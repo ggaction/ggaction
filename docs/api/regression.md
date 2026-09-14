@@ -5,7 +5,7 @@ title: Regression
 
 # Regression
 
-{% include chart-example.html id="regression" %}
+{% include chart-example.html id="regression" lead=true %}
 
 `createRegression()` layers grouped linear, polynomial, or LOESS fits over an
 existing quantitative point mark. Linear and polynomial fits can include mean
@@ -20,6 +20,12 @@ or prediction interval bands; LOESS is line-only.
 
 ## `createRegression(options?)`
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `points`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const program = points.createRegression();
 ```
@@ -30,6 +36,12 @@ field used by color and/or shape. Dataset, Cartesian coordinate, and x/y scales
 come from that point layer. Inference fails rather than choosing among multiple
 targets or group fields. Explicit `groupBy: false` requests one model and survives JSON serialization.
 Legacy explicit `groupBy: undefined` keeps the same JavaScript behavior.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.createRegression({
@@ -69,6 +81,12 @@ program.createRegression({
 
 Choose another model or interval without coordinating its child layers:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `points`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 points.createRegression({ method: "polynomial", degree: 2 });
 points.createRegression({ method: "loess", span: 0.55 });
@@ -102,6 +120,12 @@ decomposition matters.
 
 Use the original point owner, not generated band or line IDs:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const revised = program.editRegression({
   target: "points",
@@ -113,6 +137,12 @@ const revised = program.editRegression({
 ```
 
 Create-time data roles can be revised through the same stable owner:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `data: "observations"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const rebound = program.editRegression({
@@ -137,6 +167,12 @@ object can also restore it explicitly. Target omission uses the current or
 only regression owner and fails on ambiguity.
 
 ## Editing generated components
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const emphasized = program

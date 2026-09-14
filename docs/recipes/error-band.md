@@ -5,7 +5,7 @@ title: Error Band Recipe
 
 # Error Band Recipe
 
-{% include chart-example.html id="error-band" %}
+{% include chart-example.html id="error-band" lead=true %}
 
 ## Minimal flow
 

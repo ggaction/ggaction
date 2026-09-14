@@ -12,6 +12,8 @@ Each declared action has an exact signature and its own stable link. Option tabl
 
 **API layer:** primitive. **Authoring roles:** H4.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editSemantic(options: EditSemanticOptions): ChartProgram;
 ```
@@ -38,6 +40,8 @@ Behavior, inference, resets, and errors: [Extension and scale contracts](./exten
 ## `createGraphics`
 
 **API layer:** primitive. **Authoring roles:** H4.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createGraphics(options: { id: string; type: GraphicType; length?: number; parent?: string; before?: string; after?: string; }): ChartProgram;
@@ -68,6 +72,8 @@ Behavior, inference, resets, and errors: [Extension and scale contracts](./exten
 ## `editGraphics`
 
 **API layer:** primitive. **Authoring roles:** H4.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editGraphics(options: EditGraphicsOptions): ChartProgram;

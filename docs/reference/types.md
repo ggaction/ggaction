@@ -325,13 +325,62 @@ Related types: [`ScalarAggregateOperation`](#type-scalaraggregateoperation) · [
 export type AngleEncodingOptions =
   | { target?: string; value: number; field?: never; fieldType?: never }
   | { target?: string; field: string; fieldType?: "quantitative"; value?: never };
-
-type WithoutEncodingTarget<T> = T extends unknown
-  ? Omit<T, "target" | "coordinate">
-  : never;
 ```
 
 </details>
+
+### `AnnotationAnchor` {#type-annotationanchor}
+
+<details markdown="1">
+<summary>Expand AnnotationAnchor</summary>
+
+```typescript
+type AnnotationAnchor =
+  | {
+      x?: never;
+      y?: never;
+      space?: never;
+      source?: string;
+      data?: never;
+      coordinate?: never;
+    }
+  | {
+      x: unknown;
+      y: unknown;
+      space?: "data";
+      source?: string;
+      data?: never;
+      coordinate?: never;
+    }
+  | {
+      x: number;
+      y: number;
+      space: "plot";
+      source?: never;
+      data?: string;
+      coordinate?: string;
+    };
+```
+
+</details>
+
+### `AnnotationBaseOptions` {#type-annotationbaseoptions}
+
+<details markdown="1">
+<summary>Expand AnnotationBaseOptions</summary>
+
+```typescript
+type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "text"> & {
+  id?: string;
+  text: unknown;
+  format?: TextFormat;
+  layout?: false | Omit<LabelLayoutOptions, "target">;
+};
+```
+
+</details>
+
+Related types: [`TextMarkOptions`](#type-textmarkoptions) · [`TextFormat`](#type-textformat) · [`LabelLayoutOptions`](#type-labellayoutoptions).
 
 ### `ApplyThemeOptions` {#type-applythemeoptions}
 
@@ -381,6 +430,41 @@ export type AreaPlotMeasureChannel = string | { field: string; scale?: NonPointQ
 </details>
 
 Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions).
+
+### `AreaRangePositionEncodingOptions` {#type-arearangepositionencodingoptions}
+
+<details markdown="1">
+<summary>Expand AreaRangePositionEncodingOptions</summary>
+
+```typescript
+type AreaRangePositionEncodingOptions = {
+  target?: string;
+  coordinate?: string;
+  fieldType?: "quantitative";
+  temporalUnit?: never;
+  scale?: NonPointQuantitativePositionScaleOptions;
+} & (
+  | { lower: string; upper: { datum: number } }
+  | { lower: { datum: number }; upper: string }
+);
+```
+
+</details>
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions).
+
+### `AtLeastOne` {#type-atleastone}
+
+<details markdown="1">
+<summary>Expand AtLeastOne</summary>
+
+```typescript
+type AtLeastOne<T> = {
+  [K in keyof T]-?: Required<Pick<T, K>> & Partial<Omit<T, K>>
+}[keyof T];
+```
+
+</details>
 
 ### `AxisFormat` {#type-axisformat}
 
@@ -561,6 +645,23 @@ export type AxisValue = string | boolean | number;
 
 </details>
 
+### `BandPositionChannel` {#type-bandpositionchannel}
+
+<details markdown="1">
+<summary>Expand BandPositionChannel</summary>
+
+```typescript
+type BandPositionChannel = FacadePositionChannel<
+  NonPointZeroSupportingPositionScaleOptions,
+  NonPointTemporalPositionScaleOptions,
+  NonPointBandPositionScaleOptions
+>;
+```
+
+</details>
+
+Related types: [`FacadePositionChannel`](#type-facadepositionchannel) · [`NonPointZeroSupportingPositionScaleOptions`](#type-nonpointzerosupportingpositionscaleoptions) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions) · [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionscaleoptions).
+
 ### `BandPositionScaleOptions` {#type-bandpositionscaleoptions}
 
 <details markdown="1">
@@ -574,6 +675,42 @@ export type BandPositionScaleOptions =
 </details>
 
 Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionscaleoptions).
+
+### `BarCategoricalColorChannel` {#type-barcategoricalcolorchannel}
+
+<details markdown="1">
+<summary>Expand BarCategoricalColorChannel</summary>
+
+```typescript
+type BarCategoricalColorChannel =
+  | string
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
+      scale?: NonPointCategoricalColorScaleOptions;
+      palette?: Palette;
+      layout?: Exclude<ColorLayout, "center">;
+    };
+```
+
+</details>
+
+Related types: [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`ColorLayout`](#type-colorlayout).
+
+### `BarColorChannel` {#type-barcolorchannel}
+
+<details markdown="1">
+<summary>Expand BarColorChannel</summary>
+
+```typescript
+type BarColorChannel =
+  | BarCategoricalColorChannel
+  | QuantitativeBarColorChannel;
+```
+
+</details>
+
+Related types: [`BarCategoricalColorChannel`](#type-barcategoricalcolorchannel) · [`QuantitativeBarColorChannel`](#type-quantitativebarcolorchannel).
 
 ### `BarWidthOptions` {#type-barwidthoptions}
 
@@ -589,6 +726,45 @@ export type BarWidthOptions = { target?: string } & (
 
 </details>
 
+### `BarYPositionChannel` {#type-barypositionchannel}
+
+<details markdown="1">
+<summary>Expand BarYPositionChannel</summary>
+
+```typescript
+type BarYPositionChannel =
+  | string
+  | {
+      field: string;
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      aggregate?: never;
+      stack?: never;
+      scale?: NonPointTemporalPositionScaleOptions;
+    }
+  | ({ field: string; stack?: StackMode } & (
+      | {
+          fieldType?: "quantitative";
+          aggregate?: never;
+          scale?: NonPointZeroSupportingPositionScaleOptions;
+        }
+      | {
+          fieldType: "nominal" | "ordinal";
+          aggregate?: never;
+          scale?: NonPointBandPositionScaleOptions;
+        }
+      | {
+          fieldType?: "quantitative" | "nominal" | "ordinal";
+          aggregate: AggregateOperation;
+          scale?: NonPointZeroSupportingPositionScaleOptions;
+        }
+    ));
+```
+
+</details>
+
+Related types: [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions) · [`StackMode`](#type-stackmode) · [`NonPointZeroSupportingPositionScaleOptions`](#type-nonpointzerosupportingpositionscaleoptions) · [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionscaleoptions) · [`AggregateOperation`](#type-aggregateoperation).
+
 ### `BaselineDensityPlacement` {#type-baselinedensityplacement}
 
 <details markdown="1">
@@ -601,6 +777,59 @@ export interface BaselineDensityPlacement {
 ```
 
 </details>
+
+### `BasicColorChannel` {#type-basiccolorchannel}
+
+<details markdown="1">
+<summary>Expand BasicColorChannel</summary>
+
+```typescript
+type BasicColorChannel =
+  | string
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
+      scale?: CategoricalColorScaleOptions;
+      palette?: Palette;
+    }
+  | {
+      field: string;
+      fieldType: "quantitative";
+      scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+      palette?: Palette;
+    }
+  | {
+      field: string;
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
+      palette?: Palette;
+    };
+```
+
+</details>
+
+Related types: [`CategoricalColorScaleOptions`](#type-categoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`ContinuousColorScaleOptions`](#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](#type-discretizedcolorscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit).
+
+### `BasicHistogramEncoding` {#type-basichistogramencoding}
+
+<details markdown="1">
+<summary>Expand BasicHistogramEncoding</summary>
+
+```typescript
+type BasicHistogramEncoding =
+  HistogramEncodingOptions extends infer T
+    ? T extends unknown
+      ? Omit<T, "field" | "target" | "coordinate" | "stack"> & {
+          stack?: Exclude<StackMode, "center">;
+        }
+      : never
+    : never;
+```
+
+</details>
+
+Related types: [`HistogramEncodingOptions`](#type-histogramencodingoptions) · [`StackMode`](#type-stackmode).
 
 ### `BasicShapeChannel` {#type-basicshapechannel}
 
@@ -739,6 +968,24 @@ export interface Bin2DOutputFields {
 
 </details>
 
+### `BinDataMode` {#type-bindatamode}
+
+<details markdown="1">
+<summary>Expand BinDataMode</summary>
+
+```typescript
+type BinDataMode =
+  | { maxBins?: number; step?: never; boundaries?: never }
+  | { maxBins?: never; step: number; boundaries?: never }
+  | {
+      maxBins?: never;
+      step?: never;
+      boundaries: readonly [number, number, ...number[]];
+    };
+```
+
+</details>
+
 ### `BinDataOptions` {#type-bindataoptions}
 
 <details markdown="1">
@@ -761,7 +1008,7 @@ export type BinDataOptions = {
 
 </details>
 
-Related types: [`StatisticalWeight`](#type-statisticalweight) · [`BinDataOutputFields`](#type-bindataoutputfields).
+Related types: [`StatisticalWeight`](#type-statisticalweight) · [`BinDataOutputFields`](#type-bindataoutputfields) · [`BinDataMode`](#type-bindatamode).
 
 ### `BinDataOutputFields` {#type-bindataoutputfields}
 
@@ -775,14 +1022,6 @@ export interface BinDataOutputFields {
   count?: string;
   members?: string;
 }
-type BinDataMode =
-  | { maxBins?: number; step?: never; boundaries?: never }
-  | { maxBins?: never; step: number; boundaries?: never }
-  | {
-      maxBins?: never;
-      step?: never;
-      boundaries: readonly [number, number, ...number[]];
-    };
 ```
 
 </details>
@@ -871,6 +1110,19 @@ export interface BoxPlotCategoryChannel {
 
 Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionscaleoptions).
 
+### `BoxPlotGuideOptions` {#type-boxplotguideoptions}
+
+<details markdown="1">
+<summary>Expand BoxPlotGuideOptions</summary>
+
+```typescript
+type BoxPlotGuideOptions = Omit<CartesianGuideOptions, "legend"> & { legend?: false };
+```
+
+</details>
+
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions).
+
 ### `BoxPlotMeasureChannel` {#type-boxplotmeasurechannel}
 
 <details markdown="1">
@@ -925,7 +1177,7 @@ export interface BoxPlotOptions {
 
 </details>
 
-Related types: [`BoxPlotPositionChannel`](#type-boxplotpositionchannel) · [`BoxPlotWhisker`](#type-boxplotwhisker) · [`RectStyleDetails`](#type-rectstyledetails) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape).
+Related types: [`BoxPlotPositionChannel`](#type-boxplotpositionchannel) · [`BoxPlotWhisker`](#type-boxplotwhisker) · [`RectStyleDetails`](#type-rectstyledetails) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`BoxPlotGuideOptions`](#type-boxplotguideoptions).
 
 ### `BoxPlotPositionChannel` {#type-boxplotpositionchannel}
 
@@ -955,6 +1207,82 @@ export type BoxPlotWhisker =
 
 </details>
 
+### `CAxes` {#type-caxes}
+
+<details markdown="1">
+<summary>Expand CAxes</summary>
+
+```typescript
+type CAxes = Omit<CartesianAxesOptions, "x" | "y"> & {
+  x?: false | CAxis<XAxisPosition>;
+  y?: false | CAxis<YAxisPosition>;
+};
+```
+
+</details>
+
+Related types: [`CartesianAxesOptions`](#type-cartesianaxesoptions) · [`CAxis`](#type-caxis) · [`XAxisPosition`](#type-xaxisposition) · [`YAxisPosition`](#type-yaxisposition).
+
+### `CAxis` {#type-caxis}
+
+<details markdown="1">
+<summary>Expand CAxis</summary>
+
+```typescript
+type CAxis<P extends string> = Omit<CompleteAxisOptions<P>, "ticksAndLabels"> & {
+  ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position">;
+};
+```
+
+</details>
+
+Related types: [`CompleteAxisOptions`](#type-completeaxisoptions) · [`CAxisTicks`](#type-caxisticks).
+
+### `CAxisTicks` {#type-caxisticks}
+
+<details markdown="1">
+<summary>Expand CAxisTicks</summary>
+
+```typescript
+type CAxisTicks<P extends string> = Omit<AxisTicksAndLabelsOptions<P>, "labels"> & {
+  labels?: AxisLabelStyleOptions & AxisLabelLayoutOptions;
+};
+```
+
+</details>
+
+Related types: [`AxisTicksAndLabelsOptions`](#type-axisticksandlabelsoptions) · [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions).
+
+### `CCategoricalGuides` {#type-ccategoricalguides}
+
+<details markdown="1">
+<summary>Expand CCategoricalGuides</summary>
+
+```typescript
+type CCategoricalGuides = Omit<CartesianCategoricalGuideOptions, "axes"> & {
+  axes?: false | CAxes;
+};
+```
+
+</details>
+
+Related types: [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions) · [`CAxes`](#type-caxes).
+
+### `CPathGuides` {#type-cpathguides}
+
+<details markdown="1">
+<summary>Expand CPathGuides</summary>
+
+```typescript
+type CPathGuides = Omit<CartesianPathGuideOptions, "axes"> & {
+  axes?: false | CAxes;
+};
+```
+
+</details>
+
+Related types: [`CartesianPathGuideOptions`](#type-cartesianpathguideoptions) · [`CAxes`](#type-caxes).
+
 ### `CanvasOptions` {#type-canvasoptions}
 
 <details markdown="1">
@@ -971,6 +1299,103 @@ export interface CanvasOptions {
 
 </details>
 
+### `CartesianAxesOptions` {#type-cartesianaxesoptions}
+
+<details markdown="1">
+<summary>Expand CartesianAxesOptions</summary>
+
+```typescript
+type CartesianAxesOptions = Omit<
+  CreateAxesOptions,
+  "coordinate" | "theta" | "radius"
+> & {
+  coordinate?: { id?: string; type?: "auto" | "cartesian" };
+};
+```
+
+</details>
+
+Related types: [`CreateAxesOptions`](#type-createaxesoptions).
+
+### `CartesianCategoricalGuideOptions` {#type-cartesiancategoricalguideoptions}
+
+<details markdown="1">
+<summary>Expand CartesianCategoricalGuideOptions</summary>
+
+```typescript
+type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (Omit<
+    FilledMarkLegendOptions,
+    "count" | "values" | "gradient" | "labels" | "order"
+  > & {
+    labels?: CategoricalLegendTextOptions;
+    order?: CartesianLegendOrder;
+  });
+};
+```
+
+</details>
+
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
+
+### `CartesianGridOptions` {#type-cartesiangridoptions}
+
+<details markdown="1">
+<summary>Expand CartesianGridOptions</summary>
+
+```typescript
+type CartesianGridOptions = Pick<CreateGridOptions, "horizontal" | "vertical">;
+```
+
+</details>
+
+Related types: [`CreateGridOptions`](#type-creategridoptions).
+
+### `CartesianGuideOptions` {#type-cartesianguideoptions}
+
+<details markdown="1">
+<summary>Expand CartesianGuideOptions</summary>
+
+```typescript
+type CartesianGuideOptions = {
+  axes?: false | CartesianAxesOptions;
+  grid?: false | CartesianGridOptions;
+  legend?: false | (Omit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
+};
+```
+
+</details>
+
+Related types: [`CartesianAxesOptions`](#type-cartesianaxesoptions) · [`CartesianGridOptions`](#type-cartesiangridoptions) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
+
+### `CartesianLegendOrder` {#type-cartesianlegendorder}
+
+<details markdown="1">
+<summary>Expand CartesianLegendOrder</summary>
+
+```typescript
+type CartesianLegendOrder = LegendValueOrder | { channel: "x" | "y"; values?: never };
+```
+
+</details>
+
+Related types: [`LegendValueOrder`](#type-legendvalueorder).
+
+### `CartesianPathGuideOptions` {#type-cartesianpathguideoptions}
+
+<details markdown="1">
+<summary>Expand CartesianPathGuideOptions</summary>
+
+```typescript
+type CartesianPathGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
+};
+```
+
+</details>
+
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`PathLegendOptions`](#type-pathlegendoptions) · [`LegendValueOrder`](#type-legendvalueorder).
+
 ### `CategoricalColorScaleOptions` {#type-categoricalcolorscaleoptions}
 
 <details markdown="1">
@@ -979,14 +1404,6 @@ export interface CanvasOptions {
 ```typescript
 export type CategoricalColorScaleOptions =
   NonPointCategoricalColorScaleOptions & { unknown?: string };
-type SizeScaleCommonOptions = ScaleFields<"id" | "reverse"> & {
-  unknown?: number;
-};
-type ContinuousSizeScaleOptions = SizeScaleCommonOptions &
-  ScaleFields<"clamp"> & {
-    domain?: "auto" | readonly [number, number];
-    range?: "auto" | readonly [number, number];
-  };
 ```
 
 </details>
@@ -1013,6 +1430,61 @@ export interface CategoricalEncodingOptions {
 
 Related types: [`CategoricalColorScaleOptions`](#type-categoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`ColorLayout`](#type-colorlayout).
 
+### `CategoricalLegendTextOptions` {#type-categoricallegendtextoptions}
+
+<details markdown="1">
+<summary>Expand CategoricalLegendTextOptions</summary>
+
+```typescript
+type CategoricalLegendTextOptions = {
+  offset?: number;
+  color?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+  format?: "auto";
+};
+```
+
+</details>
+
+### `CategoricalPolarAxesOptions` {#type-categoricalpolaraxesoptions}
+
+<details markdown="1">
+<summary>Expand CategoricalPolarAxesOptions</summary>
+
+```typescript
+type CategoricalPolarAxesOptions = Omit<
+  Pick<CreateAxesOptions, "theta" | "radius">,
+  "theta"
+> & {
+  coordinate?: { id?: string; type?: "auto" | "polar" };
+  theta?: false | CategoricalThetaAxisOptions;
+};
+```
+
+</details>
+
+Related types: [`CreateAxesOptions`](#type-createaxesoptions) · [`CategoricalThetaAxisOptions`](#type-categoricalthetaaxisoptions).
+
+### `CategoricalPolarGridOptions` {#type-categoricalpolargridoptions}
+
+<details markdown="1">
+<summary>Expand CategoricalPolarGridOptions</summary>
+
+```typescript
+type CategoricalPolarGridOptions = Omit<
+  Pick<CreateGridOptions, "theta" | "radial">,
+  "theta"
+> & {
+  theta?: boolean | CategoricalThetaGridOptions;
+};
+```
+
+</details>
+
+Related types: [`CreateGridOptions`](#type-creategridoptions) · [`CategoricalThetaGridOptions`](#type-categoricalthetagridoptions).
+
 ### `CategoricalPositionScaleOptions` {#type-categoricalpositionscaleoptions}
 
 <details markdown="1">
@@ -1027,6 +1499,56 @@ export type CategoricalPositionScaleOptions =
 </details>
 
 Related types: [`BandPositionScaleOptions`](#type-bandpositionscaleoptions) · [`PointPositionScaleOptions`](#type-pointpositionscaleoptions).
+
+### `CategoricalThetaAxisOptions` {#type-categoricalthetaaxisoptions}
+
+<details markdown="1">
+<summary>Expand CategoricalThetaAxisOptions</summary>
+
+```typescript
+type CategoricalThetaAxisOptions = Omit<CompletePolarAxisOptions, "ticksAndLabels"> & {
+  ticksAndLabels?: false | CategoricalThetaTicksAndLabelsOptions;
+};
+```
+
+</details>
+
+Related types: [`CompletePolarAxisOptions`](#type-completepolaraxisoptions) · [`CategoricalThetaTicksAndLabelsOptions`](#type-categoricalthetaticksandlabelsoptions).
+
+### `CategoricalThetaGridOptions` {#type-categoricalthetagridoptions}
+
+<details markdown="1">
+<summary>Expand CategoricalThetaGridOptions</summary>
+
+```typescript
+type CategoricalThetaGridOptions = Omit<PolarGridOptions, "count"> & {
+  count?: never;
+};
+```
+
+</details>
+
+Related types: [`PolarGridOptions`](#type-polargridoptions).
+
+### `CategoricalThetaTicksAndLabelsOptions` {#type-categoricalthetaticksandlabelsoptions}
+
+<details markdown="1">
+<summary>Expand CategoricalThetaTicksAndLabelsOptions</summary>
+
+```typescript
+type CategoricalThetaTicksAndLabelsOptions = Omit<
+  PolarTicksAndLabelsOptions,
+  "count" | "labels"
+> & {
+  count?: never;
+  labels?: Omit<AxisLabelStyleOptions, "format"> & DisplayLabelOptions &
+    { format?: "auto" };
+};
+```
+
+</details>
+
+Related types: [`PolarTicksAndLabelsOptions`](#type-polarticksandlabelsoptions) · [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions).
 
 ### `CategoryDensityPlacement` {#type-categorydensityplacement}
 
@@ -1128,6 +1650,23 @@ export type ColorEncodingOptions =
 
 Related types: [`CategoricalEncodingOptions`](#type-categoricalencodingoptions) · [`AggregateOperation`](#type-aggregateoperation) · [`ContinuousColorScaleOptions`](#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](#type-discretizedcolorscaleoptions) · [`Palette`](#type-palette) · [`TemporalInputUnit`](#type-temporalinputunit).
 
+### `ColorGuides` {#type-colorguides}
+
+<details markdown="1">
+<summary>Expand ColorGuides</summary>
+
+```typescript
+type ColorGuides = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (Omit<FilledMarkLegendOptions, "values" | "order"> & {
+    order?: CartesianLegendOrder;
+  });
+};
+```
+
+</details>
+
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
+
 ### `ColorLayout` {#type-colorlayout}
 
 <details markdown="1">
@@ -1165,6 +1704,26 @@ export interface CompleteAxisOptions<P extends string> {
 
 Related types: [`AxisLineStyleOptions`](#type-axislinestyleoptions) · [`AxisTicksAndLabelsOptions`](#type-axisticksandlabelsoptions) · [`AxisTitleOptions`](#type-axistitleoptions).
 
+### `CompleteDataBaseOptions` {#type-completedatabaseoptions}
+
+<details markdown="1">
+<summary>Expand CompleteDataBaseOptions</summary>
+
+```typescript
+type CompleteDataBaseOptions = {
+  id: string;
+  source?: string;
+  key: string;
+  groupBy?: string | readonly string[];
+  fill?: Readonly<Record<string, DatasetScalar>>;
+  members?: string;
+};
+```
+
+</details>
+
+Related types: [`DatasetScalar`](#type-datasetscalar).
+
 ### `CompleteDataOptions` {#type-completedataoptions}
 
 <details markdown="1">
@@ -1179,19 +1738,11 @@ export type CompleteDataOptions = CompleteDataBaseOptions & (
     }
   | { values?: never; sequence?: never }
 );
-type ImputedDataBaseOptions = {
-  id: string;
-  source?: string;
-  fields: string | readonly [string, ...string[]];
-  groupBy?: string | readonly string[];
-  edges?: "keep" | "error";
-  maxGap?: number;
-};
 ```
 
 </details>
 
-Related types: [`DatasetScalar`](#type-datasetscalar).
+Related types: [`CompleteDataBaseOptions`](#type-completedatabaseoptions) · [`DatasetScalar`](#type-datasetscalar).
 
 ### `CompletePolarAxisOptions` {#type-completepolaraxisoptions}
 
@@ -1282,27 +1833,11 @@ export interface ComputedDataOptions {
   as: string;
   expression: ComputedExpression;
 }
-type NormalizedDataBaseOptions = {
-  id: string;
-  source?: string;
-  field: string;
-  as: string;
-  groupBy?: string | readonly string[];
-};
-type NormalizeBaselineOptions =
-  | {
-      baseline?: { position: "first" | "last" };
-      sortBy: readonly [WindowSort, ...WindowSort[]];
-    }
-  | {
-      baseline: { value: number };
-      sortBy?: readonly WindowSort[];
-    };
 ```
 
 </details>
 
-Related types: [`ComputedExpression`](#type-computedexpression) · [`WindowSort`](#type-windowsort).
+Related types: [`ComputedExpression`](#type-computedexpression).
 
 ### `ComputedExpression` {#type-computedexpression}
 
@@ -1385,6 +1920,23 @@ export type ContinuousColorScaleOptions =
 
 Related types: [`NonPointContinuousColorScaleOptions`](#type-nonpointcontinuouscolorscaleoptions).
 
+### `ContinuousSizeScaleOptions` {#type-continuoussizescaleoptions}
+
+<details markdown="1">
+<summary>Expand ContinuousSizeScaleOptions</summary>
+
+```typescript
+type ContinuousSizeScaleOptions = SizeScaleCommonOptions &
+  ScaleFields<"clamp"> & {
+    domain?: "auto" | readonly [number, number];
+    range?: "auto" | readonly [number, number];
+  };
+```
+
+</details>
+
+Related types: [`SizeScaleCommonOptions`](#type-sizescalecommonoptions) · [`ScaleFields`](#type-scalefields).
+
 ### `CoordinateAspect` {#type-coordinateaspect}
 
 <details markdown="1">
@@ -1424,6 +1976,8 @@ export type CreateAnnotationOptions = AnnotationBaseOptions & AnnotationAnchor;
 ```
 
 </details>
+
+Related types: [`AnnotationBaseOptions`](#type-annotationbaseoptions) · [`AnnotationAnchor`](#type-annotationanchor).
 
 ### `CreateAreaPlotOptions` {#type-createareaplotoptions}
 
@@ -1498,7 +2052,7 @@ export interface CreateBarPlotOptions {
 
 </details>
 
-Related types: [`BarWidthOptions`](#type-barwidthoptions) · [`RectStyleDetails`](#type-rectstyledetails).
+Related types: [`BandPositionChannel`](#type-bandpositionchannel) · [`BarYPositionChannel`](#type-barypositionchannel) · [`BarColorChannel`](#type-barcolorchannel) · [`BarWidthOptions`](#type-barwidthoptions) · [`RectStyleDetails`](#type-rectstyledetails) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`ColorGuides`](#type-colorguides).
 
 ### `CreateBeeswarmPlotOptions` {#type-createbeeswarmplotoptions}
 
@@ -1531,7 +2085,7 @@ export type CreateBeeswarmPlotOptions = {
 
 </details>
 
-Related types: [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`BeeswarmPackingOptions`](#type-beeswarmpackingoptions) · [`RugMeasureChannel`](#type-rugmeasurechannel) · [`StripCategoryChannel`](#type-stripcategorychannel).
+Related types: [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`BeeswarmPackingOptions`](#type-beeswarmpackingoptions) · [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`RugMeasureChannel`](#type-rugmeasurechannel) · [`StripCategoryChannel`](#type-stripcategorychannel).
 
 ### `CreateCoordinateOptions` {#type-createcoordinateoptions}
 
@@ -1618,7 +2172,7 @@ export interface CreateDotPlotOptions extends EndpointPlotBaseOptions {
 
 </details>
 
-Related types: [`EndpointValueChannel`](#type-endpointvaluechannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`EndpointLabelOptions`](#type-endpointlabeloptions).
+Related types: [`EndpointPlotBaseOptions`](#type-endpointplotbaseoptions) · [`EndpointValueChannel`](#type-endpointvaluechannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`EndpointLabelOptions`](#type-endpointlabeloptions).
 
 ### `CreateDumbbellPlotOptions` {#type-createdumbbellplotoptions}
 
@@ -1638,7 +2192,7 @@ export interface CreateDumbbellPlotOptions extends EndpointPlotBaseOptions {
 
 </details>
 
-Related types: [`EndpointValueChannel`](#type-endpointvaluechannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`RuleStyleOptions`](#type-rulestyleoptions) · [`EndpointLabelOptions`](#type-endpointlabeloptions).
+Related types: [`EndpointPlotBaseOptions`](#type-endpointplotbaseoptions) · [`EndpointValueChannel`](#type-endpointvaluechannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`RuleStyleOptions`](#type-rulestyleoptions) · [`EndpointLabelOptions`](#type-endpointlabeloptions).
 
 ### `CreateECDFPlotOptions` {#type-createecdfplotoptions}
 
@@ -1664,7 +2218,7 @@ export interface CreateECDFPlotOptions {
 
 </details>
 
-Related types: [`ECDFOutputFields`](#type-ecdfoutputfields) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`EndpointLabelOptions`](#type-endpointlabeloptions).
+Related types: [`ECDFOutputFields`](#type-ecdfoutputfields) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`EndpointLabelOptions`](#type-endpointlabeloptions) · [`CartesianPathGuideOptions`](#type-cartesianpathguideoptions).
 
 ### `CreateGridOptions` {#type-creategridoptions}
 
@@ -1695,93 +2249,11 @@ export interface CreateGuidesOptions {
   grid?: false | CreateGridOptions;
   legend?: false | LegendOptions;
 }
-
-type CartesianAxesOptions = Omit<
-  CreateAxesOptions,
-  "coordinate" | "theta" | "radius"
-> & {
-  coordinate?: { id?: string; type?: "auto" | "cartesian" };
-};
-type CAxisTicks<P extends string> = Omit<AxisTicksAndLabelsOptions<P>, "labels"> & {
-  labels?: AxisLabelStyleOptions & AxisLabelLayoutOptions;
-};
-type CAxis<P extends string> = Omit<CompleteAxisOptions<P>, "ticksAndLabels"> & {
-  ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position">;
-};
-type CAxes = Omit<CartesianAxesOptions, "x" | "y"> & {
-  x?: false | CAxis<XAxisPosition>;
-  y?: false | CAxis<YAxisPosition>;
-};
-type CartesianGridOptions = Pick<CreateGridOptions, "horizontal" | "vertical">;
-type FilledMarkLegendOptions = Omit<LegendOptions, "symbol"> & {
-  symbol?: "auto"
-    | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
-    | { layers: readonly LegendSymbolLayer[] };
-};
-type CategoricalLegendTextOptions = {
-  offset?: number;
-  color?: string;
-  fontSize?: number;
-  fontFamily?: string;
-  fontWeight?: string | number;
-  format?: "auto";
-};
-type PathLegendOptions = Omit<
-  LegendOptions,
-  "symbol" | "gradient" | "count" | "values" | "labels"
-> & {
-  symbol?: "auto" | { length?: number; lineWidth?: number }
-    | { layers: readonly LegendSymbolLayer[] };
-  labels?: CategoricalLegendTextOptions;
-};
-type CartesianGuideOptions = {
-  axes?: false | CartesianAxesOptions;
-  grid?: false | CartesianGridOptions;
-  legend?: false | (Omit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
-};
-type CartesianPathGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
-  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
-};
-type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
-  legend?: false | (Omit<
-    FilledMarkLegendOptions,
-    "count" | "values" | "gradient" | "labels" | "order"
-  > & {
-    labels?: CategoricalLegendTextOptions;
-    order?: CartesianLegendOrder;
-  });
-};
-type CPathGuides = Omit<CartesianPathGuideOptions, "axes"> & {
-  axes?: false | CAxes;
-};
-type CCategoricalGuides = Omit<CartesianCategoricalGuideOptions, "axes"> & {
-  axes?: false | CAxes;
-};
-type ColorGuides = Omit<CartesianGuideOptions, "legend"> & {
-  legend?: false | (Omit<FilledMarkLegendOptions, "values" | "order"> & {
-    order?: CartesianLegendOrder;
-  });
-};
-type BoxPlotGuideOptions = Omit<CartesianGuideOptions, "legend"> & { legend?: false };
-type GradientPlotDensityLegendOptions = {
-  title?: string;
-  position?: "right";
-};
-type GradientPlotGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
-  legend?: false | GradientPlotDensityLegendOptions;
-};
-type ParallelGuideOptions = {
-  axes?: false | {
-    coordinate?: { id?: string; type?: "auto" | "parallel" };
-  };
-  grid?: false;
-  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
-};
 ```
 
 </details>
 
-Related types: [`CreateAxesOptions`](#type-createaxesoptions) · [`CreateGridOptions`](#type-creategridoptions) · [`LegendOptions`](#type-legendoptions) · [`AxisTicksAndLabelsOptions`](#type-axisticksandlabelsoptions) · [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions) · [`CompleteAxisOptions`](#type-completeaxisoptions) · [`XAxisPosition`](#type-xaxisposition) · [`YAxisPosition`](#type-yaxisposition) · [`LegendSymbolLayer`](#type-legendsymbollayer).
+Related types: [`CreateAxesOptions`](#type-createaxesoptions) · [`CreateGridOptions`](#type-creategridoptions) · [`LegendOptions`](#type-legendoptions).
 
 ### `CreateHeatmapOptions` {#type-createheatmapoptions}
 
@@ -1822,7 +2294,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
 
 </details>
 
-Related types: [`RectStyleDetails`](#type-rectstyledetails).
+Related types: [`BasicHistogramEncoding`](#type-basichistogramencoding) · [`HistogramCategoricalColorChannel`](#type-histogramcategoricalcolorchannel) · [`RectStyleDetails`](#type-rectstyledetails) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions).
 
 ### `CreateHorizonPlotOptions` {#type-createhorizonplotoptions}
 
@@ -1873,7 +2345,7 @@ export type CreateIntervalPlotOptions = IntervalPlotBaseOptions & (
 
 </details>
 
-Related types: [`ErrorBarPositionChannel`](#type-errorbarpositionchannel) · [`ErrorBarIntervalChannel`](#type-errorbarintervalchannel).
+Related types: [`IntervalPlotBaseOptions`](#type-intervalplotbaseoptions) · [`ErrorBarPositionChannel`](#type-errorbarpositionchannel) · [`ErrorBarIntervalChannel`](#type-errorbarintervalchannel).
 
 ### `CreateLinePlotOptions` {#type-createlineplotoptions}
 
@@ -1899,20 +2371,11 @@ export interface CreateLinePlotOptions {
   };
   guides?: false | CPathGuides;
 }
-
-type BasicHistogramEncoding =
-  HistogramEncodingOptions extends infer T
-    ? T extends unknown
-      ? Omit<T, "field" | "target" | "coordinate" | "stack"> & {
-          stack?: Exclude<StackMode, "center">;
-        }
-      : never
-    : never;
 ```
 
 </details>
 
-Related types: [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation) · [`HistogramEncodingOptions`](#type-histogramencodingoptions) · [`StackMode`](#type-stackmode).
+Related types: [`LineXPositionChannel`](#type-linexpositionchannel) · [`LineYPositionChannel`](#type-lineypositionchannel) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation) · [`CPathGuides`](#type-cpathguides).
 
 ### `CreateLollipopPlotOptions` {#type-createlollipopplotoptions}
 
@@ -1931,7 +2394,7 @@ export interface CreateLollipopPlotOptions extends EndpointPlotBaseOptions {
 
 </details>
 
-Related types: [`EndpointValueChannel`](#type-endpointvaluechannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`RuleStyleOptions`](#type-rulestyleoptions) · [`EndpointLabelOptions`](#type-endpointlabeloptions).
+Related types: [`EndpointPlotBaseOptions`](#type-endpointplotbaseoptions) · [`EndpointValueChannel`](#type-endpointvaluechannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`RuleStyleOptions`](#type-rulestyleoptions) · [`EndpointLabelOptions`](#type-endpointlabeloptions).
 
 ### `CreateMarkLabelsOptions` {#type-createmarklabelsoptions}
 
@@ -1997,7 +2460,7 @@ export interface CreateParallelCoordinatesOptions {
 
 </details>
 
-Related types: [`ParallelDimension`](#type-paralleldimension) · [`ParallelMissingPolicy`](#type-parallelmissingpolicy) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails).
+Related types: [`ParallelDimension`](#type-paralleldimension) · [`ParallelMissingPolicy`](#type-parallelmissingpolicy) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`ParallelGuideOptions`](#type-parallelguideoptions).
 
 ### `CreatePiePlotOptions` {#type-createpieplotoptions}
 
@@ -2045,7 +2508,7 @@ export interface CreatePolarLinePlotOptions {
 
 </details>
 
-Related types: [`PolarThetaChannel`](#type-polarthetachannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`CreateLinePlotOptions`](#type-createlineplotoptions) · [`PolarPathGuideOptions`](#type-polarpathguideoptions).
+Related types: [`PolarThetaChannel`](#type-polarthetachannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`CreateLinePlotOptions`](#type-createlineplotoptions) · [`PolarPathGuideOptions`](#type-polarpathguideoptions).
 
 ### `CreatePolarScatterPlotOptions` {#type-createpolarscatterplotoptions}
 
@@ -2069,7 +2532,7 @@ export interface CreatePolarScatterPlotOptions {
 
 </details>
 
-Related types: [`PolarThetaChannel`](#type-polarthetachannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`PolarPointGuideOptions`](#type-polarpointguideoptions).
+Related types: [`PolarThetaChannel`](#type-polarthetachannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`PolarPointGuideOptions`](#type-polarpointguideoptions).
 
 ### `CreateRadarPlotOptions` {#type-createradarplotoptions}
 
@@ -2103,7 +2566,7 @@ export type CreateRadarPlotOptions = {
 
 </details>
 
-Related types: [`RadarCategoryValue`](#type-radarcategoryvalue) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`CreateLinePlotOptions`](#type-createlineplotoptions) · [`RadarGuideOptions`](#type-radarguideoptions) · [`RadarCategoryChannel`](#type-radarcategorychannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`RadarWideOptions`](#type-radarwideoptions).
+Related types: [`RadarCategoryValue`](#type-radarcategoryvalue) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`CreateLinePlotOptions`](#type-createlineplotoptions) · [`RadarGuideOptions`](#type-radarguideoptions) · [`RadarCategoryChannel`](#type-radarcategorychannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`RadarWideOptions`](#type-radarwideoptions).
 
 ### `CreateRadialAxisLabelsOptions` {#type-createradialaxislabelsoptions}
 
@@ -2196,7 +2659,7 @@ export interface CreateRaincloudPlotOptions {
 
 </details>
 
-Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions).
+Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions).
 
 ### `CreateReferenceBandOptions` {#type-createreferencebandoptions}
 
@@ -2214,7 +2677,7 @@ export type CreateReferenceBandOptions =
 
 </details>
 
-Related types: [`RectMarkOptions`](#type-rectmarkoptions) · [`ReferenceStatistic`](#type-referencestatistic).
+Related types: [`RectMarkOptions`](#type-rectmarkoptions) · [`ReferenceBinding`](#type-referencebinding) · [`DynamicReferenceBinding`](#type-dynamicreferencebinding) · [`ReferenceStatistic`](#type-referencestatistic).
 
 ### `CreateReferenceLineOptions` {#type-createreferencelineoptions}
 
@@ -2231,7 +2694,7 @@ export type CreateReferenceLineOptions =
 
 </details>
 
-Related types: [`RuleStyleOptions`](#type-rulestyleoptions) · [`ReferenceStatistic`](#type-referencestatistic).
+Related types: [`RuleStyleOptions`](#type-rulestyleoptions) · [`ReferenceBinding`](#type-referencebinding) · [`DynamicReferenceBinding`](#type-dynamicreferencebinding) · [`ReferenceStatistic`](#type-referencestatistic).
 
 ### `CreateRegressionBandOptions` {#type-createregressionbandoptions}
 
@@ -2280,40 +2743,11 @@ export interface CreateRegressionLineOptions extends StrokeStyleDetails {
   strokeWidth?: number;
   curve?: CurveInterpolation;
 }
-
-type RegressionParameterOptions =
-  | {
-      method?: "linear";
-      degree?: never;
-      span?: never;
-      confidenceMethod?: ConfidenceIntervalMethod;
-      level?: number;
-      confidence?: number;
-      interval?: RegressionInterval;
-    }
-  | {
-      method: "polynomial";
-      degree?: number;
-      span?: never;
-      confidenceMethod?: ConfidenceIntervalMethod;
-      level?: number;
-      confidence?: number;
-      interval?: RegressionInterval;
-    }
-  | {
-      method: "loess";
-      degree?: never;
-      span?: number;
-      confidenceMethod?: never;
-      level?: never;
-      confidence?: never;
-      interval?: never;
-    };
 ```
 
 </details>
 
-Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval).
+Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation).
 
 ### `CreateRegressionPlotOptions` {#type-createregressionplotoptions}
 
@@ -2327,7 +2761,7 @@ export type CreateRegressionPlotOptions = RegressionPlotBaseOptions &
 
 </details>
 
-Related types: [`RegressionOptions`](#type-regressionoptions).
+Related types: [`RegressionPlotBaseOptions`](#type-regressionplotbaseoptions) · [`RegressionPlotStatisticalOptions`](#type-regressionplotstatisticaloptions) · [`RegressionOptions`](#type-regressionoptions).
 
 ### `CreateRosePlotOptions` {#type-createroseplotoptions}
 
@@ -2410,7 +2844,7 @@ export interface CreateScatterPlotOptions {
 
 </details>
 
-Related types: [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape).
+Related types: [`PointFacadePositionChannel`](#type-pointfacadepositionchannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
 
 ### `CreateStripPlotOptions` {#type-createstripplotoptions}
 
@@ -2443,7 +2877,7 @@ export type CreateStripPlotOptions = {
 
 </details>
 
-Related types: [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`RugMeasureChannel`](#type-rugmeasurechannel) · [`StripPixelJitterOptions`](#type-strippixeljitteroptions) · [`StripCategoryChannel`](#type-stripcategorychannel) · [`StripBandJitterOptions`](#type-stripbandjitteroptions).
+Related types: [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`RugMeasureChannel`](#type-rugmeasurechannel) · [`StripPixelJitterOptions`](#type-strippixeljitteroptions) · [`StripCategoryChannel`](#type-stripcategorychannel) · [`StripBandJitterOptions`](#type-stripbandjitteroptions).
 
 ### `CreateThetaAxisLabelsOptions` {#type-createthetaaxislabelsoptions}
 
@@ -2673,13 +3107,6 @@ export type DatasetCompleteTransform = {
     }
   | { readonly values?: never; readonly sequence?: never }
 );
-type DatasetImputedBaseTransform = {
-  readonly type: "impute";
-  readonly fields: readonly string[];
-  readonly groupBy: readonly string[];
-  readonly edges: "keep" | "error";
-  readonly maxGap?: number;
-};
 ```
 
 </details>
@@ -2877,6 +3304,23 @@ export interface DatasetHorizonTransform {
 
 Related types: [`TemporalInputUnit`](#type-temporalinputunit) · [`HorizonResolution`](#type-horizonresolution) · [`HorizonMissingPolicy`](#type-horizonmissingpolicy) · [`HorizonOverflowPolicy`](#type-horizonoverflowpolicy) · [`Palette`](#type-palette) · [`HorizonOutputFields`](#type-horizonoutputfields) · [`DatasetScalar`](#type-datasetscalar).
 
+### `DatasetImputedBaseTransform` {#type-datasetimputedbasetransform}
+
+<details markdown="1">
+<summary>Expand DatasetImputedBaseTransform</summary>
+
+```typescript
+type DatasetImputedBaseTransform = {
+  readonly type: "impute";
+  readonly fields: readonly string[];
+  readonly groupBy: readonly string[];
+  readonly edges: "keep" | "error";
+  readonly maxGap?: number;
+};
+```
+
+</details>
+
 ### `DatasetImputedTransform` {#type-datasetimputedtransform}
 
 <details markdown="1">
@@ -2904,7 +3348,7 @@ export type DatasetImputedTransform = DatasetImputedBaseTransform & (
 
 </details>
 
-Related types: [`DatasetScalar`](#type-datasetscalar) · [`DatasetWindowSort`](#type-datasetwindowsort).
+Related types: [`DatasetImputedBaseTransform`](#type-datasetimputedbasetransform) · [`DatasetScalar`](#type-datasetscalar) · [`DatasetWindowSort`](#type-datasetwindowsort).
 
 ### `DatasetIntervalOutputFields` {#type-datasetintervaloutputfields}
 
@@ -2958,6 +3402,38 @@ export type DatasetIntervalTransform = {
 
 Related types: [`DatasetIntervalOutputFields`](#type-datasetintervaloutputfields) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod).
 
+### `DatasetNormalizeBaselineTransform` {#type-datasetnormalizebaselinetransform}
+
+<details markdown="1">
+<summary>Expand DatasetNormalizeBaselineTransform</summary>
+
+```typescript
+type DatasetNormalizeBaselineTransform = {
+  readonly baseline: NormalizeBaseline;
+  readonly sortBy: readonly WindowSort[];
+};
+```
+
+</details>
+
+Related types: [`NormalizeBaseline`](#type-normalizebaseline) · [`WindowSort`](#type-windowsort).
+
+### `DatasetNormalizedBaseTransform` {#type-datasetnormalizedbasetransform}
+
+<details markdown="1">
+<summary>Expand DatasetNormalizedBaseTransform</summary>
+
+```typescript
+type DatasetNormalizedBaseTransform = {
+  readonly type: "normalize";
+  readonly field: string;
+  readonly as: string;
+  readonly groupBy: readonly string[];
+};
+```
+
+</details>
+
 ### `DatasetNormalizedTransform` {#type-datasetnormalizedtransform}
 
 <details markdown="1">
@@ -2984,7 +3460,7 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
 
 </details>
 
-Related types: [`NormalizeZeroDenominator`](#type-normalizezerodenominator).
+Related types: [`DatasetNormalizedBaseTransform`](#type-datasetnormalizedbasetransform) · [`NormalizeZeroDenominator`](#type-normalizezerodenominator) · [`DatasetNormalizeBaselineTransform`](#type-datasetnormalizebaselinetransform).
 
 ### `DatasetRegressionTransform` {#type-datasetregressiontransform}
 
@@ -3057,6 +3533,18 @@ export interface DatasetStackTransform {
   readonly mode: StackDataMode;
   readonly as: Required<StackDataOutputFields>;
 }
+```
+
+</details>
+
+Related types: [`StackDataMode`](#type-stackdatamode) · [`StackDataOutputFields`](#type-stackdataoutputfields).
+
+### `DatasetStatisticalReferenceTransform` {#type-datasetstatisticalreferencetransform}
+
+<details markdown="1">
+<summary>Expand DatasetStatisticalReferenceTransform</summary>
+
+```typescript
 interface DatasetStatisticalReferenceTransform {
   readonly type: "statisticalReference";
   readonly target: string;
@@ -3064,8 +3552,6 @@ interface DatasetStatisticalReferenceTransform {
 ```
 
 </details>
-
-Related types: [`StackDataMode`](#type-stackdatamode) · [`StackDataOutputFields`](#type-stackdataoutputfields).
 
 ### `DatasetSummaryTransform` {#type-datasetsummarytransform}
 
@@ -3108,7 +3594,26 @@ export type DatasetTimeUnitTransform = DatasetTimeUnitTransformBase & (
 
 </details>
 
-Related types: [`TimeUnit`](#type-timeunit).
+Related types: [`DatasetTimeUnitTransformBase`](#type-datasettimeunittransformbase) · [`TimeUnit`](#type-timeunit).
+
+### `DatasetTimeUnitTransformBase` {#type-datasettimeunittransformbase}
+
+<details markdown="1">
+<summary>Expand DatasetTimeUnitTransformBase</summary>
+
+```typescript
+type DatasetTimeUnitTransformBase = {
+  readonly type: "timeUnit";
+  readonly field: string;
+  readonly temporalUnit?: TemporalInputUnit;
+  readonly as: string;
+  readonly timeZone?: string;
+};
+```
+
+</details>
+
+Related types: [`TemporalInputUnit`](#type-temporalinputunit).
 
 ### `DatasetTransform` {#type-datasettransform}
 
@@ -3135,12 +3640,11 @@ export type DatasetTransform =
   | DatasetStatisticalReferenceTransform
   | DatasetTimeUnitTransform
   | DatasetWindowTransform;
-type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;
 ```
 
 </details>
 
-Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
+Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -3251,7 +3755,7 @@ export type DatumPositionEncodingOptions =
 
 </details>
 
-Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions) · [`NonPointCategoricalPositionScaleOptions`](#type-nonpointcategoricalpositionscaleoptions).
+Related types: [`InferredRuleDatumPositionEncodingOptions`](#type-inferredruledatumpositionencodingoptions) · [`RulePositionEncodingBase`](#type-rulepositionencodingbase) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions) · [`NonPointCategoricalPositionScaleOptions`](#type-nonpointcategoricalpositionscaleoptions).
 
 ### `DensityDataOptions` {#type-densitydataoptions}
 
@@ -3272,7 +3776,18 @@ export interface DensityDataOptions {
   weight?: StatisticalWeight;
   as?: readonly [string, string];
 }
+```
 
+</details>
+
+Related types: [`DensityKernel`](#type-densitykernel) · [`DensityNormalization`](#type-densitynormalization) · [`StatisticalWeight`](#type-statisticalweight).
+
+### `DensityEncodingBase` {#type-densityencodingbase}
+
+<details markdown="1">
+<summary>Expand DensityEncodingBase</summary>
+
+```typescript
 type DensityEncodingBase = Omit<DensityDataOptions, "id" | "groupBy"> & {
   groupBy?: string | false;
   target?: string;
@@ -3284,7 +3799,7 @@ type DensityEncodingBase = Omit<DensityDataOptions, "id" | "groupBy"> & {
 
 </details>
 
-Related types: [`DensityKernel`](#type-densitykernel) · [`DensityNormalization`](#type-densitynormalization) · [`StatisticalWeight`](#type-statisticalweight) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions).
+Related types: [`DensityDataOptions`](#type-densitydataoptions) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions).
 
 ### `DensityEncodingOptions` {#type-densityencodingoptions}
 
@@ -3306,7 +3821,7 @@ export type DensityEncodingOptions = DensityEncodingBase & (
 
 </details>
 
-Related types: [`BaselineDensityPlacement`](#type-baselinedensityplacement) · [`NonPointZeroSupportingPositionScaleOptions`](#type-nonpointzerosupportingpositionscaleoptions) · [`CategoryDensityPlacement`](#type-categorydensityplacement).
+Related types: [`DensityEncodingBase`](#type-densityencodingbase) · [`BaselineDensityPlacement`](#type-baselinedensityplacement) · [`NonPointZeroSupportingPositionScaleOptions`](#type-nonpointzerosupportingpositionscaleoptions) · [`CategoryDensityPlacement`](#type-categorydensityplacement).
 
 ### `DensityKernel` {#type-densitykernel}
 
@@ -3408,7 +3923,7 @@ export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend"> & {
 
 </details>
 
-Related types: [`DensityPlotLegendOptions`](#type-densityplotlegendoptions).
+Related types: [`CCategoricalGuides`](#type-ccategoricalguides) · [`DensityPlotLegendOptions`](#type-densityplotlegendoptions).
 
 ### `DensityPlotLegendOptions` {#type-densityplotlegendoptions}
 
@@ -3421,7 +3936,7 @@ export type DensityPlotLegendOptions = Omit<PieLegendOptions, "order"> & { order
 
 </details>
 
-Related types: [`PieLegendOptions`](#type-pielegendoptions).
+Related types: [`PieLegendOptions`](#type-pielegendoptions) · [`LegendValueOrder`](#type-legendvalueorder).
 
 ### `DensityWidthResolution` {#type-densitywidthresolution}
 
@@ -3524,6 +4039,29 @@ export type DurationWindowUnit = "millisecond" | "second" | "minute" | "hour" | 
 
 </details>
 
+### `DynamicReferenceBinding` {#type-dynamicreferencebinding}
+
+<details markdown="1">
+<summary>Expand DynamicReferenceBinding</summary>
+
+```typescript
+type DynamicReferenceBinding = {
+  readonly id?: string;
+  readonly source: string;
+  readonly axis: "x" | "y";
+  readonly population?: "boundData" | "visibleItems";
+  readonly field?: string;
+  readonly x?: never;
+  readonly y?: never;
+  readonly space?: never;
+  readonly data?: never;
+  readonly coordinate?: never;
+  readonly temporalUnit?: never;
+};
+```
+
+</details>
+
 ### `ECDFDataOptions` {#type-ecdfdataoptions}
 
 <details markdown="1">
@@ -3539,20 +4077,11 @@ export interface ECDFDataOptions {
   missing?: "drop" | "error";
   as?: ECDFOutputFields;
 }
-
-type TimeUnitDataBaseOptions = {
-  id: string;
-  source?: string;
-  field: string;
-  temporalUnit?: TemporalInputUnit;
-  as: string;
-  timeZone?: string;
-};
 ```
 
 </details>
 
-Related types: [`ECDFOutputFields`](#type-ecdfoutputfields) · [`TemporalInputUnit`](#type-temporalinputunit).
+Related types: [`ECDFOutputFields`](#type-ecdfoutputfields).
 
 ### `ECDFOutputFields` {#type-ecdfoutputfields}
 
@@ -3607,20 +4136,6 @@ export interface EditBin2DDataOptions {
   as?: DatasetBin2DOutputFields;
   dependents?: DerivedDataDependents;
 }
-
-type FocusedDerivedDataPatch<T> = T extends unknown
-  ? Partial<Omit<T, "id" | "source">>
-  : never;
-type FocusedDerivedDataEdit<T> = {
-  target: string;
-  dependents?: DerivedDataDependents;
-} & FocusedDerivedDataPatch<T>;
-type FocusedWeightedDerivedDataEdit<T, Weight> = {
-  target: string;
-  dependents?: DerivedDataDependents;
-} & (T extends unknown
-  ? Omit<FocusedDerivedDataPatch<T>, "weight"> & { weight?: Weight | false }
-  : never);
 ```
 
 </details>
@@ -3641,7 +4156,7 @@ export type EditBinDataOptions = FocusedWeightedDerivedDataEdit<
 
 </details>
 
-Related types: [`BinDataOptions`](#type-bindataoptions) · [`StatisticalWeight`](#type-statisticalweight).
+Related types: [`FocusedWeightedDerivedDataEdit`](#type-focusedweightedderiveddataedit) · [`BinDataOptions`](#type-bindataoptions) · [`StatisticalWeight`](#type-statisticalweight).
 
 ### `EditBoxPlotOptions` {#type-editboxplotoptions}
 
@@ -3692,7 +4207,7 @@ export type EditColorScaleOptions = FocusedScaleSelection & WithoutScaleId<
 
 </details>
 
-Related types: [`CategoricalColorScaleOptions`](#type-categoricalcolorscaleoptions) · [`ContinuousColorScaleOptions`](#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](#type-discretizedcolorscaleoptions).
+Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`WithoutScaleId`](#type-withoutscaleid) · [`CategoricalColorScaleOptions`](#type-categoricalcolorscaleoptions) · [`ContinuousColorScaleOptions`](#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](#type-discretizedcolorscaleoptions).
 
 ### `EditCompleteDataOptions` {#type-editcompletedataoptions}
 
@@ -3705,7 +4220,7 @@ export type EditCompleteDataOptions = FocusedDerivedDataEdit<CompleteDataOptions
 
 </details>
 
-Related types: [`CompleteDataOptions`](#type-completedataoptions).
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`CompleteDataOptions`](#type-completedataoptions).
 
 ### `EditCompositionLayoutOptions` {#type-editcompositionlayoutoptions}
 
@@ -3736,7 +4251,7 @@ export type EditComputedDataOptions = FocusedDerivedDataEdit<ComputedDataOptions
 
 </details>
 
-Related types: [`ComputedDataOptions`](#type-computeddataoptions).
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`ComputedDataOptions`](#type-computeddataoptions).
 
 ### `EditCoordinateOptions` {#type-editcoordinateoptions}
 
@@ -3752,7 +4267,20 @@ export type EditCoordinateOptions = EditCoordinateTarget & (
 
 </details>
 
-Related types: [`CoordinateAspect`](#type-coordinateaspect) · [`PolarFrameOptions`](#type-polarframeoptions).
+Related types: [`EditCoordinateTarget`](#type-editcoordinatetarget) · [`CoordinateAspect`](#type-coordinateaspect) · [`PolarFrameOptions`](#type-polarframeoptions).
+
+### `EditCoordinateTarget` {#type-editcoordinatetarget}
+
+<details markdown="1">
+<summary>Expand EditCoordinateTarget</summary>
+
+```typescript
+type EditCoordinateTarget = {
+  target: string;
+};
+```
+
+</details>
 
 ### `EditDensityDataOptions` {#type-editdensitydataoptions}
 
@@ -3768,7 +4296,7 @@ export type EditDensityDataOptions = FocusedWeightedDerivedDataEdit<
 
 </details>
 
-Related types: [`DensityDataOptions`](#type-densitydataoptions) · [`StatisticalWeight`](#type-statisticalweight).
+Related types: [`FocusedWeightedDerivedDataEdit`](#type-focusedweightedderiveddataedit) · [`DensityDataOptions`](#type-densitydataoptions) · [`StatisticalWeight`](#type-statisticalweight).
 
 ### `EditDensityOptions` {#type-editdensityoptions}
 
@@ -3828,7 +4356,7 @@ export type EditECDFDataOptions = FocusedWeightedDerivedDataEdit<
 
 </details>
 
-Related types: [`ECDFDataOptions`](#type-ecdfdataoptions).
+Related types: [`FocusedWeightedDerivedDataEdit`](#type-focusedweightedderiveddataedit) · [`ECDFDataOptions`](#type-ecdfdataoptions).
 
 ### `EditECDFPlotOptions` {#type-editecdfplotoptions}
 
@@ -4003,7 +4531,7 @@ export type EditFilteredDataOptions = FocusedDerivedDataEdit<FilterDataOptions>;
 
 </details>
 
-Related types: [`FilterDataOptions`](#type-filterdataoptions).
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`FilterDataOptions`](#type-filterdataoptions).
 
 ### `EditFoldDataOptions` {#type-editfolddataoptions}
 
@@ -4016,7 +4544,7 @@ export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 
 </details>
 
-Related types: [`FoldDataOptions`](#type-folddataoptions).
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`FoldDataOptions`](#type-folddataoptions).
 
 ### `EditGradientPlotOptions` {#type-editgradientplotoptions}
 
@@ -4034,179 +4562,11 @@ export interface EditGradientPlotOptions {
   gradient?: GradientPlotAppearanceOptions;
   center?: false | GradientPlotCenterOptions;
 }
-
-type FacadePositionChannel<Quantitative, Temporal, Categorical> =
-  | string
-  | (Omit<PositionEncodingBase, "target" | "coordinate"> &
-      PositionScaleBranches<Quantitative, Temporal, Categorical>);
-type PointFacadePositionChannel =
-  | string
-  | ({ field: string } & (
-      | {
-          fieldType?: "quantitative";
-          scale?: QuantitativePositionScaleOptions;
-        }
-      | {
-          fieldType: "temporal";
-          temporalUnit?: TemporalInputUnit;
-          scale?: TemporalPositionScaleOptions;
-        }
-      | {
-          fieldType: "nominal" | "ordinal";
-          scale?: CategoricalPositionScaleOptions;
-        }
-    ));
-type LineXPositionChannel =
-  | string
-  | ({ field: string; bin?: PositionEncodingBase["bin"] } & (
-      | {
-          fieldType?: "quantitative";
-          scale?: NonPointQuantitativePositionScaleOptions;
-        }
-      | {
-          fieldType: "temporal";
-          temporalUnit?: TemporalInputUnit;
-          scale?: NonPointTemporalPositionScaleOptions;
-        }
-    ));
-type LineYPositionChannel =
-  | string
-  | ({ field: string } & (
-      | {
-          fieldType?: "quantitative";
-          aggregate?: AggregateOperation;
-          scale?: NonPointQuantitativePositionScaleOptions;
-        }
-      | {
-          fieldType: "temporal";
-          temporalUnit?: TemporalInputUnit;
-          aggregate?: never;
-          scale?: NonPointTemporalPositionScaleOptions;
-        }
-    ));
-type BandPositionChannel = FacadePositionChannel<
-  NonPointZeroSupportingPositionScaleOptions,
-  NonPointTemporalPositionScaleOptions,
-  NonPointBandPositionScaleOptions
->;
-type BarYPositionChannel =
-  | string
-  | {
-      field: string;
-      fieldType: "temporal";
-      temporalUnit?: TemporalInputUnit;
-      aggregate?: never;
-      stack?: never;
-      scale?: NonPointTemporalPositionScaleOptions;
-    }
-  | ({ field: string; stack?: StackMode } & (
-      | {
-          fieldType?: "quantitative";
-          aggregate?: never;
-          scale?: NonPointZeroSupportingPositionScaleOptions;
-        }
-      | {
-          fieldType: "nominal" | "ordinal";
-          aggregate?: never;
-          scale?: NonPointBandPositionScaleOptions;
-        }
-      | {
-          fieldType?: "quantitative" | "nominal" | "ordinal";
-          aggregate: AggregateOperation;
-          scale?: NonPointZeroSupportingPositionScaleOptions;
-        }
-    ));
-type BasicColorChannel =
-  | string
-  | {
-      field: string;
-      fieldType?: "nominal" | "ordinal";
-      scale?: CategoricalColorScaleOptions;
-      palette?: Palette;
-    }
-  | {
-      field: string;
-      fieldType: "quantitative";
-      scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
-      palette?: Palette;
-    }
-  | {
-      field: string;
-      fieldType: "temporal";
-      temporalUnit?: TemporalInputUnit;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
-      palette?: Palette;
-    };
-type NonPointCategoricalColorChannel =
-  | string
-  | {
-      field: string;
-      fieldType?: "nominal" | "ordinal";
-      scale?: NonPointCategoricalColorScaleOptions;
-      palette?: Palette;
-      layout?: ColorLayout;
-    };
-type HistogramCategoricalColorChannel =
-  | string
-  | {
-      field: string;
-      fieldType?: "nominal" | "ordinal";
-      scale?: NonPointCategoricalColorScaleOptions;
-      palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
-    };
-type LineCategoricalColorChannel =
-  | string
-  | {
-      field: string;
-      fieldType?: "nominal" | "ordinal";
-      scale?: NonPointCategoricalColorScaleOptions;
-      palette?: Palette;
-    };
-type QuantitativeBarColorChannel = {
-  field: string;
-  fieldType: "quantitative";
-  aggregate?: AggregateOperation;
-  scale?:
-    | NonPointContinuousColorScaleOptions
-    | NonPointDiscretizedColorScaleOptions;
-  palette?: Palette;
-  layout?: never;
-};
-type BarCategoricalColorChannel =
-  | string
-  | {
-      field: string;
-      fieldType?: "nominal" | "ordinal";
-      scale?: NonPointCategoricalColorScaleOptions;
-      palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
-    };
-type BarColorChannel =
-  | BarCategoricalColorChannel
-  | QuantitativeBarColorChannel;
-type RectColorChannel =
-  | LineCategoricalColorChannel
-  | {
-      field: string;
-      fieldType: "quantitative";
-      scale?:
-        | NonPointContinuousColorScaleOptions
-        | NonPointDiscretizedColorScaleOptions;
-      palette?: Palette;
-    }
-  | {
-      field: string;
-      fieldType: "temporal";
-      temporalUnit?: TemporalInputUnit;
-      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
-      palette?: Palette;
-    };
 ```
 
 </details>
 
-Related types: [`GradientPlotPositionChannel`](#type-gradientplotpositionchannel) · [`GradientPlotDensityOptions`](#type-gradientplotdensityoptions) · [`GradientPlotAppearanceOptions`](#type-gradientplotappearanceoptions) · [`GradientPlotCenterOptions`](#type-gradientplotcenteroptions) · [`QuantitativePositionScaleOptions`](#type-quantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`TemporalPositionScaleOptions`](#type-temporalpositionscaleoptions) · [`CategoricalPositionScaleOptions`](#type-categoricalpositionscaleoptions) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions) · [`AggregateOperation`](#type-aggregateoperation) · [`NonPointZeroSupportingPositionScaleOptions`](#type-nonpointzerosupportingpositionscaleoptions) · [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionscaleoptions) · [`StackMode`](#type-stackmode) · [`CategoricalColorScaleOptions`](#type-categoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`ContinuousColorScaleOptions`](#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](#type-discretizedcolorscaleoptions) · [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`ColorLayout`](#type-colorlayout) · [`NonPointContinuousColorScaleOptions`](#type-nonpointcontinuouscolorscaleoptions) · [`NonPointDiscretizedColorScaleOptions`](#type-nonpointdiscretizedcolorscaleoptions).
+Related types: [`GradientPlotPositionChannel`](#type-gradientplotpositionchannel) · [`GradientPlotDensityOptions`](#type-gradientplotdensityoptions) · [`GradientPlotAppearanceOptions`](#type-gradientplotappearanceoptions) · [`GradientPlotCenterOptions`](#type-gradientplotcenteroptions).
 
 ### `EditGraphicsOptions` {#type-editgraphicsoptions}
 
@@ -4283,7 +4643,7 @@ export type EditImputedDataOptions = FocusedDerivedDataEdit<ImputedDataOptions>;
 
 </details>
 
-Related types: [`ImputedDataOptions`](#type-imputeddataoptions).
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`ImputedDataOptions`](#type-imputeddataoptions).
 
 ### `EditIntervalDataOptions` {#type-editintervaldataoptions}
 
@@ -4296,7 +4656,7 @@ export type EditIntervalDataOptions = FocusedDerivedDataEdit<IntervalDataOptions
 
 </details>
 
-Related types: [`IntervalDataOptions`](#type-intervaldataoptions).
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`IntervalDataOptions`](#type-intervaldataoptions).
 
 ### `EditLegendBlockOptions` {#type-editlegendblockoptions}
 
@@ -4495,7 +4855,7 @@ export type EditNormalizedDataOptions = FocusedDerivedDataEdit<NormalizedDataOpt
 
 </details>
 
-Related types: [`NormalizedDataOptions`](#type-normalizeddataoptions).
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`NormalizedDataOptions`](#type-normalizeddataoptions).
 
 ### `EditOpacityScaleOptions` {#type-editopacityscaleoptions}
 
@@ -4508,7 +4868,7 @@ export type EditOpacityScaleOptions = FocusedScaleSelection & WithoutScaleId<Opa
 
 </details>
 
-Related types: [`OpacityScaleOptions`](#type-opacityscaleoptions).
+Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`WithoutScaleId`](#type-withoutscaleid) · [`OpacityScaleOptions`](#type-opacityscaleoptions).
 
 ### `EditParallelAxisOptions` {#type-editparallelaxisoptions}
 
@@ -4539,7 +4899,7 @@ export type EditParallelScaleOptions = {
 
 </details>
 
-Related types: [`QuantitativePositionScaleOptions`](#type-quantitativepositionscaleoptions) · [`CategoricalPositionScaleOptions`](#type-categoricalpositionscaleoptions).
+Related types: [`WithoutScaleId`](#type-withoutscaleid) · [`QuantitativePositionScaleOptions`](#type-quantitativepositionscaleoptions) · [`CategoricalPositionScaleOptions`](#type-categoricalpositionscaleoptions).
 
 ### `EditPolarAxisOptions` {#type-editpolaraxisoptions}
 
@@ -4593,7 +4953,7 @@ export type EditRScaleOptions = FocusedScaleSelection & WithoutScaleId<RadiusSca
 
 </details>
 
-Related types: [`RadiusScaleOptions`](#type-radiusscaleoptions) · [`RadialMapping`](#type-radialmapping).
+Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`WithoutScaleId`](#type-withoutscaleid) · [`RadiusScaleOptions`](#type-radiusscaleoptions) · [`RadialMapping`](#type-radialmapping).
 
 ### `EditRadialAxisOptions` {#type-editradialaxisoptions}
 
@@ -4633,7 +4993,7 @@ export interface EditRaincloudPlotOptions {
 
 </details>
 
-Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions).
+Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel).
 
 ### `EditRectMarkOptions` {#type-editrectmarkoptions}
 
@@ -4661,7 +5021,7 @@ export type EditRegressionDataOptions = FocusedDerivedDataEdit<RegressionDataOpt
 
 </details>
 
-Related types: [`RegressionDataOptions`](#type-regressiondataoptions).
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`RegressionDataOptions`](#type-regressiondataoptions).
 
 ### `EditRegressionOptions` {#type-editregressionoptions}
 
@@ -4719,8 +5079,6 @@ export interface EditScaleOptions {
   midpoint?: number | "auto";
   unknown?: unknown;
 }
-
-type FocusedScaleSelection = { id?: string; target?: string };
 ```
 
 </details>
@@ -4751,7 +5109,7 @@ export type EditShapeScaleOptions = FocusedScaleSelection & WithoutScaleId<Shape
 
 </details>
 
-Related types: [`ShapeScaleOptions`](#type-shapescaleoptions).
+Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`WithoutScaleId`](#type-withoutscaleid) · [`ShapeScaleOptions`](#type-shapescaleoptions).
 
 ### `EditSizeScaleOptions` {#type-editsizescaleoptions}
 
@@ -4765,6 +5123,8 @@ export type EditSizeScaleOptions = FocusedScaleSelection &
 
 </details>
 
+Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`ExistingSizeScaleEditPatch`](#type-existingsizescaleeditpatch) · [`SizeScaleTypeEditPatch`](#type-sizescaletypeeditpatch).
+
 ### `EditStackDataOptions` {#type-editstackdataoptions}
 
 <details markdown="1">
@@ -4776,7 +5136,7 @@ export type EditStackDataOptions = FocusedDerivedDataEdit<StackDataOptions>;
 
 </details>
 
-Related types: [`StackDataOptions`](#type-stackdataoptions).
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`StackDataOptions`](#type-stackdataoptions).
 
 ### `EditStrokeDashScaleOptions` {#type-editstrokedashscaleoptions}
 
@@ -4785,49 +5145,11 @@ Related types: [`StackDataOptions`](#type-stackdataoptions).
 
 ```typescript
 export type EditStrokeDashScaleOptions = FocusedScaleSelection & WithoutScaleId<DashScaleOptions>;
-
-interface PositionEncodingBase {
-  field: string;
-  target?: string;
-  coordinate?: string;
-  bin?:
-    | { maxBins?: number; step?: never; boundaries?: never }
-    | { maxBins?: never; step: number; boundaries?: never }
-    | {
-        maxBins?: never;
-        step?: never;
-        boundaries: readonly [number, number, ...number[]];
-      };
-  stack?: StackMode;
-}
-
-type PositionScaleBranches<Quantitative, Temporal, Categorical> =
-  | {
-      fieldType?: "quantitative";
-      aggregate?: never;
-      scale?: Quantitative;
-    }
-  | {
-      fieldType: "temporal";
-      temporalUnit?: TemporalInputUnit;
-      aggregate?: never;
-      scale?: Temporal;
-    }
-  | {
-      fieldType: "nominal" | "ordinal";
-      aggregate?: never;
-      scale?: Categorical;
-    }
-  | {
-      fieldType?: FieldType;
-      aggregate: AggregateOperation;
-      scale?: Quantitative;
-    };
 ```
 
 </details>
 
-Related types: [`DashScaleOptions`](#type-dashscaleoptions) · [`StackMode`](#type-stackmode) · [`TemporalInputUnit`](#type-temporalinputunit) · [`FieldType`](#type-fieldtype) · [`AggregateOperation`](#type-aggregateoperation).
+Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`WithoutScaleId`](#type-withoutscaleid) · [`DashScaleOptions`](#type-dashscaleoptions).
 
 ### `EditStrokeScaleOptions` {#type-editstrokescaleoptions}
 
@@ -4839,46 +5161,11 @@ export type EditStrokeScaleOptions = { target: string } & Omit<
   EditColorScaleOptions,
   "id" | "target"
 >;
-type ExistingSizeScaleEditPatch = {
-  type?: never;
-  domain?: "auto" | readonly [number, ...number[]];
-  range?: "auto" | readonly [number, number, ...number[]];
-  unknown?: number;
-  clamp?: boolean;
-  reverse?: boolean;
-  base?: number;
-  exponent?: number;
-};
-type SizeScaleTypeEditPatch =
-  | (Omit<WithoutScaleId<SizeScaleOptions>, "type"> & { type?: "linear" })
-  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "log" }>, "type"> & {
-      type: "log";
-    })
-  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "sqrt" }>, "type"> & {
-      type: "sqrt";
-    })
-  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "pow" }>, "type" | "exponent"> & {
-      type: "pow";
-      exponent?: number;
-    })
-  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "quantize" }>, "type" | "range"> & {
-      type: "quantize";
-      range?: readonly [number, number, ...number[]];
-    })
-  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "quantile" }>, "type" | "range"> & {
-      type: "quantile";
-      range?: readonly [number, number, ...number[]];
-    })
-  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "threshold" }>, "type" | "domain" | "range"> & {
-      type: "threshold";
-      domain?: readonly [number, ...number[]];
-      range?: readonly [number, number, ...number[]];
-    });
 ```
 
 </details>
 
-Related types: [`EditColorScaleOptions`](#type-editcolorscaleoptions) · [`SizeScaleOptions`](#type-sizescaleoptions).
+Related types: [`EditColorScaleOptions`](#type-editcolorscaleoptions).
 
 ### `EditStrokeWidthScaleOptions` {#type-editstrokewidthscaleoptions}
 
@@ -4891,7 +5178,7 @@ export type EditStrokeWidthScaleOptions = FocusedScaleSelection & WithoutScaleId
 
 </details>
 
-Related types: [`StrokeWidthScaleOptions`](#type-strokewidthscaleoptions).
+Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`WithoutScaleId`](#type-withoutscaleid) · [`StrokeWidthScaleOptions`](#type-strokewidthscaleoptions).
 
 ### `EditSummaryDataOptions` {#type-editsummarydataoptions}
 
@@ -4907,7 +5194,7 @@ export type EditSummaryDataOptions = FocusedWeightedDerivedDataEdit<
 
 </details>
 
-Related types: [`SummaryDataOptions`](#type-summarydataoptions) · [`StatisticalWeight`](#type-statisticalweight).
+Related types: [`FocusedWeightedDerivedDataEdit`](#type-focusedweightedderiveddataedit) · [`SummaryDataOptions`](#type-summarydataoptions) · [`StatisticalWeight`](#type-statisticalweight).
 
 ### `EditTextMarkOptions` {#type-edittextmarkoptions}
 
@@ -4952,7 +5239,7 @@ export type EditThetaScaleOptions = FocusedScaleSelection & WithoutScaleId<Theta
 
 </details>
 
-Related types: [`ThetaScaleOptions`](#type-thetascaleoptions).
+Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`WithoutScaleId`](#type-withoutscaleid) · [`ThetaScaleOptions`](#type-thetascaleoptions).
 
 ### `EditTimeUnitDataOptions` {#type-edittimeunitdataoptions}
 
@@ -4965,7 +5252,7 @@ export type EditTimeUnitDataOptions = FocusedDerivedDataEdit<TimeUnitDataOptions
 
 </details>
 
-Related types: [`TimeUnitDataOptions`](#type-timeunitdataoptions).
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`TimeUnitDataOptions`](#type-timeunitdataoptions).
 
 ### `EditTitleOptions` {#type-edittitleoptions}
 
@@ -5017,7 +5304,7 @@ export type EditWindowDataOptions = FocusedDerivedDataEdit<WindowDataOptions>;
 
 </details>
 
-Related types: [`WindowDataOptions`](#type-windowdataoptions).
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`WindowDataOptions`](#type-windowdataoptions).
 
 ### `EditXOffsetScaleOptions` {#type-editxoffsetscaleoptions}
 
@@ -5045,7 +5332,7 @@ export type EditXScaleOptions = FocusedScaleSelection & WithoutScaleId<
 
 </details>
 
-Related types: [`QuantitativePositionScaleOptions`](#type-quantitativepositionscaleoptions) · [`TemporalPositionScaleOptions`](#type-temporalpositionscaleoptions) · [`CategoricalPositionScaleOptions`](#type-categoricalpositionscaleoptions).
+Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`WithoutScaleId`](#type-withoutscaleid) · [`QuantitativePositionScaleOptions`](#type-quantitativepositionscaleoptions) · [`TemporalPositionScaleOptions`](#type-temporalpositionscaleoptions) · [`CategoricalPositionScaleOptions`](#type-categoricalpositionscaleoptions).
 
 ### `EditYOffsetScaleOptions` {#type-edityoffsetscaleoptions}
 
@@ -5087,7 +5374,7 @@ export interface EncodeChannelsOptions {
 
 </details>
 
-Related types: [`EncodingChannelAssignments`](#type-encodingchannelassignments).
+Related types: [`AtLeastOne`](#type-atleastone) · [`EncodingChannelAssignments`](#type-encodingchannelassignments).
 
 ### `EncodingChannelAssignments` {#type-encodingchannelassignments}
 
@@ -5116,15 +5403,11 @@ export interface EncodingChannelAssignments {
   angle?: WithoutEncodingTarget<AngleEncodingOptions>;
   text?: WithoutEncodingTarget<TextEncodingOptions>;
 }
-
-type AtLeastOne<T> = {
-  [K in keyof T]-?: Required<Pick<T, K>> & Partial<Omit<T, K>>
-}[keyof T];
 ```
 
 </details>
 
-Related types: [`PositionEncodingOptions`](#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](#type-thetaencodingoptions) · [`RadialEncodingOptions`](#type-radialencodingoptions) · [`XOffsetEncodingOptions`](#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](#type-groupencodingoptions) · [`PathOrderEncodingOptions`](#type-pathorderencodingoptions) · [`ColorEncodingOptions`](#type-colorencodingoptions) · [`StrokeEncodingOptions`](#type-strokeencodingoptions) · [`SizeEncodingOptions`](#type-sizeencodingoptions) · [`ShapeEncodingOptions`](#type-shapeencodingoptions) · [`OpacityEncodingOptions`](#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](#type-strokedashencodingoptions) · [`AngleEncodingOptions`](#type-angleencodingoptions) · [`TextEncodingOptions`](#type-textencodingoptions).
+Related types: [`WithoutEncodingTarget`](#type-withoutencodingtarget) · [`PositionEncodingOptions`](#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](#type-thetaencodingoptions) · [`RadialEncodingOptions`](#type-radialencodingoptions) · [`XOffsetEncodingOptions`](#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](#type-groupencodingoptions) · [`PathOrderEncodingOptions`](#type-pathorderencodingoptions) · [`ColorEncodingOptions`](#type-colorencodingoptions) · [`StrokeEncodingOptions`](#type-strokeencodingoptions) · [`SizeEncodingOptions`](#type-sizeencodingoptions) · [`ShapeEncodingOptions`](#type-shapeencodingoptions) · [`OpacityEncodingOptions`](#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](#type-strokedashencodingoptions) · [`AngleEncodingOptions`](#type-angleencodingoptions) · [`TextEncodingOptions`](#type-textencodingoptions).
 
 ### `EndpointCategoryChannel` {#type-endpointcategorychannel}
 
@@ -5159,6 +5442,18 @@ export type EndpointLabelOptions = Omit<
   | { field?: string; value?: never }
   | { field?: never; value: unknown }
 );
+```
+
+</details>
+
+Related types: [`TextMarkOptions`](#type-textmarkoptions) · [`TextFormat`](#type-textformat) · [`LabelLayoutOptions`](#type-labellayoutoptions).
+
+### `EndpointPlotBaseOptions` {#type-endpointplotbaseoptions}
+
+<details markdown="1">
+<summary>Expand EndpointPlotBaseOptions</summary>
+
+```typescript
 type EndpointPlotBaseOptions = {
   id?: string;
   data?: string;
@@ -5172,7 +5467,7 @@ type EndpointPlotBaseOptions = {
 
 </details>
 
-Related types: [`TextMarkOptions`](#type-textmarkoptions) · [`TextFormat`](#type-textformat) · [`LabelLayoutOptions`](#type-labellayoutoptions) · [`EndpointCategoryChannel`](#type-endpointcategorychannel) · [`EndpointPlotSummary`](#type-endpointplotsummary).
+Related types: [`EndpointCategoryChannel`](#type-endpointcategorychannel) · [`EndpointPlotSummary`](#type-endpointplotsummary) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
 
 ### `EndpointPlotSummary` {#type-endpointplotsummary}
 
@@ -5437,6 +5732,42 @@ export interface ErrorBarStatisticalIntervalChannel {
 
 Related types: [`IntervalCenter`](#type-intervalcenter) · [`IntervalExtent`](#type-intervalextent) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions).
 
+### `ExistingSizeScaleEditPatch` {#type-existingsizescaleeditpatch}
+
+<details markdown="1">
+<summary>Expand ExistingSizeScaleEditPatch</summary>
+
+```typescript
+type ExistingSizeScaleEditPatch = {
+  type?: never;
+  domain?: "auto" | readonly [number, ...number[]];
+  range?: "auto" | readonly [number, number, ...number[]];
+  unknown?: number;
+  clamp?: boolean;
+  reverse?: boolean;
+  base?: number;
+  exponent?: number;
+};
+```
+
+</details>
+
+### `FacadePositionChannel` {#type-facadepositionchannel}
+
+<details markdown="1">
+<summary>Expand FacadePositionChannel</summary>
+
+```typescript
+type FacadePositionChannel<Quantitative, Temporal, Categorical> =
+  | string
+  | (Omit<PositionEncodingBase, "target" | "coordinate"> &
+      PositionScaleBranches<Quantitative, Temporal, Categorical>);
+```
+
+</details>
+
+Related types: [`PositionEncodingBase`](#type-positionencodingbase) · [`PositionScaleBranches`](#type-positionscalebranches).
+
 ### `FacetGridOptions` {#type-facetgridoptions}
 
 <details markdown="1">
@@ -5597,6 +5928,34 @@ export type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";
 
 </details>
 
+### `FilledMarkLegendOptions` {#type-filledmarklegendoptions}
+
+<details markdown="1">
+<summary>Expand FilledMarkLegendOptions</summary>
+
+```typescript
+type FilledMarkLegendOptions = Omit<LegendOptions, "symbol"> & {
+  symbol?: "auto"
+    | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
+    | { layers: readonly LegendSymbolLayer[] };
+};
+```
+
+</details>
+
+Related types: [`LegendOptions`](#type-legendoptions) · [`LegendSymbolLayer`](#type-legendsymbollayer).
+
+### `FilledMarkStroke` {#type-filledmarkstroke}
+
+<details markdown="1">
+<summary>Expand FilledMarkStroke</summary>
+
+```typescript
+type FilledMarkStroke = string | false;
+```
+
+</details>
+
 ### `FilterComparison` {#type-filtercomparison}
 
 <details markdown="1">
@@ -5696,6 +6055,64 @@ export interface FitCanvasOptions {
 
 </details>
 
+### `FocusedDerivedDataEdit` {#type-focusedderiveddataedit}
+
+<details markdown="1">
+<summary>Expand FocusedDerivedDataEdit</summary>
+
+```typescript
+type FocusedDerivedDataEdit<T> = {
+  target: string;
+  dependents?: DerivedDataDependents;
+} & FocusedDerivedDataPatch<T>;
+```
+
+</details>
+
+Related types: [`DerivedDataDependents`](#type-deriveddatadependents) · [`FocusedDerivedDataPatch`](#type-focusedderiveddatapatch).
+
+### `FocusedDerivedDataPatch` {#type-focusedderiveddatapatch}
+
+<details markdown="1">
+<summary>Expand FocusedDerivedDataPatch</summary>
+
+```typescript
+type FocusedDerivedDataPatch<T> = T extends unknown
+  ? Partial<Omit<T, "id" | "source">>
+  : never;
+```
+
+</details>
+
+### `FocusedScaleSelection` {#type-focusedscaleselection}
+
+<details markdown="1">
+<summary>Expand FocusedScaleSelection</summary>
+
+```typescript
+type FocusedScaleSelection = { id?: string; target?: string };
+```
+
+</details>
+
+### `FocusedWeightedDerivedDataEdit` {#type-focusedweightedderiveddataedit}
+
+<details markdown="1">
+<summary>Expand FocusedWeightedDerivedDataEdit</summary>
+
+```typescript
+type FocusedWeightedDerivedDataEdit<T, Weight> = {
+  target: string;
+  dependents?: DerivedDataDependents;
+} & (T extends unknown
+  ? Omit<FocusedDerivedDataPatch<T>, "weight"> & { weight?: Weight | false }
+  : never);
+```
+
+</details>
+
+Related types: [`DerivedDataDependents`](#type-deriveddatadependents) · [`FocusedDerivedDataPatch`](#type-focusedderiveddatapatch).
+
 ### `FoldDataOptions` {#type-folddataoptions}
 
 <details markdown="1">
@@ -5761,6 +6178,20 @@ export interface GradientPlotCenterOptions extends StrokeStyleDetails {
 
 Related types: [`StrokeStyleDetails`](#type-strokestyledetails).
 
+### `GradientPlotDensityLegendOptions` {#type-gradientplotdensitylegendoptions}
+
+<details markdown="1">
+<summary>Expand GradientPlotDensityLegendOptions</summary>
+
+```typescript
+type GradientPlotDensityLegendOptions = {
+  title?: string;
+  position?: "right";
+};
+```
+
+</details>
+
 ### `GradientPlotDensityOptions` {#type-gradientplotdensityoptions}
 
 <details markdown="1">
@@ -5779,6 +6210,21 @@ export interface GradientPlotDensityOptions {
 </details>
 
 Related types: [`DensityKernel`](#type-densitykernel) · [`DensityNormalization`](#type-densitynormalization).
+
+### `GradientPlotGuideOptions` {#type-gradientplotguideoptions}
+
+<details markdown="1">
+<summary>Expand GradientPlotGuideOptions</summary>
+
+```typescript
+type GradientPlotGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | GradientPlotDensityLegendOptions;
+};
+```
+
+</details>
+
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`GradientPlotDensityLegendOptions`](#type-gradientplotdensitylegendoptions).
 
 ### `GradientPlotOptions` {#type-gradientplotoptions}
 
@@ -5803,7 +6249,7 @@ export interface GradientPlotOptions {
 
 </details>
 
-Related types: [`GradientPlotPositionChannel`](#type-gradientplotpositionchannel) · [`GradientPlotDensityOptions`](#type-gradientplotdensityoptions) · [`GradientPlotAppearanceOptions`](#type-gradientplotappearanceoptions) · [`GradientPlotCenterOptions`](#type-gradientplotcenteroptions).
+Related types: [`GradientPlotPositionChannel`](#type-gradientplotpositionchannel) · [`GradientPlotDensityOptions`](#type-gradientplotdensityoptions) · [`GradientPlotAppearanceOptions`](#type-gradientplotappearanceoptions) · [`GradientPlotCenterOptions`](#type-gradientplotcenteroptions) · [`GradientPlotGuideOptions`](#type-gradientplotguideoptions).
 
 ### `GradientPlotPositionChannel` {#type-gradientplotpositionchannel}
 
@@ -5890,7 +6336,7 @@ export interface HeatmapBaseOptions {
 
 </details>
 
-Related types: [`RectStyleDetails`](#type-rectstyledetails).
+Related types: [`RectStyleDetails`](#type-rectstyledetails) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
 
 ### `HeatmapBinOptions` {#type-heatmapbinoptions}
 
@@ -5956,6 +6402,27 @@ export interface HighlightMarksOptions {
 </details>
 
 Related types: [`MarkSelector`](#type-markselector) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern) · [`PointShape`](#type-pointshape).
+
+### `HistogramCategoricalColorChannel` {#type-histogramcategoricalcolorchannel}
+
+<details markdown="1">
+<summary>Expand HistogramCategoricalColorChannel</summary>
+
+```typescript
+type HistogramCategoricalColorChannel =
+  | string
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
+      scale?: NonPointCategoricalColorScaleOptions;
+      palette?: Palette;
+      layout?: Exclude<ColorLayout, "center">;
+    };
+```
+
+</details>
+
+Related types: [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`ColorLayout`](#type-colorlayout).
 
 ### `HistogramEncodingOptions` {#type-histogramencodingoptions}
 
@@ -6085,6 +6552,8 @@ export type HorizonPlotGuideOptions = {
 
 </details>
 
+Related types: [`CAxes`](#type-caxes) · [`CartesianGridOptions`](#type-cartesiangridoptions).
+
 ### `HorizonResolution` {#type-horizonresolution}
 
 <details markdown="1">
@@ -6157,6 +6626,26 @@ export type HorizonYScaleOptions = ScaleFields<"id" | "clamp" | "reverse"> & {
 
 </details>
 
+Related types: [`ScaleFields`](#type-scalefields).
+
+### `ImputedDataBaseOptions` {#type-imputeddatabaseoptions}
+
+<details markdown="1">
+<summary>Expand ImputedDataBaseOptions</summary>
+
+```typescript
+type ImputedDataBaseOptions = {
+  id: string;
+  source?: string;
+  fields: string | readonly [string, ...string[]];
+  groupBy?: string | readonly string[];
+  edges?: "keep" | "error";
+  maxGap?: number;
+};
+```
+
+</details>
+
 ### `ImputedDataOptions` {#type-imputeddataoptions}
 
 <details markdown="1">
@@ -6184,7 +6673,29 @@ export type ImputedDataOptions = ImputedDataBaseOptions & (
 
 </details>
 
-Related types: [`DatasetScalar`](#type-datasetscalar) · [`WindowSort`](#type-windowsort).
+Related types: [`ImputedDataBaseOptions`](#type-imputeddatabaseoptions) · [`DatasetScalar`](#type-datasetscalar) · [`WindowSort`](#type-windowsort).
+
+### `InferredRuleDatumPositionEncodingOptions` {#type-inferredruledatumpositionencodingoptions}
+
+<details markdown="1">
+<summary>Expand InferredRuleDatumPositionEncodingOptions</summary>
+
+```typescript
+type InferredRuleDatumPositionEncodingOptions = {
+  field?: never;
+  datum: unknown;
+  target?: string;
+  coordinate?: string;
+  fieldType?: undefined;
+  scale?:
+    | NonPointQuantitativePositionScaleOptions
+    | NonPointCategoricalPositionScaleOptions;
+};
+```
+
+</details>
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`NonPointCategoricalPositionScaleOptions`](#type-nonpointcategoricalpositionscaleoptions).
 
 ### `InsertCompositionChildOptions` {#type-insertcompositionchildoptions}
 
@@ -6262,20 +6773,12 @@ export interface IntervalOutputFields {
 
 </details>
 
-### `IntervalPlotErrorBarOptions` {#type-intervalploterrorbaroptions}
+### `IntervalPlotBaseOptions` {#type-intervalplotbaseoptions}
 
 <details markdown="1">
-<summary>Expand IntervalPlotErrorBarOptions</summary>
+<summary>Expand IntervalPlotBaseOptions</summary>
 
 ```typescript
-export interface IntervalPlotErrorBarOptions extends StrokeStyleDetails {
-  caps?: boolean;
-  capSize?: number;
-  stroke?: string;
-  strokeWidth?: number;
-  strokeDash?: DashStyle | DashPattern;
-  opacity?: number;
-}
 type IntervalPlotBaseOptions = {
   id?: string;
   data?: string;
@@ -6292,7 +6795,27 @@ type IntervalPlotBaseOptions = {
 
 </details>
 
-Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern) · [`ErrorBarOffsetChannel`](#type-errorbaroffsetchannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions).
+Related types: [`ErrorBarOffsetChannel`](#type-errorbaroffsetchannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`IntervalPlotErrorBarOptions`](#type-intervalploterrorbaroptions) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
+
+### `IntervalPlotErrorBarOptions` {#type-intervalploterrorbaroptions}
+
+<details markdown="1">
+<summary>Expand IntervalPlotErrorBarOptions</summary>
+
+```typescript
+export interface IntervalPlotErrorBarOptions extends StrokeStyleDetails {
+  caps?: boolean;
+  capSize?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDash?: DashStyle | DashPattern;
+  opacity?: number;
+}
+```
+
+</details>
+
+Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern).
 
 ### `JitterMaxOffset` {#type-jittermaxoffset}
 
@@ -6430,14 +6953,9 @@ export interface LegendBorderOptions {
   padding?: number;
   background?: string;
 }
-
-type LegendValueOrder = "scale" | { values: readonly CategoryValue[]; channel?: never };
-type CartesianLegendOrder = LegendValueOrder | { channel: "x" | "y"; values?: never };
 ```
 
 </details>
-
-Related types: [`CategoryValue`](#type-categoryvalue).
 
 ### `LegendChannel` {#type-legendchannel}
 
@@ -6505,6 +7023,8 @@ export type LegendOrder = LegendValueOrder |
 ```
 
 </details>
+
+Related types: [`LegendValueOrder`](#type-legendvalueorder).
 
 ### `LegendSymbolLayer` {#type-legendsymbollayer}
 
@@ -6592,6 +7112,91 @@ export interface LegendTitleStyleOptions {
 ```
 
 </details>
+
+### `LegendValueOrder` {#type-legendvalueorder}
+
+<details markdown="1">
+<summary>Expand LegendValueOrder</summary>
+
+```typescript
+type LegendValueOrder = "scale" | { values: readonly CategoryValue[]; channel?: never };
+```
+
+</details>
+
+Related types: [`CategoryValue`](#type-categoryvalue).
+
+### `LineCategoricalColorChannel` {#type-linecategoricalcolorchannel}
+
+<details markdown="1">
+<summary>Expand LineCategoricalColorChannel</summary>
+
+```typescript
+type LineCategoricalColorChannel =
+  | string
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
+      scale?: NonPointCategoricalColorScaleOptions;
+      palette?: Palette;
+    };
+```
+
+</details>
+
+Related types: [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](#type-palette).
+
+### `LineXPositionChannel` {#type-linexpositionchannel}
+
+<details markdown="1">
+<summary>Expand LineXPositionChannel</summary>
+
+```typescript
+type LineXPositionChannel =
+  | string
+  | ({ field: string; bin?: PositionEncodingBase["bin"] } & (
+      | {
+          fieldType?: "quantitative";
+          scale?: NonPointQuantitativePositionScaleOptions;
+        }
+      | {
+          fieldType: "temporal";
+          temporalUnit?: TemporalInputUnit;
+          scale?: NonPointTemporalPositionScaleOptions;
+        }
+    ));
+```
+
+</details>
+
+Related types: [`PositionEncodingBase`](#type-positionencodingbase) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions).
+
+### `LineYPositionChannel` {#type-lineypositionchannel}
+
+<details markdown="1">
+<summary>Expand LineYPositionChannel</summary>
+
+```typescript
+type LineYPositionChannel =
+  | string
+  | ({ field: string } & (
+      | {
+          fieldType?: "quantitative";
+          aggregate?: AggregateOperation;
+          scale?: NonPointQuantitativePositionScaleOptions;
+        }
+      | {
+          fieldType: "temporal";
+          temporalUnit?: TemporalInputUnit;
+          aggregate?: never;
+          scale?: NonPointTemporalPositionScaleOptions;
+        }
+    ));
+```
+
+</details>
+
+Related types: [`AggregateOperation`](#type-aggregateoperation) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions).
 
 ### `MarkGraphicProperty` {#type-markgraphicproperty}
 
@@ -6722,7 +7327,7 @@ export type MeasuredRadialGuideOptions = {
 
 </details>
 
-Related types: [`PieLegendOptions`](#type-pielegendoptions).
+Related types: [`CategoricalPolarAxesOptions`](#type-categoricalpolaraxesoptions) · [`CategoricalPolarGridOptions`](#type-categoricalpolargridoptions) · [`PieLegendOptions`](#type-pielegendoptions).
 
 ### `MeasuredRadiusScaleOptions` {#type-measuredradiusscaleoptions}
 
@@ -6759,6 +7364,8 @@ export type NonPointBandPositionScaleOptions = ScaleFields<
 
 </details>
 
+Related types: [`ScaleFields`](#type-scalefields).
+
 ### `NonPointCategoricalColorScaleOptions` {#type-nonpointcategoricalcolorscaleoptions}
 
 <details markdown="1">
@@ -6774,7 +7381,7 @@ export type NonPointCategoricalColorScaleOptions = ScaleFields<"id" | "palette">
 
 </details>
 
-Related types: [`Palette`](#type-palette).
+Related types: [`ScaleFields`](#type-scalefields) · [`Palette`](#type-palette).
 
 ### `NonPointCategoricalPositionScaleOptions` {#type-nonpointcategoricalpositionscaleoptions}
 
@@ -6785,7 +7392,6 @@ Related types: [`Palette`](#type-palette).
 export type NonPointCategoricalPositionScaleOptions =
   | NonPointBandPositionScaleOptions
   | NonPointPointPositionScaleOptions;
-type WithoutScaleId<T> = T extends unknown ? Omit<T, "id"> : never;
 ```
 
 </details>
@@ -6813,7 +7419,7 @@ export type NonPointContinuousColorScaleOptions = ScaleFields<
 
 </details>
 
-Related types: [`PaletteName`](#type-palettename).
+Related types: [`ScaleFields`](#type-scalefields) · [`PaletteName`](#type-palettename).
 
 ### `NonPointDiscretizedColorScaleOptions` {#type-nonpointdiscretizedcolorscaleoptions}
 
@@ -6848,6 +7454,8 @@ export type NonPointPointPositionScaleOptions = ScaleFields<
 
 </details>
 
+Related types: [`ScaleFields`](#type-scalefields).
+
 ### `NonPointQuantileColorScaleOptions` {#type-nonpointquantilecolorscaleoptions}
 
 <details markdown="1">
@@ -6864,7 +7472,7 @@ export type NonPointQuantileColorScaleOptions = ScaleFields<"id" | "reverse"> & 
 
 </details>
 
-Related types: [`PaletteName`](#type-palettename).
+Related types: [`ScaleFields`](#type-scalefields) · [`PaletteName`](#type-palettename).
 
 ### `NonPointQuantitativePositionScaleOptions` {#type-nonpointquantitativepositionscaleoptions}
 
@@ -6884,7 +7492,7 @@ export type NonPointQuantitativePositionScaleOptions = ScaleFields<
 
 </details>
 
-Related types: [`QuantitativePositionScaleType`](#type-quantitativepositionscaletype).
+Related types: [`ScaleFields`](#type-scalefields) · [`QuantitativePositionScaleType`](#type-quantitativepositionscaletype).
 
 ### `NonPointQuantizeColorScaleOptions` {#type-nonpointquantizecolorscaleoptions}
 
@@ -6904,7 +7512,7 @@ export type NonPointQuantizeColorScaleOptions = ScaleFields<
 
 </details>
 
-Related types: [`PaletteName`](#type-palettename).
+Related types: [`ScaleFields`](#type-scalefields) · [`PaletteName`](#type-palettename).
 
 ### `NonPointTemporalPositionScaleOptions` {#type-nonpointtemporalpositionscaleoptions}
 
@@ -6923,6 +7531,8 @@ export type NonPointTemporalPositionScaleOptions = ScaleFields<
 
 </details>
 
+Related types: [`ScaleFields`](#type-scalefields).
+
 ### `NonPointThresholdColorScaleOptions` {#type-nonpointthresholdcolorscaleoptions}
 
 <details markdown="1">
@@ -6939,7 +7549,7 @@ export type NonPointThresholdColorScaleOptions = ScaleFields<"id" | "reverse"> &
 
 </details>
 
-Related types: [`PaletteName`](#type-palettename).
+Related types: [`ScaleFields`](#type-scalefields) · [`PaletteName`](#type-palettename).
 
 ### `NonPointZeroSupportingPositionScaleOptions` {#type-nonpointzerosupportingpositionscaleoptions}
 
@@ -6957,6 +7567,40 @@ export type NonPointZeroSupportingPositionScaleOptions = Omit<
 
 Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`ZeroSupportingPositionScaleType`](#type-zerosupportingpositionscaletype).
 
+### `NormalizeBaseline` {#type-normalizebaseline}
+
+<details markdown="1">
+<summary>Expand NormalizeBaseline</summary>
+
+```typescript
+export type NormalizeBaseline =
+  | { readonly position: "first" | "last" }
+  | { readonly value: number };
+```
+
+</details>
+
+### `NormalizeBaselineOptions` {#type-normalizebaselineoptions}
+
+<details markdown="1">
+<summary>Expand NormalizeBaselineOptions</summary>
+
+```typescript
+type NormalizeBaselineOptions =
+  | {
+      baseline?: { position: "first" | "last" };
+      sortBy: readonly [WindowSort, ...WindowSort[]];
+    }
+  | {
+      baseline: { value: number };
+      sortBy?: readonly WindowSort[];
+    };
+```
+
+</details>
+
+Related types: [`WindowSort`](#type-windowsort).
+
 ### `NormalizeZeroDenominator` {#type-normalizezerodenominator}
 
 <details markdown="1">
@@ -6964,6 +7608,23 @@ Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquanti
 
 ```typescript
 export type NormalizeZeroDenominator = "error" | "null" | "zero";
+```
+
+</details>
+
+### `NormalizedDataBaseOptions` {#type-normalizeddatabaseoptions}
+
+<details markdown="1">
+<summary>Expand NormalizedDataBaseOptions</summary>
+
+```typescript
+type NormalizedDataBaseOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  as: string;
+  groupBy?: string | readonly string[];
+};
 ```
 
 </details>
@@ -6990,19 +7651,11 @@ export type NormalizedDataOptions = NormalizedDataBaseOptions & (
     } & NormalizeBaselineOptions)
   | ({ method: "change" } & NormalizeBaselineOptions)
 );
-type CompleteDataBaseOptions = {
-  id: string;
-  source?: string;
-  key: string;
-  groupBy?: string | readonly string[];
-  fill?: Readonly<Record<string, DatasetScalar>>;
-  members?: string;
-};
 ```
 
 </details>
 
-Related types: [`NormalizeZeroDenominator`](#type-normalizezerodenominator) · [`DatasetScalar`](#type-datasetscalar).
+Related types: [`NormalizedDataBaseOptions`](#type-normalizeddatabaseoptions) · [`NormalizeZeroDenominator`](#type-normalizezerodenominator) · [`NormalizeBaselineOptions`](#type-normalizebaselineoptions).
 
 ### `NumericFormatString` {#type-numericformatstring}
 
@@ -7014,6 +7667,8 @@ export type NumericFormatString = `.${ValueFormatPrecision}${"f" | "%" | "e"}`;
 ```
 
 </details>
+
+Related types: [`ValueFormatPrecision`](#type-valueformatprecision).
 
 ### `OffsetEncodingOptions` {#type-offsetencodingoptions}
 
@@ -7109,6 +7764,8 @@ export type OpacityScaleOptions = ScaleFields<
 ```
 
 </details>
+
+Related types: [`ScaleFields`](#type-scalefields).
 
 ### `OrderCategoriesOptions` {#type-ordercategoriesoptions}
 
@@ -7336,7 +7993,26 @@ export type ParallelDimension = string | ({
 
 </details>
 
-Related types: [`QuantitativePositionScaleOptions`](#type-quantitativepositionscaleoptions) · [`CategoricalPositionScaleOptions`](#type-categoricalpositionscaleoptions).
+Related types: [`WithoutScaleId`](#type-withoutscaleid) · [`QuantitativePositionScaleOptions`](#type-quantitativepositionscaleoptions) · [`CategoricalPositionScaleOptions`](#type-categoricalpositionscaleoptions).
+
+### `ParallelGuideOptions` {#type-parallelguideoptions}
+
+<details markdown="1">
+<summary>Expand ParallelGuideOptions</summary>
+
+```typescript
+type ParallelGuideOptions = {
+  axes?: false | {
+    coordinate?: { id?: string; type?: "auto" | "parallel" };
+  };
+  grid?: false;
+  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
+};
+```
+
+</details>
+
+Related types: [`PathLegendOptions`](#type-pathlegendoptions) · [`LegendValueOrder`](#type-legendvalueorder).
 
 ### `ParallelMissingPolicy` {#type-parallelmissingpolicy}
 
@@ -7372,6 +8048,26 @@ export type ParameterizedAggregateOperation =
 </details>
 
 Related types: [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod).
+
+### `PathLegendOptions` {#type-pathlegendoptions}
+
+<details markdown="1">
+<summary>Expand PathLegendOptions</summary>
+
+```typescript
+type PathLegendOptions = Omit<
+  LegendOptions,
+  "symbol" | "gradient" | "count" | "values" | "labels"
+> & {
+  symbol?: "auto" | { length?: number; lineWidth?: number }
+    | { layers: readonly LegendSymbolLayer[] };
+  labels?: CategoricalLegendTextOptions;
+};
+```
+
+</details>
+
+Related types: [`LegendOptions`](#type-legendoptions) · [`LegendSymbolLayer`](#type-legendsymbollayer) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions).
 
 ### `PathOrderEncodingOptions` {#type-pathorderencodingoptions}
 
@@ -7441,6 +8137,37 @@ export type PieLegendOptions = Omit<
 ```
 
 </details>
+
+Related types: [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`LegendValueOrder`](#type-legendvalueorder) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions).
+
+### `PointFacadePositionChannel` {#type-pointfacadepositionchannel}
+
+<details markdown="1">
+<summary>Expand PointFacadePositionChannel</summary>
+
+```typescript
+type PointFacadePositionChannel =
+  | string
+  | ({ field: string } & (
+      | {
+          fieldType?: "quantitative";
+          scale?: QuantitativePositionScaleOptions;
+        }
+      | {
+          fieldType: "temporal";
+          temporalUnit?: TemporalInputUnit;
+          scale?: TemporalPositionScaleOptions;
+        }
+      | {
+          fieldType: "nominal" | "ordinal";
+          scale?: CategoricalPositionScaleOptions;
+        }
+    ));
+```
+
+</details>
+
+Related types: [`QuantitativePositionScaleOptions`](#type-quantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`TemporalPositionScaleOptions`](#type-temporalpositionscaleoptions) · [`CategoricalPositionScaleOptions`](#type-categoricalpositionscaleoptions).
 
 ### `PointPackingMaxOffset` {#type-pointpackingmaxoffset}
 
@@ -7520,13 +8247,6 @@ export type PolarChartGuideOptions = {
   grid?: false | Pick<CreateGridOptions, "theta" | "radial">;
   legend?: false | LegendOptions;
 };
-type PolarLegendOrder = LegendValueOrder | { channel: "theta"; values?: never };
-type PolarPathLegendOptions = Omit<PathLegendOptions, "order"> & {
-  order?: PolarLegendOrder;
-};
-type PolarPointLegendOptions = Omit<FilledMarkLegendOptions, "order"> & {
-  order?: PolarLegendOrder;
-};
 ```
 
 </details>
@@ -7556,10 +8276,6 @@ export type PolarFrameCenter = {
 export type PolarFrameOptions = "auto" | {
   center?: PolarFrameCenter;
   radius?: PolarFrameRadius;
-};
-
-type EditCoordinateTarget = {
-  target: string;
 };
 ```
 
@@ -7632,6 +8348,19 @@ export interface PolarLabelOptions extends AxisLabelStyleOptions {
 
 Related types: [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`AxisValue`](#type-axisvalue).
 
+### `PolarLegendOrder` {#type-polarlegendorder}
+
+<details markdown="1">
+<summary>Expand PolarLegendOrder</summary>
+
+```typescript
+type PolarLegendOrder = LegendValueOrder | { channel: "theta"; values?: never };
+```
+
+</details>
+
+Related types: [`LegendValueOrder`](#type-legendvalueorder).
+
 ### `PolarPathGuideOptions` {#type-polarpathguideoptions}
 
 <details markdown="1">
@@ -7645,7 +8374,22 @@ export type PolarPathGuideOptions = Omit<PolarChartGuideOptions, "legend"> & {
 
 </details>
 
-Related types: [`PolarChartGuideOptions`](#type-polarchartguideoptions).
+Related types: [`PolarChartGuideOptions`](#type-polarchartguideoptions) · [`PolarPathLegendOptions`](#type-polarpathlegendoptions).
+
+### `PolarPathLegendOptions` {#type-polarpathlegendoptions}
+
+<details markdown="1">
+<summary>Expand PolarPathLegendOptions</summary>
+
+```typescript
+type PolarPathLegendOptions = Omit<PathLegendOptions, "order"> & {
+  order?: PolarLegendOrder;
+};
+```
+
+</details>
+
+Related types: [`PathLegendOptions`](#type-pathlegendoptions) · [`PolarLegendOrder`](#type-polarlegendorder).
 
 ### `PolarPointGuideOptions` {#type-polarpointguideoptions}
 
@@ -7660,7 +8404,22 @@ export type PolarPointGuideOptions = Omit<PolarChartGuideOptions, "legend"> & {
 
 </details>
 
-Related types: [`PolarChartGuideOptions`](#type-polarchartguideoptions).
+Related types: [`PolarChartGuideOptions`](#type-polarchartguideoptions) · [`PolarPointLegendOptions`](#type-polarpointlegendoptions).
+
+### `PolarPointLegendOptions` {#type-polarpointlegendoptions}
+
+<details markdown="1">
+<summary>Expand PolarPointLegendOptions</summary>
+
+```typescript
+type PolarPointLegendOptions = Omit<FilledMarkLegendOptions, "order"> & {
+  order?: PolarLegendOrder;
+};
+```
+
+</details>
+
+Related types: [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`PolarLegendOrder`](#type-polarlegendorder).
 
 ### `PolarRadiusChannel` {#type-polarradiuschannel}
 
@@ -7747,6 +8506,32 @@ export interface PolarTitleOptions {
 
 </details>
 
+### `PositionEncodingBase` {#type-positionencodingbase}
+
+<details markdown="1">
+<summary>Expand PositionEncodingBase</summary>
+
+```typescript
+interface PositionEncodingBase {
+  field: string;
+  target?: string;
+  coordinate?: string;
+  bin?:
+    | { maxBins?: number; step?: never; boundaries?: never }
+    | { maxBins?: never; step: number; boundaries?: never }
+    | {
+        maxBins?: never;
+        step?: never;
+        boundaries: readonly [number, number, ...number[]];
+      };
+  stack?: StackMode;
+}
+```
+
+</details>
+
+Related types: [`StackMode`](#type-stackmode).
+
 ### `PositionEncodingOptions` {#type-positionencodingoptions}
 
 <details markdown="1">
@@ -7762,7 +8547,41 @@ export type PositionEncodingOptions = PositionEncodingBase & PositionScaleBranch
 
 </details>
 
-Related types: [`QuantitativePositionScaleOptions`](#type-quantitativepositionscaleoptions) · [`TemporalPositionScaleOptions`](#type-temporalpositionscaleoptions) · [`CategoricalPositionScaleOptions`](#type-categoricalpositionscaleoptions).
+Related types: [`PositionEncodingBase`](#type-positionencodingbase) · [`PositionScaleBranches`](#type-positionscalebranches) · [`QuantitativePositionScaleOptions`](#type-quantitativepositionscaleoptions) · [`TemporalPositionScaleOptions`](#type-temporalpositionscaleoptions) · [`CategoricalPositionScaleOptions`](#type-categoricalpositionscaleoptions).
+
+### `PositionScaleBranches` {#type-positionscalebranches}
+
+<details markdown="1">
+<summary>Expand PositionScaleBranches</summary>
+
+```typescript
+type PositionScaleBranches<Quantitative, Temporal, Categorical> =
+  | {
+      fieldType?: "quantitative";
+      aggregate?: never;
+      scale?: Quantitative;
+    }
+  | {
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      aggregate?: never;
+      scale?: Temporal;
+    }
+  | {
+      fieldType: "nominal" | "ordinal";
+      aggregate?: never;
+      scale?: Categorical;
+    }
+  | {
+      fieldType?: FieldType;
+      aggregate: AggregateOperation;
+      scale?: Quantitative;
+    };
+```
+
+</details>
+
+Related types: [`TemporalInputUnit`](#type-temporalinputunit) · [`FieldType`](#type-fieldtype) · [`AggregateOperation`](#type-aggregateoperation).
 
 ### `PreGriddedHeatmapOptions` {#type-pregriddedheatmapoptions}
 
@@ -7780,7 +8599,7 @@ export interface PreGriddedHeatmapOptions extends HeatmapBaseOptions {
 
 </details>
 
-Related types: [`HeatmapBaseOptions`](#type-heatmapbaseoptions) · [`HeatmapCategoryPositionChannel`](#type-heatmapcategorypositionchannel).
+Related types: [`HeatmapBaseOptions`](#type-heatmapbaseoptions) · [`HeatmapCategoryPositionChannel`](#type-heatmapcategorypositionchannel) · [`RectColorChannel`](#type-rectcolorchannel).
 
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
@@ -7795,6 +8614,28 @@ export type QuantileColorScaleOptions =
 </details>
 
 Related types: [`NonPointQuantileColorScaleOptions`](#type-nonpointquantilecolorscaleoptions).
+
+### `QuantitativeBarColorChannel` {#type-quantitativebarcolorchannel}
+
+<details markdown="1">
+<summary>Expand QuantitativeBarColorChannel</summary>
+
+```typescript
+type QuantitativeBarColorChannel = {
+  field: string;
+  fieldType: "quantitative";
+  aggregate?: AggregateOperation;
+  scale?:
+    | NonPointContinuousColorScaleOptions
+    | NonPointDiscretizedColorScaleOptions;
+  palette?: Palette;
+  layout?: never;
+};
+```
+
+</details>
+
+Related types: [`AggregateOperation`](#type-aggregateoperation) · [`NonPointContinuousColorScaleOptions`](#type-nonpointcontinuouscolorscaleoptions) · [`NonPointDiscretizedColorScaleOptions`](#type-nonpointdiscretizedcolorscaleoptions) · [`Palette`](#type-palette).
 
 ### `QuantitativePositionScaleOptions` {#type-quantitativepositionscaleoptions}
 
@@ -7818,12 +8659,9 @@ Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquanti
 ```typescript
 export type QuantitativePositionScaleType =
   | "linear" | "log" | "pow" | "sqrt" | "symlog";
-type ScaleFields<Keys extends keyof ScaleOptions> = Pick<ScaleOptions, Keys>;
 ```
 
 </details>
-
-Related types: [`ScaleOptions`](#type-scaleoptions).
 
 ### `QuantizeColorScaleOptions` {#type-quantizecolorscaleoptions}
 
@@ -7850,38 +8688,11 @@ export type RadarCategoryChannel = string | {
   fieldType?: "nominal" | "ordinal";
   scale?: RadarCategoryScaleOptions;
 };
-type CategoricalThetaTicksAndLabelsOptions = Omit<
-  PolarTicksAndLabelsOptions,
-  "count" | "labels"
-> & {
-  count?: never;
-  labels?: Omit<AxisLabelStyleOptions, "format"> & DisplayLabelOptions &
-    { format?: "auto" };
-};
-type CategoricalThetaAxisOptions = Omit<CompletePolarAxisOptions, "ticksAndLabels"> & {
-  ticksAndLabels?: false | CategoricalThetaTicksAndLabelsOptions;
-};
-type CategoricalThetaGridOptions = Omit<PolarGridOptions, "count"> & {
-  count?: never;
-};
-type CategoricalPolarAxesOptions = Omit<
-  Pick<CreateAxesOptions, "theta" | "radius">,
-  "theta"
-> & {
-  coordinate?: { id?: string; type?: "auto" | "polar" };
-  theta?: false | CategoricalThetaAxisOptions;
-};
-type CategoricalPolarGridOptions = Omit<
-  Pick<CreateGridOptions, "theta" | "radial">,
-  "theta"
-> & {
-  theta?: boolean | CategoricalThetaGridOptions;
-};
 ```
 
 </details>
 
-Related types: [`RadarCategoryScaleOptions`](#type-radarcategoryscaleoptions) · [`PolarTicksAndLabelsOptions`](#type-polarticksandlabelsoptions) · [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions) · [`CompletePolarAxisOptions`](#type-completepolaraxisoptions) · [`PolarGridOptions`](#type-polargridoptions) · [`CreateAxesOptions`](#type-createaxesoptions) · [`CreateGridOptions`](#type-creategridoptions).
+Related types: [`RadarCategoryScaleOptions`](#type-radarcategoryscaleoptions).
 
 ### `RadarCategoryScaleOptions` {#type-radarcategoryscaleoptions}
 
@@ -7926,7 +8737,7 @@ export type RadarGuideOptions = Omit<PolarPathGuideOptions, "axes" | "grid" | "l
 
 </details>
 
-Related types: [`PolarPathGuideOptions`](#type-polarpathguideoptions).
+Related types: [`PolarPathGuideOptions`](#type-polarpathguideoptions) · [`CategoricalPolarAxesOptions`](#type-categoricalpolaraxesoptions) · [`CategoricalPolarGridOptions`](#type-categoricalpolargridoptions) · [`PathLegendOptions`](#type-pathlegendoptions) · [`LegendValueOrder`](#type-legendvalueorder).
 
 ### `RadarWideOptions` {#type-radarwideoptions}
 
@@ -7957,31 +8768,11 @@ export type RadialEncodingOptions = {
   | { field: string; mapping?: RadialMapping; aggregate: "sum"; scale?: MeasuredRadiusScaleOptions }
   | { field?: never; mapping?: RadialMapping; aggregate: "count"; scale?: MeasuredRadiusScaleOptions }
 );
-
-type RulePositionValue =
-  | { field: string; datum?: never }
-  | { field?: never; datum: unknown };
-
-type RulePositionEncodingBase = RulePositionValue & {
-  target?: string;
-  coordinate?: string;
-};
-
-type InferredRuleDatumPositionEncodingOptions = {
-  field?: never;
-  datum: unknown;
-  target?: string;
-  coordinate?: string;
-  fieldType?: undefined;
-  scale?:
-    | NonPointQuantitativePositionScaleOptions
-    | NonPointCategoricalPositionScaleOptions;
-};
 ```
 
 </details>
 
-Related types: [`RadiusScaleOptions`](#type-radiusscaleoptions) · [`RadialMapping`](#type-radialmapping) · [`MeasuredRadiusScaleOptions`](#type-measuredradiusscaleoptions) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`NonPointCategoricalPositionScaleOptions`](#type-nonpointcategoricalpositionscaleoptions).
+Related types: [`RadiusScaleOptions`](#type-radiusscaleoptions) · [`RadialMapping`](#type-radialmapping) · [`MeasuredRadiusScaleOptions`](#type-measuredradiusscaleoptions).
 
 ### `RadialMapping` {#type-radialmapping}
 
@@ -8179,6 +8970,56 @@ export type RaincloudValueChannel = string | {
 
 Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions).
 
+### `RangePositionEncodingOptions` {#type-rangepositionencodingoptions}
+
+<details markdown="1">
+<summary>Expand RangePositionEncodingOptions</summary>
+
+```typescript
+type RangePositionEncodingOptions = AreaRangePositionEncodingOptions | {
+  lower: string;
+  upper: string;
+  target?: string;
+  coordinate?: string;
+} & (
+  | { fieldType?: "quantitative"; temporalUnit?: never; scale?: NonPointQuantitativePositionScaleOptions }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit; scale?: NonPointTemporalPositionScaleOptions }
+);
+```
+
+</details>
+
+Related types: [`AreaRangePositionEncodingOptions`](#type-arearangepositionencodingoptions) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions).
+
+### `RectColorChannel` {#type-rectcolorchannel}
+
+<details markdown="1">
+<summary>Expand RectColorChannel</summary>
+
+```typescript
+type RectColorChannel =
+  | LineCategoricalColorChannel
+  | {
+      field: string;
+      fieldType: "quantitative";
+      scale?:
+        | NonPointContinuousColorScaleOptions
+        | NonPointDiscretizedColorScaleOptions;
+      palette?: Palette;
+    }
+  | {
+      field: string;
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
+      palette?: Palette;
+    };
+```
+
+</details>
+
+Related types: [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`NonPointContinuousColorScaleOptions`](#type-nonpointcontinuouscolorscaleoptions) · [`NonPointDiscretizedColorScaleOptions`](#type-nonpointdiscretizedcolorscaleoptions) · [`Palette`](#type-palette) · [`TemporalInputUnit`](#type-temporalinputunit).
+
 ### `RectMarkOptions` {#type-rectmarkoptions}
 
 <details markdown="1">
@@ -8214,6 +9055,34 @@ export type RectStyleDetails = StrokeStyleDetails & {
 
 Related types: [`StrokeStyleDetails`](#type-strokestyledetails).
 
+### `ReferenceAxis` {#type-referenceaxis}
+
+<details markdown="1">
+<summary>Expand ReferenceAxis</summary>
+
+```typescript
+type ReferenceAxis<Value> = { x: Value; y?: never } | { y: Value; x?: never };
+```
+
+</details>
+
+### `ReferenceBinding` {#type-referencebinding}
+
+<details markdown="1">
+<summary>Expand ReferenceBinding</summary>
+
+```typescript
+type ReferenceBinding<DataValue, PlotValue> =
+  | ({ space?: "data"; source?: string; temporalUnit?: TemporalInputUnit;
+       data?: never; coordinate?: never } & ReferenceAxis<DataValue>)
+  | ({ space: "plot"; data?: string; coordinate?: string;
+       source?: never; temporalUnit?: never } & ReferenceAxis<PlotValue>);
+```
+
+</details>
+
+Related types: [`TemporalInputUnit`](#type-temporalinputunit) · [`ReferenceAxis`](#type-referenceaxis).
+
 ### `ReferenceStatistic` {#type-referencestatistic}
 
 <details markdown="1">
@@ -8223,19 +9092,6 @@ Related types: [`StrokeStyleDetails`](#type-strokestyledetails).
 export type ReferenceStatistic =
   | { readonly op: "mean" | "median" | "min" | "max"; readonly p?: never }
   | { readonly op: "quantile"; readonly p: number };
-type DynamicReferenceBinding = {
-  readonly id?: string;
-  readonly source: string;
-  readonly axis: "x" | "y";
-  readonly population?: "boundData" | "visibleItems";
-  readonly field?: string;
-  readonly x?: never;
-  readonly y?: never;
-  readonly space?: never;
-  readonly data?: never;
-  readonly coordinate?: never;
-  readonly temporalUnit?: never;
-};
 ```
 
 </details>
@@ -8259,6 +9115,25 @@ export interface RegressionBandOptions extends StrokeStyleDetails {
 
 Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation).
 
+### `RegressionCommonOptions` {#type-regressioncommonoptions}
+
+<details markdown="1">
+<summary>Expand RegressionCommonOptions</summary>
+
+```typescript
+type RegressionCommonOptions = {
+  target?: string;
+  x?: string;
+  y?: string;
+  groupBy?: string | false;
+  line?: StrokeStyleDetails & { strokeWidth?: number; curve?: CurveInterpolation };
+};
+```
+
+</details>
+
+Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation).
+
 ### `RegressionDataOptions` {#type-regressiondataoptions}
 
 <details markdown="1">
@@ -8272,19 +9147,11 @@ export type RegressionDataOptions = {
   y: string;
   groupBy?: string;
 } & RegressionParameterOptions;
-
-type RegressionCommonOptions = {
-  target?: string;
-  x?: string;
-  y?: string;
-  groupBy?: string | false;
-  line?: StrokeStyleDetails & { strokeWidth?: number; curve?: CurveInterpolation };
-};
 ```
 
 </details>
 
-Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation).
+Related types: [`RegressionParameterOptions`](#type-regressionparameteroptions).
 
 ### `RegressionInterval` {#type-regressioninterval}
 
@@ -8329,7 +9196,101 @@ export type RegressionOptions = RegressionCommonOptions & (
 
 </details>
 
-Related types: [`RegressionBandOptions`](#type-regressionbandoptions).
+Related types: [`RegressionCommonOptions`](#type-regressioncommonoptions) · [`RegressionParameterOptions`](#type-regressionparameteroptions) · [`RegressionBandOptions`](#type-regressionbandoptions).
+
+### `RegressionParameterOptions` {#type-regressionparameteroptions}
+
+<details markdown="1">
+<summary>Expand RegressionParameterOptions</summary>
+
+```typescript
+type RegressionParameterOptions =
+  | {
+      method?: "linear";
+      degree?: never;
+      span?: never;
+      confidenceMethod?: ConfidenceIntervalMethod;
+      level?: number;
+      confidence?: number;
+      interval?: RegressionInterval;
+    }
+  | {
+      method: "polynomial";
+      degree?: number;
+      span?: never;
+      confidenceMethod?: ConfidenceIntervalMethod;
+      level?: number;
+      confidence?: number;
+      interval?: RegressionInterval;
+    }
+  | {
+      method: "loess";
+      degree?: never;
+      span?: number;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+      interval?: never;
+    };
+```
+
+</details>
+
+Related types: [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval).
+
+### `RegressionPlotBaseOptions` {#type-regressionplotbaseoptions}
+
+<details markdown="1">
+<summary>Expand RegressionPlotBaseOptions</summary>
+
+```typescript
+type RegressionPlotBaseOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: RegressionPlotPositionChannel;
+  y: RegressionPlotPositionChannel;
+  color?: BasicColorChannel;
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: CreateScatterPlotOptions["point"];
+  guides?: false | CartesianGuideOptions;
+};
+```
+
+</details>
+
+Related types: [`RegressionPlotPositionChannel`](#type-regressionplotpositionchannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
+
+### `RegressionPlotPositionChannel` {#type-regressionplotpositionchannel}
+
+<details markdown="1">
+<summary>Expand RegressionPlotPositionChannel</summary>
+
+```typescript
+export type RegressionPlotPositionChannel = string | {
+  field: string;
+  fieldType?: "quantitative";
+  scale?: NonPointQuantitativePositionScaleOptions;
+};
+```
+
+</details>
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions).
+
+### `RegressionPlotStatisticalOptions` {#type-regressionplotstatisticaloptions}
+
+<details markdown="1">
+<summary>Expand RegressionPlotStatisticalOptions</summary>
+
+```typescript
+type RegressionPlotStatisticalOptions<T> = T extends unknown
+  ? Omit<T, "target" | "x" | "y">
+  : never;
+```
+
+</details>
 
 ### `RemoveAxisOptions` {#type-removeaxisoptions}
 
@@ -8449,44 +9410,9 @@ export interface RemoveMarkFilterOptions {
 export type RemoveMarkLabelsOptions =
   | { target: string; source?: never }
   | { source: string; target?: never };
-
-type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "text"> & {
-  id?: string;
-  text: unknown;
-  format?: TextFormat;
-  layout?: false | Omit<LabelLayoutOptions, "target">;
-};
-
-type AnnotationAnchor =
-  | {
-      x?: never;
-      y?: never;
-      space?: never;
-      source?: string;
-      data?: never;
-      coordinate?: never;
-    }
-  | {
-      x: unknown;
-      y: unknown;
-      space?: "data";
-      source?: string;
-      data?: never;
-      coordinate?: never;
-    }
-  | {
-      x: number;
-      y: number;
-      space: "plot";
-      source?: never;
-      data?: string;
-      coordinate?: string;
-    };
 ```
 
 </details>
-
-Related types: [`TextMarkOptions`](#type-textmarkoptions) · [`TextFormat`](#type-textformat) · [`LabelLayoutOptions`](#type-labellayoutoptions).
 
 ### `RemoveMarkOptions` {#type-removemarkoptions}
 
@@ -8629,7 +9555,18 @@ export type RequestedDatasetTransform = RequestedTransform<Exclude<
 
 </details>
 
-Related types: [`DatasetTransform`](#type-datasettransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform).
+Related types: [`RequestedTransform`](#type-requestedtransform) · [`DatasetTransform`](#type-datasettransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform).
+
+### `RequestedTransform` {#type-requestedtransform}
+
+<details markdown="1">
+<summary>Expand RequestedTransform</summary>
+
+```typescript
+type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;
+```
+
+</details>
 
 ### `RotationInput` {#type-rotationinput}
 
@@ -8638,9 +9575,6 @@ Related types: [`DatasetTransform`](#type-datasettransform) · [`DatasetHorizonT
 
 ```typescript
 export type RotationInput = number | { value: number; unit: RotationUnit };
-type ValueFormatDigit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-type ValueFormatPrecision = ValueFormatDigit | 10 | 11 | 12 | `0${ValueFormatDigit}`;
-type TimeAxisDirective = "Y" | "m" | "d" | "b";
 ```
 
 </details>
@@ -8687,6 +9621,8 @@ export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend"> & {
 
 </details>
 
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`CAxes`](#type-caxes).
+
 ### `RugMeasureChannel` {#type-rugmeasurechannel}
 
 <details markdown="1">
@@ -8731,6 +9667,35 @@ export interface RugTickOptions extends StrokeStyleDetails {
 
 Related types: [`StrokeStyleDetails`](#type-strokestyledetails).
 
+### `RulePositionEncodingBase` {#type-rulepositionencodingbase}
+
+<details markdown="1">
+<summary>Expand RulePositionEncodingBase</summary>
+
+```typescript
+type RulePositionEncodingBase = RulePositionValue & {
+  target?: string;
+  coordinate?: string;
+};
+```
+
+</details>
+
+Related types: [`RulePositionValue`](#type-rulepositionvalue).
+
+### `RulePositionValue` {#type-rulepositionvalue}
+
+<details markdown="1">
+<summary>Expand RulePositionValue</summary>
+
+```typescript
+type RulePositionValue =
+  | { field: string; datum?: never }
+  | { field?: never; datum: unknown };
+```
+
+</details>
+
 ### `RuleStyleOptions` {#type-rulestyleoptions}
 
 <details markdown="1">
@@ -8743,18 +9708,11 @@ export interface RuleStyleOptions extends StrokeStyleDetails {
   strokeDash?: DashStyle | DashPattern;
   opacity?: number;
 }
-
-type ReferenceAxis<Value> = { x: Value; y?: never } | { y: Value; x?: never };
-type ReferenceBinding<DataValue, PlotValue> =
-  | ({ space?: "data"; source?: string; temporalUnit?: TemporalInputUnit;
-       data?: never; coordinate?: never } & ReferenceAxis<DataValue>)
-  | ({ space: "plot"; data?: string; coordinate?: string;
-       source?: never; temporalUnit?: never } & ReferenceAxis<PlotValue>);
 ```
 
 </details>
 
-Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern) · [`TemporalInputUnit`](#type-temporalinputunit).
+Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern).
 
 ### `ScalarAggregateOperation` {#type-scalaraggregateoperation}
 
@@ -8770,6 +9728,19 @@ export type ScalarAggregateOperation =
 ```
 
 </details>
+
+### `ScaleFields` {#type-scalefields}
+
+<details markdown="1">
+<summary>Expand ScaleFields</summary>
+
+```typescript
+type ScaleFields<Keys extends keyof ScaleOptions> = Pick<ScaleOptions, Keys>;
+```
+
+</details>
+
+Related types: [`ScaleOptions`](#type-scaleoptions).
 
 ### `ScaleOptions` {#type-scaleoptions}
 
@@ -8854,32 +9825,29 @@ export type SecondaryPositionEncodingOptions =
   | SecondaryRulePositionEncodingOptions
   | { datum: unknown; field?: never; fieldType?: "quantitative"; target?: string; scale?: { id?: string }; coordinate?: string }
   | ({ field: string; datum?: never; target?: string; scale?: { id?: string }; coordinate?: string } & TemporalBindingBranch);
+```
 
-type AreaRangePositionEncodingOptions = {
-  target?: string;
-  coordinate?: string;
-  fieldType?: "quantitative";
-  temporalUnit?: never;
-  scale?: NonPointQuantitativePositionScaleOptions;
-} & (
-  | { lower: string; upper: { datum: number } }
-  | { lower: { datum: number }; upper: string }
-);
+</details>
 
-type RangePositionEncodingOptions = AreaRangePositionEncodingOptions | {
-  lower: string;
-  upper: string;
-  target?: string;
-  coordinate?: string;
+Related types: [`SecondaryRulePositionEncodingOptions`](#type-secondaryrulepositionencodingoptions) · [`TemporalBindingBranch`](#type-temporalbindingbranch).
+
+### `SecondaryRulePositionEncodingOptions` {#type-secondaryrulepositionencodingoptions}
+
+<details markdown="1">
+<summary>Expand SecondaryRulePositionEncodingOptions</summary>
+
+```typescript
+type SecondaryRulePositionEncodingOptions = RulePositionEncodingBase & {
+  scale?: { id?: string };
 } & (
-  | { fieldType?: "quantitative"; temporalUnit?: never; scale?: NonPointQuantitativePositionScaleOptions }
-  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit; scale?: NonPointTemporalPositionScaleOptions }
+  | { fieldType: Exclude<FieldType, "temporal">; temporalUnit?: never }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit }
 );
 ```
 
 </details>
 
-Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions).
+Related types: [`RulePositionEncodingBase`](#type-rulepositionencodingbase) · [`FieldType`](#type-fieldtype) · [`TemporalInputUnit`](#type-temporalinputunit).
 
 ### `SelectMarksOptions` {#type-selectmarksoptions}
 
@@ -8944,7 +9912,7 @@ export type ShapeScaleOptions = ScaleFields<"id"> & {
 
 </details>
 
-Related types: [`PointShape`](#type-pointshape).
+Related types: [`ScaleFields`](#type-scalefields) · [`PointShape`](#type-pointshape).
 
 ### `SizeEncodingOptions` {#type-sizeencodingoptions}
 
@@ -8963,6 +9931,21 @@ export type SizeEncodingOptions = {
 </details>
 
 Related types: [`SizeScaleOptions`](#type-sizescaleoptions).
+
+### `SizeScaleCommonOptions` {#type-sizescalecommonoptions}
+
+<details markdown="1">
+<summary>Expand SizeScaleCommonOptions</summary>
+
+```typescript
+type SizeScaleCommonOptions = ScaleFields<"id" | "reverse"> & {
+  unknown?: number;
+};
+```
+
+</details>
+
+Related types: [`ScaleFields`](#type-scalefields).
 
 ### `SizeScaleOptions` {#type-sizescaleoptions}
 
@@ -9018,6 +10001,45 @@ export type SizeScaleOptions =
 ```
 
 </details>
+
+Related types: [`ContinuousSizeScaleOptions`](#type-continuoussizescaleoptions) · [`SizeScaleCommonOptions`](#type-sizescalecommonoptions).
+
+### `SizeScaleTypeEditPatch` {#type-sizescaletypeeditpatch}
+
+<details markdown="1">
+<summary>Expand SizeScaleTypeEditPatch</summary>
+
+```typescript
+type SizeScaleTypeEditPatch =
+  | (Omit<WithoutScaleId<SizeScaleOptions>, "type"> & { type?: "linear" })
+  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "log" }>, "type"> & {
+      type: "log";
+    })
+  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "sqrt" }>, "type"> & {
+      type: "sqrt";
+    })
+  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "pow" }>, "type" | "exponent"> & {
+      type: "pow";
+      exponent?: number;
+    })
+  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "quantize" }>, "type" | "range"> & {
+      type: "quantize";
+      range?: readonly [number, number, ...number[]];
+    })
+  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "quantile" }>, "type" | "range"> & {
+      type: "quantile";
+      range?: readonly [number, number, ...number[]];
+    })
+  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "threshold" }>, "type" | "domain" | "range"> & {
+      type: "threshold";
+      domain?: readonly [number, ...number[]];
+      range?: readonly [number, number, ...number[]];
+    });
+```
+
+</details>
+
+Related types: [`WithoutScaleId`](#type-withoutscaleid) · [`SizeScaleOptions`](#type-sizescaleoptions).
 
 ### `StackDataMode` {#type-stackdatamode}
 
@@ -9305,6 +10327,21 @@ export interface SummaryDataOptions {
 
 Related types: [`SummaryAggregateOptions`](#type-summaryaggregateoptions) · [`StatisticalWeight`](#type-statisticalweight).
 
+### `TemporalBindingBranch` {#type-temporalbindingbranch}
+
+<details markdown="1">
+<summary>Expand TemporalBindingBranch</summary>
+
+```typescript
+type TemporalBindingBranch =
+  | { fieldType?: "quantitative"; temporalUnit?: never }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit };
+```
+
+</details>
+
+Related types: [`TemporalInputUnit`](#type-temporalinputunit).
+
 ### `TemporalInputUnit` {#type-temporalinputunit}
 
 <details markdown="1">
@@ -9545,6 +10582,17 @@ export type ThresholdColorScaleOptions =
 
 Related types: [`NonPointThresholdColorScaleOptions`](#type-nonpointthresholdcolorscaleoptions).
 
+### `TimeAxisDirective` {#type-timeaxisdirective}
+
+<details markdown="1">
+<summary>Expand TimeAxisDirective</summary>
+
+```typescript
+type TimeAxisDirective = "Y" | "m" | "d" | "b";
+```
+
+</details>
+
 ### `TimeUnit` {#type-timeunit}
 
 <details markdown="1">
@@ -9561,12 +10609,23 @@ export type TimeUnit =
   | "second"
   | "week"
   | "weekday";
-type DatasetTimeUnitTransformBase = {
-  readonly type: "timeUnit";
-  readonly field: string;
-  readonly temporalUnit?: TemporalInputUnit;
-  readonly as: string;
-  readonly timeZone?: string;
+```
+
+</details>
+
+### `TimeUnitDataBaseOptions` {#type-timeunitdatabaseoptions}
+
+<details markdown="1">
+<summary>Expand TimeUnitDataBaseOptions</summary>
+
+```typescript
+type TimeUnitDataBaseOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  temporalUnit?: TemporalInputUnit;
+  as: string;
+  timeZone?: string;
 };
 ```
 
@@ -9601,7 +10660,7 @@ export type TimeUnitDataOptions = TimeUnitDataBaseOptions & (
 
 </details>
 
-Related types: [`TimeUnit`](#type-timeunit).
+Related types: [`TimeUnitDataBaseOptions`](#type-timeunitdatabaseoptions) · [`TimeUnit`](#type-timeunit).
 
 ### `TitleOptions` {#type-titleoptions}
 
@@ -9655,6 +10714,8 @@ export type UtcFormatString = `${string}%${TimeAxisDirective}${string}`;
 
 </details>
 
+Related types: [`TimeAxisDirective`](#type-timeaxisdirective).
+
 ### `ValueFormat` {#type-valueformat}
 
 <details markdown="1">
@@ -9667,6 +10728,30 @@ export type ValueFormat = "auto" | NumericFormatString | UtcFormatString;
 </details>
 
 Related types: [`NumericFormatString`](#type-numericformatstring) · [`UtcFormatString`](#type-utcformatstring).
+
+### `ValueFormatDigit` {#type-valueformatdigit}
+
+<details markdown="1">
+<summary>Expand ValueFormatDigit</summary>
+
+```typescript
+type ValueFormatDigit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+```
+
+</details>
+
+### `ValueFormatPrecision` {#type-valueformatprecision}
+
+<details markdown="1">
+<summary>Expand ValueFormatPrecision</summary>
+
+```typescript
+type ValueFormatPrecision = ValueFormatDigit | 10 | 11 | 12 | `0${ValueFormatDigit}`;
+```
+
+</details>
+
+Related types: [`ValueFormatDigit`](#type-valueformatdigit).
 
 ### `ViolinPlotAreaOptions` {#type-violinplotareaoptions}
 
@@ -9748,7 +10833,7 @@ export interface ViolinPlotOptions {
 
 </details>
 
-Related types: [`ViolinPlotPositionChannel`](#type-violinplotpositionchannel) · [`ViolinPlotSplitOptions`](#type-violinplotsplitoptions) · [`ViolinPlotColorOptions`](#type-violinplotcoloroptions) · [`ViolinPlotDensityOptions`](#type-violinplotdensityoptions) · [`ViolinPlotAreaOptions`](#type-violinplotareaoptions).
+Related types: [`ViolinPlotPositionChannel`](#type-violinplotpositionchannel) · [`ViolinPlotSplitOptions`](#type-violinplotsplitoptions) · [`ViolinPlotColorOptions`](#type-violinplotcoloroptions) · [`ViolinPlotDensityOptions`](#type-violinplotdensityoptions) · [`ViolinPlotAreaOptions`](#type-violinplotareaoptions) · [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions).
 
 ### `ViolinPlotPositionChannel` {#type-violinplotpositionchannel}
 
@@ -9881,6 +10966,30 @@ Related types: [`WindowSortOrder`](#type-windowsortorder).
 
 ```typescript
 export type WindowSortOrder = "ascending" | "descending";
+```
+
+</details>
+
+### `WithoutEncodingTarget` {#type-withoutencodingtarget}
+
+<details markdown="1">
+<summary>Expand WithoutEncodingTarget</summary>
+
+```typescript
+type WithoutEncodingTarget<T> = T extends unknown
+  ? Omit<T, "target" | "coordinate">
+  : never;
+```
+
+</details>
+
+### `WithoutScaleId` {#type-withoutscaleid}
+
+<details markdown="1">
+<summary>Expand WithoutScaleId</summary>
+
+```typescript
+type WithoutScaleId<T> = T extends unknown ? Omit<T, "id"> : never;
 ```
 
 </details>

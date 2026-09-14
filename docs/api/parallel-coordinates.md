@@ -6,7 +6,7 @@ description: Create and revise row-wise paths across ordered dimension-local sca
 
 # Parallel Coordinates
 
-{% include chart-example.html id="parallel-coordinates" %}
+{% include chart-example.html id="parallel-coordinates" lead=true %}
 
 Use Parallel coordinates when each row should remain visible while several
 measurements are compared. Every eligible source row becomes one selectable
@@ -22,6 +22,12 @@ createParallelCoordinates({
 ```
 
 Only `dimensions` is required after a Canvas and an unambiguous dataset exist.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart } from "ggaction";
@@ -96,6 +102,12 @@ optional: omission uses stable source-row lineage and never guesses a field.
 Use the atomic encoding after creating a line mark when the wrapped steps need
 to remain individually controllable:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "profiles"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const advanced = chart()
   .createCanvas()
@@ -122,6 +134,12 @@ keep their own dimension assignment.
 Use `editParallelScale` when the dimension field should stay in place and only
 its scale definition should change. Both selectors are explicit: `target` is
 the Parallel line layer and `dimension` is the exact stored field name.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "parallelLines"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const revised = program.editParallelScale({
@@ -162,11 +180,6 @@ across unrelated composed child programs are not implemented. `facet` and
 per-dimension domains. `repeatCharts({ channel: { parallelDimension: field },
 fields })` replaces exactly one stored dimension role.
 
-## Related
-
-[Basic Charts](./basic-charts.md) · [Coordinates](./coordinates.md) ·
-[Series encodings](./series-encodings.md) · [Selection and Highlighting](./appearance/selection-and-highlighting.md)
-
 ## Edit a dimension axis
 
 Use `editParallelAxis({ field, line?, ticks?, labels?, ticksAndLabels?, title? })`
@@ -176,3 +189,8 @@ preserves the other dimensions. Create missing components with `createParallelAx
 remove a field with `removeParallelAxis`, or remove the complete guide with
 `removeParallelAxes`. See [Parallel axis lifecycle](axes.md) for exact options,
 defaults, restoration and dimension-reordering behavior.
+
+## Related
+
+[Basic Charts](./basic-charts.md) · [Coordinates](./coordinates.md) ·
+[Series encodings](./series-encodings.md) · [Selection and Highlighting](./appearance/selection-and-highlighting.md)

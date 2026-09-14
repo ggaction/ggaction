@@ -5,7 +5,7 @@ title: Rendering
 
 # Rendering
 
-{% include chart-example.html id="scatterplot" %}
+{% include chart-example.html id="scatterplot" lead=true %}
 
 Render one fully materialized `ChartProgram` to Browser Canvas, a browser-safe
 SVG string, a Node PNG file, or a single-page vector PDF. Choose the target
@@ -26,6 +26,12 @@ datasets, semantic encodings, context, or trace to infer missing output.
 ## Complete example program
 
 Every rendering fragment below continues from this complete program:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart } from "ggaction";
@@ -56,6 +62,12 @@ const program = chart()
 In a browser page containing `<canvas id="chart"></canvas>`, render with its 2D
 context:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { render } from "ggaction";
 
@@ -66,6 +78,12 @@ render(program, context);
 The optional `pixelRatio` increases physical output density while retaining
 logical chart coordinates. For an HTML Canvas, ggaction also preserves the
 logical CSS width and height while enlarging the backing store:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 render(program, context, { pixelRatio: 2 });
@@ -83,6 +101,12 @@ to `16777216` pixels.
 The browser-safe SVG entry returns a complete SVG document string without
 reading the DOM or filesystem. Assign it to a trusted application container or
 save the returned string with the file API available in your environment.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { renderToSVG } from "ggaction/svg";
@@ -106,6 +130,12 @@ and contain only ASCII letters, numbers, `_`, or `-`.
 For example, a browser application can place the generated document in an
 existing output container:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 document.querySelector("#svg-output").innerHTML = svg;
 ```
@@ -113,6 +143,12 @@ document.querySelector("#svg-output").innerHTML = svg;
 ## PNG output
 
 The Node-only entry point writes a completed program directly to PNG.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { renderToPNG } from "ggaction/png";
@@ -130,6 +166,12 @@ produces a 1280×800 image. The result contains the absolute `output`, physical
 ## PDF output
 
 The Node-only PDF entry writes one completed chart as one vector PDF page:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { renderToPDF } from "ggaction/pdf";

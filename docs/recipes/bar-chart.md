@@ -5,7 +5,7 @@ title: Bar Chart Recipe
 
 # Bar Chart Recipe
 
-{% include chart-example.html id="bar" %}
+{% include chart-example.html id="bar" lead=true %}
 
 The current complete bar-chart example uses grouped bars. Grouping is a layout
 choice inside the bar chart, not a separate top-level chart type.

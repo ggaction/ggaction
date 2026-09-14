@@ -5,12 +5,18 @@ title: Stroke Dash Encoding
 
 # Stroke Dash Encoding
 
-{% include chart-example.html id="line" %}
+{% include chart-example.html id="line" lead=true %}
 
 ## `encodeStrokeDash(options)`
 
 Map a nominal field to line-series or rule dash patterns, or apply one constant pattern
 to every series.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeStrokeDash({ field: "Origin" });
@@ -42,6 +48,12 @@ numbers that is not entirely zero. Named styles resolve as follows:
 
 Names remain in semantic scale state, while resolved scales and graphics store
 only numeric patterns.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeStrokeDash({

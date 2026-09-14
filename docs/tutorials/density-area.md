@@ -7,7 +7,7 @@ title: Density Area Chart Tutorial
 
 ## Complete density facade
 
-{% include chart-example.html id="density-plot" %}
+{% include chart-example.html id="density-plot" lead=true %}
 
 Use `createDensityPlot` to complete a density chart in one action:
 
@@ -29,26 +29,26 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/main/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 
-![Acceleration density by origin](../assets/images/cars-density-area.png)
+![Acceleration density by origin](../assets/images/cars-density-area.png){: loading="lazy" fetchpriority="auto" width="1440" height="1000" }
 
 This chart estimates the distribution of car acceleration separately for each
 Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ site.data.provenance.exampleSourceRef }}/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -173,6 +173,6 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/cars-density-area/program.js).
 - Continue with [Encodings](../api/encodings.md),
   [Legends](../api/legends.md), and [Scale options](../api/scales.md).

@@ -5,11 +5,17 @@ title: Point Appearance
 
 # Point Appearance
 
-{% include chart-example.html id="regression" %}
+{% include chart-example.html id="regression" lead=true %}
 
 ## `encodeRadius({ value, target? })`
 
 Broadcast a non-negative finite graphical radius to a point mark.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeRadius({ value: 3 });
@@ -31,6 +37,12 @@ is not a Polar radial position channel.
 
 ## `removePointRadius({ target? } = {})`
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const defaultSized = program.removePointRadius();
 ```
@@ -41,6 +53,12 @@ does not remove or edit semantic Polar `radius`. An ambiguous target or a point
 without an explicit radius is an error.
 
 ## Point field encodings
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program

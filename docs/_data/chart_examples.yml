@@ -107,7 +107,7 @@
   thumbnail_height: 395
   caption: Deterministic label wrapping and rotation preserve a larger plot inside a fixed Canvas.
   summary: Fit chart margins after laying out long Cartesian axis labels.
-  actions: createXAxis · fitCanvas
+  actions: createXAxis
   tasks: relationship guides layout
   url: /api/canvas/#fitcanvasoptions
   home_group: essentials
@@ -575,7 +575,7 @@
   thumbnail_height: 507
   caption: Nominal theta categories connected as closed series.
   summary: Close nominal-angle series without duplicating the first observation.
-  actions: createLineMark · closed
+  actions: createLineMark
   tasks: multivariate coordinate
   url: /tutorials/polar-lines/#closed-radar-paths
   home_group: coordinates
@@ -666,7 +666,7 @@
   thumbnail_height: 371
   caption: Final visual items selected and emphasized by their rendered grain.
   summary: Select, filter, and emphasize final point, bar, and line items.
-  actions: selectMarks · highlightMarks
+  actions: highlightMarks
   tasks: selection
   gallery_featured: true
   url: /tutorials/mark-selection/
@@ -732,8 +732,9 @@
   thumbnail_height: 448
   caption: The value field and a constant zero share the same automatic domain.
   summary: Define bounds and independently revise series identity, placement, and color.
-  actions: createAreaPlot layoutSeries encodeGroup
+  actions: createAreaPlot · layoutSeries · encodeGroup
   tasks: trend comparison
+  tutorial_order: 140
   url: /tutorials/area-layout/
 
 - id: radial-sectors
@@ -783,3 +784,517 @@
   actions: createBarPlot · editScale · createLegend
   tasks: color scale transitions
   url: /api/scales/discretized-color/#changing-color-scale-families
+- id: cars-origin-histogram-facet
+  example: /examples/cars-origin-histogram-facet/
+  title: Faceted car histograms
+  image: /assets/images/cars-origin-histogram-facet.png
+  alt: Each origin panel shows the observed distribution with its own final bars
+  width: 1512
+  height: 1156
+  thumbnail: /assets/images/cars-origin-histogram-facet-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 489
+  caption: Each origin panel shows the observed distribution with its own final bars.
+  summary: Each origin panel shows the observed distribution with its own final bars.
+  actions: createBarMark · encodeHistogram · encodeColor
+  tasks: composition distribution
+  url: /reference/actions/marks/#createbarmark
+- id: cars-weighted-rules
+  example: /examples/cars-weighted-rules/
+  title: Field-driven rule widths
+  image: /assets/images/cars-weighted-rules.png
+  alt: Rule widths and opacity map quantitative observations to visible stroke properties
+  width: 1040
+  height: 640
+  thumbnail: /assets/images/cars-weighted-rules-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 394
+  caption: Rule widths and opacity map quantitative observations to visible stroke properties.
+  summary: Rule widths and opacity map quantitative observations to visible stroke properties.
+  actions: createRuleMark · encodeX · encodeX2
+  tasks: comparison
+  url: /reference/actions/marks/#createrulemark
+- id: raincloud-plot
+  example: /examples/raincloud-plot/
+  title: Raincloud distribution
+  image: /assets/images/raincloud-plot.png
+  alt: A half violin, summary, and raw observations share one category and measure frame
+  width: 1360
+  height: 840
+  thumbnail: /assets/images/raincloud-plot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 395
+  caption: A half violin, summary, and raw observations share one category and measure frame.
+  summary: A half violin, summary, and raw observations share one category and measure frame.
+  actions: createRaincloudPlot
+  tasks: distribution comparison
+  url: /reference/actions/charts-data/#createraincloudplot
+- id: beeswarm-plot
+  example: /examples/beeswarm-plot/
+  title: Beeswarm distribution
+  image: /assets/images/beeswarm-plot.png
+  alt: Packed point glyphs preserve individual observations within each category slot
+  width: 1040
+  height: 680
+  thumbnail: /assets/images/beeswarm-plot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 418
+  caption: Packed point glyphs preserve individual observations within each category slot.
+  summary: Packed point glyphs preserve individual observations within each category slot.
+  actions: createBeeswarmPlot
+  tasks: distribution comparison
+  url: /reference/actions/charts-data/#createbeeswarmplot
+- id: dot-plot
+  example: /examples/dot-plot/
+  title: Categorical dot plot
+  image: /assets/images/dot-plot.png
+  alt: Each raw observation remains a dot on its categorical slot
+  width: 960
+  height: 640
+  thumbnail: /assets/images/dot-plot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 427
+  caption: Each raw observation remains a dot on its categorical slot.
+  summary: Each raw observation remains a dot on its categorical slot.
+  actions: createDotPlot
+  tasks: comparison
+  url: /reference/actions/charts-data/#createdotplot
+- id: lollipop-plot
+  example: /examples/lollipop-plot/
+  title: Lollipop plot
+  image: /assets/images/lollipop-plot.png
+  alt: A stem connects each observation to the explicit zero baseline
+  width: 960
+  height: 640
+  thumbnail: /assets/images/lollipop-plot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 427
+  caption: A stem connects each observation to the explicit zero baseline.
+  summary: A stem connects each observation to the explicit zero baseline.
+  actions: createLollipopPlot
+  tasks: comparison
+  url: /reference/actions/charts-data/#createlollipopplot
+- id: dumbbell-plot
+  example: /examples/dumbbell-plot/
+  title: Dumbbell changes
+  image: /assets/images/dumbbell-plot.png
+  alt: Named before and after endpoints retain their roles when values reverse
+  width: 960
+  height: 640
+  thumbnail: /assets/images/dumbbell-plot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 427
+  caption: Named before and after endpoints retain their roles when values reverse.
+  summary: Named before and after endpoints retain their roles when values reverse.
+  actions: createDumbbellPlot
+  tasks: comparison
+  url: /tutorials/endpoint-plots/
+  tutorial_order: 150
+- id: ecdf-plot
+  example: /examples/ecdf-plot/
+  title: Empirical cumulative distribution
+  image: /assets/images/ecdf-plot.png
+  alt: Step-after lines show cumulative probability at each observed support value
+  width: 1040
+  height: 680
+  thumbnail: /assets/images/ecdf-plot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 418
+  caption: Step-after lines show cumulative probability at each observed support value.
+  summary: Step-after lines show cumulative probability at each observed support value.
+  actions: createECDFPlot
+  tasks: distribution
+  url: /tutorials/ecdf/
+  tutorial_order: 160
+- id: theta-legend-order
+  example: /examples/theta-legend-order/
+  title: Pie legend order
+  image: /assets/images/theta-legend-order.png
+  alt: Reordering a categorical legend preserves the identities of the linked sectors
+  width: 2000
+  height: 1400
+  thumbnail: /assets/images/theta-legend-order-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: Reordering a categorical legend preserves the identities of the linked sectors.
+  summary: Reordering a categorical legend preserves the identities of the linked sectors.
+  actions: createPiePlot · editLegend
+  tasks: composition
+  url: /reference/actions/charts-data/#createpieplot
+- id: temporal-input
+  example: /examples/temporal-input/
+  title: Explicit temporal inputs
+  image: /assets/images/temporal-input.png
+  alt: Quantitative measures are positioned against explicitly parsed temporal input
+  width: 1520
+  height: 840
+  thumbnail: /assets/images/temporal-input-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 354
+  caption: Quantitative measures are positioned against explicitly parsed temporal input.
+  summary: Quantitative measures are positioned against explicitly parsed temporal input.
+  actions: createScatterPlot · createTitle
+  tasks: time
+  url: /reference/actions/charts-data/#createscatterplot
+- id: series-identity
+  example: /examples/series-identity/
+  title: Independent series appearance
+  image: /assets/images/series-identity.png
+  alt: Series identity remains independent from color, width, and opacity encodings
+  width: 1520
+  height: 920
+  thumbnail: /assets/images/series-identity-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 387
+  caption: Series identity remains independent from color, width, and opacity encodings.
+  summary: Series identity remains independent from color, width, and opacity encodings.
+  actions: createLinePlot · encodeStrokeWidth · encodeOpacity
+  tasks: relationship
+  url: /reference/actions/charts-data/#createlineplot
+- id: directional-tick-plot
+  example: /examples/directional-tick-plot/
+  title: Directional ticks and points
+  image: /assets/images/directional-tick-plot.png
+  alt: Directional glyphs and a rug compare point and tick encodings
+  width: 2144
+  height: 744
+  thumbnail: /assets/images/directional-tick-plot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 222
+  caption: Directional glyphs and a rug compare point and tick encodings.
+  summary: Directional glyphs and a rug compare point and tick encodings.
+  actions: encodeX · encodeY · createTickMark
+  tasks: distribution
+  url: /reference/actions/encodings/#encodex
+- id: cars-binned-heatmap
+  example: /examples/cars-binned-heatmap/
+  title: Binned cars heatmap
+  image: /assets/images/cars-binned-heatmap.png
+  alt: Rectangular bins summarize the density of two quantitative car measurements
+  width: 1400
+  height: 1000
+  thumbnail: /assets/images/cars-binned-heatmap-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 457
+  caption: Rectangular bins summarize the density of two quantitative car measurements.
+  summary: Rectangular bins summarize the density of two quantitative car measurements.
+  actions: createHeatmap · createTitle
+  tasks: distribution relationship
+  url: /reference/actions/charts-data/#createheatmap
+- id: time-unit-data
+  example: /examples/time-unit-data/
+  title: Time bucket comparison
+  image: /assets/images/time-unit-data.png
+  alt: Calendar buckets change temporal resolution while preserving original measurements
+  width: 1856
+  height: 768
+  thumbnail: /assets/images/time-unit-data-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 265
+  caption: Calendar buckets change temporal resolution while preserving original measurements.
+  summary: Calendar buckets change temporal resolution while preserving original measurements.
+  actions: createScatterPlot · encodePointRadius · createTitle
+  tasks: time
+  url: /reference/actions/charts-data/#createscatterplot
+- id: airline-passenger-moving-windows
+  example: /examples/airline-passenger-moving-windows/
+  title: Moving passenger windows
+  image: /assets/images/airline-passenger-moving-windows.png
+  alt: Ordered moving summaries reveal changes in monthly passenger counts
+  width: 2384
+  height: 744
+  thumbnail: /assets/images/airline-passenger-moving-windows-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 200
+  caption: Ordered moving summaries reveal changes in monthly passenger counts.
+  summary: Ordered moving summaries reveal changes in monthly passenger counts.
+  actions: createTimeUnitData · createLineMark · encodeX
+  tasks: time
+  url: /reference/actions/charts-data/#createtimeunitdata
+- id: cars-window-rank-scatterplot
+  example: /examples/cars-window-rank-scatterplot/
+  title: Ranked cars
+  image: /assets/images/cars-window-rank-scatterplot.png
+  alt: A partitioned window rank selects observations before drawing a scatterplot
+  width: 1520
+  height: 1000
+  thumbnail: /assets/images/cars-window-rank-scatterplot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 421
+  caption: A partitioned window rank selects observations before drawing a scatterplot.
+  summary: A partitioned window rank selects observations before drawing a scatterplot.
+  actions: createWindowData · filterData · createScatterPlot
+  tasks: relationship
+  url: /reference/actions/charts-data/#createwindowdata
+- id: cross-feature-dashboard
+  example: /examples/cross-feature-dashboard/
+  title: Mixed chart dashboard
+  image: /assets/images/cross-feature-dashboard.png
+  alt: Complete statistical and coordinate-specific programs form a nested dashboard
+  width: 2440
+  height: 1732
+  thumbnail: /assets/images/cross-feature-dashboard-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 454
+  caption: Complete statistical and coordinate-specific programs form a nested dashboard.
+  summary: Complete statistical and coordinate-specific programs form a nested dashboard.
+  actions: facet · editCompositionLayout
+  tasks: composition
+  url: /reference/actions/charts-data/#facet
+- id: cars-origin-jitter
+  example: /examples/point-jitter/
+  title: Cars by origin with jitter
+  image: /assets/images/cars-origin-jitter.png
+  alt: Bounded deterministic offsets separate overlapping observations inside category slots
+  width: 1280
+  height: 880
+  thumbnail: /assets/images/cars-origin-jitter-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 440
+  caption: Bounded deterministic offsets separate overlapping observations inside category slots.
+  summary: Bounded deterministic offsets separate overlapping observations inside category slots.
+  actions: createStripPlot
+  tasks: distribution
+  url: /reference/actions/charts-data/#createstripplot
+- id: dark-theme-scatterplot
+  example: /examples/dark-theme-scatterplot/
+  title: Dark theme scatterplot
+  image: /assets/images/dark-theme-scatterplot.png
+  alt: A program theme changes default canvas, guide, and mark appearance together
+  width: 1280
+  height: 800
+  thumbnail: /assets/images/dark-theme-scatterplot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 400
+  caption: A program theme changes default canvas, guide, and mark appearance together.
+  summary: A program theme changes default canvas, guide, and mark appearance together.
+  actions: createPointMark · encodeX · encodeY
+  tasks: relationship
+  url: /reference/actions/marks/#createpointmark
+- id: gapminder-country-labels
+  example: /examples/gapminder-country-labels/
+  title: Country labels without overlap
+  image: /assets/images/gapminder-country-labels.png
+  alt: Attached labels use bounded collision layout and leader lines
+  width: 1520
+  height: 1040
+  thumbnail: /assets/images/gapminder-country-labels-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 438
+  caption: Attached labels use bounded collision layout and leader lines.
+  summary: Attached labels use bounded collision layout and leader lines.
+  actions: createPointMark · encodeX · encodeY
+  tasks: relationship
+  url: /reference/actions/marks/#createpointmark
+- id: gapminder-continuous-color-bars
+  example: /examples/gapminder-continuous-color-bars/
+  title: Continuous aggregate bar color
+  image: /assets/images/gapminder-continuous-color-bars.png
+  alt: A quantitative color scale maps a compatible aggregate for each bar
+  width: 1360
+  height: 760
+  thumbnail: /assets/images/gapminder-continuous-color-bars-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 358
+  caption: A quantitative color scale maps a compatible aggregate for each bar.
+  summary: A quantitative color scale maps a compatible aggregate for each bar.
+  actions: filterData · createBarMark · encodeX
+  tasks: comparison
+  url: /reference/actions/charts-data/#filterdata
+- id: gapminder-discretized-color-scales
+  example: /examples/gapminder-discretized-color-scales/
+  title: Discretized color intervals
+  image: /assets/images/gapminder-discretized-color-scales.png
+  alt: Quantitative observations map to ordered color intervals and legend labels
+  width: 960
+  height: 624
+  thumbnail: /assets/images/gapminder-discretized-color-scales-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 416
+  caption: Quantitative observations map to ordered color intervals and legend labels.
+  summary: Quantitative observations map to ordered color intervals and legend labels.
+  actions: filterData · createPointMark · encodeX
+  tasks: relationship
+  url: /reference/actions/charts-data/#filterdata
+- id: gapminder-temporal-discrete-scales
+  example: /examples/gapminder-temporal-discrete-scales/
+  title: Temporal and discrete positions
+  image: /assets/images/gapminder-temporal-discrete-scales.png
+  alt: Band, point, and temporal mappings retain distinct positional meanings
+  width: 912
+  height: 624
+  thumbnail: /assets/images/gapminder-temporal-discrete-scales-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 438
+  caption: Band, point, and temporal mappings retain distinct positional meanings.
+  summary: Band, point, and temporal mappings retain distinct positional meanings.
+  actions: filterData · createBarMark · encodeX
+  tasks: time comparison
+  url: /reference/actions/charts-data/#filterdata
+- id: gapminder-transformed-scales
+  example: /examples/gapminder-transformed-scales/
+  title: Transformed quantitative positions
+  image: /assets/images/gapminder-transformed-scales.png
+  alt: Nonlinear position scales compare measurements over unequal numeric ranges
+  width: 912
+  height: 624
+  thumbnail: /assets/images/gapminder-transformed-scales-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 438
+  caption: Nonlinear position scales compare measurements over unequal numeric ranges.
+  summary: Nonlinear position scales compare measurements over unequal numeric ranges.
+  actions: filterData · createPointMark · encodeX
+  tasks: relationship
+  url: /reference/actions/charts-data/#filterdata
+- id: repair-missing-observations
+  example: /examples/repair-missing-observations/
+  title: Repair missing observations
+  image: /assets/images/repair-missing-observations.png
+  alt: Repair missing observations shown as an executable chart workflow
+  width: 1720
+  height: 600
+  thumbnail: /assets/images/repair-missing-observations-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 223
+  caption: Repair missing observations. Each panel is generated from the complete program below.
+  summary: Repair missing observations with explicit inputs and immutable program revisions.
+  actions: createWindowData · createLinePlot · bindMarkData
+  tasks: comparison composition
+  url: /recipes/repair-missing-observations/
+  recipe_url: /recipes/repair-missing-observations/
+  recipe_order: 200
+- id: compare-weighted-distributions
+  example: /examples/compare-weighted-distributions/
+  title: Compare weighted distributions
+  image: /assets/images/compare-weighted-distributions.png
+  alt: Compare weighted distributions shown as an executable chart workflow
+  width: 2240
+  height: 600
+  thumbnail: /assets/images/compare-weighted-distributions-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 171
+  caption: Compare weighted distributions. Each panel is generated from the complete program below.
+  summary: Compare weighted distributions with explicit inputs and immutable program revisions.
+  actions: createHistogram · createDensityPlot · createECDFPlot
+  tasks: comparison composition
+  url: /recipes/compare-weighted-distributions/
+  recipe_url: /recipes/compare-weighted-distributions/
+  recipe_order: 201
+- id: switch-encoding-modes
+  example: /examples/switch-encoding-modes/
+  title: Switch encoding modes atomically
+  image: /assets/images/switch-encoding-modes.png
+  alt: Switch encoding modes atomically shown as an executable chart workflow
+  width: 2224
+  height: 560
+  thumbnail: /assets/images/switch-encoding-modes-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 161
+  caption: Switch encoding modes atomically. Each panel is generated from the complete program below.
+  summary: Switch encoding modes atomically with explicit inputs and immutable program revisions.
+  actions: createScatterPlot · encodeChannels
+  tasks: comparison composition
+  url: /recipes/switch-encoding-modes/
+  recipe_url: /recipes/switch-encoding-modes/
+  recipe_order: 202
+- id: edit-scales-and-guides
+  example: /examples/edit-scales-and-guides/
+  title: Edit scales and refresh guides
+  image: /assets/images/edit-scales-and-guides.png
+  alt: Edit scales and refresh guides shown as an executable chart workflow
+  width: 1800
+  height: 640
+  thumbnail: /assets/images/edit-scales-and-guides-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 228
+  caption: Edit scales and refresh guides. Each panel is generated from the complete program below.
+  summary: Edit scales and refresh guides with explicit inputs and immutable program revisions.
+  actions: createScatterPlot · editXScale · editXAxis
+  tasks: comparison composition
+  url: /recipes/edit-scales-and-guides/
+  recipe_url: /recipes/edit-scales-and-guides/
+  recipe_order: 203
+- id: edit-selected-labels
+  example: /examples/edit-selected-labels/
+  title: Select and place final-item labels
+  image: /assets/images/edit-selected-labels.png
+  alt: Select and place final-item labels shown as an executable chart workflow
+  width: 1720
+  height: 640
+  thumbnail: /assets/images/edit-selected-labels-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 238
+  caption: Select and place final-item labels. Each panel is generated from the complete program below.
+  summary: Select and place final-item labels with explicit inputs and immutable program revisions.
+  actions: editMarkLabelSelection · editMarkLabelPlacement · layoutLabels
+  tasks: comparison composition
+  url: /recipes/edit-selected-labels/
+  recipe_url: /recipes/edit-selected-labels/
+  recipe_order: 204
+- id: apply-custom-theme
+  example: /examples/apply-custom-theme/
+  title: Apply, override, and remove a theme
+  image: /assets/images/apply-custom-theme.png
+  alt: Apply, override, and remove a theme shown as an executable chart workflow
+  width: 2224
+  height: 560
+  thumbnail: /assets/images/apply-custom-theme-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 161
+  caption: Apply, override, and remove a theme. Each panel is generated from the complete program below.
+  summary: Apply, override, and remove a theme with explicit inputs and immutable program revisions.
+  actions: applyTheme · editPointMark · removeTheme
+  tasks: comparison composition
+  url: /recipes/apply-custom-theme/
+  recipe_url: /recipes/apply-custom-theme/
+  recipe_order: 205
+- id: edit-facet-source
+  example: /examples/edit-facet-source/
+  title: Revise facet source and shared guides
+  image: /assets/images/edit-facet-source.png
+  alt: Revise facet source and shared guides shown as an executable chart workflow
+  width: 1620
+  height: 644
+  thumbnail: /assets/images/edit-facet-source-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 254
+  caption: Revise facet source and shared guides. Each panel is generated from the complete program below.
+  summary: Revise facet source and shared guides with explicit inputs and immutable program revisions.
+  actions: editFacetSource · editFacetHeaders · editFacetGuides
+  tasks: comparison composition
+  url: /recipes/edit-facet-source/
+  recipe_url: /recipes/edit-facet-source/
+  recipe_order: 206
+- id: remove-dependent-resources
+  example: /examples/remove-dependent-resources/
+  title: Remove resources in dependency order
+  image: /assets/images/remove-dependent-resources.png
+  alt: Remove resources in dependency order shown as an executable chart workflow
+  width: 1480
+  height: 560
+  thumbnail: /assets/images/remove-dependent-resources-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 242
+  caption: Remove resources in dependency order. Each panel is generated from the complete program below.
+  summary: Remove resources in dependency order with explicit inputs and immutable program revisions.
+  actions: encodeY · removeData · removeMark
+  tasks: comparison composition
+  url: /recipes/remove-dependent-resources/
+  recipe_url: /recipes/remove-dependent-resources/
+  recipe_order: 207
+- id: hierarchical-authoring
+  example: /examples/hierarchical-authoring/
+  title: Choose the right authoring level
+  image: /assets/images/hierarchical-authoring.png
+  alt: The same scatterplot authored at different levels and then restyled
+  width: 2480
+  height: 600
+  thumbnail: /assets/images/hierarchical-authoring-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 155
+  caption: A complete chart and its explicit lower-level composition remain independently editable.
+  summary: Choose the smallest action that expresses the intended chart change.
+  actions: createScatterPlot · createPointMark · editPointMark
+  tasks: comparison
+  url: /tutorials/hierarchical-authoring/
+  tutorial_order: 1

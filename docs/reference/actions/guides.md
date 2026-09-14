@@ -12,6 +12,8 @@ Each declared action has an exact signature and its own stable link. Option tabl
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createParallelAxes(options?: ParallelAxesOptions): ChartProgram;
 ```
@@ -37,6 +39,8 @@ Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis
 ## `createParallelAxis`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createParallelAxis(options: CreateParallelAxisOptions): ChartProgram;
@@ -69,6 +73,8 @@ Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editParallelAxis(options: EditParallelAxisOptions): ChartProgram;
 ```
@@ -100,6 +106,8 @@ Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram;
 ```
@@ -126,6 +134,8 @@ Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeParallelAxes(options?: ParallelAxesOptions): ChartProgram;
 ```
@@ -151,6 +161,8 @@ Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis
 ## `createAxes`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createAxes(options?: CreateAxesOptions): ChartProgram;
@@ -187,6 +199,8 @@ Create Cartesian or Polar axes directly, including inferred titles and ticks.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
 ```
@@ -216,6 +230,8 @@ Behavior, inference, resets, and errors: [Complete single-channel axes](./guides
 ## `createYAxis`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
@@ -247,6 +263,8 @@ Behavior, inference, resets, and errors: [Complete single-channel axes](./guides
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createXAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: XAxisPosition }): ChartProgram;
 ```
@@ -274,6 +292,8 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 ## `createYAxisLine`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createYAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: YAxisPosition }): ChartProgram;
@@ -303,6 +323,8 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editXAxisLine(options?: AxisLineStyleOptions & { position?: XAxisPosition }): ChartProgram;
 ```
@@ -330,6 +352,8 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editYAxisLine(options?: AxisLineStyleOptions & { position?: YAxisPosition }): ChartProgram;
 ```
@@ -356,6 +380,8 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 ## `createXAxisTicks`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createXAxisTicks(options?: AxisTickOptions<XAxisPosition>): ChartProgram;
@@ -388,6 +414,8 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createYAxisTicks(options?: AxisTickOptions<YAxisPosition>): ChartProgram;
 ```
@@ -419,6 +447,8 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editXAxisTicks(options?: Omit<AxisTickOptions<XAxisPosition>, "scale">): ChartProgram;
 ```
@@ -449,6 +479,8 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editYAxisTicks(options?: Omit<AxisTickOptions<YAxisPosition>, "scale">): ChartProgram;
 ```
@@ -478,6 +510,8 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 ## `createXAxisLabels`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createXAxisLabels(options?: AxisLabelOptions<XAxisPosition>): ChartProgram;
@@ -519,6 +553,8 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createYAxisLabels(options?: AxisLabelOptions<YAxisPosition>): ChartProgram;
 ```
@@ -559,6 +595,8 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editXAxisLabels(options?: Omit<AxisLabelOptions<XAxisPosition>, "scale">): ChartProgram;
 ```
@@ -597,6 +635,8 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 ## `editYAxisLabels`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editYAxisLabels(options?: Omit<AxisLabelOptions<YAxisPosition>, "scale">): ChartProgram;
@@ -637,6 +677,8 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createXAxisTicksAndLabels(options?: AxisTicksAndLabelsOptions<XAxisPosition>): ChartProgram;
 ```
@@ -666,6 +708,8 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 ## `createYAxisTicksAndLabels`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createYAxisTicksAndLabels(options?: AxisTicksAndLabelsOptions<YAxisPosition>): ChartProgram;
@@ -697,6 +741,8 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editXAxisTicksAndLabels(options: Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "scale">): ChartProgram;
 ```
@@ -726,6 +772,8 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editYAxisTicksAndLabels(options: Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "scale">): ChartProgram;
 ```
@@ -754,6 +802,8 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 ## `createXAxisTitle`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createXAxisTitle(options?: AxisTitleOptions<XAxisPosition>): ChartProgram;
@@ -789,6 +839,8 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createYAxisTitle(options?: AxisTitleOptions<YAxisPosition>): ChartProgram;
 ```
@@ -823,6 +875,8 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editXAxisTitle(options?: Omit<AxisTitleOptions<XAxisPosition>, "scale">): ChartProgram;
 ```
@@ -855,6 +909,8 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 ## `editYAxisTitle`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editYAxisTitle(options?: Omit<AxisTitleOptions<YAxisPosition>, "scale">): ChartProgram;
@@ -889,6 +945,8 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editXAxis(options: EditAxisOptions<XAxisPosition>): ChartProgram;
 ```
@@ -918,6 +976,8 @@ Behavior, inference, resets, and errors: [Complete single-channel axes](./guides
 ## `editYAxis`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editYAxis(options: EditAxisOptions<YAxisPosition>): ChartProgram;
@@ -949,6 +1009,8 @@ Behavior, inference, resets, and errors: [Complete single-channel axes](./guides
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeXAxis(options?: RemoveAxisOptions): ChartProgram;
 ```
@@ -975,6 +1037,8 @@ Behavior, inference, resets, and errors: [Complete axis removal](./guides.md#com
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeYAxis(options?: RemoveAxisOptions): ChartProgram;
 ```
@@ -1000,6 +1064,8 @@ Behavior, inference, resets, and errors: [Complete axis removal](./guides.md#com
 ## `createGrid`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createGrid(options?: CreateGridOptions): ChartProgram;
@@ -1036,6 +1102,8 @@ marks, or infer the Polar grid families backed by stored theta/radius encodings.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createHorizontalGrid(options?: GridDirectionOptions): ChartProgram;
 ```
@@ -1066,6 +1134,8 @@ Behavior, inference, resets, and errors: [Directional grids](./guides.md#directi
 ## `createVerticalGrid`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createVerticalGrid(options?: GridDirectionOptions): ChartProgram;
@@ -1098,6 +1168,8 @@ Behavior, inference, resets, and errors: [Directional grids](./guides.md#directi
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editHorizontalGrid(options: EditGridOptions): ChartProgram;
 ```
@@ -1126,6 +1198,8 @@ Behavior, inference, resets, and errors: [Directional grids](./guides.md#directi
 ## `editVerticalGrid`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editVerticalGrid(options: EditGridOptions): ChartProgram;
@@ -1156,6 +1230,8 @@ Behavior, inference, resets, and errors: [Directional grids](./guides.md#directi
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editGrid(options: EditGridDirectionsOptions): ChartProgram;
 ```
@@ -1184,6 +1260,8 @@ Behavior, inference, resets, and errors: [Directional grids](./guides.md#directi
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeGrid(options?: RemoveGridOptions): ChartProgram;
 ```
@@ -1211,6 +1289,8 @@ Behavior, inference, resets, and errors: [Directional grids](./guides.md#directi
 ## `createLegend`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createLegend(options?: LegendOptions): ChartProgram;
@@ -1286,6 +1366,8 @@ changing its domain or the encoded marks. `values` cannot be combined with
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editLegend(options: EditLegendOptions): ChartProgram;
 ```
@@ -1357,6 +1439,8 @@ dependent replay that would invalidate a stored exact sample fails atomically.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editLegendBlock(options: EditLegendBlockOptions): ChartProgram;
 ```
@@ -1409,6 +1493,8 @@ mapping is rejected. Empty `title` hides the selected block. Full programs only.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editLegendLayout(options: EditLegendLayoutOptions): ChartProgram;
 ```
@@ -1442,6 +1528,8 @@ Behavior, inference, resets, and errors: [Focused legend edits](./guides.md#focu
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editLegendLabels(options: EditLegendLabelsOptions): ChartProgram;
 ```
@@ -1473,6 +1561,8 @@ Behavior, inference, resets, and errors: [Focused legend edits](./guides.md#focu
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editLegendTitle(options: EditLegendTitleOptions): ChartProgram;
 ```
@@ -1503,6 +1593,8 @@ Behavior, inference, resets, and errors: [Focused legend edits](./guides.md#focu
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editLegendSymbols(options: EditLegendSymbolsOptions): ChartProgram;
 ```
@@ -1531,6 +1623,8 @@ Behavior, inference, resets, and errors: [Focused legend edits](./guides.md#focu
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editLegendBorder(options: EditLegendBorderOptions): ChartProgram;
 ```
@@ -1556,6 +1650,8 @@ Behavior, inference, resets, and errors: [Focused legend edits](./guides.md#focu
 ## `createGuides`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createGuides(options?: CreateGuidesOptions): ChartProgram;
@@ -1592,6 +1688,8 @@ collections; explicit collection objects retain strict create semantics.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeLegend(options?: RemoveLegendOptions): ChartProgram;
 ```
@@ -1625,6 +1723,8 @@ visibility, layout and item order; automatic symbols are inferred again. [Legend
 ## `createTitle`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createTitle(options: TitleOptions): ChartProgram;
@@ -1669,6 +1769,8 @@ Create a chart title and optional subtitle. [Titles](../../api/titles.md)
 ## `editTitle`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editTitle(options: EditTitleOptions): ChartProgram;
@@ -1715,6 +1817,8 @@ omitted properties remain unchanged. [Titles](../../api/titles.md)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeTitle(): ChartProgram;
 ```
@@ -1740,6 +1844,8 @@ Remove the complete chart title and subtitle resource. [Titles](../../api/titles
 ## `createThetaAxis`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createThetaAxis(options?: CompleteThetaAxisOptions): ChartProgram;
@@ -1774,6 +1880,8 @@ Create the complete outer circular theta axis. [Axes](../../api/axes.md)
 ## `createRadialAxis`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createRadialAxis(options?: CompleteRadialAxisOptions): ChartProgram;
@@ -1811,6 +1919,8 @@ Create the complete center-to-edge radial axis; `angle` defaults to `90`.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editThetaAxis(options: EditThetaAxisOptions): ChartProgram;
 ```
@@ -1844,6 +1954,8 @@ Edit selected theta-axis components. [Axes](../../api/axes.md#editing-a-complete
 ## `editRadialAxis`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editRadialAxis(options: EditRadialAxisOptions): ChartProgram;
@@ -1881,6 +1993,8 @@ Edit selected radial components; `angle` moves the whole axis.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeThetaAxis(options?: RemoveAxisOptions): ChartProgram;
 ```
@@ -1912,6 +2026,8 @@ Remove the complete theta-axis resource. [Axes](../../api/axes.md#removing-an-ax
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeRadialAxis(options?: RemoveAxisOptions): ChartProgram;
 ```
@@ -1942,6 +2058,8 @@ Remove the complete radial-axis resource. [Axes](../../api/axes.md#removing-an-a
 ## `createThetaAxisLine`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createThetaAxisLine(options?: CreateThetaAxisLineOptions): ChartProgram;
@@ -1976,6 +2094,8 @@ Create missing theta-axis line independently of the other components. Reuse stor
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editThetaAxisLine(options?: AxisLineStyleOptions): ChartProgram;
 ```
@@ -2006,6 +2126,8 @@ Edit the outer baseline style. [Axes](../../api/axes.md)
 ## `createRadialAxisLine`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createRadialAxisLine(options?: CreateRadialAxisLineOptions): ChartProgram;
@@ -2041,6 +2163,8 @@ Create missing radial-axis line independently of the other components. Reuse sto
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editRadialAxisLine(options?: AxisLineStyleOptions): ChartProgram;
 ```
@@ -2071,6 +2195,8 @@ Edit the radial baseline style. [Axes](../../api/axes.md)
 ## `createThetaAxisTicks`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createThetaAxisTicks(options?: CreateThetaAxisTicksOptions): ChartProgram;
@@ -2108,6 +2234,8 @@ Create missing theta-axis ticks independently of the other components. Use count
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editThetaAxisTicks(options?: PolarTickOptions): ChartProgram;
 ```
@@ -2141,6 +2269,8 @@ Edit theta tick geometry and style. [Axes](../../api/axes.md)
 ## `createRadialAxisTicks`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createRadialAxisTicks(options?: CreateRadialAxisTicksOptions): ChartProgram;
@@ -2179,6 +2309,8 @@ Create missing radial-axis ticks independently of the other components. Use coun
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editRadialAxisTicks(options?: PolarTickOptions): ChartProgram;
 ```
@@ -2212,6 +2344,8 @@ Edit radial tick geometry and style. [Axes](../../api/axes.md)
 ## `createThetaAxisLabels`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createThetaAxisLabels(options?: CreateThetaAxisLabelsOptions): ChartProgram;
@@ -2253,6 +2387,8 @@ Create missing theta-axis labels independently of the other components. Use coun
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editThetaAxisLabels(options?: ThetaAxisLabelOptions): ChartProgram;
 ```
@@ -2290,6 +2426,8 @@ Edit perimeter theta labels. [Axes](../../api/axes.md)
 ## `createRadialAxisLabels`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createRadialAxisLabels(options?: CreateRadialAxisLabelsOptions): ChartProgram;
@@ -2331,6 +2469,8 @@ Create missing radial-axis labels independently of the other components. Use cou
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;
 ```
@@ -2367,6 +2507,8 @@ Edit radial value labels. [Axes](../../api/axes.md)
 ## `createThetaAxisTitle`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createThetaAxisTitle(options?: CreateThetaAxisTitleOptions): ChartProgram;
@@ -2405,6 +2547,8 @@ Create missing theta-axis title independently of the other components. Reuse sto
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;
 ```
@@ -2439,6 +2583,8 @@ Edit the theta title. [Axes](../../api/axes.md)
 ## `createRadialAxisTitle`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createRadialAxisTitle(options?: CreateRadialAxisTitleOptions): ChartProgram;
@@ -2479,6 +2625,8 @@ Create missing radial-axis title independently of the other components. Reuse st
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;
 ```
@@ -2516,6 +2664,8 @@ to the baseline midpoint inside the plot. [Axes](../../api/axes.md)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createThetaGrid(options?: PolarGridOptions): ChartProgram;
 ```
@@ -2551,6 +2701,8 @@ Create theta spokes behind related marks. [Grids](../../api/grids.md)
 ## `createRadialGrid`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createRadialGrid(options?: PolarGridOptions): ChartProgram;
@@ -2588,6 +2740,8 @@ Create concentric radial paths behind related marks. [Grids](../../api/grids.md)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editThetaGrid(options: EditPolarGridOptions): ChartProgram;
 ```
@@ -2621,6 +2775,8 @@ Edit the existing theta grid. [Grids](../../api/grids.md#editing-grids)
 ## `editRadialGrid`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editRadialGrid(options: EditPolarGridOptions): ChartProgram;

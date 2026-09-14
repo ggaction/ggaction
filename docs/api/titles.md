@@ -5,7 +5,7 @@ title: Titles
 
 # Titles
 
-{% include chart-example.html id="line" %}
+{% include chart-example.html id="line" lead=true %}
 
 ## At a glance
 
@@ -18,6 +18,12 @@ title: Titles
 ## `createTitle(options)`
 
 Creates one chart title and an optional subtitle on any Canvas edge.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.createTitle({
@@ -43,6 +49,12 @@ program.createTitle({
 Both style objects accept `color`, `fontSize`, `fontFamily`, and `fontWeight`.
 Numeric weights follow the shared [Canvas font-weight policy](./marks/text.md#font-weights).
 The defaults are:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 {
@@ -88,6 +100,12 @@ the Canvas, changing margins, or moving the title automatically.
 
 Partially edits the existing title. At least one option is required.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const edited = program.editTitle({
   position: "bottom",
@@ -107,6 +125,12 @@ unrelated chart state.
 
 Remove the complete chart title resource, including subtitle text, concrete
 graphics, and stored layout settings:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const untitled = program.removeTitle();

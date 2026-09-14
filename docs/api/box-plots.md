@@ -5,7 +5,7 @@ title: Box Plots
 
 # Box Plots
 
-{% include chart-example.html id="box" %}
+{% include chart-example.html id="box" lead=true %}
 
 `createBoxPlot` creates vertical or horizontal box plots from one categorical
 field and one quantitative field. It derives immutable summary data and
@@ -17,6 +17,12 @@ composes ordinary ranged-bar, error-bar, rule, and optional point actions.
 | --- | --- | --- |
 | `createBoxPlot` | `createBoxPlot()` after one eligible encoded layer | Quartile boxes, medians, whiskers, caps, and optional outliers |
 | `editBoxPlot` | `editBoxPlot({ width: { band: 0.5 } })` | Stable owner and current summary retained unless statistics change |
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart } from "ggaction";
@@ -36,6 +42,12 @@ const program = chart()
 ```
 
 ## `createBoxPlot`
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 createBoxPlot({
@@ -72,6 +84,12 @@ produce a finished chart.
 The category/measure pairing determines orientation. This horizontal min–max
 example creates no outlier resources:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.createBoxPlot({
   x: { field: "Horsepower" },
@@ -82,6 +100,12 @@ program.createBoxPlot({
 
 Tukey factor and component appearance can be changed together without exposing
 the child marks:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.createBoxPlot({
@@ -105,6 +129,12 @@ The shape-detail vocabulary and lifecycle follow
 Edit the stable box owner instead of generated whisker, cap, median, or
 outlier IDs:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "boxPlot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const styled = program.editBoxPlot({
   target: "boxPlot",
@@ -118,6 +148,12 @@ const styled = program.editBoxPlot({
 
 Revise the raw source or replace either complete positional role without
 recreating the plot:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `styled`. Resource selectors used here: `data: "observations"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const horizontal = styled.editBoxPlot({

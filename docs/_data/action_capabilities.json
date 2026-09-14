@@ -253,7 +253,7 @@
   ],
   "legends": [
     {
-      "family": "Categorical",
+      "family": "Categorical color/shape/dash",
       "marks": [
         "point",
         "line",
@@ -262,34 +262,90 @@
         "rect",
         "arc"
       ],
-      "channels": "color, shape, strokeDash, or compatible composites"
+      "channels": "ordinal color; point shape; line strokeDash; compatible composites follow family constraints"
     },
     {
-      "family": "Continuous gradient",
-      "marks": [
-        "point",
-        "aggregate bar",
-        "rect"
-      ],
-      "channels": "sequential color"
-    },
-    {
-      "family": "Discretized interval",
-      "marks": [
-        "point",
-        "aggregate bar",
-        "rect"
-      ],
-      "channels": "quantize, quantile, or threshold color"
-    },
-    {
-      "family": "Sampled",
+      "family": "Categorical stroke",
       "marks": [
         "point",
         "line",
+        "area",
+        "bar",
+        "rect",
+        "arc",
+        "rule",
+        "tick"
+      ],
+      "channels": "ordinal stroke; final-item or series identities"
+    },
+    {
+      "family": "Continuous color gradient",
+      "marks": [
+        "point",
+        "aggregate bar",
+        "rect"
+      ],
+      "channels": "sequential color; gradient swatch, no symbol recipe"
+    },
+    {
+      "family": "Continuous stroke gradient",
+      "marks": [
+        "point",
+        "line",
+        "area",
+        "bar",
+        "rect",
+        "arc",
+        "rule",
+        "tick"
+      ],
+      "channels": "sequential stroke; separate gradient, no symbol recipe"
+    },
+    {
+      "family": "Discretized color interval",
+      "marks": [
+        "point",
+        "aggregate bar",
+        "rect"
+      ],
+      "channels": "quantize/quantile/threshold color; rectangle swatches"
+    },
+    {
+      "family": "Discretized stroke interval",
+      "marks": [
+        "point",
+        "line",
+        "area",
+        "bar",
+        "rect",
+        "arc",
+        "rule",
+        "tick"
+      ],
+      "channels": "quantize/quantile/threshold stroke; outline-colored interval symbols"
+    },
+    {
+      "family": "Size",
+      "marks": [
+        "point"
+      ],
+      "channels": "size; continuous numeric samples or every discrete interval; point glyph symbol"
+    },
+    {
+      "family": "Opacity",
+      "marks": [
+        "point",
+        "line"
+      ],
+      "channels": "quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend"
+    },
+    {
+      "family": "Stroke width",
+      "marks": [
+        "line",
         "rule"
       ],
-      "channels": "field opacity, size, or strokeWidth"
+      "channels": "quantitative strokeWidth samples; line symbol"
     }
   ],
   "axes": [
@@ -336,15 +392,238 @@
     {
       "family": "Parallel dimension axes",
       "create": [
-        "createAxes", "createParallelAxes", "createParallelAxis"
+        "createAxes",
+        "createParallelAxes",
+        "createParallelAxis"
       ],
-      "edit": ["editParallelAxis", "removeParallelAxis", "removeParallelAxes"],
+      "edit": [
+        "editParallelAxis",
+        "removeParallelAxis",
+        "removeParallelAxes"
+      ],
       "components": [
         "line",
         "ticks",
         "labels",
         "title from each stored dimension"
       ]
+    }
+  ],
+  "stroke": [
+    {
+      "mode": "Constant",
+      "support": {
+        "point": [
+          "constant color or supported reset"
+        ],
+        "line": [
+          "constant color or supported reset"
+        ],
+        "area": [
+          "constant color or supported reset"
+        ],
+        "bar": [
+          "constant color or supported reset"
+        ],
+        "rect": [
+          "constant color or supported reset"
+        ],
+        "arc": [
+          "constant color or supported reset"
+        ],
+        "rule": [
+          "constant color or supported reset"
+        ],
+        "tick": [
+          "constant color or supported reset"
+        ]
+      },
+      "options": "Independent from fill/color; no scale; field-to-constant removes the stroke legend"
+    },
+    {
+      "mode": "Categorical",
+      "support": {
+        "point": [
+          "nominal",
+          "ordinal"
+        ],
+        "line": [
+          "nominal",
+          "ordinal"
+        ],
+        "area": [
+          "nominal",
+          "ordinal"
+        ],
+        "bar": [
+          "nominal",
+          "ordinal"
+        ],
+        "rect": [
+          "nominal",
+          "ordinal"
+        ],
+        "arc": [
+          "nominal",
+          "ordinal"
+        ],
+        "rule": [
+          "nominal",
+          "ordinal"
+        ],
+        "tick": [
+          "nominal",
+          "ordinal"
+        ]
+      },
+      "options": "ordinal scale; one unambiguous value per final item; Line/Area values must be constant within each series"
+    },
+    {
+      "mode": "Continuous",
+      "support": {
+        "point": [
+          "quantitative",
+          "temporal"
+        ],
+        "line": [
+          "quantitative",
+          "temporal"
+        ],
+        "area": [
+          "quantitative",
+          "temporal"
+        ],
+        "bar": [
+          "quantitative",
+          "temporal"
+        ],
+        "rect": [
+          "quantitative",
+          "temporal"
+        ],
+        "arc": [
+          "quantitative",
+          "temporal"
+        ],
+        "rule": [
+          "quantitative",
+          "temporal"
+        ],
+        "tick": [
+          "quantitative",
+          "temporal"
+        ]
+      },
+      "options": "sequential scale; no aggregate option; unknown fallback is row-owned Point only; series and final-item uniqueness still apply"
+    },
+    {
+      "mode": "Discretized continuous",
+      "support": {
+        "point": [
+          "quantitative"
+        ],
+        "line": [
+          "quantitative"
+        ],
+        "area": [
+          "quantitative"
+        ],
+        "bar": [
+          "quantitative"
+        ],
+        "rect": [
+          "quantitative"
+        ],
+        "arc": [
+          "quantitative"
+        ],
+        "rule": [
+          "quantitative"
+        ],
+        "tick": [
+          "quantitative"
+        ]
+      },
+      "options": "quantize, quantile, threshold; same final-item and series constraints"
+    }
+  ],
+  "appearance": [
+    {
+      "action": "encodeSize",
+      "marks": [
+        "point"
+      ],
+      "fieldTypes": "quantitative",
+      "scales": "linear, log, sqrt, pow, quantize, quantile, threshold",
+      "grain": "row-owned point; range values are areas; remove explicit radius first"
+    },
+    {
+      "action": "encodeShape",
+      "marks": [
+        "point"
+      ],
+      "fieldTypes": "nominal",
+      "scales": "ordinal",
+      "grain": "row-owned point; conflicts with explicit constant shape"
+    },
+    {
+      "action": "encodeOpacity",
+      "marks": [
+        "point",
+        "line",
+        "rule"
+      ],
+      "fieldTypes": "quantitative or constant",
+      "scales": "linear for field; none for constant",
+      "grain": "point/rule item or complete line series; values within one series must agree"
+    },
+    {
+      "action": "encodeStrokeWidth",
+      "marks": [
+        "line",
+        "rule"
+      ],
+      "fieldTypes": "quantitative or constant",
+      "scales": "linear, log, sqrt, pow, symlog for field; none for constant",
+      "grain": "complete line series or rule item; width in logical pixels"
+    },
+    {
+      "action": "encodeStrokeDash",
+      "marks": [
+        "line",
+        "rule"
+      ],
+      "fieldTypes": "nominal or constant",
+      "scales": "ordinal for field; none for constant",
+      "grain": "complete line series or rule item; series values must agree"
+    },
+    {
+      "action": "encodeAngle",
+      "marks": [
+        "point",
+        "tick"
+      ],
+      "fieldTypes": "quantitative or constant",
+      "scales": "none",
+      "grain": "item; clockwise degrees; circles retain the angle as a visual no-op"
+    },
+    {
+      "action": "encodePointRadius / encodeRadius",
+      "marks": [
+        "point"
+      ],
+      "fieldTypes": "constant",
+      "scales": "none",
+      "grain": "glyph radius in logical pixels; independent from Polar position r"
+    },
+    {
+      "action": "encodeBarWidth",
+      "marks": [
+        "bar"
+      ],
+      "fieldTypes": "constant band fraction or pixels",
+      "scales": "parent category band or temporal/quantitative slot",
+      "grain": "aggregate or ranged bar; histogram bins own their width"
     }
   ]
 }

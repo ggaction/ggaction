@@ -5,7 +5,7 @@ title: Editing Legends
 
 # Editing Legends
 
-{% include chart-example.html id="density" %}
+{% include chart-example.html id="density" lead=true %}
 
 ## Updates and trace
 
@@ -25,6 +25,12 @@ Explicit `legacy-bottom` retains its fixed Canvas anchors.
 `editLegend()` updates one existing stable legend. Omit `target` when exactly
 one legend target exists; otherwise pass its mark ID. It accepts content, layout and appearance changes supported by the resulting
 legend kind. Mark encodings and scales stay unchanged.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ~~~javascript
 program.editLegend({
@@ -67,6 +73,12 @@ Standalone size legends support `title`, `count`, `labels`, `titleStyle`, border
 and four-edge layout through the same editing actions. On a Full program
 with an existing standalone size legend, this fragment edits its sampled content:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const edited = program.editLegend({
   count: 3,
@@ -80,6 +92,12 @@ const restored = edited.editLegendTitle({ title: false })
 
 For continuous size, opacity, and stroke-width legends, `values` replaces the
 automatic samples with exact values:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const exact = program.editLegend({ values: [10, 50, 100] });
@@ -126,6 +144,12 @@ space; visible content and borders must fit the Canvas.
 
 For a line or rule with an existing stroke-width legend (fragment):
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `weightedLines`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 weightedLines.editLegend({
   position: "top", layout: "edge", columns: 3,
@@ -139,6 +163,12 @@ Basic supports size legend creation; these editing actions require Full.
 Pass `channels` as the exact final content set for the entire target. This
 fragment requires a Full program with an existing legend and color, shape and
 size encodings on `points`:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const colorAndSize = program.editLegend({
@@ -170,6 +200,12 @@ title or count preserves independent size styles. Other targets remain intact.
 Use `editLegendBlock()` when one mark has several legend blocks and an edit
 must apply to only one of them. Both selectors are required: `target` is the
 owning mark ID and `channel` identifies the logical block.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const edited = program.editLegendBlock({
@@ -203,6 +239,12 @@ and restore the current base style.
 
 Use `labelMap` on a categorical block to change reader-facing names while
 preserving the typed raw domain and block order:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const localized = program.editLegendBlock({
@@ -238,6 +280,12 @@ to agree. `editLegendBlock()` is available on Full programs only.
 Focused actions avoid constructing nested `editLegend()` options when only one
 legend component should change:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program
   .editLegendLayout({ position: "left", offset: 12 })
@@ -271,6 +319,12 @@ Legend label and title weights follow the shared
 `removeLegend()` removes every legend block associated with one mark, including
 combined categorical and size blocks. Mark encodings and scales remain.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const withoutLegend = program.removeLegend({ target: "points" });
 ```
@@ -279,6 +333,12 @@ const withoutLegend = program.removeLegend({ target: "points" });
 legend owners require an explicit target.
 
 Pass `channels` to remove only the selected content:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const withoutSize = program.removeLegend({
@@ -326,10 +386,6 @@ grouped-area color, and compatible point color/shape/size, sequential color,
 or standalone field-opacity legends automatically.
 Pass `createGuides({ legend: false })` to opt out.
 
-## Related
-
-[Legend overview](../legends.md) · [Guides](../guides.md) · [Canvas](../canvas.md)
-
 Combined categorical-size legends can also move between all four edges with
 `editLegendLayout({ position })`. Moving to a different edge infers the direction
 when it is omitted; explicit incompatible grid controls still fail. On top and
@@ -337,3 +393,7 @@ bottom the categorical layout controls position both blocks. The size block's
 own stored layout returns when the categorical channels are removed. A title
 edit changes the categorical title; the size block retains its own title and
 visibility. Whole-content replacement preserves both retained blocks' settings.
+
+## Related
+
+[Legend overview](../legends.md) · [Guides](../guides.md) · [Canvas](../canvas.md)

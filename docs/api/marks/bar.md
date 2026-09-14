@@ -5,12 +5,18 @@ title: Bar Marks
 
 # Bar Marks
 
-{% include chart-example.html id="bar" %}
+{% include chart-example.html id="bar" lead=true %}
 
 Bar marks represent binned counts, aggregate categories, grouped or stacked
 partitions, and observed quantitative intervals.
 
 ## `createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const program = chart()
@@ -38,6 +44,12 @@ For an aggregate bar, combine an ordinal position and quantitative aggregate.
 Complete aggregate and ranged bars immediately use the default `0.72` band
 width; call `encodeBarWidth` only to override it:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program
   .encodeX({ field: "year", fieldType: "ordinal" })
@@ -52,6 +64,12 @@ Observed interval bars instead combine one categorical axis with `encodeYRange`
 or `encodeXRange`.
 
 ## `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.editBarMark({

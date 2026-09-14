@@ -6,6 +6,8 @@ HTML routes are canonical; the generated full-text bundle is available at
 
 ## Start
 
+- Development/release status and exact source identity: ./version/
+
 - Documentation overview: ./
 - npm installation and first runnable chart: ./getting-started/
 - Local one-tool MCP for compact chart-authoring knowledge: ./mcp/
@@ -170,3 +172,24 @@ are internal operations.
 - Statistical Layer Actions: ./reference/actions/statistics/
 - Guide, Axis, Grid, and Title Actions: ./reference/actions/guides/
 - Extension Actions: ./reference/actions/extension/
+- Summaries, Bins, and Data Shaping: ./api/data/summaries-and-shaping/
+- Expressions and Normalization: ./api/data/expressions-and-normalization/
+- Missing Keys and Values: ./api/data/missing-data/
+- Data Revisions and Removal: ./api/data/revisions-and-removal/
+- Facets and Field Repetition: ./api/composition/facets/
+- Editing Compositions: ./api/composition/editing/
+- Attached Mark Labels: ./api/marks/labels/
+- Label Collision Layout: ./api/marks/label-layout/
+- Repair missing observations: ./recipes/repair-missing-observations/
+- Compare weighted distributions: ./recipes/compare-weighted-distributions/
+- Switch encoding modes atomically: ./recipes/switch-encoding-modes/
+- Edit scales and refresh guides: ./recipes/edit-scales-and-guides/
+- Select and place final-item labels: ./recipes/edit-selected-labels/
+- Apply, override, and remove a theme: ./recipes/apply-custom-theme/
+- Revise facet source and shared guides: ./recipes/edit-facet-source/
+- Remove resources in dependency order: ./recipes/remove-dependent-resources/
+- Choose the Right Authoring Level: ./tutorials/hierarchical-authoring/
+- Authoring Conventions: ./concepts/authoring-conventions/
+- Data Grain and Statistical Policies: ./api/data/policies/
+- Choose a Chart: ./api/chart-picker/
+- Complete Axes and Labels: ./api/axes/complete/

@@ -20,6 +20,9 @@ one part. The main, basic, extension, SVG, PNG, and PDF entry points include Typ
 
 ## Start here
 
+Learn [how the same chart stays editable across authoring levels](./tutorials/hierarchical-authoring.md),
+then [choose from every complete chart family](./api/chart-picker.md).
+
 <div class="docs-entry-grid">
   <a href="./getting-started/">
     <strong>Build your first chart</strong>

@@ -5,12 +5,18 @@ title: Rect Marks
 
 # Rect Marks
 
-{% include chart-example.html id="heatmap" %}
+{% include chart-example.html id="heatmap" lead=true %}
 
 Rect marks represent independent two-dimensional cells. They are distinct from
 bars: rects do not infer aggregation, a zero baseline, stacking, or bar width.
 
 ## `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const program = chart()
@@ -32,6 +38,12 @@ row. Missing category combinations are not synthesized.
 
 Ranged rects use complete continuous endpoint pairs:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program
   .encodeX({ field: "xStart" })
@@ -42,6 +54,12 @@ program
 
 A continuous `x`/`x2` pair on its own spans the plot height; a `y`/`y2` pair
 on its own spans the plot width. Use this for interval shading:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: "data"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart } from "ggaction";
@@ -79,6 +97,12 @@ row. `encodeColor` accepts categorical and continuous color scales.
 
 ## `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })`
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const outlined = program.editRectMark({
   opacity: 0.9,
@@ -106,12 +130,6 @@ retain the normal text default, and an explicit text fill always
 wins. `selectMarks`, `filterMarks`, and `highlightMarks` operate on final
 observed cells at item grain.
 
-## Related
-
-[Position encodings](../position-encodings.md) ·
-[Series and color encodings](../series-encodings.md) ·
-[Text marks](./text.md)
-
 Constant-only rectangles have one selection item whose members are the entire
 dataset. Only fields common to all members can supply a field label. Use explicit
 constant text when the rectangle describes the interval itself. `filterMarks`
@@ -121,3 +139,9 @@ retains member rows and requires at least one matching final item; use
 For temporal positions or colors, `channel` selectors compare normalized epoch
 milliseconds, including fields stored as ISO strings or calendar years. `field`
 selectors continue to compare the original source values.
+
+## Related
+
+[Position encodings](../position-encodings.md) ·
+[Series and color encodings](../series-encodings.md) ·
+[Text marks](./text.md)

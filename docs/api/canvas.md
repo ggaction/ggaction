@@ -5,7 +5,7 @@ title: Canvas
 
 # Canvas
 
-{% include chart-example.html id="scatterplot" %}
+{% include chart-example.html id="scatterplot" lead=true %}
 
 ## At a glance
 
@@ -27,6 +27,12 @@ encodings.
 | `background` | non-empty string | `"white"` |
 | `margin` | non-negative number or side object | `{ top: 30, right: 30, bottom: 60, left: 70 }` |
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const program = chart().createCanvas({
   width: 640,
@@ -40,6 +46,12 @@ const program = chart().createCanvas({
 
 Updates one or more existing canvas options. Omitted values are preserved. A
 numeric margin applies to every side; a partial object updates only named sides.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const resized = program.editCanvas({
@@ -60,6 +72,12 @@ dimensions to derive plot bounds. It is neither a drawable node in
 
 After marks, guides, and titles exist, a Full chart can shrink its margins while
 keeping the Canvas size fixed:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const fitted = program.fitCanvas({

@@ -5,19 +5,19 @@ title: Cars Line Chart Tutorial
 
 # Cars Line Chart Tutorial
 
-![Mean acceleration by year, grouped by origin](../assets/images/cars-line-chart.png)
+![Mean acceleration by year, grouped by origin](../assets/images/cars-line-chart.png){: loading="eager" fetchpriority="high" width="1440" height="920" }
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ site.data.provenance.exampleSourceRef }}/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -153,7 +153,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/cars-line-chart/program.js).
 - Continue with [Encodings](../api/encodings.md),
   [Guides](../api/guides.md), [Titles](../api/titles.md), and the
   [Basic Chart contract](../api/basic-charts.md#createlineplot).

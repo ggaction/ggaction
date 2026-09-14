@@ -5,7 +5,7 @@ title: Histogram Positions
 
 # Histogram Positions
 
-{% include chart-example.html id="histogram" %}
+{% include chart-example.html id="histogram" lead=true %}
 
 ## At a glance
 
@@ -17,6 +17,12 @@ title: Histogram Positions
 
 Prefer the atomic action for ordinary chart authoring:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.encodeHistogram({ field: "Displacement", maxBins: 10 });
 ```
@@ -26,6 +32,12 @@ or validation.
 
 Pass a statistical weight when rows represent repeated observations or have
 unequal reliability:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeHistogram({

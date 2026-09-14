@@ -11,7 +11,7 @@ into a radar path.
 
 ## Open Polar trends
 
-{% include chart-example.html id="polar-line" %}
+{% include chart-example.html id="polar-line" lead=true %}
 
 This chart orders years around a partial circle and maps life expectancy to
 radial distance.
@@ -21,7 +21,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ site.data.provenance.exampleSourceRef }}/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program

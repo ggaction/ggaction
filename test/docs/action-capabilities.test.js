@@ -148,3 +148,56 @@ test("smokes complete Cartesian axis editing", () => {
   assert.equal(edited.semanticSpec.guides.axis.x.title, "Edited X");
   assert.equal(edited.semanticSpec.guides.axis.y.title, "Edited Y");
 });
+
+function strokeConsumer(kind) {
+  const base = chart().createCanvas({ width: 600, height: 420, margin: 130 })
+    .createData({ values: [
+      { x: 1, y: 2, x2: 2, y2: 3, category: "A", mass: 1, tone: "one", weight: 2 },
+      { x: 2, y: 3, x2: 3, y2: 4, category: "B", mass: 2, tone: "one", weight: 2 }
+    ] });
+  if (kind === "point") return base.createScatterPlot({ id: "mark", x: "x", y: "y", guides: false });
+  if (kind === "line") return base.createLinePlot({ id: "mark", x: "x", y: "y", guides: false });
+  if (kind === "area") return base.createAreaPlot({ id: "mark", x: "x", y: "y", guides: false });
+  if (kind === "bar") return base.createBarPlot({ id: "mark", x: "category", y: { field: "y", aggregate: "sum" }, guides: false });
+  if (kind === "arc") return base.createArcMark({ id: "mark" }).encodeTheta({ field: "mass" });
+  const create = { rect: "createRectMark", rule: "createRuleMark", tick: "createTickMark" }[kind];
+  let program = base[create]({ id: "mark" })
+    .encodeX({ field: "x", fieldType: "quantitative" })
+    .encodeY({ field: "y", fieldType: "quantitative" });
+  if (kind === "rect") program = program.encodeX2({ field: "x2" }).encodeY2({ field: "y2" });
+  if (kind === "rule") program = program.encodeY2({ datum: 0, fieldType: "quantitative" });
+  return program;
+}
+
+test("verifies independent stroke and legend support for every documented mark", () => {
+  const supported = ["point", "line", "area", "bar", "rect", "arc", "rule", "tick"];
+  for (const row of registry.stroke) assert.deepEqual(Object.keys(row.support), supported);
+  for (const kind of supported) {
+    const base = strokeConsumer(kind);
+    for (const fieldType of ["nominal", "quantitative"]) {
+      const encoded = base.encodeStroke({ target: "mark", fieldType,
+        field: fieldType === "nominal" ? "tone" : "weight" });
+      const legend = encoded.createLegend({ target: "mark", channels: ["stroke"], position: "bottom" });
+      assert.ok(legend.semanticSpec.layers.find(layer => layer.id === "mark").encoding.stroke);
+      assert.ok(Object.keys(legend.graphicSpec.objects).length > Object.keys(encoded.graphicSpec.objects).length);
+      assert.equal(base.semanticSpec.layers.find(layer => layer.id === "mark").encoding.stroke, undefined);
+    }
+  }
+  for (const kind of ["line", "area"]) {
+    const base = strokeConsumer(kind);
+    const before = JSON.stringify(base);
+    assert.throws(() => base.encodeStroke({ target: "mark", field: "x", fieldType: "quantitative" }), /series/);
+    assert.equal(JSON.stringify(base), before);
+  }
+});
+
+test("uses point opacity samples for line consumers and rejects rule opacity legends", () => {
+  const rule = strokeConsumer("rule").encodeOpacity({ target: "mark", field: "weight" });
+  assert.throws(() => rule.createLegend({ target: "mark", channels: ["opacity"] }), /opacity legend target/);
+  for (const kind of ["line"]) {
+    const program = strokeConsumer(kind).encodeOpacity({ target: "mark", field: "weight" })
+      .createLegend({ target: "mark", channels: ["opacity"], position: "bottom", values: [2] });
+    assert.ok(Object.values(program.graphicSpec.objects).some(object =>
+      object.type === "circle" || object.items?.some(item => item.type === "circle")));
+  }
+});

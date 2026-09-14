@@ -5,7 +5,7 @@ title: Position Scales
 
 # Position Scales
 
-{% include chart-example.html id="scatterplot" %}
+{% include chart-example.html id="scatterplot" lead=true %}
 
 {% include chart-example.html id="line" %}
 

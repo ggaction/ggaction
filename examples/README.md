@@ -16,7 +16,7 @@ python3 -m http.server 8000
 - [Extension TypeScript](./extension-typescript/) demonstrates strict custom
   action authoring against the installed package.
 
-## Curated chart programs
+## Maintained public chart programs
 
 ### [Program composition](./program-composition/)
 
@@ -52,7 +52,7 @@ Representative actions: `createScatterPlot`. [Documentation](https://ggaction.gi
 
 Fit chart margins after laying out long Cartesian axis labels.
 
-Representative actions: `createXAxis`, `fitCanvas`. [Documentation](https://ggaction.github.io/ggaction/api/canvas/#fitcanvasoptions).
+Representative actions: `createXAxis`. [Documentation](https://ggaction.github.io/ggaction/api/canvas/#fitcanvasoptions).
 
 ### [Multi-legend layout](./cars-multi-legend-layout/)
 
@@ -196,7 +196,7 @@ Representative actions: `createLineMark`, `encodeTheta`, `encodeR`. [Documentati
 
 Close nominal-angle series without duplicating the first observation.
 
-Representative actions: `createLineMark`, `closed`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-lines/#closed-radar-paths).
+Representative actions: `createLineMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-lines/#closed-radar-paths).
 
 ### [Donut chart](./cars-origin-donut/)
 
@@ -226,7 +226,7 @@ Representative actions: `createArcMark`, `encodeTheta`, `encodeR`. [Documentatio
 
 Select, filter, and emphasize final point, bar, and line items.
 
-Representative actions: `selectMarks`, `highlightMarks`. [Documentation](https://ggaction.github.io/ggaction/tutorials/mark-selection/).
+Representative actions: `highlightMarks`. [Documentation](https://ggaction.github.io/ggaction/tutorials/mark-selection/).
 
 ### [Signed Horizon chart](./horizon-plot/)
 
@@ -250,7 +250,7 @@ Representative actions: `createPiePlot`. [Documentation](https://ggaction.github
 
 Define bounds and independently revise series identity, placement, and color.
 
-Representative actions: `createAreaPlot layoutSeries encodeGroup`. [Documentation](https://ggaction.github.io/ggaction/tutorials/area-layout/).
+Representative actions: `createAreaPlot`, `layoutSeries`, `encodeGroup`. [Documentation](https://ggaction.github.io/ggaction/tutorials/area-layout/).
 
 ### [Measured rose sectors](./radial-sectors/)
 
@@ -270,9 +270,207 @@ Switch between continuous color and numeric classes without stale guides.
 
 Representative actions: `createBarPlot`, `editScale`, `createLegend`. [Documentation](https://ggaction.github.io/ggaction/api/scales/discretized-color/#changing-color-scale-families).
 
+### [Faceted car histograms](./cars-origin-histogram-facet/)
+
+Each origin panel shows the observed distribution with its own final bars.
+
+Representative actions: `createBarMark`, `encodeHistogram`, `encodeColor`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/marks/#createbarmark).
+
+### [Field-driven rule widths](./cars-weighted-rules/)
+
+Rule widths and opacity map quantitative observations to visible stroke properties.
+
+Representative actions: `createRuleMark`, `encodeX`, `encodeX2`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/marks/#createrulemark).
+
+### [Raincloud distribution](./raincloud-plot/)
+
+A half violin, summary, and raw observations share one category and measure frame.
+
+Representative actions: `createRaincloudPlot`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createraincloudplot).
+
+### [Beeswarm distribution](./beeswarm-plot/)
+
+Packed point glyphs preserve individual observations within each category slot.
+
+Representative actions: `createBeeswarmPlot`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createbeeswarmplot).
+
+### [Categorical dot plot](./dot-plot/)
+
+Each raw observation remains a dot on its categorical slot.
+
+Representative actions: `createDotPlot`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createdotplot).
+
+### [Lollipop plot](./lollipop-plot/)
+
+A stem connects each observation to the explicit zero baseline.
+
+Representative actions: `createLollipopPlot`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createlollipopplot).
+
+### [Dumbbell changes](./dumbbell-plot/)
+
+Named before and after endpoints retain their roles when values reverse.
+
+Representative actions: `createDumbbellPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/endpoint-plots/).
+
+### [Empirical cumulative distribution](./ecdf-plot/)
+
+Step-after lines show cumulative probability at each observed support value.
+
+Representative actions: `createECDFPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/ecdf/).
+
+### [Pie legend order](./theta-legend-order/)
+
+Reordering a categorical legend preserves the identities of the linked sectors.
+
+Representative actions: `createPiePlot`, `editLegend`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createpieplot).
+
+### [Explicit temporal inputs](./temporal-input/)
+
+Quantitative measures are positioned against explicitly parsed temporal input.
+
+Representative actions: `createScatterPlot`, `createTitle`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createscatterplot).
+
+### [Independent series appearance](./series-identity/)
+
+Series identity remains independent from color, width, and opacity encodings.
+
+Representative actions: `createLinePlot`, `encodeStrokeWidth`, `encodeOpacity`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createlineplot).
+
+### [Directional ticks and points](./directional-tick-plot/)
+
+Directional glyphs and a rug compare point and tick encodings.
+
+Representative actions: `encodeX`, `encodeY`, `createTickMark`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/encodings/#encodex).
+
+### [Binned cars heatmap](./cars-binned-heatmap/)
+
+Rectangular bins summarize the density of two quantitative car measurements.
+
+Representative actions: `createHeatmap`, `createTitle`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createheatmap).
+
+### [Time bucket comparison](./time-unit-data/)
+
+Calendar buckets change temporal resolution while preserving original measurements.
+
+Representative actions: `createScatterPlot`, `encodePointRadius`, `createTitle`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createscatterplot).
+
+### [Moving passenger windows](./airline-passenger-moving-windows/)
+
+Ordered moving summaries reveal changes in monthly passenger counts.
+
+Representative actions: `createTimeUnitData`, `createLineMark`, `encodeX`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createtimeunitdata).
+
+### [Ranked cars](./cars-window-rank-scatterplot/)
+
+A partitioned window rank selects observations before drawing a scatterplot.
+
+Representative actions: `createWindowData`, `filterData`, `createScatterPlot`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createwindowdata).
+
+### [Mixed chart dashboard](./cross-feature-dashboard/)
+
+Complete statistical and coordinate-specific programs form a nested dashboard.
+
+Representative actions: `facet`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#facet).
+
+### [Cars by origin with jitter](./point-jitter/)
+
+Bounded deterministic offsets separate overlapping observations inside category slots.
+
+Representative actions: `createStripPlot`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createstripplot).
+
+### [Dark theme scatterplot](./dark-theme-scatterplot/)
+
+A program theme changes default canvas, guide, and mark appearance together.
+
+Representative actions: `createPointMark`, `encodeX`, `encodeY`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/marks/#createpointmark).
+
+### [Country labels without overlap](./gapminder-country-labels/)
+
+Attached labels use bounded collision layout and leader lines.
+
+Representative actions: `createPointMark`, `encodeX`, `encodeY`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/marks/#createpointmark).
+
+### [Continuous aggregate bar color](./gapminder-continuous-color-bars/)
+
+A quantitative color scale maps a compatible aggregate for each bar.
+
+Representative actions: `filterData`, `createBarMark`, `encodeX`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#filterdata).
+
+### [Discretized color intervals](./gapminder-discretized-color-scales/)
+
+Quantitative observations map to ordered color intervals and legend labels.
+
+Representative actions: `filterData`, `createPointMark`, `encodeX`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#filterdata).
+
+### [Temporal and discrete positions](./gapminder-temporal-discrete-scales/)
+
+Band, point, and temporal mappings retain distinct positional meanings.
+
+Representative actions: `filterData`, `createBarMark`, `encodeX`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#filterdata).
+
+### [Transformed quantitative positions](./gapminder-transformed-scales/)
+
+Nonlinear position scales compare measurements over unequal numeric ranges.
+
+Representative actions: `filterData`, `createPointMark`, `encodeX`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#filterdata).
+
+### [Repair missing observations](./repair-missing-observations/)
+
+Repair missing observations with explicit inputs and immutable program revisions.
+
+Representative actions: `createWindowData`, `createLinePlot`, `bindMarkData`. [Documentation](https://ggaction.github.io/ggaction/recipes/repair-missing-observations/).
+
+### [Compare weighted distributions](./compare-weighted-distributions/)
+
+Compare weighted distributions with explicit inputs and immutable program revisions.
+
+Representative actions: `createHistogram`, `createDensityPlot`, `createECDFPlot`. [Documentation](https://ggaction.github.io/ggaction/recipes/compare-weighted-distributions/).
+
+### [Switch encoding modes atomically](./switch-encoding-modes/)
+
+Switch encoding modes atomically with explicit inputs and immutable program revisions.
+
+Representative actions: `createScatterPlot`, `encodeChannels`. [Documentation](https://ggaction.github.io/ggaction/recipes/switch-encoding-modes/).
+
+### [Edit scales and refresh guides](./edit-scales-and-guides/)
+
+Edit scales and refresh guides with explicit inputs and immutable program revisions.
+
+Representative actions: `createScatterPlot`, `editXScale`, `editXAxis`. [Documentation](https://ggaction.github.io/ggaction/recipes/edit-scales-and-guides/).
+
+### [Select and place final-item labels](./edit-selected-labels/)
+
+Select and place final-item labels with explicit inputs and immutable program revisions.
+
+Representative actions: `editMarkLabelSelection`, `editMarkLabelPlacement`, `layoutLabels`. [Documentation](https://ggaction.github.io/ggaction/recipes/edit-selected-labels/).
+
+### [Apply, override, and remove a theme](./apply-custom-theme/)
+
+Apply, override, and remove a theme with explicit inputs and immutable program revisions.
+
+Representative actions: `applyTheme`, `editPointMark`, `removeTheme`. [Documentation](https://ggaction.github.io/ggaction/recipes/apply-custom-theme/).
+
+### [Revise facet source and shared guides](./edit-facet-source/)
+
+Revise facet source and shared guides with explicit inputs and immutable program revisions.
+
+Representative actions: `editFacetSource`, `editFacetHeaders`, `editFacetGuides`. [Documentation](https://ggaction.github.io/ggaction/recipes/edit-facet-source/).
+
+### [Remove resources in dependency order](./remove-dependent-resources/)
+
+Remove resources in dependency order with explicit inputs and immutable program revisions.
+
+Representative actions: `encodeY`, `removeData`, `removeMark`. [Documentation](https://ggaction.github.io/ggaction/recipes/remove-dependent-resources/).
+
+### [Choose the right authoring level](./hierarchical-authoring/)
+
+Choose the smallest action that expresses the intended chart change.
+
+Representative actions: `createScatterPlot`, `createPointMark`, `editPointMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchical-authoring/).
+
 ## Development fixtures
 
-Other directories under `examples/` support focused browser, package, and
-cross-capability tests. They are development fixtures rather than additional
-user-facing chart contracts; use the curated catalog above for supported
-public examples.
+The catalog includes every maintained public chart program. Getting Started
+and the README authoring sequence are documentation-only programs with their
+own entry points. Browser hosts, extension fixtures, and Quarto setup support
+these programs; they do not define additional chart examples.

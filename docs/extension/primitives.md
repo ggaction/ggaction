@@ -19,6 +19,12 @@ chart-authoring API.
 Creates, replaces, or removes one supported semantic branch and structurally
 copies the changed path.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.editSemantic({
   property: "layer[points].mark.type",
@@ -37,6 +43,12 @@ paths are complete layers such as `layer[points]`, encoding channels such as
 `layer[points].encoding.opacity`, and legend branches such as
 `guide.legend.opacity`. Source datasets remain immutable; only an unreferenced
 derived dataset may be removed as a complete dataset resource.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.editSemantic({
@@ -75,6 +87,12 @@ removes its policy container without changing graphics.
 Creates one concrete object, a homogeneous drawable collection, or an empty
 heterogeneous drawable `collection`.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.createGraphics({ id: "points", type: "circle", length: 2 });
 ```
@@ -85,6 +103,12 @@ homogeneous drawable types. A heterogeneous `collection` is populated through
 one `editGraphics({ property: "items" })` call instead; replacement `items`
 arrays are likewise limited to 10,000 entries. Equivalent repeated
 creation is idempotent.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "symbols"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program
@@ -130,6 +154,12 @@ top-level placement in `graphicSpec.order`.
 Ordinary chart actions create and use their Canvas/plot hierarchy automatically.
 An extension that authors the same structure directly makes every owner explicit:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program
   .createGraphics({ id: "canvas", type: "canvas" })
@@ -149,6 +179,12 @@ program
 `before` or `after` places a new graphic relative to a direct sibling. They are
 mutually exclusive, the referenced graphic must already belong to the same
 parent, and no top-level graphic can be placed before the Canvas.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.createGraphics({
@@ -190,6 +226,12 @@ A path can be open and stroked or Z-closed and filled. Filled paths require a fi
 `Z` command; their stroke is optional. When both fill and stroke are present, the
 Canvas renderer fills first and strokes second.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program
   .createGraphics({ id: "band", type: "path" })
@@ -214,6 +256,12 @@ not the whole Canvas. Stops are ordered by offsets from `0` to `1`; repeated
 adjacent offsets create a hard transition. A paint object and its nested `stops`
 array are one scalar property value, so broadcasting it to a collection applies
 the complete paint to every item.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "distributionStrips"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const verticalDensityPaint = {
@@ -249,18 +297,24 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.sourceRef }}/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.sourceRef }}/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
 ## `editGraphics({ target, property, value | remove })`
 
 Sets one validated concrete property or removes one named graphic subtree.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.editGraphics({
@@ -279,6 +333,12 @@ Use `remove: true` without `property` or `value` to remove a named graphic and
 its owned named descendants. The action also detaches the root from its parent
 or top-level order. The Canvas root and generated items cannot be removed;
 resize or replace an item's owning collection instead.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "opacityLegendSymbols"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.editGraphics({
@@ -303,6 +363,12 @@ apply concrete graphic edits, including connected axis updates. Aggregate line
 consumers resolve their domains from derived means rather than raw rows. Ordinal
 ranges may contain color strings, a validated named-palette descriptor, or validated
 even-length stroke-dash patterns for the matching channel.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.createScale({ id: "x", type: "linear" });

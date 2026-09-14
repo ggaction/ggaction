@@ -5,11 +5,17 @@ title: Scale Missing Values
 
 # Scale Missing Values
 
-{% include chart-example.html id="scatterplot" %}
+{% include chart-example.html id="scatterplot" lead=true %}
 
 ## Missing and invalid values
 
 Point encodings can provide an `unknown` fallback inside their scale options:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeX({

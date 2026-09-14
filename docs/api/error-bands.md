@@ -5,7 +5,7 @@ title: Error Bands
 
 # Error Bands
 
-{% include chart-example.html id="error-band" %}
+{% include chart-example.html id="error-band" lead=true %}
 
 `createErrorBand()` creates a vertical or horizontal confidence or interval
 ribbon as one ordinary area layer. It can derive grouped interval rows or
@@ -23,6 +23,12 @@ consume existing center/lower/upper fields.
 
 The following runnable fragment assumes `gapminder` is an in-memory array of
 row objects loaded by the application.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "errorBand"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart } from "ggaction";
@@ -116,6 +122,12 @@ are both supported, including on optional lower and upper boundary lines. For
 example, a horizontal interval inferred
 from an existing Cars scatterplot can be authored as:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `scatterplot`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 scatterplot.createErrorBand({
   x: { field: "Displacement", center: "mean", extent: "ci" },
@@ -155,6 +167,12 @@ ordinary line layers after the filled band. Stroke, width, dash, and opacity
 default to the shared mark color, `1`, solid, and `1`. Boundary paths inherit
 the band curve unless `boundaries.curve` explicitly overrides it:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.createErrorBand({
   x: { field: "year", fieldType: "temporal" },
@@ -178,6 +196,12 @@ layer IDs. The create action intentionally accepts one shared boundary recipe.
 ## Editing the band
 
 `editErrorBand()` changes the stable body appearance:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "errorBand"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.removeEncoding({ target: "errorBand", channel: "color" }).editErrorBand({
@@ -211,6 +235,12 @@ Use `boundaries: false` on `editErrorBand()` to disable both boundaries; the
 call is also valid when they are already absent. A boundary appearance object
 creates or edits both owned lines:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.editErrorBand({
   boundaries: { stroke: "#334155", strokeWidth: 1.5 }
@@ -218,6 +248,12 @@ program.editErrorBand({
 ```
 
 `editErrorBandBoundary()` edits or creates one or both owned boundaries:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.editErrorBandBoundary({

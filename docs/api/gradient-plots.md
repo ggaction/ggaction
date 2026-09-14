@@ -5,7 +5,7 @@ title: Gradient Plots
 
 # Gradient Plots
 
-{% include chart-example.html id="gradient" %}
+{% include chart-example.html id="gradient" lead=true %}
 
 `createGradientPlot` compares a quantitative distribution across categories.
 Each category becomes one density-filled strip plus an optional center rule.
@@ -13,6 +13,12 @@ The action uses the same categorical/quantitative `x` and `y` roles as
 `createBoxPlot`, so orientation follows the fields rather than a separate flag.
 
 ## Create a gradient plot
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart } from "ggaction";
@@ -37,6 +43,12 @@ materializes an internal sampled profile dataset.
 
 Use a categorical color encoding when each category should keep its own hue:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "gradientPlot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const colored = program.encodeColor({
   target: "gradientPlot",
@@ -51,6 +63,12 @@ controls the neutral palette and opacity range when no category color encoding
 is present.
 
 ## Options and defaults
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 createGradientPlot({
@@ -82,6 +100,12 @@ choice is accepted only when one source or target is unambiguous.
 
 ## Edit and compose
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `colored`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const edited = colored.editGradientPlot({
   density: { bandwidth: 0.8 },
@@ -91,6 +115,12 @@ const edited = colored.editGradientPlot({
 ```
 
 The same owner can revise its raw source or complete positional roles:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `edited`. Resource selectors used here: `data: "observations"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const horizontal = edited.editGradientPlot({

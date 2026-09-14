@@ -5,7 +5,7 @@ title: Chart API
 
 # Chart API
 
-{% include chart-example.html id="scatterplot" %}
+{% include chart-example.html id="scatterplot" lead=true %}
 
 Build a chart from a small set of domain actions. Start with the family that
 owns the decision you need to make; follow its focused pages only when the
@@ -24,6 +24,11 @@ overview no longer provides enough control.
   <a href="./composition/"><strong>Program composition</strong><span>Arrange complete chart programs horizontally or vertically and replace stable child slots.</span></a>
   <a href="./rendering/"><strong>Rendering</strong><span>Render the fully materialized program to Browser Canvas, SVG, Node PNG, or vector PDF.</span></a>
 </div>
+
+## All complete chart families
+
+The [complete chart picker](./chart-picker.md) covers every H0 facade, including
+Pie, Area, Density, Horizon, endpoint charts, ECDF, Rug, Strip, Beeswarm, and Raincloud.
 
 ## Statistical and distribution facades
 

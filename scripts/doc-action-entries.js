@@ -1,3 +1,4 @@
+import { buildDocProvenance } from "./doc-provenance.js";
 import { declaredActionMetadata } from "./action-card-source.js";
 import { authoringRoles } from "./action-card-metadata.js";
 import { publicOptionDeclarations } from "./generate-doc-signatures.js";
@@ -21,6 +22,7 @@ function typeCell(value) {
 }
 
 export async function explicitActionPages({ catalog, sections, legacyLocations, families, page }) {
+  const provenance = await buildDocProvenance();
   const definitions = new Map((await declaredActionMetadata(catalog.actions)).map(item => [item.name, item]));
   const namedDeclarations = await publicOptionDeclarations();
   const sources = new Map();
@@ -74,6 +76,7 @@ export async function explicitActionPages({ catalog, sections, legacyLocations, 
       return [
         `### \`${action.name}\``, "",
         `**API layer:** ${action.layer}. **Authoring roles:** ${authoringRoles(action).join(", ")}.`, "",
+        `**Availability:** ${provenance.actionAvailability[action.name]?.introducedAfter ? "Development; added after " + provenance.baseline.tag : "Available by " + provenance.baseline.tag}. See [release compatibility](../version.md).`, "",
         "```typescript", declaration.signature, "```", "",
         ...(typeNames.length ? ["Named option contracts: " + typeNames.map(name =>
           `[\`${name}\`](./../types.md#type-${name.toLowerCase()})`).join(" · ") + ".", ""] : []),

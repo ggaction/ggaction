@@ -5,7 +5,7 @@ title: Categorical and Size Legends
 
 # Categorical and Size Legends
 
-{% include chart-example.html id="line" %}
+{% include chart-example.html id="line" lead=true %}
 
 ## `createLegend(options?)`
 
@@ -15,11 +15,23 @@ quantitative point-size, continuous-color gradient, and field-opacity legends.
 It also infers interval swatches for quantize, quantile, and threshold point
 color scales.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ~~~javascript
 program.createLegend();
 ~~~
 
 A size encoding is independently eligible; color and shape are not required:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ~~~javascript
 program.createLegend({ channels: ["size"], position: "right", count: 4 });
@@ -139,6 +151,12 @@ the plot's left edge and keeps 40 logical pixels between complete occupied
 blocks. A left-positioned categorical title participates in the same inline
 center line as a left-positioned sampled-opacity title.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `densityArea`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ~~~javascript
 densityArea.createLegend({
   position: "top",
@@ -177,15 +195,17 @@ Radial Bar use `theta`. Line, Area, Density, and Parallel facade declarations
 offer `"scale"` or explicit `values`, since their declared positions do not
 provide a categorical axis to link.
 
-## Related
-
-[Legend overview](../legends.md) · [Composite symbols](./composite.md) · [Editing legends](./editing.md)
-
 ### Combined categorical and size layout
 
 Point legends can combine categorical color or shape with quantitative size on
 any edge. For a point chart with both encodings, this fragment places a bordered
 legend above the plot:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```js
 program.createLegend({
@@ -211,3 +231,7 @@ Title spacing also includes labels that are taller than the samples.
 A size border retained from an earlier standalone legend stays inside the
 shared outer border. Other legends place this complete group as one block.
 Combined legends require `layout: "edge"`; `"legacy-bottom"` is unsupported.
+
+## Related
+
+[Legend overview](../legends.md) · [Composite symbols](./composite.md) · [Editing legends](./editing.md)

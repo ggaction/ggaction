@@ -5,12 +5,18 @@ title: Rule Marks
 
 # Rule Marks
 
-{% include chart-example.html id="error-bar" %}
+{% include chart-example.html id="error-bar" lead=true %}
 
 Rule marks represent reference lines and intervals. They use concrete line
 primitives without exposing a renderer-specific path format.
 
 ## `createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart } from "ggaction";
@@ -68,6 +74,12 @@ it. Canvas and scale changes recompute all endpoints.
 Use reference facades to add a constant threshold or interval to a chart. This example uses the scatterplot's
 x scale for the band and y scale for the line:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "referenceLine"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { chart } from "ggaction";
 
@@ -89,6 +101,12 @@ Plot y fractions increase from bottom to top. A plot band can use `x: [0.2, 0.6]
 Both resize with the Canvas. Existing data is required, but may be empty for plot references.
 
 Statistical references keep the same Rule and Rect editing surface while deriving their positions from a source mark:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "observations"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const summarized = chart()

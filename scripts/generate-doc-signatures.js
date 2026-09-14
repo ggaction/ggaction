@@ -61,7 +61,7 @@ export async function buildSignatureSection() {
 
 export async function publicOptionDeclarations() {
   const source = (await readFile(declarationFile, "utf8")).split("export class ChartProgram {")[0];
-  const starts = [...source.matchAll(/^export (?:interface|type) ([A-Za-z][A-Za-z0-9]*)\b/gm)];
+  const starts = [...source.matchAll(/^(?:export )?(?:interface|type) ([A-Za-z][A-Za-z0-9]*)\b/gm)];
   return new Map(starts.map((match, index) => [
     match[1], source.slice(match.index, starts[index + 1]?.index ?? source.length).trim()
   ]));

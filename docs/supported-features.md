@@ -10,75 +10,24 @@ chart-authoring API does not support that combination.
 
 ## Complete chart support
 
-Every chart family below supports Browser Canvas, browser-safe SVG, Node PNG,
-single-page vector PDF, and an optional chart title. The smaller family tables
-keep the comparison readable on narrow screens.
+Use the [chart picker](./api/chart-picker.md) for every current H0 facade, its required
+input context, editable owners, package membership, and lower-level actions.
 
-### Cartesian charts
+| Task | Complete chart families | Next decision |
+| --- | --- | --- |
+| Relationships and trends | Scatter, Line, Area, Regression, Polar Scatter/Line, Radar, Parallel Coordinates | Choose position roles, series identity, then appearance |
+| Category comparisons | Bar, Dot, Lollipop, Dumbbell | Keep raw rows or select an explicit summary; retain endpoint roles |
+| Distributions | Histogram, Density, ECDF, Rug, Strip, Beeswarm, Raincloud, Box, Violin, Gradient | Choose raw observations, weights, smoothing, or summary grain |
+| Intervals | Interval plot, Error Bar and Error Band layers | Choose explicit endpoints or a statistical interval |
+| Part-to-whole and radial values | Pie, Rose, Radial Bar | Pie angle, Rose area, and radial length express different measures |
+| Dense samples | Pre-gridded or rectangular binned Heatmap; Horizon | Choose aggregation or folded-band meaning explicitly |
+| Repeated and combined views | Facet, Facet Grid, field repetition, horizontal/vertical concatenation | Choose independent versus shared domains and guide policies |
 
-The complete `createScatterPlot`, `createLinePlot`, `createBarPlot`,
-`createHistogram`, and pre-gridded or raw-row binned `createHeatmap` facades compose the same
-mark, encoding, scale, and guide actions described below. Individual actions
-remain available for custom layering and editing.
-
-| Capability | Scatterplot | Line | Histogram | Bar | Heatmap / ranged rect |
-| --- | --- | --- | --- | --- | --- |
-| Semantic mark | point | line | bar | bar | rect |
-| Position | quantitative x/y | direct quantitative x/y; temporal or binned x with aggregate y | binned x, count y | vertical or horizontal category/aggregate pair | two discrete bands or x/x2 + y/y2 ranges |
-| Nominal color | point fill | series stroke | five bar layouts | five bar layouts | cell fill |
-| Stroke dash | — | nominal or constant; 4 named styles | — | — | — |
-| Appearance | radius, deterministic bounded x/y jitter | stroke width, 8 curves | default bar geometry | band or logical-pixel width | encoded fill, opacity, outline |
-| Automatic guides | linear axes; horizontal grid | UTC time/linear axes; horizontal grid | bin-aligned/linear axes; horizontal grid | ordinal/linear axes; horizontal grid | discrete/continuous axes and color legend |
-| Legend | point color + shape | categorical | categorical | categorical | categorical or continuous color |
-| Selection/highlight | point | series | final bar | final bar | observed cell |
-
-### Statistical layers
-
-| Capability | Regression scatterplot | Density area | Horizon area |
-| --- | --- | --- | --- |
-| Semantic marks | point + area + line | area | area |
-| Position | shared quantitative x/y | value + density x/y | quantitative/temporal x; folded `[0, 1]` y/y2 |
-| Nominal color | point fill + fit stroke | overlay/stack/fill/diverging area | positive/negative band palettes |
-| Appearance | point opacity, band fill/outline, line width, 8 curves | opacity, 8 curves | band count, baseline, 8 curves |
-| Automatic guides | shared linear axes and horizontal grid | source-value/density axes; horizontal grid, vertical optional | source x axis/grid only; no folded y axis or legend |
-| Legend | composite color/shape/line + size | categorical top/right/bottom | intentionally omitted |
-| Selection/highlight | layer selection + point highlight | series | folded band items |
-
-### Intervals and distributions
-
-| Capability | Error bar | Error band | Box plot | Gradient plot | Violin plot |
-| --- | --- | --- | --- | --- | --- |
-| Semantic marks | rule | area | bar + rule + point | rect + rule | area |
-| Position | categorical, quantitative, or temporal independent axis; interval on the other | quantitative/temporal independent axis; x/x2 or y/y2 interval | categorical axis; quantitative interval axis | categorical axis; sampled quantitative profile | categorical center; quantitative density profile |
-| Nominal color | — | grouped area fill | body fill through ranged-bar color | category hue with density modulation | category or two-value split fill |
-| Appearance | stroke, width, dash, opacity, optional caps | fill, opacity, 8 curves, styled boundaries | configurable component styles and whiskers | structured gradient fill, width, optional center rule | fill, opacity, outline, 8 curves, shared/independent width |
-| Automatic guides | interval and independent axes; perpendicular grid | interval and independent axes; perpendicular grid | opt-in categorical/linear axes and horizontal grid | categorical/linear axes, grid, density legend | categorical/linear axes; horizontal grid |
-| Legend | — | categorical | optional ranged-bar color legend | neutral density; categorical color when requested | optional category or split legend |
-| Selection/highlight | rule | series | component | category strip | full or split profile |
-
-### Polar charts
-
-| Capability | Polar points | Polar line / radar | Arc / donut / rose / radial bar |
-| --- | --- | --- | --- |
-| Semantic mark | point | line | arc |
-| Position | theta/radius | theta/radius | direct quantitative theta, categorical count/weighted-sum theta, or theta/radius |
-| Nominal color | point fill | series stroke | sector fill, including overlay grain |
-| Stroke dash | — | nominal or constant; 4 named styles | — |
-| Appearance | radius, opacity, shape | stroke width, opacity, open/closed | inner radius, angular padding, fill, outline, opacity |
-| Automatic guides | theta outer axis, radial axis, spokes, circles | theta outer axis, radial axis, spokes, circles | applicable theta/radius axes, spokes, circles |
-| Legend | point color + shape | categorical | categorical |
-| Selection/highlight | point | series | sector |
-
-### Parallel coordinates
-
-| Capability | Supported now |
-| --- | --- |
-| Semantic mark | one open line-path item per eligible source row |
-| Position | two or more ordered quantitative or ordinal dimensions, each with a local scale and axis |
-| Missing values | `break` fragments, whole-row `drop-row`, or strict `error` |
-| Appearance | categorical color, categorical or constant stroke dash, line stroke/width/opacity |
-| Automatic guides | one ordinary line/text axis per dimension and applicable categorical legend; no automatic grid |
-| Selection/highlight | source-row item, including immutable `filterMarks` rematerialization |
+All complete families render through Browser Canvas, browser-safe SVG, Node PNG,
+and single-page vector PDF. Support is conditional on each facade's required roles
+and data grain. The [canonical channel tables](./api/encodings.md) own mark, field-type,
+scale-family, and item-grain compatibility. A facade's convenient default is not the
+complete support limit of its underlying mark.
 
 ## Shared foundations
 
@@ -86,7 +35,7 @@ remain available for custom layering and editing.
 | --- | --- |
 | Program model | Immutable unit or composition `ChartProgram`, hierarchical trace, nested Cartesian/Polar/Parallel composition, stable child replacement, and Cartesian/Polar/Parallel facet, grid, and eligible field-role repetition |
 | Canvas | Create/edit width, height, background, margin |
-| Data | Immutable arrays of plain row objects, named filters, stable window operations, rectangular 2D bins, grouped interval summaries, grouped linear/polynomial/LOESS regression, grouped kernel-density derivations, and immutable Horizon band revisions |
+| Data | Immutable source rows, filtering, computation, normalization, completion, imputation, folding, summaries, stacks, 1D/2D bins, windows, calendar buckets, regression, intervals, KDE, ECDF, and explicit derived revision replay |
 | Coordinates | Named Cartesian, Polar, and Parallel resources; x/y use Cartesian, theta/radius use Polar, and ordered dimensions use Parallel |
 | Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position with semantic explicit/count/category/summary ordering, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset/yOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
@@ -94,7 +43,7 @@ remain available for custom layering and editing.
 | Titles | One four-edge title with an optional subtitle, deterministic word/character wrapping, and partial editing |
 | Rendering | Browser Canvas, browser-safe SVG string, Node PNG, and single-page vector PDF |
 | Graphics | Concrete canvas, circle, line, rect, text, `M/L/C/Z` command paths, shared 8-value line/area curves, and heterogeneous drawable collections |
-| Selection | Strict point/bar/rect/series/arc/rule comparison, set, range and grouped rank; reusable selection state; mark-specific highlight/dimming/front order |
+| Selection | Strict point/bar/rect/series/arc/rule/tick comparison, set, range and grouped rank; reusable selection state; mark-specific highlight/dimming/front order |
 
 Basic chart facades infer only a current or unique dataset and stable unused
 role IDs. Ambiguous data or an occupied default role requires an explicit ID.
@@ -151,7 +100,7 @@ values, adaptive bandwidth, and Polar violin placement are not implemented.
 ### Selection, appearance, and text
 
 Mark selection supports point, final-bar item, stacked-bar group, line/area
-series, arc sector, and rule grain. Selector values explicitly distinguish data fields,
+series, rect cell, arc sector, rule, and tick grain. Selector values explicitly distinguish data fields,
 pre-scale semantic channels, and concrete graphic properties.
 Highlight appearance supports point fill/shape/size/outline/offset, bar fill and
 outline, area/arc fill/outline/offset, and line/rule stroke/width/dash/offset.

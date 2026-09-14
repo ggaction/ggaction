@@ -8,22 +8,25 @@ title: Area and Series Layout
 An area measures the space between a value and a baseline, or between two explicit bounds.
 Start with a complete chart, then edit its endpoints, grouping, placement, and appearance separately.
 
-{% include chart-example.html id="area-layout" %}
+{% include chart-example.html id="area-layout" lead=true %}
 
 ## Start with a zero baseline
 
 ```javascript
-import { chart } from 'ggaction';
+import { chart, render } from 'ggaction';
 const program = chart()
   .createCanvas({ width: 1000, height: 700, margin: 150 })
   .createData({ id: 'data', values: [
-    { time: 1, value: 2 }, { time: 2, value: 4 }, { time: 3, value: 3 }
+    { time: 1, value: 2, low: 1, high: 3 },
+    { time: 2, value: 4, low: 2, high: 6 },
+    { time: 3, value: 3, low: 1, high: 5 }
   ] })
-  .createAreaPlot({ x: 'time', y: 'value' });
+  .createAreaPlot({ id: 'm', x: 'time', y: 'value' });
+render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/main/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation

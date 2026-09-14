@@ -5,7 +5,7 @@ title: Coordinates
 
 # Coordinates
 
-{% include chart-example.html id="scatterplot" %}
+{% include chart-example.html id="scatterplot" lead=true %}
 
 ## At a glance
 
@@ -48,6 +48,12 @@ or attached explicitly.
 | `type` | `"cartesian"`, `"polar"`, or `"parallel"` | `"cartesian"` |
 | `layers` | array of existing layer IDs | `[]` |
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.createCoordinate({
   id: "detail",
@@ -74,6 +80,12 @@ uses its own namespaced scale and axis. Use the complete
 Use this complete-entry action to constrain the shape of an existing coordinate
 without changing the Canvas or its allocated plot rectangle.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "main"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const square = program.editCoordinate({
   target: "main",
@@ -95,6 +107,12 @@ ggaction places the largest matching rectangle inside the current plot allocatio
 data unit. It requires a complete Cartesian coordinate whose active layers all
 share one quantitative linear x/y scale pair:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "main"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const equalUnits = program.editCoordinate({
   target: "main",
@@ -109,6 +127,12 @@ must already agree with the requested effective bounds.
 
 Use `aspect: "auto"` to remove the constraint:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `equalUnits`. Resource selectors used here: `target: "main"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const automatic = equalUnits.editCoordinate({
   target: "main",
@@ -120,6 +144,12 @@ The action is available from `ggaction` and is absent from `ggaction/basic`.
 
 For a Polar coordinate, `polarFrame` moves the center and constrains the radial
 extent inside the aspect-adjusted effective bounds:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `polarProgram`. Resource selectors used here: `target: "polar"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const movedPolar = polarProgram.editCoordinate({
@@ -147,6 +177,12 @@ cannot contain them.
 ## `removeCoordinate({ id })` {#removecoordinate-id}
 
 Full programs can remove an unattached named coordinate with an explicit ID:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const cleaned = program.removeCoordinate({ id: "temporaryFrame" });

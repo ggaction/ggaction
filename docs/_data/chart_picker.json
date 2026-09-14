@@ -1,0 +1,43 @@
+{
+  "Relationships and trends": {
+    "createScatterPlot": "One row per observation; x and y fields",
+    "createLinePlot": "Ordered positions and measures; explicit aggregation when needed",
+    "createAreaPlot": "Ordered values and a baseline, or paired interval bounds",
+    "createRegressionPlot": "Finite quantitative observations for a fit and optional uncertainty",
+    "createPolarScatterPlot": "Angular and radial fields per observation",
+    "createPolarLinePlot": "Ordered angular/radial observations per path",
+    "createRadarPlot": "Long category/value rows or explicitly selected wide fields",
+    "createParallelCoordinates": "Rows with two or more quantitative or ordinal dimensions"
+  },
+  "Comparisons and intervals": {
+    "createBarPlot": "Categorical/measure roles, explicit summary, or ranged endpoints",
+    "createDotPlot": "Category and measure per raw row, or an explicit summary",
+    "createLollipopPlot": "Category, measure, and a finite baseline",
+    "createDumbbellPlot": "Category plus named start and end measurements",
+    "createIntervalPlot": "Center and interval measurements or a statistical interval definition"
+  },
+  "Distributions": {
+    "createHistogram": "Quantitative observations; one bin policy; optional weights",
+    "createDensityPlot": "Finite numeric observations and KDE decisions",
+    "createECDFPlot": "Numeric support observations; optional group and weight field",
+    "createBoxPlot": "One categorical and one quantitative role; constructor may defer roles",
+    "createGradientPlot": "Category and quantitative profile roles; constructor may defer roles",
+    "createViolinPlot": "Category and quantitative measure; optional two-value split",
+    "createRugPlot": "One quantitative or temporal measure",
+    "createStripPlot": "One measure, optionally with a categorical slot",
+    "createBeeswarmPlot": "Category and measure for glyph-aware deterministic packing",
+    "createRaincloudPlot": "Shared category/measure rows for density, summary, and observations"
+  },
+  "Parts, radial values, and dense samples": {
+    "createPiePlot": "Category counts or category sums for proportional sector angles",
+    "createRosePlot": "Category counts or sums represented by sector area",
+    "createRadialBarPlot": "Category counts or sums represented by radial length",
+    "createHeatmap": "Pre-gridded cells or two raw quantitative fields for rectangular bins",
+    "createHorizonPlot": "Ordered quantitative/temporal x and foldable quantitative y"
+  },
+  "Repeated chart structure": {
+    "facet": "One complete chart and an eligible shared ancestor field",
+    "facetGrid": "One complete chart plus row and column fields",
+    "repeatCharts": "One eligible mark role and an ordered field list"
+  }
+}

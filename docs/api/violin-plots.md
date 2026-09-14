@@ -5,13 +5,19 @@ title: Violin Plots
 
 # Violin Plots
 
-{% include chart-example.html id="violin" %}
+{% include chart-example.html id="violin" lead=true %}
 
 Use `createViolinPlot` to compare kernel-density profiles inside categorical
 bands. It accepts the same categorical/quantitative x/y role family as box and
 gradient plots, then infers orientation from the complete field pair.
 
 ## Minimal vertical violin
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const program = chart()
@@ -30,6 +36,12 @@ inferred when the current dataset makes one categorical and one quantitative
 role unambiguous.
 
 ## Density width and orientation
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 .createViolinPlot({
@@ -51,6 +63,12 @@ shape. `resolve: "shared"` uses one density maximum across categories;
 
 For weighted observations, put the definition inside `density`:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 .createViolinPlot({
   x: "category",
@@ -65,6 +83,12 @@ Each category or split profile uses its own positive-weight membership. The
 same weighted rules determine unit/count density and automatic bandwidth.
 
 ## Split a category into two halves
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 .createViolinPlot({
@@ -87,6 +111,12 @@ domain is omitted, ggaction uses first-appearance order only if exactly two
 values are observed.
 
 ## Appearance and guides
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 .createViolinPlot({
@@ -111,6 +141,12 @@ contract.
 `createViolinPlot` creates a stable owner. Revise its data and statistical
 roles together:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "violins"`; `data: "revised"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const revised = program.editViolinPlot({
   target: "violins",
@@ -128,6 +164,12 @@ profiles. Omitting `weight` preserves the current mode.
 The owner ID stays stable while the action creates a new immutable density-data
 revision and reconciles orientation, scales, axes, grid, selections, and
 highlights. Use the lower actions for a single resource decision:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const revised = program

@@ -66,3 +66,79 @@ test("action filtering updates TOC visibility and counts and a hidden hash targe
     assert.equal(await page.locator(".docs-action-heading:not([hidden])").count(), 35);
   } finally { await browser.close(); }
 });
+
+test("search handles zero, one, two, and eight results without stale active options", async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  try {
+    const index = Array.from({ length: 8 }, (_, i) => ({
+      pageTitle: `Page ${i}`, sectionTitle: "Topic", summary: "Example section", kind: "reference",
+      url: `/page-${i}/`, keywords: ["octet", ...(i < 2 ? ["duo"] : []), ...(i === 0 ? ["solo"] : [])]
+    }));
+    await page.route("https://docs.test/search-index.json", route => route.fulfill({ json: index }));
+    await page.setContent('<base href="https://docs.test/"><div class="docs-search"><input id="docs-search-input"><ul id="docs-search-results" hidden></ul></div><div id="docs-search-config" data-root-url="/" data-index-url="/search-index.json"></div>');
+    await page.addScriptTag({ content: await read("docs/assets/js/docs-search.js") });
+    const input = page.locator("input");
+    for (const [query, count] of [["missing", 0], ["solo", 1], ["duo", 2], ["octet", 8], ["missing", 0]]) {
+      await input.fill(query);
+      await page.waitForFunction(expected => document.querySelector('[role="status"]').textContent === expected,
+        `${count} ${count === 1 ? "result" : "results"}`);
+      assert.equal(await page.locator('[role="option"]').count(), count);
+      assert.equal(await input.getAttribute("aria-activedescendant"), null);
+      await input.press("ArrowUp");
+      assert.equal(await input.getAttribute("aria-activedescendant"), count ? `docs-search-option-${count - 1}` : null);
+      await input.press("ArrowDown");
+      assert.equal(await input.getAttribute("aria-activedescendant"), count ? "docs-search-option-0" : null);
+    }
+  } finally { await browser.close(); }
+});
+
+test("each retry makes one request after consecutive failures and pending searches respect cancellation", async () => {
+  const browser = await chromium.launch();
+  try {
+    for (const ending of ["new-query", "escape", "outside"]) {
+      const page = await browser.newPage();
+      let attempts = 0;
+      let pending;
+      let announce;
+      const requested = new Promise(resolve => { announce = resolve; });
+      await page.route("https://docs.test/search-index.json", async route => {
+        attempts++;
+        if (attempts < 3) return route.fulfill({ status: 503, body: "Unavailable" });
+        pending = route; announce();
+      });
+      await page.setContent('<base href="https://docs.test/"><div class="docs-search"><input id="docs-search-input"><ul id="docs-search-results" hidden></ul></div><div id="docs-search-config" data-root-url="/" data-index-url="/search-index.json"></div><button id="outside">Page navigation</button>');
+      await page.addScriptTag({ content: await read("docs/assets/js/docs-search.js") });
+      const input = page.locator("input");
+      const retry = page.getByRole("button", { name: "Retry search" });
+      await input.fill("alpha");
+      await retry.waitFor();
+      assert.equal(attempts, 1);
+      const failed = page.waitForResponse("https://docs.test/search-index.json");
+      await retry.click(); await failed;
+      await page.waitForFunction(() => document.querySelector("input").getAttribute("aria-busy") === "false");
+      assert.equal(attempts, 2, "A failed retry must not silently make another request");
+      assert.equal(await retry.isVisible(), true);
+      assert.equal(await input.evaluate(element => element === document.activeElement), true);
+      await retry.click(); await requested;
+      if (ending === "new-query") await input.fill("beta");
+      else if (ending === "escape") await input.press("Escape");
+      else await page.locator("#outside").click();
+      const completed = page.waitForResponse("https://docs.test/search-index.json");
+      await pending.fulfill({ json: ["alpha", "beta"].map(name => ({
+        pageTitle: name, sectionTitle: "", summary: `${name} section`, keywords: [name], kind: "reference", url: `/${name}/`
+      })) });
+      await completed;
+      await page.waitForFunction(() => document.querySelector("input").getAttribute("aria-busy") === "false");
+      if (ending === "new-query") {
+        await page.locator('[role="option"]').waitFor();
+        assert.equal(await page.locator('[role="option"]').getAttribute("href"), "https://docs.test/beta/");
+      } else {
+        assert.equal(await page.locator("#docs-search-results").isHidden(), true);
+        assert.equal(await input.getAttribute("aria-activedescendant"), null);
+      }
+      assert.equal(attempts, 3);
+      await page.close();
+    }
+  } finally { await browser.close(); }
+});

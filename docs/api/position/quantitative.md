@@ -5,7 +5,7 @@ title: Quantitative Positions
 
 # Quantitative Positions
 
-{% include chart-example.html id="scatterplot" %}
+{% include chart-example.html id="scatterplot" lead=true %}
 
 ## At a glance
 
@@ -15,6 +15,12 @@ title: Quantitative Positions
 | `encodeY` | `encodeY({ field: "y" })` | point mark and finite field | Concrete vertical positions |
 
 ## Point `encodeX(options)` and `encodeY(options)`
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program

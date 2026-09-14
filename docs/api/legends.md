@@ -5,7 +5,7 @@ title: Legends
 
 # Legends
 
-{% include chart-example.html id="density" %}
+{% include chart-example.html id="density" lead=true %}
 
 <div class="docs-concept-flow" role="img" aria-label="Legend creation reads resolved encodings and scales, chooses a symbol recipe, and writes concrete guide graphics">
   <span><code>encoding + scale</code><strong>Guide meaning</strong></span>
@@ -32,12 +32,19 @@ editing page when changing an existing guide.
 ## Supported legend families
 
 <!-- action-capabilities:legends:start -->
+
 | Legend family | Supported marks | Channels |
 | --- | --- | --- |
-| Categorical | point, line, area, bar, rect, arc | color, shape, strokeDash, or compatible composites |
-| Continuous gradient | point, aggregate bar, rect | sequential color |
-| Discretized interval | point, aggregate bar, rect | quantize, quantile, or threshold color |
-| Sampled | point, line, rule | field opacity, size, or strokeWidth |
+| Categorical color/shape/dash | point, line, area, bar, rect, arc | ordinal color; point shape; line strokeDash; compatible composites follow family constraints |
+| Categorical stroke | point, line, area, bar, rect, arc, rule, tick | ordinal stroke; final-item or series identities |
+| Continuous color gradient | point, aggregate bar, rect | sequential color; gradient swatch, no symbol recipe |
+| Continuous stroke gradient | point, line, area, bar, rect, arc, rule, tick | sequential stroke; separate gradient, no symbol recipe |
+| Discretized color interval | point, aggregate bar, rect | quantize/quantile/threshold color; rectangle swatches |
+| Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
+| Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
+| Opacity | point, line | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
+| Stroke width | line, rule | quantitative strokeWidth samples; line symbol |
+
 <!-- action-capabilities:legends:end -->
 
 ## Focused legend families

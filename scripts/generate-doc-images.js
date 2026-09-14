@@ -7,11 +7,12 @@ import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { renderToPNG } from "ggaction/png";
 import { createGettingStartedChart } from
   "../examples/getting-started/program.js";
-import { publicCharts } from "../examples/registry.js";
+import { publicExamples } from "../examples/registry.js";
 
 const thumbnailMaxWidth = 640;
 
 const dataFiles = Object.freeze({
+  fashionTsne: new URL("../data/fashion_mnist_tsne.csv", import.meta.url),
   cars: new URL("../data/cars.json", import.meta.url),
   jobs: new URL("../data/jobs.json", import.meta.url),
   gapminder: new URL("../data/gapminder.json", import.meta.url),
@@ -21,21 +22,29 @@ const dataFiles = Object.freeze({
 const data = Object.fromEntries(await Promise.all(
   Object.entries(dataFiles).map(async ([id, file]) => [
     id,
-    JSON.parse(await readFile(file, "utf8"))
+    file.pathname.endsWith(".csv")
+      ? (await readFile(file, "utf8")).trim().split(/\r?\n/).slice(1).map(line => {
+        const [x, y, label, name] = line.split(",");
+        return { x_pos: Number(x), y_pos: Number(y), label: Number(label), label_name: name };
+      })
+      : JSON.parse(await readFile(file, "utf8"))
   ])
 ));
 
 function imageDefinition(chart) {
   return {
     ...chart,
-    dataFile: dataFiles[chart.data],
-    createProgram: () => chart.createProgram(structuredClone(data[chart.data]))
+    recipe: chart.createProgram.toString(),
+    dataFiles: typeof chart.data === "string" ? [dataFiles[chart.data]]
+      : Object.values(chart.data ?? {}).map(id => dataFiles[id]),
+    createProgram: () => chart.createProgram(structuredClone(typeof chart.data === "string"
+      ? data[chart.data] : Object.fromEntries(Object.entries(chart.data ?? {}).map(([key, id]) => [key, data[id]]))))
   };
 }
 
-export const chartImages = publicCharts({ docsGroup: "charts" })
+export const chartImages = publicExamples({ docsGroup: "charts" })
   .map(imageDefinition);
-export const tutorialImages = publicCharts({ docsGroup: "tutorials" })
+export const tutorialImages = publicExamples().filter(chart => chart.docsGroup !== "charts")
   .map(imageDefinition);
 export const guideImages = Object.freeze([
   Object.freeze({
@@ -69,6 +78,20 @@ async function sourceFiles(directory) {
   return nested.flat().filter(file => file.endsWith(".js")).sort();
 }
 
+async function exampleSources(file, seen = new Set()) {
+  const absolute = fileURLToPath(file);
+  if (seen.has(absolute)) return seen;
+  seen.add(absolute);
+  if (!absolute.endsWith(".js")) return seen;
+  const source = await readFile(file, "utf8");
+  for (const match of source.matchAll(/\bfrom\s+["'](\.{1,2}\/[^"']+)["']/g)) {
+    const dependency = new URL(match[1], file);
+    if (dependency.pathname.startsWith(new URL("../src/", import.meta.url).pathname)) continue;
+    if (/\.(?:js|json)$/.test(dependency.pathname)) await exampleSources(dependency, seen);
+  }
+  return seen;
+}
+
 export async function buildDocImageManifest() {
   const root = fileURLToPath(new URL("../", import.meta.url));
   const sharedFiles = [
@@ -99,9 +122,13 @@ export async function buildDocImageManifest() {
   for (const chart of allImages) {
     const hash = createHash("sha256");
     hash.update(sharedHash);
-    hash.update(`${chart.width}x${chart.height}@2`);
-    hash.update(await readFile(chart.programFile));
-    if (chart.dataFile) hash.update(await readFile(chart.dataFile));
+    hash.update(`${chart.id}:${chart.width}x${chart.height}@2`);
+    hash.update(chart.recipe ?? chart.createProgram.toString());
+    for (const file of [...await exampleSources(chart.programFile)].sort()) {
+      hash.update(relative(root, file));
+      hash.update(await readFile(file));
+    }
+    for (const file of chart.dataFiles ?? []) hash.update(await readFile(file));
     const group = chartImages.includes(chart)
       ? groups.charts
       : tutorialImages.includes(chart)

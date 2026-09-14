@@ -5,13 +5,19 @@ title: Data and Mark Filtering
 
 # Data and Mark Filtering
 
-{% include chart-example.html id="selection" %}
+{% include chart-example.html id="selection" lead=true %}
 
 {% include chart-example.html id="regression" %}
 
 ## `filterData({ id, source?, field, oneOf | predicate | range })`
 
 Create a named derived dataset without replacing or mutating its source.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const selected = chart()
@@ -42,6 +48,12 @@ Comparison operators are `"eq"`, `"neq"`, `"lt"`, `"lte"`, `"gt"`, and
 require both values to be finite numbers or both to be strings; incompatible or
 missing field values are omitted. String order is lexicographic.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const powerfulCars = chart()
   .createData({ id: "cars", values: cars })
@@ -55,6 +67,12 @@ const powerfulCars = chart()
 Range endpoints must be the same type and `min` cannot exceed `max`.
 `inclusive` defaults to `true`; setting it to `false` excludes both endpoints.
 An empty result is valid.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "cars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.filterData({
@@ -72,6 +90,12 @@ Filter existing final mark items without changing the source dataset.
 mark when possible, creates a namespaced immutable dataset such as
 `pointsFilteredData`, rebinds only that mark, and rematerializes its scales,
 graphics, and connected guides.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Import chart from ggaction and provide Cars rows with finite Displacement and Acceleration.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const filtered = chart()
@@ -95,6 +119,12 @@ concrete graphical value. Operators are `eq | neq | gt | gte | lt | lte`,
 line/area series path, arc sector, or rule. Stacked bars additionally support
 `grain: "stack"`.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.filterMarks({
   target: "bars",
@@ -107,6 +137,12 @@ program.filterMarks({
 The first filter records the mark's canonical source and a normalized selector
 recipe. Repeating the same selector is idempotent. A different repeated filter
 must state whether it replaces the recipe or composes with its current result.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `filtered`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const narrower = filtered.filterMarks({
@@ -146,6 +182,12 @@ The action restores the prior Histogram bin policy, rematerializes the mark,
 scales, and guides, and releases the filtered dataset when no downstream dataset
 still references that snapshot. Omit `target` for the current or unique active
 filter.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `japanOnly`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const restored = japanOnly.removeMarkFilter({ target: "points" });

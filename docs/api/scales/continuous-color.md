@@ -5,11 +5,17 @@ title: Continuous Color Scales
 
 # Continuous Color Scales
 
-{% include chart-example.html id="density" %}
+{% include chart-example.html id="density" lead=true %}
 
 ## Named palettes
 
 Use a name directly or an object with optional sampling controls:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeColor({
@@ -58,6 +64,12 @@ color ranges are also limited to 10,000 stops. `interpolate` accepts
 `hcl`, `hcl-long`, `cubehelix`, or `cubehelix-long`. `clamp` and `reverse`
 affect both points and a connected gradient legend.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.encodeColor({
   field: "Acceleration",
@@ -84,6 +96,12 @@ the unaggregated source rows.
 A quantitative sequential scale can use `midpoint` to assign the palette's center
 sample to a meaningful value. In this complete example, zero is white even though
 the domain runs from -2 to 8:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart } from "ggaction";

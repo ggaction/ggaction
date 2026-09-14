@@ -5,7 +5,7 @@ title: Annotation Recipe
 
 # Annotation Recipe
 
-{% include chart-example.html id="annotation" %}
+{% include chart-example.html id="annotation" lead=true %}
 
 ## Minimal flow
 

@@ -5,14 +5,41 @@ title: Continuous Legends
 
 # Continuous Legends
 
-{% include chart-example.html id="multi-legend-layout" %}
+{% include chart-example.html id="multi-legend-layout" lead=true %}
+
+## Match the channel and sample recipe
+
+Rule opacity is a supported encoding but does not currently have an opacity legend.
+
+A legend consumes an encoding scale. Its display sample need not have the same mark
+type as the plotted consumer: an opacity legend uses point samples even for a Line. Stroke-width legends use lines. A gradient is not a collection of glyph samples.
+
+| Family | Consumer and scale | Samples | Display recipe | Composition and edges |
+| --- | --- | --- | --- | --- |
+| Color gradient | Point, aggregate Bar, Rect; sequential quantitative/temporal color | Tick `count`; no explicit sampled `values` | Gradient rectangle; rejects `symbol` | Separate block; all four edges |
+| Stroke gradient | Supported stroke marks; sequential quantitative/temporal stroke | Tick `count` | Gradient rectangle; rejects `symbol` | Separate stroke block; all four edges |
+| Color/stroke interval | Compatible quantize, quantile, threshold consumer | Every interval | Filled or outlined swatches, respectively | Ordered interval block; all four edges |
+| Opacity | Point, Line; quantitative linear opacity | `count` or explicit ascending `values` | One point recipe; `type` omitted or `"point"` | Separate block; all four edges |
+| Size | Point; continuous numeric size or discrete area scale | Continuous `count`/`values`; every discrete interval | Area-scaled point symbol | Separate block; all four edges |
+| Stroke width | Line, Rule; quantitative width | `count` or explicit ascending `values` | Line sample with scaled width | Separate block; all four edges |
+
+The [canonical compatibility tables](../legends.md) list exact consumers; the
+[legend editor](./editing.md) owns combining and selecting blocks. Equal visible
+labels do not make independent channels a valid categorical composite. For all
+families, requested margins must contain labels, symbols, titles, and borders.
 
 ## Continuous color, stroke, and opacity
 
-A point `color` encoding with a quantitative or temporal field produces a
+A supported Point, aggregate Bar, or Rect `color` encoding with a quantitative or temporal field produces a
 continuous gradient. Right/left positions orient it vertically; top/bottom
 orient it horizontally. The implementation writes 60 adjacent concrete rects,
 tick lines, and text to `graphicSpec`; renderers do not interpolate colors.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ~~~javascript
 program.createLegend({
@@ -22,7 +49,7 @@ program.createLegend({
 });
 ~~~
 
-A field-driven quantitative `opacity` encoding produces representative point
+A Point or Line field-driven quantitative `opacity` encoding produces representative point
 samples in ascending domain order. Reversing the opacity range changes symbol
 appearance without reversing labels. Its neutral default symbol is a circle
 with radius `7` and fill `#4c78a8`; pass one `{ type: "point", ... }` recipe to
@@ -30,6 +57,12 @@ override it. `type` is optional and only accepts `"point"`; `radius` must be
 positive. `fill`, `stroke`, and non-negative `strokeWidth` are also supported.
 The same recipe works with `editLegend`, `editLegendSymbols`, and
 `createGuides({ legend: ... })`, including TypeScript.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ~~~javascript
 program.createLegend({ channels: ["opacity"], position: "left" });
@@ -40,6 +73,12 @@ with the same mapping, tick, formatting, edge, and lifecycle rules. Quantize,
 quantile, and threshold stroke scales create a stroke interval legend. Its
 symbols keep the mark's fill and draw the mapped color as the outline. An
 explicit mark `strokeWidth: 0` remains zero.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ~~~javascript
 program
@@ -61,6 +100,12 @@ pixels and twice `itemGap`, enlarged when needed to keep `itemGap` between
 neighbouring sample or label bounds. Inline legends keep `itemGap` between
 complete sample-label pairs. Large fonts and strokes require sufficient Canvas
 space; overflow is an error.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ~~~javascript
 program.createLegend({
@@ -92,6 +137,12 @@ numeric samples. Pass a finite, strictly increasing array with 1–100 values.
 The array is used as written: ggaction does not sort or deduplicate it. Every
 value must lie inside the effective scale domain, and log scales require
 positive values. `count` and `values` cannot appear in the same call.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ~~~javascript
 program.createLegend({
@@ -128,6 +179,12 @@ stroke width in both dimensions. The default `labels.offset: 8` is the gap
 after the painted swatch edge. Large samples and text expand rows and keep
 12 pixels below a visible top title; insufficient Canvas space is an error.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ~~~javascript
 program.createLegend({
   channels: ["color"],
@@ -137,11 +194,11 @@ program.createLegend({
 });
 ~~~
 
-## Related
-
-[Legend overview](../legends.md) · [Scale options](../scales.md) · [Editing legends](./editing.md)
-
 Hidden titles do not contribute to occupied bounds or borders. For horizontal
 inline opacity legends, hiding the title also removes its width and gap.
 The stored title remains available for later restoration; restoring a title
 that does not fit the Canvas fails without changing the earlier program.
+
+## Related
+
+[Legend overview](../legends.md) · [Scale options](../scales.md) · [Editing legends](./editing.md)

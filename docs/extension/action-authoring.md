@@ -16,12 +16,24 @@ title: Action Authoring
 The extension entry point is for developers adding traceable domain actions and
 installing them on the complete `chart()` program.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 import { action, registerExtension } from "ggaction/extension";
 ```
 
 Define each method with `action()`, then register the complete package in one
 batch. Registration runs when the extension package is imported.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const setPointOpacityAction = action(
@@ -48,6 +60,12 @@ registerExtension({
 
 An application imports the extension for its registration side effect before
 creating or using a complete chart program.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart } from "ggaction";

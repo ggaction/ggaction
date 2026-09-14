@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -31,6 +31,13 @@ export function inspectDocsEnvironment({
   return errors;
 }
 
+export function docsEnvironmentRecommendations(environment, recommendedRuby = readFileSync(path.join(root, ".ruby-version"), "utf8").trim()) {
+  const compatible = inspectDocsEnvironment({ ...environment, bundleAvailable: true, chromiumAvailable: true }).length === 0;
+  return compatible && environment.rubyVersion && environment.rubyVersion !== recommendedRuby
+    ? [`Ruby ${environment.rubyVersion} meets preflight only if dependencies resolve; CI uses ${recommendedRuby}. Use the pinned version to reproduce CI exactly.`]
+    : [];
+}
+
 function command(name, args) {
   return spawnSync(name, args, { cwd: root, encoding: "utf8" });
 }
@@ -47,7 +54,10 @@ export function currentDocsEnvironment() {
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
-  const errors = inspectDocsEnvironment(currentDocsEnvironment());
+  const environment = currentDocsEnvironment();
+  const errors = inspectDocsEnvironment(environment);
+  const recommendations = docsEnvironmentRecommendations(environment);
+  if (recommendations.length) process.stdout.write(`Recommended toolchain:\n- ${recommendations.join("\n- ")}\n`);
   if (errors.length > 0) {
     process.stderr.write(`Documentation environment is not ready:\n- ${errors.join("\n- ")}\n`);
     process.exitCode = 1;

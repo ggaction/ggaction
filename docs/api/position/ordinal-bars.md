@@ -5,7 +5,7 @@ title: Bar Positions
 
 # Bar Positions
 
-{% include chart-example.html id="bar" %}
+{% include chart-example.html id="bar" lead=true %}
 
 ## At a glance
 
@@ -28,6 +28,12 @@ title: Bar Positions
 | `scale.type` | `"band"` | `"band"` |
 | `scale.domain` | `"auto"` or unique nominal values | `"auto"` |
 | `scale.range` | `"auto"` or two finite numbers | `"auto"` |
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeX({ field: "year", fieldType: "ordinal" });
@@ -62,6 +68,12 @@ changing source rows.
 | `scale.nice` | boolean | `true` |
 | `scale.zero` | boolean | `false` |
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.encodeY({
   field: "perc",
@@ -82,6 +94,12 @@ slots, and `encodeBarWidth` is an optional graphical override.
 
 Positions and width can be authored in either order:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program
   .encodeBarWidth({ band: 0.5 })
@@ -100,6 +118,12 @@ histogram bins. Invalid fields, values, and widths fail immediately.
 
 Bar orientation is inferred from the completed position pair; it is not stored
 as a separate mark option.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program

@@ -5,7 +5,7 @@ title: Position Encodings
 
 # Position Encodings
 
-{% include chart-example.html id="scatterplot" %}
+{% include chart-example.html id="scatterplot" lead=true %}
 
 Choose the position family from the semantic mark and field relationship. All
 position actions infer the current mark, use or create a compatible coordinate,
@@ -14,6 +14,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 ## Supported marks and modes
 
 <!-- action-capabilities:position:start -->
+
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
 | `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
@@ -22,6 +23,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
+
 <!-- action-capabilities:position:end -->
 
 ## Choose an encoding
@@ -68,6 +70,12 @@ areas, signed values, duplicate group/x rows, or missing positions.
 
 ## Polar positions
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program
   .encodeTheta({ field: "angle" })
@@ -101,6 +109,12 @@ Polar theta/radius cannot be mixed on one layer.
 On an Arc mark with categorical theta, `encodeR` can aggregate a measure per
 category and encode either annular area or radial length. This fragment assumes
 `program` already has data with `category` and non-negative numeric `value` fields:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program
@@ -142,6 +156,12 @@ one of `field` or `datum`. Datum-only rules infer finite numbers as quantitative
 and other supported scalar values as nominal. Field rules, temporal data, and
 ambiguous values require an explicit `fieldType`:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program
   .createRuleMark()
@@ -156,11 +176,6 @@ full-span rule; `y` alone draws a horizontal full-span rule. `x+y+y2` and
 `y+x+x2` draw bounded intervals, while all four endpoints draw a diagonal.
 Calling the same action again replaces only that endpoint.
 
-## Related
-
-[Encodings](./encodings.md) · [Scale options](./scales.md) ·
-[Coordinates](./coordinates.md) · [Series encodings](./series-encodings.md)
-
 ## Area bounds
 
 Area `encodeXRange` and `encodeYRange` accept a field name or `{ datum: number }`
@@ -168,3 +183,8 @@ for each bound, with at least one field. Bounds retain their order even when the
 The two endpoints share one scale; reassignment validates the final pair and scale together.
 `encodeX2` and `encodeY2` accept quantitative datum bounds without an explicit fieldType.
 Use a finite, nonzero baseline for log scales.
+
+## Related
+
+[Encodings](./encodings.md) · [Scale options](./scales.md) ·
+[Coordinates](./coordinates.md) · [Series encodings](./series-encodings.md)

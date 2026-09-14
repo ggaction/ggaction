@@ -5,7 +5,7 @@ title: Error Bars
 
 # Error Bars
 
-{% include chart-example.html id="error-bar" %}
+{% include chart-example.html id="error-bar" lead=true %}
 
 `createErrorBar()` materializes vertical or horizontal intervals from either
 grouped statistics or existing center/lower/upper fields. It can infer its
@@ -19,6 +19,12 @@ inputs from an already encoded layer or accept both channel roles directly.
 | `editErrorBar` | `editErrorBar({ opacity: 0.6 })` | Stable main rule and owned caps revised together |
 
 ## `createErrorBar(options?)`
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const intervals = chart()
@@ -103,6 +109,12 @@ Use `encodeXOffset` or `encodeYOffset` when more than one estimate belongs to a
 category. An error bar inferred from that point layer reuses the offset field,
 scale, domain order, and padding automatically:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "estimates"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const grouped = chart()
   .createCanvas()
@@ -125,6 +137,12 @@ parent-position-scale, offset-scale, or data changes.
 
 For a direct facade without a source layer, pass the matching offset explicitly:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.createErrorBar({
   x: { field: "metric", fieldType: "nominal" },
@@ -142,6 +160,12 @@ temporal positions do not have category slots and therefore reject offsets.
 Use an explicit interval definition when observations sit on a numeric x or y
 position. The `lower` and `upper` fields identify the interval axis, so the
 other quantitative channel remains the independent position:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const learningCurve = chart()
@@ -175,6 +199,12 @@ the ambiguity.
 
 ## Horizontal intervals
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const horizontal = chart()
   .createCanvas()
@@ -188,6 +218,12 @@ const horizontal = chart()
 This stores y/x/x2 encodings and creates vertical fixed-pixel caps.
 
 ## Existing interval fields
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const explicit = chart()
@@ -210,6 +246,12 @@ Explicit mode does not derive another dataset and does not accept `groupBy`,
 the interval-axis title unless a later guide action supplies another title.
 
 ## Inference from an encoded layer
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const overlay = chart()
@@ -257,6 +299,12 @@ Cap/join/miter values use the shared
 [Mark Style](./appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles)
 contract and replay across all generated Rule children.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `intervals`. Resource selectors used here: `data: "data"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const styled = intervals.createErrorBar({
   id: "styledErrorBar",
@@ -274,6 +322,12 @@ const styled = intervals.createErrorBar({
 ## Editing error bars
 
 Use the stable error-bar owner instead of editing generated cap layers:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `intervals`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const edited = intervals.editErrorBar({

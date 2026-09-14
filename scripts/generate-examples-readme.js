@@ -54,15 +54,15 @@ export async function buildExamplesReadme() {
     "- [Extension TypeScript](./extension-typescript/) demonstrates strict custom",
     "  action authoring against the installed package.",
     "",
-    "## Curated chart programs",
+    "## Maintained public chart programs",
     "",
     ...charts,
     "## Development fixtures",
     "",
-    "Other directories under `examples/` support focused browser, package, and",
-    "cross-capability tests. They are development fixtures rather than additional",
-    "user-facing chart contracts; use the curated catalog above for supported",
-    "public examples.",
+    "The catalog includes every maintained public chart program. Getting Started",
+    "and the README authoring sequence are documentation-only programs with their",
+    "own entry points. Browser hosts, extension fixtures, and Quarto setup support",
+    "these programs; they do not define additional chart examples.",
     ""
   ].join("\n");
 }

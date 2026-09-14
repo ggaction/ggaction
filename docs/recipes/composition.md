@@ -5,7 +5,7 @@ title: Composition Recipe
 
 # Composition Recipe
 
-{% include chart-example.html id="composition" %}
+{% include chart-example.html id="composition" lead=true %}
 
 ## Minimal flow
 

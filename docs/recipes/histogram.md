@@ -5,7 +5,7 @@ title: Histogram Recipe
 
 # Histogram Recipe
 
-{% include chart-example.html id="histogram" %}
+{% include chart-example.html id="histogram" lead=true %}
 
 ## Minimal flow
 

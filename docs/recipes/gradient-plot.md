@@ -5,7 +5,7 @@ title: Gradient Plot Recipe
 
 # Gradient Plot Recipe
 
-{% include chart-example.html id="gradient" %}
+{% include chart-example.html id="gradient" lead=true %}
 
 ## Minimal flow
 

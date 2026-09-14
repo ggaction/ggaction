@@ -84,11 +84,13 @@
   },
   "/tutorials/endpoint-plots/": {
     "title": "Dot, Lollipop, and Dumbbell Plots",
-    "description": "These three Full entry actions share one categorical endpoint model. Each starts from immutable rows and produces ordinary point and rule children, so existing mark, scale, label,…"
+    "description": "These three Full entry actions share one categorical endpoint model. Each starts from immutable rows and produces ordinary point and rule children, so existing mark, scale, label,…",
+    "image": "/assets/images/dumbbell-plot.png"
   },
   "/tutorials/ecdf/": {
     "title": "Empirical Cumulative Distribution Plots",
-    "description": "An empirical cumulative distribution function answers: “What share of the observations is less than or equal to this value?” createECDFPlot owns that statistical definition and…"
+    "description": "An empirical cumulative distribution function answers: “What share of the observations is less than or equal to this value?” createECDFPlot owns that statistical definition and…",
+    "image": "/assets/images/ecdf-plot.png"
   },
   "/recipes/": {
     "title": "Chart Recipes",
@@ -228,7 +230,7 @@
   },
   "/api/data/source-and-derived/": {
     "title": "Source and Derived Data",
-    "description": "Empty arrays are valid, and row properties may contain nested arrays or objects. The action copies and freezes the supplied data.",
+    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/data/filtering/": {
@@ -350,17 +352,17 @@
   },
   "/api/position/quantitative/": {
     "title": "Quantitative Positions",
-    "description": "Automatic domains combine compatible fields that share a scale. Automatic ranges use plot bounds, and every encoded value must be finite.",
+    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/position/temporal/": {
     "title": "Temporal Line Positions",
-    "description": "Parseable date strings and finite timestamps are normalized for scale resolution without changing the source dataset. The path remains empty until y is encoded.",
+    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: program.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/api/position/ordinal-bars/": {
     "title": "Ordinal Bar Positions",
-    "description": "fieldType: \"ordinal\" describes ordered categories. Their positional scale is band, which supplies positive width; scale.type: \"ordinal\" is a different lookup scale family and is…",
+    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: program.",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
   "/api/position/category-ordering/": {
@@ -375,7 +377,7 @@
   },
   "/api/position/offsets/": {
     "title": "Ordinal Offsets",
-    "description": "That action calls encodeXOffset for a vertical bar or encodeYOffset for a horizontal bar as a wrapped child with the same field.",
+    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: program.",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
   "/api/series-encodings/": {
@@ -470,7 +472,7 @@
   },
   "/api/legends/continuous/": {
     "title": "Continuous Legends",
-    "description": "A point color encoding with a quantitative or temporal field produces a continuous gradient. Right/left positions orient it vertically; top/bottom orient it horizontally.",
+    "description": "Rule opacity is a supported encoding but does not currently have an opacity legend.",
     "image": "/assets/images/cars-multi-legend-layout.png"
   },
   "/api/legends/composite/": {
@@ -587,5 +589,113 @@
   "/extension/primitives/": {
     "title": "Primitive API",
     "description": "These methods are the low level public extension layer, not the recommended chart authoring API."
+  },
+  "/api/data/summaries-and-shaping/": {
+    "title": "Summaries, Bins, and Data Shaping",
+    "description": "Create reusable aggregate rows without tying the calculation to a chart type:",
+    "image": "/assets/images/cars-histogram.png"
+  },
+  "/api/data/expressions-and-normalization/": {
+    "title": "Expressions and Normalization",
+    "description": "Add a typed primitive or null field to every source row with a serializable formula:",
+    "image": "/assets/images/cars-regression-scatterplot.png"
+  },
+  "/api/data/missing-data/": {
+    "title": "Missing Keys and Values",
+    "description": "Materialize missing keys inside each observed group without silently turning absence into zero:",
+    "image": "/assets/images/repair-missing-observations.png"
+  },
+  "/api/data/revisions-and-removal/": {
+    "title": "Data Revisions and Removal",
+    "description": "Every standalone value producing data action creates a logical dataset owner. The owner ID remains stable while successful edits create immutable physical revisions.",
+    "image": "/assets/images/cars-scatterplot.png"
+  },
+  "/api/composition/facets/": {
+    "title": "Facets and Field Repetition",
+    "description": "Call facet on one complete unit chart to repeat it for each observed field value:",
+    "image": "/assets/images/facet-grid.png"
+  },
+  "/api/composition/editing/": {
+    "title": "Editing Compositions",
+    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: row.",
+    "image": "/assets/images/program-composition.png"
+  },
+  "/api/marks/labels/": {
+    "title": "Attached Mark Labels",
+    "description": "Create final item labels in one call, then use the lower text actions to refine them:",
+    "image": "/assets/images/edit-selected-labels.png"
+  },
+  "/api/marks/label-layout/": {
+    "title": "Label Collision Layout",
+    "description": "Use explicit offsets for intentional placement, or assign collision aware placement after the text encoding is complete:",
+    "image": "/assets/images/gapminder-country-labels.png"
+  },
+  "/recipes/repair-missing-observations/": {
+    "title": "Repair missing observations",
+    "description": "Restore an omitted time key, impute its measure, and recompute a trailing window when new source observations arrive.",
+    "image": "/assets/images/repair-missing-observations.png"
+  },
+  "/recipes/compare-weighted-distributions/": {
+    "title": "Compare weighted distributions",
+    "description": "Compare three different summaries of the same weighted observations without treating their vertical units as interchangeable.",
+    "image": "/assets/images/compare-weighted-distributions.png"
+  },
+  "/recipes/switch-encoding-modes/": {
+    "title": "Switch encoding modes atomically",
+    "description": "Switch two supported channels between field encodings and constants as one validated chart revision.",
+    "image": "/assets/images/switch-encoding-modes.png"
+  },
+  "/recipes/edit-scales-and-guides/": {
+    "title": "Edit scales and refresh guides",
+    "description": "Change an existing positional mapping and keep its visible ticks aligned with the rematerialized marks.",
+    "image": "/assets/images/edit-scales-and-guides.png"
+  },
+  "/recipes/edit-selected-labels/": {
+    "title": "Select and place final-item labels",
+    "description": "Label only the largest final aggregates, place labels outside bar ends, and apply bounded collision layout.",
+    "image": "/assets/images/edit-selected-labels.png"
+  },
+  "/recipes/apply-custom-theme/": {
+    "title": "Apply, override, and remove a theme",
+    "description": "Apply reusable defaults, preserve an intentional local override, and remove the active theme.",
+    "image": "/assets/images/apply-custom-theme.png"
+  },
+  "/recipes/edit-facet-source/": {
+    "title": "Revise facet source and shared guides",
+    "description": "Replace a facet's retained source program, rename its headers, and arrange outer axes with a shared categorical legend.",
+    "image": "/assets/images/edit-facet-source.png"
+  },
+  "/recipes/remove-dependent-resources/": {
+    "title": "Remove resources in dependency order",
+    "description": "Use the ownership error to identify a live consumer, then delete the consumer and its temporary dataset in order.",
+    "image": "/assets/images/remove-dependent-resources.png"
+  },
+  "/tutorials/hierarchical-authoring/": {
+    "title": "Choose the Right Authoring Level",
+    "description": "A chart can begin as one high level action and remain editable through its lower level parts.",
+    "image": "/assets/images/hierarchical-authoring.png"
+  },
+  "/concepts/authoring-conventions/": {
+    "title": "Authoring Conventions",
+    "description": "A successful action returns a new ChartProgram. Keep that returned value to continue editing. The earlier program and caller owned option objects remain unchanged."
+  },
+  "/api/data/policies/": {
+    "title": "Data Grain and Statistical Policies",
+    "description": "Choose a transform by its output meaning before selecting a chart. Aggregation, completion, and imputation solve different problems and do not share one missing value or weight…",
+    "image": "/assets/images/repair-missing-observations.png"
+  },
+  "/api/chart-picker/": {
+    "title": "Choose a Chart",
+    "description": "Start with the chart that expresses the data's meaning, then edit its parts through lower level actions. Every H0 action in the current declared catalog appears below.",
+    "image": "/assets/images/hierarchical-authoring.png"
+  },
+  "/version/": {
+    "title": "Documentation Version",
+    "description": "The current site describes a contract. The package metadata still says; that number alone does not mean every documented action is available in the published npm artifact."
+  },
+  "/api/axes/complete/": {
+    "title": "Complete Axes and Labels",
+    "description": "Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis action for ordinary chart authoring.",
+    "image": "/assets/images/cars-line-chart.png"
   }
 }

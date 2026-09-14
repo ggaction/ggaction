@@ -5,7 +5,7 @@ title: Category Ordering
 
 # Category Ordering
 
-{% include chart-example.html id="ordered-category-bar" %}
+{% include chart-example.html id="ordered-category-bar" lead=true %}
 
 Use `orderCategories` when a nominal or ordinal x/y/theta position should follow an
 explicit list or a data-derived order. The assignment changes the resolved
@@ -13,6 +13,12 @@ position domain, mark geometry, axis labels, and final selection-item order
 together. It never reorders source rows.
 
 ## `orderCategories(options)`
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const ordered = program.orderCategories({
@@ -49,6 +55,12 @@ authorities and cannot be combined.
 
 ## `removeCategoryOrder({ target?, channel })`
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `ordered`. Resource selectors used here: `target: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const automatic = ordered.removeCategoryOrder({
   target: "bars",
@@ -65,6 +77,12 @@ preserved. Removing a missing assignment is an error.
 
 On an existing weighted Pie, these calls put category C first without changing
 its weight or color (fragment; `pie` must already encode categories A, B, and C):
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `pie`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const ordered = pie.orderCategories({ channel: "theta", values: ["C", "A"] });

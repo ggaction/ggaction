@@ -5,7 +5,7 @@ title: Violin Plot Recipe
 
 # Violin Plot Recipe
 
-{% include chart-example.html id="violin" %}
+{% include chart-example.html id="violin" lead=true %}
 
 ## Minimal flow
 

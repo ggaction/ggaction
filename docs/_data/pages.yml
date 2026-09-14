@@ -410,3 +410,69 @@
 - title: Primitive API
   url: /extension/primitives/
   parent: /extension/action-authoring/
+- title: Summaries, Bins, and Data Shaping
+  url: /api/data/summaries-and-shaping/
+  parent: /api/data/source-and-derived/
+- title: Expressions and Normalization
+  url: /api/data/expressions-and-normalization/
+  parent: /api/data/source-and-derived/
+- title: Missing Keys and Values
+  url: /api/data/missing-data/
+  parent: /api/data/source-and-derived/
+- title: Data Revisions and Removal
+  url: /api/data/revisions-and-removal/
+  parent: /api/data/source-and-derived/
+- title: Facets and Field Repetition
+  url: /api/composition/facets/
+  parent: /api/composition/
+- title: Editing Compositions
+  url: /api/composition/editing/
+  parent: /api/composition/
+- title: Attached Mark Labels
+  url: /api/marks/labels/
+  parent: /api/marks/text/
+- title: Label Collision Layout
+  url: /api/marks/label-layout/
+  parent: /api/marks/text/
+- title: Repair missing observations
+  url: /recipes/repair-missing-observations/
+  parent: /recipes/
+- title: Compare weighted distributions
+  url: /recipes/compare-weighted-distributions/
+  parent: /recipes/
+- title: Switch encoding modes atomically
+  url: /recipes/switch-encoding-modes/
+  parent: /recipes/
+- title: Edit scales and refresh guides
+  url: /recipes/edit-scales-and-guides/
+  parent: /recipes/
+- title: Select and place final-item labels
+  url: /recipes/edit-selected-labels/
+  parent: /recipes/
+- title: Apply, override, and remove a theme
+  url: /recipes/apply-custom-theme/
+  parent: /recipes/
+- title: Revise facet source and shared guides
+  url: /recipes/edit-facet-source/
+  parent: /recipes/
+- title: Remove resources in dependency order
+  url: /recipes/remove-dependent-resources/
+  parent: /recipes/
+- title: Choose the Right Authoring Level
+  url: /tutorials/hierarchical-authoring/
+  parent: /tutorials/
+- title: Authoring Conventions
+  url: /concepts/authoring-conventions/
+  parent: /concepts/chart-program/
+- title: Data Grain and Statistical Policies
+  url: /api/data/policies/
+  parent: /api/data/
+- title: Choose a Chart
+  url: /api/chart-picker/
+  parent: /api/
+- title: Documentation Version
+  url: /version/
+  parent: /reference/actions/
+- title: Complete Axes and Labels
+  url: /api/axes/complete/
+  parent: /api/axes/

@@ -1,6 +1,8 @@
 <script
   id="docs-search-config"
   type="application/json"
+  data-source-status="{{ site.data.provenance.status }}"
+  data-contract-id="{{ site.data.provenance.contractId | slice: 7, 12 }}"
   data-index-url="{{ '/search-index.json' | relative_url }}"
   data-root-url="{{ '/' | relative_url }}"
 ></script>

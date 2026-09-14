@@ -136,7 +136,11 @@
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart."
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/area-layout/program.js",
+      "exported": "createAreaSimple"
+    }
   },
   "tutorials/density-area.md": {
     "mode": "complete",
@@ -159,7 +163,11 @@
     "mode": "complete",
     "environment": "browser-module",
     "result": "changes",
-    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart."
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/dumbbell-plot/program.js",
+      "exported": "createDumbbellPlotExample"
+    }
   },
   "tutorials/error-band.md": {
     "mode": "complete",
@@ -258,5 +266,95 @@
     "contains": "const filtered = chart()",
     "importChart": true,
     "prerequisites": "Import chart from ggaction and provide Cars rows with finite Displacement and Acceleration."
+  },
+  "recipes/repair-missing-observations.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/repair-missing-observations/program.js",
+      "exported": "createMissingObservationsWorkflow"
+    }
+  },
+  "recipes/compare-weighted-distributions.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/compare-weighted-distributions/program.js",
+      "exported": "createWeightedDistributionsWorkflow"
+    }
+  },
+  "recipes/switch-encoding-modes.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/switch-encoding-modes/program.js",
+      "exported": "createEncodingModesWorkflow"
+    }
+  },
+  "recipes/edit-scales-and-guides.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/edit-scales-and-guides/program.js",
+      "exported": "createScaleGuidesWorkflow"
+    }
+  },
+  "recipes/edit-selected-labels.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/edit-selected-labels/program.js",
+      "exported": "createSelectedLabelsWorkflow"
+    }
+  },
+  "recipes/apply-custom-theme.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/apply-custom-theme/program.js",
+      "exported": "createCustomThemeWorkflow"
+    }
+  },
+  "recipes/edit-facet-source.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/edit-facet-source/program.js",
+      "exported": "createFacetSourceWorkflow"
+    }
+  },
+  "recipes/remove-dependent-resources.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/remove-dependent-resources/program.js",
+      "exported": "createResourceRemovalWorkflow"
+    }
+  },
+  "tutorials/hierarchical-authoring.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup and a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/hierarchical-authoring/program.js",
+      "exported": "createHierarchicalAuthoring"
+    }
   }
 }

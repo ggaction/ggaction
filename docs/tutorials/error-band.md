@@ -5,22 +5,22 @@ title: Error Band Chart Tutorial
 
 # Error Band Chart Tutorial
 
-![Mean life expectancy by cluster with bounded confidence bands](../assets/images/gapminder-error-band.png)
+![Mean life expectancy by cluster with bounded confidence bands](../assets/images/gapminder-error-band.png){: loading="eager" fetchpriority="high" width="1520" height="960" }
 
 This chart summarizes life expectancy over time for each Gapminder cluster.
 `createErrorBand` derives one mean and two-sided 95% Student-t confidence
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ site.data.provenance.exampleSourceRef }}/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program

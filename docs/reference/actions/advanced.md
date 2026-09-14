@@ -12,6 +12,8 @@ Each declared action has an exact signature and its own stable link. Option tabl
 
 **API layer:** advanced. **Authoring roles:** H2.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodeChannels(options: EncodeChannelsOptions): ChartProgram;
 ```
@@ -65,6 +67,8 @@ from `ggaction`; use the focused encoding actions from `ggaction/basic`.
 
 **API layer:** advanced. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 selectMarks(options: SelectMarksOptions): ChartProgram;
 ```
@@ -114,6 +118,8 @@ values, and properties are concrete graphical values.
 
 **API layer:** advanced. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editMarkSelection(options: EditMarkSelectionOptions): ChartProgram;
 ```
@@ -159,6 +165,8 @@ replayed from a clean baseline.
 ## `removeMarkSelection`
 
 **API layer:** advanced. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 removeMarkSelection(options?: RemoveMarkSelectionOptions): ChartProgram;

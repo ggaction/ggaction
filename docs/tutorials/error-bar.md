@@ -5,22 +5,22 @@ title: Error Bar Chart Tutorial
 
 # Error Bar Chart Tutorial
 
-![Car observations with grouped mean confidence intervals](../assets/images/cars-error-bar.png)
+![Car observations with grouped mean confidence intervals](../assets/images/cars-error-bar.png){: loading="eager" fetchpriority="high" width="1440" height="920" }
 
 This chart keeps individual car observations visible while summarizing
 acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ site.data.provenance.exampleSourceRef }}/data/cars.json --output public/cars.json
 ```
 
 ## Complete program

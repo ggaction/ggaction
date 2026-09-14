@@ -5,7 +5,7 @@ title: Scale Options
 
 # Scale Options
 
-{% include chart-example.html id="density" %}
+{% include chart-example.html id="density" lead=true %}
 
 Scales map semantic field or datum values into concrete positions and
 appearance values. Encodings create compatible scales automatically; use
@@ -36,6 +36,12 @@ defaults and stored program state.
 
 Existing scales can be changed with `editScale`:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const reversed = program.editScale({ id: "x", reverse: true });
 ```
@@ -43,12 +49,24 @@ const reversed = program.editScale({ id: "x", reverse: true });
 Color scales can use the same top-level palette shorthand during creation and
 editing. It is mutually exclusive with `range`:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const recolored = program.editScale({ id: "color", palette: "set2" });
 ```
 
 Full programs also expose channel-specific editors, so ordinary revisions do
 not require knowing the generated scale ID:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program
@@ -59,10 +77,28 @@ program
   .editSizeScale({ range: [20, 200] });
 ```
 
-The complete family is `editXScale`, `editYScale`, `editThetaScale`,
-`editRScale`, `editColorScale`, `editStrokeScale`, `editSizeScale`, `editOpacityScale`,
-`editShapeScale`, `editStrokeWidthScale`, `editStrokeDashScale`,
-`editXOffsetScale`, `editYOffsetScale`, and `editParallelScale`.
+The complete focused family and declared selectors are generated below.
+
+<!-- focused-scale-editors:start -->
+
+| Focused editor | Selectors | Role and API layer |
+| --- | --- | --- |
+| [`editXScale`](../reference/actions/charts-data.md#editxscale) | `id` (optional), `target` (optional) | H2 · user-facing |
+| [`editYScale`](../reference/actions/charts-data.md#edityscale) | `id` (optional), `target` (optional) | H2 · user-facing |
+| [`editXOffsetScale`](../reference/actions/charts-data.md#editxoffsetscale) | `target` (required) | H2 · user-facing |
+| [`editYOffsetScale`](../reference/actions/charts-data.md#edityoffsetscale) | `target` (required) | H2 · user-facing |
+| [`editParallelScale`](../reference/actions/charts-data.md#editparallelscale) | `target` (required), `dimension` (required) | H2 · user-facing |
+| [`editThetaScale`](../reference/actions/charts-data.md#editthetascale) | `id` (optional), `target` (optional) | H2 · user-facing |
+| [`editRScale`](../reference/actions/charts-data.md#editrscale) | `id` (optional), `target` (optional) | H2 · user-facing |
+| [`editColorScale`](../reference/actions/charts-data.md#editcolorscale) | `id` (optional), `target` (optional) | H2 · user-facing |
+| [`editStrokeScale`](../reference/actions/charts-data.md#editstrokescale) | `target` (required) | H2 · user-facing |
+| [`editSizeScale`](../reference/actions/charts-data.md#editsizescale) | `id` (optional), `target` (optional) | H2 · user-facing |
+| [`editOpacityScale`](../reference/actions/charts-data.md#editopacityscale) | `id` (optional), `target` (optional) | H2 · user-facing |
+| [`editShapeScale`](../reference/actions/charts-data.md#editshapescale) | `id` (optional), `target` (optional) | H2 · user-facing |
+| [`editStrokeWidthScale`](../reference/actions/charts-data.md#editstrokewidthscale) | `id` (optional), `target` (optional) | H2 · user-facing |
+| [`editStrokeDashScale`](../reference/actions/charts-data.md#editstrokedashscale) | `id` (optional), `target` (optional) | H2 · user-facing |
+
+<!-- focused-scale-editors:end -->
 
 Offset editors require `target`; they edit that mark's nested offset scale.
 `editParallelScale` requires both `target` and the exact `dimension` field.
@@ -96,6 +132,12 @@ focused stroke edits then refresh both sets of consumers.
 Advanced authors can create a named unattached scale with the same complete
 type vocabulary:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const program = chart().createScale({
   id: "temperature",
@@ -120,6 +162,12 @@ domain or range; omission preserves the current value. Quantitative position
 scales can change atomically between `linear`, `log`, `pow`, `sqrt`, and
 `symlog`:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const logarithmic = program.editScale({ id: "x", type: "log", base: 10 });
 ```
@@ -128,6 +176,12 @@ Categorical bar positions use `band`; categorical point and rule positions use
 `point`. Both preserve first-appearance domain order. A band scale exposes a
 non-zero slot width and accepts `paddingInner`, `paddingOuter`, and `align`.
 A point scale exposes zero bandwidth and accepts `padding` and `align`.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeX({
@@ -145,6 +199,12 @@ and guides. A band can be shared by bars and point centers, but changing it to
 ## `removeScale({ id })` {#removescale-id}
 
 Use the Full-only removal action to delete an unattached named scale:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const cleaned = program.removeScale({ id: "temporaryColor" });

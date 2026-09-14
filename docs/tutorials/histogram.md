@@ -5,20 +5,20 @@ title: Cars Histogram Tutorial
 
 # Cars Histogram Tutorial
 
-![Displacement distribution grouped by origin](../assets/images/cars-histogram.png)
+![Displacement distribution grouped by origin](../assets/images/cars-histogram.png){: loading="eager" fetchpriority="high" width="864" height="920" }
 
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ site.data.provenance.exampleSourceRef }}/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -116,7 +116,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/cars-histogram/program.js).
 - Continue with [Encodings](../api/encodings.md),
   [Guides](../api/guides.md), [Titles](../api/titles.md), and the
   [Basic Chart contract](../api/basic-charts.md#createhistogram).

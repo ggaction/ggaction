@@ -5,7 +5,7 @@ title: Ordinal and Stroke Dash Scales
 
 # Ordinal and Stroke Dash Scales
 
-{% include chart-example.html id="line" %}
+{% include chart-example.html id="line" lead=true %}
 
 ## Discrete and ordinal scales
 
@@ -23,6 +23,12 @@ resolved centers. Reversed explicit ranges are valid.
 
 Color ranges accept explicit colors or a named palette descriptor; stroke-dash
 ranges accept named styles and direct dash patterns.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeColor({
@@ -42,6 +48,12 @@ colors, and dash patterns are stored as concrete graphical values.
 The names `solid`, `dashed`, `dotted`, and `dashdot` resolve to `[]`, `[6, 4]`,
 `[1, 3]`, and `[6, 3, 1, 3]`. A direct pattern is an empty array or an
 even-length array of non-negative finite numbers that is not entirely zero.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeStrokeDash({

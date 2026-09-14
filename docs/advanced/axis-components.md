@@ -5,13 +5,19 @@ title: Advanced Axis Components
 
 # Advanced Axis Components
 
-{% include chart-example.html id="scatterplot" %}
+{% include chart-example.html id="scatterplot" lead=true %}
 
 Use these actions when a complete `createAxes` call is not sufficient. All
 component actions require a resolved compatible quantitative, time, band, or point scale and Canvas
 bounds. x supports `bottom` and `top`; y supports `left` and `right`.
 
 ## Complete single-channel axes
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.createXAxis({
@@ -35,11 +41,13 @@ with their focused create actions. See the
 [shared optional component rules](../api/axes.md#omit-remove-and-restore-components).
 
 <!-- action-capabilities:axes:start -->
+
 | Axis family | Create | Edit | Editable components |
 | --- | --- | --- | --- |
 | Cartesian complete axis | `createXAxis` / `createYAxis` / `createAxes` | `editXAxis` / `editYAxis` | line, ticks, labels, ticksAndLabels, title, position |
 | Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, radial angle and radial title position |
 | Parallel dimension axes | `createAxes` / `createParallelAxes` / `createParallelAxis` | `editParallelAxis` / `removeParallelAxis` / `removeParallelAxes` | line, ticks, labels, title from each stored dimension |
+
 <!-- action-capabilities:axes:end -->
 
 Create also accepts `coordinate`, an existing coordinate ID consumed by the
@@ -47,6 +55,12 @@ selected channel and scale. `createAxes` supplies this automatically and stores
 it on the semantic guide.
 
 ## Lines
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.createXAxisLine({
@@ -64,6 +78,12 @@ omit `scale`. Endpoints are inferred from the resolved scale range and Canvas
 bounds; concrete endpoints are not accepted.
 
 ## Ticks
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.createXAxisTicks({ count: 5, length: 6 });
@@ -86,6 +106,12 @@ ticks default to the inferred bin boundaries. Passing either option disables
 that inference.
 
 ## Labels
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.createXAxisLabels({ format: { decimals: 1 } });
@@ -118,6 +144,12 @@ tick and label configurations produce an error.
 
 ## Ticks and labels together
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.createXAxisTicksAndLabels({
   count: 5,
@@ -135,9 +167,15 @@ Shared options are `scale` (create only), `position`, and either `count` or
 `values`. Nested `ticks` accepts `length`, `color`, and `lineWidth`; nested
 `labels` accepts the same text style, format, rotation, wrapping, overlap, and
 label-map options as standalone Cartesian labels. Its count/values belong to
-the shared ticks-and-labels request. See [axis label layout](../api/axes.md).
+the shared ticks-and-labels request. See [axis label layout](../api/axes/complete.md).
 
 ## Titles
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.createXAxisTitle({ text: "Horsepower" });

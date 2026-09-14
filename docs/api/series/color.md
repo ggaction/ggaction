@@ -5,7 +5,7 @@ title: Color Encoding
 
 # Color Encoding
 
-{% include chart-example.html id="line" %}
+{% include chart-example.html id="line" lead=true %}
 
 ## `encodeColor(options)`
 
@@ -20,11 +20,13 @@ per series. Raw Area supports an independent group field or tuple. Color must be
 `layout: "center"` can infer the initial group from color when no group is present.
 
 <!-- action-capabilities:color:start -->
+
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
 | Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
 | Discretized continuous | point, aggregate bar, rect | point/aggregate bar/rect: quantitative | quantize, quantile, or threshold scale |
+
 <!-- action-capabilities:color:end -->
 
 | Option | Type | Default |
@@ -41,6 +43,12 @@ per series. Raw Area supports an independent group field or tuple. Color must be
 | `scale.range` | `"auto"`, color array, or palette descriptor | `"auto"` |
 | `scale.palette` | palette name or `{ name, count?, extent? }` | omitted |
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.encodeColor({
   field: "Origin",
@@ -55,6 +63,12 @@ forms. Automatic domains preserve first-appearance order.
 Use `fieldType: "ordinal"` when the values are ordered categories rather than
 continuous magnitudes. They still receive discrete palette colors and legend
 entries:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeColor({
@@ -77,6 +91,12 @@ domain size unless `count` is supplied. On a sequential scale, `count` must be
 at least `2` and controls the concrete gradient-stop count. Non-categorical
 palettes also accept an optional two-value `extent` within `[0, 1]`.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.encodeColor({
   field: "Origin",
@@ -92,6 +112,12 @@ placement in `layoutSeries`, invokes `encodeXOffset` for vertical bars or
 zero and one mean per category/color cell. Negative and positive bars therefore
 extend in opposite directions from the same zero baseline. Color and offset
 scales are fully resolved, and concrete rects use the implicit `0.72` band width immediately.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `groupedBars`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 groupedBars.encodeColor({
@@ -110,6 +136,12 @@ On a complete histogram, `encodeColor` rematerializes each non-empty bin as
 zero-stacked category rects. Stack and fill order follow source first appearance of each series,
 independently of the color domain. The y scale continues to use each bin's total count, and an explicit
 domain must contain every observed category.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `histogram`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 histogram.encodeColor({
@@ -131,12 +163,24 @@ values; their group and overlay layouts use zero as each rectangle's start
 endpoint and reject explicit measure domains that exclude zero. Call
 `encodeBarWidth` after color only when the implicit `0.72` width is not desired.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `histogram`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 histogram.encodeColor({ field: "Origin", layout: "fill" });
 ```
 
 On an area mark, author grouping directly or through
 `encodeDensity({ groupBy })`, then encode that same field:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `densityArea`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 densityArea.encodeColor({
@@ -158,6 +202,12 @@ layout; group-to-stack transitions remove active offsets and only unused automat
 
 `layout: "center"` is the area-only shorthand for matching grouping, color, and
 `layoutSeries({ mode: "center" })` in one atomic call:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "occupations"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const stream = chart()
@@ -191,6 +241,12 @@ For an aggregate bar, continuous color is computed at the same final category
 grain as the rectangle. When the color field matches the quantitative measure,
 omitting `aggregate` inherits that measure aggregate:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 bars
   .encodeY({ field: "population", aggregate: "sum", stack: null })
@@ -203,6 +259,12 @@ bars
 
 If color uses a different field, its aggregate is required because multiple
 source rows cannot be chosen arbitrarily for one final rectangle:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `bars`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 bars.encodeColor({

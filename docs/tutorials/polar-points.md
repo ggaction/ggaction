@@ -5,7 +5,7 @@ title: Polar Point Chart Tutorial
 
 # Polar Point Chart Tutorial
 
-{% include chart-example.html id="polar" %}
+{% include chart-example.html id="polar" lead=true %}
 
 This tutorial maps car acceleration to angle, horsepower to distance from the
 center, and origin to color. The public angle unit is degrees: `0` points to 12
@@ -16,7 +16,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ site.data.provenance.exampleSourceRef }}/data/cars.json --output public/cars.json
 ```
 
 ## Complete program

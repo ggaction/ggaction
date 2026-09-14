@@ -5,7 +5,20 @@ title: Mark Style
 
 # Mark Style
 
-{% include chart-example.html id="bar" %}
+{% include chart-example.html id="bar" lead=true %}
+
+## Canonical stroke compatibility
+
+<!-- action-capabilities:stroke:start -->
+
+| Mode | Supported marks | Field types | Scale and grain constraints |
+| --- | --- | --- | --- |
+| Constant | point, line, area, bar, rect, arc, rule, tick | point/line/area/bar/rect/arc/rule/tick: constant color or supported reset | Independent from fill/color; no scale; field-to-constant removes the stroke legend |
+| Categorical | point, line, area, bar, rect, arc, rule, tick | point/line/area/bar/rect/arc/rule/tick: nominal, ordinal | ordinal scale; one unambiguous value per final item; Line/Area values must be constant within each series |
+| Continuous | point, line, area, bar, rect, arc, rule, tick | point/line/area/bar/rect/arc/rule/tick: quantitative, temporal | sequential scale; no aggregate option; unknown fallback is row-owned Point only; series and final-item uniqueness still apply |
+| Discretized continuous | point, line, area, bar, rect, arc, rule, tick | point/line/area/bar/rect/arc/rule/tick: quantitative | quantize, quantile, threshold; same final-item and series constraints |
+
+<!-- action-capabilities:stroke:end -->
 
 ## Stroke caps, joins, and rounded rectangles
 
@@ -20,6 +33,12 @@ Every strokable mark style accepts `lineCap`, `lineJoin`, and `miterLimit`:
 Bar and Rect styles also accept a non-negative finite `cornerRadius`, which
 defaults to `0`. The requested radius is measured in logical Canvas pixels and
 is clamped separately for each item to half its smaller side:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const rounded = chart()
@@ -59,6 +78,12 @@ stroke restores the authored cap, join, and miter limit.
 color to a Point, Line, Area, Bar, Rect, Arc, Rule, or Tick. The field form maps
 categorical, quantitative, or temporal data through an independent stroke scale:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program
   .encodeColor({ field: "group" })
@@ -91,6 +116,12 @@ independent quantitative width scale for a line or rule. Rules receive one
 width per source row. Lines receive one width per complete series, so all rows
 in one series must contain the same field value. No implicit mean, sum, or
 representative row is selected. The default concrete width range is `[1, 8]`.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program
@@ -128,6 +159,12 @@ appearance. Endpoints and statistical component ownership remain separate.
 
 Override the fraction of each resolved category band—or directional offset slot for group
 layout—used by an aggregate or ranged bar and rematerialize its rectangles.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeBarWidth({ band: 0.72 });

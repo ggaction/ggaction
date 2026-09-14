@@ -12,7 +12,7 @@ radius for rose charts and radial bars.
 
 ## Complete pie and donut plots
 
-{% include chart-example.html id="pie-plot" %}
+{% include chart-example.html id="pie-plot" lead=true %}
 
 Use `createPiePlot` for a complete category count or explicitly weighted pie.
 This is the count variant of the canonical `examples/pie-plot/program.js`:
@@ -81,7 +81,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ site.data.provenance.exampleSourceRef }}/data/cars.json --output public/cars.json
 ```
 
 ## Complete program

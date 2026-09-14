@@ -467,7 +467,8 @@ test("keeps the strict TypeScript extension example executable by package CI", (
 
 test("keeps task pages visual and chart figures canonical", async () => {
   const catalog = chartExampleCatalog();
-  assert.match(read("docs/_includes/chart-example.html"), /fetchpriority="high"/);
+  assert.match(read("docs/_includes/chart-example.html"), /if include\.lead/);
+  assert.match(read("docs/_includes/chart-example.html"), /else %}lazy/);
   const manifest = JSON.parse(read("docs/assets/images/manifest.json"));
   assert.equal(catalog.size >= 10, true);
 
@@ -576,13 +577,13 @@ test("routes entry documentation to the canonical example indexes", () => {
   assert.match(readme, /\.\/examples\/README\.md/);
   assert.match(readme, /\/tutorials\//);
   assert.match(readme, /examples\/cars-regression-scatterplot/);
-  assert.equal(
-    [...catalog.values()].filter(example => example.tutorial_order).length,
-    13
+  assert.deepEqual(
+    [...catalog.values()].filter(example => example.tutorial_order).map(example => example.url).sort(),
+    pageRegistry().filter(page => page.url.startsWith("/tutorials/") && page.url !== "/tutorials/").map(page => page.url).sort()
   );
-  assert.equal(
-    [...catalog.values()].filter(example => example.recipe_order).length,
-    19
+  assert.deepEqual(
+    [...catalog.values()].filter(example => example.recipe_order).map(example => example.recipe_url).sort(),
+    pageRegistry().filter(page => page.url.startsWith("/recipes/") && page.url !== "/recipes/").map(page => page.url).sort()
   );
   assert.match(read("docs/tutorials/index.md"), /example\.tutorial_order/);
   assert.match(read("docs/recipes/index.md"), /example\.recipe_order/);
@@ -657,7 +658,7 @@ test("keeps complete tutorial programs portable to package consumers", () => {
       source,
       new RegExp(
         `curl --fail --location https://raw\\.githubusercontent\\.com/` +
-        `ggaction/ggaction/main/data/${dataset}\\.json --output public/${dataset}\\.json`
+        `ggaction/ggaction/\\{\\{ site\\.data\\.provenance\\.exampleSourceRef \\}\\}/data/${dataset}\\.json --output public/${dataset}\\.json`
       )
     );
   }
@@ -677,7 +678,7 @@ test("keeps every primary recipe snippet labeled and syntactically runnable", ()
   for (const url of recipeUrls) {
     const relative = url.replace(/^\//, "").replace(/\/$/, ".md");
     const source = read(`docs/${relative}`);
-    assert.match(source, /\{% include runnable-recipe-note\.html %\}/, url);
+    assert.match(source, /\{% include runnable-recipe-note\.html %\}|## Prerequisites/, url);
     const primary = source.match(/```javascript\n([\s\S]*?)```/)?.[1];
     assert.notEqual(primary, undefined, `${url} primary JavaScript`);
     assert.match(primary, /from "ggaction";/, `${url} public package import`);
@@ -702,7 +703,7 @@ test("documents one shared numeric font-weight rendering policy", () => {
     "docs/api/legends/editing.md",
     "docs/api/axes.md",
     "docs/advanced/axis-components.md",
-    "docs/api/composition.md"
+    "docs/api/composition/facets.md"
   ]) {
     assert.match(read(page), /font-weight policy/);
     assert.match(read(page), /#font-weights/);
@@ -884,8 +885,8 @@ test("keeps point legend support consistent across public guidance", () => {
   const legends = read("docs/api/legends.md");
   assert.doesNotMatch(troubleshooting, /Point color legends are currently\s+unsupported/);
   assert.match(troubleshooting, /nominal point color encoding can create/);
-  assert.match(supported, /point color \+ shape/);
-  assert.match(legends, /Categorical \| point, line, area, bar, rect, arc/);
+  assert.match(supported, /canonical channel tables/);
+  assert.match(legends, /Categorical color\/shape\/dash \| point, line, area, bar, rect, arc/);
 });
 
 test("classifies every declared ChartProgram action in the reference", async () => {

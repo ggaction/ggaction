@@ -12,11 +12,13 @@ Each declared action has an exact signature and its own stable link. Option tabl
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`PointShape`](./../types.md#type-pointshape).
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`PointShape`](./../types.md#type-pointshape) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -51,6 +53,8 @@ Create a semantic point mark with one of 12 equal-area shape realizations.
 ## `createTickMark`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
@@ -90,6 +94,8 @@ Length defaults to `14`; stroke width defaults to `2`. [Marks](../../api/marks.m
 ## `createReferenceLine`
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
@@ -154,6 +160,8 @@ The shared scale still drives both marks. Add text with `createMarkLabels({ sour
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
 ```
@@ -210,6 +218,8 @@ is needed. Both reference facades are available in the full entry point.
 ## `createMarkLabels`
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
@@ -271,6 +281,8 @@ keeps its percentage of the complete source.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
 ```
@@ -310,6 +322,8 @@ rebound with this action or removed.
 ## `editMarkLabelPlacement`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
@@ -353,6 +367,8 @@ Pass `"auto"` to restore the legacy source anchor and remove the owned placement
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
 ```
@@ -390,6 +406,8 @@ to use `removeMark`.
 ## `createAnnotation`
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createAnnotation(options: CreateAnnotationOptions): ChartProgram;
@@ -455,6 +473,8 @@ Omit `layout` or pass `false` to retain the exact anchor. A layout object accept
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createTextMark(options?: TextMarkOptions): ChartProgram;
 ```
@@ -510,6 +530,8 @@ input contract.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editTextMark(options: EditTextMarkOptions): ChartProgram;
 ```
@@ -551,6 +573,8 @@ source or position. [Text marks](../../api/marks/text.md)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 layoutLabels(options?: LabelLayoutOptions): ChartProgram;
 ```
@@ -590,6 +614,8 @@ warning summary. [Text marks](../../api/marks/text.md)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
 ```
@@ -619,6 +645,7 @@ semantic base positions. [Text marks](../../api/marks/text.md)
 ### Position capability matrix
 
 <!-- action-capabilities:position:start -->
+
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
 | `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
@@ -627,6 +654,7 @@ semantic base positions. [Text marks](../../api/marks/text.md)
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
+
 <!-- action-capabilities:position:end -->
 
 Temporal input branches accept `temporalUnit: "auto" | "year" | "timestamp"`.
@@ -640,11 +668,13 @@ binding clears it. Domains and tick values are already normalized timestamps.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editPointMark(options: StrokeStyleDetails & { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`PointShape`](./../types.md#type-pointshape).
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`PointShape`](./../types.md#type-pointshape) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -678,6 +708,8 @@ Change constant point shape, fill, opacity, or outline appearance and rematerial
 ## `editTickMark`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editTickMark(options: StrokeStyleDetails & { target?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
@@ -717,6 +749,8 @@ position, and other assignments. [Marks](../../api/marks.md)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 jitterPoints(options: JitterPointsOptions): ChartProgram;
 ```
@@ -753,6 +787,8 @@ replaces the previous policy from the semantic base positions. [Point marks](../
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeJitter(options?: RemoveJitterOptions): ChartProgram;
 ```
@@ -783,6 +819,8 @@ directly from its semantic encodings. [Point marks](../../api/marks/point.md)
 ## `packPoints`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 packPoints(options: PackPointsOptions): ChartProgram;
@@ -822,6 +860,8 @@ fails atomically; `"overlap"` records unresolved best-effort placements.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
 ```
@@ -853,6 +893,8 @@ positions. [Point marks](../../api/marks/point.md)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeMark(options?: RemoveMarkOptions): ChartProgram;
 ```
@@ -883,6 +925,8 @@ and independently shared resources. [Marks](../../api/marks.md)
 ## `createLineMark`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
@@ -929,6 +973,8 @@ series as a radar path.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
 ```
@@ -968,11 +1014,13 @@ semantic encodings. [Marks](../../api/marks.md)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createBarMark(options?: RectStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
-Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails).
+Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1008,11 +1056,13 @@ Create a semantic bar mark and empty rect collection.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editBarMark(options: RectStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
-Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails).
+Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1047,6 +1097,8 @@ field-driven color encoding. [Marks](../../api/marks.md)
 ## `createAreaMark`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
@@ -1093,6 +1145,8 @@ Area `missing` defaults to `"error"`. `"break"` splits null/undefined measured e
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
 ```
@@ -1131,6 +1185,8 @@ Create a semantic rule mark and empty line collection. The first omitted ID is
 ## `editRuleMark`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
@@ -1171,6 +1227,8 @@ accepts the same styles. [Rule marks](../../api/marks/rule.md)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
 ```
@@ -1210,6 +1268,8 @@ Edit constant area appearance. `stroke: false` removes an existing outline.
 ## `createArcMark`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
@@ -1254,6 +1314,8 @@ radial sectors. [Marks](../../api/marks/line-area.md#arc-marks)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
 ```
@@ -1294,6 +1356,8 @@ Edit arc geometry or appearance and rematerialize complete sector paths.
 ## `createRectMark`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createRectMark(options?: RectMarkOptions): ChartProgram;
@@ -1336,6 +1400,8 @@ not infer bar aggregation, baseline, stack, or width semantics.
 ## `editRectMark`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editRectMark(options: EditRectMarkOptions): ChartProgram;

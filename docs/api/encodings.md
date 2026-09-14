@@ -5,7 +5,7 @@ title: Encodings
 
 # Encodings
 
-{% include chart-example.html id="regression" %}
+{% include chart-example.html id="regression" lead=true %}
 
 Encoding actions connect data fields or constants to chart channels. Ordinary
 authors choose the relationship; ggaction infers a unique target, coordinate,
@@ -25,6 +25,7 @@ scale ID, and field type when the stored program makes that choice safe.
 ## Supported mark/channel matrix
 
 <!-- action-capabilities:summary:start -->
+
 The tables below are generated from the same reviewed capability registry used by the focused API pages.
 
 ### Position channels
@@ -46,6 +47,28 @@ The tables below are generated from the same reviewed capability registry used b
 | Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
 | Discretized continuous | point, aggregate bar, rect | point/aggregate bar/rect: quantitative | quantize, quantile, or threshold scale |
 
+### Independent stroke channel
+
+| Mode | Supported marks | Field types | Scale and grain constraints |
+| --- | --- | --- | --- |
+| Constant | point, line, area, bar, rect, arc, rule, tick | point/line/area/bar/rect/arc/rule/tick: constant color or supported reset | Independent from fill/color; no scale; field-to-constant removes the stroke legend |
+| Categorical | point, line, area, bar, rect, arc, rule, tick | point/line/area/bar/rect/arc/rule/tick: nominal, ordinal | ordinal scale; one unambiguous value per final item; Line/Area values must be constant within each series |
+| Continuous | point, line, area, bar, rect, arc, rule, tick | point/line/area/bar/rect/arc/rule/tick: quantitative, temporal | sequential scale; no aggregate option; unknown fallback is row-owned Point only; series and final-item uniqueness still apply |
+| Discretized continuous | point, line, area, bar, rect, arc, rule, tick | point/line/area/bar/rect/arc/rule/tick: quantitative | quantize, quantile, threshold; same final-item and series constraints |
+
+### Other appearance channels
+
+| Action | Marks | Field types | Scale family | Item grain and units |
+| --- | --- | --- | --- | --- |
+| `encodeSize` | point | quantitative | linear, log, sqrt, pow, quantize, quantile, threshold | row-owned point; range values are areas; remove explicit radius first |
+| `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
+| `encodeOpacity` | point, line, rule | quantitative or constant | linear for field; none for constant | point/rule item or complete line series; values within one series must agree |
+| `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
+| `encodeStrokeDash` | line, rule | nominal or constant | ordinal for field; none for constant | complete line series or rule item; series values must agree |
+| `encodeAngle` | point, tick | quantitative or constant | none | item; clockwise degrees; circles retain the angle as a visual no-op |
+| `encodePointRadius` / `encodeRadius` | point | constant | none | glyph radius in logical pixels; independent from Polar position r |
+| `encodeBarWidth` | bar | constant band fraction or pixels | parent category band or temporal/quantitative slot | aggregate or ranged bar; histogram bins own their width |
+
 ### Selection and guides
 
 | Action | Supported marks | Grain | Result |
@@ -54,16 +77,22 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Legend family | Supported marks | Channels |
 | --- | --- | --- |
-| Categorical | point, line, area, bar, rect, arc | color, shape, strokeDash, or compatible composites |
-| Continuous gradient | point, aggregate bar, rect | sequential color |
-| Discretized interval | point, aggregate bar, rect | quantize, quantile, or threshold color |
-| Sampled | point, line, rule | field opacity, size, or strokeWidth |
+| Categorical color/shape/dash | point, line, area, bar, rect, arc | ordinal color; point shape; line strokeDash; compatible composites follow family constraints |
+| Categorical stroke | point, line, area, bar, rect, arc, rule, tick | ordinal stroke; final-item or series identities |
+| Continuous color gradient | point, aggregate bar, rect | sequential color; gradient swatch, no symbol recipe |
+| Continuous stroke gradient | point, line, area, bar, rect, arc, rule, tick | sequential stroke; separate gradient, no symbol recipe |
+| Discretized color interval | point, aggregate bar, rect | quantize/quantile/threshold color; rectangle swatches |
+| Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
+| Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
+| Opacity | point, line | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
+| Stroke width | line, rule | quantitative strokeWidth samples; line symbol |
 
 | Axis family | Create | Edit | Editable components |
 | --- | --- | --- | --- |
 | Cartesian complete axis | `createXAxis` / `createYAxis` / `createAxes` | `editXAxis` / `editYAxis` | line, ticks, labels, ticksAndLabels, title, position |
 | Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, radial angle and radial title position |
 | Parallel dimension axes | `createAxes` / `createParallelAxes` / `createParallelAxis` | `editParallelAxis` / `removeParallelAxis` / `removeParallelAxes` | line, ticks, labels, title from each stored dimension |
+
 <!-- action-capabilities:summary:end -->
 
 ## Direction
@@ -71,6 +100,12 @@ The tables below are generated from the same reviewed capability registry used b
 `encodeAngle` rotates point and Tick glyphs with finite direct degrees. It
 accepts either one constant `value` or one quantitative `field`; it does not
 create a scale or legend. `0` points up and positive values rotate clockwise.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "ticks"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const directional = chart()
@@ -142,6 +177,12 @@ scale IDs. The exact option and error contracts live in the
 Use `removeEncoding({ channel, target? })` to remove one active assignment
 without deleting its named scale, source dataset, or coordinate:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const plainPoints = encodedPoints
   .removeEncoding({ channel: "size" })
@@ -183,13 +224,6 @@ referenced by a stored selection also fails atomically. Use the generated compat
 family page for inference and ordering rules. If a valid action still selects
 nothing, see [Troubleshooting](../troubleshooting.md#a-target-cannot-be-inferred).
 
-## Related
-
-[Position Encodings](./position-encodings.md) ·
-[Series Encodings](./series-encodings.md) ·
-[Appearance](./appearance.md) · [Scale Options](./scales.md)
-
-
 ## Explicit grouping and time inputs
 
 `createRegression`, `encodeDensity` and `encodeHorizon` accept `groupBy: false`
@@ -202,3 +236,9 @@ Temporal bindings accept `temporalUnit: "auto" | "year" | "timestamp"`; see
 [temporal inputs](./position/temporal.md#explicit-input-units). The option changes
 input interpretation without modifying raw rows or the existing mean Bar and
 nominal numeric color defaults.
+
+## Related
+
+[Position Encodings](./position-encodings.md) ·
+[Series Encodings](./series-encodings.md) ·
+[Appearance](./appearance.md) · [Scale Options](./scales.md)

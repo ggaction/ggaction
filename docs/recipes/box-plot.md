@@ -5,7 +5,7 @@ title: Box Plot Recipe
 
 # Box Plot Recipe
 
-{% include chart-example.html id="box" %}
+{% include chart-example.html id="box" lead=true %}
 
 ## Minimal flow
 

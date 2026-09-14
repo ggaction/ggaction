@@ -5,7 +5,7 @@ title: Parallel Coordinates Recipe
 
 # Parallel Coordinates Recipe
 
-{% include chart-example.html id="parallel-coordinates" %}
+{% include chart-example.html id="parallel-coordinates" lead=true %}
 
 ## Minimal flow
 

@@ -12,6 +12,8 @@ Each declared action has an exact signature and its own stable link. Option tabl
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createSummaryData(options: SummaryDataOptions): ChartProgram;
 ```
@@ -47,6 +49,8 @@ shared aggregate operations. [Source and Derived Data](../../api/data/source-and
 ## `createBinData`
 
 **API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createBinData(options: BinDataOptions): ChartProgram;
@@ -92,6 +96,8 @@ members using the same edge rules as Histogram.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createFoldData(options: FoldDataOptions): ChartProgram;
 ```
@@ -126,6 +132,8 @@ every source cell. [Source and Derived Data](../../api/data/source-and-derived.m
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createComputedData(options: ComputedDataOptions): ChartProgram;
 ```
@@ -159,6 +167,8 @@ expression. [Source and Derived Data](../../api/data/source-and-derived.md#creat
 ## `createNormalizedData`
 
 **API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -201,6 +211,8 @@ percent-change values independently within each group.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createCompleteData(options: CompleteDataOptions): ChartProgram;
 ```
@@ -239,6 +251,8 @@ explicit fill and source-membership provenance for synthesized rows.
 ## `createImputedData`
 
 **API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createImputedData(options: ImputedDataOptions): ChartProgram;
@@ -280,6 +294,8 @@ imputation while preserving group boundaries and final source order.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createStackData(options: StackDataOptions): ChartProgram;
 ```
@@ -317,6 +333,8 @@ by Bar and Area layouts. [Source and Derived Data](../../api/data/source-and-der
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editComputedData(options: EditComputedDataOptions): ChartProgram;
 ```
@@ -345,6 +363,8 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editFoldData(options: EditFoldDataOptions): ChartProgram;
 ```
@@ -372,6 +392,8 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 ## `editSummaryData`
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editSummaryData(options: EditSummaryDataOptions): ChartProgram;
@@ -402,6 +424,8 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 ## `editBinData`
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editBinData(options: EditBinDataOptions): ChartProgram;
@@ -440,6 +464,8 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editStackData(options: EditStackDataOptions): ChartProgram;
 ```
@@ -470,6 +496,8 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 ## `editIntervalData`
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editIntervalData(options: EditIntervalDataOptions): ChartProgram;
@@ -504,6 +532,8 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editECDFData(options: EditECDFDataOptions): ChartProgram;
 ```
@@ -534,6 +564,8 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 ## `editNormalizedData`
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;
@@ -569,6 +601,8 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editCompleteData(options: EditCompleteDataOptions): ChartProgram;
 ```
@@ -600,6 +634,8 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 ## `editImputedData`
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editImputedData(options: EditImputedDataOptions): ChartProgram;
@@ -633,6 +669,8 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 ## `createIntervalData`
 
 **API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createIntervalData(options: IntervalDataOptions): ChartProgram;
@@ -676,6 +714,8 @@ median supports interquartile range. [Data](../../api/data.md)
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createECDFData(options: ECDFDataOptions): ChartProgram;
 ```
@@ -713,6 +753,8 @@ resolved provenance stores every positive denominator. [Data](../../api/data.md)
 ## `createRegression`
 
 **API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createRegression(options?: RegressionOptions): ChartProgram;
@@ -762,6 +804,8 @@ polynomial degree to `2`; LOESS span to `0.75`.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editRegression(options: EditRegressionOptions): ChartProgram;
 ```
@@ -810,6 +854,8 @@ removes grouping. Component-only changes retain the current fitted rows.
 ## `createErrorBar`
 
 **API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createErrorBar(options?: ErrorBarOptions): ChartProgram;
@@ -867,6 +913,8 @@ the main rule, and both caps on one shared sub-slot scale.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editErrorBar(options: EditErrorBarOptions): ChartProgram;
 ```
@@ -920,6 +968,8 @@ convert statistical and explicit intervals while preserving owner/cap IDs.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createErrorBand(options?: ErrorBandOptions): ChartProgram;
 ```
@@ -972,6 +1022,8 @@ is overridden.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editErrorBand(options: EditErrorBandOptions): ChartProgram;
 ```
@@ -1009,6 +1061,8 @@ Behavior, inference, resets, and errors: [editErrorBand and editErrorBandBoundar
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editErrorBandBoundary(options: EditErrorBandBoundaryOptions): ChartProgram;
 ```
@@ -1042,6 +1096,8 @@ Behavior, inference, resets, and errors: [editErrorBand and editErrorBandBoundar
 ## `createBoxPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createBoxPlot(options?: BoxPlotOptions): ChartProgram;
@@ -1094,6 +1150,8 @@ ensure compatible guides inside the facade; omission and `false` create none.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editBoxPlot(options: EditBoxPlotOptions): ChartProgram;
 ```
@@ -1134,6 +1192,8 @@ IDs. [Box plots](../../api/box-plots.md#editing-a-box-plot)
 ## `createGradientPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createGradientPlot(options?: GradientPlotOptions): ChartProgram;
@@ -1184,6 +1244,8 @@ control lightness and opacity.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editGradientPlot(options: EditGradientPlotOptions): ChartProgram;
 ```
@@ -1223,6 +1285,8 @@ one immutable raw-source profile revision; appearance-only edits retain it.
 ## `createViolinPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createViolinPlot(options: ViolinPlotOptions): ChartProgram;
@@ -1272,6 +1336,8 @@ one half to each side of the category center.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editViolinPlot(options: EditViolinPlotOptions): ChartProgram;
 ```
@@ -1310,6 +1376,8 @@ appearance remains available through `editAreaMark`.
 ## `createRegressionBand`
 
 **API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createRegressionBand(options: CreateRegressionBandOptions): ChartProgram;
@@ -1352,6 +1420,8 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editRegressionBand(options: StrokeStyleDetails & { target?: string; color?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
 ```
@@ -1384,6 +1454,8 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 ## `createRegressionLine`
 
 **API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createRegressionLine(options: CreateRegressionLineOptions): ChartProgram;
@@ -1423,6 +1495,8 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editRegressionLine(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
 ```
@@ -1452,6 +1526,8 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 ## `createDensityPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createDensityPlot(options: CreateDensityPlotOptions): ChartProgram;
@@ -1510,6 +1586,8 @@ See the [complete density workflow](../../tutorials/density-area.md#complete-den
 ## `createHorizonPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createHorizonPlot(options: CreateHorizonPlotOptions): ChartProgram;

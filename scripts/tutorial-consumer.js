@@ -1,34 +1,15 @@
 import assert from "node:assert/strict";
-import { copyFile, mkdir, readFile, realpath, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, realpath, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { chromium } from "playwright";
 import { build, preview } from "vite";
 
+import { documentationPrograms } from "./doc-snippets.js";
+import { docInputs } from "../test/support/docs-inputs.js";
+
 const root = fileURLToPath(new URL("../", import.meta.url));
-
-export const TUTORIAL_CONSUMERS = Object.freeze({
-  "scatterplot": "cars",
-  "line-chart": "cars",
-  "histogram": "cars",
-  "grouped-bar": "jobs",
-  "regression-scatterplot": "cars",
-  "density-area": "cars",
-  "error-bar": "cars",
-  "error-band": "gapminder",
-  "polar-points": "cars",
-  "polar-lines": "gapminder",
-  "polar-arcs": "cars"
-});
-
-export function completeTutorialProgram(markdown, name = "tutorial") {
-  const heading = markdown.indexOf("## Complete program");
-  assert.notEqual(heading, -1, `${name} must identify its complete program.`);
-  const match = markdown.slice(heading).match(/```javascript\n([\s\S]*?)\n```/);
-  assert.notEqual(match, null, `${name} must contain a JavaScript program.`);
-  return match[1];
-}
 
 function tutorialHtml(name) {
   return `<!doctype html>
@@ -43,42 +24,36 @@ function tutorialHtml(name) {
 }
 
 async function prepareTutorials(directory) {
+  const examples = await documentationPrograms();
   const publicDirectory = path.join(directory, "public");
   await mkdir(publicDirectory, { recursive: true });
-  for (const dataset of new Set(Object.values(TUTORIAL_CONSUMERS))) {
-    await copyFile(
-      path.join(root, "data", `${dataset}.json`),
-      path.join(publicDirectory, `${dataset}.json`)
-    );
+  for (const dataset of new Set(examples.map(example => example.dataset).filter(Boolean))) {
+    await copyFile(path.join(root, "data", `${dataset}.json`),
+      path.join(publicDirectory, `${dataset}.json`));
   }
-
   const inputs = {};
-  for (const [name, dataset] of Object.entries(TUTORIAL_CONSUMERS)) {
-    const markdown = await readFile(
-      path.join(root, "docs", "tutorials", `${name}.md`),
-      "utf8"
-    );
-    const source = completeTutorialProgram(markdown, name);
-    assert.match(source, /from "ggaction"/);
-    assert.doesNotMatch(source, /\.\.\/\.\.\/(?:src|data)\//);
-    assert.match(source, new RegExp(`fetch\\("/${dataset}\\.json"\\)`));
-    assert.match(source, /if \(!response\.ok\) throw new Error/);
-    assert.match(
-      markdown.slice(0, markdown.indexOf("## Complete program")),
-      new RegExp(
-        `curl --fail --location https://raw\\.githubusercontent\\.com/` +
-        `ggaction/ggaction/main/data/${dataset}\\.json --output public/${dataset}\\.json`
-      )
-    );
-
+  const consumers = [];
+  for (const example of examples) {
+    const name = example.file.replace(/\.md$/, "").replaceAll("/", "-");
+    const fixture = example.fixture ? docInputs[example.fixture] : {};
+    assert.ok(fixture, `${example.file} has an unknown fixture.`);
+    const prefix = [
+      'import { render as renderDocumentationResult } from "ggaction";',
+      ...(example.importChart ? ['import { chart } from "ggaction";'] : []),
+      ...Object.entries(fixture).map(([key, value]) => `const ${key} = ${JSON.stringify(value)};`)
+    ].join("\n");
+    const result = example.result.split(",").at(-1).trim();
+    const source = `${prefix}\n${example.code}\nrenderDocumentationResult(${result}, document.querySelector("#chart").getContext("2d"));\n`;
+    assert.doesNotMatch(source, /from ["']\.\.\/.*src\//, "Examples must import the installed package.");
     const tutorialDirectory = path.join(directory, "tutorials", name);
     await mkdir(tutorialDirectory, { recursive: true });
-    await writeFile(path.join(tutorialDirectory, "main.js"), `${source}\n`);
+    await writeFile(path.join(tutorialDirectory, "main.js"), source);
     const html = path.join(tutorialDirectory, "index.html");
     await writeFile(html, tutorialHtml(name));
     inputs[name] = html;
+    consumers.push({ name, dataset: example.dataset });
   }
-  return inputs;
+  return { inputs, consumers };
 }
 
 async function assertRenderedTutorial(page, baseUrl, name, dataset) {
@@ -120,7 +95,7 @@ async function assertRenderedTutorial(page, baseUrl, name, dataset) {
   assert.deepEqual(consoleErrors, [], `${name} console errors`);
   assert.deepEqual(pageErrors, [], `${name} page errors`);
   assert.deepEqual(responseErrors, [], `${name} response errors`);
-  assert.equal(
+  if (dataset) assert.equal(
     await page.evaluate(filename => performance.getEntriesByType("resource")
       .some(entry => new URL(entry.name).pathname === `/${filename}.json`), dataset),
     true,
@@ -130,7 +105,7 @@ async function assertRenderedTutorial(page, baseUrl, name, dataset) {
 
 export async function testTutorialConsumers(directory) {
   directory = await realpath(directory);
-  const inputs = await prepareTutorials(directory);
+  const { inputs, consumers } = await prepareTutorials(directory);
   await build({
     root: directory,
     logLevel: "silent",
@@ -151,7 +126,7 @@ export async function testTutorialConsumers(directory) {
   const baseUrl = server.resolvedUrls.local[0];
   const browser = await chromium.launch({ headless: true });
   try {
-    for (const [name, dataset] of Object.entries(TUTORIAL_CONSUMERS)) {
+    for (const { name, dataset } of consumers) {
       const page = await browser.newPage();
       try {
         await assertRenderedTutorial(page, baseUrl, name, dataset);

@@ -5,7 +5,7 @@ title: Dot, Lollipop, and Dumbbell Plots
 
 # Dot, Lollipop, and Dumbbell Plots
 
-![A categorical dumbbell plot with named start and end points](../assets/images/endpoint-plots.png)
+{% include chart-example.html id="dumbbell-plot" lead=true %}
 
 These three Full entry actions share one categorical endpoint model. Each starts
 from immutable rows and produces ordinary point and rule children, so existing
@@ -33,14 +33,19 @@ const lollipops = base.createLollipopPlot({
   baseline: 0
 });
 const changes = base.createDumbbellPlot({
+  id: "dumbbell",
   category: "category",
   start: "before",
   end: "after",
-  labels: { endpoint: "both" }
+  guides: false
 });
 
 render(changes, document.querySelector("#chart").getContext("2d"));
 ```
+
+The rendered panel is the canonical guide-free dumbbell example. Use the browser
+module setup with `<canvas id="chart"></canvas>`. Add `labels: { endpoint: "both" }`
+and reserve guide space when those components are desired.
 
 Raw rows remain raw. When categories repeat, set `summary` to `mean`, `median`,
 `sum`, `min`, or `max` to request one derived row per category. Ggaction never

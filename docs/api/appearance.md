@@ -5,7 +5,24 @@ title: Appearance Encodings
 
 # Appearance Encodings
 
-{% include chart-example.html id="regression" %}
+{% include chart-example.html id="regression" lead=true %}
+
+## Canonical appearance compatibility
+
+<!-- action-capabilities:appearance:start -->
+
+| Action | Marks | Field types | Scale family | Item grain and units |
+| --- | --- | --- | --- | --- |
+| `encodeSize` | point | quantitative | linear, log, sqrt, pow, quantize, quantile, threshold | row-owned point; range values are areas; remove explicit radius first |
+| `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
+| `encodeOpacity` | point, line, rule | quantitative or constant | linear for field; none for constant | point/rule item or complete line series; values within one series must agree |
+| `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
+| `encodeStrokeDash` | line, rule | nominal or constant | ordinal for field; none for constant | complete line series or rule item; series values must agree |
+| `encodeAngle` | point, tick | quantitative or constant | none | item; clockwise degrees; circles retain the angle as a visual no-op |
+| `encodePointRadius` / `encodeRadius` | point | constant | none | glyph radius in logical pixels; independent from Polar position r |
+| `encodeBarWidth` | bar | constant band fraction or pixels | parent category band or temporal/quantitative slot | aggregate or ranged bar; histogram bins own their width |
+
+<!-- action-capabilities:appearance:end -->
 
 ## At a glance
 
@@ -35,9 +52,11 @@ focused pages below for selection, point appearance, and mark-specific style.
 ## Supported highlight marks
 
 <!-- action-capabilities:highlight:start -->
+
 | Action | Supported marks | Grain | Result |
 | --- | --- | --- | --- |
 | `selectMarks` / `highlightMarks` | point, bar, line, area, rect, arc, rule, tick | item; stacked bars also support stack | selection intent and mark-specific durable emphasis |
+
 <!-- action-capabilities:highlight:end -->
 
 ## Focused appearance families

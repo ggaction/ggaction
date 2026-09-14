@@ -5,7 +5,7 @@ title: Marks
 
 # Marks
 
-{% include chart-example.html id="scatterplot" %}
+{% include chart-example.html id="scatterplot" lead=true %}
 
 Marks define the semantic form of a layer. Create a mark first, then connect it
 to data through position, grouping, and appearance encodings. The first mark of
@@ -68,6 +68,12 @@ removes generated composite children, unreferenced generated datasets, owned
 legends, and selection/highlight state. Source data and resources shared by
 another mark remain:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `layeredProgram`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const barsOnly = layeredProgram.removeMark({ target: "points" });
 ```
@@ -106,6 +112,12 @@ updates it.
 
 `createTickMark` creates a centered fixed-length line glyph for every source
 row after both x and y encodings are complete:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `cars`. Resource selectors used here: `target: "ticks"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const rug = chart()

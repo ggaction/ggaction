@@ -5,7 +5,7 @@ title: Horizon Chart Recipe
 
 # Horizon Chart Recipe
 
-{% include chart-example.html id="horizon" %}
+{% include chart-example.html id="horizon" lead=true %}
 
 ## Minimal flow
 

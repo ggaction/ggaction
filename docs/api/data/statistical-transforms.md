@@ -5,12 +5,18 @@ title: Statistical Data Transforms
 
 # Statistical Data Transforms
 
-{% include chart-example.html id="regression" %}
+{% include chart-example.html id="regression" lead=true %}
 
 ## `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval? })`
 
 Create deterministic regression predictions from an existing dataset. This is
 an advanced data action used by higher-level regression chart actions.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.createRegressionData({
@@ -52,6 +58,12 @@ before allocating or entering the expensive fit.
 Create immutable grouped interval-summary rows independently from an error-bar
 mark.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.createIntervalData({
   id: "accelerationIntervals",
@@ -83,6 +95,12 @@ or endpoint is not representable throws a `RangeError` atomically.
 
 Create an immutable kernel-density dataset. This is an advanced data
 action used by higher-level density-chart encodings.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.createDensityData({

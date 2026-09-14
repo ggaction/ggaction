@@ -7,8 +7,8 @@ title: Mark Selection and Highlighting Tutorial
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/main/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -17,7 +17,7 @@ Follow [Getting Started](../getting-started.md) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ site.data.provenance.exampleSourceRef }}/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -89,7 +89,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 
 ## Highlight grouped maximum points
 
-![Maximum-horsepower point in each Origin highlighted as a red diamond](../assets/images/mark-selection-points.png)
+![Maximum-horsepower point in each Origin highlighted as a red diamond](../assets/images/mark-selection-points.png){: loading="eager" fetchpriority="high" width="1520" height="880" }
 
 The selector runs at point-item grain. `groupBy: "Origin"` chooses one maximum
 Horsepower row per Origin; styling happens only after the three semantic items
@@ -117,7 +117,7 @@ remain unchanged.
 
 ## Select a complete histogram stack
 
-![Tallest complete histogram stack highlighted in gold](../assets/images/mark-selection-bars.png)
+![Tallest complete histogram stack highlighted in gold](../assets/images/mark-selection-bars.png){: loading="lazy" fetchpriority="auto" width="864" height="920" }
 
 For bars, semantic endpoints and concrete dimensions are intentionally
 separate. `channel: "y2"` compares the upper semantic endpoint. With
@@ -144,7 +144,7 @@ topmost matching rectangle rather than the complete stack.
 
 ## Highlight one line series
 
-![Japan line series highlighted with a red dashed stroke](../assets/images/mark-selection-lines.png)
+![Japan line series highlighted with a red dashed stroke](../assets/images/mark-selection-lines.png){: loading="lazy" fetchpriority="auto" width="1440" height="920" }
 
 A multi-row line is one series item. The selected field must therefore have
 one unique value over the complete path.

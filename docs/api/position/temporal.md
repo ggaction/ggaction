@@ -5,7 +5,7 @@ title: Temporal Line Positions
 
 # Temporal Line Positions
 
-{% include chart-example.html id="line" %}
+{% include chart-example.html id="line" lead=true %}
 
 ## At a glance
 
@@ -15,6 +15,12 @@ title: Temporal Line Positions
 | aggregate `encodeY` | `encodeY({ field: "value", aggregate: "mean" })` | temporal x | Sorted scalar-aggregate path(s) |
 
 ## Temporal line `encodeX(options)`
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeX({
@@ -57,6 +63,12 @@ Explicit year accepts integer 0–9999 or exactly four digits. Timestamp require
 a finite number in the Date range; numeric strings, Date objects and automatic
 seconds inference are excluded. Other unit names, null and false fail.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.encodeX({
   field: "time", fieldType: "temporal", temporalUnit: "timestamp",
@@ -71,9 +83,15 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/main/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeY({
@@ -125,6 +143,12 @@ two finite values per final group.
 
 Parameterized aggregates accept either a quantile probability or an ordered
 row selection:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeY({

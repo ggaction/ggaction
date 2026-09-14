@@ -5,12 +5,18 @@ title: Composite Legend Symbols
 
 # Composite Legend Symbols
 
-{% include chart-example.html id="regression" %}
+{% include chart-example.html id="regression" lead=true %}
 
 ## Layered symbols
 
 Legend symbols are graphical recipes composed from line, point, and swatch
 layers. The default line shorthand remains supported:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `lineProgram`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ~~~javascript
 lineProgram.createLegend({
@@ -22,6 +28,12 @@ Histogram, grouped-bar, and grouped-area swatch shorthand supports `width`,
 `height`, `stroke`, and `strokeWidth`.
 
 Use layers for a composite symbol:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `lineProgram`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ~~~javascript
 lineProgram.createLegend({
@@ -35,6 +47,12 @@ lineProgram.createLegend({
 ~~~
 
 The same recipe works in top and bottom item grids:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `lineProgram`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ~~~javascript
 lineProgram.createLegend({
@@ -52,6 +70,12 @@ lineProgram.createLegend({
 ~~~
 
 Supported layers are:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ~~~javascript
 { type: "line", length?, lineWidth? }
@@ -97,6 +121,12 @@ three encodings.
 
 The default creates no background. Pass true for default border settings or an
 object with color, lineWidth, padding, and background.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ~~~javascript
 program.createLegend({

@@ -53,7 +53,7 @@
     const regions = actionHeadings.map((action, index) => {
       const nodes = [action.heading];
       let next = action.heading.nextElementSibling;
-      while (next && !next.matches("h2, h3")) {
+      while (next && !next.matches("h2, .docs-action-heading")) {
         nodes.push(next);
         next = next.nextElementSibling;
       }

@@ -5,7 +5,7 @@ title: Discretized Color Scales
 
 # Discretized Color Scales
 
-{% include chart-example.html id="scatterplot" %}
+{% include chart-example.html id="scatterplot" lead=true %}
 
 ## Discretized quantitative color
 
@@ -17,6 +17,12 @@ continuous gradient:
   possible.
 - `threshold` uses an explicit, strictly increasing boundary array. A domain
   with `n` boundaries requires `n + 1` colors.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeColor({
@@ -50,6 +56,12 @@ instead of silently creating duplicate classes.
 In Full, `editScale` and a type-changing `encodeColor` reassignment share one
 transition policy. Both update every attached mark. A compatible gradient legend
 becomes an interval legend, or the reverse, in the same immutable action.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 import { chart } from "ggaction";

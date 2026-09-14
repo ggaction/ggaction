@@ -5,7 +5,7 @@ title: Line and Area Marks
 
 # Line and Area Marks
 
-{% include chart-example.html id="line" %}
+{% include chart-example.html id="line" lead=true %}
 
 Line and area marks materialize ordered backend-neutral paths. Lines connect
 values; areas close two edges or one density edge against a baseline.
@@ -13,6 +13,12 @@ values; areas close two edges or one density edge against a baseline.
 ## Line marks
 
 ### `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const program = chart()
@@ -40,6 +46,12 @@ data and positions are inferred. Compatible aggregate grain is inferred too,
 so an aggregate trend over aggregate bars needs no repeated `encodeX` or
 `encodeY` call:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const layered = chart()
   .createData({ values: cars })
@@ -55,6 +67,12 @@ policies are not transferred. Pass `data` explicitly to assemble an independent
 line with explicit encodings and scale IDs.
 
 ### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed?, lineCap?, lineJoin?, miterLimit? })`
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.editLineMark({
@@ -84,6 +102,12 @@ Line marks also accept theta/radius positions. The two encoding actions may be
 called in either order; one channel remains valid semantic state but does not
 produce a path until both are present.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const radar = chart()
   .createData({ values: rows })
@@ -105,6 +129,12 @@ through the shared line materialization lifecycle.
 
 ### `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const area = chart()
   .createData({ values: intervalRows })
@@ -122,6 +152,12 @@ without creating a scale or legend. For a center-stacked area,
 center y policy atomically.
 
 ### `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.editAreaMark({
@@ -141,6 +177,12 @@ Area stroke details use the same shared Mark Style contract as Line.
 ## Arc marks
 
 ### `createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const donut = chart()
@@ -167,12 +209,6 @@ retains the edited settings until both required encodings exist. Constant
 the outline and stored width; a later string stroke restores width `1`.
 Arc stroke cap/join values are retained for the closed path and later replay.
 
-## Related
-
-[Position encodings](../position-encodings.md) · [Polar line tutorial](../../tutorials/polar-lines.md) ·
-[Series encodings](../series-encodings.md) ·
-[Density](../encodings.md#atomic-density) · [Error bands](../error-bands.md)
-
 Area endpoints can use a quantitative field or a finite `{ datum: number }` bound.
 At least one endpoint must be a field; the independent position is always a field.
 Use `encodeYRange({ lower: "value", upper: { datum: 0 } })` for a vertical zero baseline.
@@ -182,3 +218,9 @@ The default `missing: "error"` rejects missing endpoints. With `missing: "break"
 null or undefined measured endpoints split the path into closed segments with at least two consecutive valid samples.
 Missing independent positions, invalid group keys, NaN and Infinity remain errors.
 `editAreaMark({ missing: "break" })` changes the same policy. Density and Horizon retain their own missing-data policies.
+
+## Related
+
+[Position encodings](../position-encodings.md) · [Polar line tutorial](../../tutorials/polar-lines.md) ·
+[Series encodings](../series-encodings.md) ·
+[Density](../encodings.md#atomic-density) · [Error bands](../error-bands.md)

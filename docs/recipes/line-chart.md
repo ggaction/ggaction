@@ -5,7 +5,7 @@ title: Line Chart Recipe
 
 # Line Chart Recipe
 
-{% include chart-example.html id="line" %}
+{% include chart-example.html id="line" lead=true %}
 
 ## Minimal flow
 

@@ -7,7 +7,7 @@ title: Horizon Chart Tutorial
 
 ## Complete Horizon facade
 
-{% include chart-example.html id="horizon-plot" %}
+{% include chart-example.html id="horizon-plot" lead=true %}
 
 Use `createHorizonPlot` to author signed bands and the original x axis in one action:
 
@@ -32,10 +32,10 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/main/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
-![Kenya life expectancy Horizon chart](../assets/images/gapminder-horizon.png)
+![Kenya life expectancy Horizon chart](../assets/images/gapminder-horizon.png){: loading="lazy" fetchpriority="auto" width="1520" height="600" }
 
 This chart folds Kenya's life expectancy above and below a 55-year baseline
 into three compact bands. The source rows stay immutable. `encodeHorizon`
@@ -43,8 +43,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/gapminder-horizon/program.js).
 
 ## Complete program
 

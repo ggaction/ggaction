@@ -5,7 +5,7 @@ title: Ordinal Offsets
 
 # Ordinal Offsets
 
-{% include chart-example.html id="bar" %}
+{% include chart-example.html id="bar" lead=true %}
 
 ## At a glance
 
@@ -17,6 +17,12 @@ title: Ordinal Offsets
 | `editYOffsetScale` | `editYOffsetScale({ target: "bars", reverse: true })` | existing yOffset encoding | Edit horizontal subgroup placement |
 
 Most chart authors should use:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.encodeColor({ field: "sex", layout: "group" });
@@ -58,6 +64,12 @@ successful encoding or scale edit. This keeps repeated encoding, shared marks,
 Canvas resize, and renderer replay on the same requested policy.
 
 ## Focused offset scale editing
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `groupedBars`. Resource selectors used here: `target: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const reordered = groupedBars.editXOffsetScale({

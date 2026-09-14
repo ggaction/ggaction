@@ -5,7 +5,7 @@ title: Rose Chart Recipe
 
 # Rose Chart Recipe
 
-{% include chart-example.html id="rose" %}
+{% include chart-example.html id="rose" lead=true %}
 
 A rose chart compares several magnitudes inside equal categorical angle bands.
 The overlay layout draws larger sectors first so smaller sectors remain visible.

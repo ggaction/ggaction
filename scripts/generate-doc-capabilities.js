@@ -10,6 +10,8 @@ const targets = Object.freeze({
   summary: ["docs/api/encodings.md"],
   position: ["docs/api/position-encodings.md", "docs/_sources/action-reference.md"],
   color: ["docs/api/series/color.md", "docs/_sources/action-reference.md"],
+  stroke: ["docs/api/appearance/mark-style.md"],
+  appearance: ["docs/api/appearance.md"],
   highlight: ["docs/api/appearance.md"],
   legends: ["docs/api/legends.md"],
   axes: ["docs/advanced/axis-components.md"]
@@ -56,6 +58,14 @@ export function capabilitySections(registry) {
       row.mode, marks(row.support), fieldTypes(row.support), row.options
     ])
   );
+  const stroke = table(
+    ["Mode", "Supported marks", "Field types", "Scale and grain constraints"],
+    registry.stroke.map(row => [row.mode, marks(row.support), fieldTypes(row.support), row.options])
+  );
+  const appearance = table(
+    ["Action", "Marks", "Field types", "Scale family", "Item grain and units"],
+    registry.appearance.map(row => [action(row.action), row.marks.join(", "), row.fieldTypes, row.scales, row.grain])
+  );
   const highlight = table(
     ["Action", "Supported marks", "Grain", "Result"],
     registry.highlight.map(row => [
@@ -75,6 +85,8 @@ export function capabilitySections(registry) {
   return {
     position,
     color,
+    stroke,
+    appearance,
     highlight,
     legends,
     axes,
@@ -89,6 +101,8 @@ export function capabilitySections(registry) {
       "",
       color,
       "",
+      "### Independent stroke channel", "", stroke, "",
+      "### Other appearance channels", "", appearance, "",
       "### Selection and guides",
       "",
       highlight,
@@ -109,7 +123,7 @@ function replaceSection(source, id, body, file) {
   assert.notEqual(last, -1, `${file} is missing ${end}`);
   assert.equal(source.indexOf(start, first + start.length), -1, `${file} repeats ${start}`);
   assert.equal(source.indexOf(end, last + end.length), -1, `${file} repeats ${end}`);
-  return `${source.slice(0, first + start.length)}\n${body}\n${source.slice(last)}`;
+  return `${source.slice(0, first + start.length)}\n\n${body}\n\n${source.slice(last)}`;
 }
 
 export async function generateDocCapabilities({ check = false } = {}) {

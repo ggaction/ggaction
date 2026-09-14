@@ -5,7 +5,7 @@ title: Path Ordering Recipe
 
 # Path Ordering Recipe
 
-{% include chart-example.html id="development-trajectories" %}
+{% include chart-example.html id="development-trajectories" lead=true %}
 
 ## Minimal flow
 

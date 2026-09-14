@@ -5,7 +5,7 @@ title: Guides
 
 # Guides
 
-{% include chart-example.html id="histogram" %}
+{% include chart-example.html id="histogram" lead=true %}
 
 ## At a glance
 
@@ -26,11 +26,23 @@ title: Guides
 Creates the applicable Cartesian, Polar, or Parallel axes, Cartesian or Polar grid, and categorical legend supported
 by the current semantic encodings.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.createGuides();
 ```
 
 Pass child options to customize each guide:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.createGuides({
@@ -54,6 +66,12 @@ program.createGuides({
 
 `false` explicitly skips that guide:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.createGuides({ legend: false });
 ```
@@ -66,6 +84,12 @@ With automatic options, an existing axis, grid, or legend collection is kept
 as-is and only a missing applicable collection is created. This supports
 progressive authoring after a chart facade has already created its default
 axes and grid:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program
@@ -94,6 +118,12 @@ line legend.
 Density areas can request both grids and forward the complete top-legend
 layout through the aggregate:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `densityArea`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 densityArea.createGuides({
   grid: { horizontal: {}, vertical: {} },
@@ -118,12 +148,24 @@ one composite Origin legend, followed by the five-symbol size legend.
 For grouped bars, the shortest call creates an ordinal x axis at band centers,
 a quantitative y axis, a horizontal grid, and a right-side color legend:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `groupedBars`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 groupedBars.createGuides();
 ```
 
 The same child options remain available. For example, this changes the ordinal
 labels while retaining inference for every other guide:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `groupedBars`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 groupedBars.createGuides({

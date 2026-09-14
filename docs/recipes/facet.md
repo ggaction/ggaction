@@ -5,7 +5,7 @@ title: Facet Recipe
 
 # Facet Recipe
 
-{% include chart-example.html id="facet" %}
+{% include chart-example.html id="facet" lead=true %}
 
 ## Minimal flow
 

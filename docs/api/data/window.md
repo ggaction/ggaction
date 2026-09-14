@@ -18,6 +18,12 @@ running totals, or neighboring values without changing the source rows.
 
 ## `createWindowData({ id, source?, partitionBy?, sortBy?, operations, temporalUnit? })`
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const program = chart()
   .createData({
@@ -72,6 +78,12 @@ required non-negative integer; `frame.following` is optional and defaults to
 `0`. A trailing three-row mean therefore uses `{ preceding: 2 }`, while a
 centered five-row mean uses `{ preceding: 2, following: 2 }`:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `monthly`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const trailing = monthly.createWindowData({
   id: "trailingMean",
@@ -93,6 +105,12 @@ nullish and non-finite source values. `missing: "skip"` excludes only `null` and
 errors. A frame with fewer valid values than `minPeriods` produces `null`.
 
 Use a duration frame for an elapsed-time window:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `events`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const weekly = events.createWindowData({
@@ -127,5 +145,5 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](../data.md) · [Source and derived data](./source-and-derived.md) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/main/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](../../reference/actions.md)

@@ -5,7 +5,7 @@ title: Grids
 
 # Grids
 
-{% include chart-example.html id="histogram" %}
+{% include chart-example.html id="histogram" lead=true %}
 
 ## At a glance
 
@@ -22,9 +22,21 @@ defaults to horizontal only. A Polar-only chart creates theta spokes when theta
 is encoded and radial circles when radius is encoded; charts with both channels
 create both families.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.createGrid();
 ```
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.createGrid({
@@ -91,6 +103,12 @@ ambiguous, provide its ID explicitly.
 
 Use the direction-specific edit actions after that grid exists:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program
   .editHorizontalGrid({ count: 6, color: "#cbd5e1" })
@@ -102,6 +120,12 @@ Use either `count` or `values`. `values: "auto"` restores current axis/scale
 inference. At least one option is required.
 
 Use `editGrid()` to update both directions through one aggregate action:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 program.editGrid({
@@ -130,6 +154,12 @@ encoding is present. Pass `createGuides({ grid: false })` to opt out.
 
 `removeGrid()` removes every existing direction. Select a subset with explicit
 booleans:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const noGrid = program.removeGrid();

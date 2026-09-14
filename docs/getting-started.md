@@ -137,14 +137,17 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/main/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/README.md)
 for complete runnable modules. Browse the
 <a href="{{ '/gallery/' | relative_url }}">chart gallery</a> for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/main/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
+
+Learn [how the same chart stays editable across authoring levels](./tutorials/hierarchical-authoring.md),
+then [choose from every complete chart family](./api/chart-picker.md).
 
 <div class="docs-entry-grid">
   <a href="{{ '/recipes/' | relative_url }}"><strong>Copy a chart recipe</strong><span>Start from the shortest supported flow for a known chart type.</span></a>

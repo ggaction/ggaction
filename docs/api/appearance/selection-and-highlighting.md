@@ -5,12 +5,18 @@ title: Selection and Highlighting
 
 # Selection and Highlighting
 
-{% include chart-example.html id="selection" %}
+{% include chart-example.html id="selection" lead=true %}
 
 ## Mark selection and highlighting
 
 `selectMarks` is the advanced reusable-selection action. Selection by itself
 does not alter `semanticSpec` or `graphicSpec`:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const selected = program.selectMarks({
@@ -56,6 +62,12 @@ is the upper/end endpoint. Concrete property `y` is the top pixel and concrete
 property `height` is its pixel length. For example, select the tallest complete
 histogram stack semantically with:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "bars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.selectMarks({
   target: "bars",
@@ -70,6 +82,12 @@ the currently rendered pixel height.
 
 `highlightMarks` is the concise chart-authoring facade. It can create the
 selection inline or reuse one:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`, `selected`. Resource selectors used here: `selection: "highestByOrigin"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const highlighted = program.highlightMarks({
@@ -119,6 +137,12 @@ requires a matching `stroke` for point, bar, area, and arc highlight recipes.
 preserves the preceding domains and clears retained mark, label, and highlight
 graphics until the filter is replaced, composed, or removed.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "trends"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 program.highlightMarks({
   target: "trends",
@@ -143,6 +167,12 @@ assignment.
 
 Replace a stored selector while keeping its ID and mark target:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `highlighted`. Resource selectors used here: `selection: "highestByOrigin"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const revised = highlighted.editMarkSelection({
   selection: "highestByOrigin",
@@ -158,6 +188,12 @@ ordinary baseline before the existing style is applied to the new keys.
 
 Remove only the graphical assignment while retaining reusable selection intent,
 or release both through the selection action:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `revised`. Resource selectors used here: `selection: "highestByOrigin"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const selectedOnly = revised.removeMarkHighlight({

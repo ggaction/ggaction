@@ -20,6 +20,12 @@ perform data transforms.
 
 ## `createBin2DData({ id, source?, x, y, bins?, extent?, includeEmpty?, members?, as? })`
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const program = chart()
   .createData({
@@ -91,6 +97,12 @@ unreferenced previous revision.
 `editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?, dependents? })`
 
 Use `editBin2DData` when only part of the current transform should change:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "cells"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const revised = program.editBin2DData({

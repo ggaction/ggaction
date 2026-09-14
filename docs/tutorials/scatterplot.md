@@ -5,18 +5,18 @@ title: Cars Scatterplot Tutorial
 
 # Cars Scatterplot Tutorial
 
-![Horsepower versus miles per gallon](../assets/images/cars-scatterplot.png)
+![Horsepower versus miles per gallon](../assets/images/cars-scatterplot.png){: loading="eager" fetchpriority="high" width="1280" height="800" }
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/main/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ site.data.provenance.exampleSourceRef }}/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -162,7 +162,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/main/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](../api/encodings.md),
   [Guides](../api/guides.md), and the
   [Basic Chart contract](../api/basic-charts.md#createscatterplot).

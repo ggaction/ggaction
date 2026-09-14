@@ -5,7 +5,7 @@ title: Heatmap Recipe
 
 # Heatmap Recipe
 
-{% include chart-example.html id="heatmap" %}
+{% include chart-example.html id="heatmap" lead=true %}
 
 ## Pre-gridded flow
 

@@ -5,7 +5,7 @@ title: Scatterplot Recipe
 
 # Scatterplot Recipe
 
-{% include chart-example.html id="scatterplot" %}
+{% include chart-example.html id="scatterplot" lead=true %}
 
 ## Minimal flow
 

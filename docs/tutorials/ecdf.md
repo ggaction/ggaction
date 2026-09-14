@@ -5,7 +5,7 @@ title: Empirical Cumulative Distribution Plots
 
 # Empirical Cumulative Distribution Plots
 
-![Two weighted empirical cumulative distributions](../assets/images/ecdf-plot.png)
+{% include chart-example.html id="ecdf-plot" lead=true %}
 
 An empirical cumulative distribution function answers: “What share of the
 observations is less than or equal to this value?” `createECDFPlot` owns that
@@ -41,7 +41,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/main/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on

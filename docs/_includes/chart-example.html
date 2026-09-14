@@ -7,8 +7,8 @@
       alt="{{ example.alt }}"
       width="{{ example.width }}"
       height="{{ example.height }}"
-      loading="eager"
-      fetchpriority="high"
+      loading="{% if include.lead %}eager{% else %}lazy{% endif %}"
+      fetchpriority="{% if include.lead %}high{% else %}auto{% endif %}"
     >
   </a>
   <figcaption>{{ example.caption }}</figcaption>

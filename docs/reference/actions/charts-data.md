@@ -12,6 +12,8 @@ Each declared action has an exact signature and its own stable link. Option tabl
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createCanvas(options?: CanvasOptions): ChartProgram;
 ```
@@ -44,6 +46,8 @@ Create the program's Canvas and plot bounds. [Canvas options](../../api/canvas.m
 ## `editCanvas`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editCanvas(options: CanvasOptions): ChartProgram;
@@ -78,6 +82,8 @@ Edit Canvas properties and rematerialize connected consumers.
 ## `fitCanvas`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 fitCanvas(options?: FitCanvasOptions): ChartProgram;
@@ -117,6 +123,8 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 ## `applyTheme`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 applyTheme(options: ApplyThemeOptions): ChartProgram;
@@ -178,6 +186,8 @@ bounds and composition layout.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeTheme(): ChartProgram;
 ```
@@ -205,6 +215,8 @@ ancestor theme becomes active again. Explicit local styles remain unchanged.
 ## `createData`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
@@ -234,6 +246,8 @@ Create one immutable named dataset. [Data](../../api/data.md)
 ## `removeData`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 removeData(options: RemoveResourceOptions): ChartProgram;
@@ -270,6 +284,8 @@ does not infer, cascade, or change graphics.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeScale(options: RemoveResourceOptions): ChartProgram;
 ```
@@ -302,6 +318,8 @@ graphics. [Scale Options](../../api/scales.md#removescale-id)
 ## `removeCoordinate`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 removeCoordinate(options: RemoveResourceOptions): ChartProgram;
@@ -336,6 +354,8 @@ no replacement coordinate is inferred. This action is Full-only.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 bindMarkData(options: BindMarkDataOptions): ChartProgram;
 ```
@@ -369,6 +389,8 @@ highlights before it rematerializes every registered consumer.
 ## `filterData`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 filterData(options: FilterDataOptions): ChartProgram;
@@ -406,6 +428,8 @@ comparison, or range filter. The source defaults to current data.
 ## `createDensityData`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createDensityData(options: DensityDataOptions): ChartProgram;
@@ -452,6 +476,8 @@ kernel to `"gaussian"`, and normalization to `"unit"`.
 ## `createRegressionData`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createRegressionData(options: RegressionDataOptions): ChartProgram;
@@ -500,6 +526,8 @@ LOESS is line-only.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createWindowData(options: WindowDataOptions): ChartProgram;
 ```
@@ -540,6 +568,8 @@ a stable sort while the output preserves source row order.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
 ```
@@ -579,6 +609,8 @@ bucket timestamp, including week, or a nominal local weekday field.
 ## `createBin2DData`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createBin2DData(options: Bin2DDataOptions): ChartProgram;
@@ -621,6 +653,8 @@ direct visual consumers. [Rectangular 2D bins](../../api/data/bin2d.md)
 ## `editBin2DData`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editBin2DData(options: EditBin2DDataOptions): ChartProgram;
@@ -667,6 +701,8 @@ rebind direct visual consumers, and safely release the prior revision.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editDerivedData(options: EditDerivedDataOptions): ChartProgram;
 ```
@@ -693,6 +729,8 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 ## `editFilteredData`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editFilteredData(options: EditFilteredDataOptions): ChartProgram;
@@ -723,6 +761,8 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 ## `editTimeUnitData`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram;
@@ -757,6 +797,8 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editWindowData(options: EditWindowDataOptions): ChartProgram;
 ```
@@ -786,6 +828,8 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 ## `editDensityData`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editDensityData(options: EditDensityDataOptions): ChartProgram;
@@ -821,6 +865,8 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 ## `editRegressionData`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editRegressionData(options: EditRegressionDataOptions): ChartProgram;
@@ -858,6 +904,8 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createCoordinate(options?: CreateCoordinateOptions): ChartProgram;
 ```
@@ -885,6 +933,8 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editCoordinate(options: EditCoordinateOptions): ChartProgram;
 ```
@@ -911,6 +961,8 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 ## `createScale`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createScale(options: CreateScaleOptions): ChartProgram;
@@ -956,6 +1008,8 @@ Behavior, inference, resets, and errors: [Extension and scale contracts](./exten
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editScale(options: EditScaleOptions): ChartProgram;
 ```
@@ -1000,6 +1054,8 @@ Behavior, inference, resets, and errors: [Extension and scale contracts](./exten
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editXScale(options: EditXScaleOptions): ChartProgram;
 ```
@@ -1040,6 +1096,8 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 ## `editYScale`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editYScale(options: EditYScaleOptions): ChartProgram;
@@ -1082,6 +1140,8 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;
 ```
@@ -1113,6 +1173,8 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editYOffsetScale(options: EditYOffsetScaleOptions): ChartProgram;
 ```
@@ -1143,6 +1205,8 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 ## `editParallelScale`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editParallelScale(options: EditParallelScaleOptions): ChartProgram;
@@ -1185,6 +1249,8 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editThetaScale(options: EditThetaScaleOptions): ChartProgram;
 ```
@@ -1221,6 +1287,8 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 ## `editRScale`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editRScale(options: EditRScaleOptions): ChartProgram;
@@ -1259,6 +1327,8 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editColorScale(options: EditColorScaleOptions): ChartProgram;
 ```
@@ -1294,6 +1364,8 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;
 ```
@@ -1323,6 +1395,8 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 ## `editSizeScale`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editSizeScale(options: EditSizeScaleOptions): ChartProgram;
@@ -1358,6 +1432,8 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;
 ```
@@ -1392,6 +1468,8 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editShapeScale(options: EditShapeScaleOptions): ChartProgram;
 ```
@@ -1421,6 +1499,8 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 ## `editStrokeWidthScale`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;
@@ -1458,6 +1538,8 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;
 ```
@@ -1487,6 +1569,8 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createDerivedData(options: CreateDerivedDataOptions): ChartProgram;
 ```
@@ -1513,6 +1597,8 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 ## `filterMarks`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 filterMarks(options: FilterMarksOptions): ChartProgram;
@@ -1561,6 +1647,8 @@ when different. Empty results preserve the preceding scale domains.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeMarkFilter(options?: RemoveMarkFilterOptions): ChartProgram;
 ```
@@ -1593,6 +1681,8 @@ policy, and retain any filtered dataset snapshot that still has downstream users
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeMarkHighlight(options?: RemoveMarkSelectionOptions): ChartProgram;
 ```
@@ -1624,6 +1714,8 @@ legend baseline, and retain the reusable selection.
 ## `highlightMarks`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 highlightMarks(options: HighlightMarksOptions): ChartProgram;
@@ -1675,6 +1767,8 @@ selected-last order.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editCompositionLayout(options: EditCompositionLayoutOptions): ChartProgram;
 ```
@@ -1711,6 +1805,8 @@ is rebuilt from retained child programs.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 replaceCompositionChild(options: ReplaceCompositionChildOptions): ChartProgram;
 ```
@@ -1742,6 +1838,8 @@ must already be a complete chart or composition program.
 ## `insertCompositionChild`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 insertCompositionChild(options: InsertCompositionChildOptions): ChartProgram;
@@ -1777,6 +1875,8 @@ Use either `before` or `after`; omitting both appends the child.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeCompositionChild(options: RemoveCompositionChildOptions): ChartProgram;
 ```
@@ -1808,6 +1908,8 @@ but its final child cannot be removed.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 reorderCompositionChildren(options: ReorderCompositionChildrenOptions): ChartProgram;
 ```
@@ -1838,6 +1940,8 @@ program references stay unchanged while placements and snapshots are rebuilt.
 ## `facet`
 
 **API layer:** user-facing. **Authoring roles:** H0.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 facet(options: FacetOptions): ChartProgram;
@@ -1889,6 +1993,8 @@ See [Program composition](../../api/composition.md#repeat-the-current-chart-by-a
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 facetGrid(options: FacetGridOptions): ChartProgram;
 ```
@@ -1931,6 +2037,8 @@ coordinate, header, and shared or explicit-domain local guides.
 ## `repeatCharts`
 
 **API layer:** user-facing. **Authoring roles:** H0.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 repeatCharts(options: RepeatChartsOptions): ChartProgram;
@@ -1976,6 +2084,8 @@ layers, and composite roles are rejected with explicit errors.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editFacetSource(options: EditFacetSourceOptions): ChartProgram;
 ```
@@ -2009,6 +2119,8 @@ repeat field list changes.
 ## `editFacetHeaders`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editFacetHeaders(options: EditFacetHeadersOptions): ChartProgram;
@@ -2048,6 +2160,8 @@ without changing child programs or facet value order.
 ## `editFacetScales`
 
 **API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editFacetScales(options: FacetScaleResolutions): ChartProgram;
@@ -2095,6 +2209,8 @@ to every Parallel dimension.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editFacetGuides(options: FacetGuideOptions): ChartProgram;
 ```
@@ -2128,6 +2244,8 @@ child-local and reject `"outer"`.
 ## `createScatterPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
@@ -2169,6 +2287,8 @@ appearance encodings. [Basic Charts](../../api/basic-charts.md#createscatterplot
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createDotPlot(options: CreateDotPlotOptions): ChartProgram;
 ```
@@ -2208,6 +2328,8 @@ Create categorical dots from raw rows by default. Set `summary` explicitly to
 ## `createLollipopPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createLollipopPlot(options: CreateLollipopPlotOptions): ChartProgram;
@@ -2250,6 +2372,8 @@ The point and stem use the same source grain and quantitative scale.
 ## `createDumbbellPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createDumbbellPlot(options: CreateDumbbellPlotOptions): ChartProgram;
@@ -2297,6 +2421,8 @@ default. Set `guides.axes.x.title` for a horizontal plot or
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editEndpointPlot(options: EditEndpointPlotOptions): ChartProgram;
 ```
@@ -2337,6 +2463,8 @@ original appearance and guide policy are retained.
 ## `createECDFPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createECDFPlot(options: CreateECDFPlotOptions): ChartProgram;
@@ -2381,6 +2509,8 @@ optional grouping controls both statistical denominators and path identity.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editECDFPlot(options: EditECDFPlotOptions): ChartProgram;
 ```
@@ -2420,6 +2550,8 @@ Ungrouping also removes a coupled group color unless a replacement is supplied.
 ## `createIntervalPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createIntervalPlot(options: CreateIntervalPlotOptions): ChartProgram;
@@ -2466,6 +2598,8 @@ the call order dependent.
 ## `createRegressionPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createRegressionPlot(options: CreateRegressionPlotOptions): ChartProgram;
@@ -2518,6 +2652,8 @@ ungrouped model request.
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createLinePlot(options: CreateLinePlotOptions): ChartProgram;
 ```
@@ -2557,6 +2693,8 @@ non-empty tuple, assigned before independent series color and dash. [Basic Chart
 ## `createPolarScatterPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
@@ -2599,6 +2737,8 @@ Radial position remains independent from `size` and constant `point.radius`.
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
 ```
@@ -2638,6 +2778,8 @@ open unless `line.closed: true` is explicit. [Polar positions](../../api/positio
 ## `createRadarPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;
@@ -2683,6 +2825,8 @@ are used as supplied; the facade does not infer normalization. [Polar positions]
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createRugPlot(options: CreateRugPlotOptions): ChartProgram;
 ```
@@ -2722,6 +2866,8 @@ needed. The default guide contains only the measure axis.
 ## `createStripPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createStripPlot(options: CreateStripPlotOptions): ChartProgram;
@@ -2766,6 +2912,8 @@ one-measure strip uses pixel units.
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;
 ```
@@ -2807,6 +2955,8 @@ glyph extents within each category slot. The facade reuses `createStripPlot` and
 ## `createRaincloudPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createRaincloudPlot(options: CreateRaincloudPlotOptions): ChartProgram;
@@ -2853,6 +3003,8 @@ offset on the side opposite the density.
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editRaincloudPlot(options: EditRaincloudPlotOptions): ChartProgram;
 ```
@@ -2894,6 +3046,8 @@ an optional component or remove color; at least one component must remain enable
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createBarPlot(options: CreateBarPlotOptions): ChartProgram;
 ```
@@ -2934,6 +3088,8 @@ the measure's mean in either orientation; temporal categories are supported on b
 ## `createHistogram`
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createHistogram(options: CreateHistogramOptions): ChartProgram;
@@ -2979,6 +3135,8 @@ be specified. [Basic Charts](../../api/basic-charts.md#createhistogram)
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createHeatmap(options: CreateHeatmapOptions): ChartProgram;
 ```
@@ -3017,6 +3175,8 @@ into ranged cells colored by count. [Basic Charts](../../api/basic-charts.md#cre
 ## `createParallelCoordinates`
 
 **API layer:** user-facing. **Authoring roles:** H0.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram;
@@ -3058,6 +3218,8 @@ local scales and axes. Only `dimensions` is required.
 ## `createPiePlot`
 
 **API layer:** user-facing. **Authoring roles:** H0.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createPiePlot(options: CreatePiePlotOptions): ChartProgram;
@@ -3108,6 +3270,8 @@ scales and legend actions. [Pie and donut tutorial](../../tutorials/polar-arcs.m
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createRosePlot(options: CreateRosePlotOptions): ChartProgram;
 ```
@@ -3151,6 +3315,8 @@ The default id is `rosePlot`. Radius scales are linear and zero-based; explicit 
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 createRadialBarPlot(options: CreateRadialBarPlotOptions): ChartProgram;
 ```
@@ -3193,6 +3359,8 @@ The default id is `radialBarPlot`. Radius scales are linear and zero-based; expl
 ## `createAreaPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;

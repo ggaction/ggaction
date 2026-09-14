@@ -5,20 +5,20 @@ title: Bar Chart Tutorial
 
 # Bar Chart Tutorial
 
-![Mean job percentage by year and sex](../assets/images/jobs-grouped-bar.png)
+![Mean job percentage by year and sex](../assets/images/jobs-grouped-bar.png){: loading="eager" fetchpriority="high" width="1440" height="920" }
 
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/main/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/main/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](../getting-started.md), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/{{ site.data.provenance.exampleSourceRef }}/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -127,7 +127,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/main/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](../api/position-encodings.md),
   [Series encodings](../api/series-encodings.md), and
   [Constant appearance](../api/appearance.md), or review the

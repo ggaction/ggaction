@@ -5,11 +5,17 @@ title: Basic Charts
 
 # Basic Charts
 
-{% include chart-example.html id="scatterplot" %}
+{% include chart-example.html id="scatterplot" lead=true %}
 
 Basic chart actions create a complete mark, its encodings, and applicable
 guides in one traceable call. Create a Canvas and dataset first, then provide
 only the fields that define the chart.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const program = chart()
@@ -26,6 +32,9 @@ Their existing nested mark styles accept the same shape details as direct
 marks: Point, Line, Area, Arc, Rule, and Tick styles accept `lineCap`,
 `lineJoin`, and `miterLimit`; Bar and Rect styles also accept `cornerRadius`.
 See [Mark Style](./appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles).
+
+This page covers five common Cartesian facades. Use [Choose a Chart](./chart-picker.md)
+for all H0 chart families and their package and editing paths.
 
 ## Choose a facade
 
@@ -79,6 +88,12 @@ createScatterPlot(options: CreateScatterPlotOptions): ChartProgram
 Required options are `x` and `y`. Optional `color`, `size`, and `shape` values
 create field encodings; `point` controls constant point appearance.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const scatter = chart()
   .createCanvas()
@@ -115,6 +130,12 @@ unique tuple such as `["country", "scenario"]`. Explicit groups define identity;
 `color` and `strokeDash` can use other fields with one value per series. Without
 `groupBy`, color/dash retain their shared-field grouping. Use `line` for constant
 appearance. See [independent series identity](./series-encodings.md).
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const line = chart()
@@ -156,12 +177,24 @@ Both `{ x: "product", y: "units_sold" }` and the horizontal
 Set `aggregate` explicitly for another statistic. Temporal categories work
 on either axis and accept temporal scale options.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const bars = chart()
   .createCanvas()
   .createData({ values: rows })
   .createBarPlot({ x: "product", y: "units_sold" });
 ```
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const bars = chart()
@@ -187,6 +220,12 @@ createHistogram(options: CreateHistogramOptions): ChartProgram
 
 `field` is required. The action atomically creates binned x and count y
 encodings because those meanings depend on each other.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const histogram = chart()
@@ -215,6 +254,12 @@ createHeatmap(options: CreateHeatmapOptions): ChartProgram
 observed row. With `bin`, raw quantitative `x` and `y` fields are divided into a
 rectangular grid and cell color represents the generated count.
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const heatmap = chart()
   .createCanvas({ margin: { right: 120 } })
@@ -230,6 +275,12 @@ const heatmap = chart()
     rect: { stroke: "white", strokeWidth: 1 }
   });
 ```
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const binnedHeatmap = chart()

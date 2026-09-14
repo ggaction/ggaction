@@ -9,6 +9,7 @@
   let sections;
   let loading;
   let activeIndex = -1;
+  let requestVersion = 0;
   const status = document.createElement("span");
   status.className = "docs-search-status";
   status.setAttribute("role", "status");
@@ -60,6 +61,7 @@
   }
 
   function clearResults() {
+    requestVersion += 1;
     results.replaceChildren();
     results.hidden = true;
     activeIndex = -1;
@@ -97,15 +99,17 @@
     void loadSections();
   }, { once: true });
 
-  async function updateResults() {
+  async function updateResults(forceLoad = false) {
+    const request = ++requestVersion;
     const query = searchable(input.value);
-    if (query.length < 2) {
+    if (query.length < 2 && !forceLoad) {
       clearResults();
       return;
     }
 
     const searchableSections = await loadSections();
-    if (query !== searchable(input.value)) return;
+    if (request !== requestVersion || query !== searchable(input.value)) return;
+    if (query.length < 2) { clearResults(); return; }
     if (!searchableSections) return;
 
     const queryCompact = query.replaceAll(" ", "");
@@ -179,7 +183,7 @@
         link.href = new URL(match.url.replace(/^\/+/, ""), docsRoot);
         const kind = document.createElement("span");
         kind.className = "docs-search-kind";
-        kind.textContent = match.kind;
+        kind.textContent = [match.kind, config.dataset.sourceStatus, config.dataset.contractId].filter(Boolean).join(" · ");
         const title = document.createElement("span");
         title.className = "docs-search-title";
         title.textContent = match.sectionTitle
@@ -197,11 +201,10 @@
     input.setAttribute("aria-expanded", "true");
     status.textContent = `${matches.length} ${matches.length === 1 ? "result" : "results"}`;
   }
-  input.addEventListener("input", updateResults);
-  retry.addEventListener("click", async () => {
-    await loadSections();
-    await updateResults();
+  input.addEventListener("input", () => { void updateResults(); });
+  retry.addEventListener("click", () => {
     input.focus();
+    void updateResults(true);
   });
 
   input.addEventListener("keydown", event => {

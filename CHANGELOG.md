@@ -13,6 +13,61 @@ All notable changes to `ggaction` are recorded in this file.
   point-size scales with equal-area geometry, focused scale editing, complete
   interval legends, source replay, strict types, and installed-package support.
 
+- Added normalization and missing-data workflows with `createNormalizedData`,
+  `createCompleteData`, and `createImputedData`. Computed expressions now support
+  typed scalar/null results, comparisons, conditions, and short-circuit logic;
+  calendar buckets and windows have explicit time and ordering policies.
+- Added immutable derived revision editing: `editDerivedData`, `editComputedData`,
+  `editFilteredData`, `editFoldData`, `editSummaryData`, `editBinData`,
+  `editTimeUnitData`, `editWindowData`, `editDensityData`, `editStackData`,
+  `editRegressionData`, `editIntervalData`, `editECDFData`, `editNormalizedData`,
+  `editCompleteData`, and `editImputedData`. An existing descendant rejects an
+  edit by default; `dependents: "recompute"` rebuilds the full affected closure.
+- Added focused scale editing with `editXScale`, `editYScale`, `editThetaScale`,
+  `editRScale`, `editColorScale`, `editStrokeScale`, `editSizeScale`,
+  `editOpacityScale`, `editShapeScale`, `editStrokeWidthScale`,
+  `editStrokeDashScale`, `editXOffsetScale`, `editYOffsetScale`, and
+  `editParallelScale`. These select the channel owner and replay its consumers.
+- Added `encodeChannels` for atomic multi-channel reassignment; `editCoordinate`
+  for Cartesian aspect and Polar frame changes; and `editLegendBlock` for one
+  identified block of a composite legend.
+- Added `editMarkLabelSelection`, `editMarkLabelPlacement`, and `removeMarkLabels`.
+  Label selection now works on final aggregated items; semantic placement follows
+  directed boundaries through source, scale, and layout changes.
+- Added explicit safe removal with `removeData`, `removeScale`, and
+  `removeCoordinate`. A live dependency produces an ownership-path error; remove
+  or rebind consumers before removing the resource.
+- Added weighted summaries, bins, histogram/KDE authoring and revisions; dynamic
+  statistical reference lines/bands; exact sampled legend values; typed display
+  label maps; facet-header role/side/alignment controls; custom theme tokens;
+  detailed stroke styles, rounded rectangles, and expanded Polar/Parallel facets.
+
+### Changed
+
+- Point-size ranges represent area across continuous and discrete families.
+  Entering a discrete size family requires a destination domain and range;
+  repeated field assignments preserve compatible scale settings.
+- Axis, legend, and facet display labels preserve raw category identity. Mapping
+  `"KR"` to `"South Korea"` changes visible text while grouping, selection, and
+  domain lookup still use `"KR"`. Numeric and UTC formats must match field type.
+- Custom themes supply defaults while explicit mark styles retain precedence.
+  Removing a theme restores baseline defaults and retains explicit overrides.
+- Complete guides can be created progressively without duplicating existing
+  compatible components. Polar/Parallel repetition retains source recipes and
+  rejects unsupported role substitutions explicitly.
+- Documentation now distinguishes the development contract from released 0.0.13,
+  provides an exact address and declaration for every action, and executes every
+  maintained tutorial and recipe against the packaged module. See
+  [migration notes](https://ggaction.github.io/ggaction/version/#migration-from-v0013).
+
+### Fixed
+
+- Corrected default dumbbell axis titles, direct Rose radius refinement, and stale
+  current-guide pointers after removal.
+- Corrected executable examples, API defaults and compatibility descriptions,
+  missing gallery/tutorial entries, exact-action search, initial ArrowUp selection,
+  filter/TOC synchronization, search retries, and narrow-screen type references.
+
 ## [0.0.13] - 2026-09-07
 
 ### Added

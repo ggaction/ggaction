@@ -13,6 +13,8 @@ const chartCatalogFile = path.join(docsRoot, "_data/chart_examples.yml");
 const outputFile = path.join(docsRoot, "search-index.json");
 
 const SEARCH_ALIASES = new Map([
+  ["/recipes/compare-weighted-distributions/", ["weighted histogram", "weighted KDE", "weighted ECDF"]],
+  ["/api/data/missing-data/", ["missing values", "missing keys", "complete", "impute"]],
   ["/accessibility/", ["accessible chart", "aria label", "alt text", "accessible svg"]],
   ["/responsive-charts/", ["responsive canvas", "responsive chart", "ResizeObserver", "retina", "device pixel ratio"]],
   ["/performance/", ["large dataset", "large chart", "render benchmark", "allocation limit"]],
@@ -229,7 +231,7 @@ export async function buildDocSearchIndex() {
         url: sectionUrl,
         ...(canonical ? { actionName } : {}),
         kind: searchKind(page.url, section.heading.label),
-        summary: namedType ? `Exact TypeScript definition for ${section.heading.label}.`
+        summary: namedType ? "Declared TypeScript shape."
           : summary((canonical && card.summary) || cleanText(section.body.join("\n")) || pageSummary),
         keywords: namedType ? [section.heading.label] : action
           ? [
@@ -257,7 +259,7 @@ export async function buildDocSearchIndex() {
   }
   return entries.map(entry => ({
     ...entry,
-    keywords: [...new Set(entry.keywords)].slice(0, entry.actionName ? 64 : 60)
+    keywords: [...new Set(entry.keywords)].slice(0, entry.actionName ? 40 : 24)
   }));
 }
 

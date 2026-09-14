@@ -5,7 +5,7 @@ title: Error Bar Recipe
 
 # Error Bar Recipe
 
-{% include chart-example.html id="error-bar" %}
+{% include chart-example.html id="error-bar" lead=true %}
 
 ## Minimal flow
 

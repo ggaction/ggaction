@@ -8,7 +8,7 @@
       <div class="docs-topbar__inner">
         <div class="docs-brand-lockup">
           <a class="docs-brand" href="{{ '/' | relative_url }}">ggaction</a>
-          <a class="docs-version" href="https://www.npmjs.com/package/ggaction/v/{{ site.version }}" aria-label="ggaction {{ site.version }} on npm">{{ site.version }}</a>
+          <a class="docs-version" href="{{ "/version/" | relative_url }}" aria-label="Documentation version and release compatibility">{% if site.data.provenance.status == "development" %}dev{% else %}{{ site.version }}{% endif %}</a>
         </div>
 
         <nav class="docs-topnav" aria-label="Primary navigation">
@@ -43,6 +43,10 @@
         data-page-toc="{% if page.toc == false %}false{% else %}auto{% endif %}"
       >
         {%- include breadcrumbs.html -%}
+        <p class="docs-release-status">{{ site.data.provenance.status | capitalize }} documentation ·
+          <a href="{{ '/version/' | relative_url }}">{{ site.data.provenance.actionCount }} actions; release compatibility</a> ·
+          <span title="{{ site.data.provenance.contractId }}">contract {{ site.data.provenance.contractId | slice: 7, 12 }}</span>
+        </p>
         {{ content }}
         {%- include page-navigation.html -%}
       </main>

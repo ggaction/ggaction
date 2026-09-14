@@ -1499,6 +1499,7 @@ semantic base positions. [Text marks](../api/marks/text.md)
 #### Position capability matrix
 
 <!-- action-capabilities:position:start -->
+
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
 | `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
@@ -1507,6 +1508,7 @@ semantic base positions. [Text marks](../api/marks/text.md)
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
+
 <!-- action-capabilities:position:end -->
 
 Temporal input branches accept `temporalUnit: "auto" | "year" | "timestamp"`.
@@ -1830,11 +1832,13 @@ removes grouping.
 #### Color capability matrix
 
 <!-- action-capabilities:color:start -->
+
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
 | Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
 | Discretized continuous | point, aggregate bar, rect | point/aggregate bar/rect: quantitative | quantize, quantile, or threshold scale |
+
 <!-- action-capabilities:color:end -->
 
 ```javascript

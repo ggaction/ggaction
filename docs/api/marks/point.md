@@ -5,7 +5,7 @@ title: Point Marks
 
 # Point Marks
 
-{% include chart-example.html id="scatterplot" %}
+{% include chart-example.html id="scatterplot" lead=true %}
 
 Point marks represent individual observations or derived items. Their semantic
 type is `point`; circle, square, diamond, and other symbols are graphical
@@ -25,6 +25,12 @@ realizations of that meaning.
 | `lineCap` | `"butt"`, `"round"`, or `"square"` | `"butt"` |
 | `lineJoin` | `"miter"`, `"round"`, or `"bevel"` | `"miter"` |
 | `miterLimit` | positive finite number | `10` |
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const program = chart()
@@ -47,6 +53,12 @@ for a field-driven area mapping. `removePointRadius()` returns an explicitly
 sized point mark to the theme radius without changing Polar position.
 
 ## `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const diamonds = program.editPointMark({
@@ -78,6 +90,12 @@ corner, so a later shape or stroke replay does not discard authored style.
 Use bounded jitter to separate overlapping Cartesian points without changing
 their semantic x/y values:
 
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
 ```javascript
 const separated = program.jitterPoints({
   channel: "x",
@@ -108,6 +126,12 @@ the assignment. Selectors that read `channel` still see semantic values, while
 selectors that read concrete `property` values see final jittered geometry.
 
 ## `removeJitter({ target? } = {})`
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `separated`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
 
 ```javascript
 const restored = separated.removeJitter();

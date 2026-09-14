@@ -12,6 +12,8 @@ Each declared action has an exact signature and its own stable link. Option tabl
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodeX(options: PositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
 ```
@@ -58,6 +60,8 @@ once; any field-bound x, y, or text encoding selects row grain.
 ## `encodeY`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 encodeY(options: YPositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
@@ -108,6 +112,8 @@ source-owned Text continues to reject direct position replacement.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;
 ```
@@ -147,6 +153,8 @@ It requires an existing x and shares its scale and coordinate.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodeColor(options: ColorEncodingOptions): ChartProgram;
 ```
@@ -176,11 +184,13 @@ The following call patterns are abbreviated examples; the declaration above owns
 ### Color capability matrix
 
 <!-- action-capabilities:color:start -->
+
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
 | Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
 | Discretized continuous | point, aggregate bar, rect | point/aggregate bar/rect: quantitative | quantize, quantile, or threshold scale |
+
 <!-- action-capabilities:color:end -->
 
 ```javascript
@@ -210,6 +220,8 @@ categorical color with optional overlay layout.
 ## `encodeStrokeDash`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;
@@ -250,6 +262,8 @@ constant named/direct pattern. Named styles are `solid`, `dashed`, `dotted`, and
 ## `encodeStroke`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 encodeStroke(options: StrokeEncodingOptions): ChartProgram;
@@ -292,6 +306,8 @@ override. Text outlines are outside this action.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;
 ```
@@ -331,6 +347,8 @@ constant mode. Active channel selections must be removed before replacement.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodeSize(options: SizeEncodingOptions): ChartProgram;
 ```
@@ -367,6 +385,8 @@ is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodeShape(options: ShapeEncodingOptions): ChartProgram;
 ```
@@ -400,6 +420,8 @@ Encode or replace a nominal field with the shared 12-value point-shape vocabular
 ## `encodeAngle`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 encodeAngle(options: AngleEncodingOptions): ChartProgram;
@@ -437,6 +459,8 @@ branch; remove it with `removeEncoding({ channel: "angle" })`.
 ## `encodeOpacity`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 encodeOpacity(options: OpacityEncodingOptions): ChartProgram;
@@ -478,6 +502,8 @@ owned opacity legend and rejects fieldType/scale or selections using that channe
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodeRadius(options: { value: number; target?: string }): ChartProgram;
 ```
@@ -506,6 +532,8 @@ Apply a constant point radius. [Constant appearance](../../api/appearance.md)
 ## `encodeTheta`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 encodeTheta(options: ThetaEncodingOptions): ChartProgram;
@@ -551,6 +579,8 @@ range is `[0, 360]`.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodeR(options: RadialEncodingOptions): ChartProgram;
 ```
@@ -592,6 +622,8 @@ replace a measured category aggregate with ordinary row-level radial length.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodePointRadius(options: { value: number; target?: string }): ChartProgram;
 ```
@@ -623,6 +655,8 @@ does not assign semantic Polar radial position.
 
 **API layer:** user-facing. **Authoring roles:** H2, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removePointRadius(options?: { target?: string }): ChartProgram;
 ```
@@ -652,6 +686,8 @@ Semantic Polar radial position is unchanged.
 ## `encodeXOffset`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;
@@ -694,6 +730,8 @@ bar color layout normally invokes this action automatically.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodeYOffset(options: YOffsetEncodingOptions): ChartProgram;
 ```
@@ -735,6 +773,8 @@ follow the same contract as `encodeXOffset`.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
 ```
@@ -774,9 +814,13 @@ It requires an existing y and shares its scale and coordinate.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodeYRange(options: RangePositionEncodingOptions): ChartProgram;
 ```
+
+Named option contracts: [`RangePositionEncodingOptions`](./../types.md#type-rangepositionencodingoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -809,9 +853,13 @@ Atomically compose area or ranged-bar `encodeY` and `encodeY2`. Area bounds acce
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodeXRange(options: RangePositionEncodingOptions): ChartProgram;
 ```
+
+Named option contracts: [`RangePositionEncodingOptions`](./../types.md#type-rangepositionencodingoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -843,6 +891,8 @@ Atomically compose area or ranged-bar `encodeX` and `encodeX2`. Area bounds acce
 ## `encodeGroup`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 encodeGroup(options: GroupEncodingOptions): ChartProgram;
@@ -883,6 +933,8 @@ Statistical and stacked-layout groups remain owned by their existing actions.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
 ```
@@ -918,6 +970,8 @@ Ties preserve source-row order, and no scale or guide is created.
 ## `encodeParallelCoordinates`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
@@ -955,6 +1009,8 @@ The default missing policy is `"break"`.
 
 **API layer:** user-facing. **Authoring roles:** H2, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
 ```
@@ -985,6 +1041,8 @@ position ordering. [Series encodings](../../api/series-encodings.md)
 ## `orderCategories`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 orderCategories(options: OrderCategoriesOptions): ChartProgram;
@@ -1024,6 +1082,8 @@ order are updated together. [Category ordering](../../api/position/category-orde
 
 **API layer:** user-facing. **Authoring roles:** H2, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeCategoryOrder(options: RemoveCategoryOrderOptions): ChartProgram;
 ```
@@ -1056,6 +1116,8 @@ first-appearance order. [Category ordering](../../api/position/category-ordering
 
 **API layer:** user-facing. **Authoring roles:** H2, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text"; }): ChartProgram;
 ```
@@ -1087,6 +1149,8 @@ retained; incomplete marks remain empty until later encoding completion.
 ## `encodeText`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 encodeText(options: TextEncodingOptions): ChartProgram;
@@ -1125,6 +1189,8 @@ replaces the previous content branch. [Text marks](../../api/marks/text.md)
 ## `encodeHistogram`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
@@ -1176,6 +1242,8 @@ remain unchanged.
 ## `encodeDensity`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 encodeDensity(options: DensityEncodingOptions): ChartProgram;
@@ -1229,6 +1297,8 @@ Pass `densityChannel: "x"` for a horizontal orientation.
 
 **API layer:** user-facing. **Authoring roles:** H2, H3.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 editDensity(options: EditDensityOptions): ChartProgram;
 ```
@@ -1278,6 +1348,8 @@ fields, density channel, coordinate, and position scale IDs are preserved.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodeHorizon(options?: HorizonEncodingOptions): ChartProgram;
 ```
@@ -1324,6 +1396,8 @@ chart. Compatible target, source, and fields are inferred when unambiguous.
 ## `editHorizon`
 
 **API layer:** user-facing. **Authoring roles:** H2, H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editHorizon(options: EditHorizonOptions): ChartProgram;
@@ -1372,6 +1446,8 @@ removes grouping.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
+
 ```typescript
 encodeBarWidth(options?: BarWidthOptions): ChartProgram;
 ```
@@ -1407,6 +1483,8 @@ accept it. The modes are mutually exclusive. The first omitted mode defaults to
 ## `layoutSeries`
 
 **API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 layoutSeries(options: SeriesLayoutOptions): ChartProgram;
