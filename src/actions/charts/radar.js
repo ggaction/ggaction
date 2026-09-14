@@ -185,7 +185,7 @@ function scaleWithOrder(category, order, operation) {
   return { ...category, scale: { ...scale, domain: order } };
 }
 
-export const createRadarPlot = action(
+export const createRadarPlot = /* @__PURE__ */ action(
   {
     op: "createRadarPlot",
     description: "Create a closed Radar plot from long rows or an explicit wide fold."

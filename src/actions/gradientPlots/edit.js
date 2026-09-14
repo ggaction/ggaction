@@ -110,7 +110,7 @@ function updateGradientPositions(program, owner, current, candidate, hasCenter) 
   );
 }
 
-export const editGradientPlot = action(
+export const editGradientPlot = /* @__PURE__ */ action(
   {
     op: "editGradientPlot",
     description: "Edit one stable categorical gradient plot."

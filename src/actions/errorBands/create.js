@@ -82,7 +82,7 @@ function positionOptions({ target, field, fieldType, coordinate, scale, temporal
     ...(temporalUnit === undefined ? {} : { temporalUnit }) };
 }
 
-export const createErrorBandBoundary = action(
+export const createErrorBandBoundary = /* @__PURE__ */ action(
   {
     op: "createErrorBandBoundary",
     description: "Create one lower or upper error-band boundary line."
@@ -171,7 +171,7 @@ function rangeArgs(resolved) {
   };
 }
 
-export const createErrorBand = action(
+export const createErrorBand = /* @__PURE__ */ action(
   {
     op: "createErrorBand",
     description: "Create a statistical or explicit interval band."

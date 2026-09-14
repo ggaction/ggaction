@@ -79,7 +79,7 @@ function editRectangles(program, id, rectangles) {
   return next;
 }
 
-export const rematerializeBarMark = action(
+export const rematerializeBarMark = /* @__PURE__ */ action(
   {
     op: "rematerializeBarMark",
     description: "Recompute concrete bar graphics from complete semantics."

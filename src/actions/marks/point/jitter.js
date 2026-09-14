@@ -28,7 +28,7 @@ function resolveJitterTarget(program, target, channel) {
   });
 }
 
-export const jitterPoints = action(
+export const jitterPoints = /* @__PURE__ */ action(
   {
     op: "jitterPoints",
     description: "Apply deterministic bounded graphical jitter to a point mark."
@@ -46,7 +46,7 @@ export const jitterPoints = action(
   }
 );
 
-export const removeJitter = action(
+export const removeJitter = /* @__PURE__ */ action(
   {
     op: "removeJitter",
     description: "Remove point jitter and restore semantic scale positions."

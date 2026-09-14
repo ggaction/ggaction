@@ -45,7 +45,7 @@ function withTitle(program, args, create) {
     ...(titles.length === 0 ? { remove: true } : { value: titles }) });
 }
 
-const createParallelAxes = action({
+const createParallelAxes = /* @__PURE__ */ action({
   op: "createParallelAxes", description: "Create axes for every encoded Parallel dimension."
 }, function (args = {}) {
   validateOptionObject(args, ["target", "coordinate"], "createParallelAxes");
@@ -79,7 +79,7 @@ function makeAxisAction(create) {
 const createParallelAxis = makeAxisAction(true);
 const editParallelAxis = makeAxisAction(false);
 
-const removeParallelAxis = action({
+const removeParallelAxis = /* @__PURE__ */ action({
   op: "removeParallelAxis", description: "Remove every component of one Parallel field axis."
 }, function (args = {}) {
   validateOptionObject(args, ["field", "target"], "removeParallelAxis");
@@ -91,7 +91,7 @@ const removeParallelAxis = action({
     ...Object.fromEntries(PARALLEL_AXIS_PARTS.filter(part => config[part] !== undefined).map(part => [part, false])) });
 });
 
-const removeParallelAxes = action({
+const removeParallelAxes = /* @__PURE__ */ action({
   op: "removeParallelAxes", description: "Remove all Parallel axis semantics, recipes and graphics."
 }, function (args = {}) {
   validateOptionObject(args, ["target", "coordinate"], "removeParallelAxes");

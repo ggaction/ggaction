@@ -248,7 +248,7 @@ function cleanupPositionGuides(program, scales) {
   return next;
 }
 
-export const removeMark = action(
+export const removeMark = /* @__PURE__ */ action(
   { op: "removeMark", description: "Remove one stable mark owner and owned state." },
   function (args = {}) {
     validateKeys(args, OPTIONS, "removeMark");

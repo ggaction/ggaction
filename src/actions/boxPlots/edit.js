@@ -213,7 +213,7 @@ function updateBoxPositions(program, owner, current, candidate, {
   return next;
 }
 
-export const editBoxPlot = action(
+export const editBoxPlot = /* @__PURE__ */ action(
   {
     op: "editBoxPlot",
     description: "Revise one box plot and its owned components."

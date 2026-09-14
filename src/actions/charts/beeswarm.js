@@ -29,7 +29,7 @@ function normalizePacking(value, operation) {
   return { ...packing };
 }
 
-export const createBeeswarmPlot = action(
+export const createBeeswarmPlot = /* @__PURE__ */ action(
   {
     op: "createBeeswarmPlot",
     description: "Create a Point plot packed within categorical slots."

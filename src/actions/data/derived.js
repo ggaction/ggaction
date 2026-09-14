@@ -27,7 +27,7 @@ const OWNED_MARK_ROLES = Object.freeze([
   "statisticalReference"
 ]);
 
-export const createDerivedData = action(
+export const createDerivedData = /* @__PURE__ */ action(
   { op: "createDerivedData", description: "Create an immutable derived dataset definition." },
   function (args = {}) {
     validateKeys(args, OPTIONS, "createDerivedData");
@@ -50,7 +50,7 @@ export const createDerivedData = action(
   }
 );
 
-export const releaseDerivedData = action(
+export const releaseDerivedData = /* @__PURE__ */ action(
   {
     op: "releaseDerivedData",
     description: "Release one unreferenced derived dataset."
@@ -85,7 +85,7 @@ export const releaseDerivedData = action(
   }
 );
 
-export const rebindLayerData = action(
+export const rebindLayerData = /* @__PURE__ */ action(
   {
     op: "rebindLayerData",
     description: "Rebind one semantic layer to an existing dataset."
@@ -134,7 +134,7 @@ function applyMarkDataBinding(program, target, data) {
   return applyLayerDataRematerialization(rebound, target);
 }
 
-export const bindMarkData = action(
+export const bindMarkData = /* @__PURE__ */ action(
   {
     op: "bindMarkData",
     description: "Atomically bind one independent mark to materialized data."

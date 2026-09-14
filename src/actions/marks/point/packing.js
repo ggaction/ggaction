@@ -28,7 +28,7 @@ function target(program, requested, channel) {
   });
 }
 
-export const packPoints = action(
+export const packPoints = /* @__PURE__ */ action(
   { op: "packPoints", description: "Pack point glyphs deterministically within categorical slots." },
   function (args = {}) {
     validateKeys(args, OPTIONS, "packPoints");
@@ -43,7 +43,7 @@ export const packPoints = action(
   }
 );
 
-export const removePointPacking = action(
+export const removePointPacking = /* @__PURE__ */ action(
   { op: "removePointPacking", description: "Remove point packing and restore semantic positions." },
   function (args = {}) {
     validateKeys(args, REMOVE_OPTIONS, "removePointPacking");

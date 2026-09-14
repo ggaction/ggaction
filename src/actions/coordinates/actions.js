@@ -31,7 +31,7 @@ function validateLayers(program, layers) {
   return ids;
 }
 
-export const createCoordinate = action(
+export const createCoordinate = /* @__PURE__ */ action(
   {
     op: "createCoordinate",
     description: "Create a semantic coordinate and attach layers to it."

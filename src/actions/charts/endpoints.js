@@ -254,7 +254,7 @@ function finish(program, { id, source, data, kind, roles, summary, orientation, 
   });
 }
 
-export const createDotPlot = action(
+export const createDotPlot = /* @__PURE__ */ action(
   { op: "createDotPlot", description: "Create raw or explicitly summarized categorical dots." },
   function (args = {}) {
     const operation = "createDotPlot";
@@ -284,7 +284,7 @@ export const createDotPlot = action(
   }
 );
 
-export const createLollipopPlot = action(
+export const createLollipopPlot = /* @__PURE__ */ action(
   { op: "createLollipopPlot", description: "Create categorical value points with baseline stems." },
   function (args = {}) {
     const operation = "createLollipopPlot";
@@ -327,7 +327,7 @@ export const createLollipopPlot = action(
   }
 );
 
-export const createDumbbellPlot = action(
+export const createDumbbellPlot = /* @__PURE__ */ action(
   { op: "createDumbbellPlot", description: "Create two categorical endpoints joined by a connector." },
   function (args = {}) {
     const operation = "createDumbbellPlot";
@@ -449,7 +449,7 @@ function reviseRequestedScales(program, ownerId, revised, changes) {
   return next;
 }
 
-export const editEndpointPlot = action(
+export const editEndpointPlot = /* @__PURE__ */ action(
   { op: "editEndpointPlot", description: "Atomically revise an endpoint plot's semantic roles." },
   function (args = {}) {
     validateFacadeOptions(args, EDIT_OPTIONS, "editEndpointPlot");

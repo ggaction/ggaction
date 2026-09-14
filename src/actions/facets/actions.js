@@ -183,7 +183,7 @@ function rederiveFacet(program, { scales, guides }) {
   }, compositionSpec.children);
 }
 
-export const facet = action(
+export const facet = /* @__PURE__ */ action(
   {
     op: "facet",
     description: "Repeat one direct-source chart by field value."
@@ -428,7 +428,7 @@ function deriveRepeatChildren(base, definition, scales, closeInheritedAction) {
   );
 }
 
-export const repeatCharts = action(
+export const repeatCharts = /* @__PURE__ */ action(
   {
     op: "repeatCharts",
     description: "Repeat one direct chart across an ordered field-role list."
@@ -495,7 +495,7 @@ export const repeatCharts = action(
   }
 );
 
-export const facetGrid = action(
+export const facetGrid = /* @__PURE__ */ action(
   {
     op: "facetGrid",
     description: "Repeat one direct-source Cartesian chart across a row and column field grid."
@@ -565,7 +565,7 @@ export const facetGrid = action(
   }
 );
 
-export const editFacetHeaders = action(
+export const editFacetHeaders = /* @__PURE__ */ action(
   {
     op: "editFacetHeaders",
     description: "Edit parent-owned facet header appearance.",
@@ -656,7 +656,7 @@ export const editFacetHeaders = action(
   }
 );
 
-export const editFacetScales = action(
+export const editFacetScales = /* @__PURE__ */ action(
   {
     op: "editFacetScales",
     description: "Edit facet scale-resolution policies and rederive every cell.",
@@ -691,7 +691,7 @@ export const editFacetScales = action(
   }
 );
 
-export const editFacetGuides = action(
+export const editFacetGuides = /* @__PURE__ */ action(
   {
     op: "editFacetGuides",
     description: "Edit facet guide ownership and rederive every cell.",
@@ -764,7 +764,7 @@ function adoptUnitState(program, actionOwner) {
   });
 }
 
-export const editFacetSource = action(
+export const editFacetSource = /* @__PURE__ */ action(
   {
     op: "editFacetSource",
     description: "Reapply one facet, grid, or repeat recipe to a revised complete unit program.",

@@ -50,7 +50,7 @@ function retainedHistogramBoundaries(layer, items) {
   return boundaries.length < 2 ? undefined : boundaries;
 }
 
-export const materializeFilteredData = action(
+export const materializeFilteredData = /* @__PURE__ */ action(
   { op: "materializeFilteredData", description: "Materialize one filtered derived dataset." },
   function (args = {}) {
     validateKeys(args, MATERIALIZE_OPTIONS, "materializeFilteredData");
@@ -66,7 +66,7 @@ export const materializeFilteredData = action(
   }
 );
 
-export const filterData = action(
+export const filterData = /* @__PURE__ */ action(
   { op: "filterData", description: "Create a named dataset from one field filter." },
   function (args = {}) {
     validateKeys(args, OPTIONS, "filterData");
@@ -97,7 +97,7 @@ export const filterData = action(
   }
 );
 
-export const materializeMarkFilteredData = action(
+export const materializeMarkFilteredData = /* @__PURE__ */ action(
   {
     op: "materializeMarkFilteredData",
     description: "Materialize member rows retained by one final-item mark selection."
@@ -170,7 +170,7 @@ export const materializeMarkFilteredData = action(
   }
 );
 
-export const materializeEmptyMark = action(
+export const materializeEmptyMark = /* @__PURE__ */ action(
   {
     op: "materializeEmptyMark",
     description: "Clear one active empty-filter mark without changing its domains."
@@ -261,7 +261,7 @@ function sameSelector(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);
 }
 
-export const removeMarkFilter = action(
+export const removeMarkFilter = /* @__PURE__ */ action(
   {
     op: "removeMarkFilter",
     description: "Remove one active final-item filter and restore its source."
@@ -280,7 +280,7 @@ export const removeMarkFilter = action(
   }
 );
 
-export const filterMarks = action(
+export const filterMarks = /* @__PURE__ */ action(
   {
     op: "filterMarks",
     description: "Retain selected final mark items through immutable derived data."

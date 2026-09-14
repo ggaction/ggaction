@@ -79,7 +79,7 @@ function encodeAppearanceField(program, channel, args, operation) {
   return rematerializeEncoding(next, target, channel, scale.id, layer);
 }
 
-const encodeRadius = action(
+const encodeRadius = /* @__PURE__ */ action(
   {
     op: "encodeRadius",
     description: "Set a constant graphical radius on a point mark."
@@ -112,7 +112,7 @@ const encodeRadius = action(
   }
 );
 
-const encodePointRadius = action(
+const encodePointRadius = /* @__PURE__ */ action(
   {
     op: "encodePointRadius",
     description: "Set a constant graphical radius on a point mark."
@@ -146,7 +146,7 @@ const removePointRadius = /* @__PURE__ */ action(
   }
 );
 
-const encodeSize = action(
+const encodeSize = /* @__PURE__ */ action(
   {
     op: "encodeSize",
     description: "Encode a quantitative field as equal-area point size."
@@ -156,7 +156,7 @@ const encodeSize = action(
   }
 );
 
-const encodeShape = action(
+const encodeShape = /* @__PURE__ */ action(
   {
     op: "encodeShape",
     description: "Encode a nominal field as point shape."

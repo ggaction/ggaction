@@ -250,6 +250,8 @@ src/mcp/cli.js           ↔ package `ggaction-mcp` executable
 public contract로 함께 관리한다. MCP executable은 module export map에 추가하지 않으며 Node-only dependency graph를
 browser-safe entry에 연결하지 않는다.
 
+Static built-in `action(...)` declaration에만 pure-call annotation을 둔다. Factory가 만드는 WeakMap key/value는 반환 wrapper를 사용하지 않으면 관찰 불가능하며, 해당 wrapper를 제거할 때만 함께 버릴 수 있다. Extension 사용자의 `action()` 호출과 등록 함수에는 annotation을 붙이지 않아 metadata validation과 prototype registration을 보존한다. Basic entry에서 등록하지 않은 sibling action의 dependency를 bundle에서 제거한다.
+
 ### Browser bundle regression ceilings
 
 Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 않아야 한다.

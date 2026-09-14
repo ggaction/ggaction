@@ -79,7 +79,7 @@ function normalizeRugGuides(value, measure, operation) {
   return { axes, grid, legend: false };
 }
 
-export const createRugPlot = action(
+export const createRugPlot = /* @__PURE__ */ action(
   {
     op: "createRugPlot",
     description: "Create a one-dimensional Rug plot at an explicit plot edge."
@@ -206,7 +206,7 @@ function normalizeStripGuides(value, actualChannels, hasLegend, operation) {
   return { axes, grid, legend };
 }
 
-export const createStripPlot = action(
+export const createStripPlot = /* @__PURE__ */ action(
   {
     op: "createStripPlot",
     description: "Create a one-dimensional Strip plot with an optional categorical slot and jitter."

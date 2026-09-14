@@ -185,7 +185,7 @@ function resolveAxisArgs(layers, channel, option) {
   return { ...args, scale };
 }
 
-const createAxes = action(
+const createAxes = /* @__PURE__ */ action(
   {
     op: "createAxes",
     description: "Read a stored coordinate and create its applicable axes."

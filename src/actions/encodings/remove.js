@@ -203,7 +203,7 @@ function rematerializeTarget(program, target) {
   return next;
 }
 
-export const removeEncoding = action(
+export const removeEncoding = /* @__PURE__ */ action(
   {
     op: "removeEncoding",
     description: "Remove one semantic encoding and its owned materialized state."

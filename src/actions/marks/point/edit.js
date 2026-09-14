@@ -19,7 +19,7 @@ const OPTIONS = Object.freeze([
   ...STROKE_STYLE_PROPERTIES
 ]);
 
-export const editPointMark = action(
+export const editPointMark = /* @__PURE__ */ action(
   {
     op: "editPointMark",
     description: "Edit constant point-mark appearance."

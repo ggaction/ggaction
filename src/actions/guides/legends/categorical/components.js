@@ -8,7 +8,7 @@ import {
 } from "./layout.js";
 import { resolveCategoricalLegendPlacement } from "../lifecycle.js";
 
-export const rematerializeLegendLabels = action(
+export const rematerializeLegendLabels = /* @__PURE__ */ action(
   { op: "rematerializeLegendLabels", description: "Rematerialize categorical legend labels." },
   function (args = {}) {
     noOptions(args, "rematerializeLegendLabels");
@@ -36,7 +36,7 @@ export const rematerializeLegendLabels = action(
   }
 );
 
-export const createLegendLabels = action(
+export const createLegendLabels = /* @__PURE__ */ action(
   { op: "createLegendLabels", description: "Create categorical legend labels." },
   function (args = {}) {
     noOptions(args, "createLegendLabels");
@@ -56,7 +56,7 @@ export const createLegendLabels = action(
   }
 );
 
-export const rematerializeLegendTitle = action(
+export const rematerializeLegendTitle = /* @__PURE__ */ action(
   { op: "rematerializeLegendTitle", description: "Rematerialize the categorical legend title." },
   function (args = {}) {
     noOptions(args, "rematerializeLegendTitle");
@@ -86,7 +86,7 @@ export const rematerializeLegendTitle = action(
   }
 );
 
-export const createLegendTitle = action(
+export const createLegendTitle = /* @__PURE__ */ action(
   { op: "createLegendTitle", description: "Create the categorical legend title." },
   function (args = {}) {
     noOptions(args, "createLegendTitle");
@@ -105,7 +105,7 @@ export const createLegendTitle = action(
   }
 );
 
-export const rematerializeLegendBackground = action(
+export const rematerializeLegendBackground = /* @__PURE__ */ action(
   { op: "rematerializeLegendBackground", description: "Rematerialize the legend background." },
   function (args = {}) {
     noOptions(args, "rematerializeLegendBackground");
@@ -129,7 +129,7 @@ export const rematerializeLegendBackground = action(
   }
 );
 
-export const createLegendBackground = action(
+export const createLegendBackground = /* @__PURE__ */ action(
   { op: "createLegendBackground", description: "Create the legend background rect." },
   function (args = {}) {
     noOptions(args, "createLegendBackground");

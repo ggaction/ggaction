@@ -13,7 +13,7 @@ const OPTIONS = Object.freeze([
   "unknown"
 ]);
 
-export const setQuantitativeColorScale = action(
+export const setQuantitativeColorScale = /* @__PURE__ */ action(
   {
     op: "setQuantitativeColorScale",
     description: "Create or update an internal quantitative color scale."

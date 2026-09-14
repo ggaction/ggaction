@@ -3,7 +3,7 @@ import { validateKeys } from "../../core/validation.js";
 import { deriveBin2DRows } from "../../grammar/bin2d.js";
 import { MATERIALIZE_OPTIONS, requireDerivedDataset } from "./shared.js";
 
-export const materializeBin2DData = action(
+export const materializeBin2DData = /* @__PURE__ */ action(
   {
     op: "materializeBin2DData",
     description: "Materialize one immutable rectangular 2D-bin dataset."

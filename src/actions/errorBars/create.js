@@ -144,7 +144,7 @@ function resolveAppearance(args) {
   });
 }
 
-export const createErrorBarCap = action(
+export const createErrorBarCap = /* @__PURE__ */ action(
   {
     op: "createErrorBarCap",
     description: "Create one fixed-pixel error-bar cap."
@@ -256,7 +256,7 @@ function intervalArgs(resolved, field) {
   };
 }
 
-export const createErrorBar = action(
+export const createErrorBar = /* @__PURE__ */ action(
   {
     op: "createErrorBar",
     description: "Create a statistical or explicit vertical or horizontal interval."

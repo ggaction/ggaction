@@ -234,7 +234,7 @@ function updateRegressionBandSemantics(program, bandId, { x, groupBy }) {
   });
 }
 
-export const editRegression = action(
+export const editRegression = /* @__PURE__ */ action(
   {
     op: "editRegression",
     description: "Revise a regression model and its owned visible components."

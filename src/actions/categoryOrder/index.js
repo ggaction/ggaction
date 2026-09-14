@@ -79,7 +79,7 @@ function rematerializeAssignment(program, scaleId) {
   }));
 }
 
-export const orderCategories = action(
+export const orderCategories = /* @__PURE__ */ action(
   { op: "orderCategories", description: "Assign semantic order to a categorical position." },
   function (args = {}) {
     validateKeys(args, ORDER_OPTIONS, "orderCategories");
@@ -94,7 +94,7 @@ export const orderCategories = action(
   }
 );
 
-export const removeCategoryOrder = action(
+export const removeCategoryOrder = /* @__PURE__ */ action(
   { op: "removeCategoryOrder", description: "Restore automatic category order." },
   function (args = {}) {
     validateKeys(args, REMOVE_OPTIONS, "removeCategoryOrder");

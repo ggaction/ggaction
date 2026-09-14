@@ -20,7 +20,7 @@ const EDIT_OPTIONS = Object.freeze([
   ...STROKE_STYLE_PROPERTIES
 ]);
 
-export const editBarMark = action(
+export const editBarMark = /* @__PURE__ */ action(
   {
     op: "editBarMark",
     description: "Edit whole-bar fill, opacity, and outline appearance."

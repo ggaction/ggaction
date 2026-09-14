@@ -299,7 +299,7 @@ function finalScaleIds(before, after, originalLayer, finalLayer, requests) {
   );
 }
 
-const rematerializeEncodingScales = action(
+const rematerializeEncodingScales = /* @__PURE__ */ action(
   {
     op: "rematerializeEncodingScales",
     description: "Resolve every scale affected by one atomic encoding assignment."
@@ -390,7 +390,7 @@ function applyEncodingAssignments(program, plan) {
   return instantiateProgram(plan.state, program.constructor);
 }
 
-export const encodeChannels = action(
+export const encodeChannels = /* @__PURE__ */ action(
   {
     op: "encodeChannels",
     description: "Atomically assign multiple encoding channels to one mark."

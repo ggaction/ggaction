@@ -101,7 +101,7 @@ function validateStrokeField(dataset, layer, args, scale, temporalUnit) {
   }
 }
 
-export const encodeStroke = action(
+export const encodeStroke = /* @__PURE__ */ action(
   {
     op: "encodeStroke",
     description: "Assign constant or field-driven graphical stroke color."

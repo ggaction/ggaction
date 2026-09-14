@@ -72,7 +72,7 @@ function requireRegressionBandDataset(program, args) {
   return { dataset, transform };
 }
 
-export const createRegressionBand = action(
+export const createRegressionBand = /* @__PURE__ */ action(
   {
     op: "createRegressionBand",
     description: "Create and encode a grouped regression confidence band."
@@ -121,7 +121,7 @@ export const createRegressionBand = action(
   }
 );
 
-export const editRegressionBand = action(
+export const editRegressionBand = /* @__PURE__ */ action(
   {
     op: "editRegressionBand",
     description: "Edit regression-band fill, opacity, and outline."
@@ -157,7 +157,7 @@ export const editRegressionBand = action(
   }
 );
 
-export const editRegressionLine = action(
+export const editRegressionLine = /* @__PURE__ */ action(
   {
     op: "editRegressionLine",
     description: "Edit regression-line width or curve."
@@ -187,7 +187,7 @@ export const editRegressionLine = action(
   }
 );
 
-export const createRegressionLine = action(
+export const createRegressionLine = /* @__PURE__ */ action(
   {
     op: "createRegressionLine",
     description: "Create and encode grouped regression line paths."

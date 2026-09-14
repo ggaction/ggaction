@@ -100,7 +100,7 @@ function insertSibling(siblings, id, { before, after }) {
   return freezeOwned(next);
 }
 
-const createGraphics = action(
+const createGraphics = /* @__PURE__ */ action(
   {
     op: "createGraphics",
     description: "Create and optionally attach a concrete graphic.",

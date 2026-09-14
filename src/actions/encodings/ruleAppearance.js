@@ -19,7 +19,7 @@ const WIDTH_OPTIONS = Object.freeze([
   "target", "value", "field", "fieldType", "scale"
 ]);
 
-const encodeStrokeWidth = action(
+const encodeStrokeWidth = /* @__PURE__ */ action(
   {
     op: "encodeStrokeWidth",
     description: "Assign constant or field-driven line or rule stroke width."

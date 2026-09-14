@@ -6,7 +6,7 @@ import { findLayer } from "../../selectors/layers.js";
 
 const OPTIONS = Object.freeze(["id", "profile", "source"]);
 
-export const rebindGradientPlotProfile = action(
+export const rebindGradientPlotProfile = /* @__PURE__ */ action(
   {
     op: "rebindGradientPlotProfile",
     description: "Rebind one gradient plot to a replayed profile revision."

@@ -116,7 +116,7 @@ export function applyCompositionState(program, state, tracedChildren = []) {
   return next.materializeComposition();
 }
 
-const useProgram = action(
+const useProgram = /* @__PURE__ */ action(
   {
     op: "useProgram",
     description: "Retain one named child program in a composition.",
@@ -131,7 +131,7 @@ const useProgram = action(
   }
 );
 
-const materializeComposition = action(
+const materializeComposition = /* @__PURE__ */ action(
   {
     op: "materializeComposition",
     description: "Materialize retained child programs into one graphic tree.",
@@ -162,7 +162,7 @@ function concatAction(direction, op) {
 export const hconcatAction = concatAction("horizontal", "hconcat");
 export const vconcatAction = concatAction("vertical", "vconcat");
 
-const editCompositionLayout = action(
+const editCompositionLayout = /* @__PURE__ */ action(
   {
     op: "editCompositionLayout",
     description: "Edit composition layout.",
@@ -227,7 +227,7 @@ const editCompositionLayout = action(
   }
 );
 
-const replaceCompositionChild = action(
+const replaceCompositionChild = /* @__PURE__ */ action(
   {
     op: "replaceCompositionChild",
     description: "Replace one composition child without changing its slot.",
@@ -269,7 +269,7 @@ function requireConcat(program, operation) {
   }
 }
 
-const insertCompositionChild = action(
+const insertCompositionChild = /* @__PURE__ */ action(
   {
     op: "insertCompositionChild",
     description: "Insert one named child into a concat composition.",
@@ -310,7 +310,7 @@ const insertCompositionChild = action(
   }
 );
 
-const removeCompositionChild = action(
+const removeCompositionChild = /* @__PURE__ */ action(
   {
     op: "removeCompositionChild",
     description: "Remove one named child from a concat composition.",
@@ -338,7 +338,7 @@ const removeCompositionChild = action(
   }
 );
 
-const reorderCompositionChildren = action(
+const reorderCompositionChildren = /* @__PURE__ */ action(
   {
     op: "reorderCompositionChildren",
     description: "Reorder every named child in a concat composition.",

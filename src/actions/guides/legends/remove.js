@@ -67,7 +67,7 @@ export function removeOwnedColorLegends(program, target) {
   return kinds.length === 0 ? program : removeLegendKinds(program, kinds);
 }
 
-export const removeLegend = action(
+export const removeLegend = /* @__PURE__ */ action(
   { op: "removeLegend", description: "Remove selected legend content or every block owned by one mark." },
   function (args = {}) {
     validateKeys(args, OPTIONS, "removeLegend");

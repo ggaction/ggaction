@@ -76,7 +76,7 @@ function rematerializePath(program, layer) {
     : program;
 }
 
-const encodePathOrder = action(
+const encodePathOrder = /* @__PURE__ */ action(
   {
     op: "encodePathOrder",
     description: "Order vertices within each Cartesian path series."
@@ -102,7 +102,7 @@ const encodePathOrder = action(
   }
 );
 
-const removePathOrder = action(
+const removePathOrder = /* @__PURE__ */ action(
   {
     op: "removePathOrder",
     description: "Remove explicit path order and restore automatic ordering."

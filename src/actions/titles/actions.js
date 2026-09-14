@@ -120,7 +120,7 @@ export const createTitleText = titleTextAction("title", true);
 export const editSubtitleText = titleTextAction("subtitle", false);
 export const createSubtitleText = titleTextAction("subtitle", true);
 
-export const rematerializeTitle = action(
+export const rematerializeTitle = /* @__PURE__ */ action(
   { op: "rematerializeTitle", description: "Rematerialize chart title graphics." },
   withGuideLayoutValidation(function (args = {}) {
     noOptions(args, "rematerializeTitle");
@@ -142,7 +142,7 @@ export const rematerializeTitle = action(
   })
 );
 
-export const createTitle = action(
+export const createTitle = /* @__PURE__ */ action(
   {
     op: "createTitle",
     description: "Create a chart title and optional subtitle.",
@@ -176,7 +176,7 @@ export const createTitle = action(
   })
 );
 
-export const editTitle = action(
+export const editTitle = /* @__PURE__ */ action(
   {
     op: "editTitle",
     description: "Edit one stable chart title resource.",
@@ -214,7 +214,7 @@ export const editTitle = action(
   })
 );
 
-export const removeTitle = action(
+export const removeTitle = /* @__PURE__ */ action(
   {
     op: "removeTitle",
     description: "Remove the complete chart title resource.",

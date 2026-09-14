@@ -300,7 +300,7 @@ function applyPointPacking(program, {
   };
 }
 
-export const rematerializePointMark = action(
+export const rematerializePointMark = /* @__PURE__ */ action(
   {
     op: "rematerializePointMark",
     description: "Recompute concrete point geometry and appearance."

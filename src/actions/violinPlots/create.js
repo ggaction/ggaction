@@ -132,7 +132,7 @@ function guideOptions(guides, x, y, category, color) {
   };
 }
 
-export const createViolinPlot = action(
+export const createViolinPlot = /* @__PURE__ */ action(
   {
     op: "createViolinPlot",
     description: "Create a categorical kernel-density violin plot."

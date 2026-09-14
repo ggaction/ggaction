@@ -19,7 +19,7 @@ const OPTIONS = Object.freeze([
   "target", "coordinate", "dimensions", "key", "missing"
 ]);
 
-export const encodeParallelCoordinates = action(
+export const encodeParallelCoordinates = /* @__PURE__ */ action(
   {
     op: "encodeParallelCoordinates",
     description: "Atomically encode ordered Parallel-coordinate dimensions."

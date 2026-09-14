@@ -109,7 +109,7 @@ function applyScaleDefinition(program, current, definition) {
   return patch === undefined ? program : program.editScale(patch);
 }
 
-const editHorizon = action(
+const editHorizon = /* @__PURE__ */ action(
   {
     op: "editHorizon",
     description: "Revise one Horizon transform and rematerialize its consumers."
@@ -278,7 +278,7 @@ const editHorizon = action(
   }
 );
 
-const encodeHorizon = action(
+const encodeHorizon = /* @__PURE__ */ action(
   {
     op: "encodeHorizon",
     description: "Derive and encode one folded Horizon area."

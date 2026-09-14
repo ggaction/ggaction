@@ -159,7 +159,7 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
   return next;
 }
 
-const encodeX2 = action(
+const encodeX2 = /* @__PURE__ */ action(
   {
     op: "encodeX2",
     description: "Encode a secondary horizontal endpoint."
@@ -175,7 +175,7 @@ const encodeX2 = action(
   }
 );
 
-const encodeY2 = action(
+const encodeY2 = /* @__PURE__ */ action(
   {
     op: "encodeY2",
     description: "Encode a secondary vertical endpoint."
@@ -225,7 +225,7 @@ function rangeAction(channel) {
 const encodeYRange = rangeAction("y");
 const encodeXRange = rangeAction("x");
 
-const encodeGroup = action(
+const encodeGroup = /* @__PURE__ */ action(
   {
     op: "encodeGroup",
     description: "Split path geometry by nominal identity fields without a scale."

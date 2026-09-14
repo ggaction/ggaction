@@ -20,7 +20,7 @@ const STROKE_DASH_ENCODING_OPTIONS = Object.freeze([
   "field", "value", "target", "fieldType", "scale"
 ]);
 
-const clearStrokeDashEncoding = action(
+const clearStrokeDashEncoding = /* @__PURE__ */ action(
   {
     op: "clearStrokeDashEncoding",
     description: "Remove the current semantic stroke-dash assignment."
@@ -58,7 +58,7 @@ function reconcileLegendAfterDashRemoval(program, target) {
     .rematerializeLegend();
 }
 
-const encodeStrokeDash = action(
+const encodeStrokeDash = /* @__PURE__ */ action(
   {
     op: "encodeStrokeDash",
     description: "Encode a nominal field as line stroke dash."

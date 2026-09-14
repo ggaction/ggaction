@@ -465,7 +465,7 @@ function syncReferenceEncoding(program, id, source, config) {
   return next;
 }
 
-export const materializeStatisticalReferenceData = action(
+export const materializeStatisticalReferenceData = /* @__PURE__ */ action(
   {
     op: "materializeStatisticalReferenceData",
     description: "Materialize one owned statistical reference value dataset."
@@ -485,7 +485,7 @@ export const materializeStatisticalReferenceData = action(
   }
 );
 
-export const rematerializeStatisticalReference = action(
+export const rematerializeStatisticalReference = /* @__PURE__ */ action(
   {
     op: "rematerializeStatisticalReference",
     description: "Recompute one source-dependent statistical reference."
@@ -637,7 +637,7 @@ function createReference(program, args, band) {
     : createLiteralReference(program, args, band);
 }
 
-export const createReferenceLine = action(
+export const createReferenceLine = /* @__PURE__ */ action(
   {
     op: "createReferenceLine",
     description: "Create a constant or statistical reference line."
@@ -647,7 +647,7 @@ export const createReferenceLine = action(
   }
 );
 
-export const createReferenceBand = action(
+export const createReferenceBand = /* @__PURE__ */ action(
   {
     op: "createReferenceBand",
     description: "Create a constant or statistical reference interval."

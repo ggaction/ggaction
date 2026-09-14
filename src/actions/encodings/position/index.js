@@ -141,7 +141,7 @@ function encodePosition(program, channel, args, operation) {
   return applyDetachedScaleRematerialization(next, [layer]);
 }
 
-const encodeX = action(
+const encodeX = /* @__PURE__ */ action(
   {
     op: "encodeX",
     description: "Encode a field as horizontal position."
@@ -151,7 +151,7 @@ const encodeX = action(
   }
 );
 
-const encodeY = action(
+const encodeY = /* @__PURE__ */ action(
   {
     op: "encodeY",
     description: "Encode a field as vertical position."
@@ -161,7 +161,7 @@ const encodeY = action(
   }
 );
 
-const encodeTheta = action(
+const encodeTheta = /* @__PURE__ */ action(
   {
     op: "encodeTheta",
     description: "Encode a field as Polar angle in clockwise degrees."
@@ -171,7 +171,7 @@ const encodeTheta = action(
   }
 );
 
-const encodeR = action(
+const encodeR = /* @__PURE__ */ action(
   {
     op: "encodeR",
     description: "Encode a quantitative field as Polar radius."

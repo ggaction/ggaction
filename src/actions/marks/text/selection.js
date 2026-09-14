@@ -40,7 +40,7 @@ function validateSelectionSource(program, source, requested) {
   resolveMarkSelection(program, source, definition.selector);
 }
 
-const editMarkLabelSelection = action(
+const editMarkLabelSelection = /* @__PURE__ */ action(
   {
     op: "editMarkLabelSelection",
     description: "Replace the final-item membership requested by an attached label."

@@ -19,7 +19,7 @@ import {
   resolveBoxSourceLayer
 } from "./resolve.js";
 
-export const createBoxPlot = action(
+export const createBoxPlot = /* @__PURE__ */ action(
   {
     op: "createBoxPlot",
     description: "Create a Tukey box plot from categorical and quantitative positions."

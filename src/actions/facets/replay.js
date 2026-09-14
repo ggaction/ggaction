@@ -22,7 +22,7 @@ function requestedTransform(transform) {
   };
 }
 
-export const replayDerivedData = action(
+export const replayDerivedData = /* @__PURE__ */ action(
   {
     op: "replayDerivedData",
     description: "Replay one stored derived-data transform for a facet cell."

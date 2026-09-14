@@ -126,7 +126,7 @@ function applyBin2DRevision(program, {
   });
 }
 
-export const createBin2DData = action(
+export const createBin2DData = /* @__PURE__ */ action(
   {
     op: "createBin2DData",
     description: "Create or revise immutable rectangular 2D-bin values."
@@ -168,7 +168,7 @@ export const createBin2DData = action(
   }
 );
 
-export const editBin2DData = action(
+export const editBin2DData = /* @__PURE__ */ action(
   {
     op: "editBin2DData",
     description: "Partially revise one logical rectangular 2D-bin owner."

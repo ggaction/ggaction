@@ -50,7 +50,7 @@ function resolveStandaloneLegendStep(args, kind) {
   return { op: kind === "size" ? "createSizeLegend" : "createStrokeWidthLegend", args: options };
 }
 
-export const rematerializeLegend = action(
+export const rematerializeLegend = /* @__PURE__ */ action(
   { op: "rematerializeLegend", description: "Rematerialize every existing legend component." },
   withGuideLayoutValidation(function (args = {}) {
     noOptions(args, "rematerializeLegend");
@@ -213,7 +213,7 @@ export function resolveCategoricalLegendConfig(program, args = {}) {
   return config;
 }
 
-export const createCategoricalLegend = action(
+export const createCategoricalLegend = /* @__PURE__ */ action(
   { op: "createCategoricalLegend", description: "Create one categorical legend block." },
   withGuideLayoutValidation(function (args = {}) {
     const config = resolveCategoricalLegendConfig(this, args);
@@ -403,14 +403,14 @@ export function applyLegendCreationPlan(program, plan) {
     : plan.finish === "auto" ? finishLegend(next) : next;
 }
 
-export const createLegend = action(
+export const createLegend = /* @__PURE__ */ action(
   { op: "createLegend", description: "Create an inferred legend for selected channels." },
   withGuideLayoutValidation(function (args = {}) {
     return applyLegendCreationPlan(this, resolveLegendCreationPlan(this, args));
   })
 );
 
-export const removeCategoricalLegend = action(
+export const removeCategoricalLegend = /* @__PURE__ */ action(
   {
     op: "removeCategoricalLegend",
     description: "Remove the active categorical legend and its concrete components."

@@ -163,7 +163,7 @@ function resolveGradientConfig(program, config) {
   };
 }
 
-export const rematerializeGradientLegend = action(
+export const rematerializeGradientLegend = /* @__PURE__ */ action(
   {
     op: "rematerializeGradientLegend",
     description: "Rematerialize a continuous color gradient legend."
@@ -381,7 +381,7 @@ export function createGradientLegendFromConfig(program, config) {
   return next.rematerializeGradientLegend();
 }
 
-export const createGradientLegend = action(
+export const createGradientLegend = /* @__PURE__ */ action(
   {
     op: "createGradientLegend",
     description: "Create a continuous color gradient legend."

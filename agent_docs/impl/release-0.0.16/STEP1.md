@@ -29,7 +29,7 @@
 | 12 | preview가 관계없는 원본 데이터까지 다시 복사한다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 13 | 긴 trace의 append 비용이 누적된다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 14 | SVG가 매번 전체 graphicSpec을 직렬화·해시한다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
-| 15 | 최소 산점도 번들이 예산 상한에 거의 도달했다 | 진행 전 | — |
+| 15 | 최소 산점도 번들이 예산 상한에 거의 도달했다 | 부분 구현·검증 | Basic gzip 174,967→168,184; Full 359,382→359,334로 영향 작음. 신규 기능 후 최종 budget 재평가 필요 |
 | 16 | 브라우저 전용 사용자도 MCP·네이티브 렌더 의존성을 설치한다 | 구현·검증 완료 | renderer/package/MCP 38개, docs/package 33개, 실제 bare→optional 설치·Full/Basic/타입/전체 package consumer 통과 |
 | 17 | 런타임 성능 회귀를 검출하는 공식 workload가 필요하다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 18 | 실제 폰트와 저작용 text bounds 차이를 줄일 선택지가 필요하다 | 진행 전 | — |
@@ -77,3 +77,7 @@ PNG/PDF Buffer API와 async PNG encoding을 추가하고 파일 출력이 같은
 ### Structured diagnostics checkpoint
 
 Error identity/class를 보존하는 WeakMap metadata와 browser-safe entry를 추가했다. 공통 option/value/ID/resource/live-reference/limit validator가 의미를 직접 분류하고 wrapper는 미분류 실패에 action-failed만 부여한다. 원본 행을 저장하지 않는다. 35개 focused test 및 전체 package consumer 통과. 일반 suite 3,690개 중 package visibility 문서 목록 1개가 실패해 README/architecture를 고쳤고 관련 계약을 재검증했다. 최종 full/coverage/release 검증은 남아 있다.
+
+### Built-in tree shaking checkpoint
+
+239개 top-level built-in action declaration에만 pure call annotation을 적용했다. 등록 함수와 extension author의 action() 검증은 그대로 실행된다. 실제 bundled subset에서 미사용 wrapper 제거 및 invalid extension metadata 예외 보존을 검증했고 18개 계약과 전체 installed package consumer가 통과했다. Basic은 기존 175,000-byte 상한 대비 6,816 bytes 여유를 확보했다. Full은 모든 action을 등록하므로 감소가 48 bytes에 그쳤고 항목 15의 최종 budget 검토를 남긴다.

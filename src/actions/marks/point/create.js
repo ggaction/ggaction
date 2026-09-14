@@ -22,7 +22,7 @@ const OPTIONS = Object.freeze([
   ...STROKE_STYLE_PROPERTIES
 ]);
 
-export const createPointMark = action(
+export const createPointMark = /* @__PURE__ */ action(
   {
     op: "createPointMark",
     description: "Create a semantic point mark and concrete point graphics."

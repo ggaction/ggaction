@@ -41,7 +41,7 @@ function guideOptions(value) {
   return guides;
 }
 
-export const createHorizonPlot = action({
+export const createHorizonPlot = /* @__PURE__ */ action({
   op: OPERATION, description: "Create a signed, folded horizon area with original-x guides."
 }, function (args = {}) {
   validateFacadeOptions(args, OPTIONS, OPERATION);

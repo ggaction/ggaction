@@ -207,7 +207,7 @@ export function resolveStrokeGradientLegendCreation(program, args = {}) {
   return resolveGradientConfig(program, config);
 }
 
-export const rematerializeStrokeGradientLegend = action(
+export const rematerializeStrokeGradientLegend = /* @__PURE__ */ action(
   {
     op: "rematerializeStrokeGradientLegend",
     description: "Rematerialize a continuous stroke gradient legend."
@@ -336,7 +336,7 @@ export function createStrokeGradientLegendFromConfig(program, config) {
   return next.rematerializeStrokeGradientLegend();
 }
 
-export const createStrokeGradientLegend = action(
+export const createStrokeGradientLegend = /* @__PURE__ */ action(
   {
     op: "createStrokeGradientLegend",
     description: "Create a continuous stroke gradient legend."
@@ -411,7 +411,7 @@ export function resolveStrokeIntervalLegendCreation(program, args = {}) {
   return resolveStrokeIntervalConfig(program, config);
 }
 
-export const rematerializeStrokeIntervalLegend = action(
+export const rematerializeStrokeIntervalLegend = /* @__PURE__ */ action(
   {
     op: "rematerializeStrokeIntervalLegend",
     description: "Rematerialize a discretized stroke interval legend."
@@ -500,7 +500,7 @@ export function createStrokeIntervalLegendFromConfig(program, config) {
   return next.rematerializeStrokeIntervalLegend();
 }
 
-export const createStrokeIntervalLegend = action(
+export const createStrokeIntervalLegend = /* @__PURE__ */ action(
   {
     op: "createStrokeIntervalLegend",
     description: "Create a discretized stroke interval legend."

@@ -14,7 +14,7 @@ const REGRESSION_OPTIONS = Object.freeze([
   "confidenceMethod", "level", "confidence", "interval", "band", "line"
 ]);
 
-export const createRegression = action(
+export const createRegression = /* @__PURE__ */ action(
   {
     op: "createRegression",
     description: "Fit and layer regression lines with optional interval bands."

@@ -375,7 +375,7 @@ export function reviseDerivedData(program, {
   return applyRevisionPlan(program, resolved, plan);
 }
 
-export const editDerivedData = action(
+export const editDerivedData = /* @__PURE__ */ action(
   {
     op: "editDerivedData",
     description: "Atomically revise one standalone derived-data definition."

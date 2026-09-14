@@ -3,7 +3,7 @@ import { validateKeys } from "../../core/validation.js";
 import { applyFacetGuideComposition } from
   "../../materialization/facetGuides/index.js";
 
-export const composeFacetGuides = action(
+export const composeFacetGuides = /* @__PURE__ */ action(
   {
     op: "composeFacetGuides",
     description: "Apply outer-axis ownership and promote shared facet legends.",

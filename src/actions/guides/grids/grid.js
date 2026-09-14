@@ -183,7 +183,7 @@ const createVerticalGrid = makeCreate("vertical");
 const editHorizontalGrid = makeEdit("horizontal");
 const editVerticalGrid = makeEdit("vertical");
 
-const editGrid = action(
+const editGrid = /* @__PURE__ */ action(
   {
     op: "editGrid",
     description: "Edit selected existing Cartesian grid directions."
@@ -253,7 +253,7 @@ export function resolveGridOptions(program, args = {}, layers = program.semantic
   return { horizontal, vertical, theta, radial };
 }
 
-const createGrid = action(
+const createGrid = /* @__PURE__ */ action(
   {
     op: "createGrid",
     description: "Create selected Cartesian grid directions."
@@ -273,7 +273,7 @@ const createGrid = action(
   }
 );
 
-const rematerializeGrid = action(
+const rematerializeGrid = /* @__PURE__ */ action(
   {
     op: "rematerializeGrid",
     description: "Recompute every existing grid direction."
@@ -305,7 +305,7 @@ const rematerializeGrid = action(
   }
 );
 
-const removeGrid = action(
+const removeGrid = /* @__PURE__ */ action(
   {
     op: "removeGrid",
     description: "Remove selected Cartesian grid directions."

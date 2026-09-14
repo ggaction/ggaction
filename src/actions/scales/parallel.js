@@ -45,7 +45,7 @@ function resolveParallelDimension(program, args) {
   return dimension;
 }
 
-export const editParallelScale = action(
+export const editParallelScale = /* @__PURE__ */ action(
   {
     op: "editParallelScale",
     description: "Edit a Parallel-coordinate dimension scale by field identity."

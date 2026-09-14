@@ -389,7 +389,7 @@ function removeBoundary(program, id) {
   return removeOwnedMark(program, id);
 }
 
-export const rematerializeErrorBandBoundary = action(
+export const rematerializeErrorBandBoundary = /* @__PURE__ */ action(
   {
     op: "rematerializeErrorBandBoundary",
     description: "Rematerialize one owned error-band boundary."
@@ -422,7 +422,7 @@ export const rematerializeErrorBandBoundary = action(
   }
 );
 
-export const editErrorBand = action(
+export const editErrorBand = /* @__PURE__ */ action(
   {
     op: "editErrorBand",
     description: "Revise one error band's roles, statistics, body, and boundaries."
@@ -585,7 +585,7 @@ export const editErrorBand = action(
   }
 );
 
-export const editErrorBandBoundary = action(
+export const editErrorBandBoundary = /* @__PURE__ */ action(
   {
     op: "editErrorBandBoundary",
     description: "Edit one or both owned error-band boundaries."

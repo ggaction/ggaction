@@ -460,7 +460,7 @@ function updateErrorBarRoles(program, owner, current, candidate, dataId, capIds)
   return next.rematerializeErrorBar({ id: owner.id });
 }
 
-export const rematerializeErrorBar = action(
+export const rematerializeErrorBar = /* @__PURE__ */ action(
   {
     op: "rematerializeErrorBar",
     description: "Reconcile one error bar and its owned caps."
@@ -494,7 +494,7 @@ export const rematerializeErrorBar = action(
   }
 );
 
-export const editErrorBar = action(
+export const editErrorBar = /* @__PURE__ */ action(
   {
     op: "editErrorBar",
     description: "Revise one error bar's roles, statistics, and owned caps."

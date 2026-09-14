@@ -17,7 +17,7 @@ const CENTER_OPTIONS = Object.freeze([
 ]);
 const LEGEND_OPTIONS = Object.freeze(["owner", "title", "position"]);
 
-export const createGradientPlotCenter = action(
+export const createGradientPlotCenter = /* @__PURE__ */ action(
   {
     op: "createGradientPlotCenter",
     description: "Create the optional center rule for one gradient plot."
@@ -82,7 +82,7 @@ function editProperties(program, target, properties) {
   return next;
 }
 
-export const rematerializeGradientPlotLegend = action(
+export const rematerializeGradientPlotLegend = /* @__PURE__ */ action(
   {
     op: "rematerializeGradientPlotLegend",
     description: "Rematerialize one gradient plot density legend."
@@ -160,7 +160,7 @@ export function fulfillGradientPlotLegend(program, args) {
   return program;
 }
 
-export const createGradientPlotLegend = action(
+export const createGradientPlotLegend = /* @__PURE__ */ action(
   {
     op: "createGradientPlotLegend",
     description: "Create the neutral density legend owned by one gradient plot."

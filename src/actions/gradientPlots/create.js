@@ -18,7 +18,7 @@ import {
   resolveGradientSourceLayer
 } from "./resolve.js";
 
-export const createGradientPlot = action(
+export const createGradientPlot = /* @__PURE__ */ action(
   {
     op: "createGradientPlot",
     description: "Create a categorical density gradient plot."

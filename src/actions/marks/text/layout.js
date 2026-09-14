@@ -226,7 +226,7 @@ function placementLeaderItems(program, layer) {
   });
 }
 
-const materializeMarkLabelPlacement = action(
+const materializeMarkLabelPlacement = /* @__PURE__ */ action(
   {
     op: "materializeMarkLabelPlacement",
     description: "Reconcile semantic attached-label placement leaders."
@@ -267,7 +267,7 @@ const materializeMarkLabelPlacement = action(
   }
 );
 
-const materializeLabelLayout = action(
+const materializeLabelLayout = /* @__PURE__ */ action(
   {
     op: "materializeLabelLayout",
     description: "Resolve concrete label positions and optional leader lines."
@@ -326,7 +326,7 @@ const materializeLabelLayout = action(
   }
 );
 
-const layoutLabels = action(
+const layoutLabels = /* @__PURE__ */ action(
   {
     op: "layoutLabels",
     description: "Assign deterministic collision-aware layout to a text mark."
@@ -358,7 +358,7 @@ const layoutLabels = action(
   }
 );
 
-const editMarkLabelPlacement = action(
+const editMarkLabelPlacement = /* @__PURE__ */ action(
   {
     op: "editMarkLabelPlacement",
     description: "Replace or reset semantic placement for one attached label layer."
@@ -418,7 +418,7 @@ const editMarkLabelPlacement = action(
   }
 );
 
-const removeLabelLayout = action(
+const removeLabelLayout = /* @__PURE__ */ action(
   {
     op: "removeLabelLayout",
     description: "Remove label layout and restore semantic base text positions."

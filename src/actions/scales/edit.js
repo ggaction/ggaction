@@ -145,7 +145,7 @@ function applyScaleEdit(program, {
   return next;
 }
 
-export const editScale = action(
+export const editScale = /* @__PURE__ */ action(
   {
     op: "editScale",
     description: "Edit an existing scale and rematerialize its consumers."

@@ -15,7 +15,7 @@ export function stackLayoutMode(stack) {
   return stack === "normalize" ? "fill" : stack === "center" ? "center" : stack === null ? "overlay" : "stack";
 }
 
-export const layoutSeries = action({ op: "layoutSeries", description: "Assign series placement independently of color." }, function (args = {}) {
+export const layoutSeries = /* @__PURE__ */ action({ op: "layoutSeries", description: "Assign series placement independently of color." }, function (args = {}) {
   validateOptions(args, ["target", "mode"], "layoutSeries");
   const mode = validateColorLayout(args.mode);
   const { id: target, layer, dataset } = resolveTarget(this, args.target, ["bar", "area"], "series mark");

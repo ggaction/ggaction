@@ -67,7 +67,7 @@ function resolveCanvasState(program, args) {
   return cloneAndFreeze(state);
 }
 
-export const editCanvas = action(
+export const editCanvas = /* @__PURE__ */ action(
   {
     op: "editCanvas",
     description: "Edit canvas properties and authoring bounds."
@@ -104,7 +104,7 @@ export const editCanvas = action(
   }
 );
 
-export const createCanvas = action(
+export const createCanvas = /* @__PURE__ */ action(
   {
     op: "createCanvas",
     description: "Create and configure the chart canvas."
@@ -147,7 +147,7 @@ export const createCanvas = action(
   }
 );
 
-export const createBasicCanvas = action(
+export const createBasicCanvas = /* @__PURE__ */ action(
   {
     op: "createCanvas",
     description: "Create and configure the chart canvas."

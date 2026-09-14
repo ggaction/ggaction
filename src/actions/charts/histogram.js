@@ -23,7 +23,7 @@ const HISTOGRAM_OPTIONS = Object.freeze([
   "maxBins", "binStep", "binBoundaries", "stack", "xScale", "yScale", "weight"
 ]);
 
-export const createHistogram = action(
+export const createHistogram = /* @__PURE__ */ action(
   {
     op: "createHistogram",
     description: "Create a binned count histogram from existing chart data."

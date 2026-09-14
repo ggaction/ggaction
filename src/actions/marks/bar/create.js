@@ -20,7 +20,7 @@ const CREATE_OPTIONS = Object.freeze([
   "cornerRadius", ...STROKE_STYLE_PROPERTIES
 ]);
 
-export const createBarMark = action(
+export const createBarMark = /* @__PURE__ */ action(
   {
     op: "createBarMark",
     description: "Create a semantic bar mark and empty rect collection."

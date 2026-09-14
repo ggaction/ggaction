@@ -146,7 +146,7 @@ export function resolveSizeLegendLayout(program, config) {
     labels, titleStyle, background, config: effective };
 }
 
-export const rematerializeSizeLegend = action(
+export const rematerializeSizeLegend = /* @__PURE__ */ action(
   {
     op: "rematerializeSizeLegend",
     description: "Rematerialize a quantitative point-size legend."
@@ -291,7 +291,7 @@ export function createSizeLegendFromConfig(program, config) {
   return next.rematerializeSizeLegend();
 }
 
-export const createSizeLegend = action(
+export const createSizeLegend = /* @__PURE__ */ action(
   {
     op: "createSizeLegend",
     description: "Create an equal-area point-size legend."

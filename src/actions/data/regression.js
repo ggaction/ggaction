@@ -31,7 +31,7 @@ export const materializeRegressionData = derivedMaterializer(
     })
 );
 
-export const createRegressionData = action(
+export const createRegressionData = /* @__PURE__ */ action(
   { op: "createRegressionData", description: "Create grouped regression values and optional interval bounds." },
   function (args = {}) {
     validateKeys(args, OPTIONS, "createRegressionData");

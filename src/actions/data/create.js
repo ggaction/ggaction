@@ -5,7 +5,7 @@ import { hasDataset, hasDatasetOwner } from "../../selectors/index.js";
 
 const OPTIONS = Object.freeze(["id", "values"]);
 
-export const createData = action(
+export const createData = /* @__PURE__ */ action(
   { op: "createData", description: "Create an immutable named dataset." },
   function (args = {}) {
     validateKeys(args, OPTIONS, "createData");

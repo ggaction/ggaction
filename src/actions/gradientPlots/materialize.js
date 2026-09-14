@@ -123,7 +123,7 @@ function bodyItems(program, layer, dataset, config) {
   });
 }
 
-export const materializeGradientPlotFill = action(
+export const materializeGradientPlotFill = /* @__PURE__ */ action(
   {
     op: "materializeGradientPlotFill",
     description: "Materialize categorical density profiles as gradient strips."
@@ -170,7 +170,7 @@ export const materializeGradientPlotFill = action(
   }
 );
 
-export const materializeGradientPlot = action(
+export const materializeGradientPlot = /* @__PURE__ */ action(
   {
     op: "materializeGradientPlot",
     description: "Materialize one complete categorical gradient plot."

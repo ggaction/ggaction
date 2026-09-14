@@ -16,7 +16,7 @@ const OUTLIER_OPTIONS = Object.freeze([
   ...STROKE_STYLE_PROPERTIES
 ]);
 
-export const createBoxMedian = action(
+export const createBoxMedian = /* @__PURE__ */ action(
   {
     op: "createBoxMedian",
     description: "Create a median rule spanning one concrete box body."
@@ -58,7 +58,7 @@ export const createBoxMedian = action(
   }
 );
 
-export const createBoxOutliers = action(
+export const createBoxOutliers = /* @__PURE__ */ action(
   {
     op: "createBoxOutliers",
     description: "Create concrete point symbols for box-plot outlier rows."

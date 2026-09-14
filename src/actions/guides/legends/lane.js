@@ -374,7 +374,7 @@ function applyHorizontalPlan(program, groups, plan) {
   return next;
 }
 
-export const rematerializeSideLegendLane = action(
+export const rematerializeSideLegendLane = /* @__PURE__ */ action(
   {
     op: "rematerializeSideLegendLane",
     description: "Align and stack every right or left legend block."
@@ -457,7 +457,7 @@ export const rematerializeSideLegendLane = action(
   }
 );
 
-export const rematerializeHorizontalLegendLane = action(
+export const rematerializeHorizontalLegendLane = /* @__PURE__ */ action(
   {
     op: "rematerializeHorizontalLegendLane",
     description: "Pack and align every top or bottom legend block."

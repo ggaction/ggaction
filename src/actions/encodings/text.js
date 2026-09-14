@@ -25,7 +25,7 @@ function validateTextField(rows, field, format) {
   if (!found) throw new Error(`Unknown text field "${field}".`);
 }
 
-export const encodeText = action(
+export const encodeText = /* @__PURE__ */ action(
   {
     op: "encodeText",
     description: "Assign field, constant, or source semantic text content."

@@ -11,7 +11,7 @@ const OPTIONS = Object.freeze([
   "id", "source", "x", "y", "bins", "extent", "includeEmpty", "members", "as"
 ]);
 
-export const createBasicBin2DData = action(
+export const createBasicBin2DData = /* @__PURE__ */ action(
   {
     op: "createBin2DData",
     description: "Create immutable rectangular 2D-bin values."

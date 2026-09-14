@@ -23,7 +23,7 @@ const BAR_OPTIONS = Object.freeze([
   "fill", "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
 ]);
 
-export const createBarPlot = action(
+export const createBarPlot = /* @__PURE__ */ action(
   {
     op: "createBarPlot",
     description: "Create a Cartesian bar plot from existing chart data."

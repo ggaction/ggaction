@@ -47,7 +47,7 @@ function collectionProperties(part, axes, bounds) {
   };
 }
 
-export const rematerializeParallelAxes = action({
+export const rematerializeParallelAxes = /* @__PURE__ */ action({
   op: "rematerializeParallelAxes",
   description: "Recompute concrete Parallel dimension axes."
 }, function (args = {}) {

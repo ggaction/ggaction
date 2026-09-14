@@ -39,7 +39,7 @@ function position(value, operation, channel) {
   return resolved;
 }
 
-export const createPolarScatterPlot = action(
+export const createPolarScatterPlot = /* @__PURE__ */ action(
   {
     op: "createPolarScatterPlot",
     description: "Create a Polar scatter plot with distinct radial position and glyph size."
@@ -89,7 +89,7 @@ export const createPolarScatterPlot = action(
   }
 );
 
-export const createPolarLinePlot = action(
+export const createPolarLinePlot = /* @__PURE__ */ action(
   {
     op: "createPolarLinePlot",
     description: "Create an open or explicitly closed Polar line plot."

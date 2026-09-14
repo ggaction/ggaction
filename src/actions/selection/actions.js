@@ -278,7 +278,7 @@ export function rematerializeThemeHighlights(program) {
   return next;
 }
 
-export const selectMarks = action(
+export const selectMarks = /* @__PURE__ */ action(
   { op: "selectMarks", description: "Create one reusable selection over final mark items." },
   function (args = {}) {
     validateKeys(args, SELECT_OPTIONS, "selectMarks");
@@ -291,7 +291,7 @@ export const selectMarks = action(
   }
 );
 
-export const editMarkSelection = action(
+export const editMarkSelection = /* @__PURE__ */ action(
   {
     op: "editMarkSelection",
     description: "Replace one stored mark selector while preserving its identity and target."
@@ -325,7 +325,7 @@ export const editMarkSelection = action(
   }
 );
 
-export const removeMarkHighlight = action(
+export const removeMarkHighlight = /* @__PURE__ */ action(
   {
     op: "removeMarkHighlight",
     description: "Remove one stored highlight assignment and restore the clean mark baseline."
@@ -349,7 +349,7 @@ export const removeMarkHighlight = action(
   }
 );
 
-export const removeMarkSelection = action(
+export const removeMarkSelection = /* @__PURE__ */ action(
   {
     op: "removeMarkSelection",
     description: "Remove one stored selection after removing its dependent highlight."
@@ -376,7 +376,7 @@ export const removeMarkSelection = action(
   }
 );
 
-export const applyPointHighlight = action(
+export const applyPointHighlight = /* @__PURE__ */ action(
   { op: "applyPointHighlight", description: "Apply selected point appearance and geometry." },
   function (args = {}) {
     validateKeys(args, INTERNAL_SELECTION_OPTIONS, "applyPointHighlight");
@@ -432,14 +432,14 @@ function applyRectangularHighlight(
     transformRectangularHighlightChild(item, args.style, offset));
 }
 
-export const applyBarHighlight = action(
+export const applyBarHighlight = /* @__PURE__ */ action(
   { op: "applyBarHighlight", description: "Apply selected bar appearance." },
   function (args = {}) {
     return applyRectangularHighlight(this, args, "applyBarHighlight", "bar");
   }
 );
 
-export const applyRectHighlight = action(
+export const applyRectHighlight = /* @__PURE__ */ action(
   { op: "applyRectHighlight", description: "Apply selected rect appearance." },
   function (args = {}) {
     return applyRectangularHighlight(
@@ -452,7 +452,7 @@ export const applyRectHighlight = action(
   }
 );
 
-export const applyPathHighlight = action(
+export const applyPathHighlight = /* @__PURE__ */ action(
   { op: "applyPathHighlight", description: "Apply selected line or area path appearance and offset." },
   function (args = {}) {
     validateKeys(args, INTERNAL_SELECTION_OPTIONS, "applyPathHighlight");
@@ -473,7 +473,7 @@ export const applyPathHighlight = action(
   }
 );
 
-export const applyRuleHighlight = action(
+export const applyRuleHighlight = /* @__PURE__ */ action(
   { op: "applyRuleHighlight", description: "Apply selected rule appearance and offset." },
   function (args = {}) {
     validateKeys(args, INTERNAL_SELECTION_OPTIONS, "applyRuleHighlight");
@@ -493,7 +493,7 @@ export const applyRuleHighlight = action(
   }
 );
 
-export const dimUnselectedMarkItems = action(
+export const dimUnselectedMarkItems = /* @__PURE__ */ action(
   { op: "dimUnselectedMarkItems", description: "Dim the complement of one mark selection." },
   function (args = {}) {
     validateKeys(args, INTERNAL_DIM_OPTIONS, "dimUnselectedMarkItems");
@@ -507,7 +507,7 @@ export const dimUnselectedMarkItems = action(
   }
 );
 
-export const placeSelectedMarkItemsLast = action(
+export const placeSelectedMarkItemsLast = /* @__PURE__ */ action(
   { op: "placeSelectedMarkItemsLast", description: "Place selected collection items after their complement." },
   function (args = {}) {
     validateKeys(args, INTERNAL_ORDER_OPTIONS, "placeSelectedMarkItemsLast");
@@ -528,7 +528,7 @@ export const placeSelectedMarkItemsLast = action(
   }
 );
 
-export const rematerializeMarkHighlights = action(
+export const rematerializeMarkHighlights = /* @__PURE__ */ action(
   { op: "rematerializeMarkHighlights", description: "Reapply stored highlight assignments to one rematerialized mark." },
   function (args = {}) {
     validateKeys(args, REMATERIALIZE_OPTIONS, "rematerializeMarkHighlights");
@@ -553,7 +553,7 @@ export const rematerializeMarkHighlights = action(
   }
 );
 
-export const highlightMarks = action(
+export const highlightMarks = /* @__PURE__ */ action(
   { op: "highlightMarks", description: "Select and emphasize final visual mark items." },
   function (args = {}) {
     validateKeys(args, HIGHLIGHT_OPTIONS, "highlightMarks");

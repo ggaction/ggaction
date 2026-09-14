@@ -123,7 +123,7 @@ export function resolveGuideOptions(program, args = {}, layers = program.semanti
   return { axes, grid, legend };
 }
 
-const createGuides = action(
+const createGuides = /* @__PURE__ */ action(
   {
     op: "createGuides",
     description: "Create applicable axes, grid, and legend."

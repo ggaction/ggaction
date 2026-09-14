@@ -212,7 +212,7 @@ export const createLegendSymbolSwatches = makeCreateSymbol(
   "rematerializeLegendSymbolSwatches"
 );
 
-export const createLegendSymbols = action(
+export const createLegendSymbols = /* @__PURE__ */ action(
   { op: "createLegendSymbols", description: "Create layered legend symbols." },
   function (args = {}) {
     noOptions(args, "createLegendSymbols");
@@ -230,7 +230,7 @@ export const createLegendSymbols = action(
   }
 );
 
-export const rematerializeLegendSymbols = action(
+export const rematerializeLegendSymbols = /* @__PURE__ */ action(
   { op: "rematerializeLegendSymbols", description: "Rematerialize layered legend symbols." },
   function (args = {}) {
     noOptions(args, "rematerializeLegendSymbols");
@@ -248,7 +248,7 @@ export const rematerializeLegendSymbols = action(
   }
 );
 
-export const rematerializeBasicLegendHighlights = action(
+export const rematerializeBasicLegendHighlights = /* @__PURE__ */ action(
   {
     op: "rematerializeLegendHighlights",
     description: "Reflect exact categorical mark highlights in legend symbols."

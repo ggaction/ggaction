@@ -162,7 +162,7 @@ function removeGraphicTree(graphicSpec, id) {
   return freezeOwned({ objects: freezeOwned(objects), order });
 }
 
-const editGraphics = action(
+const editGraphics = /* @__PURE__ */ action(
   {
     op: "editGraphics",
     description: "Replace or remove concrete graphic state.",
