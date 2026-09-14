@@ -29,8 +29,12 @@ const program = chart().createData({
 });
 ```
 
-Empty arrays are valid, and row properties may contain nested arrays or
-objects. The action copies and freezes the supplied data. A dataset ID cannot
+Empty arrays are valid. Every row index must exist and contain a plain object;
+sparse arrays are rejected with the invalid row index. Row properties may
+contain nested arrays or plain objects. Functions, class instances, and cycles
+cannot be stored. The action copies and freezes the supplied data without
+freezing caller-owned values. TypeScript preserves structural row interfaces
+and rejects non-object rows and function-valued cells. A dataset ID cannot
 be created twice, and source values cannot be replaced after creation. The
 first omitted ID is stored as `"data"`. Once any dataset exists, another
 `createData` call must provide an explicit ID; the library does not invent

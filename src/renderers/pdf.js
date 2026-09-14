@@ -9,6 +9,7 @@ import {
   resolveGraphicRenderTarget
 } from "./canvas/index.js";
 import { preflightCanvasGraphicSpec } from "./canvas/native.js";
+import { validateRendererOptions } from "./options.js";
 
 const PDF_OPTIONS = new Set(["output", "metadata"]);
 const PDF_METADATA = new Set([
@@ -19,30 +20,9 @@ const PDF_METADATA = new Set([
 ]);
 const MAX_PDF_DIMENSION = 16_777_216;
 
-function requirePlainObject(value, label) {
-  if (
-    value === null ||
-    typeof value !== "object" ||
-    Array.isArray(value) ||
-    Object.getPrototypeOf(value) !== Object.prototype
-  ) {
-    throw new TypeError(`${label} must be a plain object.`);
-  }
-  return value;
-}
-
-function requireClosedKeys(value, allowed, label) {
-  for (const key of Object.keys(value)) {
-    if (!allowed.has(key)) {
-      throw new TypeError(`${label} does not support option "${key}".`);
-    }
-  }
-}
-
 function requireMetadata(metadata) {
   if (metadata === undefined) return undefined;
-  requirePlainObject(metadata, "renderToPDF metadata");
-  requireClosedKeys(metadata, PDF_METADATA, "renderToPDF metadata");
+  validateRendererOptions(metadata, PDF_METADATA, "renderToPDF metadata");
 
   const resolved = {};
   for (const key of ["title", "author", "subject"]) {
@@ -76,8 +56,7 @@ function requireMetadata(metadata) {
 }
 
 function requirePDFOptions(options) {
-  requirePlainObject(options, "renderToPDF options");
-  requireClosedKeys(options, PDF_OPTIONS, "renderToPDF");
+  validateRendererOptions(options, PDF_OPTIONS, "renderToPDF options");
   if (typeof options.output !== "string" || options.output.length === 0) {
     throw new TypeError("renderToPDF requires a non-empty output path.");
   }

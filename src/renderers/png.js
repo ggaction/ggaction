@@ -4,8 +4,13 @@ import { dirname, resolve } from "node:path";
 import { createCanvas } from "@napi-rs/canvas";
 
 import { render } from "./canvas/index.js";
+import { validateRendererOptions } from "./options.js";
 
-export async function renderToPNG(program, { output, pixelRatio = 1 } = {}) {
+const PNG_OPTIONS = new Set(["output", "pixelRatio"]);
+
+export async function renderToPNG(program, options = {}) {
+  validateRendererOptions(options, PNG_OPTIONS, "renderToPNG options");
+  const { output, pixelRatio = 1 } = options;
   if (typeof output !== "string" || output.length === 0) {
     throw new TypeError("renderToPNG requires a non-empty output path.");
   }

@@ -420,7 +420,7 @@
       "layer": "user-facing",
       "domain": "core",
       "summary": "Create one immutable named dataset.",
-      "signature": "createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;",
+      "signature": "createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;",
       "intents": [
         "create data",
         "create",
@@ -476,7 +476,7 @@
         {
           "name": "values",
           "required": true,
-          "type": "readonly unknown[]"
+          "type": "readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[]"
         }
       ],
       "callPatterns": [

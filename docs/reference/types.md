@@ -23,7 +23,7 @@ interface ChartProgramActions {
   fitCanvas(options?: FitCanvasOptions): ChartProgram;
   applyTheme(options: ApplyThemeOptions): ChartProgram;
   removeTheme(): ChartProgram;
-  createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
+  createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
   removeData(options: RemoveResourceOptions): ChartProgram;
   removeScale(options: RemoveResourceOptions): ChartProgram;
   removeCoordinate(options: RemoveResourceOptions): ChartProgram;
@@ -2101,6 +2101,22 @@ export interface CreateCoordinateOptions {
 ```
 
 </details>
+
+### `CreateDataOptions` {#type-createdataoptions}
+
+<details markdown="1">
+<summary>Expand CreateDataOptions</summary>
+
+```typescript
+export interface CreateDataOptions<Row extends object> {
+  id?: string;
+  values: readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[];
+}
+```
+
+</details>
+
+Related types: [`StoredCell`](#type-storedcell).
 
 ### `CreateDensityPlotOptions` {#type-createdensityplotoptions}
 
@@ -10110,6 +10126,20 @@ export interface StatisticalWeight {
   readonly field: string;
   readonly kind: "frequency" | "reliability";
 }
+```
+
+</details>
+
+### `StoredCell` {#type-storedcell}
+
+<details markdown="1">
+<summary>Expand StoredCell</summary>
+
+```typescript
+type StoredCell<T> = T extends (...args: never[]) => unknown ? never
+  : T extends readonly (infer Value)[] ? readonly StoredCell<Value>[]
+  : T extends object ? { readonly [Key in keyof T]: StoredCell<T[Key]> }
+  : T;
 ```
 
 </details>

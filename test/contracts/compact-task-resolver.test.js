@@ -32,7 +32,7 @@ const authoringPrerequisites = [
   },
   {
     id: "action.createData",
-    signature: "createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;",
+    signature: "createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;",
     call: "program = program.createData({ values })",
     bindings: ["values"]
   }

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { access, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -93,6 +93,17 @@ test("rejects a missing or empty output path", async () => {
     () => renderToPNG(pngProgram(), { output: "" }),
     /non-empty output path/
   );
+});
+
+test("rejects malformed and unknown options before creating files", async () => {
+  const output = await outputPath();
+  for (const options of [null, [], 1]) {
+    await assert.rejects(renderToPNG(pngProgram(), options), /options must be a plain object/);
+  }
+  await assert.rejects(renderToPNG(pngProgram(), { output, pixelratio: 2 }), /does not support option "pixelratio"/);
+  await assert.rejects(access(path.dirname(output)), { code: "ENOENT" });
+  const options = Object.assign(Object.create(null), { output, pixelRatio: 2 });
+  assert.equal((await renderToPNG(pngProgram(), options)).width, 24);
 });
 
 test("rejects unsafe physical dimensions before replacing output", async () => {

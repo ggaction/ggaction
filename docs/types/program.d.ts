@@ -4474,6 +4474,16 @@ export interface EditTitleOptions
 
 export interface ChartProgram extends RegisteredExtensionActions {}
 
+type StoredCell<T> = T extends (...args: never[]) => unknown ? never
+  : T extends readonly (infer Value)[] ? readonly StoredCell<Value>[]
+  : T extends object ? { readonly [Key in keyof T]: StoredCell<T[Key]> }
+  : T;
+
+export interface CreateDataOptions<Row extends object> {
+  id?: string;
+  values: readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[];
+}
+
 export class ChartProgram {
   constructor(state?: ActionOptions);
   readonly semanticSpec: SemanticSpec;
@@ -4491,7 +4501,7 @@ export class ChartProgram {
   fitCanvas(options?: FitCanvasOptions): ChartProgram;
   applyTheme(options: ApplyThemeOptions): ChartProgram;
   removeTheme(): ChartProgram;
-  createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
+  createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
   removeData(options: RemoveResourceOptions): ChartProgram;
   removeScale(options: RemoveResourceOptions): ChartProgram;
   removeCoordinate(options: RemoveResourceOptions): ChartProgram;

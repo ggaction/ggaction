@@ -238,7 +238,7 @@ test("rejects unsupported paths and invalid dataset values", () => {
         property: "dataset[cars].values",
         value: [1, 2]
       }),
-    /array of plain row objects/
+    /every row to be a plain object/
   );
 
   assert.throws(

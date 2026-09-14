@@ -3,6 +3,17 @@ import { isPlainObject } from "./immutable.js";
 export const MAX_GENERATED_ITEMS = 10_000;
 export const MAX_WORK_ITEMS = 10_000_000;
 
+export function validateDataRows(values, label = "Dataset") {
+  if (!Array.isArray(values)) {
+    throw new TypeError(`${label} requires values to be an array.`);
+  }
+  for (let index = 0; index < values.length; index += 1) {
+    if (!Object.hasOwn(values, index) || !isPlainObject(values[index])) {
+      throw new TypeError(`${label} requires every row to be a plain object; invalid row at index ${index}.`);
+    }
+  }
+}
+
 export function validateGeneratedItemLimit(
   value,
   label,

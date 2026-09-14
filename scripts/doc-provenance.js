@@ -16,7 +16,7 @@ export async function buildDocProvenance({ releaseContract } = {}) {
   releaseContract ??= JSON.parse(await readFile(path.join(root, "docs/_data/release_contract.json"), "utf8"));
   const packageInfo = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
   const declaration = await readFile(path.join(root, "types/program.d.ts"), "utf8");
-  const names = [...declaration.split("export class ChartProgram {")[1].matchAll(/^  ([A-Za-z][A-Za-z0-9]*)\(/gm)]
+  const names = [...declaration.split("export class ChartProgram {")[1].matchAll(/^  ([A-Za-z][A-Za-z0-9]*)(?:<[^\n]+>)?\(/gm)]
     .map(match => match[1]).filter(name => name !== "constructor");
   const hash = createHash("sha256");
   for (const file of [...await contractFiles("src"), ...await contractFiles("types")]) {

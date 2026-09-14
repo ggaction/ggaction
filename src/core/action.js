@@ -35,6 +35,8 @@ function summarizeObject(value, ancestors = new WeakSet()) {
       summary[`${key}Count`] = item.length;
     } else if (isPlainObject(item)) {
       summary[key] = summarizeObject(item, ancestors);
+    } else if (typeof item === "function") {
+      summary[`${key}Type`] = "function";
     } else if (item !== null && typeof item === "object") {
       summary[`${key}Type`] = item.constructor?.name ?? "object";
     } else {

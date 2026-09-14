@@ -58,11 +58,11 @@ function publicCards(actionCards) {
 
 function declarationPosition(source, name) {
   const classStart = source.indexOf("export class ChartProgram {");
-  const position = source.indexOf(`  ${name}(`, classStart);
-  if (classStart === -1 || position === -1) {
+  const match = new RegExp(`^  ${name}(?:<[^\\n]+>)?\\(`, "m").exec(source.slice(classStart));
+  if (classStart === -1 || match === null) {
     throw new Error(`Declaration was not found for ${name}.`);
   }
-  return position + 2;
+  return classStart + match.index + 2;
 }
 
 function flattenedTypes(type) {

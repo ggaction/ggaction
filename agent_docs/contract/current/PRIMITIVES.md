@@ -2,6 +2,11 @@
 
 Current direct-action contracts for this domain. Shared notation and lifecycle rules live in [`../README.md`](../README.md).
 
+세 primitive의 최상위 option object는 closed key 검증을 공유하며 unknown key를 거부한다.
+`dataset[id].values`는 dense plain-row array만 받고 함수·class instance·cycle을 저장하지 않는다.
+외부 함수가 extension 실행 인자라면 trace는 함수 자체 대신 lightweight type summary를 보관한다.
+공통 검증 근거는 `test/contracts/input-boundaries.test.js`다.
+
 ## `editSemantic`
 
 - Signature: `editSemantic({ property, value }) | editSemantic({ property, remove: true })`.

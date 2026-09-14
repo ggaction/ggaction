@@ -516,6 +516,8 @@ caller-owned rows         → 이후 수정해도 program1에 영향 없음
 - 변경되지 않은 frozen branch는 공유할 수 있다.
 - 외부에서 받은 array와 plain object는 clone하고 freeze하여 library ownership으로
   전환한다.
+- 함수와 class instance는 mutable 외부 참조이므로 state에 저장하지 않는다. 실행용 extension
+  callback은 인자로 받을 수 있지만 trace는 함수 객체 대신 type summary만 저장한다.
 - source dataset의 `values`가 한 번 저장되면 다시 수정할 수 없다.
 - derived dataset도 concrete `values`가 materialize된 뒤에는 immutable하다.
 - Derived transform parameter edit은 새 deterministic namespaced dataset revision을 만들고 consumer를
@@ -2337,6 +2339,11 @@ PDF는 vector output이므로 `pixelRatio`를 받지 않는다. `ggaction/pdf`�
 않는다.
 
 ## PNG adapter
+
+SVG/PNG/PDF의 plain-object와 closed-option 검증은 `renderers/options.js`가 공유한다.
+이 모듈은 순수 값 검증용 `core/immutable.js`를 사용할 수 있으며 renderer가 program/action을
+import하거나 semanticSpec을 해석하는 의존성은 계속 금지한다. Null-prototype plain object도
+동일하게 허용하고 unknown option은 output 전에 거부한다.
 
 `renderToPNG`는 Node에서 1×1 native Canvas를 만든 뒤 같은 Canvas renderer를 호출한다.
 Renderer가 logical size와 `pixelRatio`를 적용하고, adapter는 PNG buffer를 만들어 지정

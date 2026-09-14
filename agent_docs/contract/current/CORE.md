@@ -216,8 +216,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     명시한 ID는 지원 문자 규칙을 통과하고 기존 dataset과 중복되지 않아야 한다.
   - Effect: `semanticSpec.datasets`의 key 역할을 하며 성공 후 current data가 된다.
 - `values`
-  - Status: Implemented. 필수 array이며 각 row는 plain object여야 한다. 빈 배열, nested array,
-    object-valued cell은 허용한다.
+  - Status: Implemented. 필수 dense array이며 모든 index의 row는 plain object여야 한다.
+    빈 배열과 nested array/plain-object cell은 허용한다. 함수, class instance, cycle은 저장하지 않는다.
+    누락된 row는 index를 포함한 오류로 첫 저장 전에 거부한다.
   - Effect: caller-owned 값을 deep clone/freeze하여 immutable source dataset으로 저장한다.
     graphic output은 만들지 않는다.
 - 오류: ambiguous omitted ID, invalid/duplicate ID, non-array와 non-object row를 거부한다.
@@ -226,7 +227,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createData`
 
-- Implemented: `createData({ id?: UserId; values: readonly Record<string, unknown>[] })`; 첫 unnamed source는
+- Implemented: `createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram`.
+  Options의 ID는 `id?: UserId`이며 구조적 row interface와 readonly nested cell 타입을 보존하고
+  non-object/array row 및 함수 cell을 타입에서 거부한다. 첫 unnamed source는
   `"data"`를 저장하고 이후 source는 explicit ID가 필요하다.
 - Proposed (NOT IMPLEMENTED): `{ values: AsyncIterable<Record<string, unknown>> | Readonly<Record<FieldName, readonly unknown[]>> }`
 
@@ -240,7 +243,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: deeply nested arrays/objects, `null`, `undefined`, non-finite number와 bigint cell ownership/freeze.
   - 🟣 Proposed: async iterable/columnar input adapter. Source dataset immutability와 deterministic trace
     completion 정책이 먼저 필요하다.
-- Evidence: `test/unit/actions/data/create-data.test.js`.
+- Evidence: `test/unit/actions/data/create-data.test.js`, `test/contracts/input-boundaries.test.js`,
+  `test/contracts/source-data-types.test.js`.
 
 ## `removeData`
 

@@ -1,7 +1,7 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { freezeOwned } from "../../core/immutable.js";
-import { validateGeneratedItemLimit } from "../../core/validation.js";
+import { validateGeneratedItemLimit, validateOptionObject } from "../../core/validation.js";
 import {
   isDrawableGraphicType,
   isGraphicContainerType,
@@ -106,7 +106,9 @@ const createGraphics = action(
     description: "Create and optionally attach a concrete graphic.",
     scope: "any"
   },
-  function ({ id, type, length, parent, before, after } = {}) {
+  function (args = {}) {
+    validateOptionObject(args, ["id", "type", "length", "parent", "before", "after"], "createGraphics");
+    const { id, type, length, parent, before, after } = args;
     if (typeof id !== "string" || !GRAPHIC_ID_PATTERN.test(id)) {
       throw new TypeError(
         "createGraphics requires an id containing only letters, numbers, _ or -."

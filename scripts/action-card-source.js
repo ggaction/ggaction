@@ -241,9 +241,9 @@ function actionResources(action, optionNames, intentSource) {
 function declarationPosition(source, name) {
   const classStart = source.indexOf("export class ChartProgram {");
   if (classStart === -1) throw new Error("ChartProgram declaration was not found.");
-  const position = source.indexOf(`  ${name}(`, classStart);
-  if (position === -1) throw new Error(`Declaration was not found for ${name}.`);
-  return position + 2;
+  const match = new RegExp(`^  ${name}(?:<[^\\n]+>)?\\(`, "m").exec(source.slice(classStart));
+  if (match === null) throw new Error(`Declaration was not found for ${name}.`);
+  return classStart + match.index + 2;
 }
 
 function exactSignatureFromSource(source, name) {

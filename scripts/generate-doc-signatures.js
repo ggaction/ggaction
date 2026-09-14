@@ -23,7 +23,7 @@ export async function declaredActionSignatures() {
   const lines = sourceText.slice(classStart).split("\n");
   const signatures = [];
   for (let index = 0; index < lines.length; index += 1) {
-    const start = lines[index].match(/^  ([A-Za-z][A-Za-z0-9]*)\(/);
+    const start = lines[index].match(/^  ([A-Za-z][A-Za-z0-9]*)(?:<[^\n]+>)?\(/);
     if (!start || start[1] === "constructor") continue;
     const declaration = [lines[index]];
     while (!declaration.at(-1).trimEnd().endsWith("): ChartProgram;")) {

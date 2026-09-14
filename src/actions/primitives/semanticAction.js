@@ -7,6 +7,7 @@ import {
   removeOwnedPath
 } from "../../core/immutable.js";
 import { parseSemanticPath } from "../../grammar/schemas/semanticPath.js";
+import { validateOptionObject } from "../../core/validation.js";
 
 const CONTEXT_KEYS = Object.freeze({
   dataset: "currentData",
@@ -197,7 +198,9 @@ export function createSemanticPrimitiveAction(validateSemanticValue, planNamedRe
       description: "Create, replace, or remove one semantic property.",
       scope: "any"
     },
-    function ({ property, value, remove = false } = {}) {
+    function (args = {}) {
+      validateOptionObject(args, ["property", "value", "remove"], "editSemantic");
+      const { property, value, remove = false } = args;
       if (typeof remove !== "boolean") {
         throw new TypeError("editSemantic remove must be a boolean.");
       }

@@ -23,6 +23,10 @@ based on where the output runs and how it will be consumed.
 Rendering consumes a completed program's `graphicSpec`. It does not read
 datasets, semantic encodings, context, or trace to infer missing output.
 
+SVG, PNG, and PDF options must be plain objects (including objects with a null
+prototype). Unknown option keys are rejected before output is written; for
+example, use `pixelRatio`, not `pixelratio`, for PNG density.
+
 ## Complete example program
 
 Every rendering fragment below continues from this complete program:

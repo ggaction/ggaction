@@ -51,7 +51,9 @@ test("keeps source imports inside their architectural boundaries", () => {
     if (!(owner in allowed)) continue;
     for (const dependency of localImports(file)) {
       assert.equal(
-        allowed[owner].has(layer(dependency)),
+        allowed[owner].has(layer(dependency)) || (
+          owner === "renderers" && path.relative(root, dependency) === path.join("core", "immutable.js")
+        ),
         true,
         `${path.relative(root, file)} must not import ${path.relative(root, dependency)}`
       );

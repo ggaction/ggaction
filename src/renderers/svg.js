@@ -17,6 +17,7 @@ import {
   requireStringProperty
 } from "./canvas/validation.js";
 import { normalizeRendererFontWeight } from "./text.js";
+import { validateRendererOptions } from "./options.js";
 
 const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 const SVG_OPTIONS = new Set(["title", "description", "resourceNamespace"]);
@@ -525,19 +526,7 @@ function serializeBody(graphicSpec, rootId, rootCanvas, width, height, state) {
 }
 
 function requireSVGOptions(options) {
-  if (
-    options === null ||
-    typeof options !== "object" ||
-    Array.isArray(options) ||
-    Object.getPrototypeOf(options) !== Object.prototype
-  ) {
-    throw new TypeError("renderToSVG options must be a plain object.");
-  }
-  for (const key of Object.keys(options)) {
-    if (!SVG_OPTIONS.has(key)) {
-      throw new TypeError(`renderToSVG does not support option "${key}".`);
-    }
-  }
+  validateRendererOptions(options, SVG_OPTIONS, "renderToSVG options");
   for (const key of SVG_OPTIONS) {
     if (
       options[key] !== undefined &&
