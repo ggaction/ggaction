@@ -1,4 +1,4 @@
-import { action } from "../../core/action.js";
+import { action, closedAction } from "../../core/action.js";
 import { registerFacetDataRevision, reviseUnitData } from "../data/revise.js";
 import { freezeOwned, isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -184,13 +184,12 @@ function rederiveFacet(program, { scales, guides }) {
   }, compositionSpec.children);
 }
 
-export const facet = /* @__PURE__ */ action(
+export const facet = /* @__PURE__ */ closedAction(
   {
     op: "facet",
     description: "Repeat one direct-source chart by field value."
-  },
+  }, FACET_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, FACET_OPTIONS, "facet");
     const guides = normalizeGuides(args.guides);
     const definition = resolveFacetDefinition(this.semanticSpec, args);
     if (definition.family !== "cartesian" && guides.axes === "outer") {
@@ -429,13 +428,12 @@ function deriveRepeatChildren(base, definition, scales, closeInheritedAction) {
   );
 }
 
-export const repeatCharts = /* @__PURE__ */ action(
+export const repeatCharts = /* @__PURE__ */ closedAction(
   {
     op: "repeatCharts",
     description: "Repeat one direct chart across an ordered field-role list."
-  },
+  }, REPEAT_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, REPEAT_OPTIONS, "repeatCharts");
     const guides = normalizeGuides(args.guides);
     if (guides.axes === "outer") {
       throw new Error("repeatCharts does not promote axes across different repeated fields.");
@@ -496,13 +494,12 @@ export const repeatCharts = /* @__PURE__ */ action(
   }
 );
 
-export const facetGrid = /* @__PURE__ */ action(
+export const facetGrid = /* @__PURE__ */ closedAction(
   {
     op: "facetGrid",
     description: "Repeat one direct-source Cartesian chart across a row and column field grid."
-  },
+  }, FACET_GRID_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, FACET_GRID_OPTIONS, "facetGrid");
     const guides = normalizeGuides(args.guides);
     const definition = resolveFacetGridDefinition(this.semanticSpec, args);
     if (definition.family !== "cartesian" && guides.axes === "outer") {
@@ -765,14 +762,13 @@ function adoptUnitState(program, actionOwner) {
   });
 }
 
-export const editFacetSource = /* @__PURE__ */ action(
+export const editFacetSource = /* @__PURE__ */ closedAction(
   {
     op: "editFacetSource",
     description: "Reapply one facet, grid, or repeat recipe to a revised complete unit program.",
     scope: "composition"
-  },
+  }, SOURCE_EDIT_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, SOURCE_EDIT_OPTIONS, "editFacetSource");
     requireFacetProgram(this, "editFacetSource");
     const current = this.compositionSpec;
     const facetConfig = this.materializationConfigs.facets?.[current.id];

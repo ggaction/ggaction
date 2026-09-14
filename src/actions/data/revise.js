@@ -1,6 +1,6 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateOptionObject } from "../../core/validation.js";
+
 import { requireDataset } from "../../selectors/datasets.js";
 import { requireLayer } from "../../selectors/layers.js";
 import { applyRevisionPlan, buildSourceRevisionPlan } from "./edit.js";
@@ -26,10 +26,9 @@ export function reviseUnitData(program, { source, id, values }) {
   return { program: next, plan };
 }
 
-export const reviseData = /* @__PURE__ */ action(
-  { op: "reviseData", description: "Revise source data and its dependent chart.", scope: "any" },
+export const reviseData = /* @__PURE__ */ closedAction(
+  { op: "reviseData", description: "Revise source data and its dependent chart.", scope: "any" }, ["source", "id", "values"],
   function (args = {}) {
-    validateOptionObject(args, ["source", "id", "values"], "reviseData");
     const source = validateUserId(args.source, "Source dataset id");
     const id = validateUserId(args.id, "Revision dataset id");
     if (this.compositionSpec !== undefined && this.compositionSpec.type !== "facet") {

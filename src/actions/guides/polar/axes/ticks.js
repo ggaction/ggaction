@@ -159,7 +159,7 @@ function makeCreateTicks(kind) {
   });
 }
 
-export const createThetaAxisTicks = makeCreateTicks("theta");
-export const createRadialAxisTicks = makeCreateTicks("radius");
-export const editThetaAxisTicks = makeEditTicks("theta");
-export const editRadialAxisTicks = makeEditTicks("radius");
+export const createThetaAxisTicks = /* @__PURE__ */ makeCreateTicks("theta");
+export const createRadialAxisTicks = /* @__PURE__ */ makeCreateTicks("radius");
+export const editThetaAxisTicks = /* @__PURE__ */ makeEditTicks("theta");
+export const editRadialAxisTicks = /* @__PURE__ */ makeEditTicks("radius");

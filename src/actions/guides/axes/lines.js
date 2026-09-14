@@ -126,8 +126,8 @@ function createEditAxisLine(channel) {
   );
 }
 
-const editXAxisLine = createEditAxisLine("x");
-const editYAxisLine = createEditAxisLine("y");
+const editXAxisLine = /* @__PURE__ */ createEditAxisLine("x");
+const editYAxisLine = /* @__PURE__ */ createEditAxisLine("y");
 
 function createAxisLine(channel) {
   const operation = channel === "x" ? "createXAxisLine" : "createYAxisLine";
@@ -164,8 +164,8 @@ function createAxisLine(channel) {
   );
 }
 
-const createXAxisLine = createAxisLine("x");
-const createYAxisLine = createAxisLine("y");
+const createXAxisLine = /* @__PURE__ */ createAxisLine("x");
+const createYAxisLine = /* @__PURE__ */ createAxisLine("y");
 
 export function registerAxisLineActions(ProgramClass) {
   ProgramClass.prototype.editXAxisLine = editXAxisLine;

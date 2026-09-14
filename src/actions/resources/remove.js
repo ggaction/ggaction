@@ -162,12 +162,12 @@ function removeResource(kind, operation, description) {
   );
 }
 
-export const removeData = removeResource(
+export const removeData = /* @__PURE__ */ removeResource(
   "data", "removeData", "Remove one unreferenced named dataset."
 );
-export const removeScale = removeResource(
+export const removeScale = /* @__PURE__ */ removeResource(
   "scale", "removeScale", "Remove one unreferenced named scale."
 );
-export const removeCoordinate = removeResource(
+export const removeCoordinate = /* @__PURE__ */ removeResource(
   "coordinate", "removeCoordinate", "Remove one unreferenced named coordinate."
 );

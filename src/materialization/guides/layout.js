@@ -4,12 +4,12 @@ import { axisGraphicIds, legendResourcePolicies } from "./resources.js";
 
 // Only domain-owned guides participate. Extension primitives may deliberately
 // overlap, and a combined categorical/size legend is one occupied group.
-export function resolveGuideCollisionBlocks(graphicSpec, guideConfigs, titleConfig) {
+export function resolveGuideCollisionBlocks(graphicSpec, guideConfigs, titleConfig, profile) {
   const blocks = [];
   const append = (id, kind, position, ids) => {
     if (position === undefined) return;
     const existing = ids.filter(id => graphicSpec.objects[id] !== undefined);
-    const bounds = unionConcreteGraphicBounds(graphicSpec, existing);
+    const bounds = unionConcreteGraphicBounds(graphicSpec, existing, profile);
     if (bounds !== undefined) blocks.push({ id, kind, position, bounds });
   };
   append("chart title", "title", titleConfig?.position, ["chartTitle", "chartSubtitle"]);
@@ -46,7 +46,7 @@ export function withGuideLayoutTransaction(program, apply) {
     context.deferGuideLayoutValidation = program.context.deferGuideLayoutValidation;
   }
   const next = result._clone({ context });
-  assertGuideCollisionBlocks(resolveGuideCollisionBlocks(next.graphicSpec, next.guideConfigs, next.titleConfig));
+  assertGuideCollisionBlocks(resolveGuideCollisionBlocks(next.graphicSpec, next.guideConfigs, next.titleConfig, next.materializationConfigs.textMetrics));
   return next;
 }
 

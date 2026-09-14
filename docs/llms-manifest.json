@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:42971c684950b2818941c30f094dc292530ead7fc7e64e8530d5534088d54b80",
+    "contractId": "sha256:b3654099f6b3d108283154c109a4d09d4fa4333620ecbb24310d7a87ee25afe1",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -629,8 +629,8 @@
         "the-library-infers",
         "continue"
       ],
-      "bytes": 1433,
-      "sha256": "98cfe61c38ff5732300b97a3df7cc518590e56c2706c9868afb4f4a19c28ac7c"
+      "bytes": 1532,
+      "sha256": "1bb7d3b475afab979ab9365a5834cf54cc8c908173dce17c6c609232e75415cc"
     },
     {
       "order": 41,
@@ -1172,6 +1172,7 @@
       "source": "api/rendering.md",
       "headings": [
         "rendering",
+        "measured-text-layout",
         "at-a-glance",
         "automated-environment-checks",
         "complete-example-program",
@@ -1184,8 +1185,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 12204,
-      "sha256": "f8c1837da1fc43f0f955d6cb3d763011a49e5ddb0245f8700c2c41c78cce5fd0"
+      "bytes": 15614,
+      "sha256": "e1295e4485160d59ee819d277333f71a953ce23545a5d5726765ce3269f2b6e6"
     },
     {
       "order": 73,
@@ -1884,8 +1885,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 29842,
-      "sha256": "77952493e3998001c59fa402d4c211e18f284ad7cbf313cf90cc369dd270b36d"
+      "bytes": 30048,
+      "sha256": "2634e46e3c00e2a84b517d398f11eeaaa9c05b2ccf4aa6f7dd7df943dd0f306c"
     },
     {
       "order": 117,
@@ -1897,6 +1898,8 @@
         "createcanvas",
         "editcanvas",
         "fitcanvas",
+        "applytextmetrics",
+        "removetextmetrics",
         "applytheme",
         "removetheme",
         "createdata",
@@ -1983,8 +1986,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 147922,
-      "sha256": "c696ca0f897a26b12d2cdd587a45debc20912a261afb47cd4e64c8822152e0c8"
+      "bytes": 149718,
+      "sha256": "e7c60e721b8324165a82e3260698f2c94b18d998adba05835713d2ec00ddf7b3"
     },
     {
       "order": 118,
@@ -2308,6 +2311,7 @@
         "type-angleencodingoptions",
         "type-annotationanchor",
         "type-annotationbaseoptions",
+        "type-applytextmetricsoptions",
         "type-applythemeoptions",
         "type-areaplotindependentchannel",
         "type-areaplotmeasurechannel",
@@ -2854,6 +2858,9 @@
         "type-textencodingoptions",
         "type-textformat",
         "type-textmarkoptions",
+        "type-textmeasurement",
+        "type-textmetricfontweight",
+        "type-textmetricsprofile",
         "type-themedefinition",
         "type-themename",
         "type-themetokens",
@@ -2894,8 +2901,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 300770,
-      "sha256": "a904a06e5f24927cd6eca781216552995014570e176155f0d6e35a747687a7d3"
+      "bytes": 302037,
+      "sha256": "12c63cf5b8a43da114305c49f9df3b81f4634d32b00ef40bebd22094765b9f39"
     },
     {
       "order": 126,
@@ -3246,7 +3253,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "e5a582f60b2ac52d8fe3f22b9ea4a6157b902d6a7e2a4ee32a0b04ccb70eb40c"
+      "sha256": "61c865f6eab22caddaf8a398790f7badfb182c972e9da58041cc7181dff6dd6b"
     },
     {
       "order": 149,

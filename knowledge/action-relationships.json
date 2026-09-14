@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 277,
+  "actionCount": 279,
   "relationships": [
     {
       "name": "createCanvas",
@@ -29,6 +29,14 @@
       "wraps": [
         "editCanvas"
       ]
+    },
+    {
+      "name": "applyTextMetrics",
+      "wraps": []
+    },
+    {
+      "name": "removeTextMetrics",
+      "wraps": []
     },
     {
       "name": "applyTheme",

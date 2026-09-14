@@ -1,4 +1,4 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateKeys } from "../../core/validation.js";
 import { normalizeRegressionParameters } from "../../grammar/regression/index.js";
 import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
@@ -14,13 +14,12 @@ const REGRESSION_OPTIONS = Object.freeze([
   "confidenceMethod", "level", "confidence", "interval", "band", "line"
 ]);
 
-export const createRegression = /* @__PURE__ */ action(
+export const createRegression = /* @__PURE__ */ closedAction(
   {
     op: "createRegression",
     description: "Fit and layer regression lines with optional interval bands."
-  },
+  }, REGRESSION_OPTIONS,
   function (args = {}) {
-    validateKeys(args, REGRESSION_OPTIONS, "createRegression");
     const point = findRegressionPoint(this, args.target);
     const x = args.x === undefined
       ? point.encoding.x.field

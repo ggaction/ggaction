@@ -1,9 +1,6 @@
-import { action } from "../../core/action.js";
+import { action, closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
-import {
-  validateKeys,
-  validateNonEmptyString,
-} from "../../core/validation.js";
+import { validateNonEmptyString } from "../../core/validation.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
 import {
@@ -171,13 +168,12 @@ function rangeArgs(resolved) {
   };
 }
 
-export const createErrorBand = /* @__PURE__ */ action(
+export const createErrorBand = /* @__PURE__ */ closedAction(
   {
     op: "createErrorBand",
     description: "Create a statistical or explicit interval band."
-  },
+  }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "createErrorBand");
     const strokeDetails = requestedStrokeDetails(args, "createErrorBand");
     const resolved = resolveErrorBand(this, args);
     const curve = validateCurveInterpolation(args.curve ?? "linear");

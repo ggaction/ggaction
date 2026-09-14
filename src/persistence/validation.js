@@ -1,3 +1,4 @@
+import { normalizeTextMetricProfile } from "../core/textMetricProfile.js";
 import { isPlainObject } from "../core/immutable.js";
 import { validateUserId } from "../core/identifiers.js";
 import { collectAllResourceReferences } from "../core/resourceReferences.js";
@@ -140,6 +141,7 @@ export function validateProgramState(program, path) {
   }
   for (const key of ["resolvedScales", "materializationConfigs", "context"]) requireObject(program[key], `${path}.${key}`);
   for (const key of ["marks", "guides"]) requireObject(program.materializationConfigs[key], `${path}.materializationConfigs.${key}`);
+  if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   const selections = program.materializationConfigs.selections ?? {};
   requireObject(selections, `${path}.materializationConfigs.selections`);
   for (const [id, selection] of Object.entries(selections)) {

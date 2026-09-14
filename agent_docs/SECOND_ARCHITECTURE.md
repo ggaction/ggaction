@@ -413,12 +413,20 @@ caller-owned rows         → 이후 수정해도 program1에 영향 없음
   전체 sibling과 role을 함께 수정한다.
 - context, resolved scale, materialization config, trace도 같은 원칙을 따른다.
 
+Closed built-in option vocabulary는 private `closedAction` factory를 통해 공통 wrapper의 object validation과 결합할 수 있다. 반환값은 동일한 `action()` wrapper이며 scope, trace, diagnostics와 extension API를 바꾸지 않는다. 검증된 built-in factory 호출에만 purity annotation을 적용하여 미사용 wrapper의 등록용 계산을 제거할 수 있게 한다. 외부 extension 호출의 metadata/option 검증은 생략하지 않는다.
+
 Trace append는 private persistent child tail을 공유한다. 공개 `children`은 요청 시 한 번 materialize하는 stable frozen Array이며 순서·ID·직렬화 형태는 그대로다. 활성 마지막 branch append는 이전 sibling 수와 무관하다.
 
 테마 completion hook은 graphic/config/children/composition 및 visual semantic branch가 모두 같은 data/context-only transition에서 바로 반환한다. Appearance를 바꾸는 transition에는 기존 명시적 reconciliation이 적용된다.
 
 `_clone()`은 현재 runtime class의 constructor를 사용하므로 `ChartProgram` subclass에서도
 action chain이 subclass type을 유지한다.
+
+## 저작용 text metrics
+
+Host 측정값은 `materializationConfigs.textMetrics`의 immutable profile이 소유한다. Pure layout과 concrete bounds 함수는 해당 profile을 명시적인 인자로 받아 exact match 또는 기존 estimate를 선택한다. 전역 mutable font provider와 backend 객체를 사용하지 않는다. Shared `core/font.js`가 기본 font family와 numeric weight 정규화를 소유하며 renderer와 authoring measurement가 이를 공유한다.
+
+`materialization/typography.js`는 측정 profile 변경과 theme font 변경의 공통 text-owner rematerialization 경계다. 기존 text mark, guide, legend, title의 wrapped domain action을 순서대로 실행하고 final guide collision을 검증한다. Composition은 child snapshot을 먼저 갱신하고 parent header/shared guide/placement를 재계산한다. Exact 공개 계약은 [CORE](contract/current/CORE.md#applytextmetrics)가 소유한다. Renderer는 profile을 읽지 않고 이미 배치된 text graphics만 그린다.
 
 ## 구조화된 진단 경계
 

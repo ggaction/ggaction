@@ -1,6 +1,6 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
+
 import { withPreviewDatasetValues } from
   "../primitives/semanticAction.js";
 import {
@@ -50,10 +50,9 @@ function retainedHistogramBoundaries(layer, items) {
   return boundaries.length < 2 ? undefined : boundaries;
 }
 
-export const materializeFilteredData = /* @__PURE__ */ action(
-  { op: "materializeFilteredData", description: "Materialize one filtered derived dataset." },
+export const materializeFilteredData = /* @__PURE__ */ closedAction(
+  { op: "materializeFilteredData", description: "Materialize one filtered derived dataset." }, MATERIALIZE_OPTIONS,
   function (args = {}) {
-    validateKeys(args, MATERIALIZE_OPTIONS, "materializeFilteredData");
     const { id, source, transform } = requireDerivedDataset(
       this,
       args.id,
@@ -66,10 +65,9 @@ export const materializeFilteredData = /* @__PURE__ */ action(
   }
 );
 
-export const filterData = /* @__PURE__ */ action(
-  { op: "filterData", description: "Create a named dataset from one field filter." },
+export const filterData = /* @__PURE__ */ closedAction(
+  { op: "filterData", description: "Create a named dataset from one field filter." }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "filterData");
     const id = validateUserId(args.id, "Filtered dataset id");
     const requestedSource = validateUserId(
       args.source ?? this.context.currentData,
@@ -97,13 +95,12 @@ export const filterData = /* @__PURE__ */ action(
   }
 );
 
-export const materializeMarkFilteredData = /* @__PURE__ */ action(
+export const materializeMarkFilteredData = /* @__PURE__ */ closedAction(
   {
     op: "materializeMarkFilteredData",
     description: "Materialize member rows retained by one final-item mark selection."
-  },
+  }, MATERIALIZE_OPTIONS,
   function (args = {}) {
-    validateKeys(args, MATERIALIZE_OPTIONS, "materializeMarkFilteredData");
     const { id, dataset, source, transform } = requireDerivedDataset(
       this,
       args.id,
@@ -170,13 +167,12 @@ export const materializeMarkFilteredData = /* @__PURE__ */ action(
   }
 );
 
-export const materializeEmptyMark = /* @__PURE__ */ action(
+export const materializeEmptyMark = /* @__PURE__ */ closedAction(
   {
     op: "materializeEmptyMark",
     description: "Clear one active empty-filter mark without changing its domains."
-  },
+  }, EMPTY_MARK_OPTIONS,
   function (args = {}) {
-    validateKeys(args, EMPTY_MARK_OPTIONS, "materializeEmptyMark");
     const id = validateUserId(args.id, "Empty mark id");
     const layer = requireLayer(this, id);
     const owner = this.markConfigs[id]?.markFilter;
@@ -261,13 +257,12 @@ function sameSelector(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);
 }
 
-export const removeMarkFilter = /* @__PURE__ */ action(
+export const removeMarkFilter = /* @__PURE__ */ closedAction(
   {
     op: "removeMarkFilter",
     description: "Remove one active final-item filter and restore its source."
-  },
+  }, REMOVE_MARK_FILTER_OPTIONS,
   function (args = {}) {
-    validateKeys(args, REMOVE_MARK_FILTER_OPTIONS, "removeMarkFilter");
     const target = args.target === undefined
       ? undefined
       : validateUserId(args.target, "Mark filter target id");
@@ -280,13 +275,12 @@ export const removeMarkFilter = /* @__PURE__ */ action(
   }
 );
 
-export const filterMarks = /* @__PURE__ */ action(
+export const filterMarks = /* @__PURE__ */ closedAction(
   {
     op: "filterMarks",
     description: "Retain selected final mark items through immutable derived data."
-  },
+  }, MARK_OPTIONS,
   function (args = {}) {
-    validateKeys(args, MARK_OPTIONS, "filterMarks");
     if (args.mode !== undefined && !["replace", "compose"].includes(args.mode)) {
       throw new Error(`Unknown mark filter mode "${args.mode}".`);
     }

@@ -222,8 +222,8 @@ function rangeAction(channel) {
   });
 }
 
-const encodeYRange = rangeAction("y");
-const encodeXRange = rangeAction("x");
+const encodeYRange = /* @__PURE__ */ rangeAction("y");
+const encodeXRange = /* @__PURE__ */ rangeAction("x");
 
 const encodeGroup = /* @__PURE__ */ action(
   {

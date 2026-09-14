@@ -67,7 +67,7 @@ function componentIds(program, kind) {
 }
 
 function legendGraphicBounds(program, id) {
-  let bounds = resolveConcreteGraphicBounds(program.graphicSpec, id);
+  let bounds = resolveConcreteGraphicBounds(program.graphicSpec, id, program.materializationConfigs.textMetrics);
   const graphic = program.graphicSpec.objects[id];
   if (!id.includes("LegendSymbol") || graphic?.type !== "line") return bounds;
   const properties = graphic.items?.map(item => item.properties) ??
@@ -126,7 +126,7 @@ function blockDescriptor(program, kind, config) {
   const labels = resolveConcreteGraphicBounds(
     program.graphicSpec,
     components.labelId
-  );
+  , program.materializationConfigs.textMetrics);
   const title = components.titleId === undefined
     ? undefined
     : (() => {
@@ -134,7 +134,7 @@ function blockDescriptor(program, kind, config) {
         const titleBounds = resolveConcreteGraphicBounds(
           program.graphicSpec,
           components.titleId
-        );
+        , program.materializationConfigs.textMetrics);
         return {
           x: graphic.properties.x,
           y: graphic.properties.y,
@@ -479,7 +479,7 @@ export const rematerializeHorizontalLegendLane = /* @__PURE__ */ action(
       if (entries.length === 1) {
         const [kind, config] = entries[0];
         const ids = existingIds(next, kind);
-        const bounds = unionConcreteGraphicBounds(next.graphicSpec, ids);
+        const bounds = unionConcreteGraphicBounds(next.graphicSpec, ids, next.materializationConfigs.textMetrics);
         const { dx, dy } = resolveSingleHorizontalLegendPlacement({
           plot, canvas, config, bounds
         });

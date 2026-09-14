@@ -1,3 +1,21 @@
+import { DEFAULT_FONT_FAMILY, textMetricFontWeight, textMetricKey } from "./font.js";
+
+import { isOwned } from "./immutable.js";
+
+const measurementIndexes = new WeakMap();
+
+function measuredWidth(profile, text, style) {
+  if (profile === undefined) return undefined;
+  let index = measurementIndexes.get(profile);
+  if (index === undefined) {
+    index = new Map(profile.measurements.map(measurement =>
+      [textMetricKey(measurement), measurement.width]));
+    if (isOwned(profile)) measurementIndexes.set(profile, index);
+  }
+  return index.get(textMetricKey({ text, fontFamily: style.fontFamily ?? DEFAULT_FONT_FAMILY,
+    fontSize: style.fontSize, fontWeight: textMetricFontWeight(style.fontWeight) }));
+}
+
 function codePointWidth(codePoint) {
   if (/\s/u.test(codePoint)) return 0.28;
   if (/[iIl.,:;!'|]/u.test(codePoint)) return 0.27;
@@ -25,7 +43,8 @@ export function textBoundsFitCanvas(bounds, canvas) {
 
 export function measureTextWidth(
   text,
-  { fontSize, fontFamily, fontWeight } = {}
+  { fontSize, fontFamily, fontWeight } = {},
+  profile
 ) {
   if (typeof text !== "string") {
     throw new TypeError("Text measurement requires a string.");
@@ -33,6 +52,8 @@ export function measureTextWidth(
   if (!Number.isFinite(fontSize) || fontSize <= 0) {
     throw new RangeError("Text measurement requires a positive fontSize.");
   }
+  const measured = measuredWidth(profile, text, { fontSize, fontFamily, fontWeight });
+  if (measured !== undefined) return measured;
   let joined = false;
   let width = 0;
   for (const codePoint of text) {
@@ -76,11 +97,11 @@ export function resolveTextBounds({
   textAlign = "left",
   textBaseline = "alphabetic",
   rotation = 0
-} = {}) {
+} = {}, profile) {
   if (![x, y, rotation].every(Number.isFinite)) {
     throw new TypeError("Text bounds require finite x, y, and rotation values.");
   }
-  const width = measureTextWidth(text, { fontSize, fontFamily, fontWeight });
+  const width = measureTextWidth(text, { fontSize, fontFamily, fontWeight }, profile);
   const [left, right] = textAlign === "center"
     ? [-width / 2, width / 2]
     : ["right", "end"].includes(textAlign) ? [-width, 0] : [0, width];

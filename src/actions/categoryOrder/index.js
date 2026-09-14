@@ -1,6 +1,6 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
+
 import { findDataset } from "../../selectors/datasets.js";
 import { resolveEligibleLayer } from "../../selectors/layers.js";
 import { findScaleConsumers } from "../scales/consumers/index.js";
@@ -79,10 +79,9 @@ function rematerializeAssignment(program, scaleId) {
   }));
 }
 
-export const orderCategories = /* @__PURE__ */ action(
-  { op: "orderCategories", description: "Assign semantic order to a categorical position." },
+export const orderCategories = /* @__PURE__ */ closedAction(
+  { op: "orderCategories", description: "Assign semantic order to a categorical position." }, ORDER_OPTIONS,
   function (args = {}) {
-    validateKeys(args, ORDER_OPTIONS, "orderCategories");
     const { layer, encoding, dataset } = resolveAssignment(this, args, "orderCategories");
     const order = normalizeCategoryOrder(args);
     resolveCategoryOrder(dataset.values, encoding.field, order);
@@ -94,10 +93,9 @@ export const orderCategories = /* @__PURE__ */ action(
   }
 );
 
-export const removeCategoryOrder = /* @__PURE__ */ action(
-  { op: "removeCategoryOrder", description: "Restore automatic category order." },
+export const removeCategoryOrder = /* @__PURE__ */ closedAction(
+  { op: "removeCategoryOrder", description: "Restore automatic category order." }, REMOVE_OPTIONS,
   function (args = {}) {
-    validateKeys(args, REMOVE_OPTIONS, "removeCategoryOrder");
     const { layer, encoding } = resolveAssignment(
       this,
       args,

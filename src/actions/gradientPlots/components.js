@@ -1,5 +1,5 @@
 import { assertGuideOptions, guideConflict } from "../guides/reuse.js";
-import { action } from "../../core/action.js";
+import { action, closedAction } from "../../core/action.js";
 import { validateKeys } from "../../core/validation.js";
 import { GRADIENT_PROFILE_FIELDS } from "../../grammar/gradientProfile.js";
 import {
@@ -17,13 +17,12 @@ const CENTER_OPTIONS = Object.freeze([
 ]);
 const LEGEND_OPTIONS = Object.freeze(["owner", "title", "position"]);
 
-export const createGradientPlotCenter = /* @__PURE__ */ action(
+export const createGradientPlotCenter = /* @__PURE__ */ closedAction(
   {
     op: "createGradientPlotCenter",
     description: "Create the optional center rule for one gradient plot."
-  },
+  }, CENTER_OPTIONS,
   function (args = {}) {
-    validateKeys(args, CENTER_OPTIONS, "createGradientPlotCenter");
     const categoryAction = args.orientation === "vertical" ? "encodeX" : "encodeY";
     const measureAction = args.orientation === "vertical" ? "encodeY" : "encodeX";
     const spanOrientation = args.orientation === "vertical" ? "horizontal" : "vertical";

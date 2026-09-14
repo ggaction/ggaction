@@ -1,14 +1,13 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { resolveOptionalUserId } from "../../core/identifiers.js";
-import { validateDataRows, validateKeys } from "../../core/validation.js";
+import { validateDataRows } from "../../core/validation.js";
 import { hasDataset, hasDatasetOwner } from "../../selectors/index.js";
 
 const OPTIONS = Object.freeze(["id", "values"]);
 
-export const createData = /* @__PURE__ */ action(
-  { op: "createData", description: "Create an immutable named dataset." },
+export const createData = /* @__PURE__ */ closedAction(
+  { op: "createData", description: "Create an immutable named dataset." }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "createData");
     const id = resolveOptionalUserId(args.id, {
       defaultId: "data",
       label: "Dataset id",

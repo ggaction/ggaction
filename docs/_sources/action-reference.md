@@ -251,6 +251,26 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 `overflow: "report"` stores a structured result on
 `materializationConfigs.fitting`.
 
+### `applyTextMetrics`
+
+```javascript
+applyTextMetrics({ profile })
+```
+
+Apply a host-measured width profile to title, axis, legend, label, and composition
+layout. See [Measured text layout](../api/rendering.md#measured-text-layout) for the
+exact profile format, matching rules, propagation, and executable example.
+
+### `removeTextMetrics`
+
+```javascript
+removeTextMetrics()
+```
+
+Remove the active profile and rematerialize with deterministic width estimates.
+See [Measured text layout](../api/rendering.md#measured-text-layout) for lifecycle
+and composition behavior.
+
 ### `applyTheme`
 
 ```javascript

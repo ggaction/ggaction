@@ -92,7 +92,7 @@ function attachParentLegend(program, prepared, plot, layout) {
 }
 
 function assertSharedLegendFits(program, id, layout, plot) {
-  const bounds = resolveConcreteGraphicBounds(program.graphicSpec, id);
+  const bounds = resolveConcreteGraphicBounds(program.graphicSpec, id, program.materializationConfigs.textMetrics);
   if (bounds === undefined) {
     throw new Error("Facet shared legend requires measurable concrete bounds.");
   }

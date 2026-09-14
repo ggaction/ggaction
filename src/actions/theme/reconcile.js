@@ -1,3 +1,4 @@
+import { rematerializeTypography } from "../../materialization/typography.js";
 import { themeTokens } from "../../theme/defaults.js";
 import {
   normalizeThemeState,
@@ -977,48 +978,6 @@ function collectOverrides(program) {
   return overrides;
 }
 
-function callExisting(program, graphicId, operation) {
-  return program.graphicSpec.objects[graphicId] !== undefined &&
-    typeof program[operation] === "function"
-    ? program[operation]()
-    : program;
-}
-
-function rematerializeThemeTypography(program) {
-  if (program.compositionSpec !== undefined) {
-    return program.compositionSpec.type === "facet"
-      ? program.materializeComposition()
-      : program;
-  }
-
-  let next = program;
-  for (const layer of next.semanticSpec.layers) {
-    if (layer.mark?.type === "text" &&
-        next.graphicSpec.objects[layer.id] !== undefined &&
-        typeof next.rematerializeTextMark === "function") {
-      next = next.rematerializeTextMark({ id: layer.id });
-    }
-  }
-  for (const [id, operation] of [
-    ["xAxisLabels", "editXAxisLabels"],
-    ["yAxisLabels", "editYAxisLabels"],
-    ["xAxisTitle", "editXAxisTitle"],
-    ["yAxisTitle", "editYAxisTitle"],
-    ["thetaAxisLabels", "editThetaAxisLabels"],
-    ["radialAxisLabels", "editRadialAxisLabels"],
-    ["thetaAxisTitle", "editThetaAxisTitle"],
-    ["radialAxisTitle", "editRadialAxisTitle"]
-  ]) {
-    next = callExisting(next, id, operation);
-  }
-  if (Object.keys(next.guideConfigs.legend ?? {}).length > 0 &&
-      typeof next.rematerializeLegend === "function") {
-    next = next.rematerializeLegend();
-  }
-  next = callExisting(next, "chartTitle", "rematerializeTitle");
-  return next;
-}
-
 export function reconcileProgramTheme(program, { source, metadata }) {
   const storedState = program.materializationConfigs.theme;
   if (storedState === undefined) return program;
@@ -1072,15 +1031,16 @@ export function reconcileProgramTheme(program, { source, metadata }) {
 
   const facetsChanged = configs.value.facets !==
     themed.materializationConfigs.facets;
+  const typographyChanged = sourceTokens.fontFamily !== targetTokens.fontFamily;
   if (facetsChanged && next.compositionSpec?.type === "facet") {
     next = next.materializeComposition();
-  } else if (sourceTokens.fontFamily !== targetTokens.fontFamily) {
-    next = rematerializeThemeTypography(next);
+  } else if (typographyChanged) {
+    next = rematerializeTypography(next);
   }
 
   const parallelChanged = configs.value.guides.axis?.parallel !==
     themed.guideConfigs.axis?.parallel;
-  if (parallelChanged && typeof next.rematerializeParallelAxes === "function") {
+  if (parallelChanged && !typographyChanged && typeof next.rematerializeParallelAxes === "function") {
     next = next.rematerializeParallelAxes();
   }
 

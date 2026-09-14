@@ -66,7 +66,7 @@ function labelGeometry(program, kind, config, angle = resolveAngle(program, kind
       textAlign: geometry.textAlign[index],
       textBaseline: geometry.textBaseline[index]
     }))
-  });
+  }, program.materializationConfigs.textMetrics);
   return geometry;
 }
 
@@ -218,7 +218,7 @@ function makeCreateLabels(kind) {
   });
 }
 
-export const createThetaAxisLabels = makeCreateLabels("theta");
-export const createRadialAxisLabels = makeCreateLabels("radius");
-export const editThetaAxisLabels = makeEditLabels("theta");
-export const editRadialAxisLabels = makeEditLabels("radius");
+export const createThetaAxisLabels = /* @__PURE__ */ makeCreateLabels("theta");
+export const createRadialAxisLabels = /* @__PURE__ */ makeCreateLabels("radius");
+export const editThetaAxisLabels = /* @__PURE__ */ makeEditLabels("theta");
+export const editRadialAxisLabels = /* @__PURE__ */ makeEditLabels("radius");

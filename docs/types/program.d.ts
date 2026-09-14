@@ -1,6 +1,21 @@
 import type { RegisteredExtensionActions } from "./extension.js";
 
 export type TemporalInputUnit = "auto" | "year" | "timestamp";
+export type TextMetricFontWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
+export interface TextMeasurement {
+  readonly text: string;
+  readonly fontFamily: string;
+  readonly fontSize: number;
+  readonly fontWeight: TextMetricFontWeight;
+  readonly width: number;
+}
+export interface TextMetricsProfile {
+  readonly schemaVersion: 1;
+  readonly id: string;
+  readonly measurements: readonly TextMeasurement[];
+}
+export interface ApplyTextMetricsOptions { profile: TextMetricsProfile; }
+
 export type ThemeName = "light" | "dark";
 export interface ThemeTokens {
   background: string;
@@ -4504,6 +4519,8 @@ export class ChartProgram {
   createCanvas(options?: CanvasOptions): ChartProgram;
   editCanvas(options: CanvasOptions): ChartProgram;
   fitCanvas(options?: FitCanvasOptions): ChartProgram;
+  applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
+  removeTextMetrics(): ChartProgram;
   applyTheme(options: ApplyThemeOptions): ChartProgram;
   removeTheme(): ChartProgram;
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;

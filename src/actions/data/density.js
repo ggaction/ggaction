@@ -25,7 +25,7 @@ function requestedTransform(args, op, categorical = false) {
   });
 }
 
-export const materializeDensityData = derivedMaterializer(
+export const materializeDensityData = /* @__PURE__ */ derivedMaterializer(
   "materializeDensityData",
   "Materialize one grouped kernel-density dataset.",
   "density",
@@ -44,7 +44,7 @@ export const materializeDensityData = derivedMaterializer(
   }]
 );
 
-export const createDensityData = derivedCreator(
+export const createDensityData = /* @__PURE__ */ derivedCreator(
   "createDensityData",
   "Create grouped kernel-density values.",
   OPTIONS,
@@ -54,7 +54,7 @@ export const createDensityData = derivedCreator(
   "materializeDensityData"
 );
 
-export const createCategoricalDensityData = derivedCreator(
+export const createCategoricalDensityData = /* @__PURE__ */ derivedCreator(
   "createCategoricalDensityData",
   "Create category-placed kernel-density values.",
   CATEGORICAL_OPTIONS,

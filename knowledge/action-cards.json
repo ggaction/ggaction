@@ -3,7 +3,7 @@
   "packageVersion": "0.0.15",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 277,
+  "count": 279,
   "cards": [
     {
       "schemaVersion": 3,
@@ -291,6 +291,114 @@
       "snippet": "program.fitCanvas({ padding: 1 })",
       "errors": [],
       "route": "/reference/actions/charts-data/#fitcanvas"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "applyTextMetrics",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Apply a host-measured width profile to title, axis, legend, label, and composition layout.",
+      "signature": "applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;",
+      "intents": [
+        "apply text metrics",
+        "apply",
+        "set defaults",
+        "chart setup",
+        "data and scales",
+        "measured text widths",
+        "font measurement profile"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [],
+        "owns": [
+          "measured text widths"
+        ],
+        "idOptions": []
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [],
+      "editableVia": [
+        "removeTextMetrics"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "profile",
+          "required": true,
+          "type": "TextMetricsProfile"
+        }
+      ],
+      "callPatterns": [
+        "applyTextMetrics({ profile })"
+      ],
+      "snippet": "program.applyTextMetrics({ profile: { schemaVersion: 1, id: \"host\", measurements: [] } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#applytextmetrics"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "removeTextMetrics",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Remove the active profile and rematerialize with deterministic width estimates.",
+      "signature": "removeTextMetrics(): ChartProgram;",
+      "intents": [
+        "remove text metrics",
+        "remove",
+        "delete",
+        "chart setup",
+        "data and scales",
+        "measured text widths",
+        "font measurement profile"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing measured text widths"
+        ],
+        "owns": [],
+        "idOptions": []
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [],
+      "editableVia": [],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing measured text widths"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [],
+      "callPatterns": [
+        "removeTextMetrics()"
+      ],
+      "snippet": "program.removeTextMetrics()",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#removetextmetrics"
     },
     {
       "schemaVersion": 3,

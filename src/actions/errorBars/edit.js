@@ -1,4 +1,4 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
 import {
@@ -460,13 +460,12 @@ function updateErrorBarRoles(program, owner, current, candidate, dataId, capIds)
   return next.rematerializeErrorBar({ id: owner.id });
 }
 
-export const rematerializeErrorBar = /* @__PURE__ */ action(
+export const rematerializeErrorBar = /* @__PURE__ */ closedAction(
   {
     op: "rematerializeErrorBar",
     description: "Reconcile one error bar and its owned caps."
-  },
+  }, REMATERIALIZE_OPTIONS,
   function (args = {}) {
-    validateKeys(args, REMATERIALIZE_OPTIONS, "rematerializeErrorBar");
     const id = validateUserId(args.id, "Error-bar id");
     const layer = findLayer(this, id);
     const config = this.markConfigs[id]?.errorBar;
@@ -494,13 +493,12 @@ export const rematerializeErrorBar = /* @__PURE__ */ action(
   }
 );
 
-export const editErrorBar = /* @__PURE__ */ action(
+export const editErrorBar = /* @__PURE__ */ closedAction(
   {
     op: "editErrorBar",
     description: "Revise one error bar's roles, statistics, and owned caps."
-  },
+  }, ERROR_BAR_EDIT_OPTIONS,
   function (args = {}) {
-    validateKeys(args, ERROR_BAR_EDIT_OPTIONS, "editErrorBar");
     const editable = ERROR_BAR_EDIT_OPTIONS.filter(option => option !== "target");
     if (!editable.some(option => Object.hasOwn(args, option))) {
       throw new Error("editErrorBar requires at least one change.");

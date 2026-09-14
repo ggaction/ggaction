@@ -164,11 +164,12 @@ function makeEdit(channel) {
     let next = this._withGuideConfig(channel, config).editGraphics({ target: id, property: "length", value: resolved.values.length });
     for (const property of ["x1", "y1", "x2", "y2"]) next = next.editGraphics({ target: id, property, value: resolved[property] });
     next = next.editGraphics({ target: id, property: "stroke", value: config.color }).editGraphics({ target: id, property: "strokeWidth", value: config.lineWidth });
-    return applyMaterializationPlan(next, planAxisTickGridRematerialization(next, channel));
+    // Structural dependency plans own grids during a scale/role handoff.
+    return explicitMode ? applyMaterializationPlan(next, planAxisTickGridRematerialization(next, channel)) : next;
   }));
 }
 
-const editXAxisTicks = makeEdit("x"), editYAxisTicks = makeEdit("y");
+const editXAxisTicks = /* @__PURE__ */ makeEdit("x"), editYAxisTicks = /* @__PURE__ */ makeEdit("y");
 
 function makeCreate(channel) {
   const op = channel === "x" ? "createXAxisTicks" : "createYAxisTicks";
@@ -192,7 +193,7 @@ function makeCreate(channel) {
     const config = { scale, position: defaultAxisPosition(channel), length: DEFAULTS.length, color: DEFAULTS.color, lineWidth: DEFAULTS.lineWidth, ...options, inferredValues: inferredValues !== undefined, mode: Object.hasOwn(options, "values") ? "values" : "count" };
     if (config.mode === "values") delete config.count; else config.count ??= DEFAULTS.count;
     validateConfig(channel, config); geometry(this, channel, config);
-    return this.editSemantic({ property: `guide.axis.${channel}.scale`, value: scale })
+    const next = this.editSemantic({ property: `guide.axis.${channel}.scale`, value: scale })
       .createGraphics({
         id,
         type: "line",
@@ -200,10 +201,11 @@ function makeCreate(channel) {
         ...resolvePlotGraphicPlacement(this)
       })
       ._withGuideConfig(channel, config)[edit]();
+    return applyMaterializationPlan(next, planAxisTickGridRematerialization(next, channel));
   }));
 }
 
-const createXAxisTicks = makeCreate("x"), createYAxisTicks = makeCreate("y");
+const createXAxisTicks = /* @__PURE__ */ makeCreate("x"), createYAxisTicks = /* @__PURE__ */ makeCreate("y");
 export function registerAxisTickActions(Class) {
   Class.prototype.editXAxisTicks = editXAxisTicks; Class.prototype.editYAxisTicks = editYAxisTicks;
   Class.prototype.createXAxisTicks = createXAxisTicks; Class.prototype.createYAxisTicks = createYAxisTicks;

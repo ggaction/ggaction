@@ -8,14 +8,14 @@ const OPTIONS = Object.freeze([
   "id", "source", "groupBy", "aggregates", "members", "weight"
 ]);
 
-export const materializeSummaryData = derivedMaterializer(
+export const materializeSummaryData = /* @__PURE__ */ derivedMaterializer(
   "materializeSummaryData",
   "Materialize one immutable grouped summary dataset.",
   "summary",
   deriveSummaryRows
 );
 
-export const createSummaryData = derivedCreator(
+export const createSummaryData = /* @__PURE__ */ derivedCreator(
   "createSummaryData",
   "Create reusable grouped aggregate values and provenance.",
   OPTIONS,

@@ -32,6 +32,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 
 | Action | Authoring role | API layer | Domain |
 | --- | --- | --- | --- |
+| [`applyTextMetrics`](./actions/charts-data.md#applytextmetrics) | H3 | user-facing | core |
 | [`applyTheme`](./actions/charts-data.md#applytheme) | H3 | user-facing | core |
 | [`bindMarkData`](./actions/charts-data.md#bindmarkdata) | H2 | user-facing | core |
 | [`createAnnotation`](./actions/marks.md#createannotation) | H1, H2 | user-facing | marks |
@@ -299,6 +300,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removePointRadius`](./actions/encodings.md#removepointradius) | H2, H3 | user-facing | encodings |
 | [`removeRadialAxis`](./actions/guides.md#removeradialaxis) | H3 | user-facing | axes |
 | [`removeScale`](./actions/charts-data.md#removescale) | H2 | user-facing | core |
+| [`removeTextMetrics`](./actions/charts-data.md#removetextmetrics) | H3 | user-facing | core |
 | [`removeTheme`](./actions/charts-data.md#removetheme) | H3 | user-facing | core |
 | [`removeThetaAxis`](./actions/guides.md#removethetaaxis) | H3 | user-facing | axes |
 | [`removeTitle`](./actions/guides.md#removetitle) | H3 | user-facing | legend_and_title |

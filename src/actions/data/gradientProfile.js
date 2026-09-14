@@ -9,7 +9,7 @@ const OPTIONS = Object.freeze([
   "kernel", "normalization", "center", "as"
 ]);
 
-export const materializeGradientProfileData = derivedMaterializer(
+export const materializeGradientProfileData = /* @__PURE__ */ derivedMaterializer(
   "materializeGradientProfileData",
   "Materialize one categorical density-profile dataset.",
   "gradientProfile",
@@ -24,7 +24,7 @@ export const materializeGradientProfileData = derivedMaterializer(
   }]
 );
 
-export const createGradientProfileData = derivedCreator(
+export const createGradientProfileData = /* @__PURE__ */ derivedCreator(
   "createGradientProfileData",
   "Create one immutable categorical density-profile dataset.",
   OPTIONS,

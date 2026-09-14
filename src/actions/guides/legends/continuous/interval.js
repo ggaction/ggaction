@@ -1,5 +1,5 @@
 import { resolveLegendItemLayout } from "../../../../layout/legendItems.js";
-import { action } from "../../../../core/action.js";
+import { action, closedAction } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
 import {
   validateKeys,
@@ -86,15 +86,16 @@ export function normalizeIntervalLegend(args) {
   };
 }
 
-export function resolveIntervalConfig(program, stored) {
-  const layer = resolveContinuousColorLayer(program, stored.target);
-  const encoding = layer.encoding.color;
+export function resolveIntervalConfig(program, stored, channel = "color") {
+  const label = channel === "color" ? "Interval legend" : "Stroke interval legend";
+  const layer = resolveContinuousColorLayer(program, stored.target, channel);
+  const encoding = layer.encoding[channel];
   if (encoding.fieldType !== "quantitative") {
-    throw new Error("Interval legend requires quantitative color.");
+    throw new Error(`${label} requires quantitative ${channel}.`);
   }
   const scale = program.resolvedScales[encoding.scale];
   if (!["quantize", "quantile", "threshold"].includes(scale?.type)) {
-    throw new Error(`Interval legend requires a resolved discretized scale "${encoding.scale}".`);
+    throw new Error(`${label} requires a resolved discretized scale "${encoding.scale}".`);
   }
   return { encoding, scale, config: {
       ...stored,
@@ -104,32 +105,31 @@ export function resolveIntervalConfig(program, stored) {
     } };
 }
 
-export function resolveIntervalLayout(program, config, scale) {
+export function resolveIntervalLayout(program, config, scale, label = "Interval legend") {
   const { plot, canvas } = resolveContinuousBounds(program);
   const labels = formatDiscretizedIntervals(scale.thresholds, config.labels.format);
-  const layout = resolveLegendItemLayout(plot, config, labels, config.symbol);
+  const layout = resolveLegendItemLayout(plot, config, labels, config.symbol, undefined, program.materializationConfigs.textMetrics);
   const occupiedBounds = layout.bounds;
   assertLegendBoundsInsideCanvas(
     occupiedBounds,
     canvas,
-    "Interval legend layout", config
+    `${label} layout`, config
   );
   const background = resolveLegendBackgroundFromBounds(
     occupiedBounds,
     config.border,
     canvas,
-    "Interval legend", config
+    label, config
   );
   return { labels, ...layout, background };
 }
 
-export const rematerializeIntervalLegend = /* @__PURE__ */ action(
+export const rematerializeIntervalLegend = /* @__PURE__ */ closedAction(
   {
     op: "rematerializeIntervalLegend",
     description: "Rematerialize a discretized color interval legend."
-  },
+  }, [],
   function (args = {}) {
-    validateKeys(args, [], "rematerializeIntervalLegend");
     const stored = this.guideConfigs.legend?.interval;
     if (stored === undefined) {
       throw new Error("Interval legend requires stored configuration.");

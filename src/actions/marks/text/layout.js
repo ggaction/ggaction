@@ -1,4 +1,4 @@
-import { action } from "../../../core/action.js";
+import { action, closedAction } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { validateOptionObject } from "../../../core/validation.js";
 import { DEFAULT_TEXT_MARK } from "../../../grammar/text.js";
@@ -221,22 +221,17 @@ function placementLeaderItems(program, layer) {
       sourceY: entry.anchor.y,
       dx: properties.x - entry.anchor.x,
       dy: properties.y - entry.anchor.y,
-      bounds: resolveTextBounds(properties)
+      bounds: resolveTextBounds(properties, program.materializationConfigs.textMetrics)
     };
   });
 }
 
-const materializeMarkLabelPlacement = /* @__PURE__ */ action(
+const materializeMarkLabelPlacement = /* @__PURE__ */ closedAction(
   {
     op: "materializeMarkLabelPlacement",
     description: "Reconcile semantic attached-label placement leaders."
-  },
+  }, MATERIALIZE_PLACEMENT_OPTIONS,
   function (args = {}) {
-    validateOptionObject(
-      args,
-      MATERIALIZE_PLACEMENT_OPTIONS,
-      "materializeMarkLabelPlacement"
-    );
     const id = validateUserId(args.id, "Attached label id");
     const layer = findLayer(this, id);
     if (!isSourceOwnedText(layer)) {
@@ -267,13 +262,12 @@ const materializeMarkLabelPlacement = /* @__PURE__ */ action(
   }
 );
 
-const materializeLabelLayout = /* @__PURE__ */ action(
+const materializeLabelLayout = /* @__PURE__ */ closedAction(
   {
     op: "materializeLabelLayout",
     description: "Resolve concrete label positions and optional leader lines."
-  },
+  }, MATERIALIZE_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, MATERIALIZE_OPTIONS, "materializeLabelLayout");
     const id = validateUserId(args.id, "Text mark id");
     const rematerializeBase = args.rematerializeBase ?? true;
     if (typeof rematerializeBase !== "boolean") {
@@ -294,7 +288,7 @@ const materializeLabelLayout = /* @__PURE__ */ action(
       axis: config.axis,
       padding: config.padding,
       maxDisplacement: config.maxDisplacement
-    });
+    }, next.materializationConfigs.textMetrics);
     next = editMarkGraphic(next, id, {
       x: resolved.items.map(item => item.x),
       y: resolved.items.map(item => item.y)
@@ -326,13 +320,12 @@ const materializeLabelLayout = /* @__PURE__ */ action(
   }
 );
 
-const layoutLabels = /* @__PURE__ */ action(
+const layoutLabels = /* @__PURE__ */ closedAction(
   {
     op: "layoutLabels",
     description: "Assign deterministic collision-aware layout to a text mark."
-  },
+  }, TEXT_LABEL_LAYOUT_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, TEXT_LABEL_LAYOUT_OPTIONS, "layoutLabels");
     const layer = requireCompleteText(this, args.target, "layoutLabels");
     const policy = normalizePolicy(args);
     const placement = this.markConfigs[layer.id]?.labelAuthoring?.placement;
@@ -418,13 +411,12 @@ const editMarkLabelPlacement = /* @__PURE__ */ action(
   }
 );
 
-const removeLabelLayout = /* @__PURE__ */ action(
+const removeLabelLayout = /* @__PURE__ */ closedAction(
   {
     op: "removeLabelLayout",
     description: "Remove label layout and restore semantic base text positions."
-  },
+  }, REMOVE_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, REMOVE_OPTIONS, "removeLabelLayout");
     const layer = requireConfiguredText(this, args.target);
     const config = this.materializationConfigs.labelLayouts[layer.id];
     return removeLeaderGraphic(

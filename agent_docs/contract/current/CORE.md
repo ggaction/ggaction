@@ -114,6 +114,43 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Evidence: `test/unit/actions/canvas/fit-canvas.test.js`, `test/contracts/fitting.test.js`,
   `test/charts/fitted-long-labels/`.
 
+## `applyTextMetrics`
+
+- Signature: `applyTextMetrics({ profile })`
+- 목적과 필수 state: Full unit/composition에서 host가 측정한 text width를 저작용 배치에 적용한다. Canvas 이전에도 적용할 수 있다. Renderer는 기존 concrete text만 그린다.
+- Profile: `{ schemaVersion: 1, id: NonEmptyUserId, measurements: TextMeasurement[] }`. 각 measurement는 정확한 `{ text: string, fontFamily: NonEmptyString, fontSize: PositiveFinite, fontWeight: 100|200|300|400|500|600|700|800|900, width: NonNegativeFinite }`다. 빈 문자열/빈 measurement 배열/0 width는 유효하다. Root/measurement key는 closed이며 tuple 조합의 중복, 희소 배열, 잘못된 값은 거부한다.
+- 매칭: text/family/size/normalized weight의 exact match다. 생략 family는 shared sans-serif, weight는 normal=400, bold=700; numeric weight는 renderer의 100 단위 rounding/clamping을 공유한다. 지원되는 numeric string도 같은 weight다. 미일치 font/text 조합과 그 외 CSS relative weight는 기존 deterministic estimate를 사용한다.
+- 효과: canonical `materializationConfigs.textMetrics`에 clone/freeze한 profile만 저장한다. Private immutable-key cache는 측정 lookup 비용만 줄인다. Typography, source data와 scale mapping을 바꾸지 않는다. Text mark/label placement·collision layout, Cartesian/Polar/Parallel guides, 범례와 title의 기존 wrapped rematerialization과 전체 guide collision 검증을 수행한다.
+- Composition: root와 모든 현재 nested child에 같은 profile을 적용하고 ancestor layout/header/shared guide를 재계산한다. Basic child는 같은 state의 Full snapshot으로 채택한다. 이전 child profile을 history frame으로 보관하지 않는다. 이후 concat child replacement/insertion과 retained facet/repeat replay는 현재 parent profile을 사용한다.
+- 실패 원자성: 모든 candidate와 descendant materialization이 성공한 새 program만 반환한다. overflow/collision 등 기존 배치 규칙의 실패는 이전 program과 caller profile을 변경하지 않는다.
+- 지속성: 일반 domain edit, Canvas 변경과 source revision이 같은 policy를 소비한다. Editable persistence는 profile을 보존·검증한다. Render-only snapshot은 이미 계산된 graphic tree만 저장한다. Backend/font callback은 저장하지 않는다.
+- Evidence: `test/unit/actions/text-metrics.test.js`, `test/contracts/text-metrics-types.test.js`.
+
+### Formal values — `applyTextMetrics`
+
+- Implemented: `applyTextMetrics({ profile: TextMetricsProfile }): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): none.
+
+### Value coverage — `applyTextMetrics`
+
+- ✅ Covered: exact/normalized match, 0 width, unmatched fallback, Unicode text, closed keys/schema/duplicate/invalid values, owned input, trace, pre-authoring application, title rewrap, Canvas/edit persistence, retained composition, whole action corpus empty-profile equality and editable persistence.
+
+## `removeTextMetrics`
+
+- Signature: `removeTextMetrics()`
+- 효과: active profile을 제거하고 기존 estimate로 같은 dependency closure를 재계산한다. Composition은 root와 descendants의 profile을 제거한다. Profile 이전의 typography나 다른 profile history를 복원하지 않는다.
+- 오류: active profile 없음, unknown/non-object options와 재계산 실패를 거부한다. 원본은 보존한다. Basic entry에는 두 metrics action 모두 없다.
+- Evidence: `test/unit/actions/text-metrics.test.js`, `test/contracts/text-metrics-types.test.js`.
+
+### Formal values — `removeTextMetrics`
+
+- Implemented: `removeTextMetrics(): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): none.
+
+### Value coverage — `removeTextMetrics`
+
+- ✅ Covered: unit/composition removal, deterministic restoration, inactive rejection, persistence round trip and Full/Basic boundary.
+
 ## `applyTheme`
 
 - Signature: `applyTheme({ theme, scope? })`

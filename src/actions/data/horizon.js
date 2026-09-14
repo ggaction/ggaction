@@ -26,7 +26,7 @@ function requestedTransform(args) {
   });
 }
 
-export const materializeHorizonData = derivedMaterializer(
+export const materializeHorizonData = /* @__PURE__ */ derivedMaterializer(
   "materializeHorizonData",
   "Materialize one immutable Horizon band dataset.",
   "horizon",
@@ -34,7 +34,7 @@ export const materializeHorizonData = derivedMaterializer(
   result => [{ ...result.transform, resolved: result.resolved }]
 );
 
-export const createHorizonData = derivedCreator(
+export const createHorizonData = /* @__PURE__ */ derivedCreator(
   "createHorizonData",
   "Create one immutable Horizon band dataset.",
   OPTIONS,

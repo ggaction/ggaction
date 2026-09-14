@@ -21,6 +21,8 @@ interface ChartProgramActions {
   createCanvas(options?: CanvasOptions): ChartProgram;
   editCanvas(options: CanvasOptions): ChartProgram;
   fitCanvas(options?: FitCanvasOptions): ChartProgram;
+  applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
+  removeTextMetrics(): ChartProgram;
   applyTheme(options: ApplyThemeOptions): ChartProgram;
   removeTheme(): ChartProgram;
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
@@ -382,6 +384,19 @@ type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "t
 </details>
 
 Related types: [`TextMarkOptions`](#type-textmarkoptions) · [`TextFormat`](#type-textformat) · [`LabelLayoutOptions`](#type-labellayoutoptions).
+
+### `ApplyTextMetricsOptions` {#type-applytextmetricsoptions}
+
+<details markdown="1">
+<summary>Expand ApplyTextMetricsOptions</summary>
+
+```typescript
+export interface ApplyTextMetricsOptions { profile: TextMetricsProfile; }
+```
+
+</details>
+
+Related types: [`TextMetricsProfile`](#type-textmetricsprofile).
 
 ### `ApplyThemeOptions` {#type-applythemeoptions}
 
@@ -10478,6 +10493,53 @@ export interface TextMarkOptions {
 </details>
 
 Related types: [`RotationInput`](#type-rotationinput).
+
+### `TextMeasurement` {#type-textmeasurement}
+
+<details markdown="1">
+<summary>Expand TextMeasurement</summary>
+
+```typescript
+export interface TextMeasurement {
+  readonly text: string;
+  readonly fontFamily: string;
+  readonly fontSize: number;
+  readonly fontWeight: TextMetricFontWeight;
+  readonly width: number;
+}
+```
+
+</details>
+
+Related types: [`TextMetricFontWeight`](#type-textmetricfontweight).
+
+### `TextMetricFontWeight` {#type-textmetricfontweight}
+
+<details markdown="1">
+<summary>Expand TextMetricFontWeight</summary>
+
+```typescript
+export type TextMetricFontWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
+```
+
+</details>
+
+### `TextMetricsProfile` {#type-textmetricsprofile}
+
+<details markdown="1">
+<summary>Expand TextMetricsProfile</summary>
+
+```typescript
+export interface TextMetricsProfile {
+  readonly schemaVersion: 1;
+  readonly id: string;
+  readonly measurements: readonly TextMeasurement[];
+}
+```
+
+</details>
+
+Related types: [`TextMeasurement`](#type-textmeasurement).
 
 ### `ThemeDefinition` {#type-themedefinition}
 

@@ -94,6 +94,42 @@
       }
     },
     {
+      "name": "applyTextMetrics",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Replace the measured-width profile or reset with `removeTextMetrics`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "applytextmetrics"
+      }
+    },
+    {
+      "name": "removeTextMetrics",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Remove the active profile and restore estimated text layout",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "removetextmetrics"
+      }
+    },
+    {
       "name": "applyTheme",
       "layer": "user-facing",
       "domain": "core",
@@ -1108,7 +1144,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces the target jitter assignment; `removeJitter` removes it",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1126,7 +1162,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Removes one target jitter assignment and restores semantic base positions",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1144,7 +1180,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces deterministic category-slot packing; `removePointPacking` removes it",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1162,7 +1198,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Removes one packing assignment and restores semantic positions",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1342,7 +1378,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces a compatible x field and scale",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1360,7 +1396,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces a compatible y field and scale",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1378,7 +1414,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action atomically replaces one or more compatible channels on one explicit mark",
-      "audit": "Final-state reassignment — Implemented",
+      "audit": "Final-state reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1396,7 +1432,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces the compatible secondary x endpoint",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1414,7 +1450,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces compatible color grouping",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1432,7 +1468,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action atomically replaces field, constant value, and scale binding",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1450,7 +1486,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces constant or field-driven stroke color",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1468,7 +1504,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces constant rule width or field-driven line/rule width",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1486,7 +1522,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces field and scale binding",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1504,7 +1540,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces field and scale binding",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1522,7 +1558,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces the complete constant or field direction assignment",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1540,7 +1576,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces the constant value",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1558,7 +1594,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces the constant value",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1576,7 +1612,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces the field and compatible Polar angle scale binding",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1594,7 +1630,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces the field and compatible Polar radial scale binding",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1612,7 +1648,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Delegates replacement to encodeRadius",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1630,7 +1666,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Removes explicit point glyph radius and restores the theme default",
-      "audit": "Removal — Implemented",
+      "audit": "Removal \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1648,7 +1684,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces compatible same-field scale and padding policy",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1666,7 +1702,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces compatible same-field scale and padding policy",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1684,7 +1720,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces a compatible secondary y endpoint",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1702,7 +1738,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action atomically replaces lower/upper fields",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1720,7 +1756,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action atomically replaces lower/upper fields",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1738,7 +1774,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces compatible path grouping",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1756,7 +1792,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces the field and direction for one compatible path",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1774,7 +1810,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action atomically replaces ordered dimensions, key, missing policy and dimension scales",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1792,7 +1828,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Removes explicit topology order and restores automatic independent-position ordering",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1810,7 +1846,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces category-order intent for one categorical position",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1828,7 +1864,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Removes category-order intent and restores automatic first-appearance order",
-      "audit": "Removal — Implemented",
+      "audit": "Removal \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1846,7 +1882,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Removes one encoding and its owned companions, guides and concrete state",
-      "audit": "Removal — Implemented",
+      "audit": "Removal \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1864,7 +1900,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces field or constant text content",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1882,7 +1918,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action will replace atomic bin/count encodings",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1900,7 +1936,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "`editDensity` creates and rebinds an immutable revision",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1936,7 +1972,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "`editHorizon` creates and rebinds an immutable revision",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1972,7 +2008,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces band or pixel width; valid incomplete bars retain the assignment",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -3178,7 +3214,7 @@
       "status": "implemented",
       "lifecycle": "Mutable resource",
       "update": "Edits an existing coordinate layout constraint",
-      "audit": "Coordinate aspect and Polar frame — Implemented",
+      "audit": "Coordinate aspect and Polar frame \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -5018,7 +5054,7 @@
       },
       "lifecycle": "Assignment",
       "update": "Reassign layoutSeries; edit endpoints, group, appearance, scales and guides",
-      "audit": "Reassignment — Implemented",
+      "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",

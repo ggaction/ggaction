@@ -10,7 +10,7 @@ const OPTIONS = Object.freeze([
   "nice", "zero", "includeEmpty", "members", "as", "weight"
 ]);
 
-export const materializeBinData = derivedMaterializer(
+export const materializeBinData = /* @__PURE__ */ derivedMaterializer(
   "materializeBinData",
   "Materialize one immutable one-dimensional bin dataset.",
   "bin",
@@ -18,7 +18,7 @@ export const materializeBinData = derivedMaterializer(
   resolveBinTransform
 );
 
-export const createBinData = derivedCreator(
+export const createBinData = /* @__PURE__ */ derivedCreator(
   "createBinData",
   "Create reusable one-dimensional bin bounds, counts, and members.",
   OPTIONS,

@@ -239,12 +239,12 @@ function makeEdit(kind) {
   });
 }
 
-const createThetaGrid = makeCreate("theta");
-const createRadialGrid = makeCreate("radial");
-const editThetaGrid = makeEdit("theta");
-const editRadialGrid = makeEdit("radial");
-const rematerializeThetaGrid = makeRematerialize("theta");
-const rematerializeRadialGrid = makeRematerialize("radial");
+const createThetaGrid = /* @__PURE__ */ makeCreate("theta");
+const createRadialGrid = /* @__PURE__ */ makeCreate("radial");
+const editThetaGrid = /* @__PURE__ */ makeEdit("theta");
+const editRadialGrid = /* @__PURE__ */ makeEdit("radial");
+const rematerializeThetaGrid = /* @__PURE__ */ makeRematerialize("theta");
+const rematerializeRadialGrid = /* @__PURE__ */ makeRematerialize("radial");
 
 export function registerPolarGridActions(ProgramClass) {
   ProgramClass.prototype.createThetaGrid = createThetaGrid;

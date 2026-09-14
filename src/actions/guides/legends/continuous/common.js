@@ -318,7 +318,7 @@ export function styleContinuousText(
   });
 }
 
-export function resolveLegendTextBounds(position, text, style) {
+export function resolveLegendTextBounds(position, text, style, profile) {
   return resolveTextBounds({
     x: position.x,
     y: position.y,
@@ -326,7 +326,7 @@ export function resolveLegendTextBounds(position, text, style) {
     ...style,
     textAlign: position.align ?? "left",
     textBaseline: "middle"
-  });
+  }, profile);
 }
 
 export function assertLegendBoundsInsideCanvas(bounds, canvas, label, config) {

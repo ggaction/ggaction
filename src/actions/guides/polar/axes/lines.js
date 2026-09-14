@@ -114,7 +114,7 @@ function makeCreateLine(kind) {
   });
 }
 
-export const createThetaAxisLine = makeCreateLine("theta");
-export const createRadialAxisLine = makeCreateLine("radius");
-export const editThetaAxisLine = makeEditLine("theta");
-export const editRadialAxisLine = makeEditLine("radius");
+export const createThetaAxisLine = /* @__PURE__ */ makeCreateLine("theta");
+export const createRadialAxisLine = /* @__PURE__ */ makeCreateLine("radius");
+export const editThetaAxisLine = /* @__PURE__ */ makeEditLine("theta");
+export const editRadialAxisLine = /* @__PURE__ */ makeEditLine("radius");

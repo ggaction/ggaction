@@ -1,6 +1,6 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
+
 import {
   findDataset,
   hasDataset,
@@ -27,10 +27,9 @@ const OWNED_MARK_ROLES = Object.freeze([
   "statisticalReference"
 ]);
 
-export const createDerivedData = /* @__PURE__ */ action(
-  { op: "createDerivedData", description: "Create an immutable derived dataset definition." },
+export const createDerivedData = /* @__PURE__ */ closedAction(
+  { op: "createDerivedData", description: "Create an immutable derived dataset definition." }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "createDerivedData");
     const id = validateUserId(args.id, "Derived dataset id");
     const requestedSource = validateUserId(args.source, "Source dataset id");
     const source = resolveDatasetReference(
@@ -50,13 +49,12 @@ export const createDerivedData = /* @__PURE__ */ action(
   }
 );
 
-export const releaseDerivedData = /* @__PURE__ */ action(
+export const releaseDerivedData = /* @__PURE__ */ closedAction(
   {
     op: "releaseDerivedData",
     description: "Release one unreferenced derived dataset."
-  },
+  }, RELEASE_OPTIONS,
   function (args = {}) {
-    validateKeys(args, RELEASE_OPTIONS, "releaseDerivedData");
     const validatedId = validateUserId(args.id, "Derived dataset id");
     const dataset = findDataset(this, validatedId);
     if (dataset === undefined || dataset.source === undefined) {
@@ -85,13 +83,12 @@ export const releaseDerivedData = /* @__PURE__ */ action(
   }
 );
 
-export const rebindLayerData = /* @__PURE__ */ action(
+export const rebindLayerData = /* @__PURE__ */ closedAction(
   {
     op: "rebindLayerData",
     description: "Rebind one semantic layer to an existing dataset."
-  },
+  }, REBIND_OPTIONS,
   function (args = {}) {
-    validateKeys(args, REBIND_OPTIONS, "rebindLayerData");
     const id = validateUserId(args.id, "Layer id");
     const requestedData = validateUserId(args.data, "Layer dataset id");
     const data = resolveDatasetReference(
@@ -134,13 +131,12 @@ function applyMarkDataBinding(program, target, data) {
   return applyLayerDataRematerialization(rebound, target);
 }
 
-export const bindMarkData = /* @__PURE__ */ action(
+export const bindMarkData = /* @__PURE__ */ closedAction(
   {
     op: "bindMarkData",
     description: "Atomically bind one independent mark to materialized data."
-  },
+  }, BIND_OPTIONS,
   function (args = {}) {
-    validateKeys(args, BIND_OPTIONS, "bindMarkData");
     const target = validateUserId(args.target, "Mark target id");
     const requestedData = validateUserId(args.data, "Mark dataset id");
     const data = resolveDatasetReference(

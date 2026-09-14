@@ -145,10 +145,10 @@ function makeEdit(channel) {
   );
 }
 
-const createXAxisTicksAndLabels = makeCreate("x");
-const createYAxisTicksAndLabels = makeCreate("y");
-const editXAxisTicksAndLabels = makeEdit("x");
-const editYAxisTicksAndLabels = makeEdit("y");
+const createXAxisTicksAndLabels = /* @__PURE__ */ makeCreate("x");
+const createYAxisTicksAndLabels = /* @__PURE__ */ makeCreate("y");
+const editXAxisTicksAndLabels = /* @__PURE__ */ makeEdit("x");
+const editYAxisTicksAndLabels = /* @__PURE__ */ makeEdit("y");
 
 export function registerAxisTickGroupActions(Class) {
   Class.prototype.createXAxisTicksAndLabels = createXAxisTicksAndLabels;

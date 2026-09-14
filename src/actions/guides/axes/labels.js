@@ -165,7 +165,7 @@ function assertTickCompatibility(ticks, config, operation) {
   if (config.mode === "values" && !sameOrderedValues(ticks.values, config.values)) throw new Error(`${operation} conflicts with axis ticks.`);
 }
 
-function expandWrappedLabels(resolved, text, config, channel) {
+function expandWrappedLabels(resolved, text, config, channel, profile) {
   if (config.maxWidth === undefined) {
     return {
       ...resolved,
@@ -184,7 +184,7 @@ function expandWrappedLabels(resolved, text, config, channel) {
     const lines = wrapText(text[index], {
       maxWidth: config.maxWidth,
       mode: config.wrap,
-      style
+      style, profile
     });
     validateGeneratedItemLimit(
       expanded.text.length + lines.length,
@@ -271,7 +271,7 @@ function resolve(program, channel, config) {
       offset: config.offset
     })
   };
-  const resolved = expandWrappedLabels(geometry, text, config, channel);
+  const resolved = expandWrappedLabels(geometry, text, config, channel, program.materializationConfigs.textMetrics);
   const canvas = findCanvasGraphic(program)?.properties;
   const labelBounds = resolved.text.map((value, index) => resolveTextBounds({
     x: Array.isArray(resolved.x) ? resolved.x[index] : resolved.x,
@@ -283,7 +283,7 @@ function resolve(program, channel, config) {
     textAlign: resolved.textAlign,
     textBaseline: resolved.textBaseline,
     rotation: config.rotation
-  }));
+  }, program.materializationConfigs.textMetrics));
   const groupedBounds = unionLabelBounds(labelBounds.map((bounds, index) => ({
     bounds,
     group: resolved.groups[index]
@@ -299,7 +299,7 @@ function resolve(program, channel, config) {
     throw new Error(`The ${channel}-axis labels overlap each other.`);
   }
   const title = program.graphicSpec.objects[`${channel}AxisTitle`]
-    ? resolveConcreteGraphicBounds(program.graphicSpec, `${channel}AxisTitle`)
+    ? resolveConcreteGraphicBounds(program.graphicSpec, `${channel}AxisTitle`, program.materializationConfigs.textMetrics)
     : undefined;
   if (title &&
     program.guideConfigs.axis?.[channel]?.title?.inferredOffset !== true &&
@@ -366,8 +366,8 @@ function makeEdit(channel) {
   }));
 }
 
-const editXAxisLabels = makeEdit("x");
-const editYAxisLabels = makeEdit("y");
+const editXAxisLabels = /* @__PURE__ */ makeEdit("x");
+const editYAxisLabels = /* @__PURE__ */ makeEdit("y");
 
 function makeCreate(channel) {
   const op = channel === "x" ? "createXAxisLabels" : "createYAxisLabels";
@@ -426,8 +426,8 @@ function makeCreate(channel) {
   }));
 }
 
-const createXAxisLabels = makeCreate("x");
-const createYAxisLabels = makeCreate("y");
+const createXAxisLabels = /* @__PURE__ */ makeCreate("x");
+const createYAxisLabels = /* @__PURE__ */ makeCreate("y");
 
 export function registerAxisLabelActions(Class) {
   Class.prototype.editXAxisLabels = editXAxisLabels;

@@ -122,8 +122,8 @@ function makeCreateAxis(channel) {
   );
 }
 
-const createXAxis = makeCreateAxis("x");
-const createYAxis = makeCreateAxis("y");
+const createXAxis = /* @__PURE__ */ makeCreateAxis("x");
+const createYAxis = /* @__PURE__ */ makeCreateAxis("y");
 
 export function registerAxisActions(Class) {
   Class.prototype.createXAxis = createXAxis;

@@ -22,6 +22,8 @@ const analysisChartEditorNames = new Set([
 
 const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts"]);
 const coreH3Names = new Set([
+  "applyTextMetrics",
+  "removeTextMetrics",
   "reviseData",
   "createCanvas",
   "editCanvas",

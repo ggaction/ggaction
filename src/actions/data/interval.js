@@ -16,14 +16,14 @@ const OPTIONS = Object.freeze([
   "as"
 ]);
 
-export const materializeIntervalData = derivedMaterializer(
+export const materializeIntervalData = /* @__PURE__ */ derivedMaterializer(
   "materializeIntervalData",
   "Materialize one grouped interval-summary dataset.",
   "interval",
   deriveInterval
 );
 
-export const createIntervalData = derivedCreator(
+export const createIntervalData = /* @__PURE__ */ derivedCreator(
   "createIntervalData",
   "Create immutable grouped interval-summary values.",
   OPTIONS,

@@ -1,5 +1,5 @@
-import { action } from "../../core/action.js";
-import { validateKeys } from "../../core/validation.js";
+import { closedAction } from "../../core/action.js";
+
 import { findSemanticScale } from "../../selectors/scales.js";
 import { resolveFacadeData } from "../charts/shared.js";
 import {
@@ -19,13 +19,12 @@ import {
   resolveBoxSourceLayer
 } from "./resolve.js";
 
-export const createBoxPlot = /* @__PURE__ */ action(
+export const createBoxPlot = /* @__PURE__ */ closedAction(
   {
     op: "createBoxPlot",
     description: "Create a Tukey box plot from categorical and quantitative positions."
-  },
+  }, BOX_PLOT_OPTIONS,
   function (args = {}) {
-    validateKeys(args, BOX_PLOT_OPTIONS, "createBoxPlot");
     const id = resolveBoxPlotId(this, args.id);
     const source = resolveBoxSourceLayer(this, args.target, {
       requiresInference: args.x === undefined || args.y === undefined

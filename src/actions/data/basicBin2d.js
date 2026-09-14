@@ -1,6 +1,6 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
+
 import {
   deriveBin2DRows,
   normalizeBin2DTransform
@@ -11,13 +11,12 @@ const OPTIONS = Object.freeze([
   "id", "source", "x", "y", "bins", "extent", "includeEmpty", "members", "as"
 ]);
 
-export const createBasicBin2DData = /* @__PURE__ */ action(
+export const createBasicBin2DData = /* @__PURE__ */ closedAction(
   {
     op: "createBin2DData",
     description: "Create immutable rectangular 2D-bin values."
-  },
+  }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "createBin2DData");
     const owner = validateUserId(args.id, "2D bin dataset id");
     if (this.materializationConfigs.data?.bin2d?.[owner] !== undefined) {
       throw new Error(`2D bin owner "${owner}" already exists.`);

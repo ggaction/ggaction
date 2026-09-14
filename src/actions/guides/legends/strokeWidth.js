@@ -1,4 +1,4 @@
-import { action } from "../../../core/action.js";
+import { action, closedAction } from "../../../core/action.js";
 import {
   validateNonEmptyString,
   validateKeys
@@ -88,19 +88,18 @@ export function resolveStrokeWidthLegendLayout(program, config) {
     "quantitative",
     effective.labels.format
   );
-  const layout = resolveLegendItemLayout(plot, effective, labels, { width: 32, height: 0, strokeWidth: widths });
+  const layout = resolveLegendItemLayout(plot, effective, labels, { width: 32, height: 0, strokeWidth: widths }, undefined, program.materializationConfigs.textMetrics);
   assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Stroke-width legend layout", effective);
   const background = resolveLegendBackgroundFromBounds(layout.bounds, effective.border, canvas, "Stroke-width legend", effective);
   return { ...layout, widths, labels, background, config: effective };
 }
 
-export const rematerializeStrokeWidthLegend = /* @__PURE__ */ action(
+export const rematerializeStrokeWidthLegend = /* @__PURE__ */ closedAction(
   {
     op: "rematerializeStrokeWidthLegend",
     description: "Rematerialize a quantitative stroke-width legend."
-  },
+  }, [],
   function (args = {}) {
-    validateKeys(args, [], "rematerializeStrokeWidthLegend");
     const stored = this.guideConfigs.legend?.strokeWidth;
     if (stored === undefined) {
       throw new Error("Stroke-width legend requires stored configuration.");

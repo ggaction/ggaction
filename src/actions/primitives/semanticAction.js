@@ -1,5 +1,5 @@
 import { hasSemanticScaleReferences } from "../../selectors/scales.js";
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import {
   cloneAndFreeze,
   freezeOwned,
@@ -7,7 +7,7 @@ import {
   removeOwnedPath
 } from "../../core/immutable.js";
 import { parseSemanticPath } from "../../grammar/schemas/semanticPath.js";
-import { validateOptionObject } from "../../core/validation.js";
+
 
 const CONTEXT_KEYS = Object.freeze({
   dataset: "currentData",
@@ -192,14 +192,14 @@ export function withoutPreviewLayerEncodings(program, { id, channels }) {
 }
 
 export function createSemanticPrimitiveAction(validateSemanticValue, planNamedRemoval) {
-  return action(
+  return closedAction(
     {
       op: "editSemantic",
       description: "Create, replace, or remove one semantic property.",
       scope: "any"
-    },
+    }, ["property", "value", "remove"],
     function (args = {}) {
-      validateOptionObject(args, ["property", "value", "remove"], "editSemantic");
+
       const { property, value, remove = false } = args;
       if (typeof remove !== "boolean") {
         throw new TypeError("editSemantic remove must be a boolean.");

@@ -1,4 +1,4 @@
-import { action } from "../../core/action.js";
+import { action, closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
@@ -388,13 +388,12 @@ export function reviseDerivedData(program, {
   return applyRevisionPlan(program, resolved, plan);
 }
 
-export const editDerivedData = /* @__PURE__ */ action(
+export const editDerivedData = /* @__PURE__ */ closedAction(
   {
     op: "editDerivedData",
     description: "Atomically revise one standalone derived-data definition."
-  },
+  }, GENERIC_OPTIONS,
   function (args = {}) {
-    validateKeys(args, GENERIC_OPTIONS, "editDerivedData");
     if (!Object.hasOwn(args, "target")) {
       throw new TypeError("editDerivedData requires target.");
     }
@@ -461,72 +460,72 @@ function focusedEditor(op, type, properties) {
   );
 }
 
-export const editComputedData = focusedEditor(
+export const editComputedData = /* @__PURE__ */ focusedEditor(
   "editComputedData", "computed", ["as", "expression"]
 );
-export const editFilteredData = focusedEditor(
+export const editFilteredData = /* @__PURE__ */ focusedEditor(
   "editFilteredData", "filter", ["field", "oneOf", "predicate", "range"]
 );
-export const editFoldData = focusedEditor(
+export const editFoldData = /* @__PURE__ */ focusedEditor(
   "editFoldData", "fold", ["fields", "as"]
 );
-export const editSummaryData = focusedEditor(
+export const editSummaryData = /* @__PURE__ */ focusedEditor(
   "editSummaryData", "summary", ["groupBy", "aggregates", "members", "weight"]
 );
-export const editBinData = focusedEditor(
+export const editBinData = /* @__PURE__ */ focusedEditor(
   "editBinData", "bin", [
     "field", "maxBins", "step", "boundaries", "extent", "nice", "zero",
     "includeEmpty", "members", "as", "weight"
   ]
 );
-export const editTimeUnitData = focusedEditor(
+export const editTimeUnitData = /* @__PURE__ */ focusedEditor(
   "editTimeUnitData", "timeUnit", [
     "field", "unit", "as", "temporalUnit", "timeZone", "weekStartsOn",
     "weekRule"
   ]
 );
-export const editWindowData = focusedEditor(
+export const editWindowData = /* @__PURE__ */ focusedEditor(
   "editWindowData", "window", [
     "partitionBy", "sortBy", "operations", "temporalUnit"
   ]
 );
-export const editDensityData = focusedEditor(
+export const editDensityData = /* @__PURE__ */ focusedEditor(
   "editDensityData", "density", [
     "field", "groupBy", "bandwidth", "extent", "steps", "kernel",
     "normalization", "as", "weight"
   ]
 );
-export const editStackData = focusedEditor(
+export const editStackData = /* @__PURE__ */ focusedEditor(
   "editStackData", "stack", ["category", "group", "value", "mode", "as"]
 );
-export const editRegressionData = focusedEditor(
+export const editRegressionData = /* @__PURE__ */ focusedEditor(
   "editRegressionData", "regression", [
     "x", "y", "groupBy", "method", "degree", "span", "confidenceMethod",
     "level", "confidence", "interval"
   ]
 );
-export const editIntervalData = focusedEditor(
+export const editIntervalData = /* @__PURE__ */ focusedEditor(
   "editIntervalData", "interval", [
     "field", "groupBy", "center", "extent", "method", "level", "as"
   ]
 );
-export const editECDFData = focusedEditor(
+export const editECDFData = /* @__PURE__ */ focusedEditor(
   "editECDFData", "ecdf", [
     "field", "groupBy", "weight", "missing", "as"
   ]
 );
-export const editNormalizedData = focusedEditor(
+export const editNormalizedData = /* @__PURE__ */ focusedEditor(
   "editNormalizedData", "normalize", [
     "field", "as", "groupBy", "method", "variance", "zeroDenominator",
     "baseline", "sortBy"
   ]
 );
-export const editCompleteData = focusedEditor(
+export const editCompleteData = /* @__PURE__ */ focusedEditor(
   "editCompleteData", "complete", [
     "key", "groupBy", "values", "sequence", "fill", "members"
   ]
 );
-export const editImputedData = focusedEditor(
+export const editImputedData = /* @__PURE__ */ focusedEditor(
   "editImputedData", "impute", [
     "fields", "groupBy", "sortBy", "method", "value", "edges", "maxGap"
   ]

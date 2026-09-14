@@ -1,4 +1,4 @@
-import { action } from "../../../core/action.js";
+import { action, closedAction } from "../../../core/action.js";
 import {
   validateNonEmptyString,
   validateKeys
@@ -139,20 +139,19 @@ export function resolveSizeLegendLayout(program, config) {
       top: -r - symbolExtent,
       bottom: r + symbolExtent
     }))
-  });
+  }, undefined, program.materializationConfigs.textMetrics);
   assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Size legend layout", { ...effective, ...geometry });
   const background = resolveLegendBackgroundFromBounds(layout.bounds, effective.border, canvas, "Size legend", { ...effective, ...geometry });
   return { ...layout, symbolX: layout.symbolX.map(x => x + sampleWidth / 2), radii, text,
     labels, titleStyle, background, config: effective };
 }
 
-export const rematerializeSizeLegend = /* @__PURE__ */ action(
+export const rematerializeSizeLegend = /* @__PURE__ */ closedAction(
   {
     op: "rematerializeSizeLegend",
     description: "Rematerialize a quantitative point-size legend."
-  },
+  }, [],
   function (args = {}) {
-    validateKeys(args, [], "rematerializeSizeLegend");
     const config = this.guideConfigs.legend?.size;
     if (config === undefined) throw new Error("Size legend requires stored configuration.");
     const layer = findLayer(this, config.target);

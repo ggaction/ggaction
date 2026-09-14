@@ -1,4 +1,4 @@
-import { action } from "../../core/action.js";
+import { action, closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateKeys } from "../../core/validation.js";
@@ -278,10 +278,9 @@ export function rematerializeThemeHighlights(program) {
   return next;
 }
 
-export const selectMarks = /* @__PURE__ */ action(
-  { op: "selectMarks", description: "Create one reusable selection over final mark items." },
+export const selectMarks = /* @__PURE__ */ closedAction(
+  { op: "selectMarks", description: "Create one reusable selection over final mark items." }, SELECT_OPTIONS,
   function (args = {}) {
-    validateKeys(args, SELECT_OPTIONS, "selectMarks");
     const layer = resolveTarget(this, args.target);
     const resolved = resolveMarkSelection(this, layer.id, selectorFrom(args));
     const id = resolveSelectionCreationId(this, args.id, layer.id);
@@ -291,13 +290,12 @@ export const selectMarks = /* @__PURE__ */ action(
   }
 );
 
-export const editMarkSelection = /* @__PURE__ */ action(
+export const editMarkSelection = /* @__PURE__ */ closedAction(
   {
     op: "editMarkSelection",
     description: "Replace one stored mark selector while preserving its identity and target."
-  },
+  }, EDIT_SELECTION_OPTIONS,
   function (args = {}) {
-    validateKeys(args, EDIT_SELECTION_OPTIONS, "editMarkSelection");
     const current = resolveStoredSelection(this, args.selection);
     const replacement = resolveMarkSelection(
       this,
@@ -325,13 +323,12 @@ export const editMarkSelection = /* @__PURE__ */ action(
   }
 );
 
-export const removeMarkHighlight = /* @__PURE__ */ action(
+export const removeMarkHighlight = /* @__PURE__ */ closedAction(
   {
     op: "removeMarkHighlight",
     description: "Remove one stored highlight assignment and restore the clean mark baseline."
-  },
+  }, REMOVE_SELECTION_OPTIONS,
   function (args = {}) {
-    validateKeys(args, REMOVE_SELECTION_OPTIONS, "removeMarkHighlight");
     const current = resolveStoredSelection(this, args.selection);
     const dependent = Object.entries(
       this.materializationConfigs.highlights ?? {}
@@ -349,13 +346,12 @@ export const removeMarkHighlight = /* @__PURE__ */ action(
   }
 );
 
-export const removeMarkSelection = /* @__PURE__ */ action(
+export const removeMarkSelection = /* @__PURE__ */ closedAction(
   {
     op: "removeMarkSelection",
     description: "Remove one stored selection after removing its dependent highlight."
-  },
+  }, REMOVE_SELECTION_OPTIONS,
   function (args = {}) {
-    validateKeys(args, REMOVE_SELECTION_OPTIONS, "removeMarkSelection");
     const current = resolveStoredSelection(this, args.selection);
     const labelDependents = namedLabelDependents(this, current.id);
     if (labelDependents.length > 0) {
@@ -376,10 +372,9 @@ export const removeMarkSelection = /* @__PURE__ */ action(
   }
 );
 
-export const applyPointHighlight = /* @__PURE__ */ action(
-  { op: "applyPointHighlight", description: "Apply selected point appearance and geometry." },
+export const applyPointHighlight = /* @__PURE__ */ closedAction(
+  { op: "applyPointHighlight", description: "Apply selected point appearance and geometry." }, INTERNAL_SELECTION_OPTIONS,
   function (args = {}) {
-    validateKeys(args, INTERNAL_SELECTION_OPTIONS, "applyPointHighlight");
     const resolved = resolveStoredSelection(this, args.selection);
     const keys = selectedKeys(args, resolved);
     if (resolved.items[0]?.markType !== "point" && resolved.items.length > 0) {
@@ -452,10 +447,9 @@ export const applyRectHighlight = /* @__PURE__ */ action(
   }
 );
 
-export const applyPathHighlight = /* @__PURE__ */ action(
-  { op: "applyPathHighlight", description: "Apply selected line or area path appearance and offset." },
+export const applyPathHighlight = /* @__PURE__ */ closedAction(
+  { op: "applyPathHighlight", description: "Apply selected line or area path appearance and offset." }, INTERNAL_SELECTION_OPTIONS,
   function (args = {}) {
-    validateKeys(args, INTERNAL_SELECTION_OPTIONS, "applyPathHighlight");
     const resolved = resolveStoredSelection(this, args.selection);
     const keys = selectedKeys(args, resolved);
     const markType = resolved.items[0]?.markType;
@@ -473,10 +467,9 @@ export const applyPathHighlight = /* @__PURE__ */ action(
   }
 );
 
-export const applyRuleHighlight = /* @__PURE__ */ action(
-  { op: "applyRuleHighlight", description: "Apply selected rule appearance and offset." },
+export const applyRuleHighlight = /* @__PURE__ */ closedAction(
+  { op: "applyRuleHighlight", description: "Apply selected rule appearance and offset." }, INTERNAL_SELECTION_OPTIONS,
   function (args = {}) {
-    validateKeys(args, INTERNAL_SELECTION_OPTIONS, "applyRuleHighlight");
     const resolved = resolveStoredSelection(this, args.selection);
     const keys = selectedKeys(args, resolved);
     if (
@@ -493,10 +486,9 @@ export const applyRuleHighlight = /* @__PURE__ */ action(
   }
 );
 
-export const dimUnselectedMarkItems = /* @__PURE__ */ action(
-  { op: "dimUnselectedMarkItems", description: "Dim the complement of one mark selection." },
+export const dimUnselectedMarkItems = /* @__PURE__ */ closedAction(
+  { op: "dimUnselectedMarkItems", description: "Dim the complement of one mark selection." }, INTERNAL_DIM_OPTIONS,
   function (args = {}) {
-    validateKeys(args, INTERNAL_DIM_OPTIONS, "dimUnselectedMarkItems");
     const opacity = validateUnitInterval(args.opacity, "Dim opacity");
     const resolved = resolveStoredSelection(this, args.selection);
     const keys = selectedKeys(args, resolved);
@@ -507,10 +499,9 @@ export const dimUnselectedMarkItems = /* @__PURE__ */ action(
   }
 );
 
-export const placeSelectedMarkItemsLast = /* @__PURE__ */ action(
-  { op: "placeSelectedMarkItemsLast", description: "Place selected collection items after their complement." },
+export const placeSelectedMarkItemsLast = /* @__PURE__ */ closedAction(
+  { op: "placeSelectedMarkItemsLast", description: "Place selected collection items after their complement." }, INTERNAL_ORDER_OPTIONS,
   function (args = {}) {
-    validateKeys(args, INTERNAL_ORDER_OPTIONS, "placeSelectedMarkItemsLast");
     const resolved = resolveStoredSelection(this, args.selection);
     const keys = selectedKeys(args, resolved);
     if (keys.length === 0 || keys.length === resolved.items.length) {
@@ -528,10 +519,9 @@ export const placeSelectedMarkItemsLast = /* @__PURE__ */ action(
   }
 );
 
-export const rematerializeMarkHighlights = /* @__PURE__ */ action(
-  { op: "rematerializeMarkHighlights", description: "Reapply stored highlight assignments to one rematerialized mark." },
+export const rematerializeMarkHighlights = /* @__PURE__ */ closedAction(
+  { op: "rematerializeMarkHighlights", description: "Reapply stored highlight assignments to one rematerialized mark." }, REMATERIALIZE_OPTIONS,
   function (args = {}) {
-    validateKeys(args, REMATERIALIZE_OPTIONS, "rematerializeMarkHighlights");
     validateUserId(args.target, "Highlight target id");
     if (!Array.isArray(args.highlights)) {
       throw new TypeError("rematerializeMarkHighlights requires highlight entries.");
@@ -553,10 +543,9 @@ export const rematerializeMarkHighlights = /* @__PURE__ */ action(
   }
 );
 
-export const highlightMarks = /* @__PURE__ */ action(
-  { op: "highlightMarks", description: "Select and emphasize final visual mark items." },
+export const highlightMarks = /* @__PURE__ */ closedAction(
+  { op: "highlightMarks", description: "Select and emphasize final visual mark items." }, HIGHLIGHT_OPTIONS,
   function (args = {}) {
-    validateKeys(args, HIGHLIGHT_OPTIONS, "highlightMarks");
     if (args.select !== undefined && args.selection !== undefined) {
       throw new Error("highlightMarks accepts select or selection, not both.");
     }

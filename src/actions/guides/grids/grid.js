@@ -1,10 +1,6 @@
-import { action } from "../../../core/action.js";
+import { action, closedAction } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
-import {
-  noOptions,
-  validateKeys,
-  validateOptionObject
-} from "../../../core/validation.js";
+import { noOptions, validateOptionObject } from "../../../core/validation.js";
 import {
   gridNames,
   editGridConfig,
@@ -176,12 +172,12 @@ function normalizeDirection(value, direction) {
   return value;
 }
 
-const rematerializeHorizontalGrid = makeRematerialize("horizontal");
-const rematerializeVerticalGrid = makeRematerialize("vertical");
-const createHorizontalGrid = makeCreate("horizontal");
-const createVerticalGrid = makeCreate("vertical");
-const editHorizontalGrid = makeEdit("horizontal");
-const editVerticalGrid = makeEdit("vertical");
+const rematerializeHorizontalGrid = /* @__PURE__ */ makeRematerialize("horizontal");
+const rematerializeVerticalGrid = /* @__PURE__ */ makeRematerialize("vertical");
+const createHorizontalGrid = /* @__PURE__ */ makeCreate("horizontal");
+const createVerticalGrid = /* @__PURE__ */ makeCreate("vertical");
+const editHorizontalGrid = /* @__PURE__ */ makeEdit("horizontal");
+const editVerticalGrid = /* @__PURE__ */ makeEdit("vertical");
 
 const editGrid = /* @__PURE__ */ action(
   {
@@ -305,13 +301,12 @@ const rematerializeGrid = /* @__PURE__ */ action(
   }
 );
 
-const removeGrid = /* @__PURE__ */ action(
+const removeGrid = /* @__PURE__ */ closedAction(
   {
     op: "removeGrid",
     description: "Remove selected Cartesian grid directions."
-  },
+  }, AGGREGATE_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, AGGREGATE_OPTIONS, "removeGrid");
     for (const direction of AGGREGATE_OPTIONS) {
       if (
         Object.hasOwn(args, direction) &&

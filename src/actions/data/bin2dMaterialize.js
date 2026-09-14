@@ -1,15 +1,14 @@
-import { action } from "../../core/action.js";
-import { validateKeys } from "../../core/validation.js";
+import { closedAction } from "../../core/action.js";
+
 import { deriveBin2DRows } from "../../grammar/bin2d.js";
 import { MATERIALIZE_OPTIONS, requireDerivedDataset } from "./shared.js";
 
-export const materializeBin2DData = /* @__PURE__ */ action(
+export const materializeBin2DData = /* @__PURE__ */ closedAction(
   {
     op: "materializeBin2DData",
     description: "Materialize one immutable rectangular 2D-bin dataset."
-  },
+  }, MATERIALIZE_OPTIONS,
   function (args = {}) {
-    validateKeys(args, MATERIALIZE_OPTIONS, "materializeBin2DData");
     const { id, source, transform } = requireDerivedDataset(
       this,
       args.id,

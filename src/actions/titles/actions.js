@@ -115,10 +115,10 @@ function titleTextAction(kind, create) {
   }));
 }
 
-export const editTitleText = titleTextAction("title", false);
-export const createTitleText = titleTextAction("title", true);
-export const editSubtitleText = titleTextAction("subtitle", false);
-export const createSubtitleText = titleTextAction("subtitle", true);
+export const editTitleText = /* @__PURE__ */ titleTextAction("title", false);
+export const createTitleText = /* @__PURE__ */ titleTextAction("title", true);
+export const editSubtitleText = /* @__PURE__ */ titleTextAction("subtitle", false);
+export const createSubtitleText = /* @__PURE__ */ titleTextAction("subtitle", true);
 
 export const rematerializeTitle = /* @__PURE__ */ action(
   { op: "rematerializeTitle", description: "Rematerialize chart title graphics." },

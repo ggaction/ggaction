@@ -1,3 +1,4 @@
+import { validateKeys } from "./validation.js";
 import { annotateError } from "./diagnostics.js";
 import { cloneAndFreeze, freezeOwned, isOwned, isPlainObject } from "./immutable.js";
 
@@ -234,4 +235,13 @@ export function action(metadata, implementation) {
   metadataByWrappedAction.set(wrappedAction, ownedMetadata);
   implementationByWrappedAction.set(wrappedAction, implementation);
   return wrappedAction;
+}
+
+// Private built-in convenience: action() owns the object boundary and trace,
+// while each definition supplies its closed option vocabulary exactly once.
+export function closedAction(metadata, options, implementation) {
+  return action(metadata, function (args = {}) {
+    if (options !== undefined) validateKeys(args, options, metadata.op);
+    return implementation.call(this, args);
+  });
 }

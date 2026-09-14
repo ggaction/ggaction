@@ -1,6 +1,10 @@
 import type { ChartProgram, CompositionOptions } from "./program.js";
 
 export type {
+  TextMetricFontWeight,
+  TextMeasurement,
+  TextMetricsProfile,
+  ApplyTextMetricsOptions,
   ReviseDataOptions,
   ActionOptions,
   AxisFormat,

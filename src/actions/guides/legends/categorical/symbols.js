@@ -196,18 +196,18 @@ function makeCreateSymbol(type, edit) {
   );
 }
 
-export const rematerializeLegendSymbolLines = makeEditSymbol("line");
-export const rematerializeLegendSymbolPoints = makeEditSymbol("point");
-export const rematerializeLegendSymbolSwatches = makeEditSymbol("swatch");
-export const createLegendSymbolLines = makeCreateSymbol(
+export const rematerializeLegendSymbolLines = /* @__PURE__ */ makeEditSymbol("line");
+export const rematerializeLegendSymbolPoints = /* @__PURE__ */ makeEditSymbol("point");
+export const rematerializeLegendSymbolSwatches = /* @__PURE__ */ makeEditSymbol("swatch");
+export const createLegendSymbolLines = /* @__PURE__ */ makeCreateSymbol(
   "line",
   "rematerializeLegendSymbolLines"
 );
-export const createLegendSymbolPoints = makeCreateSymbol(
+export const createLegendSymbolPoints = /* @__PURE__ */ makeCreateSymbol(
   "point",
   "rematerializeLegendSymbolPoints"
 );
-export const createLegendSymbolSwatches = makeCreateSymbol(
+export const createLegendSymbolSwatches = /* @__PURE__ */ makeCreateSymbol(
   "swatch",
   "rematerializeLegendSymbolSwatches"
 );

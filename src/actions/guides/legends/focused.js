@@ -17,7 +17,7 @@ function makeFocusedLegendEdit({ name, options, map }) {
   );
 }
 
-const editLegendLayout = makeFocusedLegendEdit({
+const editLegendLayout = /* @__PURE__ */ makeFocusedLegendEdit({
   name: "editLegendLayout",
   options: [
     "position", "layout", "align", "direction", "columns", "offset",
@@ -26,13 +26,13 @@ const editLegendLayout = makeFocusedLegendEdit({
   map: args => args
 });
 
-const editLegendLabels = makeFocusedLegendEdit({
+const editLegendLabels = /* @__PURE__ */ makeFocusedLegendEdit({
   name: "editLegendLabels",
   options: ["offset", "color", "fontSize", "fontFamily", "fontWeight", "format"],
   map: ({ target, ...labels }) => ({ target, labels })
 });
 
-const editLegendTitle = makeFocusedLegendEdit({
+const editLegendTitle = /* @__PURE__ */ makeFocusedLegendEdit({
   name: "editLegendTitle",
   options: ["title", "color", "fontSize", "fontFamily", "fontWeight"],
   map: ({ target, title, ...titleStyle }) => ({
@@ -42,13 +42,13 @@ const editLegendTitle = makeFocusedLegendEdit({
   })
 });
 
-const editLegendSymbols = makeFocusedLegendEdit({
+const editLegendSymbols = /* @__PURE__ */ makeFocusedLegendEdit({
   name: "editLegendSymbols",
   options: ["symbol", "count", "gradient"],
   map: args => args
 });
 
-const editLegendBorder = makeFocusedLegendEdit({
+const editLegendBorder = /* @__PURE__ */ makeFocusedLegendEdit({
   name: "editLegendBorder",
   options: ["border"],
   map: args => args

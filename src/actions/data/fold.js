@@ -6,14 +6,14 @@ import { derivedCreator, derivedMaterializer } from "./shared.js";
 
 const OPTIONS = Object.freeze(["id", "source", "fields", "as"]);
 
-export const materializeFoldData = derivedMaterializer(
+export const materializeFoldData = /* @__PURE__ */ derivedMaterializer(
   "materializeFoldData",
   "Materialize one immutable wide-to-long dataset.",
   "fold",
   deriveFoldRows
 );
 
-export const createFoldData = derivedCreator(
+export const createFoldData = /* @__PURE__ */ derivedCreator(
   "createFoldData",
   "Create reusable key/value rows from selected wide fields.",
   OPTIONS,

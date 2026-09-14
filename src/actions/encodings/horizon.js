@@ -1,6 +1,6 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateOptionObject } from "../../core/validation.js";
+
 import {
   deriveHorizon,
   validateHorizonTransform
@@ -109,13 +109,12 @@ function applyScaleDefinition(program, current, definition) {
   return patch === undefined ? program : program.editScale(patch);
 }
 
-const editHorizon = /* @__PURE__ */ action(
+const editHorizon = /* @__PURE__ */ closedAction(
   {
     op: "editHorizon",
     description: "Revise one Horizon transform and rematerialize its consumers."
-  },
+  }, EDIT_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, EDIT_OPTIONS, "editHorizon");
     if (Object.hasOwn(args, "groupBy") && args.groupBy === undefined) {
       throw new Error("editHorizon groupBy requires a field string or false.");
     }
@@ -278,13 +277,12 @@ const editHorizon = /* @__PURE__ */ action(
   }
 );
 
-const encodeHorizon = /* @__PURE__ */ action(
+const encodeHorizon = /* @__PURE__ */ closedAction(
   {
     op: "encodeHorizon",
     description: "Derive and encode one folded Horizon area."
-  },
+  }, OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, OPTIONS, "encodeHorizon");
     const layer = findHorizonArea(this, args.target);
     validateUnusedHorizonEncodings(layer);
     const source = resolveHorizonSource(this, layer, args.source);

@@ -29,10 +29,10 @@
 | 12 | preview가 관계없는 원본 데이터까지 다시 복사한다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 13 | 긴 trace의 append 비용이 누적된다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 14 | SVG가 매번 전체 graphicSpec을 직렬화·해시한다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
-| 15 | 최소 산점도 번들이 예산 상한에 거의 도달했다 | 부분 구현·검증 | Basic gzip 174,967→168,184; Full 359,382→359,334로 영향 작음. 신규 기능 후 최종 budget 재평가 필요 |
+| 15 | 최소 산점도 번들이 예산 상한에 거의 도달했다 | 부분 구현·검증 | Basic gzip 174,967→165,806; Full 신규 기능 포함 359,795. 공통 validator/gradient/typography와 factory tree shaking 적용; 최종 budget 재평가 필요 |
 | 16 | 브라우저 전용 사용자도 MCP·네이티브 렌더 의존성을 설치한다 | 구현·검증 완료 | renderer/package/MCP 38개, docs/package 33개, 실제 bare→optional 설치·Full/Basic/타입/전체 package consumer 통과 |
 | 17 | 런타임 성능 회귀를 검출하는 공식 workload가 필요하다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
-| 18 | 실제 폰트와 저작용 text bounds 차이를 줄일 선택지가 필요하다 | 진행 전 | — |
+| 18 | 실제 폰트와 저작용 text bounds 차이를 줄일 선택지가 필요하다 | 구현·검증 완료 | exact-font profile, fallback, wrapped rematerialization, composition/Basic adoption, persistence, 타입 및 installed consumer 통과 |
 | 19 | 릴리즈의 단일 순차 검증 경로가 약 59분 걸린다 | 구현·로컬 검증; 릴리즈 실행 대기 | canonical candidate를 병렬 source/coverage/package/docs/7 realistic shard에 전달; strict fan-in |
 | 20 | realistic 테스트가 main의 필수 merge check에 포함되지 않는다 | 부분 구현·검증 | realistic-required strict aggregate 추가; 실제 main required rule 추가 남음 |
 | 21 | 자동 검증이 Ubuntu·Chromium에 집중되어 있다 | 구현·로컬 검증 완료 | macOS native smoke, Chromium/Firefox/WebKit DPR 1·2 및 installed consumer 통과; Windows/Ubuntu matrix는 실제 CI 대기 |
@@ -127,3 +127,11 @@ Architecture에서 primitive signature, encoding/scale/coordinate 값 목록, tr
 새 원본을 만들고 기존 DAG planner와 typed reference collector로 dependent chain을 갱신한다. 원본 snapshot, owner identity/style, retained facet/repeat recipe를 보존하고 stored selection까지 speculative transaction에서 검증한다. 동일 문자열의 data/mark ID를 구분해 statistical reference의 mark source를 잘못 바꾸지 않는다. 전체 action corpus의 원본을 같은 rows로 갱신하여 SVG exact equality와 trace closure를 확인했다. 이 검사에서 발견한 inferred grid가 tick edit 뒤 stale 상태로 남는 문제도 고쳤으며 explicit grid values/count는 유지한다.
 
 Data capability 209개, 최종 source/catalog/input/type/boundary/grid 36개, theme/architecture 61개와 실제 전체 installed package consumer를 통과했다. Consumer의 고정 action 개수는 canonical Current index를 읽도록 수정했다. Theme override의 중복 처리와 data 등록을 합쳐 browser gzip 상한을 유지했다. Source probe Full gzip은 359,986 bytes이며 항목 15의 추가 여유 확보는 여전히 남아 있다. Package 파일은 신규 source module 1개를 반영해 533개, packed 상한 725,000 bytes로 조정했고 browser 상한은 변경하지 않았다.
+
+### Text metrics and shared bundle checkpoint
+
+승인한 immutable profile의 정확한 text/font tuple을 저작용 폭 계산에 연결했다. Title·axis·legend·label·facet·composition과 selection bounds가 같은 profile을 사용하며 renderer에는 callback이나 profile을 전달하지 않는다. Theme font 변경과 profile 변경은 같은 wrapped typography rematerialization을 사용한다. Full composition은 Basic child를 editable Full snapshot으로 채택하며 원래 Basic은 보존한다. Exact match가 없으면 기존 추정을 유지하고 remove는 추정으로 복구한다.
+
+전체 일반 suite 3,742/3,742, 최종 typography/theme/tree-shaking/architecture 등 72/72, 문서·catalog 52/52 및 실제 installed package consumer를 통과했다. 새 핵심 metrics 60개 coverage 검사는 line 99.02%, branch 99.21%, function 100%다. 마지막 theme Parallel 중복 재계산 제거 후 영향 검사를 다시 통과했다. 생성 문서를 갱신했다.
+
+공통 closed-option wrapper와 gradient color/stroke geometry/materialization, 기존 built-in factory의 pure annotation으로 중복을 줄였다. Extension action 검증과 각 domain의 trace를 보존한다. 실제 installed browser gzip은 Full 359,795, Basic 165,806, SVG 6,956 bytes로 기존 상한을 유지한다. 새로운 runtime module 4개의 package entry 상한은 537이며 packed/unpacked 상한은 유지했다. 전체 suite가 드러낸 violin orientation 변경 중 grid rematerialization 순서도 고쳐 explicit tick 변경과 내부 dependency plan을 구분했다.

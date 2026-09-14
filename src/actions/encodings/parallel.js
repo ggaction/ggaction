@@ -1,5 +1,5 @@
-import { action } from "../../core/action.js";
-import { validateOptionObject } from "../../core/validation.js";
+import { closedAction } from "../../core/action.js";
+
 import {
   normalizeParallelDimensions,
   validateParallelKeyField,
@@ -19,13 +19,12 @@ const OPTIONS = Object.freeze([
   "target", "coordinate", "dimensions", "key", "missing"
 ]);
 
-export const encodeParallelCoordinates = /* @__PURE__ */ action(
+export const encodeParallelCoordinates = /* @__PURE__ */ closedAction(
   {
     op: "encodeParallelCoordinates",
     description: "Atomically encode ordered Parallel-coordinate dimensions."
-  },
+  }, OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, OPTIONS, "encodeParallelCoordinates");
     const { id: target, dataset, layer } = resolveTarget(
       this,
       args.target,

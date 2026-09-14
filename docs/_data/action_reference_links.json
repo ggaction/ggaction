@@ -2,6 +2,8 @@
   "createCanvas": "/reference/actions/charts-data/#createcanvas",
   "editCanvas": "/reference/actions/charts-data/#editcanvas",
   "fitCanvas": "/reference/actions/charts-data/#fitcanvas",
+  "applyTextMetrics": "/reference/actions/charts-data/#applytextmetrics",
+  "removeTextMetrics": "/reference/actions/charts-data/#removetextmetrics",
   "applyTheme": "/reference/actions/charts-data/#applytheme",
   "removeTheme": "/reference/actions/charts-data/#removetheme",
   "createData": "/reference/actions/charts-data/#createdata",

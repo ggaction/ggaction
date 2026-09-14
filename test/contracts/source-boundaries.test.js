@@ -55,6 +55,7 @@ test("keeps source imports inside their architectural boundaries", () => {
         allowed[owner].has(layer(dependency)) || (
           (owner === "persistence" && path.relative(root, dependency) === path.join("actions", "primitives", "semantic.js")) ||
           (owner === "renderers" && path.relative(root, dependency) === path.join("core", "immutable.js")) ||
+          (["renderers", "theme"].includes(owner) && path.relative(root, dependency) === path.join("core", "font.js")) ||
           (["renderers", "selectors"].includes(owner) && path.relative(root, dependency) === path.join("core", "diagnostics.js"))
         ),
         true,

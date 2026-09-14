@@ -1,4 +1,5 @@
-export const DEFAULT_FONT_FAMILY = "sans-serif";
+import { DEFAULT_FONT_FAMILY } from "../core/font.js";
+export { DEFAULT_FONT_FAMILY };
 
 export const DEFAULT_POINT_RADIUS = 3;
 

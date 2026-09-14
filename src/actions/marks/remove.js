@@ -1,7 +1,7 @@
 import { isSourceOwnedText } from "../../grammar/text.js";
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
+
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { applyDetachedScaleRematerialization } from "../../materialization/dependencies.js";
@@ -248,10 +248,9 @@ function cleanupPositionGuides(program, scales) {
   return next;
 }
 
-export const removeMark = /* @__PURE__ */ action(
-  { op: "removeMark", description: "Remove one stable mark owner and owned state." },
+export const removeMark = /* @__PURE__ */ closedAction(
+  { op: "removeMark", description: "Remove one stable mark owner and owned state." }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "removeMark");
     const owner = resolveOwner(this, args.target);
     const ids = collectClosure(this, owner.id);
     const external = externalMarkReferences(this, ids);

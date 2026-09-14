@@ -101,6 +101,10 @@ async function testNodeConsumer(directory) {
     assert.equal(revised.graphicSpec.objects.point.items.length, 3);
     assert.equal(program.graphicSpec.objects.point.items.length, 2);
     assert.equal(basicChart().reviseData, undefined);
+    const measured = program.applyTextMetrics({ profile: { schemaVersion: 1, id: "host", measurements: [] } });
+    assert.equal(measured.materializationConfigs.textMetrics.id, "host");
+    assert.deepEqual(measured.removeTextMetrics().graphicSpec, program.graphicSpec);
+    assert.equal(basicChart().applyTextMetrics, undefined);
     assert.equal(renderToSVG(restored), renderToSVG(program));
     assert.equal(renderToSVG(deserializeGraphic(serializeGraphic(program))), renderToSVG(program));
     assert.notDeepEqual(restored.editPointMark({ fill: "red" }).graphicSpec, program.graphicSpec);
@@ -3472,6 +3476,15 @@ async function testTypeScriptConsumer(directory) {
     // @ts-expect-error Snapshot restore requires JSON text.
     persistence.deserializeProgram({});
     void restored;
+    const textProfile: import("ggaction").TextMetricsProfile = { schemaVersion: 1, id: "host", measurements: [
+      { text: "Title", fontFamily: "sans-serif", fontSize: 20, fontWeight: 400, width: 40 }
+    ] };
+    const withMetrics: ChartProgram = program.applyTextMetrics({ profile: textProfile }).removeTextMetrics();
+    void withMetrics;
+    // @ts-expect-error Measured weights must already be normalized.
+    program.applyTextMetrics({ profile: { ...textProfile, measurements: [{ ...textProfile.measurements[0], fontWeight: 150 }] } });
+    // @ts-expect-error Profiles require schema version 1.
+    program.applyTextMetrics({ profile: { ...textProfile, schemaVersion: 2 } });
     const diagnostics = await import("ggaction/diagnostics");
     const details = diagnostics.getErrorDetails(new Error());
     const code: import("ggaction/diagnostics").ErrorCode | undefined = details?.code;

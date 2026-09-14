@@ -120,6 +120,70 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 `materializationConfigs.fitting`.
 
 
+## `applyTextMetrics`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
+```
+
+Named option contracts: [`ApplyTextMetricsOptions`](./../types.md#type-applytextmetricsoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `profile` | Required | `TextMetricsProfile` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+applyTextMetrics({ profile })
+```
+
+Apply a host-measured width profile to title, axis, legend, label, and composition
+layout. See [Measured text layout](../../api/rendering.md#measured-text-layout) for the
+exact profile format, matching rules, propagation, and executable example.
+
+
+## `removeTextMetrics`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+removeTextMetrics(): ChartProgram;
+```
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+This action takes no named options.
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+removeTextMetrics()
+```
+
+Remove the active profile and rematerialize with deterministic width estimates.
+See [Measured text layout](../../api/rendering.md#measured-text-layout) for lifecycle
+and composition behavior.
+
+
 ## `applyTheme`
 
 **API layer:** user-facing. **Authoring roles:** H3.

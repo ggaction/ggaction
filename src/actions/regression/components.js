@@ -1,6 +1,6 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
+
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { resolveEligibleLayer } from "../../selectors/layers.js";
@@ -72,13 +72,12 @@ function requireRegressionBandDataset(program, args) {
   return { dataset, transform };
 }
 
-export const createRegressionBand = /* @__PURE__ */ action(
+export const createRegressionBand = /* @__PURE__ */ closedAction(
   {
     op: "createRegressionBand",
     description: "Create and encode a grouped regression confidence band."
-  },
+  }, BAND_OPTIONS,
   function (args = {}) {
-    validateKeys(args, BAND_OPTIONS, "createRegressionBand");
     const id = validateUserId(args.id, "Regression band id");
     const { transform } = requireRegressionBandDataset(this, args);
     validateAreaCreateOutline(args, "createRegressionBand");
@@ -121,13 +120,12 @@ export const createRegressionBand = /* @__PURE__ */ action(
   }
 );
 
-export const editRegressionBand = /* @__PURE__ */ action(
+export const editRegressionBand = /* @__PURE__ */ closedAction(
   {
     op: "editRegressionBand",
     description: "Edit regression-band fill, opacity, and outline."
-  },
+  }, EDIT_BAND_OPTIONS,
   function (args = {}) {
-    validateKeys(args, EDIT_BAND_OPTIONS, "editRegressionBand");
     const changes = [
       "color", "opacity", "stroke", "strokeWidth", "curve",
       ...STROKE_STYLE_PROPERTIES
@@ -157,13 +155,12 @@ export const editRegressionBand = /* @__PURE__ */ action(
   }
 );
 
-export const editRegressionLine = /* @__PURE__ */ action(
+export const editRegressionLine = /* @__PURE__ */ closedAction(
   {
     op: "editRegressionLine",
     description: "Edit regression-line width or curve."
-  },
+  }, EDIT_LINE_OPTIONS,
   function (args = {}) {
-    validateKeys(args, EDIT_LINE_OPTIONS, "editRegressionLine");
     if (
       !["strokeWidth", "curve", ...STROKE_STYLE_PROPERTIES]
         .some(property => Object.hasOwn(args, property))
@@ -187,13 +184,12 @@ export const editRegressionLine = /* @__PURE__ */ action(
   }
 );
 
-export const createRegressionLine = /* @__PURE__ */ action(
+export const createRegressionLine = /* @__PURE__ */ closedAction(
   {
     op: "createRegressionLine",
     description: "Create and encode grouped regression line paths."
-  },
+  }, LINE_OPTIONS,
   function (args = {}) {
-    validateKeys(args, LINE_OPTIONS, "createRegressionLine");
     const id = validateUserId(args.id, "Regression line id");
     let next = this
       .createLineMark({

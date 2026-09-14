@@ -1,7 +1,7 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
+
 import { findTransformPolicy } from "../../grammar/transforms.js";
 
 const REPLAY_OPTIONS = Object.freeze(["id", "source", "transform"]);
@@ -22,13 +22,12 @@ function requestedTransform(transform) {
   };
 }
 
-export const replayDerivedData = /* @__PURE__ */ action(
+export const replayDerivedData = /* @__PURE__ */ closedAction(
   {
     op: "replayDerivedData",
     description: "Replay one stored derived-data transform for a facet cell."
-  },
+  }, REPLAY_OPTIONS,
   function (args = {}) {
-    validateKeys(args, REPLAY_OPTIONS, "replayDerivedData");
     const id = validateUserId(args.id, "Facet replay dataset id");
     const source = validateUserId(args.source, "Facet replay source id");
     const resolved = requestedTransform(args.transform);

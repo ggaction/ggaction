@@ -9,14 +9,14 @@ const OPTIONS = Object.freeze([
   "weekStartsOn", "weekRule"
 ]);
 
-export const materializeTimeUnitData = derivedMaterializer(
+export const materializeTimeUnitData = /* @__PURE__ */ derivedMaterializer(
   "materializeTimeUnitData",
   "Materialize one immutable UTC time-unit dataset.",
   "timeUnit",
   deriveTimeUnitRows
 );
 
-export const createTimeUnitData = derivedCreator(
+export const createTimeUnitData = /* @__PURE__ */ derivedCreator(
   "createTimeUnitData",
   "Create immutable UTC calendar bucket values.",
   OPTIONS,

@@ -3,15 +3,15 @@ import {
   measureTextWidth
 } from "../core/textMetrics.js";
 
-export function measureLegendTextWidth(value, style = { fontSize: 12 }) {
-  return measureTextWidth(formatVisibleText(value), style);
+export function measureLegendTextWidth(value, style = { fontSize: 12 }, profile) {
+  return measureTextWidth(formatVisibleText(value), style, profile);
 }
 
-export function resolveLegendGrid(config, width, count, symbolHeight) {
+export function resolveLegendGrid(config, width, count, symbolHeight, profile) {
   const labels = config.domain.map(formatVisibleText);
   const itemWidths = labels.map(
     label => width + config.labels.offset +
-      measureLegendTextWidth(label, config.labels)
+      measureLegendTextWidth(label, config.labels, profile)
   );
   const columnCount = Math.min(config.columns ?? count, count);
   const rowCount = Math.ceil(count / columnCount);

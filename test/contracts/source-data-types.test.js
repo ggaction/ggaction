@@ -48,7 +48,7 @@ ${name}.createData({ values: [{ nested: [{ callback: () => 1 }] }] });
 ${name}.createData({ values: [{ date: new Date() }] });
 `).join("\n")}
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
       "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { encoding: "utf8", cwd: root });

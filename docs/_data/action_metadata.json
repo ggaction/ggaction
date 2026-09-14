@@ -23,6 +23,22 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "applyTextMetrics": {
+    "operation": "apply",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "removeTextMetrics": {
+    "operation": "remove",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "applyTheme": {
     "operation": "apply",
     "authoringRoles": [

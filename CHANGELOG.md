@@ -4,6 +4,13 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+### Added
+
+- Added `reviseData` for immutable source revisions with dependent chart updates.
+- Added `applyTextMetrics` and `removeTextMetrics` for host-measured text layout,
+  including titles, axes, legends, labels, retained compositions, and persistence.
+
+
 ## [0.0.15] - 2026-09-14
 
 ### Added

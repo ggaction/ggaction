@@ -1,6 +1,6 @@
-import { action } from "../../../core/action.js";
+import { closedAction } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
-import { validateKeys } from "../../../core/validation.js";
+
 import { normalizePointJitterPolicy } from "../../../grammar/jitter.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
 import { resolveEligibleLayer } from "../../../selectors/layers.js";
@@ -28,13 +28,12 @@ function resolveJitterTarget(program, target, channel) {
   });
 }
 
-export const jitterPoints = /* @__PURE__ */ action(
+export const jitterPoints = /* @__PURE__ */ closedAction(
   {
     op: "jitterPoints",
     description: "Apply deterministic bounded graphical jitter to a point mark."
-  },
+  }, JITTER_OPTIONS,
   function (args = {}) {
-    validateKeys(args, JITTER_OPTIONS, "jitterPoints");
     const policy = normalizePointJitterPolicy(args);
     const layer = resolveJitterTarget(this, args.target, policy.channel);
     if (this.materializationConfigs.pointPacking?.[layer.id] !== undefined) {
@@ -46,13 +45,12 @@ export const jitterPoints = /* @__PURE__ */ action(
   }
 );
 
-export const removeJitter = /* @__PURE__ */ action(
+export const removeJitter = /* @__PURE__ */ closedAction(
   {
     op: "removeJitter",
     description: "Remove point jitter and restore semantic scale positions."
-  },
+  }, REMOVE_OPTIONS,
   function (args = {}) {
-    validateKeys(args, REMOVE_OPTIONS, "removeJitter");
     const requested = args.target === undefined
       ? undefined
       : validateUserId(args.target, "Point jitter target");

@@ -425,6 +425,7 @@ export function buildActionRelationshipPrograms() {
     ...missingDataPrograms(),
     ...derivedEditingPrograms(),
     chart().createData({ id: "revisionSource", values: [{ x: 1 }] })
-      .reviseData({ source: "revisionSource", id: "revisionNext", values: [{ x: 2 }] })
+      .reviseData({ source: "revisionSource", id: "revisionNext", values: [{ x: 2 }] }),
+    chart().applyTextMetrics({ profile: { schemaVersion: 1, id: "host", measurements: [] } }).removeTextMetrics()
   ];
 }

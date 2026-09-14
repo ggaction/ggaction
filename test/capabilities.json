@@ -124,6 +124,11 @@
     "support": [
       { "type": "prefix", "path": "unit/support/" }
     ],
+    "text-metrics": [
+      { "type": "file", "path": "unit/actions/text-metrics.test.js" },
+      { "type": "file", "path": "contracts/text-metrics-types.test.js" },
+      { "type": "file", "path": "unit/layout/text.test.js" }
+    ],
     "theme": [
       { "type": "prefix", "path": "unit/theme/" },
       { "type": "file", "path": "unit/actions/theme.test.js" },

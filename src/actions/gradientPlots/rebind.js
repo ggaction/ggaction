@@ -1,18 +1,17 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
+
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 
 const OPTIONS = Object.freeze(["id", "profile", "source"]);
 
-export const rebindGradientPlotProfile = /* @__PURE__ */ action(
+export const rebindGradientPlotProfile = /* @__PURE__ */ closedAction(
   {
     op: "rebindGradientPlotProfile",
     description: "Rebind one gradient plot to a replayed profile revision."
-  },
+  }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "rebindGradientPlotProfile");
     const id = validateUserId(args.id, "Gradient-plot id");
     const profileId = validateUserId(
       args.profile,

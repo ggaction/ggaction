@@ -1,13 +1,7 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
-import {
-  validateOptionObject,
-  validateKeys,
-  validateNonEmptyString,
-  validateNonNegativeFinite,
-  validateUnitInterval
-} from "../../core/validation.js";
+import { validateKeys, validateNonEmptyString, validateNonNegativeFinite, validateUnitInterval } from "../../core/validation.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
 import { normalizeStrokeDashPattern } from "../../grammar/scales/index.js";
 import {
@@ -389,17 +383,12 @@ function removeBoundary(program, id) {
   return removeOwnedMark(program, id);
 }
 
-export const rematerializeErrorBandBoundary = /* @__PURE__ */ action(
+export const rematerializeErrorBandBoundary = /* @__PURE__ */ closedAction(
   {
     op: "rematerializeErrorBandBoundary",
     description: "Rematerialize one owned error-band boundary."
-  },
+  }, REMATERIALIZE_OPTIONS,
   function (args = {}) {
-    validateOptionObject(
-      args,
-      REMATERIALIZE_OPTIONS,
-      "rematerializeErrorBandBoundary"
-    );
     const id = validateUserId(args.id, "Error-band boundary id");
     currentBoundaryAppearance(this, id);
     const graphic = this.graphicSpec.objects[id];
@@ -422,13 +411,12 @@ export const rematerializeErrorBandBoundary = /* @__PURE__ */ action(
   }
 );
 
-export const editErrorBand = /* @__PURE__ */ action(
+export const editErrorBand = /* @__PURE__ */ closedAction(
   {
     op: "editErrorBand",
     description: "Revise one error band's roles, statistics, body, and boundaries."
-  },
+  }, EDIT_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, EDIT_OPTIONS, "editErrorBand");
     if (!["data", "x", "y", "groupBy", "fill", "opacity", "curve",
       "statistics", "boundaries", ...STROKE_STYLE_PROPERTIES]
       .some(key => Object.hasOwn(args, key))) {
@@ -585,17 +573,12 @@ export const editErrorBand = /* @__PURE__ */ action(
   }
 );
 
-export const editErrorBandBoundary = /* @__PURE__ */ action(
+export const editErrorBandBoundary = /* @__PURE__ */ closedAction(
   {
     op: "editErrorBandBoundary",
     description: "Edit one or both owned error-band boundaries."
-  },
+  }, BOUNDARY_EDIT_OPTIONS,
   function (args = {}) {
-    validateOptionObject(
-      args,
-      BOUNDARY_EDIT_OPTIONS,
-      "editErrorBandBoundary"
-    );
     if (!ERROR_BAND_BOUNDARY_OPTIONS.some(key => Object.hasOwn(args, key))) {
       throw new Error("editErrorBandBoundary requires an appearance change.");
     }
