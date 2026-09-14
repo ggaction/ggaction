@@ -40,7 +40,7 @@
 | 23 | 높은 coverage를 보완할 공통 음성 계약·교차층 테스트가 필요하다 | 구현·검증 완료 | Current catalog 전체 valid-call corpus → unknown/null/array/scalar rejection 및 source snapshot; generic/focused·atomic/sequential 동치 |
 | 24 | 실행 계약과 생성 메타데이터의 의미 원본을 좁혀야 한다 | 구현·검증 완료 | scale 단위·impute 필수값 공유; architecture의 중복 API/지원 목록을 Current owner 링크로 통합, 경로·anchor·package 계약 검증 |
 | 25 | MCP 평가는 실행 성공과 요구 충족을 분리해야 한다 | 구현·검증 완료 | 85개 MCP·카드·문서·패키지 계약, installed consumer 및 15개 의미 평가 통과 |
-| 26 | 원본 데이터의 불변 revision을 유지한 갱신 흐름 | 진행 전 | — |
+| 26 | 원본 데이터의 불변 revision을 유지한 갱신 흐름 | 구현·검증 완료 | 전체 corpus 원본 revision의 SVG 동치, derived/owner/selection/facet/repeat 갱신, 타입·음성·불변성 및 실제 installed consumer 통과 |
 | 27 | 저장·복원을 위한 버전 있는 snapshot/recipe 경계 | 구현·검증 완료 | 139개 corpus state/graphic round trip, malformed/extension/Basic/불변 편집, 46개 영향 검사와 실제 installed package 통과 |
 | 28 | 구조화된 진단과 실제 한도 안내 | 구현·검증 완료 | 진단·불변성·selectors·타입·bare 및 installed package; 일반 3690개 중 문서 목록 1개 수정 후 해당 계약 재통과 |
 | 29 | PNG/PDF 메모리 출력과 비동기 비용 경계 | 구현·검증 완료 | renderer/package/MCP 38개, docs/package 33개, 실제 bare→optional 설치·Full/Basic/타입/전체 package consumer 통과 |
@@ -121,3 +121,9 @@ macOS/Windows Node 22 installed-package smoke와 Firefox/WebKit representative b
 ### Architecture contract ownership checkpoint
 
 Architecture에서 primitive signature, encoding/scale/coordinate 값 목록, transform 옵션, mark별 지원 조건, guide spacing/default와 facade 세부 call chain 등 중복된 계약을 Current owner 및 실행 corpus 관계로 연결했다. 약 1,080줄을 줄이고 state ownership, immutable revision/retained composition, domain→graphic 흐름, final grain, pure policy, package/renderer 및 검증 경계는 보존했다. 특히 histogram step/explicit boundary를 미구현으로 표시한 오래된 설명이 별도 계약으로 남지 않게 했다. 현재 지원 현황도 example/index로 연결한다. 11개 architecture 경로·anchor·문서 package surface 검사를 통과했다.
+
+### Source revision checkpoint
+
+새 원본을 만들고 기존 DAG planner와 typed reference collector로 dependent chain을 갱신한다. 원본 snapshot, owner identity/style, retained facet/repeat recipe를 보존하고 stored selection까지 speculative transaction에서 검증한다. 동일 문자열의 data/mark ID를 구분해 statistical reference의 mark source를 잘못 바꾸지 않는다. 전체 action corpus의 원본을 같은 rows로 갱신하여 SVG exact equality와 trace closure를 확인했다. 이 검사에서 발견한 inferred grid가 tick edit 뒤 stale 상태로 남는 문제도 고쳤으며 explicit grid values/count는 유지한다.
+
+Data capability 209개, 최종 source/catalog/input/type/boundary/grid 36개, theme/architecture 61개와 실제 전체 installed package consumer를 통과했다. Consumer의 고정 action 개수는 canonical Current index를 읽도록 수정했다. Theme override의 중복 처리와 data 등록을 합쳐 browser gzip 상한을 유지했다. Source probe Full gzip은 359,986 bytes이며 항목 15의 추가 여유 확보는 여전히 남아 있다. Package 파일은 신규 source module 1개를 반영해 533개, packed 상한 725,000 bytes로 조정했고 browser 상한은 변경하지 않았다.

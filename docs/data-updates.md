@@ -6,9 +6,41 @@ title: Data Updates and Live Refresh
 # Data Updates and Live Refresh
 
 Source dataset values are immutable after creation. `createData` copies and freezes
-caller-owned rows; it does not provide an action that replaces those values.
-For refreshed, streaming, or user-edited source data, retain the rows in the
-application and build a new program snapshot.
+caller-owned rows. Use `reviseData` to add a fresh source snapshot and update its
+dependent chart, or rebuild a program from application-owned rows.
+
+## Revise a source and its dependent chart
+
+`reviseData({ source, id, values })` is a Full-entry action. Both IDs are required:
+`source` names an existing materialized original dataset, and `id` is a fresh,
+distinct dataset ID. The action retains the original rows and creates an immutable
+revision. Derived transforms, marks, scales, guides, labels, selections, and
+highlights follow the new source while stable chart IDs and explicit styles remain.
+
+```javascript
+import { chart } from "ggaction";
+
+const before = chart()
+  .createCanvas()
+  .createData({ id: "sales", values: [{ quarter: "Q1", revenue: 12 }] })
+  .createBarPlot({ x: "quarter", y: "revenue", guides: false });
+const after = before.reviseData({
+  source: "sales",
+  id: "salesUpdated",
+  values: [{ quarter: "Q1", revenue: 15 }, { quarter: "Q2", revenue: 20 }]
+});
+```
+
+Invalid rows, missing fields, incompatible selections, or failed materialization
+reject the whole revision; `before` remains usable. Follow-up refreshes use the
+current source ID and another fresh ID. Old source snapshots are not deleted
+automatically. Standalone derived-data definitions keep their existing logical
+editor targets.
+
+Retained-source facets, facet grids, and repeats rederive their cells using the
+existing recipe, including its selected values and fields. They do not add new
+facet categories automatically. For concat, revise an explicit child and pass it
+to `replaceCompositionChild({ target, program })`.
 
 An unused source dataset can be removed with
 [`removeData`](./api/data/revisions-and-removal.md#removedata-id); removing the resource does
@@ -68,9 +100,8 @@ labels, selections, and highlights before returning the revised program.
 Composite charts keep their source changes in the corresponding aggregate edit
 action so all owned layers change together.
 
-Use a revision action when the source snapshot is unchanged and the user is
-changing chart intent. Rebuild from source when row identity, values, schema,
-or source-dataset membership changes.
+Use `reviseData` when new rows retain compatible field meanings. Rebuild when the
+new schema or intended chart structure requires a different authoring flow.
 
 ## Async update policy
 

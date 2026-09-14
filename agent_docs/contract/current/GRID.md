@@ -14,6 +14,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Effect: semantic guide에는 scale/coordinate, graphical config에는 tick policy/style, concrete line
   collection에는 endpoints를 저장한다. 관련 mark와 label leader보다 앞에 graphic을 배치한다.
   Creation order, same-value Canvas edits, and scale rematerialization preserve that drawing order and pixels.
+  Automatic tick reuse도 live dependency다. Matching Cartesian axis의 tick 생성/편집은 해당 inferred grid를
+  즉시 wrapped rematerialization으로 갱신한다. Explicit grid count/values는 axis edit에 영향받지 않는다.
 
 ## Shared formal types
 

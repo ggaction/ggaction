@@ -1,4 +1,6 @@
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
+import { applyMaterializationPlan } from "../../../materialization/planner.js";
+import { planAxisTickGridRematerialization } from "../../../materialization/scaleGuideDependencies.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -161,7 +163,8 @@ function makeEdit(channel) {
     const resolved = geometry(this, channel, config);
     let next = this._withGuideConfig(channel, config).editGraphics({ target: id, property: "length", value: resolved.values.length });
     for (const property of ["x1", "y1", "x2", "y2"]) next = next.editGraphics({ target: id, property, value: resolved[property] });
-    return next.editGraphics({ target: id, property: "stroke", value: config.color }).editGraphics({ target: id, property: "strokeWidth", value: config.lineWidth });
+    next = next.editGraphics({ target: id, property: "stroke", value: config.color }).editGraphics({ target: id, property: "strokeWidth", value: config.lineWidth });
+    return applyMaterializationPlan(next, planAxisTickGridRematerialization(next, channel));
   }));
 }
 

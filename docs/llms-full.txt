@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.15.
 
-Contract: sha256:45b574f8a2aac97066bc787442d0a60ddfda7174d21180d3bb86ff7a96429b68. Status: development. Runtime source: 4591300e031be55e9e43ca6c2060320db2073aaa. Release baseline: v0.0.13.
+Contract: sha256:42971c684950b2818941c30f094dc292530ead7fc7e64e8530d5534088d54b80. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -258,9 +258,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/4591300e031be55e9e43ca6c2060320db2073aaa/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/4591300e031be55e9e43ca6c2060320db2073aaa/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -13411,9 +13411,41 @@ and retry from the unchanged program.
 # Data Updates and Live Refresh
 
 Source dataset values are immutable after creation. `createData` copies and freezes
-caller-owned rows; it does not provide an action that replaces those values.
-For refreshed, streaming, or user-edited source data, retain the rows in the
-application and build a new program snapshot.
+caller-owned rows. Use `reviseData` to add a fresh source snapshot and update its
+dependent chart, or rebuild a program from application-owned rows.
+
+## Revise a source and its dependent chart
+
+`reviseData({ source, id, values })` is a Full-entry action. Both IDs are required:
+`source` names an existing materialized original dataset, and `id` is a fresh,
+distinct dataset ID. The action retains the original rows and creates an immutable
+revision. Derived transforms, marks, scales, guides, labels, selections, and
+highlights follow the new source while stable chart IDs and explicit styles remain.
+
+```javascript
+import { chart } from "ggaction";
+
+const before = chart()
+  .createCanvas()
+  .createData({ id: "sales", values: [{ quarter: "Q1", revenue: 12 }] })
+  .createBarPlot({ x: "quarter", y: "revenue", guides: false });
+const after = before.reviseData({
+  source: "sales",
+  id: "salesUpdated",
+  values: [{ quarter: "Q1", revenue: 15 }, { quarter: "Q2", revenue: 20 }]
+});
+```
+
+Invalid rows, missing fields, incompatible selections, or failed materialization
+reject the whole revision; `before` remains usable. Follow-up refreshes use the
+current source ID and another fresh ID. Old source snapshots are not deleted
+automatically. Standalone derived-data definitions keep their existing logical
+editor targets.
+
+Retained-source facets, facet grids, and repeats rederive their cells using the
+existing recipe, including its selected values and fields. They do not add new
+facet categories automatically. For concat, revise an explicit child and pass it
+to `replaceCompositionChild({ target, program })`.
 
 An unused source dataset can be removed with
 [`removeData`](./api/data/revisions-and-removal/#removedata-id); removing the resource does
@@ -13473,9 +13505,8 @@ labels, selections, and highlights before returning the revised program.
 Composite charts keep their source changes in the corresponding aggregate edit
 action so all owned layers change together.
 
-Use a revision action when the source snapshot is unchanged and the user is
-changing chart intent. Rebuild from source when row identity, values, schema,
-or source-dataset membership changes.
+Use `reviseData` when new rows retain compatible field meanings. Rebuild when the
+new schema or intended chart structure requires a different authoring flow.
 
 ## Async update policy
 
@@ -14568,6 +14599,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`reorderCompositionChildren`](./reference/actions/charts-data/#reordercompositionchildren) | H3 | user-facing | composition |
 | [`repeatCharts`](./reference/actions/charts-data/#repeatcharts) | H0 | user-facing | composition |
 | [`replaceCompositionChild`](./reference/actions/charts-data/#replacecompositionchild) | H3 | user-facing | composition |
+| [`reviseData`](./reference/actions/charts-data/#revisedata) | H3 | user-facing | core |
 | [`selectMarks`](./reference/actions/advanced/#selectmarks) | H3 | advanced | mark-selection |
 
 <!-- Source: /reference/actions/charts-data/ -->
@@ -14788,6 +14820,38 @@ createData({ id?, values })
 ```
 
 Create one immutable named dataset. [Data](./api/data/)
+
+## `reviseData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;
+```
+
+Named option contracts: [`ReviseDataOptions`](./reference/types/#type-revisedataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `source` | Required | `string` |
+| `id` | Required | `string` |
+| `values` | Required | `readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[]` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+reviseData({ source, id, values })
+```
+
+Create a fresh original-data revision and atomically update its dependent chart.
+The original is retained; IDs and styles of existing chart owners remain stable.
+See [Data updates](./data-updates/#revise-a-source-and-its-dependent-chart).
 
 ## `removeData`
 
@@ -25084,6 +25148,7 @@ interface ChartProgramActions {
   applyTheme(options: ApplyThemeOptions): ChartProgram;
   removeTheme(): ChartProgram;
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
+  reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;
   removeData(options: RemoveResourceOptions): ChartProgram;
   removeScale(options: RemoveResourceOptions): ChartProgram;
   removeCoordinate(options: RemoveResourceOptions): ChartProgram;
@@ -33135,6 +33200,19 @@ Related types: [`RequestedTransform`](./reference/types/#type-requestedtransform
 type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;
 ```
 
+### `ReviseDataOptions` {#type-revisedataoptions}
+
+ Expand ReviseDataOptions
+
+```typescript
+export interface ReviseDataOptions<Row extends object> extends CreateDataOptions<Row> {
+  source: string;
+  id: string;
+}
+```
+
+Related types: [`CreateDataOptions`](./reference/types/#type-createdataoptions).
+
 ### `RotationInput` {#type-rotationinput}
 
  Expand RotationInput
@@ -34904,12 +34982,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/4591300e031be55e9e43ca6c2060320db2073aaa/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/4591300e031be55e9e43ca6c2060320db2073aaa/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -36937,11 +37015,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:45b574f8a2aac97066bc787442d0a60ddfda7174d21180d3bb86ff7a96429b68` |
+| Contract fingerprint | `sha256:42971c684950b2818941c30f094dc292530ead7fc7e64e8530d5534088d54b80` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `4591300e031be55e9e43ca6c2060320db2073aaa` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 276 |
+| Declared actions here | 277 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

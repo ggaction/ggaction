@@ -14,6 +14,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`applyTheme`](current/CORE.md#applytheme) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeTheme`](current/CORE.md#removetheme) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createData`](current/CORE.md#createdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`reviseData`](current/CORE.md#revisedata) | core | Immutable create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeData`](current/CORE.md#removedata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeScale`](current/CORE.md#removescale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeCoordinate`](current/CORE.md#removecoordinate) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |

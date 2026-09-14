@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:45b574f8a2aac97066bc787442d0a60ddfda7174d21180d3bb86ff7a96429b68",
-    "sourceCommit": "4591300e031be55e9e43ca6c2060320db2073aaa",
+    "contractId": "sha256:42971c684950b2818941c30f094dc292530ead7fc7e64e8530d5534088d54b80",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "d420d2dfe5a0245c701d53802596f673ab65f737ba51710fb375324205144c2a"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -1762,6 +1762,7 @@
       "source": "data-updates.md",
       "headings": [
         "data-updates-and-live-refresh",
+        "revise-a-source-and-its-dependent-chart",
         "rebuild-from-source-rows",
         "what-can-be-revised-in-place",
         "async-update-policy",
@@ -1770,8 +1771,8 @@
         "snapshot-format-version-1",
         "related"
       ],
-      "bytes": 8007,
-      "sha256": "bca1038979b305714eb4a87eda898895966363abde49370996890ca3adcd348a"
+      "bytes": 9387,
+      "sha256": "e4b2fa9050262c6d918f7545a0f5b011f816d4ea3050c5b1045c986eed6c24e2"
     },
     {
       "order": 110,
@@ -1883,8 +1884,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 29752,
-      "sha256": "e24eca9b053f12f2a88481294a11e721efa096a08eaf47b5ba2e400f724c31c8"
+      "bytes": 29842,
+      "sha256": "77952493e3998001c59fa402d4c211e18f284ad7cbf313cf90cc369dd270b36d"
     },
     {
       "order": 117,
@@ -1899,6 +1900,7 @@
         "applytheme",
         "removetheme",
         "createdata",
+        "revisedata",
         "removedata",
         "removescale",
         "removecoordinate",
@@ -1981,8 +1983,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 146774,
-      "sha256": "d58d8376f52da1c05a96dda7ce98f468f6ad6a1c629baf9a4c8896f4ead134af"
+      "bytes": 147922,
+      "sha256": "c696ca0f897a26b12d2cdd587a45debc20912a261afb47cd4e64c8822152e0c8"
     },
     {
       "order": 118,
@@ -2805,6 +2807,7 @@
         "type-replacecompositionchildoptions",
         "type-requesteddatasettransform",
         "type-requestedtransform",
+        "type-revisedataoptions",
         "type-rotationinput",
         "type-rotationunit",
         "type-rowwindowframe",
@@ -2891,8 +2894,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 300388,
-      "sha256": "53b94269cb646dd502c92511196415d7923e274ccb333cfec5e443b367ec2684"
+      "bytes": 300770,
+      "sha256": "a904a06e5f24927cd6eca781216552995014570e176155f0d6e35a747687a7d3"
     },
     {
       "order": 126,
@@ -2922,8 +2925,8 @@
         "editgraphics-target-property-value-remove",
         "scale-materialization"
       ],
-      "bytes": 16959,
-      "sha256": "8beb3bd2d33b82cfcde88a4de1668c8ff77f6997c22cdca177486e6d1555e93b"
+      "bytes": 16887,
+      "sha256": "bd8e7c8dbfed631d08e448b205d9b5e06c7906da395bebeaf3d20cdfeabccbf7"
     },
     {
       "order": 128,
@@ -3242,8 +3245,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "85a5b0942aa91461e217ab5a1e6cf0092816ef23d73c6b7da6cf687ff4f7f66c"
+      "bytes": 3000,
+      "sha256": "e5a582f60b2ac52d8fe3f22b9ea4a6157b902d6a7e2a4ee32a0b04ccb70eb40c"
     },
     {
       "order": 149,

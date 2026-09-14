@@ -24,6 +24,7 @@ interface ChartProgramActions {
   applyTheme(options: ApplyThemeOptions): ChartProgram;
   removeTheme(): ChartProgram;
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
+  reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;
   removeData(options: RemoveResourceOptions): ChartProgram;
   removeScale(options: RemoveResourceOptions): ChartProgram;
   removeCoordinate(options: RemoveResourceOptions): ChartProgram;
@@ -9583,6 +9584,22 @@ type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;
 ```
 
 </details>
+
+### `ReviseDataOptions` {#type-revisedataoptions}
+
+<details markdown="1">
+<summary>Expand ReviseDataOptions</summary>
+
+```typescript
+export interface ReviseDataOptions<Row extends object> extends CreateDataOptions<Row> {
+  source: string;
+  id: string;
+}
+```
+
+</details>
+
+Related types: [`CreateDataOptions`](#type-createdataoptions).
 
 ### `RotationInput` {#type-rotationinput}
 

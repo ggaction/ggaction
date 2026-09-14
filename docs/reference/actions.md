@@ -307,4 +307,5 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`reorderCompositionChildren`](./actions/charts-data.md#reordercompositionchildren) | H3 | user-facing | composition |
 | [`repeatCharts`](./actions/charts-data.md#repeatcharts) | H0 | user-facing | composition |
 | [`replaceCompositionChild`](./actions/charts-data.md#replacecompositionchild) | H3 | user-facing | composition |
+| [`reviseData`](./actions/charts-data.md#revisedata) | H3 | user-facing | core |
 | [`selectMarks`](./actions/advanced.md#selectmarks) | H3 | advanced | mark-selection |

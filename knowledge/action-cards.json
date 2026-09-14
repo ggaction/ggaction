@@ -3,7 +3,7 @@
   "packageVersion": "0.0.15",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 276,
+  "count": 277,
   "cards": [
     {
       "schemaVersion": 3,
@@ -485,6 +485,85 @@
       "snippet": "program.createData({ values: [{ category: \"A\", value: 1 }] })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "reviseData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Create a fresh original-data revision and atomically update its dependent chart.",
+      "signature": "reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;",
+      "intents": [
+        "revise data",
+        "revise source data",
+        "refresh chart rows",
+        "create an immutable data revision",
+        "chart setup",
+        "data and scales",
+        "dataset"
+      ],
+      "lifecycle": "Immutable create-only",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "dataset"
+        ],
+        "idOptions": [
+          "source",
+          "id"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "createData"
+      ],
+      "editableVia": [],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "source",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "values",
+          "required": true,
+          "type": "readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[]"
+        }
+      ],
+      "callPatterns": [
+        "reviseData({ source, id, values })"
+      ],
+      "snippet": "program.reviseData({ source: \"data-1\", id: \"data-1\", values: [{ category: \"A\", value: 1 }] })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#revisedata"
     },
     {
       "schemaVersion": 3,

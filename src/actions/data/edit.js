@@ -254,7 +254,7 @@ function buildRevisionPlan(
       `Derived dataset "${resolved.owner}" cannot use one of its dependents as source.`
     );
   }
-  const reserved = new Set();
+  const reserved = new Set(resolved.revision === undefined ? [] : [resolved.revision]);
   const revisions = [];
   const replacements = new Map();
   const add = (dataset, ownerRecord, transform, requestedSource) => {
@@ -274,7 +274,12 @@ function buildRevisionPlan(
     revisions.push(revision);
     replacements.set(dataset.id, id);
   };
-  add(resolved.dataset, resolved, definition, rootSource);
+  if (resolved.revision === undefined) {
+    add(resolved.dataset, resolved, definition, rootSource);
+  } else {
+    revisions.push({ old: resolved.current, id: resolved.revision });
+    replacements.set(resolved.current, resolved.revision);
+  }
   if (dependents === "recompute") {
     for (const dataset of downstream) {
       const policy = findTransformPolicy(dataset.transform[0].type);
@@ -292,14 +297,15 @@ function directLayerConsumers(program, data) {
     .map(layer => layer.id);
 }
 
-function applyRevisionPlan(program, resolved, plan) {
+export function applyRevisionPlan(program, resolved, plan, { retain = new Set() } = {}) {
   const root = plan.revisions[0];
-  const changes = outputFieldChanges(
+  const changes = resolved === undefined ? new Map() : outputFieldChanges(
     resolved.dataset.transform[0],
     root.transform
   );
   let next = program;
   for (const revision of plan.revisions) {
+    if (revision.transform === undefined) continue;
     const policy = findTransformPolicy(revision.transform.type);
     next = next.createDerivedData({
       id: revision.id,
@@ -345,12 +351,19 @@ function applyRevisionPlan(program, resolved, plan) {
     next = applyLayerDataRematerialization(next, consumer.id);
   }
   for (const revision of [...plan.revisions].reverse()) {
+    if (retain.has(revision.old)) continue;
     next = next.releaseDerivedData({ id: revision.old });
   }
 
   const currentData = plan.replacements.get(program.context.currentData) ??
     program.context.currentData;
   return next._withContext({ ...program.context, currentData });
+}
+
+export function buildSourceRevisionPlan(program, source, id) {
+  return buildRevisionPlan(program, {
+    current: source, dataset: findDataset(program, source), revision: id
+  }, undefined, "recompute");
 }
 
 function sameRequested(left, right) {

@@ -1,11 +1,7 @@
-import { isPlainObject } from "../../core/immutable.js";
+import { collectDataOwnerReferences, collectMarkConfigReferences } from "../../core/resourceReferences.js";
 import { datasetTransformOutputRoles } from "../../grammar/transforms.js";
 import { requireLayer } from "../../selectors/layers.js";
 
-const DATA_REFERENCE_KEYS = new Set([
-  "data", "dataset", "dataId", "filteredData", "originalData",
-  "outlierDataId", "profileId", "source", "summaryId"
-]);
 
 export function outputFieldChanges(previous, next) {
   const before = datasetTransformOutputRoles(previous);
@@ -107,39 +103,23 @@ export function rebindLayerOutputFields(program, id, changes) {
   return next;
 }
 
-function replaceReferences(value, replacements, key) {
-  if (Array.isArray(value)) {
-    let changed = false;
-    const items = value.map(item => {
-      const next = replaceReferences(item, replacements);
-      changed ||= next !== item;
-      return next;
-    });
-    return changed ? items : value;
-  }
-  if (!isPlainObject(value)) {
-    return DATA_REFERENCE_KEYS.has(key) && replacements.has(value)
-      ? replacements.get(value)
-      : value;
-  }
-  let changed = false;
-  const result = {};
-  for (const [childKey, child] of Object.entries(value)) {
-    const next = replaceReferences(child, replacements, childKey);
-    changed ||= next !== child;
-    result[childKey] = next;
-  }
-  return changed ? result : value;
+function replaceAtPath(value, [key, ...rest], replacement) {
+  const result = Array.isArray(value) ? [...value] : { ...value };
+  Object.defineProperty(result, key, { value: rest.length === 0
+    ? replacement : replaceAtPath(value[key], rest, replacement),
+    enumerable: true, configurable: true, writable: true });
+  return result;
 }
 
 export function rebindMaterializationDataReferences(program, replacements) {
   if (replacements.size === 0) return program;
   let next = program;
-  for (const [key, config] of Object.entries(program.materializationConfigs)) {
-    const replaced = replaceReferences(config, replacements, key);
-    if (replaced !== config) {
-      next = next._withMaterializationConfig([key], replaced);
-    }
+  for (const ref of [...collectMarkConfigReferences(program), ...collectDataOwnerReferences(program)]) {
+    if (ref.kind !== "data" || !replacements.has(ref.id)) continue;
+    const path = ref.ownerKind === "markConfig" ? ["marks", ref.ownerId, ...ref.path] : ref.path;
+    const [root, ...rest] = path;
+    next = next._withMaterializationConfig([root],
+      replaceAtPath(next.materializationConfigs[root], rest, replacements.get(ref.id)));
   }
   return next;
 }

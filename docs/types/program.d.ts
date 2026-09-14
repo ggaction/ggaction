@@ -4484,6 +4484,11 @@ export interface CreateDataOptions<Row extends object> {
   values: readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[];
 }
 
+export interface ReviseDataOptions<Row extends object> extends CreateDataOptions<Row> {
+  source: string;
+  id: string;
+}
+
 export class ChartProgram {
   constructor(state?: ActionOptions);
   readonly semanticSpec: SemanticSpec;
@@ -4502,6 +4507,7 @@ export class ChartProgram {
   applyTheme(options: ApplyThemeOptions): ChartProgram;
   removeTheme(): ChartProgram;
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
+  reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;
   removeData(options: RemoveResourceOptions): ChartProgram;
   removeScale(options: RemoveResourceOptions): ChartProgram;
   removeCoordinate(options: RemoveResourceOptions): ChartProgram;

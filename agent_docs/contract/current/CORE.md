@@ -246,6 +246,27 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Evidence: `test/unit/actions/data/create-data.test.js`, `test/contracts/input-boundaries.test.js`,
   `test/contracts/source-data-types.test.js`.
 
+## `reviseData`
+
+- Signature: `reviseData({ source, id, values })`. Full 전용 immutable source revision이다.
+- `source`와 `id`는 필수 explicit user ID다. source는 materialized 원본 dataset이어야 하며 derived snapshot은 거부한다. 새 id는 source와 다르고 dataset/logical owner와 충돌하지 않아야 한다.
+- `values`는 createData와 같은 dense plain-object row 및 immutable cell 계약이다. 외부 값을 복사·동결하며 과거 원본은 보존한다.
+- Effect: 새 source를 createData wrapped child로 만들고, 해당 source의 transitive derived DAG를 기존 transform policy/materializer로 재계산한다. Stable mark/composite ID와 명시적 style을 유지하면서 layer와 typed private data reference 및 logical owner를 rebind한다. Scale/mark/guide/label/highlight를 기존 materialization 경로로 갱신하고 highlight 없는 stored selection도 final item grain에서 검증한다. 참조되지 않는 과거 derived revision은 기존 release lifecycle을 따른다. 원본은 자동 삭제하지 않는다.
+- Unit과 retained-source facet/grid/repeat를 지원한다. Facet은 기존 values/grid/repeat/layout/scale/guide recipe를 보존하여 child를 다시 derive한다. 새로운 category를 자동으로 recipe에 추가하지 않는다. Concat은 명시적 child를 revise한 뒤 replaceCompositionChild로 조합한다.
+- Missing source, duplicate ID, invalid rows, incompatible field/schema/selection 및 rematerialization/layout 실패는 전체를 거부한다. 이전 program/trace는 변경되지 않으며 성공 public trace root는 reviseData다.
+
+### Formal values — `reviseData`
+
+- Implemented: `reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram`; `source: string`, `id: string`, `values: CreateDataOptions<Row>["values"]`.
+- Proposed (NOT IMPLEMENTED): none.
+- No proposal: in-place source overwrite, automatic public revision ID, implicit concat child selection.
+
+### Value coverage — `reviseData`
+
+- ✅ Covered: new rows/count/domain, immutable input/original, final selection/highlight, transitive transform revision/logical editor, retained facet/repeat, Full/Basic boundary and invalid inputs.
+- ✅ Covered: complete action corpus unchanged-row revision and drawable SVG equivalence.
+- Evidence: `test/unit/actions/data/source-revision.test.js`, `test/contracts/source-data-types.test.js`.
+
 ## `removeData`
 
 - Signature: `removeData({ id })`

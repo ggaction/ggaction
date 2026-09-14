@@ -1,4 +1,5 @@
 import { action } from "../../core/action.js";
+import { registerFacetDataRevision, reviseUnitData } from "../data/revise.js";
 import { freezeOwned, isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
 import {
@@ -838,6 +839,23 @@ export const editFacetSource = /* @__PURE__ */ action(
 );
 
 export function registerFacetActions(ProgramClass) {
+  registerFacetDataRevision((program, args) => {
+    const { program: unit, plan } = reviseUnitData(facetUnitTemplate(program), args);
+    const current = program.compositionSpec;
+    // Adopt an already-materialized unit revision into the retained parent.
+    const revised = new program.constructor({
+      ...unit,
+      graphicSpec: program.graphicSpec,
+      children: program.children,
+      materializationConfigs: { ...unit.materializationConfigs,
+        facets: program.materializationConfigs.facets,
+        ...(program.titleConfig === undefined ? {} : { title: program.titleConfig }) },
+      actionSequence: unit._actionSequence,
+      compositionSpec: { ...current, facet: { ...current.facet,
+        data: plan.replacements.get(current.facet.data) ?? current.facet.data } }
+    });
+    return rederiveFacet(revised, current.facet);
+  });
   ProgramClass.prototype.replayDerivedData = replayDerivedData;
   ProgramClass.prototype.composeFacetGuides = composeFacetGuides;
   ProgramClass.prototype.facet = facet;

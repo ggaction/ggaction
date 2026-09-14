@@ -29,6 +29,7 @@ const relationshipFile = path.join(root, "knowledge/action-relationships.json");
 
 const operationPrefixes = Object.freeze([
   "create",
+  "revise",
   "bind",
   "apply",
   "edit",
@@ -228,7 +229,7 @@ function actionResources(action, optionNames, intentSource) {
   if (action.domain === "primitives") prerequisites.push("extension action context");
 
   const owns = [];
-  if (["create", "apply", "encode", "filter", "select", "highlight", "layout", "jitter", "pack", "order", "compose"].includes(operation)) {
+  if (["create", "revise", "apply", "encode", "filter", "select", "highlight", "layout", "jitter", "pack", "order", "compose"].includes(operation)) {
     owns.push(operation === "encode" ? `${resource} assignment` : resource);
   }
 

@@ -374,6 +374,8 @@ Retained source는 재생 가능한 원본이며 child의 final graphics를 원�
 
 Standalone derived-data lifecycle도 requested transform과 materialized revision을 분리한다. `materializationConfigs.data`가 logical owner를 current snapshot에 연결하고 dataset source/layer data는 실제 snapshot ID를 저장한다. Pure transform registry가 requested extractor, normalizer, materializer, output role과 replay policy를 제공한다. Revision planner는 deterministic DAG를 따라 새 snapshot과 reference transition을 계획하고 wrapped action이 실행한다. Chart 내부 transform은 standalone registry에 중복 등록하지 않고 해당 chart owner가 lifecycle을 소유한다.
 
+원본 revision은 같은 DAG planner에 새 immutable source snapshot을 시작점으로 제공한다. Reference transition은 shared typed reference collector가 소유하므로 data ID와 mark ID가 같은 문자열이어도 namespace를 혼동하지 않는다. 모든 candidate의 rematerialization과 stored selection compatibility를 검증한 뒤 wrapped transaction을 반환한다. Retained facet/repeat는 갱신된 unit template에서 저장된 composition recipe를 다시 적용한다.
+
 Automatic statistical parameter의 요청과 계산값은 서로 다른 provenance다. Replay는 이전 계산값을 자동 정책으로 오인하지 않고 새 rows에서 다시 계산한다. Field output 이름을 바꾸는 revision은 semantic role에 따라 encoding과 selection/jitter binding도 함께 옮긴다. 제거되는 output을 참조하는 consumer는 전환 전체를 거부한다. Exact lifecycle은 [CORE](contract/current/CORE.md), 통계별 provenance는 [STATISTICS](contract/current/STATISTICS.md)가 소유한다.
 
 ## Immutability와 ownership

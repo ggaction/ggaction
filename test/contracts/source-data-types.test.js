@@ -19,6 +19,13 @@ declare const full: ChartProgram;
 declare const basic: BasicChartProgram;
 interface Row { x: number; nested: { tags: readonly string[] }; missing?: number; }
 declare const rows: readonly Row[];
+full.reviseData({ source: "data", id: "next", values: rows });
+// @ts-expect-error explicit source and fresh identity are required
+full.reviseData({ values: rows });
+// @ts-expect-error source revision is Full only
+basic.reviseData({ source: "data", id: "next", values: rows });
+// @ts-expect-error revision has the same stored cell boundary
+full.reviseData({ source: "data", id: "next", values: [{ callback: () => 1 }] });
 ${["full", "basic"].map(name => `
 ${name}.createData({ values: rows }).createScatterPlot({ x: "x", y: "x" });
 ${name}.createData({ values: [] });

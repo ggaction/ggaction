@@ -18,6 +18,16 @@ const GRIDS = Object.freeze([
   Object.freeze({ role: "radial", op: "rematerializeRadialGrid" })
 ]);
 
+export function planAxisTickGridRematerialization(program, channel) {
+  const ticks = program.guideConfigs.axis?.[channel]?.ticks;
+  const role = channel === "x" ? "vertical" : "horizontal";
+  const config = program.guideConfigs.grid?.[role];
+  return buildMaterializationPlan({ guides:
+    config?.inferredValues === true && config.scale === ticks?.scale
+      ? GRIDS.filter(grid => grid.role === role).map(grid => ({ op: grid.op })) : []
+  });
+}
+
 function usesPositionalScale(program, id) {
   return program.semanticSpec.layers.some(layer =>
     !isSourceOwnedText(layer) && (

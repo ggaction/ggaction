@@ -95,6 +95,12 @@ async function testNodeConsumer(directory) {
       .encodeY({ field: "y" })
       .encodeRadius({ value: 3 });
     const restored = deserializeProgram(serializeProgram(program));
+    const revised = program.reviseData({ source: "data", id: "updatedData", values: [
+      { x: 1, y: 2 }, { x: 3, y: 7 }, { x: 4, y: 3 }
+    ] });
+    assert.equal(revised.graphicSpec.objects.point.items.length, 3);
+    assert.equal(program.graphicSpec.objects.point.items.length, 2);
+    assert.equal(basicChart().reviseData, undefined);
     assert.equal(renderToSVG(restored), renderToSVG(program));
     assert.equal(renderToSVG(deserializeGraphic(serializeGraphic(program))), renderToSVG(program));
     assert.notDeepEqual(restored.editPointMark({ fill: "red" }).graphicSpec, program.graphicSpec);
@@ -2161,12 +2167,14 @@ async function testMcpConsumer(directory) {
     path.join(installedRoot, "knowledge", file),
     "utf8"
   ))));
+  const actionIndex = JSON.parse(await readFile(path.join(root, "agent_docs/contract/ACTION_INDEX.json"), "utf8"));
+  const expectedActions = actionIndex.actions.filter(entry => entry.status === "implemented").length;
   if (
     actionCardSchema.properties?.schemaVersion?.const !== 3 ||
     actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
     actionCards.schemaVersion !== 3 ||
-    actionCards.count !== 276 ||
-    actionCards.cards.length !== 276 ||
+    actionCards.count !== expectedActions ||
+    actionCards.cards.length !== expectedActions ||
     actionCards.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed action-card discovery contract is missing or stale.");

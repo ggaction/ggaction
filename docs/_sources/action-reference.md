@@ -441,6 +441,16 @@ createData({ id?, values })
 
 Create one immutable named dataset. [Data](../api/data.md)
 
+### `reviseData`
+
+```javascript
+reviseData({ source, id, values })
+```
+
+Create a fresh original-data revision and atomically update its dependent chart.
+The original is retained; IDs and styles of existing chart owners remain stable.
+See [Data updates](../data-updates.md#revise-a-source-and-its-dependent-chart).
+
 ### `removeData`
 
 ```javascript

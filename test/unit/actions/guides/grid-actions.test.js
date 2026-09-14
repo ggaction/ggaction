@@ -208,3 +208,18 @@ test("validates aggregate and directional grid options", () => {
   assert.throws(() => created.rematerializeGrid({ force: true }), /does not accept/);
   assert.equal(program.semanticSpec.guides.grid, undefined);
 });
+
+test("axis tick edits immediately update inferred grids while preserving explicit grid values", () => {
+  const p=chart().createCanvas({width:400,height:300,margin:50})
+    .createData({values:[{x:0,y:0},{x:10,y:10}]})
+    .createPointMark().encodeX({field:"x"}).encodeY({field:"y"})
+    .createAxes().createGrid();
+  const n=p.editYAxisTicks({values:[0,5,10]});
+  assert.deepEqual(n.graphicSpec.objects.horizontalGridLines.items.map(i=>i.properties.y1),
+    n.graphicSpec.objects.yAxisTicks.items.map(i=>i.properties.y1));
+  assert.notDeepEqual(n.graphicSpec.objects.horizontalGridLines,p.graphicSpec.objects.horizontalGridLines);
+  const explicit=p.editHorizontalGrid({values:[0,10]});
+  assert.deepEqual(explicit.editYAxisTicks({values:[0,5,10]}).graphicSpec.objects.horizontalGridLines,
+    explicit.graphicSpec.objects.horizontalGridLines);
+  assert.ok(n.trace.children.at(-1).children.some(node=>node.op==="rematerializeHorizontalGrid"));
+});

@@ -423,6 +423,8 @@ export function buildActionRelationshipPrograms() {
     ...resourceRemovalPrograms(),
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
-    ...derivedEditingPrograms()
+    ...derivedEditingPrograms(),
+    chart().createData({ id: "revisionSource", values: [{ x: 1 }] })
+      .reviseData({ source: "revisionSource", id: "revisionNext", values: [{ x: 2 }] })
   ];
 }

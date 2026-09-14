@@ -245,6 +245,42 @@ createData({ id?, values })
 Create one immutable named dataset. [Data](../../api/data.md)
 
 
+## `reviseData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;
+```
+
+Named option contracts: [`ReviseDataOptions`](./../types.md#type-revisedataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `source` | Required | `string` |
+| `id` | Required | `string` |
+| `values` | Required | `readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[]` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+reviseData({ source, id, values })
+```
+
+Create a fresh original-data revision and atomically update its dependent chart.
+The original is retained; IDs and styles of existing chart owners remain stable.
+See [Data updates](../../data-updates.md#revise-a-source-and-its-dependent-chart).
+
+
 ## `removeData`
 
 **API layer:** user-facing. **Authoring roles:** H2.

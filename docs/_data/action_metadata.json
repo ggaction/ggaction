@@ -47,6 +47,14 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "reviseData": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "removeData": {
     "operation": "remove",
     "authoringRoles": [

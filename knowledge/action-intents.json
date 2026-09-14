@@ -60,6 +60,11 @@
     "compose": [
       "facet",
       "repeat chart"
+    ],
+    "revise": [
+      "revise source data",
+      "refresh chart rows",
+      "create an immutable data revision"
     ]
   },
   "domainIntents": {

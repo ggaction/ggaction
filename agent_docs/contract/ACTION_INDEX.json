@@ -148,6 +148,24 @@
       }
     },
     {
+      "name": "reviseData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create a fresh source revision and rebind dependent owners",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "revisedata"
+      }
+    },
+    {
       "name": "removeData",
       "layer": "user-facing",
       "domain": "core",
