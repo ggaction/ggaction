@@ -5,7 +5,7 @@
   "provenance": {
     "status": "development",
     "contractId": "sha256:2badd89c96e73d87ca0c01f9f8c119c76f4b152be5196692cdb96638aecb75e1",
-    "sourceCommit": null,
+    "sourceCommit": "69353bac611e6c5b4f5d50288842f540ba5470cd",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -23,15 +23,14 @@
       "source": "index.md",
       "headings": [
         "ggaction",
-        "research-basis",
         "start-here",
         "common-chart-types",
         "statistics-and-uncertainty",
         "alternative-coordinates",
         "go-deeper"
       ],
-      "bytes": 4365,
-      "sha256": "8572c3a493ef2688c75ab5b97b98961ea410128c664c74b6f554caabd303297e"
+      "bytes": 2429,
+      "sha256": "33667d06533a8f59fc84b0bf6a959333bd45e62b98fe0f2babddffde87096da0"
     },
     {
       "order": 2,
@@ -47,8 +46,8 @@
         "runnable-repository-examples",
         "next"
       ],
-      "bytes": 5417,
-      "sha256": "19348a256e144c09bb998e68833195a4564880c9cdd3d6cfffa9f277adb081a5"
+      "bytes": 5427,
+      "sha256": "e61192453d3afa18c6bf72642351d86575ae063ca51c19610aa5d60bd9ce90ec"
     },
     {
       "order": 3,
@@ -64,8 +63,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 10299,
-      "sha256": "03adc50206cf5cabd4b0129b57bcc6ebe532bba40a762a0467c29e0284b80519"
+      "bytes": 10089,
+      "sha256": "255a47a199fd2af680f963e7a2f31381f86ae6c10b889d18a6640aecdcae105e"
     },
     {
       "order": 4,
@@ -108,8 +107,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 5418,
-      "sha256": "552507459a30850e81ae2ef71e87fde4319fc4a0b393be63c3bdf2e711a970f4"
+      "bytes": 5438,
+      "sha256": "f04153dd922f316d3ddceff746491bc39bf539b2e510308195c160cb93f845dd"
     },
     {
       "order": 7,
@@ -124,8 +123,8 @@
         "current-boundary",
         "related"
       ],
-      "bytes": 3557,
-      "sha256": "d160dd9d731d8e8a250ce0a9e2de0a1ef028b04a8c2c4511934e06c835baac12"
+      "bytes": 3562,
+      "sha256": "4dc2192e79c9b23d8d50bc99bdf8bc89de115ee4055f82bd20f92322498699fd"
     },
     {
       "order": 8,
@@ -139,8 +138,8 @@
         "closed-radar-paths",
         "related"
       ],
-      "bytes": 3444,
-      "sha256": "854b324f3b0e5a0febcd3223281aeb584efe2baefaf8a60109fb681483e37493"
+      "bytes": 3449,
+      "sha256": "4240da4e3a8ca1d0526ef44eed5f65c97763df525cfdbb6a370021def96ef722"
     },
     {
       "order": 9,
@@ -160,8 +159,8 @@
         "editing-an-arc",
         "related"
       ],
-      "bytes": 9981,
-      "sha256": "1a500f4c96e8eaec356f6ae5ad26410d6309f645d8a0350ba61a2b605e19b979"
+      "bytes": 9986,
+      "sha256": "fbb85fce97fe2d32c64e65b20e8753e92ea8a497c44c739f66e28bd0e8c4ddb7"
     },
     {
       "order": 10,
@@ -177,8 +176,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4761,
-      "sha256": "fb1f6a87749dcf18f8842a1501eef98f4f4f04deb4f4dc19187d9dc60dabd84f"
+      "bytes": 4781,
+      "sha256": "98fc66db09aa4bb639a58fc4cc50f07b4974f36100e9d4153f30d53cf7bdc44a"
     },
     {
       "order": 11,
@@ -192,8 +191,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4360,
-      "sha256": "e35deaf50f75d1c34bacc6955ac897871557ee9a608c73213509bae4164c8034"
+      "bytes": 4380,
+      "sha256": "dd59c067cdc87bb949410aab6d101d025e8a2feb477b8afdbafdb8a6dd2da046"
     },
     {
       "order": 12,
@@ -208,8 +207,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4133,
-      "sha256": "9f3e7110fc2b3b693325b85a141225b021ad3e37ae6bdd5763ad14b1397bc9af"
+      "bytes": 4153,
+      "sha256": "99a3cf05af7178d042b7aa218032423aec763be96bfa2f90f865b4c85e46ca8d"
     },
     {
       "order": 13,
@@ -223,8 +222,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4201,
-      "sha256": "80217fca1994b0da1571ba3c5f60fbdc97ffcb8bb86fdc8a69d0d57ec7d2a490"
+      "bytes": 4216,
+      "sha256": "7372b0948990f5f8f5f8088e750e313f1a9713ea3a5e28e6fbf6c087211b40e9"
     },
     {
       "order": 14,
@@ -238,8 +237,8 @@
         "separate-series-identity-placement-and-color",
         "keep-gaps-explicit"
       ],
-      "bytes": 3522,
-      "sha256": "7b6250e17ad94ac2a6ccce2a71194b8787bd57804fd8ae70822330d3605e0524"
+      "bytes": 3527,
+      "sha256": "2c1a9af791594e1f684db5f2b4ecd4c04cc063073ec5193f67bc58afe05d2009"
     },
     {
       "order": 15,
@@ -255,8 +254,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 6242,
-      "sha256": "c513663d1f45b12bd0e14efa783f589b475203282667b24bf4e803f3deb06c88"
+      "bytes": 6267,
+      "sha256": "2bc47e88dd23c6713a57d27989c86b341a561b04970112905db75e4d6b264b3a"
     },
     {
       "order": 16,
@@ -271,8 +270,8 @@
         "revise-without-mutation",
         "key-action-trace"
       ],
-      "bytes": 4635,
-      "sha256": "1a1a1fffe9d6c21486a788123e606e72ee2d81c1ffdd8d8365754bb98e95be6c"
+      "bytes": 4650,
+      "sha256": "fbceaca906da5bfc0682f8eb4abe7224705b5de82f9bb5ac8e57fb190376f475"
     },
     {
       "order": 17,
@@ -287,8 +286,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3572,
-      "sha256": "0f087e6828f4496b225e2e69b19da62785c6dbd155cbc42207ffaee5f0eecac4"
+      "bytes": 3587,
+      "sha256": "0fcb6ff4b5d08d807941c1654c2ea49268c75f6ab76e5be9ce43c36ee4ba8324"
     },
     {
       "order": 18,
@@ -303,8 +302,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3796,
-      "sha256": "7ce522b57cf02f54b0fc3ba852fe0544e1dfbf3e131ddf49411e5bda4256260c"
+      "bytes": 3811,
+      "sha256": "4037b578b481046b967e0643f54da28542ded545622ceffe610b514a3b0135cc"
     },
     {
       "order": 19,
@@ -320,8 +319,8 @@
         "choose-filtering-reusable-selection-or-highlighting",
         "run-and-continue"
       ],
-      "bytes": 6357,
-      "sha256": "b068d075f4154ca29a0add3ddb18d704a2681d21e94924c3a67c94bcff563702"
+      "bytes": 6372,
+      "sha256": "fcbdffcef474552f0ffc5492364d12395a42610634c8a96035f850a33ce92e0a"
     },
     {
       "order": 20,
@@ -347,8 +346,8 @@
         "missing-values-and-grouping",
         "revise-the-statistical-source"
       ],
-      "bytes": 3871,
-      "sha256": "2adb3107931f118ab0a303c159a997b89da4d0a4fd696370b821e94abef265d9"
+      "bytes": 3876,
+      "sha256": "e8937734def95e520d8280e4ba3b9f2d070ad000c4726c2e822b6767741cb48f"
     },
     {
       "order": 22,
@@ -860,8 +859,8 @@
         "createwindowdata-id-source-partitionby-sortby-operations-temporalunit",
         "related"
       ],
-      "bytes": 5882,
-      "sha256": "6cbb14c3afd814a0af9e46a58579ed58e6b6c69b670ff68ee3fde2c83ca4d680"
+      "bytes": 5887,
+      "sha256": "2c1acbd40ea40ef6d0a66cf922ec3e5853c89f27caadf4bdd7c0d08a3023117b"
     },
     {
       "order": 55,
@@ -1204,8 +1203,8 @@
         "insert-remove-and-reorder-named-concat-children",
         "state-trace-and-action-scope"
       ],
-      "bytes": 6903,
-      "sha256": "9d9acca4432978757129decaae64ea67d3e541e465636d1f4386a8d16ba1e905"
+      "bytes": 6913,
+      "sha256": "020de471154fa681dbe9d631b85c5dcbfd1e286d69a3c0aaf84ae854a64da95c"
     },
     {
       "order": 74,
@@ -1255,8 +1254,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 7294,
-      "sha256": "29d95703670118e278610619cba047b3876bfa12877017dbe6bcdf9793367740"
+      "bytes": 7299,
+      "sha256": "79eeb3de2d141b487fe097b52101044a16ec82a456eef897f0d6643e0e998617"
     },
     {
       "order": 77,
@@ -1336,8 +1335,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 5498,
-      "sha256": "0ca98ecac3df51c50f63e705d3c8aef278601d629092d65a32f10e89d2c89743"
+      "bytes": 5503,
+      "sha256": "c1cc8a5859da3382b36ebfc891d75b98ca551ec9de4773b45481422e8207ca26"
     },
     {
       "order": 82,
@@ -2896,8 +2895,8 @@
         "isolated-program-classes",
         "action-contract"
       ],
-      "bytes": 7627,
-      "sha256": "02712abf7535820066e06cf61f7931402d83985309b120df4b59b60f6ff01978"
+      "bytes": 7542,
+      "sha256": "8ffe55abba1593627088c8d074f92d03a4fa6f94dda017adcfd38c5ef0ef6ce6"
     },
     {
       "order": 127,
@@ -2911,8 +2910,8 @@
         "editgraphics-target-property-value-remove",
         "scale-materialization"
       ],
-      "bytes": 16661,
-      "sha256": "5bb04fa423620bfaf7a93a373f4a5a4511bf11be82d325eafd2ac96a0516c5b1"
+      "bytes": 16733,
+      "sha256": "06840cf810afc8145467b582d06a9c47ddbb0b36614274e9df05a6836e2f0695"
     },
     {
       "order": 128,
@@ -2979,8 +2978,8 @@
         "build-a-row-and-column-facet-grid",
         "repeat-a-positional-encoding-across-fields"
       ],
-      "bytes": 12840,
-      "sha256": "2bb3683e1fa13df7c0b3a5ad37cbdd2d67b359bccd3aca84778ab2b819b8c0fd"
+      "bytes": 12855,
+      "sha256": "0f5e25eb0c87fba08a23bfe807e63dc74f91cea4610635920b3b448e23c8ca68"
     },
     {
       "order": 133,
@@ -3023,8 +3022,8 @@
         "layoutlabelsoptions",
         "removelabellayoutoptions"
       ],
-      "bytes": 2609,
-      "sha256": "394d4097705834819301627080f4590a34396d7b62fcae14bc8e5f751fdb35cd"
+      "bytes": 2614,
+      "sha256": "00bab7a90be49712287e4c7d9c9175a75ff9705deaca0562b5b41511fe7c12da"
     },
     {
       "order": 136,
@@ -3169,8 +3168,8 @@
         "catalog-role-tags",
         "related"
       ],
-      "bytes": 6254,
-      "sha256": "44b1a3e915ceae38a8d0bfb9856a1698743b2c11976edf2e2a9e88c47f9d2c2a"
+      "bytes": 6106,
+      "sha256": "6051064606ddaf184073d026fc633e8d401a584ed28390bd82838b0cd6f50136"
     },
     {
       "order": 145,
@@ -3229,11 +3228,10 @@
       "headings": [
         "documentation-version",
         "choose-the-matching-documentation",
-        "migration-from-v0013",
-        "paper-compatibility"
+        "migration-from-v0013"
       ],
-      "bytes": 5479,
-      "sha256": "cebc709b2d663eb890e91d3446b0b9511ea3d8ba7e3f6c6729a675d57b2ab0d0"
+      "bytes": 2853,
+      "sha256": "60bd29ac3bce14c6e361ea32c8533d9a25b3ad7fc4b0f62e88f40d4dda668f0c"
     },
     {
       "order": 149,

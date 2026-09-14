@@ -3,9 +3,9 @@
   "status": "development",
   "packageVersion": "0.0.13",
   "contractId": "sha256:2badd89c96e73d87ca0c01f9f8c119c76f4b152be5196692cdb96638aecb75e1",
-  "sourceCommit": null,
-  "sourceRef": "main",
-  "exampleSourceRef": "codex/roadmap7-authoring-refinement",
+  "sourceCommit": "69353bac611e6c5b4f5d50288842f540ba5470cd",
+  "sourceRef": "69353bac611e6c5b4f5d50288842f540ba5470cd",
+  "exampleSourceRef": "69353bac611e6c5b4f5d50288842f540ba5470cd",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",

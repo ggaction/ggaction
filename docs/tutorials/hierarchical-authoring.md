@@ -93,8 +93,7 @@ createGuides
 
 This is one branch of the hierarchy, not the complete guide implementation.
 A whole-axis choice can delegate to tick choices, while an author who only wants
-longer ticks can call the focused editor. The [paper's Figure 3](https://www.hyeonjeon.com/assets/pdf/jeon27arxiv.pdf#page=7)
-illustrates this relative composition.
+longer ticks can call the focused editor.
 
 ## Read the delegation in the trace
 
@@ -123,9 +122,9 @@ update policy.
 
 ## Catalog role tags
 
-The repository also labels actions with H0–H4 for catalog lookup. These are
-implementation catalog tags, **not** the paper's two grammar units or trace
-depths. Several actions along the guide hierarchy above all have tag H3.
+The repository also labels actions with H0–H4 for catalog lookup. These tags
+group actions by role independently of their trace depth. Several actions along
+the guide hierarchy above all have tag H3.
 An action may have several tags, and a call may skip tags when it delegates.
 
 | Tag | Catalog grouping | Examples |

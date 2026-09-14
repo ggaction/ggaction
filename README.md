@@ -25,11 +25,6 @@ A program composes action calls in authoring order and retains their resulting
 immutable state. Authors read a linear sequence of decisions; an action may
 delegate to smaller actions recorded in its nested execution trace.
 
-This model comes from the [ggaction paper](https://www.hyeonjeon.com/assets/pdf/jeon27arxiv.pdf).
-See [the grammar's research basis](https://ggaction.github.io/ggaction/#research-basis)
-and [paper compatibility](https://ggaction.github.io/ggaction/version/#paper-compatibility)
-for its scope and the API revisions used by examples.
-
 The following fragment assumes `cars` is an array of row objects:
 
 ```javascript

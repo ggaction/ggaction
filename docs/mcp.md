@@ -15,11 +15,6 @@ files, make network requests, or collect telemetry.
 
 ## Measured impact
 
-This benchmark evaluates the MCP authoring workflow. It is separate from the
-paper's small-model grammar-generation and human-interpretation studies; their
-methods and metrics are not interchangeable. See the [research basis](./index.md#research-basis)
-for those studies and their limits.
-
 A fixed 576-run evaluation compared public-documentation browsing with
 MCP-first authoring plus bounded fallback across Terra, Luna, and Nano. Each
 model-condition cell contains 48 observations from the same 24 tasks and two

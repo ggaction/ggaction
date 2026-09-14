@@ -44,9 +44,9 @@ All notable changes to `ggaction` are recorded in this file.
 
 ### Changed
 
-- Clarified the paper's action/program grammar, relative action hierarchy,
-  decision-level atomicity, and research evidence. Catalog role tags and current
-  API additions are documented separately from the paper's evaluated system.
+- Clarified the action/program grammar, relative action hierarchy, and
+  decision-level atomicity. Catalog role tags are distinguished from action
+  delegation and package exposure.
 - Resource removal actions now record their semantic deletions as `editSemantic`
   children. The full extension primitive accepts whole unused source datasets
   and coordinates while retaining dependency guards and immutable snapshots.

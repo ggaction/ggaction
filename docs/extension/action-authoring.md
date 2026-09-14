@@ -18,8 +18,7 @@ installing them on the complete `chart()` program.
 
 ## Design an authoring action
 
-The [paper's design principles](https://www.hyeonjeon.com/assets/pdf/jeon27arxiv.pdf#page=6)
-concern the author's decision before the implementation's method signature:
+Define the author's decision before choosing the implementation's method signature:
 
 - **Meaningfulness:** choose a decision that an author would make on its own.
   Prefer familiar operation–target names, such as `editLineMark` for a line-style
