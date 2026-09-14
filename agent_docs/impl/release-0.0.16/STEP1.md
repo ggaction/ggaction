@@ -170,3 +170,9 @@ PR #131의 첫 run `34825970866`에서 source/render/browser, coverage, document
 - 최종 전체 source coverage는 line 95.14%, branch 91.92%, function 98.78%이며 99개 critical floor를 모두 통과했다. 중간 일반 suite의 생성 문서 3개 freshness 실패는 generator 실행 뒤 docs 120개 및 최종 전체 coverage 실행에서 재검증했다.
 - CI와 같은 Node 22.23.2의 실제 installed package 전체 consumer 통과: Full/Basic/SVG gzip 359,670/166,182/6,961 bytes. Native Node 22.23.1과의 압축 수치를 같은 runtime의 결과처럼 비교하지 않는다. Browser 상한은 유지했고, 공유 runtime 2개 파일 추가로 package entries 상한만 542로 맞췄다. 최종 local audit는 packed 725,084, unpacked 3,597,570 bytes다.
 - Main ruleset `20421930`에 `realistic-required`를 추가하고 기존 checks, strict mode와 bypass actor가 그대로임을 확인했다. 두 번째 PR CI 및 exact-tag release의 성공은 아직 이 checkpoint의 완료 주장에 포함하지 않는다.
+
+### Windows checkout byte parity
+
+두 번째 CI `34829264505`에서 Node 20/22/24 package와 macOS·Firefox·WebKit 검사는 통과했다. Windows는 npm 실행 이후 package 검사까지 진행했으며 자동 CRLF checkout으로 packed size가 730,787 bytes가 되어 상한을 넘었다. 배포 대상 source/types/knowledge 및 package metadata에만 LF checkout을 지정했다. 원본 CSV와 binary asset의 checkout 정책은 바꾸지 않는다.
+
+`core.autocrlf=true`의 별도 checkout으로 554개 파일이 원본과 byte-identical함을 확인했다. Node 22.23.2의 해당 checkout에서 실제 compact package를 만들고 542 entries, packed 726,464, unpacked 3,597,570 bytes를 확인했다. 크기 상한을 올리지 않았다. 최종 quiet benchmark는 이전과 같은 Node 22.23.1/Apple M4에서 7회 sample median으로 trace 16k append 70.25ms, 10k themed data-only 50개 action 0.73ms, 10k SVG 재출력 15.46ms다. 장치별 절대 성능 보장은 아니다.
