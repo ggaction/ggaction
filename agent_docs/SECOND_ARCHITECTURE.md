@@ -2342,6 +2342,12 @@ PDF는 vector output이므로 `pixelRatio`를 받지 않는다. `ggaction/pdf`�
 `ggaction/png`의 native/filesystem dependency는 browser-safe entry graph에 들어가지
 않는다.
 
+## 선택 의존성과 메모리 출력
+
+`@napi-rs/canvas`와 `@modelcontextprotocol/sdk`는 optional peer dependency다. 개발 환경에만 devDependency로 설치한다. Browser entry는 둘을 가져오지 않는다. Node renderer entry의 import는 native package 없이 성공하고, 실제 출력 시 lazy load하며 누락 시 명시적인 설치 명령을 반환한다. MCP CLI도 SDK 누락을 stderr에 안내하고 exit 1로 종료한다.
+
+`renderToPNGBuffer`/`renderToPDFBuffer`는 caller-owned Uint8Array와 dimension/byte metadata를 반환한다. 프로그램에 backend나 output buffer를 저장하지 않는다. File 함수는 같은 buffer 함수를 호출한 후 filesystem에 쓴다. PNG는 동기 Canvas drawing 후 native async encode를 사용하며 PDF construction/encoding은 동기다. Exact public contract는 `docs/api/rendering.md`와 해당 declaration이 소유한다.
+
 ## PNG adapter
 
 SVG/PNG/PDF의 plain-object와 closed-option 검증은 `renderers/options.js`가 공유한다.

@@ -140,12 +140,10 @@
     "registry": "https://registry.npmjs.org/",
     "tag": "latest"
   },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "1.30.0",
-    "@napi-rs/canvas": "^1.0.2"
-  },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "@napi-rs/canvas": "^1.0.2",
     "ajv": "^8.20.0",
     "es-module-lexer": "^1.7.0",
     "esbuild": "0.28.2",
@@ -153,5 +151,17 @@
     "playwright": "^1.61.1",
     "typescript": "^7.0.2",
     "vite": "^6.4.3"
+  },
+  "peerDependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "@napi-rs/canvas": "^1.0.2"
+  },
+  "peerDependenciesMeta": {
+    "@modelcontextprotocol/sdk": {
+      "optional": true
+    },
+    "@napi-rs/canvas": {
+      "optional": true
+    }
   }
 }

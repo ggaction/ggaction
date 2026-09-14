@@ -6,7 +6,7 @@ import test from "node:test";
 import { inflateSync } from "node:zlib";
 
 import { chart, hconcat } from "../../../src/index.js";
-import { renderToPDF } from "../../../src/renderers/pdf.js";
+import { renderToPDF, renderToPDFBuffer } from "../../../src/renderers/pdf.js";
 
 function completeGraphicSpec() {
   return {
@@ -391,4 +391,21 @@ test("rejects unsafe native geometry before replacing PDF output", async t => {
     /Canvas native geometry.*16777216/
   );
   assert.equal(await readFile(output, "utf8"), "existing");
+});
+
+
+test("PDF memory output preserves vector content, metadata, and preflight errors", async () => {
+  const graphicSpec = completeGraphicSpec();
+  const result = await renderToPDFBuffer({ graphicSpec }, { metadata: { title: "Memory chart" } });
+  assert.equal(result.buffer instanceof Uint8Array, true);
+  assert.equal(result.bytes, result.buffer.length);
+  assert.equal(result.pages, 1);
+  assert.equal(result.width, 160);
+  assert.equal(result.height, 120);
+  assert.equal(Object.isFrozen(result), true);
+  assert.match(Buffer.from(result.buffer).toString("latin1"), /^%PDF-/);
+  await assert.rejects(renderToPDFBuffer({ graphicSpec }, { output: "unused" }), /does not support option/);
+  await assert.rejects(renderToPDFBuffer({ graphicSpec }, { metadata: { title: 1 } }), /non-empty string/);
+  const invalid = chart().createCanvas({ width: 10.5, height: 10, margin: 0 });
+  await assert.rejects(renderToPDFBuffer(invalid), /positive integers/);
 });

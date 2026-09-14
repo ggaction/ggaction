@@ -30,7 +30,7 @@
 | 13 | 긴 trace의 append 비용이 누적된다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 14 | SVG가 매번 전체 graphicSpec을 직렬화·해시한다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 15 | 최소 산점도 번들이 예산 상한에 거의 도달했다 | 진행 전 | — |
-| 16 | 브라우저 전용 사용자도 MCP·네이티브 렌더 의존성을 설치한다 | 진행 전 | — |
+| 16 | 브라우저 전용 사용자도 MCP·네이티브 렌더 의존성을 설치한다 | 구현·검증 완료 | renderer/package/MCP 38개, docs/package 33개, 실제 bare→optional 설치·Full/Basic/타입/전체 package consumer 통과 |
 | 17 | 런타임 성능 회귀를 검출하는 공식 workload가 필요하다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 18 | 실제 폰트와 저작용 text bounds 차이를 줄일 선택지가 필요하다 | 진행 전 | — |
 | 19 | 릴리즈의 단일 순차 검증 경로가 약 59분 걸린다 | 진행 전 | — |
@@ -43,7 +43,7 @@
 | 26 | 원본 데이터의 불변 revision을 유지한 갱신 흐름 | 진행 전 | — |
 | 27 | 저장·복원을 위한 버전 있는 snapshot/recipe 경계 | 진행 전 | — |
 | 28 | 구조화된 진단과 실제 한도 안내 | 진행 전 | — |
-| 29 | PNG/PDF 메모리 출력과 비동기 비용 경계 | 진행 전 | — |
+| 29 | PNG/PDF 메모리 출력과 비동기 비용 경계 | 구현·검증 완료 | renderer/package/MCP 38개, docs/package 33개, 실제 bare→optional 설치·Full/Basic/타입/전체 package consumer 통과 |
 | 30 | 접근성 보조 출력을 최종 시각적 데이터 단위와 연결한다 | 진행 전 | — |
 | 31 | 릴리즈 준비를 하나의 검토 가능한 변경으로 생성한다 | 진행 전 | — |
 
@@ -69,3 +69,7 @@ Scale의 band padding 단위를 grammar registry에서 공유한다. Parallel을
 ### Immutable performance checkpoint
 
 Owned subtree 재사용, data-only theme fast path, persistent trace children, immutable SVG hash cache를 도입했다. 공개 Array trace·순서·ID·직렬화와 mutable renderer input의 재계산을 보존한다. `benchmark:runtime`은 환경 및 7개 sample을 남기고 같은 환경 baseline 대비 회귀를 검출한다. 실제 10k themed data 50개 추가 median 0.63ms, SVG 반복 14.83ms, trace 16k append 71.41ms를 기록했다. 감사의 각각 467.94/22.53/218.61ms보다 낮다. 서로 다른 실행의 측정이라 절대 성능 보장으로 취급하지 않는다. Architecture의 오래된 ranged encoding 경로를 고치고 현재 source link test를 추가했다.
+
+### Optional backends and memory output checkpoint
+
+PNG/PDF Buffer API와 async PNG encoding을 추가하고 파일 출력이 같은 경로를 사용하게 했다. Optional peer 누락 상태에서 browser/entry import·명확한 오류를 실제 tarball 설치로 검증한 뒤 두 peer를 설치해 Node/MCP/type/tutorial/브라우저 bundle 전체 consumer를 통과했다. Package 상한은 backend loader 1개 및 API/type/docs 증가를 위해 523 files/3,565,000 unpacked bytes로 맞췄으며 packed/gzip 상한은 유지한다. Browser full/basic gzip 358,817/174,478 bytes로 통과했으나 항목 15의 여유 확보는 아직 남아 있다.

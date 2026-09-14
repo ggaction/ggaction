@@ -89,6 +89,10 @@ Install the current public release:
 npm install ggaction
 ```
 
+For Node PNG/PDF output, also install `@napi-rs/canvas`. For the MCP server,
+also install `@modelcontextprotocol/sdk`. These are optional peer dependencies;
+browser Canvas/SVG users do not need either package.
+
 Add the Canvas element that the rendering code targets. Its accessible name and
 fallback text summarize the chart for contexts where Canvas pixels are not
 available:

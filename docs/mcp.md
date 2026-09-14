@@ -41,7 +41,7 @@ failure analysis, and limitations.
 Install `ggaction` in the project where the MCP client will run:
 
 ```bash
-npm install ggaction
+npm install ggaction @modelcontextprotocol/sdk
 ```
 
 Launch the installed executable from that project:

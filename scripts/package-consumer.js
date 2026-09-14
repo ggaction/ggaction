@@ -1,4 +1,4 @@
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -79,8 +79,8 @@ async function testNodeConsumer(directory) {
     import { chart, hconcat, render, vconcat } from "ggaction";
     import { chart as basicChart, render as basicRender } from "ggaction/basic";
     import { action, ChartProgram, registerExtension } from "ggaction/extension";
-    import { renderToPDF } from "ggaction/pdf";
-    import { renderToPNG } from "ggaction/png";
+    import { renderToPDF, renderToPDFBuffer } from "ggaction/pdf";
+    import { renderToPNG, renderToPNGBuffer } from "ggaction/png";
     import { renderToSVG } from "ggaction/svg";
 
     const program = chart()
@@ -1820,6 +1820,12 @@ async function testNodeConsumer(directory) {
       "facetGrid", "repeatCharts", "editFacetSource",
       "insertCompositionChild", "removeCompositionChild", "reorderCompositionChildren"
     ]) assert.equal(basicChart()[method], undefined, method);
+    const memoryPNG = await renderToPNGBuffer(program);
+    const memoryPDF = await renderToPDFBuffer(program);
+    assert.equal(memoryPNG.buffer instanceof Uint8Array, true);
+    assert.equal(memoryPDF.buffer instanceof Uint8Array, true);
+    assert.equal(memoryPNG.bytes, memoryPNG.buffer.length);
+    assert.equal(memoryPDF.pages, 1);
     const result = await renderToPNG(program, {
       output: ${JSON.stringify(output)},
       pixelRatio: 1
@@ -2537,11 +2543,11 @@ async function testTypeScriptConsumer(directory) {
     } from "ggaction";
     import { action, ChartProgram as ExtensionProgram } from "ggaction/extension";
     import {
-      renderToPDF,
+      renderToPDF, renderToPDFBuffer, type PDFBufferResult,
       type PDFMetadata,
       type PDFRenderResult
     } from "ggaction/pdf";
-    import { renderToPNG, type PNGRenderResult } from "ggaction/png";
+    import { renderToPNG, renderToPNGBuffer, type PNGBufferResult, type PNGRenderResult } from "ggaction/png";
     import {
       renderToSVG,
       type SVGRenderOptions
@@ -3441,6 +3447,13 @@ async function testTypeScriptConsumer(directory) {
     const removeOptions: RemoveCompositionChildOptions = { target: "view-2" };
     const typedRemoved: ChartProgram = typedReordered.removeCompositionChild(removeOptions);
     const draw: typeof render = render;
+    const pngMemory: Promise<PNGBufferResult> = renderToPNGBuffer(program, { pixelRatio: 2 });
+    const pdfMemory: Promise<PDFBufferResult> = renderToPDFBuffer(program);
+    // @ts-expect-error Memory output does not accept filesystem options.
+    renderToPNGBuffer(program, { output: "chart.png" });
+    // @ts-expect-error PDF memory output does not accept raster density.
+    renderToPDFBuffer(program, { pixelRatio: 2 });
+    void pngMemory; void pdfMemory;
     const png: Promise<PNGRenderResult> = renderToPNG(program, { output: "chart.png" });
     const pdfMetadata: PDFMetadata = {
       title: "Typed PDF",
@@ -4135,9 +4148,44 @@ async function testTypeScriptConsumer(directory) {
   run(tscCommand, ["--project", "tsconfig.json"], directory);
 }
 
+async function testOptionalDependencies(consumer) {
+  const source = `
+    import assert from "node:assert/strict";
+    import { chart } from "ggaction";
+    import { chart as basic } from "ggaction/basic";
+    import { renderToSVG } from "ggaction/svg";
+    import { renderToPNGBuffer } from "ggaction/png";
+    import { renderToPDFBuffer } from "ggaction/pdf";
+    for (const name of ["@napi-rs/canvas", "@modelcontextprotocol/sdk"]) {
+      assert.throws(() => import.meta.resolve(name), { code: "ERR_MODULE_NOT_FOUND" });
+    }
+    const program = chart().createCanvas();
+    assert.match(renderToSVG(program), /<svg/);
+    assert.match(renderToSVG(basic().createCanvas()), /<svg/);
+    for (const render of [renderToPNGBuffer, renderToPDFBuffer]) {
+      await assert.rejects(render(program), error => error.message.includes("npm install ggaction @napi-rs/canvas"));
+    }
+  `;
+  await writeFile(path.join(consumer.directory, "optional-consumer.mjs"), source);
+  run(process.execPath, ["optional-consumer.mjs"], consumer.directory);
+  const cli = spawnSync(process.execPath, ["node_modules/ggaction/src/mcp/cli.js"], {
+    cwd: consumer.directory, encoding: "utf8"
+  });
+  if (cli.status !== 1 || !cli.stderr.includes("npm install ggaction @modelcontextprotocol/sdk")) {
+    throw new Error(`Missing SDK diagnostic failed: ${cli.stderr}`);
+  }
+  const peers = consumer.installedManifest.peerDependencies;
+  run(npmCommand, ["install", "--ignore-scripts", "--no-audit", "--no-fund",
+    ...Object.entries(peers).map(([name, version]) => `${name}@${version}`)
+  ], consumer.directory, { env: {
+    ...process.env, NPM_CONFIG_CACHE: path.join(consumer.directory, ".npm-cache")
+  } });
+}
+
 export async function testPackageConsumer(options) {
   const consumer = await preparePackageConsumer(options);
   try {
+    await testOptionalDependencies(consumer);
     await testNodeConsumer(consumer.directory);
     const mcp = await testMcpConsumer(consumer.directory);
     await testTypeScriptConsumer(consumer.directory);

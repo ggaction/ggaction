@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
-import { PDFDocument } from "@napi-rs/canvas";
+import { loadNativeBackend } from "./nativeBackend.js";
 
 import {
   drawResolvedGraphicSpec,
@@ -12,6 +12,7 @@ import { preflightCanvasGraphicSpec } from "./canvas/native.js";
 import { validateRendererOptions } from "./options.js";
 
 const PDF_OPTIONS = new Set(["output", "metadata"]);
+const BUFFER_OPTIONS = new Set(["metadata"]);
 const PDF_METADATA = new Set([
   "title",
   "author",
@@ -55,25 +56,6 @@ function requireMetadata(metadata) {
   return resolved;
 }
 
-function requirePDFOptions(options) {
-  validateRendererOptions(options, PDF_OPTIONS, "renderToPDF options");
-  if (typeof options.output !== "string" || options.output.length === 0) {
-    throw new TypeError("renderToPDF requires a non-empty output path.");
-  }
-  return {
-    output: resolve(options.output),
-    metadata: requireMetadata(options.metadata)
-  };
-}
-
-function renderPDFBuffer(target, metadata) {
-  const document = new PDFDocument(metadata);
-  const context = document.beginPage(target.width, target.height);
-  drawResolvedGraphicSpec(target, context);
-  document.endPage();
-  return document.close();
-}
-
 function requirePDFPageDimensions(target) {
   if (![target.width, target.height].every(value =>
     Number.isSafeInteger(value) && value > 0 && value <= MAX_PDF_DIMENSION
@@ -84,22 +66,32 @@ function requirePDFPageDimensions(target) {
   }
 }
 
-export async function renderToPDF(program, options = {}) {
-  const { output, metadata } = requirePDFOptions(options);
+export async function renderToPDFBuffer(program, options = {}) {
+  validateRendererOptions(options, BUFFER_OPTIONS, "renderToPDFBuffer options");
+  const metadata = requireMetadata(options.metadata);
   const graphicSpec = requireProgramGraphicSpec(program);
   const target = resolveGraphicRenderTarget(graphicSpec);
   requirePDFPageDimensions(target);
   preflightCanvasGraphicSpec(target);
-  const buffer = renderPDFBuffer(target, metadata);
+  const { PDFDocument } = await loadNativeBackend();
+  const document = new PDFDocument(metadata);
+  const context = document.beginPage(target.width, target.height);
+  drawResolvedGraphicSpec(target, context);
+  document.endPage();
+  const buffer = document.close();
+  return Object.freeze({
+    buffer, width: target.width, height: target.height, pages: 1, bytes: buffer.length
+  });
+}
 
+export async function renderToPDF(program, options = {}) {
+  validateRendererOptions(options, PDF_OPTIONS, "renderToPDF options");
+  if (typeof options.output !== "string" || options.output.length === 0) {
+    throw new TypeError("renderToPDF requires a non-empty output path.");
+  }
+  const { buffer, ...result } = await renderToPDFBuffer(program, { metadata: options.metadata });
+  const output = resolve(options.output);
   await mkdir(dirname(output), { recursive: true });
   await writeFile(output, buffer);
-
-  return Object.freeze({
-    output,
-    width: target.width,
-    height: target.height,
-    pages: 1,
-    bytes: buffer.length
-  });
+  return Object.freeze({ output, ...result });
 }

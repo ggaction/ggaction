@@ -11,6 +11,11 @@ Render one fully materialized `ChartProgram` to Browser Canvas, a browser-safe
 SVG string, a Node PNG file, or a single-page vector PDF. Choose the target
 based on where the output runs and how it will be consumed.
 
+Canvas and SVG need only `npm install ggaction`. For Node PNG and PDF, install
+the optional native backend with `npm install ggaction @napi-rs/canvas`.
+Importing the PNG/PDF entry works without the backend; calling it then reports
+the required installation command. No dependency is installed automatically.
+
 ## At a glance
 
 | Target | Environment | Shortest call | Use when |
@@ -167,6 +172,19 @@ Missing output directories are created. A logical 640×400 chart at ratio 2
 produces a 1280×800 image. The result contains the absolute `output`, physical
 `width` and `height`, `pixelRatio`, and byte count.
 
+## PNG in memory
+
+For HTTP responses, object storage, or other host-controlled output, use the
+Node-only `renderToPNGBuffer(program, { pixelRatio })` from `ggaction/png`.
+Options are optional and accept only `pixelRatio` (default 1). The result is
+`{ buffer, width, height, pixelRatio, bytes }`, where `buffer` is a caller-owned
+`Uint8Array` and dimensions are physical pixels. Each call returns independent
+bytes. The result object is frozen; its byte array remains writable.
+
+Canvas drawing and geometry validation are synchronous. PNG encoding runs
+asynchronously in the native backend; the returned Promise does not move chart
+authoring or Canvas drawing off the JavaScript thread.
+
 ## PDF output
 
 The Node-only PDF entry writes one completed chart as one vector PDF page:
@@ -229,6 +247,19 @@ the complete finite JavaScript number range.
 Line curve actions resolve interpolation into those commands before rendering.
 Canvas, SVG, and PDF execute `L` and cubic `C` segments but do not read curve
 names or calculate control points.
+
+## PDF in memory
+
+The Node-only `renderToPDFBuffer(program, { metadata })` from `ggaction/pdf`
+accepts the same optional metadata as file output and returns
+`{ buffer, width, height, pages: 1, bytes }`. Options may be omitted. The
+caller-owned `Uint8Array` contains one vector PDF page; dimensions are logical
+PDF points. The result object is frozen and its bytes remain writable.
+
+Both memory functions reject `output`; PDF also rejects `pixelRatio`. File
+functions call their corresponding memory function before creating directories
+or replacing files. PDF construction and encoding are synchronous even though
+the public function returns a Promise. Use a host worker for expensive jobs.
 
 ## Errors and limitations
 

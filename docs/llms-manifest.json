@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:c4cd01c269a1df323cd586e5b2407f4d1ee9b3999f7fdf74e9755d6ac6a4b2ed",
+    "contractId": "sha256:bd43525eb7582b6861ec99e0269b3ad73ad4e9fdb5b8511e3171cccccabeecc2",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -46,8 +46,8 @@
         "runnable-repository-examples",
         "next"
       ],
-      "bytes": 5427,
-      "sha256": "e61192453d3afa18c6bf72642351d86575ae063ca51c19610aa5d60bd9ce90ec"
+      "bytes": 5623,
+      "sha256": "5d3a1b058d084ffc036d1f8fc88d52672f6700b0e45d4712219a9f9bfeb3b50d"
     },
     {
       "order": 3,
@@ -63,8 +63,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 10017,
-      "sha256": "eee0a96c61f593a080f05418da3ef7876763d8a23d395e504c29c345280beac1"
+      "bytes": 10043,
+      "sha256": "1488bfbdd4c2dff485e54a4e9765e68d291573fdcc5888baf82a8af31abacf41"
     },
     {
       "order": 4,
@@ -1176,12 +1176,14 @@
         "browser-canvas",
         "svg-output",
         "png-output",
+        "png-in-memory",
         "pdf-output",
+        "pdf-in-memory",
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 9658,
-      "sha256": "9b42ff9ac80300a62fd2a684bdf99c035056c87a3fe636e0d692691d424622d1"
+      "bytes": 11346,
+      "sha256": "ee40811312609e49d2bb74b0c0e4f7643631fe026afd53d80ab18c570a81efe3"
     },
     {
       "order": 73,
@@ -2280,8 +2282,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 3574,
-      "sha256": "e8dfe1b0f0d4c0fed23fa3e1cbd92ecfbf5dee99760d07b18b5f46e1c53a6a1b"
+      "bytes": 4089,
+      "sha256": "77b2c4fbe92e10d9916c8b32283445033084508921e44468f5b112e24b911932"
     },
     {
       "order": 125,
@@ -3233,7 +3235,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "9c989ad1fa78a8e6d0ce06a3fe2b55faae24c8c9b0717650533444ae7657012f"
+      "sha256": "b0b979b446c0b5937aca6d31b339053933b604c09740dff72205c9105c2b7b75"
     },
     {
       "order": 149,

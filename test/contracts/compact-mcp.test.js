@@ -259,7 +259,7 @@ test("keeps the MCP implementation out of chart execution and network surfaces",
   assert.deepEqual(packageJson.bin, {
     "ggaction-mcp": "./src/mcp/cli.js"
   });
-  assert.equal(packageJson.dependencies["@modelcontextprotocol/sdk"], "1.30.0");
+  assert.equal(packageJson.peerDependencies["@modelcontextprotocol/sdk"], "1.30.0");
   assert.equal(Object.keys(packageJson.exports).includes("./mcp"), false);
 
   const sources = [

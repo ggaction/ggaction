@@ -24,3 +24,12 @@ export function renderToPDF(
   program: Pick<ChartProgram, "graphicSpec">,
   options: PDFRenderOptions
 ): Promise<PDFRenderResult>;
+
+export interface PDFBufferResult extends Omit<PDFRenderResult, "output"> {
+  readonly buffer: Uint8Array;
+}
+
+export function renderToPDFBuffer(
+  program: Pick<ChartProgram, "graphicSpec">,
+  options?: { metadata?: PDFMetadata }
+): Promise<PDFBufferResult>;

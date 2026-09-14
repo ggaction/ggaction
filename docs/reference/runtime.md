@@ -73,6 +73,15 @@ export function renderToPNG(
   program: Pick<ChartProgram, "graphicSpec">,
   options: { output: string; pixelRatio?: number }
 ): Promise<PNGRenderResult>;
+
+export interface PNGBufferResult extends Omit<PNGRenderResult, "output"> {
+  readonly buffer: Uint8Array;
+}
+
+export function renderToPNGBuffer(
+  program: Pick<ChartProgram, "graphicSpec">,
+  options?: { pixelRatio?: number }
+): Promise<PNGBufferResult>;
 ```
 
 #### `ggaction/pdf`
@@ -102,6 +111,15 @@ export function renderToPDF(
   program: Pick<ChartProgram, "graphicSpec">,
   options: PDFRenderOptions
 ): Promise<PDFRenderResult>;
+
+export interface PDFBufferResult extends Omit<PDFRenderResult, "output"> {
+  readonly buffer: Uint8Array;
+}
+
+export function renderToPDFBuffer(
+  program: Pick<ChartProgram, "graphicSpec">,
+  options?: { metadata?: PDFMetadata }
+): Promise<PDFBufferResult>;
 ```
 
 <!-- END GENERATED RUNTIME SIGNATURES -->

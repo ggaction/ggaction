@@ -23,7 +23,8 @@ export async function buildDocProvenance({ releaseContract } = {}) {
     hash.update(file); hash.update(await readFile(path.join(root, file)));
   }
   hash.update(JSON.stringify({ version: packageInfo.version, exports: packageInfo.exports,
-    dependencies: packageInfo.dependencies, engines: packageInfo.engines }));
+    dependencies: packageInfo.dependencies, peerDependencies: packageInfo.peerDependencies,
+    peerDependenciesMeta: packageInfo.peerDependenciesMeta, engines: packageInfo.engines }));
   const sourceCommit = execFileSync("git", ["log", "-1", "--format=%H", "--", "src", "types"], { cwd: root, encoding: "utf8" }).trim();
   const dirty = execFileSync("git", ["diff", "HEAD", "--", "src", "types"], { cwd: root, encoding: "utf8" }).length > 0;
   const baselineDiff = execFileSync("git", ["diff", "--name-only", baseline.commit, "--", "src", "types"], { cwd: root, encoding: "utf8" });
