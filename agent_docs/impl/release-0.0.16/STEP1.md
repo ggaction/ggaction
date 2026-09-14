@@ -29,7 +29,7 @@
 | 12 | preview가 관계없는 원본 데이터까지 다시 복사한다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 13 | 긴 trace의 append 비용이 누적된다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 14 | SVG가 매번 전체 graphicSpec을 직렬화·해시한다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
-| 15 | 최소 산점도 번들이 예산 상한에 거의 도달했다 | 부분 구현·검증 | Basic gzip 174,967→165,806; Full 신규 기능 포함 359,795. 공통 validator/gradient/typography와 factory tree shaking 적용; 최종 budget 재평가 필요 |
+| 15 | 최소 산점도 번들이 예산 상한에 거의 도달했다 | 구현·검증 완료; Full 여유 제한 기록 | 권장 Basic 최소 차트 gzip 174,967→165,806 (약 5.2% 감소). Full 신규 기능 포함 359,782로 기존 360,000 상한 유지; 추가 여유는 218 bytes |
 | 16 | 브라우저 전용 사용자도 MCP·네이티브 렌더 의존성을 설치한다 | 구현·검증 완료 | renderer/package/MCP 38개, docs/package 33개, 실제 bare→optional 설치·Full/Basic/타입/전체 package consumer 통과 |
 | 17 | 런타임 성능 회귀를 검출하는 공식 workload가 필요하다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 18 | 실제 폰트와 저작용 text bounds 차이를 줄일 선택지가 필요하다 | 구현·검증 완료 | exact-font profile, fallback, wrapped rematerialization, composition/Basic adoption, persistence, 타입 및 installed consumer 통과 |
@@ -45,7 +45,7 @@
 | 28 | 구조화된 진단과 실제 한도 안내 | 구현·검증 완료 | 진단·불변성·selectors·타입·bare 및 installed package; 일반 3690개 중 문서 목록 1개 수정 후 해당 계약 재통과 |
 | 29 | PNG/PDF 메모리 출력과 비동기 비용 경계 | 구현·검증 완료 | renderer/package/MCP 38개, docs/package 33개, 실제 bare→optional 설치·Full/Basic/타입/전체 package consumer 통과 |
 | 30 | 접근성 보조 출력을 최종 시각적 데이터 단위와 연결한다 | 구현·검증 완료 | 집계·histogram 보존·오차 구간·UTC line·Parallel·facet/concat·음성·browser graph, 전체 corpus 및 installed consumer 통과 |
-| 31 | 릴리즈 준비를 하나의 검토 가능한 변경으로 생성한다 | 도구 구현·검증; 실제 0.0.16 준비 대기 | canonical version/changelog plan·drift/날짜/다운그레이드/빈 노트 거부·재실행 동치, 27개 영향 계약 및 docs 120개 통과 |
+| 31 | 릴리즈 준비를 하나의 검토 가능한 변경으로 생성한다 | 구현·실제 version 준비 검증 완료 | package/lock/runtime/README/Jekyll/MCP/Context7 동기화, generator·음성·재실행 동치; 최종 19개 계약 및 docs 120개 통과 |
 
 ## 검증 checkpoint
 
@@ -149,3 +149,11 @@ Browser-safe 별도 entry에서 final item adapter와 pure path series를 읽는
 `release:prepare`는 clean tree에서 package/lock/runtime/README version 및 Unreleased notes를 먼저 검증하고 변경안을 생성한다. 같은 버전의 재실행은 노트/날짜를 보존하며 committed runtime의 provenance를 재생성한다. Release contract hash·canonical documentation generators·local notes·preparation manifest를 연결하고 publish/tag/push/commit은 실행하지 않는다. 발전 중인 코드가 바로 published provenance로 잘못 표시되지 않도록 기존 dirty-state 정책을 유지한다. API/package/MCP tests의 과거 version literal은 canonical runtime identity와 실제 package를 비교하게 바꿨다.
 
 순수 plan의 동치·보존·음성 입력과 기존 candidate/notes/MCP/package 경계를 검증했다. 전체 문서 120개 통과. Jekyll은 로컬 Ruby 3.2.11에서 build와 preflight를 통과했으며 CI의 고정 Ruby 3.2.6 결과를 별도로 확인한다. 실제 version 준비 및 통합 검증은 다음 단계다.
+
+### 0.0.16 integration preparation
+
+전체 일반 suite 3,755/3,755와 실제 0.0.16 installed package consumer가 통과했다. 최초 version 변경 검사에서 Jekyll version, MCP taxonomy/resources version, Context7 pinned version 누락을 찾아 preparation 입력·검증·출력에 추가했다. Accessibility의 architecture package inventory와 capability 정렬도 고쳤다. 영향 검사 69개, 최종 docs 120개 및 package/MCP/preparation 등 19개 통과.
+
+권장 Basic entry의 최소 산점도 gzip은 165,806 bytes로 감사 기준보다 9,161 bytes 작다. Full은 모든 등록 action을 유지하므로 신규 기능과 함께 359,782 bytes이며 상한 대비 여유가 작다는 제한을 기록한다. 큰 Full 축소를 달성했다고 주장하지 않는다. SVG는 6,956 bytes다. Browser 한도는 변경하지 않았다. 최종 tarball audit는 540 files, packed 725,076, unpacked 3,606,432 bytes다. Packed 상한은 새 API와 릴리즈 설명 증가를 반영해 730,000으로 맞췄고 unpacked 3,610,000을 유지했다.
+
+실제 release:prepare 재실행은 버전 0.0.16과 source contract를 보존하고 committed runtime의 문서 provenance 및 local notes를 생성했다. 이 기록은 PR 전 snapshot이다. CI의 coverage/realistic/platform/browser 및 exact-candidate release 검증, main 보호 규칙 추가와 실제 배포는 다음 단계에 남긴다.
