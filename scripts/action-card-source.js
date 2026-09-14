@@ -1,3 +1,4 @@
+import { IMPUTE_REQUIRED_OPTIONS } from "../src/core/optionRequirements.js";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -437,6 +438,15 @@ function callPattern(action, options) {
 }
 
 function callPatterns(action, options, intentSource) {
+  if (action.name === "createImputedData") {
+    const branches = new Map();
+    for (const [method, required] of Object.entries(IMPUTE_REQUIRED_OPTIONS)) {
+      const key = required.join(", ");
+      branches.set(key, [...(branches.get(key) ?? []), JSON.stringify(method)]);
+    }
+    return [...branches].map(([required, methods]) =>
+      `${action.name}({ id, fields, method: ${methods.join(" | ")}, ${required}, source?, groupBy? })`);
+  }
   return intentSource.callPatternOverrides[action.name] ?? [callPattern(action, options)];
 }
 

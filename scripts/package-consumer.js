@@ -2267,8 +2267,8 @@ async function testMcpConsumer(directory) {
   ) {
     throw new Error("Installed completion or primitive discovery metadata is stale.");
   }
-  if (taskPacketSchema.properties?.schemaVersion?.const !== 4) {
-    throw new Error("Installed task packet schema must require schemaVersion 4.");
+  if (taskPacketSchema.properties?.schemaVersion?.const !== 5) {
+    throw new Error("Installed task packet schema must require schemaVersion 5.");
   }
   if (
     intentTaxonomySchema.$id !==
@@ -2311,7 +2311,7 @@ async function testMcpConsumer(directory) {
     }
     const packet = JSON.parse(result.content[0].text);
     if (
-      packet.schemaVersion !== 4 ||
+      packet.schemaVersion !== 5 ||
       packet.packageVersion !== installedPackage.version ||
       packet.authoring?.initialize !== "let program = chart()" ||
       packet.authoring?.prerequisites?.length !== 2 ||
@@ -4285,7 +4285,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "private-export-rejection",
       "installed-local-mcp",
       "direct-mcp-byte-equality",
-      "task-packet-v4-authoring-execution",
+      "task-packet-v5-authoring-execution",
       "explicit-unresolved-docs-fallback",
       "terminal-unsupported-no-fallback"
     ]

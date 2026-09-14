@@ -21,9 +21,9 @@
 | 04 | 세 저수준 primitive는 알 수 없는 최상위 옵션을 조용히 버린다 | 구현·검증 완료 | 입력/타입/renderer 82개 통과; 통합 검사 및 영향 계약 재검증 |
 | 05 | PNG만 renderer 옵션 검증 정책이 다르다 | 구현·검증 완료 | 입력/타입/renderer 82개 통과; 통합 검사 및 영향 계약 재검증 |
 | 06 | createData TypeScript 선언이 런타임보다 지나치게 넓다 | 구현·검증 완료 | 입력/타입/renderer 82개 통과; 통합 검사 및 영향 계약 재검증 |
-| 07 | MCP가 복합 요청의 일부를 누락하고도 미해결 사항이 없다고 말한다 | 진행 전 | — |
+| 07 | MCP가 복합 요청의 일부를 누락하고도 미해결 사항이 없다고 말한다 | 구현·검증 완료 | 85개 MCP·카드·문서·패키지 계약, installed consumer 및 15개 의미 평가 통과 |
 | 08 | focused scale editor 6개의 padding 단위가 잘못 생성된다 | 구현·검증 완료 | canonical scale unit registry; 카드·계층·문서·패키지 15개 통과 |
-| 09 | MCP requiredOptions가 필수 옵션과 예제에 등장한 옵션을 혼합한다 | 진행 전 | — |
+| 09 | MCP requiredOptions가 필수 옵션과 예제에 등장한 옵션을 혼합한다 | 구현·검증 완료 | 85개 MCP·카드·문서·패키지 계약, installed consumer 및 15개 의미 평가 통과 |
 | 10 | 현재 아키텍처 문서에 존재하지 않는 구현 경로가 남아 있다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 11 | 테마가 무관한 액션에도 전체 그래픽을 순회한다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 12 | preview가 관계없는 원본 데이터까지 다시 복사한다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
@@ -38,8 +38,8 @@
 | 21 | 자동 검증이 Ubuntu·Chromium에 집중되어 있다 | 진행 전 | — |
 | 22 | 실패한 렌더·문서 테스트의 진단 artifact를 자동 보존해야 한다 | 진행 전 | — |
 | 23 | 높은 coverage를 보완할 공통 음성 계약·교차층 테스트가 필요하다 | 진행 전 | — |
-| 24 | 실행 계약과 생성 메타데이터의 의미 원본을 좁혀야 한다 | 진행 전 | — |
-| 25 | MCP 평가는 실행 성공과 요구 충족을 분리해야 한다 | 진행 전 | — |
+| 24 | 실행 계약과 생성 메타데이터의 의미 원본을 좁혀야 한다 | 부분 구현·검증 | scale 단위 및 impute 조건부 필수값 공유; architecture의 상세 계약 분리 정리 남음 |
+| 25 | MCP 평가는 실행 성공과 요구 충족을 분리해야 한다 | 구현·검증 완료 | 85개 MCP·카드·문서·패키지 계약, installed consumer 및 15개 의미 평가 통과 |
 | 26 | 원본 데이터의 불변 revision을 유지한 갱신 흐름 | 진행 전 | — |
 | 27 | 저장·복원을 위한 버전 있는 snapshot/recipe 경계 | 진행 전 | — |
 | 28 | 구조화된 진단과 실제 한도 안내 | 구현·검증 완료 | 진단·불변성·selectors·타입·bare 및 installed package; 일반 3690개 중 문서 목록 1개 수정 후 해당 계약 재통과 |
@@ -81,3 +81,7 @@ Error identity/class를 보존하는 WeakMap metadata와 browser-safe entry를 �
 ### Built-in tree shaking checkpoint
 
 239개 top-level built-in action declaration에만 pure call annotation을 적용했다. 등록 함수와 extension author의 action() 검증은 그대로 실행된다. 실제 bundled subset에서 미사용 wrapper 제거 및 invalid extension metadata 예외 보존을 검증했고 18개 계약과 전체 installed package consumer가 통과했다. Basic은 기존 175,000-byte 상한 대비 6,816 bytes 여유를 확보했다. Full은 모든 action을 등록하므로 감소가 48 bytes에 그쳤고 항목 15의 최종 budget 검토를 남긴다.
+
+### MCP requirements checkpoint
+
+Packet v5에서 requiredOptions와 sample/configured options를 분리했다. Impute conditional rule은 runtime validator·card callPatterns·resolver가 같은 pure registry를 사용한다. Red/log/rotation explicit options와 derived creator→focused editor의 known owner 연결을 실제 실행한다. 해석된 phrase/option source coverage의 union을 제외한 유의미한 원문은 미해결로 보존한다. 새 평가 15개는 execution 15/15, fulfillment 10/15, 예상한 unresolved 5개, false completion 0이며 package/contract/taxonomy/card/resolver/case hash를 기록한다. 기존 LLM 실험 기록은 변경하지 않았다. 85개 영향 계약과 실제 installed package consumer가 통과했다.

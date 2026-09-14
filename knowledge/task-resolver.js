@@ -1,3 +1,4 @@
+import { IMPUTE_REQUIRED_OPTIONS } from "../src/core/optionRequirements.js";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -923,6 +924,33 @@ function actionCall(provider, options) {
   return `program.${provider.name}(${body.length === 0 ? "{}" : `{ ${body} }`})`;
 }
 
+function linkCreatedDataEditors(entries) {
+  const created = new Map();
+  return entries.map(entry => {
+    if (entry.provider.kind !== "action") return entry;
+    const name = entry.provider.name;
+    const call = actionCall(entry.provider, mergeOptionValues(entry.provider, entry.coverage));
+    if (/^create.+Data$/.test(name)) {
+      const id = call.match(/\bid\s*:\s*"([A-Za-z0-9_-]+)"/)?.[1];
+      if (id) created.set(name, id);
+    }
+    if (/^edit.+Data$/.test(name)) {
+      const id = created.get(name.replace(/^edit/, "create"));
+      if (id) return entryWithRequestedOptions(entry, new Map([["target", codeString(id)]]));
+    }
+    return entry;
+  });
+}
+
+function requiredOptionNames(card, call) {
+  const required = card.options.filter(option => option.required).map(option => option.name);
+  if (card.name === "createImputedData") {
+    const method = call.match(/\bmethod\s*:\s*["'](constant|forward|backward|linear)["']/)?.[1];
+    required.push(...(IMPUTE_REQUIRED_OPTIONS[method] ?? []));
+  }
+  return unique(required);
+}
+
 function planEntry(entry, step) {
   const { provider, coverage } = entry;
   const mergedOptions = mergeOptionValues(provider, coverage);
@@ -952,7 +980,7 @@ function planEntry(entry, step) {
       kind: provider.kind,
       name: provider.name,
       constraints: coverage,
-      requiredOptions: provider.exactOptionNames ?? [...options.keys()],
+      requiredOptions: requiredOptionNames(card, actionCall(provider, options)),
       signature: card.signature,
       route: card.route
     },
@@ -1144,6 +1172,69 @@ function applyRequestedOptions(entries, query) {
     }
     return true;
   };
+
+  const rejectRequirement = (source, constraint, reason) => {
+    unmatchedRequirements.push(source);
+    unresolved.push(unresolvedDecision(constraint, reason));
+  };
+  const singleFacade = names => {
+    const owners = configured.filter(entry => names.includes(entry.provider.name));
+    const allCharts = configured.filter(entry => entry.provider.kind === "action" &&
+      cards.get(entry.provider.name)?.domain === "charts");
+    return owners.length === 1 && allCharts.length === 1 ? owners[0] : undefined;
+  };
+  const addEditor = (name, values, source) => {
+    let target = configured.find(entry => entry.provider.name === name);
+    if (!target) {
+      const card = cards.get(name);
+      // Start from the requested options, never from a sample edit that could
+      // reset unrelated user state (for example reverse or labelMap).
+      target = { provider: {
+        id: `request.${name}`, kind: "action", name, order: orderForCard(card),
+        anchors: [], covers: [], baseOptions: Object.fromEntries(values)
+      }, coverage: [] };
+      const rendererIndex = configured.findIndex(entry => entry.provider.kind === "runtime");
+      configured = [...configured];
+      configured.splice(rendererIndex < 0 ? configured.length : rendererIndex, 0, target);
+    }
+    apply([name], values, source);
+  };
+  const pointColors = [...query.matchAll(/\b(red|blue|green|orange|purple|black|white|yellow|pink|gray|grey)\s+(?:points|markers)\b/gi)];
+  if (pointColors.length) {
+    const colors = unique(pointColors.map(match => match[1].toLowerCase()));
+    const owner = singleFacade(["createScatterPlot", "createPolarScatterPlot"]);
+    if (colors.length === 1 && owner) {
+      for (const match of pointColors) apply([owner.provider.name], new Map([
+        ["point", `{ fill: ${codeString(colors[0])} }`]
+      ]), match[0]);
+    } else {
+      for (const match of pointColors) rejectRequirement(match[0], "request.pointColor",
+        "Point color requires one unambiguous point chart and one requested color.");
+    }
+  }
+  const cartesianFacades = ["createScatterPlot", "createLinePlot", "createAreaPlot", "createBarPlot", "createHeatmap"];
+  const rotations = [...query.matchAll(/\b(?:rotate|tilt)\s+(?:the\s+)?([xy])[ -]+axis\s+labels?\s+(?:by|to)\s+(-?\d+(?:\.\d+)?)\s*(degrees?|radians?)\b/gi)];
+  for (const match of rotations) {
+    const channel = match[1].toUpperCase();
+    const value = Number(match[2]);
+    const unit = match[3].toLowerCase().startsWith("degree") ? "degrees" : "radians";
+    const peers = rotations.filter(other => other[1].toUpperCase() === channel);
+    if (singleFacade(cartesianFacades) && Number.isFinite(value) &&
+        unique(peers.map(other => `${other[2]}:${other[3]}`)).length === 1) {
+      addEditor(`edit${channel}AxisLabels`, new Map([
+        ["rotation", `{ value: ${value}, unit: "${unit}" }`]
+      ]), match[0]);
+    } else rejectRequirement(match[0], `request.${channel.toLowerCase()}AxisRotation`,
+      "Axis label rotation requires one Cartesian chart and an unambiguous angle with units.");
+  }
+  for (const match of query.matchAll(/\b(?:logarithmic|log)\s+([xy])\s+(?:axis|scale)\b/gi)) {
+    if (singleFacade(cartesianFacades)) {
+      addEditor(`edit${match[1].toUpperCase()}Scale`, new Map([
+        ["type", '"log"']
+      ]), match[0]);
+    } else rejectRequirement(match[0], "request.logScale",
+      "A logarithmic scale requires one unambiguous Cartesian chart and compatible nonzero data.");
+  }
 
   const bands = query.match(
     /\b(?:(one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+bands?|bands?\s*(?:of|=|:)?\s*(one|two|three|four|five|six|seven|eight|nine|ten|\d+))\b/i
@@ -1457,7 +1548,7 @@ function applyRequestedOptions(entries, query) {
         provider: { ...entry.provider, call: `renderToSVG(program, { ${body} })` }
       } : entry);
       for (const [option, value] of svgOptions) {
-        appliedOptions.push({ owner: "renderToSVG", option, value, source: "SVG accessible text" });
+        appliedOptions.push({ owner: "renderToSVG", option, value, source: option === "title" ? svgTitle[0] : svgDescription[0] });
       }
     }
   }
@@ -1810,6 +1901,41 @@ function completeChartBoundaries(matchedIds, blocked) {
   return unresolved;
 }
 
+function unconsumedRequirements(query, matched, exactNames, requested) {
+  const normalizeWords = value => value.normalize("NFKC").toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, " ").trim().replace(/\s+/g, " ");
+  const normalized = ` ${normalizeWords(query)} `;
+  const covered = new Uint8Array(normalized.length);
+  const consumed = [
+    ...requested.appliedOptions.map(option => option.source),
+    ...requested.unmatchedRequirements,
+    ...(requested.unresolved.some(entry => ["renderer.svg.accessibleText", "output.accessibility"].includes(entry.constraint)) ||
+      ["title", "description"].every(option => requested.appliedOptions.some(entry => entry.owner === "renderToSVG" && entry.option === option))
+      ? ["accessible", "accessibility"] : []),
+    ...(requested.entries.some(entry => entry.provider.name === "facet" &&
+      /legend:\s*"shared"/.test(mergeOptionValues(entry.provider, entry.coverage).get("guides") ?? ""))
+      ? ["shared legend"] : []),
+    ...matched.flatMap(constraint => constraint.phrases), ...exactNames
+  ].map(normalizeWords).filter(Boolean).sort((a, b) => b.length - a.length);
+  for (const phrase of consumed) {
+    const needle = ` ${phrase} `;
+    let start = normalized.indexOf(needle);
+    while (start !== -1) {
+      covered.fill(1, start, start + needle.length);
+      start = normalized.indexOf(needle, start + 1);
+    }
+  }
+  const remaining = normalized.split("").map((character, index) => covered[index] ? " " : character).join("");
+  const syntax = new Set(("a an the and then with using use as at on in to of for by from " +
+    "create draw make build show add apply set please chart plot output export render " +
+    "i want would like me can you it this that is be should must into also put charts").split(" "));
+  const unknown = remaining.trim().split(/\s+/).filter(word => word && !syntax.has(word));
+  if (unknown.length === 0) return [];
+  // Return original text, including non-English words and punctuation, so no
+  // rejected requirement is disguised as an executable or silently discarded.
+  return query.trim().match(/[\s\S]{1,176}/g) ?? [];
+}
+
 function genericUnresolved(normalizedQuery, matchedIds, exactNames) {
   const unresolved = [];
   const taskSpecificMatches = [...matchedIds].filter(id =>
@@ -1986,9 +2112,15 @@ export function searchGgaction(query) {
     providerRequestPosition(left, positions) - providerRequestPosition(right, positions) ||
     left.provider.id.localeCompare(right.provider.id)
   ));
-  const requested = applyRequestedOptions(ordered, planningQuery);
+  const requested = applyRequestedOptions(linkCreatedDataEditors(ordered), planningQuery);
   ordered = requested.entries;
   unresolved.push(...requested.unresolved);
+  const unconsumed = negation ? [] : unconsumedRequirements(planningQuery, matched, exactNames, requested);
+  if (unconsumed.length > 0) {
+    requested.unmatchedRequirements.push(...unconsumed);
+    unresolved.push(unresolvedDecision("request.unconsumed",
+      "Part of the original request was not interpreted. Review unmatchedRequirements before claiming the requested chart is complete."));
+  }
   const closure = runtimeClosureDecisions(ordered);
   unsupported.push(...closure.unsupported);
   unresolved.push(...closure.unresolved);
@@ -1997,7 +2129,7 @@ export function searchGgaction(query) {
   }
   const entries = ordered.map((entry, index) => planEntry(entry, index + 1));
   const packet = {
-    schemaVersion: 4,
+    schemaVersion: 5,
     packageVersion: cardsArtifact.packageVersion,
     query: query.trim(),
     matchedConstraints: [...matchedIds],

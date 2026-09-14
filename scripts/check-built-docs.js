@@ -191,7 +191,7 @@ const taskPacketSchema = JSON.parse(await readFile(
   path.join(siteRoot, "schemas/task-packet.schema.json"),
   "utf8"
 ));
-assert.equal(taskPacketSchema.properties.schemaVersion.const, 4);
+assert.equal(taskPacketSchema.properties.schemaVersion.const, 5);
 const llmsManifestSchema = JSON.parse(await readFile(
   path.join(siteRoot, "schemas/llms-manifest.schema.json"),
   "utf8"

@@ -1608,7 +1608,8 @@
         }
       ],
       "callPatterns": [
-        "createImputedData({ id, fields, method, source?, groupBy?, edges?, maxGap?, value? })"
+        "createImputedData({ id, fields, method: \"constant\", value, source?, groupBy? })",
+        "createImputedData({ id, fields, method: \"forward\" | \"backward\" | \"linear\", sortBy, source?, groupBy? })"
       ],
       "snippet": "program.createImputedData({ id: \"imputed\", fields: \"amount\", groupBy: \"series\", sortBy: [{ field: \"period\" }], method: \"linear\" })",
       "errors": [],

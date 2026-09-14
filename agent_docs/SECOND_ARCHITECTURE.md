@@ -218,11 +218,11 @@ Action-card schema v3는 exposure layer와 별도로 H0–H4 authoring role, imm
 deferred completion과 complete H0 facade를 구분한다. 관계 생성기는 direct action trace의 immediate child만 읽고
 internal materializer branch나 transitive descendant를 펼치지 않는다.
 
-Task packet schema v4는 action identity를 위한 `actionPlan`/`exactCalls`와 별도로 executable-module closure를 위한
+Task packet schema v5는 action identity를 위한 `actionPlan`/`exactCalls`와 별도로 executable-module closure를 위한
 `authoring`을 소유한다. `authoring.imports`는 task가 고른 public package entry, `initialize`는 `let program = chart()`,
 `steps`는 immutable `program = ...` action/composition과 renderer call을 순서대로 제공한다. Query에는 exact user task만
 전달하며 dataset, code scaffold와 evaluator instruction은 넣지 않는다. Direct adapter와 MCP는 이 전체 packet을 byte-equal하게
-직렬화한다.
+직렬화한다. `requiredOptions`는 sample key와 구분한 unconditional/selected-branch requirement이고, impute method별 필수값은 pure core optionRequirements policy를 runtime validator와 공유한다. Point color, 명시 단위 axis rotation, log axis를 concrete options로 연결한다. Taxonomy phrase 및 적용된 option source의 coverage union 이후 남는 유의미한 원문은 unmatchedRequirements/unresolved에 보존한다.
 
 Complete-chart intent와 raw-mark intent를 구분한다. 선택된 mark/template가 있다는 사실은 drawable chart의
 완료 증거가 아니며, 필요한 baseline·placement 결정을 `unresolved`에 남긴다. 더 구체적인 chart phrase는

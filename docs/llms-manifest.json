@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:250f6e42445960c9ce1f44cc91906988bcc4baa3970692225d0d766d835ad18c",
+    "contractId": "sha256:84291f97f9e3a1899e049e189ec70cd54f1fe81c52adc0bb7cb0ce255b71cbcb",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -58,13 +58,14 @@
         "local-mcp-for-llm-chart-authoring",
         "measured-impact",
         "install-and-launch",
+        "packet-v5-contract",
         "one-tool-workflow",
         "read-only-resources",
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 10043,
-      "sha256": "1488bfbdd4c2dff485e54a4e9765e68d291573fdcc5888baf82a8af31abacf41"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -3238,7 +3239,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "62bfbf6265b4cc03a71ebbbf337f3acb9f33c4638af6b2e7809551af41106a5a"
+      "sha256": "9ad58141191d006e8d6e96ab71b0345ed3c33b5f2d2d634012844a51013692ec"
     },
     {
       "order": 149,

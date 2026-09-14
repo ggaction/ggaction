@@ -63,7 +63,7 @@ test("exposes exactly one read-only search tool with a byte-equal direct payload
     assert.deepEqual(called.content[0], { type: "text", text: direct });
     assert.equal(Buffer.byteLength(called.content[0].text) <= 6144, true);
     const packet = JSON.parse(called.content[0].text);
-    assert.equal(packet.schemaVersion, 4);
+    assert.equal(packet.schemaVersion, 5);
     assert.equal(packet.packageVersion, "0.0.15");
     assert.deepEqual(packet.authoring.imports, [
       'import { chart } from "ggaction";',

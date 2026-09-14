@@ -236,3 +236,12 @@ test("every compact snippet type-checks against the exact ChartProgram declarati
     await rm(temporary, { recursive: true, force: true });
   }
 });
+
+
+test("imputation call patterns preserve method-specific requirements", async () => {
+  const artifact = JSON.parse(await readFile(new URL("../../knowledge/action-cards.json", import.meta.url), "utf8"));
+  const card = artifact.cards.find(card => card.name === "createImputedData");
+  assert.match(card.callPatterns[0], /method: "constant", value/);
+  assert.match(card.callPatterns[1], /method: "forward" \| "backward" \| "linear", sortBy/);
+  assert.equal(card.options.find(option => option.name === "groupBy").required, false);
+});
