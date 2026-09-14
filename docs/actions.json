@@ -19216,6 +19216,10 @@
         {
           "path": "padding",
           "unit": "band-fraction"
+        },
+        {
+          "path": "align",
+          "unit": "ratio"
         }
       ],
       "inference": [
@@ -19398,6 +19402,10 @@
         {
           "path": "padding",
           "unit": "band-fraction"
+        },
+        {
+          "path": "align",
+          "unit": "ratio"
         }
       ],
       "inference": [
@@ -19578,8 +19586,12 @@
           "unit": "band-fraction"
         },
         {
+          "path": "align",
+          "unit": "ratio"
+        },
+        {
           "path": "padding",
-          "unit": "logical-pixel"
+          "unit": "band-fraction"
         }
       ],
       "inference": [
@@ -19749,8 +19761,12 @@
           "unit": "band-fraction"
         },
         {
+          "path": "align",
+          "unit": "ratio"
+        },
+        {
           "path": "padding",
-          "unit": "logical-pixel"
+          "unit": "band-fraction"
         }
       ],
       "inference": [
@@ -19919,7 +19935,11 @@
         },
         {
           "path": "padding",
-          "unit": "logical-pixel"
+          "unit": "band-fraction"
+        },
+        {
+          "path": "align",
+          "unit": "ratio"
         }
       ],
       "inference": [
@@ -20043,7 +20063,11 @@
         },
         {
           "path": "padding",
-          "unit": "logical-pixel"
+          "unit": "band-fraction"
+        },
+        {
+          "path": "align",
+          "unit": "ratio"
         }
       ],
       "inference": [
@@ -20166,8 +20190,12 @@
           "unit": "band-fraction"
         },
         {
+          "path": "align",
+          "unit": "ratio"
+        },
+        {
           "path": "padding",
-          "unit": "logical-pixel"
+          "unit": "band-fraction"
         }
       ],
       "inference": [
@@ -20338,7 +20366,11 @@
         },
         {
           "path": "padding",
-          "unit": "logical-pixel"
+          "unit": "band-fraction"
+        },
+        {
+          "path": "align",
+          "unit": "ratio"
         }
       ],
       "inference": [

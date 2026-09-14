@@ -22,7 +22,7 @@
 | 05 | PNG만 renderer 옵션 검증 정책이 다르다 | 구현·검증 완료 | 입력/타입/renderer 82개 통과; 통합 검사 및 영향 계약 재검증 |
 | 06 | createData TypeScript 선언이 런타임보다 지나치게 넓다 | 구현·검증 완료 | 입력/타입/renderer 82개 통과; 통합 검사 및 영향 계약 재검증 |
 | 07 | MCP가 복합 요청의 일부를 누락하고도 미해결 사항이 없다고 말한다 | 진행 전 | — |
-| 08 | focused scale editor 6개의 padding 단위가 잘못 생성된다 | 진행 전 | — |
+| 08 | focused scale editor 6개의 padding 단위가 잘못 생성된다 | 구현·검증 완료 | canonical scale unit registry; 카드·계층·문서·패키지 15개 통과 |
 | 09 | MCP requiredOptions가 필수 옵션과 예제에 등장한 옵션을 혼합한다 | 진행 전 | — |
 | 10 | 현재 아키텍처 문서에 존재하지 않는 구현 경로가 남아 있다 | 진행 전 | — |
 | 11 | 테마가 무관한 액션에도 전체 그래픽을 순회한다 | 진행 전 | — |
@@ -61,3 +61,7 @@
 ### Axis assertion checkpoint
 
 명시한 좌표계 ID/type과 이종 channel option을 하위 axis action 전에 검증한다. Cartesian 생략 추론과 기존 Polar/Parallel flow는 보존한다. `axes-validation-tests.log`, `axes-validation-contracts.log`, `axes-validation-package.log` 및 docs 생성 결과를 확인했다.
+
+### Scale metadata checkpoint
+
+Scale의 band padding 단위를 grammar registry에서 공유한다. Parallel을 포함한 모든 create/edit scale 카드가 band-fraction을 표시하는지 검증했다. `scale-metadata-tests.log` 15/15와 docs 생성을 확인했다. 공개 계약 Gate 전체 승인도 DECISIONS에 기록했다.

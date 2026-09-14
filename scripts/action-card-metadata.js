@@ -1,3 +1,5 @@
+import { SCALE_OPTION_UNITS } from "../src/grammar/scales/types.js";
+
 const ROLE_ORDER = Object.freeze(["H0", "H1", "H2", "H3", "H4"]);
 
 const analysisChartNames = new Set([
@@ -198,7 +200,10 @@ export function optionUnits(action, options) {
   }
   for (const option of options) {
     let unit;
-    if (option.name === "temporalUnit") unit = "temporal-input";
+    if (/^(create|edit).*Scale$/.test(action.name) &&
+        Object.hasOwn(SCALE_OPTION_UNITS, option.name) && includesNumber(option.type)) {
+      unit = SCALE_OPTION_UNITS[option.name];
+    } else if (option.name === "temporalUnit") unit = "temporal-input";
     else if (action.name === "createTimeUnitData" && option.name === "unit") unit = "calendar-unit";
     else if (option.name === "rotation" && option.type.includes("RotationInput")) unit = "angle";
     else if ((option.name === "angle" || option.name === "padAngle") && includesNumber(option.type)) unit = "degree";
@@ -213,9 +218,7 @@ export function optionUnits(action, options) {
     else if (option.name === "bandwidth" && includesNumber(option.type)) unit = "data-value";
     else if ((countNames.has(option.name) || (action.name === "createGraphics" && option.name === "length")) && includesNumber(option.type)) unit = "count";
     else if (logicalPixelNames.has(option.name) && includesNumber(option.type)) {
-      unit = ["createScale", "editScale"].includes(action.name) && option.name === "padding"
-        ? "band-fraction"
-        : "logical-pixel";
+      unit = "logical-pixel";
     }
     if (unit) units.push({ path: option.name, unit });
   }
