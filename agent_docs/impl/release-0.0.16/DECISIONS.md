@@ -95,6 +95,17 @@ context, trace, retained children와 composition state를 보존한다. 열린 a
 현재 설치된 built-in/등록 extension만 사용한다. 미등록 extension/custom subclass는
 정식 복원 adapter가 없으면 거부한다. 알 수 없는 schemaVersion을 최선 추측으로 읽지 않는다.
 
+Envelope의 정확한 key는 `{ schemaVersion: 1, kind: "editable" | "graphic",
+packageVersion: string, extensions: string[], payload: EncodedValue }`다. `graphic`은
+extensions가 빈 배열이다. `EncodedValue`의 string/boolean/null과 finite number는 그대로
+저장한다. 일반 배열은 `["array", EncodedValue[]]`, plain object는
+`["object", [string, EncodedValue][]]`, undefined는 `["undefined"]`, bigint는
+`["bigint", decimalString]`, 특수 숫자는 `["number", "NaN" | "Infinity" | "-Infinity" | "-0"]`다.
+Nested sparse array의 구멍은 array payload 안에서만 `["hole"]`로 나타낸다. 중복 object key,
+알 수 없는 tag, 잘못된 tuple 길이와 잘못된 bigint literal은 거부한다. Object key를 prototype
+setter로 쓰지 않고 own property로 복원한다. Editable payload의 key는 현재 constructor의
+canonical state 이름을 사용하고 파생 alias나 `_actionSequence`는 저장하지 않는다.
+
 `serializeGraphic`은 concrete graphicSpec만 저장하고, `deserializeGraphic`은 renderer에
 전달할 `{ graphicSpec }`를 반환한다. 이를 편집 가능한 ChartProgram이라고 표시하지 않는다.
 trace의 count summary를 원래 인자로 복원하거나 실행하는 방식은 사용하지 않는다.
@@ -115,6 +126,12 @@ Profile에 정확한 문자열·font 조합이 없으면 기존 deterministic es
 Profile의 선언된 값은 finite non-negative여야 한다. 설치 시 profile을 clone/freeze하고
 같은 snapshot은 이후 host 폰트나 외부 원본 변경에 영향받지 않는다. Remove는 profile을
 제거하고 기존 추정 정책으로 재계산한다. Typography 자체를 다른 font로 자동 변경하지 않는다.
+
+Profile shape는 `{ schemaVersion: 1, id: string, measurements: [
+{ text: string, fontFamily: string, fontSize: number, fontWeight: number, width: number }
+] }`다. fontSize는 양수, fontWeight는 renderer가 정규화한 100–900의 100 단위 값이고
+같은 조합의 중복 measurement는 거부한다. Text style의 생략 fontFamily/weight는 기존
+기본값으로 정규화한 뒤 정확하게 매칭한다. Profile을 제거할 때 active profile이 없으면 오류다.
 
 ## 6. 구조화된 진단 — 항목 28
 
