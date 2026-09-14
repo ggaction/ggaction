@@ -12,20 +12,23 @@ import {
   BROWSER_BUNDLE_GZIP_LIMITS,
   measureMinimalBrowserBundle
 } from "./browser-bundle-size.js";
+import { npmInvocation } from "./npm-command.js";
 import { createPackageArtifact } from "./package-artifact.js";
 import { testTutorialConsumers } from "./tutorial-consumer.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+const npmCommand = "npm";
 const tscCommand = path.join(
   root,
   "node_modules",
-  ".bin",
-  process.platform === "win32" ? "tsc.cmd" : "tsc"
+  "typescript",
+  "bin",
+  "tsc"
 );
 
 function run(command, args, cwd, options = {}) {
-  execFileSync(command, args, {
+  const invocation = command === npmCommand ? npmInvocation(args, { env: options.env ?? process.env }) : { command, args };
+  execFileSync(invocation.command, invocation.args, {
     cwd,
     encoding: "utf8",
     stdio: "pipe",
@@ -4163,7 +4166,7 @@ async function testTypeScriptConsumer(directory) {
     },
     files: ["consumer.ts", "extension-authoring.ts"]
   }, null, 2)}\n`);
-  run(tscCommand, ["--project", "tsconfig.json"], directory);
+  run(process.execPath, [tscCommand, "--project", "tsconfig.json"], directory);
 }
 
 async function testOptionalDependencies(consumer) {

@@ -28,6 +28,21 @@ the required installation command. No dependency is installed automatically.
 Rendering consumes a completed program's `graphicSpec`. It does not read
 datasets, semantic encodings, context, or trace to infer missing output.
 
+## Automated environment checks
+
+CI and release qualification exercise these environments against installed
+packages. The release jobs all consume the same candidate tarball.
+
+| Environment | Checks |
+| --- | --- |
+| Ubuntu, Node.js 20, 22, and 24 | Package installation, public entries, declarations, and consumer workflows |
+| macOS and Windows, Node.js 22 | Native PNG/PDF buffers and files, image dimensions, SVG, and snapshot round trips |
+| Chromium, Firefox, and WebKit supplied by the pinned Playwright dependency | Canvas and SVG clipping, gradients, text alignment, resizing, DPR 1 and 2, accessible labels, and SVG downloads |
+
+Browser checks use a shared representative graphic scene; they do not imply
+coverage of every browser release, operating system, font, or device. Native
+checks use the optional Canvas backend installed on each runner.
+
 SVG, PNG, and PDF options must be plain objects (including objects with a null
 prototype). Unknown option keys are rejected before output is written; for
 example, use `pixelRatio`, not `pixelratio`, for PNG density.

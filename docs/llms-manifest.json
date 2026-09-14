@@ -5,7 +5,7 @@
   "provenance": {
     "status": "development",
     "contractId": "sha256:45b574f8a2aac97066bc787442d0a60ddfda7174d21180d3bb86ff7a96429b68",
-    "sourceCommit": null,
+    "sourceCommit": "4591300e031be55e9e43ca6c2060320db2073aaa",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11024,
-      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
+      "bytes": 11096,
+      "sha256": "d420d2dfe5a0245c701d53802596f673ab65f737ba51710fb375324205144c2a"
     },
     {
       "order": 4,
@@ -1173,6 +1173,7 @@
       "headings": [
         "rendering",
         "at-a-glance",
+        "automated-environment-checks",
         "complete-example-program",
         "browser-canvas",
         "svg-output",
@@ -1183,8 +1184,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 11346,
-      "sha256": "ee40811312609e49d2bb74b0c0e4f7643631fe026afd53d80ab18c570a81efe3"
+      "bytes": 12204,
+      "sha256": "f8c1837da1fc43f0f955d6cb3d763011a49e5ddb0245f8700c2c41c78cce5fd0"
     },
     {
       "order": 73,
@@ -2921,8 +2922,8 @@
         "editgraphics-target-property-value-remove",
         "scale-materialization"
       ],
-      "bytes": 16887,
-      "sha256": "bd8e7c8dbfed631d08e448b205d9b5e06c7906da395bebeaf3d20cdfeabccbf7"
+      "bytes": 16959,
+      "sha256": "8beb3bd2d33b82cfcde88a4de1668c8ff77f6997c22cdca177486e6d1555e93b"
     },
     {
       "order": 128,
@@ -3241,8 +3242,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3000,
-      "sha256": "d92355f5c4f8c3efcad1bc7c7711d6ff5cbc7599a18eedeae080f4416db0566e"
+      "bytes": 3033,
+      "sha256": "85a5b0942aa91461e217ab5a1e6cf0092816ef23d73c6b7da6cf687ff4f7f66c"
     },
     {
       "order": 149,

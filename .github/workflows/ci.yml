@@ -183,6 +183,80 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
+  platform:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Verify installed native package outputs
+        run: node scripts/run-check.js test-platform -- npm run test:platform
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
+
+  browsers:
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [firefox, webkit]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Install the browser runtime
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Verify browser rendering and downloads
+        env:
+          GGACTION_BROWSER: ${{ matrix.browser }}
+        run: node scripts/run-check.js test-browser-compat -- npm run test:browser:compat
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
+
   coverage:
     runs-on: ubuntu-latest
     steps:

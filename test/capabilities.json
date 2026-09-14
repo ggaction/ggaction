@@ -78,7 +78,9 @@
     ],
     "package": [
       { "type": "prefix", "path": "contracts/package-" },
-      { "type": "file", "path": "browser/package-consumer.browser.js" }
+      { "type": "file", "path": "browser/package-consumer.browser.js" },
+      { "type": "file", "path": "browser/backend-compatibility.browser.js" },
+      { "type": "file", "path": "unit/support/npm-command.test.js" }
     ],
     "persistence": [
       { "type": "prefix", "path": "unit/persistence/" }

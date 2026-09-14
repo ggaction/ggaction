@@ -35,7 +35,7 @@
 | 18 | 실제 폰트와 저작용 text bounds 차이를 줄일 선택지가 필요하다 | 진행 전 | — |
 | 19 | 릴리즈의 단일 순차 검증 경로가 약 59분 걸린다 | 구현·로컬 검증; 릴리즈 실행 대기 | canonical candidate를 병렬 source/coverage/package/docs/7 realistic shard에 전달; strict fan-in |
 | 20 | realistic 테스트가 main의 필수 merge check에 포함되지 않는다 | 부분 구현·검증 | realistic-required strict aggregate 추가; 실제 main required rule 추가 남음 |
-| 21 | 자동 검증이 Ubuntu·Chromium에 집중되어 있다 | 진행 전 | — |
+| 21 | 자동 검증이 Ubuntu·Chromium에 집중되어 있다 | 구현·로컬 검증 완료 | macOS native smoke, Chromium/Firefox/WebKit DPR 1·2 및 installed consumer 통과; Windows/Ubuntu matrix는 실제 CI 대기 |
 | 22 | 실패한 렌더·문서 테스트의 진단 artifact를 자동 보존해야 한다 | 구현·로컬 검증 완료 | 의도적 실패에서 로그/status·actual/expected/diff·브라우저 화면 보존; CI failure upload와 budget/오류 비은폐 확인 |
 | 23 | 높은 coverage를 보완할 공통 음성 계약·교차층 테스트가 필요하다 | 구현·검증 완료 | Current catalog 전체 valid-call corpus → unknown/null/array/scalar rejection 및 source snapshot; generic/focused·atomic/sequential 동치 |
 | 24 | 실행 계약과 생성 메타데이터의 의미 원본을 좁혀야 한다 | 부분 구현·검증 | scale 단위 및 impute 조건부 필수값 공유; architecture의 상세 계약 분리 정리 남음 |
@@ -113,3 +113,7 @@ Packet v5에서 requiredOptions와 sample/configured options를 분리했다. Im
 CI/release test command는 출력 streaming을 유지하며 마지막 2MiB log와 exit/status/환경을 기록한다. Failure collector는 checks/failures/docs의 명시된 진단 폴더만 수집하고 개별 10MiB, 전체 payload 50MiB/300파일로 제한하며 생략 수를 manifest에 남긴다. 이전 collection output을 재사용하지 않는다. 실패한 PNG assertion은 case ID·기대 조건·실제 PNG를 남기고 primitive/public mismatch는 두 이미지와 4백만 pixel 이하 diff를 보존한다. Browser readiness/열린 실패 page와 docs exception은 screenshot·URL·오류를 보존한다.
 
 의도적으로 exit 7/9, 없는 실행파일, 쓰기 불가, 이미지 mismatch, 브라우저 mismatch, oversized/aggregate-budget 사례를 실행해 원래 오류가 유지됨을 확인했다. Critical job에 continue-on-error를 넣지 않고 failure-only 수집/upload 단계만 허용한다. 25개 초기 영향 검사와 추가 budget 검사, 기존 브라우저 84개, 대표 렌더 3개 및 실제 run-check→test runner smoke를 통과했다. GitHub artifact의 실제 다운로드 확인은 최종 CI/release 관찰 단계에 남긴다.
+
+### Platform and browser compatibility checkpoint
+
+macOS/Windows Node 22 installed-package smoke와 Firefox/WebKit representative browser jobs를 CI 및 exact-candidate release fan-in에 추가했다. Native PNG/PDF memory/files, SVG, persistence와 공통 scene의 clip/gradient를 검증한다. Browser 3종의 Canvas/SVG text alignment, resize, DPR 1·2, labels와 download 6개가 로컬에서 통과했다. macOS arm64 native smoke, 22개 release/discovery 검사, npm invocation 단위 검사와 전체 installed consumer도 통과했다. Windows npm CLI와 TypeScript 실행은 npm run 환경의 실제 CLI 경로를 Node로 호출하여 공백과 .cmd shell 문제를 피한다. Linux/Windows runner 결과는 최종 CI에서 확인하며 환경별 범위를 공개 rendering 문서에 구분했다.

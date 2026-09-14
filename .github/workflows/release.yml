@@ -401,9 +401,123 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
+  verify-platform:
+    needs: candidate
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Download the canonical candidate
+        uses: actions/download-artifact@v8
+        with:
+          name: ggaction-${{ inputs.tag }}
+          path: .artifacts/release
+      - name: Verify and select the exact candidate for package consumers
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          node scripts/release-candidate.js --verify .artifacts/release/candidate.json "$RELEASE_TAG"
+          node --input-type=module -e '
+            import { readFileSync, appendFileSync } from "node:fs";
+            import path from "node:path";
+            const candidate = JSON.parse(readFileSync(".artifacts/release/candidate.json", "utf8"));
+            appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(".artifacts/release", candidate.filename)}\n`);
+          '
+      - name: Verify installed native package outputs
+        run: node scripts/run-check.js test-platform -- npm run test:platform
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
+
+  verify-browsers:
+    needs: candidate
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [firefox, webkit]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Download the canonical candidate
+        uses: actions/download-artifact@v8
+        with:
+          name: ggaction-${{ inputs.tag }}
+          path: .artifacts/release
+      - name: Verify and select the exact candidate for package consumers
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          node scripts/release-candidate.js --verify .artifacts/release/candidate.json "$RELEASE_TAG"
+          node --input-type=module -e '
+            import { readFileSync, appendFileSync } from "node:fs";
+            import path from "node:path";
+            const candidate = JSON.parse(readFileSync(".artifacts/release/candidate.json", "utf8"));
+            appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(".artifacts/release", candidate.filename)}\n`);
+          '
+      - name: Install the browser runtime
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Verify browser rendering and downloads
+        env:
+          GGACTION_BROWSER: ${{ matrix.browser }}
+        run: node scripts/run-check.js test-browser-compat -- npm run test:browser:compat
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
+
   verify:
     if: ${{ always() }}
-    needs: [candidate, verify-source, verify-coverage, verify-package, verify-documentation, realistic-data, verify-realistic]
+    needs: [candidate, verify-source, verify-coverage, verify-package, verify-documentation, realistic-data, verify-realistic, verify-platform, verify-browsers]
     runs-on: ubuntu-latest
     steps:
       - name: Check out the requested tag
@@ -418,7 +532,7 @@ jobs:
       - name: Require every verification job to succeed
         env:
           GGACTION_JOB_RESULTS: ${{ toJSON(needs) }}
-        run: node scripts/test-sharding.js --check-jobs candidate verify-source verify-coverage verify-package verify-documentation realistic-data verify-realistic
+        run: node scripts/test-sharding.js --check-jobs candidate verify-source verify-coverage verify-package verify-documentation realistic-data verify-realistic verify-platform verify-browsers
       - name: Collect bounded failure evidence
         if: ${{ failure() }}
         continue-on-error: true

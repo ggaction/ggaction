@@ -88,7 +88,7 @@ function workflowJob(source, name) {
 
 test("parallel qualifications consume one canonical candidate and join before publishing", () => {
   assert.equal((workflow.match(/run: node scripts\/release-candidate\.js "\$RELEASE_TAG"/g) ?? []).length, 1);
-  const names = ["verify-source", "verify-coverage", "verify-package", "verify-documentation", "verify-realistic"];
+  const names = ["verify-source", "verify-coverage", "verify-package", "verify-documentation", "verify-realistic", "verify-platform", "verify-browsers"];
   for (const name of names) {
     const job = workflowJob(workflow, name);
     assert.match(job, /needs: (?:candidate|\[candidate, realistic-data\])/);
@@ -113,6 +113,25 @@ test("parallel qualifications consume one canonical candidate and join before pu
       assert.match(step, /if: \$\{\{ failure\(\) \}\}/);
     }
   }
+});
+
+test("qualifies native platforms and three browser engines with strict release dependencies", () => {
+  const ci = readFileSync(new URL("../../.github/workflows/ci.yml", import.meta.url), "utf8");
+  for (const [source, prefix] of [[ci, ""], [workflow, "verify-"]]) {
+    const platform = workflowJob(source, `${prefix}platform`);
+    assert.match(platform, /os: \[macos-latest, windows-latest\]/);
+    assert.match(platform, /node-version: 22/);
+    assert.match(platform, /shell: bash/);
+    assert.match(platform, /npm run test:platform/);
+    const browsers = workflowJob(source, `${prefix}browsers`);
+    assert.match(browsers, /browser: \[firefox, webkit\]/);
+    assert.match(browsers, /playwright install --with-deps \$\{\{ matrix.browser \}\}/);
+    assert.match(browsers, /GGACTION_BROWSER: \$\{\{ matrix.browser \}\}/);
+    assert.match(browsers, /npm run test:browser:compat/);
+  }
+  const aggregate = workflowJob(workflow, "verify");
+  assert.match(aggregate, /needs: \[[^\n]*verify-platform, verify-browsers\]/);
+  assert.match(aggregate, /--check-jobs[^\n]*verify-platform verify-browsers/);
 });
 
 test("realistic CI has a stable aggregate that cannot accept skipped or failed dependencies", () => {

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.15.
 
-Contract: sha256:45b574f8a2aac97066bc787442d0a60ddfda7174d21180d3bb86ff7a96429b68. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:45b574f8a2aac97066bc787442d0a60ddfda7174d21180d3bb86ff7a96429b68. Status: development. Runtime source: 4591300e031be55e9e43ca6c2060320db2073aaa. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -258,9 +258,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/4591300e031be55e9e43ca6c2060320db2073aaa/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/4591300e031be55e9e43ca6c2060320db2073aaa/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -8491,6 +8491,21 @@ the required installation command. No dependency is installed automatically.
 
 Rendering consumes a completed program's `graphicSpec`. It does not read
 datasets, semantic encodings, context, or trace to infer missing output.
+
+## Automated environment checks
+
+CI and release qualification exercise these environments against installed
+packages. The release jobs all consume the same candidate tarball.
+
+| Environment | Checks |
+| --- | --- |
+| Ubuntu, Node.js 20, 22, and 24 | Package installation, public entries, declarations, and consumer workflows |
+| macOS and Windows, Node.js 22 | Native PNG/PDF buffers and files, image dimensions, SVG, and snapshot round trips |
+| Chromium, Firefox, and WebKit supplied by the pinned Playwright dependency | Canvas and SVG clipping, gradients, text alignment, resizing, DPR 1 and 2, accessible labels, and SVG downloads |
+
+Browser checks use a shared representative graphic scene; they do not imply
+coverage of every browser release, operating system, font, or device. Native
+checks use the optional Canvas backend installed on each runner.
 
 SVG, PNG, and PDF options must be plain objects (including objects with a null
 prototype). Unknown option keys are rejected before output is written; for
@@ -34889,12 +34904,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/4591300e031be55e9e43ca6c2060320db2073aaa/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/4591300e031be55e9e43ca6c2060320db2073aaa/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -36924,7 +36939,7 @@ The comparison baseline below is the older release used by the migration notes.
 | --- | --- |
 | Contract fingerprint | `sha256:45b574f8a2aac97066bc787442d0a60ddfda7174d21180d3bb86ff7a96429b68` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `current` |
+| Runtime source commit | `4591300e031be55e9e43ca6c2060320db2073aaa` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 276 |
 | Declared actions in that release | 234 |
