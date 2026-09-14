@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { action, summarizeArgs } from "../../../src/core/action.js";
+import { action, summarizeArgs, appendActionNodeAtPath, createActionNode } from "../../../src/core/action.js";
 import { ChartProgram } from "../../../src/core/ChartProgram.js";
 
 class TestProgram extends ChartProgram {}
@@ -166,4 +166,30 @@ test("guards unit and composition action capabilities before tracing", () => {
     () => action({ op: "bad", description: "Bad scope.", scope: "unknown" }, () => child),
     /Unknown action scope/
   );
+});
+
+
+test("persistent traces retain Array semantics, older branches, and snapshot identity", () => {
+  let program = new TestProgram();
+  const first = program.setNestedValue({ value: 1 });
+  program = first;
+  for (let index = 0; index < 2000; index += 1) {
+    program = program.setNestedValue({ value: index });
+  }
+  const children = program.trace.children;
+  assert.equal(children.length, 2001);
+  assert.equal(Array.isArray(children), true);
+  assert.equal(Object.isFrozen(children), true);
+  assert.equal(program.trace.children, children);
+  assert.equal(first.trace.children.length, 1);
+  assert.equal(children[0], first.trace.children[0]);
+  assert.deepEqual(JSON.parse(JSON.stringify(program.trace)).children.at(-1), children.at(-1));
+  const leaf = createActionNode({ id: "extra", op: "extra", description: "Extra.", args: {} });
+  const revised = appendActionNodeAtPath(program.trace, [0, 0], leaf);
+  assert.deepEqual(revised.path, [0, 0, 0]);
+  assert.equal(revised.root.children[0].children[0].children[0], leaf);
+  assert.equal(revised.root.children[1], children[1]);
+  assert.equal(children[0].children[0].children.length, 0);
+  assert.throws(() => appendActionNodeAtPath(program.trace, [-1], leaf), /Unknown parent/);
+  assert.throws(() => appendActionNodeAtPath(program.trace, null, leaf), /must be an array/);
 });

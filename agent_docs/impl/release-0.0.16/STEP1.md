@@ -24,14 +24,14 @@
 | 07 | MCP가 복합 요청의 일부를 누락하고도 미해결 사항이 없다고 말한다 | 진행 전 | — |
 | 08 | focused scale editor 6개의 padding 단위가 잘못 생성된다 | 구현·검증 완료 | canonical scale unit registry; 카드·계층·문서·패키지 15개 통과 |
 | 09 | MCP requiredOptions가 필수 옵션과 예제에 등장한 옵션을 혼합한다 | 진행 전 | — |
-| 10 | 현재 아키텍처 문서에 존재하지 않는 구현 경로가 남아 있다 | 진행 전 | — |
-| 11 | 테마가 무관한 액션에도 전체 그래픽을 순회한다 | 진행 전 | — |
-| 12 | preview가 관계없는 원본 데이터까지 다시 복사한다 | 진행 전 | — |
-| 13 | 긴 trace의 append 비용이 누적된다 | 진행 전 | — |
-| 14 | SVG가 매번 전체 graphicSpec을 직렬화·해시한다 | 진행 전 | — |
+| 10 | 현재 아키텍처 문서에 존재하지 않는 구현 경로가 남아 있다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
+| 11 | 테마가 무관한 액션에도 전체 그래픽을 순회한다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
+| 12 | preview가 관계없는 원본 데이터까지 다시 복사한다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
+| 13 | 긴 trace의 append 비용이 누적된다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
+| 14 | SVG가 매번 전체 graphicSpec을 직렬화·해시한다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 15 | 최소 산점도 번들이 예산 상한에 거의 도달했다 | 진행 전 | — |
 | 16 | 브라우저 전용 사용자도 MCP·네이티브 렌더 의존성을 설치한다 | 진행 전 | — |
-| 17 | 런타임 성능 회귀를 검출하는 공식 workload가 필요하다 | 진행 전 | — |
+| 17 | 런타임 성능 회귀를 검출하는 공식 workload가 필요하다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 18 | 실제 폰트와 저작용 text bounds 차이를 줄일 선택지가 필요하다 | 진행 전 | — |
 | 19 | 릴리즈의 단일 순차 검증 경로가 약 59분 걸린다 | 진행 전 | — |
 | 20 | realistic 테스트가 main의 필수 merge check에 포함되지 않는다 | 진행 전 | — |
@@ -65,3 +65,7 @@
 ### Scale metadata checkpoint
 
 Scale의 band padding 단위를 grammar registry에서 공유한다. Parallel을 포함한 모든 create/edit scale 카드가 band-fraction을 표시하는지 검증했다. `scale-metadata-tests.log` 15/15와 docs 생성을 확인했다. 공개 계약 Gate 전체 승인도 DECISIONS에 기록했다.
+
+### Immutable performance checkpoint
+
+Owned subtree 재사용, data-only theme fast path, persistent trace children, immutable SVG hash cache를 도입했다. 공개 Array trace·순서·ID·직렬화와 mutable renderer input의 재계산을 보존한다. `benchmark:runtime`은 환경 및 7개 sample을 남기고 같은 환경 baseline 대비 회귀를 검출한다. 실제 10k themed data 50개 추가 median 0.63ms, SVG 반복 14.83ms, trace 16k append 71.41ms를 기록했다. 감사의 각각 467.94/22.53/218.61ms보다 낮다. 서로 다른 실행의 측정이라 절대 성능 보장으로 취급하지 않는다. Architecture의 오래된 ranged encoding 경로를 고치고 현재 source link test를 추가했다.

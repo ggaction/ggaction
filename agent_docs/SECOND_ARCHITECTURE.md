@@ -513,7 +513,7 @@ caller-owned rows         → 이후 수정해도 program1에 영향 없음
 불변성은 program shell만 clone하는 것으로 끝나지 않는다.
 
 - 수정되는 object/array path는 structural copy한다.
-- 변경되지 않은 frozen branch는 공유할 수 있다.
+- 변경되지 않은 library-owned branch는 중첩 clone에서도 identity를 공유한다. 외부 `Object.freeze`는 재귀 불변성의 증거로 취급하지 않는다.
 - 외부에서 받은 array와 plain object는 clone하고 freeze하여 library ownership으로
   전환한다.
 - 함수와 class instance는 mutable 외부 참조이므로 state에 저장하지 않는다. 실행용 extension
@@ -528,6 +528,10 @@ caller-owned rows         → 이후 수정해도 program1에 영향 없음
   wrapped `rebindLayerData` transition을 반환한다. Composite와 owned transform은 해당 aggregate owner가
   전체 sibling과 role을 함께 수정한다.
 - context, resolved scale, materialization config, trace도 같은 원칙을 따른다.
+
+Trace append는 private persistent child tail을 공유한다. 공개 `children`은 요청 시 한 번 materialize하는 stable frozen Array이며 순서·ID·직렬화 형태는 그대로다. 활성 마지막 branch append는 이전 sibling 수와 무관하다.
+
+테마 completion hook은 graphic/config/children/composition 및 visual semantic branch가 모두 같은 data/context-only transition에서 바로 반환한다. Appearance를 바꾸는 transition에는 기존 명시적 reconciliation이 적용된다.
 
 `_clone()`은 현재 runtime class의 constructor를 사용하므로 `ChartProgram` subclass에서도
 action chain이 subclass type을 유지한다.
@@ -2310,7 +2314,7 @@ complete SVG document string을 반환한다.
   wrapping이나 layout을 다시 계산하지 않는다.
 - Central serializer는 text, attribute, title과 description의 XML 1.0 scalar validity를 먼저
   검증하므로 invalid control, lone surrogate와 forbidden noncharacter를 partial string 없이 거부한다.
-- 기본 clip/gradient ID namespace는 `graphicSpec`의 deterministic hash다. 동일 spec SVG를 같은
+- 기본 clip/gradient ID namespace는 `graphicSpec`의 deterministic hash다. Library-owned immutable spec만 WeakMap으로 hash를 재사용하며 외부 mutable concrete spec은 매번 계산한다. 동일 spec SVG를 같은
   DOM에 함께 둘 때는 ASCII letter로 시작하고 letter/digit/`_`/`-`만 쓰는 explicit
   `resourceNamespace`로 충돌을 피한다. Raw graphic ID는 document identifier로 노출하지 않는다.
 - SVG numeric geometry는 finite JavaScript number 전체를 보존하며 Canvas-backed native cap을
@@ -2912,6 +2916,6 @@ dimension guide를 deterministic plan으로 rematerialize한다.
 
 `grammar/areaEndpoints.js`는 quantitative field/datum과 raw Area의 error/break 값을 해석한다.
 Position assignment, scale 소비자, path grammar가 이 해석을 공유하며 source rows는 변경하지 않는다.
-`actions/encodings/areaRange.js`는 최종 pair와 scale을 순수 preview한 뒤 기존 wrapped primary/secondary를
+`actions/encodings/ranged.js`는 최종 pair와 scale을 순수 preview한 뒤 기존 wrapped primary/secondary를
 실행한다. `actions/scales/preview.js`의 소비자·domain 계산은 실제 rematerializeScale과 이 preflight가 공유한다.
 Break의 각 closed segment는 원본 row indices를 유지해 selection과 geometry의 grain이 같다.

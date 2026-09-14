@@ -1,3 +1,4 @@
+import { isOwned } from "../core/immutable.js";
 import {
   requireSingleOrderedGraphicByType,
   walkGraphicTreeEvents
@@ -38,14 +39,20 @@ const DOMINANT_BASELINES = Object.freeze({
   bottom: "text-after-edge"
 });
 
+const namespaceByGraphic = new WeakMap();
+
 function resourceNamespace(graphicSpec) {
+  const cached = namespaceByGraphic.get(graphicSpec);
+  if (cached !== undefined) return cached;
   const serialized = JSON.stringify(graphicSpec);
   let hash = 0xcbf29ce484222325n;
   for (let index = 0; index < serialized.length; index += 1) {
     hash ^= BigInt(serialized.charCodeAt(index));
     hash = BigInt.asUintN(64, hash * 0x100000001b3n);
   }
-  return hash.toString(36);
+  const namespace = hash.toString(36);
+  if (isOwned(graphicSpec)) namespaceByGraphic.set(graphicSpec, namespace);
+  return namespace;
 }
 
 function escapeText(value) {

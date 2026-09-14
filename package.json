@@ -129,7 +129,8 @@
     "docs:provenance": "node scripts/doc-provenance.js",
     "docs:picker": "node scripts/generate-doc-chart-picker.js",
     "docs:snippets": "node scripts/generate-doc-snippet-contracts.js",
-    "docs:scale-editors": "node scripts/generate-doc-scale-editors.js"
+    "docs:scale-editors": "node scripts/generate-doc-scale-editors.js",
+    "benchmark:runtime": "node scripts/benchmark-runtime.js"
   },
   "engines": {
     "node": ">=20"

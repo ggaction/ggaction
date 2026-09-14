@@ -30,6 +30,10 @@ export function cloneAndFreeze(value, ancestors = new WeakSet(), path = "state")
     return value;
   }
 
+  // Only library-owned values are recursively immutable; Object.freeze alone
+  // does not prove ownership of a caller's descendants.
+  if (isOwned(value)) return value;
+
   if (ancestors.has(value)) {
     throw new TypeError("Cannot store cyclic values in a ChartProgram.");
   }

@@ -1,4 +1,4 @@
-import { cloneAndFreeze, freezeOwned, isPlainObject } from "./immutable.js";
+import { cloneAndFreeze, freezeOwned, isOwned, isPlainObject } from "./immutable.js";
 
 const metadataByWrappedAction = new WeakMap();
 const implementationByWrappedAction = new WeakMap();
@@ -73,13 +73,59 @@ export function createActionNode({ id, op, description, args }) {
   });
 }
 
+// Persistent child tails make appending the active (last) branch independent
+// of sibling count. The public children property remains a stable frozen Array.
+const childLists = new WeakMap();
+
+function childList(node) {
+  let list = childLists.get(node);
+  if (list !== undefined) return list;
+  let tail;
+  for (const child of node.children) tail = { value: child, previous: tail };
+  list = { tail, length: node.children.length };
+  if (isOwned(node)) childLists.set(node, list);
+  return list;
+}
+
+function withChildList(node, list) {
+  let children;
+  const next = {};
+  for (const key of Object.keys(node)) {
+    if (key !== "children") Object.defineProperty(next, key, {
+      value: node[key], enumerable: true
+    });
+  }
+  Object.defineProperty(next, "children", {
+    enumerable: true,
+    get() {
+      if (children === undefined) {
+        const values = new Array(list.length);
+        let item = list.tail;
+        for (let index = list.length - 1; index >= 0; index -= 1) {
+          values[index] = item.value;
+          item = item.previous;
+        }
+        children = freezeOwned(values);
+      }
+      return children;
+    }
+  });
+  childLists.set(next, list);
+  return freezeOwned(next);
+}
+
+function childAt(node, index) {
+  const list = childList(node);
+  return index === list.length - 1 ? list.tail.value : node.children[index];
+}
+
 function nodeAtPath(root, path) {
   let node = root;
   for (const index of path) {
-    if (!Number.isInteger(index) || index < 0 || index >= node.children.length) {
+    if (!Number.isInteger(index) || index < 0 || index >= childList(node).length) {
       throw new Error(`Unknown parent action path "${path.join(".")}".`);
     }
-    node = node.children[index];
+    node = childAt(node, index);
   }
   return node;
 }
@@ -89,19 +135,28 @@ export function appendActionNodeAtPath(root, parentPath, actionNode) {
     throw new TypeError("Parent action path must be an array.");
   }
   const parent = nodeAtPath(root, parentPath);
-  const path = [...parentPath, parent.children.length];
+  const path = [...parentPath, childList(parent).length];
 
   function append(node, depth) {
+    const list = childList(node);
     if (depth === parentPath.length) {
-      return freezeOwned({
-        ...node,
-        children: freezeOwned([...node.children, actionNode])
+      return withChildList(node, {
+        tail: { value: actionNode, previous: list.tail }, length: list.length + 1
       });
     }
     const index = parentPath[depth];
-    const children = [...node.children];
-    children[index] = append(children[index], depth + 1);
-    return freezeOwned({ ...node, children: freezeOwned(children) });
+    const child = append(childAt(node, index), depth + 1);
+    if (index === list.length - 1) {
+      return withChildList(node, {
+        tail: { value: child, previous: list.tail.previous }, length: list.length
+      });
+    }
+    // Restored/extension traces may address an older sibling explicitly.
+    let tail;
+    for (let position = 0; position < list.length; position += 1) {
+      tail = { value: position === index ? child : node.children[position], previous: tail };
+    }
+    return withChildList(node, { tail, length: list.length });
   }
 
   return { root: append(root, 0), path };

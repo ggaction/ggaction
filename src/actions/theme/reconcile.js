@@ -1047,6 +1047,15 @@ function rematerializeThemeTypography(program) {
 export function reconcileProgramTheme(program, { source, metadata }) {
   const storedState = program.materializationConfigs.theme;
   if (storedState === undefined) return program;
+  // Data/context/trace-only transitions cannot change authored appearance.
+  // Preserve all visual identities instead of rescanning every existing mark.
+  if (program.graphicSpec === source.graphicSpec &&
+      program.materializationConfigs === source.materializationConfigs &&
+      program.children === source.children &&
+      program.compositionSpec === source.compositionSpec &&
+      ["layers", "scales", "coordinates", "guides", "title"].every(
+        key => program.semanticSpec[key] === source.semanticSpec[key]
+      )) return program;
   const composition = program.compositionSpec !== undefined;
   const state = normalizeThemeState(storedState, { composition });
   const sourceState = normalizeThemeState(

@@ -57,6 +57,17 @@ npm run docs:verify
 See `docs/README.md` for documentation runtime setup and `test/README.md` for
 selector, rendering, and artifact details.
 
+## Runtime performance checks
+
+Run `npm run benchmark:runtime -- --output=.artifacts/benchmarks/before.json`
+before a performance-sensitive change. Afterward, run
+`npm run benchmark:runtime -- --baseline=.artifacts/benchmarks/before.json`.
+The suite records seven samples after warmup for trace growth, dataset previews,
+themed data-only edits, and repeated SVG output. Compare on the same Node version
+and CPU. A median increase above both 50% and 5 ms fails the comparison; inspect
+raw samples and repeat an isolated run to distinguish noise from a regression.
+These measured workloads supplement correctness tests and package bundle budgets.
+
 ## Change expectations
 
 - Preserve `ChartProgram` immutability and do not mutate caller-owned input.
