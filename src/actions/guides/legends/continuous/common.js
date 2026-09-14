@@ -26,6 +26,7 @@ import { isOpacityLegendLayer } from "../../../../materialization/legends.js";
 import { findCanvasGraphic } from
   "../../../../materialization/graphicHierarchy.js";
 import { normalizeLegendSampling } from "../sampling.js";
+import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 
 const OPTIONS = [
   "target", "channels", "position", "align", "offset", "title", "count",
@@ -63,12 +64,7 @@ const DEFAULT_BORDER = {
 export const validatePositive = validatePositiveFinite;
 export const validateNonNegative = validateNonNegativeFinite;
 
-export function editGraphicProperties(program, target, properties) {
-  for (const [property, value] of Object.entries(properties)) {
-    program = program.editGraphics({ target, property, value });
-  }
-  return program;
-}
+export { editGraphicProperties };
 
 export function normalizeLegendTextOptions(value, label, defaults) {
   if (value === undefined) return { ...defaults };
@@ -406,4 +402,46 @@ export function normalizeItemLegendLayout(args) {
   validateNonNegative(offset, "Legend offset");
   validatePositive(itemGap, "Legend itemGap");
   return { position, layout, align, direction, columns, titlePosition, offset, itemGap };
+}
+
+export function materializeItemLegend(program, kind, config, layout, {
+  symbols, optional = {}, text = layout.labels,
+  labels = layout.config.labels, titleStyle = layout.config.titleStyle
+}) {
+  const prefix = `${kind}Legend`;
+  let next = program
+    .editSemantic({ property: `guide.legend.${kind}.scale`, value: config.scale })
+    .editSemantic({ property: `guide.legend.${kind}.title`, value: config.title })
+    ._withLegendConfig(kind, config);
+  next = editGraphicProperties(next, `${prefix}Symbols`, {
+    length: text.length,
+    ...symbols
+  });
+  next = editGraphicProperties(next, `${prefix}Labels`, {
+    length: text.length, x: layout.labelX, y: layout.itemY, text
+  });
+  next = editLegendBackground(next, `${prefix}Background`, layout.background, config.border);
+  next = editGraphicProperties(next, `${prefix}Symbols`, Object.fromEntries(
+    Object.entries(optional).filter(([, value]) => value !== undefined)
+  ));
+  next = styleContinuousText(next, `${prefix}Labels`, labels);
+  const effective = layout.config;
+  if (effective.titleVisible === false) return next;
+  next = editGraphicProperties(next, `${prefix}Title`, {
+    x: layout.title.x, y: layout.title.y, text: effective.title
+  });
+  return styleContinuousText(next, `${prefix}Title`, titleStyle, { align: layout.title.align });
+}
+
+export function createItemLegendGraphics(program, kind, config, count, type, placement) {
+  const prefix = `${kind}Legend`;
+  let next = program
+    .editSemantic({ property: `guide.legend.${kind}.scale`, value: config.scale })
+    .editSemantic({ property: `guide.legend.${kind}.title`, value: config.title })
+    ._withLegendConfig(kind, config);
+  if (config.border !== false) next = next.createGraphics({ id: `${prefix}Background`, type: "rect", ...placement });
+  next = next.createGraphics({ id: `${prefix}Symbols`, type, length: count, ...placement })
+    .createGraphics({ id: `${prefix}Labels`, type: "text", length: count, ...placement });
+  if (config.titleVisible !== false) next = next.createGraphics({ id: `${prefix}Title`, type: "text", ...placement });
+  return next;
 }

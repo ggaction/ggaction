@@ -241,3 +241,26 @@ test("rejects invalid band roles atomically", () => {
   );
   assert.equal(JSON.stringify(before), snapshot);
 });
+
+test("changes interval extent alongside temporal roles and preserves grouped bounds", () => {
+  const before = errorBand();
+  const snapshot = JSON.stringify(before);
+  const revised = before.editErrorBand({
+    x: { field: "year", fieldType: "temporal" },
+    statistics: { center: "median", extent: "iqr" }
+  });
+  const transform = revised.semanticSpec.datasets.at(-1).transform[0];
+  assert.deepEqual(transform.groupBy, ["year", "group"]);
+  assert.equal(transform.extent, "iqr");
+  assert.equal(Object.hasOwn(transform, "method"), false);
+  assert.equal(Object.hasOwn(transform, "level"), false);
+  assert.deepEqual(revised.semanticSpec.datasets.at(-1).values.map(row => [
+    row.__errorBand_lower, row.__errorBand_upper
+  ]), [[10.5, 11.5], [13.5, 14.5], [18.5, 19.5], [21.5, 22.5]]);
+  const restored = revised.editErrorBand({
+    x: { field: "year", fieldType: "temporal" },
+    statistics: { center: "mean", extent: "ci", level: 0.9 }
+  });
+  assert.equal(restored.semanticSpec.datasets.at(-1).transform[0].level, 0.9);
+  assert.equal(JSON.stringify(before), snapshot);
+});

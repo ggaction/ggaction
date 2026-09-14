@@ -1,3 +1,4 @@
+import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { getPointGraphicType } from "../../../grammar/schemas/mark.js";
@@ -515,19 +516,12 @@ export const rematerializePointMark = /* @__PURE__ */ action(
           value: centersY.map((value, index) => value - (Array.isArray(sides) ? sides[index] : sides) / 2)
         });
       }
-      next = next
-        .editGraphics({ target: id, property: "width", value: sides })
-        .editGraphics({ target: id, property: "height", value: sides })
-        .editGraphics({
-          target: id,
-          property: "stroke",
-          value: mappedStroke ?? fill ?? DEFAULT_POINT_FILL
-        })
-        .editGraphics({
-          target: id,
-          property: "strokeWidth",
-          value: mappedStroke === undefined ? 0 : config.strokeWidth ?? 1
-        });
+      next = editGraphicProperties(next, id, {
+        width: sides,
+        height: sides,
+        stroke: mappedStroke ?? fill ?? DEFAULT_POINT_FILL,
+        strokeWidth: mappedStroke === undefined ? 0 : config.strokeWidth ?? 1
+      });
     }
     if (config.opacity !== undefined) {
       next = next.editGraphics({ target: id, property: "opacity", value: config.opacity });
@@ -535,17 +529,15 @@ export const rematerializePointMark = /* @__PURE__ */ action(
       next = next.editGraphics({ target: id, property: "opacity", value: encodedOpacity });
     }
     if (mappedStroke !== undefined) {
-      next = next
-        .editGraphics({ target: id, property: "stroke", value: mappedStroke })
-        .editGraphics({
-          target: id,
-          property: "strokeWidth",
-          value: config.strokeWidth ?? 1
-        });
+      next = editGraphicProperties(next, id, {
+        stroke: mappedStroke,
+        strokeWidth: config.strokeWidth ?? 1
+      });
     } else if (config.stroke === false) {
-      next = next
-        .editGraphics({ target: id, property: "stroke", value: "transparent" })
-        .editGraphics({ target: id, property: "strokeWidth", value: 0 });
+      next = editGraphicProperties(next, id, {
+        stroke: "transparent",
+        strokeWidth: 0
+      });
     } else if (config.stroke !== undefined) {
       next = next.editGraphics({ target: id, property: "stroke", value: config.stroke });
       next = next.editGraphics({

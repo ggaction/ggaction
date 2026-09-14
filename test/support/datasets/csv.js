@@ -23,38 +23,38 @@ function visitCsvRecords(source, visitor) {
     throw new TypeError("CSV source must be a string.");
   }
   let record = [];
-  let field = "";
+  let field = [];
   let quoted = false;
   let recordIndex = 0;
   const visit = () => {
-    record.push(field);
+    record.push(field.join(""));
     visitor(record, recordIndex);
     recordIndex += 1;
     record = [];
-    field = "";
+    field = [];
   };
   for (let index = 0; index < source.length; index += 1) {
     const character = source[index];
     if (quoted) {
       if (character === '"' && source[index + 1] === '"') {
-        field += '"';
+        field.push('"');
         index += 1;
       } else if (character === '"') {
         quoted = false;
       } else {
-        field += character;
+        field.push(character);
       }
       continue;
     }
     if (character === '"') {
       quoted = true;
     } else if (character === ",") {
-      record.push(field);
-      field = "";
+      record.push(field.join(""));
+      field = [];
     } else if (character === "\n") {
       visit();
     } else if (character !== "\r") {
-      field += character;
+      field.push(character);
     }
   }
   if (quoted) throw new Error("CSV source has an unterminated quoted field.");

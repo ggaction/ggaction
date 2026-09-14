@@ -804,9 +804,7 @@ function guideOptions(profile, resources, context, ordinal, action) {
             : axisStyle(resources.x, "x", profile, ordinal),
           y: profile.axisFalse === "y"
             ? false
-            : axisStyle(resources.y, "y", profile, ordinal),
-          theta: false,
-          radius: false
+            : axisStyle(resources.y, "y", profile, ordinal)
         },
     grid: cartesianGrid(profile, resources),
     legend: profile.legend === false

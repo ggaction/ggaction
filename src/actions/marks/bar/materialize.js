@@ -1,3 +1,4 @@
+import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { validateMarkOptions } from "../shared.js";
@@ -32,43 +33,16 @@ function editRectangles(program, id, rectangles) {
       rectangles.map(rectangle => materializeRectItem(rectangle, radius))
     );
   }
-  let next = program
-    .editGraphics({ target: id, property: "length", value: rectangles.length })
-    .editGraphics({
-      target: id,
-      property: "x",
-      value: rectangles.map(rect => rect.x)
-    })
-    .editGraphics({
-      target: id,
-      property: "y",
-      value: rectangles.map(rect => rect.y)
-    })
-    .editGraphics({
-      target: id,
-      property: "width",
-      value: rectangles.map(rect => rect.width)
-    })
-    .editGraphics({
-      target: id,
-      property: "height",
-      value: rectangles.map(rect => rect.height)
-    })
-    .editGraphics({
-      target: id,
-      property: "fill",
-      value: rectangles.map(rect => rect.fill)
-    })
-    .editGraphics({
-      target: id,
-      property: "stroke",
-      value: rectangles.map(rect => rect.stroke)
-    })
-    .editGraphics({
-      target: id,
-      property: "strokeWidth",
-      value: rectangles.map(rect => rect.strokeWidth)
-    });
+  let next = editGraphicProperties(program, id, {
+    length: rectangles.length,
+    x: rectangles.map(rect => rect.x),
+    y: rectangles.map(rect => rect.y),
+    width: rectangles.map(rect => rect.width),
+    height: rectangles.map(rect => rect.height),
+    fill: rectangles.map(rect => rect.fill),
+    stroke: rectangles.map(rect => rect.stroke),
+    strokeWidth: rectangles.map(rect => rect.strokeWidth)
+  });
   if (rectangles.some(rect => rect.opacity !== undefined)) {
     next = next.editGraphics({
       target: id,

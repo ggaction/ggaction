@@ -1343,7 +1343,12 @@ function buildDirectPointText(factors) {
       fontWeight: 700,
       align: "left"
     })
-    .createTitle({ text: lifecycleTitle(factors, "Annotated observations") });
+    .createTitle({ text: lifecycleTitle(factors, "Annotated observations") })
+    .reviseData({ source: "appearanceRows", id: "appearanceRowsRevised", values: rows })
+    .applyTextMetrics({
+      profile: { schemaVersion: 1, id: "appearanceMetrics", measurements: [] }
+    })
+    .removeTextMetrics();
 }
 
 function directRangeRows(dataset) {
@@ -2074,7 +2079,7 @@ function lifecycleSignature(base, factors) {
       "editNormalizedData", "editCompleteData", "editImputedData"
     ],
     "action-direct-point-text": [
-      "encodeRadius", "encodeOpacity", "editOpacityScale", "createTextMark", "encodeText",
+      "reviseData", "applyTextMetrics", "removeTextMetrics", "encodeRadius", "encodeOpacity", "editOpacityScale", "createTextMark", "encodeText",
       "editTextMark", "createMarkLabels", "editMarkLabelSelection", "editMarkLabelPlacement", "removeMarkLabels",
       "editStrokeScale"
     ],
@@ -2320,6 +2325,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 ]);
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
+  "reviseData", "applyTextMetrics", "removeTextMetrics",
   "filterData", "createRegressionData", "createWindowData", "createTimeUnitData",
   "createIntervalData", "createTickMark", "editTickMark", "removeMark",
   "createNormalizedData", "createCompleteData", "createImputedData",

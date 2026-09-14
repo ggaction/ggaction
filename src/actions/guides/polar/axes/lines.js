@@ -1,3 +1,4 @@
+import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 import { action } from "../../../../core/action.js";
 import {
   buildPolarCircleCommands,
@@ -63,17 +64,10 @@ function makeEditLine(kind) {
     for (const [property, value] of Object.entries(geometry)) {
       next = next.editGraphics({ target: names.line, property, value });
     }
-    return next
-      .editGraphics({
-        target: names.line,
-        property: "stroke",
-        value: config.color
-      })
-      .editGraphics({
-        target: names.line,
-        property: "strokeWidth",
-        value: config.lineWidth
-      });
+    return editGraphicProperties(next, names.line, {
+      stroke: config.color,
+      strokeWidth: config.lineWidth
+    });
   });
 }
 

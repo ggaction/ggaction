@@ -1,3 +1,4 @@
+import { editGraphicProperties } from "../primitives/graphicProperties.js";
 import { action, closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateNonEmptyString } from "../../core/validation.js";
@@ -135,14 +136,11 @@ export const createErrorBandBoundary = /* @__PURE__ */ action(
     if (groupBy !== undefined) {
       next = next.encodeGroup({ target: id, field: groupBy });
     }
-    return next
-      .editGraphics({ target: id, property: "stroke", value: stroke })
-      .editGraphics({
-        target: id,
-        property: "strokeDash",
-        value: next.graphicSpec.objects[id].items.map(() => strokeDash)
-      })
-      .editGraphics({ target: id, property: "opacity", value: opacity });
+    return editGraphicProperties(next, id, {
+      stroke: stroke,
+      strokeDash: next.graphicSpec.objects[id].items.map(() => strokeDash),
+      opacity: opacity
+    });
   }
 );
 

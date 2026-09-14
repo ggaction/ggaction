@@ -1,3 +1,4 @@
+import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 import { action } from "../../../../core/action.js";
 import { validateNonNegativeFinite } from "../../../../core/validation.js";
 import {
@@ -112,17 +113,10 @@ function makeEditTicks(kind) {
         value: geometry[property]
       });
     }
-    return next
-      .editGraphics({
-        target: names.ticks,
-        property: "stroke",
-        value: config.color
-      })
-      .editGraphics({
-        target: names.ticks,
-        property: "strokeWidth",
-        value: config.lineWidth
-      });
+    return editGraphicProperties(next, names.ticks, {
+      stroke: config.color,
+      strokeWidth: config.lineWidth
+    });
   });
 }
 

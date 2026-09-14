@@ -195,7 +195,10 @@ function runSweepInDisposableProcess({
     [childEnvironmentName]: "1"
   };
   delete childEnvironment.NODE_TEST_CONTEXT;
+  // Keep V8 within the existing 512 MiB total-process budget on CI hosts.
   const child = spawnSync(process.execPath, [
+    "--max-old-space-size=256",
+    "--max-semi-space-size=8",
     "--test",
     `--test-name-pattern=^${testName}$`,
     fileURLToPath(import.meta.url)
@@ -217,7 +220,7 @@ function runSweepInDisposableProcess({
   for (const [key, value] of Object.entries(expectedResources)) {
     assert.deepEqual(resources[key], value, `${testName} ${key}`);
   }
-  assert.ok(resources.maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, resources);
+  assert.ok(resources.maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, JSON.stringify(resources));
 }
 
 function hashIds(ids) {
@@ -736,7 +739,7 @@ test(CARTESIAN_GUIDE_SWEEP_TEST_NAME, () => {
     }
   }
   const maxRssKiB = process.resourceUsage().maxRSS;
-  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, { maxRssKiB });
+  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, JSON.stringify({ maxRssKiB }));
   console.log(`${CARTESIAN_GUIDE_SWEEP_RESOURCE_PREFIX}${JSON.stringify({
     builds,
     eligibleDatasets: recipe.datasets.length,
@@ -1121,7 +1124,7 @@ test(FACET_SWEEP_TEST_NAME, () => {
   assert.equal(maximumHeight, 2_210);
   collectGarbage();
   const maxRssKiB = process.resourceUsage().maxRSS;
-  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, { maxRssKiB });
+  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, JSON.stringify({ maxRssKiB }));
   console.log(`${FACET_SWEEP_RESOURCE_PREFIX}${JSON.stringify({
     builds,
     maximumWidth,
@@ -1648,7 +1651,7 @@ test(REMOVAL_SWEEP_TEST_NAME, () => {
   assert.equal(builds, 50);
   collectGarbage();
   const maxRssKiB = process.resourceUsage().maxRSS;
-  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, { maxRssKiB });
+  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, JSON.stringify({ maxRssKiB }));
   console.log(`${REMOVAL_SWEEP_RESOURCE_PREFIX}${JSON.stringify({
     builds,
     eligibleDatasets: recipe.datasets.length,
@@ -1934,7 +1937,7 @@ test(DERIVED_SWEEP_TEST_NAME, () => {
   assert.equal(builds, 31);
   collectGarbage();
   const maxRssKiB = process.resourceUsage().maxRSS;
-  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, { maxRssKiB });
+  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, JSON.stringify({ maxRssKiB }));
   console.log(`${DERIVED_SWEEP_RESOURCE_PREFIX}${JSON.stringify({
     builds,
     eligibleDatasets: recipe.datasets.length,
@@ -2170,7 +2173,7 @@ test(STATISTICAL_SWEEP_TEST_NAME, () => {
   assert.equal(builds, 31);
   collectGarbage();
   const maxRssKiB = process.resourceUsage().maxRSS;
-  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, { maxRssKiB });
+  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, JSON.stringify({ maxRssKiB }));
   console.log(`${STATISTICAL_SWEEP_RESOURCE_PREFIX}${JSON.stringify({
     builds,
     eligibleDatasets: recipe.datasets.length,
@@ -2274,7 +2277,7 @@ test(REGRESSION_SWEEP_TEST_NAME, () => {
   assert.equal(builds, 50);
   collectGarbage();
   const maxRssKiB = process.resourceUsage().maxRSS;
-  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, { maxRssKiB });
+  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, JSON.stringify({ maxRssKiB }));
   console.log(`${REGRESSION_SWEEP_RESOURCE_PREFIX}${JSON.stringify({
     builds,
     minimumRows,

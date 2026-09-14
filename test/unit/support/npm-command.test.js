@@ -7,11 +7,19 @@ test("Windows invokes the npm JavaScript CLI through Node without a shell", () =
   const args = ["install", "C:\\project with spaces\\candidate.tgz"];
   assert.deepEqual(npmInvocation(args, { platform: "win32", env: { npm_execpath: cli }, node: "C:\\node.exe" }),
     { command: "C:\\node.exe", args: [cli, ...args] });
-  assert.throws(() => npmInvocation([], { platform: "win32", env: {} }), /npm run on Windows/);
+  assert.throws(() => npmInvocation([], { platform: "win32", env: {}, exists: () => false }), /npm run on Windows/);
 });
 
 test("Unix uses the active npm CLI when available and otherwise the executable", () => {
   assert.deepEqual(npmInvocation(["pack"], { platform: "darwin", env: {} }), { command: "npm", args: ["pack"] });
   assert.deepEqual(npmInvocation(["pack"], { platform: "linux", env: { npm_execpath: "/tools/npm-cli.js" }, node: "/tools/node" }),
     { command: "/tools/node", args: ["/tools/npm-cli.js", "pack"] });
+});
+
+test("Windows direct CI invocations resolve the CLI next to the Node installation", () => {
+  const node = "C:\\Program Files\\nodejs\\node.exe";
+  const cli = "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js";
+  assert.deepEqual(npmInvocation(["run", "test:platform"], {
+    platform: "win32", env: {}, node, exists: candidate => candidate === cli
+  }), { command: node, args: [cli, "run", "test:platform"] });
 });

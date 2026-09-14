@@ -138,13 +138,7 @@ export function planIntervalRoleData(program, {
   };
 }
 
-export function planIntervalEdit(program, {
-  owner,
-  data,
-  consumers,
-  statistics,
-  operation
-}) {
+export function validateIntervalStatistics(statistics, operation) {
   if (!isPlainObject(statistics)) {
     throw new TypeError(`${operation} statistics must be a plain object.`);
   }
@@ -154,16 +148,9 @@ export function planIntervalEdit(program, {
       `${operation} statistics requires center, extent, method, or level.`
     );
   }
-  const previous = findDataset(program, data);
-  const transform = previous?.transform?.length === 1
-    ? previous.transform[0]
-    : undefined;
-  if (transform?.type !== "interval") {
-    throw new Error(
-      `${operation} statistics requires a statistical interval owner; ` +
-      "explicit interval fields cannot be converted by edit."
-    );
-  }
+}
+
+export function mergeIntervalStatistics(transform, statistics) {
   const center = Object.hasOwn(statistics, "center")
     ? statistics.center
     : transform.center;
@@ -181,7 +168,28 @@ export function planIntervalEdit(program, {
   } else if (extent === "ci" && transform.extent === "ci") {
     raw.level = transform.level;
   }
-  const parameters = normalizeIntervalParameters(raw);
+  return normalizeIntervalParameters(raw);
+}
+
+export function planIntervalEdit(program, {
+  owner,
+  data,
+  consumers,
+  statistics,
+  operation
+}) {
+  validateIntervalStatistics(statistics, operation);
+  const previous = findDataset(program, data);
+  const transform = previous?.transform?.length === 1
+    ? previous.transform[0]
+    : undefined;
+  if (transform?.type !== "interval") {
+    throw new Error(
+      `${operation} statistics requires a statistical interval owner; ` +
+      "explicit interval fields cannot be converted by edit."
+    );
+  }
+  const parameters = mergeIntervalStatistics(transform, statistics);
   const current = {
     center: transform.center,
     extent: transform.extent,

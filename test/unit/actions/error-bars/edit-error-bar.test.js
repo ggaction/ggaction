@@ -313,3 +313,26 @@ test("rejects invalid role revisions without changing the input program", () => 
   );
   assert.equal(JSON.stringify(before), snapshot);
 });
+
+test("merges statistics during a role revision without retaining CI-only parameters", () => {
+  const before = errorBar();
+  const snapshot = JSON.stringify(before);
+  const revised = before.editErrorBar({
+    x: { field: "group", fieldType: "nominal" },
+    statistics: { center: "median", extent: "iqr" }
+  });
+  const transform = revised.semanticSpec.datasets.at(-1).transform[0];
+  assert.equal(transform.center, "median");
+  assert.equal(transform.extent, "iqr");
+  assert.equal(Object.hasOwn(transform, "method"), false);
+  assert.equal(Object.hasOwn(transform, "level"), false);
+  assert.deepEqual(revised.semanticSpec.datasets.at(-1).values.map(row => [
+    row.__errorBar_center, row.__errorBar_lower, row.__errorBar_upper
+  ]), [[2, 1.5, 2.5], [4, 3, 5]]);
+  for (const statistics of [null, {}, { unknown: true }, { extent: "iqr", method: "student-t" }]) {
+    assert.throws(() => before.editErrorBar({
+      x: { field: "group", fieldType: "nominal" }, statistics
+    }), /statistics|Interval|Median/);
+  }
+  assert.equal(JSON.stringify(before), snapshot);
+});

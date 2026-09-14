@@ -3,7 +3,7 @@
 ## 진행 상태
 
 - [x] v0.0.15 기준 감사와 구현 범위 확인
-- [ ] 31개 항목 구현 및 계약 동기화
+- [x] 31개 항목 구현 및 계약 동기화
 - [ ] 통합·패키지·문서·realistic·coverage·브라우저·렌더 검증
 - [ ] PR 정상 통합 및 0.0.16 exact candidate 릴리즈
 
@@ -29,14 +29,14 @@
 | 12 | preview가 관계없는 원본 데이터까지 다시 복사한다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 13 | 긴 trace의 append 비용이 누적된다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 14 | SVG가 매번 전체 graphicSpec을 직렬화·해시한다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
-| 15 | 최소 산점도 번들이 예산 상한에 거의 도달했다 | 구현·검증 완료; Full 여유 제한 기록 | 권장 Basic 최소 차트 gzip 174,967→165,806 (약 5.2% 감소). Full 신규 기능 포함 359,782로 기존 360,000 상한 유지; 추가 여유는 218 bytes |
+| 15 | 최소 산점도 번들이 예산 상한에 거의 도달했다 | 구현·검증 완료; Full 여유 제한 기록 | 같은 로컬 runtime에서 권장 Basic gzip 약 5.2% 감소. CI Node 22.23.2 installed Full/Basic/SVG 359,670/166,182/6,961 bytes; 기존 browser 상한 유지 |
 | 16 | 브라우저 전용 사용자도 MCP·네이티브 렌더 의존성을 설치한다 | 구현·검증 완료 | renderer/package/MCP 38개, docs/package 33개, 실제 bare→optional 설치·Full/Basic/타입/전체 package consumer 통과 |
 | 17 | 런타임 성능 회귀를 검출하는 공식 workload가 필요하다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 18 | 실제 폰트와 저작용 text bounds 차이를 줄일 선택지가 필요하다 | 구현·검증 완료 | exact-font profile, fallback, wrapped rematerialization, composition/Basic adoption, persistence, 타입 및 installed consumer 통과 |
 | 19 | 릴리즈의 단일 순차 검증 경로가 약 59분 걸린다 | 구현·로컬 검증; 릴리즈 실행 대기 | canonical candidate를 병렬 source/coverage/package/docs/7 realistic shard에 전달; strict fan-in |
-| 20 | realistic 테스트가 main의 필수 merge check에 포함되지 않는다 | 부분 구현·검증 | realistic-required strict aggregate 추가; 실제 main required rule 추가 남음 |
+| 20 | realistic 테스트가 main의 필수 merge check에 포함되지 않는다 | 구현·실제 보호 규칙 검증 완료 | realistic-required strict aggregate 및 main ruleset 20421930의 required check에 추가; 기존 required checks·strict·bypass actor 유지 확인 |
 | 21 | 자동 검증이 Ubuntu·Chromium에 집중되어 있다 | 구현·로컬 검증 완료 | macOS native smoke, Chromium/Firefox/WebKit DPR 1·2 및 installed consumer 통과; Windows/Ubuntu matrix는 실제 CI 대기 |
-| 22 | 실패한 렌더·문서 테스트의 진단 artifact를 자동 보존해야 한다 | 구현·로컬 검증 완료 | 의도적 실패에서 로그/status·actual/expected/diff·브라우저 화면 보존; CI failure upload와 budget/오류 비은폐 확인 |
+| 22 | 실패한 렌더·문서 테스트의 진단 artifact를 자동 보존해야 한다 | 구현·실제 CI artifact 검증 완료 | 의도적 실패의 로그/status·이미지 보존, 실제 run 34825970866의 Windows failure artifact 다운로드 및 원인 확인; 한도와 실패 상태 유지 |
 | 23 | 높은 coverage를 보완할 공통 음성 계약·교차층 테스트가 필요하다 | 구현·검증 완료 | Current catalog 전체 valid-call corpus → unknown/null/array/scalar rejection 및 source snapshot; generic/focused·atomic/sequential 동치 |
 | 24 | 실행 계약과 생성 메타데이터의 의미 원본을 좁혀야 한다 | 구현·검증 완료 | scale 단위·impute 필수값 공유; architecture의 중복 API/지원 목록을 Current owner 링크로 통합, 경로·anchor·package 계약 검증 |
 | 25 | MCP 평가는 실행 성공과 요구 충족을 분리해야 한다 | 구현·검증 완료 | 85개 MCP·카드·문서·패키지 계약, installed consumer 및 15개 의미 평가 통과 |
@@ -157,3 +157,16 @@ Browser-safe 별도 entry에서 final item adapter와 pure path series를 읽는
 권장 Basic entry의 최소 산점도 gzip은 165,806 bytes로 감사 기준보다 9,161 bytes 작다. Full은 모든 등록 action을 유지하므로 신규 기능과 함께 359,782 bytes이며 상한 대비 여유가 작다는 제한을 기록한다. 큰 Full 축소를 달성했다고 주장하지 않는다. SVG는 6,956 bytes다. Browser 한도는 변경하지 않았다. 최종 tarball audit는 540 files, packed 725,076, unpacked 3,606,432 bytes다. Packed 상한은 새 API와 릴리즈 설명 증가를 반영해 730,000으로 맞췄고 unpacked 3,610,000을 유지했다.
 
 실제 release:prepare 재실행은 버전 0.0.16과 source contract를 보존하고 committed runtime의 문서 provenance 및 local notes를 생성했다. 이 기록은 PR 전 snapshot이다. CI의 coverage/realistic/platform/browser 및 exact-candidate release 검증, main 보호 규칙 추가와 실제 배포는 다음 단계에 남긴다.
+
+### First CI closeout
+
+PR #131의 첫 run `34825970866`에서 source/render/browser, coverage, documentation, macOS, Firefox와 WebKit은 통과했다. Windows의 `spawn npm ENOENT`, Node 22.23.2의 gzip 차이, 변경된 axis 계약과 동기화되지 않은 realistic fixture, 신규 action coverage inventory, 긴 CSV 문자열로 인한 메모리 초과를 실제 실패 원인으로 분리했다.
+
+- Windows는 Node 설치 옆의 npm CLI를 직접 실행한다. 공백 포함 경로·npm wrapper·startup error의 retained log 등 9개 검사를 통과했다. 실제 Windows failure artifact도 다운로드해 원인과 보존 결과를 확인했다.
+- Item legend와 interval revision의 중복을 줄이고, 여러 property 편집은 기존 wrapped primitive를 순서대로 호출한다. Fixture 변경 전 141개 corpus의 semantic/graphic/config/trace와 SVG가 모두 일치했다. Interval·legend 254개 검사를 통과했다.
+- Role과 statistics를 함께 편집할 때 이전 CI-only method/level이 남는 오류도 발견했다. 단독 statistics 편집과 같은 partial merge를 공유하며 median/IQR의 숫자 경계와 입력 불변성, grouped temporal band 및 CI 복원을 검증했다. Current 계약과 공개 API 설명을 동기화했다.
+- Cartesian fixture에서 Polar-only false 옵션을 제거했다. 120/216/360 strict 생성 격리 검사가 모두 통과했고, 직접 사용자 action 272개와 option inventory/ledger를 동기화했다. `reviseData`, `applyTextMetrics`, `removeTextMetrics`는 실제 생성 시나리오의 root call로 실행된다.
+- CSV의 문자별 string concatenation을 field 단위 join으로 바꾸었다. 긴 quoted description 40개는 이전 parser에서 64 MiB heap OOM을 재현하고 수정 parser에서는 완전 동일한 값으로 통과한다. 기존 parser 동치·fixture 19개 및 신규 통계/CSV 회귀 26개가 통과했다. 50개 maximal regression 데이터셋은 기존 row/group/fallback 기대를 유지하고 최대 RSS 270,368 KiB로 통과했다. Disposable child heap은 256 MiB, RSS 상한은 기존 512 MiB다.
+- 최종 전체 source coverage는 line 95.14%, branch 91.92%, function 98.78%이며 99개 critical floor를 모두 통과했다. 중간 일반 suite의 생성 문서 3개 freshness 실패는 generator 실행 뒤 docs 120개 및 최종 전체 coverage 실행에서 재검증했다.
+- CI와 같은 Node 22.23.2의 실제 installed package 전체 consumer 통과: Full/Basic/SVG gzip 359,670/166,182/6,961 bytes. Native Node 22.23.1과의 압축 수치를 같은 runtime의 결과처럼 비교하지 않는다. Browser 상한은 유지했고, 공유 runtime 2개 파일 추가로 package entries 상한만 542로 맞췄다. 최종 local audit는 packed 725,084, unpacked 3,597,570 bytes다.
+- Main ruleset `20421930`에 `realistic-required`를 추가하고 기존 checks, strict mode와 bypass actor가 그대로임을 확인했다. 두 번째 PR CI 및 exact-tag release의 성공은 아직 이 checkpoint의 완료 주장에 포함하지 않는다.

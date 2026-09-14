@@ -1493,6 +1493,13 @@ utility, gradient strip recipe, opacity symbol recipe를 분리하며, quantitat
 분리해 shared lane owner가 맡는다. Top/bottom multi-block placement도 같은 `layout/legendLane.js`의 pure
 geometry와 별도 wrapped horizontal owner를 사용하며 renderer는 그 최종 좌표만 읽는다.
 
+Size와 stroke-width legend의 item graphic 생성·배치는 `actions/guides/legends/continuous/common.js`가
+공유하고 각 family는 scale 추론·symbol recipe·layout·config를 소유한다. `actions/primitives/graphicProperties.js`는
+여러 property를 지정된 순서로 기존 wrapped `editGraphics`에 전달하는 private helper다. 새 public primitive나
+batch trace를 만들지 않는다. Error-bar와 error-band의 source/role 복원·scale 계획·statistics 검증은
+`actions/intervals/revision.js`가 공유하며, family별 저장 형태와 scale default·offset·group 제약은 각 owner에 남긴다.
+Statistics partial merge는 `actions/data/intervalEdit.js`가 단독 편집과 role 동시 편집에 공통 제공한다.
+
 구현된 mark type, encoding channel, categorical legend channel, legend config kind는
 `core/vocabulary.js`가 canonical owner다. Schema parser, action validation, private config와
 materialization discovery는 이 목록을 import하며 별도의 문자열 목록을 만들지 않는다. 현재 legend

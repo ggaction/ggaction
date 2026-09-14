@@ -877,9 +877,7 @@ function exerciseCartesianGuides(factors, base) {
     axes: {
       coordinate: { id: "main", type: ordinal % 2 === 0 ? "cartesian" : "auto" },
       x: xAxis,
-      y: yAxis,
-      theta: false,
-      radius: false
+      y: yAxis
     },
     grid: {
       horizontal: {

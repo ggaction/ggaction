@@ -64,9 +64,13 @@ All notable changes to `ggaction` are recorded in this file.
 - Distinguished data and mark identity when revising statistical-reference inputs.
   Inferred grids now follow explicit tick changes without disrupting orientation
   changes that must rematerialize guides in dependency order.
+- Applied the same interval-statistics merge during simultaneous role edits,
+  clearing inherited confidence-interval parameters when changing extent.
 - Reused the exact release artifact in installed-package consumers instead of
   silently repacking it, and made development npm/TypeScript invocation portable
   across supported operating systems.
+- Bounded long CSV description memory in realistic test fixtures and synchronized
+  their direct action coverage and coordinate options with current contracts.
 
 ## [0.0.15] - 2026-09-14
 

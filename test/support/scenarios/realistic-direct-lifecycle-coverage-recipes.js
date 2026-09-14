@@ -2849,9 +2849,7 @@ const CARTESIAN_GUIDE_RECIPE = makeDelegatedGuideRecipe({
       .createAxes({
         coordinate: { id: "main", type: "cartesian" },
         x: axis,
-        y: false,
-        theta: false,
-        radius: false
+        y: false
       }).removeXAxis({ coordinate: "main", scale: "x" })
       .createXAxis(axis)
       .editXAxis({ labels: decimalTicksAndLabels().labels })

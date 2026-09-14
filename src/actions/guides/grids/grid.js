@@ -1,3 +1,4 @@
+import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { action, closedAction } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { noOptions, validateOptionObject } from "../../../core/validation.js";
@@ -71,17 +72,10 @@ function makeRematerialize(direction) {
           value: geometry[property]
         });
       }
-      return next
-        .editGraphics({
-          target: operation.graphic,
-          property: "stroke",
-          value: config.color
-        })
-        .editGraphics({
-          target: operation.graphic,
-          property: "strokeWidth",
-          value: config.lineWidth
-        })
+      return editGraphicProperties(next, operation.graphic, {
+        stroke: config.color,
+        strokeWidth: config.lineWidth
+      })
         .editGraphics({
           target: operation.graphic,
           property: "strokeDash",

@@ -47,6 +47,14 @@ test("a failing check retains a bounded log and its exact exit status", async t 
   assert.equal(await runCheck("missing-command", path.join(root, "missing"), [], { outputDirectory: root, stdout: silence, stderr: silence }), 1);
 });
 
+test("check wrappers execute the active npm CLI and retain startup diagnostics", async t => {
+  const root = await fixture(t);
+  assert.equal(await runCheck("npm-version", "npm", ["--version"], { outputDirectory: root, stdout: silence, stderr: silence }), 0);
+  assert.match(await readFile(path.join(root,"npm-version.log"),"utf8"), /\d+\.\d+\.\d+/);
+  assert.equal(await runCheck("startup",path.join(root,"missing"),[],{ outputDirectory: root, stdout:silence,stderr:silence }),1);
+  assert.match(await readFile(path.join(root,"startup.log"),"utf8"),/Could not start check:.*ENOENT/);
+});
+
 test("failure collection excludes large files and old outputs while preserving identities", async t => {
   const root = await fixture(t);
   const failures = path.join(root, ".artifacts/failures");

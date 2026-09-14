@@ -1,3 +1,4 @@
+import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { applyMaterializationPlan } from "../../../materialization/planner.js";
 import { planAxisTickGridRematerialization } from "../../../materialization/scaleGuideDependencies.js";
@@ -163,7 +164,10 @@ function makeEdit(channel) {
     const resolved = geometry(this, channel, config);
     let next = this._withGuideConfig(channel, config).editGraphics({ target: id, property: "length", value: resolved.values.length });
     for (const property of ["x1", "y1", "x2", "y2"]) next = next.editGraphics({ target: id, property, value: resolved[property] });
-    next = next.editGraphics({ target: id, property: "stroke", value: config.color }).editGraphics({ target: id, property: "strokeWidth", value: config.lineWidth });
+    next = editGraphicProperties(next, id, {
+      stroke: config.color,
+      strokeWidth: config.lineWidth
+    });
     // Structural dependency plans own grids during a scale/role handoff.
     return explicitMode ? applyMaterializationPlan(next, planAxisTickGridRematerialization(next, channel)) : next;
   }));

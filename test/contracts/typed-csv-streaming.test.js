@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { spawnSync } from "node:child_process";
 
 import { referenceParseTypedCsv } from "../oracles/typed-csv.js";
 import { parseTypedCsv } from "../support/datasets/csv.js";
@@ -237,4 +238,29 @@ test("returns fresh mutable arrays containing fresh frozen row records", () => {
     assert.equal(Object.isFrozen(first[index]), true);
     assert.equal(Object.isFrozen(second[index]), true);
   }
+});
+
+test("keeps long quoted descriptions within a bounded parser heap", () => {
+  const moduleUrl = new URL("../support/datasets/csv.js", import.meta.url).href;
+  const child = spawnSync(process.execPath, [
+    "--max-old-space-size=64", "--input-type=module", "--eval", `
+      import assert from "node:assert/strict";
+      import { parseTypedCsv } from ${JSON.stringify(moduleUrl)};
+      const note = 'A "quoted" description, with a newline\\n' + "long ".repeat(16000);
+      const source = "value,note\\n" + Array.from({ length: 40 }, (_, index) =>
+        index + ',"' + note.replaceAll('"', '""') + '"\\n'
+      ).join("");
+      const rows = parseTypedCsv(source, {
+        id: "long-descriptions",
+        fields: { value: { type: "quantitative" }, note: { type: "nominal" } }
+      });
+      assert.equal(rows.length, 40);
+      for (const [index, row] of rows.entries()) {
+        assert.equal(row.value, index);
+        assert.equal(row.note, note);
+      }
+    `
+  ], { encoding: "utf8", maxBuffer: 1024 * 1024 });
+  assert.equal(child.error, undefined, child.error?.message);
+  assert.equal(child.status, 0, child.stderr);
 });

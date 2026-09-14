@@ -1,3 +1,4 @@
+import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 import { action } from "../../../../core/action.js";
 import {
   activeConfig,
@@ -58,24 +59,23 @@ function makeEditSymbol(type) {
         const x1 = layout.symbolX.map(
           value => value + (symbolWidth(config) - layer.length) / 2
         );
-        next = next
-          .editGraphics({ target: id, property: "x1", value: x1 })
-          .editGraphics({ target: id, property: "y1", value: layout.itemY })
-          .editGraphics({
-            target: id,
-            property: "x2",
-            value: x1.map(value => value + layer.length)
-          })
-          .editGraphics({ target: id, property: "y2", value: layout.itemY })
+        next = editGraphicProperties(editGraphicProperties(editGraphicProperties(next, id, {
+          x1: x1,
+          y1: layout.itemY
+        }), id, {
+          x2: x1.map(value => value + layer.length),
+          y2: layout.itemY
+        })
           .editGraphics({
             target: id,
             property: "stroke",
             value: layer.stroke ?? (config.channels.includes("stroke")
               ? appearance.strokes
               : appearance.colors)
-          })
-          .editGraphics({ target: id, property: "strokeWidth", value: layer.lineWidth })
-          .editGraphics({ target: id, property: "strokeDash", value: appearance.dashes });
+          }), id, {
+          strokeWidth: layer.lineWidth,
+          strokeDash: appearance.dashes
+        });
         for (const [property, value] of Object.entries(
           requestedStrokeDetails(layer, "Legend line symbol")
         )) {
@@ -108,15 +108,12 @@ function makeEditSymbol(type) {
             value: items
           });
         }
-        next = next
-          .editGraphics({ target: id, property: "x", value: x })
-          .editGraphics({ target: id, property: "y", value: layout.itemY })
-          .editGraphics({ target: id, property: "radius", value: layer.size })
-          .editGraphics({
-            target: id,
-            property: "fill",
-            value: layer.fill ?? appearance.colors
-          })
+        next = editGraphicProperties(next, id, {
+          x: x,
+          y: layout.itemY,
+          radius: layer.size,
+          fill: layer.fill ?? appearance.colors
+        })
           .editGraphics({
             target: id,
             property: "stroke",
