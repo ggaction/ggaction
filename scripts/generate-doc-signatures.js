@@ -111,13 +111,14 @@ function exportedDeclarations(source) {
 }
 
 export async function buildRuntimeSignatureSection() {
-  const [main, basic, svg, png, pdf, diagnostics] = await Promise.all([
+  const [main, basic, svg, png, pdf, diagnostics, persistence] = await Promise.all([
     declaration("index.d.ts"),
     declaration("basic.d.ts"),
     declaration("svg.d.ts"),
     declaration("png.d.ts"),
     declaration("pdf.d.ts"),
-    declaration("diagnostics.d.ts")
+    declaration("diagnostics.d.ts"),
+    declaration("persistence.d.ts")
   ]);
   const entries = [
     ["ggaction", functionsFrom(main, "export function chart()")],
@@ -125,7 +126,8 @@ export async function buildRuntimeSignatureSection() {
     ["ggaction/svg", exportedDeclarations(svg)],
     ["ggaction/png", exportedDeclarations(png)],
     ["ggaction/pdf", exportedDeclarations(pdf)],
-    ["ggaction/diagnostics", exportedDeclarations(diagnostics)]
+    ["ggaction/diagnostics", exportedDeclarations(diagnostics)],
+    ["ggaction/persistence", exportedDeclarations(persistence)]
   ];
   return [
     runtimeBegin,

@@ -113,7 +113,7 @@ Program execution
 
 ## Public package boundary
 
-패키지는 여섯 개의 명시적 module entry point와 하나의 Node executable을 가진다.
+패키지는 export map에 선언된 명시적 module entry point와 하나의 Node executable을 가진다.
 
 ### `ggaction`
 
@@ -202,6 +202,10 @@ import { renderToPDF } from "ggaction/pdf";
 point 아래에만 존재한다. Fully materialized `graphicSpec`을 logical Canvas
 width/height와 숫자상 같은 point 크기의 한 page에 그리고 optional
 title/author/subject/keywords metadata를 기록한다.
+
+### `ggaction/persistence`
+
+Browser-safe 저장·복원 entry다. Canonical constructor state를 versioned tagged JSON으로 보존하며, graphic-only payload는 renderer에만 전달한다. 복원은 action replay나 compiler 실행 없이 기존 순수 semantic/graphic validator와 resource reference collector를 사용하고, 검증한 상태를 constructor가 소유한다. Full/Basic 원본은 full ChartProgram으로 복원하며 등록되지 않은 subclass/trace op는 거부한다. 정확한 format과 사용 계약은 `docs/data-updates.md`의 저장·복원 절을 따른다.
 
 ### `ggaction/diagnostics`
 

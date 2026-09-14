@@ -215,6 +215,7 @@ The package is ESM-only and requires Node.js 20 or later.
 | `ggaction/extension` | Author and register wrapped actions with public low-level primitives |
 | `ggaction/png` | Render a completed program to a PNG file in Node.js |
 | `ggaction/pdf` | Render a completed program to a single-page vector PDF file in Node.js |
+| `ggaction/persistence` | Save and restore editable programs or graphic snapshots in Browser or Node |
 | `ggaction/diagnostics` | Read structured error codes and resource details in Browser or Node |
 | `ggaction/svg` | Serialize a completed program to browser-safe SVG |
 | `ggaction-mcp` | Run the local read-only MCP authoring server over stdio in Node.js |

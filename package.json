@@ -71,6 +71,10 @@
     "./diagnostics": {
       "types": "./types/diagnostics.d.ts",
       "default": "./src/diagnostics.js"
+    },
+    "./persistence": {
+      "types": "./types/persistence.d.ts",
+      "default": "./src/persistence.js"
     }
   },
   "scripts": {

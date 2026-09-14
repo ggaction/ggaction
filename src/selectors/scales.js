@@ -11,7 +11,7 @@ export function requireSemanticScale(program, id) {
 }
 
 export function requireResolvedScale(program, id, type) {
-  const scale = program.resolvedScales[id];
+  const scale = Object.hasOwn(program.resolvedScales, id) ? program.resolvedScales[id] : undefined;
   if (scale === undefined || (type !== undefined && scale.type !== type)) {
     throw annotateError(new Error(
       type === undefined

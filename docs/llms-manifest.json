@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:84291f97f9e3a1899e049e189ec70cd54f1fe81c52adc0bb7cb0ce255b71cbcb",
+    "contractId": "sha256:45b574f8a2aac97066bc787442d0a60ddfda7174d21180d3bb86ff7a96429b68",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1765,10 +1765,12 @@
         "what-can-be-revised-in-place",
         "async-update-policy",
         "derived-data",
+        "save-and-restore-snapshots",
+        "snapshot-format-version-1",
         "related"
       ],
-      "bytes": 3661,
-      "sha256": "0bf89d01ccdbee5f83c6dfc27471a30584aba2f176855ab2b79ed1fd20cd4347"
+      "bytes": 8007,
+      "sha256": "bca1038979b305714eb4a87eda898895966363abde49370996890ca3adcd348a"
     },
     {
       "order": 110,
@@ -2283,11 +2285,12 @@
         "ggactionpng",
         "ggactionpdf",
         "ggactiondiagnostics",
+        "ggactionpersistence",
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 4683,
-      "sha256": "5368c19196dc6e3803bc848a9070a07c7d54792b91006215d87863dd2de024ab"
+      "bytes": 5165,
+      "sha256": "db00b968b7ab5ff5646f81c6660ec93dff6c358c19edb8b4d41da9ee050b8c71"
     },
     {
       "order": 125,
@@ -3239,7 +3242,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "9ad58141191d006e8d6e96ab71b0345ed3c33b5f2d2d634012844a51013692ec"
+      "sha256": "d92355f5c4f8c3efcad1bc7c7711d6ff5cbc7599a18eedeae080f4416db0566e"
     },
     {
       "order": 149,

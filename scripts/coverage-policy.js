@@ -5,6 +5,11 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "snapshot-validation": Object.freeze({
+    prefix: "persistence/",
+    floor: Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+    rationale: "Persisted snapshots must preserve values and reject malformed state before editable restoration."
+  }),
   "guide-layout-validation": Object.freeze({
     prefix: "materialization/guides/",
     floor: Object.freeze({ lines: 90, branches: 80, functions: 100 }),
@@ -43,6 +48,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
 });
 
 export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
+  "persistence.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "grammar/positionDatum.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
   "grammar/markLabels.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
   "actions/guides/legends/transition.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),

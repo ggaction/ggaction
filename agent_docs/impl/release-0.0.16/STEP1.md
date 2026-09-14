@@ -41,7 +41,7 @@
 | 24 | 실행 계약과 생성 메타데이터의 의미 원본을 좁혀야 한다 | 부분 구현·검증 | scale 단위 및 impute 조건부 필수값 공유; architecture의 상세 계약 분리 정리 남음 |
 | 25 | MCP 평가는 실행 성공과 요구 충족을 분리해야 한다 | 구현·검증 완료 | 85개 MCP·카드·문서·패키지 계약, installed consumer 및 15개 의미 평가 통과 |
 | 26 | 원본 데이터의 불변 revision을 유지한 갱신 흐름 | 진행 전 | — |
-| 27 | 저장·복원을 위한 버전 있는 snapshot/recipe 경계 | 진행 전 | — |
+| 27 | 저장·복원을 위한 버전 있는 snapshot/recipe 경계 | 구현·검증 완료 | 139개 corpus state/graphic round trip, malformed/extension/Basic/불변 편집, 46개 영향 검사와 실제 installed package 통과 |
 | 28 | 구조화된 진단과 실제 한도 안내 | 구현·검증 완료 | 진단·불변성·selectors·타입·bare 및 installed package; 일반 3690개 중 문서 목록 1개 수정 후 해당 계약 재통과 |
 | 29 | PNG/PDF 메모리 출력과 비동기 비용 경계 | 구현·검증 완료 | renderer/package/MCP 38개, docs/package 33개, 실제 bare→optional 설치·Full/Basic/타입/전체 package consumer 통과 |
 | 30 | 접근성 보조 출력을 최종 시각적 데이터 단위와 연결한다 | 진행 전 | — |
@@ -89,3 +89,13 @@ Packet v5에서 requiredOptions와 sample/configured options를 분리했다. Im
 ### Catalog-wide negative input checkpoint
 
 실행 가능한 action relationship corpus에서 모든 Current direct action의 성공한 입력·source를 수집해 malformed/unknown option과 원본 보존을 검사한다. 테스트의 capture wrapper도 정식 action()으로 만들어 내부 speculative invocation의 metadata 경계를 보존했다. 실패한 fixture를 오류 검증 성공으로 잘못 계산하지 않도록 원본 valid args의 재실행을 먼저 요구한다. Generic/focused scale와 atomic/sequential encoding의 semantic/graphic 동치를 함께 통과했다. 기존 sparse rows·family assertion·Full/Basic boundary 검사는 그대로 유지한다.
+
+### Persistence checkpoint
+
+승인된 schema 1 tagged JSON과 browser-safe persistence entry를 구현했다. Full/Basic을 editable Full로 복원하며 trace replay 없이 constructor가 상태를 소유한다. Codec의 값·hole·prototype key 보존과 잘못된 tag/key/type/cycle, open stack, unknown extension/subclass, dangling reference/owner, malformed concrete tree를 검증했다. 전체 139개 action corpus의 canonical state 동치, drawable program의 SVG exact equality, partial state의 동일한 renderer failure를 통과했다. 이 과정에서 nested facet editing의 child actionStack이 한 단계만 닫히던 문제를 고쳐 후속 child action이 정상 root에 붙게 했다. Optional outlier/boundary/ungrouped regression의 예약 ID는 live reference와 구분한다.
+
+- 일반 suite 3,708개 중 3,707개 통과; 신규 test capability 등록 누락 1개 수정 후 46개 영향 검사를 재통과했다. 이후 추가 browser graph/version test도 이 46개에 포함된다.
+- 실제 installed package의 persistence runtime/positive·negative types와 기존 전체 consumer 통과. Full/Basic/SVG gzip은 359,621/168,315/6,973 bytes이며 기존 상한을 유지한다.
+- 집중 codec/validation coverage: line 98.39%, branch 96.97%, function 100%; 새 snapshot critical family/entry floor를 추가했다.
+- Packed audit는 532 files, 718,359 packed, 3,591,260 unpacked bytes다. 새 5개 배포 파일을 위해 entries 532, unpacked 상한 3,600,000으로 맞추며 packed 720,000은 유지한다.
+- 최종 모든 기능 완료 후 전체 coverage/realistic/render/browser/docs/release 검증은 별도로 남아 있다.

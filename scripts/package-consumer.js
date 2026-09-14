@@ -82,6 +82,7 @@ async function testNodeConsumer(directory) {
     import { renderToPDF, renderToPDFBuffer } from "ggaction/pdf";
     import { renderToPNG, renderToPNGBuffer } from "ggaction/png";
     import { renderToSVG } from "ggaction/svg";
+    import { serializeProgram, deserializeProgram, serializeGraphic, deserializeGraphic } from "ggaction/persistence";
 
     const program = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
@@ -90,6 +91,10 @@ async function testNodeConsumer(directory) {
       .encodeX({ field: "x" })
       .encodeY({ field: "y" })
       .encodeRadius({ value: 3 });
+    const restored = deserializeProgram(serializeProgram(program));
+    assert.equal(renderToSVG(restored), renderToSVG(program));
+    assert.equal(renderToSVG(deserializeGraphic(serializeGraphic(program))), renderToSVG(program));
+    assert.notDeepEqual(restored.editPointMark({ fill: "red" }).graphicSpec, program.graphicSpec);
     const resourceCleanup = chart()
       .createData({ id: "unusedData", values: [] })
       .createScale({ id: "unusedScale", type: "linear" })
@@ -3447,6 +3452,15 @@ async function testTypeScriptConsumer(directory) {
     const removeOptions: RemoveCompositionChildOptions = { target: "view-2" };
     const typedRemoved: ChartProgram = typedReordered.removeCompositionChild(removeOptions);
     const draw: typeof render = render;
+    const persistence = await import("ggaction/persistence");
+    const restored: ChartProgram = persistence.deserializeProgram(persistence.serializeProgram(program));
+    persistence.serializeProgram(basicChart());
+    renderToSVG(persistence.deserializeGraphic(persistence.serializeGraphic(program)));
+    // @ts-expect-error Graphics snapshots are render-only.
+    persistence.deserializeGraphic(persistence.serializeGraphic(program)).createData({ values: [] });
+    // @ts-expect-error Snapshot restore requires JSON text.
+    persistence.deserializeProgram({});
+    void restored;
     const diagnostics = await import("ggaction/diagnostics");
     const details = diagnostics.getErrorDetails(new Error());
     const code: import("ggaction/diagnostics").ErrorCode | undefined = details?.code;

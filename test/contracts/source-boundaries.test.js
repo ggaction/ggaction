@@ -35,6 +35,7 @@ const allowed = Object.freeze({
     "actions", "core", "grammar", "layout", "materialization", "selectors", "theme"
   ]),
   core: new Set(["core"]),
+  persistence: new Set(["persistence", "core", "grammar", "selectors"]),
   grammar: new Set(["core", "grammar"]),
   layout: new Set(["core", "layout"]),
   materialization: new Set([
@@ -52,6 +53,7 @@ test("keeps source imports inside their architectural boundaries", () => {
     for (const dependency of localImports(file)) {
       assert.equal(
         allowed[owner].has(layer(dependency)) || (
+          (owner === "persistence" && path.relative(root, dependency) === path.join("actions", "primitives", "semantic.js")) ||
           (owner === "renderers" && path.relative(root, dependency) === path.join("core", "immutable.js")) ||
           (["renderers", "selectors"].includes(owner) && path.relative(root, dependency) === path.join("core", "diagnostics.js"))
         ),

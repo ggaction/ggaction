@@ -78,6 +78,9 @@
       { "type": "prefix", "path": "contracts/package-" },
       { "type": "file", "path": "browser/package-consumer.browser.js" }
     ],
+    "persistence": [
+      { "type": "prefix", "path": "unit/persistence/" }
+    ],
     "polar": [
       { "type": "prefix", "path": "charts/polar-" },
       { "type": "prefix", "path": "unit/actions/coordinates/" },

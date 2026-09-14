@@ -34,6 +34,11 @@ const PUBLIC_ENTRIES = Object.freeze({
     types: "./types/pdf.d.ts",
     values: Object.freeze(["renderToPDF", "renderToPDFBuffer"])
   }),
+  "./persistence": Object.freeze({
+    runtime: "./src/persistence.js",
+    types: "./types/persistence.d.ts",
+    values: Object.freeze(["deserializeGraphic", "deserializeProgram", "serializeGraphic", "serializeProgram"])
+  }),
   "./diagnostics": Object.freeze({
     runtime: "./src/diagnostics.js",
     types: "./types/diagnostics.d.ts",
