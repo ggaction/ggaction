@@ -388,23 +388,7 @@ export async function buildActionRelationships() {
   const directNames = new Set(actionNames);
   const relationships = new Map(actionNames.map(name => [name, new Set()]));
   const observed = new Set();
-  const descriptors = generateScenarioDescriptors({
-    mode: "smoke",
-    includeTidyTuesday: false
-  });
-  const programs = [
-    ...descriptors.map(buildScenario),
-    ...selectionLifecyclePrograms(),
-    ...focusedScaleEditorPrograms(),
-    ...atomicEncodingPrograms(),
-    ...legendBlockPrograms(),
-    ...coordinateAspectPrograms(),
-    ...labelRemovalPrograms(),
-    ...resourceRemovalPrograms(),
-    ...normalizedDataPrograms(),
-    ...missingDataPrograms(),
-    ...derivedEditingPrograms()
-  ];
+  const programs = buildActionRelationshipPrograms();
   for (const program of programs) {
     collectDirectRelationships(program.trace, directNames, relationships, observed);
   }
@@ -421,4 +405,27 @@ export async function buildActionRelationships() {
       wraps: [...relationships.get(name)]
     }))
   };
+}
+
+export function buildActionRelationshipPrograms() {
+  const descriptors = generateScenarioDescriptors({
+    mode: "smoke",
+    includeTidyTuesday: false
+  });
+  return [
+    ...descriptors.map(buildScenario),
+    ...selectionLifecyclePrograms(),
+    ...focusedScaleEditorPrograms(),
+    ...atomicEncodingPrograms(),
+    ...legendBlockPrograms(),
+    ...coordinateAspectPrograms(),
+    ...labelRemovalPrograms(),
+    ...resourceRemovalPrograms(),
+    ...normalizedDataPrograms(),
+    ...missingDataPrograms(),
+    ...derivedEditingPrograms(),
+    chart().createData({ id: "revisionSource", values: [{ x: 1 }] })
+      .reviseData({ source: "revisionSource", id: "revisionNext", values: [{ x: 2 }] }),
+    chart().applyTextMetrics({ profile: { schemaVersion: 1, id: "host", measurements: [] } }).removeTextMetrics()
+  ];
 }

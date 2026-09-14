@@ -54,7 +54,7 @@ function makeRemoveAxis(channel) {
   );
 }
 
-export const removeXAxis = makeRemoveAxis("x");
-export const removeYAxis = makeRemoveAxis("y");
-export const removeThetaAxis = makeRemoveAxis("theta");
-export const removeRadialAxis = makeRemoveAxis("radius");
+export const removeXAxis = /* @__PURE__ */ makeRemoveAxis("x");
+export const removeYAxis = /* @__PURE__ */ makeRemoveAxis("y");
+export const removeThetaAxis = /* @__PURE__ */ makeRemoveAxis("theta");
+export const removeRadialAxis = /* @__PURE__ */ makeRemoveAxis("radius");

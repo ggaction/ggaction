@@ -14,7 +14,7 @@ import { requestedStrokeDetails } from "../../grammar/strokeStyle.js";
 import { resolvePlotGraphicPlacement } from
   "../../materialization/graphicHierarchy.js";
 
-export const materializeBoxPlot = action(
+export const materializeBoxPlot = /* @__PURE__ */ action(
   {
     op: "materializeBoxPlot",
     description: "Materialize a complete box-plot composite."

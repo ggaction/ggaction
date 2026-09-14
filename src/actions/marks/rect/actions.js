@@ -49,7 +49,7 @@ function requireRectLayer(program, requested, operation) {
   });
 }
 
-const createRectMark = action(
+const createRectMark = /* @__PURE__ */ action(
   { op: "createRectMark", description: "Create a semantic rectangular cell layer." },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createRectMark");
@@ -90,7 +90,7 @@ const createRectMark = action(
   }
 );
 
-const rematerializeRectMark = action(
+const rematerializeRectMark = /* @__PURE__ */ action(
   { op: "rematerializeRectMark", description: "Recompute concrete rectangular cells." },
   function (args = {}) {
     validateMarkOptions(args, REMATERIALIZE_OPTIONS, "rematerializeRectMark");
@@ -146,7 +146,7 @@ const rematerializeRectMark = action(
   }
 );
 
-const editRectMark = action(
+const editRectMark = /* @__PURE__ */ action(
   { op: "editRectMark", description: "Edit rectangular cell appearance." },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editRectMark");

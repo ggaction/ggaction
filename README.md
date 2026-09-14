@@ -89,6 +89,10 @@ Install the current public release:
 npm install ggaction
 ```
 
+For Node PNG/PDF output, also install `@napi-rs/canvas`. For the MCP server,
+also install `@modelcontextprotocol/sdk`. These are optional peer dependencies;
+browser Canvas/SVG users do not need either package.
+
 Add the Canvas element that the rendering code targets. Its accessible name and
 fallback text summarize the chart for contexts where Canvas pixels are not
 available:
@@ -211,11 +215,14 @@ The package is ESM-only and requires Node.js 20 or later.
 | `ggaction/extension` | Author and register wrapped actions with public low-level primitives |
 | `ggaction/png` | Render a completed program to a PNG file in Node.js |
 | `ggaction/pdf` | Render a completed program to a single-page vector PDF file in Node.js |
+| `ggaction/persistence` | Save and restore editable programs or graphic snapshots in Browser or Node |
+| `ggaction/accessibility` | Export final visual data for host-provided accessible tables and descriptions |
+| `ggaction/diagnostics` | Read structured error codes and resource details in Browser or Node |
 | `ggaction/svg` | Serialize a completed program to browser-safe SVG |
 | `ggaction-mcp` | Run the local read-only MCP authoring server over stdio in Node.js |
 
 All module entries include TypeScript declarations. The default, basic,
-extension, and SVG entries are browser-safe; the PNG and PDF adapters are
+extension, diagnostics, accessibility, and SVG entries are browser-safe; the PNG and PDF adapters are
 Node-only.
 
 The installed package also includes the Node-only `ggaction-mcp` executable. It
@@ -240,7 +247,7 @@ the extra discussion required before public API or architecture changes.
 
 ## Status and development
 
-> **Status:** `0.0.15` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
+> **Status:** `0.0.16` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
 
 ```bash
 npm install
@@ -253,3 +260,16 @@ npm run test:docs
 ## Related Links
 
 - Action-trace demo: [Link](https://ggactionbot.github.io/action-trace-demo/)
+
+### Prepare a release
+
+Record changes under `Unreleased` in `CHANGELOG.md` and commit the reviewed work.
+Run `npm run release:prepare -- 0.0.16 --dry-run` to preview version updates.
+Omit `--dry-run` to update versions, promote notes, and generate the release
+contract, documentation, and local notes. Review the Git diff. After committing
+runtime changes, rerun the command to refresh source provenance; existing notes
+and their date are preserved.
+
+Preparation does not commit, push, tag, publish, or deploy. Integration and required
+PR checks precede an annotated tag. The protected workflow verifies and publishes
+one candidate from that tag. Generation failures leave an unfinished diff to review.

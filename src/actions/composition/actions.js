@@ -1,4 +1,5 @@
-import { action } from "../../core/action.js";
+import { inheritTextMetrics } from "../textMetrics/index.js";
+import { action, closedAction } from "../../core/action.js";
 import { ChartProgram as CoreChartProgram } from "../../core/ChartProgram.js";
 import { freezeOwned, isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -116,7 +117,7 @@ export function applyCompositionState(program, state, tracedChildren = []) {
   return next.materializeComposition();
 }
 
-const useProgram = action(
+const useProgram = /* @__PURE__ */ action(
   {
     op: "useProgram",
     description: "Retain one named child program in a composition.",
@@ -131,7 +132,7 @@ const useProgram = action(
   }
 );
 
-const materializeComposition = action(
+const materializeComposition = /* @__PURE__ */ action(
   {
     op: "materializeComposition",
     description: "Materialize retained child programs into one graphic tree.",
@@ -159,17 +160,16 @@ function concatAction(direction, op) {
   );
 }
 
-export const hconcatAction = concatAction("horizontal", "hconcat");
-export const vconcatAction = concatAction("vertical", "vconcat");
+export const hconcatAction = /* @__PURE__ */ concatAction("horizontal", "hconcat");
+export const vconcatAction = /* @__PURE__ */ concatAction("vertical", "vconcat");
 
-const editCompositionLayout = action(
+const editCompositionLayout = /* @__PURE__ */ closedAction(
   {
     op: "editCompositionLayout",
     description: "Edit composition layout.",
     scope: "composition"
-  },
+  }, LAYOUT_EDIT_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, LAYOUT_EDIT_OPTIONS, "editCompositionLayout");
     if (!LAYOUT_EDIT_OPTIONS.some(option => Object.hasOwn(args, option))) {
       throw new TypeError("editCompositionLayout requires at least one layout option.");
     }
@@ -227,14 +227,13 @@ const editCompositionLayout = action(
   }
 );
 
-const replaceCompositionChild = action(
+const replaceCompositionChild = /* @__PURE__ */ closedAction(
   {
     op: "replaceCompositionChild",
     description: "Replace one composition child without changing its slot.",
     scope: "composition"
-  },
+  }, REPLACEMENT_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, REPLACEMENT_OPTIONS, "replaceCompositionChild");
     this._assertCompositionProgram("replaceCompositionChild");
     if (this.compositionSpec.type === "facet") {
       throw new Error("replaceCompositionChild is not available on a facet composition.");
@@ -246,10 +245,10 @@ const replaceCompositionChild = action(
     if (!(args.program instanceof CoreChartProgram)) {
       throw new TypeError("replaceCompositionChild program must be a ChartProgram.");
     }
-    const replacement = replayInheritedThemeFrames(
+    const replacement = inheritTextMetrics(this, replayInheritedThemeFrames(
       args.program,
       this.materializationConfigs.theme
-    );
+    ));
     childDescriptor({ id: target, program: replacement });
     const children = freezeOwned({
       ...this.children,
@@ -269,14 +268,13 @@ function requireConcat(program, operation) {
   }
 }
 
-const insertCompositionChild = action(
+const insertCompositionChild = /* @__PURE__ */ closedAction(
   {
     op: "insertCompositionChild",
     description: "Insert one named child into a concat composition.",
     scope: "composition"
-  },
+  }, INSERTION_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, INSERTION_OPTIONS, "insertCompositionChild");
     requireConcat(this, "insertCompositionChild");
     const id = validateUserId(args.id, "Composition child ID");
     if (Object.hasOwn(this.children, id)) {
@@ -288,10 +286,10 @@ const insertCompositionChild = action(
     if (args.before !== undefined && args.after !== undefined) {
       throw new Error("insertCompositionChild before and after are mutually exclusive.");
     }
-    const inserted = replayInheritedThemeFrames(
+    const inserted = inheritTextMetrics(this, replayInheritedThemeFrames(
       args.program,
       this.materializationConfigs.theme
-    );
+    ));
     childDescriptor({ id, program: inserted });
     const order = [...this.compositionSpec.children];
     if (args.before !== undefined || args.after !== undefined) {
@@ -310,14 +308,13 @@ const insertCompositionChild = action(
   }
 );
 
-const removeCompositionChild = action(
+const removeCompositionChild = /* @__PURE__ */ closedAction(
   {
     op: "removeCompositionChild",
     description: "Remove one named child from a concat composition.",
     scope: "composition"
-  },
+  }, REMOVAL_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, REMOVAL_OPTIONS, "removeCompositionChild");
     requireConcat(this, "removeCompositionChild");
     const target = validateUserId(args.target, "Composition child target");
     if (!Object.hasOwn(this.children, target)) {
@@ -338,14 +335,13 @@ const removeCompositionChild = action(
   }
 );
 
-const reorderCompositionChildren = action(
+const reorderCompositionChildren = /* @__PURE__ */ closedAction(
   {
     op: "reorderCompositionChildren",
     description: "Reorder every named child in a concat composition.",
     scope: "composition"
-  },
+  }, REORDER_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, REORDER_OPTIONS, "reorderCompositionChildren");
     requireConcat(this, "reorderCompositionChildren");
     if (!Array.isArray(args.order) || args.order.length === 0 ||
         args.order.some(id => typeof id !== "string" || id.length === 0)) {

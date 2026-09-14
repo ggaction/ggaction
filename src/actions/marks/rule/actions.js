@@ -92,7 +92,7 @@ function validateEndpointBindings(layer) {
   }
 }
 
-const createRuleMark = action(
+const createRuleMark = /* @__PURE__ */ action(
   {
     op: "createRuleMark",
     description: "Create a semantic rule mark and empty line collection."
@@ -142,7 +142,7 @@ const createRuleMark = action(
   }
 );
 
-const editRuleMark = action(
+const editRuleMark = /* @__PURE__ */ action(
   { op: "editRuleMark", description: "Edit constant rule appearance through its encoding owners." },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editRuleMark");
@@ -168,7 +168,7 @@ const editRuleMark = action(
   }
 );
 
-const rematerializeRuleMark = action(
+const rematerializeRuleMark = /* @__PURE__ */ action(
   {
     op: "rematerializeRuleMark",
     description: "Recompute concrete rule endpoints and appearance."
@@ -377,7 +377,7 @@ const rematerializeRuleMark = action(
   }
 );
 
-export const materializeRuleSpan = action(
+export const materializeRuleSpan = /* @__PURE__ */ action(
   {
     op: "materializeRuleSpan",
     description: "Materialize a fixed-pixel span around a rule anchor."

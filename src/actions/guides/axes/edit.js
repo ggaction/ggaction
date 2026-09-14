@@ -164,8 +164,8 @@ function makeEditAxis(channel) {
   );
 }
 
-const editXAxis = makeEditAxis("x");
-const editYAxis = makeEditAxis("y");
+const editXAxis = /* @__PURE__ */ makeEditAxis("x");
+const editYAxis = /* @__PURE__ */ makeEditAxis("y");
 
 export function registerCompleteAxisEditActions(ProgramClass) {
   ProgramClass.prototype.editXAxis = editXAxis;

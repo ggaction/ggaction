@@ -376,7 +376,7 @@ function hasActiveStroke(properties) {
     (properties.strokeWidth ?? 0) > 0;
 }
 
-function primitiveBounds(type, properties = {}) {
+function primitiveBounds(type, properties = {}, profile) {
   const strokeExtent = hasActiveStroke(properties)
     ? properties.strokeWidth / 2
     : 0;
@@ -420,7 +420,7 @@ function primitiveBounds(type, properties = {}) {
       !Number.isFinite(properties.fontSize) ||
       typeof properties.text !== "string"
     ) return undefined;
-    return resolveTextBounds(properties);
+    return resolveTextBounds(properties, profile);
   }
   if (type === "path") {
     const commands = properties.commands;
@@ -469,15 +469,15 @@ function ancestorOffset(graphicSpec, target) {
   }
 }
 
-function objectBounds(graphicSpec, id, object, ancestors, x, y) {
+function objectBounds(graphicSpec, id, object, ancestors, x, y, profile) {
   if (ancestors.has(id)) {
     throw new Error(`Graphic attachment cycle includes "${id}".`);
   }
   ancestors.add(id);
   let result = object.items === undefined
-    ? translateBounds(primitiveBounds(object.type, object.properties), x, y)
+    ? translateBounds(primitiveBounds(object.type, object.properties, profile), x, y)
     : unionBounds(object.items.map(item => translateBounds(
-        primitiveBounds(item.type ?? object.type, item.properties),
+        primitiveBounds(item.type ?? object.type, item.properties, profile),
         x,
         y
       )));
@@ -489,7 +489,7 @@ function objectBounds(graphicSpec, id, object, ancestors, x, y) {
       throw new Error(`Unknown attached graphic "${childId}".`);
     }
     const bounds = objectBounds(
-      graphicSpec, childId, child.object, ancestors, childX, childY
+      graphicSpec, childId, child.object, ancestors, childX, childY, profile
     );
     if (bounds !== undefined) {
       result = includeExtent(
@@ -501,23 +501,23 @@ function objectBounds(graphicSpec, id, object, ancestors, x, y) {
   return result;
 }
 
-export function resolveConcreteGraphicBounds(graphicSpec, target) {
+export function resolveConcreteGraphicBounds(graphicSpec, target, profile) {
   const found = requireGraphic(graphicSpec, target);
   const [x, y] = ancestorOffset(graphicSpec, target);
   return requireFiniteBounds(found.kind === "item"
     ? translateBounds(
-      primitiveBounds(found.object.type ?? found.owner.type, found.object.properties),
+      primitiveBounds(found.object.type ?? found.owner.type, found.object.properties, profile),
       x,
       y
     )
-    : objectBounds(graphicSpec, found.id, found.object, new Set(), x, y));
+    : objectBounds(graphicSpec, found.id, found.object, new Set(), x, y, profile));
 }
 
-export function unionConcreteGraphicBounds(graphicSpec, targets) {
+export function unionConcreteGraphicBounds(graphicSpec, targets, profile) {
   if (!Array.isArray(targets)) {
     throw new TypeError("Graphic bounds targets must be an array.");
   }
   return unionBounds(targets.map(target =>
-    resolveConcreteGraphicBounds(graphicSpec, target)
+    resolveConcreteGraphicBounds(graphicSpec, target, profile)
   ));
 }

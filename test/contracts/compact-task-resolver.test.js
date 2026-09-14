@@ -32,7 +32,7 @@ const authoringPrerequisites = [
   },
   {
     id: "action.createData",
-    signature: "createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;",
+    signature: "createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;",
     call: "program = program.createData({ values })",
     bindings: ["values"]
   }
@@ -282,7 +282,7 @@ test("every exact action name resolves to its compact card without gaps", async 
       assert.equal(first.actionPlan[0].requiredOptions.includes(option.name), true, `${card.name}.${option.name}`);
     }
     assert.deepEqual(first.exactCalls, [card.snippet], card.name);
-    assert.equal(first.schemaVersion, 4, card.name);
+    assert.equal(first.schemaVersion, 5, card.name);
     assert.equal(first.packageVersion, cards.packageVersion, card.name);
     const prerequisites = authoringPrerequisites.filter(entry =>
       entry.id !== `action.${card.name}`
@@ -780,10 +780,12 @@ test("reports concrete options, placeholders, and unsupported requirements witho
     "scatter plot with horizontal legend at bottom as svg"
   );
   assert.equal(missingLegendChannel.exactCalls[0].includes("legend"), false);
-  assert.deepEqual(missingLegendChannel.unmatchedRequirements, ["legend channel"]);
+  assert.deepEqual(missingLegendChannel.unmatchedRequirements, ["legend channel",
+    "scatter plot with horizontal legend at bottom as svg"]);
   assert.deepEqual(missingLegendChannel.unresolved.map(entry => entry.constraint), [
     "guide.legend",
-    "layout.legend.bottom"
+    "layout.legend.bottom",
+    "request.unconsumed"
   ]);
   const unscopedColumns = searchGgaction("bar chart with 3 columns as svg");
   assert.deepEqual(unscopedColumns.unmatchedRequirements, ["3 columns"]);
@@ -891,7 +893,7 @@ test("design fixtures prove bounded one-call task closure without silent partial
     json("task-packet.schema.json")
   ]);
   assert.equal(fixtures.role, "resolver-design-fixtures-not-evaluation-corpus");
-  assert.equal(schema.properties.schemaVersion.const, 4);
+  assert.equal(schema.properties.schemaVersion.const, 5);
   assert.deepEqual(schema.properties.authoring.required, [
     "imports",
     "initialize",
@@ -1068,4 +1070,43 @@ test("area discovery uses the complete facade and preserves requested fields and
   assert.equal(program.semanticSpec.layers[0].encoding.x.field, "time");
   assert.equal(program.graphicSpec.objects.areaPlot.items.length, 1);
   assert.deepEqual(Object.keys(program.semanticSpec.guides.axis), ["x", "y"]);
+});
+
+
+test("executes point color, explicit axis rotation, and logarithmic scale requirements together", async () => {
+  const packet = searchGgaction("Create a scatter plot with red points and rotate the x axis labels by 45 degrees and use a logarithmic y axis");
+  assert.deepEqual(packet.unresolved, []);
+  assert.deepEqual(packet.unmatchedRequirements, []);
+  assert.ok(taskPacketBytes(packet) <= 6144);
+  const { program } = await executeAuthoring(packet, { rows: [{ x: 1, y: 1 }, { x: 2, y: 100 }] });
+  const layer = program.semanticSpec.layers.find(layer => layer.id === "scatterPlot");
+  const scale = program.semanticSpec.scales.find(scale => scale.id === layer.encoding.y.scale);
+  assert.equal(scale.type, "log");
+  assert.equal(scale.zero, undefined);
+  assert.ok(program.graphicSpec.objects.scatterPlot.items.every(item => item.properties.fill === "red"));
+  assert.ok(program.graphicSpec.objects.xAxisLabels.items.every(item => item.properties.rotation === Math.PI / 4));
+  assert.deepEqual(packet.actionPlan.map(entry => entry.requiredOptions), [["x", "y"], [], []]);
+});
+
+test("required options reflect the contract and selected imputation method rather than sample calls", () => {
+  assert.deepEqual(searchGgaction("editXScale").actionPlan[0].requiredOptions, []);
+  const impute = searchGgaction("createImputedData").actionPlan[0].requiredOptions;
+  assert.deepEqual(impute, ["id", "fields", "method", "sortBy"]);
+  assert.equal(impute.includes("groupBy"), false);
+  assert.deepEqual(searchGgaction("editImputedData").actionPlan[0].requiredOptions, ["target"]);
+});
+
+test("retains unparsed, conflicting, and non-English requirements instead of claiming completion", () => {
+  for (const query of [
+    "scatter plot with sparkling markers", "scatter plot with 빨간 점",
+    "scatter plot with red points and blue points", "scatter plot with red points and a custom unsupported flourish",
+    "scatter plot and rotate x axis labels by 45", "scatter plot and logarithmic axis"
+  ]) {
+    const packet = searchGgaction(query);
+    assert.ok(packet.unresolved.length > 0, query);
+    assert.ok(packet.unmatchedRequirements.length > 0, query);
+    assert.ok(taskPacketBytes(packet) <= 6144);
+  }
+  const long = `scatter plot with ${"unparsed decoration ".repeat(22)}`;
+  assert.equal(searchGgaction(long).unmatchedRequirements.join(""), long.trim());
 });

@@ -1,5 +1,5 @@
-import { action } from "../../../../core/action.js";
-import { validateNonEmptyString, validateOptionObject } from "../../../../core/validation.js";
+import { action, closedAction } from "../../../../core/action.js";
+import { validateNonEmptyString } from "../../../../core/validation.js";
 import { requireParallelAxisLayer, resolveParallelAxisTarget } from "./resolve.js";
 import {
   defaultParallelAxis, hasParallelAxisParts, PARALLEL_AXIS_GRAPHICS,
@@ -45,10 +45,10 @@ function withTitle(program, args, create) {
     ...(titles.length === 0 ? { remove: true } : { value: titles }) });
 }
 
-const createParallelAxes = action({
+const createParallelAxes = /* @__PURE__ */ closedAction({
   op: "createParallelAxes", description: "Create axes for every encoded Parallel dimension."
-}, function (args = {}) {
-  validateOptionObject(args, ["target", "coordinate"], "createParallelAxes");
+}, ["target", "coordinate"], function (args = {}) {
+
   const resolved = owner(this, args, "createParallelAxes");
   if (resolved.stored !== undefined || this.guideConfigs.axis?.parallel !== undefined ||
       Object.values(PARALLEL_AXIS_GRAPHICS).some(id => this.graphicSpec.objects[id] !== undefined)) {
@@ -76,13 +76,13 @@ function makeAxisAction(create) {
   });
 }
 
-const createParallelAxis = makeAxisAction(true);
-const editParallelAxis = makeAxisAction(false);
+const createParallelAxis = /* @__PURE__ */ makeAxisAction(true);
+const editParallelAxis = /* @__PURE__ */ makeAxisAction(false);
 
-const removeParallelAxis = action({
+const removeParallelAxis = /* @__PURE__ */ closedAction({
   op: "removeParallelAxis", description: "Remove every component of one Parallel field axis."
-}, function (args = {}) {
-  validateOptionObject(args, ["field", "target"], "removeParallelAxis");
+}, ["field", "target"], function (args = {}) {
+
   validateNonEmptyString(args.field, "Parallel axis field");
   const resolved = owner(this, args, "removeParallelAxis", true);
   const config = resolveParallelAxisConfigs(this, resolved.dimensions).dimensions.find(dimension => dimension.field === args.field);
@@ -91,10 +91,10 @@ const removeParallelAxis = action({
     ...Object.fromEntries(PARALLEL_AXIS_PARTS.filter(part => config[part] !== undefined).map(part => [part, false])) });
 });
 
-const removeParallelAxes = action({
+const removeParallelAxes = /* @__PURE__ */ closedAction({
   op: "removeParallelAxes", description: "Remove all Parallel axis semantics, recipes and graphics."
-}, function (args = {}) {
-  validateOptionObject(args, ["target", "coordinate"], "removeParallelAxes");
+}, ["target", "coordinate"], function (args = {}) {
+
   const stored = this.semanticSpec.guides.axis?.parallel;
   if (stored === undefined) throw new Error("removeParallelAxes requires existing Parallel axes.");
   if (args.target !== undefined && args.target !== stored.target ||

@@ -53,3 +53,5 @@ rows when every label still cannot fit.
 
 [Text marks](../api/marks/text.md) ·
 [Data filtering](../api/data/filtering.md)
+
+For host-measured text widths, see [Measured text layout](../api/rendering.md#measured-text-layout).

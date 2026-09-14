@@ -18,12 +18,19 @@ function validateParallel(property, value) {
   }
 }
 
-export function registerSemanticPrimitiveAction(ProgramClass) {
-  const validateSemanticValue = createSemanticValueValidator({
+function fullSemanticValidator() {
+  return createSemanticValueValidator({
     validateDatasetTransforms,
     validateParallel,
     sourceMarkTypes: ["point", "bar", "line", "rule", "rect", "arc"]
   });
+}
+
+export function validateStoredSemanticValue(program, parsed, value) {
+  return fullSemanticValidator()(program, parsed, value);
+}
+
+export function registerSemanticPrimitiveAction(ProgramClass) {
   ProgramClass.prototype.editSemantic =
-    createSemanticPrimitiveAction(validateSemanticValue, planResourceRemoval);
+    createSemanticPrimitiveAction(fullSemanticValidator(), planResourceRemoval);
 }

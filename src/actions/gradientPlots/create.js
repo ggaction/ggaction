@@ -1,5 +1,5 @@
-import { action } from "../../core/action.js";
-import { validateKeys } from "../../core/validation.js";
+import { closedAction } from "../../core/action.js";
+
 import { findDataset } from "../../selectors/datasets.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import {
@@ -18,13 +18,12 @@ import {
   resolveGradientSourceLayer
 } from "./resolve.js";
 
-export const createGradientPlot = action(
+export const createGradientPlot = /* @__PURE__ */ closedAction(
   {
     op: "createGradientPlot",
     description: "Create a categorical density gradient plot."
-  },
+  }, GRADIENT_PLOT_OPTIONS,
   function (args = {}) {
-    validateKeys(args, GRADIENT_PLOT_OPTIONS, "createGradientPlot");
     const id = resolveGradientPlotId(this, args.id);
     const source = resolveGradientSourceLayer(this, args.target);
     const data = args.data ?? source?.data ?? this.context.currentData ??

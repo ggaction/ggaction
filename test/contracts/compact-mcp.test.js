@@ -1,3 +1,4 @@
+import { packageVersion } from "../../src/version.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -63,8 +64,8 @@ test("exposes exactly one read-only search tool with a byte-equal direct payload
     assert.deepEqual(called.content[0], { type: "text", text: direct });
     assert.equal(Buffer.byteLength(called.content[0].text) <= 6144, true);
     const packet = JSON.parse(called.content[0].text);
-    assert.equal(packet.schemaVersion, 4);
-    assert.equal(packet.packageVersion, "0.0.15");
+    assert.equal(packet.schemaVersion, 5);
+    assert.equal(packet.packageVersion, packageVersion);
     assert.deepEqual(packet.authoring.imports, [
       'import { chart } from "ggaction";',
       'import { renderToSVG } from "ggaction/svg";'
@@ -110,8 +111,8 @@ test("keeps resource discovery bounded and reads exact cards and recipes", async
   const overview = readKnowledgeResource("ggaction://overview");
   const recipe = readKnowledgeResource("ggaction://recipes/scatter-svg");
   assert.equal(JSON.parse(card.text).name, "createScatterPlot");
-  assert.equal(JSON.parse(overview.text).packageVersion, "0.0.15");
-  assert.equal(JSON.parse(recipe.text).packageVersion, "0.0.15");
+  assert.equal(JSON.parse(overview.text).packageVersion, packageVersion);
+  assert.equal(JSON.parse(recipe.text).packageVersion, packageVersion);
   assert.deepEqual(JSON.parse(recipe.text).packet.exactCalls, [
     "program.createScatterPlot({ x: { field: \"x\", fieldType: \"quantitative\" }, y: { field: \"y\", fieldType: \"quantitative\" }, color: \"category\", guides: { legend: { position: \"bottom\", offset: 70 } } })",
     "renderToSVG(program)"
@@ -259,7 +260,7 @@ test("keeps the MCP implementation out of chart execution and network surfaces",
   assert.deepEqual(packageJson.bin, {
     "ggaction-mcp": "./src/mcp/cli.js"
   });
-  assert.equal(packageJson.dependencies["@modelcontextprotocol/sdk"], "1.30.0");
+  assert.equal(packageJson.peerDependencies["@modelcontextprotocol/sdk"], "1.30.0");
   assert.equal(Object.keys(packageJson.exports).includes("./mcp"), false);
 
   const sources = [

@@ -1,8 +1,5 @@
-import { action } from "../../core/action.js";
-import {
-  validateKeys,
-  validateOptionObject
-} from "../../core/validation.js";
+import { closedAction } from "../../core/action.js";
+import { validateOptionObject } from "../../core/validation.js";
 import { findLayer } from "../../selectors/layers.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findSemanticScale } from "../../selectors/scales.js";
@@ -144,20 +141,19 @@ function resolveAppearance(args) {
   });
 }
 
-export const createErrorBarCap = action(
+export const createErrorBarCap = /* @__PURE__ */ closedAction(
   {
     op: "createErrorBarCap",
     description: "Create one fixed-pixel error-bar cap."
-  },
-  function (args = {}) {
-    validateKeys(args, [
+  }, [
       "id", "data", "orientation", "positionField", "positionFieldType",
       "intervalField", "coordinate", "positionScale", "intervalScale", "positionTemporalUnit",
       "offsetChannel", "offsetField", "offsetFieldType", "offsetScale",
       "offsetPaddingInner", "offsetPaddingOuter",
       "capSize", "stroke", "strokeWidth", "strokeDash", "opacity",
       ...STROKE_STYLE_PROPERTIES
-    ], "createErrorBarCap");
+    ],
+  function (args = {}) {
     if (!["vertical", "horizontal"].includes(args.orientation)) {
       throw new Error(`Unsupported error-bar orientation "${args.orientation}".`);
     }
@@ -256,13 +252,12 @@ function intervalArgs(resolved, field) {
   };
 }
 
-export const createErrorBar = action(
+export const createErrorBar = /* @__PURE__ */ closedAction(
   {
     op: "createErrorBar",
     description: "Create a statistical or explicit vertical or horizontal interval."
-  },
+  }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "createErrorBar");
     const resolved = resolveErrorBar(this, args);
     const appearance = resolveAppearance(args);
     let next = createResolvedIntervalData(this, resolved);

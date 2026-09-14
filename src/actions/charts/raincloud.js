@@ -376,7 +376,7 @@ function raincloudOwner(program, requested) {
   throw new Error("editRaincloudPlot target is ambiguous; provide target.");
 }
 
-export const createRaincloudPlot = action(
+export const createRaincloudPlot = /* @__PURE__ */ action(
   { op: "createRaincloudPlot", description: "Create a half-density, summary, and raw-point distribution plot." },
   function (args = {}) {
     const operation = "createRaincloudPlot";
@@ -385,7 +385,7 @@ export const createRaincloudPlot = action(
   }
 );
 
-export const editRaincloudPlot = action(
+export const editRaincloudPlot = /* @__PURE__ */ action(
   { op: "editRaincloudPlot", description: "Revise one Raincloud plot's shared source and statistical roles." },
   function (args = {}) {
     const operation = "editRaincloudPlot";

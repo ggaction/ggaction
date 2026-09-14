@@ -1,6 +1,6 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
+
 import {
   deriveBin2DRows,
   normalizeBin2DTransform,
@@ -126,13 +126,12 @@ function applyBin2DRevision(program, {
   });
 }
 
-export const createBin2DData = action(
+export const createBin2DData = /* @__PURE__ */ closedAction(
   {
     op: "createBin2DData",
     description: "Create or revise immutable rectangular 2D-bin values."
-  },
+  }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "createBin2DData");
     const owner = validateUserId(args.id, "2D bin dataset id");
     const config = ownerConfig(this, owner);
     const previous = config === undefined
@@ -168,13 +167,12 @@ export const createBin2DData = action(
   }
 );
 
-export const editBin2DData = action(
+export const editBin2DData = /* @__PURE__ */ closedAction(
   {
     op: "editBin2DData",
     description: "Partially revise one logical rectangular 2D-bin owner."
-  },
+  }, EDIT_OPTIONS,
   function (args = {}) {
-    validateKeys(args, EDIT_OPTIONS, "editBin2DData");
     if (!EDITABLE.some(option => Object.hasOwn(args, option))) {
       throw new Error("editBin2DData requires at least one transform or source option.");
     }

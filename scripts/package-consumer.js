@@ -1,4 +1,4 @@
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -12,20 +12,23 @@ import {
   BROWSER_BUNDLE_GZIP_LIMITS,
   measureMinimalBrowserBundle
 } from "./browser-bundle-size.js";
+import { npmInvocation } from "./npm-command.js";
 import { createPackageArtifact } from "./package-artifact.js";
 import { testTutorialConsumers } from "./tutorial-consumer.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+const npmCommand = "npm";
 const tscCommand = path.join(
   root,
   "node_modules",
-  ".bin",
-  process.platform === "win32" ? "tsc.cmd" : "tsc"
+  "typescript",
+  "bin",
+  "tsc"
 );
 
 function run(command, args, cwd, options = {}) {
-  execFileSync(command, args, {
+  const invocation = command === npmCommand ? npmInvocation(args, { env: options.env ?? process.env }) : { command, args };
+  execFileSync(invocation.command, invocation.args, {
     cwd,
     encoding: "utf8",
     stdio: "pipe",
@@ -79,9 +82,11 @@ async function testNodeConsumer(directory) {
     import { chart, hconcat, render, vconcat } from "ggaction";
     import { chart as basicChart, render as basicRender } from "ggaction/basic";
     import { action, ChartProgram, registerExtension } from "ggaction/extension";
-    import { renderToPDF } from "ggaction/pdf";
-    import { renderToPNG } from "ggaction/png";
+    import { renderToPDF, renderToPDFBuffer } from "ggaction/pdf";
+    import { renderToPNG, renderToPNGBuffer } from "ggaction/png";
     import { renderToSVG } from "ggaction/svg";
+    import { serializeProgram, deserializeProgram, serializeGraphic, deserializeGraphic } from "ggaction/persistence";
+    import { exportAccessibleData } from "ggaction/accessibility";
 
     const program = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
@@ -90,6 +95,23 @@ async function testNodeConsumer(directory) {
       .encodeX({ field: "x" })
       .encodeY({ field: "y" })
       .encodeRadius({ value: 3 });
+    const alternative = exportAccessibleData(program);
+    assert.equal(alternative.views[0].rows.length, 2);
+    assert.ok(Object.isFrozen(alternative.views[0].rows));
+    const restored = deserializeProgram(serializeProgram(program));
+    const revised = program.reviseData({ source: "data", id: "updatedData", values: [
+      { x: 1, y: 2 }, { x: 3, y: 7 }, { x: 4, y: 3 }
+    ] });
+    assert.equal(revised.graphicSpec.objects.point.items.length, 3);
+    assert.equal(program.graphicSpec.objects.point.items.length, 2);
+    assert.equal(basicChart().reviseData, undefined);
+    const measured = program.applyTextMetrics({ profile: { schemaVersion: 1, id: "host", measurements: [] } });
+    assert.equal(measured.materializationConfigs.textMetrics.id, "host");
+    assert.deepEqual(measured.removeTextMetrics().graphicSpec, program.graphicSpec);
+    assert.equal(basicChart().applyTextMetrics, undefined);
+    assert.equal(renderToSVG(restored), renderToSVG(program));
+    assert.equal(renderToSVG(deserializeGraphic(serializeGraphic(program))), renderToSVG(program));
+    assert.notDeepEqual(restored.editPointMark({ fill: "red" }).graphicSpec, program.graphicSpec);
     const resourceCleanup = chart()
       .createData({ id: "unusedData", values: [] })
       .createScale({ id: "unusedScale", type: "linear" })
@@ -1820,6 +1842,12 @@ async function testNodeConsumer(directory) {
       "facetGrid", "repeatCharts", "editFacetSource",
       "insertCompositionChild", "removeCompositionChild", "reorderCompositionChildren"
     ]) assert.equal(basicChart()[method], undefined, method);
+    const memoryPNG = await renderToPNGBuffer(program);
+    const memoryPDF = await renderToPDFBuffer(program);
+    assert.equal(memoryPNG.buffer instanceof Uint8Array, true);
+    assert.equal(memoryPDF.buffer instanceof Uint8Array, true);
+    assert.equal(memoryPNG.bytes, memoryPNG.buffer.length);
+    assert.equal(memoryPDF.pages, 1);
     const result = await renderToPNG(program, {
       output: ${JSON.stringify(output)},
       pixelRatio: 1
@@ -2147,12 +2175,14 @@ async function testMcpConsumer(directory) {
     path.join(installedRoot, "knowledge", file),
     "utf8"
   ))));
+  const actionIndex = JSON.parse(await readFile(path.join(root, "agent_docs/contract/ACTION_INDEX.json"), "utf8"));
+  const expectedActions = actionIndex.actions.filter(entry => entry.status === "implemented").length;
   if (
     actionCardSchema.properties?.schemaVersion?.const !== 3 ||
     actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
     actionCards.schemaVersion !== 3 ||
-    actionCards.count !== 276 ||
-    actionCards.cards.length !== 276 ||
+    actionCards.count !== expectedActions ||
+    actionCards.cards.length !== expectedActions ||
     actionCards.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed action-card discovery contract is missing or stale.");
@@ -2261,8 +2291,8 @@ async function testMcpConsumer(directory) {
   ) {
     throw new Error("Installed completion or primitive discovery metadata is stale.");
   }
-  if (taskPacketSchema.properties?.schemaVersion?.const !== 4) {
-    throw new Error("Installed task packet schema must require schemaVersion 4.");
+  if (taskPacketSchema.properties?.schemaVersion?.const !== 5) {
+    throw new Error("Installed task packet schema must require schemaVersion 5.");
   }
   if (
     intentTaxonomySchema.$id !==
@@ -2305,7 +2335,7 @@ async function testMcpConsumer(directory) {
     }
     const packet = JSON.parse(result.content[0].text);
     if (
-      packet.schemaVersion !== 4 ||
+      packet.schemaVersion !== 5 ||
       packet.packageVersion !== installedPackage.version ||
       packet.authoring?.initialize !== "let program = chart()" ||
       packet.authoring?.prerequisites?.length !== 2 ||
@@ -2537,11 +2567,11 @@ async function testTypeScriptConsumer(directory) {
     } from "ggaction";
     import { action, ChartProgram as ExtensionProgram } from "ggaction/extension";
     import {
-      renderToPDF,
+      renderToPDF, renderToPDFBuffer, type PDFBufferResult,
       type PDFMetadata,
       type PDFRenderResult
     } from "ggaction/pdf";
-    import { renderToPNG, type PNGRenderResult } from "ggaction/png";
+    import { renderToPNG, renderToPNGBuffer, type PNGBufferResult, type PNGRenderResult } from "ggaction/png";
     import {
       renderToSVG,
       type SVGRenderOptions
@@ -3441,6 +3471,44 @@ async function testTypeScriptConsumer(directory) {
     const removeOptions: RemoveCompositionChildOptions = { target: "view-2" };
     const typedRemoved: ChartProgram = typedReordered.removeCompositionChild(removeOptions);
     const draw: typeof render = render;
+    const accessibility = await import("ggaction/accessibility");
+    const alternative: import("ggaction/accessibility").AccessibleData = accessibility.exportAccessibleData(program);
+    accessibility.exportAccessibleData(basicChart());
+    // @ts-expect-error Output is deeply readonly.
+    alternative.views.push({});
+    // @ts-expect-error Unknown options are rejected.
+    accessibility.exportAccessibleData(program, { unknown: true });
+    // @ts-expect-error Render-only data is insufficient.
+    accessibility.exportAccessibleData({graphicSpec:program.graphicSpec});
+    const persistence = await import("ggaction/persistence");
+    const restored: ChartProgram = persistence.deserializeProgram(persistence.serializeProgram(program));
+    persistence.serializeProgram(basicChart());
+    renderToSVG(persistence.deserializeGraphic(persistence.serializeGraphic(program)));
+    // @ts-expect-error Graphics snapshots are render-only.
+    persistence.deserializeGraphic(persistence.serializeGraphic(program)).createData({ values: [] });
+    // @ts-expect-error Snapshot restore requires JSON text.
+    persistence.deserializeProgram({});
+    void restored;
+    const textProfile: import("ggaction").TextMetricsProfile = { schemaVersion: 1, id: "host", measurements: [
+      { text: "Title", fontFamily: "sans-serif", fontSize: 20, fontWeight: 400, width: 40 }
+    ] };
+    const withMetrics: ChartProgram = program.applyTextMetrics({ profile: textProfile }).removeTextMetrics();
+    void withMetrics;
+    // @ts-expect-error Measured weights must already be normalized.
+    program.applyTextMetrics({ profile: { ...textProfile, measurements: [{ ...textProfile.measurements[0], fontWeight: 150 }] } });
+    // @ts-expect-error Profiles require schema version 1.
+    program.applyTextMetrics({ profile: { ...textProfile, schemaVersion: 2 } });
+    const diagnostics = await import("ggaction/diagnostics");
+    const details = diagnostics.getErrorDetails(new Error());
+    const code: import("ggaction/diagnostics").ErrorCode | undefined = details?.code;
+    void code;
+    const pngMemory: Promise<PNGBufferResult> = renderToPNGBuffer(program, { pixelRatio: 2 });
+    const pdfMemory: Promise<PDFBufferResult> = renderToPDFBuffer(program);
+    // @ts-expect-error Memory output does not accept filesystem options.
+    renderToPNGBuffer(program, { output: "chart.png" });
+    // @ts-expect-error PDF memory output does not accept raster density.
+    renderToPDFBuffer(program, { pixelRatio: 2 });
+    void pngMemory; void pdfMemory;
     const png: Promise<PNGRenderResult> = renderToPNG(program, { output: "chart.png" });
     const pdfMetadata: PDFMetadata = {
       title: "Typed PDF",
@@ -4132,12 +4200,51 @@ async function testTypeScriptConsumer(directory) {
     },
     files: ["consumer.ts", "extension-authoring.ts"]
   }, null, 2)}\n`);
-  run(tscCommand, ["--project", "tsconfig.json"], directory);
+  run(process.execPath, [tscCommand, "--project", "tsconfig.json"], directory);
+}
+
+async function testOptionalDependencies(consumer) {
+  const source = `
+    import assert from "node:assert/strict";
+    import { chart } from "ggaction";
+    import { getErrorDetails } from "ggaction/diagnostics";
+    import { chart as basic } from "ggaction/basic";
+    import { renderToSVG } from "ggaction/svg";
+    import { renderToPNGBuffer } from "ggaction/png";
+    import { renderToPDFBuffer } from "ggaction/pdf";
+    for (const name of ["@napi-rs/canvas", "@modelcontextprotocol/sdk"]) {
+      assert.throws(() => import.meta.resolve(name), { code: "ERR_MODULE_NOT_FOUND" });
+    }
+    const program = chart().createCanvas();
+    try { program.createData({ values: [], unexpected: true }); } catch (error) {
+      assert.equal(getErrorDetails(error).code, "invalid-option");
+    }
+    assert.match(renderToSVG(program), /<svg/);
+    assert.match(renderToSVG(basic().createCanvas()), /<svg/);
+    for (const render of [renderToPNGBuffer, renderToPDFBuffer]) {
+      await assert.rejects(render(program), error => error.message.includes("npm install ggaction @napi-rs/canvas"));
+    }
+  `;
+  await writeFile(path.join(consumer.directory, "optional-consumer.mjs"), source);
+  run(process.execPath, ["optional-consumer.mjs"], consumer.directory);
+  const cli = spawnSync(process.execPath, ["node_modules/ggaction/src/mcp/cli.js"], {
+    cwd: consumer.directory, encoding: "utf8"
+  });
+  if (cli.status !== 1 || !cli.stderr.includes("npm install ggaction @modelcontextprotocol/sdk")) {
+    throw new Error(`Missing SDK diagnostic failed: ${cli.stderr}`);
+  }
+  const peers = consumer.installedManifest.peerDependencies;
+  run(npmCommand, ["install", "--ignore-scripts", "--no-audit", "--no-fund",
+    ...Object.entries(peers).map(([name, version]) => `${name}@${version}`)
+  ], consumer.directory, { env: {
+    ...process.env, NPM_CONFIG_CACHE: path.join(consumer.directory, ".npm-cache")
+  } });
 }
 
 export async function testPackageConsumer(options) {
   const consumer = await preparePackageConsumer(options);
   try {
+    await testOptionalDependencies(consumer);
     await testNodeConsumer(consumer.directory);
     const mcp = await testMcpConsumer(consumer.directory);
     await testTypeScriptConsumer(consumer.directory);
@@ -4229,7 +4336,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "private-export-rejection",
       "installed-local-mcp",
       "direct-mcp-byte-equality",
-      "task-packet-v4-authoring-execution",
+      "task-packet-v5-authoring-execution",
       "explicit-unresolved-docs-fallback",
       "terminal-unsupported-no-fallback"
     ]

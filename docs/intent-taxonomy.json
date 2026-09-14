@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "packageVersion": "0.0.15",
+  "packageVersion": "0.0.16",
   "constraints": [
     {
       "id": "program.canvas",
@@ -741,7 +741,8 @@
       "phrases": [
         "avoid label overlap",
         "label collision",
-        "layout labels"
+        "layout labels",
+        "label collision avoidance"
       ]
     },
     {
@@ -769,7 +770,9 @@
         "remove mark labels",
         "remove labels",
         "delete mark labels",
-        "delete attached labels"
+        "delete attached labels",
+        "remove labels from bar",
+        "remove labels from bars"
       ]
     },
     {

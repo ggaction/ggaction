@@ -77,3 +77,88 @@ test("deploys Pages only after the protected release publish", () => {
   assert.match(workflow, /pages: write/);
   assert.ok(workflow.indexOf("gh release create") < workflow.indexOf("pages-build:"));
 });
+
+function workflowJob(source, name) {
+  const start = source.indexOf(`\n  ${name}:\n`);
+  assert.notEqual(start, -1, `Missing job ${name}`);
+  const body = source.slice(start + 1);
+  const next = body.slice(1).search(/^  [\w-]+:\s*$/m);
+  return next < 0 ? body : body.slice(0, next + 1);
+}
+
+test("parallel qualifications consume one canonical candidate and join before publishing", () => {
+  assert.equal((workflow.match(/run: node scripts\/release-candidate\.js "\$RELEASE_TAG"/g) ?? []).length, 1);
+  const names = ["verify-source", "verify-coverage", "verify-package", "verify-documentation", "verify-realistic", "verify-platform", "verify-browsers"];
+  for (const name of names) {
+    const job = workflowJob(workflow, name);
+    assert.match(job, /needs: (?:candidate|\[candidate, realistic-data\])/);
+    assert.match(job, /name: ggaction-\$\{\{ inputs.tag \}\}/);
+    assert.match(job, /release-candidate.js --verify/);
+    assert.match(job, /GGACTION_PACKAGE_SPEC=/);
+    assert.ok(job.indexOf("release-candidate.js --verify") < job.indexOf("npm run test:") ||
+      name === "verify-source" && job.indexOf("release-candidate.js --verify") < job.indexOf("run: npm test"));
+  }
+  const aggregate = workflowJob(workflow, "verify");
+  assert.match(aggregate, /if: \$\{\{ always\(\) \}\}/);
+  assert.match(aggregate, /GGACTION_JOB_RESULTS: \$\{\{ toJSON\(needs\) \}\}/);
+  assert.match(aggregate, /--check-jobs candidate verify-source verify-coverage verify-package verify-documentation realistic-data verify-realistic/);
+  assert.match(workflowJob(workflow, "publish"), /needs: verify/);
+  const realistic = workflowJob(workflow, "verify-realistic");
+  assert.match(realistic, /fail-fast: false/);
+  assert.match(realistic, /shard: \[1, 2, 3, 4, 5, 6, 7\]/);
+  assert.match(realistic, /npm run test:realistic -- --shard=\$\{\{ matrix.shard \}\}\/7/);
+  for (const step of workflow.split(/(?=^      - name:)/m)) {
+    if (step.includes("continue-on-error: true")) {
+      assert.match(step, /^      - name: (Collect bounded failure evidence|Upload failure evidence)/);
+      assert.match(step, /if: \$\{\{ failure\(\) \}\}/);
+    }
+  }
+});
+
+test("qualifies native platforms and three browser engines with strict release dependencies", () => {
+  const ci = readFileSync(new URL("../../.github/workflows/ci.yml", import.meta.url), "utf8");
+  for (const [source, prefix] of [[ci, ""], [workflow, "verify-"]]) {
+    const platform = workflowJob(source, `${prefix}platform`);
+    assert.match(platform, /os: \[macos-latest, windows-latest\]/);
+    assert.match(platform, /node-version: 22/);
+    assert.match(platform, /shell: bash/);
+    assert.match(platform, /npm run test:platform/);
+    const browsers = workflowJob(source, `${prefix}browsers`);
+    assert.match(browsers, /browser: \[firefox, webkit\]/);
+    assert.match(browsers, /playwright install --with-deps \$\{\{ matrix.browser \}\}/);
+    assert.match(browsers, /GGACTION_BROWSER: \$\{\{ matrix.browser \}\}/);
+    assert.match(browsers, /npm run test:browser:compat/);
+  }
+  const aggregate = workflowJob(workflow, "verify");
+  assert.match(aggregate, /needs: \[[^\n]*verify-platform, verify-browsers\]/);
+  assert.match(aggregate, /--check-jobs[^\n]*verify-platform verify-browsers/);
+});
+
+test("realistic CI has a stable aggregate that cannot accept skipped or failed dependencies", () => {
+  const ci = readFileSync(new URL("../../.github/workflows/ci.yml", import.meta.url), "utf8");
+  const aggregate = workflowJob(ci, "realistic-required");
+  assert.match(aggregate, /if: \$\{\{ always\(\) \}\}/);
+  assert.match(aggregate, /needs: \[realistic-data, realistic\]/);
+  assert.match(aggregate, /--check-jobs realistic-data realistic/);
+  assert.match(aggregate, /GGACTION_JOB_RESULTS: \$\{\{ toJSON\(needs\) \}\}/);
+});
+
+test("test and documentation failures retain bounded artifacts without forgiving required checks", () => {
+  const ci = readFileSync(new URL("../../.github/workflows/ci.yml", import.meta.url), "utf8");
+  for (const [source, jobs] of [[ci, ["package", "test", "realistic", "coverage", "documentation"]],
+    [workflow, ["verify-source", "verify-coverage", "verify-package", "verify-documentation", "verify-realistic"]]]) {
+    for (const name of jobs) {
+      const job = workflowJob(source, name);
+      assert.match(job, /node scripts\/run-check.js/);
+      assert.match(job, /node scripts\/collect-failure-artifacts.js/);
+      assert.match(job, /path: \.artifacts\/ci-evidence/);
+      assert.match(job, /retention-days: 7/);
+      for (const step of job.split(/(?=^      - name:)/m)) {
+        if (step.includes("continue-on-error: true")) {
+          assert.match(step, /^      - name: (Collect bounded failure evidence|Upload failure evidence)/);
+          assert.match(step, /if: \$\{\{ failure\(\) \}\}/);
+        }
+      }
+    }
+  }
+});

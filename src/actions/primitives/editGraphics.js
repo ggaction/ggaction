@@ -1,4 +1,4 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { cloneAndFreeze, freezeOwned, isPlainObject } from "../../core/immutable.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
 import {
@@ -162,13 +162,14 @@ function removeGraphicTree(graphicSpec, id) {
   return freezeOwned({ objects: freezeOwned(objects), order });
 }
 
-const editGraphics = action(
+const editGraphics = /* @__PURE__ */ closedAction(
   {
     op: "editGraphics",
     description: "Replace or remove concrete graphic state.",
     scope: "any"
-  },
-  function ({ target, property, value, remove = false } = {}) {
+  }, ["target", "property", "value", "remove"],
+  function (args = {}) {
+    const { target, property, value, remove = false } = args;
     if (typeof target !== "string" || target.length === 0) {
       throw new TypeError("editGraphics requires a non-empty target string.");
     }

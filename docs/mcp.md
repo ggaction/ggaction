@@ -41,7 +41,7 @@ failure analysis, and limitations.
 Install `ggaction` in the project where the MCP client will run:
 
 ```bash
-npm install ggaction
+npm install ggaction @modelcontextprotocol/sdk
 ```
 
 Launch the installed executable from that project:
@@ -65,6 +65,23 @@ executable so the selected `ggaction` version is reproducible:
 
 The exact configuration container varies by MCP client, but the command always
 starts the same local stdio process. Node.js 20 or later is required.
+
+## Packet v5 contract
+
+Check `schemaVersion === 5` before consuming a task packet. `requiredOptions`
+contains unconditional requirements and requirements of the selected method
+branch, not every option in a sample. For example, `editXScale` has no named
+mandatory option (it still needs a meaningful edit); `createImputedData` with
+`method: "linear"` requires `sortBy`, while `groupBy` remains optional. Read
+`exactCalls` and `appliedOptions` for proposed values. Version 4 consumers must
+update their schema and stop treating this list as the set of configured options.
+
+Concrete point colors, axis label rotations with explicit units, and
+logarithmic x/y scales can be combined with supported chart requests. Every
+unparsed meaningful clause is retained in `unmatchedRequirements`; unresolved
+requests are partial proposals and must not be presented as completed charts.
+The deterministic parser may ask for an exact action or clearer wording for
+phrases it does not recognize.
 
 ## One-tool workflow
 

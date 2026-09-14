@@ -257,6 +257,12 @@ export function deriveFacetChildren(
   );
 }
 
+function closeInheritedActions(program) {
+  let closed = program;
+  while (closed.actionStack.length > 0) closed = closed._exitAction();
+  return closed;
+}
+
 export function resolveFacetChildrenScales(
   template,
   cellIds,
@@ -303,7 +309,7 @@ export function resolveFacetChildrenScales(
     cellIds.map(id => {
       const child = independentlyResolved[id];
       if (child.semanticSpec.layers.length === 0) {
-        return [id, closeInheritedAction ? child._exitAction() : child];
+        return [id, closeInheritedAction ? closeInheritedActions(child) : child];
       }
       const resolved = materializeFacetCell(
         child,
@@ -312,7 +318,7 @@ export function resolveFacetChildrenScales(
         template.resolvedScales,
         Object.hasOwn(populated, id)
       );
-      return [id, closeInheritedAction ? resolved._exitAction() : resolved];
+      return [id, closeInheritedAction ? closeInheritedActions(resolved) : resolved];
     })
   );
   const firstPopulatedId = Object.keys(populated)[0];

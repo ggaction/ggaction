@@ -114,7 +114,7 @@ function applyDensityPosition(program, layerId, definition, groupBy) {
   return next;
 }
 
-const encodeDensity = action(
+const encodeDensity = /* @__PURE__ */ action(
   {
     op: "encodeDensity",
     description: "Derive and encode a baseline or categorical kernel-density area."
@@ -259,7 +259,7 @@ function assertGroupingSelectionCompatibility(program, layer, changesGroup) {
   }
 }
 
-const editDensity = action(
+const editDensity = /* @__PURE__ */ action(
   {
     op: "editDensity",
     description: "Revise one density transform and rematerialize its consumers."

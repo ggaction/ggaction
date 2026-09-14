@@ -140,7 +140,7 @@ function removeLabelState(program, plan) {
   return Object.keys(context).length === 0 ? next : next._withContext(context);
 }
 
-export const removeMarkLabels = action(
+export const removeMarkLabels = /* @__PURE__ */ action(
   {
     op: "removeMarkLabels",
     description: "Remove attached label layers while preserving their source mark."

@@ -4,6 +4,32 @@ import { isPlainObject } from "./immutable.js";
 const ACTION_NAME_PATTERN = /^[A-Za-z_$][A-Za-z0-9_$]*$/;
 const DEFINITION_KEYS = new Set(["name", "actions"]);
 const registeredExtensionNames = new Set();
+const extensionByAction = new Map();
+const builtinOpsByClass = new WeakMap();
+
+export function recordBuiltinActions(ProgramClass, additional = []) {
+  builtinOpsByClass.set(ProgramClass, new Set([
+    ...Object.getOwnPropertyNames(ProgramClass.prototype).flatMap(name => {
+      const metadata = getWrappedActionMetadata(ProgramClass.prototype[name]);
+      return metadata ? [metadata.op] : [];
+    }), ...additional
+  ]));
+}
+
+export function isBuiltinProgramClass(ProgramClass) {
+  return builtinOpsByClass.has(ProgramClass);
+}
+
+export function requiredTraceExtension(ProgramClass, op) {
+  if (op === "program" || builtinOpsByClass.get(ProgramClass)?.has(op)) return undefined;
+  const extension = extensionByAction.get(op);
+  if (extension !== undefined) return extension;
+  throw new TypeError(`Cannot persist unregistered action "${op}".`);
+}
+
+export function hasRegisteredExtension(name) {
+  return registeredExtensionNames.has(name);
+}
 
 function readDataProperty(object, key, owner) {
   const descriptor = Object.getOwnPropertyDescriptor(object, key);
@@ -101,4 +127,5 @@ export function registerProgramExtension(ProgramClass, definition) {
 
   Object.defineProperties(ProgramClass.prototype, descriptors);
   registeredExtensionNames.add(name);
+  for (const actionName of actionNames) extensionByAction.set(actionName, name);
 }

@@ -4,16 +4,16 @@ function lineCenters(lines, style, lineHeight, start) {
   return lines.map((_, index) => start + style.fontSize / 2 + index * lineHeight);
 }
 
-export function buildTitleReadingBlock({ text, subtitle }, config) {
+export function buildTitleReadingBlock({ text, subtitle }, config, profile) {
   const titleLines = wrapText(text, {
     maxWidth: config.maxWidth,
     mode: config.wrap,
-    style: config.titleStyle
+    style: config.titleStyle, profile
   });
   const subtitleLines = subtitle === undefined ? [] : wrapText(subtitle, {
     maxWidth: config.maxWidth,
     mode: config.wrap,
-    style: config.subtitleStyle
+    style: config.subtitleStyle, profile
   });
   const titleLineHeight = config.lineHeight ?? config.titleStyle.fontSize * 1.2;
   const subtitleLineHeight = config.lineHeight ??
@@ -36,8 +36,8 @@ export function buildTitleReadingBlock({ text, subtitle }, config) {
     ? titleBottom
     : subtitleCenters.at(-1) + config.subtitleStyle.fontSize / 2;
   const widths = [
-    ...titleLines.map(line => measureTextWidth(line, config.titleStyle)),
-    ...subtitleLines.map(line => measureTextWidth(line, config.subtitleStyle))
+    ...titleLines.map(line => measureTextWidth(line, config.titleStyle, profile)),
+    ...subtitleLines.map(line => measureTextWidth(line, config.subtitleStyle, profile))
   ];
   return {
     titleLines,
@@ -61,7 +61,7 @@ export function alignedTextAnchor(start, length, align) {
   return start + length;
 }
 
-function axisAlignedTextBounds({ x, y, text, style, align, rotation }) {
+function axisAlignedTextBounds({ x, y, text, style, align, rotation }, profile) {
   return resolveTextBounds({
     x,
     y,
@@ -70,7 +70,7 @@ function axisAlignedTextBounds({ x, y, text, style, align, rotation }) {
     textAlign: align,
     textBaseline: "middle",
     rotation
-  });
+  }, profile);
 }
 
 function unionBounds(bounds) {
@@ -82,7 +82,7 @@ function unionBounds(bounds) {
   }), { left: Infinity, right: -Infinity, top: Infinity, bottom: -Infinity });
 }
 
-export function resolveTitleComponentBounds(component, style) {
+export function resolveTitleComponentBounds(component, style, profile) {
   return unionBounds(component.lines.map((text, index) => axisAlignedTextBounds({
     x: Array.isArray(component.x) ? component.x[index] : component.x,
     y: Array.isArray(component.y) ? component.y[index] : component.y,
@@ -90,7 +90,7 @@ export function resolveTitleComponentBounds(component, style) {
     style,
     align: component.textAlign,
     rotation: component.rotation
-  })));
+  }, profile)));
 }
 
 export function unionTitleBounds(bounds) {

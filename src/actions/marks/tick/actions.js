@@ -88,7 +88,7 @@ function validateTickConfig(args, current = DEFAULT_TICK_CONFIG) {
   };
 }
 
-export const createTickMark = action(
+export const createTickMark = /* @__PURE__ */ action(
   {
     op: "createTickMark",
     description: "Create a centered fixed-length Tick mark."
@@ -133,7 +133,7 @@ export const createTickMark = action(
   }
 );
 
-export const editTickMark = action(
+export const editTickMark = /* @__PURE__ */ action(
   {
     op: "editTickMark",
     description: "Edit Tick length and constant line appearance."
@@ -163,7 +163,7 @@ export const editTickMark = action(
   }
 );
 
-export const rematerializeTickMark = action(
+export const rematerializeTickMark = /* @__PURE__ */ action(
   {
     op: "rematerializeTickMark",
     description: "Recompute concrete centered Tick endpoints and appearance."

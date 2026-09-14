@@ -1,10 +1,12 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
 
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { renderToPNG } from "ggaction/png";
 
+import { recordFailure } from "./failure-artifacts.js";
 import { ensureVariantMetadata } from "./artifact-metadata.js";
 import { resolvePngArtifactPath } from "./artifact-paths.js";
 
@@ -72,7 +74,7 @@ function rootBackground(program) {
     : resolveCssColor(root.properties.background);
 }
 
-export async function assertRenderedPNG(
+async function assertRenderedPNGImpl(
   program,
   {
     name,
@@ -232,4 +234,44 @@ export async function assertRenderedPNG(
     visualSignature: compactSignature,
     pixelHash: createHash("sha256").update(pixels).digest("hex")
   };
+}
+
+export async function assertRenderedPNG(program, options) {
+  try { return await assertRenderedPNGImpl(program, options); } catch (error) {
+    let output;
+    try { output = resolvePngArtifactPath(options); } catch {}
+    await recordFailure({ label: options.name ?? JSON.stringify(options.artifact), error, files: output ? [output] : [], details: options });
+    throw error;
+  }
+}
+
+export async function assertSameRenderedPNG(actual, expected, label) {
+  if (actual.pixelHash === expected.pixelHash) return;
+  const error = new assert.AssertionError({ message: `${label} pixels differ`, actual: actual.pixelHash, expected: expected.pixelHash });
+  const directory = await recordFailure({ label, error, files: [actual.output, expected.output], details: { actual: actual.pixelHash, expected: expected.pixelHash } });
+  if (directory !== undefined) {
+    try {
+      const images = await Promise.all([actual.output, expected.output].map(file => loadImage(file)));
+      const width = Math.max(...images.map(image => image.width));
+      const height = Math.max(...images.map(image => image.height));
+      if (width * height <= 4_000_000) {
+        const pixels = images.map(image => {
+          const context = createCanvas(width, height).getContext("2d");
+          context.drawImage(image, 0, 0);
+          return context.getImageData(0, 0, width, height).data;
+        });
+        const canvas = createCanvas(width, height);
+        const context = canvas.getContext("2d");
+        const diff = context.createImageData(width, height);
+        for (let index = 0; index < diff.data.length; index += 4) {
+          if ([0, 1, 2, 3].some(offset => pixels[0][index + offset] !== pixels[1][index + offset])) {
+            diff.data.set([255, 0, 255, 255], index);
+          }
+        }
+        context.putImageData(diff, 0, 0);
+        await writeFile(path.join(directory, "diff.png"), await canvas.encode("png"));
+      }
+    } catch (failure) { process.stderr.write(`Could not write pixel diff: ${failure.message}\n`); }
+  }
+  throw error;
 }

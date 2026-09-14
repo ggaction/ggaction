@@ -515,7 +515,7 @@
   },
   "/data-updates/": {
     "title": "Data Updates and Live Refresh",
-    "description": "Source dataset values are immutable after creation. createData copies and freezes caller owned rows; it does not provide an action that replaces those values."
+    "description": "Source dataset values are immutable after creation. createData copies and freezes caller owned rows."
   },
   "/errors-and-recovery/": {
     "title": "Errors and Recovery",

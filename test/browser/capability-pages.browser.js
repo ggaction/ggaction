@@ -6,6 +6,7 @@ import { chromium } from "playwright";
 
 import {
   assertNoBrowserErrors,
+  closeBrowserWithEvidence,
   openBrowserPage,
   windowValue
 } from "../support/browser.js";
@@ -62,7 +63,7 @@ test.before(async () => {
 });
 
 test.after(async () => {
-  await browser?.close();
+  await closeBrowserWithEvidence(browser);
   await server?.close();
 });
 

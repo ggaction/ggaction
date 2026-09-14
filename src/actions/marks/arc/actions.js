@@ -102,7 +102,7 @@ function normalizeConfig(
   return config;
 }
 
-const createArcMark = action(
+const createArcMark = /* @__PURE__ */ action(
   {
     op: "createArcMark",
     description: "Create a semantic arc mark and empty path collection."
@@ -158,7 +158,7 @@ function requireArc(program, id) {
   return { layer, dataset };
 }
 
-const rematerializeArcMark = action(
+const rematerializeArcMark = /* @__PURE__ */ action(
   {
     op: "rematerializeArcMark",
     description: "Recompute concrete annular-sector paths."
@@ -256,7 +256,7 @@ const rematerializeArcMark = action(
   }
 );
 
-const editArcMark = action(
+const editArcMark = /* @__PURE__ */ action(
   {
     op: "editArcMark",
     description: "Edit arc geometry and appearance."

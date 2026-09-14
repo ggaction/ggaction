@@ -125,7 +125,7 @@ function requireTextLayer(program, requested, operation) {
   });
 }
 
-const createTextMark = action(
+const createTextMark = /* @__PURE__ */ action(
   {
     op: "createTextMark",
     description: "Create a semantic text annotation layer."
@@ -254,7 +254,7 @@ function resolveAnnotationBinding(program, args) {
   };
 }
 
-const createAnnotation = action(
+const createAnnotation = /* @__PURE__ */ action(
   {
     op: "createAnnotation",
     description: "Create text at a final mark, data, or plot anchor."
@@ -327,7 +327,7 @@ const createAnnotation = action(
   }
 );
 
-const createMarkLabels = action(
+const createMarkLabels = /* @__PURE__ */ action(
   {
     op: "createMarkLabels",
     description: "Create final-item text labels attached to an existing mark."
@@ -412,7 +412,7 @@ const createMarkLabels = action(
   }
 );
 
-const rematerializeTextMark = action(
+const rematerializeTextMark = /* @__PURE__ */ action(
   {
     op: "rematerializeTextMark",
     description: "Recompute concrete text content, anchors, and typography."
@@ -458,7 +458,7 @@ const rematerializeTextMark = action(
   }
 );
 
-const editTextMark = action(
+const editTextMark = /* @__PURE__ */ action(
   {
     op: "editTextMark",
     description: "Edit text typography, alignment, rotation, and offsets."

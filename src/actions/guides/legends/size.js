@@ -1,4 +1,4 @@
-import { action } from "../../../core/action.js";
+import { action, closedAction } from "../../../core/action.js";
 import {
   validateNonEmptyString,
   validateKeys
@@ -17,7 +17,8 @@ import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import {
   assertLegendBoundsInsideCanvas,
-  editLegendBackground,
+  materializeItemLegend,
+  createItemLegendGraphics,
   normalizeItemLegendLayout,
   normalizeLegendBorder,
   normalizeLegendTextOptions,
@@ -25,8 +26,7 @@ import {
   resolveContinuousBounds,
   resolveLegendBackgroundFromBounds,
   formatContinuousValues,
-  selectLegendLayer,
-  styleContinuousText
+  selectLegendLayer
 } from "./continuous/common.js";
 import { legendResourcePolicies } from "../../../materialization/guides/resources.js";
 import {
@@ -139,20 +139,19 @@ export function resolveSizeLegendLayout(program, config) {
       top: -r - symbolExtent,
       bottom: r + symbolExtent
     }))
-  });
+  }, undefined, program.materializationConfigs.textMetrics);
   assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Size legend layout", { ...effective, ...geometry });
   const background = resolveLegendBackgroundFromBounds(layout.bounds, effective.border, canvas, "Size legend", { ...effective, ...geometry });
   return { ...layout, symbolX: layout.symbolX.map(x => x + sampleWidth / 2), radii, text,
     labels, titleStyle, background, config: effective };
 }
 
-export const rematerializeSizeLegend = action(
+export const rematerializeSizeLegend = /* @__PURE__ */ closedAction(
   {
     op: "rematerializeSizeLegend",
     description: "Rematerialize a quantitative point-size legend."
-  },
+  }, [],
   function (args = {}) {
-    validateKeys(args, [], "rematerializeSizeLegend");
     const config = this.guideConfigs.legend?.size;
     if (config === undefined) throw new Error("Size legend requires stored configuration.");
     const layer = findLayer(this, config.target);
@@ -169,51 +168,18 @@ export const rematerializeSizeLegend = action(
       domain: scale.domain
     };
     const layout = resolveSizeLegendLayout(this, currentConfig);
-    const effective = layout.config;
-    const { itemY, symbolX, labelX, radii, labels, titleStyle } = layout;
-    let next = this
-      .editSemantic({ property: "guide.legend.size.scale", value: encoding.scale })
-      .editSemantic({ property: "guide.legend.size.title", value: title })
-      ._withLegendConfig("size", currentConfig)
-      .editGraphics({ target: "sizeLegendSymbols", property: "length", value: radii.length })
-      .editGraphics({ target: "sizeLegendSymbols", property: "x", value: symbolX })
-      .editGraphics({ target: "sizeLegendSymbols", property: "y", value: itemY })
-      .editGraphics({
-        target: "sizeLegendSymbols",
-        property: "radius",
-        value: radii
-      })
-      .editGraphics({
-        target: "sizeLegendSymbols",
-        property: "fill",
-        value: effective.blockSymbol?.fill ?? DEFAULT_COLORS.sizeSymbol
-      })
-      .editGraphics({ target: "sizeLegendSymbols", property: "opacity",
-        value: effective.blockSymbol?.opacity ?? 0.7 })
-      .editGraphics({ target: "sizeLegendLabels", property: "length", value: radii.length })
-      .editGraphics({ target: "sizeLegendLabels", property: "x", value: labelX })
-      .editGraphics({ target: "sizeLegendLabels", property: "y", value: itemY })
-      .editGraphics({
-        target: "sizeLegendLabels",
-        property: "text",
-        value: layout.text
-      });
-    next = editLegendBackground(next, "sizeLegendBackground", layout.background, currentConfig.border);
-    if (effective.blockSymbol?.stroke !== undefined) {
-      next = next.editGraphics({ target: "sizeLegendSymbols", property: "stroke",
-        value: effective.blockSymbol.stroke });
-    }
-    if (effective.blockSymbol?.strokeWidth !== undefined) {
-      next = next.editGraphics({ target: "sizeLegendSymbols", property: "strokeWidth",
-        value: effective.blockSymbol.strokeWidth });
-    }
-    next = styleContinuousText(next, "sizeLegendLabels", labels);
-    if (effective.titleVisible === false) return next;
-    next = next
-      .editGraphics({ target: "sizeLegendTitle", property: "x", value: layout.title.x })
-      .editGraphics({ target: "sizeLegendTitle", property: "y", value: layout.title.y })
-      .editGraphics({ target: "sizeLegendTitle", property: "text", value: effective.title });
-    return styleContinuousText(next, "sizeLegendTitle", titleStyle, { align: layout.title.align });
+    return materializeItemLegend(this, "size", currentConfig, layout, {
+      text: layout.text, labels: layout.labels, titleStyle: layout.titleStyle,
+      symbols: {
+        x: layout.symbolX, y: layout.itemY, radius: layout.radii,
+        fill: layout.config.blockSymbol?.fill ?? DEFAULT_COLORS.sizeSymbol,
+        opacity: layout.config.blockSymbol?.opacity ?? 0.7
+      },
+      optional: {
+        stroke: layout.config.blockSymbol?.stroke,
+        strokeWidth: layout.config.blockSymbol?.strokeWidth
+      }
+    });
   }
 );
 
@@ -261,37 +227,10 @@ export function createSizeLegendFromConfig(program, config) {
   ).flatMap(policy => policy.graphicIds));
   const before = program.graphicSpec.objects.canvas?.children?.find(id => following.has(id));
   const placement = resolveLegendGraphicPlacement(program, before === undefined ? {} : { before });
-  let next = program
-    .editSemantic({ property: "guide.legend.size.scale", value: config.scale })
-    .editSemantic({ property: "guide.legend.size.title", value: config.title })
-    ._withLegendConfig("size", config);
-  if (config.border !== false) {
-    next = next.createGraphics({ id: "sizeLegendBackground", type: "rect",
-      ...placement });
-  }
-  next = next.createGraphics({
-      id: "sizeLegendSymbols",
-      type: "circle",
-      length: count,
-      ...placement
-    })
-    .createGraphics({
-      id: "sizeLegendLabels",
-      type: "text",
-      length: count,
-      ...placement
-    });
-  if (config.titleVisible !== false) {
-    next = next.createGraphics({
-      id: "sizeLegendTitle",
-      type: "text",
-      ...placement
-    });
-  }
-  return next.rematerializeSizeLegend();
+  return createItemLegendGraphics(program, "size", config, count, "circle", placement).rematerializeSizeLegend();
 }
 
-export const createSizeLegend = action(
+export const createSizeLegend = /* @__PURE__ */ action(
   {
     op: "createSizeLegend",
     description: "Create an equal-area point-size legend."

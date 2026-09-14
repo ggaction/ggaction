@@ -220,9 +220,12 @@ as above, to clear its legend consistently. Conversely, a band created or edited
 with explicit fill rejects `encodeColor` until `editErrorBand({ fill: false })`
 clears that override. This edit-only reset restores encoded color or the theme
 default; it does not make the band transparent. Creation still requires a string
-fill. `statistics: { center?, extent?, level? }` creates one
+fill. `statistics: { center?, extent?, method?, level? }` creates one
 immutable interval revision for statistical owners and rebinds the body and
 enabled boundaries. Explicit interval owners reject that option.
+Combined role/statistics edits use the same merge as statistics-only edits:
+leaving confidence intervals discards inherited `method` and `level`.
+Explicitly supplying either for another extent is an error.
 
 `data`, `x`, and `y` replace the source and position/interval roles in the same
 preflight. They may switch orientation or convert between statistical and

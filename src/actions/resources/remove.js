@@ -1,3 +1,4 @@
+import { annotateError } from "../../core/diagnostics.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateOptionObject } from "../../core/validation.js";
@@ -70,20 +71,20 @@ export function resolveResourceOwnership(program, { kind, id }) {
     if (resource !== undefined) return { ownership: "named", resource };
     const other = existingKind(program, id);
     if (other !== undefined) {
-      throw new Error(`Resource "${id}" exists as ${other}, not ${kind}.`);
+      throw annotateError(new Error(`Resource "${id}" exists as ${other}, not ${kind}.`), { code: "incompatible-resource", resourceId: id });
     }
-    throw new Error(`Unknown ${kind} "${id}".`);
+    throw annotateError(new Error(`Unknown ${kind} "${id}".`), { code: "missing-resource", resourceId: id });
   }
 
   const owners = dataOwners(program).filter(owner => owner.owner === id);
   if (owners.length > 1) {
-    throw new Error(`Data resource "${id}" has ambiguous logical ownership.`);
+    throw annotateError(new Error(`Data resource "${id}" has ambiguous logical ownership.`), { code: "ambiguous-resource", resourceId: id });
   }
   if (owners.length === 1) {
     const owner = owners[0];
     const current = exactResource(program, "data", owner.current);
     if (current === undefined) {
-      throw new Error(`Data owner "${id}" has no current dataset.`);
+      throw annotateError(new Error(`Data owner "${id}" has no current dataset.`), { code: "missing-resource", resourceId: id });
     }
     return { ownership: "standalone", resource: current, dataOwner: owner };
   }
@@ -98,9 +99,9 @@ export function resolveResourceOwnership(program, { kind, id }) {
   }
   const other = existingKind(program, id);
   if (other !== undefined) {
-    throw new Error(`Resource "${id}" exists as ${other}, not data.`);
+    throw annotateError(new Error(`Resource "${id}" exists as ${other}, not data.`), { code: "incompatible-resource", resourceId: id });
   }
-  throw new Error(`Unknown data "${id}".`);
+  throw annotateError(new Error(`Unknown data "${id}".`), { code: "missing-resource", resourceId: id });
 }
 
 function assertSupportedProgram(program, operation) {
@@ -126,10 +127,10 @@ export function planResourceRemoval(program, { kind, id, operation }) {
     value.path.at(-1) === "current"
   ));
   if (live.length > 0) {
-    throw new Error(
+    throw annotateError(new Error(
       `Cannot remove ${kind} "${id}"; live references: ` +
       live.map(formatReference).join("; ")
-    );
+    ), { code: "resource-in-use", resourceId: id, candidates: [...new Set(live.map(value => value.ownerId))] });
   }
   return Object.freeze({
     kind,
@@ -161,12 +162,12 @@ function removeResource(kind, operation, description) {
   );
 }
 
-export const removeData = removeResource(
+export const removeData = /* @__PURE__ */ removeResource(
   "data", "removeData", "Remove one unreferenced named dataset."
 );
-export const removeScale = removeResource(
+export const removeScale = /* @__PURE__ */ removeResource(
   "scale", "removeScale", "Remove one unreferenced named scale."
 );
-export const removeCoordinate = removeResource(
+export const removeCoordinate = /* @__PURE__ */ removeResource(
   "coordinate", "removeCoordinate", "Remove one unreferenced named coordinate."
 );

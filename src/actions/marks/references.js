@@ -1,8 +1,8 @@
 import { isSourceOwnedText } from "../../grammar/text.js";
-import { action } from "../../core/action.js";
+import { action, closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
+
 import { findCoordinate } from "../../selectors/coordinates.js";
 import {
   findDataset,
@@ -465,13 +465,12 @@ function syncReferenceEncoding(program, id, source, config) {
   return next;
 }
 
-export const materializeStatisticalReferenceData = action(
+export const materializeStatisticalReferenceData = /* @__PURE__ */ closedAction(
   {
     op: "materializeStatisticalReferenceData",
     description: "Materialize one owned statistical reference value dataset."
-  },
+  }, MATERIALIZE_OPTIONS,
   function (args = {}) {
-    validateKeys(args, MATERIALIZE_OPTIONS, "materializeStatisticalReferenceData");
     const { id, source, transform } = requireDerivedDataset(
       this,
       args.id,
@@ -485,13 +484,12 @@ export const materializeStatisticalReferenceData = action(
   }
 );
 
-export const rematerializeStatisticalReference = action(
+export const rematerializeStatisticalReference = /* @__PURE__ */ closedAction(
   {
     op: "rematerializeStatisticalReference",
     description: "Recompute one source-dependent statistical reference."
-  },
+  }, MATERIALIZE_OPTIONS,
   function (args = {}) {
-    validateKeys(args, MATERIALIZE_OPTIONS, "rematerializeStatisticalReference");
     const id = validateUserId(args.id, "Statistical reference mark id");
     const config = this.markConfigs[id]?.statisticalReference;
     const { source } = requireStatisticalSource(this, config, id);
@@ -637,7 +635,7 @@ function createReference(program, args, band) {
     : createLiteralReference(program, args, band);
 }
 
-export const createReferenceLine = action(
+export const createReferenceLine = /* @__PURE__ */ action(
   {
     op: "createReferenceLine",
     description: "Create a constant or statistical reference line."
@@ -647,7 +645,7 @@ export const createReferenceLine = action(
   }
 );
 
-export const createReferenceBand = action(
+export const createReferenceBand = /* @__PURE__ */ action(
   {
     op: "createReferenceBand",
     description: "Create a constant or statistical reference interval."

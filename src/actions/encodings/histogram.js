@@ -6,7 +6,7 @@ const HISTOGRAM_OPTIONS = Object.freeze([
   "stack", "xScale", "yScale", "weight"
 ]);
 
-const encodeHistogram = action(
+const encodeHistogram = /* @__PURE__ */ action(
   {
     op: "encodeHistogram",
     description: "Encode a binned count histogram with a configurable layout stack."

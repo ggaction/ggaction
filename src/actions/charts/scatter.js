@@ -23,7 +23,7 @@ const POINT_OPTIONS = Object.freeze([
   ...STROKE_STYLE_PROPERTIES
 ]);
 
-export const createScatterPlot = action(
+export const createScatterPlot = /* @__PURE__ */ action(
   {
     op: "createScatterPlot",
     description: "Create a Cartesian scatter plot from existing chart data."

@@ -73,6 +73,15 @@ export function renderToPNG(
   program: Pick<ChartProgram, "graphicSpec">,
   options: { output: string; pixelRatio?: number }
 ): Promise<PNGRenderResult>;
+
+export interface PNGBufferResult extends Omit<PNGRenderResult, "output"> {
+  readonly buffer: Uint8Array;
+}
+
+export function renderToPNGBuffer(
+  program: Pick<ChartProgram, "graphicSpec">,
+  options?: { pixelRatio?: number }
+): Promise<PNGBufferResult>;
 ```
 
 #### `ggaction/pdf`
@@ -102,6 +111,47 @@ export function renderToPDF(
   program: Pick<ChartProgram, "graphicSpec">,
   options: PDFRenderOptions
 ): Promise<PDFRenderResult>;
+
+export interface PDFBufferResult extends Omit<PDFRenderResult, "output"> {
+  readonly buffer: Uint8Array;
+}
+
+export function renderToPDFBuffer(
+  program: Pick<ChartProgram, "graphicSpec">,
+  options?: { metadata?: PDFMetadata }
+): Promise<PDFBufferResult>;
+```
+
+#### `ggaction/diagnostics`
+
+```typescript
+export type ErrorCode = "invalid-option" | "invalid-value" | "missing-resource" |
+  "ambiguous-resource" | "incompatible-resource" | "resource-in-use" |
+  "resource-limit" | "unsupported-format" | "action-failed";
+
+export interface ErrorDetails {
+  readonly code: ErrorCode;
+  readonly operation?: string;
+  readonly optionPath?: string;
+  readonly resourceId?: string;
+  readonly candidates?: readonly string[];
+  readonly limit?: number;
+  readonly actual?: number;
+}
+
+export function getErrorDetails(error: unknown): ErrorDetails | undefined;
+```
+
+#### `ggaction/persistence`
+
+```typescript
+import type { ChartProgram } from "./program.js";
+import type { BasicChartProgram } from "./basic.js";
+
+export function serializeProgram(program: ChartProgram | BasicChartProgram): string;
+export function deserializeProgram(text: string): ChartProgram;
+export function serializeGraphic(program: Pick<ChartProgram, "graphicSpec">): string;
+export function deserializeGraphic(text: string): Readonly<Pick<ChartProgram, "graphicSpec">>;
 ```
 
 <!-- END GENERATED RUNTIME SIGNATURES -->

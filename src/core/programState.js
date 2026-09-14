@@ -23,7 +23,7 @@ export function ownChildPrograms(children, ProgramClass) {
     if (!(program instanceof ProgramClass)) {
       throw new TypeError(`ChartProgram child "${id}" must be a ChartProgram.`);
     }
-    owned[id] = program;
+    Object.defineProperty(owned, id, { value: program, enumerable: true });
   }
   return freezeOwned(owned);
 }

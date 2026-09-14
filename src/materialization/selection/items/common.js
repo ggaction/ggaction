@@ -102,7 +102,7 @@ function collectionBounds(program, items) {
   const bounds = unionConcreteGraphicBounds(
     program.graphicSpec,
     items.map(item => item.id)
-  );
+  , program.materializationConfigs.textMetrics);
   if (bounds === undefined) return {};
   const { left, top, right, bottom } = bounds;
   return { x: left, y: top, width: right - left, height: bottom - top };

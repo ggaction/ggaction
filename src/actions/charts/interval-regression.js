@@ -82,7 +82,7 @@ function applyIntervalPointPositions(program, id, config) {
   return next;
 }
 
-export const createIntervalPlot = action(
+export const createIntervalPlot = /* @__PURE__ */ action(
   {
     op: "createIntervalPlot",
     description: "Create a center point and matching statistical or explicit interval."
@@ -139,7 +139,7 @@ const REGRESSION_OPTIONS = Object.freeze([
   "interval", "band", "line", "guides"
 ]);
 
-export const createRegressionPlot = action(
+export const createRegressionPlot = /* @__PURE__ */ action(
   {
     op: "createRegressionPlot",
     description: "Create a scatter plot with a fitted regression line and optional interval band."

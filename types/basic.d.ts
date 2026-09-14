@@ -1,4 +1,4 @@
-import type { ChartProgram, BasicSeriesLayoutOptions } from "./program.js";
+import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions } from "./program.js";
 
 export type {
   AxisLabelOptions,
@@ -17,6 +17,7 @@ export type {
   CompleteAxisOptions,
   CreateAxesOptions,
   CreateBarPlotOptions,
+  CreateDataOptions,
   CreateGridOptions,
   CreateGuidesOptions,
   CreateHeatmapOptions,
@@ -111,7 +112,8 @@ type RebindMethod<T> = T extends (...args: infer Args) => ChartProgram
 
 export type BasicChartProgram =
   Pick<ChartProgram, BasicStateKey> &
-  { readonly [Key in BasicMethodKey]: RebindMethod<ChartProgram[Key]> } &
+  { readonly [Key in Exclude<BasicMethodKey, "createData">]: RebindMethod<ChartProgram[Key]> } &
+  { createData<Row extends object>(options: CreateDataOptions<Row>): BasicChartProgram } &
   { readonly layoutSeries: (options: BasicSeriesLayoutOptions) => BasicChartProgram };
 
 export function chart(): BasicChartProgram;

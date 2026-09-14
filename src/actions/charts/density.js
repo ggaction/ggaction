@@ -14,7 +14,7 @@ const AREA_OPTIONS = [
   ...STROKE_STYLE_PROPERTIES
 ];
 
-export const createDensityPlot = action({
+export const createDensityPlot = /* @__PURE__ */ action({
   op: OPERATION, description: "Create a baseline kernel-density area plot with optional explicit groups."
 }, function (args = {}) {
   validateFacadeOptions(args, OPTIONS, OPERATION);

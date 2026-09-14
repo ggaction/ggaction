@@ -6,9 +6,41 @@ title: Data Updates and Live Refresh
 # Data Updates and Live Refresh
 
 Source dataset values are immutable after creation. `createData` copies and freezes
-caller-owned rows; it does not provide an action that replaces those values.
-For refreshed, streaming, or user-edited source data, retain the rows in the
-application and build a new program snapshot.
+caller-owned rows. Use `reviseData` to add a fresh source snapshot and update its
+dependent chart, or rebuild a program from application-owned rows.
+
+## Revise a source and its dependent chart
+
+`reviseData({ source, id, values })` is a Full-entry action. Both IDs are required:
+`source` names an existing materialized original dataset, and `id` is a fresh,
+distinct dataset ID. The action retains the original rows and creates an immutable
+revision. Derived transforms, marks, scales, guides, labels, selections, and
+highlights follow the new source while stable chart IDs and explicit styles remain.
+
+```javascript
+import { chart } from "ggaction";
+
+const before = chart()
+  .createCanvas()
+  .createData({ id: "sales", values: [{ quarter: "Q1", revenue: 12 }] })
+  .createBarPlot({ x: "quarter", y: "revenue", guides: false });
+const after = before.reviseData({
+  source: "sales",
+  id: "salesUpdated",
+  values: [{ quarter: "Q1", revenue: 15 }, { quarter: "Q2", revenue: 20 }]
+});
+```
+
+Invalid rows, missing fields, incompatible selections, or failed materialization
+reject the whole revision; `before` remains usable. Follow-up refreshes use the
+current source ID and another fresh ID. Old source snapshots are not deleted
+automatically. Standalone derived-data definitions keep their existing logical
+editor targets.
+
+Retained-source facets, facet grids, and repeats rederive their cells using the
+existing recipe, including its selected values and fields. They do not add new
+facet categories automatically. For concat, revise an explicit child and pass it
+to `replaceCompositionChild({ target, program })`.
 
 An unused source dataset can be removed with
 [`removeData`](./api/data/revisions-and-removal.md#removedata-id); removing the resource does
@@ -68,9 +100,8 @@ labels, selections, and highlights before returning the revised program.
 Composite charts keep their source changes in the corresponding aggregate edit
 action so all owned layers change together.
 
-Use a revision action when the source snapshot is unchanged and the user is
-changing chart intent. Rebuild from source when row identity, values, schema,
-or source-dataset membership changes.
+Use `reviseData` when new rows retain compatible field meanings. Rebuild when the
+new schema or intended chart structure requires a different authoring flow.
 
 ## Async update policy
 
@@ -93,6 +124,94 @@ Higher-level materializers create concrete derived values. When source rows
 change, recreate both source and derived datasets in the new program. Editing
 a derived transform revises the transform against the existing immutable
 source snapshot only.
+
+## Save and restore snapshots
+
+The browser-safe `ggaction/persistence` entry stores either an editable program
+or its concrete graphics. This standalone example needs no filesystem or DOM:
+
+```javascript
+import { chart } from "ggaction";
+import {
+  serializeProgram, deserializeProgram, serializeGraphic, deserializeGraphic
+} from "ggaction/persistence";
+import { renderToSVG } from "ggaction/svg";
+
+const original = chart()
+  .createCanvas()
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 5 }] })
+  .createScatterPlot({ x: "x", y: "y" });
+const saved = serializeProgram(original);
+const restored = deserializeProgram(saved);
+const edited = restored.editPointMark({ fill: "red" });
+const renderOnly = deserializeGraphic(serializeGraphic(edited));
+const svg = renderToSVG(renderOnly);
+```
+
+`serializeProgram(program): string` accepts a built-in Full or Basic program.
+`deserializeProgram(text): ChartProgram` returns an immutable **Full** program,
+including when the original used Basic. It preserves semantic state, concrete
+graphics, resolved scales, materialization settings, context, trace, retained
+children, and composition state. It does not replay actions or recalculate the
+chart. Subsequent edits use the restored settings and leave the saved snapshot
+unchanged. Partial authoring states can be saved; restoring one does not supply
+missing Canvas dimensions or other prerequisites.
+
+`serializeGraphic(program): string` accepts an object with `graphicSpec`.
+`deserializeGraphic(text): Readonly<Pick<ChartProgram, "graphicSpec">>` returns
+only the immutable graphics wrapper accepted by Canvas, SVG, PNG, and PDF
+renderers. It has no authoring methods or source data. Concrete property and
+tree validation applies to both formats; normal renderer requirements still
+apply to unfinished graphics.
+
+The host owns storage and transport of the returned strings. Both restore
+functions validate the envelope, and editable restoration additionally checks
+resource references, owner identities, trace structure, and registered
+extensions. Import required extension packages before restoring their programs.
+Unknown extensions, unregistered custom subclasses or trace operations, and
+open action stacks are rejected. The format cannot load code, import packages,
+or execute saved trace arguments. Custom subclass restoration adapters are not
+available.
+
+### Snapshot format, version 1
+
+Each JSON envelope has exactly these keys:
+
+```text
+{ schemaVersion: 1, kind: "editable" | "graphic", packageVersion: string,
+  extensions: string[], payload: EncodedValue }
+```
+
+`packageVersion` records the producer version; `schemaVersion` determines the
+format. Unknown schema versions are rejected. `extensions` contains the exact
+registered extension names required by the editable action traces, including
+children; graphic snapshots use an empty array. The editable payload uses the
+canonical keys `semanticSpec`, `graphicSpec`, `resolvedScales`,
+`materializationConfigs`, `children`, `compositionSpec`, `context`, `trace`, and
+`actionStack`. Children recursively use the same state shape. The stack must be
+empty; aliases and private action counters are not persisted. The graphic
+payload is `graphicSpec` itself.
+
+The tagged value codec preserves values that plain JSON would lose:
+
+| Value | Encoded representation |
+| --- | --- |
+| String, boolean, null, finite number except negative zero | Unchanged |
+| Array | `["array", EncodedValue[]]` |
+| Plain object | `["object", [string, EncodedValue][]]` |
+| Undefined | `["undefined"]` |
+| Bigint | `["bigint", decimalString]` |
+| NaN, positive/negative infinity, negative zero | `["number", "NaN" \| "Infinity" \| "-Infinity" \| "-0"]` |
+| A hole in a nested sparse array | `["hole"]`, only inside an array payload |
+
+Dataset row arrays must still be dense arrays of plain rows. Nested cell arrays
+can preserve holes. Tag-like user arrays remain ordinary encoded arrays, so
+user data cannot collide with the codec. Object keys, including `__proto__`, are
+restored as own properties. Duplicate keys, invalid tuples/tags, and malformed
+bigint literals are rejected. Symbols, functions, class instances, cycles,
+non-enumerable object properties, and named array properties cannot be saved;
+codec errors identify their location. Shared subobjects are stored by value,
+not as an object-identity graph.
 
 ## Related
 

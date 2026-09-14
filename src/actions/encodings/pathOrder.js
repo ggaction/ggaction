@@ -1,9 +1,6 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import {
-  validateNonEmptyString,
-  validateOptionObject
-} from "../../core/validation.js";
+import { validateNonEmptyString } from "../../core/validation.js";
 import { readQuantitativeField } from "../../grammar/scales/index.js";
 import { validatePathOrderDirection } from "../../grammar/pathOrder.js";
 import {
@@ -76,13 +73,12 @@ function rematerializePath(program, layer) {
     : program;
 }
 
-const encodePathOrder = action(
+const encodePathOrder = /* @__PURE__ */ closedAction(
   {
     op: "encodePathOrder",
     description: "Order vertices within each Cartesian path series."
-  },
+  }, ENCODE_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, ENCODE_OPTIONS, "encodePathOrder");
     const field = validateNonEmptyString(args.field, "Path order field");
     const fieldType = args.fieldType ?? "quantitative";
     if (fieldType !== "quantitative") {
@@ -102,13 +98,12 @@ const encodePathOrder = action(
   }
 );
 
-const removePathOrder = action(
+const removePathOrder = /* @__PURE__ */ closedAction(
   {
     op: "removePathOrder",
     description: "Remove explicit path order and restore automatic ordering."
-  },
+  }, REMOVE_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, REMOVE_OPTIONS, "removePathOrder");
     const layer = resolvePathOrderLayer(this, args.target, { active: true });
     const next = this.editSemantic({
       property: `layer[${layer.id}].encoding.pathOrder`,

@@ -159,7 +159,7 @@ function layoutSignature(program) {
   return hash.toString(16).padStart(16, "0");
 }
 
-export const fitCanvas = action(
+export const fitCanvas = /* @__PURE__ */ action(
   {
     op: "fitCanvas",
     description: "Fit Canvas margins around existing layout resources."

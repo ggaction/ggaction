@@ -1,0 +1,10 @@
+# Preserve the published package's text bytes on Windows checkouts as well.
+/.gitattributes text eol=lf
+/src/** text eol=lf
+/types/** text eol=lf
+/knowledge/** text eol=lf
+/package.json text eol=lf
+/package-lock.json text eol=lf
+/README.md text eol=lf
+/CHANGELOG.md text eol=lf
+/LICENSE text eol=lf

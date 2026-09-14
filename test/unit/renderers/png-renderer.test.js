@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { access, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 
 import { chart } from "../../../src/index.js";
-import { renderToPNG } from "../../../src/renderers/png.js";
+import { renderToPNG, renderToPNGBuffer } from "../../../src/renderers/png.js";
 
 const temporaryDirectories = [];
 
@@ -95,6 +95,17 @@ test("rejects a missing or empty output path", async () => {
   );
 });
 
+test("rejects malformed and unknown options before creating files", async () => {
+  const output = await outputPath();
+  for (const options of [null, [], 1]) {
+    await assert.rejects(renderToPNG(pngProgram(), options), /options must be a plain object/);
+  }
+  await assert.rejects(renderToPNG(pngProgram(), { output, pixelratio: 2 }), /does not support option "pixelratio"/);
+  await assert.rejects(access(path.dirname(output)), { code: "ENOENT" });
+  const options = Object.assign(Object.create(null), { output, pixelRatio: 2 });
+  assert.equal((await renderToPNG(pngProgram(), options)).width, 24);
+});
+
 test("rejects unsafe physical dimensions before replacing output", async () => {
   const output = await outputPath();
   await renderToPNG(pngProgram(), { output });
@@ -137,4 +148,21 @@ test("rejects unsafe native geometry before replacing output", async () => {
     /Canvas native geometry.*16777216/
   );
   assert.equal(await readFile(output, "utf8"), "existing");
+});
+
+
+test("PNG memory output matches file bytes and is independently owned", async () => {
+  const program = pngProgram();
+  const output = await outputPath();
+  const memory = await renderToPNGBuffer(program, { pixelRatio: 2 });
+  const file = await renderToPNG(program, { output, pixelRatio: 2 });
+  assert.equal(memory.bytes, memory.buffer.length);
+  assert.deepEqual(memory.buffer, await readFile(output));
+  assert.equal(memory.width, file.width);
+  assert.equal(Object.isFrozen(memory), true);
+  const first = memory.buffer[0];
+  memory.buffer[0] = 0;
+  assert.equal((await renderToPNGBuffer(program)).buffer[0], first);
+  await assert.rejects(renderToPNGBuffer(program, { output }), /does not support option/);
+  await assert.rejects(renderToPNGBuffer(program, { pixelRatio: 0 }), /positive finite/);
 });

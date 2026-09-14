@@ -5,12 +5,12 @@ export {
   resolveTextBounds
 } from "../core/textMetrics.js";
 
-function wrapCodePoints(text, maxWidth, style) {
+function wrapCodePoints(text, maxWidth, style, profile) {
   const lines = [];
   let line = "";
   for (const codePoint of [...text]) {
     const candidate = line + codePoint;
-    if (line !== "" && measureTextWidth(candidate, style) > maxWidth) {
+    if (line !== "" && measureTextWidth(candidate, style, profile) > maxWidth) {
       lines.push(line);
       line = codePoint;
     } else {
@@ -21,22 +21,22 @@ function wrapCodePoints(text, maxWidth, style) {
   return lines;
 }
 
-function wrapWords(text, maxWidth, style) {
+function wrapWords(text, maxWidth, style, profile) {
   const lines = [];
   let line = "";
   for (const word of text.trim().split(/\s+/u)) {
-    if (measureTextWidth(word, style) > maxWidth) {
+    if (measureTextWidth(word, style, profile) > maxWidth) {
       if (line !== "") {
         lines.push(line);
         line = "";
       }
-      const fragments = wrapCodePoints(word, maxWidth, style);
+      const fragments = wrapCodePoints(word, maxWidth, style, profile);
       lines.push(...fragments.slice(0, -1));
       line = fragments.at(-1);
       continue;
     }
     const candidate = line === "" ? word : `${line} ${word}`;
-    if (line !== "" && measureTextWidth(candidate, style) > maxWidth) {
+    if (line !== "" && measureTextWidth(candidate, style, profile) > maxWidth) {
       lines.push(line);
       line = word;
     } else {
@@ -50,7 +50,8 @@ function wrapWords(text, maxWidth, style) {
 export function wrapText(text, {
   maxWidth,
   mode = "word",
-  style
+  style,
+  profile
 } = {}) {
   if (maxWidth === undefined) return [text];
   if (!Number.isFinite(maxWidth) || maxWidth <= 0) {
@@ -60,6 +61,6 @@ export function wrapText(text, {
     throw new Error(`Unsupported text wrap mode "${mode}".`);
   }
   return mode === "word"
-    ? wrapWords(text, maxWidth, style)
-    : wrapCodePoints(text, maxWidth, style);
+    ? wrapWords(text, maxWidth, style, profile)
+    : wrapCodePoints(text, maxWidth, style, profile);
 }

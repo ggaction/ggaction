@@ -24,7 +24,7 @@ const LINE_OPTIONS = Object.freeze([
   ...STROKE_STYLE_PROPERTIES
 ]);
 
-export const createLinePlot = action(
+export const createLinePlot = /* @__PURE__ */ action(
   {
     op: "createLinePlot",
     description: "Create a Cartesian line plot from existing chart data."

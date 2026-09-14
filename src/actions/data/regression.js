@@ -1,6 +1,6 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
+
 import {
   deriveRegression,
   normalizeRegressionTransform
@@ -13,7 +13,7 @@ const OPTIONS = Object.freeze([
   "confidenceMethod", "level", "confidence", "interval"
 ]);
 
-export const materializeRegressionData = derivedMaterializer(
+export const materializeRegressionData = /* @__PURE__ */ derivedMaterializer(
   "materializeRegressionData",
   "Materialize one regression derived dataset.",
   "regression",
@@ -31,10 +31,9 @@ export const materializeRegressionData = derivedMaterializer(
     })
 );
 
-export const createRegressionData = action(
-  { op: "createRegressionData", description: "Create grouped regression values and optional interval bounds." },
+export const createRegressionData = /* @__PURE__ */ closedAction(
+  { op: "createRegressionData", description: "Create grouped regression values and optional interval bounds." }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "createRegressionData");
     const id = validateUserId(args.id, "Regression dataset id");
     const requestedSource = validateUserId(
       args.source ?? this.context.currentData,

@@ -114,6 +114,43 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Evidence: `test/unit/actions/canvas/fit-canvas.test.js`, `test/contracts/fitting.test.js`,
   `test/charts/fitted-long-labels/`.
 
+## `applyTextMetrics`
+
+- Signature: `applyTextMetrics({ profile })`
+- 목적과 필수 state: Full unit/composition에서 host가 측정한 text width를 저작용 배치에 적용한다. Canvas 이전에도 적용할 수 있다. Renderer는 기존 concrete text만 그린다.
+- Profile: `{ schemaVersion: 1, id: NonEmptyUserId, measurements: TextMeasurement[] }`. 각 measurement는 정확한 `{ text: string, fontFamily: NonEmptyString, fontSize: PositiveFinite, fontWeight: 100|200|300|400|500|600|700|800|900, width: NonNegativeFinite }`다. 빈 문자열/빈 measurement 배열/0 width는 유효하다. Root/measurement key는 closed이며 tuple 조합의 중복, 희소 배열, 잘못된 값은 거부한다.
+- 매칭: text/family/size/normalized weight의 exact match다. 생략 family는 shared sans-serif, weight는 normal=400, bold=700; numeric weight는 renderer의 100 단위 rounding/clamping을 공유한다. 지원되는 numeric string도 같은 weight다. 미일치 font/text 조합과 그 외 CSS relative weight는 기존 deterministic estimate를 사용한다.
+- 효과: canonical `materializationConfigs.textMetrics`에 clone/freeze한 profile만 저장한다. Private immutable-key cache는 측정 lookup 비용만 줄인다. Typography, source data와 scale mapping을 바꾸지 않는다. Text mark/label placement·collision layout, Cartesian/Polar/Parallel guides, 범례와 title의 기존 wrapped rematerialization과 전체 guide collision 검증을 수행한다.
+- Composition: root와 모든 현재 nested child에 같은 profile을 적용하고 ancestor layout/header/shared guide를 재계산한다. Basic child는 같은 state의 Full snapshot으로 채택한다. 이전 child profile을 history frame으로 보관하지 않는다. 이후 concat child replacement/insertion과 retained facet/repeat replay는 현재 parent profile을 사용한다.
+- 실패 원자성: 모든 candidate와 descendant materialization이 성공한 새 program만 반환한다. overflow/collision 등 기존 배치 규칙의 실패는 이전 program과 caller profile을 변경하지 않는다.
+- 지속성: 일반 domain edit, Canvas 변경과 source revision이 같은 policy를 소비한다. Editable persistence는 profile을 보존·검증한다. Render-only snapshot은 이미 계산된 graphic tree만 저장한다. Backend/font callback은 저장하지 않는다.
+- Evidence: `test/unit/actions/text-metrics.test.js`, `test/contracts/text-metrics-types.test.js`.
+
+### Formal values — `applyTextMetrics`
+
+- Implemented: `applyTextMetrics({ profile: TextMetricsProfile }): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): none.
+
+### Value coverage — `applyTextMetrics`
+
+- ✅ Covered: exact/normalized match, 0 width, unmatched fallback, Unicode text, closed keys/schema/duplicate/invalid values, owned input, trace, pre-authoring application, title rewrap, Canvas/edit persistence, retained composition, whole action corpus empty-profile equality and editable persistence.
+
+## `removeTextMetrics`
+
+- Signature: `removeTextMetrics()`
+- 효과: active profile을 제거하고 기존 estimate로 같은 dependency closure를 재계산한다. Composition은 root와 descendants의 profile을 제거한다. Profile 이전의 typography나 다른 profile history를 복원하지 않는다.
+- 오류: active profile 없음, unknown/non-object options와 재계산 실패를 거부한다. 원본은 보존한다. Basic entry에는 두 metrics action 모두 없다.
+- Evidence: `test/unit/actions/text-metrics.test.js`, `test/contracts/text-metrics-types.test.js`.
+
+### Formal values — `removeTextMetrics`
+
+- Implemented: `removeTextMetrics(): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): none.
+
+### Value coverage — `removeTextMetrics`
+
+- ✅ Covered: unit/composition removal, deterministic restoration, inactive rejection, persistence round trip and Full/Basic boundary.
+
 ## `applyTheme`
 
 - Signature: `applyTheme({ theme, scope? })`
@@ -216,8 +253,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     명시한 ID는 지원 문자 규칙을 통과하고 기존 dataset과 중복되지 않아야 한다.
   - Effect: `semanticSpec.datasets`의 key 역할을 하며 성공 후 current data가 된다.
 - `values`
-  - Status: Implemented. 필수 array이며 각 row는 plain object여야 한다. 빈 배열, nested array,
-    object-valued cell은 허용한다.
+  - Status: Implemented. 필수 dense array이며 모든 index의 row는 plain object여야 한다.
+    빈 배열과 nested array/plain-object cell은 허용한다. 함수, class instance, cycle은 저장하지 않는다.
+    누락된 row는 index를 포함한 오류로 첫 저장 전에 거부한다.
   - Effect: caller-owned 값을 deep clone/freeze하여 immutable source dataset으로 저장한다.
     graphic output은 만들지 않는다.
 - 오류: ambiguous omitted ID, invalid/duplicate ID, non-array와 non-object row를 거부한다.
@@ -226,7 +264,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createData`
 
-- Implemented: `createData({ id?: UserId; values: readonly Record<string, unknown>[] })`; 첫 unnamed source는
+- Implemented: `createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram`.
+  Options의 ID는 `id?: UserId`이며 구조적 row interface와 readonly nested cell 타입을 보존하고
+  non-object/array row 및 함수 cell을 타입에서 거부한다. 첫 unnamed source는
   `"data"`를 저장하고 이후 source는 explicit ID가 필요하다.
 - Proposed (NOT IMPLEMENTED): `{ values: AsyncIterable<Record<string, unknown>> | Readonly<Record<FieldName, readonly unknown[]>> }`
 
@@ -240,7 +280,29 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: deeply nested arrays/objects, `null`, `undefined`, non-finite number와 bigint cell ownership/freeze.
   - 🟣 Proposed: async iterable/columnar input adapter. Source dataset immutability와 deterministic trace
     completion 정책이 먼저 필요하다.
-- Evidence: `test/unit/actions/data/create-data.test.js`.
+- Evidence: `test/unit/actions/data/create-data.test.js`, `test/contracts/input-boundaries.test.js`,
+  `test/contracts/source-data-types.test.js`.
+
+## `reviseData`
+
+- Signature: `reviseData({ source, id, values })`. Full 전용 immutable source revision이다.
+- `source`와 `id`는 필수 explicit user ID다. source는 materialized 원본 dataset이어야 하며 derived snapshot은 거부한다. 새 id는 source와 다르고 dataset/logical owner와 충돌하지 않아야 한다.
+- `values`는 createData와 같은 dense plain-object row 및 immutable cell 계약이다. 외부 값을 복사·동결하며 과거 원본은 보존한다.
+- Effect: 새 source를 createData wrapped child로 만들고, 해당 source의 transitive derived DAG를 기존 transform policy/materializer로 재계산한다. Stable mark/composite ID와 명시적 style을 유지하면서 layer와 typed private data reference 및 logical owner를 rebind한다. Scale/mark/guide/label/highlight를 기존 materialization 경로로 갱신하고 highlight 없는 stored selection도 final item grain에서 검증한다. 참조되지 않는 과거 derived revision은 기존 release lifecycle을 따른다. 원본은 자동 삭제하지 않는다.
+- Unit과 retained-source facet/grid/repeat를 지원한다. Facet은 기존 values/grid/repeat/layout/scale/guide recipe를 보존하여 child를 다시 derive한다. 새로운 category를 자동으로 recipe에 추가하지 않는다. Concat은 명시적 child를 revise한 뒤 replaceCompositionChild로 조합한다.
+- Missing source, duplicate ID, invalid rows, incompatible field/schema/selection 및 rematerialization/layout 실패는 전체를 거부한다. 이전 program/trace는 변경되지 않으며 성공 public trace root는 reviseData다.
+
+### Formal values — `reviseData`
+
+- Implemented: `reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram`; `source: string`, `id: string`, `values: CreateDataOptions<Row>["values"]`.
+- Proposed (NOT IMPLEMENTED): none.
+- No proposal: in-place source overwrite, automatic public revision ID, implicit concat child selection.
+
+### Value coverage — `reviseData`
+
+- ✅ Covered: new rows/count/domain, immutable input/original, final selection/highlight, transitive transform revision/logical editor, retained facet/repeat, Full/Basic boundary and invalid inputs.
+- ✅ Covered: complete action corpus unchanged-row revision and drawable SVG equivalence.
+- Evidence: `test/unit/actions/data/source-revision.test.js`, `test/contracts/source-data-types.test.js`.
 
 ## `removeData`
 
@@ -1880,3 +1942,7 @@ type EditableCurrentScale = {
 ### Value coverage — `editStrokeDashScale`
 
 - ✅ Covered: line-series dash-range editing, strict dash typing, and rematerialization. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+
+## Persistence package boundary
+
+Browser-safe `ggaction/persistence`의 네 함수는 action replay 없이 canonical state를 저장·복원한다. 정확한 version 1 format과 Full/Basic/extension/render-only 경계는 [`../../../docs/data-updates.md`](../../../docs/data-updates.md#save-and-restore-snapshots)가 소유한다. `test/unit/persistence/`와 installed package consumer가 codec, immutable editing, 현재 action corpus의 state/SVG 동치 및 malformed input rejection을 검증한다.

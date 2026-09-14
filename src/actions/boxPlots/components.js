@@ -1,5 +1,5 @@
-import { action } from "../../core/action.js";
-import { validateKeys } from "../../core/validation.js";
+import { closedAction } from "../../core/action.js";
+
 import {
   requestedStrokeDetails,
   STROKE_STYLE_PROPERTIES
@@ -16,13 +16,12 @@ const OUTLIER_OPTIONS = Object.freeze([
   ...STROKE_STYLE_PROPERTIES
 ]);
 
-export const createBoxMedian = action(
+export const createBoxMedian = /* @__PURE__ */ closedAction(
   {
     op: "createBoxMedian",
     description: "Create a median rule spanning one concrete box body."
-  },
+  }, MEDIAN_OPTIONS,
   function (args = {}) {
-    validateKeys(args, MEDIAN_OPTIONS, "createBoxMedian");
     if (!["vertical", "horizontal"].includes(args.orientation)) {
       throw new Error(`Unsupported box median orientation "${args.orientation}".`);
     }
@@ -58,13 +57,12 @@ export const createBoxMedian = action(
   }
 );
 
-export const createBoxOutliers = action(
+export const createBoxOutliers = /* @__PURE__ */ closedAction(
   {
     op: "createBoxOutliers",
     description: "Create concrete point symbols for box-plot outlier rows."
-  },
+  }, OUTLIER_OPTIONS,
   function (args = {}) {
-    validateKeys(args, OUTLIER_OPTIONS, "createBoxOutliers");
     if (!["vertical", "horizontal"].includes(args.orientation)) {
       throw new Error(`Unsupported box outlier orientation "${args.orientation}".`);
     }

@@ -1,5 +1,5 @@
-import { action } from "../../../core/action.js";
-import { validateGeneratedItemLimit, validateOptionObject } from "../../../core/validation.js";
+import { closedAction } from "../../../core/action.js";
+import { validateGeneratedItemLimit } from "../../../core/validation.js";
 import { resolvePlotGraphicPlacement } from "../../../materialization/graphicHierarchy.js";
 import { requireParallelAxisLayer, resolveParallelAxisTarget, resolveStyledParallelAxes } from "./parallel/resolve.js";
 import { PARALLEL_AXIS_GRAPHICS, PARALLEL_AXIS_PARTS, hasParallelAxisParts } from "./parallel/policy.js";
@@ -47,11 +47,11 @@ function collectionProperties(part, axes, bounds) {
   };
 }
 
-export const rematerializeParallelAxes = action({
+export const rematerializeParallelAxes = /* @__PURE__ */ closedAction({
   op: "rematerializeParallelAxes",
   description: "Recompute concrete Parallel dimension axes."
-}, function (args = {}) {
-  validateOptionObject(args, ["target"], "rematerializeParallelAxes");
+}, ["target"], function (args = {}) {
+
   const stored = this.semanticSpec.guides.axis?.parallel;
   if (stored === undefined) throw new Error("rematerializeParallelAxes requires existing Parallel axes.");
   const target = resolveParallelAxisTarget(this, args.target ?? stored.target);

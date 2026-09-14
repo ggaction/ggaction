@@ -1,4 +1,5 @@
-import { action } from "../../core/action.js";
+import { action, closedAction } from "../../core/action.js";
+import { registerFacetDataRevision, reviseUnitData } from "../data/revise.js";
 import { freezeOwned, isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
 import {
@@ -183,13 +184,12 @@ function rederiveFacet(program, { scales, guides }) {
   }, compositionSpec.children);
 }
 
-export const facet = action(
+export const facet = /* @__PURE__ */ closedAction(
   {
     op: "facet",
     description: "Repeat one direct-source chart by field value."
-  },
+  }, FACET_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, FACET_OPTIONS, "facet");
     const guides = normalizeGuides(args.guides);
     const definition = resolveFacetDefinition(this.semanticSpec, args);
     if (definition.family !== "cartesian" && guides.axes === "outer") {
@@ -428,13 +428,12 @@ function deriveRepeatChildren(base, definition, scales, closeInheritedAction) {
   );
 }
 
-export const repeatCharts = action(
+export const repeatCharts = /* @__PURE__ */ closedAction(
   {
     op: "repeatCharts",
     description: "Repeat one direct chart across an ordered field-role list."
-  },
+  }, REPEAT_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, REPEAT_OPTIONS, "repeatCharts");
     const guides = normalizeGuides(args.guides);
     if (guides.axes === "outer") {
       throw new Error("repeatCharts does not promote axes across different repeated fields.");
@@ -495,13 +494,12 @@ export const repeatCharts = action(
   }
 );
 
-export const facetGrid = action(
+export const facetGrid = /* @__PURE__ */ closedAction(
   {
     op: "facetGrid",
     description: "Repeat one direct-source Cartesian chart across a row and column field grid."
-  },
+  }, FACET_GRID_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, FACET_GRID_OPTIONS, "facetGrid");
     const guides = normalizeGuides(args.guides);
     const definition = resolveFacetGridDefinition(this.semanticSpec, args);
     if (definition.family !== "cartesian" && guides.axes === "outer") {
@@ -565,7 +563,7 @@ export const facetGrid = action(
   }
 );
 
-export const editFacetHeaders = action(
+export const editFacetHeaders = /* @__PURE__ */ action(
   {
     op: "editFacetHeaders",
     description: "Edit parent-owned facet header appearance.",
@@ -656,7 +654,7 @@ export const editFacetHeaders = action(
   }
 );
 
-export const editFacetScales = action(
+export const editFacetScales = /* @__PURE__ */ action(
   {
     op: "editFacetScales",
     description: "Edit facet scale-resolution policies and rederive every cell.",
@@ -691,7 +689,7 @@ export const editFacetScales = action(
   }
 );
 
-export const editFacetGuides = action(
+export const editFacetGuides = /* @__PURE__ */ action(
   {
     op: "editFacetGuides",
     description: "Edit facet guide ownership and rederive every cell.",
@@ -764,14 +762,13 @@ function adoptUnitState(program, actionOwner) {
   });
 }
 
-export const editFacetSource = action(
+export const editFacetSource = /* @__PURE__ */ closedAction(
   {
     op: "editFacetSource",
     description: "Reapply one facet, grid, or repeat recipe to a revised complete unit program.",
     scope: "composition"
-  },
+  }, SOURCE_EDIT_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, SOURCE_EDIT_OPTIONS, "editFacetSource");
     requireFacetProgram(this, "editFacetSource");
     const current = this.compositionSpec;
     const facetConfig = this.materializationConfigs.facets?.[current.id];
@@ -838,6 +835,23 @@ export const editFacetSource = action(
 );
 
 export function registerFacetActions(ProgramClass) {
+  registerFacetDataRevision((program, args) => {
+    const { program: unit, plan } = reviseUnitData(facetUnitTemplate(program), args);
+    const current = program.compositionSpec;
+    // Adopt an already-materialized unit revision into the retained parent.
+    const revised = new program.constructor({
+      ...unit,
+      graphicSpec: program.graphicSpec,
+      children: program.children,
+      materializationConfigs: { ...unit.materializationConfigs,
+        facets: program.materializationConfigs.facets,
+        ...(program.titleConfig === undefined ? {} : { title: program.titleConfig }) },
+      actionSequence: unit._actionSequence,
+      compositionSpec: { ...current, facet: { ...current.facet,
+        data: plan.replacements.get(current.facet.data) ?? current.facet.data } }
+    });
+    return rederiveFacet(revised, current.facet);
+  });
   ProgramClass.prototype.replayDerivedData = replayDerivedData;
   ProgramClass.prototype.composeFacetGuides = composeFacetGuides;
   ProgramClass.prototype.facet = facet;

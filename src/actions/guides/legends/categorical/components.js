@@ -1,3 +1,4 @@
+import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 import { action } from "../../../../core/action.js";
 import {
   activeConfig,
@@ -8,7 +9,7 @@ import {
 } from "./layout.js";
 import { resolveCategoricalLegendPlacement } from "../lifecycle.js";
 
-export const rematerializeLegendLabels = action(
+export const rematerializeLegendLabels = /* @__PURE__ */ action(
   { op: "rematerializeLegendLabels", description: "Rematerialize categorical legend labels." },
   function (args = {}) {
     noOptions(args, "rematerializeLegendLabels");
@@ -18,25 +19,27 @@ export const rematerializeLegendLabels = action(
       throw new Error("rematerializeLegendLabels requires existing legend labels.");
     }
     const layout = resolveLayout(this, config);
-    return this
-      .editGraphics({ target: id, property: "length", value: config.domain.length })
-      .editGraphics({ target: id, property: "x", value: layout.labelX })
-      .editGraphics({ target: id, property: "y", value: layout.itemY })
+    return editGraphicProperties(editGraphicProperties(this, id, {
+      length: config.domain.length,
+      x: layout.labelX,
+      y: layout.itemY
+    })
       .editGraphics({
         target: id,
         property: "text",
         value: categoricalLegendLabels(config)
-      })
-      .editGraphics({ target: id, property: "fill", value: config.labels.color })
-      .editGraphics({ target: id, property: "fontSize", value: config.labels.fontSize })
-      .editGraphics({ target: id, property: "fontFamily", value: config.labels.fontFamily })
-      .editGraphics({ target: id, property: "fontWeight", value: config.labels.fontWeight })
-      .editGraphics({ target: id, property: "textAlign", value: "left" })
-      .editGraphics({ target: id, property: "textBaseline", value: "middle" });
+      }), id, {
+      fill: config.labels.color,
+      fontSize: config.labels.fontSize,
+      fontFamily: config.labels.fontFamily,
+      fontWeight: config.labels.fontWeight,
+      textAlign: "left",
+      textBaseline: "middle"
+    });
   }
 );
 
-export const createLegendLabels = action(
+export const createLegendLabels = /* @__PURE__ */ action(
   { op: "createLegendLabels", description: "Create categorical legend labels." },
   function (args = {}) {
     noOptions(args, "createLegendLabels");
@@ -56,7 +59,7 @@ export const createLegendLabels = action(
   }
 );
 
-export const rematerializeLegendTitle = action(
+export const rematerializeLegendTitle = /* @__PURE__ */ action(
   { op: "rematerializeLegendTitle", description: "Rematerialize the categorical legend title." },
   function (args = {}) {
     noOptions(args, "rematerializeLegendTitle");
@@ -66,14 +69,15 @@ export const rematerializeLegendTitle = action(
       throw new Error("rematerializeLegendTitle requires an existing legend title.");
     }
     const layout = resolveLayout(this, config);
-    return this
-      .editGraphics({ target: id, property: "x", value: layout.titleX })
-      .editGraphics({ target: id, property: "y", value: layout.titleY })
-      .editGraphics({ target: id, property: "text", value: config.title })
-      .editGraphics({ target: id, property: "fill", value: config.titleStyle.color })
-      .editGraphics({ target: id, property: "fontSize", value: config.titleStyle.fontSize })
-      .editGraphics({ target: id, property: "fontFamily", value: config.titleStyle.fontFamily })
-      .editGraphics({ target: id, property: "fontWeight", value: config.titleStyle.fontWeight })
+    return editGraphicProperties(this, id, {
+      x: layout.titleX,
+      y: layout.titleY,
+      text: config.title,
+      fill: config.titleStyle.color,
+      fontSize: config.titleStyle.fontSize,
+      fontFamily: config.titleStyle.fontFamily,
+      fontWeight: config.titleStyle.fontWeight
+    })
       .editGraphics({
         target: id,
         property: "textAlign",
@@ -86,7 +90,7 @@ export const rematerializeLegendTitle = action(
   }
 );
 
-export const createLegendTitle = action(
+export const createLegendTitle = /* @__PURE__ */ action(
   { op: "createLegendTitle", description: "Create the categorical legend title." },
   function (args = {}) {
     noOptions(args, "createLegendTitle");
@@ -105,7 +109,7 @@ export const createLegendTitle = action(
   }
 );
 
-export const rematerializeLegendBackground = action(
+export const rematerializeLegendBackground = /* @__PURE__ */ action(
   { op: "rematerializeLegendBackground", description: "Rematerialize the legend background." },
   function (args = {}) {
     noOptions(args, "rematerializeLegendBackground");
@@ -118,18 +122,19 @@ export const rematerializeLegendBackground = action(
       throw new Error("rematerializeLegendBackground requires an existing background.");
     }
     const layout = resolveLayout(this, config).background;
-    return this
-      .editGraphics({ target: id, property: "x", value: layout.x })
-      .editGraphics({ target: id, property: "y", value: layout.y })
-      .editGraphics({ target: id, property: "width", value: layout.width })
-      .editGraphics({ target: id, property: "height", value: layout.height })
-      .editGraphics({ target: id, property: "fill", value: config.border.background })
-      .editGraphics({ target: id, property: "stroke", value: config.border.color })
-      .editGraphics({ target: id, property: "strokeWidth", value: config.border.lineWidth });
+    return editGraphicProperties(this, id, {
+      x: layout.x,
+      y: layout.y,
+      width: layout.width,
+      height: layout.height,
+      fill: config.border.background,
+      stroke: config.border.color,
+      strokeWidth: config.border.lineWidth
+    });
   }
 );
 
-export const createLegendBackground = action(
+export const createLegendBackground = /* @__PURE__ */ action(
   { op: "createLegendBackground", description: "Create the legend background rect." },
   function (args = {}) {
     noOptions(args, "createLegendBackground");

@@ -39,8 +39,8 @@ function createOffsetScaleEditor(channel) {
   );
 }
 
-export const editXOffsetScale = createOffsetScaleEditor("xOffset");
-export const editYOffsetScale = createOffsetScaleEditor("yOffset");
+export const editXOffsetScale = /* @__PURE__ */ createOffsetScaleEditor("xOffset");
+export const editYOffsetScale = /* @__PURE__ */ createOffsetScaleEditor("yOffset");
 
 export function registerOffsetScaleActions(ProgramClass) {
   ProgramClass.prototype.editXOffsetScale = editXOffsetScale;

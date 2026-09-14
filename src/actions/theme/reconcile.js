@@ -1,3 +1,4 @@
+import { rematerializeTypography } from "../../materialization/typography.js";
 import { themeTokens } from "../../theme/defaults.js";
 import {
   normalizeThemeState,
@@ -46,10 +47,7 @@ function tokenFor(value, sourceTokens, targetTokens) {
   if (matches.length === 0) return undefined;
   const targets = new Set(matches.map(token => targetTokens[token]));
   if (targets.size !== 1) return undefined;
-  for (const token of matches) {
-    if (targetTokens[token] === targets.values().next().value) return token;
-  }
-  return undefined;
+  return matches[0];
 }
 
 function roleValues(role, sourceTokens, legacy = []) {
@@ -411,6 +409,11 @@ function recolorConfig(
   return { changed, value: changed ? next : value };
 }
 
+function addMarkPropertyOverrides(overrides, id, property) {
+  overrides.add(`c:marks.${id}.${property}`);
+  overrides.add(`g:${id}.${property}`);
+}
+
 function addMarkOverrides(overrides, program, op, args) {
   const match = /^(?:create|edit)(Point|Line|Area|Arc|Bar|Rect|Rule|Tick|Text)Mark$/u
     .exec(op);
@@ -425,42 +428,43 @@ function addMarkOverrides(overrides, program, op, args) {
   if (typeof id !== "string") return;
   for (const property of ["fill", "stroke", "fontFamily"]) {
     if (!Object.hasOwn(args, property)) continue;
-    overrides.add(`c:marks.${id}.${property}`);
-    overrides.add(`g:${id}.${property}`);
+    addMarkPropertyOverrides(overrides, id, property);
   }
 }
 
 function addFacadeMarkOverrides(overrides, op, args) {
   const facades = {
-    createScatterPlot: ["scatterPlot", "point", ["fill", "stroke"]],
-    createLinePlot: ["linePlot", "line", ["stroke"]],
-    createPolarScatterPlot: ["polarScatterPlot", "point", ["fill", "stroke"]],
-    createPolarLinePlot: ["polarLinePlot", "line", ["stroke"]],
-    createRadarPlot: ["radarPlot", "line", ["stroke"]],
-    createRugPlot: ["rugPlot", "tick", ["stroke"]],
-    createStripPlot: ["stripPlot", "point", ["fill", "stroke"]],
-    createBeeswarmPlot: ["beeswarmPlot", "point", ["fill", "stroke"]],
-    createBarPlot: ["barPlot", "bar", ["fill", "stroke"]],
-    createAreaPlot: ["areaPlot", "area", ["fill", "stroke"]],
-    createPiePlot: ["piePlot", "arc", ["fill", "stroke"]],
-    createRosePlot: ["rosePlot", "arc", ["fill", "stroke"]],
-    createRadialBarPlot: ["radialBarPlot", "arc", ["fill", "stroke"]],
-    createDensityPlot: ["densityPlot", "area", ["fill", "stroke"]],
-    createParallelCoordinates: ["parallelCoordinates", "line", ["stroke"]],
-    createHistogram: ["histogram", "bar", ["fill", "stroke"]],
-    createHeatmap: ["heatmap", "rect", ["stroke"]],
-    createHorizonPlot: ["horizonPlot", "area", ["stroke"]],
-    editHorizon: ["horizonPlot", "area", ["stroke"]],
-    createViolinPlot: ["violinPlot", "area", ["fill", "stroke"]]
+    createScatterPlot: ["point", true],
+    createLinePlot: ["line", false],
+    createPolarScatterPlot: ["point", true],
+    createPolarLinePlot: ["line", false],
+    createRadarPlot: ["line", false],
+    createRugPlot: ["tick", false],
+    createStripPlot: ["point", true],
+    createBeeswarmPlot: ["point", true],
+    createBarPlot: ["bar", true],
+    createAreaPlot: ["area", true],
+    createPiePlot: ["arc", true],
+    createRosePlot: ["arc", true],
+    createRadialBarPlot: ["arc", true],
+    createDensityPlot: ["area", true],
+    createParallelCoordinates: ["line", false],
+    createHistogram: ["bar", true],
+    createHeatmap: ["rect", false],
+    createHorizonPlot: ["area", false],
+    editHorizon: ["area", false],
+    createViolinPlot: ["area", true]
   };
   const facade = facades[op];
   if (facade === undefined) return;
-  const [defaultId, option, properties] = facade;
+  const [option, includesFill] = facade;
+  const subject = op === "editHorizon" ? "HorizonPlot" : op.slice(6);
+  const defaultId = subject[0].toLowerCase() + subject.slice(1);
+  const properties = includesFill ? ["fill", "stroke"] : ["stroke"];
   const id = args.id ?? defaultId;
   for (const property of properties) {
     if (!Object.hasOwn(args[option] ?? {}, property)) continue;
-    overrides.add(`c:marks.${id}.${property}`);
-    overrides.add(`g:${id}.${property}`);
+    addMarkPropertyOverrides(overrides, id, property);
   }
 }
 
@@ -492,8 +496,7 @@ function addTextFacadeOverrides(overrides, node) {
   if (typeof id !== "string") return;
   for (const property of ["fill", "fontFamily"]) {
     if (!Object.hasOwn(node.args, property)) continue;
-    overrides.add(`c:marks.${id}.${property}`);
-    overrides.add(`g:${id}.${property}`);
+    addMarkPropertyOverrides(overrides, id, property);
   }
 }
 
@@ -509,8 +512,7 @@ function addErrorBarOverrides(overrides, program, node) {
   if (id === undefined) return;
   const config = program.markConfigs[id].errorBar;
   for (const target of [id, config.lowerCapId, config.upperCapId]) {
-    overrides.add(`c:marks.${target}.stroke`);
-    overrides.add(`g:${target}.stroke`);
+    addMarkPropertyOverrides(overrides, target, "stroke");
   }
 }
 
@@ -536,8 +538,7 @@ function addErrorBandOverrides(overrides, program, node) {
   const targets = errorBandTargets(program, node);
   if (targets === undefined) return;
   if (Object.hasOwn(node.args, "fill") && node.args.fill !== false) {
-    overrides.add(`c:marks.${targets.id}.fill`);
-    overrides.add(`g:${targets.id}.fill`);
+    addMarkPropertyOverrides(overrides, targets.id, "fill");
   }
   const boundary = node.op === "editErrorBandBoundary"
     ? node.args
@@ -548,8 +549,7 @@ function addErrorBandOverrides(overrides, program, node) {
     ? [targets.lower, targets.upper]
     : [(node.args.boundary === "lower" ? targets.lower : targets.upper)];
   for (const id of ids) {
-    overrides.add(`c:marks.${id}.stroke`);
-    overrides.add(`g:${id}.stroke`);
+    addMarkPropertyOverrides(overrides, id, "stroke");
   }
 }
 
@@ -589,8 +589,7 @@ function addReferenceOverrides(overrides, op, args) {
   const id = args.id ?? defaultId;
   for (const property of properties) {
     if (!Object.hasOwn(args, property)) continue;
-    overrides.add(`c:marks.${id}.${property}`);
-    overrides.add(`g:${id}.${property}`);
+    addMarkPropertyOverrides(overrides, id, property);
   }
 }
 
@@ -611,12 +610,10 @@ function addRegressionOverrides(overrides, node) {
       : child?.args.id ?? child?.args.target;
   if (typeof id !== "string") return;
   if (Object.hasOwn(style ?? {}, "color")) {
-    overrides.add(`c:marks.${id}.fill`);
-    overrides.add(`g:${id}.fill`);
+    addMarkPropertyOverrides(overrides, id, "fill");
   }
   if (Object.hasOwn(style ?? {}, "stroke")) {
-    overrides.add(`c:marks.${id}.stroke`);
-    overrides.add(`g:${id}.stroke`);
+    addMarkPropertyOverrides(overrides, id, "stroke");
   }
 }
 
@@ -835,39 +832,18 @@ function addParallelOverrides(overrides, program, op, args) {
 }
 
 function addLegendOverrides(overrides, program, args) {
-  const legend = program.guideConfigs.legend ?? {};
-  const prefixes = {
-    series: "seriesLegend",
-    color: "colorLegend",
-    stroke: "strokeLegend",
-    interval: "colorLegend",
-    gradient: "colorGradient",
-    strokeInterval: "strokeInterval",
-    strokeGradient: "strokeGradient",
-    size: "sizeLegend",
-    strokeWidth: "strokeWidthLegend",
-    opacity: "opacityLegend"
-  };
-  for (const kind of Object.keys(legend)) {
-    if (Object.hasOwn(args.labels ?? {}, "color")) {
-      overrides.add(`c:guides.legend.${kind}.labels.color`);
-      if (prefixes[kind]) overrides.add(`g:${prefixes[kind]}Labels.fill`);
-    }
-    if (Object.hasOwn(args.labels ?? {}, "fontFamily")) {
-      overrides.add(`c:guides.legend.${kind}.labels.fontFamily`);
-      if (prefixes[kind]) overrides.add(`g:${prefixes[kind]}Labels.fontFamily`);
-    }
-    if (Object.hasOwn(args.titleStyle ?? {}, "color")) {
-      overrides.add(`c:guides.legend.${kind}.titleStyle.color`);
-      if (prefixes[kind]) overrides.add(`g:${prefixes[kind]}Title.fill`);
-    }
-    if (Object.hasOwn(args.titleStyle ?? {}, "fontFamily")) {
-      overrides.add(`c:guides.legend.${kind}.titleStyle.fontFamily`);
-      if (prefixes[kind]) overrides.add(`g:${prefixes[kind]}Title.fontFamily`);
-    }
-    if (Object.hasOwn(args.border ?? {}, "color")) {
-      overrides.add(`c:guides.legend.${kind}.border.color`);
-      if (prefixes[kind]) overrides.add(`g:${prefixes[kind]}Background.stroke`);
+  for (const kind of Object.keys(program.guideConfigs.legend ?? {})) {
+    const prefix = legendPrefix(kind);
+    for (const [option, suffix, property, graphicProperty] of [
+      ["labels", "Labels", "color", "fill"],
+      ["labels", "Labels", "fontFamily", "fontFamily"],
+      ["titleStyle", "Title", "color", "fill"],
+      ["titleStyle", "Title", "fontFamily", "fontFamily"],
+      ["border", "Background", "color", "stroke"]
+    ]) {
+      if (!Object.hasOwn(args[option] ?? {}, property)) continue;
+      overrides.add(`c:guides.legend.${kind}.${option}.${property}`);
+      if (prefix) overrides.add(`g:${prefix}${suffix}.${graphicProperty}`);
     }
   }
 }
@@ -1002,51 +978,18 @@ function collectOverrides(program) {
   return overrides;
 }
 
-function callExisting(program, graphicId, operation) {
-  return program.graphicSpec.objects[graphicId] !== undefined &&
-    typeof program[operation] === "function"
-    ? program[operation]()
-    : program;
-}
-
-function rematerializeThemeTypography(program) {
-  if (program.compositionSpec !== undefined) {
-    return program.compositionSpec.type === "facet"
-      ? program.materializeComposition()
-      : program;
-  }
-
-  let next = program;
-  for (const layer of next.semanticSpec.layers) {
-    if (layer.mark?.type === "text" &&
-        next.graphicSpec.objects[layer.id] !== undefined &&
-        typeof next.rematerializeTextMark === "function") {
-      next = next.rematerializeTextMark({ id: layer.id });
-    }
-  }
-  for (const [id, operation] of [
-    ["xAxisLabels", "editXAxisLabels"],
-    ["yAxisLabels", "editYAxisLabels"],
-    ["xAxisTitle", "editXAxisTitle"],
-    ["yAxisTitle", "editYAxisTitle"],
-    ["thetaAxisLabels", "editThetaAxisLabels"],
-    ["radialAxisLabels", "editRadialAxisLabels"],
-    ["thetaAxisTitle", "editThetaAxisTitle"],
-    ["radialAxisTitle", "editRadialAxisTitle"]
-  ]) {
-    next = callExisting(next, id, operation);
-  }
-  if (Object.keys(next.guideConfigs.legend ?? {}).length > 0 &&
-      typeof next.rematerializeLegend === "function") {
-    next = next.rematerializeLegend();
-  }
-  next = callExisting(next, "chartTitle", "rematerializeTitle");
-  return next;
-}
-
 export function reconcileProgramTheme(program, { source, metadata }) {
   const storedState = program.materializationConfigs.theme;
   if (storedState === undefined) return program;
+  // Data/context/trace-only transitions cannot change authored appearance.
+  // Preserve all visual identities instead of rescanning every existing mark.
+  if (program.graphicSpec === source.graphicSpec &&
+      program.materializationConfigs === source.materializationConfigs &&
+      program.children === source.children &&
+      program.compositionSpec === source.compositionSpec &&
+      ["layers", "scales", "coordinates", "guides", "title"].every(
+        key => program.semanticSpec[key] === source.semanticSpec[key]
+      )) return program;
   const composition = program.compositionSpec !== undefined;
   const state = normalizeThemeState(storedState, { composition });
   const sourceState = normalizeThemeState(
@@ -1088,15 +1031,16 @@ export function reconcileProgramTheme(program, { source, metadata }) {
 
   const facetsChanged = configs.value.facets !==
     themed.materializationConfigs.facets;
+  const typographyChanged = sourceTokens.fontFamily !== targetTokens.fontFamily;
   if (facetsChanged && next.compositionSpec?.type === "facet") {
     next = next.materializeComposition();
-  } else if (sourceTokens.fontFamily !== targetTokens.fontFamily) {
-    next = rematerializeThemeTypography(next);
+  } else if (typographyChanged) {
+    next = rematerializeTypography(next);
   }
 
   const parallelChanged = configs.value.guides.axis?.parallel !==
     themed.guideConfigs.axis?.parallel;
-  if (parallelChanged && typeof next.rematerializeParallelAxes === "function") {
+  if (parallelChanged && !typographyChanged && typeof next.rematerializeParallelAxes === "function") {
     next = next.rematerializeParallelAxes();
   }
 

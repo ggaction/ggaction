@@ -14,8 +14,8 @@ function materializer(type, op, select) {
   );
 }
 
-export const materializeBoxSummaryData = materializer("boxSummary", "materializeBoxSummaryData", value => value.summaries);
-export const materializeBoxOutlierData = materializer("boxOutlier", "materializeBoxOutlierData", value => value.outliers);
+export const materializeBoxSummaryData = /* @__PURE__ */ materializer("boxSummary", "materializeBoxSummaryData", value => value.summaries);
+export const materializeBoxOutlierData = /* @__PURE__ */ materializer("boxOutlier", "materializeBoxOutlierData", value => value.outliers);
 
 function creator(type, op, materialize) {
   return derivedCreator(
@@ -36,5 +36,5 @@ function creator(type, op, materialize) {
   );
 }
 
-export const createBoxSummaryData = creator("boxSummary", "createBoxSummaryData", "materializeBoxSummaryData");
-export const createBoxOutlierData = creator("boxOutlier", "createBoxOutlierData", "materializeBoxOutlierData");
+export const createBoxSummaryData = /* @__PURE__ */ creator("boxSummary", "createBoxSummaryData", "materializeBoxSummaryData");
+export const createBoxOutlierData = /* @__PURE__ */ creator("boxOutlier", "createBoxOutlierData", "materializeBoxOutlierData");

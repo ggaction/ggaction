@@ -1,4 +1,4 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { freezeOwned } from "../../core/immutable.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
@@ -100,13 +100,14 @@ function insertSibling(siblings, id, { before, after }) {
   return freezeOwned(next);
 }
 
-const createGraphics = action(
+const createGraphics = /* @__PURE__ */ closedAction(
   {
     op: "createGraphics",
     description: "Create and optionally attach a concrete graphic.",
     scope: "any"
-  },
-  function ({ id, type, length, parent, before, after } = {}) {
+  }, ["id", "type", "length", "parent", "before", "after"],
+  function (args = {}) {
+    const { id, type, length, parent, before, after } = args;
     if (typeof id !== "string" || !GRAPHIC_ID_PATTERN.test(id)) {
       throw new TypeError(
         "createGraphics requires an id containing only letters, numbers, _ or -."

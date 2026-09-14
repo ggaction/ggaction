@@ -1,3 +1,4 @@
+import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
@@ -119,15 +120,16 @@ function createEditAxisLine(channel) {
         next = next.editGraphics({ target: graphic, property, value: geometry[property] });
       }
 
-      return next
-        .editGraphics({ target: graphic, property: "stroke", value: color })
-        .editGraphics({ target: graphic, property: "strokeWidth", value: lineWidth });
+      return editGraphicProperties(next, graphic, {
+        stroke: color,
+        strokeWidth: lineWidth
+      });
     })
   );
 }
 
-const editXAxisLine = createEditAxisLine("x");
-const editYAxisLine = createEditAxisLine("y");
+const editXAxisLine = /* @__PURE__ */ createEditAxisLine("x");
+const editYAxisLine = /* @__PURE__ */ createEditAxisLine("y");
 
 function createAxisLine(channel) {
   const operation = channel === "x" ? "createXAxisLine" : "createYAxisLine";
@@ -164,8 +166,8 @@ function createAxisLine(channel) {
   );
 }
 
-const createXAxisLine = createAxisLine("x");
-const createYAxisLine = createAxisLine("y");
+const createXAxisLine = /* @__PURE__ */ createAxisLine("x");
+const createYAxisLine = /* @__PURE__ */ createAxisLine("y");
 
 export function registerAxisLineActions(ProgramClass) {
   ProgramClass.prototype.editXAxisLine = editXAxisLine;

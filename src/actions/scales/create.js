@@ -77,7 +77,7 @@ function assertEquivalentScale(existing, expected) {
   }
 }
 
-export const createScale = action(
+export const createScale = /* @__PURE__ */ action(
   {
     op: "createScale",
     description: "Create a named semantic scale."

@@ -57,7 +57,7 @@ export function validateAreaCreateOutline(args, operation = "createAreaMark") {
   };
 }
 
-const createAreaMark = action(
+const createAreaMark = /* @__PURE__ */ action(
   {
     op: "createAreaMark",
     description: "Create a semantic area mark and empty path collection."
@@ -109,7 +109,7 @@ const createAreaMark = action(
   }
 );
 
-const configureAreaStrokeFromFill = action(
+const configureAreaStrokeFromFill = /* @__PURE__ */ action(
   {
     op: "configureAreaStrokeFromFill",
     description: "Use each area path fill as its outline color."
@@ -138,7 +138,7 @@ const configureAreaStrokeFromFill = action(
   }
 );
 
-const rematerializeAreaMark = action(
+const rematerializeAreaMark = /* @__PURE__ */ action(
   {
     op: "rematerializeAreaMark",
     description: "Recompute grouped closed area paths."
@@ -231,7 +231,7 @@ const rematerializeAreaMark = action(
   }
 );
 
-const editAreaMark = action(
+const editAreaMark = /* @__PURE__ */ action(
   {
     op: "editAreaMark",
     description: "Edit area curve and constant appearance."

@@ -9,14 +9,14 @@ const OPTIONS = Object.freeze([
   "variance", "zeroDenominator", "baseline", "sortBy"
 ]);
 
-export const materializeNormalizedData = derivedMaterializer(
+export const materializeNormalizedData = /* @__PURE__ */ derivedMaterializer(
   "materializeNormalizedData",
   "Materialize one immutable grouped normalization dataset.",
   "normalize",
   deriveNormalizedRows
 );
 
-export const createNormalizedData = derivedCreator(
+export const createNormalizedData = /* @__PURE__ */ derivedCreator(
   "createNormalizedData",
   "Create a row-preserving grouped normalization dataset.",
   OPTIONS,

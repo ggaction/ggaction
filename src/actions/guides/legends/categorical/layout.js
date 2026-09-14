@@ -152,7 +152,7 @@ export function resolveLayout(program, config) {
   const width = symbolWidth(config);
   const layout = resolveLegendItemLayout(plot, config, categoricalLegendLabels(config), {
     width, height: 0, itemBounds: resolveSampleBounds(program, config, width)
-  }, canvas);
+  }, canvas, program.materializationConfigs.textMetrics);
   assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Categorical legend layout", config);
   const background = resolveLegendBackgroundFromBounds(layout.bounds, config.border, canvas,
     "Categorical legend", config);

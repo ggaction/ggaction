@@ -148,14 +148,19 @@ export function collectMarkConfigReferences(program) {
           "coordinate", value, "markConfig", ownerId, path
         ));
       }
-      if ((key === "scale" || key.endsWith("Scale")) && typeof value === "string") {
+      const reservedScale = root === "regression" && key === "colorScale" && config.regression.groupBy === undefined;
+      if (!reservedScale && (key === "scale" || key.endsWith("Scale")) && typeof value === "string") {
         append(references, reference("scale", value, "markConfig", ownerId, path));
       } else if (key === "scale" && isPlainObject(value)) {
         append(references, reference(
           "scale", value.id, "markConfig", ownerId, [...path, "id"]
         ));
       }
-      if (MARK_ID_KEYS.has(key)) {
+      const inactiveMark = (root === "boxPlot" && key === "outlierId" && !Object.hasOwn(program.markConfigs, value)) ||
+        (root === "errorBar" && ["lowerCapId", "upperCapId"].includes(key) && config.errorBar.caps === false) ||
+        (root === "errorBand" && ["lowerBoundaryId", "upperBoundaryId"].includes(key) &&
+          !Object.hasOwn(program.markConfigs, value));
+      if (MARK_ID_KEYS.has(key) && !inactiveMark) {
         append(references, reference("mark", value, "markConfig", ownerId, path));
       }
       if (
@@ -316,7 +321,13 @@ export function collectResourceReferences(program, { kind, id }) {
     throw new Error(`Unknown resource kind "${kind}".`);
   }
   const target = validateUserId(id, "Resource id");
-  const combined = [
+  const combined = collectAllResourceReferences(program).filter(value => value.kind === kind && value.id === target);
+  const unique = new Map(combined.map(value => [referenceKey(value), value]));
+  return freezeOwned([...unique.values()].sort(compareReferences));
+}
+
+export function collectAllResourceReferences(program) {
+  return [
     ...collectSemanticDataReferences(program),
     ...collectSemanticScaleReferences(program),
     ...collectSemanticCoordinateReferences(program),
@@ -326,7 +337,5 @@ export function collectResourceReferences(program, { kind, id }) {
     ...collectDataOwnerReferences(program),
     ...collectCompositionReferences(program),
     ...collectContextReferences(program)
-  ].filter(value => value.kind === kind && value.id === target);
-  const unique = new Map(combined.map(value => [referenceKey(value), value]));
-  return freezeOwned([...unique.values()].sort(compareReferences));
+  ];
 }

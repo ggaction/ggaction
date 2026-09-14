@@ -23,7 +23,7 @@ function guideOptions(value, color) {
   return { ...guides, axes: false, grid: false };
 }
 
-export const createPiePlot = action({
+export const createPiePlot = /* @__PURE__ */ action({
   op: OPERATION, description: "Create a categorical count or weighted-sum pie or donut plot."
 }, function (args = {}) {
   validateFacadeOptions(args, OPTIONS, OPERATION);

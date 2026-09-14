@@ -113,7 +113,7 @@ Program execution
 
 ## Public package boundary
 
-패키지는 여섯 개의 명시적 module entry point와 하나의 Node executable을 가진다.
+패키지는 export map에 선언된 명시적 module entry point와 하나의 Node executable을 가진다.
 
 ### `ggaction`
 
@@ -203,27 +203,27 @@ point 아래에만 존재한다. Fully materialized `graphicSpec`을 logical Can
 width/height와 숫자상 같은 point 크기의 한 page에 그리고 optional
 title/author/subject/keywords metadata를 기록한다.
 
+### `ggaction/persistence`
+
+Browser-safe 저장·복원 entry다. Canonical constructor state를 versioned tagged JSON으로 보존하며, graphic-only payload는 renderer에만 전달한다. 복원은 action replay나 compiler 실행 없이 기존 순수 semantic/graphic validator와 resource reference collector를 사용하고, 검증한 상태를 constructor가 소유한다. Full/Basic 원본은 full ChartProgram으로 복원하며 등록되지 않은 subclass/trace op는 거부한다. 정확한 format과 사용 계약은 `docs/data-updates.md`의 저장·복원 절을 따른다.
+
+### `ggaction/accessibility`
+
+`src/accessibility.js`의 read-only `ggaction/accessibility` entry는 기존 final-item selection adapter 및 pure path series 계산을 사용하여 시각적 grain의 데이터를 반환한다. Renderer나 DOM을 실행하지 않고 원본 행을 최종 표로 대체하지 않는다. 안정적인 composite owner 관계는 `src/selectors/markOwners.js`를 mark removal과 공유한다. 결과의 정확한 schema와 제한은 [Rendering](../docs/api/rendering.md#accessible-data-alternatives)이 소유한다.
+
+### `ggaction/diagnostics`
+
+`getErrorDetails(error)`로 stable code와 선택적인 operation/option/resource/budget metadata를 읽는 browser-safe entry다. Error identity/class를 보존하고 원본 data row를 저장하지 않는다. 상세 계약은 `docs/errors-and-recovery.md`가 소유한다.
+
 ### `ggaction-mcp`
 
 설치된 package가 제공하는 Node-only local stdio executable이다. Model-visible tool은
 `search_ggaction({ query })` 하나이며 direct adapter와 같은 serialized compact task packet을 반환한다. Overview,
 exact action card, bounded task recipe와 unresolved-only documentation section은 read-only MCP resources로만 제공한다.
 
-Action-card schema v3는 exposure layer와 별도로 H0–H4 authoring role, immediate public child trace, stable owner의
-편집 action, default/basic entry 지원, option unit, inference와 completion requirement를 기록한다. Box/Gradient의
-deferred completion과 complete H0 facade를 구분한다. 관계 생성기는 direct action trace의 immediate child만 읽고
-internal materializer branch나 transitive descendant를 펼치지 않는다.
+Knowledge generation은 Current action inventory, 선언과 실행 가능한 public trace에서 카드·관계·call pattern을 만든다. Runtime과 metadata가 공유해야 하는 조건부 필수값과 단위는 pure policy registry에 둔다. Adapter는 sample에 등장한 옵션을 필수 계약으로 승격하지 않는다.
 
-Task packet schema v4는 action identity를 위한 `actionPlan`/`exactCalls`와 별도로 executable-module closure를 위한
-`authoring`을 소유한다. `authoring.imports`는 task가 고른 public package entry, `initialize`는 `let program = chart()`,
-`steps`는 immutable `program = ...` action/composition과 renderer call을 순서대로 제공한다. Query에는 exact user task만
-전달하며 dataset, code scaffold와 evaluator instruction은 넣지 않는다. Direct adapter와 MCP는 이 전체 packet을 byte-equal하게
-직렬화한다.
-
-Complete-chart intent와 raw-mark intent를 구분한다. 선택된 mark/template가 있다는 사실은 drawable chart의
-완료 증거가 아니며, 필요한 baseline·placement 결정을 `unresolved`에 남긴다. 더 구체적인 chart phrase는
-겹친 일반 phrase만 shadow하고 별도 요청한 chart를 제거하지 않는다. Runtime dependency는 chart intent alias가
-아닌 canonical lower action identity로 주입한다.
+Task resolver는 해석한 요구에서 실행 가능한 authoring 순서를 만들고, 해석되지 않은 유의미한 원문은 unresolved로 보존한다. 실행 성공과 요구 충족은 별도 평가다. Direct adapter와 MCP는 같은 serializer를 사용한다. Exact packet/card shape와 version은 `knowledge/task-packet.schema.json`, `knowledge/action-card.schema.json` 및 [MCP 문서](../docs/mcp.md)가 소유한다.
 
 MCP boundary는 chart program이나 renderer를 import하거나 실행하지 않는다. Request-selected filesystem path, network,
 shell/code execution과 telemetry surface를 노출하지 않는다. 자체 package에 포함된 bounded knowledge artifact만 읽으며,
@@ -246,6 +246,8 @@ src/mcp/cli.js           ↔ package `ggaction-mcp` executable
 public contract로 함께 관리한다. MCP executable은 module export map에 추가하지 않으며 Node-only dependency graph를
 browser-safe entry에 연결하지 않는다.
 
+Static built-in `action(...)` declaration에만 pure-call annotation을 둔다. Factory가 만드는 WeakMap key/value는 반환 wrapper를 사용하지 않으면 관찰 불가능하며, 해당 wrapper를 제거할 때만 함께 버릴 수 있다. Extension 사용자의 `action()` 호출과 등록 함수에는 annotation을 붙이지 않아 metadata validation과 prototype registration을 보존한다. Basic entry에서 등록하지 않은 sibling action의 dependency를 bundle에서 제거한다.
+
 ### Browser bundle regression ceilings
 
 Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 않아야 한다.
@@ -261,17 +263,25 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 Gzip 크기는 같은 minified bytes라도 Node가 포함한 zlib 버전에 따라 달라질 수 있으므로 지원하는
 Node 20·22·24 matrix의 최댓값을 포함해야 한다.
 
-## Series policy primitive state
+## 실행 계약의 위치
 
-Semantic primitive는 layer.layout.mode, layer.mark.missing, encoding.group.inferredFrom을
-각각 배치 결정·결측 정책·legacy 추론 origin의 단일 위치로 저장하고 vocabulary를 검사한다.
-Primitive 저장과 제거는 immutable하며 graphics를 바꾸지 않는다. 공개 layoutSeries는 최종 의미를 preflight한 뒤
-wrapped offset/endpoint/scale/mark/guide owner를 명시적으로 호출한다. createAreaPlot은 이 하위 owner들의 합성이다.
-Raw Area 경계·공동 결측 분할은 areaSeries, Bar aggregate cells는 bars/aggregate가 소유한다. 두 materializer와
-selection은 같은 series identity와 bounds를 사용하며 별도 renderer 추론이나 H0 recipe를 저장하지 않는다.
-자동 offset scale의 소유권만 mark config에 기록한다. Group에서 떠나면 encoding/config를 정리하고 실제
-layer/guide 참조가 없는 owned scale을 semantic primitive로 제거한다. 이 removal은 resolved cache와 currentScale도 정리한다.
-Primitive target은 별도 수치 oracle와 explicit graphic edits를 사용하고 public 결과와 exact parity로 비교한다.
+이 문서는 상태 소유권, 계층 간 의존성과 실행 흐름을 설명한다. 메서드별 매개변수·기본값·추론·지원 조합·오류는 아래 Current 계약이 소유하며 이 문서에 복제하지 않는다. 구현 상태와 direct/internal 분류는 [ACTION_INDEX.json](contract/ACTION_INDEX.json), 선언은 `types/`, 자동화된 value vocabulary는 owning runtime registry를 사용한다.
+
+| 결정 | 정확한 계약 |
+| --- | --- |
+| Canvas, source와 derived revision, scale, coordinate, theme | [CORE](contract/current/CORE.md) |
+| Semantic/graphic primitive | [PRIMITIVES](contract/current/PRIMITIVES.md) |
+| Mark와 completeness | [MARKS](contract/current/MARKS.md) |
+| Encoding, grouping, ordering, series layout | [ENCODINGS](contract/current/ENCODINGS.md) |
+| Selection, highlight, filter와 label layout | [MARK_SELECTION](contract/current/MARK_SELECTION.md) |
+| Axis와 grid | [AXES](contract/current/AXES.md), [GRID](contract/current/GRID.md) |
+| Legend와 title | [LEGEND_AND_TITLE](contract/current/LEGEND_AND_TITLE.md) |
+| Composition, facet와 repeat | [COMPOSITION](contract/current/COMPOSITION.md) |
+| Statistical layer와 composite | [STATISTICS](contract/current/STATISTICS.md), [COMPOSITE_MARKS](contract/current/COMPOSITE_MARKS.md) |
+| Complete chart facade | [COMPLETE_CHARTS](contract/current/COMPLETE_CHARTS.md), [BASIC_CHARTS](contract/current/BASIC_CHARTS.md) |
+| Distribution facade와 palette | [GRADIENT_PLOTS](contract/current/GRADIENT_PLOTS.md), [VIOLIN_PLOTS](contract/current/VIOLIN_PLOTS.md), [PALETTES](contract/current/PALETTES.md) |
+
+지원 목록이나 default가 바뀌면 이 표의 owner와 생성 메타데이터를 갱신한다. 상태 경계나 실행 흐름도 바뀔 때만 이 문서의 해당 설명을 수정한다.
 
 ## `ChartProgram`의 canonical state
 
@@ -350,149 +360,27 @@ point row, bar cell/stack, line-area path series와 rule row로 분리된다. �
 policy가 `applyPathHighlight` operation을 선택했는지 확인하므로 이후 path 기반 mark가 같은
 selection grain과 style 계약을 재사용할 수 있다.
 
-Ordinary unit program은 frozen empty `children`과 absent `compositionSpec`을 가진다. Concat parent는 최소 두
-child를, facet parent는 최소 한 derived child를 저장한다. 두 경우 모두 child key에 정확히 대응하는 ordered
-child ID를 가지며 child semantic state를 parent layer grammar로 병합하지 않는다. Child program은 이미
-immutable하므로 lookup만 structural copy하고 각 program reference는 그대로 보존한다.
+Unit은 child 없는 프로그램이고 composition parent는 named child snapshot을 보존한다. Child semantic state를 parent layer grammar로 합치지 않는다. Lookup만 structural copy하고 이미 소유한 immutable child reference를 공유한다.
 
-Action wrapper는 기본적으로 unit scope를 적용한다. Composition-only action은 별도 scope를 선언하고,
-`createGraphics`와 `editGraphics`처럼 두 program kind의 concrete materialization에 필요한 primitive만 `any`
-scope를 가진다. 따라서 composition parent에 ordinary mark, encoding, data 또는 guide action을 호출하면 trace나
-state를 만들기 전에 실패한다.
+Action scope는 unit/composition/any를 구분한다. Package composition은 complete child를 먼저 검증한 뒤 wrapped child adoption과 composition materialization을 실행한다. Parent renderer는 namespaced concrete snapshot만 읽는다. Layout은 explicit child 크기를 보존하고 automatic cross-axis slot을 정규화한다. Nested composition은 root Canvas만 늘리지 않고 전체 snapshot을 정렬한다.
 
-Package-level `hconcat()`과 `vconcat()`은 최소 두 complete child를 먼저 검증한 뒤 blank parent에서
-composition state를 만든다. 각 child는 wrapped `useProgram` node로 trace에 기록되고,
-`materializeComposition`이 layout을 해석해 parent canvas와 namespaced child snapshot을 concrete graphics로
-작성한다. Horizontal composition은 automatic child height를, vertical composition은 automatic child width를
-가장 큰 cross-axis slot 크기로 맞춘다. Unit child는 그 크기로 rematerialize한다. Nested composition child는
-root Canvas만 늘려 내부를 왼쪽/위쪽에 남기지 않고 intrinsic layout 전체를 outer `align`에 따라 slot 안에
-배치한다. 명시적 child dimension은 보존한다.
-Parent canvas 크기는 normalized child 크기, gap과 padding으로 결정되며 renderer는 이 완성된 parent
-`graphicSpec`만 읽는다. Nested composition도 동일한 snapshot protocol을 재귀적으로 사용한다.
-따라서 nested Cartesian, Polar, Parallel compositions는 같은 retained-child와 concrete-snapshot 계약을 따른다.
+Facet/repeat는 retained source에서 다음 transaction을 수행한다.
 
-Chainable `facet({ field })`은 complete unit program을 composition parent로 전환한다. 모든 visible layer의
-dataset ancestry에서 하나의 latest common row-preserving partition anchor를 먼저 확정하고, field value를 해당
-materialized ancestor의 first-appearance order로 해석한다. 각 cell은 anchor를 보존한 채 namespaced filtered
-dataset을 만들고, supported descendant transform을 topological order로 replay한 뒤 repeated layer를 wrapped
-`rebindLayerData`로 명시적으로 연결한 immutable child program이다. Raw facet value는 header text에만 사용하고
-generated dataset, child, graphic ID에는 포함하지 않는다. Facet과 facetGrid는 complete Cartesian뿐 아니라
-Polar Point/Line/direct Arc/Pie/Rose/Radar와 Parallel unit source를 받는다. Repeat는 Cartesian x/y, raw role을
-직접 치환해도 facade 의미가 유지되는 Polar theta/r, 정확히 한 Parallel dimension을 치환한다. Pie/Radar의 raw
-role처럼 facade가 파생 의미를 소유하는 위치와 여러 Parallel dimension을 한 번에 치환하는 요청은 preflight에서
-거부한다. Target mark가 소유하는 statistical-reference dependent와 attached Text label은 target과 함께 반복하며,
-무관한 visible layer가 섞인 source는 부분 반복하지 않는다.
+1. Dataset ancestry에서 partition anchor와 transform DAG를 pure planner로 결정한다.
+2. Child별 partition과 canonical transform replay, layer 및 private owner reference rebind를 wrapped action으로 실행한다.
+3. 모든 candidate의 semantic scale intent를 비교해 shared/independent domain을 확정한다.
+4. Child-local coordinate range로 mark, guide, label, selection/highlight와 style을 materialize한다.
+5. Parent가 child snapshot, edge guides/shared legends, headers와 title을 배치한다.
 
-Facet은 x/y/color/fill/stroke/size/opacity/theta/public `r`/`parallelDimensions`별
-`shared | independent` scale policy를 저장한다. Public `r`는 저장 전 semantic `radius` role로 정규화한다.
-Shared automatic domain은 full-source order와
-cell 결과의 deterministic union을 사용하고, independent automatic domain은 child별 결과를 보존하며 explicit
-semantic domain은 항상 우선한다. Shared histogram x는 template bin boundary를 공유하고 independent x는 cell별
-boundary를 다시 계산한다. Shared는 domain만 공유한다. Polar frame의 center/radius와 Parallel dimension position은
-각 child plot bounds에서 계산하므로 child-local range와 geometry를 parent 값으로 덮지 않는다.
+Domain을 공유해도 coordinate frame과 range를 parent 값으로 덮지 않는다. Empty child는 incomplete scale inference를 허용하는 핑계가 아니다. Guide promotion은 실제 recipe와 represented scales의 compatibility를 검증한다. Explicit child guide 승격과 legacy categorical fallback은 다른 경로다.
 
-Facet materialization은 세 단계를 한 transaction으로 수행한다. 첫 단계는 partition, descendant transform replay,
-layer rebind, stored label/selection/placement/theme/style intent replay까지 마친 semantic child candidate를 만든다.
-둘째 단계는 모든 candidate를 본 뒤 shared 또는 independent effective domain을 결정한다. 셋째 단계는 확정된
-domain과 child-local range로 mark, guide, label, leader를 한 번 materialize하고 parent가 namespaced Canvas snapshot을
-attach한다. Transform 뒤 row가 없어도 child의 semantic layer와 coordinate는 유지하며 concrete mark collection은
-canonical empty `items: []`가 된다. Shared 또는 explicit-domain guide는 빈 child에도 유지할 수 있다. Independent
-automatic domain을 빈 child에서 추론해야 하는 요청은 결정론적 오류다.
+Retained source는 재생 가능한 원본이며 child의 final graphics를 원본으로 역추론하지 않는다. Source나 facet policy 편집은 전체 candidate와 ancestor layout을 검증한 뒤 원자적으로 교체한다. Exact topology와 source/field/guide 지원 범위는 [COMPOSITION](contract/current/COMPOSITION.md)이 소유한다.
 
-Axes는 기본적으로 cell-owned이다. Cartesian에서만 `guides.axes: "outer"`가 column별 bottommost occupied cell과
-row별 leftmost occupied cell을 유지하며 Polar/Parallel outer-axis 요청은 preflight에서 거부한다. Explicit
-`guides.legend: "shared"`는 compatible categorical, gradient,
-discretized-color, size 또는 opacity recipe를 parent-owned concrete graphic으로 승격한다. Guide preparation은
-source legend의 concrete bounds와 `left | right | top | bottom` edge, horizontal alignment를 함께 보존한다. Facet
-layout은 side edge면 width lane, top/bottom edge면 height lane을 child grid 전에 확정하고, placement는 그 lane과
-translated child-plot union을 기준으로 guide snapshot을 이동한다. Explicit guide가 없어서 legacy categorical
-legend를 합성하는 경우에만 right edge가 기본값이다. Repeated header와 chart title도 parent-owned concrete
-graphics다. Canonical title order는 `facet(...).createTitle(...)`이며 이미 valid한 unit title은 cell에서 제거하고
-parent에 한 번 promote한다. `editFacetHeaders`와 facet-compatible
-`editCompositionLayout({ columns?, gap?, align?, padding? })`은 child identity를 보존한 채 parent snapshot만 다시
-materialize한다. `editFacetScales`와 `editFacetGuides`는 parent에 retained된 pre-facet semantic/materialization
-state와 current field/data/value definition에서 stable child IDs를 다시 derive/replay한 뒤 complete children과 parent
-snapshot을 atomically 교체한다. Renderer는 concat과 마찬가지로 완성된 parent `graphicSpec`만 읽는다.
-각 repeated header의 horizontal anchor는 child Canvas center가 아니라 translated child plot center다.
+Standalone derived-data lifecycle도 requested transform과 materialized revision을 분리한다. `materializationConfigs.data`가 logical owner를 current snapshot에 연결하고 dataset source/layer data는 실제 snapshot ID를 저장한다. Pure transform registry가 requested extractor, normalizer, materializer, output role과 replay policy를 제공한다. Revision planner는 deterministic DAG를 따라 새 snapshot과 reference transition을 계획하고 wrapped action이 실행한다. Chart 내부 transform은 standalone registry에 중복 등록하지 않고 해당 chart owner가 lifecycle을 소유한다.
 
-Composition parent는 ordinary unit Canvas editor의 target이 아니다. Facet source의 Canvas를 바꾸려면 retained
-source와 동등한 revised unit program에서 `editCanvas(...)`를 수행한 다음
-`facet.editFacetSource({ program: revisedUnit })`로 atomically 교체한다. 이 경로는 child-local Polar frame,
-Parallel positions, scale range, label/leader와 parent layout을 다시 계산한다.
+원본 revision은 같은 DAG planner에 새 immutable source snapshot을 시작점으로 제공한다. Reference transition은 shared typed reference collector가 소유하므로 data ID와 mark ID가 같은 문자열이어도 namespace를 혼동하지 않는다. 모든 candidate의 rematerialization과 stored selection compatibility를 검증한 뒤 wrapped transaction을 반환한다. Retained facet/repeat는 갱신된 unit template에서 저장된 composition recipe를 다시 적용한다.
 
-Facet replay의 pure dataset dependency planner는 visible layer에서 source 방향으로 ancestry를
-검증하고, 모든 branch가 공유하는 latest row-preserving partition anchor와 deterministic topological replay order를
-반환한다. 이 planner는 semantic state를 수정하거나 trace를 만들지 않는다. Public facet action은 filter,
-time-unit, regression, density, Horizon, interval, box-summary와 box-outlier descendant를
-`replayDerivedData → createDerivedData → canonical materialize*Data` hierarchy로 실행한다. Transform별 통계 계산은
-facet에 복제하지 않고 각 기존 data materializer가 계속 소유한다.
-
-Density provenance는 requested policy와 materialized revision 결과를 분리한다. `bandwidth`와 `extent`의
-`"auto"` intent는 transform에 그대로 남고, 해당 revision에서 계산한 concrete 값은
-`resolved: { bandwidth, extent }`에 저장된다. 따라서 derived replay와 `editDensity`는 새 source rows마다
-자동 policy를 다시 계산하면서도 각 immutable revision의 실제 계산값을 해석할 수 있다.
-Density encoding의 field/channel 추론, positional definition과 scale transition은
-`actions/encodings/density/resolve.js`가 pure result로 계산한다. Wrapped action은 이 결과를 사용해 semantic
-edit, derived-data revision과 graphic materialization을 명시적으로 호출한다.
-Category placement는 같은 transform에 normalized category field, position channel, side, band-relative width,
-shared/independent resolution과 optional two-value split intent를 저장한다. Split domain을 추론한 revision은
-concrete first-appearance pair를 `resolved.splitDomain`에 저장한다. Category band center, resolved half-width와
-closed path commands는 `graphicSpec`에만 존재한다.
-
-Horizon provenance도 requested policy와 materialized result를 분리한다. Transform은 source x/y field와 type,
-optional group, band count, baseline, automatic/explicit extent, shared/independent resolution, missing/overflow policy,
-positive/negative palette와 namespaced output fields를 저장한다. 각 immutable revision에서 실제 사용한 group별
-`extent`와 `bandHeight`는 `resolved.extents`에 기록된다. Folded lower/upper values와 sign/band/segment identity는
-derived dataset에, concrete closed path commands는 `graphicSpec`에만 존재한다. `editHorizon`은 새 revision을
-만들어 existing area layer를 명시적으로 rebind하고 orphaned prior revision만 제거한다. Scale ID와 target layer
-identity를 유지하므로 selection/highlight가 새 geometry에 다시 적용된다.
-Horizon source/field/group 추론과 folded scale/palette definition은
-`actions/encodings/horizon/resolve.js`가 소유하고, wrapped action은 revision authoring과 materialization 순서만
-조정한다. 두 encoding family가 만드는 canonical scale edit subset과 equality 판정은
-`actions/scales/patch.js`를 공유한다.
-
-Facet replay는 Horizon resolved provenance를 그대로 복사하지 않는다. Shared y policy는 parent automatic extent를
-모든 cell의 explicit replay extent로 고정하고, independent y policy는 각 partition에서 automatic extent를 다시
-계산한다. 이 차이는 semantic scale resolution에 의해 결정되며 renderer나 facet layout이 band 계산을 복제하지
-않는다.
-
-Standalone derived-data provenance는 requested transform과 materialized revision 결과를 분리한다.
-`materializationConfigs.data[family][owner].current`가 안정적인 logical owner를 현재 immutable snapshot에
-연결한다. Dataset selector는 logical owner를 먼저 해석하고, 실제 `dataset.source`와 `layer.data`에는 해석된
-snapshot ID를 저장한다. `editDerivedData`와 family별 focused editor는 transform registry의 requested extractor,
-normalizer, materializer와 semantic output-role 정보를 사용해 하나의 transaction을 계획한다. 기본
-`dependents:"reject"`는 하위 derived edge가 있으면 쓰기 전에 중단한다. 명시적인 `"recompute"`는 semantic dataset
-순서로 고정된 DAG traversal에서 모든 도달 가능한 snapshot을 만들고, direct consumers와 known retained data
-references를 rebind하고, 전체 speculative program이 유효한 뒤에만 같은 wrapped action hierarchy를 반환한다.
-Earlier program은 기존 snapshots를 유지하며 stale snapshot은 source로 읽을 수 있지만 edit target으로 사용할 수
-없다. Chart facade 내부 transform은 logical owner registry에 등록하지 않으므로 owning chart editor가 계속 lifecycle을
-소유한다.
-
-Rectangular 2D-bin provenance도 같은 공통 revision 실행기를 사용하며 requested grid policy와 materialized revision 결과를 분리한다. Transform은
-requested `bins`, per-axis automatic/explicit `extent`, output fields와 empty/member policy를 저장하고,
-`resolved`는 해당 revision의 concrete extent, edges, eligible count와 occupied count를 저장한다. 동일 logical
-owner를 다시 author하거나 `editBin2DData`로 partial edit하면 direct layer consumer는
-wrapped rebind와 materialization plan으로 갱신된다. Output 이름을 바꾸는 revision은 transform role을 기준으로 direct
-consumer의 semantic encoding과 stored selection/jitter field binding을 함께 옮긴 뒤 scale, mark와 guide를 다시
-materialize하되 stored display title은 보존한다. 제거되는 optional output을 참조하는 binding은 transition 전에 거부한다. Edit facade는 omitted
-requested provenance를 보존하고 complete consumer transition을 speculative immutable branch에서 검증한다. Earlier program은 기존 revision을 유지한다. Facet
-replay에서는 `resolved`를 제거하고 child partition에서 다시 계산한다. Exact option과 owner inference는
-[`CORE.md`](contract/current/CORE.md#editbin2ddata)가 소유한다.
-
-Facet scale grammar는 Cartesian/appearance channel, Polar theta/radius와 Parallel dimension별
-shared/independent intent를 pure normalized plan으로 소유한다. Omitted
-channel은 shared이며, 같은 scale ID에 연결된 channel들이 서로 다른 policy를 요청하면 state 변경 전에 거부한다.
-Shared automatic continuous domain은 child domain의 min/max union, discrete domain은 child order의 stable union,
-quantile domain은 duplicate를 보존한 sample merge다. Independent automatic domain은 child별 결과를 보존하고,
-어느 policy에서도 explicit semantic domain이 우선한다. Public facet runtime은 이 결과를 각 child의 concrete
-resolved scale에 적용한 뒤 dependent mark와 guide를 다시 materialize한다.
-
-Advanced facet guide grammar도 pure ownership plan으로 분리된다. Cartesian outer axes는 각 column의 bottommost
-occupied cell과 각 row의 leftmost occupied cell을 선택하고, retained child guide bounds를 parent 좌표로 번역한다.
-Polar/Parallel outer axes는 지원하지 않는다. Shared
-legend는 child-specific target을 제외한 canonical config와 represented resolved scales가 concretely compatible할
-때만 categorical, gradient, discretized, size 또는 opacity recipe를 한 parent source에서 promote한다. 이 plan은
-child guide removal과 parent promotion의 입력이며 `composeFacetGuides` wrapped action이 parent snapshot에 적용한다.
+Automatic statistical parameter의 요청과 계산값은 서로 다른 provenance다. Replay는 이전 계산값을 자동 정책으로 오인하지 않고 새 rows에서 다시 계산한다. Field output 이름을 바꾸는 revision은 semantic role에 따라 encoding과 selection/jitter binding도 함께 옮긴다. 제거되는 output을 참조하는 consumer는 전환 전체를 거부한다. Exact lifecycle은 [CORE](contract/current/CORE.md), 통계별 provenance는 [STATISTICS](contract/current/STATISTICS.md)가 소유한다.
 
 ## Immutability와 ownership
 
@@ -513,9 +401,11 @@ caller-owned rows         → 이후 수정해도 program1에 영향 없음
 불변성은 program shell만 clone하는 것으로 끝나지 않는다.
 
 - 수정되는 object/array path는 structural copy한다.
-- 변경되지 않은 frozen branch는 공유할 수 있다.
+- 변경되지 않은 library-owned branch는 중첩 clone에서도 identity를 공유한다. 외부 `Object.freeze`는 재귀 불변성의 증거로 취급하지 않는다.
 - 외부에서 받은 array와 plain object는 clone하고 freeze하여 library ownership으로
   전환한다.
+- 함수와 class instance는 mutable 외부 참조이므로 state에 저장하지 않는다. 실행용 extension
+  callback은 인자로 받을 수 있지만 trace는 함수 객체 대신 type summary만 저장한다.
 - source dataset의 `values`가 한 번 저장되면 다시 수정할 수 없다.
 - derived dataset도 concrete `values`가 materialize된 뒤에는 immutable하다.
 - Derived transform parameter edit은 새 deterministic namespaced dataset revision을 만들고 consumer를
@@ -527,443 +417,68 @@ caller-owned rows         → 이후 수정해도 program1에 영향 없음
   전체 sibling과 role을 함께 수정한다.
 - context, resolved scale, materialization config, trace도 같은 원칙을 따른다.
 
+Closed built-in option vocabulary는 private `closedAction` factory를 통해 공통 wrapper의 object validation과 결합할 수 있다. 반환값은 동일한 `action()` wrapper이며 scope, trace, diagnostics와 extension API를 바꾸지 않는다. 검증된 built-in factory 호출에만 purity annotation을 적용하여 미사용 wrapper의 등록용 계산을 제거할 수 있게 한다. 외부 extension 호출의 metadata/option 검증은 생략하지 않는다.
+
+Trace append는 private persistent child tail을 공유한다. 공개 `children`은 요청 시 한 번 materialize하는 stable frozen Array이며 순서·ID·직렬화 형태는 그대로다. 활성 마지막 branch append는 이전 sibling 수와 무관하다.
+
+테마 completion hook은 graphic/config/children/composition 및 visual semantic branch가 모두 같은 data/context-only transition에서 바로 반환한다. Appearance를 바꾸는 transition에는 기존 명시적 reconciliation이 적용된다.
+
 `_clone()`은 현재 runtime class의 constructor를 사용하므로 `ChartProgram` subclass에서도
 action chain이 subclass type을 유지한다.
 
+## 저작용 text metrics
+
+Host 측정값은 `materializationConfigs.textMetrics`의 immutable profile이 소유한다. Pure layout과 concrete bounds 함수는 해당 profile을 명시적인 인자로 받아 exact match 또는 기존 estimate를 선택한다. 전역 mutable font provider와 backend 객체를 사용하지 않는다. Shared `core/font.js`가 기본 font family와 numeric weight 정규화를 소유하며 renderer와 authoring measurement가 이를 공유한다.
+
+`materialization/typography.js`는 측정 profile 변경과 theme font 변경의 공통 text-owner rematerialization 경계다. 기존 text mark, guide, legend, title의 wrapped domain action을 순서대로 실행하고 final guide collision을 검증한다. Composition은 child snapshot을 먼저 갱신하고 parent header/shared guide/placement를 재계산한다. Exact 공개 계약은 [CORE](contract/current/CORE.md#applytextmetrics)가 소유한다. Renderer는 profile을 읽지 않고 이미 배치된 text graphics만 그린다.
+
+## 구조화된 진단 경계
+
+Browser-safe `ggaction/diagnostics`의 `getErrorDetails`는 Error identity에 연결된 frozen metadata를 읽는다. Pure `core/diagnostics.js`만 WeakMap을 소유하며 state나 원본 데이터를 보관하지 않는다. Shared validation/selectors는 의미를 아는 실패 지점에서 code와 resource/option/budget 정보를 부여하고 wrapped action은 미분류 오류에 action-failed 및 innermost operation을 추가한다. Error 종류/identity를 바꾸거나 메시지로 code를 추론하지 않는다. Renderer와 selector의 core 접근은 이 순수 진단 helper로 한정한다. Exact code/field 의미는 `docs/errors-and-recovery.md`와 `types/diagnostics.d.ts`가 소유한다.
+
 ## `semanticSpec`
 
-Canonical empty semantic state는 다음과 같다.
+Canonical semantic schema는 `core/specs.js`와 primitive validator가 소유한다. Named datasets/layers/scales/coordinates는 사용자 identity를 가진다. Guide와 title의 system slot은 별도 namespace다. User ID 검증과 closed vocabulary 검증을 혼합하지 않는다.
 
-```javascript
-{
-  datasets: [],
-  layers: [],
-  scales: [],
-  coordinates: [],
-  guides: {},
-  title: {}
-}
-```
-
-### Named resource와 system slot
-
-다음 collection은 stable `id`를 가진 named resource다. ID는 사용자가 명시하거나 ordinary
-chart-authoring action이 unambiguous deterministic role default로 결정할 수 있다.
-
-```text
-datasets[].id
-layers[].id
-scales[].id
-coordinates[].id
-```
-
-Guide와 title은 library-defined system path를 사용한다.
-
-```text
-guides.axis.x
-guides.axis.y
-guides.grid.horizontal
-guides.grid.vertical
-guides.legend.series
-guides.legend.color
-guides.legend.size
-title.text
-title.subtitle
-```
-
-Named resource ID는 closed vocabulary가 아니다. 기본 형식, 생성 시 uniqueness, 참조 시
-existence를 검증한다. Channel, mark type, scale type, coordinate type처럼 라이브러리가
-정한 값은 closed vocabulary로 검증한다.
-
-`editSemantic`의 string property path는 계속 public primitive contract다. 내부 value validation은
-`actions/primitives/semanticValidation/`의 dataset, layer, scale, guide dispatcher로 나뉘며, 각 module은 자기
-semantic kind의 closed vocabulary와 value shape만 소유한다. Dispatcher 분리는 저장 schema나 public path를
-변경하지 않는다.
-
-첫 source dataset의 omitted ID는 `"data"`, 첫 semantic mark type별 omitted ID는
-`"point" | "line" | "bar" | "rect" | "area" | "rule" | "arc" | "tick" | "text"`로 materialize한다. 이 결정은 context에만 두지 않고
-각 resource의 canonical `id`로 저장한다. 같은 dataset slot 또는 같은 mark type을 다시 만들 때
-counter suffix를 자동 생성하지 않으며 explicit user ID를 요구한다. Derived data, explicit scale,
-regression component처럼 다른 resource가 직접 참조하는 advanced creation action은 자체 contract가
-허용하지 않는 한 ID를 계속 요구한다.
+`actions/primitives/semanticValidation/`는 semantic kind별 validation을 분리한다. Shared primitive dispatcher는 path를 해석하고 해당 validator를 호출한다. Shape를 저장할 수 있다는 사실은 해당 domain action의 materialization 지원을 뜻하지 않는다.
 
 ### Dataset
 
-Source dataset은 다음처럼 row object array를 저장한다.
+Source는 소유한 immutable rows를 저장한다. Derived dataset은 source reference, requested transform provenance와 materialized values를 저장한다. Pure `grammar/transforms.js`가 각 transform의 schema, materializer operation, replay topology와 output-role policy를 연결한다. Domain action과 primitive validator가 이를 공유한다.
 
-```javascript
-{
-  id: "cars",
-  values: [ ... ]
-}
-```
-
-Derived dataset은 source와 정확히 하나의 transform provenance를 먼저 기록한 뒤 pure grammar 계산의
-결과를 concrete `values`로 저장한다. Multiple-transform pipeline은 현재 contract가 아니며
-`createDerivedData`와 primitive semantic validation이 한 원소 tuple만 허용한다.
-
-```javascript
-{
-  id: "pointsRegressionData",
-  source: "filteredCars",
-  transform: [
-    {
-      type: "regression",
-      method: "linear",
-      x: "Displacement",
-      y: "Acceleration",
-      groupBy: "Origin",
-      confidenceMethod: "student-t",
-      level: 0.95,
-      interval: "mean"
-    }
-  ],
-  values: [ ...materialized rows ]
-}
-```
-
-현재 built-in derived transform은 다음과 같다.
-
-- scalar `oneOf` membership, strict comparison, or inclusive/exclusive range filter
-- grouped or ungrouped linear or polynomial least-squares regression, with mean or prediction intervals
-- grouped or ungrouped LOESS regression with deterministic local neighborhoods and line-only output
-- grouped or ungrouped kernel density estimation with Gaussian, Epanechnikov, uniform, or triangular kernels
-- UTC year, quarter, month, day, hour, minute, or second bucket-start field derivation
-- partitioned ordered window calculation with row number, rank, dense rank, cumulative sum, lag, and lead
-
-Transform은 source, input/output field, group, method 및 resolved parameter를 보존한다.
-Regression의 degree/span/confidenceMethod/level/interval과 density의 automatic bandwidth, kernel/normalization처럼 계산
-결과에 영향을 주는 resolved default도 provenance에 다시 저장한다.
-
-Filter transform은 `oneOf | predicate | range` 중 정확히 하나를 소유한다. Equality는 strict하고
-ordered comparison/range는 양쪽이 모두 finite number이거나 모두 string일 때만 적용한다. Range의
-`inclusive` default도 provenance에 저장하며 materialization은 source row order를 보존한다.
-
-`filterMarks`는 ordinary chart-authoring facade다. Shared mark selector로 final point/bar/path/rule item을
-고른 뒤 그 item의 member rows를 source order로 보존하는 `${markId}FilteredData`를 만들고 mark data
-reference를 explicit semantic action으로 rebind한다. Active owner와 `markFilter` provenance는 canonical source와
-ordered normalized selector recipe를 기록한다. 같은 selector 반복은 idempotent이고 다른 반복은 explicit
-`replace | compose` mode를 요구한다. 참조 중인 과거 filtered dataset은 snapshot으로 유지하고 새 revision
-ID를 쓴다. Histogram은 resolved boundaries를 semantic fixed boundaries로 승격해 subset rematerialization이
-선택 전 bin identity를 바꾸지 않게 하고 removal 때 원래 bin policy를 복구한다. Empty view는 직전 resolved
-domain을 유지하면서 mark/label/highlight graphics를 비운다. 원본과 다른 mark는 그대로 유지하며 scale,
-mark, guide를 ordered plan으로 rematerialize한다. 이미 만들어진 독립 statistical layer를 암묵적으로 rebind하지 않으므로 filtered
-statistic은 filter 이후에 생성한다.
-
-Window transform은 ordered `partitionBy`, `sortBy`, `operations` provenance를 저장한다. Partition 내부
-계산 순서는 stable multi-field sort를 따르지만 materialized output row order는 source order를 보존한다.
-Operation은 선언 순서대로 실행되어 앞 output을 뒤 input으로 사용할 수 있다. Public lifecycle은 immutable
-create-only이다. Window는 row 수를 보존해도 주변 row에 의존하므로 facet은 먼저 source를 partition한 뒤
-registry의 canonical materializer를 cell마다 다시 호출한다.
-
-Time-unit transform은 input temporal field, closed UTC unit과 distinct output field를 저장한다. Materialization은
-source row order와 existing cells를 보존하고 output에 bucket-start timestamp를 추가한다. Transform은
-row-preserving이므로 facet의 latest common partition anchor가 될 수 있고, earlier explicit anchor 뒤에서는 canonical
-time-unit materializer를 child별로 replay한다.
-
-Interval transform은 input field, ordered `groupBy`, `mean | median` center,
-`stderr | stdev | ci | iqr` extent, CI method/level과 distinct center/lower/upper output fields를 기록한다.
-Aggregate·Interval·Regression의 CI critical value는 `grammar/statistics/confidenceInterval`이 한 번만 소유한다.
-Median은 IQR과만, CI method/level은 CI extent와만 호환된다. `createIntervalData`는 이 provenance와 immutable
-summary rows를 함께 저장한다. `createErrorBar`의 statistical mode는 이 action을 호출하고 explicit mode는
-이미 center/lower/upper field를 가진 source dataset을 직접 사용한다.
+Mark filter는 final item grain에서 member rows를 선택하고 immutable derived view로 rebind한다. 원본 표의 filter와 mark item filter를 같은 계산으로 간주하지 않는다. Window처럼 인접 row에 의존하는 transform은 row 수가 같아도 partition 뒤 재계산해야 한다. Replay transparency와 partition eligibility는 transform policy로 결정한다. Exact filter/window/bin/statistical 옵션은 [CORE](contract/current/CORE.md)와 [STATISTICS](contract/current/STATISTICS.md)에 둔다.
 
 ### Layer와 mark
 
-Layer는 data reference, optional source/coordinate, semantic mark와 encoding을 묶는다.
+Layer가 data, optional source/coordinate, semantic mark와 encoding을 연결한다. Semantic mark와 concrete primitive는 일대일이 아니다. Point shape는 circle/rect/path, path mark는 command collection, interval composite는 ordinary mark sibling으로 표현된다. Renderer가 semantic mark 이름을 dispatch하지 않는다.
 
-```javascript
-{
-  id: "points",
-  data: "cars",
-  coordinate: "main",
-  mark: { type: "point" },
-  encoding: { ... }
-}
-```
-
-Ordinary layered mark creation은 explicit data가 없을 때 current eligible layer, 그 다음 unique eligible
-layer에서 compatible position을 추론한다. Candidate는 target mark의 position policy로 다시 검증한다.
-Source와 target이 동일한 final item grain을 지원하면 aggregate 같은 grain-preserving policy도 함께 저장한다.
-예를 들어 temporal aggregate bar 위 line은 같은 `mean`과 x/y scale을 상속한다. Bin, stack, offset처럼
-topology를 바꾸거나 target recipe가 같은 grain으로 지원하지 않는 policy는 제거한 candidate만 시도하며,
-ambiguity는 explicit authoring을 요구한다.
-
-현재 semantic mark type은 다음과 같다.
-
-```text
-point
-line
-bar
-rect
-area
-rule
-arc
-text
-```
-
-Graphic primitive와 semantic mark는 일치할 필요가 없다.
-
-```text
-semantic point → circle, rect 또는 heterogeneous collection
-semantic line  → path collection
-semantic bar   → rect collection
-semantic rect  → rect collection
-semantic area  → closed path collection
-semantic rule  → line collection
-semantic arc   → closed sector path collection
-semantic text  → text collection
-```
+새 layer의 inheritance는 target capability와 final item grain을 검증한다. Source/target이 공유할 수 없는 topology-changing policy를 무조건 복사하지 않는다. 결정한 binding은 context가 아니라 semantic state에 저장한다. 지원 조합은 [MARKS](contract/current/MARKS.md)와 [ENCODINGS](contract/current/ENCODINGS.md)가 소유한다.
 
 ### Encoding
 
-현재 schema가 다루는 주요 channel은 다음과 같다.
+`core/vocabulary.js`의 positional descriptor가 coordinate family, role, shared-scale relation, guide/grid binding과 mark capability를 소유한다. Inference, consumer discovery, inheritance와 removal이 같은 descriptor를 사용한다.
 
-```text
-position       x, y, x2, y2, xOffset, yOffset
-polar position theta, radius
-appearance     color, stroke, strokeDash, size, shape, opacity
-grouping       group
-topology       pathOrder
-content        text
-```
+Field mapping과 grouping/order/series layout은 semantic intent다. Constant appearance와 pixel/band placement intent는 materialization config다. `layoutSeries`는 semantic layout 변경 후 offset/endpoint/scale/mark/guide owner를 명시적으로 호출한다. Automatic scale의 private ownership만 config에 기록하고 semantic scale 정책을 이중 저장하지 않는다.
 
-`src/core/vocabulary.js`의 positional-channel descriptor가 각 channel의 coordinate
-family, primary/secondary/offset role, shared scale channel, 기본 coordinate,
-guide/grid binding과 현재 허용 mark type을 한 번 소유한다. Coordinate inference,
-scale-consumer discovery, guide rebinding, layered inheritance와 removal cleanup은 이
-descriptor를 읽는다. 따라서 새 positional channel을 추가할 때 서로 다른 dispatch
-목록을 독립적으로 늘리지 않는다. Semantic mark type과 허용 concrete graphic type의
-대응도 같은 vocabulary boundary가 소유하며 target resolution은 그 계약을 사용한다.
+Series identity, appearance field 유일성, row eligibility와 order는 geometry 전에 확정한다. Aggregate/bin/stack, ordered vertices와 missing-data segmentation은 같은 final grain을 scale, mark와 selection에 제공해야 한다. `grammar/areaEndpoints.js`가 Area endpoint의 datum/field/missing 값을 공유하고 `actions/encodings/ranged.js`는 complete pair를 preview한 뒤 wrapped primary/secondary를 실행한다.
 
-Field-driven mapping은 semantic encoding이다. Fixed radius, opacity, stroke width, fill
-같은 display constant는 graphical materialization config와 concrete graphic property다.
-
-```javascript
-// semantic
-encoding.color = {
-  field: "Origin",
-  fieldType: "nominal",
-  scale: "color"
-};
-
-// semantic title override for the channel's guide
-encoding.y.title = "Mean acceleration";
-
-// graphical
-materializationConfigs.marks.points.opacity = 0.27;
-graphicSpec.objects.points.items[0].properties.opacity = 0.27;
-```
-
-Grouped mark의 directional offset padding과 grouped bar의 width mode도 semantic scale에 중복 저장하지 않는다.
-`materializationConfigs.marks[target].barWidth`는 mutually exclusive band/pixel intent를,
-`materializationConfigs.marks[target].xOffset | yOffset`은 inner/outer padding intent를 소유한다. Scale
-materializer는 shared offset consumer의 padding policy와 parent categorical slot 크기가 일치하는지 검증한 뒤
-signed step, start와 concrete bandwidth를 `resolvedScales`에 계산한다.
-
-`group`은 path를 series로 나누는 semantic channel이지만 scale이나 guide를 만들지
-않는다. `pathOrder`는 compatible path의 각 series 안에서 vertex topology를 결정하는 semantic encoding이며
-`{ field, fieldType: "quantitative", order: "ascending" | "descending" }`를 저장한다. Scale이나 guide는
-만들지 않고, 같은 order 값은 source row order로 안정화하며 repeated position도 별도 vertex로 보존한다.
-생략하면 기존 independent-position automatic sort가 그대로 동작하고 `removePathOrder`는 explicit branch를
-제거해 그 동작으로 복귀한다. `y2`는 area upper bound이며 기존 y scale을 정확히 공유한다. `xOffset`과 `yOffset`은 ordinal
-category slot 안의 grouped sub-slot을 표현한다. Bar는 resolved bandwidth를 rectangle에 적용하고 point/rule은
-sub-slot center를 parent position에 더한다. Primary positional encoding의 optional `title`은
-field 또는 transform provenance에서 추론되는 guide title을 명시적으로 덮어쓰는 semantic text다.
-Guide materializer는 이 값을 가장 먼저 읽으며 renderer가 title을 다시 추론하지 않는다.
-
-Quantitative-x aggregate line은 `encoding.x.bin`이 final row grain을 소유한다. Scale materialization이
-semantic x scale policy로 하나의 resolved boundary set을 만들고, line grammar는 bin midpoint와 series key로
-rows를 partition한 뒤 y aggregate를 계산한다. Automatic x domain, aggregate y domain, concrete path와
-selection series는 이 동일한 boundary set을 소비한다. Bin 없는 direct quantitative line은 row grain을
-보존하며 repeated x를 암묵적으로 합치지 않는다.
-
-첫 path-order 범위는 raw 또는 row-preserving data를 소비하는 ordinary Cartesian line과 ranged area다. Aggregate
-line, Polar line, density/error/regression 같은 generated path와 non-row-preserving transform은 topology owner가
-다르므로 assignment 전에 거부한다. Action은 x/y가 아직 incomplete일 때 semantic intent만 저장할 수 있으며,
-position이 완성되면 owning line/area materializer가 같은 branch를 적용한다. Canvas, scale, data/filter,
-selection/highlight와 facet replay도 이 canonical materializer를 호출해 explicit order를 다시 적용한다.
-
-Categorical Cartesian `x | y`와 Polar `theta` order도 scale definition mutation이 아니라 position encoding이 소유하는 semantic
-assignment다. `encoding[channel].categoryOrder`에는 explicit category list 또는 category/count/summary 계산
-intent를 저장하고 semantic scale의 `domain: "auto"`는 유지한다. Scale materializer가 current dataset에서
-deterministic domain을 풀고, owning action이 scale → connected marks → guides 순서로 explicit materialization
-plan을 실행한다. 그래서 data/facet replay는 stored intent를 다시 계산할 수 있고 source row 순서는 바뀌지
-않는다. Shared facet scale은 base resolved order를 사용하며 independent scale은 각 cell dataset에서 intent를
-다시 푼다. `removeCategoryOrder`는 assignment만 제거해 automatic first-appearance domain으로 복귀한다.
-
-Categorical legend의 선택적 `guide.legend.color/series.order`는 위치 order와 별개다. Explicit values 또는
-같은 target의 categorical channel link를 저장하고, legend resolver가 appearance scale의 value→symbol 배정을
-보존한 item permutation을 계산한다. Linked positional scale은 guide dependency planner의 legend dependency에
-포함하며 reset은 order leaf를 제거한다. Invalid link나 연결 encoding 제거는 public action을 거부한다.
-
-Measured radius의 lower semantic state는 scale.radialMapping과 radius encoding.aggregate가 각각 mapping과
-category grain을 소유한다. Arc grammar는 합산값과 원본 sourceIndices를 함께 계산하고, scale consumer는 같은
-aggregate에서 [0,max] domain을 결정한다. 공통 continuous mapper가 area/length 의미를 적용하므로 Arc와 Polar
-axis/grid는 별도의 보정식을 갖지 않는다. Math는 outer radius로 정규화한 뒤 제곱하여 overflow를 피한다.
-명시적 Arc innerRadius provenance는 private mark config에서만 추적하여 explicit range와의 충돌을 검사하며,
-기본 innerRadius 0을 사용자가 선택한 ratio라고 추측하지 않는다. Public measured encoder와 Rose/Radial facade는 Current다. Facade는 이 lower chain을 합성하며 Polar guide fulfillment도 공통 guide owner가 scope·reuse·conflict를 검증한다.
-
-Measured radius의 public 진입은 encodeR(mapping, aggregate), scale의 하위 소유자는 createScale/editScale(radialMapping)이다. 같은 scale에 정책을 중복 저장하지 않는다. Shared normalization이 radialMapping을 보존·검증하며, measured Arc가 theta를 기다릴 때 domain이나 placeholder mark를 만들지 않는다. Layered Arc inheritance는 category aggregate를 함께 보존하며 Point에는 이 radius를 전파하지 않는다.
+Categorical position order는 semantic encoding의 요청이며 automatic domain 계산 때 해석한다. Legend item order는 appearance mapping을 바꾸지 않는 별도의 guide 요청이다. Temporal input unit은 input descriptor가 소유하고 shared field parser가 timestamp로 정규화한다. Geometry나 renderer에 별도 temporal parser를 두지 않는다.
 
 ### Semantic scale
 
-Scale은 named semantic resource다.
+Semantic scale은 요청한 mapping policy, `resolvedScales`는 현재 모든 consumer와 bounds에서 계산한 결과다. Scale role registry와 definition normalizer가 type family/option compatibility를 공유하고 channel resolver는 concrete domain/range 계약을 제공한다.
 
-```javascript
-{
-  id: "x",
-  type: "linear",
-  domain: "auto",
-  range: "auto",
-  nice: true,
-  zero: false
-}
-```
-
-현재 direct scale type은 `linear`, `log`, `pow`, `sqrt`, `symlog`, `time`, `band`, `point`, `ordinal`,
-`sequential`, `quantize`, `quantile`, `threshold`이다. Role registry가 quantitative position, temporal
-position, discrete position, ordinal appearance, continuous color, discretized color의 compatible subset을
-한 번만 소유한다. Scale 종류 판별은 이 registry에서 파생한 predicate를 사용하며 action마다 문자열
-목록을 복제하지 않는다. `createScale`, `editScale`, position encoding은 같은 definition normalizer로
-boolean policy, transformed parameter, interpolation, padding과 align을 검증한다. 각 channel resolver는
-domain/range의 concrete value contract만 제공한다.
-Category position은 width가 필요한 bar에서 `band`, center만 필요한 point/rule에서 `point`를 사용하고
-appearance/offset lookup은 `ordinal`이 소유한다. Band/point는 signed step, aligned start와 각각 positive/zero
-bandwidth를 resolved state에 저장한다. Offset auto range는 positive band bandwidth를 우선하고 point position에서는
-absolute step을 하나의 categorical slot 크기로 사용한다. Channel default ID는 일반적으로
-`x`, `y`, `color`, `stroke`, `size`, `shape`, `strokeDash`, `xOffset`, `yOffset`처럼 channel 이름을 쓴다.
-독립 scale이 필요할 때 명시적 ID를 제공한다.
-
-같은 scale ID를 참조하는 consumer는 domain과 range를 공유한다. 현재 하나의 scale은
-하나의 channel 역할에서만 공유할 수 있으며 x와 y를 동시에 설명할 수 없다. 모든
-consumer의 값이 combined domain 계산에 참여한다.
-Binned x scale은 연결된 bar/line consumer가 모두 binned이고 동일한 bin definition을 가질 때만 공유한다.
-Resolved boundary endpoint가 x domain을, 동일 boundary의 midpoint aggregate가 line geometry와 y domain을
-결정하므로 scale과 mark가 서로 다른 grain을 계산하지 않는다.
-Temporal aggregate bar가 소유하는 bandwidth는 scale identity가 아니라 bar layout policy다. 같은 temporal
-field를 소비하는 compatible line은 bar center range를 공유해 vertex를 정확히 center에 놓되 bandwidth를
-소유하지 않는다. 다른 field meaning이나 incompatible consumer가 같은 scale에 연결되면 materialization
-전에 거부한다.
-Encoding이나 interval action이 `{ id }`만 전달해 existing scale을 참조하면 stored definition을
-그대로 재사용한다. Action-specific defaults는 새 scale을 생성할 때만 적용한다.
-
-Automatic continuous domain에는 `zero`가 먼저 적용되고 그 뒤 `nice`가 적용된다.
-사용자가 explicit domain 또는 range를 주면 automatic policy보다 우선한다. Ordinal
-domain은 source의 deterministic first-appearance order를 기본으로 사용하며 compatible position encoding의
-`categoryOrder` assignment가 있으면 그 resolved order가 current concrete domain을 덮어쓴다.
-Band/point padding과 align edit는 같은 scale을 소비하는 marks와 guides를 모두 rematerialize하며,
-bar consumer가 남아 있으면 bandwidth가 없는 point type으로의 전환을 거부한다.
-
-`editScale`은 structural resource mutation의 명시적 예외다. Unattached scale 또는 모든 connected
-consumer가 compatible한 scale에 한해 complete resulting definition을 preflight하고 type을 atomic하게
-바꾼다. Old type 전용 parameter와 interpolation은 structural removal하고, scale, mark, axis, grid, legend를
-deterministic plan으로 rematerialize한다. Position transform mapping은 point, line, area, bar, rule이 shared
-grammar를 사용한다.
-
-Scale `unknown`은 domain member가 아니라 mapping fallback이다. 현재 row-owned point item의 x/y/color/size/
-shape/opacity만 지원하며 concrete channel value를 먼저 검증한다. Missing/invalid input과 explicit ordinal
-domain 밖의 input이 fallback으로 간다. Compound path, aggregate bar, rule, offset과 strokeDash처럼 한 input이
-final item topology와 일대일 대응하지 않는 grain은 fallback을 적용하지 않고 명시적으로 거부한다. Direct
-unattached scale은 channel을 모르므로 fallback validation을 consumer attachment까지 지연한다.
+Shared scale은 ID의 일치뿐 아니라 channel meaning, grain, bin, offset와 range compatibility도 요구한다. 같은 final consumer grain이 domain과 mark geometry를 결정한다. Unknown fallback은 domain member가 아니며 해당 mark-item policy가 지원하는 경우에만 mapping 단계에서 적용한다. Default/type transition/fallback의 정확한 지원 범위는 [CORE](contract/current/CORE.md)와 [ENCODINGS](contract/current/ENCODINGS.md)에 둔다.
 
 ### Coordinate
 
-Coordinate는 named semantic resource이며 layer가 ID로 참조한다.
+Coordinate는 layer가 참조하는 named semantic resource다. Requested aspect와 Polar frame은 semantic state이고, effective bounds/frame은 `layout/aspect.js` 및 `materialization/coordinateBounds.js`의 계산 결과다. 이미 계산한 effective bounds를 다음 layout의 allocated input으로 사용하지 않는다.
 
-```javascript
-{
-  id: "main",
-  type: "cartesian",
-  aspect: { mode: "data", ratio: 1, alignX: "center", alignY: "center" }
-}
-```
-
-`aspect`는 optional requested state다. Canvas margin과 guide/title/legend가 정한 rectangle은 allocated plot
-bounds이고, `layout/aspect.js`가 그 안의 largest-fit effective bounds를 계산한다. `frame` ratio는 width/height,
-`data` ratio는 x와 y의 pixels-per-unit 비다. 계산된 effective bounds는 semantic state에 저장하지 않고 다음
-layout pass의 allocated input으로 재사용하지 않는다. `materialization/coordinateBounds.js`가 coordinate별 effective bounds와
-scale-consumer bounds를 소유하고 position scale, mark, axis와 grid가 같은 결과를 읽는다.
-
-`data` aspect는 하나의 complete Cartesian quantitative linear x/y scale pair만 허용한다. Auto scale domain을
-먼저 해결하고 final domain span으로 aspect를 계산한 뒤 effective range를 해결하므로 순서는
-`domain → aspect → range → marks → guides → layout → highlight`다. Domain/Canvas 변경과 `editCoordinate`는
-cross-cutting materialization plan으로 pair의 두 scale과 모든 consumer를 함께 갱신한다. 실패하는 final
-geometry는 버려지는 immutable branch에서 먼저 검증한다. `"auto"`는 semantic aspect override를 제거한다.
-
-Polar coordinate의 optional `polarFrame`도 requested state다. `center`는 aspect 적용 뒤 effective bounds의
-fraction이고, `radius`는 중심에서 네 변까지의 최소 거리 비율 또는 고정 px다.
-`grammar/polar.js`가 하나의 resolved `{centerX,centerY,availableRadius}`를 만들고
-`materialization/coordinateBounds.js`가 semantic request와 effective bounds를 결합한다. Radius scale, Point,
-Line, Arc, selection item, Polar axis와 grid는 모두 같은 resolved frame을 읽는다. 순서는
-`domain → aspect → polarFrame → radial range → marks → guides → layout → highlight`이며, px radius가 resize된
-bounds에 들어가지 않으면 Canvas edit 전체가 실패한다. Requested fraction/px 객체를 resolved 숫자로 덮지 않는다.
-
-Vocabulary에는 `cartesian`, `polar`, `parallel`이 있다. x/y positional encoding은 명시하지 않으면
-`main` Cartesian coordinate를 생성하고 저장한다. theta/radius positional encoding은 compatible한
-유일한 기존 Polar coordinate를 재사용하거나 `polar` coordinate를 생성하고 저장한다. 여러 compatible
-coordinate가 있으면 임의로 선택하지 않고 explicit ID를 요구한다. 한 layer에서 Cartesian x/y와 Polar
-theta/radius를 함께 저장하지 않는다.
-
-Parallel coordinate는 ordered `encoding.parallel.dimensions`와 optional `key`, `missing` policy를
-semantic state로 저장한다. 각 dimension은 독립적인 namespaced scale을 참조하고, target/dimension identity가
-그 generated scale ID를 소유한다. `encodeParallelCoordinates`는 최소 두 dimension, unique field, compatible
-field type과 scale option을 preflight한 뒤 coordinate, encoding, scales를 atomic하게 author한다. Renderer는
-Parallel 의미를 해석하지 않고 materializer가 만든 ordinary path 및 line/text guide collection만 읽는다.
-Chart facade와 encoding action이 공유하는 coordinate/dimension/scale policy는
-`actions/coordinates/parallel.js`가 소유한다. Parallel axis의 guide geometry resolution은
-`actions/guides/axes/parallel/resolve.js`가 pure result로 계산하며 wrapped guide action은 concrete graphic
-authoring과 trace hierarchy만 소유한다.
-
-현재 Polar vertical slice는 point, line과 arc mark를 지원한다. Theta의 public 단위는 degree이며 12시 방향의 0에서
-clockwise로 증가한다. 기본 theta range는 `[0, 360]`, 기본 radius range는 현재 plot bounds의 짧은 변
-절반이다. Semantic encoding과 resolved scale은 theta/radius를 유지하지만 mark materializer는 Polar frame과
-mapping을 적용한 final Cartesian x/y 또는 path commands만 `graphicSpec`에 쓴다. 따라서 renderer는 coordinate
-type이나 angle을 해석하지 않는다. 한 Polar channel만 있는 incomplete state는 semantic으로 보존하되 해당
-mark의 visible geometry를 만들지 않는다.
-
-Polar guide는 theta/radius encoding과 동일한 resolved scale 및 Polar frame을 사용한다. Theta axis는 outer
-circle, radial axis는 resolved radius range의 minimum에서 endpoint까지 이어지는 line을 소유하며 theta grid는
-spokes, radial grid는 concentric paths를
-소유한다. Semantic guide에는 scale/coordinate binding과 title만 저장하고 tick selection, radial-axis angle,
-style은 materialization config가 소유한다. `graphicSpec`에는 최종 path/line/text만 기록하므로 renderer는 여전히
-Polar scale, tick, coordinate를 추론하지 않는다. Grid는 관련 mark보다 먼저, axis는 mark보다 나중에 그려지며
-action call order가 drawing order를 결정하지 않는다.
-Complete Polar axis와 공개 focused component 생성은 같은 wrapped guide owner를 호출한다.
-Cartesian/Polar optional component 삭제는 axes/components의 공통 primitive cleanup을 사용하고 마지막 component는 기존 전체 remove owner로 정리한다.
-독립적인 component 작성에서도 binding·angle·style의 기존 저장 위치를 공유하며, 별도의 facade cache나 renderer 추론을 만들지 않는다. 세부 lifecycle은 [Current axes 계약](contract/current/AXES.md)이 소유한다.
-
-Radial-axis title의 default `position: "inside"`는 resolved radial baseline midpoint 아래에 놓인다. Explicit
-`position: "outside"`는 endpoint 바깥 방향에 배치하고 `offset`을 endpoint와 title 사이 간격으로 해석한다.
-`title: false`는 optional semantic/config/graphic branch를 모두 만들지 않는다.
-
-`grammar/polarPaths.js`는 Polar frame 안의 circle, pie sector와 annular sector를
-backend-neutral `M/L/C/Z` command로 만든다. Sweep은 최대 90도인 cubic segment로
-분할하고 reverse sweep, full circle과 angular padding을 pure geometry로 처리한다.
-Canvas renderer는 angle, radius, sector 또는 arc primitive를 해석하지 않는다. Polar guide
-circle도 이 grammar를 재사용하며 기존 four-cubic circle command 계약을 유지한다.
-
-Polar axis action은 `actions/guides/polar/axes/`에서 `shared`, `lines`, `ticks`,
-`labels`, `titles`, aggregate `facade`로 분리된다. Leaf module은 해당 concrete component와
-materialization config만 소유하고 facade는 validation과 nested action orchestration만
-소유한다. 상위 `polar/axes.js`는 action registration boundary다.
+의존 순서는 domain → aspect → coordinate frame → range → marks → guides → layout → highlight다. Polar와 Parallel도 final Cartesian commands를 작성하므로 renderer에 coordinate branch가 없다. Parallel의 ordered dimension policy는 `actions/coordinates/parallel.js`, guide geometry는 `actions/guides/axes/parallel/resolve.js`가 소유한다. Polar sector/circle command는 `grammar/polarPaths.js`가 공유한다.
 
 ### Guide와 title
 
-Guide semantic state는 어떤 scale과 coordinate를 설명하는지, 그리고 사용자에게
-보이는 semantic title이 무엇인지 기록한다. Tick 길이, stroke, font, offset, legend
-symbol geometry 같은 appearance는 semantic guide에 저장하지 않는다.
-
-Legend lifecycle은 `materializationConfigs.guides.legend`의 kind별 complete block을 ownership unit으로 사용한다.
-Categorical block은 여러 represented channel을 하나의 resource로 소유하므로 partial channel removal로 분해하지
-않는다. Selective removal은 requested complete block만 semantic/config/graphics에서 해제하고 retained block의
-layout dependency를 existing legend rematerializer로 다시 계산한다. Side lane은 retained family graphics를 모두
-intrinsic 상태로 materialize한 뒤 한 번 배치하므로 create/edit/remove, scale과 Canvas replay가 같은 concrete
-결과로 수렴한다. Stroke-width title/count/typography edit도 같은 config→explicit rematerialization 경계를 사용한다.
-
-Chart title은 guide와 별개의 top-level semantic concept다. `title.text`와
-`title.subtitle`만 의미 상태이며 실제 위치와 typography는 materialization config 및
-`graphicSpec`에 저장한다.
+Semantic guide는 설명하는 scale/coordinate와 semantic text를 저장한다. Tick recipe, symbol geometry, typography와 placement는 config, final lines/text는 graphics다. Legend의 kind별 complete block이 lifecycle ownership 단위다. Removal/edit는 해당 block을 해제하고 남은 block의 occupied bounds를 재계산한다. 정확한 옵션·생성/편집/삭제 범위는 [AXES](contract/current/AXES.md), [GRID](contract/current/GRID.md), [LEGEND_AND_TITLE](contract/current/LEGEND_AND_TITLE.md)에 둔다.
 
 ## `graphicSpec`
 
@@ -1331,64 +846,9 @@ editGraphics
 
 ## Primitive action
 
-### `editSemantic({ property, value | remove })`
+세 primitive는 semantic transition, graphic identity/attachment, concrete property transition을 분담한다. Domain lifecycle은 이 primitive를 wrapped child로 조합한다. Primitive가 의미를 저장했다고 renderer output이 자동 갱신되지는 않는다.
 
-Validated semantic path 하나를 upsert한다.
-
-```text
-dataset[cars].values
-layer[points].encoding.x.field
-scale[x].domain
-coordinate[main].type
-guide.axis.x.title
-title.text
-```
-
-Path parser는 user-defined bracket ID와 system-supported property vocabulary를 구분한다.
-Unknown path를 임의로 만들어 저장하지 않는다. Value validator는 field type, scale type,
-transform schema, stack/bin policy, coordinate type 등을 검증한다.
-
-`remove: true`는 `value`와 함께 쓸 수 없으며 supported semantic branch를 structural copy로
-삭제한다. Encoding channel, legend branch와 complete layer resource를 제거할 수 있고 빈 parent
-object도 함께 정리한다. Source dataset values는 생성 이후 수정할 수 없지만, Full primitive는
-참조 없는 source dataset 전체와 coordinate 전체를 named-resource dependency 검사 후 제거할 수 있다.
-Unit derived dataset의 기존 primitive removal은 semantic reference 검사 범위를 유지하며 owning action이
-config/graphics 수명주기를 조정한다. Facet parent의 named-resource removal은 전체 참조 검사를 요구한다.
-삭제도 동일한 `editSemantic` trace node로 기록된다. Layer removal은 semantic resource만 소유하므로 domain removal action이 related graphic,
-config, selection/highlight와 orphaned derived data cleanup을 명시적으로 조합한다.
-
-Encoding removal도 같은 경계를 따른다. Public `removeEncoding`은 closed channel vocabulary를 해석하고
-same-mark companion와 guide ownership을 preflight한 뒤 `editSemantic({ remove: true })`를 조합한다. 그 다음
-domain mark materializer가 empty concrete baseline에서 complete mark만 다시 만들고 source-dependent overlay를
-replay한다. Named source dataset, scale와 coordinate는 이 transition의 소유물이 아니므로 보존한다. Exact
-channel cascade와 error behavior는 current encoding contract가 소유한다.
-
-### `createGraphics({ id, type, length?, parent?, before?, after? })`
-
-Graphic identity, type, optional homogeneous cardinality와 tree attachment를 만든다.
-
-- Equivalent definition은 idempotent할 수 있다.
-- 같은 ID의 conflicting type, length, parent, placement는 error다.
-- `parent`를 생략하면 `graphicSpec.order`, 지정하면 Canvas/collection의 named `children`에 붙인다.
-- `before`/`after`는 같은 parent의 direct sibling order를 만든다.
-- `length`는 drawable item cardinality만 만든다.
-- Heterogeneous `collection`은 `editGraphics(items)`로 concrete item을 제공한다.
-
-### `editGraphics({ target, property, value | remove })`
-
-기존 graphic 또는 concrete item의 property 하나를 upsert한다.
-
-- Scalar는 homogeneous items 전체에 broadcast한다.
-- Outer array는 item index별 값으로 distribute한다.
-- Nested array/object item은 한 concrete item의 값으로 그대로 저장할 수 있다.
-- `length`는 collection cardinality를 immutable하게 바꾼다.
-- `items` replacement는 모든 item이 기존 drawable type과 같으면 parent의
-  homogeneous type을 보존한다. Item type이 섞일 때만 parent를 heterogeneous
-  `collection`으로 전환한다.
-- Target, property, concrete value는 shared graphic schema로 검증한다.
-- `remove: true`는 property/value 없이 named graphic subtree를 삭제하고 parent children 또는
-  top-level order에서 detach한다. Canvas root는 삭제할 수 없다.
-- Generated item은 독립 삭제하지 않고 owning collection의 `length` 또는 `items`를 편집한다.
+Semantic removal은 dependency preflight를, graphic removal은 subtree detach를 소유한다. Named-resource removal, selection/config teardown과 dependent rematerialization은 owning domain action이 함께 실행한다. Exact path grammar, distribution/broadcast, idempotency, cardinality와 removal 계약은 [PRIMITIVES](contract/current/PRIMITIVES.md)가 유일한 원문이다.
 
 ## Selector와 resource identity
 
@@ -1542,169 +1002,22 @@ batch가 임의로 guide를 삭제하지 않는다.
 각 semantic mark type은 자신이 concrete output을 만들 준비가 되었는지를 mark
 materialization policy에 정의한다.
 
-### Bar geometry와 layout policy
+### Mark별 책임
 
-Bar는 mark type만으로 geometry를 결정하지 않는다. `grammar/bars/policy.js`가 현재
-semantic encoding을 하나의 canonical grain으로 분류한다.
+| Policy | 책임 | Exact contract |
+| --- | --- | --- |
+| Bar | Semantic grain 분류, bin/aggregate/stack/offset 결과와 rectangle completeness | [MARKS](contract/current/MARKS.md), [ENCODINGS](contract/current/ENCODINGS.md) |
+| Point/Tick | Row eligibility, shape/angle/jitter geometry와 item attachment | [MARKS](contract/current/MARKS.md) |
+| Line/Area | Series identity, missing/order/curve, endpoint와 closed command stream | [MARKS](contract/current/MARKS.md), [ENCODINGS](contract/current/ENCODINGS.md) |
+| Arc | Partition/aggregate membership, radial mapping과 sector path | [MARKS](contract/current/MARKS.md), [ENCODINGS](contract/current/ENCODINGS.md) |
+| Rule/Rect | Endpoint 또는 fixed-span/whole-plot intent를 final concrete bounds로 변환 | [MARKS](contract/current/MARKS.md) |
+| Text | Final semantic content, anchor, deterministic text bounds와 attached label layout | [MARKS](contract/current/MARKS.md), [MARK_SELECTION](contract/current/MARK_SELECTION.md) |
 
-- `histogram`: binned quantitative x + count y + zero stack
-- `aggregate`: ordinal x + scalar aggregate y + non-stack
+Bar grain/default layout은 `grammar/bars/policy.js`, aggregate math는 `grammar/bars/`, concrete rectangles는 `materialization/bars/`가 소유한다. Bin option vocabulary를 아키텍처에 별도로 복제하지 않는다. Transform 등록은 `grammar/transforms.js` 한 곳에서 primitive schema와 domain replay를 연결한다.
 
-Color의 기본 layout도 같은 grain에서 추론한다. Histogram은 `stack`, aggregate bar는
-`group`이며 action, scale consumer, mark materializer가 각자 이 조건을 다시 작성하지 않는다.
-Pure aggregate 계산은 `grammar/bars/`, concrete rectangle 계산과 completeness 검증은
-`materialization/bars/`가 소유한다.
+Incomplete mark는 semantic intent와 필요 시 빈 collection만 보존한다. Geometry의 prerequisites가 완성되면 responsible encoding action이 owning materializer를 호출한다. 임시 좌표나 임의 row를 합성하지 않는다.
 
-Histogram bin authoring의 canonical shape은 `{ maxBins }`다. 기본값과 validation은
-`normalizeHistogramBin` 한 곳이 소유하며 semantic encoding, scale consumer, tick과 bar
-materializer는 그 normalized bin object를 전달한다. 현재 `step`과 explicit boundaries는
-planned contract이므로 시각 구현 승인을 받기 전에는 지원하지 않는다.
-
-### Point
-
-- x/y resolved scale이 있으면 geometry를 materialize할 수 있다.
-- color, size, shape field encoding을 함께 적용한다.
-- size는 equal-area 값이며 모든 12개 shape recipe가 같은 target area로 정규화된다.
-- field-driven mixed shape는 heterogeneous circle/rect/path collection을 만든다.
-- constant radius와 opacity는 mark materialization config에서 다시 적용한다.
-- Cartesian point jitter는 `materializationConfigs.jitters[target]`이 requested policy와 resolved metadata를
-  소유한다. Semantic x/y mapping 후, shape/radius/stroke extent를 포함해 plot과 categorical slot bounds 안에서
-  deterministic final center를 계산한다. 같은 action 재호출은 semantic base에서 교체하고 `removeJitter`는
-  assignment를 제거한다. Highlight의 concrete offset은 jitter 이후에 적용된다.
-
-### Line
-
-- Cartesian line은 x/y, Polar line은 theta/radius와 supported raw quantitative 또는
-  scalar/parameterized aggregate semantics가 필요하다.
-- Parallel line은 ordered Parallel dimensions를 하나의 source row당 하나의 path로 투영한다. Dimension별
-  scale mapping, missing-value policy, row key와 series appearance는 materializer가 final command/item identity로
-  확정하며 renderer에는 Parallel-specific branch가 없다.
-- 명시적 group의 field 또는 fields tuple만 series identity를 결정한다. 색·점선·두께·opacity는 series 안에서
-  raw 값이 하나인 appearance field를 사용한다. Shared path-series grammar가 identity와 유일성 검증을 소유한다.
-- 명시적 group이 없으면 color 또는 strokeDash로 나누며 둘 다 있으면 같은 field여야 한다.
-  Width/opacity는 implicit identity에 참여하지 않는다. Ordinary ranged Area도 explicit tuple을 지원한다.
-  통계·layout owner의 group과 Parallel row identity는 별도 계약을 유지한다.
-- `encodeGroup`과 `encodeStrokeDash` 재호출은 기존 assignment를 원자적으로 교체한다.
-  StrokeDash의 field/constant mode도 같은 action이 소유하며, 더 이상 참조하지 않는 named scale은
-  resource identity를 보존하기 위해 자동 삭제하지 않는다.
-- series 하나당 backend-neutral path 하나를 만든다.
-- source first-appearance group order와 명시적 x sort를 사용한다.
-- curve는 mark materialization config이며 `linear`, step family와 네 cubic family를 final `M/L/C`
-  commands로 변환한다. `editLineMark`는 curve를 갱신하며 scalar width/opacity는 같은 channel의 field encoding과 충돌한다.
-  encodeStrokeWidth/encodeOpacity가 field↔constant 교체와 scale/legend/highlight 재계산을 소유한다.
-- Polar series는 theta domain order로 stable sort한 뒤 shared Polar projection으로 final points를 만든다.
-  현재 Polar curve는 `linear`만 지원한다. `closed`도 materialization config이며 true이면 첫 point를
-  복제하지 않고 series마다 final `Z` 하나를 추가한다. `editLineMark`의 closed 변경과 scale/Canvas/data/
-  selection 변경은 동일한 line rematerializer를 호출한다.
-
-### Arc
-
-- Arc는 bar의 coordinate-dependent 변형이 아니라 별도 semantic `arc` mark다.
-- Aggregate 없는 quantitative theta는 positive source row마다 하나의 final sector를 만들고 row value의
-  합에 대한 비율로 full theta range를 나눈다. Source order와 row grain을 보존하며 zero row는 생략한다.
-  Negative/non-finite value와 all-zero total은 semantic state 변경 전에 거부하고 radius encoding과 함께
-  사용할 수 없다.
-- Count theta는 category별 final aggregate grain을 한 바퀴의 비율로 나누며 radius encoding 없이도 pie/donut
-  sector를 materialize한다.
-- Ordinal/nominal theta와 quantitative radius는 equal-angle band 안의 radial sector를 만든다. Color
-  `layout: "overlay"`가 있으면 같은 theta band의 outer radius descending 순서로 그려 작은 sector도 보존한다.
-- `innerRadius`는 available Polar radius의 `[0, 1)` 비율이고 auto radius range의 minimum이 된다. `padAngle`은
-  public theta와 같은 degree 단위다. 둘 다 mark materialization config가 소유한다.
-- Zero-area sector는 placeholder path를 만들지 않는다. 모든 visible sector는 backend-neutral final `M/L/C/Z`
-  command path 하나이며 renderer는 arc, angle, aggregate 또는 overlay를 해석하지 않는다.
-- Arc selection policy는 final `sector` grain, source members, theta/radius/color semantic channel과 concrete path
-  bounds/attachment를 소유한다. Highlight는 unhighlighted baseline에서 fill/outline/opacity/offset을 다시 적용하고
-  categorical legend symbol만 동기화한다.
-- `editArcMark`, scale/Canvas edit, filtering과 highlight replay는 같은 arc rematerializer를 사용한다.
-
-### Area
-
-- ranged area는 exactly one shared x/x2 또는 y/y2 scale pair가 필요하다.
-- vertical area는 x independent position 순서로 y/y2를 닫고, horizontal area는 y independent position
-  순서로 x/x2를 닫는다. 두 orientation 모두 별도 mark type 없이 ordinary area path로 저장된다.
-- area curve는 line과 같은 8-value grammar를 사용한다. Lower/upper edge를 independent-axis 방향으로
-  각각 interpolate하고 upper command stream을 control-point-safe하게 뒤집어 connector와 `Z`로 닫는다.
-  따라서 monotone을 포함한 모든 curve가 horizontal/vertical area에서 같은 grammar를 재사용한다.
-- density area는 derived density provenance와 value/density scale이 필요하다.
-- group 하나당 closed path 하나를 만든다.
-- density는 scale로 변환된 zero baseline에서 닫는다.
-- color encoding이 있으면 group domain 순서로 fill을 적용한다.
-
-### Temporal input normalization
-
-TemporalInputUnit belongs to the encoding or transform input descriptor. The shared fields parser implements
-explicit auto/year/timestamp; positions, color, scale consumers, geometry and channel selections consume it.
-Raw rows are immutable. Same-binding reassignment preserves a unit; new bindings clear stale units. Time scales
-and ticks consume normalized timestamps. Horizon-generated timestamps carry an explicit timestamp binding.
-Regression/Density/Horizon normalize JSON groupBy:false before creating their existing transforms; no schema
-or false field sentinel is added. Mean Bar and nominal numeric color defaults remain unchanged.
-
-### Rule
-
-- Rule은 semantic `rule` layer 하나와 backend-neutral `line` collection 하나를 가진다.
-- `createRuleMark`는 identity, data binding과 empty collection을 만들고 요청된 scalar style을 기존
-  encodeStroke/encodeStrokeWidth/encodeStrokeDash/encodeOpacity에 위임한다. editRuleMark도 같은 owner를
-  사용하며 모든 입력을 먼저 검증한다. Active field assignment와 scalar edit는 충돌한다.
-- `encodeX`, `encodeY`, `encodeX2`, `encodeY2`가 field 또는 datum endpoint를 독립적으로 저장하며,
-  secondary endpoint는 corresponding primary와 scale, coordinate, field type을 공유한다.
-- x-only/y-only는 current plot bounds 전체를 지나는 vertical/horizontal line이 된다.
-  `x+y+y2`와 `y+x+x2`는 bounded interval, four-endpoint assignment는 diagonal line이 된다.
-- Fluent chain의 transient incomplete endpoint state는 fabricated geometry 대신 empty collection을 유지한다.
-  Endpoint 조합이 완성되면 responsible encoding action이 `rematerializeRuleMark`를 호출한다.
-- Constant stroke/width와 existing dash/opacity assignments는 materialization config에 저장되고 모든
-  concrete line child에 적용된다. Renderer는 semantic endpoint나 full-span intent를 추론하지 않는다.
-- Composite cap은 ordinary x/y anchor encoding과 graphical `fixedSpan` config를 결합한다. Canvas 또는
-  scale 변경 시 span을 다시 concrete endpoint로 계산하며 renderer는 cap role이나 pixel span을 모른다.
-
-### Tick
-
-- Tick은 complete Cartesian x/y anchor를 요구하는 centered fixed-length line glyph다.
-- `length`, `stroke`, `strokeWidth`, `opacity`는 mark materialization config가 소유한다. Default length는 `14`,
-  stroke width는 `2`, opacity는 `1`이며 stroke는 shared theme mark color를 사용한다.
-- x 또는 y 하나만 있는 중간 상태는 semantic assignment와 scale을 보존하지만 line item을 만들지 않는다.
-  두 position이 완성되면 source row마다 concrete `x1/y1/x2/y2`를 materialize한다.
-- Fixed-y rug distribution은 ordinary y field를 명시해 작성하며 x-only plot-edge placement를 추론하지 않는다.
-- `encodeAngle`은 point/Tick에 finite constant 또는 quantitative field degree를 scale 없이 직접 저장한다.
-  0°는 위쪽이고 양수는 clockwise이며 reassignment는 datum/field branch 전체를 교체한다.
-- Tick은 angle마다 centered endpoint를 다시 계산한다. Point는 circle을 시각적으로 그대로 두고 square를
-  포함한 polygon glyph를 center 주위의 concrete path command로 회전한다. Jitter extent도 같은 회전된
-  geometry를 사용한다.
-- `removeEncoding({ channel: "angle" })`는 assignment를 제거하고 unrotated baseline을 재물질화한다.
-  Filter, facet, Canvas/scale 변경과 stored highlight replay도 mark policy를 통해 같은 concrete geometry를 만든다.
-- Renderer는 Tick identity, center 또는 length를 해석하지 않고 ordinary concrete line collection만 읽는다.
-
-### Aggregate bar provenance와 completeness
-
-- Histogram은 binned x, count y, zero stack이 함께 있어야 한다.
-- Grouped bar는 한 discrete category axis, perpendicular aggregate measure axis, null stack,
-  orientation에 맞는 xOffset/yOffset group과 bar width가 필요하다.
-- final grouping grain에서 aggregate하고 observed cell만 rect로 만든다.
-- Missing categorical combination을 자동으로 zero rect로 합성하지 않는다.
-
-Aggregate grammar는 scalar operation과 parameter object를 한 canonical owner에서 검증한다.
-Parameterized quantile은 finite output sample에 linear interpolation을 적용하고, ordered
-`first | last`는 valid comparable `orderBy` key와 stable source-order fallback으로 row value를
-선택한다. Public encoding action은 omitted ordered direction을 `"ascending"`으로 normalize해
-semantic state에 저장한다. 계산 가능한 candidate가 없는 final group은 zero나 임의 row로
-대체하지 않고 생략한다.
-
-Dataset transform vocabulary와 capability registry는 `grammar/transforms.js`가 소유한다.
-Filter, mark filter, regression, density, interval, window, box summary/outlier의 상세 schema는 각
-grammar 모듈이 검증한다. `editSemantic` primitive는 transform별 property를 다시 구현하지
-않고 registry에 위임하므로 domain action과 primitive authoring이 같은 transform contract를
-사용한다. 같은 descriptor가 materializer operation, facet replay topology와 requested-transform
-normalization, provenance transparency를 함께 소유해 새 transform을 여러 dispatch table에 중복
-등록하지 않는다.
-
-Mark가 incomplete한 중간 상태일 때 empty graphic collection은 존재할 수 있지만 잘못된
-임시 geometry를 만들지 않는다. 이후 responsible encoding action이 completeness를
-확보하면 mark rematerialization을 호출한다.
-
-Highlighted mark의 rematerialization은 하나의 shared lifecycle을 사용한다. Lifecycle은
-target에 적용된 highlight config를 immutable baseline에서 잠시 분리하고, stale concrete
-items를 비운 뒤 해당 mark의 wrapped rematerialization action을 호출하며, 마지막으로 저장된
-selection을 현재 item identity에 다시 적용한다. Mark별 materializer는 baseline geometry와
-appearance만 소유하고 highlight strip/replay 절차를 복제하지 않는다.
+Highlight lifecycle은 base geometry를 만들기 전에 target의 기존 override를 잠시 분리하고, stale concrete items를 정리한 뒤 새 final item identity에서 selection을 다시 평가한다. 각 mark는 geometry/appearance policy만 제공하며 strip/replay transaction을 복제하지 않는다. Field/channel/property selector는 각각 source members, pre-scale semantic value, final concrete value를 읽는 별도 namespace다.
 
 ## Cross-cutting rematerialization plan
 
@@ -1849,156 +1162,29 @@ inference와 collision 검증만 담당하고 이 geometry 결과를 wrapped gra
 
 ### Axis
 
-`createAxes`는 persisted coordinate family와 encoding을 읽어 axis applicability를 결정한다. Cartesian은
-x/y, Polar는 theta/radius, Parallel은 ordered dimension axis를 사용한다.
+Aggregate는 persisted coordinate family와 encoding에서 applicability를 결정하고 해당 family의 wrapped line/tick/label/title owner를 호출한다. Component editor와 complete-axis editor는 같은 stored config와 leaf action을 공유한다. Axis가 missing encoding을 수리하거나 coordinate를 자동 compile하지 않는다.
 
-```text
-createXAxis
-├─ createXAxisLine
-├─ createXAxisTicksAndLabels
-│  ├─ createXAxisTicks
-│  └─ createXAxisLabels
-└─ createXAxisTitle
-```
-
-Y도 같은 구조를 가진다. Tick value, label text, title text는 scale과 semantic provenance에서
-infer하고 concrete line/text collection을 만든다. Axis는 missing coordinate를 생성하거나
-encoding을 수리하지 않는다.
-
-Cartesian/Polar complete-axis edit는 component object와 `false`를 구분한다. Object는 existing wrapped leaf edit를,
-`false`는 matching materialization config와 concrete graphic removal을 조합하고 title이면 semantic title leaf도
-제거한다. Aggregate는 selected edit/removal 전체를 immutable speculative branch에서 preflight하고 retained component만
-current Canvas/scale dependency plan에 남긴다. 마지막 component가 사라지면 existing complete-axis removal이 empty
-semantic/config branch까지 정리한다. Scale, coordinate, mark encoding과 source data는 component lifecycle의 소유물이
-아니므로 보존한다.
-
-Standalone size/stroke-width의 sampled content editor는 count·title mode·partial typography를 공통 검증하고 각 family의 immutable guide config에 저장한다. Size materializer는 같은 target의 categorical block만 상속하며 다른 target에서 style/geometry를 읽지 않는다. Family별 size-area/line-width geometry와 scale mapping은 각 materializer에 유지한다. 정확한 범위는 `contract/current/LEGEND_AND_TITLE.md`를 따른다.
-
-Parallel axis의 semantic owner는 target/coordinate/scales와 explicit field/title 배열을 저장한다. Field별 component style/tick/visibility recipe와 all/selected 생성 범위는 private guide config가 소유한다. Field 이름은 object key로 쓰지 않는다. Public field lifecycle은 `actions/guides/axes/parallel/lifecycle.js`, 순수 옵션 정책은 `policy.js`, geometry는 `resolve.js`, wrapped concrete reconciliation은 `parallel.js`가 소유한다. 정확한 옵션과 lifecycle은 `contract/current/AXES.md`를 따른다. Layer-data plan은 모든 소비 scale을 먼저 해결한 line에 `scales:false`를 전달하여 guide 재계산이 mark 내부와 guide stage에서 중복되지 않도록 한다.
-
-Parallel axis는 dimension마다 axis line, ticks, labels와 title을 만들고 dimension scale을 독립적으로
-설명한다. 현재 aggregate `createAxes`가 이 family를 dispatch하며 Cartesian channel별 axis option을 Parallel에
-재해석하지 않는다. Parallel grid는 현재 지원하지 않으므로 `createGuides`는 applicable axis와 categorical
-line legend만 조립한다.
+Parallel의 field lifecycle은 `actions/guides/axes/parallel/lifecycle.js`, pure policy/geometry는 해당 family module, concrete reconciliation은 wrapped action이 소유한다. Domain이 바뀌면 inferred tick recipe만 다시 결정하고 caller recipe와 styles는 보존한다.
 
 ### Grid
 
-Grid는 horizontal과 vertical을 독립적으로 켜고 끌 수 있다. `createGuides`의 applicable
-기본은 horizontal grid다. Grid line은 concrete `line` collection이며 mark보다 뒤에
-그려지도록 explicit placement를 사용한다. Axis tick value가 있으면 같은 값을 재사용할
-수 있다. `editHorizontalGrid`와 `editVerticalGrid`는 existing semantic scale/coordinate
-binding을 유지하면서 direction별 tick policy와 appearance config를 바꾸고, 대응하는
-wrapped `rematerialize*Grid` action으로 concrete collection 전체를 다시 만든다.
-
-Guide aggregate의 적용 가능성은 `actions/guides/applicability.js`가 positional-channel
-descriptor와 persisted encoding/scale을 읽어 한 번 결정한다. `createGuides`와
-`createGrid`는 이 결과를 공유한다. Polar omission은 실제 존재하는 theta/radius channel의
-axis와 grid만 선택하므로 theta-only count arc가 radial guide를 합성하지 않는다.
+`actions/guides/applicability.js`가 positional descriptor와 persisted scale을 읽어 applicable guide를 결정한다. Facade와 grid aggregate가 같은 결과를 사용한다. Grid geometry는 resolved axis ticks 또는 owning tick policy를 사용하고 explicit tree placement로 mark보다 먼저 그린다.
 
 ### Legend
 
-항목형 범례의 pure content→edge owner `layout/legendItems.js`는 formatted labels와 sample dimensions를 받아
-sample별 actual stroke bounds와 minimum slot의 union을 배치 전에 측정하고 single-edge 좌표를 반환한다.
-Label column, row/pitch/title spacing과 border가 같은 occupied slot을 사용한다. 공통 grid 측정을 사용하며 categorical, interval, size와 stroke-width가 소비한다. Categorical owner는 실제 recipe와 canonical point-shape graphics를 local collection으로 구성하고 canonical concrete bounds로 path miter까지 측정하여 item owner에 전달한다. Explicit legacy-bottom도 같은 occupied slot을 사용하되 고정 text anchors와 title/item/plot 간격 검증을 유지한다.
-Explicit value-format token의 공통 owner는 `grammar/valueFormat.js`다. Numeric `.0`–`.12` `f/%/e`, UTC
-`%Y/%m/%d/%b/%%` 검증과 실제 변환을 Axis, Text, continuous legend가 공유한다. 각 surface의 `auto`는 기존
-tick-aware, exact-string, distinct-sample owner에 남는다. Axis만 legacy `{ decimals }`를 허용하고 continuous
-legend는 nested `labels.format`으로 token을 저장한다. Family compatibility와 categorical identity 보호는 호출
-surface가 결정한다.
-Scale/format/appearance 검증은 family action에 남고 horizontal single/multi-block placement는 lane owner가 final
-concrete bounds를 소비한다. Hidden title은 실제 occupied bounds에 포함하지 않는다. Categorical grid도 hidden title의 높이와 inline gap을 제외하고 legacy-bottom border는 visible item bounds를 사용한다.
-Size는 categorical 내부 좌표 계산에 의존하지 않고 실제 circle bounds와 sample slot을 제공한다. Side lane은 각 block의 요구 간격을 포함한 공통 label column과 nested border bounds를 소유한다. Horizontal 결합은 pure group layout이 independent block을 먼저 pack하고 outer lane이 그 결과를 atomic block으로 배치한다. Nested border와 두 title을 함께 이동하며 size 자체 layout config는 보존한다. Same-edge collision은 공통 최종 상태 검증으로 수렴한다. Single horizontal legend도 wrapped rematerializeHorizontalLegendLane으로 수렴한다. Pure layout/legendLane.js가 foreground와 background union을 align/offset에 맞춰 translation하고 최종 Canvas fit을 검사한다. Family의 intrinsic horizontal 좌표 fit은 이 단계까지 유예하며 side/legacy fit은 기존 owner에 남는다. Same-target size는 categorical의 effective edge를 사용하고 explicit legacy-bottom은 horizontal lane에서 제외한다. Continuous common normalizer가 side alignment를 검증하고 gradient/opacity/interval/size/width의 title-style normalizer를 공유한다. TitleStyle에는 label offset을 허용하지 않으며 gradient의 create/edit는 동일한 top title-position 계약을 사용한다. Opacity owner는 실제 circle stroke extent와 text 치수로 sample spacing을 계산하고 공통 final layout이 그 결과를 소비한다. Side lane은 mirrored label anchor의 절대 center 거리를 유지한다. Categorical, interval과 width도 실제 sample/font 간격을 사용한다. 각 family의 네 edge와 생성·편집·제거·scale/encoding/Canvas replay는 공통 통합 matrix로 검증한다. 신규 categorical+size는 edge와 무관하게 typography를 공유하며 retained standalone size의 자체 style은 보존한다.
+Family action은 scale/content/appearance를 검증하고 intrinsic concrete recipe를 만든다. `layout/legendItems.js`는 실제 sample stroke/path bounds와 formatted text를 측정해 공통 occupied item slot을 계산한다. Size/interval/stroke-width는 categorical symbol implementation을 복제하지 않고 같은 layout owner에 자기 recipe를 제공한다.
 
-Categorical creation와 content revision의 공통 owner는 `actions/guides/legends/lifecycle.js`다.
-선택된 channels의 definition/automatic recipe를 재검증하고 기존 title visibility, styles, order와 caller recipe를
-보존한다. createLegend, editLegend content replacement, partial removeLegend, removeEncoding이 이 owner를 공유하며 semantic/graphic 변경은
-기존 wrapped primitives와 component materializers로 명시적으로 수행한다. Resource-kind cleanup도 같은 owner가
-관리한다. Symbol component type/order reconciliation도 같은 lifecycle owner에서 editor와 rematerializeLegend가 공유한다.
-Dependency replay는 inferredSymbol인 recipe만 현재 companion context로 다시 resolve하며 explicit recipe는 보존한다.
-Renderer에는 content 추론·복원 로직을 추가하지 않는다.
+`layout/legendLane.js`는 family-independent concrete block을 edge별로 배치한다. Wrapped side/horizontal lane owner만 그 계산 결과를 graphics에 적용한다. Border와 title을 포함한 occupied bounds로 최종 Canvas/guide collision을 검증한다. Multi-block packaging과 single-block alignment를 혼동하지 않는다. Legacy-bottom은 별도 명시된 placement 계약이며 option 존재 여부로 추측하지 않는다.
 
-Full 전용 `editLegendBlock`은 한 target 안의 logical legend block을 member channel로 선택한다. Stable identity는
-ASCII 정렬한 channel 집합의 JSON key이며 concrete graphic ID나 display index를 상태에 저장하지 않는다. 각
-kind config의 `blockOverrides[key]`는 block-local title, gap, item text style과 허용된 symbol style만 소유한다.
-Exact sampled values/count는 기존 sampling config, categorical order는 기존 semantic guide order가 계속 유일
-owner다. Materializer는 base config에 override를 합친 ephemeral effective config로 graphics와 occupied bounds를
-다시 계산하고 persisted base config는 유지한다. Content revision, partial removal, encoding removal과 color scale
-family transition은 graphic 삭제 전에 old/new descriptors를 비교해 compatible override만 이동시키며 충돌은
-원본 program과 trace를 바꾸지 않고 거부한다.
+`actions/guides/legends/lifecycle.js`가 categorical creation/content replacement/removal의 공통 owner다. Automatic symbol recipe는 현재 companion에서 다시 결정하고 explicit recipe는 보존한다. Stable logical block override는 channel-set identity로 config에 저장하며 graphic ID/display index를 authoritative state로 쓰지 않는다. Family transition은 compatible override만 이동시키고 충돌을 원자적으로 거부한다.
 
-Categorical legend는 color, stroke, strokeDash, shape와 mark recipe를 generic legend
-layout/materialization pipeline으로 조립한다.
-
-```text
-semantic role      categorical legend
-mark-specific view symbol recipe
-layout             position/direction/columns/title/border
-graphics           background + layered symbols + labels + title
-```
-
-Line, point, rect/area symbol 차이는 complete legend implementation fork가 아니라 symbol
-recipe로 표현한다. Point quantitative size legend는 별도 quantitative recipe를 사용하지만
-`createLegend`와 `createGuides`의 public flow 안에서 함께 조정된다.
-Explicit channel selection은 정확한 content 경계이며 categorical+size의 요청을 두 기존 owner에 분리한다.
-Recipe inference와 정규화는 categorical recipe owner가 공통 처리하며 config.inferredSymbol이 automatic/caller
-provenance를 저장한다. Content 재생성은 automatic recipe를 다시 추론하고 explicit recipe를 유지한다.
-Editor는 recipe layer 집합이나 순서가 바뀌면 symbol components를 선언 순서로 재생성하여 drawing order를 보존한다.
-
-Encoding reassignment는 existing categorical legend의 inferred field/title/domain/symbol을
-갱신하되 explicit title과 appearance config를 보존한다. Field-driven strokeDash를 constant로
-바꾸면 strokeDash component만 제거하고, 남는 channel이 없을 때만 legend resource와 graphics를
-제거한다.
-
-Chart-independent legend default는 right다. Top/bottom, horizontal/vertical direction,
-columns, alignment, title position, border 등은 explicit option이다.
-Categorical placement mode는 config.layout 한 곳에 edge 또는 legacy-bottom으로 저장한다. Option 존재 여부로
-mode를 추론하지 않는다. 생성 default는 edge이며 편집 omission과 encoding/Canvas/scale replay는 저장한 mode를
-보존한다. Legacy-bottom은 Canvas 하단 고정 single-row를 명시하는 compatibility mode다.
-Right/left에 둘 이상의 legend block이 있으면 각 family materializer가 intrinsic concrete graphics를 먼저
-만들고 `layout/legendLane.js`의 pure lane grammar가 공통 title-start, symbol-center, label-start 열과
-top-to-bottom block placement를 계산한다. `rematerializeSideLegendLane`은 이 결과를 concrete graphics에
-적용하는 유일한 wrapped owner다. Ordering은 owning layer declaration 뒤 family order이며 block 사이에는
-최소 24 logical pixels를 둔다. Categorical과 size가 같은 target이면 하나의 occupied bounds와 border를
-공유하고, independent gradient/interval/opacity/stroke-width block은 각 group bounds를 유지한 채 같은 lane에
-참여한다. Left lane도 item 내부 symbol→label 순서와 resolved domain 순서를 보존하며 y-axis guide와 margin
-충돌을 함께 검증한다. 공간이 부족하면 Canvas를 확장하거나 block을 옮기지 않고 전체 action이 실패한다.
-Top/bottom에 둘 이상의 compatible block이 있으면 `resolveHorizontalLegendLane`이 concrete occupied width를
-stable order로 측정하고 plot left부터 40 logical pixels 간격으로 배치한다. 남은 plot width에 맞지 않는 block만
-바깥의 다음 row로 넘어가며 각 새 row도 plot left에서 시작한다. 이때 multi-legend의 absolute `align`은 placement에
-쓰지 않고 single legend에서만 기존 의미를 유지한다. 각 row는 concrete title baseline과 graphical-element start를
-공유하며 둘 사이를 12 logical pixels로 고정한다. `rematerializeHorizontalLegendLane`은 title과 나머지 content를
-x/y로 별도 translation한 뒤 optional background를 final foreground bounds에서 다시 계산하고 chart title 또는
-x-axis guide collision과 final Canvas bounds를 검증한다. Gradient와 opacity의 top/bottom label은 모두 graphical
-element 뒤에 놓인다. Horizontal categorical과 sampled opacity의 `titlePosition: "left"`는 이 stacked-title
-grammar 대신 하나의 graphical center line을 공유한다. Opacity sample은 symbol 뒤 8 pixels에 label을 두고 다음
-sample 전 20 pixels를 유지한다.
-`editLegend`는 mark channel/scale binding을 유지한다. Optional channels는 target 전체의 최종 content이며
-creation.js의 공통 step descriptor와 기존 creation planner로 kind를 정하고 editor의 pure normalizer로
-보존 config와 요청 style을 병합한다. Kind별 config factory가 wrapped primitives/materializers를 명시적으로
-호출한다. 동일 normalizer를 일반 편집과 content 교체가 공유한다. Companion size의 유효 text style에는
-요청한 leaf만 병합하며 title/count edit가 자체 스타일을 덮어쓰지 않는다.
+`grammar/valueFormat.js`는 명시된 numeric/UTC token parsing과 formatting을 공유한다. Auto formatting은 각 surface의 기존 의미를 유지한다. Semantic label을 그리는 renderer가 format이나 sample을 다시 추론하지 않는다. Option, spacing, edge, block lifecycle의 상세는 [LEGEND_AND_TITLE](contract/current/LEGEND_AND_TITLE.md)가 소유한다.
 
 ### Title
 
-Title은 guide와 별도 stable resource다. `createTitle`과 `editTitle`이 main title과 optional
-subtitle을 concrete text node로 만들며 alignment, position, offset, gap, wrapping과 font는
-materialization config가 소유한다.
+Title/subtitle은 separate stable resource다. Typography, wrapping와 placement는 config, resolved lines/coordinates/rotation은 graphics다. `core/textMetrics.js`와 pure title layout이 계산을 공유하고 renderer는 wrap하지 않는다.
 
-Title alignment span은 Canvas나 guide-inclusive container가 아니라 실제 plot bounds다. Unit chart는 Canvas
-margin으로 정해진 plot bounds를 사용하고 facet parent는 translated child plot bounds의 union을 사용한다.
-따라서 child margin, axis label/title, facet padding과 shared legend는 left/center/right anchor를 이동시키지
-않는다. Facet header도 같은 원칙으로 각 child plot center를 사용한다. Layout이나 Canvas 변경은 parent title
-span과 모든 header anchor를 다시 계산해 rematerialize한다.
-
-Top/bottom title은 horizontal block이고 left/right title은 complete reading block을 각각
-`-Math.PI / 2`, `Math.PI / 2`로 회전한다. `maxWidth`가 있으면 shared deterministic text
-metric이 word 또는 Unicode code-point character wrapping을 계산한다. Oversized word는
-character fallback을 사용한다. Resolved line break, line coordinate와 rotation은
-`graphicSpec`의 single text 또는 text collection에 저장되고 renderer는 다시 측정하거나 wrap하지 않는다.
-
-Edit은 omitted property를 유지하고 supplied style leaf만 merge한다. Subtitle removal/restoration과
-single/collection 전환은 stable graphic ID 아래에서 stale child 없이 reconcile한다. Title block은
-actual occupied bounds로 requested margin과 same-edge guide collision을 검증하며 Canvas를 자동 확장하지 않는다.
+Alignment는 Canvas 전체가 아니라 actual plot bounds를 사용한다. Facet title은 translated child plot union, header는 각 child plot center를 사용한다. Guide 포함 bounds를 plot으로 오인하지 않는다. Equivalent title/Canvas/layout edits는 같은 final bounds와 symmetric collision 결과로 수렴한다.
 
 ### Drawing order
 
@@ -2014,216 +1200,13 @@ reconcile한다. Concrete type이나 cardinality가 바뀌어 stable node를 교
 Aggregate action은 user-facing intent를 concise하게 표현하되 기존 wrapped child를 실제로
 호출한다.
 
-### Complete Pie
+Facade는 raw semantic 역할을 받아 기존 data/mark/encoding/guide action을 합성한다. H0가 새로운 compiler나 별도 chart state를 만들지 않는다. Facade의 편집은 stable lower owner가 담당하거나 sibling 전체의 원자적 수정이 필요한 composite editor가 담당한다.
 
-```text
-createPiePlot
-├─ createArcMark
-├─ encodeTheta(category count | explicit weighted sum)
-├─ encodeColor?
-└─ compatible categorical guide fulfillment
-```
+예를 들어 statistical interval은 derived summary → ordinary range mark → optional boundary/cap 순서다. Regression band는 explicit interval owner를 재사용하며 density/Horizon은 ordinary Area에 derived provenance를 연결한다. Pie는 Arc partition owner, violin은 categorical density owner를 재사용한다. Shared data-source/channel/scale inference는 facade 사이에 복제하지 않는다.
 
-Full-only H0가 source와 역할을 명시해 기존 owner를 조합한다. Partition 계산·sector membership·geometry는
-기존 Arc/theta owner에 남고 별도 chart state나 compiler가 없다. Donut은 같은 Arc의 inner radius이며,
-편집은 lower mark·encoding·scale·guide action이 맡는다. 정확한 계약은
-[Complete chart facades](contract/current/COMPLETE_CHARTS.md#createpieplot)를 따른다.
+Revision은 새 derived snapshot을 만든 뒤 stable mark/sibling을 rebind하고 shared-scale mark와 guides를 materialize한다. 이전 revision의 release는 live reference graph로 판단한다. Style와 semantic owner identity는 통계 결과와 분리해 보존한다.
 
-### Histogram
-
-```text
-encodeHistogram
-├─ encodeX(bin)
-└─ encodeY(count, stack)
-```
-
-x와 y를 따로 authoring하면 incomplete histogram 의미가 되기 때문에 하나의 atomic
-domain action을 제공한다.
-
-### Density
-
-Full-only `createDensityPlot`은 `createAreaMark → encodeDensity → encodeColor? → guide fulfillment`를
-조합한다. GroupBy와 color를 독립적으로 작성하며 color는 derived profile이 보존하는 group field만
-소비한다. Facade가 KDE 계산·source metadata join·orientation state를 추가하지 않는다.
-정확한 계약은 [Complete chart facades](contract/current/COMPLETE_CHARTS.md#createdensityplot)를 따른다.
-
-```text
-encodeDensity
-├─ createDensityData | createCategoricalDensityData
-│  ├─ createDerivedData
-│  └─ materializeDensityData
-├─ editSemantic(layer.data = derived dataset)
-├─ encodeX
-├─ encodeY
-├─ encodeGroup? 
-└─ rematerializeAreaMark
-```
-
-Baseline placement에서는 `densityChannel`에 따라 value와 density field가 x/y 중 어느 쪽에 놓이는지 결정하고
-scale zero baseline에서 area를 닫는다. Category placement에서는 categorical band center와 quantitative value axis를
-같은 Cartesian coordinate에 연결하고 density magnitude를 band-relative full/half width로 바꾼다. Shared width는
-전체 profile maximum, independent width는 category-local maximum을 사용하며 split halves는 같은 category maximum을
-공유한다.
-
-```text
-editDensity
-├─ createDensityData(new revision)
-├─ editSemantic(layer.data = new revision)
-├─ releaseDerivedData(old revision, only when orphaned)
-└─ rematerialize affected shared-scale marks and guides
-```
-
-Density edit은 source, output field, orientation과 scale binding을 유지한다. 전달된 statistical parameter만
-새 revision provenance에 적용하며 이전 derived values를 덮어쓰지 않는다. Baseline과 category mode를 전환할 때는
-새 position definition을 검증한 뒤 stale encoding과 scale을 제거하고 모든 연결 consumer를 deterministic plan으로
-다시 materialize한다.
-
-### Horizon
-
-Full-only `createHorizonPlot`은 `createAreaMark → createCoordinate? → encodeHorizon → editAreaMark? → x guide fulfillment`를
-조합한다. Explicit opacity는 lower encoding의 opaque default 뒤에 적용한다. Palette가 band color를 소유하며
-automatic guide는 original x만 보여준다. 별도 amplitude guide나 chart state는 추가하지 않는다.
-정확한 계약은 [Complete chart facades](contract/current/COMPLETE_CHARTS.md#createhorizonplot)를 따른다.
-
-```text
-encodeHorizon
-├─ createHorizonData
-│  ├─ createDerivedData
-│  └─ materializeHorizonData
-├─ rebindLayerData
-├─ encodeX
-├─ encodeY
-├─ encodeGroup
-├─ encodeY2
-├─ encodeColor
-└─ materialize affected area and guide consumers
-```
-
-Horizon은 area target의 source x/y를 baseline 기준 signed amplitude로 바꾼 뒤 sign별 repeated band로 fold한다.
-Semantic layer에는 ordinary x/y/y2/group/color encoding을 저장하고 folded y scale을 `[0, 1]`로 고정한다.
-Automatic guide policy는 original x axis/grid만 허용하고 folded y axis와 internal sign/band color legend는 만들지
-않는다. Area materializer와 Canvas/PNG/SVG/PDF renderer는 Horizon-specific branch 없이 ordinary closed path
-collection을 처리한다.
-
-```text
-editHorizon
-├─ createHorizonData(new revision)
-├─ rebindLayerData
-├─ releaseDerivedData(old revision, only when orphaned)
-├─ retain compatible scale IDs and target identity
-└─ rematerialize shared-scale marks and guides
-```
-
-```text
-createViolinPlot
-├─ createAreaMark
-├─ configureAreaStrokeFromFill?
-├─ encodeDensity(category placement)
-├─ encodeColor?
-└─ createGuides?
-```
-
-`createViolinPlot({ x, y })`은 Box/Gradient plot과 같은 categorical/quantitative positional family facade다.
-Exactly one categorical role이 placement와 grouping을, one quantitative role이 density value axis를 소유한다.
-Facade는 child chart를 category마다 만들지 않고 ordinary area, density encoding, color와 guide action을 그대로
-호출한다. Facade 자체는 aggregate create-only이며 density revision은 `editDensity`, path appearance는
-`editAreaMark`, scale/guide revision은 각 owning resource action이 담당한다.
-
-### Regression
-
-```text
-createRegression
-├─ createRegressionData
-├─ createRegressionBand
-│  ├─ createErrorBand (explicit interval mode)
-│  │  ├─ createAreaMark
-│  │  ├─ encodeX
-│  │  ├─ encodeYRange
-│  │  └─ encodeGroup?
-│  ├─ editSemantic (remove generic interval title)
-│  └─ editAreaMark? (outline)
-└─ createRegressionLine
-   ├─ createLineMark
-   ├─ encodeX
-   ├─ encodeY
-   ├─ encodeColor?
-   └─ encodeGroup?
-```
-
-Target point mark의 x/y, coordinate, scale, color/shape grouping을 unique하게 infer할 수
-있다. Multiple group candidates가 있으면 `groupBy`를 요구한다. Regression band wrapper는 derived
-regression provenance를 검증하고 generic error band의 explicit interval composition을 재사용한다.
-Regression-specific IDs/default appearance와 기존 semantic output은 wrapper가 보존한다.
-
-### Error bar
-
-```text
-createErrorBar
-├─ createIntervalData? (statistical mode only)
-│  ├─ createDerivedData
-│  └─ materializeIntervalData
-├─ createRuleMark + encodeX/encodeY + encodeX2/encodeY2 + encodeXOffset/encodeYOffset?
-├─ appearance encoding actions
-├─ createErrorBarCap? (caps enabled)
-│  └─ materializeRuleSpan
-└─ createErrorBarCap? (caps enabled)
-   └─ materializeRuleSpan
-```
-
-Exactly one of x/y is identifiable quantitative interval이고 다른 하나는
-quantitative/categorical/ordinal/temporal position이므로 vertical과 horizontal orientation을 같은 action이
-infer한다. 두 channel이 모두 quantitative이면 explicit interval fields나 statistical interval option이 interval
-axis를 명확히 결정해야 한다. Statistical mode는 source row에서
-mean/median interval을 만들고 explicit mode는 existing center/lower/upper field를 사용한다. Existing encoded
-layer에서 data, coordinate, x/y field와 scale을 추론할 때 mark type이 아니라 persisted encoding capability를
-selector predicate로 검사한다. Color는 appearance이고 `encoding.group`만 일반 series grouping으로 해석한다.
-Matching categorical xOffset/yOffset이 있으면 offset field도 statistical grouping에 포함하고 source point, main rule,
-fixed-pixel caps가 동일한 ordinal offset scale과 padding을 공유한다. Main rule과 optional fixed-pixel caps는 shared
-stroke/width/dash/opacity assignment를 사용하며
-ordinary resource로 저장된다. 별도 composite registry는 만들지 않는다.
-
-### Error band
-
-```text
-createErrorBand
-├─ createIntervalData? (statistical mode only)
-├─ createAreaMark
-├─ encodeX + encodeYRange (vertical)
-│  └─ encodeY + encodeY2
-├─ encodeY + encodeXRange (horizontal)
-│  └─ encodeX + encodeX2
-├─ encodeGroup?
-├─ createErrorBandBoundary? (lower)
-└─ createErrorBandBoundary? (upper)
-```
-
-Vertical contract에서 x는 quantitative 또는 temporal independent position이고 y/y2는 quantitative
-lower/upper interval이다. Horizontal contract는 이를 y independent position과 x/x2 interval로 바꾼다.
-Statistical mode는 independent position과 optional group field로 immutable interval
-rows를 만들며 explicit mode는 existing center/lower/upper fields를 사용한다. Existing encoded source가
-있으면 persisted data, coordinate, compatible scales와 explicit group을 재사용하고, 두 quantitative axes처럼
-interval role이 유일하지 않으면 추측하지 않는다. `createErrorBand`는 ordinary area와 derived dataset을
-조합하며 별도 composite registry를 만들지 않는다. Field-driven fill은 aggregate option이 아니라 existing
-`encodeColor`가 소유한다. Optional lower/upper boundaries는 deterministic ordinary line layers이며 band
-뒤에 그린다. Band curve는 area mark config로 concrete commands를 만들고 boundary curve는 기본적으로
-이를 상속하되 명시적으로 override할 수 있다. Shared stroke, width, dash, opacity는 boundary children의
-concrete appearance로 저장된다. Aggregate는 independent lower/upper appearance object를 받지 않으며,
-서로 다른 style이 필요하면 deterministic ordinary boundary line child를 각자 편집한다.
-
-### Guides
-
-```text
-createGuides
-├─ createAxes?   
-├─ createGrid?
-└─ createLegend?
-```
-
-Omission은 persisted semantic state를 기준으로 applicability를 infer하고, `{}`는 해당
-component를 inferred detail로 명시 선택하며, `false`는 명시적으로 끈다.
-`createGuides`와 `createGrid` aggregate는 같은 guide applicability owner를 소비한다. Arc
-color는 categorical legend candidate이며 Polar grid direction은 stored theta/radius
-scale별로 선택된다.
+정확한 child action 관계는 실행 corpus에서 생성한 [action-relationships.json](../knowledge/action-relationships.json), 공개 lifecycle은 [COMPLETE_CHARTS](contract/current/COMPLETE_CHARTS.md), [STATISTICS](contract/current/STATISTICS.md), [COMPOSITE_MARKS](contract/current/COMPOSITE_MARKS.md)가 소유한다.
 
 ## Built-in visual default
 
@@ -2308,7 +1291,7 @@ complete SVG document string을 반환한다.
   wrapping이나 layout을 다시 계산하지 않는다.
 - Central serializer는 text, attribute, title과 description의 XML 1.0 scalar validity를 먼저
   검증하므로 invalid control, lone surrogate와 forbidden noncharacter를 partial string 없이 거부한다.
-- 기본 clip/gradient ID namespace는 `graphicSpec`의 deterministic hash다. 동일 spec SVG를 같은
+- 기본 clip/gradient ID namespace는 `graphicSpec`의 deterministic hash다. Library-owned immutable spec만 WeakMap으로 hash를 재사용하며 외부 mutable concrete spec은 매번 계산한다. 동일 spec SVG를 같은
   DOM에 함께 둘 때는 ASCII letter로 시작하고 letter/digit/`_`/`-`만 쓰는 explicit
   `resourceNamespace`로 충돌을 피한다. Raw graphic ID는 document identifier로 노출하지 않는다.
 - SVG numeric geometry는 finite JavaScript number 전체를 보존하며 Canvas-backed native cap을
@@ -2336,7 +1319,18 @@ PDF는 vector output이므로 `pixelRatio`를 받지 않는다. `ggaction/pdf`�
 `ggaction/png`의 native/filesystem dependency는 browser-safe entry graph에 들어가지
 않는다.
 
+## 선택 의존성과 메모리 출력
+
+`@napi-rs/canvas`와 `@modelcontextprotocol/sdk`는 optional peer dependency다. 개발 환경에만 devDependency로 설치한다. Browser entry는 둘을 가져오지 않는다. Node renderer entry의 import는 native package 없이 성공하고, 실제 출력 시 lazy load하며 누락 시 명시적인 설치 명령을 반환한다. MCP CLI도 SDK 누락을 stderr에 안내하고 exit 1로 종료한다.
+
+`renderToPNGBuffer`/`renderToPDFBuffer`는 caller-owned Uint8Array와 dimension/byte metadata를 반환한다. 프로그램에 backend나 output buffer를 저장하지 않는다. File 함수는 같은 buffer 함수를 호출한 후 filesystem에 쓴다. PNG는 동기 Canvas drawing 후 native async encode를 사용하며 PDF construction/encoding은 동기다. Exact public contract는 `docs/api/rendering.md`와 해당 declaration이 소유한다.
+
 ## PNG adapter
+
+SVG/PNG/PDF의 plain-object와 closed-option 검증은 `renderers/options.js`가 공유한다.
+이 모듈은 순수 값 검증용 `core/immutable.js`를 사용할 수 있으며 renderer가 program/action을
+import하거나 semanticSpec을 해석하는 의존성은 계속 금지한다. Null-prototype plain object도
+동일하게 허용하고 unknown option은 output 전에 거부한다.
 
 `renderToPNG`는 Node에서 1×1 native Canvas를 만든 뒤 같은 Canvas renderer를 호출한다.
 Renderer가 logical size와 `pixelRatio`를 적용하고, adapter는 PNG buffer를 만들어 지정
@@ -2498,6 +1492,13 @@ utility, gradient strip recipe, opacity symbol recipe를 분리하며, quantitat
 `point`가 아니라 `size`라는 실제 책임 이름을 사용한다. Right/left multi-block placement만 family recipe에서
 분리해 shared lane owner가 맡는다. Top/bottom multi-block placement도 같은 `layout/legendLane.js`의 pure
 geometry와 별도 wrapped horizontal owner를 사용하며 renderer는 그 최종 좌표만 읽는다.
+
+Size와 stroke-width legend의 item graphic 생성·배치는 `actions/guides/legends/continuous/common.js`가
+공유하고 각 family는 scale 추론·symbol recipe·layout·config를 소유한다. `actions/primitives/graphicProperties.js`는
+여러 property를 지정된 순서로 기존 wrapped `editGraphics`에 전달하는 private helper다. 새 public primitive나
+batch trace를 만들지 않는다. Error-bar와 error-band의 source/role 복원·scale 계획·statistics 검증은
+`actions/intervals/revision.js`가 공유하며, family별 저장 형태와 scale default·offset·group 제약은 각 owner에 남긴다.
+Statistics partial merge는 `actions/data/intervalEdit.js`가 단독 편집과 role 동시 편집에 공통 제공한다.
 
 구현된 mark type, encoding channel, categorical legend channel, legend config kind는
 `core/vocabulary.js`가 canonical owner다. Schema parser, action validation, private config와
@@ -2743,36 +1744,7 @@ interval containment을 deterministic invariant로 검증한다.
 
 ## 현재 완성된 vertical slice
 
-현재 architecture는 다음 차트 flow로 검증되어 있다.
-
-1. Quantitative x/y와 nominal color를 가진 cars scatterplot
-2. Temporal x, aggregate mean y, color와 strokeDash series를 가진 cars line chart
-3. Binned x, count y, zero stack과 color를 가진 cars histogram
-4. Ordinal x, aggregate y, grouped color/xOffset을 가진 jobs bar chart
-5. Filtered point, size/shape/opacity, grouped OLS line과 confidence band를 가진 regression
-   scatterplot
-6. Grouped Gaussian KDE와 baseline-closed area를 가진 density area chart
-7. Grouped mean Student-t interval과 fixed-pixel caps를 가진 cars error-bar chart
-8. Temporal x와 cluster-grouped mean Student-t y/y2 paths를 가진 Gapminder error-band chart
-9. Nominal category/quantitative measure를 양방향으로 배치하고 configurable Tukey factor 또는 minmax,
-   band width, box/median/outlier appearance와 optional outlier removal을 지원하는 Cars box plot
-10. Theta count partition, equal-angle rose overlay와 quantitative radial extent를 각각 검증하는 Cars donut,
-    Nightingale rose와 Gapminder radial-bar chart
-11. Partition-local window rank를 source order로 저장한 뒤 filtered point consumer에 연결하는 Cars
-    window-rank scatterplot
-12. Raw quantitative x/y rows를 immutable 2D-bin revision으로 만들고 ranged rect와 count color에 연결하는
-    Cars binned heatmap
-13. Category별 immutable density profile, backend-neutral linear-gradient `FillPaint`, optional center rule,
-    source filtering, category-strip highlighting과 Cartesian facet replay를 가진 Cars gradient plot
-14. Category band 안에서 shared-width full density와 two-value split half density를 materialize하고
-    positional-family `createViolinPlot({ x, y })` facade와 exact parity를 갖는 Cars acceleration violin plot
-15. Ordered quantitative/ordinal dimension별 local scale/axis와 source-row open path를 가진 Cars Parallel Coordinates
-16. Gapminder point source에 attached text를 bounded collision layout과 optional leader로 배치하고
-    public/primitive exact parity를 갖는 Country Labels chart
-
-이 목록은 chart type별 별도 compiler가 있다는 뜻이 아니다. 같은 data, scale, mark,
-encoding, guide, layout, materialization primitive가 여러 vertical slice에서 재사용된다는
-검증 목록이다.
+현재 차트와 예제 목록은 [examples index](../examples/README.md), 실행 evidence는 [ACTION_INDEX.json](contract/ACTION_INDEX.json)과 test capability registry가 소유한다. 이 문서는 별도 지원 현황 목록을 유지하지 않는다. Vertical slice는 shared lower layers의 재사용을 증명하며 chart별 compiler를 뜻하지 않는다.
 
 ## 새 기능을 추가하는 기준
 
@@ -2905,6 +1877,6 @@ dimension guide를 deterministic plan으로 rematerialize한다.
 
 `grammar/areaEndpoints.js`는 quantitative field/datum과 raw Area의 error/break 값을 해석한다.
 Position assignment, scale 소비자, path grammar가 이 해석을 공유하며 source rows는 변경하지 않는다.
-`actions/encodings/areaRange.js`는 최종 pair와 scale을 순수 preview한 뒤 기존 wrapped primary/secondary를
+`actions/encodings/ranged.js`는 최종 pair와 scale을 순수 preview한 뒤 기존 wrapped primary/secondary를
 실행한다. `actions/scales/preview.js`의 소비자·domain 계산은 실제 rematerializeScale과 이 preflight가 공유한다.
 Break의 각 closed segment는 원본 row indices를 유지해 selection과 geometry의 grain이 같다.

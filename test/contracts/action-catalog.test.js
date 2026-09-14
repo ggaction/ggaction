@@ -50,7 +50,7 @@ function declaredProgramMethods() {
     declaration.indexOf("export class ChartProgram")
   );
 
-  return [...classBody.matchAll(/^  ([A-Za-z][A-Za-z0-9]*)\(/gm)]
+  return [...classBody.matchAll(/^  ([A-Za-z][A-Za-z0-9]*)(?:<[^\n]+>)?\(/gm)]
     .map(match => match[1])
     .filter(name => name !== "constructor");
 }

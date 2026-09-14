@@ -1,3 +1,4 @@
+import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { action } from "../../../core/action.js";
 import {
   noOptions,
@@ -139,13 +140,10 @@ function editConcrete(program, kind, config, geometry) {
   for (const [property, value] of Object.entries(properties)) {
     next = next.editGraphics({ target: graphic, property, value });
   }
-  return next
-    .editGraphics({ target: graphic, property: "stroke", value: config.color })
-    .editGraphics({
-      target: graphic,
-      property: "strokeWidth",
-      value: config.lineWidth
-    })
+  return editGraphicProperties(next, graphic, {
+    stroke: config.color,
+    strokeWidth: config.lineWidth
+  })
     .editGraphics({
       target: graphic,
       property: "strokeDash",
@@ -239,12 +237,12 @@ function makeEdit(kind) {
   });
 }
 
-const createThetaGrid = makeCreate("theta");
-const createRadialGrid = makeCreate("radial");
-const editThetaGrid = makeEdit("theta");
-const editRadialGrid = makeEdit("radial");
-const rematerializeThetaGrid = makeRematerialize("theta");
-const rematerializeRadialGrid = makeRematerialize("radial");
+const createThetaGrid = /* @__PURE__ */ makeCreate("theta");
+const createRadialGrid = /* @__PURE__ */ makeCreate("radial");
+const editThetaGrid = /* @__PURE__ */ makeEdit("theta");
+const editRadialGrid = /* @__PURE__ */ makeEdit("radial");
+const rematerializeThetaGrid = /* @__PURE__ */ makeRematerialize("theta");
+const rematerializeRadialGrid = /* @__PURE__ */ makeRematerialize("radial");
 
 export function registerPolarGridActions(ProgramClass) {
   ProgramClass.prototype.createThetaGrid = createThetaGrid;

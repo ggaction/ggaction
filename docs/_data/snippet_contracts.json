@@ -2981,6 +2981,18 @@
   {
     "file": "api/rendering.md",
     "block": 1,
+    "heading": "Measured text layout",
+    "mode": "fragment",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "a61be368967daa63294e8ffe37d42c11426dfab1cec2b70eaf9ab96c51c5c13b",
+    "executable": false
+  },
+  {
+    "file": "api/rendering.md",
+    "block": 2,
     "heading": "Complete example program",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2992,7 +3004,7 @@
   },
   {
     "file": "api/rendering.md",
-    "block": 2,
+    "block": 3,
     "heading": "Browser Canvas",
     "mode": "fragment",
     "environment": "browser-module",
@@ -3004,7 +3016,7 @@
   },
   {
     "file": "api/rendering.md",
-    "block": 3,
+    "block": 4,
     "heading": "Browser Canvas",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3016,7 +3028,7 @@
   },
   {
     "file": "api/rendering.md",
-    "block": 4,
+    "block": 5,
     "heading": "SVG output",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3028,7 +3040,7 @@
   },
   {
     "file": "api/rendering.md",
-    "block": 5,
+    "block": 6,
     "heading": "SVG output",
     "mode": "fragment",
     "environment": "browser-module",
@@ -3040,7 +3052,7 @@
   },
   {
     "file": "api/rendering.md",
-    "block": 6,
+    "block": 7,
     "heading": "PNG output",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3052,7 +3064,7 @@
   },
   {
     "file": "api/rendering.md",
-    "block": 7,
+    "block": 8,
     "heading": "PDF output",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3060,6 +3072,20 @@
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "6053d8d8c5485807508a90f96481104fde3b0934d3a48dfb310cb59cd5d8acfe",
+    "executable": false
+  },
+  {
+    "file": "api/rendering.md",
+    "block": 9,
+    "heading": "Accessible data alternatives",
+    "mode": "alternative",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [
+      "target: \"sales\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: \"sales\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "bc8e84151f865094ca13337584b6bd2a0003ea283a5e513e3155c312bf6a58a2",
     "executable": false
   },
   {

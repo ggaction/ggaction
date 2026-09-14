@@ -14,6 +14,10 @@ title: Primitive Extension API
 These methods are the low-level public extension layer, not the recommended
 chart-authoring API.
 
+All three primitives accept one plain options object and reject unknown
+top-level keys. Misspelled options never silently fall back to a default.
+Stored values cannot contain functions, class instances, or cyclic references.
+
 ## `editSemantic({ property, value | remove })`
 
 Creates, replaces, or removes one supported semantic branch and structurally

@@ -362,11 +362,14 @@ owners. It creates one immutable interval revision and rebinds the main rule
 and enabled caps. Median and IQR must be selected together; `level` is valid
 only for confidence intervals. Explicit center/lower/upper owners reject a
 statistics edit instead of converting modes.
+The same merge rules apply when changing channel roles in the same call.
+Switching away from confidence intervals discards inherited `method` and `level`;
+explicitly supplying either for another extent is an error.
 
 `caps: false` removes both owned cap resources. A later `caps: true` recreates
 them from the owner's stored data, fields, coordinate, position/offset scales,
 and offset padding. The main
-interval retains its current dataset unless `statistics` is supplied.
+interval retains its current dataset unless data, channel roles, or `statistics` change.
 Attached mark labels are rebound to the new interval revision, and stored
 selections and highlights replay after rematerialization. The complete request
 is validated before the wrapped rematerialization runs.

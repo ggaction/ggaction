@@ -197,7 +197,7 @@ export function prepareSharedFacetLegend(program) {
   if (roots.length === 0) {
     throw new Error("Shared facet legend has no concrete guide graphics.");
   }
-  const bounds = unionConcreteGraphicBounds(source.graphicSpec, roots);
+  const bounds = unionConcreteGraphicBounds(source.graphicSpec, roots, source.materializationConfigs.textMetrics);
   if (bounds === undefined) {
     throw new Error("Shared facet legend has no measurable concrete bounds.");
   }

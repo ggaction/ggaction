@@ -127,7 +127,7 @@ function actionFlow(source, start) {
 function declaredProgramMethods() {
   const declaration = read("types/program.d.ts");
   const classBody = declaration.slice(declaration.indexOf("export class ChartProgram"));
-  return [...classBody.matchAll(/^\s{2}([A-Za-z][A-Za-z0-9]*)\(/gm)]
+  return [...classBody.matchAll(/^\s{2}([A-Za-z][A-Za-z0-9]*)(?:<[^\n]+>)?\(/gm)]
     .map(match => match[1])
     .filter(name => name !== "constructor");
 }

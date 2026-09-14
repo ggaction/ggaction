@@ -1,4 +1,4 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
@@ -213,13 +213,12 @@ function updateBoxPositions(program, owner, current, candidate, {
   return next;
 }
 
-export const editBoxPlot = action(
+export const editBoxPlot = /* @__PURE__ */ closedAction(
   {
     op: "editBoxPlot",
     description: "Revise one box plot and its owned components."
-  },
+  }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "editBoxPlot");
     if (!OPTIONS.slice(1).some(key => Object.hasOwn(args, key))) {
       throw new Error("editBoxPlot requires at least one box-plot option.");
     }

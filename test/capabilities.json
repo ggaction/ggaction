@@ -1,12 +1,16 @@
 {
   "version": 2,
   "capabilities": {
+    "accessibility": [
+      { "type": "prefix", "path": "unit/accessibility/" }
+    ],
     "actions": [
       { "type": "prefix", "path": "unit/actions/" }
     ],
     "architecture": [
       { "type": "prefix", "path": "contracts/" },
-      { "type": "prefix", "path": "unit/core/" }
+      { "type": "prefix", "path": "unit/core/" },
+      { "type": "file", "path": "unit/support/test-sharding.test.js" }
     ],
     "area-layout": [
       { "type": "prefix", "path": "charts/area-layout/" }
@@ -14,6 +18,7 @@
     "artifacts": [
       { "type": "file", "path": "contracts/chart-variant-structure.test.js" },
       { "type": "file", "path": "unit/support/artifacts.test.js" },
+      { "type": "file", "path": "unit/support/failure-artifacts.test.js" },
       { "type": "file", "path": "unit/support/visual-variants.test.js" }
     ],
     "center-stack": [
@@ -76,7 +81,12 @@
     ],
     "package": [
       { "type": "prefix", "path": "contracts/package-" },
-      { "type": "file", "path": "browser/package-consumer.browser.js" }
+      { "type": "file", "path": "browser/package-consumer.browser.js" },
+      { "type": "file", "path": "browser/backend-compatibility.browser.js" },
+      { "type": "file", "path": "unit/support/npm-command.test.js" }
+    ],
+    "persistence": [
+      { "type": "prefix", "path": "unit/persistence/" }
     ],
     "polar": [
       { "type": "prefix", "path": "charts/polar-" },
@@ -116,6 +126,11 @@
     ],
     "support": [
       { "type": "prefix", "path": "unit/support/" }
+    ],
+    "text-metrics": [
+      { "type": "file", "path": "unit/actions/text-metrics.test.js" },
+      { "type": "file", "path": "contracts/text-metrics-types.test.js" },
+      { "type": "file", "path": "unit/layout/text.test.js" }
     ],
     "theme": [
       { "type": "prefix", "path": "unit/theme/" },

@@ -212,7 +212,7 @@ export function resolveTitleLayout(program, config) {
           program.semanticSpec.title.subtitle,
           "Chart subtitle"
         )
-  }, config);
+  }, config, program.materializationConfigs.textMetrics);
   const horizontal = ["top", "bottom"].includes(config.position);
   let component;
   if (horizontal) {
@@ -249,10 +249,10 @@ export function resolveTitleLayout(program, config) {
     ? undefined
     : component(block.subtitleLines, block.subtitleCenters);
   const titleBounds = unionTitleBounds([
-    resolveTitleComponentBounds(title, config.titleStyle),
+    resolveTitleComponentBounds(title, config.titleStyle, program.materializationConfigs.textMetrics),
     ...(subtitle === undefined
       ? []
-      : [resolveTitleComponentBounds(subtitle, config.subtitleStyle)])
+      : [resolveTitleComponentBounds(subtitle, config.subtitleStyle, program.materializationConfigs.textMetrics)])
   ]);
   validateLayout(
     config.position,

@@ -12,3 +12,12 @@ export function renderToPNG(
   program: Pick<ChartProgram, "graphicSpec">,
   options: { output: string; pixelRatio?: number }
 ): Promise<PNGRenderResult>;
+
+export interface PNGBufferResult extends Omit<PNGRenderResult, "output"> {
+  readonly buffer: Uint8Array;
+}
+
+export function renderToPNGBuffer(
+  program: Pick<ChartProgram, "graphicSpec">,
+  options?: { pixelRatio?: number }
+): Promise<PNGBufferResult>;

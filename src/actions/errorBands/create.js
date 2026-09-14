@@ -1,9 +1,7 @@
-import { action } from "../../core/action.js";
+import { editGraphicProperties } from "../primitives/graphicProperties.js";
+import { action, closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
-import {
-  validateKeys,
-  validateNonEmptyString,
-} from "../../core/validation.js";
+import { validateNonEmptyString } from "../../core/validation.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
 import {
@@ -82,7 +80,7 @@ function positionOptions({ target, field, fieldType, coordinate, scale, temporal
     ...(temporalUnit === undefined ? {} : { temporalUnit }) };
 }
 
-export const createErrorBandBoundary = action(
+export const createErrorBandBoundary = /* @__PURE__ */ action(
   {
     op: "createErrorBandBoundary",
     description: "Create one lower or upper error-band boundary line."
@@ -138,14 +136,11 @@ export const createErrorBandBoundary = action(
     if (groupBy !== undefined) {
       next = next.encodeGroup({ target: id, field: groupBy });
     }
-    return next
-      .editGraphics({ target: id, property: "stroke", value: stroke })
-      .editGraphics({
-        target: id,
-        property: "strokeDash",
-        value: next.graphicSpec.objects[id].items.map(() => strokeDash)
-      })
-      .editGraphics({ target: id, property: "opacity", value: opacity });
+    return editGraphicProperties(next, id, {
+      stroke: stroke,
+      strokeDash: next.graphicSpec.objects[id].items.map(() => strokeDash),
+      opacity: opacity
+    });
   }
 );
 
@@ -171,13 +166,12 @@ function rangeArgs(resolved) {
   };
 }
 
-export const createErrorBand = action(
+export const createErrorBand = /* @__PURE__ */ closedAction(
   {
     op: "createErrorBand",
     description: "Create a statistical or explicit interval band."
-  },
+  }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "createErrorBand");
     const strokeDetails = requestedStrokeDetails(args, "createErrorBand");
     const resolved = resolveErrorBand(this, args);
     const curve = validateCurveInterpolation(args.curve ?? "linear");

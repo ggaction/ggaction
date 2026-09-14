@@ -11,6 +11,83 @@ Render one fully materialized `ChartProgram` to Browser Canvas, a browser-safe
 SVG string, a Node PNG file, or a single-page vector PDF. Choose the target
 based on where the output runs and how it will be consumed.
 
+Canvas and SVG need only `npm install ggaction`. For Node PNG and PDF, install
+the optional native backend with `npm install ggaction @napi-rs/canvas`.
+Importing the PNG/PDF entry works without the backend; calling it then reports
+the required installation command. No dependency is installed automatically.
+
+## Measured text layout
+
+Full charts support `applyTextMetrics({ profile })` and `removeTextMetrics()`.
+These authoring actions recalculate text layout before rendering. A profile has
+exactly `schemaVersion: 1`, a nonempty `id`, and a `measurements` array. Each entry
+has exactly `text`, `fontFamily`, `fontSize`, `fontWeight`, and `width`.
+
+The host measures strings in the font it will use. Width is in logical pixels,
+not output pixels multiplied by device pixel ratio. Font size must be positive;
+width must be finite and nonnegative. Weight is one of 100, 200, …, 900.
+Duplicate text/family/size/weight combinations are rejected. Empty profiles and
+empty strings are valid.
+
+This complete browser example waits for fonts and measures the full string and
+word candidates that its title wrapping will use:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+await document.fonts.ready;
+const context = document.createElement("canvas").getContext("2d");
+const fontFamily = "sans-serif";
+const fontSize = 20;
+const fontWeight = 400;
+context.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+const profile = {
+  schemaVersion: 1,
+  id: "page-fonts",
+  measurements: ["Alpha Beta", "Alpha", "Beta"].map(text => ({
+    text, fontFamily, fontSize, fontWeight,
+    width: context.measureText(text).width
+  }))
+};
+const measured = chart()
+  .applyTextMetrics({ profile })
+  .createCanvas({ width: 500, height: 350, margin: 80 })
+  .createTitle({
+    text: "Alpha Beta", maxWidth: 100,
+    titleStyle: { fontFamily, fontSize, fontWeight }
+  });
+const estimated = measured.removeTextMetrics();
+```
+
+Matching uses the exact string, family, size, and normalized weight. Omitted
+family uses `sans-serif`; omitted/`normal` weight is 400 and `bold` is 700.
+Numeric weights use the renderer's rounding to 100 and clamping to 100–900;
+strings `"100"` through `"900"` match those numeric values. Unmatched strings or
+styles, including relative CSS weights, use the existing deterministic estimate.
+Wrapping may measure partial words and candidate lines; include those strings
+when exact measurements are needed for them.
+
+Applying clones and freezes the profile and replaces any active profile. It
+recalculates titles, axes, legends, labels, and composition layout without
+changing typography. A composition applies the profile to its root and nested
+children, adopting Basic children as Full snapshots; replacement/insertion children and retained facet/repeat edits inherit
+it. Removal clears the profile throughout that composition and restores
+estimates; it does not restore earlier child profiles. Removing without an active
+profile is an error. Failed layout leaves the original program intact.
+
+Later domain edits and source revisions use the stored profile. Editable
+[persistence](../data-updates.md#save-and-restore-snapshots) preserves and validates it. Render-only snapshots
+contain the already laid-out graphics. Changing the original profile or loading
+a font later does not change an existing program. Apply a new measured profile
+to update layout after fonts change. Canvas, SVG, PNG, and PDF draw the resulting
+text graphics; they do not rewrap or replace the authoring measurements.
+
 ## At a glance
 
 | Target | Environment | Shortest call | Use when |
@@ -22,6 +99,25 @@ based on where the output runs and how it will be consumed.
 
 Rendering consumes a completed program's `graphicSpec`. It does not read
 datasets, semantic encodings, context, or trace to infer missing output.
+
+## Automated environment checks
+
+CI and release qualification exercise these environments against installed
+packages. The release jobs all consume the same candidate tarball.
+
+| Environment | Checks |
+| --- | --- |
+| Ubuntu, Node.js 20, 22, and 24 | Package installation, public entries, declarations, and consumer workflows |
+| macOS and Windows, Node.js 22 | Native PNG/PDF buffers and files, image dimensions, SVG, and snapshot round trips |
+| Chromium, Firefox, and WebKit supplied by the pinned Playwright dependency | Canvas and SVG clipping, gradients, text alignment, resizing, DPR 1 and 2, accessible labels, and SVG downloads |
+
+Browser checks use a shared representative graphic scene; they do not imply
+coverage of every browser release, operating system, font, or device. Native
+checks use the optional Canvas backend installed on each runner.
+
+SVG, PNG, and PDF options must be plain objects (including objects with a null
+prototype). Unknown option keys are rejected before output is written; for
+example, use `pixelRatio`, not `pixelratio`, for PNG density.
 
 ## Complete example program
 
@@ -163,6 +259,19 @@ Missing output directories are created. A logical 640×400 chart at ratio 2
 produces a 1280×800 image. The result contains the absolute `output`, physical
 `width` and `height`, `pixelRatio`, and byte count.
 
+## PNG in memory
+
+For HTTP responses, object storage, or other host-controlled output, use the
+Node-only `renderToPNGBuffer(program, { pixelRatio })` from `ggaction/png`.
+Options are optional and accept only `pixelRatio` (default 1). The result is
+`{ buffer, width, height, pixelRatio, bytes }`, where `buffer` is a caller-owned
+`Uint8Array` and dimensions are physical pixels. Each call returns independent
+bytes. The result object is frozen; its byte array remains writable.
+
+Canvas drawing and geometry validation are synchronous. PNG encoding runs
+asynchronously in the native backend; the returned Promise does not move chart
+authoring or Canvas drawing off the JavaScript thread.
+
 ## PDF output
 
 The Node-only PDF entry writes one completed chart as one vector PDF page:
@@ -226,6 +335,19 @@ Line curve actions resolve interpolation into those commands before rendering.
 Canvas, SVG, and PDF execute `L` and cubic `C` segments but do not read curve
 names or calculate control points.
 
+## PDF in memory
+
+The Node-only `renderToPDFBuffer(program, { metadata })` from `ggaction/pdf`
+accepts the same optional metadata as file output and returns
+`{ buffer, width, height, pages: 1, bytes }`. Options may be omitted. The
+caller-owned `Uint8Array` contains one vector PDF page; dimensions are logical
+PDF points. The result object is frozen and its bytes remain writable.
+
+Both memory functions reject `output`; PDF also rejects `pixelRatio`. File
+functions call their corresponding memory function before creating directories
+or replacing files. PDF construction and encoding are synchronous even though
+the public function returns a Promise. Use a host worker for expensive jobs.
+
 ## Errors and limitations
 
 Rendering never reads `semanticSpec`. Every drawable property must already be
@@ -239,6 +361,73 @@ key sets. SVG `resourceNamespace` follows the identifier form above, and SVG
 text, attributes, titles, and descriptions reject characters that XML 1.0
 cannot represent; emoji, joiners, variation selectors, and right-to-left text
 remain unchanged.
+
+## Accessible data alternatives
+
+`exportAccessibleData(program, { target? })` from `ggaction/accessibility` works in
+Browser and Node with Full or Basic editable programs. It returns a deeply frozen
+`{ schemaVersion: 1, title, views }` without changing the program or its trace.
+`title` is the semantic title string or `null`.
+
+<!-- snippet-context:start -->
+
+> **alternative.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+import { exportAccessibleData } from "ggaction/accessibility";
+
+const program = chart().createCanvas()
+  .createData({ values: [
+    { quarter: "Q1", revenue: 12 }, { quarter: "Q1", revenue: 18 },
+    { quarter: "Q2", revenue: 20 }
+  ] })
+  .createBarPlot({ id: "sales", x: "quarter",
+    y: { field: "revenue", aggregate: "mean" }, guides: false });
+const alternative = exportAccessibleData(program, { target: "sales" });
+console.log(alternative.views[0]);
+```
+
+The first quarter is one aggregated bar with endpoints 0 and 15, rather than two
+source rows. The second bar has endpoints 0 and 20.
+
+Each owner view has `ownerId`, `markType`, `columns`, `rows`, and `units`. A column
+has a unique `key`, semantic channel `role`, and `component` mark ID, with `field`,
+`aggregate`, and `unit` when applicable. Keys combine component ID and channel
+with `:`. A row has `component`, a `series` field/value record, and `values` keyed
+by those column keys. Composite owners include their owned graphical components
+in the same view; rows from different components may use different columns.
+Absent values remain absent. Temporal position values use UTC milliseconds and
+corresponding columns declare `unit: "utc-milliseconds"`; other units are not
+guessed. Area layouts can also supply `lower` and `upper` endpoint roles. Parallel
+coordinate dimensions use their field names as column roles.
+
+Omitting `target` exports every stable chart owner in semantic order. An explicit
+target must name a stable owner; requesting an owned component reports its owner.
+A composition returns child views in composition order, each with `ownerId`,
+`kind: "composition-child"`, `title`, and nested `views`. Facet children also have
+a `facet` field/value record. Grid facets contain both row and column fields;
+repeats contain `repeatField` and `channel`. To select a mark within a composition,
+pass the explicit child program to this function. A composition-level target is
+rejected instead of choosing among repeated IDs.
+
+Point, bar, histogram, line, area, arc, rule, tick, rect, and their supported
+composite owners use final materialized data. This includes aggregate cells, bin
+endpoints, ordered path points, stack endpoints, error intervals, and final mark
+filters. Attached text labels repeat owner data and do not create additional views.
+Standalone text marks and custom unsupported owners raise an error identifying
+the owner; the function never silently returns a partial set of views. Incomplete
+marks and render-only snapshots are rejected. Empty charts return an empty list.
+
+The output describes the authored chart data, including data outside a clipped
+viewport or styled with zero opacity. It does not reverse scale mappings from
+pixels or infer units, prose, missing observations, or statistical explanations.
+The host supplies meaningful captions, HTML tables, and ARIA relationships. Use
+DOM `textContent` for user-controlled titles, column labels, and values; do not
+insert them as HTML. Keep the alternative synchronized by exporting the updated
+program after an edit.
 
 ## Related
 

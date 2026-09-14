@@ -1,5 +1,5 @@
 import { assertGuideOptions, guideConflict } from "../guides/reuse.js";
-import { action } from "../../core/action.js";
+import { action, closedAction } from "../../core/action.js";
 import { validateKeys } from "../../core/validation.js";
 import { GRADIENT_PROFILE_FIELDS } from "../../grammar/gradientProfile.js";
 import {
@@ -17,13 +17,12 @@ const CENTER_OPTIONS = Object.freeze([
 ]);
 const LEGEND_OPTIONS = Object.freeze(["owner", "title", "position"]);
 
-export const createGradientPlotCenter = action(
+export const createGradientPlotCenter = /* @__PURE__ */ closedAction(
   {
     op: "createGradientPlotCenter",
     description: "Create the optional center rule for one gradient plot."
-  },
+  }, CENTER_OPTIONS,
   function (args = {}) {
-    validateKeys(args, CENTER_OPTIONS, "createGradientPlotCenter");
     const categoryAction = args.orientation === "vertical" ? "encodeX" : "encodeY";
     const measureAction = args.orientation === "vertical" ? "encodeY" : "encodeX";
     const spanOrientation = args.orientation === "vertical" ? "horizontal" : "vertical";
@@ -82,7 +81,7 @@ function editProperties(program, target, properties) {
   return next;
 }
 
-export const rematerializeGradientPlotLegend = action(
+export const rematerializeGradientPlotLegend = /* @__PURE__ */ action(
   {
     op: "rematerializeGradientPlotLegend",
     description: "Rematerialize one gradient plot density legend."
@@ -160,7 +159,7 @@ export function fulfillGradientPlotLegend(program, args) {
   return program;
 }
 
-export const createGradientPlotLegend = action(
+export const createGradientPlotLegend = /* @__PURE__ */ action(
   {
     op: "createGradientPlotLegend",
     description: "Create the neutral density legend owned by one gradient plot."

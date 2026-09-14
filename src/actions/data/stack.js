@@ -8,14 +8,14 @@ const OPTIONS = Object.freeze([
   "id", "source", "category", "group", "value", "mode", "as"
 ]);
 
-export const materializeStackData = derivedMaterializer(
+export const materializeStackData = /* @__PURE__ */ derivedMaterializer(
   "materializeStackData",
   "Materialize one immutable category/series stack dataset.",
   "stack",
   deriveStackRows
 );
 
-export const createStackData = derivedCreator(
+export const createStackData = /* @__PURE__ */ derivedCreator(
   "createStackData",
   "Create reusable start, end, value, and share stack rows.",
   OPTIONS,

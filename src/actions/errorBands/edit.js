@@ -1,13 +1,8 @@
-import { action } from "../../core/action.js";
+import { currentIntervalRoleArgs, resolveIntervalRoleScales, applyIntervalStatistics } from "../intervals/revision.js";
+import { closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
-import {
-  validateOptionObject,
-  validateKeys,
-  validateNonEmptyString,
-  validateNonNegativeFinite,
-  validateUnitInterval
-} from "../../core/validation.js";
+import { validateKeys, validateNonEmptyString, validateNonNegativeFinite, validateUnitInterval } from "../../core/validation.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
 import { normalizeStrokeDashPattern } from "../../grammar/scales/index.js";
 import {
@@ -15,12 +10,10 @@ import {
   STROKE_STYLE_PROPERTIES
 } from "../../grammar/strokeStyle.js";
 import { findLayer } from "../../selectors/layers.js";
-import { findSemanticScale } from "../../selectors/scales.js";
 import { removeOwnedMark } from "../marks/remove.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { resolveIntervalComposite } from "../intervals/resolve.js";
 import {
-  resolveDistributionScalePlan,
   setCartesianPosition,
   updateDistributionPositions
 } from "../distributions/revision.js";
@@ -68,7 +61,6 @@ const EDIT_OPTIONS = Object.freeze([
   "target", "data", "x", "y", "groupBy", "fill", "opacity", "curve",
   "statistics", "boundaries", ...STROKE_STYLE_PROPERTIES
 ]);
-const STATISTICS_OPTIONS = Object.freeze(["center", "extent", "method", "level"]);
 const EDIT_POLICY = Object.freeze({
   operation: "editErrorBand",
   resourceLabel: "error-band",
@@ -116,48 +108,13 @@ function resolveOwner(program, requested) {
   });
 }
 
-function currentRoleArgs(program, owner, current) {
-  const transform = findIntervalTransform(program, current.data);
-  const intervalChannel = current.orientation === "vertical" ? "y" : "x";
-  const positionChannel = intervalChannel === "x" ? "y" : "x";
-  const position = {
-    field: current.position.field,
-    fieldType: current.position.fieldType,
-    ...(current.position.temporalUnit === undefined
-      ? {}
-      : { temporalUnit: current.position.temporalUnit }),
-    scale: { id: current.positionScale }
-  };
-  const interval = transform === undefined
-    ? {
-        center: current.centerField ?? owner.encoding[intervalChannel].title,
-        lower: current.lowerField,
-        upper: current.upperField,
-        scale: { id: current.intervalScale }
-      }
-    : {
-        field: transform.field,
-        center: transform.center,
-        extent: transform.extent,
-        ...(transform.method === undefined ? {} : { method: transform.method }),
-        ...(transform.level === undefined ? {} : { level: transform.level }),
-        scale: { id: current.intervalScale }
-      };
-  return {
-    source: current.source ?? transform?.source ?? current.data,
-    x: positionChannel === "x" ? position : interval,
-    y: positionChannel === "y" ? position : interval,
-    groupBy: current.groupBy
-  };
-}
-
 function channelArgs(requested, fallback) {
   if (requested === undefined) return fallback;
   return requested;
 }
 
 function resolveRoleCandidate(program, owner, current, args) {
-  const previous = currentRoleArgs(program, owner, current);
+  const previous = currentIntervalRoleArgs(program, owner, current, false);
   const full = {
     data: Object.hasOwn(args, "data") ? args.data : previous.source,
     x: channelArgs(args.x, previous.x),
@@ -179,75 +136,11 @@ function resolveRoleCandidate(program, owner, current, args) {
       "editErrorBand groupBy must differ from the independent position field."
     );
   }
-  if (Object.hasOwn(args, "statistics")) {
-    if (!isPlainObject(args.statistics)) {
-      throw new TypeError("editErrorBand statistics must be a plain object.");
-    }
-    validateKeys(args.statistics, STATISTICS_OPTIONS, "editErrorBand statistics");
-    if (!STATISTICS_OPTIONS.some(key => Object.hasOwn(args.statistics, key))) {
-      throw new Error(
-        "editErrorBand statistics requires center, extent, method, or level."
-      );
-    }
-    full[resolved.interval.channel] = {
-      ...full[resolved.interval.channel],
-      ...args.statistics
-    };
-    resolved = resolveIntervalComposite(program, full, policy);
-  }
-  const positionRole = {
-    field: resolved.position.field,
-    fieldType: resolved.position.fieldType,
-    scale: resolved.position.scale
-  };
-  const intervalTitle = resolved.interval.mode === "statistical"
-    ? resolved.interval.field
-    : resolved.interval.title;
-  const intervalRole = {
-    field: intervalTitle,
-    fieldType: "quantitative",
-    scale: resolved.interval.scale
-  };
-  const x = resolved.position.channel === "x" ? positionRole : intervalRole;
-  const y = resolved.position.channel === "y" ? positionRole : intervalRole;
-  const plan = (channel, role) => {
-    const fallback = role === intervalRole
-      ? current.intervalScale
-      : current.positionScale;
-    const stored = findSemanticScale(program, fallback);
-    const compatible = role.fieldType === "temporal"
-      ? stored?.type === "time"
-      : ["linear", "log", "pow", "sqrt", "symlog"].includes(stored?.type);
-    const requested = role.scale.type !== undefined || compatible
-      ? role.scale
-      : { ...role.scale, type: role.fieldType === "temporal" ? "time" : "linear" };
-    return resolveDistributionScalePlan(program, {
-      channel,
-      fieldType: role.fieldType,
-      requested,
-      fallback,
-      defaults: role === intervalRole
-        ? EDIT_POLICY.intervalScaleDefaults
-        : EDIT_POLICY.scaleDefaults(role.fieldType)
-    });
-  };
-  const xScale = plan("x", x);
-  const yScale = plan("y", y);
+  resolved = applyIntervalStatistics(program, full, policy, args, resolved);
+  const roles = resolveIntervalRoleScales(program, resolved, current, EDIT_POLICY, owner, previous);
   return {
     ...resolved,
-    x: { ...x, scale: xScale.id },
-    y: { ...y, scale: yScale.id },
-    xScale,
-    yScale,
-    category: resolved.position.field,
-    categoryType: resolved.position.fieldType,
-    measure: intervalTitle,
-    previous: {
-      x: { field: previous.x.center ?? previous.x.field,
-        fieldType: owner.encoding.x.fieldType, scale: owner.encoding.x.scale },
-      y: { field: previous.y.center ?? previous.y.field,
-        fieldType: owner.encoding.y.fieldType, scale: owner.encoding.y.scale }
-    }
+    ...roles
   };
 }
 
@@ -389,17 +282,12 @@ function removeBoundary(program, id) {
   return removeOwnedMark(program, id);
 }
 
-export const rematerializeErrorBandBoundary = action(
+export const rematerializeErrorBandBoundary = /* @__PURE__ */ closedAction(
   {
     op: "rematerializeErrorBandBoundary",
     description: "Rematerialize one owned error-band boundary."
-  },
+  }, REMATERIALIZE_OPTIONS,
   function (args = {}) {
-    validateOptionObject(
-      args,
-      REMATERIALIZE_OPTIONS,
-      "rematerializeErrorBandBoundary"
-    );
     const id = validateUserId(args.id, "Error-band boundary id");
     currentBoundaryAppearance(this, id);
     const graphic = this.graphicSpec.objects[id];
@@ -422,13 +310,12 @@ export const rematerializeErrorBandBoundary = action(
   }
 );
 
-export const editErrorBand = action(
+export const editErrorBand = /* @__PURE__ */ closedAction(
   {
     op: "editErrorBand",
     description: "Revise one error band's roles, statistics, body, and boundaries."
-  },
+  }, EDIT_OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, EDIT_OPTIONS, "editErrorBand");
     if (!["data", "x", "y", "groupBy", "fill", "opacity", "curve",
       "statistics", "boundaries", ...STROKE_STYLE_PROPERTIES]
       .some(key => Object.hasOwn(args, key))) {
@@ -585,17 +472,12 @@ export const editErrorBand = action(
   }
 );
 
-export const editErrorBandBoundary = action(
+export const editErrorBandBoundary = /* @__PURE__ */ closedAction(
   {
     op: "editErrorBandBoundary",
     description: "Edit one or both owned error-band boundaries."
-  },
+  }, BOUNDARY_EDIT_OPTIONS,
   function (args = {}) {
-    validateOptionObject(
-      args,
-      BOUNDARY_EDIT_OPTIONS,
-      "editErrorBandBoundary"
-    );
     if (!ERROR_BAND_BOUNDARY_OPTIONS.some(key => Object.hasOwn(args, key))) {
       throw new Error("editErrorBandBoundary requires an appearance change.");
     }

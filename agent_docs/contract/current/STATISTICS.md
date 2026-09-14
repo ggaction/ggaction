@@ -143,6 +143,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   stored interval provenance, validates the complete center/extent/method/level combination, creates one namespaced immutable
   interval revision, explicitly rebinds the main rule and enabled caps, rematerializes them, and safely releases the
   old unreferenced dataset. Explicit center/lower/upper owners reject this option rather than changing modes.
+- A combined role/statistics edit uses the same partial merge as a statistics-only edit. Inherited `method` and `level`
+  survive only a CI-to-CI transition; changing extent discards them unless explicitly supplied, in which case the
+  complete combination must validate. Position or grouping edits must not change that merge policy.
 - Without data-role options or `statistics`, the edit retains the existing interval dataset. Main and cap
   appearance is reconciled through one wrapped `rematerializeErrorBar` action; generated cap IDs are not public
   parameters. Attached mark labels are rebound with interval revisions, and stored selections/highlights replay.

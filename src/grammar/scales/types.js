@@ -26,6 +26,14 @@ export const COMPLETE_SCALE_TYPES = Object.freeze([
   ...new Set(Object.values(SCALE_TYPES_BY_ROLE).flat())
 ]);
 
+// Dimensionless scale spacing is shared by generic and focused editors.
+export const SCALE_OPTION_UNITS = Object.freeze({
+  padding: "band-fraction",
+  paddingInner: "band-fraction",
+  paddingOuter: "band-fraction",
+  align: "ratio"
+});
+
 const SCALE_PROPERTY_TYPES = Object.freeze({
   midpoint: Object.freeze(["sequential"]),
   nice: Object.freeze(["linear", "log", "pow", "sqrt", "symlog", "time"]),

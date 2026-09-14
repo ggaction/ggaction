@@ -1,3 +1,4 @@
+import { registerTextMetricActions } from "./textMetrics/index.js";
 import { registerPrimitiveActions } from "./primitives/index.js";
 import { registerSelectionActions } from "./selection/index.js";
 import { registerDataActions } from "./data/index.js";
@@ -53,4 +54,5 @@ export function registerActions(ProgramClass) {
   registerCategoryOrderActions(ProgramClass);
   registerSelectionActions(ProgramClass);
   registerResourceActions(ProgramClass);
+  registerTextMetricActions(ProgramClass);
 }

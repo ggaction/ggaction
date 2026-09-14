@@ -1,3 +1,4 @@
+import { IMPUTE_REQUIRED_OPTIONS } from "../src/core/optionRequirements.js";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -28,6 +29,7 @@ const relationshipFile = path.join(root, "knowledge/action-relationships.json");
 
 const operationPrefixes = Object.freeze([
   "create",
+  "revise",
   "bind",
   "apply",
   "edit",
@@ -227,7 +229,7 @@ function actionResources(action, optionNames, intentSource) {
   if (action.domain === "primitives") prerequisites.push("extension action context");
 
   const owns = [];
-  if (["create", "apply", "encode", "filter", "select", "highlight", "layout", "jitter", "pack", "order", "compose"].includes(operation)) {
+  if (["create", "revise", "apply", "encode", "filter", "select", "highlight", "layout", "jitter", "pack", "order", "compose"].includes(operation)) {
     owns.push(operation === "encode" ? `${resource} assignment` : resource);
   }
 
@@ -241,9 +243,9 @@ function actionResources(action, optionNames, intentSource) {
 function declarationPosition(source, name) {
   const classStart = source.indexOf("export class ChartProgram {");
   if (classStart === -1) throw new Error("ChartProgram declaration was not found.");
-  const position = source.indexOf(`  ${name}(`, classStart);
-  if (position === -1) throw new Error(`Declaration was not found for ${name}.`);
-  return position + 2;
+  const match = new RegExp(`^  ${name}(?:<[^\\n]+>)?\\(`, "m").exec(source.slice(classStart));
+  if (match === null) throw new Error(`Declaration was not found for ${name}.`);
+  return classStart + match.index + 2;
 }
 
 function exactSignatureFromSource(source, name) {
@@ -437,6 +439,15 @@ function callPattern(action, options) {
 }
 
 function callPatterns(action, options, intentSource) {
+  if (action.name === "createImputedData") {
+    const branches = new Map();
+    for (const [method, required] of Object.entries(IMPUTE_REQUIRED_OPTIONS)) {
+      const key = required.join(", ");
+      branches.set(key, [...(branches.get(key) ?? []), JSON.stringify(method)]);
+    }
+    return [...branches].map(([required, methods]) =>
+      `${action.name}({ id, fields, method: ${methods.join(" | ")}, ${required}, source?, groupBy? })`);
+  }
   return intentSource.callPatternOverrides[action.name] ?? [callPattern(action, options)];
 }
 

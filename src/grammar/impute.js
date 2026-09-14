@@ -1,3 +1,4 @@
+import { IMPUTE_REQUIRED_OPTIONS } from "../core/optionRequirements.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { interpolateNumber, inverseLerp } from "./numeric.js";
 import { normalizeTemporalValue } from "./scales/fields.js";
@@ -6,7 +7,7 @@ const TRANSFORM_KEYS = Object.freeze([
   "type", "fields", "groupBy", "sortBy", "method", "value", "edges", "maxGap"
 ]);
 const SORT_KEYS = Object.freeze(["field", "order"]);
-const METHODS = Object.freeze(["constant", "forward", "backward", "linear"]);
+const METHODS = Object.freeze(Object.keys(IMPUTE_REQUIRED_OPTIONS));
 
 function rejectUnknownKeys(value, supported, label) {
   const unknown = Object.keys(value).find(key => !supported.includes(key));
@@ -98,7 +99,7 @@ export function validateImputeTransform(transform) {
     throw new Error(`Unsupported impute method "${transform.method}".`);
   }
   const hasValue = Object.hasOwn(transform, "value");
-  if (transform.method === "constant") {
+  if (IMPUTE_REQUIRED_OPTIONS[transform.method].includes("value")) {
     if (!hasValue) throw new TypeError("Impute constant requires a value.");
     if (transform.value === undefined) {
       throw new TypeError("Impute constant value must be a JSON-safe scalar.");

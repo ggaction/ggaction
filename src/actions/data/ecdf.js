@@ -9,7 +9,7 @@ const OPTIONS = Object.freeze([
   "id", "source", "field", "groupBy", "weight", "missing", "as"
 ]);
 
-export const materializeECDFData = derivedMaterializer(
+export const materializeECDFData = /* @__PURE__ */ derivedMaterializer(
   "materializeECDFData",
   "Materialize one empirical cumulative distribution dataset.",
   "ecdf",
@@ -17,7 +17,7 @@ export const materializeECDFData = derivedMaterializer(
   resolveECDFTransform
 );
 
-export const createECDFData = derivedCreator(
+export const createECDFData = /* @__PURE__ */ derivedCreator(
   "createECDFData",
   "Create immutable empirical cumulative distribution values.",
   OPTIONS,

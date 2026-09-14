@@ -542,7 +542,7 @@ function editLegendContent(program, target, args) {
   return next.rematerializeLegend();
 }
 
-export const editLegend = action(
+export const editLegend = /* @__PURE__ */ action(
   { op: "editLegend", description: "Edit one stable legend content, layout or appearance." },
   withGuideLayoutValidation(function (args = {}) {
     validateOptionObject(args, OPTIONS, "editLegend");

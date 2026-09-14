@@ -1,6 +1,6 @@
-import { action } from "../../../core/action.js";
+import { closedAction } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
-import { validateKeys } from "../../../core/validation.js";
+
 import { normalizePointPackingPolicy } from "../../../grammar/pointPacking.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
 import { resolveEligibleLayer } from "../../../selectors/layers.js";
@@ -28,10 +28,9 @@ function target(program, requested, channel) {
   });
 }
 
-export const packPoints = action(
-  { op: "packPoints", description: "Pack point glyphs deterministically within categorical slots." },
+export const packPoints = /* @__PURE__ */ closedAction(
+  { op: "packPoints", description: "Pack point glyphs deterministically within categorical slots." }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "packPoints");
     const policy = normalizePointPackingPolicy(args);
     const layer = target(this, args.target, policy.channel);
     if (this.materializationConfigs.jitters?.[layer.id] !== undefined) {
@@ -43,10 +42,9 @@ export const packPoints = action(
   }
 );
 
-export const removePointPacking = action(
-  { op: "removePointPacking", description: "Remove point packing and restore semantic positions." },
+export const removePointPacking = /* @__PURE__ */ closedAction(
+  { op: "removePointPacking", description: "Remove point packing and restore semantic positions." }, REMOVE_OPTIONS,
   function (args = {}) {
-    validateKeys(args, REMOVE_OPTIONS, "removePointPacking");
     const requested = args.target === undefined
       ? undefined
       : validateUserId(args.target, "Point packing target");

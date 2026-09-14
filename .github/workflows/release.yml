@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  verify:
+  candidate:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the requested tag
@@ -24,18 +24,13 @@ jobs:
         with:
           ref: ${{ inputs.tag }}
           fetch-depth: 0
-      - name: Set up the canonical qualification runtime
+      - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 20
-          registry-url: https://registry.npmjs.org/
           package-manager-cache: false
-      - name: Install a trusted-publishing-capable npm CLI
-        run: npm install --global "npm@^11.5.1"
       - name: Install exact dependencies
         run: npm ci
-      - name: Install Chromium for source and release consumer tests
-        run: npx playwright install --with-deps chromium
       - name: Verify tag, version, and checked-out commit
         env:
           RELEASE_TAG: ${{ inputs.tag }}
@@ -50,63 +45,6 @@ jobs:
         env:
           RELEASE_TAG: ${{ inputs.tag }}
         run: node scripts/release-candidate.js "$RELEASE_TAG"
-      - name: Verify generated contracts and documentation
-        run: |
-          npm run contracts:catalog:check
-          npm run docs:generate
-          node --input-type=module -e '
-            import assert from "node:assert/strict";
-            import { buildDocProvenance } from "./scripts/doc-provenance.js";
-            assert.equal((await buildDocProvenance()).status, "published-release");
-          '
-          npm run test:docs
-          # Native Canvas PNG bytes vary across supported operating systems.
-          # Their sources, manifest, dimensions, and rendered output remain
-          # covered by documentation and render tests; all other generated
-          # documentation must stay byte-identical to the release tag.
-          git diff --exit-code -- \
-            docs \
-            examples/README.md \
-            knowledge/action-cards.json \
-            ':(exclude)docs/assets/images/*.png'
-      - name: Run unit, acceptance, and contract tests
-        run: npm test
-      - name: Set up the coverage and documentation runtime
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          registry-url: https://registry.npmjs.org/
-          package-manager-cache: false
-      - name: Restore verified dataset corpus
-        id: dataset-cache
-        uses: actions/cache@v5
-        with:
-          path: .artifacts/datasets/tidytuesday
-          key: ggaction-tidytuesday-${{ runner.os }}-${{ hashFiles('data/corpus/manifest.json') }}
-      - name: Fetch and verify dataset corpus
-        if: steps.dataset-cache.outputs.cache-hit != 'true'
-        run: npm run datasets:sync
-      - name: Run realistic corpus contracts
-        run: npm run test:realistic
-      - name: Enforce coverage thresholds
-        run: npm run test:coverage
-      - name: Test the installed packed-package consumers
-        run: npm run test:package
-      - name: Set up the documentation runtime
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.2.6"
-          bundler-cache: true
-      - name: Build documentation with Jekyll
-        run: npm run docs:build
-      - name: Check built documentation
-        run: npm run test:docs:built
-      - name: Test browser package and documentation consumers
-        run: |
-          npm run test:browser
-          npm run test:docs:browser
-      - name: Render PNG regression charts
-        run: npm run test:render
       - name: Retain the exact reviewed release artifact
         uses: actions/upload-artifact@v7
         with:
@@ -116,6 +54,497 @@ jobs:
             .artifacts/release/ggaction-*.tgz
             .artifacts/release/ggaction-*-release-notes.md
           if-no-files-found: error
+          retention-days: 7
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
+
+  verify-source:
+    needs: candidate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the requested tag
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          package-manager-cache: false
+      - name: Install exact dependencies
+        run: npm ci
+      - name: Download the canonical candidate
+        uses: actions/download-artifact@v8
+        with:
+          name: ggaction-${{ inputs.tag }}
+          path: .artifacts/release
+      - name: Verify and select the exact candidate for package consumers
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          node scripts/release-candidate.js --verify .artifacts/release/candidate.json "$RELEASE_TAG"
+          node --input-type=module -e '
+            import { readFileSync, appendFileSync } from "node:fs";
+            import path from "node:path";
+            const candidate = JSON.parse(readFileSync(".artifacts/release/candidate.json", "utf8"));
+            appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(".artifacts/release", candidate.filename)}\n`);
+          '
+      - name: Install Chromium for browser consumers
+        run: npx playwright install --with-deps chromium
+      - name: Run unit, acceptance, and contract tests
+        run: node scripts/run-check.js test -- npm test
+      - name: Test browser package consumers
+        run: node scripts/run-check.js test-browser -- npm run test:browser
+      - name: Render PNG regression charts
+        run: node scripts/run-check.js test-render -- npm run test:render
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
+
+  verify-coverage:
+    needs: candidate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the requested tag
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - name: Install exact dependencies
+        run: npm ci
+      - name: Download the canonical candidate
+        uses: actions/download-artifact@v8
+        with:
+          name: ggaction-${{ inputs.tag }}
+          path: .artifacts/release
+      - name: Verify and select the exact candidate for package consumers
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          node scripts/release-candidate.js --verify .artifacts/release/candidate.json "$RELEASE_TAG"
+          node --input-type=module -e '
+            import { readFileSync, appendFileSync } from "node:fs";
+            import path from "node:path";
+            const candidate = JSON.parse(readFileSync(".artifacts/release/candidate.json", "utf8"));
+            appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(".artifacts/release", candidate.filename)}\n`);
+          '
+      - name: Install Chromium for browser consumers
+        run: npx playwright install --with-deps chromium
+      - name: Enforce coverage thresholds
+        run: node scripts/run-check.js test-coverage -- npm run test:coverage
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
+
+  verify-package:
+    needs: candidate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the requested tag
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - name: Install exact dependencies
+        run: npm ci
+      - name: Download the canonical candidate
+        uses: actions/download-artifact@v8
+        with:
+          name: ggaction-${{ inputs.tag }}
+          path: .artifacts/release
+      - name: Verify and select the exact candidate for package consumers
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          node scripts/release-candidate.js --verify .artifacts/release/candidate.json "$RELEASE_TAG"
+          node --input-type=module -e '
+            import { readFileSync, appendFileSync } from "node:fs";
+            import path from "node:path";
+            const candidate = JSON.parse(readFileSync(".artifacts/release/candidate.json", "utf8"));
+            appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(".artifacts/release", candidate.filename)}\n`);
+          '
+      - name: Install Chromium for browser consumers
+        run: npx playwright install --with-deps chromium
+      - name: Test the installed canonical package
+        run: node scripts/run-check.js test-package -- npm run test:package
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
+
+  verify-documentation:
+    needs: candidate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the requested tag
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - name: Install exact dependencies
+        run: npm ci
+      - name: Download the canonical candidate
+        uses: actions/download-artifact@v8
+        with:
+          name: ggaction-${{ inputs.tag }}
+          path: .artifacts/release
+      - name: Verify and select the exact candidate for package consumers
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          node scripts/release-candidate.js --verify .artifacts/release/candidate.json "$RELEASE_TAG"
+          node --input-type=module -e '
+            import { readFileSync, appendFileSync } from "node:fs";
+            import path from "node:path";
+            const candidate = JSON.parse(readFileSync(".artifacts/release/candidate.json", "utf8"));
+            appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(".artifacts/release", candidate.filename)}\n`);
+          '
+      - name: Install Chromium for browser consumers
+        run: npx playwright install --with-deps chromium
+      - name: Set up the documentation runtime
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2.6"
+          bundler-cache: true
+      - name: Verify generated contracts and documentation
+        run: |
+          npm run contracts:catalog:check
+          node scripts/run-check.js docs-generate -- npm run docs:generate
+          node --input-type=module -e '
+            import assert from "node:assert/strict";
+            import { buildDocProvenance } from "./scripts/doc-provenance.js";
+            assert.equal((await buildDocProvenance()).status, "published-release");
+          '
+          node scripts/run-check.js test-docs -- npm run test:docs
+          # Native Canvas PNG bytes vary across supported operating systems.
+          # Their sources, manifest, dimensions, and rendered output remain
+          # covered by documentation and render tests; all other generated
+          # documentation must stay byte-identical to the release tag.
+          git diff --exit-code -- \
+            docs \
+            examples/README.md \
+            knowledge/action-cards.json \
+            ':(exclude)docs/assets/images/*.png'
+      - name: Build documentation with Jekyll
+        run: node scripts/run-check.js docs-build -- npm run docs:build
+      - name: Check built documentation
+        run: node scripts/run-check.js test-docs-built -- npm run test:docs:built
+      - name: Test documentation in desktop and mobile browsers
+        run: node scripts/run-check.js test-docs-browser -- npm run test:docs:browser
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
+
+  realistic-data:
+    needs: candidate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the requested tag
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - name: Install exact dependencies
+        run: npm ci
+      - name: Restore verified dataset corpus
+        id: dataset-cache
+        uses: actions/cache@v5
+        with:
+          path: .artifacts/datasets/tidytuesday
+          key: ggaction-tidytuesday-${{ runner.os }}-${{ hashFiles('data/corpus/manifest.json') }}
+      - name: Fetch and verify dataset corpus
+        if: steps.dataset-cache.outputs.cache-hit != 'true'
+        run: npm run datasets:sync
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
+
+  verify-realistic:
+    needs: [candidate, realistic-data]
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the requested tag
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - name: Install exact dependencies
+        run: npm ci
+      - name: Download the canonical candidate
+        uses: actions/download-artifact@v8
+        with:
+          name: ggaction-${{ inputs.tag }}
+          path: .artifacts/release
+      - name: Verify and select the exact candidate for package consumers
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          node scripts/release-candidate.js --verify .artifacts/release/candidate.json "$RELEASE_TAG"
+          node --input-type=module -e '
+            import { readFileSync, appendFileSync } from "node:fs";
+            import path from "node:path";
+            const candidate = JSON.parse(readFileSync(".artifacts/release/candidate.json", "utf8"));
+            appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(".artifacts/release", candidate.filename)}\n`);
+          '
+      - name: Restore verified dataset corpus
+        id: dataset-cache
+        uses: actions/cache@v5
+        with:
+          path: .artifacts/datasets/tidytuesday
+          key: ggaction-tidytuesday-${{ runner.os }}-${{ hashFiles('data/corpus/manifest.json') }}
+      - name: Fetch and verify dataset corpus
+        if: steps.dataset-cache.outputs.cache-hit != 'true'
+        run: npm run datasets:sync
+      - name: Run the assigned realistic files
+        run: node scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=${{ matrix.shard }}/7
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
+
+  verify-platform:
+    needs: candidate
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Download the canonical candidate
+        uses: actions/download-artifact@v8
+        with:
+          name: ggaction-${{ inputs.tag }}
+          path: .artifacts/release
+      - name: Verify and select the exact candidate for package consumers
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          node scripts/release-candidate.js --verify .artifacts/release/candidate.json "$RELEASE_TAG"
+          node --input-type=module -e '
+            import { readFileSync, appendFileSync } from "node:fs";
+            import path from "node:path";
+            const candidate = JSON.parse(readFileSync(".artifacts/release/candidate.json", "utf8"));
+            appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(".artifacts/release", candidate.filename)}\n`);
+          '
+      - name: Verify installed native package outputs
+        run: node scripts/run-check.js test-platform -- npm run test:platform
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
+
+  verify-browsers:
+    needs: candidate
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [firefox, webkit]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Download the canonical candidate
+        uses: actions/download-artifact@v8
+        with:
+          name: ggaction-${{ inputs.tag }}
+          path: .artifacts/release
+      - name: Verify and select the exact candidate for package consumers
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          node scripts/release-candidate.js --verify .artifacts/release/candidate.json "$RELEASE_TAG"
+          node --input-type=module -e '
+            import { readFileSync, appendFileSync } from "node:fs";
+            import path from "node:path";
+            const candidate = JSON.parse(readFileSync(".artifacts/release/candidate.json", "utf8"));
+            appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(".artifacts/release", candidate.filename)}\n`);
+          '
+      - name: Install the browser runtime
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Verify browser rendering and downloads
+        env:
+          GGACTION_BROWSER: ${{ matrix.browser }}
+        run: node scripts/run-check.js test-browser-compat -- npm run test:browser:compat
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
+
+  verify:
+    if: ${{ always() }}
+    needs: [candidate, verify-source, verify-coverage, verify-package, verify-documentation, realistic-data, verify-realistic, verify-platform, verify-browsers]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the requested tag
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Require every verification job to succeed
+        env:
+          GGACTION_JOB_RESULTS: ${{ toJSON(needs) }}
+        run: node scripts/test-sharding.js --check-jobs candidate verify-source verify-coverage verify-package verify-documentation realistic-data verify-realistic verify-platform verify-browsers
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
           retention-days: 7
 
   publish:
@@ -183,6 +612,19 @@ jobs:
           else
             gh release create "$RELEASE_TAG" --verify-tag --title "ggaction $VERSION" --notes-file "$NOTES"
           fi
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
 
   pages-build:
     needs: publish
@@ -214,13 +656,26 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6
       - name: Build the exact release documentation
-        run: npm run docs:build
+        run: node scripts/run-check.js docs-build -- npm run docs:build
       - name: Check the built documentation
-        run: npm run test:docs:built
+        run: node scripts/run-check.js test-docs-built -- npm run test:docs:built
       - name: Upload the GitHub Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
           path: _site
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
 
   context7-refresh:
     needs: publish

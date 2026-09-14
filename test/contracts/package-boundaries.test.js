@@ -1,3 +1,4 @@
+import { packageVersion } from "../../src/version.js";
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import test from "node:test";
@@ -27,12 +28,27 @@ const PUBLIC_ENTRIES = Object.freeze({
   "./png": Object.freeze({
     runtime: "./src/renderers/png.js",
     types: "./types/png.d.ts",
-    values: Object.freeze(["renderToPNG"])
+    values: Object.freeze(["renderToPNG", "renderToPNGBuffer"])
   }),
   "./pdf": Object.freeze({
     runtime: "./src/renderers/pdf.js",
     types: "./types/pdf.d.ts",
-    values: Object.freeze(["renderToPDF"])
+    values: Object.freeze(["renderToPDF", "renderToPDFBuffer"])
+  }),
+  "./persistence": Object.freeze({
+    runtime: "./src/persistence.js",
+    types: "./types/persistence.d.ts",
+    values: Object.freeze(["deserializeGraphic", "deserializeProgram", "serializeGraphic", "serializeProgram"])
+  }),
+  "./accessibility": Object.freeze({
+    runtime: "./src/accessibility.js",
+    types: "./types/accessibility.d.ts",
+    values: Object.freeze(["exportAccessibleData"])
+  }),
+  "./diagnostics": Object.freeze({
+    runtime: "./src/diagnostics.js",
+    types: "./types/diagnostics.d.ts",
+    values: Object.freeze(["getErrorDetails"])
   }),
   "./svg": Object.freeze({
     runtime: "./src/renderers/svg.js",
@@ -108,7 +124,7 @@ test("maps every public entry point to a declaration file", () => {
     "utf8"
   ));
   assert.equal(packageJson.types, PUBLIC_ENTRIES["."].types);
-  assert.deepEqual(Object.keys(packageJson.exports), Object.keys(PUBLIC_ENTRIES));
+  assert.deepEqual(Object.keys(packageJson.exports).sort(), Object.keys(PUBLIC_ENTRIES).sort());
   for (const [specifier, expected] of Object.entries(PUBLIC_ENTRIES)) {
     assert.deepEqual(packageJson.exports[specifier], {
       types: expected.types,
@@ -145,7 +161,7 @@ test("keeps the public release identity and legal metadata consistent", () => {
   const license = readFileSync(new URL("../../LICENSE", import.meta.url), "utf8");
 
   assert.equal(packageJson.name, "ggaction");
-  assert.equal(packageJson.version, "0.0.15");
+  assert.equal(packageJson.version, packageVersion);
   assert.equal(lockfile.version, packageJson.version);
   assert.equal(lockfile.packages[""].version, packageJson.version);
   assert.equal(packageJson.license, "MIT");

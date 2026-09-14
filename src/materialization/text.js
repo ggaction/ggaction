@@ -214,7 +214,7 @@ function pointPlacementGeometry(program, source, item) {
   const objectBounds = unionConcreteGraphicBounds(
     program.graphicSpec,
     item.graphicIds
-  );
+  , program.materializationConfigs.textMetrics);
   const corners = objectBounds === undefined ? [] : [
     { x: objectBounds.left, y: objectBounds.top },
     { x: objectBounds.right, y: objectBounds.top },
@@ -391,7 +391,7 @@ function resolveSourceTextItems(program, layer, config) {
         dx: resolvedConfig.dx,
         dy: resolvedConfig.dy
       }
-    });
+    }, program.materializationConfigs.textMetrics);
     if (!resolved.visible) return [];
     if (
       resolved.anchor.startsWith("outside") &&

@@ -1,5 +1,5 @@
-import { action } from "../../../core/action.js";
-import { validateKeys } from "../../../core/validation.js";
+import { closedAction } from "../../../core/action.js";
+
 import {
   removeLegendKinds,
   resolveCategoricalLegendRevision,
@@ -67,10 +67,9 @@ export function removeOwnedColorLegends(program, target) {
   return kinds.length === 0 ? program : removeLegendKinds(program, kinds);
 }
 
-export const removeLegend = action(
-  { op: "removeLegend", description: "Remove selected legend content or every block owned by one mark." },
+export const removeLegend = /* @__PURE__ */ closedAction(
+  { op: "removeLegend", description: "Remove selected legend content or every block owned by one mark." }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "removeLegend");
     const target = resolveLegendTarget(this, args.target, "removeLegend");
     const targetKinds = Object.entries(this.guideConfigs.legend ?? {})
       .filter(([, config]) => config?.target === target)

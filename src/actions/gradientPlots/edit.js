@@ -1,7 +1,7 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
+
 import { planDerivedDataRevision } from "../../materialization/dataProvenance.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
@@ -110,13 +110,12 @@ function updateGradientPositions(program, owner, current, candidate, hasCenter) 
   );
 }
 
-export const editGradientPlot = action(
+export const editGradientPlot = /* @__PURE__ */ closedAction(
   {
     op: "editGradientPlot",
     description: "Edit one stable categorical gradient plot."
-  },
+  }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "editGradientPlot");
     if (!OPTIONS.slice(1).some(key => Object.hasOwn(args, key))) {
       throw new Error("editGradientPlot requires at least one gradient-plot option.");
     }

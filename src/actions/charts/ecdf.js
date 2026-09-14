@@ -72,7 +72,7 @@ function resolveOwner(program, requested) {
   throw new Error("editECDFPlot target is ambiguous; provide target.");
 }
 
-export const createECDFPlot = action(
+export const createECDFPlot = /* @__PURE__ */ action(
   {
     op: "createECDFPlot",
     description: "Create a right-continuous empirical cumulative distribution plot."
@@ -158,7 +158,7 @@ export const createECDFPlot = action(
   }
 );
 
-export const editECDFPlot = action(
+export const editECDFPlot = /* @__PURE__ */ action(
   {
     op: "editECDFPlot",
     description: "Atomically revise an ECDF plot's source or statistical roles."

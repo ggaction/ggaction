@@ -1,7 +1,8 @@
+import { ownedChildren, ownership } from "../../selectors/markOwners.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
+
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { applyDetachedScaleRematerialization } from "../../materialization/dependencies.js";
@@ -22,50 +23,6 @@ const REMOVE_AXIS = Object.freeze({
   theta: "removeThetaAxis",
   radius: "removeRadialAxis"
 });
-
-function ownedChildren(program, id) {
-  const config = program.markConfigs[id] ?? {};
-  return [
-    config.errorBar?.lowerCapId,
-    config.errorBar?.upperCapId,
-    config.errorBand?.lowerBoundaryId,
-    config.errorBand?.upperBoundaryId,
-    config.regression?.bandId,
-    config.regression?.lineId,
-    config.boxPlot?.whiskerId,
-    config.boxPlot?.medianId,
-    config.boxPlot?.outlierId,
-    config.gradientPlot?.centerId,
-    config.intervalPlot?.intervalId,
-    config.endpointPlot?.roles?.stemId,
-    config.endpointPlot?.roles?.startId,
-    config.endpointPlot?.roles?.connectorId,
-    ...(config.raincloudPlot?.ownedChildIds ?? [])
-  ].concat(
-    program.semanticSpec.layers
-      .filter(layer => layer.source === id)
-      .map(layer => layer.id)
-  ).concat(
-    program.semanticSpec.layers
-      .filter(layer =>
-        program.markConfigs[layer.id]?.statisticalReference?.source === id
-      )
-      .map(layer => layer.id)
-  ).filter(child => child !== undefined && child !== id && findLayer(program, child) !== undefined);
-}
-
-function ownership(program) {
-  const ownerByChild = new Map();
-  for (const layer of program.semanticSpec.layers) {
-    for (const child of ownedChildren(program, layer.id)) {
-      if (program.markConfigs[child]?.statisticalReference !== undefined) {
-        continue;
-      }
-      ownerByChild.set(child, layer.id);
-    }
-  }
-  return ownerByChild;
-}
 
 function resolveOwner(program, requested) {
   const ownerByChild = ownership(program);
@@ -248,10 +205,9 @@ function cleanupPositionGuides(program, scales) {
   return next;
 }
 
-export const removeMark = action(
-  { op: "removeMark", description: "Remove one stable mark owner and owned state." },
+export const removeMark = /* @__PURE__ */ closedAction(
+  { op: "removeMark", description: "Remove one stable mark owner and owned state." }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "removeMark");
     const owner = resolveOwner(this, args.target);
     const ids = collectClosure(this, owner.id);
     const external = externalMarkReferences(this, ids);

@@ -10,7 +10,7 @@ import { normalizeBarWidth } from "../../grammar/bars/geometry.js";
 
 const OPTIONS = Object.freeze(["band", "pixels", "target"]);
 
-const encodeBarWidth = action(
+const encodeBarWidth = /* @__PURE__ */ action(
   {
     op: "encodeBarWidth",
     description: "Override aggregate or ranged bar width within its category slot."

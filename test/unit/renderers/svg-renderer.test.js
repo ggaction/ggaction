@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { cloneAndFreeze } from "../../../src/core/immutable.js";
 import { renderToSVG } from "../../../src/renderers/svg.js";
 
 function completeGraphicSpec() {
@@ -486,4 +487,18 @@ test("rejects invalid options and incomplete concrete graphics", () => {
     () => renderToSVG({ graphicSpec: unsupported }),
     /does not support "image" yet/
   );
+});
+
+
+test("repeated immutable SVG output matches fresh output and mutable scenes invalidate namespaces", () => {
+  const mutable = completeGraphicSpec();
+  const owned = cloneAndFreeze(mutable);
+  const first = renderToSVG({ graphicSpec: owned });
+  assert.equal(renderToSVG({ graphicSpec: owned }), first);
+  assert.equal(renderToSVG({ graphicSpec: mutable }), first);
+  mutable.objects.plot.items[0].properties.width += 1;
+  const changed = renderToSVG({ graphicSpec: mutable });
+  assert.notEqual(changed.match(/id="(ggaction-gradient-[^"]+)/)[1],
+    first.match(/id="(ggaction-gradient-[^"]+)/)[1]);
+  assert.equal(renderToSVG({ graphicSpec: owned }), first);
 });

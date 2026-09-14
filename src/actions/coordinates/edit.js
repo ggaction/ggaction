@@ -27,7 +27,7 @@ function applyCoordinatePatch(program, target, property, value) {
   });
 }
 
-export const editCoordinate = action(
+export const editCoordinate = /* @__PURE__ */ action(
   {
     op: "editCoordinate",
     description: "Edit coordinate layout constraints and rematerialize its consumers."

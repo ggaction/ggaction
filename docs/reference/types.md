@@ -21,9 +21,12 @@ interface ChartProgramActions {
   createCanvas(options?: CanvasOptions): ChartProgram;
   editCanvas(options: CanvasOptions): ChartProgram;
   fitCanvas(options?: FitCanvasOptions): ChartProgram;
+  applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
+  removeTextMetrics(): ChartProgram;
   applyTheme(options: ApplyThemeOptions): ChartProgram;
   removeTheme(): ChartProgram;
-  createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
+  createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
+  reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;
   removeData(options: RemoveResourceOptions): ChartProgram;
   removeScale(options: RemoveResourceOptions): ChartProgram;
   removeCoordinate(options: RemoveResourceOptions): ChartProgram;
@@ -381,6 +384,19 @@ type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "t
 </details>
 
 Related types: [`TextMarkOptions`](#type-textmarkoptions) · [`TextFormat`](#type-textformat) · [`LabelLayoutOptions`](#type-labellayoutoptions).
+
+### `ApplyTextMetricsOptions` {#type-applytextmetricsoptions}
+
+<details markdown="1">
+<summary>Expand ApplyTextMetricsOptions</summary>
+
+```typescript
+export interface ApplyTextMetricsOptions { profile: TextMetricsProfile; }
+```
+
+</details>
+
+Related types: [`TextMetricsProfile`](#type-textmetricsprofile).
 
 ### `ApplyThemeOptions` {#type-applythemeoptions}
 
@@ -2101,6 +2117,22 @@ export interface CreateCoordinateOptions {
 ```
 
 </details>
+
+### `CreateDataOptions` {#type-createdataoptions}
+
+<details markdown="1">
+<summary>Expand CreateDataOptions</summary>
+
+```typescript
+export interface CreateDataOptions<Row extends object> {
+  id?: string;
+  values: readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[];
+}
+```
+
+</details>
+
+Related types: [`StoredCell`](#type-storedcell).
 
 ### `CreateDensityPlotOptions` {#type-createdensityplotoptions}
 
@@ -9568,6 +9600,22 @@ type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;
 
 </details>
 
+### `ReviseDataOptions` {#type-revisedataoptions}
+
+<details markdown="1">
+<summary>Expand ReviseDataOptions</summary>
+
+```typescript
+export interface ReviseDataOptions<Row extends object> extends CreateDataOptions<Row> {
+  source: string;
+  id: string;
+}
+```
+
+</details>
+
+Related types: [`CreateDataOptions`](#type-createdataoptions).
+
 ### `RotationInput` {#type-rotationinput}
 
 <details markdown="1">
@@ -10114,6 +10162,20 @@ export interface StatisticalWeight {
 
 </details>
 
+### `StoredCell` {#type-storedcell}
+
+<details markdown="1">
+<summary>Expand StoredCell</summary>
+
+```typescript
+type StoredCell<T> = T extends (...args: never[]) => unknown ? never
+  : T extends readonly (infer Value)[] ? readonly StoredCell<Value>[]
+  : T extends object ? { readonly [Key in keyof T]: StoredCell<T[Key]> }
+  : T;
+```
+
+</details>
+
 ### `StripBandJitterOptions` {#type-stripbandjitteroptions}
 
 <details markdown="1">
@@ -10431,6 +10493,53 @@ export interface TextMarkOptions {
 </details>
 
 Related types: [`RotationInput`](#type-rotationinput).
+
+### `TextMeasurement` {#type-textmeasurement}
+
+<details markdown="1">
+<summary>Expand TextMeasurement</summary>
+
+```typescript
+export interface TextMeasurement {
+  readonly text: string;
+  readonly fontFamily: string;
+  readonly fontSize: number;
+  readonly fontWeight: TextMetricFontWeight;
+  readonly width: number;
+}
+```
+
+</details>
+
+Related types: [`TextMetricFontWeight`](#type-textmetricfontweight).
+
+### `TextMetricFontWeight` {#type-textmetricfontweight}
+
+<details markdown="1">
+<summary>Expand TextMetricFontWeight</summary>
+
+```typescript
+export type TextMetricFontWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
+```
+
+</details>
+
+### `TextMetricsProfile` {#type-textmetricsprofile}
+
+<details markdown="1">
+<summary>Expand TextMetricsProfile</summary>
+
+```typescript
+export interface TextMetricsProfile {
+  readonly schemaVersion: 1;
+  readonly id: string;
+  readonly measurements: readonly TextMeasurement[];
+}
+```
+
+</details>
+
+Related types: [`TextMeasurement`](#type-textmeasurement).
 
 ### `ThemeDefinition` {#type-themedefinition}
 

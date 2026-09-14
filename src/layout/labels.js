@@ -172,7 +172,7 @@ export function assertMarkLabelPlacementSupport({ markType, coordinateType, inte
 }
 
 function localTextBounds(text) {
-  return resolveTextBounds({ ...text, x: 0, y: 0 });
+  return resolveTextBounds({ ...text, x: 0, y: 0 }, text.profile);
 }
 
 function projectionRange(bounds, direction) {
@@ -207,7 +207,7 @@ function centerCandidate(center, text) {
 }
 
 function candidateBounds(candidate, text) {
-  return resolveTextBounds({ ...text, x: candidate.x, y: candidate.y });
+  return resolveTextBounds({ ...text, x: candidate.x, y: candidate.y }, text.profile);
 }
 
 function intervalContains(bounds, container) {
@@ -328,7 +328,8 @@ function outsideFallback(anchor) {
   return anchor === "insideStart" ? "outsideStart" : "outsideEnd";
 }
 
-export function resolveMarkLabelPlacement({ placement, geometry, text } = {}) {
+export function resolveMarkLabelPlacement({ placement, geometry, text } = {}, profile) {
+  text = { ...text, profile };
   const normalized = normalizeMarkLabelPlacement(placement);
   validatePlacementGeometry(geometry, normalized.anchor);
   let anchor = normalized.anchor;
@@ -501,7 +502,7 @@ export function enumerateLabelOffsets({ axis, padding, maxDisplacement }) {
   return cloneAndFreeze(candidates);
 }
 
-function textBounds(item, offset = { x: 0, y: 0 }) {
+function textBounds(item, offset = { x: 0, y: 0 }, profile) {
   return resolveTextBounds({
     x: item.x + offset.x,
     y: item.y + offset.y,
@@ -512,7 +513,7 @@ function textBounds(item, offset = { x: 0, y: 0 }) {
     textAlign: item.textAlign,
     textBaseline: item.textBaseline,
     rotation: item.rotation
-  });
+  }, profile);
 }
 
 function candidateScore(bounds, boundary, placed, candidate, order) {
@@ -552,7 +553,7 @@ function overlapPairs(items) {
   return pairs;
 }
 
-export function resolveLabelLayout({ items, bounds, ...options } = {}) {
+export function resolveLabelLayout({ items, bounds, ...options } = {}, profile) {
   if (!Array.isArray(items)) {
     throw new TypeError("Label layout requires an item array.");
   }
@@ -567,14 +568,14 @@ export function resolveLabelLayout({ items, bounds, ...options } = {}) {
   );
   const base = items.map(item => ({
     id: item.id,
-    collisionBounds: expanded(textBounds(item), policy.padding)
+    collisionBounds: expanded(textBounds(item, undefined, profile), policy.padding)
   }));
   const placed = [];
   const resolved = [];
   for (const item of items) {
     let best;
     for (const [order, candidate] of candidates.entries()) {
-      const boundsAtCandidate = textBounds(item, candidate);
+      const boundsAtCandidate = textBounds(item, candidate, profile);
       const collisionBounds = expanded(boundsAtCandidate, policy.padding);
       const score = candidateScore(
         collisionBounds,
@@ -619,7 +620,7 @@ export function resolveLabelLayout({ items, bounds, ...options } = {}) {
   });
 }
 
-export function assertPolarTextLayout({ canvas, items, label }) {
+export function assertPolarTextLayout({ canvas, items, label }, profile) {
   const dimensions = canvas?.properties;
   if (
     ![dimensions?.width, dimensions?.height].every(Number.isFinite) ||
@@ -627,7 +628,7 @@ export function assertPolarTextLayout({ canvas, items, label }) {
   ) {
     throw new Error("Polar text layout requires finite Canvas dimensions.");
   }
-  const bounds = items.map(resolveTextBounds);
+  const bounds = items.map(item => resolveTextBounds(item, profile));
   const outside = bounds.some(item => !textBoundsFitCanvas(item, dimensions));
   let overlap = false;
   for (let first = 0; first < bounds.length && !overlap; first += 1) {

@@ -1,5 +1,5 @@
 import { validateUserId } from "../../../core/identifiers.js";
-import { isPlainObject } from "../../../core/immutable.js";
+import { validateDataRows } from "../../../core/validation.js";
 import { hasDataset } from "../../../selectors/datasets.js";
 
 export function validateDatasetSemanticValue(
@@ -10,9 +10,7 @@ export function validateDatasetSemanticValue(
 ) {
   const property = parsed.path[0];
   if (property === "values") {
-    if (!Array.isArray(value) || !value.every(isPlainObject)) {
-      throw new TypeError("Dataset values must be an array of plain row objects.");
-    }
+    validateDataRows(value, `Dataset "${parsed.id}"`);
     return;
   }
   if (property === "source") {

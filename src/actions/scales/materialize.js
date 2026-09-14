@@ -27,7 +27,7 @@ function validateOptions(args) {
   }
 }
 
-export const rematerializeScale = action(
+export const rematerializeScale = /* @__PURE__ */ action(
   {
     op: "rematerializeScale",
     description: "Recompute every concrete consumer of a scale."

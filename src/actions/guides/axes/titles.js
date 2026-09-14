@@ -36,7 +36,7 @@ import { resolveConcreteGraphicBounds } from
 import { validateAxisTextStyle } from "./labels.js";
 import { resolveRotation } from "../../../grammar/rotation.js";
 
-function titleBounds(geometry, config, text) {
+function titleBounds(geometry, config, text, profile) {
   return resolveTextBounds({
     ...geometry,
     text,
@@ -46,7 +46,7 @@ function titleBounds(geometry, config, text) {
     textAlign: "center",
     textBaseline: "middle",
     rotation: config.rotation
-  });
+  }, profile);
 }
 
 function inferredTitleOffset(program, channel, config) {
@@ -57,7 +57,7 @@ function inferredTitleOffset(program, channel, config) {
   });
   const canvas = findCanvasGraphic(program)?.properties;
   const labels = program.graphicSpec.objects[`${channel}AxisLabels`]
-    ? resolveConcreteGraphicBounds(program.graphicSpec, `${channel}AxisLabels`)
+    ? resolveConcreteGraphicBounds(program.graphicSpec, `${channel}AxisLabels`, program.materializationConfigs.textMetrics)
     : undefined;
   const preferred = channel === "x" ? 42 : 52;
   if (!plot || !canvas || !labels) return preferred;
@@ -71,7 +71,7 @@ function inferredTitleOffset(program, channel, config) {
     position: config.position,
     along: 0,
     offset: preferred
-  }), config, program.semanticSpec.guides.axis?.[channel]?.title ?? "");
+  }), config, program.semanticSpec.guides.axis?.[channel]?.title ?? "", program.materializationConfigs.textMetrics);
   const needed = positive
     ? labels[far] + 4 - bounds[near]
     : bounds[far] - labels[near] + 4;
@@ -191,13 +191,13 @@ function resolveGeometry(program, channel, config) {
     geometry,
     config,
     program.semanticSpec.guides.axis?.[channel]?.title ?? ""
-  );
+  , program.materializationConfigs.textMetrics);
   const canvas = findCanvasGraphic(program)?.properties;
   if (!canvas || !textBoundsFitCanvas(resolvedBounds, canvas)) {
     throw new Error(`The ${channel}-axis title does not fit the Canvas margin.`);
   }
   const labelsBounds = program.graphicSpec.objects[`${channel}AxisLabels`]
-    ? resolveConcreteGraphicBounds(program.graphicSpec, `${channel}AxisLabels`)
+    ? resolveConcreteGraphicBounds(program.graphicSpec, `${channel}AxisLabels`, program.materializationConfigs.textMetrics)
     : undefined;
   if (labelsBounds && textBoundsIntersect(resolvedBounds, labelsBounds)) {
     throw new Error(`The ${channel}-axis title overlaps the axis labels.`);
@@ -269,8 +269,8 @@ function makeEdit(channel) {
   }));
 }
 
-const editXAxisTitle = makeEdit("x");
-const editYAxisTitle = makeEdit("y");
+const editXAxisTitle = /* @__PURE__ */ makeEdit("x");
+const editYAxisTitle = /* @__PURE__ */ makeEdit("y");
 
 function makeCreate(channel) {
   const operation = names(channel);
@@ -327,8 +327,8 @@ function makeCreate(channel) {
   }));
 }
 
-const createXAxisTitle = makeCreate("x");
-const createYAxisTitle = makeCreate("y");
+const createXAxisTitle = /* @__PURE__ */ makeCreate("x");
+const createYAxisTitle = /* @__PURE__ */ makeCreate("y");
 
 export function registerAxisTitleActions(Class) {
   Class.prototype.createXAxisTitle = createXAxisTitle;

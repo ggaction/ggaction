@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "role": "deterministic-requirement-evaluation",
+  "cases": [
+    {
+      "id": "red-points",
+      "query": "Create a scatter plot with red points",
+      "checks": [
+        {
+          "kind": "fill",
+          "value": "red"
+        }
+      ]
+    },
+    {
+      "id": "blue-markers",
+      "query": "Please draw a scatter chart with blue markers",
+      "checks": [
+        {
+          "kind": "fill",
+          "value": "blue"
+        }
+      ]
+    },
+    {
+      "id": "x-angle",
+      "query": "Create a scatter plot and rotate the x axis labels by 45 degrees",
+      "checks": [
+        {
+          "kind": "rotation",
+          "axis": "x",
+          "radians": 0.7853981633974483
+        }
+      ]
+    },
+    {
+      "id": "y-angle",
+      "query": "Make a scatter plot and tilt the y axis labels to 0.5 radians",
+      "checks": [
+        {
+          "kind": "rotation",
+          "axis": "y",
+          "radians": 0.5
+        }
+      ]
+    },
+    {
+      "id": "log-y",
+      "query": "Create a scatter plot and use a logarithmic y axis",
+      "checks": [
+        {
+          "kind": "scale",
+          "axis": "y",
+          "value": "log"
+        }
+      ]
+    },
+    {
+      "id": "log-x",
+      "query": "Draw a line plot with log x scale",
+      "checks": [
+        {
+          "kind": "scale",
+          "axis": "x",
+          "value": "log"
+        }
+      ]
+    },
+    {
+      "id": "combined",
+      "query": "Create a scatter plot with purple points and rotate the x axis labels by -30 degrees and use a logarithmic y axis",
+      "checks": [
+        {
+          "kind": "fill",
+          "value": "purple"
+        },
+        {
+          "kind": "rotation",
+          "axis": "x",
+          "radians": -0.5235987755982988
+        },
+        {
+          "kind": "scale",
+          "axis": "y",
+          "value": "log"
+        }
+      ]
+    },
+    {
+      "id": "unknown-appearance",
+      "query": "Create a scatter plot with sparkling markers",
+      "expectUnresolved": true,
+      "checks": []
+    },
+    {
+      "id": "unknown-angle-unit",
+      "query": "Create a scatter plot and rotate x axis labels by 45",
+      "expectUnresolved": true,
+      "checks": []
+    },
+    {
+      "id": "conflicting-color",
+      "query": "Create a scatter plot with red points and blue points",
+      "expectUnresolved": true,
+      "checks": []
+    },
+    {
+      "id": "mixed-language",
+      "query": "Create a scatter plot with \ubc18\uc9dd\uc774\ub294 \uc810",
+      "expectUnresolved": true,
+      "checks": []
+    },
+    {
+      "id": "preserve-other-clause",
+      "query": "Create a scatter plot with red points and a custom flourish",
+      "expectUnresolved": true,
+      "checks": [
+        {
+          "kind": "fill",
+          "value": "red"
+        }
+      ]
+    },
+    {
+      "id": "theme-local-style",
+      "query": "scatter plot with red points applyTheme",
+      "checks": [
+        {
+          "kind": "fill",
+          "value": "red"
+        },
+        {
+          "kind": "background",
+          "value": "#0f172a"
+        }
+      ]
+    },
+    {
+      "id": "facet-views",
+      "query": "scatter plot facet",
+      "checks": [
+        {
+          "kind": "facet",
+          "children": 3
+        }
+      ]
+    },
+    {
+      "id": "computed-data-edit",
+      "query": "scatter plot createComputedData editComputedData",
+      "checks": [
+        {
+          "kind": "dataColumn",
+          "owner": "ratios",
+          "field": "ratio",
+          "values": [
+            2,
+            10,
+            100
+          ]
+        }
+      ]
+    }
+  ]
+}

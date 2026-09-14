@@ -1,4 +1,5 @@
-import { action } from "../../../../core/action.js";
+import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
+import { action, closedAction } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
 import { validateKeys } from "../../../../core/validation.js";
 import { mapLinearValues } from "../../../../grammar/scales/index.js";
@@ -94,7 +95,7 @@ function resolveOpacityLayout(program, config, scale) {
     config.labels.format
   );
   const symbolExtent = config.symbol.radius + (config.symbol.strokeWidth ?? 0) / 2;
-  const labelWidths = texts.map(text => measureTextWidth(text, config.labels));
+  const labelWidths = texts.map(text => measureTextWidth(text, config.labels, program.materializationConfigs.textMetrics));
   let symbols;
   let labels;
   let title;
@@ -124,7 +125,7 @@ function resolveOpacityLayout(program, config, scale) {
       align: config.position === "right" ? "left" : "right"
     };
   } else if (config.titlePosition === "left") {
-    const titleWidth = config.titleVisible === false ? 0 : measureTextWidth(config.title, config.titleStyle);
+    const titleWidth = config.titleVisible === false ? 0 : measureTextWidth(config.title, config.titleStyle, program.materializationConfigs.textMetrics);
     const titlePrefix = config.titleVisible === false ? 0 : titleWidth + 20;
     const samplesWidth = labelWidths.reduce(
       (sum, width) => sum + symbolExtent * 2 + config.labels.offset + width,
@@ -187,9 +188,9 @@ function resolveOpacityLayout(program, config, scale) {
     title,
     config.title,
     config.titleStyle
-  );
+  , program.materializationConfigs.textMetrics);
   const labelBounds = labels.map((label, index) =>
-    resolveLegendTextBounds(label, texts[index], config.labels)
+    resolveLegendTextBounds(label, texts[index], config.labels, program.materializationConfigs.textMetrics)
   );
   const symbolBounds = symbols.map(symbol => ({
     left: symbol.x - symbolExtent,
@@ -212,13 +213,12 @@ function resolveOpacityLayout(program, config, scale) {
   return { values, texts, symbols, labels, title, background };
 }
 
-export const rematerializeOpacityLegend = /* @__PURE__ */ action(
+export const rematerializeOpacityLegend = /* @__PURE__ */ closedAction(
   {
     op: "rematerializeOpacityLegend",
     description: "Rematerialize a field-opacity sample legend."
-  },
+  }, [],
   function (args = {}) {
-    validateKeys(args, [], "rematerializeOpacityLegend");
     const stored = this.guideConfigs.legend?.opacity;
     if (stored === undefined) {
       throw new Error("Opacity legend requires stored configuration.");
@@ -229,7 +229,7 @@ export const rematerializeOpacityLegend = /* @__PURE__ */ action(
     const opacities = mapLinearValues(layout.values, scale.domain, scale.range, {
       clamp: scale.clamp ?? false
     });
-    let next = this
+    let next = editGraphicProperties(editGraphicProperties(editGraphicProperties(this
       .editSemantic({
         property: "guide.legend.opacity.scale",
         value: encoding.scale
@@ -238,57 +238,20 @@ export const rematerializeOpacityLegend = /* @__PURE__ */ action(
         property: "guide.legend.opacity.title",
         value: config.title
       })
-      ._withLegendConfig("opacity", currentConfig)
-      .editGraphics({
-        target: "opacityLegendSymbols",
-        property: "length",
-        value: layout.values.length
-      })
-      .editGraphics({
-        target: "opacityLegendSymbols",
-        property: "x",
-        value: layout.symbols.map(symbol => symbol.x)
-      })
-      .editGraphics({
-        target: "opacityLegendSymbols",
-        property: "y",
-        value: layout.symbols.map(symbol => symbol.y)
-      })
-      .editGraphics({
-        target: "opacityLegendSymbols",
-        property: "radius",
-        value: config.symbol.radius
-      })
-      .editGraphics({
-        target: "opacityLegendSymbols",
-        property: "fill",
-        value: config.symbol.fill
-      })
-      .editGraphics({
-        target: "opacityLegendSymbols",
-        property: "opacity",
-        value: opacities
-      })
-      .editGraphics({
-        target: "opacityLegendLabels",
-        property: "length",
-        value: layout.values.length
-      })
-      .editGraphics({
-        target: "opacityLegendLabels",
-        property: "x",
-        value: layout.labels.map(label => label.x)
-      })
-      .editGraphics({
-        target: "opacityLegendLabels",
-        property: "y",
-        value: layout.labels.map(label => label.y)
-      })
-      .editGraphics({
-        target: "opacityLegendLabels",
-        property: "text",
-        value: layout.texts
-      });
+      ._withLegendConfig("opacity", currentConfig), "opacityLegendSymbols", {
+      length: layout.values.length,
+      x: layout.symbols.map(symbol => symbol.x),
+      y: layout.symbols.map(symbol => symbol.y)
+    }), "opacityLegendSymbols", {
+      radius: config.symbol.radius,
+      fill: config.symbol.fill,
+      opacity: opacities
+    }), "opacityLegendLabels", {
+      length: layout.values.length,
+      x: layout.labels.map(label => label.x),
+      y: layout.labels.map(label => label.y),
+      text: layout.texts
+    });
     next = editLegendBackground(
       next,
       "opacityLegendBackground",
@@ -316,22 +279,11 @@ export const rematerializeOpacityLegend = /* @__PURE__ */ action(
       { align: layout.labels[0].align }
     );
     if (config.titleVisible === false) return next;
-    next = next
-      .editGraphics({
-        target: "opacityLegendTitle",
-        property: "x",
-        value: layout.title.x
-      })
-      .editGraphics({
-        target: "opacityLegendTitle",
-        property: "y",
-        value: layout.title.y
-      })
-      .editGraphics({
-        target: "opacityLegendTitle",
-        property: "text",
-        value: config.title
-      });
+    next = editGraphicProperties(next, "opacityLegendTitle", {
+      x: layout.title.x,
+      y: layout.title.y,
+      text: config.title
+    });
     return styleContinuousText(
       next,
       "opacityLegendTitle",
@@ -419,13 +371,12 @@ export const createOpacityLegend = /* @__PURE__ */ action(
   }
 );
 
-export const removeOpacityLegend = /* @__PURE__ */ action(
+export const removeOpacityLegend = /* @__PURE__ */ closedAction(
   {
     op: "removeOpacityLegend",
     description: "Remove a field-opacity legend after switching to constant opacity."
-  },
+  }, [],
   function (args = {}) {
-    validateKeys(args, [], "removeOpacityLegend");
     if (this.guideConfigs.legend?.opacity === undefined) return this;
     const targets = [
       "opacityLegendBackground",

@@ -39,7 +39,7 @@ import {
 
 import { applyTemporalUnit } from "../temporal.js";
 
-const encodeColor = action(
+const encodeColor = /* @__PURE__ */ action(
   {
     op: "encodeColor",
     description: "Encode a field as graphical color."

@@ -52,7 +52,7 @@ function validateTitleGeometry(program, kind, config, geometry, text) {
       fontFamily: config.fontFamily,
       fontWeight: config.fontWeight
     }]
-  });
+  }, program.materializationConfigs.textMetrics);
 }
 
 function resolveTitleConfig(kind, args, resources, previous) {
@@ -177,7 +177,7 @@ function makeCreateTitle(kind) {
   });
 }
 
-export const createThetaAxisTitle = makeCreateTitle("theta");
-export const createRadialAxisTitle = makeCreateTitle("radius");
-export const editThetaAxisTitle = makeEditTitle("theta");
-export const editRadialAxisTitle = makeEditTitle("radius");
+export const createThetaAxisTitle = /* @__PURE__ */ makeCreateTitle("theta");
+export const createRadialAxisTitle = /* @__PURE__ */ makeCreateTitle("radius");
+export const editThetaAxisTitle = /* @__PURE__ */ makeEditTitle("theta");
+export const editRadialAxisTitle = /* @__PURE__ */ makeEditTitle("radius");

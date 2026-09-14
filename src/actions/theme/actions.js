@@ -28,7 +28,7 @@ function requireCompositionThemeHandlers() {
   return compositionThemeHandlers;
 }
 
-export const applyTheme = action(
+export const applyTheme = /* @__PURE__ */ action(
   {
     op: "applyTheme",
     description: "Apply persistent visual defaults to the chart program.",
@@ -70,7 +70,7 @@ export const applyTheme = action(
   }
 );
 
-export const removeTheme = action(
+export const removeTheme = /* @__PURE__ */ action(
   {
     op: "removeTheme",
     description: "Remove program theme defaults while preserving local styles.",

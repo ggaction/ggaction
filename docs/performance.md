@@ -61,6 +61,16 @@ same measurement unless the product question is end-to-end latency.
 - Reuse a completed program for multiple renderers when semantics and logical
   dimensions are unchanged; renderers consume the same `graphicSpec`.
 
+## Generated-work limits
+
+Many expansion operations cap generated items at 10,000 per operation. This
+applies to generated path commands, grid values, and aggregate layout cells;
+it is not a universal source-row limit. Work-intensive calculations such as
+label collision planning also have a 10,000,000-work-item budget. The shared
+validator reports `resource-limit` with the named quantity, `limit`, and
+`actual` through `getErrorDetails` from `ggaction/diagnostics`. Reduce the
+expansion (for example, fewer bins or labels) while preserving chart meaning.
+
 ## Allocation limits
 
 Canvas and PNG reject a physical side above 32,767 pixels or a complete raster

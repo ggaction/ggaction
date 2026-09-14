@@ -1,4 +1,4 @@
-import { action } from "../../core/action.js";
+import { action, closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
@@ -254,7 +254,7 @@ function buildRevisionPlan(
       `Derived dataset "${resolved.owner}" cannot use one of its dependents as source.`
     );
   }
-  const reserved = new Set();
+  const reserved = new Set(resolved.revision === undefined ? [] : [resolved.revision]);
   const revisions = [];
   const replacements = new Map();
   const add = (dataset, ownerRecord, transform, requestedSource) => {
@@ -274,7 +274,12 @@ function buildRevisionPlan(
     revisions.push(revision);
     replacements.set(dataset.id, id);
   };
-  add(resolved.dataset, resolved, definition, rootSource);
+  if (resolved.revision === undefined) {
+    add(resolved.dataset, resolved, definition, rootSource);
+  } else {
+    revisions.push({ old: resolved.current, id: resolved.revision });
+    replacements.set(resolved.current, resolved.revision);
+  }
   if (dependents === "recompute") {
     for (const dataset of downstream) {
       const policy = findTransformPolicy(dataset.transform[0].type);
@@ -292,14 +297,15 @@ function directLayerConsumers(program, data) {
     .map(layer => layer.id);
 }
 
-function applyRevisionPlan(program, resolved, plan) {
+export function applyRevisionPlan(program, resolved, plan, { retain = new Set() } = {}) {
   const root = plan.revisions[0];
-  const changes = outputFieldChanges(
+  const changes = resolved === undefined ? new Map() : outputFieldChanges(
     resolved.dataset.transform[0],
     root.transform
   );
   let next = program;
   for (const revision of plan.revisions) {
+    if (revision.transform === undefined) continue;
     const policy = findTransformPolicy(revision.transform.type);
     next = next.createDerivedData({
       id: revision.id,
@@ -345,12 +351,19 @@ function applyRevisionPlan(program, resolved, plan) {
     next = applyLayerDataRematerialization(next, consumer.id);
   }
   for (const revision of [...plan.revisions].reverse()) {
+    if (retain.has(revision.old)) continue;
     next = next.releaseDerivedData({ id: revision.old });
   }
 
   const currentData = plan.replacements.get(program.context.currentData) ??
     program.context.currentData;
   return next._withContext({ ...program.context, currentData });
+}
+
+export function buildSourceRevisionPlan(program, source, id) {
+  return buildRevisionPlan(program, {
+    current: source, dataset: findDataset(program, source), revision: id
+  }, undefined, "recompute");
 }
 
 function sameRequested(left, right) {
@@ -375,13 +388,12 @@ export function reviseDerivedData(program, {
   return applyRevisionPlan(program, resolved, plan);
 }
 
-export const editDerivedData = action(
+export const editDerivedData = /* @__PURE__ */ closedAction(
   {
     op: "editDerivedData",
     description: "Atomically revise one standalone derived-data definition."
-  },
+  }, GENERIC_OPTIONS,
   function (args = {}) {
-    validateKeys(args, GENERIC_OPTIONS, "editDerivedData");
     if (!Object.hasOwn(args, "target")) {
       throw new TypeError("editDerivedData requires target.");
     }
@@ -448,72 +460,72 @@ function focusedEditor(op, type, properties) {
   );
 }
 
-export const editComputedData = focusedEditor(
+export const editComputedData = /* @__PURE__ */ focusedEditor(
   "editComputedData", "computed", ["as", "expression"]
 );
-export const editFilteredData = focusedEditor(
+export const editFilteredData = /* @__PURE__ */ focusedEditor(
   "editFilteredData", "filter", ["field", "oneOf", "predicate", "range"]
 );
-export const editFoldData = focusedEditor(
+export const editFoldData = /* @__PURE__ */ focusedEditor(
   "editFoldData", "fold", ["fields", "as"]
 );
-export const editSummaryData = focusedEditor(
+export const editSummaryData = /* @__PURE__ */ focusedEditor(
   "editSummaryData", "summary", ["groupBy", "aggregates", "members", "weight"]
 );
-export const editBinData = focusedEditor(
+export const editBinData = /* @__PURE__ */ focusedEditor(
   "editBinData", "bin", [
     "field", "maxBins", "step", "boundaries", "extent", "nice", "zero",
     "includeEmpty", "members", "as", "weight"
   ]
 );
-export const editTimeUnitData = focusedEditor(
+export const editTimeUnitData = /* @__PURE__ */ focusedEditor(
   "editTimeUnitData", "timeUnit", [
     "field", "unit", "as", "temporalUnit", "timeZone", "weekStartsOn",
     "weekRule"
   ]
 );
-export const editWindowData = focusedEditor(
+export const editWindowData = /* @__PURE__ */ focusedEditor(
   "editWindowData", "window", [
     "partitionBy", "sortBy", "operations", "temporalUnit"
   ]
 );
-export const editDensityData = focusedEditor(
+export const editDensityData = /* @__PURE__ */ focusedEditor(
   "editDensityData", "density", [
     "field", "groupBy", "bandwidth", "extent", "steps", "kernel",
     "normalization", "as", "weight"
   ]
 );
-export const editStackData = focusedEditor(
+export const editStackData = /* @__PURE__ */ focusedEditor(
   "editStackData", "stack", ["category", "group", "value", "mode", "as"]
 );
-export const editRegressionData = focusedEditor(
+export const editRegressionData = /* @__PURE__ */ focusedEditor(
   "editRegressionData", "regression", [
     "x", "y", "groupBy", "method", "degree", "span", "confidenceMethod",
     "level", "confidence", "interval"
   ]
 );
-export const editIntervalData = focusedEditor(
+export const editIntervalData = /* @__PURE__ */ focusedEditor(
   "editIntervalData", "interval", [
     "field", "groupBy", "center", "extent", "method", "level", "as"
   ]
 );
-export const editECDFData = focusedEditor(
+export const editECDFData = /* @__PURE__ */ focusedEditor(
   "editECDFData", "ecdf", [
     "field", "groupBy", "weight", "missing", "as"
   ]
 );
-export const editNormalizedData = focusedEditor(
+export const editNormalizedData = /* @__PURE__ */ focusedEditor(
   "editNormalizedData", "normalize", [
     "field", "as", "groupBy", "method", "variance", "zeroDenominator",
     "baseline", "sortBy"
   ]
 );
-export const editCompleteData = focusedEditor(
+export const editCompleteData = /* @__PURE__ */ focusedEditor(
   "editCompleteData", "complete", [
     "key", "groupBy", "values", "sequence", "fill", "members"
   ]
 );
-export const editImputedData = focusedEditor(
+export const editImputedData = /* @__PURE__ */ focusedEditor(
   "editImputedData", "impute", [
     "fields", "groupBy", "sortBy", "method", "value", "edges", "maxGap"
   ]

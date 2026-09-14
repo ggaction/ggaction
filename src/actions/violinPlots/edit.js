@@ -74,7 +74,7 @@ function assertSplitSelectionCompatibility(program, owner, changesSplit) {
   }
 }
 
-export const editViolinPlot = action(
+export const editViolinPlot = /* @__PURE__ */ action(
   {
     op: OPERATION,
     description: "Revise one violin plot's data and statistical roles."

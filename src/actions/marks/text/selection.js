@@ -1,6 +1,6 @@
-import { action } from "../../../core/action.js";
+import { closedAction } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
-import { validateOptionObject } from "../../../core/validation.js";
+
 import { normalizeLabelSelectionEdit } from
   "../../../grammar/markLabelSelection.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
@@ -40,13 +40,12 @@ function validateSelectionSource(program, source, requested) {
   resolveMarkSelection(program, source, definition.selector);
 }
 
-const editMarkLabelSelection = action(
+const editMarkLabelSelection = /* @__PURE__ */ closedAction(
   {
     op: "editMarkLabelSelection",
     description: "Replace the final-item membership requested by an attached label."
-  },
+  }, OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, OPTIONS, "editMarkLabelSelection");
     if (!Object.hasOwn(args, "target")) {
       throw new Error("editMarkLabelSelection requires target.");
     }

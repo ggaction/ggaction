@@ -1,5 +1,5 @@
-import { action } from "../../core/action.js";
-import { validateKeys } from "../../core/validation.js";
+import { closedAction } from "../../core/action.js";
+
 import { findSemanticScale } from "../../selectors/scales.js";
 
 const OPTIONS = Object.freeze([
@@ -13,13 +13,12 @@ const OPTIONS = Object.freeze([
   "unknown"
 ]);
 
-export const setQuantitativeColorScale = action(
+export const setQuantitativeColorScale = /* @__PURE__ */ closedAction(
   {
     op: "setQuantitativeColorScale",
     description: "Create or update an internal quantitative color scale."
-  },
+  }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "setQuantitativeColorScale");
     if (!["sequential", "quantize", "quantile", "threshold"].includes(args.type)) {
       throw new Error(`Unsupported quantitative color scale type "${args.type}".`);
     }

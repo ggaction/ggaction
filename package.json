@@ -1,6 +1,6 @@
 {
   "name": "ggaction",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Build charts through immutable, traceable graphical actions.",
   "license": "MIT",
   "author": "Hyeon Jeon",
@@ -67,6 +67,18 @@
     "./svg": {
       "types": "./types/svg.d.ts",
       "default": "./src/renderers/svg.js"
+    },
+    "./diagnostics": {
+      "types": "./types/diagnostics.d.ts",
+      "default": "./src/diagnostics.js"
+    },
+    "./persistence": {
+      "types": "./types/persistence.d.ts",
+      "default": "./src/persistence.js"
+    },
+    "./accessibility": {
+      "types": "./types/accessibility.d.ts",
+      "default": "./src/accessibility.js"
     }
   },
   "scripts": {
@@ -129,7 +141,12 @@
     "docs:provenance": "node scripts/doc-provenance.js",
     "docs:picker": "node scripts/generate-doc-chart-picker.js",
     "docs:snippets": "node scripts/generate-doc-snippet-contracts.js",
-    "docs:scale-editors": "node scripts/generate-doc-scale-editors.js"
+    "docs:scale-editors": "node scripts/generate-doc-scale-editors.js",
+    "benchmark:runtime": "node scripts/benchmark-runtime.js",
+    "benchmark:authoring": "node scripts/evaluate-authoring-requirements.js",
+    "test:platform": "node scripts/test-platform-package.js",
+    "test:browser:compat": "node scripts/run-tests.js browser browser/backend-compatibility.browser.js",
+    "release:prepare": "node scripts/prepare-release.js"
   },
   "engines": {
     "node": ">=20"
@@ -139,12 +156,10 @@
     "registry": "https://registry.npmjs.org/",
     "tag": "latest"
   },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "1.30.0",
-    "@napi-rs/canvas": "^1.0.2"
-  },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "@napi-rs/canvas": "^1.0.2",
     "ajv": "^8.20.0",
     "es-module-lexer": "^1.7.0",
     "esbuild": "0.28.2",
@@ -152,5 +167,17 @@
     "playwright": "^1.61.1",
     "typescript": "^7.0.2",
     "vite": "^6.4.3"
+  },
+  "peerDependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "@napi-rs/canvas": "^1.0.2"
+  },
+  "peerDependenciesMeta": {
+    "@modelcontextprotocol/sdk": {
+      "optional": true
+    },
+    "@napi-rs/canvas": {
+      "optional": true
+    }
   }
 }

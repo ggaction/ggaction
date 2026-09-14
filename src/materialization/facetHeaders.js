@@ -139,13 +139,13 @@ function roleDescriptors(program, headers) {
   return [...columns, ...rows];
 }
 
-function laneThickness(descriptors, role) {
+function laneThickness(descriptors, role, profile) {
   const visible = descriptors.filter(item => item.role === role && item.text !== "");
   if (visible.length === 0) return 0;
   if (role === "column") {
     return Math.max(...visible.map(item => item.config.fontSize + item.config.offset));
   }
-  return Math.max(...visible.map(item => measureTextWidth(item.text, item.config) +
+  return Math.max(...visible.map(item => measureTextWidth(item.text, item.config, profile) +
     item.config.offset));
 }
 
@@ -163,7 +163,7 @@ export function prepareFacetHeaders(program, headersConfig) {
   };
   if (headers.mode === "roles") {
     const column = resolveFacetHeaderConfig(headers, "column");
-    const columnThickness = laneThickness(descriptors, "column");
+    const columnThickness = laneThickness(descriptors, "column", program.materializationConfigs.textMetrics);
     if (program.compositionSpec.facet.grid === undefined) {
       for (const descriptor of descriptors) {
         if (descriptor.text !== "") {
@@ -176,7 +176,7 @@ export function prepareFacetHeaders(program, headersConfig) {
     } else {
       headerLayout.outer[column.side] = columnThickness;
       const row = resolveFacetHeaderConfig(headers, "row");
-      headerLayout.outer[row.side] = laneThickness(descriptors, "row");
+      headerLayout.outer[row.side] = laneThickness(descriptors, "row", program.materializationConfigs.textMetrics);
     }
   }
   return { headers, descriptors, headerLayout };
@@ -287,10 +287,10 @@ function styledItem(item) {
   };
 }
 
-function assertRoleHeadersFit(records, items, layout) {
+function assertRoleHeadersFit(records, items, layout, profile) {
   const bounds = items.map((item, index) => records[index].descriptor.text === ""
     ? undefined
-    : resolveTextBounds(item.properties));
+    : resolveTextBounds(item.properties, profile));
   for (const [index, current] of bounds.entries()) {
     if (current === undefined) continue;
     if (current.left < -1e-9 || current.right > layout.width + 1e-9 ||
@@ -305,11 +305,11 @@ function assertRoleHeadersFit(records, items, layout) {
   }
 }
 
-function assertLegacyHeadersFit(items, layout, plotById) {
+function assertLegacyHeadersFit(items, layout, plotById, profile) {
   const previous = [];
   for (let index = 0; index < items.length; index += 1) {
     if (items[index].properties.text === "") continue;
-    const bounds = resolveTextBounds(items[index].properties);
+    const bounds = resolveTextBounds(items[index].properties, profile);
     const cell = layout.children[index];
     const plot = plotById.get(cell.id);
     if (bounds.left < 0 || bounds.right > layout.width ||
@@ -325,6 +325,7 @@ function assertLegacyHeadersFit(items, layout, plotById) {
 }
 
 export function materializeFacetHeaders(program, layout, plots, prepared) {
+  const profile = program.materializationConfigs.textMetrics;
   const cells = new Map(layout.children.map(cell => [cell.id, cell]));
   const plotById = new Map(plots.map(plot => [plot.id, plot]));
   const records = prepared.descriptors.map(descriptor => {
@@ -335,9 +336,9 @@ export function materializeFacetHeaders(program, layout, plots, prepared) {
   });
   const items = records.map(styledItem);
   if (prepared.headers.mode === "legacy") {
-    assertLegacyHeadersFit(items, layout, plotById);
+    assertLegacyHeadersFit(items, layout, plotById, profile);
   } else {
-    assertRoleHeadersFit(records, items, layout);
+    assertRoleHeadersFit(records, items, layout, profile);
   }
   const id = `${program.compositionSpec.id}-headers`;
   return program

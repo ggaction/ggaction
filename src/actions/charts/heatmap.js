@@ -136,7 +136,7 @@ function binnedGuides(guides, xTitle, yTitle) {
   };
 }
 
-export const createHeatmap = action(
+export const createHeatmap = /* @__PURE__ */ action(
   {
     op: OPERATION,
     description: "Create a pre-gridded or rectangularly binned heatmap."

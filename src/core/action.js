@@ -1,4 +1,6 @@
-import { cloneAndFreeze, freezeOwned, isPlainObject } from "./immutable.js";
+import { validateKeys } from "./validation.js";
+import { annotateError } from "./diagnostics.js";
+import { cloneAndFreeze, freezeOwned, isOwned, isPlainObject } from "./immutable.js";
 
 const metadataByWrappedAction = new WeakMap();
 const implementationByWrappedAction = new WeakMap();
@@ -35,6 +37,8 @@ function summarizeObject(value, ancestors = new WeakSet()) {
       summary[`${key}Count`] = item.length;
     } else if (isPlainObject(item)) {
       summary[key] = summarizeObject(item, ancestors);
+    } else if (typeof item === "function") {
+      summary[`${key}Type`] = "function";
     } else if (item !== null && typeof item === "object") {
       summary[`${key}Type`] = item.constructor?.name ?? "object";
     } else {
@@ -71,13 +75,59 @@ export function createActionNode({ id, op, description, args }) {
   });
 }
 
+// Persistent child tails make appending the active (last) branch independent
+// of sibling count. The public children property remains a stable frozen Array.
+const childLists = new WeakMap();
+
+function childList(node) {
+  let list = childLists.get(node);
+  if (list !== undefined) return list;
+  let tail;
+  for (const child of node.children) tail = { value: child, previous: tail };
+  list = { tail, length: node.children.length };
+  if (isOwned(node)) childLists.set(node, list);
+  return list;
+}
+
+function withChildList(node, list) {
+  let children;
+  const next = {};
+  for (const key of Object.keys(node)) {
+    if (key !== "children") Object.defineProperty(next, key, {
+      value: node[key], enumerable: true
+    });
+  }
+  Object.defineProperty(next, "children", {
+    enumerable: true,
+    get() {
+      if (children === undefined) {
+        const values = new Array(list.length);
+        let item = list.tail;
+        for (let index = list.length - 1; index >= 0; index -= 1) {
+          values[index] = item.value;
+          item = item.previous;
+        }
+        children = freezeOwned(values);
+      }
+      return children;
+    }
+  });
+  childLists.set(next, list);
+  return freezeOwned(next);
+}
+
+function childAt(node, index) {
+  const list = childList(node);
+  return index === list.length - 1 ? list.tail.value : node.children[index];
+}
+
 function nodeAtPath(root, path) {
   let node = root;
   for (const index of path) {
-    if (!Number.isInteger(index) || index < 0 || index >= node.children.length) {
+    if (!Number.isInteger(index) || index < 0 || index >= childList(node).length) {
       throw new Error(`Unknown parent action path "${path.join(".")}".`);
     }
-    node = node.children[index];
+    node = childAt(node, index);
   }
   return node;
 }
@@ -87,19 +137,28 @@ export function appendActionNodeAtPath(root, parentPath, actionNode) {
     throw new TypeError("Parent action path must be an array.");
   }
   const parent = nodeAtPath(root, parentPath);
-  const path = [...parentPath, parent.children.length];
+  const path = [...parentPath, childList(parent).length];
 
   function append(node, depth) {
+    const list = childList(node);
     if (depth === parentPath.length) {
-      return freezeOwned({
-        ...node,
-        children: freezeOwned([...node.children, actionNode])
+      return withChildList(node, {
+        tail: { value: actionNode, previous: list.tail }, length: list.length + 1
       });
     }
     const index = parentPath[depth];
-    const children = [...node.children];
-    children[index] = append(children[index], depth + 1);
-    return freezeOwned({ ...node, children: freezeOwned(children) });
+    const child = append(childAt(node, index), depth + 1);
+    if (index === list.length - 1) {
+      return withChildList(node, {
+        tail: { value: child, previous: list.tail.previous }, length: list.length
+      });
+    }
+    // Restored/extension traces may address an older sibling explicitly.
+    let tail;
+    for (let position = 0; position < list.length; position += 1) {
+      tail = { value: position === index ? child : node.children[position], previous: tail };
+    }
+    return withChildList(node, { tail, length: list.length });
   }
 
   return { root: append(root, 0), path };
@@ -137,39 +196,52 @@ export function action(metadata, implementation) {
   });
 
   const wrappedAction = function wrappedAction(args = {}) {
-    if (!isPlainObject(args)) {
-      throw new TypeError("Action arguments must be a plain object.");
-    }
-
-    if (scope === "unit") this._assertUnitProgram(ownedMetadata.op);
-    if (scope === "composition") this._assertCompositionProgram(ownedMetadata.op);
-
-    const summarizedArgs = summarizeArgs(args);
-    const entered = this._enterAction({
-      ...ownedMetadata,
-      args: summarizedArgs
-    });
-    let result = implementation.call(entered, args);
-
-    if (!(result instanceof this.constructor)) {
-      throw new TypeError(`${ownedMetadata.op} must return a ChartProgram.`);
-    }
-
-    if (this.actionStack.length === 0 && actionCompletionHook !== undefined) {
-      result = actionCompletionHook(result, {
-        source: this,
-        metadata: ownedMetadata,
+    try {
+      if (!isPlainObject(args)) {
+        throw new TypeError("Action arguments must be a plain object.");
+      }
+  
+      if (scope === "unit") this._assertUnitProgram(ownedMetadata.op);
+      if (scope === "composition") this._assertCompositionProgram(ownedMetadata.op);
+  
+      const summarizedArgs = summarizeArgs(args);
+      const entered = this._enterAction({
+        ...ownedMetadata,
         args: summarizedArgs
       });
+      let result = implementation.call(entered, args);
+  
       if (!(result instanceof this.constructor)) {
-        throw new TypeError("Action completion hook must return a ChartProgram.");
+        throw new TypeError(`${ownedMetadata.op} must return a ChartProgram.`);
       }
+  
+      if (this.actionStack.length === 0 && actionCompletionHook !== undefined) {
+        result = actionCompletionHook(result, {
+          source: this,
+          metadata: ownedMetadata,
+          args: summarizedArgs
+        });
+        if (!(result instanceof this.constructor)) {
+          throw new TypeError("Action completion hook must return a ChartProgram.");
+        }
+      }
+  
+      return result._exitAction();
+    } catch (error) {
+      throw annotateError(error, { code: "action-failed", operation: ownedMetadata.op });
     }
-
-    return result._exitAction();
   };
 
   metadataByWrappedAction.set(wrappedAction, ownedMetadata);
   implementationByWrappedAction.set(wrappedAction, implementation);
   return wrappedAction;
+}
+
+// Private built-in convenience: action() owns the object boundary and trace,
+// while each definition supplies its closed option vocabulary exactly once.
+export function closedAction(metadata, options, implementation) {
+  return action(metadata, function (args = {}) {
+    if (options !== undefined) validateKeys(args, options, metadata.op);
+    return implementation.call(this, args);
+  });
 }

@@ -353,7 +353,7 @@ function normalizeBlockPatch(args, descriptor) {
   return patch;
 }
 
-export const editLegendBlock = action(
+export const editLegendBlock = /* @__PURE__ */ action(
   {
     op: "editLegendBlock",
     description: "Edit one logical legend block selected by channel."

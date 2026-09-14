@@ -1,6 +1,6 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateOptionObject } from "../../core/validation.js";
+
 import {
   getPositionChannelDefinition,
   POSITION_ENCODING_CHANNELS
@@ -203,13 +203,12 @@ function rematerializeTarget(program, target) {
   return next;
 }
 
-export const removeEncoding = action(
+export const removeEncoding = /* @__PURE__ */ closedAction(
   {
     op: "removeEncoding",
     description: "Remove one semantic encoding and its owned materialized state."
-  },
+  }, OPTIONS,
   function (args = {}) {
-    validateOptionObject(args, OPTIONS, "removeEncoding");
     if (!REMOVABLE_CHANNELS.includes(args.channel)) {
       throw new Error(
         `Unsupported removable encoding channel "${args.channel}".`

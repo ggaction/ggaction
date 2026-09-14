@@ -25,6 +25,10 @@ npm install ggaction
 npm install --save-dev vite
 ```
 
+Node PNG/PDF output additionally requires `npm install @napi-rs/canvas`. The
+optional MCP server requires `npm install @modelcontextprotocol/sdk`. Browser
+Canvas and SVG need neither dependency.
+
 The command installs the public `ggaction` package from the npm registry.
 
 Create `index.html`:

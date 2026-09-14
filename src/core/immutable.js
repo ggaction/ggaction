@@ -22,10 +22,17 @@ export function isOwned(value) {
   return value !== null && typeof value === "object" && ownedValues.has(value);
 }
 
-export function cloneAndFreeze(value, ancestors = new WeakSet()) {
+export function cloneAndFreeze(value, ancestors = new WeakSet(), path = "state") {
+  if (typeof value === "function") {
+    throw new TypeError(`Cannot store a function at ${path} in a ChartProgram.`);
+  }
   if (value === null || typeof value !== "object") {
     return value;
   }
+
+  // Only library-owned values are recursively immutable; Object.freeze alone
+  // does not prove ownership of a caller's descendants.
+  if (isOwned(value)) return value;
 
   if (ancestors.has(value)) {
     throw new TypeError("Cannot store cyclic values in a ChartProgram.");
@@ -36,12 +43,12 @@ export function cloneAndFreeze(value, ancestors = new WeakSet()) {
   let clone;
 
   if (Array.isArray(value)) {
-    clone = value.map(item => cloneAndFreeze(item, ancestors));
+    clone = value.map((item, index) => cloneAndFreeze(item, ancestors, `${path}[${index}]`));
   } else if (isPlainObject(value)) {
     clone = Object.fromEntries(
       Object.entries(value).map(([key, item]) => [
         key,
-        cloneAndFreeze(item, ancestors)
+        cloneAndFreeze(item, ancestors, `${path}.${key}`)
       ])
     );
   } else {

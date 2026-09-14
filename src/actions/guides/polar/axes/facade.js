@@ -228,7 +228,7 @@ function makeEditAxis(kind) {
   });
 }
 
-export const createThetaAxis = makeCreateAxis("theta");
-export const createRadialAxis = makeCreateAxis("radius");
-export const editThetaAxis = makeEditAxis("theta");
-export const editRadialAxis = makeEditAxis("radius");
+export const createThetaAxis = /* @__PURE__ */ makeCreateAxis("theta");
+export const createRadialAxis = /* @__PURE__ */ makeCreateAxis("radius");
+export const editThetaAxis = /* @__PURE__ */ makeEditAxis("theta");
+export const editRadialAxis = /* @__PURE__ */ makeEditAxis("radius");

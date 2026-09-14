@@ -60,6 +60,11 @@
     "compose": [
       "facet",
       "repeat chart"
+    ],
+    "revise": [
+      "revise source data",
+      "refresh chart rows",
+      "create an immutable data revision"
     ]
   },
   "domainIntents": {
@@ -876,6 +881,11 @@
       "polar center and radius",
       "move polar chart center",
       "fixed radial extent"
+    ],
+    "TextMetrics": [
+      "measured text widths",
+      "font measurement profile",
+      "text layout precision"
     ]
   },
   "summaryOverrides": {
@@ -1500,6 +1510,13 @@
       "placement": {
         "anchor": "outsideEnd",
         "gap": 4
+      }
+    },
+    "applyTextMetrics": {
+      "profile": {
+        "schemaVersion": 1,
+        "id": "host",
+        "measurements": []
       }
     }
   },

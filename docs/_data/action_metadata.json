@@ -23,6 +23,22 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "applyTextMetrics": {
+    "operation": "apply",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "removeTextMetrics": {
+    "operation": "remove",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "applyTheme": {
     "operation": "apply",
     "authoringRoles": [
@@ -43,6 +59,14 @@
     "operation": "create",
     "authoringRoles": [
       "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "reviseData": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
     ],
     "layer": "user-facing",
     "domain": "core"

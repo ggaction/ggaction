@@ -14,7 +14,7 @@ function rematerialize(program, layer, target) {
     : program.rematerializePointMark({ id: target });
 }
 
-export const encodeAngle = action(
+export const encodeAngle = /* @__PURE__ */ action(
   {
     op: "encodeAngle",
     description: "Assign direct clockwise degree rotation to point or Tick glyphs."

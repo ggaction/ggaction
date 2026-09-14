@@ -53,7 +53,7 @@ function scopeParallelGuides(guides, coordinate) {
   };
 }
 
-export const createParallelCoordinates = action(
+export const createParallelCoordinates = /* @__PURE__ */ action(
   {
     op: "createParallelCoordinates",
     description: "Create a complete Parallel-coordinates chart."

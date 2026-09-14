@@ -136,6 +136,18 @@ test("action-card hierarchy is generated from the executable direct-child trace"
   );
 });
 
+test("scale spacing units agree across every generic and focused editor", async () => {
+  const artifact = JSON.parse(await readFile(new URL("../../knowledge/action-cards.json", import.meta.url), "utf8"));
+  const editors = artifact.cards.filter(card => /^(create|edit).*Scale$/.test(card.name));
+  assert.ok(editors.some(card => card.name === "editParallelScale"));
+  for (const card of editors) {
+    for (const option of ["padding", "paddingInner", "paddingOuter"]) {
+      if (!card.options.some(entry => entry.name === option)) continue;
+      assert.deepEqual(card.units.filter(entry => entry.path === option), [{ path: option, unit: "band-fraction" }], `${card.name}.${option}`);
+    }
+  }
+});
+
 test("action cards separate entry support, units, inference, and completion", async () => {
   const artifact = JSON.parse(await readFile(cardFile, "utf8"));
   const byName = new Map(artifact.cards.map(card => [card.name, card]));
@@ -223,4 +235,13 @@ test("every compact snippet type-checks against the exact ChartProgram declarati
   } finally {
     await rm(temporary, { recursive: true, force: true });
   }
+});
+
+
+test("imputation call patterns preserve method-specific requirements", async () => {
+  const artifact = JSON.parse(await readFile(new URL("../../knowledge/action-cards.json", import.meta.url), "utf8"));
+  const card = artifact.cards.find(card => card.name === "createImputedData");
+  assert.match(card.callPatterns[0], /method: "constant", value/);
+  assert.match(card.callPatterns[1], /method: "forward" \| "backward" \| "linear", sortBy/);
+  assert.equal(card.options.find(option => option.name === "groupBy").required, false);
 });

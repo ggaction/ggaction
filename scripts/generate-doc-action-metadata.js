@@ -16,6 +16,7 @@ function operation(name) {
   }
   if (["facet", "facetGrid", "repeatCharts"].includes(name)) return "compose";
   if (
+    name === "reviseData" ||
     name === "bindMarkData" ||
     name === "jitterPoints" ||
     name === "packPoints" ||

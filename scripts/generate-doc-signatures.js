@@ -23,7 +23,7 @@ export async function declaredActionSignatures() {
   const lines = sourceText.slice(classStart).split("\n");
   const signatures = [];
   for (let index = 0; index < lines.length; index += 1) {
-    const start = lines[index].match(/^  ([A-Za-z][A-Za-z0-9]*)\(/);
+    const start = lines[index].match(/^  ([A-Za-z][A-Za-z0-9]*)(?:<[^\n]+>)?\(/);
     if (!start || start[1] === "constructor") continue;
     const declaration = [lines[index]];
     while (!declaration.at(-1).trimEnd().endsWith("): ChartProgram;")) {
@@ -111,19 +111,23 @@ function exportedDeclarations(source) {
 }
 
 export async function buildRuntimeSignatureSection() {
-  const [main, basic, svg, png, pdf] = await Promise.all([
+  const [main, basic, svg, png, pdf, diagnostics, persistence] = await Promise.all([
     declaration("index.d.ts"),
     declaration("basic.d.ts"),
     declaration("svg.d.ts"),
     declaration("png.d.ts"),
-    declaration("pdf.d.ts")
+    declaration("pdf.d.ts"),
+    declaration("diagnostics.d.ts"),
+    declaration("persistence.d.ts")
   ]);
   const entries = [
     ["ggaction", functionsFrom(main, "export function chart()")],
     ["ggaction/basic", functionsFrom(basic, "export function chart()")],
     ["ggaction/svg", exportedDeclarations(svg)],
     ["ggaction/png", exportedDeclarations(png)],
-    ["ggaction/pdf", exportedDeclarations(pdf)]
+    ["ggaction/pdf", exportedDeclarations(pdf)],
+    ["ggaction/diagnostics", exportedDeclarations(diagnostics)],
+    ["ggaction/persistence", exportedDeclarations(persistence)]
   ];
   return [
     runtimeBegin,

@@ -93,7 +93,7 @@ function applyLineMaterialization(program, id, materialization, config) {
   });
 }
 
-const createLineMark = action(
+const createLineMark = /* @__PURE__ */ action(
   {
     op: "createLineMark",
     description: "Create a semantic line mark and empty path collection."
@@ -186,7 +186,7 @@ function requireLine(program, id) {
   return { dataset, layer };
 }
 
-const rematerializeLineMark = action(
+const rematerializeLineMark = /* @__PURE__ */ action(
   {
     op: "rematerializeLineMark",
     description: "Recompute aggregate series and concrete line paths."
@@ -268,7 +268,7 @@ const rematerializeLineMark = action(
   }
 );
 
-const editLineMark = action(
+const editLineMark = /* @__PURE__ */ action(
   {
     op: "editLineMark",
     description: "Edit line-mark curve and stroke width."

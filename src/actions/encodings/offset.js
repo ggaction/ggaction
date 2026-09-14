@@ -110,8 +110,8 @@ function createOffsetEncoding(channel) {
   );
 }
 
-const encodeXOffset = createOffsetEncoding("xOffset");
-const encodeYOffset = createOffsetEncoding("yOffset");
+const encodeXOffset = /* @__PURE__ */ createOffsetEncoding("xOffset");
+const encodeYOffset = /* @__PURE__ */ createOffsetEncoding("yOffset");
 
 export function registerOffsetEncodingAction(ProgramClass) {
   ProgramClass.prototype.encodeXOffset = encodeXOffset;

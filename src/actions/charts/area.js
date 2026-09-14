@@ -11,7 +11,7 @@ import {
 const OPERATION = "createAreaPlot";
 const OPTIONS = ["id", "data", "coordinate", "x", "y", "valueChannel", "baseline", "groupBy", "layout", "missing", "color", "area", "guides"];
 
-export const createAreaPlot = action({ op: OPERATION, description: "Create a simple, ranged, or stacked Cartesian area plot." }, function (args = {}) {
+export const createAreaPlot = /* @__PURE__ */ action({ op: OPERATION, description: "Create a simple, ranged, or stacked Cartesian area plot." }, function (args = {}) {
   validateFacadeOptions(args, OPTIONS, OPERATION);
   for (const [key, value] of Object.entries(args)) if (value === null) throw new TypeError(`${OPERATION} ${key} cannot be null.`);
   const id = resolveFacadeId(this, args.id, { defaultId: "areaPlot", operation: OPERATION });

@@ -42,9 +42,9 @@ function createMeasuredPlot(program, args, { operation, defaultId, mapping }) {
   });
 }
 
-export const createRosePlot = action({ op: "createRosePlot", description: "Create equal-angle sectors with area proportional to category count or sum." }, function (args = {}) {
+export const createRosePlot = /* @__PURE__ */ action({ op: "createRosePlot", description: "Create equal-angle sectors with area proportional to category count or sum." }, function (args = {}) {
   return createMeasuredPlot(this, args, { operation: "createRosePlot", defaultId: "rosePlot", mapping: "area" });
 });
-export const createRadialBarPlot = action({ op: "createRadialBarPlot", description: "Create equal-angle sectors with radial length proportional to category count or sum." }, function (args = {}) {
+export const createRadialBarPlot = /* @__PURE__ */ action({ op: "createRadialBarPlot", description: "Create equal-angle sectors with radial length proportional to category count or sum." }, function (args = {}) {
   return createMeasuredPlot(this, args, { operation: "createRadialBarPlot", defaultId: "radialBarPlot", mapping: "radius-length" });
 });

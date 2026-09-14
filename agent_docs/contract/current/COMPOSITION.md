@@ -1,5 +1,7 @@
 # Current program composition actions
 
+Returned facet/repeat children have closed action stacks, including when derivation is nested inside an edit. Subsequent child edits create top-level trace nodes.
+
 Nested snapshots preserve complete child ancestry with collision-free graphic IDs. Each composition adds only its
 own namespace prefix; existing identifiers are not encoded again. Identifier length grows linearly with ancestry.
 Exact internal graphic ID spelling is not a public authoring option.

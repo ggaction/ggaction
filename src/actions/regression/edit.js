@@ -1,4 +1,4 @@
-import { action } from "../../core/action.js";
+import { closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
 import {
@@ -234,13 +234,12 @@ function updateRegressionBandSemantics(program, bandId, { x, groupBy }) {
   });
 }
 
-export const editRegression = action(
+export const editRegression = /* @__PURE__ */ closedAction(
   {
     op: "editRegression",
     description: "Revise a regression model and its owned visible components."
-  },
+  }, OPTIONS,
   function (args = {}) {
-    validateKeys(args, OPTIONS, "editRegression");
     if (!OPTIONS.slice(1).some(key => Object.hasOwn(args, key))) {
       throw new Error("editRegression requires a statistical or component option.");
     }

@@ -17,14 +17,15 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { transformSync } from "esbuild";
+import { npmInvocation } from "./npm-command.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 521,
-  packedBytes: 720_000,
-  unpackedBytes: 3_550_000
+  entries: 542,
+  packedBytes: 730_000,
+  unpackedBytes: 3_610_000
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -96,7 +97,8 @@ export function isolatedPackEnvironment(cache, environment = process.env) {
 }
 
 function pack(args, cwd, environment) {
-  const output = execFileSync(npmCommand, ["pack", "--json", ...args], {
+  const invocation = npmInvocation(["pack", "--json", ...args], { env: environment });
+  const output = execFileSync(invocation.command, invocation.args, {
     cwd,
     encoding: "utf8",
     env: environment

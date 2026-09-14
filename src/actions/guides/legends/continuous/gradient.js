@@ -1,4 +1,4 @@
-import { action } from "../../../../core/action.js";
+import { action, closedAction } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
 import { validateKeys } from "../../../../core/validation.js";
 import { mapScaleConsumerValues } from "../../../../materialization/scales/map.js";
@@ -7,6 +7,7 @@ import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
 import {
   assertLegendBoundsInsideCanvas,
   editLegendBackground,
+  editGraphicProperties,
   formatContinuousValues,
   normalizeContinuousLegend,
   requireResolvedLegendScale,
@@ -26,7 +27,7 @@ export const DEFAULT_GRADIENT_SIZE = Object.freeze({ length: 120, thickness: 12 
 
 const GRADIENT_OPTIONS = Object.freeze(["length", "thickness"]);
 
-export function resolveGradientLayout(program, config, scale) {
+export function resolveGradientLayout(program, config, scale, label = "Gradient legend") {
   const { plot, canvas } = resolveContinuousBounds(program);
   const vertical = ["right", "left"].includes(config.position);
   const length = config.gradient.length;
@@ -111,25 +112,25 @@ export function resolveGradientLayout(program, config, scale) {
     bottom: Math.max(tick.y1, tick.y2) + 0.5
   }));
   const labelBounds = labels.map((label, index) =>
-    resolveLegendTextBounds(label, texts[index], config.labels)
+    resolveLegendTextBounds(label, texts[index], config.labels, program.materializationConfigs.textMetrics)
   );
   const titleBounds = config.titleVisible === false ? undefined : resolveLegendTextBounds(
     title,
     config.title,
     config.titleStyle
-  );
+  , program.materializationConfigs.textMetrics);
   const occupiedBounds = [stripBounds, ...tickBounds, ...labelBounds,
     ...(config.titleVisible === false ? [] : [titleBounds])];
   assertLegendBoundsInsideCanvas(
     occupiedBounds,
     canvas,
-    "Gradient legend layout", config
+    `${label} layout`, config
   );
   const background = resolveLegendBackgroundFromBounds(
     occupiedBounds,
     config.border,
     canvas,
-    "Gradient legend", config
+    label, config
   );
   return {
     vertical, x, y, length, thickness, values, texts, labels, ticks, title,
@@ -137,11 +138,11 @@ export function resolveGradientLayout(program, config, scale) {
   };
 }
 
-function resolveGradientConfig(program, config) {
-  const layer = resolveContinuousColorLayer(program, config.target);
-  const encoding = layer.encoding.color;
+export function resolveGradientConfig(program, config, channel = "color") {
+  const layer = resolveContinuousColorLayer(program, config.target, channel);
+  const encoding = layer.encoding[channel];
   if (!["quantitative", "temporal"].includes(encoding.fieldType)) {
-    throw new Error("Gradient legend requires quantitative or temporal color.");
+    throw new Error(`${channel === "color" ? "Gradient" : "Stroke gradient"} legend requires quantitative or temporal ${channel}.`);
   }
   const scale = requireResolvedLegendScale(
     program,
@@ -163,153 +164,84 @@ function resolveGradientConfig(program, config) {
   };
 }
 
-export const rematerializeGradientLegend = action(
+// Both channels use the same positions and width policy. Their paint and
+// semantic/graphic namespaces remain explicit channel-owned choices.
+export function materializeGradientLegend(program, resolved, appearance) {
+  const stroke = appearance !== undefined;
+  const channel = stroke ? "stroke" : "color";
+  const kind = stroke ? "strokeGradient" : "gradient";
+  const prefix = `${channel}Gradient`;
+  const { scale, encoding, config: currentConfig } = resolved;
+  const config = resolveEffectiveLegendBlockConfig(program, kind, currentConfig);
+  const layout = resolveGradientLayout(program, config, scale,
+    stroke ? "Stroke gradient legend" : "Gradient legend");
+  const stripCount = 60;
+  const stripSize = layout.length / stripCount;
+  const strips = Array.from({ length: stripCount }, (_, index) => {
+    const fraction = (index + 0.5) / stripCount;
+    const position = layout.vertical ? 1 - fraction : fraction;
+    const samplingScale = scale.midpoint === undefined ? { ...scale, domain: [0, 1] } : scale;
+    const value = scale.midpoint === undefined ? position : interpolateNumber(...scale.domain, position);
+    const [color] = mapScaleConsumerValues([value], samplingScale, channel);
+    return {
+      x: layout.x + (layout.vertical ? 0 : index * stripSize),
+      y: layout.y + (layout.vertical ? index * stripSize : 0),
+      width: layout.vertical ? layout.thickness : stripSize,
+      height: layout.vertical ? stripSize : layout.thickness,
+      fill: stroke ? appearance.fill : color,
+      stroke: color,
+      strokeWidth: stroke ? appearance.strokeWidth : 0
+    };
+  });
+  let next = program
+    .editSemantic({ property: `guide.legend.${channel}.scale`, value: encoding.scale })
+    .editSemantic({ property: `guide.legend.${channel}.title`, value: config.title })
+    ._withLegendConfig(kind, currentConfig);
+  // Preserve each channel's established primitive trace order.
+  if (!stroke) next = next.editGraphics({ target: `${prefix}Strips`, property: "length", value: strips.length });
+  next = editLegendBackground(next, `${prefix}Background`, layout.background, config.border);
+  if (stroke) next = next.editGraphics({ target: `${prefix}Strips`, property: "length", value: strips.length });
+  for (const property of ["x", "y", "width", "height", "fill", "stroke", "strokeWidth"]) {
+    next = next.editGraphics({ target: `${prefix}Strips`, property, value: strips.map(strip => strip[property]) });
+  }
+  next = next.editGraphics({ target: `${prefix}Ticks`, property: "length", value: layout.ticks.length });
+  for (const property of ["x1", "y1", "x2", "y2"]) {
+    next = next.editGraphics({ target: `${prefix}Ticks`, property, value: layout.ticks.map(tick => tick[property]) });
+  }
+  next = editGraphicProperties(next, `${prefix}Ticks`, { stroke: DEFAULT_COLORS.mutedText, strokeWidth: 1 });
+  next = editGraphicProperties(next, `${prefix}Labels`, {
+    length: layout.labels.length, x: layout.labels.map(label => label.x),
+    y: layout.labels.map(label => label.y), text: layout.texts
+  });
+  next = styleContinuousText(next, `${prefix}Labels`, config.labels, { align: layout.labels[0].align });
+  if (config.titleVisible === false) return next;
+  next = editGraphicProperties(next, `${prefix}Title`, { x: layout.title.x, y: layout.title.y, text: config.title });
+  return styleContinuousText(next, `${prefix}Title`, config.titleStyle, { align: layout.title.align });
+}
+
+export const rematerializeGradientLegend = /* @__PURE__ */ closedAction(
   {
     op: "rematerializeGradientLegend",
     description: "Rematerialize a continuous color gradient legend."
-  },
+  }, [],
   function (args = {}) {
-    validateKeys(args, [], "rematerializeGradientLegend");
     const stored = this.guideConfigs.legend?.gradient;
     if (stored === undefined) {
       throw new Error("Gradient legend requires stored configuration.");
     }
-    const { scale, encoding, config: currentConfig } = resolveGradientConfig(this, stored);
-    const config = resolveEffectiveLegendBlockConfig(this, "gradient", currentConfig);
-    const layout = resolveGradientLayout(this, config, scale);
-    const stripCount = 60;
-    const stripSize = layout.length / stripCount;
-    const strips = Array.from({ length: stripCount }, (_, index) => {
-      const fraction = (index + 0.5) / stripCount;
-      const position = layout.vertical ? 1 - fraction : fraction;
-      // Keep legacy uniform samples exact without a value/domain round trip.
-      const samplingScale = scale.midpoint === undefined ? { ...scale, domain: [0, 1] } : scale;
-      const value = scale.midpoint === undefined ? position : interpolateNumber(...scale.domain, position);
-      const [color] = mapScaleConsumerValues([value], samplingScale, "color");
-      return {
-        x: layout.x + (layout.vertical ? 0 : index * stripSize),
-        y: layout.y + (layout.vertical ? index * stripSize : 0),
-        width: layout.vertical ? layout.thickness : stripSize,
-        height: layout.vertical ? stripSize : layout.thickness,
-        fill: color,
-        stroke: color,
-        strokeWidth: 0
-      };
-    });
-    let next = this
-      .editSemantic({
-        property: "guide.legend.color.scale",
-        value: encoding.scale
-      })
-      .editSemantic({
-        property: "guide.legend.color.title",
-        value: config.title
-      })
-      ._withLegendConfig("gradient", currentConfig)
-      .editGraphics({
-        target: "colorGradientStrips",
-        property: "length",
-        value: strips.length
-      });
-    next = editLegendBackground(
-      next,
-      "colorGradientBackground",
-      layout.background,
-      config.border
-    );
-    for (const property of [
-      "x", "y", "width", "height", "fill", "stroke", "strokeWidth"
-    ]) {
-      next = next.editGraphics({
-        target: "colorGradientStrips",
-        property,
-        value: strips.map(strip => strip[property])
-      });
-    }
-    next = next.editGraphics({
-      target: "colorGradientTicks",
-      property: "length",
-      value: layout.ticks.length
-    });
-    for (const property of ["x1", "y1", "x2", "y2"]) {
-      next = next.editGraphics({
-        target: "colorGradientTicks",
-        property,
-        value: layout.ticks.map(tick => tick[property])
-      });
-    }
-    next = next
-      .editGraphics({
-        target: "colorGradientTicks",
-        property: "stroke",
-        value: DEFAULT_COLORS.mutedText
-      })
-      .editGraphics({
-        target: "colorGradientTicks",
-        property: "strokeWidth",
-        value: 1
-      })
-      .editGraphics({
-        target: "colorGradientLabels",
-        property: "length",
-        value: layout.labels.length
-      })
-      .editGraphics({
-        target: "colorGradientLabels",
-        property: "x",
-        value: layout.labels.map(label => label.x)
-      })
-      .editGraphics({
-        target: "colorGradientLabels",
-        property: "y",
-        value: layout.labels.map(label => label.y)
-      })
-      .editGraphics({
-        target: "colorGradientLabels",
-        property: "text",
-        value: layout.texts
-      });
-    next = styleContinuousText(
-      next,
-      "colorGradientLabels",
-      config.labels,
-      { align: layout.labels[0].align }
-    );
-    if (config.titleVisible === false) return next;
-    next = next
-      .editGraphics({
-        target: "colorGradientTitle",
-        property: "x",
-        value: layout.title.x
-      })
-      .editGraphics({
-        target: "colorGradientTitle",
-        property: "y",
-        value: layout.title.y
-      })
-      .editGraphics({
-        target: "colorGradientTitle",
-        property: "text",
-        value: config.title
-      });
-    return styleContinuousText(
-      next,
-      "colorGradientTitle",
-      config.titleStyle,
-      { align: layout.title.align }
-    );
+    return materializeGradientLegend(this, resolveGradientConfig(this, stored));
   }
 );
 
 
-export function resolveGradientLegendCreation(program, args = {}) {
+export function resolveGradientLegendCreation(program, args = {}, channel = "color") {
   const config = normalizeContinuousLegend(args, "gradient");
   if (args.channels !== undefined && (
     !Array.isArray(args.channels) ||
     args.channels.length !== 1 ||
-    args.channels[0] !== "color"
+    args.channels[0] !== channel
   )) {
-    throw new Error('Gradient legend requires channels: ["color"].');
+    throw new Error(`Gradient legend requires channels: ["${channel}"].`);
   }
   if (args.gradient !== undefined && !isPlainObject(args.gradient)) {
     throw new TypeError("createLegend.gradient must be a plain object.");
@@ -326,62 +258,64 @@ export function resolveGradientLegendCreation(program, args = {}) {
   config.titleVisible = true;
   validatePositive(config.gradient.length, "Gradient length");
   validatePositive(config.gradient.thickness, "Gradient thickness");
-  const resolved = resolveGradientConfig(program, config);
+  const resolved = resolveGradientConfig(program, config, channel);
   return resolved;
 }
 
-export function createGradientLegendFromConfig(program, config) {
-  const resolved = resolveGradientConfig(program, config);
-  resolveGradientLayout(program, resolved.config, resolved.scale);
+export function createGradientLegendFromConfig(program, config, channel = "color") {
+  const prefix = `${channel}Gradient`;
+  const kind = channel === "color" ? "gradient" : "strokeGradient";
+  const resolved = resolveGradientConfig(program, config, channel);
+  resolveGradientLayout(program, resolved.config, resolved.scale, channel === "color" ? "Gradient legend" : "Stroke gradient legend");
   let next = program
     .editSemantic({
-      property: "guide.legend.color.scale",
+      property: `guide.legend.${channel}.scale`,
       value: resolved.encoding.scale
     })
     .editSemantic({
-      property: "guide.legend.color.title",
+      property: `guide.legend.${channel}.title`,
       value: resolved.config.title
     })
-    ._withLegendConfig("gradient", resolved.config);
+    ._withLegendConfig(kind, resolved.config);
   if (resolved.config.border !== false) {
     next = next.createGraphics({
-      id: "colorGradientBackground",
+      id: `${prefix}Background`,
       type: "rect",
       ...resolveLegendGraphicPlacement(next)
     });
   }
   next = next
     .createGraphics({
-      id: "colorGradientStrips",
+      id: `${prefix}Strips`,
       type: "rect",
       length: 0,
       ...resolveLegendGraphicPlacement(next, resolved.config.border === false
         ? {}
-        : { after: "colorGradientBackground" })
+        : { after: `${prefix}Background` })
     })
     .createGraphics({
-      id: "colorGradientTicks",
+      id: `${prefix}Ticks`,
       type: "line",
       length: 0,
       ...resolveLegendGraphicPlacement(next)
     })
     .createGraphics({
-      id: "colorGradientLabels",
+      id: `${prefix}Labels`,
       type: "text",
       length: 0,
       ...resolveLegendGraphicPlacement(next)
     });
   if (resolved.config.titleVisible !== false) {
     next = next.createGraphics({
-      id: "colorGradientTitle",
+      id: `${prefix}Title`,
       type: "text",
       ...resolveLegendGraphicPlacement(next)
     });
   }
-  return next.rematerializeGradientLegend();
+  return next[channel === "color" ? "rematerializeGradientLegend" : "rematerializeStrokeGradientLegend"]();
 }
 
-export const createGradientLegend = action(
+export const createGradientLegend = /* @__PURE__ */ action(
   {
     op: "createGradientLegend",
     description: "Create a continuous color gradient legend."
