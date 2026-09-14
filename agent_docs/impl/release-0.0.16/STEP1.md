@@ -36,7 +36,7 @@
 | 19 | 릴리즈의 단일 순차 검증 경로가 약 59분 걸린다 | 구현·로컬 검증; 릴리즈 실행 대기 | canonical candidate를 병렬 source/coverage/package/docs/7 realistic shard에 전달; strict fan-in |
 | 20 | realistic 테스트가 main의 필수 merge check에 포함되지 않는다 | 부분 구현·검증 | realistic-required strict aggregate 추가; 실제 main required rule 추가 남음 |
 | 21 | 자동 검증이 Ubuntu·Chromium에 집중되어 있다 | 진행 전 | — |
-| 22 | 실패한 렌더·문서 테스트의 진단 artifact를 자동 보존해야 한다 | 진행 전 | — |
+| 22 | 실패한 렌더·문서 테스트의 진단 artifact를 자동 보존해야 한다 | 구현·로컬 검증 완료 | 의도적 실패에서 로그/status·actual/expected/diff·브라우저 화면 보존; CI failure upload와 budget/오류 비은폐 확인 |
 | 23 | 높은 coverage를 보완할 공통 음성 계약·교차층 테스트가 필요하다 | 구현·검증 완료 | Current catalog 전체 valid-call corpus → unknown/null/array/scalar rejection 및 source snapshot; generic/focused·atomic/sequential 동치 |
 | 24 | 실행 계약과 생성 메타데이터의 의미 원본을 좁혀야 한다 | 부분 구현·검증 | scale 단위 및 impute 조건부 필수값 공유; architecture의 상세 계약 분리 정리 남음 |
 | 25 | MCP 평가는 실행 성공과 요구 충족을 분리해야 한다 | 구현·검증 완료 | 85개 MCP·카드·문서·패키지 계약, installed consumer 및 15개 의미 평가 통과 |
@@ -107,3 +107,9 @@ Packet v5에서 requiredOptions와 sample/configured options를 분리했다. Im
 245개 이전 successful realistic test의 duration 합을 22개 파일별 scheduling weight로 기록했다. 단순 round-robin 최대 합 1,301,299ms 대비 greedy weighted 최대 합 945,678ms이며, 이는 병렬 실행의 실제 벽시계 시간 보장이 아니다. File 전체가 정확히 한 shard에 포함되고, 신규 파일은 median weight로 빠짐없이 배정된다. 실행 전 파일과 추정치를 출력한다.
 
 실패·취소·skipped·누락·추가 prerequisite를 strict aggregate가 거부하는 테스트, partition exhaustive/disjoint/determinism·unknown file·입력검사, 기존 discovery/release contract 23개가 통과했다. YAML parsing과 실제 작은 realistic shard/empty shard 실행도 통과했다. Main의 실제 required rule 변경 및 전체 실제 release pipeline 성공은 이후 통합·릴리즈 단계에 남긴다.
+
+### Failure evidence checkpoint
+
+CI/release test command는 출력 streaming을 유지하며 마지막 2MiB log와 exit/status/환경을 기록한다. Failure collector는 checks/failures/docs의 명시된 진단 폴더만 수집하고 개별 10MiB, 전체 payload 50MiB/300파일로 제한하며 생략 수를 manifest에 남긴다. 이전 collection output을 재사용하지 않는다. 실패한 PNG assertion은 case ID·기대 조건·실제 PNG를 남기고 primitive/public mismatch는 두 이미지와 4백만 pixel 이하 diff를 보존한다. Browser readiness/열린 실패 page와 docs exception은 screenshot·URL·오류를 보존한다.
+
+의도적으로 exit 7/9, 없는 실행파일, 쓰기 불가, 이미지 mismatch, 브라우저 mismatch, oversized/aggregate-budget 사례를 실행해 원래 오류가 유지됨을 확인했다. Critical job에 continue-on-error를 넣지 않고 failure-only 수집/upload 단계만 허용한다. 25개 초기 영향 검사와 추가 budget 검사, 기존 브라우저 84개, 대표 렌더 3개 및 실제 run-check→test runner smoke를 통과했다. GitHub artifact의 실제 다운로드 확인은 최종 CI/release 관찰 단계에 남긴다.

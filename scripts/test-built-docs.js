@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { saveBrowserEvidence } from "../test/support/browser.js";
 import { createServer } from "node:http";
 import { mkdir, readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
@@ -608,6 +609,9 @@ try {
   assert.equal(await noScriptMobile.locator(".docs-sidenav").isVisible(), true);
   assert.equal(await noScriptMobile.locator("#main-content").isVisible(), true);
   await noScriptMobileContext.close();
+} catch (error) {
+  await saveBrowserEvidence(browser, error);
+  throw error;
 } finally {
   await browser.close();
   await new Promise(resolve => server.close(resolve));

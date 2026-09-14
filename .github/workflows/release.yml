@@ -55,6 +55,19 @@ jobs:
             .artifacts/release/ggaction-*-release-notes.md
           if-no-files-found: error
           retention-days: 7
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
 
   verify-source:
     needs: candidate
@@ -91,11 +104,24 @@ jobs:
       - name: Install Chromium for browser consumers
         run: npx playwright install --with-deps chromium
       - name: Run unit, acceptance, and contract tests
-        run: npm test
+        run: node scripts/run-check.js test -- npm test
       - name: Test browser package consumers
-        run: npm run test:browser
+        run: node scripts/run-check.js test-browser -- npm run test:browser
       - name: Render PNG regression charts
-        run: npm run test:render
+        run: node scripts/run-check.js test-render -- npm run test:render
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
 
   verify-coverage:
     needs: candidate
@@ -132,7 +158,20 @@ jobs:
       - name: Install Chromium for browser consumers
         run: npx playwright install --with-deps chromium
       - name: Enforce coverage thresholds
-        run: npm run test:coverage
+        run: node scripts/run-check.js test-coverage -- npm run test:coverage
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
 
   verify-package:
     needs: candidate
@@ -169,7 +208,20 @@ jobs:
       - name: Install Chromium for browser consumers
         run: npx playwright install --with-deps chromium
       - name: Test the installed canonical package
-        run: npm run test:package
+        run: node scripts/run-check.js test-package -- npm run test:package
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
 
   verify-documentation:
     needs: candidate
@@ -213,13 +265,13 @@ jobs:
       - name: Verify generated contracts and documentation
         run: |
           npm run contracts:catalog:check
-          npm run docs:generate
+          node scripts/run-check.js docs-generate -- npm run docs:generate
           node --input-type=module -e '
             import assert from "node:assert/strict";
             import { buildDocProvenance } from "./scripts/doc-provenance.js";
             assert.equal((await buildDocProvenance()).status, "published-release");
           '
-          npm run test:docs
+          node scripts/run-check.js test-docs -- npm run test:docs
           # Native Canvas PNG bytes vary across supported operating systems.
           # Their sources, manifest, dimensions, and rendered output remain
           # covered by documentation and render tests; all other generated
@@ -230,11 +282,24 @@ jobs:
             knowledge/action-cards.json \
             ':(exclude)docs/assets/images/*.png'
       - name: Build documentation with Jekyll
-        run: npm run docs:build
+        run: node scripts/run-check.js docs-build -- npm run docs:build
       - name: Check built documentation
-        run: npm run test:docs:built
+        run: node scripts/run-check.js test-docs-built -- npm run test:docs:built
       - name: Test documentation in desktop and mobile browsers
-        run: npm run test:docs:browser
+        run: node scripts/run-check.js test-docs-browser -- npm run test:docs:browser
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
 
   realistic-data:
     needs: candidate
@@ -261,6 +326,19 @@ jobs:
       - name: Fetch and verify dataset corpus
         if: steps.dataset-cache.outputs.cache-hit != 'true'
         run: npm run datasets:sync
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
 
   verify-realistic:
     needs: [candidate, realistic-data]
@@ -308,7 +386,20 @@ jobs:
         if: steps.dataset-cache.outputs.cache-hit != 'true'
         run: npm run datasets:sync
       - name: Run the assigned realistic files
-        run: npm run test:realistic -- --shard=${{ matrix.shard }}/7
+        run: node scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=${{ matrix.shard }}/7
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
 
   verify:
     if: ${{ always() }}
@@ -328,6 +419,19 @@ jobs:
         env:
           GGACTION_JOB_RESULTS: ${{ toJSON(needs) }}
         run: node scripts/test-sharding.js --check-jobs candidate verify-source verify-coverage verify-package verify-documentation realistic-data verify-realistic
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
 
   publish:
     needs: verify
@@ -394,6 +498,19 @@ jobs:
           else
             gh release create "$RELEASE_TAG" --verify-tag --title "ggaction $VERSION" --notes-file "$NOTES"
           fi
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
 
   pages-build:
     needs: publish
@@ -425,13 +542,26 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6
       - name: Build the exact release documentation
-        run: npm run docs:build
+        run: node scripts/run-check.js docs-build -- npm run docs:build
       - name: Check the built documentation
-        run: npm run test:docs:built
+        run: node scripts/run-check.js test-docs-built -- npm run test:docs:built
       - name: Upload the GitHub Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
           path: _site
+      - name: Collect bounded failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        run: node scripts/collect-failure-artifacts.js
+      - name: Upload failure evidence
+        if: ${{ failure() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-${{ github.job }}-${{ strategy.job-index || 0 }}-${{ github.run_attempt }}
+          path: .artifacts/ci-evidence
+          if-no-files-found: ignore
+          retention-days: 7
 
   context7-refresh:
     needs: publish

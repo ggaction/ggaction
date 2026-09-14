@@ -3,7 +3,7 @@ import test from "node:test";
 
 import { summarizeArgs } from "../../src/core/action.js";
 import { artifactScopeConfig } from "./artifact-schema.js";
-import { assertRenderedPNG } from "./png.js";
+import { assertRenderedPNG, assertSameRenderedPNG } from "./png.js";
 
 const UNRESOLVED = Symbol("unresolved displayed value");
 
@@ -451,7 +451,7 @@ export function registerVisualVariantTests(variants) {
             renderOptions(variant, "user-facing")
           )
         ]);
-        assert.equal(userFacingResult.pixelHash, primitiveResult.pixelHash);
+        await assertSameRenderedPNG(userFacingResult, primitiveResult, `${variant.chart}/${variant.variant}`);
       } else {
         await assertRenderedPNG(
           primitive,

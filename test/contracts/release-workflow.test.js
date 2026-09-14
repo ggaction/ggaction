@@ -107,7 +107,12 @@ test("parallel qualifications consume one canonical candidate and join before pu
   assert.match(realistic, /fail-fast: false/);
   assert.match(realistic, /shard: \[1, 2, 3, 4, 5, 6, 7\]/);
   assert.match(realistic, /npm run test:realistic -- --shard=\$\{\{ matrix.shard \}\}\/7/);
-  assert.doesNotMatch(workflow, /continue-on-error:\s*true/);
+  for (const step of workflow.split(/(?=^      - name:)/m)) {
+    if (step.includes("continue-on-error: true")) {
+      assert.match(step, /^      - name: (Collect bounded failure evidence|Upload failure evidence)/);
+      assert.match(step, /if: \$\{\{ failure\(\) \}\}/);
+    }
+  }
 });
 
 test("realistic CI has a stable aggregate that cannot accept skipped or failed dependencies", () => {
@@ -117,4 +122,24 @@ test("realistic CI has a stable aggregate that cannot accept skipped or failed d
   assert.match(aggregate, /needs: \[realistic-data, realistic\]/);
   assert.match(aggregate, /--check-jobs realistic-data realistic/);
   assert.match(aggregate, /GGACTION_JOB_RESULTS: \$\{\{ toJSON\(needs\) \}\}/);
+});
+
+test("test and documentation failures retain bounded artifacts without forgiving required checks", () => {
+  const ci = readFileSync(new URL("../../.github/workflows/ci.yml", import.meta.url), "utf8");
+  for (const [source, jobs] of [[ci, ["package", "test", "realistic", "coverage", "documentation"]],
+    [workflow, ["verify-source", "verify-coverage", "verify-package", "verify-documentation", "verify-realistic"]]]) {
+    for (const name of jobs) {
+      const job = workflowJob(source, name);
+      assert.match(job, /node scripts\/run-check.js/);
+      assert.match(job, /node scripts\/collect-failure-artifacts.js/);
+      assert.match(job, /path: \.artifacts\/ci-evidence/);
+      assert.match(job, /retention-days: 7/);
+      for (const step of job.split(/(?=^      - name:)/m)) {
+        if (step.includes("continue-on-error: true")) {
+          assert.match(step, /^      - name: (Collect bounded failure evidence|Upload failure evidence)/);
+          assert.match(step, /if: \$\{\{ failure\(\) \}\}/);
+        }
+      }
+    }
+  }
 });
