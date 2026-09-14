@@ -1,3 +1,4 @@
+import { packageVersion } from "../../src/version.js";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
@@ -47,7 +48,7 @@ test("publishes only the bounded public package artifact", async () => {
   const paths = manifest.files.map(file => file.path);
 
   assert.equal(manifest.name, "ggaction");
-  assert.equal(manifest.version, "0.0.15");
+  assert.equal(manifest.version, packageVersion);
   assert.ok(manifest.entryCount <= PACKAGE_LIMITS.entries);
   assert.ok(manifest.size <= PACKAGE_LIMITS.packedBytes);
   assert.ok(manifest.unpackedSize <= PACKAGE_LIMITS.unpackedBytes);

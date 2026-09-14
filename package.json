@@ -145,7 +145,8 @@
     "benchmark:runtime": "node scripts/benchmark-runtime.js",
     "benchmark:authoring": "node scripts/evaluate-authoring-requirements.js",
     "test:platform": "node scripts/test-platform-package.js",
-    "test:browser:compat": "node scripts/run-tests.js browser browser/backend-compatibility.browser.js"
+    "test:browser:compat": "node scripts/run-tests.js browser browser/backend-compatibility.browser.js",
+    "release:prepare": "node scripts/prepare-release.js"
   },
   "engines": {
     "node": ">=20"

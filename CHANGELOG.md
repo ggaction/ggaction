@@ -6,12 +6,65 @@ All notable changes to `ggaction` are recorded in this file.
 
 ### Added
 
-- Add `ggaction/accessibility` to export immutable final visual data with stable owners, component roles, series, and composition hierarchy.
+- Added `reviseData` for immutable original-data revisions that update dependent
+  transforms, chart owners, scales, guides, labels, selections, and retained facets.
+- Added `applyTextMetrics` and `removeTextMetrics` for host-measured text layout
+  with immutable exact-font profiles, deterministic fallback, composition
+  propagation, and wrapped typography rematerialization.
+- Added browser-safe `ggaction/persistence` with versioned editable-program and
+  graphic-only snapshots, tagged value preservation, and strict restoration.
+- Added browser-safe `ggaction/accessibility` with immutable final visual data,
+  component roles, aggregate/bin/interval values, series, and composition hierarchy.
+- Added `ggaction/diagnostics` to read structured error codes and resource details
+  while preserving the original Error, TypeError, or RangeError identity.
+- Added `renderToPNGBuffer` and `renderToPDFBuffer` for Node memory output.
+  PNG encoding is asynchronous; Canvas drawing remains synchronous.
+- Added `release:prepare` for reviewable version, changelog, release-contract,
+  provenance, and generated-documentation updates without publishing side effects.
+- Added reproducible runtime benchmarks, exhaustive direct-action negative-input
+  contracts, semantic authoring evaluations, and cross-platform/browser checks.
 
-- Added `reviseData` for immutable source revisions with dependent chart updates.
-- Added `applyTextMetrics` and `removeTextMetrics` for host-measured text layout,
-  including titles, axes, legends, labels, retained compositions, and persistence.
+### Changed
 
+- **Installation:** Node rendering and MCP dependencies are now optional peers.
+  Canvas/SVG users can install only `ggaction`. Node PNG/PDF users must also install
+  `@napi-rs/canvas`; MCP users must also install `@modelcontextprotocol/sdk`.
+  Missing backends report the required install command and never auto-install.
+- MCP task packets now use schema version 5. Required options are separate from
+  example/configured options, exact calls preserve explicit user choices, and
+  unresolved request fragments remain visible. Consumers must check packet versions.
+- Reused owned immutable subtrees, avoided unrelated theme traversal, shared
+  persistent trace tails, and cached immutable SVG resource hashes. Mutable
+  renderer inputs still recompute their hashes.
+- Reduced Basic browser bundle size through built-in factory tree shaking and
+  shared validation/materialization code. Existing browser gzip limits remain.
+- Release verification now distributes one canonical candidate artifact across
+  independent source, coverage, package, documentation, platform, browser, and
+  weighted realistic-test jobs, then requires a strict successful aggregate.
+- Added a strict realistic-test aggregate check and bounded failure evidence for
+  test logs, render differences, and browser screenshots. Verification errors
+  retain their original failing status.
+- Consolidated architecture prose around ownership and state flow, with exact
+  action behavior linked to current contracts and shared metadata owners.
+
+### Fixed
+
+- Rejected callable, mutable class-instance, cyclic, and sparse source inputs
+  before they could escape immutable ownership or fail during materialization.
+  TypeScript source-row declarations now match the runtime data boundary.
+- Rejected unknown options consistently in extension primitives and renderers,
+  including PNG, and validated axis coordinate/channel assertions before changes.
+- Corrected padding units for focused scale editors using one canonical registry.
+- Corrected MCP required-option inference, explicit style/scale choices, derived
+  owner references, and false-completion reporting for partially understood tasks.
+- Preserved nested facet trace closure and prototype-named keys during snapshot
+  round trips, and distinguished live dependencies from reserved optional IDs.
+- Distinguished data and mark identity when revising statistical-reference inputs.
+  Inferred grids now follow explicit tick changes without disrupting orientation
+  changes that must rematerialize guides in dependency order.
+- Reused the exact release artifact in installed-package consumers instead of
+  silently repacking it, and made development npm/TypeScript invocation portable
+  across supported operating systems.
 
 ## [0.0.15] - 2026-09-14
 

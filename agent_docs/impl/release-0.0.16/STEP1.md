@@ -45,7 +45,7 @@
 | 28 | 구조화된 진단과 실제 한도 안내 | 구현·검증 완료 | 진단·불변성·selectors·타입·bare 및 installed package; 일반 3690개 중 문서 목록 1개 수정 후 해당 계약 재통과 |
 | 29 | PNG/PDF 메모리 출력과 비동기 비용 경계 | 구현·검증 완료 | renderer/package/MCP 38개, docs/package 33개, 실제 bare→optional 설치·Full/Basic/타입/전체 package consumer 통과 |
 | 30 | 접근성 보조 출력을 최종 시각적 데이터 단위와 연결한다 | 구현·검증 완료 | 집계·histogram 보존·오차 구간·UTC line·Parallel·facet/concat·음성·browser graph, 전체 corpus 및 installed consumer 통과 |
-| 31 | 릴리즈 준비를 하나의 검토 가능한 변경으로 생성한다 | 진행 전 | — |
+| 31 | 릴리즈 준비를 하나의 검토 가능한 변경으로 생성한다 | 도구 구현·검증; 실제 0.0.16 준비 대기 | canonical version/changelog plan·drift/날짜/다운그레이드/빈 노트 거부·재실행 동치, 27개 영향 계약 및 docs 120개 통과 |
 
 ## 검증 checkpoint
 
@@ -143,3 +143,9 @@ Browser-safe 별도 entry에서 final item adapter와 pure path series를 읽는
 집계 평균 3/8, interval bounds 2–4/6–10, histogram count conservation, filtered row, UTC aggregate line, Parallel dimension, facet 계층 및 원본 보존을 검증했다. 141개 relationship corpus 중 134개 지원, 7개 standalone text의 명시적 오류를 확인했다. Runtime/package/boundary 23개, 별도 package/tree-shaking 18개, 문서 120개 및 installed package의 runtime/types 전체 consumer 통과. 접근성 entry coverage line 98.73%, branch 94.12%, function 100%. Source-only browser graph는 Full action 등록이나 Node dependency를 포함하지 않는다.
 
 새 배포 파일 3개로 entries 540, unpacked 3,601,724 bytes를 확인하고 unpacked 상한을 3,610,000으로 맞췄다. Packed/browser 상한은 유지한다. Installed Full/Basic/SVG gzip은 359,782/165,806/6,956 bytes다.
+
+### Release preparation checkpoint
+
+`release:prepare`는 clean tree에서 package/lock/runtime/README version 및 Unreleased notes를 먼저 검증하고 변경안을 생성한다. 같은 버전의 재실행은 노트/날짜를 보존하며 committed runtime의 provenance를 재생성한다. Release contract hash·canonical documentation generators·local notes·preparation manifest를 연결하고 publish/tag/push/commit은 실행하지 않는다. 발전 중인 코드가 바로 published provenance로 잘못 표시되지 않도록 기존 dirty-state 정책을 유지한다. API/package/MCP tests의 과거 version literal은 canonical runtime identity와 실제 package를 비교하게 바꿨다.
+
+순수 plan의 동치·보존·음성 입력과 기존 candidate/notes/MCP/package 경계를 검증했다. 전체 문서 120개 통과. Jekyll은 로컬 Ruby 3.2.11에서 build와 preflight를 통과했으며 CI의 고정 Ruby 3.2.6 결과를 별도로 확인한다. 실제 version 준비 및 통합 검증은 다음 단계다.
