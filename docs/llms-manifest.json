@@ -3,9 +3,9 @@
   "packageVersion": "0.0.16",
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
-    "status": "development",
+    "status": "published-release",
     "contractId": "sha256:0b76a2c9b1d2f953b70f9e643a60c234204bd392e4782820465035412515bf82",
-    "sourceCommit": null,
+    "sourceCommit": "cdcd030ee663dde0193384cd6d7b37af1b15b804",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11024,
-      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
+      "bytes": 11096,
+      "sha256": "b76d1a2637ebd4463d09180e14fdc8a0f43b4b4332926c8bd9df6fa68d5a127c"
     },
     {
       "order": 4,
@@ -1988,8 +1988,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 149718,
-      "sha256": "e7c60e721b8324165a82e3260698f2c94b18d998adba05835713d2ec00ddf7b3"
+      "bytes": 149394,
+      "sha256": "0cde7436429d688ff2272b004fe5d3f4c8e8a2d955fc5ae8c947717734cc7174"
     },
     {
       "order": 118,
@@ -2033,8 +2033,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 62348,
-      "sha256": "63da0ce4544665dadfb42e0a4c02fbacbae933fcacfbbeb05c81d1c57bae45d9"
+      "bytes": 62312,
+      "sha256": "217dd2f88bca72e46a3b78940178a34878f0c81fca2e8ab2c7959de414504285"
     },
     {
       "order": 119,
@@ -2137,8 +2137,8 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 74563,
-      "sha256": "1dc2fbfa7a1fbeeda0eb2b01d053f22c92789a35364af5a8cc808a8bdfeb8840"
+      "bytes": 74407,
+      "sha256": "dd8eeb18864eed392e4434dac0f02e1010fae4fc72ef04f70aefb68835cac6a2"
     },
     {
       "order": 121,
@@ -2234,8 +2234,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 114651,
-      "sha256": "e6fdcb88669248a76f21432073e0583da10e944b55f151f5c9a99104c8cca8c3"
+      "bytes": 114639,
+      "sha256": "8c66c3f777f6fb2f3135e7df3d2aafaadabe32e01967a6919848e7ffe9c90c51"
     },
     {
       "order": 122,
@@ -2259,8 +2259,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 10285,
-      "sha256": "8254783a14842402919b5ff7afd3faa0628e393e51b4035403b3afc61811071e"
+      "bytes": 10273,
+      "sha256": "3999b66f0deb9ead2ef6f82a60573aa6c1af53f5f3fabe8711e110e606d6232b"
     },
     {
       "order": 123,
@@ -2934,8 +2934,8 @@
         "editgraphics-target-property-value-remove",
         "scale-materialization"
       ],
-      "bytes": 16887,
-      "sha256": "bd8e7c8dbfed631d08e448b205d9b5e06c7906da395bebeaf3d20cdfeabccbf7"
+      "bytes": 16959,
+      "sha256": "fefa9257cc6c290af813df000452055d17f95be08a322667daa2c20d79e378ad"
     },
     {
       "order": 128,
@@ -3254,8 +3254,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3000,
-      "sha256": "60ad5d1625f512e551e92e18b6011d0ab47c4e198a04c08331db0f85b381ac45"
+      "bytes": 3039,
+      "sha256": "1a8168c42e4e7fdde607f9bc3e8536ba0122e34233214b8bc7c3b8b51fc635b8"
     },
     {
       "order": 149,
