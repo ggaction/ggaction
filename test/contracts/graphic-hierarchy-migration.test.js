@@ -25,6 +25,8 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "cars-origin-histogram-facet": [],
+  "cars-weighted-rules": ["canvas", "cars", "strokeWidthLegendSymbols", "strokeWidthLegendLabels", "strokeWidthLegendTitle"],
   "facet-grid": [],
   "repeat-charts": [],
   "beeswarm-plot": [

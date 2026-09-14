@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 import { chromium } from "playwright";
 
-import { publicCharts } from "../../examples/registry.js";
+import { publicExamples } from "../../examples/registry.js";
 import {
   assertNoBrowserErrors,
   openBrowserPage,
@@ -13,7 +13,7 @@ import {
 import { startStaticServer } from "../support/static-server.js";
 
 const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
-const examples = publicCharts({ browser: true });
+const examples = publicExamples({ browser: true });
 
 let browser;
 let server;

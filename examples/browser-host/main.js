@@ -1,5 +1,5 @@
 import { render } from "../../src/index.js";
-import { PUBLIC_CHARTS } from "../registry.js";
+import { publicExamples } from "../registry.js";
 
 const DATA_FILES = Object.freeze({
   cars: "cars.json",
@@ -40,7 +40,7 @@ async function loadExampleData(definition) {
 }
 
 const id = new URLSearchParams(window.location.search).get("chart") ?? document.body.dataset.chart;
-const example = PUBLIC_CHARTS.find(candidate => candidate.id === id);
+const example = publicExamples().find(candidate => candidate.id === id);
 if (example === undefined) throw new Error(`Unknown browser chart "${id}".`);
 
 const program = example.createProgram(await loadExampleData(example.data));

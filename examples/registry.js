@@ -1,3 +1,14 @@
+import { createHierarchicalAuthoring } from "./hierarchical-authoring/program.js";
+import { createResourceRemovalWorkflow } from "./remove-dependent-resources/program.js";
+import { createFacetSourceWorkflow } from "./edit-facet-source/program.js";
+import { createCustomThemeWorkflow } from "./apply-custom-theme/program.js";
+import { createSelectedLabelsWorkflow } from "./edit-selected-labels/program.js";
+import { createScaleGuidesWorkflow } from "./edit-scales-and-guides/program.js";
+import { createEncodingModesWorkflow } from "./switch-encoding-modes/program.js";
+import { createWeightedDistributionsWorkflow } from "./compare-weighted-distributions/program.js";
+import { createMissingObservationsWorkflow } from "./repair-missing-observations/program.js";
+import { createCarsWeightedRules } from "./cars-weighted-rules/program.js";
+import { createCarsOriginHistogramFacet } from "./cars-origin-histogram-facet/program.js";
 import { createBarTransition } from "./color-transitions/program.js";
 import { createMidpoint } from "./color-midpoint/program.js";
 import { createRoseHole } from "./radial-sectors/program.js";
@@ -109,11 +120,34 @@ function example({ id, data, width, height, createProgram, ...options }) {
     programFile: new URL(`./${options.programDirectory ?? id}/program.js`, import.meta.url),
     testDirectory: options.testDirectory ?? id,
     docsGroup: options.docsGroup,
+    workflow: options.workflow ?? false,
     browser: options.browser && Object.freeze(options.browser)
   });
 }
 
+export const DOCUMENTATION_ONLY_PROGRAMS = Object.freeze({
+  "getting-started": "Inline-data program for the Getting Started guide.",
+  "readme-authoring-sequence": "Stepwise animation for the repository README."
+});
+
+// Ordered authoring lessons reuse the chart families below. Their exact displayed
+// programs are checked by the documentation and installed-consumer suites.
+export const DOCUMENTATION_WORKFLOWS = Object.freeze([
+  example({ id: "hierarchical-authoring", data: {}, width: 1240, height: 300, createProgram: createHierarchicalAuthoring, workflow: true, browser: { path: "hierarchical-authoring/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "hierarchical-authoring", width: 1240, height: 300 } } } }),
+  example({ id: "remove-dependent-resources", data: {}, width: 740, height: 280, createProgram: createResourceRemovalWorkflow, workflow: true, browser: { path: "remove-dependent-resources/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "remove-dependent-resources", width: 740, height: 280 } } } }),
+  example({ id: "edit-facet-source", data: {}, width: 810, height: 322, createProgram: createFacetSourceWorkflow, workflow: true, browser: { path: "edit-facet-source/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "edit-facet-source", width: 810, height: 322 } } } }),
+  example({ id: "apply-custom-theme", data: {}, width: 1112, height: 280, createProgram: createCustomThemeWorkflow, workflow: true, browser: { path: "apply-custom-theme/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "apply-custom-theme", width: 1112, height: 280 } } } }),
+  example({ id: "edit-selected-labels", data: {}, width: 860, height: 320, createProgram: createSelectedLabelsWorkflow, workflow: true, browser: { path: "edit-selected-labels/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "edit-selected-labels", width: 860, height: 320 } } } }),
+  example({ id: "edit-scales-and-guides", data: {}, width: 900, height: 320, createProgram: createScaleGuidesWorkflow, workflow: true, browser: { path: "edit-scales-and-guides/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "edit-scales-and-guides", width: 900, height: 320 } } } }),
+  example({ id: "switch-encoding-modes", data: {}, width: 1112, height: 280, createProgram: createEncodingModesWorkflow, workflow: true, browser: { path: "switch-encoding-modes/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "switch-encoding-modes", width: 1112, height: 280 } } } }),
+  example({ id: "compare-weighted-distributions", data: {}, width: 1120, height: 300, createProgram: createWeightedDistributionsWorkflow, workflow: true, browser: { path: "compare-weighted-distributions/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "compare-weighted-distributions", width: 1120, height: 300 } } } }),
+  example({ id: "repair-missing-observations", data: {}, width: 860, height: 300, createProgram: createMissingObservationsWorkflow, workflow: true, browser: { path: "repair-missing-observations/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "repair-missing-observations", width: 860, height: 300 } } } }),
+]);
+
+// Chart-family examples retain their independent primitive/public baselines.
 export const PUBLIC_CHARTS = Object.freeze([
+  example({ id: "cars-origin-histogram-facet", data: "cars", width: 756, height: 578, createProgram: createCarsOriginHistogramFacet, testDirectory: "cars-origin-scatterplot-facet", browser: { path: "browser-host/?chart=cars-origin-histogram-facet", canvas: "#chart" } }),
+  example({ id: "cars-weighted-rules", data: "cars", width: 520, height: 320, createProgram: createCarsWeightedRules, testDirectory: "cars-error-bar", browser: { path: "browser-host/?chart=cars-weighted-rules", canvas: "#chart" } }),
   example({
     id: "raincloud-plot", data: {}, width: 680, height: 420,
     createProgram: () => createRaincloudExample(), testDirectory: "raincloud-plot",
@@ -850,4 +884,11 @@ export function publicChart(id) {
   const chart = PUBLIC_CHARTS.find(candidate => candidate.id === id);
   if (!chart) throw new Error(`Unknown public chart "${id}".`);
   return chart;
+}
+
+export function publicExamples(options = {}) {
+  return [...PUBLIC_CHARTS, ...DOCUMENTATION_WORKFLOWS].filter(example =>
+    (options.docsGroup === undefined || example.docsGroup === options.docsGroup) &&
+    (options.browser === undefined || Boolean(example.browser) === options.browser)
+  );
 }

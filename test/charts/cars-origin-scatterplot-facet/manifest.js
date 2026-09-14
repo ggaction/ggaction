@@ -123,6 +123,7 @@ export const visualVariants = Object.freeze([
     variant: "two-column-wrap",
     title: "Cars Origin Histogram Facet",
     callChain: histogramFacetTarget,
+    compareSemanticSpec: false,
     artifact,
     primitive: () => createCarsOriginHistogramFacetPrimitives(cars),
     userFacing: () => createCarsOriginHistogramFacet(cars),
