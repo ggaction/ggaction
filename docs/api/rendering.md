@@ -362,6 +362,73 @@ text, attributes, titles, and descriptions reject characters that XML 1.0
 cannot represent; emoji, joiners, variation selectors, and right-to-left text
 remain unchanged.
 
+## Accessible data alternatives
+
+`exportAccessibleData(program, { target? })` from `ggaction/accessibility` works in
+Browser and Node with Full or Basic editable programs. It returns a deeply frozen
+`{ schemaVersion: 1, title, views }` without changing the program or its trace.
+`title` is the semantic title string or `null`.
+
+<!-- snippet-context:start -->
+
+> **alternative.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+import { exportAccessibleData } from "ggaction/accessibility";
+
+const program = chart().createCanvas()
+  .createData({ values: [
+    { quarter: "Q1", revenue: 12 }, { quarter: "Q1", revenue: 18 },
+    { quarter: "Q2", revenue: 20 }
+  ] })
+  .createBarPlot({ id: "sales", x: "quarter",
+    y: { field: "revenue", aggregate: "mean" }, guides: false });
+const alternative = exportAccessibleData(program, { target: "sales" });
+console.log(alternative.views[0]);
+```
+
+The first quarter is one aggregated bar with endpoints 0 and 15, rather than two
+source rows. The second bar has endpoints 0 and 20.
+
+Each owner view has `ownerId`, `markType`, `columns`, `rows`, and `units`. A column
+has a unique `key`, semantic channel `role`, and `component` mark ID, with `field`,
+`aggregate`, and `unit` when applicable. Keys combine component ID and channel
+with `:`. A row has `component`, a `series` field/value record, and `values` keyed
+by those column keys. Composite owners include their owned graphical components
+in the same view; rows from different components may use different columns.
+Absent values remain absent. Temporal position values use UTC milliseconds and
+corresponding columns declare `unit: "utc-milliseconds"`; other units are not
+guessed. Area layouts can also supply `lower` and `upper` endpoint roles. Parallel
+coordinate dimensions use their field names as column roles.
+
+Omitting `target` exports every stable chart owner in semantic order. An explicit
+target must name a stable owner; requesting an owned component reports its owner.
+A composition returns child views in composition order, each with `ownerId`,
+`kind: "composition-child"`, `title`, and nested `views`. Facet children also have
+a `facet` field/value record. Grid facets contain both row and column fields;
+repeats contain `repeatField` and `channel`. To select a mark within a composition,
+pass the explicit child program to this function. A composition-level target is
+rejected instead of choosing among repeated IDs.
+
+Point, bar, histogram, line, area, arc, rule, tick, rect, and their supported
+composite owners use final materialized data. This includes aggregate cells, bin
+endpoints, ordered path points, stack endpoints, error intervals, and final mark
+filters. Attached text labels repeat owner data and do not create additional views.
+Standalone text marks and custom unsupported owners raise an error identifying
+the owner; the function never silently returns a partial set of views. Incomplete
+marks and render-only snapshots are rejected. Empty charts return an empty list.
+
+The output describes the authored chart data, including data outside a clipped
+viewport or styled with zero opacity. It does not reverse scale mappings from
+pixels or infer units, prose, missing observations, or statistical explanations.
+The host supplies meaningful captions, HTML tables, and ARIA relationships. Use
+DOM `textContent` for user-controlled titles, column labels, and values; do not
+insert them as HTML. Keep the alternative synchronized by exporting the updated
+program after an edit.
+
 ## Related
 
 [Canvas](./canvas.md) · [Semantic and graphical state](../concepts/semantic-and-graphics.md) ·

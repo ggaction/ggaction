@@ -216,12 +216,13 @@ The package is ESM-only and requires Node.js 20 or later.
 | `ggaction/png` | Render a completed program to a PNG file in Node.js |
 | `ggaction/pdf` | Render a completed program to a single-page vector PDF file in Node.js |
 | `ggaction/persistence` | Save and restore editable programs or graphic snapshots in Browser or Node |
+| `ggaction/accessibility` | Export final visual data for host-provided accessible tables and descriptions |
 | `ggaction/diagnostics` | Read structured error codes and resource details in Browser or Node |
 | `ggaction/svg` | Serialize a completed program to browser-safe SVG |
 | `ggaction-mcp` | Run the local read-only MCP authoring server over stdio in Node.js |
 
 All module entries include TypeScript declarations. The default, basic,
-extension, diagnostics, and SVG entries are browser-safe; the PNG and PDF adapters are
+extension, diagnostics, accessibility, and SVG entries are browser-safe; the PNG and PDF adapters are
 Node-only.
 
 The installed package also includes the Node-only `ggaction-mcp` executable. It

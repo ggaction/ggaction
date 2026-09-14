@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:b3654099f6b3d108283154c109a4d09d4fa4333620ecbb24310d7a87ee25afe1",
+    "contractId": "sha256:e726f6c6de6df43f4ef2a6f186e2ce291518686480ea4d9142006785f3a199b4",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1183,10 +1183,11 @@
         "pdf-output",
         "pdf-in-memory",
         "errors-and-limitations",
+        "accessible-data-alternatives",
         "related"
       ],
-      "bytes": 15614,
-      "sha256": "e1295e4485160d59ee819d277333f71a953ce23545a5d5726765ce3269f2b6e6"
+      "bytes": 19325,
+      "sha256": "c9dadab8579384a3ca4a109198cc74759b2776bd60ddb2ece3d3e9207cc96f81"
     },
     {
       "order": 73,
@@ -3253,7 +3254,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "61c865f6eab22caddaf8a398790f7badfb182c972e9da58041cc7181dff6dd6b"
+      "sha256": "15b7cbf285754ee773df52cccd7113ca15b3a2a4c543b6bdfee341d13bfb355b"
     },
     {
       "order": 149,

@@ -86,6 +86,7 @@ async function testNodeConsumer(directory) {
     import { renderToPNG, renderToPNGBuffer } from "ggaction/png";
     import { renderToSVG } from "ggaction/svg";
     import { serializeProgram, deserializeProgram, serializeGraphic, deserializeGraphic } from "ggaction/persistence";
+    import { exportAccessibleData } from "ggaction/accessibility";
 
     const program = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
@@ -94,6 +95,9 @@ async function testNodeConsumer(directory) {
       .encodeX({ field: "x" })
       .encodeY({ field: "y" })
       .encodeRadius({ value: 3 });
+    const alternative = exportAccessibleData(program);
+    assert.equal(alternative.views[0].rows.length, 2);
+    assert.ok(Object.isFrozen(alternative.views[0].rows));
     const restored = deserializeProgram(serializeProgram(program));
     const revised = program.reviseData({ source: "data", id: "updatedData", values: [
       { x: 1, y: 2 }, { x: 3, y: 7 }, { x: 4, y: 3 }
@@ -3467,6 +3471,15 @@ async function testTypeScriptConsumer(directory) {
     const removeOptions: RemoveCompositionChildOptions = { target: "view-2" };
     const typedRemoved: ChartProgram = typedReordered.removeCompositionChild(removeOptions);
     const draw: typeof render = render;
+    const accessibility = await import("ggaction/accessibility");
+    const alternative: import("ggaction/accessibility").AccessibleData = accessibility.exportAccessibleData(program);
+    accessibility.exportAccessibleData(basicChart());
+    // @ts-expect-error Output is deeply readonly.
+    alternative.views.push({});
+    // @ts-expect-error Unknown options are rejected.
+    accessibility.exportAccessibleData(program, { unknown: true });
+    // @ts-expect-error Render-only data is insufficient.
+    accessibility.exportAccessibleData({graphicSpec:program.graphicSpec});
     const persistence = await import("ggaction/persistence");
     const restored: ChartProgram = persistence.deserializeProgram(persistence.serializeProgram(program));
     persistence.serializeProgram(basicChart());

@@ -6,6 +6,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ### Added
 
+- Add `ggaction/accessibility` to export immutable final visual data with stable owners, component roles, series, and composition hierarchy.
+
 - Added `reviseData` for immutable source revisions with dependent chart updates.
 - Added `applyTextMetrics` and `removeTextMetrics` for host-measured text layout,
   including titles, axes, legends, labels, retained compositions, and persistence.

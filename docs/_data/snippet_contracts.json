@@ -3075,6 +3075,20 @@
     "executable": false
   },
   {
+    "file": "api/rendering.md",
+    "block": 9,
+    "heading": "Accessible data alternatives",
+    "mode": "alternative",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [
+      "target: \"sales\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: \"sales\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "bc8e84151f865094ca13337584b6bd2a0003ea283a5e513e3155c312bf6a58a2",
+    "executable": false
+  },
+  {
     "file": "api/scales.md",
     "block": 1,
     "heading": "At a glance",

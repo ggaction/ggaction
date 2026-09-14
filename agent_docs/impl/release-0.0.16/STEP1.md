@@ -44,7 +44,7 @@
 | 27 | 저장·복원을 위한 버전 있는 snapshot/recipe 경계 | 구현·검증 완료 | 139개 corpus state/graphic round trip, malformed/extension/Basic/불변 편집, 46개 영향 검사와 실제 installed package 통과 |
 | 28 | 구조화된 진단과 실제 한도 안내 | 구현·검증 완료 | 진단·불변성·selectors·타입·bare 및 installed package; 일반 3690개 중 문서 목록 1개 수정 후 해당 계약 재통과 |
 | 29 | PNG/PDF 메모리 출력과 비동기 비용 경계 | 구현·검증 완료 | renderer/package/MCP 38개, docs/package 33개, 실제 bare→optional 설치·Full/Basic/타입/전체 package consumer 통과 |
-| 30 | 접근성 보조 출력을 최종 시각적 데이터 단위와 연결한다 | 진행 전 | — |
+| 30 | 접근성 보조 출력을 최종 시각적 데이터 단위와 연결한다 | 구현·검증 완료 | 집계·histogram 보존·오차 구간·UTC line·Parallel·facet/concat·음성·browser graph, 전체 corpus 및 installed consumer 통과 |
 | 31 | 릴리즈 준비를 하나의 검토 가능한 변경으로 생성한다 | 진행 전 | — |
 
 ## 검증 checkpoint
@@ -135,3 +135,11 @@ Data capability 209개, 최종 source/catalog/input/type/boundary/grid 36개, th
 전체 일반 suite 3,742/3,742, 최종 typography/theme/tree-shaking/architecture 등 72/72, 문서·catalog 52/52 및 실제 installed package consumer를 통과했다. 새 핵심 metrics 60개 coverage 검사는 line 99.02%, branch 99.21%, function 100%다. 마지막 theme Parallel 중복 재계산 제거 후 영향 검사를 다시 통과했다. 생성 문서를 갱신했다.
 
 공통 closed-option wrapper와 gradient color/stroke geometry/materialization, 기존 built-in factory의 pure annotation으로 중복을 줄였다. Extension action 검증과 각 domain의 trace를 보존한다. 실제 installed browser gzip은 Full 359,795, Basic 165,806, SVG 6,956 bytes로 기존 상한을 유지한다. 새로운 runtime module 4개의 package entry 상한은 537이며 packed/unpacked 상한은 유지했다. 전체 suite가 드러낸 violin orientation 변경 중 grid rematerialization 순서도 고쳐 explicit tick 변경과 내부 dependency plan을 구분했다.
+
+### Accessible final data checkpoint
+
+Browser-safe 별도 entry에서 final item adapter와 pure path series를 읽는다. Mark removal과 stable owner 관계를 공유하고 composite component를 한 owner view 아래 보존한다. Column role·field·aggregate·UTC unit, series와 ordered facet/repeat/concat hierarchy를 immutable schema 1 출력에 담는다. Standalone text/지원 불가능한 owner는 ID를 명시해 전체 거부하며 일부 성공 결과를 조용히 반환하지 않는다.
+
+집계 평균 3/8, interval bounds 2–4/6–10, histogram count conservation, filtered row, UTC aggregate line, Parallel dimension, facet 계층 및 원본 보존을 검증했다. 141개 relationship corpus 중 134개 지원, 7개 standalone text의 명시적 오류를 확인했다. Runtime/package/boundary 23개, 별도 package/tree-shaking 18개, 문서 120개 및 installed package의 runtime/types 전체 consumer 통과. 접근성 entry coverage line 98.73%, branch 94.12%, function 100%. Source-only browser graph는 Full action 등록이나 Node dependency를 포함하지 않는다.
+
+새 배포 파일 3개로 entries 540, unpacked 3,601,724 bytes를 확인하고 unpacked 상한을 3,610,000으로 맞췄다. Packed/browser 상한은 유지한다. Installed Full/Basic/SVG gzip은 359,782/165,806/6,956 bytes다.

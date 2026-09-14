@@ -75,6 +75,10 @@
     "./persistence": {
       "types": "./types/persistence.d.ts",
       "default": "./src/persistence.js"
+    },
+    "./accessibility": {
+      "types": "./types/accessibility.d.ts",
+      "default": "./src/accessibility.js"
     }
   },
   "scripts": {
