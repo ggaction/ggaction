@@ -19,10 +19,30 @@ return rejected promises for validation or filesystem failures.
 | `Error` | Missing/ambiguous resource, incompatible chart state, unsupported combination, or named lookup failure | Add an explicit ID or revise the authoring sequence |
 | Rejected renderer promise | Invalid renderer options or filesystem/native output failure | Keep the program, inspect the environment, and retry output separately |
 
-The public API does not currently expose stable machine-readable error codes.
-Do not branch production behavior on complete English message text. Use the
-documented option and lifecycle contract to prevent expected failures, and log
-the message with action context for diagnosis.
+## Structured diagnostics
+
+Import `getErrorDetails` from the browser-safe `ggaction/diagnostics` entry.
+`getErrorDetails(error)` returns frozen metadata for classified ggaction failures
+and `undefined` for an unrelated error or non-error value. Error classes and
+identity are preserved, including extension errors that are already frozen.
+
+The stable `code` values are `invalid-option`, `invalid-value`,
+`missing-resource`, `ambiguous-resource`, `incompatible-resource`,
+`resource-in-use`, `resource-limit`, `unsupported-format`, and `action-failed`.
+Shared input validation and named-resource selectors assign specific codes.
+Wrapped actions attach `action-failed` to other errors without guessing their
+category from English message text. Not every individual domain failure has a
+more specific code yet. Standalone renderer errors carry details where their
+option or resource-limit validator supplies them; native/filesystem failures
+can return `undefined`.
+
+Optional fields are `operation`, `optionPath`, `resourceId`, `candidates`,
+`limit`, and `actual`. `operation` identifies the innermost wrapped action that
+observed the error (or an explicitly named renderer). `optionPath` identifies
+the supplied key or the validator's named quantity. `candidates` lists resource
+IDs; `actual` and `limit` are numeric counts. No row values or complete program
+state are included. Use codes and available fields for recovery, and retain
+the message for human diagnosis. Do not parse complete message text.
 
 ## Recover without losing the previous chart
 

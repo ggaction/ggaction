@@ -34,6 +34,11 @@ const PUBLIC_ENTRIES = Object.freeze({
     types: "./types/pdf.d.ts",
     values: Object.freeze(["renderToPDF", "renderToPDFBuffer"])
   }),
+  "./diagnostics": Object.freeze({
+    runtime: "./src/diagnostics.js",
+    types: "./types/diagnostics.d.ts",
+    values: Object.freeze(["getErrorDetails"])
+  }),
   "./svg": Object.freeze({
     runtime: "./src/renderers/svg.js",
     types: "./types/svg.d.ts",
@@ -108,7 +113,7 @@ test("maps every public entry point to a declaration file", () => {
     "utf8"
   ));
   assert.equal(packageJson.types, PUBLIC_ENTRIES["."].types);
-  assert.deepEqual(Object.keys(packageJson.exports), Object.keys(PUBLIC_ENTRIES));
+  assert.deepEqual(Object.keys(packageJson.exports).sort(), Object.keys(PUBLIC_ENTRIES).sort());
   for (const [specifier, expected] of Object.entries(PUBLIC_ENTRIES)) {
     assert.deepEqual(packageJson.exports[specifier], {
       types: expected.types,

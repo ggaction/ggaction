@@ -1,3 +1,4 @@
+import { annotateError } from "../../core/diagnostics.js";
 import { drawCircleGraphic } from "./circle.js";
 import { drawLineGraphic } from "./line.js";
 import { drawPathGraphic } from "./path.js";
@@ -208,14 +209,14 @@ export function render(program, context, { pixelRatio = 1 } = {}) {
     physicalWidth > MAX_RASTER_DIMENSION ||
     physicalHeight > MAX_RASTER_DIMENSION
   ) {
-    throw new RangeError(
+    throw annotateError(new RangeError(
       `render physical Canvas dimensions must not exceed ${MAX_RASTER_DIMENSION}.`
-    );
+    ), { code: "resource-limit", operation: "render", optionPath: "physicalDimensions", limit: MAX_RASTER_DIMENSION, actual: Math.max(physicalWidth, physicalHeight) });
   }
   if (physicalWidth * physicalHeight > MAX_RASTER_PIXELS) {
-    throw new RangeError(
+    throw annotateError(new RangeError(
       `render physical Canvas pixel count must not exceed ${MAX_RASTER_PIXELS}.`
-    );
+    ), { code: "resource-limit", operation: "render", optionPath: "physicalPixels", limit: MAX_RASTER_PIXELS, actual: physicalWidth * physicalHeight });
   }
   preflightCanvasGraphicSpec(target, pixelRatio);
 

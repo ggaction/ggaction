@@ -67,6 +67,10 @@
     "./svg": {
       "types": "./types/svg.d.ts",
       "default": "./src/renderers/svg.js"
+    },
+    "./diagnostics": {
+      "types": "./types/diagnostics.d.ts",
+      "default": "./src/diagnostics.js"
     }
   },
   "scripts": {

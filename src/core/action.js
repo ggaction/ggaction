@@ -1,3 +1,4 @@
+import { annotateError } from "./diagnostics.js";
 import { cloneAndFreeze, freezeOwned, isOwned, isPlainObject } from "./immutable.js";
 
 const metadataByWrappedAction = new WeakMap();
@@ -194,36 +195,40 @@ export function action(metadata, implementation) {
   });
 
   const wrappedAction = function wrappedAction(args = {}) {
-    if (!isPlainObject(args)) {
-      throw new TypeError("Action arguments must be a plain object.");
-    }
-
-    if (scope === "unit") this._assertUnitProgram(ownedMetadata.op);
-    if (scope === "composition") this._assertCompositionProgram(ownedMetadata.op);
-
-    const summarizedArgs = summarizeArgs(args);
-    const entered = this._enterAction({
-      ...ownedMetadata,
-      args: summarizedArgs
-    });
-    let result = implementation.call(entered, args);
-
-    if (!(result instanceof this.constructor)) {
-      throw new TypeError(`${ownedMetadata.op} must return a ChartProgram.`);
-    }
-
-    if (this.actionStack.length === 0 && actionCompletionHook !== undefined) {
-      result = actionCompletionHook(result, {
-        source: this,
-        metadata: ownedMetadata,
+    try {
+      if (!isPlainObject(args)) {
+        throw new TypeError("Action arguments must be a plain object.");
+      }
+  
+      if (scope === "unit") this._assertUnitProgram(ownedMetadata.op);
+      if (scope === "composition") this._assertCompositionProgram(ownedMetadata.op);
+  
+      const summarizedArgs = summarizeArgs(args);
+      const entered = this._enterAction({
+        ...ownedMetadata,
         args: summarizedArgs
       });
+      let result = implementation.call(entered, args);
+  
       if (!(result instanceof this.constructor)) {
-        throw new TypeError("Action completion hook must return a ChartProgram.");
+        throw new TypeError(`${ownedMetadata.op} must return a ChartProgram.`);
       }
+  
+      if (this.actionStack.length === 0 && actionCompletionHook !== undefined) {
+        result = actionCompletionHook(result, {
+          source: this,
+          metadata: ownedMetadata,
+          args: summarizedArgs
+        });
+        if (!(result instanceof this.constructor)) {
+          throw new TypeError("Action completion hook must return a ChartProgram.");
+        }
+      }
+  
+      return result._exitAction();
+    } catch (error) {
+      throw annotateError(error, { code: "action-failed", operation: ownedMetadata.op });
     }
-
-    return result._exitAction();
   };
 
   metadataByWrappedAction.set(wrappedAction, ownedMetadata);

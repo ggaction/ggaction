@@ -3447,6 +3447,10 @@ async function testTypeScriptConsumer(directory) {
     const removeOptions: RemoveCompositionChildOptions = { target: "view-2" };
     const typedRemoved: ChartProgram = typedReordered.removeCompositionChild(removeOptions);
     const draw: typeof render = render;
+    const diagnostics = await import("ggaction/diagnostics");
+    const details = diagnostics.getErrorDetails(new Error());
+    const code: import("ggaction/diagnostics").ErrorCode | undefined = details?.code;
+    void code;
     const pngMemory: Promise<PNGBufferResult> = renderToPNGBuffer(program, { pixelRatio: 2 });
     const pdfMemory: Promise<PDFBufferResult> = renderToPDFBuffer(program);
     // @ts-expect-error Memory output does not accept filesystem options.
@@ -4152,6 +4156,7 @@ async function testOptionalDependencies(consumer) {
   const source = `
     import assert from "node:assert/strict";
     import { chart } from "ggaction";
+    import { getErrorDetails } from "ggaction/diagnostics";
     import { chart as basic } from "ggaction/basic";
     import { renderToSVG } from "ggaction/svg";
     import { renderToPNGBuffer } from "ggaction/png";
@@ -4160,6 +4165,9 @@ async function testOptionalDependencies(consumer) {
       assert.throws(() => import.meta.resolve(name), { code: "ERR_MODULE_NOT_FOUND" });
     }
     const program = chart().createCanvas();
+    try { program.createData({ values: [], unexpected: true }); } catch (error) {
+      assert.equal(getErrorDetails(error).code, "invalid-option");
+    }
     assert.match(renderToSVG(program), /<svg/);
     assert.match(renderToSVG(basic().createCanvas()), /<svg/);
     for (const render of [renderToPNGBuffer, renderToPDFBuffer]) {

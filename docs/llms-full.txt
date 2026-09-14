@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.15.
 
-Contract: sha256:bd43525eb7582b6861ec99e0269b3ad73ad4e9fdb5b8511e3171cccccabeecc2. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:1bf6b6815187bc71aaddc53a2b88c0339d233044c8831cc3699d6149459f9e9b. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -13336,6 +13336,16 @@ same measurement unless the product question is end-to-end latency.
 - Reuse a completed program for multiple renderers when semantics and logical
  dimensions are unchanged; renderers consume the same `graphicSpec`.
 
+## Generated-work limits
+
+Many expansion operations cap generated items at 10,000 per operation. This
+applies to generated path commands, grid values, and aggregate layout cells;
+it is not a universal source-row limit. Work-intensive calculations such as
+label collision planning also have a 10,000,000-work-item budget. The shared
+validator reports `resource-limit` with the named quantity, `limit`, and
+`actual` through `getErrorDetails` from `ggaction/diagnostics`. Reduce the
+expansion (for example, fewer bins or labels) while preserving chart meaning.
+
 ## Allocation limits
 
 Canvas and PNG reject a physical side above 32,767 pixels or a complete raster
@@ -13481,10 +13491,30 @@ return rejected promises for validation or filesystem failures.
 | `Error` | Missing/ambiguous resource, incompatible chart state, unsupported combination, or named lookup failure | Add an explicit ID or revise the authoring sequence |
 | Rejected renderer promise | Invalid renderer options or filesystem/native output failure | Keep the program, inspect the environment, and retry output separately |
 
-The public API does not currently expose stable machine-readable error codes.
-Do not branch production behavior on complete English message text. Use the
-documented option and lifecycle contract to prevent expected failures, and log
-the message with action context for diagnosis.
+## Structured diagnostics
+
+Import `getErrorDetails` from the browser-safe `ggaction/diagnostics` entry.
+`getErrorDetails(error)` returns frozen metadata for classified ggaction failures
+and `undefined` for an unrelated error or non-error value. Error classes and
+identity are preserved, including extension errors that are already frozen.
+
+The stable `code` values are `invalid-option`, `invalid-value`,
+`missing-resource`, `ambiguous-resource`, `incompatible-resource`,
+`resource-in-use`, `resource-limit`, `unsupported-format`, and `action-failed`.
+Shared input validation and named-resource selectors assign specific codes.
+Wrapped actions attach `action-failed` to other errors without guessing their
+category from English message text. Not every individual domain failure has a
+more specific code yet. Standalone renderer errors carry details where their
+option or resource-limit validator supplies them; native/filesystem failures
+can return `undefined`.
+
+Optional fields are `operation`, `optionPath`, `resourceId`, `candidates`,
+`limit`, and `actual`. `operation` identifies the innermost wrapped action that
+observed the error (or an explicitly named renderer). `optionPath` identifies
+the supplied key or the validator's named quantity. `candidates` lists resource
+IDs; `actual` and `limit` are numeric counts. No row values or complete program
+state are included. Use codes and available fields for recovery, and retain
+the message for human diagnosis. Do not parse complete message text.
 
 ## Recover without losing the previous chart
 
@@ -24856,6 +24886,26 @@ export function renderToPDFBuffer(
   program: Pick<ChartProgram, "graphicSpec">,
   options?: { metadata?: PDFMetadata }
 ): Promise<PDFBufferResult>;
+```
+
+#### `ggaction/diagnostics`
+
+```typescript
+export type ErrorCode = "invalid-option" | "invalid-value" | "missing-resource" |
+  "ambiguous-resource" | "incompatible-resource" | "resource-in-use" |
+  "resource-limit" | "unsupported-format" | "action-failed";
+
+export interface ErrorDetails {
+  readonly code: ErrorCode;
+  readonly operation?: string;
+  readonly optionPath?: string;
+  readonly resourceId?: string;
+  readonly candidates?: readonly string[];
+  readonly limit?: number;
+  readonly actual?: number;
+}
+
+export function getErrorDetails(error: unknown): ErrorDetails | undefined;
 ```
 
 ## Rendering functions
@@ -36755,7 +36805,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:bd43525eb7582b6861ec99e0269b3ad73ad4e9fdb5b8511e3171cccccabeecc2` |
+| Contract fingerprint | `sha256:1bf6b6815187bc71aaddc53a2b88c0339d233044c8831cc3699d6149459f9e9b` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

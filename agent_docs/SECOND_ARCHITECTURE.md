@@ -203,6 +203,10 @@ point 아래에만 존재한다. Fully materialized `graphicSpec`을 logical Can
 width/height와 숫자상 같은 point 크기의 한 page에 그리고 optional
 title/author/subject/keywords metadata를 기록한다.
 
+### `ggaction/diagnostics`
+
+`getErrorDetails(error)`로 stable code와 선택적인 operation/option/resource/budget metadata를 읽는 browser-safe entry다. Error identity/class를 보존하고 원본 data row를 저장하지 않는다. 상세 계약은 `docs/errors-and-recovery.md`가 소유한다.
+
 ### `ggaction-mcp`
 
 설치된 package가 제공하는 Node-only local stdio executable이다. Model-visible tool은
@@ -535,6 +539,10 @@ Trace append는 private persistent child tail을 공유한다. 공개 `children`
 
 `_clone()`은 현재 runtime class의 constructor를 사용하므로 `ChartProgram` subclass에서도
 action chain이 subclass type을 유지한다.
+
+## 구조화된 진단 경계
+
+Browser-safe `ggaction/diagnostics`의 `getErrorDetails`는 Error identity에 연결된 frozen metadata를 읽는다. Pure `core/diagnostics.js`만 WeakMap을 소유하며 state나 원본 데이터를 보관하지 않는다. Shared validation/selectors는 의미를 아는 실패 지점에서 code와 resource/option/budget 정보를 부여하고 wrapped action은 미분류 오류에 action-failed 및 innermost operation을 추가한다. Error 종류/identity를 바꾸거나 메시지로 code를 추론하지 않는다. Renderer와 selector의 core 접근은 이 순수 진단 helper로 한정한다. Exact code/field 의미는 `docs/errors-and-recovery.md`와 `types/diagnostics.d.ts`가 소유한다.
 
 ## `semanticSpec`
 

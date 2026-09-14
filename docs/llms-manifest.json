@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:bd43525eb7582b6861ec99e0269b3ad73ad4e9fdb5b8511e3171cccccabeecc2",
+    "contractId": "sha256:1bf6b6815187bc71aaddc53a2b88c0339d233044c8831cc3699d6149459f9e9b",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1745,12 +1745,13 @@
         "choose-the-output-deliberately",
         "measure-authoring-and-rendering-separately",
         "reduce-work-at-the-right-boundary",
+        "generated-work-limits",
         "allocation-limits",
         "large-chart-review",
         "related"
       ],
-      "bytes": 4034,
-      "sha256": "15c2729a721014cd6615f6a5b17949467a17f39ee3b02f6ccb694b5aa04d1a8c"
+      "bytes": 4593,
+      "sha256": "2d1adc2bbfe8ab57481fcb2b50859ae5fe5ff53fefdc1b4dca1c90b6cc9e4d1a"
     },
     {
       "order": 109,
@@ -1776,13 +1777,14 @@
       "headings": [
         "errors-and-recovery",
         "error-categories",
+        "structured-diagnostics",
         "recover-without-losing-the-previous-chart",
         "common-failures",
         "diagnosis-order",
         "related"
       ],
-      "bytes": 3506,
-      "sha256": "3f2913503d8bb4100cc2b1e262c5829bde327af77844e912b24417c55769c029"
+      "bytes": 4726,
+      "sha256": "b6194523db259580eb95570a11e512d5a5be77a7625d04c2db0b8ce991dd2d6b"
     },
     {
       "order": 111,
@@ -2279,11 +2281,12 @@
         "ggactionsvg",
         "ggactionpng",
         "ggactionpdf",
+        "ggactiondiagnostics",
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 4089,
-      "sha256": "77b2c4fbe92e10d9916c8b32283445033084508921e44468f5b112e24b911932"
+      "bytes": 4683,
+      "sha256": "5368c19196dc6e3803bc848a9070a07c7d54792b91006215d87863dd2de024ab"
     },
     {
       "order": 125,
@@ -3235,7 +3238,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "b0b979b446c0b5937aca6d31b339053933b604c09740dff72205c9105c2b7b75"
+      "sha256": "e224a20b3d8309b58a42c002584b14c6c3c0a8fecf7050ddda26b0a0a692dafd"
     },
     {
       "order": 149,

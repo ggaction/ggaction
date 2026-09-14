@@ -42,7 +42,7 @@
 | 25 | MCP 평가는 실행 성공과 요구 충족을 분리해야 한다 | 진행 전 | — |
 | 26 | 원본 데이터의 불변 revision을 유지한 갱신 흐름 | 진행 전 | — |
 | 27 | 저장·복원을 위한 버전 있는 snapshot/recipe 경계 | 진행 전 | — |
-| 28 | 구조화된 진단과 실제 한도 안내 | 진행 전 | — |
+| 28 | 구조화된 진단과 실제 한도 안내 | 구현·검증 완료 | 진단·불변성·selectors·타입·bare 및 installed package; 일반 3690개 중 문서 목록 1개 수정 후 해당 계약 재통과 |
 | 29 | PNG/PDF 메모리 출력과 비동기 비용 경계 | 구현·검증 완료 | renderer/package/MCP 38개, docs/package 33개, 실제 bare→optional 설치·Full/Basic/타입/전체 package consumer 통과 |
 | 30 | 접근성 보조 출력을 최종 시각적 데이터 단위와 연결한다 | 진행 전 | — |
 | 31 | 릴리즈 준비를 하나의 검토 가능한 변경으로 생성한다 | 진행 전 | — |
@@ -73,3 +73,7 @@ Owned subtree 재사용, data-only theme fast path, persistent trace children, i
 ### Optional backends and memory output checkpoint
 
 PNG/PDF Buffer API와 async PNG encoding을 추가하고 파일 출력이 같은 경로를 사용하게 했다. Optional peer 누락 상태에서 browser/entry import·명확한 오류를 실제 tarball 설치로 검증한 뒤 두 peer를 설치해 Node/MCP/type/tutorial/브라우저 bundle 전체 consumer를 통과했다. Package 상한은 backend loader 1개 및 API/type/docs 증가를 위해 523 files/3,565,000 unpacked bytes로 맞췄으며 packed/gzip 상한은 유지한다. Browser full/basic gzip 358,817/174,478 bytes로 통과했으나 항목 15의 여유 확보는 아직 남아 있다.
+
+### Structured diagnostics checkpoint
+
+Error identity/class를 보존하는 WeakMap metadata와 browser-safe entry를 추가했다. 공통 option/value/ID/resource/live-reference/limit validator가 의미를 직접 분류하고 wrapper는 미분류 실패에 action-failed만 부여한다. 원본 행을 저장하지 않는다. 35개 focused test 및 전체 package consumer 통과. 일반 suite 3,690개 중 package visibility 문서 목록 1개가 실패해 README/architecture를 고쳤고 관련 계약을 재검증했다. 최종 full/coverage/release 검증은 남아 있다.
