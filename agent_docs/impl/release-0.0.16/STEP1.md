@@ -37,7 +37,7 @@
 | 20 | realistic 테스트가 main의 필수 merge check에 포함되지 않는다 | 진행 전 | — |
 | 21 | 자동 검증이 Ubuntu·Chromium에 집중되어 있다 | 진행 전 | — |
 | 22 | 실패한 렌더·문서 테스트의 진단 artifact를 자동 보존해야 한다 | 진행 전 | — |
-| 23 | 높은 coverage를 보완할 공통 음성 계약·교차층 테스트가 필요하다 | 진행 전 | — |
+| 23 | 높은 coverage를 보완할 공통 음성 계약·교차층 테스트가 필요하다 | 구현·검증 완료 | Current catalog 전체 valid-call corpus → unknown/null/array/scalar rejection 및 source snapshot; generic/focused·atomic/sequential 동치 |
 | 24 | 실행 계약과 생성 메타데이터의 의미 원본을 좁혀야 한다 | 부분 구현·검증 | scale 단위 및 impute 조건부 필수값 공유; architecture의 상세 계약 분리 정리 남음 |
 | 25 | MCP 평가는 실행 성공과 요구 충족을 분리해야 한다 | 구현·검증 완료 | 85개 MCP·카드·문서·패키지 계약, installed consumer 및 15개 의미 평가 통과 |
 | 26 | 원본 데이터의 불변 revision을 유지한 갱신 흐름 | 진행 전 | — |
@@ -85,3 +85,7 @@ Error identity/class를 보존하는 WeakMap metadata와 browser-safe entry를 �
 ### MCP requirements checkpoint
 
 Packet v5에서 requiredOptions와 sample/configured options를 분리했다. Impute conditional rule은 runtime validator·card callPatterns·resolver가 같은 pure registry를 사용한다. Red/log/rotation explicit options와 derived creator→focused editor의 known owner 연결을 실제 실행한다. 해석된 phrase/option source coverage의 union을 제외한 유의미한 원문은 미해결로 보존한다. 새 평가 15개는 execution 15/15, fulfillment 10/15, 예상한 unresolved 5개, false completion 0이며 package/contract/taxonomy/card/resolver/case hash를 기록한다. 기존 LLM 실험 기록은 변경하지 않았다. 85개 영향 계약과 실제 installed package consumer가 통과했다.
+
+### Catalog-wide negative input checkpoint
+
+실행 가능한 action relationship corpus에서 모든 Current direct action의 성공한 입력·source를 수집해 malformed/unknown option과 원본 보존을 검사한다. 테스트의 capture wrapper도 정식 action()으로 만들어 내부 speculative invocation의 metadata 경계를 보존했다. 실패한 fixture를 오류 검증 성공으로 잘못 계산하지 않도록 원본 valid args의 재실행을 먼저 요구한다. Generic/focused scale와 atomic/sequential encoding의 semantic/graphic 동치를 함께 통과했다. 기존 sparse rows·family assertion·Full/Basic boundary 검사는 그대로 유지한다.
