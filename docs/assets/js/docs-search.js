@@ -8,6 +8,7 @@
   const docsRoot = new URL(config.dataset.rootUrl, document.baseURI);
   let sections;
   let loading;
+  let loadFailed = false;
   let activeIndex = -1;
   let requestVersion = 0;
   const status = document.createElement("span");
@@ -32,9 +33,11 @@
     results.setAttribute("aria-busy", String(busy));
   }
 
-  async function loadSections() {
+  async function loadSections(explicitRetry = false) {
     if (sections) return sections;
     if (loading) return loading;
+    if (loadFailed && !explicitRetry) return undefined;
+    loadFailed = false;
     setBusy(true);
     status.textContent = "Loading search…";
     retry.hidden = true;
@@ -49,6 +52,7 @@
       status.textContent = "";
       return sections;
     }).catch(() => {
+      loadFailed = true;
       clearResults();
       status.textContent = "Search could not load. Retry or use the page navigation.";
       retry.hidden = false;
@@ -107,7 +111,7 @@
       return;
     }
 
-    const searchableSections = await loadSections();
+    const searchableSections = await loadSections(forceLoad);
     if (request !== requestVersion || query !== searchable(input.value)) return;
     if (query.length < 2) { clearResults(); return; }
     if (!searchableSections) return;

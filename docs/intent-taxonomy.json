@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "packageVersion": "0.0.14",
+  "packageVersion": "0.0.15",
   "constraints": [
     {
       "id": "program.canvas",
