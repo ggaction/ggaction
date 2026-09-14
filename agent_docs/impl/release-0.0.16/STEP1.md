@@ -38,7 +38,7 @@
 | 21 | 자동 검증이 Ubuntu·Chromium에 집중되어 있다 | 구현·로컬 검증 완료 | macOS native smoke, Chromium/Firefox/WebKit DPR 1·2 및 installed consumer 통과; Windows/Ubuntu matrix는 실제 CI 대기 |
 | 22 | 실패한 렌더·문서 테스트의 진단 artifact를 자동 보존해야 한다 | 구현·로컬 검증 완료 | 의도적 실패에서 로그/status·actual/expected/diff·브라우저 화면 보존; CI failure upload와 budget/오류 비은폐 확인 |
 | 23 | 높은 coverage를 보완할 공통 음성 계약·교차층 테스트가 필요하다 | 구현·검증 완료 | Current catalog 전체 valid-call corpus → unknown/null/array/scalar rejection 및 source snapshot; generic/focused·atomic/sequential 동치 |
-| 24 | 실행 계약과 생성 메타데이터의 의미 원본을 좁혀야 한다 | 부분 구현·검증 | scale 단위 및 impute 조건부 필수값 공유; architecture의 상세 계약 분리 정리 남음 |
+| 24 | 실행 계약과 생성 메타데이터의 의미 원본을 좁혀야 한다 | 구현·검증 완료 | scale 단위·impute 필수값 공유; architecture의 중복 API/지원 목록을 Current owner 링크로 통합, 경로·anchor·package 계약 검증 |
 | 25 | MCP 평가는 실행 성공과 요구 충족을 분리해야 한다 | 구현·검증 완료 | 85개 MCP·카드·문서·패키지 계약, installed consumer 및 15개 의미 평가 통과 |
 | 26 | 원본 데이터의 불변 revision을 유지한 갱신 흐름 | 진행 전 | — |
 | 27 | 저장·복원을 위한 버전 있는 snapshot/recipe 경계 | 구현·검증 완료 | 139개 corpus state/graphic round trip, malformed/extension/Basic/불변 편집, 46개 영향 검사와 실제 installed package 통과 |
@@ -117,3 +117,7 @@ CI/release test command는 출력 streaming을 유지하며 마지막 2MiB log�
 ### Platform and browser compatibility checkpoint
 
 macOS/Windows Node 22 installed-package smoke와 Firefox/WebKit representative browser jobs를 CI 및 exact-candidate release fan-in에 추가했다. Native PNG/PDF memory/files, SVG, persistence와 공통 scene의 clip/gradient를 검증한다. Browser 3종의 Canvas/SVG text alignment, resize, DPR 1·2, labels와 download 6개가 로컬에서 통과했다. macOS arm64 native smoke, 22개 release/discovery 검사, npm invocation 단위 검사와 전체 installed consumer도 통과했다. Windows npm CLI와 TypeScript 실행은 npm run 환경의 실제 CLI 경로를 Node로 호출하여 공백과 .cmd shell 문제를 피한다. Linux/Windows runner 결과는 최종 CI에서 확인하며 환경별 범위를 공개 rendering 문서에 구분했다.
+
+### Architecture contract ownership checkpoint
+
+Architecture에서 primitive signature, encoding/scale/coordinate 값 목록, transform 옵션, mark별 지원 조건, guide spacing/default와 facade 세부 call chain 등 중복된 계약을 Current owner 및 실행 corpus 관계로 연결했다. 약 1,080줄을 줄이고 state ownership, immutable revision/retained composition, domain→graphic 흐름, final grain, pure policy, package/renderer 및 검증 경계는 보존했다. 특히 histogram step/explicit boundary를 미구현으로 표시한 오래된 설명이 별도 계약으로 남지 않게 했다. 현재 지원 현황도 example/index로 연결한다. 11개 architecture 경로·anchor·문서 package surface 검사를 통과했다.
