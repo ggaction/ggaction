@@ -194,3 +194,40 @@ test("createAxes validates its public options", () => {
     /Unknown createAxes option/
   );
 });
+
+test("createAxes rejects conflicting family assertions and channel options atomically", () => {
+  const rows = [{ x: 1, y: 2 }, { x: 2, y: 3 }];
+  const programs = {
+    cartesian: encodedProgram(),
+    polar: chart().createCanvas().createData({ values: [{ c: "a", v: 2 }, { c: "b", v: 3 }] })
+      .createRosePlot({ category: "c", value: "v", aggregate: "sum", color: false, guides: false }),
+    parallel: chart().createCanvas().createData({ values: rows })
+      .createParallelCoordinates({ dimensions: [{ field: "x" }, { field: "y" }], guides: false })
+  };
+  for (const [family, program] of Object.entries(programs)) {
+    const before = { semantic: program.semanticSpec, graphic: program.graphicSpec, trace: program.trace };
+    const id = program.semanticSpec.coordinates[0].id;
+    for (const type of Object.keys(programs)) {
+      if (type === family) {
+        const inferred = program.createAxes();
+        assert.deepEqual(program.createAxes({ coordinate: { id, type } }).graphicSpec, inferred.graphicSpec);
+        assert.deepEqual(program.createAxes({ coordinate: { type } }).graphicSpec, inferred.graphicSpec);
+        assert.deepEqual(program.createAxes({ coordinate: { id, type: "auto" } }).graphicSpec, inferred.graphicSpec);
+      } else {
+        assert.throws(() => program.createAxes({ coordinate: { type } }), /coordinate type conflicts|has type/);
+        assert.throws(() => program.createAxes({ coordinate: { id, type } }), /has type/);
+      }
+    }
+    for (const channel of family === "cartesian" ? ["theta", "radius"]
+      : family === "polar" ? ["x", "y"] : ["x", "y", "theta", "radius"]) {
+      for (const value of [{}, false]) {
+        assert.throws(() => program.createAxes({ [channel]: value }), /require Polar|require Cartesian|not supported for Parallel/);
+      }
+    }
+    assert.throws(() => program.createAxes({ coordinate: { id: "missing" } }), /Unknown coordinate/);
+    assert.throws(() => program.createAxes({ coordinate: { id: "bad id" } }), /Coordinate id must/);
+    assert.equal(program.semanticSpec, before.semantic);
+    assert.equal(program.graphicSpec, before.graphic);
+    assert.equal(program.trace, before.trace);
+  }
+});

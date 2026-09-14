@@ -38,6 +38,7 @@ export function validateAxesArgs(args) {
   if (!COORDINATE_API_TYPES.has(type)) {
     throw new Error(`Unknown createAxes coordinate type "${type}".`);
   }
+  if (coordinate.id !== undefined) validateUserId(coordinate.id, "Coordinate id");
 
   return coordinate;
 }
@@ -121,7 +122,7 @@ function resolveCoordinate(program, descriptor, cartesianLayers) {
   }
 
   if (existing.type !== "cartesian") {
-    throw new Error("createAxes does not yet support Polar axes.");
+    throw new Error("createAxes x/y options require a Cartesian coordinate.");
   }
 
   return { id, layers };
@@ -187,7 +188,7 @@ function resolveAxisArgs(layers, channel, option) {
 const createAxes = action(
   {
     op: "createAxes",
-    description: "Read a semantic coordinate and create its Cartesian axes."
+    description: "Read a stored coordinate and create its applicable axes."
   },
   function (args = {}) {
     const coordinateDescriptor = validateAxesArgs(args);
@@ -197,6 +198,16 @@ const createAxes = action(
     const requestedCoordinateType = coordinateDescriptor.id === undefined
       ? undefined
       : findCoordinate(this, coordinateDescriptor.id)?.type;
+    if (coordinateDescriptor.id !== undefined) {
+      if (requestedCoordinateType === undefined) {
+        throw new Error(`Unknown coordinate "${coordinateDescriptor.id}".`);
+      }
+      if (coordinateDescriptor.type !== undefined &&
+          coordinateDescriptor.type !== "auto" &&
+          coordinateDescriptor.type !== requestedCoordinateType) {
+        throw new Error(`Coordinate "${coordinateDescriptor.id}" has type "${requestedCoordinateType}", not "${coordinateDescriptor.type}".`);
+      }
+    }
     const explicitlyPolar = coordinateDescriptor.type === "polar" ||
       requestedCoordinateType === "polar" ||
       args.theta !== undefined || args.radius !== undefined;
@@ -206,6 +217,10 @@ const createAxes = action(
       (cartesianLayers.length === 0 && polarLayers.length === 0) ||
       explicitlyParallel
     )) {
+      if (coordinateDescriptor.type !== undefined &&
+          !["auto", "parallel"].includes(coordinateDescriptor.type)) {
+        throw new Error("createAxes coordinate type conflicts with Parallel encodings.");
+      }
       if (
         args.x !== undefined || args.y !== undefined ||
         args.theta !== undefined || args.radius !== undefined
@@ -231,7 +246,8 @@ const createAxes = action(
     }
     if (polarLayers.length > 0 &&
         (cartesianLayers.length === 0 || explicitlyPolar)) {
-      if (coordinateDescriptor.type === "cartesian") {
+      if (coordinateDescriptor.type !== undefined &&
+          !["auto", "polar"].includes(coordinateDescriptor.type)) {
         throw new Error("createAxes coordinate type conflicts with Polar encodings.");
       }
       if (args.x !== undefined || args.y !== undefined) {
@@ -262,6 +278,9 @@ const createAxes = action(
         polarProgram = polarProgram.createRadialAxis(radius);
       }
       return polarProgram;
+    }
+    if (args.theta !== undefined || args.radius !== undefined) {
+      throw new Error("createAxes theta/radius options require Polar encodings.");
     }
     const coordinate = resolveCoordinate(
       this,

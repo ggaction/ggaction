@@ -37,6 +37,11 @@ program.createAxes({
 `coordinate.type` accepts `"auto"`, `"cartesian"`, `"polar"`, or `"parallel"` as a stored
 type assertion.
 
+An explicit coordinate ID and type must agree with the stored coordinate.
+Options from another family are rejected, including `false`: x/y options
+require Cartesian encodings, theta/radius options require Polar encodings,
+and Parallel axes do not accept these channel-specific option objects.
+
 Each x/y axis option supports:
 
 | Option | Value |
@@ -277,4 +282,3 @@ remains encoded. Recreate missing components through `createParallelAxis`.
 
 For individual lines, ticks, labels, and titles, see
 [Advanced axis components](./../../advanced/axis-components.md).
-

@@ -17,7 +17,7 @@
 | --- | --- | --- | --- |
 | 01 | 함수가 포함된 데이터는 외부에서 저장 후 변경할 수 있다 | 구현·검증 완료 | 입력/타입/renderer 82개 통과; 통합 검사 및 영향 계약 재검증 |
 | 02 | 희소 데이터 배열이 통과한 뒤 엉뚱한 그래픽 오류를 낸다 | 구현·검증 완료 | 입력/타입/renderer 82개 통과; 통합 검사 및 영향 계약 재검증 |
-| 03 | createAxes가 명시한 좌표계·채널 선택을 무시한다 | 진행 전 | — |
+| 03 | createAxes가 명시한 좌표계·채널 선택을 무시한다 | 구현·검증 완료 | 3×3 family/ID assertion, 이종 channel 및 기존 axis lifecycle; 관련 계약 45개 통과 |
 | 04 | 세 저수준 primitive는 알 수 없는 최상위 옵션을 조용히 버린다 | 구현·검증 완료 | 입력/타입/renderer 82개 통과; 통합 검사 및 영향 계약 재검증 |
 | 05 | PNG만 renderer 옵션 검증 정책이 다르다 | 구현·검증 완료 | 입력/타입/renderer 82개 통과; 통합 검사 및 영향 계약 재검증 |
 | 06 | createData TypeScript 선언이 런타임보다 지나치게 넓다 | 구현·검증 완료 | 입력/타입/renderer 82개 통과; 통합 검사 및 영향 계약 재검증 |
@@ -57,3 +57,7 @@
 - 일반 suite 3,677개 중 새 generic signature로 영향을 받은 계약·메타데이터 기대 9개를 발견해 수정했다. 수정 후 해당 85개 중 84개 통과, 마지막 package 크기 한도는 추가 renderer validator 및 row 타입의 실제 unpacked 크기 3,550,202 bytes에 맞춰 3,555,000으로 조정하고 package suite를 재검증했다. 파일 개수 상한은 공유 validator 1개 추가에 맞춰 522다. 브라우저 gzip 상한은 유지한다.
 - `docs:generate` 완료, generic action의 발견·카드·provenance·realistic type inventory를 동기화했다.
 - 다른 26개 항목과 최종 통합·릴리즈는 아직 완료하지 않았다.
+
+### Axis assertion checkpoint
+
+명시한 좌표계 ID/type과 이종 channel option을 하위 axis action 전에 검증한다. Cartesian 생략 추론과 기존 Polar/Parallel flow는 보존한다. `axes-validation-tests.log`, `axes-validation-contracts.log`, `axes-validation-package.log` 및 docs 생성 결과를 확인했다.

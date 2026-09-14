@@ -271,7 +271,9 @@ type CompleteAxisOptions<P extends string> = {
 
 - Signature: `createAxes({ coordinate?, x?, y?, theta?, radius? })`
 - `coordinate.id`: existing coordinate ID. 생략하면 encoded Cartesian layers가 참조하는 유일한 ID를 추론한다.
-- `coordinate.type`: `"auto" | "cartesian" | "polar"`, 기본값 `"auto"`; stored type assertion이다.
+- `coordinate.type`: `"auto" | "cartesian" | "polar" | "parallel"`, 기본값 `"auto"`; stored type assertion이다.
+  Explicit ID/type assertion과 selected family가 충돌하면 하위 axis action 전에 거부한다.
+  이종 family의 channel option은 `false`를 포함해 무시하지 않고 거부한다.
 - `x`, `y`: `false`, `{}`, 또는 complete-axis options. 생략하면 해당 encoded channel을 자동 선택하고,
   `false`는 명시적으로 끈다.
 - Effect: coordinate를 만들거나 고치지 않고 stored positional layers를 읽어 selected complete axes를 만든다.
@@ -282,7 +284,7 @@ type CompleteAxisOptions<P extends string> = {
 
 ### Formal values — `createAxes`
 
-- Implemented: Cartesian `x`/`y`와 Polar `theta`/`radius` option을 coordinate family별로 dispatch한다.
+- Implemented: Cartesian `x`/`y`, Polar `theta`/`radius`, Parallel field axes를 stored coordinate family로 dispatch한다.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createAxes`
@@ -290,7 +292,8 @@ type CompleteAxisOptions<P extends string> = {
 - `coordinate.id`
   - ✅ Covered: omission with unique coordinate, explicit matching ID, unknown/ambiguous IDs.
 - `coordinate.type`
-  - ✅ Covered: omission/`"auto"`, `"cartesian"`, `"polar"`, stored-type mismatch와 unknown value.
+  - ✅ Covered: omission/`"auto"`, `"cartesian"`, `"polar"`, `"parallel"`, 3×3 stored-type assertions,
+    ID/type mismatch, 이종 channel option, unknown value와 실패 원자성.
 - `x`, `y`
   - ✅ Covered: omission inference, `{}` explicit selection, `false` opt-out, nested options, neither selected error.
   - ✅ Covered: bounded multi-layer/shared-coordinate cases prove opt-out, explicit scale resolution and ambiguity

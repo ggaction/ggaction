@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.15.
 
-Contract: sha256:79b91e658accf8e88d97693169862285634c55484087577573bbba531b518cea. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:4750231608a858a6687047e4c08a30b863a21e79a16febb7eba74b0bf0f171b5. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -36702,7 +36702,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:79b91e658accf8e88d97693169862285634c55484087577573bbba531b518cea` |
+| Contract fingerprint | `sha256:4750231608a858a6687047e4c08a30b863a21e79a16febb7eba74b0bf0f171b5` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
@@ -36774,6 +36774,11 @@ program.createAxes({
 
 `coordinate.type` accepts `"auto"`, `"cartesian"`, `"polar"`, or `"parallel"` as a stored
 type assertion.
+
+An explicit coordinate ID and type must agree with the stored coordinate.
+Options from another family are rejected, including `false`: x/y options
+require Cartesian encodings, theta/radius options require Polar encodings,
+and Parallel axes do not accept these channel-specific option objects.
 
 Each x/y axis option supports:
 
