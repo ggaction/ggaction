@@ -245,7 +245,7 @@ export async function buildDocActionReference() {
     "",
     "# Action Reference",
     "",
-    "Every direct action accepts one option object and returns a new immutable `ChartProgram`. Choose a task family for readable behavior, defaults, inference, and errors; use the exact lookup when you already know the action name. Authoring roles run from H0 complete charts through H4 extension primitives. The API-layer labels match the action catalog layers `user-facing`, `advanced`, and `primitive`, respectively, and independently describe exposure.",
+    "Every direct action accepts one option object and returns a new immutable `ChartProgram`. Choose a task family for readable behavior, defaults, inference, and errors; use the exact lookup when you already know the action name. H0–H4 are [catalog role tags](../tutorials/hierarchical-authoring.md#catalog-role-tags), not grammar levels or trace depths. An action's relative hierarchy comes from the smaller actions it composes. The API-layer labels `user-facing`, `advanced`, and `primitive` independently describe exposure.",
     "",
     '<div class="docs-entry-grid docs-entry-grid--two">',
     cards,

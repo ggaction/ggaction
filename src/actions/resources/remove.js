@@ -5,7 +5,7 @@ import {
   canonicalResourcePath,
   collectResourceReferences
 } from "../../core/resourceReferences.js";
-import { removeNamedSemanticResourceState } from "../../core/programState.js";
+import { releaseNamedResourceOwnership } from "../../core/programState.js";
 import { findCoordinate } from "../../selectors/coordinates.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
@@ -148,7 +148,15 @@ function removeResource(kind, operation, description) {
       validateOptionObject(args, OPTIONS, operation);
       const id = validateUserId(args.id, `${operation} id`);
       const plan = planResourceRemoval(this, { kind, id, operation });
-      return removeNamedSemanticResourceState(this, plan);
+      // Release a validated logical owner before removing its physical revision.
+      // The primitive then checks the remaining consumers without mistaking the
+      // owner's own replay entry for an independently chart-owned resource.
+      let next = releaseNamedResourceOwnership(this, plan);
+      const selector = kind === "data" ? "dataset" : kind;
+      for (const semanticId of plan.semanticIds) {
+        next = next.editSemantic({ property: `${selector}[${semanticId}]`, remove: true });
+      }
+      return next;
     }
   );
 }

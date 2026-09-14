@@ -5,10 +5,14 @@ title: Data Updates and Live Refresh
 
 # Data Updates and Live Refresh
 
-Source datasets are immutable and create-only. `createData` copies and freezes
+Source dataset values are immutable after creation. `createData` copies and freezes
 caller-owned rows; it does not provide an action that replaces those values.
 For refreshed, streaming, or user-edited source data, retain the rows in the
 application and build a new program snapshot.
+
+An unused source dataset can be removed with
+[`removeData`](./api/data/revisions-and-removal.md#removedata-id); removing the resource does
+not mutate its values in an earlier snapshot.
 
 ## Rebuild from source rows
 

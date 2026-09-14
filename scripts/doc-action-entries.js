@@ -105,7 +105,7 @@ export async function explicitActionPages({ catalog, sections, legacyLocations, 
       `### Previous reference location {#${anchor}}\n\nThis contract moved: [open the current action or shared contract](./${destination.split("/").at(-2)}.md#${destination.split("#")[1]}).`);
     outputs.set(`reference/actions/${family.id}.md`, page({
       ...family,
-      introduction: "Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layer and H0–H4 authoring role are independent classifications.",
+      introduction: "Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layers and [H0–H4 catalog role tags](../../tutorials/hierarchical-authoring.md#catalog-role-tags) are independent classifications. Relative action hierarchy is determined by composition, not by a tag or fixed trace depth.",
       body: [...entries, ...sharedBlocks, ...legacy].join("\n\n")
     }));
   }

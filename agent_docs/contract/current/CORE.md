@@ -259,6 +259,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   정렬한다. 하나라도 남으면 `Cannot remove data "<id>"; live references: ...`로 거부한다. 성공은
   `semanticSpec.datasets`와 필요한 standalone owner/current pointer만 바꾸며 `graphicSpec`과 `children`은
   reference-identical하다. domain, layout, mark 또는 guide를 재물질화하지 않는다.
+- Trace와 구현 경계: 전체 dependency preflight 후 실제 semantic ID에 대해 `editSemantic({ property, remove:true })`를
+  wrapped child로 호출한다. Standalone logical data-owner config와 logical current pointer는 preflight 후
+  primitive 호출 전에 domain action이 정리한다. Facet의 수정된 physical revision도 logical owner로 삭제할 수 있다.
 - 적용 제한: concat composition parent는 거부한다. 같은 문자열 ID를 가진 child resource는 다른 program
   namespace이므로 parent의 전역 참조로 추론하지 않는다.
 
@@ -285,7 +288,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   참조가 아니다. `context.currentScale`은 삭제를 막지 않으며 성공 시 unset한다.
 - 결과: semantic scale과 같은 ID의 `resolvedScales` cache를 함께 제거한다. live edge가 있으면 정렬된
   referrer path를 포함해 원자적으로 거부한다. 성공 전후 `graphicSpec`과 `children`은 같은 object이며
-  mark/domain/layout을 다시 계산하지 않는다.
+  mark/domain/layout을 다시 계산하지 않는다. Semantic 삭제와 cache/current pointer 정리는 wrapped `editSemantic` 자식이 담당한다.
 
 ### Formal values — `removeScale`
 
@@ -307,6 +310,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   geometry나 graphic parent ID는 coordinate edge가 아니다.
 - 결과: semantic coordinate만 제거한다. `context.currentCoordinate`만 가리키면 unset하고 삭제한다.
   다른 coordinate를 자동 선택하지 않으며 mark, scale, guide와 concrete graphics를 재물질화하지 않는다.
+  실제 semantic 삭제와 current pointer 정리는 wrapped `editSemantic` 자식이 담당한다.
   live edge, wrong kind, unknown ID, concat parent와 closed option 오류는 caller state와 trace를 유지한다.
 
 ### Formal values — `removeCoordinate`

@@ -50,15 +50,21 @@
     },
     {
       "name": "removeData",
-      "wraps": []
+      "wraps": [
+        "editSemantic"
+      ]
     },
     {
       "name": "removeScale",
-      "wraps": []
+      "wraps": [
+        "editSemantic"
+      ]
     },
     {
       "name": "removeCoordinate",
-      "wraps": []
+      "wraps": [
+        "editSemantic"
+      ]
     },
     {
       "name": "bindMarkData",

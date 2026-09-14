@@ -516,7 +516,9 @@
       "authoringRoles": [
         "H2"
       ],
-      "wraps": [],
+      "wraps": [
+        "editSemantic"
+      ],
       "editableVia": [],
       "supports": {
         "entryPoints": [
@@ -576,7 +578,9 @@
       "authoringRoles": [
         "H2"
       ],
-      "wraps": [],
+      "wraps": [
+        "editSemantic"
+      ],
       "editableVia": [],
       "supports": {
         "entryPoints": [
@@ -635,7 +639,9 @@
       "authoringRoles": [
         "H2"
       ],
-      "wraps": [],
+      "wraps": [
+        "editSemantic"
+      ],
       "editableVia": [],
       "supports": {
         "entryPoints": [

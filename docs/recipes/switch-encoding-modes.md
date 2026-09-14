@@ -16,7 +16,8 @@ Use the [Getting Started browser module setup](../getting-started.md), install t
 includes its data and imports. The development contract includes APIs that may be
 newer than the latest npm release; check the [documentation version](../version.md).
 
-Authoring levels: Advanced `encodeChannels` batches H2 channel decisions; H0 creates the initial scatterplot.
+Decision sequence: `createScatterPlot` creates the initial chart; the Advanced
+`encodeChannels` action batches subsequent channel changes.
 
 ## Complete program
 

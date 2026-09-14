@@ -16,7 +16,7 @@ Use the [Getting Started browser module setup](../getting-started.md), install t
 includes its data and imports. The development contract includes APIs that may be
 newer than the latest npm release; check the [documentation version](../version.md).
 
-Authoring levels: H0 faceting → H1 source replay → H3 header and guide policies.
+Decision sequence: faceting → source replay → header and guide policies.
 
 ## Complete program
 

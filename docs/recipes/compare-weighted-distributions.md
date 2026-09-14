@@ -16,7 +16,7 @@ Use the [Getting Started browser module setup](../getting-started.md), install t
 includes its data and imports. The development contract includes APIs that may be
 newer than the latest npm release; check the [documentation version](../version.md).
 
-Authoring levels: H0 histogram, density, and ECDF facades → H1 weighted transforms.
+Decision sequence: histogram, density, and ECDF facades → weighted transforms.
 
 ## Complete program
 

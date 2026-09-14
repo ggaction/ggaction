@@ -6,26 +6,28 @@ title: Choose a Chart
 # Choose a Chart
 
 Start with the chart that expresses the data's meaning, then edit its parts through
-lower-level actions. Every H0 action in the current declared catalog appears below.
+lower-level actions. Every complete-chart action in the current declared catalog
+appears below, including composition and deferred-construction entries.
 
 {% include chart-example.html id="hierarchical-authoring" lead=true %}
 
 ## Three independent choices
 
-**H0–H4 authoring role** describes the decision's level. **API layer** describes
+**H0–H4 catalog role tags** group related authoring tasks; the actual hierarchy
+comes from the smaller actions an action composes. **API layer** describes
 user-facing, advanced, or primitive exposure. **Package entry** describes availability
 from the full or basic import. A higher-level action is not automatically part of the
 smaller package, and a low-level domain action is not automatically an extension primitive.
 
 Prepare a Canvas and explicit or unambiguous materialized data before a unit chart
-facade. Repetition consumes a complete program. H0 Box and Gradient constructors
+facade. Repetition consumes a complete program. Box and Gradient constructors
 can defer roles, so merely calling them does not necessarily produce a complete chart.
 
 <!-- chart-picker:start -->
 
 ## Relationships and trends
 
-| Task / input | H0 action | Role · layer · entry | Direct editor | Lower-level actions |
+| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
 | --- | --- | --- | --- | --- |
 | One row per observation; x and y fields | [`createScatterPlot`](../reference/actions/charts-data.md#createscatterplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createPointMark`](../reference/actions/marks.md#createpointmark) · [`encodeX`](../reference/actions/encodings.md#encodex) · [`encodeY`](../reference/actions/encodings.md#encodey) · [`encodeColor`](../reference/actions/encodings.md#encodecolor) · [`encodeShape`](../reference/actions/encodings.md#encodeshape) · [`createGuides`](../reference/actions/guides.md#createguides) |
 | Ordered positions and measures; explicit aggregation when needed | [`createLinePlot`](../reference/actions/charts-data.md#createlineplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createLineMark`](../reference/actions/marks.md#createlinemark) · [`encodeX`](../reference/actions/encodings.md#encodex) · [`encodeY`](../reference/actions/encodings.md#encodey) · [`encodeGroup`](../reference/actions/encodings.md#encodegroup) · [`encodeColor`](../reference/actions/encodings.md#encodecolor) · [`encodeStrokeDash`](../reference/actions/encodings.md#encodestrokedash) · [`createGuides`](../reference/actions/guides.md#createguides) |
@@ -38,7 +40,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 
 ## Comparisons and intervals
 
-| Task / input | H0 action | Role · layer · entry | Direct editor | Lower-level actions |
+| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
 | --- | --- | --- | --- | --- |
 | Categorical/measure roles, explicit summary, or ranged endpoints | [`createBarPlot`](../reference/actions/charts-data.md#createbarplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createBarMark`](../reference/actions/marks.md#createbarmark) · [`encodeY`](../reference/actions/encodings.md#encodey) · [`encodeX`](../reference/actions/encodings.md#encodex) · [`encodeColor`](../reference/actions/encodings.md#encodecolor) · [`encodeBarWidth`](../reference/actions/encodings.md#encodebarwidth) · [`createGuides`](../reference/actions/guides.md#createguides) |
 | Category and measure per raw row, or an explicit summary | [`createDotPlot`](../reference/actions/charts-data.md#createdotplot) | H0, H1 · user-facing · default | [`editEndpointPlot`](../reference/actions/charts-data.md#editendpointplot) | [`createSummaryData`](../reference/actions/statistics.md#createsummarydata) · [`createPointMark`](../reference/actions/marks.md#createpointmark) · [`encodeX`](../reference/actions/encodings.md#encodex) · [`encodeY`](../reference/actions/encodings.md#encodey) |
@@ -48,7 +50,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 
 ## Distributions
 
-| Task / input | H0 action | Role · layer · entry | Direct editor | Lower-level actions |
+| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
 | --- | --- | --- | --- | --- |
 | Quantitative observations; one bin policy; optional weights | [`createHistogram`](../reference/actions/charts-data.md#createhistogram) | H0, H1 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createBarMark`](../reference/actions/marks.md#createbarmark) · [`encodeHistogram`](../reference/actions/encodings.md#encodehistogram) · [`encodeColor`](../reference/actions/encodings.md#encodecolor) · [`createGuides`](../reference/actions/guides.md#createguides) |
 | Finite numeric observations and KDE decisions | [`createDensityPlot`](../reference/actions/statistics.md#createdensityplot) | H0, H1 · user-facing · default | [`editDensity`](../reference/actions/encodings.md#editdensity) · [`editAreaMark`](../reference/actions/marks.md#editareamark) | [`createAreaMark`](../reference/actions/marks.md#createareamark) · [`encodeDensity`](../reference/actions/encodings.md#encodedensity) · [`createGuides`](../reference/actions/guides.md#createguides) · [`encodeColor`](../reference/actions/encodings.md#encodecolor) |
@@ -63,7 +65,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 
 ## Parts, radial values, and dense samples
 
-| Task / input | H0 action | Role · layer · entry | Direct editor | Lower-level actions |
+| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
 | --- | --- | --- | --- | --- |
 | Category counts or category sums for proportional sector angles | [`createPiePlot`](../reference/actions/charts-data.md#createpieplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createArcMark`](../reference/actions/marks.md#createarcmark) · [`encodeTheta`](../reference/actions/encodings.md#encodetheta) · [`encodeColor`](../reference/actions/encodings.md#encodecolor) · [`createGuides`](../reference/actions/guides.md#createguides) |
 | Category counts or sums represented by sector area | [`createRosePlot`](../reference/actions/charts-data.md#createroseplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createArcMark`](../reference/actions/marks.md#createarcmark) · [`encodeTheta`](../reference/actions/encodings.md#encodetheta) · [`encodeR`](../reference/actions/encodings.md#encoder) · [`encodeColor`](../reference/actions/encodings.md#encodecolor) · [`createGuides`](../reference/actions/guides.md#createguides) |
@@ -73,7 +75,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 
 ## Repeated chart structure
 
-| Task / input | H0 action | Role · layer · entry | Direct editor | Lower-level actions |
+| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
 | --- | --- | --- | --- | --- |
 | One complete chart and an eligible shared ancestor field | [`facet`](../reference/actions/charts-data.md#facet) | H0 · user-facing · default | [`editFacetSource`](../reference/actions/charts-data.md#editfacetsource) · [`editFacetHeaders`](../reference/actions/charts-data.md#editfacetheaders) · [`editFacetScales`](../reference/actions/charts-data.md#editfacetscales) · [`editFacetGuides`](../reference/actions/charts-data.md#editfacetguides) · [`editCompositionLayout`](../reference/actions/charts-data.md#editcompositionlayout) |  |
 | One complete chart plus row and column fields | [`facetGrid`](../reference/actions/charts-data.md#facetgrid) | H0 · user-facing · default | [`editFacetSource`](../reference/actions/charts-data.md#editfacetsource) · [`editFacetHeaders`](../reference/actions/charts-data.md#editfacetheaders) · [`editFacetScales`](../reference/actions/charts-data.md#editfacetscales) · [`editFacetGuides`](../reference/actions/charts-data.md#editfacetguides) · [`editCompositionLayout`](../reference/actions/charts-data.md#editcompositionlayout) |  |
@@ -89,9 +91,12 @@ retain a source recipe. Use the [composition overview](./composition.md) to choo
 
 The [five basic Cartesian facades](./basic-charts.md) are a compact starting subset.
 For intervals added to existing layers, use [Error Bar](./error-bars.md) or
-[Error Band](./error-bands.md), which are H1 layer tasks rather than separate H0
-complete-chart entries. See [hierarchical authoring](../tutorials/hierarchical-authoring.md)
+[Error Band](./error-bands.md), which add interval layers to a chart.
+See [hierarchical authoring](../tutorials/hierarchical-authoring.md)
 for one chart authored and edited at several levels.
+
+The table's H0–H4 values are [catalog role tags](../tutorials/hierarchical-authoring.md#catalog-role-tags),
+separate from the relative action hierarchy and from package exposure.
 
 ## Related
 

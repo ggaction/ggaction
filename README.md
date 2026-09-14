@@ -16,15 +16,19 @@ Every frame is rendered from an immutable `ChartProgram`. The final R² label is
 
 ## A grammar of graphical action
 
-Actions are verbs:
+An action expresses a design operation on a chart element. In
+`editLineMark({ strokeWidth: 4 })`, `edit` is the operation, `LineMark` names
+the target concept, and the option supplies the design choice.
 
-`create · transform · encode · edit · select · compose`
+The grammar has two units: **graphical actions** and **chart programs**.
+A program composes action calls in authoring order and retains their resulting
+immutable state. Authors read a linear sequence of decisions; an action may
+delegate to smaller actions recorded in its nested execution trace.
 
-Chart resources are nouns:
-
-`data · marks · scales · coordinates · guides`
-
-A `ChartProgram` is the immutable sentence they produce.
+This model comes from the [ggaction paper](https://www.hyeonjeon.com/assets/pdf/jeon27arxiv.pdf).
+See [the grammar's research basis](https://ggaction.github.io/ggaction/#research-basis)
+and [paper compatibility](https://ggaction.github.io/ggaction/version/#paper-compatibility)
+for its scope and the API revisions used by examples.
 
 The following fragment assumes `cars` is an array of row objects:
 
@@ -32,7 +36,11 @@ The following fragment assumes `cars` is an array of row objects:
 import { chart } from "ggaction";
 
 const program = chart()
-  .createCanvas()
+  .createCanvas({
+    width: 760,
+    height: 480,
+    margin: { top: 40, right: 190, bottom: 70, left: 80 }
+  })
   .createData({ values: cars })
   .createScatterPlot({
     id: "points",
@@ -44,6 +52,12 @@ const program = chart()
   .createRegression()
   .createGuides();
 ```
+
+Here `createRegression()` infers groups from the point layer, uses a linear
+model, and includes a 95% mean-response interval band. The right margin reserves
+space for the resulting legend. The [regression recipe](https://ggaction.github.io/ggaction/recipes/regression-scatterplot/)
+provides data and rendering setup; [regression options](https://ggaction.github.io/ggaction/api/regression/)
+control grouping, model, interval, and whether a band is drawn.
 
 ## Why actions?
 

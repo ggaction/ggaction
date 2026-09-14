@@ -16,7 +16,7 @@ Use the [Getting Started browser module setup](../getting-started.md), install t
 includes its data and imports. The development contract includes APIs that may be
 newer than the latest npm release; check the [documentation version](../version.md).
 
-Authoring levels: Complete chart → independent mark removal → explicit data lifecycle.
+Decision sequence: Complete chart → independent mark removal → explicit data lifecycle.
 
 ## Complete program
 

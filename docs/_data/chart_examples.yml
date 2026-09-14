@@ -1286,13 +1286,13 @@
   example: /examples/hierarchical-authoring/
   title: Choose the right authoring level
   image: /assets/images/hierarchical-authoring.png
-  alt: The same scatterplot authored at different levels and then restyled
+  alt: A high-level scatterplot followed by focused styling and a later opacity edit
   width: 2480
   height: 600
   thumbnail: /assets/images/hierarchical-authoring-thumb.png
   thumbnail_width: 640
   thumbnail_height: 155
-  caption: A complete chart and its explicit lower-level composition remain independently editable.
+  caption: Refine a complete chart with focused actions, then revise an earlier style decision.
   summary: Choose the smallest action that expresses the intended chart change.
   actions: createScatterPlot · createPointMark · editPointMark
   tasks: comparison

@@ -13,8 +13,15 @@ title: Actions and Trace Trees
   <span>createGraphics / editGraphics<strong>primitives</strong></span>
 </div>
 
-Every chart-authoring method is an action. Calling a high-level action records
-that action and any wrapped actions it invokes as children.
+An action expresses an operation on a chart element, with options describing
+the requested design choice. A chart program composes calls in authoring order.
+For example, adding a scatterplot, reducing point opacity, and adding guides
+are three successive decisions; authors need not write the internal tree.
+
+The trace preserves both views. `program.trace.children` lists the top-level
+authored calls in order. Each call's nested `children` records the wrapped
+actions it delegated to. A high-level action is high relative to those smaller
+decisions, rather than occupying a fixed universal depth:
 
 ```text
 createAxes
@@ -48,6 +55,20 @@ count.
 
 Trace state is immutable and does not affect rendering. It can be traversed as
 a normal tree for inspection, explanation, provenance, or recommendation.
+
+## Revisions preserve decisions
+
+Appending `editPointMark({ opacity: 0.35 })` and later
+`editPointMark({ opacity: 0.7 })` to the same point chart preserves both decisions;
+the later edit of that property supplies the final opacity. Earlier programs
+remain usable. Setting `0.7` in the original constructor can produce the same
+graphics, but it records an initial choice rather than a later revision.
+
+This ordered precedence applies to repeated edits of the same owned property.
+Distinct contracts such as theme defaults, field encodings, and local style
+overrides have their own compatibility and precedence rules. Follow the
+[hierarchical authoring tutorial](../tutorials/hierarchical-authoring.md) for an
+executable high-level chart followed by focused refinements.
 
 Developers can define new wrapped actions with the
 [extension API](../extension/action-authoring.md).

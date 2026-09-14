@@ -1,4 +1,5 @@
 import { createSemanticPrimitiveAction } from "./semanticAction.js";
+import { planResourceRemoval } from "../resources/remove.js";
 import { validateDatasetTransforms } from "../../grammar/transforms.js";
 import {
   validateParallelDimensions,
@@ -24,5 +25,5 @@ export function registerSemanticPrimitiveAction(ProgramClass) {
     sourceMarkTypes: ["point", "bar", "line", "rule", "rect", "arc"]
   });
   ProgramClass.prototype.editSemantic =
-    createSemanticPrimitiveAction(validateSemanticValue);
+    createSemanticPrimitiveAction(validateSemanticValue, planResourceRemoval);
 }

@@ -28,55 +28,21 @@ export function ownChildPrograms(children, ProgramClass) {
   return freezeOwned(owned);
 }
 
-const COLLECTION_BY_RESOURCE_KIND = Object.freeze({
-  data: "datasets",
-  scale: "scales",
-  coordinate: "coordinates"
-});
-
-const CONTEXT_BY_RESOURCE_KIND = Object.freeze({
-  data: "currentData",
-  scale: "currentScale",
-  coordinate: "currentCoordinate"
-});
-
-export function removeNamedSemanticResourceState(program, {
-  kind,
-  id,
-  semanticIds = [id],
-  dataOwner
-}) {
-  const collection = COLLECTION_BY_RESOURCE_KIND[kind];
-  if (collection === undefined) {
-    throw new Error(`Unknown removable resource kind "${kind}".`);
-  }
-  const removed = new Set(semanticIds);
-  const semanticSpec = freezeOwned({
-    ...program.semanticSpec,
-    [collection]: freezeOwned(program.semanticSpec[collection].filter(
-      resource => !removed.has(resource.id)
-    ))
-  });
-  const resolvedScales = kind === "scale"
-    ? freezeOwned(Object.fromEntries(Object.entries(program.resolvedScales).filter(
-        ([scaleId]) => !removed.has(scaleId)
-      )))
-    : program.resolvedScales;
-  const contextKey = CONTEXT_BY_RESOURCE_KIND[kind];
-  const contextTargets = new Set([id, ...semanticIds]);
-  const context = contextTargets.has(program.context[contextKey])
-    ? freezeOwned({ ...program.context, [contextKey]: undefined })
-    : program.context;
+// Semantic entries, resolved scale caches, and physical current-resource IDs
+// are removed by editSemantic. A logical data owner also retains its own ID
+// and replay configuration; release those non-semantic references after the
+// domain's dependency validation and before the primitive deletion.
+export function releaseNamedResourceOwnership(program, { kind, id, dataOwner }) {
+  if (kind !== "data") return program;
   const materializationConfigs = dataOwner === undefined
     ? program.materializationConfigs
     : removeMaterializationConfig(
         program.materializationConfigs,
         ["data", dataOwner.family, dataOwner.owner]
       ).value;
-  return program._clone({
-    semanticSpec,
-    resolvedScales,
-    context,
-    materializationConfigs
-  });
+  const context = program.context.currentData === id
+    ? freezeOwned({ ...program.context, currentData: undefined })
+    : program.context;
+  if (context === program.context && materializationConfigs === program.materializationConfigs) return program;
+  return program._clone({ context, materializationConfigs });
 }

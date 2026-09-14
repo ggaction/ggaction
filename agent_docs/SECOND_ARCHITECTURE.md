@@ -1350,9 +1350,11 @@ transform schema, stack/bin policy, coordinate type 등을 검증한다.
 
 `remove: true`는 `value`와 함께 쓸 수 없으며 supported semantic branch를 structural copy로
 삭제한다. Encoding channel, legend branch와 complete layer resource를 제거할 수 있고 빈 parent
-object도 함께 정리한다. Source dataset state는 생성 이후 삭제하거나 교체할 수 없고 unreferenced
-derived dataset만 complete resource removal을 허용한다. 삭제도 동일한 `editSemantic` trace node로
-기록된다. Layer removal은 semantic resource만 소유하므로 domain removal action이 related graphic,
+object도 함께 정리한다. Source dataset values는 생성 이후 수정할 수 없지만, Full primitive는
+참조 없는 source dataset 전체와 coordinate 전체를 named-resource dependency 검사 후 제거할 수 있다.
+Unit derived dataset의 기존 primitive removal은 semantic reference 검사 범위를 유지하며 owning action이
+config/graphics 수명주기를 조정한다. Facet parent의 named-resource removal은 전체 참조 검사를 요구한다.
+삭제도 동일한 `editSemantic` trace node로 기록된다. Layer removal은 semantic resource만 소유하므로 domain removal action이 related graphic,
 config, selection/highlight와 orphaned derived data cleanup을 명시적으로 조합한다.
 
 Encoding removal도 같은 경계를 따른다. Public `removeEncoding`은 closed channel vocabulary를 해석하고
@@ -2883,8 +2885,12 @@ shared legend, label/selection/theme/style replay를 같은 immutable compositio
 같은 로드맵에서 named data·scale·coordinate의 수명주기는 cross-domain reference registry로 통합됐다.
 Registry는 semantic layer와 derived source, mark·guide·selection·data-owner config, facet provenance와 current
 context를 typed edge로 읽고 historical trace나 우연히 같은 문자열인 field/style token은 제외한다. Public
-resource removal은 이 read-only graph에서 live edge가 0인 경우에만 semantic entry와 해당 cache/context를
-한 immutable commit으로 정리한다. Standalone derived owner는 current snapshot과 owner registry를 함께
+resource removal은 이 read-only graph에서 live edge가 0인 경우에만 wrapped `editSemantic` 자식으로 semantic
+entry와 해당 cache/current pointer를 정리한다. `actions/resources/remove.js`가 domain action과 Full primitive의
+공유 named-resource preflight를 소유하며, Basic primitive에는 이 의존성을 넣지 않는다. Logical data-owner
+configuration은 전체 dependency 검사 후 semantic 삭제 전에 domain action이 해제한다. 따라서 facet의
+physical revision 삭제도 owner 자신의 registry entry를 외부 소유권으로 오인하지 않는다. 전체 결과는 하나의
+immutable action으로 반환한다. Standalone derived owner는 current snapshot과 owner registry를 함께
 해제하지만 chart-owned dataset은 기존 owner action을 거치게 한다. 기존 derived revision release,
 mark/selection teardown도 같은 reference model을 소비하므로 새 replay config가 생기면 collector fixture를
 추가하지 않은 채 삭제 정책만 별도로 확장할 수 없다.

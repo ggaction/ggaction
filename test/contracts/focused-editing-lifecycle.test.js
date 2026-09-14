@@ -146,10 +146,12 @@ test("publishes exact current option types and aligns audience classifications",
       method
     );
   }
-  assert.match(
-    actionReference,
-    /catalog layers `user-facing`, `advanced`,\s+and `primitive`, respectively/
-  );
+  for (const name of ["createGuides", "createCoordinate", "createScale"]) {
+    const owner = index.actions.find(action => action.name === name);
+    const row = actionReference.split("\n").find(line => line.startsWith(`| [\`${name}\`]`));
+    assert.ok(owner, name);
+    assert.ok(row?.endsWith(`| ${owner.layer} | ${owner.domain} |`), name);
+  }
 });
 
 test("keeps every accepted focused-editing action and capability current", () => {

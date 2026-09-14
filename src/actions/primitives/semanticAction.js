@@ -79,7 +79,7 @@ function removeEntity(spec, parsed) {
   if (parsed.kind === "scale" && parsed.path.length === 0) {
     if (hasSemanticScaleReferences(spec, parsed.id)) throw new Error(`Scale "${parsed.id}" is still referenced.`);
   }
-  if (["layer", "scale"].includes(parsed.kind) && parsed.path.length === 0) {
+  if (["layer", "scale", "coordinate"].includes(parsed.kind) && parsed.path.length === 0) {
     const nextCollection = collection.filter((_, itemIndex) => itemIndex !== index);
     return freezeOwned({
       ...spec,
@@ -87,10 +87,6 @@ function removeEntity(spec, parsed) {
     });
   }
   if (parsed.kind === "dataset" && parsed.path.length === 0) {
-    const dataset = collection[index];
-    if (dataset.source === undefined) {
-      throw new Error(`Source dataset "${parsed.id}" is immutable after creation.`);
-    }
     const referenced = spec.layers.some(layer => layer.data === parsed.id) ||
       spec.datasets.some(candidate => candidate.source === parsed.id);
     if (referenced) {
@@ -194,7 +190,7 @@ export function withoutPreviewLayerEncodings(program, { id, channels }) {
   return program._clone({ semanticSpec });
 }
 
-export function createSemanticPrimitiveAction(validateSemanticValue) {
+export function createSemanticPrimitiveAction(validateSemanticValue, planNamedRemoval) {
   return action(
     {
       op: "editSemantic",
@@ -213,14 +209,37 @@ export function createSemanticPrimitiveAction(validateSemanticValue) {
       }
 
       const parsed = parseSemanticPath(property, { allowContainer: remove });
+      const removesNamedResource = remove && parsed.path.length === 0 &&
+        ["dataset", "scale", "coordinate"].includes(parsed.kind);
       if (this.compositionSpec !== undefined && !(
-        this.compositionSpec.type === "facet" && parsed.kind === "title"
+        this.compositionSpec.type === "facet" &&
+        (parsed.kind === "title" || removesNamedResource)
       )) {
         throw new Error(
-          "editSemantic on a composition parent currently supports only facet title state."
+          "editSemantic on a composition parent supports only facet title state and unreferenced named resource removal."
         );
       }
       if (remove) {
+        // Source/coordinate removal and facet-parent removal use the same full
+        // dependency policy as the domain lifecycle. Existing unit derived-data
+        // teardown retains its semantic-only primitive contract; its owning
+        // action coordinates configuration and graphics cleanup separately.
+        const resource = removesNamedResource
+          ? this.semanticSpec[parsed.collection].find(item => item.id === parsed.id)
+          : undefined;
+        if (resource !== undefined && (
+          parsed.kind === "coordinate" || this.compositionSpec?.type === "facet" ||
+          (parsed.kind === "dataset" && resource.source === undefined)
+        )) {
+          if (planNamedRemoval === undefined) {
+            throw new Error("Named resource removal requires the full ChartProgram.");
+          }
+          planNamedRemoval(this, {
+            kind: parsed.kind === "dataset" ? "data" : parsed.kind,
+            id: parsed.id,
+            operation: "editSemantic"
+          });
+        }
         const semanticSpec = parsed.kind === "guide"
           ? removeRootProperty(this.semanticSpec, "guides", parsed.path)
           : parsed.kind === "title"
@@ -235,6 +254,10 @@ export function createSemanticPrimitiveAction(validateSemanticValue) {
           parsed.kind === "layer" &&
           parsed.path.length === 0 &&
           this.context.currentMark === parsed.id;
+        const clearsCurrentCoordinate =
+          parsed.kind === "coordinate" &&
+          parsed.path.length === 0 &&
+          this.context.currentCoordinate === parsed.id;
         const clearsCurrentGuide =
           parsed.kind === "guide" &&
           parsed.path.length === 2 &&
@@ -244,13 +267,14 @@ export function createSemanticPrimitiveAction(validateSemanticValue) {
         return this._clone({
           semanticSpec,
           ...(removesScale ? { resolvedScales: freezeOwned(resolvedScales) } : {}),
-          ...(clearsCurrentData || clearsCurrentMark || clearsCurrentGuide ||
+          ...(clearsCurrentData || clearsCurrentMark || clearsCurrentGuide || clearsCurrentCoordinate ||
               (removesScale && this.context.currentScale === parsed.id)
             ? { context: freezeOwned({
                 ...this.context,
                 ...(removesScale && this.context.currentScale === parsed.id ? { currentScale: undefined } : {}),
                 ...(clearsCurrentData ? { currentData: undefined } : {}),
                 ...(clearsCurrentMark ? { currentMark: undefined } : {}),
+                ...(clearsCurrentCoordinate ? { currentCoordinate: undefined } : {}),
                 ...(clearsCurrentGuide ? { currentGuide: undefined } : {})
               }) }
             : {})

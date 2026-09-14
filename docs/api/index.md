@@ -27,7 +27,7 @@ overview no longer provides enough control.
 
 ## All complete chart families
 
-The [complete chart picker](./chart-picker.md) covers every H0 facade, including
+The [complete chart picker](./chart-picker.md) covers every complete-chart facade, including
 Pie, Area, Density, Horizon, endpoint charts, ECDF, Rug, Strip, Beeswarm, and Raincloud.
 
 ## Statistical and distribution facades

@@ -16,6 +16,30 @@ title: Action Authoring
 The extension entry point is for developers adding traceable domain actions and
 installing them on the complete `chart()` program.
 
+## Design an authoring action
+
+The [paper's design principles](https://www.hyeonjeon.com/assets/pdf/jeon27arxiv.pdf#page=6)
+concern the author's decision before the implementation's method signature:
+
+- **Meaningfulness:** choose a decision that an author would make on its own.
+  Prefer familiar operation–target names, such as `editLineMark` for a line-style
+  decision, over names describing internal arrays or incidental helper steps.
+- **Design atomicity:** keep independently meaningful decisions separate. One
+  intent may require several coordinated changes: swapping axes can update two
+  channels, their scales, and their guides. An unrelated title change need not be
+  bundled into that action.
+- **Composition:** reuse smaller actions that own meaningful parts of the
+  decision. Promote a repeated, useful composition when it merits its own name;
+  more names also increase the vocabulary an author must learn.
+
+Choose the semantic owner and affected consumers before writing the action.
+Validate the proposed result, call the semantic primitive, and explicitly invoke
+the domain or graphical actions needed to rematerialize those consumers.
+**Failure atomicity** then ensures that an invalid request leaves the input
+program unchanged. It is a separate guarantee from design atomicity.
+
+## Register the implementation
+
 <!-- snippet-context:start -->
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.

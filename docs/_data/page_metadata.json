@@ -487,7 +487,7 @@
   },
   "/concepts/chart-program/": {
     "title": "ChartProgram and Immutability",
-    "description": "chart() returns an empty ChartProgram. A program contains the authored chart state and the history used to produce it."
+    "description": "The grammar has two units: a graphical action expresses one authoring decision, and a chart program composes those actions in order."
   },
   "/concepts/semantic-and-graphics/": {
     "title": "Semantic and Graphical State",
@@ -495,7 +495,7 @@
   },
   "/concepts/actions-and-trace/": {
     "title": "Actions and Trace Trees",
-    "description": "Every chart authoring method is an action. Calling a high level action records that action and any wrapped actions it invokes as children."
+    "description": "An action expresses an operation on a chart element, with options describing the requested design choice. A chart program composes calls in authoring order."
   },
   "/accessibility/": {
     "title": "Accessibility",
@@ -515,7 +515,7 @@
   },
   "/data-updates/": {
     "title": "Data Updates and Live Refresh",
-    "description": "Source datasets are immutable and create only. createData copies and freezes caller owned rows; it does not provide an action that replaces those values."
+    "description": "Source dataset values are immutable after creation. createData copies and freezes caller owned rows; it does not provide an action that replaces those values."
   },
   "/errors-and-recovery/": {
     "title": "Errors and Recovery",
@@ -686,7 +686,7 @@
   },
   "/api/chart-picker/": {
     "title": "Choose a Chart",
-    "description": "Start with the chart that expresses the data's meaning, then edit its parts through lower level actions. Every H0 action in the current declared catalog appears below.",
+    "description": "Start with the chart that expresses the data's meaning, then edit its parts through lower level actions.",
     "image": "/assets/images/hierarchical-authoring.png"
   },
   "/version/": {

@@ -3688,7 +3688,7 @@
   {
     "file": "extension/action-authoring.md",
     "block": 1,
-    "heading": "Action Authoring",
+    "heading": "Register the implementation",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -3700,7 +3700,7 @@
   {
     "file": "extension/action-authoring.md",
     "block": 2,
-    "heading": "Action Authoring",
+    "heading": "Register the implementation",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -3712,7 +3712,7 @@
   {
     "file": "extension/action-authoring.md",
     "block": 3,
-    "heading": "Action Authoring",
+    "heading": "Register the implementation",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],

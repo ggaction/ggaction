@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart } from "../../../../src/ChartProgram.js";
+import { chart as basicChart } from "../../../../src/basic.js";
 
 test("creates and replaces semantic properties without mutating earlier programs", () => {
   const empty = chart();
@@ -110,7 +111,7 @@ test("validates semantic removal mode and preserves dataset immutability", () =>
   );
 });
 
-test("removes only complete unreferenced derived dataset resources", () => {
+test("removes complete unreferenced datasets while preserving immutable source values", () => {
   const source = chart().editSemantic({
     property: "dataset[source].values",
     value: [{ value: 1 }]
@@ -133,10 +134,11 @@ test("removes only complete unreferenced derived dataset resources", () => {
     "source",
     "derived"
   ]);
-  assert.throws(
-    () => source.editSemantic({ property: "dataset[source]", remove: true }),
-    /Source dataset.*immutable/
-  );
+  const removedSource = source.editSemantic({ property: "dataset[source]", remove: true });
+  assert.deepEqual(removedSource.semanticSpec.datasets, []);
+  assert.deepEqual(source.semanticSpec.datasets[0].values, [{ value: 1 }]);
+  assert.equal(removedSource.context.currentData, undefined);
+  assert.throws(() => derived.editSemantic({ property: "dataset[source]", remove: true }), /live references/);
   const referenced = derived.editSemantic({
     property: "layer[points].data",
     value: "derived"
@@ -148,6 +150,24 @@ test("removes only complete unreferenced derived dataset resources", () => {
     }),
     /still referenced/
   );
+});
+
+test("removes unreferenced coordinates and rejects live coordinate consumers", () => {
+  const before = chart().createCoordinate({ id: "unused" });
+  const after = before.editSemantic({ property: "coordinate[unused]", remove: true });
+  assert.deepEqual(after.semanticSpec.coordinates, []);
+  assert.equal(after.context.currentCoordinate, undefined);
+  assert.equal(before.semanticSpec.coordinates[0].id, "unused");
+  assert.strictEqual(after.graphicSpec, before.graphicSpec);
+  assert.strictEqual(after.editSemantic({ property: "coordinate[unused]", remove: true }).semanticSpec, after.semanticSpec);
+  const used = before.editSemantic({ property: "layer[points].coordinate", value: "unused" });
+  assert.throws(() => used.editSemantic({ property: "coordinate[unused]", remove: true }), /live references/);
+});
+
+test("keeps full resource-removal policy outside Basic primitive dependencies", () => {
+  const basic = basicChart().createData({ values: [] });
+  assert.throws(() => basic.editSemantic({ property: "dataset[data]", remove: true }), /requires the full ChartProgram/);
+  assert.equal(basic.semanticSpec.datasets.length, 1);
 });
 
 test("removes a complete layer resource without mutating earlier programs", () => {

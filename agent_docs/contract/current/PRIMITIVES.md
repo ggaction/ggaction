@@ -12,9 +12,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   primitive authoring state로 저장할 수 있다. 이 primitive validation은 aggregate 계산이나 graphical
   materialization을 수행하지 않는다.
 - `remove`: `true`일 때 value 대신 supported encoding channel, legend branch 또는 complete layer resource를
-  삭제하고 empty parent object를 prune한다. Source dataset은 삭제할 수 없고 unreferenced derived dataset만
-  complete resource removal을 허용한다. Unreferenced scale container도 제거할 수 있고 resolvedScales/currentScale을 정리한다.
-  Layer/guide/parallel reference가 남은 scale은 오류이며 graphics는 이 primitive가 변경하지 않는다.
+  삭제하고 empty parent object를 prune한다. Full primitive는 complete source dataset과 coordinate container도
+  제거할 수 있으며 이 두 경로는 named-resource registry의 전체 live-reference 검사를 사용한다. Source values의
+  생성 후 수정·부분 삭제는 계속 거부한다. Unit derived dataset의 기존 primitive removal은 semantic layer/source
+  reference를 검사하고, configuration/graphics 수명주기는 owning domain action이 조정한다. Scale container removal은
+  semantic references를 검사하고 resolvedScales/currentScale을 정리한다. Coordinate/currentData pointer도 삭제된 실제
+  ID를 가리키면 unset한다. Facet parent는 title과 전체 참조 검사에 통과한 named-resource removal만 허용한다.
+  그래픽은 변경하지 않는다. Basic 내부 primitive에는 Full resource-removal policy dependency를 포함하지 않는다.
 - Series policy leaves: `layer[id].layout.mode`는 group/stack/fill/overlay/diverging/center,
   `layer[id].mark.missing`은 error/break, `layer[id].encoding.group.inferredFrom`은 color/offset이다.
   `layer[id].layout` container 제거를 지원한다. 이 primitive 저장은 layout·path segmentation을 실행하지 않는다.
@@ -33,7 +37,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `editSemantic`
 
-- Implemented: `editSemantic({ property: SemanticPropertyPath; value: ValueForSemanticPath<typeof property> }) | editSemantic({ property: RemovableSemanticPath; remove: true })`; assignment와 removal은 mutually exclusive다.
+- Implemented: `editSemantic(options: EditSemanticOptions): ChartProgram`; property string은 runtime의 supported path vocabulary로 검증하며 assignment와 removal은 mutually exclusive다.
 - Proposed (NOT IMPLEMENTED): —
 - Maybe Future (NOT IMPLEMENTED): wildcard path, multi-property object 또는 batch edit.
 
@@ -54,6 +58,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: structural copy and context inference without automatic graphic compilation.
   - ✅ Covered: encoding/legend branch와 complete layer removal, empty-parent pruning, idempotence와 dataset
     immutability.
+  - ✅ Covered: source/coordinate 전체 삭제와 current pointer 정리, live reference 거부, Basic dependency 경계.
 - Radial evidence: `test/unit/grammar/measured-radius.test.js`, `test/unit/actions/marks/measured-arc-primitives.test.js`.
 - Evidence: `test/unit/actions/primitives/edit-semantic.test.js`, `test/unit/actions/primitives/series-policy-state.test.js`.
 

@@ -71,12 +71,18 @@ test("keeps the chart picker, workflow programs, snippet contracts, and provenan
 });
 
 test("keeps the hierarchical lesson geometrically equivalent before intentional styling", () => {
-  const { highLevel, composed, styled } = authoringStages();
+  const { highLevel, composed, styled, revisedAgain } = authoringStages();
   assert.deepEqual(highLevel.graphicSpec, composed.graphicSpec);
   assert.deepEqual(highLevel.semanticSpec.datasets, styled.semanticSpec.datasets);
   assert.notDeepEqual(composed.graphicSpec, styled.graphicSpec);
   assert.equal(highLevel.trace.children.at(-1).op, "createScatterPlot");
   assert.ok(highLevel.trace.children.at(-1).children.some(child => child.op === "encodeX"));
+  assert.deepEqual(styled.trace.children.slice(0, highLevel.trace.children.length), highLevel.trace.children);
+  assert.deepEqual(revisedAgain.trace.children.slice(0, styled.trace.children.length), styled.trace.children);
+  assert.ok(styled.graphicSpec.objects.points.items.every(item => item.properties.opacity === 0.35));
+  assert.ok(revisedAgain.graphicSpec.objects.points.items.every(item => item.properties.opacity === 0.7));
+  const rescaled = revisedAgain.editXScale({ domain: [0, 10] });
+  assert.ok(rescaled.graphicSpec.objects.points.items.every(item => item.properties.opacity === 0.7));
 });
 
 test("anchors completion, imputation, and window prose to literal expected values", () => {

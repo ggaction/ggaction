@@ -17,7 +17,7 @@ export async function generateDocChartPicker({ check = false } = {}) {
   };
   const body = Object.entries(groups).flatMap(([title, entries]) => [
     `## ${title}`, "",
-    "| Task / input | H0 action | Role · layer · entry | Direct editor | Lower-level actions |",
+    "| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |",
     "| --- | --- | --- | --- | --- |",
     ...Object.entries(entries).map(([name, input]) => {
       const card = h0.find(card => card.name === name);

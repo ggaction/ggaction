@@ -9,16 +9,18 @@ export function authoringStages() {
   const highLevel = base.createScatterPlot({ id: "points", x: "x", y: "y", guides: false });
   const composed = base.createPointMark({ id: "points" })
     .encodeX({ field: "x" }).encodeY({ field: "y" });
-  const styled = composed.encodePointRadius({ value: 8 })
-    .editPointMark({ fill: "#7c3aed" }).createGuides({ legend: false });
-  return { highLevel, composed, styled };
+  const styled = highLevel.encodePointRadius({ value: 8 })
+    .editPointMark({ fill: "#7c3aed", opacity: 0.35 })
+    .createGuides({ legend: false });
+  const revisedAgain = styled.editPointMark({ opacity: 0.7 });
+  return { highLevel, composed, styled, revisedAgain };
 }
 
 export function createHierarchicalAuthoring() {
-  const { highLevel, composed, styled } = authoringStages();
+  const { highLevel, styled, revisedAgain } = authoringStages();
   return hconcat({ programs: [
-    highLevel.createTitle({ text: "H0: complete chart" }),
-    composed.createTitle({ text: "H2: mark and encodings" }),
-    styled.createTitle({ text: "Focused style and guides" })
+    highLevel.createTitle({ text: "High-level chart" }),
+    styled.createTitle({ text: "Focused refinement" }),
+    revisedAgain.createTitle({ text: "Later opacity edit" })
   ], gap: 20 });
 }

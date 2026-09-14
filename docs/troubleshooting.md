@@ -33,7 +33,8 @@ The library fails instead of overlapping the plot or clipping labels.
 
 ## A target cannot be inferred
 
-When more than one compatible mark exists, pass its ID:
+If the action cannot resolve a compatible current mark or one unique eligible
+mark, pass the intended mark's ID:
 
 ```javascript
 program.encodeColor({
@@ -42,8 +43,10 @@ program.encodeColor({
 });
 ```
 
-The same rule applies to explicit `data`, `scale.id`, and `coordinate` options.
-Omit an ID only when the current state has one unambiguous candidate.
+Several marks may coexist while the current mark still makes an omitted target
+unambiguous. Explicit IDs are useful when you intend to address another owner.
+Check the corresponding `data`, `scale.id`, or `coordinate` selector contract:
+inference is action-specific, and some actions always require an explicit ID.
 
 ## A mark is not ready to materialize
 

@@ -15,6 +15,11 @@ files, make network requests, or collect telemetry.
 
 ## Measured impact
 
+This benchmark evaluates the MCP authoring workflow. It is separate from the
+paper's small-model grammar-generation and human-interpretation studies; their
+methods and metrics are not interchangeable. See the [research basis](./index.md#research-basis)
+for those studies and their limits.
+
 A fixed 576-run evaluation compared public-documentation browsing with
 MCP-first authoring plus bounded fallback across Terra, Luna, and Nano. Each
 model-condition cell contains 48 observations from the same 24 tasks and two
@@ -203,7 +208,7 @@ The public machine-readable copies are the typed
 [`mcp-resources.json`](./mcp-resources.json) bounded resource catalog with its
 [`schema`](./schemas/mcp-resources.schema.json), and the
 [`task-packet.schema.json`](./schemas/task-packet.schema.json) result contract.
-Each schema v3 action card keeps exposure separate from H0–H4 authoring roles
+Each schema v3 action card keeps exposure separate from H0–H4 catalog role tags
 and records direct child actions, lifecycle editors, entry-point support,
 units, inference, and completion requirements. `deferred` completion identifies
 owners such as Box and Gradient plots that still need compatible position roles

@@ -44,6 +44,12 @@ All notable changes to `ggaction` are recorded in this file.
 
 ### Changed
 
+- Clarified the paper's action/program grammar, relative action hierarchy,
+  decision-level atomicity, and research evidence. Catalog role tags and current
+  API additions are documented separately from the paper's evaluated system.
+- Resource removal actions now record their semantic deletions as `editSemantic`
+  children. The full extension primitive accepts whole unused source datasets
+  and coordinates while retaining dependency guards and immutable snapshots.
 - Point-size ranges represent area across continuous and discrete families.
   Entering a discrete size family requires a destination domain and range;
   repeated field assignments preserve compatible scale settings.
@@ -62,6 +68,9 @@ All notable changes to `ggaction` are recorded in this file.
 
 ### Fixed
 
+- Corrected the README's canvas margins for its complete 406-row example and
+  documented regression defaults beside the example. The hierarchy tutorial now
+  refines its high-level chart and demonstrates a subsequent style revision.
 - Corrected default dumbbell axis titles, direct Rose radius refinement, and stale
   current-guide pointers after removal.
 - Corrected executable examples, API defaults and compatibility descriptions,

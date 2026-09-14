@@ -65,7 +65,10 @@ facade editor.
   symbol recipe. Existing titles and styles are retained. Conflicting explicit
   guide styles require the owning editor or a disabled guide branch.
 - `guides: false` and nested `false` skip this call's requests; they do not delete
-  existing guides. Direct `createGuides` and guide creation actions remain strict.
+  existing guides. Automatic `createGuides()` also keeps existing collections and
+  creates missing applicable collections. An explicit collection object retains
+  its child action's strict create contract; use the owning editor to revise it.
+  See [guide creation and reuse](./guides.md#createguidesoptions).
 - Facade guides describe the facade's own layer and coordinate. Cartesian facades
   accept Cartesian axes and grids. Line and Parallel legends accept line symbols
   or explicit symbol layers; Histogram and Violin legends are categorical. Box

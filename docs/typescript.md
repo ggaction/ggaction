@@ -97,7 +97,7 @@ isolated program surface.
 
 - `/types/program.d.ts` serves the full public `ChartProgram` declaration.
 - `/actions.json` serves schema v3 compact cards with each option's exact type
-  string, H0–H4 authoring roles, direct wrapped actions, lifecycle editors,
+  string, H0–H4 catalog role tags, direct wrapped actions, lifecycle editors,
   package entry support, units, inference, and completion requirements.
 - `/schemas/action-card.schema.json` and
   `/schemas/action-cards.schema.json` define the card shapes.

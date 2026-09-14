@@ -13,8 +13,11 @@ title: ChartProgram and Immutability
   <span>trace<strong>history</strong></span>
 </div>
 
-`chart()` returns an empty `ChartProgram`. A program contains the authored chart
-state and the history used to produce it.
+The grammar has two units: a graphical action expresses one authoring decision,
+and a chart program composes those actions in order. `chart()` returns an empty
+`ChartProgram`; each action returns the next immutable program state and retains
+the history used to produce it. The authored call sequence is linear, while its
+[execution trace](./actions-and-trace.md) can contain nested delegated actions.
 
 ```javascript
 import { chart } from "ggaction";
@@ -32,7 +35,7 @@ not mutated.
 
 | Property | Purpose |
 | --- | --- |
-| `semanticSpec` | Data, layers, encodings, scales, coordinates, and guides |
+| `semanticSpec` | Data, layers, encodings, scales, coordinates, guides, and chart-title/subtitle text |
 | `graphicSpec` | Fully materialized backend-neutral graphics |
 | `resolvedScales` | Resolved domains and concrete output ranges |
 | `materializationConfigs` | Immutable appearance and layout inputs needed for later rematerialization |

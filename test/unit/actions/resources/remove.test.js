@@ -38,6 +38,16 @@ test("removes unused named data, scale, and coordinate resources immutably", () 
     ["removeData", "removeScale", "removeCoordinate"]
   );
   assert.equal(before.semanticSpec.datasets[0].id, "unusedData");
+  for (const [program, property] of [
+    [withoutData, "dataset[unusedData]"],
+    [withoutScale, "scale[unusedScale]"],
+    [after, "coordinate[unusedCoordinate]"]
+  ]) {
+    const children = program.trace.children.at(-1).children;
+    assert.equal(children.length, 1);
+    assert.equal(children[0].op, "editSemantic");
+    assert.deepEqual(children[0].args, { property, remove: true });
+  }
 });
 
 test("removing a scale also drops its resolved cache entry", () => {
@@ -144,6 +154,44 @@ test("removes a standalone logical derived-data owner after its last consumer", 
   assert.equal(Object.isFrozen(plan), true);
   assert.equal(Object.isFrozen(plan.semanticIds), true);
   assert.equal(Object.isFrozen(plan.dataOwner), true);
+});
+
+test("removes an unused revised logical data owner on a facet through its physical primitive", () => {
+  const before = chart()
+    .createCanvas({ width: 300, height: 200, margin: 20 })
+    .createData({ id: "source", values: rows })
+    .createComputedData({
+      id: "computed",
+      as: "doubleX",
+      expression: { op: "multiply", left: { field: "x" }, right: { constant: 2 } }
+    })
+    .editComputedData({
+      target: "computed",
+      expression: { op: "multiply", left: { field: "x" }, right: { constant: 3 } }
+    })
+    .createPointMark({ id: "points", data: "source" })
+    .encodeX({ field: "x" }).encodeY({ field: "y" })
+    .facet({ field: "group" });
+  const physicalId = before.materializationConfigs.data.computed.computed.current;
+  assert.notEqual(physicalId, "computed");
+  const snapshot = JSON.stringify(before);
+  assert.throws(
+    () => before.editSemantic({ property: `dataset[${physicalId}]`, remove: true }),
+    /chart-owned; use its owning resource action/
+  );
+  assert.equal(JSON.stringify(before), snapshot);
+
+  const after = before.removeData({ id: "computed" });
+  assert.deepEqual(after.semanticSpec.datasets.map(dataset => dataset.id), ["source"]);
+  assert.equal(after.materializationConfigs.data, undefined);
+  assert.strictEqual(after.graphicSpec, before.graphicSpec);
+  assert.strictEqual(after.children, before.children);
+  assert.equal(before.materializationConfigs.data.computed.computed.current, physicalId);
+  const removal = after.trace.children.at(-1);
+  assert.equal(removal.op, "removeData");
+  assert.equal(removal.children.length, 1);
+  assert.equal(removal.children[0].op, "editSemantic");
+  assert.deepEqual(removal.children[0].args, { property: `dataset[${physicalId}]`, remove: true });
 });
 
 test("a standalone logical derived-data owner remains blocked while consumed", () => {

@@ -18,6 +18,21 @@ async function module(name, source) {
   return import(pathToFileURL(file));
 }
 
+test("the README authoring sequence completes with the repository cars data and its legend", async () => {
+  const readme = await readFile(new URL("../../README.md", import.meta.url), "utf8");
+  const snippet = documentationCodeBlocks(readme).find(block =>
+    block.language === "javascript" && block.code.includes(".createRegression()")
+  );
+  assert.ok(snippet);
+  const cars = JSON.parse(await readFile(new URL("../../data/cars.json", import.meta.url), "utf8"));
+  const { program } = await module("readme-authoring", `const cars = ${JSON.stringify(cars)};\n${snippet.code}\nexport { program };`);
+  assert.equal(cars.length, 406);
+  assert.equal(program.semanticSpec.datasets[0].values.length, cars.length);
+  assert.equal(program.trace.children.at(-1).op, "createGuides");
+  assert.ok(Object.keys(program.semanticSpec.guides.legend).length > 0);
+  assert.equal(program.graphicSpec.objects.points.items.length, cars.length);
+});
+
 test("the documented empty filter preserves its source and stores the named empty result", async () => {
   const code = (await blocks("troubleshooting.md")).find(block => block.heading === "A filter produces an empty mark").code;
   const original = chart().createData({ id: "source", values: [{ Origin: "Europe" }] });

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.13.
 
-Contract: sha256:9c8e41c32d9ae903e08077b114ca9b80df796b51f12e7d9274322280987390f7. Status: development. Runtime source: 85f64d3fd2e90fa65af908cd6cd51ba2c9033277. Release baseline: v0.0.13.
+Contract: sha256:2badd89c96e73d87ca0c01f9f8c119c76f4b152be5196692cdb96638aecb75e1. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -29,6 +29,37 @@ Start with a complete example, then use the API pages when you need to customize
 one part. The main, basic, extension, SVG, PNG, and PDF entry points include TypeScript declarations.
 
  Experimental 0.0.13 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
+
+## Research basis
+
+[ggaction: A Grammar of Graphical Actions](https://www.hyeonjeon.com/assets/pdf/jeon27arxiv.pdf),
+by Hyeon Jeon and Jinwook Seo, describes the grammar's design. A graphical action
+expresses a meaningful authoring decision, and a chart program composes those
+actions in order. Larger actions delegate to smaller ones, so authors can start
+with a chart and append focused refinements. The [hierarchical authoring tutorial](./tutorials/hierarchical-authoring/)
+connects that model to the current API.
+
+The paper and this site's MCP benchmark answer different questions:
+
+- **Paper §5 — expressiveness.** A fixed API snapshot identified as v0.0.13 maps
+ 97 object, operation, and intent entries using existing compatible chart/data
+ and at most four calls: 86 direct, nine partial, and two unsupported mappings.
+ These results are not a coverage percentage for the current development API.
+- **Paper §6 — machine interpretability.** Fine-tuned small models generate chart
+ programs over sequences of authoring requests. Full-program and edit-delta AST
+ measures evaluate learning and generation under those study conditions.
+- **Paper §7 — human interpretability.** Sixteen participants reconstructed
+ 128 drawings from chart code. Results show lower interpretation effort relative
+ to some compared grammars, without a statistically significant completeness or
+ accuracy advantage for ggaction.
+- **[Local MCP benchmark](./mcp/#measured-impact).** A separate 576-run study
+ compares documentation browsing with MCP-first authoring and bounded fallback,
+ measuring task success, tokens, and model-call costs for that fixed task set.
+
+Familiar action names do not reveal every consequential default. For example,
+regression model, grouping, and interval choices still deserve explanation.
+See [paper and API compatibility](./version/#paper-compatibility) before copying
+paper examples into an installed release.
 
 ## Start here
 
@@ -204,11 +235,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -239,6 +270,11 @@ files, make network requests, or collect telemetry.
 
 ## Measured impact
 
+This benchmark evaluates the MCP authoring workflow. It is separate from the
+paper's small-model grammar-generation and human-interpretation studies; their
+methods and metrics are not interchangeable. See the [research basis](./#research-basis)
+for those studies and their limits.
+
 A fixed 576-run evaluation compared public-documentation browsing with
 MCP-first authoring plus bounded fallback across Terra, Luna, and Nano. Each
 model-condition cell contains 48 observations from the same 24 tasks and two
@@ -254,9 +290,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/85f64d3fd2e90fa65af908cd6cd51ba2c9033277/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/85f64d3fd2e90fa65af908cd6cd51ba2c9033277/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -427,7 +463,7 @@ The public machine-readable copies are the typed
 [`mcp-resources.json`](./mcp-resources.json) bounded resource catalog with its
 [`schema`](./schemas/mcp-resources.schema.json), and the
 [`task-packet.schema.json`](./schemas/task-packet.schema.json) result contract.
-Each schema v3 action card keeps exposure separate from H0–H4 authoring roles
+Each schema v3 action card keeps exposure separate from H0–H4 catalog role tags
 and records direct child actions, lifecycle editors, entry-point support,
 units, inference, and completion requirements. `deferred` completion identifies
 owners such as Box and Gradient plots that still need compatible position roles
@@ -606,15 +642,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/640aebe70ef82d9bdd84675499806b4ce76c389c/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap7-authoring-refinement/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -760,7 +796,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -778,7 +814,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/640aebe70ef82d9bdd84675499806b4ce76c389c/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap7-authoring-refinement/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -891,7 +927,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/640aebe70ef82d9bdd84675499806b4ce76c389c/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap7-authoring-refinement/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1061,7 +1097,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/640aebe70ef82d9bdd84675499806b4ce76c389c/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap7-authoring-refinement/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1283,15 +1319,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/640aebe70ef82d9bdd84675499806b4ce76c389c/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap7-authoring-refinement/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1427,7 +1463,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1441,15 +1477,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/640aebe70ef82d9bdd84675499806b4ce76c389c/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap7-authoring-refinement/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1547,7 +1583,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1561,15 +1597,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/640aebe70ef82d9bdd84675499806b4ce76c389c/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap7-authoring-refinement/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1678,7 +1714,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1694,15 +1730,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/640aebe70ef82d9bdd84675499806b4ce76c389c/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap7-authoring-refinement/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1827,7 +1863,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1902,7 +1938,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1912,15 +1948,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/640aebe70ef82d9bdd84675499806b4ce76c389c/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap7-authoring-refinement/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2045,7 +2081,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2078,7 +2114,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2089,8 +2125,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2186,15 +2222,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/640aebe70ef82d9bdd84675499806b4ce76c389c/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap7-authoring-refinement/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2291,15 +2327,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/640aebe70ef82d9bdd84675499806b4ce76c389c/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap7-authoring-refinement/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2405,8 +2441,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2415,7 +2451,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/640aebe70ef82d9bdd84675499806b4ce76c389c/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap7-authoring-refinement/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2714,7 +2750,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -3814,7 +3850,8 @@ The library fails instead of overlapping the plot or clipping labels.
 
 ## A target cannot be inferred
 
-When more than one compatible mark exists, pass its ID:
+If the action cannot resolve a compatible current mark or one unique eligible
+mark, pass the intended mark's ID:
 
 ```javascript
 program.encodeColor({
@@ -3823,8 +3860,10 @@ program.encodeColor({
 });
 ```
 
-The same rule applies to explicit `data`, `scale.id`, and `coordinate` options.
-Omit an ID only when the current state has one unambiguous candidate.
+Several marks may coexist while the current mark still makes an omitted target
+unambiguous. Explicit IDs are useful when you intend to address another owner.
+Check the corresponding `data`, `scale.id`, or `coordinate` selector contract:
+inference is action-specific, and some actions always require an explicit ID.
 
 ## A mark is not ready to materialize
 
@@ -4078,7 +4117,7 @@ overview no longer provides enough control.
 
 ## All complete chart families
 
-The [complete chart picker](./api/chart-picker/) covers every H0 facade, including
+The [complete chart picker](./api/chart-picker/) covers every complete-chart facade, including
 Pie, Area, Density, Horizon, endpoint charts, ECDF, Rug, Strip, Beeswarm, and Raincloud.
 
 ## Statistical and distribution facades
@@ -4155,7 +4194,10 @@ facade editor.
  symbol recipe. Existing titles and styles are retained. Conflicting explicit
  guide styles require the owning editor or a disabled guide branch.
 - `guides: false` and nested `false` skip this call's requests; they do not delete
- existing guides. Direct `createGuides` and guide creation actions remain strict.
+ existing guides. Automatic `createGuides()` also keeps existing collections and
+ creates missing applicable collections. An explicit collection object retains
+ its child action's strict create contract; use the owning editor to revise it.
+ See [guide creation and reuse](./api/guides/#createguidesoptions).
 - Facade guides describe the facade's own layer and coordinate. Cartesian facades
  accept Cartesian axes and grids. Line and Parallel legends accept line symbols
  or explicit symbol layers; Histogram and Violin legends are categorical. Box
@@ -5437,7 +5479,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -8684,7 +8726,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -8745,7 +8787,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -9098,7 +9140,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -9660,7 +9702,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -12701,8 +12743,11 @@ visibility. Whole-content replacement preserves both retained blocks' settings.
  context next action
  trace history
 
-`chart()` returns an empty `ChartProgram`. A program contains the authored chart
-state and the history used to produce it.
+The grammar has two units: a graphical action expresses one authoring decision,
+and a chart program composes those actions in order. `chart()` returns an empty
+`ChartProgram`; each action returns the next immutable program state and retains
+the history used to produce it. The authored call sequence is linear, while its
+[execution trace](./concepts/actions-and-trace/) can contain nested delegated actions.
 
 ```javascript
 import { chart } from "ggaction";
@@ -12720,7 +12765,7 @@ not mutated.
 
 | Property | Purpose |
 | --- | --- |
-| `semanticSpec` | Data, layers, encodings, scales, coordinates, and guides |
+| `semanticSpec` | Data, layers, encodings, scales, coordinates, guides, and chart-title/subtitle text |
 | `graphicSpec` | Fully materialized backend-neutral graphics |
 | `resolvedScales` | Resolved domains and concrete output ranges |
 | `materializationConfigs` | Immutable appearance and layout inputs needed for later rematerialization |
@@ -12836,12 +12881,13 @@ graphicSpec  = what the renderer draws
 ## Semantic state
 
 `semanticSpec` stores named datasets, semantic layers and marks, data-driven
-encodings, scales, coordinates, and guides. Examples include:
+encodings, scales, coordinates, guides, and chart-title/subtitle text. Examples include:
 
 - `Horsepower` encoded on x;
 - a linear x scale with an automatic domain;
 - a point layer using the `main` Cartesian coordinate;
-- an x-axis explaining scale `x`.
+- an x-axis explaining scale `x`;
+- the chart title stored in `program.semanticSpec.title.text`.
 
 ## Graphical state
 
@@ -12888,6 +12934,11 @@ Appearance-only values such as canvas background, fixed radius, fonts, and
 strokes are graphical. User-authored scale domains and ranges remain semantic;
 the values produced by applying them are graphical.
 
+A title illustrates all three responsibilities: its text is semantic, its
+authored appearance and layout inputs are retained in `materializationConfigs`,
+and its resolved text lines and positions are in `graphicSpec`. Editing a title
+coordinates these changes through the owning action.
+
 <!-- Source: /concepts/actions-and-trace/ -->
 
 # Actions and Trace Trees
@@ -12898,8 +12949,15 @@ the values produced by applying them are graphical.
  →
  createGraphics / editGraphics primitives
 
-Every chart-authoring method is an action. Calling a high-level action records
-that action and any wrapped actions it invokes as children.
+An action expresses an operation on a chart element, with options describing
+the requested design choice. A chart program composes calls in authoring order.
+For example, adding a scatterplot, reducing point opacity, and adding guides
+are three successive decisions; authors need not write the internal tree.
+
+The trace preserves both views. `program.trace.children` lists the top-level
+authored calls in order. Each call's nested `children` records the wrapped
+actions it delegated to. A high-level action is high relative to those smaller
+decisions, rather than occupying a fixed universal depth:
 
 ```text
 createAxes
@@ -12933,6 +12991,20 @@ count.
 
 Trace state is immutable and does not affect rendering. It can be traversed as
 a normal tree for inspection, explanation, provenance, or recommendation.
+
+## Revisions preserve decisions
+
+Appending `editPointMark({ opacity: 0.35 })` and later
+`editPointMark({ opacity: 0.7 })` to the same point chart preserves both decisions;
+the later edit of that property supplies the final opacity. Earlier programs
+remain usable. Setting `0.7` in the original constructor can produce the same
+graphics, but it records an initial choice rather than a later revision.
+
+This ordered precedence applies to repeated edits of the same owned property.
+Distinct contracts such as theme defaults, field encodings, and local style
+overrides have their own compatibility and precedence rules. Follow the
+[hierarchical authoring tutorial](./tutorials/hierarchical-authoring/) for an
+executable high-level chart followed by focused refinements.
 
 Developers can define new wrapped actions with the
 [extension API](./extension/action-authoring/).
@@ -13289,10 +13361,14 @@ and retry from the unchanged program.
 
 # Data Updates and Live Refresh
 
-Source datasets are immutable and create-only. `createData` copies and freezes
+Source dataset values are immutable after creation. `createData` copies and freezes
 caller-owned rows; it does not provide an action that replaces those values.
 For refreshed, streaming, or user-edited source data, retain the rows in the
 application and build a new program snapshot.
+
+An unused source dataset can be removed with
+[`removeData`](./api/data/revisions-and-removal/#removedata-id); removing the resource does
+not mutate its values in an earlier snapshot.
 
 ## Rebuild from source rows
 
@@ -13706,7 +13782,7 @@ isolated program surface.
 
 - `/types/program.d.ts` serves the full public `ChartProgram` declaration.
 - `/actions.json` serves schema v3 compact cards with each option's exact type
- string, H0–H4 authoring roles, direct wrapped actions, lifecycle editors,
+ string, H0–H4 catalog role tags, direct wrapped actions, lifecycle editors,
  package entry support, units, inference, and completion requirements.
 - `/schemas/action-card.schema.json` and
  `/schemas/action-cards.schema.json` define the card shapes.
@@ -14040,7 +14116,7 @@ and automatic cross-composition scale sharing are not implemented.
 
 # Action Reference
 
-Every direct action accepts one option object and returns a new immutable `ChartProgram`. Choose a task family for readable behavior, defaults, inference, and errors; use the exact lookup when you already know the action name. Authoring roles run from H0 complete charts through H4 extension primitives. The API-layer labels match the action catalog layers `user-facing`, `advanced`, and `primitive`, respectively, and independently describe exposure.
+Every direct action accepts one option object and returns a new immutable `ChartProgram`. Choose a task family for readable behavior, defaults, inference, and errors; use the exact lookup when you already know the action name. H0–H4 are [catalog role tags](./tutorials/hierarchical-authoring/#catalog-role-tags), not grammar levels or trace depths. An action's relative hierarchy comes from the smaller actions it composes. The API-layer labels `user-facing`, `advanced`, and `primitive` independently describe exposure.
 
  [Charts, Data, and Composition Actions Create complete charts, manage data, select marks, and compose complete programs.](./reference/actions/charts-data/)
  [Mark Actions Create, edit, jitter, and remove semantic chart marks.](./reference/actions/marks/)
@@ -14341,7 +14417,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 
 # Charts, Data, and Composition Actions
 
-Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layer and H0–H4 authoring role are independent classifications.
+Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layers and [H0–H4 catalog role tags](./tutorials/hierarchical-authoring/#catalog-role-tags) are independent classifications. Relative action hierarchy is determined by composition, not by a tag or fixed trace depth.
 
 ## `createCanvas`
 
@@ -17463,7 +17539,7 @@ range rules to be satisfied.
 
 # Mark Actions
 
-Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layer and H0–H4 authoring role are independent classifications.
+Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layers and [H0–H4 catalog role tags](./tutorials/hierarchical-authoring/#catalog-role-tags) are independent classifications. Relative action hierarchy is determined by composition, not by a tag or fixed trace depth.
 
 ## `createPointMark`
 
@@ -18772,7 +18848,7 @@ with field-driven color. `stroke: false` disables the outline.
 
 # Encoding Actions
 
-Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layer and H0–H4 authoring role are independent classifications.
+Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layers and [H0–H4 catalog role tags](./tutorials/hierarchical-authoring/#catalog-role-tags) are independent classifications. Relative action hierarchy is determined by composition, not by a tag or fixed trace depth.
 
 ## `encodeX`
 
@@ -20154,7 +20230,7 @@ This contract moved: [open the current action or shared contract](./reference/ac
 
 # Statistical Layer Actions
 
-Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layer and H0–H4 authoring role are independent classifications.
+Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layers and [H0–H4 catalog role tags](./tutorials/hierarchical-authoring/#catalog-role-tags) are independent classifications. Relative action hierarchy is determined by composition, not by a tag or fixed trace depth.
 
 ## `createSummaryData`
 
@@ -21714,7 +21790,7 @@ raw provenance objects have their own normalized requirements.
 
 # Guide, Axis, Grid, and Title Actions
 
-Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layer and H0–H4 authoring role are independent classifications.
+Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layers and [H0–H4 catalog role tags](./tutorials/hierarchical-authoring/#catalog-role-tags) are independent classifications. Relative action hierarchy is determined by composition, not by a tag or fixed trace depth.
 
 ## `createParallelAxes`
 
@@ -24331,7 +24407,7 @@ rematerialization as `editLegend`. At least one component change is required.
 
 # Advanced Chart Actions
 
-Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layer and H0–H4 authoring role are independent classifications.
+Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layers and [H0–H4 catalog role tags](./tutorials/hierarchical-authoring/#catalog-role-tags) are independent classifications. Relative action hierarchy is determined by composition, not by a tag or fixed trace depth.
 
 ## `encodeChannels`
 
@@ -24549,7 +24625,7 @@ This contract moved: [open the current action or shared contract](./reference/ac
 
 # Extension Actions
 
-Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layer and H0–H4 authoring role are independent classifications.
+Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layers and [H0–H4 catalog role tags](./tutorials/hierarchical-authoring/#catalog-role-tags) are independent classifications. Relative action hierarchy is determined by composition, not by a tag or fixed trace depth.
 
 ## `editSemantic`
 
@@ -34120,6 +34196,30 @@ export type ZeroSupportingPositionScaleType =
 The extension entry point is for developers adding traceable domain actions and
 installing them on the complete `chart()` program.
 
+## Design an authoring action
+
+The [paper's design principles](https://www.hyeonjeon.com/assets/pdf/jeon27arxiv.pdf#page=6)
+concern the author's decision before the implementation's method signature:
+
+- **Meaningfulness:** choose a decision that an author would make on its own.
+ Prefer familiar operation–target names, such as `editLineMark` for a line-style
+ decision, over names describing internal arrays or incidental helper steps.
+- **Design atomicity:** keep independently meaningful decisions separate. One
+ intent may require several coordinated changes: swapping axes can update two
+ channels, their scales, and their guides. An unrelated title change need not be
+ bundled into that action.
+- **Composition:** reuse smaller actions that own meaningful parts of the
+ decision. Promote a repeated, useful composition when it merits its own name;
+ more names also increase the vocabulary an author must learn.
+
+Choose the semantic owner and affected consumers before writing the action.
+Validate the proposed result, call the semantic primitive, and explicitly invoke
+the domain or graphical actions needed to rematerialize those consumers.
+**Failure atomicity** then ensures that an invalid request leaves the input
+program unchanged. It is a separate guarantee from design atomicity.
+
+## Register the implementation
+
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 ```javascript
@@ -34323,10 +34423,25 @@ Dataset values cannot be replaced after creation.
 Use `remove: true` instead of `value` to remove one supported semantic branch.
 Empty parent objects are pruned, the earlier program remains unchanged, and the
 removal is recorded as an `editSemantic` trace node. Current removable container
-paths are complete layers such as `layer[points]`, encoding channels such as
+paths include complete layers such as `layer[points]`, encoding channels such as
 `layer[points].encoding.opacity`, and legend branches such as
-`guide.legend.opacity`. Source datasets remain immutable; only an unreferenced
-derived dataset may be removed as a complete dataset resource.
+`guide.legend.opacity`, complete datasets such as `dataset[observations]`, scales
+such as `scale[x]`, and coordinates such as `coordinate[main]`. Source rows still
+cannot be edited after creation. Removing an entire unreferenced source dataset
+is different from modifying its values.
+
+Source-dataset and coordinate removal use the full named-resource dependency
+checks and clear a matching current-resource pointer. Scale removal clears its
+resolved cache and current pointer. Unit-program derived-data removal retains
+its lower-level semantic-reference checks; the owning domain action coordinates
+its materialization configuration and graphical consumers. A facet parent also
+allows named-resource removal after full dependency validation; other semantic
+edits on composition parents remain limited to facet title state.
+
+Use `removeData`, `removeScale`, or `removeCoordinate` for ordinary resource
+lifecycles. They validate ownership and all live references, then invoke
+`editSemantic` for the concrete semantic deletion. `removeData` additionally
+releases a standalone logical data owner's retained configuration.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -34553,12 +34668,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/85f64d3fd2e90fa65af908cd6cd51ba2c9033277/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/85f64d3fd2e90fa65af908cd6cd51ba2c9033277/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -35093,7 +35208,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 `facet` uses field values in source first-appearance order. It infers one
@@ -35286,7 +35401,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -35333,7 +35448,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/codex/roadmap7-authoring-refinement/examples/repeat-charts).
 
 <!-- Source: /api/composition/editing/ -->
 
@@ -35708,7 +35823,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/640aebe70ef82d9bdd84675499806b4ce76c389c/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/roadmap7-authoring-refinement/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -35736,7 +35851,7 @@ Use the [Getting Started browser module setup](./getting-started/), install the 
 includes its data and imports. The development contract includes APIs that may be
 newer than the latest npm release; check the [documentation version](./version/).
 
-Authoring levels: H0 line chart → data transform actions → H2 mark rebind.
+Decision sequence: line chart → data transform actions → mark rebind.
 
 ## Complete program
 
@@ -35800,7 +35915,7 @@ Use the [Getting Started browser module setup](./getting-started/), install the 
 includes its data and imports. The development contract includes APIs that may be
 newer than the latest npm release; check the [documentation version](./version/).
 
-Authoring levels: H0 histogram, density, and ECDF facades → H1 weighted transforms.
+Decision sequence: histogram, density, and ECDF facades → weighted transforms.
 
 ## Complete program
 
@@ -35858,7 +35973,8 @@ Use the [Getting Started browser module setup](./getting-started/), install the 
 includes its data and imports. The development contract includes APIs that may be
 newer than the latest npm release; check the [documentation version](./version/).
 
-Authoring levels: Advanced `encodeChannels` batches H2 channel decisions; H0 creates the initial scatterplot.
+Decision sequence: `createScatterPlot` creates the initial chart; the Advanced
+`encodeChannels` action batches subsequent channel changes.
 
 ## Complete program
 
@@ -35920,7 +36036,7 @@ Use the [Getting Started browser module setup](./getting-started/), install the 
 includes its data and imports. The development contract includes APIs that may be
 newer than the latest npm release; check the [documentation version](./version/).
 
-Authoring levels: H0 scatterplot → H2 scale editors and H3 axis editors.
+Decision sequence: scatterplot → scale editors and axis editors.
 
 ## Complete program
 
@@ -35972,7 +36088,7 @@ Use the [Getting Started browser module setup](./getting-started/), install the 
 includes its data and imports. The development contract includes APIs that may be
 newer than the latest npm release; check the [documentation version](./version/).
 
-Authoring levels: H0 bar facade → H2 final-item selection and placement → H3 collision policy.
+Decision sequence: bar facade → final-item selection and placement → collision policy.
 
 ## Complete program
 
@@ -36032,7 +36148,7 @@ Use the [Getting Started browser module setup](./getting-started/), install the 
 includes its data and imports. The development contract includes APIs that may be
 newer than the latest npm release; check the [documentation version](./version/).
 
-Authoring levels: H0 scatterplot → H3 theme and mark-style editing.
+Decision sequence: scatterplot → theme and mark-style editing.
 
 ## Complete program
 
@@ -36087,7 +36203,7 @@ Use the [Getting Started browser module setup](./getting-started/), install the 
 includes its data and imports. The development contract includes APIs that may be
 newer than the latest npm release; check the [documentation version](./version/).
 
-Authoring levels: H0 faceting → H1 source replay → H3 header and guide policies.
+Decision sequence: faceting → source replay → header and guide policies.
 
 ## Complete program
 
@@ -36149,7 +36265,7 @@ Use the [Getting Started browser module setup](./getting-started/), install the 
 includes its data and imports. The development contract includes APIs that may be
 newer than the latest npm release; check the [documentation version](./version/).
 
-Authoring levels: Complete chart → independent mark removal → explicit data lifecycle.
+Decision sequence: Complete chart → independent mark removal → explicit data lifecycle.
 
 ## Complete program
 
@@ -36223,17 +36339,19 @@ export function authoringStages() {
   const highLevel = base.createScatterPlot({ id: "points", x: "x", y: "y", guides: false });
   const composed = base.createPointMark({ id: "points" })
     .encodeX({ field: "x" }).encodeY({ field: "y" });
-  const styled = composed.encodePointRadius({ value: 8 })
-    .editPointMark({ fill: "#7c3aed" }).createGuides({ legend: false });
-  return { highLevel, composed, styled };
+  const styled = highLevel.encodePointRadius({ value: 8 })
+    .editPointMark({ fill: "#7c3aed", opacity: 0.35 })
+    .createGuides({ legend: false });
+  const revisedAgain = styled.editPointMark({ opacity: 0.7 });
+  return { highLevel, composed, styled, revisedAgain };
 }
 
 export function createHierarchicalAuthoring() {
-  const { highLevel, composed, styled } = authoringStages();
+  const { highLevel, styled, revisedAgain } = authoringStages();
   return hconcat({ programs: [
-    highLevel.createTitle({ text: "H0: complete chart" }),
-    composed.createTitle({ text: "H2: mark and encodings" }),
-    styled.createTitle({ text: "Focused style and guides" })
+    highLevel.createTitle({ text: "High-level chart" }),
+    styled.createTitle({ text: "Focused refinement" }),
+    revisedAgain.createTitle({ text: "Later opacity edit" })
   ], gap: 20 });
 }
 
@@ -36241,70 +36359,99 @@ const program = createHierarchicalAuthoring();
 render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
-## Choose a decision, then its action
+## Refine the chart you already authored
 
-The first two panels encode exactly the same observations. `createScatterPlot` (H0)
-creates a point mark and delegates positional decisions to H2 actions. The second
-panel spells out those decisions as `createPointMark`, `encodeX`, and `encodeY`.
-Neither approach changes the immutable source rows.
+The first panel is `highLevel`, created by one `createScatterPlot` action.
+The second is `styled`, derived directly from that program by changing point
+radius, fill, and opacity and adding guides. The third is `revisedAgain`: one
+more point-opacity edit changes `0.35` to `0.7`. The earlier panels retain their
+own values. Neither revision repeats the dataset or positional decisions.
 
-The third panel keeps that chart and changes only the intended parts. A larger glyph
-radius and purple fill are focused appearance decisions. `createGuides` adds the axes
-and grid implied by its existing encodings. There is no need to reconstruct data or
-choose the scatterplot again just to restyle its points.
+Appending an edit preserves when a design decision changed. Authoring the same
+final style in the initial constructor can produce the same graphics, but its
+trace records an initial choice instead of a later revision. Repeated edits of
+this point-opacity property use the latest value; other owners, including theme
+and field encodings, keep their documented compatibility and precedence rules.
 
-| Role | Decision | Example |
-| --- | --- | --- |
-| H0 | Complete chart or repeated/composed chart structure | `createScatterPlot`, `createHistogram`, `facet` |
-| H1 | Statistical or composite authoring task | `createSummaryData`, `createECDFData`, `createMarkLabels` |
-| H2 | Mark, semantic encoding, scale, coordinate, or binding decision | `createPointMark`, `encodeX`, `editScale`, `bindMarkData` |
-| H3 | Presentation, guide, or focused component decision | `editPointMark`, `createAxes`, `applyTheme` |
-| H4 | Extension primitives for semantic and concrete graphic state | `editSemantic`, `createGraphics`, `editGraphics` |
+`composed` is a separate construction alternative: `createPointMark`, `encodeX`,
+and `encodeY` produce the same initial graphics as `highLevel`. It is included
+to compare abstraction choices; refinement does not require expanding the
+high-level call into that lower-level program.
 
-An action may carry several roles. The [exact action reference](./reference/actions/)
-owns its current role metadata. For example, a statistical chart facade may perform
-both an H0 chart task and an H1 composite task.
+## Follow the relative action hierarchy
 
-For a concrete H1 workflow, follow [missing-observation repair](./recipes/repair-missing-observations/):
-completion, imputation, and a window calculation create reusable derived datasets;
-a lower-level rebind then changes the displayed line. Those operations have a different
-grain from styling an already constructed mark.
+The grammar has two units: **graphical actions** and **chart programs**. Within
+a program, an action's abstraction level is relative to the decisions it composes.
+For example, an entire guide collection contains axes; an axis contains a line,
+ticks, labels, and a title. These relationships have several levels even when
+the catalog gives the actions the same role tag.
+
+```text
+createGuides
+└─ createAxes
+   └─ createXAxis
+      └─ createXAxisTicksAndLabels
+         └─ createXAxisTicks
+            └─ editXAxisTicks
+```
+
+This is one branch of the hierarchy, not the complete guide implementation.
+A whole-axis choice can delegate to tick choices, while an author who only wants
+longer ticks can call the focused editor. The [paper's Figure 3](https://www.hyeonjeon.com/assets/pdf/jeon27arxiv.pdf#page=7)
+illustrates this relative composition.
 
 ## Read the delegation in the trace
 
-The returned programs expose `trace`. For this scatterplot, the relevant hierarchy is:
+The authored sequence is linear; delegated calls form the nested trace.
+For the first panel, part of the tree is:
 
 ```text
-createScatterPlot                 H0
-├─ createPointMark                H2
-│  ├─ editSemantic                H4
-│  └─ createGraphics              H4
-├─ encodeX                        H2
-└─ encodeY                        H2
+createScatterPlot
+├─ createPointMark
+│  ├─ editSemantic
+│  └─ createGraphics
+├─ encodeX
+└─ encodeY
 ```
 
-This is a partial tree; nested scale and materialization operations are omitted for
-readability. Inspect `authoringStages().highLevel.trace` for the complete retained tree.
-The trace records how actions delegated work. Renderers consume the resulting concrete
-`graphicSpec`; they do not execute the trace or compile `semanticSpec` automatically.
+Nested style, scale, and materialization calls are omitted here for readability.
+Inspect `authoringStages().highLevel.trace` for the retained tree. In `styled`,
+that whole top-level `createScatterPlot` call remains before the new refinement
+calls. Renderers draw the resulting `graphicSpec`; they do not execute the trace.
 
-H4 primitives are the [extension-authoring path](./extension/action-authoring/).
-Changing a primitive graphic directly does not revise its semantic data or encoding,
-so a later domain rematerialization may rebuild it. Ordinary chart changes should use
-the domain action that owns their meaning and update policy.
+The [extension primitives](./extension/action-authoring/) express semantic
+and concrete graphical transitions. Changing a primitive graphic directly does
+not revise the domain intent, so later rematerialization may rebuild it.
+Ordinary revisions should use the domain action that owns the decision and its
+update policy.
 
-## Role, API layer, and package are separate
+## Catalog role tags
 
-H0–H4 describe the decision's level. The API layer classifies an action as user-facing,
-advanced, or primitive. Package membership says whether it is exposed by `ggaction`,
-`ggaction/basic`, or the extension entry. None can be inferred from the other two.
-`createScale` and `editScale`, for example, are user-facing H2 domain actions;
-`encodeChannels` is an advanced action available only from the full package.
+The repository also labels actions with H0–H4 for catalog lookup. These are
+implementation catalog tags, **not** the paper's two grammar units or trace
+depths. Several actions along the guide hierarchy above all have tag H3.
+An action may have several tags, and a call may skip tags when it delegates.
+
+| Tag | Catalog grouping | Examples |
+| --- | --- | --- |
+| H0 | Complete charts and repeated/composed chart structure | `createScatterPlot`, `createHistogram`, `facet` |
+| H1 | Statistical or composite tasks | `createSummaryData`, `createECDFData`, `createMarkLabels` |
+| H2 | Marks, encodings, scales, coordinates, bindings | `createPointMark`, `encodeX`, `editScale`, `bindMarkData` |
+| H3 | Presentation and guide components | `editPointMark`, `createAxes`, `editXAxisTicks`, `applyTheme` |
+| H4 | Extension primitives | `editSemantic`, `createGraphics`, `editGraphics` |
+
+Role tags, API layers, and packages answer different questions. API layers label
+an action as user-facing, advanced, or primitive. Package membership determines
+whether a method is exposed by the full, basic, or extension entry. A role tag
+alone does not determine either. The [exact reference](./reference/actions/)
+records current classifications; use the action relationships to understand
+composition.
 
 ## Related
 
-[Choose a chart](./api/chart-picker/) · [Authoring conventions](./concepts/authoring-conventions/) ·
-[Action traces](./concepts/actions-and-trace/)
+[Action design principles](./extension/action-authoring/#design-an-authoring-action) ·
+[Authoring conventions](./concepts/authoring-conventions/) ·
+[Action traces](./concepts/actions-and-trace/) · [Choose a chart](./api/chart-picker/)
 
 <!-- Source: /concepts/authoring-conventions/ -->
 
@@ -36348,11 +36495,22 @@ is valid only where its option type declares it. An empty category display map, 
 example, stores an explicit empty map; `labelMap:"auto"` removes that map. Do not
 apply one editor's merge or no-op policy to every other editor.
 
-## Atomic failure and dependencies
+## Design decisions and failure atomicity
+
+An action should express a decision that is meaningful on its own. **Design
+atomicity** keeps independently meaningful decisions separate, even when one
+decision requires coordinated changes to several resources. Swapping x and y,
+for example, is one intent that can require a multi-channel update.
+
+**Failure atomicity** describes a different guarantee: a rejected request leaves
+the input program unchanged. Packing unrelated choices into one option object
+does not by itself make a coherent authoring action. Extension authors can use
+the [action design principles](./extension/action-authoring/#design-an-authoring-action)
+to choose an appropriate boundary.
 
 An action validates its complete result before returning it. If it throws, continue
 from the earlier program; there is no partially returned chart to repair. For a batch
-of channel assignments use [atomic encoding](./recipes/switch-encoding-modes/).
+of coordinated channel assignments use [atomic encoding](./recipes/switch-encoding-modes/).
 
 Derived edits reject live downstream dependencies by default. `dependents:"recompute"`
 is an explicit request to rebuild that closure; it is not a general cascade-delete
@@ -36440,22 +36598,24 @@ ordered calculation; do not infer a fixed 24-hour duration from a local date lab
 # Choose a Chart
 
 Start with the chart that expresses the data's meaning, then edit its parts through
-lower-level actions. Every H0 action in the current declared catalog appears below.
+lower-level actions. Every complete-chart action in the current declared catalog
+appears below, including composition and deferred-construction entries.
 
 ## Three independent choices
 
-**H0–H4 authoring role** describes the decision's level. **API layer** describes
+**H0–H4 catalog role tags** group related authoring tasks; the actual hierarchy
+comes from the smaller actions an action composes. **API layer** describes
 user-facing, advanced, or primitive exposure. **Package entry** describes availability
 from the full or basic import. A higher-level action is not automatically part of the
 smaller package, and a low-level domain action is not automatically an extension primitive.
 
 Prepare a Canvas and explicit or unambiguous materialized data before a unit chart
-facade. Repetition consumes a complete program. H0 Box and Gradient constructors
+facade. Repetition consumes a complete program. Box and Gradient constructors
 can defer roles, so merely calling them does not necessarily produce a complete chart.
 
 ## Relationships and trends
 
-| Task / input | H0 action | Role · layer · entry | Direct editor | Lower-level actions |
+| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
 | --- | --- | --- | --- | --- |
 | One row per observation; x and y fields | [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createPointMark`](./reference/actions/marks/#createpointmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeShape`](./reference/actions/encodings/#encodeshape) · [`createGuides`](./reference/actions/guides/#createguides) |
 | Ordered positions and measures; explicit aggregation when needed | [`createLinePlot`](./reference/actions/charts-data/#createlineplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createLineMark`](./reference/actions/marks/#createlinemark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeGroup`](./reference/actions/encodings/#encodegroup) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeStrokeDash`](./reference/actions/encodings/#encodestrokedash) · [`createGuides`](./reference/actions/guides/#createguides) |
@@ -36468,7 +36628,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 
 ## Comparisons and intervals
 
-| Task / input | H0 action | Role · layer · entry | Direct editor | Lower-level actions |
+| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
 | --- | --- | --- | --- | --- |
 | Categorical/measure roles, explicit summary, or ranged endpoints | [`createBarPlot`](./reference/actions/charts-data/#createbarplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createBarMark`](./reference/actions/marks/#createbarmark) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeBarWidth`](./reference/actions/encodings/#encodebarwidth) · [`createGuides`](./reference/actions/guides/#createguides) |
 | Category and measure per raw row, or an explicit summary | [`createDotPlot`](./reference/actions/charts-data/#createdotplot) | H0, H1 · user-facing · default | [`editEndpointPlot`](./reference/actions/charts-data/#editendpointplot) | [`createSummaryData`](./reference/actions/statistics/#createsummarydata) · [`createPointMark`](./reference/actions/marks/#createpointmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) |
@@ -36478,7 +36638,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 
 ## Distributions
 
-| Task / input | H0 action | Role · layer · entry | Direct editor | Lower-level actions |
+| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
 | --- | --- | --- | --- | --- |
 | Quantitative observations; one bin policy; optional weights | [`createHistogram`](./reference/actions/charts-data/#createhistogram) | H0, H1 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createBarMark`](./reference/actions/marks/#createbarmark) · [`encodeHistogram`](./reference/actions/encodings/#encodehistogram) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) |
 | Finite numeric observations and KDE decisions | [`createDensityPlot`](./reference/actions/statistics/#createdensityplot) | H0, H1 · user-facing · default | [`editDensity`](./reference/actions/encodings/#editdensity) · [`editAreaMark`](./reference/actions/marks/#editareamark) | [`createAreaMark`](./reference/actions/marks/#createareamark) · [`encodeDensity`](./reference/actions/encodings/#encodedensity) · [`createGuides`](./reference/actions/guides/#createguides) · [`encodeColor`](./reference/actions/encodings/#encodecolor) |
@@ -36493,7 +36653,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 
 ## Parts, radial values, and dense samples
 
-| Task / input | H0 action | Role · layer · entry | Direct editor | Lower-level actions |
+| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
 | --- | --- | --- | --- | --- |
 | Category counts or category sums for proportional sector angles | [`createPiePlot`](./reference/actions/charts-data/#createpieplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createArcMark`](./reference/actions/marks/#createarcmark) · [`encodeTheta`](./reference/actions/encodings/#encodetheta) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) |
 | Category counts or sums represented by sector area | [`createRosePlot`](./reference/actions/charts-data/#createroseplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createArcMark`](./reference/actions/marks/#createarcmark) · [`encodeTheta`](./reference/actions/encodings/#encodetheta) · [`encodeR`](./reference/actions/encodings/#encoder) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) |
@@ -36503,7 +36663,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 
 ## Repeated chart structure
 
-| Task / input | H0 action | Role · layer · entry | Direct editor | Lower-level actions |
+| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
 | --- | --- | --- | --- | --- |
 | One complete chart and an eligible shared ancestor field | [`facet`](./reference/actions/charts-data/#facet) | H0 · user-facing · default | [`editFacetSource`](./reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](./reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](./reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](./reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) | |
 | One complete chart plus row and column fields | [`facetGrid`](./reference/actions/charts-data/#facetgrid) | H0 · user-facing · default | [`editFacetSource`](./reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](./reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](./reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](./reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) | |
@@ -36517,9 +36677,12 @@ retain a source recipe. Use the [composition overview](./api/composition/) to ch
 
 The [five basic Cartesian facades](./api/basic-charts/) are a compact starting subset.
 For intervals added to existing layers, use [Error Bar](./api/error-bars/) or
-[Error Band](./api/error-bands/), which are H1 layer tasks rather than separate H0
-complete-chart entries. See [hierarchical authoring](./tutorials/hierarchical-authoring/)
+[Error Band](./api/error-bands/), which add interval layers to a chart.
+See [hierarchical authoring](./tutorials/hierarchical-authoring/)
 for one chart authored and edited at several levels.
+
+The table's H0–H4 values are [catalog role tags](./tutorials/hierarchical-authoring/#catalog-role-tags),
+separate from the relative action hierarchy and from package exposure.
 
 ## Related
 
@@ -36536,9 +36699,9 @@ mean every documented action is available in the published npm artifact.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:9c8e41c32d9ae903e08077b114ca9b80df796b51f12e7d9274322280987390f7` |
-| Example and dataset source | `640aebe70ef82d9bdd84675499806b4ce76c389c` |
-| Runtime source commit | `85f64d3fd2e90fa65af908cd6cd51ba2c9033277` |
+| Contract fingerprint | `sha256:2badd89c96e73d87ca0c01f9f8c119c76f4b152be5196692cdb96638aecb75e1` |
+| Example and dataset source | `codex/roadmap7-authoring-refinement` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 276 |
 | Declared actions in that release | 234 |
@@ -36578,6 +36741,31 @@ size ranges express **area**, and switching to a discrete size family requires t
 new domain and nondecreasing area range. `encodeColor({ value })` is not a constant
 fill assignment; use the mark's style editor or the supported stroke/opacity channel
 forms described in their references.
+
+## Paper compatibility
+
+The [ggaction paper](https://www.hyeonjeon.com/assets/pdf/jeon27arxiv.pdf) explains
+the grammar's design. Its examples, its fixed evaluation snapshot, and this
+development contract have distinct provenance. The PDF inspected on September
+14, 2026 has 21 pages and SHA-256
+`081c873dab45b7855a87b57491533e2821c5918705ef0730f35ffb8d72303e53`.
+Page numbers below count the first PDF page as page 1.
+
+| Paper reference | Compatibility with current documentation |
+| --- | --- |
+| §3.2–3.4, pp.5–6: actions, program sequence, and progressive edits | [Actions and traces](./concepts/actions-and-trace/) explains the model; the [hierarchical tutorial](./tutorials/hierarchical-authoring/) demonstrates appending refinements to a high-level chart |
+| §3.2, p.5: scatterplot, color, opacity, regression, guides | The current layout contract requires space for the legend. The [regression recipe](./recipes/regression-scatterplot/) supplies explicit margins and data/rendering setup; the README's corresponding chain is checked with the repository's 406-row cars dataset |
+| Figure 1, p.1: `editColorScale` | This method is available in the development contract and was added after the published v0.0.13 declarations; the paper's `...layout` is also a setup placeholder |
+| §5.1, p.8: evaluation snapshot called v0.0.13 | The published comparison baseline is recorded above. The supplied paper does not pin the exact evaluation commit, so matching its version label alone does not establish that every paper figure uses that same release |
+| Table 3, p.10: `removeMarks` spelling | No direct public action by that name exists in the checked release or current declaration. `removeMark` removes a layer, while `filterMarks` filters displayed items; substituting one name for the other does not establish an equivalent blank-data operation |
+| Figure 3, p.7: internal legend components | The figure shows action decomposition, including [internal trace operations](./reference/runtime/#internal-trace-operations); it is not a list of publicly callable methods |
+| §8.2, p.18: `createLinearRegression` | This is a discussion example of a possible explicit name, not a current API. Use the documented `createRegression({ method: "linear" })` |
+
+Current example source and runtime identities appear in the provenance table
+above. Follow that example source revision when reproducing this site's charts.
+These adaptations preserve the paper's authoring model without claiming an
+exact reproduction of every paper figure or evaluation. The [research basis](./#research-basis)
+also distinguishes the paper's evidence from the separate MCP benchmark.
 
 <!-- Source: /api/axes/complete/ -->
 

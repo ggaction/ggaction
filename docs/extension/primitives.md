@@ -39,10 +39,25 @@ Dataset values cannot be replaced after creation.
 Use `remove: true` instead of `value` to remove one supported semantic branch.
 Empty parent objects are pruned, the earlier program remains unchanged, and the
 removal is recorded as an `editSemantic` trace node. Current removable container
-paths are complete layers such as `layer[points]`, encoding channels such as
+paths include complete layers such as `layer[points]`, encoding channels such as
 `layer[points].encoding.opacity`, and legend branches such as
-`guide.legend.opacity`. Source datasets remain immutable; only an unreferenced
-derived dataset may be removed as a complete dataset resource.
+`guide.legend.opacity`, complete datasets such as `dataset[observations]`, scales
+such as `scale[x]`, and coordinates such as `coordinate[main]`. Source rows still
+cannot be edited after creation. Removing an entire unreferenced source dataset
+is different from modifying its values.
+
+Source-dataset and coordinate removal use the full named-resource dependency
+checks and clear a matching current-resource pointer. Scale removal clears its
+resolved cache and current pointer. Unit-program derived-data removal retains
+its lower-level semantic-reference checks; the owning domain action coordinates
+its materialization configuration and graphical consumers. A facet parent also
+allows named-resource removal after full dependency validation; other semantic
+edits on composition parents remain limited to facet title state.
+
+Use `removeData`, `removeScale`, or `removeCoordinate` for ordinary resource
+lifecycles. They validate ownership and all live references, then invoke
+`editSemantic` for the concrete semantic deletion. `removeData` additionally
+releases a standalone logical data owner's retained configuration.
 
 <!-- snippet-context:start -->
 

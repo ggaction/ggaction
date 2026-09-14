@@ -45,11 +45,22 @@ is valid only where its option type declares it. An empty category display map, 
 example, stores an explicit empty map; `labelMap:"auto"` removes that map. Do not
 apply one editor's merge or no-op policy to every other editor.
 
-## Atomic failure and dependencies
+## Design decisions and failure atomicity
+
+An action should express a decision that is meaningful on its own. **Design
+atomicity** keeps independently meaningful decisions separate, even when one
+decision requires coordinated changes to several resources. Swapping x and y,
+for example, is one intent that can require a multi-channel update.
+
+**Failure atomicity** describes a different guarantee: a rejected request leaves
+the input program unchanged. Packing unrelated choices into one option object
+does not by itself make a coherent authoring action. Extension authors can use
+the [action design principles](../extension/action-authoring.md#design-an-authoring-action)
+to choose an appropriate boundary.
 
 An action validates its complete result before returning it. If it throws, continue
 from the earlier program; there is no partially returned chart to repair. For a batch
-of channel assignments use [atomic encoding](../recipes/switch-encoding-modes.md).
+of coordinated channel assignments use [atomic encoding](../recipes/switch-encoding-modes.md).
 
 Derived edits reject live downstream dependencies by default. `dependents:"recompute"`
 is an explicit request to rebuild that closure; it is not a general cascade-delete

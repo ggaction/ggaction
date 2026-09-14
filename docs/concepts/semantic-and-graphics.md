@@ -25,12 +25,13 @@ graphicSpec  = what the renderer draws
 ## Semantic state
 
 `semanticSpec` stores named datasets, semantic layers and marks, data-driven
-encodings, scales, coordinates, and guides. Examples include:
+encodings, scales, coordinates, guides, and chart-title/subtitle text. Examples include:
 
 - `Horsepower` encoded on x;
 - a linear x scale with an automatic domain;
 - a point layer using the `main` Cartesian coordinate;
-- an x-axis explaining scale `x`.
+- an x-axis explaining scale `x`;
+- the chart title stored in `program.semanticSpec.title.text`.
 
 ## Graphical state
 
@@ -76,3 +77,8 @@ and writes concrete x values. `render()` later reads only `graphicSpec`.
 Appearance-only values such as canvas background, fixed radius, fonts, and
 strokes are graphical. User-authored scale domains and ranges remain semantic;
 the values produced by applying them are graphical.
+
+A title illustrates all three responsibilities: its text is semantic, its
+authored appearance and layout inputs are retained in `materializationConfigs`,
+and its resolved text lines and positions are in `graphicSpec`. Editing a title
+coordinates these changes through the owning action.

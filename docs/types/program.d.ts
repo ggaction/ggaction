@@ -1057,6 +1057,11 @@ export type ScaleRange = "auto" | readonly unknown[] | {
   readonly palette: Palette;
 };
 export type ActionOptions = Record<string, unknown>;
+/**
+ * One semantic assignment or removal. Complete unreferenced source datasets and
+ * coordinates can be removed; source values remain immutable. Domain removal
+ * actions own full resource/configuration lifecycle checks and cleanup.
+ */
 export type EditSemanticOptions =
   | { property: string; value: unknown; remove?: false }
   | { property: string; remove: true; value?: never };

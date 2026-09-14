@@ -18,6 +18,37 @@ one part. The main, basic, extension, SVG, PNG, and PDF entry points include Typ
 
 <p class="docs-release-status"><strong>Experimental {{ site.version }}</strong> · APIs may change before 1.0.0. Review the <a href="https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md">changelog</a> when upgrading.</p>
 
+## Research basis
+
+[ggaction: A Grammar of Graphical Actions](https://www.hyeonjeon.com/assets/pdf/jeon27arxiv.pdf),
+by Hyeon Jeon and Jinwook Seo, describes the grammar's design. A graphical action
+expresses a meaningful authoring decision, and a chart program composes those
+actions in order. Larger actions delegate to smaller ones, so authors can start
+with a chart and append focused refinements. The [hierarchical authoring tutorial](./tutorials/hierarchical-authoring.md)
+connects that model to the current API.
+
+The paper and this site's MCP benchmark answer different questions:
+
+- **Paper §5 — expressiveness.** A fixed API snapshot identified as v0.0.13 maps
+  97 object, operation, and intent entries using existing compatible chart/data
+  and at most four calls: 86 direct, nine partial, and two unsupported mappings.
+  These results are not a coverage percentage for the current development API.
+- **Paper §6 — machine interpretability.** Fine-tuned small models generate chart
+  programs over sequences of authoring requests. Full-program and edit-delta AST
+  measures evaluate learning and generation under those study conditions.
+- **Paper §7 — human interpretability.** Sixteen participants reconstructed
+  128 drawings from chart code. Results show lower interpretation effort relative
+  to some compared grammars, without a statistically significant completeness or
+  accuracy advantage for ggaction.
+- **[Local MCP benchmark](./mcp.md#measured-impact).** A separate 576-run study
+  compares documentation browsing with MCP-first authoring and bounded fallback,
+  measuring task success, tokens, and model-call costs for that fixed task set.
+
+Familiar action names do not reveal every consequential default. For example,
+regression model, grouping, and interval choices still deserve explanation.
+See [paper and API compatibility](./version.md#paper-compatibility) before copying
+paper examples into an installed release.
+
 ## Start here
 
 Learn [how the same chart stays editable across authoring levels](./tutorials/hierarchical-authoring.md),
