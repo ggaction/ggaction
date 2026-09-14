@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "source": "https://github.com/ggaction/ggaction/actions/runs/34802294379",
+  "environment": "Ubuntu, Node 22",
+  "measurement": "Sum of per-test duration_ms from the successful realistic run; scheduling estimates, not per-file elapsed-time guarantees.",
+  "durationMs": {
+    "contracts/dataset-fixtures.test.js": 22252,
+    "contracts/generated-lifecycle-scenarios.test.js": 20882,
+    "contracts/generated-scenario-effective-factors.test.js": 2529,
+    "contracts/generated-scenario-feature-coverage.test.js": 44770,
+    "contracts/generated-scenarios.test.js": 24465,
+    "contracts/realistic-arc-legend-layout.test.js": 67117,
+    "contracts/realistic-cartesian-facade-coverage-recipes.test.js": 134704,
+    "contracts/realistic-complete-chart-facades.test.js": 3510,
+    "contracts/realistic-data-mark-recipes.test.js": 151354,
+    "contracts/realistic-direct-lifecycle-coverage-recipes.test.js": 799519,
+    "contracts/realistic-encoding-coverage-recipes.test.js": 35752,
+    "contracts/realistic-facade-option-recipes.test.js": 331156,
+    "contracts/realistic-facet-column-factors.test.js": 165289,
+    "contracts/realistic-facet-raster-bounds.test.js": 82744,
+    "contracts/realistic-guide-scale-recipes.test.js": 487640,
+    "contracts/realistic-hierarchical-facade-matrix.test.js": 367033,
+    "contracts/realistic-lifecycle-factor-effects.test.js": 63898,
+    "contracts/realistic-lifecycle-provenance.test.js": 106,
+    "contracts/realistic-scenario-generation-isolation.test.js": 945678,
+    "contracts/realistic-scenario-generator.test.js": 535185,
+    "contracts/realistic-scenario-runner.test.js": 99611,
+    "contracts/realistic-statistical-facade-coverage-recipes.test.js": 159323
+  }
+}

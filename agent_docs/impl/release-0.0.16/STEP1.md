@@ -33,8 +33,8 @@
 | 16 | 브라우저 전용 사용자도 MCP·네이티브 렌더 의존성을 설치한다 | 구현·검증 완료 | renderer/package/MCP 38개, docs/package 33개, 실제 bare→optional 설치·Full/Basic/타입/전체 package consumer 통과 |
 | 17 | 런타임 성능 회귀를 검출하는 공식 workload가 필요하다 | 구현·검증 완료 | 불변성·trace·theme·SVG·경로 91개 및 패키지·discovery 통과; 공식 13 workload 측정 |
 | 18 | 실제 폰트와 저작용 text bounds 차이를 줄일 선택지가 필요하다 | 진행 전 | — |
-| 19 | 릴리즈의 단일 순차 검증 경로가 약 59분 걸린다 | 진행 전 | — |
-| 20 | realistic 테스트가 main의 필수 merge check에 포함되지 않는다 | 진행 전 | — |
+| 19 | 릴리즈의 단일 순차 검증 경로가 약 59분 걸린다 | 구현·로컬 검증; 릴리즈 실행 대기 | canonical candidate를 병렬 source/coverage/package/docs/7 realistic shard에 전달; strict fan-in |
+| 20 | realistic 테스트가 main의 필수 merge check에 포함되지 않는다 | 부분 구현·검증 | realistic-required strict aggregate 추가; 실제 main required rule 추가 남음 |
 | 21 | 자동 검증이 Ubuntu·Chromium에 집중되어 있다 | 진행 전 | — |
 | 22 | 실패한 렌더·문서 테스트의 진단 artifact를 자동 보존해야 한다 | 진행 전 | — |
 | 23 | 높은 coverage를 보완할 공통 음성 계약·교차층 테스트가 필요하다 | 구현·검증 완료 | Current catalog 전체 valid-call corpus → unknown/null/array/scalar rejection 및 source snapshot; generic/focused·atomic/sequential 동치 |
@@ -99,3 +99,11 @@ Packet v5에서 requiredOptions와 sample/configured options를 분리했다. Im
 - 집중 codec/validation coverage: line 98.39%, branch 96.97%, function 100%; 새 snapshot critical family/entry floor를 추가했다.
 - Packed audit는 532 files, 718,359 packed, 3,591,260 unpacked bytes다. 새 5개 배포 파일을 위해 entries 532, unpacked 상한 3,600,000으로 맞추며 packed 720,000은 유지한다.
 - 최종 모든 기능 완료 후 전체 coverage/realistic/render/browser/docs/release 검증은 별도로 남아 있다.
+
+### Parallel release verification checkpoint
+
+릴리즈를 candidate pack/upload → 독립 source/coverage/package/docs/7 realistic shard → strict verify → protected publish로 분리했다. 모든 package/browser consumer job은 같은 tarball을 download하고 digest·tag·commit을 검증한 뒤 GGACTION_PACKAGE_SPEC으로 지정한다. 기존 workflow는 candidate를 만들었으나 package consumer가 이 환경 변수를 받지 않아 다시 pack하는 경로였으므로 정확한 artifact 검증 누락도 고쳤다.
+
+245개 이전 successful realistic test의 duration 합을 22개 파일별 scheduling weight로 기록했다. 단순 round-robin 최대 합 1,301,299ms 대비 greedy weighted 최대 합 945,678ms이며, 이는 병렬 실행의 실제 벽시계 시간 보장이 아니다. File 전체가 정확히 한 shard에 포함되고, 신규 파일은 median weight로 빠짐없이 배정된다. 실행 전 파일과 추정치를 출력한다.
+
+실패·취소·skipped·누락·추가 prerequisite를 strict aggregate가 거부하는 테스트, partition exhaustive/disjoint/determinism·unknown file·입력검사, 기존 discovery/release contract 23개가 통과했다. YAML parsing과 실제 작은 realistic shard/empty shard 실행도 통과했다. Main의 실제 required rule 변경 및 전체 실제 release pipeline 성공은 이후 통합·릴리즈 단계에 남긴다.

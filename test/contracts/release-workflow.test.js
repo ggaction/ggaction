@@ -77,3 +77,44 @@ test("deploys Pages only after the protected release publish", () => {
   assert.match(workflow, /pages: write/);
   assert.ok(workflow.indexOf("gh release create") < workflow.indexOf("pages-build:"));
 });
+
+function workflowJob(source, name) {
+  const start = source.indexOf(`\n  ${name}:\n`);
+  assert.notEqual(start, -1, `Missing job ${name}`);
+  const body = source.slice(start + 1);
+  const next = body.slice(1).search(/^  [\w-]+:\s*$/m);
+  return next < 0 ? body : body.slice(0, next + 1);
+}
+
+test("parallel qualifications consume one canonical candidate and join before publishing", () => {
+  assert.equal((workflow.match(/run: node scripts\/release-candidate\.js "\$RELEASE_TAG"/g) ?? []).length, 1);
+  const names = ["verify-source", "verify-coverage", "verify-package", "verify-documentation", "verify-realistic"];
+  for (const name of names) {
+    const job = workflowJob(workflow, name);
+    assert.match(job, /needs: (?:candidate|\[candidate, realistic-data\])/);
+    assert.match(job, /name: ggaction-\$\{\{ inputs.tag \}\}/);
+    assert.match(job, /release-candidate.js --verify/);
+    assert.match(job, /GGACTION_PACKAGE_SPEC=/);
+    assert.ok(job.indexOf("release-candidate.js --verify") < job.indexOf("npm run test:") ||
+      name === "verify-source" && job.indexOf("release-candidate.js --verify") < job.indexOf("run: npm test"));
+  }
+  const aggregate = workflowJob(workflow, "verify");
+  assert.match(aggregate, /if: \$\{\{ always\(\) \}\}/);
+  assert.match(aggregate, /GGACTION_JOB_RESULTS: \$\{\{ toJSON\(needs\) \}\}/);
+  assert.match(aggregate, /--check-jobs candidate verify-source verify-coverage verify-package verify-documentation realistic-data verify-realistic/);
+  assert.match(workflowJob(workflow, "publish"), /needs: verify/);
+  const realistic = workflowJob(workflow, "verify-realistic");
+  assert.match(realistic, /fail-fast: false/);
+  assert.match(realistic, /shard: \[1, 2, 3, 4, 5, 6, 7\]/);
+  assert.match(realistic, /npm run test:realistic -- --shard=\$\{\{ matrix.shard \}\}\/7/);
+  assert.doesNotMatch(workflow, /continue-on-error:\s*true/);
+});
+
+test("realistic CI has a stable aggregate that cannot accept skipped or failed dependencies", () => {
+  const ci = readFileSync(new URL("../../.github/workflows/ci.yml", import.meta.url), "utf8");
+  const aggregate = workflowJob(ci, "realistic-required");
+  assert.match(aggregate, /if: \$\{\{ always\(\) \}\}/);
+  assert.match(aggregate, /needs: \[realistic-data, realistic\]/);
+  assert.match(aggregate, /--check-jobs realistic-data realistic/);
+  assert.match(aggregate, /GGACTION_JOB_RESULTS: \$\{\{ toJSON\(needs\) \}\}/);
+});

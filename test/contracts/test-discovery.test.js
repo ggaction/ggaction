@@ -235,8 +235,7 @@ test("caps file concurrency without changing file order or coverage policy", () 
     [
       "--test",
       "--test-concurrency=2",
-      "--test-shard=2/7",
-      ...files
+      files[0]
     ]
   );
   assert.deepEqual(files, [

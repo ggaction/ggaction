@@ -102,6 +102,22 @@ jobs:
       - name: Run realistic corpus contracts
         run: npm run test:realistic -- --shard=${{ matrix.shard }}/7
 
+  realistic-required:
+    if: ${{ always() }}
+    needs: [realistic-data, realistic]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Require every realistic prerequisite and shard
+        env:
+          GGACTION_JOB_RESULTS: ${{ toJSON(needs) }}
+        run: node scripts/test-sharding.js --check-jobs realistic-data realistic
+
   coverage:
     runs-on: ubuntu-latest
     steps:

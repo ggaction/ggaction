@@ -6,7 +6,8 @@
     ],
     "architecture": [
       { "type": "prefix", "path": "contracts/" },
-      { "type": "prefix", "path": "unit/core/" }
+      { "type": "prefix", "path": "unit/core/" },
+      { "type": "file", "path": "unit/support/test-sharding.test.js" }
     ],
     "area-layout": [
       { "type": "prefix", "path": "charts/area-layout/" }

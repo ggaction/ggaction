@@ -1,5 +1,6 @@
 import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
+import { partitionTestFiles } from "./test-sharding.js";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
@@ -136,7 +137,7 @@ export function parseTestShard(argument) {
   }
   const index = Number(match[1]);
   const total = Number(match[2]);
-  if (index < 1 || total < 1 || index > total) {
+  if (!Number.isSafeInteger(index) || !Number.isSafeInteger(total) || index < 1 || total < 1 || index > total) {
     throw new Error(
       `Invalid test shard "${argument}". Expected 1 <= index <= total.`
     );
@@ -147,9 +148,7 @@ export function parseTestShard(argument) {
 export function testRunnerArguments(suite, files, shard) {
   const concurrency = suite === "realistic" ? 2 : 4;
   const args = ["--test", `--test-concurrency=${concurrency}`];
-  if (shard !== undefined) {
-    args.push(`--test-shard=${shard.index}/${shard.total}`);
-  }
+  const selected = shard === undefined ? files : partitionTestFiles(files, shard.total)[shard.index - 1].files;
   if (suite === "coverage") {
     args.push(
       "--experimental-test-coverage",
@@ -159,7 +158,7 @@ export function testRunnerArguments(suite, files, shard) {
       "--test-coverage-functions=98"
     );
   }
-  args.push(...files);
+  args.push(...selected);
   return args;
 }
 
@@ -174,6 +173,14 @@ function run(suite, selectors, shard) {
     throw new Error(`No test files found for suite "${suite}"${suffix}.`);
   }
   const coverage = suite === "coverage";
+  if (shard !== undefined) {
+    const partition = partitionTestFiles(files, shard.total)[shard.index - 1];
+    process.stdout.write(`${JSON.stringify({ shard, files: partition.files.map(file => path.relative(testRoot, file)), estimatedMs: partition.estimatedMs })}\n`);
+    if (partition.files.length === 0) {
+      process.stdout.write("No files assigned to this shard.\n");
+      return;
+    }
+  }
   const args = testRunnerArguments(suite, files, shard);
   const result = spawnSync(process.execPath, args, {
     cwd: repositoryRoot,
