@@ -207,6 +207,10 @@ title/author/subject/keywords metadata를 기록한다.
 
 Browser-safe 저장·복원 entry다. Canonical constructor state를 versioned tagged JSON으로 보존하며, graphic-only payload는 renderer에만 전달한다. 복원은 action replay나 compiler 실행 없이 기존 순수 semantic/graphic validator와 resource reference collector를 사용하고, 검증한 상태를 constructor가 소유한다. Full/Basic 원본은 full ChartProgram으로 복원하며 등록되지 않은 subclass/trace op는 거부한다. 정확한 format과 사용 계약은 `docs/data-updates.md`의 저장·복원 절을 따른다.
 
+### `ggaction/accessibility`
+
+`src/accessibility.js`의 read-only `ggaction/accessibility` entry는 기존 final-item selection adapter 및 pure path series 계산을 사용하여 시각적 grain의 데이터를 반환한다. Renderer나 DOM을 실행하지 않고 원본 행을 최종 표로 대체하지 않는다. 안정적인 composite owner 관계는 `src/selectors/markOwners.js`를 mark removal과 공유한다. 결과의 정확한 schema와 제한은 [Rendering](../docs/api/rendering.md#accessible-data-alternatives)이 소유한다.
+
 ### `ggaction/diagnostics`
 
 `getErrorDetails(error)`로 stable code와 선택적인 operation/option/resource/budget metadata를 읽는 browser-safe entry다. Error identity/class를 보존하고 원본 data row를 저장하지 않는다. 상세 계약은 `docs/errors-and-recovery.md`가 소유한다.
@@ -1869,7 +1873,3 @@ Position assignment, scale 소비자, path grammar가 이 해석을 공유하며
 `actions/encodings/ranged.js`는 최종 pair와 scale을 순수 preview한 뒤 기존 wrapped primary/secondary를
 실행한다. `actions/scales/preview.js`의 소비자·domain 계산은 실제 rematerializeScale과 이 preflight가 공유한다.
 Break의 각 closed segment는 원본 row indices를 유지해 selection과 geometry의 grain이 같다.
-
-### 접근성 보조 출력 경계
-
-`src/accessibility.js`의 read-only `ggaction/accessibility` entry는 기존 final-item selection adapter 및 pure path series 계산을 사용하여 시각적 grain의 데이터를 반환한다. Renderer나 DOM을 실행하지 않고 원본 행을 최종 표로 대체하지 않는다. 안정적인 composite owner 관계는 `src/selectors/markOwners.js`를 mark removal과 공유한다. 결과의 정확한 schema와 제한은 [Rendering](../docs/api/rendering.md#accessible-data-alternatives)이 소유한다.

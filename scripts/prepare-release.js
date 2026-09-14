@@ -8,7 +8,8 @@ import { npmInvocation } from "./npm-command.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 export const RELEASE_INPUTS = Object.freeze([
-  "package.json", "package-lock.json", "src/version.js", "README.md", "CHANGELOG.md"
+  "package.json", "package-lock.json", "src/version.js", "README.md", "CHANGELOG.md", "docs/_config.yml",
+  "knowledge/intent-taxonomy.json", "knowledge/mcp-resources.json", "context7.json"
 ]);
 const versionPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
 
@@ -29,6 +30,19 @@ export function planRelease(files, { version, date }) {
   if (difference !== -1 && a[difference] < b[difference]) throw new Error("Release preparation cannot downgrade the package.");
   const status = `**Status:** \`${current}\` is the current experimental public release.`;
   if (files["README.md"].split(status).length !== 2) throw new Error("README release status must have one canonical current version.");
+  const config = files["docs/_config.yml"];
+  const configVersions = config.match(/^version: .+$/gm) ?? [];
+  if (configVersions.length !== 1 || configVersions[0] !== `version: ${current}`) throw new Error("Documentation and package versions must agree before preparation.");
+  const knowledge = {};
+  for (const file of ["knowledge/intent-taxonomy.json", "knowledge/mcp-resources.json"]) {
+    const value = JSON.parse(files[file]);
+    if (value.packageVersion !== current) throw new Error(`${file} and package versions must agree before preparation.`);
+    value.packageVersion = version;
+    knowledge[file] = JSON.stringify(value,null,2)+"\n";
+  }
+  const context = JSON.parse(files["context7.json"]);
+  if (!Array.isArray(context.previousVersions)) throw new Error("Context7 must list version-pinned documentation.");
+  if (!context.previousVersions.some(entry=>entry.tag===`v${version}`)) context.previousVersions.unshift({tag:`v${version}`});
   let changelog = files["CHANGELOG.md"];
   if (version !== current) {
     if (changelog.includes(`## [${version}]`)) throw new Error("The requested release already exists in CHANGELOG.md.");
@@ -43,7 +57,10 @@ export function planRelease(files, { version, date }) {
     "package-lock.json": JSON.stringify(lock,null,2)+"\n",
     "src/version.js": runtime.replace(identity[0],`export const packageVersion = "${version}";`),
     "README.md": files["README.md"].replace(status,`**Status:** \`${version}\` is the current experimental public release.`),
-    "CHANGELOG.md": changelog
+    "CHANGELOG.md": changelog,
+    "docs/_config.yml": config.replace(configVersions[0], `version: ${version}`),
+    ...knowledge,
+    "context7.json": JSON.stringify(context,null,2)+"\n"
   });
 }
 

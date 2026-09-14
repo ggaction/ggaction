@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.16] - 2026-09-14
+
 ### Added
 
 - Added `reviseData` for immutable original-data revisions that update dependent

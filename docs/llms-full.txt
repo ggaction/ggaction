@@ -2,9 +2,9 @@
 
 
 
-Package metadata version: 0.0.15.
+Package metadata version: 0.0.16.
 
-Contract: sha256:e726f6c6de6df43f4ef2a6f186e2ce291518686480ea4d9142006785f3a199b4. Status: development. Runtime source: 872042ce6b3302657f84b9744d3d12e1e233c490. Release baseline: v0.0.13.
+Contract: sha256:1f7c4de3aaf1cbf8f0bda4a885de258c312eb3d73f4e36f021907a86bdd4dda8. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -28,7 +28,7 @@ Build, inspect, select, and revise charts one meaningful action at a time.
 Start with a complete example, then use the API pages when you need to customize
 one part. The main, basic, extension, SVG, PNG, and PDF entry points include TypeScript declarations.
 
- Experimental 0.0.15 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
+ Experimental 0.0.16 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
 
 ## Start here
 
@@ -258,9 +258,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/872042ce6b3302657f84b9744d3d12e1e233c490/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/872042ce6b3302657f84b9744d3d12e1e233c490/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -13253,6 +13253,18 @@ render(program, context);
 If an application adds its own pointer or keyboard controls, it owns focus
 order, state announcements, and equivalent keyboard operation. The current
 ggaction contract is static and does not supply those behaviors.
+
+## Data alternatives at the chart’s final grain
+
+Use `exportAccessibleData` from `ggaction/accessibility` to obtain immutable
+columns and rows for supported chart owners. Aggregated bars, histogram bins,
+error intervals, and filtered marks describe their final plotted values. Nested
+charts preserve child and facet information. This avoids presenting unaggregated
+source rows as though they were the chart’s displayed values.
+
+The host builds the HTML table and supplies captions, units, and explanatory
+text. See [Accessible data alternatives](./api/rendering/#accessible-data-alternatives)
+for the schema, runnable example, and explicit unsupported-owner behavior.
 
 ## Authoring checks
 
@@ -35223,12 +35235,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/872042ce6b3302657f84b9744d3d12e1e233c490/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/872042ce6b3302657f84b9744d3d12e1e233c490/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -37247,7 +37259,7 @@ separate from the relative action hierarchy and from package exposure.
 
 # Documentation Version
 
-The current site documents **ggaction 0.0.15** with a
+The current site documents **ggaction 0.0.16** with a
 **development** contract.
 A `published-release` contract matches that package version. A `development`
 contract can include newer behavior; its package version alone does not establish
@@ -37256,9 +37268,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:e726f6c6de6df43f4ef2a6f186e2ce291518686480ea4d9142006785f3a199b4` |
+| Contract fingerprint | `sha256:1f7c4de3aaf1cbf8f0bda4a885de258c312eb3d73f4e36f021907a86bdd4dda8` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `872042ce6b3302657f84b9744d3d12e1e233c490` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 279 |
 | Declared actions in that release | 234 |

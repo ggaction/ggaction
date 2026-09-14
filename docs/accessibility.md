@@ -74,6 +74,18 @@ If an application adds its own pointer or keyboard controls, it owns focus
 order, state announcements, and equivalent keyboard operation. The current
 ggaction contract is static and does not supply those behaviors.
 
+## Data alternatives at the chart’s final grain
+
+Use `exportAccessibleData` from `ggaction/accessibility` to obtain immutable
+columns and rows for supported chart owners. Aggregated bars, histogram bins,
+error intervals, and filtered marks describe their final plotted values. Nested
+charts preserve child and facet information. This avoids presenting unaggregated
+source rows as though they were the chart’s displayed values.
+
+The host builds the HTML table and supplies captions, units, and explanatory
+text. See [Accessible data alternatives](./api/rendering.md#accessible-data-alternatives)
+for the schema, runnable example, and explicit unsupported-owner behavior.
+
 ## Authoring checks
 
 - Pair color with shape, dash, direct labels, position, or explicit text when
