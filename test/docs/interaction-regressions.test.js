@@ -93,6 +93,35 @@ test("search handles zero, one, two, and eight results without stale active opti
   } finally { await browser.close(); }
 });
 
+test("typing after a completed failed prefetch waits for an explicit retry", async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  try {
+    await page.setContent('<base href="https://docs.test/"><div class="docs-search"><input id="docs-search-input"><ul id="docs-search-results" hidden></ul></div><div id="docs-search-config" data-root-url="/" data-index-url="/search-index.json"></div>');
+    await page.evaluate(() => {
+      window.searchRequests = 0;
+      window.fetch = async () => {
+        window.searchRequests++;
+        return new Response("Unavailable", { status: 503 });
+      };
+    });
+    await page.addScriptTag({ content: await read("docs/assets/js/docs-search.js") });
+    const input = page.locator("input");
+    const retry = page.getByRole("button", { name: "Retry search" });
+    await input.focus();
+    await retry.waitFor();
+    await page.waitForFunction(() => document.querySelector("input").getAttribute("aria-busy") === "false");
+    for (const query of ["alpha", "beta"]) {
+      await input.fill(query);
+      assert.equal(await page.evaluate(() => window.searchRequests), 1);
+      assert.equal(await retry.isVisible(), true);
+    }
+    await retry.click();
+    await page.waitForFunction(() => document.querySelector("input").getAttribute("aria-busy") === "false");
+    assert.equal(await page.evaluate(() => window.searchRequests), 2);
+  } finally { await browser.close(); }
+});
+
 test("each retry makes one request after consecutive failures and pending searches respect cancellation", async () => {
   const browser = await chromium.launch();
   try {

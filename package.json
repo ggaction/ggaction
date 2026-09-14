@@ -1,6 +1,6 @@
 {
   "name": "ggaction",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Build charts through immutable, traceable graphical actions.",
   "license": "MIT",
   "author": "Hyeon Jeon",

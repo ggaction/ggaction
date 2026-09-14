@@ -281,7 +281,7 @@ keeps its percentage of the complete source.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.15. See [release compatibility](../../version.md).
 
 ```typescript
 editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
@@ -323,7 +323,7 @@ rebound with this action or removed.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.15. See [release compatibility](../../version.md).
 
 ```typescript
 editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
@@ -367,7 +367,7 @@ Pass `"auto"` to restore the legacy source anchor and remove the owned placement
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.15. See [release compatibility](../../version.md).
 
 ```typescript
 removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;

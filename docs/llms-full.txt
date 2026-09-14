@@ -2,9 +2,9 @@
 
 
 
-Package metadata version: 0.0.14.
+Package metadata version: 0.0.15.
 
-Contract: sha256:29dd948d670f4aef7317c43201f4b8586da437955d7b999f285113e2ef579431. Status: published-release. Runtime source: 69353bac611e6c5b4f5d50288842f540ba5470cd. Release baseline: v0.0.13.
+Contract: sha256:a7ee8ae5024fed66a13e4fa314812ba28e09bcee04a37d976c88929854e731d9. Status: published-release. Runtime source: 69353bac611e6c5b4f5d50288842f540ba5470cd. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -28,7 +28,7 @@ Build, inspect, select, and revise charts one meaningful action at a time.
 Start with a complete example, then use the API pages when you need to customize
 one part. The main, basic, extension, SVG, PNG, and PDF entry points include TypeScript declarations.
 
- Experimental 0.0.14 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
+ Experimental 0.0.15 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
 
 ## Start here
 
@@ -14598,7 +14598,7 @@ Create one immutable named dataset. [Data](./api/data/)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 removeData(options: RemoveResourceOptions): ChartProgram;
@@ -14631,7 +14631,7 @@ does not infer, cascade, or change graphics.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 removeScale(options: RemoveResourceOptions): ChartProgram;
@@ -14662,7 +14662,7 @@ graphics. [Scale Options](./api/scales/#removescale-id)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 removeCoordinate(options: RemoveResourceOptions): ChartProgram;
@@ -15008,7 +15008,7 @@ rebind direct visual consumers, and safely release the prior revision.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editDerivedData(options: EditDerivedDataOptions): ChartProgram;
@@ -15032,7 +15032,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editFilteredData(options: EditFilteredDataOptions): ChartProgram;
@@ -15059,7 +15059,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram;
@@ -15089,7 +15089,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editWindowData(options: EditWindowDataOptions): ChartProgram;
@@ -15116,7 +15116,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editDensityData(options: EditDensityDataOptions): ChartProgram;
@@ -15148,7 +15148,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editRegressionData(options: EditRegressionDataOptions): ChartProgram;
@@ -15205,7 +15205,7 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editCoordinate(options: EditCoordinateOptions): ChartProgram;
@@ -15311,7 +15311,7 @@ Behavior, inference, resets, and errors: [Extension and scale contracts](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editXScale(options: EditXScaleOptions): ChartProgram;
@@ -15349,7 +15349,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editYScale(options: EditYScaleOptions): ChartProgram;
@@ -15387,7 +15387,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;
@@ -15415,7 +15415,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editYOffsetScale(options: EditYOffsetScaleOptions): ChartProgram;
@@ -15443,7 +15443,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editParallelScale(options: EditParallelScaleOptions): ChartProgram;
@@ -15481,7 +15481,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editThetaScale(options: EditThetaScaleOptions): ChartProgram;
@@ -15515,7 +15515,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editRScale(options: EditRScaleOptions): ChartProgram;
@@ -15549,7 +15549,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editColorScale(options: EditColorScaleOptions): ChartProgram;
@@ -15581,7 +15581,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;
@@ -15608,7 +15608,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editSizeScale(options: EditSizeScaleOptions): ChartProgram;
@@ -15639,7 +15639,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;
@@ -15670,7 +15670,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editShapeScale(options: EditShapeScaleOptions): ChartProgram;
@@ -15697,7 +15697,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;
@@ -15730,7 +15730,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;
@@ -17758,7 +17758,7 @@ keeps its percentage of the complete source.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
@@ -17796,7 +17796,7 @@ rebound with this action or removed.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
@@ -17836,7 +17836,7 @@ Pass `"auto"` to restore the legacy source anchor and remove the owned placement
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
@@ -20340,7 +20340,7 @@ expression. [Source and Derived Data](./api/data/source-and-derived/#createcompu
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -20379,7 +20379,7 @@ percent-change values independently within each group.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 createCompleteData(options: CompleteDataOptions): ChartProgram;
@@ -20416,7 +20416,7 @@ explicit fill and source-membership provenance for synthesized rows.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 createImputedData(options: ImputedDataOptions): ChartProgram;
@@ -20489,7 +20489,7 @@ by Bar and Area layouts. [Source and Derived Data](./api/data/source-and-derived
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editComputedData(options: EditComputedDataOptions): ChartProgram;
@@ -20514,7 +20514,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editFoldData(options: EditFoldDataOptions): ChartProgram;
@@ -20539,7 +20539,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editSummaryData(options: EditSummaryDataOptions): ChartProgram;
@@ -20566,7 +20566,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editBinData(options: EditBinDataOptions): ChartProgram;
@@ -20600,7 +20600,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editStackData(options: EditStackDataOptions): ChartProgram;
@@ -20628,7 +20628,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editIntervalData(options: EditIntervalDataOptions): ChartProgram;
@@ -20658,7 +20658,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editECDFData(options: EditECDFDataOptions): ChartProgram;
@@ -20686,7 +20686,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;
@@ -20717,7 +20717,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editCompleteData(options: EditCompleteDataOptions): ChartProgram;
@@ -20746,7 +20746,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editImputedData(options: EditImputedDataOptions): ChartProgram;
@@ -22986,7 +22986,7 @@ dependent replay that would invalidate a stored exact sample fails atomically.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 editLegendBlock(options: EditLegendBlockOptions): ChartProgram;
@@ -24377,7 +24377,7 @@ Each declared action has an exact signature and its own stable link. Option tabl
 
 **API layer:** advanced. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.14. See [release compatibility](./version/).
+**Availability:** Available by v0.0.15. See [release compatibility](./version/).
 
 ```typescript
 encodeChannels(options: EncodeChannelsOptions): ChartProgram;
@@ -35811,7 +35811,7 @@ Restore an omitted time key, impute its measure, and recompute a trailing window
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.14 or later;
+includes its data and imports. These APIs require ggaction 0.0.15 or later;
 check the [documentation version](./version/) for release compatibility.
 
 Decision sequence: line chart → data transform actions → mark rebind.
@@ -35875,7 +35875,7 @@ Compare three different summaries of the same weighted observations without trea
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.14 or later;
+includes its data and imports. These APIs require ggaction 0.0.15 or later;
 check the [documentation version](./version/) for release compatibility.
 
 Decision sequence: histogram, density, and ECDF facades → weighted transforms.
@@ -35933,7 +35933,7 @@ Switch two supported channels between field encodings and constants as one valid
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.14 or later;
+includes its data and imports. These APIs require ggaction 0.0.15 or later;
 check the [documentation version](./version/) for release compatibility.
 
 Decision sequence: `createScatterPlot` creates the initial chart; the Advanced
@@ -35996,7 +35996,7 @@ Change an existing positional mapping and keep its visible ticks aligned with th
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.14 or later;
+includes its data and imports. These APIs require ggaction 0.0.15 or later;
 check the [documentation version](./version/) for release compatibility.
 
 Decision sequence: scatterplot → scale editors and axis editors.
@@ -36048,7 +36048,7 @@ Label only the largest final aggregates, place labels outside bar ends, and appl
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.14 or later;
+includes its data and imports. These APIs require ggaction 0.0.15 or later;
 check the [documentation version](./version/) for release compatibility.
 
 Decision sequence: bar facade → final-item selection and placement → collision policy.
@@ -36108,7 +36108,7 @@ Apply reusable defaults, preserve an intentional local override, and remove the 
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.14 or later;
+includes its data and imports. These APIs require ggaction 0.0.15 or later;
 check the [documentation version](./version/) for release compatibility.
 
 Decision sequence: scatterplot → theme and mark-style editing.
@@ -36163,7 +36163,7 @@ Replace a facet's retained source program, rename its headers, and arrange outer
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.14 or later;
+includes its data and imports. These APIs require ggaction 0.0.15 or later;
 check the [documentation version](./version/) for release compatibility.
 
 Decision sequence: faceting → source replay → header and guide policies.
@@ -36225,7 +36225,7 @@ Use the ownership error to identify a live consumer, then delete the consumer an
 
 Use the [Getting Started browser module setup](./getting-started/), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.14 or later;
+includes its data and imports. These APIs require ggaction 0.0.15 or later;
 check the [documentation version](./version/) for release compatibility.
 
 Decision sequence: Complete chart → independent mark removal → explicit data lifecycle.
@@ -36655,7 +36655,7 @@ separate from the relative action hierarchy and from package exposure.
 
 # Documentation Version
 
-The current site documents **ggaction 0.0.14** with a
+The current site documents **ggaction 0.0.15** with a
 **published-release** contract.
 A `published-release` contract matches that package version. A `development`
 contract can include newer behavior; its package version alone does not establish
@@ -36664,7 +36664,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:29dd948d670f4aef7317c43201f4b8586da437955d7b999f285113e2ef579431` |
+| Contract fingerprint | `sha256:a7ee8ae5024fed66a13e4fa314812ba28e09bcee04a37d976c88929854e731d9` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Published comparison baseline | `v0.0.13` |

@@ -4,7 +4,7 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
-## [0.0.14] - 2026-09-14
+## [0.0.15] - 2026-09-14
 
 ### Added
 
@@ -70,6 +70,9 @@ All notable changes to `ggaction` are recorded in this file.
 
 ### Fixed
 
+- Prevented typing immediately after a failed search-index prefetch from sending
+  an implicit retry. Each explicit retry now sends one request even when the
+  first failure arrives before the input event.
 - Corrected the README's canvas margins for its complete 406-row example and
   documented regression defaults beside the example. The hierarchy tutorial now
   refines its high-level chart and demonstrates a subsequent style revision.

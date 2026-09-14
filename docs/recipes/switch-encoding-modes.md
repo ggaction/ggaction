@@ -13,7 +13,7 @@ Switch two supported channels between field encodings and constants as one valid
 
 Use the [Getting Started browser module setup](../getting-started.md), install the full
 `ggaction` entry, and provide `<canvas id="chart"></canvas>`. This complete example
-includes its data and imports. These APIs require ggaction 0.0.14 or later;
+includes its data and imports. These APIs require ggaction 0.0.15 or later;
 check the [documentation version](../version.md) for release compatibility.
 
 Decision sequence: `createScatterPlot` creates the initial chart; the Advanced
