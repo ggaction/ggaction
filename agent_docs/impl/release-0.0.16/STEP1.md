@@ -176,3 +176,9 @@ PR #131의 첫 run `34825970866`에서 source/render/browser, coverage, document
 두 번째 CI `34829264505`에서 Node 20/22/24 package와 macOS·Firefox·WebKit 검사는 통과했다. Windows는 npm 실행 이후 package 검사까지 진행했으며 자동 CRLF checkout으로 packed size가 730,787 bytes가 되어 상한을 넘었다. 배포 대상 source/types/knowledge 및 package metadata에만 LF checkout을 지정했다. 원본 CSV와 binary asset의 checkout 정책은 바꾸지 않는다.
 
 `core.autocrlf=true`의 별도 checkout으로 554개 파일이 원본과 byte-identical함을 확인했다. Node 22.23.2의 해당 checkout에서 실제 compact package를 만들고 542 entries, packed 726,464, unpacked 3,597,570 bytes를 확인했다. 크기 상한을 올리지 않았다. 최종 quiet benchmark는 이전과 같은 Node 22.23.1/Apple M4에서 7회 sample median으로 trace 16k append 70.25ms, 10k themed data-only 50개 action 0.73ms, 10k SVG 재출력 15.46ms다. 장치별 절대 성능 보장은 아니다.
+
+### Exact rendered fixture closeout
+
+세 번째 CI `34829622369`은 source 3,760/3,760, browser 86/86, PNG 216/216, coverage, documentation, Node 20/22/24, Windows/macOS와 Firefox/WebKit을 통과했다. Realistic 7개 shard 중 6개가 통과했고, 마지막 shard는 tuition PNG fixture의 과거 fingerprint만 실패했다.
+
+v0.0.15를 별도 checkout으로 실행해 semantic/graphic 상태를 비교했다. 유일한 차이는 `verticalGridLines.items`: 이전에는 최종 x-axis tick 8개와 무관한 자동 grid 5개가 남았고 현재는 최종 tick 위치와 일치한다. 이는 이번 릴리즈의 explicit tick → inferred grid 재계산 수정에 따른 의도된 결과다. Semantic state와 나머지 graphic state는 같았다. 고정 fingerprint를 갱신하고 grid 개수 8 및 final tick 좌표 동치를 직접 assertion으로 추가했다. PNG/PDF byte replay·readability 검사를 포함한 해당 runner 모듈 29/29가 로컬에서 통과했다. 이 변경은 runtime/source contract를 바꾸지 않는다.

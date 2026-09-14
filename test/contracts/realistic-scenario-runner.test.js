@@ -39,6 +39,7 @@ import {
   "../../scripts/run-realistic-scenarios.js";
 import { releaseTidyTuesdaySourceCache } from
   "../support/datasets/tidytuesday.js";
+import { buildScenario } from "../support/scenarios/engine.js";
 
 let boundedGeneration;
 
@@ -1697,7 +1698,7 @@ test("accepts deterministic readable PNG and compressed PDF artifact regressions
       profile: Object.freeze({ id: "decimal-object" })
     }),
     semanticFingerprint:
-      "282eee9732ac7e9b0de9c8cdd45895360eb7e15a0f56eb65cbcf566391a5c7e3"
+      "c8508e58a882beacc3d4704f55f9c467b1fcd043bf0a76c3055ae4c857d1da6b"
   });
   const outerSpace = Object.freeze({
     id: "realistic-ranked-dots-1c891ae5f0d9",
@@ -1724,6 +1725,12 @@ test("accepts deterministic readable PNG and compressed PDF artifact regressions
     releaseTidyTuesdaySourceCache(tuition.factors.dataset);
     releaseTidyTuesdaySourceCache(outerSpace.factors.dataset);
   });
+
+  const tuitionGraphics = buildScenario(tuition).graphicSpec.objects;
+  const gridPositions = tuitionGraphics.verticalGridLines.items.map(item => item.properties.x1);
+  assert.equal(gridPositions.length, 8);
+  assert.deepEqual(gridPositions, tuitionGraphics.xAxisTicks.items.map(item => item.properties.x1),
+    "Inferred grid must follow the final explicit ticks, not retain five earlier automatic ticks.");
 
   const pngOutcome = await executeRealisticScenarioTask({
     index: 0,
