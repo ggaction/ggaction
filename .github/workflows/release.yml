@@ -34,6 +34,8 @@ jobs:
         run: npm install --global "npm@^11.5.1"
       - name: Install exact dependencies
         run: npm ci
+      - name: Install Chromium for source and release consumer tests
+        run: npx playwright install --with-deps chromium
       - name: Verify tag, version, and checked-out commit
         env:
           RELEASE_TAG: ${{ inputs.tag }}
@@ -52,6 +54,11 @@ jobs:
         run: |
           npm run contracts:catalog:check
           npm run docs:generate
+          node --input-type=module -e '
+            import assert from "node:assert/strict";
+            import { buildDocProvenance } from "./scripts/doc-provenance.js";
+            assert.equal((await buildDocProvenance()).status, "published-release");
+          '
           npm run test:docs
           # Native Canvas PNG bytes vary across supported operating systems.
           # Their sources, manifest, dimensions, and rendered output remain
@@ -83,8 +90,6 @@ jobs:
         run: npm run test:realistic
       - name: Enforce coverage thresholds
         run: npm run test:coverage
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
       - name: Test the installed packed-package consumers
         run: npm run test:package
       - name: Set up the documentation runtime

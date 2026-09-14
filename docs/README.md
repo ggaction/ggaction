@@ -60,3 +60,10 @@ runtime source, and example source. Use a full checkout (`git fetch --unshallow`
 for a shallow clone); the documentation CI job sets `fetch-depth: 0`. Chromium
 is required before the source tests because search regressions execute in a
 real browser, as well as in the later built-site checks.
+
+For a release, update the package and site versions, then pin that version's
+runtime contract fingerprint in `_data/release_contract.json`. Keep the earlier
+`release_baseline.json` for migration comparisons. The release status requires
+both a matching version and the exact contract fingerprint; later runtime edits
+automatically return the documentation to development status. The release workflow
+deploys this documentation only after publishing the same annotated tag to npm.

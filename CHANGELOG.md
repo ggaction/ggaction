@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.14] - 2026-09-14
+
 ### Added
 
 - Added independent field-driven stroke color for Point, Line, Area, Bar, Rect,
@@ -61,7 +63,7 @@ All notable changes to `ggaction` are recorded in this file.
 - Complete guides can be created progressively without duplicating existing
   compatible components. Polar/Parallel repetition retains source recipes and
   rejects unsupported role substitutions explicitly.
-- Documentation now distinguishes the development contract from released 0.0.13,
+- Documentation now distinguishes released API snapshots from later development,
   provides an exact address and declaration for every action, and executes every
   maintained tutorial and recipe against the packaged module. See
   [migration notes](https://ggaction.github.io/ggaction/version/#migration-from-v0013).

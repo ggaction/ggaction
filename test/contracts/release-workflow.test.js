@@ -32,6 +32,11 @@ test("keeps generated release documentation strict across native PNG platforms",
     /npm run docs:generate[\s\S]*npm run test:docs[\s\S]*git diff --exit-code/
   );
   assert.match(workflow, /knowledge\/action-cards\.json/);
+  assert.ok(
+    workflow.indexOf("npx playwright install --with-deps chromium") <
+      workflow.indexOf("npm run test:docs"),
+    "documentation source tests execute browser consumers"
+  );
   assert.match(workflow, /:\(exclude\)docs\/assets\/images\/\*\.png/);
   assert.doesNotMatch(workflow, /:\(exclude\)[^\n]*(manifest|\.json|\.md|\.txt)/);
 });

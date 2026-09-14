@@ -70,6 +70,27 @@ test("keeps the chart picker, workflow programs, snippet contracts, and provenan
   assert.ok((await read("docs/llms-full.txt")).includes(provenance.contractId));
 });
 
+test("release provenance requires the matching version and exact runtime fingerprint", async () => {
+  const current = await buildDocProvenance({ releaseContract: {} });
+  const releaseContract = { tag: `v${current.packageVersion}`, contractId: current.contractId };
+  const matched = await buildDocProvenance({ releaseContract });
+  assert.equal(matched.status, matched.sourceCommit === null ? "development" : "published-release");
+  for (const entry of Object.values(matched.actionAvailability)) {
+    if (entry.introducedAfter && matched.status === "published-release") {
+      assert.equal(entry.availableBy, releaseContract.tag);
+      assert.equal(entry.status, "published-release");
+    }
+  }
+  for (const mismatched of [
+    { ...releaseContract, tag: "v0.0.0" },
+    { ...releaseContract, contractId: `sha256:${"0".repeat(64)}` }
+  ]) {
+    const result = await buildDocProvenance({ releaseContract: mismatched });
+    assert.equal(result.status, "development");
+    assert.ok(Object.values(result.actionAvailability).some(entry => entry.status === "development"));
+  }
+});
+
 test("keeps the hierarchical lesson geometrically equivalent before intentional styling", () => {
   const { highLevel, composed, styled, revisedAgain } = authoringStages();
   assert.deepEqual(highLevel.graphicSpec, composed.graphicSpec);

@@ -11,8 +11,9 @@ async function contractFiles(directory) {
     ? contractFiles(`${directory}/${entry.name}`)
     : /\.(?:js|ts)$/.test(entry.name) ? [`${directory}/${entry.name}`] : []))).flat().sort();
 }
-export async function buildDocProvenance() {
+export async function buildDocProvenance({ releaseContract } = {}) {
   const baseline = JSON.parse(await readFile(path.join(root, "docs/_data/release_baseline.json"), "utf8"));
+  releaseContract ??= JSON.parse(await readFile(path.join(root, "docs/_data/release_contract.json"), "utf8"));
   const packageInfo = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
   const declaration = await readFile(path.join(root, "types/program.d.ts"), "utf8");
   const names = [...declaration.split("export class ChartProgram {")[1].matchAll(/^  ([A-Za-z][A-Za-z0-9]*)\(/gm)]
@@ -33,12 +34,16 @@ export async function buildDocProvenance() {
   const exampleSourceRef = exampleDirty
     ? execFileSync("git", ["rev-parse", "--abbrev-ref", "HEAD"], { cwd: root, encoding: "utf8" }).trim()
     : exampleCommit;
-  const released = !dirty && !baselineDiff.split("\n").some(file => /\.(?:js|ts)$/.test(file)) && packageInfo.version === baseline.tag.slice(1);
+  const contractId = `sha256:${hash.digest("hex")}`;
+  const released = !dirty && (
+    (releaseContract.tag === `v${packageInfo.version}` && releaseContract.contractId === contractId) ||
+    (!baselineDiff.split("\n").some(file => /\.(?:js|ts)$/.test(file)) && packageInfo.version === baseline.tag.slice(1))
+  );
   return {
     schemaVersion: 1,
     status: released ? "published-release" : "development",
     packageVersion: packageInfo.version,
-    contractId: `sha256:${hash.digest("hex")}`,
+    contractId,
     sourceCommit: dirty ? null : sourceCommit,
     sourceRef: dirty ? "main" : sourceCommit,
     exampleSourceRef,
@@ -46,7 +51,9 @@ export async function buildDocProvenance() {
     actionCount: names.length,
     actionAvailability: Object.fromEntries(names.map(name => [name, baseline.actions.includes(name)
       ? { availableBy: baseline.tag }
-      : { introducedAfter: baseline.tag, status: "development" }]))
+      : { introducedAfter: baseline.tag, ...(released
+          ? { availableBy: `v${packageInfo.version}`, status: "published-release" }
+          : { status: "development" }) }]))
   };
 }
 export async function generateDocProvenance({ check = false } = {}) {

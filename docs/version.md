@@ -5,9 +5,12 @@ title: Documentation Version
 
 # Documentation Version
 
-The current site describes a **{{ site.data.provenance.status }}** contract.
-The package metadata still says **{{ site.version }}**; that number alone does not
-mean every documented action is available in the published npm artifact.
+The current site documents **ggaction {{ site.version }}** with a
+**{{ site.data.provenance.status }}** contract.
+A `published-release` contract matches that package version. A `development`
+contract can include newer behavior; its package version alone does not establish
+API availability. Each action entry identifies its release availability.
+The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
@@ -21,10 +24,10 @@ mean every documented action is available in the published npm artifact.
 ## Choose the matching documentation
 
 - Read [the v0.0.13 release documentation at its immutable commit](https://github.com/ggaction/ggaction/tree/6115fdd286303fc77e60a92fa3baf634cb282b8c/docs) when using that installed release.
-- Use this site's action entries for the development contract shown above. Entries
-  distinguish actions available by v0.0.13 from actions added after it.
+- Use this site's action entries for the contract shown above. Each entry identifies
+  the release that provides the action or explicitly marks it as development-only.
 - Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md)
-  and [migration notes](#migration-from-v0013) before depending on development behavior.
+  and [migration notes](#migration-from-v0013) when upgrading.
 
 The machine-readable [provenance manifest](./doc-provenance.json) records the same
 contract fingerprint, runtime source revision, baseline, and action availability.

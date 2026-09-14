@@ -76,7 +76,7 @@ export async function explicitActionPages({ catalog, sections, legacyLocations, 
       return [
         `### \`${action.name}\``, "",
         `**API layer:** ${action.layer}. **Authoring roles:** ${authoringRoles(action).join(", ")}.`, "",
-        `**Availability:** ${provenance.actionAvailability[action.name]?.introducedAfter ? "Development; added after " + provenance.baseline.tag : "Available by " + provenance.baseline.tag}. See [release compatibility](../version.md).`, "",
+        `**Availability:** ${provenance.actionAvailability[action.name]?.availableBy ? "Available by " + provenance.actionAvailability[action.name].availableBy : "Development; added after " + provenance.baseline.tag}. See [release compatibility](../version.md).`, "",
         "```typescript", declaration.signature, "```", "",
         ...(typeNames.length ? ["Named option contracts: " + typeNames.map(name =>
           `[\`${name}\`](./../types.md#type-${name.toLowerCase()})`).join(" · ") + ".", ""] : []),

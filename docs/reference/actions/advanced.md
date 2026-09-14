@@ -12,7 +12,7 @@ Each declared action has an exact signature and its own stable link. Option tabl
 
 **API layer:** advanced. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.14. See [release compatibility](../../version.md).
 
 ```typescript
 encodeChannels(options: EncodeChannelsOptions): ChartProgram;

@@ -691,7 +691,7 @@
   },
   "/version/": {
     "title": "Documentation Version",
-    "description": "The current site describes a contract. The package metadata still says; that number alone does not mean every documented action is available in the published npm artifact."
+    "description": "The current site documents ggaction with a contract. A published release contract matches that package version."
   },
   "/api/axes/complete/": {
     "title": "Complete Axes and Labels",
