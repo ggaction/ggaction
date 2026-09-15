@@ -14,9 +14,10 @@ import { requestedRectStyleDetails } from
   "../../../grammar/roundedRect.js";
 import { STROKE_STYLE_PROPERTIES } from
   "../../../grammar/strokeStyle.js";
+import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const CREATE_OPTIONS = Object.freeze([
-  "id", "data", "fill", "opacity", "stroke", "strokeWidth",
+  "id", "data", "missing", "fill", "opacity", "stroke", "strokeWidth",
   "cornerRadius", ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -52,6 +53,12 @@ export const createBarMark = /* @__PURE__ */ action(
         property: `layer[${id}].data`,
         value: data
       });
+    if (Object.hasOwn(args, "missing")) {
+      created = created.editSemantic({
+        property: `layer[${id}].mark.missing`,
+        value: validateItemMissing(args.missing, "Bar missing")
+      });
+    }
     created = applyLayeredMarkInheritance(created, id, inherited);
     created = created
       .createGraphics({

@@ -19,6 +19,8 @@ import { findLayer } from "../../../selectors/layers.js";
 import { validateNonEmptySemanticString } from "./shared.js";
 import { normalizeStatisticalWeight } from
   "../../../grammar/weightedStatistics.js";
+import { ITEM_MISSING_MARK_TYPES, validateItemMissing } from
+  "../../../grammar/itemMissing.js";
 
 function validateLayerSource(program, parsed, value, sourceMarkTypes) {
   validateUserId(value, "Layer source id");
@@ -52,8 +54,26 @@ export function validateLayerSemanticValue(
   if (property === "mark.type" && !MARK_TYPES.includes(value)) {
     throw new Error(`Unknown mark type "${value}".`);
   }
-  if (property === "mark.missing" && !["error", "break"].includes(value)) {
-    throw new Error(`Unsupported area missing policy "${value}".`);
+  if (property === "mark.missing") {
+    const markType = findLayer(program, parsed.id)?.mark?.type;
+    if (markType === "area") {
+      if (!["error", "break"].includes(value)) {
+        throw new Error(`Unsupported area missing policy "${value}".`);
+      }
+    } else if (ITEM_MISSING_MARK_TYPES.includes(markType)) {
+      validateItemMissing(value, `${markType} missing`);
+    } else {
+      throw new Error(`Mark type "${markType}" does not support a missing policy.`);
+    }
+  }
+  if (property === "derivedBindings.regression") {
+    if (!value || typeof value !== "object" || Array.isArray(value) ||
+        Object.keys(value).length !== 2 || value.mode !== "follow" ||
+        !Array.isArray(value.roles) || value.roles.length !== 3 ||
+        value.roles.join(",") !== "data,x,y") {
+      throw new Error("Regression derived binding must follow data, x, and y roles.");
+    }
+    return;
   }
   if (property === "layout.mode" && !COLOR_LAYOUTS.includes(value)) {
     throw new Error(`Unsupported series layout "${value}".`);

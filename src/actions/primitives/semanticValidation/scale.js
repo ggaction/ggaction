@@ -55,6 +55,12 @@ export function validateScaleSemanticValue(program, parsed, value) {
     return;
   }
   if (property === "domain") return validateSemanticScaleDomain(value);
+  if (property === "emptyDomain") {
+    if (!["preserve", "require-explicit"].includes(value)) {
+      throw new Error('Scale emptyDomain must be "preserve" or "require-explicit".');
+    }
+    return;
+  }
   if (property === "range") return validateSemanticScaleRange(value);
   if (["nice", "zero", "clamp", "reverse"].includes(property)) {
     if (typeof value !== "boolean") {

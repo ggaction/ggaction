@@ -1,4 +1,4 @@
-/** Roadmap 8 revision 2: REVIEW-ONLY declarations. Not a published package API. */
+/** Roadmap 8 revision 2 planning snapshot. Canonical declarations now live in types/. */
 import type {
   ChartProgram,
   ConfidenceIntervalMethod,

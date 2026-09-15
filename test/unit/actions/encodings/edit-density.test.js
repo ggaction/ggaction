@@ -424,7 +424,7 @@ test("removes group-owned color and rejects invalid density provenance atomicall
   );
   assert.throws(
     () => colored.editDensity({ field: "missing" }),
-    /at least one valid field\/group row/
+    /does not contain field "missing"/
   );
   assert.throws(
     () => colored.editDensity({ groupBy: "" }),

@@ -64,6 +64,59 @@ test("empty, partial, Basic, and composed states restore as immutable editable F
   assert.notDeepEqual(edited.graphicSpec, restored.children.__proto__.graphicSpec);
 });
 
+test("editable schema version 1 migrates dataset schemas while version 2 requires them", () => {
+  const original = chart()
+    .createData({ id: "source", values: [{ group: "A", value: 2 }] })
+    .createSummaryData({
+      id: "summary",
+      groupBy: "group",
+      aggregates: [{ op: "mean", field: "value", as: "mean" }]
+    });
+  const envelope = JSON.parse(serializeProgram(original));
+  const state = decodeValue(envelope.payload);
+  for (const dataset of state.semanticSpec.datasets) delete dataset.schema;
+  envelope.schemaVersion = 1;
+  envelope.payload = encodeValue(state);
+
+  const migrated = deserializeProgram(JSON.stringify(envelope));
+  assert.deepEqual(
+    migrated.semanticSpec.datasets.map(dataset => dataset.schema.completeness),
+    ["known", "known"]
+  );
+  assert.deepEqual(
+    migrated.semanticSpec.datasets[1].schema.fields.map(field => field.name),
+    ["group", "mean"]
+  );
+  assert.equal(JSON.parse(serializeProgram(migrated)).schemaVersion, 2);
+
+  envelope.schemaVersion = 2;
+  assert.throws(
+    () => deserializeProgram(JSON.stringify(envelope)),
+    /requires schema/
+  );
+});
+
+test("editable restoration retains compatible empty-domain preservation identity", () => {
+  const original = chart()
+    .createCanvas()
+    .createData({
+      id: "source",
+      values: [{ x: 1, y: 2 }, { x: 4, y: 5 }],
+      schema: { fields: [
+        { name: "x", storageType: "number", nullable: false },
+        { name: "y", storageType: "number", nullable: false }
+      ] }
+    })
+    .createPointMark({ id: "points" })
+    .encodeX({ target: "points", field: "x", scale: { emptyDomain: "preserve" } })
+    .encodeY({ target: "points", field: "y", scale: { emptyDomain: "preserve" } });
+  const restored = deserializeProgram(serializeProgram(original));
+  const emptied = restored.reviseData({ source: "source", id: "empty", values: [] });
+  assert.deepEqual(emptied.resolvedScales.x.domain, original.resolvedScales.x.domain);
+  assert.deepEqual(emptied.resolvedScales.y.domain, original.resolvedScales.y.domain);
+  assert.equal(emptied.graphicSpec.objects.points.items.length, 0);
+});
+
 test("registered extensions restore without executing actions; unknown classes and operations fail", () => {
   let calls = 0;
   registerExtension({ name: "persistence-test", actions: {
@@ -88,7 +141,7 @@ test("registered extensions restore without executing actions; unknown classes a
 
 test("envelopes, canonical keys, and closed traces are mandatory", () => {
   const envelope = JSON.parse(serializeProgram(chart()));
-  for (const value of [null, 1, {}, "{", "[]", JSON.stringify({ ...envelope, schemaVersion: 2 }),
+  for (const value of [null, 1, {}, "{", "[]", JSON.stringify({ ...envelope, schemaVersion: 3 }),
     JSON.stringify({ ...envelope, kind: "graphic" }), JSON.stringify({ ...envelope, packageVersion: "unknown" }),
     JSON.stringify({ ...envelope, extra: true })]) assert.throws(() => deserializeProgram(value));
   for (const mutate of [s => { delete s.context; }, s => { s.markConfigs = {}; },

@@ -5,6 +5,8 @@ import {
   setEncodingProperties,
   validateOptions
 } from "./shared.js";
+import { applyRequestedItemMissingPolicy } from
+  "../../grammar/itemMissing.js";
 
 const OPTIONS = Object.freeze(["target", "value", "field", "fieldType"]);
 
@@ -29,7 +31,7 @@ export const encodeAngle = /* @__PURE__ */ action(
     if (hasValue && args.fieldType !== undefined) {
       throw new Error("Constant angle does not accept fieldType.");
     }
-    const { id: target, dataset, layer } = resolveTarget(
+    const { id: target, dataset: sourceDataset, layer } = resolveTarget(
       this,
       args.target,
       ["point", "tick"],
@@ -39,6 +41,7 @@ export const encodeAngle = /* @__PURE__ */ action(
       throw new TypeError("encodeAngle value must be finite degrees.");
     }
     if (hasField) {
+      const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
       const fieldType = args.fieldType ?? "quantitative";
       if (fieldType !== "quantitative") {
         throw new Error("encodeAngle requires a quantitative field.");

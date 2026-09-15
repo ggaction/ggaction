@@ -127,6 +127,12 @@ source snapshot only.
 
 ## Save and restore snapshots
 
+Use `getDatasetSchema`, `describeAction`, `comparePrograms`, and
+`inspectProgram` from `ggaction/inspection` to inspect data contracts, discover
+action metadata, compare immutable revisions, and calculate bounded chart
+summaries without reaching into private state. Inspection never mutates the
+program and reports unsupported or malformed structures explicitly.
+
 The browser-safe `ggaction/persistence` entry stores either an editable program
 or its concrete graphics. This standalone example needs no filesystem or DOM:
 
@@ -173,17 +179,23 @@ open action stacks are rejected. The format cannot load code, import packages,
 or execute saved trace arguments. Custom subclass restoration adapters are not
 available.
 
-### Snapshot format, version 1
+### Snapshot formats
 
 Each JSON envelope has exactly these keys:
 
 ```text
-{ schemaVersion: 1, kind: "editable" | "graphic", packageVersion: string,
+{ schemaVersion: 2, kind: "editable", packageVersion: string,
+  extensions: string[], payload: EncodedValue }
+{ schemaVersion: 1, kind: "graphic", packageVersion: string,
   extensions: string[], payload: EncodedValue }
 ```
 
+Editable snapshots use schema version 2 so dataset schema and calculation
+metadata round-trip. The reader migrates editable version 1 payloads by
+inferring or deriving missing dataset schemas before validation. Graphic
+snapshots remain version 1 because their payload shape did not change.
 `packageVersion` records the producer version; `schemaVersion` determines the
-format. Unknown schema versions are rejected. `extensions` contains the exact
+format. Other schema versions are rejected. `extensions` contains the exact
 registered extension names required by the editable action traces, including
 children; graphic snapshots use an empty array. The editable payload uses the
 canonical keys `semanticSpec`, `graphicSpec`, `resolvedScales`,

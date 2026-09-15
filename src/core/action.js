@@ -192,7 +192,8 @@ export function action(metadata, implementation) {
   const ownedMetadata = freezeOwned({
     op: metadata.op,
     description: metadata.description,
-    scope
+    scope,
+    ...(Array.isArray(metadata.options) ? { options: [...metadata.options] } : {})
   });
 
   const wrappedAction = function wrappedAction(args = {}) {
@@ -240,7 +241,7 @@ export function action(metadata, implementation) {
 // Private built-in convenience: action() owns the object boundary and trace,
 // while each definition supplies its closed option vocabulary exactly once.
 export function closedAction(metadata, options, implementation) {
-  return action(metadata, function (args = {}) {
+  return action({ ...metadata, options }, function (args = {}) {
     if (options !== undefined) validateKeys(args, options, metadata.op);
     return implementation.call(this, args);
   });

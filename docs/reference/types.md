@@ -54,6 +54,7 @@ interface ChartProgramActions {
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
   createBin2DData(options: Bin2DDataOptions): ChartProgram;
+  createSortedData(options: SortedDataOptions): ChartProgram;
   editDerivedData(options: EditDerivedDataOptions): ChartProgram;
   editComputedData(options: EditComputedDataOptions): ChartProgram;
   editFilteredData(options: EditFilteredDataOptions): ChartProgram;
@@ -65,31 +66,32 @@ interface ChartProgramActions {
   editDensityData(options: EditDensityDataOptions): ChartProgram;
   editStackData(options: EditStackDataOptions): ChartProgram;
   editRegressionData(options: EditRegressionDataOptions): ChartProgram;
+  editSortedData(options: EditSortedDataOptions): ChartProgram;
   editIntervalData(options: EditIntervalDataOptions): ChartProgram;
   editECDFData(options: EditECDFDataOptions): ChartProgram;
   editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;
   editCompleteData(options: EditCompleteDataOptions): ChartProgram;
   editImputedData(options: EditImputedDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
-  createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editPointMark(options: StrokeStyleDetails & { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
-  editTickMark(options: StrokeStyleDetails & { target?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+  createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editPointMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+  editTickMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   packPoints(options: PackPointsOptions): ChartProgram;
   removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
   createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  createBarMark(options?: RectStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: RectStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  createBarMark(options?: RectStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
-  createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
-  editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
+  createRuleMark(options?: { id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+  editRuleMark(options: { target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
   editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
@@ -1018,6 +1020,7 @@ export type BinDataOptions = {
   includeEmpty?: boolean;
   members?: boolean;
   weight?: StatisticalWeight;
+  missing?: "error" | "drop";
   as?: BinDataOutputFields;
 } & BinDataMode;
 ```
@@ -2127,12 +2130,13 @@ export interface CreateCoordinateOptions {
 export interface CreateDataOptions<Row extends object> {
   id?: string;
   values: readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[];
+  schema?: SourceSchemaInput;
 }
 ```
 
 </details>
 
-Related types: [`StoredCell`](#type-storedcell).
+Related types: [`StoredCell`](#type-storedcell) · [`SourceSchemaInput`](#type-sourceschemainput).
 
 ### `CreateDensityPlotOptions` {#type-createdensityplotoptions}
 
@@ -3101,6 +3105,7 @@ export interface DatasetBinTransform {
   readonly includeEmpty: boolean;
   readonly members: boolean;
   readonly weight?: StatisticalWeight;
+  readonly missing?: "error" | "drop";
   readonly as: {
     readonly lower: string;
     readonly upper: string;
@@ -3178,6 +3183,7 @@ export interface DatasetDensityTransform {
   kernel?: DensityKernel;
   normalization?: DensityNormalization;
   weight?: StatisticalWeight;
+  missing?: "error" | "drop";
   as: readonly [string, string];
   resolve: "shared";
   placement?: {
@@ -3265,10 +3271,12 @@ Related types: [`ECDFOutputFields`](#type-ecdfoutputfields) · [`DatasetECDFReso
 export type DatasetFilterTransform = {
   type: "filter";
   field: string;
+  nulls?: "include" | "exclude";
 } & (
-  | { oneOf: readonly DatasetScalar[]; predicate?: never; range?: never }
-  | { oneOf?: never; predicate: FilterComparison; range?: never }
-  | { oneOf?: never; predicate?: never; range: FilterRange }
+  | { oneOf: readonly DatasetScalar[]; noneOf?: never; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf: readonly DatasetScalar[]; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRange }
 );
 ```
 
@@ -3408,6 +3416,7 @@ export type DatasetIntervalTransform = {
   field: string;
   groupBy: readonly string[];
   as: DatasetIntervalOutputFields;
+  missing?: "error" | "drop";
 } & (
   | {
       center: "mean";
@@ -3506,24 +3515,22 @@ export type DatasetRegressionTransform = {
   y: string;
   groupBy?: string;
 } & (
-  | {
+  | ({
       method: "linear";
-      interval: "mean" | "prediction";
       degree?: never;
       span?: never;
-    } & (
+    } & ({ interval: false; confidenceMethod?: never; level?: never; confidence?: never } | ({ interval: "mean" | "prediction" } & (
       | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
       | { confidence: number; confidenceMethod?: never; level?: never }
-    )
-  | {
+    ))))
+  | ({
       method: "polynomial";
       degree: number;
-      interval: "mean" | "prediction";
       span?: never;
-    } & (
+    } & ({ interval: false; confidenceMethod?: never; level?: never; confidence?: never } | ({ interval: "mean" | "prediction" } & (
       | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
       | { confidence: number; confidenceMethod?: never; level?: never }
-    )
+    ))))
   | {
       method: "loess";
       span: number;
@@ -3533,12 +3540,12 @@ export type DatasetRegressionTransform = {
       confidence?: never;
       interval?: never;
     }
-);
+) & { readonly predict?: RegressionPredictOptions; readonly missing?: "error" | "drop" };
 ```
 
 </details>
 
-Related types: [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod).
+Related types: [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionPredictOptions`](#type-regressionpredictoptions).
 
 ### `DatasetScalar` {#type-datasetscalar}
 
@@ -3547,6 +3554,25 @@ Related types: [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod).
 
 ```typescript
 export type DatasetScalar = string | number | boolean | null;
+```
+
+</details>
+
+### `DatasetSortTransform` {#type-datasetsorttransform}
+
+<details markdown="1">
+<summary>Expand DatasetSortTransform</summary>
+
+```typescript
+export interface DatasetSortTransform {
+  readonly type: "sort";
+  readonly sortBy: readonly {
+    readonly field: string;
+    readonly order: "ascending" | "descending";
+    readonly nulls: "first" | "last";
+    readonly temporalUnit?: "year" | "timestamp";
+  }[];
+}
 ```
 
 </details>
@@ -3585,6 +3611,24 @@ interface DatasetStatisticalReferenceTransform {
 
 </details>
 
+### `DatasetStorageType` {#type-datasetstoragetype}
+
+<details markdown="1">
+<summary>Expand DatasetStorageType</summary>
+
+```typescript
+export type DatasetStorageType =
+  | "number"
+  | "string"
+  | "boolean"
+  | "array"
+  | "object"
+  | "unknown"
+  | "mixed";
+```
+
+</details>
+
 ### `DatasetSummaryTransform` {#type-datasetsummarytransform}
 
 <details markdown="1">
@@ -3597,6 +3641,8 @@ export interface DatasetSummaryTransform {
   aggregates: readonly SummaryAggregateOptions[];
   members?: string;
   weight?: StatisticalWeight;
+  missing?: "error" | "drop";
+  empty?: "null" | "identity";
 }
 ```
 
@@ -3663,6 +3709,7 @@ export type DatasetTransform =
   | DatasetFilterTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
+  | DatasetSortTransform
   | DatasetDensityTransform
   | DatasetECDFTransform
   | DatasetHorizonTransform
@@ -3676,7 +3723,7 @@ export type DatasetTransform =
 
 </details>
 
-Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
+Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -3806,6 +3853,7 @@ export interface DensityDataOptions {
   kernel?: DensityKernel;
   normalization?: DensityNormalization;
   weight?: StatisticalWeight;
+  missing?: "error" | "drop";
   as?: readonly [string, string];
 }
 ```
@@ -4558,12 +4606,17 @@ export interface EditFacetSourceOptions { program: ChartProgram; }
 <summary>Expand EditFilteredDataOptions</summary>
 
 ```typescript
-export type EditFilteredDataOptions = FocusedDerivedDataEdit<FilterDataOptions>;
+export type EditFilteredDataOptions = FilterModePatch & {
+  target: string;
+  field?: string;
+  nulls?: "include" | "exclude" | false;
+  dependents?: DerivedDataDependents;
+};
 ```
 
 </details>
 
-Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`FilterDataOptions`](#type-filterdataoptions).
+Related types: [`FilterModePatch`](#type-filtermodepatch) · [`DerivedDataDependents`](#type-deriveddatadependents).
 
 ### `EditFoldDataOptions` {#type-editfolddataoptions}
 
@@ -5073,15 +5126,18 @@ export interface EditRegressionOptions {
   confidenceMethod?: ConfidenceIntervalMethod;
   level?: number;
   confidence?: number;
-  interval?: RegressionInterval;
+  interval?: RegressionInterval | false;
+  missing?: "error" | "drop";
+  predict?: RegressionPredictOptions | false;
   band?: false | RegressionBandOptions;
   line?: StrokeStyleDetails & { strokeWidth?: number; curve?: CurveInterpolation };
+  sourceBinding?: "fixed" | "follow";
 }
 ```
 
 </details>
 
-Related types: [`RegressionMethod`](#type-regressionmethod) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval) · [`RegressionBandOptions`](#type-regressionbandoptions) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation).
+Related types: [`RegressionMethod`](#type-regressionmethod) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval) · [`RegressionPredictOptions`](#type-regressionpredictoptions) · [`RegressionBandOptions`](#type-regressionbandoptions) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation).
 
 ### `EditScaleOptions` {#type-editscaleoptions}
 
@@ -5094,6 +5150,7 @@ export interface EditScaleOptions {
   id?: string;
   type?: ScaleType;
   domain?: "auto" | readonly unknown[];
+  emptyDomain?: "preserve" | "require-explicit";
   range?: ScaleRange;
   nice?: boolean;
   zero?: boolean;
@@ -5156,6 +5213,23 @@ export type EditSizeScaleOptions = FocusedScaleSelection &
 </details>
 
 Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`ExistingSizeScaleEditPatch`](#type-existingsizescaleeditpatch) · [`SizeScaleTypeEditPatch`](#type-sizescaletypeeditpatch).
+
+### `EditSortedDataOptions` {#type-editsorteddataoptions}
+
+<details markdown="1">
+<summary>Expand EditSortedDataOptions</summary>
+
+```typescript
+export interface EditSortedDataOptions {
+  target: string;
+  sortBy: readonly [SortKey, ...SortKey[]];
+  dependents?: DerivedDataDependents;
+}
+```
+
+</details>
+
+Related types: [`SortKey`](#type-sortkey) · [`DerivedDataDependents`](#type-deriveddatadependents).
 
 ### `EditStackDataOptions` {#type-editstackdataoptions}
 
@@ -5988,6 +6062,17 @@ type FilledMarkStroke = string | false;
 
 </details>
 
+### `FilterBound` {#type-filterbound}
+
+<details markdown="1">
+<summary>Expand FilterBound</summary>
+
+```typescript
+type FilterBound = number | string;
+```
+
+</details>
+
 ### `FilterComparison` {#type-filtercomparison}
 
 <details markdown="1">
@@ -6011,6 +6096,7 @@ export type FilterDataOptions = {
   id: string;
   source?: string;
   field: string;
+  nulls?: "include" | "exclude";
 } & FilterModeOptions;
 ```
 
@@ -6041,14 +6127,33 @@ Related types: [`MarkSelector`](#type-markselector).
 
 ```typescript
 export type FilterModeOptions =
-  | { oneOf: readonly unknown[]; predicate?: never; range?: never }
-  | { oneOf?: never; predicate: FilterComparison; range?: never }
-  | { oneOf?: never; predicate?: never; range: FilterRange };
+  | { oneOf: readonly [DatasetScalar, ...DatasetScalar[]]; noneOf?: never; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf: readonly [DatasetScalar, ...DatasetScalar[]]; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRange };
 ```
 
 </details>
 
-Related types: [`FilterComparison`](#type-filtercomparison) · [`FilterRange`](#type-filterrange).
+Related types: [`DatasetScalar`](#type-datasetscalar) · [`FilterComparison`](#type-filtercomparison) · [`FilterRange`](#type-filterrange).
+
+### `FilterModePatch` {#type-filtermodepatch}
+
+<details markdown="1">
+<summary>Expand FilterModePatch</summary>
+
+```typescript
+type FilterModePatch =
+  | { oneOf: readonly [DatasetScalar, ...DatasetScalar[]]; noneOf?: never; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf: readonly [DatasetScalar, ...DatasetScalar[]]; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRangePatch }
+  | { oneOf?: never; noneOf?: never; predicate?: never; range?: never };
+```
+
+</details>
+
+Related types: [`DatasetScalar`](#type-datasetscalar) · [`FilterComparison`](#type-filtercomparison) · [`FilterRangePatch`](#type-filterrangepatch).
 
 ### `FilterRange` {#type-filterrange}
 
@@ -6056,14 +6161,56 @@ Related types: [`FilterComparison`](#type-filtercomparison) · [`FilterRange`](#
 <summary>Expand FilterRange</summary>
 
 ```typescript
-export type FilterRange = {
-  min: number | string;
-  max: number | string;
-  inclusive?: boolean;
+export type FilterRange = FilterRangeBounds & FilterRangeClosure;
+```
+
+</details>
+
+Related types: [`FilterRangeBounds`](#type-filterrangebounds) · [`FilterRangeClosure`](#type-filterrangeclosure).
+
+### `FilterRangeBounds` {#type-filterrangebounds}
+
+<details markdown="1">
+<summary>Expand FilterRangeBounds</summary>
+
+```typescript
+type FilterRangeBounds =
+  | { min: FilterBound; max?: FilterBound }
+  | { min?: FilterBound; max: FilterBound };
+```
+
+</details>
+
+Related types: [`FilterBound`](#type-filterbound).
+
+### `FilterRangeClosure` {#type-filterrangeclosure}
+
+<details markdown="1">
+<summary>Expand FilterRangeClosure</summary>
+
+```typescript
+type FilterRangeClosure =
+  | { inclusive?: boolean; minInclusive?: never; maxInclusive?: never }
+  | { inclusive?: never; minInclusive?: boolean; maxInclusive?: boolean };
+```
+
+</details>
+
+### `FilterRangePatch` {#type-filterrangepatch}
+
+<details markdown="1">
+<summary>Expand FilterRangePatch</summary>
+
+```typescript
+export type FilterRangePatch = FilterRangeClosure & {
+  min?: FilterBound | false;
+  max?: FilterBound | false;
 };
 ```
 
 </details>
+
+Related types: [`FilterRangeClosure`](#type-filterrangeclosure) · [`FilterBound`](#type-filterbound).
 
 ### `FitCanvasOptions` {#type-fitcanvasoptions}
 
@@ -6771,6 +6918,7 @@ export interface IntervalDataOptions {
   extent?: IntervalExtent;
   method?: ConfidenceIntervalMethod;
   level?: number;
+  missing?: "error" | "drop";
   as?: IntervalOutputFields;
 }
 ```
@@ -9061,6 +9209,7 @@ Related types: [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel
 export interface RectMarkOptions extends RectStyleDetails {
   id?: string;
   data?: string;
+  missing?: "error" | "skip";
   fill?: string;
   opacity?: number;
   stroke?: string | false;
@@ -9159,6 +9308,8 @@ type RegressionCommonOptions = {
   y?: string;
   groupBy?: string | false;
   line?: StrokeStyleDetails & { strokeWidth?: number; curve?: CurveInterpolation };
+  sourceBinding?: "fixed" | "follow";
+  missing?: "error" | "drop";
 };
 ```
 
@@ -9178,6 +9329,7 @@ export type RegressionDataOptions = {
   x: string;
   y: string;
   groupBy?: string;
+  missing?: "error" | "drop";
 } & RegressionParameterOptions;
 ```
 
@@ -9244,7 +9396,8 @@ type RegressionParameterOptions =
       confidenceMethod?: ConfidenceIntervalMethod;
       level?: number;
       confidence?: number;
-      interval?: RegressionInterval;
+      interval?: RegressionInterval | false;
+      predict?: RegressionPredictOptions;
     }
   | {
       method: "polynomial";
@@ -9253,7 +9406,8 @@ type RegressionParameterOptions =
       confidenceMethod?: ConfidenceIntervalMethod;
       level?: number;
       confidence?: number;
-      interval?: RegressionInterval;
+      interval?: RegressionInterval | false;
+      predict?: RegressionPredictOptions;
     }
   | {
       method: "loess";
@@ -9263,12 +9417,13 @@ type RegressionParameterOptions =
       level?: never;
       confidence?: never;
       interval?: never;
+      predict?: RegressionPredictOptions;
     };
 ```
 
 </details>
 
-Related types: [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval).
+Related types: [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval) · [`RegressionPredictOptions`](#type-regressionpredictoptions).
 
 ### `RegressionPlotBaseOptions` {#type-regressionplotbaseoptions}
 
@@ -9320,6 +9475,19 @@ Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquanti
 type RegressionPlotStatisticalOptions<T> = T extends unknown
   ? Omit<T, "target" | "x" | "y">
   : never;
+```
+
+</details>
+
+### `RegressionPredictOptions` {#type-regressionpredictoptions}
+
+<details markdown="1">
+<summary>Expand RegressionPredictOptions</summary>
+
+```typescript
+export type RegressionPredictOptions =
+  | { values: readonly [number, ...number[]]; domain?: never; steps?: never }
+  | { values?: never; domain: readonly [number, number]; steps: number };
 ```
 
 </details>
@@ -9801,6 +9969,7 @@ export interface ScaleOptions {
   id?: string;
   type?: ScaleType;
   domain?: "auto" | readonly unknown[];
+  emptyDomain?: "preserve" | "require-explicit";
   range?: ScaleRange;
   nice?: boolean;
   zero?: boolean;
@@ -10088,6 +10257,72 @@ type SizeScaleTypeEditPatch =
 </details>
 
 Related types: [`WithoutScaleId`](#type-withoutscaleid) · [`SizeScaleOptions`](#type-sizescaleoptions).
+
+### `SortKey` {#type-sortkey}
+
+<details markdown="1">
+<summary>Expand SortKey</summary>
+
+```typescript
+export interface SortKey {
+  field: string;
+  order?: "ascending" | "descending";
+  nulls?: "first" | "last";
+  temporalUnit?: "year" | "timestamp";
+}
+```
+
+</details>
+
+### `SortedDataOptions` {#type-sorteddataoptions}
+
+<details markdown="1">
+<summary>Expand SortedDataOptions</summary>
+
+```typescript
+export interface SortedDataOptions {
+  id: string;
+  source?: string;
+  sortBy: readonly [SortKey, ...SortKey[]];
+}
+```
+
+</details>
+
+Related types: [`SortKey`](#type-sortkey).
+
+### `SourceSchemaField` {#type-sourceschemafield}
+
+<details markdown="1">
+<summary>Expand SourceSchemaField</summary>
+
+```typescript
+export interface SourceSchemaField {
+  name: string;
+  storageType: Exclude<DatasetStorageType, "unknown" | "mixed">;
+  nullable?: boolean;
+  optional?: boolean;
+}
+```
+
+</details>
+
+Related types: [`DatasetStorageType`](#type-datasetstoragetype).
+
+### `SourceSchemaInput` {#type-sourceschemainput}
+
+<details markdown="1">
+<summary>Expand SourceSchemaInput</summary>
+
+```typescript
+export interface SourceSchemaInput {
+  fields: readonly SourceSchemaField[];
+}
+```
+
+</details>
+
+Related types: [`SourceSchemaField`](#type-sourceschemafield).
 
 ### `StackDataMode` {#type-stackdatamode}
 
@@ -10382,6 +10617,8 @@ export interface SummaryDataOptions {
   aggregates: readonly SummaryAggregateOptions[];
   members?: string;
   weight?: StatisticalWeight;
+  missing?: "error" | "drop";
+  empty?: "null" | "identity";
 }
 ```
 
@@ -10477,6 +10714,7 @@ export interface TextMarkOptions {
   /** Explicit source mark. Mutually exclusive with data; may be incomplete. */
   source?: string;
   text?: unknown;
+  missing?: "error" | "skip";
   fill?: string;
   opacity?: number;
   fontSize?: number;

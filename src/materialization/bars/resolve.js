@@ -4,6 +4,7 @@ import { findLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { BAR_GRAINS, resolveBarGrain } from "../../grammar/bars/policy.js";
 import { requestedStrokeDetails } from "../../grammar/strokeStyle.js";
+import { applyItemMissingPolicy } from "../../grammar/itemMissing.js";
 
 export const DEFAULT_BAR_FILL = DEFAULT_COLORS.mark;
 export const DEFAULT_BAR_STROKE = "white";
@@ -37,10 +38,11 @@ export function requireCompleteBar(program, id) {
   if (layer?.mark?.type !== "bar") {
     throw new Error(`Unknown bar mark "${id}".`);
   }
-  const dataset = findDataset(program, layer.data);
-  if (dataset === undefined) {
+  const sourceDataset = findDataset(program, layer.data);
+  if (sourceDataset === undefined) {
     throw new Error(`Bar mark "${id}" requires an existing dataset.`);
   }
+  const dataset = applyItemMissingPolicy(layer, sourceDataset);
   const graphic = program.graphicSpec.objects[id];
   const roundedCollection = graphic?.type === "collection" &&
     Object.hasOwn(program.markConfigs[id]?.barAppearance ?? {}, "cornerRadius") &&

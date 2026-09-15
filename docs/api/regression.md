@@ -69,6 +69,9 @@ program.createRegression({
 | `level` | number strictly between `0` and `1` | `0.95` |
 | `confidence` | compatibility alias for `level`; must match it when both appear | omitted |
 | `interval` | `"mean"` or `"prediction"` | `"mean"` |
+| `predict` | `{ values }` or `{ domain, steps }` | observed unique x values |
+| `missing` | `"error"` or `"drop"` | compatibility behavior when omitted |
+| `sourceBinding` | `"fixed"` or `"follow"` | `"fixed"` |
 | `band` | appearance object or `false` | default band; no band for LOESS |
 | `band.color` | color string | `"#111111"` |
 | `band.opacity` | number from `0` to `1` | `0.18` |
@@ -91,6 +94,7 @@ Choose another model or interval without coordinating its child layers:
 points.createRegression({ method: "polynomial", degree: 2 });
 points.createRegression({ method: "loess", span: 0.55 });
 points.createRegression({ interval: "prediction" });
+points.createRegression({ interval: false, band: false });
 ```
 
 Polynomial degree `1` retains polynomial provenance while producing the same
@@ -99,6 +103,11 @@ and are therefore at least as wide as matching mean intervals. LOESS does not
 accept `confidenceMethod`, `level`, `confidence`, `interval`, or a band object; its omitted or `false` band
 produces only the fitted line. Linear and polynomial bands can also be disabled
 with `band: false`.
+
+`sourceBinding: "fixed"` keeps the regression attached to the source snapshot
+used at creation. `"follow"` refits when `reviseData` advances that logical
+source. Appearance-only edits preserve fitted rows. Statistical, field, or
+prediction-grid edits create one new immutable fitted dataset.
 
 Each regression produces at most 10,000 group/x rows. Polynomial and LOESS
 inputs whose estimated fitting work exceeds 10,000,000 units throw a
@@ -153,7 +162,8 @@ const rebound = program.editRegression({
 });
 ```
 
-`method`, `degree`, `span`, `confidenceMethod`, `level`, `confidence`, and `interval` follow the same
+`method`, `degree`, `span`, `confidenceMethod`, `level`, `confidence`, `interval`,
+`predict`, `missing`, and `sourceBinding` follow the same
 method-specific rules as creation. A data-role or statistical change creates
 one new immutable fitted-data revision, rebinds every owned regression
 component, and releases the old revision when nothing references it.

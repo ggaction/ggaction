@@ -1082,6 +1082,15 @@ function addDirectDerivedDataEdits(program) {
       target: "editWindow",
       operations: [{ op: "rank", as: "rank" }]
     })
+    .createSortedData({
+      id: "editSorted",
+      source: "editSource",
+      sortBy: [{ field: "order" }]
+    })
+    .editSortedData({
+      target: "editSorted",
+      sortBy: [{ field: "order", order: "descending" }]
+    })
     .createDensityData({
       id: "editDensity",
       source: "editSource",
@@ -2074,7 +2083,7 @@ function lifecycleSignature(base, factors) {
       "removeData", "removeScale", "removeCoordinate",
       "createNormalizedData", "createCompleteData", "createImputedData", "editDerivedData",
       "editComputedData", "editFilteredData", "editFoldData", "editSummaryData",
-      "editBinData", "editTimeUnitData", "editWindowData", "editDensityData",
+      "editBinData", "editTimeUnitData", "editWindowData", "createSortedData", "editSortedData", "editDensityData",
       "editStackData", "editRegressionData", "editIntervalData", "editECDFData",
       "editNormalizedData", "editCompleteData", "editImputedData"
     ],
@@ -2327,6 +2336,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "reviseData", "applyTextMetrics", "removeTextMetrics",
   "filterData", "createRegressionData", "createWindowData", "createTimeUnitData",
+  "createSortedData", "editSortedData",
   "createIntervalData", "createTickMark", "editTickMark", "removeMark",
   "createNormalizedData", "createCompleteData", "createImputedData",
   "editDerivedData", "editComputedData", "editFilteredData", "editFoldData",

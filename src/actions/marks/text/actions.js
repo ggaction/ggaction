@@ -39,13 +39,14 @@ import {
 } from "../../charts/shared.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
+import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const STYLE_OPTIONS = Object.freeze([
   "fill", "opacity", "fontSize", "fontFamily", "fontWeight",
   "align", "baseline", "rotation", "dx", "dy"
 ]);
-const CREATE_OPTIONS = Object.freeze(["id", "data", "source", "text", ...STYLE_OPTIONS]);
-const EDIT_OPTIONS = Object.freeze(["target", ...STYLE_OPTIONS]);
+const CREATE_OPTIONS = Object.freeze(["id", "data", "source", "text", "missing", ...STYLE_OPTIONS]);
+const EDIT_OPTIONS = Object.freeze(["target", "missing", ...STYLE_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "replayLayout"]);
 
 function sourceMatchesData(program, layer, requestedData) {
@@ -139,6 +140,9 @@ const createTextMark = /* @__PURE__ */ action(
       operation: "createTextMark"
     });
     const inherited = resolveTextInheritance(this, args);
+    if (Object.hasOwn(args, "missing") && inherited?.source !== undefined) {
+      throw new Error("Text missing policy requires a row-backed text mark, not source-owned labels.");
+    }
     const { data } = resolveMarkData(this, {
       ...args,
       ...(args.data === undefined && inherited?.data !== undefined
@@ -150,6 +154,12 @@ const createTextMark = /* @__PURE__ */ action(
     let next = this
       .editSemantic({ property: `layer[${id}].mark.type`, value: "text" })
       .editSemantic({ property: `layer[${id}].data`, value: data });
+    if (Object.hasOwn(args, "missing")) {
+      next = next.editSemantic({
+        property: `layer[${id}].mark.missing`,
+        value: validateItemMissing(args.missing, "Text missing")
+      });
+    }
     if (inherited?.source !== undefined) {
       next = next.editSemantic({
         property: `layer[${id}].source`,
@@ -465,20 +475,29 @@ const editTextMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editTextMark");
-    if (!STYLE_OPTIONS.some(option => Object.hasOwn(args, option))) {
+    if (!["missing", ...STYLE_OPTIONS].some(option => Object.hasOwn(args, option))) {
       throw new Error("editTextMark requires at least one editable property.");
     }
     const layer = requireTextLayer(this, args.target, "editTextMark");
-    const next = this._withMarkConfig(
+    if (Object.hasOwn(args, "missing") && layer.source !== undefined) {
+      throw new Error("Text missing policy requires a row-backed text mark, not source-owned labels.");
+    }
+    const semantic = Object.hasOwn(args, "missing")
+      ? this.editSemantic({
+          property: `layer[${layer.id}].mark.missing`,
+          value: validateItemMissing(args.missing, "Text missing")
+        })
+      : this;
+    const next = semantic._withMarkConfig(
       layer.id,
       {
         ...normalizeTextMarkConfig(
           args,
-          this.markConfigs[layer.id] ?? DEFAULT_TEXT_MARK
+          semantic.markConfigs[layer.id] ?? DEFAULT_TEXT_MARK
         ),
         fillExplicit: Object.hasOwn(args, "fill")
           ? true
-          : this.markConfigs[layer.id]?.fillExplicit ?? false
+          : semantic.markConfigs[layer.id]?.fillExplicit ?? false
       }
     );
     return canMaterializeText(next, layer)

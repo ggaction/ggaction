@@ -18,6 +18,8 @@ import {
   resolveBarChannels,
   resolveBarGrain
 } from "../../grammar/bars/policy.js";
+import { applyRequestedItemMissingPolicy } from
+  "../../grammar/itemMissing.js";
 
 const ENCODING_OPTIONS = Object.freeze([
   "field", "target", "fieldType", "scale", "paddingInner", "paddingOuter"
@@ -33,12 +35,13 @@ function createOffsetEncoding(channel) {
     function (args = {}) {
       validateOptions(args, ENCODING_OPTIONS, operation);
       const fieldType = validateCategoricalFieldType(args.fieldType ?? "nominal");
-      const { id: target, dataset, layer } = resolveTarget(
+      const { id: target, dataset: sourceDataset, layer } = resolveTarget(
         this,
         args.target,
         ["bar", "point", "rule"],
         "offset-compatible mark"
       );
+      const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
 
       if (layer.mark.type === "bar") {
         const channels = resolveBarChannels(layer);

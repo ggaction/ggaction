@@ -10,7 +10,7 @@ title: Rule Marks
 Rule marks represent reference lines and intervals. They use concrete line
 primitives without exposing a renderer-specific path format.
 
-## `createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`
+## `createRuleMark({ id?, data?, missing?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 <!-- snippet-context:start -->
 

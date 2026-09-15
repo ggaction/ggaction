@@ -21,6 +21,7 @@ test("creates immutable interval provenance and concrete summary rows", () => {
   const summary = program.semanticSpec.datasets[1];
 
   assert.deepEqual(summary, {
+    schema: summary.schema,
     id: "summary",
     source: "data",
     transform: [{

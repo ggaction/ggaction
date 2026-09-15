@@ -6,7 +6,7 @@ import { derivedCreator, derivedMaterializer } from "./shared.js";
 
 const OPTIONS = Object.freeze([
   "id", "source", "field", "groupBy", "bandwidth", "extent", "steps",
-  "kernel", "normalization", "as", "weight"
+  "kernel", "normalization", "as", "weight", "missing"
 ]);
 const CATEGORICAL_OPTIONS = Object.freeze([...OPTIONS, "placement"]);
 

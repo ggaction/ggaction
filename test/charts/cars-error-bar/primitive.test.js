@@ -100,12 +100,18 @@ test("authors the canonical error-bar target with raw interval and line primitiv
   );
 
   assert.equal(program.semanticSpec.datasets[0].id, "data");
-  assert.deepEqual(summary, {
+  const { schema, ...summaryWithoutSchema } = summary;
+  assert.deepEqual(summaryWithoutSchema, {
     id: "errorBarIntervalData",
     source: "data",
     transform: [values.transform],
     values: values.rows
   });
+  assert.equal(schema.completeness, "known");
+  assert.equal(schema.origin, "derived");
+  assert.deepEqual(schema.fields.map(field => field.name), [
+    "Origin", "__errorBar_center", "__errorBar_lower", "__errorBar_upper"
+  ]);
   assert.deepEqual(
     program.semanticSpec.layers.map(layer => [layer.id, layer.mark.type]),
     [

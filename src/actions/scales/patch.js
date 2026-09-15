@@ -1,5 +1,5 @@
 const SCALE_EDIT_PROPERTIES = Object.freeze([
-  "type", "domain", "range", "nice", "zero", "clamp", "reverse",
+  "type", "domain", "range", "emptyDomain", "nice", "zero", "clamp", "reverse",
   "base", "exponent", "constant", "paddingInner", "paddingOuter",
   "padding", "align", "interpolate", "midpoint", "unknown"
 ]);

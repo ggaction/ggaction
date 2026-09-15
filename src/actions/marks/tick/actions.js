@@ -21,6 +21,8 @@ import {
   requestedStrokeDetails,
   STROKE_STYLE_PROPERTIES
 } from "../../../grammar/strokeStyle.js";
+import { applyItemMissingPolicy, validateItemMissing } from
+  "../../../grammar/itemMissing.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import { rematerializeExistingLegend } from "../../encodings/shared.js";
 import {
@@ -37,8 +39,8 @@ import {
 const APPEARANCE_OPTIONS = Object.freeze([
   "length", "stroke", "strokeWidth", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
-const CREATE_OPTIONS = Object.freeze(["id", "data", ...APPEARANCE_OPTIONS]);
-const EDIT_OPTIONS = Object.freeze(["target", ...APPEARANCE_OPTIONS]);
+const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...APPEARANCE_OPTIONS]);
+const EDIT_OPTIONS = Object.freeze(["target", "missing", ...APPEARANCE_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 
 export const DEFAULT_TICK_CONFIG = Object.freeze({
@@ -114,6 +116,12 @@ export const createTickMark = /* @__PURE__ */ action(
     let created = this
       .editSemantic({ property: `layer[${id}].mark.type`, value: "tick" })
       .editSemantic({ property: `layer[${id}].data`, value: data });
+    if (Object.hasOwn(args, "missing")) {
+      created = created.editSemantic({
+        property: `layer[${id}].mark.missing`,
+        value: validateItemMissing(args.missing, "Tick missing")
+      });
+    }
     created = applyLayeredMarkInheritance(created, id, inherited)
       .createGraphics({
         id,
@@ -141,9 +149,9 @@ export const editTickMark = /* @__PURE__ */ action(
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editTickMark");
     requestedStrokeDetails(args, "editTickMark");
-    if (!APPEARANCE_OPTIONS.some(property => Object.hasOwn(args, property))) {
+    if (!["missing", ...APPEARANCE_OPTIONS].some(property => Object.hasOwn(args, property))) {
       throw new Error(
-        "editTickMark requires length, stroke, strokeWidth, or opacity."
+        "editTickMark requires length, stroke, strokeWidth, opacity, or missing."
       );
     }
     const layer = resolveTick(this, args.target, "editTickMark");
@@ -152,11 +160,17 @@ export const editTickMark = /* @__PURE__ */ action(
         "editTickMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
       );
     }
+    const semantic = Object.hasOwn(args, "missing")
+      ? this.editSemantic({
+          property: `layer[${layer.id}].mark.missing`,
+          value: validateItemMissing(args.missing, "Tick missing")
+        })
+      : this;
     const config = validateTickConfig(args, {
       ...DEFAULT_TICK_CONFIG,
-      ...this.markConfigs[layer.id]
+      ...semantic.markConfigs[layer.id]
     });
-    const materialized = this
+    const materialized = semantic
       ._withMarkConfig(layer.id, config)
       .rematerializeTickMark({ id: layer.id });
     return rematerializeExistingLegend(materialized);
@@ -190,10 +204,11 @@ export const rematerializeTickMark = /* @__PURE__ */ action(
     if (graphic?.type !== "line" || !Array.isArray(graphic.items)) {
       throw new Error(`Tick mark "${id}" requires line collection graphics.`);
     }
-    const dataset = findDataset(this, layer.data);
-    if (dataset === undefined) {
+    const sourceDataset = findDataset(this, layer.data);
+    if (sourceDataset === undefined) {
       throw new Error(`Tick mark "${id}" requires an existing dataset.`);
     }
+    const dataset = applyItemMissingPolicy(layer, sourceDataset);
     if (
       layer.encoding?.x?.scale === undefined ||
       layer.encoding?.y?.scale === undefined

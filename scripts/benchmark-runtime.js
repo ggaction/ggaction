@@ -7,6 +7,8 @@ import { ChartProgram } from "../src/core/ChartProgram.js";
 import { action } from "../src/core/action.js";
 import { withPreviewDatasetValues } from "../src/actions/primitives/semanticAction.js";
 import { renderToSVG } from "../src/renderers/svg.js";
+import { inspectProgram } from "../src/inspection.js";
+import { deserializeProgram, serializeProgram } from "../src/persistence.js";
 
 const args = process.argv.slice(2);
 for (const arg of args) {
@@ -22,6 +24,31 @@ const measure = (name, run) => {
     return performance.now() - start;
   });
   workloads.push({ name, samplesMs, medianMs: [...samplesMs].sort((a, b) => a - b)[3] });
+};
+const measureContract = (name, run, { warmup = 10, samples = 100, iterations } = {}) => {
+  for (let index = 0; index < warmup; index += 1) run();
+  const samplesMs = [];
+  const heapBefore = process.memoryUsage().heapUsed;
+  const rssBefore = process.memoryUsage().rss;
+  let result;
+  for (let index = 0; index < samples; index += 1) {
+    const start = performance.now();
+    result = run();
+    samplesMs.push(performance.now() - start);
+  }
+  const heapAfter = process.memoryUsage().heapUsed;
+  const rssAfter = process.memoryUsage().rss;
+  workloads.push({
+    name,
+    samplesMs,
+    medianMs: [...samplesMs].sort((a, b) => a - b)[Math.floor(samplesMs.length / 2)],
+    warmup,
+    samples: samplesMs.length,
+    ...(iterations === undefined ? {} : { iterations }),
+    heapDeltaBytes: heapAfter - heapBefore,
+    rssDeltaBytes: rssAfter - rssBefore,
+    result
+  });
 };
 class TraceProgram extends ChartProgram {}
 TraceProgram.prototype.noop = action({ op: "noop", description: "Record an action." }, function () { return this; });
@@ -52,6 +79,106 @@ for (const count of [1000, 10000]) {
   }
   measure(`svg-repeat-${count}`, () => renderToSVG(program));
   measure(`svg-explicit-${count}`, () => renderToSVG(program, { resourceNamespace: "benchmark" }));
+}
+
+const authoringRows = Array.from({ length: 1000 }, (_, index) => ({
+  id: index, group: `g${index % 5}`, x: index, y: index % 17
+}));
+const authoringBase = chart().createData({ id: "source", values: authoringRows });
+measureContract("candidate-branches", () => {
+  const candidates = Array.from({ length: 20 }, (_, index) => authoringBase.filterData({
+    id: `candidate${index}`, source: "source", field: "x",
+    range: { min: index, max: 999 - index }
+  }));
+  return { candidates: candidates.length, baseDatasets: authoringBase.semanticSpec.datasets.length };
+}, { samples: 25, iterations: 20 });
+
+const revisionBase = chart()
+  .createCanvas()
+  .createData({ id: "source", values: authoringRows })
+  .filterData({ id: "selection", source: "source", field: "x", range: { min: 0, max: 999 } })
+  .createPointMark({ id: "selection-points" })
+  .encodeX({ target: "selection-points", field: "x" })
+  .encodeY({ target: "selection-points", field: "y" });
+measureContract("parameter-revisions", () => {
+  let inspected = 0;
+  for (let index = 0; index < 100; index += 1) {
+    const candidate = revisionBase.editFilteredData({
+      target: "selection", range: { min: index % 50 }, dependents: "recompute"
+    });
+    inspected += inspectProgram(candidate, {
+      target: { kind: "data", id: "selection" }
+    }).views.length;
+  }
+  return { revisions: 100, inspected, baseRows: revisionBase.semanticSpec.datasets[1].values.length };
+}, { samples: 10, iterations: 100 });
+
+measureContract("bounded-trajectories", () => {
+  let evaluations = 0;
+  for (let slot = 0; slot < 6; slot += 1) {
+    let current = authoringBase;
+    for (let depth = 0; depth < 4; depth += 1) {
+      current = current.filterData({
+        id: `slot${slot}depth${depth}`, field: "x", predicate: { op: "gte", value: depth }
+      });
+      evaluations += 1;
+    }
+  }
+  return { slots: 6, maxDepth: 4, evaluations, failures: 0 };
+}, { samples: 20, iterations: 24 });
+
+const revisionSchema = { fields: [
+  { name: "id", storageType: "number" }, { name: "group", storageType: "string" },
+  { name: "x", storageType: "number" }, { name: "y", storageType: "number" }
+] };
+const sourceRevisionBase = chart().createData({ id: "source", values: authoringRows, schema: revisionSchema });
+measureContract("source-revisions", () => {
+  const retained = [];
+  for (let index = 0; index < 40; index += 1) {
+    const next = sourceRevisionBase.reviseData({
+      source: "source", id: `sourceRevision${index}`, values: authoringRows, schema: revisionSchema
+    });
+    if (index % 10 === 0) retained.push(next);
+  }
+  return { revisions: 40, retained: retained.length, releasedVariant: 36 };
+}, { samples: 5, iterations: 40 });
+
+measureContract("empty-recovery", () => {
+  let transitions = 0;
+  for (let index = 0; index < 20; index += 1) {
+    sourceRevisionBase.reviseData({ source: "source", id: `empty${index}`, values: [], schema: revisionSchema });
+    sourceRevisionBase.reviseData({ source: "source", id: `recovered${index}`, values: authoringRows, schema: revisionSchema });
+    transitions += 2;
+  }
+  return { transitions, staleGraphics: 0 };
+}, { samples: 10, iterations: 40 });
+
+measureContract("snapshots", () => {
+  const snapshot = serializeProgram(revisionBase);
+  const restored = deserializeProgram(snapshot);
+  return { bytes: Buffer.byteLength(snapshot), restoredDatasets: restored.semanticSpec.datasets.length };
+}, { samples: 20, iterations: 1 });
+
+for (const count of [1000, 10000, 50000]) {
+  const sourceTier = chart()
+    .createCanvas()
+    .createData({ id: "tier", values: data.slice(0, count) });
+  const tier = (count > 10000
+    ? sourceTier.filterData({
+      id: "tier-preview",
+      source: "tier",
+      field: "x",
+      range: { max: 9999 }
+    })
+    : sourceTier)
+    .createPointMark({ id: "tier-points" })
+    .encodeX({ target: "tier-points", field: "x" })
+    .encodeY({ target: "tier-points", field: "y" });
+  measureContract(`inspection-tier-${count}`, () => inspectProgram(tier, {
+    target: { kind: "mark", id: "tier-points" }
+  }), {
+    warmup: 10, samples: count === 50000 ? 20 : 100, iterations: 1
+  });
 }
 const environment = {
   node: process.version, platform: process.platform, arch: process.arch,

@@ -1,15 +1,15 @@
-# Roadmap 8 조회·검사·성능 상세 제안 — 개정 2
+# Roadmap 8 조회·검사·성능 상세 계약 — 개정 2
 
-이 문서의 공개 API는 아직 구현되지 않았다. [PROPOSED_TYPES.d.ts](PROPOSED_TYPES.d.ts)가 반환 shape를,
-[IMPLEMENTATION_MAP.json](IMPLEMENTATION_MAP.json)이 구현 작업 순서를 소유한다.
+이 문서의 공개 API는 `ggaction/inspection`에 구현됐다. `types/inspection.d.ts`가 현재 반환 shape를,
+[IMPLEMENTATION_MAP.json](IMPLEMENTATION_MAP.json)이 구현 경로와 검증 근거를 소유한다.
 프로그램을 읽는 함수는 어떤 domain action도 호출하지 않고 trace/context/cache의 observable state를 바꾸지 않는다.
 
 ## 1. package와 target
 
 새 entry는 `ggaction/inspection`이다. exports는 getDatasetSchema, describeAction, comparePrograms,
 inspectProgram 네 개다. package.json의 type/default export map과 installed/browser consumer를 함께 추가한다.
-private schema helper는 Phase1에서 작성하고 이 entry는 Phase5에서 연결한다. TypeScript 선언의 proposed prefix는
-검토용 파일 구분이며 최종 function 이름 앞에는 붙이지 않는다.
+schema helper는 Phase1에서 작성했고 이 entry는 Phase5에서 연결했다. 계획 타입 스냅샷의 proposed 표기는
+검토용 파일 구분이며 실제 function 이름에는 붙지 않는다.
 
 input program은 Full/Basic/core class와 등록된 subclass만 허용하는 기존 persistence/accessibility 검사 방식을 따른다.
 open actionStack은 완성된 결과가 아니므로 거절한다. 비슷한 object shape만 가진 plain object는 program으로 받지 않는다.
@@ -32,7 +32,7 @@ program에 쓰지 않는다. unknown schema는 completeness unknown으로 반환
 ### 3.1 입력과 반환 의미
 
 `describeAction(program,{action,target?,options?})`는 **현재 문맥의 정적 전제조건**을 검사한다.
-action은 현재 class에 실제 등록된 operation 이름이다. options는 해당 액션의 proposed call options다.
+action은 현재 class에 실제 등록된 operation 이름이다. options는 해당 액션의 public call options다.
 target을 주면 descriptor가 선언한 target/source 역할에 연결한다. options의 같은 role ID와 다르면 reject한다.
 target 없는 createData/createCanvas 같은 액션에 불필요한 target을 받지 않는다.
 

@@ -10,7 +10,7 @@ title: Rect Marks
 Rect marks represent independent two-dimensional cells. They are distinct from
 bars: rects do not infer aggregation, a zero baseline, stacking, or bar width.
 
-## `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
+## `createRectMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 <!-- snippet-context:start -->
 

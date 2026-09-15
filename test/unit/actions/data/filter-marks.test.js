@@ -68,10 +68,12 @@ test("filters the current mark through an immutable derived dataset", () => {
   });
 
   assert.deepEqual(program.semanticSpec.datasets[0], {
+    schema: program.semanticSpec.datasets[0].schema,
     id: "rows",
     values: rows
   });
   assert.deepEqual(program.semanticSpec.datasets[1], {
+    schema: program.semanticSpec.datasets[1].schema,
     id: "pointsFilteredData",
     source: "rows",
     transform: [{

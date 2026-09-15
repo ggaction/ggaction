@@ -11,6 +11,7 @@ import { derivedMaterializer } from "./shared.js";
 const OPTIONS = Object.freeze([
   "id", "source", "x", "y", "groupBy", "method", "degree", "span",
   "confidenceMethod", "level", "confidence", "interval"
+  , "predict", "missing"
 ]);
 
 export const materializeRegressionData = /* @__PURE__ */ derivedMaterializer(
@@ -27,7 +28,9 @@ export const materializeRegressionData = /* @__PURE__ */ derivedMaterializer(
       confidenceMethod: transform.confidenceMethod,
       level: transform.level,
       confidence: transform.confidence,
-      interval: transform.interval
+      interval: transform.interval,
+      predict: transform.predict
+      , missing: transform.missing
     })
 );
 

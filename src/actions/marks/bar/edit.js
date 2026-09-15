@@ -14,9 +14,10 @@ import { requestedRectStyleDetails } from
 import { STROKE_STYLE_PROPERTIES } from
   "../../../grammar/strokeStyle.js";
 import { rematerializeExistingLegend } from "../../encodings/shared.js";
+import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const EDIT_OPTIONS = Object.freeze([
-  "target", "fill", "opacity", "stroke", "strokeWidth", "cornerRadius",
+  "target", "missing", "fill", "opacity", "stroke", "strokeWidth", "cornerRadius",
   ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -29,12 +30,12 @@ export const editBarMark = /* @__PURE__ */ action(
     validateMarkOptions(args, EDIT_OPTIONS, "editBarMark");
     const styleDetails = requestedRectStyleDetails(args, "editBarMark");
     const changes = [
-      "fill", "opacity", "stroke", "strokeWidth", "cornerRadius",
+      "missing", "fill", "opacity", "stroke", "strokeWidth", "cornerRadius",
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!changes.some(key => Object.hasOwn(args, key))) {
       throw new Error(
-        "editBarMark requires fill, opacity, stroke, or strokeWidth."
+        "editBarMark requires fill, opacity, stroke, or strokeWidth; missing is also editable."
       );
     }
     const requested = Object.hasOwn(args, "target")
@@ -61,7 +62,13 @@ export const editBarMark = /* @__PURE__ */ action(
       );
     }
 
-    const config = { ...this.markConfigs[layer.id] };
+    const semantic = Object.hasOwn(args, "missing")
+      ? this.editSemantic({
+          property: `layer[${layer.id}].mark.missing`,
+          value: validateItemMissing(args.missing, "Bar missing")
+        })
+      : this;
+    const config = { ...semantic.markConfigs[layer.id] };
     const appearance = { ...config.barAppearance };
     Object.assign(appearance, styleDetails);
     if (Object.hasOwn(args, "fill")) {
@@ -95,7 +102,7 @@ export const editBarMark = /* @__PURE__ */ action(
       );
     }
 
-    const next = this._withMarkConfig(layer.id, {
+    const next = semantic._withMarkConfig(layer.id, {
       ...config,
       barAppearance: appearance
     });

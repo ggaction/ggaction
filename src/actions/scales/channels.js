@@ -10,7 +10,7 @@ const DEFINITIONS = Object.freeze({
   editXScale: Object.freeze({
     channel: "x",
     options: Object.freeze([
-      "type", "domain", "range", "nice", "zero", "clamp", "reverse",
+      "type", "domain", "range", "emptyDomain", "nice", "zero", "clamp", "reverse",
       "base", "exponent", "constant", "paddingInner", "paddingOuter",
       "padding", "align", "unknown"
     ])
@@ -18,7 +18,7 @@ const DEFINITIONS = Object.freeze({
   editYScale: Object.freeze({
     channel: "y",
     options: Object.freeze([
-      "type", "domain", "range", "nice", "zero", "clamp", "reverse",
+      "type", "domain", "range", "emptyDomain", "nice", "zero", "clamp", "reverse",
       "base", "exponent", "constant", "paddingInner", "paddingOuter",
       "padding", "align", "unknown"
     ])
@@ -26,21 +26,21 @@ const DEFINITIONS = Object.freeze({
   editThetaScale: Object.freeze({
     channel: "theta",
     options: Object.freeze([
-      "type", "domain", "range", "nice", "zero", "clamp", "reverse",
+      "type", "domain", "range", "emptyDomain", "nice", "zero", "clamp", "reverse",
       "paddingInner", "paddingOuter", "padding", "align"
     ])
   }),
   editRScale: Object.freeze({
     channel: "radius",
     options: Object.freeze([
-      "type", "domain", "range", "nice", "zero", "clamp", "reverse",
+      "type", "domain", "range", "emptyDomain", "nice", "zero", "clamp", "reverse",
       "base", "exponent", "constant", "radialMapping"
     ])
   }),
   editColorScale: Object.freeze({
     channel: "color",
     options: Object.freeze([
-      "type", "domain", "range", "clamp", "reverse", "palette",
+      "type", "domain", "range", "emptyDomain", "clamp", "reverse", "palette",
       "interpolate", "midpoint", "unknown"
     ])
   }),
@@ -48,37 +48,37 @@ const DEFINITIONS = Object.freeze({
     channel: "stroke",
     targetOnly: true,
     options: Object.freeze([
-      "type", "domain", "range", "clamp", "reverse", "palette",
+      "type", "domain", "range", "emptyDomain", "clamp", "reverse", "palette",
       "interpolate", "midpoint", "unknown"
     ])
   }),
   editSizeScale: Object.freeze({
     channel: "size",
     options: Object.freeze([
-      "type", "domain", "range", "unknown", "clamp", "reverse", "base",
+      "type", "domain", "range", "emptyDomain", "unknown", "clamp", "reverse", "base",
       "exponent"
     ])
   }),
   editOpacityScale: Object.freeze({
     channel: "opacity",
     options: Object.freeze([
-      "type", "domain", "range", "nice", "zero", "clamp", "reverse", "unknown"
+      "type", "domain", "range", "emptyDomain", "nice", "zero", "clamp", "reverse", "unknown"
     ])
   }),
   editShapeScale: Object.freeze({
     channel: "shape",
-    options: Object.freeze(["type", "domain", "range", "unknown"])
+    options: Object.freeze(["type", "domain", "range", "emptyDomain", "unknown"])
   }),
   editStrokeWidthScale: Object.freeze({
     channel: "strokeWidth",
     options: Object.freeze([
-      "type", "domain", "range", "nice", "zero", "clamp", "reverse",
+      "type", "domain", "range", "emptyDomain", "nice", "zero", "clamp", "reverse",
       "base", "exponent", "constant"
     ])
   }),
   editStrokeDashScale: Object.freeze({
     channel: "strokeDash",
-    options: Object.freeze(["type", "domain", "range"])
+    options: Object.freeze(["type", "domain", "range", "emptyDomain"])
   })
 });
 

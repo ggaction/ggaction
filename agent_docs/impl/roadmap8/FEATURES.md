@@ -1,16 +1,16 @@
 # 11개 기능의 구현 방향과 인수 조건
 
-상태: **미구현 제안**. 아래 API 이름·옵션은 검토용 후보이며 0.0.16 API가 아니다.
+상태: **F01–F05·F07–F12 구현 및 검증 완료**. 아래 API 이름·옵션은 현재 구현된 계약이다.
 각 API 결정은 [DECISIONS.md](DECISIONS.md), 독립 기대값은 [VALIDATION.md](VALIDATION.md)를 따른다.
-정확한 제안 타입은 [PROPOSED_TYPES.d.ts](PROPOSED_TYPES.d.ts), 알고리즘·저장 계약은
+계획 시점 타입 스냅샷은 [PROPOSED_TYPES.d.ts](PROPOSED_TYPES.d.ts), 알고리즘·저장 계약은
 [IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md), 조회 계약은 [INSPECTION_SPEC.md](INSPECTION_SPEC.md)를 따른다.
-이 요약보다 구체적인 개정 2 상세 명세가 제안의 세부 의미를 소유한다. F06은 사용자 요청으로 제외됐다.
+이 요약보다 구체적인 개정 2 상세 명세가 설계 의미를 소유한다. F06은 사용자 요청으로 제외됐다.
 
 ## F01 — 필드/schema 계약 (Phase 1, D01/D02)
 
 **이유:** 필드 없음과 값 없음은 다르다. 빈 행 배열만으로는 필드 목록과 타입을 복구할 수 없다.
 
-- `createData({id, values, schema?})` 확장과 read-only `getDatasetSchema(program,{data})`를 제안한다.
+- `createData({id, values, schema?})` 확장과 read-only `getDatasetSchema(program,{data})`를 제공한다.
 - schema는 순서 있는 field descriptor 목록을 가진다. 필수 정보는 name, storage type, nullable,
   행에서의 optional 여부다. `unknown`과 `mixed`를 number/string으로 억지 승격하지 않는다.
 - source 값에서 추론한 schema와 명시한 schema의 출처를 구분한다. 값 검증은 모든 행에서 수행한다.

@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "activeRoadmap": "roadmap8",
-  "activePhase": 0,
-  "lastCompletedRoadmap": "roadmap7",
-  "lastCompletedPhase": 12,
+  "activeRoadmap": null,
+  "activePhase": null,
+  "lastCompletedRoadmap": "roadmap8",
+  "lastCompletedPhase": 7,
   "roadmaps": [
     {
       "id": "roadmap1",
@@ -120,8 +120,8 @@
     {
       "id": "roadmap8",
       "title": "Composable Authoring Correctness and Execution Contracts",
-      "status": "active",
-      "role": "current-execution-plan",
+      "status": "completed",
+      "role": "historical-execution-record",
       "file": "agent_docs/impl/roadmap8/ROADMAP.md"
     }
   ]

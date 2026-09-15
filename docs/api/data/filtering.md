@@ -9,7 +9,7 @@ title: Data and Mark Filtering
 
 {% include chart-example.html id="regression" %}
 
-## `filterData({ id, source?, field, oneOf | predicate | range })`
+## `filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })`
 
 Create a named derived dataset without replacing or mutating its source.
 
@@ -35,11 +35,14 @@ const selected = chart()
 | `source` | existing dataset ID | no; defaults to current dataset |
 | `field` | non-empty string | yes |
 | `oneOf` | non-empty scalar array | one filter mode required |
+| `noneOf` | non-empty scalar array | one filter mode required |
 | `predicate` | `{ op, value }` | one filter mode required |
-| `range` | `{ min, max, inclusive? }` | one filter mode required |
+| `range` | `{ min?, max?, minInclusive?, maxInclusive? }` | one filter mode required |
+| `nulls` | `"include"` or `"exclude"` | `"exclude"` |
 
 The derived dataset stores its source ID, filter transform, and immutable
-materialized values. Exactly one of `oneOf`, `predicate`, or `range` is required.
+materialized values. Exactly one of `oneOf`, `noneOf`, `predicate`, or `range`
+is required.
 Rows retain source order, the source remains unchanged, and the new dataset
 becomes current data for the next mark.
 
@@ -64,9 +67,15 @@ const powerfulCars = chart()
   });
 ```
 
-Range endpoints must be the same type and `min` cannot exceed `max`.
-`inclusive` defaults to `true`; setting it to `false` excludes both endpoints.
-An empty result is valid.
+`noneOf` is the complement of `oneOf` for non-null values. `nulls` independently
+controls rows whose selected field is `null` or `undefined`; it does not make
+ordered comparisons coerce missing values.
+
+A range can have only a lower bound, only an upper bound, or both. Present
+endpoints must have compatible ordered types, and `min` cannot exceed `max`.
+`minInclusive` and `maxInclusive` each default to `true`. The compatibility
+property `inclusive` sets both endpoints together, but cannot be combined with
+either endpoint-specific property. An empty result is valid.
 
 <!-- snippet-context:start -->
 
@@ -79,9 +88,13 @@ program.filterData({
   id: "midDisplacementCars",
   source: "cars",
   field: "Displacement",
-  range: { min: 100, max: 300, inclusive: true }
+  range: { min: 100, max: 300, minInclusive: false, maxInclusive: true }
 });
 ```
+
+`editFilteredData` accepts the same modes. Supplying a new mode replaces the
+old one atomically. A partial range edit preserves an omitted endpoint and its
+existing inclusivity; `min: false` or `max: false` removes that endpoint.
 
 ## `filterMarks({ target?, mode?, ...selector })` {#filter-marks}
 

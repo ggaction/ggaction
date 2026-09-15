@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.16.
 
-Contract: sha256:0b76a2c9b1d2f953b70f9e643a60c234204bd392e4782820465035412515bf82. Status: published-release. Runtime source: cdcd030ee663dde0193384cd6d7b37af1b15b804. Release baseline: v0.0.13.
+Contract: sha256:89ddb0a06ff09a57098c295cda50788c02ed0418b6689098f725fe8e79e04805. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -187,6 +187,10 @@ created in `index.html`.
 | `ggaction` | Modern ESM browsers and Node.js 20+ | Complete chart authoring and Browser Canvas rendering |
 | `ggaction/basic` | Modern ESM browsers and Node.js 20+ | Smaller creation path for scatter, line, bar, histogram, and heatmap charts |
 | `ggaction/extension` | Modern ESM browsers and Node.js 20+ | Wrapped action registration and public primitive authoring |
+| `ggaction/inspection` | Modern ESM browsers and Node.js 20+ | Dataset schemas, action preflight, immutable diffs, and concrete-result inspection |
+| `ggaction/persistence` | Modern ESM browsers and Node.js 20+ | Editable and render-only snapshot serialization |
+| `ggaction/accessibility` | Modern ESM browsers and Node.js 20+ | Final visual-data export for host accessibility surfaces |
+| `ggaction/diagnostics` | Modern ESM browsers and Node.js 20+ | Structured action error details |
 | `ggaction/png` | Node.js 20+ only | PNG file output through the native Canvas adapter |
 | `ggaction/pdf` | Node.js 20+ only | Single-page vector PDF file output |
 | `ggaction/svg` | Modern ESM browsers and Node.js 20+ | Complete SVG document string output |
@@ -258,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/cdcd030ee663dde0193384cd6d7b37af1b15b804/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/cdcd030ee663dde0193384cd6d7b37af1b15b804/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -510,10 +514,23 @@ The exact setup signatures are:
 
 ```typescript
 createCanvas(options?: CanvasOptions): ChartProgram;
-createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
+createData<Row extends object>(options: {
+  id?: string;
+  values: readonly Row[];
+  schema?: {
+    fields: readonly {
+      name: string;
+      storageType: "number" | "string" | "boolean" | "array" | "object";
+      nullable?: boolean;
+      optional?: boolean;
+    }[];
+  };
+}): ChartProgram;
 ```
 
 `values` is the caller-owned array; `createData({ rows })` is not a public call.
+Provide `schema` when an empty source still needs known fields. Without it, an empty
+source has unknown field completeness and field-driven actions cannot infer those fields.
 Every action returns a new `ChartProgram`, so retain each reassignment or use a
 fluent chain. See [Canvas](./api/canvas/), [Data](./api/data/), and the
 [ChartProgram type](./reference/types/) for their normative contracts.
@@ -4767,12 +4784,13 @@ creating state, and a failed action leaves the earlier program unchanged.
 
 # Source and Derived Data
 
-## `createData({ id?, values })` {#createdata-id-values}
+## `createData({ id?, values, schema? })` {#createdata-id-values}
 
 | Option | Type | Required |
 | --- | --- | --- |
 | `id` | string containing letters, numbers, `_`, or `-` | no; first dataset defaults to `"data"` |
 | `values` | array of plain row objects | yes |
+| `schema` | `{ fields: Record<string, DatasetFieldSchema> }` | no |
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -4795,6 +4813,15 @@ be created twice, and source values cannot be replaced after creation. The
 first omitted ID is stored as `"data"`. Once any dataset exists, another
 `createData` call must provide an explicit ID; the library does not invent
 `data2`-style names.
+
+Every dataset carries a schema. Non-empty source rows infer field kinds and
+nullable state from observed values. An empty source has an unknown schema;
+`[{}]` has a known schema with no fields. Pass `schema` when an empty dataset
+must retain field meaning or when every row should be checked against a closed
+set of declared fields. Derived transforms validate their input fields and
+publish their output schema. `getDatasetSchema(program, id)` from
+`ggaction/inspection` returns the immutable normalized result, including
+lineage and whether it was declared, inferred, or derived.
 
 The most recently created dataset becomes the default for `createPointMark`,
 `createLineMark`, or `createBarMark`. Creating data records semantic state only
@@ -4844,6 +4871,7 @@ corresponding higher-level action when the library should materialize values:
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
+| `"sort"` | `{ type, sortBy }` | `createSortedData` |
 | `"density"` | `{ type, field, groupBy?, bandwidth, extent, steps, kernel?, normalization?, weight?, as, resolve: "shared", resolved? }` | `createDensityData` |
 | `"ecdf"` | `{ type, field, groupBy, weight?, missing, as, resolved? }` | `createECDFData` |
 | `"statisticalReference"` | `{ type, target }` | Owned by `createReferenceLine` / `createReferenceBand`; use those actions |
@@ -4860,8 +4888,9 @@ and explaining this requirement. Choosing it as the current dataset has the same
 result. Use a value-producing action from the table above to create data for the
 chart; consumers do not run transform definitions automatically.
 
-For regression, linear and polynomial transforms require an `interval` and either
-legacy `confidence` or the explicit `confidenceMethod` plus `level` branch.
+For regression, linear and polynomial transforms with an interval require
+either legacy `confidence` or the explicit `confidenceMethod` plus `level`
+branch. `interval: false` stores fit-only output without confidence fields.
 Polynomial also requires `degree`. LOESS requires `span` and does
 not accept interval properties. Density `as` is a two-field tuple. Interval
 `as` contains distinct `center`, `lower`, and `upper` field names; mean CI
@@ -4875,6 +4904,32 @@ provenance directly. Time-unit transforms use the common temporal input parser,
 then resolve UTC or an explicit IANA-zone calendar boundary. Weekday output is
 nominal; other units store a finite bucket-start timestamp. Use
 `createTimeUnitData` to validate source fields and materialize rows.
+
+## `createSortedData({ id, source?, sortBy })` {#create-sorted-data}
+
+Create a materialized derived dataset whose rows are stably ordered without
+changing its source. `sortBy` is a non-empty array of `{ field, order?, nulls?,
+temporalUnit? }` keys. `order` defaults to `"ascending"`; `nulls`
+defaults to `"last"`. Quantitative, categorical, and temporal keys use their
+declared comparison rules. Mixed incompatible values fail instead of being
+coerced. Equal keys retain source order.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+const ordered = chart()
+  .createData({ id: "sales", values: sales })
+  .createSortedData({
+    id: "orderedSales",
+    sortBy: [
+      { field: "region", fieldType: "nominal" },
+      { field: "revenue", fieldType: "quantitative", order: "descending" }
+    ]
+  });
+```
+
+The transform retains the source schema and participates in dependent replay,
+source revision, persistence, and the ordinary derived-data lifecycle.
 
 `DatasetTransform` and `CreateDerivedDataOptions` export the same public union
 for TypeScript. Internal transforms generated by composite actions, including
@@ -4956,7 +5011,7 @@ See [Data Revisions and Removal](./api/data/revisions-and-removal/#removedata-id
 
 # Data and Mark Filtering
 
-## `filterData({ id, source?, field, oneOf | predicate | range })`
+## `filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })`
 
 Create a named derived dataset without replacing or mutating its source.
 
@@ -4978,11 +5033,14 @@ const selected = chart()
 | `source` | existing dataset ID | no; defaults to current dataset |
 | `field` | non-empty string | yes |
 | `oneOf` | non-empty scalar array | one filter mode required |
+| `noneOf` | non-empty scalar array | one filter mode required |
 | `predicate` | `{ op, value }` | one filter mode required |
-| `range` | `{ min, max, inclusive? }` | one filter mode required |
+| `range` | `{ min?, max?, minInclusive?, maxInclusive? }` | one filter mode required |
+| `nulls` | `"include"` or `"exclude"` | `"exclude"` |
 
 The derived dataset stores its source ID, filter transform, and immutable
-materialized values. Exactly one of `oneOf`, `predicate`, or `range` is required.
+materialized values. Exactly one of `oneOf`, `noneOf`, `predicate`, or `range`
+is required.
 Rows retain source order, the source remains unchanged, and the new dataset
 becomes current data for the next mark.
 
@@ -5003,9 +5061,15 @@ const powerfulCars = chart()
   });
 ```
 
-Range endpoints must be the same type and `min` cannot exceed `max`.
-`inclusive` defaults to `true`; setting it to `false` excludes both endpoints.
-An empty result is valid.
+`noneOf` is the complement of `oneOf` for non-null values. `nulls` independently
+controls rows whose selected field is `null` or `undefined`; it does not make
+ordered comparisons coerce missing values.
+
+A range can have only a lower bound, only an upper bound, or both. Present
+endpoints must have compatible ordered types, and `min` cannot exceed `max`.
+`minInclusive` and `maxInclusive` each default to `true`. The compatibility
+property `inclusive` sets both endpoints together, but cannot be combined with
+either endpoint-specific property. An empty result is valid.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "cars"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -5014,9 +5078,13 @@ program.filterData({
   id: "midDisplacementCars",
   source: "cars",
   field: "Displacement",
-  range: { min: 100, max: 300, inclusive: true }
+  range: { min: 100, max: 300, minInclusive: false, maxInclusive: true }
 });
 ```
+
+`editFilteredData` accepts the same modes. Supplying a new mode replaces the
+old one atomically. A partial range edit preserves an omitted endpoint and its
+existing inclusivity; `min: false` or `max: false` removes that endpoint.
 
 ## `filterMarks({ target?, mode?, ...selector })` {#filter-marks}
 
@@ -5120,7 +5188,7 @@ const restored = japanOnly.removeMarkFilter({ target: "points" });
 
 # Statistical Data Transforms
 
-## `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval? })`
+## `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval?, predict?, missing? })`
 
 Create deterministic regression predictions from an existing dataset. This is
 an advanced data action used by higher-level regression chart actions.
@@ -5149,20 +5217,27 @@ program.createRegressionData({
 | `level` | number strictly between `0` and `1`; not accepted by LOESS | `0.95` |
 | `confidence` | compatibility alias for `level`; must match it when both appear | omitted |
 | `interval` | `"mean"` or `"prediction"`; not accepted by LOESS | `"mean"` |
+| `predict` | `{ values }` or `{ domain, steps }` | observed unique x values |
+| `missing` | `"error"` or `"drop"` | compatibility behavior when omitted |
 
-Linear and polynomial fits use stable least squares. Polynomial groups require
-at least `degree + 2` rows and `degree + 1` distinct x values. LOESS uses
+Linear and polynomial fits use stable least squares. Fit-only linear models
+require two rows; fit-only polynomial models require `degree + 1` rows and
+distinct x values. Confidence intervals require the additional residual
+degrees of freedom. Set `interval: false` for fitted values without lower and
+upper confidence fields. LOESS uses
 tricube-weighted local-linear fits over `ceil(span * groupSize)` nearest rows,
 with source order breaking distance ties. Output follows group first appearance
-and observed unique x order. Linear and polynomial output includes fixed
-`__regression_ci_lower` / `__regression_ci_upper` fields; LOESS is line-only.
+and the chosen prediction grid. Explicit prediction values must be finite,
+unique, and strictly ascending; a domain requires at least two steps. Linear
+and polynomial interval output includes fixed `__regression_ci_lower` /
+`__regression_ci_upper` fields; fit-only and LOESS output does not.
 Source values remain unchanged.
 
 Regression output is limited to 10,000 unique group/x rows. Polynomial and
 LOESS fitting reject inputs whose estimated work exceeds 10,000,000 units,
 before allocating or entering the expensive fit.
 
-## `createIntervalData({ id, source?, field, groupBy?, center?, extent?, method?, level?, as? })` {#create-interval-data}
+## `createIntervalData({ id, source?, field, groupBy?, center?, extent?, method?, level?, missing?, as? })` {#create-interval-data}
 
 Create immutable grouped interval-summary rows independently from an error-bar
 mark.
@@ -5187,16 +5262,18 @@ program.createIntervalData({
 | `extent` | `"stderr"`, `"stdev"`, `"ci"`, or `"iqr"` | `"ci"` |
 | `method` | `"normal"` or `"student-t"` | `"student-t"` for CI |
 | `level` | number strictly between `0` and `1` | `0.95` for CI |
+| `missing` | `"error"` or `"drop"` | compatibility behavior when omitted |
 | `as` | `{ center, lower, upper }` distinct field names | ID-namespaced fields |
 
 Mean supports standard error, sample standard deviation, and two-sided normal
 or Student-t confidence intervals. Median requires interquartile range, and IQR
 requires median. Group order follows first appearance. Missing group values,
-non-finite measures, and undersized mean groups are omitted; valid source rows
+non-finite measures follow the explicit `missing` policy when provided;
+undersized mean groups fail with a diagnostic. Valid source rows
 and the source dataset remain unchanged. A summary whose derived finite center
 or endpoint is not representable throws a `RangeError` atomically.
 
-## `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, weight?, as? })`
+## `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, weight?, missing?, as? })`
 
 Create an immutable kernel-density dataset. This is an advanced data
 action used by higher-level density-chart encodings.
@@ -5224,6 +5301,7 @@ program.createDensityData({
 | `kernel` | `"gaussian"`, `"epanechnikov"`, `"uniform"`, or `"triangular"` | `"gaussian"` |
 | `normalization` | `"unit"` or `"count"` | `"unit"` |
 | `weight` | `{ field, kind: "frequency" | "reliability" }` | unweighted |
+| `missing` | `"error"` or `"drop"` | compatibility behavior when omitted |
 | `as` | two distinct output field names | `<field>_value`, `<field>_density` |
 
 Grouped densities use one shared extent and inclusive sample grid. Group order
@@ -5245,6 +5323,12 @@ profile, and facet child. Multiple profiles store their individual resolved
 bandwidths in first-appearance order. Frequency weights are non-negative safe
 integers; reliability weights are non-negative finite numbers. Use an explicit
 positive bandwidth when a weighted profile has effective sample size one.
+
+Summary, bin, density, interval, and regression materializers store calculation
+reports in `materializationConfigs.calculations.datasets[id]`. Reports expose
+input, accepted, and dropped row counts plus transform-specific group or output
+counts. Editing or revising a derived dataset replaces its report; releasing
+the dataset removes it.
 
 ## Related
 
@@ -5643,6 +5727,15 @@ each type infers its ID and current dataset when those choices are unambiguous.
 | Text | `createTextMark` | `editTextMark`, `layoutLabels`, `removeLabelLayout`, `removeMarkLabels` | Text collection |
 | Rect | `createRectMark` | `editRectMark` | Rect collection |
 
+Point, Bar, Rect, Tick, Rule, and row-backed Text marks accept
+`missing: "error" | "skip"` in their create and edit actions. The explicit
+`"error"` policy rejects the first `null`, absent, or `undefined` value in any
+field-backed active encoding. `"skip"` removes that row from every scale domain
+and concrete item calculation for the mark, so its selections, labels, and
+inspection counts use the same eligible set. Omission preserves the earlier
+per-mark behavior. Area keeps its separate `"error" | "break"` series policy;
+Arc missing values must be handled by the data or aggregate policy.
+
 Use `removeMark({ target? })` to remove one complete stable mark owner. It also
 removes generated composite children, unreferenced generated datasets, owned
 legends, and selection/highlight state. Source data and resources shared by
@@ -5681,7 +5774,7 @@ those graphics.
 
 ## Tick marks
 
-`createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`
+`createTickMark({ id?, data?, missing?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`
 creates a Tick, and
 `editTickMark({ target?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? })`
 updates it.
@@ -5741,7 +5834,7 @@ Point marks represent individual observations or derived items. Their semantic
 type is `point`; circle, square, diamond, and other symbols are graphical
 realizations of that meaning.
 
-## `createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
+## `createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 | Option | Type | Default or inference |
 | --- | --- | --- |
@@ -6072,7 +6165,7 @@ Missing independent positions, invalid group keys, NaN and Infinity remain error
 Bar marks represent binned counts, aggregate categories, grouped or stacked
 partitions, and observed quantitative intervals.
 
-## `createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
+## `createBarMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -6150,7 +6243,7 @@ for the closed cap/join values, defaults, and high-level pass-through rules.
 Rule marks represent reference lines and intervals. They use concrete line
 primitives without exposing a renderer-specific path format.
 
-## `createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`
+## `createRuleMark({ id?, data?, missing?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -6540,7 +6633,7 @@ See [Label Collision Layout](./api/marks/label-layout/#removelabellayoutoptions)
 Rect marks represent independent two-dimensional cells. They are distinct from
 bars: rects do not infer aggregation, a zero baseline, stacking, or bar width.
 
-## `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
+## `createRectMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -6944,6 +7037,9 @@ program.createRegression({
 | `level` | number strictly between `0` and `1` | `0.95` |
 | `confidence` | compatibility alias for `level`; must match it when both appear | omitted |
 | `interval` | `"mean"` or `"prediction"` | `"mean"` |
+| `predict` | `{ values }` or `{ domain, steps }` | observed unique x values |
+| `missing` | `"error"` or `"drop"` | compatibility behavior when omitted |
+| `sourceBinding` | `"fixed"` or `"follow"` | `"fixed"` |
 | `band` | appearance object or `false` | default band; no band for LOESS |
 | `band.color` | color string | `"#111111"` |
 | `band.opacity` | number from `0` to `1` | `0.18` |
@@ -6962,6 +7058,7 @@ Choose another model or interval without coordinating its child layers:
 points.createRegression({ method: "polynomial", degree: 2 });
 points.createRegression({ method: "loess", span: 0.55 });
 points.createRegression({ interval: "prediction" });
+points.createRegression({ interval: false, band: false });
 ```
 
 Polynomial degree `1` retains polynomial provenance while producing the same
@@ -6970,6 +7067,11 @@ and are therefore at least as wide as matching mean intervals. LOESS does not
 accept `confidenceMethod`, `level`, `confidence`, `interval`, or a band object; its omitted or `false` band
 produces only the fitted line. Linear and polynomial bands can also be disabled
 with `band: false`.
+
+`sourceBinding: "fixed"` keeps the regression attached to the source snapshot
+used at creation. `"follow"` refits when `reviseData` advances that logical
+source. Appearance-only edits preserve fitted rows. Statistical, field, or
+prediction-grid edits create one new immutable fitted dataset.
 
 Each regression produces at most 10,000 group/x rows. Polynomial and LOESS
 inputs whose estimated fitting work exceeds 10,000,000 units throw a
@@ -7016,7 +7118,8 @@ const rebound = program.editRegression({
 });
 ```
 
-`method`, `degree`, `span`, `confidenceMethod`, `level`, `confidence`, and `interval` follow the same
+`method`, `degree`, `span`, `confidenceMethod`, `level`, `confidence`, `interval`,
+`predict`, `missing`, and `sourceBinding` follow the same
 method-specific rules as creation. A data-role or statistical change creates
 one new immutable fitted-data revision, rebinds every owned regression
 component, and releases the old revision when nothing references it.
@@ -13683,6 +13786,12 @@ source snapshot only.
 
 ## Save and restore snapshots
 
+Use `getDatasetSchema`, `describeAction`, `comparePrograms`, and
+`inspectProgram` from `ggaction/inspection` to inspect data contracts, discover
+action metadata, compare immutable revisions, and calculate bounded chart
+summaries without reaching into private state. Inspection never mutates the
+program and reports unsupported or malformed structures explicitly.
+
 The browser-safe `ggaction/persistence` entry stores either an editable program
 or its concrete graphics. This standalone example needs no filesystem or DOM:
 
@@ -13729,17 +13838,23 @@ open action stacks are rejected. The format cannot load code, import packages,
 or execute saved trace arguments. Custom subclass restoration adapters are not
 available.
 
-### Snapshot format, version 1
+### Snapshot formats
 
 Each JSON envelope has exactly these keys:
 
 ```text
-{ schemaVersion: 1, kind: "editable" | "graphic", packageVersion: string,
+{ schemaVersion: 2, kind: "editable", packageVersion: string,
+  extensions: string[], payload: EncodedValue }
+{ schemaVersion: 1, kind: "graphic", packageVersion: string,
   extensions: string[], payload: EncodedValue }
 ```
 
+Editable snapshots use schema version 2 so dataset schema and calculation
+metadata round-trip. The reader migrates editable version 1 payloads by
+inferring or deriving missing dataset schemas before validation. Graphic
+snapshots remain version 1 because their payload shape did not change.
 `packageVersion` records the producer version; `schemaVersion` determines the
-format. Unknown schema versions are rejected. `extensions` contains the exact
+format. Other schema versions are rejected. `extensions` contains the exact
 registered extension names required by the editable action traces, including
 children; graphic snapshots use an empty array. The editable payload uses the
 canonical keys `semanticSpec`, `graphicSpec`, `resolvedScales`,
@@ -13774,6 +13889,101 @@ not as an object-identity graph.
 [Source and derived data](./api/data/source-and-derived/) ·
 [ChartProgram and immutability](./concepts/chart-program/) ·
 [Responsive charts](./responsive-charts/) · [Errors and recovery](./errors-and-recovery/)
+
+<!-- Source: /inspection/ -->
+
+# Program Inspection
+
+The browser-safe `ggaction/inspection` entry reads a closed Full or Basic
+program without executing an action or changing its trace, context, or cached
+materialization. Every returned object is immutable and carries `version: 1`
+where its contract may evolve.
+
+```javascript
+import {
+  getDatasetSchema,
+  describeAction,
+  comparePrograms,
+  inspectProgram
+} from "ggaction/inspection";
+```
+
+## Read a dataset contract
+
+```javascript
+const { data, schema } = getDatasetSchema(program, { data: "sales" });
+```
+
+The explicit dataset ID can be a logical derived-data owner or its current
+physical revision. The result reports the resolved ID and normalized schema.
+`completeness: "unknown"` means the library cannot prove field availability;
+it is different from a known schema whose `fields` array is empty. Use
+`childPath` to address a dataset inside a composition.
+
+## Preflight an action
+
+```javascript
+const description = describeAction(program, {
+  action: "encodeShape",
+  target: { kind: "mark", id: "points" },
+  options: { field: "category" }
+});
+```
+
+`parameterDefinitions` comes from the same generated action-card and type
+contract as the public reference. Required options, unknown options, an
+explicit target mismatch, known missing fields, and supported mark-family
+constraints appear in `requirements`, `checks`, and structured `findings`.
+`applicability: "supported"` means the static checks passed; numerical fitting,
+allocation, and rendering remain `not_run`. Registered extension actions with
+no built-in descriptor return `unverified`.
+
+## Compare immutable revisions
+
+```javascript
+const comparison = comparePrograms(before, after);
+const dataScoped = comparePrograms(before, after, {
+  target: { kind: "data", id: "sales" }
+});
+```
+
+The full comparison includes datasets and values, layer order and bindings,
+scales, coordinates, guides, Canvas settings, composition intent, and
+user-authored appearance. It ignores trace-only IDs, current selection context,
+and cache identity. Changes are classified as `data`, `binding`, `structure`,
+`scale`, `guide`, or `style`. A targeted comparison also includes changed
+downstream consumers and sets `completeProgramComparison: false`.
+
+## Inspect concrete results
+
+```javascript
+const report = inspectProgram(program, {
+  target: { kind: "mark", id: "points" }
+});
+```
+
+Each owner view separates source rows, logical items, concrete primitives, and
+statically visible candidates. Flags distinguish zero opacity, zero size,
+outside-Canvas bounds, and rows removed by `missing: "skip"`. Line and Area
+counts use series grain. Guides have separate views so axis or legend items do
+not inflate data-mark counts. Stored statistical calculation reports appear in
+`calculations`.
+
+The inspection checks concrete structure and finite geometry where the graphic
+contract supports it. It does not claim raster-pixel visibility, occlusion, or
+exact font ink bounds; those checks remain `not_run` and make
+`coverage.partial` true. A malformed graphic hierarchy is rejected rather than
+reported as a valid partial result.
+
+Targets use `{ kind, id, childPath? }`, where `kind` is `data`, `mark`, `scale`,
+`coordinate`, or `guide`. IDs from different resource kinds never alias, and
+`childPath` is resolved from the outer program inward.
+
+## Related
+
+[Data updates and snapshots](./data-updates/) ·
+[ChartProgram and immutability](./concepts/chart-program/) ·
+[Errors and recovery](./errors-and-recovery/)
 
 <!-- Source: /errors-and-recovery/ -->
 
@@ -14550,6 +14760,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createRuleMark`](./reference/actions/marks/#createrulemark) | H2 | user-facing | marks |
 | [`createScale`](./reference/actions/charts-data/#createscale) | H2 | user-facing | core |
 | [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) | H0 | user-facing | charts |
+| [`createSortedData`](./reference/actions/statistics/#createsorteddata) | H1 | user-facing | statistics |
 | [`createStackData`](./reference/actions/statistics/#createstackdata) | H1 | user-facing | statistics |
 | [`createStripPlot`](./reference/actions/charts-data/#createstripplot) | H0 | user-facing | charts |
 | [`createSummaryData`](./reference/actions/statistics/#createsummarydata) | H1 | user-facing | statistics |
@@ -14646,6 +14857,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editSemantic`](./reference/actions/extension/#editsemantic) | H4 | primitive | primitives |
 | [`editShapeScale`](./reference/actions/charts-data/#editshapescale) | H2 | user-facing | core |
 | [`editSizeScale`](./reference/actions/charts-data/#editsizescale) | H2 | user-facing | core |
+| [`editSortedData`](./reference/actions/statistics/#editsorteddata) | H1, H3 | user-facing | statistics |
 | [`editStackData`](./reference/actions/statistics/#editstackdata) | H1, H3 | user-facing | statistics |
 | [`editStrokeDashScale`](./reference/actions/charts-data/#editstrokedashscale) | H2 | user-facing | core |
 | [`editStrokeScale`](./reference/actions/charts-data/#editstrokescale) | H2 | user-facing | core |
@@ -14865,7 +15077,7 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
@@ -14895,7 +15107,7 @@ exact profile format, matching rules, propagation, and executable example.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 removeTextMetrics(): ChartProgram;
@@ -15021,6 +15233,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Required | `readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[]` |
+| `schema` | Optional / branch-dependent | `SourceSchemaInput \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -15034,7 +15247,7 @@ Create one immutable named dataset. [Data](./api/data/)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;
@@ -15051,6 +15264,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `source` | Required | `string` |
 | `id` | Required | `string` |
 | `values` | Required | `readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[]` |
+| `schema` | Optional / branch-dependent | `SourceSchemaInput \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -15066,7 +15280,7 @@ See [Data updates](./data-updates/#revise-a-source-and-its-dependent-chart).
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 removeData(options: RemoveResourceOptions): ChartProgram;
@@ -15099,7 +15313,7 @@ does not infer, cascade, or change graphics.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 removeScale(options: RemoveResourceOptions): ChartProgram;
@@ -15130,7 +15344,7 @@ graphics. [Scale Options](./api/scales/#removescale-id)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 removeCoordinate(options: RemoveResourceOptions): ChartProgram;
@@ -15210,14 +15424,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Required | `string` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `field` | Required | `string` |
-| `oneOf` | Optional / branch-dependent | `readonly unknown[] \| undefined` |
+| `nulls` | Optional / branch-dependent | `"exclude" \| "include" \| undefined` |
+| `oneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
+| `noneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `predicate` | Optional / branch-dependent | `FilterComparison \| undefined` |
 | `range` | Optional / branch-dependent | `FilterRange \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-filterData({ id, source?, field, oneOf | predicate | range })
+filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })
 ```
 
 Create an immutable named derived dataset using exactly one membership,
@@ -15252,6 +15468,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `kernel` | Optional / branch-dependent | `DensityKernel \| undefined` |
 | `normalization` | Optional / branch-dependent | `DensityNormalization \| undefined` |
 | `weight` | Optional / branch-dependent | `StatisticalWeight \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `readonly [string, string] \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -15259,7 +15476,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 createDensityData({
   id, source?, field, groupBy?, bandwidth?, extent?, steps?,
-  kernel?, normalization?, as?
+  kernel?, normalization?, weight?, missing?, as?
 })
 ```
 
@@ -15291,20 +15508,22 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `x` | Required | `string` |
 | `y` | Required | `string` |
 | `groupBy` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `RegressionInterval \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
+| `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 createRegressionData({
   id, source?, x, y, groupBy?, method?, degree?, span?,
-  confidenceMethod?, level?, confidence?, interval?
+  confidenceMethod?, level?, confidence?, interval?, predict?, missing?
 })
 ```
 
@@ -15476,7 +15695,7 @@ rebind direct visual consumers, and safely release the prior revision.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editDerivedData(options: EditDerivedDataOptions): ChartProgram;
@@ -15500,7 +15719,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editFilteredData(options: EditFilteredDataOptions): ChartProgram;
@@ -15514,12 +15733,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
-| `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
-| `oneOf` | Optional / branch-dependent | `readonly unknown[] \| undefined` |
+| `oneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
+| `noneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `predicate` | Optional / branch-dependent | `FilterComparison \| undefined` |
-| `range` | Optional / branch-dependent | `FilterRange \| undefined` |
+| `range` | Optional / branch-dependent | `FilterRangePatch \| undefined` |
+| `target` | Required | `string` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
+| `nulls` | Optional / branch-dependent | `"exclude" \| "include" \| false \| undefined` |
+| `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused core data editing](./reference/actions/charts-data/#focused-core-data-editing).
 
@@ -15527,7 +15748,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram;
@@ -15557,7 +15778,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editWindowData(options: EditWindowDataOptions): ChartProgram;
@@ -15584,7 +15805,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editDensityData(options: EditDensityDataOptions): ChartProgram;
@@ -15607,6 +15828,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `steps` | Optional / branch-dependent | `number \| undefined` |
 | `kernel` | Optional / branch-dependent | `DensityKernel \| undefined` |
 | `normalization` | Optional / branch-dependent | `DensityNormalization \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `readonly [string, string] \| undefined` |
 | `weight` | Optional / branch-dependent | `false \| StatisticalWeight \| undefined` |
 
@@ -15616,7 +15838,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editRegressionData(options: EditRegressionDataOptions): ChartProgram;
@@ -15638,10 +15860,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `RegressionInterval \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
+| `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 | `x` | Optional / branch-dependent | `string \| undefined` |
 | `y` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused core data editing](./reference/actions/charts-data/#focused-core-data-editing).
 
@@ -15673,7 +15897,7 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editCoordinate(options: EditCoordinateOptions): ChartProgram;
@@ -15715,6 +15939,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Required | `string` |
 | `type` | Optional / branch-dependent | `ScaleType \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| undefined` |
+| `emptyDomain` | Optional / branch-dependent | `"preserve" \| "require-explicit" \| undefined` |
 | `range` | Optional / branch-dependent | `ScaleRange \| undefined` |
 | `nice` | Optional / branch-dependent | `boolean \| undefined` |
 | `zero` | Optional / branch-dependent | `boolean \| undefined` |
@@ -15756,6 +15981,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `type` | Optional / branch-dependent | `ScaleType \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| undefined` |
+| `emptyDomain` | Optional / branch-dependent | `"preserve" \| "require-explicit" \| undefined` |
 | `range` | Optional / branch-dependent | `ScaleRange \| undefined` |
 | `nice` | Optional / branch-dependent | `boolean \| undefined` |
 | `zero` | Optional / branch-dependent | `boolean \| undefined` |
@@ -15779,7 +16005,7 @@ Behavior, inference, resets, and errors: [Extension and scale contracts](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editXScale(options: EditXScaleOptions): ChartProgram;
@@ -15817,7 +16043,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editYScale(options: EditYScaleOptions): ChartProgram;
@@ -15855,7 +16081,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;
@@ -15883,7 +16109,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editYOffsetScale(options: EditYOffsetScaleOptions): ChartProgram;
@@ -15911,7 +16137,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editParallelScale(options: EditParallelScaleOptions): ChartProgram;
@@ -15949,7 +16175,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editThetaScale(options: EditThetaScaleOptions): ChartProgram;
@@ -15983,7 +16209,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editRScale(options: EditRScaleOptions): ChartProgram;
@@ -16017,7 +16243,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editColorScale(options: EditColorScaleOptions): ChartProgram;
@@ -16049,7 +16275,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;
@@ -16076,7 +16302,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editSizeScale(options: EditSizeScaleOptions): ChartProgram;
@@ -16107,7 +16333,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;
@@ -16138,7 +16364,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editShapeScale(options: EditShapeScaleOptions): ChartProgram;
@@ -16165,7 +16391,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;
@@ -16198,7 +16424,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;
@@ -17183,9 +17409,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `RegressionInterval \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
+| `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `sourceBinding` | Optional / branch-dependent | `"fixed" \| "follow" \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `band` | Optional / branch-dependent | `false \| RegressionBandOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -17902,7 +18131,8 @@ See the [Area and series layout tutorial](./tutorials/area-layout/).
 
 ```javascript
 editDerivedData({ target, definition, dependents? })
-editFilteredData({ target, field?, oneOf? | predicate? | range?, dependents? })
+editFilteredData({ target, field?, oneOf? | noneOf? | predicate? | range?, nulls?, dependents? })
+editSortedData({ target, sortBy, dependents? })
 editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, dependents? })
 editWindowData({ target, partitionBy?, sortBy?, operations?, temporalUnit?, dependents? })
 editDensityData({ target, field?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, weight?, dependents? })
@@ -17980,7 +18210,7 @@ Each declared action has an exact signature and its own stable link. Option tabl
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
@@ -17996,6 +18226,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `shape` | Optional / branch-dependent | `PointShape \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -18005,7 +18236,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic point mark with one of 12 equal-area shape realizations.
@@ -18018,7 +18249,7 @@ Create a semantic point mark with one of 12 equal-area shape realizations.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails).
@@ -18034,6 +18265,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -18139,6 +18371,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
@@ -18184,6 +18417,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -18226,7 +18460,7 @@ keeps its percentage of the complete source.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
@@ -18264,7 +18498,7 @@ rebound with this action or removed.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
@@ -18304,7 +18538,7 @@ Pass `"auto"` to restore the legacy source anchor and remove the owned placement
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
@@ -18354,6 +18588,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -18420,6 +18655,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `text` | Optional / branch-dependent | `unknown` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -18470,6 +18706,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -18580,7 +18817,7 @@ binding clears it. Domains and tick values are already normalized timestamps.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editPointMark(options: StrokeStyleDetails & { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+editPointMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
@@ -18595,6 +18832,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `shape` | Optional / branch-dependent | `PointShape \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -18604,7 +18842,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })
+editPointMark({ target?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
@@ -18617,7 +18855,7 @@ Change constant point shape, fill, opacity, or outline appearance and rematerial
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editTickMark(options: StrokeStyleDetails & { target?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+editTickMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails).
@@ -18632,6 +18870,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -18890,7 +19129,7 @@ semantic encodings. [Marks](./api/marks/)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createBarMark(options?: RectStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+createBarMark(options?: RectStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
@@ -18907,6 +19146,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
@@ -18928,7 +19168,7 @@ Create a semantic bar mark and empty rect collection.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editBarMark(options: RectStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
@@ -18944,6 +19184,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
@@ -19009,7 +19250,7 @@ Area `missing` defaults to `"error"`. `"break"` splits null/undefined measured e
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
+createRuleMark(options?: { id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
 ```
 
 Named option contracts: [`RuleStyleOptions`](./reference/types/#type-rulestyleoptions).
@@ -19022,6 +19263,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
@@ -19046,7 +19288,7 @@ Create a semantic rule mark and empty line collection. The first omitted ID is
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
+editRuleMark(options: { target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
 ```
 
 Named option contracts: [`RuleStyleOptions`](./reference/types/#type-rulestyleoptions).
@@ -19058,6 +19300,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
@@ -19214,6 +19457,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
@@ -19257,6 +19501,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
@@ -20415,6 +20660,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `kernel` | Optional / branch-dependent | `DensityKernel \| undefined` |
 | `normalization` | Optional / branch-dependent | `DensityNormalization \| undefined` |
 | `weight` | Optional / branch-dependent | `StatisticalWeight \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `readonly [string, string] \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
@@ -20688,6 +20934,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `aggregates` | Required | `readonly SummaryAggregateOptions[]` |
 | `members` | Optional / branch-dependent | `string \| undefined` |
 | `weight` | Optional / branch-dependent | `StatisticalWeight \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
+| `empty` | Optional / branch-dependent | `"identity" \| "null" \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -20725,6 +20973,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `includeEmpty` | Optional / branch-dependent | `boolean \| undefined` |
 | `members` | Optional / branch-dependent | `boolean \| undefined` |
 | `weight` | Optional / branch-dependent | `StatisticalWeight \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `BinDataOutputFields \| undefined` |
 | `maxBins` | Optional / branch-dependent | `number \| undefined` |
 | `step` | Optional / branch-dependent | `number \| undefined` |
@@ -20808,7 +21057,7 @@ expression. [Source and Derived Data](./api/data/source-and-derived/#createcompu
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -20843,11 +21092,43 @@ Materialize row-preserving share, z-score, min-max, index, change, or fractional
 percent-change values independently within each group.
 [Source and Derived Data](./api/data/source-and-derived/#createnormalizeddata-id-source-field-as-groupby-method)
 
+## `createSortedData`
+
+**API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createSortedData(options: SortedDataOptions): ChartProgram;
+```
+
+Named option contracts: [`SortedDataOptions`](./reference/types/#type-sorteddataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `sortBy` | Required | `readonly [SortKey, ...SortKey[]]` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createSortedData({ id, source?, sortBy })
+```
+
+Create immutable rows in stable multi-key order. Each key controls direction,
+null placement, and quantitative, categorical, or temporal comparison.
+[Source and derived data](./api/data/source-and-derived/#create-sorted-data)
+
 ## `createCompleteData`
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 createCompleteData(options: CompleteDataOptions): ChartProgram;
@@ -20884,7 +21165,7 @@ explicit fill and source-membership provenance for synthesized rows.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 createImputedData(options: ImputedDataOptions): ChartProgram;
@@ -20957,7 +21238,7 @@ by Bar and Area layouts. [Source and Derived Data](./api/data/source-and-derived
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editComputedData(options: EditComputedDataOptions): ChartProgram;
@@ -20982,7 +21263,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editFoldData(options: EditFoldDataOptions): ChartProgram;
@@ -21007,7 +21288,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editSummaryData(options: EditSummaryDataOptions): ChartProgram;
@@ -21026,6 +21307,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `aggregates` | Optional / branch-dependent | `readonly SummaryAggregateOptions[] \| undefined` |
 | `members` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
+| `empty` | Optional / branch-dependent | `"identity" \| "null" \| undefined` |
 | `weight` | Optional / branch-dependent | `false \| StatisticalWeight \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
@@ -21034,7 +21317,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editBinData(options: EditBinDataOptions): ChartProgram;
@@ -21059,6 +21342,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `zero` | Optional / branch-dependent | `boolean \| undefined` |
 | `includeEmpty` | Optional / branch-dependent | `boolean \| undefined` |
 | `members` | Optional / branch-dependent | `boolean \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `BinDataOutputFields \| undefined` |
 | `weight` | Optional / branch-dependent | `false \| StatisticalWeight \| undefined` |
 
@@ -21068,7 +21352,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editStackData(options: EditStackDataOptions): ChartProgram;
@@ -21096,7 +21380,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editIntervalData(options: EditIntervalDataOptions): ChartProgram;
@@ -21118,6 +21402,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `extent` | Optional / branch-dependent | `IntervalExtent \| undefined` |
 | `method` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `IntervalOutputFields \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
@@ -21126,7 +21411,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editECDFData(options: EditECDFDataOptions): ChartProgram;
@@ -21154,7 +21439,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;
@@ -21181,11 +21466,35 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
 
+## `editSortedData`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editSortedData(options: EditSortedDataOptions): ChartProgram;
+```
+
+Named option contracts: [`EditSortedDataOptions`](./reference/types/#type-editsorteddataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string` |
+| `sortBy` | Required | `readonly [SortKey, ...SortKey[]]` |
+| `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
+
+Behavior, inference, resets, and errors: [Focused core data editing](./reference/actions/charts-data/#focused-core-data-editing).
+
 ## `editCompleteData`
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editCompleteData(options: EditCompleteDataOptions): ChartProgram;
@@ -21214,7 +21523,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editImputedData(options: EditImputedDataOptions): ChartProgram;
@@ -21266,13 +21575,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `extent` | Optional / branch-dependent | `IntervalExtent \| undefined` |
 | `method` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `IntervalOutputFields \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 createIntervalData({
-  id, source?, field, groupBy?, center?, extent?, method?, level?, as?
+  id, source?, field, groupBy?, center?, extent?, method?, level?, missing?, as?
 })
 ```
 
@@ -21339,13 +21649,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `sourceBinding` | Optional / branch-dependent | `"fixed" \| "follow" \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `RegressionInterval \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
+| `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 | `band` | Optional / branch-dependent | `false \| RegressionBandOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -21391,9 +21704,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `RegressionInterval \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
+| `predict` | Optional / branch-dependent | `false \| RegressionPredictOptions \| undefined` |
 | `band` | Optional / branch-dependent | `false \| RegressionBandOptions \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `sourceBinding` | Optional / branch-dependent | `"fixed" \| "follow" \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -23454,7 +23770,7 @@ dependent replay that would invalidate a stored exact sample fails atomically.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editLegendBlock(options: EditLegendBlockOptions): ChartProgram;
@@ -24845,7 +25161,7 @@ Each declared action has an exact signature and its own stable link. Option tabl
 
 **API layer:** advanced. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 encodeChannels(options: EncodeChannelsOptions): ChartProgram;
@@ -25387,6 +25703,7 @@ interface ChartProgramActions {
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
   createBin2DData(options: Bin2DDataOptions): ChartProgram;
+  createSortedData(options: SortedDataOptions): ChartProgram;
   editDerivedData(options: EditDerivedDataOptions): ChartProgram;
   editComputedData(options: EditComputedDataOptions): ChartProgram;
   editFilteredData(options: EditFilteredDataOptions): ChartProgram;
@@ -25398,31 +25715,32 @@ interface ChartProgramActions {
   editDensityData(options: EditDensityDataOptions): ChartProgram;
   editStackData(options: EditStackDataOptions): ChartProgram;
   editRegressionData(options: EditRegressionDataOptions): ChartProgram;
+  editSortedData(options: EditSortedDataOptions): ChartProgram;
   editIntervalData(options: EditIntervalDataOptions): ChartProgram;
   editECDFData(options: EditECDFDataOptions): ChartProgram;
   editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;
   editCompleteData(options: EditCompleteDataOptions): ChartProgram;
   editImputedData(options: EditImputedDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
-  createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editPointMark(options: StrokeStyleDetails & { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
-  editTickMark(options: StrokeStyleDetails & { target?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+  createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editPointMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+  editTickMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   packPoints(options: PackPointsOptions): ChartProgram;
   removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
   createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  createBarMark(options?: RectStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: RectStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  createBarMark(options?: RectStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
-  createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
-  editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
+  createRuleMark(options?: { id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+  editRuleMark(options: { target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
   editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
@@ -26236,6 +26554,7 @@ export type BinDataOptions = {
   includeEmpty?: boolean;
   members?: boolean;
   weight?: StatisticalWeight;
+  missing?: "error" | "drop";
   as?: BinDataOutputFields;
 } & BinDataMode;
 ```
@@ -27159,10 +27478,11 @@ export interface CreateCoordinateOptions {
 export interface CreateDataOptions<Row extends object> {
   id?: string;
   values: readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[];
+  schema?: SourceSchemaInput;
 }
 ```
 
-Related types: [`StoredCell`](./reference/types/#type-storedcell).
+Related types: [`StoredCell`](./reference/types/#type-storedcell) · [`SourceSchemaInput`](./reference/types/#type-sourceschemainput).
 
 ### `CreateDensityPlotOptions` {#type-createdensityplotoptions}
 
@@ -27992,6 +28312,7 @@ export interface DatasetBinTransform {
   readonly includeEmpty: boolean;
   readonly members: boolean;
   readonly weight?: StatisticalWeight;
+  readonly missing?: "error" | "drop";
   readonly as: {
     readonly lower: string;
     readonly upper: string;
@@ -28060,6 +28381,7 @@ export interface DatasetDensityTransform {
   kernel?: DensityKernel;
   normalization?: DensityNormalization;
   weight?: StatisticalWeight;
+  missing?: "error" | "drop";
   as: readonly [string, string];
   resolve: "shared";
   placement?: {
@@ -28138,10 +28460,12 @@ Related types: [`ECDFOutputFields`](./reference/types/#type-ecdfoutputfields) ·
 export type DatasetFilterTransform = {
   type: "filter";
   field: string;
+  nulls?: "include" | "exclude";
 } & (
-  | { oneOf: readonly DatasetScalar[]; predicate?: never; range?: never }
-  | { oneOf?: never; predicate: FilterComparison; range?: never }
-  | { oneOf?: never; predicate?: never; range: FilterRange }
+  | { oneOf: readonly DatasetScalar[]; noneOf?: never; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf: readonly DatasetScalar[]; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRange }
 );
 ```
 
@@ -28263,6 +28587,7 @@ export type DatasetIntervalTransform = {
   field: string;
   groupBy: readonly string[];
   as: DatasetIntervalOutputFields;
+  missing?: "error" | "drop";
 } & (
   | {
       center: "mean";
@@ -28349,24 +28674,22 @@ export type DatasetRegressionTransform = {
   y: string;
   groupBy?: string;
 } & (
-  | {
+  | ({
       method: "linear";
-      interval: "mean" | "prediction";
       degree?: never;
       span?: never;
-    } & (
+    } & ({ interval: false; confidenceMethod?: never; level?: never; confidence?: never } | ({ interval: "mean" | "prediction" } & (
       | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
       | { confidence: number; confidenceMethod?: never; level?: never }
-    )
-  | {
+    ))))
+  | ({
       method: "polynomial";
       degree: number;
-      interval: "mean" | "prediction";
       span?: never;
-    } & (
+    } & ({ interval: false; confidenceMethod?: never; level?: never; confidence?: never } | ({ interval: "mean" | "prediction" } & (
       | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
       | { confidence: number; confidenceMethod?: never; level?: never }
-    )
+    ))))
   | {
       method: "loess";
       span: number;
@@ -28376,10 +28699,10 @@ export type DatasetRegressionTransform = {
       confidence?: never;
       interval?: never;
     }
-);
+) & { readonly predict?: RegressionPredictOptions; readonly missing?: "error" | "drop" };
 ```
 
-Related types: [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod).
+Related types: [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod) · [`RegressionPredictOptions`](./reference/types/#type-regressionpredictoptions).
 
 ### `DatasetScalar` {#type-datasetscalar}
 
@@ -28387,6 +28710,22 @@ Related types: [`ConfidenceIntervalMethod`](./reference/types/#type-confidencein
 
 ```typescript
 export type DatasetScalar = string | number | boolean | null;
+```
+
+### `DatasetSortTransform` {#type-datasetsorttransform}
+
+ Expand DatasetSortTransform
+
+```typescript
+export interface DatasetSortTransform {
+  readonly type: "sort";
+  readonly sortBy: readonly {
+    readonly field: string;
+    readonly order: "ascending" | "descending";
+    readonly nulls: "first" | "last";
+    readonly temporalUnit?: "year" | "timestamp";
+  }[];
+}
 ```
 
 ### `DatasetStackTransform` {#type-datasetstacktransform}
@@ -28417,6 +28756,21 @@ interface DatasetStatisticalReferenceTransform {
 }
 ```
 
+### `DatasetStorageType` {#type-datasetstoragetype}
+
+ Expand DatasetStorageType
+
+```typescript
+export type DatasetStorageType =
+  | "number"
+  | "string"
+  | "boolean"
+  | "array"
+  | "object"
+  | "unknown"
+  | "mixed";
+```
+
 ### `DatasetSummaryTransform` {#type-datasetsummarytransform}
 
  Expand DatasetSummaryTransform
@@ -28428,6 +28782,8 @@ export interface DatasetSummaryTransform {
   aggregates: readonly SummaryAggregateOptions[];
   members?: string;
   weight?: StatisticalWeight;
+  missing?: "error" | "drop";
+  empty?: "null" | "identity";
 }
 ```
 
@@ -28485,6 +28841,7 @@ export type DatasetTransform =
   | DatasetFilterTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
+  | DatasetSortTransform
   | DatasetDensityTransform
   | DatasetECDFTransform
   | DatasetHorizonTransform
@@ -28496,7 +28853,7 @@ export type DatasetTransform =
   | DatasetWindowTransform;
 ```
 
-Related types: [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
+Related types: [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetSortTransform`](./reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -28613,6 +28970,7 @@ export interface DensityDataOptions {
   kernel?: DensityKernel;
   normalization?: DensityNormalization;
   weight?: StatisticalWeight;
+  missing?: "error" | "drop";
   as?: readonly [string, string];
 }
 ```
@@ -29239,10 +29597,15 @@ export interface EditFacetSourceOptions { program: ChartProgram; }
  Expand EditFilteredDataOptions
 
 ```typescript
-export type EditFilteredDataOptions = FocusedDerivedDataEdit<FilterDataOptions>;
+export type EditFilteredDataOptions = FilterModePatch & {
+  target: string;
+  field?: string;
+  nulls?: "include" | "exclude" | false;
+  dependents?: DerivedDataDependents;
+};
 ```
 
-Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderiveddataedit) · [`FilterDataOptions`](./reference/types/#type-filterdataoptions).
+Related types: [`FilterModePatch`](./reference/types/#type-filtermodepatch) · [`DerivedDataDependents`](./reference/types/#type-deriveddatadependents).
 
 ### `EditFoldDataOptions` {#type-editfolddataoptions}
 
@@ -29664,13 +30027,16 @@ export interface EditRegressionOptions {
   confidenceMethod?: ConfidenceIntervalMethod;
   level?: number;
   confidence?: number;
-  interval?: RegressionInterval;
+  interval?: RegressionInterval | false;
+  missing?: "error" | "drop";
+  predict?: RegressionPredictOptions | false;
   band?: false | RegressionBandOptions;
   line?: StrokeStyleDetails & { strokeWidth?: number; curve?: CurveInterpolation };
+  sourceBinding?: "fixed" | "follow";
 }
 ```
 
-Related types: [`RegressionMethod`](./reference/types/#type-regressionmethod) · [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod) · [`RegressionInterval`](./reference/types/#type-regressioninterval) · [`RegressionBandOptions`](./reference/types/#type-regressionbandoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
+Related types: [`RegressionMethod`](./reference/types/#type-regressionmethod) · [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod) · [`RegressionInterval`](./reference/types/#type-regressioninterval) · [`RegressionPredictOptions`](./reference/types/#type-regressionpredictoptions) · [`RegressionBandOptions`](./reference/types/#type-regressionbandoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
 
 ### `EditScaleOptions` {#type-editscaleoptions}
 
@@ -29682,6 +30048,7 @@ export interface EditScaleOptions {
   id?: string;
   type?: ScaleType;
   domain?: "auto" | readonly unknown[];
+  emptyDomain?: "preserve" | "require-explicit";
   range?: ScaleRange;
   nice?: boolean;
   zero?: boolean;
@@ -29733,6 +30100,20 @@ export type EditSizeScaleOptions = FocusedScaleSelection &
 ```
 
 Related types: [`FocusedScaleSelection`](./reference/types/#type-focusedscaleselection) · [`ExistingSizeScaleEditPatch`](./reference/types/#type-existingsizescaleeditpatch) · [`SizeScaleTypeEditPatch`](./reference/types/#type-sizescaletypeeditpatch).
+
+### `EditSortedDataOptions` {#type-editsorteddataoptions}
+
+ Expand EditSortedDataOptions
+
+```typescript
+export interface EditSortedDataOptions {
+  target: string;
+  sortBy: readonly [SortKey, ...SortKey[]];
+  dependents?: DerivedDataDependents;
+}
+```
+
+Related types: [`SortKey`](./reference/types/#type-sortkey) · [`DerivedDataDependents`](./reference/types/#type-deriveddatadependents).
 
 ### `EditStackDataOptions` {#type-editstackdataoptions}
 
@@ -30421,6 +30802,14 @@ Related types: [`LegendOptions`](./reference/types/#type-legendoptions) · [`Leg
 type FilledMarkStroke = string | false;
 ```
 
+### `FilterBound` {#type-filterbound}
+
+ Expand FilterBound
+
+```typescript
+type FilterBound = number | string;
+```
+
 ### `FilterComparison` {#type-filtercomparison}
 
  Expand FilterComparison
@@ -30440,6 +30829,7 @@ export type FilterDataOptions = {
   id: string;
   source?: string;
   field: string;
+  nulls?: "include" | "exclude";
 } & FilterModeOptions;
 ```
 
@@ -30464,24 +30854,73 @@ Related types: [`MarkSelector`](./reference/types/#type-markselector).
 
 ```typescript
 export type FilterModeOptions =
-  | { oneOf: readonly unknown[]; predicate?: never; range?: never }
-  | { oneOf?: never; predicate: FilterComparison; range?: never }
-  | { oneOf?: never; predicate?: never; range: FilterRange };
+  | { oneOf: readonly [DatasetScalar, ...DatasetScalar[]]; noneOf?: never; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf: readonly [DatasetScalar, ...DatasetScalar[]]; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRange };
 ```
 
-Related types: [`FilterComparison`](./reference/types/#type-filtercomparison) · [`FilterRange`](./reference/types/#type-filterrange).
+Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`FilterComparison`](./reference/types/#type-filtercomparison) · [`FilterRange`](./reference/types/#type-filterrange).
+
+### `FilterModePatch` {#type-filtermodepatch}
+
+ Expand FilterModePatch
+
+```typescript
+type FilterModePatch =
+  | { oneOf: readonly [DatasetScalar, ...DatasetScalar[]]; noneOf?: never; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf: readonly [DatasetScalar, ...DatasetScalar[]]; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRangePatch }
+  | { oneOf?: never; noneOf?: never; predicate?: never; range?: never };
+```
+
+Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`FilterComparison`](./reference/types/#type-filtercomparison) · [`FilterRangePatch`](./reference/types/#type-filterrangepatch).
 
 ### `FilterRange` {#type-filterrange}
 
  Expand FilterRange
 
 ```typescript
-export type FilterRange = {
-  min: number | string;
-  max: number | string;
-  inclusive?: boolean;
+export type FilterRange = FilterRangeBounds & FilterRangeClosure;
+```
+
+Related types: [`FilterRangeBounds`](./reference/types/#type-filterrangebounds) · [`FilterRangeClosure`](./reference/types/#type-filterrangeclosure).
+
+### `FilterRangeBounds` {#type-filterrangebounds}
+
+ Expand FilterRangeBounds
+
+```typescript
+type FilterRangeBounds =
+  | { min: FilterBound; max?: FilterBound }
+  | { min?: FilterBound; max: FilterBound };
+```
+
+Related types: [`FilterBound`](./reference/types/#type-filterbound).
+
+### `FilterRangeClosure` {#type-filterrangeclosure}
+
+ Expand FilterRangeClosure
+
+```typescript
+type FilterRangeClosure =
+  | { inclusive?: boolean; minInclusive?: never; maxInclusive?: never }
+  | { inclusive?: never; minInclusive?: boolean; maxInclusive?: boolean };
+```
+
+### `FilterRangePatch` {#type-filterrangepatch}
+
+ Expand FilterRangePatch
+
+```typescript
+export type FilterRangePatch = FilterRangeClosure & {
+  min?: FilterBound | false;
+  max?: FilterBound | false;
 };
 ```
+
+Related types: [`FilterRangeClosure`](./reference/types/#type-filterrangeclosure) · [`FilterBound`](./reference/types/#type-filterbound).
 
 ### `FitCanvasOptions` {#type-fitcanvasoptions}
 
@@ -31074,6 +31513,7 @@ export interface IntervalDataOptions {
   extent?: IntervalExtent;
   method?: ConfidenceIntervalMethod;
   level?: number;
+  missing?: "error" | "drop";
   as?: IntervalOutputFields;
 }
 ```
@@ -32986,6 +33426,7 @@ Related types: [`LineCategoricalColorChannel`](./reference/types/#type-linecateg
 export interface RectMarkOptions extends RectStyleDetails {
   id?: string;
   data?: string;
+  missing?: "error" | "skip";
   fill?: string;
   opacity?: number;
   stroke?: string | false;
@@ -33066,6 +33507,8 @@ type RegressionCommonOptions = {
   y?: string;
   groupBy?: string | false;
   line?: StrokeStyleDetails & { strokeWidth?: number; curve?: CurveInterpolation };
+  sourceBinding?: "fixed" | "follow";
+  missing?: "error" | "drop";
 };
 ```
 
@@ -33082,6 +33525,7 @@ export type RegressionDataOptions = {
   x: string;
   y: string;
   groupBy?: string;
+  missing?: "error" | "drop";
 } & RegressionParameterOptions;
 ```
 
@@ -33136,7 +33580,8 @@ type RegressionParameterOptions =
       confidenceMethod?: ConfidenceIntervalMethod;
       level?: number;
       confidence?: number;
-      interval?: RegressionInterval;
+      interval?: RegressionInterval | false;
+      predict?: RegressionPredictOptions;
     }
   | {
       method: "polynomial";
@@ -33145,7 +33590,8 @@ type RegressionParameterOptions =
       confidenceMethod?: ConfidenceIntervalMethod;
       level?: number;
       confidence?: number;
-      interval?: RegressionInterval;
+      interval?: RegressionInterval | false;
+      predict?: RegressionPredictOptions;
     }
   | {
       method: "loess";
@@ -33155,10 +33601,11 @@ type RegressionParameterOptions =
       level?: never;
       confidence?: never;
       interval?: never;
+      predict?: RegressionPredictOptions;
     };
 ```
 
-Related types: [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod) · [`RegressionInterval`](./reference/types/#type-regressioninterval).
+Related types: [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod) · [`RegressionInterval`](./reference/types/#type-regressioninterval) · [`RegressionPredictOptions`](./reference/types/#type-regressionpredictoptions).
 
 ### `RegressionPlotBaseOptions` {#type-regressionplotbaseoptions}
 
@@ -33203,6 +33650,16 @@ Related types: [`NonPointQuantitativePositionScaleOptions`](./reference/types/#t
 type RegressionPlotStatisticalOptions<T> = T extends unknown
   ? Omit<T, "target" | "x" | "y">
   : never;
+```
+
+### `RegressionPredictOptions` {#type-regressionpredictoptions}
+
+ Expand RegressionPredictOptions
+
+```typescript
+export type RegressionPredictOptions =
+  | { values: readonly [number, ...number[]]; domain?: never; steps?: never }
+  | { values?: never; domain: readonly [number, number]; steps: number };
 ```
 
 ### `RemoveAxisOptions` {#type-removeaxisoptions}
@@ -33585,6 +34042,7 @@ export interface ScaleOptions {
   id?: string;
   type?: ScaleType;
   domain?: "auto" | readonly unknown[];
+  emptyDomain?: "preserve" | "require-explicit";
   range?: ScaleRange;
   nice?: boolean;
   zero?: boolean;
@@ -33835,6 +34293,60 @@ type SizeScaleTypeEditPatch =
 
 Related types: [`WithoutScaleId`](./reference/types/#type-withoutscaleid) · [`SizeScaleOptions`](./reference/types/#type-sizescaleoptions).
 
+### `SortKey` {#type-sortkey}
+
+ Expand SortKey
+
+```typescript
+export interface SortKey {
+  field: string;
+  order?: "ascending" | "descending";
+  nulls?: "first" | "last";
+  temporalUnit?: "year" | "timestamp";
+}
+```
+
+### `SortedDataOptions` {#type-sorteddataoptions}
+
+ Expand SortedDataOptions
+
+```typescript
+export interface SortedDataOptions {
+  id: string;
+  source?: string;
+  sortBy: readonly [SortKey, ...SortKey[]];
+}
+```
+
+Related types: [`SortKey`](./reference/types/#type-sortkey).
+
+### `SourceSchemaField` {#type-sourceschemafield}
+
+ Expand SourceSchemaField
+
+```typescript
+export interface SourceSchemaField {
+  name: string;
+  storageType: Exclude<DatasetStorageType, "unknown" | "mixed">;
+  nullable?: boolean;
+  optional?: boolean;
+}
+```
+
+Related types: [`DatasetStorageType`](./reference/types/#type-datasetstoragetype).
+
+### `SourceSchemaInput` {#type-sourceschemainput}
+
+ Expand SourceSchemaInput
+
+```typescript
+export interface SourceSchemaInput {
+  fields: readonly SourceSchemaField[];
+}
+```
+
+Related types: [`SourceSchemaField`](./reference/types/#type-sourceschemafield).
+
 ### `StackDataMode` {#type-stackdatamode}
 
  Expand StackDataMode
@@ -34082,6 +34594,8 @@ export interface SummaryDataOptions {
   aggregates: readonly SummaryAggregateOptions[];
   members?: string;
   weight?: StatisticalWeight;
+  missing?: "error" | "drop";
+  empty?: "null" | "identity";
 }
 ```
 
@@ -34159,6 +34673,7 @@ export interface TextMarkOptions {
   /** Explicit source mark. Mutually exclusive with data; may be incomplete. */
   source?: string;
   text?: unknown;
+  missing?: "error" | "skip";
   fill?: string;
   opacity?: number;
   fontSize?: number;
@@ -35241,12 +35756,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/cdcd030ee663dde0193384cd6d7b37af1b15b804/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/cdcd030ee663dde0193384cd6d7b37af1b15b804/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -35624,6 +36139,7 @@ top-level decision:
 | --- | --- |
 | computed | `editComputedData` |
 | filter | `editFilteredData` |
+| sort | `editSortedData` |
 | fold | `editFoldData` |
 | summary | `editSummaryData` |
 | one-dimensional bin | `editBinData` |
@@ -35664,6 +36180,24 @@ if a downstream expression contains a field reference that cannot be rewritten
 safely. Mode changes clear fields owned by the previous mode before the new
 definition is normalized. In focused weighted editors, `weight: false` removes
 an existing weight; omission preserves it.
+
+## `editSortedData({ target, sortBy, dependents? })` {#edit-sorted-data}
+
+Replace the complete sort-key list for an existing sorted-data owner. Omitted
+keys are not merged because their precedence is part of the ordering meaning.
+The edit creates a new immutable physical revision, preserves the logical owner,
+and follows the same stable comparison and null-placement rules as
+`createSortedData`. Use `dependents: "recompute"` when downstream derived data
+must advance with the new row order.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `ordered`. Resource selectors used here: `target: "orderedSales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+const descending = ordered.editSortedData({
+  target: "orderedSales",
+  sortBy: [{ field: "revenue", fieldType: "quantitative", order: "descending" }]
+});
+```
 
 An edit must change the requested transform or source. A semantic no-op throws
 before creating a revision. Successful revisions use deterministic IDs of the
@@ -37125,10 +37659,17 @@ or weight policy.
 | [Impute](./api/data/missing-data/) | Existing rows, groups, and method-specific stable order | Same rows in source order | Fills null/undefined only. Linear uses numeric/time distance. Edges and max-gap are explicit policies; NaN/infinity reject. |
 | [Stack](./api/data/summaries-and-shaping/) | Unique category/group pairs | Same rows plus endpoints and share | No missing-cell synthesis. Stack/fill/center require nonnegative values; diverging separates signs; zero has zero share. |
 | [Window](./api/data/window/) | Explicit sort/partition decisions for ordered operations | Same rows in source order | Stable ordering governs windows; frame and per-operation rules determine edges. No rows are synthesized. |
+| [Sorted data](./api/data/source-and-derived/#create-sorted-data) | Ordered keys with explicit direction, null placement, and optional temporal normalization | Same rows in stable sorted order | Equal keys retain source order. Mixed non-missing key types reject instead of coercing values. Sorting never mutates the source rows. |
 | [Time unit](./api/data/time-units/) | Explicit temporal parsing and calendar policy | Same rows with a bucket field | UTC by default or an explicit IANA zone; weekday is categorical, other buckets are timestamps. |
 | [Density](./api/data/statistical-transforms/) | Finite observations; optional group and bandwidth | Ordered sample grid per group | Positive mass contributes; zero weights are validated but omitted from statistical membership. Kernel, extent, and normalization are explicit. |
 | [ECDF](./tutorials/ecdf/) | Ordered finite support within groups | One initial seed plus each positive-mass support | Missing defaults to drop; explicit error available. Zero weight adds no support; negative/nonfinite weight or zero total mass rejects. |
-| [Regression / interval](./api/data/statistical-transforms/) | Compatible finite numeric measurements and method-specific groups | Fit samples or one interval per group | Fitting and uncertainty have method-specific sample requirements. Do not assume a weight or missing policy from KDE or ECDF applies. |
+| [Regression / interval](./api/data/statistical-transforms/) | Compatible finite numeric measurements and method-specific groups | Fit samples or one interval per group | Explicit `missing: "drop" | "error"` controls nullable rows. Fitting and uncertainty have separate sample requirements; `interval: false` computes no interval fields. |
+
+Summary, bin, density, regression, and interval transforms record exclusion reports
+under `materializationConfigs.calculations`. The report identifies the current logical
+owner, input and retained counts, excluded reasons, and the units used by weighted
+calculations. Editing or revising a transform replaces its report with one computed
+from the current input; removing the owner removes the report.
 
 ## Missing keys are not missing values
 
@@ -37266,7 +37807,7 @@ separate from the relative action hierarchy and from package exposure.
 # Documentation Version
 
 The current site documents **ggaction 0.0.16** with a
-**published-release** contract.
+**development** contract.
 A `published-release` contract matches that package version. A `development`
 contract can include newer behavior; its package version alone does not establish
 API availability. Each action entry identifies its release availability.
@@ -37274,11 +37815,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:0b76a2c9b1d2f953b70f9e643a60c234204bd392e4782820465035412515bf82` |
+| Contract fingerprint | `sha256:89ddb0a06ff09a57098c295cda50788c02ed0418b6689098f725fe8e79e04805` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `cdcd030ee663dde0193384cd6d7b37af1b15b804` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 279 |
+| Declared actions here | 281 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

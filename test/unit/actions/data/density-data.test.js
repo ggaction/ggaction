@@ -76,6 +76,7 @@ test("creates immutable density provenance and concrete values", () => {
   });
 
   assert.deepEqual(program.semanticSpec.datasets[1], {
+    schema: program.semanticSpec.datasets[1].schema,
     id: "densitiesDensityData",
     source: "cars",
     transform: [{

@@ -58,14 +58,14 @@ function linearPrediction(model, xValue) {
 }
 
 function fitLinearGroup(rows, {
-  x, y, group, confidenceMethod, level
+  x, y, group, confidenceMethod, level, interval
 }) {
   const count = rows.length;
   const groupLabel = group === undefined ? "all" : String(group);
   const label = `Regression group "${groupLabel}"`;
-  if (count < 3) {
+  if (count < (interval === false ? 2 : 3)) {
     throw new Error(
-      `${label} requires at least three rows.`
+      `${label} requires at least ${interval === false ? "two" : "three"} rows.`
     );
   }
   const xValues = rows.map(row => row[x]);
@@ -148,6 +148,7 @@ function fitLinearGroup(rows, {
     normalizedSxx
   });
   if (!normalizedXByDifference) model.normalizedXByDifference = false;
+  if (interval === false) return model;
   const residualSumSquares = stableFiniteSquareSum(
     rows.map(row => row[y] - linearPrediction(model, row[x])),
     `${label} residual sum of squares`
@@ -238,19 +239,19 @@ function polynomialResponse(design, values, size, scale = 1) {
 }
 
 function fitPolynomialGroup(rows, {
-  x, y, group, confidenceMethod, level, degree
+  x, y, group, confidenceMethod, level, degree, interval
 }) {
   const count = rows.length;
   const parameterCount = degree + 1;
   const groupLabel = group === undefined ? "all" : String(group);
   const label = `Polynomial regression group "${groupLabel}"`;
   if (
-    count < degree + 2 ||
+    count < (interval === false ? parameterCount : degree + 2) ||
     new Set(rows.map(row => row[x])).size < parameterCount
   ) {
     throw new Error(
       `${label} requires at least ` +
-      `${degree + 2} rows and ${parameterCount} distinct x values.`
+      `${interval === false ? parameterCount : degree + 2} rows and ${parameterCount} distinct x values.`
     );
   }
   const xValues = rows.map(row => row[x]);
@@ -289,7 +290,7 @@ function fitPolynomialGroup(rows, {
         `${label} coefficient ${index}`
       ))
     : scaledCoefficients;
-  const inverse = invertSymmetricMatrix(normal);
+  const inverse = interval === false ? undefined : invertSymmetricMatrix(normal);
   const fitted = design.map(basis => stableResponse
     ? restoreFiniteScale(
         dot(basis, scaledCoefficients),
@@ -298,12 +299,12 @@ function fitPolynomialGroup(rows, {
       )
     : dot(basis, normalizedCoefficients)
   );
-  const residualSumSquares = stableFiniteSquareSum(
+  const residualSumSquares = interval === false ? undefined : stableFiniteSquareSum(
     fitted.map((value, index) => rows[index][y] - value),
     `${label} residual sum of squares`
   );
   const degreesOfFreedom = count - parameterCount;
-  const residualVariance = residualSumSquares / degreesOfFreedom;
+  const residualVariance = interval === false ? undefined : residualSumSquares / degreesOfFreedom;
   const model = {
     count,
     degreesOfFreedom,
@@ -316,13 +317,15 @@ function fitPolynomialGroup(rows, {
     normalizedCoefficients,
     center,
     scale,
-    inverse,
-    residualSumSquares,
-    residualStandardError: Math.sqrt(residualVariance),
-    critical: confidenceCriticalValue({
-      method: confidenceMethod,
-      level,
-      degreesOfFreedom
+    ...(inverse === undefined ? {} : { inverse }),
+    ...(interval === false ? {} : {
+      residualSumSquares,
+      residualStandardError: Math.sqrt(residualVariance),
+      critical: confidenceCriticalValue({
+        method: confidenceMethod,
+        level,
+        degreesOfFreedom
+      })
     })
   };
   if (!normalizedXByDifference) model.normalizedXByDifference = false;
@@ -345,7 +348,9 @@ function evaluatePolynomial(model, xValue) {
           model.responseScale,
           "Polynomial regression prediction"
         ),
-    leverage: dot(basis, model.inverse.map(row => dot(row, basis)))
+    ...(model.inverse === undefined ? {} : {
+      leverage: dot(basis, model.inverse.map(row => dot(row, basis)))
+    })
   };
 }
 
@@ -420,7 +425,29 @@ function fitLoessGroup(rows, { x, y, group, span }) {
       neighborIndices: weighted.map(item => item.index)
     };
   });
-  return { count: rows.length, span, neighborCount, fits };
+  return { count: rows.length, span, neighborCount, fits, rows, x, y, xScale, yScale };
+}
+
+function predictLoessAt(model, xValue) {
+  const found = model.fits.find(fit => fit.x === xValue);
+  if (found !== undefined) return found.prediction;
+  const neighbors = model.rows.map((row, index) => ({
+    row,
+    index,
+    distance: Math.abs(row[model.x] / model.xScale - xValue / model.xScale)
+  })).sort((left, right) => left.distance - right.distance || left.index - right.index)
+    .slice(0, model.neighborCount);
+  const radius = neighbors.at(-1).distance;
+  const weighted = neighbors.map(neighbor => ({
+    ...neighbor,
+    weight: radius === 0 ? 1 : (1 - (neighbor.distance / radius) ** 3) ** 3
+  }));
+  const ordinary = weightedPrediction(weighted, model.x, model.y, xValue);
+  return Number.isFinite(ordinary) ? ordinary : restoreFiniteScale(
+    weightedPrediction(weighted, model.x, model.y, xValue, model.xScale, model.yScale),
+    model.yScale,
+    "LOESS regression prediction"
+  );
 }
 
 export function fitRegressionGroup(rows, { x, y, group, parameters }) {
@@ -430,7 +457,8 @@ export function fitRegressionGroup(rows, { x, y, group, parameters }) {
       y,
       group,
       confidenceMethod: parameters.confidenceMethod,
-      level: parameters.level
+      level: parameters.level,
+      interval: parameters.interval
     });
   }
   if (parameters.method === "polynomial") {
@@ -440,7 +468,8 @@ export function fitRegressionGroup(rows, { x, y, group, parameters }) {
       group,
       confidenceMethod: parameters.confidenceMethod,
       level: parameters.level,
-      degree: parameters.degree
+      degree: parameters.degree,
+      interval: parameters.interval
     });
   }
   return fitLoessGroup(rows, { x, y, group, span: parameters.span });
@@ -454,8 +483,8 @@ export function predictRegressionAt(model, xValue, parameters) {
     ? linearPrediction(model, xValue)
     : parameters.method === "polynomial"
       ? polynomial.prediction
-      : model.fits.find(fit => fit.x === xValue).prediction;
-  if (parameters.method === "loess") return { prediction };
+      : predictLoessAt(model, xValue);
+  if (parameters.method === "loess" || parameters.interval === false) return { prediction };
   const leverage = parameters.method === "linear"
     ? model.normalizedSxx !== undefined
       ? 1 / model.count + (

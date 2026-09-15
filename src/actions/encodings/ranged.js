@@ -14,6 +14,8 @@ import { deriveAreaSeries } from "../../grammar/areaSeries.js";
 import { resolvePositionEncoding } from "./position/resolve.js";
 import { resolveScalePreview } from "../scales/preview.js";
 import { findUpstreamTransform } from "../../materialization/dataProvenance.js";
+import { applyRequestedItemMissingPolicy } from
+  "../../grammar/itemMissing.js";
 
 const SECONDARY_OPTIONS = Object.freeze([
   "field", "datum", "target", "fieldType", "scale", "coordinate", "temporalUnit"
@@ -46,7 +48,7 @@ function validateSecondaryField(dataset, field, fieldType, temporalUnit) {
 
 function encodeSecondaryPosition(program, channel, args, operation, types) {
   validateOptions(args, SECONDARY_OPTIONS, operation);
-  const { id: target, dataset, layer } = resolveTarget(
+  const { id: target, dataset: sourceDataset, layer } = resolveTarget(
     program,
     args.target,
     types,
@@ -72,6 +74,9 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
   const rect = layer.mark.type === "rect";
   const hasField = Object.hasOwn(args, "field");
   const hasDatum = Object.hasOwn(args, "datum");
+  const dataset = hasField
+    ? applyRequestedItemMissingPolicy(layer, sourceDataset, args.field)
+    : applyRequestedItemMissingPolicy(layer, sourceDataset);
   if ((rule || area || rect) && hasField === hasDatum) {
     throw new Error(`${operation} requires exactly one of field or datum for a ${layer.mark.type} mark.`);
   }

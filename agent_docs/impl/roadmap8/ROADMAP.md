@@ -1,11 +1,10 @@
 # Roadmap 8 — 조합 가능한 차트 저작의 정확성과 실행 계약
 
-상태: **계획 개정 2 — flatten 제외 및 구현 상세화, 제품 구현 미시작**. 기준은 `v0.0.16`, commit
-`2b930177793a41a76ef3d664f3803f24d29ba67b`다. 사용자의 “이 수정을 roadmap8로 해서 계획해봐”는
-이번 계획 작성의 근거다. 아래 새 API·저장 형식·기본값의 제안이 승인됐다는 뜻은 아니다.
-후속 요청으로 F06을 제외하고, 다른 구현자를 위한 개정 2 상세 명세·타입·작업 지도·fixture를 추가했다.
-현재 위치는 **Phase 0 — 계획·계약 검토**이며 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이
-개발 위치를 소유한다. 마지막 구현 완료 로드맵은 Roadmap 7 Phase 12다.
+상태: **구현 및 통합 검증 완료 — flatten 제외**. 계획 기준은 `v0.0.16`, commit
+`2b930177793a41a76ef3d664f3803f24d29ba67b`였으며, 후속 사용자 승인에 따라 F01–F05와
+F07–F12를 구현했다. F06과 V23–V25는 제외 기록만 보존한다. npm publish, release tag,
+문서 배포는 이 완료 상태에 포함되지 않는다. [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이
+완료 위치를 소유한다.
 
 ## 목표
 
@@ -23,13 +22,13 @@ ggaction의 핵심인 **고수준 사용자 결정 → 도메인 연산 → 하�
 2. [BASELINE.md](BASELINE.md): 0.0.16에서 실제로 확인한 동작과 과장하지 말아야 할 한계.
 3. [FEATURES.md](FEATURES.md): F01–F05·F07–F12별 이유, 동작, API 후보, 구현 위치, 완료 조건.
 4. [DECISIONS.md](DECISIONS.md): 새 public/persisted/architecture 결정과 호환성 제안.
-5. [VALIDATION.md](VALIDATION.md): 43개 인수 사례와 통합·성능 검증. 구조화된 기대값은 [ACCEPTANCE_CASES.json](ACCEPTANCE_CASES.json).
+5. [VALIDATION.md](VALIDATION.md): 43개 인수 사례와 통합·성능 검증. 구조화된 결과와 증거는 [ACCEPTANCE_CASES.json](ACCEPTANCE_CASES.json).
 6. [구현자 시작 문서](IMPLEMENTER_START_HERE.md): 상세 명세·타입·작업 지도·재개 순서.
-7. [Phase 0 목표](phase0/GOAL.md): 현재 계획 상태와 구현을 시작할 때의 순서.
+7. [Phase 0 목표](phase0/GOAL.md): 계획 기준과 완료된 구현으로의 전환 기록.
 
-이 디렉터리의 API는 모두 **제안이며 아직 호출할 수 없다**. 현재 API는
-[ACTION_INDEX.json](../../contract/ACTION_INDEX.json), `types/`, `src/`가 소유한다.
-계획을 작성했다는 이유로 current contract나 generated action catalog에 새 함수를 등록하지 않는다.
+현재 public API의 권위는 [ACTION_INDEX.json](../../contract/ACTION_INDEX.json), `types/`, `src/`다.
+이 디렉터리의 상세 명세는 설계 이유와 재현 절차를 보존하며, 현재 동작과 충돌하면 public source와
+검증된 current contract를 따른다.
 
 ## 범위와 원래 목록의 대응
 
@@ -88,12 +87,12 @@ ggaction은 유효 조건, 계산 결과, 리소스 관계, 변경 사실과 검
 | 6 | 후보 실행 workload와 자원/성능 개선 | 측정은 0부터, 최종 판정은 5 이후 | G6: D13의 새 경계 변경만 |
 | 7 | 전 기능 통합·문서·배포 후보 closeout | 1–6 | G7: D14의 별도 배포 결정 |
 
-### Phase 0 — 기준과 계약 검토
+### Phase 0 — 기준과 계약 검토 (완료)
 
 - BASELINE의 소규모 재현을 고정된 0.0.16에서 다시 실행하고 raw 값과 오류를 구분한다.
 - 제안 API, canonical state 예시, v1 snapshot 복원 전략, 기존 호출의 영향표를 D01–D14로 검토한다.
 - 검증은 source/tree/pixel/numeric/package를 나누고, 측정하지 않은 것은 `not_run`으로 둔다.
-- 현재 산출물은 이 계획 문서다. 제품 구현은 아직 없다. 정확한 API 승인 뒤에만 dependent 구현에 진입한다.
+- 이 단계의 제안은 후속 사용자 승인으로 확정됐고 Phase 1–7 구현의 기준이 됐다.
 
 ### Phase 1 — F01/F02: 빈 데이터도 설명 가능한 실행
 
@@ -177,10 +176,7 @@ Canvas/PNG/PDF 호환, 실패·해제·persistence까지 묶는다. 비동기 as
 두 확장은 요구 범위가 정해지기 전에는 새 renderer/state schema를 성급하게 구현하지 않는다.
 기존 AGENTS의 새 visual target 검토 규칙이 적용되며, 보이지 않은 이미지에 대한 승인을 기록하지 않는다.
 
-## 승인·진행 규칙
+## 승인·진행 기록
 
-G0–G7의 현재 상태는 모두 [DECISIONS.md](DECISIONS.md)에 있다. 정확히 승인된 결정은 관련 Phase에서
-재사용하며 같은 내용의 반복 승인을 만들지 않는다. runtime source를 바꾸지 않는 계획·재현·리뷰 자료는
-진행할 수 있다. 아직 정해지지 않은 public/schema/architecture 결정만 그 구현의 경계로 삼는다.
-각 구현 Phase 시작 시 GOAL/STEP/GATES를 생성하고, STEP 앞에 진행 상태를 둔다.
-독립 작업은 진행하되 미승인 결정을 임의 구현하거나 승인되지 않은 기능을 완료로 표시하지 않는다.
+G0–G7의 구현 결정과 승인 근거는 [DECISIONS.md](DECISIONS.md)에 있다. 구현·타입·문서·패키지
+검증은 완료됐다. 외부 npm publish, release tag, 문서 배포는 별도 운영 작업이며 실행되지 않았다.

@@ -120,6 +120,10 @@ created in `index.html`.
 | `ggaction` | Modern ESM browsers and Node.js 20+ | Complete chart authoring and Browser Canvas rendering |
 | `ggaction/basic` | Modern ESM browsers and Node.js 20+ | Smaller creation path for scatter, line, bar, histogram, and heatmap charts |
 | `ggaction/extension` | Modern ESM browsers and Node.js 20+ | Wrapped action registration and public primitive authoring |
+| `ggaction/inspection` | Modern ESM browsers and Node.js 20+ | Dataset schemas, action preflight, immutable diffs, and concrete-result inspection |
+| `ggaction/persistence` | Modern ESM browsers and Node.js 20+ | Editable and render-only snapshot serialization |
+| `ggaction/accessibility` | Modern ESM browsers and Node.js 20+ | Final visual-data export for host accessibility surfaces |
+| `ggaction/diagnostics` | Modern ESM browsers and Node.js 20+ | Structured action error details |
 | `ggaction/png` | Node.js 20+ only | PNG file output through the native Canvas adapter |
 | `ggaction/pdf` | Node.js 20+ only | Single-page vector PDF file output |
 | `ggaction/svg` | Modern ESM browsers and Node.js 20+ | Complete SVG document string output |

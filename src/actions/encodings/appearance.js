@@ -25,6 +25,8 @@ import {
   setEncodingProperties,
   validateOptions
 } from "./shared.js";
+import { applyRequestedItemMissingPolicy } from
+  "../../grammar/itemMissing.js";
 
 const RADIUS_OPTIONS = Object.freeze(["value", "target"]);
 const REMOVE_RADIUS_OPTIONS = Object.freeze(["target"]);
@@ -34,13 +36,14 @@ const OPACITY_OPTIONS = Object.freeze([
 const FIELD_OPTIONS = Object.freeze(["field", "target", "fieldType", "scale"]);
 function encodeAppearanceField(program, channel, args, operation) {
   validateOptions(args, FIELD_OPTIONS, operation);
-  const { id: target, dataset, layer } = resolveTarget(
+  const { id: target, dataset: sourceDataset, layer } = resolveTarget(
     program,
     args.target,
     ["point"],
     "point mark"
   );
   const expectedFieldType = channel === "shape" ? "nominal" : "quantitative";
+  const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
   const fieldType = args.fieldType ?? expectedFieldType;
   if (fieldType !== expectedFieldType) {
     throw new Error(`${operation} requires a ${expectedFieldType} field.`);
@@ -196,7 +199,7 @@ const encodeOpacity = /* @__PURE__ */ action(
     if (hasValue && (args.fieldType !== undefined || args.scale !== undefined)) {
       throw new Error("Constant opacity does not accept fieldType or scale.");
     }
-    const { id: target, dataset, layer } = resolveTarget(
+    const { id: target, dataset: sourceDataset, layer } = resolveTarget(
       this,
       args.target,
       ["point", "rule", "line"],
@@ -222,6 +225,7 @@ const encodeOpacity = /* @__PURE__ */ action(
         : next.rematerializePointMark({ id: target });
       return applyDetachedScaleRematerialization(materialized, [layer]);
     }
+    const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
     const fieldType = args.fieldType ?? "quantitative";
     if (fieldType !== "quantitative") {
       throw new Error("encodeOpacity requires a quantitative field.");

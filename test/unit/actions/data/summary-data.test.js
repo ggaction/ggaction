@@ -25,6 +25,7 @@ test("createSummaryData materializes stable grouped multi-aggregate rows", () =>
   });
 
   assert.deepEqual(program.semanticSpec.datasets[1], {
+    schema: program.semanticSpec.datasets[1].schema,
     id: "summary",
     source: "source",
     transform: [{
@@ -65,7 +66,7 @@ test("createSummaryData materializes stable grouped multi-aggregate rows", () =>
     program.trace.children.at(-1).children.map(child => child.op),
     ["createDerivedData", "materializeSummaryData"]
   );
-  assert.deepEqual(source.semanticSpec.datasets, [{ id: "source", values: rows }]);
+  assert.deepEqual(source.semanticSpec.datasets, [{ id: "source", values: rows, schema: source.semanticSpec.datasets[0].schema }]);
 });
 
 test("createSummaryData defines empty and ungrouped grain deterministically", () => {
@@ -78,7 +79,9 @@ test("createSummaryData defines empty and ungrouped grain deterministically", ()
   assert.deepEqual(empty.semanticSpec.datasets[1].values, [{ rows: 0 }]);
 
   const groupedEmpty = chart()
-    .createData({ id: "source", values: [] })
+    .createData({ id: "source", values: [], schema: { fields: [
+      { name: "group", storageType: "string" }
+    ] } })
     .createSummaryData({
       id: "summary",
       groupBy: "group",
@@ -95,7 +98,7 @@ test("createSummaryData rejects invalid fields, types, aliases, and shapes atomi
     [{ groupBy: ["group", "group"], aggregates: [{ op: "count", as: "n" }] }, /unique/],
     [{ aggregates: [{ op: "count", field: "value", as: "n" }] }, /does not accept a field/],
     [{ aggregates: [{ op: "mean", as: "m" }] }, /field must be/],
-    [{ aggregates: [{ op: "mean", field: "missing", as: "m" }] }, /does not contain aggregate field/],
+    [{ aggregates: [{ op: "mean", field: "missing", as: "m" }] }, /does not contain field/],
     [{ groupBy: "group", aggregates: [{ op: "count", as: "group" }] }, /collides/],
     [{ aggregates: [{ op: "mean", field: "group", as: "m" }] }, /numeric or missing/],
     [{ aggregates: [{ op: "count", as: "n" }], members: "n" }, /collides/],

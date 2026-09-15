@@ -448,7 +448,9 @@ test("clears stale mode fields before normalizing the replacement mode", () => {
     filtered.materializationConfigs.data.filter.filtered.current
   ).transform[0];
   assert.equal(Object.hasOwn(filterTransform, "oneOf"), false);
-  assert.deepEqual(filterTransform.range, { min: 2, max: 4, inclusive: true });
+  assert.deepEqual(filterTransform.range, {
+    min: 2, minInclusive: true, max: 4, maxInclusive: true
+  });
 
   const imputed = source()
     .createImputedData({

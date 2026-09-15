@@ -1,4 +1,4 @@
-# Roadmap 8 데이터·저작 구현 상세 제안 — 개정 2
+# Roadmap 8 데이터·저작 구현 상세 계약 — 개정 2
 
 이 문서는 **미구현 제안**의 세부 의미를 고정한다. 이름을 비슷하게 추측해 바로 코딩하지 말고
 [PROPOSED_TYPES.d.ts](PROPOSED_TYPES.d.ts), [구현 지도](IMPLEMENTATION_MAP.json), [인수 사례](ACCEPTANCE_CASES.json)를 함께 읽는다.

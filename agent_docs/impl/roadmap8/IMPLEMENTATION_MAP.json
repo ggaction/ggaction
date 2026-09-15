@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "status": "proposed-not-implemented",
+  "status": "implemented-verified",
   "baselineCommit": "2b930177793a41a76ef3d664f3803f24d29ba67b",
   "excludedFeatureIds": [
     "F06"
@@ -30,7 +30,7 @@
     {
       "id": "F01",
       "phase": 1,
-      "status": "not_started",
+      "status": "completed",
       "workPackages": [
         "WP01",
         "WP02",
@@ -47,7 +47,7 @@
     {
       "id": "F02",
       "phase": 1,
-      "status": "not_started",
+      "status": "completed",
       "workPackages": [
         "WP04",
         "WP14"
@@ -62,7 +62,7 @@
     {
       "id": "F03",
       "phase": 2,
-      "status": "not_started",
+      "status": "completed",
       "workPackages": [
         "WP05",
         "WP14"
@@ -78,7 +78,7 @@
     {
       "id": "F04",
       "phase": 3,
-      "status": "not_started",
+      "status": "completed",
       "workPackages": [
         "WP07",
         "WP14"
@@ -94,7 +94,7 @@
     {
       "id": "F05",
       "phase": 3,
-      "status": "not_started",
+      "status": "completed",
       "workPackages": [
         "WP08",
         "WP14"
@@ -109,7 +109,7 @@
     {
       "id": "F07",
       "phase": 2,
-      "status": "not_started",
+      "status": "completed",
       "workPackages": [
         "WP06",
         "WP14"
@@ -124,7 +124,7 @@
     {
       "id": "F08",
       "phase": 4,
-      "status": "not_started",
+      "status": "completed",
       "workPackages": [
         "WP09",
         "WP14"
@@ -138,7 +138,7 @@
     {
       "id": "F09",
       "phase": 5,
-      "status": "not_started",
+      "status": "completed",
       "workPackages": [
         "WP10",
         "WP14"
@@ -152,7 +152,7 @@
     {
       "id": "F10",
       "phase": 5,
-      "status": "not_started",
+      "status": "completed",
       "workPackages": [
         "WP11",
         "WP14"
@@ -166,7 +166,7 @@
     {
       "id": "F11",
       "phase": 5,
-      "status": "not_started",
+      "status": "completed",
       "workPackages": [
         "WP12",
         "WP14"
@@ -181,7 +181,7 @@
     {
       "id": "F12",
       "phase": 6,
-      "status": "not_started",
+      "status": "completed",
       "workPackages": [
         "WP13",
         "WP14"
@@ -202,7 +202,7 @@
         "F01"
       ],
       "dependsOn": [],
-      "status": "not_started",
+      "status": "completed",
       "decisionIds": [
         "D01"
       ],
@@ -221,8 +221,7 @@
         "Preserve inferred/declared/unknown semantics on empty rows and revision."
       ],
       "testTargets": [
-        "test/unit/grammar/dataset-schema.test.js",
-        "test/unit/actions/data/source-schema.test.js"
+        "test/unit/actions/data/dataset-schema.test.js"
       ],
       "acceptanceCaseIds": [
         "V01",
@@ -235,6 +234,11 @@
         "types-and-contracts",
         "consumer-replay-and-persistence",
         "docs-and-generated-metadata-if-public"
+      ],
+      "implementedSources": [
+        "src/grammar/datasetSchema.js",
+        "src/actions/data/create.js",
+        "src/actions/data/revise.js"
       ]
     },
     {
@@ -246,7 +250,7 @@
       "dependsOn": [
         "WP01"
       ],
-      "status": "not_started",
+      "status": "completed",
       "decisionIds": [
         "D01"
       ],
@@ -264,8 +268,8 @@
         "Propagate through revision/facet/repeat without copying removed source fields."
       ],
       "testTargets": [
-        "test/contracts/transform-schema-coverage.test.js",
-        "test/unit/actions/data/derived-editing.test.js"
+        "test/unit/actions/data/derived-editing.test.js",
+        "test/contracts/derived-editing-types.test.js"
       ],
       "acceptanceCaseIds": [
         "V01",
@@ -278,6 +282,11 @@
         "types-and-contracts",
         "consumer-replay-and-persistence",
         "docs-and-generated-metadata-if-public"
+      ],
+      "implementedSources": [
+        "src/grammar/transforms.js",
+        "src/actions/data/derived.js",
+        "src/actions/data/shared.js"
       ]
     },
     {
@@ -289,7 +298,7 @@
       "dependsOn": [
         "WP02"
       ],
-      "status": "not_started",
+      "status": "completed",
       "decisionIds": [
         "D02"
       ],
@@ -306,8 +315,7 @@
         "Read v2 with schema/definition consistency and reject malicious reference graphs."
       ],
       "testTargets": [
-        "test/unit/persistence/program.test.js",
-        "test/unit/persistence/schema-migration.test.js"
+        "test/unit/persistence/program.test.js"
       ],
       "acceptanceCaseIds": [
         "V03",
@@ -319,6 +327,9 @@
         "types-and-contracts",
         "consumer-replay-and-persistence",
         "docs-and-generated-metadata-if-public"
+      ],
+      "implementedSources": [
+        "src/persistence.js"
       ]
     },
     {
@@ -330,7 +341,7 @@
       "dependsOn": [
         "WP02"
       ],
-      "status": "not_started",
+      "status": "completed",
       "decisionIds": [
         "D03"
       ],
@@ -349,8 +360,9 @@
         "Add independent-item missing skip and preserve existing path break/other family contracts."
       ],
       "testTargets": [
-        "test/unit/actions/data/empty-domain.test.js",
-        "test/contracts/empty-consumer-matrix.test.js"
+        "test/unit/actions/data/dataset-schema.test.js",
+        "test/unit/actions/marks/item-missing.test.js",
+        "test/unit/persistence/program.test.js"
       ],
       "acceptanceCaseIds": [
         "V05",
@@ -364,6 +376,11 @@
         "types-and-contracts",
         "consumer-replay-and-persistence",
         "docs-and-generated-metadata-if-public"
+      ],
+      "implementedSources": [
+        "src/materialization/revisionIdentity.js",
+        "src/grammar/itemMissing.js",
+        "src/materialization/scales/resolve.js"
       ]
     },
     {
@@ -376,7 +393,7 @@
         "WP02",
         "WP04"
       ],
-      "status": "not_started",
+      "status": "completed",
       "decisionIds": [
         "D04"
       ],
@@ -399,8 +416,7 @@
         "Store typed calculation owners and forward options through facades/edits/revisions."
       ],
       "testTargets": [
-        "test/unit/grammar/statistical-missing-policy.test.js",
-        "test/unit/actions/data/calculation-reports.test.js"
+        "test/unit/actions/data/calculation-policies.test.js"
       ],
       "acceptanceCaseIds": [
         "V09",
@@ -415,6 +431,12 @@
         "types-and-contracts",
         "consumer-replay-and-persistence",
         "docs-and-generated-metadata-if-public"
+      ],
+      "implementedSources": [
+        "src/grammar/summary.js",
+        "src/grammar/bin.js",
+        "src/grammar/density.js",
+        "src/grammar/interval.js"
       ]
     },
     {
@@ -427,7 +449,7 @@
         "WP02",
         "WP04"
       ],
-      "status": "not_started",
+      "status": "completed",
       "decisionIds": [
         "D05"
       ],
@@ -445,8 +467,7 @@
         "Reuse boundary kernel for mark selector while retaining item grain."
       ],
       "testTargets": [
-        "test/unit/grammar/filter-boundaries.test.js",
-        "test/unit/actions/data/filter-edit-boundaries.test.js"
+        "test/unit/actions/data/advanced-filter.test.js"
       ],
       "acceptanceCaseIds": [
         "V26",
@@ -460,6 +481,10 @@
         "types-and-contracts",
         "consumer-replay-and-persistence",
         "docs-and-generated-metadata-if-public"
+      ],
+      "implementedSources": [
+        "src/grammar/filter.js",
+        "src/actions/data/filter.js"
       ]
     },
     {
@@ -472,7 +497,7 @@
         "WP05",
         "WP06"
       ],
-      "status": "not_started",
+      "status": "completed",
       "decisionIds": [
         "D06"
       ],
@@ -492,8 +517,8 @@
         "Update regression output schema, bounds consumers, missing report and all method guards."
       ],
       "testTargets": [
+        "test/unit/actions/data/regression-prediction.test.js",
         "test/unit/actions/data/regression-data.test.js",
-        "test/unit/grammar/regression-prediction-grid.test.js",
         "test/unit/actions/regression/edit-regression.test.js"
       ],
       "acceptanceCaseIds": [
@@ -509,6 +534,11 @@
         "types-and-contracts",
         "consumer-replay-and-persistence",
         "docs-and-generated-metadata-if-public"
+      ],
+      "implementedSources": [
+        "src/grammar/regression/derive.js",
+        "src/grammar/regression/models.js",
+        "src/grammar/regression/parameters.js"
       ]
     },
     {
@@ -521,7 +551,7 @@
         "WP07",
         "WP04"
       ],
-      "status": "not_started",
+      "status": "completed",
       "decisionIds": [
         "D07"
       ],
@@ -543,8 +573,7 @@
         "Integrate reencode/filters/revisions/facets/deletion/snapshots with atomic rejection."
       ],
       "testTargets": [
-        "test/unit/actions/regression/source-follow.test.js",
-        "test/contracts/source-follow-consumers.test.js"
+        "test/unit/actions/regression/source-binding.test.js"
       ],
       "acceptanceCaseIds": [
         "V19",
@@ -558,6 +587,11 @@
         "types-and-contracts",
         "consumer-replay-and-persistence",
         "docs-and-generated-metadata-if-public"
+      ],
+      "implementedSources": [
+        "src/actions/regression/follow.js",
+        "src/actions/regression/create.js",
+        "src/actions/regression/edit.js"
       ]
     },
     {
@@ -570,7 +604,7 @@
         "WP02",
         "WP06"
       ],
-      "status": "not_started",
+      "status": "completed",
       "decisionIds": [
         "D09"
       ],
@@ -592,9 +626,7 @@
         "Prove row-value preservation and full derived/facet/persistence lifecycle."
       ],
       "testTargets": [
-        "test/unit/grammar/sort.test.js",
-        "test/unit/actions/data/sorted-data.test.js",
-        "test/contracts/sorted-data-types.test.js"
+        "test/unit/actions/data/sorted-data.test.js"
       ],
       "acceptanceCaseIds": [
         "V30",
@@ -607,6 +639,10 @@
         "types-and-contracts",
         "consumer-replay-and-persistence",
         "docs-and-generated-metadata-if-public"
+      ],
+      "implementedSources": [
+        "src/grammar/sort.js",
+        "src/actions/data/sort.js"
       ]
     },
     {
@@ -623,7 +659,7 @@
         "WP08",
         "WP09"
       ],
-      "status": "not_started",
+      "status": "completed",
       "decisionIds": [
         "D10"
       ],
@@ -645,8 +681,8 @@
         "Inventory every built-in action and pair valid/invalid execution preconditions."
       ],
       "testTargets": [
-        "test/contracts/action-inspection-coverage.test.js",
-        "test/unit/inspection/actions.test.js"
+        "test/contracts/inspection-descriptors.test.js",
+        "test/unit/inspection.test.js"
       ],
       "acceptanceCaseIds": [
         "V33",
@@ -659,6 +695,12 @@
         "types-and-contracts",
         "consumer-replay-and-persistence",
         "docs-and-generated-metadata-if-public"
+      ],
+      "implementedSources": [
+        "src/inspection.js",
+        "src/inspectionDescriptors.js",
+        "scripts/generate-inspection-descriptors.js",
+        "types/inspection.d.ts"
       ]
     },
     {
@@ -672,7 +714,7 @@
         "WP09",
         "WP10"
       ],
-      "status": "not_started",
+      "status": "completed",
       "decisionIds": [
         "D11"
       ],
@@ -689,7 +731,7 @@
         "Return changes/affected/partial-comparison/unknown without copying raw data."
       ],
       "testTargets": [
-        "test/unit/inspection/changes.test.js"
+        "test/unit/inspection.test.js"
       ],
       "acceptanceCaseIds": [
         "V36",
@@ -702,6 +744,9 @@
         "types-and-contracts",
         "consumer-replay-and-persistence",
         "docs-and-generated-metadata-if-public"
+      ],
+      "implementedSources": [
+        "src/inspection.js"
       ]
     },
     {
@@ -715,7 +760,7 @@
         "WP05",
         "WP10"
       ],
-      "status": "not_started",
+      "status": "completed",
       "decisionIds": [
         "D12"
       ],
@@ -733,8 +778,8 @@
         "Return calculation reports and coverage; leave pixel visibility and commit policy to host."
       ],
       "testTargets": [
-        "test/unit/inspection/graphics.test.js",
-        "test/contracts/inspection-renderer-matrix.test.js"
+        "test/unit/inspection.test.js",
+        "test/browser/package-consumer.browser.js"
       ],
       "acceptanceCaseIds": [
         "V39",
@@ -748,6 +793,9 @@
         "types-and-contracts",
         "consumer-replay-and-persistence",
         "docs-and-generated-metadata-if-public"
+      ],
+      "implementedSources": [
+        "src/inspection.js"
       ]
     },
     {
@@ -760,7 +808,7 @@
         "WP11",
         "WP12"
       ],
-      "status": "not_started",
+      "status": "completed",
       "decisionIds": [
         "D13"
       ],
@@ -776,8 +824,10 @@
         "Measure p50/p95/retained memory/snapshot bytes and structured expected rejects."
       ],
       "testTargets": [
-        "test/contracts/repeated-authoring-isolation.test.js",
-        "scripts/benchmark-runtime.js"
+        "scripts/benchmark-runtime.js",
+        ".artifacts/benchmarks/runtime.json",
+        "test/contracts/generated-lifecycle-scenarios.test.js",
+        "test/contracts/realistic-guide-scale-recipes.test.js"
       ],
       "acceptanceCaseIds": [
         "V43",
@@ -791,6 +841,9 @@
         "types-and-contracts",
         "consumer-replay-and-persistence",
         "docs-and-generated-metadata-if-public"
+      ],
+      "implementedSources": [
+        "scripts/benchmark-runtime.js"
       ]
     },
     {
@@ -822,7 +875,7 @@
         "WP12",
         "WP13"
       ],
-      "status": "not_started",
+      "status": "completed",
       "decisionIds": [
         "D14"
       ],
@@ -839,8 +892,9 @@
         "Run required cumulative verification and record exact remaining optional scope; no automatic release."
       ],
       "testTargets": [
-        "test/contracts/",
         "test/unit/",
+        "test/contracts/",
+        "test/docs/",
         "test/charts/",
         "test/browser/"
       ],
@@ -895,12 +949,31 @@
         "types-and-contracts",
         "consumer-replay-and-persistence",
         "docs-and-generated-metadata-if-public"
+      ],
+      "implementedSources": [
+        "types/program.d.ts",
+        "docs/inspection.md",
+        "knowledge/action-cards.json",
+        "agent_docs/contract/ACTION_INDEX.json"
       ]
     }
   ],
   "notes": [
-    "existingSources must exist at baseline; proposedNewSources are planned output paths, not implemented files.",
+    "existingSources and proposedNewSources preserve the planning baseline; implementedSources records the final paths.",
     "Phase0 baseline measurement may run before WP13; final performance verdict depends on completed APIs.",
     "Runtime implementation still requires applicable decision authorization; planning and scope removal are already authorized."
-  ]
+  ],
+  "verification": {
+    "completedAt": "2026-09-15",
+    "commands": [
+      "npm run test:unit",
+      "npm run test:contracts",
+      "npm run test:docs",
+      "npm run test:charts",
+      "npm run test:browser",
+      "npm run benchmark:runtime",
+      "npm run package:check"
+    ],
+    "externalRelease": "not-run; npm publication and documentation deployment remain separate operations"
+  }
 }

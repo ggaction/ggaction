@@ -39,6 +39,7 @@ test("createNormalizedData preserves row order for share, minmax, and zscore", (
     ["createDerivedData", "materializeNormalizedData"]
   );
   assert.deepEqual(source.semanticSpec.datasets, [{
+    schema: source.semanticSpec.datasets[0].schema,
     id: "source", values: [{ x: 2 }, { x: 4 }]
   }]);
 });
@@ -201,7 +202,9 @@ test("createNormalizedData owns canonical options and rejects overflowing result
 
 test("createNormalizedData validates empty-source structure without inventing fields", () => {
   const program = chart()
-    .createData({ id: "source", values: [] })
+    .createData({ id: "source", values: [], schema: { fields: [
+      { name: "unknown", storageType: "number" }
+    ] } })
     .createNormalizedData({
       id: "empty", field: "unknown", as: "result", method: "share"
     });

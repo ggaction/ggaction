@@ -211,6 +211,10 @@ Browser-safe 저장·복원 entry다. Canonical constructor state를 versioned t
 
 `src/accessibility.js`의 read-only `ggaction/accessibility` entry는 기존 final-item selection adapter 및 pure path series 계산을 사용하여 시각적 grain의 데이터를 반환한다. Renderer나 DOM을 실행하지 않고 원본 행을 최종 표로 대체하지 않는다. 안정적인 composite owner 관계는 `src/selectors/markOwners.js`를 mark removal과 공유한다. 결과의 정확한 schema와 제한은 [Rendering](../docs/api/rendering.md#accessible-data-alternatives)이 소유한다.
 
+### `ggaction/inspection`
+
+`src/inspection.js`의 browser-safe read-only entry는 저장된 dataset schema, action의 정적 적용 가능성, 두 프로그램의 resource 변화, materialized graphic의 구조와 가시 후보를 조회한다. 조회는 action을 실행하거나 program, trace, context를 바꾸지 않는다. 계산이나 pixel 확인을 수행하지 않은 검사는 `not_run`, 알 수 없는 extension 의미는 `unverified`, 지원하지 않는 concrete owner는 partial coverage로 반환한다.
+
 ### `ggaction/diagnostics`
 
 `getErrorDetails(error)`로 stable code와 선택적인 operation/option/resource/budget metadata를 읽는 browser-safe entry다. Error identity/class를 보존하고 원본 data row를 저장하지 않는다. 상세 계약은 `docs/errors-and-recovery.md`가 소유한다.
@@ -238,6 +242,7 @@ src/extension.js         ↔ types/extension.d.ts
 src/renderers/pdf.js     ↔ types/pdf.d.ts
 src/renderers/png.js     ↔ types/png.d.ts
 src/renderers/svg.js     ↔ types/svg.d.ts
+src/inspection.js        ↔ types/inspection.d.ts
 ChartProgram contract    ↔ types/program.d.ts
 src/mcp/cli.js           ↔ package `ggaction-mcp` executable
 ```
@@ -254,7 +259,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 360,000 bytes |
+| `ggaction` | 370,000 bytes |
 | `ggaction/basic` | 175,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 

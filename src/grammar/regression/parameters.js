@@ -1,9 +1,38 @@
-import { cloneAndFreeze } from "../../core/immutable.js";
+import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
 import { normalizeConfidenceInterval } from
   "../statistics/confidenceInterval.js";
 
 const MAX_POLYNOMIAL_DEGREE = 32;
+
+export function normalizeRegressionPredict(predict) {
+  if (predict === undefined) return undefined;
+  if (predict === false) throw new TypeError("Regression predict false is only valid in edits.");
+  if (!isPlainObject(predict)) {
+    throw new TypeError("Regression predict must be a plain object.");
+  }
+  const unknown = Object.keys(predict).find(key => !["values", "domain", "steps"].includes(key));
+  if (unknown !== undefined) throw new Error(`Unknown regression predict property "${unknown}".`);
+  const usesValues = Object.hasOwn(predict, "values");
+  const usesDomain = Object.hasOwn(predict, "domain") || Object.hasOwn(predict, "steps");
+  if (usesValues === usesDomain) throw new Error("Regression predict requires values or domain with steps.");
+  if (usesValues) {
+    const values = predict.values;
+    if (!Array.isArray(values) || values.length === 0 || values.some((value, index) =>
+      !Number.isFinite(value) || (index > 0 && !(value > values[index - 1]))
+    )) throw new TypeError("Regression predict values must be finite, unique, and strictly ascending.");
+    return cloneAndFreeze({ values: [...values] });
+  }
+  if (!Array.isArray(predict.domain) || predict.domain.length !== 2 ||
+      !predict.domain.every(Number.isFinite) || !(predict.domain[0] < predict.domain[1])) {
+    throw new TypeError("Regression predict domain must be two increasing finite numbers.");
+  }
+  if (!Number.isInteger(predict.steps) || predict.steps < 2) {
+    throw new RangeError("Regression predict steps must be an integer of at least two.");
+  }
+  validateGeneratedItemLimit(predict.steps, "Regression predict steps");
+  return cloneAndFreeze({ domain: [...predict.domain], steps: predict.steps });
+}
 
 export function requireRegressionField(field, label) {
   if (typeof field !== "string" || field.length === 0) {
@@ -44,6 +73,21 @@ export function normalizeRegressionParameters({
   }
   if (span !== undefined) {
     throw new Error("Regression span requires the loess method.");
+  }
+  if (interval === false) {
+    if (confidenceMethod !== undefined || level !== undefined || confidence !== undefined) {
+      throw new Error("Regression interval false cannot include confidence options.");
+    }
+    if (method === "polynomial") {
+      const resolvedDegree = degree ?? 2;
+      if (!Number.isInteger(resolvedDegree) || resolvedDegree < 1) {
+        throw new RangeError("Regression polynomial degree must be a positive integer.");
+      }
+      validateGeneratedItemLimit(resolvedDegree, "Regression polynomial degree", MAX_POLYNOMIAL_DEGREE);
+      return cloneAndFreeze({ method, degree: resolvedDegree, interval: false });
+    }
+    if (degree !== undefined) throw new Error("Regression degree requires the polynomial method.");
+    return cloneAndFreeze({ method, interval: false });
   }
   if (level !== undefined && confidence !== undefined && level !== confidence) {
     throw new Error(
@@ -96,7 +140,7 @@ export function validateRegressionTransform(transform) {
   const supported = [
     "type", "method", "x", "y", "groupBy", "confidenceMethod", "level",
     "confidence", "interval",
-    "degree", "span"
+    "degree", "span", "predict", "missing"
   ];
   const unknown = Object.keys(transform).find(key => !supported.includes(key));
   if (unknown !== undefined) {
@@ -127,9 +171,14 @@ export function validateRegressionTransform(transform) {
     confidence: transform.confidence,
     interval: transform.interval
   });
+  normalizeRegressionPredict(transform.predict);
+  if (transform.missing !== undefined && !["error", "drop"].includes(transform.missing)) {
+    throw new Error('Regression missing must be "error" or "drop".');
+  }
   if (normalized.method === "loess") return transform;
   if (
     transform.confidence === undefined &&
+    transform.interval !== false &&
     (transform.confidenceMethod === undefined || transform.level === undefined)
   ) {
     throw new Error("Regression confidence provenance requires method and level.");
@@ -142,6 +191,7 @@ export function validateRegressionTransform(transform) {
 
 export function normalizeRegressionTransform(args = {}) {
   const parameters = normalizeRegressionParameters(args);
+  const predict = normalizeRegressionPredict(args.predict);
   const transform = {
     type: "regression",
     method: parameters.method,
@@ -153,11 +203,13 @@ export function normalizeRegressionTransform(args = {}) {
       : {}),
     ...(parameters.method === "loess"
       ? { span: parameters.span }
-      : {
+      : parameters.interval === false ? { interval: false } : {
           confidenceMethod: parameters.confidenceMethod,
           level: parameters.level,
           interval: parameters.interval
-        })
+        }),
+    ...(predict === undefined ? {} : { predict }),
+    ...(args.missing === undefined ? {} : { missing: args.missing })
   };
   validateRegressionTransform(transform);
   return cloneAndFreeze(transform);

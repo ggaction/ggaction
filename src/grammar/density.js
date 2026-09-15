@@ -59,6 +59,7 @@ export function normalizeDensityTransform(args = {}) {
     as: args.as ?? [`${args.field}_value`, `${args.field}_density`],
     resolve: args.resolve ?? "shared",
     ...(args.weight === undefined ? {} : { weight: args.weight }),
+    ...(args.missing === undefined ? {} : { missing: args.missing }),
     ...(args.placement === undefined ? {} : { placement: args.placement })
   };
   validateDensityTransform(transform);
@@ -370,7 +371,7 @@ function hasValidResolvedBandwidthState(resolved, transform) {
 export function validateDensityTransform(transform) {
   const supported = [
     "type", "field", "groupBy", "bandwidth", "extent", "steps", "as",
-    "resolve", "kernel", "normalization", "placement", "weight", "resolved"
+    "resolve", "kernel", "normalization", "placement", "weight", "missing", "resolved"
   ];
   const unknown = Object.keys(transform).find(key => !supported.includes(key));
   if (unknown !== undefined) {
@@ -382,6 +383,9 @@ export function validateDensityTransform(transform) {
   requireField(transform.field, "Density field");
   if (transform.weight !== undefined) {
     normalizeStatisticalWeight(transform.weight, "Density weight");
+  }
+  if (transform.missing !== undefined && !["error", "drop"].includes(transform.missing)) {
+    throw new Error('Density missing must be "error" or "drop".');
   }
   if (transform.groupBy !== undefined) {
     requireField(transform.groupBy, "Density groupBy");
@@ -540,7 +544,8 @@ export function deriveKernelDensity(values, {
   normalization = "unit",
   as,
   placement,
-  weight
+  weight,
+  missing
 } = {}) {
   if (!Array.isArray(values)) {
     throw new TypeError("Density values must be an array.");
@@ -561,9 +566,31 @@ export function deriveKernelDensity(values, {
   )];
   const resolvedKernel = validateDensityKernel(kernel);
   const resolvedNormalization = validateDensityNormalization(normalization);
+  let missingValueRows = 0;
+  let missingWeightRows = 0;
+  const inputValues = missing === undefined ? values : values.filter((row, index) => {
+    const source = row?.[sourceField];
+    if (source === null || source === undefined) {
+      if (missing === "error") throw new TypeError(`Density field "${sourceField}" is missing at row ${index}.`);
+      missingValueRows += 1;
+      return false;
+    }
+    if (!Number.isFinite(source)) {
+      throw new TypeError(`Density field "${sourceField}" must contain a finite number at row ${index}.`);
+    }
+    if (weight !== undefined) {
+      const weightValue = row?.[weight.field];
+      if (weightValue === null || weightValue === undefined) {
+        if (missing === "error") throw new TypeError(`Density weight "${weight.field}" is missing at row ${index}.`);
+        missingWeightRows += 1;
+        return false;
+      }
+    }
+    return true;
+  });
   const statisticalWeights = weight === undefined
     ? undefined
-    : readStatisticalWeights(values, weight, "Density");
+    : readStatisticalWeights(inputValues, weight, "Density");
   if (statisticalWeights !== undefined) {
     validateWeightedNumericFields(
       statisticalWeights.entries,
@@ -579,7 +606,7 @@ export function deriveKernelDensity(values, {
           isNominalValue(entry.row[placement.split.field]))
       );
   const validRows = statisticalWeights === undefined
-    ? values.filter(row =>
+    ? inputValues.filter(row =>
         row !== null &&
         typeof row === "object" &&
         Number.isFinite(row[sourceField]) &&
@@ -759,6 +786,27 @@ export function deriveKernelDensity(values, {
     extent: resolvedExtent,
     steps,
     samples,
-    values: rows
+    values: rows,
+    ...(missing === undefined ? {} : {
+      report: {
+        version: 1,
+        owner: { kind: "data", id: "pending" },
+        inputs: [],
+        units: [{
+          role: outputFields[1],
+          group: {},
+          inputRows: values.length,
+          usedRows: validRows.length,
+          excludedRows: values.length - validRows.length,
+          excludedByReason: {
+            ...(missingValueRows === 0 ? {} : { "missing-value": missingValueRows }),
+            ...(missingWeightRows === 0 ? {} : { "missing-weight": missingWeightRows })
+          },
+          ...(statisticalWeights === undefined ? {} : {
+            zeroWeightRows: statisticalWeights.entries.filter(entry => entry.weight === 0).length
+          })
+        }]
+      }
+    })
   });
 }

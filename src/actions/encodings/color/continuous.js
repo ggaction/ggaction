@@ -26,6 +26,8 @@ import {
 } from "./policy.js";
 
 import { applyTemporalUnit } from "../temporal.js";
+import { applyRequestedItemMissingPolicy } from
+  "../../../grammar/itemMissing.js";
 
 export function encodeContinuousColor(program, args) {
   if (!["quantitative", "temporal"].includes(args.fieldType)) {
@@ -34,12 +36,13 @@ export function encodeContinuousColor(program, args) {
   if (args.layout !== undefined) {
     throw new Error("Continuous color does not support layout.");
   }
-  const { id: target, dataset, layer } = resolveTarget(
+  const { id: target, dataset: sourceDataset, layer } = resolveTarget(
     program,
     args.target,
     ["point", "bar", "rect"],
     "continuous color mark"
   );
+  const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
   assertNoConstantColor(program, layer);
   const temporalUnit = resolveTemporalUnit(args, args.fieldType, layer.encoding?.color);
   const requestedScale = resolveReassignmentScaleOptions(

@@ -26,6 +26,7 @@ test("creates immutable box summary and outlier provenance through wrapped data 
   });
 
   assert.deepEqual(completed.semanticSpec.datasets[1], {
+    schema: completed.semanticSpec.datasets[1].schema,
     id: "summary",
     source: "data",
     transform: [{

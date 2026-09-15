@@ -7,7 +7,7 @@ import { derivedCreator, derivedMaterializer } from "./shared.js";
 
 const OPTIONS = Object.freeze([
   "id", "source", "field", "maxBins", "step", "boundaries", "extent",
-  "nice", "zero", "includeEmpty", "members", "as", "weight"
+  "nice", "zero", "includeEmpty", "members", "as", "weight", "missing"
 ]);
 
 export const materializeBinData = /* @__PURE__ */ derivedMaterializer(

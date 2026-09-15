@@ -62,7 +62,8 @@ test("creates immutable regression provenance and concrete values", () => {
     groupBy: "Origin"
   });
 
-  assert.deepEqual(program.semanticSpec.datasets[2], {
+  const { schema, ...stored } = program.semanticSpec.datasets[2];
+  assert.deepEqual(stored, {
     id: "regressionData",
     source: "selectedCars",
     transform: [{
@@ -77,6 +78,10 @@ test("creates immutable regression provenance and concrete values", () => {
     }],
     values: expected.regressionRows
   });
+  assert.deepEqual(schema.fields.map(field => field.name), [
+    "Origin", "Displacement", "Acceleration",
+    "__regression_ci_lower", "__regression_ci_upper"
+  ]);
   assert.equal(Object.isFrozen(program.semanticSpec.datasets[2].values), true);
   assert.equal(filtered.semanticSpec.datasets.length, 2);
   const node = program.trace.children.at(-1);
@@ -126,7 +131,7 @@ test("validates regression action options and source inference", () => {
   );
   assert.throws(
     () => program.createRegressionData({ id: "fit", x: "missing", y: "y" }),
-    /finite number/
+    /does not contain field/
   );
   assert.throws(
     () => chart().createRegressionData({ id: "fit", x: "x", y: "y" }),

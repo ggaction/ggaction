@@ -517,6 +517,10 @@
     "title": "Data Updates and Live Refresh",
     "description": "Source dataset values are immutable after creation. createData copies and freezes caller owned rows."
   },
+  "/inspection/": {
+    "title": "Program Inspection",
+    "description": "The browser safe ggaction/inspection entry reads a closed Full or Basic program without executing an action or changing its trace, context, or cached materialization."
+  },
   "/errors-and-recovery/": {
     "title": "Errors and Recovery",
     "description": "ggaction rejects ambiguous state, invalid options, incompatible resources, and renderer allocation failures instead of guessing."

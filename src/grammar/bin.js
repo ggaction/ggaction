@@ -15,7 +15,7 @@ import {
 
 const TRANSFORM_KEYS = Object.freeze([
   "type", "field", "bin", "extent", "nice", "zero", "includeEmpty",
-  "members", "as", "weight", "resolved"
+  "members", "as", "weight", "missing", "resolved"
 ]);
 const AS_KEYS = Object.freeze(["lower", "upper", "count", "members"]);
 const RESOLVED_KEYS = Object.freeze(["domain", "step", "boundaries"]);
@@ -59,7 +59,8 @@ export function normalizeBinTransform({
   includeEmpty,
   members,
   as,
-  weight
+  weight,
+  missing
 } = {}) {
   const selected = [maxBins, step, boundaries].filter(value => value !== undefined);
   if (selected.length > 1) {
@@ -83,7 +84,8 @@ export function normalizeBinTransform({
     as: normalizeAs(field, as, resolvedMembers),
     ...(weight === undefined
       ? {}
-      : { weight: normalizeStatisticalWeight(weight, "Bin weight") })
+      : { weight: normalizeStatisticalWeight(weight, "Bin weight") }),
+    ...(missing === undefined ? {} : { missing })
   };
   validateBinTransform(transform);
   return cloneAndFreeze(transform);
@@ -100,6 +102,9 @@ export function validateBinTransform(transform) {
   requireField(transform.field, "Bin field");
   if (transform.weight !== undefined) {
     normalizeStatisticalWeight(transform.weight, "Bin weight");
+  }
+  if (transform.missing !== undefined && !["error", "drop"].includes(transform.missing)) {
+    throw new Error('Bin missing must be "error" or "drop".');
   }
   normalizeHistogramBin(transform.bin);
   if (
@@ -142,22 +147,31 @@ export function validateBinTransform(transform) {
   return transform;
 }
 
-function readValues(rows, field) {
-  return rows.map((row, index) => {
+function readValues(rows, field, missing) {
+  const eligible = [];
+  let excluded = 0;
+  rows.forEach((row, index) => {
     const value = row[field];
+    if (value === null || value === undefined) {
+      if (missing === "drop") { excluded += 1; return; }
+      throw new TypeError(`Bin field "${field}" must contain a finite number at row ${index}.`);
+    }
     if (!Number.isFinite(value)) {
       throw new TypeError(`Bin field "${field}" must contain a finite number at row ${index}.`);
     }
-    return value;
+    eligible.push({ row, index });
   });
+  return { eligible, excluded };
 }
 
 export function deriveBinRows(rows, transform) {
   validateBinTransform(transform);
-  const values = readValues(rows, transform.field);
+  const selected = readValues(rows, transform.field, transform.missing);
+  const eligibleRows = selected.eligible.map(entry => entry.row);
+  const values = eligibleRows.map(row => row[transform.field]);
   const weights = transform.weight === undefined
     ? undefined
-    : readStatisticalWeights(rows, transform.weight, "Bin");
+    : readStatisticalWeights(eligibleRows, transform.weight, "Bin");
   if (weights !== undefined) {
     validateWeightedNumericFields(weights.entries, [transform.field], "Bin");
   }
@@ -188,7 +202,7 @@ export function deriveBinRows(rows, transform) {
   });
   const members = resolved.boundaries.slice(0, -1).map(() => []);
   const entries = weightSummary === undefined
-    ? rows.map((row, index) => ({ row, index }))
+    ? selected.eligible
     : weightSummary.positive;
   entries.forEach(entry => {
     const value = entry.row[transform.field];
@@ -217,7 +231,22 @@ export function deriveBinRows(rows, transform) {
       domain: resolved.domain,
       ...(resolved.step === undefined ? {} : { step: resolved.step }),
       boundaries: resolved.boundaries
-    }
+    },
+    ...(transform.missing === undefined ? {} : {
+      report: {
+        version: 1,
+        owner: { kind: "data", id: "pending" },
+        inputs: [],
+        units: [{
+          role: transform.as.count,
+          group: {},
+          inputRows: rows.length,
+          usedRows: eligibleRows.length,
+          excludedRows: selected.excluded,
+          excludedByReason: selected.excluded === 0 ? {} : { "missing-value": selected.excluded }
+        }]
+      }
+    })
   };
 }
 

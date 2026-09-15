@@ -5,6 +5,12 @@ import { hasRegisteredExtension, isBuiltinProgramClass } from "./core/extensionR
 import { packageVersion } from "./version.js";
 import { decodeValue, encodeValue, invalidSnapshot } from "./persistence/codec.js";
 import { exactKeys, requireObject, STATE_KEYS, validateGraphic, validateProgramState, validateTrace } from "./persistence/validation.js";
+import {
+  deriveTransformSchema,
+  inferDatasetSchema,
+  validateDatasetSchema
+} from "./grammar/datasetSchema.js";
+import { restoreResolvedScaleBindings } from "./actions/scales/preview.js";
 
 function canonicalState(program, extensions, path = "payload") {
   if (!(program instanceof ChartProgram || program instanceof BasicChartProgram) || !isBuiltinProgramClass(program.constructor)) {
@@ -19,7 +25,7 @@ function canonicalState(program, extensions, path = "payload") {
 }
 
 function envelope(kind, payload, extensions = []) {
-  return JSON.stringify({ schemaVersion: 1, kind, packageVersion, extensions, payload: encodeValue(payload) });
+  return JSON.stringify({ schemaVersion: kind === "editable" ? 2 : 1, kind, packageVersion, extensions, payload: encodeValue(payload) });
 }
 
 function readEnvelope(text, kind) {
@@ -27,7 +33,13 @@ function readEnvelope(text, kind) {
   let value;
   try { value = JSON.parse(text); } catch { throw invalidSnapshot("Snapshot must be valid JSON.", "snapshot"); }
   exactKeys(value, ["schemaVersion", "kind", "packageVersion", "extensions", "payload"], "snapshot");
-  if (value.schemaVersion !== 1 || value.kind !== kind) throw invalidSnapshot(`Unsupported snapshot schema or kind; expected schema 1 ${kind}.`, "snapshot");
+  const versions = kind === "editable" ? [1, 2] : [1];
+  if (!versions.includes(value.schemaVersion) || value.kind !== kind) {
+    throw invalidSnapshot(
+      `Unsupported snapshot schema or kind; expected schema ${versions.join(" or ")} ${kind}.`,
+      "snapshot"
+    );
+  }
   if (typeof value.packageVersion !== "string" || !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/.test(value.packageVersion)) throw invalidSnapshot("Invalid snapshot packageVersion.", "snapshot.packageVersion");
   if (!Array.isArray(value.extensions) || new Set(value.extensions).size !== value.extensions.length ||
       value.extensions.some(name => typeof name !== "string" || !hasRegisteredExtension(name)) || (kind === "graphic" && value.extensions.length)) {
@@ -36,15 +48,69 @@ function readEnvelope(text, kind) {
   return { ...value, payload: decodeValue(value.payload) };
 }
 
-function restoreState(state, extensions, path = "payload") {
+function restoreState(state, extensions, path = "payload", { requireSchemas = false } = {}) {
   exactKeys(state, STATE_KEYS, path);
   if (!Array.isArray(state.actionStack) || state.actionStack.length) throw invalidSnapshot("Snapshot actionStack must be empty.", `${path}.actionStack`);
   requireObject(state.children, `${path}.children`);
   validateTrace(state.trace, ChartProgram, extensions, `${path}.trace`);
-  const children = Object.fromEntries(Object.entries(state.children).map(([id, child]) => [id, restoreState(child, extensions, `${path}.children.${id}`)]));
+  const children = Object.fromEntries(Object.entries(state.children).map(([id, child]) => [id, restoreState(
+    child,
+    extensions,
+    `${path}.children.${id}`,
+    { requireSchemas }
+  )]));
   const program = new ChartProgram({ ...state, children });
   validateProgramState(program, path);
-  return program;
+  if (requireSchemas) {
+    for (const dataset of program.semanticSpec.datasets) {
+      if (dataset.schema === undefined) {
+        throw invalidSnapshot(`Dataset "${dataset.id}" requires schema in editable snapshot version 2.`, `${path}.semanticSpec.datasets`);
+      }
+      validateDatasetSchema(dataset.schema);
+    }
+  }
+  return restoreResolvedScaleBindings(program);
+}
+
+function migrateStateSchemas(state) {
+  const datasets = state.semanticSpec.datasets;
+  const byId = new Map(datasets.map(dataset => [dataset.id, dataset]));
+  const schemas = new Map();
+  const active = new Set();
+  function schemaFor(id) {
+    if (schemas.has(id)) return schemas.get(id);
+    if (active.has(id)) throw invalidSnapshot(`Cyclic data source "${id}".`, "payload.semanticSpec.datasets");
+    active.add(id);
+    const dataset = byId.get(id);
+    let schema;
+    if (dataset.schema !== undefined) {
+      schema = validateDatasetSchema(dataset.schema);
+    } else if (dataset.source === undefined) {
+      schema = inferDatasetSchema(dataset.values ?? []);
+    } else {
+      const sourceSchema = schemaFor(dataset.source);
+      schema = deriveTransformSchema(
+        sourceSchema,
+        dataset.transform?.[0] ?? {},
+        dataset.values,
+        { sourceId: dataset.source, ownerId: dataset.id }
+      );
+    }
+    active.delete(id);
+    schemas.set(id, schema);
+    return schema;
+  }
+  const semanticSpec = {
+    ...state.semanticSpec,
+    datasets: datasets.map(dataset => ({ ...dataset, schema: schemaFor(dataset.id) }))
+  };
+  return {
+    ...state,
+    semanticSpec,
+    children: Object.fromEntries(Object.entries(state.children).map(
+      ([id, child]) => [id, migrateStateSchemas(child)]
+    ))
+  };
 }
 
 export function serializeProgram(program) {
@@ -55,7 +121,14 @@ export function serializeProgram(program) {
 export function deserializeProgram(text) {
   const stored = readEnvelope(text, "editable");
   const extensions = new Set();
-  const program = restoreState(stored.payload, extensions);
+  let payload = stored.payload;
+  if (stored.schemaVersion === 1) {
+    // Validate the historical state before adding any inferred metadata. Migration
+    // must never repair an invalid reference graph or malformed payload.
+    restoreState(payload, new Set());
+    payload = migrateStateSchemas(payload);
+  }
+  const program = restoreState(payload, extensions, "payload", { requireSchemas: true });
   if (extensions.size !== stored.extensions.length || stored.extensions.some(name => !extensions.has(name))) {
     throw invalidSnapshot("Snapshot extensions must exactly match its action traces.", "snapshot.extensions");
   }

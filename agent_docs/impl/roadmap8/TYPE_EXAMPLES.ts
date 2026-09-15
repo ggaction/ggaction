@@ -1,4 +1,4 @@
-/** Compile-only proposal examples. Do not execute: these APIs are not implemented. */
+/** Compile-only Roadmap 8 contract examples retained with the planning snapshot. */
 import type {
   CreateDataOptions, FilterDataOptions, EditFilteredDataOptions,
   RegressionOptions, RegressionDataOptions, SortedDataOptions,

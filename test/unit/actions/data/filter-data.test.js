@@ -22,6 +22,7 @@ test("filters the current dataset through wrapped derived-data actions", () => {
   });
 
   assert.deepEqual(program.semanticSpec.datasets[1], {
+    schema: program.semanticSpec.datasets[1].schema,
     id: "selected",
     source: "rows",
     transform: [{ type: "filter", field: "category", oneOf: ["A"] }],
@@ -40,7 +41,7 @@ test("filters the current dataset through wrapped derived-data actions", () => {
     program.trace.children.at(-1).children[1].children.map(node => node.op),
     ["editSemantic"]
   );
-  assert.deepEqual(source.semanticSpec.datasets, [{ id: "rows", values: rows }]);
+  assert.deepEqual(source.semanticSpec.datasets, [{ id: "rows", values: rows, schema: source.semanticSpec.datasets[0].schema }]);
 });
 
 test("supports an explicit source and scalar filter values", () => {
@@ -90,7 +91,7 @@ test("validates filter inference, options, and derived state", () => {
   );
   assert.throws(
     () => base.filterData({ id: "selected", field: "category", oneOf: [] }),
-    /oneOf must be a non-empty array/
+    /oneOf must be a non-empty dense array/
   );
   assert.throws(
     () => base.filterData({
@@ -218,8 +219,9 @@ test("resolves inclusive and exclusive range endpoints", () => {
 
   assert.deepEqual(inclusive.semanticSpec.datasets[1].transform[0].range, {
     min: 1,
+    minInclusive: true,
     max: 3,
-    inclusive: true
+    maxInclusive: true
   });
   assert.deepEqual(
     inclusive.semanticSpec.datasets[1].values.map(row => row.id),
@@ -255,8 +257,9 @@ test("owns predicate and range provenance", () => {
   });
   assert.deepEqual(ranged.semanticSpec.datasets[1].transform[0].range, {
     min: 1,
+    minInclusive: true,
     max: 3,
-    inclusive: true
+    maxInclusive: true
   });
 });
 
@@ -289,5 +292,7 @@ test("validates filter mode exclusivity and ordered operands", () => {
       /filter|comparison|predicate|range|exactly/i
     );
   }
-  assert.deepEqual(base.semanticSpec.datasets, [{ id: "rows", values: rows }]);
+  assert.deepEqual(base.semanticSpec.datasets, [{
+    id: "rows", values: rows, schema: base.semanticSpec.datasets[0].schema
+  }]);
 });

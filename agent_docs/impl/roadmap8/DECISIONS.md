@@ -1,6 +1,6 @@
 # Roadmap 8 결정·호환성·Gate 원장
 
-모든 결정은 **제안**이다. 계획 작성은 승인됐지만 새 API·저장 형식·구현·릴리즈는 승인되지 않았다.
+모든 구현 결정은 후속 사용자 승인에 따라 확정·적용됐다. 릴리즈 tag, npm publish, 문서 배포는 실행되지 않았다.
 Gate state는 planned/ready-for-review/approved/changes-requested만 사용한다. 제품 코드나
 실행 가능한 prototype가 없는 이번 문서를 구현 완료 증거로 해석하지 않는다.
 
@@ -26,9 +26,9 @@ Gate state는 planned/ready-for-review/approved/changes-requested만 사용한�
 ## 개정 2 상세 명세와 권위
 
 사용자가 flatten 제외와 다른 구현자를 위한 상세화를 요청했다. 범위 제외는 승인된 결정이다.
-남은 새 API의 구현 승인을 의미하지는 않는다. [IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md),
-[INSPECTION_SPEC.md](INSPECTION_SPEC.md), [PROPOSED_TYPES.d.ts](PROPOSED_TYPES.d.ts)가 구체적인 제안안을
-소유한다. 이전 요약의 미정 표현은 이 개정안으로 해소한다. 모든 non-excluded D는 해당 명세에 매핑한다.
+후속 승인으로 남은 새 API도 구현됐다. [IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md),
+[INSPECTION_SPEC.md](INSPECTION_SPEC.md), [PROPOSED_TYPES.d.ts](PROPOSED_TYPES.d.ts)가 계획 시점의 구체안을
+보존한다. 모든 non-excluded D는 현재 구현과 해당 명세에 매핑한다.
 
 ## G1/G3의 구체 계약
 
@@ -50,25 +50,23 @@ Gate state는 planned/ready-for-review/approved/changes-requested만 사용한�
 - D09: sort의 stable key 비교, null 배치, temporalUnit year/timestamp만의 명시 normalization을 사용한다.
 - D10–D12: inspection entry는4개 read-only function이며 report version1, typed target, unknown/coverage를 제공한다.
 
-이 선택은 승인 검토 가능한 상세 제안이다. 향후 사용자 승인을 기록한 뒤 해당 구현을 진행한다.
+이 선택은 승인 뒤 구현됐으며 runtime/types/current contract와 자동 생성 문서로 검증했다.
 
 ## Gate 상태와 패키지
 
 | Gate | 현재 상태 | 구현 전 검토할 범위 | 승인 근거 |
 | --- | --- | --- | --- |
-| G0 | planned | 11개 기능(F06 제외) 순서, E01/E02 경계, 이 계획의 API 제안 | 계획·상세화 요청 있음; F06 제외 확정, 나머지 API 구현 승인 없음 |
-| G1 | planned | schema/empty/nullable 정책, persistence migration fixture, public calls | 없음 |
-| G2 | planned | per-family default 영향표, missing/empty/filter 타입, raw numeric oracle | 없음 |
-| G3 | planned | interval/grid/follow 계약, 관계 state, source 변경 전후 curve | 없음 |
-| G4 | planned | sort source/output/schema/lineage, create/edit/remove 호출 | 없음 |
-| G5 | planned | read-only entry export/types, 반환 schema, descriptor coverage, unknown 사례 | 없음 |
-| G6 | planned | 새 public limit/async/cache boundary 변경이 필요한 경우만 그 구체안 | 없음 |
-| G7 | planned | 최종 호환성·범위·검증 결과와 별도로 요청할 release 대상 | 없음 |
+| G0 | approved | 11개 기능(F06 제외) 순서, E01/E02 경계, 이 계획의 API | 상세 계획 이후 사용자의 전체 구현 승인 |
+| G1 | approved | schema/empty/nullable 정책, persistence migration fixture, public calls | 전체 구현 승인 및 unit/persistence 검증 |
+| G2 | approved | per-family default 영향표, missing/empty/filter 타입, raw numeric oracle | 전체 구현 승인 및 정책 fixture 검증 |
+| G3 | approved | interval/grid/follow 계약, 관계 state, source 변경 전후 curve | 전체 구현 승인 및 regression lifecycle 검증 |
+| G4 | approved | sort source/output/schema/lineage, create/edit/remove 호출 | 전체 구현 승인 및 generated lifecycle 검증 |
+| G5 | approved | read-only entry export/types, 반환 schema, descriptor coverage, unknown 사례 | 전체 구현 승인 및 browser/package 검증 |
+| G6 | approved | workload와 기존 자원 cap 안의 성능 경계 | 전체 구현 승인 및 runtime benchmark 실행 |
+| G7 | approved | 최종 호환성·범위·통합 검증 | 전체 구현 승인; 외부 publish/deploy는 실행하지 않음 |
 
-G0가 계획 승인으로 해소되더라도 아직 구체화되지 않은 D의 선택까지 자동 승인됐다고 쓰지 않는다.
-반대로 사용자가 구체적인 여러 D를 한 번에 승인하면 해당 Gate에 같은 승인 근거를 연결하고
-각 Phase에서 다시 허락을 묻지 않는다. G6은 이미 승인된 의미 안의 내부 최적화를 막는 Gate가 아니다.
-G7도 구현 통합 검증을 막지 않으며 외부 배포 권한만 별도로 취급한다.
+사용자의 후속 전체 구현 승인을 G0–G7에 연결했으며 각 Phase에서 반복 승인을 요구하지 않았다.
+G7의 완료는 구현 통합 검증까지이며 외부 배포는 별도 운영 작업으로 취급한다.
 
 필요한 review package는 final source/call 또는 승인 전 primitive prototype, before/after state,
 focused numerical/structural 검증, 기존 behavior 영향, declarations/문서 변경안으로 구성한다.

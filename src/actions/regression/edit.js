@@ -7,7 +7,7 @@ import {
   validateNonNegativeFinite,
   validateUnitInterval
 } from "../../core/validation.js";
-import { normalizeRegressionParameters } from "../../grammar/regression/index.js";
+import { normalizeRegressionParameters, normalizeRegressionPredict } from "../../grammar/regression/index.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
 import {
   requestedStrokeDetails,
@@ -23,6 +23,7 @@ import { requireRegressionField } from "./resolve.js";
 const OPTIONS = Object.freeze([
   "target", "data", "x", "y", "groupBy", "method", "degree", "span",
   "confidenceMethod", "level", "confidence", "interval", "band", "line"
+  , "predict", "sourceBinding", "missing"
 ]);
 const BAND_OPTIONS = Object.freeze([
   "color", "opacity", "stroke", "strokeWidth", "curve",
@@ -115,7 +116,7 @@ function resolveParameters(previous, args) {
     if (Object.hasOwn(args, key)) raw[key] = args[key];
   }
   const inheritsLevel = !Object.hasOwn(raw, "confidence");
-  if (method === previous.method) {
+  if (method === previous.method && args.interval !== false) {
     for (const key of [
       "degree", "span", "confidenceMethod", "level", "interval"
     ]) {
@@ -127,7 +128,7 @@ function resolveParameters(previous, args) {
         raw[key] = previous[key];
       }
     }
-  } else if (method !== "loess" && previous.method !== "loess") {
+  } else if (method !== "loess" && previous.method !== "loess" && args.interval !== false) {
     for (const key of ["confidenceMethod", "level", "interval"]) {
       if (
         !Object.hasOwn(raw, key) &&
@@ -138,7 +139,19 @@ function resolveParameters(previous, args) {
       }
     }
   }
-  return normalizeRegressionParameters(raw);
+  const parameters = normalizeRegressionParameters(raw);
+  const predict = Object.hasOwn(args, "predict")
+    ? args.predict === false ? undefined : normalizeRegressionPredict(args.predict)
+    : previous.predict;
+  const missing = Object.hasOwn(args, "missing") ? args.missing : previous.missing;
+  if (missing !== undefined && !["error", "drop"].includes(missing)) {
+    throw new Error('Regression missing must be "error" or "drop".');
+  }
+  return {
+    ...parameters,
+    ...(predict === undefined ? {} : { predict }),
+    ...(missing === undefined ? {} : { missing })
+  };
 }
 
 function regressionColorScale(owner, current, groupBy) {
@@ -245,15 +258,31 @@ export const editRegression = /* @__PURE__ */ closedAction(
     }
     const owner = resolveRegressionOwner(this, args.target);
     const current = this.markConfigs[owner.id].regression;
-    const source = Object.hasOwn(args, "data")
+    const currentBinding = owner.derivedBindings?.regression?.mode === "follow" ? "follow" : "fixed";
+    const sourceBinding = args.sourceBinding ?? currentBinding;
+    if (!["fixed", "follow"].includes(sourceBinding)) throw new Error('Regression sourceBinding must be "fixed" or "follow".');
+    const followed = sourceBinding === "follow" ? {
+      data: owner.data,
+      x: owner.encoding?.x?.fieldType === "quantitative" ? owner.encoding.x.field : undefined,
+      y: owner.encoding?.y?.fieldType === "quantitative" ? owner.encoding.y.field : undefined
+    } : undefined;
+    if (sourceBinding === "follow" && (!followed.data || !followed.x || !followed.y)) {
+      throw new Error(`Following regression source "${owner.id}" requires quantitative x/y fields and data.`);
+    }
+    for (const key of ["data", "x", "y"]) {
+      if (followed !== undefined && Object.hasOwn(args, key) && args[key] !== followed[key]) {
+        throw new Error(`Following regression ${key} must match source mark "${owner.id}".`);
+      }
+    }
+    const source = followed?.data ?? (Object.hasOwn(args, "data")
       ? validateUserId(args.data, "Regression data id")
-      : current.source;
-    const x = Object.hasOwn(args, "x")
+      : current.source);
+    const x = followed?.x ?? (Object.hasOwn(args, "x")
       ? requireRegressionField(args.x, "Regression x")
-      : current.x;
-    const y = Object.hasOwn(args, "y")
+      : current.x);
+    const y = followed?.y ?? (Object.hasOwn(args, "y")
       ? requireRegressionField(args.y, "Regression y")
-      : current.y;
+      : current.y);
     const groupBy = Object.hasOwn(args, "groupBy")
       ? args.groupBy === false
         ? undefined
@@ -272,12 +301,12 @@ export const editRegression = /* @__PURE__ */ closedAction(
     const linePatch = Object.hasOwn(args, "line")
       ? validateLinePatch(args.line)
       : undefined;
-    if (parameters.method === "loess" && bandPatch !== undefined && bandPatch !== false) {
+    if ((parameters.method === "loess" || parameters.interval === false) && bandPatch !== undefined && bandPatch !== false) {
       throw new Error("LOESS regression does not support a band object.");
     }
 
     const hadBand = current.bandId !== undefined;
-    const wantsBand = parameters.method !== "loess" &&
+    const wantsBand = parameters.method !== "loess" && parameters.interval !== false &&
       (bandPatch === false
         ? false
         : hadBand || bandPatch !== undefined || current.parameters.method === "loess");
@@ -384,6 +413,12 @@ export const editRegression = /* @__PURE__ */ closedAction(
       });
       if (changesStatistics) {
         next = next.releaseDerivedData(revision.release);
+      }
+      const binding = findLayer(next, owner.id)?.derivedBindings?.regression;
+      if (sourceBinding === "follow" && binding?.mode !== "follow") {
+        next = next.editSemantic({ property: `layer[${owner.id}].derivedBindings.regression`, value: { mode: "follow", roles: ["data", "x", "y"] } });
+      } else if (sourceBinding === "fixed" && binding !== undefined) {
+        next = next.editSemantic({ property: `layer[${owner.id}].derivedBindings.regression`, remove: true });
       }
       return next;
     };

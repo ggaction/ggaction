@@ -124,7 +124,7 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
@@ -158,7 +158,7 @@ exact profile format, matching rules, propagation, and executable example.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 removeTextMetrics(): ChartProgram;
@@ -297,6 +297,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Required | `readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[]` |
+| `schema` | Optional / branch-dependent | `SourceSchemaInput \| undefined` |
 
 </details>
 
@@ -313,7 +314,7 @@ Create one immutable named dataset. [Data](../../api/data.md)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;
@@ -331,6 +332,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `source` | Required | `string` |
 | `id` | Required | `string` |
 | `values` | Required | `readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[]` |
+| `schema` | Optional / branch-dependent | `SourceSchemaInput \| undefined` |
 
 </details>
 
@@ -349,7 +351,7 @@ See [Data updates](../../data-updates.md#revise-a-source-and-its-dependent-chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 removeData(options: RemoveResourceOptions): ChartProgram;
@@ -386,7 +388,7 @@ does not infer, cascade, or change graphics.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 removeScale(options: RemoveResourceOptions): ChartProgram;
@@ -421,7 +423,7 @@ graphics. [Scale Options](../../api/scales.md#removescale-id)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 removeCoordinate(options: RemoveResourceOptions): ChartProgram;
@@ -510,7 +512,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Required | `string` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `field` | Required | `string` |
-| `oneOf` | Optional / branch-dependent | `readonly unknown[] \| undefined` |
+| `nulls` | Optional / branch-dependent | `"exclude" \| "include" \| undefined` |
+| `oneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
+| `noneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `predicate` | Optional / branch-dependent | `FilterComparison \| undefined` |
 | `range` | Optional / branch-dependent | `FilterRange \| undefined` |
 
@@ -519,7 +523,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-filterData({ id, source?, field, oneOf | predicate | range })
+filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })
 ```
 
 Create an immutable named derived dataset using exactly one membership,
@@ -556,6 +560,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `kernel` | Optional / branch-dependent | `DensityKernel \| undefined` |
 | `normalization` | Optional / branch-dependent | `DensityNormalization \| undefined` |
 | `weight` | Optional / branch-dependent | `StatisticalWeight \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `readonly [string, string] \| undefined` |
 
 </details>
@@ -565,7 +570,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 createDensityData({
   id, source?, field, groupBy?, bandwidth?, extent?, steps?,
-  kernel?, normalization?, as?
+  kernel?, normalization?, weight?, missing?, as?
 })
 ```
 
@@ -599,13 +604,15 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `x` | Required | `string` |
 | `y` | Required | `string` |
 | `groupBy` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `RegressionInterval \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
+| `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 
 </details>
 
@@ -614,7 +621,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 createRegressionData({
   id, source?, x, y, groupBy?, method?, degree?, span?,
-  confidenceMethod?, level?, confidence?, interval?
+  confidenceMethod?, level?, confidence?, interval?, predict?, missing?
 })
 ```
 
@@ -803,7 +810,7 @@ rebind direct visual consumers, and safely release the prior revision.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editDerivedData(options: EditDerivedDataOptions): ChartProgram;
@@ -832,7 +839,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editFilteredData(options: EditFilteredDataOptions): ChartProgram;
@@ -847,12 +854,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
-| `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
-| `oneOf` | Optional / branch-dependent | `readonly unknown[] \| undefined` |
+| `oneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
+| `noneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `predicate` | Optional / branch-dependent | `FilterComparison \| undefined` |
-| `range` | Optional / branch-dependent | `FilterRange \| undefined` |
+| `range` | Optional / branch-dependent | `FilterRangePatch \| undefined` |
+| `target` | Required | `string` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
+| `nulls` | Optional / branch-dependent | `"exclude" \| "include" \| false \| undefined` |
+| `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 
 </details>
 
@@ -864,7 +873,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram;
@@ -899,7 +908,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editWindowData(options: EditWindowDataOptions): ChartProgram;
@@ -931,7 +940,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editDensityData(options: EditDensityDataOptions): ChartProgram;
@@ -955,6 +964,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `steps` | Optional / branch-dependent | `number \| undefined` |
 | `kernel` | Optional / branch-dependent | `DensityKernel \| undefined` |
 | `normalization` | Optional / branch-dependent | `DensityNormalization \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `readonly [string, string] \| undefined` |
 | `weight` | Optional / branch-dependent | `false \| StatisticalWeight \| undefined` |
 
@@ -968,7 +978,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editRegressionData(options: EditRegressionDataOptions): ChartProgram;
@@ -991,10 +1001,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `RegressionInterval \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
+| `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 | `x` | Optional / branch-dependent | `string \| undefined` |
 | `y` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 
 </details>
 
@@ -1035,7 +1047,7 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editCoordinate(options: EditCoordinateOptions): ChartProgram;
@@ -1083,6 +1095,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Required | `string` |
 | `type` | Optional / branch-dependent | `ScaleType \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| undefined` |
+| `emptyDomain` | Optional / branch-dependent | `"preserve" \| "require-explicit" \| undefined` |
 | `range` | Optional / branch-dependent | `ScaleRange \| undefined` |
 | `nice` | Optional / branch-dependent | `boolean \| undefined` |
 | `zero` | Optional / branch-dependent | `boolean \| undefined` |
@@ -1129,6 +1142,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `type` | Optional / branch-dependent | `ScaleType \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| undefined` |
+| `emptyDomain` | Optional / branch-dependent | `"preserve" \| "require-explicit" \| undefined` |
 | `range` | Optional / branch-dependent | `ScaleRange \| undefined` |
 | `nice` | Optional / branch-dependent | `boolean \| undefined` |
 | `zero` | Optional / branch-dependent | `boolean \| undefined` |
@@ -1156,7 +1170,7 @@ Behavior, inference, resets, and errors: [Extension and scale contracts](./exten
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editXScale(options: EditXScaleOptions): ChartProgram;
@@ -1199,7 +1213,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editYScale(options: EditYScaleOptions): ChartProgram;
@@ -1242,7 +1256,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;
@@ -1275,7 +1289,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editYOffsetScale(options: EditYOffsetScaleOptions): ChartProgram;
@@ -1308,7 +1322,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editParallelScale(options: EditParallelScaleOptions): ChartProgram;
@@ -1351,7 +1365,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editThetaScale(options: EditThetaScaleOptions): ChartProgram;
@@ -1390,7 +1404,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editRScale(options: EditRScaleOptions): ChartProgram;
@@ -1429,7 +1443,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editColorScale(options: EditColorScaleOptions): ChartProgram;
@@ -1466,7 +1480,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;
@@ -1498,7 +1512,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editSizeScale(options: EditSizeScaleOptions): ChartProgram;
@@ -1534,7 +1548,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;
@@ -1570,7 +1584,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editShapeScale(options: EditShapeScaleOptions): ChartProgram;
@@ -1602,7 +1616,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;
@@ -1640,7 +1654,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;
@@ -2732,9 +2746,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `RegressionInterval \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
+| `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `sourceBinding` | Optional / branch-dependent | `"fixed" \| "follow" \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `band` | Optional / branch-dependent | `false \| RegressionBandOptions \| undefined` |
 
 </details>
@@ -3522,7 +3539,8 @@ See the [Area and series layout tutorial](../../tutorials/area-layout.md).
 
 ```javascript
 editDerivedData({ target, definition, dependents? })
-editFilteredData({ target, field?, oneOf? | predicate? | range?, dependents? })
+editFilteredData({ target, field?, oneOf? | noneOf? | predicate? | range?, nulls?, dependents? })
+editSortedData({ target, sortBy, dependents? })
 editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, dependents? })
 editWindowData({ target, partitionBy?, sortBy?, operations?, temporalUnit?, dependents? })
 editDensityData({ target, field?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, weight?, dependents? })

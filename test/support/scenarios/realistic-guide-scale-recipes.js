@@ -1250,6 +1250,7 @@ function buildSimpleGuide(factors) {
       type: "linear",
       domain: "auto",
       range: "auto",
+      emptyDomain: variant.nice ? "preserve" : "require-explicit",
       nice: variant.nice,
       zero: variant.zero,
       reverse: variant.reverse
@@ -1315,6 +1316,7 @@ function temporalPointBase(factors) {
       type: "time",
       domain: "auto",
       range: "auto",
+      emptyDomain: initialReverse ? "preserve" : "require-explicit",
       nice: initialReverse,
       clamp: !initialReverse,
       reverse: !initialReverse,

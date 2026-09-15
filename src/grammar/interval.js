@@ -16,6 +16,7 @@ const TRANSFORM_KEYS = [
   "extent",
   "method",
   "level",
+  "missing",
   "as"
 ];
 const OUTPUT_KEYS = ["center", "lower", "upper"];
@@ -81,6 +82,9 @@ export function validateIntervalTransform(transform) {
   }
   if (!EXTENT_VALUES.includes(transform.extent)) {
     throw new Error(`Unsupported interval extent "${transform.extent}".`);
+  }
+  if (transform.missing !== undefined && !["error", "drop"].includes(transform.missing)) {
+    throw new Error('Interval missing must be "error" or "drop".');
   }
   if (
     (transform.center === "median") !== (transform.extent === "iqr")
@@ -201,15 +205,24 @@ export function deriveInterval(rows, transform) {
   }
   validateIntervalTransform(transform);
   const groups = new Map();
+  let missingRows = 0;
   for (const row of rows) {
     if (!isPlainObject(row)) continue;
     const value = row[transform.field];
     if (isMissing(value) || !Number.isFinite(value)) {
+      const nullish = value === undefined || value === null;
+      if (transform.missing === "error" && nullish) {
+        throw new TypeError(`Interval field "${transform.field}" is missing.`);
+      }
+      if (transform.missing !== undefined && !nullish) {
+        throw new TypeError(`Interval field "${transform.field}" must contain finite numbers.`);
+      }
       if (value !== undefined && value !== null && typeof value !== "number") {
         throw new TypeError(
           `Interval field "${transform.field}" must contain numeric or missing values.`
         );
       }
+      if (nullish) missingRows += 1;
       continue;
     }
     const groupValues = transform.groupBy.map(field => row[field]);
@@ -240,7 +253,23 @@ export function deriveInterval(rows, transform) {
       [transform.as.upper]: stableDecimal(result.upper)
     });
   }
-  return cloneAndFreeze(output);
+  if (transform.missing === undefined) return cloneAndFreeze(output);
+  return cloneAndFreeze({
+    values: output,
+    report: {
+      version: 1,
+      owner: { kind: "data", id: "pending" },
+      inputs: [],
+      units: [{
+        role: transform.as.center,
+        group: {},
+        inputRows: rows.length,
+        usedRows: rows.length - missingRows,
+        excludedRows: missingRows,
+        excludedByReason: missingRows === 0 ? {} : { "missing-value": missingRows }
+      }]
+    }
+  });
 }
 
 export function normalizeIntervalTransform({
@@ -250,6 +279,7 @@ export function normalizeIntervalTransform({
   extent,
   method,
   level,
+  missing,
   as
 }) {
   nonEmptyString(field, "Interval field");
@@ -260,6 +290,7 @@ export function normalizeIntervalTransform({
     field,
     groupBy: grouping,
     ...parameters,
+    ...(missing === undefined ? {} : { missing }),
     as
   };
   validateIntervalTransform(transform);

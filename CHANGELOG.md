@@ -4,6 +4,24 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+### Added
+
+- Added declared and inferred dataset schemas, stable derived sorting with
+  `createSortedData` and `editSortedData`, explicit statistical missing and empty
+  policies, regression prediction grids, and fixed or following regression source
+  bindings.
+- Added the browser-safe `ggaction/inspection` entry with dataset schema lookup,
+  action capability descriptions, program comparison, and owner-aware graphic
+  inspection.
+
+### Changed
+
+- Empty scale domains can preserve a compatible prior domain or require an
+  explicit domain. Independent item marks can reject or skip rows with missing
+  encoded values.
+- Editable snapshots now write schema version 2 and restore version 1 snapshots
+  through a validated migration.
+
 ## [0.0.16] - 2026-09-14
 
 ### Added

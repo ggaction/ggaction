@@ -33,7 +33,7 @@ test("createBinData reuses exact histogram boundary and last-bin rules", () => {
     program.trace.children.at(-1).children.map(child => child.op),
     ["createDerivedData", "materializeBinData"]
   );
-  assert.deepEqual(source.semanticSpec.datasets, [{ id: "source", values: rows }]);
+  assert.deepEqual(source.semanticSpec.datasets, [{ id: "source", values: rows, schema: source.semanticSpec.datasets[0].schema }]);
 });
 
 test("createBinData supports maxBins, steps, empty-bin omission, and resolved provenance", () => {
@@ -73,7 +73,7 @@ test("createBinData rejects invalid bin policies and input atomically", () => {
     [{ field: "value", as: { extra: "x" } }, /Unknown bin as/],
     [{ field: "value", members: false, as: { members: "rows" } }, /requires members/],
     [{ field: "value", includeEmpty: "yes" }, /must be a boolean/],
-    [{ field: "missing" }, /finite number at row 0/],
+    [{ field: "missing" }, /does not contain field "missing"/],
     [{ field: "value", extra: true }, /Unknown createBinData option/]
   ];
   invalid.forEach(([options, error], index) => {

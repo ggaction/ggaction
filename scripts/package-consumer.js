@@ -87,6 +87,7 @@ async function testNodeConsumer(directory) {
     import { renderToSVG } from "ggaction/svg";
     import { serializeProgram, deserializeProgram, serializeGraphic, deserializeGraphic } from "ggaction/persistence";
     import { exportAccessibleData } from "ggaction/accessibility";
+    import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
     const program = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
@@ -98,10 +99,21 @@ async function testNodeConsumer(directory) {
     const alternative = exportAccessibleData(program);
     assert.equal(alternative.views[0].rows.length, 2);
     assert.ok(Object.isFrozen(alternative.views[0].rows));
+    assert.deepEqual(
+      getDatasetSchema(program, { data: "data" }).schema.fields.map(field => field.name),
+      ["x", "y"]
+    );
+    assert.equal(describeAction(program, {
+      action: "editPointMark",
+      target: { kind: "mark", id: "point" },
+      options: { fill: "red" }
+    }).applicability, "supported");
+    assert.equal(inspectProgram(program).views.some(view => view.owner.id === "point"), true);
     const restored = deserializeProgram(serializeProgram(program));
     const revised = program.reviseData({ source: "data", id: "updatedData", values: [
       { x: 1, y: 2 }, { x: 3, y: 7 }, { x: 4, y: 3 }
     ] });
+    assert.equal(comparePrograms(program, revised).equivalence, "different");
     assert.equal(revised.graphicSpec.objects.point.items.length, 3);
     assert.equal(program.graphicSpec.objects.point.items.length, 2);
     assert.equal(basicChart().reviseData, undefined);
@@ -2581,11 +2593,31 @@ async function testTypeScriptConsumer(directory) {
       render as basicRender,
       type BasicChartProgram
     } from "ggaction/basic";
+    import {
+      comparePrograms,
+      describeAction,
+      getDatasetSchema,
+      inspectProgram,
+      type ActionDescription,
+      type ProgramComparison,
+      type ProgramInspection
+    } from "ggaction/inspection";
 
     const program: ChartProgram = chart().createCanvas({ width: 100, height: 100 });
     const themeName: ThemeName = "dark";
     const themeOptions: ApplyThemeOptions = { theme: themeName };
     const themedProgram: ChartProgram = program.applyTheme(themeOptions).removeTheme();
+    const inspection: ProgramInspection = inspectProgram(program);
+    const description: ActionDescription = describeAction(program, {
+      action: "createData",
+      options: { id: "typedRows", values: [] }
+    });
+    const comparison: ProgramComparison = comparePrograms(program, themedProgram);
+    const typedSchema = getDatasetSchema(
+      chart().createData({ id: "typedRows", values: [{ x: 1 }] }),
+      { data: "typedRows" }
+    );
+    void [inspection, description, comparison, typedSchema];
     const basicThemedProgram: BasicChartProgram = basicChart().applyTheme(themeOptions);
     const removeResourceOptions: RemoveResourceOptions = { id: "unused" };
     program.removeData(removeResourceOptions);
@@ -4291,6 +4323,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "pdf",
       "png",
       "svg",
+      "inspection",
       "numeric-font-weight",
       "point-jitter",
       "point-packing",

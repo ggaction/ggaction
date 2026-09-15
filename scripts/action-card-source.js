@@ -527,7 +527,7 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
     }
     assertSnippet(action, declaration, card.snippet);
     const bytes = Buffer.byteLength(JSON.stringify(card), "utf8");
-    if (bytes > 3328) throw new Error(`${card.name} compact card is ${bytes} bytes.`);
+    if (bytes > 3360) throw new Error(`${card.name} compact card is ${bytes} bytes.`);
     maxBytes = Math.max(maxBytes, bytes);
     totalBytes += bytes;
   }

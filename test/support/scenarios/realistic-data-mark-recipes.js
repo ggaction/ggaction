@@ -854,6 +854,7 @@ function buildPointLabels(factors) {
     })
     .editPointMark({
       target: "observations",
+      missing: "error",
       shape: factors.shape,
       fill: factors.fill,
       opacity: factors.opacity,

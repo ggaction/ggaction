@@ -162,6 +162,7 @@ are internal operations.
 - Responsive Charts: ./responsive-charts/
 - Performance and Large Charts: ./performance/
 - Data Updates and Live Refresh: ./data-updates/
+- Program Inspection: ./inspection/
 - Errors and Recovery: ./errors-and-recovery/
 - Versioning and Documentation Provenance: ./versioning/
 - Fonts and Text Rendering: ./fonts/

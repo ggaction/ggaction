@@ -1,6 +1,6 @@
 # Roadmap 8 실행·재개 절차 — 개정 2
 
-이 파일은 다른 구현자가 같은 결과를 만들기 위한 작업 순서다. 코드 구현 상태는 **not_started**다.
+이 파일은 다른 구현자가 같은 결과를 재현하기 위한 작업 순서다. 코드 구현 상태는 **completed**다.
 F06은 제외되었다. 시작 파일은 [IMPLEMENTER_START_HERE.md](IMPLEMENTER_START_HERE.md)다.
 
 ## 1. 시작 전 확인
@@ -23,7 +23,7 @@ dependsOn은 기능 dependency이며 병렬 agent 사용을 요구하는 지침�
 
 각 WP마다:
 
-1. existingSources와 해당 파일 scope의 AGENTS를 읽는다. proposedNewSources는 아직 없는 출력 파일이다.
+1. existingSources와 implementedSources 및 해당 파일 scope의 AGENTS를 읽는다. proposedNewSources는 계획 당시 경로다.
 2. 관련 D의 exact 승인 근거와 API/types 개정을 기록한다. 이미 승인된 범위는 재확인하지 않는다.
 3. 관련 V 사례에서 expected values/error/identity 관계를 먼저 확인한다.
 4. pure normalizer·kernel → action registration → replay/consumer → types/contracts 순으로 구현한다.

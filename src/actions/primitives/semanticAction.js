@@ -7,6 +7,7 @@ import {
   removeOwnedPath
 } from "../../core/immutable.js";
 import { parseSemanticPath } from "../../grammar/schemas/semanticPath.js";
+import { deriveTransformSchema, inferDatasetSchema, validateRowsAgainstSchema } from "../../grammar/datasetSchema.js";
 
 
 const CONTEXT_KEYS = Object.freeze({
@@ -44,7 +45,39 @@ function updateEntity(spec, parsed, value) {
   }
 
   const current = index === -1 ? { id: parsed.id } : collection[index];
-  const updated = setNestedProperty(current, parsed.path, value);
+  let updated = setNestedProperty(current, parsed.path, value);
+  if (
+    parsed.kind === "dataset" && parsed.path.length === 1 &&
+    parsed.path[0] === "transform" && current.schema === undefined &&
+    current.source !== undefined && value.length === 1
+  ) {
+    const source = collection.find(dataset => dataset.id === current.source);
+    if (source?.schema !== undefined) {
+      updated = setNestedProperty(updated, ["schema"], deriveTransformSchema(
+        source.schema,
+        value[0],
+        undefined,
+        { sourceId: source.id, ownerId: parsed.id }
+      ));
+    }
+  }
+  if (
+    parsed.kind === "dataset" && parsed.path.length === 1 &&
+    parsed.path[0] === "values" &&
+    (current.schema === undefined || current.schema.origin === "derived")
+  ) {
+    const source = current.source === undefined
+      ? undefined
+      : collection.find(dataset => dataset.id === current.source);
+    const schema = source?.schema !== undefined && current.transform?.length === 1
+      ? deriveTransformSchema(source.schema, current.transform[0], value, {
+          sourceId: source.id,
+          ownerId: parsed.id
+        })
+      : inferDatasetSchema(value);
+    validateRowsAgainstSchema(value, schema, `Dataset "${parsed.id}"`);
+    updated = setNestedProperty(updated, ["schema"], schema);
+  }
   const nextCollection = [...collection];
 
   if (index === -1) {
@@ -155,13 +188,14 @@ export function withRematerializedDerivedDataset(program, {
   id,
   source,
   transform,
-  values
+  values,
+  schema
 }) {
   const semanticSpec = {
     ...program.semanticSpec,
     datasets: program.semanticSpec.datasets.map(dataset =>
       dataset.id === id
-        ? { ...dataset, source, transform: [transform], values }
+        ? { ...dataset, source, transform: [transform], values, ...(schema === undefined ? {} : { schema }) }
         : dataset
     )
   };

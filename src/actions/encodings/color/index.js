@@ -38,6 +38,8 @@ import {
 } from "./policy.js";
 
 import { applyTemporalUnit } from "../temporal.js";
+import { applyRequestedItemMissingPolicy } from
+  "../../../grammar/itemMissing.js";
 
 const encodeColor = /* @__PURE__ */ action(
   {
@@ -58,12 +60,13 @@ const encodeColor = /* @__PURE__ */ action(
     }
     const fieldType = validateCategoricalFieldType(requestedFieldType);
     resolveTemporalUnit(args, fieldType);
-    const { id: target, dataset, layer } = resolveTarget(
+    const { id: target, dataset: sourceDataset, layer } = resolveTarget(
       this,
       args.target,
       ["point", "line", "bar", "area", "arc", "rect"],
       "color mark"
     );
+    const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
     assertNoConstantColor(this, layer);
     const densityTransform = dataset.transform?.length === 1 &&
       dataset.transform[0].type === "density"

@@ -16,9 +16,10 @@ import {
   resolveMarkId,
   validateMarkOptions
 } from "../shared.js";
+import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const OPTIONS = Object.freeze([
-  "id", "data", "shape", "fill", "opacity", "stroke", "strokeWidth",
+  "id", "data", "missing", "shape", "fill", "opacity", "stroke", "strokeWidth",
   ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -61,6 +62,12 @@ export const createPointMark = /* @__PURE__ */ action(
         property: `layer[${id}].data`,
         value: data
       });
+    if (Object.hasOwn(args, "missing")) {
+      next = next.editSemantic({
+        property: `layer[${id}].mark.missing`,
+        value: validateItemMissing(args.missing, "Point missing")
+      });
+    }
     next = applyLayeredMarkInheritance(next, id, inherited)
       .createGraphics({
         id,

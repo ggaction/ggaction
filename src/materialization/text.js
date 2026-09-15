@@ -9,6 +9,7 @@ import { formatTextValue } from "../grammar/text.js";
 import { normalizePositionDatum } from "../grammar/positionDatum.js";
 import { mapOrdinalPositionValues } from "../grammar/scales/index.js";
 import { findDataset } from "../selectors/datasets.js";
+import { applyItemMissingPolicy } from "../grammar/itemMissing.js";
 import { findCoordinate } from "../selectors/coordinates.js";
 import { findLayer } from "../selectors/layers.js";
 import { unionConcreteGraphicBounds } from
@@ -414,10 +415,11 @@ function resolveSourceTextItems(program, layer, config) {
 }
 
 function resolveRowTextItems(program, layer, config) {
-  const dataset = findDataset(program, layer.data);
-  if (dataset === undefined) {
+  const sourceDataset = findDataset(program, layer.data);
+  if (sourceDataset === undefined) {
     throw new Error(`Text mark "${layer.id}" requires an existing dataset.`);
   }
+  const dataset = applyItemMissingPolicy(layer, sourceDataset);
   const encodings = [layer.encoding?.x, layer.encoding?.y, layer.encoding?.text];
   const length = encodings.some(encoding => encoding !== undefined && Object.hasOwn(encoding, "field"))
     ? dataset.values.length

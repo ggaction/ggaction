@@ -151,6 +151,14 @@
     "layer": "user-facing",
     "domain": "statistics"
   },
+  "createSortedData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H1"
+    ],
+    "layer": "user-facing",
+    "domain": "statistics"
+  },
   "createCompleteData": {
     "operation": "create",
     "authoringRoles": [
@@ -335,6 +343,15 @@
     "domain": "statistics"
   },
   "editNormalizedData": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H1",
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "statistics"
+  },
+  "editSortedData": {
     "operation": "edit",
     "authoringRoles": [
       "H1",

@@ -11,7 +11,7 @@ Point marks represent individual observations or derived items. Their semantic
 type is `point`; circle, square, diamond, and other symbols are graphical
 realizations of that meaning.
 
-## `createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
+## `createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 | Option | Type | Default or inference |
 | --- | --- | --- |

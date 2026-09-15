@@ -33,6 +33,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `aggregates` | Required | `readonly SummaryAggregateOptions[]` |
 | `members` | Optional / branch-dependent | `string \| undefined` |
 | `weight` | Optional / branch-dependent | `StatisticalWeight \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
+| `empty` | Optional / branch-dependent | `"identity" \| "null" \| undefined` |
 
 </details>
 
@@ -74,6 +76,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `includeEmpty` | Optional / branch-dependent | `boolean \| undefined` |
 | `members` | Optional / branch-dependent | `boolean \| undefined` |
 | `weight` | Optional / branch-dependent | `StatisticalWeight \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `BinDataOutputFields \| undefined` |
 | `maxBins` | Optional / branch-dependent | `number \| undefined` |
 | `step` | Optional / branch-dependent | `number \| undefined` |
@@ -168,7 +171,7 @@ expression. [Source and Derived Data](../../api/data/source-and-derived.md#creat
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -207,11 +210,47 @@ percent-change values independently within each group.
 [Source and Derived Data](../../api/data/source-and-derived.md#createnormalizeddata-id-source-field-as-groupby-method)
 
 
+## `createSortedData`
+
+**API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createSortedData(options: SortedDataOptions): ChartProgram;
+```
+
+Named option contracts: [`SortedDataOptions`](./../types.md#type-sorteddataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `sortBy` | Required | `readonly [SortKey, ...SortKey[]]` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createSortedData({ id, source?, sortBy })
+```
+
+Create immutable rows in stable multi-key order. Each key controls direction,
+null placement, and quantitative, categorical, or temporal comparison.
+[Source and derived data](../../api/data/source-and-derived.md#create-sorted-data)
+
+
 ## `createCompleteData`
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createCompleteData(options: CompleteDataOptions): ChartProgram;
@@ -252,7 +291,7 @@ explicit fill and source-membership provenance for synthesized rows.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createImputedData(options: ImputedDataOptions): ChartProgram;
@@ -333,7 +372,7 @@ by Bar and Area layouts. [Source and Derived Data](../../api/data/source-and-der
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editComputedData(options: EditComputedDataOptions): ChartProgram;
@@ -363,7 +402,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editFoldData(options: EditFoldDataOptions): ChartProgram;
@@ -393,7 +432,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editSummaryData(options: EditSummaryDataOptions): ChartProgram;
@@ -413,6 +452,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `aggregates` | Optional / branch-dependent | `readonly SummaryAggregateOptions[] \| undefined` |
 | `members` | Optional / branch-dependent | `string \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
+| `empty` | Optional / branch-dependent | `"identity" \| "null" \| undefined` |
 | `weight` | Optional / branch-dependent | `false \| StatisticalWeight \| undefined` |
 
 </details>
@@ -425,7 +466,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editBinData(options: EditBinDataOptions): ChartProgram;
@@ -451,6 +492,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `zero` | Optional / branch-dependent | `boolean \| undefined` |
 | `includeEmpty` | Optional / branch-dependent | `boolean \| undefined` |
 | `members` | Optional / branch-dependent | `boolean \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `BinDataOutputFields \| undefined` |
 | `weight` | Optional / branch-dependent | `false \| StatisticalWeight \| undefined` |
 
@@ -464,7 +506,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editStackData(options: EditStackDataOptions): ChartProgram;
@@ -497,7 +539,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editIntervalData(options: EditIntervalDataOptions): ChartProgram;
@@ -520,6 +562,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `extent` | Optional / branch-dependent | `IntervalExtent \| undefined` |
 | `method` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `IntervalOutputFields \| undefined` |
 
 </details>
@@ -532,7 +575,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editECDFData(options: EditECDFDataOptions): ChartProgram;
@@ -565,7 +608,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;
@@ -597,11 +640,40 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 
 
+## `editSortedData`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editSortedData(options: EditSortedDataOptions): ChartProgram;
+```
+
+Named option contracts: [`EditSortedDataOptions`](./../types.md#type-editsorteddataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string` |
+| `sortBy` | Required | `readonly [SortKey, ...SortKey[]]` |
+| `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
+
+</details>
+
+Behavior, inference, resets, and errors: [Focused core data editing](./charts-data.md#focused-core-data-editing).
+
+
+
 ## `editCompleteData`
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editCompleteData(options: EditCompleteDataOptions): ChartProgram;
@@ -635,7 +707,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.16. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editImputedData(options: EditImputedDataOptions): ChartProgram;
@@ -693,6 +765,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `extent` | Optional / branch-dependent | `IntervalExtent \| undefined` |
 | `method` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `IntervalOutputFields \| undefined` |
 
 </details>
@@ -701,7 +774,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createIntervalData({
-  id, source?, field, groupBy?, center?, extent?, method?, level?, as?
+  id, source?, field, groupBy?, center?, extent?, method?, level?, missing?, as?
 })
 ```
 
@@ -774,13 +847,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `sourceBinding` | Optional / branch-dependent | `"fixed" \| "follow" \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `RegressionInterval \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
+| `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 | `band` | Optional / branch-dependent | `false \| RegressionBandOptions \| undefined` |
 
 </details>
@@ -830,9 +906,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `RegressionInterval \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
+| `predict` | Optional / branch-dependent | `false \| RegressionPredictOptions \| undefined` |
 | `band` | Optional / branch-dependent | `false \| RegressionBandOptions \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `sourceBinding` | Optional / branch-dependent | `"fixed" \| "follow" \| undefined` |
 
 </details>
 

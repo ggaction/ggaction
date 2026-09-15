@@ -3,6 +3,15 @@
 이 문서는 Roadmap의 시간 순서와 결과를 빠르게 찾기 위한 인덱스다. 각 Roadmap의 원본 STEP, Gate와
 closeout 기록은 그대로 보존한다. 과거 문서가 현재 API 계약을 소유하지는 않는다.
 
+## Roadmap 8 — Composable Authoring Correctness and Execution Contracts
+
+Phase 0~7을 완료했다. Dataset schema와 빈 domain, 통계 결측 정책, 회귀 grid와 source-follow,
+stable sorted data, browser-safe inspection API, 후보 반복 실행 benchmark를 구현했다. F06 flatten은
+사용자 결정으로 제외했고 외부 npm publish와 문서 배포는 완료 범위에 포함하지 않았다.
+
+- 기록: [`roadmap8/ROADMAP.md`](roadmap8/ROADMAP.md)
+- Closeout: [`roadmap8/phase7/GOAL.md`](roadmap8/phase7/GOAL.md)
+
 ## Roadmap 1 — Initial Chart Foundations
 
 Primitive action, immutable trace, explicit materialization과 Canvas/PNG renderer를 구축하고 scatterplot,

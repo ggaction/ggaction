@@ -8,6 +8,12 @@ import {
   chart as basicChart,
   render as basicRender
 } from "../../src/basic.js";
+import {
+  comparePrograms,
+  describeAction,
+  getDatasetSchema,
+  inspectProgram
+} from "../../src/inspection.js";
 
 const PUBLIC_ENTRIES = Object.freeze({
   ".": Object.freeze({
@@ -50,6 +56,13 @@ const PUBLIC_ENTRIES = Object.freeze({
     types: "./types/diagnostics.d.ts",
     values: Object.freeze(["getErrorDetails"])
   }),
+  "./inspection": Object.freeze({
+    runtime: "./src/inspection.js",
+    types: "./types/inspection.d.ts",
+    values: Object.freeze([
+      "comparePrograms", "describeAction", "getDatasetSchema", "inspectProgram"
+    ])
+  }),
   "./svg": Object.freeze({
     runtime: "./src/renderers/svg.js",
     types: "./types/svg.d.ts",
@@ -75,6 +88,10 @@ test("exports the public module boundaries", () => {
   assert.equal(typeof vconcat, "function");
   assert.equal(typeof basicChart, "function");
   assert.equal(typeof basicRender, "function");
+  assert.equal(typeof comparePrograms, "function");
+  assert.equal(typeof describeAction, "function");
+  assert.equal(typeof getDatasetSchema, "function");
+  assert.equal(typeof inspectProgram, "function");
 });
 
 test("keeps the basic entry focused on common Cartesian charts", () => {

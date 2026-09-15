@@ -63,6 +63,15 @@ each type infers its ID and current dataset when those choices are unambiguous.
 | Text | `createTextMark` | `editTextMark`, `layoutLabels`, `removeLabelLayout`, `removeMarkLabels` | Text collection |
 | Rect | `createRectMark` | `editRectMark` | Rect collection |
 
+Point, Bar, Rect, Tick, Rule, and row-backed Text marks accept
+`missing: "error" | "skip"` in their create and edit actions. The explicit
+`"error"` policy rejects the first `null`, absent, or `undefined` value in any
+field-backed active encoding. `"skip"` removes that row from every scale domain
+and concrete item calculation for the mark, so its selections, labels, and
+inspection counts use the same eligible set. Omission preserves the earlier
+per-mark behavior. Area keeps its separate `"error" | "break"` series policy;
+Arc missing values must be handled by the data or aggregate policy.
+
 Use `removeMark({ target? })` to remove one complete stable mark owner. It also
 removes generated composite children, unreferenced generated datasets, owned
 legends, and selection/highlight state. Source data and resources shared by
@@ -105,7 +114,7 @@ those graphics.
 
 ## Tick marks
 
-`createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`
+`createTickMark({ id?, data?, missing?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`
 creates a Tick, and
 `editTickMark({ target?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? })`
 updates it.

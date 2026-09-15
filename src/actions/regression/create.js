@@ -1,6 +1,6 @@
 import { closedAction } from "../../core/action.js";
 import { validateKeys } from "../../core/validation.js";
-import { normalizeRegressionParameters } from "../../grammar/regression/index.js";
+import { normalizeRegressionParameters, normalizeRegressionPredict } from "../../grammar/regression/index.js";
 import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import {
   findRegressionPoint,
@@ -12,6 +12,7 @@ import {
 const REGRESSION_OPTIONS = Object.freeze([
   "target", "x", "y", "groupBy", "method", "degree", "span",
   "confidenceMethod", "level", "confidence", "interval", "band", "line"
+  , "predict", "sourceBinding", "missing"
 ]);
 
 export const createRegression = /* @__PURE__ */ closedAction(
@@ -20,6 +21,10 @@ export const createRegression = /* @__PURE__ */ closedAction(
     description: "Fit and layer regression lines with optional interval bands."
   }, REGRESSION_OPTIONS,
   function (args = {}) {
+    const sourceBinding = args.sourceBinding ?? "fixed";
+    if (!["fixed", "follow"].includes(sourceBinding)) {
+      throw new Error('Regression sourceBinding must be "fixed" or "follow".');
+    }
     const point = findRegressionPoint(this, args.target);
     const x = args.x === undefined
       ? point.encoding.x.field
@@ -37,10 +42,20 @@ export const createRegression = /* @__PURE__ */ closedAction(
       );
     }
     const parameters = normalizeRegressionParameters(args);
+    const predict = normalizeRegressionPredict(args.predict);
+    const regressionDefinition = {
+      ...parameters,
+      ...(predict === undefined ? {} : { predict }),
+      ...(args.missing === undefined ? {} : { missing: args.missing })
+    };
     let band = false;
     if (parameters.method === "loess") {
       if (args.band !== undefined && args.band !== false) {
         throw new Error("LOESS regression does not support a band object.");
+      }
+    } else if (parameters.interval === false) {
+      if (args.band !== undefined && args.band !== false) {
+        throw new Error("Regression interval false cannot include a band object.");
       }
     } else if (args.band !== false) {
       band = requireRegressionObject(args.band ?? {}, "Regression band");
@@ -78,7 +93,7 @@ export const createRegression = /* @__PURE__ */ closedAction(
         x,
         y,
         ...(groupBy === undefined ? {} : { groupBy }),
-        ...parameters
+        ...regressionDefinition
       });
     if (band !== false) {
       next = next.createRegressionBand({
@@ -105,7 +120,7 @@ export const createRegression = /* @__PURE__ */ closedAction(
       yScale,
       ...line
     });
-    return next._withMarkConfig(point.id, {
+    next = next._withMarkConfig(point.id, {
       ...next.markConfigs[point.id],
       regression: {
         source: point.data,
@@ -119,8 +134,14 @@ export const createRegression = /* @__PURE__ */ closedAction(
         dataId,
         bandId: band === false ? undefined : bandId,
         lineId,
-        parameters
+        parameters: regressionDefinition
       }
     });
+    return sourceBinding === "follow"
+      ? next.editSemantic({
+          property: `layer[${point.id}].derivedBindings.regression`,
+          value: { mode: "follow", roles: ["data", "x", "y"] }
+        })
+      : next;
   }
 );

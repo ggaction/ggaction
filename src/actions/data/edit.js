@@ -13,6 +13,8 @@ import {
 } from "../../selectors/datasets.js";
 import { applyLayerDataRematerialization } from
   "../../materialization/dependencies.js";
+import { withLogicalDataReplacements } from
+  "../../materialization/revisionIdentity.js";
 import {
   outputFieldChanges,
   rebindLayerOutputFields,
@@ -36,6 +38,7 @@ const CREATOR_BY_TYPE = Object.freeze({
   interval: "createIntervalData",
   normalize: "createNormalizedData",
   regression: "createRegressionData",
+  sort: "createSortedData",
   stack: "createStackData",
   summary: "createSummaryData",
   timeUnit: "createTimeUnitData",
@@ -54,6 +57,7 @@ const REVISION_ROLE = Object.freeze({
   interval: "IntervalData",
   normalize: "NormalizedData",
   regression: "RegressionData",
+  sort: "SortedData",
   stack: "StackData",
   summary: "SummaryData",
   timeUnit: "TimeUnitData",
@@ -298,6 +302,11 @@ function directLayerConsumers(program, data) {
 }
 
 export function applyRevisionPlan(program, resolved, plan, { retain = new Set() } = {}) {
+  return withLogicalDataReplacements(plan.replacements, () =>
+    applyRevisionPlanWithIdentity(program, resolved, plan, { retain }));
+}
+
+function applyRevisionPlanWithIdentity(program, resolved, plan, { retain }) {
   const root = plan.revisions[0];
   const changes = resolved === undefined ? new Map() : outputFieldChanges(
     resolved.dataset.transform[0],
@@ -464,18 +473,18 @@ export const editComputedData = /* @__PURE__ */ focusedEditor(
   "editComputedData", "computed", ["as", "expression"]
 );
 export const editFilteredData = /* @__PURE__ */ focusedEditor(
-  "editFilteredData", "filter", ["field", "oneOf", "predicate", "range"]
+  "editFilteredData", "filter", ["field", "oneOf", "noneOf", "predicate", "range", "nulls"]
 );
 export const editFoldData = /* @__PURE__ */ focusedEditor(
   "editFoldData", "fold", ["fields", "as"]
 );
 export const editSummaryData = /* @__PURE__ */ focusedEditor(
-  "editSummaryData", "summary", ["groupBy", "aggregates", "members", "weight"]
+  "editSummaryData", "summary", ["groupBy", "aggregates", "members", "weight", "missing", "empty"]
 );
 export const editBinData = /* @__PURE__ */ focusedEditor(
   "editBinData", "bin", [
     "field", "maxBins", "step", "boundaries", "extent", "nice", "zero",
-    "includeEmpty", "members", "as", "weight"
+    "includeEmpty", "members", "as", "weight", "missing"
   ]
 );
 export const editTimeUnitData = /* @__PURE__ */ focusedEditor(
@@ -492,7 +501,7 @@ export const editWindowData = /* @__PURE__ */ focusedEditor(
 export const editDensityData = /* @__PURE__ */ focusedEditor(
   "editDensityData", "density", [
     "field", "groupBy", "bandwidth", "extent", "steps", "kernel",
-    "normalization", "as", "weight"
+    "normalization", "as", "weight", "missing"
   ]
 );
 export const editStackData = /* @__PURE__ */ focusedEditor(
@@ -501,12 +510,15 @@ export const editStackData = /* @__PURE__ */ focusedEditor(
 export const editRegressionData = /* @__PURE__ */ focusedEditor(
   "editRegressionData", "regression", [
     "x", "y", "groupBy", "method", "degree", "span", "confidenceMethod",
-    "level", "confidence", "interval"
+    "level", "confidence", "interval", "predict"
   ]
+);
+export const editSortedData = /* @__PURE__ */ focusedEditor(
+  "editSortedData", "sort", ["sortBy"]
 );
 export const editIntervalData = /* @__PURE__ */ focusedEditor(
   "editIntervalData", "interval", [
-    "field", "groupBy", "center", "extent", "method", "level", "as"
+    "field", "groupBy", "center", "extent", "method", "level", "missing", "as"
   ]
 );
 export const editECDFData = /* @__PURE__ */ focusedEditor(
@@ -543,6 +555,7 @@ export const EDIT_DERIVED_DATA_ACTIONS = Object.freeze({
   editDensityData,
   editStackData,
   editRegressionData,
+  editSortedData,
   editIntervalData,
   editECDFData,
   editNormalizedData,

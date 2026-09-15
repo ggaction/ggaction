@@ -39,13 +39,15 @@ import {
   requestedStrokeDetails,
   STROKE_STYLE_PROPERTIES
 } from "../../../grammar/strokeStyle.js";
+import { applyItemMissingPolicy, validateItemMissing } from
+  "../../../grammar/itemMissing.js";
 
 const APPEARANCE_OPTIONS = Object.freeze([
   "stroke", "strokeWidth", "strokeDash", "opacity",
   ...STROKE_STYLE_PROPERTIES
 ]);
-const CREATE_OPTIONS = Object.freeze(["id", "data", ...APPEARANCE_OPTIONS]);
-const EDIT_OPTIONS = Object.freeze(["target", ...APPEARANCE_OPTIONS]);
+const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...APPEARANCE_OPTIONS]);
+const EDIT_OPTIONS = Object.freeze(["target", "missing", ...APPEARANCE_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 const SPAN_OPTIONS = Object.freeze(["id", "orientation", "size"]);
 const DEFAULT_RULE_CONFIG = Object.freeze({
@@ -66,10 +68,11 @@ function requireRule(program, id) {
   if (layer?.mark?.type !== "rule") {
     throw new Error(`Unknown rule mark "${id}".`);
   }
-  const dataset = findDataset(program, layer.data);
-  if (dataset === undefined) {
+  const sourceDataset = findDataset(program, layer.data);
+  if (sourceDataset === undefined) {
     throw new Error(`Rule mark "${id}" requires an existing dataset.`);
   }
+  const dataset = applyItemMissingPolicy(layer, sourceDataset);
   const graphic = program.graphicSpec.objects[id];
   if (graphic?.type !== "line" || graphic.items === undefined) {
     throw new Error(`Rule mark "${id}" requires line collection graphics.`);
@@ -118,6 +121,12 @@ const createRuleMark = /* @__PURE__ */ action(
     let created = this
       .editSemantic({ property: `layer[${id}].mark.type`, value: "rule" })
       .editSemantic({ property: `layer[${id}].data`, value: data });
+    if (Object.hasOwn(args, "missing")) {
+      created = created.editSemantic({
+        property: `layer[${id}].mark.missing`,
+        value: validateItemMissing(args.missing, "Rule missing")
+      });
+    }
     created = applyLayeredMarkInheritance(created, id, inherited);
     created = created
       .createGraphics({
@@ -154,11 +163,18 @@ const editRuleMark = /* @__PURE__ */ action(
       label: "rule mark"
     });
     const appearance = planRuleAppearance(args, layer);
-    if (appearance.length === 0 && Object.keys(strokeDetails).length === 0) {
-      throw new Error("editRuleMark requires an appearance change.");
+    if (appearance.length === 0 && Object.keys(strokeDetails).length === 0 &&
+        !Object.hasOwn(args, "missing")) {
+      throw new Error("editRuleMark requires missing or an appearance change.");
     }
-    const configured = this._withMarkConfig(layer.id, {
-      ...this.markConfigs[layer.id],
+    const semantic = Object.hasOwn(args, "missing")
+      ? this.editSemantic({
+          property: `layer[${layer.id}].mark.missing`,
+          value: validateItemMissing(args.missing, "Rule missing")
+        })
+      : this;
+    const configured = semantic._withMarkConfig(layer.id, {
+      ...semantic.markConfigs[layer.id],
       ...strokeDetails
     });
     const materialized = appearance.length === 0

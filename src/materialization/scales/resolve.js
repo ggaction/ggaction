@@ -35,6 +35,36 @@ import { resolveOffsetScalePolicy } from "./policies/offset.js";
 import { resolveBinnedPositionDomain } from "./policies/binnedPosition.js";
 import { resolveSeriesLayoutDomain } from "./policies/series.js";
 import { OFFSET_POSITION_CHANNELS } from "../../core/vocabulary.js";
+import { annotateError } from "../../core/diagnostics.js";
+import { cloneAndFreeze } from "../../core/immutable.js";
+import { comparableDataIdentity } from "../revisionIdentity.js";
+
+const bindingSignatures = new WeakMap();
+
+function scaleBindingSignature(channel, consumers, { comparable = false } = {}) {
+  return consumers.map(consumer => ({
+    channel: consumer.channel ?? channel,
+    coordinate: consumer.layer.coordinate,
+    data: comparable
+      ? comparableDataIdentity(consumer.layer.data)
+      : consumer.layer.data,
+    field: consumer.encoding.field,
+    datum: consumer.encoding.datum,
+    fieldType: consumer.encoding.fieldType,
+    temporalUnit: consumer.encoding.temporalUnit,
+    aggregate: consumer.encoding.aggregate,
+    bin: consumer.encoding.bin
+  })).sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)));
+}
+
+export function rememberResolvedScaleBinding(resolvedScale, channel, consumers) {
+  if (resolvedScale !== undefined) {
+    bindingSignatures.set(
+      resolvedScale,
+      cloneAndFreeze(scaleBindingSignature(channel, consumers))
+    );
+  }
+}
 
 function resolveDefaultDomain({
   scale,
@@ -206,12 +236,22 @@ export function resolveScaleMaterialization(options) {
     .flatMap(item => item.values)
     .filter(value => value !== undefined);
   const preserved = resolvedScales[id]?.domain;
+  const bindingSignature = scaleBindingSignature(channel, consumers);
+  const comparableBindingSignature = scaleBindingSignature(channel, consumers, {
+    comparable: true
+  });
+  const priorSignature = resolvedScales[id] === undefined
+    ? undefined
+    : bindingSignatures.get(resolvedScales[id]);
+  const samePreservedMeaning = priorSignature !== undefined &&
+    JSON.stringify(priorSignature) === JSON.stringify(comparableBindingSignature);
   if (
     scale.domain === "auto" &&
     Array.isArray(preserved) &&
-    consumers.some(({ layer }) =>
+    resolvedScales[id]?.type === scale.type &&
+    (consumers.some(({ layer }) =>
       markConfigs?.[layer.id]?.markFilter?.empty === true
-    )
+    ) || (scale.emptyDomain === "preserve" && allValues.length === 0 && samePreservedMeaning))
   ) {
     return resolveScaleMaterialization({
       ...options,
@@ -220,6 +260,27 @@ export function resolveScaleMaterialization(options) {
         ...item,
         categoryOrder: undefined
       }))
+    });
+  }
+  if (
+    scale.domain === "auto" && allValues.length === 0 &&
+    scale.emptyDomain === "preserve" && Array.isArray(preserved) && !samePreservedMeaning
+  ) {
+    throw annotateError(new Error(`Scale "${id}" requires an explicit domain because its binding changed.`), {
+      code: "incompatible-resource",
+      operation: "rematerializeScale",
+      optionPath: "domain",
+      resourceId: id,
+      reason: "domain-required"
+    });
+  }
+  if (scale.domain === "auto" && allValues.length === 0) {
+    throw annotateError(new Error(`Scale "${id}" requires an explicit domain for empty data.`), {
+      code: "incompatible-resource",
+      operation: "rematerializeScale",
+      optionPath: "domain",
+      resourceId: id,
+      reason: "domain-required"
     });
   }
   if (channel === "size") {
@@ -389,7 +450,9 @@ export function resolveScaleMaterialization(options) {
       };
     }
   }
-  return scale.reverse === true
+  const finalScale = cloneAndFreeze(scale.reverse === true
     ? reverseResolvedScale(resolvedScale)
-    : resolvedScale;
+    : resolvedScale);
+  bindingSignatures.set(finalScale, cloneAndFreeze(bindingSignature));
+  return finalScale;
 }

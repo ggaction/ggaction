@@ -13,6 +13,7 @@ const OPTIONS = Object.freeze([
   "extent",
   "method",
   "level",
+  "missing",
   "as"
 ]);
 
@@ -42,6 +43,7 @@ export const createIntervalData = /* @__PURE__ */ derivedCreator(
       extent: args.extent,
       method: args.method,
       level: args.level,
+      missing: args.missing,
       as
     });
   },

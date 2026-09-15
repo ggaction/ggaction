@@ -29,13 +29,15 @@ import {
 } from "../../../grammar/roundedRect.js";
 import { STROKE_STYLE_PROPERTIES } from
   "../../../grammar/strokeStyle.js";
+import { applyItemMissingPolicy, validateItemMissing } from
+  "../../../grammar/itemMissing.js";
 
 const STYLE_OPTIONS = Object.freeze([
   "fill", "opacity", "stroke", "strokeWidth", "cornerRadius",
   ...STROKE_STYLE_PROPERTIES
 ]);
-const CREATE_OPTIONS = Object.freeze(["id", "data", ...STYLE_OPTIONS]);
-const EDIT_OPTIONS = Object.freeze(["target", ...STYLE_OPTIONS]);
+const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...STYLE_OPTIONS]);
+const EDIT_OPTIONS = Object.freeze(["target", "missing", ...STYLE_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
 
 function requireRectLayer(program, requested, operation) {
@@ -71,6 +73,12 @@ const createRectMark = /* @__PURE__ */ action(
     let next = this
       .editSemantic({ property: `layer[${id}].mark.type`, value: "rect" })
       .editSemantic({ property: `layer[${id}].data`, value: data });
+    if (Object.hasOwn(args, "missing")) {
+      next = next.editSemantic({
+        property: `layer[${id}].mark.missing`,
+        value: validateItemMissing(args.missing, "Rect missing")
+      });
+    }
     next = applyLayeredMarkInheritance(next, id, inherited)
       .createGraphics({
         id,
@@ -120,10 +128,11 @@ const rematerializeRectMark = /* @__PURE__ */ action(
     if (this.markConfigs[id]?.gradientPlot?.materialized === true) {
       return this.materializeGradientPlotFill({ id });
     }
-    const dataset = findDataset(this, layer.data);
-    if (dataset === undefined) {
+    const sourceDataset = findDataset(this, layer.data);
+    if (sourceDataset === undefined) {
       throw new Error(`Rect mark "${id}" requires an existing dataset.`);
     }
+    const dataset = applyItemMissingPolicy(layer, sourceDataset);
     if (!canMaterializeRect(this, layer)) {
       return replaceGraphicItems(this, id, "rect", []);
     }
@@ -151,7 +160,7 @@ const editRectMark = /* @__PURE__ */ action(
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editRectMark");
     requestedRectStyleDetails(args, "editRectMark");
-    if (!STYLE_OPTIONS.some(option => Object.hasOwn(args, option))) {
+    if (!["missing", ...STYLE_OPTIONS].some(option => Object.hasOwn(args, option))) {
       throw new Error("editRectMark requires at least one editable property.");
     }
     const layer = requireRectLayer(this, args.target, "editRectMark");
@@ -163,16 +172,22 @@ const editRectMark = /* @__PURE__ */ action(
         "editRectMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
       );
     }
-    const next = this._withMarkConfig(
+    const semantic = Object.hasOwn(args, "missing")
+      ? this.editSemantic({
+          property: `layer[${layer.id}].mark.missing`,
+          value: validateItemMissing(args.missing, "Rect missing")
+        })
+      : this;
+    const next = semantic._withMarkConfig(
       layer.id,
       {
         ...normalizeRectMarkConfig(
           args,
-          this.markConfigs[layer.id] ?? DEFAULT_RECT_MARK
+          semantic.markConfigs[layer.id] ?? DEFAULT_RECT_MARK
         ),
         fillExplicit: Object.hasOwn(args, "fill")
           ? true
-          : this.markConfigs[layer.id]?.fillExplicit ?? false
+          : semantic.markConfigs[layer.id]?.fillExplicit ?? false
       }
     );
     const materialized = canMaterializeRect(next, layer)

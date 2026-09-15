@@ -1698,7 +1698,7 @@ test("accepts deterministic readable PNG and compressed PDF artifact regressions
       profile: Object.freeze({ id: "decimal-object" })
     }),
     semanticFingerprint:
-      "c8508e58a882beacc3d4704f55f9c467b1fcd043bf0a76c3055ae4c857d1da6b"
+      "0ed3897f3303dad3e5c4259ddd0ed756aa8808821971f81b898ac486eb308951"
   });
   const outerSpace = Object.freeze({
     id: "realistic-ranked-dots-1c891ae5f0d9",
@@ -1719,7 +1719,7 @@ test("accepts deterministic readable PNG and compressed PDF artifact regressions
       radius: 4
     }),
     semanticFingerprint:
-      "f33a4bdf3a06f19c6cae87e2bbc1b78c95ef7e223163ff3971db5efc41dbbec2"
+      "426a46ac2917d90b00e85cf2cfa9b29f25e8e942db5b13e83220f45541484e3c"
   });
   t.after(() => {
     releaseTidyTuesdaySourceCache(tuition.factors.dataset);

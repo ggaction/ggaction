@@ -5,6 +5,12 @@ import {
   findDataset,
   resolveDatasetReference
 } from "../../selectors/datasets.js";
+import {
+  assertFieldsAvailable,
+  deriveTransformSchema,
+  transformInputFields,
+  validateRowsAgainstSchema
+} from "../../grammar/datasetSchema.js";
 
 export const MATERIALIZE_OPTIONS = Object.freeze(["id"]);
 
@@ -37,17 +43,39 @@ export function derivedMaterializer(op, description, type, derive, resolve) {
       args.id,
       type
     );
+    assertFieldsAvailable(source.schema, transformInputFields(transform), {
+      data: source.id,
+      operation: op
+    });
     const result = derive(source.values, transform);
+    const values = Array.isArray(result) ? result : result.values;
+    const schema = deriveTransformSchema(source.schema, transform, values, {
+      sourceId: source.id,
+      ownerId: id
+    });
+    validateRowsAgainstSchema(values, schema, `Derived dataset "${id}"`);
     const program = resolve === undefined
       ? this
       : this.editSemantic({
           property: `dataset[${id}].transform`,
           value: resolve(result, transform)
         });
-    return program.editSemantic({
+    let next = program.editSemantic({
       property: `dataset[${id}].values`,
-      value: Array.isArray(result) ? result : result.values
+      value: values
     });
+    if (!Array.isArray(result) && result.report !== undefined) {
+      const report = {
+        ...result.report,
+        owner: { kind: "data", id },
+        inputs: [{ kind: "data", id: source.id }]
+      };
+      next = next._withMaterializationConfig(
+        ["calculations", "datasets", id],
+        report
+      );
+    }
+    return next;
   });
 }
 

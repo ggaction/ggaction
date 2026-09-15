@@ -3,7 +3,7 @@
   "packageVersion": "0.0.16",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 279,
+  "count": 281,
   "cards": [
     {
       "schemaVersion": 3,
@@ -585,10 +585,15 @@
           "name": "values",
           "required": true,
           "type": "readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[]"
+        },
+        {
+          "name": "schema",
+          "required": false,
+          "type": "SourceSchemaInput | undefined"
         }
       ],
       "callPatterns": [
-        "createData({ values, id? })"
+        "createData({ values, id?, schema? })"
       ],
       "snippet": "program.createData({ values: [{ category: \"A\", value: 1 }] })",
       "errors": [],
@@ -664,10 +669,15 @@
           "name": "values",
           "required": true,
           "type": "readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[]"
+        },
+        {
+          "name": "schema",
+          "required": false,
+          "type": "SourceSchemaInput | undefined"
         }
       ],
       "callPatterns": [
-        "reviseData({ source, id, values })"
+        "reviseData({ source, id, values, schema? })"
       ],
       "snippet": "program.reviseData({ source: \"data-1\", id: \"data-1\", values: [{ category: \"A\", value: 1 }] })",
       "errors": [],
@@ -1008,9 +1018,19 @@
           "type": "string"
         },
         {
+          "name": "nulls",
+          "required": false,
+          "type": "\"exclude\" | \"include\" | undefined"
+        },
+        {
           "name": "oneOf",
           "required": false,
-          "type": "readonly unknown[] | undefined"
+          "type": "readonly [DatasetScalar, ...DatasetScalar[]] | undefined"
+        },
+        {
+          "name": "noneOf",
+          "required": false,
+          "type": "readonly [DatasetScalar, ...DatasetScalar[]] | undefined"
         },
         {
           "name": "predicate",
@@ -1127,10 +1147,20 @@
           "name": "weight",
           "required": false,
           "type": "StatisticalWeight | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
+        },
+        {
+          "name": "empty",
+          "required": false,
+          "type": "\"identity\" | \"null\" | undefined"
         }
       ],
       "callPatterns": [
-        "createSummaryData({ id, aggregates, source?, groupBy?, members?, weight? })"
+        "createSummaryData({ id, aggregates, source?, groupBy?, members?, weight?, missing?, empty? })"
       ],
       "snippet": "program.createSummaryData({ id: \"summary-data-1\", aggregates: [] })",
       "errors": [],
@@ -1251,6 +1281,11 @@
           "name": "weight",
           "required": false,
           "type": "StatisticalWeight | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
         },
         {
           "name": "as",
@@ -1575,6 +1610,87 @@
       "snippet": "program.createNormalizedData({ id: \"normalized\", field: \"amount\", as: \"share\", method: \"share\" })",
       "errors": [],
       "route": "/reference/actions/statistics/#createnormalizeddata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createSortedData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Create immutable rows in stable multi-key order.",
+      "signature": "createSortedData(options: SortedDataOptions): ChartProgram;",
+      "intents": [
+        "create sorted data",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "sorted dataset",
+        "stable multi-key row order"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "sorted dataset"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "authoringRoles": [
+        "H1"
+      ],
+      "wraps": [
+        "createDerivedData"
+      ],
+      "editableVia": [
+        "editSortedData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "sortBy",
+          "required": true,
+          "type": "readonly [SortKey, ...SortKey[]]"
+        }
+      ],
+      "callPatterns": [
+        "createSortedData({ id, sortBy, source? })"
+      ],
+      "snippet": "program.createSortedData({ id: \"sorted\", sortBy: [{ field: \"group\" }, { field: \"value\", order: \"descending\", nulls: \"last\" }] })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createsorteddata"
     },
     {
       "schemaVersion": 3,
@@ -2037,6 +2153,11 @@
           "type": "StatisticalWeight | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
+        },
+        {
           "name": "as",
           "required": false,
           "type": "readonly [string, string] | undefined"
@@ -2137,6 +2258,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
+        },
+        {
           "name": "method",
           "required": false,
           "type": "\"linear\" | \"loess\" | \"polynomial\" | undefined"
@@ -2169,11 +2295,16 @@
         {
           "name": "interval",
           "required": false,
-          "type": "RegressionInterval | undefined"
+          "type": "false | RegressionInterval | undefined"
+        },
+        {
+          "name": "predict",
+          "required": false,
+          "type": "RegressionPredictOptions | undefined"
         }
       ],
       "callPatterns": [
-        "createRegressionData({ id, x, y, source?, groupBy?, method?, degree?, span? })"
+        "createRegressionData({ id, x, y, source?, groupBy?, missing?, method?, degree? })"
       ],
       "snippet": "program.createRegressionData({ id: \"regression-data-1\", x: \"x\", y: \"y\" })",
       "errors": [],
@@ -2873,19 +3004,14 @@
       },
       "options": [
         {
-          "name": "target",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "dependents",
-          "required": false,
-          "type": "DerivedDataDependents | undefined"
-        },
-        {
           "name": "oneOf",
           "required": false,
-          "type": "readonly unknown[] | undefined"
+          "type": "readonly [DatasetScalar, ...DatasetScalar[]] | undefined"
+        },
+        {
+          "name": "noneOf",
+          "required": false,
+          "type": "readonly [DatasetScalar, ...DatasetScalar[]] | undefined"
         },
         {
           "name": "predicate",
@@ -2895,16 +3021,31 @@
         {
           "name": "range",
           "required": false,
-          "type": "FilterRange | undefined"
+          "type": "FilterRangePatch | undefined"
+        },
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
         },
         {
           "name": "field",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "nulls",
+          "required": false,
+          "type": "\"exclude\" | \"include\" | false | undefined"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
         }
       ],
       "callPatterns": [
-        "editFilteredData({ target, dependents?, oneOf?, predicate?, range?, field? })"
+        "editFilteredData({ target, oneOf?, noneOf?, predicate?, range?, field?, nulls?, dependents? })"
       ],
       "snippet": "program.editFilteredData({ target: \"filtered\", oneOf: [1] })",
       "errors": [],
@@ -3080,13 +3221,23 @@
           "type": "string | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
+        },
+        {
+          "name": "empty",
+          "required": false,
+          "type": "\"identity\" | \"null\" | undefined"
+        },
+        {
           "name": "weight",
           "required": false,
           "type": "false | StatisticalWeight | undefined"
         }
       ],
       "callPatterns": [
-        "editSummaryData({ target, dependents?, groupBy?, aggregates?, members?, weight? })"
+        "editSummaryData({ target, dependents?, groupBy?, aggregates?, members?, missing?, empty?, weight? })"
       ],
       "snippet": "program.editSummaryData({ target: \"summary\", aggregates: [{ op: \"count\", as: \"count\" }] })",
       "errors": [],
@@ -3213,6 +3364,11 @@
           "name": "members",
           "required": false,
           "type": "boolean | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
         },
         {
           "name": "as",
@@ -3567,6 +3723,11 @@
           "type": "DensityNormalization | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
+        },
+        {
           "name": "as",
           "required": false,
           "type": "readonly [string, string] | undefined"
@@ -3785,7 +3946,12 @@
         {
           "name": "interval",
           "required": false,
-          "type": "RegressionInterval | undefined"
+          "type": "false | RegressionInterval | undefined"
+        },
+        {
+          "name": "predict",
+          "required": false,
+          "type": "RegressionPredictOptions | undefined"
         },
         {
           "name": "x",
@@ -3801,6 +3967,11 @@
           "name": "groupBy",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
         }
       ],
       "callPatterns": [
@@ -3907,6 +4078,11 @@
           "name": "level",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
         },
         {
           "name": "as",
@@ -4137,6 +4313,87 @@
       "snippet": "program.editNormalizedData({ target: \"normalized\", method: \"minmax\" })",
       "errors": [],
       "route": "/reference/actions/statistics/#editnormalizeddata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editSortedData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits sorted dataset, including settings for stable multi-key row order.",
+      "signature": "editSortedData(options: EditSortedDataOptions): ChartProgram;",
+      "intents": [
+        "edit sorted data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "sorted dataset",
+        "stable multi-key row order"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing sorted dataset",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editSortedData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing sorted dataset",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "sortBy",
+          "required": true,
+          "type": "readonly [SortKey, ...SortKey[]]"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editSortedData({ target, sortBy, dependents? })"
+      ],
+      "snippet": "program.editSortedData({ target: \"sorted\", sortBy: [{ field: \"value\" }] })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#editsorteddata"
     },
     {
       "schemaVersion": 3,
@@ -4458,6 +4715,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
+        },
+        {
           "name": "as",
           "required": false,
           "type": "IntervalOutputFields | undefined"
@@ -4581,7 +4843,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic point mark with one of 12 equal-area shape realizations.",
-      "signature": "createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "create point mark",
         "create",
@@ -4675,6 +4937,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "shape",
           "required": false,
           "type": "PointShape | undefined"
@@ -4701,7 +4968,7 @@
         }
       ],
       "callPatterns": [
-        "createPointMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, shape?, fill?, opacity? })"
+        "createPointMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, missing?, shape?, fill? })"
       ],
       "snippet": "program.createPointMark({})",
       "errors": [],
@@ -4713,7 +4980,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Creates short tick glyphs for compact one-dimensional distributions or aligned value marks.",
-      "signature": "createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;",
+      "signature": "createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;",
       "intents": [
         "create tick mark",
         "create",
@@ -4811,6 +5078,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "length",
           "required": false,
           "type": "number | undefined"
@@ -4832,7 +5104,7 @@
         }
       ],
       "callPatterns": [
-        "createTickMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, length?, stroke?, strokeWidth? })"
+        "createTickMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, missing?, length?, stroke? })"
       ],
       "snippet": "program.createTickMark({})",
       "errors": [],
@@ -5184,6 +5456,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "fill",
           "required": false,
           "type": "string | undefined"
@@ -5333,6 +5610,11 @@
           "name": "source",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
         },
         {
           "name": "fill",
@@ -5785,6 +6067,11 @@
       },
       "options": [
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "fill",
           "required": false,
           "type": "string | undefined"
@@ -5997,6 +6284,11 @@
           "type": "unknown"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "fill",
           "required": false,
           "type": "string | undefined"
@@ -6048,7 +6340,7 @@
         }
       ],
       "callPatterns": [
-        "createTextMark({ id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFamily? })"
+        "createTextMark({ id?, data?, source?, text?, missing?, fill?, opacity?, fontSize? })"
       ],
       "snippet": "program.createTextMark({})",
       "errors": [],
@@ -6126,6 +6418,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "fill",
           "required": false,
           "type": "string | undefined"
@@ -6177,9 +6474,9 @@
         }
       ],
       "callPatterns": [
-        "editTextMark({ target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline? })"
+        "editTextMark({ target?, missing?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align? })"
       ],
-      "snippet": "program.editTextMark({ fill: \"#f28e2b\" })",
+      "snippet": "program.editTextMark({ missing: \"error\" })",
       "errors": [],
       "route": "/reference/actions/marks/#edittextmark"
     },
@@ -6354,7 +6651,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.",
-      "signature": "editPointMark(options: StrokeStyleDetails & { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "editPointMark(options: StrokeStyleDetails & { target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "edit point mark",
         "edit",
@@ -6431,6 +6728,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "shape",
           "required": false,
           "type": "PointShape | undefined"
@@ -6457,7 +6759,7 @@
         }
       ],
       "callPatterns": [
-        "editPointMark({ target?, lineCap?, lineJoin?, miterLimit?, shape?, fill?, opacity?, stroke? })"
+        "editPointMark({ target?, lineCap?, lineJoin?, miterLimit?, missing?, shape?, fill?, opacity? })"
       ],
       "snippet": "program.editPointMark({ fill: \"#f28e2b\" })",
       "errors": [],
@@ -6469,7 +6771,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Partially edit Tick length or constant line appearance while preserving data, position, and other assignments.",
-      "signature": "editTickMark(options: StrokeStyleDetails & { target?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;",
+      "signature": "editTickMark(options: StrokeStyleDetails & { target?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;",
       "intents": [
         "edit tick mark",
         "edit",
@@ -6550,6 +6852,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "length",
           "required": false,
           "type": "number | undefined"
@@ -6571,7 +6878,7 @@
         }
       ],
       "callPatterns": [
-        "editTickMark({ target?, lineCap?, lineJoin?, miterLimit?, length?, stroke?, strokeWidth?, opacity? })"
+        "editTickMark({ target?, lineCap?, lineJoin?, miterLimit?, missing?, length?, stroke?, strokeWidth? })"
       ],
       "snippet": "program.editTickMark({ lineCap: \"butt\" })",
       "errors": [],
@@ -7213,7 +7520,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic bar mark and empty rect collection.",
-      "signature": "createBarMark(options?: RectStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "createBarMark(options?: RectStyleDetails & { id?: string; data?: string; missing?: \"error\" | \"skip\"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "create bar mark",
         "create",
@@ -7312,6 +7619,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "fill",
           "required": false,
           "type": "string | undefined"
@@ -7333,7 +7645,7 @@
         }
       ],
       "callPatterns": [
-        "createBarMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, fill?, opacity? })"
+        "createBarMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, missing?, fill? })"
       ],
       "snippet": "program.createBarMark({})",
       "errors": [],
@@ -7345,7 +7657,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit whole-bar appearance and rematerialize every concrete rectangle.",
-      "signature": "editBarMark(options: RectStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "editBarMark(options: RectStyleDetails & { target?: string; missing?: \"error\" | \"skip\"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "edit bar mark",
         "edit",
@@ -7427,6 +7739,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "fill",
           "required": false,
           "type": "string | undefined"
@@ -7448,7 +7765,7 @@
         }
       ],
       "callPatterns": [
-        "editBarMark({ target?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, fill?, opacity?, stroke? })"
+        "editBarMark({ target?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, missing?, fill?, opacity? })"
       ],
       "snippet": "program.editBarMark({ lineCap: \"butt\" })",
       "errors": [],
@@ -7595,7 +7912,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic rule mark and empty line collection.",
-      "signature": "createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;",
+      "signature": "createRuleMark(options?: { id?: string; data?: string; missing?: \"error\" | \"skip\" } & RuleStyleOptions): ChartProgram;",
       "intents": [
         "create rule mark",
         "create",
@@ -7675,6 +7992,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "stroke",
           "required": false,
           "type": "string | undefined"
@@ -7711,7 +8033,7 @@
         }
       ],
       "callPatterns": [
-        "createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin? })"
+        "createRuleMark({ id?, data?, missing?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap? })"
       ],
       "snippet": "program.createRuleMark({})",
       "errors": [],
@@ -7723,7 +8045,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit constant Rule appearance through the four existing encoding owners.",
-      "signature": "editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;",
+      "signature": "editRuleMark(options: { target?: string; missing?: \"error\" | \"skip\" } & RuleStyleOptions): ChartProgram;",
       "intents": [
         "edit rule mark",
         "edit",
@@ -7788,6 +8110,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "stroke",
           "required": false,
           "type": "string | undefined"
@@ -7824,7 +8151,7 @@
         }
       ],
       "callPatterns": [
-        "editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? })"
+        "editRuleMark({ target?, missing?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin? })"
       ],
       "snippet": "program.editRuleMark({ stroke: \"#334155\" })",
       "errors": [],
@@ -11200,6 +11527,11 @@
           "type": "StatisticalWeight | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
+        },
+        {
           "name": "as",
           "required": false,
           "type": "readonly [string, string] | undefined"
@@ -11850,6 +12182,16 @@
           "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
         },
         {
+          "name": "sourceBinding",
+          "required": false,
+          "type": "\"fixed\" | \"follow\" | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
+        },
+        {
           "name": "method",
           "required": false,
           "type": "\"linear\" | \"loess\" | \"polynomial\" | undefined"
@@ -11882,7 +12224,12 @@
         {
           "name": "interval",
           "required": false,
-          "type": "RegressionInterval | undefined"
+          "type": "false | RegressionInterval | undefined"
+        },
+        {
+          "name": "predict",
+          "required": false,
+          "type": "RegressionPredictOptions | undefined"
         },
         {
           "name": "band",
@@ -12021,7 +12368,17 @@
         {
           "name": "interval",
           "required": false,
-          "type": "RegressionInterval | undefined"
+          "type": "false | RegressionInterval | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
+        },
+        {
+          "name": "predict",
+          "required": false,
+          "type": "false | RegressionPredictOptions | undefined"
         },
         {
           "name": "band",
@@ -12032,6 +12389,11 @@
           "name": "line",
           "required": false,
           "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
+        },
+        {
+          "name": "sourceBinding",
+          "required": false,
+          "type": "\"fixed\" | \"follow\" | undefined"
         }
       ],
       "callPatterns": [
@@ -19451,6 +19813,11 @@
           "type": "\"auto\" | readonly unknown[] | undefined"
         },
         {
+          "name": "emptyDomain",
+          "required": false,
+          "type": "\"preserve\" | \"require-explicit\" | undefined"
+        },
+        {
           "name": "range",
           "required": false,
           "type": "ScaleRange | undefined"
@@ -19532,7 +19899,7 @@
         }
       ],
       "callPatterns": [
-        "createScale({ id, radialMapping?, type?, domain?, range?, nice?, zero?, clamp? })"
+        "createScale({ id, radialMapping?, type?, domain?, emptyDomain?, range?, nice?, zero? })"
       ],
       "snippet": "program.createScale({ id: \"scale-1\" })",
       "errors": [],
@@ -19635,6 +20002,11 @@
           "type": "\"auto\" | readonly unknown[] | undefined"
         },
         {
+          "name": "emptyDomain",
+          "required": false,
+          "type": "\"preserve\" | \"require-explicit\" | undefined"
+        },
+        {
           "name": "range",
           "required": false,
           "type": "ScaleRange | undefined"
@@ -19716,7 +20088,7 @@
         }
       ],
       "callPatterns": [
-        "editScale({ id?, radialMapping?, type?, domain?, range?, nice?, zero?, clamp? })"
+        "editScale({ id?, radialMapping?, type?, domain?, emptyDomain?, range?, nice?, zero? })"
       ],
       "snippet": "program.editScale({ type: \"linear\" })",
       "errors": [],
@@ -28713,7 +29085,12 @@
         {
           "name": "interval",
           "required": false,
-          "type": "RegressionInterval | undefined"
+          "type": "false | RegressionInterval | undefined"
+        },
+        {
+          "name": "predict",
+          "required": false,
+          "type": "RegressionPredictOptions | undefined"
         },
         {
           "name": "groupBy",
@@ -28724,6 +29101,16 @@
           "name": "line",
           "required": false,
           "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
+        },
+        {
+          "name": "sourceBinding",
+          "required": false,
+          "type": "\"fixed\" | \"follow\" | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
         },
         {
           "name": "band",
@@ -30543,6 +30930,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "fill",
           "required": false,
           "type": "string | undefined"
@@ -30584,7 +30976,7 @@
         }
       ],
       "callPatterns": [
-        "createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin? })"
+        "createRectMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, lineCap? })"
       ],
       "snippet": "program.createRectMark({})",
       "errors": [],
@@ -30678,6 +31070,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "fill",
           "required": false,
           "type": "string | undefined"
@@ -30699,7 +31096,7 @@
         }
       ],
       "callPatterns": [
-        "editRectMark({ target?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, fill?, opacity?, stroke? })"
+        "editRectMark({ target?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, missing?, fill?, opacity? })"
       ],
       "snippet": "program.editRectMark({ lineCap: \"butt\" })",
       "errors": [],
