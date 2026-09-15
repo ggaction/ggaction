@@ -94,6 +94,30 @@ test("editable schema version 1 migrates dataset schemas while version 2 require
     () => deserializeProgram(JSON.stringify(envelope)),
     /requires schema/
   );
+
+  const composed = hconcat({ programs: [
+    {
+      id: "left",
+      program: chart().createCanvas().createData({ id: "leftRows", values: [{ x: 1 }] })
+    },
+    {
+      id: "right",
+      program: chart().createCanvas().createData({ id: "rightRows", values: [{ y: 2 }] })
+    }
+  ] });
+  const composedEnvelope = JSON.parse(serializeProgram(composed));
+  const composedState = decodeValue(composedEnvelope.payload);
+  for (const child of Object.values(composedState.children)) {
+    for (const dataset of child.semanticSpec.datasets) delete dataset.schema;
+  }
+  composedEnvelope.schemaVersion = 1;
+  composedEnvelope.payload = encodeValue(composedState);
+  const migratedComposition = deserializeProgram(JSON.stringify(composedEnvelope));
+  assert.deepEqual(
+    Object.values(migratedComposition.children).map(child =>
+      child.semanticSpec.datasets[0].schema.completeness),
+    ["known", "known"]
+  );
 });
 
 test("editable restoration retains compatible empty-domain preservation identity", () => {

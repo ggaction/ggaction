@@ -16,8 +16,10 @@
 
 ## 검증
 
-- `npm run test:unit`: 2,575개 통과.
+- `npm run test:unit`: 2,577개 통과.
 - `npm run test:contracts`: 524개 통과.
+- `npm run test:coverage`: 94.90% lines, 91.49% branches, 98.55% functions;
+  99개 critical floor 통과.
 - `npm run test:docs`: 120개 통과.
 - `npm run test:charts`: 578개 통과.
 - `npm run test:browser`: 86개 통과.
