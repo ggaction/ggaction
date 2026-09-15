@@ -4,7 +4,12 @@
 
 ## 현재 상태
 
-- 현재 활성 계획은 없다. 마지막 완료 owner는 **Roadmap 7 Phase 12**다.
+- 현재 활성 계획은 **Roadmap 8 Phase 0 — 계획·계약 검토**다. runtime 구현은 미시작이다.
+- [`roadmap8/ROADMAP.md`](roadmap8/ROADMAP.md) — 12개 보완의 범위·Phase·완료 기준
+- [`roadmap8/FEATURES.md`](roadmap8/FEATURES.md) — 기능별 API 후보와 구현 방향
+- [`roadmap8/DECISIONS.md`](roadmap8/DECISIONS.md) — 미승인 public/schema 결정과 호환성
+- [`roadmap8/VALIDATION.md`](roadmap8/VALIDATION.md) — 46개 인수 사례와 통합·성능 검증
+- 마지막 완료 owner는 **Roadmap 7 Phase 12**다.
 - [`roadmap7/ROADMAP.md`](roadmap7/ROADMAP.md) — 완료된 범위·의존성·Phase 0–12 실행 기록
 - [`roadmap7/LOW_INFERENCE_IMPLEMENTATION_SPEC.md`](roadmap7/LOW_INFERENCE_IMPLEMENTATION_SPEC.md) —
   낮은 성능의 구현자도 결과를 재현·감사할 수 있는 상세 함수·state·검증 명세

@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "activeRoadmap": null,
-  "activePhase": null,
+  "activeRoadmap": "roadmap8",
+  "activePhase": 0,
   "lastCompletedRoadmap": "roadmap7",
   "lastCompletedPhase": 12,
   "roadmaps": [
@@ -114,7 +114,15 @@
       "title": "Detailed Chart Authoring Operations",
       "status": "completed",
       "role": "historical-execution-record",
-      "file": "agent_docs/impl/roadmap7/ROADMAP.md"
+      "file": "agent_docs/impl/roadmap7/ROADMAP.md",
+      "successor": "roadmap8"
+    },
+    {
+      "id": "roadmap8",
+      "title": "Composable Authoring Correctness and Execution Contracts",
+      "status": "active",
+      "role": "current-execution-plan",
+      "file": "agent_docs/impl/roadmap8/ROADMAP.md"
     }
   ]
 }
