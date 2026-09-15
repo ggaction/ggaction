@@ -1,8 +1,9 @@
 # Roadmap 8 — 조합 가능한 차트 저작의 정확성과 실행 계약
 
-상태: **계획 작성 완료, 제품 구현 미시작**. 기준은 `v0.0.16`, commit
+상태: **계획 개정 2 — flatten 제외 및 구현 상세화, 제품 구현 미시작**. 기준은 `v0.0.16`, commit
 `2b930177793a41a76ef3d664f3803f24d29ba67b`다. 사용자의 “이 수정을 roadmap8로 해서 계획해봐”는
 이번 계획 작성의 근거다. 아래 새 API·저장 형식·기본값의 제안이 승인됐다는 뜻은 아니다.
+후속 요청으로 F06을 제외하고, 다른 구현자를 위한 개정 2 상세 명세·타입·작업 지도·fixture를 추가했다.
 현재 위치는 **Phase 0 — 계획·계약 검토**이며 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이
 개발 위치를 소유한다. 마지막 구현 완료 로드맵은 Roadmap 7 Phase 12다.
 
@@ -20,10 +21,11 @@ ggaction의 핵심인 **고수준 사용자 결정 → 도메인 연산 → 하�
 
 1. 이 문서: 범위, 순서, Phase 의존성, 전체 완료 조건.
 2. [BASELINE.md](BASELINE.md): 0.0.16에서 실제로 확인한 동작과 과장하지 말아야 할 한계.
-3. [FEATURES.md](FEATURES.md): F01–F12별 이유, 동작, API 후보, 구현 위치, 완료 조건.
+3. [FEATURES.md](FEATURES.md): F01–F05·F07–F12별 이유, 동작, API 후보, 구현 위치, 완료 조건.
 4. [DECISIONS.md](DECISIONS.md): 새 public/persisted/architecture 결정과 호환성 제안.
-5. [VALIDATION.md](VALIDATION.md): 독립 수치 oracle, 실패 사례, 통합 행렬, 성능 workload.
-6. [Phase 0 목표](phase0/GOAL.md): 현재 계획 상태와 구현을 시작할 때의 순서.
+5. [VALIDATION.md](VALIDATION.md): 43개 인수 사례와 통합·성능 검증. 구조화된 기대값은 [ACCEPTANCE_CASES.json](ACCEPTANCE_CASES.json).
+6. [구현자 시작 문서](IMPLEMENTER_START_HERE.md): 상세 명세·타입·작업 지도·재개 순서.
+7. [Phase 0 목표](phase0/GOAL.md): 현재 계획 상태와 구현을 시작할 때의 순서.
 
 이 디렉터리의 API는 모두 **제안이며 아직 호출할 수 없다**. 현재 API는
 [ACTION_INDEX.json](../../contract/ACTION_INDEX.json), `types/`, `src/`가 소유한다.
@@ -38,7 +40,6 @@ ggaction의 핵심인 **고수준 사용자 결정 → 도메인 연산 → 하�
 | 3 | F03 | 결측값·빈 집계 정책과 제외 정보 | P0 | 2 |
 | 4 | F04 | 회귀 적합·구간 분리와 예측 grid | P0 | 3 |
 | 5 | F05 | 원본을 추적하는 파생 표현 관계 | P0 | 3 |
-| 6 | F06 | 배열 flatten 데이터와 편집 lifecycle | P1 | 4 |
 | 7 | F07 | 범위 경계·제외·null 필터 계약 | P1 | 2 |
 | 8 | F08 | 독립적인 안정적 행 정렬 | P1 | 4 |
 | 9 | F09 | 기계적으로 조회 가능한 액션 capability | P1 | 5 |
@@ -48,7 +49,8 @@ ggaction의 핵심인 **고수준 사용자 결정 → 도메인 연산 → 하�
 | 조건부 확장 | E01 | 지리 의미·투영·geometry | 별도 범위 결정 | 확장 설계 |
 | 조건부 확장 | E02 | 이미지 mark·asset·renderer/export | 별도 범위 결정 | 확장 설계 |
 
-F01–F12는 모두 핵심 계획에 포함한다. E01/E02도 삭제하지 않고 아래 확장 구간에 기록한다.
+핵심 범위는 **11개: F01–F05, F07–F12**다. 사용자 요청으로 F06(flatten)은 제외했다.
+기존 ID를 재사용하거나 뒤 번호를 당기지 않는다. 제외 결정 D08 및 V23–V25는 번호만 보존하며 구현 의무가 없다. E01/E02도 삭제하지 않고 아래 확장 구간에 기록한다.
 앞선 설명에서 두 항목은 Full 표현 범위를 선택할 때의 조건부 확장이었으므로 이번 계획에서
 자동으로 구현 승인·첫 릴리즈 의무로 바꾸지 않는다. 이후 사용자가 포함하면 별도 Phase와 전체
 consumer matrix를 추가하고 해당 작업까지 끝나기 전에 확장 포함 로드맵 완료를 선언하지 않는다.
@@ -81,7 +83,7 @@ ggaction은 유효 조건, 계산 결과, 리소스 관계, 변경 사실과 검
 | 1 | 필드/schema 및 빈 결과의 공통 기반 | 0 | G1: D01–D03 |
 | 2 | 필터와 통계 결측 정책 | 1 | G2: D04–D05 |
 | 3 | 회귀와 추적 관계 | 1, 2 | G3: D06–D07 |
-| 4 | flatten·sort 및 전체 데이터 lifecycle | 1, 2 | G4: D08–D09 |
+| 4 | sort 및 전체 데이터 lifecycle | 1, 2 | G4: D09 |
 | 5 | capability·changes·inspection 조회 | 1–4 | G5: D10–D12 |
 | 6 | 후보 실행 workload와 자원/성능 개선 | 측정은 0부터, 최종 판정은 5 이후 | G6: D13의 새 경계 변경만 |
 | 7 | 전 기능 통합·문서·배포 후보 closeout | 1–6 | G7: D14의 별도 배포 결정 |
@@ -124,14 +126,14 @@ ggaction은 유효 조건, 계산 결과, 리소스 관계, 변경 사실과 검
 
 완료: 두 점 직선, 독립 회귀, 원본을 따르는 회귀를 구분하고 잘못된 예전 곡선을 최신 결과로 남기지 않는다.
 
-### Phase 4 — F06/F08: 일반 데이터 저작 연산
+### Phase 4 — F08: 독립 행 정렬
 
-1. 단일 배열 flatten과 ordered multi-key sort의 pure kernel·출력 schema·lineage를 작성한다.
-2. 기존 derived creator/materializer와 edit/revision registry에 두 family를 연결한다.
+1. ordered multi-key sort의 pure kernel·출력 schema·lineage를 작성한다.
+2. 기존 derived creator/materializer와 edit/revision registry에 sort family를 연결한다.
 3. 기존 fold/pathOrder/category order/window sort의 의미를 바꾸지 않는다.
 4. 파생 연산 소비자, facet partition, dataset 삭제 안전성, persistence를 완성한다.
 
-완료: 새 함수 두 개만 있는 상태가 아니라 생성·수정·재계산·복원의 전체 경로가 통과한다.
+완료: 정렬 생성 함수만 있는 상태가 아니라 생성·수정·재계산·복원의 전체 경로가 통과한다.
 
 ### Phase 5 — F09/F10/F11: 라이브러리가 아는 사실을 공개
 

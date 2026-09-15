@@ -18,7 +18,6 @@ id  group  x  y  z
 
 nullable: (A,null), (A,2), (B,null), (B,4), (C,null), (C,null)
 bins: 0,5,10,15,20,null
-arrays: {id:"a",xs:[10,20]}, {id:"b",xs:[]}, {id:"c",xs:null}
 ```
 
 integer counts/membership은 exact 비교한다. 회귀·분포 등 부동소수점 값은 해당 수치식의
@@ -27,6 +26,9 @@ integer counts/membership은 exact 비교한다. 회귀·분포 등 부동소수
 기존 numerical 안정성 fixture의 tolerance를 이어받는다.
 
 ## 인수 사례
+
+활성 사례는 **43개: V01–V22, V26–V46**다. V23–V25는 사용자가 제외한 F06의 과거 번호이며
+다른 사례에 재사용하지 않는다. 구조화된 입력·검증 연결은 [ACCEPTANCE_CASES.json](ACCEPTANCE_CASES.json)을 따른다.
 
 | ID | Feature | 준비와 조작 | 기대 결과 |
 | --- | --- | --- | --- |
@@ -52,9 +54,6 @@ integer counts/membership은 exact 비교한다. 회귀·분포 등 부동소수
 | V20 | F05 | fixed 회귀에서 source y→z | 기존 회귀 recipe 유지; follow와의 차이를 문서/compare에서 확인 |
 | V21 | F05 | follow source 필터 변경, group 표본 부족 또는 cycle/source 삭제 | 정책상 invalid면 source 포함 전체 patch 실패, stale curve 성공 반환 없음 |
 | V22 | F05 | follow→fixed, snapshot 복원, facet/concat child 교체 | 최신 resolved recipe와 explicit target 관계 보존; 다른 child 불변 |
-| V23 | F06 | arrays에서 empty drop, missing drop | a 원소10/20 두 행; 원본 row0/index0,1; b/c 제외 이유 구별 |
-| V24 | F06 | arrays에서 empty keep, missing keep | a 두 행+b/c 각각 as/index null 한 행, 총4; scalar non-array는 오류 |
-| V25 | F06 | output name 충돌, sparse source, object/multiple-array 요청, limit 초과 | 생성 전 거절/명시 unsupported; 입력 불변; 지원되는 edit/revise/replay는 동등 |
 | V26 | F07 | six에서 1≤x<3 단일 range | id1,2,4,5; 기존 gte1→lt3 조합과 일치 |
 | V27 | F07 | group noneOf A; 숫자1과 문자열1 혼합 | group B만 유지, typed 비교로 1과"1" 구별 |
 | V28 | F07 | lower만, upper만, inverted, 양 경계 없음, 옵션 충돌 | 열린 경계 성공, 나머지 의미 invalid는 atomic reject |
@@ -74,7 +73,7 @@ integer counts/membership은 exact 비교한다. 회귀·분포 등 부동소수
 | V42 | F11 | 같은 graphic의 SVG/Canvas/PNG/PDF 및 nested composition | 공통 geometry/ownership 검사 일치; pixel visibility 미검사를 passed로 쓰지 않음 |
 | V43 | F12 | 같은 base에서 독립 후보20개, option별 반복 수정 | source/data 공유 유지, 후보 상호오염 없음; elapsed/retained memory 기록 |
 | V44 | F12 | 평가 count 고정 다단계 workload와 장기 source revision | 동일 결과, 한계/실패 공개; cache stale와 불필요한 live retention 검사 |
-| V45 | F12 | cap 내 및 fold/flatten/generated count 초과 입력 | cap 내는 correctness 통과, 초과는 structured resource-limit 진단 |
+| V45 | F12 | cap 내 및 fold/generated count 초과 입력 | cap 내는 correctness 통과, 초과는 structured resource-limit 진단 |
 | V46 | F12 | Node와 browser installed package의 export/bundle/inspection | browser에 Node builtin 누출 없음; 새 entry가 미사용 main bundle에 강제 포함되지 않음 |
 
 ## 기능별 공통 lifecycle 행렬

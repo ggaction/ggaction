@@ -1,8 +1,10 @@
-# F01–F12 구현 방향과 인수 조건
+# 11개 기능의 구현 방향과 인수 조건
 
 상태: **미구현 제안**. 아래 API 이름·옵션은 검토용 후보이며 0.0.16 API가 아니다.
 각 API 결정은 [DECISIONS.md](DECISIONS.md), 독립 기대값은 [VALIDATION.md](VALIDATION.md)를 따른다.
-최종 TypeScript union, unknown-key 규칙, error code, persisted JSON 예시를 승인 패키지에 넣은 뒤 구현한다.
+정확한 제안 타입은 [PROPOSED_TYPES.d.ts](PROPOSED_TYPES.d.ts), 알고리즘·저장 계약은
+[IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md), 조회 계약은 [INSPECTION_SPEC.md](INSPECTION_SPEC.md)를 따른다.
+이 요약보다 구체적인 개정 2 상세 명세가 제안의 세부 의미를 소유한다. F06은 사용자 요청으로 제외됐다.
 
 ## F01 — 필드/schema 계약 (Phase 1, D01/D02)
 
@@ -16,7 +18,7 @@
 - 기존 field-name binding을 stable UUID로 강제 전환하지 않는다. 앱 field ID는 adapter가 매핑한다.
   파생 field의 lineage는 source dataset/field, transform owner, output role로 재현 가능하게 기록한다.
 - 모든 transform policy가 input requirements/output fields를 제공한다. filter/sort는 fields 유지,
-  summary는 group key와 output만, flatten/window는 확정된 새 field를 추가한다.
+  summary는 group key와 output만, window 등은 확정된 새 field를 추가한다.
 - 데이터 0행이어도 known schema에 없는 field 참조는 missing-resource 계열 finding과 field 경로로 거절한다.
   과거 schema 없는 빈 source는 unknown이며 유효한 field를 임의로 만들어내지 않는다.
 - source revision에서 schema도 다시 검증한다. field 삭제로 소비자가 무효해지면 원본 전체를 보존한다.
@@ -37,8 +39,7 @@
 - preserve는 같은 dataset 의미/field/type/unit 관계의 이전 유효 domain만 재사용한다. 다른 필드로
   reencode한 뒤 이전 숫자 범위를 그대로 쓰지 않는다. categorical domain도 같은 원칙이다.
 - 새 차트에 explicit domain이 있으면 데이터 mark 0개인 정상 결과를 만들 수 있다. 이전/명시 domain이
-  모두 없으면 구조적 incomplete 결과 또는 명확한 domain-required 결과를 반환하는 계약을 D03에서 확정한다.
-  권장안은 기존 throw 계약을 유지하되 diagnostics로 이유를 구별하고 caller가 explicit domain을 제공하게 한다.
+  모두 없으면 domain-required 진단으로 거절한다. 기존 throw 계약을 유지하되 이유를 구별하고 caller가 explicit domain을 제공하게 한다.
 - 빈 결과 뒤 데이터가 채워지면 새 입력에서 domain·mark·guide·selection을 다시 계산한다.
 - nullable summary 출력은 각 mark의 명시적 missing 처리로 소비한다. 점의 skip과 선의 break는
   다르며 null→0 치환으로 모든 renderer를 통과시키지 않는다. 지원 불가 조합은 명시 거절한다.
@@ -119,24 +120,6 @@ mark source-dependent consumer discovery, facet/repeat/child replacement/persist
 
 **완료 조건:** V19–V22. fixed와 follow의 의도된 차이, chain order, rollback, 삭제·복원 후 관계를 증명한다.
 
-## F06 — 배열 flatten (Phase 4, D08)
-
-**이유:** fold는 열 이름을 값으로 옮기며, flatten은 한 배열의 원소를 별도 행으로 만든다.
-
-- `createFlattenData({id,source,field,as,indexAs?,rowAs?,empty?,missing?})`와 matching edit를 제안한다.
-- 첫 완결 범위는 한 개 array field의 한 단계 펼침이다. 배열 원소는 JSON scalar를 지원한다.
-  객체 원소의 열 projection, 여러 배열의 zip/cartesian product는 자동 적용하지 않고 unsupported다.
-- 원본의 다른 field는 보존하고 as/indexAs/rowAs 충돌은 입력값 처리 전에 거절한다. 원본 배열 field는
-  보존하여 기존 field 참조의 의미를 바꾸지 않는다. as는 별도 이름이어야 한다.
-- 순서는 source row order → array index다. indexAs는 0부터, rowAs는 해당 source revision의 원본 row index다.
-  row index를 데이터 수정 뒤에도 영원히 같은 row identity라고 주장하지 않는다.
-- `empty:"drop"|"keep"`, `missing:"error"|"drop"|"keep"`를 제안한다. keep은 as/indexAs=null 행 1개다.
-  scalar(non-array)는 missing이 아니라 오류다. sparse/cyclic array는 source 검증에서 거절한다.
-- 출력 행 수를 생성 전에 계산하고 resource limit을 적용한다. 원본 nested array/caller input을 수정하지 않는다.
-- derived registry, editing, source revision, schema lineage, facet partition, members/selection 소비 범위를 완성한다.
-
-**완료 조건:** V23–V25. keep/drop, mixed-length, empty source, null element, 충돌, limit, 전체 lifecycle.
-
 ## F07 — 필터 표현과 일관된 수정 (Phase 2, D05)
 
 **이유:** 한 범위 조건을 여러 임시 dataset으로 표현하면 경계 한쪽 수정·제거와 provenance 관리가 복잡해진다.
@@ -159,7 +142,7 @@ mark source-dependent consumer discovery, facet/repeat/child replacement/persist
 - sortBy는 non-empty, field 중복 reject, order 기본 ascending, nulls 기본 last다.
   동점은 해당 입력 revision의 source row index로 깨는 stable sort다.
 - numbers는 numeric, strings는 locale와 무관한 고정 lexical ordering, booleans는 false/true다.
-  시간은 선언된 temporal storage 또는 명시적인 normalization 결과로 비교한다. 표시 label로 정렬하지 않는다.
+  시간은 temporalUnit year/timestamp를 명시해 기존 normalizer로 해석한다. 날짜 문자열은 먼저 정규화하고 표시 label로 정렬하지 않는다.
 - mixed incompatible scalar/structured sort key는 오류다. null/undefined는 null placement를 따른다.
 - source.values를 in-place sort하지 않는다. field 값과 row membership은 바뀌지 않아야 한다.
 - 새로운 derived dataset이므로 downstream window/line/aggregate-first-last의 입력 순서와 facet replay를 검사한다.

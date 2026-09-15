@@ -15,7 +15,7 @@ Gate state는 planned/ready-for-review/approved/changes-requested만 사용한�
 | D05 | noneOf와 경계별 range; 기존 inclusive와 새 옵션 혼합은 reject | generic expression/boolean AST까지 확대하지 않음. 날짜 parsing은 필터 외부의 명시 normalization | G2 |
 | D06 | interval:false로 계산 생략, band:false는 표시 생략 유지; explicit predict grid | 기존 band:false를 interval:false로 자동 해석하면 기존 CI field 소비자가 깨짐 | G3 |
 | D07 | sourceBinding fixed default, explicit follow는 source data/x/y 추적·groupBy 고정 | implicit reactive graph 또는 모든 grouping 상속 제외. 관계 변경은 semantic intent이고 renderer가 갱신하지 않음 | G3 |
-| D08 | 1개 array field의 scalar 1단계 flatten, index/row lineage, empty/missing 정책 | object projection·multi-array zip/product는 명시 unsupported, 별도 요청 없이 scope 확대하지 않음 | G4 |
+| D08 | **제외 확정** — 사용자 요청으로 F06(flatten) 삭제 | 2026-09-15 “flatten은 빼자”; 재승인 요청이나 후속 구현 의무 없음 | 해당 없음 |
 | D09 | 독립 sorted dataset, multi-key stable order, 명시 null placement | window에 더미 연산을 넣어 sort를 흉내 내거나 pathOrder를 dataset sort로 재해석하지 않음 | G4 |
 | D10 | browser-safe read-only inspection entry, shared normalize/validation에 기반한 describeAction | 문서 string parser나 앱 추천기 내장 제외. Full/Basic/extension 검사 coverage를 구분 | G5 |
 | D11 | conservative structural/semantic change report, unknown 가능 | 일반적인 semantic-equivalence prover나 lossless action log를 추가하지 않음 | G5 |
@@ -23,66 +23,44 @@ Gate state는 planned/ready-for-review/approved/changes-requested만 사용한�
 | D13 | 측정 후 hotspot 최적화, output/work caps 유지, 신규 async/worker API는 증거 기반 | limit 상향·자동 sampling·데이터 의미 변경으로 속도를 맞추지 않음 | G6 |
 | D14 | 모든 feature의 docs/types/persistence/package 동기화, 버전/배포는 별도 | 이번 계획을 main merge/PR/npm/docs publish 승인으로 재사용하지 않음 | G7 |
 
-## G1에서 보여야 할 state 계약
+## 개정 2 상세 명세와 권위
 
-아래는 shape 예시이며 final TypeScript/JSON schema가 아니다. 정확한 optional/type/unknown-field
-검사와 normalizer는 실행 가능한 fixture로 검토한다.
+사용자가 flatten 제외와 다른 구현자를 위한 상세화를 요청했다. 범위 제외는 승인된 결정이다.
+남은 새 API의 구현 승인을 의미하지는 않는다. [IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md),
+[INSPECTION_SPEC.md](INSPECTION_SPEC.md), [PROPOSED_TYPES.d.ts](PROPOSED_TYPES.d.ts)가 구체적인 제안안을
+소유한다. 이전 요약의 미정 표현은 이 개정안으로 해소한다. 모든 non-excluded D는 해당 명세에 매핑한다.
 
-```text
-semanticSpec.datasets[id]
-  values/source/transform                 기존 의미 유지
-  schema
-    fields[]: name, storageType, nullable, optional, origin
-    origin: declared | inferred | derived
-    derived field lineage: source dataset/field, owner, role
+## G1/G3의 구체 계약
 
-source schema = source 값 또는 명시 schema의 검증 결과
-derived schema = 해당 transform policy(input schema, definition)의 결과
-```
+개정 2에서 다음과 같이 권장안을 고정했다. 정확한 schema/알고리즘은
+[IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md), 타입은 [PROPOSED_TYPES.d.ts](PROPOSED_TYPES.d.ts)를 따른다.
 
-- storageType은 number/string/boolean/array/object/unknown/mixed를 구분하는 안을 제안한다.
-  시간 semanticType/단위와 timestamp storage를 혼동하지 않는다. 세부 temporal encoding 계약과 일치시킨다.
-- declared schema가 있으면 값과 충돌하는 타입·허용하지 않은 null/absent/unknown field를 검증한다.
-  inferred source는 모든 row key의 union을 사용하고 row마다 field가 빠질 수 있음을 optional로 기록한다.
-- schemaVersion 1 → 2 reader는 source부터 DAG 순서로 known schema를 재구성한다. 0행·all-null 등
-  타입 증거가 없는 field는 unknown이다. old graphic snapshot은 그대로 render 가능해야 한다.
-- source dataset에 field가 전혀 없다는 것과 schema 자체를 모른다는 것을 구분한다.
-- 기존 action이 생성한 옛 snapshot의 migration 이후 render/추가 edit를 둘 다 검사한다.
-  extension schema를 모르면 caller 등록 descriptor 또는 explicit unsupported로 처리한다.
-- type/data policy의 자동 inference 결과를 현재 사용자가 명시적으로 선택한 의도로 기록하지 않는다.
+- D01: dataset.schema는 version/completeness/origin/fields를 가진다. declared source는 closed fields,
+  inferred는 모든 row key union, schema 없는 0행은 unknown이다.
+- D02: editable writer는 schemaVersion2, reader는1/2다. graphic-only 형식은 기존 schemaVersion1 유지다.
+- D03: scale.emptyDomain에 opt-in policy를 두고, 같은 의미의 이전 domain만 보존한다.
+  resolvedScales에 signature만 추가하며 domain 값은 중복 저장하지 않는다. 새 domain을 결정할 수 없으면 명확히 거절한다.
+- D04: 계산 report는 materializationConfigs.calculations의 typed owner에 저장하며 summary measure별
+  eligibility를 구별한다. null 두 행의 count는2이며 empty identity가 이를0으로 바꾸지 않는다.
+- D05: range edit는 같은 field/mode일 때 부분 merge, field/mode 변경 시 새 complete mode를 요구한다.
+  edit-only false 경계는 삭제이고 create에서는 거절한다.
+- D06: interval:false와 band:false를 분리한다. predict:false는 edit-only observed grid 복귀다.
+- D07: source point layer의 derivedBindings.regression에 follow 의미를 저장한다. fixed는 entry 부재다.
+  기존 materialization recipe는 실행/appearance owner로 유지하며 follow mode를 이중 저장하지 않는다.
+- D09: sort의 stable key 비교, null 배치, temporalUnit year/timestamp만의 명시 normalization을 사용한다.
+- D10–D12: inspection entry는4개 read-only function이며 report version1, typed target, unknown/coverage를 제공한다.
 
-## G3에서 보여야 할 relationship 계약
-
-```text
-semantic derived relationship
-  owner: 실제 회귀 owner
-  sourceTarget: source mark ID
-  mode: fixed | follow
-  followedRoles: inputData, x, y
-  grouping: resolved fixed recipe
-
-materializationConfigs
-  기존 regression geometry/appearance 재계산 설정
-  semantic relationship을 독립적으로 복제하지 않음
-```
-
-fixed mode의 기존 materialization recipe를 이동할지, 새 follow 의미만 semantic relationship에 저장할지는
-현재 owner record와 함께 canonical JSON before/after를 G3에 제출한다. 한 사실을 두 owner가
-각각 수정하는 구조는 허용하지 않는다. 이 저장 위치는 아직 구현 확정이 아니다.
-
-source-follow가 각 함수에 흩어진 observer로 실행되지 않도록 encoding/data 변경 action에서
-관계의 dependency closure를 계획하고, schema → 계산 → domain → mark → guide/layout 순서로 실행한다.
-외부에 중간 program을 노출하지 않고 실패하면 원본을 반환하는 척하지 말고 오류로 전체 변경을 거절한다.
+이 선택은 승인 검토 가능한 상세 제안이다. 향후 사용자 승인을 기록한 뒤 해당 구현을 진행한다.
 
 ## Gate 상태와 패키지
 
 | Gate | 현재 상태 | 구현 전 검토할 범위 | 승인 근거 |
 | --- | --- | --- | --- |
-| G0 | planned | F01–F12 순서, E01/E02 경계, 이 계획의 API 제안 | 없음; 계획 작성 요청만 있음 |
+| G0 | planned | 11개 기능(F06 제외) 순서, E01/E02 경계, 이 계획의 API 제안 | 계획·상세화 요청 있음; F06 제외 확정, 나머지 API 구현 승인 없음 |
 | G1 | planned | schema/empty/nullable 정책, persistence migration fixture, public calls | 없음 |
 | G2 | planned | per-family default 영향표, missing/empty/filter 타입, raw numeric oracle | 없음 |
 | G3 | planned | interval/grid/follow 계약, 관계 state, source 변경 전후 curve | 없음 |
-| G4 | planned | flatten/sort source/output/schema/lineage, create/edit/remove 호출 | 없음 |
+| G4 | planned | sort source/output/schema/lineage, create/edit/remove 호출 | 없음 |
 | G5 | planned | read-only entry export/types, 반환 schema, descriptor coverage, unknown 사례 | 없음 |
 | G6 | planned | 새 public limit/async/cache boundary 변경이 필요한 경우만 그 구체안 | 없음 |
 | G7 | planned | 최종 호환성·범위·검증 결과와 별도로 요청할 release 대상 | 없음 |
@@ -100,7 +78,7 @@ focused numerical/structural 검증, 기존 behavior 영향, declarations/문서
 ## 최종 호환성 분류
 
 1. **잘못된 입력의 교정:** 없는 field의 묵시적 빈 결과 → 명확한 오류. valid input 결과는 유지.
-2. **명시적인 기능 확장:** interval false, predict, follow, flatten/sort, inspection entry.
+2. **명시적인 기능 확장:** interval false, predict, follow, sort, inspection entry.
 3. **옵트인 정책:** missing/empty/range boundary. omission의 동작은 기존 fixture로 고정.
 4. **저장 형식 확장:** schema 1을 읽고 새 형식을 쓰는 단방향 migration. 과거 runtime이 새
    snapshot을 읽을 수 있다고 보장하지 않는다. payload/data version과 package version을 분리한다.

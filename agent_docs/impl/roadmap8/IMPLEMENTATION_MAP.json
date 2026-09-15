@@ -1,0 +1,906 @@
+{
+  "version": 2,
+  "status": "proposed-not-implemented",
+  "baselineCommit": "2b930177793a41a76ef3d664f3803f24d29ba67b",
+  "excludedFeatureIds": [
+    "F06"
+  ],
+  "excludedDecisionIds": [
+    "D08"
+  ],
+  "activeFeatureCount": 11,
+  "activeCaseCount": 43,
+  "executionOrder": [
+    "WP01",
+    "WP02",
+    "WP03",
+    "WP04",
+    "WP05",
+    "WP06",
+    "WP07",
+    "WP08",
+    "WP09",
+    "WP10",
+    "WP11",
+    "WP12",
+    "WP13",
+    "WP14"
+  ],
+  "features": [
+    {
+      "id": "F01",
+      "phase": 1,
+      "status": "not_started",
+      "workPackages": [
+        "WP01",
+        "WP02",
+        "WP03",
+        "WP14"
+      ],
+      "caseIds": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ]
+    },
+    {
+      "id": "F02",
+      "phase": 1,
+      "status": "not_started",
+      "workPackages": [
+        "WP04",
+        "WP14"
+      ],
+      "caseIds": [
+        "V05",
+        "V06",
+        "V07",
+        "V08"
+      ]
+    },
+    {
+      "id": "F03",
+      "phase": 2,
+      "status": "not_started",
+      "workPackages": [
+        "WP05",
+        "WP14"
+      ],
+      "caseIds": [
+        "V09",
+        "V10",
+        "V11",
+        "V12",
+        "V13"
+      ]
+    },
+    {
+      "id": "F04",
+      "phase": 3,
+      "status": "not_started",
+      "workPackages": [
+        "WP07",
+        "WP14"
+      ],
+      "caseIds": [
+        "V14",
+        "V15",
+        "V16",
+        "V17",
+        "V18"
+      ]
+    },
+    {
+      "id": "F05",
+      "phase": 3,
+      "status": "not_started",
+      "workPackages": [
+        "WP08",
+        "WP14"
+      ],
+      "caseIds": [
+        "V19",
+        "V20",
+        "V21",
+        "V22"
+      ]
+    },
+    {
+      "id": "F07",
+      "phase": 2,
+      "status": "not_started",
+      "workPackages": [
+        "WP06",
+        "WP14"
+      ],
+      "caseIds": [
+        "V26",
+        "V27",
+        "V28",
+        "V29"
+      ]
+    },
+    {
+      "id": "F08",
+      "phase": 4,
+      "status": "not_started",
+      "workPackages": [
+        "WP09",
+        "WP14"
+      ],
+      "caseIds": [
+        "V30",
+        "V31",
+        "V32"
+      ]
+    },
+    {
+      "id": "F09",
+      "phase": 5,
+      "status": "not_started",
+      "workPackages": [
+        "WP10",
+        "WP14"
+      ],
+      "caseIds": [
+        "V33",
+        "V34",
+        "V35"
+      ]
+    },
+    {
+      "id": "F10",
+      "phase": 5,
+      "status": "not_started",
+      "workPackages": [
+        "WP11",
+        "WP14"
+      ],
+      "caseIds": [
+        "V36",
+        "V37",
+        "V38"
+      ]
+    },
+    {
+      "id": "F11",
+      "phase": 5,
+      "status": "not_started",
+      "workPackages": [
+        "WP12",
+        "WP14"
+      ],
+      "caseIds": [
+        "V39",
+        "V40",
+        "V41",
+        "V42"
+      ]
+    },
+    {
+      "id": "F12",
+      "phase": 6,
+      "status": "not_started",
+      "workPackages": [
+        "WP13",
+        "WP14"
+      ],
+      "caseIds": [
+        "V43",
+        "V44",
+        "V45",
+        "V46"
+      ]
+    }
+  ],
+  "workPackages": [
+    {
+      "id": "WP01",
+      "phase": 1,
+      "features": [
+        "F01"
+      ],
+      "dependsOn": [],
+      "status": "not_started",
+      "decisionIds": [
+        "D01"
+      ],
+      "existingSources": [
+        "src/actions/data/create.js",
+        "src/actions/data/revise.js",
+        "src/actions/primitives/semanticValidation/dataset.js",
+        "src/grammar/schemas/semanticPath.js"
+      ],
+      "proposedNewSources": [
+        "src/grammar/datasetSchema.js"
+      ],
+      "orderedSteps": [
+        "Write normalizeSourceSchema/inferDatasetSchema/assertFieldsAvailable pure helpers.",
+        "Add dataset.schema path and declared source validation.",
+        "Preserve inferred/declared/unknown semantics on empty rows and revision."
+      ],
+      "testTargets": [
+        "test/unit/grammar/dataset-schema.test.js",
+        "test/unit/actions/data/source-schema.test.js"
+      ],
+      "acceptanceCaseIds": [
+        "V01",
+        "V02",
+        "V04"
+      ],
+      "doneRequires": [
+        "focused-tests",
+        "negative-input-and-immutability",
+        "types-and-contracts",
+        "consumer-replay-and-persistence",
+        "docs-and-generated-metadata-if-public"
+      ]
+    },
+    {
+      "id": "WP02",
+      "phase": 1,
+      "features": [
+        "F01"
+      ],
+      "dependsOn": [
+        "WP01"
+      ],
+      "status": "not_started",
+      "decisionIds": [
+        "D01"
+      ],
+      "existingSources": [
+        "src/grammar/transforms.js",
+        "src/actions/data/shared.js",
+        "src/actions/data/derived.js",
+        "src/actions/data/edit.js",
+        "src/grammar/transformTopology.js"
+      ],
+      "proposedNewSources": [],
+      "orderedSteps": [
+        "Register inputFields/outputSchema per every built-in transform policy.",
+        "Attach derived schema before compute and validate result; extend nonshared materializers too.",
+        "Propagate through revision/facet/repeat without copying removed source fields."
+      ],
+      "testTargets": [
+        "test/contracts/transform-schema-coverage.test.js",
+        "test/unit/actions/data/derived-editing.test.js"
+      ],
+      "acceptanceCaseIds": [
+        "V01",
+        "V02",
+        "V04"
+      ],
+      "doneRequires": [
+        "focused-tests",
+        "negative-input-and-immutability",
+        "types-and-contracts",
+        "consumer-replay-and-persistence",
+        "docs-and-generated-metadata-if-public"
+      ]
+    },
+    {
+      "id": "WP03",
+      "phase": 1,
+      "features": [
+        "F01"
+      ],
+      "dependsOn": [
+        "WP02"
+      ],
+      "status": "not_started",
+      "decisionIds": [
+        "D02"
+      ],
+      "existingSources": [
+        "src/persistence.js",
+        "src/persistence/validation.js",
+        "src/persistence/codec.js",
+        "types/persistence.d.ts"
+      ],
+      "proposedNewSources": [],
+      "orderedSteps": [
+        "Keep graphic-only version1; write editable version2.",
+        "Read v1 with prior strict validation then DAG schema migration; retain unknown.",
+        "Read v2 with schema/definition consistency and reject malicious reference graphs."
+      ],
+      "testTargets": [
+        "test/unit/persistence/program.test.js",
+        "test/unit/persistence/schema-migration.test.js"
+      ],
+      "acceptanceCaseIds": [
+        "V03",
+        "V04"
+      ],
+      "doneRequires": [
+        "focused-tests",
+        "negative-input-and-immutability",
+        "types-and-contracts",
+        "consumer-replay-and-persistence",
+        "docs-and-generated-metadata-if-public"
+      ]
+    },
+    {
+      "id": "WP04",
+      "phase": 1,
+      "features": [
+        "F02"
+      ],
+      "dependsOn": [
+        "WP02"
+      ],
+      "status": "not_started",
+      "decisionIds": [
+        "D03"
+      ],
+      "existingSources": [
+        "src/materialization/scales/resolve.js",
+        "src/actions/scales/materialize.js",
+        "src/grammar/scales/definition.js",
+        "src/grammar/schemas/semanticPath.js",
+        "src/actions/data/filter.js",
+        "src/core/vocabulary.js"
+      ],
+      "proposedNewSources": [],
+      "orderedSteps": [
+        "Add opt-in emptyDomain and compatible binding signature in resolved scale.",
+        "Keep explicit domain/legacy markFilter paths; clear empty owner graphics and recover deterministically.",
+        "Add independent-item missing skip and preserve existing path break/other family contracts."
+      ],
+      "testTargets": [
+        "test/unit/actions/data/empty-domain.test.js",
+        "test/contracts/empty-consumer-matrix.test.js"
+      ],
+      "acceptanceCaseIds": [
+        "V05",
+        "V06",
+        "V07",
+        "V08"
+      ],
+      "doneRequires": [
+        "focused-tests",
+        "negative-input-and-immutability",
+        "types-and-contracts",
+        "consumer-replay-and-persistence",
+        "docs-and-generated-metadata-if-public"
+      ]
+    },
+    {
+      "id": "WP05",
+      "phase": 2,
+      "features": [
+        "F03"
+      ],
+      "dependsOn": [
+        "WP02",
+        "WP04"
+      ],
+      "status": "not_started",
+      "decisionIds": [
+        "D04"
+      ],
+      "existingSources": [
+        "src/grammar/aggregate.js",
+        "src/grammar/summary.js",
+        "src/grammar/bin.js",
+        "src/grammar/density.js",
+        "src/grammar/interval.js",
+        "src/grammar/weightedStatistics.js",
+        "src/actions/data/shared.js",
+        "src/core/resourceReferences.js"
+      ],
+      "proposedNewSources": [
+        "src/grammar/statisticalEligibility.js"
+      ],
+      "orderedSteps": [
+        "Freeze omission compatibility per family.",
+        "Implement explicit missing/empty eligibility and per-group/per-measure report units.",
+        "Store typed calculation owners and forward options through facades/edits/revisions."
+      ],
+      "testTargets": [
+        "test/unit/grammar/statistical-missing-policy.test.js",
+        "test/unit/actions/data/calculation-reports.test.js"
+      ],
+      "acceptanceCaseIds": [
+        "V09",
+        "V10",
+        "V11",
+        "V12",
+        "V13"
+      ],
+      "doneRequires": [
+        "focused-tests",
+        "negative-input-and-immutability",
+        "types-and-contracts",
+        "consumer-replay-and-persistence",
+        "docs-and-generated-metadata-if-public"
+      ]
+    },
+    {
+      "id": "WP06",
+      "phase": 2,
+      "features": [
+        "F07"
+      ],
+      "dependsOn": [
+        "WP02",
+        "WP04"
+      ],
+      "status": "not_started",
+      "decisionIds": [
+        "D05"
+      ],
+      "existingSources": [
+        "src/grammar/filter.js",
+        "src/grammar/transforms.js",
+        "src/grammar/markSelection.js",
+        "src/grammar/markFilter.js",
+        "src/actions/data/filter.js"
+      ],
+      "proposedNewSources": [],
+      "orderedSteps": [
+        "Normalize oneOf/noneOf/predicate/range and explicit nulls.",
+        "Implement same-field range partial merge and edit-only false bound removal.",
+        "Reuse boundary kernel for mark selector while retaining item grain."
+      ],
+      "testTargets": [
+        "test/unit/grammar/filter-boundaries.test.js",
+        "test/unit/actions/data/filter-edit-boundaries.test.js"
+      ],
+      "acceptanceCaseIds": [
+        "V26",
+        "V27",
+        "V28",
+        "V29"
+      ],
+      "doneRequires": [
+        "focused-tests",
+        "negative-input-and-immutability",
+        "types-and-contracts",
+        "consumer-replay-and-persistence",
+        "docs-and-generated-metadata-if-public"
+      ]
+    },
+    {
+      "id": "WP07",
+      "phase": 3,
+      "features": [
+        "F04"
+      ],
+      "dependsOn": [
+        "WP05",
+        "WP06"
+      ],
+      "status": "not_started",
+      "decisionIds": [
+        "D06"
+      ],
+      "existingSources": [
+        "src/grammar/regression/parameters.js",
+        "src/grammar/regression/models.js",
+        "src/grammar/regression/derive.js",
+        "src/actions/data/regression.js",
+        "src/actions/regression/create.js",
+        "src/actions/regression/edit.js",
+        "src/grammar/transforms.js"
+      ],
+      "proposedNewSources": [],
+      "orderedSteps": [
+        "Separate fit and interval with explicit false interval; preserve legacy band visibility.",
+        "Add observed/explicit predictions and edit reset to observed.",
+        "Update regression output schema, bounds consumers, missing report and all method guards."
+      ],
+      "testTargets": [
+        "test/unit/actions/data/regression-data.test.js",
+        "test/unit/grammar/regression-prediction-grid.test.js",
+        "test/unit/actions/regression/edit-regression.test.js"
+      ],
+      "acceptanceCaseIds": [
+        "V14",
+        "V15",
+        "V16",
+        "V17",
+        "V18"
+      ],
+      "doneRequires": [
+        "focused-tests",
+        "negative-input-and-immutability",
+        "types-and-contracts",
+        "consumer-replay-and-persistence",
+        "docs-and-generated-metadata-if-public"
+      ]
+    },
+    {
+      "id": "WP08",
+      "phase": 3,
+      "features": [
+        "F05"
+      ],
+      "dependsOn": [
+        "WP07",
+        "WP04"
+      ],
+      "status": "not_started",
+      "decisionIds": [
+        "D07"
+      ],
+      "existingSources": [
+        "src/actions/regression/create.js",
+        "src/actions/regression/edit.js",
+        "src/materialization/dependencies.js",
+        "src/materialization/planner.js",
+        "src/actions/data/edit.js",
+        "src/actions/data/revise.js",
+        "src/core/resourceReferences.js"
+      ],
+      "proposedNewSources": [
+        "src/materialization/followingRegression.js"
+      ],
+      "orderedSteps": [
+        "Store follow relationship only on source point semantic derivedBindings.",
+        "Plan source-data/x/y changes after final patch; keep grouping and style fixed.",
+        "Integrate reencode/filters/revisions/facets/deletion/snapshots with atomic rejection."
+      ],
+      "testTargets": [
+        "test/unit/actions/regression/source-follow.test.js",
+        "test/contracts/source-follow-consumers.test.js"
+      ],
+      "acceptanceCaseIds": [
+        "V19",
+        "V20",
+        "V21",
+        "V22"
+      ],
+      "doneRequires": [
+        "focused-tests",
+        "negative-input-and-immutability",
+        "types-and-contracts",
+        "consumer-replay-and-persistence",
+        "docs-and-generated-metadata-if-public"
+      ]
+    },
+    {
+      "id": "WP09",
+      "phase": 4,
+      "features": [
+        "F08"
+      ],
+      "dependsOn": [
+        "WP02",
+        "WP06"
+      ],
+      "status": "not_started",
+      "decisionIds": [
+        "D09"
+      ],
+      "existingSources": [
+        "src/grammar/transforms.js",
+        "src/grammar/transformTopology.js",
+        "src/actions/data/index.js",
+        "src/actions/data/edit.js",
+        "src/actions/data/shared.js",
+        "types/program.d.ts"
+      ],
+      "proposedNewSources": [
+        "src/grammar/sort.js",
+        "src/actions/data/sort.js"
+      ],
+      "orderedSteps": [
+        "Implement stable typed multi-key kernel with explicit temporal normalization.",
+        "Register createSortedData/materializeSortedData/editSortedData and sort topology.",
+        "Prove row-value preservation and full derived/facet/persistence lifecycle."
+      ],
+      "testTargets": [
+        "test/unit/grammar/sort.test.js",
+        "test/unit/actions/data/sorted-data.test.js",
+        "test/contracts/sorted-data-types.test.js"
+      ],
+      "acceptanceCaseIds": [
+        "V30",
+        "V31",
+        "V32"
+      ],
+      "doneRequires": [
+        "focused-tests",
+        "negative-input-and-immutability",
+        "types-and-contracts",
+        "consumer-replay-and-persistence",
+        "docs-and-generated-metadata-if-public"
+      ]
+    },
+    {
+      "id": "WP10",
+      "phase": 5,
+      "features": [
+        "F09"
+      ],
+      "dependsOn": [
+        "WP03",
+        "WP05",
+        "WP06",
+        "WP07",
+        "WP08",
+        "WP09"
+      ],
+      "status": "not_started",
+      "decisionIds": [
+        "D10"
+      ],
+      "existingSources": [
+        "src/core/action.js",
+        "src/core/validation.js",
+        "src/core/diagnostics.js",
+        "knowledge/action-card.schema.json",
+        "package.json"
+      ],
+      "proposedNewSources": [
+        "src/inspection.js",
+        "src/inspection/actions.js",
+        "types/inspection.d.ts"
+      ],
+      "orderedSteps": [
+        "Build browser-safe descriptors from shared pure validation, not prose/node task-resolver.",
+        "Export getDatasetSchema and describeAction with explicit target and coverage statuses.",
+        "Inventory every built-in action and pair valid/invalid execution preconditions."
+      ],
+      "testTargets": [
+        "test/contracts/action-inspection-coverage.test.js",
+        "test/unit/inspection/actions.test.js"
+      ],
+      "acceptanceCaseIds": [
+        "V33",
+        "V34",
+        "V35"
+      ],
+      "doneRequires": [
+        "focused-tests",
+        "negative-input-and-immutability",
+        "types-and-contracts",
+        "consumer-replay-and-persistence",
+        "docs-and-generated-metadata-if-public"
+      ]
+    },
+    {
+      "id": "WP11",
+      "phase": 5,
+      "features": [
+        "F10"
+      ],
+      "dependsOn": [
+        "WP08",
+        "WP09",
+        "WP10"
+      ],
+      "status": "not_started",
+      "decisionIds": [
+        "D11"
+      ],
+      "existingSources": [
+        "src/core/resourceReferences.js",
+        "src/core/immutable.js"
+      ],
+      "proposedNewSources": [
+        "src/inspection/changes.js"
+      ],
+      "orderedSteps": [
+        "Map typed existing IDs and owner-role generated identities conservatively.",
+        "Compare semantic and graphical intent excluding trace/transient cache only.",
+        "Return changes/affected/partial-comparison/unknown without copying raw data."
+      ],
+      "testTargets": [
+        "test/unit/inspection/changes.test.js"
+      ],
+      "acceptanceCaseIds": [
+        "V36",
+        "V37",
+        "V38"
+      ],
+      "doneRequires": [
+        "focused-tests",
+        "negative-input-and-immutability",
+        "types-and-contracts",
+        "consumer-replay-and-persistence",
+        "docs-and-generated-metadata-if-public"
+      ]
+    },
+    {
+      "id": "WP12",
+      "phase": 5,
+      "features": [
+        "F11"
+      ],
+      "dependsOn": [
+        "WP04",
+        "WP05",
+        "WP10"
+      ],
+      "status": "not_started",
+      "decisionIds": [
+        "D12"
+      ],
+      "existingSources": [
+        "src/accessibility.js",
+        "src/materialization/selection/items/index.js",
+        "src/core/vocabulary.js"
+      ],
+      "proposedNewSources": [
+        "src/inspection/graphics.js"
+      ],
+      "orderedSteps": [
+        "Traverse validated graphic ownership and logical item adapters.",
+        "Compute conservative geometry/opacity/clip checks with explicit grain and unknown counts.",
+        "Return calculation reports and coverage; leave pixel visibility and commit policy to host."
+      ],
+      "testTargets": [
+        "test/unit/inspection/graphics.test.js",
+        "test/contracts/inspection-renderer-matrix.test.js"
+      ],
+      "acceptanceCaseIds": [
+        "V39",
+        "V40",
+        "V41",
+        "V42"
+      ],
+      "doneRequires": [
+        "focused-tests",
+        "negative-input-and-immutability",
+        "types-and-contracts",
+        "consumer-replay-and-persistence",
+        "docs-and-generated-metadata-if-public"
+      ]
+    },
+    {
+      "id": "WP13",
+      "phase": 6,
+      "features": [
+        "F12"
+      ],
+      "dependsOn": [
+        "WP11",
+        "WP12"
+      ],
+      "status": "not_started",
+      "decisionIds": [
+        "D13"
+      ],
+      "existingSources": [
+        "scripts/benchmark-runtime.js",
+        "scripts/measure-browser-bundle.js",
+        "src/core/validation.js"
+      ],
+      "proposedNewSources": [],
+      "orderedSteps": [
+        "Capture same-runtime baseline and six fixed workload families.",
+        "Profile and optimize only verified hotspots without changing meaning/caps.",
+        "Measure p50/p95/retained memory/snapshot bytes and structured expected rejects."
+      ],
+      "testTargets": [
+        "test/contracts/repeated-authoring-isolation.test.js",
+        "scripts/benchmark-runtime.js"
+      ],
+      "acceptanceCaseIds": [
+        "V43",
+        "V44",
+        "V45",
+        "V46"
+      ],
+      "doneRequires": [
+        "focused-tests",
+        "negative-input-and-immutability",
+        "types-and-contracts",
+        "consumer-replay-and-persistence",
+        "docs-and-generated-metadata-if-public"
+      ]
+    },
+    {
+      "id": "WP14",
+      "phase": 7,
+      "features": [
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F05",
+        "F07",
+        "F08",
+        "F09",
+        "F10",
+        "F11",
+        "F12"
+      ],
+      "dependsOn": [
+        "WP03",
+        "WP04",
+        "WP05",
+        "WP06",
+        "WP07",
+        "WP08",
+        "WP09",
+        "WP10",
+        "WP11",
+        "WP12",
+        "WP13"
+      ],
+      "status": "not_started",
+      "decisionIds": [
+        "D14"
+      ],
+      "existingSources": [
+        "types/program.d.ts",
+        "package.json",
+        "scripts/package-consumer.js",
+        "agent_docs/SECOND_ARCHITECTURE.md"
+      ],
+      "proposedNewSources": [],
+      "orderedSteps": [
+        "Close every parent case and child assertion in durable capability test owners.",
+        "Synchronize current contracts/types/docs/generated catalog/cards/MCP/package surfaces.",
+        "Run required cumulative verification and record exact remaining optional scope; no automatic release."
+      ],
+      "testTargets": [
+        "test/contracts/",
+        "test/unit/",
+        "test/charts/",
+        "test/browser/"
+      ],
+      "acceptanceCaseIds": [
+        "V01",
+        "V02",
+        "V03",
+        "V04",
+        "V05",
+        "V06",
+        "V07",
+        "V08",
+        "V09",
+        "V10",
+        "V11",
+        "V12",
+        "V13",
+        "V14",
+        "V15",
+        "V16",
+        "V17",
+        "V18",
+        "V19",
+        "V20",
+        "V21",
+        "V22",
+        "V26",
+        "V27",
+        "V28",
+        "V29",
+        "V30",
+        "V31",
+        "V32",
+        "V33",
+        "V34",
+        "V35",
+        "V36",
+        "V37",
+        "V38",
+        "V39",
+        "V40",
+        "V41",
+        "V42",
+        "V43",
+        "V44",
+        "V45",
+        "V46"
+      ],
+      "doneRequires": [
+        "focused-tests",
+        "negative-input-and-immutability",
+        "types-and-contracts",
+        "consumer-replay-and-persistence",
+        "docs-and-generated-metadata-if-public"
+      ]
+    }
+  ],
+  "notes": [
+    "existingSources must exist at baseline; proposedNewSources are planned output paths, not implemented files.",
+    "Phase0 baseline measurement may run before WP13; final performance verdict depends on completed APIs.",
+    "Runtime implementation still requires applicable decision authorization; planning and scope removal are already authorized."
+  ]
+}

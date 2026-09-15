@@ -18,7 +18,8 @@
 
 현재 활성 계획은 **Roadmap 8 Phase 0 — 계획·계약 검토**다. 제품 구현은 아직 시작하지 않았다.
 [Roadmap 8](impl/roadmap8/ROADMAP.md)은 필드/schema·빈 결과·통계·회귀·파생 관계·새 데이터 연산·
-조회 API·반복 실행 성능의 12개 보완을 연결한다. API·저장 형식은 검토용 제안이다.
+조회 API·반복 실행 성능의 11개 보완을 연결한다. API·저장 형식은 검토용 제안이다.
+[구현자 시작 문서](impl/roadmap8/IMPLEMENTER_START_HERE.md)에 flatten 제외 후 상세 구현 순서와 검증을 정리했다.
 마지막 완료 owner는 **Roadmap 7 Phase 12**다.
 [상세 로드맵](impl/roadmap7/ROADMAP.md)은 사용자가 선택한 차트 저작 연산 25개의 구현 이력이며,
 [저추론 구현 명세](impl/roadmap7/LOW_INFERENCE_IMPLEMENTATION_SPEC.md)는 더 낮은 성능의 구현자도

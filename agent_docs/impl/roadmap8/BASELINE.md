@@ -20,7 +20,7 @@ Autocomplete 앱, 원래 추천 corpus, 대규모 p95를 검증한 기록은 아
 | B10 | 6행을 group partition, x/id 정렬, cumulativeSum/movingMean preceding1 | total=[2,6,12,3,8,15], mean=[2,3,5,3,4,6] | 명세 window oracle와 일치 |
 | B11 | range에 minInclusive/maxInclusive 추가 | unknown property 오류 | 기존 inclusive는 양 끝을 함께 제어 |
 | B12 | x gte1 → x lt3 두 filterData 연결 | x=[1,2] | 반열린 범위는 기존 조합으로 표현 가능 |
-| B13 | 배열 값 xs:[1,2]를 createFoldData fields:[xs]로 처리 | primitive scalar type 오류 | fold는 배열 flatten이 아님 |
+| B13 | 배열 값 xs:[1,2]를 createFoldData fields:[xs]로 처리 | primitive scalar type 오류 | 과거 조사 사실만 보존; 관련 F06은 사용자 요청으로 제외 |
 | B14 | createData values 6행의 trace | values 배열 대신 valuesCount:6 | trace가 lossless action log가 아님 |
 
 JSON.stringify는 undefined object value를 생략한다. B04 검증 시 raw property 값 또는
