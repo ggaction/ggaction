@@ -40,6 +40,7 @@ import { offsetCategoryPositions } from
   "../../../materialization/categorySlotOffset.js";
 import { requestedStrokeDetails } from
   "../../../grammar/strokeStyle.js";
+import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
 
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 const DEFAULT_POINT_FILL = DEFAULT_COLORS.mark;
@@ -337,10 +338,11 @@ export const rematerializePointMark = /* @__PURE__ */ action(
     if (!["circle", "rect", "path", "collection"].includes(graphic?.type)) {
       throw new Error(`Point mark "${id}" requires point graphics.`);
     }
-    const dataset = findDataset(resolved, layer.data);
-    if (dataset === undefined) {
+    const sourceDataset = findDataset(resolved, layer.data);
+    if (sourceDataset === undefined) {
       throw new Error(`Point mark "${id}" requires an existing dataset.`);
     }
+    const dataset = applyItemMissingPolicy(layer, sourceDataset);
 
     if (graphic.items.length === 0 && !canMaterializePoint(resolved, layer)) {
       return resolved;

@@ -196,7 +196,7 @@ test("rejects invalid regression data revisions before exposing a branch", () =>
   );
   assert.throws(
     () => before.editRegression({ x: "missing" }),
-    /Field "missing" must contain a finite number/
+    /does not contain field "missing"/
   );
   assert.throws(
     () => before.editRegression({ groupBy: "" }),

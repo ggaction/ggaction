@@ -3,9 +3,9 @@
   "packageVersion": "0.0.16",
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
-    "status": "published-release",
-    "contractId": "sha256:0b76a2c9b1d2f953b70f9e643a60c234204bd392e4782820465035412515bf82",
-    "sourceCommit": "cdcd030ee663dde0193384cd6d7b37af1b15b804",
+    "status": "development",
+    "contractId": "sha256:89ddb0a06ff09a57098c295cda50788c02ed0418b6689098f725fe8e79e04805",
+    "sourceCommit": "a5ab34f0f3940ef2ae4ef538869e82b29c47c685",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -14,7 +14,7 @@
     "manifest": "doc-provenance.json"
   },
   "bundle": "llms-full.txt",
-  "sectionCount": 149,
+  "sectionCount": 150,
   "sections": [
     {
       "order": 1,
@@ -46,8 +46,8 @@
         "runnable-repository-examples",
         "next"
       ],
-      "bytes": 5623,
-      "sha256": "5d3a1b058d084ffc036d1f8fc88d52672f6700b0e45d4712219a9f9bfeb3b50d"
+      "bytes": 6112,
+      "sha256": "9ed5c1293ca1a8aa4e6a6134a3665c5c6a58566bc97e41f7f7aebff5ec030662"
     },
     {
       "order": 3,
@@ -65,7 +65,7 @@
         "related"
       ],
       "bytes": 11096,
-      "sha256": "b76d1a2637ebd4463d09180e14fdc8a0f43b4b4332926c8bd9df6fa68d5a127c"
+      "sha256": "4186f94bbfd33e5d1884a8ddf72a9248877a7c4b9a9adf945236b8bdf5a19e11"
     },
     {
       "order": 4,
@@ -80,8 +80,8 @@
         "terminal-limitations-and-open-decisions",
         "compact-knowledge-route"
       ],
-      "bytes": 4696,
-      "sha256": "8f41973da7c3d27edf4bb31080eb944c92f26a875df6b188bcc3c3c4865d10be"
+      "bytes": 5087,
+      "sha256": "c2f172c86cb55bcb2e7b2d2d12c36695e3cb93c7efc02f7e12fa8347e1cdaf2c"
     },
     {
       "order": 5,
@@ -790,6 +790,7 @@
         "source-and-derived-data",
         "createdata-id-values",
         "create-derived-data",
+        "create-sorted-data",
         "bindmarkdata-target-data",
         "createsummarydata-id-source-groupby-aggregates-members",
         "createbindata-id-source-field-binoptions",
@@ -803,8 +804,8 @@
         "removedata-id",
         "related"
       ],
-      "bytes": 10691,
-      "sha256": "cc39e538d6d48188494c09d36445e8eddb628de65155486366f316f1dfc1cd3b"
+      "bytes": 12619,
+      "sha256": "b910288c45a3df1a390cd69e30aa12ab385a23821d053183444d59cc306d236d"
     },
     {
       "order": 51,
@@ -813,13 +814,13 @@
       "source": "api/data/filtering.md",
       "headings": [
         "data-and-mark-filtering",
-        "filterdata-id-source-field-oneof-predicate-range",
+        "filterdata-id-source-field-oneof-noneof-predicate-range-nulls",
         "filter-marks",
         "removemarkfilter-target",
         "related"
       ],
-      "bytes": 6849,
-      "sha256": "441a8b5a161aafa8daf31c073b7aa3570ad088499e38a72826f2f9829fa91fe7"
+      "bytes": 7668,
+      "sha256": "130c843c60912795c437c30a7906f0ff4cd41a4367eeb7765de7430e01f89cb3"
     },
     {
       "order": 52,
@@ -828,13 +829,13 @@
       "source": "api/data/statistical-transforms.md",
       "headings": [
         "statistical-data-transforms",
-        "createregressiondata-id-source-x-y-groupby-method-degree-span-confidencemethod-level-confidence-interval",
+        "createregressiondata-id-source-x-y-groupby-method-degree-span-confidencemethod-level-confidence-interval-predict-missing",
         "create-interval-data",
-        "createdensitydata-id-source-field-groupby-bandwidth-extent-steps-kernel-normalization-weight-as",
+        "createdensitydata-id-source-field-groupby-bandwidth-extent-steps-kernel-normalization-weight-missing-as",
         "related"
       ],
-      "bytes": 6746,
-      "sha256": "06a0d6f5e1adddfcb923bad806b00855fe0aed171fecc088139ca77476366c79"
+      "bytes": 7816,
+      "sha256": "2c42e92a029669efc46e0c004e3ed318944a8e30b7d27fdadab7bed26b827c30"
     },
     {
       "order": 53,
@@ -891,8 +892,8 @@
         "tick-marks",
         "related"
       ],
-      "bytes": 6189,
-      "sha256": "9791dd637d37287a90fca05604196a1ac1d3c686b34ec26c1a403d0ac74c4209"
+      "bytes": 6794,
+      "sha256": "f61e22f113cad53e58a33133eb514552022df4c4eaf532f824946741216abe73"
     },
     {
       "order": 57,
@@ -901,15 +902,15 @@
       "source": "api/marks/point.md",
       "headings": [
         "point-marks",
-        "createpointmark-id-data-shape-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
+        "createpointmark-id-data-missing-shape-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
         "editpointmark-target-shape-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
         "jitterpoints-target-channel-maxoffset-seed-key",
         "removejitter-target",
         "continue-with-encodings",
         "errors-and-limitations"
       ],
-      "bytes": 6417,
-      "sha256": "e1a47b1d3e5a977b9774e99c2616649c9e418eaab46bf30d6db5ccb454324828"
+      "bytes": 6427,
+      "sha256": "b8eb203047b2b2d76fac7d4b069dbcf1f2ca83044a262091db7a9064ed82dbf3"
     },
     {
       "order": 58,
@@ -940,12 +941,12 @@
       "source": "api/marks/bar.md",
       "headings": [
         "bar-marks",
-        "createbarmark-id-data-fill-opacity-stroke-strokewidth-cornerradius-linecap-linejoin-miterlimit",
+        "createbarmark-id-data-missing-fill-opacity-stroke-strokewidth-cornerradius-linecap-linejoin-miterlimit",
         "edit-bar-mark",
         "related"
       ],
-      "bytes": 3522,
-      "sha256": "297322a4234c82396c6e08872437932bbe6321c9844947e02ac5f8d72ab4d524"
+      "bytes": 3532,
+      "sha256": "7d1ecce7c7301f7169f4c320248c3632420503ad2d8cdbb5b30c55af617f2697"
     },
     {
       "order": 60,
@@ -954,12 +955,12 @@
       "source": "api/marks/rule.md",
       "headings": [
         "rule-marks",
-        "createrulemark-id-data-stroke-strokewidth-strokedash-opacity-linecap-linejoin-miterlimit",
+        "createrulemark-id-data-missing-stroke-strokewidth-strokedash-opacity-linecap-linejoin-miterlimit",
         "reference-lines-and-bands",
         "related"
       ],
-      "bytes": 6384,
-      "sha256": "0ef4641b937fb3bf8addbfbeb1621dc5d905d8f6a4d9ba53aedf641d399b73fd"
+      "bytes": 6394,
+      "sha256": "c953291a8648a06faebc7b67186c59ebc13041945091f4808ab2e0e31923ef22"
     },
     {
       "order": 61,
@@ -991,13 +992,13 @@
       "source": "api/marks/rect.md",
       "headings": [
         "rect-marks",
-        "createrectmark-id-data-fill-opacity-stroke-strokewidth-cornerradius-linecap-linejoin-miterlimit",
+        "createrectmark-id-data-missing-fill-opacity-stroke-strokewidth-cornerradius-linecap-linejoin-miterlimit",
         "editrectmark-target-fill-opacity-stroke-strokewidth-cornerradius-linecap-linejoin-miterlimit",
         "cell-labels-and-selection",
         "related"
       ],
-      "bytes": 6068,
-      "sha256": "e02bea0b7fa521255d1e7d9ff0f96e4cf2fb2ec45f5e7d4ea69b9574ad42ef5e"
+      "bytes": 6078,
+      "sha256": "2ce022ad059b53265bebca5c18a55ef1e0f45411dcde986d7934b4031ab32db6"
     },
     {
       "order": 63,
@@ -1040,8 +1041,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 8467,
-      "sha256": "a987bb451ecf458d6761de6d0d8fbe8f9aa1772aaec299b7d3ffb14d954ebae8"
+      "bytes": 9071,
+      "sha256": "f2e37b5b28c54d0d28b9f7e5a60d4bf659a92ed77fa725ac97102a4058e6539f"
     },
     {
       "order": 65,
@@ -1771,14 +1772,30 @@
         "async-update-policy",
         "derived-data",
         "save-and-restore-snapshots",
-        "snapshot-format-version-1",
+        "snapshot-formats",
         "related"
       ],
-      "bytes": 9387,
-      "sha256": "e4b2fa9050262c6d918f7545a0f5b011f816d4ea3050c5b1045c986eed6c24e2"
+      "bytes": 10126,
+      "sha256": "acb00931d183333499379ccc861d62397a0bc39b4d6cc58ba855c197b44f8da4"
     },
     {
       "order": 110,
+      "title": "Program Inspection",
+      "route": "/inspection/",
+      "source": "inspection.md",
+      "headings": [
+        "program-inspection",
+        "read-a-dataset-contract",
+        "preflight-an-action",
+        "compare-immutable-revisions",
+        "inspect-concrete-results",
+        "related"
+      ],
+      "bytes": 3479,
+      "sha256": "34b956522066896570015719103d0e11125314004d491344bed842d4da7944a1"
+    },
+    {
+      "order": 111,
       "title": "Errors and Recovery",
       "route": "/errors-and-recovery/",
       "source": "errors-and-recovery.md",
@@ -1795,7 +1812,7 @@
       "sha256": "b6194523db259580eb95570a11e512d5a5be77a7625d04c2db0b8ce991dd2d6b"
     },
     {
-      "order": 111,
+      "order": 112,
       "title": "Versioning and Documentation Provenance",
       "route": "/versioning/",
       "source": "versioning.md",
@@ -1810,7 +1827,7 @@
       "sha256": "ad0559a7eea17134ca9d2651c1ff776c32cffe75824f2dc7a434db4d59a213c4"
     },
     {
-      "order": 112,
+      "order": 113,
       "title": "Fonts and Text Rendering",
       "route": "/fonts/",
       "source": "fonts.md",
@@ -1826,7 +1843,7 @@
       "sha256": "4fced11a7e063a64e00216c34c4bf47ef94283e866d8892aadbba9cb37d74406"
     },
     {
-      "order": 113,
+      "order": 114,
       "title": "TypeScript",
       "route": "/typescript/",
       "source": "typescript.md",
@@ -1843,7 +1860,7 @@
       "sha256": "e3225467935d8fee0d6d44a5745e8b435fae5fcda95aeb3f4818bf3044c2a8af"
     },
     {
-      "order": 114,
+      "order": 115,
       "title": "Advanced Axis Components",
       "route": "/advanced/axis-components/",
       "source": "advanced/axis-components.md",
@@ -1860,7 +1877,7 @@
       "sha256": "bd326818f70281b0c5a02778205afbfeec3320a9dd1c42c4cd9b325c66246ad5"
     },
     {
-      "order": 115,
+      "order": 116,
       "title": "Supported Features",
       "route": "/supported-features/",
       "source": "supported-features.md",
@@ -1879,7 +1896,7 @@
       "sha256": "2b4094dd3f785c62bfe75137e60fdf40cb1d27f3d3ac2eafc4bfceb9f69bb84e"
     },
     {
-      "order": 116,
+      "order": 117,
       "title": "Complete Action Reference",
       "route": "/reference/actions/",
       "source": "reference/actions.md",
@@ -1887,11 +1904,11 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 30048,
-      "sha256": "2634e46e3c00e2a84b517d398f11eeaaa9c05b2ccf4aa6f7dd7df943dd0f306c"
+      "bytes": 30262,
+      "sha256": "58f3ac0c418335d046918d5f2faf271e401c2a73fb77f141ab9fe573070a1aa6"
     },
     {
-      "order": 117,
+      "order": 118,
       "title": "Charts, Data, and Composition Actions",
       "route": "/reference/actions/charts-data/",
       "source": "reference/actions/charts-data.md",
@@ -1988,11 +2005,11 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 149394,
-      "sha256": "0cde7436429d688ff2272b004fe5d3f4c8e8a2d955fc5ae8c947717734cc7174"
+      "bytes": 151399,
+      "sha256": "972caca8b76e6203db2ea80a2dd3679163d99fcda1f804da776d2810f1f2dbb7"
     },
     {
-      "order": 118,
+      "order": 119,
       "title": "Mark Actions",
       "route": "/reference/actions/marks/",
       "source": "reference/actions/marks.md",
@@ -2033,11 +2050,11 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 62312,
-      "sha256": "217dd2f88bca72e46a3b78940178a34878f0c81fca2e8ab2c7959de414504285"
+      "bytes": 63777,
+      "sha256": "48e6d244031551016fdda069095d8b7c1f3892a2c03481f54b5b679768e264bf"
     },
     {
-      "order": 119,
+      "order": 120,
       "title": "Encoding Actions",
       "route": "/reference/actions/encodings/",
       "source": "reference/actions/encodings.md",
@@ -2083,11 +2100,11 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 59414,
-      "sha256": "44c43a27fcbbfa182771add96a99194a06684fa4012a9d3bafee9c3c0d243827"
+      "bytes": 59493,
+      "sha256": "dc1b33c11f56a85348152ad93ce3ed2e4478bc6fcbb3d988e1d5d19180e004a3"
     },
     {
-      "order": 120,
+      "order": 121,
       "title": "Statistical Layer Actions",
       "route": "/reference/actions/statistics/",
       "source": "reference/actions/statistics.md",
@@ -2098,6 +2115,7 @@
         "createfolddata",
         "createcomputeddata",
         "createnormalizeddata",
+        "createsorteddata",
         "createcompletedata",
         "createimputeddata",
         "createstackdata",
@@ -2109,6 +2127,7 @@
         "editintervaldata",
         "editecdfdata",
         "editnormalizeddata",
+        "editsorteddata",
         "editcompletedata",
         "editimputeddata",
         "createintervaldata",
@@ -2137,11 +2156,11 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 74407,
-      "sha256": "dd8eeb18864eed392e4434dac0f02e1010fae4fc72ef04f70aefb68835cac6a2"
+      "bytes": 77745,
+      "sha256": "56fff4c7231f52c7cd8c289cd27c0f89f2613226f126a084cf1543bdeb54ba91"
     },
     {
-      "order": 121,
+      "order": 122,
       "title": "Guide, Axis, Grid, and Title Actions",
       "route": "/reference/actions/guides/",
       "source": "reference/actions/guides.md",
@@ -2234,11 +2253,11 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 114639,
-      "sha256": "8c66c3f777f6fb2f3135e7df3d2aafaadabe32e01967a6919848e7ffe9c90c51"
+      "bytes": 114651,
+      "sha256": "e6fdcb88669248a76f21432073e0583da10e944b55f151f5c9a99104c8cca8c3"
     },
     {
-      "order": 122,
+      "order": 123,
       "title": "Advanced Chart Actions",
       "route": "/reference/actions/advanced/",
       "source": "reference/actions/advanced.md",
@@ -2259,11 +2278,11 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 10273,
-      "sha256": "3999b66f0deb9ead2ef6f82a60573aa6c1af53f5f3fabe8711e110e606d6232b"
+      "bytes": 10285,
+      "sha256": "8254783a14842402919b5ff7afd3faa0628e393e51b4035403b3afc61811071e"
     },
     {
-      "order": 123,
+      "order": 124,
       "title": "Extension Actions",
       "route": "/reference/actions/extension/",
       "source": "reference/actions/extension.md",
@@ -2279,7 +2298,7 @@
       "sha256": "f17b025b602033087f2d61c31fcc8133c9e0b58318e0645f6e23e15a707ed013"
     },
     {
-      "order": 124,
+      "order": 125,
       "title": "Program and Rendering Functions",
       "route": "/reference/runtime/",
       "source": "reference/runtime.md",
@@ -2301,7 +2320,7 @@
       "sha256": "db00b968b7ab5ff5646f81c6660ec93dff6c358c19edb8b4d41da9ee050b8c71"
     },
     {
-      "order": 125,
+      "order": 126,
       "title": "Exact TypeScript Contract",
       "route": "/reference/types/",
       "source": "reference/types.md",
@@ -2474,8 +2493,10 @@
         "type-datasetnormalizedtransform",
         "type-datasetregressiontransform",
         "type-datasetscalar",
+        "type-datasetsorttransform",
         "type-datasetstacktransform",
         "type-datasetstatisticalreferencetransform",
+        "type-datasetstoragetype",
         "type-datasetsummarytransform",
         "type-datasettimeunittransform",
         "type-datasettimeunittransformbase",
@@ -2561,6 +2582,7 @@
         "type-editsemanticoptions",
         "type-editshapescaleoptions",
         "type-editsizescaleoptions",
+        "type-editsorteddataoptions",
         "type-editstackdataoptions",
         "type-editstrokedashscaleoptions",
         "type-editstrokescaleoptions",
@@ -2609,11 +2631,16 @@
         "type-fieldtype",
         "type-filledmarklegendoptions",
         "type-filledmarkstroke",
+        "type-filterbound",
         "type-filtercomparison",
         "type-filterdataoptions",
         "type-filtermarksoptions",
         "type-filtermodeoptions",
+        "type-filtermodepatch",
         "type-filterrange",
+        "type-filterrangebounds",
+        "type-filterrangeclosure",
+        "type-filterrangepatch",
         "type-fitcanvasoptions",
         "type-focusedderiveddataedit",
         "type-focusedderiveddatapatch",
@@ -2793,6 +2820,7 @@
         "type-regressionplotbaseoptions",
         "type-regressionplotpositionchannel",
         "type-regressionplotstatisticaloptions",
+        "type-regressionpredictoptions",
         "type-removeaxisoptions",
         "type-removecategoryorderoptions",
         "type-removecompositionchildoptions",
@@ -2838,6 +2866,10 @@
         "type-sizescalecommonoptions",
         "type-sizescaleoptions",
         "type-sizescaletypeeditpatch",
+        "type-sortkey",
+        "type-sorteddataoptions",
+        "type-sourceschemafield",
+        "type-sourceschemainput",
         "type-stackdatamode",
         "type-stackdataoptions",
         "type-stackdataoutputfields",
@@ -2903,11 +2935,11 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 302037,
-      "sha256": "12c63cf5b8a43da114305c49f9df3b81f4634d32b00ef40bebd22094765b9f39"
+      "bytes": 308766,
+      "sha256": "67211c8afdb8593938a4dd837b33430f4f53a2f55916bd9958294feffc7835a7"
     },
     {
-      "order": 126,
+      "order": 127,
       "title": "Action Authoring",
       "route": "/extension/action-authoring/",
       "source": "extension/action-authoring.md",
@@ -2923,7 +2955,7 @@
       "sha256": "8ffe55abba1593627088c8d074f92d03a4fa6f94dda017adcfd38c5ef0ef6ce6"
     },
     {
-      "order": 127,
+      "order": 128,
       "title": "Primitive API",
       "route": "/extension/primitives/",
       "source": "extension/primitives.md",
@@ -2935,10 +2967,10 @@
         "scale-materialization"
       ],
       "bytes": 16959,
-      "sha256": "fefa9257cc6c290af813df000452055d17f95be08a322667daa2c20d79e378ad"
+      "sha256": "ec69d1d36a819e0aa630079739dabb8a514b8c12dd060d736ff02ef42c0981cf"
     },
     {
-      "order": 128,
+      "order": 129,
       "title": "Summaries, Bins, and Data Shaping",
       "route": "/api/data/summaries-and-shaping/",
       "source": "api/data/summaries-and-shaping.md",
@@ -2953,7 +2985,7 @@
       "sha256": "f86414dbfdec24ccc1371516aae62addcad044441bf8d6498fa9c1bfc74fa83e"
     },
     {
-      "order": 129,
+      "order": 130,
       "title": "Expressions and Normalization",
       "route": "/api/data/expressions-and-normalization/",
       "source": "api/data/expressions-and-normalization.md",
@@ -2966,7 +2998,7 @@
       "sha256": "725a9cec4e03ba9c590f7e12c2449dece742e77ab54d227aa56e5ac3615e8fb4"
     },
     {
-      "order": 130,
+      "order": 131,
       "title": "Missing Keys and Values",
       "route": "/api/data/missing-data/",
       "source": "api/data/missing-data.md",
@@ -2979,20 +3011,21 @@
       "sha256": "225e79647350fbe088ca1ebba0aa34c84fee0298776b6c6177aee43a11cb0e74"
     },
     {
-      "order": 131,
+      "order": 132,
       "title": "Data Revisions and Removal",
       "route": "/api/data/revisions-and-removal/",
       "source": "api/data/revisions-and-removal.md",
       "headings": [
         "data-revisions-and-removal",
         "editing-derived-data",
+        "edit-sorted-data",
         "removedata-id"
       ],
-      "bytes": 7254,
-      "sha256": "0132b1baebb99857bae8bec65a36c37ef38be25ebb4671335f071a3783584090"
+      "bytes": 8269,
+      "sha256": "89bd0a2ed1e2abd46167b6b2984e1a98dbb701686a29426cfa078e35499e4e19"
     },
     {
-      "order": 132,
+      "order": 133,
       "title": "Facets and Field Repetition",
       "route": "/api/composition/facets/",
       "source": "api/composition/facets.md",
@@ -3006,7 +3039,7 @@
       "sha256": "0f5e25eb0c87fba08a23bfe807e63dc74f91cea4610635920b3b448e23c8ca68"
     },
     {
-      "order": 133,
+      "order": 134,
       "title": "Editing Compositions",
       "route": "/api/composition/editing/",
       "source": "api/composition/editing.md",
@@ -3022,7 +3055,7 @@
       "sha256": "bb361c47a285ea29c454fb414ce8d16b10ba909b5e9bc5c5a511d5b348c311f7"
     },
     {
-      "order": 134,
+      "order": 135,
       "title": "Attached Mark Labels",
       "route": "/api/marks/labels/",
       "source": "api/marks/labels.md",
@@ -3037,7 +3070,7 @@
       "sha256": "28535493d29cb409b6b2b69d4d91a95ec134dcce6065de8b57e89946ac2debcb"
     },
     {
-      "order": 135,
+      "order": 136,
       "title": "Label Collision Layout",
       "route": "/api/marks/label-layout/",
       "source": "api/marks/label-layout.md",
@@ -3050,7 +3083,7 @@
       "sha256": "00bab7a90be49712287e4c7d9c9175a75ff9705deaca0562b5b41511fe7c12da"
     },
     {
-      "order": 136,
+      "order": 137,
       "title": "Repair missing observations",
       "route": "/recipes/repair-missing-observations/",
       "source": "recipes/repair-missing-observations.md",
@@ -3066,7 +3099,7 @@
       "sha256": "9928c2eaa8663ab746cd9d40376ef79c1b4f8634650fa4158f7c92ccea83bc21"
     },
     {
-      "order": 137,
+      "order": 138,
       "title": "Compare weighted distributions",
       "route": "/recipes/compare-weighted-distributions/",
       "source": "recipes/compare-weighted-distributions.md",
@@ -3082,7 +3115,7 @@
       "sha256": "df3ee0d3553a4c165daa91ebc9bb0b0165f53932938da03ca77370b7dfa48a37"
     },
     {
-      "order": 138,
+      "order": 139,
       "title": "Switch encoding modes atomically",
       "route": "/recipes/switch-encoding-modes/",
       "source": "recipes/switch-encoding-modes.md",
@@ -3098,7 +3131,7 @@
       "sha256": "8b7ff73872e01415925768d9e71b00cced459e7237af9269cae481f07d1552ce"
     },
     {
-      "order": 139,
+      "order": 140,
       "title": "Edit scales and refresh guides",
       "route": "/recipes/edit-scales-and-guides/",
       "source": "recipes/edit-scales-and-guides.md",
@@ -3114,7 +3147,7 @@
       "sha256": "5f9a9dd1e29049768f40392954bed39f5dadb803122b8725347730a030ed28c6"
     },
     {
-      "order": 140,
+      "order": 141,
       "title": "Select and place final-item labels",
       "route": "/recipes/edit-selected-labels/",
       "source": "recipes/edit-selected-labels.md",
@@ -3130,7 +3163,7 @@
       "sha256": "7262f9d736122fcd3908930b9a003fba3e2654b653c012658e00ef64fa2742bc"
     },
     {
-      "order": 141,
+      "order": 142,
       "title": "Apply, override, and remove a theme",
       "route": "/recipes/apply-custom-theme/",
       "source": "recipes/apply-custom-theme.md",
@@ -3146,7 +3179,7 @@
       "sha256": "c8ca65194baac5b737a29b91bba2af679e38c327cd1a2b416eed1da3fa240d78"
     },
     {
-      "order": 142,
+      "order": 143,
       "title": "Revise facet source and shared guides",
       "route": "/recipes/edit-facet-source/",
       "source": "recipes/edit-facet-source.md",
@@ -3162,7 +3195,7 @@
       "sha256": "3ad6ef82965e6403f6ee646014c7180f03fe30ef78e4132ad6f6281d37b6cf1d"
     },
     {
-      "order": 143,
+      "order": 144,
       "title": "Remove resources in dependency order",
       "route": "/recipes/remove-dependent-resources/",
       "source": "recipes/remove-dependent-resources.md",
@@ -3178,7 +3211,7 @@
       "sha256": "e2b12fe0fff8caa8d96a76d137a49eda83e4351e01551c8be4437b31835590a8"
     },
     {
-      "order": 144,
+      "order": 145,
       "title": "Choose the Right Authoring Level",
       "route": "/tutorials/hierarchical-authoring/",
       "source": "tutorials/hierarchical-authoring.md",
@@ -3196,7 +3229,7 @@
       "sha256": "6051064606ddaf184073d026fc633e8d401a584ed28390bd82838b0cd6f50136"
     },
     {
-      "order": 145,
+      "order": 146,
       "title": "Authoring Conventions",
       "route": "/concepts/authoring-conventions/",
       "source": "concepts/authoring-conventions.md",
@@ -3211,7 +3244,7 @@
       "sha256": "ebbadf100f44602ab0e02594e1e5861df5e9af6d6ce7893d0dfd508ff9a6a998"
     },
     {
-      "order": 146,
+      "order": 147,
       "title": "Data Grain and Statistical Policies",
       "route": "/api/data/policies/",
       "source": "api/data/policies.md",
@@ -3222,11 +3255,11 @@
         "weights-units-and-finite-density-extents",
         "related"
       ],
-      "bytes": 5789,
-      "sha256": "05a7e0ccd6a24e8e58308e6063544be94c12a22ea8551add9377f118faf6bebd"
+      "bytes": 6557,
+      "sha256": "a6f53c5e39d2a75f1a025aecbe45f6549afc021fb1e11222920c119ba3228dcc"
     },
     {
-      "order": 147,
+      "order": 148,
       "title": "Choose a Chart",
       "route": "/api/chart-picker/",
       "source": "api/chart-picker.md",
@@ -3245,7 +3278,7 @@
       "sha256": "6472d885967117a83ed70f163e3fa04f31294101788123f70468873b71093922"
     },
     {
-      "order": 148,
+      "order": 149,
       "title": "Documentation Version",
       "route": "/version/",
       "source": "version.md",
@@ -3254,11 +3287,11 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3039,
-      "sha256": "1a8168c42e4e7fdde607f9bc3e8536ba0122e34233214b8bc7c3b8b51fc635b8"
+      "bytes": 3033,
+      "sha256": "c6383511ad3e26b33897001e7e49887cf73977df40b4c1a57d8a30f2f418ff37"
     },
     {
-      "order": 149,
+      "order": 150,
       "title": "Complete Axes and Labels",
       "route": "/api/axes/complete/",
       "source": "api/axes/complete.md",

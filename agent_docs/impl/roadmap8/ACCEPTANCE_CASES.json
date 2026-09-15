@@ -1,0 +1,1419 @@
+{
+  "version": 2,
+  "status": "implemented-verified",
+  "baseline": "v0.0.16",
+  "activeFeatureIds": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F07",
+    "F08",
+    "F09",
+    "F10",
+    "F11",
+    "F12"
+  ],
+  "excluded": {
+    "featureIds": [
+      "F06"
+    ],
+    "caseIds": [
+      "V23",
+      "V24",
+      "V25"
+    ],
+    "reason": "2026-09-15 사용자 요청으로 제외; 번호 재사용 금지"
+  },
+  "formatNotes": [
+    "Declarative test vectors, not a runtime action script.",
+    "The $expected undefined sentinel is an assertion value, not dataset content.",
+    "Passed cases are backed by the feature evidence paths recorded on each case."
+  ],
+  "fixtures": {
+    "six": [
+      {
+        "id": 1,
+        "group": "A",
+        "x": 1,
+        "y": 2,
+        "z": 13
+      },
+      {
+        "id": 2,
+        "group": "A",
+        "x": 2,
+        "y": 4,
+        "z": 16
+      },
+      {
+        "id": 3,
+        "group": "A",
+        "x": 3,
+        "y": 6,
+        "z": 19
+      },
+      {
+        "id": 4,
+        "group": "B",
+        "x": 1,
+        "y": 3,
+        "z": 14
+      },
+      {
+        "id": 5,
+        "group": "B",
+        "x": 2,
+        "y": 5,
+        "z": 17
+      },
+      {
+        "id": 6,
+        "group": "B",
+        "x": 3,
+        "y": 7,
+        "z": 20
+      }
+    ],
+    "nullable": [
+      {
+        "group": "A",
+        "value": null
+      },
+      {
+        "group": "A",
+        "value": 2
+      },
+      {
+        "group": "B",
+        "value": null
+      },
+      {
+        "group": "B",
+        "value": 4
+      },
+      {
+        "group": "C",
+        "value": null
+      },
+      {
+        "group": "C",
+        "value": null
+      }
+    ],
+    "bins": [
+      {
+        "value": 0
+      },
+      {
+        "value": 5
+      },
+      {
+        "value": 10
+      },
+      {
+        "value": 15
+      },
+      {
+        "value": 20
+      },
+      {
+        "value": null
+      }
+    ],
+    "declaredEmpty": {
+      "values": [],
+      "schema": {
+        "fields": [
+          {
+            "name": "x",
+            "storageType": "number"
+          },
+          {
+            "name": "y",
+            "storageType": "number",
+            "nullable": true
+          }
+        ]
+      }
+    },
+    "legacyEmpty": {
+      "values": [],
+      "schemaAbsent": true
+    },
+    "twoPoints": [
+      {
+        "x": 1,
+        "y": 2
+      },
+      {
+        "x": 2,
+        "y": 4
+      }
+    ],
+    "typedCategories": [
+      {
+        "id": "number-one",
+        "value": 1
+      },
+      {
+        "id": "string-one",
+        "value": "1"
+      },
+      {
+        "id": "two",
+        "value": 2
+      },
+      {
+        "id": "null",
+        "value": null
+      }
+    ],
+    "sortRows": [
+      {
+        "id": "a2-first",
+        "group": "A",
+        "x": 2
+      },
+      {
+        "id": "b1",
+        "group": "B",
+        "x": 1
+      },
+      {
+        "id": "a-null",
+        "group": "A",
+        "x": null
+      },
+      {
+        "id": "a1",
+        "group": "A",
+        "x": 1
+      },
+      {
+        "id": "a2-second",
+        "group": "A",
+        "x": 2
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "V01",
+      "feature": "F01",
+      "phase": 1,
+      "status": "passed",
+      "scenario": "six를 group별 y mean으로 summary 후 x gte2 filter",
+      "assertions": [
+        "field-unavailable finding, 원본/summary 불변, 새 빈 dataset을 성공으로 반환하지 않음"
+      ],
+      "fixture": "six",
+      "steps": [
+        {
+          "op": "summary",
+          "groupBy": [
+            "group"
+          ],
+          "aggregates": [
+            {
+              "op": "mean",
+              "field": "y",
+              "as": "mean"
+            }
+          ]
+        },
+        {
+          "op": "filter",
+          "field": "x",
+          "predicate": {
+            "op": "gte",
+            "value": 2
+          }
+        }
+      ],
+      "expected": {
+        "errorCode": "missing-resource",
+        "reason": "field-unavailable",
+        "inputUnchanged": true
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/dataset-schema.test.js",
+        "test/unit/persistence/program.test.js"
+      ]
+    },
+    {
+      "id": "V02",
+      "feature": "F01",
+      "phase": 1,
+      "status": "passed",
+      "scenario": "선언된 x/y schema의 0행 데이터에 x filter와 typo filter",
+      "assertions": [
+        "x는 field 검증 통과, typo는 실패; 값 유무와 별개"
+      ],
+      "fixture": "declaredEmpty",
+      "expected": {
+        "xFieldExists": true,
+        "typoFieldExists": false,
+        "rowCount": 0
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/dataset-schema.test.js",
+        "test/unit/persistence/program.test.js"
+      ]
+    },
+    {
+      "id": "V03",
+      "feature": "F01",
+      "phase": 1,
+      "status": "passed",
+      "scenario": "schema 없는 과거 빈 source snapshot 복원",
+      "assertions": [
+        "unknown을 기록, 임의 field/type 생성 없음; 명시 schema 제공 경로 안내"
+      ],
+      "fixture": "legacyEmpty",
+      "expected": {
+        "schemaCompleteness": "unknown",
+        "renderExistingGraphicAllowed": true,
+        "mayInventField": false
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/dataset-schema.test.js",
+        "test/unit/persistence/program.test.js"
+      ]
+    },
+    {
+      "id": "V04",
+      "feature": "F01",
+      "phase": 1,
+      "status": "passed",
+      "scenario": "source revision으로 사용 중 field 삭제 또는 타입 변경",
+      "assertions": [
+        "invalid 소비자가 있으면 atomic reject; independent source는 영향 없음"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/dataset-schema.test.js",
+        "test/unit/persistence/program.test.js"
+      ]
+    },
+    {
+      "id": "V05",
+      "feature": "F02",
+      "phase": 1,
+      "status": "passed",
+      "scenario": "valid filter가 0행, 같은 field의 기존 domain 있음",
+      "assertions": [
+        "preserve 정책에서 mark 0개, domain/사용자 style 유지"
+      ],
+      "fixture": "six",
+      "expected": {
+        "dataItems": 0,
+        "preservePriorCompatibleDomain": true,
+        "sourceRows": 6
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/dataset-schema.test.js",
+        "test/unit/actions/marks/item-missing.test.js",
+        "test/unit/persistence/program.test.js"
+      ]
+    },
+    {
+      "id": "V06",
+      "feature": "F02",
+      "phase": 1,
+      "status": "passed",
+      "scenario": "새 0행 차트, explicit x/y domain",
+      "assertions": [
+        "유효한 empty render; axis/legend가 data mark 수에 포함되지 않음"
+      ],
+      "fixture": "declaredEmpty",
+      "options": {
+        "xDomain": [
+          0,
+          10
+        ],
+        "yDomain": [
+          0,
+          20
+        ]
+      },
+      "expected": {
+        "dataItems": 0,
+        "schemaCompleteness": "known",
+        "domainError": false
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/dataset-schema.test.js",
+        "test/unit/actions/marks/item-missing.test.js",
+        "test/unit/persistence/program.test.js"
+      ]
+    },
+    {
+      "id": "V07",
+      "feature": "F02",
+      "phase": 1,
+      "status": "passed",
+      "scenario": "새 0행 차트, known schema, domain 없음",
+      "assertions": [
+        "명확한 domain-required 진단; invented [0,1] 없음"
+      ],
+      "fixture": "declaredEmpty",
+      "expected": {
+        "errorCode": "incompatible-resource",
+        "reason": "domain-required"
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/dataset-schema.test.js",
+        "test/unit/actions/marks/item-missing.test.js",
+        "test/unit/persistence/program.test.js"
+      ]
+    },
+    {
+      "id": "V08",
+      "feature": "F02",
+      "phase": 1,
+      "status": "passed",
+      "scenario": "empty→non-empty revise와 y→다른 단위 z reencode",
+      "assertions": [
+        "첫 경우 새 데이터로 재계산, 둘째 이전 y domain을 z에 잘못 재사용하지 않음"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/dataset-schema.test.js",
+        "test/unit/actions/marks/item-missing.test.js",
+        "test/unit/persistence/program.test.js"
+      ]
+    },
+    {
+      "id": "V09",
+      "feature": "F03",
+      "phase": 2,
+      "status": "passed",
+      "scenario": "nullable summary, explicit identity policy",
+      "assertions": [
+        "A:count2,valid1,sum2,mean2,median2; B:2,1,4,4,4; C:2,0,0,null,null"
+      ],
+      "fixture": "nullable",
+      "options": {
+        "empty": "identity"
+      },
+      "expected": {
+        "groups": [
+          {
+            "group": "A",
+            "count": 2,
+            "valid": 1,
+            "sum": 2,
+            "mean": 2,
+            "median": 2
+          },
+          {
+            "group": "B",
+            "count": 2,
+            "valid": 1,
+            "sum": 4,
+            "mean": 4,
+            "median": 4
+          },
+          {
+            "group": "C",
+            "count": 2,
+            "valid": 0,
+            "sum": 0,
+            "mean": null,
+            "median": null
+          }
+        ]
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/calculation-policies.test.js"
+      ]
+    },
+    {
+      "id": "V10",
+      "feature": "F03",
+      "phase": 2,
+      "status": "passed",
+      "scenario": "nullable summary, 정책 omission",
+      "assertions": [
+        "승인된 호환 전략에 따라 0.0.16과 일치; undefined를 null로 비교하지 않음"
+      ],
+      "fixture": "nullable",
+      "expected": {
+        "groupC": {
+          "count": 2,
+          "valid": 0,
+          "sum": {
+            "$expected": "undefined"
+          },
+          "mean": {
+            "$expected": "undefined"
+          },
+          "median": {
+            "$expected": "undefined"
+          }
+        }
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/calculation-policies.test.js"
+      ]
+    },
+    {
+      "id": "V11",
+      "feature": "F03",
+      "phase": 2,
+      "status": "passed",
+      "scenario": "bins, missing drop, boundaries=[0,10,20]",
+      "assertions": [
+        "count2,3; 마지막 20 포함; input6,used5,excluded-null1"
+      ],
+      "fixture": "bins",
+      "options": {
+        "missing": "drop",
+        "boundaries": [
+          0,
+          10,
+          20
+        ]
+      },
+      "expected": {
+        "counts": [
+          2,
+          3
+        ],
+        "inputRows": 6,
+        "usedRows": 5,
+        "excludedRows": 1,
+        "excludedByReason": {
+          "missing-value": 1
+        }
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/calculation-policies.test.js"
+      ]
+    },
+    {
+      "id": "V12",
+      "feature": "F03",
+      "phase": 2,
+      "status": "passed",
+      "scenario": "weighted statistics와 일부 null/0-weight/invalid weight",
+      "assertions": [
+        "기존 frequency/reliability 수식 유지; null 제외와 0 기여를 분리; invalid weight는 오류"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/calculation-policies.test.js"
+      ]
+    },
+    {
+      "id": "V13",
+      "feature": "F03",
+      "phase": 2,
+      "status": "passed",
+      "scenario": "같은 explicit policy의 facade/standalone/edit/revise/facet",
+      "assertions": [
+        "수치/field/grain과 report가 해당 최신 입력 기준으로 일치"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/calculation-policies.test.js"
+      ]
+    },
+    {
+      "id": "V14",
+      "feature": "F04",
+      "phase": 3,
+      "status": "passed",
+      "scenario": "(1,2),(2,4), interval false, band false",
+      "assertions": [
+        "slope2,intercept0; CI fields 없음; 원본 두 점 유지"
+      ],
+      "fixture": "twoPoints",
+      "options": {
+        "interval": false,
+        "band": false
+      },
+      "expected": {
+        "slope": 2,
+        "intercept": 0,
+        "boundsFieldsPresent": false,
+        "originalPointCount": 2
+      },
+      "tolerance": {
+        "absolute": 1e-10,
+        "relative": 1e-10
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/regression-prediction.test.js",
+        "test/unit/actions/data/regression-data.test.js"
+      ]
+    },
+    {
+      "id": "V15",
+      "feature": "F04",
+      "phase": 3,
+      "status": "passed",
+      "scenario": "V14에 mean/prediction interval 요청",
+      "assertions": [
+        "구간 표본 조건 오류; 임의 margin 또는 zero band 생성 없음"
+      ],
+      "fixture": "twoPoints",
+      "options": {
+        "interval": "mean"
+      },
+      "expected": {
+        "throws": true,
+        "inputUnchanged": true,
+        "createdBand": false
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/regression-prediction.test.js",
+        "test/unit/actions/data/regression-data.test.js"
+      ]
+    },
+    {
+      "id": "V16",
+      "feature": "F04",
+      "phase": 3,
+      "status": "passed",
+      "scenario": "six group별 linear interval false",
+      "assertions": [
+        "A slope2/intercept0, B slope2/intercept1; whole group은 slope2/intercept0.5"
+      ],
+      "fixture": "six",
+      "expected": {
+        "A": {
+          "slope": 2,
+          "intercept": 0
+        },
+        "B": {
+          "slope": 2,
+          "intercept": 1
+        },
+        "ungrouped": {
+          "slope": 2,
+          "intercept": 0.5
+        }
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/regression-prediction.test.js",
+        "test/unit/actions/data/regression-data.test.js"
+      ]
+    },
+    {
+      "id": "V17",
+      "feature": "F04",
+      "phase": 3,
+      "status": "passed",
+      "scenario": "explicit grid [1,1.5,2], A/B fit",
+      "assertions": [
+        "A=[2,3,4], B=[3,4,5]; observed x 이외 1.5 포함"
+      ],
+      "fixture": "six",
+      "options": {
+        "predict": {
+          "values": [
+            1,
+            1.5,
+            2
+          ]
+        }
+      },
+      "expected": {
+        "A": [
+          2,
+          3,
+          4
+        ],
+        "B": [
+          3,
+          4,
+          5
+        ]
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/regression-prediction.test.js",
+        "test/unit/actions/data/regression-data.test.js"
+      ]
+    },
+    {
+      "id": "V18",
+      "feature": "F04",
+      "phase": 3,
+      "status": "passed",
+      "scenario": "duplicate/descending/nonfinite grid, constant x, too-small sample",
+      "assertions": [
+        "구체 오류와 atomic failure; full model/method matrix에 명시 unsupported"
+      ],
+      "fixture": "six",
+      "invalidPredictVariants": [
+        {
+          "values": [
+            1,
+            1
+          ]
+        },
+        {
+          "values": [
+            2,
+            1
+          ]
+        },
+        {
+          "domain": [
+            1,
+            2
+          ],
+          "steps": 1
+        },
+        {
+          "values": [
+            1,
+            2
+          ],
+          "domain": [
+            1,
+            2
+          ],
+          "steps": 2
+        }
+      ],
+      "expected": {
+        "throws": true,
+        "inputUnchanged": true
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/regression-prediction.test.js",
+        "test/unit/actions/data/regression-data.test.js"
+      ]
+    },
+    {
+      "id": "V19",
+      "feature": "F05",
+      "phase": 3,
+      "status": "passed",
+      "scenario": "follow 회귀에서 source y→z",
+      "assertions": [
+        "A slope3/intercept10, B slope3/intercept11로 변경; 회귀 스타일 보존"
+      ],
+      "fixture": "six",
+      "options": {
+        "sourceBinding": "follow",
+        "reencodeY": "z"
+      },
+      "expected": {
+        "A": {
+          "slope": 3,
+          "intercept": 10
+        },
+        "B": {
+          "slope": 3,
+          "intercept": 11
+        },
+        "preserveCurveAppearance": true
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/regression/source-binding.test.js"
+      ]
+    },
+    {
+      "id": "V20",
+      "feature": "F05",
+      "phase": 3,
+      "status": "passed",
+      "scenario": "fixed 회귀에서 source y→z",
+      "assertions": [
+        "기존 회귀 recipe 유지; follow와의 차이를 문서/compare에서 확인"
+      ],
+      "fixture": "six",
+      "options": {
+        "sourceBinding": "fixed",
+        "reencodeY": "z"
+      },
+      "expected": {
+        "regressionYField": "y",
+        "pointYField": "z"
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/regression/source-binding.test.js"
+      ]
+    },
+    {
+      "id": "V21",
+      "feature": "F05",
+      "phase": 3,
+      "status": "passed",
+      "scenario": "follow source 필터 변경, group 표본 부족 또는 cycle/source 삭제",
+      "assertions": [
+        "정책상 invalid면 source 포함 전체 patch 실패, stale curve 성공 반환 없음"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/regression/source-binding.test.js"
+      ]
+    },
+    {
+      "id": "V22",
+      "feature": "F05",
+      "phase": 3,
+      "status": "passed",
+      "scenario": "follow→fixed, snapshot 복원, facet/concat child 교체",
+      "assertions": [
+        "최신 resolved recipe와 explicit target 관계 보존; 다른 child 불변"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/regression/source-binding.test.js"
+      ]
+    },
+    {
+      "id": "V26",
+      "feature": "F07",
+      "phase": 2,
+      "status": "passed",
+      "scenario": "six에서 1≤x<3 단일 range",
+      "assertions": [
+        "id1,2,4,5; 기존 gte1→lt3 조합과 일치"
+      ],
+      "fixture": "six",
+      "options": {
+        "range": {
+          "min": 1,
+          "max": 3,
+          "minInclusive": true,
+          "maxInclusive": false
+        }
+      },
+      "expected": {
+        "rowIds": [
+          1,
+          2,
+          4,
+          5
+        ]
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/advanced-filter.test.js"
+      ]
+    },
+    {
+      "id": "V27",
+      "feature": "F07",
+      "phase": 2,
+      "status": "passed",
+      "scenario": "group noneOf A; 숫자1과 문자열1 혼합",
+      "assertions": [
+        "group B만 유지, typed 비교로 1과\"1\" 구별"
+      ],
+      "fixture": "typedCategories",
+      "options": {
+        "field": "value",
+        "noneOf": [
+          1
+        ]
+      },
+      "expected": {
+        "rowIds": [
+          "string-one",
+          "two",
+          "null"
+        ]
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/advanced-filter.test.js"
+      ]
+    },
+    {
+      "id": "V28",
+      "feature": "F07",
+      "phase": 2,
+      "status": "passed",
+      "scenario": "lower만, upper만, inverted, 양 경계 없음, 옵션 충돌",
+      "assertions": [
+        "열린 경계 성공, 나머지 의미 invalid는 atomic reject"
+      ],
+      "fixture": "six",
+      "variants": [
+        {
+          "range": {
+            "min": 2
+          },
+          "expectedRowIds": [
+            2,
+            3,
+            5,
+            6
+          ]
+        },
+        {
+          "range": {
+            "max": 2
+          },
+          "expectedRowIds": [
+            1,
+            2,
+            4,
+            5
+          ]
+        },
+        {
+          "range": {
+            "min": 2,
+            "max": 2,
+            "maxInclusive": false
+          },
+          "expectedRowIds": []
+        },
+        {
+          "range": {},
+          "throws": true
+        }
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/advanced-filter.test.js"
+      ]
+    },
+    {
+      "id": "V29",
+      "feature": "F07",
+      "phase": 2,
+      "status": "passed",
+      "scenario": "하한 pin 후 상한만 edit, snapshot/revise; temporal 정규화 후 filter",
+      "assertions": [
+        "하한 보존; explicit zone normalization의 expected membership 유지"
+      ],
+      "fixture": "six",
+      "create": {
+        "range": {
+          "min": 1,
+          "max": 3,
+          "minInclusive": true,
+          "maxInclusive": false
+        }
+      },
+      "patch": {
+        "range": {
+          "max": 2
+        }
+      },
+      "expected": {
+        "rowIds": [
+          1,
+          4
+        ],
+        "retainedMin": 1,
+        "retainedMinInclusive": true,
+        "retainedMaxInclusive": false
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/advanced-filter.test.js"
+      ]
+    },
+    {
+      "id": "V30",
+      "feature": "F08",
+      "phase": 4,
+      "status": "passed",
+      "scenario": "multi-key sortBy, tie/nulls",
+      "assertions": [
+        "명시 key 순서와 null placement, tie는 source index; 값/membership 보존"
+      ],
+      "fixture": "sortRows",
+      "options": {
+        "sortBy": [
+          {
+            "field": "group"
+          },
+          {
+            "field": "x",
+            "order": "descending",
+            "nulls": "last"
+          }
+        ]
+      },
+      "expected": {
+        "rowIds": [
+          "a2-first",
+          "a2-second",
+          "a1",
+          "a-null",
+          "b1"
+        ]
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/sorted-data.test.js"
+      ]
+    },
+    {
+      "id": "V31",
+      "feature": "F08",
+      "phase": 4,
+      "status": "passed",
+      "scenario": "정렬 결과에 같은 sort 재적용, descending↔ascending edit",
+      "assertions": [
+        "값/행수 불변, deterministic order; raw row array mutation 없음"
+      ],
+      "fixture": "sortRows",
+      "expected": {
+        "membershipUnchanged": true,
+        "valuesUnchanged": true,
+        "secondSortSameOrder": true,
+        "inputArrayUnchanged": true
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/sorted-data.test.js"
+      ]
+    },
+    {
+      "id": "V32",
+      "feature": "F08",
+      "phase": 4,
+      "status": "passed",
+      "scenario": "시간·혼합타입 key, sort→window/facet/revise",
+      "assertions": [
+        "temporal 기준 순서, incompatible mixed type 오류, partition 재계산 동등"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/actions/data/sorted-data.test.js"
+      ]
+    },
+    {
+      "id": "V33",
+      "feature": "F09",
+      "phase": 5,
+      "status": "passed",
+      "scenario": "모든 built-in action inventory와 Full/Basic surface",
+      "assertions": [
+        "누락 descriptor 없음; supported/conditional/unsupported/unverified 구별"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/contracts/inspection-descriptors.test.js",
+        "test/unit/inspection.test.js"
+      ]
+    },
+    {
+      "id": "V34",
+      "feature": "F09",
+      "phase": 5,
+      "status": "passed",
+      "scenario": "point shape 가능, line shape 불가, missing target/field/options",
+      "assertions": [
+        "정적 applicability와 실제 실행 전제조건 일치; numeric 검사 미실행은 표시"
+      ],
+      "fixture": "six",
+      "expected": {
+        "pointShape": "supported",
+        "lineShape": "unsupported",
+        "numericExecutionCheck": "not_run"
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/contracts/inspection-descriptors.test.js",
+        "test/unit/inspection.test.js"
+      ]
+    },
+    {
+      "id": "V35",
+      "feature": "F09",
+      "phase": 5,
+      "status": "passed",
+      "scenario": "조회 반복과 unknown registered extension",
+      "assertions": [
+        "program/trace 불변, extension 의미 미확인이 supported로 승격되지 않음"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/contracts/inspection-descriptors.test.js",
+        "test/unit/inspection.test.js"
+      ]
+    },
+    {
+      "id": "V36",
+      "feature": "F10",
+      "phase": 5,
+      "status": "passed",
+      "scenario": "color binding 변경 vs 색 constant 변경 vs 제목만 수정",
+      "assertions": [
+        "해당 resource/role 변경과 shared consumer 보고, row change를 발명하지 않음"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/inspection.test.js"
+      ]
+    },
+    {
+      "id": "V37",
+      "feature": "F10",
+      "phase": 5,
+      "status": "passed",
+      "scenario": "trace/context-only 차이, layer order 변경, 다른 source 동일 값",
+      "assertions": [
+        "trace-only는 차트 의미변경 아님; 순서/기존 identity 차이는 보존"
+      ],
+      "expected": {
+        "traceOnly": "equal",
+        "layerOrderChanged": "different",
+        "differentSourceIdentity": "different"
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/inspection.test.js"
+      ]
+    },
+    {
+      "id": "V38",
+      "feature": "F10",
+      "phase": 5,
+      "status": "passed",
+      "scenario": "새로운 generated IDs가 다른 builtin equivalent 결과/unknown extension",
+      "assertions": [
+        "검증한 canonical owner만 동등 처리; unknown은 명시 반환"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/inspection.test.js"
+      ]
+    },
+    {
+      "id": "V39",
+      "feature": "F11",
+      "phase": 5,
+      "status": "passed",
+      "scenario": "axis-only, mark opacity0, zero size, outside clip",
+      "assertions": [
+        "네 상태를 구별, guide symbol을 data item으로 세지 않음"
+      ],
+      "expected": {
+        "axisOnlyDataItems": 0,
+        "opacityZeroVisibleCandidates": 0,
+        "pixelVisibilityStatus": "not_run"
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/inspection.test.js",
+        "test/browser/package-consumer.browser.js"
+      ]
+    },
+    {
+      "id": "V40",
+      "feature": "F11",
+      "phase": 5,
+      "status": "passed",
+      "scenario": "line/area/composite interval/boxplot",
+      "assertions": [
+        "logical item/series와 concrete primitive counts를 혼동하지 않음"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/inspection.test.js",
+        "test/browser/package-consumer.browser.js"
+      ]
+    },
+    {
+      "id": "V41",
+      "feature": "F11",
+      "phase": 5,
+      "status": "passed",
+      "scenario": "nullable/empty 결과와 unsupported text/custom owner",
+      "assertions": [
+        "empty와 error/미검사 구별; partial inspection coverage를 공개"
+      ],
+      "expected": {
+        "unknownOwnerCounts": null,
+        "coveragePartial": true,
+        "emptyIsError": false
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/inspection.test.js",
+        "test/browser/package-consumer.browser.js"
+      ]
+    },
+    {
+      "id": "V42",
+      "feature": "F11",
+      "phase": 5,
+      "status": "passed",
+      "scenario": "같은 graphic의 SVG/Canvas/PNG/PDF 및 nested composition",
+      "assertions": [
+        "공통 geometry/ownership 검사 일치; pixel visibility 미검사를 passed로 쓰지 않음"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "test/unit/inspection.test.js",
+        "test/browser/package-consumer.browser.js"
+      ]
+    },
+    {
+      "id": "V43",
+      "feature": "F12",
+      "phase": 6,
+      "status": "passed",
+      "scenario": "같은 base에서 독립 후보20개, option별 반복 수정",
+      "assertions": [
+        "source/data 공유 유지, 후보 상호오염 없음; elapsed/retained memory 기록"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "scripts/benchmark-runtime.js",
+        ".artifacts/benchmarks/runtime.json",
+        "test/contracts/generated-lifecycle-scenarios.test.js",
+        "test/contracts/realistic-guide-scale-recipes.test.js"
+      ]
+    },
+    {
+      "id": "V44",
+      "feature": "F12",
+      "phase": 6,
+      "status": "passed",
+      "scenario": "평가 count 고정 다단계 workload와 장기 source revision",
+      "assertions": [
+        "동일 결과, 한계/실패 공개; cache stale와 불필요한 live retention 검사"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "scripts/benchmark-runtime.js",
+        ".artifacts/benchmarks/runtime.json",
+        "test/contracts/generated-lifecycle-scenarios.test.js",
+        "test/contracts/realistic-guide-scale-recipes.test.js"
+      ]
+    },
+    {
+      "id": "V45",
+      "feature": "F12",
+      "phase": 6,
+      "status": "passed",
+      "scenario": "cap 내 및 fold/generated count 초과 입력",
+      "assertions": [
+        "cap 내는 correctness 통과, 초과는 structured resource-limit 진단"
+      ],
+      "expected": {
+        "overLimitCode": "resource-limit",
+        "limitExplicit": true,
+        "inputUnchanged": true
+      },
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "scripts/benchmark-runtime.js",
+        ".artifacts/benchmarks/runtime.json",
+        "test/contracts/generated-lifecycle-scenarios.test.js",
+        "test/contracts/realistic-guide-scale-recipes.test.js"
+      ]
+    },
+    {
+      "id": "V46",
+      "feature": "F12",
+      "phase": 6,
+      "status": "passed",
+      "scenario": "Node와 browser installed package의 export/bundle/inspection",
+      "assertions": [
+        "browser에 Node builtin 누출 없음; 새 entry가 미사용 main bundle에 강제 포함되지 않음"
+      ],
+      "requiredDimensions": [
+        "correct-result",
+        "immutable-input",
+        "explicit-failure-or-coverage"
+      ],
+      "evidence": [
+        "scripts/benchmark-runtime.js",
+        ".artifacts/benchmarks/runtime.json",
+        "test/contracts/generated-lifecycle-scenarios.test.js",
+        "test/contracts/realistic-guide-scale-recipes.test.js"
+      ]
+    }
+  ]
+}

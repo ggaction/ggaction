@@ -13,6 +13,8 @@ import {
   validateFieldType,
   validatePositionChannel
 } from "../../../grammar/scales/index.js";
+import { applyRequestedItemMissingPolicy } from
+  "../../../grammar/itemMissing.js";
 import { resolvePositionScaleDefinition } from "../../scales/definitions.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
 import {
@@ -92,7 +94,7 @@ function resolveCoordinate(program, channel, layer, requestedId) {
 export function resolvePositionEncoding(program, channel, args, operation) {
   validateOptions(args, POSITION_ENCODING_OPTIONS, operation);
   validatePositionChannel(channel);
-  const { id: target, dataset, layer } = resolveTarget(
+  const { id: target, dataset: sourceDataset, layer } = resolveTarget(
     program,
     args.target,
     getPositionChannelDefinition(channel).markTypes
@@ -157,6 +159,9 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     xEncoding?.bin !== undefined && args.field === undefined
     ? xEncoding.field
     : args.field;
+  const dataset = hasField
+    ? applyRequestedItemMissingPolicy(layer, sourceDataset, field)
+    : applyRequestedItemMissingPolicy(layer, sourceDataset);
   const datum = args.datum;
   const temporalUnit = resolveTemporalUnit({ ...args, ...(hasDatum ? {} : { field }) }, fieldType, previous);
   const usesField = !countRadius && (!["rule", "area", "rect", "text", "point", "tick"].includes(layer.mark.type) || hasField);

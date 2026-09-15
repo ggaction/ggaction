@@ -27,9 +27,14 @@ import {
   resolveEligibleLayer
 } from "../../selectors/index.js";
 import { MATERIALIZE_OPTIONS, requireDerivedDataset } from "./shared.js";
+import {
+  assertFieldsAvailable,
+  deriveTransformSchema,
+  transformInputFields
+} from "../../grammar/datasetSchema.js";
 
 const OPTIONS = Object.freeze([
-  "id", "source", "field", "oneOf", "predicate", "range"
+  "id", "source", "field", "oneOf", "noneOf", "predicate", "range", "nulls"
 ]);
 const MARK_SELECTOR_KEYS = Object.freeze([
   "grain", "field", "channel", "property", "op", "value", "values",
@@ -58,10 +63,16 @@ export const materializeFilteredData = /* @__PURE__ */ closedAction(
       args.id,
       "filter"
     );
-    return this.editSemantic({
-      property: `dataset[${id}].values`,
-      value: deriveFilteredRows(source.values, transform)
+    assertFieldsAvailable(source.schema, transformInputFields(transform), {
+      data: source.id,
+      operation: "materializeFilteredData"
     });
+    const values = deriveFilteredRows(source.values, transform);
+    const schema = deriveTransformSchema(source.schema, transform, values, {
+      sourceId: source.id,
+      ownerId: id
+    });
+    return this.editSemantic({ property: `dataset[${id}].values`, value: values });
   }
 );
 

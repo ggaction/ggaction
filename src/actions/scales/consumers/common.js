@@ -5,6 +5,7 @@ import { readScaleField } from "../../../grammar/scales/index.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
 import { SCALED_ENCODING_CHANNELS } from "../../../core/vocabulary.js";
+import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
 
 export function findScale(program, id) {
   return requireSemanticScale(program, id);
@@ -39,7 +40,7 @@ export function requireConsumerDataset(program, consumer) {
       `Mark "${consumer.layer.id}" references unknown dataset "${consumer.layer.data}".`
     );
   }
-  return dataset;
+  return applyItemMissingPolicy(consumer.layer, dataset);
 }
 
 export function isDirectCategoricalConsumer(consumer) {

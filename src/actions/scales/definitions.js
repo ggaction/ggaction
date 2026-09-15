@@ -37,7 +37,7 @@ import { resolveRequestedOffsetPolicy } from
   "../../materialization/scales/policies/offset.js";
 import { findScaleConsumers } from "./consumers/index.js";
 
-const BASE_OPTIONS = ["id", "type", "domain", "range"];
+const BASE_OPTIONS = ["id", "type", "domain", "range", "emptyDomain"];
 const UNKNOWN_OPTIONS = [...BASE_OPTIONS, "unknown"];
 const CLAMP_REVERSE = ["clamp", "reverse"];
 const BOOLEAN_OPTIONS = ["nice", "zero", ...CLAMP_REVERSE];

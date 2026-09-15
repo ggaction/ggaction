@@ -12,7 +12,14 @@ for (const variant of visualVariants) {
     const program = variant.primitive();
     assert.equal(JSON.stringify(target), before);
     assert.ok(Object.isFrozen(target.publicCalls[1].args.values));
-    assert.deepEqual(program.semanticSpec.datasets, [{ id: "data", values: target.publicCalls[1].args.values }]);
+    assert.equal(program.semanticSpec.datasets.length, 1);
+    const [dataset] = program.semanticSpec.datasets;
+    assert.deepEqual({ id: dataset.id, values: dataset.values }, {
+      id: "data",
+      values: target.publicCalls[1].args.values
+    });
+    assert.equal(dataset.schema.completeness, "known");
+    assert.equal(dataset.schema.origin, "inferred");
     const layer = program.semanticSpec.layers[0];
     const items = program.graphicSpec.objects.m.items;
     assert.equal(layer.encoding.color?.layout, undefined);

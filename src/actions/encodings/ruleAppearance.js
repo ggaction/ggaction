@@ -14,6 +14,8 @@ import {
 import { findLayer } from "../../selectors/layers.js";
 import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
 import { assertEncodingSelectionCompatibility } from "../../materialization/selection/compatibility.js";
+import { applyRequestedItemMissingPolicy } from
+  "../../grammar/itemMissing.js";
 
 const WIDTH_OPTIONS = Object.freeze([
   "target", "value", "field", "fieldType", "scale"
@@ -57,12 +59,13 @@ const encodeStrokeWidth = /* @__PURE__ */ action(
       next = next.rematerializeRuleMark({ id });
       return applyDetachedScaleRematerialization(next, [layer]);
     }
-    const { id, dataset, layer } = resolveTarget(
+    const { id, dataset: sourceDataset, layer } = resolveTarget(
       this,
       args.target,
       ["rule", "line"],
       "rule or line mark"
     );
+    const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
     const fieldType = args.fieldType ?? "quantitative";
     if (fieldType !== "quantitative") {
       throw new Error("encodeStrokeWidth requires a quantitative field.");

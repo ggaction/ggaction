@@ -886,6 +886,11 @@
       "measured text widths",
       "font measurement profile",
       "text layout precision"
+    ],
+    "SortedData": [
+      "sorted dataset",
+      "stable multi-key row order",
+      "ordered rows"
     ]
   },
   "summaryOverrides": {
@@ -1518,6 +1523,27 @@
         "id": "host",
         "measurements": []
       }
+    },
+    "createSortedData": {
+      "id": "sorted",
+      "sortBy": [
+        {
+          "field": "group"
+        },
+        {
+          "field": "value",
+          "order": "descending",
+          "nulls": "last"
+        }
+      ]
+    },
+    "editSortedData": {
+      "target": "sorted",
+      "sortBy": [
+        {
+          "field": "value"
+        }
+      ]
     }
   },
   "callPatternOverrides": {

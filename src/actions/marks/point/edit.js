@@ -13,9 +13,10 @@ import {
 import { resolveEligibleLayer } from "../../../selectors/layers.js";
 import { rematerializeExistingLegend } from "../../encodings/shared.js";
 import { validateMarkOptions } from "../shared.js";
+import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const OPTIONS = Object.freeze([
-  "target", "shape", "fill", "opacity", "stroke", "strokeWidth",
+  "target", "missing", "shape", "fill", "opacity", "stroke", "strokeWidth",
   ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -28,12 +29,12 @@ export const editPointMark = /* @__PURE__ */ action(
     validateMarkOptions(args, OPTIONS, "editPointMark");
     const strokeDetails = requestedStrokeDetails(args, "editPointMark");
     const editable = [
-      "shape", "fill", "opacity", "stroke", "strokeWidth",
+      "missing", "shape", "fill", "opacity", "stroke", "strokeWidth",
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!editable.some(property => Object.hasOwn(args, property))) {
       throw new Error(
-        "editPointMark requires shape, fill, opacity, stroke, or strokeWidth."
+        "editPointMark requires shape, fill, opacity, stroke, strokeWidth, or missing."
       );
     }
     if (args.target !== undefined) validateUserId(args.target, "Point mark id");
@@ -61,7 +62,13 @@ export const editPointMark = /* @__PURE__ */ action(
     if (Object.hasOwn(args, "opacity") && layer.encoding?.opacity?.field !== undefined) {
       throw new Error("editPointMark opacity conflicts with a field encoding; use encodeOpacity with value to replace it.");
     }
-    const config = { ...this.markConfigs[id] };
+    const semantic = Object.hasOwn(args, "missing")
+      ? this.editSemantic({
+          property: `layer[${id}].mark.missing`,
+          value: validateItemMissing(args.missing, "Point missing")
+        })
+      : this;
+    const config = { ...semantic.markConfigs[id] };
     Object.assign(config, strokeDetails);
     if (Object.hasOwn(args, "shape")) {
       config.shape = validatePointShape(args.shape);
@@ -97,7 +104,7 @@ export const editPointMark = /* @__PURE__ */ action(
         "Point strokeWidth"
       );
     }
-    const next = this
+    const next = semantic
       ._withMarkConfig(id, config)
       .rematerializePointMark({ id });
     return rematerializeExistingLegend(next);

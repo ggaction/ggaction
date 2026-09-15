@@ -17,6 +17,7 @@ test("createFoldData preserves source cells in stable row-major field order", ()
   });
 
   assert.deepEqual(program.semanticSpec.datasets[1], {
+    schema: program.semanticSpec.datasets[1].schema,
     id: "long",
     source: "source",
     transform: [{
@@ -35,7 +36,7 @@ test("createFoldData preserves source cells in stable row-major field order", ()
     program.trace.children.at(-1).children.map(child => child.op),
     ["createDerivedData", "materializeFoldData"]
   );
-  assert.deepEqual(source.semanticSpec.datasets, [{ id: "source", values: rows }]);
+  assert.deepEqual(source.semanticSpec.datasets, [{ id: "source", values: rows, schema: source.semanticSpec.datasets[0].schema }]);
 });
 
 test("createFoldData uses defaults, supports empty input, and feeds ordinary marks", () => {
@@ -49,7 +50,9 @@ test("createFoldData uses defaults, supports empty input, and feeds ordinary mar
   assert.equal(program.graphicSpec.objects.points.items.length, 4);
 
   const empty = chart()
-    .createData({ id: "source", values: [] })
+    .createData({ id: "source", values: [], schema: { fields: [
+      { name: "apples", storageType: "number" }
+    ] } })
     .createFoldData({ id: "long", fields: ["apples"] });
   assert.deepEqual(empty.semanticSpec.datasets[1].values, []);
 });

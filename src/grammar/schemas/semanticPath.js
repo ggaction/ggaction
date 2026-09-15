@@ -49,7 +49,7 @@ const ENCODING_PATHS = Object.freeze([
 const ENTITY_PATHS = Object.freeze({
   dataset: {
     collection: "datasets",
-    properties: new Set(["source", "transform", "values"])
+    properties: new Set(["source", "transform", "schema", "values"])
   },
   layer: {
     collection: "layers",
@@ -64,6 +64,7 @@ const ENTITY_PATHS = Object.freeze({
       "transform",
       "mark.type",
       "mark.missing",
+      "derivedBindings.regression",
       "layout.mode",
       ...ENCODING_PATHS
     ])
@@ -71,7 +72,7 @@ const ENTITY_PATHS = Object.freeze({
   scale: {
     collection: "scales",
     properties: new Set([
-      "type", "domain", "range", "nice", "zero", "clamp", "reverse",
+      "type", "domain", "range", "emptyDomain", "nice", "zero", "clamp", "reverse",
       "unknown", "base", "exponent", "constant", "interpolate", "radialMapping", "midpoint",
       "paddingInner", "paddingOuter", "padding", "align"
     ])

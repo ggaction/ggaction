@@ -16,8 +16,13 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-현재 활성 Roadmap은 없다. 마지막 완료 owner는 **Roadmap 7 Phase 12**다.
-[상세 로드맵](impl/roadmap7/ROADMAP.md)은 사용자가 선택한 차트 저작 연산 25개의 구현 이력이며,
+현재 활성 계획은 없고 마지막 완료 owner는 **Roadmap 8 Phase 7**이다.
+[Roadmap 8](impl/roadmap8/ROADMAP.md)은 필드/schema·빈 결과·통계·회귀·파생 관계·정렬·
+조회 API·반복 실행 성능의 11개 보완을 구현했다.
+[Phase 7 완료 기록](impl/roadmap8/phase7/GOAL.md)과
+[구현자 시작 문서](impl/roadmap8/IMPLEMENTER_START_HERE.md)에 flatten 제외 범위, 상세 구현 경로와 검증을 정리했다.
+[Roadmap 7](impl/roadmap7/ROADMAP.md)은 그 이전 완료 이력이다.
+[Roadmap 7 상세 로드맵](impl/roadmap7/ROADMAP.md)은 사용자가 선택한 차트 저작 연산 25개의 구현 이력이며,
 [저추론 구현 명세](impl/roadmap7/LOW_INFERENCE_IMPLEMENTATION_SPEC.md)는 더 낮은 성능의 구현자도
 같은 결과를 재현·감사할 수 있도록 함수·state·검증 순서를 보존한다. 최종 통합 결과는
 [Phase 12 STEP1](impl/roadmap7/phase12/STEP1.md)에 있다.

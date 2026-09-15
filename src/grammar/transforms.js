@@ -23,6 +23,7 @@ import {
   validateCompleteTransform
 } from "./complete.js";
 import {
+  normalizeFilterTransformEdit,
   normalizeFilterTransform,
   validateFilterTransform
 } from "./filter.js";
@@ -62,6 +63,7 @@ import {
   validateSummaryTransform
 } from "./summary.js";
 import { normalizeStackTransform, validateStackTransform } from "./stack.js";
+import { normalizeSortTransform, validateSortTransform } from "./sort.js";
 import { validateStatisticalReferenceTransform } from
   "./statisticalReference.js";
 import { findTransformTopology } from "./transformTopology.js";
@@ -100,15 +102,6 @@ function replaceExclusive(options, patch, keys) {
 
 function normalizeSimple(normalize) {
   return (transform, patch) => normalize(mergedOptions(transform, patch));
-}
-
-function normalizeFilterEdit(transform, patch) {
-  const base = replaceExclusive(
-    requestedOptions(transform),
-    patch,
-    ["oneOf", "predicate", "range"]
-  );
-  return normalizeFilterTransform({ ...base, ...patch });
 }
 
 function normalizeBinEdit(transform, patch) {
@@ -202,6 +195,7 @@ function normalizeNormalizeEdit(transform, patch) {
 
 function normalizeRegressionEdit(transform, patch) {
   const base = { ...requestedOptions(transform) };
+  if (patch.predict === false) delete base.predict;
   const method = patch.method ?? base.method;
   if (method !== base.method) {
     if (method !== "polynomial") delete base.degree;
@@ -212,7 +206,14 @@ function normalizeRegressionEdit(transform, patch) {
       ]) delete base[key];
     }
   }
-  return normalizeRegressionTransform({ ...base, ...patch, method });
+  if (patch.interval === false) {
+    for (const key of ["confidenceMethod", "level", "confidence"]) delete base[key];
+  }
+  return normalizeRegressionTransform({
+    ...base,
+    ...Object.fromEntries(Object.entries(patch).filter(([key, value]) => !(key === "predict" && value === false))),
+    method
+  });
 }
 
 function normalizeTimeUnitEdit(transform, patch) {
@@ -373,7 +374,7 @@ const TRANSFORM_POLICIES = Object.freeze({
     materializeOp: "materializeFilteredData",
     replayTransform: requestedTransform,
     editable: true,
-    normalizeEdit: normalizeFilterEdit,
+    normalizeEdit: normalizeFilterTransformEdit,
     outputRoles: () => ({})
   }),
   fold: Object.freeze({
@@ -440,6 +441,15 @@ const TRANSFORM_POLICIES = Object.freeze({
     replayTransform: requestedTransform,
     editable: true,
     normalizeEdit: normalizeRegressionEdit,
+    outputRoles: () => ({})
+  }),
+  sort: Object.freeze({
+    ...findTransformTopology("sort"),
+    validate: validateSortTransform,
+    materializeOp: "materializeSortedData",
+    replayTransform: requestedTransform,
+    editable: true,
+    normalizeEdit: normalizeSimple(normalizeSortTransform),
     outputRoles: () => ({})
   }),
   summary: Object.freeze({

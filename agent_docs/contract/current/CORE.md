@@ -1946,3 +1946,39 @@ type EditableCurrentScale = {
 ## Persistence package boundary
 
 Browser-safe `ggaction/persistence`의 네 함수는 action replay 없이 canonical state를 저장·복원한다. 정확한 version 1 format과 Full/Basic/extension/render-only 경계는 [`../../../docs/data-updates.md`](../../../docs/data-updates.md#save-and-restore-snapshots)가 소유한다. `test/unit/persistence/`와 installed package consumer가 codec, immutable editing, 현재 action corpus의 state/SVG 동치 및 malformed input rejection을 검증한다.
+
+## `createSortedData`
+
+- Signature: `createSortedData({ id, source?, sortBy })`.
+- `sortBy`: Implemented as a non-empty ordered list of unique `{ field, order?, nulls?, temporalUnit? }` keys. `order` defaults to `"ascending"`; `nulls` defaults to `"last"`; temporal keys explicitly use `"year"` or `"timestamp"` normalization.
+- Effect: creates an immutable row-preserving derived dataset. Keys are compared in declaration order and complete ties preserve the input revision's row order. It does not mutate source arrays or add an index column.
+- Errors: rejects unavailable fields, sparse or empty key lists, duplicate fields, mixed incompatible non-missing scalar types, structured values, invalid temporal values, and unknown options atomically.
+- Lifecycle: the logical owner is revised by `editSortedData`, recomputed by source revision and dependent replay, and removed by `removeData`.
+
+### Formal values — `createSortedData`
+
+- Implemented: `createSortedData(options: SortedDataOptions): ChartProgram` (Full only).
+- Planned (NOT IMPLEMENTED): —
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createSortedData`
+
+- ✅ Covered: `id`, `source`, and `sortBy` inference, stable ties, multi-key order, null placement, temporal normalization, schema preservation, and invalid mixed values. Evidence: `test/unit/actions/data/sorted-data.test.js`.
+- No proposal remains for this action.
+
+## `editSortedData`
+
+- Signature: `editSortedData({ target, sortBy, dependents? })`.
+- Effect: atomically creates the next physical revision for a standalone sorted-data owner, rebinds consumers, optionally recomputes descendants, and releases the unreferenced prior revision.
+- `sortBy` is a complete replacement using the same validation and stable-sort contract as `createSortedData`.
+
+### Formal values — `editSortedData`
+
+- Implemented: `editSortedData(options: EditSortedDataOptions): ChartProgram` (Full only).
+- Planned (NOT IMPLEMENTED): —
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editSortedData`
+
+- ✅ Covered: `target`, `sortBy`, and `dependents` use the shared derived-data lifecycle. Evidence: `test/unit/actions/data/sorted-data.test.js` and `test/unit/actions/data/derived-editing.test.js`.
+- No proposal remains for this action.

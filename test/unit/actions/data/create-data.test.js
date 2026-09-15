@@ -17,6 +17,7 @@ test("creates an immutable dataset and updates currentData", () => {
   assert.deepEqual(empty.semanticSpec.datasets, []);
   assert.deepEqual(program.semanticSpec.datasets, [
     {
+      schema: program.semanticSpec.datasets[0].schema,
       id: "cars",
       values: [
         { id: 1, nested: { tags: ["a", "b"] } },

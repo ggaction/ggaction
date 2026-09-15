@@ -27,6 +27,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createFoldData`](current/CORE.md#createfolddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createComputedData`](current/CORE.md#createcomputeddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createNormalizedData`](current/CORE.md#createnormalizeddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createSortedData`](current/CORE.md#createsorteddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createCompleteData`](current/CORE.md#createcompletedata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createImputedData`](current/CORE.md#createimputeddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createStackData`](current/CORE.md#createstackdata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -50,6 +51,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editIntervalData`](current/CORE.md#editintervaldata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editECDFData`](current/CORE.md#editecdfdata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editNormalizedData`](current/CORE.md#editnormalizeddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editSortedData`](current/CORE.md#editsorteddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editCompleteData`](current/CORE.md#editcompletedata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editImputedData`](current/CORE.md#editimputeddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createIntervalData`](current/STATISTICS.md#createintervaldata) | statistics | Mutable resource | Intentional | ✅ / ✅ / ✅ |

@@ -22,6 +22,7 @@ test("createComputedData preserves row grain and materializes closed arithmetic"
   });
 
   assert.deepEqual(program.semanticSpec.datasets[1], {
+    schema: program.semanticSpec.datasets[1].schema,
     id: "shares",
     source: "source",
     transform: [{ type: "computed", as: "share", expression: ratio }],
@@ -34,7 +35,7 @@ test("createComputedData preserves row grain and materializes closed arithmetic"
     program.trace.children.at(-1).children.map(child => child.op),
     ["createDerivedData", "materializeComputedData"]
   );
-  assert.deepEqual(source.semanticSpec.datasets, [{ id: "source", values: rows }]);
+  assert.deepEqual(source.semanticSpec.datasets, [{ id: "source", values: rows, schema: source.semanticSpec.datasets[0].schema }]);
 });
 
 test("createComputedData composes binary, unary, field, and finite constants", () => {
@@ -159,7 +160,9 @@ test("createComputedData evaluates conditionals lazily while preflighting every 
     }
   }), /does not contain field "missing"/);
 
-  const empty = chart().createData({ id: "empty", values: [] }).createComputedData({
+  const empty = chart().createData({ id: "empty", values: [], schema: { fields: [
+    { name: "unknown", storageType: "number" }
+  ] } }).createComputedData({
     id: "emptyResult", as: "result", expression: { field: "unknown" }
   });
   assert.deepEqual(empty.semanticSpec.datasets[1].values, []);

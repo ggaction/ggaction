@@ -896,7 +896,7 @@
   {
     "file": "api/data/filtering.md",
     "block": 1,
-    "heading": "`filterData({ id, source?, field, oneOf | predicate | range })`",
+    "heading": "`filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -908,7 +908,7 @@
   {
     "file": "api/data/filtering.md",
     "block": 2,
-    "heading": "`filterData({ id, source?, field, oneOf | predicate | range })`",
+    "heading": "`filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -920,7 +920,7 @@
   {
     "file": "api/data/filtering.md",
     "block": 3,
-    "heading": "`filterData({ id, source?, field, oneOf | predicate | range })`",
+    "heading": "`filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -930,7 +930,7 @@
       "source: \"cars\""
     ],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: \"cars\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "5b96425d8ae205a9cd3f61189ec3b851a74e134ffe679974f11a0f61a26763bd",
+    "sha256": "f18a676e7b5c5e52d6e1df9af5e2c62d4267a3bb05529ae04ad474bdac4f39a9",
     "executable": false
   },
   {
@@ -1042,7 +1042,23 @@
   {
     "file": "api/data/revisions-and-removal.md",
     "block": 2,
-    "heading": "Editing derived data {#editing-derived-data}",
+    "heading": "`editSortedData({ target, sortBy, dependents? })` {#edit-sorted-data}",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "ordered"
+    ],
+    "resources": [
+      "target: \"orderedSales\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `ordered`. Resource selectors used here: `target: \"orderedSales\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "59069dd77d02bcc20c4980ae59a0aa340b3ee78e3c2875730f1e07fcce274562",
+    "executable": false
+  },
+  {
+    "file": "api/data/revisions-and-removal.md",
+    "block": 3,
+    "heading": "`editSortedData({ target, sortBy, dependents? })` {#edit-sorted-data}",
     "mode": "expected-error",
     "environment": "esm-context",
     "receivers": [],
@@ -1057,7 +1073,7 @@
   },
   {
     "file": "api/data/revisions-and-removal.md",
-    "block": 3,
+    "block": 4,
     "heading": "`removeData({ id })` {#removedata-id}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1072,7 +1088,7 @@
   {
     "file": "api/data/source-and-derived.md",
     "block": 1,
-    "heading": "`createData({ id?, values })` {#createdata-id-values}",
+    "heading": "`createData({ id?, values, schema? })` {#createdata-id-values}",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -1098,6 +1114,18 @@
   {
     "file": "api/data/source-and-derived.md",
     "block": 3,
+    "heading": "`createSortedData({ id, source?, sortBy })` {#create-sorted-data}",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "0271b038007cebf5bfeaa3afb21712a94b8c0f82e6a22a9a158043949e06bd0b",
+    "executable": false
+  },
+  {
+    "file": "api/data/source-and-derived.md",
+    "block": 4,
     "heading": "`bindMarkData({ target, data })` {#bindmarkdata-target-data}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1115,7 +1143,7 @@
   {
     "file": "api/data/statistical-transforms.md",
     "block": 1,
-    "heading": "`createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval? })`",
+    "heading": "`createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval?, predict?, missing? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -1129,7 +1157,7 @@
   {
     "file": "api/data/statistical-transforms.md",
     "block": 2,
-    "heading": "`createIntervalData({ id, source?, field, groupBy?, center?, extent?, method?, level?, as? })` {#create-interval-data}",
+    "heading": "`createIntervalData({ id, source?, field, groupBy?, center?, extent?, method?, level?, missing?, as? })` {#create-interval-data}",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -1143,7 +1171,7 @@
   {
     "file": "api/data/statistical-transforms.md",
     "block": 3,
-    "heading": "`createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, weight?, as? })`",
+    "heading": "`createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, weight?, missing?, as? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -2125,7 +2153,7 @@
   {
     "file": "api/marks/bar.md",
     "block": 1,
-    "heading": "`createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`",
+    "heading": "`createBarMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -2137,7 +2165,7 @@
   {
     "file": "api/marks/bar.md",
     "block": 2,
-    "heading": "`createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`",
+    "heading": "`createBarMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -2357,7 +2385,7 @@
   {
     "file": "api/marks/point.md",
     "block": 1,
-    "heading": "`createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`",
+    "heading": "`createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -2411,7 +2439,7 @@
   {
     "file": "api/marks/rect.md",
     "block": 1,
-    "heading": "`createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`",
+    "heading": "`createRectMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -2423,7 +2451,7 @@
   {
     "file": "api/marks/rect.md",
     "block": 2,
-    "heading": "`createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`",
+    "heading": "`createRectMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -2435,7 +2463,7 @@
   {
     "file": "api/marks/rect.md",
     "block": 3,
-    "heading": "`createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`",
+    "heading": "`createRectMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -2463,7 +2491,7 @@
   {
     "file": "api/marks/rule.md",
     "block": 1,
-    "heading": "`createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`",
+    "heading": "`createRuleMark({ id?, data?, missing?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -2931,7 +2959,7 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `points`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "373e2c4e709c7d1b08a50804b008889928cc156b70fbac592b62fff9b9f34928",
+    "sha256": "1fffac5ededd4b5b60fa889d4ff56950696ac03a80020a345d5d988d960b5ab8",
     "executable": false
   },
   {

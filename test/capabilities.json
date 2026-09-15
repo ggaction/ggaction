@@ -2,141 +2,378 @@
   "version": 2,
   "capabilities": {
     "accessibility": [
-      { "type": "prefix", "path": "unit/accessibility/" }
+      {
+        "type": "prefix",
+        "path": "unit/accessibility/"
+      }
     ],
     "actions": [
-      { "type": "prefix", "path": "unit/actions/" }
+      {
+        "type": "prefix",
+        "path": "unit/actions/"
+      }
     ],
     "architecture": [
-      { "type": "prefix", "path": "contracts/" },
-      { "type": "prefix", "path": "unit/core/" },
-      { "type": "file", "path": "unit/support/test-sharding.test.js" }
+      {
+        "type": "prefix",
+        "path": "contracts/"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/core/"
+      },
+      {
+        "type": "file",
+        "path": "unit/support/test-sharding.test.js"
+      }
     ],
     "area-layout": [
-      { "type": "prefix", "path": "charts/area-layout/" }
+      {
+        "type": "prefix",
+        "path": "charts/area-layout/"
+      }
     ],
     "artifacts": [
-      { "type": "file", "path": "contracts/chart-variant-structure.test.js" },
-      { "type": "file", "path": "unit/support/artifacts.test.js" },
-      { "type": "file", "path": "unit/support/failure-artifacts.test.js" },
-      { "type": "file", "path": "unit/support/visual-variants.test.js" }
+      {
+        "type": "file",
+        "path": "contracts/chart-variant-structure.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/support/artifacts.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/support/failure-artifacts.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/support/visual-variants.test.js"
+      }
     ],
     "center-stack": [
-      { "type": "prefix", "path": "charts/centered-area-stream/" }
+      {
+        "type": "prefix",
+        "path": "charts/centered-area-stream/"
+      }
     ],
     "charts": [
-      { "type": "prefix", "path": "charts/" }
+      {
+        "type": "prefix",
+        "path": "charts/"
+      }
     ],
     "data": [
-      { "type": "prefix", "path": "unit/actions/data/" },
-      { "type": "prefix", "path": "charts/airline-passenger-moving-windows/" },
-      { "type": "prefix", "path": "charts/time-unit-data/" },
-      { "type": "prefix", "path": "charts/cars-binned-heatmap/" },
-      { "type": "prefix", "path": "charts/cars-window-rank-scatterplot/" },
-      { "type": "file", "path": "contracts/dataset-fixtures.test.js" },
-      { "type": "file", "path": "contracts/transform-registry.test.js" }
+      {
+        "type": "prefix",
+        "path": "unit/actions/data/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/airline-passenger-moving-windows/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/time-unit-data/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/cars-binned-heatmap/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/cars-window-rank-scatterplot/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/dataset-fixtures.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/transform-registry.test.js"
+      }
     ],
     "documentation": [
-      { "type": "prefix", "path": "docs/" },
-      { "type": "file", "path": "contracts/documentation-truth.test.js" }
+      {
+        "type": "prefix",
+        "path": "docs/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/documentation-truth.test.js"
+      }
     ],
     "grammar": [
-      { "type": "prefix", "path": "unit/grammar/" }
+      {
+        "type": "prefix",
+        "path": "unit/grammar/"
+      }
     ],
     "guides": [
-      { "type": "prefix", "path": "unit/actions/guides/" },
-      { "type": "file", "path": "unit/layout/grid-policy.test.js" },
-      { "type": "file", "path": "unit/layout/legend-policy.test.js" },
-      { "type": "prefix", "path": "charts/polar-guides/" }
+      {
+        "type": "prefix",
+        "path": "unit/actions/guides/"
+      },
+      {
+        "type": "file",
+        "path": "unit/layout/grid-policy.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/layout/legend-policy.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/polar-guides/"
+      }
     ],
     "horizon": [
-      { "type": "file", "path": "unit/grammar/horizon.test.js" },
-      { "type": "file", "path": "unit/actions/data/horizon-data.test.js" },
-      { "type": "file", "path": "unit/actions/encodings/encode-horizon.test.js" },
-      { "type": "file", "path": "unit/actions/encodings/edit-horizon.test.js" },
-      { "type": "prefix", "path": "charts/gapminder-horizon/" }
+      {
+        "type": "file",
+        "path": "unit/grammar/horizon.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/horizon-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/encodings/encode-horizon.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/encodings/edit-horizon.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/gapminder-horizon/"
+      }
+    ],
+    "inspection": [
+      {
+        "type": "file",
+        "path": "unit/inspection.test.js"
+      }
     ],
     "label-layout": [
-      { "type": "prefix", "path": "charts/gapminder-country-labels/" },
-      { "type": "file", "path": "unit/actions/marks/label-layout.test.js" },
-      { "type": "file", "path": "unit/layout/labels.test.js" }
+      {
+        "type": "prefix",
+        "path": "charts/gapminder-country-labels/"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/marks/label-layout.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/layout/labels.test.js"
+      }
     ],
     "layout": [
-      { "type": "prefix", "path": "unit/layout/" }
+      {
+        "type": "prefix",
+        "path": "unit/layout/"
+      }
     ],
     "legend-layout": [
-      { "type": "prefix", "path": "charts/cars-multi-legend-layout/" },
-      { "type": "file", "path": "unit/layout/legend-policy.test.js" },
-      { "type": "file", "path": "unit/layout/legend-lane.test.js" },
-      { "type": "prefix", "path": "unit/actions/guides/" }
+      {
+        "type": "prefix",
+        "path": "charts/cars-multi-legend-layout/"
+      },
+      {
+        "type": "file",
+        "path": "unit/layout/legend-policy.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/layout/legend-lane.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/actions/guides/"
+      }
     ],
     "marks": [
-      { "type": "prefix", "path": "charts/directional-tick-plot/" }
+      {
+        "type": "prefix",
+        "path": "charts/directional-tick-plot/"
+      }
     ],
     "materialization": [
-      { "type": "prefix", "path": "unit/materialization/" }
+      {
+        "type": "prefix",
+        "path": "unit/materialization/"
+      }
     ],
     "oracles": [
-      { "type": "prefix", "path": "unit/oracles/" }
+      {
+        "type": "prefix",
+        "path": "unit/oracles/"
+      }
     ],
     "package": [
-      { "type": "prefix", "path": "contracts/package-" },
-      { "type": "file", "path": "browser/package-consumer.browser.js" },
-      { "type": "file", "path": "browser/backend-compatibility.browser.js" },
-      { "type": "file", "path": "unit/support/npm-command.test.js" }
+      {
+        "type": "prefix",
+        "path": "contracts/package-"
+      },
+      {
+        "type": "file",
+        "path": "browser/package-consumer.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/backend-compatibility.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/support/npm-command.test.js"
+      }
     ],
     "persistence": [
-      { "type": "prefix", "path": "unit/persistence/" }
+      {
+        "type": "prefix",
+        "path": "unit/persistence/"
+      }
     ],
     "polar": [
-      { "type": "prefix", "path": "charts/polar-" },
-      { "type": "prefix", "path": "unit/actions/coordinates/" },
-      { "type": "prefix", "path": "contracts/visual-capability-" },
-      { "type": "file", "path": "contracts/composition-integration.test.js" }
+      {
+        "type": "prefix",
+        "path": "charts/polar-"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/actions/coordinates/"
+      },
+      {
+        "type": "prefix",
+        "path": "contracts/visual-capability-"
+      },
+      {
+        "type": "file",
+        "path": "contracts/composition-integration.test.js"
+      }
     ],
     "realistic": [
-      { "type": "file", "path": "contracts/dataset-fixtures.test.js" },
-      { "type": "prefix", "path": "contracts/generated-scenario" },
-      { "type": "file", "path": "contracts/generated-lifecycle-scenarios.test.js" },
-      { "type": "prefix", "path": "contracts/realistic-" }
+      {
+        "type": "file",
+        "path": "contracts/dataset-fixtures.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "contracts/generated-scenario"
+      },
+      {
+        "type": "file",
+        "path": "contracts/generated-lifecycle-scenarios.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "contracts/realistic-"
+      }
     ],
     "rendering": [
-      { "type": "prefix", "path": "unit/renderers/" },
-      { "type": "file", "path": "contracts/renderer-consumer-matrix.test.js" },
-      { "type": "file", "path": "browser/public-examples.browser.js" }
+      {
+        "type": "prefix",
+        "path": "unit/renderers/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/renderer-consumer-matrix.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/public-examples.browser.js"
+      }
     ],
     "scales": [
-      { "type": "prefix", "path": "unit/actions/scales/" },
-      { "type": "file", "path": "contracts/scale-capability-contract.test.js" }
+      {
+        "type": "prefix",
+        "path": "unit/actions/scales/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/scale-capability-contract.test.js"
+      }
     ],
     "selection": [
-      { "type": "prefix", "path": "charts/mark-selection-" },
-      { "type": "prefix", "path": "unit/actions/selection/" },
-      { "type": "prefix", "path": "unit/selectors/" },
-      { "type": "file", "path": "contracts/selection-policy.test.js" },
-      { "type": "file", "path": "contracts/selectors.test.js" }
+      {
+        "type": "prefix",
+        "path": "charts/mark-selection-"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/actions/selection/"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/selectors/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/selection-policy.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/selectors.test.js"
+      }
     ],
     "selectors": [
-      { "type": "prefix", "path": "unit/selectors/" }
+      {
+        "type": "prefix",
+        "path": "unit/selectors/"
+      }
     ],
     "statistics": [
-      { "type": "prefix", "path": "unit/actions/statistics/" },
-      { "type": "prefix", "path": "charts/cars-regression-scatterplot/" },
-      { "type": "prefix", "path": "charts/cars-box-plot/" }
+      {
+        "type": "prefix",
+        "path": "unit/actions/statistics/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/cars-regression-scatterplot/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/cars-box-plot/"
+      }
     ],
     "support": [
-      { "type": "prefix", "path": "unit/support/" }
+      {
+        "type": "prefix",
+        "path": "unit/support/"
+      }
     ],
     "text-metrics": [
-      { "type": "file", "path": "unit/actions/text-metrics.test.js" },
-      { "type": "file", "path": "contracts/text-metrics-types.test.js" },
-      { "type": "file", "path": "unit/layout/text.test.js" }
+      {
+        "type": "file",
+        "path": "unit/actions/text-metrics.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/text-metrics-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/layout/text.test.js"
+      }
     ],
     "theme": [
-      { "type": "prefix", "path": "unit/theme/" },
-      { "type": "file", "path": "unit/actions/theme.test.js" },
-      { "type": "file", "path": "unit/actions/theme-composition.test.js" },
-      { "type": "file", "path": "contracts/theme.test.js" }
+      {
+        "type": "prefix",
+        "path": "unit/theme/"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/theme.test.js"
+      }
     ]
   }
 }

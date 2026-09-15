@@ -16,7 +16,7 @@ import {
 } from "./weightedStatistics.js";
 
 const TRANSFORM_KEYS = Object.freeze([
-  "type", "groupBy", "aggregates", "members", "weight"
+  "type", "groupBy", "aggregates", "members", "weight", "missing", "empty"
 ]);
 const AGGREGATE_KEYS = Object.freeze(["op", "field", "as"]);
 const NOMINAL_OPERATIONS = new Set(["distinct", "valid", "missing"]);
@@ -51,7 +51,7 @@ function normalizeAggregate(value) {
   };
 }
 
-export function normalizeSummaryTransform({ groupBy, aggregates, members, weight } = {}) {
+export function normalizeSummaryTransform({ groupBy, aggregates, members, weight, missing, empty } = {}) {
   const transform = {
     type: "summary",
     groupBy: normalizeGroupBy(groupBy),
@@ -61,7 +61,9 @@ export function normalizeSummaryTransform({ groupBy, aggregates, members, weight
     ...(members === undefined ? {} : { members }),
     ...(weight === undefined
       ? {}
-      : { weight: normalizeStatisticalWeight(weight, "Summary weight") })
+      : { weight: normalizeStatisticalWeight(weight, "Summary weight") }),
+    ...(missing === undefined ? {} : { missing }),
+    ...(empty === undefined ? {} : { empty })
   };
   validateSummaryTransform(transform);
   return cloneAndFreeze(transform);
@@ -120,6 +122,12 @@ export function validateSummaryTransform(transform) {
   if (transform.weight !== undefined) {
     normalizeStatisticalWeight(transform.weight, "Summary weight");
   }
+  if (transform.missing !== undefined && !["error", "drop"].includes(transform.missing)) {
+    throw new Error('Summary missing must be "error" or "drop".');
+  }
+  if (transform.empty !== undefined && !["null", "identity"].includes(transform.empty)) {
+    throw new Error('Summary empty must be "null" or "identity".');
+  }
   return transform;
 }
 
@@ -169,12 +177,13 @@ function validateAggregateValues(rows, aggregate) {
 export function deriveSummaryRows(rows, transform) {
   validateSummaryTransform(transform);
   requireSourceFields(rows, transform);
+  const explicitWeighted = transform.weight !== undefined && transform.missing !== undefined;
   let weightEntries;
   if (transform.weight === undefined) {
     for (const aggregate of transform.aggregates) {
       validateAggregateValues(rows, aggregate);
     }
-  } else {
+  } else if (!explicitWeighted) {
     weightEntries = readStatisticalWeights(rows, transform.weight, "Summary").entries;
     validateWeightedNumericFields(
       weightEntries,
@@ -183,6 +192,37 @@ export function deriveSummaryRows(rows, transform) {
       ))],
       "Summary"
     );
+  } else {
+    // Explicit missing policy is evaluated per measure. Validate every
+    // nonmissing value now, while leaving nullish value/weight pairs for the
+    // reason-priority accounting below.
+    readStatisticalWeights(
+      rows.filter(row => row[transform.weight.field] !== null && row[transform.weight.field] !== undefined),
+      transform.weight,
+      "Summary"
+    );
+    for (const aggregate of transform.aggregates) {
+      if (aggregate.field === undefined) continue;
+      validateAggregateValues(
+        rows.filter(row => row[aggregate.field] !== null && row[aggregate.field] !== undefined),
+        aggregate
+      );
+    }
+  }
+  if (transform.missing === "error") {
+    if (transform.weight !== undefined) {
+      const weightIndex = rows.findIndex(row =>
+        row[transform.weight.field] === null || row[transform.weight.field] === undefined
+      );
+      if (weightIndex !== -1) {
+        throw new TypeError(`Summary weight "${transform.weight.field}" is missing at row ${weightIndex}.`);
+      }
+    }
+    for (const aggregate of transform.aggregates) {
+      if (aggregate.field === undefined) continue;
+      const index = rows.findIndex(row => row[aggregate.field] === null || row[aggregate.field] === undefined);
+      if (index !== -1) throw new TypeError(`Summary field "${aggregate.field}" is missing at row ${index}.`);
+    }
   }
 
   const groups = new Map();
@@ -212,34 +252,92 @@ export function deriveSummaryRows(rows, transform) {
     throw new RangeError(`Summary output cannot exceed ${MAX_OUTPUT_ROWS} groups.`);
   }
 
-  return [...groups.values()].map(group => {
-    const weightSummary = transform.weight === undefined
+  const units = [];
+  const values = [...groups.values()].map(group => {
+    const sharedWeightSummary = transform.weight === undefined || explicitWeighted
       ? undefined
       : summarizeStatisticalWeights(
           group.entries,
           transform.weight.kind,
           "Summary group"
         );
+    const aggregated = Object.fromEntries(transform.aggregates.map(aggregate => {
+      let missingValue = 0;
+      let missingWeight = 0;
+      let zeroWeightRows = 0;
+      let measureWeightSummary = sharedWeightSummary;
+      if (explicitWeighted) {
+        const eligible = group.rows.filter(row => {
+          if (aggregate.field !== undefined &&
+              (row[aggregate.field] === null || row[aggregate.field] === undefined)) {
+            missingValue += 1;
+            return false;
+          }
+          if (row[transform.weight.field] === null || row[transform.weight.field] === undefined) {
+            missingWeight += 1;
+            return false;
+          }
+          return true;
+        });
+        const entries = readStatisticalWeights(eligible, transform.weight, "Summary").entries;
+        zeroWeightRows = entries.filter(entry => entry.weight === 0).length;
+        measureWeightSummary = summarizeStatisticalWeights(
+          entries,
+          transform.weight.kind,
+          "Summary group"
+        );
+      }
+      let value = measureWeightSummary === undefined
+        ? aggregateRows(group.rows, aggregate.field ?? "__row", aggregate.op)
+        : calculateWeightedAggregate(
+            measureWeightSummary,
+            aggregate.field,
+            aggregate.op,
+            `Summary aggregate "${aggregate.as}"`
+          );
+      if (value === undefined && transform.empty !== undefined) {
+        const op = typeof aggregate.op === "string" ? aggregate.op : aggregate.op.op;
+        value = transform.empty === "identity" && op === "sum" ? 0 : null;
+      }
+      if (transform.missing !== undefined || transform.empty !== undefined) {
+        const missing = explicitWeighted
+          ? missingValue + missingWeight
+          : aggregate.field === undefined ? 0 : group.rows.filter(row => row[aggregate.field] === null || row[aggregate.field] === undefined).length;
+        units.push({
+          role: aggregate.as,
+          group: group.values,
+          inputRows: group.rows.length,
+          usedRows: group.rows.length - missing,
+          excludedRows: missing,
+          excludedByReason: missing === 0 ? {} : {
+            ...(missingValue === 0 && explicitWeighted ? {} : { "missing-value": explicitWeighted ? missingValue : missing }),
+            ...(missingWeight === 0 ? {} : { "missing-weight": missingWeight })
+          },
+          ...(explicitWeighted ? { zeroWeightRows } : {})
+        });
+      }
+      return [aggregate.as, value];
+    }));
     return {
       ...group.values,
-      ...Object.fromEntries(transform.aggregates.map(aggregate => [
-        aggregate.as,
-        weightSummary === undefined
-          ? aggregateRows(group.rows, aggregate.field ?? "__row", aggregate.op)
-          : calculateWeightedAggregate(
-              weightSummary,
-              aggregate.field,
-              aggregate.op,
-              `Summary aggregate "${aggregate.as}"`
-            )
-      ])),
+      ...aggregated,
       ...(transform.members === undefined
         ? {}
         : {
-            [transform.members]: weightSummary === undefined
+            [transform.members]: sharedWeightSummary === undefined
               ? group.rows
-              : weightedRows(weightSummary)
+              : weightedRows(sharedWeightSummary)
           })
     };
   });
+  if (transform.missing === undefined && transform.empty === undefined) return values;
+  return {
+    values,
+    report: cloneAndFreeze({
+      version: 1,
+      owner: { kind: "data", id: "pending" },
+      inputs: [],
+      units
+    })
+  };
 }

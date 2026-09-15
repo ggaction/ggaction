@@ -34,10 +34,23 @@ The exact setup signatures are:
 
 ```typescript
 createCanvas(options?: CanvasOptions): ChartProgram;
-createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
+createData<Row extends object>(options: {
+  id?: string;
+  values: readonly Row[];
+  schema?: {
+    fields: readonly {
+      name: string;
+      storageType: "number" | "string" | "boolean" | "array" | "object";
+      nullable?: boolean;
+      optional?: boolean;
+    }[];
+  };
+}): ChartProgram;
 ```
 
 `values` is the caller-owned array; `createData({ rows })` is not a public call.
+Provide `schema` when an empty source still needs known fields. Without it, an empty
+source has unknown field completeness and field-driven actions cannot infer those fields.
 Every action returns a new `ChartProgram`, so retain each reassignment or use a
 fluent chain. See [Canvas](./api/canvas.md), [Data](./api/data.md), and the
 [ChartProgram type](./reference/types.md) for their normative contracts.

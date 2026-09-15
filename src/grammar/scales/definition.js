@@ -108,6 +108,13 @@ export function normalizeScaleDefinition({
     domain: validateDomain(type, rawDomain),
     range: validateRange(type, rawRange)
   };
+  const emptyDomain = retainedValue(previous, patch, defaults, "emptyDomain", typeChanged);
+  if (emptyDomain !== undefined) {
+    if (!["preserve", "require-explicit"].includes(emptyDomain)) {
+      throw new Error('Scale emptyDomain must be "preserve" or "require-explicit".');
+    }
+    definition.emptyDomain = emptyDomain;
+  }
 
   for (const property of BOOLEAN_PROPERTIES) {
     let value = retainedValue(previous, patch, defaults, property, typeChanged);

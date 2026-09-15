@@ -46,7 +46,8 @@ test("stores derived-data provenance and regression layer channels", () => {
       value: ["color", "shape"]
     });
 
-  assert.deepEqual(program.semanticSpec.datasets.slice(1), [
+  const derived = program.semanticSpec.datasets.slice(1);
+  assert.deepEqual(derived.map(({ schema, ...dataset }) => dataset), [
     {
       id: "selected",
       source: "cars",
@@ -68,6 +69,8 @@ test("stores derived-data provenance and regression layer channels", () => {
       values: []
     }
   ]);
+  assert.deepEqual(derived.map(dataset => dataset.schema.origin), ["derived", "derived"]);
+  assert.deepEqual(derived.map(dataset => dataset.schema.completeness), ["known", "known"]);
   assert.deepEqual(program.semanticSpec.layers, [
     { id: "band", encoding: { y2: { field: "upper" }, group: { field: "group" } } },
     { id: "points", encoding: { shape: { field: "group" } } }
@@ -94,7 +97,7 @@ test("validates derived-data transform contracts", () => {
       property: "dataset[selected].transform",
       value: [{ type: "filter", field: "Origin", oneOf: [] }]
     }),
-    /oneOf must be a non-empty array/
+    /oneOf must be a non-empty.*array/
   );
   assert.throws(
     () => base.editSemantic({

@@ -52,6 +52,7 @@ top-level decision:
 | --- | --- |
 | computed | `editComputedData` |
 | filter | `editFilteredData` |
+| sort | `editSortedData` |
 | fold | `editFoldData` |
 | summary | `editSummaryData` |
 | one-dimensional bin | `editBinData` |
@@ -92,6 +93,28 @@ if a downstream expression contains a field reference that cannot be rewritten
 safely. Mode changes clear fields owned by the previous mode before the new
 definition is normalized. In focused weighted editors, `weight: false` removes
 an existing weight; omission preserves it.
+
+## `editSortedData({ target, sortBy, dependents? })` {#edit-sorted-data}
+
+Replace the complete sort-key list for an existing sorted-data owner. Omitted
+keys are not merged because their precedence is part of the ordering meaning.
+The edit creates a new immutable physical revision, preserves the logical owner,
+and follows the same stable comparison and null-placement rules as
+`createSortedData`. Use `dependents: "recompute"` when downstream derived data
+must advance with the new row order.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `ordered`. Resource selectors used here: `target: "orderedSales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+const descending = ordered.editSortedData({
+  target: "orderedSales",
+  sortBy: [{ field: "revenue", fieldType: "quantitative", order: "descending" }]
+});
+```
 
 An edit must change the requested transform or source. A semantic no-op throws
 before creating a revision. Successful revisions use deterministic IDs of the

@@ -50,7 +50,12 @@ export function createGapminderContinuousColorBarPrimitives(gapminder, variant) 
       value: [{
         type: "filter",
         field: "year",
-        range: { min: 1995, max: 2005, inclusive: true }
+        range: {
+          min: 1995,
+          minInclusive: true,
+          max: 2005,
+          maxInclusive: true
+        }
       }]
     })
     .editSemantic({ property: "dataset[recent].values", value: recentRows })

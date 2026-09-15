@@ -48,6 +48,7 @@ import {
 import { createCompleteData, materializeCompleteData } from "./complete.js";
 import { createImputedData, materializeImputedData } from "./impute.js";
 import { createStackData, materializeStackData } from "./stack.js";
+import { createSortedData, materializeSortedData } from "./sort.js";
 import { EDIT_DERIVED_DATA_ACTIONS } from "./edit.js";
 import { createBoxSummaryData, createBoxOutlierData, materializeBoxSummaryData, materializeBoxOutlierData } from "./box.js";
 
@@ -96,6 +97,8 @@ export function registerDataActions(ProgramClass) {
     materializeImputedData,
     createStackData,
     materializeStackData,
+    createSortedData,
+    materializeSortedData,
     createTimeUnitData,
     materializeTimeUnitData,
     createBin2DData,

@@ -26,6 +26,8 @@ import {
   setEncodingProperties,
   validateOptions
 } from "./shared.js";
+import { applyRequestedItemMissingPolicy } from
+  "../../grammar/itemMissing.js";
 
 const OPTIONS = Object.freeze([
   "target", "value", "field", "fieldType", "temporalUnit", "scale"
@@ -122,7 +124,7 @@ export const encodeStroke = /* @__PURE__ */ action(
         "Constant stroke does not accept fieldType, temporalUnit, or scale."
       );
     }
-    const { id: target, dataset, layer } = resolveTarget(
+    const { id: target, dataset: sourceDataset, layer } = resolveTarget(
       this,
       args.target,
       MARK_TYPES,
@@ -155,6 +157,7 @@ export const encodeStroke = /* @__PURE__ */ action(
     }
 
     const fieldType = args.fieldType ?? "nominal";
+    const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
     const previous = layer.encoding?.stroke;
     const temporalUnit = resolveTemporalUnit(args, fieldType, previous);
     const requestedScale = resolveReassignmentScaleOptions(

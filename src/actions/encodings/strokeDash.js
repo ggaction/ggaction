@@ -15,6 +15,8 @@ import {
 } from "./shared.js";
 import { findLayer } from "../../selectors/layers.js";
 import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
+import { applyRequestedItemMissingPolicy } from
+  "../../grammar/itemMissing.js";
 
 const STROKE_DASH_ENCODING_OPTIONS = Object.freeze([
   "field", "value", "target", "fieldType", "scale"
@@ -73,12 +75,15 @@ const encodeStrokeDash = /* @__PURE__ */ action(
     if (hasValue && (args.fieldType !== undefined || args.scale !== undefined)) {
       throw new Error("Constant stroke dash does not accept fieldType or scale.");
     }
-    const { id: target, dataset, layer } = resolveTarget(
+    const { id: target, dataset: sourceDataset, layer } = resolveTarget(
       this,
       args.target,
       ["line", "rule"],
       "line or rule mark"
     );
+    const dataset = hasField
+      ? applyRequestedItemMissingPolicy(layer, sourceDataset, args.field)
+      : sourceDataset;
     if (hasValue) {
       normalizeStrokeDashPattern(args.value);
       validatePathSeriesAppearance(dataset.values, {

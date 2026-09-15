@@ -25,10 +25,17 @@ or weight policy.
 | [Impute](./missing-data.md) | Existing rows, groups, and method-specific stable order | Same rows in source order | Fills null/undefined only. Linear uses numeric/time distance. Edges and max-gap are explicit policies; NaN/infinity reject. |
 | [Stack](./summaries-and-shaping.md) | Unique category/group pairs | Same rows plus endpoints and share | No missing-cell synthesis. Stack/fill/center require nonnegative values; diverging separates signs; zero has zero share. |
 | [Window](./window.md) | Explicit sort/partition decisions for ordered operations | Same rows in source order | Stable ordering governs windows; frame and per-operation rules determine edges. No rows are synthesized. |
+| [Sorted data](./source-and-derived.md#create-sorted-data) | Ordered keys with explicit direction, null placement, and optional temporal normalization | Same rows in stable sorted order | Equal keys retain source order. Mixed non-missing key types reject instead of coercing values. Sorting never mutates the source rows. |
 | [Time unit](./time-units.md) | Explicit temporal parsing and calendar policy | Same rows with a bucket field | UTC by default or an explicit IANA zone; weekday is categorical, other buckets are timestamps. |
 | [Density](./statistical-transforms.md) | Finite observations; optional group and bandwidth | Ordered sample grid per group | Positive mass contributes; zero weights are validated but omitted from statistical membership. Kernel, extent, and normalization are explicit. |
 | [ECDF](../../tutorials/ecdf.md) | Ordered finite support within groups | One initial seed plus each positive-mass support | Missing defaults to drop; explicit error available. Zero weight adds no support; negative/nonfinite weight or zero total mass rejects. |
-| [Regression / interval](./statistical-transforms.md) | Compatible finite numeric measurements and method-specific groups | Fit samples or one interval per group | Fitting and uncertainty have method-specific sample requirements. Do not assume a weight or missing policy from KDE or ECDF applies. |
+| [Regression / interval](./statistical-transforms.md) | Compatible finite numeric measurements and method-specific groups | Fit samples or one interval per group | Explicit `missing: "drop" | "error"` controls nullable rows. Fitting and uncertainty have separate sample requirements; `interval: false` computes no interval fields. |
+
+Summary, bin, density, regression, and interval transforms record exclusion reports
+under `materializationConfigs.calculations`. The report identifies the current logical
+owner, input and retained counts, excluded reasons, and the units used by weighted
+calculations. Editing or revising a transform replaces its report with one computed
+from the current input; removing the owner removes the report.
 
 ## Missing keys are not missing values
 

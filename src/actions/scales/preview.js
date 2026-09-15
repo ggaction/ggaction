@@ -9,7 +9,10 @@ import {
   resolveScaleConsumerBounds
 } from "../../materialization/coordinateBounds.js";
 import { requireCoordinate } from "../../selectors/coordinates.js";
-import { resolveScaleMaterialization } from "../../materialization/scales/resolve.js";
+import {
+  rememberResolvedScaleBinding,
+  resolveScaleMaterialization
+} from "../../materialization/scales/resolve.js";
 import { findScale, findScaleConsumers, resolveConsumerCategoryOrder,
   resolveConsumerValues, resolveSeriesLayoutScaleValues } from "./consumers/index.js";
 
@@ -124,6 +127,30 @@ export function resolveScalePreview(program, id) {
     { resolvedScales }
   );
   return resolveScalePreviewAtBounds(program, id, bounds);
+}
+
+export function restoreResolvedScaleBindings(program) {
+  for (const scale of program.semanticSpec.scales) {
+    const resolved = program.resolvedScales[scale.id];
+    if (resolved === undefined) continue;
+    const consumers = findScaleConsumers(program, scale.id);
+    const channels = new Set(consumers.map(consumer =>
+      normalizePositionScaleChannel(consumer.channel)
+    ));
+    const families = new Set([...channels].map(channel =>
+      channel === "stroke" ? "color" : channel
+    ));
+    if (families.size === 1) {
+      const channel = channels.size === 1
+        ? channels.values().next().value
+        : families.values().next().value;
+      rememberResolvedScaleBinding(resolved, channel, consumers);
+    }
+  }
+  for (const child of Object.values(program.children)) {
+    restoreResolvedScaleBindings(child);
+  }
+  return program;
 }
 
 export function validatePendingMeasuredScale(program, scale, consumers) {

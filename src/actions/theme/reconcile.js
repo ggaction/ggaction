@@ -6,6 +6,7 @@ import {
   setThemeStateOverrides
 } from "./state.js";
 import { findLayer } from "../../selectors/layers.js";
+import { reconcileFollowingRegressions } from "../regression/follow.js";
 
 let rematerializeThemeHighlights = program => program;
 
@@ -979,6 +980,7 @@ function collectOverrides(program) {
 }
 
 export function reconcileProgramTheme(program, { source, metadata }) {
+  program = reconcileFollowingRegressions(program);
   const storedState = program.materializationConfigs.theme;
   if (storedState === undefined) return program;
   // Data/context/trace-only transitions cannot change authored appearance.

@@ -1266,6 +1266,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `kernel` | Optional / branch-dependent | `DensityKernel \| undefined` |
 | `normalization` | Optional / branch-dependent | `DensityNormalization \| undefined` |
 | `weight` | Optional / branch-dependent | `StatisticalWeight \| undefined` |
+| `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `readonly [string, string] \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |

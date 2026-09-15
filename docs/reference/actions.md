@@ -107,6 +107,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createRuleMark`](./actions/marks.md#createrulemark) | H2 | user-facing | marks |
 | [`createScale`](./actions/charts-data.md#createscale) | H2 | user-facing | core |
 | [`createScatterPlot`](./actions/charts-data.md#createscatterplot) | H0 | user-facing | charts |
+| [`createSortedData`](./actions/statistics.md#createsorteddata) | H1 | user-facing | statistics |
 | [`createStackData`](./actions/statistics.md#createstackdata) | H1 | user-facing | statistics |
 | [`createStripPlot`](./actions/charts-data.md#createstripplot) | H0 | user-facing | charts |
 | [`createSummaryData`](./actions/statistics.md#createsummarydata) | H1 | user-facing | statistics |
@@ -203,6 +204,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editSemantic`](./actions/extension.md#editsemantic) | H4 | primitive | primitives |
 | [`editShapeScale`](./actions/charts-data.md#editshapescale) | H2 | user-facing | core |
 | [`editSizeScale`](./actions/charts-data.md#editsizescale) | H2 | user-facing | core |
+| [`editSortedData`](./actions/statistics.md#editsorteddata) | H1, H3 | user-facing | statistics |
 | [`editStackData`](./actions/statistics.md#editstackdata) | H1, H3 | user-facing | statistics |
 | [`editStrokeDashScale`](./actions/charts-data.md#editstrokedashscale) | H2 | user-facing | core |
 | [`editStrokeScale`](./actions/charts-data.md#editstrokescale) | H2 | user-facing | core |

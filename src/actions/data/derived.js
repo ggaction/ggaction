@@ -11,6 +11,10 @@ import { requireLayer } from "../../selectors/layers.js";
 import { applyLayerDataRematerialization } from
   "../../materialization/dependencies.js";
 import { collectResourceReferences } from "../../core/resourceReferences.js";
+import {
+  assertFieldsAvailable,
+  transformInputFields
+} from "../../grammar/datasetSchema.js";
 
 const OPTIONS = Object.freeze(["id", "source", "transform"]);
 const RELEASE_OPTIONS = Object.freeze(["id"]);
@@ -43,9 +47,16 @@ export const createDerivedData = /* @__PURE__ */ closedAction(
     if (!hasDataset(this, source)) {
       throw new Error(`Unknown source dataset "${source}".`);
     }
-    return this
+    const created = this
       .editSemantic({ property: `dataset[${id}].source`, value: source })
       .editSemantic({ property: `dataset[${id}].transform`, value: args.transform });
+    const input = resolveDatasetReference(created, source, "Source dataset");
+    const transform = args.transform[0];
+    assertFieldsAvailable(input.schema, transformInputFields(transform), {
+      data: input.id,
+      operation: "createDerivedData"
+    });
+    return created;
   }
 );
 
@@ -75,6 +86,9 @@ export const releaseDerivedData = /* @__PURE__ */ closedAction(
       property: `dataset[${validatedId}]`,
       remove: true
     });
+    next = next._withoutMaterializationConfig([
+      "calculations", "datasets", validatedId
+    ]);
     for (const owner of selfOwners) {
       const [, family, ownerId] = owner.path;
       next = next._withoutMaterializationConfig(["data", family, ownerId]);

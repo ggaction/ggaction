@@ -20,6 +20,7 @@ test("createCompleteData fills one typed key domain with explicit membership", (
   values[1] = 99;
 
   assert.deepEqual(dataset(program, "complete"), {
+    schema: dataset(program, "complete").schema,
     id: "complete",
     source: "source",
     transform: [{
@@ -62,7 +63,10 @@ test("createCompleteData preserves group and domain order without Cartesian grou
 });
 
 test("createCompleteData handles empty global and grouped sources explicitly", () => {
-  const source = chart().createData({ id: "source", values: [] });
+  const source = chart().createData({ id: "source", values: [], schema: { fields: [
+    { name: "t", storageType: "number" },
+    { name: "g", storageType: "string" }
+  ] } });
   const global = source.createCompleteData({
     id: "global", key: "t", values: [1, 2], fill: { v: 0 }
   });

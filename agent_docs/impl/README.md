@@ -4,7 +4,14 @@
 
 ## 현재 상태
 
-- 현재 활성 계획은 없다. 마지막 완료 owner는 **Roadmap 7 Phase 12**다.
+- 현재 활성 계획은 없고 마지막 완료 owner는 **Roadmap 8 Phase 7**이다.
+- [`roadmap8/ROADMAP.md`](roadmap8/ROADMAP.md) — 구현된 11개 보완의 범위·Phase·완료 기준
+- [`roadmap8/phase7/GOAL.md`](roadmap8/phase7/GOAL.md) — 통합 검증과 외부 배포 경계
+- [`roadmap8/IMPLEMENTER_START_HERE.md`](roadmap8/IMPLEMENTER_START_HERE.md) — 다른 구현자를 위한 상세 명세·타입·파일별 작업 지도
+- [`roadmap8/FEATURES.md`](roadmap8/FEATURES.md) — 기능별 public API와 구현 방향
+- [`roadmap8/DECISIONS.md`](roadmap8/DECISIONS.md) — 승인된 public/schema 결정과 호환성
+- [`roadmap8/VALIDATION.md`](roadmap8/VALIDATION.md) — 43개 인수 사례와 통합·성능 검증
+- 그 이전 완료 owner는 **Roadmap 7 Phase 12**다.
 - [`roadmap7/ROADMAP.md`](roadmap7/ROADMAP.md) — 완료된 범위·의존성·Phase 0–12 실행 기록
 - [`roadmap7/LOW_INFERENCE_IMPLEMENTATION_SPEC.md`](roadmap7/LOW_INFERENCE_IMPLEMENTATION_SPEC.md) —
   낮은 성능의 구현자도 결과를 재현·감사할 수 있는 상세 함수·state·검증 명세
@@ -35,6 +42,7 @@
 - [`roadmap5.4/ROADMAP.md`](roadmap5.4/ROADMAP.md) — completed, compact knowledge delivery와 local MCP integration
 - [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md) — completed, hierarchical chart authoring과 action consistency
 - [`roadmap7/ROADMAP.md`](roadmap7/ROADMAP.md) — completed, detailed chart authoring operations 25개와 전체 integration closeout
+- [`roadmap8/ROADMAP.md`](roadmap8/ROADMAP.md) — completed, composable authoring correctness와 execution contracts
 
 ## 재사용하는 개발 절차
 

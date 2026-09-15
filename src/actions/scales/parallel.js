@@ -6,7 +6,7 @@ import { requireLayer } from "../../selectors/layers.js";
 import { requireSemanticScale } from "../../selectors/scales.js";
 
 const QUANTITATIVE_OPTIONS = Object.freeze([
-  "type", "domain", "range", "nice", "zero", "clamp", "reverse",
+  "type", "domain", "range", "emptyDomain", "nice", "zero", "clamp", "reverse",
   "base", "exponent", "constant", "unknown"
 ]);
 const ORDINAL_OPTIONS = Object.freeze([

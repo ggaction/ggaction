@@ -87,6 +87,34 @@ test("resets auto domain and range while preserving omitted policies", () => {
   assert.deepEqual(edited.resolvedScales.x.range, [80, 220]);
 });
 
+test("edits the empty-domain policy and enforces it on later data revisions", () => {
+  const edited = pointProgram().editScale({
+    id: "x",
+    emptyDomain: "require-explicit"
+  });
+  const autoDomain = chart()
+    .createCanvas({ width: 300, height: 200, margin: 20 })
+    .createData({
+      id: "rows",
+      values: [{ x: -5 }, { x: 5 }, { x: 15 }],
+      schema: { fields: [{ name: "x", storageType: "number" }] }
+    })
+    .createPointMark({ id: "points" })
+    .encodeX({ field: "x" });
+
+  assert.equal(requireTestScale(edited, "x").emptyDomain, "require-explicit");
+  assert.throws(
+    () => autoDomain
+      .editScale({ id: "x", emptyDomain: "require-explicit" })
+      .reviseData({ source: "rows", id: "empty", values: [] }),
+    /explicit domain/
+  );
+  assert.deepEqual(autoDomain
+    .editScale({ id: "x", emptyDomain: "preserve" })
+    .reviseData({ source: "rows", id: "empty", values: [] })
+    .resolvedScales.x.domain, [-5, 15]);
+});
+
 test("infers one existing scale and records meaningful nested actions", () => {
   const base = chart()
     .createCanvas({ width: 100, height: 100, margin: 10 })

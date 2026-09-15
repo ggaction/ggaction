@@ -66,6 +66,7 @@ test("creates immutable window provenance and concrete source-ordered rows", () 
   const dataset = program.semanticSpec.datasets[1];
 
   assert.deepEqual(dataset, {
+    schema: dataset.schema,
     id: "ranked",
     source: "source",
     transform: [{

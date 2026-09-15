@@ -24,6 +24,7 @@ const CREATE_SCALE_OPTIONS = Object.freeze([
   "id",
   "type",
   "domain",
+  "emptyDomain",
   "range",
   "nice",
   "zero",
@@ -164,7 +165,7 @@ export const createScale = /* @__PURE__ */ action(
       .editSemantic({ property: `scale[${id}].range`, value: definition.range });
 
     for (const property of [
-      "nice", "zero", "clamp", "reverse", "base", "exponent", "constant",
+      "emptyDomain", "nice", "zero", "clamp", "reverse", "base", "exponent", "constant",
       "paddingInner", "paddingOuter", "padding", "align", "interpolate", "midpoint",
       "radialMapping", "unknown"
     ]) {

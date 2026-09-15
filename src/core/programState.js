@@ -34,12 +34,16 @@ export function ownChildPrograms(children, ProgramClass) {
 // domain's dependency validation and before the primitive deletion.
 export function releaseNamedResourceOwnership(program, { kind, id, dataOwner }) {
   if (kind !== "data") return program;
-  const materializationConfigs = dataOwner === undefined
+  let materializationConfigs = dataOwner === undefined
     ? program.materializationConfigs
     : removeMaterializationConfig(
         program.materializationConfigs,
         ["data", dataOwner.family, dataOwner.owner]
       ).value;
+  materializationConfigs = removeMaterializationConfig(
+    materializationConfigs,
+    ["calculations", "datasets", dataOwner?.current ?? id]
+  ).value;
   const context = program.context.currentData === id
     ? freezeOwned({ ...program.context, currentData: undefined })
     : program.context;

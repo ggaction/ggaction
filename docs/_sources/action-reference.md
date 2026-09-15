@@ -940,12 +940,22 @@ local scales and axes. Only `dimensions` is required.
 ### `filterData`
 
 ```javascript
-filterData({ id, source?, field, oneOf | predicate | range })
+filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })
 ```
 
 Create an immutable named derived dataset using exactly one membership,
 comparison, or range filter. The source defaults to current data.
 [Data](../api/data.md)
+
+### `createSortedData`
+
+```javascript
+createSortedData({ id, source?, sortBy })
+```
+
+Create immutable rows in stable multi-key order. Each key controls direction,
+null placement, and quantitative, categorical, or temporal comparison.
+[Source and derived data](../api/data/source-and-derived.md#create-sorted-data)
 
 ### `filterMarks`
 
@@ -997,7 +1007,7 @@ legend baseline, and retain the reusable selection.
 ```javascript
 createRegressionData({
   id, source?, x, y, groupBy?, method?, degree?, span?,
-  confidenceMethod?, level?, confidence?, interval?
+  confidenceMethod?, level?, confidence?, interval?, predict?, missing?
 })
 ```
 
@@ -1011,7 +1021,7 @@ LOESS is line-only.
 ```javascript
 createDensityData({
   id, source?, field, groupBy?, bandwidth?, extent?, steps?,
-  kernel?, normalization?, as?
+  kernel?, normalization?, weight?, missing?, as?
 })
 ```
 
@@ -1024,7 +1034,7 @@ kernel to `"gaussian"`, and normalization to `"unit"`.
 
 ```javascript
 createIntervalData({
-  id, source?, field, groupBy?, center?, extent?, method?, level?, as?
+  id, source?, field, groupBy?, center?, extent?, method?, level?, missing?, as?
 })
 ```
 
@@ -1095,7 +1105,8 @@ rebind direct visual consumers, and safely release the prior revision.
 
 ```javascript
 editDerivedData({ target, definition, dependents? })
-editFilteredData({ target, field?, oneOf? | predicate? | range?, dependents? })
+editFilteredData({ target, field?, oneOf? | noneOf? | predicate? | range?, nulls?, dependents? })
+editSortedData({ target, sortBy, dependents? })
 editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, dependents? })
 editWindowData({ target, partitionBy?, sortBy?, operations?, temporalUnit?, dependents? })
 editDensityData({ target, field?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, weight?, dependents? })
@@ -1141,7 +1152,7 @@ belong only to the previous mode before validating the final definition.
 ### `createPointMark`
 
 ```javascript
-createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic point mark with one of 12 equal-area shape realizations.
@@ -1150,7 +1161,7 @@ Create a semantic point mark with one of 12 equal-area shape realizations.
 ### `editPointMark`
 
 ```javascript
-editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })
+editPointMark({ target?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.

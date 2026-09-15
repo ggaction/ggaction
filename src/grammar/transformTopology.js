@@ -16,6 +16,7 @@ const TRANSFORM_TOPOLOGY = Object.freeze({
   markFilter: Object.freeze({ provenanceTransparent: true }),
   normalize: Object.freeze({ facetTopology: "statistical" }),
   regression: Object.freeze({ facetTopology: "statistical" }),
+  sort: Object.freeze({ facetTopology: "statistical" }),
   summary: Object.freeze({ facetTopology: "statistical" }),
   stack: Object.freeze({ facetTopology: "statistical" }),
   statisticalReference: Object.freeze({ facetTopology: "statistical" }),

@@ -26,7 +26,7 @@ import { hasExactLegendSamplingForScale } from
   "../guides/legends/sampling.js";
 
 const OPTIONS = Object.freeze([
-  "id", "type", "domain", "range", "nice", "zero", "clamp", "reverse",
+  "id", "type", "domain", "range", "emptyDomain", "nice", "zero", "clamp", "reverse",
   "base", "exponent", "constant", "paddingInner", "paddingOuter", "padding",
   "align", "interpolate", "midpoint", "unknown", "palette", "radialMapping"
 ]);

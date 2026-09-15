@@ -9,6 +9,8 @@ import {
   setEncodingProperties,
   validateOptions
 } from "./shared.js";
+import { applyRequestedItemMissingPolicy } from
+  "../../grammar/itemMissing.js";
 
 const OPTIONS = Object.freeze(["target", "field", "value", "content", "normalizeBy", "format"]);
 
@@ -41,12 +43,15 @@ export const encodeText = /* @__PURE__ */ action(
     if (Object.hasOwn(args, "normalizeBy") && (!hasContent || args.content !== "share")) {
       throw new Error("Text normalizeBy is only supported with share content.");
     }
-    const { id: target, dataset, layer } = resolveTarget(
+    const { id: target, dataset: sourceDataset, layer } = resolveTarget(
       this,
       args.target,
       ["text"],
       "text mark"
     );
+    const dataset = hasField
+      ? applyRequestedItemMissingPolicy(layer, sourceDataset, args.field)
+      : applyRequestedItemMissingPolicy(layer, sourceDataset);
     const previous = layer.encoding?.text;
     const format = validateTextFormat(args.format ?? previous?.format ?? "auto");
     const content = hasContent

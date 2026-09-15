@@ -356,6 +356,13 @@ function derivedEditingPrograms() {
       as: "normalized", method: "share"
     })
     .editNormalizedData({ target: "editNormalized", method: "minmax" })
+    .createSortedData({
+      id: "editSorted", source: "editSource",
+      sortBy: [{ field: "group" }, { field: "value", order: "descending" }]
+    })
+    .editSortedData({
+      target: "editSorted", sortBy: [{ field: "value" }]
+    })
     .createCompleteData({
       id: "editComplete", source: "editSource", key: "category",
       groupBy: "group", values: ["c1", "c2"]
