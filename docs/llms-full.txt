@@ -2,9 +2,9 @@
 
 
 
-Package metadata version: 0.0.16.
+Package metadata version: 0.0.17.
 
-Contract: sha256:89ddb0a06ff09a57098c295cda50788c02ed0418b6689098f725fe8e79e04805. Status: development. Runtime source: a5ab34f0f3940ef2ae4ef538869e82b29c47c685. Release baseline: v0.0.13.
+Contract: sha256:5520b0fa9525fea045e789b547925c825310808ddbffbf488e7dcae38987a1ae. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -28,7 +28,7 @@ Build, inspect, select, and revise charts one meaningful action at a time.
 Start with a complete example, then use the API pages when you need to customize
 one part. The main, basic, extension, SVG, PNG, and PDF entry points include TypeScript declarations.
 
- Experimental 0.0.16 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
+ Experimental 0.0.17 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
 
 ## Start here
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/a5ab34f0f3940ef2ae4ef538869e82b29c47c685/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/a5ab34f0f3940ef2ae4ef538869e82b29c47c685/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -35756,12 +35756,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/a5ab34f0f3940ef2ae4ef538869e82b29c47c685/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/a5ab34f0f3940ef2ae4ef538869e82b29c47c685/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -37806,7 +37806,7 @@ separate from the relative action hierarchy and from package exposure.
 
 # Documentation Version
 
-The current site documents **ggaction 0.0.16** with a
+The current site documents **ggaction 0.0.17** with a
 **development** contract.
 A `published-release` contract matches that package version. A `development`
 contract can include newer behavior; its package version alone does not establish
@@ -37815,9 +37815,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:89ddb0a06ff09a57098c295cda50788c02ed0418b6689098f725fe8e79e04805` |
+| Contract fingerprint | `sha256:5520b0fa9525fea045e789b547925c825310808ddbffbf488e7dcae38987a1ae` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `a5ab34f0f3940ef2ae4ef538869e82b29c47c685` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 281 |
 | Declared actions in that release | 234 |
