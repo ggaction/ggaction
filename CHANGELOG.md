@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.17] - 2026-09-15
+
 ### Added
 
 - Added declared and inferred dataset schemas, stable derived sorting with
