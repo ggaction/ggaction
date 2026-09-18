@@ -52,7 +52,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
   for their row or column; neither long-axis anchor uses the child Canvas, axis-reserved margin, facet padding, or
   shared legend extent.
 - Empty-string facet values remain semantic values and render with the deterministic visible header `(empty)`.
-- Facet child cardinality는 최대 `100`이며 child derivation 전 `partitionRows * childCount <= 10,000,000`
+- Facet child cardinality는 공통 generated-item 한도 `10,000`을 적용하며 child derivation 전 `partitionRows * childCount <= 10,000,000`
   work budget을 검증한다.
 - Facet materialization fails atomically when a header leaves the composed Canvas, intersects another header or its
   child plot, or when the shared legend leaves the composed Canvas or intersects the translated child-plot union.

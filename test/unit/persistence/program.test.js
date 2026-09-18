@@ -87,7 +87,7 @@ test("editable schema version 1 migrates dataset schemas while version 2 require
     migrated.semanticSpec.datasets[1].schema.fields.map(field => field.name),
     ["group", "mean"]
   );
-  assert.equal(JSON.parse(serializeProgram(migrated)).schemaVersion, 2);
+  assert.equal(JSON.parse(serializeProgram(migrated)).schemaVersion, 3);
 
   envelope.schemaVersion = 2;
   assert.throws(
@@ -165,7 +165,7 @@ test("registered extensions restore without executing actions; unknown classes a
 
 test("envelopes, canonical keys, and closed traces are mandatory", () => {
   const envelope = JSON.parse(serializeProgram(chart()));
-  for (const value of [null, 1, {}, "{", "[]", JSON.stringify({ ...envelope, schemaVersion: 3 }),
+  for (const value of [null, 1, {}, "{", "[]", JSON.stringify({ ...envelope, schemaVersion: 4 }),
     JSON.stringify({ ...envelope, kind: "graphic" }), JSON.stringify({ ...envelope, packageVersion: "unknown" }),
     JSON.stringify({ ...envelope, extra: true })]) assert.throws(() => deserializeProgram(value));
   for (const mutate of [s => { delete s.context; }, s => { s.markConfigs = {}; },
@@ -225,4 +225,14 @@ test("graphic snapshots reject malformed, duplicated, orphaned and cyclic concre
     envelope.payload = encodeValue(graphicSpec);
     assert.throws(() => deserializeGraphic(JSON.stringify(envelope)));
   }
+});
+
+
+test("editable version 2 remains readable while shared payloads require version 3", () => {
+  const source = example();
+  const envelope = JSON.parse(serializeProgram(source));
+  const state = decodeValue(envelope.payload);
+  const legacy = { ...envelope, schemaVersion: 2, payload: encodeValue(state) };
+  assert.deepEqual(deserializeProgram(JSON.stringify(legacy)).graphicSpec, source.graphicSpec);
+  assert.throws(() => deserializeProgram(JSON.stringify({ ...envelope, schemaVersion: 2 })), /require.*version 3/);
 });

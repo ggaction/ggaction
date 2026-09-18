@@ -165,7 +165,7 @@ test("rejects invalid facet fields, values, and explicit dataset mismatches", ()
     }),
     /partition dataset "missing" does not exist/
   );
-  const largeValues = Array.from({ length: 101 }, (_, index) => ({
+  const largeValues = Array.from({ length: 10_001 }, (_, index) => ({
     x: index,
     y: index,
     group: `group-${index}`
@@ -178,7 +178,7 @@ test("rejects invalid facet fields, values, and explicit dataset mismatches", ()
   };
   assert.throws(
     () => resolveFacetDefinition(large, { field: "group" }),
-    /Facet child count must not exceed 100/
+    /Facet child count must not exceed 10000/
   );
 
   const expensiveValues = Array.from({ length: 100_001 }, (_, index) => ({

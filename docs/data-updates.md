@@ -184,14 +184,16 @@ available.
 Each JSON envelope has exactly these keys:
 
 ```text
-{ schemaVersion: 2, kind: "editable", packageVersion: string,
+{ schemaVersion: 3, kind: "editable", packageVersion: string,
   extensions: string[], payload: EncodedValue }
 { schemaVersion: 1, kind: "graphic", packageVersion: string,
   extensions: string[], payload: EncodedValue }
 ```
 
-Editable snapshots use schema version 2 so dataset schema and calculation
-metadata round-trip. The reader migrates editable version 1 payloads by
+Editable snapshots use schema version 3 to store large repeated arrays once,
+including source data shared by many facet panels. Dataset schema and calculation
+metadata still round-trip. Version 2 remains readable. The reader migrates
+editable version 1 payloads by
 inferring or deriving missing dataset schemas before validation. Graphic
 snapshots remain version 1 because their payload shape did not change.
 `packageVersion` records the producer version; `schemaVersion` determines the
@@ -203,6 +205,14 @@ canonical keys `semanticSpec`, `graphicSpec`, `resolvedScales`,
 `actionStack`. Children recursively use the same state shape. The stack must be
 empty; aliases and private action counters are not persisted. The graphic
 payload is `graphicSpec` itself.
+
+Editable version 3 wraps encoded values as `["shared", arrays, root]`.
+Arrays with at least 32 entries are interned by their exact tagged contents;
+`["reference", index]` reuses an earlier array. Array definitions may refer only
+to previously defined arrays, so cycles and forward references are invalid.
+Restoration retains immutable shared arrays across children; editing one child
+still leaves its siblings and earlier programs unchanged. No rows are discarded
+and no statistical operation is rerun to reduce storage.
 
 The tagged value codec preserves values that plain JSON would lose:
 

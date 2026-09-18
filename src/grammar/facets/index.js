@@ -6,7 +6,6 @@ import {
 } from "../../core/validation.js";
 import { planFacetDependencies, resolveFacetFamily } from "./dependencies.js";
 import { readNominalField } from "../scales/index.js";
-const MAX_FACET_CHILDREN = 100;
 
 function requireFacetField(field, label = "facet") {
   if (typeof field !== "string" || field.length === 0) {
@@ -100,8 +99,7 @@ export function resolveFacetDefinition(semanticSpec, options = {}) {
   const values = resolveValues(observed, options.values);
   validateGeneratedItemLimit(
     values.length,
-    "Facet child count",
-    MAX_FACET_CHILDREN
+    "Facet child count"
   );
   validateWorkLimit(
     dataset.values.length * values.length,
@@ -175,8 +173,7 @@ export function resolveFacetGridDefinition(semanticSpec, options = {}) {
   }
   validateGeneratedItemLimit(
     selected.length,
-    "Facet grid child count",
-    MAX_FACET_CHILDREN
+    "Facet grid child count"
   );
   validateWorkLimit(
     dataset.values.length * selected.length,

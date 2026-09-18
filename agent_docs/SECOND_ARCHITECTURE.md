@@ -219,6 +219,12 @@ title/author/subject/keywords metadata를 기록한다.
 
 Browser-safe 저장·복원 entry다. Canonical constructor state를 versioned tagged JSON으로 보존하며, graphic-only payload는 renderer에만 전달한다. 복원은 action replay나 compiler 실행 없이 기존 순수 semantic/graphic validator와 resource reference collector를 사용하고, 검증한 상태를 constructor가 소유한다. Full/Basic 원본은 full ChartProgram으로 복원하며 등록되지 않은 subclass/trace op는 거부한다. 정확한 format과 사용 계약은 `docs/data-updates.md`의 저장·복원 절을 따른다.
 
+Editable snapshot v3는32개 이상 array의 exact tagged content를 intern하여 facet child마다
+같은 원본 행을 반복 저장하지 않는다. 이전 array만 참조하는 DAG이며 cycle/forward reference는
+거부한다. Decode한 fresh plain graph를 한 번 소유하여 child constructor가 immutable source를
+공유한다. 기존 semantic/graphic/reference validator를 유지하며 v1 migration과 v2 reader도 유지한다.
+Facet은 기존100-child 전용 ceiling 대신 공통 generated-item/work budget을 적용한다.
+
 ### `ggaction/accessibility`
 
 `src/accessibility.js`의 read-only `ggaction/accessibility` entry는 기존 final-item selection adapter 및 pure path series 계산을 사용하여 시각적 grain의 데이터를 반환한다. Renderer나 DOM을 실행하지 않고 원본 행을 최종 표로 대체하지 않는다. 안정적인 composite owner 관계는 `src/selectors/markOwners.js`를 mark removal과 공유한다. 결과의 정확한 schema와 제한은 [Rendering](../docs/api/rendering.md#accessible-data-alternatives)이 소유한다.

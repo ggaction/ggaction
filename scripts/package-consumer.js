@@ -140,6 +140,21 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(deserializeProgram(serializeProgram(initialHeaders)).graphicSpec, initialHeaders.graphicSpec);
     assert.ok((await renderToPNGBuffer(initialHeaders)).buffer.length > 1000);
 
+    const manyPanels = chart().createCanvas({ width: 120, height: 100, margin: 20 })
+      .createData({ id: "manyRows", values: Array.from({ length: 212 }, (_, i) => ({
+        group: "item-" + Math.floor(i / 2), x: i % 2, y: i % 7
+      })) })
+      .createLinePlot({ x: "x", y: "y", groupBy: "group", guides: false })
+      .facet({ field: "group", columns: 10, scales: { x: "independent", y: "independent" } });
+    const manyStored = serializeProgram(manyPanels);
+    assert.equal(JSON.parse(manyStored).schemaVersion, 3);
+    const manyRestored = deserializeProgram(manyStored);
+    assert.equal(Object.keys(manyRestored.children).length, 106);
+    const manyChildren = Object.values(manyRestored.children);
+    assert.equal(manyChildren[0].semanticSpec.datasets[0].values, manyChildren[105].semanticSpec.datasets[0].values);
+    assert.equal(serializeProgram(manyRestored), manyStored);
+    assert.ok((await renderToPNGBuffer(manyRestored)).buffer.length > 1000);
+
     const precomputedBox = chart().createCanvas({ width: 600, height: 400, margin: 80 })
       .createData({ values: [{ group: "A", min: 3.07, q1: 13.3475, median: 17.795, q3: 24.1275, max: 50.81 }] })
       .createBoxPlot({ x: { field: "group", fieldType: "nominal" },

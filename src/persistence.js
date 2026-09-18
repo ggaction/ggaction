@@ -1,9 +1,9 @@
 import { ChartProgram } from "./ChartProgram.js";
 import { BasicChartProgram } from "./BasicChartProgram.js";
-import { cloneAndFreeze } from "./core/immutable.js";
+import { cloneAndFreeze, freezeOwned } from "./core/immutable.js";
 import { hasRegisteredExtension, isBuiltinProgramClass } from "./core/extensionRegistry.js";
 import { packageVersion } from "./version.js";
-import { decodeValue, encodeValue, invalidSnapshot } from "./persistence/codec.js";
+import { decodeValue, encodeValue, encodeSharedValue, invalidSnapshot } from "./persistence/codec.js";
 import { exactKeys, requireObject, STATE_KEYS, validateGraphic, validateProgramState, validateTrace } from "./persistence/validation.js";
 import {
   deriveTransformSchema,
@@ -25,7 +25,7 @@ function canonicalState(program, extensions, path = "payload") {
 }
 
 function envelope(kind, payload, extensions = []) {
-  return JSON.stringify({ schemaVersion: kind === "editable" ? 2 : 1, kind, packageVersion, extensions, payload: encodeValue(payload) });
+  return JSON.stringify({ schemaVersion: kind === "editable" ? 3 : 1, kind, packageVersion, extensions, payload: kind === "editable" ? encodeSharedValue(payload) : encodeValue(payload) });
 }
 
 function readEnvelope(text, kind) {
@@ -33,7 +33,7 @@ function readEnvelope(text, kind) {
   let value;
   try { value = JSON.parse(text); } catch { throw invalidSnapshot("Snapshot must be valid JSON.", "snapshot"); }
   exactKeys(value, ["schemaVersion", "kind", "packageVersion", "extensions", "payload"], "snapshot");
-  const versions = kind === "editable" ? [1, 2] : [1];
+  const versions = kind === "editable" ? [1, 2, 3] : [1];
   if (!versions.includes(value.schemaVersion) || value.kind !== kind) {
     throw invalidSnapshot(
       `Unsupported snapshot schema or kind; expected schema ${versions.join(" or ")} ${kind}.`,
@@ -44,6 +44,9 @@ function readEnvelope(text, kind) {
   if (!Array.isArray(value.extensions) || new Set(value.extensions).size !== value.extensions.length ||
       value.extensions.some(name => typeof name !== "string" || !hasRegisteredExtension(name)) || (kind === "graphic" && value.extensions.length)) {
     throw invalidSnapshot("Snapshot requires unknown, duplicate, or inapplicable extensions.", "snapshot.extensions");
+  }
+  if (value.schemaVersion < 3 && value.payload?.[0] === "shared") {
+    throw invalidSnapshot("Shared array payloads require editable snapshot version 3.", "snapshot.payload");
   }
   return { ...value, payload: decodeValue(value.payload) };
 }
@@ -64,7 +67,7 @@ function restoreState(state, extensions, path = "payload", { requireSchemas = fa
   if (requireSchemas) {
     for (const dataset of program.semanticSpec.datasets) {
       if (dataset.schema === undefined) {
-        throw invalidSnapshot(`Dataset "${dataset.id}" requires schema in editable snapshot version 2.`, `${path}.semanticSpec.datasets`);
+        throw invalidSnapshot(`Dataset "${dataset.id}" requires schema in editable snapshot version 2 or later.`, `${path}.semanticSpec.datasets`);
       }
       validateDatasetSchema(dataset.schema);
     }
@@ -118,6 +121,15 @@ export function serializeProgram(program) {
   return envelope("editable", canonicalState(program, extensions), [...extensions].sort());
 }
 
+// Decoding creates fresh plain containers. Own them once across the whole graph
+// so child constructors retain shared immutable data instead of copying each pool.
+function ownDecodedState(value, seen = new WeakSet()) {
+  if (value === null || typeof value !== "object" || seen.has(value)) return;
+  seen.add(value);
+  for (const child of Object.values(value)) ownDecodedState(child, seen);
+  freezeOwned(value);
+}
+
 export function deserializeProgram(text) {
   const stored = readEnvelope(text, "editable");
   const extensions = new Set();
@@ -128,6 +140,7 @@ export function deserializeProgram(text) {
     restoreState(payload, new Set());
     payload = migrateStateSchemas(payload);
   }
+  ownDecodedState(payload);
   const program = restoreState(payload, extensions, "payload", { requireSchemas: true });
   if (extensions.size !== stored.extensions.length || stored.extensions.some(name => !extensions.has(name))) {
     throw invalidSnapshot("Snapshot extensions must exactly match its action traces.", "snapshot.extensions");

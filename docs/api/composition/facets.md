@@ -54,7 +54,7 @@ no matching label rows retains its other marks.
 `facet` uses field values in source first-appearance order. It infers one
 common row-preserving dataset ancestor, then filters and replays supported
 derived data independently inside each cell. Omitted `columns` creates one row;
-a positive value wraps cells row-major. A facet contains at most 100 children,
+a positive value wraps cells row-major. A facet uses the shared 10,000 generated-item limit,
 and source-row count multiplied by child count must not exceed the shared
 10,000,000-unit work budget.
 
