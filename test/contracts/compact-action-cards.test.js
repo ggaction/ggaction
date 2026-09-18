@@ -10,8 +10,10 @@ import Ajv2020 from "ajv/dist/2020.js";
 
 import {
   buildActionCards,
-  validateActionCards
+  validateActionCards,
+  validateCallPatternOptions
 } from "../../scripts/action-card-source.js";
+import { chart } from "../../src/index.js";
 import { buildActionRelationships } from "../../scripts/action-relationship-source.js";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
@@ -128,7 +130,7 @@ test("action-card hierarchy is generated from the executable direct-child trace"
   );
   assert.deepEqual(
     artifact.cards.find(card => card.name === "createScatterPlot").wraps,
-    ["createPointMark", "encodeX", "encodeY", "encodeColor", "encodeShape", "createGuides"]
+    ["createPointMark", "encodeX", "encodeY", "encodeColor", "encodeShape", "createGuides", "encodeSize", "encodePointRadius"]
   );
   assert.deepEqual(
     artifact.cards.find(card => card.name === "selectMarks").editableVia,
@@ -244,4 +246,36 @@ test("imputation call patterns preserve method-specific requirements", async () 
   assert.match(card.callPatterns[0], /method: "constant", value/);
   assert.match(card.callPatterns[1], /method: "forward" \| "backward" \| "linear", sortBy/);
   assert.equal(card.options.find(option => option.name === "groupBy").required, false);
+});
+
+
+test("call pattern validation rejects unsupported top-level keys without confusing nested keys", () => {
+  const options = ["x", "y", "color", "guides"].map(name => ({ name }));
+  assert.throws(() => validateCallPatternOptions("createBarPlot({ x, y, stack?, groupBy? })", options), /undeclared option "stack"/u);
+  assert.doesNotThrow(() => validateCallPatternOptions('createBarPlot({ x, y, color: { field, scale: { range: ["a", "b"] } }, guides? })', options));
+  assert.throws(() => validateCallPatternOptions('createBarPlot({ x, y, color: { field }, unknown? })', options), /undeclared option "unknown"/u);
+});
+
+test("advertised bar calls execute and direction-only guide branches retain their exact meaning", async () => {
+  const { cards } = JSON.parse(await readFile(cardFile, "utf8"));
+  const bar = cards.find(card => card.name === "createBarPlot");
+  assert.ok(cards.find(card => card.name === "createMarkLabels").intents.includes("source-owned text"));
+  assert.ok(cards.find(card => card.name === "createMarkLabels").resources.prerequisites.includes("existing eligible source mark"));
+  assert.ok(cards.find(card => card.name === "createIntervalPlot").intents.includes("point and interval"));
+  assert.ok(cards.find(card => card.name === "encodeChannels").intents.includes("multiple encodings on one mark"));
+  assert.ok(bar.callPatterns.every(pattern => !/stack|groupBy/u.test(pattern)));
+  const rows = [{ category: "A", x: 1, y: 2, group: "one" }, { category: "B", x: 2, y: 4, group: "two" }];
+  const base = () => chart().createCanvas({ width: 500, height: 400, margin: 100 }).createData({ values: rows });
+  for (const options of [
+    { x: "category", y: "y", width: { pixels: 20 }, color: "group" },
+    { x: "category", y: "y", color: "group", guides: false }
+  ]) assert.equal(base().createBarPlot(options).graphicSpec.objects.barPlot.items.length, 2);
+  const scatter = axes => base().createScatterPlot({ x: "x", y: "y", guides: { axes, grid: false, legend: false } });
+  const neither = scatter({ x: false });
+  const onlyY = scatter({ x: false, y: {} });
+  assert.equal(neither.graphicSpec.objects.xAxisLabels, undefined);
+  assert.equal(neither.graphicSpec.objects.yAxisLabels, undefined);
+  assert.equal(onlyY.graphicSpec.objects.xAxisLabels, undefined);
+  assert.ok(onlyY.graphicSpec.objects.yAxisLabels.items.length > 0);
+  assert.equal(onlyY.graphicSpec.objects.scatterPlot.items.length, rows.length);
 });

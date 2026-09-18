@@ -784,8 +784,8 @@ an optional component or remove color; at least one component must remain enable
 createBarPlot({ id?, data?, coordinate?, x, y, color?, width?, bar?, guides? })
 ```
 
-Create a complete vertical, horizontal, aggregate, ranged, grouped, or stacked
-bar chart through the existing bar policies. Category-first child calls infer
+Create categorical or temporal bars with quantitative measures; use `color.layout` for grouped or stacked partitions, not top-level `stack`/`groupBy`; width defaults to 0.72 of the slot and guides are inferred unless disabled.
+Category-first child calls infer
 the measure's mean in either orientation; temporal categories are supported on both axes.
 [Basic Charts](../api/basic-charts.md#createbarplot)
 
@@ -2237,7 +2237,7 @@ appearance remains available through `editAreaMark`.
 createGuides({ axes?, grid?, legend? })
 ```
 
-Create applicable Cartesian or Polar axes and grids plus supported legends.
+Create applicable axes, grids, and legends; omitted branches infer applicability, false skips a branch, and explicit direction objects enable only named directions: `axes:{x:false}` requests neither axis while `axes:{x:false,y:{}}` requests y.
 Automatic calls preserve existing guide collections and add missing applicable
 collections; explicit collection objects retain strict create semantics.
 [Guides](../api/guides.md)

@@ -76,6 +76,42 @@ program.createGuides({
 program.createGuides({ legend: false });
 ```
 
+## Explicit axis directions
+
+Omitting `axes`, or passing `axes: {}`, infers applicable axes. Once a direction
+is named, only explicitly enabled directions are requested. In particular,
+`axes: { x: false }` requests neither axis; retain y with `axes: { x: false, y: {} }`.
+Skipping a guide does not remove a guide that already exists.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+const program = chart()
+  .createCanvas({ width: 400, height: 300, margin: 60 })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createScatterPlot({
+    x: "x", y: "y",
+    guides: { axes: { x: false, y: {} }, grid: false, legend: false }
+  });
+```
+
+Here, the y axis is visible and the x axis is absent. The two observations remain
+two points. The lifecycle label **Aggregate create-only** means that an action
+composes child actions; it does not mean that the action statistically aggregates rows.
+
+## Choose a concise authoring action
+
+| Intent | Public action |
+| --- | --- |
+| Attach text to an existing mark's items | `createMarkLabels` |
+| Assign several channels to one mark atomically | `encodeChannels` |
+| Create a point and its interval together | `createIntervalPlot` |
+
 `createGuides` is an aggregate creation action. Revise or remove existing
 guides through their owning axis, grid, and legend actions; there is no generic
 `editGuides` action.

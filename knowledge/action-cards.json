@@ -5523,11 +5523,12 @@
         "graphical mark",
         "mark appearance",
         "mark labels",
-        "final-item values"
+        "source-owned text"
       ],
       "lifecycle": "Aggregate create-only",
       "resources": {
         "prerequisites": [
+          "existing eligible source mark",
           "dataset and coordinate context"
         ],
         "owns": [
@@ -5596,6 +5597,7 @@
       "completionRequirements": {
         "state": "contextual",
         "requires": [
+          "existing eligible source mark",
           "dataset and coordinate context"
         ],
         "allowsEmpty": false
@@ -5907,7 +5909,7 @@
         "graphical mark",
         "mark appearance",
         "mark labels",
-        "final-item values"
+        "source-owned text"
       ],
       "lifecycle": "Mutable resource",
       "resources": {
@@ -19098,7 +19100,7 @@
       "name": "createGuides",
       "layer": "user-facing",
       "domain": "legend_and_title",
-      "summary": "Create applicable Cartesian or Polar axes and grids plus supported legends.",
+      "summary": "Create applicable axes, grids, and legends; omitted branches infer applicability, false skips a branch, and explicit direction objects enable only named directions: axes:{x:false} requests neither axis while axes:{x:false,y:{}} requests y.",
       "signature": "createGuides(options?: CreateGuidesOptions): ChartProgram;",
       "intents": [
         "create guides",
@@ -27864,7 +27866,7 @@
       "name": "createScatterPlot",
       "layer": "user-facing",
       "domain": "charts",
-      "summary": "Draws a complete scatter plot that shows the relationship between two fields as points.",
+      "summary": "Draws one point per observation, without statistical aggregation. Supports color, size, and shape fields; defaults to applicable axes, grid, and legends. Aggregate create-only describes composed actions, not aggregated rows.",
       "signature": "createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;",
       "intents": [
         "create scatter plot",
@@ -27898,7 +27900,9 @@
         "encodeY",
         "encodeColor",
         "encodeShape",
-        "createGuides"
+        "createGuides",
+        "encodeSize",
+        "encodePointRadius"
       ],
       "editableVia": [],
       "supports": {
@@ -28811,7 +28815,7 @@
         "complete chart",
         "chart facade",
         "interval plot",
-        "center estimate and uncertainty"
+        "point and interval"
       ],
       "lifecycle": "Aggregate create-only",
       "resources": {
@@ -30292,7 +30296,7 @@
       "name": "createBarPlot",
       "layer": "user-facing",
       "domain": "charts",
-      "summary": "Create a complete vertical, horizontal, aggregate, ranged, grouped, or stacked bar chart through the existing bar policies.",
+      "summary": "Create categorical or temporal bars with quantitative measures; use color.layout for grouped or stacked partitions, not top-level stack/groupBy; width defaults to 0.72 of the slot and guides are inferred unless disabled.",
       "signature": "createBarPlot(options: CreateBarPlotOptions): ChartProgram;",
       "intents": [
         "create bar plot",
@@ -30415,7 +30419,7 @@
       ],
       "callPatterns": [
         "createBarPlot({ x, y, width?, color? })",
-        "createBarPlot({ x, y, stack?, groupBy?, guides? })"
+        "createBarPlot({ x, y, color?, guides? })"
       ],
       "snippet": "program.createBarPlot({ x: \"x\", y: \"y\" })",
       "errors": [],

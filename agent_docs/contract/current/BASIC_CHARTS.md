@@ -4,6 +4,8 @@ Basic Chart facade는 existing domain action을 wrapped child로 조합하는 us
 별도 semantic schema, compiler, materialization config와 renderer branch를 만들지 않는다. Canvas와 source dataset은
 선행 state에 있어야 하고 생성 후 편집은 resource-specific action을 사용한다.
 
+Aggregate create-only는 child action 합성을 뜻하며 source rows의 통계 집계를 뜻하지 않는다.
+
 ## Shared contract
 
 - Data resolution: explicit existing ID → valid current dataset → one unique dataset. Ambiguity is an error.
@@ -44,6 +46,7 @@ Basic Chart facade는 existing domain action을 wrapped child로 조합하는 us
 - Histogram의 shared x scale은 각 consumer가 계산한 bin boundaries가 모두 같을 때만 자동 ticks를 재사용한다.
   Parallel의 별도 facade는 각자 dimension scale IDs를 만들므로 다른 owner의 축을 자동 공유하지 않는다.
   Gradient density legend도 owner별 density scale ID가 달라 다른 owner/family의 color legend를 덮어쓰지 않는다.
+- Explicit axes direction object에서 생략 방향은 요청하지 않는다. `axes:{x:false}`는 축을 만들지 않고 `axes:{x:false,y:{}}`는 y만 요청한다.
 - `guides:false` 또는 nested branch false는 기존 guide를 삭제하지 않는다. 세 branch 모두 false인 facade는
   guide action을 실행하지 않는다. Box omission=false와 Box/Gradient의 deferred completion은 유지한다.
 - 이 계약은 하위 데이터·grain·scale compatibility를 확장하지 않는다. 예를 들어 grouped Bar의 서로 다른

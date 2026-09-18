@@ -1642,7 +1642,9 @@
         "encodeY",
         "encodeColor",
         "encodeShape",
-        "createGuides"
+        "createGuides",
+        "encodeSize",
+        "encodePointRadius"
       ]
     },
     {

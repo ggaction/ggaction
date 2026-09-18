@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:3b86ebaf3c141340d243e3f0910be37e4c43a47afa29aa094b18f51fe85e0d7b",
+    "contractId": "sha256:f7d03abae8b97dfd228f7e4d5dfff776200887c2d441aba41da3f8c855722a82",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1141,11 +1141,13 @@
         "guides",
         "at-a-glance",
         "createguidesoptions",
+        "explicit-axis-directions",
+        "choose-a-concise-authoring-action",
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 7236,
-      "sha256": "6bd2ac7ca1713d7f1be2edc6849a264059f5057971b2f809bdc94efbda852620"
+      "bytes": 8641,
+      "sha256": "f6514513d09a64dd1d2d4bc76e966e989cbb3a87d8da4f12a56d23d28cd66413"
     },
     {
       "order": 71,
@@ -2005,8 +2007,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 151399,
-      "sha256": "972caca8b76e6203db2ea80a2dd3679163d99fcda1f804da776d2810f1f2dbb7"
+      "bytes": 151502,
+      "sha256": "a8abefaf19430fd533569be17ecbdbd8a415d6653d4c86a3a549194300a84e05"
     },
     {
       "order": 119,
@@ -2253,8 +2255,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 114651,
-      "sha256": "e6fdcb88669248a76f21432073e0583da10e944b55f151f5c9a99104c8cca8c3"
+      "bytes": 114819,
+      "sha256": "4f2156009b885309ea58dbb13a2b58b87b3357c294afe5644e3267fec2bc76d1"
     },
     {
       "order": 123,
@@ -3274,8 +3276,8 @@
         "compose-or-refine",
         "related"
       ],
-      "bytes": 18486,
-      "sha256": "6472d885967117a83ed70f163e3fa04f31294101788123f70468873b71093922"
+      "bytes": 18622,
+      "sha256": "3bd5720d852ed6aa1a6d84fad5f94d44ce1d53c664e592b4711dd5f9346a13bc"
     },
     {
       "order": 149,
@@ -3288,7 +3290,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "fc59885ce0befccf2aebe5da7acd15cf4d0842093c6b2c0d394defc8cf24fd9f"
+      "sha256": "076658ca592e4b4be06f546136e98157b28ad912c99458b019409230c8bd1f79"
     },
     {
       "order": 150,

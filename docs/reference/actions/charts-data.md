@@ -3198,8 +3198,8 @@ The following call patterns are abbreviated examples; the declaration above owns
 createBarPlot({ id?, data?, coordinate?, x, y, color?, width?, bar?, guides? })
 ```
 
-Create a complete vertical, horizontal, aggregate, ranged, grouped, or stacked
-bar chart through the existing bar policies. Category-first child calls infer
+Create categorical or temporal bars with quantitative measures; use `color.layout` for grouped or stacked partitions, not top-level `stack`/`groupBy`; width defaults to 0.72 of the slot and guides are inferred unless disabled.
+Category-first child calls infer
 the measure's mean in either orientation; temporal categories are supported on both axes.
 [Basic Charts](../../api/basic-charts.md#createbarplot)
 

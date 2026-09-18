@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:3b86ebaf3c141340d243e3f0910be37e4c43a47afa29aa094b18f51fe85e0d7b. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:f7d03abae8b97dfd228f7e4d5dfff776200887c2d441aba41da3f8c855722a82. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -8320,6 +8320,38 @@ program.createGuides({
 ```javascript
 program.createGuides({ legend: false });
 ```
+
+## Explicit axis directions
+
+Omitting `axes`, or passing `axes: {}`, infers applicable axes. Once a direction
+is named, only explicitly enabled directions are requested. In particular,
+`axes: { x: false }` requests neither axis; retain y with `axes: { x: false, y: {} }`.
+Skipping a guide does not remove a guide that already exists.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+const program = chart()
+  .createCanvas({ width: 400, height: 300, margin: 60 })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createScatterPlot({
+    x: "x", y: "y",
+    guides: { axes: { x: false, y: {} }, grid: false, legend: false }
+  });
+```
+
+Here, the y axis is visible and the x axis is absent. The two observations remain
+two points. The lifecycle label **Aggregate create-only** means that an action
+composes child actions; it does not mean that the action statistically aggregates rows.
+
+## Choose a concise authoring action
+
+| Intent | Public action |
+| --- | --- |
+| Attach text to an existing mark's items | `createMarkLabels` |
+| Assign several channels to one mark atomically | `encodeChannels` |
+| Create a point and its interval together | `createIntervalPlot` |
 
 `createGuides` is an aggregate creation action. Revise or remove existing
 guides through their owning axis, grid, and legend actions; there is no generic
@@ -17831,8 +17863,8 @@ The following call patterns are abbreviated examples; the declaration above owns
 createBarPlot({ id?, data?, coordinate?, x, y, color?, width?, bar?, guides? })
 ```
 
-Create a complete vertical, horizontal, aggregate, ranged, grouped, or stacked
-bar chart through the existing bar policies. Category-first child calls infer
+Create categorical or temporal bars with quantitative measures; use `color.layout` for grouped or stacked partitions, not top-level `stack`/`groupBy`; width defaults to 0.72 of the slot and guides are inferred unless disabled.
+Category-first child calls infer
 the measure's mean in either orientation; temporal categories are supported on both axes.
 [Basic Charts](./api/basic-charts/#createbarplot)
 
@@ -23989,7 +24021,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 createGuides({ axes?, grid?, legend? })
 ```
 
-Create applicable Cartesian or Polar axes and grids plus supported legends.
+Create applicable axes, grids, and legends; omitted branches infer applicability, false skips a branch, and explicit direction objects enable only named directions: `axes:{x:false}` requests neither axis while `axes:{x:false,y:{}}` requests y.
 Automatic calls preserve existing guide collections and add missing applicable
 collections; explicit collection objects retain strict create semantics.
 [Guides](./api/guides/)
@@ -37744,7 +37776,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 
 | Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
 | --- | --- | --- | --- | --- |
-| One row per observation; x and y fields | [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createPointMark`](./reference/actions/marks/#createpointmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeShape`](./reference/actions/encodings/#encodeshape) · [`createGuides`](./reference/actions/guides/#createguides) |
+| One row per observation; x and y fields | [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createPointMark`](./reference/actions/marks/#createpointmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeShape`](./reference/actions/encodings/#encodeshape) · [`createGuides`](./reference/actions/guides/#createguides) · [`encodeSize`](./reference/actions/encodings/#encodesize) · [`encodePointRadius`](./reference/actions/encodings/#encodepointradius) |
 | Ordered positions and measures; explicit aggregation when needed | [`createLinePlot`](./reference/actions/charts-data/#createlineplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createLineMark`](./reference/actions/marks/#createlinemark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeGroup`](./reference/actions/encodings/#encodegroup) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeStrokeDash`](./reference/actions/encodings/#encodestrokedash) · [`createGuides`](./reference/actions/guides/#createguides) |
 | Ordered values and a baseline, or paired interval bounds | [`createAreaPlot`](./reference/actions/charts-data/#createareaplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createAreaMark`](./reference/actions/marks/#createareamark) · [`encodeGroup`](./reference/actions/encodings/#encodegroup) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeYRange`](./reference/actions/encodings/#encodeyrange) · [`layoutSeries`](./reference/actions/encodings/#layoutseries) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) |
 | Finite quantitative observations for a fit and optional uncertainty | [`createRegressionPlot`](./reference/actions/charts-data/#createregressionplot) | H0, H1 · user-facing · default | Refine the owned marks, encodings, or guides | [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) · [`createRegression`](./reference/actions/statistics/#createregression) |
@@ -37829,7 +37861,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:3b86ebaf3c141340d243e3f0910be37e4c43a47afa29aa094b18f51fe85e0d7b` |
+| Contract fingerprint | `sha256:f7d03abae8b97dfd228f7e4d5dfff776200887c2d441aba41da3f8c855722a82` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

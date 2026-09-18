@@ -1711,7 +1711,19 @@
   {
     "file": "api/guides.md",
     "block": 4,
-    "heading": "`createGuides(options?)`",
+    "heading": "Explicit axis directions",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "d082ecec1406d5d4abbc2bdccc3efd4632b7312860409f14e709d78d5313d95e",
+    "executable": false
+  },
+  {
+    "file": "api/guides.md",
+    "block": 5,
+    "heading": "Choose a concise authoring action",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -1722,8 +1734,8 @@
   },
   {
     "file": "api/guides.md",
-    "block": 5,
-    "heading": "`createGuides(options?)`",
+    "block": 6,
+    "heading": "Choose a concise authoring action",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -1736,8 +1748,8 @@
   },
   {
     "file": "api/guides.md",
-    "block": 6,
-    "heading": "`createGuides(options?)`",
+    "block": 7,
+    "heading": "Choose a concise authoring action",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -1750,8 +1762,8 @@
   },
   {
     "file": "api/guides.md",
-    "block": 7,
-    "heading": "`createGuides(options?)`",
+    "block": 8,
+    "heading": "Choose a concise authoring action",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [

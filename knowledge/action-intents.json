@@ -262,7 +262,7 @@
     ],
     "MarkLabels": [
       "mark labels",
-      "final-item values",
+      "source-owned text",
       "pie percentages",
       "bar value labels"
     ],
@@ -505,7 +505,7 @@
     ],
     "IntervalPlot": [
       "interval plot",
-      "center estimate and uncertainty"
+      "point and interval"
     ],
     "RegressionPlot": [
       "regression plot",
@@ -896,7 +896,7 @@
   "summaryOverrides": {
     "createBoxPlot": "Creates a Box plot owner that defers geometry and guides until compatible x/y roles are available.",
     "createGradientPlot": "Creates a Gradient plot owner that defers geometry and guides until compatible x/y roles are available.",
-    "createScatterPlot": "Draws a complete scatter plot that shows the relationship between two fields as points.",
+    "createScatterPlot": "Draws one point per observation, without statistical aggregation. Supports color, size, and shape fields; defaults to applicable axes, grid, and legends. Aggregate create-only describes composed actions, not aggregated rows.",
     "createPolarScatterPlot": "Draws a complete Polar scatter plot that maps observations to angular and radial position while keeping glyph size independent.",
     "createPolarLinePlot": "Draws a complete Polar line plot that connects angular and radial observations as open or explicitly closed paths.",
     "createRadarPlot": "Draws a complete Radar plot from long category-value rows or explicitly selected wide fields as closed Polar profiles.",
@@ -1662,7 +1662,7 @@
     ],
     "createBarPlot": [
       "createBarPlot({ x, y, width?, color? })",
-      "createBarPlot({ x, y, stack?, groupBy?, guides? })"
+      "createBarPlot({ x, y, color?, guides? })"
     ],
     "createPolarScatterPlot": [
       "createPolarScatterPlot({ theta, radius })",

@@ -1678,7 +1678,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 createGuides({ axes?, grid?, legend? })
 ```
 
-Create applicable Cartesian or Polar axes and grids plus supported legends.
+Create applicable axes, grids, and legends; omitted branches infer applicability, false skips a branch, and explicit direction objects enable only named directions: `axes:{x:false}` requests neither axis while `axes:{x:false,y:{}}` requests y.
 Automatic calls preserve existing guide collections and add missing applicable
 collections; explicit collection objects retain strict create semantics.
 [Guides](../../api/guides.md)

@@ -191,7 +191,9 @@ function actionResources(action, optionNames, intentSource) {
   const resource = aliases[0];
   const prerequisites = [];
 
-  if (action.name === "editMarkLabelSelection") {
+  if (action.name === "createMarkLabels") {
+    prerequisites.push("existing eligible source mark");
+  } else if (action.name === "editMarkLabelSelection") {
     prerequisites.push("attached label");
   } else if (action.name === "editMarkLabelPlacement") {
     prerequisites.push("attached label with a supported source geometry");
@@ -438,6 +440,36 @@ function callPattern(action, options) {
   return `${action.name}({ ${selected.map(name => `${name}${required.has(name) ? "" : "?"}`).join(", ")} })`;
 }
 
+// Call patterns use documentation shorthand, so inspect only top-level option
+// names. Nested objects and literal values belong to the option's own contract.
+export function validateCallPatternOptions(pattern, options) {
+  const body = pattern.match(/\(\{([\s\S]*)\}\)$/u)?.[1];
+  if (body === undefined) return;
+  const allowed = new Set(options.map(option => option.name));
+  let depth = 0, quote, segment = "";
+  const segments = [];
+  for (const character of body) {
+    if (quote) {
+      if (character === quote) quote = undefined;
+    } else if (character === '"' || character === "'") quote = character;
+    else if ("{[(".includes(character)) depth += 1;
+    else if ("}])".includes(character)) depth -= 1;
+    if (character === "," && depth === 0 && !quote) {
+      segments.push(segment); segment = "";
+    } else segment += character;
+  }
+  segments.push(segment);
+  for (const segment of segments) {
+    for (const candidate of segment.split(":", 1)[0].split("|")) {
+      const key = candidate.trim().replace(/\?$/u, "");
+      if (key.startsWith("...")) continue;
+      if (/^[A-Za-z][A-Za-z0-9]*$/u.test(key) && !allowed.has(key)) {
+        throw new Error(`Call pattern advertises undeclared option "${key}": ${pattern}`);
+      }
+    }
+  }
+}
+
 function callPatterns(action, options, intentSource) {
   if (action.name === "createImputedData") {
     const branches = new Map();
@@ -507,6 +539,7 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
     ) {
       throw new Error(`${card.name} call patterns are invalid.`);
     }
+    for (const pattern of card.callPatterns) validateCallPatternOptions(pattern, declaration.options);
     if (new Set(card.options.map(option => option.name)).size !== card.options.length) {
       throw new Error(`${card.name} repeats an option key.`);
     }
