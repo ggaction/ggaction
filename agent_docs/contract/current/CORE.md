@@ -173,7 +173,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - Custom object는 `base`와 `tokens`를 모두 요구한다. `tokens`는 `background`, `mark`, `text`,
     `strongText`, `mutedText`, `axis`, `axisTitle`, `grid`, `border`, `sizeSymbol`,
     `regressionBand`, `boxLine`, `boxMedian`, `referenceLine`, `referenceBand`,
-    `gradientCenter`, `highlight`, `fontFamily`의 closed vocabulary다. 값은 non-empty string이다.
+    `gradientCenter`, `highlight`, `fontFamily`, `axisLabel`, `axisLabelFontFamily`,
+    `axisTitleFontFamily`, `axisLabelFontSize`, `axisTitleFontSize`의 closed vocabulary다.
+    FontSize token은 positive finite number이며 나머지는 non-empty string이다.
+  - Axis 전용 token은 Cartesian/Polar/Parallel 축에만 적용한다. Role font family 미지정은
+    global fontFamily, size 미지정은 family 기본값(label 12/11/11, title 13)으로 돌아간다.
+    axisLabel 미지정은 Cartesian/Polar text, Parallel axis 색을 사용한다.
+    초기 guide 공간 검사부터 active font를 적용하며 explicit role style이 우선한다.
   - Partial token은 base 위에 한 번만 overlay한다. 다음 `applyTheme`은 이전 partial token과 merge하지
     않으므로 생략한 token은 새 base 값으로 돌아간다.
 - `scope`
@@ -193,7 +199,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   resolved token object와 계산된 layout을 theme request state에 저장하지 않는다. Composition 전파는
   retained child input을 변경하지 않고 postorder로 새 snapshots를 만든다.
 - 오류: non-object/empty options, unknown root/token key, missing `base`/`tokens`, invalid theme/scope,
-  empty 또는 non-string token을 거부한다. 전체 candidate materialization이 실패하면 receiver와 caller
+  잘못된 font size, empty 또는 non-string 색/font family token을 거부한다. 전체 candidate materialization이 실패하면 receiver와 caller
   input은 변경되지 않는다.
 - Coverage: `test/unit/theme/defaults.test.js`, `test/unit/theme/state.test.js`,
   `test/unit/actions/theme.test.js`, `test/unit/actions/theme-composition.test.js`가 schema, frame ordering,

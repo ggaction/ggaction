@@ -40,15 +40,15 @@ import {
 
 const FACET_OPTIONS = Object.freeze([
   "id", "field", "data", "values", "columns", "gap", "spacing", "align", "padding", "scales",
-  "guides"
+  "guides", "headers"
 ]);
 const FACET_GRID_OPTIONS = Object.freeze([
   "id", "data", "rows", "columns", "combinations", "gap", "spacing", "align",
-  "padding", "scales", "guides"
+  "padding", "scales", "guides", "headers"
 ]);
 const REPEAT_OPTIONS = Object.freeze([
   "id", "target", "channel", "fields", "columns", "gap", "spacing", "align",
-  "padding", "scales", "guides"
+  "padding", "scales", "guides", "headers"
 ]);
 const SOURCE_EDIT_OPTIONS = Object.freeze(["program"]);
 const GUIDE_OPTIONS = Object.freeze(["axes", "legend"]);
@@ -185,7 +185,100 @@ function rederiveFacet(program, { scales, guides }) {
   }, compositionSpec.children);
 }
 
+function resolveEditedFacetHeaders(currentHeaders, args, grid, operation = "editFacetHeaders") {
+  validateOptionObject(args, HEADER_OPTIONS, operation, {
+    allowEmpty: false,
+    emptyMessage: `${operation} requires at least one change.`
+  });
+  const role = args.role ?? "all";
+  if (!["all", "row", "column"].includes(role)) {
+    throw new Error(`Unknown facet header role "${role}".`);
+  }
+  if (role === "all" && Object.hasOwn(args, "side")) {
+    throw new Error(`${operation} side requires an explicit row or column role.`);
+  }
+  if (role === "row" && grid === undefined) {
+    throw new Error(`${operation} row role requires a row-column facet grid.`);
+  }
+  if (Object.hasOwn(args, "side")) {
+    const sides = role === "row" ? ["left", "right"]
+      : grid === undefined
+        ? ["top", "bottom", "left", "right"] : ["top", "bottom"];
+    if (!sides.includes(args.side)) {
+      throw new Error(`${operation} ${role} side must be ${sides.join(" or ")}.`);
+    }
+  }
+  if (Object.hasOwn(args, "align") &&
+      !["start", "center", "end"].includes(args.align)) {
+    throw new Error(`${operation} align must be start, center, or end.`);
+  }
+  if (role === "all" && Object.keys(args).every(key => key === "role")) {
+    throw new Error(`${operation} requires at least one change.`);
+  }
+  const current = normalizeFacetHeadersConfig(currentHeaders);
+  const owner = role === "all" ? "common" : role;
+  const patch = { ...current[owner] };
+  for (const key of HEADER_STYLE_OPTIONS) {
+    if (Object.hasOwn(args, key)) patch[key] = args[key];
+  }
+  if (Object.hasOwn(args, "side")) patch.side = args.side;
+  if (Object.hasOwn(args, "labelMap")) {
+    if (args.labelMap === "auto") delete patch.labelMap;
+    else {
+      patch.labelMap = normalizeDisplayLabelMap(
+        args.labelMap,
+        `${operation} ${role} labelMap`
+      );
+    }
+  }
+  const headers = {
+    ...current,
+    ...(role === "all" ? {} : { mode: "roles" }),
+    [owner]: patch
+  };
+  for (const headerRole of ["all", "row", "column"]) {
+    const resolved = resolveFacetHeaderConfig(headers, headerRole);
+    validatePositiveFinite(resolved.fontSize, `Facet ${headerRole} header fontSize`);
+    validateNonEmptyString(resolved.fontFamily, `Facet ${headerRole} header fontFamily`);
+    validateNonEmptyString(resolved.color, `Facet ${headerRole} header color`);
+    validateNonNegativeFinite(resolved.offset, `Facet ${headerRole} header offset`);
+    if (!(
+      (typeof resolved.fontWeight === "string" && resolved.fontWeight.length > 0) ||
+      Number.isFinite(resolved.fontWeight)
+    )) {
+      throw new TypeError(
+        `Facet ${headerRole} header fontWeight must be a non-empty string or number.`
+      );
+    }
+    if (!["start", "center", "end"].includes(resolved.align)) {
+      throw new Error(`Facet ${headerRole} header align must be start, center, or end.`);
+    }
+    if (resolved.labelMap !== undefined) {
+      normalizeDisplayLabelMap(
+        resolved.labelMap,
+        `Facet ${headerRole} header labelMap`
+      );
+    }
+  }
+  return headers;
+}
+
+function initialFacetHeaders(value, grid) {
+  let headers = createDefaultFacetHeaders();
+  if (value === undefined) return headers;
+  validateOptionObject(value, [...HEADER_STYLE_OPTIONS, "labelMap", "row", "column"], "facet.headers");
+  const { row, column, ...common } = value;
+  if (Object.keys(common).length > 0) headers = resolveEditedFacetHeaders(headers, common, grid, "facet.headers");
+  for (const [role, patch] of [["row", row], ["column", column]]) {
+    if (patch === undefined) continue;
+    validateOptionObject(patch, HEADER_OPTIONS.filter(key => key !== "role"), `facet.headers.${role}`);
+    headers = resolveEditedFacetHeaders(headers, { ...patch, role }, grid, `facet.headers.${role}`);
+  }
+  return headers;
+}
+
 function composeDerivedFacet(program, args, { definition, derived, guides, scalePolicies, facet }) {
+  const headers = initialFacetHeaders(args.headers, definition.grid);
   const preflight = resolveFacetLayout({
     spacing: args.spacing,
     plots: Object.entries(derived.children).map(([id, child]) => ({ id, ...resolveGraphicBounds(child) })),
@@ -204,7 +297,7 @@ function composeDerivedFacet(program, args, { definition, derived, guides, scale
     facet: { data: definition.data, ...facet, scales: scalePolicies.channels, guides }
   };
   return applyCompositionState(
-    program._withMaterializationConfig(["facets", definition.id], { headers: createDefaultFacetHeaders() }),
+    program._withMaterializationConfig(["facets", definition.id], { headers }),
     { children: derived.children, compositionSpec }, compositionSpec.children
   );
 }
@@ -469,80 +562,7 @@ export const editFacetHeaders = /* @__PURE__ */ action(
     if (!isPlainObject(config?.headers)) {
       throw new Error(`Facet "${id}" requires header configuration.`);
     }
-    validateOptionObject(args, HEADER_OPTIONS, "editFacetHeaders", {
-      allowEmpty: false,
-      emptyMessage: "editFacetHeaders requires at least one change."
-    });
-    const role = args.role ?? "all";
-    if (!["all", "row", "column"].includes(role)) {
-      throw new Error(`Unknown facet header role "${role}".`);
-    }
-    if (role === "all" && Object.hasOwn(args, "side")) {
-      throw new Error("editFacetHeaders side requires an explicit row or column role.");
-    }
-    if (role === "row" && this.compositionSpec.facet.grid === undefined) {
-      throw new Error("editFacetHeaders row role requires a row-column facet grid.");
-    }
-    if (Object.hasOwn(args, "side")) {
-      const sides = role === "row" ? ["left", "right"]
-        : this.compositionSpec.facet.grid === undefined
-          ? ["top", "bottom", "left", "right"] : ["top", "bottom"];
-      if (!sides.includes(args.side)) {
-        throw new Error(`editFacetHeaders ${role} side must be ${sides.join(" or ")}.`);
-      }
-    }
-    if (Object.hasOwn(args, "align") &&
-        !["start", "center", "end"].includes(args.align)) {
-      throw new Error("editFacetHeaders align must be start, center, or end.");
-    }
-    if (role === "all" && Object.keys(args).every(key => key === "role")) {
-      throw new Error("editFacetHeaders requires at least one change.");
-    }
-    const current = normalizeFacetHeadersConfig(config.headers);
-    const owner = role === "all" ? "common" : role;
-    const patch = { ...current[owner] };
-    for (const key of HEADER_STYLE_OPTIONS) {
-      if (Object.hasOwn(args, key)) patch[key] = args[key];
-    }
-    if (Object.hasOwn(args, "side")) patch.side = args.side;
-    if (Object.hasOwn(args, "labelMap")) {
-      if (args.labelMap === "auto") delete patch.labelMap;
-      else {
-        patch.labelMap = normalizeDisplayLabelMap(
-          args.labelMap,
-          `editFacetHeaders ${role} labelMap`
-        );
-      }
-    }
-    const headers = {
-      ...current,
-      ...(role === "all" ? {} : { mode: "roles" }),
-      [owner]: patch
-    };
-    for (const headerRole of ["all", "row", "column"]) {
-      const resolved = resolveFacetHeaderConfig(headers, headerRole);
-      validatePositiveFinite(resolved.fontSize, `Facet ${headerRole} header fontSize`);
-      validateNonEmptyString(resolved.fontFamily, `Facet ${headerRole} header fontFamily`);
-      validateNonEmptyString(resolved.color, `Facet ${headerRole} header color`);
-      validateNonNegativeFinite(resolved.offset, `Facet ${headerRole} header offset`);
-      if (!(
-        (typeof resolved.fontWeight === "string" && resolved.fontWeight.length > 0) ||
-        Number.isFinite(resolved.fontWeight)
-      )) {
-        throw new TypeError(
-          `Facet ${headerRole} header fontWeight must be a non-empty string or number.`
-        );
-      }
-      if (!["start", "center", "end"].includes(resolved.align)) {
-        throw new Error(`Facet ${headerRole} header align must be start, center, or end.`);
-      }
-      if (resolved.labelMap !== undefined) {
-        normalizeDisplayLabelMap(
-          resolved.labelMap,
-          `Facet ${headerRole} header labelMap`
-        );
-      }
-    }
+    const headers = resolveEditedFacetHeaders(config.headers, args, this.compositionSpec.facet.grid);
     return this
       ._withMaterializationConfig(["facets", id], { ...config, headers })
       .materializeComposition();

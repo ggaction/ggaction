@@ -1,5 +1,5 @@
 import { rematerializeTypography } from "../../materialization/typography.js";
-import { themeTokens } from "../../theme/defaults.js";
+import { AXIS_LABEL_FONT_SIZES, AXIS_TITLE_FONT_SIZE, themeTokens } from "../../theme/defaults.js";
 import {
   normalizeThemeState,
   resolveEffectiveThemeTokens,
@@ -21,7 +21,7 @@ const THEME_STYLE_PROPERTIES = Object.freeze([
   "background",
   "fill",
   "stroke",
-  "fontFamily"
+  "fontFamily", "fontSize"
 ]);
 const COLOR_TOKENS = Object.freeze([
   "mark",
@@ -51,15 +51,38 @@ function tokenFor(value, sourceTokens, targetTokens) {
   return matches[0];
 }
 
-function roleValues(role, sourceTokens, legacy = []) {
+function axisFamily(name) {
+  return name.startsWith("parallel") ? "parallel"
+    : /^(theta|radial|radius)/u.test(name) ? "polar" : "cartesian";
+}
+
+function axisTextRole(property, component) {
+  if (!["labels", "title"].includes(component)) return undefined;
+  const role = component === "labels" ? "axisLabel" : "axisTitle";
+  if (property === "fontFamily") return `${role}FontFamily`;
+  if (property === "fontSize") return `${role}FontSize`;
+  if (["fill", "color"].includes(property)) return role;
+  return undefined;
+}
+
+function roleToken(tokens, role, family = "cartesian") {
+  if (tokens[role] !== undefined) return tokens[role];
+  if (role === "axisLabel") return family === "parallel" ? tokens.axis : tokens.text;
+  if (["axisLabelFontFamily", "axisTitleFontFamily"].includes(role)) return tokens.fontFamily;
+  if (role === "axisLabelFontSize") return AXIS_LABEL_FONT_SIZES[family];
+  if (role === "axisTitleFontSize") return AXIS_TITLE_FONT_SIZE;
+  return undefined;
+}
+
+function roleValues(role, sourceTokens, legacy = [], family) {
   return new Set([
-    sourceTokens[role],
-    themeTokens("light")[role],
+    roleToken(sourceTokens, role, family),
+    roleToken(themeTokens("light"), role, family),
     ...legacy.map(token => themeTokens("light")[token] ?? token)
   ]);
 }
 
-function mapRoleValue(value, role, sourceTokens, targetTokens, legacy) {
+function mapRoleValue(value, role, sourceTokens, targetTokens, legacy, family) {
   if (Array.isArray(value)) {
     let changed = false;
     const next = value.map(item => {
@@ -68,17 +91,18 @@ function mapRoleValue(value, role, sourceTokens, targetTokens, legacy) {
         role,
         sourceTokens,
         targetTokens,
-        legacy
+        legacy, family
       );
       changed ||= mapped.changed;
       return mapped.value;
     });
     return { changed, value: changed ? next : value };
   }
-  if (!roleValues(role, sourceTokens, legacy).has(value)) {
+  if (!roleValues(role, sourceTokens, legacy, family).has(value)) {
     return { changed: false, value };
   }
-  return { changed: value !== targetTokens[role], value: targetTokens[role] };
+  const target = roleToken(targetTokens, role, family);
+  return { changed: value !== target, value: target };
 }
 
 function mapColorValue(value, sourceTokens, targetTokens) {
@@ -158,6 +182,9 @@ function componentRole(program, id, property) {
 }
 
 function graphicRole(program, id, property) {
+  const axisPart = /Axis(Labels|Titles?)$/u.exec(id);
+  const scoped = axisPart === null ? undefined : axisTextRole(property, axisPart[1] === "Labels" ? "labels" : "title");
+  if (scoped !== undefined) return scoped;
   if (property === "fontFamily") return "fontFamily";
   if (id === "canvas" && property === "background") return "background";
   if (id === `${program.compositionSpec?.id}-headers` && property === "fill") {
@@ -198,6 +225,7 @@ function graphicRole(program, id, property) {
 }
 
 function roleLegacy(role) {
+  if (role === "axisLabel") return ["text", "axis"];
   if (role === "axis") return ["text"];
   if (role === "axisTitle") return ["text", "strongText"];
   if (role === "strongText") return ["text"];
@@ -238,7 +266,7 @@ function mapGraphicProperties(
       role,
       sourceTokens,
       targetTokens,
-      roleLegacy(role)
+      roleLegacy(role), axisFamily(id)
     );
     if (mapped.changed) {
       next[property] = mapped.value;
@@ -304,6 +332,11 @@ function recolorGraphic(
 
 function configRole(program, path) {
   const property = path.at(-1);
+  if (path[0] === "guides" && path[1] === "axis") {
+    const component = path[2] === "parallel" ? path.at(-2) : path[3];
+    const scoped = axisTextRole(property, component);
+    if (scoped !== undefined) return scoped;
+  }
   if (property === "fontFamily") return "fontFamily";
   if (path[0] === "facets" && path.includes("headers") &&
       property === "color") {
@@ -369,7 +402,7 @@ function recolorConfig(
   }
   if (value === null || typeof value !== "object") {
     const property = path.at(-1);
-    if (!["color", "fill", "stroke", "background", "fontFamily"]
+    if (!["color", "fill", "stroke", "background", "fontFamily", "fontSize"]
       .includes(property)) {
       return { changed: false, value };
     }
@@ -387,7 +420,7 @@ function recolorConfig(
           role,
           sourceTokens,
           targetTokens,
-          roleLegacy(role)
+          roleLegacy(role), axisFamily(String(path[2] ?? ""))
         );
   }
   if (["theme", "highlights", "selections"].includes(path[0])) {
@@ -722,10 +755,11 @@ function addAxisOverrides(overrides, op, args) {
       `g:${idPrefix}Axis${match[2]}.${component === "line" || component === "ticks" ? "stroke" : "fill"}`
     );
   }
-  if (["labels", "title"].includes(component) &&
-      Object.hasOwn(args, "fontFamily")) {
-    overrides.add(`c:guides.axis.${channel}.${component}.fontFamily`);
-    overrides.add(`g:${idPrefix}Axis${match[2]}.fontFamily`);
+  for (const property of ["fontFamily", "fontSize"]) {
+    if (["labels", "title"].includes(component) && Object.hasOwn(args, property)) {
+      overrides.add(`c:guides.axis.${channel}.${component}.${property}`);
+      overrides.add(`g:${idPrefix}Axis${match[2]}.${property}`);
+    }
   }
 }
 
@@ -750,15 +784,22 @@ function addCompleteAxisOverride(overrides, name, args) {
         `g:${idPrefix}Axis${suffix}.${component === "line" || component === "ticks" ? "stroke" : "fill"}`
       );
     }
-    if (["labels", "title"].includes(component) &&
-        Object.hasOwn(options ?? {}, "fontFamily")) {
-      overrides.add(`c:guides.axis.${channel}.${component}.fontFamily`);
-      overrides.add(`g:${idPrefix}Axis${suffix}.fontFamily`);
+    for (const property of ["fontFamily", "fontSize"]) {
+      if (["labels", "title"].includes(component) && Object.hasOwn(options ?? {}, property)) {
+        overrides.add(`c:guides.axis.${channel}.${component}.${property}`);
+        overrides.add(`g:${idPrefix}Axis${suffix}.${property}`);
+      }
     }
   }
 }
 
 function addCompleteAxisOverrides(overrides, op, args) {
+  if (args.guides?.axes !== null && typeof args.guides?.axes === "object") {
+    addCompleteAxisOverrides(overrides, "createAxes", args.guides.axes);
+  }
+  if (op === "createGuides" && args.axes !== null && typeof args.axes === "object") {
+    addCompleteAxisOverrides(overrides, "createAxes", args.axes);
+  }
   const match = /^(?:create|edit)(X|Y|Theta|Radial)Axis$/u.exec(op);
   if (match !== null) addCompleteAxisOverride(overrides, match[1], args);
   const group = /^(?:create|edit)(X|Y)AxisTicksAndLabels$/u.exec(op);
@@ -823,11 +864,10 @@ function addParallelOverrides(overrides, program, op, args) {
         `c:guides.axis.parallel.axes.dimensions.${index}.${component}.color`
       );
     }
-    if (["labels", "title"].includes(component) &&
-        Object.hasOwn(options ?? {}, "fontFamily")) {
-      overrides.add(
-        `c:guides.axis.parallel.axes.dimensions.${index}.${component}.fontFamily`
-      );
+    for (const property of ["fontFamily", "fontSize"]) {
+      if (["labels", "title"].includes(component) && Object.hasOwn(options ?? {}, property)) {
+        overrides.add(`c:guides.axis.parallel.axes.dimensions.${index}.${component}.${property}`);
+      }
     }
   }
 }
@@ -921,7 +961,7 @@ function explicitOverrides(program, node) {
   const overrides = new Set();
   if (op === "editGraphics" &&
       typeof args.target === "string" &&
-      ["background", "fill", "stroke", "fontFamily"].includes(args.property)) {
+      ["background", "fill", "stroke", "fontFamily", "fontSize"].includes(args.property)) {
     overrides.add(`g:${args.target}.${args.property}`);
   }
   if (["createCanvas", "editCanvas"].includes(op) &&
@@ -962,6 +1002,13 @@ function explicitOverrides(program, node) {
   if (op === "editFacetHeaders") {
     addFacetOverrides(overrides, program, args);
   }
+  if (["facet", "facetGrid", "repeatCharts"].includes(op) && args.headers !== undefined) {
+    const { row, column, ...common } = args.headers;
+    addFacetOverrides(overrides, program, common);
+    for (const [role, patch] of [["row", row], ["column", column]]) {
+      if (patch !== undefined) addFacetOverrides(overrides, program, { ...patch, role });
+    }
+  }
   return overrides;
 }
 
@@ -977,6 +1024,12 @@ function collectOverrides(program) {
     }
   }
   return overrides;
+}
+
+function axisTypographyChanged(before, after) {
+  if (before === after || after === null || typeof after !== "object") return false;
+  return Object.entries(after).some(([key, value]) => ["fontFamily", "fontSize"].includes(key)
+    ? value !== before?.[key] : axisTypographyChanged(before?.[key], value));
 }
 
 export function reconcileProgramTheme(program, { source, metadata }) {
@@ -1033,7 +1086,8 @@ export function reconcileProgramTheme(program, { source, metadata }) {
 
   const facetsChanged = configs.value.facets !==
     themed.materializationConfigs.facets;
-  const typographyChanged = sourceTokens.fontFamily !== targetTokens.fontFamily;
+  const typographyChanged = sourceTokens.fontFamily !== targetTokens.fontFamily ||
+    axisTypographyChanged(themed.guideConfigs.axis, configs.value.guides.axis);
   if (facetsChanged && next.compositionSpec?.type === "facet") {
     next = next.materializeComposition();
   } else if (typographyChanged) {

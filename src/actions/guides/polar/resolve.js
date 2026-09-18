@@ -15,7 +15,7 @@ import { formatTimeTick, formatTimeTicks } from "../../../grammar/ticks.js";
 import { resolveCoordinatePolarFrame } from
   "../../../materialization/coordinateBounds.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
-import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
+import { AXIS_LABEL_FONT_SIZES, AXIS_TITLE_FONT_SIZE, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
 import {
   findGraphicParent,
@@ -41,7 +41,7 @@ export const POLAR_AXIS_DEFAULTS = Object.freeze({
     radiusOffset: 10,
     format: "auto",
     color: DEFAULT_COLORS.text,
-    fontSize: 11,
+    fontSize: AXIS_LABEL_FONT_SIZES.polar,
     fontFamily: DEFAULT_FONT_FAMILY,
     fontWeight: "normal"
   }),
@@ -49,7 +49,7 @@ export const POLAR_AXIS_DEFAULTS = Object.freeze({
     thetaOffset: 42,
     radiusOffset: 8,
     color: DEFAULT_COLORS.strongText,
-    fontSize: 13,
+    fontSize: AXIS_TITLE_FONT_SIZE,
     fontFamily: DEFAULT_FONT_FAMILY,
     fontWeight: 600
   })

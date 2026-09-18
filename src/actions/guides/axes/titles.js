@@ -1,3 +1,4 @@
+import { axisThemeTypography } from "../../theme/state.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
@@ -14,7 +15,7 @@ import {
   mapContinuousScaleValues,
   mapOrdinalPositionValues
 } from "../../../grammar/scales/index.js";
-import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
+import { AXIS_TITLE_FONT_SIZE, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { formatAggregateTitle } from "../../../grammar/aggregate.js";
@@ -90,7 +91,7 @@ const CREATE_OPTIONS = [
 const EDIT_OPTIONS = CREATE_OPTIONS.filter(key => key !== "scale");
 const DEFAULTS = {
   color: DEFAULT_COLORS.text,
-  fontSize: 13,
+  fontSize: AXIS_TITLE_FONT_SIZE,
   fontFamily: DEFAULT_FONT_FAMILY,
   fontWeight: 600
 };
@@ -312,6 +313,7 @@ function makeCreate(channel) {
       fontSize: DEFAULTS.fontSize,
       fontFamily: DEFAULTS.fontFamily,
       fontWeight: DEFAULTS.fontWeight,
+      ...axisThemeTypography(this.materializationConfigs.theme, "title"),
       ...appearance
     };
     let next = this

@@ -158,3 +158,15 @@ export function setThemeStateOverrides(state, overrides) {
     overrides: cloneAndFreeze([...overrides].sort())
   });
 }
+
+// Resolve active font defaults before guide layout validates their occupied bounds.
+export function axisThemeTypography(state, component) {
+  if (resolveEffectiveThemeFrame(state) === undefined) return {};
+  const tokens = resolveEffectiveThemeTokens(state);
+  const role = component === "labels" ? "axisLabel" : "axisTitle";
+  const fontSize = tokens[`${role}FontSize`];
+  return {
+    fontFamily: tokens[`${role}FontFamily`] ?? tokens.fontFamily,
+    ...(fontSize === undefined ? {} : { fontSize })
+  };
+}

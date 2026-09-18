@@ -1,10 +1,11 @@
+import { axisThemeTypography } from "../../../theme/state.js";
 import {
   validateGeneratedItemLimit,
   validateNonEmptyString,
   validateNonNegativeFinite,
   validateOptionObject
 } from "../../../../core/validation.js";
-import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../../../../theme/defaults.js";
+import { AXIS_LABEL_FONT_SIZES, AXIS_TITLE_FONT_SIZE, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../../../../theme/defaults.js";
 import { validateAxisTextStyle } from "../labels.js";
 import { validateAxisFormat } from "../policy.js";
 
@@ -20,15 +21,15 @@ const STYLE_OPTIONS = Object.freeze({
   title: ["text", "offset", "color", "fontSize", "fontFamily", "fontWeight"]
 });
 
-export function defaultParallelAxis(field) {
+export function defaultParallelAxis(field, theme) {
   return {
     field,
     line: { color: DEFAULT_COLORS.axis, lineWidth: 1.25 },
     ticks: { mode: "auto", length: 8, color: DEFAULT_COLORS.mutedText, lineWidth: 1 },
     labels: { mode: "auto", offset: 9, format: "auto", color: DEFAULT_COLORS.axis,
-      fontSize: 11, fontFamily: DEFAULT_FONT_FAMILY, fontWeight: "normal" },
+      fontSize: AXIS_LABEL_FONT_SIZES.parallel, fontFamily: DEFAULT_FONT_FAMILY, fontWeight: "normal", ...axisThemeTypography(theme, "labels") },
     title: { offset: 20, color: DEFAULT_COLORS.axisTitle,
-      fontSize: 13, fontFamily: DEFAULT_FONT_FAMILY, fontWeight: 600 }
+      fontSize: AXIS_TITLE_FONT_SIZE, fontFamily: DEFAULT_FONT_FAMILY, fontWeight: 600, ...axisThemeTypography(theme, "title") }
   };
 }
 
@@ -98,8 +99,8 @@ function patchComponent(previous, defaults, options, part, create, operation) {
   return next;
 }
 
-export function patchParallelAxis(previous, args, create, operation) {
-  const defaults = defaultParallelAxis(args.field);
+export function patchParallelAxis(previous, args, create, operation, theme) {
+  const defaults = defaultParallelAxis(args.field, theme);
   const next = { ...previous, field: args.field };
   const updates = {};
   for (const part of ["line", "title"]) {
@@ -132,6 +133,6 @@ export function resolveParallelAxisConfigs(program, dimensions) {
   const previous = program.guideConfigs.axis?.parallel?.axes;
   const mode = previous?.mode ?? "all";
   const configs = dimensions.map(dimension => previous?.dimensions?.find(config => config.field === dimension.field) ??
-    (mode === "all" ? defaultParallelAxis(dimension.field) : { field: dimension.field }));
+    (mode === "all" ? defaultParallelAxis(dimension.field, program.materializationConfigs.theme) : { field: dimension.field }));
   return { mode, dimensions: configs };
 }

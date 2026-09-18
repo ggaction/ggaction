@@ -19,7 +19,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ## `facet`
 
-- Signature: `facet({ id?, field, data?, values?, columns?, gap?, spacing?, align?, padding?, scales?, guides? })`.
+- Signature: `facet({ id?, field, data?, values?, columns?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })`.
 - `field` is required. Omitted `data` resolves only when every eligible repeated layer has one unique common row-preserving ancestor.
 - Supported sources are complete Cartesian point, line, area, histogram bar, aggregate bar, ranged bar, rule, data-bound text,
   regression, density, interval/error-band, and box-plot programs; Polar Point, Line, direct Arc, Pie, Rose and Radar;
@@ -59,7 +59,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `facet`
 
-- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingRowPreservingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer"; legend?: false | "shared" } }): ChartProgram`.
+- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingRowPreservingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer"; legend?: false | "shared" }; headers?: FacetHeadersOptions }): ChartProgram`.
 - Implemented non-Cartesian families: Polar Point/Line/direct Arc/Pie/Rose/Radar and Parallel coordinates.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -85,9 +85,22 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
   `test/contracts/polar-parallel-facets.test.js`, `test/charts/cars-origin-scatterplot-facet/facet-variants.test.js`,
   `test/charts/cross-feature-integration/variants/facet-resolution/public.test.js`.
 
+### Initial header styles
+
+- `facet`, `facetGrid`, `repeatCharts` accept `headers?: FacetHeadersOptions`.
+  Common appearance/map options match `editFacetHeaders` without `role` or `side`;
+  optional `row` and `column` objects match that editor without `role`.
+- Common defaults apply first, then explicit role overrides. Role/side eligibility,
+  label-map resets, measured layout and atomic rejection match the editor below.
+  Explicit initial styles remain authored overrides across themes and source replay.
+- Omission retains legacy defaults. Row intent requires a two-field grid. Initial
+  options are stored in the existing facet header config, with no second state owner.
+- Evidence: `test/unit/actions/initial-facet-headers.test.js` compares initial
+  construction with create-then-edit for facets, grids, and repeats.
+
 ## `facetGrid`
 
-- Signature: `facetGrid({ id?, data?, rows, columns, combinations?, gap?, spacing?, align?, padding?, scales?, guides? })`.
+- Signature: `facetGrid({ id?, data?, rows, columns, combinations?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })`.
 - `rows` and `columns` each require a different source field and accept an optional unique observed `values` order.
   Omitted orders use first appearance independently on each field.
 - `combinations: "observed"` is the default. It creates only observed pairs while retaining their true row and column
@@ -102,7 +115,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `facetGrid`
 
-- Implemented: `facetGrid({ id?: UserId; data?: ExistingRowPreservingDatasetId; rows: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; columns: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; combinations?: "observed" | "full"; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions }): ChartProgram`.
+- Implemented: `facetGrid({ id?: UserId; data?: ExistingRowPreservingDatasetId; rows: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; columns: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; combinations?: "observed" | "full"; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
 - Implemented for the same Cartesian, Polar and Parallel families and policies as `facet`.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -117,7 +130,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ## `repeatCharts`
 
-- Signature: `repeatCharts({ id?, target?, channel, fields, columns?, gap?, spacing?, align?, padding?, scales?, guides? })`.
+- Signature: `repeatCharts({ id?, target?, channel, fields, columns?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })`.
 - Repeats one complete direct-source mark by replacing an eligible field role across an ordered unique field list.
   Cartesian marks accept `x` or `y`; Polar Point/Line/direct field-bound Arc/Rose accept `theta` or public `r`; Parallel
   coordinates accept `{ parallelDimension: field }` and replace exactly that dimension while preserving its position,
@@ -134,7 +147,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `repeatCharts`
 
-- Implemented: `repeatCharts({ id?: UserId; target?: EligibleDirectMarkId; channel: "x" | "y" | "theta" | "r" | { parallelDimension: NonEmptyString }; fields: NonEmptyUniqueFieldTuple; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions }): ChartProgram`.
+- Implemented: `repeatCharts({ id?: UserId; target?: EligibleDirectMarkId; channel: "x" | "y" | "theta" | "r" | { parallelDimension: NonEmptyString }; fields: NonEmptyUniqueFieldTuple; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
 - Explicitly rejected: Pie/Radar raw positional-role replacement, composite statistical roles, derived target datasets,
   two-dimensional repeat matrices, and outer axes.
 - Proposed (NOT IMPLEMENTED): —

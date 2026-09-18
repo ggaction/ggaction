@@ -6044,6 +6044,7 @@ export interface FacetGridOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
 }
@@ -6051,7 +6052,7 @@ export interface FacetGridOptions {
 
 </details>
 
-Related types: [`FacetGridRole`](#type-facetgridrole) · [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions).
+Related types: [`FacetGridRole`](#type-facetgridrole) · [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions) · [`FacetHeadersOptions`](#type-facetheadersoptions).
 
 ### `FacetGridRole` {#type-facetgridrole}
 
@@ -6116,6 +6117,22 @@ export type FacetHeaderSide = "top" | "bottom" | "left" | "right";
 
 </details>
 
+### `FacetHeadersOptions` {#type-facetheadersoptions}
+
+<details markdown="1">
+<summary>Expand FacetHeadersOptions</summary>
+
+```typescript
+export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side"> & {
+  row?: Omit<EditFacetHeadersOptions, "role">;
+  column?: Omit<EditFacetHeadersOptions, "role">;
+};
+```
+
+</details>
+
+Related types: [`EditFacetHeadersOptions`](#type-editfacetheadersoptions).
+
 ### `FacetOptions` {#type-facetoptions}
 
 <details markdown="1">
@@ -6133,6 +6150,7 @@ export interface FacetOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
 }
@@ -6140,7 +6158,7 @@ export interface FacetOptions {
 
 </details>
 
-Related types: [`DatasetScalar`](#type-datasetscalar) · [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions).
+Related types: [`DatasetScalar`](#type-datasetscalar) · [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions) · [`FacetHeadersOptions`](#type-facetheadersoptions).
 
 ### `FacetScaleResolution` {#type-facetscaleresolution}
 
@@ -9911,6 +9929,7 @@ export interface RepeatChartsOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
 }
@@ -9918,7 +9937,7 @@ export interface RepeatChartsOptions {
 
 </details>
 
-Related types: [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions).
+Related types: [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions) · [`FacetHeadersOptions`](#type-facetheadersoptions).
 
 ### `ReplaceCompositionChildOptions` {#type-replacecompositionchildoptions}
 
@@ -11033,6 +11052,11 @@ export type ThemeName = "light" | "dark";
 
 ```typescript
 export interface ThemeTokens {
+  axisLabel?: string;
+  axisLabelFontFamily?: string;
+  axisTitleFontFamily?: string;
+  axisLabelFontSize?: number;
+  axisTitleFontSize?: number;
   background: string;
   mark: string;
   text: string;

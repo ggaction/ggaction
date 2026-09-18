@@ -62,6 +62,10 @@ Standalone Cartesian axis는 기존 guide.axis의 scale/coordinate binding을 da
 Mark consumer 배열에 가짜 layer나 dataset을 넣지 않는다. Scale preview와 Canvas/coordinate/scale
 rematerialization plan이 이 binding을 읽어 명시 domain·coordinate bounds로 축을 갱신한다.
 
+Axis 전용 typography는 기존 theme frame의 partial token을 사용한다. 초기 축 layout 전에
+active font 기본값을 읽고, theme 변경 시 기존 guide config와 concrete text bounds를 함께
+갱신한다. Facet 초기 header 스타일은 기존 header config에 정규화하며 editor와 같은 검증을 사용한다.
+
 ## 전체 계층
 
 ```text
@@ -271,7 +275,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Gzip ceiling |
 | --- | ---: |
 | `ggaction` | 378,000 bytes |
-| `ggaction/basic` | 178,000 bytes |
+| `ggaction/basic` | 180,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -1938,3 +1942,7 @@ Box facade의 explicit summary mapping은 기존 boxSummary derived-data owner�
 Source revision과 facet replay는 같은 transform validator/materializer를 사용한다. 픽셀 body 폭과
 median 폭은 기존 mark config에 남고 Rule median은 concrete body center와 owner width intent를 읽는다.
 Whisker cap/style은 기존 ErrorBar editor가 생성/제거와 rematerialization을 소유한다.
+
+축 전용 typography 및 초기 guide font layout 지원 후 Basic gzip 실측은178,573bytes다.
+기존178,000bytes 한도를 초과해180,000bytes로 조정한다. Full/SVG/artifact 한도는 유지하며
+이전 한도 통과로 보고하지 않는다. 초기 facet header는 기존 header config/editor 검증을 공유한다.

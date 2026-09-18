@@ -118,6 +118,28 @@ async function testNodeConsumer(directory) {
       assert.equal(png.buffer.readUInt32BE(16), Math.ceil(canvas.width));
       assert.equal(png.buffer.readUInt32BE(20), Math.ceil(canvas.height));
     }
+    for (const factory of [chart, basicChart]) {
+      const scoped = factory().createCanvas({ width: 300, height: 200, margin: 24 })
+        .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
+        .applyTheme({ theme: { base: "light", tokens: {
+          axisLabelFontSize: 6, axisLabelFontFamily: "serif", axisLabel: "red"
+        } } })
+        .createScatterPlot({ x: "x", y: "y", guides: { axes: {
+          x: { title: false }, y: false
+        }, grid: false, legend: false } });
+      assert.equal(scoped.graphicSpec.objects.xAxisLabels.items[0].properties.fontSize, 6);
+      assert.equal(scoped.graphicSpec.objects.xAxisLabels.items[0].properties.fill, "red");
+      assert.deepEqual(deserializeProgram(serializeProgram(scoped)).graphicSpec, scoped.graphicSpec);
+      assert.ok((await renderToPNGBuffer(scoped)).buffer.length > 1000);
+    }
+    const initialHeaders = chart().createCanvas({ width: 250, height: 200, margin: 50 })
+      .createData({ values: [{ x: 1, y: 2, group: "A" }, { x: 2, y: 3, group: "B" }] })
+      .createScatterPlot({ x: "x", y: "y", guides: false })
+      .facet({ field: "group", headers: { color: "red", column: { side: "right" } } });
+    assert.equal(initialHeaders.materializationConfigs.facets.facet.headers.common.color, "red");
+    assert.deepEqual(deserializeProgram(serializeProgram(initialHeaders)).graphicSpec, initialHeaders.graphicSpec);
+    assert.ok((await renderToPNGBuffer(initialHeaders)).buffer.length > 1000);
+
     const precomputedBox = chart().createCanvas({ width: 600, height: 400, margin: 80 })
       .createData({ values: [{ group: "A", min: 3.07, q1: 13.3475, median: 17.795, q3: 24.1275, max: 50.81 }] })
       .createBoxPlot({ x: { field: "group", fieldType: "nominal" },
@@ -2814,6 +2836,17 @@ async function testTypeScriptConsumer(directory) {
 
     const program: ChartProgram = chart().createCanvas({ width: 100, height: 100 });
     const themeName: ThemeName = "dark";
+    chart().facet({ field: "group", headers: { fontSize: 14, column: { side: "right", color: "red" } } });
+    chart().facetGrid({ rows: { field: "row" }, columns: { field: "column" },
+      headers: { row: { side: "left" }, column: { fontFamily: "serif" } } });
+    // @ts-expect-error side belongs to a row/column role
+    chart().facet({ field: "group", headers: { side: "right" } });
+    basicChart().applyTheme({ theme: { base: "light", tokens: {
+      axisLabel: "red", axisLabelFontSize: 6, axisTitleFontSize: 18,
+      axisLabelFontFamily: "serif", axisTitleFontFamily: "monospace"
+    } } });
+    // @ts-expect-error font size is numeric
+    chart().applyTheme({ theme: { base: "light", tokens: { axisLabelFontSize: "large" } } });
     const themeOptions: ApplyThemeOptions = { theme: themeName };
     const themedProgram: ChartProgram = program.applyTheme(themeOptions).removeTheme();
     const inspection: ProgramInspection = inspectProgram(program);

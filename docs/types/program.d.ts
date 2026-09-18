@@ -19,6 +19,11 @@ export interface ApplyTextMetricsOptions { profile: TextMetricsProfile; }
 
 export type ThemeName = "light" | "dark";
 export interface ThemeTokens {
+  axisLabel?: string;
+  axisLabelFontFamily?: string;
+  axisTitleFontFamily?: string;
+  axisLabelFontSize?: number;
+  axisTitleFontSize?: number;
   background: string;
   mark: string;
   text: string;
@@ -211,6 +216,7 @@ export interface FacetOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
 }
@@ -229,6 +235,7 @@ export interface FacetGridOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
 }
@@ -243,6 +250,7 @@ export interface RepeatChartsOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
 }
@@ -258,6 +266,10 @@ export interface EditFacetHeadersOptions {
   side?: FacetHeaderSide;
   align?: FacetHeaderAlign;
 }
+export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side"> & {
+  row?: Omit<EditFacetHeadersOptions, "role">;
+  column?: Omit<EditFacetHeadersOptions, "role">;
+};
 export type FacetHeaderRole = "all" | "row" | "column";
 export type FacetHeaderSide = "top" | "bottom" | "left" | "right";
 export type FacetHeaderAlign = "start" | "center" | "end";

@@ -26,16 +26,17 @@ test("normalizes built-in and custom theme requests into owned partial definitio
   assert.equal(Object.isFrozen(normalized.tokens), true);
 });
 
-test("resolves exactly the closed eighteen-token theme vocabulary", () => {
-  assert.equal(THEME_TOKEN_KEYS.length, 18);
-  assert.deepEqual(Object.keys(THEME_TOKENS.light), [...THEME_TOKEN_KEYS]);
-  assert.deepEqual(Object.keys(THEME_TOKENS.dark), [...THEME_TOKEN_KEYS]);
+test("resolves base tokens and the closed optional axis typography vocabulary", () => {
+  assert.equal(THEME_TOKEN_KEYS.length, 23);
+  const baseKeys = THEME_TOKEN_KEYS.filter(key => !["axisLabel", "axisLabelFontFamily", "axisTitleFontFamily", "axisLabelFontSize", "axisTitleFontSize"].includes(key));
+  assert.deepEqual(Object.keys(THEME_TOKENS.light), [...baseKeys]);
+  assert.deepEqual(Object.keys(THEME_TOKENS.dark), [...baseKeys]);
 
   const resolved = resolveThemeTokens({
     base: "light",
     tokens: { mark: "red", grid: "green", fontFamily: "RoadmapTest" }
   });
-  assert.deepEqual(Object.keys(resolved), [...THEME_TOKEN_KEYS]);
+  assert.deepEqual(Object.keys(resolved), [...baseKeys]);
   assert.equal(resolved.mark, "red");
   assert.equal(resolved.grid, "green");
   assert.equal(resolved.fontFamily, "RoadmapTest");

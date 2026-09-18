@@ -1,3 +1,4 @@
+import { axisThemeTypography } from "../../theme/state.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
@@ -20,7 +21,7 @@ import {
 import { formatTimeTick, formatTimeTicks } from "../../../grammar/ticks.js";
 import { resolveRotation } from "../../../grammar/rotation.js";
 import { valuesFromTickConfig } from "../tickValues.js";
-import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
+import { AXIS_LABEL_FONT_SIZES, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
 import {
   defaultAxisPosition,
@@ -53,7 +54,7 @@ const OPTIONS = [
 const DEFAULTS = {
   count: 5,
   color: DEFAULT_COLORS.text,
-  fontSize: 12,
+  fontSize: AXIS_LABEL_FONT_SIZES.cartesian,
   fontFamily: DEFAULT_FONT_FAMILY,
   fontWeight: "normal",
   rotation: 0,
@@ -426,6 +427,7 @@ function makeCreate(channel) {
       fontSize: DEFAULTS.fontSize,
       fontFamily: DEFAULTS.fontFamily,
       fontWeight: DEFAULTS.fontWeight,
+      ...axisThemeTypography(this.materializationConfigs.theme, "labels"),
       rotation: DEFAULTS.rotation,
       overlap: DEFAULTS.overlap,
       ...args,

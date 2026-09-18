@@ -246,6 +246,7 @@ export type {
   EditHorizonOptions,
   EditCompositionLayoutOptions,
   EditFacetHeadersOptions,
+  FacetHeadersOptions,
   EditAxisOptions,
   EditGradientPlotOptions,
   EditViolinPlotOptions,

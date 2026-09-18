@@ -1,3 +1,4 @@
+import { axisThemeTypography } from "../../../theme/state.js";
 import { action } from "../../../../core/action.js";
 import {
   validateNonEmptyString,
@@ -55,7 +56,8 @@ function validateTitleGeometry(program, kind, config, geometry, text) {
   }, program.materializationConfigs.textMetrics);
 }
 
-function resolveTitleConfig(kind, args, resources, previous) {
+function resolveTitleConfig(program, kind, args, resources, previous) {
+  const typography = axisThemeTypography(program.materializationConfigs.theme, "title");
   const config = {
     ...(previous ?? {}),
     scale: resources.scale,
@@ -65,9 +67,9 @@ function resolveTitleConfig(kind, args, resources, previous) {
       ? POLAR_AXIS_DEFAULTS.title.thetaOffset
       : POLAR_AXIS_DEFAULTS.title.radiusOffset),
     color: args.color ?? previous?.color ?? POLAR_AXIS_DEFAULTS.title.color,
-    fontSize: args.fontSize ?? previous?.fontSize ??
+    fontSize: args.fontSize ?? previous?.fontSize ?? typography.fontSize ??
       POLAR_AXIS_DEFAULTS.title.fontSize,
-    fontFamily: args.fontFamily ?? previous?.fontFamily ??
+    fontFamily: args.fontFamily ?? previous?.fontFamily ?? typography.fontFamily ??
       POLAR_AXIS_DEFAULTS.title.fontFamily,
     fontWeight: args.fontWeight ?? previous?.fontWeight ??
       POLAR_AXIS_DEFAULTS.title.fontWeight
@@ -106,7 +108,7 @@ function makeEditTitle(kind) {
       scale: previous.scale,
       coordinate: previous.coordinate
     };
-    const config = resolveTitleConfig(kind, args, resources, previous);
+    const config = resolveTitleConfig(this, kind, args, resources, previous);
     const text = Object.hasOwn(args, "text")
       ? validateNonEmptyString(args.text, "Polar axis title text")
       : config.inferredText
@@ -150,7 +152,7 @@ function makeCreateTitle(kind) {
     }
     const resources = componentResources(this, kind, args, operation.create);
     const angle = resolveAngle(this, kind, args);
-    const config = resolveTitleConfig(kind, args, resources);
+    const config = resolveTitleConfig(this, kind, args, resources);
     const text = validateNonEmptyString(
       args.text ?? inferAxisTitleText(this, names.channel, resources.scale),
       "Polar axis title text"

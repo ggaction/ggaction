@@ -27453,6 +27453,11 @@
           "type": "FacetGuideOptions | undefined"
         },
         {
+          "name": "headers",
+          "required": false,
+          "type": "FacetHeadersOptions | undefined"
+        },
+        {
           "name": "spacing",
           "required": false,
           "type": "\"canvas\" | \"plot\" | undefined"
@@ -27583,6 +27588,11 @@
           "name": "guides",
           "required": false,
           "type": "FacetGuideOptions | undefined"
+        },
+        {
+          "name": "headers",
+          "required": false,
+          "type": "FacetHeadersOptions | undefined"
         },
         {
           "name": "spacing",
@@ -27719,6 +27729,11 @@
           "name": "guides",
           "required": false,
           "type": "FacetGuideOptions | undefined"
+        },
+        {
+          "name": "headers",
+          "required": false,
+          "type": "FacetHeadersOptions | undefined"
         },
         {
           "name": "spacing",

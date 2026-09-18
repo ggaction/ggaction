@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:801be1ba37579c46b9d5a6eccff6f64da25f68a65eb0108804922c8fa649a784. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:4efe352c769ba4d62d850482d4c3d936cd9622ae72cb1597e48ccc3b3647b7f9. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -15588,8 +15588,18 @@ program.applyTheme({
 Custom definitions accept these token keys: `background`, `mark`, `text`,
 `strongText`, `mutedText`, `axis`, `axisTitle`, `grid`, `border`,
 `sizeSymbol`, `regressionBand`, `boxLine`, `boxMedian`, `referenceLine`,
-`referenceBand`, `gradientCenter`, `highlight`, and `fontFamily`. A new theme
-replaces the previous request; omitted partial tokens come from the new base.
+`referenceBand`, `gradientCenter`, `highlight`, `fontFamily`, `axisLabel`,
+`axisLabelFontFamily`, `axisTitleFontFamily`, `axisLabelFontSize`, and
+`axisTitleFontSize`. Font sizes must be positive finite numbers; other tokens
+must be non-empty strings. A new theme replaces the previous request; omitted
+partial tokens come from the new base.
+
+Axis label and title font tokens affect only axes, including Polar and Parallel
+axes. Omitted role fonts fall back to `fontFamily`; omitted sizes retain each
+axis family's default. `axisLabel` overrides label color; without it, Cartesian
+and Polar labels use `text`, and Parallel labels use `axis`. `axisTitle` controls
+axis title color. Explicit axis styles win, even when equal to a built-in default.
+Active fonts are used during initial guide layout as well as later theme edits.
 
 A unit chart defaults to `scope: "self"`. A composition defaults to
 `scope: "descendants"`, which updates its root, current nested children, and
@@ -17225,12 +17235,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
+| `headers` | Optional / branch-dependent | `FacetHeadersOptions \| undefined` |
 | `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-facet({ id?, field, data?, values?, columns?, gap?, spacing?, align?, padding?, scales?, guides? })
+facet({ id?, field, data?, values?, columns?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })
 ```
 
 Repeat one complete Cartesian, Polar, or Parallel chart by a field on its common
@@ -17245,6 +17256,15 @@ the child legend's configured `left`, `right`, `top`, or `bottom` edge. Top and
 bottom promotion also preserves the child legend's horizontal alignment;
 author those options with `createLegend` before calling `facet`.
 See [Program composition](./api/composition/#repeat-the-current-chart-by-a-field).
+
+Creation options for `facet`, `facetGrid`, and `repeatCharts` accept `headers`.
+Set common `fontSize`, `fontFamily`, `fontWeight`, `color`, `offset`, `align`, or
+`labelMap`, and optional `row`/`column` objects with role-specific overrides and
+`side`. Common styles are applied before role overrides. Row headers require a
+two-field grid; its column sides are top/bottom, while one-field facets and
+repeats also allow left/right column headers. The option uses the same values,
+layout, and precedence as `editFacetHeaders`; authored styles survive themes
+and source replay. Omitting `headers` preserves the default headers.
 
 ## `facetGrid`
 
@@ -17274,12 +17294,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
+| `headers` | Optional / branch-dependent | `FacetHeadersOptions \| undefined` |
 | `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-facetGrid({ id?, data?, rows, columns, combinations?, gap?, spacing?, align?, padding?, scales?, guides? })
+facetGrid({ id?, data?, rows, columns, combinations?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })
 ```
 
 Repeat one supported Cartesian, Polar, or Parallel chart over two ordered
@@ -17316,12 +17337,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
+| `headers` | Optional / branch-dependent | `FacetHeadersOptions \| undefined` |
 | `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-repeatCharts({ id?, target?, channel, fields, columns?, gap?, spacing?, align?, padding?, scales?, guides? })
+repeatCharts({ id?, target?, channel, fields, columns?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })
 ```
 
 Repeat one direct mark by replacing Cartesian `x`/`y`, eligible Polar
@@ -31376,12 +31398,13 @@ export interface FacetGridOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
 }
 ```
 
-Related types: [`FacetGridRole`](./reference/types/#type-facetgridrole) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions).
+Related types: [`FacetGridRole`](./reference/types/#type-facetgridrole) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](./reference/types/#type-facetheadersoptions).
 
 ### `FacetGridRole` {#type-facetgridrole}
 
@@ -31431,6 +31454,19 @@ export type FacetHeaderRole = "all" | "row" | "column";
 export type FacetHeaderSide = "top" | "bottom" | "left" | "right";
 ```
 
+### `FacetHeadersOptions` {#type-facetheadersoptions}
+
+ Expand FacetHeadersOptions
+
+```typescript
+export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side"> & {
+  row?: Omit<EditFacetHeadersOptions, "role">;
+  column?: Omit<EditFacetHeadersOptions, "role">;
+};
+```
+
+Related types: [`EditFacetHeadersOptions`](./reference/types/#type-editfacetheadersoptions).
+
 ### `FacetOptions` {#type-facetoptions}
 
  Expand FacetOptions
@@ -31447,12 +31483,13 @@ export interface FacetOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
 }
 ```
 
-Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions).
+Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](./reference/types/#type-facetheadersoptions).
 
 ### `FacetScaleResolution` {#type-facetscaleresolution}
 
@@ -34586,12 +34623,13 @@ export interface RepeatChartsOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
 }
 ```
 
-Related types: [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions).
+Related types: [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](./reference/types/#type-facetheadersoptions).
 
 ### `ReplaceCompositionChildOptions` {#type-replacecompositionchildoptions}
 
@@ -35525,6 +35563,11 @@ export type ThemeName = "light" | "dark";
 
 ```typescript
 export interface ThemeTokens {
+  axisLabel?: string;
+  axisLabelFontFamily?: string;
+  axisTitleFontFamily?: string;
+  axisLabelFontSize?: number;
+  axisTitleFontSize?: number;
   background: string;
   mark: string;
   text: string;
@@ -37115,6 +37158,7 @@ and source-row count multiplied by child count must not exceed the shared
 | `align` | `"center"` | Aligns unequal cells inside grid tracks |
 | `padding` | `0` on every side | Adds scalar or four-side parent padding |
 | `scales` | every used role `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `yOffset`, `theta`, public `r`, `color`, `stroke`, `size`, `shape`, `opacity`, `strokeDash`, or all `parallelDimensions` |
+| `headers` | default header style | Common text style/map plus optional `row` and `column` overrides; role objects also accept `side` |
 | `guides.axes` | `"each"` | `"outer"` keeps occupied-edge Cartesian x/y axes; Polar and Parallel axes remain local and reject `"outer"` |
 | `guides.legend` | `false` | `"shared"` promotes one compatible parent-owned categorical, gradient, discretized-color, size, or opacity legend |
 
@@ -38640,7 +38684,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:801be1ba37579c46b9d5a6eccff6f64da25f68a65eb0108804922c8fa649a784` |
+| Contract fingerprint | `sha256:4efe352c769ba4d62d850482d4c3d936cd9622ae72cb1597e48ccc3b3647b7f9` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

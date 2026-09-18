@@ -234,8 +234,18 @@ program.applyTheme({
 Custom definitions accept these token keys: `background`, `mark`, `text`,
 `strongText`, `mutedText`, `axis`, `axisTitle`, `grid`, `border`,
 `sizeSymbol`, `regressionBand`, `boxLine`, `boxMedian`, `referenceLine`,
-`referenceBand`, `gradientCenter`, `highlight`, and `fontFamily`. A new theme
-replaces the previous request; omitted partial tokens come from the new base.
+`referenceBand`, `gradientCenter`, `highlight`, `fontFamily`, `axisLabel`,
+`axisLabelFontFamily`, `axisTitleFontFamily`, `axisLabelFontSize`, and
+`axisTitleFontSize`. Font sizes must be positive finite numbers; other tokens
+must be non-empty strings. A new theme replaces the previous request; omitted
+partial tokens come from the new base.
+
+Axis label and title font tokens affect only axes, including Polar and Parallel
+axes. Omitted role fonts fall back to `fontFamily`; omitted sizes retain each
+axis family's default. `axisLabel` overrides label color; without it, Cartesian
+and Polar labels use `text`, and Parallel labels use `axis`. `axisTitle` controls
+axis title color. Explicit axis styles win, even when equal to a built-in default.
+Active fonts are used during initial guide layout as well as later theme edits.
 
 A unit chart defaults to `scope: "self"`. A composition defaults to
 `scope: "descendants"`, which updates its root, current nested children, and
@@ -2090,6 +2100,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
+| `headers` | Optional / branch-dependent | `FacetHeadersOptions \| undefined` |
 | `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
 
 </details>
@@ -2097,7 +2108,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-facet({ id?, field, data?, values?, columns?, gap?, spacing?, align?, padding?, scales?, guides? })
+facet({ id?, field, data?, values?, columns?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })
 ```
 
 Repeat one complete Cartesian, Polar, or Parallel chart by a field on its common
@@ -2112,6 +2123,15 @@ the child legend's configured `left`, `right`, `top`, or `bottom` edge. Top and
 bottom promotion also preserves the child legend's horizontal alignment;
 author those options with `createLegend` before calling `facet`.
 See [Program composition](../../api/composition.md#repeat-the-current-chart-by-a-field).
+
+Creation options for `facet`, `facetGrid`, and `repeatCharts` accept `headers`.
+Set common `fontSize`, `fontFamily`, `fontWeight`, `color`, `offset`, `align`, or
+`labelMap`, and optional `row`/`column` objects with role-specific overrides and
+`side`. Common styles are applied before role overrides. Row headers require a
+two-field grid; its column sides are top/bottom, while one-field facets and
+repeats also allow left/right column headers. The option uses the same values,
+layout, and precedence as `editFacetHeaders`; authored styles survive themes
+and source replay. Omitting `headers` preserves the default headers.
 
 
 ## `facetGrid`
@@ -2143,6 +2163,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
+| `headers` | Optional / branch-dependent | `FacetHeadersOptions \| undefined` |
 | `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
 
 </details>
@@ -2150,7 +2171,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-facetGrid({ id?, data?, rows, columns, combinations?, gap?, spacing?, align?, padding?, scales?, guides? })
+facetGrid({ id?, data?, rows, columns, combinations?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })
 ```
 
 Repeat one supported Cartesian, Polar, or Parallel chart over two ordered
@@ -2189,6 +2210,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
+| `headers` | Optional / branch-dependent | `FacetHeadersOptions \| undefined` |
 | `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
 
 </details>
@@ -2196,7 +2218,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-repeatCharts({ id?, target?, channel, fields, columns?, gap?, spacing?, align?, padding?, scales?, guides? })
+repeatCharts({ id?, target?, channel, fields, columns?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })
 ```
 
 Repeat one direct mark by replacing Cartesian `x`/`y`, eligible Polar

@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:801be1ba37579c46b9d5a6eccff6f64da25f68a65eb0108804922c8fa649a784",
+    "contractId": "sha256:4efe352c769ba4d62d850482d4c3d936cd9622ae72cb1597e48ccc3b3647b7f9",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -2015,8 +2015,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 158357,
-      "sha256": "95215408dad40d0617d6b698781d636a9e06a1927784a9301a33d203165aad01"
+      "bytes": 159923,
+      "sha256": "bd92a814f1173e69e3ed157a686155db21e23b73a5db9aaa07258dc36d481058"
     },
     {
       "order": 119,
@@ -2642,6 +2642,7 @@
         "type-facetheaderalign",
         "type-facetheaderrole",
         "type-facetheaderside",
+        "type-facetheadersoptions",
         "type-facetoptions",
         "type-facetscaleresolution",
         "type-facetscaleresolutions",
@@ -2954,8 +2955,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 317922,
-      "sha256": "15d84dfbac3a5a12a2d3b1ca9511b2e0c8abace71989cc6492a34d3d1be16e77"
+      "bytes": 318765,
+      "sha256": "d0006fcb1e751dffe9c33f8949a3a75a94fd175a67ca5f9abdeb87bd99b3a0f1"
     },
     {
       "order": 127,
@@ -3055,8 +3056,8 @@
         "repeat-a-positional-encoding-across-fields",
         "space-between-plots"
       ],
-      "bytes": 15383,
-      "sha256": "47d92d744d0224f575526a29d2e15cfb5c59390e8a80b2eeb9a3dbd75a767e6d"
+      "bytes": 15520,
+      "sha256": "3ed2a4dbb2a9405aad6bab659112150e29444e5b0fb91380f29fc79664f5fe22"
     },
     {
       "order": 134,
@@ -3308,7 +3309,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "3781e71e73b0171ac9c2861052136e2f2256aad189777fe3f433110cc96a89a0"
+      "sha256": "d967798a92e9fa98ce77e5265d141f6d07bc5ac867fa050517841f284a52c037"
     },
     {
       "order": 150,

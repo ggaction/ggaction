@@ -68,7 +68,7 @@ function makeAxisAction(create) {
       ? { mode: "selected", dimensions: resolved.dimensions.map(dimension => ({ field: dimension.field })) }
       : resolveParallelAxisConfigs(this, resolved.dimensions);
     const previous = config.dimensions.find(dimension => dimension.field === args.field);
-    const updated = patchParallelAxis(previous, args, create, operation);
+    const updated = patchParallelAxis(previous, args, create, operation, this.materializationConfigs.theme);
     const next = withTitle(withOwner(this, resolved, {
       ...config, dimensions: config.dimensions.map(dimension => dimension.field === args.field ? updated : dimension)
     }), args, create);

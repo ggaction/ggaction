@@ -1,3 +1,4 @@
+import { axisThemeTypography } from "../../../theme/state.js";
 import { action } from "../../../../core/action.js";
 import { validateNonNegativeFinite } from "../../../../core/validation.js";
 import {
@@ -99,6 +100,7 @@ function resolveLabelConfig(program, kind, args, resources, previous) {
   } else {
     mode = normalizePolarTickMode(program, resources.scale, {}, count);
   }
+  const typography = axisThemeTypography(program.materializationConfigs.theme, "labels");
   const config = {
     ...(previous ?? {}),
     scale: resources.scale,
@@ -110,9 +112,9 @@ function resolveLabelConfig(program, kind, args, resources, previous) {
     format: args.format ?? previous?.format ??
       POLAR_AXIS_DEFAULTS.labels.format,
     color: args.color ?? previous?.color ?? POLAR_AXIS_DEFAULTS.labels.color,
-    fontSize: args.fontSize ?? previous?.fontSize ??
+    fontSize: args.fontSize ?? previous?.fontSize ?? typography.fontSize ??
       POLAR_AXIS_DEFAULTS.labels.fontSize,
-    fontFamily: args.fontFamily ?? previous?.fontFamily ??
+    fontFamily: args.fontFamily ?? previous?.fontFamily ?? typography.fontFamily ??
       POLAR_AXIS_DEFAULTS.labels.fontFamily,
     fontWeight: args.fontWeight ?? previous?.fontWeight ??
       POLAR_AXIS_DEFAULTS.labels.fontWeight

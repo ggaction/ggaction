@@ -2,6 +2,8 @@ import { DEFAULT_FONT_FAMILY } from "../core/font.js";
 export { DEFAULT_FONT_FAMILY };
 
 export const DEFAULT_POINT_RADIUS = 3;
+export const AXIS_LABEL_FONT_SIZES = Object.freeze({ cartesian: 12, polar: 11, parallel: 11 });
+export const AXIS_TITLE_FONT_SIZE = 13;
 
 export const DEFAULT_COLORS = Object.freeze({
   mark: "#4c78a8",
@@ -42,7 +44,8 @@ export const THEME_TOKEN_KEYS = Object.freeze([
   "referenceBand",
   "gradientCenter",
   "highlight",
-  "fontFamily"
+  "fontFamily", "axisLabel", "axisLabelFontFamily", "axisTitleFontFamily",
+  "axisLabelFontSize", "axisTitleFontSize"
 ]);
 
 const THEME_DEFINITION_KEYS = Object.freeze(["base", "tokens"]);
@@ -120,7 +123,9 @@ function normalizeThemeTokens(tokens) {
   validateKeys(tokens, THEME_TOKEN_KEYS, "applyTheme theme.tokens");
   const normalized = {};
   for (const [key, value] of Object.entries(tokens)) {
-    validateNonEmptyString(value, `applyTheme theme.tokens.${key}`);
+    if (key.endsWith("FontSize")) {
+      if (!Number.isFinite(value) || value <= 0) throw new RangeError(`applyTheme theme.tokens.${key} must be positive and finite.`);
+    } else validateNonEmptyString(value, `applyTheme theme.tokens.${key}`);
     normalized[key] = value;
   }
   return own(normalized);
