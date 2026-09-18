@@ -167,3 +167,15 @@ test("rejects invalid grid options without mutating inputs", () => {
   );
   assert.deepEqual(children, snapshot);
 });
+
+test("reserves independent left and right header lanes for each physical column", () => {
+  const source = { cellColumns: { left: [20, 30], right: [10, 40] } };
+  const layout = resolveFacetLayout({ children, columns: 2, gap: 0, padding: 0, headerLayout: source });
+  assert.deepEqual(layout.children.map(child => [child.x, child.y]), [[20, 0], [160, 0], [20, 80]]);
+  assert.equal(layout.width, 300);
+  assert.equal(layout.height, 160);
+  assert.deepEqual(source, { cellColumns: { left: [20, 30], right: [10, 40] } });
+  for (const cellColumns of [{ left: [1] }, { right: [-1, 0] }, { top: [0, 0] }, null]) {
+    assert.throws(() => resolveFacetLayout({ children, columns: 2, headerLayout: { cellColumns } }));
+  }
+});

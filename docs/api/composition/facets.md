@@ -211,8 +211,20 @@ const labeledMatrix = matrix
 
 Row-column grids create one header for each occupied column, followed by one
 for each occupied row. One-field facets and `repeatCharts` support the column
-role and retain one header per cell. Row sides are `left` or `right`; column
-sides are `top` or `bottom`. Role settings override the common style and map.
+role and retain one header per cell. Supported sides depend on the facet topology:
+
+| Facet topology and role | Supported sides |
+| --- | --- |
+| Row-column grid, row headers | `left`, `right` |
+| Row-column grid, column headers | `top`, `bottom` |
+| One-field facet or repeat, column headers | `top`, `bottom`, `left`, `right` |
+
+For one-field facets, `editFacetHeaders({ role: "column", side: "right" })`
+places each value beside its own panel. Left/right headers reserve measured
+width for every physical column, including wrapped grids with zero gap or
+padding. Child plot sizes stay unchanged. `align` follows the vertical plot
+span on the sides and the horizontal plot span at the top/bottom.
+Role settings override the common style and map.
 `labelMap: "auto"` on a role returns to the common map, while an unqualified
 reset returns to the normal visible formatter. Typed raw values remain the
 partition identity. Duplicate display text and `""` are allowed; an empty
@@ -221,6 +233,28 @@ mapped header keeps its stable item position and reserves no strip space.
 Header strips are measured before child placement. Changes to fonts, labels,
 sides, composition layout, titles, or shared legends therefore rebuild the
 required parent space without moving or rewriting child program identity.
+
+A complete example with a right-side header for each panel:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const panels = chart()
+  .createCanvas({ width: 200, height: 160, margin: 35 })
+  .createData({ values: [
+    { panel: "First", category: "A", value: 2 },
+    { panel: "Second", category: "A", value: 5 }
+  ] })
+  .createBarPlot({ x: "category", y: "value", guides: false })
+  .facet({ field: "panel", columns: 2, gap: 0, padding: 0 })
+  .editFacetHeaders({ role: "column", side: "right" });
+```
 
 ## Build a row and column facet grid
 

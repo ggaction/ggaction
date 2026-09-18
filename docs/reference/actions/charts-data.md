@@ -2271,6 +2271,9 @@ editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, 
 
 Edit the parent-owned repeated facet headers and rebuild the parent snapshot
 without changing child programs or facet value order.
+One-field facets and repeats accept all four sides with `role: "column"`;
+left/right placements reserve a measured lane beside every physical column.
+Row-column grids retain left/right row headers and top/bottom column headers.
 
 
 ## `editFacetScales`

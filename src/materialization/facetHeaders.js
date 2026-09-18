@@ -115,6 +115,7 @@ function roleDescriptors(program, headers) {
       id,
       ids: [id],
       row: Math.floor(index / spec.columns),
+      column: index % spec.columns,
       text: mappedText(spec.facet.values[index], column),
       config: column
     }));
@@ -165,11 +166,22 @@ export function prepareFacetHeaders(program, headersConfig) {
     const column = resolveFacetHeaderConfig(headers, "column");
     const columnThickness = laneThickness(descriptors, "column", program.materializationConfigs.textMetrics);
     if (program.compositionSpec.facet.grid === undefined) {
+      const side = ["left", "right"].includes(column.side);
+      if (side) {
+        headerLayout.cellColumns = {
+          left: Array(program.compositionSpec.columns).fill(0),
+          right: Array(program.compositionSpec.columns).fill(0)
+        };
+      }
       for (const descriptor of descriptors) {
         if (descriptor.text !== "") {
-          headerLayout.cellRows[column.side][descriptor.row] = Math.max(
-            headerLayout.cellRows[column.side][descriptor.row],
-            descriptor.config.fontSize + descriptor.config.offset
+          const reservations = side ? headerLayout.cellColumns : headerLayout.cellRows;
+          const index = side ? descriptor.column : descriptor.row;
+          const thickness = side
+            ? measureTextWidth(descriptor.text, descriptor.config, program.materializationConfigs.textMetrics)
+            : descriptor.config.fontSize;
+          reservations[column.side][index] = Math.max(
+            reservations[column.side][index], thickness + descriptor.config.offset
           );
         }
       }
@@ -239,7 +251,7 @@ function roleItem(descriptor, cells, plots) {
   const snapshots = union(selectedCells.map(placedCell));
   const config = descriptor.config;
   let anchor;
-  if (descriptor.role === "column") {
+  if (["top", "bottom"].includes(config.side)) {
     anchor = horizontalAnchor(plot, config.align);
     const top = config.side === "top";
     anchor.y = top

@@ -591,7 +591,9 @@ export const editFacetHeaders = /* @__PURE__ */ action(
       throw new Error("editFacetHeaders row role requires a row-column facet grid.");
     }
     if (Object.hasOwn(args, "side")) {
-      const sides = role === "row" ? ["left", "right"] : ["top", "bottom"];
+      const sides = role === "row" ? ["left", "right"]
+        : this.compositionSpec.facet.grid === undefined
+          ? ["top", "bottom", "left", "right"] : ["top", "bottom"];
       if (!sides.includes(args.side)) {
         throw new Error(`editFacetHeaders ${role} side must be ${sides.join(" or ")}.`);
       }

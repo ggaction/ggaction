@@ -173,7 +173,10 @@ Exact internal graphic ID spelling is not a public authoring option.
   `formatVisibleText`. Typed raw values remain the identity, so `1` and `"1"` may display differently without
   changing partitions. Duplicate visible labels and `""` are valid; empty mapped text keeps the item identity but
   reserves no strip space.
-- Row sides are `left | right`; column sides are `top | bottom`. `align:"start" | "center" | "end"` applies
+- Row sides are `left | right`; grid column sides are `top | bottom`. One-field facet
+  and repeat column headers also accept `left | right`, keeping one header per cell. Side cell
+  headers reserve the maximum measured text width plus offset for each physical column,
+  including wrapped rows, without resizing child canvases. `align:"start" | "center" | "end"` applies
   along the occupied plot span. `side` requires an explicit row/column role. Role strips reserve measured space in
   the parent layout before child placement, so font, map, side, layout, title and shared-legend changes converge.
 - Editing preserves child identity, semantic facet values, shared scales and layout order, then rematerializes the
@@ -191,6 +194,7 @@ Exact internal graphic ID spelling is not a public authoring option.
   prior state, invalid role/side/map, empty edit and non-facet rejection.
 - Evidence: `test/unit/actions/composition/facet.test.js`,
   `test/unit/actions/composition/facet-display-headers.test.js`,
+  `test/unit/actions/composition/facet-side-headers.test.js`,
   `test/unit/grammar/layout/facets.test.js`, and
   `test/charts/cars-origin-scatterplot-facet/facet-variants.test.js`.
 

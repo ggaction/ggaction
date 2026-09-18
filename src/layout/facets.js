@@ -54,7 +54,7 @@ function alignedOffset(remaining, align) {
 
 const ZERO_SIDES = Object.freeze({ top: 0, right: 0, bottom: 0, left: 0 });
 
-function normalizeHeaderLayout(value, rows) {
+function normalizeHeaderLayout(value, rows, columns) {
   if (value === undefined) {
     return {
       outer: ZERO_SIDES,
@@ -62,7 +62,7 @@ function normalizeHeaderLayout(value, rows) {
     };
   }
   if (!isPlainObject(value) || Object.keys(value).some(
-    key => !["outer", "cellRows"].includes(key)
+    key => !["outer", "cellRows", "cellColumns"].includes(key)
   )) {
     throw new TypeError("Facet headerLayout must contain outer and cellRows.");
   }
@@ -92,7 +92,24 @@ function normalizeHeaderLayout(value, rows) {
     ));
     return [side, [...amounts]];
   }));
-  return { outer, cellRows };
+  if (value.cellColumns === undefined) return { outer, cellRows };
+  const sourceColumns = value.cellColumns;
+  if (!isPlainObject(sourceColumns) || Object.keys(sourceColumns).some(
+    key => !["left", "right"].includes(key)
+  )) {
+    throw new TypeError("Facet headerLayout.cellColumns must contain left and right arrays.");
+  }
+  const cellColumns = Object.fromEntries(["left", "right"].map(side => {
+    const amounts = sourceColumns[side] ?? Array(columns).fill(0);
+    if (!Array.isArray(amounts) || amounts.length !== columns) {
+      throw new RangeError(`Facet headerLayout.cellColumns.${side} must match column count.`);
+    }
+    amounts.forEach((amount, index) => validateCompositionSpacing(
+      amount, `Facet headerLayout.cellColumns.${side}[${index}]`
+    ));
+    return [side, [...amounts]];
+  }));
+  return { outer, cellRows, cellColumns };
 }
 
 export function resolveFacetLayout({
@@ -150,7 +167,10 @@ export function resolveFacetLayout({
     : 0;
   const rowCount = coordinates?.rows ??
     Math.ceil(resolvedChildren.length / resolvedColumns);
-  const headers = normalizeHeaderLayout(headerLayout, rowCount);
+  const headers = normalizeHeaderLayout(headerLayout, rowCount, resolvedColumns);
+  const columnHeaders = headers.cellColumns ?? {
+    left: Array(resolvedColumns).fill(0), right: Array(resolvedColumns).fill(0)
+  };
   const columnWidths = Array(resolvedColumns).fill(-Infinity);
   const rowHeights = Array(rowCount).fill(-Infinity);
   resolvedChildren.forEach((child, index) => {
@@ -165,7 +185,9 @@ export function resolveFacetLayout({
   });
   const columnStarts = columnWidths.map((_, column) =>
     resolvedPadding.left + headers.outer.left + columnWidths.slice(0, column)
-      .reduce((sum, width) => sum + width, 0) + resolvedGap * column
+      .reduce((sum, width, index) =>
+        sum + columnHeaders.left[index] + width + columnHeaders.right[index], 0) +
+      resolvedGap * column + columnHeaders.left[column]
   );
   const rowStarts = rowHeights.map((_, row) =>
     resolvedTitleHeight + resolvedPadding.top + headers.outer.top +
@@ -202,6 +224,8 @@ export function resolveFacetLayout({
   const gridWidth = resolvedPadding.left +
     headers.outer.left +
     columnWidths.reduce((sum, width) => sum + width, 0) +
+    columnHeaders.left.reduce((sum, amount) => sum + amount, 0) +
+    columnHeaders.right.reduce((sum, amount) => sum + amount, 0) +
     resolvedGap * Math.max(0, resolvedColumns - 1) +
     headers.outer.right +
     resolvedPadding.right;

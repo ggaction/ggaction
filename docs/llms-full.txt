@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:8878333a274d4d9743fc225d1a93a6cd25e8a40eb3654b03977e29b8ee7e0b9a. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:7817d9daef5ac2b662f15c7ea63820e0d2d50a90944c405a4e605468a7cc0d8d. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -17109,6 +17109,9 @@ editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, 
 
 Edit the parent-owned repeated facet headers and rebuild the parent snapshot
 without changing child programs or facet value order.
+One-field facets and repeats accept all four sides with `role: "column"`;
+left/right placements reserve a measured lane beside every physical column.
+Row-column grids retain left/right row headers and top/bottom column headers.
 
 ## `editFacetScales`
 
@@ -36684,8 +36687,20 @@ const labeledMatrix = matrix
 
 Row-column grids create one header for each occupied column, followed by one
 for each occupied row. One-field facets and `repeatCharts` support the column
-role and retain one header per cell. Row sides are `left` or `right`; column
-sides are `top` or `bottom`. Role settings override the common style and map.
+role and retain one header per cell. Supported sides depend on the facet topology:
+
+| Facet topology and role | Supported sides |
+| --- | --- |
+| Row-column grid, row headers | `left`, `right` |
+| Row-column grid, column headers | `top`, `bottom` |
+| One-field facet or repeat, column headers | `top`, `bottom`, `left`, `right` |
+
+For one-field facets, `editFacetHeaders({ role: "column", side: "right" })`
+places each value beside its own panel. Left/right headers reserve measured
+width for every physical column, including wrapped grids with zero gap or
+padding. Child plot sizes stay unchanged. `align` follows the vertical plot
+span on the sides and the horizontal plot span at the top/bottom.
+Role settings override the common style and map.
 `labelMap: "auto"` on a role returns to the common map, while an unqualified
 reset returns to the normal visible formatter. Typed raw values remain the
 partition identity. Duplicate display text and `""` are allowed; an empty
@@ -36694,6 +36709,24 @@ mapped header keeps its stable item position and reserves no strip space.
 Header strips are measured before child placement. Changes to fonts, labels,
 sides, composition layout, titles, or shared legends therefore rebuild the
 required parent space without moving or rewriting child program identity.
+
+A complete example with a right-side header for each panel:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+const panels = chart()
+  .createCanvas({ width: 200, height: 160, margin: 35 })
+  .createData({ values: [
+    { panel: "First", category: "A", value: 2 },
+    { panel: "Second", category: "A", value: 5 }
+  ] })
+  .createBarPlot({ x: "category", y: "value", guides: false })
+  .facet({ field: "panel", columns: 2, gap: 0, padding: 0 })
+  .editFacetHeaders({ role: "column", side: "right" });
+```
 
 ## Build a row and column facet grid
 
@@ -38032,7 +38065,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:8878333a274d4d9743fc225d1a93a6cd25e8a40eb3654b03977e29b8ee7e0b9a` |
+| Contract fingerprint | `sha256:7817d9daef5ac2b662f15c7ea63820e0d2d50a90944c405a4e605468a7cc0d8d` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
