@@ -202,3 +202,11 @@ export function resolveGuideCoordinateBounds(program, {
   }
   return resolveCoordinateBounds(program, target, { resolvedScales });
 }
+
+// Cartesian guide bindings are semantic scale consumers without data rows.
+export function axisScaleBindings(program, id) {
+  return Object.entries(program.semanticSpec.guides.axis ?? {}).flatMap(([channel, guide]) =>
+    ["x", "y"].includes(channel) && guide.scale === id && guide.coordinate !== undefined &&
+      program.materializationConfigs?.guides?.axis?.[channel]?.binding?.standalone === true
+      ? [{ channel, coordinate: guide.coordinate }] : []);
+}

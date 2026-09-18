@@ -64,7 +64,7 @@ export function needsCanvasScaleRematerialization(program, scale) {
       usesRadialScale(program, scale.id) ||
       semanticGuideUsesScale(program, scale.id)) &&
     (program.resolvedScales[scale.id] !== undefined || scale.radialMapping !== undefined) &&
-    usesPositionalScale(program, scale.id)
+    (usesPositionalScale(program, scale.id) || semanticGuideUsesScale(program, scale.id))
   );
 }
 

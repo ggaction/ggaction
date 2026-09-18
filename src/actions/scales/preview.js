@@ -5,6 +5,8 @@ import { findSemanticScale } from "../../selectors/scales.js";
 import { normalizePositionScaleChannel } from "../../core/vocabulary.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 import {
+  axisScaleBindings,
+  resolveCoordinateBounds,
   resolveDataAspectScalePair,
   resolveScaleConsumerBounds
 } from "../../materialization/coordinateBounds.js";
@@ -19,10 +21,15 @@ import { findScale, findScaleConsumers, resolveConsumerCategoryOrder,
 function resolveScalePreviewAtBounds(program, id, bounds) {
   const scale = findScale(program, id);
   const consumers = findScaleConsumers(program, id);
-  if (consumers.length === 0) throw new Error(`Scale "${id}" has no supported consumers.`);
+  const axes = axisScaleBindings(program, id);
+  if (consumers.length === 0 && axes.length === 0) throw new Error(`Scale "${id}" has no supported consumers.`);
+  if (consumers.length === 0 && (!Array.isArray(scale.domain) || scale.domain.length === 0)) {
+    throw new Error("Standalone axis scales require an explicit nonempty domain.");
+  }
   const consumerChannels = new Set(consumers.map(
     consumer => normalizePositionScaleChannel(consumer.channel)
   ));
+  for (const binding of axes) consumerChannels.add(binding.channel);
   const families = new Set([...consumerChannels].map(
     channel => channel === "stroke" ? "color" : channel
   ));
@@ -99,6 +106,12 @@ function dataAspectScaleIds(program) {
 
 export function resolveScalePreview(program, id) {
   const requestedConsumers = findScaleConsumers(program, id);
+  const axes = axisScaleBindings(program, id);
+  if (requestedConsumers.length === 0 && axes.length > 0) {
+    const coordinate = requireCoordinate(program, axes[0].coordinate);
+    if (coordinate.type !== "cartesian") throw new Error("Standalone axes require a Cartesian coordinate.");
+    return resolveScalePreviewAtBounds(program, id, resolveCoordinateBounds(program, coordinate.id));
+  }
   const positionChannels = new Set([
     "x", "y", "x2", "y2", "theta", "radius"
   ]);
@@ -126,6 +139,12 @@ export function resolveScalePreview(program, id) {
     provisional.consumers,
     { resolvedScales }
   );
+  for (const binding of axes) {
+    const guideBounds = resolveCoordinateBounds(program, binding.coordinate, { resolvedScales });
+    if (["x", "y", "width", "height"].some(key => Math.abs(guideBounds[key] - bounds[key]) > 1e-9)) {
+      throw new Error("Axis and mark scale consumers require matching coordinate bounds.");
+    }
+  }
   return resolveScalePreviewAtBounds(program, id, bounds);
 }
 
@@ -137,6 +156,7 @@ export function restoreResolvedScaleBindings(program) {
     const channels = new Set(consumers.map(consumer =>
       normalizePositionScaleChannel(consumer.channel)
     ));
+    for (const binding of axisScaleBindings(program, scale.id)) channels.add(binding.channel);
     const families = new Set([...channels].map(channel =>
       channel === "stroke" ? "color" : channel
     ));

@@ -189,6 +189,18 @@
   {
     "file": "api/axes.md",
     "block": 1,
+    "heading": "Standalone Cartesian axes",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "7e76965261352cc995c11f21b4420070befc764a461ba3d55ae2a34845850c72",
+    "executable": false
+  },
+  {
+    "file": "api/axes.md",
+    "block": 2,
     "heading": "Polar component creation",
     "mode": "fragment",
     "environment": "esm-context",
@@ -200,7 +212,7 @@
   },
   {
     "file": "api/axes.md",
-    "block": 2,
+    "block": 3,
     "heading": "Editing a complete axis",
     "mode": "fragment",
     "environment": "esm-context",
@@ -212,7 +224,7 @@
   },
   {
     "file": "api/axes.md",
-    "block": 3,
+    "block": 4,
     "heading": "Removing an axis",
     "mode": "fragment",
     "environment": "esm-context",

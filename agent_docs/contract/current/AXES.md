@@ -9,7 +9,15 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 `createXAxis`와 `createYAxis`는 같은 option shape를 사용한다.
 
 - `scale`: optional scale ID. 생략하면 channel ID를 사용하거나 parent `createAxes`가 유일한 scale을 전달한다.
-- `coordinate`: optional existing coordinate ID. 선택 channel/scale을 소비하는 layer가 실제로 연결돼야 한다.
+- `coordinate`: optional existing coordinate ID. 일반 축은 선택 channel/scale을 소비하는 layer가 연결된다.
+  `coordinate`와 `scale`을 모두 명시하면 mark/data 없는 standalone 축도 생성할 수 있다.
+  Standalone은 Cartesian coordinate와 nonempty explicit scale.domain을 요구한다. 자동 domain은 거부한다.
+  제목 기본값은 scale ID이며 title:false 또는 명시 text로 바꿀 수 있다. Invisible mark나 dataset을 만들지 않는다.
+  Linear/log/symlog/time/band/point, scale edit, Canvas·frame aspect resize, 저장복원을 지원한다.
+  축 binding은 기존 guide.axis.{channel}.scale/coordinate가 소유하며 scale materialization이 함께 읽는다.
+  guideConfigs.axis.{channel}.binding.standalone은 독립 생성 intent를 보존해 일반 축의 중간 역할 교체와 구분한다.
+  다른 channel과 scale 공유 또는 서로 다른 effective coordinate bounds는 거부한다.
+  Evidence: `test/unit/actions/guides/standalone-axes.test.js`.
 - `position`: x는 `"bottom" | "top"`, y는 `"left" | "right"`를 사용하며 defaults는 bottom/left다.
 - `line`: `{ color?, lineWidth? }`; axis-line child에 전달한다.
 - `ticksAndLabels`: `{ count?, values?, ticks?, labels? }`; shared tick/label child에 전달한다.

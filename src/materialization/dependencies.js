@@ -32,7 +32,9 @@ export function planCoordinateRematerialization(program, target) {
     ...(layer.encoding?.parallel?.dimensions ?? []).map(
       dimension => dimension.scale
     )
-  ]).filter(id => id !== undefined))];
+  ]).filter(id => id !== undefined)),
+    ...Object.values(program.semanticSpec.guides.axis ?? {}).filter(guide => guide.coordinate === target)
+      .map(guide => guide.scale).filter(id => id !== undefined)];
   const directMarks = layers
     .map(layer => getMarkMaterializationStep(program, layer))
     .filter(step => step !== undefined);

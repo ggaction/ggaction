@@ -5,6 +5,7 @@ import { normalizePositionScaleChannel } from "../../core/vocabulary.js";
 import { findLayer } from "../../selectors/layers.js";
 import { requireSemanticScale } from "../../selectors/scales.js";
 import { findScaleConsumers } from "./consumers/index.js";
+import { axisScaleBindings } from "../../materialization/coordinateBounds.js";
 
 const DEFINITIONS = Object.freeze({
   editXScale: Object.freeze({
@@ -99,9 +100,11 @@ function allConsumers(program) {
 }
 
 function channelScaleIds(program, channel) {
-  return [...new Set(allConsumers(program)
+  return [...new Set([...allConsumers(program)
     .filter(consumer => normalizePositionScaleChannel(consumer.channel) === channel)
-    .map(consumer => consumer.encoding.scale))];
+    .map(consumer => consumer.encoding.scale),
+    ...program.semanticSpec.scales.filter(scale => axisScaleBindings(program, scale.id)
+      .some(binding => binding.channel === channel)).map(scale => scale.id)])];
 }
 
 function requireSingleScale(ids, operation, scope) {
@@ -115,6 +118,8 @@ function requireSingleScale(ids, operation, scope) {
 function validateScaleChannel(program, id, channel, operation) {
   requireSemanticScale(program, id);
   const consumers = findScaleConsumers(program, id);
+  const axes = axisScaleBindings(program, id);
+  if (consumers.length === 0 && axes.length === 1 && axes[0].channel === channel) return id;
   if (consumers.length === 0) {
     throw new Error(`${operation} requires a scale bound to the ${channel} channel.`);
   }

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:2367251d73d877faf06a48f3a070ea53d0bb57b0940f6add5aa324f580dfa452. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:fbf4ff20c387124be45f78cb02ef91d2d0850f78cbf09234ec48b4ba097662fc. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12028,6 +12028,27 @@ legend on the same edge. This applies to creation, focused and whole-axis edits,
 and Canvas or scale updates, regardless of authoring order. Increase the margin
 or change offsets when space is insufficient; a failed action preserves the
 earlier program.
+
+## Standalone Cartesian axes
+
+An axis does not need an invisible mark or dataset. Supply an existing Cartesian
+coordinate and a scale with an explicit domain:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+const ruler = chart().createCanvas({ margin: 80 })
+  .createCoordinate({ id: "frame", type: "cartesian" })
+  .createScale({ id: "amount", type: "linear", domain: [0, 100] })
+  .createXAxis({ coordinate: "frame", scale: "amount" });
+```
+
+The title defaults to the scale ID. Set `title: false` to omit it or use
+`title: { text: "Amount" }`. Both resource IDs are required for standalone
+creation; an automatic domain needs data consumers. Scale edits, Canvas resize,
+coordinate frame aspect changes, and serialization preserve the binding.
 
 ## Polar component creation
 
@@ -25462,6 +25483,12 @@ Each component accepts its edit object or `false` for removal. Use
 preserves scale, coordinate, encoding, and data, while the last component also
 cleans the empty axis state.
 
+Cartesian `createXAxis`/`createYAxis` can bind a standalone scale without marks:
+provide both `coordinate` and `scale`, with an existing Cartesian coordinate
+and explicit nonempty scale domain. The default title is the scale ID.
+Scale, Canvas, and coordinate frame edits update the axis. Auto domains require
+data consumers; unrelated channel or coordinate bindings are rejected.
+
 ## Axis lines, ticks, and labels
 
 ```javascript
@@ -38433,7 +38460,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:2367251d73d877faf06a48f3a070ea53d0bb57b0940f6add5aa324f580dfa452` |
+| Contract fingerprint | `sha256:fbf4ff20c387124be45f78cb02ef91d2d0850f78cbf09234ec48b4ba097662fc` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

@@ -6,6 +6,8 @@ import { validateUserId } from "../../../core/identifiers.js";
 import { validateKeys } from "../../../core/validation.js";
 import { hasCoordinate } from "../../../selectors/index.js";
 import { validateEnabledAxisComponents } from "./components.js";
+import { requireSemanticScale } from "../../../selectors/scales.js";
+import { requireCoordinate } from "../../../selectors/coordinates.js";
 
 const TOP_OPTIONS = Object.freeze([
   "scale",
@@ -100,16 +102,26 @@ function makeCreateAxis(channel) {
         if (!exists) {
           throw new Error(`Unknown coordinate "${coordinate}".`);
         }
-        if (!hasConsumer) {
-          throw new Error(
-            `${operation.create} found no ${channel} encoding for coordinate "${coordinate}" and scale "${scale}".`
-          );
+        const standalone = !hasConsumer;
+        if (standalone && (!Object.hasOwn(args, "scale") ||
+            next.semanticSpec.layers.some(layer => Object.values(layer.encoding ?? {}).some(encoding => encoding?.scale === scale)))) {
+          throw new Error(`${operation.create} found no ${channel} encoding for coordinate "${coordinate}" and scale "${scale}"; standalone binding requires an explicit unused scale.`);
+        }
+        if (standalone) {
+          const definition = requireSemanticScale(next, scale);
+          if (!Array.isArray(definition.domain) || definition.domain.length === 0 ||
+              requireCoordinate(next, coordinate).type !== "cartesian") {
+            throw new Error("Standalone axes require a Cartesian coordinate and explicit nonempty scale domain.");
+          }
         }
 
         next = next.editSemantic({
           property: `guide.axis.${channel}.coordinate`,
           value: coordinate
         });
+        if (standalone) next = next._withGuideConfig(channel, "binding", { standalone: true })
+          .editSemantic({ property: `guide.axis.${channel}.scale`, value: scale })
+          .rematerializeScale({ id: scale, guides: false, marks: false });
       }
 
       for (const component of ["line", "ticksAndLabels", "title"]) {

@@ -2050,6 +2050,17 @@ async function testNodeConsumer(directory) {
     const annotation = annotationSource.createAnnotation({
       text: "Peak · 9.0", x: 8, y: 9, dx: 8, dy: -16
     });
+    const standaloneAxis = chart().createCanvas({ width: 500, height: 300, margin: 70 })
+      .createCoordinate({ id: "ruler", type: "cartesian" })
+      .createScale({ id: "amount", type: "linear", domain: [0, 100] })
+      .createXAxis({ coordinate: "ruler", scale: "amount" });
+    assert.equal(standaloneAxis.semanticSpec.layers.length, 0);
+    assert.equal(standaloneAxis.semanticSpec.datasets.length, 0);
+    const widerAxis = standaloneAxis.editCanvas({ width: 700 }).editXScale({ domain: [0, 200] });
+    assert.deepEqual(widerAxis.resolvedScales.amount.range, [70, 630]);
+    assert.deepEqual(widerAxis.resolvedScales.amount.domain, [0, 200]);
+    assert.deepEqual(deserializeProgram(serializeProgram(widerAxis)).graphicSpec, widerAxis.graphicSpec);
+    assert.match(renderToSVG(widerAxis), /<text/);
     for (const factory of [chart, basicChart]) {
       const numericBars = factory().createCanvas({ width: 500, height: 300, margin: 50 })
         .createData({ values: [{ x: 1, y: 2 }, { x: 3, y: 4 }, { x: 3, y: 5 }] })

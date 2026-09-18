@@ -2850,6 +2850,12 @@ Each component accepts its edit object or `false` for removal. Use
 preserves scale, coordinate, encoding, and data, while the last component also
 cleans the empty axis state.
 
+Cartesian `createXAxis`/`createYAxis` can bind a standalone scale without marks:
+provide both `coordinate` and `scale`, with an existing Cartesian coordinate
+and explicit nonempty scale domain. The default title is the scale ID.
+Scale, Canvas, and coordinate frame edits update the axis. Auto domains require
+data consumers; unrelated channel or coordinate bindings are rejected.
+
 ## Axis lines, ticks, and labels
 
 ```javascript

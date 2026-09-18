@@ -11,7 +11,7 @@ import {
   applyMaterializationPlan,
   planCoordinateRematerialization
 } from "../../materialization/dependencies.js";
-import { findDataAspectCoordinatesForScale } from
+import { axisScaleBindings, findDataAspectCoordinatesForScale } from
   "../../materialization/coordinateBounds.js";
 import {
   findSemanticScale,
@@ -115,7 +115,7 @@ function applyScaleEdit(program, {
       value: definition[property]
     });
   }
-  if (consumers.length === 0) return next;
+  if (consumers.length === 0) return axisScaleBindings(next, id).length === 0 ? next : next.rematerializeScale({ id });
 
   const aspectCoordinates = findDataAspectCoordinatesForScale(next, id);
   if (aspectCoordinates.length > 0) {

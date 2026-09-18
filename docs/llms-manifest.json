@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:2367251d73d877faf06a48f3a070ea53d0bb57b0940f6add5aa324f580dfa452",
+    "contractId": "sha256:fbf4ff20c387124be45f78cb02ef91d2d0850f78cbf09234ec48b4ba097662fc",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1555,6 +1555,7 @@
       "headings": [
         "axes",
         "at-a-glance",
+        "standalone-cartesian-axes",
         "polar-component-creation",
         "omit-remove-and-restore-components",
         "createaxesoptions",
@@ -1563,8 +1564,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 8813,
-      "sha256": "87a41f0ef087144d67ecfd66d853e1f40ee4801a00943078acd2d6d75330aee5"
+      "bytes": 9785,
+      "sha256": "ae787514390c936ee693aa932b781f544f3ce0c8f44119cea5e940a3c8d0644a"
     },
     {
       "order": 96,
@@ -2259,8 +2260,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 115142,
-      "sha256": "3b5779edc3ff016cc6c7041f3f5e818532ac48d59a1e7318e2ab18f484e76126"
+      "bytes": 115523,
+      "sha256": "48825ab8377c8145f1797be9641340777dba999204a7ead07a88dac2be441cdf"
     },
     {
       "order": 123,
@@ -3300,7 +3301,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "e6b8bdce0263ab45350a0e6a34bbb8156c75dc6213583f4e7c5e4c3eafbc4611"
+      "sha256": "a062dfad2fd630048d370f5f786fa200b354745177e82f9e5182540d8d482395"
     },
     {
       "order": 150,

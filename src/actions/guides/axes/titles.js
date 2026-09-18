@@ -8,7 +8,7 @@ import {
   validateNonEmptyString,
   validateNonNegativeFinite
 } from "../../../core/validation.js";
-import { resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
+import { axisScaleBindings, resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
 import {
   isTransformedScaleType,
   mapContinuousScaleValues,
@@ -151,6 +151,7 @@ export function inferAxisTitleText(program, channel, scaleId) {
     }
   }
   if (primaryTitles.size === 1) return [...primaryTitles][0];
+  if (titles.size === 0 && axisScaleBindings(program, scaleId).some(binding => binding.channel === channel)) return scaleId;
   if (titles.size !== 1) throw new Error(`Axis title text cannot be inferred for scale "${scaleId}".`);
   return [...titles][0];
 }

@@ -22,6 +22,31 @@ and Canvas or scale updates, regardless of authoring order. Increase the margin
 or change offsets when space is insufficient; a failed action preserves the
 earlier program.
 
+## Standalone Cartesian axes
+
+An axis does not need an invisible mark or dataset. Supply an existing Cartesian
+coordinate and a scale with an explicit domain:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const ruler = chart().createCanvas({ margin: 80 })
+  .createCoordinate({ id: "frame", type: "cartesian" })
+  .createScale({ id: "amount", type: "linear", domain: [0, 100] })
+  .createXAxis({ coordinate: "frame", scale: "amount" });
+```
+
+The title defaults to the scale ID. Set `title: false` to omit it or use
+`title: { text: "Amount" }`. Both resource IDs are required for standalone
+creation; an automatic domain needs data consumers. Scale edits, Canvas resize,
+coordinate frame aspect changes, and serialization preserve the binding.
+
 ## Polar component creation
 
 Create a missing Polar axis component without rebuilding the other components.

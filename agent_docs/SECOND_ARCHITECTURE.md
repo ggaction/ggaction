@@ -58,6 +58,10 @@ Numeric-center Bar는 `mark.orientation`으로 raw 행의 center/measure 역할�
 기존 histogram/aggregate/ranged와 별도 centered grain으로 소비하며, 공유 position scale,
 선택 item, labels, facets는 같은 bar policy를 사용한다. Pixel width는 기존 mark config 소유다.
 
+Standalone Cartesian axis는 기존 guide.axis의 scale/coordinate binding을 data 없는 소비자로 사용한다.
+Mark consumer 배열에 가짜 layer나 dataset을 넣지 않는다. Scale preview와 Canvas/coordinate/scale
+rematerialization plan이 이 binding을 읽어 명시 domain·coordinate bounds로 축을 갱신한다.
+
 ## 전체 계층
 
 ```text
@@ -275,6 +279,10 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 새 기능의 installed consumer 측정은 약 372,700 bytes다. 이후 산점도 field stroke와
 관련 범례를 Basic에도 지원하면서 Basic 실측은 174,557에서 176,590 bytes로 증가했고
 Basic 예산을 175,000에서 178,000 bytes로 조정했다. SVG와 package artifact 예산은 유지한다. 이 변경은 기능 증가분을 허용하는 예산 변경이며 이전 한도 통과를 뜻하지 않는다.
+
+Standalone Cartesian axis 기능 추가 시 packed artifact가765,714bytes로 기존765,000bytes를 초과했다.
+명시 axis binding과 lifecycle 지원을 유지하면서 packed 예산을775,000bytes로 조정한다.
+Entry552 및 unpacked3,900,000bytes 한도는 유지하며 이전 packed 한도 통과로 보고하지 않는다.
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
 `scripts/browser-bundle-size.js`이고 package consumer와 documentation contract가 같은 값을 검증한다.

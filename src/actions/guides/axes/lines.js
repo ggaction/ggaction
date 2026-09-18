@@ -8,7 +8,7 @@ import {
   validateNonEmptyString,
   validateNonNegativeFinite
 } from "../../../core/validation.js";
-import { resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
+import { axisScaleBindings, resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import {
   defaultAxisPosition,
@@ -46,7 +46,7 @@ function resolveGeometry(program, channel, scaleId, position) {
     layer => !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale === scaleId
   );
 
-  if (!hasConsumer) {
+  if (!hasConsumer && !axisScaleBindings(program, scaleId).some(binding => binding.channel === channel)) {
     throw new Error(
       `Axis line requires scale "${scaleId}" on the ${channel} channel.`
     );
