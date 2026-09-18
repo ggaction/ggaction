@@ -10,7 +10,7 @@ title: Rect Marks
 Rect marks represent independent two-dimensional cells. They are distinct from
 bars: rects do not infer aggregation, a zero baseline, stacking, or bar width.
 
-## `createRectMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
+## `createRectMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 <!-- snippet-context:start -->
 
@@ -95,7 +95,7 @@ Until one supported topology is complete, semantic intent is retained and the
 rect collection stays empty. Missing endpoint or color values omit only their
 row. `encodeColor` accepts categorical and continuous color scales.
 
-## `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })`
+## `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`
 
 <!-- snippet-context:start -->
 
@@ -139,6 +139,15 @@ retains member rows and requires at least one matching final item; use
 For temporal positions or colors, `channel` selectors compare normalized epoch
 milliseconds, including fields stored as ISO strings or calendar years. `field`
 selectors continue to compare the original source values.
+
+### Independent corners
+
+`cornerRadiusTopLeft`, `cornerRadiusTopRight`, `cornerRadiusBottomRight`, and
+`cornerRadiusBottomLeft` override `cornerRadius` for their visual corners.
+Each value is a finite non-negative logical-pixel radius, clamped independently
+to half the smaller item side. An explicit zero keeps that corner square.
+Omitted corners use the global radius or zero. Edits retain unspecified
+overrides, so resetting the global radius alone does not clear them.
 
 ## Related
 

@@ -25,7 +25,7 @@ import { resolveMarkGraphicPlacement } from
 import { rematerializeExistingLegend } from "../../encodings/shared.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import {
-  requestedRectStyleDetails
+  requestedRectStyleDetails, hasRectRadius, RECT_RADIUS_PROPERTIES
 } from "../../../grammar/roundedRect.js";
 import { STROKE_STYLE_PROPERTIES } from
   "../../../grammar/strokeStyle.js";
@@ -33,7 +33,7 @@ import { applyItemMissingPolicy, validateItemMissing } from
   "../../../grammar/itemMissing.js";
 
 const STYLE_OPTIONS = Object.freeze([
-  "fill", "opacity", "stroke", "strokeWidth", "cornerRadius",
+  "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
   ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...STYLE_OPTIONS]);
@@ -117,7 +117,7 @@ const rematerializeRectMark = /* @__PURE__ */ action(
     const graphic = this.graphicSpec.objects[id];
     if (layer?.mark?.type !== "rect") throw new Error(`Unknown rect mark "${id}".`);
     const roundedCollection = graphic?.type === "collection" &&
-      Object.hasOwn(this.markConfigs[id] ?? {}, "cornerRadius") &&
+      hasRectRadius(this.markConfigs[id]) &&
       graphic.items?.every(item => ["rect", "path"].includes(item.type));
     if (
       (graphic?.type !== "rect" && !roundedCollection) ||

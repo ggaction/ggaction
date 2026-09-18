@@ -1200,7 +1200,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `whisker` | Optional / branch-dependent | `BoxPlotWhisker \| undefined` |
 | `width` | Optional / branch-dependent | `{ band?: number \| undefined; } \| undefined` |
 | `outliers` | Optional / branch-dependent | `boolean \| undefined` |
-| `box` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; } & { fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `box` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
 | `median` | Optional / branch-dependent | `(StrokeStyleDetails & { stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `outlier` | Optional / branch-dependent | `(StrokeStyleDetails & { shape?: PointShape \| undefined; radius?: number \| undefined; opacity?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| BoxPlotGuideOptions \| undefined` |
@@ -1251,7 +1251,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `whisker` | Optional / branch-dependent | `BoxPlotWhisker \| undefined` |
 | `width` | Optional / branch-dependent | `{ band?: number \| undefined; } \| undefined` |
 | `outliers` | Optional / branch-dependent | `boolean \| undefined` |
-| `box` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; } & { fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `box` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
 | `median` | Optional / branch-dependent | `(StrokeStyleDetails & { stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `outlier` | Optional / branch-dependent | `(StrokeStyleDetails & { shape?: PointShape \| undefined; radius?: number \| undefined; opacity?: number \| undefined; }) \| undefined` |
 

@@ -144,7 +144,7 @@ export function resolveRectRows(program, layer, dataset) {
 }
 
 export function resolveRectGraphicItems(program, layer, dataset) {
-  const radius = program.markConfigs[layer.id]?.cornerRadius ?? 0;
+  const radius = program.markConfigs[layer.id] ?? {};
   return resolveRectRows(program, layer, dataset).map(item =>
     materializeRectItem(item.properties, radius)
   );

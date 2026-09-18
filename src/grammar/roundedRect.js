@@ -5,8 +5,12 @@ import {
 } from "./strokeStyle.js";
 
 export const ROUNDED_RECT_K = 4 * (Math.sqrt(2) - 1) / 3;
+export const RECT_RADIUS_PROPERTIES = Object.freeze([
+  "cornerRadius", "cornerRadiusTopLeft", "cornerRadiusTopRight",
+  "cornerRadiusBottomRight", "cornerRadiusBottomLeft"
+]);
 export const RECT_STYLE_PROPERTIES = Object.freeze([
-  "cornerRadius",
+  ...RECT_RADIUS_PROPERTIES,
   ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -17,12 +21,12 @@ function requireFinite(value, property) {
   return value;
 }
 
-export function validateCornerRadius(value, label = "Rect style") {
+export function validateCornerRadius(value, label = "Rect style", property = "cornerRadius") {
   if (!Number.isFinite(value)) {
-    throw new TypeError(`${label} cornerRadius must be a finite number.`);
+    throw new TypeError(`${label} ${property} must be a finite number.`);
   }
   if (value < 0) {
-    throw new RangeError(`${label} cornerRadius must not be negative.`);
+    throw new RangeError(`${label} ${property} must not be negative.`);
   }
   return value;
 }
@@ -33,9 +37,9 @@ export function requestedRectStyleDetails(request = {}, label = "Rect style") {
   }
   return freezeOwned({
     ...requestedStrokeDetails(request, label),
-    ...(Object.hasOwn(request, "cornerRadius")
-      ? { cornerRadius: validateCornerRadius(request.cornerRadius, label) }
-      : {})
+    ...Object.fromEntries(RECT_RADIUS_PROPERTIES
+      .filter(property => Object.hasOwn(request, property))
+      .map(property => [property, validateCornerRadius(request[property], label, property)]))
   });
 }
 
@@ -65,60 +69,48 @@ export function resolveRoundedRectRadius(width, height, requestedRadius) {
   return Math.min(requestedRadius, width / 2, height / 2);
 }
 
+export function hasRectRadius(style = {}) {
+  return RECT_RADIUS_PROPERTIES.some(property => Object.hasOwn(style, property));
+}
+
+function resolveCornerRadii(width, height, requested) {
+  const style = typeof requested === "number" ? { cornerRadius: requested } : requested;
+  const details = requestedRectStyleDetails(style, "Rounded rect");
+  return RECT_RADIUS_PROPERTIES.slice(1).map(property => resolveRoundedRectRadius(
+    width, height, details[property] ?? details.cornerRadius ?? 0
+  ));
+}
+
 export function roundedRectCommands({ x, y, width, height, radius }) {
   const geometry = normalizeRectGeometry({ x, y, width, height });
-  const r = resolveRoundedRectRadius(
-    geometry.width,
-    geometry.height,
-    radius
-  );
-  if (!(r > 0)) {
+  const [tl, tr, br, bl] = resolveCornerRadii(geometry.width, geometry.height, radius);
+  if (![tl, tr, br, bl].some(value => value > 0)) {
     throw new RangeError("Rounded rect commands require a positive resolved radius.");
   }
   const right = geometry.x + geometry.width;
   const bottom = geometry.y + geometry.height;
-  const c = ROUNDED_RECT_K * r;
+  const k = ROUNDED_RECT_K;
   return freezeOwned([
-    { op: "M", x: geometry.x + r, y: geometry.y },
-    { op: "L", x: right - r, y: geometry.y },
+    { op: "M", x: geometry.x + tl, y: geometry.y },
+    { op: "L", x: right - tr, y: geometry.y },
     {
-      op: "C",
-      x1: right - r + c,
-      y1: geometry.y,
-      x2: right,
-      y2: geometry.y + r - c,
-      x: right,
-      y: geometry.y + r
+      op: "C", x1: right - tr + k * tr, y1: geometry.y,
+      x2: right, y2: geometry.y + tr - k * tr, x: right, y: geometry.y + tr
     },
-    { op: "L", x: right, y: bottom - r },
+    { op: "L", x: right, y: bottom - br },
     {
-      op: "C",
-      x1: right,
-      y1: bottom - r + c,
-      x2: right - r + c,
-      y2: bottom,
-      x: right - r,
-      y: bottom
+      op: "C", x1: right, y1: bottom - br + k * br,
+      x2: right - br + k * br, y2: bottom, x: right - br, y: bottom
     },
-    { op: "L", x: geometry.x + r, y: bottom },
+    { op: "L", x: geometry.x + bl, y: bottom },
     {
-      op: "C",
-      x1: geometry.x + r - c,
-      y1: bottom,
-      x2: geometry.x,
-      y2: bottom - r + c,
-      x: geometry.x,
-      y: bottom - r
+      op: "C", x1: geometry.x + bl - k * bl, y1: bottom,
+      x2: geometry.x, y2: bottom - bl + k * bl, x: geometry.x, y: bottom - bl
     },
-    { op: "L", x: geometry.x, y: geometry.y + r },
+    { op: "L", x: geometry.x, y: geometry.y + tl },
     {
-      op: "C",
-      x1: geometry.x,
-      y1: geometry.y + r - c,
-      x2: geometry.x + r - c,
-      y2: geometry.y,
-      x: geometry.x + r,
-      y: geometry.y
+      op: "C", x1: geometry.x, y1: geometry.y + tl - k * tl,
+      x2: geometry.x + tl - k * tl, y2: geometry.y, x: geometry.x + tl, y: geometry.y
     },
     { op: "Z" }
   ].map(command => freezeOwned(command)));
@@ -129,15 +121,11 @@ export function materializeRectItem(properties, requestedRadius = 0) {
     throw new TypeError("Rounded rect item properties must be a plain object.");
   }
   const geometry = normalizeRectGeometry(properties);
-  const radius = resolveRoundedRectRadius(
-    geometry.width,
-    geometry.height,
-    requestedRadius
-  );
+  const radii = resolveCornerRadii(geometry.width, geometry.height, requestedRadius);
   const appearance = Object.fromEntries(Object.entries(properties).filter(
     ([key]) => !["x", "y", "width", "height"].includes(key)
   ));
-  return radius === 0
+  return radii.every(radius => radius === 0)
     ? freezeOwned({
         type: "rect",
         properties: freezeOwned({ ...geometry, ...appearance })
@@ -145,7 +133,7 @@ export function materializeRectItem(properties, requestedRadius = 0) {
     : freezeOwned({
         type: "path",
         properties: freezeOwned({
-          commands: roundedRectCommands({ ...geometry, radius }),
+          commands: roundedRectCommands({ ...geometry, radius: requestedRadius }),
           ...appearance
         })
       });

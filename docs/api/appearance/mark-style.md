@@ -56,14 +56,20 @@ const rounded = chart()
   .encodeY({ field: "value", aggregate: "sum" });
 ```
 
-A positive radius rounds all four corners. `cornerRadius: 0` restores square
-rectangles. Resizing, re-encoding, data and scale edits, selection highlights,
+A positive global radius rounds all four corners. Override individual corners with
+`cornerRadiusTopLeft`, `cornerRadiusTopRight`, `cornerRadiusBottomRight`, or
+`cornerRadiusBottomLeft`. Each accepts a finite non-negative value and clamps to
+half the smaller item side. Explicit zero keeps that corner square. For example,
+`{ cornerRadius: 16, cornerRadiusTopRight: 0, cornerRadiusBottomLeft: 0 }`
+rounds only the top-left and bottom-right corners. Unspecified corners use the
+global radius or zero. Edits retain unspecified overrides; all effective radii
+must be zero to restore square rectangles. Resizing, re-encoding, data and scale edits, selection highlights,
 automatic legends, themes, and facet source replay preserve the requested
 style and recalculate geometry. An explicit legend-block symbol color still
 wins over the inherited source color.
 
 Point, Line, Area, Arc, Rule, and Tick accept the three stroke-detail options.
-Bar and Rect accept all four. Text does not accept them, and `cornerRadius` is
+Bar and Rect also accept the global and per-corner radius options. Text does not accept them, and `cornerRadius` is
 rejected by every non-rectangular family. The same options pass through existing
 high-level nested styles such as `point`, `line`, `area`, `arc`, `tick`, `bar`,
 `rect`, `box`, `stem`, `errorBar`, `boundaries`, and reference styles.

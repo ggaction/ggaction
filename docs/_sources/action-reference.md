@@ -1265,6 +1265,11 @@ createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
 Create a semantic bar mark and empty rect collection.
 `stroke: false` disables the outline and its width at creation. [Marks](../api/marks.md)
 
+Global `cornerRadius` and per-corner `cornerRadiusTopLeft`, `cornerRadiusTopRight`,
+`cornerRadiusBottomRight`, and `cornerRadiusBottomLeft` use non-negative logical pixels.
+Each corner override wins over the global fallback and clamps to half the smaller item side.
+Omitted corners fall back to the global radius or zero; edits retain unspecified overrides.
+
 ### `editBarMark`
 
 ```javascript
@@ -1278,6 +1283,11 @@ field-driven color encoding. [Marks](../api/marks.md)
 
 Cardinal line `tension` is a finite number from 0 to 1 (default 0); it scales tangents by `1-tension`.
 The line facade forwards `line.tension`; changing to another curve clears the previous setting.
+Global `cornerRadius` and per-corner `cornerRadiusTopLeft`, `cornerRadiusTopRight`,
+`cornerRadiusBottomRight`, and `cornerRadiusBottomLeft` use non-negative logical pixels.
+Each corner override wins over the global fallback and clamps to half the smaller item side.
+Omitted corners fall back to the global radius or zero; edits retain unspecified overrides.
+
 ### `createAreaMark`
 
 ```javascript
@@ -1351,6 +1361,11 @@ or complete x/x2 and y/y2 endpoint pairs materialize observed cells. Rects do
 not infer bar aggregation, baseline, stack, or width semantics.
 [Rect marks](../api/marks/rect.md)
 
+Global `cornerRadius` and per-corner `cornerRadiusTopLeft`, `cornerRadiusTopRight`,
+`cornerRadiusBottomRight`, and `cornerRadiusBottomLeft` use non-negative logical pixels.
+Each corner override wins over the global fallback and clamps to half the smaller item side.
+Omitted corners fall back to the global radius or zero; edits retain unspecified overrides.
+
 ### `editRectMark`
 
 ```javascript
@@ -1360,6 +1375,11 @@ editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
 Edit rect appearance and rematerialize complete cells. Constant fill conflicts
 with field-driven color. `stroke: false` disables the outline.
 [Rect marks](../api/marks/rect.md)
+
+Global `cornerRadius` and per-corner `cornerRadiusTopLeft`, `cornerRadiusTopRight`,
+`cornerRadiusBottomRight`, and `cornerRadiusBottomLeft` use non-negative logical pixels.
+Each corner override wins over the global fallback and clamps to half the smaller item side.
+Omitted corners fall back to the global radius or zero; edits retain unspecified overrides.
 
 ### `createReferenceLine`
 
@@ -1390,7 +1410,7 @@ The shared scale still drives both marks. Add text with `createMarkLabels({ sour
 createReferenceBand({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
-Create one constant Rect spanning the other plot axis. Exactly one `x: [lower, upper]` or `y: [lower, upper]`
+Create a constant reference band. Exactly one `x: [lower, upper]` or `y: [lower, upper]`
 is required. Reversed endpoints produce positive bounds; equal endpoints produce no rectangle.
 It uses the same data/plot binding rules as `createReferenceLine`, but data-space bands require quantitative
 or temporal source positions. Plot endpoints must both be finite fractions in `[0,1]`.

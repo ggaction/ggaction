@@ -9,7 +9,7 @@ import { canMaterializeBar } from "../../../materialization/marks/index.js";
 import { DEFAULT_BAR_STROKE_WIDTH } from "../../../materialization/bars/resolve.js";
 import { resolveEligibleLayer } from "../../../selectors/layers.js";
 import { validateMarkOptions } from "../shared.js";
-import { requestedRectStyleDetails } from
+import { requestedRectStyleDetails, RECT_RADIUS_PROPERTIES } from
   "../../../grammar/roundedRect.js";
 import { STROKE_STYLE_PROPERTIES } from
   "../../../grammar/strokeStyle.js";
@@ -17,7 +17,7 @@ import { rematerializeExistingLegend } from "../../encodings/shared.js";
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const EDIT_OPTIONS = Object.freeze([
-  "target", "missing", "fill", "opacity", "stroke", "strokeWidth", "cornerRadius",
+  "target", "missing", "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
   ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -30,7 +30,7 @@ export const editBarMark = /* @__PURE__ */ action(
     validateMarkOptions(args, EDIT_OPTIONS, "editBarMark");
     const styleDetails = requestedRectStyleDetails(args, "editBarMark");
     const changes = [
-      "missing", "fill", "opacity", "stroke", "strokeWidth", "cornerRadius",
+      "missing", "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!changes.some(key => Object.hasOwn(args, key))) {

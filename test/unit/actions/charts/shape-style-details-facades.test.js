@@ -8,7 +8,9 @@ const DETAILS = Object.freeze({
   lineJoin: "bevel",
   miterLimit: 4
 });
-const RECT_DETAILS = Object.freeze({ cornerRadius: 6, ...DETAILS });
+const RECT_DETAILS = Object.freeze({
+  cornerRadius: 6, cornerRadiusTopRight: 0, cornerRadiusBottomLeft: 0, ...DETAILS
+});
 const rows = Object.freeze([
   Object.freeze({
     x: 0, y: 1, value: 1, category: "A", group: "G1",
@@ -53,6 +55,13 @@ function assertStyledMark(program, id, { rounded = false } = {}) {
       item.type === "path" && item.properties.commands.length === 10
     ), true, `${id} rounded paths`);
     assert.equal(config.cornerRadius, RECT_DETAILS.cornerRadius);
+    assert.equal(config.cornerRadiusTopRight, 0);
+    assert.equal(config.cornerRadiusBottomLeft, 0);
+    for (const item of graphic.items) {
+      const c = item.properties.commands;
+      assert.equal(c[2].y, c[0].y);
+      assert.equal(c[6].y, c[4].y);
+    }
   }
 }
 

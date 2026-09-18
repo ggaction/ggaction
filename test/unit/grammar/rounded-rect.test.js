@@ -100,3 +100,37 @@ test("rejects invalid radius and geometry values", () => {
     /positive resolved radius/u
   );
 });
+
+test("resolves independent corner overrides against the global radius", () => {
+  const item = materializeRectItem({ x: 0, y: 0, width: 100, height: 40 }, {
+    cornerRadius: 16, cornerRadiusTopRight: 0, cornerRadiusBottomLeft: 0
+  });
+  const c = item.properties.commands;
+  assert.deepEqual(c[0], { op: "M", x: 16, y: 0 });
+  assert.deepEqual(c[2], { op: "C", x1: 100, y1: 0, x2: 100, y2: 0, x: 100, y: 0 });
+  assert.deepEqual(c[4], { op: "C", x1: 100, y1: 24 + 16 * ROUNDED_RECT_K,
+    x2: 84 + 16 * ROUNDED_RECT_K, y2: 40, x: 84, y: 40 });
+  assert.deepEqual(c[6], { op: "C", x1: 0, y1: 40, x2: 0, y2: 40, x: 0, y: 40 });
+});
+
+test("clamps each visual corner after normalizing reversed bounds", () => {
+  const item = materializeRectItem({ x: 100, y: 40, width: -100, height: -40 }, {
+    cornerRadiusTopLeft: 100, cornerRadiusTopRight: 3,
+    cornerRadiusBottomRight: 9, cornerRadiusBottomLeft: 5
+  });
+  const c = item.properties.commands;
+  assert.deepEqual(c[0], { op: "M", x: 20, y: 0 });
+  assert.deepEqual(c[1], { op: "L", x: 97, y: 0 });
+  assert.deepEqual(c[3], { op: "L", x: 100, y: 31 });
+  assert.deepEqual(c[5], { op: "L", x: 5, y: 40 });
+  for (const corner of ["TopLeft", "TopRight", "BottomRight", "BottomLeft"]) {
+    for (const invalid of [-1, Infinity, NaN, "3", null]) {
+      assert.throws(() => materializeRectItem({ x: 0, y: 0, width: 100, height: 40 }, {
+        [`cornerRadius${corner}`]: invalid
+      }));
+    }
+  }
+  assert.equal(materializeRectItem({ x: 0, y: 0, width: 0, height: 40 }, {
+    cornerRadiusTopLeft: 100
+  }).type, "rect");
+});

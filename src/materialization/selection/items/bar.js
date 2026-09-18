@@ -1,3 +1,4 @@
+import { hasRectRadius } from "../../../grammar/roundedRect.js";
 import { deriveSeriesBarCells } from "../../../grammar/bars/aggregate.js";
 import { readSeriesIdentity } from "../../../grammar/pathSeries.js";
 import {
@@ -211,10 +212,7 @@ export function resolveBarItems(program, layer, dataset, selectionGrain) {
   if (definitions === undefined) {
     throw new Error(`Bar mark "${layer.id}" is incomplete for selection.`);
   }
-  const graphicTypes = Object.hasOwn(
-    program.markConfigs[layer.id]?.barAppearance ?? {},
-    "cornerRadius"
-  ) ? ["rect", "path"] : "rect";
+  const graphicTypes = hasRectRadius(program.markConfigs[layer.id]?.barAppearance) ? ["rect", "path"] : "rect";
   if (selectionGrain === "stack") {
     return finalizeItems(
       program,

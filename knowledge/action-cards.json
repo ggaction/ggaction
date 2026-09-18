@@ -5309,7 +5309,7 @@
       "name": "createReferenceBand",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Create one constant Rect spanning the other plot axis.",
+      "summary": "Create a constant reference band.",
       "signature": "createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;",
       "intents": [
         "create reference band",
@@ -5456,6 +5456,26 @@
           "type": "number | undefined"
         },
         {
+          "name": "cornerRadiusTopLeft",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusTopRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomLeft",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "missing",
           "required": false,
           "type": "\"error\" | \"skip\" | undefined"
@@ -5502,7 +5522,6 @@
         }
       ],
       "callPatterns": [
-        "createReferenceBand({ x: [2, 6] })",
         "createReferenceBand({ space: \"plot\", y: [0.2, 0.8] })"
       ],
       "snippet": "program.createReferenceBand({ x: [2, 6] })",
@@ -7621,6 +7640,26 @@
           "type": "number | undefined"
         },
         {
+          "name": "cornerRadiusTopLeft",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusTopRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomLeft",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -7657,7 +7696,7 @@
         }
       ],
       "callPatterns": [
-        "createBarMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, missing?, fill? })"
+        "createBarMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight? })"
       ],
       "snippet": "program.createBarMark({})",
       "errors": [],
@@ -7746,6 +7785,26 @@
           "type": "number | undefined"
         },
         {
+          "name": "cornerRadiusTopLeft",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusTopRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomLeft",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -7777,7 +7836,7 @@
         }
       ],
       "callPatterns": [
-        "editBarMark({ target?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, missing?, fill?, opacity? })"
+        "editBarMark({ target?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight? })"
       ],
       "snippet": "program.editBarMark({ lineCap: \"butt\" })",
       "errors": [],
@@ -13329,7 +13388,7 @@
         {
           "name": "box",
           "required": false,
-          "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; } & { fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; cornerRadiusTopLeft?: number | undefined; cornerRadiusTopRight?: number | undefined; cornerRadiusBottomRight?: number | undefined; cornerRadiusBottomLeft?: number | undefined; } & { ...; }) | undefined"
         },
         {
           "name": "median",
@@ -13463,7 +13522,7 @@
         {
           "name": "box",
           "required": false,
-          "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; } & { fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; cornerRadiusTopLeft?: number | undefined; cornerRadiusTopRight?: number | undefined; cornerRadiusBottomRight?: number | undefined; cornerRadiusBottomLeft?: number | undefined; } & { ...; }) | undefined"
         },
         {
           "name": "median",
@@ -30411,7 +30470,7 @@
         {
           "name": "bar",
           "required": false,
-          "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; } & { fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; cornerRadiusTopLeft?: number | undefined; cornerRadiusTopRight?: number | undefined; cornerRadiusBottomRight?: number | undefined; cornerRadiusBottomLeft?: number | undefined; } & { ...; }) | undefined"
         },
         {
           "name": "guides",
@@ -30585,7 +30644,7 @@
         {
           "name": "bar",
           "required": false,
-          "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; } & { fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; cornerRadiusTopLeft?: number | undefined; cornerRadiusTopRight?: number | undefined; cornerRadiusBottomRight?: number | undefined; cornerRadiusBottomLeft?: number | undefined; } & { ...; }) | undefined"
         },
         {
           "name": "guides",
@@ -30712,7 +30771,7 @@
         {
           "name": "rect",
           "required": false,
-          "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; } & { opacity?: number | undefined; stroke?: string | false | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; cornerRadiusTopLeft?: number | undefined; cornerRadiusTopRight?: number | undefined; cornerRadiusBottomRight?: number | undefined; cornerRadiusBottomLeft?: number | undefined; } & { ...; }) | undefined"
         },
         {
           "name": "guides",
@@ -30989,6 +31048,26 @@
           "name": "cornerRadius",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusTopLeft",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusTopRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomLeft",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
@@ -31086,6 +31165,26 @@
           "type": "number | undefined"
         },
         {
+          "name": "cornerRadiusTopLeft",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusTopRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomLeft",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "missing",
           "required": false,
           "type": "\"error\" | \"skip\" | undefined"
@@ -31112,7 +31211,7 @@
         }
       ],
       "callPatterns": [
-        "editRectMark({ target?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, missing?, fill?, opacity? })"
+        "editRectMark({ target?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight? })"
       ],
       "snippet": "program.editRectMark({ lineCap: \"butt\" })",
       "errors": [],

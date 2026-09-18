@@ -108,7 +108,7 @@ function resolveSampleBounds(program, config, width) {
             : layer.stroke,
           opacity: layer.opacity,
           ...requestedStrokeDetails(details, "Legend swatch symbol")
-        }, details.cornerRadius ?? 0);
+        }, details);
       }
       if (config.channels.includes("shape")) {
         return createPointShapeGraphic({ shape: appearance.shapes[index], x: width / 2, y: 0,

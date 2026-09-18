@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:0c94fc1f3b7c8f899f8a1f5b8cba645b0516d36b003f7d463aa525a0d8b360f3. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:78f8ff4426a1615cc402b864c0115b5fb8be34261a53ea62c43e4f0a98955ff1. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -6207,7 +6207,7 @@ Missing independent positions, invalid group keys, NaN and Infinity remain error
 Bar marks represent binned counts, aggregate categories, grouped or stacked
 partitions, and observed quantitative intervals.
 
-## `createBarMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
+## `createBarMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -6256,7 +6256,7 @@ width, before or after assigning positions; otherwise the default band fraction
 uses the smallest observed time gap. Both orientations support ISO dates and
 explicit timestamp units.
 
-## `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}
+## `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -6275,6 +6275,15 @@ after Canvas or scale rematerialization.
 
 See [Mark Style](./api/appearance/mark-style/#stroke-caps-joins-and-rounded-rectangles)
 for the closed cap/join values, defaults, and high-level pass-through rules.
+
+### Independent corners
+
+`cornerRadiusTopLeft`, `cornerRadiusTopRight`, `cornerRadiusBottomRight`, and
+`cornerRadiusBottomLeft` override `cornerRadius` for their visual corners.
+Each value is a finite non-negative logical-pixel radius, clamped independently
+to half the smaller item side. An explicit zero keeps that corner square.
+Omitted corners use the global radius or zero. Edits retain unspecified
+overrides, so resetting the global radius alone does not clear them.
 
 ## Related
 
@@ -6683,7 +6692,7 @@ See [Label Collision Layout](./api/marks/label-layout/#removelabellayoutoptions)
 Rect marks represent independent two-dimensional cells. They are distinct from
 bars: rects do not infer aggregation, a zero baseline, stacking, or bar width.
 
-## `createRectMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
+## `createRectMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -6756,7 +6765,7 @@ Until one supported topology is complete, semantic intent is retained and the
 rect collection stays empty. Missing endpoint or color values omit only their
 row. `encodeColor` accepts categorical and continuous color scales.
 
-## `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })`
+## `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -6796,6 +6805,15 @@ retains member rows and requires at least one matching final item; use
 For temporal positions or colors, `channel` selectors compare normalized epoch
 milliseconds, including fields stored as ISO strings or calendar years. `field`
 selectors continue to compare the original source values.
+
+### Independent corners
+
+`cornerRadiusTopLeft`, `cornerRadiusTopRight`, `cornerRadiusBottomRight`, and
+`cornerRadiusBottomLeft` override `cornerRadius` for their visual corners.
+Each value is a finite non-negative logical-pixel radius, clamped independently
+to half the smaller item side. An explicit zero keeps that corner square.
+Omitted corners use the global radius or zero. Edits retain unspecified
+overrides, so resetting the global radius alone does not clear them.
 
 ## Related
 
@@ -10841,14 +10859,20 @@ const rounded = chart()
   .encodeY({ field: "value", aggregate: "sum" });
 ```
 
-A positive radius rounds all four corners. `cornerRadius: 0` restores square
-rectangles. Resizing, re-encoding, data and scale edits, selection highlights,
+A positive global radius rounds all four corners. Override individual corners with
+`cornerRadiusTopLeft`, `cornerRadiusTopRight`, `cornerRadiusBottomRight`, or
+`cornerRadiusBottomLeft`. Each accepts a finite non-negative value and clamps to
+half the smaller item side. Explicit zero keeps that corner square. For example,
+`{ cornerRadius: 16, cornerRadiusTopRight: 0, cornerRadiusBottomLeft: 0 }`
+rounds only the top-left and bottom-right corners. Unspecified corners use the
+global radius or zero. Edits retain unspecified overrides; all effective radii
+must be zero to restore square rectangles. Resizing, re-encoding, data and scale edits, selection highlights,
 automatic legends, themes, and facet source replay preserve the requested
 style and recalculate geometry. An explicit legend-block symbol color still
 wins over the inherited source color.
 
 Point, Line, Area, Arc, Rule, and Tick accept the three stroke-detail options.
-Bar and Rect accept all four. Text does not accept them, and `cornerRadius` is
+Bar and Rect also accept the global and per-corner radius options. Text does not accept them, and `cornerRadius` is
 rejected by every non-rectangular family. The same options pass through existing
 high-level nested styles such as `point`, `line`, `area`, `arc`, `tick`, `bar`,
 `rect`, `box`, `stem`, `errorBar`, `boundaries`, and reference styles.
@@ -17894,7 +17918,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `color` | Optional / branch-dependent | `BarColorChannel \| undefined` |
 | `width` | Optional / branch-dependent | `Omit<BarWidthOptions, "target"> \| undefined` |
-| `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; } & { fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
 | `x` | Required | `string \| BarRangePositionChannel \| (Omit<PositionEncodingBase, "coordinate" \| "target"> & { fieldType?: "quantitative" \| undefined; aggregate?: undefined; scale?: NonPointZeroSupportingPositionScaleOptions \| undefined; } & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) ...` |
 | `y` | Required | `string \| BarRangePositionChannel \| ({ field: string; fieldType: "temporal"; temporalUnit?: TemporalInputUnit \| undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions \| undefined; } & { ...; }) \| ... 6 more ... \| ({ ...; } & ... 1 more ... & { ...; })` |
@@ -17940,7 +17964,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `field` | Required | `string` |
 | `color` | Optional / branch-dependent | `HistogramCategoricalColorChannel \| undefined` |
-| `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; } & { fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianCategoricalGuideOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -17977,7 +18001,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `rect` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; } & { opacity?: number \| undefined; stroke?: string \| false \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `rect` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -18457,6 +18481,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopLeft` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -18473,7 +18501,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 createReferenceBand({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
-Create one constant Rect spanning the other plot axis. Exactly one `x: [lower, upper]` or `y: [lower, upper]`
+Create a constant reference band. Exactly one `x: [lower, upper]` or `y: [lower, upper]`
 is required. Reversed endpoints produce positive bounds; equal endpoints produce no rectangle.
 It uses the same data/plot binding rules as `createReferenceLine`, but data-space bands require quantitative
 or temporal source positions. Plot endpoints must both be finite fractions in `[0,1]`.
@@ -19232,6 +19260,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopLeft` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -19248,6 +19280,11 @@ createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
 
 Create a semantic bar mark and empty rect collection.
 `stroke: false` disables the outline and its width at creation. [Marks](./api/marks/)
+
+Global `cornerRadius` and per-corner `cornerRadiusTopLeft`, `cornerRadiusTopRight`,
+`cornerRadiusBottomRight`, and `cornerRadiusBottomLeft` use non-negative logical pixels.
+Each corner override wins over the global fallback and clamps to half the smaller item side.
+Omitted corners fall back to the global radius or zero; edits retain unspecified overrides.
 
 ## `editBarMark`
 
@@ -19271,6 +19308,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopLeft` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
@@ -19290,6 +19331,10 @@ field-driven color encoding. [Marks](./api/marks/)
 
 Cardinal line `tension` is a finite number from 0 to 1 (default 0); it scales tangents by `1-tension`.
 The line facade forwards `line.tension`; changing to another curve clears the previous setting.
+Global `cornerRadius` and per-corner `cornerRadiusTopLeft`, `cornerRadiusTopRight`,
+`cornerRadiusBottomRight`, and `cornerRadiusBottomLeft` use non-negative logical pixels.
+Each corner override wins over the global fallback and clamps to half the smaller item side.
+Omitted corners fall back to the global radius or zero; edits retain unspecified overrides.
 
 ## `createAreaMark`
 
@@ -19557,6 +19602,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopLeft` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -19568,6 +19617,11 @@ Create a semantic rect mark and empty rect collection. Two discrete x/y bands
 or complete x/x2 and y/y2 endpoint pairs materialize observed cells. Rects do
 not infer bar aggregation, baseline, stack, or width semantics.
 [Rect marks](./api/marks/rect/)
+
+Global `cornerRadius` and per-corner `cornerRadiusTopLeft`, `cornerRadiusTopRight`,
+`cornerRadiusBottomRight`, and `cornerRadiusBottomLeft` use non-negative logical pixels.
+Each corner override wins over the global fallback and clamps to half the smaller item side.
+Omitted corners fall back to the global radius or zero; edits retain unspecified overrides.
 
 ## `editRectMark`
 
@@ -19592,6 +19646,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopLeft` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -19607,6 +19665,11 @@ editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
 Edit rect appearance and rematerialize complete cells. Constant fill conflicts
 with field-driven color. `stroke: false` disables the outline.
 [Rect marks](./api/marks/rect/)
+
+Global `cornerRadius` and per-corner `cornerRadiusTopLeft`, `cornerRadiusTopRight`,
+`cornerRadiusBottomRight`, and `cornerRadiusBottomLeft` use non-negative logical pixels.
+Each corner override wins over the global fallback and clamps to half the smaller item side.
+Omitted corners fall back to the global radius or zero; edits retain unspecified overrides.
 
 ## Related
 
@@ -22063,7 +22126,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `whisker` | Optional / branch-dependent | `BoxPlotWhisker \| undefined` |
 | `width` | Optional / branch-dependent | `{ band?: number \| undefined; } \| undefined` |
 | `outliers` | Optional / branch-dependent | `boolean \| undefined` |
-| `box` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; } & { fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `box` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
 | `median` | Optional / branch-dependent | `(StrokeStyleDetails & { stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `outlier` | Optional / branch-dependent | `(StrokeStyleDetails & { shape?: PointShape \| undefined; radius?: number \| undefined; opacity?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| BoxPlotGuideOptions \| undefined` |
@@ -22110,7 +22173,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `whisker` | Optional / branch-dependent | `BoxPlotWhisker \| undefined` |
 | `width` | Optional / branch-dependent | `{ band?: number \| undefined; } \| undefined` |
 | `outliers` | Optional / branch-dependent | `boolean \| undefined` |
-| `box` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; } & { fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `box` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
 | `median` | Optional / branch-dependent | `(StrokeStyleDetails & { stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `outlier` | Optional / branch-dependent | `(StrokeStyleDetails & { shape?: PointShape \| undefined; radius?: number \| undefined; opacity?: number \| undefined; }) \| undefined` |
 
@@ -33563,6 +33626,10 @@ Related types: [`RectStyleDetails`](./reference/types/#type-rectstyledetails).
 ```typescript
 export type RectStyleDetails = StrokeStyleDetails & {
   cornerRadius?: number;
+  cornerRadiusTopLeft?: number;
+  cornerRadiusTopRight?: number;
+  cornerRadiusBottomRight?: number;
+  cornerRadiusBottomLeft?: number;
 };
 ```
 
@@ -37937,7 +38004,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:0c94fc1f3b7c8f899f8a1f5b8cba645b0516d36b003f7d463aa525a0d8b360f3` |
+| Contract fingerprint | `sha256:78f8ff4426a1615cc402b864c0115b5fb8be34261a53ea62c43e4f0a98955ff1` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

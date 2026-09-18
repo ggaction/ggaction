@@ -13,19 +13,17 @@ import {
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import { offsetCategoryRectangles } from
   "../../../materialization/categorySlotOffset.js";
-import { materializeRectItem } from "../../../grammar/roundedRect.js";
-import { STROKE_STYLE_PROPERTIES } from
-  "../../../grammar/strokeStyle.js";
+import { materializeRectItem, RECT_STYLE_PROPERTIES } from "../../../grammar/roundedRect.js";
 import { replaceGraphicItems } from "../../primitives/editGraphics.js";
 
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
 
 function editRectangles(program, id, rectangles) {
   const appearance = program.markConfigs[id]?.barAppearance ?? {};
-  const hasShapeStyle = ["cornerRadius", ...STROKE_STYLE_PROPERTIES]
+  const hasShapeStyle = RECT_STYLE_PROPERTIES
     .some(property => Object.hasOwn(appearance, property));
   if (hasShapeStyle) {
-    const radius = appearance.cornerRadius ?? 0;
+    const radius = appearance;
     return replaceGraphicItems(
       program,
       id,

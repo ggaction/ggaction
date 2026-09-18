@@ -51,12 +51,16 @@ type StrokeStyleDetails = {
 
 type RectStyleDetails = StrokeStyleDetails & {
   cornerRadius?: NonNegativeFinite;
+  cornerRadiusTopLeft?: NonNegativeFinite;
+  cornerRadiusTopRight?: NonNegativeFinite;
+  cornerRadiusBottomRight?: NonNegativeFinite;
+  cornerRadiusBottomLeft?: NonNegativeFinite;
 };
 ```
 
 - Point, Tick, Line, Area, Arc, and Rule accept `StrokeStyleDetails`. Bar and Rect accept
-  `RectStyleDetails`. Text rejects all four fields, and every non-rectangular family rejects
-  `cornerRadius` through its existing closed option validator.
+  `RectStyleDetails`. Text rejects these fields, and every non-rectangular family rejects
+  all corner-radius options through its existing closed option validator.
 - Effective omitted defaults are `lineCap: "butt"`, `lineJoin: "miter"`, `miterLimit: 10`, and
   `cornerRadius: 0`. Omitted defaults are not persisted or serialized, so an old program keeps its
   previous semantic, graphic, trace, and pixel result. An explicit default value is stored as authored intent.
@@ -66,9 +70,15 @@ type RectStyleDetails = StrokeStyleDetails & {
   finishes before target resolution and materialization, so failure preserves the earlier program.
 - Stroke details remain requested mark appearance even while an outline is disabled. Re-enabling the stroke
   restores them. Theme application changes paint defaults but never rewrites these explicit geometry details.
+- Each `cornerRadiusTopLeft`, `cornerRadiusTopRight`, `cornerRadiusBottomRight`, and
+  `cornerRadiusBottomLeft` overrides the global radius for that visual corner, including explicit zero.
+  Unspecified corners use `cornerRadius`, or zero when it is omitted. Each override is finite and
+  non-negative and uses the same per-item clamp as the global radius. Edits preserve unspecified
+  overrides; changing the global radius does not erase them. Visual corner names apply after
+  normalization of reversed geometry.
 - A positive Bar/Rect radius converts each concrete rectangle to one deterministic 10-command path and clamps
   the effective radius independently to `min(requested, width / 2, height / 2)`. Reversed rectangles are
-  normalized first. Setting radius to zero restores a homogeneous rect owner while retaining stable owner/item IDs.
+  normalized first. Setting every effective corner radius to zero restores a homogeneous rect owner while retaining stable owner/item IDs.
 - Resize, scale/data/encoding edits, legend and highlight replay, theme apply/remove, and facet source replay
   rematerialize from the requested value. Inferred legend symbols inherit source radius and stroke details; an
   explicit `editLegendBlock` symbol paint override is applied afterward and remains authoritative.
@@ -77,9 +87,10 @@ type RectStyleDetails = StrokeStyleDetails & {
   strokes. Painted bounds include exact cap and join extents and honor the effective miter limit.
 - The same fields pass through existing facade style objects such as `point`, `line`, `area`, `arc`, `tick`,
   `stem`, `errorBar`, and `boundaries`; Bar/Rect-owned `bar`, `rect`, `box`, and reference-band styles also
-  accept `cornerRadius`. No generic style action or legend-only geometry option is added.
+  accept the global and per-corner radius options. No generic style action or legend-only geometry option is added.
 
 Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-rect.test.js`,
+`test/unit/actions/marks/independent-rect-corners.test.js`,
 `test/unit/grammar/graphic-bounds.test.js`, `test/unit/renderers/canvas-stroke-details.test.js`,
 `test/unit/renderers/svg-renderer.test.js`, `test/unit/renderers/pdf-renderer.test.js`,
 `test/unit/actions/marks/shape-style-details.test.js`,
@@ -429,7 +440,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createBarMark`
 
-- Signature: `createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
+- Signature: `createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`, `data`: 첫 unnamed bar의 deterministic `"bar"` 또는 explicit 새 ID와 optional existing/current data다.
 - Effect: semantic `bar` layer와 길이 0의 rect collection을 만든다. 관련 x/y/grouping semantics가
   완성될 때 rect가 materialize된다.
@@ -440,7 +451,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createBarMark`
 
-- Implemented: `createBarMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createBarMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createBarMark`
@@ -456,7 +467,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editBarMark`
 
-- Signature: `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`: current compatible bar, unique bar, or explicit existing bar ID.
 - `fill`: non-empty constant color. Field-driven color encoding과 함께 사용할 수 없다.
 - `opacity`: unit interval. `stroke`: non-empty color or `false`; false는 concrete transparent zero-width outline로
@@ -466,7 +477,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editBarMark`
 
-- Implemented: `editBarMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editBarMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -653,7 +664,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createRectMark`
 
-- Signature: `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`.
+- Signature: `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`.
 - The first omitted ID resolves to `"rect"`. Data is explicit or inferred from the current dataset; a newly layered
   rect may inherit one unique compatible Cartesian source's data, coordinate, and position encodings.
 - Rect is a distinct semantic mark. It materializes two discrete band positions (`x` and `y`), two complete
@@ -676,7 +687,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createRectMark`
 
-- Implemented: `createRectMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
+- Implemented: `createRectMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
 - Proposed (NOT IMPLEMENTED): categorical cell completion and automatic missing-cell placeholders.
 
 ### Value coverage — `createRectMark`
@@ -688,7 +699,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editRectMark`
 
-- Signature: `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`.
 - At least one property is required. Omitted target resolves only one eligible rect. Omitted properties preserve the
   immutable mark configuration; `stroke: false` disables the stroke and rejects a simultaneous width.
 - Constant fill and `encodeColor` are mutually exclusive. Complete cells rematerialize immediately; incomplete rects
@@ -696,7 +707,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editRectMark`
 
-- Implemented: `editRectMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editRectMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editRectMark`

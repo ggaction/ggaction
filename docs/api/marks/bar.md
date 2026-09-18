@@ -10,7 +10,7 @@ title: Bar Marks
 Bar marks represent binned counts, aggregate categories, grouped or stacked
 partitions, and observed quantitative intervals.
 
-## `createBarMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
+## `createBarMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 <!-- snippet-context:start -->
 
@@ -67,7 +67,7 @@ width, before or after assigning positions; otherwise the default band fraction
 uses the smallest observed time gap. Both orientations support ISO dates and
 explicit timestamp units.
 
-## `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}
+## `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}
 
 <!-- snippet-context:start -->
 
@@ -90,6 +90,15 @@ after Canvas or scale rematerialization.
 
 See [Mark Style](../appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles)
 for the closed cap/join values, defaults, and high-level pass-through rules.
+
+### Independent corners
+
+`cornerRadiusTopLeft`, `cornerRadiusTopRight`, `cornerRadiusBottomRight`, and
+`cornerRadiusBottomLeft` override `cornerRadius` for their visual corners.
+Each value is a finite non-negative logical-pixel radius, clamped independently
+to half the smaller item side. An explicit zero keeps that corner square.
+Omitted corners use the global radius or zero. Edits retain unspecified
+overrides, so resetting the global radius alone does not clear them.
 
 ## Related
 

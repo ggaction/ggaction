@@ -1,3 +1,4 @@
+import { hasRectRadius } from "../../grammar/roundedRect.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
@@ -45,7 +46,7 @@ export function requireCompleteBar(program, id) {
   const dataset = applyItemMissingPolicy(layer, sourceDataset);
   const graphic = program.graphicSpec.objects[id];
   const roundedCollection = graphic?.type === "collection" &&
-    Object.hasOwn(program.markConfigs[id]?.barAppearance ?? {}, "cornerRadius") &&
+    hasRectRadius(program.markConfigs[id]?.barAppearance) &&
     graphic.items?.every(child => ["rect", "path"].includes(child.type));
   if (graphic?.type !== "rect" && !roundedCollection) {
     throw new Error(`Bar mark "${id}" requires rect graphics.`);

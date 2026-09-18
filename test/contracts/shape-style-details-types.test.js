@@ -32,7 +32,13 @@ const stroke: StrokeStyleDetails = {
   lineJoin: "bevel",
   miterLimit: 4
 };
-const rect: RectStyleDetails = { ...stroke, cornerRadius: 8 };
+const rect: RectStyleDetails = { ...stroke, cornerRadius: 8,
+  cornerRadiusTopLeft: 2, cornerRadiusTopRight: 0,
+  cornerRadiusBottomRight: 4, cornerRadiusBottomLeft: 0 };
+// @ts-expect-error corner radii require numbers
+p.createRectMark({ cornerRadiusTopLeft: "8" });
+// @ts-expect-error point marks do not have rectangular corners
+p.createPointMark({ cornerRadiusTopRight: 4 });
 const basicStroke: BasicStrokeStyleDetails = stroke;
 const basicRect: BasicRectStyleDetails = rect;
 

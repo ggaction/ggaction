@@ -10,7 +10,7 @@ import {
 } from "../shared.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
-import { requestedRectStyleDetails } from
+import { requestedRectStyleDetails, RECT_RADIUS_PROPERTIES } from
   "../../../grammar/roundedRect.js";
 import { STROKE_STYLE_PROPERTIES } from
   "../../../grammar/strokeStyle.js";
@@ -18,7 +18,7 @@ import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const CREATE_OPTIONS = Object.freeze([
   "id", "data", "missing", "fill", "opacity", "stroke", "strokeWidth",
-  "cornerRadius", ...STROKE_STYLE_PROPERTIES
+  ...RECT_RADIUS_PROPERTIES, ...STROKE_STYLE_PROPERTIES
 ]);
 
 export const createBarMark = /* @__PURE__ */ action(
@@ -70,7 +70,7 @@ export const createBarMark = /* @__PURE__ */ action(
     created = materializeInheritedMark(created, id);
     const appearance = Object.fromEntries(
       [
-        "fill", "opacity", "stroke", "strokeWidth", "cornerRadius",
+        "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
         ...STROKE_STYLE_PROPERTIES
       ]
         .filter(property => Object.hasOwn(args, property))

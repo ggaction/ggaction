@@ -9264,6 +9264,10 @@ Related types: [`RectStyleDetails`](#type-rectstyledetails).
 ```typescript
 export type RectStyleDetails = StrokeStyleDetails & {
   cornerRadius?: number;
+  cornerRadiusTopLeft?: number;
+  cornerRadiusTopRight?: number;
+  cornerRadiusBottomRight?: number;
+  cornerRadiusBottomLeft?: number;
 };
 ```
 

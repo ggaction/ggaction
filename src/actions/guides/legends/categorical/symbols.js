@@ -13,6 +13,7 @@ import {
 import { resolveCategoricalLegendPlacement } from "../lifecycle.js";
 import { createPointShapeGraphic } from "../../../../grammar/pointShapes.js";
 import {
+  hasRectRadius,
   materializeRectItem,
   requestedRectStyleDetails
 } from "../../../../grammar/roundedRect.js";
@@ -36,7 +37,7 @@ function makeEditSymbol(type) {
       const layer = layerFor(config, type);
       const id = symbolGraphic(config, type);
       const dynamicPoint = type === "point" && config.channels.includes("shape");
-      const styledSwatch = type === "swatch" && Object.hasOwn(layer, "cornerRadius");
+      const styledSwatch = type === "swatch" && hasRectRadius(layer);
       const expected = dynamicPoint || styledSwatch
         ? "collection"
         : { line: "line", point: "circle", swatch: "rect" }[type];
@@ -153,7 +154,7 @@ function makeEditSymbol(type) {
           strokeWidth: layer.strokeWidth,
           ...(layer.opacity === undefined ? {} : { opacity: layer.opacity }),
           ...requestedStrokeDetails(details, "Legend swatch symbol")
-        }, details.cornerRadius ?? 0))
+        }, details))
       );
     }
   );
@@ -173,7 +174,7 @@ function makeCreateSymbol(type, edit) {
         throw new Error(`${op} requires missing ${type} symbols.`);
       }
       const graphicType = type === "point" && config.channels.includes("shape") ||
-        type === "swatch" && (layer.cornerRadius ?? 0) > 0
+        type === "swatch" && hasRectRadius(layer)
         ? "collection"
         : { line: "line", point: "circle", swatch: "rect" }[type];
       return this

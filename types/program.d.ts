@@ -1083,6 +1083,10 @@ export type StrokeStyleDetails = {
 };
 export type RectStyleDetails = StrokeStyleDetails & {
   cornerRadius?: number;
+  cornerRadiusTopLeft?: number;
+  cornerRadiusTopRight?: number;
+  cornerRadiusBottomRight?: number;
+  cornerRadiusBottomLeft?: number;
 };
 export type PaletteName =
   | "accent"

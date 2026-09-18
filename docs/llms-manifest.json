@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:0c94fc1f3b7c8f899f8a1f5b8cba645b0516d36b003f7d463aa525a0d8b360f3",
+    "contractId": "sha256:78f8ff4426a1615cc402b864c0115b5fb8be34261a53ea62c43e4f0a98955ff1",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -941,12 +941,13 @@
       "source": "api/marks/bar.md",
       "headings": [
         "bar-marks",
-        "createbarmark-id-data-missing-fill-opacity-stroke-strokewidth-cornerradius-linecap-linejoin-miterlimit",
+        "createbarmark-id-data-missing-fill-opacity-stroke-strokewidth-cornerradius-cornerradiustopleft-cornerradiustopright-cornerradiusbottomright-cornerradiusbottomleft-linecap-linejoin-miterlimit",
         "edit-bar-mark",
+        "independent-corners",
         "related"
       ],
-      "bytes": 3859,
-      "sha256": "89d7f083934acb28ec3468356366d40ab6ec601f1d55a1f239a6fa2a69984d2e"
+      "bytes": 4525,
+      "sha256": "aac497c859ba59aabf127f37bafbd9ef4aa29b1522e300a51f5f157c866bcfa0"
     },
     {
       "order": 60,
@@ -992,13 +993,14 @@
       "source": "api/marks/rect.md",
       "headings": [
         "rect-marks",
-        "createrectmark-id-data-missing-fill-opacity-stroke-strokewidth-cornerradius-linecap-linejoin-miterlimit",
-        "editrectmark-target-fill-opacity-stroke-strokewidth-cornerradius-linecap-linejoin-miterlimit",
+        "createrectmark-id-data-missing-fill-opacity-stroke-strokewidth-cornerradius-cornerradiustopleft-cornerradiustopright-cornerradiusbottomright-cornerradiusbottomleft-linecap-linejoin-miterlimit",
+        "editrectmark-target-fill-opacity-stroke-strokewidth-cornerradius-cornerradiustopleft-cornerradiustopright-cornerradiusbottomright-cornerradiusbottomleft-linecap-linejoin-miterlimit",
         "cell-labels-and-selection",
+        "independent-corners",
         "related"
       ],
-      "bytes": 6078,
-      "sha256": "2ce022ad059b53265bebca5c18a55ef1e0f45411dcde986d7934b4031ab32db6"
+      "bytes": 6744,
+      "sha256": "415f5698ba84fbc4ca6fff3201fb4d99733059e1e4215938c060572d4b5cf900"
     },
     {
       "order": 63,
@@ -1434,8 +1436,8 @@
         "encodebarwidth-band-pixels-target",
         "related"
       ],
-      "bytes": 9813,
-      "sha256": "1eccf3a161dcab718425d6b1d6c828d6984a6eef581cb5a5d31e05109f813f8c"
+      "bytes": 10359,
+      "sha256": "1c6bc8ed9f79facbb7a40095559a9e171dba13ee38498ee6a4d6b538c6daa235"
     },
     {
       "order": 88,
@@ -2007,8 +2009,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 152345,
-      "sha256": "4ddb05017172fd02e1c1195e742a6b8015a540c6a75efcd0d8c4fc7464d7c05b"
+      "bytes": 152527,
+      "sha256": "5d621a92e87ba5ca07b7f3e821cfc179babecdfa8b1997829811b18710899dcf"
     },
     {
       "order": 119,
@@ -2052,8 +2054,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 64169,
-      "sha256": "46dca2cdd9f6d6d82e16cccc2bab2cb586ae853b82d56bcc00685c1d283a1186"
+      "bytes": 67223,
+      "sha256": "1b5c705207b44f9902243542317a38dd71a9b8af680428b6f250578a193dc275"
     },
     {
       "order": 120,
@@ -2158,8 +2160,8 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 77745,
-      "sha256": "56fff4c7231f52c7cd8c289cd27c0f89f2613226f126a084cf1543bdeb54ba91"
+      "bytes": 77867,
+      "sha256": "9513db893d8fd606abc8291fbfd017deedd4b74dcf45271a8bb7277f04d1c93e"
     },
     {
       "order": 122,
@@ -2939,8 +2941,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 309939,
-      "sha256": "bec027da8603e62c3ea84dfa30b549525681ece807e913e428f0771b406e3b11"
+      "bytes": 310075,
+      "sha256": "13d98aa008c15d9a6667197493df3923bb86c6f1942d8807f230741d6c25bd11"
     },
     {
       "order": 127,
@@ -3292,7 +3294,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "8cc87f3f8c47da492cb79c7fb58c7453ab5e19c27cbe79f97a089fcb676915ea"
+      "sha256": "18992d5cfad78fd0da3d96aa9eb117c1b749b4b795d1989c1065c7598ac51037"
     },
     {
       "order": 150,

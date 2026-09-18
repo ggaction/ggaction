@@ -1,5 +1,5 @@
 import { rectUsesFields } from "../../../grammar/rects.js";
-import { readRectItemGeometry } from "../../../grammar/roundedRect.js";
+import { hasRectRadius, readRectItemGeometry } from "../../../grammar/roundedRect.js";
 import { resolveRectRows } from "../../rect.js";
 import {
   channelMapFromRow,
@@ -40,7 +40,7 @@ function resolveGradientPlotItems(program, layer, dataset) {
 
 export function resolveRectItems(program, layer, dataset) {
   const graphic = program.graphicSpec.objects[layer.id];
-  const rounded = Object.hasOwn(program.markConfigs[layer.id] ?? {}, "cornerRadius");
+  const rounded = hasRectRadius(program.markConfigs[layer.id]);
   const compatibleCollection = rounded && graphic?.type === "collection" &&
     graphic.items?.every(item => ["rect", "path"].includes(item.type));
   if (
