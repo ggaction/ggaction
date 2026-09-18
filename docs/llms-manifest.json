@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:1523245223fa8a2d7326e80f3917cccd0fcffbe9abd155c1d445b671a932c6f1",
+    "contractId": "sha256:0c94fc1f3b7c8f899f8a1f5b8cba645b0516d36b003f7d463aa525a0d8b360f3",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -726,8 +726,8 @@
         "other-complete-chart-facades",
         "advanced-authoring"
       ],
-      "bytes": 13425,
-      "sha256": "bf29fa83789474d28901510f8cb058b393036d22d87cbbf384fec7158e54d731"
+      "bytes": 14633,
+      "sha256": "4afc3c981edb6dc35aa44a0bb2864c064852bbd96dd055d21e3265f40fe72a5d"
     },
     {
       "order": 47,
@@ -931,8 +931,8 @@
         "editarcmark-target-innerradius-padangle-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
         "related"
       ],
-      "bytes": 10912,
-      "sha256": "4118004192341c1572fa132ffd73ce82829edc76842857fa1e28bc3a727cbce9"
+      "bytes": 11149,
+      "sha256": "49bb20695e90159dc127a21639dd9e2aaf1bedb5786537a27f49ac986407029a"
     },
     {
       "order": 59,
@@ -2007,8 +2007,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 151635,
-      "sha256": "ab64e8b9e0c2f75eddb3d70c8493b82eaecfe6cc3cb8f36341a416e7980aec5b"
+      "bytes": 152345,
+      "sha256": "4ddb05017172fd02e1c1195e742a6b8015a540c6a75efcd0d8c4fc7464d7c05b"
     },
     {
       "order": 119,
@@ -2354,6 +2354,8 @@
         "type-bandpositionscaleoptions",
         "type-barcategoricalcolorchannel",
         "type-barcolorchannel",
+        "type-barfieldposition",
+        "type-barrangepositionchannel",
         "type-barwidthoptions",
         "type-barypositionchannel",
         "type-baselinedensityplacement",
@@ -2937,8 +2939,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 308951,
-      "sha256": "122e38cdc9d3f86f7acf8c50c35e38b71a2848a50f0a27e71fe843527f55a1ae"
+      "bytes": 309939,
+      "sha256": "bec027da8603e62c3ea84dfa30b549525681ece807e913e428f0771b406e3b11"
     },
     {
       "order": 127,
@@ -3276,8 +3278,8 @@
         "compose-or-refine",
         "related"
       ],
-      "bytes": 18622,
-      "sha256": "3bd5720d852ed6aa1a6d84fad5f94d44ce1d53c664e592b4711dd5f9346a13bc"
+      "bytes": 18752,
+      "sha256": "9efc0a8faad3514238c4c311491ed6e0b048eeae5c31fc4cdffcce20ae24aa99"
     },
     {
       "order": 149,
@@ -3290,7 +3292,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "f205bf48dacc7f5d966d696cd3770e451527d06e7de8286e7efa192739219bb9"
+      "sha256": "8cc87f3f8c47da492cb79c7fb58c7453ab5e19c27cbe79f97a089fcb676915ea"
     },
     {
       "order": 150,

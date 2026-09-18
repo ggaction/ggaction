@@ -3183,12 +3183,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `x` | Required | `BandPositionChannel` |
-| `y` | Required | `BarYPositionChannel` |
 | `color` | Optional / branch-dependent | `BarColorChannel \| undefined` |
 | `width` | Optional / branch-dependent | `Omit<BarWidthOptions, "target"> \| undefined` |
 | `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; } & { fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+| `x` | Required | `string \| BarRangePositionChannel \| (Omit<PositionEncodingBase, "coordinate" \| "target"> & { fieldType?: "quantitative" \| undefined; aggregate?: undefined; scale?: NonPointZeroSupportingPositionScaleOptions \| undefined; } & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) ...` |
+| `y` | Required | `string \| BarRangePositionChannel \| ({ field: string; fieldType: "temporal"; temporalUnit?: TemporalInputUnit \| undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions \| undefined; } & { ...; }) \| ... 6 more ... \| ({ ...; } & ... 1 more ... & { ...; })` |
 
 </details>
 
@@ -3199,8 +3199,8 @@ createBarPlot({ id?, data?, coordinate?, x, y, color?, width?, bar?, guides? })
 ```
 
 Create categorical or temporal bars with quantitative measures; use `color.layout` for grouped or stacked partitions, not top-level `stack`/`groupBy`; width defaults to 0.72 of the slot and guides are inferred unless disabled.
-Category-first child calls infer
-the measure's mean in either orientation; temporal categories are supported on both axes.
+A channel may instead specify `{ lower, upper, scale? }` for raw interval bars without aggregation.
+Category-first child calls infer the ordinary single-field measure's mean in either orientation; temporal categories are supported on both axes.
 [Basic Charts](../../api/basic-charts.md#createbarplot)
 
 

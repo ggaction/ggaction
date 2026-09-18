@@ -427,6 +427,13 @@ export function buildActionRelationshipPrograms() {
     chart().createCanvas({ width: 400, height: 300, margin: 40 })
       .createData({ values: [{ x: 1, y: 2 }] })
       .createScatterPlot({ x: "x", y: "y", point: { radius: 4 }, guides: false }),
+    ...[true, false].map(vertical => chart()
+      .createCanvas({ width: 400, height: 300, margin: 40 })
+      .createData({ values: [{ category: "A", lo: 2, hi: 6 }, { category: "B", lo: 3, hi: 7 }] })
+      .createBarPlot({
+        x: vertical ? "category" : { lower: "lo", upper: "hi" },
+        y: vertical ? { lower: "lo", upper: "hi" } : "category", guides: false
+      })),
     ...selectionLifecyclePrograms(),
     ...focusedScaleEditorPrograms(),
     ...atomicEncodingPrograms(),

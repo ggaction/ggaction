@@ -730,6 +730,38 @@ type BarColorChannel =
 
 Related types: [`BarCategoricalColorChannel`](#type-barcategoricalcolorchannel) · [`QuantitativeBarColorChannel`](#type-quantitativebarcolorchannel).
 
+### `BarFieldPosition` {#type-barfieldposition}
+
+<details markdown="1">
+<summary>Expand BarFieldPosition</summary>
+
+```typescript
+type BarFieldPosition<T> = T extends string ? T : T & { lower?: never; upper?: never };
+```
+
+</details>
+
+### `BarRangePositionChannel` {#type-barrangepositionchannel}
+
+<details markdown="1">
+<summary>Expand BarRangePositionChannel</summary>
+
+```typescript
+export type BarRangePositionChannel = {
+  lower: string;
+  upper: string;
+  fieldType?: "quantitative";
+  scale?: NonPointZeroSupportingPositionScaleOptions;
+  field?: never;
+  aggregate?: never;
+  stack?: never;
+};
+```
+
+</details>
+
+Related types: [`NonPointZeroSupportingPositionScaleOptions`](#type-nonpointzerosupportingpositionscaleoptions).
+
 ### `BarWidthOptions` {#type-barwidthoptions}
 
 <details markdown="1">
@@ -2051,12 +2083,10 @@ Related types: [`CompleteAxisOptions`](#type-completeaxisoptions) · [`XAxisPosi
 <summary>Expand CreateBarPlotOptions</summary>
 
 ```typescript
-export interface CreateBarPlotOptions {
+export type CreateBarPlotOptions = {
   id?: string;
   data?: string;
   coordinate?: string;
-  x: BandPositionChannel;
-  y: BarYPositionChannel;
   color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target">;
   bar?: RectStyleDetails & {
@@ -2066,12 +2096,16 @@ export interface CreateBarPlotOptions {
     strokeWidth?: number;
   };
   guides?: false | ColorGuides;
-}
+} & (
+  | { x: BarFieldPosition<BandPositionChannel>; y: BarFieldPosition<BarYPositionChannel> }
+  | { x: BarRangePositionChannel; y: BarFieldPosition<BandPositionChannel> }
+  | { x: BarFieldPosition<BandPositionChannel>; y: BarRangePositionChannel }
+);
 ```
 
 </details>
 
-Related types: [`BandPositionChannel`](#type-bandpositionchannel) · [`BarYPositionChannel`](#type-barypositionchannel) · [`BarColorChannel`](#type-barcolorchannel) · [`BarWidthOptions`](#type-barwidthoptions) · [`RectStyleDetails`](#type-rectstyledetails) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`ColorGuides`](#type-colorguides).
+Related types: [`BarColorChannel`](#type-barcolorchannel) · [`BarWidthOptions`](#type-barwidthoptions) · [`RectStyleDetails`](#type-rectstyledetails) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`ColorGuides`](#type-colorguides) · [`BarFieldPosition`](#type-barfieldposition) · [`BandPositionChannel`](#type-bandpositionchannel) · [`BarYPositionChannel`](#type-barypositionchannel) · [`BarRangePositionChannel`](#type-barrangepositionchannel).
 
 ### `CreateBeeswarmPlotOptions` {#type-createbeeswarmplotoptions}
 

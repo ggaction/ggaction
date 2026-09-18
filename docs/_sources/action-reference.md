@@ -785,8 +785,8 @@ createBarPlot({ id?, data?, coordinate?, x, y, color?, width?, bar?, guides? })
 ```
 
 Create categorical or temporal bars with quantitative measures; use `color.layout` for grouped or stacked partitions, not top-level `stack`/`groupBy`; width defaults to 0.72 of the slot and guides are inferred unless disabled.
-Category-first child calls infer
-the measure's mean in either orientation; temporal categories are supported on both axes.
+A channel may instead specify `{ lower, upper, scale? }` for raw interval bars without aggregation.
+Category-first child calls infer the ordinary single-field measure's mean in either orientation; temporal categories are supported on both axes.
 [Basic Charts](../api/basic-charts.md#createbarplot)
 
 ### `createHistogram`

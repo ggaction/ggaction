@@ -93,15 +93,15 @@ export function resolveLinePositionPolicy({
   if (layer.encoding?.x?.bin !== undefined && args.aggregate === undefined) {
     throw new Error("Binned line x encoding requires an aggregate y encoding.");
   }
-  const quantitativePair =
+  const continuousPair =
     fieldType === "quantitative" &&
-    layer.encoding?.x?.fieldType === "quantitative" &&
+    ["quantitative", "temporal"].includes(layer.encoding?.x?.fieldType) &&
     layer.encoding.x.bin === undefined;
   const prospectiveDirect =
     args.aggregate === undefined &&
     (fieldType === "temporal" ||
       (fieldType === "quantitative" &&
-        (layer.encoding?.x === undefined || quantitativePair)));
+        (layer.encoding?.x === undefined || continuousPair)));
   if (interval || (windowOutput && args.aggregate === undefined) || prospectiveDirect) {
     if (!["quantitative", "temporal"].includes(fieldType)) {
       throw new Error(

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:1523245223fa8a2d7326e80f3917cccd0fcffbe9abd155c1d445b671a932c6f1. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:0c94fc1f3b7c8f899f8a1f5b8cba645b0516d36b003f7d463aa525a0d8b360f3. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -4295,6 +4295,26 @@ Required options are `x` and `y`. Position option objects select vertical,
 horizontal, aggregate, or ranged geometry. `color.layout` owns grouped,
 stacked, normalized-fill, overlay, and diverging arrangements.
 
+Use `{ lower, upper }` on one axis for raw interval bars. The opposite axis
+must be categorical or temporal. Bounds remain per-row values: no mean, sum,
+or stacking is introduced. Do not combine a range with `field`, `aggregate`,
+or `stack` in the same channel, or specify ranges on both axes.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+const program = chart().createCanvas({ width: 400, height: 300, margin: 60 })
+  .createData({ values: [{ item: "A", low: 2, high: 6 }, { item: "B", low: 4, high: 8 }] })
+  .createBarPlot({ x: { lower: "low", upper: "high" }, y: "item", width: { pixels: 18 } });
+```
+
+A range channel also accepts `fieldType: "quantitative"` and an explicit `scale`,
+using the existing bar scale types (`linear`, `pow`, `sqrt`, or `symlog`).
+Swap x and y for vertical bars. Repeated categories remain separate rectangles.
+Layered interval bars can share a compatible value scale with a raw line;
+use explicit scale IDs when the plot contains several scales.
+
 Field strings use data-driven shorthand: finite numeric fields infer
 quantitative positions and other supported scalar fields infer nominal
 positions. Use an option object with `fieldType` when a numeric field is an
@@ -6056,6 +6076,10 @@ const program = chart().createCanvas({ width: 400, height: 300, margin: 50 })
   .createLinePlot({ x: "x", y: "y", line: { curve: "cardinal", tension: 0.9 } });
 const softer = program.editLineMark({ tension: 0.5 });
 ```
+
+A temporal x field with a quantitative y field can also retain raw observations:
+omit `aggregate` to draw each row, or specify an aggregate such as `mean` to
+combine observations at each time. Both encoding orders have the same result.
 
 A constant `stroke` conflicts with field-driven `encodeColor`. Appearance is
 stored and reapplied whenever scale, Canvas, or grouping changes rebuild paths.
@@ -17868,12 +17892,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `x` | Required | `BandPositionChannel` |
-| `y` | Required | `BarYPositionChannel` |
 | `color` | Optional / branch-dependent | `BarColorChannel \| undefined` |
 | `width` | Optional / branch-dependent | `Omit<BarWidthOptions, "target"> \| undefined` |
 | `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; } & { fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+| `x` | Required | `string \| BarRangePositionChannel \| (Omit<PositionEncodingBase, "coordinate" \| "target"> & { fieldType?: "quantitative" \| undefined; aggregate?: undefined; scale?: NonPointZeroSupportingPositionScaleOptions \| undefined; } & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) ...` |
+| `y` | Required | `string \| BarRangePositionChannel \| ({ field: string; fieldType: "temporal"; temporalUnit?: TemporalInputUnit \| undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions \| undefined; } & { ...; }) \| ... 6 more ... \| ({ ...; } & ... 1 more ... & { ...; })` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -17882,8 +17906,8 @@ createBarPlot({ id?, data?, coordinate?, x, y, color?, width?, bar?, guides? })
 ```
 
 Create categorical or temporal bars with quantitative measures; use `color.layout` for grouped or stacked partitions, not top-level `stack`/`groupBy`; width defaults to 0.72 of the slot and guides are inferred unless disabled.
-Category-first child calls infer
-the measure's mean in either orientation; temporal categories are supported on both axes.
+A channel may instead specify `{ lower, upper, scale? }` for raw interval bars without aggregation.
+Category-first child calls infer the ordinary single-field measure's mean in either orientation; temporal categories are supported on both axes.
 [Basic Charts](./api/basic-charts/#createbarplot)
 
 ## `createHistogram`
@@ -26374,6 +26398,32 @@ type BarColorChannel =
 
 Related types: [`BarCategoricalColorChannel`](./reference/types/#type-barcategoricalcolorchannel) · [`QuantitativeBarColorChannel`](./reference/types/#type-quantitativebarcolorchannel).
 
+### `BarFieldPosition` {#type-barfieldposition}
+
+ Expand BarFieldPosition
+
+```typescript
+type BarFieldPosition<T> = T extends string ? T : T & { lower?: never; upper?: never };
+```
+
+### `BarRangePositionChannel` {#type-barrangepositionchannel}
+
+ Expand BarRangePositionChannel
+
+```typescript
+export type BarRangePositionChannel = {
+  lower: string;
+  upper: string;
+  fieldType?: "quantitative";
+  scale?: NonPointZeroSupportingPositionScaleOptions;
+  field?: never;
+  aggregate?: never;
+  stack?: never;
+};
+```
+
+Related types: [`NonPointZeroSupportingPositionScaleOptions`](./reference/types/#type-nonpointzerosupportingpositionscaleoptions).
+
 ### `BarWidthOptions` {#type-barwidthoptions}
 
  Expand BarWidthOptions
@@ -27475,12 +27525,10 @@ Related types: [`CompleteAxisOptions`](./reference/types/#type-completeaxisoptio
  Expand CreateBarPlotOptions
 
 ```typescript
-export interface CreateBarPlotOptions {
+export type CreateBarPlotOptions = {
   id?: string;
   data?: string;
   coordinate?: string;
-  x: BandPositionChannel;
-  y: BarYPositionChannel;
   color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target">;
   bar?: RectStyleDetails & {
@@ -27490,10 +27538,14 @@ export interface CreateBarPlotOptions {
     strokeWidth?: number;
   };
   guides?: false | ColorGuides;
-}
+} & (
+  | { x: BarFieldPosition<BandPositionChannel>; y: BarFieldPosition<BarYPositionChannel> }
+  | { x: BarRangePositionChannel; y: BarFieldPosition<BandPositionChannel> }
+  | { x: BarFieldPosition<BandPositionChannel>; y: BarRangePositionChannel }
+);
 ```
 
-Related types: [`BandPositionChannel`](./reference/types/#type-bandpositionchannel) · [`BarYPositionChannel`](./reference/types/#type-barypositionchannel) · [`BarColorChannel`](./reference/types/#type-barcolorchannel) · [`BarWidthOptions`](./reference/types/#type-barwidthoptions) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`ColorGuides`](./reference/types/#type-colorguides).
+Related types: [`BarColorChannel`](./reference/types/#type-barcolorchannel) · [`BarWidthOptions`](./reference/types/#type-barwidthoptions) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`ColorGuides`](./reference/types/#type-colorguides) · [`BarFieldPosition`](./reference/types/#type-barfieldposition) · [`BandPositionChannel`](./reference/types/#type-bandpositionchannel) · [`BarYPositionChannel`](./reference/types/#type-barypositionchannel) · [`BarRangePositionChannel`](./reference/types/#type-barrangepositionchannel).
 
 ### `CreateBeeswarmPlotOptions` {#type-createbeeswarmplotoptions}
 
@@ -37813,7 +37865,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 
 | Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
 | --- | --- | --- | --- | --- |
-| Categorical/measure roles, explicit summary, or ranged endpoints | [`createBarPlot`](./reference/actions/charts-data/#createbarplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createBarMark`](./reference/actions/marks/#createbarmark) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeBarWidth`](./reference/actions/encodings/#encodebarwidth) · [`createGuides`](./reference/actions/guides/#createguides) |
+| Categorical/measure roles, explicit summary, or ranged endpoints | [`createBarPlot`](./reference/actions/charts-data/#createbarplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createBarMark`](./reference/actions/marks/#createbarmark) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeBarWidth`](./reference/actions/encodings/#encodebarwidth) · [`createGuides`](./reference/actions/guides/#createguides) · [`encodeYRange`](./reference/actions/encodings/#encodeyrange) · [`encodeXRange`](./reference/actions/encodings/#encodexrange) |
 | Category and measure per raw row, or an explicit summary | [`createDotPlot`](./reference/actions/charts-data/#createdotplot) | H0, H1 · user-facing · default | [`editEndpointPlot`](./reference/actions/charts-data/#editendpointplot) | [`createSummaryData`](./reference/actions/statistics/#createsummarydata) · [`createPointMark`](./reference/actions/marks/#createpointmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) |
 | Category, measure, and a finite baseline | [`createLollipopPlot`](./reference/actions/charts-data/#createlollipopplot) | H0, H1 · user-facing · default | [`editEndpointPlot`](./reference/actions/charts-data/#editendpointplot) | [`createSummaryData`](./reference/actions/statistics/#createsummarydata) · [`createRuleMark`](./reference/actions/marks/#createrulemark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeX2`](./reference/actions/encodings/#encodex2) · [`createPointMark`](./reference/actions/marks/#createpointmark) |
 | Category plus named start and end measurements | [`createDumbbellPlot`](./reference/actions/charts-data/#createdumbbellplot) | H0, H1 · user-facing · default | [`editEndpointPlot`](./reference/actions/charts-data/#editendpointplot) | [`createSummaryData`](./reference/actions/statistics/#createsummarydata) · [`createRuleMark`](./reference/actions/marks/#createrulemark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeX2`](./reference/actions/encodings/#encodex2) · [`createPointMark`](./reference/actions/marks/#createpointmark) |
@@ -37885,7 +37937,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:1523245223fa8a2d7326e80f3917cccd0fcffbe9abd155c1d445b671a932c6f1` |
+| Contract fingerprint | `sha256:0c94fc1f3b7c8f899f8a1f5b8cba645b0516d36b003f7d463aa525a0d8b360f3` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

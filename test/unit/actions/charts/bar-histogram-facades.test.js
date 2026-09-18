@@ -297,3 +297,84 @@ test("uses explicit/current data and requires explicit IDs after stable conflict
     /requires an explicit createhistogram id/
   );
 });
+
+for (const vertical of [true, false]) {
+  test(`raw ${vertical ? "vertical" : "horizontal"} bar facade matches explicit range actions without aggregating rows`, () => {
+    const values = [{ category: "A", lo: 2, hi: 6 }, { category: "A", lo: 3, hi: 7 }, { category: "B", lo: 4, hi: 8 }];
+    const source = base(values);
+    const interval = { lower: "lo", upper: "hi", scale: { domain: [0, 10] } };
+    const options = { x: vertical ? "category" : interval, y: vertical ? interval : "category",
+      width: { pixels: 12 }, bar: { fill: "orange" }, guides: false };
+    const saved = structuredClone(options);
+    const p = source.createBarPlot(options);
+    let explicit = source.createBarMark({ id: "barPlot", fill: "orange" });
+    explicit = vertical
+      ? explicit.encodeX({ field: "category", fieldType: "nominal" }).encodeYRange({ ...interval, fieldType: "quantitative" })
+      : explicit.encodeY({ field: "category", fieldType: "nominal" }).encodeXRange({ ...interval, fieldType: "quantitative" });
+    explicit = explicit.encodeBarWidth({ pixels: 12 });
+    assert.deepEqual(p.semanticSpec, explicit.semanticSpec);
+    assert.deepEqual(p.graphicSpec, explicit.graphicSpec);
+    assert.equal(p.graphicSpec.objects.barPlot.items.length, 3);
+    assert.equal(p.semanticSpec.layers[0].encoding[vertical ? "y" : "x"].aggregate, undefined);
+    assert.deepEqual(p.editCanvas({ width: 500, height: 400 }).graphicSpec,
+      explicit.editCanvas({ width: 500, height: 400 }).graphicSpec);
+    assert.deepEqual(options, saved);
+    assert.equal(source.semanticSpec.layers.length, 0);
+    assert.ok(p.trace.children.at(-1).children.some(child => child.op === (vertical ? "encodeYRange" : "encodeXRange")));
+  });
+}
+
+test("temporal interval bar facade shares a value scale with a raw line and retains guide ownership", () => {
+  const p = base([{ date: "2024-01-01", lo: 2, hi: 6 }, { date: "2024-01-03", lo: 4, hi: 8 }])
+    .createBarPlot({
+      x: { field: "date", fieldType: "temporal" },
+      y: { lower: "lo", upper: "hi", scale: { id: "amount" } },
+      width: { pixels: 5 },
+      guides: { axes: { x: { ticksAndLabels: { count: 2, labels: { format: "%m-%d" } } }, y: {} } }
+    })
+    .createLinePlot({
+      x: { field: "date", fieldType: "temporal", scale: { id: "x" } },
+      y: { field: "lo", scale: { id: "amount" } }, guides: false
+    });
+  assert.equal(p.semanticSpec.layers.length, 2);
+  assert.equal(p.semanticSpec.layers[0].encoding.y.scale, p.semanticSpec.layers[1].encoding.y.scale);
+  assert.equal(p.graphicSpec.objects.barPlot.items.length, 2);
+  assert.equal(p.graphicSpec.objects.linePlot.items.length, 1);
+  assert.ok(p.graphicSpec.objects.yAxisLabels.items.length > 0);
+  assert.deepEqual(p.editCanvas({ width: 500 }).graphicSpec.objects.barPlot.items.map(item => item.properties.width), [5, 5]);
+});
+
+test("range facade rejects ambiguous bounds, transforms, and two ranged channels atomically", () => {
+  const p = base([{ category: "A", lo: 2, hi: 6 }]);
+  for (const y of [
+    { lower: "lo" }, { upper: "hi" }, { lower: "lo", upper: "hi", field: "lo" },
+    { lower: "lo", upper: "hi", aggregate: "mean" }, { lower: "lo", upper: "hi", fieldType: "temporal" }
+  ]) assert.throws(() => p.createBarPlot({ x: "category", y }), /range|option/u);
+  assert.throws(() => p.createBarPlot({ x: { lower: "lo", upper: "hi" }, y: { lower: "lo", upper: "hi" } }), /one range/u);
+  assert.equal(p.semanticSpec.layers.length, 0);
+});
+
+test("five raw bullet layers stay five facade calls and preserve independent facet ranges", () => {
+  const values = [
+    { category: "A", lo: 2, hi: 6, panel: "first" },
+    { category: "B", lo: 20, hi: 60, panel: "second" }
+  ];
+  let p = base(values);
+  for (let index = 0; index < 5; index += 1) {
+    p = p.createBarPlot({ id: `bullet-${index}`, x: { lower: "lo", upper: "hi" },
+      y: "category", width: { pixels: 30 - index * 5 }, guides: false });
+  }
+  assert.equal(p.trace.children.filter(child => child.op === "createBarPlot").length, 5);
+  assert.deepEqual(p.semanticSpec.layers.map(layer => layer.id), ["bullet-0", "bullet-1", "bullet-2", "bullet-3", "bullet-4"]);
+  const faceted = p.facet({ field: "panel", scales: { x: "independent", y: "independent" } });
+  const children = Object.values(faceted.children);
+  assert.equal(children.length, 2);
+  for (const child of children) {
+    for (let index = 0; index < 5; index += 1) {
+      const items = child.graphicSpec.objects[`bullet-${index}`].items;
+      assert.equal(items.length, 1);
+      assert.equal(items[0].properties.height, 30 - index * 5);
+    }
+  }
+  assert.notDeepEqual(children[0].resolvedScales.x.domain, children[1].resolvedScales.x.domain);
+});

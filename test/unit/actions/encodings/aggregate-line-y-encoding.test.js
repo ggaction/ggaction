@@ -185,10 +185,14 @@ test("regroups and rematerializes paths when a series field is introduced", () =
 });
 
 test("validates aggregate line y requirements", () => {
-  assert.throws(
-    () => createXEncodedLine().encodeY({ field: "value" }),
-    /Aggregate must be a supported operation/
-  );
+  const raw = createXEncodedLine().encodeY({ field: "value" });
+  assert.equal(raw.semanticSpec.layers[0].encoding.y.aggregate, undefined);
+  assert.equal(raw.graphicSpec.objects.trends.items[0].properties.commands.length, rows.length);
+  const reverseOrder = chart().createCanvas({ width: 240, height: 160, margin: 20 })
+    .createData({ id: "data", values: rows }).createLineMark({ id: "trends" })
+    .encodeY({ field: "value" })
+    .encodeX({ field: "year", fieldType: "temporal", scale: { nice: true } });
+  assert.deepEqual(reverseOrder.graphicSpec, raw.graphicSpec);
   assert.throws(
     () => createXEncodedLine().encodeY({
       field: "value",

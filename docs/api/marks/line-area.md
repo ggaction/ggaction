@@ -112,6 +112,10 @@ const program = chart().createCanvas({ width: 400, height: 300, margin: 50 })
 const softer = program.editLineMark({ tension: 0.5 });
 ```
 
+A temporal x field with a quantitative y field can also retain raw observations:
+omit `aggregate` to draw each row, or specify an aggregate such as `mean` to
+combine observations at each time. Both encoding orders have the same result.
+
 A constant `stroke` conflicts with field-driven `encodeColor`. Appearance is
 stored and reapplied whenever scale, Canvas, or grouping changes rebuild paths.
 `lineCap`, `lineJoin`, and `miterLimit` use the closed values and defaults in

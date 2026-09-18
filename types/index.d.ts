@@ -117,6 +117,7 @@ export type {
   CreateGuidesOptions,
   CreateGridOptions,
   CreateBarPlotOptions,
+  BarRangePositionChannel,
   CreateHeatmapOptions,
   CreateHistogramOptions,
   CreatePiePlotOptions,

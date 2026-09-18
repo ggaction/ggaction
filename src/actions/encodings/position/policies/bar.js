@@ -26,7 +26,8 @@ function resolveBarChannelPolicy({
   let stack;
   const xEncoding = layer.encoding?.x;
   const opposite = layer.encoding?.[channel === "x" ? "y" : "x"];
-  const pendingBoxRange = program.markConfigs[layer.id]?.boxPlot !== undefined;
+  const pendingRange = program.markConfigs[layer.id]?.boxPlot !== undefined ||
+    layer.encoding?.[`${channel}2`] !== undefined;
 
   if (["nominal", "ordinal", "temporal"].includes(fieldType)) {
     if (args.aggregate !== undefined || args.bin !== undefined || args.stack !== undefined) {
@@ -73,11 +74,11 @@ function resolveBarChannelPolicy({
     }
     aggregate = args.aggregate ?? (
       ["nominal", "ordinal", "temporal"].includes(opposite?.fieldType) &&
-      !pendingBoxRange
+      !pendingRange
         ? "mean"
         : undefined
     );
-    if (pendingBoxRange && args.aggregate === undefined) {
+    if (pendingRange && args.aggregate === undefined) {
       return { bin, aggregate, stack };
     }
     stack = Object.hasOwn(args, "stack") ? args.stack : opposite === undefined ? undefined : null;
@@ -106,7 +107,8 @@ export function resolveBarPositionPolicy(context) {
   const policy = resolveBarChannelPolicy(context);
   const oppositeChannel = channel === "x" ? "y" : "x";
   const opposite = layer.encoding?.[oppositeChannel];
-  const pendingBoxRange = program.markConfigs[layer.id]?.boxPlot !== undefined;
+  const pendingRange = program.markConfigs[layer.id]?.boxPlot !== undefined ||
+    layer.encoding?.[`${channel}2`] !== undefined;
   const candidate = {
     ...layer,
     encoding: {
@@ -118,7 +120,7 @@ export function resolveBarPositionPolicy(context) {
   // Absence of an aggregate/stack is sufficient to represent an unresolved role.
   let companion;
   if (
-    !pendingBoxRange && resolveBarGrain(layer) === undefined &&
+    !pendingRange && resolveBarGrain(layer) === undefined &&
     opposite?.fieldType === "quantitative" && opposite.bin === undefined
   ) {
     const resolved = resolveBarChannelPolicy({
@@ -138,7 +140,7 @@ export function resolveBarPositionPolicy(context) {
     }
   }
   const orientation = resolveBarOrientation(candidate);
-  if (opposite !== undefined && orientation === undefined && !pendingBoxRange) {
+  if (opposite !== undefined && orientation === undefined && !pendingRange) {
     throw new Error(
       `Bar ${channel} encoding requires a quantitative field opposite a categorical position.`
     );

@@ -618,17 +618,17 @@
     {
       "name": "encodeYRange",
       "wraps": [
+        "editSemantic",
         "encodeY",
-        "encodeY2",
-        "editSemantic"
+        "encodeY2"
       ]
     },
     {
       "name": "encodeXRange",
       "wraps": [
+        "editSemantic",
         "encodeX",
-        "encodeX2",
-        "editSemantic"
+        "encodeX2"
       ]
     },
     {
@@ -1804,7 +1804,9 @@
         "encodeX",
         "encodeColor",
         "encodeBarWidth",
-        "createGuides"
+        "createGuides",
+        "encodeYRange",
+        "encodeXRange"
       ]
     },
     {

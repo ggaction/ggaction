@@ -362,12 +362,12 @@ type AggregateOperation =
 - Canonical owner: `src/grammar/positionCompatibility.js`. Generic mark × channel acceptance는 여기서만
   정의하고 bar grain narrowing은 `src/grammar/bars/policy.js`가 소유한다.
 - Point x/y: `"quantitative" | "temporal" | "ordinal" | "nominal"`.
-- Line x: `"quantitative" | "temporal"`; line y는 direct quantitative pair, regression/interval/window output,
+- Line x: `"quantitative" | "temporal"`; line y는 direct quantitative/temporal pair (aggregate 생략), regression/interval/window output,
   또는 temporal x aggregate policy에 따라 `"quantitative" | "temporal" | "ordinal" | "nominal"`을 더 좁힌다.
 - Area x: ranged area는 `"quantitative" | "temporal"`, density area는 `"quantitative"`; area y는
   `"quantitative"`.
-- Bar vertical: `ordinal | temporal x + quantitative aggregate y`.
-- Bar horizontal: `quantitative aggregate x + ordinal | temporal y`.
+- Bar vertical: `ordinal | nominal | temporal x + quantitative aggregate y` 또는 raw `y/y2`.
+- Bar horizontal: `quantitative aggregate x + ordinal | nominal | temporal y` 또는 raw `x/x2`.
 - Bar orientation은 complete pair에서 추론하며 semantic mark에 중복 저장하지 않는다. Histogram은
   binned quantitative x/count y로 vertical을 결정한다.
 - Temporal normalization은 source dataset을 바꾸지 않는다. 생략/auto에서 1000–9999 정수와 4자리 문자열은 UTC
@@ -634,7 +634,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Signature: `encodeYRange({ lower, upper, target?, fieldType?, coordinate?, scale? })`
 - `lower`, `upper`: 필수 quantitative field names이며 각각 y와 y2가 된다.
 - `target`, `fieldType`, `coordinate`, `scale`: `encodeY` 계약을 공유한다.
-- Effect: wrapped `encodeY` 뒤 `encodeY2`를 호출하는 atomic action이다. 중간의 incomplete area/bar
+- Effect: bar는 secondary endpoint 의미를 먼저 설정해 일시적인 평균 집계를 방지한다. 이후 wrapped `encodeY` 뒤 `encodeY2`를 호출하는 atomic action이다. 중간의 incomplete area/bar
   상태를 public workflow에 노출하지 않는다.
 - Reassignment: 같은 area 또는 ranged bar에 다시 호출하면 wrapped y/y2 assignments가 두 field를 함께 교체하고
   shared scale, concrete closed paths/rects와 consumers를 rematerialize한다. Earlier programs remain unchanged.
@@ -664,7 +664,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - Signature: `encodeXRange({ lower, upper, target?, fieldType?, coordinate?, scale? })`
 - `lower`, `upper`: Area는 field string 또는 finite datum 객체이며 최소 하나는 field다. Bar/Rect는 field names이고 각각 x와 x2가 된다.
-- Effect: wrapped `encodeX` 뒤 area/bar-compatible `encodeX2`를 호출하는 atomic action이다.
+- Effect: bar는 secondary endpoint 의미를 먼저 설정해 기존 raw scale consumers와 호환된다. 이후 wrapped `encodeX` 뒤 area/bar-compatible `encodeX2`를 호출하는 atomic action이다.
 - Horizontal area는 y independent position 순서로 lower path와 reversed upper path를 연결해 Z-closed
   concrete path를 만들고 ranged bar는 one rect per observed category를 만든다. x/x2는 one shared scale and coordinate를 사용한다.
 - Reassignment는 두 fields를 함께 교체하고 scale, area와 connected guides를 rematerialize하며 earlier

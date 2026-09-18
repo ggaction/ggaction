@@ -170,6 +170,30 @@ Required options are `x` and `y`. Position option objects select vertical,
 horizontal, aggregate, or ranged geometry. `color.layout` owns grouped,
 stacked, normalized-fill, overlay, and diverging arrangements.
 
+Use `{ lower, upper }` on one axis for raw interval bars. The opposite axis
+must be categorical or temporal. Bounds remain per-row values: no mean, sum,
+or stacking is introduced. Do not combine a range with `field`, `aggregate`,
+or `stack` in the same channel, or specify ranges on both axes.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+const program = chart().createCanvas({ width: 400, height: 300, margin: 60 })
+  .createData({ values: [{ item: "A", low: 2, high: 6 }, { item: "B", low: 4, high: 8 }] })
+  .createBarPlot({ x: { lower: "low", upper: "high" }, y: "item", width: { pixels: 18 } });
+```
+
+A range channel also accepts `fieldType: "quantitative"` and an explicit `scale`,
+using the existing bar scale types (`linear`, `pow`, `sqrt`, or `symlog`).
+Swap x and y for vertical bars. Repeated categories remain separate rectangles.
+Layered interval bars can share a compatible value scale with a raw line;
+use explicit scale IDs when the plot contains several scales.
+
 Field strings use data-driven shorthand: finite numeric fields infer
 quantitative positions and other supported scalar fields infer nominal
 positions. Use an option object with `fieldType` when a numeric field is an

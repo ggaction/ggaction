@@ -205,15 +205,14 @@ test("draws a materialized window output directly on a temporal line", () => {
 
   assert.equal(program.semanticSpec.layers[0].encoding.y.aggregate, undefined);
   assert.equal(program.graphicSpec.objects.linePlot.items[0].properties.commands.length, 3);
-  assert.throws(
-    () => source.createLinePlot({
-      data: "moving",
-      x: { field: "date", fieldType: "temporal" },
-      y: { field: "value", fieldType: "quantitative" },
-      guides: false
-    }),
-    /Aggregate must be a supported operation/
-  );
+  const raw = source.createLinePlot({
+    data: "moving",
+    x: { field: "date", fieldType: "temporal" },
+    y: { field: "value", fieldType: "quantitative" }, guides: false
+  });
+  assert.equal(raw.semanticSpec.layers[0].encoding.y.aggregate, undefined);
+  assert.equal(raw.graphicSpec.objects.linePlot.items[0].properties.commands.length, 3);
+  assert.notDeepEqual(raw.graphicSpec.objects.linePlot.items, program.graphicSpec.objects.linePlot.items);
 });
 
 test("rejects ambiguous dash shorthand and Polar-only closure before authoring", () => {

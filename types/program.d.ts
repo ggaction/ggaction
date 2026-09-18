@@ -3475,12 +3475,20 @@ type BasicHistogramEncoding =
       : never
     : never;
 
-export interface CreateBarPlotOptions {
+export type BarRangePositionChannel = {
+  lower: string;
+  upper: string;
+  fieldType?: "quantitative";
+  scale?: NonPointZeroSupportingPositionScaleOptions;
+  field?: never;
+  aggregate?: never;
+  stack?: never;
+};
+type BarFieldPosition<T> = T extends string ? T : T & { lower?: never; upper?: never };
+export type CreateBarPlotOptions = {
   id?: string;
   data?: string;
   coordinate?: string;
-  x: BandPositionChannel;
-  y: BarYPositionChannel;
   color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target">;
   bar?: RectStyleDetails & {
@@ -3490,7 +3498,11 @@ export interface CreateBarPlotOptions {
     strokeWidth?: number;
   };
   guides?: false | ColorGuides;
-}
+} & (
+  | { x: BarFieldPosition<BandPositionChannel>; y: BarFieldPosition<BarYPositionChannel> }
+  | { x: BarRangePositionChannel; y: BarFieldPosition<BandPositionChannel> }
+  | { x: BarFieldPosition<BandPositionChannel>; y: BarRangePositionChannel }
+);
 
 export type CreateHistogramOptions = BasicHistogramEncoding & {
   id?: string;

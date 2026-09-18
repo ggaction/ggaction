@@ -23,6 +23,20 @@ const BAR_OPTIONS = Object.freeze([
   "fill", "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
 ]);
 
+function normalizeBarPosition(value, label) {
+  const encoding = normalizeFieldEncoding(value, label);
+  if (!Object.hasOwn(encoding, "lower") && !Object.hasOwn(encoding, "upper")) return encoding;
+  validateFacadeOptions(encoding, ["lower", "upper", "fieldType", "scale"], label);
+  if (typeof encoding.lower !== "string" || !encoding.lower.length ||
+      typeof encoding.upper !== "string" || !encoding.upper.length) {
+    throw new TypeError(`${label} range requires lower and upper field names.`);
+  }
+  if (encoding.fieldType !== undefined && encoding.fieldType !== "quantitative") {
+    throw new Error(`${label} range must be quantitative.`);
+  }
+  return { ...encoding, fieldType: "quantitative" };
+}
+
 export const createBarPlot = /* @__PURE__ */ action(
   {
     op: "createBarPlot",
@@ -36,17 +50,23 @@ export const createBarPlot = /* @__PURE__ */ action(
     });
     const data = resolveFacadeData(this, args.data, "createBarPlot");
     const bar = normalizeAppearance(args.bar, BAR_OPTIONS, "createBarPlot bar");
-    const x = normalizeFieldEncoding(args.x, "createBarPlot x");
-    const y = normalizeFieldEncoding(args.y, "createBarPlot y");
+    const x = normalizeBarPosition(args.x, "createBarPlot x");
+    const y = normalizeBarPosition(args.y, "createBarPlot y");
+    const xRange = Object.hasOwn(x, "lower");
+    const yRange = Object.hasOwn(y, "lower");
+    if (xRange && yRange) throw new Error("createBarPlot accepts only one range channel.");
     x.fieldType = inferFacadeFieldType(this, data, x, "createBarPlot x");
     y.fieldType = inferFacadeFieldType(this, data, y, "createBarPlot y");
     const color = normalizeEncoding(args.color, "createBarPlot color");
     const width = normalizeTargetOptions(args.width, "createBarPlot width");
     const guides = normalizeGuides(args.guides, "createBarPlot");
 
+    if ((xRange && !isBarCategoryEncoding(y)) || (yRange && !isBarCategoryEncoding(x))) {
+      throw new Error("createBarPlot range requires a categorical or temporal opposite position.");
+    }
     const positions = isBarCategoryEncoding(y)
-      ? [["encodeY", y], ["encodeX", x]]
-      : [["encodeX", x], ["encodeY", y]];
+      ? [["encodeY", y], [xRange ? "encodeXRange" : "encodeX", x]]
+      : [["encodeX", x], [yRange ? "encodeYRange" : "encodeY", y]];
     let next = this.createBarMark({ id, data, ...bar });
     for (const [operation, encoding] of positions) {
       next = next[operation](positionArgs(encoding, {

@@ -39,6 +39,14 @@ const basicRect: BasicRectStyleDetails = rect;
 // Direct mark create/edit pairs.
 p.createPointMark(stroke).editPointMark(stroke);
 p.createTickMark(stroke).editTickMark(stroke);
+p.createBarPlot({ x: "category", y: { lower: "lo", upper: "hi" } });
+p.createBarPlot({ x: { lower: "lo", upper: "hi" }, y: "category" });
+// @ts-expect-error both channels cannot be intervals
+p.createBarPlot({ x: { lower: "lo", upper: "hi" }, y: { lower: "lo", upper: "hi" } });
+// @ts-expect-error a field and interval bounds cannot be combined
+p.createBarPlot({ x: "category", y: { field: "value", lower: "lo", upper: "hi" } });
+// @ts-expect-error raw intervals cannot request an aggregate
+p.createBarPlot({ x: "category", y: { lower: "lo", upper: "hi", aggregate: "mean" } });
 p.createLineMark(stroke).editLineMark(stroke);
 p.createLineMark({ curve: "cardinal", tension: 0.9 }).editLineMark({ tension: 0.5 });
 p.createLinePlot({ x: "x", y: "y", line: { curve: "cardinal", tension: 0.9 } });

@@ -119,7 +119,7 @@ test("supports atomic range encoding, pixel width, and Canvas rematerialization"
   const resized = ranged.editCanvas({ width: 250 });
 
   assert.deepEqual(
-    ranged.trace.children.at(-2).children.map(node => node.op),
+    ranged.trace.children.at(-2).children.filter(node => node.op !== "editSemantic").map(node => node.op),
     ["encodeY", "encodeY2"]
   );
   assert.deepEqual(

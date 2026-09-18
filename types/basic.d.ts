@@ -17,6 +17,7 @@ export type {
   CompleteAxisOptions,
   CreateAxesOptions,
   CreateBarPlotOptions,
+  BarRangePositionChannel,
   CreateDataOptions,
   CreateGridOptions,
   CreateGuidesOptions,

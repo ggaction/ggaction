@@ -122,7 +122,7 @@ createLinePlot({
 - Explicit groupBy is a single field or non-empty unique tuple and exclusively defines path identity.
   Color/dash may use different fields if each is unique within its final series. The facade assigns group first.
 - Plain strokeDash string is rejected because a field name and a named dash style are both strings.
-- Direct, grouped, temporal aggregate, and direct materialized window-output line policies remain child-owned.
+- Direct quantitative/temporal, grouped, explicit temporal aggregate, and materialized window-output line policies remain child-owned. Temporal x + quantitative y에서 aggregate 생략은 raw rows를 보존하며 x/y 호출 순서에 의존하지 않는다.
   `closed: true` is rejected because this facade is Cartesian; Polar line authoring remains available through the
   advanced mark/encoding chain.
 - Semantic/graphic/render output exactly matches the equivalent explicit action chain and approved Cars line primitive.
@@ -160,6 +160,8 @@ createBarPlot({
 ```
 
 - Stable default ID is `barPlot`.
+- 한 위치 channel은 `{ lower, upper, fieldType?: "quantitative", scale? }` raw interval을 받는다. 다른 channel은 categorical/temporal field다. 양쪽 range, field/aggregate/stack과 range의 혼합은 거부한다.
+- Raw range는 category-first `encodeXRange`/`encodeYRange`를 호출하고 입력 행을 합치지 않는다. 여러 구간 layer와 raw line이 compatible value scale을 공유하고 resize/facet에도 경계·폭·그리기 순서를 유지한다.
 - Hierarchy: `createBarMark`, category-first position actions (`encodeX`→`encodeY` vertically,
   `encodeY`→`encodeX` horizontally), optional `encodeColor`/`encodeBarWidth`, optional `createGuides`.
 - `x`/`y` field strings and option objects without `fieldType` infer finite numeric data as quantitative and

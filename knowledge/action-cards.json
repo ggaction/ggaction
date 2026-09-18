@@ -10393,9 +10393,9 @@
         "H2"
       ],
       "wraps": [
+        "editSemantic",
         "encodeY",
-        "encodeY2",
-        "editSemantic"
+        "encodeY2"
       ],
       "editableVia": [
         "removeEncoding"
@@ -10510,9 +10510,9 @@
         "H2"
       ],
       "wraps": [
+        "editSemantic",
         "encodeX",
-        "encodeX2",
-        "editSemantic"
+        "encodeX2"
       ],
       "editableVia": [
         "removeEncoding"
@@ -30340,7 +30340,9 @@
         "encodeX",
         "encodeColor",
         "encodeBarWidth",
-        "createGuides"
+        "createGuides",
+        "encodeYRange",
+        "encodeXRange"
       ],
       "editableVia": [],
       "supports": {
@@ -30397,16 +30399,6 @@
           "type": "string | undefined"
         },
         {
-          "name": "x",
-          "required": true,
-          "type": "BandPositionChannel"
-        },
-        {
-          "name": "y",
-          "required": true,
-          "type": "BarYPositionChannel"
-        },
-        {
           "name": "color",
           "required": false,
           "type": "BarColorChannel | undefined"
@@ -30425,11 +30417,21 @@
           "name": "guides",
           "required": false,
           "type": "false | ColorGuides | undefined"
+        },
+        {
+          "name": "x",
+          "required": true,
+          "type": "string | BarRangePositionChannel | (Omit<PositionEncodingBase, \"coordinate\" | \"target\"> & { fieldType?: \"quantitative\" | undefined; aggregate?: undefined; scale?: NonPointZeroSupportingPositionScaleOptions | undefined; } & { ...; }) | (Omit<...> & ... 1 more ... & { ...; }) | (Omit<...> & ... 1 more ... & { ...; }) ..."
+        },
+        {
+          "name": "y",
+          "required": true,
+          "type": "string | BarRangePositionChannel | ({ field: string; fieldType: \"temporal\"; temporalUnit?: TemporalInputUnit | undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions | undefined; } & { ...; }) | ... 6 more ... | ({ ...; } & ... 1 more ... & { ...; })"
         }
       ],
       "callPatterns": [
         "createBarPlot({ x, y, width?, color? })",
-        "createBarPlot({ x, y, color?, guides? })"
+        "createBarPlot({ x: { lower, upper, scale? }, y, width?, guides? })"
       ],
       "snippet": "program.createBarPlot({ x: \"x\", y: \"y\" })",
       "errors": [],

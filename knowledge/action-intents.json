@@ -1662,7 +1662,7 @@
     ],
     "createBarPlot": [
       "createBarPlot({ x, y, width?, color? })",
-      "createBarPlot({ x, y, color?, guides? })"
+      "createBarPlot({ x: { lower, upper, scale? }, y, width?, guides? })"
     ],
     "createPolarScatterPlot": [
       "createPolarScatterPlot({ theta, radius })",

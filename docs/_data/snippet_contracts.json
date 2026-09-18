@@ -339,7 +339,7 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "7d2bd0ae1ea8bef6bfe5319d832e34051a7b4013fd2c10fa7143a603aeba6cf7",
+    "sha256": "1b0cf0acf0e8be1eafda425f9764af31551a4e72c423300b7b5ae55d080c8284",
     "executable": false
   },
   {
@@ -351,12 +351,24 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "8e751750ad40102277c97338dc492fca7c4c490651d39c21665472fdaa42ba86",
+    "sha256": "7d2bd0ae1ea8bef6bfe5319d832e34051a7b4013fd2c10fa7143a603aeba6cf7",
     "executable": false
   },
   {
     "file": "api/basic-charts.md",
     "block": 6,
+    "heading": "`createBarPlot`",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "8e751750ad40102277c97338dc492fca7c4c490651d39c21665472fdaa42ba86",
+    "executable": false
+  },
+  {
+    "file": "api/basic-charts.md",
+    "block": 7,
     "heading": "`createHistogram`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -368,7 +380,7 @@
   },
   {
     "file": "api/basic-charts.md",
-    "block": 7,
+    "block": 8,
     "heading": "`createHeatmap`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -380,7 +392,7 @@
   },
   {
     "file": "api/basic-charts.md",
-    "block": 8,
+    "block": 9,
     "heading": "`createHeatmap`",
     "mode": "fragment",
     "environment": "esm-context",

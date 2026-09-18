@@ -210,6 +210,17 @@ function rangeAction(channel) {
     const { layer, dataset } = resolveTarget(this, args.target, ["area", "bar", "rect", "rule"], "ranged mark");
     let next = this;
     let lower = { field: args.lower }, upper = { field: args.upper };
+    if (layer.mark.type === "bar") {
+      common.target = layer.id;
+      const resolved = resolvePositionEncoding(this, channel, {
+        ...common, ...lower,
+        ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }),
+        ...(args.scale === undefined ? {} : { scale: args.scale })
+      }, op);
+      next = setEncodingProperties(next, layer.id, `${channel}2`, {
+        ...upper, fieldType: common.fieldType, scale: resolved.scale.id
+      });
+    }
     if (layer.mark.type === "area") {
       common.target = layer.id;
       const prepared = prepareAreaRange(this, layer, dataset, channel, args, common);
