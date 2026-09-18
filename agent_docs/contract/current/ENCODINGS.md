@@ -657,6 +657,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
     reassignment and rematerialization through both wrapped child actions.
 - Reassignment
   - ✅ Covered: lower/upper 동시 교체, wrapped child order, concrete path change와 earlier-program immutability.
+- Temporal ranged bar는 실제 날짜 간격을 유지하고 aggregate temporal bar와 같은 slot 정책을 사용한다. ISO/timestamp 정규화, 양방향, pixel width의 선후 지정, resize/scale edit/source revision/저장 복원을 지원한다.
 - Evidence: ranged-area, ranged-bar and regression tests.
 
 ## `encodeXRange`

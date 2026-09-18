@@ -60,8 +60,12 @@ program
 `encodeColor({ layout })` can arrange partitions with `stack`, `fill`, `group`,
 `overlay`, or `diverging`. Group layout invokes `encodeXOffset` for vertical
 bars or `encodeYOffset` for horizontal bars internally.
-Observed interval bars instead combine one categorical axis with `encodeYRange`
-or `encodeXRange`.
+Observed interval bars combine one categorical or temporal axis with `encodeYRange`
+or `encodeXRange`. Temporal centers preserve actual date gaps and share the
+ordinary temporal-bar slot policy. Use `encodeBarWidth({ pixels: 5 })` for a fixed
+width, before or after assigning positions; otherwise the default band fraction
+uses the smallest observed time gap. Both orientations support ISO dates and
+explicit timestamp units.
 
 ## `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}
 

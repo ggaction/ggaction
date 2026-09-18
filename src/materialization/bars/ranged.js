@@ -23,7 +23,12 @@ export function deriveRangedRectangles(required, program, width) {
   const secondary = layer.encoding[secondaryChannel];
   const categoryScale = program.resolvedScales[category.scale];
   const measureScale = program.resolvedScales[primary.scale];
-  const centers = mapOrdinalPositionValues(dataset.values.map(row => row[category.field]), categoryScale);
+  const categoryValues = readScaleField(dataset.values, category.field, category.fieldType, {
+    temporalUnit: category.temporalUnit
+  });
+  const centers = (categoryScale.type === "time" ? mapContinuousScaleValues : mapOrdinalPositionValues)(
+    categoryValues, categoryScale
+  );
   const first = mapContinuousScaleValues(
     dataset.values.map(row => row[primary.field]),
     measureScale

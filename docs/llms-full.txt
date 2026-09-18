@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:c3bb3d0108ae717ffbf8ef7f9305737d08597f2322eca26645850bbbab7c905d. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:3b86ebaf3c141340d243e3f0910be37e4c43a47afa29aa094b18f51fe85e0d7b. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -6207,8 +6207,12 @@ program
 `encodeColor({ layout })` can arrange partitions with `stack`, `fill`, `group`,
 `overlay`, or `diverging`. Group layout invokes `encodeXOffset` for vertical
 bars or `encodeYOffset` for horizontal bars internally.
-Observed interval bars instead combine one categorical axis with `encodeYRange`
-or `encodeXRange`.
+Observed interval bars combine one categorical or temporal axis with `encodeYRange`
+or `encodeXRange`. Temporal centers preserve actual date gaps and share the
+ordinary temporal-bar slot policy. Use `encodeBarWidth({ pixels: 5 })` for a fixed
+width, before or after assigning positions; otherwise the default band fraction
+uses the smallest observed time gap. Both orientations support ISO dates and
+explicit timestamp units.
 
 ## `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}
 
@@ -37825,7 +37829,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:c3bb3d0108ae717ffbf8ef7f9305737d08597f2322eca26645850bbbab7c905d` |
+| Contract fingerprint | `sha256:3b86ebaf3c141340d243e3f0910be37e4c43a47afa29aa094b18f51fe85e0d7b` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

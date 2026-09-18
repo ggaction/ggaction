@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart } from "../../../../src/index.js";
+import { serializeProgram, deserializeProgram } from "../../../../src/persistence.js";
+import { renderToSVG } from "../../../../src/renderers/svg.js";
 
 const rows = Object.freeze([
   Object.freeze({ group: "A", lower: 2, upper: 6, middle: 4 }),
@@ -163,3 +165,44 @@ test("spans a median rule across the rematerialized box body", () => {
     ])
   );
 });
+
+for (const vertical of [true, false]) {
+  for (const widthFirst of [true, false]) {
+    for (const timestamps of [true, false]) {
+      test(`temporal ranged bars preserve uneven intervals (${vertical ? "vertical" : "horizontal"}, width ${widthFirst ? "first" : "last"}, ${timestamps ? "timestamps" : "ISO"})`, () => {
+        const dates = ["2024-01-05", "2024-01-08", "2024-01-09"];
+        const values = dates.map((date, index) => ({
+          date: timestamps ? Date.parse(date) : date, lower: index + 1, upper: index + 3
+        }));
+        let p = chart().createCanvas({ width: 500, height: 500, margin: 50 })
+          .createData({ values }).createBarMark({ id: "range" });
+        if (widthFirst) p = p.encodeBarWidth({ pixels: 5 });
+        const encoding = { field: "date", fieldType: "temporal",
+          ...(timestamps ? { temporalUnit: "timestamp" } : {}),
+          scale: { domain: dates.map(Date.parse).filter((_, index) => index !== 1), nice: false } };
+        p = vertical ? p.encodeX(encoding) : p.encodeY(encoding);
+        const interval = { lower: "lower", upper: "upper", scale: { domain: [0, 5], nice: false } };
+        p = vertical ? p.encodeYRange(interval) : p.encodeXRange(interval);
+        if (!widthFirst) p = p.encodeBarWidth({ pixels: 5 });
+        const inspect = program => {
+          const props = program.graphicSpec.objects.range.items.map(item => item.properties);
+          assert.deepEqual(props.map(item => vertical ? item.width : item.height), [5, 5, 5]);
+          const centers = props.map(item => vertical ? item.x + item.width / 2 : item.y + item.height / 2);
+          assert.ok(Math.abs((centers[1] - centers[0]) / (centers[2] - centers[1]) - 3) < 1e-9);
+          assert.ok(props.every(item => Number.isFinite(item.x) && Number.isFinite(item.y) && item.width > 0 && item.height > 0));
+          return props;
+        };
+        const original = inspect(p);
+        assert.deepEqual(original.map(item => vertical ? item.height : item.width), [160, 160, 160]);
+        inspect(p.editCanvas({ width: 600, height: 600 }));
+        inspect(vertical ? p.editXScale({ reverse: true }) : p.editYScale({ reverse: true }));
+        const restored = deserializeProgram(serializeProgram(p));
+        assert.deepEqual(inspect(restored), original);
+        assert.match(renderToSVG(restored), /<rect/u);
+        const revised = p.reviseData({ source: "data", id: "updated", values: values.map(row => ({ ...row, lower: row.lower + 0.5 })) });
+        assert.deepEqual(inspect(revised).map(item => vertical ? item.height : item.width), [120, 120, 120]);
+        assert.deepEqual(inspect(p), original);
+      });
+    }
+  }
+}

@@ -10,7 +10,7 @@ import {
 export function resolveTemporalBarBand(valuesByConsumer, domain, range) {
   const temporalBars = valuesByConsumer.filter(({ consumer }) => {
     const channels = resolveBarChannels(consumer.layer);
-    return resolveBarGrain(consumer.layer) === BAR_GRAINS.aggregate &&
+    return [BAR_GRAINS.aggregate, BAR_GRAINS.ranged].includes(resolveBarGrain(consumer.layer)) &&
       channels?.category === consumer.channel &&
       consumer.encoding.fieldType === "temporal";
   });
