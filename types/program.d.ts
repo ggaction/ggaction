@@ -3433,6 +3433,7 @@ export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & 
 export interface SeriesLayoutOptions { target?: string; mode: ColorLayout; }
 export interface BasicSeriesLayoutOptions { target?: string; mode: Exclude<ColorLayout, "center">; }
 export type AreaPlotIndependentChannel = string | ({ field: string } & (
+  | { fieldType: "nominal" | "ordinal"; scale?: NonPointCategoricalPositionScaleOptions }
   | { fieldType?: "quantitative"; scale?: NonPointQuantitativePositionScaleOptions }
   | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit; scale?: NonPointTemporalPositionScaleOptions }
 ));

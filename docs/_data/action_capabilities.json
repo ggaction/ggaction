@@ -18,7 +18,9 @@
         ],
         "area": [
           "quantitative",
-          "temporal"
+          "temporal",
+          "ordinal",
+          "nominal"
         ],
         "bar": [
           "quantitative",
@@ -70,7 +72,9 @@
         ],
         "area": [
           "quantitative",
-          "temporal"
+          "temporal",
+          "ordinal",
+          "nominal"
         ],
         "bar": [
           "quantitative",

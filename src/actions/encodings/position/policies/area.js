@@ -26,16 +26,16 @@ export function resolveAreaPositionPolicy({
   const density = dataset.transform?.find(transform => transform.type === "density");
   if (["nominal", "ordinal"].includes(fieldType)) {
     if (
-      density?.placement?.type !== "category" ||
+      density !== undefined && (density.placement?.type !== "category" ||
       density.placement.channel !== channel ||
-      density.placement.categoryField !== field
+      density.placement.categoryField !== field)
     ) {
       throw new Error(
         "Categorical area position requires a matching category density placement."
       );
     }
     if (args.aggregate !== undefined || args.bin !== undefined || args.stack !== undefined) {
-      throw new Error("Categorical density position does not support aggregate, bin, or stack.");
+      throw new Error("Categorical area position does not support aggregate, bin, or stack.");
     }
     return emptyPositionPolicy();
   }

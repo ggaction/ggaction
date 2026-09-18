@@ -39,7 +39,7 @@ test("invalid nested roles, constants, guides and ambiguous resources fail atomi
   const invalid = [
     { valueChannel: "z" }, { baseline: null }, { missing: "skip" },
     { x: { field: "time", target: "wrong" } }, { y: { field: "value", coordinate: "wrong" } },
-    { x: { field: "time", fieldType: "nominal" } }, { y: { field: "value", aggregate: "sum" } },
+    { x: { field: "time", fieldType: "unsupported" } }, { y: { field: "value", aggregate: "sum" } },
     { y: { lower: "lo", upper: "hi" }, baseline: 0 },
     { y: { lower: { datum: 0 }, upper: { datum: 1 } } },
     { y: { field: "value", scale: { type: "log" } } },

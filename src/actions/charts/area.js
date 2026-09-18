@@ -21,8 +21,8 @@ export const createAreaPlot = /* @__PURE__ */ action({ op: OPERATION, descriptio
   const independentChannel = valueChannel === "y" ? "x" : "y";
   const independent = omitUndefinedOptions(normalizeFieldEncoding(args[independentChannel], `${OPERATION} ${independentChannel}`));
   validateFacadeOptions(independent, ["field", "fieldType", "temporalUnit", "scale"], `${OPERATION} independent position`);
-  if (independent.fieldType !== undefined && !["quantitative", "temporal"].includes(independent.fieldType)) {
-    throw new Error("createAreaPlot independent position must be quantitative or temporal.");
+  if (independent.fieldType !== undefined && !["quantitative", "temporal", "nominal", "ordinal"].includes(independent.fieldType)) {
+    throw new Error("createAreaPlot independent position must be quantitative, temporal, or categorical.");
   }
   const measurement = omitUndefinedOptions(normalizeFieldEncoding(args[valueChannel], `${OPERATION} ${valueChannel}`));
   const ranged = Object.hasOwn(measurement, "lower") || Object.hasOwn(measurement, "upper");

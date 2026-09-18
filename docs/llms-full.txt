@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:39723f16f8c1baff68ab900367ebc3b6b91fdff9a5b5ff98433129fc720dc247. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:6ca06c06ccddd9e1073f0574c5cc7c15165b6bedd609ee3102e076dda5f429ff. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -6228,6 +6228,30 @@ null or undefined measured endpoints split the path into closed segments with at
 Missing independent positions, invalid group keys, NaN and Infinity remain errors.
 `editAreaMark({ missing: "break" })` changes the same policy. Density and Horizon retain their own missing-data policies.
 
+**Ordered categories.**
+
+Nominal/ordinal independent positions support point/band scales. Domain order
+(or first appearance) orders vertices unless path order is explicit. Stacking
+requires aligned groups; missing categories are not synthesized.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+import { chart } from "ggaction";
+
+const program = chart().createCanvas({ width: 640, height: 400, margin: { top: 30, right: 120, bottom: 60, left: 60 } }).createData({ values: [
+  { day: "Mon", channel: "A", sales: 10 },
+  { day: "Tue", channel: "A", sales: 20 },
+  { day: "Mon", channel: "B", sales: 5 },
+  { day: "Tue", channel: "B", sales: 8 }
+]}).createAreaPlot({
+  x: { field: "day", fieldType: "ordinal", scale: { type: "point", domain: ["Mon", "Tue"] } },
+  y: "sales", groupBy: "channel", color: "channel", layout: "stack"
+});
+```
+
+Stacked totals: Mon 15, Tue 28.
+
 ## Related
 
 [Position encodings](./api/position-encodings/) · [Polar line tutorial](./tutorials/polar-lines/) ·
@@ -6880,8 +6904,8 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/line/area/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/area/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule, area, and rect also accept datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
@@ -9274,8 +9298,8 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/line/area/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/area/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule, area, and rect also accept datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
@@ -18288,7 +18312,7 @@ Create a simple area, crossing ribbon, or accumulated series chart in the full e
 `areaPlot`; x and y are required. `valueChannel` defaults to y. Its measurement is a field string,
 `{field,scale?}`, or `{lower,upper,scale?}`. Each bound is a field string or finite `{datum}` and at least
 one bound must use a field. A simple field closes to baseline 0; `baseline` cannot accompany a range.
-The independent position is quantitative or temporal and accepts field/fieldType/temporalUnit/scale.
+The independent position is quantitative, temporal, nominal, or ordinal. Categorical positions follow the scale domain order and accept point or band scales; temporalUnit applies only to temporal fields.
 
 `groupBy` explicitly identifies nominal series using a field or a unique nonempty tuple. Color is optional,
 categorical, and constant within each series. `layout` defaults to overlay; stack/fill/diverging require
@@ -18976,8 +19000,8 @@ semantic base positions. [Text marks](./api/marks/text/)
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/line/area/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/area/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule, area, and rect also accept datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
@@ -26277,12 +26301,13 @@ Related types: [`ThemeDefinition`](./reference/types/#type-themedefinition).
 
 ```typescript
 export type AreaPlotIndependentChannel = string | ({ field: string } & (
+  | { fieldType: "nominal" | "ordinal"; scale?: NonPointCategoricalPositionScaleOptions }
   | { fieldType?: "quantitative"; scale?: NonPointQuantitativePositionScaleOptions }
   | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit; scale?: NonPointTemporalPositionScaleOptions }
 ));
 ```
 
-Related types: [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](./reference/types/#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](./reference/types/#type-nonpointtemporalpositionscaleoptions).
+Related types: [`NonPointCategoricalPositionScaleOptions`](./reference/types/#type-nonpointcategoricalpositionscaleoptions) · [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](./reference/types/#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](./reference/types/#type-nonpointtemporalpositionscaleoptions).
 
 ### `AreaPlotMeasureChannel` {#type-areaplotmeasurechannel}
 
@@ -38113,7 +38138,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:39723f16f8c1baff68ab900367ebc3b6b91fdff9a5b5ff98433129fc720dc247` |
+| Contract fingerprint | `sha256:6ca06c06ccddd9e1073f0574c5cc7c15165b6bedd609ee3102e076dda5f429ff` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

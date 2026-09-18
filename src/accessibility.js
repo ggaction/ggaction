@@ -38,8 +38,8 @@ function pathRows(program, layer) {
     const transform = findUpstreamTransform(program, dataset, "density");
     derived = transform === undefined
       ? layer.encoding.y?.stack === "center"
-        ? deriveCenteredAreaSeries(rows, layer)
-        : deriveAreaSeries(rows, layer)
+        ? deriveCenteredAreaSeries(rows, layer, { xDomain: program.resolvedScales[layer.encoding.x?.scale]?.domain, yDomain: program.resolvedScales[layer.encoding.y?.scale]?.domain })
+        : deriveAreaSeries(rows, layer, { xDomain: program.resolvedScales[layer.encoding.x?.scale]?.domain, yDomain: program.resolvedScales[layer.encoding.y?.scale]?.domain })
       : deriveDensityAreaSeries(rows, layer, transform);
     if (transform !== undefined && transform.placement?.type !== "category") {
       derived = layoutDensityAreaSeries(derived, layer.layout?.mode ?? layer.encoding.color?.layout ?? "overlay");

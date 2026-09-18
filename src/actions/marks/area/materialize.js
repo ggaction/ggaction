@@ -6,6 +6,7 @@ import {
 } from "../../../grammar/areaSeries.js";
 import {
   mapContinuousScaleValues,
+  mapOrdinalPositionValues,
   mapOrdinalValues
 } from "../../../grammar/scales/index.js";
 import { mapScaleConsumerValues } from
@@ -37,9 +38,8 @@ function resolveAreaPaths({
   }
   return derived.series.map(series => {
     if (densityTransform === undefined && derived.orientation === "horizontal") {
-      const y = mapContinuousScaleValues(
-        series.values.map(value => value.y),
-        yScale
+      const y = (["point", "band"].includes(yScale.type) ? mapOrdinalPositionValues : mapContinuousScaleValues)(
+        series.values.map(value => value.y), yScale
       );
       const lower = mapContinuousScaleValues(
         series.values.map(value => value.x),
@@ -57,9 +57,8 @@ function resolveAreaPaths({
       );
     }
     if (densityTransform !== undefined && derived.mode === "x-density") {
-      const y = mapContinuousScaleValues(
-        series.values.map(value => value.y),
-        yScale
+      const y = (["point", "band"].includes(yScale.type) ? mapOrdinalPositionValues : mapContinuousScaleValues)(
+        series.values.map(value => value.y), yScale
       );
       const upper = mapContinuousScaleValues(
         series.values.map(value => value.x),
@@ -80,7 +79,7 @@ function resolveAreaPaths({
         { independentAxis: "y" }
       );
     }
-    const x = mapContinuousScaleValues(
+    const x = (["point", "band"].includes(xScale.type) ? mapOrdinalPositionValues : mapContinuousScaleValues)(
       series.values.map(value => value.x),
       xScale
     );
@@ -134,8 +133,8 @@ export function resolveAreaMaterialization({
     layer.encoding?.y?.stack === "center";
   const rawDerived = densityTransform === undefined
     ? centered
-      ? deriveCenteredAreaSeries(rows, layer)
-      : deriveAreaSeries(rows, layer)
+      ? deriveCenteredAreaSeries(rows, layer, { xDomain: xScale.domain })
+      : deriveAreaSeries(rows, layer, { xDomain: xScale.domain, yDomain: yScale.domain })
     : deriveDensityAreaSeries(rows, layer, densityTransform);
   const colorEncoding = layer.encoding?.color;
   const layout = layer.layout?.mode ?? colorEncoding?.layout ?? "overlay";

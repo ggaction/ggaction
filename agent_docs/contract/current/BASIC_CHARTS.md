@@ -362,3 +362,9 @@ createParallelCoordinates({
 - Evidence: `test/unit/actions/encodings/parallel-coordinates.test.js`,
   `test/charts/cars-parallel-coordinates/public.test.js`, and
   `test/charts/cars-parallel-coordinates/png.render.js`.
+
+### 범주형 Area 독립 위치
+
+- Ordinary Area의 독립 x 또는 y는 nominal/ordinal을 지원하며 point/band scale domain 순서로 경로를 정렬한다. 명시적 pathOrder는 domain 정렬보다 우선한다.
+- createAreaPlot은 같은 독립 위치를 허용한다. 정량 endpoint, layoutSeries 정렬 그리드 및 missing 정책은 유지하며 누락 범주를 합성하지 않는다.
+- Evidence: `test/unit/actions/encodings/categorical-areas.test.js`.

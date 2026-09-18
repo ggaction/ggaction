@@ -83,8 +83,8 @@ export function resolveAreaItems(program, layer, dataset) {
   const transform = findUpstreamTransform(program, dataset, "density");
   const derived = transform === undefined
     ? layer.encoding?.y?.stack === "center"
-      ? deriveCenteredAreaSeries(dataset.values, layer)
-      : deriveAreaSeries(dataset.values, layer)
+      ? deriveCenteredAreaSeries(dataset.values, layer, { xDomain: program.resolvedScales[layer.encoding.x?.scale]?.domain, yDomain: program.resolvedScales[layer.encoding.y?.scale]?.domain })
+      : deriveAreaSeries(dataset.values, layer, { xDomain: program.resolvedScales[layer.encoding.x?.scale]?.domain, yDomain: program.resolvedScales[layer.encoding.y?.scale]?.domain })
     : deriveDensityAreaSeries(dataset.values, layer, transform);
   return finalizeItems(
     program,

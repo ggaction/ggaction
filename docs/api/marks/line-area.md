@@ -278,6 +278,34 @@ null or undefined measured endpoints split the path into closed segments with at
 Missing independent positions, invalid group keys, NaN and Infinity remain errors.
 `editAreaMark({ missing: "break" })` changes the same policy. Density and Horizon retain their own missing-data policies.
 
+**Ordered categories.**
+
+Nominal/ordinal independent positions support point/band scales. Domain order
+(or first appearance) orders vertices unless path order is explicit. Stacking
+requires aligned groups; missing categories are not synthesized.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from "ggaction";
+
+const program = chart().createCanvas({ width: 640, height: 400, margin: { top: 30, right: 120, bottom: 60, left: 60 } }).createData({ values: [
+  { day: "Mon", channel: "A", sales: 10 },
+  { day: "Tue", channel: "A", sales: 20 },
+  { day: "Mon", channel: "B", sales: 5 },
+  { day: "Tue", channel: "B", sales: 8 }
+]}).createAreaPlot({
+  x: { field: "day", fieldType: "ordinal", scale: { type: "point", domain: ["Mon", "Tue"] } },
+  y: "sales", groupBy: "channel", color: "channel", layout: "stack"
+});
+```
+
+Stacked totals: Mon 15, Tue 28.
+
 ## Related
 
 [Position encodings](../position-encodings.md) · [Polar line tutorial](../../tutorials/polar-lines.md) ·

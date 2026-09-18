@@ -423,6 +423,7 @@ Related types: [`ThemeDefinition`](#type-themedefinition).
 
 ```typescript
 export type AreaPlotIndependentChannel = string | ({ field: string } & (
+  | { fieldType: "nominal" | "ordinal"; scale?: NonPointCategoricalPositionScaleOptions }
   | { fieldType?: "quantitative"; scale?: NonPointQuantitativePositionScaleOptions }
   | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit; scale?: NonPointTemporalPositionScaleOptions }
 ));
@@ -430,7 +431,7 @@ export type AreaPlotIndependentChannel = string | ({ field: string } & (
 
 </details>
 
-Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions).
+Related types: [`NonPointCategoricalPositionScaleOptions`](#type-nonpointcategoricalpositionscaleoptions) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions).
 
 ### `AreaPlotMeasureChannel` {#type-areaplotmeasurechannel}
 

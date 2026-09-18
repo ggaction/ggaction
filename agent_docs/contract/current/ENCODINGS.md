@@ -1640,3 +1640,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   `test/charts/area-layout/`, `test/contracts/area-endpoint-types.test.js`.
 
 Parallel reencoding은 field identity로 axis component recipe와 explicit title을 보존하며 removed field를 정리한다. 전체/선택 생성 범위와 cleanup은 [Parallel field-axis contract](AXES.md#shared-parallel-field-axis-contract)를 따른다.
+
+### 범주형 Area 독립 위치
+
+- Ordinary Area의 독립 x 또는 y는 nominal/ordinal을 지원하며 point/band scale domain 순서로 경로를 정렬한다. 명시적 pathOrder는 domain 정렬보다 우선한다.
+- createAreaPlot은 같은 독립 위치를 허용한다. 정량 endpoint, layoutSeries 정렬 그리드 및 missing 정책은 유지하며 누락 범주를 합성하지 않는다.
+- Evidence: `test/unit/actions/encodings/categorical-areas.test.js`.

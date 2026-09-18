@@ -13,30 +13,31 @@ function indexSegments(segments) {
   return indexed;
 }
 
-export function deriveAreaSeries(rows, layer) {
+export function deriveAreaSeries(rows, layer, options = {}) {
   if (layer?.mark?.type !== "area") {
     throw new Error("Area series derivation requires a semantic area mark.");
   }
   const { x, y, x2, y2 } = layer.encoding ?? {};
   const vertical =
-    ["quantitative", "temporal"].includes(x?.fieldType) &&
+    ["quantitative", "temporal", "nominal", "ordinal"].includes(x?.fieldType) &&
     y?.fieldType === "quantitative" &&
     y2?.fieldType === "quantitative" &&
     x2 === undefined;
   const horizontal =
-    ["quantitative", "temporal"].includes(y?.fieldType) &&
+    ["quantitative", "temporal", "nominal", "ordinal"].includes(y?.fieldType) &&
     x?.fieldType === "quantitative" &&
     x2?.fieldType === "quantitative" &&
     y2 === undefined;
   if (vertical === horizontal) {
     throw new Error(
-      `Area mark "${layer.id}" requires exactly one quantitative x/x2 or y/y2 range and one quantitative or temporal independent position.`
+      `Area mark "${layer.id}" requires exactly one quantitative x/x2 or y/y2 range and one quantitative, temporal, or categorical independent position.`
     );
   }
   const grouping = validatePathSeriesAppearance(rows, layer);
   const orientation = vertical ? "vertical" : "horizontal";
   const independent = vertical ? x : y;
-  const independentValues = independent.fieldType === "temporal"
+  const categorical = ["nominal", "ordinal"].includes(independent.fieldType);
+  const independentValues = categorical ? readNominalField(rows, independent.field) : independent.fieldType === "temporal"
     ? readTemporalField(rows, independent.field, independent.temporalUnit)
     : readQuantitativeField(rows, independent.field);
   if (Object.hasOwn(independent, "datum")) throw new Error("Area independent position requires a field.");
@@ -46,6 +47,9 @@ export function deriveAreaSeries(rows, layer) {
   const missing = layer.mark.missing ?? "error";
   const lower = readAreaEndpoint(rows, primary, missing);
   const upper = readAreaEndpoint(rows, secondary, missing);
+  const categoryOrder = categorical ? options[vertical ? "xDomain" : "yDomain"] ?? [...new Set(independentValues)] : undefined;
+  const ranks = new Map(categoryOrder?.map((value, index) => [value, index]));
+  if (categorical && independentValues.some(value => !ranks.has(value))) throw new Error("Area categorical domain must contain every observed position.");
   const pathOrder = layer.encoding?.pathOrder;
   const orderValues = pathOrder === undefined
     ? undefined
@@ -83,7 +87,7 @@ export function deriveAreaSeries(rows, layer) {
   const series = [...groups.values()].flatMap(item => {
     const key = vertical ? "x" : "y";
     const values = pathOrder === undefined
-      ? item.values.sort((left, right) => left[key] - right[key])
+      ? item.values.sort((left, right) => categorical ? ranks.get(left[key]) - ranks.get(right[key]) : left[key] - right[key])
       : stableOrderPathValues(
           item.values.map(({ pathOrder: _pathOrder, ...value }) => value),
           item.values.map(value => value.pathOrder),
@@ -125,13 +129,13 @@ export function deriveAreaSeries(rows, layer) {
   });
 }
 
-export function deriveCenteredAreaSeries(rows, layer) {
+export function deriveCenteredAreaSeries(rows, layer, options = {}) {
   if (layer?.mark?.type !== "area") {
     throw new Error("Centered area series derivation requires an area mark.");
   }
   const { x, y, x2, y2, group, color } = layer.encoding ?? {};
   if (
-    !["quantitative", "temporal"].includes(x?.fieldType) ||
+    !["quantitative", "temporal", "nominal", "ordinal"].includes(x?.fieldType) ||
     y?.fieldType !== "quantitative" ||
     y?.stack !== "center" ||
     x2 !== undefined ||
@@ -149,7 +153,8 @@ export function deriveCenteredAreaSeries(rows, layer) {
       `Centered area color on mark "${layer.id}" must match its group field.`
     );
   }
-  const xValues = x.fieldType === "temporal"
+  const categorical = ["nominal", "ordinal"].includes(x.fieldType);
+  const xValues = categorical ? readNominalField(rows, x.field) : x.fieldType === "temporal"
     ? readTemporalField(rows, x.field, x.temporalUnit)
     : readQuantitativeField(rows, x.field);
   const yValues = readQuantitativeField(rows, y.field);
@@ -172,7 +177,10 @@ export function deriveCenteredAreaSeries(rows, layer) {
     values.set(xValues[index], yValues[index]);
     positions.add(xValues[index]);
   }
-  const orderedPositions = [...positions].sort((left, right) => left - right);
+  const orderedPositions = categorical
+    ? (options.xDomain ?? [...positions]).filter(value => positions.has(value))
+    : [...positions].sort((left, right) => left - right);
+  if (orderedPositions.length !== positions.size) throw new Error("Area categorical domain must contain every observed position.");
   if (groupOrder.length === 0 || orderedPositions.length < 2) {
     throw new Error(
       `Centered area mark "${layer.id}" requires at least two aligned positions.`

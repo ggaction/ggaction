@@ -831,7 +831,7 @@ Create a simple area, crossing ribbon, or accumulated series chart in the full e
 `areaPlot`; x and y are required. `valueChannel` defaults to y. Its measurement is a field string,
 `{field,scale?}`, or `{lower,upper,scale?}`. Each bound is a field string or finite `{datum}` and at least
 one bound must use a field. A simple field closes to baseline 0; `baseline` cannot accompany a range.
-The independent position is quantitative or temporal and accepts field/fieldType/temporalUnit/scale.
+The independent position is quantitative, temporal, nominal, or ordinal. Categorical positions follow the scale domain order and accept point or band scales; temporalUnit applies only to temporal fields.
 
 `groupBy` explicitly identifies nominal series using a field or a unique nonempty tuple. Color is optional,
 categorical, and constant within each series. `layout` defaults to overlay; stack/fill/diverging require
@@ -1574,8 +1574,8 @@ semantic base positions. [Text marks](../api/marks/text.md)
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/line/area/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/area/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule, area, and rect also accept datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |

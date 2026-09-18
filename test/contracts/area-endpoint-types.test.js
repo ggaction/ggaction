@@ -34,7 +34,6 @@ program.createAreaPlot({ x: "time", y: "value", layout: "group" });
 program.createAreaPlot({ x: "time", y: { lower: { datum: 0 }, upper: { datum: 1 } } });
 // @ts-expect-error range and baseline cannot both own the endpoints
 program.createAreaPlot({ x: "time", y: { lower: "lo", upper: "hi" }, baseline: 0 });
-// @ts-expect-error independent position cannot be nominal
 program.createAreaPlot({ x: { field: "time", fieldType: "nominal" }, y: "value" });
 // @ts-expect-error quantitative independent positions cannot use temporal scales
 program.createAreaPlot({ x: { field: "time", fieldType: "quantitative", scale: { type: "time" } }, y: "value" });
@@ -42,6 +41,9 @@ program.createAreaPlot({ x: { field: "time", fieldType: "quantitative", scale: {
 program.createAreaPlot({ x: { field: "time", temporalUnit: "seconds" }, y: "value" });
 // @ts-expect-error measurement does not aggregate raw rows
 program.createAreaPlot({ x: "time", y: { field: "value", aggregate: "sum" } });
+program.createAreaPlot({ x: "value", y: { field: "category", fieldType: "ordinal", scale: { type: "point" } }, valueChannel: "x" });
+// @ts-expect-error categorical positions cannot use quantitative scales
+program.createAreaPlot({ x: { field: "category", fieldType: "nominal", scale: { type: "log" } }, y: "value" });
 program.createAreaMark({ missing: "break" });
 program.editAreaMark({ missing: "error" });
 program.encodeYRange({ lower: "value", upper: { datum: 0 } });
