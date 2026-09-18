@@ -130,7 +130,7 @@ test("action-card hierarchy is generated from the executable direct-child trace"
   );
   assert.deepEqual(
     artifact.cards.find(card => card.name === "createScatterPlot").wraps,
-    ["createPointMark", "encodeX", "encodeY", "encodeColor", "encodeShape", "createGuides", "encodeSize", "encodePointRadius"]
+    ["createPointMark", "encodeX", "encodeY", "encodeColor", "encodeShape", "createGuides", "encodeStroke", "editPointMark", "encodeSize", "encodePointRadius"]
   );
   assert.deepEqual(
     artifact.cards.find(card => card.name === "selectMarks").editableVia,

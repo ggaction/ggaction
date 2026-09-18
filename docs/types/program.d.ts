@@ -2999,6 +2999,7 @@ export interface CreateScatterPlotOptions {
   x: PointFacadePositionChannel;
   y: PointFacadePositionChannel;
   color?: BasicColorChannel;
+  stroke?: string | WithoutEncodingTarget<Extract<StrokeEncodingOptions, { field: string }>>;
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {

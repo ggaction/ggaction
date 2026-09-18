@@ -132,6 +132,17 @@ async function testNodeConsumer(directory) {
     assert.equal(facetTitle.editCompositionLayout({ gap: 11 }).graphicSpec.objects.chartTitle.properties.fontStyle, "italic");
 
 
+    for (const factory of [chart, basicChart]) {
+      const stroked = factory().createCanvas({ width: 800, height: 500, margin: 150 })
+        .createData({ values: [{ x: 1, y: 2, group: "A" }, { x: 2, y: 3, group: "B" }] })
+        .createScatterPlot({ x: "x", y: "y", stroke: { field: "group", scale: { range: ["red", "blue"] } },
+          point: { fill: "none", strokeWidth: 2 } });
+      assert.deepEqual(stroked.graphicSpec.objects.scatterPlot.items.map(item => item.properties.stroke), ["red", "blue"]);
+      assert.equal(stroked.guideConfigs.legend.stroke.target, "scatterPlot");
+      assert.deepEqual(deserializeProgram(serializeProgram(stroked)).graphicSpec, stroked.graphicSpec);
+      assert.match(renderToSVG(stroked), /stroke="red"/);
+    }
+
     const categorySizes = chart().createCanvas({
       width: 800, height: 500, margin: { left: 60, right: 260, top: 60, bottom: 130 }
     }).createData({ values: [
@@ -2700,6 +2711,14 @@ async function testTypeScriptConsumer(directory) {
       .editCompositionLayout({ spacing: "canvas" });
     chart().repeatCharts({ channel: "y", fields: ["a", "b"], spacing: "plot" });
     chart().facetGrid({ rows: { field: "r" }, columns: { field: "c" }, spacing: "plot" });
+
+    chart().createScatterPlot({ x: "x", y: "y", stroke: "group", point: { strokeWidth: 2 } });
+    basicChart().createScatterPlot({ x: "x", y: "y", stroke: { field: "amount", fieldType: "quantitative" } });
+    // @ts-expect-error Basic authors stroke through the facade
+    basicChart().encodeStroke({ field: "group" });
+    chart().createScatterPlot({ x: "x", y: "y", stroke: { field: "amount", fieldType: "quantitative" } });
+    // @ts-expect-error constant stroke belongs in point
+    chart().createScatterPlot({ x: "x", y: "y", stroke: { value: "red" } });
 
     const program: ChartProgram = chart().createCanvas({ width: 100, height: 100 });
     const themeName: ThemeName = "dark";

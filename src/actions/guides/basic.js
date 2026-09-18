@@ -1,3 +1,4 @@
+import { registerStrokeColorLegendActions } from "./legends/continuous/stroke.js";
 import { registerBasicCartesianAxisActions } from "./axes/index.js";
 import { registerGuideCollectionActions } from "./guides.js";
 import { registerBasicGridActions } from "./grids/index.js";
@@ -15,6 +16,7 @@ export function registerBasicGuideActions(ProgramClass) {
   registerBasicCategoricalLegendActions(ProgramClass);
   registerGradientLegendActions(ProgramClass);
   registerIntervalLegendActions(ProgramClass);
+  registerStrokeColorLegendActions(ProgramClass);
   registerSizeLegendActions(ProgramClass);
   registerBasicGridActions(ProgramClass);
   registerGuideCollectionActions(ProgramClass);

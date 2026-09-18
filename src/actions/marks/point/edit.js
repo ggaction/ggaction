@@ -96,7 +96,7 @@ export const editPointMark = /* @__PURE__ */ action(
       }
     }
     if (Object.hasOwn(args, "strokeWidth")) {
-      if (typeof config.stroke !== "string") {
+      if (typeof config.stroke !== "string" && layer.encoding?.stroke?.field === undefined) {
         throw new Error("Point strokeWidth requires an active stroke.");
       }
       config.strokeWidth = validateNonNegativeFinite(

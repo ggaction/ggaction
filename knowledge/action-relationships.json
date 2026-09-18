@@ -1643,6 +1643,8 @@
         "encodeColor",
         "encodeShape",
         "createGuides",
+        "encodeStroke",
+        "editPointMark",
         "encodeSize",
         "encodePointRadius"
       ]

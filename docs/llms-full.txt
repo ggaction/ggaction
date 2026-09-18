@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:8fa000afddf614d440b9d59a0ca68f0dce928e84cb17fc25c26cd3034a87df86. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:b0a140f3f4e409732db66a7eacd670d8f581ff1d4a151c2a139b1a1d78788936. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -4221,7 +4221,7 @@ actions never create either one or silently choose among ambiguous resources.
 createScatterPlot(options: CreateScatterPlotOptions): ChartProgram
 ```
 
-Required options are `x` and `y`. Optional `color`, `size`, and `shape` values
+Required options are `x` and `y`. Optional `color`, `stroke`, `size`, and `shape` values
 create field encodings; `point` controls constant point appearance.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -4249,7 +4249,15 @@ default point radius of `3`. `point.radius` accepts a non-negative finite logica
 radius, including zero, and conflicts with `size`. It delegates to
 `encodePointRadius` → `encodeRadius` in default and Basic entries. Constant fill,
 shape, opacity, stroke, and stroke width belong in `point`; field-driven color,
-size, and shape remain top-level.
+stroke, size, and shape remain top-level.
+
+Use `stroke: "Origin"` to encode a field as the point outline; its object form
+accepts field-driven `encodeStroke` options. It conflicts with `point.stroke`.
+A requested `point.strokeWidth` is applied after the stroke encoding. Categorical,
+continuous, and discretized stroke legends use the existing guide policy in both
+default and Basic entries; select `guides.legend.channels` when authoring multiple
+appearance channels. Basic supports this through the facade, without exposing
+a standalone `encodeStroke` method.
 
 ## `createLinePlot`
 
@@ -6001,7 +6009,7 @@ is not currently supported.
 
 Point IDs must be unique, the dataset must exist, opacity must be between `0`
 and `1`, and stroke width must be non-negative. At least one property is
-required by `editPointMark`; `strokeWidth` requires an active string stroke.
+required by `editPointMark`; `strokeWidth` requires an active constant or field-driven stroke.
 Jitter requires a complete Cartesian x/y point
 mark, a unique target, a valid offset form, and unique values for an explicit
 identity key.
@@ -17371,6 +17379,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `x` | Required | `PointFacadePositionChannel` |
 | `y` | Required | `PointFacadePositionChannel` |
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| Omit<{ target?: string \| undefined; field: string; value?: undefined; fieldType?: "nominal" \| "ordinal" \| undefined; temporalUnit?: undefined; scale?: CategoricalColorScaleOptions \| undefined; }, "coordinate" \| "target"> \| Omit<...> \| Omit<...> \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
 | `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
@@ -17379,7 +17388,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createScatterPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, guides? })
+createScatterPlot({ id?, data?, coordinate?, x, y, color?, stroke?, size?, shape?, point?, guides? })
 ```
 
 Create a complete Cartesian point chart from required x/y fields and optional
@@ -28552,6 +28561,7 @@ export interface CreateScatterPlotOptions {
   x: PointFacadePositionChannel;
   y: PointFacadePositionChannel;
   color?: BasicColorChannel;
+  stroke?: string | WithoutEncodingTarget<Extract<StrokeEncodingOptions, { field: string }>>;
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
@@ -28566,7 +28576,7 @@ export interface CreateScatterPlotOptions {
 }
 ```
 
-Related types: [`PointFacadePositionChannel`](./reference/types/#type-pointfacadepositionchannel) · [`BasicColorChannel`](./reference/types/#type-basiccolorchannel) · [`BasicSizeChannel`](./reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](./reference/types/#type-basicshapechannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions).
+Related types: [`PointFacadePositionChannel`](./reference/types/#type-pointfacadepositionchannel) · [`BasicColorChannel`](./reference/types/#type-basiccolorchannel) · [`WithoutEncodingTarget`](./reference/types/#type-withoutencodingtarget) · [`StrokeEncodingOptions`](./reference/types/#type-strokeencodingoptions) · [`BasicSizeChannel`](./reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](./reference/types/#type-basicshapechannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions).
 
 ### `CreateStripPlotOptions` {#type-createstripplotoptions}
 
@@ -38278,7 +38288,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 
 | Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
 | --- | --- | --- | --- | --- |
-| One row per observation; x and y fields | [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createPointMark`](./reference/actions/marks/#createpointmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeShape`](./reference/actions/encodings/#encodeshape) · [`createGuides`](./reference/actions/guides/#createguides) · [`encodeSize`](./reference/actions/encodings/#encodesize) · [`encodePointRadius`](./reference/actions/encodings/#encodepointradius) |
+| One row per observation; x and y fields | [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createPointMark`](./reference/actions/marks/#createpointmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeShape`](./reference/actions/encodings/#encodeshape) · [`createGuides`](./reference/actions/guides/#createguides) · [`encodeStroke`](./reference/actions/encodings/#encodestroke) · [`editPointMark`](./reference/actions/marks/#editpointmark) · [`encodeSize`](./reference/actions/encodings/#encodesize) · [`encodePointRadius`](./reference/actions/encodings/#encodepointradius) |
 | Ordered positions and measures; explicit aggregation when needed | [`createLinePlot`](./reference/actions/charts-data/#createlineplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createLineMark`](./reference/actions/marks/#createlinemark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeGroup`](./reference/actions/encodings/#encodegroup) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeStrokeDash`](./reference/actions/encodings/#encodestrokedash) · [`createGuides`](./reference/actions/guides/#createguides) |
 | Ordered values and a baseline, or paired interval bounds | [`createAreaPlot`](./reference/actions/charts-data/#createareaplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createAreaMark`](./reference/actions/marks/#createareamark) · [`encodeGroup`](./reference/actions/encodings/#encodegroup) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeYRange`](./reference/actions/encodings/#encodeyrange) · [`layoutSeries`](./reference/actions/encodings/#layoutseries) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) |
 | Finite quantitative observations for a fit and optional uncertainty | [`createRegressionPlot`](./reference/actions/charts-data/#createregressionplot) | H0, H1 · user-facing · default | Refine the owned marks, encodings, or guides | [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) · [`createRegression`](./reference/actions/statistics/#createregression) |
@@ -38363,7 +38373,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:8fa000afddf614d440b9d59a0ca68f0dce928e84cb17fc25c26cd3034a87df86` |
+| Contract fingerprint | `sha256:b0a140f3f4e409732db66a7eacd670d8f581ff1d4a151c2a139b1a1d78788936` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

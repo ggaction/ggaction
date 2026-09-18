@@ -28111,6 +28111,8 @@
         "encodeColor",
         "encodeShape",
         "createGuides",
+        "encodeStroke",
+        "editPointMark",
         "encodeSize",
         "encodePointRadius"
       ],
@@ -28175,6 +28177,11 @@
           "type": "BasicColorChannel | undefined"
         },
         {
+          "name": "stroke",
+          "required": false,
+          "type": "string | Omit<{ target?: string | undefined; field: string; value?: undefined; fieldType?: \"nominal\" | \"ordinal\" | undefined; temporalUnit?: undefined; scale?: CategoricalColorScaleOptions | undefined; }, \"coordinate\" | \"target\"> | Omit<...> | Omit<...> | undefined"
+        },
+        {
           "name": "size",
           "required": false,
           "type": "BasicSizeChannel | undefined"
@@ -28196,7 +28203,7 @@
         }
       ],
       "callPatterns": [
-        "createScatterPlot({ x, y, id?, data?, coordinate?, color?, size?, shape? })"
+        "createScatterPlot({ x, y, id?, data?, coordinate?, color?, stroke?, size? })"
       ],
       "snippet": "program.createScatterPlot({ x: \"x\", y: \"y\" })",
       "errors": [],

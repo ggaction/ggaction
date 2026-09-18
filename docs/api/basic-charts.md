@@ -88,7 +88,7 @@ actions never create either one or silently choose among ambiguous resources.
 createScatterPlot(options: CreateScatterPlotOptions): ChartProgram
 ```
 
-Required options are `x` and `y`. Optional `color`, `size`, and `shape` values
+Required options are `x` and `y`. Optional `color`, `stroke`, `size`, and `shape` values
 create field encodings; `point` controls constant point appearance.
 
 <!-- snippet-context:start -->
@@ -120,7 +120,15 @@ default point radius of `3`. `point.radius` accepts a non-negative finite logica
 radius, including zero, and conflicts with `size`. It delegates to
 `encodePointRadius` → `encodeRadius` in default and Basic entries. Constant fill,
 shape, opacity, stroke, and stroke width belong in `point`; field-driven color,
-size, and shape remain top-level.
+stroke, size, and shape remain top-level.
+
+Use `stroke: "Origin"` to encode a field as the point outline; its object form
+accepts field-driven `encodeStroke` options. It conflicts with `point.stroke`.
+A requested `point.strokeWidth` is applied after the stroke encoding. Categorical,
+continuous, and discretized stroke legends use the existing guide policy in both
+default and Basic entries; select `guides.legend.channels` when authoring multiple
+appearance channels. Basic supports this through the facade, without exposing
+a standalone `encodeStroke` method.
 
 ## `createLinePlot`
 

@@ -152,7 +152,7 @@ is not currently supported.
 
 Point IDs must be unique, the dataset must exist, opacity must be between `0`
 and `1`, and stroke width must be non-negative. At least one property is
-required by `editPointMark`; `strokeWidth` requires an active string stroke.
+required by `editPointMark`; `strokeWidth` requires an active constant or field-driven stroke.
 Jitter requires a complete Cartesian x/y point
 mark, a unique target, a valid offset form, and unique values for an explicit
 identity key.

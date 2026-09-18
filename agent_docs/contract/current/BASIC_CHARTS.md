@@ -63,6 +63,7 @@ createScatterPlot({
   x: FieldName | PointPositionOptions;
   y: FieldName | PointPositionOptions;
   color?: FieldName | ColorEncodingOptionsWithoutTarget;
+  stroke?: FieldName | FieldStrokeEncodingOptionsWithoutTarget;
   size?: FieldName | SizeEncodingOptionsWithoutTarget;
   shape?: FieldName | ShapeEncodingOptionsWithoutTarget;
   point?: PointMarkAppearanceOptions & { radius?: NonNegativeFinite };
@@ -71,9 +72,13 @@ createScatterPlot({
 ```
 
 - Stable default ID is `scatterPlot`.
-- Hierarchy: `createPointMark`, `encodeX`, `encodeY`, optional `encodeColor`/`encodeSize`/`encodeShape`,
+- Hierarchy: `createPointMark`, `encodeX`, `encodeY`, optional `encodeColor`/`encodeStroke`/`encodeSize`/`encodeShape`,
   optional `createGuides`.
-- Constant appearance belongs to `point`; field-driven color/size/shape stays top-level. Child conflicts are preserved.
+- Constant appearance belongs to `point`; field-driven color/stroke/size/shape stays top-level. Child conflicts are preserved.
+- `stroke`는 field string 또는 field-driven `encodeStroke` option이며 `point.stroke`와 충돌한다.
+  상수 stroke는 `point`에 둔다. Field stroke와 함께 지정한 `point.strokeWidth`는 encoding 뒤
+  wrapped `editPointMark`로 적용한다. 기존 stroke legend owner를 사용하며 categorical, continuous,
+  discretized 범례를 지원한다. Basic은 facade 내부 stroke child와 범례를 지원하지만 독립 encodeStroke API를 노출하지 않는다.
 - `point.radius` is a non-negative finite logical radius; zero is valid. It calls `encodePointRadius` →
   `encodeRadius` after x/y and before optional field appearance. It conflicts with top-level `size`.
 - Omitted radius and size use the materialized point radius `3`; no explicit radius config is authored.
@@ -84,7 +89,7 @@ createScatterPlot({
 ### Formal values — `createScatterPlot`
 
 - Implemented: `createScatterPlot(options: CreateScatterPlotOptions): ChartProgram`.
-- Required: `x`, `y`; optional: `id`, `data`, `coordinate`, `color`, `size`, `shape`, `point`, `guides`.
+- Required: `x`, `y`; optional: `id`, `data`, `coordinate`, `color`, `stroke`, `size`, `shape`, `point`, `guides`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -94,7 +99,8 @@ createScatterPlot({
 - ✅ Covered: string/object channels, point appearance, guide default/disable and option ownership.
 - ✅ Covered: default radius, scale reversal, Canvas rendering, Node PNG and primitive equality.
 - ✅ Covered: unknown/nested target options, mark/encoding conflicts and immutable failure.
-- Evidence: `test/unit/actions/charts/basic-chart-facades.test.js`,
+- Evidence: `test/unit/actions/charts/scatter-stroke-facade.test.js`,
+ `test/unit/actions/charts/basic-chart-facades.test.js`,
   `test/charts/cars-scatterplot/public.test.js`, and
   `test/charts/cars-scatterplot/png.render.js`.
 

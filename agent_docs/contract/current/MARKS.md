@@ -154,6 +154,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - `opacity`는 `[0, 1]`, `stroke`는 non-empty color string 또는 edit-time `false`, `strokeWidth`는 non-negative
   finite logical pixel이다. `stroke: false`는 outline과 stored width를 함께 비활성화하며 simultaneous
   `strokeWidth`는 오류다. 이후 string stroke는 point default width `1`로 복원한다.
+- `strokeWidth`는 constant string stroke 또는 field-driven stroke encoding이 활성화되어 있어야 한다.
 - Scalar opacity conflicts with active field opacity; use `encodeOpacity({ value })` for explicit replacement.
 - 최소 한 appearance property가 필요하며 omitted properties는 기존 stored config를 보존한다.
 - Effect: mark materialization config를 갱신하고 wrapped `rematerializePointMark`로 concrete items를

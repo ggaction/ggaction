@@ -2396,6 +2396,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `x` | Required | `PointFacadePositionChannel` |
 | `y` | Required | `PointFacadePositionChannel` |
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| Omit<{ target?: string \| undefined; field: string; value?: undefined; fieldType?: "nominal" \| "ordinal" \| undefined; temporalUnit?: undefined; scale?: CategoricalColorScaleOptions \| undefined; }, "coordinate" \| "target"> \| Omit<...> \| Omit<...> \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
 | `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
@@ -2406,7 +2407,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createScatterPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, guides? })
+createScatterPlot({ id?, data?, coordinate?, x, y, color?, stroke?, size?, shape?, point?, guides? })
 ```
 
 Create a complete Cartesian point chart from required x/y fields and optional

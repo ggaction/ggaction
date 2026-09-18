@@ -422,6 +422,9 @@ export function buildActionRelationshipPrograms() {
   return [
     ...descriptors.map(buildScenario),
     chart().createCanvas({ width: 400, height: 300, margin: 40 })
+      .createData({ values: [{ x: 1, y: 2, group: "A" }] })
+      .createScatterPlot({ x: "x", y: "y", stroke: "group", point: { strokeWidth: 2 }, guides: false }),
+    chart().createCanvas({ width: 400, height: 300, margin: 40 })
       .createData({ values: [{ x: 1, y: 2, amount: 3 }, { x: 2, y: 4, amount: 8 }] })
       .createScatterPlot({ x: "x", y: "y", size: "amount", guides: false }),
     chart().createCanvas({ width: 400, height: 300, margin: 40 })

@@ -599,7 +599,7 @@ highlights before it rematerializes every registered consumer.
 ### `createScatterPlot`
 
 ```javascript
-createScatterPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, guides? })
+createScatterPlot({ id?, data?, coordinate?, x, y, color?, stroke?, size?, shape?, point?, guides? })
 ```
 
 Create a complete Cartesian point chart from required x/y fields and optional

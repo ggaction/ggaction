@@ -2935,6 +2935,7 @@ export interface CreateScatterPlotOptions {
   x: PointFacadePositionChannel;
   y: PointFacadePositionChannel;
   color?: BasicColorChannel;
+  stroke?: string | WithoutEncodingTarget<Extract<StrokeEncodingOptions, { field: string }>>;
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
@@ -2951,7 +2952,7 @@ export interface CreateScatterPlotOptions {
 
 </details>
 
-Related types: [`PointFacadePositionChannel`](#type-pointfacadepositionchannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
+Related types: [`PointFacadePositionChannel`](#type-pointfacadepositionchannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`WithoutEncodingTarget`](#type-withoutencodingtarget) · [`StrokeEncodingOptions`](#type-strokeencodingoptions) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
 
 ### `CreateStripPlotOptions` {#type-createstripplotoptions}
 

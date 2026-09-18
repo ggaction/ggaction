@@ -263,13 +263,14 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Gzip ceiling |
 | --- | ---: |
 | `ggaction` | 375,000 bytes |
-| `ggaction/basic` | 175,000 bytes |
+| `ggaction/basic` | 178,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
 370,000에서 375,000 bytes로 조정했다. 이전 기능 기준선은 369,996 bytes였으며,
-새 기능의 installed consumer 측정은 약 372,700 bytes다. Basic/SVG와 package artifact
-예산은 유지한다. 이 변경은 기능 증가분을 허용하는 예산 변경이며 이전 한도 통과를 뜻하지 않는다.
+새 기능의 installed consumer 측정은 약 372,700 bytes다. 이후 산점도 field stroke와
+관련 범례를 Basic에도 지원하면서 Basic 실측은 174,557에서 176,590 bytes로 증가했고
+Basic 예산을 175,000에서 178,000 bytes로 조정했다. SVG와 package artifact 예산은 유지한다. 이 변경은 기능 증가분을 허용하는 예산 변경이며 이전 한도 통과를 뜻하지 않는다.
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
 `scripts/browser-bundle-size.js`이고 package consumer와 documentation contract가 같은 값을 검증한다.
@@ -1454,7 +1455,9 @@ registrar를 한 번 조립하고 top-level `ChartProgram.js`가 이를 core pro
 `actions/basic.js`는 같은 domain action 중 다섯 common Cartesian facade의 생성에 필요한
 subset만 조립하고 `BasicChartProgram.js`가 별도 core subclass에 등록한다. 두 assembly는
 같은 core state와 ordinary facade/materializer를 공유한다. Scatter point.radius는 Basic에서도
-encodePointRadius → internal encodeRadius로 전달된다. Rule/general opacity/statistics는 추가하지 않는다.
+encodePointRadius → internal encodeRadius로 전달된다. Scatter field stroke는 공유 wrapped encodeStroke를
+facade 내부에서 호출하고 Basic persistence의 built-in trace dependency로 등록한다.
+Basic standalone encodeStroke는 노출하지 않으며 stroke 범례 materializer는 Basic에도 등록한다. Rule/general opacity/statistics는 추가하지 않는다.
 Canvas와 2D-bin은 Basic graph가
 편집·revision planner를 끌어오지 않도록 동일 validation과 primitive를 사용하는 one-shot
 creation action을 등록하며, full entry의 lifecycle action과 op identity는 유지한다.
