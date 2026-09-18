@@ -1,3 +1,4 @@
+import { requireStringValue as requireField } from "../core/validation.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import {
   deriveKernelDensity,
@@ -23,12 +24,6 @@ const TRANSFORM_KEYS = [
 ];
 const OUTPUT_KEYS = Object.keys(GRADIENT_PROFILE_FIELDS);
 
-function requireField(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
 
 function validatePair(value, label) {
   if (

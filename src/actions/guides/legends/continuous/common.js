@@ -1,3 +1,4 @@
+import { isContinuousColorScaleType } from "../../../../grammar/scales/types.js";
 import { isPlainObject } from "../../../../core/immutable.js";
 import { resolveTextBounds } from "../../../../core/textMetrics.js";
 import {
@@ -251,7 +252,7 @@ export function resolveContinuousColorLayer(program, requested, channel = "color
 
 export function requireResolvedLegendScale(program, id, type) {
   const scale = program.resolvedScales[id];
-  if (scale?.type !== type) {
+  if (type === "sequential" ? !isContinuousColorScaleType(scale?.type) : scale?.type !== type) {
     throw new Error(`Legend requires resolved ${type} scale "${id}".`);
   }
   return scale;

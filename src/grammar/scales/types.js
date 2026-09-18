@@ -16,7 +16,7 @@ export const SCALE_TYPES_BY_ROLE = Object.freeze({
   [SCALE_ROLES.bandPosition]: Object.freeze(["band"]),
   [SCALE_ROLES.pointPosition]: Object.freeze(["point"]),
   [SCALE_ROLES.discreteAppearance]: Object.freeze(["ordinal"]),
-  [SCALE_ROLES.continuousColor]: Object.freeze(["sequential"]),
+  [SCALE_ROLES.continuousColor]: Object.freeze(["sequential", "log", "symlog"]),
   [SCALE_ROLES.discretizedColor]: Object.freeze([
     "quantize", "quantile", "threshold"
   ])

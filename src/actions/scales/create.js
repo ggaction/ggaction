@@ -87,14 +87,18 @@ export const createScale = /* @__PURE__ */ action(
     validateOptions(args);
     const id = validateUserId(args.id, "Scale id");
     const type = validateScaleType(args.type ?? "linear");
-    const colorType = isColorScaleType(type);
+    const colorType = isColorScaleType(type) && (
+      !["log", "symlog"].includes(type) || args.palette !== undefined ||
+      args.interpolate !== undefined || (Array.isArray(args.range) && typeof args.range[0] === "string") ||
+      args.range?.palette !== undefined
+    );
     if (args.palette !== undefined && args.range !== undefined) {
       throw new Error("Color scale cannot specify both palette and range.");
     }
     if (args.palette !== undefined && !colorType) {
       throw new Error(`Scale type "${type}" does not support palette.`);
     }
-    if (args.interpolate !== undefined && type !== "sequential") {
+    if (args.interpolate !== undefined && !colorType) {
       throw new Error(`Scale type "${type}" does not support interpolate.`);
     }
     const requestedRange = args.palette === undefined
@@ -129,6 +133,7 @@ export const createScale = /* @__PURE__ */ action(
         })
       : normalizeScaleDefinition({
           type,
+          color: colorType,
           patch: {
             ...args,
             ...(requestedRange === undefined ? {} : { range: requestedRange })
@@ -143,7 +148,7 @@ export const createScale = /* @__PURE__ */ action(
           validateRange: (scaleType, value) =>
             isDiscretizedColorScaleType(scaleType)
               ? validateDiscretizedColorRange(value)
-              : isContinuousColorScaleType(scaleType)
+              : colorType && isContinuousColorScaleType(scaleType)
                 ? validateSequentialColorRange(value)
                 : scaleType === "ordinal"
                   ? validateOrdinalRange(value)

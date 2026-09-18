@@ -787,13 +787,14 @@ type BarYPositionChannel =
   | string
   | {
       field: string;
+      bin?: never;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
       stack?: never;
       scale?: NonPointTemporalPositionScaleOptions;
     }
-  | ({ field: string; stack?: StackMode } & (
+  | ({ field: string; bin?: never; stack?: StackMode } & (
       | {
           fieldType?: "quantitative";
           aggregate?: never;
@@ -853,7 +854,7 @@ type BasicColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 ```
@@ -1692,7 +1693,7 @@ export type ColorEncodingOptions =
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
       layout?: never;
     };
@@ -7636,7 +7637,9 @@ Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionsc
 export type NonPointContinuousColorScaleOptions = ScaleFields<
   "id" | "interpolate" | "midpoint" | "clamp" | "reverse"
 > & {
-  type?: "sequential";
+  type?: "sequential" | "log" | "symlog";
+  base?: number;
+  constant?: number;
   domain?: "auto" | readonly [unknown, unknown];
   range?: "auto" | readonly [string, string, ...string[]];
   palette?: PaletteName | {
@@ -9240,7 +9243,7 @@ type RectColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
+      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 ```

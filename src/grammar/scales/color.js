@@ -1,3 +1,4 @@
+import { mapTransformedValues } from "./transformed.js";
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
 import {
@@ -349,6 +350,15 @@ export function mapSequentialColors(
   options = {}
 ) {
   const { interpolation = "rgb", clamp: shouldClamp = false } = options;
+  if (["log", "symlog"].includes(options.type)) {
+    validateSequentialMidpoint(options.midpoint, options.type, domain);
+    const normalized = mapTransformedValues(values, domain, [0, 1], {
+      type: options.type, clamp: shouldClamp,
+      ...(options.type === "log" ? { base: options.base } : { constant: options.constant }),
+      ...(Object.hasOwn(options, "unknown") ? { unknown: NaN } : {})
+    });
+    return mapSequentialColors(normalized, [0, 1], stops, { ...options, type: "sequential" });
+  }
   const hasUnknown = Object.hasOwn(options, "unknown");
   if (!Array.isArray(domain) || domain.length !== 2 || !domain.every(Number.isFinite)) {
     throw new TypeError("Sequential color domain must contain two finite numbers.");

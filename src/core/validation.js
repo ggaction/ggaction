@@ -98,3 +98,15 @@ export function validateNonNegativeFinite(value, label) {
   }
   return value;
 }
+
+export function requireStringValue(value, label) {
+  if (typeof value !== "string" || value.length === 0) {
+    throw new TypeError(`${label} must be a non-empty string.`);
+  }
+  return value;
+}
+
+export function rejectUnknownProperties(value, supported, label) {
+  const unknown = Object.keys(value).find(key => !supported.includes(key));
+  if (unknown !== undefined) throw new Error(`Unknown ${label} property "${unknown}".`);
+}

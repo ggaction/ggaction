@@ -1464,7 +1464,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"ordinal" \| "quantile" \| "quantize" \| "sequential" \| "threshold" \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "symlog" \| "threshold" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |
@@ -1472,6 +1472,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `reverse` | Optional / branch-dependent | `boolean \| undefined` |
 | `interpolate` | Optional / branch-dependent | `ContinuousColorInterpolation \| undefined` |
 | `midpoint` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `base` | Optional / branch-dependent | `number \| undefined` |
+| `constant` | Optional / branch-dependent | `number \| undefined` |
 
 </details>
 
@@ -1500,7 +1502,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Required | `string` |
 | `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"ordinal" \| "quantile" \| "quantize" \| "sequential" \| "threshold" \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "symlog" \| "threshold" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |
@@ -3200,7 +3202,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
 | `x` | Required | `string \| BarRangePositionChannel \| (Omit<PositionEncodingBase, "coordinate" \| "target"> & { fieldType?: "quantitative" \| undefined; aggregate?: undefined; scale?: NonPointZeroSupportingPositionScaleOptions \| undefined; } & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) ...` |
-| `y` | Required | `string \| BarRangePositionChannel \| ({ field: string; fieldType: "temporal"; temporalUnit?: TemporalInputUnit \| undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions \| undefined; } & { ...; }) \| ... 6 more ... \| ({ ...; } & ... 1 more ... & { ...; })` |
+| `y` | Required | `string \| BarRangePositionChannel \| ({ field: string; bin?: undefined; fieldType: "temporal"; temporalUnit?: TemporalInputUnit \| undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions \| undefined; } & { ...; }) \| ... 6 more ... \| ({ ...; } & ... 1 more ... & { ...; })` |
 
 </details>
 

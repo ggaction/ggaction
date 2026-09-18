@@ -1,3 +1,4 @@
+import { requireStringValue as nonEmptyField } from "../core/validation.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { isNominalValue, readNominalField } from "./scales/fields.js";
 import { aggregateScalarValues } from "./aggregate.js";
@@ -7,12 +8,6 @@ export const CATEGORY_ORDER_CHANNELS = Object.freeze(["x", "y", "theta"]);
 const DIRECTIONS = ["ascending", "descending"];
 const AGGREGATES = ["sum", "mean", "min", "max"];
 
-function nonEmptyField(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
 
 const sameValue = Object.is;
 

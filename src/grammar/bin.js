@@ -1,3 +1,5 @@
+import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation.js";
+import { requireStringValue as requireField } from "../core/validation.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import {
   findHistogramBinIndex,
@@ -20,19 +22,7 @@ const TRANSFORM_KEYS = Object.freeze([
 const AS_KEYS = Object.freeze(["lower", "upper", "count", "members"]);
 const RESOLVED_KEYS = Object.freeze(["domain", "step", "boundaries"]);
 
-function rejectUnknownKeys(value, supported, label) {
-  const unknown = Object.keys(value).find(key => !supported.includes(key));
-  if (unknown !== undefined) {
-    throw new Error(`Unknown ${label} property "${unknown}".`);
-  }
-}
 
-function requireField(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
 
 function normalizeAs(field, value, members) {
   const requested = value ?? {};

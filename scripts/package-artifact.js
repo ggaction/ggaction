@@ -73,13 +73,17 @@ const COMPACT_JSON_FILES = Object.freeze([
   "knowledge/task-packet.schema.json"
 ]);
 const COMPACT_JAVASCRIPT_FILES = Object.freeze([
-  "knowledge/task-resolver.js"
+  "knowledge/task-resolver.js",
+  "src/grammar/scales/color.js",
+  "src/grammar/scales/transformed.js",
+  "src/grammar/scales/definition.js",
+  "src/actions/scales/definitions.js"
 ]);
 
-export function compactPackageJavaScript(source) {
+export function compactPackageJavaScript(source, { keepNames = true } = {}) {
   return transformSync(source, {
     format: "esm",
-    keepNames: true,
+    keepNames,
     legalComments: "inline",
     loader: "js",
     minifyIdentifiers: true,
@@ -137,7 +141,8 @@ function stagePackage(cwd, environment) {
       const stagedFile = path.join(staging, file);
       if (existsSync(stagedFile)) {
         writeFileSync(stagedFile, compactPackageJavaScript(
-          readFileSync(stagedFile, "utf8")
+          readFileSync(stagedFile, "utf8"),
+          { keepNames: file === "knowledge/task-resolver.js" }
         ));
       }
     }

@@ -1,3 +1,4 @@
+import { requireStringValue as requireField } from "../core/validation.js";
 import { isPlainObject } from "../core/immutable.js";
 import {
   interpolateNumber,
@@ -15,12 +16,6 @@ export const WEIGHTED_AGGREGATE_OPERATIONS = Object.freeze([
   "stderr", "median", "q1", "q3", "quantile"
 ]);
 
-function requireField(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
 
 export function normalizeStatisticalWeight(value, label = "Statistical weight") {
   if (!isPlainObject(value)) {

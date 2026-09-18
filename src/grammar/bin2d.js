@@ -1,3 +1,4 @@
+import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation.js";
 import {
   cloneAndFreeze,
   isPlainObject
@@ -18,12 +19,6 @@ const RESOLVED_KEYS = Object.freeze([
   "extent", "edges", "eligibleCount", "occupiedCount"
 ]);
 
-function rejectUnknownKeys(value, supported, label) {
-  const unknown = Object.keys(value).find(key => !supported.includes(key));
-  if (unknown !== undefined) {
-    throw new Error(`Unknown ${label} property "${unknown}".`);
-  }
-}
 
 function requirePositiveInteger(value, label) {
   if (!Number.isInteger(value) || value <= 0) {

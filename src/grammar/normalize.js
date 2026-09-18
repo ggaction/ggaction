@@ -1,3 +1,6 @@
+import { scalarKey, normalizeSortBy, validateSortBy } from "./transformKeys.js";
+import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation.js";
+import { requireStringValue as requireField } from "../core/validation.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import {
   inverseLerp,
@@ -15,22 +18,8 @@ const METHODS = Object.freeze([
   "share", "zscore", "minmax", "index", "change", "percentChange"
 ]);
 const ZERO_POLICIES = Object.freeze(["error", "null", "zero"]);
-const SORT_KEYS = Object.freeze(["field", "order"]);
-const ORDERS = Object.freeze(["ascending", "descending"]);
 const BASELINE_KEYS = Object.freeze(["position", "value"]);
 const BASELINE_METHODS = new Set(["index", "change", "percentChange"]);
-
-function rejectUnknownKeys(value, supported, label) {
-  const unknown = Object.keys(value).find(key => !supported.includes(key));
-  if (unknown !== undefined) throw new Error(`Unknown ${label} property "${unknown}".`);
-}
-
-function requireField(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
 
 function normalizeGroupBy(value) {
   if (value === undefined) return [];
@@ -45,33 +34,6 @@ function validateGroupBy(groupBy) {
   }
   if (new Set(groupBy).size !== groupBy.length) {
     throw new Error("Normalize groupBy fields must be unique.");
-  }
-}
-
-function normalizeSortBy(value) {
-  if (value === undefined) return [];
-  if (!Array.isArray(value)) return value;
-  return value.map(sort => isPlainObject(sort)
-    ? { ...sort, order: sort.order ?? "ascending" }
-    : sort
-  );
-}
-
-function validateSortBy(sortBy) {
-  if (!Array.isArray(sortBy)) throw new TypeError("Normalize sortBy must be an array.");
-  const fields = [];
-  sortBy.forEach((sort, index) => {
-    if (!isPlainObject(sort)) {
-      throw new TypeError(`Normalize sortBy[${index}] must be a plain object.`);
-    }
-    rejectUnknownKeys(sort, SORT_KEYS, `normalize sortBy[${index}]`);
-    fields.push(requireField(sort.field, `Normalize sortBy[${index}].field`));
-    if (!ORDERS.includes(sort.order)) {
-      throw new Error(`Unsupported normalize sort order "${sort.order}".`);
-    }
-  });
-  if (new Set(fields).size !== fields.length) {
-    throw new Error("Normalize sortBy fields must be unique.");
   }
 }
 
@@ -136,7 +98,7 @@ export function validateNormalizeTransform(transform) {
     throw new Error("Normalize zeroDenominator is not available for change.");
   }
   if (BASELINE_METHODS.has(transform.method)) {
-    validateSortBy(transform.sortBy);
+    validateSortBy(transform.sortBy, "Normalize");
     validateBaseline(transform.baseline, transform.sortBy);
   } else {
     if (hasBaseline) {
@@ -182,18 +144,6 @@ export function normalizeNormalizeTransform(args = {}) {
   }
   validateNormalizeTransform(transform);
   return cloneAndFreeze(transform);
-}
-
-function scalarKey(value, label) {
-  if (value === null) return "null";
-  if (typeof value === "string") return `string:${value.length}:${value}`;
-  if (typeof value === "boolean") return `boolean:${value}`;
-  if (typeof value === "number" && Number.isFinite(value)) {
-    return `number:${Object.is(value, -0) ? 0 : value}`;
-  }
-  throw new TypeError(
-    `${label} must contain null, strings, booleans, or finite numbers.`
-  );
 }
 
 function compareScalar(left, right, label) {

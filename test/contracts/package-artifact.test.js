@@ -83,6 +83,12 @@ test("publishes only the bounded public package artifact", async () => {
     Buffer.byteLength(compactPackageJavaScript(resolverSource))
   );
   assert.equal(await readFile(resolverFile, "utf8"), resolverSource);
+  for (const relative of ["src/grammar/scales/color.js", "src/grammar/scales/transformed.js",
+    "src/grammar/scales/definition.js", "src/actions/scales/definitions.js"]) {
+    const source = await readFile(new URL(`../../${relative}`, import.meta.url), "utf8");
+    assert.equal(manifest.files.find(file => file.path === relative).size,
+      Buffer.byteLength(compactPackageJavaScript(source, {keepNames:false})));
+  }
 });
 
 test("rejects missing, forbidden, and oversized package manifests", () => {
@@ -156,4 +162,32 @@ test("rejects missing, forbidden, and oversized package manifests", () => {
     }),
     /Package entry count/
   );
+});
+
+
+test("packed scale compaction preserves exports and numeric color results", async () => {
+  const compactModule = async name => {
+    const url = new URL(`../../src/grammar/scales/${name}.js`, import.meta.url);
+    const source = await readFile(url, "utf8");
+    const compact = compactPackageJavaScript(source, {keepNames:false}).replace(
+      /from\s*["'](\.[^"']+)["']/g,
+      (_, relative) => `from ${JSON.stringify(new URL(relative, url).href)}`
+    );
+    const module = await import(`data:text/javascript;base64,${Buffer.from(compact).toString("base64")}`);
+    assert.deepEqual(Object.keys(module), Object.keys(await import(url.href)));
+    return module;
+  };
+  const definitions = await compactModule("../../actions/scales/definitions");
+  assert.deepEqual(definitions.resolveQuantitativeColorScaleDefinition({semanticSpec:{scales:[]}},"quantitative",{type:"log",range:["black","white"]}),
+    {id:"color",type:"log",domain:"auto",range:["black","white"],interpolate:"rgb",base:10});
+  const color = await compactModule("color");
+  assert.deepEqual(color.mapSequentialColors([1,10,100],[1,100],["#000000","#ffffff"],{type:"log"}),
+    ["#000000","#808080","#ffffff"]);
+  const definition = await compactModule("definition");
+  assert.deepEqual(definition.normalizeScaleDefinition({type:"log",color:true,
+    patch:{domain:[1,100],range:["black","white"]},validateDomain:(_,value)=>value,validateRange:(_,value)=>value}),
+    {type:"log",domain:[1,100],range:["black","white"],base:10,interpolate:"rgb"});
+  const transformed = await compactModule("transformed");
+  assert.deepEqual(transformed.mapTransformedValues([1,10,100],[1,100],[0,100],{type:"log"}),[0,50,100]);
+  assert.deepEqual(transformed.mapTransformedValues([-1,0,1],[-1,1],[0,100],{type:"symlog",constant:.01}),[0,50,100]);
 });

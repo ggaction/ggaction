@@ -7,7 +7,7 @@ const OPTIONS = Object.freeze([
   "type",
   "domain",
   "range",
-  "interpolate", "midpoint",
+  "interpolate", "midpoint", "base", "constant",
   "clamp",
   "reverse",
   "unknown"
@@ -19,7 +19,7 @@ export const setQuantitativeColorScale = /* @__PURE__ */ closedAction(
     description: "Create or update an internal quantitative color scale."
   }, OPTIONS,
   function (args = {}) {
-    if (!["sequential", "quantize", "quantile", "threshold"].includes(args.type)) {
+    if (!["sequential", "log", "symlog", "quantize", "quantile", "threshold"].includes(args.type)) {
       throw new Error(`Unsupported quantitative color scale type "${args.type}".`);
     }
     const existing = findSemanticScale(this, args.id);
@@ -34,7 +34,7 @@ export const setQuantitativeColorScale = /* @__PURE__ */ closedAction(
       next = next.editSemantic({ property: `scale[${args.id}].midpoint`, remove: true });
     }
     for (const property of [
-      "type", "domain", "range", "interpolate", "midpoint", "clamp", "reverse", "unknown"
+      "type", "domain", "range", "interpolate", "midpoint", "base", "constant", "clamp", "reverse", "unknown"
     ]) {
       if (!Object.hasOwn(args, property)) continue;
       if (existing?.[property] === args[property]) continue;

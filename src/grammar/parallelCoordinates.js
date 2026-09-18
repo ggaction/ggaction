@@ -1,3 +1,4 @@
+import { requireStringValue as nonEmptyString } from "../core/validation.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { validateUserId } from "../core/identifiers.js";
 import { validateOptionObject } from "../core/validation.js";
@@ -18,12 +19,6 @@ const DIMENSION_SCALE_OPTIONS = Object.freeze([
   "padding", "align", "unknown"
 ]);
 
-function nonEmptyString(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
 
 export function validateParallelKeyField(value) {
   return nonEmptyString(value, "Parallel key field");

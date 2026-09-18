@@ -1,3 +1,5 @@
+import { requireStringValue as nonEmptyString } from "../core/validation.js";
+import { isGroupValue } from "./transformKeys.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { aggregateScalarValues } from "./aggregate.js";
 import { requireFiniteResult, stableDecimal } from "./numeric.js";
@@ -21,11 +23,6 @@ const TRANSFORM_KEYS = [
 ];
 const OUTPUT_KEYS = ["center", "lower", "upper"];
 
-function nonEmptyString(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-}
 
 function validateGrouping(groupBy) {
   if (
@@ -166,10 +163,6 @@ function isMissing(value) {
     (typeof value === "number" && Number.isNaN(value));
 }
 
-function isGroupValue(value) {
-  return typeof value === "string" || typeof value === "boolean" ||
-    (typeof value === "number" && Number.isFinite(value));
-}
 
 function deriveGroup(values, transform) {
   if (transform.center === "median") {

@@ -1,3 +1,4 @@
+import { mapContinuousScaleValues, transformedTicks } from "../../../../grammar/scales/index.js";
 import { action, closedAction } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
 import { validateKeys } from "../../../../core/validation.js";
@@ -58,7 +59,11 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
         y: y - titleGap - config.titleStyle.fontSize / 2,
         align: "center"
       };
-  const values = [...sampleContinuousValues(scale.domain, config.count)];
+  const transformed = ["log", "symlog"].includes(scale.type);
+  const values = transformed
+    ? transformedTicks(scale.type, scale.domain, config.count,
+        scale.type === "log" ? {base: scale.base} : {constant: scale.constant})
+    : [...sampleContinuousValues(scale.domain, config.count)];
   if (scale.midpoint !== undefined && !values.includes(scale.midpoint)) {
     values.push(scale.midpoint);
     values.sort((a, b) => scale.domain[1] > scale.domain[0] ? a - b : b - a);
@@ -69,7 +74,8 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
     config.fieldType,
     config.labels.format
   );
-  const fractions = values.map((value, index) => scale.midpoint === undefined
+  const fractions = transformed ? mapContinuousScaleValues(values, {...scale, range: [0, 1]})
+    : values.map((value, index) => scale.midpoint === undefined
     ? index / (values.length - 1)
     : inverseLerp(value, ...scale.domain));
   const labelOffset = config.labels.offset;
@@ -180,7 +186,7 @@ export function materializeGradientLegend(program, resolved, appearance) {
   const strips = Array.from({ length: stripCount }, (_, index) => {
     const fraction = (index + 0.5) / stripCount;
     const position = layout.vertical ? 1 - fraction : fraction;
-    const samplingScale = scale.midpoint === undefined ? { ...scale, domain: [0, 1] } : scale;
+    const samplingScale = scale.midpoint === undefined ? { ...scale, type: "sequential", domain: [0, 1] } : scale;
     const value = scale.midpoint === undefined ? position : interpolateNumber(...scale.domain, position);
     const [color] = mapScaleConsumerValues([value], samplingScale, channel);
     return {

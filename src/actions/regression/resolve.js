@@ -1,3 +1,5 @@
+import { requireStringValue as requireRegressionField } from "../../core/validation.js";
+export { requireStringValue as requireRegressionField } from "../../core/validation.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { findLayer } from "../../selectors/layers.js";
 
@@ -8,12 +10,6 @@ export function requireRegressionObject(value, label) {
   return value;
 }
 
-export function requireRegressionField(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
 
 export function findRegressionPoint(program, requested) {
   const eligible = program.semanticSpec.layers.filter(layer =>

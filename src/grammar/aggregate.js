@@ -1,3 +1,5 @@
+import { requireStringValue as nonEmptyString } from "../core/validation.js";
+import { isGroupValue as isNominal } from "./transformKeys.js";
 import { isPlainObject } from "../core/immutable.js";
 import {
   interpolateNumber,
@@ -25,11 +27,6 @@ const PARAMETERIZED_OPERATIONS = [
   "quantile", "first", "last", "ciLower", "ciUpper"
 ];
 
-function nonEmptyString(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-}
 
 export function isScalarAggregate(value) {
   return typeof value === "string" && SCALAR_OPERATIONS.has(value);
@@ -137,10 +134,6 @@ function isMissing(value) {
     (typeof value === "number" && Number.isNaN(value));
 }
 
-function isNominal(value) {
-  return typeof value === "string" || typeof value === "boolean" ||
-    (typeof value === "number" && Number.isFinite(value));
-}
 
 export function validateAggregateFieldValues(rows, field, fieldType) {
   if (!Array.isArray(rows)) {

@@ -1,3 +1,4 @@
+import { isContinuousColorScaleType } from "../../../../grammar/scales/types.js";
 import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
 import { sameGuideValue } from "../../reuse.js";
 import { normalizeLegendOrder } from "../../../../grammar/categoryOrder.js";
@@ -256,7 +257,7 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
       ? layer.encoding?.color
       : undefined;
     const scale = findSemanticScale(program, encoding?.scale);
-    return scale?.type === "sequential";
+    return isContinuousColorScaleType(scale?.type);
   });
   const continuousColor = requestedCandidate(
     program, args.target, continuousColorCandidates
@@ -281,7 +282,7 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
   }
   const continuousStrokeCandidates = candidates.filter(layer => {
     const scale = findSemanticScale(program, layer.encoding?.stroke?.scale);
-    return scale?.type === "sequential";
+    return isContinuousColorScaleType(scale?.type);
   });
   const continuousStroke = requestedCandidate(
     program,

@@ -20,6 +20,9 @@ export function mapScaleConsumerValues(values, resolvedScale, channel) {
       resolvedScale.domain,
       resolvedScale.range,
       {
+        type: resolvedScale.type,
+        base: resolvedScale.base,
+        constant: resolvedScale.constant,
         interpolation: resolvedScale.interpolate,
         midpoint: resolvedScale.midpoint,
         clamp: resolvedScale.clamp ?? false,

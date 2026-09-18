@@ -1065,6 +1065,17 @@ async function testNodeConsumer(directory) {
     const basicInterval = basicChart().createCanvas({ width: 1000, height: 700, margin: 150 }).createData({ values: transitionRows })
       .createBarPlot({ id: "interval", x: "category", y: { field: "value", aggregate: "sum" }, color: { field: "value", fieldType: "quantitative", scale: { type: "quantize", range: ["blue", "red"] } } });
     assert.equal(basicInterval.guideConfigs.legend.interval.target, "interval");
+    for (const factory of [chart, basicChart]) for (const type of ["log", "symlog"]) {
+      const values = (type === "log" ? [1, 10, 100] : [-1, 0, 1]).map((value, x) => ({ x, value }));
+      const transformed = factory().createCanvas({ margin: 100 }).createData({ values })
+        .createScatterPlot({ id: "transformed", x: "x", y: "value", color: {
+          field: "value", fieldType: "quantitative", scale: { type, range: ["#000000", "#ffffff"] }
+        } });
+      assert.deepEqual(transformed.graphicSpec.objects.transformed.items.map(item => item.properties.fill),
+        ["#000000", "#808080", "#ffffff"]);
+      assert.equal(transformed.graphicSpec.objects.colorGradientStrips.items.length, 60);
+      assert.match(renderToSVG(transformed), /#808080/);
+    }
     const midpointPlot = chart().createCanvas({ width: 1000, height: 700, margin: 150 })
       .createData({ values: [-2, 0, 4, 8].map((value, x) => ({ value, x })) })
       .createScatterPlot({ id: "midpoint", x: "x", y: "value", color: { field: "value", fieldType: "quantitative", scale: { id: "midpointColor", midpoint: 0, range: ["blue", "white", "red"] } } });
@@ -1279,9 +1290,11 @@ async function testNodeConsumer(directory) {
         .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" }).encodeColor({ field: "g" });
       const p = source.createLegend({ position, columns: 1 });
       assert.equal(p.guideConfigs.legend.color.direction, "vertical");
-      for (const patch of [{ direction: "horizontal" }, { columns: 2 }, { titlePosition: "left" }]) {
+      for (const patch of [{ direction: "horizontal" }, { titlePosition: "left" }]) {
         assert.throws(() => source.createLegend({ position, ...patch }), /Side legends require/);
       }
+      const columns = source.createLegend({ position, columns: 2 });
+      assert.equal(new Set(columns.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.x)).size, 2);
       if (factory === chart) {
         assert.deepEqual(source.createLegend({ position: "top", columns: 2, itemGap: 28 })
           .editLegendLayout({ position, columns: 1 }).graphicSpec, p.graphicSpec);
@@ -3011,11 +3024,11 @@ async function testTypeScriptConsumer(directory) {
         type: "log"
       } }
     };
+    // @ts-expect-error Bar y positions do not support binning.
     const invalidBarYBin: CreateBarPlotOptions = {
       x: { field: "category", fieldType: "nominal" },
       y: {
         field: "value",
-        // @ts-expect-error Bar y positions do not support binning.
         bin: { maxBins: 10 }
       }
     };

@@ -83,6 +83,7 @@ function validatePointParameters(definition, previous, patch, defaults, typeChan
 
 export function normalizeScaleDefinition({
   type,
+  color = false,
   previous = {},
   patch = {},
   defaults = {},
@@ -157,10 +158,11 @@ export function normalizeScaleDefinition({
     }
   }
 
-  const interpolate = retainedValue(
+  let interpolate = retainedValue(
     previous, patch, defaults, "interpolate", typeChanged
   );
-  if (isContinuousColorScaleType(type)) {
+  if (type === "sequential" || (color && isContinuousColorScaleType(type))) {
+    if (interpolate === undefined && retainCompatibleOnTypeChange) interpolate = previous.interpolate;
     definition.interpolate = validateContinuousColorInterpolation(
       interpolate ?? "rgb"
     );

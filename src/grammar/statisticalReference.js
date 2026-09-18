@@ -1,3 +1,4 @@
+import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation.js";
 import { aggregateRows } from "./aggregate.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 
@@ -6,12 +7,6 @@ const SIMPLE_STATISTICS = new Set(["mean", "median", "min", "max"]);
 const POPULATIONS = new Set(["boundData", "visibleItems"]);
 const TRANSFORM_KEYS = Object.freeze(["type", "target"]);
 
-function rejectUnknownKeys(value, supported, label) {
-  const unknown = Object.keys(value).find(key => !supported.includes(key));
-  if (unknown !== undefined) {
-    throw new Error(`Unknown ${label} property "${unknown}".`);
-  }
-}
 
 export function normalizeReferenceStatistic(value, label = "Reference statistic") {
   if (!isPlainObject(value)) {

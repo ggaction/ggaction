@@ -1,3 +1,5 @@
+import { requireStringValue as nonEmptyString } from "../core/validation.js";
+import { isGroupValue as groupValue } from "./transformKeys.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { stableDecimal } from "./numeric.js";
 
@@ -6,11 +8,6 @@ const TRANSFORM_KEYS = Object.freeze([
 ]);
 const OUTPUT_KEYS = Object.freeze(["value", "cumulative", "probability"]);
 
-function nonEmptyString(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-}
 
 function normalizeGroupBy(groupBy) {
   const fields = groupBy === undefined
@@ -101,10 +98,6 @@ export function normalizeECDFTransform({ field, groupBy, weight, missing = "drop
   return cloneAndFreeze(transform);
 }
 
-function groupValue(value) {
-  return typeof value === "string" || typeof value === "boolean" ||
-    (typeof value === "number" && Number.isFinite(value));
-}
 
 function rejectOrDrop(transform, index, reason) {
   if (transform.missing === "error") {

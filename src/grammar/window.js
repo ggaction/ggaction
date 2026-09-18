@@ -1,3 +1,6 @@
+import { scalarKey, normalizeSortBy, validateSortBy } from "./transformKeys.js";
+import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation.js";
+import { requireStringValue as requireField } from "../core/validation.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import {
   maximumMagnitude,
@@ -11,8 +14,6 @@ import { normalizeTemporalValue, validateTemporalUnit } from "./scales/fields.js
 const TRANSFORM_KEYS = [
   "type", "partitionBy", "sortBy", "operations", "temporalUnit"
 ];
-const SORT_KEYS = ["field", "order"];
-const ORDER_VALUES = ["ascending", "descending"];
 const OPERATION_VALUES = [
   "rowNumber", "rank", "denseRank", "cumulativeSum", "lag", "lead",
   "movingMean", "movingSum"
@@ -30,20 +31,6 @@ const DURATION_UNITS = Object.freeze({
   day: 86_400_000
 });
 
-function requireField(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
-
-function rejectUnknownKeys(value, supported, label) {
-  const unknown = Object.keys(value).find(key => !supported.includes(key));
-  if (unknown !== undefined) {
-    throw new Error(`Unknown ${label} property "${unknown}".`);
-  }
-}
-
 function validateFieldList(value, label) {
   if (
     !Array.isArray(value) ||
@@ -53,26 +40,6 @@ function validateFieldList(value, label) {
   }
   if (new Set(value).size !== value.length) {
     throw new Error(`${label} fields must be unique.`);
-  }
-}
-
-function validateSortBy(sortBy) {
-  if (!Array.isArray(sortBy)) {
-    throw new TypeError("Window sortBy must be an array.");
-  }
-  const fields = [];
-  sortBy.forEach((sort, index) => {
-    if (!isPlainObject(sort)) {
-      throw new TypeError(`Window sortBy[${index}] must be a plain object.`);
-    }
-    rejectUnknownKeys(sort, SORT_KEYS, `window sortBy[${index}]`);
-    fields.push(requireField(sort.field, `Window sortBy[${index}].field`));
-    if (!ORDER_VALUES.includes(sort.order)) {
-      throw new Error(`Unsupported window sort order "${sort.order}".`);
-    }
-  });
-  if (new Set(fields).size !== fields.length) {
-    throw new Error("Window sortBy fields must be unique.");
   }
 }
 
@@ -177,7 +144,7 @@ export function validateWindowTransform(transform) {
     throw new Error(`Unsupported window transform "${transform.type}".`);
   }
   validateFieldList(transform.partitionBy, "Window partitionBy");
-  validateSortBy(transform.sortBy);
+  validateSortBy(transform.sortBy, "Window");
   validateOperations(transform.operations, transform.sortBy);
   const durationOperations = transform.operations.filter(operation =>
     MOVING_OPERATIONS.has(operation.op) && Object.hasOwn(operation.frame, "duration")
@@ -197,15 +164,6 @@ export function validateWindowTransform(transform) {
 function normalizePartitionBy(value) {
   if (value === undefined) return [];
   return Array.isArray(value) ? [...value] : [value];
-}
-
-function normalizeSortBy(value) {
-  if (value === undefined) return [];
-  if (!Array.isArray(value)) return value;
-  return value.map(sort => isPlainObject(sort)
-    ? { ...sort, order: sort.order ?? "ascending" }
-    : sort
-  );
 }
 
 function normalizeOperations(value) {
@@ -257,18 +215,6 @@ export function normalizeWindowTransform({
   };
   validateWindowTransform(transform);
   return cloneAndFreeze(transform);
-}
-
-function scalarKey(value, label) {
-  if (value === null) return "null";
-  if (typeof value === "string") return `string:${value.length}:${value}`;
-  if (typeof value === "boolean") return `boolean:${value}`;
-  if (typeof value === "number" && Number.isFinite(value)) {
-    return `number:${Object.is(value, -0) ? 0 : value}`;
-  }
-  throw new TypeError(
-    `${label} must contain null, strings, booleans, or finite numbers.`
-  );
 }
 
 function compareScalar(left, right, label) {

@@ -1,3 +1,6 @@
+import { normalizeSortBy, validateSortBy } from "./transformKeys.js";
+import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation.js";
+import { requireStringValue as requireField } from "../core/validation.js";
 import { IMPUTE_REQUIRED_OPTIONS } from "../core/optionRequirements.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { interpolateNumber, inverseLerp } from "./numeric.js";
@@ -6,20 +9,7 @@ import { normalizeTemporalValue } from "./scales/fields.js";
 const TRANSFORM_KEYS = Object.freeze([
   "type", "fields", "groupBy", "sortBy", "method", "value", "edges", "maxGap"
 ]);
-const SORT_KEYS = Object.freeze(["field", "order"]);
 const METHODS = Object.freeze(Object.keys(IMPUTE_REQUIRED_OPTIONS));
-
-function rejectUnknownKeys(value, supported, label) {
-  const unknown = Object.keys(value).find(key => !supported.includes(key));
-  if (unknown !== undefined) throw new Error(`Unknown ${label} property "${unknown}".`);
-}
-
-function requireField(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
 
 function validateFieldList(value, label) {
   if (!Array.isArray(value) || value.length === 0 || value.some(field =>
@@ -33,33 +23,6 @@ function validateFieldList(value, label) {
 function normalizeFieldList(value, { allowEmpty = false } = {}) {
   if (value === undefined) return allowEmpty ? [] : value;
   return Array.isArray(value) ? [...value] : [value];
-}
-
-function normalizeSortBy(value) {
-  if (value === undefined) return [];
-  if (!Array.isArray(value)) return value;
-  return value.map(sort => isPlainObject(sort)
-    ? { ...sort, order: sort.order ?? "ascending" }
-    : sort
-  );
-}
-
-function validateSortBy(sortBy) {
-  if (!Array.isArray(sortBy)) throw new TypeError("Impute sortBy must be an array.");
-  const fields = [];
-  sortBy.forEach((sort, index) => {
-    if (!isPlainObject(sort)) {
-      throw new TypeError(`Impute sortBy[${index}] must be a plain object.`);
-    }
-    rejectUnknownKeys(sort, SORT_KEYS, `impute sortBy[${index}]`);
-    fields.push(requireField(sort.field, `Impute sortBy[${index}].field`));
-    if (!["ascending", "descending"].includes(sort.order)) {
-      throw new Error(`Unsupported impute sort order "${sort.order}".`);
-    }
-  });
-  if (new Set(fields).size !== fields.length) {
-    throw new Error("Impute sortBy fields must be unique.");
-  }
 }
 
 function scalarType(value, label) {
@@ -94,7 +57,7 @@ export function validateImputeTransform(transform) {
   if (new Set(transform.groupBy).size !== transform.groupBy.length) {
     throw new Error("Impute groupBy fields must be unique.");
   }
-  validateSortBy(transform.sortBy);
+  validateSortBy(transform.sortBy, "Impute");
   if (!METHODS.includes(transform.method)) {
     throw new Error(`Unsupported impute method "${transform.method}".`);
   }

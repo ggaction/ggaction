@@ -21417,7 +21417,7 @@
         {
           "name": "type",
           "required": false,
-          "type": "\"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"threshold\" | undefined"
+          "type": "\"log\" | \"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"symlog\" | \"threshold\" | undefined"
         },
         {
           "name": "domain",
@@ -21453,6 +21453,16 @@
           "name": "midpoint",
           "required": false,
           "type": "number | \"auto\" | undefined"
+        },
+        {
+          "name": "base",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "constant",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
@@ -21539,7 +21549,7 @@
         {
           "name": "type",
           "required": false,
-          "type": "\"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"threshold\" | undefined"
+          "type": "\"log\" | \"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"symlog\" | \"threshold\" | undefined"
         },
         {
           "name": "domain",
@@ -30582,7 +30592,7 @@
         {
           "name": "y",
           "required": true,
-          "type": "string | BarRangePositionChannel | ({ field: string; fieldType: \"temporal\"; temporalUnit?: TemporalInputUnit | undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions | undefined; } & { ...; }) | ... 6 more ... | ({ ...; } & ... 1 more ... & { ...; })"
+          "type": "string | BarRangePositionChannel | ({ field: string; bin?: undefined; fieldType: \"temporal\"; temporalUnit?: TemporalInputUnit | undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions | undefined; } & { ...; }) | ... 6 more ... | ({ ...; } & ... 1 more ... & { ...; })"
         }
       ],
       "callPatterns": [

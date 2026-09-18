@@ -41,7 +41,7 @@ const DEFINITIONS = Object.freeze({
     channel: "color",
     options: Object.freeze([
       "type", "domain", "range", "emptyDomain", "clamp", "reverse", "palette",
-      "interpolate", "midpoint", "unknown"
+      "interpolate", "midpoint", "base", "constant", "unknown"
     ])
   }),
   editStrokeScale: Object.freeze({
@@ -49,7 +49,7 @@ const DEFINITIONS = Object.freeze({
     targetOnly: true,
     options: Object.freeze([
       "type", "domain", "range", "emptyDomain", "clamp", "reverse", "palette",
-      "interpolate", "midpoint", "unknown"
+      "interpolate", "midpoint", "base", "constant", "unknown"
     ])
   }),
   editSizeScale: Object.freeze({

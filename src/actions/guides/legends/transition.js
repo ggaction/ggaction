@@ -1,3 +1,4 @@
+import { isContinuousColorScaleType } from "../../../grammar/scales/types.js";
 import { isDiscretizedColorScaleType } from "../../../grammar/scales/types.js";
 import { normalizeContinuousLegend } from "./continuous/common.js";
 import { DEFAULT_GRADIENT_SIZE } from "./continuous/gradient.js";
@@ -9,7 +10,7 @@ import {
 } from "./target.js";
 import { validateLegendBlockOverride } from "./blocks.js";
 
-const family = (channel, type) => type === "sequential"
+const family = (channel, type) => isContinuousColorScaleType(type)
   ? channel === "stroke" ? "strokeGradient" : "gradient"
   : isDiscretizedColorScaleType(type)
     ? channel === "stroke" ? "strokeInterval" : "interval"

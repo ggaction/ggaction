@@ -1,3 +1,6 @@
+import { scalarKey } from "./transformKeys.js";
+import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation.js";
+import { requireStringValue as requireField } from "../core/validation.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import {
   aggregateRows,
@@ -21,20 +24,6 @@ const TRANSFORM_KEYS = Object.freeze([
 const AGGREGATE_KEYS = Object.freeze(["op", "field", "as"]);
 const NOMINAL_OPERATIONS = new Set(["distinct", "valid", "missing"]);
 const MAX_OUTPUT_ROWS = 10_000;
-
-function rejectUnknownKeys(value, supported, label) {
-  const unknown = Object.keys(value).find(key => !supported.includes(key));
-  if (unknown !== undefined) {
-    throw new Error(`Unknown ${label} property "${unknown}".`);
-  }
-}
-
-function requireField(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
 
 function normalizeGroupBy(value) {
   if (value === undefined) return [];
@@ -129,18 +118,6 @@ export function validateSummaryTransform(transform) {
     throw new Error('Summary empty must be "null" or "identity".');
   }
   return transform;
-}
-
-function scalarKey(value, label) {
-  if (value === null) return "null";
-  if (typeof value === "string") return `string:${value.length}:${value}`;
-  if (typeof value === "boolean") return `boolean:${value}`;
-  if (typeof value === "number" && Number.isFinite(value)) {
-    return `number:${Object.is(value, -0) ? 0 : value}`;
-  }
-  throw new TypeError(
-    `${label} must contain null, strings, booleans, or finite numbers.`
-  );
 }
 
 function requireSourceFields(rows, transform) {

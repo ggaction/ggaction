@@ -1,6 +1,7 @@
 import { validateContinuousColorConsumer } from "../../grammar/scales/colorConsumers.js";
 import {
   hasOrdinalDomain,
+  isContinuousColorScaleType,
   isDiscretizedColorScaleType,
   isDiscretePositionScaleType,
   isTransformedScaleType,
@@ -53,7 +54,7 @@ function validateRangeForChannel(scale, channel, value) {
   if (channel === "size") return validateSizeRange(value);
   if (channel === "theta") return validateThetaRange(value);
   if (channel === "radius") return validateRadialRange(value);
-  if (scale.type === "sequential") {
+  if (scale.type === "sequential" || (channel === "color" && isContinuousColorScaleType(scale.type))) {
     return validateSequentialColorRange(value);
   }
   if (isDiscretizedColorScaleType(scale.type)) {
@@ -72,7 +73,8 @@ function validateTypeTransition(scale, nextType, channel, consumers) {
   if (nextType === scale.type) return;
   validateScaleType(nextType);
   if (consumers.length === 0) return;
-  if (nextType === "sequential" || isDiscretizedColorScaleType(nextType)) {
+  if (nextType === "sequential" || isDiscretizedColorScaleType(nextType) ||
+    (channel === "color" && isContinuousColorScaleType(nextType))) {
     if (channel !== "color") {
       throw new Error(`Scale "${scale.id}" has a consumer incompatible with type "${nextType}".`);
     }
@@ -208,6 +210,7 @@ function normalizeDefinition(program, scale, channel, consumers, patch) {
     : patch;
   const definition = normalizeScaleDefinition({
     type,
+    color: channel === "color" || scale.interpolate !== undefined,
     previous: scale,
     patch: normalizedPatch,
     retainCoreOnTypeChange: true,
@@ -252,6 +255,7 @@ function normalizeDefinition(program, scale, channel, consumers, patch) {
 }
 
 export function prepareScaleEdit(program, scale, channel, consumers, args) {
+  channel ??= scale.interpolate === undefined ? undefined : "color";
   const hasPalette = Object.hasOwn(args, "palette");
   if (hasPalette && Object.hasOwn(args, "range")) {
     throw new Error("editScale cannot specify both palette and range.");

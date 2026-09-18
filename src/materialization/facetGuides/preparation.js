@@ -1,3 +1,4 @@
+import { isContinuousColorScaleType } from "../../grammar/scales/types.js";
 import {
   unionConcreteGraphicBounds
 } from "../../grammar/schemas/graphicBounds.js";
@@ -109,7 +110,7 @@ function prepareAutoLegendSource(child) {
       request.channels.includes("color") ? "color" : "stroke"
     ]?.scale
   );
-  const gradient = scale?.type === "sequential";
+  const gradient = isContinuousColorScaleType(scale?.type);
   const gradientPrefix = request.channels.includes("color")
     ? "colorGradient"
     : "strokeGradient";
@@ -123,7 +124,7 @@ function prepareAutoLegendSource(child) {
       titleStyle: { color: DEFAULT_COLORS.strongText, fontSize: 11 }
     } : {})
   });
-  if (gradient) {
+  if (gradient && scale.type === "sequential") {
     const resolved = source.resolvedScales[scale.id];
     source = source
       .editGraphics({

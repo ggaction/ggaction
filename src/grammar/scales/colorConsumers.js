@@ -7,6 +7,9 @@ export function validateContinuousColorConsumer(layer, encoding, scale, {
   channel = "color"
 } = {}) {
   const kind = layer.mark?.type;
+  if (["log", "symlog"].includes(scale.type) && encoding.fieldType !== "quantitative") {
+    throw new Error(`Scale type "${scale.type}" requires quantitative color.`);
+  }
   if (channel === "stroke") {
     if (!["point", "line", "area", "bar", "rect", "arc", "rule", "tick"].includes(kind)) {
       throw new Error("Continuous stroke requires a supported graphical mark consumer.");

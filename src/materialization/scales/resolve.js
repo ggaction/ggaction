@@ -160,7 +160,7 @@ function resolveContinuousScale({
 }) {
   return {
     type: isSequentialColor
-      ? "sequential"
+      ? scale.type
       : isOrdinalAppearance
         ? validateOrdinalScaleType(scale.type)
         : scale.type === "time"

@@ -4,6 +4,9 @@ import { isPlainObject } from "../../core/immutable.js";
 import { validateKeys } from "../../core/validation.js";
 import {
   validateColorRange,
+  isContinuousColorScaleType,
+  normalizeTransformParameters,
+  validateTransformedDomain,
   validateContinuousColorInterpolation,
   validateSequentialMidpoint,
   validateLinearScaleType,
@@ -55,7 +58,7 @@ const POSITION_OPTIONS = [
 const COLOR_OPTIONS = [...BASE_OPTIONS, "palette", "unknown"];
 const SEQUENTIAL_COLOR_OPTIONS = [
   ...COLOR_OPTIONS,
-  "interpolate", "midpoint",
+  "interpolate", "midpoint", "base", "constant",
   ...CLAMP_REVERSE
 ];
 const OPACITY_OPTIONS = [...BASE_OPTIONS, ...BOOLEAN_OPTIONS, "unknown"];
@@ -202,9 +205,9 @@ export function resolveSequentialColorScaleDefinition(
   validatePaletteRange(options);
   const id = validateUserId(options.id ?? channel, "Scale id");
   const existing = findSemanticScale(program, id);
-  const previous = existing?.type === "sequential" ? existing : undefined;
+  const previous = isContinuousColorScaleType(existing?.type) ? existing : undefined;
   const type = options.type ?? previous?.type ?? "sequential";
-  if (type !== "sequential") {
+  if (!isContinuousColorScaleType(type)) {
     throw new Error(`Unsupported continuous color scale type "${type}".`);
   }
   validateBooleanOptions(options, CLAMP_REVERSE);
@@ -222,6 +225,19 @@ export function resolveSequentialColorScaleDefinition(
       options.interpolate ?? previous?.interpolate ?? "rgb"
     )
   };
+  if (type !== "sequential" && fieldType !== "quantitative") {
+    throw new Error(`Scale type "${type}" requires quantitative color.`);
+  }
+  const parameters = Object.fromEntries(["base", "constant"].flatMap(key => {
+    const value = options[key] ?? previous?.[key];
+    return value === undefined ? [] : [[key, value]];
+  }));
+  if (type !== "sequential") {
+    Object.assign(scale, normalizeTransformParameters(type, parameters));
+    if (scale.domain !== "auto") validateTransformedDomain(type, scale.domain, parameters);
+  } else if (Object.keys(parameters).length) {
+    throw new Error("Sequential color does not support transform parameters.");
+  }
   const midpoint = validateSequentialMidpoint(
     Object.hasOwn(options, "midpoint") ? options.midpoint : previous?.midpoint, type, scale.domain
   );
@@ -247,18 +263,18 @@ export function resolveQuantitativeColorScaleDefinition(
   optionsObject(options);
   const existing = findSemanticScale(program, options.id ?? channel);
   const existingContinuous = existing !== undefined && (
-    existing.type === "sequential" ||
+    isContinuousColorScaleType(existing.type) ||
     ["quantize", "quantile", "threshold"].includes(existing.type)
   );
   const type = options.type ?? (
     existingContinuous ? existing.type : "sequential"
   );
   if (existingContinuous && existing.type !== type) {
-    validateKeys(options, type === "sequential" ? SEQUENTIAL_COLOR_OPTIONS : [...COLOR_OPTIONS, ...CLAMP_REVERSE], "scale");
+    validateKeys(options, isContinuousColorScaleType(type) ? SEQUENTIAL_COLOR_OPTIONS : [...COLOR_OPTIONS, ...CLAMP_REVERSE], "scale");
     if (fieldType !== "quantitative") throw new Error("Color scale type transition requires quantitative color.");
     return { id: existing.id, ...prepareScaleEdit(program, existing, channel, [], options) };
   }
-  if (type === "sequential") {
+  if (isContinuousColorScaleType(type)) {
     return resolveSequentialColorScaleDefinition(program, fieldType, options, channel);
   }
   validateKeys(options, [...COLOR_OPTIONS, ...CLAMP_REVERSE], "scale");

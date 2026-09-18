@@ -54,7 +54,7 @@ and compatible continuous color scale; see [Mark Style](../appearance/mark-style
 
 Quantitative or temporal point color uses `fieldType: "quantitative"` or
 `"temporal"` and an internal sequential scale. Aggregate bars support
-quantitative sequential color with one aggregate value per final rectangle.
+quantitative continuous color with one aggregate value per final rectangle.
 The default palette is
 `viridis`; an explicit palette may use `count` and `extent`, while an explicit
 range needs at least two colors. `count` controls the stored gradient stops;
@@ -88,6 +88,24 @@ For aggregate bars, a color field equal to the measure field inherits its
 aggregate. A different quantitative field requires an explicit `aggregate`.
 The automatic domain is derived from those final aggregate values, not from
 the unaggregated source rows.
+
+**Log and symmetric-log color**
+
+Quantitative color and stroke also accept `scale: { type: "log", base: 10 }`
+or `scale: { type: "symlog", constant: 0.01 }`. The default base is 10; the
+default symlog constant is 1. Log domains and values must be strictly positive
+or strictly negative with matching signs. Symlog accepts negative values and
+zero and uses `sign(x) * log(1 + abs(x) / constant)`. The constant must be
+positive; the log base must be positive and different from 1.
+
+For example, a black-to-white log scale over `[1, 100]` assigns 10 the middle
+gray. Its gradient legend places 1, 10, and 100 at equal distances. Color
+interpolation, palette sampling, clamping, and reversal retain their usual
+meaning. `editColorScale` and `editStrokeScale` update marks and gradient ticks
+together. Temporal color remains sequential; numeric `midpoint` is available
+only on sequential scales. Switching type clears incompatible transform options.
+An unattached direct log/symlog color scale needs a color range, palette, or
+interpolation option to distinguish it from a numeric position scale.
 
 ## Explicit color midpoint
 

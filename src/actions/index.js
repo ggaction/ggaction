@@ -1,27 +1,27 @@
-import { registerTextMetricActions } from "./textMetrics/index.js";
 import { registerPrimitiveActions } from "./primitives/index.js";
-import { registerSelectionActions } from "./selection/index.js";
+import { registerCanvasActions } from "./canvas/index.js";
 import { registerDataActions } from "./data/index.js";
-import { registerCategoryOrderActions } from "./categoryOrder/index.js";
-import { registerEncodingActions } from "./encodings/index.js";
-import { registerScaleActions } from "./scales/index.js";
 import { registerMarkActions } from "./marks/index.js";
+import { registerScaleActions } from "./scales/index.js";
+import { registerEncodingActions } from "./encodings/index.js";
 import { registerBasicCoordinateActions } from "./coordinates/actions.js";
 import { registerCoordinateEditActions } from "./coordinates/edit.js";
-import { registerFacetActions } from "./facets/index.js";
-import { registerCompositionActions } from "./composition/index.js";
-import { registerTitleActions } from "./titles/index.js";
-import { registerCanvasActions } from "./canvas/index.js";
 import { registerGuideActions } from "./guides/index.js";
-import { registerGradientPlotActions } from "./gradientPlots/index.js";
-import { registerBoxPlotActions } from "./boxPlots/index.js";
-import { registerErrorBarActions } from "./errorBars/index.js";
+import { registerTitleActions } from "./titles/index.js";
 import { registerRegressionActions } from "./regression/index.js";
-import { registerViolinPlotActions } from "./violinPlots/index.js";
+import { registerErrorBarActions } from "./errorBars/index.js";
 import { registerErrorBandActions } from "./errorBands/index.js";
+import { registerBoxPlotActions } from "./boxPlots/index.js";
+import { registerGradientPlotActions } from "./gradientPlots/index.js";
+import { registerViolinPlotActions } from "./violinPlots/index.js";
 import { registerChartActions } from "./charts/index.js";
-import { registerThemeActions } from "./theme/index.js";
+import { registerCategoryOrderActions } from "./categoryOrder/index.js";
+import { registerSelectionActions } from "./selection/index.js";
 import { registerResourceActions } from "./resources/index.js";
+import { registerTextMetricActions } from "./textMetrics/index.js";
+import { registerCompositionActions } from "./composition/index.js";
+import { registerFacetActions } from "./facets/index.js";
+import { registerThemeActions } from "./theme/index.js";
 import {
   applyCompositionTheme,
   removeCompositionTheme

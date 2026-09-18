@@ -1,3 +1,4 @@
+import { requireStringValue as requireName } from "../core/validation.js";
 import { annotateError } from "../core/diagnostics.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 
@@ -19,12 +20,6 @@ function rejectUnknownKeys(value, keys, label) {
   if (unknown !== undefined) throw new Error(`Unknown ${label} property "${unknown}".`);
 }
 
-function requireName(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
 
 function valueStorageType(value) {
   if (typeof value === "number") return "number";

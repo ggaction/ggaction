@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:d596057ee21a73be5cb4a39c5cc4f941f1466a6b9e61784989dc33b255e4de47. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:e5a70e3a438f6e85f43281c722acc6ac9ffc700c343138458cbc40197684c93b. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -11293,7 +11293,7 @@ immutable program unchanged.
 
 Scale type transitions reject incompatible field types, channels, or mark
 grains before changing the immutable program. Quantitative Point, aggregate Bar,
-and Rect color can transition between sequential and discretized scales. A
+and Rect color can transition between sequential, log, symlog, and discretized scales. A
 compatible gradient or interval legend on any of the four edges changes family
 in the same action, retaining its edge, alignment and common text/layout settings. Custom family-specific settings
 require explicit removal and recreation; see [color transitions](./api/scales/discretized-color/#changing-color-scale-families).
@@ -11533,7 +11533,7 @@ and compatible continuous color scale; see [Mark Style](./api/appearance/mark-st
 
 Quantitative or temporal point color uses `fieldType: "quantitative"` or
 `"temporal"` and an internal sequential scale. Aggregate bars support
-quantitative sequential color with one aggregate value per final rectangle.
+quantitative continuous color with one aggregate value per final rectangle.
 The default palette is
 `viridis`; an explicit palette may use `count` and `extent`, while an explicit
 range needs at least two colors. `count` controls the stored gradient stops;
@@ -11563,6 +11563,24 @@ For aggregate bars, a color field equal to the measure field inherits its
 aggregate. A different quantitative field requires an explicit `aggregate`.
 The automatic domain is derived from those final aggregate values, not from
 the unaggregated source rows.
+
+**Log and symmetric-log color**
+
+Quantitative color and stroke also accept `scale: { type: "log", base: 10 }`
+or `scale: { type: "symlog", constant: 0.01 }`. The default base is 10; the
+default symlog constant is 1. Log domains and values must be strictly positive
+or strictly negative with matching signs. Symlog accepts negative values and
+zero and uses `sign(x) * log(1 + abs(x) / constant)`. The constant must be
+positive; the log base must be positive and different from 1.
+
+For example, a black-to-white log scale over `[1, 100]` assigns 10 the middle
+gray. Its gradient legend places 1, 10, and 100 at equal distances. Color
+interpolation, palette sampling, clamping, and reversal retain their usual
+meaning. `editColorScale` and `editStrokeScale` update marks and gradient ticks
+together. Temporal color remains sequential; numeric `midpoint` is available
+only on sequential scales. Switching type clears incompatible transform options.
+An unattached direct log/symlog color scale needs a color range, palette, or
+interpolation option to distinguish it from a numeric position scale.
 
 ## Explicit color midpoint
 
@@ -16489,7 +16507,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"ordinal" \| "quantile" \| "quantize" \| "sequential" \| "threshold" \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "symlog" \| "threshold" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |
@@ -16497,6 +16515,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `reverse` | Optional / branch-dependent | `boolean \| undefined` |
 | `interpolate` | Optional / branch-dependent | `ContinuousColorInterpolation \| undefined` |
 | `midpoint` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `base` | Optional / branch-dependent | `number \| undefined` |
+| `constant` | Optional / branch-dependent | `number \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused channel scale editors](./reference/actions/charts-data/#focused-channel-scale-editors).
 
@@ -16520,7 +16540,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Required | `string` |
 | `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"ordinal" \| "quantile" \| "quantize" \| "sequential" \| "threshold" \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "symlog" \| "threshold" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |
@@ -18049,7 +18069,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
 | `x` | Required | `string \| BarRangePositionChannel \| (Omit<PositionEncodingBase, "coordinate" \| "target"> & { fieldType?: "quantitative" \| undefined; aggregate?: undefined; scale?: NonPointZeroSupportingPositionScaleOptions \| undefined; } & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) ...` |
-| `y` | Required | `string \| BarRangePositionChannel \| ({ field: string; fieldType: "temporal"; temporalUnit?: TemporalInputUnit \| undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions \| undefined; } & { ...; }) \| ... 6 more ... \| ({ ...; } & ... 1 more ... & { ...; })` |
+| `y` | Required | `string \| BarRangePositionChannel \| ({ field: string; bin?: undefined; fieldType: "temporal"; temporalUnit?: TemporalInputUnit \| undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions \| undefined; } & { ...; }) \| ... 6 more ... \| ({ ...; } & ... 1 more ... & { ...; })` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -20000,7 +20020,8 @@ bar color, rect fill, or arc-sector fill. Nominal and ordinal categories share a
 ordinal fields may contain ordered numeric categories. Categorical bar layout accepts `stack`, `fill`, `group`, `overlay`,
 and `diverging`; area also accepts `center` and rejects only `group` from the
 shared layout vocabulary. Quantitative and temporal
-point fields use a sequential scale; quantitative Point, aggregate Bar, and Rect fields also accept
+point fields use a sequential scale; quantitative fields also accept log/symlog
+with matching gradient legends, while quantitative Point, aggregate Bar, and Rect fields also accept
 `quantize`, `quantile`, and `threshold` color classes. Categorical
 grouped bars record `encodeXOffset` or `encodeYOffset` as a child according to
 orientation. Reassigning grouped color also atomically reassigns its offset and
@@ -26659,13 +26680,14 @@ type BarYPositionChannel =
   | string
   | {
       field: string;
+      bin?: never;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
       stack?: never;
       scale?: NonPointTemporalPositionScaleOptions;
     }
-  | ({ field: string; stack?: StackMode } & (
+  | ({ field: string; bin?: never; stack?: StackMode } & (
       | {
           fieldType?: "quantitative";
           aggregate?: never;
@@ -26719,7 +26741,7 @@ type BasicColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 ```
@@ -27414,7 +27436,7 @@ export type ColorEncodingOptions =
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
       layout?: never;
     };
@@ -32422,7 +32444,9 @@ Related types: [`NonPointBandPositionScaleOptions`](./reference/types/#type-nonp
 export type NonPointContinuousColorScaleOptions = ScaleFields<
   "id" | "interpolate" | "midpoint" | "clamp" | "reverse"
 > & {
-  type?: "sequential";
+  type?: "sequential" | "log" | "symlog";
+  base?: number;
+  constant?: number;
   domain?: "auto" | readonly [unknown, unknown];
   range?: "auto" | readonly [string, string, ...string[]];
   palette?: PaletteName | {
@@ -33759,7 +33783,7 @@ type RectColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
+      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 ```
@@ -38214,7 +38238,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:d596057ee21a73be5cb4a39c5cc4f941f1466a6b9e61784989dc33b255e4de47` |
+| Contract fingerprint | `sha256:e5a70e3a438f6e85f43281c722acc6ac9ffc700c343138458cbc40197684c93b` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

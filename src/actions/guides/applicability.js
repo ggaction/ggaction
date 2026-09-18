@@ -56,7 +56,7 @@ export function hasInferableLegend(program, layers = program.semanticSpec.layers
       (layer.mark?.type === "point" &&
         layer.encoding?.color?.scale !== undefined &&
         (layer.encoding?.shape?.scale !== undefined ||
-          ["sequential", "quantize", "quantile", "threshold"].includes(
+          ["sequential", "log", "symlog", "quantize", "quantile", "threshold"].includes(
             findSemanticScale(program, layer.encoding.color.scale)?.type
           ))) ||
       (layer.mark?.type === "line" &&

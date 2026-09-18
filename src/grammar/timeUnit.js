@@ -1,3 +1,4 @@
+import { requireStringValue as requireField } from "../core/validation.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { normalizeTemporalValue, validateTemporalUnit } from "./scales/fields.js";
 
@@ -75,12 +76,6 @@ function validateTimeZone(timeZone) {
   return timeZone;
 }
 
-function requireField(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
 
 function rejectUnknownKeys(value) {
   const unknown = Object.keys(value).find(key => !TRANSFORM_KEYS.includes(key));

@@ -1,12 +1,7 @@
+export { requireStringValue as requireDensityField } from "../../../core/validation.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { findSemanticScale } from "../../../selectors/scales.js";
 
-export function requireDensityField(value, label) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError(`${label} must be a non-empty string.`);
-  }
-  return value;
-}
 
 export function resolveDensityScaleOptions(value, defaults, label) {
   if (value !== undefined && !isPlainObject(value)) {
