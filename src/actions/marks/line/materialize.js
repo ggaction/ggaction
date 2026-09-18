@@ -121,7 +121,7 @@ export function resolvePositionedLineMaterialization({
         );
         return buildCurvePathCommands(
           series.values.map((_, index) => ({ x: x[index], y: y[index] })),
-          config.curve ?? "linear"
+          config.curve ?? "linear", config.tension
         );
       });
   const appearance = appearanceMapper(layer, resolvedScales,

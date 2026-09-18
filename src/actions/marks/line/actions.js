@@ -18,7 +18,7 @@ import {
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
-import { validateCurveInterpolation } from "../../../grammar/curveCommands.js";
+import { validateCurveInterpolation, validateCardinalTension } from "../../../grammar/curveCommands.js";
 import {
   resolveCoordinateBounds,
   resolveCoordinatePolarFrame
@@ -43,11 +43,11 @@ import {
 const DEFAULT_LINE_STROKE = DEFAULT_COLORS.mark;
 const DEFAULT_LINE_WIDTH = 2;
 const CREATE_OPTIONS = Object.freeze([
-  "id", "data", "stroke", "strokeWidth", "opacity", "curve", "closed",
+  "id", "data", "stroke", "strokeWidth", "opacity", "curve", "tension", "closed",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const EDIT_OPTIONS = Object.freeze([
-  "target", "stroke", "strokeWidth", "opacity", "curve", "closed",
+  "target", "stroke", "strokeWidth", "opacity", "curve", "tension", "closed",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
@@ -118,6 +118,7 @@ const createLineMark = /* @__PURE__ */ action(
       "Line strokeWidth"
     );
     const curve = validateCurveInterpolation(args.curve ?? "linear");
+    validateCardinalTension(args.tension, curve);
     const closed = Object.hasOwn(args, "closed")
       ? validateClosed(args.closed)
       : false;
@@ -151,6 +152,7 @@ const createLineMark = /* @__PURE__ */ action(
         {
           ...(Object.hasOwn(args, "strokeWidth") ? { strokeWidth } : {}),
           ...(Object.hasOwn(args, "curve") ? { curve } : {}),
+          ...(args.tension === undefined ? {} : { tension: args.tension }),
           ...(Object.hasOwn(args, "closed") ? { closed } : {}),
           ...strokeDetails
         }
@@ -277,7 +279,7 @@ const editLineMark = /* @__PURE__ */ action(
     validateMarkOptions(args, EDIT_OPTIONS, "editLineMark");
     const strokeDetails = requestedStrokeDetails(args, "editLineMark");
     if (!EDIT_OPTIONS.slice(1).some(key => Object.hasOwn(args, key))) {
-      throw new Error("editLineMark requires stroke, strokeWidth, opacity, curve, or closed.");
+      throw new Error("editLineMark requires stroke, strokeWidth, opacity, curve, tension, or closed.");
     }
     const target = Object.hasOwn(args, "target")
       ? validateUserId(args.target, "Line mark id")
@@ -315,6 +317,11 @@ const editLineMark = /* @__PURE__ */ action(
     })) {
       if (Object.hasOwn(args, key)) config[key] = validate(args[key], `Line ${key}`);
     }
+    if (args.curve !== undefined && args.curve !== "cardinal" && args.tension === undefined) {
+      delete config.tension;
+    }
+    if (Object.hasOwn(args, "tension")) config.tension = args.tension;
+    validateCardinalTension(config.tension, config.curve ?? "linear");
     validatePolarLineConfig(layer, config);
     const next = this._withMarkConfig(layer.id, config);
     const materialized = canMaterializeLine(next, layer)

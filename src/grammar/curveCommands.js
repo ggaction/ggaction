@@ -42,6 +42,15 @@ function validatePoints(points) {
   return points;
 }
 
+export function validateCardinalTension(tension, curve) {
+  if (tension === undefined) return 0;
+  if (curve !== "cardinal") throw new Error("Line tension requires cardinal interpolation.");
+  if (!Number.isFinite(tension) || tension < 0 || tension > 1) {
+    throw new RangeError("Cardinal tension must be between 0 and 1.");
+  }
+  return tension;
+}
+
 export function validateCurveInterpolation(curve) {
   if (!CURVE_INTERPOLATIONS.includes(curve)) {
     throw new Error(`Unsupported curve interpolation "${curve}".`);
@@ -134,7 +143,7 @@ function buildBasisCommands(points) {
   return ownCommands(commands);
 }
 
-function buildCardinalCommands(points) {
+function buildCardinalCommands(points, tension = 0) {
   const commands = [{ op: "M", x: points[0].x, y: points[0].y }];
   for (let index = 0; index < points.length - 1; index += 1) {
     const before = points[index - 1] ?? points[index];
@@ -143,10 +152,10 @@ function buildCardinalCommands(points) {
     const after = points[index + 2] ?? next;
     commands.push({
       op: "C",
-      x1: current.x + (next.x - before.x) / 6,
-      y1: current.y + (next.y - before.y) / 6,
-      x2: next.x - (after.x - current.x) / 6,
-      y2: next.y - (after.y - current.y) / 6,
+      x1: current.x + (next.x - before.x) / 6 * (1 - tension),
+      y1: current.y + (next.y - before.y) / 6 * (1 - tension),
+      x2: next.x - (after.x - current.x) / 6 * (1 - tension),
+      y2: next.y - (after.y - current.y) / 6 * (1 - tension),
       x: next.x,
       y: next.y
     });
@@ -265,7 +274,7 @@ function buildNaturalCommands(points) {
   return ownCommands(commands);
 }
 
-function buildValidatedCurvePathCommands(points, curve) {
+function buildValidatedCurvePathCommands(points, curve, tension) {
   if (curve === "linear" ||
       (SMOOTH_CURVES.has(curve) &&
         curve !== "monotone" &&
@@ -277,7 +286,7 @@ function buildValidatedCurvePathCommands(points, curve) {
   }
   if (curve === "basis") return buildBasisCommands(points);
   if (curve === "cardinal") {
-    return buildCardinalCommands(points);
+    return buildCardinalCommands(points, tension);
   }
   if (curve === "monotone") {
     return buildMonotoneCommands(points);
@@ -301,7 +310,8 @@ function curveCommandCount(pointCount, curve) {
     : pointCount;
 }
 
-export function buildCurvePathCommands(points, curve = "linear") {
+export function buildCurvePathCommands(points, curve = "linear", tension) {
+  validateCardinalTension(tension, curve);
   const validatedPoints = validatePoints(points);
   const validatedCurve = validateCurveInterpolation(curve);
   validateGeneratedItemLimit(
@@ -310,7 +320,7 @@ export function buildCurvePathCommands(points, curve = "linear") {
   );
   const direct = buildValidatedCurvePathCommands(
     validatedPoints,
-    validatedCurve
+    validatedCurve, tension
   );
   if (finiteCommands(direct)) return direct;
 
@@ -327,7 +337,7 @@ export function buildCurvePathCommands(points, curve = "linear") {
       x: point.x / xScale,
       y: point.y / yScale
     })),
-    validatedCurve
+    validatedCurve, tension
   );
   const restored = normalized.map(command => {
     const copy = {};

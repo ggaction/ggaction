@@ -7275,7 +7275,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic line mark and empty path collection.",
-      "signature": "createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
+      "signature": "createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
       "intents": [
         "create line mark",
         "create",
@@ -7379,6 +7379,11 @@
           "type": "CurveInterpolation | undefined"
         },
         {
+          "name": "tension",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "stroke",
           "required": false,
           "type": "string | undefined"
@@ -7395,7 +7400,7 @@
         }
       ],
       "callPatterns": [
-        "createLineMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, strokeWidth?, curve?, stroke? })"
+        "createLineMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, strokeWidth?, curve?, tension? })"
       ],
       "snippet": "program.createLineMark({})",
       "errors": [],
@@ -7407,7 +7412,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit line appearance and rematerialize concrete path commands without changing semantic encodings.",
-      "signature": "editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
+      "signature": "editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
       "intents": [
         "edit line mark",
         "edit",
@@ -7494,6 +7499,11 @@
           "type": "CurveInterpolation | undefined"
         },
         {
+          "name": "tension",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "stroke",
           "required": false,
           "type": "string | undefined"
@@ -7510,7 +7520,7 @@
         }
       ],
       "callPatterns": [
-        "editLineMark({ target?, lineCap?, lineJoin?, miterLimit?, strokeWidth?, curve?, stroke?, opacity? })"
+        "editLineMark({ target?, lineCap?, lineJoin?, miterLimit?, strokeWidth?, curve?, tension?, stroke? })"
       ],
       "snippet": "program.editLineMark({ lineCap: \"butt\" })",
       "errors": [],
@@ -29245,7 +29255,7 @@
         {
           "name": "line",
           "required": false,
-          "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -29497,7 +29507,7 @@
         {
           "name": "line",
           "required": false,
-          "type": "(Omit<StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\" | \"curve\"> & { ...; }) | undefined"
+          "type": "(Omit<StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\" | ... 1 more ... | \"tension\"> & { ...; }) | undefined"
         },
         {
           "name": "guides",
@@ -29616,7 +29626,7 @@
         {
           "name": "line",
           "required": false,
-          "type": "(Omit<StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\" | \"curve\"> & { ...; }) | undefined"
+          "type": "(Omit<StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\" | ... 1 more ... | \"tension\"> & { ...; }) | undefined"
         },
         {
           "name": "guides",

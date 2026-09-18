@@ -12,7 +12,7 @@ values; areas close two edges or one density edge against a baseline.
 
 ## Line marks
 
-### `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
+### `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 <!-- snippet-context:start -->
 
@@ -66,7 +66,7 @@ line vertices use the shared bar centers. Incompatible bin, stack, or offset
 policies are not transferred. Pass `data` explicitly to assemble an independent
 line with explicit encodings and scale IDs.
 
-### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed?, lineCap?, lineJoin?, miterLimit? })`
+### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`
 
 <!-- snippet-context:start -->
 
@@ -89,6 +89,28 @@ two-point series fall back to linear. Monotone paths require strictly increasing
 or decreasing materialized x values; duplicate or non-monotonic x is rejected.
 Materialization rejects any line or complete area that would expand beyond
 10,000 backend-neutral path commands before allocating that command array.
+
+For Cartesian cardinal lines, `tension` is a finite number from 0 to 1,
+with default 0 preserving the existing curve. It multiplies each tangent by
+`1 - tension`: larger values make the line tighter, and 1 yields straight
+segments represented by cubic commands with controls at the endpoints.
+Endpoints use the nearest endpoint again as the missing neighbor; two-point
+series remain linear. Other curve modes reject an explicit tension. Editing
+away from cardinal clears the previous tension.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+const program = chart().createCanvas({ width: 400, height: 300, margin: 50 })
+  .createData({ values: [{ x: 0, y: 0 }, { x: 3, y: 3 }, { x: 6, y: 0 }] })
+  .createLinePlot({ x: "x", y: "y", line: { curve: "cardinal", tension: 0.9 } });
+const softer = program.editLineMark({ tension: 0.5 });
+```
 
 A constant `stroke` conflicts with field-driven `encodeColor`. Appearance is
 stored and reapplied whenever scale, Canvas, or grouping changes rebuild paths.

@@ -1236,7 +1236,7 @@ and independently shared resources. [Marks](../api/marks.md)
 ### `createLineMark`
 
 ```javascript
-createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed? } = {})
+createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
 ```
 
 Create a semantic line mark and empty path collection. Curve defaults to
@@ -1250,7 +1250,7 @@ series as a radar path.
 ### `editLineMark`
 
 ```javascript
-editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed? })
+editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
 ```
 
 Edit line appearance and rematerialize concrete path commands without changing
@@ -1275,6 +1275,9 @@ Edit whole-bar appearance and rematerialize every concrete rectangle.
 `stroke: false` removes the visible outline; constant fill conflicts with a
 field-driven color encoding. [Marks](../api/marks.md)
 
+
+Cardinal line `tension` is a finite number from 0 to 1 (default 0); it scales tangents by `1-tension`.
+The line facade forwards `line.tension`; changing to another curve clears the previous setting.
 ### `createAreaMark`
 
 ```javascript

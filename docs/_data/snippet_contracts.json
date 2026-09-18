@@ -2309,7 +2309,7 @@
   {
     "file": "api/marks/line-area.md",
     "block": 1,
-    "heading": "`createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`",
+    "heading": "`createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -2321,7 +2321,7 @@
   {
     "file": "api/marks/line-area.md",
     "block": 2,
-    "heading": "`createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`",
+    "heading": "`createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -2333,7 +2333,7 @@
   {
     "file": "api/marks/line-area.md",
     "block": 3,
-    "heading": "`editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed?, lineCap?, lineJoin?, miterLimit? })`",
+    "heading": "`editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -2347,6 +2347,18 @@
   {
     "file": "api/marks/line-area.md",
     "block": 4,
+    "heading": "`editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "240b1e25e9c1b4b09f9aa6339b96315f76d4b7d571e99a3ca9842c0170ce84ca",
+    "executable": false
+  },
+  {
+    "file": "api/marks/line-area.md",
+    "block": 5,
     "heading": "Polar lines and radar paths",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2358,7 +2370,7 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 5,
+    "block": 6,
     "heading": "`createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2370,7 +2382,7 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 6,
+    "block": 7,
     "heading": "`editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2384,7 +2396,7 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 7,
+    "block": 8,
     "heading": "`createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",

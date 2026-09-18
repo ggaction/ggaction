@@ -227,3 +227,26 @@ test("rejects curve and area command expansion before oversized allocation", () 
     /Area path command count must not exceed 10000/
   );
 });
+
+test("cardinal tension contracts tangents while retaining endpoints and the default curve", () => {
+  const ordinary = buildCurvePathCommands(points, "cardinal");
+  assert.deepEqual(buildCurvePathCommands(points, "cardinal", 0), ordinary);
+  const halfway = buildCurvePathCommands(points, "cardinal", 0.5);
+  assert.deepEqual(halfway[1], { op: "C", x1: 0.25, y1: 0.25, x2: 2.5, y2: 3, x: 3, y: 3 });
+  const taut = buildCurvePathCommands(points, "cardinal", 0.9);
+  assert.ok(Math.abs(taut[1].x1 - 0.05) < 1e-12);
+  assert.ok(Math.abs(taut[1].x2 - 2.9) < 1e-12);
+  assert.deepEqual(buildCurvePathCommands(points, "cardinal", 1), [
+    { op: "M", x: 0, y: 0 },
+    { op: "C", x1: 0, y1: 0, x2: 3, y2: 3, x: 3, y: 3 },
+    { op: "C", x1: 3, y1: 3, x2: 6, y2: 0, x: 6, y: 0 }
+  ]);
+  assert.deepEqual(buildCurvePathCommands(points.slice(0, 2), "cardinal", 0.9),
+    [{ op: "M", x: 0, y: 0 }, { op: "L", x: 3, y: 3 }]);
+  assert.ok(buildCurvePathCommands([points[0], points[0], points[1]], "cardinal", 0.9)
+    .every(command => Object.values(command).every(value => typeof value !== "number" || Number.isFinite(value))));
+  for (const tension of [-1, 1.1, NaN, Infinity, "0.5", null]) {
+    assert.throws(() => buildCurvePathCommands(points, "cardinal", tension), /tension/u);
+  }
+  assert.throws(() => buildCurvePathCommands(points, "basis", 0.5), /requires cardinal/u);
+});

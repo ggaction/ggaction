@@ -149,7 +149,7 @@ test("rejects invalid and ambiguous edits without changing prior programs", () =
   const base = completeLineProgram();
   assert.throws(
     () => base.editLineMark({}),
-    /requires stroke, strokeWidth, opacity, curve, or closed/
+    /requires stroke, strokeWidth, opacity, curve, tension, or closed/
   );
   assert.throws(
     () => base.editLineMark({ curve: "smooth" }),

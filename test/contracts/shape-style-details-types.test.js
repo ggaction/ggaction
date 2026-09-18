@@ -40,6 +40,12 @@ const basicRect: BasicRectStyleDetails = rect;
 p.createPointMark(stroke).editPointMark(stroke);
 p.createTickMark(stroke).editTickMark(stroke);
 p.createLineMark(stroke).editLineMark(stroke);
+p.createLineMark({ curve: "cardinal", tension: 0.9 }).editLineMark({ tension: 0.5 });
+p.createLinePlot({ x: "x", y: "y", line: { curve: "cardinal", tension: 0.9 } });
+// @ts-expect-error tension is numeric
+p.createLineMark({ curve: "cardinal", tension: "0.9" });
+// @ts-expect-error polar line facade is linear-only
+p.createPolarLinePlot({ theta: "angle", radius: "distance", line: { tension: 0.5 } });
 p.createBarMark(rect).editBarMark(rect);
 p.createAreaMark(stroke).editAreaMark(stroke);
 p.createArcMark(stroke).editArcMark(stroke);

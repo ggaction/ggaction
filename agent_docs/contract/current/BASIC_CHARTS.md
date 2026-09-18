@@ -116,6 +116,7 @@ createLinePlot({
 ```
 
 - Stable default ID is `linePlot`.
+- `line.tension`은 cardinal 곡선의 `[0,1]` 장력을 `createLineMark`에 전달한다. 생략은 기존 0이다.
 - Hierarchy: `createLineMark`, `encodeX`, `encodeY`, optional `encodeGroup` then `encodeColor`/`encodeStrokeDash`,
   optional `createGuides`.
 - Explicit groupBy is a single field or non-empty unique tuple and exclusively defines path identity.

@@ -20,7 +20,7 @@ const OPTIONS = Object.freeze([
   "strokeDash", "line", "guides"
 ]);
 const LINE_OPTIONS = Object.freeze([
-  "strokeWidth", "curve", "stroke", "opacity", "closed",
+  "strokeWidth", "curve", "tension", "stroke", "opacity", "closed",
   ...STROKE_STYLE_PROPERTIES
 ]);
 

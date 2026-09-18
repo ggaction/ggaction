@@ -132,3 +132,29 @@ test("validates line mark options, ids, data, and conflicts", () => {
     /Graphic "trends" already exists/
   );
 });
+
+test("cardinal tension reaches grouped paths through facade, edits, resize, and persistence", async () => {
+  const { serializeProgram, deserializeProgram } = await import("../../../../src/persistence.js");
+  const values = [0, 3, 6].flatMap(x => [
+    { x, y: x === 3 ? 3 : 0, group: "A" },
+    { x, y: x === 3 ? 4 : 1, group: "B" }
+  ]);
+  const base = chart().createCanvas({ width: 500, height: 400, margin: 50 }).createData({ values });
+  const p = base.createLinePlot({ x: "x", y: "y", groupBy: "group", guides: false,
+    line: { curve: "cardinal", tension: 0.9 } });
+  const snapshot = serializeProgram(p);
+  assert.equal(p.markConfigs.linePlot.tension, 0.9);
+  assert.equal(p.graphicSpec.objects.linePlot.items.length, 2);
+  const q = p.editLineMark({ tension: 0.5 });
+  assert.notDeepEqual(q.graphicSpec.objects.linePlot.items, p.graphicSpec.objects.linePlot.items);
+  const restored = deserializeProgram(snapshot).editCanvas({ width: 600 });
+  assert.equal(restored.markConfigs.linePlot.tension, 0.9);
+  assert.equal(restored.graphicSpec.objects.linePlot.items.length, 2);
+  assert.deepEqual(deserializeProgram(snapshot).graphicSpec, p.graphicSpec);
+  const linear = q.editLineMark({ curve: "linear" });
+  assert.equal(linear.markConfigs.linePlot.tension, undefined);
+  assert.ok(linear.graphicSpec.objects.linePlot.items.every(item => item.properties.commands.slice(1).every(c => c.op === "L")));
+  assert.throws(() => p.editLineMark({ curve: "basis", tension: 0.5 }), /requires cardinal/u);
+  assert.throws(() => base.createLineMark({ tension: 0.5 }), /requires cardinal/u);
+  assert.equal(serializeProgram(p), snapshot);
+});

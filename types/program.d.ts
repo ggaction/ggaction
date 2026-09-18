@@ -3164,7 +3164,7 @@ export interface CreatePolarLinePlotOptions {
   color?: LineCategoricalColorChannel;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: boolean;
   };
@@ -3230,7 +3230,7 @@ export type CreateRadarPlotOptions = {
   ];
   color?: LineCategoricalColorChannel;
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: true;
   };
@@ -3458,6 +3458,7 @@ export interface CreateLinePlotOptions {
   line?: StrokeStyleDetails & {
     strokeWidth?: number;
     curve?: CurveInterpolation;
+    tension?: number;
     stroke?: string;
     opacity?: number;
     closed?: false;
@@ -4731,6 +4732,7 @@ export class ChartProgram {
     data?: string;
     strokeWidth?: number;
     curve?: CurveInterpolation;
+    tension?: number;
     stroke?: string;
     opacity?: number;
     closed?: boolean;
@@ -4739,6 +4741,7 @@ export class ChartProgram {
     target?: string;
     strokeWidth?: number;
     curve?: CurveInterpolation;
+    tension?: number;
     stroke?: string;
     opacity?: number;
     closed?: boolean;
