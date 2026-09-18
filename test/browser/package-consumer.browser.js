@@ -334,10 +334,16 @@ test.before(async () => {
           .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" }).encodeColor({ field: "g" });
         const p = source.createLegend({ position, columns: 1 });
         let rejected = 0;
-        for (const patch of [{ direction: "horizontal" }, { columns: 2 }, { titlePosition: "left" }]) {
+        for (const patch of [{ direction: "horizontal" }, { titlePosition: "left" }]) {
           try { source.createLegend({ position, ...patch }); } catch { rejected++; }
         }
-        categoricalSideOptions.push([p.guideConfigs.legend.color.direction, rejected, renderToSVG(p).startsWith("<svg ")]);
+        const multi = source.createLegend({ position, columns: 2 });
+        const labels = multi.graphicSpec.objects.colorLegendLabels.items;
+        categoricalSideOptions.push([p.guideConfigs.legend.color.direction, rejected,
+          renderToSVG(p).startsWith("<svg "),
+          labels[0].properties.x !== labels[1].properties.x &&
+          labels[0].properties.y === labels[1].properties.y]);
+        render(multi, document.getElementById("legend-content").getContext("2d"));
         render(p, document.getElementById("legend-content").getContext("2d"));
       }
       const categoricalSampleGaps = [];
@@ -782,7 +788,7 @@ test("imports and renders the packed browser entries", async () => {
     hiddenCategorical: [36.5, true],
     occupiedAlignment: [true, true, true, true, true, true],
     itemStrokeGaps: [8, 8, 8, 8, 12, 12, 12, 12],
-    categoricalSideOptions: Array.from({ length: 4 }, () => ["vertical", 3, true]),
+    categoricalSideOptions: Array.from({ length: 4 }, () => ["vertical", 2, true, true]),
     categoricalSampleGaps: [8, 8, 8, 8, 10, 10, 10, 10, 8, 8, 8, 8, 10, 10, 10, 10],
     opacitySampleGaps: [12, 12, 12, 12],
     ignoredOptionRejects: 18,

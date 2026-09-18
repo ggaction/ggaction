@@ -10,6 +10,7 @@ import {
   textBoundsIntersect
 } from "../../src/core/textMetrics.js";
 import { renderToSVG } from "../../src/renderers/svg.js";
+import { chart } from "../../src/index.js";
 import { assertAnalyticLayerIntegrity } from "../oracles/analytic-layer-integrity.js";
 import { assertGraphicIntegrity } from "../oracles/graphic-integrity.js";
 import { assertSvgIntegrity } from "../oracles/svg-integrity.js";
@@ -868,7 +869,16 @@ test("materializes analytic and SVG output with compact truthful lineage", () =>
 
 test("directly covers every newly targeted action option and broad maximal paths", async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
-  const entries = buildWitnesses().flatMap(({ program }) => program.trace.children ?? []);
+  const pixelRadiusWitness = chart()
+    .createCanvas({ width: 200, height: 200, margin: 20 })
+    .createData({ values: [{ category: "A", value: 1 }, { category: "B", value: 2 }] })
+    .createArcMark({ id: "pixelRadiusArc" })
+    .encodeTheta({ target: "pixelRadiusArc", field: "category", aggregate: "sum", weight: "value" })
+    .editArcMark({ target: "pixelRadiusArc", innerRadius: { unit: "px", value: 20 } });
+  const entries = [
+    ...buildWitnesses().flatMap(({ program }) => program.trace.children ?? []),
+    ...(pixelRadiusWitness.trace.children ?? [])
+  ];
   const directActions = new Set(entries.map(entry => entry.op));
   assert.deepEqual(
     NEW_DIRECT_ACTIONS.filter(action => !directActions.has(action)),
@@ -882,7 +892,7 @@ test("directly covers every newly targeted action option and broad maximal paths
   const newActionOptions = inventory.optionPaths.filter(option =>
     option.required && NEW_DIRECT_ACTIONS.includes(option.action)
   );
-  assert.equal(newActionOptions.length, 58);
+  assert.equal(newActionOptions.length, 60);
   assert.deepEqual(
     newActionOptions.filter(option => !directlyObserves(entries, option)).map(option => option.id),
     []

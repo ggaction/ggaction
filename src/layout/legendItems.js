@@ -55,7 +55,7 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
       return start;
     });
     symbolX = grid.cells.map(cell => columnStarts[cell.column] - sampleLeft);
-    labelX = symbolX.map(value => value + sampleRight + config.labels.offset);
+    labelX = grid.cells.map(cell => columnStarts[cell.column] + sampleWidth + config.labels.offset);
     const firstY = Math.max(plot.y + 52, titleVisible
       ? plot.y + 20 + titleHeight / 2 + 12 + itemHeight / 2 : plot.y + 52);
     itemY = grid.cells.map(cell => firstY + cell.row * pitch);
