@@ -164,7 +164,9 @@ function normalizeDefinition(program, scale, channel, consumers, patch) {
   if (channel === "size") {
     if (consumers.some(consumer =>
       consumer.layer.mark?.type !== "point" ||
-      consumer.encoding.fieldType !== "quantitative"
+      ((patch.type ?? scale.type) === "ordinal"
+        ? !["nominal", "ordinal"].includes(consumer.encoding.fieldType)
+        : consumer.encoding.fieldType !== "quantitative")
     )) {
       throw new Error(
         `Scale "${scale.id}" has a consumer incompatible with size mapping.`

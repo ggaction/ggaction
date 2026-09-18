@@ -1,30 +1,20 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
-import { interpolateNumber } from "../numeric.js";
+import { interpolateNumber, quantileSorted } from "../numeric.js";
 import { formatValue, validateValueFormat } from "../valueFormat.js";
 import { resolveColorRange, validateColorRange } from "./appearance.js";
 import { SCALE_ROLES, validateScaleTypeForRole } from "./types.js";
+import {
+  validatePair,
+  validateFiniteScaleArray as finiteValues,
+  validateIncreasingScaleArray as ascending
+} from "./validation.js";
 
 export const DISCRETIZED_COLOR_SCALE_TYPES = cloneAndFreeze([
   "quantize",
   "quantile",
   "threshold"
 ]);
-
-function finiteValues(values, label) {
-  if (!Array.isArray(values) || values.length === 0 || !values.every(Number.isFinite)) {
-    throw new TypeError(`${label} must contain finite numbers.`);
-  }
-  return values;
-}
-
-function ascending(values, label) {
-  finiteValues(values, label);
-  if (values.some((value, index) => index > 0 && value <= values[index - 1])) {
-    throw new RangeError(`${label} must be strictly increasing.`);
-  }
-  return values;
-}
 
 function nondecreasing(values, label) {
   finiteValues(values, label);
@@ -34,32 +24,35 @@ function nondecreasing(values, label) {
   return values;
 }
 
-function quantile(sorted, probability) {
-  const position = (sorted.length - 1) * probability;
-  const lower = Math.floor(position);
-  const upper = Math.ceil(position);
-  return interpolateNumber(sorted[lower], sorted[upper], position - lower);
-}
 
 export function validateDiscretizedColorDomain(type, domain) {
   validateScaleTypeForRole(type, SCALE_ROLES.discretizedColor);
+  return validateDiscretizedDomain(type, domain, "color");
+}
+
+export function validateDiscretizedDomain(type, domain, kind) {
   if (domain === "auto") {
     if (type === "threshold") {
-      throw new Error("Threshold color scale requires an explicit domain.");
+      throw new Error(`Threshold ${kind} scale requires an explicit domain.`);
     }
     return domain;
   }
-  if (!Array.isArray(domain)) {
+  if (kind === "color" && !Array.isArray(domain)) {
     throw new TypeError("Discretized color domain must be an array or auto.");
   }
   if (type === "quantize") {
-    if (domain.length !== 2 || !domain.every(Number.isFinite) || domain[0] >= domain[1]) {
+    if (kind === "size") {
+      validatePair(domain, "Quantize size domain");
+      if (domain[0] >= domain[1]) {
+        throw new RangeError("Quantize size domain must be a strictly increasing pair.");
+      }
+    } else if (domain.length !== 2 || !domain.every(Number.isFinite) || domain[0] >= domain[1]) {
       throw new RangeError("Quantize color domain must be an increasing pair.");
     }
   } else if (type === "quantile") {
-    finiteValues(domain, "Quantile color domain");
+    finiteValues(domain, `Quantile ${kind} domain`);
   } else {
-    ascending(domain, "Threshold color domain");
+    ascending(domain, `Threshold ${kind} domain`);
   }
   return cloneAndFreeze(domain);
 }
@@ -79,11 +72,51 @@ export function validateDiscretizedColorRange(range) {
   return validated;
 }
 
+export function resolveDiscretizedDomain({ type, domain, values, count, kind }) {
+  let resolvedDomain = domain === "auto"
+    ? [...values].sort((left, right) => left - right)
+    : [...domain];
+  let thresholds;
+  if (type === "quantize") {
+    if (domain === "auto") {
+      if (resolvedDomain.length === 0) {
+        throw new Error("Cannot infer an automatic quantize size domain from no values.");
+      }
+      resolvedDomain = [resolvedDomain[0], resolvedDomain.at(-1)];
+    }
+    if (resolvedDomain[0] === resolvedDomain[1]) {
+      throw new RangeError(`Quantize ${kind} scale requires a non-zero domain span.`);
+    }
+    thresholds = Array.from({ length: count - 1 }, (_, index) =>
+      interpolateNumber(resolvedDomain[0], resolvedDomain[1], (index + 1) / count));
+    if (thresholds.some((value, index) =>
+      value <= (index === 0 ? resolvedDomain[0] : thresholds[index - 1]) ||
+      value >= resolvedDomain[1]
+    )) {
+      throw new RangeError(kind === "size"
+        ? "Quantize size range requests more buckets than its domain can represent."
+        : "Quantize color range requests more classes than its numeric domain can represent.");
+    }
+  } else if (type === "quantile") {
+    if (resolvedDomain.length === 0) {
+      throw new Error("Cannot infer automatic quantile size thresholds from no values.");
+    }
+    resolvedDomain.sort((left, right) => left - right);
+    thresholds = Array.from({ length: count - 1 }, (_, index) =>
+      quantileSorted(resolvedDomain, (index + 1) / count));
+  } else {
+    thresholds = [...resolvedDomain];
+    if (count !== thresholds.length + 1) {
+      throw new RangeError(`Threshold ${kind} range must contain exactly one more ${kind === "size" ? "area" : "color"} than its domain.`);
+    }
+  }
+  return { domain: resolvedDomain, thresholds };
+}
+
 export function resolveDiscretizedColorScale({ type, domain, range, values }) {
   validateScaleTypeForRole(type, SCALE_ROLES.discretizedColor);
   finiteValues(values, "Discretized color values");
   const requestedDomain = validateDiscretizedColorDomain(type, domain);
-  const sample = [...values].sort((left, right) => left - right);
   const validatedRange = validateDiscretizedColorRange(range);
   const colorCount = type === "threshold"
     ? requestedDomain.length + 1
@@ -95,49 +128,9 @@ export function resolveDiscretizedColorScale({ type, domain, range, values }) {
   if (colors.length < 2) {
     throw new RangeError("Discretized color range requires at least two colors.");
   }
-  let resolvedDomain;
-  let thresholds;
-  if (type === "quantize") {
-    resolvedDomain = requestedDomain === "auto"
-      ? [sample[0], sample.at(-1)]
-      : [...requestedDomain];
-    if (resolvedDomain[0] === resolvedDomain[1]) {
-      throw new RangeError("Quantize color scale requires a non-zero domain span.");
-    }
-    thresholds = Array.from(
-      { length: colors.length - 1 },
-      (_, index) => interpolateNumber(
-        resolvedDomain[0],
-        resolvedDomain[1],
-        (index + 1) / colors.length
-      )
-    );
-    if (thresholds.some((value, index) =>
-      value <= (index === 0 ? resolvedDomain[0] : thresholds[index - 1]) ||
-      value >= resolvedDomain[1]
-    )) {
-      throw new RangeError(
-        "Quantize color range requests more classes than its numeric domain can represent."
-      );
-    }
-  } else if (type === "quantile") {
-    const source = requestedDomain === "auto"
-      ? sample
-      : [...requestedDomain].sort((left, right) => left - right);
-    resolvedDomain = source;
-    thresholds = Array.from(
-      { length: colors.length - 1 },
-      (_, index) => quantile(source, (index + 1) / colors.length)
-    );
-  } else {
-    resolvedDomain = [...requestedDomain];
-    thresholds = [...requestedDomain];
-    if (colors.length !== thresholds.length + 1) {
-      throw new RangeError(
-        "Threshold color range must contain exactly one more color than its domain."
-      );
-    }
-  }
+  const { domain: resolvedDomain, thresholds } = resolveDiscretizedDomain({
+    type, domain: requestedDomain, values, count: colors.length, kind: "color"
+  });
   return cloneAndFreeze({
     type,
     domain: resolvedDomain,
@@ -146,9 +139,9 @@ export function resolveDiscretizedColorScale({ type, domain, range, values }) {
   });
 }
 
-export function discretizedColorIndex(value, thresholds) {
+export function discretizedColorIndex(value, thresholds, label = "Discretized color") {
   if (!Number.isFinite(value)) {
-    throw new TypeError("Discretized color values must be finite numbers.");
+    throw new TypeError(`${label} values must be finite numbers.`);
   }
   let index = 0;
   while (index < thresholds.length && value >= thresholds[index]) index += 1;

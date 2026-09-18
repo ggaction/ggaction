@@ -118,3 +118,48 @@ test("rejects invalid size definitions and mapped values", () => {
     assert.throws(operation, pattern);
   }
 });
+
+
+test("ordinal size preserves category identity, appearance order and equal-area values", () => {
+  const values = [10, "10", false, 10];
+  const scale = resolveSizeScale({ type: "ordinal", values });
+  assert.deepEqual(scale.domain, [10, "10", false]);
+  assert.deepEqual(mapSizeValues(values, scale), [24, 110, 196, 24]);
+  assert.deepEqual(values, [10, "10", false, 10]);
+  assert.ok(Object.isFrozen(scale.domain));
+  assert.ok(Object.isFrozen(scale.range));
+  const singleton = resolveSizeScale({ type: "ordinal", values: ["only"] });
+  assert.deepEqual(mapSizeValues(["only"], singleton), [110]);
+});
+
+test("ordinal size uses explicit order, cyclic area ranges, reversal and unknown fallback", () => {
+  const scale = resolveSizeScale({
+    type: "ordinal", domain: ["B", "A", "C"], range: [81, 0],
+    reverse: true, unknown: 9, values: ["A", "B", "C", null, "missing"]
+  });
+  assert.deepEqual(scale.domain, ["B", "A", "C"]);
+  assert.deepEqual(mapSizeValues(["A", "B", "C", null, "missing"], scale),
+    [81, 0, 0, 9, 9]);
+  assert.deepEqual(resolveSizeScale({
+    type: "ordinal", domain: ["A"], range: [0], values: []
+  }).range, [0]);
+  assert.throws(() => resolveSizeScale({
+    type: "ordinal", domain: ["A"], values: ["B"]
+  }), /outside the ordinal domain/);
+});
+
+test("ordinal size rejects invalid categories and areas without numeric coercion", () => {
+  for (const values of [[null], [{}], [NaN]]) {
+    assert.throws(() => resolveSizeScale({ type: "ordinal", values }), /nominal/);
+  }
+  for (const range of [[], [-1], [Infinity], ["24"]]) {
+    assert.throws(() => resolveSizeScale({ type: "ordinal", values: ["A"], range }));
+  }
+  assert.throws(() => resolveSizeScale({
+    type: "ordinal", domain: ["A", "A"], values: ["A"]
+  }), /unique nominal/);
+  assert.throws(() => resolveSizeScale({ type: "ordinal", values: [] }), /no values/);
+  assert.throws(() => resolveSizeScale({
+    type: "ordinal", values: ["A"], clamp: true
+  }), /does not support clamp/);
+});

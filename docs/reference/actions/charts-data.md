@@ -1534,9 +1534,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `type` | Optional / branch-dependent | `"linear" \| "log" \| "pow" \| "quantile" \| "quantize" \| "sqrt" \| "threshold" \| undefined` |
-| `domain` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| readonly [number, ...number[]] \| undefined` |
-| `range` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| readonly [number, number, ...number[]] \| undefined` |
+| `type` | Optional / branch-dependent | `"linear" \| "log" \| "ordinal" \| "pow" \| "quantile" \| "quantize" \| "sqrt" \| "threshold" \| undefined` |
+| `domain` | Optional / branch-dependent | `"auto" \| readonly (string \| number \| boolean)[] \| readonly [number, number] \| readonly [number, ...number[]] \| readonly [string \| number \| boolean, ...(string \| number \| boolean)[]] \| undefined` |
+| `range` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| readonly [number, ...number[]] \| readonly [number, number, ...number[]] \| undefined` |
 | `unknown` | Optional / branch-dependent | `number \| undefined` |
 | `clamp` | Optional / branch-dependent | `boolean \| undefined` |
 | `reverse` | Optional / branch-dependent | `boolean \| undefined` |

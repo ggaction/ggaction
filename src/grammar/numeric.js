@@ -149,6 +149,13 @@ export function stableFiniteDeviation(values, {
   return { mean, deviation };
 }
 
+export function quantileSorted(sorted, probability) {
+  const position = (sorted.length - 1) * probability;
+  const lower = Math.floor(position);
+  const upper = Math.ceil(position);
+  return interpolateNumber(sorted[lower], sorted[upper], position - lower);
+}
+
 export function numericExtent(values) {
   let minimum = Infinity;
   let maximum = -Infinity;

@@ -1237,9 +1237,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ## `encodeSize`
 
 - Signature: `encodeSize({ field, target?, fieldType?, scale? })`
-- `field`: 필수 quantitative field.
+- `field`: 필수 quantitative 또는 categorical field.
 - `target`: optional point ID.
-- `fieldType`: 유일한 값 `"quantitative"`.
+- `fieldType`: 기본 `"quantitative"`; `"nominal"`, `"ordinal"`도 지원한다.
 - `scale`: `linear | log | sqrt | pow | quantize | quantile | threshold`
   size-area scale. auto continuous range는 `[24, 196]`이다. `log` base 기본값은 10이고
   `pow`는 positive finite `exponent`가 필수다. discrete range는 최소 두 개의
@@ -1251,9 +1251,15 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Coverage: regression scatterplot과 size legend tests가 representative mapping을 검증한다. explicit
   domain/range와 constant-size conflict의 값 matrix는 부분적이다.
 
+- Categorical size: nominal/ordinal field는 ordinal scale을 사용한다. Auto domain은 최초 등장 순서,
+  explicit domain은 지정 순서와 primitive identity를 유지한다. Auto area는 category 수에 따라
+  `[24,196]`을 균등 분배하며 singleton은 110이다. Explicit nonnegative area list는 cyclic mapping한다.
+  Unknown fallback은 nonnegative area이며 reverse는 domain 순서 대신 area assignment만 뒤집는다.
+  다른 field-type family의 consumer와 scale을 공유하거나 incompatible scale로 편집할 수 없다.
+
 ### Formal values — `encodeSize`
 
-- Implemented: `encodeSize({ field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: SizeScaleOptions })`, where `SizeScaleOptions` is the closed discriminated union for `linear | log | sqrt | pow | quantize | quantile | threshold`. Continuous ranges are two areas; quantize/quantile ranges contain at least two areas; threshold range length is domain cut count plus one.
+- Implemented: `encodeSize({ field: FieldName; target?: UserId; fieldType?: "quantitative" | "nominal" | "ordinal"; scale?: SizeScaleOptions | CategoricalSizeScaleOptions })`, where `SizeScaleOptions` is the closed discriminated union for quantitative `linear | log | sqrt | pow | quantize | quantile | threshold`; categorical fields use `CategoricalSizeScaleOptions`. Continuous ranges are two areas; quantize/quantile ranges contain at least two areas; threshold range length is domain cut count plus one.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeSize`

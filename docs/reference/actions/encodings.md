@@ -365,8 +365,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `field` | Required | `string` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
-| `scale` | Optional / branch-dependent | `SizeScaleOptions \| undefined` |
+| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| undefined` |
+| `scale` | Optional / branch-dependent | `SizeScaleOptions \| CategoricalSizeScaleOptions \| undefined` |
 
 </details>
 

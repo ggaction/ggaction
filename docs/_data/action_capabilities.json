@@ -572,8 +572,8 @@
       "marks": [
         "point"
       ],
-      "fieldTypes": "quantitative",
-      "scales": "linear, log, sqrt, pow, quantize, quantile, threshold",
+      "fieldTypes": "quantitative, nominal, ordinal",
+      "scales": "linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories",
       "grain": "row-owned point; range values are areas; remove explicit radius first"
     },
     {

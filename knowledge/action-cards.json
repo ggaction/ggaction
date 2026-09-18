@@ -9399,12 +9399,12 @@
         {
           "name": "fieldType",
           "required": false,
-          "type": "\"quantitative\" | undefined"
+          "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | undefined"
         },
         {
           "name": "scale",
           "required": false,
-          "type": "SizeScaleOptions | undefined"
+          "type": "SizeScaleOptions | CategoricalSizeScaleOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -21652,17 +21652,17 @@
         {
           "name": "type",
           "required": false,
-          "type": "\"linear\" | \"log\" | \"pow\" | \"quantile\" | \"quantize\" | \"sqrt\" | \"threshold\" | undefined"
+          "type": "\"linear\" | \"log\" | \"ordinal\" | \"pow\" | \"quantile\" | \"quantize\" | \"sqrt\" | \"threshold\" | undefined"
         },
         {
           "name": "domain",
           "required": false,
-          "type": "\"auto\" | readonly [number, number] | readonly [number, ...number[]] | undefined"
+          "type": "\"auto\" | readonly (string | number | boolean)[] | readonly [number, number] | readonly [number, ...number[]] | readonly [string | number | boolean, ...(string | number | boolean)[]] | undefined"
         },
         {
           "name": "range",
           "required": false,
-          "type": "\"auto\" | readonly [number, number] | readonly [number, number, ...number[]] | undefined"
+          "type": "\"auto\" | readonly [number, number] | readonly [number, ...number[]] | readonly [number, number, ...number[]] | undefined"
         },
         {
           "name": "unknown",

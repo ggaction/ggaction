@@ -378,6 +378,7 @@ export type {
   ScaleType,
   ShapeScaleOptions,
   SizeScaleOptions,
+  CategoricalSizeScaleOptions,
   StackMode,
   StackDataMode,
   StackDataOptions,

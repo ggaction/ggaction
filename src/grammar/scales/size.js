@@ -1,11 +1,21 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
-import { validateGeneratedItemLimit } from "../../core/validation.js";
-import { interpolateNumber } from "../numeric.js";
-import { validateSizeRange, resolveSizeRange } from "./appearance.js";
+import {
+  validateGeneratedItemLimit,
+  validatePositiveFinite as positiveFinite
+} from "../../core/validation.js";
+import { interpolateNumber, numericExtent } from "../numeric.js";
+import { isNominalValue } from "./fields.js";
+import { resolveOrdinalDomain, validateOrdinalDomain } from "./ordinal.js";
 import { mapLinearValues } from "./continuous.js";
 import { mapTransformedValues, resolveTransformedDomain } from "./transformed.js";
+import { validateSizeRange, DEFAULT_SIZE_RANGE, mapOrdinalValues } from "./appearance.js";
 import { validateScaleUnknown } from "./policies.js";
-import { validatePair } from "./validation.js";
+import { validatePair, validateFiniteScaleArray as finiteArray } from "./validation.js";
+import {
+  resolveDiscretizedDomain,
+  validateDiscretizedDomain,
+  discretizedColorIndex
+} from "./discretized.js";
 
 export const CONTINUOUS_SIZE_SCALE_TYPES = cloneAndFreeze([
   "linear", "log", "sqrt", "pow"
@@ -15,7 +25,7 @@ export const DISCRETE_SIZE_SCALE_TYPES = cloneAndFreeze([
 ]);
 export const SIZE_SCALE_TYPES = cloneAndFreeze([
   ...CONTINUOUS_SIZE_SCALE_TYPES,
-  ...DISCRETE_SIZE_SCALE_TYPES
+  ...DISCRETE_SIZE_SCALE_TYPES, "ordinal"
 ]);
 
 export function isContinuousSizeScaleType(type) {
@@ -24,6 +34,10 @@ export function isContinuousSizeScaleType(type) {
 
 export function isDiscreteSizeScaleType(type) {
   return DISCRETE_SIZE_SCALE_TYPES.includes(type);
+}
+
+export function isEnumeratedSizeScaleType(type) {
+  return type === "ordinal" || isDiscreteSizeScaleType(type);
 }
 
 export function isSizeScaleType(type) {
@@ -37,23 +51,14 @@ export function validateSizeScaleType(type) {
   return type;
 }
 
-function finiteArray(value, label, minimumLength = 1) {
-  if (
-    !Array.isArray(value) ||
-    value.length < minimumLength ||
-    !value.every(Number.isFinite)
-  ) {
-    throw new TypeError(`${label} must contain finite numbers.`);
+function validateSizeInputSign(values, type, label) {
+  if (type === "log" && values.some(value => value <= 0)) {
+    throw new RangeError(`Size log scale ${label} must be strictly positive.`);
   }
-  return value;
-}
-
-function strictlyIncreasing(value, label) {
-  finiteArray(value, label);
-  if (value.some((item, index) => index > 0 && item <= value[index - 1])) {
-    throw new RangeError(`${label} must be strictly increasing.`);
+  if (["sqrt", "pow"].includes(type) && values.some(value => value < 0)) {
+    throw new RangeError(`Size ${type} scale ${label} must be non-negative.`);
   }
-  return value;
+  return values;
 }
 
 function validateContinuousDomain(type, domain) {
@@ -63,43 +68,16 @@ function validateContinuousDomain(type, domain) {
       `Size ${type} scale domain values must be distinct.`
     );
   }
-  if (type === "log" && validated.some(value => value <= 0)) {
-    throw new RangeError("Size log scale domain must be strictly positive.");
-  }
-  if (["sqrt", "pow"].includes(type) && validated.some(value => value < 0)) {
-    throw new RangeError(
-      `Size ${type} scale domain must be non-negative.`
-    );
-  }
-  return validated;
+  return validateSizeInputSign(validated, type, "domain");
 }
 
 export function validateSizeScaleDomain(type, domain) {
   validateSizeScaleType(type);
-  if (domain === "auto") {
-    if (type === "threshold") {
-      throw new Error("Threshold size scale requires an explicit domain.");
-    }
-    return domain;
-  }
+  if (type === "ordinal") return validateOrdinalDomain(domain);
   if (isContinuousSizeScaleType(type)) {
-    return validateContinuousDomain(type, domain);
+    return domain === "auto" ? domain : validateContinuousDomain(type, domain);
   }
-  if (type === "quantize") {
-    const validated = validatePair(domain, "Quantize size domain");
-    if (validated[0] >= validated[1]) {
-      throw new RangeError(
-        "Quantize size domain must be a strictly increasing pair."
-      );
-    }
-    return validated;
-  }
-  if (type === "quantile") {
-    return cloneAndFreeze(finiteArray(domain, "Quantile size domain"));
-  }
-  return cloneAndFreeze(
-    strictlyIncreasing(domain, "Threshold size domain")
-  );
+  return validateDiscretizedDomain(type, domain, "size");
 }
 
 export function validateDiscreteSizeRange(range) {
@@ -119,6 +97,12 @@ export function validateDiscreteSizeRange(range) {
 export function validateSizeScaleRange(type, range) {
   validateSizeScaleType(type);
   if (isContinuousSizeScaleType(type)) return validateSizeRange(range);
+  if (type === "ordinal") {
+    if (range === "auto") return range;
+    finiteArray(range, "Ordinal size range");
+    validateGeneratedItemLimit(range.length, "Ordinal size range length");
+    return validateMappedAreas(range);
+  }
   if (range === "auto") {
     throw new Error(`Size ${type} scale requires an explicit range.`);
   }
@@ -129,19 +113,6 @@ function sizeTypeFamily(type) {
   return isContinuousSizeScaleType(type) ? "continuous" : type;
 }
 
-function requireBoolean(value, label) {
-  if (typeof value !== "boolean") {
-    throw new TypeError(`${label} must be a boolean.`);
-  }
-  return value;
-}
-
-function positiveFinite(value, label) {
-  if (!Number.isFinite(value) || value <= 0) {
-    throw new RangeError(`${label} must be a positive finite number.`);
-  }
-  return value;
-}
 
 export function normalizeSizeScaleDefinition({ previous = {}, patch = {} } = {}) {
   const type = validateSizeScaleType(patch.type ?? previous.type ?? "linear");
@@ -174,71 +145,52 @@ export function normalizeSizeScaleDefinition({ previous = {}, patch = {} } = {})
     }
   }
 
-  const rawDomain = Object.hasOwn(patch, "domain")
-    ? patch.domain
-    : Object.hasOwn(previous, "domain")
-      ? previous.domain
-      : "auto";
-  const rawRange = Object.hasOwn(patch, "range")
-    ? patch.range
-    : Object.hasOwn(previous, "range")
-      ? previous.range
-      : "auto";
+  const requested = { domain: "auto", range: "auto", ...previous, ...patch };
   const definition = {
     type,
-    domain: validateSizeScaleDomain(type, rawDomain),
-    range: validateSizeScaleRange(type, rawRange)
+    domain: validateSizeScaleDomain(type, requested.domain),
+    range: validateSizeScaleRange(type, requested.range)
   };
 
-  const reverse = Object.hasOwn(patch, "reverse")
-    ? patch.reverse
-    : previous.reverse;
-  if (reverse !== undefined) {
-    definition.reverse = requireBoolean(reverse, "Size scale reverse");
-  }
-
-  if (isContinuousSizeScaleType(type)) {
-    const clamp = Object.hasOwn(patch, "clamp")
-      ? patch.clamp
-      : isContinuousSizeScaleType(previous.type)
-        ? previous.clamp
-        : undefined;
-    if (clamp !== undefined) {
-      definition.clamp = requireBoolean(clamp, "Size scale clamp");
+  for (const property of ["reverse", "clamp"]) {
+    if (property === "clamp" && !isContinuousSizeScaleType(type)) {
+      if (Object.hasOwn(patch, property)) {
+        throw new Error(`Size ${type} scale does not support clamp.`);
+      }
+      continue;
     }
-  } else if (Object.hasOwn(patch, "clamp")) {
-    throw new Error(`Size ${type} scale does not support clamp.`);
-  }
-
-  if (type === "log") {
-    const base = Object.hasOwn(patch, "base")
-      ? patch.base
-      : !typeChanged && previous.type === "log"
-        ? previous.base
-        : 10;
-    definition.base = positiveFinite(base ?? 10, "Size log scale base");
-    if (definition.base === 1) {
-      throw new RangeError("Size log scale base must not equal 1.");
+    const value = Object.hasOwn(patch, property)
+      ? patch[property]
+      : property === "clamp" && !isContinuousSizeScaleType(previous.type)
+        ? undefined : previous[property];
+    if (value !== undefined) {
+      if (typeof value !== "boolean") {
+        throw new TypeError(`Size scale ${property} must be a boolean.`);
+      }
+      definition[property] = value;
     }
-  } else if (Object.hasOwn(patch, "base")) {
-    throw new Error(`Size ${type} scale does not support base.`);
   }
 
-  if (type === "pow") {
-    const exponent = Object.hasOwn(patch, "exponent")
-      ? patch.exponent
-      : !typeChanged && previous.type === "pow"
-        ? previous.exponent
-        : undefined;
-    if (exponent === undefined) {
+  for (const [parameter, owner, fallback] of [["base", "log", 10], ["exponent", "pow"]]) {
+    if (type !== owner) {
+      if (Object.hasOwn(patch, parameter)) {
+        throw new Error(`Size ${type} scale does not support ${parameter}.`);
+      }
+      continue;
+    }
+    const value = Object.hasOwn(patch, parameter)
+      ? patch[parameter]
+      : !typeChanged && previous.type === owner ? previous[parameter] : fallback;
+    if (parameter === "exponent" && value === undefined) {
       throw new Error("Size pow scale requires an explicit exponent.");
     }
-    definition.exponent = positiveFinite(
-      exponent,
-      "Size pow scale exponent"
+    definition[parameter] = positiveFinite(
+      parameter === "base" ? value ?? fallback : value,
+      `Size ${type} scale ${parameter}`
     );
-  } else if (Object.hasOwn(patch, "exponent")) {
-    throw new Error(`Size ${type} scale does not support exponent.`);
+    if (parameter === "base" && definition.base === 1) {
+      throw new RangeError("Size log scale base must not equal 1.");
+    }
   }
 
   const unknown = Object.hasOwn(patch, "unknown")
@@ -254,27 +206,10 @@ function validateSizeValues(values, type) {
   if (!Array.isArray(values) || !values.every(Number.isFinite)) {
     throw new TypeError("Size scale values must be finite numbers.");
   }
-  if (type === "log" && values.some(value => value <= 0)) {
-    throw new RangeError("Size log scale values must be strictly positive.");
-  }
-  if (["sqrt", "pow"].includes(type) && values.some(value => value < 0)) {
-    throw new RangeError(`Size ${type} scale values must be non-negative.`);
-  }
-  return values;
-}
-
-function numericExtent(values) {
-  let minimum = values[0];
-  let maximum = values[0];
-  for (const value of values.slice(1)) {
-    minimum = Math.min(minimum, value);
-    maximum = Math.max(maximum, value);
-  }
-  return [minimum, maximum];
+  return validateSizeInputSign(values, type, "values");
 }
 
 function resolveContinuousSizeDomain(definition, values) {
-  validateSizeValues(values, definition.type);
   if (definition.domain !== "auto") {
     return validateSizeScaleDomain(definition.type, definition.domain);
   }
@@ -297,17 +232,6 @@ function resolveContinuousSizeDomain(definition, values) {
   return validateSizeScaleDomain(definition.type, domain);
 }
 
-function quantile(sorted, probability) {
-  const position = (sorted.length - 1) * probability;
-  const lower = Math.floor(position);
-  const upper = Math.ceil(position);
-  return interpolateNumber(
-    sorted[lower],
-    sorted[upper],
-    position - lower
-  );
-}
-
 export function resolveSizeScale({
   type,
   domain = "auto",
@@ -318,12 +242,25 @@ export function resolveSizeScale({
   const definition = normalizeSizeScaleDefinition({
     patch: { type, domain, range, ...options }
   });
-  validateSizeValues(values, definition.type);
-  if (isContinuousSizeScaleType(definition.type)) {
-    const resolvedDomain = resolveContinuousSizeDomain(definition, values);
-    const resolvedRange = [...resolveSizeRange(definition.range)];
+  const ordinal = definition.type === "ordinal";
+  const source = ordinal ? values.filter(isNominalValue) : validateSizeValues(values, definition.type);
+  if (ordinal && source.length !== values.length && definition.unknown === undefined) {
+    throw new TypeError("Ordinal size values must be nominal values.");
+  }
+  if (ordinal || isContinuousSizeScaleType(definition.type)) {
+    const resolvedDomain = ordinal
+      ? resolveOrdinalDomain(definition.domain, source)
+      : resolveContinuousSizeDomain(definition, values);
+    if (ordinal) validateGeneratedItemLimit(resolvedDomain.length, "Ordinal size domain length");
+    const endpoints = definition.range === "auto" ? DEFAULT_SIZE_RANGE : definition.range;
+    const resolvedRange = ordinal && definition.range === "auto"
+      ? resolvedDomain.map((_, index) => interpolateNumber(
+          endpoints[0], endpoints[1],
+          resolvedDomain.length === 1 ? 0.5 : index / (resolvedDomain.length - 1)
+        ))
+      : [...endpoints];
     if (definition.reverse === true) resolvedRange.reverse();
-    return cloneAndFreeze({
+    const resolved = cloneAndFreeze({
       type: definition.type,
       domain: resolvedDomain,
       range: resolvedRange,
@@ -332,71 +269,16 @@ export function resolveSizeScale({
       ...(definition.type === "pow" ? { exponent: definition.exponent } : {}),
       ...(definition.unknown === undefined ? {} : { unknown: definition.unknown })
     });
+    if (ordinal) mapSizeValues(values, resolved);
+    return resolved;
   }
 
   const resolvedRange = [...definition.range];
   if (definition.reverse === true) resolvedRange.reverse();
-  const sample = [...values].sort((left, right) => left - right);
-  let resolvedDomain;
-  let thresholds;
-  if (definition.type === "quantize") {
-    if (definition.domain === "auto") {
-      if (sample.length === 0) {
-        throw new Error(
-          "Cannot infer an automatic quantize size domain from no values."
-        );
-      }
-      resolvedDomain = numericExtent(sample);
-      if (resolvedDomain[0] === resolvedDomain[1]) {
-        throw new RangeError(
-          "Quantize size scale requires a non-zero domain span."
-        );
-      }
-    } else {
-      resolvedDomain = [...definition.domain];
-    }
-    thresholds = Array.from(
-      { length: resolvedRange.length - 1 },
-      (_, index) => interpolateNumber(
-        resolvedDomain[0],
-        resolvedDomain[1],
-        (index + 1) / resolvedRange.length
-      )
-    );
-    if (thresholds.some((value, index) =>
-      value <= (index === 0 ? resolvedDomain[0] : thresholds[index - 1]) ||
-      value >= resolvedDomain[1]
-    )) {
-      throw new RangeError(
-        "Quantize size range requests more buckets than its domain can represent."
-      );
-    }
-  } else if (definition.type === "quantile") {
-    const source = definition.domain === "auto"
-      ? sample
-      : [...definition.domain].sort((left, right) => left - right);
-    if (source.length === 0) {
-      throw new Error(
-        "Cannot infer automatic quantile size thresholds from no values."
-      );
-    }
-    resolvedDomain = source;
-    thresholds = Array.from(
-      { length: resolvedRange.length - 1 },
-      (_, index) => quantile(
-        source,
-        (index + 1) / resolvedRange.length
-      )
-    );
-  } else {
-    resolvedDomain = [...definition.domain];
-    thresholds = [...definition.domain];
-    if (resolvedRange.length !== thresholds.length + 1) {
-      throw new RangeError(
-        "Threshold size range must contain exactly one more area than its domain."
-      );
-    }
-  }
+  const { domain: resolvedDomain, thresholds } = resolveDiscretizedDomain({
+    type: definition.type, domain: definition.domain, values,
+    count: resolvedRange.length, kind: "size"
+  });
   return cloneAndFreeze({
     type: definition.type,
     domain: resolvedDomain,
@@ -407,12 +289,7 @@ export function resolveSizeScale({
 }
 
 export function discretizedSizeIndex(value, thresholds) {
-  if (!Number.isFinite(value)) {
-    throw new TypeError("Discrete size values must be finite numbers.");
-  }
-  let index = 0;
-  while (index < thresholds.length && value >= thresholds[index]) index += 1;
-  return index;
+  return discretizedColorIndex(value, thresholds, "Discrete size");
 }
 
 function validateMappedAreas(areas) {
@@ -427,6 +304,10 @@ function validateMappedAreas(areas) {
 export function mapSizeValues(values, scale) {
   validateSizeScaleType(scale?.type);
   const hasUnknown = Object.hasOwn(scale, "unknown");
+  if (scale.type === "ordinal") {
+    return validateMappedAreas(mapOrdinalValues(values, scale.domain, scale.range,
+      hasUnknown ? { unknown: scale.unknown } : {}));
+  }
   const finite = values.filter(Number.isFinite);
   validateSizeValues(finite, scale.type);
   if (!hasUnknown && finite.length !== values.length) {
@@ -438,13 +319,9 @@ export function mapSizeValues(values, scale) {
       if (!Number.isFinite(value)) return scale.unknown;
       return scale.range[discretizedSizeIndex(value, scale.thresholds)];
     });
-  } else if (scale.type === "linear") {
-    mapped = mapLinearValues(values, scale.domain, scale.range, {
-      clamp: scale.clamp ?? false,
-      ...(hasUnknown ? { unknown: scale.unknown } : {})
-    });
   } else {
-    mapped = mapTransformedValues(values, scale.domain, scale.range, {
+    const mapper = scale.type === "linear" ? mapLinearValues : mapTransformedValues;
+    mapped = mapper(values, scale.domain, scale.range, {
       type: scale.type,
       clamp: scale.clamp ?? false,
       ...(hasUnknown ? { unknown: scale.unknown } : {}),

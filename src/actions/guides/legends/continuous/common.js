@@ -3,6 +3,7 @@ import { isPlainObject } from "../../../../core/immutable.js";
 import { resolveTextBounds } from "../../../../core/textMetrics.js";
 import {
   validateKeys,
+  validateFontWeight,
   validateOptionObject,
   validateNonEmptyString,
   validateNonNegativeFinite,
@@ -35,6 +36,10 @@ const OPTIONS = [
   "gradient", "symbol", "labels", "titleStyle", "itemGap", "border",
   "direction", "columns", "titlePosition"
 ];
+export const ITEM_LEGEND_OPTIONS = Object.freeze([
+  "target", "count", "values", "position", "layout", "align", "direction",
+  "columns", "titlePosition", "offset", "itemGap", "title", "labels", "titleStyle", "border"
+]);
 const TEXT_OPTIONS = [
   "offset", "color", "fontSize", "fontFamily", "fontWeight", "format"
 ];
@@ -55,6 +60,23 @@ const DEFAULT_TITLE = {
   fontFamily: DEFAULT_FONT_FAMILY,
   fontWeight: 600
 };
+export const ITEM_LEGEND_LABELS = Object.freeze(DEFAULT_LABELS);
+export const ITEM_LEGEND_TITLE_STYLE = Object.freeze({
+  ...DEFAULT_TITLE, color: DEFAULT_COLORS.strongText
+});
+
+export function normalizeItemLegendConfig(args, encoding, itemGap) {
+  return {
+    ...normalizeItemLegendLayout({ ...args, itemGap: args.itemGap ?? itemGap }),
+    title: args.title ?? encoding.field,
+    inferredTitle: args.title === undefined,
+    labels: normalizeLegendTextOptions(args.labels, "createLegend.labels", ITEM_LEGEND_LABELS),
+    titleStyle: normalizeLegendTitleOptions(args.titleStyle, "createLegend.titleStyle", ITEM_LEGEND_TITLE_STYLE),
+    border: normalizeLegendBorder(args.border),
+    titleVisible: true
+  };
+}
+
 const DEFAULT_BORDER = {
   color: DEFAULT_COLORS.border,
   lineWidth: 1,
@@ -81,12 +103,7 @@ export function normalizeLegendTextOptions(value, label, defaults) {
   for (const key of ["color", "fontFamily"]) {
     validateNonEmptyString(result[key], `${label} ${key}`);
   }
-  if (
-    typeof result.fontWeight !== "string" &&
-    !Number.isFinite(result.fontWeight)
-  ) {
-    throw new TypeError(`${label} fontWeight must be a string or finite number.`);
-  }
+  validateFontWeight(result.fontWeight, `${label} fontWeight`, "finite number");
   if (Object.hasOwn(result, "format")) {
     result.format = validateValueFormat(result.format, `${label} format`);
   }

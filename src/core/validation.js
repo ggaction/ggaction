@@ -111,11 +111,16 @@ export function rejectUnknownProperties(value, supported, label) {
   if (unknown !== undefined) throw new Error(`Unknown ${label} property "${unknown}".`);
 }
 
+export function validateFontWeight(value, label, numberType = "number") {
+  if (typeof value !== "string" && !Number.isFinite(value)) {
+    throw new TypeError(`${label} must be a string or ${numberType}.`);
+  }
+  return value;
+}
+
 export function validateTextStyle(config, label) {
   validateNonEmptyString(config.color, `${label} color`);
   validatePositiveFinite(config.fontSize, `${label} fontSize`);
   validateNonEmptyString(config.fontFamily, `${label} fontFamily`);
-  if (typeof config.fontWeight !== "string" && !Number.isFinite(config.fontWeight)) {
-    throw new TypeError(`${label} fontWeight must be a string or number.`);
-  }
+  validateFontWeight(config.fontWeight, `${label} fontWeight`);
 }

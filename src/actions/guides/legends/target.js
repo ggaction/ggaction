@@ -3,7 +3,7 @@ import {
   LEGEND_CHANNELS,
   LEGEND_CONFIG_KINDS
 } from "../../../core/vocabulary.js";
-import { isDiscreteSizeScaleType } from "../../../grammar/scales/index.js";
+import { isEnumeratedSizeScaleType } from "../../../grammar/scales/index.js";
 
 export function validateLegendChannels(channels, operation) {
   if (!Array.isArray(channels)) throw new TypeError(`${operation} channels must be an array.`);
@@ -88,7 +88,7 @@ export function describeLegendBlock(program, kind, config) {
   const family = CATEGORICAL_KINDS.includes(kind)
     ? "categorical"
     : kind === "size"
-      ? isDiscreteSizeScaleType(program.resolvedScales[scaleIds[0]].type)
+      ? isEnumeratedSizeScaleType(program.resolvedScales[scaleIds[0]].type)
         ? "discrete-size"
         : "sampled"
       : ["opacity", "strokeWidth"].includes(kind)

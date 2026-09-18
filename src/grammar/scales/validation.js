@@ -2,6 +2,25 @@ import { cloneAndFreeze } from "../../core/immutable.js";
 import { POSITION_CHANNELS } from "../../core/vocabulary.js";
 import { validateCompleteScaleType } from "./types.js";
 
+export function validateFiniteScaleArray(value, label, minimumLength = 1) {
+  if (
+    !Array.isArray(value) ||
+    value.length < minimumLength ||
+    !value.every(Number.isFinite)
+  ) {
+    throw new TypeError(`${label} must contain finite numbers.`);
+  }
+  return value;
+}
+
+export function validateIncreasingScaleArray(value, label) {
+  validateFiniteScaleArray(value, label);
+  if (value.some((item, index) => index > 0 && item <= value[index - 1])) {
+    throw new RangeError(`${label} must be strictly increasing.`);
+  }
+  return value;
+}
+
 export function validatePair(value, label) {
   if (
     !Array.isArray(value) ||

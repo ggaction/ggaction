@@ -96,6 +96,30 @@ async function testNodeConsumer(directory) {
       .encodeX({ field: "x" })
       .encodeY({ field: "y" })
       .encodeRadius({ value: 3 });
+    const categorySizes = chart().createCanvas({
+      width: 800, height: 500, margin: { left: 60, right: 260, top: 60, bottom: 130 }
+    }).createData({ values: [
+      { x: 1, y: 2, group: 10 }, { x: 2, y: 3, group: "10" }, { x: 3, y: 1, group: false }
+    ] }).createScatterPlot({
+      id: "categories", x: "x", y: "y",
+      size: { field: "group", fieldType: "nominal", scale: { range: [36, 9, 81] } },
+      guides: false
+    }).createLegend({ channels: ["size"] })
+      .encodeColor({ field: "y", fieldType: "quantitative" })
+      .createLegend({ channels: ["color"], position: "bottom" });
+    assert.deepEqual(categorySizes.resolvedScales.size.domain, [10, "10", false]);
+    assert.deepEqual(categorySizes.graphicSpec.objects.sizeLegendLabels.items.map(item => item.properties.text),
+      ["10", "10", "false"]);
+    categorySizes.graphicSpec.objects.categories.items.forEach((item, index) => {
+      assert.ok(Math.abs(Math.PI * item.properties.radius ** 2 - [36, 9, 81][index]) < 1e-10);
+    });
+    assert.match(renderToSVG(categorySizes), />false<[/]text>/);
+    assert.deepEqual(deserializeProgram(serializeProgram(categorySizes)).graphicSpec, categorySizes.graphicSpec);
+    const { buffer: categoryPNG } = await renderToPNGBuffer(categorySizes);
+    assert.equal(categoryPNG.readUInt32BE(16), 800);
+    assert.equal(categoryPNG.readUInt32BE(20), 500);
+    assert.ok(categoryPNG.length > 1000);
+
     const alternative = exportAccessibleData(program);
     assert.equal(alternative.views[0].rows.length, 2);
     assert.ok(Object.isFrozen(alternative.views[0].rows));
@@ -4154,6 +4178,15 @@ async function testTypeScriptConsumer(directory) {
     chart().encodeSize({ field: "m", scale: { type: "pow", domain: [0, 100], exponent: 2 } });
     chart().encodeSize({ field: "m", scale: { type: "threshold", domain: [10], range: [20, 80] } });
     chart().editSizeScale({ type: "quantile", domain: "auto", range: [20, 40, 80] });
+    program.encodeSize({ field: "category", fieldType: "nominal", scale: { domain: [10, "10", false], range: [9, 81, 25] } });
+    program.editSizeScale({ type: "ordinal", domain: [false, "10", 10], range: [25] });
+    basicChart().createScatterPlot({ x: "x", y: "y", size: { field: "group", fieldType: "ordinal" } });
+    // @ts-expect-error Categorical size must use ordinal scales.
+    program.encodeSize({ field: "group", fieldType: "nominal", scale: { type: "linear" } });
+    // @ts-expect-error Quantitative size must use numeric scales.
+    program.encodeSize({ field: "value", fieldType: "quantitative", scale: { type: "ordinal" } });
+    // @ts-expect-error Categorical size areas must be numbers.
+    program.encodeSize({ field: "group", fieldType: "nominal", scale: { range: ["red"] } });
     // @ts-expect-error Power size scales require an exponent during encoding.
     chart().encodeSize({ field: "m", scale: { type: "pow", domain: [0, 100] } });
     // @ts-expect-error Threshold size scales require one more range area than the type can infer.

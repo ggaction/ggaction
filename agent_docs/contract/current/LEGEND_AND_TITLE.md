@@ -72,6 +72,9 @@ type TitleWrap = "word" | "character";
   point-series+size block도 네 방향을 지원한다. Continuous size scale은 실제 scale mapper로 sampled area를
   계산한다. Quantize/quantile/threshold는 모든 interval을 stable label과 scale area symbol로 표시하며
   `count`를 명시하면 오류다. Reverse는 label/domain 순서를 유지하고 area assignment만 뒤집는다.
+- Ordinal size legend는 domain의 모든 category와 실제 mapped area를 표시한다. 숫자처럼 보이는 category도
+  원래 문자열 표기를 유지하며 count/exact values와 numeric label format을 거부한다. Color gradient와 독립적으로
+  공존하고 size scale edit, Canvas edit, persistence replay로 같은 geometry를 유지한다.
 - Explicit `["strokeWidth"]` 또는 유일한 stroke-width-only line/rule은 standalone stroke-width legend를 선택한다.
   Full에서 encoded quantitative scale을 사용하며 count와 네 방향 edge/grid/layout, text styles, border를 지원한다. Basic에는 strokeWidth encoding/family가 없으며 이 변경에서 추가하지 않는다.
 - `position`: categorical과 continuous color/stroke/opacity는 left를 포함한 네 방향을 지원한다.

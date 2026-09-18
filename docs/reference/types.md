@@ -917,16 +917,12 @@ Related types: [`ShapeScaleOptions`](#type-shapescaleoptions).
 <summary>Expand BasicSizeChannel</summary>
 
 ```typescript
-export type BasicSizeChannel = string | {
-  field: string;
-  fieldType?: "quantitative";
-  scale?: SizeScaleOptions;
-};
+export type BasicSizeChannel = string | WithoutEncodingTarget<SizeEncodingOptions>;
 ```
 
 </details>
 
-Related types: [`SizeScaleOptions`](#type-sizescaleoptions).
+Related types: [`WithoutEncodingTarget`](#type-withoutencodingtarget) · [`SizeEncodingOptions`](#type-sizeencodingoptions).
 
 ### `BasicStrokeDashChannel` {#type-basicstrokedashchannel}
 
@@ -1563,6 +1559,26 @@ export type CategoricalPositionScaleOptions =
 </details>
 
 Related types: [`BandPositionScaleOptions`](#type-bandpositionscaleoptions) · [`PointPositionScaleOptions`](#type-pointpositionscaleoptions).
+
+### `CategoricalSizeScaleOptions` {#type-categoricalsizescaleoptions}
+
+<details markdown="1">
+<summary>Expand CategoricalSizeScaleOptions</summary>
+
+```typescript
+export type CategoricalSizeScaleOptions = SizeScaleCommonOptions & {
+  type?: "ordinal";
+  domain?: "auto" | readonly (string | number | boolean)[];
+  range?: "auto" | readonly [number, ...number[]];
+  clamp?: never;
+  base?: never;
+  exponent?: never;
+};
+```
+
+</details>
+
+Related types: [`SizeScaleCommonOptions`](#type-sizescalecommonoptions).
 
 ### `CategoricalThetaAxisOptions` {#type-categoricalthetaaxisoptions}
 
@@ -5903,8 +5919,8 @@ Related types: [`IntervalCenter`](#type-intervalcenter) · [`IntervalExtent`](#t
 ```typescript
 type ExistingSizeScaleEditPatch = {
   type?: never;
-  domain?: "auto" | readonly [number, ...number[]];
-  range?: "auto" | readonly [number, number, ...number[]];
+  domain?: "auto" | readonly [string | number | boolean, ...(string | number | boolean)[]];
+  range?: "auto" | readonly [number, ...number[]];
   unknown?: number;
   clamp?: boolean;
   reverse?: boolean;
@@ -10230,14 +10246,15 @@ Related types: [`ScaleFields`](#type-scalefields) · [`PointShape`](#type-points
 export type SizeEncodingOptions = {
   field: string;
   target?: string;
-  fieldType?: "quantitative";
-  scale?: SizeScaleOptions;
-};
+} & (
+  | { fieldType?: "quantitative"; scale?: SizeScaleOptions }
+  | { fieldType: "nominal" | "ordinal"; scale?: CategoricalSizeScaleOptions }
+);
 ```
 
 </details>
 
-Related types: [`SizeScaleOptions`](#type-sizescaleoptions).
+Related types: [`SizeScaleOptions`](#type-sizescaleoptions) · [`CategoricalSizeScaleOptions`](#type-categoricalsizescaleoptions).
 
 ### `SizeScaleCommonOptions` {#type-sizescalecommonoptions}
 
@@ -10318,6 +10335,7 @@ Related types: [`ContinuousSizeScaleOptions`](#type-continuoussizescaleoptions) 
 
 ```typescript
 type SizeScaleTypeEditPatch =
+  | (WithoutScaleId<CategoricalSizeScaleOptions> & { type: "ordinal" })
   | (Omit<WithoutScaleId<SizeScaleOptions>, "type"> & { type?: "linear" })
   | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "log" }>, "type"> & {
       type: "log";
@@ -10346,7 +10364,7 @@ type SizeScaleTypeEditPatch =
 
 </details>
 
-Related types: [`WithoutScaleId`](#type-withoutscaleid) · [`SizeScaleOptions`](#type-sizescaleoptions).
+Related types: [`WithoutScaleId`](#type-withoutscaleid) · [`CategoricalSizeScaleOptions`](#type-categoricalsizescaleoptions) · [`SizeScaleOptions`](#type-sizescaleoptions).
 
 ### `SortKey` {#type-sortkey}
 

@@ -19,9 +19,4 @@ export const nonEmptyString = validateNonEmptyString;
 export const nonNegative = validateNonNegativeFinite;
 export const positive = validatePositiveFinite;
 
-export function validateFontWeight(value, label) {
-  if (typeof value !== "string" && !Number.isFinite(value)) {
-    throw new TypeError(`${label} must be a string or number.`);
-  }
-  return value;
-}
+export { validateFontWeight } from "../../../../core/validation.js";

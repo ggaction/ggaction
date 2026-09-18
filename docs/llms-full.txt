@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:63ae2a8b970bc13dd44b297adc784c123df221778f2f95569b43e50530fce9a2. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:3954aa3da95f72381301f66672d0ef79f3ca5cf45e40ac492b596f6d8971cc76. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -6952,7 +6952,7 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Action | Marks | Field types | Scale family | Item grain and units |
 | --- | --- | --- | --- | --- |
-| `encodeSize` | point | quantitative | linear, log, sqrt, pow, quantize, quantile, threshold | row-owned point; range values are areas; remove explicit radius first |
+| `encodeSize` | point | quantitative, nominal, ordinal | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; remove explicit radius first |
 | `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
 | `encodeOpacity` | point, line, rule | quantitative or constant | linear for field; none for constant | point/rule item or complete line series; values within one series must agree |
 | `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
@@ -10552,7 +10552,7 @@ See [Scale options](./api/scales/) and [Legends](./api/legends/).
 
 | Action | Marks | Field types | Scale family | Item grain and units |
 | --- | --- | --- | --- | --- |
-| `encodeSize` | point | quantitative | linear, log, sqrt, pow, quantize, quantile, threshold | row-owned point; range values are areas; remove explicit radius first |
+| `encodeSize` | point | quantitative, nominal, ordinal | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; remove explicit radius first |
 | `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
 | `encodeOpacity` | point, line, rule | quantitative or constant | linear for field; none for constant | point/rule item or complete line series; values within one series must agree |
 | `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
@@ -11118,6 +11118,7 @@ appearance values. Encodings create compatible scales automatically; use
 | Continuous position | `"auto"` | Plot bounds | `type`, `nice`, `zero`, `clamp`, `reverse` |
 | Band/point position | First-appearance order | Plot bounds | padding and alignment |
 | Ordinal appearance/offset | First-appearance order | Palette, patterns, or parent band | explicit domain/range |
+| Categorical size | Source appearance order or explicit categories | Automatic areas `[24, 196]` across categories | `ordinal`, `reverse`, unknown area |
 | Continuous size | Numeric extent | Area `[24, 196]` | `linear`, `log`, `sqrt`, `pow`, `clamp`, `reverse` |
 | Discrete size | Type-specific samples or cuts | Explicit nondecreasing areas | `quantize`, `quantile`, `threshold`, `reverse` |
 | Color/stroke/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
@@ -11183,7 +11184,16 @@ Other focused selectors follow the rules below.
 `editRScale` means Polar radial position; point glyph radius remains a constant
 appearance action.
 
-Point size scale ranges are areas rather than radii. Continuous size mappings
+Point size scale ranges are areas rather than radii. With `fieldType: "nominal"`
+or `"ordinal"`, size uses an ordinal scale. Automatic domains preserve first
+appearance; explicit domains preserve their order and distinguish numbers from
+numeric-looking strings. Automatic areas span 24 through 196, with a single
+category assigned area 110. Explicit nonnegative area lists cycle across the
+domain, matching other ordinal appearance mappings. Size legends show every
+category with its original label and mapped area; numeric sampling (`count`,
+`values`) and numeric label formats are unavailable for categorical size.
+
+ Continuous size mappings
 support `linear`, `log`, `sqrt`, and `pow`; `log` defaults to base 10 and `pow`
 requires a positive exponent. Discrete `quantize`, `quantile`, and `threshold`
 mappings require explicit nondecreasing area ranges. Type-family changes require
@@ -16576,9 +16586,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `type` | Optional / branch-dependent | `"linear" \| "log" \| "pow" \| "quantile" \| "quantize" \| "sqrt" \| "threshold" \| undefined` |
-| `domain` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| readonly [number, ...number[]] \| undefined` |
-| `range` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| readonly [number, number, ...number[]] \| undefined` |
+| `type` | Optional / branch-dependent | `"linear" \| "log" \| "ordinal" \| "pow" \| "quantile" \| "quantize" \| "sqrt" \| "threshold" \| undefined` |
+| `domain` | Optional / branch-dependent | `"auto" \| readonly (string \| number \| boolean)[] \| readonly [number, number] \| readonly [number, ...number[]] \| readonly [string \| number \| boolean, ...(string \| number \| boolean)[]] \| undefined` |
+| `range` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| readonly [number, ...number[]] \| readonly [number, number, ...number[]] \| undefined` |
 | `unknown` | Optional / branch-dependent | `number \| undefined` |
 | `clamp` | Optional / branch-dependent | `boolean \| undefined` |
 | `reverse` | Optional / branch-dependent | `boolean \| undefined` |
@@ -20189,8 +20199,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `field` | Required | `string` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
-| `scale` | Optional / branch-dependent | `SizeScaleOptions \| undefined` |
+| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| undefined` |
+| `scale` | Optional / branch-dependent | `SizeScaleOptions \| CategoricalSizeScaleOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -26819,14 +26829,10 @@ Related types: [`ShapeScaleOptions`](./reference/types/#type-shapescaleoptions).
  Expand BasicSizeChannel
 
 ```typescript
-export type BasicSizeChannel = string | {
-  field: string;
-  fieldType?: "quantitative";
-  scale?: SizeScaleOptions;
-};
+export type BasicSizeChannel = string | WithoutEncodingTarget<SizeEncodingOptions>;
 ```
 
-Related types: [`SizeScaleOptions`](./reference/types/#type-sizescaleoptions).
+Related types: [`WithoutEncodingTarget`](./reference/types/#type-withoutencodingtarget) · [`SizeEncodingOptions`](./reference/types/#type-sizeencodingoptions).
 
 ### `BasicStrokeDashChannel` {#type-basicstrokedashchannel}
 
@@ -27352,6 +27358,23 @@ export type CategoricalPositionScaleOptions =
 ```
 
 Related types: [`BandPositionScaleOptions`](./reference/types/#type-bandpositionscaleoptions) · [`PointPositionScaleOptions`](./reference/types/#type-pointpositionscaleoptions).
+
+### `CategoricalSizeScaleOptions` {#type-categoricalsizescaleoptions}
+
+ Expand CategoricalSizeScaleOptions
+
+```typescript
+export type CategoricalSizeScaleOptions = SizeScaleCommonOptions & {
+  type?: "ordinal";
+  domain?: "auto" | readonly (string | number | boolean)[];
+  range?: "auto" | readonly [number, ...number[]];
+  clamp?: never;
+  base?: never;
+  exponent?: never;
+};
+```
+
+Related types: [`SizeScaleCommonOptions`](./reference/types/#type-sizescalecommonoptions).
 
 ### `CategoricalThetaAxisOptions` {#type-categoricalthetaaxisoptions}
 
@@ -31028,8 +31051,8 @@ Related types: [`IntervalCenter`](./reference/types/#type-intervalcenter) · [`I
 ```typescript
 type ExistingSizeScaleEditPatch = {
   type?: never;
-  domain?: "auto" | readonly [number, ...number[]];
-  range?: "auto" | readonly [number, number, ...number[]];
+  domain?: "auto" | readonly [string | number | boolean, ...(string | number | boolean)[]];
+  range?: "auto" | readonly [number, ...number[]];
   unknown?: number;
   clamp?: boolean;
   reverse?: boolean;
@@ -34617,12 +34640,13 @@ Related types: [`ScaleFields`](./reference/types/#type-scalefields) · [`PointSh
 export type SizeEncodingOptions = {
   field: string;
   target?: string;
-  fieldType?: "quantitative";
-  scale?: SizeScaleOptions;
-};
+} & (
+  | { fieldType?: "quantitative"; scale?: SizeScaleOptions }
+  | { fieldType: "nominal" | "ordinal"; scale?: CategoricalSizeScaleOptions }
+);
 ```
 
-Related types: [`SizeScaleOptions`](./reference/types/#type-sizescaleoptions).
+Related types: [`SizeScaleOptions`](./reference/types/#type-sizescaleoptions) · [`CategoricalSizeScaleOptions`](./reference/types/#type-categoricalsizescaleoptions).
 
 ### `SizeScaleCommonOptions` {#type-sizescalecommonoptions}
 
@@ -34696,6 +34720,7 @@ Related types: [`ContinuousSizeScaleOptions`](./reference/types/#type-continuous
 
 ```typescript
 type SizeScaleTypeEditPatch =
+  | (WithoutScaleId<CategoricalSizeScaleOptions> & { type: "ordinal" })
   | (Omit<WithoutScaleId<SizeScaleOptions>, "type"> & { type?: "linear" })
   | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "log" }>, "type"> & {
       type: "log";
@@ -34722,7 +34747,7 @@ type SizeScaleTypeEditPatch =
     });
 ```
 
-Related types: [`WithoutScaleId`](./reference/types/#type-withoutscaleid) · [`SizeScaleOptions`](./reference/types/#type-sizescaleoptions).
+Related types: [`WithoutScaleId`](./reference/types/#type-withoutscaleid) · [`CategoricalSizeScaleOptions`](./reference/types/#type-categoricalsizescaleoptions) · [`SizeScaleOptions`](./reference/types/#type-sizescaleoptions).
 
 ### `SortKey` {#type-sortkey}
 
@@ -38289,7 +38314,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:63ae2a8b970bc13dd44b297adc784c123df221778f2f95569b43e50530fce9a2` |
+| Contract fingerprint | `sha256:3954aa3da95f72381301f66672d0ef79f3ca5cf45e40ac492b596f6d8971cc76` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

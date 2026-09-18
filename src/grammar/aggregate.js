@@ -2,7 +2,7 @@ import { requireStringValue as nonEmptyString } from "../core/validation.js";
 import { isGroupValue as isNominal } from "./transformKeys.js";
 import { isPlainObject } from "../core/immutable.js";
 import {
-  interpolateNumber,
+  quantileSorted,
   numericExtent,
   requireFiniteResult,
   stableFiniteDeviation,
@@ -158,14 +158,7 @@ function finiteValues(values) {
 
 function quantile(values, probability) {
   const ordered = [...values].sort((left, right) => left - right);
-  const position = (ordered.length - 1) * probability;
-  const lower = Math.floor(position);
-  const upper = Math.ceil(position);
-  return interpolateNumber(
-    ordered[lower],
-    ordered[upper],
-    position - lower
-  );
+  return quantileSorted(ordered, probability);
 }
 
 function comparableOrderKey(value) {

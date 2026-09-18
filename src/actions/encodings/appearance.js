@@ -2,8 +2,6 @@ import { action } from "../../core/action.js";
 import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
 import { assertEncodingSelectionCompatibility } from "../../materialization/selection/compatibility.js";
 import {
-  readNominalField,
-  readQuantitativeField,
   readScaleField,
   validateOpacityValue
 } from "../../grammar/scales/index.js";
@@ -42,11 +40,11 @@ function encodeAppearanceField(program, channel, args, operation) {
     ["point"],
     "point mark"
   );
-  const expectedFieldType = channel === "shape" ? "nominal" : "quantitative";
+  const fieldTypes = channel === "shape" ? ["nominal"] : ["quantitative", "nominal", "ordinal"];
   const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
-  const fieldType = args.fieldType ?? expectedFieldType;
-  if (fieldType !== expectedFieldType) {
-    throw new Error(`${operation} requires a ${expectedFieldType} field.`);
+  const fieldType = args.fieldType ?? fieldTypes[0];
+  if (!fieldTypes.includes(fieldType)) {
+    throw new Error(`${operation} requires a ${fieldTypes.join(" or ")} field.`);
   }
   if (channel === "size" && program.markConfigs[target]?.radius !== undefined) {
     throw new Error("encodeSize cannot be combined with a constant radius.");
@@ -59,17 +57,12 @@ function encodeAppearanceField(program, channel, args, operation) {
   const scale = resolveAppearanceScaleDefinition(
     program,
     channel,
-    requestedScale
+    requestedScale,
+    fieldType
   );
-  if (Object.hasOwn(scale, "unknown")) {
-    readScaleField(dataset.values, args.field, fieldType, {
-      allowUnknown: true
-    });
-  } else if (channel === "shape") {
-    readNominalField(dataset.values, args.field);
-  } else {
-    readQuantitativeField(dataset.values, args.field);
-  }
+  readScaleField(dataset.values, args.field, fieldType, {
+    allowUnknown: Object.hasOwn(scale, "unknown")
+  });
 
   let next = setEncodingProperties(program, target, channel, {
     field: args.field,
@@ -152,7 +145,7 @@ const removePointRadius = /* @__PURE__ */ action(
 const encodeSize = /* @__PURE__ */ action(
   {
     op: "encodeSize",
-    description: "Encode a quantitative field as equal-area point size."
+    description: "Encode a field as equal-area point size."
   },
   function (args = {}) {
     return encodeAppearanceField(this, "size", args, "encodeSize");
@@ -244,13 +237,9 @@ const encodeOpacity = /* @__PURE__ */ action(
         ...layer, encoding: { ...layer.encoding, opacity: { field: args.field, fieldType } }
       });
     }
-    if (Object.hasOwn(scale, "unknown")) {
-      readScaleField(dataset.values, args.field, fieldType, {
-        allowUnknown: true
-      });
-    } else {
-      readQuantitativeField(dataset.values, args.field);
-    }
+    readScaleField(dataset.values, args.field, fieldType, {
+      allowUnknown: Object.hasOwn(scale, "unknown")
+    });
     const { opacity, ...config } = this.markConfigs[target] ?? {};
     void opacity;
     let next = setEncodingProperties(

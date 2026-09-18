@@ -1,3 +1,4 @@
+import { formatVisibleText } from "../../../core/textMetrics.js";
 import { action, closedAction } from "../../../core/action.js";
 import {
   validateNonEmptyString,
@@ -6,23 +7,24 @@ import {
 import {
   formatDiscretizedIntervals,
   isDiscreteSizeScaleType,
+  isEnumeratedSizeScaleType,
   isSizeScaleType,
   mapSizeValues
 } from "../../../grammar/scales/index.js";
 import { resolveLegendItemLayout } from "../../../layout/legendItems.js";
-import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
+import { DEFAULT_COLORS } from
   "../../../theme/defaults.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import {
+  ITEM_LEGEND_LABELS as SIZE_LEGEND_LABELS,
+  ITEM_LEGEND_TITLE_STYLE as SIZE_LEGEND_TITLE_STYLE,
+  normalizeItemLegendConfig,
+  ITEM_LEGEND_OPTIONS as SIZE_OPTIONS,
   assertLegendBoundsInsideCanvas,
   materializeItemLegend,
   createItemLegendGraphics,
-  normalizeItemLegendLayout,
-  normalizeLegendBorder,
-  normalizeLegendTextOptions,
-  normalizeLegendTitleOptions,
   resolveContinuousBounds,
   resolveLegendBackgroundFromBounds,
   formatContinuousValues,
@@ -36,22 +38,9 @@ import {
 } from "./sampling.js";
 import { resolveEffectiveLegendBlockConfig } from "./blocks.js";
 
-const SIZE_OPTIONS = Object.freeze(["target", "count", "values", "position", "layout", "align",
-  "direction", "columns", "titlePosition", "offset", "itemGap", "title", "labels", "titleStyle", "border"]);
 
-export const SIZE_LEGEND_LABELS = Object.freeze({
-  offset: 12,
-  color: DEFAULT_COLORS.text,
-  fontSize: 12,
-  fontFamily: DEFAULT_FONT_FAMILY,
-  fontWeight: "normal"
-});
-export const SIZE_LEGEND_TITLE_STYLE = Object.freeze({
-  color: DEFAULT_COLORS.strongText,
-  fontSize: 13,
-  fontFamily: DEFAULT_FONT_FAMILY,
-  fontWeight: 600
-});
+
+export { SIZE_LEGEND_LABELS, SIZE_LEGEND_TITLE_STYLE };
 
 export function isSizeLegendPoint(layer) {
   return layer?.mark?.type === "point" &&
@@ -106,13 +95,17 @@ export function resolveSizeLegendLayout(program, config) {
     columns: categorical.columns, titlePosition: categorical.titlePosition,
     offset: categorical.offset, itemGap: effective.blockGap ?? categorical.itemGap
   } : { position };
+  const ordinalSize = scale.type === "ordinal";
+  if (ordinalSize && config.labels.format !== undefined && config.labels.format !== "auto") {
+    throw new Error("Categorical size legends retain original category labels.");
+  }
   const discrete = isDiscreteSizeScaleType(scale.type);
-  if (discrete && readLegendSampling(config).mode === "values") {
+  if ((discrete || ordinalSize) && readLegendSampling(config).mode === "values") {
     throw new Error("Discrete size legends do not support exact values.");
   }
   const values = discrete
     ? undefined
-    : resolveLegendSampleValues(effective, scale, "Size legend");
+    : ordinalSize ? scale.domain : resolveLegendSampleValues(effective, scale, "Size legend");
   const areas = discrete
     ? scale.range
     : mapSizeValues(values, scale);
@@ -122,7 +115,7 @@ export function resolveSizeLegendLayout(program, config) {
   const { plot, canvas } = resolveContinuousBounds(program);
   const text = discrete
     ? formatDiscretizedIntervals(scale.thresholds, config.labels.format)
-    : formatContinuousValues(
+    : ordinalSize ? values.map(formatVisibleText) : formatContinuousValues(
         values,
         scale.domain,
         "quantitative",
@@ -149,7 +142,7 @@ export function resolveSizeLegendLayout(program, config) {
 export const rematerializeSizeLegend = /* @__PURE__ */ closedAction(
   {
     op: "rematerializeSizeLegend",
-    description: "Rematerialize a quantitative point-size legend."
+    description: "Rematerialize a point-size legend."
   }, [],
   function (args = {}) {
     const config = this.guideConfigs.legend?.size;
@@ -193,7 +186,7 @@ export function resolveSizeLegendConfig(program, args = {}) {
     throw new Error(`Point mark "${layer.id}" requires a size encoding.`);
   }
   const scale = requireScale(program, encoding.scale);
-  const discrete = isDiscreteSizeScaleType(scale.type);
+  const discrete = isEnumeratedSizeScaleType(scale.type);
   if (discrete && (Object.hasOwn(args, "count") || Object.hasOwn(args, "values"))) {
     throw new Error("Discrete size legends do not support count or exact values.");
   }
@@ -201,20 +194,15 @@ export function resolveSizeLegendConfig(program, args = {}) {
     operation: "create",
     label: "Size legend"
   });
-  const count = discrete ? scale.range.length : undefined;
+  const count = discrete ? (scale.type === "ordinal" ? scale.domain.length : scale.range.length) : undefined;
   return {
     target: layer.id,
     scale: encoding.scale,
-    ...normalizeItemLegendLayout({ ...args, itemGap: args.itemGap ?? 40 }),
-    title: args.title ?? encoding.field,
-    inferredTitle: args.title === undefined,
+    ...normalizeItemLegendConfig(args, encoding, 40),
     domain: scale.domain,
     ...(discrete ? { count } : { sampling }),
     inheritAppearance: args.inheritAppearance === true,
-    labels: normalizeLegendTextOptions(args.labels, "createLegend.labels", SIZE_LEGEND_LABELS),
-    titleStyle: normalizeLegendTitleOptions(args.titleStyle, "createLegend.titleStyle", SIZE_LEGEND_TITLE_STYLE),
-    border: normalizeLegendBorder(args.border),
-    titleVisible: true
+
   };
 }
 

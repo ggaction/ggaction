@@ -8,16 +8,16 @@ import { resolveLegendItemLayout } from "../../../layout/legendItems.js";
 import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { findLayer } from "../../../selectors/layers.js";
-import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
+import { DEFAULT_COLORS } from
   "../../../theme/defaults.js";
 import {
+  ITEM_LEGEND_LABELS as STROKE_WIDTH_LEGEND_LABELS,
+  ITEM_LEGEND_TITLE_STYLE as STROKE_WIDTH_LEGEND_TITLE_STYLE,
+  normalizeItemLegendConfig,
+  ITEM_LEGEND_OPTIONS as OPTIONS,
   assertLegendBoundsInsideCanvas,
   materializeItemLegend,
   createItemLegendGraphics,
-  normalizeItemLegendLayout,
-  normalizeLegendBorder,
-  normalizeLegendTextOptions,
-  normalizeLegendTitleOptions,
   resolveContinuousBounds,
   resolveLegendBackgroundFromBounds,
   formatContinuousValues,
@@ -29,28 +29,15 @@ import {
 } from "./sampling.js";
 import { resolveEffectiveLegendBlockConfig } from "./blocks.js";
 
-const OPTIONS = Object.freeze(["target", "count", "values", "position", "layout", "align",
-  "direction", "columns", "titlePosition", "offset", "itemGap", "title", "labels", "titleStyle", "border"]);
 
-export const STROKE_WIDTH_LEGEND_LABELS = Object.freeze({
-  offset: 12,
-  color: DEFAULT_COLORS.text,
-  fontSize: 12,
-  fontFamily: DEFAULT_FONT_FAMILY,
-  fontWeight: "normal"
-});
 
-export const STROKE_WIDTH_LEGEND_TITLE_STYLE = Object.freeze({
-  color: DEFAULT_COLORS.strongText,
-  fontSize: 13,
-  fontFamily: DEFAULT_FONT_FAMILY,
-  fontWeight: 600
-});
+export { STROKE_WIDTH_LEGEND_LABELS, STROKE_WIDTH_LEGEND_TITLE_STYLE };
 
 export function isStrokeWidthLegendLayer(layer) {
   return ["line", "rule"].includes(layer?.mark?.type) &&
     layer.encoding?.strokeWidth?.scale !== undefined;
 }
+
 
 function resolveLayer(program, requested) {
   const layer = selectLegendLayer(
@@ -145,14 +132,9 @@ export function resolveStrokeWidthLegendConfig(program, args = {}) {
   return {
     target: layer.id,
     scale: encoding.scale,
-    ...normalizeItemLegendLayout({ ...args, itemGap: args.itemGap ?? 32 }),
-    title: args.title ?? encoding.field,
-    inferredTitle: args.title === undefined,
+    ...normalizeItemLegendConfig(args, encoding, 32),
     sampling,
-    labels: normalizeLegendTextOptions(args.labels, "createLegend.labels", STROKE_WIDTH_LEGEND_LABELS),
-    titleStyle: normalizeLegendTitleOptions(args.titleStyle, "createLegend.titleStyle", STROKE_WIDTH_LEGEND_TITLE_STYLE),
-    border: normalizeLegendBorder(args.border),
-    titleVisible: true
+
   };
 }
 

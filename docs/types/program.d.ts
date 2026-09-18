@@ -1734,6 +1734,14 @@ type ContinuousSizeScaleOptions = SizeScaleCommonOptions &
     domain?: "auto" | readonly [number, number];
     range?: "auto" | readonly [number, number];
   };
+export type CategoricalSizeScaleOptions = SizeScaleCommonOptions & {
+  type?: "ordinal";
+  domain?: "auto" | readonly (string | number | boolean)[];
+  range?: "auto" | readonly [number, ...number[]];
+  clamp?: never;
+  base?: never;
+  exponent?: never;
+};
 export type SizeScaleOptions =
   | (ContinuousSizeScaleOptions & {
       type?: "linear";
@@ -1842,8 +1850,8 @@ export type EditStrokeScaleOptions = { target: string } & Omit<
 >;
 type ExistingSizeScaleEditPatch = {
   type?: never;
-  domain?: "auto" | readonly [number, ...number[]];
-  range?: "auto" | readonly [number, number, ...number[]];
+  domain?: "auto" | readonly [string | number | boolean, ...(string | number | boolean)[]];
+  range?: "auto" | readonly [number, ...number[]];
   unknown?: number;
   clamp?: boolean;
   reverse?: boolean;
@@ -1851,6 +1859,7 @@ type ExistingSizeScaleEditPatch = {
   exponent?: number;
 };
 type SizeScaleTypeEditPatch =
+  | (WithoutScaleId<CategoricalSizeScaleOptions> & { type: "ordinal" })
   | (Omit<WithoutScaleId<SizeScaleOptions>, "type"> & { type?: "linear" })
   | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "log" }>, "type"> & {
       type: "log";
@@ -2915,11 +2924,7 @@ type RectColorChannel =
       scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
-export type BasicSizeChannel = string | {
-  field: string;
-  fieldType?: "quantitative";
-  scale?: SizeScaleOptions;
-};
+export type BasicSizeChannel = string | WithoutEncodingTarget<SizeEncodingOptions>;
 export type BasicShapeChannel = string | {
   field: string;
   fieldType?: "nominal";
@@ -4211,9 +4216,10 @@ export type StrokeWidthEncodingOptions =
 export type SizeEncodingOptions = {
   field: string;
   target?: string;
-  fieldType?: "quantitative";
-  scale?: SizeScaleOptions;
-};
+} & (
+  | { fieldType?: "quantitative"; scale?: SizeScaleOptions }
+  | { fieldType: "nominal" | "ordinal"; scale?: CategoricalSizeScaleOptions }
+);
 
 export type ShapeEncodingOptions = {
   field: string;

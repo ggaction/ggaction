@@ -95,7 +95,7 @@ export function validateShapeRange(range) {
   return cloneAndFreeze(range);
 }
 
-export function validateSizeRange(range) {
+function validateAscendingAppearanceRange(range, label) {
   if (range === "auto") return range;
   if (
     !Array.isArray(range) ||
@@ -104,10 +104,14 @@ export function validateSizeRange(range) {
     range[0] > range[1]
   ) {
     throw new TypeError(
-      "Size range must be an ascending pair of non-negative finite areas."
+      `${label} must be an ascending pair of non-negative finite ${label === "Size range" ? "areas" : "widths"}.`
     );
   }
   return cloneAndFreeze(range);
+}
+
+export function validateSizeRange(range) {
+  return validateAscendingAppearanceRange(range, "Size range");
 }
 
 export function validateOpacityRange(range) {
@@ -125,18 +129,7 @@ export function validateOpacityRange(range) {
 }
 
 export function validateStrokeWidthRange(range) {
-  if (range === "auto") return range;
-  if (
-    !Array.isArray(range) ||
-    range.length !== 2 ||
-    !range.every(value => Number.isFinite(value) && value >= 0) ||
-    range[0] > range[1]
-  ) {
-    throw new TypeError(
-      "StrokeWidth range must be an ascending pair of non-negative finite widths."
-    );
-  }
-  return cloneAndFreeze(range);
+  return validateAscendingAppearanceRange(range, "StrokeWidth range");
 }
 
 export function validateOpacityValue(value, label = "Opacity") {

@@ -1,5 +1,5 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
-import { interpolateNumber, stableDecimal } from "./numeric.js";
+import { quantileSorted, stableDecimal } from "./numeric.js";
 
 export const BOX_FIELDS = Object.freeze({
   q1: "__boxPlot_q1", median: "__boxPlot_median", q3: "__boxPlot_q3",
@@ -79,12 +79,6 @@ export function normalizeBoxTransform(options = {}) {
   return cloneAndFreeze(normalized);
 }
 
-function quantile(sorted, p) {
-  const position = (sorted.length - 1) * p;
-  const lower = Math.floor(position);
-  const upper = Math.ceil(position);
-  return interpolateNumber(sorted[lower], sorted[upper], position - lower);
-}
 
 export function deriveBoxData(rows, transform) {
   if (!Array.isArray(rows)) throw new TypeError("Box rows must be an array.");
@@ -111,7 +105,7 @@ export function deriveBoxData(rows, transform) {
   for (const group of groups) {
     const sorted = group.rows.map(row => row[measure]).sort((a, b) => a - b);
     const [q1, median, q3] = [0.25, 0.5, 0.75].map(probability =>
-      stableDecimal(quantile(sorted, probability))
+      stableDecimal(quantileSorted(sorted, probability))
     );
     const spread = q3 - q1;
     const lowerFence = whisker === "minmax"

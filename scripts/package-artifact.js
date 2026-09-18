@@ -75,6 +75,12 @@ const COMPACT_JSON_FILES = Object.freeze([
 const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "knowledge/task-resolver.js",
   "src/grammar/scales/color.js",
+  "src/grammar/scales/size.js",
+  "src/grammar/scales/discretized.js",
+  "src/grammar/scales/validation.js",
+  "src/grammar/scales/appearance.js",
+  "src/grammar/numeric.js",
+  "src/actions/guides/legends/continuous/common.js",
   "src/grammar/scales/transformed.js",
   "src/grammar/scales/definition.js",
   "src/actions/scales/definitions.js",

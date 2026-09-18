@@ -26,6 +26,7 @@ appearance values. Encodings create compatible scales automatically; use
 | Continuous position | `"auto"` | Plot bounds | `type`, `nice`, `zero`, `clamp`, `reverse` |
 | Band/point position | First-appearance order | Plot bounds | padding and alignment |
 | Ordinal appearance/offset | First-appearance order | Palette, patterns, or parent band | explicit domain/range |
+| Categorical size | Source appearance order or explicit categories | Automatic areas `[24, 196]` across categories | `ordinal`, `reverse`, unknown area |
 | Continuous size | Numeric extent | Area `[24, 196]` | `linear`, `log`, `sqrt`, `pow`, `clamp`, `reverse` |
 | Discrete size | Type-specific samples or cuts | Explicit nondecreasing areas | `quantize`, `quantile`, `threshold`, `reverse` |
 | Color/stroke/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
@@ -107,7 +108,16 @@ Other focused selectors follow the rules below.
 `editRScale` means Polar radial position; point glyph radius remains a constant
 appearance action.
 
-Point size scale ranges are areas rather than radii. Continuous size mappings
+Point size scale ranges are areas rather than radii. With `fieldType: "nominal"`
+or `"ordinal"`, size uses an ordinal scale. Automatic domains preserve first
+appearance; explicit domains preserve their order and distinguish numbers from
+numeric-looking strings. Automatic areas span 24 through 196, with a single
+category assigned area 110. Explicit nonnegative area lists cycle across the
+domain, matching other ordinal appearance mappings. Size legends show every
+category with its original label and mapped area; numeric sampling (`count`,
+`values`) and numeric label formats are unavailable for categorical size.
+
+ Continuous size mappings
 support `linear`, `log`, `sqrt`, and `pow`; `log` defaults to base 10 and `pow`
 requires a positive exponent. Discrete `quantize`, `quantile`, and `threshold`
 mappings require explicit nondecreasing area ranges. Type-family changes require

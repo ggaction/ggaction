@@ -32,7 +32,7 @@ import { findLayer } from "../../../selectors/layers.js";
 import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { resolveLegendTarget, validateLegendChannels } from "./target.js";
-import { isDiscreteSizeScaleType } from "../../../grammar/scales/index.js";
+import { isEnumeratedSizeScaleType } from "../../../grammar/scales/index.js";
 import { SIZE_LEGEND_LABELS, SIZE_LEGEND_TITLE_STYLE, resolveSizeLegendLayout, createSizeLegendFromConfig } from "./size.js";
 import {
   STROKE_WIDTH_LEGEND_LABELS,
@@ -261,7 +261,7 @@ function resolveSampledLegendEdit(program, kind, previous, args) {
     }
   }
   const discrete = size &&
-    isDiscreteSizeScaleType(program.resolvedScales[previous.scale]?.type);
+    isEnumeratedSizeScaleType(program.resolvedScales[previous.scale]?.type);
   if (discrete && (args.count !== undefined || args.values !== undefined)) {
     throw new Error("Discrete size legends do not support count or exact values.");
   }
@@ -331,7 +331,7 @@ function editSampledLegend(program, kind, previous, args) {
 
 function resolveCompanionSizeEdit(program, previous, size, args) {
   if (size === undefined) return undefined;
-  const discrete = isDiscreteSizeScaleType(
+  const discrete = isEnumeratedSizeScaleType(
     program.resolvedScales[size.scale]?.type
   );
   if (discrete && (args.count !== undefined || args.values !== undefined)) {

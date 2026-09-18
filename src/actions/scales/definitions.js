@@ -326,26 +326,23 @@ export function resolveStrokeDashScaleDefinition(program, options) {
   );
 }
 
-export function resolveAppearanceScaleDefinition(program, channel, options) {
+export function resolveAppearanceScaleDefinition(program, channel, options, fieldType = "quantitative") {
   optionsObject(options);
   if (channel === "size") {
     validateKeys(options, SIZE_OPTIONS, "scale");
     const id = validateUserId(options.id ?? channel, "Scale id");
     const existing = findSemanticScale(program, id);
-    return {
-      id,
-      ...normalizeSizeScaleDefinition({ previous: existing, patch: options })
-    };
+    const categorical = ["nominal", "ordinal"].includes(fieldType);
+    const definition = normalizeSizeScaleDefinition({
+      previous: existing,
+      patch: { ...options, type: options.type ?? existing?.type ?? (categorical ? "ordinal" : "linear") }
+    });
+    if ((definition.type === "ordinal") !== categorical) {
+      throw new Error("Size scale type must match its field type.");
+    }
+    return { id, ...definition };
   }
-  validateKeys(options, UNKNOWN_OPTIONS, "scale");
-  const id = validateUserId(options.id ?? channel, "Scale id");
-  const existing = findSemanticScale(program, id);
-  return withScaleUnknown({
-    id,
-    type: validateOrdinalScaleType(options.type ?? existing?.type ?? "ordinal"),
-    domain: validateOrdinalDomain(options.domain ?? existing?.domain ?? "auto"),
-    range: validateShapeRange(options.range ?? existing?.range ?? "auto")
-  }, { ...existing, ...options }, channel);
+  return resolveOrdinalScaleDefinition(program, options, channel, validateShapeRange);
 }
 
 export function resolveOpacityScaleDefinition(program, options) {
