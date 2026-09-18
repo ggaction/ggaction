@@ -1,6 +1,7 @@
 import type { ChartProgram, CompositionOptions } from "./program.js";
 
 export type {
+  ArcInnerRadius,
   TextMetricFontWeight,
   TextMeasurement,
   TextMetricsProfile,

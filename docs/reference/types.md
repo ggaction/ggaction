@@ -86,8 +86,8 @@ interface ChartProgramActions {
   createBarMark(options?: RectStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
-  createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+  createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
   createRuleMark(options?: { id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
@@ -415,6 +415,17 @@ export interface ApplyThemeOptions {
 </details>
 
 Related types: [`ThemeDefinition`](#type-themedefinition).
+
+### `ArcInnerRadius` {#type-arcinnerradius}
+
+<details markdown="1">
+<summary>Expand ArcInnerRadius</summary>
+
+```typescript
+export type ArcInnerRadius = number | { unit: "px"; value: number };
+```
+
+</details>
 
 ### `AreaPlotIndependentChannel` {#type-areaplotindependentchannel}
 
@@ -2551,14 +2562,14 @@ export type CreatePiePlotOptions = {
   coordinate?: string;
   category: PieCategory;
   color?: false | PieColor;
-  arc?: StrokeStyleDetails & { innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
 ```
 
 </details>
 
-Related types: [`PieCategory`](#type-piecategory) · [`PieColor`](#type-piecolor) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PieLegendOptions`](#type-pielegendoptions).
+Related types: [`PieCategory`](#type-piecategory) · [`PieColor`](#type-piecolor) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`ArcInnerRadius`](#type-arcinnerradius) · [`PieLegendOptions`](#type-pielegendoptions).
 
 ### `CreatePolarLinePlotOptions` {#type-createpolarlineplotoptions}
 
@@ -2848,14 +2859,14 @@ Related types: [`RegressionPlotBaseOptions`](#type-regressionplotbaseoptions) ·
 ```typescript
 export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value"> & {
   radiusScale?: MeasuredRadiusScaleOptions;
-  arc?: StrokeStyleDetails & { innerRadius?: number; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | MeasuredRadialGuideOptions;
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
 ```
 
 </details>
 
-Related types: [`CreatePiePlotOptions`](#type-createpieplotoptions) · [`MeasuredRadiusScaleOptions`](#type-measuredradiusscaleoptions) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`MeasuredRadialGuideOptions`](#type-measuredradialguideoptions).
+Related types: [`CreatePiePlotOptions`](#type-createpieplotoptions) · [`MeasuredRadiusScaleOptions`](#type-measuredradiusscaleoptions) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`ArcInnerRadius`](#type-arcinnerradius) · [`MeasuredRadialGuideOptions`](#type-measuredradialguideoptions).
 
 ### `CreateRugPlotOptions` {#type-createrugplotoptions}
 
@@ -8508,6 +8519,7 @@ export type PolarFrameCenter = {
 export type PolarFrameOptions = "auto" | {
   center?: PolarFrameCenter;
   radius?: PolarFrameRadius;
+  overflow?: "error" | "allow";
 };
 ```
 

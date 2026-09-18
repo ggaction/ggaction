@@ -161,6 +161,10 @@ test("action cards separate entry support, units, inference, and completion", as
     { path: "innerRadius", unit: "ratio" },
     { path: "padAngle", unit: "degree" }
   ]);
+  assert.ok(byName.get("createArcMark").units.some(entry =>
+    entry.path === "innerRadius.value" && entry.unit === "logical-pixel"));
+  assert.ok(byName.get("createPiePlot").units.some(entry =>
+    entry.path === "arc.innerRadius.value" && entry.unit === "logical-pixel"));
   assert.deepEqual(byName.get("createTimeUnitData").units, [
     { path: "unit", unit: "calendar-unit" },
     { path: "temporalUnit", unit: "temporal-input" }

@@ -1,4 +1,5 @@
-import { cloneAndFreeze } from "../core/immutable.js";
+import { validateOptionObject, validateNonNegativeFinite } from "../core/validation.js";
+import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import {
   mapContinuousScaleValues,
   mapOrdinalPositionValues,
@@ -8,7 +9,6 @@ import {
 import {
   interpolateNumber,
   normalizedFiniteSum,
-  requireFiniteResult,
   stableFiniteSum
 } from "./numeric.js";
 
@@ -136,20 +136,17 @@ function resolveProportionalRanges(values, range, labelAt) {
   });
 }
 
-function resolveProportionalRadii(layer, frame, innerRadiusRatio) {
+function resolveProportionalRadii(layer, frame, innerRadius) {
   if (!Number.isFinite(frame?.availableRadius) || frame.availableRadius < 0) {
     throw new RangeError(`Arc mark "${layer.id}" requires a finite available radius.`);
   }
   return {
-    innerRadius: requireFiniteResult(
-      frame.availableRadius * innerRadiusRatio,
-      `Arc mark "${layer.id}" inner radius`
-    ),
+    innerRadius: resolveArcInnerRadius(innerRadius, frame.availableRadius),
     outerRadius: frame.availableRadius
   };
 }
 
-function proportionalSectors(rows, layer, thetaScale, frame, innerRadiusRatio) {
+function proportionalSectors(rows, layer, thetaScale, frame, innerRadius) {
   const theta = layer.encoding.theta;
   if (!["count", "sum"].includes(theta.aggregate)) {
     throw new Error(`Arc mark "${layer.id}" requires count, sum, or radial layout.`);
@@ -171,7 +168,7 @@ function proportionalSectors(rows, layer, thetaScale, frame, innerRadiusRatio) {
       weight: weights[index]
     });
   }
-  const radii = resolveProportionalRadii(layer, frame, innerRadiusRatio);
+  const radii = resolveProportionalRadii(layer, frame, innerRadius);
   const sectors = [];
   const positiveValues = thetaScale.domain.filter(value =>
     groups.get(value).some(item => item.weight > 0)
@@ -210,7 +207,7 @@ function proportionalSectors(rows, layer, thetaScale, frame, innerRadiusRatio) {
   return sectors;
 }
 
-function quantitativeSectors(rows, layer, thetaScale, frame, innerRadiusRatio) {
+function quantitativeSectors(rows, layer, thetaScale, frame, innerRadius) {
   const theta = layer.encoding.theta;
   if (layer.encoding?.radius !== undefined) {
     throw new Error(
@@ -228,7 +225,7 @@ function quantitativeSectors(rows, layer, thetaScale, frame, innerRadiusRatio) {
     thetaScale.range,
     index => `row ${positiveIndices[index]}`
   );
-  const radii = resolveProportionalRadii(layer, frame, innerRadiusRatio);
+  const radii = resolveProportionalRadii(layer, frame, innerRadius);
   return positiveIndices.map((sourceIndex, index) => ({
     key: `${String(values[sourceIndex])}:${sourceIndex}`,
     theta: values[sourceIndex],
@@ -347,17 +344,11 @@ export function deriveArcSectors(rows, layer, {
   thetaScale,
   radiusScale,
   frame,
-  innerRadiusRatio = 0
+  innerRadius = 0
 } = {}) {
   if (!Array.isArray(rows)) throw new TypeError("Arc derivation requires rows.");
   const theta = requireArcLayer(layer);
-  if (
-    !Number.isFinite(innerRadiusRatio) ||
-    innerRadiusRatio < 0 ||
-    innerRadiusRatio >= 1
-  ) {
-    throw new RangeError("Arc innerRadius must be from 0 (inclusive) to 1 (exclusive).");
-  }
+  normalizeArcInnerRadius(innerRadius);
   const sectors = radiusScale?.radialMapping !== undefined
     ? measuredRadialSectors(rows, layer, requireBandScale(thetaScale, `Arc mark "${layer.id}" theta`), radiusScale)
     : theta.fieldType === "quantitative"
@@ -366,7 +357,7 @@ export function deriveArcSectors(rows, layer, {
         layer,
         requireContinuousThetaScale(thetaScale, `Arc mark "${layer.id}" theta`),
         frame,
-        innerRadiusRatio
+        innerRadius
       )
     : ["count", "sum"].includes(theta.aggregate)
       ? proportionalSectors(
@@ -374,7 +365,7 @@ export function deriveArcSectors(rows, layer, {
           layer,
           requireBandScale(thetaScale, `Arc mark "${layer.id}" theta`),
           frame,
-          innerRadiusRatio
+          innerRadius
         )
       : radialSectors(
           rows,
@@ -383,4 +374,26 @@ export function deriveArcSectors(rows, layer, {
           radiusScale
         );
   return cloneAndFreeze({ sectors });
+}
+
+export function normalizeArcInnerRadius(value) {
+  if (isPlainObject(value)) {
+    validateOptionObject(value, ["unit", "value"], "Arc innerRadius");
+    if (value.unit !== "px") throw new RangeError("Arc innerRadius unit must be px.");
+    return cloneAndFreeze({ unit: "px",
+      value: validateNonNegativeFinite(value.value, "Arc innerRadius") });
+  }
+  if (!Number.isFinite(value) || value < 0 || value >= 1) {
+    throw new RangeError("Arc innerRadius must be from 0 (inclusive) to 1 (exclusive).");
+  }
+  return value;
+}
+
+export function resolveArcInnerRadius(value, outer) {
+  const normalized = normalizeArcInnerRadius(value);
+  if (typeof normalized === "number") return normalized * outer;
+  if (normalized.value >= outer) {
+    throw new RangeError("Arc pixel innerRadius must be smaller than its outer radius.");
+  }
+  return normalized.value;
 }

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:e5a70e3a438f6e85f43281c722acc6ac9ffc700c343138458cbc40197684c93b. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:a6b32a00e3470eb61884f83f3ec2c02e19ef5cfa858434fd8a5899d32c10f845. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -6202,7 +6202,10 @@ const donut = chart()
   .encodeColor({ field: "Origin", palette: "tableau10" });
 ```
 
-`innerRadius` is a ratio from `0` inclusive to `1` exclusive. `padAngle` uses
+`innerRadius` is a ratio from `0` inclusive to `1` exclusive, or
+`{ unit: "px", value: 60 }` for a fixed pixel hole. Pixel values must be finite,
+non-negative, and smaller than the resolved outer radius. Automatic radial
+ranges use that same inner baseline; explicit measured ranges must agree. `padAngle` uses
 degrees. Direct quantitative theta creates one proportional sector per positive
 row. Count or weighted-sum categorical theta creates aggregated proportional
 sectors. Categorical theta plus quantitative `encodeR` creates equal-angle
@@ -9438,7 +9441,7 @@ Negative, nonfinite, all-zero, and unrepresentable positive-thickness inputs are
 
 The radial axis shows count or sum units with the same mapping as the sectors.
 An explicit radius range `[inner, outer]` defines the hole and must agree with
-an explicitly specified Arc innerRadius ratio. These modes require zero theta
+an explicitly specified Arc innerRadius (ratio or fixed pixels). These modes require zero theta
 padding and `padAngle: 0`; `nice: true`, `zero: false`, and `reverse: true` are errors.
 
 Reassigning `encodeR` preserves omitted mapping and aggregate. To change the
@@ -11887,7 +11890,7 @@ const automatic = equalUnits.editCoordinate({
 The action is available from `ggaction` and is absent from `ggaction/basic`.
 
 For a Polar coordinate, `polarFrame` moves the center and constrains the radial
-extent inside the aspect-adjusted effective bounds:
+extent relative to the aspect-adjusted effective bounds:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `polarProgram`. Resource selectors used here: `target: "polar"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -11902,8 +11905,11 @@ const movedPolar = polarProgram.editCoordinate({
 ```
 
 Center coordinates are finite fractions from 0 through 1. Fraction radius must
-be greater than 0 and at most 1; pixel radius must be positive and fit between
-the center and every frame edge. The object is a complete replacement:
+be greater than 0 and at most 1; pixel radius must be positive and, by default, fit between
+the center and every frame edge. Set `overflow: "allow"` in the frame object to allow
+a fixed pixel radius beyond the plot while keeping its authored dimensions.
+This neither expands the Canvas nor adds plot clipping: reserve Canvas margins for
+visible overflow, since exports remain bounded by the Canvas. The default is `"error"`. The object is a complete replacement:
 omitting center restores `{ x: 0.5, y: 0.5 }`, and omitting radius restores
 `{ unit: "fraction", value: 1 }`. Use `polarFrame: "auto"` to remove the
 stored request.
@@ -11912,7 +11918,10 @@ When one call supplies both patches, ggaction resolves aspect, then the Polar
 frame, then the radial scale range. Points, lines, arcs, Polar axes, grids, and
 selection geometry all consume that same resolved frame. Fraction radii resize
 with the Canvas; pixel radii remain fixed and reject a later Canvas size that
-cannot contain them.
+cannot contain them unless the stored frame uses `overflow: "allow"`.
+For proportional donuts, `arc.innerRadius: { unit: "px", value: 60 }` keeps a
+60px hole independently of a frame radius such as 120px. The inner radius must
+remain smaller than the outer radius.
 
 ## `removeCoordinate({ id })` {#removecoordinate-id}
 
@@ -18223,7 +18232,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `category` | Required | `PieCategory` |
 | `color` | Optional / branch-dependent | `false \| PieColor \| undefined` |
-| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: number \| undefined; padAngle?: number \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: ArcInnerRadius \| undefined; padAngle?: number \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| { axes?: false \| undefined; grid?: false \| undefined; legend?: false \| PieLegendOptions \| undefined; } \| undefined` |
 | `value` | Optional / branch-dependent | `string \| undefined` |
 | `aggregate` | Optional / branch-dependent | `"count" \| "sum" \| undefined` |
@@ -18240,7 +18249,7 @@ both `value` and `aggregate: "sum"`; values must be finite and nonnegative with
 a positive total. Color defaults to the category. Use `color: false` for a
 scalar `arc.fill`; otherwise each slice must resolve to one categorical color.
 
-`arc.innerRadius` is a radius ratio in [0,1), and `arc.padAngle` is in degrees.
+`arc.innerRadius` is a radius ratio in [0,1) or `{ unit: "px", value }` for a non-negative fixed inner radius smaller than the outer radius; `arc.padAngle` is in degrees.
 Use these options for a donut. `guides` defaults to a color legend with no axes
 or grid; `guides: false` skips guide creation. Explicit axes/grid requests must
 be false. A zero-weight category may remain in the color legend without a sector.
@@ -18271,7 +18280,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `category` | Required | `PieCategory` |
 | `color` | Optional / branch-dependent | `false \| PieColor \| undefined` |
 | `radiusScale` | Optional / branch-dependent | `MeasuredRadiusScaleOptions \| undefined` |
-| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: number \| undefined; padAngle?: 0 \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: ArcInnerRadius \| undefined; padAngle?: 0 \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| MeasuredRadialGuideOptions \| undefined` |
 | `value` | Optional / branch-dependent | `string \| undefined` |
 | `aggregate` | Optional / branch-dependent | `"count" \| "sum" \| undefined` |
@@ -18284,7 +18293,7 @@ createRosePlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusSc
 
 Create equal-angle sectors whose sector area, excluding the hole is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
 
-The default id is `rosePlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit Canvas. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
+The default id is `rosePlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit the resolved Polar frame. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
 
 [Measured radial tutorial](./tutorials/polar-arcs/#measured-rose-and-radial-bar-plots)
 
@@ -18312,7 +18321,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `category` | Required | `PieCategory` |
 | `color` | Optional / branch-dependent | `false \| PieColor \| undefined` |
 | `radiusScale` | Optional / branch-dependent | `MeasuredRadiusScaleOptions \| undefined` |
-| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: number \| undefined; padAngle?: 0 \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: ArcInnerRadius \| undefined; padAngle?: 0 \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| MeasuredRadialGuideOptions \| undefined` |
 | `value` | Optional / branch-dependent | `string \| undefined` |
 | `aggregate` | Optional / branch-dependent | `"count" \| "sum" \| undefined` |
@@ -18325,7 +18334,7 @@ createRadialBarPlot({ id?, data?, coordinate?, category, value?, aggregate?, rad
 
 Create equal-angle sectors whose radial length measured from the inner edge is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
 
-The default id is `radialBarPlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit Canvas. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
+The default id is `radialBarPlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit the resolved Polar frame. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
 
 [Measured radial tutorial](./tutorials/polar-arcs/#measured-rose-and-radial-bar-plots)
 
@@ -19664,10 +19673,10 @@ Edit constant area appearance. `stroke: false` removes an existing outline.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails).
+Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius).
 
  Declared options
 
@@ -19680,7 +19689,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
-| `innerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `innerRadius` | Optional / branch-dependent | `ArcInnerRadius \| undefined` |
 | `padAngle` | Optional / branch-dependent | `number \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -19705,10 +19714,10 @@ radial sectors. [Marks](./api/marks/line-area/#arc-marks)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails).
+Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius).
 
  Declared options
 
@@ -19720,7 +19729,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `innerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `innerRadius` | Optional / branch-dependent | `ArcInnerRadius \| undefined` |
 | `padAngle` | Optional / branch-dependent | `number \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -22840,7 +22849,9 @@ Canvas edits. The target coordinate ID is always explicit.
 request. Center values are normalized effective-bound fractions; radius is a
 fraction of the largest fitting radius or a positive fixed pixel value. The
 frame object is replaced as a whole, and aspect is resolved before the Polar
-frame and radial scale range.
+frame and radial scale range. Optional `overflow: "allow"` permits a pixel radius
+beyond plot bounds while preserving Canvas size; reserve outer margins for its
+exported extent. Omitted overflow defaults to `"error"`.
 
 `createDerivedData` stores immutable source and transform provenance only; it
 does not materialize values. Chart facades and mark creation reject definition-only
@@ -26061,8 +26072,8 @@ interface ChartProgramActions {
   createBarMark(options?: RectStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
-  createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+  createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
   createRuleMark(options?: { id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
@@ -26372,6 +26383,14 @@ export interface ApplyThemeOptions {
 ```
 
 Related types: [`ThemeDefinition`](./reference/types/#type-themedefinition).
+
+### `ArcInnerRadius` {#type-arcinnerradius}
+
+ Expand ArcInnerRadius
+
+```typescript
+export type ArcInnerRadius = number | { unit: "px"; value: number };
+```
 
 ### `AreaPlotIndependentChannel` {#type-areaplotindependentchannel}
 
@@ -28168,12 +28187,12 @@ export type CreatePiePlotOptions = {
   coordinate?: string;
   category: PieCategory;
   color?: false | PieColor;
-  arc?: StrokeStyleDetails & { innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
 ```
 
-Related types: [`PieCategory`](./reference/types/#type-piecategory) · [`PieColor`](./reference/types/#type-piecolor) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PieLegendOptions`](./reference/types/#type-pielegendoptions).
+Related types: [`PieCategory`](./reference/types/#type-piecategory) · [`PieColor`](./reference/types/#type-piecolor) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius) · [`PieLegendOptions`](./reference/types/#type-pielegendoptions).
 
 ### `CreatePolarLinePlotOptions` {#type-createpolarlineplotoptions}
 
@@ -28420,12 +28439,12 @@ Related types: [`RegressionPlotBaseOptions`](./reference/types/#type-regressionp
 ```typescript
 export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value"> & {
   radiusScale?: MeasuredRadiusScaleOptions;
-  arc?: StrokeStyleDetails & { innerRadius?: number; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | MeasuredRadialGuideOptions;
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
 ```
 
-Related types: [`CreatePiePlotOptions`](./reference/types/#type-createpieplotoptions) · [`MeasuredRadiusScaleOptions`](./reference/types/#type-measuredradiusscaleoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`MeasuredRadialGuideOptions`](./reference/types/#type-measuredradialguideoptions).
+Related types: [`CreatePiePlotOptions`](./reference/types/#type-createpieplotoptions) · [`MeasuredRadiusScaleOptions`](./reference/types/#type-measuredradiusscaleoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius) · [`MeasuredRadialGuideOptions`](./reference/types/#type-measuredradialguideoptions).
 
 ### `CreateRugPlotOptions` {#type-createrugplotoptions}
 
@@ -33174,6 +33193,7 @@ export type PolarFrameCenter = {
 export type PolarFrameOptions = "auto" | {
   center?: PolarFrameCenter;
   radius?: PolarFrameRadius;
+  overflow?: "error" | "allow";
 };
 ```
 
@@ -38238,7 +38258,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:e5a70e3a438f6e85f43281c722acc6ac9ffc700c343138458cbc40197684c93b` |
+| Contract fingerprint | `sha256:a6b32a00e3470eb61884f83f3ec2c02e19ef5cfa858434fd8a5899d32c10f845` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

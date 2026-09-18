@@ -1,11 +1,11 @@
 import { registerPrimitiveActions } from "./primitives/index.js";
 import { registerCanvasActions } from "./canvas/index.js";
+import { registerBasicCoordinateActions } from "./coordinates/actions.js";
+import { registerCoordinateEditActions } from "./coordinates/edit.js";
 import { registerDataActions } from "./data/index.js";
 import { registerMarkActions } from "./marks/index.js";
 import { registerScaleActions } from "./scales/index.js";
 import { registerEncodingActions } from "./encodings/index.js";
-import { registerBasicCoordinateActions } from "./coordinates/actions.js";
-import { registerCoordinateEditActions } from "./coordinates/edit.js";
 import { registerGuideActions } from "./guides/index.js";
 import { registerTitleActions } from "./titles/index.js";
 import { registerRegressionActions } from "./regression/index.js";

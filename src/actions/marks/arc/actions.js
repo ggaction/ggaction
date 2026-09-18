@@ -1,3 +1,4 @@
+import { normalizeArcInnerRadius } from "../../../grammar/arcs.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -49,14 +50,6 @@ const CREATE_OPTIONS = Object.freeze(["id", "data", ...ARC_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", ...ARC_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
 
-function validateInnerRadius(value) {
-  if (!Number.isFinite(value) || value < 0 || value >= 1) {
-    throw new RangeError(
-      "Arc innerRadius must be from 0 (inclusive) to 1 (exclusive)."
-    );
-  }
-  return value;
-}
 
 function normalizeConfig(
   args,
@@ -67,7 +60,7 @@ function normalizeConfig(
     ...previous,
     ...strokeDetails,
     ...(Object.hasOwn(args, "innerRadius")
-      ? { innerRadius: validateInnerRadius(args.innerRadius), innerRadiusExplicit: true }
+      ? { innerRadius: normalizeArcInnerRadius(args.innerRadius), innerRadiusExplicit: true }
       : {}),
     ...(Object.hasOwn(args, "padAngle")
       ? { padAngle: validateNonNegativeFinite(args.padAngle, "Arc padAngle") }
@@ -204,7 +197,7 @@ const rematerializeArcMark = /* @__PURE__ */ action(
         ? {}
         : { radiusScale: resolved.resolvedScales[radiusScaleId] }),
       frame,
-      innerRadiusRatio: config.innerRadius ?? 0
+      innerRadius: config.innerRadius ?? 0
     });
     const commands = derived.sectors.map(sector => buildAnnularSectorCommands({
       frame,

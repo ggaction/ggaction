@@ -2,7 +2,7 @@ import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { validateOptionObject } from "../core/validation.js";
 import { validatePair } from "./scales/validation.js";
 
-const POLAR_FRAME_OPTIONS = Object.freeze(["center", "radius"]);
+const POLAR_FRAME_OPTIONS = Object.freeze(["center", "radius", "overflow"]);
 const POLAR_CENTER_OPTIONS = Object.freeze(["x", "y"]);
 const POLAR_RADIUS_OPTIONS = Object.freeze(["unit", "value"]);
 const POLAR_RADIUS_UNITS = new Set(["fraction", "px"]);
@@ -34,6 +34,9 @@ export function normalizePolarFrameOptions(value) {
     throw new TypeError('Polar frame must be "auto" or a plain object.');
   }
   validateOptionObject(value, POLAR_FRAME_OPTIONS, "polar frame");
+  if (value.overflow !== undefined && !["error", "allow"].includes(value.overflow)) {
+    throw new Error("Polar frame overflow must be error or allow.");
+  }
   const center = value.center ?? {};
   if (!isPlainObject(center)) {
     throw new TypeError("Polar frame center must be a plain object.");
@@ -64,7 +67,8 @@ export function normalizePolarFrameOptions(value) {
     radius: {
       unit: radius.unit,
       value: radius.value
-    }
+    },
+    ...(value.overflow === "allow" ? { overflow: "allow" } : {})
   });
 }
 
@@ -94,7 +98,7 @@ export function resolvePolarFrame(bounds, requestedFrame = "auto") {
   const availableRadius = requested.radius.unit === "fraction"
     ? maximumRadius * requested.radius.value
     : requested.radius.value;
-  if (availableRadius > maximumRadius) {
+  if (availableRadius > maximumRadius && requested.overflow !== "allow") {
     throw new RangeError(
       `Polar frame radius ${availableRadius} exceeds the maximum radius ${maximumRadius}.`
     );

@@ -1625,9 +1625,11 @@ export type PolarFrameCenter = {
 export type PolarFrameRadius =
   | { unit: "fraction"; value: number }
   | { unit: "px"; value: number };
+export type ArcInnerRadius = number | { unit: "px"; value: number };
 export type PolarFrameOptions = "auto" | {
   center?: PolarFrameCenter;
   radius?: PolarFrameRadius;
+  overflow?: "error" | "allow";
 };
 
 type EditCoordinateTarget = {
@@ -3616,7 +3618,7 @@ export type CreatePiePlotOptions = {
   coordinate?: string;
   category: PieCategory;
   color?: false | PieColor;
-  arc?: StrokeStyleDetails & { innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
 
@@ -3627,7 +3629,7 @@ export type MeasuredRadialGuideOptions = {
 };
 export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value"> & {
   radiusScale?: MeasuredRadiusScaleOptions;
-  arc?: StrokeStyleDetails & { innerRadius?: number; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | MeasuredRadialGuideOptions;
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
 export type CreateRadialBarPlotOptions = CreateRosePlotOptions;
@@ -4819,7 +4821,7 @@ export class ChartProgram {
   createArcMark(options?: StrokeStyleDetails & {
     id?: string;
     data?: string;
-    innerRadius?: number;
+    innerRadius?: ArcInnerRadius;
     padAngle?: number;
     fill?: string;
     opacity?: number;
@@ -4828,7 +4830,7 @@ export class ChartProgram {
   }): ChartProgram;
   editArcMark(options: StrokeStyleDetails & {
     target?: string;
-    innerRadius?: number;
+    innerRadius?: ArcInnerRadius;
     padAngle?: number;
     fill?: string;
     opacity?: number;

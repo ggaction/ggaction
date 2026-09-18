@@ -1,3 +1,4 @@
+import { unionBounds } from "../core/textMetrics.js";
 export const SIDE_LEGEND_BLOCK_GAP = 24;
 export const HORIZONTAL_LEGEND_BLOCK_GAP = 40;
 export const SIDE_LEGEND_SYMBOL_CENTER = 16;
@@ -32,14 +33,6 @@ function midpoint(start, end) {
   return result === 0 ? 0 : result;
 }
 
-function unionBounds(bounds) {
-  return bounds.reduce((union, item) => ({
-    left: Math.min(union.left, item.left),
-    right: Math.max(union.right, item.right),
-    top: Math.min(union.top, item.top),
-    bottom: Math.max(union.bottom, item.bottom)
-  }), { left: Infinity, right: -Infinity, top: Infinity, bottom: -Infinity });
-}
 
 function decoration(border) {
   return border === false

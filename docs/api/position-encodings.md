@@ -132,7 +132,7 @@ Negative, nonfinite, all-zero, and unrepresentable positive-thickness inputs are
 
 The radial axis shows count or sum units with the same mapping as the sectors.
 An explicit radius range `[inner, outer]` defines the hole and must agree with
-an explicitly specified Arc innerRadius ratio. These modes require zero theta
+an explicitly specified Arc innerRadius (ratio or fixed pixels). These modes require zero theta
 padding and `padAngle: 0`; `nice: true`, `zero: false`, and `reverse: true` are errors.
 
 Reassigning `encodeR` preserves omitted mapping and aggregate. To change the

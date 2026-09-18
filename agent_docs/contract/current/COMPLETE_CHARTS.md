@@ -434,7 +434,7 @@ Default id는 `rosePlot`. Full 전용 Aggregate create-only이며 구멍을 제�
 - Category는 PieCategory, color는 PieColor를 재사용한다. Category는 필수이며 숫자도 nominal shorthand다. Color는 기본 category이고 false로 생략한다. Color와 arc.fill을 함께 쓰면 오류다.
 - Value 없음은 count. Value field가 있으면 aggregate:sum을 명시한다. Category별로 합치고 원본 행과 selection membership을 보존한다. 별도 derived dataset이나 façade recipe를 저장하지 않는다.
 - `radiusScale`은 MeasuredRadiusScaleOptions: id, linear type, domain:auto|[0,U], range:auto|[r0,R], zero:true, nice:false, reverse:false, clamp. 모든 aggregate<=U이며 0<=r0<R, 실제 Canvas에 들어가야 한다.
-- Arc appearance는 Pie와 같되 padAngle은 0만 지원한다. innerRadius는 [0,1)이고 auto range를 조정한다. Explicit range는 hole을 정하며 명시한 innerRadius와 일치해야 한다.
+- Arc appearance는 Pie와 같되 padAngle은 0만 지원한다. innerRadius는 [0,1) 비율 또는 고정 px 요청이며 auto range를 조정한다. Explicit range는 hole을 정하며 명시한 innerRadius와 일치해야 한다.
 - Zero category는 domain/legend에 남고 sector만 생략한다. Empty/all-zero/negative/nonfinite/overflow/unrepresentable-positive thickness와 범주 내 여러 색은 오류다.
 - Guides 기본은 categorical theta axis, 실제 count/sum 단위 radial axis, 적용 가능한 Polar grids와 color legend다. False는 이번 생성을 생략한다. axes는 theta/radius와 Polar coordinate만, grid는 theta/radial만, legend는 categorical PieLegendOptions만 받는다.
 - 기존 same-scale/same-coordinate guide는 명시된 appearance가 같으면 재사용한다. 생략된 style은 보존하며 빠진 component는 기존 wrapped creation action으로 채운다. Foreign resource, 다른 명시적 appearance, 기존 title의 false 제거 요청은 오류다. 다른 layer의 guide를 overwrite하지 않는다.
@@ -461,7 +461,7 @@ Default id는 `radialBarPlot`. Full 전용 Aggregate create-only이며 구멍부
 - Category는 PieCategory, color는 PieColor를 재사용한다. Category는 필수이며 숫자도 nominal shorthand다. Color는 기본 category이고 false로 생략한다. Color와 arc.fill을 함께 쓰면 오류다.
 - Value 없음은 count. Value field가 있으면 aggregate:sum을 명시한다. Category별로 합치고 원본 행과 selection membership을 보존한다. 별도 derived dataset이나 façade recipe를 저장하지 않는다.
 - `radiusScale`은 MeasuredRadiusScaleOptions: id, linear type, domain:auto|[0,U], range:auto|[r0,R], zero:true, nice:false, reverse:false, clamp. 모든 aggregate<=U이며 0<=r0<R, 실제 Canvas에 들어가야 한다.
-- Arc appearance는 Pie와 같되 padAngle은 0만 지원한다. innerRadius는 [0,1)이고 auto range를 조정한다. Explicit range는 hole을 정하며 명시한 innerRadius와 일치해야 한다.
+- Arc appearance는 Pie와 같되 padAngle은 0만 지원한다. innerRadius는 [0,1) 비율 또는 고정 px 요청이며 auto range를 조정한다. Explicit range는 hole을 정하며 명시한 innerRadius와 일치해야 한다.
 - Zero category는 domain/legend에 남고 sector만 생략한다. Empty/all-zero/negative/nonfinite/overflow/unrepresentable-positive thickness와 범주 내 여러 색은 오류다.
 - Guides 기본은 categorical theta axis, 실제 count/sum 단위 radial axis, 적용 가능한 Polar grids와 color legend다. False는 이번 생성을 생략한다. axes는 theta/radius와 Polar coordinate만, grid는 theta/radial만, legend는 categorical PieLegendOptions만 받는다.
 - 기존 same-scale/same-coordinate guide는 명시된 appearance가 같으면 재사용한다. 생략된 style은 보존하며 빠진 component는 기존 wrapped creation action으로 채운다. Foreign resource, 다른 명시적 appearance, 기존 title의 false 제거 요청은 오류다. 다른 layer의 guide를 overwrite하지 않는다.
@@ -491,7 +491,7 @@ Default id는 `piePlot`, lifecycle은 Aggregate create-only다.
   Sum은 중복 category의 nonnegative finite weights를 합친다. Invalid weight와 all-zero denominator는 오류다.
 - Color: 생략은 category, false는 field color 생략, field string 또는 `{field, fieldType?:nominal|ordinal, scale?, palette?}`.
   다른 field는 각 final slice 안에서 유일해야 한다. Scalar `arc.fill`과 함께 쓰면 오류다.
-- Arc: `{innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?}`. InnerRadius는 availableRadius의 [0,1) 비율,
+- Arc: `{innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?}`. InnerRadius는 availableRadius의 [0,1) 비율 또는 `{unit:"px",value}`의 고정 픽셀 값이다. 픽셀 값은 유한한 음이 아닌 수이며 outer radius보다 작아야 한다.
   padAngle은 nonnegative degrees, opacity는 [0,1]. Stroke는 create에서 string만 지원한다.
   기본은 innerRadius 0, padAngle 0, opacity 1, white stroke width 1. Optional undefined는 생략과 같다.
 - Guides: `{axes?:false, grid?:false, legend?:false|PieLegendOptions}` 또는 false.

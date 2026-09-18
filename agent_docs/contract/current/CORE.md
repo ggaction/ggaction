@@ -1455,7 +1455,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   - `ratio` must be a positive finite number. `alignX` and `alignY` accept `"start" | "center" | "end"` and default
     to `"center"`.
   - `"auto"` removes the stored aspect request and returns to the complete allocated plot bounds.
-- `polarFrame`: `"auto"` or `{ center?, radius? }`, available only for a Polar coordinate.
+- `polarFrame`: `"auto"` or `{ center?, radius?, overflow? }`, available only for a Polar coordinate.
   - `center: { x, y }` uses finite fractions from 0 through 1 inside the aspect-adjusted effective bounds and defaults to
     `{ x: 0.5, y: 0.5 }`.
   - `radius` is `{ unit: "fraction", value }` with `0 < value <= 1` or `{ unit: "px", value }` with a positive
@@ -1463,7 +1463,10 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   - The frame object is a complete replacement. Supplying only center restores the default radius; supplying only radius
     restores the default center. `"auto"` removes the stored request.
   - The resolved maximum is the minimum distance from the requested center to the four effective-bound edges. A pixel
-    radius larger than that maximum and a boundary center reject rather than clamp.
+    radius larger than that maximum rejects by default (`overflow: "error"`). `overflow: "allow"` permits an explicit
+    pixel radius beyond the effective bounds without changing their size or center. Boundary centers still reject.
+  - The policy does not expand or clip the plot or Canvas. Authors reserve outer Canvas margins for visible overflow;
+    export remains bounded by the Canvas. Fraction radii still lie in `(0, 1]`. Omission restores the default error policy.
 - Effect: stores normalized requested aspect on the semantic coordinate, resolves one largest-fit effective rectangle inside
   the allocated plot, then rematerializes coordinate scales, marks, dependent labels, guides, layout resources, and highlights.
   Allocated Canvas bounds remain unchanged.

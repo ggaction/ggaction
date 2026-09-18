@@ -140,3 +140,12 @@ export function resolveTextBounds({
   };
   return Object.freeze(requireFiniteBounds(bounds, "Text"));
 }
+
+export function unionBounds(bounds) {
+  return bounds.reduce((union, item) => ({
+    left: Math.min(union.left, item.left),
+    right: Math.max(union.right, item.right),
+    top: Math.min(union.top, item.top),
+    bottom: Math.max(union.bottom, item.bottom)
+  }), { left: Infinity, right: -Infinity, top: Infinity, bottom: -Infinity });
+}

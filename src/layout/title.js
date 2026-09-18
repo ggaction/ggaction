@@ -1,3 +1,4 @@
+import { unionBounds } from "../core/textMetrics.js";
 import { measureTextWidth, resolveTextBounds, wrapText } from "./text.js";
 
 function lineCenters(lines, style, lineHeight, start) {
@@ -73,14 +74,6 @@ function axisAlignedTextBounds({ x, y, text, style, align, rotation }, profile) 
   }, profile);
 }
 
-function unionBounds(bounds) {
-  return bounds.reduce((union, item) => ({
-    left: Math.min(union.left, item.left),
-    right: Math.max(union.right, item.right),
-    top: Math.min(union.top, item.top),
-    bottom: Math.max(union.bottom, item.bottom)
-  }), { left: Infinity, right: -Infinity, top: Infinity, bottom: -Infinity });
-}
 
 export function resolveTitleComponentBounds(component, style, profile) {
   return unionBounds(component.lines.map((text, index) => axisAlignedTextBounds({
@@ -97,7 +90,4 @@ export function unionTitleBounds(bounds) {
   return unionBounds(bounds);
 }
 
-export function layoutBoundsIntersect(first, second) {
-  return first.left < second.right && first.right > second.left &&
-    first.top < second.bottom && first.bottom > second.top;
-}
+export { textBoundsIntersect as layoutBoundsIntersect } from "../core/textMetrics.js";

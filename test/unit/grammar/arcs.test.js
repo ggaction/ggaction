@@ -98,7 +98,7 @@ test("derives one proportional sector per positive quantitative theta row", () =
   const derived = deriveArcSectors(rows, layer, {
     thetaScale: { type: "linear", domain: [0, 3], range: [0, 360] },
     frame,
-    innerRadiusRatio: 0.25
+    innerRadius: 0.25
   });
 
   assert.deepEqual(derived.sectors.map(sector => ({

@@ -253,7 +253,7 @@ browser-safe entry에 연결하지 않는다.
 
 Static built-in `action(...)` declaration에만 pure-call annotation을 둔다. Factory가 만드는 WeakMap key/value는 반환 wrapper를 사용하지 않으면 관찰 불가능하며, 해당 wrapper를 제거할 때만 함께 버릴 수 있다. Extension 사용자의 `action()` 호출과 등록 함수에는 annotation을 붙이지 않아 metadata validation과 prototype registration을 보존한다. Basic entry에서 등록하지 않은 sibling action의 dependency를 bundle에서 제거한다.
 
-Package staging은 task resolver와 scale definition/color/quantitative transform 모듈을 기존 esbuild 정책으로 compact한다.
+Package staging은 task resolver와 scale definition/color/quantitative transform 및 polar/arc geometry 모듈을 기존 esbuild 정책으로 compact한다.
 Repository 원본과 module 경로/export는 유지하고, packed math equivalence와 artifact size를 검사한다.
 
 ### Browser bundle regression ceilings
@@ -483,6 +483,7 @@ Shared scale은 ID의 일치뿐 아니라 channel meaning, grain, bin, offset와
 Coordinate는 layer가 참조하는 named semantic resource다. Requested aspect와 Polar frame은 semantic state이고, effective bounds/frame은 `layout/aspect.js` 및 `materialization/coordinateBounds.js`의 계산 결과다. 이미 계산한 effective bounds를 다음 layout의 allocated input으로 사용하지 않는다.
 
 의존 순서는 domain → aspect → coordinate frame → range → marks → guides → layout → highlight다. Polar와 Parallel도 final Cartesian commands를 작성하므로 renderer에 coordinate branch가 없다. Parallel의 ordered dimension policy는 `actions/coordinates/parallel.js`, guide geometry는 `actions/guides/axes/parallel/resolve.js`가 소유한다. Polar sector/circle command는 `grammar/polarPaths.js`가 공유한다.
+Polar frame의 overflow 요청은 semantic coordinate가 소유한다. Arc의 비율/픽셀 inner radius는 mark config가 소유하고, `grammar/arcs.js`의 공통 해석을 sector, radius scale, selection이 사용한다. Renderer에는 overflow나 radius 단위에 대한 새 분기를 만들지 않는다.
 
 ### Guide와 title
 

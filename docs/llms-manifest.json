@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:e5a70e3a438f6e85f43281c722acc6ac9ffc700c343138458cbc40197684c93b",
+    "contractId": "sha256:a6b32a00e3470eb61884f83f3ec2c02e19ef5cfa858434fd8a5899d32c10f845",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -932,8 +932,8 @@
         "editarcmark-target-innerradius-padangle-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
         "related"
       ],
-      "bytes": 13671,
-      "sha256": "6becc85952a8b1dd3939f327a66346dee40fefc1e0a3ab0726833afcd55ea059"
+      "bytes": 13904,
+      "sha256": "6da2151f3fe2df5087b3d4257930d57008d9586fc0e91b70c6d7b9d989a61399"
     },
     {
       "order": 59,
@@ -1234,8 +1234,8 @@
         "area-bounds",
         "related"
       ],
-      "bytes": 10963,
-      "sha256": "2320f37c7384d6219bbd31f95161f50f41fffee3d2a43c2d6eb50935e5b267af"
+      "bytes": 10981,
+      "sha256": "7d7e8b4a8162fd85f4b27e172da4a42887af74b9052cbb1c1be0b9246bdadad4"
     },
     {
       "order": 75,
@@ -1543,8 +1543,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 7672,
-      "sha256": "5fb6c663f22352fcb14ec747b930b8b7dad047daf65097c44e5e5ed4c781fe9f"
+      "bytes": 8234,
+      "sha256": "8ce87584c965cd0c4dce69ee9412c1f8ca10608665b2a8dd6081185dce8ec1e9"
     },
     {
       "order": 95,
@@ -2010,8 +2010,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 154039,
-      "sha256": "36dc847ff34acbdead6ac744dd21e3f721568cf43562edb1b52d23035ff8b662"
+      "bytes": 154190,
+      "sha256": "59cf73d74f8b7ddea2a9bf8bdca274feccab1c62a7d61e280164edd66e4f137f"
     },
     {
       "order": 119,
@@ -2055,8 +2055,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 68706,
-      "sha256": "6dfae3116a3af74fceb0faaf410e986c358853a5c7b5ed046e03586196758bb8"
+      "bytes": 68862,
+      "sha256": "c2eed3a0edfdebbfbaaa955eb3e2bd2cd3055162d9fda56d49a4a7e340ad020c"
     },
     {
       "order": 120,
@@ -2161,8 +2161,8 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 78089,
-      "sha256": "e8a6896c8d76bed2d6b49bc50c165605f13110afe76d9ac68b089478232feda9"
+      "bytes": 78277,
+      "sha256": "3d4f4cfd24aa5a5a92f1c0bd964218f9b574f67d4cd264b83a7224511fe505f2"
     },
     {
       "order": 122,
@@ -2339,6 +2339,7 @@
         "type-annotationbaseoptions",
         "type-applytextmetricsoptions",
         "type-applythemeoptions",
+        "type-arcinnerradius",
         "type-areaplotindependentchannel",
         "type-areaplotmeasurechannel",
         "type-arearangepositionencodingoptions",
@@ -2942,8 +2943,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 311716,
-      "sha256": "07b85c1e79844201a45c7a9d7c14a8010360a70586eb9ba90d6a8013ae3126f3"
+      "bytes": 312061,
+      "sha256": "392dc54ef67775e6bcc8b191e176e6abd112149647ad9fb73f6f96e2938b45fc"
     },
     {
       "order": 127,
@@ -3295,7 +3296,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "d909e11affd26cd6e1fec273b518e40b0d5c32e0927026813034914a23e61f8e"
+      "sha256": "21fc592d20f6fd2d45f3db73bdb83ef5e17dd5a40b61ed0383d5661411354d90"
     },
     {
       "order": 150,

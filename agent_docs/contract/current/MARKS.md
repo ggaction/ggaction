@@ -569,18 +569,18 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 - Signature: `createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`.
 - The first inferred ID is `"arc"`; data follows the shared current/explicit dataset contract.
-- `innerRadius` is a ratio in `[0, 1)` of the available Polar radius. `padAngle` is a non-negative degree value.
+- `innerRadius` is a ratio in `[0, 1)` of the available Polar radius, or `{ unit: "px", value }` with a non-negative finite value smaller than the resolved outer radius. Pixel values stay fixed on resize. `padAngle` is a non-negative degree value.
 - Default appearance is theme fill, opacity `1`, white stroke, and stroke width `1`.
 - Effect: creates semantic mark type `arc` and an empty path collection. Direct quantitative theta, categorical count,
   or categorical weighted-sum theta completes a proportional pie/donut; categorical theta plus quantitative radius
   completes equal-band radial sectors. Concrete output contains only closed `M/L/C/Z` commands and appearance
   properties.
 - Multiple rows in one theta band use stable larger-first overlay order. A mapped outer radius equal to the inner
-  baseline is omitted. Automatic radius range starts at `innerRadius * availableRadius`.
+  baseline is omitted. Automatic radius range starts at the resolved inner radius (ratio times available radius, or fixed pixels). Shared ranges require one resolved inner baseline; explicit measured ranges must agree with an explicitly requested inner radius.
 
 ### Formal values — `createArcMark`
 
-- Implemented: `createArcMark({ id?: UserId; data?: UserId; innerRadius?: number; padAngle?: NonNegativeFinite; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`, where `0 <= innerRadius < 1`.
+- Implemented: `createArcMark({ id?: UserId; data?: UserId; innerRadius?: ArcInnerRadius; padAngle?: NonNegativeFinite; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`, where numeric values satisfy `0 <= innerRadius < 1` and pixel requests use `{ unit: "px", value: NonNegativeFinite }`.
 - Proposed (NOT IMPLEMENTED): explicit secondary theta/radius endpoints.
 
 ### Value coverage — `createArcMark`
@@ -603,7 +603,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editArcMark`
 
-- Implemented: `editArcMark({ target?: UserId; innerRadius?: number; padAngle?: NonNegativeFinite; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editArcMark({ target?: UserId; innerRadius?: ArcInnerRadius; padAngle?: NonNegativeFinite; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editArcMark`

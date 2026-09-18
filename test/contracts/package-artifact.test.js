@@ -84,7 +84,8 @@ test("publishes only the bounded public package artifact", async () => {
   );
   assert.equal(await readFile(resolverFile, "utf8"), resolverSource);
   for (const relative of ["src/grammar/scales/color.js", "src/grammar/scales/transformed.js",
-    "src/grammar/scales/definition.js", "src/actions/scales/definitions.js"]) {
+    "src/grammar/scales/definition.js", "src/actions/scales/definitions.js",
+    "src/grammar/polar.js", "src/grammar/arcs.js"]) {
     const source = await readFile(new URL(`../../${relative}`, import.meta.url), "utf8");
     assert.equal(manifest.files.find(file => file.path === relative).size,
       Buffer.byteLength(compactPackageJavaScript(source, {keepNames:false})));

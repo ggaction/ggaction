@@ -3372,7 +3372,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `category` | Required | `PieCategory` |
 | `color` | Optional / branch-dependent | `false \| PieColor \| undefined` |
-| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: number \| undefined; padAngle?: number \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: ArcInnerRadius \| undefined; padAngle?: number \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| { axes?: false \| undefined; grid?: false \| undefined; legend?: false \| PieLegendOptions \| undefined; } \| undefined` |
 | `value` | Optional / branch-dependent | `string \| undefined` |
 | `aggregate` | Optional / branch-dependent | `"count" \| "sum" \| undefined` |
@@ -3391,7 +3391,7 @@ both `value` and `aggregate: "sum"`; values must be finite and nonnegative with
 a positive total. Color defaults to the category. Use `color: false` for a
 scalar `arc.fill`; otherwise each slice must resolve to one categorical color.
 
-`arc.innerRadius` is a radius ratio in [0,1), and `arc.padAngle` is in degrees.
+`arc.innerRadius` is a radius ratio in [0,1) or `{ unit: "px", value }` for a non-negative fixed inner radius smaller than the outer radius; `arc.padAngle` is in degrees.
 Use these options for a donut. `guides` defaults to a color legend with no axes
 or grid; `guides: false` skips guide creation. Explicit axes/grid requests must
 be false. A zero-weight category may remain in the color legend without a sector.
@@ -3424,7 +3424,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `category` | Required | `PieCategory` |
 | `color` | Optional / branch-dependent | `false \| PieColor \| undefined` |
 | `radiusScale` | Optional / branch-dependent | `MeasuredRadiusScaleOptions \| undefined` |
-| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: number \| undefined; padAngle?: 0 \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: ArcInnerRadius \| undefined; padAngle?: 0 \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| MeasuredRadialGuideOptions \| undefined` |
 | `value` | Optional / branch-dependent | `string \| undefined` |
 | `aggregate` | Optional / branch-dependent | `"count" \| "sum" \| undefined` |
@@ -3439,7 +3439,7 @@ createRosePlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusSc
 
 Create equal-angle sectors whose sector area, excluding the hole is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
 
-The default id is `rosePlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit Canvas. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
+The default id is `rosePlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit the resolved Polar frame. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
 
 [Measured radial tutorial](../../tutorials/polar-arcs.md#measured-rose-and-radial-bar-plots)
 
@@ -3469,7 +3469,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `category` | Required | `PieCategory` |
 | `color` | Optional / branch-dependent | `false \| PieColor \| undefined` |
 | `radiusScale` | Optional / branch-dependent | `MeasuredRadiusScaleOptions \| undefined` |
-| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: number \| undefined; padAngle?: 0 \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: ArcInnerRadius \| undefined; padAngle?: 0 \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| MeasuredRadialGuideOptions \| undefined` |
 | `value` | Optional / branch-dependent | `string \| undefined` |
 | `aggregate` | Optional / branch-dependent | `"count" \| "sum" \| undefined` |
@@ -3484,7 +3484,7 @@ createRadialBarPlot({ id?, data?, coordinate?, category, value?, aggregate?, rad
 
 Create equal-angle sectors whose radial length measured from the inner edge is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
 
-The default id is `radialBarPlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit Canvas. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
+The default id is `radialBarPlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit the resolved Polar frame. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
 
 [Measured radial tutorial](../../tutorials/polar-arcs.md#measured-rose-and-radial-bar-plots)
 

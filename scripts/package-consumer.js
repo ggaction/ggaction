@@ -1612,6 +1612,14 @@ async function testNodeConsumer(directory) {
       .encodeTheta({ field: "group", aggregate: "count" })
       .encodeColor({ field: "group" });
     assert.equal(arcs.graphicSpec.objects.arc.items.length, 2);
+    const overflowArcs = arcs.editArcMark({ innerRadius: { unit: "px", value: 30 } })
+      .editCoordinate({ target: "polar", polarFrame: {
+        radius: { unit: "px", value: 70 }, overflow: "allow"
+      } });
+    assert.equal(overflowArcs.graphicSpec.objects.arc.items.length, 2);
+    assert.deepEqual(overflowArcs.markConfigs.arc.innerRadius, { unit: "px", value: 30 });
+    assert.equal(overflowArcs.semanticSpec.coordinates.find(item => item.id === "polar").polarFrame.overflow, "allow");
+
     assert.equal(
       arcs.graphicSpec.objects.arc.items.every(
         item => item.properties.commands.at(-1).op === "Z"
@@ -2794,6 +2802,9 @@ async function testTypeScriptConsumer(directory) {
       value: "value", aggregate: "sum", arc: { innerRadius: 0.55, padAngle: 2 }, guides: { axes: false, grid: false } });
     const pieOptions: import("ggaction").CreatePiePlotOptions = { category: "category", color: false, arc: { fill: "red" } };
     program.createPiePlot(pieOptions).editArcMark({ target: "piePlot", innerRadius: 0.2 });
+    program.createPiePlot({ category: "category", arc: { innerRadius: { unit: "px", value: 30 } } })
+      .editCoordinate({ target: "polar", polarFrame: { radius: { unit: "px", value: 120 }, overflow: "allow" } });
+
     // @ts-expect-error Pie is full-only.
     basicChart().createPiePlot({ category: "category" });
     // @ts-expect-error A pie requires its category role.

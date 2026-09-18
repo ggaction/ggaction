@@ -1328,10 +1328,10 @@ Edit constant area appearance. `stroke: false` removes an existing outline.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails).
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`ArcInnerRadius`](./../types.md#type-arcinnerradius).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1345,7 +1345,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
-| `innerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `innerRadius` | Optional / branch-dependent | `ArcInnerRadius \| undefined` |
 | `padAngle` | Optional / branch-dependent | `number \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -1373,10 +1373,10 @@ radial sectors. [Marks](../../api/marks/line-area.md#arc-marks)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails).
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`ArcInnerRadius`](./../types.md#type-arcinnerradius).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1389,7 +1389,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `innerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `innerRadius` | Optional / branch-dependent | `ArcInnerRadius \| undefined` |
 | `padAngle` | Optional / branch-dependent | `number \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |

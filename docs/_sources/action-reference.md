@@ -57,8 +57,8 @@ interface ChartProgramActions {
   createBarMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editBarMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
-  createArcMark(options?: { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editArcMark(options: { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  createArcMark(options?: { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editArcMark(options: { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
   createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
@@ -895,7 +895,7 @@ both `value` and `aggregate: "sum"`; values must be finite and nonnegative with
 a positive total. Color defaults to the category. Use `color: false` for a
 scalar `arc.fill`; otherwise each slice must resolve to one categorical color.
 
-`arc.innerRadius` is a radius ratio in [0,1), and `arc.padAngle` is in degrees.
+`arc.innerRadius` is a radius ratio in [0,1) or `{ unit: "px", value }` for a non-negative fixed inner radius smaller than the outer radius; `arc.padAngle` is in degrees.
 Use these options for a donut. `guides` defaults to a color legend with no axes
 or grid; `guides: false` skips guide creation. Explicit axes/grid requests must
 be false. A zero-weight category may remain in the color legend without a sector.
@@ -910,7 +910,7 @@ createRosePlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusSc
 
 Create equal-angle sectors whose sector area, excluding the hole is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
 
-The default id is `rosePlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit Canvas. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
+The default id is `rosePlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit the resolved Polar frame. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
 
 [Measured radial tutorial](../tutorials/polar-arcs.md#measured-rose-and-radial-bar-plots)
 
@@ -922,7 +922,7 @@ createRadialBarPlot({ id?, data?, coordinate?, category, value?, aggregate?, rad
 
 Create equal-angle sectors whose radial length measured from the inner edge is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
 
-The default id is `radialBarPlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit Canvas. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
+The default id is `radialBarPlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit the resolved Polar frame. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
 
 [Measured radial tutorial](../tutorials/polar-arcs.md#measured-rose-and-radial-bar-plots)
 
@@ -2781,7 +2781,9 @@ Canvas edits. The target coordinate ID is always explicit.
 request. Center values are normalized effective-bound fractions; radius is a
 fraction of the largest fitting radius or a positive fixed pixel value. The
 frame object is replaced as a whole, and aspect is resolved before the Polar
-frame and radial scale range.
+frame and radial scale range. Optional `overflow: "allow"` permits a pixel radius
+beyond plot bounds while preserving Canvas size; reserve outer margins for its
+exported extent. Omitted overflow defaults to `"error"`.
 
 `createDerivedData` stores immutable source and transform provenance only; it
 does not materialize values. Chart facades and mark creation reject definition-only

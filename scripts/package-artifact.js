@@ -77,7 +77,9 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/grammar/scales/color.js",
   "src/grammar/scales/transformed.js",
   "src/grammar/scales/definition.js",
-  "src/actions/scales/definitions.js"
+  "src/actions/scales/definitions.js",
+  "src/grammar/polar.js",
+  "src/grammar/arcs.js"
 ]);
 
 export function compactPackageJavaScript(source, { keepNames = true } = {}) {

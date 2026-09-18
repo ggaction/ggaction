@@ -143,7 +143,7 @@ const automatic = equalUnits.editCoordinate({
 The action is available from `ggaction` and is absent from `ggaction/basic`.
 
 For a Polar coordinate, `polarFrame` moves the center and constrains the radial
-extent inside the aspect-adjusted effective bounds:
+extent relative to the aspect-adjusted effective bounds:
 
 <!-- snippet-context:start -->
 
@@ -162,8 +162,11 @@ const movedPolar = polarProgram.editCoordinate({
 ```
 
 Center coordinates are finite fractions from 0 through 1. Fraction radius must
-be greater than 0 and at most 1; pixel radius must be positive and fit between
-the center and every frame edge. The object is a complete replacement:
+be greater than 0 and at most 1; pixel radius must be positive and, by default, fit between
+the center and every frame edge. Set `overflow: "allow"` in the frame object to allow
+a fixed pixel radius beyond the plot while keeping its authored dimensions.
+This neither expands the Canvas nor adds plot clipping: reserve Canvas margins for
+visible overflow, since exports remain bounded by the Canvas. The default is `"error"`. The object is a complete replacement:
 omitting center restores `{ x: 0.5, y: 0.5 }`, and omitting radius restores
 `{ unit: "fraction", value: 1 }`. Use `polarFrame: "auto"` to remove the
 stored request.
@@ -172,7 +175,10 @@ When one call supplies both patches, ggaction resolves aspect, then the Polar
 frame, then the radial scale range. Points, lines, arcs, Polar axes, grids, and
 selection geometry all consume that same resolved frame. Fraction radii resize
 with the Canvas; pixel radii remain fixed and reject a later Canvas size that
-cannot contain them.
+cannot contain them unless the stored frame uses `overflow: "allow"`.
+For proportional donuts, `arc.innerRadius: { unit: "px", value: 60 }` keeps a
+60px hole independently of a frame radius such as 120px. The inner radius must
+remain smaller than the outer radius.
 
 ## `removeCoordinate({ id })` {#removecoordinate-id}
 

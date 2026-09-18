@@ -16,7 +16,7 @@ export function resolveArcItems(program, layer, dataset) {
     thetaScale,
     ...(radiusScale === undefined ? {} : { radiusScale }),
     frame,
-    innerRadiusRatio: program.markConfigs[layer.id]?.innerRadius ?? 0
+    innerRadius: program.markConfigs[layer.id]?.innerRadius ?? 0
   });
   const graphic = program.graphicSpec.objects[layer.id];
   const stroke = layer.encoding?.stroke;

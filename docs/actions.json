@@ -23879,7 +23879,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic arc mark and empty closed-path collection.",
-      "signature": "createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;",
+      "signature": "createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "create arc mark",
         "create",
@@ -23918,6 +23918,10 @@
         ]
       },
       "units": [
+        {
+          "path": "innerRadius.value",
+          "unit": "logical-pixel"
+        },
         {
           "path": "innerRadius",
           "unit": "ratio"
@@ -23981,7 +23985,7 @@
         {
           "name": "innerRadius",
           "required": false,
-          "type": "number | undefined"
+          "type": "ArcInnerRadius | undefined"
         },
         {
           "name": "padAngle",
@@ -24022,7 +24026,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit arc geometry or appearance and rematerialize complete sector paths.",
-      "signature": "editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;",
+      "signature": "editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "edit arc mark",
         "edit",
@@ -24055,6 +24059,10 @@
         ]
       },
       "units": [
+        {
+          "path": "innerRadius.value",
+          "unit": "logical-pixel"
+        },
         {
           "path": "innerRadius",
           "unit": "ratio"
@@ -24109,7 +24117,7 @@
         {
           "name": "innerRadius",
           "required": false,
-          "type": "number | undefined"
+          "type": "ArcInnerRadius | undefined"
         },
         {
           "name": "padAngle",
@@ -31369,7 +31377,16 @@
           "default"
         ]
       },
-      "units": [],
+      "units": [
+        {
+          "path": "arc.innerRadius",
+          "unit": "ratio"
+        },
+        {
+          "path": "arc.innerRadius.value",
+          "unit": "logical-pixel"
+        }
+      ],
       "inference": [
         {
           "input": "data",
@@ -31420,7 +31437,7 @@
         {
           "name": "arc",
           "required": false,
-          "type": "(StrokeStyleDetails & { innerRadius?: number | undefined; padAngle?: number | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: number | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -31492,7 +31509,16 @@
           "default"
         ]
       },
-      "units": [],
+      "units": [
+        {
+          "path": "arc.innerRadius",
+          "unit": "ratio"
+        },
+        {
+          "path": "arc.innerRadius.value",
+          "unit": "logical-pixel"
+        }
+      ],
       "inference": [
         {
           "input": "data",
@@ -31548,7 +31574,7 @@
         {
           "name": "arc",
           "required": false,
-          "type": "(StrokeStyleDetails & { innerRadius?: number | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -31619,7 +31645,16 @@
           "default"
         ]
       },
-      "units": [],
+      "units": [
+        {
+          "path": "arc.innerRadius",
+          "unit": "ratio"
+        },
+        {
+          "path": "arc.innerRadius.value",
+          "unit": "logical-pixel"
+        }
+      ],
       "inference": [
         {
           "input": "data",
@@ -31675,7 +31710,7 @@
         {
           "name": "arc",
           "required": false,
-          "type": "(StrokeStyleDetails & { innerRadius?: number | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",

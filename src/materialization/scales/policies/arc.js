@@ -1,3 +1,4 @@
+import { resolveArcInnerRadius } from "../../../grammar/arcs.js";
 import { validateMeasuredRadiusScale } from "../../../grammar/scales/radial.js";
 export function resolveArcAutoPositionRange({
   consumers,
@@ -15,16 +16,16 @@ export function resolveArcAutoPositionRange({
     return range;
   }
   if (channel === "radius") {
-    const ratios = consumers.map(
-      consumer => markConfigs[consumer.layer.id]?.innerRadius ?? 0
-    );
-    if (new Set(ratios).size !== 1) {
+    const outer = Math.max(...range);
+    const inner = consumers.map(consumer => resolveArcInnerRadius(
+      markConfigs[consumer.layer.id]?.innerRadius ?? 0, outer
+    ));
+    if (new Set(inner).size !== 1) {
       throw new Error(
         `Shared arc radius scale "${scale.id}" requires one innerRadius policy.`
       );
     }
-    const outer = Math.max(...range);
-    return [outer * ratios[0], outer];
+    return [inner[0], outer];
   }
   if (
     channel === "theta" &&
@@ -67,7 +68,7 @@ export function validateMeasuredRadiusConsumers({ scale, domain, range, consumer
     const config = markConfigs[layer.id] ?? {};
     if ((config.padAngle ?? 0) !== 0) throw new Error("Measured Arc requires padAngle 0.");
     if (scale.range !== "auto" && config.innerRadiusExplicit === true &&
-      Math.abs(config.innerRadius - range[0] / range[1]) > Number.EPSILON * 8) {
+      Math.abs(resolveArcInnerRadius(config.innerRadius, range[1]) / range[1] - range[0] / range[1]) > Number.EPSILON * 8) {
       throw new Error("Measured Arc innerRadius must agree with its explicit radius range.");
     }
   }

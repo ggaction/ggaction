@@ -1800,7 +1800,9 @@ Canvas edits. The target coordinate ID is always explicit.
 request. Center values are normalized effective-bound fractions; radius is a
 fraction of the largest fitting radius or a positive fixed pixel value. The
 frame object is replaced as a whole, and aspect is resolved before the Polar
-frame and radial scale range.
+frame and radial scale range. Optional `overflow: "allow"` permits a pixel radius
+beyond plot bounds while preserving Canvas size; reserve outer margins for its
+exported extent. Omitted overflow defaults to `"error"`.
 
 `createDerivedData` stores immutable source and transform provenance only; it
 does not materialize values. Chart facades and mark creation reject definition-only

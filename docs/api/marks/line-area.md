@@ -252,7 +252,10 @@ const donut = chart()
   .encodeColor({ field: "Origin", palette: "tableau10" });
 ```
 
-`innerRadius` is a ratio from `0` inclusive to `1` exclusive. `padAngle` uses
+`innerRadius` is a ratio from `0` inclusive to `1` exclusive, or
+`{ unit: "px", value: 60 }` for a fixed pixel hole. Pixel values must be finite,
+non-negative, and smaller than the resolved outer radius. Automatic radial
+ranges use that same inner baseline; explicit measured ranges must agree. `padAngle` uses
 degrees. Direct quantitative theta creates one proportional sector per positive
 row. Count or weighted-sum categorical theta creates aggregated proportional
 sectors. Categorical theta plus quantitative `encodeR` creates equal-angle
