@@ -127,6 +127,9 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
 
   let next = program;
   if (layer.mark.type === "bar") {
+    if (layer.mark.orientation !== undefined && primaryChannel !== (layer.mark.orientation === "vertical" ? "y" : "x")) {
+      throw new Error("Numeric bar endpoints must use the measure channel.");
+    }
     if (layer.layout?.mode !== undefined && layer.layout.mode !== "overlay") throw new Error("Ranged bars support only overlay layout; clear series layout before assigning endpoints.");
     for (const property of ["aggregate", "stack", "bin"]) {
       if (layer.encoding?.[primaryChannel]?.[property] !== undefined) {
@@ -211,6 +214,9 @@ function rangeAction(channel) {
     let next = this;
     let lower = { field: args.lower }, upper = { field: args.upper };
     if (layer.mark.type === "bar") {
+      if (layer.mark.orientation !== undefined && channel !== (layer.mark.orientation === "vertical" ? "y" : "x")) {
+        throw new Error("Numeric bar endpoints must use the measure channel.");
+      }
       common.target = layer.id;
       const resolved = resolvePositionEncoding(this, channel, {
         ...common, ...lower,

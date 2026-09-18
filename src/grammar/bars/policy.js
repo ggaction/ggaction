@@ -3,6 +3,7 @@ import { isAggregate } from "../aggregate.js";
 export const BAR_GRAINS = Object.freeze({
   histogram: "histogram",
   aggregate: "aggregate",
+  centered: "centered",
   ranged: "ranged"
 });
 
@@ -20,10 +21,17 @@ function isMeasure(encoding) {
     isAggregate(encoding.aggregate);
 }
 
+function hasNumericCenters(layer) {
+  return layer.mark.orientation !== undefined && [layer.encoding?.x, layer.encoding?.y].every(
+    encoding => encoding?.fieldType === "quantitative" && encoding.bin === undefined && encoding.aggregate === undefined
+  );
+}
+
 export function resolveBarOrientation(layer) {
   if (layer?.mark?.type !== "bar") return undefined;
   const x = layer.encoding?.x;
   const y = layer.encoding?.y;
+  if (hasNumericCenters(layer)) return layer.mark.orientation;
   if (x?.bin !== undefined && y?.aggregate === "count") {
     return BAR_ORIENTATIONS.vertical;
   }
@@ -56,6 +64,8 @@ export function resolveBarGrain(layer) {
   const x = layer.encoding?.x;
   const y = layer.encoding?.y;
 
+  if (hasNumericCenters(layer)) return BAR_GRAINS.centered;
+
   if (
     x?.bin !== undefined &&
     y?.aggregate === "count"
@@ -80,7 +90,7 @@ export function inferBarColorLayout(layer) {
   const grain = resolveBarGrain(layer);
   if (grain === BAR_GRAINS.histogram) return "stack";
   if (grain === BAR_GRAINS.aggregate) return "group";
-  if (grain === BAR_GRAINS.ranged) return "overlay";
+  if (grain === BAR_GRAINS.ranged || grain === BAR_GRAINS.centered) return "overlay";
   return undefined;
 }
 
@@ -89,6 +99,7 @@ export function resolveBarColorLayout(layer) {
   if (layer?.encoding?.color?.layout !== undefined) {
     return layer.encoding.color.layout;
   }
+  if (resolveBarGrain(layer) === BAR_GRAINS.centered) return "overlay";
   const channels = resolveBarChannels(layer);
   if (layer?.encoding?.[channels?.measure]?.stack === "normalize") return "fill";
   const offsetChannel = resolveBarOffsetChannel(layer);

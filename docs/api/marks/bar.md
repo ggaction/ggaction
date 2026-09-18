@@ -10,6 +10,14 @@ title: Bar Marks
 Bar marks represent binned counts, aggregate categories, grouped or stacked
 partitions, and observed quantitative intervals.
 
+For raw numeric centers, create the mark with `orientation: "vertical"` or
+`"horizontal"`, then encode two quantitative positions. Every row remains a
+separate bar, including repeated centers. Numeric bars extend from zero to the
+measure, or use a range on the measure channel. Width defaults to 5 pixels;
+`encodeBarWidth({ pixels: 20 })` sets a fixed width before or after positions.
+Numeric bars support overlay layout and reject band widths and aggregation.
+The `createBarPlot` facade infers vertical orientation for two raw numeric fields.
+
 ## `createBarMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 <!-- snippet-context:start -->

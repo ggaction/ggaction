@@ -29,6 +29,13 @@ function resolveBarChannelPolicy({
   const pendingRange = program.markConfigs[layer.id]?.boxPlot !== undefined ||
     layer.encoding?.[`${channel}2`] !== undefined;
 
+  if (layer.mark?.orientation !== undefined) {
+    if (fieldType !== "quantitative" || ["bin", "aggregate", "stack", "weight"].some(key => args[key] !== undefined)) {
+      throw new Error("Oriented numeric bars require raw quantitative positions without bin, aggregate, stack, or weight.");
+    }
+    return { bin, aggregate, stack };
+  }
+
   if (["nominal", "ordinal", "temporal"].includes(fieldType)) {
     if (args.aggregate !== undefined || args.bin !== undefined || args.stack !== undefined) {
       throw new Error(

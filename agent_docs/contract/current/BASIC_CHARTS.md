@@ -170,7 +170,13 @@ createBarPlot({
 ```
 
 - Stable default ID is `barPlot`.
-- 한 위치 channel은 `{ lower, upper, fieldType?: "quantitative", scale? }` raw interval을 받는다. 다른 channel은 categorical/temporal field다. 양쪽 range, field/aggregate/stack과 range의 혼합은 거부한다.
+- 두 위치가 raw quantitative이면 숫자 center와 원본 행 단위 막대를 만든다. `orientation` 기본vertical,
+  horizontal 선택 가능; numeric range는 range channel로 방향을 추론한다. 방향은 mark.orientation에 저장한다.
+  중복 center도 합치지 않는다. 일반 numeric measure는0까지, range는 입력한 양끝까지 그린다.
+  자동 measure domain에는 baseline0이 참여한다. 폭은 기본5px 또는 width.pixels이며 band 폭과 stack/group은
+  거부한다. 기존 category/temporal/aggregate/histogram에는 orientation을 지정하지 않는다.
+  Evidence: `test/unit/actions/charts/numeric-bar-centers.test.js`.
+- 한 위치 channel은 `{ lower, upper, fieldType?: "quantitative", scale? }` raw interval을 받는다. 다른 channel은 categorical/temporal 또는 numeric field다. 양쪽 range, field/aggregate/stack과 range의 혼합은 거부한다.
 - Raw range는 category-first `encodeXRange`/`encodeYRange`를 호출하고 입력 행을 합치지 않는다. 여러 구간 layer와 raw line이 compatible value scale을 공유하고 resize/facet에도 경계·폭·그리기 순서를 유지한다.
 - Hierarchy: `createBarMark`, category-first position actions (`encodeX`→`encodeY` vertically,
   `encodeY`→`encodeX` horizontally), optional `encodeColor`/`encodeBarWidth`, optional `createGuides`.
@@ -189,7 +195,7 @@ createBarPlot({
 ### Formal values — `createBarPlot`
 
 - Implemented: `createBarPlot(options: CreateBarPlotOptions): ChartProgram`.
-- Required: `x`, `y`; optional: `id`, `data`, `coordinate`, `color`, `width`, `bar`, `guides`.
+- Required: `x`, `y`; optional: `id`, `data`, `coordinate`, `orientation`, `color`, `width`, `bar`, `guides`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 

@@ -35,7 +35,8 @@ export function normalizeMarkLabelContent(source, { content, normalizeBy }) {
   }
   if (source.mark.type === "bar") {
     const grain = resolveBarGrain(source);
-    if (grain === BAR_GRAINS.ranged) {
+    if (grain === BAR_GRAINS.ranged || grain === BAR_GRAINS.centered &&
+        source.encoding[`${resolveBarChannels(source).measure}2`] !== undefined) {
       throw new Error("Ranged Bar text requires an explicit field or value.");
     }
     if (content === "category" && grain === BAR_GRAINS.histogram) {
@@ -63,6 +64,7 @@ function itemValue(source, item) {
       );
     }
     const measure = source.encoding[resolveBarChannels(source).measure];
+    if (resolveBarGrain(source) === BAR_GRAINS.centered) return item.channels[`${resolveBarChannels(source).measure}2`];
     return measure.aggregate === "count" ? item.members.length
       : aggregateRows(item.members, measure.field, measure.aggregate);
   }

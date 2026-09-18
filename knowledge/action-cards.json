@@ -7649,7 +7649,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic bar mark and empty rect collection.",
-      "signature": "createBarMark(options?: RectStyleDetails & { id?: string; data?: string; missing?: \"error\" | \"skip\"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: \"vertical\" | \"horizontal\"; missing?: \"error\" | \"skip\"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "create bar mark",
         "create",
@@ -7766,6 +7766,11 @@
           "name": "data",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "orientation",
+          "required": false,
+          "type": "\"horizontal\" | \"vertical\" | undefined"
         },
         {
           "name": "missing",
@@ -30613,6 +30618,11 @@
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "orientation",
+          "required": false,
+          "type": "\"horizontal\" | \"vertical\" | undefined"
         },
         {
           "name": "color",

@@ -1054,7 +1054,7 @@ semantic encodings. [Marks](../../api/marks.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createBarMark(options?: RectStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
@@ -1076,6 +1076,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
+| `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -1087,7 +1088,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createBarMark({ id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection.

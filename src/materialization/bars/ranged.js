@@ -6,6 +6,7 @@ import {
 } from "../../grammar/scales/index.js";
 import { mapScaleConsumerValues } from "../scales/map.js";
 import { resolveBarWidth } from "../../grammar/bars/geometry.js";
+import { BAR_GRAINS, resolveBarChannels, resolveBarGrain } from "../../grammar/bars/policy.js";
 import {
   DEFAULT_BAR_FILL,
   DEFAULT_BAR_STROKE,
@@ -14,7 +15,8 @@ import {
 
 export function deriveRangedRectangles(required, program, width) {
   const { layer, dataset } = required;
-  const vertical = layer.encoding?.y2 !== undefined;
+  const centered = resolveBarGrain(layer) === BAR_GRAINS.centered;
+  const vertical = centered ? resolveBarChannels(layer).orientation === "vertical" : layer.encoding?.y2 !== undefined;
   const categoryChannel = vertical ? "x" : "y";
   const measureChannel = vertical ? "y" : "x";
   const secondaryChannel = `${measureChannel}2`;
@@ -26,7 +28,7 @@ export function deriveRangedRectangles(required, program, width) {
   const categoryValues = readScaleField(dataset.values, category.field, category.fieldType, {
     temporalUnit: category.temporalUnit
   });
-  const centers = (categoryScale.type === "time" ? mapContinuousScaleValues : mapOrdinalPositionValues)(
+  const centers = (centered || categoryScale.type === "time" ? mapContinuousScaleValues : mapOrdinalPositionValues)(
     categoryValues, categoryScale
   );
   const first = mapContinuousScaleValues(
@@ -34,10 +36,11 @@ export function deriveRangedRectangles(required, program, width) {
     measureScale
   );
   const second = mapContinuousScaleValues(
-    dataset.values.map(row => row[secondary.field]),
+    dataset.values.map(row => secondary === undefined ? 0 : row[secondary.field]),
     measureScale
   );
-  const band = resolveBarWidth(width, Math.abs(categoryScale.bandwidth ?? categoryScale.step));
+  if (centered && width?.band !== undefined) throw new Error("Numeric-center bars require pixel width.");
+  const band = resolveBarWidth(centered ? width ?? { pixels: 5 } : width, Math.abs(categoryScale.bandwidth ?? categoryScale.step));
   const config = program.markConfigs[layer.id] ?? {};
   const appearance = config.barAppearance ?? {};
   const color = layer.encoding?.color;

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:c0fca342d57fdb23bf115de3fa82c9c2bbc89227621d400b077b77e583e8f300. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:2367251d73d877faf06a48f3a070ea53d0bb57b0940f6add5aa324f580dfa452. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -4309,9 +4309,15 @@ horizontal, aggregate, or ranged geometry. `color.layout` owns grouped,
 stacked, normalized-fill, overlay, and diverging arrangements.
 
 Use `{ lower, upper }` on one axis for raw interval bars. The opposite axis
-must be categorical or temporal. Bounds remain per-row values: no mean, sum,
+may be categorical, temporal, or numeric. Bounds remain per-row values: no mean, sum,
 or stacking is introduced. Do not combine a range with `field`, `aggregate`,
 or `stack` in the same channel, or specify ranges on both axes.
+
+Two raw numeric fields create one bar per row at the actual numeric center.
+Use `createBarPlot({ x: "position", y: "value", width: { pixels: 20 } })`
+for vertical bars, or add `orientation: "horizontal"` for horizontal bars.
+Width defaults to 5 pixels. Numeric ranges infer orientation from their measure
+channel. Numeric bars preserve repeated centers and allow overlay layout only.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -6292,6 +6298,14 @@ Stacked totals: Mon 15, Tue 28.
 
 Bar marks represent binned counts, aggregate categories, grouped or stacked
 partitions, and observed quantitative intervals.
+
+For raw numeric centers, create the mark with `orientation: "vertical"` or
+`"horizontal"`, then encode two quantitative positions. Every row remains a
+separate bar, including repeated centers. Numeric bars extend from zero to the
+measure, or use a range on the measure channel. Width defaults to 5 pixels;
+`encodeBarWidth({ pixels: 20 })` sets a fixed width before or after positions.
+Numeric bars support overlay layout and reject band widths and aggregation.
+The `createBarPlot` facade infers vertical orientation for two raw numeric fields.
 
 ## `createBarMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
 
@@ -18132,6 +18146,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `color` | Optional / branch-dependent | `BarColorChannel \| undefined` |
 | `width` | Optional / branch-dependent | `Omit<BarWidthOptions, "target"> \| undefined` |
 | `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
@@ -18142,11 +18157,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createBarPlot({ id?, data?, coordinate?, x, y, color?, width?, bar?, guides? })
+createBarPlot({ id?, data?, coordinate?, orientation?, x, y, color?, width?, bar?, guides? })
 ```
 
 Create categorical or temporal bars with quantitative measures; use `color.layout` for grouped or stacked partitions, not top-level `stack`/`groupBy`; width defaults to 0.72 of the slot and guides are inferred unless disabled.
 A channel may instead specify `{ lower, upper, scale? }` for raw interval bars without aggregation.
+Two raw numeric positions preserve each input row and numeric center spacing.
+Their orientation defaults to vertical (or follows the range channel); use
+`orientation: "horizontal"` for horizontal numeric bars. Their width defaults to
+5 pixels and accepts `width: { pixels }`, with overlay layout only. Numeric bars
+extend to zero unless explicit lower/upper bounds are supplied.
 Category-first child calls infer the ordinary single-field measure's mean in either orientation; temporal categories are supported on both axes.
 [Basic Charts](./api/basic-charts/#createbarplot)
 
@@ -19494,7 +19514,7 @@ semantic encodings. [Marks](./api/marks/)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createBarMark(options?: RectStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
@@ -19515,6 +19535,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
+| `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -19524,7 +19545,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createBarMark({ id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection.
@@ -26150,7 +26171,7 @@ interface ChartProgramActions {
   removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
   createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  createBarMark(options?: RectStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
@@ -27895,6 +27916,7 @@ export type CreateBarPlotOptions = {
   id?: string;
   data?: string;
   coordinate?: string;
+  orientation?: "vertical" | "horizontal";
   color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target">;
   bar?: RectStyleDetails & {
@@ -38411,7 +38433,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:c0fca342d57fdb23bf115de3fa82c9c2bbc89227621d400b077b77e583e8f300` |
+| Contract fingerprint | `sha256:2367251d73d877faf06a48f3a070ea53d0bb57b0940f6add5aa324f580dfa452` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

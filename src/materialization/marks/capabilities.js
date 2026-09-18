@@ -135,7 +135,7 @@ export function canMaterializeBar(program, layer) {
     return false;
   }
   const grain = resolveBarGrain(layer);
-  if (![BAR_GRAINS.histogram, BAR_GRAINS.aggregate, BAR_GRAINS.ranged].includes(grain)) {
+  if (![BAR_GRAINS.histogram, BAR_GRAINS.aggregate, BAR_GRAINS.ranged, BAR_GRAINS.centered].includes(grain)) {
     return false;
   }
   if (

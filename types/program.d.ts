@@ -3528,6 +3528,7 @@ export type CreateBarPlotOptions = {
   id?: string;
   data?: string;
   coordinate?: string;
+  orientation?: "vertical" | "horizontal";
   color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target">;
   bar?: RectStyleDetails & {
@@ -4834,6 +4835,7 @@ export class ChartProgram {
   createBarMark(options?: RectStyleDetails & {
     id?: string;
     data?: string;
+    orientation?: "vertical" | "horizontal";
     missing?: "error" | "skip";
     fill?: string;
     opacity?: number;

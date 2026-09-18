@@ -66,6 +66,10 @@ export function validateLayerSemanticValue(
       throw new Error(`Mark type "${markType}" does not support a missing policy.`);
     }
   }
+  if (property === "mark.orientation" && (findLayer(program, parsed.id)?.mark?.type !== "bar" ||
+      !["vertical", "horizontal"].includes(value))) {
+    throw new Error("Bar orientation must be vertical or horizontal.");
+  }
   if (property === "derivedBindings.regression") {
     if (!value || typeof value !== "object" || Array.isArray(value) ||
         Object.keys(value).length !== 2 || value.mode !== "follow" ||

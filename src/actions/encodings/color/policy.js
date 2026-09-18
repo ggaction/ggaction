@@ -62,7 +62,7 @@ export function resolveColorLayout(layer, requested, barGrain) {
     layer.mark.type === "bar"
       ? barGrain === BAR_GRAINS.histogram
         ? "stack"
-        : barGrain === BAR_GRAINS.ranged ? "overlay" : "group"
+        : [BAR_GRAINS.ranged, BAR_GRAINS.centered].includes(barGrain) ? "overlay" : "group"
       : layer.mark.type === "area"
         ? "overlay"
         : undefined
@@ -70,6 +70,9 @@ export function resolveColorLayout(layer, requested, barGrain) {
 
   if (["point", "line", "rect", "text"].includes(layer.mark.type) && layout !== undefined) {
     throw new Error(`Color layout is not supported for ${layer.mark.type} marks.`);
+  }
+  if (barGrain === BAR_GRAINS.centered && layout !== "overlay") {
+    throw new Error("Numeric-center bars support only overlay layout.");
   }
   if (layer.mark.type === "area" && layout === "group") {
     throw new Error('Area color layout does not support "group".');

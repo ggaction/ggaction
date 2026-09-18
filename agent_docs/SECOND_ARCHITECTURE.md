@@ -54,6 +54,10 @@ trace        = 사용자가 어떤 action hierarchy로 그 결과를 만들었�
 reconciliation 단계는 없다. 의미 변경 뒤 concrete output을 다시 만드는 것은 그
 변경을 소유한 action의 명시적 책임이다.
 
+Numeric-center Bar는 `mark.orientation`으로 raw 행의 center/measure 역할을 기록한다.
+기존 histogram/aggregate/ranged와 별도 centered grain으로 소비하며, 공유 position scale,
+선택 item, labels, facets는 같은 bar policy를 사용한다. Pixel width는 기존 mark config 소유다.
+
 ## 전체 계층
 
 ```text

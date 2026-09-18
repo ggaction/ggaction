@@ -90,9 +90,10 @@ export function normalizeOffsetScalePolicy(
 }
 
 export function resolveBarWidth(config, slotBandwidth) {
+  const normalized = normalizeBarWidth(config);
+  if (normalized.pixels !== undefined) return normalized.pixels;
   if (!Number.isFinite(slotBandwidth) || slotBandwidth <= 0) {
     throw new Error("Bar width requires a positive resolved slot bandwidth.");
   }
-  const normalized = normalizeBarWidth(config);
   return normalized.pixels ?? slotBandwidth * normalized.band;
 }

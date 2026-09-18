@@ -445,7 +445,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createBarMark`
 
-- Signature: `createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
+- Signature: `createBarMark({ id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`, `data`: 첫 unnamed bar의 deterministic `"bar"` 또는 explicit 새 ID와 optional existing/current data다.
 - Effect: semantic `bar` layer와 길이 0의 rect collection을 만든다. 관련 x/y/grouping semantics가
   완성될 때 rect가 materialize된다.
@@ -456,7 +456,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createBarMark`
 
-- Implemented: `createBarMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createBarMark({ id?: UserId; data?: UserId; orientation?: "vertical" | "horizontal"; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createBarMark`
@@ -467,7 +467,9 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   - ✅ Covered: representative combined creation, validation reuse, config persistence and grouped-bar rematerialization.
   - ✅ Covered: false outline opt-out, create/edit convergence, facade forwarding, strict declaration positive/negative
     and existing Rect comparison in `test/unit/actions/marks/filled-mark-stroke.test.js` and `scripts/package-consumer.js`.
-- No proposal: orientation/group/stack/width는 mark parameter가 아니라 encoding action이 소유한다.
+- `orientation:"vertical"|"horizontal"`은 raw numeric-center bar의 의미 방향이다. 두 위치는 quantitative이며
+  bin/aggregate/stack/weight는 거부한다. 생략한 기존 category/histogram 방향 추론은 유지한다.
+  group/stack/width는 계속 encoding action이 소유한다. Evidence: `numeric-bar-centers.test.js`.
 - Evidence: `test/unit/actions/marks/create-bar-mark.test.js`.
 
 ## `editBarMark`

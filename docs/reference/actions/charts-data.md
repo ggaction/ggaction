@@ -3204,6 +3204,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `color` | Optional / branch-dependent | `BarColorChannel \| undefined` |
 | `width` | Optional / branch-dependent | `Omit<BarWidthOptions, "target"> \| undefined` |
 | `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
@@ -3216,11 +3217,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createBarPlot({ id?, data?, coordinate?, x, y, color?, width?, bar?, guides? })
+createBarPlot({ id?, data?, coordinate?, orientation?, x, y, color?, width?, bar?, guides? })
 ```
 
 Create categorical or temporal bars with quantitative measures; use `color.layout` for grouped or stacked partitions, not top-level `stack`/`groupBy`; width defaults to 0.72 of the slot and guides are inferred unless disabled.
 A channel may instead specify `{ lower, upper, scale? }` for raw interval bars without aggregation.
+Two raw numeric positions preserve each input row and numeric center spacing.
+Their orientation defaults to vertical (or follows the range channel); use
+`orientation: "horizontal"` for horizontal numeric bars. Their width defaults to
+5 pixels and accepts `width: { pixels }`, with overlay layout only. Numeric bars
+extend to zero unless explicit lower/upper bounds are supplied.
 Category-first child calls infer the ordinary single-field measure's mean in either orientation; temporal categories are supported on both axes.
 [Basic Charts](../../api/basic-charts.md#createbarplot)
 

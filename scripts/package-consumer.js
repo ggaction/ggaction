@@ -2050,6 +2050,16 @@ async function testNodeConsumer(directory) {
     const annotation = annotationSource.createAnnotation({
       text: "Peak · 9.0", x: 8, y: 9, dx: 8, dy: -16
     });
+    for (const factory of [chart, basicChart]) {
+      const numericBars = factory().createCanvas({ width: 500, height: 300, margin: 50 })
+        .createData({ values: [{ x: 1, y: 2 }, { x: 3, y: 4 }, { x: 3, y: 5 }] })
+        .createBarPlot({ x: "x", y: "y", width: { pixels: 20 }, guides: false });
+      assert.equal(numericBars.graphicSpec.objects.barPlot.items.length, 3);
+      assert.ok(numericBars.graphicSpec.objects.barPlot.items.every(item => item.properties.width === 20));
+      assert.equal(numericBars.semanticSpec.layers[0].mark.orientation, "vertical");
+      assert.deepEqual(deserializeProgram(serializeProgram(numericBars)).graphicSpec, numericBars.graphicSpec);
+      assert.match(renderToSVG(numericBars), /<rect/);
+    }
     assert.deepEqual(annotation.graphicSpec.objects.annotation.items.map(item =>
       [item.properties.x, item.properties.y, item.properties.text]), [[368, 48, "Peak · 9.0"]]);
     assert.equal(annotationSource.createAnnotation({ id: "markNote", text: "Point" })
@@ -4251,6 +4261,10 @@ async function testTypeScriptConsumer(directory) {
       .editTextMark({ rotation: { value: Math.PI / 4, unit: "radians" } });
     chart().createAnnotation({ text: "Peak", x: 8, y: 9, rotation: { value: -45, unit: "degrees" } });
     chart().createAnnotation({ text: "Point", source: "points" });
+    chart().createBarMark({ orientation: "horizontal" }).encodeBarWidth({ pixels: 12 });
+    basicChart().createBarPlot({ x: "x", y: "y", orientation: "horizontal", width: { pixels: 12 } });
+    // @ts-expect-error Bar orientation is a closed vocabulary.
+    chart().createBarPlot({ x: "x", y: "y", orientation: "diagonal" });
     chart().createAnnotation({ text: "Total", anchor: "plot-center", fontSize: 24 });
     // @ts-expect-error The named anchor owns alignment.
     chart().createAnnotation({ text: "Total", anchor: "plot-center", align: "left" });

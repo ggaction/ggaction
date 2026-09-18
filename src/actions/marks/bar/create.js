@@ -17,7 +17,7 @@ import { STROKE_STYLE_PROPERTIES } from
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const CREATE_OPTIONS = Object.freeze([
-  "id", "data", "missing", "fill", "opacity", "stroke", "strokeWidth",
+  "id", "data", "orientation", "missing", "fill", "opacity", "stroke", "strokeWidth",
   ...RECT_RADIUS_PROPERTIES, ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -29,6 +29,9 @@ export const createBarMark = /* @__PURE__ */ action(
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createBarMark");
     requestedRectStyleDetails(args, "createBarMark");
+    if (args.orientation !== undefined && !["vertical", "horizontal"].includes(args.orientation)) {
+      throw new Error("Bar orientation must be vertical or horizontal.");
+    }
     const id = resolveMarkId(this, args.id, {
       defaultId: "bar",
       label: "Bar mark id",
@@ -58,6 +61,9 @@ export const createBarMark = /* @__PURE__ */ action(
         property: `layer[${id}].mark.missing`,
         value: validateItemMissing(args.missing, "Bar missing")
       });
+    }
+    if (args.orientation !== undefined) {
+      created = created.editSemantic({ property: `layer[${id}].mark.orientation`, value: args.orientation });
     }
     created = applyLayeredMarkInheritance(created, id, inherited);
     created = created

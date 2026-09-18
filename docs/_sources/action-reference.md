@@ -789,11 +789,16 @@ an optional component or remove color; at least one component must remain enable
 ### `createBarPlot`
 
 ```javascript
-createBarPlot({ id?, data?, coordinate?, x, y, color?, width?, bar?, guides? })
+createBarPlot({ id?, data?, coordinate?, orientation?, x, y, color?, width?, bar?, guides? })
 ```
 
 Create categorical or temporal bars with quantitative measures; use `color.layout` for grouped or stacked partitions, not top-level `stack`/`groupBy`; width defaults to 0.72 of the slot and guides are inferred unless disabled.
 A channel may instead specify `{ lower, upper, scale? }` for raw interval bars without aggregation.
+Two raw numeric positions preserve each input row and numeric center spacing.
+Their orientation defaults to vertical (or follows the range channel); use
+`orientation: "horizontal"` for horizontal numeric bars. Their width defaults to
+5 pixels and accepts `width: { pixels }`, with overlay layout only. Numeric bars
+extend to zero unless explicit lower/upper bounds are supplied.
 Category-first child calls infer the ordinary single-field measure's mean in either orientation; temporal categories are supported on both axes.
 [Basic Charts](../api/basic-charts.md#createbarplot)
 
@@ -1278,7 +1283,7 @@ semantic encodings. [Marks](../api/marks.md)
 ### `createBarMark`
 
 ```javascript
-createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createBarMark({ id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection.

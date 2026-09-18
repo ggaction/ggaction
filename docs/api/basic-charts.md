@@ -184,9 +184,15 @@ horizontal, aggregate, or ranged geometry. `color.layout` owns grouped,
 stacked, normalized-fill, overlay, and diverging arrangements.
 
 Use `{ lower, upper }` on one axis for raw interval bars. The opposite axis
-must be categorical or temporal. Bounds remain per-row values: no mean, sum,
+may be categorical, temporal, or numeric. Bounds remain per-row values: no mean, sum,
 or stacking is introduced. Do not combine a range with `field`, `aggregate`,
 or `stack` in the same channel, or specify ranges on both axes.
+
+Two raw numeric fields create one bar per row at the actual numeric center.
+Use `createBarPlot({ x: "position", y: "value", width: { pixels: 20 } })`
+for vertical bars, or add `orientation: "horizontal"` for horizontal bars.
+Width defaults to 5 pixels. Numeric ranges infer orientation from their measure
+channel. Numeric bars preserve repeated centers and allow overlay layout only.
 
 <!-- snippet-context:start -->
 

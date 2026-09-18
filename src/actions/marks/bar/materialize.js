@@ -102,7 +102,7 @@ export const rematerializeBarMark = /* @__PURE__ */ action(
       ));
     }
 
-    if (required.materialization === BAR_GRAINS.ranged) {
+    if ([BAR_GRAINS.ranged, BAR_GRAINS.centered].includes(required.materialization)) {
       const width = resolved.markConfigs[id]?.barWidth;
       return editRectangles(resolved, id, offsetCategoryRectangles(
         resolved, required.layer, deriveRangedRectangles(required, resolved, width)

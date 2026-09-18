@@ -11,7 +11,8 @@ const CARTESIAN_MARKS = new Set([
 const FACET_BAR_GRAINS = new Set([
   BAR_GRAINS.histogram,
   BAR_GRAINS.aggregate,
-  BAR_GRAINS.ranged
+  BAR_GRAINS.ranged,
+  BAR_GRAINS.centered
 ]);
 const ORDINARY_SCALE_CHANNELS = Object.freeze([
   ["x", "x"], ["y", "y"], ["xOffset", "xOffset"], ["yOffset", "yOffset"],

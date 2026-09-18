@@ -48,6 +48,7 @@ export const layoutSeries = /* @__PURE__ */ action({ op: "layoutSeries", descrip
     if (grain === undefined || encoding.x?.scale === undefined || encoding.y?.scale === undefined) throw new Error("Series layout requires a complete bar.");
     if (mode === "center") throw new Error("Centered bars are not supported.");
     if (grain === BAR_GRAINS.ranged && mode !== "overlay") throw new Error("Ranged bars support only overlay layout.");
+    if (grain === BAR_GRAINS.centered && mode !== "overlay") throw new Error("Numeric-center bars support only overlay layout.");
     if (grain === BAR_GRAINS.aggregate) deriveBarAggregates(dataset.values, updated);
     if (mode === "group" && grain === BAR_GRAINS.aggregate) {
       if (encoding.group === undefined) throw new Error("Grouped bars require a group encoding.");

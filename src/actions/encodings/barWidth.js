@@ -26,11 +26,14 @@ const encodeBarWidth = /* @__PURE__ */ action(
     const layout = resolveBarColorLayout(layer);
     const width = normalizeBarWidth(
       args,
-      this.markConfigs[target]?.barWidth
+      this.markConfigs[target]?.barWidth ?? (layer.mark.orientation === undefined ? undefined : { pixels: 5 })
     );
     const grouped = layout === "group";
     const offsetChannel = resolveBarOffsetChannel(layer);
     const grain = resolveBarGrain(layer);
+    if (layer.mark.orientation !== undefined && width.band !== undefined) {
+      throw new Error("Numeric-center bars require pixel width.");
+    }
     if (grain === undefined && this.markConfigs[target]?.boxPlot === undefined && (
       layer.encoding?.x === undefined || layer.encoding?.y === undefined
     )) {
@@ -39,7 +42,7 @@ const encodeBarWidth = /* @__PURE__ */ action(
     if (grain === BAR_GRAINS.histogram) {
       throw new Error("encodeBarWidth requires an aggregate or ranged category slot, not histogram bins.");
     }
-    if (grain === BAR_GRAINS.ranged) {
+    if ([BAR_GRAINS.ranged, BAR_GRAINS.centered].includes(grain)) {
       return this._withMarkConfig(target, { ...this.markConfigs[target], barWidth: width })
         .rematerializeBarMark({ id: target });
     }

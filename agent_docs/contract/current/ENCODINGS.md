@@ -1525,6 +1525,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Complete aggregate/ranged bar는 action 호출 전에도 implicit `{ band: 0.72 }`로 즉시 materialize된다.
   첫 assignment에서 width mode를 생략하면 그 기본값을 config에 저장하고, reassignment에서 생략하면 current
   mode와 value를 유지한다. Group slot spacing은 directional offset action이 소유한다.
+- Numeric-center bar는 category slot 없이 `pixels`만 받으며 기본5px다. `encodeBarWidth({})`도 그 기본값을
+  보존한다. 숫자 center는 공유된 continuous scale의 그대로인 좌표를 사용하며 half-width inset을 적용하지 않는다.
 - `target`: optional Bar ID. 위치가 없는 valid partial Bar도 받는다. 완성된 group layout은 matching offset를
   추가로 요구한다.
 - Effect: graphical mark config에 exactly one width mode를 저장하고 centered rect x/width를

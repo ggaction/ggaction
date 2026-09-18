@@ -3,6 +3,7 @@ import { deriveMeasuredArcValues, deriveProportionalArcRadiusValues } from "../.
 import { deriveBarAggregates } from "../../../grammar/bars/aggregate.js";
 import {
   BAR_GRAINS,
+  resolveBarChannels,
   resolveBarGrain
 } from "../../../grammar/bars/policy.js";
 import {
@@ -50,6 +51,10 @@ export function resolveMarkFamilyConsumerValues(program, consumer, dataset) {
     };
   }
   const { layer, channel } = consumer;
+  if (resolveBarGrain(layer) === BAR_GRAINS.centered &&
+      channel === resolveBarChannels(layer).measure && layer.encoding[`${channel}2`] === undefined) {
+    return { matched: true, values: [0, ...dataset.values.map(row => row[consumer.encoding.field])] };
+  }
   const encoding = layer.encoding ?? {};
   const appearance = ["stroke", "strokeWidth", "opacity"].includes(channel);
   if (

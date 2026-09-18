@@ -129,9 +129,12 @@ function histogramDefinitions(program, layer, dataset) {
 }
 
 function rangedDefinitions(layer, dataset) {
+  const measure = resolveBarGrain(layer) === BAR_GRAINS.centered ? resolveBarChannels(layer).measure : undefined;
   return dataset.values.map(row => ({
     fields: ownFields(row),
-    channels: channelMapFromRow(row, layer),
+    channels: { ...channelMapFromRow(row, layer),
+      ...(measure !== undefined && layer.encoding[`${measure}2`] === undefined
+        ? { [measure]: 0, [`${measure}2`]: row[layer.encoding[measure].field] } : {}) },
     members: [row]
   }));
 }
@@ -206,7 +209,7 @@ export function resolveBarItems(program, layer, dataset, selectionGrain) {
     ? histogramDefinitions(program, layer, dataset)
     : grain === BAR_GRAINS.aggregate
       ? aggregateCellDefinitions(program, layer, dataset)
-      : grain === BAR_GRAINS.ranged
+      : [BAR_GRAINS.ranged, BAR_GRAINS.centered].includes(grain)
         ? rangedDefinitions(layer, dataset)
         : undefined;
   if (definitions === undefined) {

@@ -64,6 +64,7 @@ const ENTITY_PATHS = Object.freeze({
       "transform",
       "mark.type",
       "mark.missing",
+      "mark.orientation",
       "derivedBindings.regression",
       "layout.mode",
       ...ENCODING_PATHS

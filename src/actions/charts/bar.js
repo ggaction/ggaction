@@ -17,7 +17,7 @@ import {
 } from "./shared.js";
 
 const OPTIONS = Object.freeze([
-  "id", "data", "coordinate", "x", "y", "color", "width", "bar", "guides"
+  "id", "data", "coordinate", "orientation", "x", "y", "color", "width", "bar", "guides"
 ]);
 const BAR_OPTIONS = Object.freeze([
   "fill", "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
@@ -60,14 +60,21 @@ export const createBarPlot = /* @__PURE__ */ action(
     const color = normalizeEncoding(args.color, "createBarPlot color");
     const width = normalizeTargetOptions(args.width, "createBarPlot width");
     const guides = normalizeGuides(args.guides, "createBarPlot");
+    const numeric = x.fieldType === "quantitative" && y.fieldType === "quantitative" &&
+      x.bin === undefined && y.bin === undefined && x.aggregate === undefined && y.aggregate === undefined;
+    if (args.orientation !== undefined && !numeric) throw new Error("createBarPlot orientation requires raw numeric positions.");
+    const orientation = numeric ? args.orientation ?? (xRange ? "horizontal" : "vertical") : undefined;
+    if (numeric && ((xRange && orientation !== "horizontal") || (yRange && orientation !== "vertical"))) {
+      throw new Error("createBarPlot range must match its numeric measure orientation.");
+    }
 
-    if ((xRange && !isBarCategoryEncoding(y)) || (yRange && !isBarCategoryEncoding(x))) {
+    if (!numeric && ((xRange && !isBarCategoryEncoding(y)) || (yRange && !isBarCategoryEncoding(x)))) {
       throw new Error("createBarPlot range requires a categorical or temporal opposite position.");
     }
-    const positions = isBarCategoryEncoding(y)
+    const positions = isBarCategoryEncoding(y) || orientation === "horizontal"
       ? [["encodeY", y], [xRange ? "encodeXRange" : "encodeX", x]]
       : [["encodeX", x], [yRange ? "encodeYRange" : "encodeY", y]];
-    let next = this.createBarMark({ id, data, ...bar });
+    let next = this.createBarMark({ id, data, ...bar, ...(orientation === undefined ? {} : { orientation }) });
     for (const [operation, encoding] of positions) {
       next = next[operation](positionArgs(encoding, {
         target: id, coordinate: args.coordinate
