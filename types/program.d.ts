@@ -7,6 +7,7 @@ export interface TextMeasurement {
   readonly fontFamily: string;
   readonly fontSize: number;
   readonly fontWeight: TextMetricFontWeight;
+  readonly fontStyle?: "normal" | "italic";
   readonly width: number;
 }
 export interface TextMetricsProfile {
@@ -4536,6 +4537,7 @@ export interface EditAxisOptions<P extends string> {
 }
 
 export interface TitleTextStyleOptions {
+  fontStyle?: "normal" | "italic";
   color?: string;
   fontSize?: number;
   fontFamily?: string;

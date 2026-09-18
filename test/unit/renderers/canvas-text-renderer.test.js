@@ -203,3 +203,16 @@ test("rejects incomplete concrete text graphics", () => {
     /requires a finite x property/
   );
 });
+
+test("Canvas renders italic font style and restores normal text independently", () => {
+  const properties = { x: 0, y: 0, text: "Credit", fontSize: 12,
+    fontFamily: "sans-serif", fontWeight: 400, fill: "black",
+    textAlign: "left", textBaseline: "middle" };
+  const context = createMockCanvasContext();
+  drawTextGraphic(context, "italic", { properties: { ...properties, fontStyle: "italic" } });
+  drawTextGraphic(context, "normal", { properties });
+  const calls = findCanvasCalls(context, "fillText");
+  assert.equal(calls[0].font, "italic 400 12px sans-serif");
+  assert.equal(calls[1].font, "400 12px sans-serif");
+  assert.throws(() => drawTextGraphic(context, "invalid", { properties: { ...properties, fontStyle: "oblique" } }), /fontStyle/u);
+});

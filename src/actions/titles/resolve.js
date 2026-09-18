@@ -1,3 +1,4 @@
+import { validateFontStyle } from "../../core/font.js";
 import { isPlainObject } from "../../core/immutable.js";
 import {
   validateKeys,
@@ -23,7 +24,7 @@ const OPTIONS = Object.freeze([
   "subtitleStyle", "maxWidth", "wrap", "lineHeight"
 ]);
 const STYLE_OPTIONS = Object.freeze([
-  "color", "fontSize", "fontFamily", "fontWeight"
+  "color", "fontSize", "fontFamily", "fontWeight", "fontStyle"
 ]);
 const POSITIONS = Object.freeze(["top", "bottom", "left", "right"]);
 const ALIGNS = Object.freeze(["left", "center", "right"]);
@@ -70,6 +71,7 @@ function normalizeStyle(value, defaults, label) {
   )) {
     throw new TypeError(`${label} fontWeight must be a non-empty string or number.`);
   }
+  if (style.fontStyle !== undefined) validateFontStyle(style.fontStyle, label);
   return style;
 }
 

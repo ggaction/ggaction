@@ -13,7 +13,7 @@ function measuredWidth(profile, text, style) {
     if (isOwned(profile)) measurementIndexes.set(profile, index);
   }
   return index.get(textMetricKey({ text, fontFamily: style.fontFamily ?? DEFAULT_FONT_FAMILY,
-    fontSize: style.fontSize, fontWeight: textMetricFontWeight(style.fontWeight) }));
+    fontSize: style.fontSize, fontWeight: textMetricFontWeight(style.fontWeight), fontStyle: style.fontStyle }));
 }
 
 function codePointWidth(codePoint) {
@@ -43,7 +43,7 @@ export function textBoundsFitCanvas(bounds, canvas) {
 
 export function measureTextWidth(
   text,
-  { fontSize, fontFamily, fontWeight } = {},
+  { fontSize, fontFamily, fontWeight, fontStyle } = {},
   profile
 ) {
   if (typeof text !== "string") {
@@ -52,7 +52,7 @@ export function measureTextWidth(
   if (!Number.isFinite(fontSize) || fontSize <= 0) {
     throw new RangeError("Text measurement requires a positive fontSize.");
   }
-  const measured = measuredWidth(profile, text, { fontSize, fontFamily, fontWeight });
+  const measured = measuredWidth(profile, text, { fontSize, fontFamily, fontWeight, fontStyle });
   if (measured !== undefined) return measured;
   let joined = false;
   let width = 0;
@@ -94,6 +94,7 @@ export function resolveTextBounds({
   fontSize,
   fontFamily,
   fontWeight,
+  fontStyle,
   textAlign = "left",
   textBaseline = "alphabetic",
   rotation = 0
@@ -101,7 +102,7 @@ export function resolveTextBounds({
   if (![x, y, rotation].every(Number.isFinite)) {
     throw new TypeError("Text bounds require finite x, y, and rotation values.");
   }
-  const width = measureTextWidth(text, { fontSize, fontFamily, fontWeight }, profile);
+  const width = measureTextWidth(text, { fontSize, fontFamily, fontWeight, fontStyle }, profile);
   const [left, right] = textAlign === "center"
     ? [-width / 2, width / 2]
     : ["right", "end"].includes(textAlign) ? [-width, 0] : [0, width];

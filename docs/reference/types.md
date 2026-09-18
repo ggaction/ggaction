@@ -10743,6 +10743,7 @@ export interface TextMeasurement {
   readonly fontFamily: string;
   readonly fontSize: number;
   readonly fontWeight: TextMetricFontWeight;
+  readonly fontStyle?: "normal" | "italic";
   readonly width: number;
 }
 ```
@@ -11041,6 +11042,7 @@ Related types: [`TitleTextStyleOptions`](#type-titletextstyleoptions).
 
 ```typescript
 export interface TitleTextStyleOptions {
+  fontStyle?: "normal" | "italic";
   color?: string;
   fontSize?: number;
   fontFamily?: string;

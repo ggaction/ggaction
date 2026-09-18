@@ -71,6 +71,7 @@ function editTextGraphic(program, id, component, style) {
     fontSize: style.fontSize,
     fontFamily: style.fontFamily,
     fontWeight: style.fontWeight,
+    ...(style.fontStyle === undefined ? {} : { fontStyle: style.fontStyle }),
     textAlign: component.textAlign,
     textBaseline: "middle"
   })) {

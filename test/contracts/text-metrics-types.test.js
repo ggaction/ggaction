@@ -21,6 +21,13 @@ const row: TextMeasurement = {text: "label",fontFamily:"sans-serif",fontSize:12,
 const profile: TextMetricsProfile = {schemaVersion:1,id:"host",measurements:[row]};
 const next: ChartProgram = full.applyTextMetrics({profile}).removeTextMetrics();
 void next;
+full.applyTextMetrics({profile:{...profile,measurements:[{...row,fontStyle:"italic"}]}});
+full.createTitle({text:"Title",titleStyle:{fontStyle:"normal"},subtitleStyle:{fontStyle:"italic"}});
+full.editTitle({titleStyle:{fontStyle:"italic"}});
+// @ts-expect-error style is a closed vocabulary
+full.editTitle({titleStyle:{fontStyle:"oblique"}});
+// @ts-expect-error measurement style is a closed vocabulary
+full.applyTextMetrics({profile:{...profile,measurements:[{...row,fontStyle:"oblique"}]}});
 // @ts-expect-error only schema 1 is supported
 full.applyTextMetrics({profile:{...profile,schemaVersion:2}});
 // @ts-expect-error normalized weight is a closed vocabulary

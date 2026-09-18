@@ -75,7 +75,7 @@ function drawText(context, child, collectionId) {
     context.fillStyle = fill;
     context.globalAlpha = opacity;
     const rendererFontWeight = normalizeRendererFontWeight(fontWeight);
-    context.font = `${rendererFontWeight} ${fontSize}px ${fontFamily}`;
+    context.font = `${properties.fontStyle === "italic" ? "italic " : ""}${rendererFontWeight} ${fontSize}px ${fontFamily}`;
     context.textAlign = textAlign;
     context.textBaseline = textBaseline;
     context.translate(x, y);

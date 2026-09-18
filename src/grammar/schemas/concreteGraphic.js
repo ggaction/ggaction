@@ -1,3 +1,4 @@
+import { validateFontStyle } from "../../core/font.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validatePathCommands } from "../pathCommands.js";
 import { validateFillPaint } from "../paint.js";
@@ -60,6 +61,7 @@ export function validateConcreteGraphicValue(type, property, value) {
   )) {
     throw new TypeError("text.fontWeight must be a non-empty string or finite number.");
   }
+  if (property === "fontStyle") validateFontStyle(value);
   if (property === "textAlign" && !TEXT_ALIGNS.has(value)) {
     throw new Error(`Unsupported text.textAlign "${value}".`);
   }

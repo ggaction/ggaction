@@ -542,8 +542,9 @@ config normalization과 rematerialization을 공유한다. Evidence:
   character fallback을 사용하고 character mode는 Unicode code point boundary를 보존한다.
 - `lineHeight`: positive finite number; `maxWidth`가 필요하고 title/subtitle의 resolved fontSize 이상이어야 한다.
   생략 시 각 style의 fontSize × `1.2`를 사용한다.
-- `titleStyle`, `subtitleStyle`: `{ color?, fontSize?, fontFamily?, fontWeight? }`; positive fontSize,
-  non-empty strings와 string/finite weight를 사용한다.
+- `titleStyle`, `subtitleStyle`: `{ color?, fontSize?, fontFamily?, fontWeight?, fontStyle? }`; positive fontSize,
+  non-empty strings와 string/finite weight를 사용한다. `fontStyle`은 `"normal" | "italic"`이며 생략 시 normal이다.
+  제목과 부제에 독립 적용되고 text measurement key, wrapping, 편집, 저장/복원과 모든 renderer에 유지된다.
 - Effect: text만 semanticSpec에 저장하고 geometry/style은 concrete text graphics와 title config에 저장한다.
   wrapping은 shared deterministic text metric으로 materialization하고 renderer는 line break를 추론하지 않는다.
   실제 rotated occupied bounds가 해당 margin에 맞지 않거나 same-edge guide와 겹치면 오류다.

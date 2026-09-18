@@ -46,7 +46,10 @@ program.createTitle({
 | `titleStyle` | text style object | default title style |
 | `subtitleStyle` | text style object | default subtitle style |
 
-Both style objects accept `color`, `fontSize`, `fontFamily`, and `fontWeight`.
+Both style objects accept `color`, `fontSize`, `fontFamily`, `fontWeight`, and
+`fontStyle: "normal" | "italic"` (normal by default). Title and subtitle styles
+are independent; for italic credits, pass `subtitleStyle: { fontStyle: "italic" }`.
+Style edits preserve omitted fields. Measured wrapping distinguishes normal and italic fonts.
 Numeric weights follow the shared [Canvas font-weight policy](./marks/text.md#font-weights).
 The defaults are:
 

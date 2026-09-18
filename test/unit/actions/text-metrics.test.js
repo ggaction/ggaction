@@ -148,3 +148,38 @@ test("theme font changes reuse the active metrics policy and restore matching wi
   assert.equal(themed.materializationConfigs.textMetrics.id,"host");
   assert.equal(svg(themed.removeTheme()),svg(measured));
 });
+
+test("normal and italic measurements remain distinct through wrapping, edits, and persistence", () => {
+  const metrics = { ...empty, measurements: [
+    measurement("Alpha Beta", 80),
+    measurement("Alpha Beta", 150, { fontStyle: "italic" }),
+    measurement("Alpha", 60, { fontStyle: "italic" }),
+    measurement("Beta", 60, { fontStyle: "italic" })
+  ] };
+  const normalized = normalizeTextMetricProfile(metrics);
+  assert.equal(measureTextWidth("Alpha Beta", { fontSize: 20 }, normalized), 80);
+  assert.equal(measureTextWidth("Alpha Beta", { fontSize: 20, fontStyle: "italic" }, normalized), 150);
+  assert.equal(resolveTextBounds({ x: 0, y: 0, text: "Alpha Beta", fontSize: 20,
+    fontStyle: "italic" }, normalized).right, 150);
+  const base = chart().applyTextMetrics({ profile: metrics })
+    .createCanvas({ width: 500, height: 400, margin: 150 })
+    .createTitle({ text: "Alpha Beta", subtitle: "Credits", maxWidth: 100,
+      titleStyle: { fontSize: 20, fontWeight: 400 },
+      subtitleStyle: { fontStyle: "italic" } });
+  const before = serializeProgram(base);
+  const italic = base.editTitle({ titleStyle: { fontStyle: "italic" } });
+  assert.equal(italic.graphicSpec.objects.chartTitle.items.length, 2);
+  assert.ok(italic.graphicSpec.objects.chartTitle.items.every(item => item.properties.fontStyle === "italic"));
+  assert.equal(base.graphicSpec.objects.chartTitle.items, undefined);
+  assert.equal(base.graphicSpec.objects.chartSubtitle.properties.fontStyle, "italic");
+  const restored = deserializeProgram(serializeProgram(italic)).editCanvas({ width: 520 });
+  assert.equal(restored.graphicSpec.objects.chartTitle.items.length, 2);
+  assert.equal((svg(restored).match(/font-style="italic"/gu) ?? []).length, 3);
+  const normal = restored.editTitle({ titleStyle: { fontStyle: "normal" }, subtitleStyle: { fontStyle: "normal" } });
+  assert.equal(normal.graphicSpec.objects.chartTitle.items, undefined);
+  assert.doesNotMatch(svg(normal), /font-style="italic"/u);
+  assert.equal(serializeProgram(base), before);
+  assert.throws(() => base.editTitle({ titleStyle: { fontStyle: "oblique" } }), /fontStyle/u);
+  assert.throws(() => normalizeTextMetricProfile({ ...empty, measurements: [measurement("A", 1, { fontStyle: "oblique" })] }), /fontStyle/u);
+  assert.throws(() => normalizeTextMetricProfile({ ...empty, measurements: [measurement("A", 1), measurement("A", 2, { fontStyle: "normal" })] }), /Duplicate/u);
+});

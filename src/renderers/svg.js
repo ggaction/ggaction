@@ -419,6 +419,7 @@ function serializeText(state, graphicId, properties) {
     ["font-family", fontFamily],
     ["font-size", formatNumber(fontSize)],
     ["font-weight", normalizeRendererFontWeight(fontWeight)],
+    ["font-style", properties.fontStyle],
     ["text-anchor", TEXT_ANCHORS[textAlign]],
     ["dominant-baseline", DOMINANT_BASELINES[textBaseline]],
     ["opacity", formatNumber(opacity)],

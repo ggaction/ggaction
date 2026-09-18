@@ -5,8 +5,15 @@ export function normalizeRendererFontWeight(fontWeight) {
   return Math.min(900, Math.max(100, Math.round(fontWeight / 100) * 100));
 }
 
-export function textMetricKey({ text, fontFamily, fontSize, fontWeight }) {
-  return JSON.stringify([text, fontFamily, fontSize, fontWeight]);
+export function validateFontStyle(value, label = "Text") {
+  if (!["normal", "italic"].includes(value)) {
+    throw new Error(`${label} fontStyle must be normal or italic.`);
+  }
+  return value;
+}
+
+export function textMetricKey({ text, fontFamily, fontSize, fontWeight, fontStyle = "normal" }) {
+  return JSON.stringify([text, fontFamily, fontSize, fontWeight, fontStyle]);
 }
 
 export function textMetricFontWeight(value = "normal") {

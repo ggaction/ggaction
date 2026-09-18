@@ -21,12 +21,13 @@ the required installation command. No dependency is installed automatically.
 Full charts support `applyTextMetrics({ profile })` and `removeTextMetrics()`.
 These authoring actions recalculate text layout before rendering. A profile has
 exactly `schemaVersion: 1`, a nonempty `id`, and a `measurements` array. Each entry
-has exactly `text`, `fontFamily`, `fontSize`, `fontWeight`, and `width`.
+requires `text`, `fontFamily`, `fontSize`, `fontWeight`, and `width`, and may
+include `fontStyle: "normal" | "italic"` (normal when omitted).
 
 The host measures strings in the font it will use. Width is in logical pixels,
 not output pixels multiplied by device pixel ratio. Font size must be positive;
 width must be finite and nonnegative. Weight is one of 100, 200, …, 900.
-Duplicate text/family/size/weight combinations are rejected. Empty profiles and
+Duplicate text/family/size/weight/style combinations are rejected. Empty profiles and
 empty strings are valid.
 
 This complete browser example waits for fonts and measures the full string and
