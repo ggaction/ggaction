@@ -10,7 +10,7 @@ import {
 } from "./resolve.js";
 
 const REGRESSION_OPTIONS = Object.freeze([
-  "target", "x", "y", "groupBy", "method", "degree", "span",
+  "target", "x", "y", "groupBy", "method", "degree", "span", "robustIterations",
   "confidenceMethod", "level", "confidence", "interval", "band", "line"
   , "predict", "sourceBinding", "missing"
 ]);

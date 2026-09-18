@@ -21,7 +21,7 @@ import { removeOwnedColorLegends } from "../guides/legends/remove.js";
 import { requireRegressionField } from "./resolve.js";
 
 const OPTIONS = Object.freeze([
-  "target", "data", "x", "y", "groupBy", "method", "degree", "span",
+  "target", "data", "x", "y", "groupBy", "method", "degree", "span", "robustIterations",
   "confidenceMethod", "level", "confidence", "interval", "band", "line"
   , "predict", "sourceBinding", "missing"
 ]);
@@ -111,14 +111,14 @@ function resolveParameters(previous, args) {
   const method = args.method ?? previous.method;
   const raw = { method };
   for (const key of [
-    "degree", "span", "confidenceMethod", "level", "confidence", "interval"
+    "degree", "span", "robustIterations", "confidenceMethod", "level", "confidence", "interval"
   ]) {
     if (Object.hasOwn(args, key)) raw[key] = args[key];
   }
   const inheritsLevel = !Object.hasOwn(raw, "confidence");
   if (method === previous.method && args.interval !== false) {
     for (const key of [
-      "degree", "span", "confidenceMethod", "level", "interval"
+      "degree", "span", "robustIterations", "confidenceMethod", "level", "interval"
     ]) {
       if (
         !Object.hasOwn(raw, key) &&

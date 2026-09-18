@@ -199,7 +199,10 @@ function normalizeRegressionEdit(transform, patch) {
   const method = patch.method ?? base.method;
   if (method !== base.method) {
     if (method !== "polynomial") delete base.degree;
-    if (method !== "loess") delete base.span;
+    if (method !== "loess") {
+      delete base.span;
+      delete base.robustIterations;
+    }
     if (method === "loess" || base.method === "loess") {
       for (const key of [
         "confidenceMethod", "level", "confidence", "interval"

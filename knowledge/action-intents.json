@@ -1574,8 +1574,7 @@
       "createIntervalPlot({ x, y, groupBy?, point?, errorBar?, guides? })"
     ],
     "createRegressionPlot": [
-      "createRegressionPlot({ x, y })",
-      "createRegressionPlot({ x, y, groupBy?, method?, band?, line?, guides? })"
+      "createRegressionPlot({ x, y, method? })"
     ],
     "createDotPlot": [
       "createDotPlot({ category, value })",

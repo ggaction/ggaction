@@ -24,6 +24,7 @@ export function deriveRegression(values, {
   method,
   degree,
   span,
+  robustIterations,
   confidenceMethod,
   level,
   confidence,
@@ -43,6 +44,7 @@ export function deriveRegression(values, {
     method,
     degree,
     span,
+    robustIterations,
     confidenceMethod,
     level,
     confidence,
@@ -102,7 +104,11 @@ export function deriveRegression(values, {
       const size = parameters.degree + 1;
       work += groupRows.length * size ** 2 + size ** 3;
     } else if (parameters.method === "loess") {
-      work += groupRows.length * xValues.length *
+      const observedSet = new Set(observedX);
+      const newPredictions = predict === undefined ? 0 :
+        xValues.filter(value => !observedSet.has(value)).length;
+      work += groupRows.length *
+        (observedX.length * (1 + (parameters.robustIterations ?? 0)) + newPredictions) *
         Math.ceil(Math.log2(groupRows.length + 1));
     }
     validateWorkLimit(work, "Regression computation");

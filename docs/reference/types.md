@@ -3559,6 +3559,7 @@ export type DatasetRegressionTransform = {
       method: "linear";
       degree?: never;
       span?: never;
+      robustIterations?: never;
     } & ({ interval: false; confidenceMethod?: never; level?: never; confidence?: never } | ({ interval: "mean" | "prediction" } & (
       | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
       | { confidence: number; confidenceMethod?: never; level?: never }
@@ -3567,6 +3568,7 @@ export type DatasetRegressionTransform = {
       method: "polynomial";
       degree: number;
       span?: never;
+      robustIterations?: never;
     } & ({ interval: false; confidenceMethod?: never; level?: never; confidence?: never } | ({ interval: "mean" | "prediction" } & (
       | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
       | { confidence: number; confidenceMethod?: never; level?: never }
@@ -3574,6 +3576,7 @@ export type DatasetRegressionTransform = {
   | {
       method: "loess";
       span: number;
+      robustIterations?: number;
       degree?: never;
       confidenceMethod?: never;
       level?: never;
@@ -5163,6 +5166,7 @@ export interface EditRegressionOptions {
   method?: RegressionMethod;
   degree?: number;
   span?: number;
+  robustIterations?: number;
   confidenceMethod?: ConfidenceIntervalMethod;
   level?: number;
   confidence?: number;
@@ -9442,6 +9446,7 @@ type RegressionParameterOptions =
       method?: "linear";
       degree?: never;
       span?: never;
+      robustIterations?: never;
       confidenceMethod?: ConfidenceIntervalMethod;
       level?: number;
       confidence?: number;
@@ -9452,6 +9457,7 @@ type RegressionParameterOptions =
       method: "polynomial";
       degree?: number;
       span?: never;
+      robustIterations?: never;
       confidenceMethod?: ConfidenceIntervalMethod;
       level?: number;
       confidence?: number;
@@ -9462,6 +9468,8 @@ type RegressionParameterOptions =
       method: "loess";
       degree?: never;
       span?: number;
+      /** Residual reweighting passes, integer 0..32; default 0. */
+      robustIterations?: number;
       confidenceMethod?: never;
       level?: never;
       confidence?: never;

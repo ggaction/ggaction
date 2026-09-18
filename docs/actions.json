@@ -2278,6 +2278,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "robustIterations",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "confidenceMethod",
           "required": false,
           "type": "ConfidenceIntervalMethod | undefined"
@@ -3929,6 +3934,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "robustIterations",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "confidenceMethod",
           "required": false,
           "type": "ConfidenceIntervalMethod | undefined"
@@ -3975,7 +3985,7 @@
         }
       ],
       "callPatterns": [
-        "editRegressionData({ target, dependents?, method?, degree?, span?, confidenceMethod?, level?, confidence? })"
+        "editRegressionData({ target, dependents?, method?, degree?, span?, robustIterations?, confidenceMethod?, level? })"
       ],
       "snippet": "program.editRegressionData({ target: \"regression\", method: \"loess\" })",
       "errors": [],
@@ -12351,6 +12361,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "robustIterations",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "confidenceMethod",
           "required": false,
           "type": "ConfidenceIntervalMethod | undefined"
@@ -12491,6 +12506,11 @@
         },
         {
           "name": "span",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "robustIterations",
           "required": false,
           "type": "number | undefined"
         },
@@ -29214,6 +29234,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "robustIterations",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "confidenceMethod",
           "required": false,
           "type": "ConfidenceIntervalMethod | undefined"
@@ -29265,8 +29290,7 @@
         }
       ],
       "callPatterns": [
-        "createRegressionPlot({ x, y })",
-        "createRegressionPlot({ x, y, groupBy?, method?, band?, line?, guides? })"
+        "createRegressionPlot({ x, y, method? })"
       ],
       "snippet": "program.createRegressionPlot({ x: \"x\", y: \"y\", groupBy: false })",
       "errors": [],

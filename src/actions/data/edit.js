@@ -509,7 +509,7 @@ export const editStackData = /* @__PURE__ */ focusedEditor(
 );
 export const editRegressionData = /* @__PURE__ */ focusedEditor(
   "editRegressionData", "regression", [
-    "x", "y", "groupBy", "method", "degree", "span", "confidenceMethod",
+    "x", "y", "groupBy", "method", "degree", "span", "robustIterations", "confidenceMethod",
     "level", "confidence", "interval", "predict"
   ]
 );

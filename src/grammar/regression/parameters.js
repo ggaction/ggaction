@@ -45,6 +45,7 @@ export function normalizeRegressionParameters({
   method = "linear",
   degree,
   span,
+  robustIterations,
   confidenceMethod,
   level,
   confidence,
@@ -69,7 +70,15 @@ export function normalizeRegressionParameters({
         "Regression LOESS span must be greater than zero and at most one."
       );
     }
-    return cloneAndFreeze({ method, span: resolvedSpan });
+    const iterations = robustIterations === undefined ? 0 : robustIterations;
+    if (!Number.isInteger(iterations) || iterations < 0 || iterations > 32) {
+      throw new RangeError("LOESS robustIterations must be an integer in [0, 32].");
+    }
+    return cloneAndFreeze({ method, span: resolvedSpan,
+      ...(iterations === 0 ? {} : { robustIterations: iterations }) });
+  }
+  if (robustIterations !== undefined) {
+    throw new Error("Regression robustIterations requires the loess method.");
   }
   if (span !== undefined) {
     throw new Error("Regression span requires the loess method.");
@@ -140,7 +149,7 @@ export function validateRegressionTransform(transform) {
   const supported = [
     "type", "method", "x", "y", "groupBy", "confidenceMethod", "level",
     "confidence", "interval",
-    "degree", "span", "predict", "missing"
+    "degree", "span", "robustIterations", "predict", "missing"
   ];
   const unknown = Object.keys(transform).find(key => !supported.includes(key));
   if (unknown !== undefined) {
@@ -166,6 +175,7 @@ export function validateRegressionTransform(transform) {
     method: transform.method,
     degree: transform.degree,
     span: transform.span,
+    robustIterations: transform.robustIterations,
     confidenceMethod: transform.confidenceMethod,
     level: transform.level,
     confidence: transform.confidence,
@@ -202,7 +212,8 @@ export function normalizeRegressionTransform(args = {}) {
       ? { degree: parameters.degree }
       : {}),
     ...(parameters.method === "loess"
-      ? { span: parameters.span }
+      ? { span: parameters.span, ...(parameters.robustIterations === undefined
+          ? {} : { robustIterations: parameters.robustIterations }) }
       : parameters.interval === false ? { interval: false } : {
           confidenceMethod: parameters.confidenceMethod,
           level: parameters.level,

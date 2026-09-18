@@ -748,7 +748,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createRegressionData`
 
-- Signature: `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval? })`
+- Signature: `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, robustIterations?, confidenceMethod?, level?, confidence?, interval? })`
 - `id`, `source`: Implemented. 새 derived ID와 existing source ID이며 source는 current data로 추론된다.
 - `x`, `y`: Implemented. 필수 quantitative field 이름이다. finite numeric values가 필요하다.
 - `groupBy`: Implemented. optional field 이름이며 생략 시 하나의 regression을 만든다. 값의 first
@@ -756,6 +756,12 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `method`: Implemented `"linear" | "polynomial" | "loess"`. 기본값은 `"linear"`다.
 - `degree`, `span`: Implemented method-specific parameter다. polynomial degree 기본값은 `2`, LOESS
   span 기본값은 `0.75`이며 다른 method와 함께 주면 오류다. Degree는 `1..32`다.
+- `robustIterations`: LOESS 전용 정수 `0..32`, 기본 `0`. 양수만 provenance에 저장한다.
+  각 반복은 group별 정규화 absolute residual 중앙값의 6배를 cutoff로 bisquare weight를
+  tricube weight에 곱한다. Cutoff가 `64*Number.EPSILON` 이하이면 그 tolerance 안쪽만 weight 1이다.
+  Weight가 바뀌지 않으면 조기 종료한다. 모든 local weight가 0이면 동일 neighborhood의 ordinary fit을
+  사용하며 span을 확대하지 않는다. 거리 weight가 모두 0인 boundary tie는 동일 weight로 계산한다.
+  추가 prediction 위치도 최종 residual weight를 사용한다.
 - `confidenceMethod`, `level`: Implemented. method는 `"normal" | "student-t"`, level은 `(0, 1)`의
   finite number다. 기본은 Student-t와 `0.95`이며 둘 다 transform provenance에 저장된다.
 - `confidence`: Implemented compatibility alias for `level`. 둘을 함께 주면 값이 같아야 하며 새 코드에는
@@ -769,14 +775,14 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   계산하며 fitted value, model coefficient 또는 interval endpoint가 finite number로 표현될 수 없으면
   materialization 전에 명확히 거부한다. 전체 unique group/x output은 최대 `10,000` rows다.
   Polynomial work `sum(n*(degree+1)^2+(degree+1)^3)`와 LOESS work
-  `sum(n*uniqueX*ceil(log2(n+1)))`는 각각 `10,000,000`을 넘기 전에 거부한다. graphic은 직접 만들지 않는다.
+  `sum(n*(uniqueX*(1+robustIterations)+newPredictionX)*ceil(log2(n+1)))`는 각각 `10,000,000`을 넘기 전에 거부한다. graphic은 직접 만들지 않는다.
 - Coverage: `test/unit/actions/data/regression-data.test.js`와
   `test/charts/cars-regression-scatterplot/reference-values.test.js`가 grouped/ungrouped 값,
   confidence bounds와 invalid/degenerate groups를 검증한다. 여러 confidence 대표값 coverage는 부분적이다.
 
 ### Formal values — `createRegressionData`
 
-- Implemented: `createRegressionData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; groupBy?: FieldName } & ({ method?: "linear"; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "polynomial"; degree?: PositiveInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "loess"; span?: UnitIntervalExclusiveZero }))`
+- Implemented: `createRegressionData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; groupBy?: FieldName } & ({ method?: "linear"; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "polynomial"; degree?: PositiveInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "loess"; span?: UnitIntervalExclusiveZero; robustIterations?: NonNegativeInteger }))`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -1111,7 +1117,7 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 
 ## `editRegressionData`
 
-- Signature: `editRegressionData({ target, x?, y?, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval?, dependents? })`.
+- Signature: `editRegressionData({ target, x?, y?, groupBy?, method?, degree?, span?, robustIterations?, confidenceMethod?, level?, confidence?, interval?, dependents? })`.
 - Linear↔polynomial은 공통 confidence/interval을 보존하고 degree만 mode에 맞게 추가/제거한다. Loess 전환은
   confidence/interval을 제거하며 loess 밖으로 전환할 때 해당 defaults를 다시 정규화한다.
 

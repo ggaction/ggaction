@@ -65,6 +65,7 @@ program.createRegression({
 | `method` | `"linear"`, `"polynomial"`, or `"loess"` | `"linear"` |
 | `degree` | integer from `1` through `32` for polynomial | `2` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
+| `robustIterations` | LOESS residual reweighting passes, integer `0..32` | `0` |
 | `confidenceMethod` | `"normal"` or `"student-t"` | `"student-t"` |
 | `level` | number strictly between `0` and `1` | `0.95` |
 | `confidence` | compatibility alias for `level`; must match it when both appear | omitted |
@@ -93,6 +94,7 @@ Choose another model or interval without coordinating its child layers:
 ```javascript
 points.createRegression({ method: "polynomial", degree: 2 });
 points.createRegression({ method: "loess", span: 0.55 });
+points.createRegression({ method: "loess", span: 0.55, robustIterations: 2 });
 points.createRegression({ interval: "prediction" });
 points.createRegression({ interval: false, band: false });
 ```
@@ -108,6 +110,22 @@ with `band: false`.
 used at creation. `"follow"` refits when `reviseData` advances that logical
 source. Appearance-only edits preserve fitted rows. Statistical, field, or
 prediction-grid edits create one new immutable fitted dataset.
+
+LOESS defaults to an ordinary local-linear fit. Set `robustIterations: 2`
+for two residual reweighting passes. Each neighborhood contains
+`max(2, ceil(span * groupRowCount))` rows; equal distances use source order,
+and duplicate x values share one prediction. If all neighbors lie at the
+tricube boundary (all distance weights zero), equal weights resolve the tied
+sample. Each pass multiplies the tricube distance
+weights by bisquare residual weights with cutoff six times the median absolute
+residual within the group. Residuals are normalized by the group's largest
+absolute response. If the cutoff is at most `64 * Number.EPSILON`, only residuals
+within that tolerance keep weight one. Unchanged weights stop iteration early.
+A neighborhood with no remaining positive weight uses its ordinary local fit;
+the span does not expand. Short spans can therefore retain isolated outliers.
+Arbitrary prediction positions use the final residual weights. Confidence bands
+remain unavailable. Omitted or zero iterations preserve the ordinary result and
+its persisted transform; positive counts are stored in provenance.
 
 Each regression produces at most 10,000 group/x rows. Polynomial and LOESS
 inputs whose estimated fitting work exceeds 10,000,000 units throw a
@@ -162,7 +180,7 @@ const rebound = program.editRegression({
 });
 ```
 
-`method`, `degree`, `span`, `confidenceMethod`, `level`, `confidence`, `interval`,
+`method`, `degree`, `span`, `robustIterations`, `confidenceMethod`, `level`, `confidence`, `interval`,
 `predict`, `missing`, and `sourceBinding` follow the same
 method-specific rules as creation. A data-role or statistical change creates
 one new immutable fitted-data revision, rebinds every owned regression
@@ -207,7 +225,7 @@ eight-value interpolation vocabulary as area and line marks.
 The action rejects ambiguous point targets, missing quantitative x/y
 encodings, incompatible coordinates or scales, ambiguous nominal grouping,
 invalid method-specific parameters, and groups that cannot support the chosen
-fit. Robust LOESS reweighting and LOESS confidence bands are not supported.
+fit. LOESS confidence bands are not supported.
 Failed calls leave the earlier immutable program unchanged.
 
 ## Related

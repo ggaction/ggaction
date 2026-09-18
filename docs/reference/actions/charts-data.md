@@ -608,6 +608,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
+| `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
@@ -620,14 +621,15 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createRegressionData({
-  id, source?, x, y, groupBy?, method?, degree?, span?,
+  id, source?, x, y, groupBy?, method?, degree?, span?, robustIterations?,
   confidenceMethod?, level?, confidence?, interval?, predict?, missing?
 })
 ```
 
 Create immutable linear, polynomial, or LOESS fitted rows at observed unique x
 values. Linear and polynomial fits support normal or Student-t mean or prediction bounds;
-LOESS is line-only.
+LOESS is line-only. Optional `robustIterations` (integer `0..32`, default `0`)
+adds residual reweighting; see [regression](../../api/regression.md) for the estimator policy.
 [Data](../../api/data.md)
 
 
@@ -998,6 +1000,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
+| `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
@@ -2746,6 +2749,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
+| `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
@@ -3552,7 +3556,7 @@ editSortedData({ target, sortBy, dependents? })
 editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, dependents? })
 editWindowData({ target, partitionBy?, sortBy?, operations?, temporalUnit?, dependents? })
 editDensityData({ target, field?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, weight?, dependents? })
-editRegressionData({ target, x?, y?, groupBy?, method?, degree?, span?, confidenceMethod?, level?, interval?, dependents? })
+editRegressionData({ target, x?, y?, groupBy?, method?, degree?, span?, robustIterations?, confidenceMethod?, level?, interval?, dependents? })
 ```
 
 Revise a standalone derived-data owner without rebuilding its consumers. New

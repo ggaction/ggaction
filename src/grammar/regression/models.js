@@ -376,7 +376,56 @@ function weightedPrediction(items, x, y, xValue, xScale = 1, yScale = 1) {
   return meanY - (variance === 0 ? 0 : covariance / variance) * meanDifference;
 }
 
-function fitLoessGroup(rows, { x, y, group, span }) {
+function applyResidualWeights(neighbors, residualWeights) {
+  if (!neighbors.some(item => item.weight > 0)) {
+    neighbors = neighbors.map(item => ({ ...item, weight: 1 }));
+  }
+  if (residualWeights === undefined) return neighbors;
+  const weighted = neighbors.map(item => ({
+    ...item, weight: item.weight * residualWeights[item.index]
+  }));
+  return weighted.some(item => item.weight > 0) ? weighted : neighbors;
+}
+
+function loessPrediction(rows, {
+  x, y, xValue, xScale, yScale, neighborCount, residualWeights, scaled = false
+}, label) {
+  const rawDistances = rows.map(row => Math.abs(row[x] - xValue));
+  const scaledDistances = scaled || rawDistances.some(value => !Number.isFinite(value));
+  const neighbors = rows
+    .map((row, index) => ({
+      row,
+      index,
+      distance: scaledDistances
+        ? Math.abs(row[x] / xScale - xValue / xScale)
+        : rawDistances[index]
+    }))
+    .sort((left, right) =>
+      left.distance - right.distance || left.index - right.index
+    )
+    .slice(0, neighborCount);
+  const radius = neighbors.at(-1).distance;
+  let weighted = neighbors.map(neighbor => ({
+    ...neighbor,
+    weight: radius === 0
+      ? 1
+      : (1 - (neighbor.distance / radius) ** 3) ** 3
+  }));
+  weighted = applyResidualWeights(weighted, residualWeights);
+  const ordinary = weightedPrediction(weighted, x, y, xValue);
+  return {
+    prediction: Number.isFinite(ordinary)
+      ? ordinary
+      : restoreFiniteScale(
+          weightedPrediction(weighted, x, y, xValue, xScale, yScale),
+          yScale,
+          label
+        ),
+    neighborIndices: weighted.map(item => item.index)
+  };
+}
+
+function fitLoessGroup(rows, { x, y, group, span, robustIterations = 0 }) {
   const groupLabel = group === undefined ? "all" : String(group);
   const label = `LOESS regression group "${groupLabel}"`;
   if (rows.length < 2 || new Set(rows.map(row => row[x])).size < 2) {
@@ -390,64 +439,42 @@ function fitLoessGroup(rows, { x, y, group, span }) {
     .sort((left, right) => left - right);
   const xScale = maximumMagnitude(rows.map(row => row[x])) || 1;
   const yScale = maximumMagnitude(rows.map(row => row[y])) || 1;
-  const fits = xValues.map(xValue => {
-    const rawDistances = rows.map(row => Math.abs(row[x] - xValue));
-    const scaledDistances = rawDistances.some(value => !Number.isFinite(value));
-    const neighbors = rows
-      .map((row, index) => ({
-        row,
-        index,
-        distance: scaledDistances
-          ? Math.abs(row[x] / xScale - xValue / xScale)
-          : rawDistances[index]
-      }))
-      .sort((left, right) =>
-        left.distance - right.distance || left.index - right.index
-      )
-      .slice(0, neighborCount);
-    const radius = neighbors.at(-1).distance;
-    const weighted = neighbors.map(neighbor => ({
-      ...neighbor,
-      weight: radius === 0
-        ? 1
-        : (1 - (neighbor.distance / radius) ** 3) ** 3
-    }));
-    const ordinary = weightedPrediction(weighted, x, y, xValue);
-    return {
-      x: xValue,
-      prediction: Number.isFinite(ordinary)
-        ? ordinary
-        : restoreFiniteScale(
-            weightedPrediction(weighted, x, y, xValue, xScale, yScale),
-            yScale,
-            `${label} prediction`
-          ),
-      neighborIndices: weighted.map(item => item.index)
-    };
-  });
-  return { count: rows.length, span, neighborCount, fits, rows, x, y, xScale, yScale };
+  const fitAtObserved = residualWeights => xValues.map(xValue => ({
+    x: xValue,
+    ...loessPrediction(rows, {
+      x, y, xValue, xScale, yScale, neighborCount, residualWeights
+    }, `${label} prediction`)
+  }));
+  let fits = fitAtObserved();
+  let residualWeights;
+  for (let iteration = 0; iteration < robustIterations; iteration += 1) {
+    const predictions = new Map(fits.map(fit => [fit.x, fit.prediction]));
+    const residuals = rows.map(row => Math.abs(row[y] / yScale - predictions.get(row[x]) / yScale));
+    const sorted = [...residuals].sort((a, b) => a - b);
+    const middle = Math.floor(sorted.length / 2);
+    const median = sorted.length % 2 === 0
+      ? (sorted[middle - 1] + sorted[middle]) / 2 : sorted[middle];
+    const tolerance = 64 * Number.EPSILON;
+    const cutoff = 6 * median;
+    const nextWeights = residuals.map(residual => {
+      if (cutoff <= tolerance) return residual <= tolerance ? 1 : 0;
+      const ratio = residual / cutoff;
+      return ratio >= 1 ? 0 : (1 - ratio * ratio) ** 2;
+    });
+    if (nextWeights.every((weight, index) => weight === (residualWeights?.[index] ?? 1))) break;
+    residualWeights = nextWeights;
+    fits = fitAtObserved(residualWeights);
+  }
+  return { count: rows.length, span, neighborCount, fits, rows, x, y, xScale, yScale,
+    ...(robustIterations === 0 ? {} : { robustIterations, residualWeights: residualWeights ?? rows.map(() => 1) }) };
 }
 
 function predictLoessAt(model, xValue) {
   const found = model.fits.find(fit => fit.x === xValue);
   if (found !== undefined) return found.prediction;
-  const neighbors = model.rows.map((row, index) => ({
-    row,
-    index,
-    distance: Math.abs(row[model.x] / model.xScale - xValue / model.xScale)
-  })).sort((left, right) => left.distance - right.distance || left.index - right.index)
-    .slice(0, model.neighborCount);
-  const radius = neighbors.at(-1).distance;
-  const weighted = neighbors.map(neighbor => ({
-    ...neighbor,
-    weight: radius === 0 ? 1 : (1 - (neighbor.distance / radius) ** 3) ** 3
-  }));
-  const ordinary = weightedPrediction(weighted, model.x, model.y, xValue);
-  return Number.isFinite(ordinary) ? ordinary : restoreFiniteScale(
-    weightedPrediction(weighted, model.x, model.y, xValue, model.xScale, model.yScale),
-    model.yScale,
-    "LOESS regression prediction"
-  );
+  return loessPrediction(model.rows, {
+    ...model, xValue, scaled: true
+  }, "LOESS regression prediction").prediction;
 }
 
 export function fitRegressionGroup(rows, { x, y, group, parameters }) {
@@ -472,7 +499,8 @@ export function fitRegressionGroup(rows, { x, y, group, parameters }) {
       interval: parameters.interval
     });
   }
-  return fitLoessGroup(rows, { x, y, group, span: parameters.span });
+  return fitLoessGroup(rows, { x, y, group, span: parameters.span,
+    robustIterations: parameters.robustIterations });
 }
 
 export function predictRegressionAt(model, xValue, parameters) {

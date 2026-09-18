@@ -1014,14 +1014,15 @@ legend baseline, and retain the reusable selection.
 
 ```javascript
 createRegressionData({
-  id, source?, x, y, groupBy?, method?, degree?, span?,
+  id, source?, x, y, groupBy?, method?, degree?, span?, robustIterations?,
   confidenceMethod?, level?, confidence?, interval?, predict?, missing?
 })
 ```
 
 Create immutable linear, polynomial, or LOESS fitted rows at observed unique x
 values. Linear and polynomial fits support normal or Student-t mean or prediction bounds;
-LOESS is line-only.
+LOESS is line-only. Optional `robustIterations` (integer `0..32`, default `0`)
+adds residual reweighting; see [regression](../api/regression.md) for the estimator policy.
 [Data](../api/data.md)
 
 ### `createDensityData`
@@ -1118,7 +1119,7 @@ editSortedData({ target, sortBy, dependents? })
 editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, dependents? })
 editWindowData({ target, partitionBy?, sortBy?, operations?, temporalUnit?, dependents? })
 editDensityData({ target, field?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, weight?, dependents? })
-editRegressionData({ target, x?, y?, groupBy?, method?, degree?, span?, confidenceMethod?, level?, interval?, dependents? })
+editRegressionData({ target, x?, y?, groupBy?, method?, degree?, span?, robustIterations?, confidenceMethod?, level?, interval?, dependents? })
 ```
 
 Revise a standalone derived-data owner without rebuilding its consumers. New
@@ -2087,21 +2088,21 @@ accept it. The modes are mutually exclusive. The first omitted mode defaults to
 
 ```javascript
 createRegression({
-  target?, x?, y?, groupBy?, method?, degree?, span?,
+  target?, x?, y?, groupBy?, method?, degree?, span?, robustIterations?,
   confidenceMethod?, level?, confidence?, interval?, band?, line?
 })
 ```
 
 Infer an eligible point layer and create immutable fitted data, optional grouped
 interval-band paths, and grouped line paths. Method defaults to `"linear"`;
-polynomial degree to `2`; LOESS span to `0.75`.
+polynomial degree to `2`; LOESS span to `0.75` and `robustIterations` to `0`.
 [Regression](../api/regression.md)
 
 ### `editRegression`
 
 ```javascript
 editRegression({
-  target?, data?, x?, y?, groupBy?, method?, degree?, span?,
+  target?, data?, x?, y?, groupBy?, method?, degree?, span?, robustIterations?,
   confidenceMethod?, level?, confidence?, interval?, band?, line?
 })
 ```

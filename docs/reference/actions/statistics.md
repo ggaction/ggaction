@@ -852,6 +852,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
+| `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
@@ -865,14 +866,14 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createRegression({
-  target?, x?, y?, groupBy?, method?, degree?, span?,
+  target?, x?, y?, groupBy?, method?, degree?, span?, robustIterations?,
   confidenceMethod?, level?, confidence?, interval?, band?, line?
 })
 ```
 
 Infer an eligible point layer and create immutable fitted data, optional grouped
 interval-band paths, and grouped line paths. Method defaults to `"linear"`;
-polynomial degree to `2`; LOESS span to `0.75`.
+polynomial degree to `2`; LOESS span to `0.75` and `robustIterations` to `0`.
 [Regression](../../api/regression.md)
 
 
@@ -903,6 +904,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `method` | Optional / branch-dependent | `RegressionMethod \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
+| `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
@@ -919,7 +921,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 editRegression({
-  target?, data?, x?, y?, groupBy?, method?, degree?, span?,
+  target?, data?, x?, y?, groupBy?, method?, degree?, span?, robustIterations?,
   confidenceMethod?, level?, confidence?, interval?, band?, line?
 })
 ```
