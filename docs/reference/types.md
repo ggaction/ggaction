@@ -10936,7 +10936,7 @@ Related types: [`NonPointThresholdColorScaleOptions`](#type-nonpointthresholdcol
 <summary>Expand TimeAxisDirective</summary>
 
 ```typescript
-type TimeAxisDirective = "Y" | "m" | "d" | "b";
+type TimeAxisDirective = "Y" | "m" | "d" | "b" | "H" | "M" | "S" | "L";
 ```
 
 </details>

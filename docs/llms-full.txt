@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:2bb042d020b5a5b84995377d8ae09329a6af0e8320a18cbc016c0df26dc176f5. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:c3bb3d0108ae717ffbf8ef7f9305737d08597f2322eca26645850bbbab7c905d. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -6522,7 +6522,11 @@ use this same renderer policy.
 Provide exactly one of `field`, constant `value`, or semantic `content`.
 `format` defaults to `"auto"`. Numeric formats are `".0f"`–`".12f"`,
 `".0%"`–`".12%"`, and `".0e"`–`".12e"`. UTC date formats compose `%Y`, `%m`,
-`%d`, and `%b`, such as `"%Y-%m-%d"`; `%%` emits a literal percent sign.
+`%d`, and `%b`, such as `"%Y-%m-%d"`. Time components are `%H` (24-hour hour),
+`%M` (minute), `%S` (second), and `%L` (three-digit millisecond); for example,
+`"%H:%M:%S.%L"` produces `"09:05:02.001"`. All components use UTC; hours, minutes,
+and seconds use two digits. `%%` emits a literal percent sign.
+The same formats work for temporal axis and legend labels.
 Calling `encodeText` again replaces the previous content assignment and
 preserves the previous format unless you supply one. Precision is an integer
 from 0 through 12; two-digit zero-padded forms such as `".01f"` are also
@@ -34863,7 +34867,7 @@ Related types: [`NonPointThresholdColorScaleOptions`](./reference/types/#type-no
  Expand TimeAxisDirective
 
 ```typescript
-type TimeAxisDirective = "Y" | "m" | "d" | "b";
+type TimeAxisDirective = "Y" | "m" | "d" | "b" | "H" | "M" | "S" | "L";
 ```
 
 ### `TimeUnit` {#type-timeunit}
@@ -37821,7 +37825,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:2bb042d020b5a5b84995377d8ae09329a6af0e8320a18cbc016c0df26dc176f5` |
+| Contract fingerprint | `sha256:c3bb3d0108ae717ffbf8ef7f9305737d08597f2322eca26645850bbbab7c905d` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

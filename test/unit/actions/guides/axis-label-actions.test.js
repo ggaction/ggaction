@@ -168,3 +168,15 @@ test("rejects incompatible formats and insufficient mirrored label margins", () 
     /do not fit the Canvas margin/
   );
 });
+
+test("sub-day temporal labels retain explicit instants through format and Canvas edits", () => {
+  const values = ["2023-12-31T23:59:59.999Z", "2024-01-01T00:00:00.001Z"];
+  const p = chart().createCanvas({ width: 600, height: 250, margin: 100 })
+    .createData({ values: values.map(date => ({ date })) })
+    .createPointMark().encodeX({ field: "date", fieldType: "temporal" })
+    .createXAxisLabels({ values: values.map(Date.parse), format: "%H:%M:%S.%L" });
+  const labels = program => program.graphicSpec.objects.xAxisLabels.items.map(item => item.properties.text);
+  assert.deepEqual(labels(p), ["23:59:59.999", "00:00:00.001"]);
+  assert.deepEqual(labels(p.editCanvas({ width: 650 })), labels(p));
+  assert.deepEqual(labels(p.editXAxisLabels({ format: ".%L" })), [".999", ".001"]);
+});

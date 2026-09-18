@@ -1561,7 +1561,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   final-item set yields empty text. Zero-height bars excluded from final items produce no placeholder labels.
   Scaling by the maximum before summing preserves meaningful shares when the raw sum would overflow.
 - `format`: `"auto"`, `.0`–`.12` precision with fixed-decimal `f`, percent `%`, or scientific `e`, or a UTC
-  pattern containing `%Y | %m | %d | %b` and literals (`%%` emits `%`). Auto uses deterministic string conversion,
+  pattern containing `%Y | %m | %d | %b | %H | %M | %S | %L` and literals (`%%` emits `%`). Auto uses deterministic string conversion,
   so share content with auto is a fraction. Percent multiplies by 100, rounds to the specified decimals and appends `%`.
   Numeric formats require finite values and reject percent overflow; UTC formats require a valid date/timestamp.
   Precision is an integer from 0 through 12;

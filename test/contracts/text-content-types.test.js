@@ -145,6 +145,9 @@ p.encodeText({ value: 1250, format: ".2e" });
 p.encodeText({ value: "2024-03-05T00:00:00Z", format: "%Y-%m-%d" });
 p.createLegend({ channels: ["color"], labels: { format: ".2e" } });
 p.editLegendLabels({ format: "%Y" });
+p.editXAxisLabels({ format: "%H:%M:%S.%L" });
+p.encodeText({ value: "2024-01-01T01:02:03Z", format: "%H" });
+p.editLegendLabels({ format: ".%L" });
 ${[...precisionCalls, ...paddedCalls].join("\n")}
 // @ts-expect-error Content and field are exclusive.
 p.encodeText({ content: "value", field: "value" });

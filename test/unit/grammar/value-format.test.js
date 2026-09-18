@@ -38,3 +38,21 @@ test("validates precision and value-family compatibility before formatting", () 
     /require a supported UTC format/
   );
 });
+
+test("UTC sub-day components preserve padding, offsets, and calendar boundaries", () => {
+  const format = "%Y-%m-%d %H:%M:%S.%L %%";
+  for (const [input, expected] of [
+    [0, "1970-01-01 00:00:00.000 %"],
+    [1, "1970-01-01 00:00:00.001 %"],
+    [999, "1970-01-01 00:00:00.999 %"],
+    [-1, "1969-12-31 23:59:59.999 %"],
+    ["2024-01-01T00:05:02.007+09:00", "2023-12-31 15:05:02.007 %"],
+    ["2024-03-01T00:00:00Z", "2024-03-01 00:00:00.000 %"]
+  ]) assert.equal(formatValue(input, { format, valueType: "temporal" }), expected);
+  for (const format of ["%H", "%M", "%S", "%L", ".%L", "%d %b %H:%M"]) {
+    assert.equal(validateValueFormat(format), format);
+  }
+  assert.throws(() => validateValueFormat("%H:%Q"), /supported format string/u);
+  assert.throws(() => validateValueFormat("%H:%"), /supported format string/u);
+  assert.throws(() => formatValue(1, { format: "%H", valueType: "quantitative" }), /cannot use a UTC/u);
+});

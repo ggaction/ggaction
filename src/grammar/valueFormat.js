@@ -1,5 +1,5 @@
 const NUMERIC_FORMAT = /^\.(0?\d|1[0-2])(f|%|e)$/;
-const TIME_DIRECTIVES = new Set(["Y", "m", "d", "b", "%"]);
+const TIME_DIRECTIVES = new Set(["Y", "m", "d", "b", "H", "M", "S", "L", "%"]);
 const MONTH_NAMES = Object.freeze([
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -61,9 +61,13 @@ function formatUtcValue(value, format, label) {
     Y: pad(date.getUTCFullYear(), 4),
     m: pad(date.getUTCMonth() + 1),
     d: pad(date.getUTCDate()),
-    b: MONTH_NAMES[date.getUTCMonth()]
+    b: MONTH_NAMES[date.getUTCMonth()],
+    H: pad(date.getUTCHours()),
+    M: pad(date.getUTCMinutes()),
+    S: pad(date.getUTCSeconds()),
+    L: pad(date.getUTCMilliseconds(), 3)
   };
-  return format.replace(/%([Ymdb%])/g, (_, directive) =>
+  return format.replace(/%([YmdbHMSL%])/g, (_, directive) =>
     directive === "%" ? "%" : values[directive]
   );
 }

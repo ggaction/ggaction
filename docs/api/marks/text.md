@@ -170,7 +170,11 @@ use this same renderer policy.
 Provide exactly one of `field`, constant `value`, or semantic `content`.
 `format` defaults to `"auto"`. Numeric formats are `".0f"`–`".12f"`,
 `".0%"`–`".12%"`, and `".0e"`–`".12e"`. UTC date formats compose `%Y`, `%m`,
-`%d`, and `%b`, such as `"%Y-%m-%d"`; `%%` emits a literal percent sign.
+`%d`, and `%b`, such as `"%Y-%m-%d"`. Time components are `%H` (24-hour hour),
+`%M` (minute), `%S` (second), and `%L` (three-digit millisecond); for example,
+`"%H:%M:%S.%L"` produces `"09:05:02.001"`. All components use UTC; hours, minutes,
+and seconds use two digits. `%%` emits a literal percent sign.
+The same formats work for temporal axis and legend labels.
 Calling `encodeText` again replaces the previous content assignment and
 preserves the previous format unless you supply one. Precision is an integer
 from 0 through 12; two-digit zero-padded forms such as `".01f"` are also
