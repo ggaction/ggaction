@@ -310,6 +310,11 @@ function relativeLuminance(color) {
 }
 
 function sourceTextConfig(config, source, item) {
+  if (config.inheritColor && config.fillExplicit !== true) {
+    const fill = item.properties[config.inheritColor];
+    if (typeof fill !== "string") throw new Error(`Source mark "${source.id}" has no resolved ${config.inheritColor} color.`);
+    return { ...config, fill };
+  }
   if (
     !["arc", "rect"].includes(source.mark.type) ||
     config.fillExplicit === true
@@ -396,7 +401,7 @@ function resolveSourceTextItems(program, layer, config) {
     if (!resolved.visible) return [];
     if (
       resolved.anchor.startsWith("outside") &&
-      config.fillExplicit !== true
+      config.fillExplicit !== true && !config.inheritColor
     ) {
       resolvedConfig = config;
     }
@@ -420,7 +425,7 @@ function resolveRowTextItems(program, layer, config) {
     throw new Error(`Text mark "${layer.id}" requires an existing dataset.`);
   }
   const dataset = applyItemMissingPolicy(layer, sourceDataset);
-  const encodings = [layer.encoding?.x, layer.encoding?.y, layer.encoding?.text];
+  const encodings = [layer.encoding?.x, layer.encoding?.y, layer.encoding?.text, layer.encoding?.color];
   const length = encodings.some(encoding => encoding !== undefined && Object.hasOwn(encoding, "field"))
     ? dataset.values.length
     : 1;
@@ -454,9 +459,10 @@ function resolveRowTextItems(program, layer, config) {
   const rows = length === 1 && dataset.values.length === 0
     ? [undefined]
     : dataset.values.slice(0, length);
+  const fills = resolveRowEncodingValues(program, layer, dataset, "color");
   return rows.flatMap((row, index) => {
     const concrete = concreteItem(
-      config,
+      fills === undefined ? config : { ...config, fill: fills[index] },
       { x: x[index], y: y[index] },
       contentValue(layer.encoding.text, row),
       layer.encoding.text.format

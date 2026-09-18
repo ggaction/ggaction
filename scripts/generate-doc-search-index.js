@@ -168,10 +168,10 @@ function sourceSections(source) {
 }
 
 function summary(text) {
-  if (text.length <= 240) return text;
-  const shortened = text.slice(0, 237);
+  if (text.length <= 232) return text;
+  const shortened = text.slice(0, 229);
   const boundary = shortened.lastIndexOf(" ");
-  return `${shortened.slice(0, boundary > 160 ? boundary : 237)}…`;
+  return `${shortened.slice(0, boundary > 160 ? boundary : 229)}…`;
 }
 
 export async function buildDocSearchIndex() {

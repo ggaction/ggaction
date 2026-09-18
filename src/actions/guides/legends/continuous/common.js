@@ -233,7 +233,7 @@ export function resolveContinuousColorLayer(program, requested, channel = "color
     requested,
     candidate => (channel === "stroke"
       ? ["point", "line", "area", "bar", "rect", "arc", "rule", "tick"]
-      : ["point", "bar", "rect"]
+      : ["point", "bar", "rect", "text"]
     ).includes(candidate.mark?.type) &&
       candidate.encoding?.[channel]?.scale !== undefined
   );

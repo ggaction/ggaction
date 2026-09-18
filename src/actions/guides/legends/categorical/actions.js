@@ -252,7 +252,7 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
     }
   }
   const continuousColorCandidates = candidates.filter(layer => {
-    const encoding = ["point", "bar", "rect"].includes(layer.mark?.type)
+    const encoding = ["point", "bar", "rect", "text"].includes(layer.mark?.type)
       ? layer.encoding?.color
       : undefined;
     const scale = findSemanticScale(program, encoding?.scale);
@@ -268,7 +268,7 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
     return { steps: [{ op: "createGradientLegend", args }], finish: "auto" };
   }
   const intervalColorCandidates = candidates.filter(layer => {
-    const encoding = ["point", "bar", "rect"].includes(layer.mark?.type) ? layer.encoding?.color : undefined;
+    const encoding = ["point", "bar", "rect", "text"].includes(layer.mark?.type) ? layer.encoding?.color : undefined;
     const scale = findSemanticScale(program, encoding?.scale);
     return ["quantize", "quantile", "threshold"].includes(scale?.type);
   });

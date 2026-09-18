@@ -3813,6 +3813,8 @@ export interface YOffsetEncodingOptions extends OffsetEncodingOptions {}
 export type TextFormat = ValueFormat;
 
 export interface TextMarkOptions {
+  /** Follow resolved source appearance; an explicit fill takes precedence. Source-owned labels only. */
+  inheritColor?: "fill" | "stroke" | false;
   id?: string;
   data?: string;
   /** Explicit source mark. Mutually exclusive with data; may be incomplete. */

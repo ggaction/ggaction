@@ -35,9 +35,9 @@ editing page when changing an existing guide.
 
 | Legend family | Supported marks | Channels |
 | --- | --- | --- |
-| Categorical color/shape/dash | point, line, area, bar, rect, arc | ordinal color; point shape; line strokeDash; compatible composites follow family constraints |
+| Categorical color/shape/dash | point, line, area, bar, rect, arc, text | ordinal color; point shape; line strokeDash; compatible composites follow family constraints |
 | Categorical stroke | point, line, area, bar, rect, arc, rule, tick | ordinal stroke; final-item or series identities |
-| Continuous color gradient | point, aggregate bar, rect | sequential color; gradient swatch, no symbol recipe |
+| Continuous color gradient | point, aggregate bar, rect, text | sequential color; gradient swatch, no symbol recipe |
 | Continuous stroke gradient | point, line, area, bar, rect, arc, rule, tick | sequential stroke; separate gradient, no symbol recipe |
 | Discretized color interval | point, aggregate bar, rect | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |

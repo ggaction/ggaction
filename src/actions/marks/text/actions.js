@@ -43,7 +43,7 @@ import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const STYLE_OPTIONS = Object.freeze([
   "fill", "opacity", "fontSize", "fontFamily", "fontWeight",
-  "align", "baseline", "rotation", "dx", "dy"
+  "align", "baseline", "rotation", "dx", "dy", "inheritColor"
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "source", "text", "missing", ...STYLE_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", "missing", ...STYLE_OPTIONS]);
@@ -481,6 +481,12 @@ const editTextMark = /* @__PURE__ */ action(
     const layer = requireTextLayer(this, args.target, "editTextMark");
     if (Object.hasOwn(args, "missing") && layer.source !== undefined) {
       throw new Error("Text missing policy requires a row-backed text mark, not source-owned labels.");
+    }
+    if (args.inheritColor && layer.source === undefined) {
+      throw new Error("Text inheritColor requires a source-owned label.");
+    }
+    if (Object.hasOwn(args, "fill") && layer.encoding?.color !== undefined) {
+      throw new Error("Text fill conflicts with its color encoding.");
     }
     const semantic = Object.hasOwn(args, "missing")
       ? this.editSemantic({

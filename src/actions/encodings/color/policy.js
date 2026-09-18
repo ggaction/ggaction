@@ -20,6 +20,9 @@ export function resolveColorScaleOptions(args) {
 }
 
 export function assertNoConstantColor(program, layer) {
+  if (layer.mark.type === "text" && layer.source !== undefined) {
+    throw new Error("Source-owned text uses inheritColor or constant fill; field color requires row-backed text.");
+  }
   const config = program.markConfigs[layer.id];
   const hasConstant = {
     point: config?.fill !== undefined,
@@ -27,7 +30,8 @@ export function assertNoConstantColor(program, layer) {
     area: config?.errorBand?.fill !== undefined,
     bar: config?.barAppearance?.fill !== undefined,
     arc: config?.fill !== undefined,
-    rect: config?.fillExplicit === true
+    rect: config?.fillExplicit === true,
+    text: config?.fillExplicit === true
   }[layer.mark.type] ?? false;
   if (hasConstant) {
     throw new Error(
@@ -64,7 +68,7 @@ export function resolveColorLayout(layer, requested, barGrain) {
         : undefined
   );
 
-  if (["point", "line", "rect"].includes(layer.mark.type) && layout !== undefined) {
+  if (["point", "line", "rect", "text"].includes(layer.mark.type) && layout !== undefined) {
     throw new Error(`Color layout is not supported for ${layer.mark.type} marks.`);
   }
   if (layer.mark.type === "area" && layout === "group") {

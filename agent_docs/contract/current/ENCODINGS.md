@@ -1646,3 +1646,5 @@ Parallel reencoding은 field identity로 axis component recipe와 explicit title
 - Ordinary Area의 독립 x 또는 y는 nominal/ordinal을 지원하며 point/band scale domain 순서로 경로를 정렬한다. 명시적 pathOrder는 domain 정렬보다 우선한다.
 - createAreaPlot은 같은 독립 위치를 허용한다. 정량 endpoint, layoutSeries 정렬 그리드 및 missing 정책은 유지하며 누락 범주를 합성하지 않는다.
 - Evidence: `test/unit/actions/encodings/categorical-areas.test.js`.
+
+- Row-backed Text의 encodeColor는 nominal/ordinal 및 quantitative/temporal 색상을 지원한다. aggregate/layout/unknown fallback은 지원하지 않으며 고정 fill과 충돌한다. source-owned label은 MARKS의 inheritColor 계약을 따른다.

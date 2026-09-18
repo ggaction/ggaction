@@ -1141,3 +1141,10 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - Ordinary Area의 독립 x 또는 y는 nominal/ordinal을 지원하며 point/band scale domain 순서로 경로를 정렬한다. 명시적 pathOrder는 domain 정렬보다 우선한다.
 - createAreaPlot은 같은 독립 위치를 허용한다. 정량 endpoint, layoutSeries 정렬 그리드 및 missing 정책은 유지하며 누락 범주를 합성하지 않는다.
 - Evidence: `test/unit/actions/encodings/categorical-areas.test.js`.
+
+### Text 색상과 source appearance
+
+- Row-backed Text는 encodeColor로 범주형/연속형 색상을 지정한다. 명시적 fill과 충돌하며 source-owned label은 독립 color encoding을 받지 않는다.
+- Text/MarkLabels의 inheritColor는 fill/stroke/false다. source final item의 실제 색상을 따르며 명시적 fill이 우선한다. 기본 arc/rect 대비색 정책은 유지한다.
+- 상속은 추가 scale/legend를 만들지 않고 source 재계산을 따른다. source appearance가 없으면 오류다.
+- Evidence: `test/unit/actions/encodings/text-color.test.js`.

@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:02cb2eb781b90f4c27587c4d596c0a32eb846dd1656dd9529dbd15a4ed79cb66",
+    "contractId": "sha256:2ad681c7ff1a52807ba27affbad4af9691ba8acb1c6e72b3867a24f513cdc38b",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -984,8 +984,8 @@
         "removelabellayoutoptions",
         "related"
       ],
-      "bytes": 12450,
-      "sha256": "65215168a0b165003dbd88727af2ec5d1fe0974d6ef4a1b63b85205d480d05e0"
+      "bytes": 13051,
+      "sha256": "d58fcaa790177718787a599f3a46dbf874554fde75a52658dfe930dcf18e46d5"
     },
     {
       "order": 62,
@@ -1027,8 +1027,8 @@
         "explicit-grouping-and-time-inputs",
         "related"
       ],
-      "bytes": 15353,
-      "sha256": "e63498ad84f0ae9297f75579e1f81c9db1cad423853cdfc94e06067897b2e05b"
+      "bytes": 15398,
+      "sha256": "a3fea75e15a16f030633e4ccc92ec007322cff21237ca1890c7886487f3ad32e"
     },
     {
       "order": 64,
@@ -1362,8 +1362,8 @@
         "continuous-aggregate-bar-color",
         "related"
       ],
-      "bytes": 11821,
-      "sha256": "fc6d3197661c05b054500169b5279c2d53252b45fc5b61b16414cf6d5d918a7a"
+      "bytes": 11854,
+      "sha256": "9881370b73e192d6d715481cd8e4927668749aaad2958055f82663a85c8748d5"
     },
     {
       "order": 83,
@@ -1595,8 +1595,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4935,
-      "sha256": "848cc2d492e0a117ba7b608b4cc7ec6207af40bfd5523e220191453f290b1dba"
+      "bytes": 4947,
+      "sha256": "de146c3a18d13d2d0ae2d74f5978cbcf7b7c7494ae43b2d650750e3c6655e11b"
     },
     {
       "order": 98,
@@ -2055,8 +2055,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 67173,
-      "sha256": "92dd714674ec11ff3f115ff6f3790936a76468bc6c14b7f431a32daac42f4718"
+      "bytes": 67808,
+      "sha256": "85d25d85c9d094d5bfa30f15ac615db8177913b3d98c71d58245a16ace85e1c4"
     },
     {
       "order": 120,
@@ -2105,8 +2105,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 59493,
-      "sha256": "dc1b33c11f56a85348152ad93ce3ed2e4478bc6fcbb3d988e1d5d19180e004a3"
+      "bytes": 59526,
+      "sha256": "4096e60f4dda5d3b303b9c839671afbd747fedfde5aa0e4864d1cdc5474338d8"
     },
     {
       "order": 121,
@@ -2942,8 +2942,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 310829,
-      "sha256": "459b2ffdd417dd65d9aab3a32b7e6116494a3c09952afb814bc39f88c0175b85"
+      "bytes": 310978,
+      "sha256": "39e57a47e8cedcba23d060db72ea7dfa6a57bb86c8abc956cdb8a4e795582c08"
     },
     {
       "order": 127,
@@ -3295,7 +3295,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "9f953cd36ea2f3bfaabbdb85d335bbf0cbd9b62a0c31a20e30605b7e36df487d"
+      "sha256": "8b0d01933da17f8e9d7850e0ba9482015fde6a523ee740a46a43c66e91057e63"
     },
     {
       "order": 150,

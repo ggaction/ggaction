@@ -49,6 +49,10 @@ export function formatTextValue(value, format = "auto") {
 
 export function normalizeTextMarkConfig(options, base = DEFAULT_TEXT_MARK) {
   const config = { ...base };
+  if (Object.hasOwn(options, "inheritColor")) {
+    if (![false, "fill", "stroke"].includes(options.inheritColor)) throw new Error("Text inheritColor must be fill, stroke, or false.");
+    config.inheritColor = options.inheritColor;
+  }
   const mapping = {
     fill: "fill",
     opacity: "opacity",

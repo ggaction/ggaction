@@ -293,3 +293,13 @@ See [Label Collision Layout](./label-layout.md#removelabellayoutoptions) for thi
 
 [Point marks](./point.md) · [Bar marks](./bar.md) · [Rule marks](./rule.md) ·
 [Encodings](../encodings.md) · [Annotation recipe](../../recipes/annotations.md)
+
+Data-bound text accepts `encodeColor` with categorical or continuous scales and
+an optional color legend. Use explicit `data` to create independent row-backed
+text; color encoding and constant fill are mutually exclusive.
+
+Attached labels instead accept `inheritColor: "fill"` or `"stroke"`. The resolved
+source item's color follows filtering, aggregation, and scale edits without a
+second legend. Explicit fill overrides inheritance; `false` disables it. The
+default contrast policy for arc/rect labels remains unchanged. A missing source
+appearance produces an error rather than an invented color.

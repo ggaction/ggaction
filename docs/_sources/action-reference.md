@@ -1431,11 +1431,10 @@ is needed. Both reference facades are available in the full entry point.
 ### `createMarkLabels`
 
 ```javascript
-createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
+createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, inheritColor?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
 ```
 
-Create final-item labels on an existing mark through text creation, encoding, and
-optional collision layout. The default content is the source's semantic value;
+Label final mark items with optional collision layout. The default content is the source's semantic value;
 Point/Line/Rule/Rect require a field or constant. A Line creates one label per
 series at its final path coordinate. The default ID is `<source>-labels`.
 Omit `select` and `selection` to label every final item. Pass `select: MarkSelector`
@@ -1521,7 +1520,7 @@ Omit `layout` or pass `false` to retain the exact anchor. A layout object accept
 ### `createTextMark`
 
 ```javascript
-createTextMark({ id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+createTextMark({ id?, data?, source?, text?, inheritColor?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
@@ -1532,6 +1531,9 @@ contributes independent scale-domain values. Source field or scale changes also 
 Direct `encodeX/Y` on attached Text is rejected: edit the source, use `editTextMark({ dx, dy })`, or create
 independent Text with explicit `data` to author its positions. Independent Text accepts field or datum positions;
 all-constant x/y/text produces one item, while any field-bound encoding uses row grain.
+Row-backed text supports `encodeColor`; explicit fill conflicts with that encoding.
+Attached labels accept `inheritColor: "fill" | "stroke" | false` to follow source appearance.
+Explicit fill overrides inheritance. Inheritance adds no color scale or duplicate legend.
 `rotation` accepts a finite legacy number in radians or an explicit
 `{ value, unit: "degrees" | "radians" }` object; both normalize to concrete
 radians. `createMarkLabels`, `createAnnotation`, and `editTextMark` share this
@@ -1541,7 +1543,7 @@ input contract.
 ### `editTextMark`
 
 ```javascript
-editTextMark({ target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
+editTextMark({ target?, inheritColor?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
 ```
 
 Edit text typography and graphical offsets without changing its semantic
@@ -1907,9 +1909,9 @@ removes grouping.
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
-| Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
-| Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
-| Discretized continuous | point, aggregate bar, rect | point/aggregate bar/rect: quantitative | quantize, quantile, or threshold scale |
+| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
+| Continuous | point, aggregate bar, rect, text | point/rect/text: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
+| Discretized continuous | point, aggregate bar, rect, text | point/aggregate bar/rect/text: quantitative | quantize, quantile, or threshold scale |
 
 <!-- action-capabilities:color:end -->
 

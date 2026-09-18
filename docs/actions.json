@@ -5533,7 +5533,7 @@
       "name": "createMarkLabels",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Create final-item labels on an existing mark through text creation, encoding, and optional collision layout.",
+      "summary": "Label final mark items with optional collision layout.",
       "signature": "createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;",
       "intents": [
         "create mark labels",
@@ -5622,6 +5622,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "inheritColor",
+          "required": false,
+          "type": "\"fill\" | \"stroke\" | false | undefined"
+        },
         {
           "name": "id",
           "required": false,
@@ -6088,6 +6093,11 @@
       },
       "options": [
         {
+          "name": "inheritColor",
+          "required": false,
+          "type": "\"fill\" | \"stroke\" | false | undefined"
+        },
+        {
           "name": "missing",
           "required": false,
           "type": "\"error\" | \"skip\" | undefined"
@@ -6285,6 +6295,11 @@
       },
       "options": [
         {
+          "name": "inheritColor",
+          "required": false,
+          "type": "\"fill\" | \"stroke\" | false | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -6361,7 +6376,7 @@
         }
       ],
       "callPatterns": [
-        "createTextMark({ id?, data?, source?, text?, missing?, fill?, opacity?, fontSize? })"
+        "createTextMark({ id?, data?, source?, inheritColor?, text?, missing?, fill?, opacity? })"
       ],
       "snippet": "program.createTextMark({})",
       "errors": [],
@@ -6439,6 +6454,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "inheritColor",
+          "required": false,
+          "type": "\"fill\" | \"stroke\" | false | undefined"
+        },
+        {
           "name": "missing",
           "required": false,
           "type": "\"error\" | \"skip\" | undefined"
@@ -6495,9 +6515,9 @@
         }
       ],
       "callPatterns": [
-        "editTextMark({ target?, missing?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align? })"
+        "editTextMark({ target?, inheritColor?, missing?, fill?, opacity?, fontSize?, fontFamily?, fontWeight? })"
       ],
-      "snippet": "program.editTextMark({ missing: \"error\" })",
+      "snippet": "program.editTextMark({ inheritColor: \"fill\" })",
       "errors": [],
       "route": "/reference/actions/marks/#edittextmark"
     },

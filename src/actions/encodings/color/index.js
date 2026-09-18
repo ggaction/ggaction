@@ -63,7 +63,7 @@ const encodeColor = /* @__PURE__ */ action(
     const { id: target, dataset: sourceDataset, layer } = resolveTarget(
       this,
       args.target,
-      ["point", "line", "bar", "area", "arc", "rect"],
+      ["point", "line", "bar", "area", "arc", "rect", "text"],
       "color mark"
     );
     const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);

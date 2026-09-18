@@ -25,6 +25,10 @@ p.encodeText(shared);
 const labels: CreateMarkLabelsOptions = { source: "bars", content: "share", normalizeBy: "category", layout: { axis: "y" } };
 p.createMarkLabels(labels);
 p.createMarkLabels();
+p.createMarkLabels({ source: "points", inheritColor: "stroke" });
+p.editTextMark({ target: "labels", inheritColor: false });
+// @ts-expect-error Source appearance uses a closed fill/stroke vocabulary.
+p.createMarkLabels({ inheritColor: "color" });
 p.createMarkLabels({ source: "bars", select: { field: "value", op: "max", count: 2 } });
 p.createMarkLabels({ source: "bars", selection: "focus" });
 const editLabelSelection: EditMarkLabelSelectionOptions = { target: "bars-labels", all: true };

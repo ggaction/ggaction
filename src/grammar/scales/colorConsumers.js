@@ -23,8 +23,8 @@ export function validateContinuousColorConsumer(layer, encoding, scale, {
     }
     return undefined;
   }
-  if (!["point", "bar", "rect"].includes(kind)) {
-    throw new Error("Continuous color requires a Point, aggregate Bar, or Rect consumer.");
+  if (!["point", "bar", "rect", "text"].includes(kind)) {
+    throw new Error("Continuous color requires a Point, aggregate Bar, Rect, or Text consumer.");
   }
   if (!["quantitative", "temporal"].includes(encoding.fieldType) ||
     (isDiscretizedColorScaleType(scale.type) && encoding.fieldType !== "quantitative")) {

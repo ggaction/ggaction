@@ -241,6 +241,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -269,11 +270,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
+createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, inheritColor?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
 ```
 
-Create final-item labels on an existing mark through text creation, encoding, and
-optional collision layout. The default content is the source's semantic value;
+Label final mark items with optional collision layout. The default content is the source's semantic value;
 Point/Line/Rule/Rect require a field or constant. A Line creates one label per
 series at its final path coordinate. The default ID is `<source>-labels`.
 Omit `select` and `selection` to label every final item. Pass `select: MarkSelector`
@@ -430,6 +430,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -497,6 +498,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
@@ -518,7 +520,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createTextMark({ id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+createTextMark({ id?, data?, source?, text?, inheritColor?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
@@ -529,6 +531,9 @@ contributes independent scale-domain values. Source field or scale changes also 
 Direct `encodeX/Y` on attached Text is rejected: edit the source, use `editTextMark({ dx, dy })`, or create
 independent Text with explicit `data` to author its positions. Independent Text accepts field or datum positions;
 all-constant x/y/text produces one item, while any field-bound encoding uses row grain.
+Row-backed text supports `encodeColor`; explicit fill conflicts with that encoding.
+Attached labels accept `inheritColor: "fill" | "stroke" | false` to follow source appearance.
+Explicit fill overrides inheritance. Inheritance adds no color scale or duplicate legend.
 `rotation` accepts a finite legacy number in radians or an explicit
 `{ value, unit: "degrees" | "radians" }` object; both normalize to concrete
 radians. `createMarkLabels`, `createAnnotation`, and `editTextMark` share this
@@ -556,6 +561,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -573,7 +579,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editTextMark({ target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
+editTextMark({ target?, inheritColor?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
 ```
 
 Edit text typography and graphical offsets without changing its semantic

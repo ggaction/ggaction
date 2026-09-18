@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:02cb2eb781b90f4c27587c4d596c0a32eb846dd1656dd9529dbd15a4ed79cb66. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:2ad681c7ff1a52807ba27affbad4af9691ba8acb1c6e72b3867a24f513cdc38b. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -6743,6 +6743,16 @@ See [Label Collision Layout](./api/marks/label-layout/#removelabellayoutoptions)
 [Point marks](./api/marks/point/) · [Bar marks](./api/marks/bar/) · [Rule marks](./api/marks/rule/) ·
 [Encodings](./api/encodings/) · [Annotation recipe](./recipes/annotations/)
 
+Data-bound text accepts `encodeColor` with categorical or continuous scales and
+an optional color legend. Use explicit `data` to create independent row-backed
+text; color encoding and constant fill are mutually exclusive.
+
+Attached labels instead accept `inheritColor: "fill"` or `"stroke"`. The resolved
+source item's color follows filtering, aggregation, and scale edits without a
+second legend. Explicit fill overrides inheritance; `false` disables it. The
+default contrast policy for arc/rect labels remains unchanged. A missing source
+appearance produces an error rather than an invented color.
+
 <!-- Source: /api/marks/rect/ -->
 
 # Rect Marks
@@ -6915,9 +6925,9 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
-| Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
-| Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
-| Discretized continuous | point, aggregate bar, rect | point/aggregate bar/rect: quantitative | quantize, quantile, or threshold scale |
+| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
+| Continuous | point, aggregate bar, rect, text | point/rect/text: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
+| Discretized continuous | point, aggregate bar, rect, text | point/aggregate bar/rect/text: quantitative | quantize, quantile, or threshold scale |
 
 ### Independent stroke channel
 
@@ -6949,9 +6959,9 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Legend family | Supported marks | Channels |
 | --- | --- | --- |
-| Categorical color/shape/dash | point, line, area, bar, rect, arc | ordinal color; point shape; line strokeDash; compatible composites follow family constraints |
+| Categorical color/shape/dash | point, line, area, bar, rect, arc, text | ordinal color; point shape; line strokeDash; compatible composites follow family constraints |
 | Categorical stroke | point, line, area, bar, rect, arc, rule, tick | ordinal stroke; final-item or series identities |
-| Continuous color gradient | point, aggregate bar, rect | sequential color; gradient swatch, no symbol recipe |
+| Continuous color gradient | point, aggregate bar, rect, text | sequential color; gradient swatch, no symbol recipe |
 | Continuous stroke gradient | point, line, area, bar, rect, arc, rule, tick | sequential stroke; separate gradient, no symbol recipe |
 | Discretized color interval | point, aggregate bar, rect | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
@@ -10216,9 +10226,9 @@ per series. Raw Area supports an independent group field or tuple. Color must be
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
-| Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
-| Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
-| Discretized continuous | point, aggregate bar, rect | point/aggregate bar/rect: quantitative | quantize, quantile, or threshold scale |
+| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
+| Continuous | point, aggregate bar, rect, text | point/rect/text: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
+| Discretized continuous | point, aggregate bar, rect, text | point/aggregate bar/rect/text: quantitative | quantize, quantile, or threshold scale |
 
 | Option | Type | Default |
 | --- | --- | --- |
@@ -12264,9 +12274,9 @@ editing page when changing an existing guide.
 
 | Legend family | Supported marks | Channels |
 | --- | --- | --- |
-| Categorical color/shape/dash | point, line, area, bar, rect, arc | ordinal color; point shape; line strokeDash; compatible composites follow family constraints |
+| Categorical color/shape/dash | point, line, area, bar, rect, arc, text | ordinal color; point shape; line strokeDash; compatible composites follow family constraints |
 | Categorical stroke | point, line, area, bar, rect, arc, rule, tick | ordinal stroke; final-item or series identities |
-| Continuous color gradient | point, aggregate bar, rect | sequential color; gradient swatch, no symbol recipe |
+| Continuous color gradient | point, aggregate bar, rect, text | sequential color; gradient swatch, no symbol recipe |
 | Continuous stroke gradient | point, line, area, bar, rect, arc, rule, tick | sequential stroke; separate gradient, no symbol recipe |
 | Discretized color interval | point, aggregate bar, rect | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
@@ -18618,6 +18628,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -18644,11 +18655,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
+createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, inheritColor?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
 ```
 
-Create final-item labels on an existing mark through text creation, encoding, and
-optional collision layout. The default content is the source's semantic value;
+Label final mark items with optional collision layout. The default content is the source's semantic value;
 Point/Line/Rule/Rect require a field or constant. A Line creates one label per
 series at its final path coordinate. The default ID is `<source>-labels`.
 Omit `select` and `selection` to label every final item. Pass `select: MarkSelector`
@@ -18791,6 +18801,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -18854,6 +18865,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
@@ -18873,7 +18885,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createTextMark({ id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+createTextMark({ id?, data?, source?, text?, inheritColor?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
@@ -18884,6 +18896,9 @@ contributes independent scale-domain values. Source field or scale changes also 
 Direct `encodeX/Y` on attached Text is rejected: edit the source, use `editTextMark({ dx, dy })`, or create
 independent Text with explicit `data` to author its positions. Independent Text accepts field or datum positions;
 all-constant x/y/text produces one item, while any field-bound encoding uses row grain.
+Row-backed text supports `encodeColor`; explicit fill conflicts with that encoding.
+Attached labels accept `inheritColor: "fill" | "stroke" | false` to follow source appearance.
+Explicit fill overrides inheritance. Inheritance adds no color scale or duplicate legend.
 `rotation` accepts a finite legacy number in radians or an explicit
 `{ value, unit: "degrees" | "radians" }` object; both normalize to concrete
 radians. `createMarkLabels`, `createAnnotation`, and `editTextMark` share this
@@ -18909,6 +18924,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -18924,7 +18940,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editTextMark({ target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
+editTextMark({ target?, inheritColor?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
 ```
 
 Edit text typography and graphical offsets without changing its semantic
@@ -19932,9 +19948,9 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
-| Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
-| Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
-| Discretized continuous | point, aggregate bar, rect | point/aggregate bar/rect: quantitative | quantize, quantile, or threshold scale |
+| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
+| Continuous | point, aggregate bar, rect, text | point/rect/text: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
+| Discretized continuous | point, aggregate bar, rect, text | point/aggregate bar/rect/text: quantitative | quantize, quantile, or threshold scale |
 
 ```javascript
 encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? })
@@ -34959,6 +34975,8 @@ Related types: [`ValueFormat`](./reference/types/#type-valueformat).
 
 ```typescript
 export interface TextMarkOptions {
+  /** Follow resolved source appearance; an explicit fill takes precedence. Source-owned labels only. */
+  inheritColor?: "fill" | "stroke" | false;
   id?: string;
   data?: string;
   /** Explicit source mark. Mutually exclusive with data; may be incomplete. */
@@ -38143,7 +38161,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:02cb2eb781b90f4c27587c4d596c0a32eb846dd1656dd9529dbd15a4ed79cb66` |
+| Contract fingerprint | `sha256:2ad681c7ff1a52807ba27affbad4af9691ba8acb1c6e72b3867a24f513cdc38b` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

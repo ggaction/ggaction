@@ -203,6 +203,10 @@
         "arc": [
           "nominal",
           "ordinal"
+        ],
+        "text": [
+          "nominal",
+          "ordinal"
         ]
       },
       "options": "bar/area layout; arc overlay; palette and ordinal scale"
@@ -220,6 +224,10 @@
         "rect": [
           "quantitative",
           "temporal"
+        ],
+        "text": [
+          "quantitative",
+          "temporal"
         ]
       },
       "options": "sequential scale; aggregate required for a different bar measure"
@@ -234,6 +242,9 @@
           "quantitative"
         ],
         "rect": [
+          "quantitative"
+        ],
+        "text": [
           "quantitative"
         ]
       },
@@ -266,7 +277,8 @@
         "area",
         "bar",
         "rect",
-        "arc"
+        "arc",
+        "text"
       ],
       "channels": "ordinal color; point shape; line strokeDash; compatible composites follow family constraints"
     },
@@ -289,7 +301,8 @@
       "marks": [
         "point",
         "aggregate bar",
-        "rect"
+        "rect",
+        "text"
       ],
       "channels": "sequential color; gradient swatch, no symbol recipe"
     },

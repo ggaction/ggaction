@@ -39,7 +39,7 @@ export function encodeContinuousColor(program, args) {
   const { id: target, dataset: sourceDataset, layer } = resolveTarget(
     program,
     args.target,
-    ["point", "bar", "rect"],
+    ["point", "bar", "rect", "text"],
     "continuous color mark"
   );
   const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
