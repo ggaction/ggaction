@@ -78,14 +78,14 @@ test("prefers the current eligible layer and rejects an ambiguous fallback", () 
     twoSources.semanticSpec.layers.find(layer => layer.id === "firstOverlay").encoding
   );
 
-  const inheritedLine = twoSources.createLineMark({ id: "pendingLine" });
+  const inheritedLine = twoSources.createLineMark({ id: "inheritedLine" });
   assert.deepEqual(
-    inheritedLine.semanticSpec.layers.find(layer => layer.id === "pendingLine").encoding,
-    {
-      y: twoSources.semanticSpec.layers.find(
-        layer => layer.id === "firstOverlay"
-      ).encoding.y
-    }
+    inheritedLine.semanticSpec.layers.find(layer => layer.id === "inheritedLine").encoding,
+    twoSources.semanticSpec.layers.find(layer => layer.id === "firstOverlay").encoding
+  );
+  assert.deepEqual(
+    inheritedLine.graphicSpec.objects.inheritedLine.items[0].properties.commands.map(({ x, y }) => [x, y]),
+    twoSources.graphicSpec.objects.firstOverlay.items.map(item => [item.properties.x, item.properties.y])
   );
 
   const withoutEligibleCurrent = twoSources

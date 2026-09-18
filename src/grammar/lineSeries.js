@@ -29,7 +29,7 @@ function requireLineEncoding(layer) {
   const y = layer.encoding?.y;
 
   if (x === undefined) {
-    throw new Error(`Line mark "${layer.id}" requires a temporal x encoding.`);
+    throw new Error(`Line mark "${layer.id}" requires an x encoding.`);
   }
 
   const binnedAggregate =
@@ -37,10 +37,10 @@ function requireLineEncoding(layer) {
     x.bin !== undefined &&
     isAggregate(y?.aggregate);
   const aggregateMode =
-    (x?.fieldType === "temporal" && isAggregate(y?.aggregate)) ||
+    (["temporal", "nominal", "ordinal"].includes(x?.fieldType) && isAggregate(y?.aggregate)) ||
     binnedAggregate;
-  const directQuantitative =
-    x?.fieldType === "quantitative" &&
+  const directNumericY =
+    ["quantitative", "nominal", "ordinal"].includes(x?.fieldType) &&
     x.bin === undefined &&
     y?.fieldType === "quantitative" &&
     y.aggregate === undefined;
@@ -48,14 +48,14 @@ function requireLineEncoding(layer) {
     y?.aggregate === undefined &&
     ((x?.fieldType === "temporal" && y?.fieldType === "quantitative") ||
       (x?.fieldType === "quantitative" && y?.fieldType === "temporal"));
-  if (!aggregateMode && !directQuantitative && !directTemporal) {
+  if (!aggregateMode && !directNumericY && !directTemporal) {
     if (x?.fieldType === "temporal") {
       throw new Error(
         `Line mark "${layer.id}" requires a supported aggregate y encoding.`
       );
     }
     throw new Error(
-      `Line mark "${layer.id}" requires temporal/aggregate or direct quantitative x/y encodings.`
+      `Line mark "${layer.id}" requires categorical/temporal aggregate or compatible direct x/y encodings.`
     );
   }
   if (aggregateMode) {
@@ -66,7 +66,7 @@ function requireLineEncoding(layer) {
     y,
     isAggregate: aggregateMode,
     binnedAggregate,
-    directRows: directTemporal || directQuantitative,
+    directRows: directTemporal || directNumericY,
     directTemporal
   };
 }
@@ -90,9 +90,17 @@ function groupedSeries(groups, fields, dimensions) {
   return series;
 }
 
-function freezeCartesianSeries(series) {
+function freezeCartesianSeries(series, categoryOrder) {
+  const observedX = series.flatMap(item => item.values.map(value => value.x));
+  const observedSet = new Set(observedX);
+  if (categoryOrder !== undefined) {
+    const domain = new Set(categoryOrder);
+    if (observedX.some(value => !domain.has(value))) {
+      throw new Error("Line categorical x domain must contain every observed vertex.");
+    }
+  }
   return cloneAndFreeze({
-    xValues: series.flatMap(item => item.values.map(value => value.x)),
+    xValues: categoryOrder === undefined ? observedX : categoryOrder.filter(value => observedSet.has(value)),
     yValues: series.flatMap(item => item.values.map(value => value.y)),
     series
   });
@@ -122,7 +130,9 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
   if (isAggregate) {
     validateAggregateFieldValues(rows, y.field, y.fieldType);
   }
-  const xValues = x.fieldType === "temporal"
+  const categorical = ["nominal", "ordinal"].includes(x.fieldType);
+  const xValues = categorical ? readNominalField(rows, x.field)
+    : x.fieldType === "temporal"
     ? readTemporalField(rows, x.field, x.temporalUnit)
     : readQuantitativeField(rows, x.field);
   const yValues = isAggregate
@@ -130,6 +140,11 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
     : y.fieldType === "temporal"
       ? readTemporalField(rows, y.field, y.temporalUnit)
       : readQuantitativeField(rows, y.field);
+  const categoryOrder = categorical ? options.xDomain ?? [...new Set(xValues)] : undefined;
+  const ranks = new Map(categoryOrder?.map((value, index) => [value, index]));
+  const compareX = categorical
+    ? (left, right) => ranks.get(left.x) - ranks.get(right.x)
+    : (left, right) => left.x - right.x;
   const seriesFields = validatePathSeriesAppearance(rows, layer);
   const binBoundaries = binnedAggregate
     ? options.xBinBoundaries ?? resolveLineBins(rows, layer).boundaries
@@ -166,7 +181,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
         `Line series on mark "${layer.id}" requires at least two ordered points.`
       );
     }
-    return freezeCartesianSeries(series);
+    return freezeCartesianSeries(series, categoryOrder);
   }
 
   if (directRows) {
@@ -181,7 +196,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
     const orderBy = directTemporal && y.fieldType === "temporal" ? "y" : "x";
     const series = [...groups.values()].flatMap(item => {
       const values = item.values.sort(
-        (left, right) => left[orderBy] - right[orderBy]
+        orderBy === "x" ? compareX : (left, right) => left.y - right.y
       );
       return values.length < 2 ? [] : [{ key: item.key, values }];
     });
@@ -190,7 +205,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
         `Line series on mark "${layer.id}" requires at least two direct points.`
       );
     }
-    return freezeCartesianSeries(series);
+    return freezeCartesianSeries(series, categoryOrder);
   }
   const aggregateGroups = new Map();
 
@@ -241,7 +256,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
   }
 
   const series = [...seriesGroups.values()].flatMap(item => {
-    const values = item.values.sort((left, right) => left.x - right.x);
+    const values = item.values.sort(compareX);
 
     if (values.length < 2) {
       return [];
@@ -256,7 +271,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
     );
   }
 
-  return freezeCartesianSeries(series);
+  return freezeCartesianSeries(series, categoryOrder);
 }
 
 function requirePolarLineEncoding(layer) {

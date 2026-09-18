@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:7817d9daef5ac2b662f15c7ea63820e0d2d50a90944c405a4e605468a7cc0d8d. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:39723f16f8c1baff68ab900367ebc3b6b91fdff9a5b5ff98433129fc720dc247. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -4285,6 +4285,11 @@ explicit Polar mark and encoding actions for closed Polar paths. A field
 materialized by `createWindowData` can be used directly as the quantitative y
 position without applying another aggregate.
 
+For named x categories, set `fieldType: "ordinal"` or `"nominal"` and optionally
+provide `scale.domain` for their order. Point/band centers align with companion
+marks. See [ordered categories](./api/marks/line-area/#ordered-categories) for
+duplicates, observed gaps, grouping, and raw versus aggregate values.
+
 ## `createBarPlot`
 
 ```typescript
@@ -6015,8 +6020,37 @@ For a direct quantitative line, `encodeX` and `encodeY` may be called in either
 order. The first action stores valid incomplete semantic and scale state while
 the path remains empty; the second completes the same final layer, resolved
 scales, and graphics in both orders. Aggregate y lines are different: their
-grain requires a compatible temporal x encoding and rejects a quantitative
-partial that would change the meaning of the line.
+grain requires categorical, temporal, or binned quantitative x. Unbinned
+quantitative x does not accept aggregate y.
+
+### Ordered categories
+
+A Cartesian line can use `fieldType: "ordinal"` or `"nominal"` on x, with raw
+quantitative y or an explicit y aggregate. Both position authoring orders work.
+The default categorical scale is `point`; `band` uses the same category centers
+as companion points or bars. An explicit domain determines vertex order;
+otherwise categories follow first appearance across the input rows.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+const weekly = chart().createCanvas().createData({ values: [
+  { day: "Wed", value: 3 }, { day: "Mon", value: 1 }, { day: "Tue", value: 2 }
+] }).createLinePlot({
+  x: { field: "day", fieldType: "ordinal", scale: { domain: ["Mon", "Tue", "Wed"] } },
+  y: "value"
+});
+```
+
+Repeated categories retain source row order within each series unless an
+aggregate is requested. Missing categories are not synthesized: the line
+connects the remaining observed vertices, retaining their category spacing.
+Missing/null raw values are rejected. A series still needs at least two
+vertices; explicit `encodePathOrder` overrides default domain traversal.
+Color/legend domain order does not change position order. Scale edits, reversal,
+resizing, facets, selection, and accessible data retain the same category meaning.
 
 When a line is layered immediately after a compatible encoded mark, omitted
 data and positions are inferred. Compatible aggregate grain is inferred too,
@@ -6846,7 +6880,7 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
 | `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule, area, and rect also accept datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
@@ -9240,7 +9274,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
 | `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule, area, and rect also accept datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
@@ -17590,7 +17624,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| CPathGuides \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "legend"> & { legend?: false \| (Omit<PathLegendOptions, "order"> & { order?: { channel: "x"; values?: undefined; } \| LegendValueOrder \| undefined; }) \| undefined; }) \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -17600,6 +17634,11 @@ createLinePlot({ id?, data?, coordinate?, x, y, color?, groupBy?, strokeDash?, l
 
 Create a complete Cartesian line chart. `groupBy` accepts one field or a
 non-empty tuple, assigned before independent series color and dash. [Basic Charts](./api/basic-charts/#createlineplot)
+
+Categorical x (`nominal` or `ordinal`) accepts point/band scales and raw quantitative
+or aggregate y. Vertices follow the x domain; absent an explicit domain, categories
+follow first appearance. Duplicate-category rows keep source order. Missing categories
+are not synthesized, and remaining observations connect across their category spacing.
 
 ## `createPolarScatterPlot`
 
@@ -18937,7 +18976,7 @@ semantic base positions. [Text marks](./api/marks/text/)
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
 | `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule, area, and rect also accept datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
@@ -27931,11 +27970,15 @@ export interface CreateLinePlotOptions {
     opacity?: number;
     closed?: false;
   };
-  guides?: false | CPathGuides;
+  guides?: false | (Omit<CPathGuides, "legend"> & {
+    legend?: false | (Omit<PathLegendOptions, "order"> & {
+      order?: LegendValueOrder | { channel: "x"; values?: never };
+    });
+  });
 }
 ```
 
-Related types: [`LineXPositionChannel`](./reference/types/#type-linexpositionchannel) · [`LineYPositionChannel`](./reference/types/#type-lineypositionchannel) · [`LineCategoricalColorChannel`](./reference/types/#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](./reference/types/#type-basicstrokedashchannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`CPathGuides`](./reference/types/#type-cpathguides).
+Related types: [`LineXPositionChannel`](./reference/types/#type-linexpositionchannel) · [`LineYPositionChannel`](./reference/types/#type-lineypositionchannel) · [`LineCategoricalColorChannel`](./reference/types/#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](./reference/types/#type-basicstrokedashchannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`CPathGuides`](./reference/types/#type-cpathguides) · [`PathLegendOptions`](./reference/types/#type-pathlegendoptions) · [`LegendValueOrder`](./reference/types/#type-legendvalueorder).
 
 ### `CreateLollipopPlotOptions` {#type-createlollipopplotoptions}
 
@@ -32084,10 +32127,15 @@ type LineXPositionChannel =
           temporalUnit?: TemporalInputUnit;
           scale?: NonPointTemporalPositionScaleOptions;
         }
+      | {
+          fieldType: "nominal" | "ordinal";
+          bin?: never;
+          scale?: NonPointCategoricalPositionScaleOptions;
+        }
     ));
 ```
 
-Related types: [`PositionEncodingBase`](./reference/types/#type-positionencodingbase) · [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](./reference/types/#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](./reference/types/#type-nonpointtemporalpositionscaleoptions).
+Related types: [`PositionEncodingBase`](./reference/types/#type-positionencodingbase) · [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](./reference/types/#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](./reference/types/#type-nonpointtemporalpositionscaleoptions) · [`NonPointCategoricalPositionScaleOptions`](./reference/types/#type-nonpointcategoricalpositionscaleoptions).
 
 ### `LineYPositionChannel` {#type-lineypositionchannel}
 
@@ -38065,7 +38113,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:7817d9daef5ac2b662f15c7ea63820e0d2d50a90944c405a4e605468a7cc0d8d` |
+| Contract fingerprint | `sha256:39723f16f8c1baff68ab900367ebc3b6b91fdff9a5b5ff98433129fc720dc247` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

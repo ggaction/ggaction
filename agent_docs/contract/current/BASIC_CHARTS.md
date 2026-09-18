@@ -143,6 +143,10 @@ createLinePlot({
   `test/charts/cars-line-chart/public.test.js`, and
   `test/charts/cars-line-chart/png.render.js`.
 
+- Categorical x supports nominal/ordinal fields with point/band scales, explicit domain order,
+  raw quantitative y or explicit aggregate y. The facade retains child position ownership.
+  Guide legend order may link the categorical x domain through `order: { channel: "x" }`.
+
 ## `createBarPlot`
 
 ```typescript

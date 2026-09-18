@@ -3,6 +3,7 @@ import {
 } from "../../../grammar/lineSeries.js";
 import {
   mapContinuousScaleValues,
+  mapOrdinalPositionValues,
   normalizeStrokeDashPattern
 } from "../../../grammar/scales/index.js";
 import { buildCurvePathCommands } from
@@ -97,9 +98,7 @@ export function resolvePositionedLineMaterialization({
   const radiusScaleId = layer.encoding?.radius?.scale;
   const lineOptions = polar
     ? { thetaDomain: resolvedScales[thetaScaleId].domain }
-    : layer.encoding?.x?.bin === undefined
-      ? undefined
-      : { xBinBoundaries };
+    : { xBinBoundaries, xDomain: resolvedScales[xScaleId].domain };
   const derived = deriveLineSeries(rows, layer, lineOptions);
   const commands = polar
     ? derived.series.map(series => buildPolarLinePathCommands({
@@ -111,7 +110,9 @@ export function resolvePositionedLineMaterialization({
         closed: config.closed ?? false
       }))
     : derived.series.map(series => {
-        const x = mapContinuousScaleValues(
+        const mapX = ["nominal", "ordinal"].includes(layer.encoding.x.fieldType)
+          ? mapOrdinalPositionValues : mapContinuousScaleValues;
+        const x = mapX(
           series.values.map(value => value.x),
           resolvedScales[xScaleId]
         );

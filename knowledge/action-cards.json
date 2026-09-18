@@ -29319,7 +29319,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CPathGuides | undefined"
+          "type": "false | (Omit<CPathGuides, \"legend\"> & { legend?: false | (Omit<PathLegendOptions, \"order\"> & { order?: { channel: \"x\"; values?: undefined; } | LegendValueOrder | undefined; }) | undefined; }) | undefined"
         }
       ],
       "callPatterns": [

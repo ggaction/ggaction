@@ -175,7 +175,7 @@ Source-owned Text의 inherited aliases는 domain, guide inference/rebinding, sca
   지원 불가 pair는 거부한다. Scale의 자동 zero 결정도 role이 완성될 때 적용한다.
 - Line order independence: direct quantitative line은 y가 아직 없어도 x semantic과 scale을 저장한다.
   `encodeY`가 compatible quantitative pair를 완성할 때 materialize하며 y→x와 동일한 final
-  layer/resolved scale/graphic을 만든다. Aggregate y line은 temporal x 또는 binned quantitative x를
+  layer/resolved scale/graphic을 만든다. Aggregate y line은 categorical/temporal x 또는 binned quantitative x를
   요구한다. Binned x는 각 resolved bin midpoint를 vertex로 사용하고 y aggregate를 bin 및 series grain에서
   계산하며 path, x domain과 y domain은 하나의 boundary set을 공유한다.
 - Layered rule datum: inherited position provenance가 있는 rule에 datum x를 작성하면 secondary endpoint가
@@ -362,8 +362,12 @@ type AggregateOperation =
 - Canonical owner: `src/grammar/positionCompatibility.js`. Generic mark × channel acceptance는 여기서만
   정의하고 bar grain narrowing은 `src/grammar/bars/policy.js`가 소유한다.
 - Point x/y: `"quantitative" | "temporal" | "ordinal" | "nominal"`.
-- Line x: `"quantitative" | "temporal"`; line y는 direct quantitative/temporal pair (aggregate 생략), regression/interval/window output,
-  또는 temporal x aggregate policy에 따라 `"quantitative" | "temporal" | "ordinal" | "nominal"`을 더 좁힌다.
+- Line x: `"quantitative" | "temporal" | "ordinal" | "nominal"`; categorical x는
+  raw quantitative y 또는 explicit aggregate y를 지원하며 band/point 중심에 배치한다.
+  Explicit domain 순서, 없으면 observed first appearance 순서로 연결한다. 중복 범주는 source 순서를
+  유지하고 미관측 범주는 생성하지 않으며 나머지 관측 vertex를 연결한다. Missing/null raw 값은 기존처럼 오류다.
+  Numeric-looking 범주의 identity는 유지한다. line y는 direct quantitative/temporal pair (aggregate 생략), regression/interval/window output,
+  또는 categorical/temporal x aggregate policy에 따라 `"quantitative" | "temporal" | "ordinal" | "nominal"`을 더 좁힌다.
 - Area x: ranged area는 `"quantitative" | "temporal"`, density area는 `"quantitative"`; area y는
   `"quantitative"`.
 - Bar vertical: `ordinal | nominal | temporal x + quantitative aggregate y` 또는 raw `y/y2`.
@@ -733,7 +737,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   Explicit order에서는 repeated position row를 합치지 않는다.
 - Reassignment: 같은 target에 다시 호출하면 field와 direction을 교체하고 complete path를 rematerialize한다.
   Position보다 먼저 호출한 incomplete path intent도 보존되며 최종 semantic state가 같으면 같은 graphics로 수렴한다.
-- Compatibility: direct Cartesian quantitative/temporal line과 ordinary ranged area를 지원한다. Aggregate line,
+- Compatibility: direct Cartesian quantitative/temporal/categorical-x line과 ordinary ranged area를 지원한다. Aggregate line,
   Polar line, density/error/regression 또는 다른 statistical/generated path는 명확히 거부한다. Missing/non-finite
   order 값은 부분 state 없이 전체 action을 거부한다.
 

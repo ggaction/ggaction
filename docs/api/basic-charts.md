@@ -160,6 +160,11 @@ explicit Polar mark and encoding actions for closed Polar paths. A field
 materialized by `createWindowData` can be used directly as the quantitative y
 position without applying another aggregate.
 
+For named x categories, set `fieldType: "ordinal"` or `"nominal"` and optionally
+provide `scale.domain` for their order. Point/band centers align with companion
+marks. See [ordered categories](marks/line-area.md#ordered-categories) for
+duplicates, observed gaps, grouping, and raw versus aggregate values.
+
 ## `createBarPlot`
 
 ```typescript

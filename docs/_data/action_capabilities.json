@@ -12,7 +12,9 @@
         ],
         "line": [
           "quantitative",
-          "temporal"
+          "temporal",
+          "ordinal",
+          "nominal"
         ],
         "area": [
           "quantitative",

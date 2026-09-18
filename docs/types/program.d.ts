@@ -2768,6 +2768,11 @@ type LineXPositionChannel =
           temporalUnit?: TemporalInputUnit;
           scale?: NonPointTemporalPositionScaleOptions;
         }
+      | {
+          fieldType: "nominal" | "ordinal";
+          bin?: never;
+          scale?: NonPointCategoricalPositionScaleOptions;
+        }
     ));
 type LineYPositionChannel =
   | string
@@ -3467,7 +3472,11 @@ export interface CreateLinePlotOptions {
     opacity?: number;
     closed?: false;
   };
-  guides?: false | CPathGuides;
+  guides?: false | (Omit<CPathGuides, "legend"> & {
+    legend?: false | (Omit<PathLegendOptions, "order"> & {
+      order?: LegendValueOrder | { channel: "x"; values?: never };
+    });
+  });
 }
 
 type BasicHistogramEncoding =

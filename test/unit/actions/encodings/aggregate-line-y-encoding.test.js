@@ -213,7 +213,7 @@ test("validates aggregate line y requirements", () => {
   assert.deepEqual(aggregateYPartial.graphicSpec.objects.trends.items, []);
   assert.throws(
     () => aggregateYPartial.encodeX({ field: "year" }),
-    /requires a temporal field or a compatible derived quantitative field/
+    /requires a categorical or temporal field, or a compatible quantitative field/
   );
   assert.throws(
     () => createXEncodedLine([{ year: "2020-01-01", value: 1 }]).encodeY({

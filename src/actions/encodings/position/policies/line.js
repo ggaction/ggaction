@@ -68,6 +68,13 @@ export function resolveLinePositionPolicy({
         stack: undefined
       };
     }
+    if (["nominal", "ordinal"].includes(fieldType)) {
+      if (layer.encoding?.y !== undefined && layer.encoding.y.aggregate === undefined &&
+          layer.encoding.y.fieldType !== "quantitative") {
+        throw new Error("Categorical line x requires a quantitative value or aggregate y encoding.");
+      }
+      return emptyPositionPolicy();
+    }
     const directPair =
       layer.encoding?.y?.aggregate === undefined &&
       ["quantitative", "temporal"].includes(layer.encoding?.y?.fieldType) &&
@@ -82,7 +89,7 @@ export function resolveLinePositionPolicy({
       )
     ) {
       throw new Error(
-        "Line x encoding requires a temporal field or a compatible derived quantitative field."
+        "Line x encoding requires a categorical or temporal field, or a compatible quantitative field."
       );
     }
     return emptyPositionPolicy();
@@ -93,9 +100,13 @@ export function resolveLinePositionPolicy({
   if (layer.encoding?.x?.bin !== undefined && args.aggregate === undefined) {
     throw new Error("Binned line x encoding requires an aggregate y encoding.");
   }
+  if (["nominal", "ordinal"].includes(layer.encoding?.x?.fieldType) &&
+      args.aggregate === undefined && fieldType !== "quantitative") {
+    throw new Error("Categorical line x requires a quantitative value or aggregate y encoding.");
+  }
   const continuousPair =
     fieldType === "quantitative" &&
-    ["quantitative", "temporal"].includes(layer.encoding?.x?.fieldType) &&
+    ["quantitative", "temporal", "nominal", "ordinal"].includes(layer.encoding?.x?.fieldType) &&
     layer.encoding.x.bin === undefined;
   const prospectiveDirect =
     args.aggregate === undefined &&
@@ -125,12 +136,12 @@ export function resolveLinePositionPolicy({
 
   if (layer.encoding?.x !== undefined) {
     const compatibleAggregateX =
-      layer.encoding.x.fieldType === "temporal" ||
+      ["temporal", "nominal", "ordinal"].includes(layer.encoding.x.fieldType) ||
       (layer.encoding.x.fieldType === "quantitative" &&
         layer.encoding.x.bin !== undefined);
     if (!compatibleAggregateX) {
       throw new Error(
-        "Aggregate line y encoding requires a temporal or binned quantitative x encoding."
+        "Aggregate line y encoding requires a temporal, categorical, or binned quantitative x encoding."
       );
     }
   }

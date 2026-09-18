@@ -32,8 +32,12 @@ p.createDensityPlot({ field: "x", guides: { legend: { order: "scale" } } });
 p.createScatterPlot({ x: "x", y: "y", guides: { legend: { order: { channel: "theta" } } } });
 // @ts-expect-error Cartesian facades cannot link theta
 p.createBarPlot({ x: "x", y: "y", guides: { legend: { order: { channel: "theta" } } } });
-// @ts-expect-error declared Line positions are quantitative or temporal
-p.createLinePlot({ x: "x", y: "y", guides: { legend: { order: { channel: "x" } } } });
+p.createLinePlot({ x: { field: "category", fieldType: "ordinal", scale: { type: "point" } }, y: "y", guides: { legend: { order: { channel: "x" } } } });
+p.createLinePlot({ x: { field: "category", fieldType: "nominal", scale: { type: "band" } }, y: { field: "y", aggregate: "sum" } });
+// @ts-expect-error categorical x cannot be binned
+p.createLinePlot({ x: { field: "category", fieldType: "ordinal", bin: { maxBins: 3 } }, y: "y" });
+// @ts-expect-error line categorical position cannot use point-only unknown fallback
+p.createLinePlot({ x: { field: "category", fieldType: "ordinal", scale: { unknown: 0 } }, y: "y" });
 // @ts-expect-error Parallel has dimension axes, not categorical x/y/theta
 p.createParallelCoordinates({ dimensions: ["x", "y"], guides: { legend: { order: { channel: "y" } } } });
 // @ts-expect-error Pie does not have Cartesian positions

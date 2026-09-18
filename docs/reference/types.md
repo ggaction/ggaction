@@ -2440,13 +2440,17 @@ export interface CreateLinePlotOptions {
     opacity?: number;
     closed?: false;
   };
-  guides?: false | CPathGuides;
+  guides?: false | (Omit<CPathGuides, "legend"> & {
+    legend?: false | (Omit<PathLegendOptions, "order"> & {
+      order?: LegendValueOrder | { channel: "x"; values?: never };
+    });
+  });
 }
 ```
 
 </details>
 
-Related types: [`LineXPositionChannel`](#type-linexpositionchannel) · [`LineYPositionChannel`](#type-lineypositionchannel) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation) · [`CPathGuides`](#type-cpathguides).
+Related types: [`LineXPositionChannel`](#type-linexpositionchannel) · [`LineYPositionChannel`](#type-lineypositionchannel) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation) · [`CPathGuides`](#type-cpathguides) · [`PathLegendOptions`](#type-pathlegendoptions) · [`LegendValueOrder`](#type-legendvalueorder).
 
 ### `CreateLollipopPlotOptions` {#type-createlollipopplotoptions}
 
@@ -7379,12 +7383,17 @@ type LineXPositionChannel =
           temporalUnit?: TemporalInputUnit;
           scale?: NonPointTemporalPositionScaleOptions;
         }
+      | {
+          fieldType: "nominal" | "ordinal";
+          bin?: never;
+          scale?: NonPointCategoricalPositionScaleOptions;
+        }
     ));
 ```
 
 </details>
 
-Related types: [`PositionEncodingBase`](#type-positionencodingbase) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions).
+Related types: [`PositionEncodingBase`](#type-positionencodingbase) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions) · [`NonPointCategoricalPositionScaleOptions`](#type-nonpointcategoricalpositionscaleoptions).
 
 ### `LineYPositionChannel` {#type-lineypositionchannel}
 

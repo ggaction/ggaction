@@ -697,6 +697,11 @@ createLinePlot({ id?, data?, coordinate?, x, y, color?, groupBy?, strokeDash?, l
 Create a complete Cartesian line chart. `groupBy` accepts one field or a
 non-empty tuple, assigned before independent series color and dash. [Basic Charts](../api/basic-charts.md#createlineplot)
 
+Categorical x (`nominal` or `ordinal`) accepts point/band scales and raw quantitative
+or aggregate y. Vertices follow the x domain; absent an explicit domain, categories
+follow first appearance. Duplicate-category rows keep source order. Missing categories
+are not synthesized, and remaining observations connect across their category spacing.
+
 ### `createPolarScatterPlot`
 
 ```javascript
@@ -1569,7 +1574,7 @@ semantic base positions. [Text marks](../api/marks/text.md)
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
 | `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule, area, and rect also accept datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |

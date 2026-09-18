@@ -38,8 +38,41 @@ For a direct quantitative line, `encodeX` and `encodeY` may be called in either
 order. The first action stores valid incomplete semantic and scale state while
 the path remains empty; the second completes the same final layer, resolved
 scales, and graphics in both orders. Aggregate y lines are different: their
-grain requires a compatible temporal x encoding and rejects a quantitative
-partial that would change the meaning of the line.
+grain requires categorical, temporal, or binned quantitative x. Unbinned
+quantitative x does not accept aggregate y.
+
+### Ordered categories
+
+A Cartesian line can use `fieldType: "ordinal"` or `"nominal"` on x, with raw
+quantitative y or an explicit y aggregate. Both position authoring orders work.
+The default categorical scale is `point`; `band` uses the same category centers
+as companion points or bars. An explicit domain determines vertex order;
+otherwise categories follow first appearance across the input rows.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const weekly = chart().createCanvas().createData({ values: [
+  { day: "Wed", value: 3 }, { day: "Mon", value: 1 }, { day: "Tue", value: 2 }
+] }).createLinePlot({
+  x: { field: "day", fieldType: "ordinal", scale: { domain: ["Mon", "Tue", "Wed"] } },
+  y: "value"
+});
+```
+
+Repeated categories retain source row order within each series unless an
+aggregate is requested. Missing categories are not synthesized: the line
+connects the remaining observed vertices, retaining their category spacing.
+Missing/null raw values are rejected. A series still needs at least two
+vertices; explicit `encodePathOrder` overrides default domain traversal.
+Color/legend domain order does not change position order. Scale edits, reversal,
+resizing, facets, selection, and accessible data retain the same category meaning.
 
 When a line is layered immediately after a compatible encoded mark, omitted
 data and positions are inferred. Compatible aggregate grain is inferred too,

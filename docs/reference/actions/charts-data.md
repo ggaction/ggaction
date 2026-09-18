@@ -2798,7 +2798,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| CPathGuides \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "legend"> & { legend?: false \| (Omit<PathLegendOptions, "order"> & { order?: { channel: "x"; values?: undefined; } \| LegendValueOrder \| undefined; }) \| undefined; }) \| undefined` |
 
 </details>
 
@@ -2810,6 +2810,11 @@ createLinePlot({ id?, data?, coordinate?, x, y, color?, groupBy?, strokeDash?, l
 
 Create a complete Cartesian line chart. `groupBy` accepts one field or a
 non-empty tuple, assigned before independent series color and dash. [Basic Charts](../../api/basic-charts.md#createlineplot)
+
+Categorical x (`nominal` or `ordinal`) accepts point/band scales and raw quantitative
+or aggregate y. Vertices follow the x domain; absent an explicit domain, categories
+follow first appearance. Duplicate-category rows keep source order. Missing categories
+are not synthesized, and remaining observations connect across their category spacing.
 
 
 ## `createPolarScatterPlot`

@@ -59,15 +59,16 @@ export function resolveLineItems(program, layer, dataset) {
   const derived = deriveLineSeries(
     dataset.values,
     layer,
-    x?.bin === undefined
-      ? undefined
-      : {
+    {
+      xDomain: program.resolvedScales[x?.scale]?.domain,
+      ...(x?.bin === undefined ? {} : {
           xBinBoundaries: resolveLineBins(
             dataset.values,
             layer,
             requireSemanticScale(program, x.scale)
           ).boundaries
-        }
+        })
+    }
   );
   return finalizeItems(
     program,
