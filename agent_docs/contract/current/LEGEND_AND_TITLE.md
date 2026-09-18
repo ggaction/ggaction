@@ -78,8 +78,8 @@ type TitleWrap = "word" | "character";
   combined point-size legend도 네 방향 edge position을 사용한다. chart-independent default는 `"right"`다.
 - `align`: `"left" | "center" | "right"`, 기본 center. right와 left side position은
   모든 family에서 center만 허용한다. Gradient/opacity도 non-center side alignment를 거절한다. Horizontal non-center legend를 side로 옮길 때는 같은 edit에서 align center를 명시해야 한다.
-- `direction`: `"horizontal" | "vertical"`; top/bottom item-grid fill order는 기본 horizontal이다. Categorical left/right는 기본/필수 vertical이며 columns omission 또는1, titlePosition top만 허용한다. 무시되는 horizontal/여러 columns/left title은 오류다. 기존 horizontal grid를 side로 옮길 때 columns1/top title을 명시하여 호환 상태를 만든다. Evidence: `test/unit/actions/guides/categorical-side-options.test.js`.
-- `columns`: positive integer; top/bottom grid의 최대 열 수. 생략하면 한 row에 가능한 item을 둔다.
+- `direction`: `"horizontal" | "vertical"`; top/bottom item-grid fill order는 기본 horizontal이다. Categorical left/right는 기본/필수 vertical이며 columns는 양의 정수, 기본1이다. titlePosition top만 허용한다. Horizontal direction/left title은 오류다. 기존 horizontal grid를 side로 옮길 때 열 수는 유지할 수 있고 titlePosition top으로 맞춘다. Evidence: `test/unit/actions/guides/categorical-side-options.test.js`.
+- `columns`: positive integer; categorical grid의 최대 열 수. Top/bottom에서 생략하면 한 row에 가능한 item을 두고 left/right에서 생략하면 한 열이다. Side는 domain 순서대로 열을 먼저 채우며 rowCount=ceil(itemCount/columns), 각 열은 그 열의 가장 넓은 label+symbol을 측정한다. 열 사이 간격은 itemGap, 행 center 간격은 기존 max(itemGap,itemHeight)를 유지한다. Combined side lane에서 여러 열 block은 내부 symbol/label 간격을 바꾸지 않고 함께 이동한다.
 - Categorical `layout`은 `"edge" | "legacy-bottom"`, default `"edge"`다. Bottom도 omission이면 reserved-margin grid다.
   기존 Canvas 하단 고정 single-row는 position bottom + layout legacy-bottom으로 명시한다. Labels y=height−28,
   title y=height−52이며 align/itemGap/recipe/styles/border를 지원한다. Columns, vertical direction, left title,

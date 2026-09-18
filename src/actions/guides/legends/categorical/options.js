@@ -157,9 +157,6 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
   if (side && direction !== "vertical") {
     throw new Error("Side legends require vertical direction.");
   }
-  if (side && columns !== undefined && columns !== 1) {
-    throw new Error("Side legends require one column.");
-  }
   if (side && titlePosition !== "top") {
     throw new Error("Side legends require a top title.");
   }

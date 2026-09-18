@@ -21,9 +21,6 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
   const titleVisible = config.titleVisible !== false;
   const titleWidth = titleVisible ? measureTextWidth(config.title, config.titleStyle, profile) : 0;
   const titleHeight = titleVisible ? config.titleStyle.fontSize : 0;
-  const itemWidth = sampleWidth + config.labels.offset + Math.max(...labels.map(
-    text => measureTextWidth(text, config.labels, profile)
-  ));
   let symbolX;
   let labelX;
   let itemY;
@@ -42,16 +39,25 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
     itemY = labels.map(() => canvas.height - 28);
     title = { x: x + width / 2, y: canvas.height - 52, align: "center" };
   } else if (side) {
-    const width = Math.max(itemWidth, titleWidth);
+    const grid = resolveLegendGrid({
+      ...config, columns: config.columns ?? 1, domain: labels
+    }, sampleWidth, labels.length, sampleHeight, profile);
+    const width = Math.max(grid.gridWidth, titleWidth);
     const x = config.position === "right" ? plot.x + plot.width + config.offset
       : plot.x - config.offset - width;
     const itemHeight = Math.max(sampleHeight, config.labels.fontSize);
     const pitch = Math.max(config.itemGap, itemHeight);
-    symbolX = labels.map(() => x - sampleLeft);
-    labelX = labels.map(() => x + sampleWidth + config.labels.offset);
+    let cursor = x;
+    const columnStarts = grid.columnWidths.map(columnWidth => {
+      const start = cursor;
+      cursor += columnWidth + config.itemGap;
+      return start;
+    });
+    symbolX = grid.cells.map(cell => columnStarts[cell.column] - sampleLeft);
+    labelX = symbolX.map(value => value + sampleRight + config.labels.offset);
     const firstY = Math.max(plot.y + 52, titleVisible
       ? plot.y + 20 + titleHeight / 2 + 12 + itemHeight / 2 : plot.y + 52);
-    itemY = labels.map((_, index) => firstY + index * pitch);
+    itemY = grid.cells.map(cell => firstY + cell.row * pitch);
     title = { x, y: plot.y + 20, align: "left" };
   } else {
     const grid = resolveLegendGrid({ ...config, domain: labels }, sampleWidth, labels.length, sampleHeight, profile);

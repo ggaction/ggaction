@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:78f8ff4426a1615cc402b864c0115b5fb8be34261a53ea62c43e4f0a98955ff1. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:8878333a274d4d9743fc225d1a93a6cd25e8a40eb3654b03977e29b8ee7e0b9a. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12353,11 +12353,34 @@ Pass `position: "bottom"` explicitly to place the legend below the plot.
 Bottom legends use the same item grid as top legends and can use left, center,
 or right alignment; side legends require center alignment. Left categorical,
 composite point, and size blocks use vertical flow and preserve symbol-to-label
-and resolved-domain order. Both sides accept only vertical direction, one column
-(`columns` omitted or `1`), and a top title. Incompatible options produce an
-error. To move a multi-column horizontal legend to either side, set
-`columns: 1` and `titlePosition: "top"` in the layout edit; omitted settings
-otherwise remain unchanged.
+and resolved-domain order. Both sides use vertical direction and a top title. `columns` is a positive
+integer and defaults to one on the sides. Items fill each column from top to
+bottom in domain order before starting the next column. Each column reserves
+its measured symbol and label width; `itemGap` separates columns. Provide
+enough side margin for the complete grid. Moving a horizontal grid to either
+side preserves its column count; use `titlePosition: "top"` when needed.
+Incompatible direction or title options produce an error.
+
+For example, this complete program places 21 years in three columns on the right:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({
+    width: 620, height: 380,
+    margin: { top: 20, right: 300, bottom: 60, left: 70 }
+  })
+  .createData({ values: Array.from({ length: 21 }, (_, i) => ({
+    x: i, y: i % 5, year: String(1980 + i)
+  })) })
+  .createScatterPlot({
+    x: "x", y: "y", color: { field: "year", fieldType: "ordinal" },
+    guides: { legend: { position: "right", columns: 3 } }
+  });
+```
 
 Categorical legends use `layout: "edge"` by default, including a bottom legend
 with no other layout options. To preserve the former compact single row anchored
@@ -23850,6 +23873,11 @@ finite, strictly increasing `values`. They use the actual channel scale without
 changing its domain or the encoded marks. `values` cannot be combined with
 `count` and is unsupported for discrete size and gradient legends.
 [Legends](./api/legends/)
+
+Categorical left/right legends accept positive `columns` (default one), fill
+columns in domain order, and measure each column before allocating its width.
+They retain vertical direction and a top title. Side grids need sufficient
+Canvas margin and preserve their internal spacing when combined with other blocks.
 
 ## `editLegend`
 
@@ -38004,7 +38032,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:78f8ff4426a1615cc402b864c0115b5fb8be34261a53ea62c43e4f0a98955ff1` |
+| Contract fingerprint | `sha256:8878333a274d4d9743fc225d1a93a6cd25e8a40eb3654b03977e29b8ee7e0b9a` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

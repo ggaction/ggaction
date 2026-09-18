@@ -1820,6 +1820,18 @@
     "heading": "`createLegend(options?)`",
     "mode": "fragment",
     "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "71864f9b310a8577488b9f5ae6519d484ba4d696c9555fad5264e89ba13c02d3",
+    "executable": false
+  },
+  {
+    "file": "api/legends/categorical.md",
+    "block": 4,
+    "heading": "`createLegend(options?)`",
+    "mode": "fragment",
+    "environment": "esm-context",
     "receivers": [
       "densityArea"
     ],
@@ -1830,7 +1842,7 @@
   },
   {
     "file": "api/legends/categorical.md",
-    "block": 4,
+    "block": 5,
     "heading": "Combined categorical and size layout",
     "mode": "fragment",
     "environment": "esm-context",

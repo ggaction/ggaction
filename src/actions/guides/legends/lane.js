@@ -149,6 +149,7 @@ function blockDescriptor(program, kind, config) {
   return {
     id: kind,
     kind,
+    preserveGrid: ["series", "color", "stroke"].includes(kind) && (config.columns ?? 1) > 1,
     target: config.target,
     border: borderFor(kind, config),
     offset: requestedOffset(config),

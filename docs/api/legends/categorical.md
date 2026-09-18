@@ -110,11 +110,38 @@ Pass `position: "bottom"` explicitly to place the legend below the plot.
 Bottom legends use the same item grid as top legends and can use left, center,
 or right alignment; side legends require center alignment. Left categorical,
 composite point, and size blocks use vertical flow and preserve symbol-to-label
-and resolved-domain order. Both sides accept only vertical direction, one column
-(`columns` omitted or `1`), and a top title. Incompatible options produce an
-error. To move a multi-column horizontal legend to either side, set
-`columns: 1` and `titlePosition: "top"` in the layout edit; omitted settings
-otherwise remain unchanged.
+and resolved-domain order. Both sides use vertical direction and a top title. `columns` is a positive
+integer and defaults to one on the sides. Items fill each column from top to
+bottom in domain order before starting the next column. Each column reserves
+its measured symbol and label width; `itemGap` separates columns. Provide
+enough side margin for the complete grid. Moving a horizontal grid to either
+side preserves its column count; use `titlePosition: "top"` when needed.
+Incompatible direction or title options produce an error.
+
+For example, this complete program places 21 years in three columns on the right:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({
+    width: 620, height: 380,
+    margin: { top: 20, right: 300, bottom: 60, left: 70 }
+  })
+  .createData({ values: Array.from({ length: 21 }, (_, i) => ({
+    x: i, y: i % 5, year: String(1980 + i)
+  })) })
+  .createScatterPlot({
+    x: "x", y: "y", color: { field: "year", fieldType: "ordinal" },
+    guides: { legend: { position: "right", columns: 3 } }
+  });
+```
 
 Categorical legends use `layout: "edge"` by default, including a bottom legend
 with no other layout options. To preserve the former compact single row anchored

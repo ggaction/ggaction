@@ -2529,6 +2529,11 @@ changing its domain or the encoded marks. `values` cannot be combined with
 `count` and is unsupported for discrete size and gradient legends.
 [Legends](../api/legends.md)
 
+Categorical left/right legends accept positive `columns` (default one), fill
+columns in domain order, and measure each column before allocating its width.
+They retain vertical direction and a top title. Side grids need sufficient
+Canvas margin and preserve their internal spacing when combined with other blocks.
+
 ### `editLegend`
 
 ```javascript
