@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:9143bf7cac3784ad064ae72a1a760de59b0460837c7a630c11534b12f17f6680. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:b7903a1226625a19718e54fadbf9c298a2296cf7e694d8e4acb94e5581d61072. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12517,8 +12517,17 @@ sufficient bottom margin; top layout requires enough top margin for its title,
 item grid, offset, and optional border. The library reports a layout error
 instead of resizing the Canvas or dropping symbol layers.
 
-## Related
+## Put a compact categorical legend inside the plot
 
+Use a corner position such as `"top-left"` and
+`overflow: { maxItems: 29 }` in `createLegend` or `editLegend`. The first 29
+categories keep their original symbols; a text-only summary reports the remaining
+count. `border: { background: "white" }` provides an opaque panel behind the
+legend. The limit changes the displayed guide only, preserving every data row
+and color assignment. See the [exact legend contract](./reference/actions/guides/#createlegend)
+for supported anchors and layout restrictions.
+
+## Related
 [Guides](./api/guides/) · [Series encodings](./api/series-encodings/) ·
 [Canvas](./api/canvas/) · [Troubleshooting](./troubleshooting/)
 
@@ -24243,10 +24252,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
+| `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
 | `order` | Optional / branch-dependent | `LegendOrder \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
-| `position` | Optional / branch-dependent | `"bottom" \| "left" \| "right" \| "top" \| undefined` |
+| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
@@ -24301,6 +24311,22 @@ columns in domain order, and measure each column before allocating its width.
 They retain vertical direction and a top title. Side grids need sufficient
 Canvas margin and preserve their internal spacing when combined with other blocks.
 
+Categorical-only legends also accept `position: "top-left" | "top-right" |
+"bottom-left" | "bottom-right"` inside the plot. `offset` is the inward gap to
+the complete painted border (or content without a border); border padding is
+reserved inside that edge. These anchors default to vertical, one-column content,
+with a top title and center alignment. They do not reserve an outer guide lane.
+The full legend must fit the plot; resizing the Canvas reanchors it.
+
+Set `overflow: { maxItems: 29 }` to display at most 29 categorical symbols and
+labels, followed by an additional text-only `…N entries` summary when needed.
+The optional `summary` value is `"ellipsis-count"`. All categories remain in
+the appearance scale and legend domain, including categories omitted from the
+visible legend. The limit follows the effective legend order and label map.
+Omission or `false` displays every category. This option also works on edge
+categorical legends. Continuous and combined sampled legends retain their
+existing edge-only contracts. Shared facet promotion requires an edge position.
+
 ## `editLegend`
 
 **API layer:** user-facing. **Authoring roles:** H3.
@@ -24323,9 +24349,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
+| `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
 | `order` | Optional / branch-dependent | `LegendOrder \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `position` | Optional / branch-dependent | `"bottom" \| "left" \| "right" \| "top" \| undefined` |
+| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
@@ -24344,11 +24371,13 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 editLegend({
   target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
-  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?
+  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow?
 })
 ```
 
-Partially edit one existing legend. Interval legends accept four-edge placement
+Partially edit one existing legend. Categorical `overflow` can be replaced or reset
+with `false`; data/scale/order revisions recompute the hidden count and remove stale
+symbols and summary text. Interval legends accept four-edge placement
 and horizontal grid/inline-title controls. Hidden continuous titles are excluded
 from occupied bounds and backgrounds. Omitted categorical `layout` preserves the
 stored mode; style edits never switch modes. Categorical `order` can be reassigned or reset
@@ -24440,7 +24469,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
-| `position` | Optional / branch-dependent | `"bottom" \| "left" \| "right" \| "top" \| undefined` |
+| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
@@ -30503,12 +30532,12 @@ Related types: [`LegendTextOptions`](./reference/types/#type-legendtextoptions).
 export interface EditLegendLayoutOptions {
   target?: string;
   layout?: "edge" | "legacy-bottom";
-  position?: "right" | "left" | "bottom" | "top";
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
   /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
   direction?: "horizontal" | "vertical";
-  /** Categorical sides allow omission or 1; multiple columns require a horizontal edge. */
+  /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
@@ -32470,17 +32499,19 @@ Related types: [`LegendOptions`](./reference/types/#type-legendoptions).
 export interface LegendOptions {
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
   layout?: "edge" | "legacy-bottom";
+  /** Categorical display limit; omitted or false shows every item. */
+  overflow?: false | { maxItems: number; summary?: "ellipsis-count" };
   /** Categorical item order; preserves the appearance scale's assignments. */
   order?: LegendOrder;
   target?: string;
   /** Exact requested content; omission infers encoded point color/shape/size. Explicit subsets include size only when listed. */
   channels?: readonly ("color" | "stroke" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
-  position?: "right" | "left" | "bottom" | "top";
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
   /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
   direction?: "horizontal" | "vertical";
-  /** Categorical sides allow omission or 1; multiple columns require a horizontal edge. */
+  /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
@@ -38694,7 +38725,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:9143bf7cac3784ad064ae72a1a760de59b0460837c7a630c11534b12f17f6680` |
+| Contract fingerprint | `sha256:b7903a1226625a19718e54fadbf9c298a2296cf7e694d8e4acb94e5581d61072` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

@@ -193,9 +193,9 @@ test("rejects invalid primitive and incomplete rendered paths", () => {
     () => paths.editGraphics({
       target: "trends",
       property: "commands",
-      value: [[{ op: "M", x: 1, y: 2 }]]
+      value: [[]]
     }),
-    /at least two commands/
+    /at least one command/
   );
   assert.throws(
     () => paths.editGraphics({

@@ -78,12 +78,20 @@ export function symbolWidth(config) {
   }));
 }
 
+export function categoricalLegendView(config) {
+  if (config.hiddenCount !== undefined || !config.overflow || config.domain.length <= config.overflow.maxItems) return config;
+  return { ...config, domain: config.domain.slice(0, config.overflow.maxItems),
+    hiddenCount: config.domain.length - config.overflow.maxItems };
+}
+
 export function categoricalLegendLabels(config) {
-  return config.domain.map(value => resolveDisplayLabel(
+  config = categoricalLegendView(config);
+  const labels = config.domain.map(value => resolveDisplayLabel(
     value,
     config.labelMap,
     formatVisibleText
   ));
+  return config.hiddenCount > 0 ? [...labels, `…${config.hiddenCount} entries`] : labels;
 }
 
 function resolveSampleBounds(program, config, width) {
@@ -147,6 +155,7 @@ function resolveSampleBounds(program, config, width) {
 }
 
 export function resolveLayout(program, config) {
+  config = categoricalLegendView(config);
   const { plot, canvas } = resolveContinuousBounds(program,
     "Legend layout requires Canvas bounds, width, and height.");
   const width = symbolWidth(config);
@@ -188,4 +197,12 @@ export function layerFor(config, type) {
     throw new Error(`Legend recipe does not contain a ${type} layer.`);
   }
   return layer;
+}
+
+
+export function resolveSymbolLayout(program, config) {
+  const view = categoricalLegendView(config);
+  const layout = resolveLayout(program, view);
+  return { ...layout, symbolX: layout.symbolX.slice(0, view.domain.length),
+    itemY: layout.itemY.slice(0, view.domain.length) };
 }

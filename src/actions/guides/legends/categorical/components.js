@@ -20,7 +20,7 @@ export const rematerializeLegendLabels = /* @__PURE__ */ action(
     }
     const layout = resolveLayout(this, config);
     return editGraphicProperties(editGraphicProperties(this, id, {
-      length: config.domain.length,
+      length: categoricalLegendLabels(config).length,
       x: layout.labelX,
       y: layout.itemY
     })
@@ -52,7 +52,7 @@ export const createLegendLabels = /* @__PURE__ */ action(
       .createGraphics({
         id,
         type: "text",
-        length: config.domain.length,
+        length: categoricalLegendLabels(config).length,
         ...resolveCategoricalLegendPlacement(this)
       })
       .rematerializeLegendLabels({ kind: config.kind });

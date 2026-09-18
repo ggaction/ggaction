@@ -18,7 +18,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ## Shared formal types
 
 ```typescript
-type LegendPosition = "right" | "bottom" | "top" | "left";
+type LegendPosition = "right" | "bottom" | "top" | "left" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
 type LegendAlign = "left" | "center" | "right";
 type LegendDirection = "horizontal" | "vertical";
 type LegendChannel = "color" | "stroke" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity";
@@ -41,7 +41,16 @@ type TitleWrap = "word" | "character";
 - Sampled opacity legend는 active quantitative opacity scale이 있는 Point와 Line을 지원한다.
   Line도 기존 circle sample recipe를 사용하며 constant assignment는 자신의 opacity block만 제거한다.
 
-- Signature: `createLegend({ target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order? })`.
+- Signature: `createLegend({ target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
+- Categorical-only `position`은 plot 내부 네 corner도 지원한다. Offset은 painted border/content의
+  plot 안쪽 간격이며 border padding을 추가 예약한다. 기본 vertical/1-column/top-title,
+  align center다. 전체 내용이 plot에 맞지 않으면 atomic 오류이며 outer lane은 예약하지 않는다.
+- `overflow?: false | { maxItems: PositiveInteger; summary?: "ellipsis-count" }`는 categorical
+  표시만 제한한다. 기본 전체 표시. 제한된 prefix 뒤 text-only `…N entries` 한 항목을 추가하며
+  symbol에는 summary를 넣지 않는다. Domain/scale/data는 원본 전체를 보존하고 hidden count는
+  materialized label text와 wrapped text update trace에 노출한다. Order/labelMap/scale/data 수정,
+  resize, editLegend 및 overflow:false reset을 지원한다. Continuous/sampled combined와 shared
+  facet promotion은 기존 edge 계약을 유지한다.
 - `target`: compatible mark ID; 생략하면 current 또는 유일한 eligible mark를 추론한다. Sequential gradient는
   point와 aggregate bar를 지원한다.
 - `order`: categorical 전용 `"scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" }`.
@@ -239,7 +248,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegend`
 
-- Signature: `editLegend({ target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order? })`.
+- Signature: `editLegend({ target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
 - `target` selects an existing logical legend by mark ID. It may be omitted only when exactly one target owns all
   active blocks; independent targets are ambiguous.
 - At least one non-target change is required. Mark encodings and scale bindings remain unchanged.
@@ -420,7 +429,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendSymbols`
 
-- Signature: `editLegendSymbols({ target?, symbol?, count?, gradient?, order? })`.
+- Signature: `editLegendSymbols({ target?, symbol?, count?, gradient?, order?, overflow? })`.
 - Legend kind별 기존 symbol/count/gradient validation을 그대로 사용한다.
 
 ### Formal values — `editLegendSymbols`

@@ -35,14 +35,15 @@ function validateCommand(command, index) {
 }
 
 export function validatePathCommands(commands) {
-  if (!Array.isArray(commands) || commands.length < 2) {
-    throw new TypeError("path.commands must contain at least two commands.");
+  if (!Array.isArray(commands) || commands.length < 1) {
+    throw new TypeError("path.commands must contain at least one command.");
   }
   validateGeneratedItemLimit(commands.length, "path.commands length");
   commands.forEach(validateCommand);
   if (commands[0].op !== "M") {
     throw new Error("path.commands must start with M.");
   }
+  if (commands.length === 1) return commands;
   if (commands.slice(1).some(command => command.op === "M")) {
     throw new Error("path.commands supports one subpath and only one initial M.");
   }

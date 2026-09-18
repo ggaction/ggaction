@@ -155,6 +155,17 @@ async function testNodeConsumer(directory) {
     assert.equal(serializeProgram(manyRestored), manyStored);
     assert.ok((await renderToPNGBuffer(manyRestored)).buffer.length > 1000);
 
+    const insideLegend = chart().createCanvas({ width: 600, height: 600, margin: 60 })
+      .createData({ values: Array.from({ length: 107 }, (_, i) => ({ x: i, y: i % 7, group: i })) })
+      .createLinePlot({ x: "x", y: "y", groupBy: "group", color: { field: "group", fieldType: "nominal" }, guides: false })
+      .createLegend({ position: "top-left", overflow: { maxItems: 29 },
+        itemGap: 12, title: false, border: { background: "white" } });
+    assert.equal(insideLegend.graphicSpec.objects.seriesLegendLabels.items.at(-1).properties.text, "…78 entries");
+    assert.equal(insideLegend.graphicSpec.objects.seriesLegendSymbols.items.length, 29);
+    assert.equal(insideLegend.guideConfigs.legend.series.domain.length, 107);
+    assert.equal(serializeProgram(deserializeProgram(serializeProgram(insideLegend))), serializeProgram(insideLegend));
+    assert.ok((await renderToPNGBuffer(insideLegend)).buffer.length > 1000);
+
     const precomputedBox = chart().createCanvas({ width: 600, height: 400, margin: 80 })
       .createData({ values: [{ group: "A", min: 3.07, q1: 13.3475, median: 17.795, q3: 24.1275, max: 50.81 }] })
       .createBoxPlot({ x: { field: "group", fieldType: "nominal" },
@@ -2862,6 +2873,12 @@ async function testTypeScriptConsumer(directory) {
     } } });
     // @ts-expect-error font size is numeric
     chart().applyTheme({ theme: { base: "light", tokens: { axisLabelFontSize: "large" } } });
+    chart().createLegend({ position: "top-left", overflow: { maxItems: 29, summary: "ellipsis-count" } });
+    chart().editLegend({ position: "bottom-right", overflow: false });
+    basicChart().createScatterPlot({ x: "x", y: "y", color: "group",
+      guides: { legend: { position: "top-right", overflow: { maxItems: 3 } } } });
+    // @ts-expect-error categorical summary vocabulary is closed
+    chart().createLegend({ overflow: { maxItems: 3, summary: "truncate" } });
     const themeOptions: ApplyThemeOptions = { theme: themeName };
     const themedProgram: ChartProgram = program.applyTheme(themeOptions).removeTheme();
     const inspection: ProgramInspection = inspectProgram(program);

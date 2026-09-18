@@ -379,6 +379,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   vertex 순서를 결정하고 중복 범주는 source 순서를 유지한다. Explicit pathOrder가 있으면 그 순서가 우선한다.
   미관측 범주는 채우지 않고 관측된 이웃을 연결하며 raw missing 값은 오류다.
   Evidence: `test/unit/actions/encodings/categorical-lines.test.js`.
+- Raw Cartesian singleton series는 위치/domain/범례 identity를 보존하고 단일 M command로 materialize한다.
+  선분이나 가짜 관측값을 만들지 않는다. Direct/pathOrder에 적용하며 aggregate/Polar의 최소 점 수는 유지한다.
 - Creation-time `stroke`/`opacity`는 wrapped `editLineMark`로 적용해 direct edit과 같은 validation/config를 사용한다.
 - Effect: semantic `line` layer와 길이 0의 path collection을 만든다. x/y encoding이 완성되기
   전에는 path가 없다.

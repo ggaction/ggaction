@@ -82,7 +82,16 @@ sufficient bottom margin; top layout requires enough top margin for its title,
 item grid, offset, and optional border. The library reports a layout error
 instead of resizing the Canvas or dropping symbol layers.
 
-## Related
+## Put a compact categorical legend inside the plot
 
+Use a corner position such as `"top-left"` and
+`overflow: { maxItems: 29 }` in `createLegend` or `editLegend`. The first 29
+categories keep their original symbols; a text-only summary reports the remaining
+count. `border: { background: "white" }` provides an opaque panel behind the
+legend. The limit changes the displayed guide only, preserving every data row
+and color assignment. See the [exact legend contract](../reference/actions/guides.md#createlegend)
+for supported anchors and layout restrictions.
+
+## Related
 [Guides](./guides.md) · [Series encodings](./series-encodings.md) ·
 [Canvas](./canvas.md) · [Troubleshooting](../troubleshooting.md)

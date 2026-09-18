@@ -210,6 +210,7 @@ export function resolveCategoricalLegendConfig(program, args = {}) {
     titleStyle: options.titleStyle,
     itemGap: options.itemGap,
     layout: options.layout,
+    ...(options.overflow === undefined ? {} : { overflow: options.overflow }),
     border: options.border
   };
   return config;

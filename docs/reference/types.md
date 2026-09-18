@@ -4959,12 +4959,12 @@ Related types: [`LegendTextOptions`](#type-legendtextoptions).
 export interface EditLegendLayoutOptions {
   target?: string;
   layout?: "edge" | "legacy-bottom";
-  position?: "right" | "left" | "bottom" | "top";
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
   /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
   direction?: "horizontal" | "vertical";
-  /** Categorical sides allow omission or 1; multiple columns require a horizontal edge. */
+  /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
@@ -7334,17 +7334,19 @@ Related types: [`LegendOptions`](#type-legendoptions).
 export interface LegendOptions {
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
   layout?: "edge" | "legacy-bottom";
+  /** Categorical display limit; omitted or false shows every item. */
+  overflow?: false | { maxItems: number; summary?: "ellipsis-count" };
   /** Categorical item order; preserves the appearance scale's assignments. */
   order?: LegendOrder;
   target?: string;
   /** Exact requested content; omission infers encoded point color/shape/size. Explicit subsets include size only when listed. */
   channels?: readonly ("color" | "stroke" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
-  position?: "right" | "left" | "bottom" | "top";
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
   /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
   direction?: "horizontal" | "vertical";
-  /** Categorical sides allow omission or 1; multiple columns require a horizontal edge. */
+  /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;

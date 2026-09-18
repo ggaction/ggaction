@@ -40,7 +40,7 @@ test("rejects malformed points, commands, sequences, and close options", () => {
     /close must be a boolean/
   );
   for (const [commands, message] of [
-    [[{ op: "M", x: 0, y: 0 }], /at least two commands/],
+    [[], /at least one command/],
     [[{ op: "L", x: 0, y: 0 }, { op: "L", x: 1, y: 1 }], /start with M/],
     [[{ op: "M", x: 0, y: 0 }, { op: "M", x: 1, y: 1 }], /only one initial M/],
     [[{ op: "M", x: 0, y: 0 }, { op: "Z" }], /at least one L or C/],
@@ -72,4 +72,9 @@ test("bounds explicit and generated path command arrays", () => {
     ]),
     /path.commands length must not exceed 10000/
   );
+});
+
+test("a single move retains a position without inventing a line segment", () => {
+  const commands = [{ op: "M", x: 12, y: 34 }];
+  assert.equal(validatePathCommands(commands), commands);
 });

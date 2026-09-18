@@ -2,11 +2,12 @@ import { editGraphicProperties } from "../../../primitives/graphicProperties.js"
 import { action } from "../../../../core/action.js";
 import {
   activeConfig,
+  categoricalLegendView,
   graphic,
   layerFor,
   noOptions,
   resolveAppearance,
-  resolveLayout,
+  resolveSymbolLayout as resolveLayout,
   symbolGraphic,
   symbolWidth
 } from "./layout.js";
@@ -33,7 +34,8 @@ function makeEditSymbol(type) {
     { op, description: `Rematerialize categorical legend ${type} symbols.` },
     function (args = {}) {
       noOptions(args, op);
-      const { config } = activeConfig(this, args.kind);
+      const { config: stored } = activeConfig(this, args.kind);
+      const config = categoricalLegendView(stored);
       const layer = layerFor(config, type);
       const id = symbolGraphic(config, type);
       const dynamicPoint = type === "point" && config.channels.includes("shape");
@@ -167,7 +169,8 @@ function makeCreateSymbol(type, edit) {
     { op, description: `Create categorical legend ${type} symbols.` },
     function (args = {}) {
       noOptions(args, op);
-      const { config } = activeConfig(this, args.kind);
+      const { config: stored } = activeConfig(this, args.kind);
+      const config = categoricalLegendView(stored);
       const layer = layerFor(config, type);
       const id = symbolGraphic(config, type);
       if (this.graphicSpec.objects[id] !== undefined) {
@@ -214,7 +217,8 @@ export const createLegendSymbols = /* @__PURE__ */ action(
   { op: "createLegendSymbols", description: "Create layered legend symbols." },
   function (args = {}) {
     noOptions(args, "createLegendSymbols");
-    const { config } = activeConfig(this, args.kind);
+    const { config: stored } = activeConfig(this, args.kind);
+    const config = categoricalLegendView(stored);
     let next = this;
     for (const layer of config.symbol.layers) {
       const operation = {
@@ -232,7 +236,8 @@ export const rematerializeLegendSymbols = /* @__PURE__ */ action(
   { op: "rematerializeLegendSymbols", description: "Rematerialize layered legend symbols." },
   function (args = {}) {
     noOptions(args, "rematerializeLegendSymbols");
-    const { config } = activeConfig(this, args.kind);
+    const { config: stored } = activeConfig(this, args.kind);
+    const config = categoricalLegendView(stored);
     let next = this;
     for (const layer of config.symbol.layers) {
       const operation = {

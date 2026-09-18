@@ -120,6 +120,9 @@ export function resolvePositionedLineMaterialization({
           series.values.map(value => value.y),
           resolvedScales[yScaleId]
         );
+        // A raw singleton retains its data position and series identity, but
+        // contributes no segment. Do not fabricate another observation.
+        if (series.values.length === 1) return [{ op: "M", x: x[0], y: y[0] }];
         return buildCurvePathCommands(
           series.values.map((_, index) => ({ x: x[index], y: y[index] })),
           config.curve ?? "linear", config.tension

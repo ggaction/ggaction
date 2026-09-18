@@ -46,7 +46,7 @@ import { planLegendBlockTransitions } from "./transition.js";
 const OPTIONS = Object.freeze([
   "target", "channels", "position", "layout", "align", "direction", "columns", "offset",
   "titlePosition", "title", "symbol", "labels", "titleStyle", "itemGap",
-  "border", "count", "values", "gradient", "order"
+  "border", "count", "values", "gradient", "order", "overflow"
 ]);
 
 function mergeObject(previous, patch) {
@@ -390,6 +390,7 @@ function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder
   const normalized = normalizeOptions({
     target: previous.target,
     channels: previous.channels,
+    ...(args.overflow === undefined && previous.overflow === undefined ? {} : { overflow: args.overflow === undefined ? previous.overflow : args.overflow }),
     layout: args.layout === undefined ? previous.layout : args.layout,
     position: args.position ?? previous.position,
     align: args.align ?? previous.align,

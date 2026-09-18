@@ -152,6 +152,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: the shared concrete-property schema is table-tested by type and `editGraphics` exercises single,
     broadcast, distributed and heterogeneous application paths.
   - ✅ Covered: finite `M | L | C | Z` path command arrays, maximum 10,000 commands, and command-order validation.
+    A single initial M is a valid position-only path with no painted segment; longer paths require L/C.
 - `value` distribution
   - ✅ Covered: scalar broadcast, outer array distribution, mismatched length, nested points arrays preserved,
     heterogeneous item replacement and shared compatible-property broadcast.

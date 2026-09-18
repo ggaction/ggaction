@@ -18399,6 +18399,11 @@
           "type": "\"edge\" | \"legacy-bottom\" | undefined"
         },
         {
+          "name": "overflow",
+          "required": false,
+          "type": "false | { maxItems: number; summary?: \"ellipsis-count\" | undefined; } | undefined"
+        },
+        {
           "name": "order",
           "required": false,
           "type": "LegendOrder | undefined"
@@ -18416,7 +18421,7 @@
         {
           "name": "position",
           "required": false,
-          "type": "\"bottom\" | \"left\" | \"right\" | \"top\" | undefined"
+          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
         },
         {
           "name": "align",
@@ -18490,7 +18495,7 @@
         }
       ],
       "callPatterns": [
-        "createLegend({ target?, layout?, order?, channels?, position?, align?, direction?, columns? })"
+        "createLegend({ target?, layout?, overflow?, order?, channels?, position?, align?, direction? })"
       ],
       "snippet": "program.createLegend({})",
       "errors": [],
@@ -18592,6 +18597,11 @@
           "type": "\"edge\" | \"legacy-bottom\" | undefined"
         },
         {
+          "name": "overflow",
+          "required": false,
+          "type": "false | { maxItems: number; summary?: \"ellipsis-count\" | undefined; } | undefined"
+        },
+        {
           "name": "order",
           "required": false,
           "type": "LegendOrder | undefined"
@@ -18604,7 +18614,7 @@
         {
           "name": "position",
           "required": false,
-          "type": "\"bottom\" | \"left\" | \"right\" | \"top\" | undefined"
+          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
         },
         {
           "name": "align",
@@ -18668,7 +18678,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, channels?, title?, values?, layout?, order?, position?, align? })"
+        "editLegend({ target?, channels?, title?, values?, layout?, overflow?, order?, position? })"
       ],
       "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],
@@ -18882,7 +18892,7 @@
         {
           "name": "position",
           "required": false,
-          "type": "\"bottom\" | \"left\" | \"right\" | \"top\" | undefined"
+          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
         },
         {
           "name": "align",

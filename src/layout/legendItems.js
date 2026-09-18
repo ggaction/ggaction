@@ -1,5 +1,5 @@
 import { measureTextWidth, resolveTextBounds } from "../core/textMetrics.js";
-import { alignLegendStart, resolveLegendGrid } from "./legend.js";
+import { alignLegendStart, resolveLegendGrid, isPlotLegend } from "./legend.js";
 
 // Measure item content before choosing its edge. Family owners supply the
 // sample dimensions and formatted labels; this module does not inspect scales.
@@ -17,7 +17,8 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
   const sampleWidth = sampleRight - sampleLeft;
   const sampleHeight = Math.max(symbol.height,
     ...sampleBounds.map(bounds => 2 * Math.max(-bounds.top, bounds.bottom)));
-  const side = ["left", "right"].includes(config.position);
+  const inside = isPlotLegend(config);
+  const side = inside || ["left", "right"].includes(config.position);
   const titleVisible = config.titleVisible !== false;
   const titleWidth = titleVisible ? measureTextWidth(config.title, config.titleStyle, profile) : 0;
   const titleHeight = titleVisible ? config.titleStyle.fontSize : 0;
@@ -103,6 +104,23 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
     if (bounds.some(bound => bound.top <= plot.y + plot.height)) {
       throw new Error("Legacy bottom legend requires more bottom-margin space.");
     }
+  }
+  if (inside) {
+    const left = Math.min(...bounds.map(b => b.left));
+    const right = Math.max(...bounds.map(b => b.right));
+    const top = Math.min(...bounds.map(b => b.top));
+    const bottom = Math.max(...bounds.map(b => b.bottom));
+    const inset = config.offset + (config.border === false ? 0 : config.border.padding + config.border.lineWidth / 2);
+    if (right - left + 2 * inset > plot.width || bottom - top + 2 * inset > plot.height) {
+      throw new Error("In-plot legend does not fit the plot; reduce its content or dimensions.");
+    }
+    const dx = config.position.endsWith("left") ? plot.x + inset - left
+      : plot.x + plot.width - inset - right;
+    const dy = config.position.startsWith("top") ? plot.y + inset - top
+      : plot.y + plot.height - inset - bottom;
+    return { symbolX: symbolX.map(x => x + dx), labelX: labelX.map(x => x + dx),
+      itemY: itemY.map(y => y + dy), title: { ...title, x: title.x + dx, y: title.y + dy },
+      bounds: bounds.map(b => ({ left: b.left + dx, right: b.right + dx, top: b.top + dy, bottom: b.bottom + dy })) };
   }
   return { symbolX, labelX, itemY, title, bounds };
 }

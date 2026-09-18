@@ -2603,16 +2603,34 @@ columns in domain order, and measure each column before allocating its width.
 They retain vertical direction and a top title. Side grids need sufficient
 Canvas margin and preserve their internal spacing when combined with other blocks.
 
+Categorical-only legends also accept `position: "top-left" | "top-right" |
+"bottom-left" | "bottom-right"` inside the plot. `offset` is the inward gap to
+the complete painted border (or content without a border); border padding is
+reserved inside that edge. These anchors default to vertical, one-column content,
+with a top title and center alignment. They do not reserve an outer guide lane.
+The full legend must fit the plot; resizing the Canvas reanchors it.
+
+Set `overflow: { maxItems: 29 }` to display at most 29 categorical symbols and
+labels, followed by an additional text-only `…N entries` summary when needed.
+The optional `summary` value is `"ellipsis-count"`. All categories remain in
+the appearance scale and legend domain, including categories omitted from the
+visible legend. The limit follows the effective legend order and label map.
+Omission or `false` displays every category. This option also works on edge
+categorical legends. Continuous and combined sampled legends retain their
+existing edge-only contracts. Shared facet promotion requires an edge position.
+
 ### `editLegend`
 
 ```javascript
 editLegend({
   target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
-  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?
+  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow?
 })
 ```
 
-Partially edit one existing legend. Interval legends accept four-edge placement
+Partially edit one existing legend. Categorical `overflow` can be replaced or reset
+with `false`; data/scale/order revisions recompute the hidden count and remove stale
+symbols and summary text. Interval legends accept four-edge placement
 and horizontal grid/inline-title controls. Hidden continuous titles are excluded
 from occupied bounds and backgrounds. Omitted categorical `layout` preserves the
 stored mode; style edits never switch modes. Categorical `order` can be reassigned or reset

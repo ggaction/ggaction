@@ -43,3 +43,12 @@ export function alignLegendStart(bounds, width, align) {
   if (align === "right") return bounds.x + bounds.width - width;
   return bounds.x + (bounds.width - width) / 2;
 }
+
+
+export const PLOT_LEGEND_POSITIONS = Object.freeze([
+  "top-left", "top-right", "bottom-left", "bottom-right"
+]);
+
+export function isPlotLegend(config) {
+  return PLOT_LEGEND_POSITIONS.includes(config.position);
+}

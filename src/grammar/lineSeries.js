@@ -174,7 +174,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
         item.orderValues,
         pathOrder.order
       );
-      return values.length < 2 ? [] : [{ key: item.key, values }];
+      return [{ key: item.key, values }];
     });
     if (series.length === 0) {
       throw new Error(
@@ -198,7 +198,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
       const values = item.values.sort(
         orderBy === "x" ? compareX : (left, right) => left.y - right.y
       );
-      return values.length < 2 ? [] : [{ key: item.key, values }];
+      return [{ key: item.key, values }];
     });
     if (series.length === 0) {
       throw new Error(

@@ -1,3 +1,4 @@
+import { PLOT_LEGEND_POSITIONS, isPlotLegend } from "../../../../layout/legend.js";
 import { validateOptionObject } from "../../../../core/validation.js";
 import { CATEGORICAL_LEGEND_CHANNELS } from "../../../../core/vocabulary.js";
 import { normalizeRecipe } from "./recipes.js";
@@ -29,7 +30,8 @@ const OPTIONS = Object.freeze([
   "labels",
   "titleStyle",
   "itemGap",
-  "border"
+  "border",
+  "overflow"
 ]);
 const TEXT_OPTIONS = Object.freeze([
   "offset",
@@ -121,8 +123,9 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
   };
   const position = args.position ?? defaults.position;
   const align = args.align ?? defaults.align;
+  const inside = isPlotLegend({ position });
   const side = ["left", "right"].includes(position);
-  const direction = args.direction ?? (side ? "vertical" : "horizontal");
+  const direction = args.direction ?? (side || inside ? "vertical" : "horizontal");
   const columns = args.columns;
   const offset = args.offset ?? 8;
   const titlePosition = args.titlePosition ?? "top";
@@ -142,14 +145,14 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
     throw new Error('Legend columns, vertical direction, left title and custom offset require layout "edge".');
   }
 
-  if (!["right", "left", "bottom", "top"].includes(position)) {
+  if (!["right", "left", "bottom", "top", ...PLOT_LEGEND_POSITIONS].includes(position)) {
     throw new Error(`Unsupported legend position "${position}".`);
   }
   if (!["left", "center", "right"].includes(align)) {
     throw new Error(`Unsupported legend alignment "${align}".`);
   }
-  if (["right", "left"].includes(position) && align !== "center") {
-    throw new Error("Side legends currently require center alignment.");
+  if ((side || inside) && align !== "center") {
+    throw new Error(inside ? "In-plot legends require center alignment." : "Side legends currently require center alignment.");
   }
   if (!["horizontal", "vertical"].includes(direction)) {
     throw new Error(`Unsupported legend direction "${direction}".`);
@@ -157,8 +160,8 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
   if (side && direction !== "vertical") {
     throw new Error("Side legends require vertical direction.");
   }
-  if (side && titlePosition !== "top") {
-    throw new Error("Side legends require a top title.");
+  if ((side || inside) && titlePosition !== "top") {
+    throw new Error(inside ? "In-plot legends require a top title." : "Side legends require a top title.");
   }
   if (columns !== undefined && (!Number.isInteger(columns) || columns <= 0)) {
     throw new RangeError("Legend columns must be a positive integer.");
@@ -178,7 +181,22 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
   validateFontWeight(titleStyle.fontWeight, "Legend title fontWeight");
   positive(itemGap, "Legend itemGap");
 
+  let overflow;
+  if (args.overflow !== undefined) {
+    overflow = args.overflow;
+    if (overflow !== false) {
+      validateObject(overflow, ["maxItems", "summary"], "Legend overflow");
+      if (!Number.isInteger(overflow.maxItems) || overflow.maxItems < 1) {
+        throw new RangeError("Legend overflow.maxItems must be a positive integer.");
+      }
+      if (overflow.summary !== undefined && overflow.summary !== "ellipsis-count") {
+        throw new Error("Legend overflow.summary must be ellipsis-count.");
+      }
+      overflow = { maxItems: overflow.maxItems, summary: "ellipsis-count" };
+    }
+  }
   return {
+    ...(overflow === undefined ? {} : { overflow }),
     target: args.target,
     channels: args.channels,
     position,

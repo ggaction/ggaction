@@ -1952,3 +1952,9 @@ Whisker cap/style은 기존 ErrorBar editor가 생성/제거와 rematerializatio
 축 전용 typography 및 초기 guide font layout 지원 후 Basic gzip 실측은178,573bytes다.
 기존178,000bytes 한도를 초과해180,000bytes로 조정한다. Full/SVG/artifact 한도는 유지하며
 이전 한도 통과로 보고하지 않는다. 초기 facet header는 기존 header config/editor 검증을 공유한다.
+
+Categorical legend overflow는 기존 full domain/config를 보존하고 materialization 직전에
+visible prefix와 hidden count를 derive한다. Symbol은 prefix만, labels/layout은 summary까지
+소비한다. Plot corner anchor는 measured painted bounds를 plot 내부로 이동하며 outer lane을
+사용하지 않는다. Raw Cartesian singleton line은 source identity와 scale domain을 유지하는
+M-only path다. Shared graphic schema가 이를 허용하며 renderer는 별도 의미 추론을 하지 않는다.
