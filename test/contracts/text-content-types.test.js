@@ -25,6 +25,10 @@ p.encodeText(shared);
 const labels: CreateMarkLabelsOptions = { source: "bars", content: "share", normalizeBy: "category", layout: { axis: "y" } };
 p.createMarkLabels(labels);
 p.createMarkLabels();
+p.createMarkLabels({ lineHeight: 13, blockAlign: "middle" });
+p.editTextMark({ lineHeight: 20, blockAlign: "first" });
+// @ts-expect-error closed multiline anchor vocabulary
+p.createMarkLabels({ blockAlign: "bottom" });
 p.createMarkLabels({ source: "points", inheritColor: "stroke" });
 p.editTextMark({ target: "labels", inheritColor: false });
 // @ts-expect-error Source appearance uses a closed fill/stroke vocabulary.

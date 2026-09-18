@@ -172,3 +172,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   `test/unit/grammar/path-commands.test.js`.
 
 Measured radius의 양수 값이 수치 정밀도 때문에 inner radius와 구별되지 않으면 오류다. 양수 sector를 조용히 생략하거나 epsilon 값으로 대체하지 않는다.
+
+### Concrete text lines
+
+Text의 optional `lines`는 `{text: string, x: finite, y: finite}` 배열이다. 각 좌표는 text anchor에 상대적이고 공통 rotation을 따른다. renderer는 줄을 재분할/측정하지 않고 이 좌표를 그린다. `text`는 전체 논리 문자열을 유지한다.

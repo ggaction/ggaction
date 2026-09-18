@@ -1148,3 +1148,10 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - Text/MarkLabels의 inheritColor는 fill/stroke/false다. source final item의 실제 색상을 따르며 명시적 fill이 우선한다. 기본 arc/rect 대비색 정책은 유지한다.
 - 상속은 추가 scale/legend를 만들지 않고 source 재계산을 따른다. source appearance가 없으면 오류다.
 - Evidence: `test/unit/actions/encodings/text-color.test.js`.
+
+### 여러 줄 Text
+
+- Text/MarkLabels/Annotation은 newline을 줄별 concrete 좌표로 변환하며 한 datum당 한 item을 유지한다. lineHeight는 양수 logical pixel이며 생략 시 fontSize×1.2다.
+- blockAlign first는 첫 줄의 baseline을 anchor에 놓고 middle은 전체 block의 세로 bounds를 가운데 놓는다. 각 줄은 동일한 align/baseline을 쓰며 회전은 공통 anchor 기준이다.
+- 내부 빈 줄은 유지하고 null/undefined/빈 전체 문자열 정책은 기존과 같다. 배열은 특별한 줄 입력 형식으로 해석하지 않는다.
+- Evidence: `test/unit/actions/marks/multiline-text.test.js`, `test/browser/multiline-text.browser.js`.

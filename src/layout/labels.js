@@ -507,6 +507,7 @@ function textBounds(item, offset = { x: 0, y: 0 }, profile) {
     x: item.x + offset.x,
     y: item.y + offset.y,
     text: item.text,
+    lines: item.lines,
     fontSize: item.fontSize,
     fontFamily: item.fontFamily,
     fontWeight: item.fontWeight,

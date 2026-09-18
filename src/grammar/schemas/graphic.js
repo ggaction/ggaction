@@ -86,6 +86,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "x",
     "y",
     "text",
+    "lines",
     "fill",
     "fontSize",
     "fontFamily",

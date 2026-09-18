@@ -5533,7 +5533,7 @@
       "name": "createMarkLabels",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Label final mark items with optional collision layout.",
+      "summary": "Label source mark items.",
       "signature": "createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;",
       "intents": [
         "create mark labels",
@@ -5547,8 +5547,7 @@
       "lifecycle": "Aggregate create-only",
       "resources": {
         "prerequisites": [
-          "existing eligible source mark",
-          "dataset and coordinate context"
+          "existing eligible source mark"
         ],
         "owns": [
           "mark labels"
@@ -5587,6 +5586,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "lineHeight",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "opacity",
           "unit": "probability"
         },
@@ -5616,12 +5619,21 @@
       "completionRequirements": {
         "state": "contextual",
         "requires": [
-          "existing eligible source mark",
-          "dataset and coordinate context"
+          "existing eligible source mark"
         ],
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "lineHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "blockAlign",
+          "required": false,
+          "type": "\"first\" | \"middle\" | undefined"
+        },
         {
           "name": "inheritColor",
           "required": false,
@@ -5739,8 +5751,7 @@
         }
       ],
       "callPatterns": [
-        "createMarkLabels()",
-        "createMarkLabels({ source?, content?, select? | selection?, placement?, format?, layout? })"
+        "createMarkLabels({ source?, content? })"
       ],
       "snippet": "program.createMarkLabels({})",
       "errors": [],
@@ -6054,6 +6065,10 @@
       },
       "units": [
         {
+          "path": "lineHeight",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "opacity",
           "unit": "probability"
         },
@@ -6092,6 +6107,16 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "lineHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "blockAlign",
+          "required": false,
+          "type": "\"first\" | \"middle\" | undefined"
+        },
         {
           "name": "inheritColor",
           "required": false,
@@ -6260,6 +6285,10 @@
       },
       "units": [
         {
+          "path": "lineHeight",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "opacity",
           "unit": "probability"
         },
@@ -6294,6 +6323,16 @@
         "allowsEmpty": true
       },
       "options": [
+        {
+          "name": "lineHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "blockAlign",
+          "required": false,
+          "type": "\"first\" | \"middle\" | undefined"
+        },
         {
           "name": "inheritColor",
           "required": false,
@@ -6376,7 +6415,7 @@
         }
       ],
       "callPatterns": [
-        "createTextMark({ id?, data?, source?, inheritColor?, text?, missing?, fill?, opacity? })"
+        "createTextMark({ id?, data?, source?, lineHeight?, blockAlign?, inheritColor?, text?, missing? })"
       ],
       "snippet": "program.createTextMark({})",
       "errors": [],
@@ -6422,6 +6461,10 @@
       },
       "units": [
         {
+          "path": "lineHeight",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "opacity",
           "unit": "probability"
         },
@@ -6452,6 +6495,16 @@
           "name": "target",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "lineHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "blockAlign",
+          "required": false,
+          "type": "\"first\" | \"middle\" | undefined"
         },
         {
           "name": "inheritColor",
@@ -6515,9 +6568,9 @@
         }
       ],
       "callPatterns": [
-        "editTextMark({ target?, inheritColor?, missing?, fill?, opacity?, fontSize?, fontFamily?, fontWeight? })"
+        "editTextMark({ target?, lineHeight?, blockAlign?, inheritColor?, missing?, fill?, opacity?, fontSize? })"
       ],
-      "snippet": "program.editTextMark({ inheritColor: \"fill\" })",
+      "snippet": "program.editTextMark({ lineHeight: 1 })",
       "errors": [],
       "route": "/reference/actions/marks/#edittextmark"
     },

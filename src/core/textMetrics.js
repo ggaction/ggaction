@@ -91,6 +91,7 @@ export function resolveTextBounds({
   x,
   y,
   text,
+  lines,
   fontSize,
   fontFamily,
   fontWeight,
@@ -101,6 +102,18 @@ export function resolveTextBounds({
 } = {}, profile) {
   if (![x, y, rotation].every(Number.isFinite)) {
     throw new TypeError("Text bounds require finite x, y, and rotation values.");
+  }
+  if (lines !== undefined) {
+    const cosine = Math.cos(rotation), sine = Math.sin(rotation);
+    const bounds = lines.map(line => resolveTextBounds({
+      x: x + line.x * cosine - line.y * sine, y: y + line.x * sine + line.y * cosine,
+      text: line.text, fontSize, fontFamily, fontWeight, fontStyle, textAlign, textBaseline, rotation
+    }, profile));
+    const union = bounds.reduce((result, bound) => ({
+      left: Math.min(result.left, bound.left), right: Math.max(result.right, bound.right),
+      top: Math.min(result.top, bound.top), bottom: Math.max(result.bottom, bound.bottom)
+    }), { left: Infinity, right: -Infinity, top: Infinity, bottom: -Infinity });
+    return Object.freeze(requireFiniteBounds(union, "Text"));
   }
   const width = measureTextWidth(text, { fontSize, fontFamily, fontWeight, fontStyle }, profile);
   const [left, right] = textAlign === "center"

@@ -207,7 +207,7 @@ function actionResources(action, optionNames, intentSource) {
     if (optionNames.includes("field")) prerequisites.push("field in the target dataset");
   }
   if (action.domain === "charts") prerequisites.push("canvas and dataset context");
-  if (action.domain === "marks" && operation === "create") {
+  if (action.domain === "marks" && operation === "create" && action.name !== "createMarkLabels") {
     prerequisites.push("dataset and coordinate context");
   }
   if (["axes", "grid", "legend_and_title"].includes(action.domain) && action.name !== "createTitle") {

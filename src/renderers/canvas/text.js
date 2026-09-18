@@ -80,7 +80,8 @@ function drawText(context, child, collectionId) {
     context.textBaseline = textBaseline;
     context.translate(x, y);
     context.rotate(rotation);
-    context.fillText(text, 0, 0);
+    if (properties.lines === undefined) context.fillText(text, 0, 0);
+    else for (const line of properties.lines) context.fillText(line.text, line.x, line.y);
   } finally {
     context.restore();
   }

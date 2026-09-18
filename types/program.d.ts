@@ -3813,6 +3813,10 @@ export interface YOffsetEncodingOptions extends OffsetEncodingOptions {}
 export type TextFormat = ValueFormat;
 
 export interface TextMarkOptions {
+  /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
+  lineHeight?: number;
+  /** Anchor the first line or center the complete multiline block. */
+  blockAlign?: "first" | "middle";
   /** Follow resolved source appearance; an explicit fill takes precedence. Source-owned labels only. */
   inheritColor?: "fill" | "stroke" | false;
   id?: string;

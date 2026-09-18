@@ -43,7 +43,7 @@ import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const STYLE_OPTIONS = Object.freeze([
   "fill", "opacity", "fontSize", "fontFamily", "fontWeight",
-  "align", "baseline", "rotation", "dx", "dy", "inheritColor"
+  "align", "baseline", "rotation", "dx", "dy", "inheritColor", "lineHeight", "blockAlign"
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "source", "text", "missing", ...STYLE_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", "missing", ...STYLE_OPTIONS]);

@@ -1885,3 +1885,7 @@ Position assignment, scale 소비자, path grammar가 이 해석을 공유하며
 `actions/encodings/ranged.js`는 최종 pair와 scale을 순수 preview한 뒤 기존 wrapped primary/secondary를
 실행한다. `actions/scales/preview.js`의 소비자·domain 계산은 실제 rematerializeScale과 이 preflight가 공유한다.
 Break의 각 closed segment는 원본 row indices를 유지해 selection과 geometry의 grain이 같다.
+
+### 여러 줄 concrete text
+
+Text materialization은 줄바꿈을 상대 좌표 `lines`로 해결하며 하나의 source item과 전체 `text`를 보존한다. Canvas/SVG/PDF는 concrete 줄만 출력하고 공통 text bounds는 같은 줄들의 회전된 합집합을 측정한다. 줄 배치는 renderer가 추론하지 않는다.

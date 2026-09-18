@@ -5,7 +5,7 @@ import {
   resolveMarkLabelPlacement
 } from "../layout/labels.js";
 import { resolveMarkLabelValues } from "../grammar/markLabels.js";
-import { formatTextValue } from "../grammar/text.js";
+import { formatTextValue, resolveTextLines } from "../grammar/text.js";
 import { normalizePositionDatum } from "../grammar/positionDatum.js";
 import { mapOrdinalPositionValues } from "../grammar/scales/index.js";
 import { findDataset } from "../selectors/datasets.js";
@@ -274,12 +274,14 @@ function concreteTextItem(config, position, text, { offsets = true } = {}) {
   if (text === undefined || !Number.isFinite(x) || !Number.isFinite(y)) {
     return undefined;
   }
+  const lines = resolveTextLines(text, config);
   return {
     type: "text",
     properties: {
       x: x + (offsets ? config.dx : 0),
       y: y + (offsets ? config.dy : 0),
       text,
+      ...(lines === undefined ? {} : { lines }),
       fill: config.fill,
       opacity: config.opacity,
       fontSize: config.fontSize,
@@ -388,6 +390,7 @@ function resolveSourceTextItems(program, layer, config) {
       geometry: sourcePlacementGeometry(program, source, item),
       text: {
         text,
+        lines: resolveTextLines(text, resolvedConfig),
         fontSize: resolvedConfig.fontSize,
         fontFamily: resolvedConfig.fontFamily,
         fontWeight: resolvedConfig.fontWeight,

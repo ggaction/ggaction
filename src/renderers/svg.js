@@ -426,7 +426,9 @@ function serializeText(state, graphicId, properties) {
     ["transform", rotation === 0
       ? undefined
       : `rotate(${formatNumber(rotationDegrees)} ${formatNumber(x)} ${formatNumber(y)})`]
-  ], escapeText(text));
+  ], properties.lines === undefined ? escapeText(text) : properties.lines.map(line =>
+    element("tspan", [["x", formatNumber(x + line.x)], ["y", formatNumber(y + line.y)]], escapeText(line.text))
+  ).join(""));
 }
 
 function serializeConcreteGraphic(state, id, graphic) {

@@ -303,3 +303,10 @@ source item's color follows filtering, aggregation, and scale edits without a
 second legend. Explicit fill overrides inheritance; `false` disables it. The
 default contrast policy for arc/rect labels remains unchanged. A missing source
 appearance produces an error rather than an invented color.
+
+Newline-delimited text remains one logical label. `lineHeight` sets positive
+pixel spacing (default `1.2 * fontSize`). `blockAlign: "first"` anchors the first
+line using `baseline`; `"middle"` centers the complete block on the anchor.
+Each line shares horizontal alignment. Blank internal lines consume spacing;
+missing values and empty whole labels retain the existing omission policy.
+Rotation, collision layout, and overflow bounds include every resolved line.

@@ -1,3 +1,4 @@
+import { validateGeneratedItemLimit } from "../../core/validation.js";
 import { validateFontStyle } from "../../core/font.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validatePathCommands } from "../pathCommands.js";
@@ -26,6 +27,14 @@ const TEXT_BASELINES = new Set([
 ]);
 
 export function validateConcreteGraphicValue(type, property, value) {
+  if (property === "lines") {
+    if (!Array.isArray(value) || value.length === 0 || value.some(line =>
+      !isPlainObject(line) || Object.keys(line).some(key => !["text", "x", "y"].includes(key)) ||
+      typeof line.text !== "string" || !Number.isFinite(line.x) || !Number.isFinite(line.y))) {
+      throw new TypeError("Text lines require non-empty resolved text/x/y records.");
+    }
+    validateGeneratedItemLimit(value.length, "Text line count");
+  }
   if (property === "fill") {
     if (typeof value === "string") {
       validateFillPaint(value, `${type}.fill`);

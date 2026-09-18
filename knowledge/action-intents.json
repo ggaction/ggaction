@@ -1559,8 +1559,7 @@
       "createReferenceBand({ space: \"plot\", y: [0.2, 0.8] })"
     ],
     "createMarkLabels": [
-      "createMarkLabels()",
-      "createMarkLabels({ source?, content?, select? | selection?, placement?, format?, layout? })"
+      "createMarkLabels({ source?, content? })"
     ],
     "createAnnotation": [
       "createAnnotation({ text, source? })",

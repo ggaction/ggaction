@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:2ad681c7ff1a52807ba27affbad4af9691ba8acb1c6e72b3867a24f513cdc38b. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:3a0b912aa1152f445e63acfff7981ad4e4edf495e4f949b90091b77f4d7493a9. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -6752,6 +6752,13 @@ source item's color follows filtering, aggregation, and scale edits without a
 second legend. Explicit fill overrides inheritance; `false` disables it. The
 default contrast policy for arc/rect labels remains unchanged. A missing source
 appearance produces an error rather than an invented color.
+
+Newline-delimited text remains one logical label. `lineHeight` sets positive
+pixel spacing (default `1.2 * fontSize`). `blockAlign: "first"` anchors the first
+line using `baseline`; `"middle"` centers the complete block on the anchor.
+Each line shares horizontal alignment. Blank internal lines consume spacing;
+missing values and empty whole labels retain the existing omission policy.
+Rotation, collision layout, and overflow bounds include every resolved line.
 
 <!-- Source: /api/marks/rect/ -->
 
@@ -18628,6 +18635,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
@@ -18655,10 +18664,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, inheritColor?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
+createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
 ```
 
-Label final mark items with optional collision layout. The default content is the source's semantic value;
+Label source mark items. The default content is the source's semantic value;
 Point/Line/Rule/Rect require a field or constant. A Line creates one label per
 series at its final path coordinate. The default ID is `<source>-labels`.
 Omit `select` and `selection` to label every final item. Pass `select: MarkSelector`
@@ -18801,6 +18810,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
@@ -18865,6 +18876,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
@@ -18885,7 +18898,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createTextMark({ id?, data?, source?, text?, inheritColor?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+createTextMark({ id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
@@ -18902,7 +18915,9 @@ Explicit fill overrides inheritance. Inheritance adds no color scale or duplicat
 `rotation` accepts a finite legacy number in radians or an explicit
 `{ value, unit: "degrees" | "radians" }` object; both normalize to concrete
 radians. `createMarkLabels`, `createAnnotation`, and `editTextMark` share this
-input contract.
+input contract. Newlines split text into resolved lines; `lineHeight` sets pixel spacing
+(default `1.2 * fontSize`). `blockAlign: "first"` anchors the first line; `"middle"`
+centers the entire block vertically. Empty internal lines are retained.
 [Text marks](./api/marks/text/)
 
 ## `editTextMark`
@@ -18924,6 +18939,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
@@ -18940,7 +18957,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editTextMark({ target?, inheritColor?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
+editTextMark({ target?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
 ```
 
 Edit text typography and graphical offsets without changing its semantic
@@ -34975,6 +34992,10 @@ Related types: [`ValueFormat`](./reference/types/#type-valueformat).
 
 ```typescript
 export interface TextMarkOptions {
+  /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
+  lineHeight?: number;
+  /** Anchor the first line or center the complete multiline block. */
+  blockAlign?: "first" | "middle";
   /** Follow resolved source appearance; an explicit fill takes precedence. Source-owned labels only. */
   inheritColor?: "fill" | "stroke" | false;
   id?: string;
@@ -38161,7 +38182,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:2ad681c7ff1a52807ba27affbad4af9691ba8acb1c6e72b3867a24f513cdc38b` |
+| Contract fingerprint | `sha256:3a0b912aa1152f445e63acfff7981ad4e4edf495e4f949b90091b77f4d7493a9` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
