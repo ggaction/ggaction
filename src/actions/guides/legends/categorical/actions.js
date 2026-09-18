@@ -1,3 +1,4 @@
+import { normalizeInitialLegendTitle } from "../continuous/common.js";
 import { isContinuousColorScaleType } from "../../../../grammar/scales/types.js";
 import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
 import { sameGuideValue } from "../../reuse.js";
@@ -179,7 +180,7 @@ export function resolveCategoricalLegendConfig(program, args = {}) {
     program,
     layer,
     args.channels,
-    args.title,
+    args.title === false ? undefined : args.title,
     args.order === undefined ? undefined : normalizeLegendOrder(args.order)
   );
   const inferredSymbol = args.symbol === undefined || args.symbol === "auto";
@@ -195,7 +196,8 @@ export function resolveCategoricalLegendConfig(program, args = {}) {
   const config = {
     target: layer.id,
     ...definition,
-    inferredTitle: !Object.hasOwn(args, "title"),
+    ...normalizeInitialLegendTitle(args.title, definition.title),
+    inferredTitle: args.title === false || !Object.hasOwn(args, "title"),
     inferredSymbol,
     position: options.position,
     align: options.align,
@@ -208,8 +210,7 @@ export function resolveCategoricalLegendConfig(program, args = {}) {
     titleStyle: options.titleStyle,
     itemGap: options.itemGap,
     layout: options.layout,
-    border: options.border,
-    titleVisible: true
+    border: options.border
   };
   return config;
 }

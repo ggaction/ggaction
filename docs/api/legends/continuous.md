@@ -194,6 +194,10 @@ program.createLegend({
 });
 ~~~
 
+Use `createLegend({ title: false })` to hide an inferred title from creation,
+including in nested `guides.legend` options. The title is excluded before layout
+validation, so a long unused field name does not require extra margin.
+
 Hidden titles do not contribute to occupied bounds or borders. For horizontal
 inline opacity legends, hiding the title also removes its width and gap.
 The stored title remains available for later restoration; restoring a title

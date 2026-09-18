@@ -1315,7 +1315,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `columns` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"left" \| "top" \| undefined` |
-| `title` | Optional / branch-dependent | `string \| undefined` |
+| `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `readonly number[] \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; } \| undefined` |

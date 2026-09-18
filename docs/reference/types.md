@@ -7256,7 +7256,8 @@ export interface LegendOptions {
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
   titlePosition?: "top" | "left";
-  title?: string;
+  /** false hides the title while retaining its inferred field text. */
+  title?: string | false;
   /** Exact ascending samples for continuous size, opacity, or stroke-width legends. Cannot be combined with count. */
   values?: readonly number[];
   count?: number;

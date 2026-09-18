@@ -18417,7 +18417,7 @@
         {
           "name": "title",
           "required": false,
-          "type": "string | undefined"
+          "type": "string | false | undefined"
         },
         {
           "name": "values",

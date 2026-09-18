@@ -1,7 +1,6 @@
 import { formatVisibleText } from "../../../core/textMetrics.js";
 import { action, closedAction } from "../../../core/action.js";
 import {
-  validateNonEmptyString,
   validateKeys
 } from "../../../core/validation.js";
 import {
@@ -179,7 +178,6 @@ export const rematerializeSizeLegend = /* @__PURE__ */ closedAction(
 
 export function resolveSizeLegendConfig(program, args = {}) {
   validateKeys(args, [...SIZE_OPTIONS, "inheritAppearance"], "createSizeLegend");
-  if (args.title !== undefined) validateNonEmptyString(args.title, "Legend title");
   const layer = resolveSizeLegendPoint(program, args.target);
   const encoding = layer.encoding?.size;
   if (encoding?.scale === undefined) {

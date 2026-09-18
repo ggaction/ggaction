@@ -20,7 +20,10 @@ function compatibleLegend(program, kind, requested, existing, explicit) {
   const appearance = {};
   for (const [key, value] of Object.entries(explicit)) {
     if (["target", "channels"].includes(key) || requested[key] === undefined) continue;
-    if (key === "symbol" && requested.symbol?.layers !== undefined) {
+    if (key === "title") {
+      appearance.titleVisible = value !== false;
+      if (value !== false) appearance.title = value;
+    } else if (key === "symbol" && requested.symbol?.layers !== undefined) {
       appearance.symbol = value === "auto" ? requested.symbol
         : value.layers !== undefined ? value
           : { layers: [{ type: requested.symbol.layers[0].type, ...value }] };

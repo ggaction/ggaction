@@ -304,7 +304,6 @@ export function resolveOpacityLegendCreation(program, args = {}) {
     throw new Error('Opacity legend requires channels: ["opacity"].');
   }
   config.symbol = normalizeOpacitySymbol(args.symbol);
-  config.titleVisible = true;
   const resolved = resolveOpacityConfig(program, config);
   return resolved;
 }

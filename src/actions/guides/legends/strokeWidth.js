@@ -1,6 +1,5 @@
 import { action, closedAction } from "../../../core/action.js";
 import {
-  validateNonEmptyString,
   validateKeys
 } from "../../../core/validation.js";
 import { mapContinuousScaleValues } from "../../../grammar/scales/index.js";
@@ -121,7 +120,6 @@ export const rematerializeStrokeWidthLegend = /* @__PURE__ */ closedAction(
 
 export function resolveStrokeWidthLegendConfig(program, args = {}) {
   validateKeys(args, OPTIONS, "createStrokeWidthLegend");
-  if (args.title !== undefined) validateNonEmptyString(args.title, "Legend title");
   const layer = resolveLayer(program, args.target);
   const encoding = layer.encoding.strokeWidth;
   requireScale(program, encoding.scale);

@@ -143,6 +143,22 @@ async function testNodeConsumer(directory) {
       assert.match(renderToSVG(stroked), /stroke="red"/);
     }
 
+    for (const factory of [chart, basicChart]) {
+      const seed = factory().createCanvas({ width: 800, height: 500, margin: 150 })
+        .createData({ values: [{ x: 1, y: 2, group: "A" }, { x: 2, y: 3, group: "B" }] })
+        .createScatterPlot({ x: "x", y: "y", color: "group", size: "y", guides: false });
+      const hidden = seed.createLegend({ title: false });
+      assert.equal(hidden.guideConfigs.legend.color.titleVisible, false);
+      assert.equal(hidden.guideConfigs.legend.size.titleVisible, true);
+      if (factory === chart) {
+        const edited = seed.createLegend().editLegend({ title: false });
+        assert.deepEqual(hidden.guideConfigs, edited.guideConfigs);
+        assert.deepEqual(hidden.graphicSpec, edited.graphicSpec);
+      }
+      assert.deepEqual(deserializeProgram(serializeProgram(hidden)).graphicSpec, hidden.graphicSpec);
+      assert.match(renderToSVG(hidden), /<svg/);
+    }
+
     const categorySizes = chart().createCanvas({
       width: 800, height: 500, margin: { left: 60, right: 260, top: 60, bottom: 130 }
     }).createData({ values: [
@@ -2719,6 +2735,11 @@ async function testTypeScriptConsumer(directory) {
     chart().createScatterPlot({ x: "x", y: "y", stroke: { field: "amount", fieldType: "quantitative" } });
     // @ts-expect-error constant stroke belongs in point
     chart().createScatterPlot({ x: "x", y: "y", stroke: { value: "red" } });
+
+    chart().createLegend({ title: false });
+    basicChart().createScatterPlot({ x: "x", y: "y", color: "group", guides: { legend: { title: false } } });
+    // @ts-expect-error only false is a title visibility option
+    chart().createLegend({ title: true });
 
     const program: ChartProgram = chart().createCanvas({ width: 100, height: 100 });
     const themeName: ThemeName = "dark";

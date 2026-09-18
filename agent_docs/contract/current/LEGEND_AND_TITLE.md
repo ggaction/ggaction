@@ -91,7 +91,13 @@ type TitleWrap = "word" | "character";
 - `offset`: non-negative finite number, 기본 `8`; plot과 legend block 간 거리다.
 - `titlePosition`: `"top" | "left"`, 기본 top. `"left"`는 horizontal categorical과 sampled opacity
   legend에서 title, symbol, label을 한 reading line으로 배치한다. Gradient와 side opacity는 `"top"`만 지원한다.
-- `title`: non-empty string; 생략하면 encoded source field를 사용한다.
+- `title`: non-empty string 또는 `false`; 생략하면 encoded source field를 사용한다.
+  `false`는 추론된 title 문자열을 유지하면서 처음부터 titleVisible:false로 생성한다. Layout 검증 전에
+  제목을 제외하므로 사용하지 않을 긴 제목 때문에 생성이 실패하지 않는다. createLegend 뒤 editLegend({title:false})와
+  같은 semantic/config/graphic 결과이며 editLegend({title:"auto"})로 복원할 수 있다. Combined categorical+size에서는
+  기존 title 선택 규칙처럼 categorical 제목에 적용하며 size block의 독립 제목은 유지한다.
+  Facade의 guides.legend.title:false도 같은 계약이며 hidden guide 재사용은 visibility를 비교한다.
+  Evidence: `test/unit/actions/guides/initial-legend-titles.test.js`.
 - `symbol`: `"auto"`, mark-specific shorthand, 또는 `{ layers: [...] }`. layer type은 `line | point | swatch`;
   각 layer는 non-negative size/stroke parameters와 supported point shape를 사용한다. Layered recipe는
   type별 최대 하나, 전체 최대 세 layer다.

@@ -65,15 +65,22 @@ export const ITEM_LEGEND_TITLE_STYLE = Object.freeze({
   ...DEFAULT_TITLE, color: DEFAULT_COLORS.strongText
 });
 
+export function normalizeInitialLegendTitle(title, fallback) {
+  if (title !== undefined && title !== false) validateNonEmptyString(title, "Legend title");
+  return {
+    title: title === false || title === undefined ? fallback : title,
+    inferredTitle: title === false || title === undefined,
+    titleVisible: title !== false
+  };
+}
+
 export function normalizeItemLegendConfig(args, encoding, itemGap) {
   return {
     ...normalizeItemLegendLayout({ ...args, itemGap: args.itemGap ?? itemGap }),
-    title: args.title ?? encoding.field,
-    inferredTitle: args.title === undefined,
+    ...normalizeInitialLegendTitle(args.title, encoding.field),
     labels: normalizeLegendTextOptions(args.labels, "createLegend.labels", ITEM_LEGEND_LABELS),
     titleStyle: normalizeLegendTitleOptions(args.titleStyle, "createLegend.titleStyle", ITEM_LEGEND_TITLE_STYLE),
-    border: normalizeLegendBorder(args.border),
-    titleVisible: true
+    border: normalizeLegendBorder(args.border)
   };
 }
 
@@ -179,7 +186,6 @@ export function normalizeContinuousLegend(args, kind) {
   }
   const itemGap = args.itemGap ?? (titlePosition === "left" ? 20 : 28);
   validatePositive(itemGap, "Legend itemGap");
-  if (args.title !== undefined) validateNonEmptyString(args.title, "Legend title");
   if (kind === "gradient") {
     for (const key of ["symbol", "columns", "direction", "itemGap"]) {
       if (Object.hasOwn(args, key)) {
@@ -199,8 +205,7 @@ export function normalizeContinuousLegend(args, kind) {
     align,
     offset,
     ...(kind === "gradient" ? { count } : { sampling }),
-    title: args.title,
-    inferredTitle: args.title === undefined,
+    ...normalizeInitialLegendTitle(args.title),
     labels: normalizeLegendTextOptions(
       args.labels,
       "createLegend.labels",

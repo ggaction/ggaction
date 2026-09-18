@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:b0a140f3f4e409732db66a7eacd670d8f581ff1d4a151c2a139b1a1d78788936. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:728eda143a382d9431e37c81961d3612a88dcf1cf5681e8208c73cff116be730. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12495,7 +12495,7 @@ preserves its remaining shape legend.
 | `columns` | positive integer | all items in one row at top |
 | `offset` | non-negative number | `8` |
 | `titlePosition` | `"top"` or `"left"` | `"top"` |
-| `title` | non-empty string | encoded field name |
+| `title` | non-empty string or `false` | encoded field name; `false` initially hides it |
 | `symbol` | `"auto"`, shorthand object, or layered recipe | inferred from mark |
 | `labels` | label style object | default sans-serif label style |
 | `titleStyle` | title style object | default sans-serif title style |
@@ -12505,6 +12505,8 @@ preserves its remaining shape legend.
 | `gradient` | `{ length?, thickness? }` with positive values | `{ length: 120, thickness: 12 }` |
 
 Pass `position: "bottom"` explicitly to place the legend below the plot.
+For a combined categorical-and-size legend, `title: false` hides the categorical
+title; the size block retains its independent title, matching `editLegend`.
 Bottom legends use the same item grid as top legends and can use left, center,
 or right alignment; side legends require center alignment. Left categorical,
 composite point, and size blocks use vertical flow and preserve symbol-to-label
@@ -12815,6 +12817,10 @@ program.createLegend({
   symbol: { width: 14, height: 12 }
 });
 ~~~
+
+Use `createLegend({ title: false })` to hide an inferred title from creation,
+including in nested `guides.legend` options. The title is excluded before layout
+validation, so a long unused field name does not require extra margin.
 
 Hidden titles do not contribute to occupied bounds or borders. For horizontal
 inline opacity legends, hiding the title also removes its width and gap.
@@ -13301,6 +13307,10 @@ visibility. Whole-content replacement preserves both retained blocks' settings.
 ## Related
 
 [Legend overview](./api/legends/) · [Guides](./api/guides/) · [Canvas](./api/canvas/)
+
+To start with a hidden title, use `createLegend({ title: false })`. This preserves
+the inferred field title for later restoration with `editLegend({ title: "auto" })`
+and avoids a separate initial edit.
 
 <!-- Source: /concepts/chart-program/ -->
 
@@ -24043,7 +24053,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `columns` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"left" \| "top" \| undefined` |
-| `title` | Optional / branch-dependent | `string \| undefined` |
+| `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `readonly number[] \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; } \| undefined` |
@@ -32189,7 +32199,8 @@ export interface LegendOptions {
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
   titlePosition?: "top" | "left";
-  title?: string;
+  /** false hides the title while retaining its inferred field text. */
+  title?: string | false;
   /** Exact ascending samples for continuous size, opacity, or stroke-width legends. Cannot be combined with count. */
   values?: readonly number[];
   count?: number;
@@ -38373,7 +38384,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:b0a140f3f4e409732db66a7eacd670d8f581ff1d4a151c2a139b1a1d78788936` |
+| Contract fingerprint | `sha256:728eda143a382d9431e37c81961d3612a88dcf1cf5681e8208c73cff116be730` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

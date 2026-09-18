@@ -261,7 +261,6 @@ export function resolveGradientLegendCreation(program, args = {}, channel = "col
     length: args.gradient?.length ?? DEFAULT_GRADIENT_SIZE.length,
     thickness: args.gradient?.thickness ?? DEFAULT_GRADIENT_SIZE.thickness
   };
-  config.titleVisible = true;
   validatePositive(config.gradient.length, "Gradient length");
   validatePositive(config.gradient.thickness, "Gradient thickness");
   const resolved = resolveGradientConfig(program, config, channel);

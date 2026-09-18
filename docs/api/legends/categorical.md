@@ -97,7 +97,7 @@ preserves its remaining shape legend.
 | `columns` | positive integer | all items in one row at top |
 | `offset` | non-negative number | `8` |
 | `titlePosition` | `"top"` or `"left"` | `"top"` |
-| `title` | non-empty string | encoded field name |
+| `title` | non-empty string or `false` | encoded field name; `false` initially hides it |
 | `symbol` | `"auto"`, shorthand object, or layered recipe | inferred from mark |
 | `labels` | label style object | default sans-serif label style |
 | `titleStyle` | title style object | default sans-serif title style |
@@ -107,6 +107,8 @@ preserves its remaining shape legend.
 | `gradient` | `{ length?, thickness? }` with positive values | `{ length: 120, thickness: 12 }` |
 
 Pass `position: "bottom"` explicitly to place the legend below the plot.
+For a combined categorical-and-size legend, `title: false` hides the categorical
+title; the size block retains its independent title, matching `editLegend`.
 Bottom legends use the same item grid as top legends and can use left, center,
 or right alignment; side legends require center alignment. Left categorical,
 composite point, and size blocks use vertical flow and preserve symbol-to-label

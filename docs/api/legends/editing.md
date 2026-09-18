@@ -397,3 +397,8 @@ visibility. Whole-content replacement preserves both retained blocks' settings.
 ## Related
 
 [Legend overview](../legends.md) · [Guides](../guides.md) · [Canvas](../canvas.md)
+
+
+To start with a hidden title, use `createLegend({ title: false })`. This preserves
+the inferred field title for later restoration with `editLegend({ title: "auto" })`
+and avoids a separate initial edit.

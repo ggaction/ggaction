@@ -13,6 +13,7 @@ import {
   assertLegendBoundsInsideCanvas,
   editGraphicProperties,
   editLegendBackground,
+  normalizeInitialLegendTitle,
   normalizeLegendBorder,
   normalizeItemLegendLayout,
   normalizeLegendTextOptions,
@@ -60,14 +61,11 @@ export function normalizeIntervalLegend(args) {
   validatePositive(symbol.width, "Legend symbol width");
   validatePositive(symbol.height, "Legend symbol height");
   validateNonNegative(symbol.strokeWidth, "Legend symbol strokeWidth");
-  if (args.title !== undefined) validateNonEmptyString(args.title, "Legend title");
   validateNonEmptyString(symbol.stroke, "Legend symbol stroke");
   return {
     target: args.target,
     ...layout,
-    title: args.title,
-    inferredTitle: args.title === undefined,
-    titleVisible: true,
+    ...normalizeInitialLegendTitle(args.title),
     symbol,
     labels: normalizeLegendTextOptions(args.labels, "createLegend.labels", {
       offset: 8,
