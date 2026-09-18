@@ -1131,3 +1131,13 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 - ✅ Covered: inferred target and complete cleanup in the shared removal suite and Gate.
 - Evidence: `test/unit/actions/guides/remove-guides.test.js`.
+
+## Exact-inner Canvas guide layout
+
+Canvas `plot` 모드에서는 label offset이 plot edge와 가장 가까운 측정 text edge 사이 간격이다.
+회전된 x label은 바깥 방향의 text 끝점을 anchor로 사용한다. 같은 회전각의 label rectangle을
+공통 회전 좌표계에서 비교하여 실제로 떨어진 대각선 label을 bounding-box overlap으로 거부하지 않는다.
+Wrapped line은 같은 원본 label group으로 처리한다. 자동 axis title offset은 기존 margin에
+제한되지 않으며 측정 overflow를 Canvas guide transaction이 수용한다. 명시적 overlap:error와
+실제 label 충돌은 여전히 오류다. 고정 외부 Canvas 동작은 변경하지 않는다.
+Evidence: `test/unit/actions/canvas/inner-plot-size.test.js`.

@@ -179,3 +179,16 @@ test("reserves independent left and right header lanes for each physical column"
     assert.throws(() => resolveFacetLayout({ children, columns: 2, headerLayout: { cellColumns } }));
   }
 });
+
+test("validates exact plot spacing bounds and retains a single outer margin allocation", () => {
+  const children = [{ id: "a", width: 200, height: 140 }, { id: "b", width: 200, height: 140 }];
+  const plots = children.map(child => ({ id: child.id, x: 80, y: 20, width: 100, height: 100 }));
+  const options = { children, plots, spacing: "plot", gap: 5 };
+  const layout = resolveFacetLayout(options);
+  assert.equal(layout.width, 305);
+  assert.equal(layout.children[1].x - layout.children[0].x, 105);
+  for (const invalid of [undefined, [], [plots[0], plots[0]], [{ ...plots[0], width: 300 }, plots[1]], [{ ...plots[0], x: NaN }, plots[1]]]) {
+    assert.throws(() => resolveFacetLayout({ ...options, plots: invalid }), /Plot spacing requires/);
+  }
+  assert.throws(() => resolveFacetLayout({ ...options, spacing: "wrong" }), /Unknown facet spacing/);
+});

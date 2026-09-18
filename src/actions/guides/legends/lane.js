@@ -496,6 +496,7 @@ export const rematerializeHorizontalLegendLane = /* @__PURE__ */ action(
           backgroundId: index === 0 ? undefined : block.backgroundId
         }))).map(child => ({ ...child, element: child.content }));
         const plan = resolveHorizontalLegendGroup({ edge, plot, canvas, groups: children,
+          allowOverflow: next.materializationConfigs.canvas?.plot !== undefined,
           align: config.align, offset: config.offset, border: group.border,
           backgroundId: group.backgroundId });
         next = applyHorizontalPlan(next, children, plan);
@@ -508,7 +509,8 @@ export const rematerializeHorizontalLegendLane = /* @__PURE__ */ action(
         edge,
         plot,
         canvas,
-        groups: horizontal
+        groups: horizontal,
+        allowOverflow: next.materializationConfigs.canvas?.plot !== undefined
       });
       next = applyHorizontalPlan(next, horizontal, plan);
     }

@@ -368,3 +368,19 @@ test("validates facet scope, sources, guides, and structural edits atomically", 
     /not available on this composition/
   );
 });
+
+
+test("facet parent title typography survives layout and style edits", () => {
+  const faceted = pointBase().facet({ field: "group", spacing: "plot", gap: 20 })
+    .createTitle({ text: "Grouped points", subtitle: "A and B",
+      titleStyle: { fontStyle: "italic" }, subtitleStyle: { fontStyle: "italic" }
+    });
+  for (const program of [faceted, faceted.editCompositionLayout({ gap: 30 })]) {
+    assert.equal(program.graphicSpec.objects.chartTitle.properties.fontStyle, "italic");
+    assert.equal(program.graphicSpec.objects.chartSubtitle.properties.fontStyle, "italic");
+  }
+  const upright = faceted.editTitle({ titleStyle: { fontStyle: "normal" } });
+  assert.equal(upright.graphicSpec.objects.chartTitle.properties.fontStyle, "normal");
+  assert.equal(upright.graphicSpec.objects.chartSubtitle.properties.fontStyle, "italic");
+  assert.equal(faceted.graphicSpec.objects.chartTitle.properties.fontStyle, "italic");
+});

@@ -19,7 +19,7 @@ import {
   formatDistinctNumericSamples,
   sampleNumericRange
 } from "../../../../grammar/numeric.js";
-import { resolveGraphicBounds } from "../../../../layout/canvas.js";
+import { resolveGraphicBounds, canvasOverflowError } from "../../../../layout/canvas.js";
 import { isHorizontalEdgeLegend } from "../../../../layout/legendLane.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../../theme/defaults.js";
@@ -351,7 +351,7 @@ export function assertLegendBoundsInsideCanvas(bounds, canvas, label, config) {
     item.left < 0 || item.right > canvas.width ||
     item.top < 0 || item.bottom > canvas.height
   )) {
-    throw new Error(`${label} requires more Canvas margin space.`);
+    throw canvasOverflowError(`${label} requires more Canvas margin space.`, bounds, canvas);
   }
 }
 
@@ -383,7 +383,10 @@ export function resolveLegendBackgroundFromBounds(
     right + strokeExtent > canvas.width ||
     bottom + strokeExtent > canvas.height
   )) {
-    throw new Error(`${label} background requires more Canvas margin space.`);
+    throw canvasOverflowError(`${label} background requires more Canvas margin space.`, [{
+      left: x - strokeExtent, right: right + strokeExtent,
+      top: y - strokeExtent, bottom: bottom + strokeExtent
+    }], canvas);
   }
   return { x, y, width: right - x, height: bottom - y };
 }

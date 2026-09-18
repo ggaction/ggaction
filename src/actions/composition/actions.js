@@ -1,3 +1,4 @@
+import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { inheritTextMetrics } from "../textMetrics/index.js";
 import { action, closedAction } from "../../core/action.js";
 import { ChartProgram as CoreChartProgram } from "../../core/ChartProgram.js";
@@ -19,7 +20,7 @@ const CONCAT_OPTIONS = Object.freeze([
   "id", "programs", "gap", "align", "padding"
 ]);
 const LAYOUT_EDIT_OPTIONS = Object.freeze([
-  "columns", "gap", "align", "padding"
+  "columns", "gap", "spacing", "align", "padding"
 ]);
 const REPLACEMENT_OPTIONS = Object.freeze(["target", "program"]);
 const INSERTION_OPTIONS = Object.freeze(["id", "program", "before", "after"]);
@@ -179,6 +180,7 @@ const editCompositionLayout = /* @__PURE__ */ closedAction(
         "editCompositionLayout columns is available only on a facet composition."
       );
     }
+    if (current.type !== "facet" && Object.hasOwn(args, "spacing")) throw new Error("Plot spacing requires a facet composition.");
     const padding = Object.hasOwn(args, "padding")
       ? normalizeCompositionPadding(args.padding, current.padding)
       : current.padding;
@@ -188,6 +190,8 @@ const editCompositionLayout = /* @__PURE__ */ closedAction(
         (current.facet.grid?.cells ?? []).map(cell => [cell.id, cell])
       );
       layout = resolveFacetLayout({
+        spacing: option(args, "spacing", current.spacing),
+        plots: current.children.map(id => ({ id, ...resolveGraphicBounds(this.children[id]) })),
         children: current.children.map((id, index) => ({
           ...childDescriptor({ id, program: this.children[id] }),
           value: current.facet.values[index],
@@ -218,7 +222,7 @@ const editCompositionLayout = /* @__PURE__ */ closedAction(
       children: this.children,
       compositionSpec: {
         ...current,
-        ...(current.type === "facet" ? { columns: layout.columns } : {}),
+        ...(current.type === "facet" ? { columns: layout.columns, ...(layout.spacing !== undefined ? { spacing: layout.spacing } : current.spacing !== undefined ? { spacing: "canvas" } : {}) } : {}),
         gap: layout.gap,
         align: layout.align,
         padding: layout.padding

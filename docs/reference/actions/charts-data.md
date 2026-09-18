@@ -31,13 +31,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `height` | Optional / branch-dependent | `number \| undefined` |
 | `background` | Optional / branch-dependent | `string \| undefined` |
 | `margin` | Optional / branch-dependent | `number \| Partial<Record<"bottom" \| "left" \| "right" \| "top", number>> \| undefined` |
+| `plot` | Optional / branch-dependent | `false \| { width: number; height: number; } \| undefined` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createCanvas({ width?, height?, background?, margin? })
+createCanvas({ width?, height?, background?, margin?, plot? })
 ```
 
 Create the program's Canvas and plot bounds. [Canvas options](../../api/canvas.md)
@@ -66,13 +67,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `height` | Optional / branch-dependent | `number \| undefined` |
 | `background` | Optional / branch-dependent | `string \| undefined` |
 | `margin` | Optional / branch-dependent | `number \| Partial<Record<"bottom" \| "left" \| "right" \| "top", number>> \| undefined` |
+| `plot` | Optional / branch-dependent | `false \| { width: number; height: number; } \| undefined` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editCanvas({ width?, height?, background?, margin? })
+editCanvas({ width?, height?, background?, margin?, plot? })
 ```
 
 Edit Canvas properties and rematerialize connected consumers.
@@ -1907,13 +1909,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `gap` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editCompositionLayout({ columns?, gap?, align?, padding? })
+editCompositionLayout({ columns?, gap?, spacing?, align?, padding? })
 ```
 
 Edit spacing, cross-axis alignment, or outer padding on an existing composition.
@@ -2087,13 +2090,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-facet({ id?, field, data?, values?, columns?, gap?, align?, padding?, scales?, guides? })
+facet({ id?, field, data?, values?, columns?, gap?, spacing?, align?, padding?, scales?, guides? })
 ```
 
 Repeat one complete Cartesian, Polar, or Parallel chart by a field on its common
@@ -2139,13 +2143,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-facetGrid({ id?, data?, rows, columns, combinations?, gap?, align?, padding?, scales?, guides? })
+facetGrid({ id?, data?, rows, columns, combinations?, gap?, spacing?, align?, padding?, scales?, guides? })
 ```
 
 Repeat one supported Cartesian, Polar, or Parallel chart over two ordered
@@ -2184,13 +2189,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-repeatCharts({ id?, target?, channel, fields, columns?, gap?, align?, padding?, scales?, guides? })
+repeatCharts({ id?, target?, channel, fields, columns?, gap?, spacing?, align?, padding?, scales?, guides? })
 ```
 
 Repeat one direct mark by replacing Cartesian `x`/`y`, eligible Polar

@@ -253,7 +253,7 @@ browser-safe entry에 연결하지 않는다.
 
 Static built-in `action(...)` declaration에만 pure-call annotation을 둔다. Factory가 만드는 WeakMap key/value는 반환 wrapper를 사용하지 않으면 관찰 불가능하며, 해당 wrapper를 제거할 때만 함께 버릴 수 있다. Extension 사용자의 `action()` 호출과 등록 함수에는 annotation을 붙이지 않아 metadata validation과 prototype registration을 보존한다. Basic entry에서 등록하지 않은 sibling action의 dependency를 bundle에서 제거한다.
 
-Package staging은 task resolver와 scale definition/color/quantitative transform 및 polar/arc geometry 모듈을 기존 esbuild 정책으로 compact한다.
+Package staging은 task resolver와 scale definition/color/quantitative transform, polar/arc geometry 및 Canvas/facet/guide layout 모듈을 기존 esbuild 정책으로 compact한다.
 Repository 원본과 module 경로/export는 유지하고, packed math equivalence와 artifact size를 검사한다.
 
 ### Browser bundle regression ceilings
@@ -262,9 +262,14 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 370,000 bytes |
+| `ggaction` | 375,000 bytes |
 | `ggaction/basic` | 175,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
+
+명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
+370,000에서 375,000 bytes로 조정했다. 이전 기능 기준선은 369,996 bytes였으며,
+새 기능의 installed consumer 측정은 약 372,700 bytes다. Basic/SVG와 package artifact
+예산은 유지한다. 이 변경은 기능 증가분을 허용하는 예산 변경이며 이전 한도 통과를 뜻하지 않는다.
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
 `scripts/browser-bundle-size.js`이고 package consumer와 documentation contract가 같은 값을 검증한다.
@@ -1893,3 +1898,11 @@ Break의 각 closed segment는 원본 row indices를 유지해 selection과 geom
 ### 여러 줄 concrete text
 
 Text materialization은 줄바꿈을 상대 좌표 `lines`로 해결하며 하나의 source item과 전체 `text`를 보존한다. Canvas/SVG/PDF는 concrete 줄만 출력하고 공통 text bounds는 같은 줄들의 회전된 합집합을 측정한다. 줄 배치는 renderer가 추론하지 않는다.
+
+### 명시적 내부 플롯 크기의 guide transaction
+
+Canvas의 opt-in 내부 크기 intent는 기존 materializationConfigs.canvas가 소유한다.
+Guide domain transaction이 실제 측정 overflow를 읽고 Canvas 및 margin을 함께 확장한 뒤
+공통 Canvas rematerialization plan을 명시적으로 실행한다. 실패한 시도는 immutable branch로
+폐기하며 generic action completion hook이나 renderer compiler를 추가하지 않는다.
+세부 sizing/충돌 계약은 Current CORE와 AXES, LEGEND_AND_TITLE이 소유한다.

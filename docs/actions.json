@@ -90,10 +90,15 @@
           "name": "margin",
           "required": false,
           "type": "number | Partial<Record<\"bottom\" | \"left\" | \"right\" | \"top\", number>> | undefined"
+        },
+        {
+          "name": "plot",
+          "required": false,
+          "type": "false | { width: number; height: number; } | undefined"
         }
       ],
       "callPatterns": [
-        "createCanvas({ width?, height?, background?, margin? })"
+        "createCanvas({ width?, height?, background?, margin?, plot? })"
       ],
       "snippet": "program.createCanvas({})",
       "errors": [],
@@ -187,10 +192,15 @@
           "name": "margin",
           "required": false,
           "type": "number | Partial<Record<\"bottom\" | \"left\" | \"right\" | \"top\", number>> | undefined"
+        },
+        {
+          "name": "plot",
+          "required": false,
+          "type": "false | { width: number; height: number; } | undefined"
         }
       ],
       "callPatterns": [
-        "editCanvas({ width?, height?, background?, margin? })"
+        "editCanvas({ width?, height?, background?, margin?, plot? })"
       ],
       "snippet": "program.editCanvas({ width: 640 })",
       "errors": [],
@@ -26995,10 +27005,15 @@
           "name": "padding",
           "required": false,
           "type": "number | CompositionPadding | undefined"
+        },
+        {
+          "name": "spacing",
+          "required": false,
+          "type": "\"canvas\" | \"plot\" | undefined"
         }
       ],
       "callPatterns": [
-        "editCompositionLayout({ columns?, gap?, align?, padding? })"
+        "editCompositionLayout({ columns?, gap?, align?, padding?, spacing? })"
       ],
       "snippet": "program.editCompositionLayout({ columns: 2 })",
       "errors": [],
@@ -27407,6 +27422,11 @@
           "name": "guides",
           "required": false,
           "type": "FacetGuideOptions | undefined"
+        },
+        {
+          "name": "spacing",
+          "required": false,
+          "type": "\"canvas\" | \"plot\" | undefined"
         }
       ],
       "callPatterns": [
@@ -27534,6 +27554,11 @@
           "name": "guides",
           "required": false,
           "type": "FacetGuideOptions | undefined"
+        },
+        {
+          "name": "spacing",
+          "required": false,
+          "type": "\"canvas\" | \"plot\" | undefined"
         }
       ],
       "callPatterns": [
@@ -27665,6 +27690,11 @@
           "name": "guides",
           "required": false,
           "type": "FacetGuideOptions | undefined"
+        },
+        {
+          "name": "spacing",
+          "required": false,
+          "type": "\"canvas\" | \"plot\" | undefined"
         }
       ],
       "callPatterns": [

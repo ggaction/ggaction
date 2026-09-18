@@ -66,6 +66,7 @@ and source-row count multiplied by child count must not exceed the shared
 | `values` | source first-appearance order | Selects and orders a non-empty set of observed scalar values |
 | `columns` | number of values | Sets the grid column count |
 | `gap` | `16` | Sets horizontal and vertical cell spacing |
+| `spacing` | `"canvas"` | Measures gaps between child canvases or, with `"plot"`, inner plot tracks |
 | `align` | `"center"` | Aligns unequal cells inside grid tracks |
 | `padding` | `0` on every side | Adds scalar or four-side parent padding |
 | `scales` | every used role `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `yOffset`, `theta`, public `r`, `color`, `stroke`, `size`, `shape`, `opacity`, `strokeDash`, or all `parallelDimensions` |
@@ -355,3 +356,18 @@ Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
 See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/repeat-charts).
+
+## Space between plots
+
+Use `facet({ field: "group", spacing: "plot", gap: 5 })` when the five-pixel gap
+should separate the data regions. The default `"canvas"` mode includes both
+children's margins between those regions. Plot mode retains each data region's
+size and reserves child margins once around the outer grid. Panel backgrounds
+cover their plots; the parent background covers the surrounding area.
+
+The same option works with `facetGrid`, `repeatCharts`, and facet
+`editCompositionLayout`. Headers and retained guides must fit the specified gap;
+otherwise the action reports a collision. `guides: { axes: "outer" }` removes
+interior axes, but remaining edge labels still need enough space. Increasing the
+gap or changing guide/header settings resolves those collisions without changing
+panel dimensions.

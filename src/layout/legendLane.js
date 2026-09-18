@@ -1,3 +1,4 @@
+import { canvasOverflowError } from "./canvas.js";
 import { unionBounds } from "../core/textMetrics.js";
 export const SIDE_LEGEND_BLOCK_GAP = 24;
 export const HORIZONTAL_LEGEND_BLOCK_GAP = 40;
@@ -22,7 +23,7 @@ export function resolveSingleHorizontalLegendPlacement({ plot, canvas, config, b
     : plot.y + plot.height + config.offset - bounds.top;
   const occupied = translateBounds(bounds, dx, dy);
   if (occupied.left < 0 || occupied.right > canvas.width || occupied.top < 0 || occupied.bottom > canvas.height) {
-    throw new Error(`Legend layout requires more ${config.position}-margin or Canvas space.`);
+    throw canvasOverflowError(`Legend layout requires more ${config.position}-margin or Canvas space.`, [occupied], canvas);
   }
   return { dx, dy, occupied };
 }
@@ -179,7 +180,7 @@ export function resolveSideLegendLane({
     occupied.left < 0 || occupied.right > canvas.width ||
     occupied.top < 0 || occupied.bottom > canvas.height
   ) {
-    throw new Error(`Legend lane requires more ${side}-margin or vertical Canvas space.`);
+    throw canvasOverflowError(`Legend lane requires more ${side}-margin or vertical Canvas space.`, [occupied], canvas);
   }
   if (axisBounds !== undefined && overlap(occupied, axisBounds)) {
     throw new Error(`${side[0].toUpperCase()}${side.slice(1)} legend lane and y-axis guides require more margin space.`);
@@ -213,14 +214,14 @@ function expandBounds(bounds, inset) {
   };
 }
 
-function packHorizontalRows(groups, plot) {
+function packHorizontalRows(groups, plot, allowOverflow = false) {
   const rows = [];
   let row = [];
   let cursor = plot.x;
   for (const group of groups) {
     const interval = expandBounds(group.horizontal, group.inset);
     const width = interval.right - interval.left;
-    if (width > plot.width) {
+    if (width > plot.width && !allowOverflow) {
       throw new Error("Horizontal legend block requires more plot width.");
     }
     let dx = cursor - interval.left;
@@ -309,13 +310,14 @@ export function resolveHorizontalLegendLane({
   plot,
   canvas,
   groups,
-  collisionBounds = []
+  collisionBounds = [],
+  allowOverflow = false
 }) {
   if (!["top", "bottom"].includes(edge)) {
     throw new Error(`Unsupported horizontal legend lane "${edge}".`);
   }
   if (groups.length < 2) return undefined;
-  const packed = packHorizontalRows(groups, plot);
+  const packed = packHorizontalRows(groups, plot, allowOverflow);
   const normalized = packed.map(normalizeHorizontalRow);
   const placements = [];
   let previousRowBounds;
@@ -350,7 +352,7 @@ export function resolveHorizontalLegendLane({
     placement.occupied.left < 0 || placement.occupied.right > canvas.width ||
     placement.occupied.top < 0 || placement.occupied.bottom > canvas.height
   )) {
-    throw new Error(`Legend lane requires more ${edge}-margin or Canvas space.`);
+    throw canvasOverflowError(`Legend lane requires more ${edge}-margin or Canvas space.`, [occupied], canvas);
   }
   if (placements.some(placement =>
     collisionBounds.some(bounds => overlap(placement.occupied, bounds))
@@ -386,10 +388,10 @@ export function resolveHorizontalLegendLane({
 // Compose independently measured content blocks before the outer edge lane
 // treats the whole group as one indivisible item.
 export function resolveHorizontalLegendGroup({ edge, plot, canvas, groups,
-  align, offset, border, backgroundId, collisionBounds = [] }) {
+  align, offset, border, backgroundId, collisionBounds = [], allowOverflow = false }) {
   const inset = decoration(border);
   const innerPlot = { ...plot, x: plot.x + inset, width: plot.width - inset * 2 };
-  const packed = packHorizontalRows(groups, innerPlot);
+  const packed = packHorizontalRows(groups, innerPlot, allowOverflow);
   const rows = packed.map(normalizeHorizontalRow);
   let cursor = 0;
   const placements = [];
@@ -413,7 +415,7 @@ export function resolveHorizontalLegendGroup({ edge, plot, canvas, groups,
   const finalBounds = translateBounds(occupied, dx, dy);
   if (finalBounds.left < 0 || finalBounds.right > canvas.width ||
     finalBounds.top < 0 || finalBounds.bottom > canvas.height) {
-    throw new Error(`Combined legend requires more ${edge}-margin or Canvas space.`);
+    throw canvasOverflowError(`Combined legend requires more ${edge}-margin or Canvas space.`, [finalBounds], canvas);
   }
   if (collisionBounds.some(bounds => overlap(finalBounds, bounds))) {
     throw new Error(`Combined ${edge} legend and ${edge === "top" ? "chart titles" : "x-axis guides"} require more margin space.`);

@@ -1,8 +1,10 @@
+import { annotateError } from "../core/diagnostics.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import {
   validateNonEmptyString,
   validateNonNegativeFinite,
-  validatePositiveFinite
+  validatePositiveFinite,
+  validateOptionObject
 } from "../core/validation.js";
 
 const MARGIN_KEYS = Object.freeze(["top", "right", "bottom", "left"]);
@@ -107,4 +109,44 @@ export function resolveGraphicBounds(program) {
     height: canvas.properties.height,
     margin
   });
+}
+
+
+// Structured measurements let explicit layout policies retry a domain action.
+// Invalid geometry is deliberately not recoverable by allocating more margin.
+export function resolveCanvasOverflow(bounds, canvas) {
+  if (!canvas || ![canvas.width, canvas.height].every(value => Number.isFinite(value) && value > 0) ||
+    !Array.isArray(bounds) || bounds.some(item => !item ||
+      ![item.left, item.right, item.top, item.bottom].every(Number.isFinite) ||
+      item.left > item.right || item.top > item.bottom)) return undefined;
+  const overflow = { top: 0, right: 0, bottom: 0, left: 0 };
+  for (const item of bounds) {
+    overflow.top = Math.max(overflow.top, -item.top);
+    overflow.right = Math.max(overflow.right, item.right - canvas.width);
+    overflow.bottom = Math.max(overflow.bottom, item.bottom - canvas.height);
+    overflow.left = Math.max(overflow.left, -item.left);
+  }
+  return Object.values(overflow).some(value => value > 1e-9)
+    ? cloneAndFreeze(overflow) : undefined;
+}
+
+export function canvasOverflowError(message, bounds, canvas) {
+  const error = new Error(message);
+  const overflow = resolveCanvasOverflow(bounds, canvas);
+  return overflow === undefined ? error : annotateError(error, {
+    reason: "canvas-overflow", canvasOverflow: overflow
+  });
+}
+
+// Exact inner dimensions opt in to domain-owned automatic guide margins.
+export function resolveCanvasPlot(args, previous) {
+  const plot = Object.hasOwn(args, "plot") ? args.plot : previous;
+  if (plot === undefined || plot === false) return undefined;
+  validateOptionObject(plot, ["width", "height"], "Canvas plot");
+  validatePositiveFinite(plot.width, "Canvas plot width");
+  validatePositiveFinite(plot.height, "Canvas plot height");
+  if (Object.hasOwn(args, "width") || Object.hasOwn(args, "height")) {
+    throw new Error("Canvas plot dimensions cannot be combined with fixed outer dimensions.");
+  }
+  return cloneAndFreeze(plot);
 }

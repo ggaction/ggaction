@@ -1354,6 +1354,8 @@ export interface CanvasOptions {
   height?: number;
   background?: string;
   margin?: number | Partial<Record<"top" | "right" | "bottom" | "left", number>>;
+  /** Exact inner dimensions with automatic outer guide margins; false disables this mode. */
+  plot?: { width: number; height: number } | false;
 }
 ```
 
@@ -4385,6 +4387,8 @@ export interface EditCompositionLayoutOptions {
   gap?: number;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
+  /** Interpret gap between child canvases (default) or inner plot regions. */
+  spacing?: "canvas" | "plot";
 }
 ```
 
@@ -5964,6 +5968,8 @@ export interface FacetGridOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  /** Interpret gap between child canvases (default) or inner plot regions. */
+  spacing?: "canvas" | "plot";
 }
 ```
 
@@ -6051,6 +6057,8 @@ export interface FacetOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  /** Interpret gap between child canvases (default) or inner plot regions. */
+  spacing?: "canvas" | "plot";
 }
 ```
 
@@ -9826,6 +9834,8 @@ export interface RepeatChartsOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  /** Interpret gap between child canvases (default) or inner plot regions. */
+  spacing?: "canvas" | "plot";
 }
 ```
 

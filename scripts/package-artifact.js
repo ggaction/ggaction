@@ -85,7 +85,14 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/grammar/scales/definition.js",
   "src/actions/scales/definitions.js",
   "src/grammar/polar.js",
-  "src/grammar/arcs.js"
+  "src/grammar/arcs.js",
+  "src/layout/canvas.js",
+  "src/layout/facets.js",
+  "src/layout/legendLane.js",
+  "src/materialization/facets.js",
+  "src/materialization/facetHeaders.js",
+  "src/materialization/guides/layout.js",
+  "src/materialization/guides/resources.js"
 ]);
 
 export function compactPackageJavaScript(source, { keepNames = true } = {}) {

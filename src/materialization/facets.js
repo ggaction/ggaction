@@ -1,11 +1,15 @@
+import { resolveConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js";
+import { textBoundsIntersect, resolveTextBounds } from "../core/textMetrics.js";
+import { axisGraphicIds, allLegendGraphicIds } from "./guides/resources.js";
 import { resolveGraphicBounds } from "../layout/canvas.js";
 import { resolvePlacedPlotBounds } from "../layout/composition.js";
 import {
   alignedTextAnchor,
-  buildTitleReadingBlock
+  buildTitleReadingBlock,
+  titleTextProperties
 } from "../layout/title.js";
 import { resolveFacetLayout } from "../layout/facets.js";
-import { namespaceGraphicSnapshot } from "./compositionSnapshot.js";
+import { namespaceGraphicId, namespaceGraphicSnapshot } from "./compositionSnapshot.js";
 import { prepareSharedFacetLegend } from "./facetGuides/index.js";
 import {
   attachSnapshotObject,
@@ -59,17 +63,10 @@ function materializeTitleComponent(program, id, lines, centers, style, plot, top
     ...(count > 1 ? { length: count } : {}),
     parent: "canvas"
   });
-  for (const [property, value] of Object.entries({
-    x,
-    y: count === 1 ? top + centers[0] : centers.map(center => top + center),
-    text: count === 1 ? lines[0] : lines,
-    fill: style.color,
-    fontSize: style.fontSize,
-    fontFamily: style.fontFamily,
-    fontWeight: style.fontWeight,
-    textAlign: program.titleConfig.align,
-    textBaseline: "middle"
-  })) {
+  for (const [property, value] of Object.entries(titleTextProperties({
+    x, y: centers.map(center => top + center), lines,
+    textAlign: program.titleConfig.align
+  }, style))) {
     next = next.editGraphics({ target: id, property, value });
   }
   return next;
@@ -122,6 +119,8 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
         column: gridCells.get(id).column
       } : {})
     })),
+    spacing: spec.spacing,
+    plots: spec.children.map(id => ({ id, ...resolveGraphicBounds(program.children[id]) })),
     columns: spec.columns,
     gap: spec.gap,
     align: spec.align,
@@ -145,6 +144,38 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
     plots
   });
   return { layout, title, plot, plots, preparedHeaders };
+}
+
+function assertPlotSpacingGuides(program, layout, plots) {
+  const occupied = [];
+  const regions = layout.children.map((cell, index) => ({ id: cell.id,
+    left: cell.x + plots[index].x, right: cell.x + plots[index].x + plots[index].width,
+    top: cell.y + plots[index].y, bottom: cell.y + plots[index].y + plots[index].height
+  }));
+  for (const cell of layout.children) {
+    const child = program.children[cell.id];
+    const ids = [
+      ...["x", "y"].flatMap(axisGraphicIds).filter(id => /Labels|Title/.test(id)),
+      ...allLegendGraphicIds(Object.keys(child.guideConfigs.legend ?? {}))
+    ];
+    for (const id of ids) {
+      const target = namespaceGraphicId(`${program.compositionSpec.id}-${cell.id}`, id);
+      if (program.graphicSpec.objects[target] === undefined) continue;
+      const bounds = resolveConcreteGraphicBounds(program.graphicSpec, target, program.materializationConfigs.textMetrics);
+      if (bounds !== undefined) occupied.push({ owner: cell.id, bounds });
+    }
+  }
+  const headers = program.graphicSpec.objects[`${program.compositionSpec.id}-headers`];
+  for (const item of headers?.items ?? []) {
+    if (item.properties.text !== "") occupied.push({ owner: "headers", bounds: resolveTextBounds(item.properties, program.materializationConfigs.textMetrics) });
+  }
+  for (let index = 0; index < occupied.length; index += 1) {
+    const item = occupied[index];
+    if (regions.some(region => region.id !== item.owner && textBoundsIntersect(item.bounds, region)) ||
+      occupied.slice(0, index).some(other => other.owner !== item.owner && textBoundsIntersect(item.bounds, other.bounds))) {
+      throw new Error("Plot spacing gap is too small for the retained facet guides or headers.");
+    }
+  }
 }
 
 export function materializeFacetGraphics(program) {
@@ -174,9 +205,21 @@ export function materializeFacetGraphics(program) {
       y: placement.y
     });
     next = attachSnapshotObject(next, snapshot, snapshot.order[0], "canvas");
+    if (layout.spacing === "plot") {
+      const root = snapshot.order[0];
+      const id = namespaceGraphicId(`${program.compositionSpec.id}-${placement.id}`, "plot-background");
+      const bounds = resolveGraphicBounds(child);
+      const first = next.graphicSpec.objects[root].children?.[0];
+      next = next.editGraphics({ target: root, property: "background", value: "transparent" })
+        .createGraphics({ id, type: "rect", parent: root, ...(first === undefined ? {} : { before: first }) });
+      for (const [property, value] of Object.entries({ ...bounds, stroke: "none", strokeWidth: 0,
+        fill: child.graphicSpec.objects.canvas.properties.background ?? "transparent"
+      })) next = next.editGraphics({ target: id, property, value });
+    }
   }
   next = materializeFacetHeaders(next, layout, plots, preparedHeaders);
   next = next.composeFacetGuides({ layout, plot });
+  if (layout.spacing === "plot") assertPlotSpacingGuides(next, layout, plots);
   if (title.height > 0) next = materializeTitle(next, plot, title);
   return next._withCanvasConfig({
     margin: ZERO_MARGIN,

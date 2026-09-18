@@ -24,6 +24,7 @@ encodings.
 | --- | --- | --- |
 | `width` | positive finite number | `640` |
 | `height` | positive finite number | `400` |
+| `plot` | `{ width, height }` or `false` | Fixed outer dimensions |
 | `background` | non-empty string | `"white"` |
 | `margin` | non-negative number or side object | `{ top: 30, right: 30, bottom: 60, left: 70 }` |
 
@@ -41,6 +42,21 @@ const program = chart().createCanvas({
   margin: { top: 30, right: 30, bottom: 60, left: 70 }
 });
 ```
+
+### Exact inner dimensions
+
+Use `createCanvas({ plot: { width: 30, height: 30 } })` to fix the data region
+while guide authoring measures and expands the outer Canvas. Both Full and Basic
+support this mode. Numeric margins provide initial space; insufficient sides grow
+on a quarter-pixel grid. Rotated axis labels use their measured outer edge and
+remain outside the plot. Chart titles are placed beyond the existing guides.
+
+Do not combine `plot` with outer `width` or `height`. On Full, use
+`editCanvas({ plot: { width: 60, height: 45 } })` to resize the data region, or
+`editCanvas({ plot: false })` to return to fixed outer dimensions. Font-metric
+updates rerun the same measured layout. Explicit scale ranges retain their usual
+fixed-coordinate behavior. Automatic margins do not resolve overlapping labels
+or other incompatible guide geometry; those errors still reject the action.
 
 ## `editCanvas(options)`
 
@@ -71,7 +87,8 @@ dimensions to derive plot bounds. It is neither a drawable node in
 ## `fitCanvas(options?)`
 
 After marks, guides, and titles exist, a Full chart can shrink its margins while
-keeping the Canvas size fixed:
+keeping the Canvas size fixed. Disable exact-inner sizing with `plot: false` before
+calling this action:
 
 <!-- snippet-context:start -->
 

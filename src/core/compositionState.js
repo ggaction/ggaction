@@ -272,7 +272,7 @@ export function ownCompositionSpec(compositionSpec, children) {
   }
   const allowed = [
     "id", "type", "direction", "children", "columns", "gap", "align",
-    "padding", "facet"
+    "padding", "facet", "spacing"
   ];
   const unknown = Object.keys(compositionSpec).find(key => !allowed.includes(key));
   if (unknown !== undefined) {
@@ -282,6 +282,9 @@ export function ownCompositionSpec(compositionSpec, children) {
     throw new TypeError("compositionSpec.id must be a non-empty string.");
   }
   const facet = compositionSpec.type === "facet";
+  if (compositionSpec.spacing !== undefined && (!facet || !["plot", "canvas"].includes(compositionSpec.spacing))) {
+    throw new Error("compositionSpec.spacing requires a facet and canvas or plot spacing.");
+  }
   if (compositionSpec.type !== undefined && !facet) {
     throw new Error(`Unknown compositionSpec type "${compositionSpec.type}".`);
   }

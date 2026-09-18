@@ -1,3 +1,4 @@
+import { canvasOverflowError } from "../../../layout/canvas.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -264,8 +265,12 @@ function resolve(program, channel, config) {
     })
   };
   const resolved = expandWrappedLabels(geometry, text, config, channel, program.materializationConfigs.textMetrics);
+  if (program.materializationConfigs.canvas?.plot !== undefined && channel === "x" && Math.abs(Math.sin(config.rotation)) > 1e-9) {
+    const outward = config.position === "bottom" ? 1 : -1;
+    resolved.textAlign = Math.sin(config.rotation) * outward < 0 ? "right" : "left";
+  }
   const canvas = findCanvasGraphic(program)?.properties;
-  const labelBounds = resolved.text.map((value, index) => resolveTextBounds({
+  let labelBounds = resolved.text.map((value, index) => resolveTextBounds({
     x: Array.isArray(resolved.x) ? resolved.x[index] : resolved.x,
     y: Array.isArray(resolved.y) ? resolved.y[index] : resolved.y,
     text: value,
@@ -276,7 +281,36 @@ function resolve(program, channel, config) {
     textBaseline: resolved.textBaseline,
     rotation: config.rotation
   }, program.materializationConfigs.textMetrics));
-  const groupedBounds = unionLabelBounds(labelBounds.map((bounds, index) => ({
+  if (program.materializationConfigs.canvas?.plot !== undefined) {
+    const horizontal = channel === "x";
+    const near = ["bottom", "right"].includes(config.position);
+    const edge = horizontal ? bounds.y + (near ? bounds.height : 0)
+      : bounds.x + (near ? bounds.width : 0);
+    const boundKey = horizontal ? (near ? "top" : "bottom") : (near ? "left" : "right");
+    const grouped = unionLabelBounds(labelBounds.map((bounds, index) => ({ bounds, group: resolved.groups[index] })));
+    const shifts = grouped.map(item => edge + (near ? config.offset : -config.offset) - item[boundKey]);
+    const axis = horizontal ? "y" : "x";
+    const positions = resolved[axis];
+    resolved[axis] = resolved.text.map((_, index) =>
+      (Array.isArray(positions) ? positions[index] : positions) + shifts[resolved.groups[index]]);
+    labelBounds = labelBounds.map((item, index) => {
+      const delta = shifts[resolved.groups[index]];
+      return horizontal ? { ...item, top: item.top + delta, bottom: item.bottom + delta }
+        : { ...item, left: item.left + delta, right: item.right + delta };
+    });
+  }
+  const rotatedOverlap = program.materializationConfigs.canvas?.plot !== undefined && config.rotation !== 0;
+  const collisionBounds = rotatedOverlap ? resolved.text.map((text, index) => {
+    const x = Array.isArray(resolved.x) ? resolved.x[index] : resolved.x;
+    const y = Array.isArray(resolved.y) ? resolved.y[index] : resolved.y;
+    const cosine = Math.cos(config.rotation), sine = Math.sin(config.rotation);
+    return resolveTextBounds({
+      x: x * cosine + y * sine, y: -x * sine + y * cosine, text,
+      fontSize: config.fontSize, fontFamily: config.fontFamily, fontWeight: config.fontWeight,
+      textAlign: resolved.textAlign, textBaseline: resolved.textBaseline
+    }, program.materializationConfigs.textMetrics);
+  }) : labelBounds;
+  const groupedBounds = unionLabelBounds(collisionBounds.map((bounds, index) => ({
     bounds,
     group: resolved.groups[index]
   })));
@@ -284,10 +318,11 @@ function resolve(program, channel, config) {
     ? left.left - right.left
     : left.top - right.top);
   if (!canvas || !labelBounds.every(item => textBoundsFitCanvas(item, canvas))) {
-    throw new Error(`The ${channel}-axis labels do not fit the Canvas margin.`);
+    throw canvasOverflowError(`The ${channel}-axis labels do not fit the Canvas margin.`, labelBounds, canvas);
   }
-  if (config.overlap === "error" && orderedBounds.some((item, index) => index > 0 &&
-    textBoundsIntersect(orderedBounds[index - 1], item))) {
+  if (config.overlap === "error" && orderedBounds.some((item, index) => rotatedOverlap
+    ? orderedBounds.slice(0, index).some(previous => textBoundsIntersect(previous, item))
+    : index > 0 && textBoundsIntersect(orderedBounds[index - 1], item))) {
     throw new Error(`The ${channel}-axis labels overlap each other.`);
   }
   const title = program.graphicSpec.objects[`${channel}AxisTitle`]

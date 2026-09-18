@@ -91,3 +91,20 @@ export function unionTitleBounds(bounds) {
 }
 
 export { textBoundsIntersect as layoutBoundsIntersect } from "../core/textMetrics.js";
+
+
+export function titleTextProperties(component, style) {
+  const distributed = value => component.lines.length === 1 && Array.isArray(value) ? value[0] : value;
+  return {
+    x: distributed(component.x),
+    y: distributed(component.y),
+    text: distributed(component.lines),
+    fill: style.color,
+    fontSize: style.fontSize,
+    fontFamily: style.fontFamily,
+    fontWeight: style.fontWeight,
+    ...(style.fontStyle === undefined ? {} : { fontStyle: style.fontStyle }),
+    textAlign: component.textAlign,
+    textBaseline: "middle"
+  };
+}

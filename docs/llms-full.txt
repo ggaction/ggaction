@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:3954aa3da95f72381301f66672d0ef79f3ca5cf45e40ac492b596f6d8971cc76. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:8fa000afddf614d440b9d59a0ca68f0dce928e84cb17fc25c26cd3034a87df86. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -4674,6 +4674,7 @@ encodings.
 | --- | --- | --- |
 | `width` | positive finite number | `640` |
 | `height` | positive finite number | `400` |
+| `plot` | `{ width, height }` or `false` | Fixed outer dimensions |
 | `background` | non-empty string | `"white"` |
 | `margin` | non-negative number or side object | `{ top: 30, right: 30, bottom: 60, left: 70 }` |
 
@@ -4687,6 +4688,21 @@ const program = chart().createCanvas({
   margin: { top: 30, right: 30, bottom: 60, left: 70 }
 });
 ```
+
+### Exact inner dimensions
+
+Use `createCanvas({ plot: { width: 30, height: 30 } })` to fix the data region
+while guide authoring measures and expands the outer Canvas. Both Full and Basic
+support this mode. Numeric margins provide initial space; insufficient sides grow
+on a quarter-pixel grid. Rotated axis labels use their measured outer edge and
+remain outside the plot. Chart titles are placed beyond the existing guides.
+
+Do not combine `plot` with outer `width` or `height`. On Full, use
+`editCanvas({ plot: { width: 60, height: 45 } })` to resize the data region, or
+`editCanvas({ plot: false })` to return to fixed outer dimensions. Font-metric
+updates rerun the same measured layout. Explicit scale ranges retain their usual
+fixed-coordinate behavior. Automatic margins do not resolve overlapping labels
+or other incompatible guide geometry; those errors still reject the action.
 
 ## `editCanvas(options)`
 
@@ -4713,7 +4729,8 @@ dimensions to derive plot bounds. It is neither a drawable node in
 ## `fitCanvas(options?)`
 
 After marks, guides, and titles exist, a Full chart can shrink its margins while
-keeping the Canvas size fixed:
+keeping the Canvas size fixed. Disable exact-inner sizing with `plot: false` before
+calling this action:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -15258,11 +15275,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `height` | Optional / branch-dependent | `number \| undefined` |
 | `background` | Optional / branch-dependent | `string \| undefined` |
 | `margin` | Optional / branch-dependent | `number \| Partial<Record<"bottom" \| "left" \| "right" \| "top", number>> \| undefined` |
+| `plot` | Optional / branch-dependent | `false \| { width: number; height: number; } \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createCanvas({ width?, height?, background?, margin? })
+createCanvas({ width?, height?, background?, margin?, plot? })
 ```
 
 Create the program's Canvas and plot bounds. [Canvas options](./api/canvas/)
@@ -15289,11 +15307,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `height` | Optional / branch-dependent | `number \| undefined` |
 | `background` | Optional / branch-dependent | `string \| undefined` |
 | `margin` | Optional / branch-dependent | `number \| Partial<Record<"bottom" \| "left" \| "right" \| "top", number>> \| undefined` |
+| `plot` | Optional / branch-dependent | `false \| { width: number; height: number; } \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editCanvas({ width?, height?, background?, margin? })
+editCanvas({ width?, height?, background?, margin?, plot? })
 ```
 
 Edit Canvas properties and rematerialize connected consumers.
@@ -16913,11 +16932,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `gap` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editCompositionLayout({ columns?, gap?, align?, padding? })
+editCompositionLayout({ columns?, gap?, spacing?, align?, padding? })
 ```
 
 Edit spacing, cross-axis alignment, or outer padding on an existing composition.
@@ -17073,11 +17093,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-facet({ id?, field, data?, values?, columns?, gap?, align?, padding?, scales?, guides? })
+facet({ id?, field, data?, values?, columns?, gap?, spacing?, align?, padding?, scales?, guides? })
 ```
 
 Repeat one complete Cartesian, Polar, or Parallel chart by a field on its common
@@ -17121,11 +17142,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-facetGrid({ id?, data?, rows, columns, combinations?, gap?, align?, padding?, scales?, guides? })
+facetGrid({ id?, data?, rows, columns, combinations?, gap?, spacing?, align?, padding?, scales?, guides? })
 ```
 
 Repeat one supported Cartesian, Polar, or Parallel chart over two ordered
@@ -17162,11 +17184,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-repeatCharts({ id?, target?, channel, fields, columns?, gap?, align?, padding?, scales?, guides? })
+repeatCharts({ id?, target?, channel, fields, columns?, gap?, spacing?, align?, padding?, scales?, guides? })
 ```
 
 Repeat one direct mark by replacing Cartesian `x`/`y`, eligible Polar
@@ -27191,6 +27214,8 @@ export interface CanvasOptions {
   height?: number;
   background?: string;
   margin?: number | Partial<Record<"top" | "right" | "bottom" | "left", number>>;
+  /** Exact inner dimensions with automatic outer guide margins; false disables this mode. */
+  plot?: { width: number; height: number } | false;
 }
 ```
 
@@ -29772,6 +29797,8 @@ export interface EditCompositionLayoutOptions {
   gap?: number;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
+  /** Interpret gap between child canvases (default) or inner plot regions. */
+  spacing?: "canvas" | "plot";
 }
 ```
 
@@ -31090,6 +31117,8 @@ export interface FacetGridOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  /** Interpret gap between child canvases (default) or inner plot regions. */
+  spacing?: "canvas" | "plot";
 }
 ```
 
@@ -31159,6 +31188,8 @@ export interface FacetOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  /** Interpret gap between child canvases (default) or inner plot regions. */
+  spacing?: "canvas" | "plot";
 }
 ```
 
@@ -34295,6 +34326,8 @@ export interface RepeatChartsOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  /** Interpret gap between child canvases (default) or inner plot regions. */
+  spacing?: "canvas" | "plot";
 }
 ```
 
@@ -36802,6 +36835,7 @@ and source-row count multiplied by child count must not exceed the shared
 | `values` | source first-appearance order | Selects and orders a non-empty set of observed scalar values |
 | `columns` | number of values | Sets the grid column count |
 | `gap` | `16` | Sets horizontal and vertical cell spacing |
+| `spacing` | `"canvas"` | Measures gaps between child canvases or, with `"plot"`, inner plot tracks |
 | `align` | `"center"` | Aligns unequal cells inside grid tracks |
 | `padding` | `0` on every side | Adds scalar or four-side parent padding |
 | `scales` | every used role `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `yOffset`, `theta`, public `r`, `color`, `stroke`, `size`, `shape`, `opacity`, `strokeDash`, or all `parallelDimensions` |
@@ -37055,6 +37089,21 @@ Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
 See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/69353bac611e6c5b4f5d50288842f540ba5470cd/examples/repeat-charts).
+
+## Space between plots
+
+Use `facet({ field: "group", spacing: "plot", gap: 5 })` when the five-pixel gap
+should separate the data regions. The default `"canvas"` mode includes both
+children's margins between those regions. Plot mode retains each data region's
+size and reserves child margins once around the outer grid. Panel backgrounds
+cover their plots; the parent background covers the surrounding area.
+
+The same option works with `facetGrid`, `repeatCharts`, and facet
+`editCompositionLayout`. Headers and retained guides must fit the specified gap;
+otherwise the action reports a collision. `guides: { axes: "outer" }` removes
+interior axes, but remaining edge labels still need enough space. Increasing the
+gap or changing guide/header settings resolves those collisions without changing
+panel dimensions.
 
 <!-- Source: /api/composition/editing/ -->
 
@@ -38314,7 +38363,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:3954aa3da95f72381301f66672d0ef79f3ca5cf45e40ac492b596f6d8971cc76` |
+| Contract fingerprint | `sha256:8fa000afddf614d440b9d59a0ca68f0dce928e84cb17fc25c26cd3034a87df86` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

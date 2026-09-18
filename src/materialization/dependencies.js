@@ -1,6 +1,5 @@
 import { withGuideLayoutTransaction } from "./guides/layout.js";
 import {
-  canDeferScaleConsumerApplication,
   getLayerScaleIds,
   getExistingMarkRematerializationStep,
   getMarkMaterializationStep,
@@ -13,54 +12,13 @@ import {
   applyMaterializationPlan as executeMaterializationPlan,
   buildMaterializationPlan
 } from "./planner.js";
-import { hasMaterializedLegend } from "./legends.js";
 import {
-  needsCanvasScaleRematerialization,
   planScaleGuideRematerialization
 } from "./scaleGuideDependencies.js";
 import { planLayoutRematerialization } from "./layout.js";
 import { requireCoordinate } from "../selectors/coordinates.js";
 
-export function planCanvasRematerialization(program) {
-  const marks = [];
-  for (const layer of program.semanticSpec.layers) {
-    const step = getMarkMaterializationStep(program, layer);
-    if (step !== undefined) marks.push(step);
-  }
-  const deferredMarkIds = new Set(
-    marks
-      .map(step => step.args.id)
-  );
-  const scales = [];
-  for (const scale of program.semanticSpec.scales) {
-    if (needsCanvasScaleRematerialization(program, scale)) {
-      const deferredConsumers = program.semanticSpec.layers.filter(layer =>
-        canDeferScaleConsumerApplication(layer) &&
-        getLayerScaleIds(layer).includes(scale.id)
-      );
-      const canDeferMarks = deferredConsumers.length === 0 ||
-        deferredConsumers.every(layer => deferredMarkIds.has(layer.id));
-      scales.push({
-        op: "rematerializeScale",
-        args: {
-          id: scale.id,
-          guides: false,
-          ...(canDeferMarks ? { marks: false } : {})
-        }
-      });
-    }
-  }
-  const guides = program.semanticSpec.scales.flatMap(scale =>
-    needsCanvasScaleRematerialization(program, scale)
-      ? planScaleGuideRematerialization(program, scale.id)
-      : []
-  );
-  if (hasMaterializedLegend(program)) {
-    guides.push({ op: "rematerializeLegend" });
-  }
-  const layout = planLayoutRematerialization(program);
-  return buildMaterializationPlan({ scales, marks, guides, layout });
-}
+export { planCanvasRematerialization } from "./layout.js";
 
 export function planCoordinateRematerialization(program, target) {
   requireCoordinate(program, target);

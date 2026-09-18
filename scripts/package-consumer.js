@@ -96,6 +96,42 @@ async function testNodeConsumer(directory) {
       .encodeX({ field: "x" })
       .encodeY({ field: "y" })
       .encodeRadius({ value: 3 });
+    for (const factory of [chart, basicChart]) {
+      const labels = ["Long sample category alpha", "Long sample category beta"];
+      const inner = factory().createCanvas({ plot: { width: 30, height: 30 } })
+        .createData({ values: labels.flatMap((x, i) => labels.map((y, j) => ({ x, y, z: i + j }))) })
+        .createHeatmap({ x: "x", y: "y", color: { field: "z", fieldType: "quantitative" },
+          guides: { legend: false, axes: {
+            x: { title: false, ticksAndLabels: { labels: { rotation: { value: -90, unit: "degrees" }, fontSize: 10 } } },
+            y: { title: false, ticksAndLabels: { labels: { fontSize: 10 } } }
+          } }
+        });
+      const { margin, plot } = inner.materializationConfigs.canvas;
+      const canvas = inner.graphicSpec.objects.canvas.properties;
+      assert.deepEqual(plot, { width: 30, height: 30 });
+      assert.equal(canvas.width - margin.left - margin.right, 30);
+      assert.equal(canvas.height - margin.top - margin.bottom, 30);
+      assert.ok(margin.left > 50 && margin.bottom > 50);
+      assert.match(renderToSVG(inner), /Long sample category alpha/);
+      assert.deepEqual(deserializeProgram(serializeProgram(inner)).graphicSpec, inner.graphicSpec);
+      const png = await renderToPNGBuffer(inner);
+      assert.equal(png.buffer.readUInt32BE(16), Math.ceil(canvas.width));
+      assert.equal(png.buffer.readUInt32BE(20), Math.ceil(canvas.height));
+    }
+    const compactFacet = chart().createCanvas({ width: 200, height: 140,
+      margin: { left: 80, right: 20, top: 20, bottom: 20 }
+    }).createData({ values: [{ group: "A", x: 1, y: 1 }, { group: "B", x: 2, y: 2 }] })
+      .createScatterPlot({ x: "x", y: "y", guides: false })
+      .facet({ field: "group", spacing: "plot", gap: 5 });
+    assert.equal(compactFacet.graphicSpec.objects.canvas.properties.width, 305);
+    assert.equal(compactFacet.editCompositionLayout({ gap: 11 }).graphicSpec.objects.canvas.properties.width, 311);
+    assert.deepEqual(deserializeProgram(serializeProgram(compactFacet)).graphicSpec, compactFacet.graphicSpec);
+    assert.match(renderToSVG(compactFacet), /<svg/);
+    const facetTitle = compactFacet.createTitle({ text: "Panel groups", titleStyle: { fontStyle: "italic" } });
+    assert.equal(facetTitle.graphicSpec.objects.chartTitle.properties.fontStyle, "italic");
+    assert.equal(facetTitle.editCompositionLayout({ gap: 11 }).graphicSpec.objects.chartTitle.properties.fontStyle, "italic");
+
+
     const categorySizes = chart().createCanvas({
       width: 800, height: 500, margin: { left: 60, right: 260, top: 60, bottom: 130 }
     }).createData({ values: [
@@ -2656,6 +2692,14 @@ async function testTypeScriptConsumer(directory) {
       type ProgramComparison,
       type ProgramInspection
     } from "ggaction/inspection";
+
+    chart().createCanvas({ plot: { width: 30, height: 30 } })
+      .editCanvas({ plot: { width: 60, height: 45 } })
+      .editCanvas({ plot: false, width: 300 });
+    chart().facet({ field: "group", spacing: "plot", gap: 5 })
+      .editCompositionLayout({ spacing: "canvas" });
+    chart().repeatCharts({ channel: "y", fields: ["a", "b"], spacing: "plot" });
+    chart().facetGrid({ rows: { field: "r" }, columns: { field: "c" }, spacing: "plot" });
 
     const program: ChartProgram = chart().createCanvas({ width: 100, height: 100 });
     const themeName: ThemeName = "dark";

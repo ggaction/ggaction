@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:3954aa3da95f72381301f66672d0ef79f3ca5cf45e40ac492b596f6d8971cc76",
+    "contractId": "sha256:8fa000afddf614d440b9d59a0ca68f0dce928e84cb17fc25c26cd3034a87df86",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -758,13 +758,14 @@
         "canvas",
         "at-a-glance",
         "createcanvasoptions",
+        "exact-inner-dimensions",
         "editcanvasoptions",
         "fitcanvasoptions",
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4102,
-      "sha256": "02327eaeacbbce07a244032b50c91b24f8878da6a2091a20bdffa085cfb4523b"
+      "bytes": 5135,
+      "sha256": "f4dd67fe9890200ceae0a76bda55377afba238717f474455418d646dbeed2623"
     },
     {
       "order": 49,
@@ -2010,8 +2011,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 155150,
-      "sha256": "3b3ba50685446e847c5a2f55279bc6c87def355a5eb7a8f538e383dda59b942b"
+      "bytes": 155728,
+      "sha256": "8cb821f85c7e476f6aed7f8c3ecbb980ed92608e4abeabd053b5a11c5d9c0e8a"
     },
     {
       "order": 119,
@@ -2945,8 +2946,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 313561,
-      "sha256": "9f9385ce861958a12622e392b2733d4e6df35d9802d9353061bff92b9390f8ff"
+      "bytes": 314147,
+      "sha256": "d18bc29e4e3b5107e83a4fe61bafcfb04ad8462427b5f64a639de325df680695"
     },
     {
       "order": 127,
@@ -3043,10 +3044,11 @@
         "facets-and-field-repetition",
         "repeat-the-current-chart-by-a-field",
         "build-a-row-and-column-facet-grid",
-        "repeat-a-positional-encoding-across-fields"
+        "repeat-a-positional-encoding-across-fields",
+        "space-between-plots"
       ],
-      "bytes": 14465,
-      "sha256": "5102f9bc1901811778b5f7a9306b8438ddc49e4895fd7946e229650043f70438"
+      "bytes": 15383,
+      "sha256": "47d92d744d0224f575526a29d2e15cfb5c59390e8a80b2eeb9a3dbd75a767e6d"
     },
     {
       "order": 134,
@@ -3298,7 +3300,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "26416d2a56f33504b6b0302544ec7a72572b7392d19b1d53de4c4d5d3803d974"
+      "sha256": "9a653325d35123b4bd957d8a2c154f48422ab9da8bcc2d8c9c74229dd2e4dfce"
     },
     {
       "order": 150,

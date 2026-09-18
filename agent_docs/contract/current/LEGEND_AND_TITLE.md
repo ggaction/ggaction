@@ -663,3 +663,12 @@ Categorical color/series는 모든 line/point/swatch layer의 실제 bounds와 n
 Legacy-bottom은 labels centerY=Canvas.height−28, title centerY=height−52를 유지하며 actual slot width로 row를 배치한다. Fixed title와 item이 겹치거나 visible content가 plot bottom을 침범하면 오류다. Content와 border의 Canvas fit도 검사한다. Hidden title은 제외한다.
 
 Evidence: `test/unit/actions/guides/categorical-legend-spacing.test.js`의240case와96mapped-shape matrix, lifecycle/shared/legacy; `test/contracts/categorical-legend-spacing.test.js`의4독립 primitive/graphics/order/PNG; existing chart references와installed package/browser probes.
+
+## Exact-inner Canvas layout
+
+Canvas `plot` 모드는 title/legend 측정 overflow에 맞춰 바깥 Canvas와 margin을 함께 확장한다.
+Title은 해당 side의 기존 guide 바깥에서 16px + offset 간격으로 배치되며 domain guide transaction
+종료 전 다시 materialize한다. 수평 legend block이 plot보다 넓어도 독립된 row로 배치할 수 있으며
+최종 occupied bounds가 바깥 Canvas expansion을 결정한다. 명시적 내부 plot 크기는 변하지 않는다.
+고정 외부 크기 모드의 plot-width restriction과 collision 오류는 유지한다.
+Evidence: `test/unit/actions/canvas/inner-plot-size.test.js`, `test/unit/grammar/layout/canvas-overflow.test.js`.

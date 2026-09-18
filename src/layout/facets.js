@@ -75,41 +75,27 @@ function normalizeHeaderLayout(value, rows, columns) {
   for (const [side, amount] of Object.entries(outer)) {
     validateCompositionSpacing(amount, `Facet headerLayout.outer.${side}`);
   }
-  const sourceRows = value.cellRows ?? {};
-  if (!isPlainObject(sourceRows) || Object.keys(sourceRows).some(
-    key => !["top", "bottom"].includes(key)
-  )) {
-    throw new TypeError("Facet headerLayout.cellRows must contain top and bottom arrays.");
-  }
-  const cellRows = Object.fromEntries(["top", "bottom"].map(side => {
-    const amounts = sourceRows[side] ?? Array(rows).fill(0);
-    if (!Array.isArray(amounts) || amounts.length !== rows) {
-      throw new RangeError(`Facet headerLayout.cellRows.${side} must match row count.`);
+  const result = { outer };
+  for (const [key, sides, count, countLabel] of [
+    ["cellRows", ["top", "bottom"], rows, "row"],
+    ["cellColumns", ["left", "right"], columns, "column"]
+  ]) {
+    if (key === "cellColumns" && value[key] === undefined) continue;
+    const source = key === "cellRows" ? value[key] ?? {} : value[key];
+    if (!isPlainObject(source) || Object.keys(source).some(side => !sides.includes(side))) {
+      throw new TypeError(`Facet headerLayout.${key} must contain ${sides[0]} and ${sides[1]} arrays.`);
     }
-    amounts.forEach((amount, index) => validateCompositionSpacing(
-      amount,
-      `Facet headerLayout.cellRows.${side}[${index}]`
-    ));
-    return [side, [...amounts]];
-  }));
-  if (value.cellColumns === undefined) return { outer, cellRows };
-  const sourceColumns = value.cellColumns;
-  if (!isPlainObject(sourceColumns) || Object.keys(sourceColumns).some(
-    key => !["left", "right"].includes(key)
-  )) {
-    throw new TypeError("Facet headerLayout.cellColumns must contain left and right arrays.");
+    result[key] = Object.fromEntries(sides.map(side => {
+      const amounts = source[side] ?? Array(count).fill(0);
+      if (!Array.isArray(amounts) || amounts.length !== count) {
+        throw new RangeError(`Facet headerLayout.${key}.${side} must match ${countLabel} count.`);
+      }
+      amounts.forEach((amount, index) => validateCompositionSpacing(amount,
+        `Facet headerLayout.${key}.${side}[${index}]`));
+      return [side, [...amounts]];
+    }));
   }
-  const cellColumns = Object.fromEntries(["left", "right"].map(side => {
-    const amounts = sourceColumns[side] ?? Array(columns).fill(0);
-    if (!Array.isArray(amounts) || amounts.length !== columns) {
-      throw new RangeError(`Facet headerLayout.cellColumns.${side} must match column count.`);
-    }
-    amounts.forEach((amount, index) => validateCompositionSpacing(
-      amount, `Facet headerLayout.cellColumns.${side}[${index}]`
-    ));
-    return [side, [...amounts]];
-  }));
-  return { outer, cellRows, cellColumns };
+  return result;
 }
 
 export function resolveFacetLayout({
@@ -124,8 +110,33 @@ export function resolveFacetLayout({
   sharedLegendWidth = DEFAULT_FACET_LEGEND_WIDTH,
   sharedLegendHeight = DEFAULT_FACET_LEGEND_HEIGHT,
   sharedLegendPosition = "right",
-  headerLayout
+  headerLayout,
+  spacing = "canvas",
+  plots
 } = {}) {
+  if (!["canvas", "plot"].includes(spacing)) throw new Error(`Unknown facet spacing "${spacing}".`);
+  const byId = new Map((plots ?? []).map(plot => [plot.id, plot]));
+  const originalChildren = children;
+  let outerMargins = ZERO_SIDES;
+  if (spacing === "plot") {
+    if (!Array.isArray(plots) || plots.length !== children?.length || byId.size !== plots.length) {
+      throw new Error("Plot spacing requires one plot bounds record per child.");
+    }
+    outerMargins = { ...ZERO_SIDES };
+    children = children.map(child => {
+      const plot = byId.get(child.id);
+      if (!plot || ![plot.x, plot.y, plot.width, plot.height].every(Number.isFinite) ||
+        plot.x < 0 || plot.y < 0 || plot.width <= 0 || plot.height <= 0 ||
+        plot.x + plot.width > child.width + 1e-9 || plot.y + plot.height > child.height + 1e-9) {
+        throw new Error("Plot spacing requires valid contained child plot bounds.");
+      }
+      outerMargins.left = Math.max(outerMargins.left, plot.x);
+      outerMargins.top = Math.max(outerMargins.top, plot.y);
+      outerMargins.right = Math.max(outerMargins.right, child.width - plot.x - plot.width);
+      outerMargins.bottom = Math.max(outerMargins.bottom, child.height - plot.y - plot.height);
+      return { ...child, width: plot.width, height: plot.height };
+    });
+  }
   const values = children?.map(child => child?.value);
   const coordinates = resolveGridCoordinates(children ?? [], columns);
   const resolvedChildren = normalizeCompositionChildren(children?.map(
@@ -135,7 +146,9 @@ export function resolveFacetLayout({
     resolveColumns(columns, resolvedChildren.length);
   const resolvedGap = validateCompositionSpacing(gap, "Facet gap");
   const resolvedAlign = normalizeCompositionAlign(align);
-  const resolvedPadding = normalizeCompositionPadding(padding);
+  const requestedPadding = normalizeCompositionPadding(padding);
+  const resolvedPadding = Object.fromEntries(Object.keys(requestedPadding).map(side =>
+    [side, requestedPadding[side] + outerMargins[side]]));
   const resolvedTitleHeight = validateCompositionSpacing(
     titleHeight,
     "Facet title height"
@@ -167,7 +180,23 @@ export function resolveFacetLayout({
     : 0;
   const rowCount = coordinates?.rows ??
     Math.ceil(resolvedChildren.length / resolvedColumns);
-  const headers = normalizeHeaderLayout(headerLayout, rowCount, resolvedColumns);
+  let headers = normalizeHeaderLayout(headerLayout, rowCount, resolvedColumns);
+  if (spacing === "plot") {
+    for (const [before, after] of [[headers.cellRows.bottom, headers.cellRows.top],
+      [headers.cellColumns?.right ?? [], headers.cellColumns?.left ?? []]]) {
+      for (let index = 1; index < before.length; index += 1) {
+        if (before[index - 1] + after[index] > resolvedGap) {
+          throw new Error("Plot spacing gap is too small for the facet headers.");
+        }
+      }
+    }
+    headers = { outer: {
+      top: headers.outer.top + headers.cellRows.top[0],
+      bottom: headers.outer.bottom + headers.cellRows.bottom.at(-1),
+      left: headers.outer.left + (headers.cellColumns?.left[0] ?? 0),
+      right: headers.outer.right + (headers.cellColumns?.right.at(-1) ?? 0)
+    }, cellRows: { top: Array(rowCount).fill(0), bottom: Array(rowCount).fill(0) } };
+  }
   const columnHeaders = headers.cellColumns ?? {
     left: Array(resolvedColumns).fill(0), right: Array(resolvedColumns).fill(0)
   };
@@ -237,12 +266,22 @@ export function resolveFacetLayout({
     resolvedGap * Math.max(0, rowCount - 1) +
     headers.outer.bottom +
     resolvedPadding.bottom;
+  if (spacing === "plot") {
+    for (let index = 0; index < placements.length; index += 1) {
+      const plot = byId.get(placements[index].id);
+      placements[index].x -= plot.x;
+      placements[index].y -= plot.y;
+      placements[index].width = originalChildren[index].width;
+      placements[index].height = originalChildren[index].height;
+    }
+  }
   return cloneAndFreeze({
+    ...(spacing === "plot" ? { spacing } : {}),
     columns: resolvedColumns,
     rows: rowCount,
     gap: resolvedGap,
     align: resolvedAlign,
-    padding: resolvedPadding,
+    padding: requestedPadding,
     titleHeight: resolvedTitleHeight,
     headerLayout: headers,
     gridWidth,

@@ -163,6 +163,8 @@ export interface EditCompositionLayoutOptions {
   gap?: number;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
+  /** Interpret gap between child canvases (default) or inner plot regions. */
+  spacing?: "canvas" | "plot";
 }
 export interface ReplaceCompositionChildOptions {
   target: string;
@@ -209,6 +211,8 @@ export interface FacetOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  /** Interpret gap between child canvases (default) or inner plot regions. */
+  spacing?: "canvas" | "plot";
 }
 export interface FacetGridRole {
   field: string;
@@ -225,6 +229,8 @@ export interface FacetGridOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  /** Interpret gap between child canvases (default) or inner plot regions. */
+  spacing?: "canvas" | "plot";
 }
 export interface RepeatChartsOptions {
   id?: string;
@@ -237,6 +243,8 @@ export interface RepeatChartsOptions {
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
+  /** Interpret gap between child canvases (default) or inner plot regions. */
+  spacing?: "canvas" | "plot";
 }
 export interface EditFacetSourceOptions { program: ChartProgram; }
 export interface EditFacetHeadersOptions {
@@ -266,6 +274,7 @@ export interface FacetCompositionSpec {
   readonly type: "facet";
   readonly children: readonly string[];
   readonly columns: number;
+  readonly spacing?: "canvas" | "plot";
   readonly gap: number;
   readonly align: CompositionAlign;
   readonly padding: Readonly<Required<CompositionPadding>>;
@@ -1248,6 +1257,8 @@ export interface CanvasOptions {
   height?: number;
   background?: string;
   margin?: number | Partial<Record<"top" | "right" | "bottom" | "left", number>>;
+  /** Exact inner dimensions with automatic outer guide margins; false disables this mode. */
+  plot?: { width: number; height: number } | false;
 }
 
 export interface FitCanvasOptions {

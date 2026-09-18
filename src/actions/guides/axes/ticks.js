@@ -1,3 +1,4 @@
+import { canvasOverflowError } from "../../../layout/canvas.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { applyMaterializationPlan } from "../../../materialization/planner.js";
@@ -127,7 +128,7 @@ function geometry(program, channel, config) {
     coordinates.some(value => !Number.isFinite(value)) ||
     !fits
   ) {
-    throw new Error(`The ${channel}-axis ticks do not fit the Canvas margin.`);
+    throw canvasOverflowError(`The ${channel}-axis ticks do not fit the Canvas margin.`, [{ left: left - strokeExtent, right: right + strokeExtent, top: top - strokeExtent, bottom: bottom + strokeExtent }], canvas);
   }
   return resolved;
 }

@@ -6,9 +6,20 @@ Nested snapshots preserve complete child ancestry with collision-free graphic ID
 own namespace prefix; existing identifiers are not encoded again. Identifier length grows linearly with ancestry.
 Exact internal graphic ID spelling is not a public authoring option.
 
+## Facet spacing policy
+
+Facet, grid, repeat 및 facet의 `editCompositionLayout`은 `spacing: "canvas" | "plot"`을 받는다.
+기본 canvas는 기존 cell Canvas 사이 gap이다. plot은 내부 data region의 grid track 사이 gap이며
+child plot 크기는 유지한다. 바깥 여백은 각 방향 child margin의 최댓값을 외곽에 한 번 배정한다.
+Role/legacy header는 plot edge에 배치하고 내부 header 예약은 gap 안에 들어가야 한다.
+남겨둔 축/범례/헤더가 다른 panel plot 또는 다른 panel guide와 겹치면 원자적으로 거부한다.
+Panel background는 plot 안에만 그려 인접 panel을 덮지 않으며 parent background가 외곽을 채운다.
+Shared legend와 title의 parent 예약은 기존 규칙을 유지한다. Concat에는 spacing 옵션을 거부한다.
+Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit/grammar/layout/facets.test.js`.
+
 ## `facet`
 
-- Signature: `facet({ id?, field, data?, values?, columns?, gap?, align?, padding?, scales?, guides? })`.
+- Signature: `facet({ id?, field, data?, values?, columns?, gap?, spacing?, align?, padding?, scales?, guides? })`.
 - `field` is required. Omitted `data` resolves only when every eligible repeated layer has one unique common row-preserving ancestor.
 - Supported sources are complete Cartesian point, line, area, histogram bar, aggregate bar, ranged bar, rule, data-bound text,
   regression, density, interval/error-band, and box-plot programs; Polar Point, Line, direct Arc, Pie, Rose and Radar;
@@ -48,7 +59,7 @@ Exact internal graphic ID spelling is not a public authoring option.
 
 ### Formal values — `facet`
 
-- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingRowPreservingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer"; legend?: false | "shared" } }): ChartProgram`.
+- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingRowPreservingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer"; legend?: false | "shared" } }): ChartProgram`.
 - Implemented non-Cartesian families: Polar Point/Line/direct Arc/Pie/Rose/Radar and Parallel coordinates.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -76,7 +87,7 @@ Exact internal graphic ID spelling is not a public authoring option.
 
 ## `facetGrid`
 
-- Signature: `facetGrid({ id?, data?, rows, columns, combinations?, gap?, align?, padding?, scales?, guides? })`.
+- Signature: `facetGrid({ id?, data?, rows, columns, combinations?, gap?, spacing?, align?, padding?, scales?, guides? })`.
 - `rows` and `columns` each require a different source field and accept an optional unique observed `values` order.
   Omitted orders use first appearance independently on each field.
 - `combinations: "observed"` is the default. It creates only observed pairs while retaining their true row and column
@@ -91,7 +102,7 @@ Exact internal graphic ID spelling is not a public authoring option.
 
 ### Formal values — `facetGrid`
 
-- Implemented: `facetGrid({ id?: UserId; data?: ExistingRowPreservingDatasetId; rows: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; columns: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; combinations?: "observed" | "full"; gap?: NonNegativeFinite; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions }): ChartProgram`.
+- Implemented: `facetGrid({ id?: UserId; data?: ExistingRowPreservingDatasetId; rows: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; columns: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; combinations?: "observed" | "full"; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions }): ChartProgram`.
 - Implemented for the same Cartesian, Polar and Parallel families and policies as `facet`.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -106,7 +117,7 @@ Exact internal graphic ID spelling is not a public authoring option.
 
 ## `repeatCharts`
 
-- Signature: `repeatCharts({ id?, target?, channel, fields, columns?, gap?, align?, padding?, scales?, guides? })`.
+- Signature: `repeatCharts({ id?, target?, channel, fields, columns?, gap?, spacing?, align?, padding?, scales?, guides? })`.
 - Repeats one complete direct-source mark by replacing an eligible field role across an ordered unique field list.
   Cartesian marks accept `x` or `y`; Polar Point/Line/direct field-bound Arc/Rose accept `theta` or public `r`; Parallel
   coordinates accept `{ parallelDimension: field }` and replace exactly that dimension while preserving its position,
@@ -123,7 +134,7 @@ Exact internal graphic ID spelling is not a public authoring option.
 
 ### Formal values — `repeatCharts`
 
-- Implemented: `repeatCharts({ id?: UserId; target?: EligibleDirectMarkId; channel: "x" | "y" | "theta" | "r" | { parallelDimension: NonEmptyString }; fields: NonEmptyUniqueFieldTuple; columns?: PositiveInteger; gap?: NonNegativeFinite; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions }): ChartProgram`.
+- Implemented: `repeatCharts({ id?: UserId; target?: EligibleDirectMarkId; channel: "x" | "y" | "theta" | "r" | { parallelDimension: NonEmptyString }; fields: NonEmptyUniqueFieldTuple; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions }): ChartProgram`.
 - Explicitly rejected: Pie/Radar raw positional-role replacement, composite statistical roles, derived target datasets,
   two-dimensional repeat matrices, and outer axes.
 - Proposed (NOT IMPLEMENTED): —
@@ -202,7 +213,7 @@ Exact internal graphic ID spelling is not a public authoring option.
 
 ## `editCompositionLayout`
 
-- Signature: `editCompositionLayout({ columns?, gap?, align?, padding? })`.
+- Signature: `editCompositionLayout({ columns?, gap?, spacing?, align?, padding? })`.
 - Requires an existing composition program and at least one layout option.
 - `columns`: positive integer for one-field facet and repeat layouts, no larger than the retained child count.
   A row-column grid keeps the width of its declared column domain; concat compositions reject it.
@@ -216,7 +227,7 @@ Exact internal graphic ID spelling is not a public authoring option.
 
 ### Formal values — `editCompositionLayout`
 
-- Implemented: `editCompositionLayout({ columns?: PositiveInteger; gap?: NonNegativeFinite; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding> }): ChartProgram`.
+- Implemented: `editCompositionLayout({ columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding> }): ChartProgram`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editCompositionLayout`

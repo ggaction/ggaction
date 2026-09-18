@@ -1,3 +1,40 @@
+import { unionConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
+
+// Only domain-owned guides participate. Extension primitives may deliberately
+// overlap, and a combined categorical/size legend is one occupied group.
+export function resolveGuideCollisionBlocks(graphicSpec, guideConfigs, titleConfig, profile) {
+  const blocks = [];
+  const append = (id, kind, position, ids) => {
+    if (position === undefined) return;
+    const existing = ids.filter(id => graphicSpec.objects[id] !== undefined);
+    const bounds = unionConcreteGraphicBounds(graphicSpec, existing, profile);
+    if (bounds !== undefined) blocks.push({ id, kind, position, bounds });
+  };
+  append("chart title", "title", titleConfig?.position, ["chartTitle", "chartSubtitle"]);
+  for (const channel of ["x", "y"]) {
+    for (const id of axisGraphicIds(channel)) {
+      const component = id.slice(`${channel}Axis`.length).toLowerCase();
+      append(`${channel}-axis ${component}`, "axis", guideConfigs.axis?.[channel]?.[component]?.position, [id]);
+    }
+  }
+  const policies = legendResourcePolicies();
+  const configs = guideConfigs.legend ?? {};
+  const categorical = policies.find(policy => policy.family === "categorical" && configs[policy.kind] !== undefined);
+  const combined = categorical !== undefined && configs.size !== undefined &&
+    configs[categorical.kind].target === configs.size.target;
+  for (const policy of policies) {
+    const config = configs[policy.kind];
+    if (config === undefined || combined && policy.kind === "size") continue;
+    const ids = combined && policy === categorical
+      ? [...policy.graphicIds, ...policies.find(item => item.kind === "size").graphicIds]
+      : policy.graphicIds;
+    append(`${policy.kind}${combined && policy === categorical ? "+size" : ""} legend`, "legend", config.position, ids);
+  }
+  return blocks;
+}
+
+
+
 const AXIS_COMPONENTS = Object.freeze(["Line", "Ticks", "Labels", "Title"]);
 
 const CATEGORICAL_COMPONENTS = Object.freeze([

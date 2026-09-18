@@ -11,6 +11,7 @@ function optionKind(name, type) {
   if (["target", "source", "data", "coordinate", "scale", "id"].includes(name)) return "resource";
   if (["field", "x", "y", "groupBy", "category", "value"].includes(name)) return "field";
   if (/domain|range|extent/i.test(name)) return "range";
+  if (name === "plot") return "object";
   if (/readonly .*\[\]|\[.*\]/.test(type)) return "array";
   if (/\bboolean\b|\btrue\b|\bfalse\b/.test(type) && !/\bnumber\b|\bstring\b/.test(type)) return "boolean";
   if (/\bnumber\b/.test(type) && !/\bstring\b/.test(type)) return "number";

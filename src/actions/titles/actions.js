@@ -1,3 +1,4 @@
+import { titleTextProperties } from "../../layout/title.js";
 import { withGuideLayoutValidation } from "../../materialization/guides/layout.js";
 import { action } from "../../core/action.js";
 import { noOptions } from "../../core/validation.js";
@@ -56,25 +57,9 @@ function ensureTextShape(program, id, component) {
   return program;
 }
 
-function distributed(value, count) {
-  return count === 1 && Array.isArray(value) ? value[0] : value;
-}
-
 function editTextGraphic(program, id, component, style) {
-  const count = component.lines.length;
   let next = ensureTextShape(program, id, component);
-  for (const [property, value] of Object.entries({
-    x: distributed(component.x, count),
-    y: distributed(component.y, count),
-    text: distributed(component.lines, count),
-    fill: style.color,
-    fontSize: style.fontSize,
-    fontFamily: style.fontFamily,
-    fontWeight: style.fontWeight,
-    ...(style.fontStyle === undefined ? {} : { fontStyle: style.fontStyle }),
-    textAlign: component.textAlign,
-    textBaseline: "middle"
-  })) {
+  for (const [property, value] of Object.entries(titleTextProperties(component, style))) {
     next = next.editGraphics({ target: id, property, value });
   }
   if (component.explicitRotation) {

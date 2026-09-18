@@ -1,3 +1,6 @@
+import { textBoundsFitCanvas } from "../../core/textMetrics.js";
+import { resolveGuideCollisionBlocks } from "../../materialization/guides/resources.js";
+import { canvasOverflowError } from "../../layout/canvas.js";
 import { validateFontStyle } from "../../core/font.js";
 import { isPlainObject } from "../../core/immutable.js";
 import {
@@ -177,11 +180,8 @@ export function requireTitleConfig(program) {
 }
 
 function validateLayout(position, titleBounds, plot, canvas) {
-  if (
-    titleBounds.left < 0 || titleBounds.top < 0 ||
-    titleBounds.right > canvas.width || titleBounds.bottom > canvas.height
-  ) {
-    throw new Error(`Chart title requires more ${position}-margin space.`);
+  if (!textBoundsFitCanvas(titleBounds, canvas)) {
+    throw canvasOverflowError(`Chart title requires more ${position}-margin space.`, [titleBounds], canvas);
   }
   const outsidePlot = {
     top: titleBounds.bottom <= plot.y,
@@ -215,11 +215,23 @@ export function resolveTitleLayout(program, config) {
           "Chart subtitle"
         )
   }, config, program.materializationConfigs.textMetrics);
+  const automatic = program.materializationConfigs.canvas?.plot !== undefined;
+  const near = ["top", "left"].includes(config.position);
   const horizontal = ["top", "bottom"].includes(config.position);
+  let titleEdge = horizontal ? plot.y + (near ? 0 : plot.height)
+    : plot.x + (near ? 0 : plot.width);
+  if (automatic) {
+    const occupied = resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs,
+      undefined, program.materializationConfigs.textMetrics).filter(item => item.position === config.position);
+    const key = horizontal ? (near ? "top" : "bottom") : (near ? "left" : "right");
+    for (const item of occupied) titleEdge = near ? Math.min(titleEdge, item.bounds[key]) : Math.max(titleEdge, item.bounds[key]);
+    titleEdge += (near ? -1 : 1) * (16 + config.offset);
+  }
   let component;
   if (horizontal) {
     const x = alignedTextAnchor(plot.x, plot.width, config.align);
-    const blockTop = config.position === "top"
+    const blockTop = automatic ? titleEdge - (near ? block.height : 0)
+      : config.position === "top"
       ? 16 + config.offset
       : plot.y + plot.height + config.offset;
     component = (lines, centers) => ({
@@ -233,7 +245,8 @@ export function resolveTitleLayout(program, config) {
   } else {
     const rotation = config.position === "left" ? -Math.PI / 2 : Math.PI / 2;
     const y = alignedTitleAnchor(plot.y, plot.height, block.width, config.align);
-    const edge = config.position === "left"
+    const edge = automatic ? titleEdge + (near ? -block.height : block.height)
+      : config.position === "left"
       ? 16 + config.offset
       : canvas.properties.width - 16 + config.offset;
     const mapX = value => config.position === "left" ? edge + value : edge - value;

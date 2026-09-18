@@ -1,3 +1,4 @@
+import { canvasOverflowError } from "../../../layout/canvas.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
@@ -78,7 +79,8 @@ function inferredTitleOffset(program, channel, config) {
   const available = positive
     ? canvas[horizontal ? "height" : "width"] - bounds[far]
     : bounds[near];
-  return preferred + Math.min(available, Math.max(0, needed));
+  return preferred + (program.materializationConfigs.canvas?.plot !== undefined
+    ? Math.max(0, needed) : Math.min(available, Math.max(0, needed)));
 }
 
 const CREATE_OPTIONS = [
@@ -194,7 +196,7 @@ function resolveGeometry(program, channel, config) {
   , program.materializationConfigs.textMetrics);
   const canvas = findCanvasGraphic(program)?.properties;
   if (!canvas || !textBoundsFitCanvas(resolvedBounds, canvas)) {
-    throw new Error(`The ${channel}-axis title does not fit the Canvas margin.`);
+    throw canvasOverflowError(`The ${channel}-axis title does not fit the Canvas margin.`, [resolvedBounds], canvas);
   }
   const labelsBounds = program.graphicSpec.objects[`${channel}AxisLabels`]
     ? resolveConcreteGraphicBounds(program.graphicSpec, `${channel}AxisLabels`, program.materializationConfigs.textMetrics)

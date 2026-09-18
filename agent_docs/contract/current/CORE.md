@@ -4,7 +4,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createCanvas`
 
-- Signature: `createCanvas({ width?, height?, background?, margin? })`
+- Signature: `createCanvas({ width?, height?, background?, margin?, plot? })`
 - 목적과 필수 state: Canvas가 없는 program에 logical Canvas와 plot bounds를 만든다.
 - `width`
   - Status: Implemented. 양의 finite number이며 기본값은 `640`이다.
@@ -21,6 +21,15 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     scalar는 네 방향에 broadcast되고 partial object는 기본 margin의 나머지 방향을 유지한다.
   - Effect: graphical materialization config의 plot bounds를 결정한다. Canvas 생성 시 아직
     consumer가 없으므로 rematerialization은 발생하지 않는다.
+- `plot`
+  - Status: Implemented. `{ width: PositiveFinite, height: PositiveFinite }`는 내부 플롯 크기를 고정하고
+    guide authoring의 측정된 overflow만큼 외부 Canvas와 해당 margin을 함께 늘린다. Full/Basic 공통이며
+    fixed outer `width`/`height`와 함께 지정할 수 없다. `false`는 일반 외부 크기 모드다.
+  - Effect: canonical Canvas config에 저장한다. Guide transaction은 최대 16회, 0.25px margin 격자로
+    재시도하며 이전 program/실패 trace는 변경하지 않는다. 회전 라벨의 가장 가까운 측정 edge를
+    plot edge에서 offset만큼 바깥으로 배치한다. Title은 기존 guide 바깥에 배치한다.
+  - Coverage: `test/unit/actions/canvas/inner-plot-size.test.js`의 Full/Basic, 충돌 옵션,
+    resize, persistence, text metrics, title와 고정 외부 모드 회귀를 검증한다.
 - 오류와 상호작용: unknown option, invalid dimension/color/margin, 두 번째 Canvas를 거부한다.
 - Coverage: `test/unit/actions/canvas/create-canvas.test.js`,
   `test/unit/grammar/layout/canvas-layout.test.js`가 defaults, partial options, invalid values와
@@ -28,7 +37,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createCanvas`
 
-- Implemented: `createCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin } = {})`
+- Implemented: `createCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite } } = {})`
 - Proposed (NOT IMPLEMENTED): `{ width?: "auto"; height?: "auto"; margin?: "auto" }`
 
 ### Value coverage — `createCanvas`
@@ -48,20 +57,21 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `editCanvas`
 
-- Signature: `editCanvas({ width?, height?, background?, margin? })`
+- Signature: `editCanvas({ width?, height?, background?, margin?, plot? })`
 - 목적과 필수 state: 기존 Canvas의 한 개 이상 property를 immutable하게 편집한다.
 - `width`, `height`, `background`, `margin`
   - Status: Implemented. 값 계약은 `createCanvas`와 같다. 생략한 property는 기존 값을 유지한다.
   - Effect: width/height/margin은 auto-range scale을 시작점으로 모든 registered consumer의
     deterministic materialization plan을 실행한다. background만 바꾸면 consumer를 다시 만들지 않는다.
   - Interaction: explicit scale range는 Canvas bounds 변경으로 재계산되지 않는다.
+- `plot`: 생략하면 기존 모드를 유지한다. 새 내부 크기 또는 `false`로 전환할 수 있다. 활성 모드에서 margin 편집은 내부 크기를 유지하며 외부 Canvas를 재계산한다.
 - 오류: 빈 edit, Canvas 부재, unknown option과 invalid resolved bounds를 거부한다.
 - Coverage: `test/unit/actions/canvas/edit-canvas.test.js`가 partial edit, margin-only edit,
   auto/explicit range 차이와 rematerialization을 검증한다.
 
 ### Formal values — `editCanvas`
 
-- Implemented: `editCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin })`; 최소 한 property가 필요하다.
+- Implemented: `editCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite } })`; 최소 한 property가 필요하다.
 - Proposed (NOT IMPLEMENTED): `createCanvas`의 `"auto"` dimension/margin과 동일하다.
 
 ### Value coverage — `editCanvas`
@@ -95,13 +105,14 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - 결정성과 lifecycle: 같은 layout과 policy의 반복 호출은 graphic/config가 정확히 같은 상태로 수렴한다.
   이후 resource가 바뀌면 다음 명시적 `fitCanvas` 호출이 새 signature로 다시 계산한다. 저장된 결과는
   마지막 호출의 기록이며 자동 resize observer나 지속 compiler가 아니다.
+- Exact-inner `plot` 모드에서는 거부한다. 먼저 `editCanvas({ plot: false })`로 해제해야 한다.
 - 오류: Canvas 부재, unknown/invalid option, minimum plot 또는 iteration bound 미충족을 정책에 따라
   거부하거나 보고한다. 어떤 경우에도 Canvas를 확대하거나 guide를 임의 이동하지 않는다.
 
 ### Formal values — `fitCanvas`
 
 - Implemented: `fitCanvas({ padding?: NonNegativeFinite; minPlotWidth?: PositiveFinite; minPlotHeight?: PositiveFinite; iterationLimit?: Integer<1,64>; overflow?: "error" | "report" } = {}): ChartProgram`
-- Proposed (NOT IMPLEMENTED): automatic/persistent fitting, Canvas dimension expansion, composition-wide fitting.
+- Proposed (NOT IMPLEMENTED): composition-wide fitting. Exact inner sizing with outer expansion belongs to createCanvas/editCanvas plot policy, not fitCanvas.
 
 ### Value coverage — `fitCanvas`
 

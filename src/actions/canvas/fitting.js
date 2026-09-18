@@ -171,6 +171,9 @@ export const fitCanvas = /* @__PURE__ */ action(
         this.materializationConfigs.canvas?.margin === undefined) {
       throw new Error("fitCanvas requires an existing Canvas.");
     }
+    if (this.materializationConfigs.canvas.plot !== undefined) {
+      throw new Error("fitCanvas requires fixed outer dimensions; disable Canvas plot sizing first.");
+    }
     const previous = this.materializationConfigs.fitting;
     if (samePolicy(previous?.policy, policy) &&
         previous?.result?.signature === layoutSignature(this)) {

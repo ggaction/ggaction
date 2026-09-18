@@ -1,3 +1,4 @@
+import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { action, closedAction } from "../../core/action.js";
 import { registerFacetDataRevision, reviseUnitData } from "../data/revise.js";
 import { freezeOwned, isPlainObject } from "../../core/immutable.js";
@@ -38,15 +39,15 @@ import {
 } from "../../materialization/facetHeaders.js";
 
 const FACET_OPTIONS = Object.freeze([
-  "id", "field", "data", "values", "columns", "gap", "align", "padding", "scales",
+  "id", "field", "data", "values", "columns", "gap", "spacing", "align", "padding", "scales",
   "guides"
 ]);
 const FACET_GRID_OPTIONS = Object.freeze([
-  "id", "data", "rows", "columns", "combinations", "gap", "align",
+  "id", "data", "rows", "columns", "combinations", "gap", "spacing", "align",
   "padding", "scales", "guides"
 ]);
 const REPEAT_OPTIONS = Object.freeze([
-  "id", "target", "channel", "fields", "columns", "gap", "align",
+  "id", "target", "channel", "fields", "columns", "gap", "spacing", "align",
   "padding", "scales", "guides"
 ]);
 const SOURCE_EDIT_OPTIONS = Object.freeze(["program"]);
@@ -184,65 +185,56 @@ function rederiveFacet(program, { scales, guides }) {
   }, compositionSpec.children);
 }
 
-export const facet = /* @__PURE__ */ closedAction(
-  {
-    op: "facet",
-    description: "Repeat one direct-source chart by field value."
-  }, FACET_OPTIONS,
-  function (args = {}) {
-    const guides = normalizeGuides(args.guides);
-    const definition = resolveFacetDefinition(this.semanticSpec, args);
-    if (definition.family !== "cartesian" && guides.axes === "outer") {
-      throw new Error("Polar and Parallel facets do not support outer axes.");
-    }
-    const scalePolicies = normalizeFacetScalePolicies(
-      this.semanticSpec,
-      args.scales ?? {}
-    );
-    const derived = deriveFacetChildren(this, definition, {
-      closeInheritedAction: true,
-      stripTitle: true,
-      scales: args.scales ?? {}
-    });
-    const preflight = resolveFacetLayout({
-      children: definition.cells.map(cell => ({
-        ...compositionChildDescriptor(cell.id, derived.children[cell.id]),
-        value: cell.value
-      })),
-      ...(Object.hasOwn(args, "columns") ? { columns: args.columns } : {}),
-      ...(Object.hasOwn(args, "gap") ? { gap: args.gap } : {}),
-      ...(Object.hasOwn(args, "align") ? { align: args.align } : {}),
-      ...(Object.hasOwn(args, "padding") ? { padding: args.padding } : {}),
-      sharedLegend: guides.legend === "shared"
-    });
-    const compositionSpec = {
-      id: definition.id,
-      type: "facet",
-      children: definition.cells.map(cell => cell.id),
-      columns: preflight.columns,
-      gap: preflight.gap,
-      align: preflight.align,
-      padding: preflight.padding,
-      facet: {
-        data: definition.data,
-        field: definition.field,
-        values: definition.values,
-        scales: scalePolicies.channels,
-        guides
+function composeDerivedFacet(program, args, { definition, derived, guides, scalePolicies, facet }) {
+  const preflight = resolveFacetLayout({
+    spacing: args.spacing,
+    plots: Object.entries(derived.children).map(([id, child]) => ({ id, ...resolveGraphicBounds(child) })),
+    children: definition.cells.map(cell => ({
+      ...compositionChildDescriptor(cell.id, derived.children[cell.id]), value: cell.value,
+      ...(definition.grid === undefined ? {} : { row: cell.row, column: cell.column })
+    })),
+    columns: definition.grid?.columns.values.length ?? args.columns,
+    gap: args.gap, align: args.align, padding: args.padding,
+    sharedLegend: guides.legend === "shared"
+  });
+  const compositionSpec = {
+    id: definition.id, type: "facet", children: definition.cells.map(cell => cell.id),
+    columns: preflight.columns, gap: preflight.gap, align: preflight.align, padding: preflight.padding,
+    ...(preflight.spacing === undefined ? {} : { spacing: preflight.spacing }),
+    facet: { data: definition.data, ...facet, scales: scalePolicies.channels, guides }
+  };
+  return applyCompositionState(
+    program._withMaterializationConfig(["facets", definition.id], { headers: createDefaultFacetHeaders() }),
+    { children: derived.children, compositionSpec }, compositionSpec.children
+  );
+}
+
+function partitionFacetAction(op, description, definitionResolver) {
+  return closedAction({ op, description }, op === "facet" ? FACET_OPTIONS : FACET_GRID_OPTIONS,
+    function (args = {}) {
+      const guides = normalizeGuides(args.guides);
+      const definition = definitionResolver(this.semanticSpec, args);
+      if (definition.family !== "cartesian" && guides.axes === "outer") {
+        throw new Error("Polar and Parallel facets do not support outer axes.");
       }
-    };
-    return applyCompositionState(
-      this._withMaterializationConfig(["facets", definition.id], {
-        headers: createDefaultFacetHeaders()
-      }),
-      {
-        children: derived.children,
-        compositionSpec
-      },
-      compositionSpec.children
-    );
-  }
-);
+      const scalePolicies = normalizeFacetScalePolicies(this.semanticSpec, args.scales ?? {});
+      const derived = deriveFacetChildren(this, definition, {
+        closeInheritedAction: true, stripTitle: true, scales: args.scales ?? {}
+      });
+      const facet = definition.grid === undefined
+        ? { field: definition.field, values: definition.values }
+        : { values: definition.cells.map(cell => cell.value), grid: {
+            ...definition.grid, cells: definition.cells.map(cell => ({
+              id: cell.id, row: cell.row, column: cell.column,
+              rowValue: cell.rowValue, columnValue: cell.columnValue, empty: cell.empty
+            }))
+          } };
+      return composeDerivedFacet(this, args, { definition, derived, guides, scalePolicies, facet });
+    });
+}
+
+export const facet = /* @__PURE__ */ partitionFacetAction("facet",
+  "Repeat one direct-source chart by field value.", resolveFacetDefinition);
 
 function resolveRepeatDefinition(program, args) {
   if (!isPlainObject(args)) {
@@ -453,115 +445,16 @@ export const repeatCharts = /* @__PURE__ */ closedAction(
       requestedScales,
       true
     );
-    const preflight = resolveFacetLayout({
-      children: definition.cells.map(cell => ({
-        ...compositionChildDescriptor(cell.id, derived.children[cell.id]),
-        value: cell.value
-      })),
-      ...(Object.hasOwn(args, "columns") ? { columns: args.columns } : {}),
-      ...(Object.hasOwn(args, "gap") ? { gap: args.gap } : {}),
-      ...(Object.hasOwn(args, "align") ? { align: args.align } : {}),
-      ...(Object.hasOwn(args, "padding") ? { padding: args.padding } : {}),
-      sharedLegend: guides.legend === "shared"
+    return composeDerivedFacet(this, args, {
+      definition, derived, guides, scalePolicies,
+      facet: { values: definition.fields,
+        repeat: { target: definition.target, channel: definition.channel, fields: definition.fields } }
     });
-    const compositionSpec = {
-      id: definition.id,
-      type: "facet",
-      children: definition.cells.map(cell => cell.id),
-      columns: preflight.columns,
-      gap: preflight.gap,
-      align: preflight.align,
-      padding: preflight.padding,
-      facet: {
-        data: definition.data,
-        values: definition.fields,
-        repeat: {
-          target: definition.target,
-          channel: definition.channel,
-          fields: definition.fields
-        },
-        scales: scalePolicies.channels,
-        guides
-      }
-    };
-    return applyCompositionState(
-      this._withMaterializationConfig(["facets", definition.id], {
-        headers: createDefaultFacetHeaders()
-      }),
-      { children: derived.children, compositionSpec },
-      compositionSpec.children
-    );
   }
 );
 
-export const facetGrid = /* @__PURE__ */ closedAction(
-  {
-    op: "facetGrid",
-    description: "Repeat one direct-source Cartesian chart across a row and column field grid."
-  }, FACET_GRID_OPTIONS,
-  function (args = {}) {
-    const guides = normalizeGuides(args.guides);
-    const definition = resolveFacetGridDefinition(this.semanticSpec, args);
-    if (definition.family !== "cartesian" && guides.axes === "outer") {
-      throw new Error("Polar and Parallel facets do not support outer axes.");
-    }
-    const scalePolicies = normalizeFacetScalePolicies(
-      this.semanticSpec,
-      args.scales ?? {}
-    );
-    const derived = deriveFacetChildren(this, definition, {
-      closeInheritedAction: true,
-      stripTitle: true,
-      scales: args.scales ?? {}
-    });
-    const preflight = resolveFacetLayout({
-      children: definition.cells.map(cell => ({
-        ...compositionChildDescriptor(cell.id, derived.children[cell.id]),
-        value: cell.value,
-        row: cell.row,
-        column: cell.column
-      })),
-      columns: definition.grid.columns.values.length,
-      ...(Object.hasOwn(args, "gap") ? { gap: args.gap } : {}),
-      ...(Object.hasOwn(args, "align") ? { align: args.align } : {}),
-      ...(Object.hasOwn(args, "padding") ? { padding: args.padding } : {}),
-      sharedLegend: guides.legend === "shared"
-    });
-    const compositionSpec = {
-      id: definition.id,
-      type: "facet",
-      children: definition.cells.map(cell => cell.id),
-      columns: preflight.columns,
-      gap: preflight.gap,
-      align: preflight.align,
-      padding: preflight.padding,
-      facet: {
-        data: definition.data,
-        values: definition.cells.map(cell => cell.value),
-        grid: {
-          ...definition.grid,
-          cells: definition.cells.map(cell => ({
-            id: cell.id,
-            row: cell.row,
-            column: cell.column,
-            rowValue: cell.rowValue,
-            columnValue: cell.columnValue,
-            empty: cell.empty
-          }))
-        },
-        scales: scalePolicies.channels,
-        guides
-      }
-    };
-    return applyCompositionState(
-      this._withMaterializationConfig(["facets", definition.id], {
-        headers: createDefaultFacetHeaders()
-      }),
-      { children: derived.children, compositionSpec },
-      compositionSpec.children
-    );
-  }
-);
+export const facetGrid = /* @__PURE__ */ partitionFacetAction("facetGrid",
+  "Repeat one direct-source Cartesian chart across a row and column field grid.", resolveFacetGridDefinition);
 
 export const editFacetHeaders = /* @__PURE__ */ action(
   {
@@ -785,6 +678,7 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
         columns: current.facet.grid.columns,
         combinations: current.facet.grid.combinations,
         gap: current.gap,
+        ...(current.spacing === undefined ? {} : { spacing: current.spacing }),
         align: current.align,
         padding: current.padding,
         scales,
@@ -796,6 +690,7 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
         ...current.facet.repeat,
         columns: current.columns,
         gap: current.gap,
+        ...(current.spacing === undefined ? {} : { spacing: current.spacing }),
         align: current.align,
         padding: current.padding,
         scales,
@@ -809,6 +704,7 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
         values: current.facet.values,
         columns: current.columns,
         gap: current.gap,
+        ...(current.spacing === undefined ? {} : { spacing: current.spacing }),
         align: current.align,
         padding: current.padding,
         scales,
