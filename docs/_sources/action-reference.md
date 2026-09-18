@@ -2224,13 +2224,13 @@ an object creates or edits both. The focused boundary action still accepts
 
 ```javascript
 createBoxPlot({
-  id?, target?, data?, x?, y?, coordinate?, whisker?, width?, outliers?,
+  id?, target?, data?, x?, y?, coordinate?, summary?, whisker?, width?, outliers?,
   box?, median?, outlier?, guides?
 } = {})
 ```
 
-Create a Box plot owner that defers geometry and guides until compatible x/y
-roles are available. The action infers an encoded source when possible
+Create a Box plot owner from raw observations or explicit five-field summaries.
+Geometry and guides defer until compatible x/y roles are available. The action infers an encoded source when possible
 and composes immutable box summary data, error-bar whiskers, ranged-bar bodies,
 median rules, and optional point outliers. Tukey factor, band width, component
 appearance, and outlier creation are configurable. [Box plots](../api/box-plots.md)

@@ -1,5 +1,6 @@
 import { closedAction } from "../../core/action.js";
 
+import { normalizeBoxSummary } from "../../grammar/boxPlot.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { resolveFacadeData } from "../charts/shared.js";
 import {
@@ -34,9 +35,17 @@ export const createBoxPlot = /* @__PURE__ */ closedAction(
       args.data ?? source?.data,
       "createBoxPlot"
     );
-    const x = resolveBoxPosition(args.x, "x") ?? source?.encoding?.x;
-    const y = resolveBoxPosition(args.y, "y") ?? source?.encoding?.y;
-    const whisker = resolveBoxWhisker(args.whisker);
+    const summary = normalizeBoxSummary(args.summary);
+    let x = resolveBoxPosition(args.x, "x") ?? source?.encoding?.x;
+    let y = resolveBoxPosition(args.y, "y") ?? source?.encoding?.y;
+    if (summary !== undefined) {
+      if (x !== undefined && y === undefined) y = { field: summary.median, fieldType: "quantitative" };
+      if (y !== undefined && x === undefined) x = { field: summary.median, fieldType: "quantitative" };
+    }
+    const whisker = resolveBoxWhisker(args.whisker, "createBoxPlot", summary === undefined ? "tukey" : "minmax");
+    if (summary !== undefined && (whisker.type !== "minmax" || args.outliers === true)) {
+      throw new Error("Precomputed box summaries require minmax whiskers and do not infer outliers.");
+    }
     const width = resolveBoxWidth(args.width);
     if (args.outliers !== undefined && typeof args.outliers !== "boolean") {
       throw new TypeError("createBoxPlot outliers must be a boolean.");
@@ -63,7 +72,8 @@ export const createBoxPlot = /* @__PURE__ */ closedAction(
       boxPlot: {
         whisker,
         width,
-        outliers: args.outliers ?? true,
+        outliers: args.outliers ?? (summary === undefined),
+        ...(summary === undefined ? {} : { summary }),
         box,
         median,
         outlier,

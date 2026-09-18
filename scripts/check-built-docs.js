@@ -1,3 +1,4 @@
+import { SEARCH_INDEX_MAX_BYTES } from "./generate-doc-search-index.js";
 import assert from "node:assert/strict";
 import { access, readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
@@ -143,7 +144,7 @@ for (const entry of searchIndex) {
   assert.equal(typeof entry.summary === "string", true);
   assert.equal(Array.isArray(entry.keywords) && entry.keywords.length > 0, true);
 }
-assert.equal((await stat(path.join(siteRoot, "search-index.json"))).size < 800_000, true);
+assert.equal((await stat(path.join(siteRoot, "search-index.json"))).size < SEARCH_INDEX_MAX_BYTES, true);
 const home = await readFile(path.join(siteRoot, "index.html"), "utf8");
 assert.match(home, /data-root-url="\/ggaction\/"/);
 

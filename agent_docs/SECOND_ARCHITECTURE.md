@@ -270,7 +270,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 375,000 bytes |
+| `ggaction` | 378,000 bytes |
 | `ggaction/basic` | 178,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -1925,3 +1925,16 @@ Guide domain transaction이 실제 측정 overflow를 읽고 Canvas 및 margin�
 공통 Canvas rematerialization plan을 명시적으로 실행한다. 실패한 시도는 immutable branch로
 폐기하며 generic action completion hook이나 renderer compiler를 추가하지 않는다.
 세부 sizing/충돌 계약은 Current CORE와 AXES, LEGEND_AND_TITLE이 소유한다.
+
+Full bundle은 summary mapping/pixel span/whisker lifecycle 추가 후375,809bytes로 측정되어
+기존375,000bytes 한도를 초과했다. 기능을 유지하며 한도를378,000bytes로 조정하고 Basic/SVG는 유지한다.
+검색 payload의810,000bytes 한도는 `scripts/generate-doc-search-index.js`에서 공유하여 source/built 검사를 일치시킨다.
+
+### Precomputed box summary provenance
+
+Box facade의 explicit summary mapping은 기존 boxSummary derived-data owner를 사용한다.
+`method:precomputed`는 다섯 field의 값과 category identity를 검증하여 canonical summary columns로
+복사하며 quantile/fence/count를 새로 추정하지 않는다. 기존 raw method:linear 경로는 유지한다.
+Source revision과 facet replay는 같은 transform validator/materializer를 사용한다. 픽셀 body 폭과
+median 폭은 기존 mark config에 남고 Rule median은 concrete body center와 owner width intent를 읽는다.
+Whisker cap/style은 기존 ErrorBar editor가 생성/제거와 rematerialization을 소유한다.

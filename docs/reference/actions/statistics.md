@@ -1193,6 +1193,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `summary` | Optional / branch-dependent | `BoxPlotSummaryFields \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
@@ -1200,10 +1201,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `whisker` | Optional / branch-dependent | `BoxPlotWhisker \| undefined` |
-| `width` | Optional / branch-dependent | `{ band?: number \| undefined; } \| undefined` |
+| `width` | Optional / branch-dependent | `BoxPlotWidth \| undefined` |
 | `outliers` | Optional / branch-dependent | `boolean \| undefined` |
 | `box` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
-| `median` | Optional / branch-dependent | `(StrokeStyleDetails & { stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `median` | Optional / branch-dependent | `(StrokeStyleDetails & { width?: "auto" \| { pixels: number; } \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `outlier` | Optional / branch-dependent | `(StrokeStyleDetails & { shape?: PointShape \| undefined; radius?: number \| undefined; opacity?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| BoxPlotGuideOptions \| undefined` |
 
@@ -1213,13 +1214,13 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createBoxPlot({
-  id?, target?, data?, x?, y?, coordinate?, whisker?, width?, outliers?,
+  id?, target?, data?, x?, y?, coordinate?, summary?, whisker?, width?, outliers?,
   box?, median?, outlier?, guides?
 } = {})
 ```
 
-Create a Box plot owner that defers geometry and guides until compatible x/y
-roles are available. The action infers an encoded source when possible
+Create a Box plot owner from raw observations or explicit five-field summaries.
+Geometry and guides defer until compatible x/y roles are available. The action infers an encoded source when possible
 and composes immutable box summary data, error-bar whiskers, ranged-bar bodies,
 median rules, and optional point outliers. Tukey factor, band width, component
 appearance, and outlier creation are configurable. [Box plots](../../api/box-plots.md)
@@ -1246,15 +1247,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `summary` | Optional / branch-dependent | `false \| BoxPlotSummaryFields \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `whisker` | Optional / branch-dependent | `BoxPlotWhisker \| undefined` |
-| `width` | Optional / branch-dependent | `{ band?: number \| undefined; } \| undefined` |
+| `width` | Optional / branch-dependent | `BoxPlotWidth \| undefined` |
 | `outliers` | Optional / branch-dependent | `boolean \| undefined` |
 | `box` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
-| `median` | Optional / branch-dependent | `(StrokeStyleDetails & { stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `median` | Optional / branch-dependent | `(StrokeStyleDetails & { width?: "auto" \| { pixels: number; } \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `outlier` | Optional / branch-dependent | `(StrokeStyleDetails & { shape?: PointShape \| undefined; radius?: number \| undefined; opacity?: number \| undefined; }) \| undefined` |
 
 </details>

@@ -19,7 +19,8 @@ createBoxPlot({
   whisker?:
     | { type?: "tukey"; factor?: PositiveFinite }
     | { type: "minmax"; factor?: never };
-  width?: { band?: UnitIntervalExclusive };
+  summary?: BoxPlotSummaryFields;
+  width?: { band?: UnitIntervalExclusive } | { pixels: PositiveFinite };
   outliers?: boolean;
   box?: {
     fill?: NonEmptyString;
@@ -32,6 +33,7 @@ createBoxPlot({
     miterLimit?: PositiveFinite;
   };
   median?: {
+    width?: { pixels: PositiveFinite } | "auto";
     stroke?: NonEmptyString;
     strokeWidth?: NonNegativeFinite;
     lineCap?: LineCap;
@@ -79,6 +81,18 @@ createBoxPlot({
 - Lifecycle은 mutable aggregate다. `editBoxPlot`은 stable owner를 통해 statistics, topology와 component
   appearance를 함께 편집한다.
 
+- `summary:{min,q1,median,q3,max}`는 existing source의 field mapping이다. 한 row당 box 하나를 유지하며
+  finite, min≤q1≤median≤q3≤max를 검증한다. Missing category는 기존처럼 생략하되 missing
+  summary 값은 거부한다. Repeated category rows는 합치지 않으며 facet partition이 가능하다. 원본 값을 rounding/통계 재계산 없이 복사한다.
+- Summary mode는 quantitative position에 median field를 사용한다. 다른 categorical position이 있으면
+  생략된 measure를 infer한다. Minmax whisker만 허용하며 outliers 기본 false/true 거부다.
+  Canonical derived `boxSummary` transform은 method:precomputed와 summary mapping을 보관한다.
+  Lower/upper fence와 sample count는 없는 정보를 합성하지 않고 생략한다.
+- `width:{pixels}`는 positive fixed box span이며 기존 band width와 배타적이다. `median.width:{pixels}`는
+  body center에서 지정 폭을 유지하고 "auto"는 body span을 따른다. 두 방향/resize에 같은 정책이다.
+- Whisker는 기존 statistical type/factor와 별개로 ErrorBar의 caps/capSize/stroke/strokeWidth/strokeDash,
+  opacity/lineCap/lineJoin/miterLimit 옵션을 받는다. Child ErrorBar가 materialization과 cap lifecycle을 소유한다.
+
 ### Formal values — `createBoxPlot`
 
 - Implemented: vertical/horizontal orientation, configurable Tukey/minmax whiskers, width/component styles,
@@ -87,6 +101,8 @@ createBoxPlot({
 
 ### Value coverage — `createBoxPlot`
 
+- ✅ Covered: precomputed field summaries, fixed pixel spans, cap/style edits, role/source replay, serialization and facets.
+- Evidence: `test/unit/actions/statistics/precomputed-box-plot.test.js`.
 - ✅ Covered: direct and deferred position order, unique-data/encoded-source inference, explicit guide opt-in,
   ambiguity rejection, deterministic IDs, sub-picounit summary ordering, exact Cars primitive
   equality, missing/outlier ownership, Canvas rematerialization, trace and immutability.
@@ -105,7 +121,8 @@ editBoxPlot({
   x?: PositionChannel;
   y?: PositionChannel;
   whisker?: BoxPlotWhisker;
-  width?: { band?: UnitIntervalExclusive };
+  summary?: BoxPlotSummaryFields | false;
+  width?: { band?: UnitIntervalExclusive } | { pixels: PositiveFinite };
   outliers?: boolean;
   box?: BoxAppearance;
   median?: MedianAppearance;
@@ -130,9 +147,13 @@ editBoxPlot({
 - Nested options use the same formal values as `createBoxPlot`. A constant `box.fill` is rejected when the body owns a
   field-driven color encoding because the request would not have a concrete effect.
 
+- Summary mapping 편집은 create-time 검증을 재사용한다. `summary:false`는 raw measure 계산으로 돌아가며
+  기존 source/measure는 명시적으로 바꾸기 전까지 보존한다. Summary/statistical 정책 변경만 derived data를
+  재계산하고 cap/style 변경은 기존 summary를 유지한다. Median width "auto"는 fixed span 설정을 제거한다.
+
 ### Formal values — `editBoxPlot`
 
-- Implemented: `editBoxPlot({ target?: UserId; data?: UserId; x?: BoxPlotPositionChannel; y?: BoxPlotPositionChannel; whisker?: BoxPlotWhisker; width?: { band?: UnitIntervalExclusive }; outliers?: boolean; box?: BoxAppearance; median?: MedianAppearance; outlier?: OutlierAppearance })`.
+- Implemented: `editBoxPlot({ target?: UserId; data?: UserId; x?: BoxPlotPositionChannel; y?: BoxPlotPositionChannel; summary?: BoxPlotSummaryFields | false; whisker?: BoxPlotWhisker; width?: { band?: UnitIntervalExclusive } | { pixels: PositiveFinite }; outliers?: boolean; box?: BoxAppearance; median?: MedianAppearance; outlier?: OutlierAppearance })`.
 - Proposed (NOT IMPLEMENTED): subgroup offsets, notches and variable-width boxes.
 
 ### Value coverage — `editBoxPlot`

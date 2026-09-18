@@ -1,3 +1,4 @@
+import { SEARCH_INDEX_MAX_BYTES } from "../../scripts/generate-doc-search-index.js";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
@@ -34,7 +35,7 @@ test("gives every declared action one exact anchor, classification, and complete
 
 test("indexes each exact action at its canonical destination within the bounded search payload", async () => {
   const source = await read("docs/search-index.json");
-  assert.ok(Buffer.byteLength(source) < 810_000);
+  assert.ok(Buffer.byteLength(source) < SEARCH_INDEX_MAX_BYTES);
   const index = JSON.parse(source);
   const links = JSON.parse(await read("docs/_data/action_reference_links.json"));
   for (const [name, route] of Object.entries(links)) {

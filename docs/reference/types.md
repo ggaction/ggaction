@@ -1222,6 +1222,7 @@ Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquanti
 
 ```typescript
 export interface BoxPlotOptions {
+  summary?: BoxPlotSummaryFields;
   id?: string;
   target?: string;
   data?: string;
@@ -1229,7 +1230,7 @@ export interface BoxPlotOptions {
   y?: BoxPlotPositionChannel;
   coordinate?: string;
   whisker?: BoxPlotWhisker;
-  width?: { band?: number };
+  width?: BoxPlotWidth;
   outliers?: boolean;
   box?: RectStyleDetails & {
     fill?: string;
@@ -1238,6 +1239,7 @@ export interface BoxPlotOptions {
     strokeWidth?: number;
   };
   median?: StrokeStyleDetails & {
+    width?: { pixels: number } | "auto";
     stroke?: string;
     strokeWidth?: number;
   };
@@ -1252,7 +1254,7 @@ export interface BoxPlotOptions {
 
 </details>
 
-Related types: [`BoxPlotPositionChannel`](#type-boxplotpositionchannel) · [`BoxPlotWhisker`](#type-boxplotwhisker) · [`RectStyleDetails`](#type-rectstyledetails) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`BoxPlotGuideOptions`](#type-boxplotguideoptions).
+Related types: [`BoxPlotSummaryFields`](#type-boxplotsummaryfields) · [`BoxPlotPositionChannel`](#type-boxplotpositionchannel) · [`BoxPlotWhisker`](#type-boxplotwhisker) · [`BoxPlotWidth`](#type-boxplotwidth) · [`RectStyleDetails`](#type-rectstyledetails) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`BoxPlotGuideOptions`](#type-boxplotguideoptions).
 
 ### `BoxPlotPositionChannel` {#type-boxplotpositionchannel}
 
@@ -1269,15 +1271,47 @@ export type BoxPlotPositionChannel =
 
 Related types: [`BoxPlotCategoryChannel`](#type-boxplotcategorychannel) · [`BoxPlotMeasureChannel`](#type-boxplotmeasurechannel).
 
+### `BoxPlotSummaryFields` {#type-boxplotsummaryfields}
+
+<details markdown="1">
+<summary>Expand BoxPlotSummaryFields</summary>
+
+```typescript
+export interface BoxPlotSummaryFields {
+  min: string;
+  q1: string;
+  median: string;
+  q3: string;
+  max: string;
+}
+```
+
+</details>
+
 ### `BoxPlotWhisker` {#type-boxplotwhisker}
 
 <details markdown="1">
 <summary>Expand BoxPlotWhisker</summary>
 
 ```typescript
-export type BoxPlotWhisker =
+export type BoxPlotWhisker = (
   | { type?: "tukey"; factor?: number }
-  | { type: "minmax"; factor?: never };
+  | { type: "minmax"; factor?: never }
+) & Pick<ErrorBarOptions, "caps" | "capSize" | "stroke" | "strokeWidth" | "strokeDash" | "opacity" |
+  "lineCap" | "lineJoin" | "miterLimit">;
+```
+
+</details>
+
+Related types: [`ErrorBarOptions`](#type-errorbaroptions).
+
+### `BoxPlotWidth` {#type-boxplotwidth}
+
+<details markdown="1">
+<summary>Expand BoxPlotWidth</summary>
+
+```typescript
+type BoxPlotWidth = { band?: number; pixels?: never } | { band?: never; pixels: number };
 ```
 
 </details>
@@ -4359,12 +4393,13 @@ Related types: [`FocusedWeightedDerivedDataEdit`](#type-focusedweightedderivedda
 
 ```typescript
 export interface EditBoxPlotOptions {
+  summary?: BoxPlotSummaryFields | false;
   target?: string;
   data?: string;
   x?: BoxPlotPositionChannel;
   y?: BoxPlotPositionChannel;
   whisker?: BoxPlotWhisker;
-  width?: { band?: number };
+  width?: BoxPlotWidth;
   outliers?: boolean;
   box?: RectStyleDetails & {
     fill?: string;
@@ -4373,6 +4408,7 @@ export interface EditBoxPlotOptions {
     strokeWidth?: number;
   };
   median?: StrokeStyleDetails & {
+    width?: { pixels: number } | "auto";
     stroke?: string;
     strokeWidth?: number;
   };
@@ -4386,7 +4422,7 @@ export interface EditBoxPlotOptions {
 
 </details>
 
-Related types: [`BoxPlotPositionChannel`](#type-boxplotpositionchannel) · [`BoxPlotWhisker`](#type-boxplotwhisker) · [`RectStyleDetails`](#type-rectstyledetails) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape).
+Related types: [`BoxPlotSummaryFields`](#type-boxplotsummaryfields) · [`BoxPlotPositionChannel`](#type-boxplotpositionchannel) · [`BoxPlotWhisker`](#type-boxplotwhisker) · [`BoxPlotWidth`](#type-boxplotwidth) · [`RectStyleDetails`](#type-rectstyledetails) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape).
 
 ### `EditColorScaleOptions` {#type-editcolorscaleoptions}
 

@@ -2,7 +2,7 @@ import { BOX_FIELDS, deriveBoxData, normalizeBoxTransform } from "../../grammar/
 import { derivedCreator, derivedMaterializer } from "./shared.js";
 
 const OPTIONS = Object.freeze([
-  "id", "source", "category", "field", "whisker", "factor", "as"
+  "id", "source", "category", "field", "whisker", "factor", "as", "summary"
 ]);
 
 function materializer(type, op, select) {
@@ -28,6 +28,7 @@ function creator(type, op, materialize) {
       type,
       category: args.category,
       field: args.field,
+      ...(args.summary === undefined ? {} : { summary: args.summary }),
       ...(args.whisker === undefined ? {} : { whisker: args.whisker }),
       ...(args.factor === undefined ? {} : { factor: args.factor }),
       as: args.as ?? BOX_FIELDS

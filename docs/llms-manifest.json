@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:7541ac4ed980fb8f9fb41dee1e294785a4c42490fbd9e6f848c7e46e36a5bb9e",
+    "contractId": "sha256:801be1ba37579c46b9d5a6eccff6f64da25f68a65eb0108804922c8fa649a784",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1098,10 +1098,11 @@
         "editing-a-box-plot",
         "current-statistical-and-visual-defaults",
         "current-limitations",
+        "precomputed-summaries",
         "related"
       ],
-      "bytes": 8269,
-      "sha256": "953727665c2b0572607d2826052b8a2769076fb65f7a11ef508bd9dfdad68a7d"
+      "bytes": 10497,
+      "sha256": "897d74ea14eba2cf7e8c3bd39d61d4425de0c8299c5f1f96a9cef1b8222c9a93"
     },
     {
       "order": 68,
@@ -2165,8 +2166,8 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 78277,
-      "sha256": "3d4f4cfd24aa5a5a92f1c0bd964218f9b574f67d4cd264b83a7224511fe505f2"
+      "bytes": 78576,
+      "sha256": "0387acd384bba67b70d3930f64d3370b2d83fef4dde8b91230413dcde0066136"
     },
     {
       "order": 122,
@@ -2389,7 +2390,9 @@
         "type-boxplotmeasurechannel",
         "type-boxplotoptions",
         "type-boxplotpositionchannel",
+        "type-boxplotsummaryfields",
         "type-boxplotwhisker",
+        "type-boxplotwidth",
         "type-caxes",
         "type-caxis",
         "type-caxisticks",
@@ -2951,8 +2954,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 316892,
-      "sha256": "7d6fee0dfd8d15b37c07531e8426f9819f0c1d308cebf82ab5f23120e5392b9a"
+      "bytes": 317922,
+      "sha256": "15d84dfbac3a5a12a2d3b1ca9511b2e0c8abace71989cc6492a34d3d1be16e77"
     },
     {
       "order": 127,
@@ -3305,7 +3308,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "cf47726e45a8528c291f1dc06eac1a9d0e875cefb72c7defe893c064f4fd8220"
+      "sha256": "3781e71e73b0171ac9c2861052136e2f2256aad189777fe3f433110cc96a89a0"
     },
     {
       "order": 150,

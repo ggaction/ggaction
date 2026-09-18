@@ -795,7 +795,8 @@
       "wraps": [
         "editSemantic",
         "encodeStroke",
-        "encodeStrokeWidth"
+        "encodeStrokeWidth",
+        "editErrorBar"
       ]
     },
     {

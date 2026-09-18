@@ -118,6 +118,18 @@ async function testNodeConsumer(directory) {
       assert.equal(png.buffer.readUInt32BE(16), Math.ceil(canvas.width));
       assert.equal(png.buffer.readUInt32BE(20), Math.ceil(canvas.height));
     }
+    const precomputedBox = chart().createCanvas({ width: 600, height: 400, margin: 80 })
+      .createData({ values: [{ group: "A", min: 3.07, q1: 13.3475, median: 17.795, q3: 24.1275, max: 50.81 }] })
+      .createBoxPlot({ x: { field: "group", fieldType: "nominal" },
+        summary: { min: "min", q1: "q1", median: "median", q3: "q3", max: "max" },
+        width: { pixels: 30 }, median: { width: { pixels: 18 } }, whisker: { caps: false, stroke: "black" } });
+    assert.equal(precomputedBox.graphicSpec.objects.boxPlot.items[0].properties.width, 30);
+    const boxMedian = precomputedBox.graphicSpec.objects.boxPlotMedian.items[0].properties;
+    assert.equal(boxMedian.x2 - boxMedian.x1, 18);
+    assert.equal(precomputedBox.graphicSpec.objects.boxPlotWhiskerLowerCap, undefined);
+    assert.deepEqual(deserializeProgram(serializeProgram(precomputedBox)).graphicSpec, precomputedBox.graphicSpec);
+    assert.ok((await renderToPNGBuffer(precomputedBox)).buffer.length > 1000);
+
     const textPlot = chart().createCanvas({ width: 600, height: 400, margin: 100 })
       .createData({ values: [{ x: 1, y: 2, label: "first", group: "A" }, { x: 2, y: 3, label: "second", group: "B" }] })
       .createTextPlot({ x: "x", y: "y", text: "label", color: "group" });
@@ -2765,6 +2777,15 @@ async function testTypeScriptConsumer(directory) {
       .editCompositionLayout({ spacing: "canvas" });
     chart().repeatCharts({ channel: "y", fields: ["a", "b"], spacing: "plot" });
     chart().facetGrid({ rows: { field: "r" }, columns: { field: "c" }, spacing: "plot" });
+
+    chart().createBoxPlot({ x: { field: "group", fieldType: "nominal" },
+      summary: { min: "min", q1: "q1", median: "median", q3: "q3", max: "max" },
+      width: { pixels: 30 }, median: { width: { pixels: 18 } }, whisker: { caps: false, stroke: "black" } })
+      .editBoxPlot({ summary: false, width: { band: 0.6 }, median: { width: "auto" } });
+    // @ts-expect-error fixed pixels and category fraction are mutually exclusive
+    chart().createBoxPlot({ width: { pixels: 30, band: 0.6 } });
+    // @ts-expect-error all five summary fields are required
+    chart().createBoxPlot({ summary: { median: "median" } });
 
     chart().createTextPlot({ x: "x", y: "y", text: "label" });
     chart().createTextPlot({ x: { field: "x", scale: { type: "log" } }, y: { datum: 2 },

@@ -29,6 +29,7 @@ export type {
   DisplayLabelOptions,
   BarWidthOptions,
   BoxPlotOptions,
+  BoxPlotSummaryFields,
   BinnedHeatmapColorOptions,
   BinnedHeatmapOptions,
   BinnedHeatmapPositionChannel,

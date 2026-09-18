@@ -421,6 +421,11 @@ export function buildActionRelationshipPrograms() {
   });
   return [
     ...descriptors.map(buildScenario),
+    chart().createCanvas().createData({ values: [{ group: "A", min: 1, q1: 2, median: 3, q3: 4, max: 5 }] })
+      .createBoxPlot({ x: { field: "group", fieldType: "nominal" },
+        summary: { min: "min", q1: "q1", median: "median", q3: "q3", max: "max" },
+        width: { pixels: 30 }, median: { width: { pixels: 18 } }, whisker: { caps: false } })
+      .editBoxPlot({ whisker: { caps: true, stroke: "black" } }),
     chart().createCanvas({ width: 600, height: 400, margin: 100 })
       .createData({ values: [{ x: 1, y: 2, label: "A", group: "one" }] })
       .createTextPlot({ x: "x", y: "y", text: "label", color: "group" }),

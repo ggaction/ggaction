@@ -6,6 +6,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ### Added
 
+- Box plots accept precomputed five-field summaries, fixed pixel box and median
+  widths, and whisker cap/stroke styling through creation and editing.
 - Added full-entry `createTextPlot` for independent data text with position,
   content, color, appearance and compatible guides in one composed action.
 

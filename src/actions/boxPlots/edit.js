@@ -1,8 +1,7 @@
 import { closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
-import { BOX_FIELDS, deriveBoxData, normalizeBoxTransform } from
+import { BOX_FIELDS, deriveBoxData, normalizeBoxTransform, normalizeBoxSummary } from
   "../../grammar/boxPlot.js";
 import { planDerivedDataRevision } from
   "../../materialization/dataProvenance.js";
@@ -16,6 +15,8 @@ import {
   updateDistributionPositions
 } from "../distributions/revision.js";
 import {
+  boxBarWidth,
+  boxWhiskerAppearance,
   resolveBoxAppearance,
   resolveBoxMedianAppearance,
   resolveBoxOutlierAppearance,
@@ -28,7 +29,7 @@ import { requestedRectStyleDetails } from "../../grammar/roundedRect.js";
 import { requestedStrokeDetails } from "../../grammar/strokeStyle.js";
 
 const OPTIONS = Object.freeze([
-  "target", "data", "x", "y", "whisker", "width", "outliers", "box",
+  "target", "data", "x", "y", "summary", "whisker", "width", "outliers", "box",
   "median", "outlier"
 ]);
 
@@ -44,7 +45,6 @@ function requirePatch(value, label) {
 function resolveEditedWhisker(current, value) {
   if (value === undefined) return current;
   const patch = requirePatch(value, "whisker");
-  validateKeys(patch, ["type", "factor"], "editBoxPlot whisker");
   const type = patch.type ?? current.type;
   const candidate = type === "minmax"
     ? { type, ...(Object.hasOwn(patch, "factor") ? { factor: patch.factor } : {}) }
@@ -54,7 +54,7 @@ function resolveEditedWhisker(current, value) {
           ? patch.factor
           : current.type === "tukey" ? current.factor : 1.5
       };
-  return resolveBoxWhisker(candidate, "editBoxPlot");
+  return resolveBoxWhisker({ ...boxWhiskerAppearance(current), ...patch, ...candidate }, "editBoxPlot");
 }
 
 function roleCandidate(program, owner, current, args) {
@@ -92,7 +92,7 @@ function updateBoxPositions(program, owner, current, candidate, {
   const capIds = [
     whiskerConfig.errorBar.lowerCapId,
     whiskerConfig.errorBar.upperCapId
-  ].filter(Boolean);
+  ].filter(id => id !== undefined && findLayer(program, id) !== undefined);
   const owned = [owner.id, current.whiskerId, ...capIds, current.medianId,
     ...(findLayer(program, current.outlierId) ? [current.outlierId] : [])];
   let next = updateDistributionPositions(
@@ -211,14 +211,23 @@ export const editBoxPlot = /* @__PURE__ */ closedAction(
     ambiguous: "Box-plot owner is ambiguous; provide target."
   }, validateUserId);
     const current = this.markConfigs[owner.id].boxPlot;
-    const whisker = resolveEditedWhisker(current.whisker, args.whisker);
+    const summary = args.summary !== undefined
+      ? args.summary === false ? undefined : normalizeBoxSummary(args.summary)
+      : current.summary;
+    const whisker = resolveEditedWhisker(current.whisker, args.whisker !== undefined ? args.whisker :
+      (summary !== undefined && current.summary === undefined ? { type: "minmax" } : undefined));
+    const whiskerAppearance = Object.fromEntries(Object.keys(boxWhiskerAppearance(args.whisker ?? {}))
+      .map(key => [key, whisker[key]]));
     const width = Object.hasOwn(args, "width")
       ? resolveBoxWidth(args.width, "editBoxPlot")
       : current.width;
     if (Object.hasOwn(args, "outliers") && typeof args.outliers !== "boolean") {
       throw new TypeError("editBoxPlot outliers must be a boolean.");
     }
-    const outliers = args.outliers ?? current.outliers;
+    const outliers = args.outliers ?? (summary !== undefined ? false : current.outliers);
+    if (summary !== undefined && (whisker.type !== "minmax" || outliers)) {
+      throw new Error("Precomputed box summaries require minmax whiskers and do not infer outliers.");
+    }
     const boxPatch = Object.hasOwn(args, "box")
       ? requirePatch(args.box, "box")
       : {};
@@ -257,8 +266,8 @@ export const editBoxPlot = /* @__PURE__ */ closedAction(
       key => Object.hasOwn(args, key)
     );
     const changesRoles = !sameRoleCandidate(current, candidate);
-    const revisesData = JSON.stringify(whisker) !== JSON.stringify(current.whisker) ||
-      outliers !== current.outliers;
+    const revisesData = whisker.type !== current.whisker.type || whisker.factor !== current.whisker.factor ||
+      JSON.stringify(summary) !== JSON.stringify(current.summary) || outliers !== current.outliers;
     if (changesRoles || revisesData) {
       const derived = deriveBoxData(
         sourceDataset.values,
@@ -266,6 +275,7 @@ export const editBoxPlot = /* @__PURE__ */ closedAction(
           type: "boxSummary",
           category: candidate.category,
           field: candidate.measure,
+          ...(summary === undefined ? {} : { summary }),
           whisker: whisker.type,
           ...(whisker.factor === undefined ? {} : { factor: whisker.factor })
         })
@@ -276,7 +286,7 @@ export const editBoxPlot = /* @__PURE__ */ closedAction(
       const capIds = [
         whiskerConfig.errorBar.lowerCapId,
         whiskerConfig.errorBar.upperCapId
-      ].filter(Boolean);
+      ].filter(id => id !== undefined && findLayer(this, id) !== undefined);
       const summaryRevision = planDerivedDataRevision(this, {
         owner: owner.id,
         role: "SummaryData",
@@ -300,6 +310,7 @@ export const editBoxPlot = /* @__PURE__ */ closedAction(
           source: candidate.source,
           category: candidate.category,
           field: candidate.measure,
+          ...(summary === undefined ? {} : { summary }),
           whisker: whisker.type,
           ...(whisker.factor === undefined ? {} : { factor: whisker.factor })
         });
@@ -335,6 +346,7 @@ export const editBoxPlot = /* @__PURE__ */ closedAction(
           boxPlot: {
             ...current,
             whisker,
+            summary,
             width,
             outliers,
             box,
@@ -347,7 +359,7 @@ export const editBoxPlot = /* @__PURE__ */ closedAction(
             summaryId: summaryRevision.id,
             outlierDataId: outlierRevision?.id
           },
-          barWidth: { band: width },
+          barWidth: boxBarWidth(width),
           fill: box.fill,
           opacity: box.opacity,
           stroke: box.stroke,
@@ -360,6 +372,9 @@ export const editBoxPlot = /* @__PURE__ */ closedAction(
           outlierDataId: outlierRevision?.id,
           hasOutliers
         });
+        if (Object.keys(whiskerAppearance).length > 0) {
+          next = next.editErrorBar({ target: current.whiskerId, ...whiskerAppearance });
+        }
         if (!hadOutlierLayer && hasOutliers) {
           const category = candidate.orientation === "vertical"
             ? candidate.x
@@ -435,6 +450,7 @@ export const editBoxPlot = /* @__PURE__ */ closedAction(
       boxPlot: {
         ...current,
         whisker,
+        summary,
         width,
         outliers,
         box,
@@ -443,7 +459,7 @@ export const editBoxPlot = /* @__PURE__ */ closedAction(
         summaryId: current.summaryId,
         outlierDataId: current.outlierDataId
       },
-      barWidth: { band: width },
+      barWidth: boxBarWidth(width),
       fill: box.fill,
       opacity: box.opacity,
       stroke: box.stroke,
@@ -453,6 +469,9 @@ export const editBoxPlot = /* @__PURE__ */ closedAction(
         : { barAppearance: boxStyleDetails })
     });
 
+    if (Object.keys(whiskerAppearance).length > 0) {
+      next = next.editErrorBar({ target: current.whiskerId, ...whiskerAppearance });
+    }
     if (changesBox) next = next.rematerializeBarMark({ id: owner.id });
     if (changesMedian) {
       next = next

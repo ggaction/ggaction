@@ -1,3 +1,4 @@
+import { boxBarWidth, boxWhiskerAppearance } from "./options.js";
 import { applyFacadeGuides } from "../charts/shared.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -60,7 +61,7 @@ export const materializeBoxPlot = /* @__PURE__ */ action(
         medianId,
         outlierId
       },
-      barWidth: { band: config.width },
+      barWidth: boxBarWidth(config.width),
       fill: config.box.fill,
       opacity: config.box.opacity,
       stroke: config.box.stroke,
@@ -73,6 +74,7 @@ export const materializeBoxPlot = /* @__PURE__ */ action(
       source,
       category: category.field,
       field: measure.field,
+      ...(config.summary === undefined ? {} : { summary: config.summary }),
       whisker: config.whisker.type,
       ...(config.whisker.factor === undefined
         ? {}
@@ -144,7 +146,8 @@ export const materializeBoxPlot = /* @__PURE__ */ action(
           }),
       coordinate: layer.coordinate,
       stroke: "#111111",
-      strokeWidth: 1.5
+      strokeWidth: 1.5,
+      ...boxWhiskerAppearance(config.whisker)
     });
     next = next
       .editSemantic({

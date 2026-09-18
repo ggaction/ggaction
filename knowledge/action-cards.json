@@ -13440,6 +13440,10 @@
           "strategy": "explicit-current-unique-or-error"
         },
         {
+          "input": "median",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "omitted optional options",
           "strategy": "documented-default"
         }
@@ -13453,6 +13457,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "summary",
+          "required": false,
+          "type": "BoxPlotSummaryFields | undefined"
+        },
         {
           "name": "id",
           "required": false,
@@ -13491,7 +13500,7 @@
         {
           "name": "width",
           "required": false,
-          "type": "{ band?: number | undefined; } | undefined"
+          "type": "BoxPlotWidth | undefined"
         },
         {
           "name": "outliers",
@@ -13506,7 +13515,7 @@
         {
           "name": "median",
           "required": false,
-          "type": "(StrokeStyleDetails & { stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { width?: \"auto\" | { pixels: number; } | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "outlier",
@@ -13562,7 +13571,8 @@
       "wraps": [
         "editSemantic",
         "encodeStroke",
-        "encodeStrokeWidth"
+        "encodeStrokeWidth",
+        "editErrorBar"
       ],
       "editableVia": [
         "editBoxPlot"
@@ -13586,6 +13596,10 @@
         {
           "input": "data",
           "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "median",
+          "strategy": "documented-auto"
         }
       ],
       "completionRequirements": {
@@ -13597,6 +13611,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "summary",
+          "required": false,
+          "type": "false | BoxPlotSummaryFields | undefined"
+        },
         {
           "name": "target",
           "required": false,
@@ -13625,7 +13644,7 @@
         {
           "name": "width",
           "required": false,
-          "type": "{ band?: number | undefined; } | undefined"
+          "type": "BoxPlotWidth | undefined"
         },
         {
           "name": "outliers",
@@ -13640,7 +13659,7 @@
         {
           "name": "median",
           "required": false,
-          "type": "(StrokeStyleDetails & { stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { width?: \"auto\" | { pixels: number; } | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "outlier",
@@ -13649,7 +13668,7 @@
         }
       ],
       "callPatterns": [
-        "editBoxPlot({ target?, data?, x?, y?, whisker?, width?, outliers?, box? })"
+        "editBoxPlot({ target?, data?, summary?, x?, y?, whisker?, width?, outliers? })"
       ],
       "snippet": "program.editBoxPlot({ data: \"data-1\" })",
       "errors": [],

@@ -447,7 +447,7 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "2e2acddc4a586a01b618d7f67a3c2b2c72c338e2edb263caeeada22fc26330fa",
+    "sha256": "f77345a6549e85b3e7f8dc834b5d906b96bea2d589dc4ee1d589af3768c7e2a8",
     "executable": false
   },
   {
@@ -508,6 +508,18 @@
     ],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `styled`. Resource selectors used here: `data: \"observations\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "43d1b33450ed37b422e46719235d78263ad1aee13bc3260424e280993dbbb790",
+    "executable": false
+  },
+  {
+    "file": "api/box-plots.md",
+    "block": 7,
+    "heading": "Precomputed summaries",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "90febeea51a7eb847910baf59000e95cfa77020d3304c89f40c482f2fa3b0b27",
     "executable": false
   },
   {

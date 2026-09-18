@@ -2585,11 +2585,24 @@ export type BoxPlotPositionChannel =
   | BoxPlotCategoryChannel
   | BoxPlotMeasureChannel;
 
-export type BoxPlotWhisker =
+export type BoxPlotWhisker = (
   | { type?: "tukey"; factor?: number }
-  | { type: "minmax"; factor?: never };
+  | { type: "minmax"; factor?: never }
+) & Pick<ErrorBarOptions, "caps" | "capSize" | "stroke" | "strokeWidth" | "strokeDash" | "opacity" |
+  "lineCap" | "lineJoin" | "miterLimit">;
+
+export interface BoxPlotSummaryFields {
+  min: string;
+  q1: string;
+  median: string;
+  q3: string;
+  max: string;
+}
+
+type BoxPlotWidth = { band?: number; pixels?: never } | { band?: never; pixels: number };
 
 export interface BoxPlotOptions {
+  summary?: BoxPlotSummaryFields;
   id?: string;
   target?: string;
   data?: string;
@@ -2597,7 +2610,7 @@ export interface BoxPlotOptions {
   y?: BoxPlotPositionChannel;
   coordinate?: string;
   whisker?: BoxPlotWhisker;
-  width?: { band?: number };
+  width?: BoxPlotWidth;
   outliers?: boolean;
   box?: RectStyleDetails & {
     fill?: string;
@@ -2606,6 +2619,7 @@ export interface BoxPlotOptions {
     strokeWidth?: number;
   };
   median?: StrokeStyleDetails & {
+    width?: { pixels: number } | "auto";
     stroke?: string;
     strokeWidth?: number;
   };
@@ -2618,12 +2632,13 @@ export interface BoxPlotOptions {
 }
 
 export interface EditBoxPlotOptions {
+  summary?: BoxPlotSummaryFields | false;
   target?: string;
   data?: string;
   x?: BoxPlotPositionChannel;
   y?: BoxPlotPositionChannel;
   whisker?: BoxPlotWhisker;
-  width?: { band?: number };
+  width?: BoxPlotWidth;
   outliers?: boolean;
   box?: RectStyleDetails & {
     fill?: string;
@@ -2632,6 +2647,7 @@ export interface EditBoxPlotOptions {
     strokeWidth?: number;
   };
   median?: StrokeStyleDetails & {
+    width?: { pixels: number } | "auto";
     stroke?: string;
     strokeWidth?: number;
   };

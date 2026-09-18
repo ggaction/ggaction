@@ -1,3 +1,4 @@
+import { SEARCH_INDEX_MAX_BYTES } from "../../scripts/generate-doc-search-index.js";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
@@ -785,7 +786,7 @@ test("keeps the compact search index generated and action-aware", async () => {
     true
   );
   assert.equal(index.length > 100, true);
-  assert.equal(JSON.stringify(index).length < 800_000, true);
+  assert.equal(Buffer.byteLength(JSON.stringify(index)) < SEARCH_INDEX_MAX_BYTES, true);
   assert.equal(index.every(entry => entry.keywords.every(keyword =>
     typeof keyword === "string" && keyword.length > 0
   )), true);

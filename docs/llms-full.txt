@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:7541ac4ed980fb8f9fb41dee1e294785a4c42490fbd9e6f848c7e46e36a5bb9e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:801be1ba37579c46b9d5a6eccff6f64da25f68a65eb0108804922c8fa649a784. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -8050,7 +8050,7 @@ const program = chart()
 
 ```javascript
 createBoxPlot({
-  id?, target?, data?, x?, y?, coordinate?, whisker?, width?, outliers?,
+  id?, target?, data?, x?, y?, coordinate?, summary?, whisker?, width?, outliers?,
   box?, median?, outlier?, guides?
 } = {})
 ```
@@ -8063,11 +8063,12 @@ createBoxPlot({
 | `x` | categorical or quantitative field and optional scale | inferred from `target` when omitted |
 | `y` | categorical or quantitative field and optional scale | inferred from `target` when omitted |
 | `coordinate` | Cartesian coordinate ID | source coordinate, then `"main"` |
-| `whisker` | `{ type: "tukey", factor? }` or `{ type: "minmax" }` | Tukey with factor `1.5` |
-| `width` | `{ band }`, where `0 < band < 1` | `{ band: 0.7 }` |
-| `outliers` | create Tukey outlier resources | `true` |
+| `summary` | `{ min, q1, median, q3, max }` source field names | omitted: compute from raw observations |
+| `whisker` | statistical policy plus `caps`, `capSize`, stroke, opacity and stroke details | Tukey with factor `1.5`; precomputed summaries use minmax |
+| `width` | `{ band }`, where `0 < band < 1`, or positive `{ pixels }` | `{ band: 0.7 }` |
+| `outliers` | create Tukey outlier resources | `true` for raw data; `false` for precomputed summaries |
 | `box` | `fill`, `opacity`, `stroke`, `strokeWidth`, `cornerRadius`, and stroke details | blue, opaque, `1.5` stroke, square corners |
-| `median` | `stroke`, `strokeWidth`, and stroke details | dark stroke with width `1.5` |
+| `median` | `stroke`, `strokeWidth`, stroke details, and `width: { pixels }` | dark stroke with width `1.5`; span follows box body |
 | `outlier` | `shape`, `radius`, `opacity`, and stroke details | black diamond, radius `3`, opacity `0.75` |
 | `guides` | `false` or applicable axis/grid/legend options | omitted: no guides; explicit `{}` creates applicable guides |
 
@@ -8181,6 +8182,43 @@ explicitly rematerialize boxes, medians, whiskers, caps, and outliers.
 
 Subgroup offsets, notches, variable-width boxes, and custom whisker appearance
 are not implemented.
+
+## Precomputed summaries
+
+Supply one row per box when the five summary values are already known:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+const summaryChart = chart().createCanvas().createData({ values: [
+  { group: "A", min: 3.07, q1: 13.3475, median: 17.795, q3: 24.1275, max: 50.81 }
+] }).createBoxPlot({
+  x: { field: "group", fieldType: "nominal" },
+  summary: { min: "min", q1: "q1", median: "median", q3: "q3", max: "max" },
+  width: { pixels: 30 },
+  median: { width: { pixels: 18 } },
+  whisker: { caps: false, stroke: "black" }
+});
+```
+
+The omitted quantitative position is inferred from `summary.median` when the
+other position is supplied. An explicit quantitative position must name that
+same field. Use categorical `y` for horizontal boxes. Values are copied exactly;
+quartiles, fences and sample counts are not estimated. Each row must have
+finite values satisfying `min <= q1 <= median <= q3 <= max`.
+Missing categories are omitted. Repeated categories retain separate boxes at the
+same category position; facets can partition them by another field. Missing
+summary values are errors. Precomputed mode rejects Tukey policy and `outliers: true`.
+
+Pixel box and median widths remain fixed on resize. Omitted median width follows
+the body; `editBoxPlot({ median: { width: "auto" } })` restores that behavior.
+Whisker cap and stroke settings use the same options as error bars. Appearance
+edits preserve summary data, while source, field mapping or statistical edits
+create an immutable derived revision. `editBoxPlot({ summary: false })` returns
+to computing summaries from the current measure field; supply `data` and a new
+measure position together when switching to raw observations.
 
 ## Related
 
@@ -22488,6 +22526,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `summary` | Optional / branch-dependent | `BoxPlotSummaryFields \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
@@ -22495,10 +22534,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `whisker` | Optional / branch-dependent | `BoxPlotWhisker \| undefined` |
-| `width` | Optional / branch-dependent | `{ band?: number \| undefined; } \| undefined` |
+| `width` | Optional / branch-dependent | `BoxPlotWidth \| undefined` |
 | `outliers` | Optional / branch-dependent | `boolean \| undefined` |
 | `box` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
-| `median` | Optional / branch-dependent | `(StrokeStyleDetails & { stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `median` | Optional / branch-dependent | `(StrokeStyleDetails & { width?: "auto" \| { pixels: number; } \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `outlier` | Optional / branch-dependent | `(StrokeStyleDetails & { shape?: PointShape \| undefined; radius?: number \| undefined; opacity?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| BoxPlotGuideOptions \| undefined` |
 
@@ -22506,13 +22545,13 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createBoxPlot({
-  id?, target?, data?, x?, y?, coordinate?, whisker?, width?, outliers?,
+  id?, target?, data?, x?, y?, coordinate?, summary?, whisker?, width?, outliers?,
   box?, median?, outlier?, guides?
 } = {})
 ```
 
-Create a Box plot owner that defers geometry and guides until compatible x/y
-roles are available. The action infers an encoded source when possible
+Create a Box plot owner from raw observations or explicit five-field summaries.
+Geometry and guides defer until compatible x/y roles are available. The action infers an encoded source when possible
 and composes immutable box summary data, error-bar whiskers, ranged-bar bodies,
 median rules, and optional point outliers. Tukey factor, band width, component
 appearance, and outlier creation are configurable. [Box plots](./api/box-plots/)
@@ -22537,15 +22576,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `summary` | Optional / branch-dependent | `false \| BoxPlotSummaryFields \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `whisker` | Optional / branch-dependent | `BoxPlotWhisker \| undefined` |
-| `width` | Optional / branch-dependent | `{ band?: number \| undefined; } \| undefined` |
+| `width` | Optional / branch-dependent | `BoxPlotWidth \| undefined` |
 | `outliers` | Optional / branch-dependent | `boolean \| undefined` |
 | `box` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
-| `median` | Optional / branch-dependent | `(StrokeStyleDetails & { stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `median` | Optional / branch-dependent | `(StrokeStyleDetails & { width?: "auto" \| { pixels: number; } \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `outlier` | Optional / branch-dependent | `(StrokeStyleDetails & { shape?: PointShape \| undefined; radius?: number \| undefined; opacity?: number \| undefined; }) \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -27258,6 +27298,7 @@ Related types: [`NonPointQuantitativePositionScaleOptions`](./reference/types/#t
 
 ```typescript
 export interface BoxPlotOptions {
+  summary?: BoxPlotSummaryFields;
   id?: string;
   target?: string;
   data?: string;
@@ -27265,7 +27306,7 @@ export interface BoxPlotOptions {
   y?: BoxPlotPositionChannel;
   coordinate?: string;
   whisker?: BoxPlotWhisker;
-  width?: { band?: number };
+  width?: BoxPlotWidth;
   outliers?: boolean;
   box?: RectStyleDetails & {
     fill?: string;
@@ -27274,6 +27315,7 @@ export interface BoxPlotOptions {
     strokeWidth?: number;
   };
   median?: StrokeStyleDetails & {
+    width?: { pixels: number } | "auto";
     stroke?: string;
     strokeWidth?: number;
   };
@@ -27286,7 +27328,7 @@ export interface BoxPlotOptions {
 }
 ```
 
-Related types: [`BoxPlotPositionChannel`](./reference/types/#type-boxplotpositionchannel) · [`BoxPlotWhisker`](./reference/types/#type-boxplotwhisker) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`BoxPlotGuideOptions`](./reference/types/#type-boxplotguideoptions).
+Related types: [`BoxPlotSummaryFields`](./reference/types/#type-boxplotsummaryfields) · [`BoxPlotPositionChannel`](./reference/types/#type-boxplotpositionchannel) · [`BoxPlotWhisker`](./reference/types/#type-boxplotwhisker) · [`BoxPlotWidth`](./reference/types/#type-boxplotwidth) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`BoxPlotGuideOptions`](./reference/types/#type-boxplotguideoptions).
 
 ### `BoxPlotPositionChannel` {#type-boxplotpositionchannel}
 
@@ -27300,14 +27342,40 @@ export type BoxPlotPositionChannel =
 
 Related types: [`BoxPlotCategoryChannel`](./reference/types/#type-boxplotcategorychannel) · [`BoxPlotMeasureChannel`](./reference/types/#type-boxplotmeasurechannel).
 
+### `BoxPlotSummaryFields` {#type-boxplotsummaryfields}
+
+ Expand BoxPlotSummaryFields
+
+```typescript
+export interface BoxPlotSummaryFields {
+  min: string;
+  q1: string;
+  median: string;
+  q3: string;
+  max: string;
+}
+```
+
 ### `BoxPlotWhisker` {#type-boxplotwhisker}
 
  Expand BoxPlotWhisker
 
 ```typescript
-export type BoxPlotWhisker =
+export type BoxPlotWhisker = (
   | { type?: "tukey"; factor?: number }
-  | { type: "minmax"; factor?: never };
+  | { type: "minmax"; factor?: never }
+) & Pick<ErrorBarOptions, "caps" | "capSize" | "stroke" | "strokeWidth" | "strokeDash" | "opacity" |
+  "lineCap" | "lineJoin" | "miterLimit">;
+```
+
+Related types: [`ErrorBarOptions`](./reference/types/#type-errorbaroptions).
+
+### `BoxPlotWidth` {#type-boxplotwidth}
+
+ Expand BoxPlotWidth
+
+```typescript
+type BoxPlotWidth = { band?: number; pixels?: never } | { band?: never; pixels: number };
 ```
 
 ### `CAxes` {#type-caxes}
@@ -29927,12 +29995,13 @@ Related types: [`FocusedWeightedDerivedDataEdit`](./reference/types/#type-focuse
 
 ```typescript
 export interface EditBoxPlotOptions {
+  summary?: BoxPlotSummaryFields | false;
   target?: string;
   data?: string;
   x?: BoxPlotPositionChannel;
   y?: BoxPlotPositionChannel;
   whisker?: BoxPlotWhisker;
-  width?: { band?: number };
+  width?: BoxPlotWidth;
   outliers?: boolean;
   box?: RectStyleDetails & {
     fill?: string;
@@ -29941,6 +30010,7 @@ export interface EditBoxPlotOptions {
     strokeWidth?: number;
   };
   median?: StrokeStyleDetails & {
+    width?: { pixels: number } | "auto";
     stroke?: string;
     strokeWidth?: number;
   };
@@ -29952,7 +30022,7 @@ export interface EditBoxPlotOptions {
 }
 ```
 
-Related types: [`BoxPlotPositionChannel`](./reference/types/#type-boxplotpositionchannel) · [`BoxPlotWhisker`](./reference/types/#type-boxplotwhisker) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape).
+Related types: [`BoxPlotSummaryFields`](./reference/types/#type-boxplotsummaryfields) · [`BoxPlotPositionChannel`](./reference/types/#type-boxplotpositionchannel) · [`BoxPlotWhisker`](./reference/types/#type-boxplotwhisker) · [`BoxPlotWidth`](./reference/types/#type-boxplotwidth) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape).
 
 ### `EditColorScaleOptions` {#type-editcolorscaleoptions}
 
@@ -38570,7 +38640,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:7541ac4ed980fb8f9fb41dee1e294785a4c42490fbd9e6f848c7e46e36a5bb9e` |
+| Contract fingerprint | `sha256:801be1ba37579c46b9d5a6eccff6f64da25f68a65eb0108804922c8fa649a784` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

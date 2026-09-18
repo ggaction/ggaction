@@ -51,7 +51,7 @@ const program = chart()
 
 ```javascript
 createBoxPlot({
-  id?, target?, data?, x?, y?, coordinate?, whisker?, width?, outliers?,
+  id?, target?, data?, x?, y?, coordinate?, summary?, whisker?, width?, outliers?,
   box?, median?, outlier?, guides?
 } = {})
 ```
@@ -64,11 +64,12 @@ createBoxPlot({
 | `x` | categorical or quantitative field and optional scale | inferred from `target` when omitted |
 | `y` | categorical or quantitative field and optional scale | inferred from `target` when omitted |
 | `coordinate` | Cartesian coordinate ID | source coordinate, then `"main"` |
-| `whisker` | `{ type: "tukey", factor? }` or `{ type: "minmax" }` | Tukey with factor `1.5` |
-| `width` | `{ band }`, where `0 < band < 1` | `{ band: 0.7 }` |
-| `outliers` | create Tukey outlier resources | `true` |
+| `summary` | `{ min, q1, median, q3, max }` source field names | omitted: compute from raw observations |
+| `whisker` | statistical policy plus `caps`, `capSize`, stroke, opacity and stroke details | Tukey with factor `1.5`; precomputed summaries use minmax |
+| `width` | `{ band }`, where `0 < band < 1`, or positive `{ pixels }` | `{ band: 0.7 }` |
+| `outliers` | create Tukey outlier resources | `true` for raw data; `false` for precomputed summaries |
 | `box` | `fill`, `opacity`, `stroke`, `strokeWidth`, `cornerRadius`, and stroke details | blue, opaque, `1.5` stroke, square corners |
-| `median` | `stroke`, `strokeWidth`, and stroke details | dark stroke with width `1.5` |
+| `median` | `stroke`, `strokeWidth`, stroke details, and `width: { pixels }` | dark stroke with width `1.5`; span follows box body |
 | `outlier` | `shape`, `radius`, `opacity`, and stroke details | black diamond, radius `3`, opacity `0.75` |
 | `guides` | `false` or applicable axis/grid/legend options | omitted: no guides; explicit `{}` creates applicable guides |
 
@@ -198,6 +199,47 @@ explicitly rematerialize boxes, medians, whiskers, caps, and outliers.
 
 Subgroup offsets, notches, variable-width boxes, and custom whisker appearance
 are not implemented.
+
+## Precomputed summaries
+
+Supply one row per box when the five summary values are already known:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const summaryChart = chart().createCanvas().createData({ values: [
+  { group: "A", min: 3.07, q1: 13.3475, median: 17.795, q3: 24.1275, max: 50.81 }
+] }).createBoxPlot({
+  x: { field: "group", fieldType: "nominal" },
+  summary: { min: "min", q1: "q1", median: "median", q3: "q3", max: "max" },
+  width: { pixels: 30 },
+  median: { width: { pixels: 18 } },
+  whisker: { caps: false, stroke: "black" }
+});
+```
+
+The omitted quantitative position is inferred from `summary.median` when the
+other position is supplied. An explicit quantitative position must name that
+same field. Use categorical `y` for horizontal boxes. Values are copied exactly;
+quartiles, fences and sample counts are not estimated. Each row must have
+finite values satisfying `min <= q1 <= median <= q3 <= max`.
+Missing categories are omitted. Repeated categories retain separate boxes at the
+same category position; facets can partition them by another field. Missing
+summary values are errors. Precomputed mode rejects Tukey policy and `outliers: true`.
+
+Pixel box and median widths remain fixed on resize. Omitted median width follows
+the body; `editBoxPlot({ median: { width: "auto" } })` restores that behavior.
+Whisker cap and stroke settings use the same options as error bars. Appearance
+edits preserve summary data, while source, field mapping or statistical edits
+create an immutable derived revision. `editBoxPlot({ summary: false })` returns
+to computing summaries from the current measure field; supply `data` and a new
+measure position together when switching to raw observations.
 
 ## Related
 

@@ -9,13 +9,43 @@ export const BOX_FIELDS = Object.freeze({
 });
 
 const TRANSFORM_KEYS = [
-  "type", "category", "field", "method", "whisker", "factor", "as"
+  "type", "category", "field", "method", "whisker", "factor", "as", "summary"
 ];
 const OUTPUT_KEYS = Object.keys(BOX_FIELDS);
 
 function field(value, label) {
   if (typeof value !== "string" || value.length === 0) throw new TypeError(`${label} must be a non-empty string.`);
   return value;
+}
+
+const SUMMARY_KEYS = Object.freeze(["min", "q1", "median", "q3", "max"]);
+
+export function normalizeBoxSummary(value) {
+  if (value === undefined) return undefined;
+  if (!isPlainObject(value) || Object.keys(value).length !== SUMMARY_KEYS.length ||
+      !SUMMARY_KEYS.every(key => Object.hasOwn(value, key))) {
+    throw new TypeError("Box summary requires min, q1, median, q3 and max field names.");
+  }
+  return cloneAndFreeze(Object.fromEntries(SUMMARY_KEYS.map(key => [key, field(value[key], `Box summary.${key}`)])));
+}
+
+function derivePrecomputedBoxData(rows, transform) {
+  const { category, summary, as } = transform;
+  const summaries = [];
+  for (const row of rows) {
+    const key = row[category];
+    if (key === undefined || key === null || key === "") continue;
+    const values = SUMMARY_KEYS.map(role => row[summary[role]]);
+    if (!values.every(Number.isFinite)) throw new TypeError("Precomputed box summaries require finite values for all five fields.");
+    if (values.some((value, index) => index > 0 && value < values[index - 1])) {
+      throw new RangeError("Box summary must satisfy min <= q1 <= median <= q3 <= max.");
+    }
+    const [min, q1, median, q3, max] = values;
+    summaries.push({ [category]: key, [as.q1]: q1, [as.median]: median, [as.q3]: q3,
+      [as.lowerWhisker]: min, [as.upperWhisker]: max });
+  }
+  if (summaries.length === 0) throw new Error("Box transform requires at least one valid row.");
+  return cloneAndFreeze({ summaries, outliers: [] });
 }
 
 function validateOutputs(as, occupied) {
@@ -40,6 +70,18 @@ export function validateBoxTransform(value) {
   }
   field(value.category, "Box category field");
   field(value.field, "Box measure field");
+  if (value.method === "precomputed") {
+    const summary = normalizeBoxSummary(value.summary);
+    if (summary === undefined || value.type !== "boxSummary" || value.field !== summary.median) {
+      throw new Error("Precomputed box summaries require a summary mapping and its median measure field.");
+    }
+    if (value.whisker !== undefined || value.factor !== undefined) {
+      throw new Error("Precomputed box summaries do not compute whiskers or factors.");
+    }
+    validateOutputs(value.as, new Set([value.category, ...Object.values(summary)]));
+    return value;
+  }
+  if (value.summary !== undefined) throw new Error("Box summary fields require the precomputed method.");
   if (value.method !== "linear") throw new Error(`Unsupported box quantile method "${value.method}".`);
   const whisker = value.whisker ?? "tukey";
   if (!["tukey", "minmax"].includes(whisker)) {
@@ -56,6 +98,16 @@ export function validateBoxTransform(value) {
 }
 
 export function normalizeBoxTransform(options = {}) {
+  if (options.summary !== undefined) {
+    const summary = normalizeBoxSummary(options.summary);
+    const normalized = { type: options.type ?? "boxSummary", category: options.category,
+      field: options.field ?? summary.median, method: "precomputed", summary, as: options.as ?? BOX_FIELDS };
+    if (options.factor !== undefined || (options.whisker !== undefined && options.whisker !== "minmax")) {
+      throw new Error("Precomputed box summaries require minmax whiskers without a factor.");
+    }
+    validateBoxTransform(normalized);
+    return cloneAndFreeze(normalized);
+  }
   const {
     type = "boxSummary",
     category,
@@ -83,6 +135,7 @@ export function normalizeBoxTransform(options = {}) {
 export function deriveBoxData(rows, transform) {
   if (!Array.isArray(rows)) throw new TypeError("Box rows must be an array.");
   validateBoxTransform(transform);
+  if (transform.method === "precomputed") return derivePrecomputedBoxData(rows, transform);
   const { category, field: measure, factor, as } = transform;
   const whisker = transform.whisker ?? "tukey";
   const groups = [];

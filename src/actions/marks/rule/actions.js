@@ -298,13 +298,16 @@ const rematerializeRuleMark = /* @__PURE__ */ action(
           properties: item?.properties
         });
         if (box === undefined) throw new Error(`Rule mark "${id}" requires box span owner "${boxSpan}".`);
+        const pixels = resolved.markConfigs[boxSpan]?.boxPlot?.median?.width?.pixels;
         if (layer.encoding?.x?.fieldType === "quantitative") {
           startX = endX = mapped.x[index];
-          startY = box.y;
-          endY = box.y + box.height;
+          const height = pixels ?? box.height;
+          startY = box.y + (box.height - height) / 2;
+          endY = startY + height;
         } else {
-          startX = box.x;
-          endX = box.x + box.width;
+          const width = pixels ?? box.width;
+          startX = box.x + (box.width - width) / 2;
+          endX = startX + width;
           startY = endY = mapped.y[index];
         }
       } else if (mode === "fixed-span") {
