@@ -983,11 +983,14 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createAnnotation`
 
-- Signature: `createAnnotation({ id?, text, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })`.
+- Signature: `createAnnotation({ id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })`.
 - Exactly one anchor branch is selected. Mark anchor omits x/y/space and uses explicit/current/unique final-item source.
   Data anchor requires x and y and selects one explicit/current/unique complete Cartesian layer for data, coordinate,
   both scales, field types and temporal units. Plot anchor requires `space:"plot"`, finite x/y in [0,1], optional
   existing data/coordinate, and ordinary `<id>-x`/`<id>-y` linear [0,1] scales. x=0 is left; y=0 is bottom.
+- `anchor:"plot-center"`는 plot x/y=.5와 align:center/baseline:middle을 함께 소유한다.
+  x/y/space/source/align/baseline 병용은 오류다. data/coordinate/style/dx/dy/layout은 기존 plot branch와 같다.
+  Canvas 크기·비대칭 margin 변경에도 plot 중앙을 유지하며 outer Canvas 중앙이나 mark 중앙을 뜻하지 않는다.
 - `text` is required constant content. Text style and format delegate to createTextMark/encodeText. Omitted/false layout
   preserves the anchor; a target-free layout object delegates to layoutLabels. Default ID is `annotation`.
 - `rotation` uses the same `RotationInput` and radians normalization as Text and Mark Labels.
@@ -1002,10 +1005,11 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 ### Formal values — `createAnnotation`
 
 - Implemented: `CreateAnnotationOptions = TextStyle & { id?: UserId; text: unknown; format?: TextFormat;
-  layout?: false | Omit<LabelLayoutOptions,"target"> } & (MarkAnchor | DataAnchor | PlotAnchor)`.
+  layout?: false | Omit<LabelLayoutOptions,"target"> } & (MarkAnchor | DataAnchor | PlotAnchor | PlotCenterAnchor)`.
 - MarkAnchor: `{ source?: UserId; x?: never; y?: never; space?: never; data?: never; coordinate?: never }`.
 - DataAnchor: `{ x: unknown; y: unknown; space?: "data"; source?: UserId; data?: never; coordinate?: never }`.
 - PlotAnchor: `{ x: UnitInterval; y: UnitInterval; space: "plot"; source?: never; data?: UserId; coordinate?: UserId }`.
+- PlotCenterAnchor: `{ anchor:"plot-center"; data?:UserId; coordinate?:UserId; x?:never; y?:never; space?:never; source?:never; align?:never; baseline?:never }`. Other branches reject `anchor`.
 - Proposed (NOT IMPLEMENTED): nearest-mark search, a dedicated annotation registry, and an `editAnnotation` facade.
 
 ### Value coverage — `createAnnotation`

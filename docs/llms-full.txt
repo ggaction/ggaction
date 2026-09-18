@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:728eda143a382d9431e37c81961d3612a88dcf1cf5681e8208c73cff116be730. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:c0fca342d57fdb23bf115de3fa82c9c2bbc89227621d400b077b77e583e8f300. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -6539,7 +6539,14 @@ const plotNote = points.createAnnotation({
   x: 0.75,
   y: 0.8
 });
+
+const centerNote = points.createAnnotation({ text: "Total", anchor: "plot-center" });
 ```
+
+`anchor: "plot-center"` owns the plot midpoint and centered horizontal/vertical
+alignment together. It follows plot bounds when the Canvas or margins change.
+Do not combine it with `x`, `y`, `space`, `source`, `align`, or `baseline`.
+Optional `data`, `coordinate`, text styling, and pixel offsets remain available.
 
 For a mark anchor, omit x, y, and space. `source` selects an existing compatible
 mark, or the current/unique mark is inferred. The constant text appears once per
@@ -18942,6 +18949,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `text` | Required | `unknown` |
 | `format` | Optional / branch-dependent | `ValueFormat \| undefined` |
 | `layout` | Optional / branch-dependent | `false \| Omit<LabelLayoutOptions, "target"> \| undefined` |
+| `anchor` | Optional / branch-dependent | `"plot-center" \| undefined` |
 | `x` | Optional / branch-dependent | `unknown` |
 | `y` | Optional / branch-dependent | `unknown` |
 | `space` | Optional / branch-dependent | `"data" \| "plot" \| undefined` |
@@ -18952,10 +18960,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createAnnotation({ id?, text, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
+createAnnotation({ id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
 ```
 
-Create constant text through one explicit anchor branch. Omit x/y/space for a
+Create anchored text. Omit x/y/space for a
 final-item mark anchor; `source` selects the mark, otherwise current/unique mark
 inference applies. Provide both x and y for a data anchor; `source` selects one
 complete Cartesian layer whose data, coordinate, scales, field types, and temporal
@@ -18966,6 +18974,11 @@ With `space: "plot"`, x and y are finite fractions in `[0,1]`, where x=0 is left
 and y=0 is bottom. Existing `data` is explicit or inferred, and `coordinate` is
 optional. Plot anchors reject `source` and use ordinary `<id>-x`/`<id>-y` linear
 scales with domain `[0,1]`. The default ID is `annotation`.
+
+`anchor: "plot-center"` supplies plot x/y=0.5, horizontal center alignment, and
+middle baseline together. It rejects `x`, `y`, `space`, `source`, `align`, and
+`baseline`; optional data, coordinate, styles, and offsets follow the plot branch.
+The anchor follows plot bounds on Canvas and margin changes.
 
 Omit `layout` or pass `false` to retain the exact anchor. A layout object accepts
 `layoutLabels` options except `target`. Later changes use `encodeText`, `encodeX/Y`,
@@ -26389,6 +26402,18 @@ export type AngleEncodingOptions =
 ```typescript
 type AnnotationAnchor =
   | {
+      anchor: "plot-center";
+      x?: never;
+      y?: never;
+      space?: never;
+      source?: never;
+      align?: never;
+      baseline?: never;
+      data?: string;
+      coordinate?: string;
+    }
+  | {
+      anchor?: never;
       x?: never;
       y?: never;
       space?: never;
@@ -26397,6 +26422,7 @@ type AnnotationAnchor =
       coordinate?: never;
     }
   | {
+      anchor?: never;
       x: unknown;
       y: unknown;
       space?: "data";
@@ -26405,6 +26431,7 @@ type AnnotationAnchor =
       coordinate?: never;
     }
   | {
+      anchor?: never;
       x: number;
       y: number;
       space: "plot";
@@ -38384,7 +38411,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:728eda143a382d9431e37c81961d3612a88dcf1cf5681e8208c73cff116be730` |
+| Contract fingerprint | `sha256:c0fca342d57fdb23bf115de3fa82c9c2bbc89227621d400b077b77e583e8f300` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

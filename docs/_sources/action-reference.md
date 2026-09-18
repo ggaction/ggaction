@@ -1508,10 +1508,10 @@ to use `removeMark`.
 ### `createAnnotation`
 
 ```javascript
-createAnnotation({ id?, text, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
+createAnnotation({ id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
 ```
 
-Create constant text through one explicit anchor branch. Omit x/y/space for a
+Create anchored text. Omit x/y/space for a
 final-item mark anchor; `source` selects the mark, otherwise current/unique mark
 inference applies. Provide both x and y for a data anchor; `source` selects one
 complete Cartesian layer whose data, coordinate, scales, field types, and temporal
@@ -1522,6 +1522,11 @@ With `space: "plot"`, x and y are finite fractions in `[0,1]`, where x=0 is left
 and y=0 is bottom. Existing `data` is explicit or inferred, and `coordinate` is
 optional. Plot anchors reject `source` and use ordinary `<id>-x`/`<id>-y` linear
 scales with domain `[0,1]`. The default ID is `annotation`.
+
+`anchor: "plot-center"` supplies plot x/y=0.5, horizontal center alignment, and
+middle baseline together. It rejects `x`, `y`, `space`, `source`, `align`, and
+`baseline`; optional data, coordinate, styles, and offsets follow the plot branch.
+The anchor follows plot bounds on Canvas and margin changes.
 
 Omit `layout` or pass `false` to retain the exact anchor. A layout object accepts
 `layoutLabels` options except `target`. Later changes use `encodeText`, `encodeX/Y`,

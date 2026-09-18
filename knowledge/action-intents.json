@@ -1563,7 +1563,7 @@
     ],
     "createAnnotation": [
       "createAnnotation({ text, source? })",
-      "createAnnotation({ text, x, y, space?: \"data\" | \"plot\" })"
+      "createAnnotation({ text, anchor: \"plot-center\" })"
     ],
     "createAreaPlot": [
       "createAreaPlot({ x, y })",

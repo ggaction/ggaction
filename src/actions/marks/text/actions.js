@@ -195,7 +195,7 @@ const LABEL_OPTIONS = Object.freeze([
 ]);
 
 const ANNOTATION_OPTIONS = Object.freeze([
-  "id", "text", "format", "x", "y", "space", "source", "data", "coordinate", "layout",
+  "id", "text", "format", "anchor", "x", "y", "space", "source", "data", "coordinate", "layout",
   ...STYLE_OPTIONS
 ]);
 
@@ -271,6 +271,15 @@ const createAnnotation = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, ANNOTATION_OPTIONS, "createAnnotation");
+    if (Object.hasOwn(args, "anchor")) {
+      if (args.anchor !== "plot-center") {
+        throw new Error('createAnnotation anchor must be "plot-center".');
+      }
+      if (["x", "y", "space", "source", "align", "baseline"].some(key => Object.hasOwn(args, key))) {
+        throw new Error("createAnnotation plot-center owns x, y, space, align, and baseline and does not accept source.");
+      }
+      args = { ...args, space: "plot", x: 0.5, y: 0.5, align: "center", baseline: "middle" };
+    }
     if (!Object.hasOwn(args, "text")) {
       throw new Error("createAnnotation requires text.");
     }

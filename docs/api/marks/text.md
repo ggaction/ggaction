@@ -38,7 +38,14 @@ const plotNote = points.createAnnotation({
   x: 0.75,
   y: 0.8
 });
+
+const centerNote = points.createAnnotation({ text: "Total", anchor: "plot-center" });
 ```
+
+`anchor: "plot-center"` owns the plot midpoint and centered horizontal/vertical
+alignment together. It follows plot bounds when the Canvas or margins change.
+Do not combine it with `x`, `y`, `space`, `source`, `align`, or `baseline`.
+Optional `data`, `coordinate`, text styling, and pixel offsets remain available.
 
 For a mark anchor, omit x, y, and space. `source` selects an existing compatible
 mark, or the current/unique mark is inferred. The constant text appears once per

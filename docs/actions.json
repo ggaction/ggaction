@@ -6033,7 +6033,7 @@
       "name": "createAnnotation",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Create constant text through one explicit anchor branch.",
+      "summary": "Create anchored text.",
       "signature": "createAnnotation(options: CreateAnnotationOptions): ChartProgram;",
       "intents": [
         "create annotation",
@@ -6218,6 +6218,11 @@
           "type": "false | Omit<LabelLayoutOptions, \"target\"> | undefined"
         },
         {
+          "name": "anchor",
+          "required": false,
+          "type": "\"plot-center\" | undefined"
+        },
+        {
           "name": "x",
           "required": false,
           "type": "unknown"
@@ -6250,7 +6255,7 @@
       ],
       "callPatterns": [
         "createAnnotation({ text, source? })",
-        "createAnnotation({ text, x, y, space?: \"data\" | \"plot\" })"
+        "createAnnotation({ text, anchor: \"plot-center\" })"
       ],
       "snippet": "program.createAnnotation({ text: \"Peak\", x: 8, y: 9 })",
       "errors": [],

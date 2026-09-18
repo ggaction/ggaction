@@ -2057,6 +2057,14 @@ async function testNodeConsumer(directory) {
     assert.equal(chart().createCanvas().createData({ values: [] })
       .createAnnotation({ text: "Plot", space: "plot", x: 0.5, y: 0.5 })
       .graphicSpec.objects.annotation.items.length, 1);
+    const centered = chart().createCanvas({ width: 480, height: 320, margin: 40 })
+      .createData({ values: [{ category: "A", value: 2 }, { category: "B", value: 3 }] })
+      .createPiePlot({ category: "category", value: "value", aggregate: "sum", guides: false })
+      .createAnnotation({ text: "5", anchor: "plot-center" });
+    assert.deepEqual([centered.graphicSpec.objects.annotation.items[0].properties.x,
+      centered.graphicSpec.objects.annotation.items[0].properties.y], [240, 160]);
+    assert.deepEqual(deserializeProgram(serializeProgram(centered)).graphicSpec, centered.graphicSpec);
+    assert.match(renderToSVG(centered), /<svg/);
     const explicitRotations = chart().createCanvas({ width: 320, height: 240, margin: 80 })
       .createData({ values: [{ x: 1, y: 2 }] })
       .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
@@ -4243,6 +4251,11 @@ async function testTypeScriptConsumer(directory) {
       .editTextMark({ rotation: { value: Math.PI / 4, unit: "radians" } });
     chart().createAnnotation({ text: "Peak", x: 8, y: 9, rotation: { value: -45, unit: "degrees" } });
     chart().createAnnotation({ text: "Point", source: "points" });
+    chart().createAnnotation({ text: "Total", anchor: "plot-center", fontSize: 24 });
+    // @ts-expect-error The named anchor owns alignment.
+    chart().createAnnotation({ text: "Total", anchor: "plot-center", align: "left" });
+    // @ts-expect-error The named anchor owns coordinates.
+    chart().createAnnotation({ text: "Total", anchor: "plot-center", x: 0.5, y: 0.5 });
     chart().createAnnotation({ text: "Plot", space: "plot", x: 0.5, y: 0.75, data: "data" });
     chart().createXAxisTitle({ text: "X", rotation: { value: 180, unit: "degrees" } })
       .editXAxisTitle({ rotation: { value: Math.PI, unit: "radians" } });

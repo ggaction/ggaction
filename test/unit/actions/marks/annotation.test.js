@@ -12,6 +12,28 @@ function annotationItem(program) {
   return program.graphicSpec.objects.annotation.items[0].properties;
 }
 
+test("plot-center owns position and alignment and follows asymmetric Canvas edits", () => {
+  const base = canvas([]);
+  const options = Object.freeze({ text: "Total", anchor: "plot-center", fontSize: 24 });
+  const centered = base.createAnnotation(options);
+  const explicit = base.createAnnotation({ text: "Total", fontSize: 24,
+    space: "plot", x: 0.5, y: 0.5, align: "center", baseline: "middle" });
+  assert.deepEqual(centered.semanticSpec, explicit.semanticSpec);
+  assert.deepEqual(centered.graphicSpec, explicit.graphicSpec);
+  const resized = centered.editCanvas({ width: 640, height: 400,
+    margin: { left: 100, right: 20, top: 30, bottom: 70 } });
+  const item = annotationItem(resized);
+  assert.equal(item.x, 360);
+  assert.equal(item.y, 180);
+  assert.equal(item.textAlign, "center");
+  assert.equal(item.textBaseline, "middle");
+  assert.equal(base.graphicSpec.objects.annotation, undefined);
+  for (const key of ["x", "y", "space", "source", "align", "baseline"]) {
+    assert.throws(() => base.createAnnotation({ ...options, [key]: undefined }), /plot-center owns/);
+  }
+  assert.throws(() => base.createAnnotation({ text: "Total", anchor: "canvas-center" }), /anchor must/);
+});
+
 test("mark anchor reuses final source grain and source-owned lifecycle", () => {
   const source = canvas([
     { category: "A", value: 2 },

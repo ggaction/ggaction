@@ -3982,6 +3982,18 @@ type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "t
 
 type AnnotationAnchor =
   | {
+      anchor: "plot-center";
+      x?: never;
+      y?: never;
+      space?: never;
+      source?: never;
+      align?: never;
+      baseline?: never;
+      data?: string;
+      coordinate?: string;
+    }
+  | {
+      anchor?: never;
       x?: never;
       y?: never;
       space?: never;
@@ -3990,6 +4002,7 @@ type AnnotationAnchor =
       coordinate?: never;
     }
   | {
+      anchor?: never;
       x: unknown;
       y: unknown;
       space?: "data";
@@ -3998,6 +4011,7 @@ type AnnotationAnchor =
       coordinate?: never;
     }
   | {
+      anchor?: never;
       x: number;
       y: number;
       space: "plot";
