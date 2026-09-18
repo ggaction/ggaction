@@ -250,6 +250,7 @@
   "editFacetScales": "/reference/actions/charts-data/#editfacetscales",
   "editFacetGuides": "/reference/actions/charts-data/#editfacetguides",
   "createScatterPlot": "/reference/actions/charts-data/#createscatterplot",
+  "createTextPlot": "/reference/actions/charts-data/#createtextplot",
   "createDotPlot": "/reference/actions/charts-data/#createdotplot",
   "createLollipopPlot": "/reference/actions/charts-data/#createlollipopplot",
   "createDumbbellPlot": "/reference/actions/charts-data/#createdumbbellplot",

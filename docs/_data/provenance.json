@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.17",
-  "contractId": "sha256:fbf4ff20c387124be45f78cb02ef91d2d0850f78cbf09234ec48b4ba097662fc",
+  "contractId": "sha256:7541ac4ed980fb8f9fb41dee1e294785a4c42490fbd9e6f848c7e46e36a5bb9e",
   "sourceCommit": null,
   "sourceRef": "main",
   "exampleSourceRef": "69353bac611e6c5b4f5d50288842f540ba5470cd",
@@ -11,7 +11,7 @@
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 281,
+  "actionCount": 282,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -264,6 +264,10 @@
     },
     "createTextMark": {
       "availableBy": "v0.0.13"
+    },
+    "createTextPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
     },
     "createMarkLabels": {
       "availableBy": "v0.0.13"

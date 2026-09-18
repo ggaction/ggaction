@@ -360,6 +360,14 @@ function buildScaleWitness(action, path, type) {
         ? { x: positionChannel(type, "x") }
         : { y: { field: "value", scale: { type } } });
     }
+    case "createTextPlot":
+      return source().createTextPlot({
+        x: path.startsWith("x.") ? positionChannel(type, "x") : "x",
+        y: path.startsWith("y.") ? positionChannel(type, "y") : "y",
+        text: "category",
+        ...(path.startsWith("color.") ? { color: colorChannel(type) } : {}),
+        guides: false
+      });
     case "createScatterPlot":
       if (path === "stroke.scale.type") {
         return source().createScatterPlot({ x: "x", y: "y", stroke: colorChannel(type), guides: false });
@@ -812,8 +820,8 @@ test("derives only role-reachable nested scale type paths", async () => {
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|radiusScale|scale)\.type$/u.test(option.path)
   );
 
-  assert.equal(scaleTypes.length, 147);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 642);
+  assert.equal(scaleTypes.length, 150);
+  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 665);
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:band"));
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:point"));
   assert.ok(options.get("option-path:encodeColor.scale.type").values.includes("string:log"));
@@ -868,7 +876,7 @@ test("executes every strict nested scale type path and literal", async () => {
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 642);
+  assert.equal(witnesses, 665);
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {

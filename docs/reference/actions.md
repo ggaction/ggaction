@@ -112,6 +112,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createStripPlot`](./actions/charts-data.md#createstripplot) | H0 | user-facing | charts |
 | [`createSummaryData`](./actions/statistics.md#createsummarydata) | H1 | user-facing | statistics |
 | [`createTextMark`](./actions/marks.md#createtextmark) | H2 | user-facing | marks |
+| [`createTextPlot`](./actions/charts-data.md#createtextplot) | H0 | user-facing | charts |
 | [`createThetaAxis`](./actions/guides.md#createthetaaxis) | H3 | user-facing | axes |
 | [`createThetaAxisLabels`](./actions/guides.md#createthetaaxislabels) | H3 | user-facing | axes |
 | [`createThetaAxisLine`](./actions/guides.md#createthetaaxisline) | H3 | user-facing | axes |

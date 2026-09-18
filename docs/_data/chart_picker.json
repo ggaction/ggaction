@@ -7,7 +7,8 @@
     "createPolarScatterPlot": "Angular and radial fields per observation",
     "createPolarLinePlot": "Ordered angular/radial observations per path",
     "createRadarPlot": "Long category/value rows or explicitly selected wide fields",
-    "createParallelCoordinates": "Rows with two or more quantitative or ordinal dimensions"
+    "createParallelCoordinates": "Rows with two or more quantitative or ordinal dimensions",
+    "createTextPlot": "Positioned text from x/y fields and row content"
   },
   "Comparisons and intervals": {
     "createBarPlot": "Categorical/measure roles, explicit summary, or ranged endpoints",

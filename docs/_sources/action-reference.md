@@ -64,6 +64,7 @@ interface ChartProgramActions {
   createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
   editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
+  createTextPlot(options: CreateTextPlotOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
   editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
   editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
@@ -604,6 +605,16 @@ createScatterPlot({ id?, data?, coordinate?, x, y, color?, stroke?, size?, shape
 
 Create a complete Cartesian point chart from required x/y fields and optional
 appearance encodings. [Basic Charts](../api/basic-charts.md#createscatterplot)
+
+### `createTextPlot`
+
+```javascript
+createTextPlot({ id?, data?, coordinate?, x, y, text, color?, style?, guides? })
+```
+
+Create a Cartesian data-text chart from required positions and content. Available
+in the full entry only. Strings name fields; constant text uses `{ value }`.
+[Basic Charts](../api/basic-charts.md#createtextplot)
 
 ### `createDotPlot`
 

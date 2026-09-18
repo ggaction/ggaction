@@ -4,6 +4,11 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+### Added
+
+- Added full-entry `createTextPlot` for independent data text with position,
+  content, color, appearance and compatible guides in one composed action.
+
 ## [0.0.17] - 2026-09-15
 
 ### Added

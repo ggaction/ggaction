@@ -3,7 +3,7 @@
   "packageVersion": "0.0.17",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 281,
+  "count": 282,
   "cards": [
     {
       "schemaVersion": 3,
@@ -28218,6 +28218,130 @@
       "snippet": "program.createScatterPlot({ x: \"x\", y: \"y\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createscatterplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createTextPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Create a Cartesian data-text chart from required positions and content.",
+      "signature": "createTextPlot(options: CreateTextPlotOptions): ChartProgram;",
+      "intents": [
+        "create text plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "text chart",
+        "data text plot"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "text chart"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H0"
+      ],
+      "wraps": [
+        "createTextMark",
+        "encodeX",
+        "encodeY",
+        "encodeText",
+        "encodeColor",
+        "createGuides"
+      ],
+      "editableVia": [],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "complete",
+        "requires": [
+          "canvas and dataset context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "x",
+          "required": true,
+          "type": "TextPlotPositionChannel"
+        },
+        {
+          "name": "y",
+          "required": true,
+          "type": "TextPlotPositionChannel"
+        },
+        {
+          "name": "text",
+          "required": true,
+          "type": "string | Omit<{ target?: string | undefined; format?: ValueFormat | undefined; } & { field: string; value?: undefined; content?: undefined; normalizeBy?: undefined; }, \"coordinate\" | \"target\"> | Omit<...>"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "RectColorChannel | undefined"
+        },
+        {
+          "name": "style",
+          "required": false,
+          "type": "Omit<TextMarkOptions, \"data\" | \"id\" | \"inheritColor\" | \"source\" | \"text\"> | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | ColorGuides | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createTextPlot({ x, y, text })",
+        "createTextPlot({ x, y, text, color?, style?, guides? })"
+      ],
+      "snippet": "program.createTextPlot({ x: \"x\", y: \"y\", text: \"label\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createtextplot"
     },
     {
       "schemaVersion": 3,

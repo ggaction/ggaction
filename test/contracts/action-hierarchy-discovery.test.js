@@ -36,6 +36,7 @@ const completeChartActions = [
   "createRugPlot",
   "createScatterPlot",
   "createStripPlot",
+  "createTextPlot",
   "createViolinPlot",
   "facet",
   "facetGrid",
@@ -106,9 +107,9 @@ test("discovery separates completion from resource validity", async () => {
     state,
     entries.length
   ])), {
-    contextual: actionCards.length - 34,
+    contextual: actionCards.length - 35,
     deferred: 2,
-    complete: 29,
+    complete: 30,
     "not-applicable": 3
   });
   assert.deepEqual(byState.deferred.map(card => card.name), [

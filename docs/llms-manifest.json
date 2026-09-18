@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:fbf4ff20c387124be45f78cb02ef91d2d0850f78cbf09234ec48b4ba097662fc",
+    "contractId": "sha256:7541ac4ed980fb8f9fb41dee1e294785a4c42490fbd9e6f848c7e46e36a5bb9e",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -724,10 +724,11 @@
         "createhistogram",
         "createheatmap",
         "other-complete-chart-facades",
-        "advanced-authoring"
+        "advanced-authoring",
+        "createtextplot"
       ],
-      "bytes": 15876,
-      "sha256": "53bb499bb18a84e8a64863574bf7ab7cc4da048e179810f46c6edcc870c89653"
+      "bytes": 17585,
+      "sha256": "cafba3b4aea35a52852e10213e32893f6f80630d2c9a53a7fb32fe1c2d625e5a"
     },
     {
       "order": 47,
@@ -1911,8 +1912,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 30262,
-      "sha256": "58f3ac0c418335d046918d5f2faf271e401c2a73fb77f141ab9fe573070a1aa6"
+      "bytes": 30362,
+      "sha256": "bf0243749661f88768b46bae3ef4fa89599ce874814ae31422e5ec3b0058af68"
     },
     {
       "order": 118,
@@ -1983,6 +1984,7 @@
         "editfacetscales",
         "editfacetguides",
         "createscatterplot",
+        "createtextplot",
         "createdotplot",
         "createlollipopplot",
         "createdumbbellplot",
@@ -2012,8 +2014,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 156544,
-      "sha256": "27ee36a133363c693056351083e54002f633e176598a5ba9c182f61f3992edc8"
+      "bytes": 158357,
+      "sha256": "95215408dad40d0617d6b698781d636a9e06a1927784a9301a33d203165aad01"
     },
     {
       "order": 119,
@@ -2476,6 +2478,7 @@
         "type-createscaleoptions",
         "type-createscatterplotoptions",
         "type-createstripplotoptions",
+        "type-createtextplotoptions",
         "type-createthetaaxislabelsoptions",
         "type-createthetaaxislineoptions",
         "type-createthetaaxisticksoptions",
@@ -2907,6 +2910,7 @@
         "type-textmeasurement",
         "type-textmetricfontweight",
         "type-textmetricsprofile",
+        "type-textplotpositionchannel",
         "type-themedefinition",
         "type-themename",
         "type-themetokens",
@@ -2947,8 +2951,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 314834,
-      "sha256": "583cd9a2494784d4206c61127c8629c67ad2e98eefcfcc62d92799899181b91f"
+      "bytes": 316892,
+      "sha256": "7d6fee0dfd8d15b37c07531e8426f9819f0c1d308cebf82ab5f23120e5392b9a"
     },
     {
       "order": 127,
@@ -3287,8 +3291,8 @@
         "compose-or-refine",
         "related"
       ],
-      "bytes": 18935,
-      "sha256": "20c101514b251c51fa5fc23a1d1b4d2eebca4ffc508fb3141781e2db65303c9a"
+      "bytes": 19495,
+      "sha256": "80bee0eb672290a76c16aa6a06ffa7f03214617d0139ab21c6a5eac68c976ad9"
     },
     {
       "order": 149,
@@ -3301,7 +3305,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "a062dfad2fd630048d370f5f786fa200b354745177e82f9e5182540d8d482395"
+      "sha256": "cf47726e45a8528c291f1dc06eac1a9d0e875cefb72c7defe893c064f4fd8220"
     },
     {
       "order": 150,

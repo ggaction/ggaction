@@ -380,3 +380,29 @@ createParallelCoordinates({
 - Ordinary Area의 독립 x 또는 y는 nominal/ordinal을 지원하며 point/band scale domain 순서로 경로를 정렬한다. 명시적 pathOrder는 domain 정렬보다 우선한다.
 - createAreaPlot은 같은 독립 위치를 허용한다. 정량 endpoint, layoutSeries 정렬 그리드 및 missing 정책은 유지하며 누락 범주를 합성하지 않는다.
 - Evidence: `test/unit/actions/encodings/categorical-areas.test.js`.
+
+## `createTextPlot`
+
+- Full-only aggregate create action: `{id?, data?, coordinate?, x, y, text, color?, style?, guides?}`.
+- Stable default ID `textPlot`; dataset resolution and guide reuse follow the shared facade contract.
+- x/y accept field strings or independent Text field/datum position encodings. Quantitative,
+  temporal, nominal and ordinal roles retain existing scale validation; aggregate/bin/stack reject.
+- text accepts a field string or target-free Text encoding (`field` with optional format, or `value`).
+- Optional field color delegates to encodeColor. style forwards TextMark appearance and missing policy;
+  source, data, text and inheritColor are not style options. Explicit fill/color conflicts retain child validation.
+- Explicit selected data prevents accidental source attachment. No data derivation or aggregation occurs.
+- Wrapped hierarchy: createTextMark, encodeX, encodeY, encodeText, optional encodeColor and guide owners.
+- Whole chain preflight preserves source state/trace on failure. Editing uses existing Text/encoding/scale
+  actions. Facets, persistence and resize use the same registered independent Text owners.
+### Formal values — `createTextPlot`
+
+- Implemented: `createTextPlot(options: CreateTextPlotOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): —
+- Required x/y/text; style and color omitted; guides infer applicability;
+  string channels mean fields; text constants require value; default font and alignment belong to Text.
+### Value coverage — `createTextPlot`
+
+- ✅ Covered: explicit-chain equivalence,
+  multiline/formatted/constant content, color, positions, lifecycle, immutable errors, reuse, facet,
+  resize, persistence and Full-only exposure.
+- Evidence: `test/unit/actions/charts/text-plot-facade.test.js`.

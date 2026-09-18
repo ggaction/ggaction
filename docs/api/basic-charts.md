@@ -33,7 +33,7 @@ marks: Point, Line, Area, Arc, Rule, and Tick styles accept `lineCap`,
 `lineJoin`, and `miterLimit`; Bar and Rect styles also accept `cornerRadius`.
 See [Mark Style](./appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles).
 
-This page covers five common Cartesian facades. Use [Choose a Chart](./chart-picker.md)
+This page covers six common Cartesian facades. Use [Choose a Chart](./chart-picker.md)
 for all H0 chart families and their package and editing paths.
 
 ## Choose a facade
@@ -41,12 +41,13 @@ for all H0 chart families and their package and editing paths.
 | Facade | Shortest complete decision | Guides when omitted |
 | --- | --- | --- |
 | `createScatterPlot` | `{ x, y }` | applicable guides |
+| `createTextPlot` (Full only) | `{ x, y, text }` | applicable guides |
 | `createLinePlot` | `{ x, y }` | applicable guides |
 | `createBarPlot` | `{ x, y }` | applicable guides |
 | `createHistogram` | `{ field }` | applicable guides |
 | `createHeatmap` | `{ x, y, color }`, or `{ x, y, bin: {} }` | applicable guides |
 
-These five facades create a complete common Cartesian chart from fields. After
+These facades create a complete common Cartesian chart from fields. After
 creation, editing returns to the action that owns the decision; for example,
 use `encodeY`, `editScale`, `editBarMark`, or `editLegend` rather than a generic
 facade editor.
@@ -386,3 +387,39 @@ Use individual [mark](./marks.md), [encoding](./encodings.md),
 needs custom layering, Polar geometry, a partially constructed state, or
 control between the wrapped steps. Both authoring styles produce the same
 immutable semantic and graphical resources.
+
+## `createTextPlot`
+
+Create one independent text mark per data row, without aggregation:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const textChart = chart().createCanvas().createData({ values: [
+  { x: 1, y: 2, label: "First" }, { x: 2, y: 3, label: "Second" }
+] }).createTextPlot({ x: "x", y: "y", text: "label" });
+```
+
+The full entry exposes this facade; `ggaction/basic` does not. Its stable default
+ID is `textPlot`. Positions accept field strings or field/datum encodings with
+quantitative, temporal or categorical scales. Aggregation, binning and stacking
+are rejected. `text` accepts a field string, `{ field, format? }`, or `{ value }`.
+Newlines retain multiline text behavior.
+
+Optional `color` uses a field encoding and its legend. Constant fill and font,
+alignment, rotation, offsets, line spacing and missing-value policy belong in
+`style`. Source appearance inheritance is not applicable to independent text.
+Use `createMarkLabels` for labels attached to marks and `createAnnotation` for
+annotations. Explicit fill and field color retain the child action's conflict
+rules. Positions and content remain editable with encoding actions; appearance
+uses `editTextMark`.
+
+`data`, `coordinate`, and `guides` follow shared facade behavior. Compatible
+existing guides are reused; `guides: false` skips guide creation. Existing marks
+do not become an implicit source: the facade always selects a dataset.

@@ -21,6 +21,7 @@ import { loadCars, loadGapminder, loadJobs } from "../support/data.js";
 const root = fileURLToPath(new URL("../..", import.meta.url));
 const FACADE_CONTRACTS = Object.freeze([
   ["createScatterPlot", "CreateScatterPlotOptions", "BASIC_CHARTS.md"],
+  ["createTextPlot", "CreateTextPlotOptions", "BASIC_CHARTS.md"],
   ["createLinePlot", "CreateLinePlotOptions", "BASIC_CHARTS.md"],
   ["createBarPlot", "CreateBarPlotOptions", "BASIC_CHARTS.md"],
   ["createHistogram", "CreateHistogramOptions", "BASIC_CHARTS.md"],
@@ -49,6 +50,8 @@ function createFacadePrograms() {
   const cars = loadCars();
   return [
     createCarsScatterplot(cars),
+    chart().createCanvas().createData({ values: [{ x: 1, y: 2, label: "A" }] })
+      .createTextPlot({ x: "x", y: "y", text: "label" }),
     createCarsLineChart(cars),
     createJobsGroupedBar(loadJobs()),
     createCarsHistogram(cars),
@@ -110,6 +113,7 @@ test("hands every facade result to its documented resource edit path", () => {
     ["editPointMark", program => program.editPointMark({
       target: "points", opacity: 0.4
     })],
+    ["editTextMark", program => program.editTextMark({ target: "textPlot", fontSize: 18 })],
     ["editLineMark", program => program.editLineMark({
       target: "trends", strokeWidth: 4
     })],

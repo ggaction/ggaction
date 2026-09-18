@@ -282,7 +282,11 @@ Basic 예산을 175,000에서 178,000 bytes로 조정했다. SVG와 package arti
 
 Standalone Cartesian axis 기능 추가 시 packed artifact가765,714bytes로 기존765,000bytes를 초과했다.
 명시 axis binding과 lifecycle 지원을 유지하면서 packed 예산을775,000bytes로 조정한다.
-Entry552 및 unpacked3,900,000bytes 한도는 유지하며 이전 packed 한도 통과로 보고하지 않는다.
+이 변경 당시 Entry552 및 unpacked3,900,000bytes 한도는 유지했다.
+이후 독립된 Text plot facade 모듈 추가로 entry 한도를553으로 조정한다.
+Packed/unpacked bytes 한도는 유지하며 이전 한도 통과로 보고하지 않는다.
+Text plot 공개 문서/검색 항목 추가 후 search-index는801,260bytes로 측정되어
+검색 payload 한도를800,000에서810,000bytes로 조정한다. 기존 content를 삭제해 기능 증가를 숨기지 않는다.
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
 `scripts/browser-bundle-size.js`이고 package consumer와 documentation contract가 같은 값을 검증한다.

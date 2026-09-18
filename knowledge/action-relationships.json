@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 281,
+  "actionCount": 282,
   "relationships": [
     {
       "name": "createCanvas",
@@ -1647,6 +1647,17 @@
         "editPointMark",
         "encodeSize",
         "encodePointRadius"
+      ]
+    },
+    {
+      "name": "createTextPlot",
+      "wraps": [
+        "createTextMark",
+        "encodeX",
+        "encodeY",
+        "encodeText",
+        "encodeColor",
+        "createGuides"
       ]
     },
     {

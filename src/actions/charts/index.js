@@ -5,6 +5,7 @@ import { createBarPlot } from "./bar.js";
 import { createHistogram } from "./histogram.js";
 import { createLinePlot } from "./line.js";
 import { createScatterPlot } from "./scatter.js";
+import { createTextPlot } from "./text.js";
 import { createParallelCoordinates } from "./parallel.js";
 import { createPiePlot } from "./pie.js";
 import { createDensityPlot } from "./density.js";
@@ -28,6 +29,7 @@ export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createHeatmap = createHeatmap;
   ProgramClass.prototype.createHistogram = createHistogram;
   ProgramClass.prototype.createScatterPlot = createScatterPlot;
+  ProgramClass.prototype.createTextPlot = createTextPlot;
   ProgramClass.prototype.createLinePlot = createLinePlot;
   ProgramClass.prototype.createParallelCoordinates = createParallelCoordinates;
   ProgramClass.prototype.createPiePlot = createPiePlot;

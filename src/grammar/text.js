@@ -13,6 +13,11 @@ export function isSourceOwnedText(layer) {
   return layer?.mark?.type === "text" && layer.source !== undefined;
 }
 
+export const TEXT_MARK_STYLE_OPTIONS = Object.freeze([
+  "fill", "opacity", "fontSize", "fontFamily", "fontWeight",
+  "align", "baseline", "rotation", "dx", "dy", "inheritColor", "lineHeight", "blockAlign"
+]);
+
 export const DEFAULT_TEXT_MARK = cloneAndFreeze({
   fill: "#334155",
   opacity: 1,

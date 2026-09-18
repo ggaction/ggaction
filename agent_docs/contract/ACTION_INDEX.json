@@ -4558,6 +4558,24 @@
       }
     },
     {
+      "name": "createTextPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Existing text, encoding, scale and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/BASIC_CHARTS.md",
+        "anchor": "createtextplot"
+      }
+    },
+    {
       "name": "createDotPlot",
       "layer": "user-facing",
       "domain": "charts",

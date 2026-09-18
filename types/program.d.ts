@@ -4023,6 +4023,26 @@ type AnnotationAnchor =
 
 export type CreateAnnotationOptions = AnnotationBaseOptions & AnnotationAnchor;
 
+type TextPlotPositionChannel =
+  | string
+  | ({ field: string } & PositionScaleBranches<
+      NonPointQuantitativePositionScaleOptions,
+      NonPointTemporalPositionScaleOptions,
+      NonPointCategoricalPositionScaleOptions>)
+  | WithoutEncodingTarget<Extract<DatumPositionEncodingOptions, { datum: unknown }>> & { coordinate?: never };
+
+export interface CreateTextPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: TextPlotPositionChannel;
+  y: TextPlotPositionChannel;
+  text: string | WithoutEncodingTarget<Extract<TextEncodingOptions, { field: string } | { value: unknown }>>;
+  color?: RectColorChannel;
+  style?: Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "inheritColor">;
+  guides?: false | ColorGuides;
+}
+
 export type BarWidthOptions = { target?: string } & (
   | { band?: number; pixels?: never }
   | { band?: never; pixels: number }
@@ -4884,6 +4904,7 @@ export class ChartProgram {
   createRuleMark(options?: { id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
   editRuleMark(options: { target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
+  createTextPlot(options: CreateTextPlotOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
   editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
   editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;

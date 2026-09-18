@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:fbf4ff20c387124be45f78cb02ef91d2d0850f78cbf09234ec48b4ba097662fc. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:7541ac4ed980fb8f9fb41dee1e294785a4c42490fbd9e6f848c7e46e36a5bb9e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -4166,7 +4166,7 @@ marks: Point, Line, Area, Arc, Rule, and Tick styles accept `lineCap`,
 `lineJoin`, and `miterLimit`; Bar and Rect styles also accept `cornerRadius`.
 See [Mark Style](./api/appearance/mark-style/#stroke-caps-joins-and-rounded-rectangles).
 
-This page covers five common Cartesian facades. Use [Choose a Chart](./api/chart-picker/)
+This page covers six common Cartesian facades. Use [Choose a Chart](./api/chart-picker/)
 for all H0 chart families and their package and editing paths.
 
 ## Choose a facade
@@ -4174,12 +4174,13 @@ for all H0 chart families and their package and editing paths.
 | Facade | Shortest complete decision | Guides when omitted |
 | --- | --- | --- |
 | `createScatterPlot` | `{ x, y }` | applicable guides |
+| `createTextPlot` (Full only) | `{ x, y, text }` | applicable guides |
 | `createLinePlot` | `{ x, y }` | applicable guides |
 | `createBarPlot` | `{ x, y }` | applicable guides |
 | `createHistogram` | `{ field }` | applicable guides |
 | `createHeatmap` | `{ x, y, color }`, or `{ x, y, bin: {} }` | applicable guides |
 
-These five facades create a complete common Cartesian chart from fields. After
+These facades create a complete common Cartesian chart from fields. After
 creation, editing returns to the action that owns the decision; for example,
 use `encodeY`, `editScale`, `editBarMark`, or `editLegend` rather than a generic
 facade editor.
@@ -4487,6 +4488,38 @@ Use individual [mark](./api/marks/), [encoding](./api/encodings/),
 needs custom layering, Polar geometry, a partially constructed state, or
 control between the wrapped steps. Both authoring styles produce the same
 immutable semantic and graphical resources.
+
+## `createTextPlot`
+
+Create one independent text mark per data row, without aggregation:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+const textChart = chart().createCanvas().createData({ values: [
+  { x: 1, y: 2, label: "First" }, { x: 2, y: 3, label: "Second" }
+] }).createTextPlot({ x: "x", y: "y", text: "label" });
+```
+
+The full entry exposes this facade; `ggaction/basic` does not. Its stable default
+ID is `textPlot`. Positions accept field strings or field/datum encodings with
+quantitative, temporal or categorical scales. Aggregation, binning and stacking
+are rejected. `text` accepts a field string, `{ field, format? }`, or `{ value }`.
+Newlines retain multiline text behavior.
+
+Optional `color` uses a field encoding and its legend. Constant fill and font,
+alignment, rotation, offsets, line spacing and missing-value policy belong in
+`style`. Source appearance inheritance is not applicable to independent text.
+Use `createMarkLabels` for labels attached to marks and `createAnnotation` for
+annotations. Explicit fill and field color retain the child action's conflict
+rules. Positions and content remain editable with encoding actions; appearance
+uses `editTextMark`.
+
+`data`, `coordinate`, and `guides` follow shared facade behavior. Compatible
+existing guides are reused; `guides: false` skips guide creation. Existing marks
+do not become an implicit source: the facade always selects a dataset.
 
 <!-- Source: /api/parallel-coordinates/ -->
 
@@ -15105,6 +15138,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createStripPlot`](./reference/actions/charts-data/#createstripplot) | H0 | user-facing | charts |
 | [`createSummaryData`](./reference/actions/statistics/#createsummarydata) | H1 | user-facing | statistics |
 | [`createTextMark`](./reference/actions/marks/#createtextmark) | H2 | user-facing | marks |
+| [`createTextPlot`](./reference/actions/charts-data/#createtextplot) | H0 | user-facing | charts |
 | [`createThetaAxis`](./reference/actions/guides/#createthetaaxis) | H3 | user-facing | axes |
 | [`createThetaAxisLabels`](./reference/actions/guides/#createthetaaxislabels) | H3 | user-facing | axes |
 | [`createThetaAxisLine`](./reference/actions/guides/#createthetaaxisline) | H3 | user-facing | axes |
@@ -17445,6 +17479,44 @@ createScatterPlot({ id?, data?, coordinate?, x, y, color?, stroke?, size?, shape
 
 Create a complete Cartesian point chart from required x/y fields and optional
 appearance encodings. [Basic Charts](./api/basic-charts/#createscatterplot)
+
+## `createTextPlot`
+
+**API layer:** user-facing. **Authoring roles:** H0.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createTextPlot(options: CreateTextPlotOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateTextPlotOptions`](./reference/types/#type-createtextplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Required | `TextPlotPositionChannel` |
+| `y` | Required | `TextPlotPositionChannel` |
+| `text` | Required | `string \| Omit<{ target?: string \| undefined; format?: ValueFormat \| undefined; } & { field: string; value?: undefined; content?: undefined; normalizeBy?: undefined; }, "coordinate" \| "target"> \| Omit<...>` |
+| `color` | Optional / branch-dependent | `RectColorChannel \| undefined` |
+| `style` | Optional / branch-dependent | `Omit<TextMarkOptions, "data" \| "id" \| "inheritColor" \| "source" \| "text"> \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createTextPlot({ id?, data?, coordinate?, x, y, text, color?, style?, guides? })
+```
+
+Create a Cartesian data-text chart from required positions and content. Available
+in the full entry only. Strings name fields; constant text uses `{ value }`.
+[Basic Charts](./api/basic-charts/#createtextplot)
 
 ## `createDotPlot`
 
@@ -26208,6 +26280,7 @@ interface ChartProgramActions {
   createRuleMark(options?: { id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
   editRuleMark(options: { target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
+  createTextPlot(options: CreateTextPlotOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
   editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
   editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
@@ -28693,6 +28766,26 @@ export type CreateStripPlotOptions = {
 ```
 
 Related types: [`BasicColorChannel`](./reference/types/#type-basiccolorchannel) · [`BasicSizeChannel`](./reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](./reference/types/#type-basicshapechannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions) · [`RugMeasureChannel`](./reference/types/#type-rugmeasurechannel) · [`StripPixelJitterOptions`](./reference/types/#type-strippixeljitteroptions) · [`StripCategoryChannel`](./reference/types/#type-stripcategorychannel) · [`StripBandJitterOptions`](./reference/types/#type-stripbandjitteroptions).
+
+### `CreateTextPlotOptions` {#type-createtextplotoptions}
+
+ Expand CreateTextPlotOptions
+
+```typescript
+export interface CreateTextPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: TextPlotPositionChannel;
+  y: TextPlotPositionChannel;
+  text: string | WithoutEncodingTarget<Extract<TextEncodingOptions, { field: string } | { value: unknown }>>;
+  color?: RectColorChannel;
+  style?: Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "inheritColor">;
+  guides?: false | ColorGuides;
+}
+```
+
+Related types: [`TextPlotPositionChannel`](./reference/types/#type-textplotpositionchannel) · [`WithoutEncodingTarget`](./reference/types/#type-withoutencodingtarget) · [`TextEncodingOptions`](./reference/types/#type-textencodingoptions) · [`RectColorChannel`](./reference/types/#type-rectcolorchannel) · [`TextMarkOptions`](./reference/types/#type-textmarkoptions) · [`ColorGuides`](./reference/types/#type-colorguides).
 
 ### `CreateThetaAxisLabelsOptions` {#type-createthetaaxislabelsoptions}
 
@@ -35320,6 +35413,22 @@ export interface TextMetricsProfile {
 
 Related types: [`TextMeasurement`](./reference/types/#type-textmeasurement).
 
+### `TextPlotPositionChannel` {#type-textplotpositionchannel}
+
+ Expand TextPlotPositionChannel
+
+```typescript
+type TextPlotPositionChannel =
+  | string
+  | ({ field: string } & PositionScaleBranches<
+      NonPointQuantitativePositionScaleOptions,
+      NonPointTemporalPositionScaleOptions,
+      NonPointCategoricalPositionScaleOptions>)
+  | WithoutEncodingTarget<Extract<DatumPositionEncodingOptions, { datum: unknown }>> & { coordinate?: never };
+```
+
+Related types: [`PositionScaleBranches`](./reference/types/#type-positionscalebranches) · [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`NonPointTemporalPositionScaleOptions`](./reference/types/#type-nonpointtemporalpositionscaleoptions) · [`NonPointCategoricalPositionScaleOptions`](./reference/types/#type-nonpointcategoricalpositionscaleoptions) · [`WithoutEncodingTarget`](./reference/types/#type-withoutencodingtarget) · [`DatumPositionEncodingOptions`](./reference/types/#type-datumpositionencodingoptions).
+
 ### `ThemeDefinition` {#type-themedefinition}
 
  Expand ThemeDefinition
@@ -38383,6 +38492,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 | Ordered angular/radial observations per path | [`createPolarLinePlot`](./reference/actions/charts-data/#createpolarlineplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createLineMark`](./reference/actions/marks/#createlinemark) · [`encodeTheta`](./reference/actions/encodings/#encodetheta) · [`encodeR`](./reference/actions/encodings/#encoder) |
 | Long category/value rows or explicitly selected wide fields | [`createRadarPlot`](./reference/actions/charts-data/#createradarplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createPolarLinePlot`](./reference/actions/charts-data/#createpolarlineplot) |
 | Rows with two or more quantitative or ordinal dimensions | [`createParallelCoordinates`](./reference/actions/charts-data/#createparallelcoordinates) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createCoordinate`](./reference/actions/charts-data/#createcoordinate) · [`createLineMark`](./reference/actions/marks/#createlinemark) · [`encodeParallelCoordinates`](./reference/actions/encodings/#encodeparallelcoordinates) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeStrokeDash`](./reference/actions/encodings/#encodestrokedash) · [`createGuides`](./reference/actions/guides/#createguides) |
+| Positioned text from x/y fields and row content | [`createTextPlot`](./reference/actions/charts-data/#createtextplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createTextMark`](./reference/actions/marks/#createtextmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeText`](./reference/actions/encodings/#encodetext) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) |
 
 ## Comparisons and intervals
 
@@ -38460,11 +38570,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:fbf4ff20c387124be45f78cb02ef91d2d0850f78cbf09234ec48b4ba097662fc` |
+| Contract fingerprint | `sha256:7541ac4ed980fb8f9fb41dee1e294785a4c42490fbd9e6f848c7e46e36a5bb9e` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 281 |
+| Declared actions here | 282 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

@@ -2040,6 +2040,14 @@
     "layer": "user-facing",
     "domain": "charts"
   },
+  "createTextPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H0"
+    ],
+    "layer": "user-facing",
+    "domain": "charts"
+  },
   "createDotPlot": {
     "operation": "create",
     "authoringRoles": [

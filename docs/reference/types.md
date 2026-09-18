@@ -93,6 +93,7 @@ interface ChartProgramActions {
   createRuleMark(options?: { id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
   editRuleMark(options: { target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
+  createTextPlot(options: CreateTextPlotOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
   editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
   editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
@@ -3001,6 +3002,29 @@ export type CreateStripPlotOptions = {
 </details>
 
 Related types: [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`RugMeasureChannel`](#type-rugmeasurechannel) · [`StripPixelJitterOptions`](#type-strippixeljitteroptions) · [`StripCategoryChannel`](#type-stripcategorychannel) · [`StripBandJitterOptions`](#type-stripbandjitteroptions).
+
+### `CreateTextPlotOptions` {#type-createtextplotoptions}
+
+<details markdown="1">
+<summary>Expand CreateTextPlotOptions</summary>
+
+```typescript
+export interface CreateTextPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: TextPlotPositionChannel;
+  y: TextPlotPositionChannel;
+  text: string | WithoutEncodingTarget<Extract<TextEncodingOptions, { field: string } | { value: unknown }>>;
+  color?: RectColorChannel;
+  style?: Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "inheritColor">;
+  guides?: false | ColorGuides;
+}
+```
+
+</details>
+
+Related types: [`TextPlotPositionChannel`](#type-textplotpositionchannel) · [`WithoutEncodingTarget`](#type-withoutencodingtarget) · [`TextEncodingOptions`](#type-textencodingoptions) · [`RectColorChannel`](#type-rectcolorchannel) · [`TextMarkOptions`](#type-textmarkoptions) · [`ColorGuides`](#type-colorguides).
 
 ### `CreateThetaAxisLabelsOptions` {#type-createthetaaxislabelsoptions}
 
@@ -10920,6 +10944,25 @@ export interface TextMetricsProfile {
 </details>
 
 Related types: [`TextMeasurement`](#type-textmeasurement).
+
+### `TextPlotPositionChannel` {#type-textplotpositionchannel}
+
+<details markdown="1">
+<summary>Expand TextPlotPositionChannel</summary>
+
+```typescript
+type TextPlotPositionChannel =
+  | string
+  | ({ field: string } & PositionScaleBranches<
+      NonPointQuantitativePositionScaleOptions,
+      NonPointTemporalPositionScaleOptions,
+      NonPointCategoricalPositionScaleOptions>)
+  | WithoutEncodingTarget<Extract<DatumPositionEncodingOptions, { datum: unknown }>> & { coordinate?: never };
+```
+
+</details>
+
+Related types: [`PositionScaleBranches`](#type-positionscalebranches) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions) · [`NonPointCategoricalPositionScaleOptions`](#type-nonpointcategoricalpositionscaleoptions) · [`WithoutEncodingTarget`](#type-withoutencodingtarget) · [`DatumPositionEncodingOptions`](#type-datumpositionencodingoptions).
 
 ### `ThemeDefinition` {#type-themedefinition}
 

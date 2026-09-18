@@ -2414,6 +2414,48 @@ Create a complete Cartesian point chart from required x/y fields and optional
 appearance encodings. [Basic Charts](../../api/basic-charts.md#createscatterplot)
 
 
+## `createTextPlot`
+
+**API layer:** user-facing. **Authoring roles:** H0.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createTextPlot(options: CreateTextPlotOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateTextPlotOptions`](./../types.md#type-createtextplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Required | `TextPlotPositionChannel` |
+| `y` | Required | `TextPlotPositionChannel` |
+| `text` | Required | `string \| Omit<{ target?: string \| undefined; format?: ValueFormat \| undefined; } & { field: string; value?: undefined; content?: undefined; normalizeBy?: undefined; }, "coordinate" \| "target"> \| Omit<...>` |
+| `color` | Optional / branch-dependent | `RectColorChannel \| undefined` |
+| `style` | Optional / branch-dependent | `Omit<TextMarkOptions, "data" \| "id" \| "inheritColor" \| "source" \| "text"> \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createTextPlot({ id?, data?, coordinate?, x, y, text, color?, style?, guides? })
+```
+
+Create a Cartesian data-text chart from required positions and content. Available
+in the full entry only. Strings name fields; constant text uses `{ value }`.
+[Basic Charts](../../api/basic-charts.md#createtextplot)
+
+
 ## `createDotPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.

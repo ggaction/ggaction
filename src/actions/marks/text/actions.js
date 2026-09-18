@@ -3,6 +3,7 @@ import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
   DEFAULT_TEXT_MARK,
+  TEXT_MARK_STYLE_OPTIONS as STYLE_OPTIONS,
   isSourceOwnedText,
   normalizeTextMarkConfig
 } from "../../../grammar/text.js";
@@ -41,10 +42,6 @@ import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
-const STYLE_OPTIONS = Object.freeze([
-  "fill", "opacity", "fontSize", "fontFamily", "fontWeight",
-  "align", "baseline", "rotation", "dx", "dy", "inheritColor", "lineHeight", "blockAlign"
-]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "source", "text", "missing", ...STYLE_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", "missing", ...STYLE_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "replayLayout"]);

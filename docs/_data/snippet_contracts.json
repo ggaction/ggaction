@@ -415,6 +415,18 @@
     "executable": false
   },
   {
+    "file": "api/basic-charts.md",
+    "block": 10,
+    "heading": "`createTextPlot`",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "75479e2cbfb25b10d9cd8a5d04fe814feb70137e04ab1ead25f9b61a14ee69b9",
+    "executable": false
+  },
+  {
     "file": "api/box-plots.md",
     "block": 1,
     "heading": "At a glance",

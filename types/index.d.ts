@@ -169,6 +169,7 @@ export type {
   StripPixelJitterOptions,
   CreateParallelCoordinatesOptions,
   CreateScatterPlotOptions,
+  CreateTextPlotOptions,
   CreateIntervalPlotOptions,
   CreateRegressionPlotOptions,
   CreateDotPlotOptions,

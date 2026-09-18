@@ -118,6 +118,15 @@ async function testNodeConsumer(directory) {
       assert.equal(png.buffer.readUInt32BE(16), Math.ceil(canvas.width));
       assert.equal(png.buffer.readUInt32BE(20), Math.ceil(canvas.height));
     }
+    const textPlot = chart().createCanvas({ width: 600, height: 400, margin: 100 })
+      .createData({ values: [{ x: 1, y: 2, label: "first", group: "A" }, { x: 2, y: 3, label: "second", group: "B" }] })
+      .createTextPlot({ x: "x", y: "y", text: "label", color: "group" });
+    assert.match(renderToSVG(textPlot), /first/);
+    assert.deepEqual(deserializeProgram(serializeProgram(textPlot)).graphicSpec, textPlot.graphicSpec);
+    assert.equal(typeof basicChart().createTextPlot, "undefined");
+    const textPng = await renderToPNGBuffer(textPlot);
+    assert.equal(textPng.buffer.readUInt32BE(16), 600);
+
     const compactFacet = chart().createCanvas({ width: 200, height: 140,
       margin: { left: 80, right: 20, top: 20, bottom: 20 }
     }).createData({ values: [{ group: "A", x: 1, y: 1 }, { group: "B", x: 2, y: 2 }] })
@@ -2756,6 +2765,18 @@ async function testTypeScriptConsumer(directory) {
       .editCompositionLayout({ spacing: "canvas" });
     chart().repeatCharts({ channel: "y", fields: ["a", "b"], spacing: "plot" });
     chart().facetGrid({ rows: { field: "r" }, columns: { field: "c" }, spacing: "plot" });
+
+    chart().createTextPlot({ x: "x", y: "y", text: "label" });
+    chart().createTextPlot({ x: { field: "x", scale: { type: "log" } }, y: { datum: 2 },
+      text: { field: "value", format: ".1f" }, color: "group", style: { lineHeight: 18 } });
+    // @ts-expect-error independent text has no source appearance inheritance
+    chart().createTextPlot({ x: "x", y: "y", text: "label", style: { inheritColor: "fill" } });
+    // @ts-expect-error positions are owned by the facade
+    chart().createTextPlot({ x: { field: "x", coordinate: "other" }, y: "y", text: "label" });
+    // @ts-expect-error source-owned content belongs to attached labels
+    chart().createTextPlot({ x: "x", y: "y", text: { content: "share" } });
+    // @ts-expect-error Full entry only
+    basicChart().createTextPlot({ x: "x", y: "y", text: "label" });
 
     chart().createScatterPlot({ x: "x", y: "y", stroke: "group", point: { strokeWidth: 2 } });
     basicChart().createScatterPlot({ x: "x", y: "y", stroke: { field: "amount", fieldType: "quantitative" } });

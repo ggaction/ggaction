@@ -891,6 +891,11 @@
       "sorted dataset",
       "stable multi-key row order",
       "ordered rows"
+    ],
+    "TextPlot": [
+      "text chart",
+      "data text plot",
+      "positioned data labels"
     ]
   },
   "summaryOverrides": {
@@ -1544,6 +1549,11 @@
           "field": "value"
         }
       ]
+    },
+    "createTextPlot": {
+      "x": "x",
+      "y": "y",
+      "text": "label"
     }
   },
   "callPatternOverrides": {
@@ -1728,6 +1738,10 @@
     ],
     "editMarkLabelPlacement": [
       "editMarkLabelPlacement({ target, placement: anchor policy | auto })"
+    ],
+    "createTextPlot": [
+      "createTextPlot({ x, y, text })",
+      "createTextPlot({ x, y, text, color?, style?, guides? })"
     ]
   },
   "errorOverrides": {
