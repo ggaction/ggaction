@@ -46,6 +46,11 @@ encoded fields. See the
 [repository example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
+Data-bound Cartesian text layers also repeat: encode x, y, and text before
+faceting. Label data must share the partition ancestor; filters replay per cell.
+Reuse the point layer's scale IDs to align labels with its positions. A cell with
+no matching label rows retains its other marks.
+
 `facet` uses field values in source first-appearance order. It infers one
 common row-preserving dataset ancestor, then filters and replays supported
 derived data independently inside each cell. Omitted `columns` creates one row;

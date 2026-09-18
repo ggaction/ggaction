@@ -6,7 +6,7 @@ import { resolveRectMode } from "../rects.js";
 import { resolveRuleMode } from "../rules.js";
 
 const CARTESIAN_MARKS = new Set([
-  "point", "line", "area", "bar", "rule", "tick", "rect"
+  "point", "line", "area", "bar", "rule", "tick", "rect", "text"
 ]);
 const FACET_BAR_GRAINS = new Set([
   BAR_GRAINS.histogram,
@@ -65,6 +65,9 @@ function classifyPrimaryLayer(semanticSpec, layer) {
     throw new Error(
       `facet requires bar mark "${layer.id}" to be a complete histogram, aggregate, or ranged bar.`
     );
+  }
+  if (type === "text" && layer.encoding?.text === undefined) {
+    throw new Error(`Facet text layer "${layer.id}" requires a text encoding.`);
   }
   const complete = (
     layer.encoding?.x?.scale !== undefined &&

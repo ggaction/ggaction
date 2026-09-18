@@ -131,7 +131,7 @@ test("repeats a Polar role together with its attached label lifecycle", () => {
       .repeatCharts({
         target: "mark", channel: "r", fields: ["radius", "distance"]
       }),
-    /does not support mark "note"/
+    /Facet text layer "note" requires a text encoding/
   );
 });
 

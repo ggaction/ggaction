@@ -2095,8 +2095,8 @@ Repeat one complete Cartesian, Polar, or Parallel chart by a field on its common
 row-preserving dataset ancestor. Values preserve source first appearance;
 scale policies can be `"shared"` or `"independent"` by supported role, including
 Polar `theta`/public `r` and all `parallelDimensions`. Layered regression data,
-other supported statistical descendants, attached labels, and references are
-recomputed per cell.
+statistical descendants, data-bound Cartesian text, attached labels, and references
+recompute per cell. Text needs x/y scales and a text encoding.
 `guides: { axes: "outer" }` keeps axes only on occupied outer cells, while
 `guides: { legend: "shared" }` promotes one compatible parent-owned legend at
 the child legend's configured `left`, `right`, `top`, or `bottom` edge. Top and

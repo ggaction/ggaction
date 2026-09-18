@@ -10,9 +10,11 @@ Exact internal graphic ID spelling is not a public authoring option.
 
 - Signature: `facet({ id?, field, data?, values?, columns?, gap?, align?, padding?, scales?, guides? })`.
 - `field` is required. Omitted `data` resolves only when every eligible repeated layer has one unique common row-preserving ancestor.
-- Supported sources are complete Cartesian point, line, area, histogram bar, aggregate bar, ranged bar, rule,
+- Supported sources are complete Cartesian point, line, area, histogram bar, aggregate bar, ranged bar, rule, data-bound text,
   regression, density, interval/error-band, and box-plot programs; Polar Point, Line, direct Arc, Pie, Rose and Radar;
   and Parallel-coordinate programs whose visible layers share one valid partition anchor and one coordinate family.
+- Independent Cartesian text requires x/y scale bindings and a text encoding. Its data must share the partition ancestor; filtered label datasets replay per cell. Empty label subsets retain sibling marks without fabricating labels. Attached labels remain source-dependent.
+- Evidence: `test/unit/actions/composition/facet-text.test.js`.
 - Facet values use source first-appearance order. Explicit `values` is a unique observed-value list whose exact order controls
   child, header and layout order. Omitted `columns` creates one row; a positive integer wraps cells row-major.
 - Omitted scale policies are shared. `x`, `y`, `xOffset`, `yOffset`, `theta`, `r`, `color`, `stroke`, `size`, `shape`,

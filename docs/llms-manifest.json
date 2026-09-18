@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:6ca06c06ccddd9e1073f0574c5cc7c15165b6bedd609ee3102e076dda5f429ff",
+    "contractId": "sha256:02cb2eb781b90f4c27587c4d596c0a32eb846dd1656dd9529dbd15a4ed79cb66",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -2010,8 +2010,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 153380,
-      "sha256": "dbbbc991d4fc9892df176ef27867797f81f6e8c4b42b8708f1bd4a91eff66bab"
+      "bytes": 153429,
+      "sha256": "476680d7cbcf4af4ab49ac3665575868f9783fa254918620aa77c3aa0d368055"
     },
     {
       "order": 119,
@@ -3042,8 +3042,8 @@
         "build-a-row-and-column-facet-grid",
         "repeat-a-positional-encoding-across-fields"
       ],
-      "bytes": 14178,
-      "sha256": "dccb64a5d6dc5b93c23277580dcbe4c49decb49882308b46880d636be3541b63"
+      "bytes": 14465,
+      "sha256": "5102f9bc1901811778b5f7a9306b8438ddc49e4895fd7946e229650043f70438"
     },
     {
       "order": 134,
@@ -3295,7 +3295,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "670cc659181f2531b9dc2b5dc91762e4a6578a395d029074529b6c6110b8fc5a"
+      "sha256": "9f953cd36ea2f3bfaabbdb85d335bbf0cbd9b62a0c31a20e30605b7e36df487d"
     },
     {
       "order": 150,
