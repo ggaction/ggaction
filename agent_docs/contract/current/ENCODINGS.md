@@ -1408,8 +1408,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Reassignment는 같은 action과 scale lifecycle을 사용한다.
 - Arc marks accept direct quantitative theta: without `aggregate` or `weight`, each positive source row becomes
   one sector and its numeric field value determines its share of the full theta range. Source-row order is
-  preserved, zero values are omitted, negative/non-finite values and an all-zero total are rejected, and this mode
-  cannot be combined with radius encoding.
+  preserved, zero values are omitted, and negative/non-finite values and an all-zero total are rejected.
+  An ordinary quantitative radius encoding can independently set each positive row’s outer radius.
 - Arc marks also retain categorical theta modes. A band scale plus `aggregate: "count"` partitions the full theta
   range by category count. `aggregate: "sum"` requires a `weight` field and partitions it by each category's sum
   of non-negative finite weights. Cross-category totals use normalized ratios so a finite sector partition remains
@@ -1445,6 +1445,12 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Radius만 있는 incomplete point는 semantic/config를 유지하고 complete theta/radius pair가 생기면 x/y를
   materialize한다.
 
+- Proportional Arc theta can combine with ordinary radius scales. Quantitative theta uses row-level radius;
+  categorical count/sum theta uses one consistent raw radius per category or explicit radius count/sum.
+  Radius domains use these final sector measures, excluding zero-angle groups. Radius-first aggregates stay
+  pending until categorical theta exists. Mapped outer radius must exceed the common inner radius;
+  sectors are not silently dropped or renormalized. Value/share labels retain the angular measure.
+  Equal-angle measured mappings remain a distinct mode and cannot combine with aggregated theta.
 - Measured Arc mode opts in with `mapping:"area"|"radius-length"` and `aggregate:"sum"` plus field, or `aggregate:"count"` without field. Omitted mapping/aggregate on reassignment preserve the existing assignment; ordinary radius does not infer aggregation.
 - Measured radius groups by categorical theta, preserves source row membership, and uses one sector per positive category. Zero categories remain in theta/color domains. Empty/all-zero, negative, nonfinite values, category overflow, and conflicting colors within a category are errors.
 - Area mapping uses `r=sqrt(r0²+t(R²-r0²))`; radius-length uses `r=r0+t(R-r0)`, where `t=value/U`. Positive thickness lost to numeric precision is an error. Axis/grid labels retain count or sum units through the same mapping.

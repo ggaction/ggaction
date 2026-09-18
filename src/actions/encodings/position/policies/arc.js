@@ -11,11 +11,6 @@ export function resolveArcPositionPolicy({ channel, args, fieldType, layer }) {
     throw new Error(`Arc ${channel} encoding does not support stack.`);
   }
   if (channel === "radius") {
-    if (layer.encoding?.theta?.fieldType === "quantitative") {
-      throw new Error(
-        "Arc radius encoding cannot be combined with quantitative theta."
-      );
-    }
     if (args.mapping !== undefined) {
       validateRadialMapping(args.mapping);
       if (fieldType !== "quantitative" || !["count", "sum"].includes(args.aggregate)) {
@@ -30,7 +25,16 @@ export function resolveArcPositionPolicy({ channel, args, fieldType, layer }) {
       return { ...emptyPositionPolicy(), aggregate: args.aggregate };
     }
     if (args.aggregate !== undefined) {
-      throw new Error("Arc radius encoding does not support aggregate.");
+      if (!["count", "sum"].includes(args.aggregate)) throw new Error("Arc radius aggregate supports count or sum.");
+      const theta = layer.encoding?.theta;
+      if (theta !== undefined && !["count", "sum"].includes(theta.aggregate)) {
+        throw new Error("Grouped arc radius requires aggregated categorical theta.");
+      }
+      if (args.aggregate === "count" && Object.hasOwn(args, "field")) {
+        throw new Error("Arc radius count does not accept a field.");
+      }
+      if (args.weight !== undefined) throw new Error("Arc radius encoding does not support weight.");
+      return { ...emptyPositionPolicy(), aggregate: args.aggregate };
     }
     if (args.weight !== undefined) {
       throw new Error("Arc radius encoding does not support weight.");
@@ -38,10 +42,8 @@ export function resolveArcPositionPolicy({ channel, args, fieldType, layer }) {
     return emptyPositionPolicy();
   }
   if (fieldType === "quantitative") {
-    if (layer.encoding?.radius !== undefined) {
-      throw new Error(
-        "Quantitative arc theta cannot be combined with radius encoding."
-      );
+    if (layer.encoding?.radius?.aggregate !== undefined) {
+      throw new Error("Grouped arc radius requires aggregated categorical theta.");
     }
     if (args.aggregate !== undefined) {
       throw new Error("Quantitative arc theta does not support aggregate.");

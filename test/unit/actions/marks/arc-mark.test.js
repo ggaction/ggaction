@@ -260,18 +260,12 @@ test("rejects incompatible arc position and appearance contracts atomically", ()
     }),
     /weight requires aggregate: "sum"/
   );
-  assert.throws(
-    () => base()
-      .encodeTheta({ field: "value" })
-      .encodeR({ field: "value" }),
-    /cannot be combined with quantitative theta/
-  );
-  assert.throws(
-    () => base()
-      .encodeR({ field: "value" })
-      .encodeTheta({ field: "value" }),
-    /cannot be combined with radius encoding/
-  );
+  const thetaFirst = base().encodeTheta({ field: "value" })
+    .encodeR({ field: "value", scale: { zero: true } });
+  const radiusFirst = base().encodeR({ field: "value", scale: { zero: true } })
+    .encodeTheta({ field: "value" });
+  assert.equal(thetaFirst.graphicSpec.objects.arc.items.length, 3);
+  assert.deepEqual(thetaFirst.graphicSpec.objects.arc, radiusFirst.graphicSpec.objects.arc);
   assert.throws(
     () => radial().editArcMark({ fill: "red" }),
     /cannot be combined with a color encoding/

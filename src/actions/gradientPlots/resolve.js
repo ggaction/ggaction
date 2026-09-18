@@ -1,5 +1,5 @@
 import { resolveOptionalUserId, validateUserId } from "../../core/identifiers.js";
-import { findLayer, hasLayer } from "../../selectors/layers.js";
+import { findLayer, hasLayer, resolveConfiguredOwner } from "../../selectors/layers.js";
 
 const CATEGORICAL = Object.freeze(["nominal", "ordinal"]);
 
@@ -62,20 +62,5 @@ export function resolveGradientPlotId(program, requested) {
 }
 
 export function resolveGradientOwner(program, requested, operation) {
-  const eligible = program.semanticSpec.layers.filter(
-    layer => program.markConfigs[layer.id]?.gradientPlot?.materialized === true
-  );
-  if (requested !== undefined) {
-    const id = validateUserId(requested, "Gradient-plot owner id");
-    const layer = findLayer(program, id);
-    if (layer === undefined || !eligible.includes(layer)) {
-      throw new Error(`Unknown gradient-plot owner "${id}".`);
-    }
-    return layer;
-  }
-  const current = findLayer(program, program.context.currentMark);
-  if (current !== undefined && eligible.includes(current)) return current;
-  if (eligible.length === 1) return eligible[0];
-  if (eligible.length === 0) throw new Error(`${operation} requires a gradient plot.`);
-  throw new Error(`${operation} target is ambiguous; provide target.`);
+  return resolveConfiguredOwner(program, requested, { config: "gradientPlot", operation, kind: "gradient", materialized: true }, validateUserId);
 }

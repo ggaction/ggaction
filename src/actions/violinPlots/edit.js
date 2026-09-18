@@ -2,7 +2,7 @@ import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
 import { findDataset } from "../../selectors/datasets.js";
-import { findLayer } from "../../selectors/layers.js";
+import { findLayer, resolveConfiguredOwner } from "../../selectors/layers.js";
 import { rebindDistributionGuides } from "../distributions/revision.js";
 import {
   resolveViolinDensity,
@@ -15,24 +15,7 @@ const OPTIONS = Object.freeze([
   "target", "data", "x", "y", "split", "density"
 ]);
 
-function resolveOwner(program, requested) {
-  const eligible = program.semanticSpec.layers.filter(
-    layer => program.markConfigs[layer.id]?.violinPlot?.materialized === true
-  );
-  if (requested !== undefined) {
-    const id = validateUserId(requested, "Violin-plot owner id");
-    const layer = findLayer(program, id);
-    if (layer === undefined || !eligible.includes(layer)) {
-      throw new Error(`Unknown violin-plot owner "${id}".`);
-    }
-    return layer;
-  }
-  const current = findLayer(program, program.context.currentMark);
-  if (current !== undefined && eligible.includes(current)) return current;
-  if (eligible.length === 1) return eligible[0];
-  if (eligible.length === 0) throw new Error(`${OPERATION} requires a violin plot.`);
-  throw new Error(`${OPERATION} target is ambiguous; provide target.`);
-}
+
 
 function currentPosition(owner, current, channel) {
   const categorical = current.orientation === "vertical"
@@ -84,7 +67,7 @@ export const editViolinPlot = /* @__PURE__ */ action(
     if (!OPTIONS.slice(1).some(key => Object.hasOwn(args, key))) {
       throw new Error(`${OPERATION} requires at least one violin-plot option.`);
     }
-    const owner = resolveOwner(this, args.target);
+    const owner = resolveConfiguredOwner(this, args.target, { config: "violinPlot", operation: OPERATION, kind: "violin", materialized: true }, validateUserId);
     const current = this.markConfigs[owner.id].violinPlot;
     const source = Object.hasOwn(args, "data")
       ? validateUserId(args.data, "Violin-plot data id")

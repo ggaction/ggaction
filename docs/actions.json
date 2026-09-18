@@ -31369,7 +31369,8 @@
         "createArcMark",
         "encodeTheta",
         "encodeColor",
-        "createGuides"
+        "createGuides",
+        "encodeR"
       ],
       "editableVia": [],
       "supports": {
@@ -31435,6 +31436,11 @@
           "type": "false | PieColor | undefined"
         },
         {
+          "name": "radius",
+          "required": false,
+          "type": "PieRadiusChannel | undefined"
+        },
+        {
           "name": "arc",
           "required": false,
           "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: number | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
@@ -31457,7 +31463,7 @@
       ],
       "callPatterns": [
         "createPiePlot({ category })",
-        "createPiePlot({ category, value, aggregate: \"sum\", arc? })"
+        "createPiePlot({ category, value, aggregate: \"sum\", radius?, arc? })"
       ],
       "snippet": "program.createPiePlot({ category: \"category\" })",
       "errors": [],

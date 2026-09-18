@@ -1,9 +1,9 @@
 import { validateUserId } from "../../../core/identifiers.js";
 import {
   validateGeneratedItemLimit,
+  validateTextStyle,
   validateNonEmptyString,
-  validateNonNegativeFinite,
-  validatePositiveFinite
+  validateNonNegativeFinite
 } from "../../../core/validation.js";
 import {
   formatTransformedTick,
@@ -264,15 +264,7 @@ export function validatePolarLineStyle(config, label) {
   validateNonNegativeFinite(config.lineWidth, `${label} lineWidth`);
 }
 
-export function validatePolarTextStyle(config, label) {
-  validateNonEmptyString(config.color, `${label} color`);
-  validatePositiveFinite(config.fontSize, `${label} fontSize`);
-  validateNonEmptyString(config.fontFamily, `${label} fontFamily`);
-  if (typeof config.fontWeight !== "string" &&
-      !Number.isFinite(config.fontWeight)) {
-    throw new TypeError(`${label} fontWeight must be a string or number.`);
-  }
-}
+export { validateTextStyle as validatePolarTextStyle };
 
 export function validatePolarLabelFormat(format) {
   return validateAxisFormat(format);

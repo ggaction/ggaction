@@ -37,7 +37,7 @@ export const rematerializeScale = /* @__PURE__ */ action(
     const id = validateUserId(args.id, "Scale id");
     const semanticScale = findScale(this, id);
     const consumers = findScaleConsumers(this, id);
-    if (semanticScale.radialMapping !== undefined && consumers.length > 0 &&
+    if (consumers.length > 0 &&
       consumers.every(isPendingMeasuredRadiusConsumer)) {
       validatePendingMeasuredScale(this, semanticScale, consumers);
       return this._withoutResolvedScale(id);

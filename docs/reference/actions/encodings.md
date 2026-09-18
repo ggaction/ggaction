@@ -613,6 +613,11 @@ encodeR({ field?, aggregate?, mapping?, target?, fieldType?, scale?, coordinate?
 
 Encode a quantitative field as Polar radial distance. The default `radius`
 scale fits the current plot bounds and rematerializes after Canvas edits.
+Proportional arcs accept independent ordinary radius scales: quantitative theta
+uses row values, while categorical count/sum theta accepts a consistent radius
+per group or explicit radius count/sum. Domains use those final sector values.
+Mapped outer radii must exceed the inner radius. Radius aggregation requires
+categorical aggregated theta and stays pending until that encoding exists.
 Measured Arc radius accepts count/sum with `mapping: "area"` or
 `"radius-length"`. Reassign with `{ field, mapping: false }` to atomically
 replace a measured category aggregate with ordinary row-level radial length.

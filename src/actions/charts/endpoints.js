@@ -1,7 +1,8 @@
+import { validateUserId } from "../../core/identifiers.js";
 import { action } from "../../core/action.js";
 import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import { isPlainObject } from "../../core/immutable.js";
-import { validateUserId } from "../../core/identifiers.js";
+import { resolveConfiguredOwner } from "../../selectors/layers.js";
 import { isNominalValue } from "../../grammar/scales/fields.js";
 import {
   validateNonEmptyString,
@@ -400,22 +401,7 @@ export const createDumbbellPlot = /* @__PURE__ */ action(
   }
 );
 
-function resolveEndpointOwner(program, requested) {
-  const eligible = program.semanticSpec.layers.filter(
-    layer => program.markConfigs[layer.id]?.endpointPlot !== undefined
-  );
-  if (requested !== undefined) {
-    const id = validateUserId(requested, "Endpoint-plot owner id");
-    const owner = eligible.find(layer => layer.id === id);
-    if (owner === undefined) throw new Error(`Unknown endpoint-plot owner "${id}".`);
-    return owner;
-  }
-  const current = eligible.find(layer => layer.id === program.context.currentMark);
-  if (current !== undefined) return current;
-  if (eligible.length === 1) return eligible[0];
-  if (eligible.length === 0) throw new Error("editEndpointPlot requires an endpoint plot.");
-  throw new Error("editEndpointPlot target is ambiguous; provide target.");
-}
+
 
 const KIND_METHOD = Object.freeze({
   dot: "createDotPlot",
@@ -457,7 +443,7 @@ export const editEndpointPlot = /* @__PURE__ */ action(
     if (changes.length === 0) {
       throw new Error("editEndpointPlot requires at least one endpoint-plot option.");
     }
-    const owner = resolveEndpointOwner(this, args.target);
+    const owner = resolveConfiguredOwner(this, args.target, { config: "endpointPlot", operation: "editEndpointPlot", kind: "endpoint", article: "an" }, validateUserId);
     const current = this.markConfigs[owner.id].endpointPlot;
     const allowed = KIND_ROLES[current.kind];
     const invalid = changes.find(key => !allowed.has(key));

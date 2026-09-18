@@ -1,5 +1,6 @@
-import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
+import { action } from "../../core/action.js";
+import { resolveConfiguredOwner } from "../../selectors/layers.js";
 import { validateNonEmptyString, validateOptionObject } from "../../core/validation.js";
 import { normalizeGroupFields } from "../../grammar/pathSeries.js";
 import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
@@ -55,22 +56,7 @@ function normalizeOutputs(value, id, operation) {
   return { ...value };
 }
 
-function resolveOwner(program, requested) {
-  const eligible = program.semanticSpec.layers.filter(
-    layer => program.markConfigs[layer.id]?.ecdfPlot !== undefined
-  );
-  if (requested !== undefined) {
-    const id = validateUserId(requested, "ECDF-plot owner id");
-    const owner = eligible.find(layer => layer.id === id);
-    if (owner === undefined) throw new Error(`Unknown ECDF-plot owner "${id}".`);
-    return owner;
-  }
-  const current = eligible.find(layer => layer.id === program.context.currentMark);
-  if (current !== undefined) return current;
-  if (eligible.length === 1) return eligible[0];
-  if (eligible.length === 0) throw new Error("editECDFPlot requires an ECDF plot.");
-  throw new Error("editECDFPlot target is ambiguous; provide target.");
-}
+
 
 export const createECDFPlot = /* @__PURE__ */ action(
   {
@@ -169,7 +155,7 @@ export const editECDFPlot = /* @__PURE__ */ action(
     if (changes.length === 0) {
       throw new Error("editECDFPlot requires at least one ECDF option.");
     }
-    const owner = resolveOwner(this, args.target);
+    const owner = resolveConfiguredOwner(this, args.target, { config: "ecdfPlot", operation: "editECDFPlot", kind: "ECDF", article: "an" }, validateUserId);
     const current = this.markConfigs[owner.id].ecdfPlot;
     const revised = { ...current.options };
     for (const key of changes) {

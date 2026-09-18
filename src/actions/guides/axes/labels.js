@@ -4,8 +4,8 @@ import { validateUserId } from "../../../core/identifiers.js";
 import {
   sameOrderedValues,
   validateGeneratedItemLimit,
+  validateTextStyle,
   validateOptionObject,
-  validateNonEmptyString,
   validateNonNegativeFinite,
   validatePositiveFinite
 } from "../../../core/validation.js";
@@ -78,15 +78,7 @@ function normalizeLabelLayout(config, args, operation) {
   return next;
 }
 
-export function validateAxisTextStyle(config, label) {
-  validateNonEmptyString(config.color, `${label} color`);
-  validatePositiveFinite(config.fontSize, `${label} fontSize`);
-  validateNonEmptyString(config.fontFamily, `${label} fontFamily`);
-  if (typeof config.fontWeight !== "string" &&
-    !Number.isFinite(config.fontWeight)) {
-    throw new TypeError(`${label} fontWeight must be a string or number.`);
-  }
-}
+export { validateTextStyle as validateAxisTextStyle };
 
 function validateOptions(args, operation, create) {
   validateOptionObject(
@@ -117,7 +109,7 @@ function validateConfig(channel, config) {
     validateGeneratedItemLimit(config.values.length, "Label value count");
   }
   validateNonNegativeFinite(config.offset, "Label offset");
-  validateAxisTextStyle(config, "Label");
+  validateTextStyle(config, "Label");
   validateAxisFormat(config.format);
   if (!Number.isFinite(config.rotation)) {
     throw new TypeError("Label rotation must resolve to finite radians.");

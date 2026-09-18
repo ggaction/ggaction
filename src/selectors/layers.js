@@ -37,3 +37,22 @@ export function resolveEligibleLayer(program, {
   if (candidates.length === 0) throw annotateError(new Error(`${label} requires an eligible layer.`), { code: "missing-resource", optionPath: targetOption });
   throw annotateError(new Error(`${label} ${targetOption} is ambiguous; provide ${targetOption}.`), { code: "ambiguous-resource", optionPath: targetOption, candidates: candidates.map(layer => layer.id) });
 }
+
+// Configured composite plots retain their established owner errors while sharing
+// the explicit/current/unique resolution order.
+export function resolveConfiguredOwner(program, requested, {
+  config, operation, kind, article = "a", materialized = false, missing, ambiguous
+}, validateUserId) {
+  const eligible = program.semanticSpec.layers.filter(layer => {
+    const value = program.markConfigs[layer.id]?.[config];
+    return materialized ? value?.materialized === true : value !== undefined;
+  });
+  const id = requested === undefined ? program.context.currentMark
+    : validateUserId(requested, `${kind[0].toUpperCase() + kind.slice(1)}-plot owner id`);
+  const owner = eligible.find(layer => layer.id === id);
+  if (owner !== undefined) return owner;
+  if (requested !== undefined) throw new Error(`Unknown ${kind}-plot owner "${id}".`);
+  if (eligible.length === 1) return eligible[0];
+  if (eligible.length === 0) throw new Error(missing ?? `${operation} requires ${article} ${kind} plot.`);
+  throw new Error(ambiguous ?? `${operation} target is ambiguous; provide target.`);
+}

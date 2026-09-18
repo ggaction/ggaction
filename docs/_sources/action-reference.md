@@ -886,7 +886,7 @@ See the [complete density workflow](../tutorials/density-area.md#complete-densit
 ### `createPiePlot`
 
 ```javascript
-createPiePlot({ id?, data?, coordinate?, category, value?, aggregate?, color?, arc?, guides? })
+createPiePlot({ id?, data?, coordinate?, category, value?, aggregate?, color?, radius?, arc?, guides? })
 ```
 
 Create one sector per category in the full package. `category` is required and
@@ -894,6 +894,16 @@ defaults to nominal count, including numeric categories. For weights, provide
 both `value` and `aggregate: "sum"`; values must be finite and nonnegative with
 a positive total. Color defaults to the category. Use `color: false` for a
 scalar `arc.fill`; otherwise each slice must resolve to one categorical color.
+
+Optional `radius` independently maps each slice's outer radius while preserving
+proportional angles. Use a field string for one consistent value per category,
+or `{ field: "amount", aggregate: "sum", scale: { type: "sqrt" } }` to sum
+radius values per category. `{ aggregate: "count" }` counts rows without a field.
+Domains use the final category measures. New non-log radius scales default to
+`zero: true`; explicit scale settings override that default and existing scales
+retain their policy. Every mapped outer radius must exceed the inner radius.
+Value/share labels continue to describe angular values. Use `encodeR` to edit
+the radius; equal-angle rose/radial-bar mappings are separate chart types.
 
 `arc.innerRadius` is a radius ratio in [0,1) or `{ unit: "px", value }` for a non-negative fixed inner radius smaller than the outer radius; `arc.padAngle` is in degrees.
 Use these options for a donut. `guides` defaults to a color legend with no axes
@@ -1987,6 +1997,11 @@ encodeR({ field?, aggregate?, mapping?, target?, fieldType?, scale?, coordinate?
 
 Encode a quantitative field as Polar radial distance. The default `radius`
 scale fits the current plot bounds and rematerializes after Canvas edits.
+Proportional arcs accept independent ordinary radius scales: quantitative theta
+uses row values, while categorical count/sum theta accepts a consistent radius
+per group or explicit radius count/sum. Domains use those final sector values.
+Mapped outer radii must exceed the inner radius. Radius aggregation requires
+categorical aggregated theta and stays pending until that encoding exists.
 Measured Arc radius accepts count/sum with `mapping: "area"` or
 `"radius-length"`. Reassign with `{ field, mapping: false }` to atomically
 replace a measured category aggregate with ordinary row-level radial length.

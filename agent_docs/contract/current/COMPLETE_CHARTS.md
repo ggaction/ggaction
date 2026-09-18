@@ -482,7 +482,7 @@ Default id는 `radialBarPlot`. Full 전용 Aggregate create-only이며 구멍부
 
 ## `createPiePlot`
 
-`createPiePlot({ id?, data?, coordinate?, category, value?, aggregate?, color?, arc?, guides? })`.
+`createPiePlot({ id?, data?, coordinate?, category, value?, aggregate?, color?, radius?, arc?, guides? })`.
 Default id는 `piePlot`, lifecycle은 Aggregate create-only다.
 
 - Category: field string 또는 `{ field, fieldType?: "nominal" | "ordinal", scale? }`. 숫자 shorthand도 nominal이다.
@@ -497,7 +497,11 @@ Default id는 `piePlot`, lifecycle은 Aggregate create-only다.
 - Guides: `{axes?:false, grid?:false, legend?:false|PieLegendOptions}` 또는 false.
   Categorical color legend만 생성한다. Count/gradient legend와 color 외 channels는 거부한다.
   Color가 없는데 legend를 요청하면 오류다. Zero-total category의 sector는 생략하지만 color-domain legend에는 남을 수 있다.
-- Effects: `createArcMark → encodeTheta → encodeColor? → guide fulfillment`의 wrapped child trace다.
+- Radius: field string or `{field?, aggregate?:"sum"|"count", scale?}` delegates to encodeR.
+  Count excludes field; sum requires it; omitted aggregation requires one consistent value per category.
+  A newly created non-log radius scale defaults to zero:true unless overridden. Existing scales retain policy.
+  Outer radius must exceed innerRadius for every positive-angle sector; explicit ranges remain pixel values.
+- Effects: `createArcMark → encodeTheta → encodeR? → encodeColor? → guide fulfillment`의 wrapped child trace다.
   Semantic은 raw source binding과 theta/category/aggregate/weight/color/scale/coordinate, graphic은 concrete sector paths다.
   별도 slice-share cache나 derived aggregate dataset을 생성하지 않는다.
 - Editing: `editArcMark`, `encodeTheta`, `encodeColor`, `removeEncoding`, scale·legend editor가 소유한다.

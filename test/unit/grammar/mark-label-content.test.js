@@ -58,7 +58,7 @@ test("arc values distinguish weighted/count sectors, quantitative theta and meas
   const numeric = { ...source, encoding: { theta: { field: "value", fieldType: "quantitative" } } };
   assert.deepEqual(resolveMarkLabelValues(numeric, [{ channels: { theta: 9 }, members: [] }], { content: "value" }), [9]);
   assert.throws(() => normalizeMarkLabelContent(numeric, { content: "category" }), /categorical Arc/);
-  const radial = { ...source, encoding: { ...source.encoding, radius: { aggregate: "sum" } } };
+  const radial = { ...source, encoding: { theta: { field: "category", fieldType: "nominal" }, radius: { aggregate: "sum" } } };
   assert.deepEqual(resolveMarkLabelValues(radial, [{ channels: { radius: 7 }, members: [] }], { content: "value" }), [7]);
 });
 

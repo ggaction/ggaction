@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:a6b32a00e3470eb61884f83f3ec2c02e19ef5cfa858434fd8a5899d32c10f845",
+    "contractId": "sha256:63ae2a8b970bc13dd44b297adc784c123df221778f2f95569b43e50530fce9a2",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -2010,8 +2010,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 154190,
-      "sha256": "59cf73d74f8b7ddea2a9bf8bdca274feccab1c62a7d61e280164edd66e4f137f"
+      "bytes": 154981,
+      "sha256": "fd138e031a5a949c32dcc119648e7478f82bdf5b3c07a106f4d48579218a2a8c"
     },
     {
       "order": 119,
@@ -2105,8 +2105,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 59607,
-      "sha256": "30abf7d1454d913e6ed79c215cc8c0156469c319c165ce0e61f9b9e23aaea896"
+      "bytes": 59997,
+      "sha256": "ba8aeb5e49b5c61fc794b84b37cc30d7aa825d04f222d0199269a4ed41481a6f"
     },
     {
       "order": 121,
@@ -2763,6 +2763,7 @@
         "type-piecategory",
         "type-piecolor",
         "type-pielegendoptions",
+        "type-pieradiuschannel",
         "type-pointfacadepositionchannel",
         "type-pointpackingmaxoffset",
         "type-pointpositionscaleoptions",
@@ -2943,8 +2944,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 312061,
-      "sha256": "392dc54ef67775e6bcc8b191e176e6abd112149647ad9fb73f6f96e2938b45fc"
+      "bytes": 312673,
+      "sha256": "cbf9aa7c64dee9770565d2b6818c47e4d9b7999090f9edb5191f1c1e9cce3060"
     },
     {
       "order": 127,
@@ -3282,8 +3283,8 @@
         "compose-or-refine",
         "related"
       ],
-      "bytes": 18752,
-      "sha256": "9efc0a8faad3514238c4c311491ed6e0b048eeae5c31fc4cdffcce20ae24aa99"
+      "bytes": 18807,
+      "sha256": "f884c23e939396e7d74274871824578b9335d99d31309bca89a0757febd1a6f5"
     },
     {
       "order": 149,
@@ -3296,7 +3297,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "21fc592d20f6fd2d45f3db73bdb83ef5e17dd5a40b61ed0383d5661411354d90"
+      "sha256": "6618dbae4a7626cca0848f1b35f5927bca6b2593a241dc1b5cd3da497738ccae"
     },
     {
       "order": 150,

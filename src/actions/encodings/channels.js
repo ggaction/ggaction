@@ -155,7 +155,6 @@ function resolveScaleOnly(program, id) {
   }
   const consumers = findScaleConsumers(program, id);
   if (
-    semanticScale.radialMapping !== undefined &&
     consumers.length > 0 &&
     consumers.every(isPendingMeasuredRadiusConsumer)
   ) {

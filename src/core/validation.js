@@ -110,3 +110,12 @@ export function rejectUnknownProperties(value, supported, label) {
   const unknown = Object.keys(value).find(key => !supported.includes(key));
   if (unknown !== undefined) throw new Error(`Unknown ${label} property "${unknown}".`);
 }
+
+export function validateTextStyle(config, label) {
+  validateNonEmptyString(config.color, `${label} color`);
+  validatePositiveFinite(config.fontSize, `${label} fontSize`);
+  validateNonEmptyString(config.fontFamily, `${label} fontFamily`);
+  if (typeof config.fontWeight !== "string" && !Number.isFinite(config.fontWeight)) {
+    throw new TypeError(`${label} fontWeight must be a string or number.`);
+  }
+}

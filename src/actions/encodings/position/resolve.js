@@ -142,7 +142,8 @@ export function resolvePositionEncoding(program, channel, args, operation) {
       ? undefined
       : args.mapping ?? findSemanticScale(program, previous?.scale)?.radialMapping
     : undefined;
-  const countRadius = mapping !== undefined && (args.aggregate ?? previous?.aggregate) === "count";
+  const countRadius = channel === "radius" && layer.mark.type === "arc" &&
+    !clearRadialMapping && (args.aggregate ?? previous?.aggregate) === "count";
   const requestedFieldType = args.fieldType ?? previous?.fieldType ?? (
     ["rule", "rect", "text", "point", "tick"].includes(layer.mark.type) && hasDatum
       ? inferDatumFieldType(args.datum, operation)
@@ -179,7 +180,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     } else readScaleField(dataset.values, field, fieldType, { temporalUnit });
   }
   const effectiveArgs = { ...args };
-  if (clearRadialMapping) delete effectiveArgs.mapping;
+  if (clearRadialMapping && args.aggregate === undefined) delete effectiveArgs.mapping;
   else if (mapping !== undefined) effectiveArgs.mapping = mapping;
   const directQuantitativeArcTheta =
     layer.mark.type === "arc" &&

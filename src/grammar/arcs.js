@@ -148,94 +148,59 @@ function resolveProportionalRadii(layer, frame, innerRadius) {
 
 function proportionalSectors(rows, layer, thetaScale, frame, innerRadius) {
   const theta = layer.encoding.theta;
-  if (!["count", "sum"].includes(theta.aggregate)) {
+  const direct = theta.fieldType === "quantitative";
+  if (!direct && !["count", "sum"].includes(theta.aggregate)) {
     throw new Error(`Arc mark "${layer.id}" requires count, sum, or radial layout.`);
   }
-  const values = readNominalField(rows, theta.field);
+  const weights = direct ? readArcThetaValues(rows, theta.field, layer.id)
+    : theta.aggregate === "count" ? rows.map(() => 1)
+      : readArcThetaWeights(rows, theta.weight, layer.id);
+  const values = direct ? rows.map((_, index) => index) : readNominalField(rows, theta.field);
   const colors = colorValues(rows, layer.encoding?.color);
-  const weights = theta.aggregate === "count"
-    ? rows.map(() => 1)
-    : readArcThetaWeights(rows, theta.weight, layer.id);
-  const groups = new Map(thetaScale.domain.map(value => [value, []]));
-  for (let index = 0; index < rows.length; index += 1) {
-    const group = groups.get(values[index]);
-    if (group === undefined) {
-      throw new Error(`Arc theta value "${values[index]}" is outside the scale domain.`);
-    }
-    group.push({
-      color: colors[index],
-      sourceIndex: index,
-      weight: weights[index]
-    });
+  const groups = new Map(groupArcRows(values, weights).map(group => [group.key, group]));
+  const domain = direct ? values : thetaScale.domain;
+  const domainValues = new Set(domain);
+  for (const value of groups.keys()) {
+    if (!domainValues.has(value)) throw new Error(`Arc theta value "${value}" is outside the scale domain.`);
   }
+  const positiveValues = domain.filter(value => groups.get(value)?.values.some(weight => weight > 0));
+  const labelAt = index => direct ? `row ${positiveValues[index]}` : `group "${String(positiveValues[index])}"`;
+  const aggregateValues = positiveValues.map((value, index) => direct ? weights[value]
+    : stableFiniteSum(groups.get(value).values, `Arc theta ${labelAt(index)} aggregate`));
+  const ranges = resolveProportionalRanges(aggregateValues, thetaScale.range, labelAt);
   const radii = resolveProportionalRadii(layer, frame, innerRadius);
-  const sectors = [];
-  const positiveValues = thetaScale.domain.filter(value =>
-    groups.get(value).some(item => item.weight > 0)
-  );
-  const aggregateValues = positiveValues.map(value => stableFiniteSum(
-    groups.get(value).map(item => item.weight),
-    `Arc theta group "${String(value)}" aggregate`
-  ));
-  const ranges = resolveProportionalRanges(
-    aggregateValues,
-    thetaScale.range,
-    index => `group "${String(positiveValues[index])}"`
-  );
-  for (const [positiveIndex, value] of positiveValues.entries()) {
+  return positiveValues.map((value, index) => {
     const group = groups.get(value);
-    const aggregateValue = aggregateValues[positiveIndex];
-    const { startTheta, endTheta } = ranges[positiveIndex];
-    const distinctColors = [...new Set(group.map(item => item.color))];
+    const distinctColors = [...new Set(group.sourceIndices.map(sourceIndex => colors[sourceIndex]))];
     if (distinctColors.length > 1) {
-      throw new Error(
-        `Aggregated arc theta group "${value}" must resolve to one color value.`
-      );
+      throw new Error(`Aggregated arc theta group "${value}" must resolve to one color value.`);
     }
-    sectors.push({
-      key: value,
-      theta: value,
-      count: group.length,
-      aggregateValue,
+    return {
+      key: direct ? `${String(weights[value])}:${value}` : value,
+      theta: direct ? weights[value] : value,
+      count: group.sourceIndices.length,
+      aggregateValue: aggregateValues[index],
       color: distinctColors[0],
-      startTheta,
-      endTheta,
-      ...radii,
-      sourceIndices: group.map(item => item.sourceIndex)
-    });
-  }
-  return sectors;
+      ...ranges[index], ...radii, sourceIndices: group.sourceIndices
+    };
+  });
 }
 
-function quantitativeSectors(rows, layer, thetaScale, frame, innerRadius) {
-  const theta = layer.encoding.theta;
-  if (layer.encoding?.radius !== undefined) {
-    throw new Error(
-      `Arc mark "${layer.id}" cannot combine quantitative theta with radius.`
-    );
+function groupRadiusRows(rows, radius, categories) {
+  const measures = radius.aggregate === "count" ? rows.map(() => 1)
+    : readQuantitativeField(rows, radius.field);
+  return groupArcRows(categories, measures);
+}
+
+function groupArcRows(categories, measures) {
+  const groups = new Map();
+  for (const [index, category] of categories.entries()) {
+    const group = groups.get(category) ?? { key: category, sourceIndices: [], values: [] };
+    group.sourceIndices.push(index);
+    group.values.push(measures[index]);
+    groups.set(category, group);
   }
-  const values = readArcThetaValues(rows, theta.field, layer.id);
-  const colors = colorValues(rows, layer.encoding?.color);
-  const positiveIndices = values
-    .map((value, index) => value > 0 ? index : undefined)
-    .filter(index => index !== undefined);
-  const positiveValues = positiveIndices.map(index => values[index]);
-  const ranges = resolveProportionalRanges(
-    positiveValues,
-    thetaScale.range,
-    index => `row ${positiveIndices[index]}`
-  );
-  const radii = resolveProportionalRadii(layer, frame, innerRadius);
-  return positiveIndices.map((sourceIndex, index) => ({
-    key: `${String(values[sourceIndex])}:${sourceIndex}`,
-    theta: values[sourceIndex],
-    count: 1,
-    aggregateValue: values[sourceIndex],
-    color: colors[sourceIndex],
-    ...ranges[index],
-    ...radii,
-    sourceIndices: [sourceIndex]
-  }));
+  return [...groups.values()];
 }
 
 export function deriveMeasuredArcValues(rows, layer) {
@@ -249,22 +214,13 @@ export function deriveMeasuredArcValues(rows, layer) {
     throw new Error("Measured count radius does not accept a field.");
   }
   const categories = readNominalField(rows, theta.field);
-  const measures = radius.aggregate === "count" ? rows.map(() => 1)
-    : readQuantitativeField(rows, radius.field);
-  if (measures.some(value => value < 0)) {
+  const colors = colorValues(rows, layer.encoding?.color);
+  const groups = groupRadiusRows(rows, radius, categories);
+  if (groups.some(group => group.values.some(value => value < 0))) {
     throw new RangeError("Measured Arc radius inputs must be non-negative.");
   }
-  const colors = colorValues(rows, layer.encoding?.color);
-  const groups = new Map();
-  for (const [index, category] of categories.entries()) {
-    const group = groups.get(category) ?? { key: category, sourceIndices: [], values: [], colors: [] };
-    group.sourceIndices.push(index);
-    group.values.push(measures[index]);
-    group.colors.push(colors[index]);
-    groups.set(category, group);
-  }
-  const result = [...groups.values()].map(group => {
-    const distinctColors = [...new Set(group.colors)];
+  const result = groups.map(group => {
+    const distinctColors = [...new Set(group.sourceIndices.map(index => colors[index]))];
     if (distinctColors.length > 1) {
       throw new Error(`Measured Arc category "${group.key}" must resolve to one color value.`);
     }
@@ -349,30 +305,27 @@ export function deriveArcSectors(rows, layer, {
   if (!Array.isArray(rows)) throw new TypeError("Arc derivation requires rows.");
   const theta = requireArcLayer(layer);
   normalizeArcInnerRadius(innerRadius);
-  const sectors = radiusScale?.radialMapping !== undefined
-    ? measuredRadialSectors(rows, layer, requireBandScale(thetaScale, `Arc mark "${layer.id}" theta`), radiusScale)
-    : theta.fieldType === "quantitative"
-    ? quantitativeSectors(
-        rows,
-        layer,
-        requireContinuousThetaScale(thetaScale, `Arc mark "${layer.id}" theta`),
-        frame,
-        innerRadius
-      )
-    : ["count", "sum"].includes(theta.aggregate)
-      ? proportionalSectors(
-          rows,
-          layer,
-          requireBandScale(thetaScale, `Arc mark "${layer.id}" theta`),
-          frame,
-          innerRadius
-        )
-      : radialSectors(
-          rows,
-          layer,
-          requireBandScale(thetaScale, `Arc mark "${layer.id}" theta`),
-          radiusScale
-        );
+  const measured = radiusScale?.radialMapping !== undefined;
+  const quantitative = theta.fieldType === "quantitative";
+  const resolvedTheta = (quantitative && !measured ? requireContinuousThetaScale : requireBandScale)(
+    thetaScale, `Arc mark "${layer.id}" theta`
+  );
+  let sectors = measured ? measuredRadialSectors(rows, layer, resolvedTheta, radiusScale)
+    : quantitative || ["count", "sum"].includes(theta.aggregate)
+      ? proportionalSectors(rows, layer, resolvedTheta, frame, innerRadius)
+      : radialSectors(rows, layer, resolvedTheta, radiusScale);
+  if (radiusScale !== undefined && !measured && (quantitative || theta.aggregate !== undefined)) {
+    const inputs = deriveProportionalArcRadiusValues(rows, layer);
+    const positions = mapContinuousScaleValues(inputs.map(item => item.radius), radiusScale);
+    const bySource = new Map(inputs.map((item, index) => [item.sourceIndices[0], { radius:item.radius, outerRadius:positions[index] }]));
+    sectors = sectors.map(sector => {
+      const mapped = bySource.get(sector.sourceIndices[0]);
+      if (mapped === undefined || !Number.isFinite(mapped.outerRadius) || mapped.outerRadius <= sector.innerRadius) {
+        throw new RangeError("Arc outer radius must exceed inner radius.");
+      }
+      return { ...sector, ...mapped };
+    });
+  }
   return cloneAndFreeze({ sectors });
 }
 
@@ -396,4 +349,26 @@ export function resolveArcInnerRadius(value, outer) {
     throw new RangeError("Arc pixel innerRadius must be smaller than its outer radius.");
   }
   return normalized.value;
+}
+
+export function deriveProportionalArcRadiusValues(rows, layer) {
+  const theta = layer.encoding?.theta;
+  const radius = layer.encoding?.radius;
+  if (theta === undefined) return [];
+  const direct = theta.fieldType === "quantitative";
+  if (direct ? radius.aggregate !== undefined : !["count", "sum"].includes(theta.aggregate)) {
+    throw new Error("Grouped arc radius requires aggregated categorical theta.");
+  }
+  const weights = direct ? readArcThetaValues(rows, theta.field, layer.id)
+    : theta.aggregate === "count" ? rows.map(() => 1) : readArcThetaWeights(rows, theta.weight, layer.id);
+  const categories = direct ? rows.map((_, index) => index) : readNominalField(rows, theta.field);
+  return groupRadiusRows(rows, radius, categories)
+    .filter(group => group.sourceIndices.some(index => weights[index] > 0))
+    .map(({ sourceIndices, values: measures }) => {
+    if (radius.aggregate === undefined && new Set(measures).size !== 1) {
+      throw new Error("Arc radius requires one value per theta group or explicit aggregation.");
+    }
+    return { sourceIndices, radius: radius.aggregate === undefined ? measures[0]
+      : stableFiniteSum(measures, "Arc radius aggregate") };
+  });
 }

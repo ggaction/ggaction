@@ -2562,6 +2562,7 @@ export type CreatePiePlotOptions = {
   coordinate?: string;
   category: PieCategory;
   color?: false | PieColor;
+  radius?: PieRadiusChannel;
   arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
@@ -2569,7 +2570,7 @@ export type CreatePiePlotOptions = {
 
 </details>
 
-Related types: [`PieCategory`](#type-piecategory) · [`PieColor`](#type-piecolor) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`ArcInnerRadius`](#type-arcinnerradius) · [`PieLegendOptions`](#type-pielegendoptions).
+Related types: [`PieCategory`](#type-piecategory) · [`PieColor`](#type-piecolor) · [`PieRadiusChannel`](#type-pieradiuschannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`ArcInnerRadius`](#type-arcinnerradius) · [`PieLegendOptions`](#type-pielegendoptions).
 
 ### `CreatePolarLinePlotOptions` {#type-createpolarlineplotoptions}
 
@@ -2857,7 +2858,7 @@ Related types: [`RegressionPlotBaseOptions`](#type-regressionplotbaseoptions) ·
 <summary>Expand CreateRosePlotOptions</summary>
 
 ```typescript
-export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value"> & {
+export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value" | "radius"> & {
   radiusScale?: MeasuredRadiusScaleOptions;
   arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | MeasuredRadialGuideOptions;
@@ -8383,6 +8384,21 @@ export type PieLegendOptions = Omit<
 
 Related types: [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`LegendValueOrder`](#type-legendvalueorder) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions).
 
+### `PieRadiusChannel` {#type-pieradiuschannel}
+
+<details markdown="1">
+<summary>Expand PieRadiusChannel</summary>
+
+```typescript
+export type PieRadiusChannel = string | {
+  scale?: RadiusScaleOptions;
+} & ({ field: string; aggregate?: "sum" } | { field?: never; aggregate: "count" });
+```
+
+</details>
+
+Related types: [`RadiusScaleOptions`](#type-radiusscaleoptions).
+
 ### `PointFacadePositionChannel` {#type-pointfacadepositionchannel}
 
 <details markdown="1">
@@ -9009,6 +9025,8 @@ export type RadialEncodingOptions = {
   coordinate?: string;
 } & (
   | { field: string; mapping?: false; aggregate?: never; scale?: RadiusScaleOptions }
+  | { field: string; mapping?: never; aggregate: "sum"; scale?: RadiusScaleOptions }
+  | { field?: never; mapping?: never; aggregate: "count"; scale?: RadiusScaleOptions }
   | { field: string; mapping?: RadialMapping; aggregate: "sum"; scale?: MeasuredRadiusScaleOptions }
   | { field?: never; mapping?: RadialMapping; aggregate: "count"; scale?: MeasuredRadiusScaleOptions }
 );

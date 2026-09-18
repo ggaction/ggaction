@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:a6b32a00e3470eb61884f83f3ec2c02e19ef5cfa858434fd8a5899d32c10f845. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:63ae2a8b970bc13dd44b297adc784c123df221778f2f95569b43e50530fce9a2. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -18232,6 +18232,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `category` | Required | `PieCategory` |
 | `color` | Optional / branch-dependent | `false \| PieColor \| undefined` |
+| `radius` | Optional / branch-dependent | `PieRadiusChannel \| undefined` |
 | `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: ArcInnerRadius \| undefined; padAngle?: number \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| { axes?: false \| undefined; grid?: false \| undefined; legend?: false \| PieLegendOptions \| undefined; } \| undefined` |
 | `value` | Optional / branch-dependent | `string \| undefined` |
@@ -18240,7 +18241,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createPiePlot({ id?, data?, coordinate?, category, value?, aggregate?, color?, arc?, guides? })
+createPiePlot({ id?, data?, coordinate?, category, value?, aggregate?, color?, radius?, arc?, guides? })
 ```
 
 Create one sector per category in the full package. `category` is required and
@@ -18248,6 +18249,16 @@ defaults to nominal count, including numeric categories. For weights, provide
 both `value` and `aggregate: "sum"`; values must be finite and nonnegative with
 a positive total. Color defaults to the category. Use `color: false` for a
 scalar `arc.fill`; otherwise each slice must resolve to one categorical color.
+
+Optional `radius` independently maps each slice's outer radius while preserving
+proportional angles. Use a field string for one consistent value per category,
+or `{ field: "amount", aggregate: "sum", scale: { type: "sqrt" } }` to sum
+radius values per category. `{ aggregate: "count" }` counts rows without a field.
+Domains use the final category measures. New non-log radius scales default to
+`zero: true`; explicit scale settings override that default and existing scales
+retain their policy. Every mapped outer radius must exceed the inner radius.
+Value/share labels continue to describe angular values. Use `encodeR` to edit
+the radius; equal-angle rose/radial-bar mappings are separate chart types.
 
 `arc.innerRadius` is a radius ratio in [0,1) or `{ unit: "px", value }` for a non-negative fixed inner radius smaller than the outer radius; `arc.padAngle` is in degrees.
 Use these options for a donut. `guides` defaults to a color legend with no axes
@@ -20400,6 +20411,11 @@ encodeR({ field?, aggregate?, mapping?, target?, fieldType?, scale?, coordinate?
 
 Encode a quantitative field as Polar radial distance. The default `radius`
 scale fits the current plot bounds and rematerializes after Canvas edits.
+Proportional arcs accept independent ordinary radius scales: quantitative theta
+uses row values, while categorical count/sum theta accepts a consistent radius
+per group or explicit radius count/sum. Domains use those final sector values.
+Mapped outer radii must exceed the inner radius. Radius aggregation requires
+categorical aggregated theta and stays pending until that encoding exists.
 Measured Arc radius accepts count/sum with `mapping: "area"` or
 `"radius-length"`. Reassign with `{ field, mapping: false }` to atomically
 replace a measured category aggregate with ordinary row-level radial length.
@@ -28187,12 +28203,13 @@ export type CreatePiePlotOptions = {
   coordinate?: string;
   category: PieCategory;
   color?: false | PieColor;
+  radius?: PieRadiusChannel;
   arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
 ```
 
-Related types: [`PieCategory`](./reference/types/#type-piecategory) · [`PieColor`](./reference/types/#type-piecolor) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius) · [`PieLegendOptions`](./reference/types/#type-pielegendoptions).
+Related types: [`PieCategory`](./reference/types/#type-piecategory) · [`PieColor`](./reference/types/#type-piecolor) · [`PieRadiusChannel`](./reference/types/#type-pieradiuschannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius) · [`PieLegendOptions`](./reference/types/#type-pielegendoptions).
 
 ### `CreatePolarLinePlotOptions` {#type-createpolarlineplotoptions}
 
@@ -28437,7 +28454,7 @@ Related types: [`RegressionPlotBaseOptions`](./reference/types/#type-regressionp
  Expand CreateRosePlotOptions
 
 ```typescript
-export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value"> & {
+export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value" | "radius"> & {
   radiusScale?: MeasuredRadiusScaleOptions;
   arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | MeasuredRadialGuideOptions;
@@ -33079,6 +33096,18 @@ export type PieLegendOptions = Omit<
 
 Related types: [`FilledMarkLegendOptions`](./reference/types/#type-filledmarklegendoptions) · [`LegendValueOrder`](./reference/types/#type-legendvalueorder) · [`CategoricalLegendTextOptions`](./reference/types/#type-categoricallegendtextoptions).
 
+### `PieRadiusChannel` {#type-pieradiuschannel}
+
+ Expand PieRadiusChannel
+
+```typescript
+export type PieRadiusChannel = string | {
+  scale?: RadiusScaleOptions;
+} & ({ field: string; aggregate?: "sum" } | { field?: never; aggregate: "count" });
+```
+
+Related types: [`RadiusScaleOptions`](./reference/types/#type-radiusscaleoptions).
+
 ### `PointFacadePositionChannel` {#type-pointfacadepositionchannel}
 
  Expand PointFacadePositionChannel
@@ -33596,6 +33625,8 @@ export type RadialEncodingOptions = {
   coordinate?: string;
 } & (
   | { field: string; mapping?: false; aggregate?: never; scale?: RadiusScaleOptions }
+  | { field: string; mapping?: never; aggregate: "sum"; scale?: RadiusScaleOptions }
+  | { field?: never; mapping?: never; aggregate: "count"; scale?: RadiusScaleOptions }
   | { field: string; mapping?: RadialMapping; aggregate: "sum"; scale?: MeasuredRadiusScaleOptions }
   | { field?: never; mapping?: RadialMapping; aggregate: "count"; scale?: MeasuredRadiusScaleOptions }
 );
@@ -38211,7 +38242,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 
 | Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
 | --- | --- | --- | --- | --- |
-| Category counts or category sums for proportional sector angles | [`createPiePlot`](./reference/actions/charts-data/#createpieplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createArcMark`](./reference/actions/marks/#createarcmark) · [`encodeTheta`](./reference/actions/encodings/#encodetheta) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) |
+| Category counts or category sums for proportional sector angles | [`createPiePlot`](./reference/actions/charts-data/#createpieplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createArcMark`](./reference/actions/marks/#createarcmark) · [`encodeTheta`](./reference/actions/encodings/#encodetheta) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) · [`encodeR`](./reference/actions/encodings/#encoder) |
 | Category counts or sums represented by sector area | [`createRosePlot`](./reference/actions/charts-data/#createroseplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createArcMark`](./reference/actions/marks/#createarcmark) · [`encodeTheta`](./reference/actions/encodings/#encodetheta) · [`encodeR`](./reference/actions/encodings/#encoder) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) |
 | Category counts or sums represented by radial length | [`createRadialBarPlot`](./reference/actions/charts-data/#createradialbarplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createArcMark`](./reference/actions/marks/#createarcmark) · [`encodeTheta`](./reference/actions/encodings/#encodetheta) · [`encodeR`](./reference/actions/encodings/#encoder) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) |
 | Pre-gridded cells or two raw quantitative fields for rectangular bins | [`createHeatmap`](./reference/actions/charts-data/#createheatmap) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createRectMark`](./reference/actions/marks/#createrectmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) · [`createBin2DData`](./reference/actions/charts-data/#createbin2ddata) · [`encodeX2`](./reference/actions/encodings/#encodex2) · [`encodeY2`](./reference/actions/encodings/#encodey2) |
@@ -38258,7 +38289,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:a6b32a00e3470eb61884f83f3ec2c02e19ef5cfa858434fd8a5899d32c10f845` |
+| Contract fingerprint | `sha256:63ae2a8b970bc13dd44b297adc784c123df221778f2f95569b43e50530fce9a2` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

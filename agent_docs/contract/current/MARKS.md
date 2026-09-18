@@ -573,9 +573,10 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - Default appearance is theme fill, opacity `1`, white stroke, and stroke width `1`.
 - Effect: creates semantic mark type `arc` and an empty path collection. Direct quantitative theta, categorical count,
   or categorical weighted-sum theta completes a proportional pie/donut; categorical theta plus quantitative radius
-  completes equal-band radial sectors. Concrete output contains only closed `M/L/C/Z` commands and appearance
+  completes equal-band radial sectors. Proportional sectors can also encode independent outer radii;
+  their angular partition and source membership remain unchanged. Concrete output contains only closed `M/L/C/Z` commands and appearance
   properties.
-- Multiple rows in one theta band use stable larger-first overlay order. A mapped outer radius equal to the inner
+- Equal-band radial sectors with multiple rows in one theta band use stable larger-first overlay order. A mapped outer radius equal to the inner
   baseline is omitted. Automatic radius range starts at the resolved inner radius (ratio times available radius, or fixed pixels). Shared ranges require one resolved inner baseline; explicit measured ranges must agree with an explicitly requested inner radius.
 
 ### Formal values — `createArcMark`

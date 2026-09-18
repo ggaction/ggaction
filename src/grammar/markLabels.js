@@ -66,7 +66,8 @@ function itemValue(source, item) {
     return measure.aggregate === "count" ? item.members.length
       : aggregateRows(item.members, measure.field, measure.aggregate);
   }
-  if (source.encoding?.radius !== undefined) return item.channels.radius;
+  if (source.encoding?.radius !== undefined && source.encoding.theta.fieldType !== "quantitative" &&
+      source.encoding.theta.aggregate === undefined) return item.channels.radius;
   const theta = source.encoding.theta;
   if (theta.fieldType === "quantitative") return item.channels.theta;
   return theta.aggregate === "count" ? item.members.length

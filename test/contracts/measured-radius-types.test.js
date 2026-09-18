@@ -20,7 +20,17 @@ p.encodeR({ field: "value" });
 p.encodeR({ field: "value", mapping: false });
 p.encodeR({ field: "value", aggregate: "sum", mapping: "area", scale: { domain: [0, 4], range: [70, 140] } });
 p.encodeR({ aggregate: "count", mapping: "radius-length" });
-p.encodeR({ field: "other", aggregate: "sum" });
+p.encodeR({ field: "other", aggregate: "sum", scale: { type: "sqrt" } });
+p.encodeR({ aggregate: "count", scale: { type: "sqrt" } });
+p.createPiePlot({ category: "group", radius: "radius" });
+p.createPiePlot({ category: "group", radius: { field: "radius", aggregate: "sum", scale: { type: "sqrt" } } });
+p.createPiePlot({ category: "group", radius: { aggregate: "count" } });
+// @ts-expect-error count radius has no field
+p.createPiePlot({ category: "group", radius: { field: "radius", aggregate: "count" } });
+// @ts-expect-error sum radius requires a field
+p.createPiePlot({ category: "group", radius: { aggregate: "sum" } });
+// @ts-expect-error radius belongs to pie rather than measured rose options
+p.createRosePlot({ category: "group", radius: "radius" });
 p.createScale({ id: "radius", radialMapping: "area" });
 p.editScale({ id: "radius", radialMapping: "radius-length" });
 p.editScale({ id: "radius", radialMapping: undefined });

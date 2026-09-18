@@ -1860,7 +1860,8 @@
         "createArcMark",
         "encodeTheta",
         "encodeColor",
-        "createGuides"
+        "createGuides",
+        "encodeR"
       ]
     },
     {

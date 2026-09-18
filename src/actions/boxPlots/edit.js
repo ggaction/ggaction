@@ -7,7 +7,7 @@ import { BOX_FIELDS, deriveBoxData, normalizeBoxTransform } from
 import { planDerivedDataRevision } from
   "../../materialization/dataProvenance.js";
 import { findDataset } from "../../selectors/datasets.js";
-import { findLayer } from "../../selectors/layers.js";
+import { findLayer, resolveConfiguredOwner } from "../../selectors/layers.js";
 import { removeOwnedMark } from "../marks/remove.js";
 import {
   resolveDistributionRoles,
@@ -32,24 +32,7 @@ const OPTIONS = Object.freeze([
   "median", "outlier"
 ]);
 
-function resolveBoxOwner(program, requested) {
-  const eligible = program.semanticSpec.layers.filter(
-    layer => program.markConfigs[layer.id]?.boxPlot?.materialized === true
-  );
-  if (requested !== undefined) {
-    const id = validateUserId(requested, "Box-plot owner id");
-    const layer = findLayer(program, id);
-    if (layer === undefined || !eligible.includes(layer)) {
-      throw new Error(`Unknown box-plot owner "${id}".`);
-    }
-    return layer;
-  }
-  const current = findLayer(program, program.context.currentMark);
-  if (current !== undefined && eligible.includes(current)) return current;
-  if (eligible.length === 1) return eligible[0];
-  if (eligible.length === 0) throw new Error("No box-plot owner is available.");
-  throw new Error("Box-plot owner is ambiguous; provide target.");
-}
+
 
 function requirePatch(value, label) {
   if (!isPlainObject(value)) {
@@ -222,7 +205,11 @@ export const editBoxPlot = /* @__PURE__ */ closedAction(
     if (!OPTIONS.slice(1).some(key => Object.hasOwn(args, key))) {
       throw new Error("editBoxPlot requires at least one box-plot option.");
     }
-    const owner = resolveBoxOwner(this, args.target);
+    const owner = resolveConfiguredOwner(this, args.target, {
+    config: "boxPlot", kind: "box", materialized: true,
+    missing: "No box-plot owner is available.",
+    ambiguous: "Box-plot owner is ambiguous; provide target."
+  }, validateUserId);
     const current = this.markConfigs[owner.id].boxPlot;
     const whisker = resolveEditedWhisker(current.whisker, args.whisker);
     const width = Object.hasOwn(args, "width")

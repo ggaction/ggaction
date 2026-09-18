@@ -1081,6 +1081,15 @@ async function testNodeConsumer(directory) {
       .createScatterPlot({ id: "midpoint", x: "x", y: "value", color: { field: "value", fieldType: "quantitative", scale: { id: "midpointColor", midpoint: 0, range: ["blue", "white", "red"] } } });
     assert.deepEqual(midpointPlot.graphicSpec.objects.midpoint.items.map(item => item.properties.fill), ["#0000ff", "#ffffff", "#ff8080", "#ff0000"]);
     assert.equal(midpointPlot.editScale({ id: "midpointColor", midpoint: "auto" }).resolvedScales.midpointColor.midpoint, undefined);
+    const jointPie = chart().createCanvas({ width: 400, height: 400, margin: 40 })
+      .createData({ values: [{ category: "A", angle: 1, radius: 4 }, { category: "A", angle: 2, radius: 5 }, { category: "B", angle: 9, radius: 16 }] })
+      .createPiePlot({ category: "category", value: "angle", aggregate: "sum",
+        radius: { field: "radius", aggregate: "sum", scale: { type: "sqrt" } }, guides: false })
+      .createMarkLabels({ source: "piePlot", content: "value" });
+    assert.deepEqual(jointPie.resolvedScales.radius.domain, [0, 16]);
+    assert.equal(jointPie.graphicSpec.objects.piePlot.items.length, 2);
+    assert.deepEqual(jointPie.graphicSpec.objects["piePlot-labels"].items.map(item => item.properties.text), ["3", "9"]);
+    assert.match(renderToSVG(jointPie), /<path/);
     const orderedPie = chart().createCanvas({ width: 1000, height: 700, margin: 150 })
       .createData({ values: [{ category: "A", value: 2 }, { category: "B", value: 3 }, { category: "C", value: 4 }] })
       .createPiePlot({ category: "category", value: "value", aggregate: "sum" })

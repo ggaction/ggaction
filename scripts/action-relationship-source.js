@@ -434,6 +434,8 @@ export function buildActionRelationshipPrograms() {
         x: vertical ? "category" : { lower: "lo", upper: "hi" },
         y: vertical ? { lower: "lo", upper: "hi" } : "category", guides: false
       })),
+    chart().createCanvas().createData({ values: [{ category: "A", amount: 3 }, { category: "B", amount: 8 }] })
+      .createPiePlot({ category: "category", radius: { field: "amount", aggregate: "sum" }, guides: false }),
     ...selectionLifecyclePrograms(),
     ...focusedScaleEditorPrograms(),
     ...atomicEncodingPrograms(),

@@ -1605,7 +1605,7 @@
     ],
     "createPiePlot": [
       "createPiePlot({ category })",
-      "createPiePlot({ category, value, aggregate: \"sum\", arc? })"
+      "createPiePlot({ category, value, aggregate: \"sum\", radius?, arc? })"
     ],
     "encodeGroup": [
       "encodeGroup({ field, target?, fieldType? })",

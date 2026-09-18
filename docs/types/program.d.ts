@@ -1989,6 +1989,8 @@ export type RadialEncodingOptions = {
   coordinate?: string;
 } & (
   | { field: string; mapping?: false; aggregate?: never; scale?: RadiusScaleOptions }
+  | { field: string; mapping?: never; aggregate: "sum"; scale?: RadiusScaleOptions }
+  | { field?: never; mapping?: never; aggregate: "count"; scale?: RadiusScaleOptions }
   | { field: string; mapping?: RadialMapping; aggregate: "sum"; scale?: MeasuredRadiusScaleOptions }
   | { field?: never; mapping?: RadialMapping; aggregate: "count"; scale?: MeasuredRadiusScaleOptions }
 );
@@ -3612,12 +3614,17 @@ export type PieLegendOptions = Omit<
   order?: LegendValueOrder | { channel: "theta"; values?: never };
   labels?: CategoricalLegendTextOptions;
 };
+export type PieRadiusChannel = string | {
+  scale?: RadiusScaleOptions;
+} & ({ field: string; aggregate?: "sum" } | { field?: never; aggregate: "count" });
+
 export type CreatePiePlotOptions = {
   id?: string;
   data?: string;
   coordinate?: string;
   category: PieCategory;
   color?: false | PieColor;
+  radius?: PieRadiusChannel;
   arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
@@ -3627,7 +3634,7 @@ export type MeasuredRadialGuideOptions = {
   grid?: false | CategoricalPolarGridOptions;
   legend?: false | PieLegendOptions;
 };
-export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value"> & {
+export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value" | "radius"> & {
   radiusScale?: MeasuredRadiusScaleOptions;
   arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | MeasuredRadialGuideOptions;

@@ -114,15 +114,14 @@ export function canMaterializeArc(_program, layer) {
   }
   if (layer.encoding.theta.fieldType === "quantitative") {
     return (
-      layer.encoding.theta.aggregate === undefined &&
-      layer.encoding?.radius === undefined
+      layer.encoding.theta.aggregate === undefined
     );
   }
   if (!["nominal", "ordinal"].includes(layer.encoding.theta.fieldType)) {
     return false;
   }
   if (["count", "sum"].includes(layer.encoding.theta.aggregate)) {
-    return layer.encoding?.radius === undefined;
+    return true;
   }
   return (
     layer.encoding.theta.aggregate === undefined &&
