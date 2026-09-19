@@ -29,7 +29,7 @@ export const REALISTIC_HIERARCHICAL_FACADE_ACTIONS = Object.freeze([
   "createBeeswarmPlot", "createRaincloudPlot"
 ]);
 
-export const REALISTIC_HIERARCHICAL_FACADE_PROFILE_COUNT = 24;
+export const REALISTIC_HIERARCHICAL_FACADE_PROFILE_COUNT = 33;
 
 function clean(value) {
   return Object.fromEntries(Object.entries(value).filter(([, child]) => child !== undefined));
@@ -46,7 +46,11 @@ function strokeDetails(index) {
 function rectDetails(index) {
   return {
     ...strokeDetails(index),
-    cornerRadius: [0, 4, 10][index % 3]
+    cornerRadius: [0, 4, 10][index % 3],
+    cornerRadiusTopLeft: index % 5,
+    cornerRadiusTopRight: (index + 1) % 5,
+    cornerRadiusBottomRight: (index + 2) % 5,
+    cornerRadiusBottomLeft: (index + 3) % 5
   };
 }
 
@@ -194,11 +198,16 @@ function colorScale(id, index, categorical = false) {
     }
     return scale;
   }
-  if (index === 16 || index === 20) {
+  if (index === 16) {
     return {
-      id, type: "sequential", domain: "auto", range: "auto", midpoint: "auto",
-      interpolate: index === 16 ? "hcl" : "hcl-long",
-      clamp: true, reverse: index === 20, unknown: "#94a3b8"
+      id, type: "log", domain: "auto", range: "auto", base: 10,
+      interpolate: "hcl", clamp: true, reverse: false, unknown: "#94a3b8"
+    };
+  }
+  if (index === 20) {
+    return {
+      id, type: "symlog", domain: "auto", range: "auto", constant: 1,
+      interpolate: "hcl-long", clamp: true, reverse: true, unknown: "#94a3b8"
     };
   }
   const type = ["quantize", "quantile", "threshold"][index % 3];
@@ -242,6 +251,16 @@ function colorChannel(id, index, { categorical = false, layout = false, temporal
 }
 
 function sizeChannel(id, index) {
+  if (index === 22 || index === 23) {
+    return {
+      field: index === 22 ? "group" : "bucket",
+      fieldType: index === 22 ? "nominal" : "ordinal",
+      scale: {
+        id, type: "ordinal", domain: "auto", range: [4, 16, 36],
+        reverse: index === 23, unknown: 4
+      }
+    };
+  }
   const type = [
     "linear", "log", "pow", "sqrt", "quantize", "quantile", "threshold"
   ][index % 7];
@@ -440,6 +459,23 @@ function legend(target, index, {
         ? "top"
         : index % 20 === 15 ? "bottom" : "right";
   const side = position === "right" || position === "left";
+  if (index >= 24 && index <= 27 && !continuous && sampledValues === undefined) {
+    return {
+      target,
+      channels: ["color"],
+      position: ["top-left", "top-right", "bottom-left", "bottom-right"][index - 24],
+      overflow: { maxItems: 3, summary: "ellipsis-count" },
+      title: "Source group",
+      symbol: legendSymbol(index, kind),
+      labels: { format: "auto" }
+    };
+  }
+  if (index === 28 && !continuous && sampledValues === undefined) {
+    return {
+      target, channels: ["color"], position: "bottom", overflow: false,
+      title: false, symbol: legendSymbol(index, kind), labels: { format: "auto" }
+    };
+  }
   if (sampledValues !== undefined) {
     return {
       target,
@@ -624,7 +660,7 @@ function cartesianGuides({
         lineWidth: 0.8, strokeDash: [3, 2]
       }
     },
-    legend: rug || !hasColor || index % 5 === 2
+    legend: rug || !hasColor || index >= 29 || index % 5 === 2 && index !== 27
       ? false
       : legend(id, index, {
           continuous: continuousColor,
@@ -688,7 +724,7 @@ function polarGuides({
         lineWidth: 0.8, strokeDash: [3, 2]
       }
     },
-    legend: !hasColor || index % 5 === 2
+    legend: !hasColor || index >= 29 || index % 5 === 2 && index !== 27
       ? false
       : legend(id, index, {
           orderChannel: legendOrderChannel,
@@ -803,6 +839,17 @@ function radialAggregateValue(program, weighted) {
     : group.length;
 }
 
+function radialAggregateMaximum(program, weighted) {
+  const rows = program.semanticSpec.datasets.find(dataset => dataset.id === "analysisRows")?.values ?? [];
+  const aggregates = new Map();
+  for (const row of rows) {
+    const value = weighted ? row.positiveY : 1;
+    if (!Number.isFinite(value)) continue;
+    aggregates.set(row.bucket, (aggregates.get(row.bucket) ?? 0) + value);
+  }
+  return Math.max(1, ...aggregates.values());
+}
+
 function appendPolarScatter(program, index) {
   const suffix = `matrix-polar-scatter-${index}`;
   const hasColor = index % 11 !== 0;
@@ -814,10 +861,11 @@ function appendPolarScatter(program, index) {
     theta: thetaChannel(`${suffix}-theta`, index),
     radius: radiusChannel(`${suffix}-radius`, index),
     ...(hasColor ? {
-      color: index === 14
+      color: index === 14 || index >= 24 && index <= 28
         ? {
             ...colorChannel(`${suffix}-color`, index, { categorical: true }),
-            field: "bucket", fieldType: "ordinal", palette: "tableau10"
+            field: "bucket", fieldType: "ordinal",
+            ...(index === 14 ? { palette: "tableau10" } : {})
           }
         : colorChannel(`${suffix}-color`, index, { temporal: [12, 13, 15].includes(index) })
     } : {}),
@@ -838,9 +886,11 @@ function appendPolarScatter(program, index) {
     thetaScale: `${suffix}-theta`, radiusScale: `${suffix}-radius`, index, hasColor,
     continuousColor: hasColor && [16, 20].includes(index)
       ? "gradient"
-      : hasColor && index !== 14 && index >= 16
+      : hasColor && index !== 14 && !(index >= 24 && index <= 28) && index >= 16
       ? "interval"
-      : hasColor && index !== 14 && index >= 8 ? "gradient" : false,
+      : hasColor && index !== 14 && !(index >= 24 && index <= 28) && index >= 8
+        ? "gradient"
+        : false,
     legendKind: "point",
     legendTemporal: [12, 13, 15].includes(index),
     legendOrderChannel: index === 14 ? "theta" : undefined,
@@ -1080,7 +1130,7 @@ function appendStrip(program, index) {
     ...positions,
     jitter,
     ...(hasColor ? {
-      color: [5, 14].includes(index)
+      color: [5, 14].includes(index) || index >= 24 && index <= 28
         ? {
             ...colorChannel(`${suffix}-color`, index, { categorical: true }),
             field: "bucket", fieldType: "ordinal",
@@ -1105,9 +1155,11 @@ function appendStrip(program, index) {
     hasColor,
     continuousColor: hasColor && [16, 20].includes(index)
       ? "gradient"
-      : hasColor && ![5, 14].includes(index) && index >= 16
+      : hasColor && ![5, 14].includes(index) && !(index >= 24 && index <= 28) && index >= 16
       ? "interval"
-      : hasColor && ![5, 14].includes(index) && index >= 8 ? "gradient" : false,
+      : hasColor && ![5, 14].includes(index) && !(index >= 24 && index <= 28) && index >= 8
+        ? "gradient"
+        : false,
     xDiscrete: mode === 2,
     yDiscrete: mode === 1 || mode === 3,
     legendKind: "point",
@@ -1210,7 +1262,7 @@ function appendBeeswarm(program, index) {
     coordinate: `${suffix}-coordinate`,
     ...positions,
     ...(hasColor ? {
-      color: [5, 14].includes(index)
+      color: [5, 14].includes(index) || index >= 24 && index <= 28
         ? {
             ...colorChannel(`${suffix}-color`, index, { categorical: true }),
             field: "bucket", fieldType: "ordinal",
@@ -1242,9 +1294,9 @@ function appendBeeswarm(program, index) {
     hasColor,
     continuousColor: hasColor && [16, 20].includes(index)
       ? "gradient"
-      : hasColor && ![5, 14].includes(index) && index >= 16
+      : hasColor && ![5, 14].includes(index) && !(index >= 24 && index <= 28) && index >= 16
         ? "interval"
-        : hasColor && ![5, 14].includes(index) && index >= 8
+        : hasColor && ![5, 14].includes(index) && !(index >= 24 && index <= 28) && index >= 8
           ? "gradient"
           : false,
     xDiscrete: mode === 2,
@@ -1333,7 +1385,14 @@ function appendRaincloud(program, index) {
           type: "box",
           whisker: {
             type: index % 4 === 0 ? "tukey" : "minmax",
-            ...(index % 4 === 0 ? { factor: 1.25 + index / 20 } : {})
+            ...(index % 4 === 0 ? { factor: 1.25 + index / 20 } : {}),
+            caps: index % 4 === 0,
+            capSize: 6 + index % 4,
+            ...strokeDetails(index),
+            stroke: "#1e3a8a",
+            strokeWidth: 1 + index % 3 * 0.2,
+            strokeDash: DASHES[Math.floor(index / 2) % DASHES.length],
+            opacity: 0.8
           },
           width: { band: 0.18 + index % 3 * 0.03 },
           outliers: index % 4 === 0,
@@ -1342,7 +1401,11 @@ function appendRaincloud(program, index) {
             ...(hasColor ? {} : { fill: "#eff6ff" }),
             opacity: 0.75, stroke: "#1e40af", strokeWidth: 1
           },
-          median: { ...strokeDetails(index), stroke: "#172554", strokeWidth: 1.5 },
+          median: {
+            ...strokeDetails(index),
+            width: index % 4 === 0 ? "auto" : { pixels: 16 + index },
+            stroke: "#172554", strokeWidth: 1.5
+          },
           outlier: {
             ...strokeDetails(index),
             shape: POINT_SHAPES[index % POINT_SHAPES.length],
@@ -1489,7 +1552,9 @@ function appendRaincloud(program, index) {
 function appendArea(program, index) {
   const suffix = `matrix-area-${index}`;
   const branch = index % 6;
-  const layout = [0, 1, 4].includes(branch)
+  const layout = index >= 29 && index <= 32
+    ? "overlay"
+    : [0, 1, 4].includes(branch)
     ? "overlay"
     : branch === 5
       ? index === 11 ? "overlay" : ["diverging", "fill", "overlay", "stack"][index % 4]
@@ -1512,7 +1577,27 @@ function appendArea(program, index) {
   const xScale = `${suffix}-x`;
   const yScale = `${suffix}-y`;
   let positions;
-  if (branch === 0) {
+  if (index === 29 || index === 30) {
+    positions = {
+      valueChannel: "y",
+      x: {
+        field: "bucket", fieldType: index === 29 ? "nominal" : "ordinal",
+        scale: categoryScale(xScale, index, index === 29 ? "band" : "point")
+      },
+      y: areaMeasureChannel(yScale, index),
+      baseline: areaBaseline(index)
+    };
+  } else if (index === 31 || index === 32) {
+    positions = {
+      valueChannel: "x",
+      x: areaMeasureChannel(xScale, index),
+      y: {
+        field: "bucket", fieldType: index === 31 ? "nominal" : "ordinal",
+        scale: categoryScale(yScale, index, index === 31 ? "band" : "point")
+      },
+      baseline: areaBaseline(index)
+    };
+  } else if (branch === 0) {
     positions = {
       valueChannel: "y",
       x: measureChannel(xScale, index),
@@ -1574,6 +1659,8 @@ function appendArea(program, index) {
   options.guides = cartesianGuides({
     id: suffix, coordinate: `${suffix}-coordinate`, xScale, yScale, index,
     hasColor: options.color !== undefined,
+    xDiscrete: ["nominal", "ordinal"].includes(options.x.fieldType),
+    yDiscrete: ["nominal", "ordinal"].includes(options.y.fieldType),
     legendOrderValues: ["A", "B"],
     xValues: [12, 18].includes(index) ? [1] : undefined,
     yValues: [12, 18].includes(index) ? [2] : undefined,
@@ -1712,9 +1799,25 @@ function radialOptions(program, action, index) {
         }
       : false,
     ...(measured ? { radiusScale: numericScale(`${suffix}-radius`, index, { measured: true }) } : {}),
+    ...(action === "createPiePlot" && index !== 23 ? {
+      radius: {
+        aggregate: weighted ? "sum" : "count",
+        ...(weighted ? { field: "positiveY" } : {}),
+        scale: index === 0
+          ? {
+              ...numericScale(`${suffix}-radius`, index),
+              domain: [0, radialAggregateMaximum(program, weighted)],
+              range: "auto",
+              reverse: false
+            }
+          : { ...numericScale(`${suffix}-radius`, index), range: [0.2, 1] }
+      }
+    } : {}),
     arc: {
       ...strokeDetails(index),
-      innerRadius: index % 3 * 0.15,
+      innerRadius: action === "createPiePlot" && index !== 23
+        ? 0
+        : index === 23 ? { value: 24, unit: "px" } : index % 3 * 0.15,
       padAngle: measured ? 0 : index % 3,
       ...(hasColor ? {} : { fill: "#60a5fa" }),
       opacity: 0.55 + index / 100,

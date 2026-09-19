@@ -768,6 +768,27 @@ type BarFieldPosition<T> = T extends string ? T : T & { lower?: never; upper?: n
 
 </details>
 
+### `BarRangeOppositePositionChannel` {#type-barrangeoppositepositionchannel}
+
+<details markdown="1">
+<summary>Expand BarRangeOppositePositionChannel</summary>
+
+```typescript
+type BarRangeOppositePositionChannel = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal" | "temporal";
+  temporalUnit?: TemporalInputUnit;
+  scale?: NonPointBandPositionScaleOptions | NonPointTemporalPositionScaleOptions;
+  bin?: never;
+  aggregate?: never;
+  stack?: never;
+};
+```
+
+</details>
+
+Related types: [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionscaleoptions) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions).
+
 ### `BarRangePositionChannel` {#type-barrangepositionchannel}
 
 <details markdown="1">
@@ -2179,14 +2200,14 @@ export type CreateBarPlotOptions = {
   guides?: false | ColorGuides;
 } & (
   | { x: BarFieldPosition<BandPositionChannel>; y: BarFieldPosition<BarYPositionChannel> }
-  | { x: BarRangePositionChannel; y: BarFieldPosition<BandPositionChannel> }
-  | { x: BarFieldPosition<BandPositionChannel>; y: BarRangePositionChannel }
+  | { x: BarRangePositionChannel; y: BarRangeOppositePositionChannel }
+  | { x: BarRangeOppositePositionChannel; y: BarRangePositionChannel }
 );
 ```
 
 </details>
 
-Related types: [`BarColorChannel`](#type-barcolorchannel) · [`BarWidthOptions`](#type-barwidthoptions) · [`RectStyleDetails`](#type-rectstyledetails) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`ColorGuides`](#type-colorguides) · [`BarFieldPosition`](#type-barfieldposition) · [`BandPositionChannel`](#type-bandpositionchannel) · [`BarYPositionChannel`](#type-barypositionchannel) · [`BarRangePositionChannel`](#type-barrangepositionchannel).
+Related types: [`BarColorChannel`](#type-barcolorchannel) · [`BarWidthOptions`](#type-barwidthoptions) · [`RectStyleDetails`](#type-rectstyledetails) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`ColorGuides`](#type-colorguides) · [`BarFieldPosition`](#type-barfieldposition) · [`BandPositionChannel`](#type-bandpositionchannel) · [`BarYPositionChannel`](#type-barypositionchannel) · [`BarRangePositionChannel`](#type-barrangepositionchannel) · [`BarRangeOppositePositionChannel`](#type-barrangeoppositepositionchannel).
 
 ### `CreateBeeswarmPlotOptions` {#type-createbeeswarmplotoptions}
 

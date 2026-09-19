@@ -3273,8 +3273,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `width` | Optional / branch-dependent | `Omit<BarWidthOptions, "target"> \| undefined` |
 | `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
-| `x` | Required | `string \| BarRangePositionChannel \| (Omit<PositionEncodingBase, "coordinate" \| "target"> & { fieldType?: "quantitative" \| undefined; aggregate?: undefined; scale?: NonPointZeroSupportingPositionScaleOptions \| undefined; } & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) ...` |
-| `y` | Required | `string \| BarRangePositionChannel \| ({ field: string; bin?: undefined; fieldType: "temporal"; temporalUnit?: TemporalInputUnit \| undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions \| undefined; } & { ...; }) \| ... 6 more ... \| ({ ...; } & ... 1 more ... & { ...; })` |
+| `x` | Required | `BarRangePositionChannel \| BarRangeOppositePositionChannel \| (Omit<PositionEncodingBase, "coordinate" \| "target"> & { ...; } & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; })` |
+| `y` | Required | `BarRangePositionChannel \| BarRangeOppositePositionChannel \| ({ field: string; bin?: undefined; fieldType: "temporal"; temporalUnit?: TemporalInputUnit \| undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions \| undefined; } & { ...; }) \| ({ ...; } & ... 1 more ... & { ...; }...` |
 
 </details>
 

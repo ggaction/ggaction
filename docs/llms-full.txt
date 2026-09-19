@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:2f3b852a35667956b6bc5322d270d9512f7182741903acdf5d54a08be534a6f3. Status: development. Runtime source: 2bf8e52aeb216a15a6241052946de04baa1baa4f. Release baseline: v0.0.13.
+Contract: sha256:beb2c426cb4d0594f7fbfbaa76d396d88c1cb1a5aa19397246404a0c3e2e61b9. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/2bf8e52aeb216a15a6241052946de04baa1baa4f/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/2bf8e52aeb216a15a6241052946de04baa1baa4f/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -18323,8 +18323,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `width` | Optional / branch-dependent | `Omit<BarWidthOptions, "target"> \| undefined` |
 | `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
-| `x` | Required | `string \| BarRangePositionChannel \| (Omit<PositionEncodingBase, "coordinate" \| "target"> & { fieldType?: "quantitative" \| undefined; aggregate?: undefined; scale?: NonPointZeroSupportingPositionScaleOptions \| undefined; } & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) ...` |
-| `y` | Required | `string \| BarRangePositionChannel \| ({ field: string; bin?: undefined; fieldType: "temporal"; temporalUnit?: TemporalInputUnit \| undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions \| undefined; } & { ...; }) \| ... 6 more ... \| ({ ...; } & ... 1 more ... & { ...; })` |
+| `x` | Required | `BarRangePositionChannel \| BarRangeOppositePositionChannel \| (Omit<PositionEncodingBase, "coordinate" \| "target"> & { ...; } & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; })` |
+| `y` | Required | `BarRangePositionChannel \| BarRangeOppositePositionChannel \| ({ field: string; bin?: undefined; fieldType: "temporal"; temporalUnit?: TemporalInputUnit \| undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions \| undefined; } & { ...; }) \| ({ ...; } & ... 1 more ... & { ...; }...` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -26978,6 +26978,24 @@ Related types: [`BarCategoricalColorChannel`](./reference/types/#type-barcategor
 type BarFieldPosition<T> = T extends string ? T : T & { lower?: never; upper?: never };
 ```
 
+### `BarRangeOppositePositionChannel` {#type-barrangeoppositepositionchannel}
+
+ Expand BarRangeOppositePositionChannel
+
+```typescript
+type BarRangeOppositePositionChannel = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal" | "temporal";
+  temporalUnit?: TemporalInputUnit;
+  scale?: NonPointBandPositionScaleOptions | NonPointTemporalPositionScaleOptions;
+  bin?: never;
+  aggregate?: never;
+  stack?: never;
+};
+```
+
+Related types: [`TemporalInputUnit`](./reference/types/#type-temporalinputunit) · [`NonPointBandPositionScaleOptions`](./reference/types/#type-nonpointbandpositionscaleoptions) · [`NonPointTemporalPositionScaleOptions`](./reference/types/#type-nonpointtemporalpositionscaleoptions).
+
 ### `BarRangePositionChannel` {#type-barrangepositionchannel}
 
  Expand BarRangePositionChannel
@@ -28157,12 +28175,12 @@ export type CreateBarPlotOptions = {
   guides?: false | ColorGuides;
 } & (
   | { x: BarFieldPosition<BandPositionChannel>; y: BarFieldPosition<BarYPositionChannel> }
-  | { x: BarRangePositionChannel; y: BarFieldPosition<BandPositionChannel> }
-  | { x: BarFieldPosition<BandPositionChannel>; y: BarRangePositionChannel }
+  | { x: BarRangePositionChannel; y: BarRangeOppositePositionChannel }
+  | { x: BarRangeOppositePositionChannel; y: BarRangePositionChannel }
 );
 ```
 
-Related types: [`BarColorChannel`](./reference/types/#type-barcolorchannel) · [`BarWidthOptions`](./reference/types/#type-barwidthoptions) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`ColorGuides`](./reference/types/#type-colorguides) · [`BarFieldPosition`](./reference/types/#type-barfieldposition) · [`BandPositionChannel`](./reference/types/#type-bandpositionchannel) · [`BarYPositionChannel`](./reference/types/#type-barypositionchannel) · [`BarRangePositionChannel`](./reference/types/#type-barrangepositionchannel).
+Related types: [`BarColorChannel`](./reference/types/#type-barcolorchannel) · [`BarWidthOptions`](./reference/types/#type-barwidthoptions) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`ColorGuides`](./reference/types/#type-colorguides) · [`BarFieldPosition`](./reference/types/#type-barfieldposition) · [`BandPositionChannel`](./reference/types/#type-bandpositionchannel) · [`BarYPositionChannel`](./reference/types/#type-barypositionchannel) · [`BarRangePositionChannel`](./reference/types/#type-barrangepositionchannel) · [`BarRangeOppositePositionChannel`](./reference/types/#type-barrangeoppositepositionchannel).
 
 ### `CreateBeeswarmPlotOptions` {#type-createbeeswarmplotoptions}
 
@@ -36613,12 +36631,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/2bf8e52aeb216a15a6241052946de04baa1baa4f/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/2bf8e52aeb216a15a6241052946de04baa1baa4f/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -38725,9 +38743,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:2f3b852a35667956b6bc5322d270d9512f7182741903acdf5d54a08be534a6f3` |
+| Contract fingerprint | `sha256:beb2c426cb4d0594f7fbfbaa76d396d88c1cb1a5aa19397246404a0c3e2e61b9` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `2bf8e52aeb216a15a6241052946de04baa1baa4f` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |

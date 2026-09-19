@@ -87,6 +87,14 @@ test("temporal color reassigns independently and shares normalized scale values"
   const nominal = colored.encodeColor({ field: "time", scale: { id: "categories", type: "ordinal" } });
   assert.equal(nominal.semanticSpec.layers[0].encoding.color.temporalUnit, undefined);
   assert.throws(() => base.encodeColor({ field: "time", temporalUnit: "timestamp" }), /temporal fieldType/);
+
+  const stroked = base.encodeStroke({
+    field: "time", fieldType: "temporal", temporalUnit: "timestamp"
+  });
+  assert.equal(
+    stroked.semanticSpec.layers[0].encoding.stroke.temporalUnit,
+    "timestamp"
+  );
   const shared = source([{ time: 2000, y: 1 }]).createPointMark({ id: "years" })
     .encodeX(temporal("time", "year")).encodeY({ field: "y" })
     .createData({ id: "milliseconds", values: [{ time: Date.UTC(2000, 0, 1), y: 2 }] })

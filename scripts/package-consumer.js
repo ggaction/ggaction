@@ -3288,11 +3288,11 @@ async function testTypeScriptConsumer(directory) {
         type: "log"
       } }
     };
-    // @ts-expect-error Bar y positions do not support binning.
     const invalidBarYBin: CreateBarPlotOptions = {
       x: { field: "category", fieldType: "nominal" },
       y: {
         field: "value",
+        // @ts-expect-error Bar y positions do not support binning.
         bin: { maxBins: 10 }
       }
     };

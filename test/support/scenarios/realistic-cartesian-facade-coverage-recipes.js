@@ -30,7 +30,11 @@ function strokeDetails(index) {
 function rectDetails(index) {
   return {
     ...strokeDetails(index),
-    cornerRadius: [0, 4, 10][index % 3]
+    cornerRadius: [0, 4, 10][index % 3],
+    cornerRadiusTopLeft: index % 5,
+    cornerRadiusTopRight: (index + 1) % 5,
+    cornerRadiusBottomRight: (index + 2) % 5,
+    cornerRadiusBottomLeft: (index + 3) % 5
   };
 }
 const AGGREGATE_OPERATIONS = Object.freeze([
@@ -57,7 +61,7 @@ const CANVAS = Object.freeze({
   width: 2_300,
   height: 1_220,
   background: "#ffffff",
-  margin: Object.freeze({ top: 250, right: 420, bottom: 150, left: 620 })
+  margin: Object.freeze({ top: 350, right: 420, bottom: 150, left: 620 })
 });
 
 function freeze(value) {
@@ -111,6 +115,8 @@ function viewFor(factors) {
     subgroup: String(row.subgroup ?? row.category ?? "observed"),
     positiveValue: row.value - valueMinimum + 1,
     positiveSecondary: Math.abs(row.value - valueMinimum) * 0.5 + index + 1,
+    intervalLower: Math.min(row.value - valueMinimum + 1, Math.abs(row.value - valueMinimum) * 0.5 + index + 1),
+    intervalUpper: Math.max(row.value - valueMinimum + 1, Math.abs(row.value - valueMinimum) * 0.5 + index + 1),
     sourcePosition: index + 1,
     observedYear: 2000 + (index % 20),
     observedYearSecondary: 2024 - (index % 20),
@@ -328,19 +334,55 @@ function paletteEncoding(index, field = "category") {
 
 function continuousColor(index, aggregate) {
   const interpolate = INTERPOLATIONS[index % INTERPOLATIONS.length];
+  const type = index % 8 === 0 ? "log" : index % 8 === 1 ? "symlog" : "sequential";
   return {
     field: "positiveValue",
     fieldType: "quantitative",
     ...(aggregate === undefined ? {} : { aggregate }),
     scale: {
       id: "mainColor",
-      type: "sequential",
+      type,
       domain: "auto",
-      midpoint: "auto",
+      ...(type === "sequential" ? { midpoint: "auto" } : {}),
+      ...(type === "log" ? { base: 10 } : {}),
+      ...(type === "symlog" ? { constant: 0.1 } : {}),
       palette: index % 2 === 0 ? "viridis" : { name: "magma", extent: [0.1, 0.9] },
       interpolate,
       clamp: index % 2 === 0,
       reverse: index % 3 === 0,
+      unknown: "#94a3b8"
+    }
+  };
+}
+
+function scatterStroke(index) {
+  if (index < 8 || index >= 19 && index < 25) {
+    const encoding = paletteEncoding(index, "subgroup");
+    const { palette, ...channel } = encoding;
+    return { ...channel, scale: { ...encoding.scale, id: "mainStroke",
+      ...(palette === undefined ? {} : { palette }) } };
+  }
+  if (index < 16) {
+    const encoding = continuousColor(index - 8);
+    return {
+      ...encoding, field: "positiveSecondary",
+      scale: { ...encoding.scale, id: "mainStroke" }
+    };
+  }
+  if (index < 19) {
+    const encoding = discretizedColor(index - 16);
+    return {
+      ...encoding, field: "positiveSecondary",
+      scale: { ...encoding.scale, id: "mainStroke" }
+    };
+  }
+  return {
+    ...temporalBinding(index - 25, true),
+    scale: {
+      id: "mainStroke", type: "sequential", domain: "auto",
+      ...(index === 27 ? { range: "auto" } : { palette: "viridis" }),
+      interpolate: INTERPOLATIONS[index % INTERPOLATIONS.length],
+      midpoint: "auto", clamp: index % 2 === 0, reverse: index % 3 === 0,
       unknown: "#94a3b8"
     }
   };
@@ -436,10 +478,25 @@ function scatterColor(index) {
 function barPosition(variant, rows) {
   const index = variant.ordinal;
   const orientation = index % 2 === 0 ? "vertical" : "horizontal";
+  if (index === 21 || index === 32) {
+    const x = {
+      field: "positiveSecondary", fieldType: "quantitative",
+      scale: quantitativeScale("mainX", "linear", { index })
+    };
+    const y = {
+      field: "positiveValue", fieldType: "quantitative",
+      scale: quantitativeScale("mainY", "linear", { index: index + 1 })
+    };
+    return { x, y };
+  }
   const category = {
     field: "category",
     fieldType: index % 4 < 2 ? "nominal" : "ordinal",
-    scale: categoricalScale(orientation === "vertical" ? "mainX" : "mainY", "band", index)
+    scale: categoricalScale(
+      orientation === "vertical" ? "mainX" : "mainY",
+      "band",
+      index
+    )
   };
   let measure;
   if (index < 8) {
@@ -460,22 +517,29 @@ function barPosition(variant, rows) {
       "positiveValue", orientation === "vertical" ? "mainY" : "mainX", index
     );
   } else if (index < 21) {
-    const x = binnedChannel(
-      "positiveValue", "mainX", index,
-      ["max", "step", "boundaries"][index - 18], rows
+    const binnedChannelName = "x";
+    const binned = binnedChannel(
+      "positiveValue", binnedChannelName === "x" ? "mainX" : "mainY", index,
+      ["max", "step", "boundaries"][index % 3], rows
     );
-    const y = {
+    const count = {
       field: "positiveValue", fieldType: "quantitative", aggregate: "count",
-      scale: quantitativeScale("mainY", "linear", { index })
+      scale: quantitativeScale(binnedChannelName === "x" ? "mainY" : "mainX", "linear", { index })
     };
-    return { x, y };
+    return binnedChannelName === "x" ? { x: binned, y: count } : { x: count, y: binned };
+  } else if (index === 22 || index === 23) {
+    const range = { lower: "intervalLower", upper: "intervalUpper" };
+    return index === 22 ? { x: category, y: range } : { x: range, y: category };
   } else if (index >= 24 && index <= 29) {
     const temporal = {
       ...temporalBinding(Math.floor((index - 24) / 2)),
       scale: quantitativeScale(orientation === "vertical" ? "mainX" : "mainY", "time", { index })
     };
     const aggregate = {
-      field: "positiveValue", fieldType: "quantitative", aggregate: "mean",
+      field: "positiveValue", fieldType: "quantitative",
+      aggregate: index === 29
+        ? { op: "last", orderBy: "sourcePosition", order: "descending" }
+        : "mean",
       scale: quantitativeScale(orientation === "vertical" ? "mainY" : "mainX", "linear", { index })
     };
     return orientation === "vertical" ? { x: temporal, y: aggregate } : { x: aggregate, y: temporal };
@@ -484,7 +548,7 @@ function barPosition(variant, rows) {
       21: { op: "quantile", probability: 0.25 },
       22: { op: "ciUpper", method: "student-t", level: 0.95 },
       23: { op: "last", orderBy: "sourcePosition", order: "descending" },
-      30: { op: "first", orderBy: "sourcePosition", order: "ascending" },
+      30: { op: "ciUpper", method: "student-t", level: 0.95 },
       31: { op: "ciLower", method: "normal", level: 0.9 },
       32: { op: "ciLower", method: "student-t", level: 0.9 },
       33: { op: "ciUpper", method: "normal", level: 0.95 },
@@ -500,7 +564,14 @@ function barPosition(variant, rows) {
   return orientation === "vertical" ? { x: category, y: measure } : { x: measure, y: category };
 }
 
-function barColor(index) {
+function barColor(index, rows) {
+  if ([21, 22, 23, 32].includes(index)) return undefined;
+  if (index === 29) {
+    return {
+      field: "category", fieldType: "nominal",
+      scale: { id: "mainColor", type: "ordinal", domain: "auto", range: "auto" }
+    };
+  }
   let encoding;
   if (index < 15) {
     const operation = AGGREGATE_OPERATIONS[index];
@@ -514,11 +585,17 @@ function barColor(index) {
     encoding = continuousColor(index, aggregate);
   }
   else if (index < 18) {
-    encoding = continuousColor(index, index === 15
+    encoding = { ...discretizedColor(index - 15), aggregate: index === 15
       ? { op: "quantile", probability: 0.25 }
       : index === 16
         ? { op: "first", orderBy: "sourcePosition", order: "ascending" }
-        : { op: "last", orderBy: "sourcePosition", order: "descending" });
+        : { op: "last", orderBy: "sourcePosition", order: "descending" } };
+    if (encoding.scale.type === "quantize") {
+      encoding = {
+        ...encoding,
+        scale: { ...encoding.scale, domain: extent(rows, "positiveValue") }
+      };
+    }
   }
   else if (index < 24) {
     encoding = {
@@ -526,7 +603,11 @@ function barColor(index) {
       layout: COLOR_LAYOUTS[(index - 18) % 5]
     };
   }
-  else if (index < 32) encoding = paletteEncoding(index - 24);
+  else if (index < 32) {
+    encoding = paletteEncoding(index - 24);
+    if (index === 24) encoding = { ...encoding, layout: "overlay" };
+    if (index === 25) encoding = { ...encoding, layout: "diverging" };
+  }
   else if (index < 35) {
     encoding = { ...discretizedColor(index - 32), aggregate: "mean" };
     if (index === 32) {
@@ -545,6 +626,19 @@ function barColor(index) {
 
 function linePosition(variant, rows) {
   const index = variant.ordinal;
+  if (index === 18 || index === 19) {
+    const type = index === 18 ? "point" : "band";
+    return {
+      x: {
+        field: "category", fieldType: index === 18 ? "nominal" : "ordinal",
+        scale: categoricalScale("mainX", type, index)
+      },
+      y: {
+        field: "positiveValue", fieldType: "quantitative",
+        scale: quantitativeScale("mainY", "linear", { index })
+      }
+    };
+  }
   if (index >= 30 && index <= 32) return {
     x: { field: "sourcePosition", fieldType: "quantitative", scale: quantitativeScale("mainX", "linear", { index }) },
     y: { ...temporalBinding(index - 30), scale: quantitativeScale("mainY", "time", { index }) }
@@ -716,6 +810,23 @@ function cartesianAxis(channel, format, policy, index) {
 }
 
 function categoricalLegend(index, symbol, target = "guideColorPoints") {
+  if (index >= 28 && index <= 31) {
+    return {
+      target,
+      channels: ["color"],
+      position: ["top-left", "top-right", "bottom-left", "bottom-right"][index - 28],
+      overflow: { maxItems: 3, summary: "ellipsis-count" },
+      title: "Authentic source category",
+      symbol,
+      labels: { format: "auto" }
+    };
+  }
+  if (index === 27) {
+    return {
+      target, channels: ["color"], position: "bottom", overflow: false,
+      title: false, symbol, labels: { format: "auto" }
+    };
+  }
   const position = ["right", "left", "top", "bottom"][index % 4];
   const side = position === "right" || position === "left";
   if (index === 3 || index === 23) {
@@ -737,7 +848,7 @@ function categoricalLegend(index, symbol, target = "guideColorPoints") {
     align: side ? "center" : ["left", "center", "right"][index % 3],
     direction: side ? "vertical" : (index % 2 === 0 ? "horizontal" : "vertical"),
     ...(side ? { columns: 1 } : { columns: 3 }),
-    offset: 32,
+    offset: position === "top" ? 120 : 32,
     titlePosition: side ? "top" : index % 2 === 0 ? "top" : "left",
     title: "Authentic source category",
     symbol,
@@ -829,10 +940,30 @@ function guideOptions(variant, program, options, action) {
     const symbol = layer.mark.type === "line" && index % 3 === 1
       ? { length: 28, lineWidth: 2.4 } : categoricalLegendSymbol(index);
     legend = categoricalLegend(index, symbol, options.id);
-    const linked = ["x", "y"].find(channel =>
-      layer.encoding[channel]?.field === color.field &&
-      ["nominal", "ordinal"].includes(layer.encoding[channel]?.fieldType));
-    legend.order = linked !== undefined && (index % 3 === 2 || index === 22 || layer.mark.type === "point")
+    if (action === "createBarPlot" && index === 24) {
+      legend = {
+        target: options.id, channels: ["color"], position: "bottom",
+        layout: "legacy-bottom", title: "Authentic source category",
+        symbol, labels: { format: "auto" }
+      };
+    }
+    if (action === "createScatterPlot" && index === 24) {
+      legend = {
+        target: options.id, channels: ["color"], position: "bottom",
+        overflow: false, title: false, symbol, labels: { format: "auto" }
+      };
+    }
+    const linked = ["x", "y"].find(channel => {
+      const encoding = layer.encoding[channel];
+      return encoding?.field === color.field &&
+        ["nominal", "ordinal"].includes(encoding.fieldType) &&
+        JSON.stringify(program.resolvedScales[encoding.scale]?.domain) ===
+          JSON.stringify(program.resolvedScales[color.scale]?.domain);
+    });
+    legend.order = linked !== undefined && (
+      index % 3 === 2 || index === 18 || index === 30 || index === 31 ||
+        layer.mark.type === "point"
+    )
       ? { channel: linked }
       : index % 2 === 0 ? "scale"
       : { values: [...program.resolvedScales[color.scale].domain].reverse() };
@@ -889,7 +1020,8 @@ function guideOptions(variant, program, options, action) {
   if (!parallel && axes.y && ["left", "right"].includes(legend.position)) {
     axes.y.position = legend.position === "right" ? "left" : "right";
   }
-  const legendOnly = guide.kind.endsWith("legend");
+  const legendOnly = guide.kind.endsWith("legend") ||
+    action === "createScatterPlot" && index === 24;
   return { axes: legendOnly ? false : axes,
     grid: legendOnly || parallel || Object.values(grid).every(value => value === false) ? false : grid, legend };
 }
@@ -927,10 +1059,16 @@ function scatterOptions(factors, view) {
     coordinate: "main",
     ...position,
     ...(index === 35 ? {} : { color: scatterColor(index) }),
-    ...(index % 4 >= 2 || index === 35 ? {} : { size: {
-      field: "positiveSecondary", fieldType: "quantitative",
-      scale: sizeScale("mainSize", index)
-    } }),
+    ...(index % 4 >= 2 || index === 35 ? {} : { size: index >= 28
+      ? {
+          field: "subgroup", fieldType: index % 2 === 0 ? "nominal" : "ordinal",
+          scale: { id: "mainSize", type: "ordinal", domain: "auto", range: [36, 81, 144], reverse: index % 3 === 0 }
+        }
+      : {
+          field: "positiveSecondary", fieldType: "quantitative",
+          scale: sizeScale("mainSize", index)
+        } }),
+    ...(index < 28 ? { stroke: scatterStroke(index) } : {}),
     shape: {
       field: "subgroup", fieldType: "nominal",
       scale: {
@@ -943,7 +1081,8 @@ function scatterOptions(factors, view) {
       shape: index % 2 === 0 ? "circle" : "square",
       ...(index === 35 ? { fill: "#2563eb", radius: 4 } : {}),
       opacity: 0.6 + index / 100,
-      ...(index === 0 ? { stroke: false } : { stroke: "#ffffff", strokeWidth: 0.8 })
+      ...(index < 28 ? { strokeWidth: 0.8 }
+        : index === 28 ? { stroke: false } : { stroke: "#ffffff", strokeWidth: 0.8 })
     },
   };
 }
@@ -954,16 +1093,20 @@ function buildScatter(factors) {
 
 function barOptions(factors, view) {
   const index = factors.variant.ordinal;
-  const color = barColor(index);
+  const color = barColor(index, view.rows);
   return {
     id: "mainBars",
     data: "analysisRows",
     coordinate: "main",
+    ...(index === 21 ? { orientation: "horizontal" }
+      : index === 32 ? { orientation: "vertical" } : {}),
     ...barPosition(factors.variant, view.rows),
     ...(color === undefined ? {} : { color }),
-    ...(index >= 18 && index <= 20 || index >= 24 && index <= 29
+    ...(index >= 18 && index <= 20 || index >= 22 && index <= 29
       ? {}
-      : { width: index % 2 === 0 ? { band: 0.72 } : { pixels: 18 } }),
+      : { width: index === 21 || index === 32
+          ? { pixels: 18 }
+          : index % 2 === 0 ? { band: 0.72 } : { pixels: 18 } }),
     bar: {
       ...rectDetails(index),
       ...(index === 35 ? { fill: "#2563eb" } : {}),
@@ -982,6 +1125,7 @@ function lineOptions(factors, view) {
   const aggregateLine = index === 5 || (index >= 6 && index <= 14) ||
     index === 16 || index === 17;
   const color = categoricalFacadeColor(index);
+  const curve = index === 18 || index === 19 ? "linear" : CURVES[index % CURVES.length];
   return {
     id: "mainLines",
     data: "analysisRows",
@@ -995,7 +1139,8 @@ function lineOptions(factors, view) {
     line: {
       ...strokeDetails(index),
       strokeWidth: 1.8,
-      curve: CURVES[index % CURVES.length],
+      curve,
+      ...(curve === "cardinal" ? { tension: (index % 10) / 10 } : {}),
       ...(index === 35 ? { stroke: "#2563eb" } : {}),
       opacity: 0.5 + index / 100,
       closed: false

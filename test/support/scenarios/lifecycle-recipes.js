@@ -271,6 +271,14 @@ function buildScatterFacade(factors) {
     .removePointRadius({ target: "scatterFacade" })
     .encodeAngle({ target: "scatterFacade", field: "angle" })
     .removeEncoding({ target: "scatterFacade", channel: "shape" })
+    .createTextPlot({
+      id: "scatterLabels",
+      data: "styles",
+      x: "x",
+      y: "positive",
+      text: "color",
+      style: { fontSize: 10, dy: -8 }
+    })
     .createTitle({ text: lifecycleTitle(factors, "Multivariate relationship") });
 }
 
@@ -2361,7 +2369,7 @@ export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "editThetaGrid", "editRadialGrid", "replaceCompositionChild", "editFacetScales",
   "facetGrid", "repeatCharts", "editFacetSource", "insertCompositionChild",
   "removeCompositionChild", "reorderCompositionChildren",
-  "createScatterPlot", "createLinePlot", "createAreaPlot", "layoutSeries", "createBarPlot", "createParallelCoordinates",
+  "createScatterPlot", "createTextPlot", "createLinePlot", "createAreaPlot", "layoutSeries", "createBarPlot", "createParallelCoordinates",
   "createRugPlot", "createStripPlot", "packPoints", "removePointPacking",
   "createBeeswarmPlot", "createRaincloudPlot", "editRaincloudPlot",
   "createECDFData", "createDotPlot",

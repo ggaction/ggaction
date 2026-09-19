@@ -179,6 +179,32 @@ test("derives aligned raw area rows into centered lower and upper series", () =>
   assert.equal(Object.isFrozen(derived.series[0].values), true);
 });
 
+test("orders categorical centered area positions by the resolved x domain", () => {
+  const rows = [
+    { day: "Mon", group: "A", value: 2 },
+    { day: "Tue", group: "A", value: 4 },
+    { day: "Mon", group: "B", value: 1 },
+    { day: "Tue", group: "B", value: 2 }
+  ];
+  const layer = {
+    id: "stream",
+    mark: { type: "area" },
+    encoding: {
+      x: { field: "day", fieldType: "ordinal" },
+      y: { field: "value", fieldType: "quantitative", stack: "center" },
+      group: { field: "group", fieldType: "nominal" }
+    }
+  };
+
+  const derived = deriveCenteredAreaSeries(rows, layer, {
+    xDomain: ["Wed", "Tue", "Mon"]
+  });
+
+  assert.deepEqual(derived.xValues, ["Tue", "Mon"]);
+  assert.deepEqual(derived.series[0].values.map(value => value.x), ["Tue", "Mon"]);
+  assert.deepEqual(derived.series[1].values.map(value => value.x), ["Tue", "Mon"]);
+});
+
 test("rejects incomplete or duplicate centered area topology", () => {
   const layer = {
     id: "stream",

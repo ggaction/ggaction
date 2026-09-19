@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
 const GEOMETRY_EPSILON = 1e-9;
-const TWO_DIMENSIONAL_PATH_MARKS = new Set(["area", "arc", "point"]);
+const TWO_DIMENSIONAL_PATH_MARKS = new Set(["area", "arc", "bar", "point", "rect"]);
 
 function plainObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);

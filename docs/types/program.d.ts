@@ -3552,6 +3552,15 @@ export type BarRangePositionChannel = {
   stack?: never;
 };
 type BarFieldPosition<T> = T extends string ? T : T & { lower?: never; upper?: never };
+type BarRangeOppositePositionChannel = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal" | "temporal";
+  temporalUnit?: TemporalInputUnit;
+  scale?: NonPointBandPositionScaleOptions | NonPointTemporalPositionScaleOptions;
+  bin?: never;
+  aggregate?: never;
+  stack?: never;
+};
 export type CreateBarPlotOptions = {
   id?: string;
   data?: string;
@@ -3568,8 +3577,8 @@ export type CreateBarPlotOptions = {
   guides?: false | ColorGuides;
 } & (
   | { x: BarFieldPosition<BandPositionChannel>; y: BarFieldPosition<BarYPositionChannel> }
-  | { x: BarRangePositionChannel; y: BarFieldPosition<BandPositionChannel> }
-  | { x: BarFieldPosition<BandPositionChannel>; y: BarRangePositionChannel }
+  | { x: BarRangePositionChannel; y: BarRangeOppositePositionChannel }
+  | { x: BarRangeOppositePositionChannel; y: BarRangePositionChannel }
 );
 
 export type CreateHistogramOptions = BasicHistogramEncoding & {

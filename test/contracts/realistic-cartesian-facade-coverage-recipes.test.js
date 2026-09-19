@@ -29,20 +29,20 @@ const actionCards = JSON.parse(readFileSync(
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const ACTIONS = new Set(REALISTIC_CARTESIAN_FACADE_COVERAGE_EXPECTED_ACTIONS);
 const EXPECTED_TARGETS = Object.freeze({
-  createScatterPlot: Object.freeze({ requirements: 377, diversity: 8 }),
-  createBarPlot: Object.freeze({ requirements: 374, diversity: 9 }),
-  createLinePlot: Object.freeze({ requirements: 314, diversity: 6 }),
-  createParallelCoordinates: Object.freeze({ requirements: 113, diversity: 3 })
+  createScatterPlot: Object.freeze({ requirements: 443, diversity: 10 }),
+  createBarPlot: Object.freeze({ requirements: 399, diversity: 9 }),
+  createLinePlot: Object.freeze({ requirements: 335, diversity: 6 }),
+  createParallelCoordinates: Object.freeze({ requirements: 123, diversity: 3 })
 });
 const EXPECTED_REQUIREMENT_DIGESTS = Object.freeze({
   // Locked after public declarations match the runtime-supported facade branches.
-  createScatterPlot: "ef900734cb074b9996319d415cd25feec62b566658b00b26bff6cc37f4657206",
-  createBarPlot: "5060d9180dbcc9180cd46388a8965472fc4cfa517bc53e3e7fc04448ec109e7c",
-  createLinePlot: "d28bb6c4dfa13b660f9a0d993a9e4761f51468a219a6d721b1b5b2353bb2f563",
-  createParallelCoordinates: "b059e4f47b4b9ef40c081ea84f0a2e8706881b617b06949237e1264224e990b8"
+  createScatterPlot: "45a388444a1fc7d5b87e6111d149dc5159819d010574b93f623f100dc5b1e9a0",
+  createBarPlot: "4c6ba0fb0f8b6d2be44db38102af77f1ee0e18f1dede2e6f76782c26c994c976",
+  createLinePlot: "f45bcb4625d4930b6bc48e594268e7caf0b635f937f94398994066764420cabd",
+  createParallelCoordinates: "f51d8a714eb5a4077ea1c16bd8b06b86992ed1db01f8a6c4a59c042f51c4b2e5"
 });
 const EXPECTED_DIVERSITY_DIGESTS = Object.freeze({
-  createScatterPlot: "759d425e12a6c5b8bc8cbafd963a619324844000bcceefadcd7086802483d828",
+  createScatterPlot: "36a216bd355e0f544ebb5926de0978c6ff653ea23d0eb508a21761c76508b195",
   createBarPlot: "e993b2af074db855a125800e960d793528c53ece7d1235c4c743714e98c693fb",
   createLinePlot: "37a49ee6ed7666a0f2d88270e2c4c049e44e00ec06dc836ce07a708c610ba1a9",
   createParallelCoordinates: "ec8f99f3b8ef011bcabbfdc64266d1157e99697a96dc593e026efb9f77793a18"
@@ -542,8 +542,8 @@ test("normalizes exact continuous-color facade bars before native rendering", {
         }
       },
       measure: "y",
-      start: 250,
-      span: 820
+      start: 350,
+      span: 720
     },
     {
       factors: {
@@ -656,10 +656,10 @@ test("locks the exact assigned option, literal, aggregate, and diversity target 
     actionRequirementCount += requirementIds.length;
     diversityCount += diversityIds.length;
   }
-  assert.equal(actionRequirementCount, 1178);
+  assert.equal(actionRequirementCount, 1300);
   assert.equal(target.familyLiterals.length, 15);
-  assert.equal(actionRequirementCount + target.familyLiterals.length, 1193);
-  assert.equal(diversityCount, 26);
+  assert.equal(actionRequirementCount + target.familyLiterals.length, 1315);
+  assert.equal(diversityCount, 28);
 });
 
 test("keeps every orthogonal profile materially distinct under one authentic witness", {

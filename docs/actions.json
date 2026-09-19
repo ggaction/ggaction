@@ -30815,12 +30815,12 @@
         {
           "name": "x",
           "required": true,
-          "type": "string | BarRangePositionChannel | (Omit<PositionEncodingBase, \"coordinate\" | \"target\"> & { fieldType?: \"quantitative\" | undefined; aggregate?: undefined; scale?: NonPointZeroSupportingPositionScaleOptions | undefined; } & { ...; }) | (Omit<...> & ... 1 more ... & { ...; }) | (Omit<...> & ... 1 more ... & { ...; }) ..."
+          "type": "BarRangePositionChannel | BarRangeOppositePositionChannel | (Omit<PositionEncodingBase, \"coordinate\" | \"target\"> & { ...; } & { ...; }) | (Omit<...> & ... 1 more ... & { ...; }) | (Omit<...> & ... 1 more ... & { ...; }) | (Omit<...> & ... 1 more ... & { ...; })"
         },
         {
           "name": "y",
           "required": true,
-          "type": "string | BarRangePositionChannel | ({ field: string; bin?: undefined; fieldType: \"temporal\"; temporalUnit?: TemporalInputUnit | undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions | undefined; } & { ...; }) | ... 6 more ... | ({ ...; } & ... 1 more ... & { ...; })"
+          "type": "BarRangePositionChannel | BarRangeOppositePositionChannel | ({ field: string; bin?: undefined; fieldType: \"temporal\"; temporalUnit?: TemporalInputUnit | undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions | undefined; } & { ...; }) | ({ ...; } & ... 1 more ... & { ...; }..."
         }
       ],
       "callPatterns": [

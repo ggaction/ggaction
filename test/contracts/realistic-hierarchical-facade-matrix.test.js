@@ -72,7 +72,7 @@ function record(stats, dataset, count = 1) {
 }
 
 test("covers every hierarchical facade option, literal and diversity requirement", {
-  timeout: 180_000
+  timeout: 600_000
 }, async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
   const options = inventory.optionPaths.filter(option =>

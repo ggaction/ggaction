@@ -132,6 +132,20 @@ const HEATMAP_VARIANTS = freeze([
     profileIndex: index
   })),
   {
+    id: "log-rgb",
+    colorType: "log",
+    interpolate: "rgb",
+    positionType: "linear",
+    profileIndex: 0
+  },
+  {
+    id: "symlog-lab",
+    colorType: "symlog",
+    interpolate: "lab",
+    positionType: "linear",
+    profileIndex: 1
+  },
+  {
     id: "quantize-bins",
     colorType: "quantize",
     positionType: "log",
@@ -449,6 +463,18 @@ function heatmapColorScale(variant) {
       id, type: "threshold", domain: [0.5, 1.5, 2.5],
       palette: { name: "greens", count: 4 },
       reverse: true
+    };
+  }
+  if (variant.colorType === "log") {
+    return {
+      id, type: "log", domain: "auto", range: "auto",
+      base: 10, interpolate: variant.interpolate, clamp: true, reverse: false
+    };
+  }
+  if (variant.colorType === "symlog") {
+    return {
+      id, type: "symlog", domain: "auto", range: "auto",
+      constant: 1, interpolate: variant.interpolate, clamp: false, reverse: true
     };
   }
   const index = INTERPOLATIONS.indexOf(variant.interpolate);

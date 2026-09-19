@@ -587,13 +587,16 @@ function addColorScales(program) {
   let next = program;
   for (const [index, interpolate] of INTERPOLATIONS.entries()) {
     const id = `sequential-${slug(interpolate)}`;
+    const type = index === 0 ? "log" : index === 1 ? "symlog" : "sequential";
     next = positionedPoint(next, id).encodeColor({
       target: id,
       field: "y",
       fieldType: "quantitative",
       scale: {
-        id: `${id}-color`, type: "sequential", domain: "auto",
-        midpoint: "auto",
+        id: `${id}-color`, type, domain: "auto",
+        ...(type === "sequential" ? { midpoint: "auto" } : {}),
+        ...(type === "log" ? { base: 10 } : {}),
+        ...(type === "symlog" ? { constant: 1 } : {}),
         ...(index < 2
           ? { palette: index === 0 ? "viridis" : "magma" }
           : index === 7
@@ -828,6 +831,20 @@ function addAppearanceEncodings(program) {
     scale: {
       id: "size-threshold-scale", type: "threshold", domain: [2, 4],
       range: [4, 9, 16], reverse: false, unknown: 4
+    }
+  });
+  next = positionedPoint(next, "size-nominal").encodeSize({
+    target: "size-nominal", field: "group", fieldType: "nominal",
+    scale: {
+      id: "size-nominal-scale", type: "ordinal", domain: "auto",
+      range: [4, 9, 16], reverse: false, unknown: 4
+    }
+  });
+  next = positionedPoint(next, "size-ordinal").encodeSize({
+    target: "size-ordinal", field: "category", fieldType: "ordinal",
+    scale: {
+      id: "size-ordinal-scale", type: "ordinal", domain: "auto",
+      range: [4, 9, 16], reverse: true, unknown: 4
     }
   });
   next = positionedPoint(next, "shape-circle").encodeShape({

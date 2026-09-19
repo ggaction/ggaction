@@ -847,7 +847,9 @@ function createOwnedFacade(base, action, args) {
     !["quantize", "quantile", "threshold"].includes(candidate.resolvedScales[layer.encoding.color.scale].type)) {
     legend = { ...requested.legend, target: layer.id, channels: ["color"] };
     if (["quantitative", "temporal"].includes(layer.encoding.color.fieldType)) {
-      const continuous = candidate.resolvedScales[layer.encoding.color.scale].type === "sequential";
+      const continuous = ["sequential", "log", "symlog"].includes(
+        candidate.resolvedScales[layer.encoding.color.scale].type
+      );
       const allowed = ["target", "channels", "title", "labels", "titleStyle", "border", "offset"];
       legend = { ...Object.fromEntries(Object.entries(legend).filter(([key]) => allowed.includes(key))),
         position: "right", ...(continuous ? { count: 6, gradient: { length: 120, thickness: 14 } } : { symbol: { width: 18, height: 14, stroke: "white", strokeWidth: 0.8 }, itemGap: 28, direction: "vertical" }) };
@@ -1407,8 +1409,20 @@ function heatmapBinnedColor(ordinal) {
       case 2: return { palette: { name: "plasma", count: 7 }, scale };
       case 3:
         return { palette: { name: "cividis", extent: [0.08, 0.92] }, scale };
-      case 4: return { scale: { ...scale, palette: "turbo" } };
-      case 5: return { scale: { ...scale, palette: "viridis" } };
+      case 4:
+        return {
+          scale: {
+            id, type: "log", domain: "auto", range: "auto", base: 10,
+            interpolate: COLOR_INTERPOLATIONS[index], clamp: true, reverse: false
+          }
+        };
+      case 5:
+        return {
+          scale: {
+            id, type: "symlog", domain: "auto", range: "auto", constant: 1,
+            interpolate: COLOR_INTERPOLATIONS[index], clamp: false, reverse: true
+          }
+        };
       case 6:
         return { scale: { ...scale, palette: { name: "magma", count: 7 } } };
       case 7:
@@ -1562,7 +1576,8 @@ function buildHeatmap(factors) {
       },
       bin: {
         bins: profile.bins ?? { x: 10, y: 8 },
-        includeEmpty: profile.includeEmpty ?? true,
+        includeEmpty: profile.includeEmpty ??
+          (ordinal + (profile.paletteOffset ?? 0)) % 12 !== 4,
         ...(profile.explicitExtent
           ? {
               extent: {
