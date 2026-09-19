@@ -6,7 +6,7 @@ import { action } from "../../../core/action.js";
 import {
   validateOptionObject
 } from "../../../core/validation.js";
-import { normalizeOptions } from "./categorical/options.js";
+import { normalizeLegendOverflow, normalizeOptions } from "./categorical/options.js";
 import { resolveLegendSymbol } from "./categorical/recipes.js";
 import { resolveLayout } from "./categorical/layout.js";
 import { resolveLegendCreationPlan } from "./categorical/actions.js";
@@ -255,6 +255,7 @@ function resolveSampledLegendEdit(program, kind, previous, args) {
   const label = size ? "size" : "stroke-width";
   const allowed = ["target", "title", "count", "values", "labels", "titleStyle",
     "position", "layout", "align", "direction", "columns", "titlePosition", "offset", "itemGap", "border"];
+  if (size) allowed.push("overflow");
   for (const key of Object.keys(args)) {
     if (!allowed.includes(key)) {
       throw new Error(`${label} legend does not accept ${key}.`);
@@ -262,6 +263,10 @@ function resolveSampledLegendEdit(program, kind, previous, args) {
   }
   const discrete = size &&
     isEnumeratedSizeScaleType(program.resolvedScales[previous.scale]?.type);
+  const ordinalSize = size && program.resolvedScales[previous.scale]?.type === "ordinal";
+  if (args.overflow !== undefined && !ordinalSize) {
+    throw new Error("Size legend overflow requires an ordinal scale.");
+  }
   if (discrete && (args.count !== undefined || args.values !== undefined)) {
     throw new Error("Discrete size legends do not support count or exact values.");
   }
@@ -289,6 +294,9 @@ function resolveSampledLegendEdit(program, kind, previous, args) {
     inferredTitle,
     titleVisible,
     ...(discrete ? {} : { sampling }),
+    ...(ordinalSize && (args.overflow !== undefined || previous.overflow !== undefined)
+      ? { overflow: normalizeLegendOverflow(args.overflow === undefined ? previous.overflow : args.overflow) }
+      : {}),
     ...(size ? { inheritAppearance: false } : {}),
     labels: normalizeLegendTextOptions(
       args.labels,

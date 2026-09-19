@@ -36,6 +36,7 @@ import {
   resolveLegendSampleValues
 } from "./sampling.js";
 import { resolveEffectiveLegendBlockConfig } from "./blocks.js";
+import { normalizeLegendOverflow } from "./categorical/options.js";
 
 
 
@@ -102,9 +103,16 @@ export function resolveSizeLegendLayout(program, config) {
   if ((discrete || ordinalSize) && readLegendSampling(config).mode === "values") {
     throw new Error("Discrete size legends do not support exact values.");
   }
-  const values = discrete
+  const allValues = discrete
     ? undefined
     : ordinalSize ? scale.domain : resolveLegendSampleValues(effective, scale, "Size legend");
+  const hiddenCount = ordinalSize && effective.overflow &&
+    allValues.length > effective.overflow.maxItems
+    ? allValues.length - effective.overflow.maxItems
+    : 0;
+  const values = hiddenCount > 0
+    ? allValues.slice(0, effective.overflow.maxItems)
+    : allValues;
   const areas = discrete
     ? scale.range
     : mapSizeValues(values, scale);
@@ -112,7 +120,7 @@ export function resolveSizeLegendLayout(program, config) {
   const radius = Math.max(...radii);
   const width = Math.max(32, radius * 2);
   const { plot, canvas } = resolveContinuousBounds(program);
-  const text = discrete
+  const itemText = discrete
     ? formatDiscretizedIntervals(scale.thresholds, config.labels.format)
     : ordinalSize ? values.map(formatVisibleText) : formatContinuousValues(
         values,
@@ -120,6 +128,7 @@ export function resolveSizeLegendLayout(program, config) {
         "quantitative",
         config.labels.format
       );
+  const text = hiddenCount > 0 ? [...itemText, `…${hiddenCount} entries`] : itemText;
   const symbolStroke = effective.blockSymbol?.strokeWidth ?? 0;
   const symbolExtent = symbolStroke / 2;
   const sampleWidth = width + symbolStroke;
@@ -134,7 +143,8 @@ export function resolveSizeLegendLayout(program, config) {
   }, undefined, program.materializationConfigs.textMetrics);
   assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Size legend layout", { ...effective, ...geometry });
   const background = resolveLegendBackgroundFromBounds(layout.bounds, effective.border, canvas, "Size legend", { ...effective, ...geometry });
-  return { ...layout, symbolX: layout.symbolX.map(x => x + sampleWidth / 2), radii, text,
+  return { ...layout, symbolX: layout.symbolX.slice(0, radii.length).map(x => x + sampleWidth / 2),
+    symbolY: layout.itemY.slice(0, radii.length), radii, text,
     labels, titleStyle, background, config: effective };
 }
 
@@ -163,7 +173,7 @@ export const rematerializeSizeLegend = /* @__PURE__ */ closedAction(
     return materializeItemLegend(this, "size", currentConfig, layout, {
       text: layout.text, labels: layout.labels, titleStyle: layout.titleStyle,
       symbols: {
-        x: layout.symbolX, y: layout.itemY, radius: layout.radii,
+        x: layout.symbolX, y: layout.symbolY, radius: layout.radii,
         fill: layout.config.blockSymbol?.fill ?? DEFAULT_COLORS.sizeSymbol,
         opacity: layout.config.blockSymbol?.opacity ?? 0.7
       },
@@ -185,6 +195,9 @@ export function resolveSizeLegendConfig(program, args = {}) {
   }
   const scale = requireScale(program, encoding.scale);
   const discrete = isEnumeratedSizeScaleType(scale.type);
+  if (args.overflow !== undefined && scale.type !== "ordinal") {
+    throw new Error("Size legend overflow requires an ordinal scale.");
+  }
   if (discrete && (Object.hasOwn(args, "count") || Object.hasOwn(args, "values"))) {
     throw new Error("Discrete size legends do not support count or exact values.");
   }
@@ -197,6 +210,7 @@ export function resolveSizeLegendConfig(program, args = {}) {
     target: layer.id,
     scale: encoding.scale,
     ...normalizeItemLegendConfig(args, encoding, 40),
+    ...(args.overflow === undefined ? {} : { overflow: normalizeLegendOverflow(args.overflow) }),
     domain: scale.domain,
     ...(discrete ? { count } : { sampling }),
     inheritAppearance: args.inheritAppearance === true,

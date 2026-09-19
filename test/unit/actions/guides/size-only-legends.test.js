@@ -132,3 +132,45 @@ test("keeps composite point series and size legend dispatch unchanged", () => {
   assert.equal(sizeBase().editCanvas({ margin: { left: 180 } })
     .createLegend({ channels: ["size"], position: "left" }).guideConfigs.legend.size.position, "left");
 });
+
+test("bounds ordinal size legends with an ellipsis-count summary", () => {
+  const categories = ["A", "B", "C", "D", "E", "F", "G", "H"];
+  const source = chart()
+    .createCanvas({ width: 640, height: 480, margin: { right: 220 } })
+    .createData({ values: categories.map((category, index) => ({ x: index, y: index, category })) })
+    .createPointMark({ id: "points" })
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" })
+    .encodeSize({ field: "category", fieldType: "nominal", scale: { domain: categories } });
+  const bounded = source.createLegend({
+    channels: ["size"],
+    overflow: { maxItems: 3, summary: "ellipsis-count" }
+  });
+
+  assert.deepEqual(
+    bounded.graphicSpec.objects.sizeLegendLabels.items.map(item => item.properties.text),
+    ["A", "B", "C", "…5 entries"]
+  );
+  assert.equal(bounded.graphicSpec.objects.sizeLegendSymbols.items.length, 3);
+  assert.deepEqual(bounded.resolvedScales.size.domain, categories);
+  assert.deepEqual(bounded.guideConfigs.legend.size.overflow,
+    { maxItems: 3, summary: "ellipsis-count" });
+
+  const edited = bounded.editLegend({ overflow: { maxItems: 5 } });
+  assert.deepEqual(
+    edited.graphicSpec.objects.sizeLegendLabels.items.map(item => item.properties.text),
+    ["A", "B", "C", "D", "E", "…3 entries"]
+  );
+  assert.equal(edited.graphicSpec.objects.sizeLegendSymbols.items.length, 5);
+  assert.deepEqual(edited.resolvedScales.size.domain, categories);
+
+  const snapshot = JSON.stringify(bounded);
+  for (const overflow of [null, {}, { maxItems: 0 }, { maxItems: 1.5 },
+    { maxItems: 2, summary: "truncate" }]) {
+    assert.throws(() => bounded.editLegend({ overflow }));
+    assert.equal(JSON.stringify(bounded), snapshot);
+  }
+  assert.throws(() => sizeBase().createLegend({
+    channels: ["size"], overflow: { maxItems: 2 }
+  }), /requires an ordinal scale/);
+});

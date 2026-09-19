@@ -38,7 +38,7 @@ const OPTIONS = [
 ];
 export const ITEM_LEGEND_OPTIONS = Object.freeze([
   "target", "count", "values", "position", "layout", "align", "direction",
-  "columns", "titlePosition", "offset", "itemGap", "title", "labels", "titleStyle", "border"
+  "columns", "titlePosition", "offset", "itemGap", "title", "labels", "titleStyle", "border", "overflow"
 ]);
 const TEXT_OPTIONS = [
   "offset", "color", "fontSize", "fontFamily", "fontWeight", "format"
@@ -435,12 +435,13 @@ export function materializeItemLegend(program, kind, config, layout, {
   labels = layout.config.labels, titleStyle = layout.config.titleStyle
 }) {
   const prefix = `${kind}Legend`;
+  const symbolLength = Object.values(symbols).find(Array.isArray)?.length ?? text.length;
   let next = program
     .editSemantic({ property: `guide.legend.${kind}.scale`, value: config.scale })
     .editSemantic({ property: `guide.legend.${kind}.title`, value: config.title })
     ._withLegendConfig(kind, config);
   next = editGraphicProperties(next, `${prefix}Symbols`, {
-    length: text.length,
+    length: symbolLength,
     ...symbols
   });
   next = editGraphicProperties(next, `${prefix}Labels`, {

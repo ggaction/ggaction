@@ -41,6 +41,18 @@ const TEXT_OPTIONS = Object.freeze([
   "fontWeight",
   "format"
 ]);
+
+export function normalizeLegendOverflow(value) {
+  if (value === undefined || value === false) return value;
+  validateObject(value, ["maxItems", "summary"], "Legend overflow");
+  if (!Number.isInteger(value.maxItems) || value.maxItems < 1) {
+    throw new RangeError("Legend overflow.maxItems must be a positive integer.");
+  }
+  if (value.summary !== undefined && value.summary !== "ellipsis-count") {
+    throw new Error("Legend overflow.summary must be ellipsis-count.");
+  }
+  return { maxItems: value.maxItems, summary: "ellipsis-count" };
+}
 const TITLE_OPTIONS = Object.freeze([
   "color",
   "fontSize",
@@ -181,20 +193,7 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
   validateFontWeight(titleStyle.fontWeight, "Legend title fontWeight");
   positive(itemGap, "Legend itemGap");
 
-  let overflow;
-  if (args.overflow !== undefined) {
-    overflow = args.overflow;
-    if (overflow !== false) {
-      validateObject(overflow, ["maxItems", "summary"], "Legend overflow");
-      if (!Number.isInteger(overflow.maxItems) || overflow.maxItems < 1) {
-        throw new RangeError("Legend overflow.maxItems must be a positive integer.");
-      }
-      if (overflow.summary !== undefined && overflow.summary !== "ellipsis-count") {
-        throw new Error("Legend overflow.summary must be ellipsis-count.");
-      }
-      overflow = { maxItems: overflow.maxItems, summary: "ellipsis-count" };
-    }
-  }
+  const overflow = normalizeLegendOverflow(args.overflow);
   return {
     ...(overflow === undefined ? {} : { overflow }),
     target: args.target,
