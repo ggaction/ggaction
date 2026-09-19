@@ -7355,7 +7355,7 @@ Related types: [`LegendOptions`](#type-legendoptions).
 export interface LegendOptions {
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
   layout?: "edge" | "legacy-bottom";
-  /** Categorical display limit; omitted or false shows every item. */
+  /** Categorical and ordinal-size display limit; omitted or false shows every item. */
   overflow?: false | { maxItems: number; summary?: "ellipsis-count" };
   /** Categorical item order; preserves the appearance scale's assignments. */
   order?: LegendOrder;

@@ -1374,13 +1374,14 @@ reserved inside that edge. These anchors default to vertical, one-column content
 with a top title and center alignment. They do not reserve an outer guide lane.
 The full legend must fit the plot; resizing the Canvas reanchors it.
 
-Set `overflow: { maxItems: 29 }` to display at most 29 categorical symbols and
-labels, followed by an additional text-only `…N entries` summary when needed.
+Set `overflow: { maxItems: 29 }` to display at most 29 categorical or ordinal
+point-size symbols and labels, followed by an additional text-only `…N entries`
+summary when needed.
 The optional `summary` value is `"ellipsis-count"`. All categories remain in
 the appearance scale and legend domain, including categories omitted from the
 visible legend. The limit follows the effective legend order and label map.
 Omission or `false` displays every category. This option also works on edge
-categorical legends. Continuous and combined sampled legends retain their
+categorical legends and standalone ordinal size legends. Continuous and combined sampled legends retain their
 existing edge-only contracts. Shared facet promotion requires an edge position.
 
 

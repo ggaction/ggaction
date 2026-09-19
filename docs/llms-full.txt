@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:beb2c426cb4d0594f7fbfbaa76d396d88c1cb1a5aa19397246404a0c3e2e61b9. Status: development. Runtime source: 02bf4f282a1701b0ca096053dac26f958c6e15ff. Release baseline: v0.0.13.
+Contract: sha256:3cb0a49bd38b0d396a4339a25328d86effadc6c900356b3b9460f7e71ab3ca74. Status: development. Runtime source: f34a5560a689e31f88db30a4251512fcbda92cab. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/02bf4f282a1701b0ca096053dac26f958c6e15ff/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/f34a5560a689e31f88db30a4251512fcbda92cab/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/02bf4f282a1701b0ca096053dac26f958c6e15ff/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/f34a5560a689e31f88db30a4251512fcbda92cab/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -24318,13 +24318,14 @@ reserved inside that edge. These anchors default to vertical, one-column content
 with a top title and center alignment. They do not reserve an outer guide lane.
 The full legend must fit the plot; resizing the Canvas reanchors it.
 
-Set `overflow: { maxItems: 29 }` to display at most 29 categorical symbols and
-labels, followed by an additional text-only `…N entries` summary when needed.
+Set `overflow: { maxItems: 29 }` to display at most 29 categorical or ordinal
+point-size symbols and labels, followed by an additional text-only `…N entries`
+summary when needed.
 The optional `summary` value is `"ellipsis-count"`. All categories remain in
 the appearance scale and legend domain, including categories omitted from the
 visible legend. The limit follows the effective legend order and label map.
 Omission or `false` displays every category. This option also works on edge
-categorical legends. Continuous and combined sampled legends retain their
+categorical legends and standalone ordinal size legends. Continuous and combined sampled legends retain their
 existing edge-only contracts. Shared facet promotion requires an edge position.
 
 ## `editLegend`
@@ -32517,7 +32518,7 @@ Related types: [`LegendOptions`](./reference/types/#type-legendoptions).
 export interface LegendOptions {
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
   layout?: "edge" | "legacy-bottom";
-  /** Categorical display limit; omitted or false shows every item. */
+  /** Categorical and ordinal-size display limit; omitted or false shows every item. */
   overflow?: false | { maxItems: number; summary?: "ellipsis-count" };
   /** Categorical item order; preserves the appearance scale's assignments. */
   order?: LegendOrder;
@@ -36631,12 +36632,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/02bf4f282a1701b0ca096053dac26f958c6e15ff/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f34a5560a689e31f88db30a4251512fcbda92cab/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/02bf4f282a1701b0ca096053dac26f958c6e15ff/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f34a5560a689e31f88db30a4251512fcbda92cab/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -38743,9 +38744,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:beb2c426cb4d0594f7fbfbaa76d396d88c1cb1a5aa19397246404a0c3e2e61b9` |
+| Contract fingerprint | `sha256:3cb0a49bd38b0d396a4339a25328d86effadc6c900356b3b9460f7e71ab3ca74` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `02bf4f282a1701b0ca096053dac26f958c6e15ff` |
+| Runtime source commit | `f34a5560a689e31f88db30a4251512fcbda92cab` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |
