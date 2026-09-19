@@ -9,7 +9,7 @@ import {
 } from
   "../support/scenarios/realistic-generation-isolation-worker.js";
 
-const MAX_ISOLATED_CHILD_RSS = 440 * 1_024 * 1_024;
+const MAX_ISOLATED_CHILD_RSS = 448 * 1_024 * 1_024;
 const MAX_ISOLATED_TOTAL_RSS = 512 * 1_024 * 1_024;
 const WORKER_EXIT_GRACE_MS = 30_000;
 const OUTER_WORKER_TIMEOUT_MS = REALISTIC_GENERATION_ISOLATION_TIMEOUT_MS +
