@@ -1993,8 +1993,8 @@
       "options": [
         {
           "name": "id",
-          "required": true,
-          "type": "string"
+          "required": false,
+          "type": "string | undefined"
         },
         {
           "name": "source",
@@ -2028,7 +2028,7 @@
         }
       ],
       "callPatterns": [
-        "createStackData({ id, category, group, value, source?, mode?, as? })"
+        "createStackData({ category, group, value, id?, source?, mode?, as? })"
       ],
       "snippet": "program.createStackData({ id: \"stacked\", category: \"category\", group: \"series\", value: \"amount\" })",
       "errors": [],

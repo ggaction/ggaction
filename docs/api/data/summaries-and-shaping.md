@@ -116,7 +116,12 @@ strings, or booleans. Missing cells and mixed types are rejected. Output names
 must be distinct and cannot overwrite a source field. The action accepts at
 most 64 selected fields and materializes at most 10,000 rows.
 
-## `createStackData({ id, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}
+## `createStackData({ id?, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}
+
+Omit `id` for the deterministic `"stacked"` dataset role. Existing datasets or
+owners with that ID are rejected; provide a fresh explicit ID for another stack.
+The source still uses the current materialized dataset when omitted.
+The minimal declaration needs only `category`, `group`, and `value`.
 
 Materialize stack geometry once and reuse it across ranged marks and labels:
 

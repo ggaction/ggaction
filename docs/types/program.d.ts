@@ -2418,7 +2418,7 @@ export type ImputedDataOptions = ImputedDataBaseOptions & (
     }
 );
 export interface StackDataOptions {
-  id: string;
+  id?: string;
   source?: string;
   category: string;
   group: string;

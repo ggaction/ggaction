@@ -599,7 +599,7 @@ imputation while preserving group boundaries and final source order.
 ### `createStackData`
 
 ```javascript
-createStackData({ id, source?, category, group, value, mode?, as? })
+createStackData({ id?, source?, category, group, value, mode?, as? })
 ```
 
 Materialize reusable start/end/value/share rows with the same stack math used

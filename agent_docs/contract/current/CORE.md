@@ -736,9 +736,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createStackData`
 
-- Signature: `createStackData({ id, source?, category, group, value, mode?, as? })`
+- Signature: `createStackData({ id?, source?, category, group, value, mode?, as? })`
 - `id`, `source`: 새 immutable derived dataset ID와 existing materialized source다. `source` 생략 시
-  current data를 사용한다.
+  current data를 사용한다. `id` 생략 시 deterministic `"stacked"` role을 사용하고 해당 ID 또는 owner가 이미 있으면 거부한다. 두 번째 stack은 explicit 새 ID가 필요하며 자동 번호나 첫 dataset 선택은 하지 않는다.
 - `category`, `group`, `value`: 서로 다른 field다. 각 source row는 한 unique category/group cell이며
   value는 finite number다. Category와 group은 null/string/boolean/finite-number scalar identity를 쓴다.
 - `mode`: `"stack" | "fill" | "center" | "diverging"`, 기본 `"stack"`이다. Phase 4의
@@ -756,7 +756,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createStackData`
 
-- Implemented: `createStackData({ id: UserId; source?: UserId; category: FieldName; group: FieldName; value: FieldName; mode?: "stack" | "fill" | "center" | "diverging"; as?: StackDataOutputFields }): ChartProgram`
+- Implemented: `createStackData({ id?: UserId; source?: UserId; category: FieldName; group: FieldName; value: FieldName; mode?: "stack" | "fill" | "center" | "diverging"; as?: StackDataOutputFields }): ChartProgram`
 - Proposed (NOT IMPLEMENTED): duplicate-cell aggregation, missing-cell synthesis와 explicit series order.
 
 ### Value coverage — `createStackData`
@@ -765,6 +765,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: mixed-sign diverging and negative rejection in non-negative modes.
 - ✅ Covered: missing/duplicate/non-finite cells, role/output uniqueness, source collision and immutable rejection.
 - Evidence: `test/unit/actions/data/stack-data.test.js`, `test/unit/grammar/transforms/series-layout.test.js`.
+
+- ✅ Covered: 생략 ID와 explicit `"stacked"` convergence, default ID collision, second explicit ID와 missing-source failure in `test/unit/actions/data/stack-data.test.js`.
 
 ## `createRegressionData`
 

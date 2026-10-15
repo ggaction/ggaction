@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:5b8b07ad3f8c7af4cb298298ad97916161ca891ae9da5d21448ffc37e06c4fe1. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:342e009ddcc974852777a9f48db9c5893bc9a6aeafaac98f175284dae2e78f97. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -5080,7 +5080,7 @@ See [Missing Keys and Values](./api/data/missing-data/#createcompletedata-id-sou
 
 See [Missing Keys and Values](./api/data/missing-data/#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap) for this contract and its examples.
 
-## `createStackData({ id, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}
+## `createStackData({ id?, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}
 
 See [Summaries, Bins, and Data Shaping](./api/data/summaries-and-shaping/#createstackdata-id-source-category-group-value-mode-as) for this contract and its examples.
 
@@ -21856,7 +21856,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `id` | Required | `string` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `category` | Required | `string` |
 | `group` | Required | `string` |
@@ -21867,7 +21867,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createStackData({ id, source?, category, group, value, mode?, as? })
+createStackData({ id?, source?, category, group, value, mode?, as? })
 ```
 
 Materialize reusable start/end/value/share rows with the same stack math used
@@ -35322,7 +35322,7 @@ export type StackDataMode = "stack" | "fill" | "center" | "diverging";
 
 ```typescript
 export interface StackDataOptions {
-  id: string;
+  id?: string;
   source?: string;
   category: string;
   group: string;
@@ -36922,7 +36922,12 @@ strings, or booleans. Missing cells and mixed types are rejected. Output names
 must be distinct and cannot overwrite a source field. The action accepts at
 most 64 selected fields and materializes at most 10,000 rows.
 
-## `createStackData({ id, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}
+## `createStackData({ id?, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}
+
+Omit `id` for the deterministic `"stacked"` dataset role. Existing datasets or
+owners with that ID are rejected; provide a fresh explicit ID for another stack.
+The source still uses the current materialized dataset when omitted.
+The minimal declaration needs only `category`, `group`, and `value`.
 
 Materialize stack geometry once and reuse it across ranged marks and labels:
 
@@ -38864,7 +38869,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:5b8b07ad3f8c7af4cb298298ad97916161ca891ae9da5d21448ffc37e06c4fe1` |
+| Contract fingerprint | `sha256:342e009ddcc974852777a9f48db9c5893bc9a6aeafaac98f175284dae2e78f97` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

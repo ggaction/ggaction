@@ -230,7 +230,7 @@ See [Missing Keys and Values](./missing-data.md#createcompletedata-id-source-key
 
 See [Missing Keys and Values](./missing-data.md#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap) for this contract and its examples.
 
-## `createStackData({ id, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}
+## `createStackData({ id?, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}
 
 See [Summaries, Bins, and Data Shaping](./summaries-and-shaping.md#createstackdata-id-source-category-group-value-mode-as) for this contract and its examples.
 

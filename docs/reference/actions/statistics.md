@@ -348,7 +348,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `id` | Required | `string` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `category` | Required | `string` |
 | `group` | Required | `string` |
@@ -361,7 +361,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createStackData({ id, source?, category, group, value, mode?, as? })
+createStackData({ id?, source?, category, group, value, mode?, as? })
 ```
 
 Materialize reusable start/end/value/share rows with the same stack math used

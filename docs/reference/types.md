@@ -10660,7 +10660,7 @@ export type StackDataMode = "stack" | "fill" | "center" | "diverging";
 
 ```typescript
 export interface StackDataOptions {
-  id: string;
+  id?: string;
   source?: string;
   category: string;
   group: string;

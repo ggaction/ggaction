@@ -118,3 +118,19 @@ test("createStackData rejects invalid cells, modes, aliases, and signs atomicall
   assert.throws(() => negative.createStackData(options()), /requires non-negative/);
   assert.equal(JSON.stringify(source), snapshot);
 });
+
+
+test("stack data infers one deterministic role and rejects collisions without mutation", () => {
+ const source=chart().createData({id:"source",values:rows});
+ const inferred=source.createStackData({category:"category",group:"series",value:"amount"});
+ assert.deepEqual(inferred.semanticSpec,source.createStackData(options()).semanticSpec);
+ assert.equal(inferred.context.currentData,"stacked");
+ assert.throws(()=>inferred.createStackData({category:"category",group:"series",value:"amount"}),/already exists/);
+ assert.equal(source.semanticSpec.datasets.length,1);
+ const second=inferred.createStackData(options({id:"second",source:"source"}));
+ assert.equal(second.context.currentData,"second");
+ assert.throws(()=>chart().createStackData({category:"category",group:"series",value:"amount"}),/source dataset id/i);
+ assert.throws(()=>source.createStackData({id:null,category:"category",group:"series",value:"amount"}));
+ const occupied=chart().createData({id:"stacked",values:rows});
+ assert.throws(()=>occupied.createStackData({category:"category",group:"series",value:"amount"}),/already exists/);
+});

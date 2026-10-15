@@ -18,6 +18,7 @@ import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/b
 import type { DatasetImputedTransform } from ${JSON.stringify(path.join(root, "types/program.js"))};
 declare const p: ChartProgram;
 declare const basic: BasicChartProgram;
+p.createStackData({category:"category",group:"series",value:"amount"});
 p.createCompleteData({ id: "complete", key: "t", values: [1, 2, 3], members: "rows" });
 p.createCompleteData({ id: "sequence", key: "t", sequence: { start: 0, end: 2, step: 1 } });
 p.createImputedData({ id: "mean", fields: "x", groupBy: "g" });
