@@ -1,3 +1,4 @@
+import { resolveBarCellOpacities } from "./resolve.js";
 import { readSeriesIdentity } from "../../grammar/pathSeries.js";
 import {
   findHistogramBinIndex,
@@ -172,6 +173,7 @@ export function deriveHistogramRectangles(required, resolved) {
     ...required,
     resolvedScales: resolved.resolvedScales
   });
+  const opacities = resolveBarCellOpacities(resolved, required.layer, segments.map(segment => segment.members));
   const existing = resolved.graphicSpec.objects[required.layer.id].items;
   const layout = resolveBarColorLayout(required.layer);
   const config = resolved.markConfigs[required.layer.id] ?? {};
@@ -224,7 +226,8 @@ export function deriveHistogramRectangles(required, resolved) {
         existing[index]?.properties.fill ??
         DEFAULT_BAR_FILL,
       ...resolveBarAppearance(config, existing[index]?.properties),
-      ...(strokes === undefined ? {} : { stroke: strokes[index] })
+      ...(strokes === undefined ? {} : { stroke: strokes[index] }),
+      ...(opacities === undefined ? {} : { opacity: opacities[index] })
     };
   });
 }

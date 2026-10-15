@@ -1,3 +1,4 @@
+import { resolveBarCellOpacities } from "./resolve.js";
 import { deriveSeriesBarCells } from "../../grammar/bars/aggregate.js";
 import { resolveBarChannels, resolveBarColorLayout, resolveBarOffsetChannel } from "../../grammar/bars/policy.js";
 import {
@@ -41,6 +42,7 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
     resolved.resolvedScales[stroke.scale],
     "stroke"
   );
+  const opacities = resolveBarCellOpacities(resolved, layer, segments.map(segment => segment.cell.sourceIndices.map(index => dataset.values[index])));
   const config = resolved.markConfigs[layer.id] ?? {};
   const existing = resolved.graphicSpec.objects[layer.id].items;
   const width = resolveBarWidth(widthConfig, grouped ? offsetScale.bandwidth : Math.abs(categoryScale.bandwidth ?? categoryScale.step));
@@ -65,6 +67,7 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
       width: vertical ? width : Math.abs(a - b), height: vertical ? Math.abs(a - b) : width,
       fill: fills?.[index] ?? config.barAppearance?.fill ?? config.fill ?? DEFAULT_BAR_FILL,
       ...resolveBarAppearance(config, existing[index]?.properties),
-      ...(strokes === undefined ? {} : { stroke: strokes[index] }) };
+      ...(strokes === undefined ? {} : { stroke: strokes[index] }),
+      ...(opacities === undefined ? {} : { opacity: opacities[index] }) };
   });
 }

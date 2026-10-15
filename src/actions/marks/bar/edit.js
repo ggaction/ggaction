@@ -56,6 +56,9 @@ export const editBarMark = /* @__PURE__ */ action(
         "editBarMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
       );
     }
+    if (Object.hasOwn(args, "opacity") && layer.encoding?.opacity !== undefined) {
+      throw new Error("editBarMark opacity conflicts with a field encoding; use encodeOpacity with value to replace it.");
+    }
     if (args.stroke === false && Object.hasOwn(args, "strokeWidth")) {
       throw new Error(
         "editBarMark cannot set strokeWidth while removing stroke."

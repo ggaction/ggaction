@@ -86,7 +86,7 @@ export function resolveMarkFamilyConsumerValues(program, consumer, dataset) {
         : channel === "x" ? derived.xValues : derived.yValues
     };
   }
-  if (resolveBarGrain(consumer.layer) === BAR_GRAINS.aggregate) {
+  if (resolveBarGrain(consumer.layer) === BAR_GRAINS.aggregate && ["x", "y", "color"].includes(consumer.channel)) {
     const derived = deriveBarAggregates(dataset.values, consumer.layer);
     if (consumer.channel === "color") {
       return {

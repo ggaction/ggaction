@@ -90,6 +90,11 @@ export const rematerializeBarMark = /* @__PURE__ */ action(
       resolved = resolved.rematerializeScale({ id: strokeScaleId });
     }
 
+    const opacityScaleId = required.layer.encoding?.opacity?.scale;
+    if (opacityScaleId !== undefined && args.scales !== false) {
+      resolved = resolved.rematerializeScale({ id: opacityScaleId });
+    }
+
     if (required.materialization === "aggregate") {
       const offsetChannel = resolveBarOffsetChannel(required.layer);
       const offsetScaleId = required.layer.encoding?.[offsetChannel]?.scale;

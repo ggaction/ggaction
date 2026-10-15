@@ -243,7 +243,7 @@ export function resolveContinuousLegendLayer(program, requested, channel) {
   if (layer === undefined) {
     throw new Error(
       requested === undefined
-        ? `${channel} legend requires one eligible ${channel === "opacity" ? "point or line" : "point"} mark.`
+        ? `${channel} legend requires one eligible ${channel === "opacity" ? "point, line or bar" : "point"} mark.`
         : `Unknown ${channel} legend target "${requested}".`
     );
   }

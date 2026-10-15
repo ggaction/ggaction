@@ -1341,14 +1341,16 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Signature: `encodeOpacity({ value, target? } | { field, target?, fieldType?, scale? })`
 - 상수로 전환할 때 target이 소유한 opacity legend만 제거하며 다른 layer의 범례는 보존한다.
 - `value`: field와 mutually exclusive인 finite `[0, 1]` number.
-- `field`: value와 mutually exclusive인 quantitative point/rule/line field. auto linear range는 `[0.2, 1]`이다.
-- `target`: optional point, rule 또는 line ID.
+- `field`: value와 mutually exclusive인 quantitative point/rule/line/bar field. auto linear range는 `[0.2, 1]`이다.
+- `target`: optional point, rule, line 또는 bar ID.
 - Effect: constant는 graphical config, field는 semantic encoding과 linear scale을 저장한다. 같은 target에
   다시 호출하면 constant↔field 또는 field↔field를 structural copy로 교체하고 target mark/legend를 rematerialize한다.
 - Line은 final-series grain이며 모든 source row의 field 값이 같아야 한다. Width처럼 implicit grouping을
   만들지 않는다. Constant mode는 fieldType/scale 및 opacity-channel selection과 충돌하고 field/own legend만
   정리한다. Field mode는 constant override를 제거한다. Line은 unknown fallback을 지원하지 않는다.
 - Field Line opacity는 scale/Canvas/filter/highlight replay와 sampled opacity legend를 지원한다.
+- Bar는 ranged item 또는 final aggregate/bin/series cell마다 하나의 field 값을 요구하며 opacity로 새로운 그룹을 만들지 않는다. 값이 다른 cell은 거부한다. 상수↔field 전환 시 `barAppearance.opacity`도 정리하며 `editBarMark({ opacity })`는 field mode와 충돌한다. Position 이전의 field 지정, scale/Canvas/persistence replay와 opacity sample legend를 지원한다.
+- Evidence: `test/unit/actions/encodings/bar-opacity.test.js` covers constant/field replacement, aggregate rejection, grouped/ranged/histogram cells, scale/Canvas edits, persistence and legend cleanup.
 - Coverage: point/rule/regression 및 line-appearance-modes tests가 replacement와 invalid range를 검증한다.
 
 ### Formal values — `encodeOpacity`
@@ -1362,7 +1364,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `value`
   - ✅ Covered: representative value, 0, 1, below/above range와 non-finite rejection.
 - `target`
-  - ✅ Covered: inferred/explicit point, rule and line, unknown/incompatible target.
+  - ✅ Covered: inferred/explicit point, rule, line and bar, unknown/incompatible target.
 - Reassignment
   - ✅ Covered: constant↔constant, field↔field and constant↔field immutable replacement.
 - ✅ Covered: auto/explicit descending range, clamp/reverse, continuous sample legend and constant-mode cleanup.

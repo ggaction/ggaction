@@ -354,7 +354,8 @@
       "family": "Opacity",
       "marks": [
         "point",
-        "line"
+        "line",
+        "bar"
       ],
       "channels": "quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend"
     },
@@ -590,11 +591,12 @@
       "marks": [
         "point",
         "line",
-        "rule"
+        "rule",
+        "bar"
       ],
       "fieldTypes": "quantitative or constant",
       "scales": "linear for field; none for constant",
-      "grain": "point/rule item or complete line series; values within one series must agree"
+      "grain": "point/rule item, complete line series, or final bar cell; values within one series/cell must agree"
     },
     {
       "action": "encodeStrokeWidth",
