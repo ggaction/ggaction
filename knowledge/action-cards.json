@@ -15346,6 +15346,10 @@
         {
           "path": "length",
           "unit": "logical-pixel"
+        },
+        {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
         }
       ],
       "inference": [
@@ -15400,10 +15404,15 @@
           "name": "length",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "createXAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length? })"
+        "createXAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length?, alongOffset? })"
       ],
       "snippet": "program.createXAxisTicks({})",
       "errors": [],
@@ -15466,6 +15475,10 @@
         {
           "path": "length",
           "unit": "logical-pixel"
+        },
+        {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
         }
       ],
       "inference": [
@@ -15520,10 +15533,15 @@
           "name": "length",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "createYAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length? })"
+        "createYAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length?, alongOffset? })"
       ],
       "snippet": "program.createYAxisTicks({})",
       "errors": [],
@@ -15578,6 +15596,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "count",
           "unit": "count"
         }
@@ -15608,6 +15630,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "XAxisPosition | undefined"
@@ -15624,7 +15651,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisTicks({ color?, lineWidth?, length?, position?, count?, values? })"
+        "editXAxisTicks({ color?, lineWidth?, length?, alongOffset?, position?, count?, values? })"
       ],
       "snippet": "program.editXAxisTicks({ color: \"#f28e2b\" })",
       "errors": [],
@@ -15679,6 +15706,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "count",
           "unit": "count"
         }
@@ -15709,6 +15740,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "YAxisPosition | undefined"
@@ -15725,7 +15761,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisTicks({ color?, lineWidth?, length?, position?, count?, values? })"
+        "editYAxisTicks({ color?, lineWidth?, length?, alongOffset?, position?, count?, values? })"
       ],
       "snippet": "program.editYAxisTicks({ color: \"#f28e2b\" })",
       "errors": [],
@@ -15787,6 +15823,10 @@
         },
         {
           "path": "fontSize",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "alongOffset",
           "unit": "logical-pixel"
         },
         {
@@ -15878,6 +15918,11 @@
           "name": "fontWeight",
           "required": false,
           "type": "string | number | undefined"
+        },
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
         },
         {
           "name": "rotation",
@@ -15971,6 +16016,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "rotation",
           "unit": "angle"
         },
@@ -16061,6 +16110,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "rotation",
           "required": false,
           "type": "RotationInput | undefined"
@@ -16143,6 +16197,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "rotation",
           "unit": "angle"
         },
@@ -16210,6 +16268,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "rotation",
           "required": false,
           "type": "RotationInput | undefined"
@@ -16251,7 +16314,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation? })"
+        "editXAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, alongOffset? })"
       ],
       "snippet": "program.editXAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
@@ -16304,6 +16367,10 @@
         },
         {
           "path": "fontSize",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "alongOffset",
           "unit": "logical-pixel"
         },
         {
@@ -16374,6 +16441,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "rotation",
           "required": false,
           "type": "RotationInput | undefined"
@@ -16415,7 +16487,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation? })"
+        "editYAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, alongOffset? })"
       ],
       "snippet": "program.editYAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
@@ -16512,12 +16584,12 @@
         {
           "name": "ticks",
           "required": false,
-          "type": "AxisTickStyleOptions | undefined"
+          "type": "CartesianAxisTickStyleOptions | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
+          "type": "(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
         }
       ],
       "callPatterns": [
@@ -16618,12 +16690,12 @@
         {
           "name": "ticks",
           "required": false,
-          "type": "AxisTickStyleOptions | undefined"
+          "type": "CartesianAxisTickStyleOptions | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
+          "type": "(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
         }
       ],
       "callPatterns": [
@@ -16707,12 +16779,12 @@
         {
           "name": "ticks",
           "required": false,
-          "type": "AxisTickStyleOptions | undefined"
+          "type": "CartesianAxisTickStyleOptions | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
+          "type": "(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
         }
       ],
       "callPatterns": [
@@ -16796,12 +16868,12 @@
         {
           "name": "ticks",
           "required": false,
-          "type": "AxisTickStyleOptions | undefined"
+          "type": "CartesianAxisTickStyleOptions | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
+          "type": "(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
         }
       ],
       "callPatterns": [
@@ -17787,6 +17859,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "count",
           "unit": "count"
         },
@@ -17817,6 +17893,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
         {
           "name": "zIndex",
           "required": false,
@@ -17864,7 +17945,7 @@
         }
       ],
       "callPatterns": [
-        "createHorizontalGrid({ scale?, coordinate?, zIndex?, bandPosition?, count?, values?, color?, lineWidth? })"
+        "createHorizontalGrid({ scale?, coordinate?, alongOffset?, zIndex?, bandPosition?, count?, values?, color? })"
       ],
       "snippet": "program.createHorizontalGrid({})",
       "errors": [],
@@ -17917,6 +17998,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "count",
           "unit": "count"
         },
@@ -17947,6 +18032,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
         {
           "name": "zIndex",
           "required": false,
@@ -17994,7 +18084,7 @@
         }
       ],
       "callPatterns": [
-        "createVerticalGrid({ scale?, coordinate?, zIndex?, bandPosition?, count?, values?, color?, lineWidth? })"
+        "createVerticalGrid({ scale?, coordinate?, alongOffset?, zIndex?, bandPosition?, count?, values?, color? })"
       ],
       "snippet": "program.createVerticalGrid({})",
       "errors": [],
@@ -18039,6 +18129,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "count",
           "unit": "count"
         },
@@ -18062,6 +18156,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
         {
           "name": "zIndex",
           "required": false,
@@ -18099,9 +18198,9 @@
         }
       ],
       "callPatterns": [
-        "editHorizontalGrid({ zIndex?, bandPosition?, count?, values?, color?, lineWidth?, strokeDash? })"
+        "editHorizontalGrid({ alongOffset?, zIndex?, bandPosition?, count?, values?, color?, lineWidth?, strokeDash? })"
       ],
-      "snippet": "program.editHorizontalGrid({ zIndex: 1 })",
+      "snippet": "program.editHorizontalGrid({ alongOffset: 1 })",
       "errors": [],
       "route": "/reference/actions/guides/#edithorizontalgrid"
     },
@@ -18144,6 +18243,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "count",
           "unit": "count"
         },
@@ -18167,6 +18270,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
         {
           "name": "zIndex",
           "required": false,
@@ -18204,9 +18312,9 @@
         }
       ],
       "callPatterns": [
-        "editVerticalGrid({ zIndex?, bandPosition?, count?, values?, color?, lineWidth?, strokeDash? })"
+        "editVerticalGrid({ alongOffset?, zIndex?, bandPosition?, count?, values?, color?, lineWidth?, strokeDash? })"
       ],
-      "snippet": "program.editVerticalGrid({ zIndex: 1 })",
+      "snippet": "program.editVerticalGrid({ alongOffset: 1 })",
       "errors": [],
       "route": "/reference/actions/guides/#editverticalgrid"
     },

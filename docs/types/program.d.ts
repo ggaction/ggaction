@@ -1309,6 +1309,10 @@ export interface AxisLineStyleOptions {
 export interface AxisTickStyleOptions extends AxisLineStyleOptions {
   length?: number;
 }
+export interface CartesianAxisTickStyleOptions extends AxisTickStyleOptions {
+  /** Signed logical pixels along the axis: positive right for x, down for y. */
+  alongOffset?: number;
+}
 export interface AxisLabelStyleOptions {
   offset?: number;
   format?: AxisFormat;
@@ -1316,6 +1320,10 @@ export interface AxisLabelStyleOptions {
   fontSize?: number;
   fontFamily?: string;
   fontWeight?: string | number;
+}
+export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Signed displacement from the mapped tick position, independent of outward offset. */
+  alongOffset?: number;
 }
 export interface AxisLabelLayoutOptions {
   /** Legacy numbers are radians; structured values make radians or degrees explicit. */
@@ -1332,8 +1340,8 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
   position?: P;
   count?: number;
   values?: readonly AxisValue[];
-  ticks?: AxisTickStyleOptions;
-  labels?: AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
+  ticks?: CartesianAxisTickStyleOptions;
+  labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 }
 export interface AxisTitleOptions<P extends string> {
   text?: string;
@@ -1366,14 +1374,14 @@ export interface CreateAxesOptions {
   radius?: false | CompleteRadialAxisOptions;
 }
 export interface AxisTickOptions<P extends string>
-  extends AxisTickStyleOptions {
+  extends CartesianAxisTickStyleOptions {
   scale?: string;
   position?: P;
   count?: number;
   values?: readonly AxisValue[];
 }
 export interface AxisLabelOptions<P extends string>
-  extends AxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
+  extends CartesianAxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
   scale?: string;
   position?: P;
   count?: number;
@@ -1496,6 +1504,8 @@ export interface EditRadialAxisOptions
 }
 
 export interface GridDirectionOptions {
+  /** Signed logical pixels along the scale: vertical lines right, horizontal lines down. */
+  alongOffset?: number;
   /** Grid draw order relative to marks at zero: positive above, nonpositive behind. */
   zIndex?: number;
   /** Band centers by default; boundary draws both edges of each selected band. */
@@ -1509,6 +1519,8 @@ export interface GridDirectionOptions {
   strokeDash?: readonly number[];
 }
 export interface EditGridOptions {
+  /** Absolute signed logical-pixel displacement; omission preserves the current value. */
+  alongOffset?: number;
   /** Preserve omitted order; finite values sort Cartesian grids relative to marks at zero. */
   zIndex?: number;
   /** Band centers by default; boundary draws both edges of each selected band. */
@@ -1561,7 +1573,7 @@ type CartesianAxesOptions = Omit<
   coordinate?: { id?: string; type?: "auto" | "cartesian" };
 };
 type CAxisTicks<P extends string> = Omit<AxisTicksAndLabelsOptions<P>, "labels"> & {
-  labels?: AxisLabelStyleOptions & AxisLabelLayoutOptions;
+  labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions;
 };
 type CAxis<P extends string> = Omit<CompleteAxisOptions<P>, "ticksAndLabels"> & {
   ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position">;

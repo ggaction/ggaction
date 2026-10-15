@@ -11,6 +11,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `values`: non-empty category-value array (continuous는 finite numbers)이며 scale domain 안에 있어야 한다.
 - `color`: non-empty string, 기본 `"#e2e8f0"`.
 - `lineWidth`: non-negative finite number, 기본 `1`.
+- `alongOffset`: signed finite logical pixels, 기본 `0`. Vertical grid는 오른쪽, horizontal grid는 아래쪽으로 mapped 위치를 이동한다. Axis tick/label offset과 독립이며 domain, values, span과 mark 위치는 보존한다. Band boundary 계산 뒤 offset을 적용한다. Create/edit/Canvas·scale replay가 같은 절대값을 유지한다. String, null, 명시 undefined와 nonfinite 입력은 거부한다. Evidence: `test/unit/actions/guides/axis-grid-along-offset.test.js`.
 - `zIndex`: Cartesian grid의 finite draw rank, 기본0은 mark 뒤, 양수는 mark 앞이다. 같은 면의 grid는 값 오름차순, 동점은 horizontal/vertical 순서다. 생략 edit는 보존하며 resize/scale/axis refresh도 명시 rank를 유지한다. Polar에는 적용하지 않는다.
 - `strokeDash`: even-length non-negative finite number array, 기본 `[]`.
 - Effect: semantic guide에는 scale/coordinate, graphical config에는 tick policy/style, concrete line
@@ -23,6 +24,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ```typescript
 type GridDirectionOptions = {
+  alongOffset?: Finite;
   zIndex?: Finite;
   bandPosition?: "center" | "boundary";
   scale?: UserId;
@@ -34,6 +36,7 @@ type GridDirectionOptions = {
   strokeDash?: DashPattern;
 };
 type EditGridOptions = {
+  alongOffset?: Finite;
   zIndex?: Finite;
   bandPosition?: "center" | "boundary";
   count?: PositiveInteger;

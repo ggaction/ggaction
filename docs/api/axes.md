@@ -29,6 +29,10 @@ use an end anchor inferred from their rotation and axis side. Reserve enough
 margin for the full label length and the axis title. Rotation does not enlarge a
 fixed Canvas or change its margins.
 
+## Shift ticks and labels along an axis
+
+Cartesian ticks and labels accept `alongOffset`, a signed finite displacement in logical pixels. Positive values move X-axis items right and Y-axis items down, including top/right axes and reversed scales. It defaults to zero and leaves the scale and axis baseline unchanged. Tick and label offsets are independent absolute values: set both when both should move. The existing label `offset` remains the outward gap from the plot edge. Complete axes, whole-axis editors and focused editors accept the same options; Canvas and scale updates preserve them. Polar and Parallel axes do not accept this option.
+
 ## Standalone Cartesian axes
 
 An axis does not need an invisible mark or dataset. Supply an existing Cartesian
@@ -213,8 +217,8 @@ axis throws before anything changes.
 | --- | --- |
 | `position` | x: `"bottom"/"top"`; y: `"left"/"right"` |
 | `line` | `false` or `{ color?, lineWidth? }` |
-| `ticks` | `false` or `{ count?, values?, length?, color?, lineWidth? }` |
-| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap? }` |
+| `ticks` | `false` or `{ count?, values?, length?, color?, lineWidth?, alongOffset? }` |
+| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, alongOffset? }` |
 | `ticksAndLabels` | `false` or `{ count?, values?, ticks?, labels? }` |
 | `title` | `false` or `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight? }` |
 

@@ -2511,7 +2511,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editXAxisTicks`",
+      "update": "`editXAxisTicks`; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2529,7 +2529,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editYAxisTicks`",
+      "update": "`editYAxisTicks`; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2547,7 +2547,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits x-axis ticks",
+      "update": "Edits x-axis ticks; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2565,7 +2565,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits y-axis ticks",
+      "update": "Edits y-axis ticks; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2583,7 +2583,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editXAxisLabels` edits style, layout, and typed categorical display labels",
+      "update": "`editXAxisLabels` edits style, layout, and typed categorical display labels; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2601,7 +2601,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editYAxisLabels` edits style, layout, and typed categorical display labels",
+      "update": "`editYAxisLabels` edits style, layout, and typed categorical display labels; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2619,7 +2619,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits x-axis label style/layout and sets or resets a typed categorical labelMap",
+      "update": "Edits x-axis label style/layout and sets or resets a typed categorical labelMap; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2637,7 +2637,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits y-axis label style/layout and sets or resets a typed categorical labelMap",
+      "update": "Edits y-axis label style/layout and sets or resets a typed categorical labelMap; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2889,7 +2889,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editHorizontalGrid`",
+      "update": "`editHorizontalGrid`; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2907,7 +2907,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editVerticalGrid`",
+      "update": "`editVerticalGrid`; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2925,7 +2925,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits one horizontal grid",
+      "update": "Edits one horizontal grid; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2943,7 +2943,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits one vertical grid",
+      "update": "Edits one vertical grid; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

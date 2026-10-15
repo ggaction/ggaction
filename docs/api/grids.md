@@ -70,12 +70,15 @@ Direction options are:
 | `values` | Exact finite data-space values; mutually exclusive with `count` |
 | `color` | Stroke color; default `#e2e8f0` |
 | `lineWidth` | Non-negative stroke width; default `1` |
+| `alongOffset` | Signed finite logical-pixel displacement; vertical lines right, horizontal lines down; default `0` |
 | `strokeDash` | Even-length non-negative dash array; default `[]` |
 
 When values and count are omitted, a grid reuses compatible existing axis
 ticks. Without an axis it uses histogram bin boundaries for a binned x scale,
 or five nice ticks for another continuous scale. Explicit values and count
 always take precedence.
+
+`alongOffset` is independent of tick and label displacement. It applies after scale mapping and band-boundary construction, survives edits and Canvas/scale updates, and does not change the scale domain or mark positions. Use zero to reset it. Polar grids do not accept this option.
 
 Horizontal lines span the plot width at y-scale positions. Vertical lines span
 the plot height at x-scale positions. Grid graphics are inserted before the

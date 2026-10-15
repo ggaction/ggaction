@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:342e009ddcc974852777a9f48db9c5893bc9a6aeafaac98f175284dae2e78f97. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:633e10de4fa15c94c2f62bec47bb8d89ade49bef79a91a799fce0ca5b64f597f. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12126,6 +12126,10 @@ use an end anchor inferred from their rotation and axis side. Reserve enough
 margin for the full label length and the axis title. Rotation does not enlarge a
 fixed Canvas or change its margins.
 
+## Shift ticks and labels along an axis
+
+Cartesian ticks and labels accept `alongOffset`, a signed finite displacement in logical pixels. Positive values move X-axis items right and Y-axis items down, including top/right axes and reversed scales. It defaults to zero and leaves the scale and axis baseline unchanged. Tick and label offsets are independent absolute values: set both when both should move. The existing label `offset` remains the outward gap from the plot edge. Complete axes, whole-axis editors and focused editors accept the same options; Canvas and scale updates preserve them. Polar and Parallel axes do not accept this option.
+
 ## Standalone Cartesian axes
 
 An axis does not need an invisible mark or dataset. Supply an existing Cartesian
@@ -12294,8 +12298,8 @@ axis throws before anything changes.
 | --- | --- |
 | `position` | x: `"bottom"/"top"`; y: `"left"/"right"` |
 | `line` | `false` or `{ color?, lineWidth? }` |
-| `ticks` | `false` or `{ count?, values?, length?, color?, lineWidth? }` |
-| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap? }` |
+| `ticks` | `false` or `{ count?, values?, length?, color?, lineWidth?, alongOffset? }` |
+| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, alongOffset? }` |
 | `ticksAndLabels` | `false` or `{ count?, values?, ticks?, labels? }` |
 | `title` | `false` or `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight? }` |
 
@@ -12375,12 +12379,15 @@ Direction options are:
 | `values` | Exact finite data-space values; mutually exclusive with `count` |
 | `color` | Stroke color; default `#e2e8f0` |
 | `lineWidth` | Non-negative stroke width; default `1` |
+| `alongOffset` | Signed finite logical-pixel displacement; vertical lines right, horizontal lines down; default `0` |
 | `strokeDash` | Even-length non-negative dash array; default `[]` |
 
 When values and count are omitted, a grid reuses compatible existing axis
 ticks. Without an axis it uses histogram bin boundaries for a binned x scale,
 or five nice ticks for another continuous scale. Explicit values and count
 always take precedence.
+
+`alongOffset` is independent of tick and label displacement. It applies after scale mapping and band-boundary construction, survives edits and Canvas/scale updates, and does not change the scale domain or mark positions. Use zero to reset it. Polar grids do not accept this option.
 
 Horizontal lines span the plot width at y-scale positions. Vertical lines span
 the plot height at x-scale positions. Grid graphics are inserted before the
@@ -23520,6 +23527,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 
 Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./reference/actions/guides/#axis-lines-ticks-and-labels).
 
@@ -23548,6 +23556,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 
 Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./reference/actions/guides/#axis-lines-ticks-and-labels).
 
@@ -23572,6 +23581,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -23599,6 +23609,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -23634,6 +23645,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
@@ -23671,6 +23683,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
@@ -23704,6 +23717,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
@@ -23740,6 +23754,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
@@ -23773,8 +23788,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
-| `ticks` | Optional / branch-dependent | `AxisTickStyleOptions \| undefined` |
-| `labels` | Optional / branch-dependent | `(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
+| `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
 
 Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./reference/actions/guides/#ticklabel-groups-and-axis-titles).
 
@@ -23800,8 +23815,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
-| `ticks` | Optional / branch-dependent | `AxisTickStyleOptions \| undefined` |
-| `labels` | Optional / branch-dependent | `(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
+| `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
 
 Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./reference/actions/guides/#ticklabel-groups-and-axis-titles).
 
@@ -23826,8 +23841,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
-| `ticks` | Optional / branch-dependent | `AxisTickStyleOptions \| undefined` |
-| `labels` | Optional / branch-dependent | `(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
+| `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
 
 Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./reference/actions/guides/#ticklabel-groups-and-axis-titles).
 
@@ -23852,8 +23867,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
-| `ticks` | Optional / branch-dependent | `AxisTickStyleOptions \| undefined` |
-| `labels` | Optional / branch-dependent | `(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
+| `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
 
 Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./reference/actions/guides/#ticklabel-groups-and-axis-titles).
 
@@ -24130,6 +24145,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
 | `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
@@ -24160,6 +24176,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
 | `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
@@ -24190,6 +24207,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
 | `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -24218,6 +24236,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
 | `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -25716,10 +25735,10 @@ createYAxisLine({ scale?, position?, color?, lineWidth? })
 editXAxisLine({ position?, color?, lineWidth? })
 editYAxisLine({ position?, color?, lineWidth? })
 
-createXAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth? })
-createYAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth? })
-editXAxisTicks({ position?, count?, values?, length?, color?, lineWidth? })
-editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth? })
+createXAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+createYAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+editXAxisTicks({ position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
 
 createXAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
@@ -25788,8 +25807,8 @@ resource. [Axes](./api/axes/)
 ## Directional grids
 
 ```javascript
-createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })
-createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })
+createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })
+createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })
 editHorizontalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
 editVerticalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
 editGrid({
@@ -26849,7 +26868,7 @@ Related types: [`RotationInput`](./reference/types/#type-rotationinput).
 
 ```typescript
 export interface AxisLabelOptions<P extends string>
-  extends AxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
+  extends CartesianAxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
   scale?: string;
   position?: P;
   count?: number;
@@ -26857,7 +26876,7 @@ export interface AxisLabelOptions<P extends string>
 }
 ```
 
-Related types: [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleoptions) · [`AxisLabelLayoutOptions`](./reference/types/#type-axislabellayoutoptions) · [`DisplayLabelOptions`](./reference/types/#type-displaylabeloptions) · [`AxisValue`](./reference/types/#type-axisvalue).
+Related types: [`CartesianAxisLabelStyleOptions`](./reference/types/#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](./reference/types/#type-axislabellayoutoptions) · [`DisplayLabelOptions`](./reference/types/#type-displaylabeloptions) · [`AxisValue`](./reference/types/#type-axisvalue).
 
 ### `AxisLabelStyleOptions` {#type-axislabelstyleoptions}
 
@@ -26893,7 +26912,7 @@ export interface AxisLineStyleOptions {
 
 ```typescript
 export interface AxisTickOptions<P extends string>
-  extends AxisTickStyleOptions {
+  extends CartesianAxisTickStyleOptions {
   scale?: string;
   position?: P;
   count?: number;
@@ -26901,7 +26920,7 @@ export interface AxisTickOptions<P extends string>
 }
 ```
 
-Related types: [`AxisTickStyleOptions`](./reference/types/#type-axistickstyleoptions) · [`AxisValue`](./reference/types/#type-axisvalue).
+Related types: [`CartesianAxisTickStyleOptions`](./reference/types/#type-cartesianaxistickstyleoptions) · [`AxisValue`](./reference/types/#type-axisvalue).
 
 ### `AxisTickStyleOptions` {#type-axistickstyleoptions}
 
@@ -26925,12 +26944,12 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
   position?: P;
   count?: number;
   values?: readonly AxisValue[];
-  ticks?: AxisTickStyleOptions;
-  labels?: AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
+  ticks?: CartesianAxisTickStyleOptions;
+  labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 }
 ```
 
-Related types: [`AxisValue`](./reference/types/#type-axisvalue) · [`AxisTickStyleOptions`](./reference/types/#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleoptions) · [`AxisLabelLayoutOptions`](./reference/types/#type-axislabellayoutoptions) · [`DisplayLabelOptions`](./reference/types/#type-displaylabeloptions).
+Related types: [`AxisValue`](./reference/types/#type-axisvalue) · [`CartesianAxisTickStyleOptions`](./reference/types/#type-cartesianaxistickstyleoptions) · [`CartesianAxisLabelStyleOptions`](./reference/types/#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](./reference/types/#type-axislabellayoutoptions) · [`DisplayLabelOptions`](./reference/types/#type-displaylabeloptions).
 
 ### `AxisTitleOptions` {#type-axistitleoptions}
 
@@ -27537,11 +27556,11 @@ Related types: [`CompleteAxisOptions`](./reference/types/#type-completeaxisoptio
 
 ```typescript
 type CAxisTicks<P extends string> = Omit<AxisTicksAndLabelsOptions<P>, "labels"> & {
-  labels?: AxisLabelStyleOptions & AxisLabelLayoutOptions;
+  labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions;
 };
 ```
 
-Related types: [`AxisTicksAndLabelsOptions`](./reference/types/#type-axisticksandlabelsoptions) · [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleoptions) · [`AxisLabelLayoutOptions`](./reference/types/#type-axislabellayoutoptions).
+Related types: [`AxisTicksAndLabelsOptions`](./reference/types/#type-axisticksandlabelsoptions) · [`CartesianAxisLabelStyleOptions`](./reference/types/#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](./reference/types/#type-axislabellayoutoptions).
 
 ### `CCategoricalGuides` {#type-ccategoricalguides}
 
@@ -27596,6 +27615,32 @@ type CartesianAxesOptions = Omit<
 ```
 
 Related types: [`CreateAxesOptions`](./reference/types/#type-createaxesoptions).
+
+### `CartesianAxisLabelStyleOptions` {#type-cartesianaxislabelstyleoptions}
+
+ Expand CartesianAxisLabelStyleOptions
+
+```typescript
+export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Signed displacement from the mapped tick position, independent of outward offset. */
+  alongOffset?: number;
+}
+```
+
+Related types: [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleoptions).
+
+### `CartesianAxisTickStyleOptions` {#type-cartesianaxistickstyleoptions}
+
+ Expand CartesianAxisTickStyleOptions
+
+```typescript
+export interface CartesianAxisTickStyleOptions extends AxisTickStyleOptions {
+  /** Signed logical pixels along the axis: positive right for x, down for y. */
+  alongOffset?: number;
+}
+```
+
+Related types: [`AxisTickStyleOptions`](./reference/types/#type-axistickstyleoptions).
 
 ### `CartesianCategoricalGuideOptions` {#type-cartesiancategoricalguideoptions}
 
@@ -30505,6 +30550,8 @@ Related types: [`EditGridOptions`](./reference/types/#type-editgridoptions) · [
 
 ```typescript
 export interface EditGridOptions {
+  /** Absolute signed logical-pixel displacement; omission preserves the current value. */
+  alongOffset?: number;
   /** Preserve omitted order; finite values sort Cartesian grids relative to marks at zero. */
   zIndex?: number;
   /** Band centers by default; boundary draws both edges of each selected band. */
@@ -32006,6 +32053,8 @@ export type GraphicType =
 
 ```typescript
 export interface GridDirectionOptions {
+  /** Signed logical pixels along the scale: vertical lines right, horizontal lines down. */
+  alongOffset?: number;
   /** Grid draw order relative to marks at zero: positive above, nonpositive behind. */
   zIndex?: number;
   /** Band centers by default; boundary draws both edges of each selected band. */
@@ -38869,7 +38918,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:342e009ddcc974852777a9f48db9c5893bc9a6aeafaac98f175284dae2e78f97` |
+| Contract fingerprint | `sha256:633e10de4fa15c94c2f62bec47bb8d89ade49bef79a91a799fce0ca5b64f597f` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
@@ -38956,6 +39005,8 @@ Each x/y axis option supports:
 | `line` | `false` or `{ color?, lineWidth? }` |
 | `ticksAndLabels` | `false` or `{ count?, values?, ticks?, labels? }` |
 | `title` | `false` or title options including `text`, `at`, `offset`, and font styling |
+
+Cartesian `ticksAndLabels.ticks.alongOffset` and `ticksAndLabels.labels.alongOffset` independently shift mapped positions in logical pixels. Positive moves right for X and down for Y; the default is zero. This preserves scale data and the outward label `offset`.
 
 Use either `count` or exact data-space `values` for ticks. Ambiguous coordinates
 or scales must be selected explicitly. `createAxes` reads stored coordinates;

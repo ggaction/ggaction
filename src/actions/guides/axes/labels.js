@@ -48,7 +48,7 @@ import {
 const OPTIONS = [
   "scale", "position", "count", "values", "offset", "format", "color",
   "fontSize", "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
-  "lineHeight", "overlap", "labelMap"
+  "lineHeight", "overlap", "labelMap", "alongOffset"
 ];
 
 const DEFAULTS = {
@@ -88,6 +88,7 @@ function validateOptions(args, operation, create) {
     create ? OPTIONS : OPTIONS.filter(key => key !== "scale"),
     operation
   );
+  if (Object.hasOwn(args, "alongOffset") && !Number.isFinite(args.alongOffset)) throw new TypeError("Label alongOffset must be a finite number.");
   if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) {
     throw new Error(`${operation} cannot use count and values together.`);
   }
@@ -110,6 +111,7 @@ function validateConfig(channel, config) {
   if (config.mode === "values") {
     validateGeneratedItemLimit(config.values.length, "Label value count");
   }
+  if (config.alongOffset !== undefined && !Number.isFinite(config.alongOffset)) throw new TypeError("Label alongOffset must be a finite number.");
   validateNonNegativeFinite(config.offset, "Label offset");
   validateTextStyle(config, "Label");
   validateAxisFormat(config.format);
@@ -261,7 +263,7 @@ function resolve(program, channel, config) {
       bounds,
       channel,
       position: config.position,
-      positions,
+      positions: positions.map(value => value + (config.alongOffset ?? 0)),
       offset: config.offset
     })
   };

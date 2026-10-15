@@ -42,7 +42,7 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 
 ## Shared axis-tick contract
 
-- Create parameters: `scale?`, `position?`, `count?`, `values?`, `length?`, `color?`, `lineWidth?`.
+- Create parameters: `scale?`, `position?`, `count?`, `values?`, `length?`, `color?`, `lineWidth?`, `alongOffset?`.
 - Edit parameters는 `scale`을 제외하고 동일하다.
 - `count`: positive integer, 기본값 `5`, 최대 `10,000`; `values`와 mutually exclusive다.
 - `values`: scale domain 안의 finite number/timestamp 또는 ordinal scalar array. histogram x는 둘 다
@@ -50,6 +50,7 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
   `10,000`이다.
 - Shared histogram scale의 자동 boundaries는 모든 binned consumer가 같은 boundary array를 계산할 때만
   유일한 결과로 재사용한다. 서로 다른 boundaries면 explicit values 또는 독립 scale이 필요하다.
+- `alongOffset`: signed finite logical-pixel displacement, 기본 `0`. X는 오른쪽, Y는 아래쪽이 양수다. Scale domain/range, axis line, label/grid 위치를 바꾸지 않고 mapped tick 위치에 더한다.
 - `length`: non-negative finite number, 기본 `6`.
 - `color`: non-empty string, 기본 `"#64748b"`.
 - `lineWidth`: non-negative finite number, 기본 `1`.
@@ -60,9 +61,10 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 
 - Create parameters: `scale?`, `position?`, `count?`, `values?`, `offset?`, `format?`, `color?`,
   `fontSize?`, `fontFamily?`, `fontWeight?`, `rotation?`, `maxWidth?`, `wrap?`, `lineHeight?`,
-  `overlap?`, `labelMap?`; edit에서는 scale을 제외한다.
+  `overlap?`, `labelMap?`, `alongOffset?`; edit에서는 scale을 제외한다.
 - `count`/`values`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
 - `offset`: non-negative finite number; x default `18`, y default `12`.
+- `alongOffset`: signed finite logical pixels, 기본 `0`. Mapped label 위치에서 X는 오른쪽, Y는 아래쪽으로 이동한다. Tick offset을 상속하지 않는 독립 절대값이다. 기존 `offset`은 축 바깥쪽 간격으로 유지된다.
 - `format`: `"auto" | { decimals: nonNegativeInteger } | AxisFormatString`. Numeric token은 `.0`–`.12`
   precision과 `f | % | e` suffix이며 quantitative에서만 허용한다. Time format은 `%Y | %m | %d | %b | %a | %H | %M | %S | %L` UTC directive 하나 이상과 literal의
   sequence이며 literal percent는 `%%`다. Unknown/dangling directive는 거부하고 ordinal은 auto만 허용한다.
@@ -103,8 +105,8 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 
 - Create: `scale?`, `position?`, `count?`, `values?`, `ticks?`, `labels?`.
 - Edit: create option에서 scale을 제외하며 빈 edit는 오류다.
-- `ticks`: `{ length?, color?, lineWidth? }`.
-- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, labelMap? }`; `labelMap`은 categorical Cartesian scale 전용이다.
+- `ticks`: `{ length?, color?, lineWidth?, alongOffset? }`.
+- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, labelMap?, alongOffset? }`; `labelMap`은 categorical Cartesian scale 전용이다.
 - Effect: shared count/values를 tick과 label child에 원자적으로 전달한다. nested appearance는 해당 child만 바꾼다.
 
 ## Shared axis-title contract
@@ -132,6 +134,12 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - `strokeDash`: even-length non-negative finite number array, 기본 `[]`.
 - Effect: semantic guide에는 scale/coordinate, graphical config에는 tick policy/style, concrete line
   collection에는 endpoints를 저장한다. 관련 mark보다 앞에 graphic을 배치한다.
+
+## Cartesian along-axis displacement evidence
+
+Ticks, labels, Cartesian grid는 각자의 `alongOffset`을 private materialization config에 저장하고 create/edit/Canvas·scale replay에서 같은 mapped 위치에 더한다. Signed finite 입력만 허용하며 null, string, NaN, Infinity와 명시 undefined를 거부한다. 이전 program과 caller input은 immutable하다. Polar/Parallel에는 이 옵션이 없다.
+
+Evidence: `test/unit/actions/guides/axis-grid-along-offset.test.js`, `test/contracts/axis-grid-offset-types.test.js`. 독립 offset, 양음수, top/right/reverse scale, complete/group/focused 경로, band-boundary grid, Canvas·scale replay와 atomic errors를 검증한다. Grid의 규범 계약은 [GRID.md](GRID.md)가 소유한다.
 
 ## Optional component lifecycle
 
@@ -770,7 +778,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 ### Formal values — `createXAxisTicks`
 
-- Implemented: `createXAxisTicks({ scale?: UserId; position?: AxisPositionX; count?: PositiveInteger; values?: readonly TickValue[]; length?: NonNegativeFinite; color?: NonEmptyString; lineWidth?: NonNegativeFinite } = {})`; `count | values` 중 최대 하나.
+- Implemented: `createXAxisTicks({ scale?: UserId; position?: AxisPositionX; count?: PositiveInteger; values?: readonly TickValue[]; length?: NonNegativeFinite; color?: NonEmptyString; lineWidth?: NonNegativeFinite; alongOffset?: Finite } = {})`; `count | values` 중 최대 하나.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createXAxisTicks`
