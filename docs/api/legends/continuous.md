@@ -206,3 +206,5 @@ that does not fit the Canvas fails without changing the earlier program.
 ## Related
 
 [Legend overview](../legends.md) · [Scale options](../scales.md) · [Editing legends](./editing.md)
+
+Numeric labels also accept `","` for grouped integers and `",.0f"` through `",.12f"` for grouped fixed decimals. UTC formats accept `%a` for an English weekday abbreviation, such as `%a %d` → `Mon 01`. These formats use the shared axis, legend and text formatter.

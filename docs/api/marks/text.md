@@ -317,3 +317,5 @@ line using `baseline`; `"middle"` centers the complete block on the anchor.
 Each line shares horizontal alignment. Blank internal lines consume spacing;
 missing values and empty whole labels retain the existing omission policy.
 Rotation, collision layout, and overflow bounds include every resolved line.
+
+Numeric labels also accept `","` for grouped integers and `",.0f"` through `",.12f"` for grouped fixed decimals. UTC formats accept `%a` for an English weekday abbreviation, such as `%a %d` → `Mon 01`. These formats use the shared axis, legend and text formatter.

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:b4fc4cd01e686505fa4c609e5dde2c74b927c235c1f4edfafb4115db7bc5d09b. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:d9a240cf84d4607759a6d3843c226da74f5c509132b9c37282c50211ae5f85da. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -6842,6 +6842,8 @@ Each line shares horizontal alignment. Blank internal lines consume spacing;
 missing values and empty whole labels retain the existing omission policy.
 Rotation, collision layout, and overflow bounds include every resolved line.
 
+Numeric labels also accept `","` for grouped integers and `",.0f"` through `",.12f"` for grouped fixed decimals. UTC formats accept `%a` for an English weekday abbreviation, such as `%a %d` → `Mon 01`. These formats use the shared axis, legend and text formatter.
+
 <!-- Source: /api/marks/rect/ -->
 
 # Rect Marks
@@ -12961,6 +12963,8 @@ that does not fit the Canvas fails without changing the earlier program.
 ## Related
 
 [Legend overview](./api/legends/) · [Scale options](./api/scales/) · [Editing legends](./api/legends/editing/)
+
+Numeric labels also accept `","` for grouped integers and `",.0f"` through `",.12f"` for grouped fixed decimals. UTC formats accept `%a` for an English weekday abbreviation, such as `%a %d` → `Mon 01`. These formats use the shared axis, legend and text formatter.
 
 <!-- Source: /api/legends/composite/ -->
 
@@ -38755,7 +38759,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:b4fc4cd01e686505fa4c609e5dde2c74b927c235c1f4edfafb4115db7bc5d09b` |
+| Contract fingerprint | `sha256:d9a240cf84d4607759a6d3843c226da74f5c509132b9c37282c50211ae5f85da` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
@@ -39057,3 +39061,5 @@ remains encoded. Recreate missing components through `createParallelAxis`.
 
 For individual lines, ticks, labels, and titles, see
 [Advanced axis components](./advanced/axis-components/).
+
+Numeric labels also accept `","` for grouped integers and `",.0f"` through `",.12f"` for grouped fixed decimals. UTC formats accept `%a` for an English weekday abbreviation, such as `%a %d` → `Mon 01`. These formats use the shared axis, legend and text formatter.

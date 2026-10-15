@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:b4fc4cd01e686505fa4c609e5dde2c74b927c235c1f4edfafb4115db7bc5d09b",
+    "contractId": "sha256:d9a240cf84d4607759a6d3843c226da74f5c509132b9c37282c50211ae5f85da",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -986,8 +986,8 @@
         "removelabellayoutoptions",
         "related"
       ],
-      "bytes": 13919,
-      "sha256": "85dc9fcc78e2b44741d27ebf7f0ff31ff152ae6439580d92b035a999ff80d958"
+      "bytes": 14186,
+      "sha256": "29527fc6f7623f56577831e6a013f9082190c88b749f0d0bf0dab696eb27bb8f"
     },
     {
       "order": 62,
@@ -1629,8 +1629,8 @@
         "continuous-color-stroke-and-opacity",
         "related"
       ],
-      "bytes": 10449,
-      "sha256": "0bd0acfaa8a76a447c43351f46caf2d727277517084142bb7626fb25f65abae6"
+      "bytes": 10716,
+      "sha256": "0e2303828f89fac52f965b7f42532afc5d50ed0d2dc1cf9e718feca6cad02486"
     },
     {
       "order": 100,
@@ -3311,7 +3311,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "f2cb8d02da67549ebb615b7782774e85b3ea24f9c1d928086f419ab074b69019"
+      "sha256": "607b47f2baa14c11c221770533b0f83f3173090f2c89628955d266f5a856d675"
     },
     {
       "order": 150,
@@ -3322,8 +3322,8 @@
         "complete-axes-and-labels",
         "createaxesoptions"
       ],
-      "bytes": 12864,
-      "sha256": "c9e939a8a65c3cf7de435e16fe437199eb22ac84b25e7a7a0f8f51cabbf5121d"
+      "bytes": 13131,
+      "sha256": "301aac60a687c6c2cba8edb9b33a1fd18eb93fe0dc6e15dbf300b379fc4f1069"
     }
   ]
 }
