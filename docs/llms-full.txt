@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:e91f0f356c160b817f4c507d3d6ef17d8069a18bd26f3e63854d06ba03f5c30c. Status: development. Runtime source: 777e9922a3ea5ff7de3f148471aa21bbba8bc08f. Release baseline: v0.0.13.
+Contract: sha256:5aacddb4e45554ab03c5c738c3197b4bac829c2bae329fc4f8a93cb4c5aeb2a8. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/777e9922a3ea5ff7de3f148471aa21bbba8bc08f/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/777e9922a3ea5ff7de3f148471aa21bbba8bc08f/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -4178,7 +4178,7 @@ for all H0 chart families and their package and editing paths.
 | `createLinePlot` | `{ x, y }` | applicable guides |
 | `createBarPlot` | `{ x, y }` | applicable guides |
 | `createHistogram` | `{ field }` | applicable guides |
-| `createHeatmap` | `{ x, y, color }`, or `{ x, y, bin: {} }` | applicable guides |
+| `createHeatmap` | `{ x, y }`, or `{ x, y, bin: {} }` | applicable guides |
 
 These facades create a complete common Cartesian chart from fields. After
 creation, editing returns to the action that owns the decision; for example,
@@ -4405,9 +4405,9 @@ histogram, color, and bar contracts.
 createHeatmap(options: CreateHeatmapOptions): ChartProgram
 ```
 
-`createHeatmap` supports two explicit modes. Without `bin`, `x`, `y`, and
-`color` describe pre-gridded rows and the action creates one cell for each valid
-observed row. With `bin`, raw quantitative `x` and `y` fields are divided into a
+`createHeatmap` supports two explicit modes. Without `bin`, `x` and `y` describe pre-gridded rows and the action creates
+one cell for each valid observed row. `color` is optional; omit it to declare the
+cell layout first, then assign a field with `encodeColor`. With `bin`, raw quantitative `x` and `y` fields are divided into a
 rectangular grid and cell color represents the generated count.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -18506,7 +18506,7 @@ createPiePlot({ id?, data?, coordinate?, category, value?, aggregate?, color?, r
 
 Create one sector per category in the full package. `category` is required and
 defaults to nominal count, including numeric categories. For weights, provide
-both `value` and `aggregate: "sum"`; values must be finite and nonnegative with
+`value`; this infers `aggregate: "sum"`. Values must be finite and nonnegative with
 a positive total. Color defaults to the category. Use `color: false` for a
 scalar `arc.fill`; otherwise each slice must resolve to one categorical color.
 
@@ -18562,7 +18562,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 createRosePlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })
 ```
 
-Create equal-angle sectors whose sector area, excluding the hole is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
+Create equal-angle sectors whose sector area, excluding the hole is proportional to category count or sum. Category is required; omit value for count or provide value to infer aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
 
 The default id is `rosePlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit the resolved Polar frame. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
 
@@ -18603,7 +18603,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 createRadialBarPlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })
 ```
 
-Create equal-angle sectors whose radial length measured from the inner edge is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
+Create equal-angle sectors whose radial length measured from the inner edge is proportional to category count or sum. Category is required; omit value for count or provide value to infer aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
 
 The default id is `radialBarPlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit the resolved Polar frame. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
 
@@ -28579,7 +28579,7 @@ export type CreatePiePlotOptions = {
   radius?: PieRadiusChannel;
   arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
-} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
+} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 ```
 
 Related types: [`PieCategory`](./reference/types/#type-piecategory) · [`PieColor`](./reference/types/#type-piecolor) · [`PieRadiusChannel`](./reference/types/#type-pieradiuschannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius) · [`PieLegendOptions`](./reference/types/#type-pielegendoptions).
@@ -28831,7 +28831,7 @@ export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" 
   radiusScale?: MeasuredRadiusScaleOptions;
   arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | MeasuredRadialGuideOptions;
-} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
+} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 ```
 
 Related types: [`CreatePiePlotOptions`](./reference/types/#type-createpieplotoptions) · [`MeasuredRadiusScaleOptions`](./reference/types/#type-measuredradiusscaleoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius) · [`MeasuredRadialGuideOptions`](./reference/types/#type-measuredradialguideoptions).
@@ -33906,7 +33906,7 @@ export interface PreGriddedHeatmapOptions extends HeatmapBaseOptions {
   x: HeatmapCategoryPositionChannel;
   y: HeatmapCategoryPositionChannel;
   bin?: never;
-  color: RectColorChannel;
+  color?: RectColorChannel;
 }
 ```
 
@@ -36641,12 +36641,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/777e9922a3ea5ff7de3f148471aa21bbba8bc08f/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/777e9922a3ea5ff7de3f148471aa21bbba8bc08f/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -38753,9 +38753,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:e91f0f356c160b817f4c507d3d6ef17d8069a18bd26f3e63854d06ba03f5c30c` |
+| Contract fingerprint | `sha256:5aacddb4e45554ab03c5c738c3197b4bac829c2bae329fc4f8a93cb4c5aeb2a8` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `777e9922a3ea5ff7de3f148471aa21bbba8bc08f` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |

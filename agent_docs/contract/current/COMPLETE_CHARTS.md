@@ -432,7 +432,7 @@ Default id는 `raincloudPlot`; lifecycle은 stable mutable composite다.
 Default id는 `rosePlot`. Full 전용 Aggregate create-only이며 구멍을 제외한 sector 면적를 category count/sum에 비례시킨다.
 
 - Category는 PieCategory, color는 PieColor를 재사용한다. Category는 필수이며 숫자도 nominal shorthand다. Color는 기본 category이고 false로 생략한다. Color와 arc.fill을 함께 쓰면 오류다.
-- Value 없음은 count. Value field가 있으면 aggregate:sum을 명시한다. Category별로 합치고 원본 행과 selection membership을 보존한다. 별도 derived dataset이나 façade recipe를 저장하지 않는다.
+- Value 없음은 count. Value field가 있으면 aggregate 생략 시 sum을 추론하며 명시한 count와는 충돌한다. Category별로 합치고 원본 행과 selection membership을 보존한다. 별도 derived dataset이나 façade recipe를 저장하지 않는다.
 - `radiusScale`은 MeasuredRadiusScaleOptions: id, linear type, domain:auto|[0,U], range:auto|[r0,R], zero:true, nice:false, reverse:false, clamp. 모든 aggregate<=U이며 0<=r0<R, 실제 Canvas에 들어가야 한다.
 - Arc appearance는 Pie와 같되 padAngle은 0만 지원한다. innerRadius는 [0,1) 비율 또는 고정 px 요청이며 auto range를 조정한다. Explicit range는 hole을 정하며 명시한 innerRadius와 일치해야 한다.
 - Zero category는 domain/legend에 남고 sector만 생략한다. Empty/all-zero/negative/nonfinite/overflow/unrepresentable-positive thickness와 범주 내 여러 색은 오류다.
@@ -459,7 +459,7 @@ Default id는 `rosePlot`. Full 전용 Aggregate create-only이며 구멍을 제�
 Default id는 `radialBarPlot`. Full 전용 Aggregate create-only이며 구멍부터 바깥쪽까지 잰 반지름 길이를 category count/sum에 비례시킨다.
 
 - Category는 PieCategory, color는 PieColor를 재사용한다. Category는 필수이며 숫자도 nominal shorthand다. Color는 기본 category이고 false로 생략한다. Color와 arc.fill을 함께 쓰면 오류다.
-- Value 없음은 count. Value field가 있으면 aggregate:sum을 명시한다. Category별로 합치고 원본 행과 selection membership을 보존한다. 별도 derived dataset이나 façade recipe를 저장하지 않는다.
+- Value 없음은 count. Value field가 있으면 aggregate 생략 시 sum을 추론하며 명시한 count와는 충돌한다. Category별로 합치고 원본 행과 selection membership을 보존한다. 별도 derived dataset이나 façade recipe를 저장하지 않는다.
 - `radiusScale`은 MeasuredRadiusScaleOptions: id, linear type, domain:auto|[0,U], range:auto|[r0,R], zero:true, nice:false, reverse:false, clamp. 모든 aggregate<=U이며 0<=r0<R, 실제 Canvas에 들어가야 한다.
 - Arc appearance는 Pie와 같되 padAngle은 0만 지원한다. innerRadius는 [0,1) 비율 또는 고정 px 요청이며 auto range를 조정한다. Explicit range는 hole을 정하며 명시한 innerRadius와 일치해야 한다.
 - Zero category는 domain/legend에 남고 sector만 생략한다. Empty/all-zero/negative/nonfinite/overflow/unrepresentable-positive thickness와 범주 내 여러 색은 오류다.
@@ -487,7 +487,7 @@ Default id는 `piePlot`, lifecycle은 Aggregate create-only다.
 
 - Category: field string 또는 `{ field, fieldType?: "nominal" | "ordinal", scale? }`. 숫자 shorthand도 nominal이다.
   Scale은 `{id?, type?:"band", domain?, range?, reverse?}`만 지원한다. Explicit domain은 모든 source category를 포함한다.
-- Aggregate: value 없음은 count. Value field를 주면 `aggregate:"sum"`을 반드시 함께 쓴다. Sum-without-value와 count+value는 오류다.
+- Aggregate: value 없음은 count. Value field를 주면 생략한 aggregate는 `"sum"`으로 추론한다. Sum-without-value와 count+value는 오류다.
   Sum은 중복 category의 nonnegative finite weights를 합친다. Invalid weight와 all-zero denominator는 오류다.
 - Color: 생략은 category, false는 field color 생략, field string 또는 `{field, fieldType?:nominal|ordinal, scale?, palette?}`.
   다른 field는 각 final slice 안에서 유일해야 한다. Scalar `arc.fill`과 함께 쓰면 오류다.

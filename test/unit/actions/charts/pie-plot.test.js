@@ -27,7 +27,7 @@ test("completes the shortest pie call with categorical count, immutable data and
 });
 
 const invalid = [
-  {}, { category: 1 }, { category: "" }, { category: "category", value: "value" },
+  {}, { category: 1 }, { category: "" },
   { category: "category", aggregate: "sum" }, { category: "category", aggregate: "mean" },
   { category: "category", aggregate: null }, { category: "category", value: "value", aggregate: "count" },
   { category: { field: "category", fieldType: "quantitative" } },
@@ -131,4 +131,14 @@ test("explicit data wins over current data and an ambiguous coordinate requires 
     .createCoordinate({ id: "two", type: "polar" });
   assert.throws(() => ambiguous.createPiePlot({ category: "category" }), /coordinate|multiple|ambiguous/i);
   assert.equal(ambiguous.createPiePlot({ category: "category", coordinate: "two" }).semanticSpec.layers[0].coordinate, "two");
+});
+
+
+test("infers weighted sum from the value field while keeping a three-option facade", () => {
+  for (const action of ["createPiePlot", "createRosePlot", "createRadialBarPlot"]) {
+    const p = base()[action]({ category: "category", value: "value", guides: false });
+    const q = base()[action]({ category: "category", value: "value", aggregate: "sum", guides: false });
+    assert.deepEqual(p.semanticSpec, q.semanticSpec);
+    assert.deepEqual(p.graphicSpec, q.graphicSpec);
+  }
 });

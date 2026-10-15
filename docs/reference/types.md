@@ -2654,7 +2654,7 @@ export type CreatePiePlotOptions = {
   radius?: PieRadiusChannel;
   arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
-} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
+} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 ```
 
 </details>
@@ -2951,7 +2951,7 @@ export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" 
   radiusScale?: MeasuredRadiusScaleOptions;
   arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | MeasuredRadialGuideOptions;
-} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
+} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 ```
 
 </details>
@@ -8995,7 +8995,7 @@ export interface PreGriddedHeatmapOptions extends HeatmapBaseOptions {
   x: HeatmapCategoryPositionChannel;
   y: HeatmapCategoryPositionChannel;
   bin?: never;
-  color: RectColorChannel;
+  color?: RectColorChannel;
 }
 ```
 

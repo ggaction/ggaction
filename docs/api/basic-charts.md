@@ -45,7 +45,7 @@ for all H0 chart families and their package and editing paths.
 | `createLinePlot` | `{ x, y }` | applicable guides |
 | `createBarPlot` | `{ x, y }` | applicable guides |
 | `createHistogram` | `{ field }` | applicable guides |
-| `createHeatmap` | `{ x, y, color }`, or `{ x, y, bin: {} }` | applicable guides |
+| `createHeatmap` | `{ x, y }`, or `{ x, y, bin: {} }` | applicable guides |
 
 These facades create a complete common Cartesian chart from fields. After
 creation, editing returns to the action that owns the decision; for example,
@@ -296,9 +296,9 @@ histogram, color, and bar contracts.
 createHeatmap(options: CreateHeatmapOptions): ChartProgram
 ```
 
-`createHeatmap` supports two explicit modes. Without `bin`, `x`, `y`, and
-`color` describe pre-gridded rows and the action creates one cell for each valid
-observed row. With `bin`, raw quantitative `x` and `y` fields are divided into a
+`createHeatmap` supports two explicit modes. Without `bin`, `x` and `y` describe pre-gridded rows and the action creates
+one cell for each valid observed row. `color` is optional; omit it to declare the
+cell layout first, then assign a field with `encodeColor`. With `bin`, raw quantitative `x` and `y` fields are divided into a
 rectangular grid and cell color represents the generated count.
 
 <!-- snippet-context:start -->
