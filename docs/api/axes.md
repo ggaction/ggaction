@@ -29,6 +29,10 @@ use an end anchor inferred from their rotation and axis side. Reserve enough
 margin for the full label length and the axis title. Rotation does not enlarge a
 fixed Canvas or change its margins.
 
+## Override displayed tick text
+
+Cartesian label `labelMap` works with categorical values, numeric ticks and time ticks. Provide typed `{ value, label }` entries. Continuous keys must be finite numbers; time keys use Unix milliseconds. Missing entries retain the normal formatter, and `"auto"` clears the map. Scale domains, tick positions and raw data are preserved. Use focused labels, nested ticks-and-labels or whole-axis editors to update the same policy.
+
 ## Shift ticks and labels along an axis
 
 Cartesian ticks and labels accept `alongOffset`, a signed finite displacement in logical pixels. Positive values move X-axis items right and Y-axis items down, including top/right axes and reversed scales. It defaults to zero and leaves the scale and axis baseline unchanged. Tick and label offsets are independent absolute values: set both when both should move. The existing label `offset` remains the outward gap from the plot edge. Complete axes, whole-axis editors and focused editors accept the same options; Canvas and scale updates preserve them. Polar and Parallel axes do not accept this option.
@@ -218,7 +222,7 @@ axis throws before anything changes.
 | `position` | x: `"bottom"/"top"`; y: `"left"/"right"` |
 | `line` | `false` or `{ color?, lineWidth? }` |
 | `ticks` | `false` or `{ count?, values?, length?, color?, lineWidth?, alongOffset? }` |
-| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, alongOffset? }` |
+| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, alongOffset?, labelMap? }` |
 | `ticksAndLabels` | `false` or `{ count?, values?, ticks?, labels? }` |
 | `title` | `false` or `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight? }` |
 

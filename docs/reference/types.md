@@ -614,6 +614,7 @@ export interface AxisTickOptions<P extends string>
   count?: number;
   values?: readonly AxisValue[];
 }
+/** Cartesian label maps use typed category values or finite numeric/timestamp keys on continuous scales. */
 ```
 
 </details>
@@ -1378,13 +1379,13 @@ Related types: [`CompleteAxisOptions`](#type-completeaxisoptions) · [`CAxisTick
 
 ```typescript
 type CAxisTicks<P extends string> = Omit<AxisTicksAndLabelsOptions<P>, "labels"> & {
-  labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions;
+  labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 };
 ```
 
 </details>
 
-Related types: [`AxisTicksAndLabelsOptions`](#type-axisticksandlabelsoptions) · [`CartesianAxisLabelStyleOptions`](#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions).
+Related types: [`AxisTicksAndLabelsOptions`](#type-axisticksandlabelsoptions) · [`CartesianAxisLabelStyleOptions`](#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions).
 
 ### `CCategoricalGuides` {#type-ccategoricalguides}
 

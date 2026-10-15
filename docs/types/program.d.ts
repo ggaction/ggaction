@@ -1386,6 +1386,7 @@ export interface AxisTickOptions<P extends string>
   count?: number;
   values?: readonly AxisValue[];
 }
+/** Cartesian label maps use typed category values or finite numeric/timestamp keys on continuous scales. */
 export interface AxisLabelOptions<P extends string>
   extends CartesianAxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
   scale?: string;
@@ -1579,7 +1580,7 @@ type CartesianAxesOptions = Omit<
   coordinate?: { id?: string; type?: "auto" | "cartesian" };
 };
 type CAxisTicks<P extends string> = Omit<AxisTicksAndLabelsOptions<P>, "labels"> & {
-  labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions;
+  labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 };
 type CAxis<P extends string> = Omit<CompleteAxisOptions<P>, "ticksAndLabels"> & {
   ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position">;

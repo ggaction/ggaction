@@ -138,10 +138,6 @@ function validateConfig(channel, config) {
 
 function normalizeAxisLabelMap(program, config, args, operation) {
   if (!Object.hasOwn(args, "labelMap")) return config;
-  const scale = program.resolvedScales[config.scale];
-  if (!["ordinal", "band", "point"].includes(scale?.type)) {
-    throw new Error(`${operation} labelMap requires a categorical scale.`);
-  }
   const next = { ...config };
   if (args.labelMap === "auto") {
     delete next.labelMap;
@@ -151,7 +147,16 @@ function normalizeAxisLabelMap(program, config, args, operation) {
       `${operation} labelMap`
     );
   }
+  validateAxisLabelMapScale(next, program.resolvedScales[config.scale], operation);
   return next;
+}
+
+function validateAxisLabelMapScale(config, scale, operation = "Axis") {
+  if (config.labelMap !== undefined &&
+      !["ordinal", "band", "point"].includes(scale?.type) &&
+      !config.labelMap.every(entry => Number.isFinite(entry.value))) {
+    throw new TypeError(`${operation} continuous labelMap values must be finite numbers or timestamps.`);
+  }
 }
 
 function assertTickCompatibility(ticks, config, operation) {
@@ -222,9 +227,7 @@ function resolve(program, channel, config) {
     channel
   });
   const discrete = ["ordinal", "band", "point"].includes(scale?.type);
-  if (config.labelMap !== undefined && !discrete) {
-    throw new Error("Axis labelMap requires a categorical scale.");
-  }
+  validateAxisLabelMapScale(config, scale);
   if ((
     !["linear", "time", "ordinal", "band", "point"].includes(scale?.type) &&
     !isTransformedScaleType(scale?.type)
@@ -252,11 +255,12 @@ function resolve(program, channel, config) {
             ? formatTransformedTick(scale.type, item)
             : String(item)
       );
-  const text = discrete
-    ? values.map(value => resolveDisplayLabel(value, config.labelMap, fallback))
-    : scale.type === "time" && config.format === "auto"
-      ? formatTimeTicks(values, scale.domain)
-      : values.map(fallback);
+  const automaticTimeLabels = scale.type === "time" && config.format === "auto"
+    ? formatTimeTicks(values, scale.domain)
+    : undefined;
+  const text = values.map((value, index) =>
+    resolveDisplayLabel(value, config.labelMap, raw =>
+      automaticTimeLabels?.[index] ?? fallback(raw)));
   const geometry = {
     values,
     ...resolveAxisLabelGeometry({
