@@ -555,7 +555,7 @@ Related types: [`RotationInput`](#type-rotationinput).
 
 ```typescript
 export interface AxisLabelOptions<P extends string>
-  extends AxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
+  extends CartesianAxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
   scale?: string;
   position?: P;
   count?: number;
@@ -565,7 +565,7 @@ export interface AxisLabelOptions<P extends string>
 
 </details>
 
-Related types: [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions) · [`AxisValue`](#type-axisvalue).
+Related types: [`CartesianAxisLabelStyleOptions`](#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions) · [`AxisValue`](#type-axisvalue).
 
 ### `AxisLabelStyleOptions` {#type-axislabelstyleoptions}
 
@@ -608,7 +608,7 @@ export interface AxisLineStyleOptions {
 
 ```typescript
 export interface AxisTickOptions<P extends string>
-  extends AxisTickStyleOptions {
+  extends CartesianAxisTickStyleOptions {
   scale?: string;
   position?: P;
   count?: number;
@@ -618,7 +618,7 @@ export interface AxisTickOptions<P extends string>
 
 </details>
 
-Related types: [`AxisTickStyleOptions`](#type-axistickstyleoptions) · [`AxisValue`](#type-axisvalue).
+Related types: [`CartesianAxisTickStyleOptions`](#type-cartesianaxistickstyleoptions) · [`AxisValue`](#type-axisvalue).
 
 ### `AxisTickStyleOptions` {#type-axistickstyleoptions}
 
@@ -646,14 +646,14 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
   position?: P;
   count?: number;
   values?: readonly AxisValue[];
-  ticks?: AxisTickStyleOptions;
-  labels?: AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
+  ticks?: CartesianAxisTickStyleOptions;
+  labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 }
 ```
 
 </details>
 
-Related types: [`AxisValue`](#type-axisvalue) · [`AxisTickStyleOptions`](#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions).
+Related types: [`AxisValue`](#type-axisvalue) · [`CartesianAxisTickStyleOptions`](#type-cartesianaxistickstyleoptions) · [`CartesianAxisLabelStyleOptions`](#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions).
 
 ### `AxisTitleOptions` {#type-axistitleoptions}
 
@@ -1378,13 +1378,13 @@ Related types: [`CompleteAxisOptions`](#type-completeaxisoptions) · [`CAxisTick
 
 ```typescript
 type CAxisTicks<P extends string> = Omit<AxisTicksAndLabelsOptions<P>, "labels"> & {
-  labels?: AxisLabelStyleOptions & AxisLabelLayoutOptions;
+  labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions;
 };
 ```
 
 </details>
 
-Related types: [`AxisTicksAndLabelsOptions`](#type-axisticksandlabelsoptions) · [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions).
+Related types: [`AxisTicksAndLabelsOptions`](#type-axisticksandlabelsoptions) · [`CartesianAxisLabelStyleOptions`](#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions).
 
 ### `CCategoricalGuides` {#type-ccategoricalguides}
 
@@ -1451,6 +1451,38 @@ type CartesianAxesOptions = Omit<
 </details>
 
 Related types: [`CreateAxesOptions`](#type-createaxesoptions).
+
+### `CartesianAxisLabelStyleOptions` {#type-cartesianaxislabelstyleoptions}
+
+<details markdown="1">
+<summary>Expand CartesianAxisLabelStyleOptions</summary>
+
+```typescript
+export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Signed displacement from the mapped tick position, independent of outward offset. */
+  alongOffset?: number;
+}
+```
+
+</details>
+
+Related types: [`AxisLabelStyleOptions`](#type-axislabelstyleoptions).
+
+### `CartesianAxisTickStyleOptions` {#type-cartesianaxistickstyleoptions}
+
+<details markdown="1">
+<summary>Expand CartesianAxisTickStyleOptions</summary>
+
+```typescript
+export interface CartesianAxisTickStyleOptions extends AxisTickStyleOptions {
+  /** Signed logical pixels along the axis: positive right for x, down for y. */
+  alongOffset?: number;
+}
+```
+
+</details>
+
+Related types: [`AxisTickStyleOptions`](#type-axistickstyleoptions).
 
 ### `CartesianCategoricalGuideOptions` {#type-cartesiancategoricalguideoptions}
 
@@ -4875,6 +4907,8 @@ Related types: [`EditGridOptions`](#type-editgridoptions) · [`EditPolarGridOpti
 
 ```typescript
 export interface EditGridOptions {
+  /** Absolute signed logical-pixel displacement; omission preserves the current value. */
+  alongOffset?: number;
   /** Preserve omitted order; finite values sort Cartesian grids relative to marks at zero. */
   zIndex?: number;
   /** Band centers by default; boundary draws both edges of each selected band. */
@@ -6694,6 +6728,8 @@ export type GraphicType =
 
 ```typescript
 export interface GridDirectionOptions {
+  /** Signed logical pixels along the scale: vertical lines right, horizontal lines down. */
+  alongOffset?: number;
   /** Grid draw order relative to marks at zero: positive above, nonpositive behind. */
   zIndex?: number;
   /** Band centers by default; boundary draws both edges of each selected band. */

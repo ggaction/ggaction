@@ -102,6 +102,7 @@ const logicalPixelNames = new Set([
   "lineWidth",
   "fontSize",
   "offset",
+  "alongOffset",
   "maxWidth",
   "lineHeight",
   "capSize",

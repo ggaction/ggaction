@@ -2931,10 +2931,10 @@ createYAxisLine({ scale?, position?, color?, lineWidth? })
 editXAxisLine({ position?, color?, lineWidth? })
 editYAxisLine({ position?, color?, lineWidth? })
 
-createXAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth? })
-createYAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth? })
-editXAxisTicks({ position?, count?, values?, length?, color?, lineWidth? })
-editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth? })
+createXAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+createYAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+editXAxisTicks({ position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
 
 createXAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
@@ -2993,8 +2993,8 @@ radians. Polar component `angle` remains degree-valued placement.
 ### Directional grids
 
 ```javascript
-createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })
-createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })
+createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })
+createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })
 editHorizontalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
 editVerticalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
 editGrid({

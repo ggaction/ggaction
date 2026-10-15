@@ -32,7 +32,7 @@ import {
 import { findCanvasGraphic, resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 
-const OPTIONS = Object.freeze(["scale", "position", "count", "values", "length", "color", "lineWidth"]);
+const OPTIONS = Object.freeze(["scale", "position", "count", "values", "length", "color", "lineWidth", "alongOffset"]);
 const DEFAULTS = Object.freeze({
   count: DEFAULT_TICK_COUNT,
   length: 6,
@@ -46,6 +46,7 @@ function validateOptions(args, operation, create) {
     create ? OPTIONS : OPTIONS.filter(key => key !== "scale"),
     operation
   );
+  if (Object.hasOwn(args, "alongOffset") && !Number.isFinite(args.alongOffset)) throw new TypeError("Tick alongOffset must be a finite number.");
   if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) throw new Error(`${operation} cannot use count and values together.`);
   if (Array.isArray(args.values)) {
     validateGeneratedItemLimit(args.values.length, "Tick value count");
@@ -66,6 +67,7 @@ function validateConfig(channel, config) {
       (typeof value === "number" && Number.isFinite(value))
     ))
   ) throw new TypeError("Tick values must be nominal values or finite numbers.");
+  if (config.alongOffset !== undefined && !Number.isFinite(config.alongOffset)) throw new TypeError("Tick alongOffset must be a finite number.");
   validateNonNegativeFinite(config.length, "Tick length");
   validateNonNegativeFinite(config.lineWidth, "Tick lineWidth");
   validateNonEmptyString(config.color, "Tick color");
@@ -103,7 +105,7 @@ function geometry(program, channel, config) {
       bounds,
       channel,
       position: config.position,
-      positions,
+      positions: positions.map(value => value + (config.alongOffset ?? 0)),
       length: config.length
     })
   };

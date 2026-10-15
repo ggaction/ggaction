@@ -27,10 +27,10 @@ import {
 } from "../../../grammar/schemas/graphicTree.js";
 
 const GRID_OPTIONS = Object.freeze([
-  "scale", "coordinate", "count", "values", "color", "lineWidth", "strokeDash", "zIndex", "bandPosition"
+  "scale", "coordinate", "count", "values", "color", "lineWidth", "strokeDash", "zIndex", "bandPosition", "alongOffset"
 ]);
 const GRID_EDIT_OPTIONS = Object.freeze([
-  "count", "values", "color", "lineWidth", "strokeDash", "zIndex", "bandPosition"
+  "count", "values", "color", "lineWidth", "strokeDash", "zIndex", "bandPosition", "alongOffset"
 ]);
 const DEFAULT_STYLE = Object.freeze({
   color: DEFAULT_COLORS.grid,
@@ -82,6 +82,7 @@ export function validateGridCreateArgs(args, operation) {
   )) {
     throw new TypeError("Grid values must be a non-empty finite number array or nominal category array; continuous grids require finite numbers.");
   }
+  if (Object.hasOwn(args, "alongOffset") && !Number.isFinite(args.alongOffset)) throw new TypeError("Grid alongOffset must be a finite number.");
   if (Object.hasOwn(args, "color")) {
     validateNonEmptyString(args.color, "Grid color");
   }
@@ -120,6 +121,7 @@ export function validateGridEditArgs(args, operation) {
       'Grid values must be "auto" or a non-empty finite number array.'
     );
   }
+  if (Object.hasOwn(args, "alongOffset") && !Number.isFinite(args.alongOffset)) throw new TypeError("Grid alongOffset must be a finite number.");
   if (Object.hasOwn(args, "color")) {
     validateNonEmptyString(args.color, "Grid color");
   }
@@ -212,6 +214,7 @@ export function resolveGridConfig(program, direction, args, resources) {
     direction,
     ...(args.bandPosition === undefined ? {} : { bandPosition: args.bandPosition }),
     ...(args.zIndex === undefined ? {} : { zIndex: args.zIndex }),
+    ...(args.alongOffset === undefined ? {} : { alongOffset: args.alongOffset }),
     scale: resources.scale,
     coordinate: resources.coordinate,
     ...explicit,
@@ -282,7 +285,7 @@ export function resolveGridGeometry(program, config) {
       ? [...new Set(centers.flatMap(center => [center - direction * scale.bandwidth / 2, center + direction * scale.bandwidth / 2]))].sort((a, b) => direction * (a - b))
       : centers;
     validateGeneratedItemLimit(positions.length, "Grid value count");
-    return resolveGridLineGeometry({ direction: config.direction, values: positions, positions, bounds });
+    return resolveGridLineGeometry({ direction: config.direction, values: positions, positions: positions.map(value => value + (config.alongOffset ?? 0)), bounds });
   }
   const values = valuesFromTickConfig(program, config);
   validateGeneratedItemLimit(values.length, "Grid value count");
@@ -295,7 +298,7 @@ export function resolveGridGeometry(program, config) {
   return resolveGridLineGeometry({
     direction: config.direction,
     values,
-    positions,
+    positions: positions.map(value => value + (config.alongOffset ?? 0)),
     bounds
   });
 }
