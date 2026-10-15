@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:876940220a0d3d460d6a351d5b5f4645678ecac734071d99f9fe7a1a234ae4a1",
-    "sourceCommit": "2baa90be781a45316fb528745e7b9a7e439e8ee6",
+    "contractId": "sha256:d3f3f372c70867148b23cfae70d48f5ba316cb37bb4b4d7548ae415c77fb0782",
+    "sourceCommit": "9ba3b75136a587d947368cfb87bfbc26e2adad1c",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,7 +65,7 @@
         "related"
       ],
       "bytes": 11096,
-      "sha256": "1cbaf1061713fcd70c1e6c1fcc32f447bebf58963cf925c85a51e6d4e5e38a2e"
+      "sha256": "d663f1f22f408d55a2ad782300ce1000b4de6a05e7a5d05fdcf750397de2e503"
     },
     {
       "order": 4,
@@ -1559,6 +1559,7 @@
         "axes",
         "at-a-glance",
         "keep-endpoint-labels-inside-the-axis-span",
+        "color-individual-tick-labels",
         "override-displayed-tick-text",
         "shift-ticks-and-labels-along-an-axis",
         "standalone-cartesian-axes",
@@ -1570,8 +1571,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 12090,
-      "sha256": "5d1587aede73b3ca6fe0a2118c329764ebb120e4cdde5d0a79219a5be5cfaecd"
+      "bytes": 12765,
+      "sha256": "1d1f28a9011c1130de2e73236b809872cd1e405bfc449b19e538b3d22cb50a23"
     },
     {
       "order": 96,
@@ -2268,8 +2269,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 119367,
-      "sha256": "8b0baf20532f540dc89b758b6d115ad3d8af374c6badb0296c0fa00ab7e7e13b"
+      "bytes": 119807,
+      "sha256": "50352737407c39f1c935d5e2f78ffc5c02ad58ac41c3249abfe832ec90220c41"
     },
     {
       "order": 123,
@@ -2406,6 +2407,7 @@
         "type-cpathguides",
         "type-canvasoptions",
         "type-cartesianaxesoptions",
+        "type-cartesianaxislabelcolormap",
         "type-cartesianaxislabelstyleoptions",
         "type-cartesianaxistickstyleoptions",
         "type-cartesiancategoricalguideoptions",
@@ -2968,8 +2970,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 324187,
-      "sha256": "5bd81ed12e8343b9855027b032ccc197e23928760217be3ad2e1f09f0412d992"
+      "bytes": 324723,
+      "sha256": "37e27951af0acd6522d6d3628dbea0c255f95fc9c8e5733e006520df0bfb4cb3"
     },
     {
       "order": 127,
@@ -3000,7 +3002,7 @@
         "scale-materialization"
       ],
       "bytes": 16959,
-      "sha256": "04df8f81d8be86aa9daf43fe898a324d244d534548ce6e279d3840c22a243ff0"
+      "sha256": "0f8eb64dd16805619b1588e8d352ebf2a0740cff363abdc22adec00247c0c5f1"
     },
     {
       "order": 129,
@@ -3322,7 +3324,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3033,
-      "sha256": "fdabbfe933448ea323a1ab5d73825a43826a26b067194c5644d974e1243c7cb3"
+      "sha256": "12679dd5825d5473a2ad2665565f370ffcb2f6291493366646382ed75c45ea2a"
     },
     {
       "order": 150,
@@ -3333,8 +3335,8 @@
         "complete-axes-and-labels",
         "createaxesoptions"
       ],
-      "bytes": 14040,
-      "sha256": "70080c7d77535c2c10382c04fa25f735ff3cc8a9bb5af626004897832842ce31"
+      "bytes": 14331,
+      "sha256": "3bf23d431b49e227cb42eae1c0783b88665adb58983560b08a21f5e11b325ecb"
     }
   ]
 }

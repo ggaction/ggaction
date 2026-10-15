@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:876940220a0d3d460d6a351d5b5f4645678ecac734071d99f9fe7a1a234ae4a1. Status: development. Runtime source: 2baa90be781a45316fb528745e7b9a7e439e8ee6. Release baseline: v0.0.13.
+Contract: sha256:d3f3f372c70867148b23cfae70d48f5ba316cb37bb4b4d7548ae415c77fb0782. Status: development. Runtime source: 9ba3b75136a587d947368cfb87bfbc26e2adad1c. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/2baa90be781a45316fb528745e7b9a7e439e8ee6/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/9ba3b75136a587d947368cfb87bfbc26e2adad1c/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/2baa90be781a45316fb528745e7b9a7e439e8ee6/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/9ba3b75136a587d947368cfb87bfbc26e2adad1c/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12132,6 +12132,10 @@ Set Cartesian labels `flush: true` to keep unrotated text bounds inside the mapp
 
 Flush preserves the existing overlap policy. When adjacent labels intentionally overlap, request `overlap: "allow"`; this does not disable Canvas or title collision checks. Specify required flush geometry at complete-axis creation so the initial axis also fits.
 
+## Color individual tick labels
+
+Use Cartesian labels `colorMap: [{ value, color }]` for per-value colors. Lookup uses raw typed tick values, independently of `labelMap` display text. Missing entries use the existing global `color`; `[]` stores an empty map and `"auto"` removes it. Continuous/time keys must be finite numbers or Unix milliseconds; categorical keys preserve their types. Duplicate keys, extra entry fields and empty colors are rejected. Wrapped lines share their tick color. Complete, whole-axis, grouped and focused label actions use the same policy, and tick/Canvas/scale changes preserve it. Polar and Parallel axes do not accept this option.
+
 ## Override displayed tick text
 
 Cartesian label `labelMap` works with categorical values, numeric ticks and time ticks. Provide typed `{ value, label }` entries. Continuous keys must be finite numbers; time keys use Unix milliseconds. Missing entries retain the normal formatter, and `"auto"` clears the map. Scale domains, tick positions and raw data are preserved. Use focused labels, nested ticks-and-labels or whole-axis editors to update the same policy.
@@ -12309,7 +12313,7 @@ axis throws before anything changes.
 | `position` | x: `"bottom"/"top"`; y: `"left"/"right"` |
 | `line` | `false` or `{ color?, lineWidth? }` |
 | `ticks` | `false` or `{ count?, values?, length?, color?, lineWidth?, alongOffset? }` |
-| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, alongOffset?, labelMap?, flush? }` |
+| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, alongOffset?, labelMap?, flush?, colorMap? }` |
 | `ticksAndLabels` | `false` or `{ count?, values?, ticks?, labels? }` |
 | `title` | `false` or `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight? }` |
 
@@ -23655,6 +23659,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
@@ -23694,6 +23699,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
@@ -23729,6 +23735,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
@@ -23767,6 +23774,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
@@ -25756,19 +25764,19 @@ editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth?, alongO
 
 createXAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 createYAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 editXAxisLabels({
   position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 editYAxisLabels({
   position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 ```
 
@@ -27631,12 +27639,27 @@ type CartesianAxesOptions = Omit<
 
 Related types: [`CreateAxesOptions`](./reference/types/#type-createaxesoptions).
 
+### `CartesianAxisLabelColorMap` {#type-cartesianaxislabelcolormap}
+
+ Expand CartesianAxisLabelColorMap
+
+```typescript
+export type CartesianAxisLabelColorMap = ReadonlyArray<Readonly<{
+  value: DatasetScalar;
+  color: string;
+}>>;
+```
+
+Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar).
+
 ### `CartesianAxisLabelStyleOptions` {#type-cartesianaxislabelstyleoptions}
 
  Expand CartesianAxisLabelStyleOptions
 
 ```typescript
 export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Typed raw-tick color overrides; missing entries use color. Auto removes the map. */
+  colorMap?: CartesianAxisLabelColorMap | "auto";
   /** Keep unrotated label bounds inside the mapped axis span; defaults to false. */
   flush?: boolean;
   /** Signed displacement from the mapped tick position, independent of outward offset. */
@@ -27644,7 +27667,7 @@ export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
 }
 ```
 
-Related types: [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleoptions).
+Related types: [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleoptions) · [`CartesianAxisLabelColorMap`](./reference/types/#type-cartesianaxislabelcolormap).
 
 ### `CartesianAxisTickStyleOptions` {#type-cartesianaxistickstyleoptions}
 
@@ -36828,12 +36851,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/2baa90be781a45316fb528745e7b9a7e439e8ee6/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/9ba3b75136a587d947368cfb87bfbc26e2adad1c/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/2baa90be781a45316fb528745e7b9a7e439e8ee6/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/9ba3b75136a587d947368cfb87bfbc26e2adad1c/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -38959,9 +38982,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:876940220a0d3d460d6a351d5b5f4645678ecac734071d99f9fe7a1a234ae4a1` |
+| Contract fingerprint | `sha256:d3f3f372c70867148b23cfae70d48f5ba316cb37bb4b4d7548ae415c77fb0782` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `2baa90be781a45316fb528745e7b9a7e439e8ee6` |
+| Runtime source commit | `9ba3b75136a587d947368cfb87bfbc26e2adad1c` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |
@@ -39046,6 +39069,8 @@ Each x/y axis option supports:
 | `line` | `false` or `{ color?, lineWidth? }` |
 | `ticksAndLabels` | `false` or `{ count?, values?, ticks?, labels? }` |
 | `title` | `false` or title options including `text`, `at`, `offset`, and font styling |
+
+Cartesian `ticksAndLabels.labels.colorMap` accepts typed `{ value, color }` entries. It overrides individual raw tick colors and falls back to `labels.color`; it does not depend on the displayed text. Use `"auto"` to remove the map. Continuous keys must be finite numeric/timestamp values.
 
 Use `ticksAndLabels.labels.flush: true` to keep unrotated X or Y label bounds inside the mapped axis span. It defaults to false and preserves the normal overlap policy; use explicit `overlap: "allow"` when neighboring labels intentionally overlap. Text, fonts and tick positions are retained. Rotated labels and a label wider than the entire span are rejected.
 
