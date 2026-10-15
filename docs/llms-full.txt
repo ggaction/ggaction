@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:269936acb70ea983ffb5b16d6459eb1879fdfa4b38c2a1596943bf8a257784a9. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:a7b9baff160a0be41b0b2869becaf03d9ac74446c4664aa64e5d0000fe80f5bd. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -36993,12 +36993,13 @@ and first appearance. A numeric sequence uses finite `start`, `end`, and
 positive `step`. Only observed group tuples are completed; the action does not
 form a Cartesian product of separate grouping fields.
 
-Each group/key pair may have at most one source row. Existing keys outside an
+Repeated observations for a group/key pair are preserved in source order, without
+aggregation. Only absent pairs receive one synthesized row. Existing keys outside an
 explicit domain are errors. Original rows keep all cells. A synthesized row gets
 the group and key values, then `fill` values or `null` for the other source fields.
 When `members` is present, original rows contain their source index and synthetic
 rows contain `[]`. Output follows group first appearance and key-domain order and
-is capped at 10,000 rows before allocation.
+is capped at 10,000 rows, including repeated observations, before allocation.
 
 ## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
 
@@ -38805,7 +38806,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:269936acb70ea983ffb5b16d6459eb1879fdfa4b38c2a1596943bf8a257784a9` |
+| Contract fingerprint | `sha256:a7b9baff160a0be41b0b2869becaf03d9ac74446c4664aa64e5d0000fe80f5bd` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

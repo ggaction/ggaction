@@ -250,20 +250,24 @@ export function deriveCompleteRows(rows, transform) {
       if (!allowed.has(identity)) {
         throw new Error(`Complete observed key is outside the requested domain at row ${entry.index}.`);
       }
-      if (lookup.has(identity)) {
-        throw new Error("Complete source contains a duplicate group and key combination.");
-      }
-      lookup.set(identity, entry);
+      if (!lookup.has(identity)) lookup.set(identity, []);
+      lookup.get(identity).push(entry);
+    }
+    const groupSize = group.values.length + domain.length - lookup.size;
+    if (output.length + groupSize > MAX_OUTPUT_ROWS) {
+      throw new RangeError(`Complete output cannot exceed ${MAX_OUTPUT_ROWS} rows.`);
     }
     for (const keyValue of domain) {
       const identity = scalarKey(keyValue, "Complete domain value");
-      const entry = lookup.get(identity);
-      if (entry === undefined) {
+      const entries = lookup.get(identity);
+      if (entries === undefined) {
         output.push(syntheticRow(fields, group, keyValue, transform));
       } else {
-        const row = { ...entry.row };
-        if (transform.members !== undefined) define(row, transform.members, [entry.index]);
-        output.push(row);
+        for (const entry of entries) {
+          const row = { ...entry.row };
+          if (transform.members !== undefined) define(row, transform.members, [entry.index]);
+          output.push(row);
+        }
       }
     }
   }

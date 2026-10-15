@@ -38,12 +38,13 @@ and first appearance. A numeric sequence uses finite `start`, `end`, and
 positive `step`. Only observed group tuples are completed; the action does not
 form a Cartesian product of separate grouping fields.
 
-Each group/key pair may have at most one source row. Existing keys outside an
+Repeated observations for a group/key pair are preserved in source order, without
+aggregation. Only absent pairs receive one synthesized row. Existing keys outside an
 explicit domain are errors. Original rows keep all cells. A synthesized row gets
 the group and key values, then `fill` values or `null` for the other source fields.
 When `members` is present, original rows contain their source index and synthetic
 rows contain `[]`. Output follows group first appearance and key-domain order and
-is capped at 10,000 rows before allocation.
+is capped at 10,000 rows, including repeated observations, before allocation.
 
 ## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
 

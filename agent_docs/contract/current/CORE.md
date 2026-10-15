@@ -670,16 +670,17 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   array다. `sequence`는 finite `start <= end`, positive `step`을 받고 `start + i * step <= end`를 생성한다.
   둘 다 없으면 source 전체 key의 typed first-appearance domain을 사용한다.
 - Group semantics: 실제 관측된 group tuple만 사용하고 group field별 Cartesian product를 만들지 않는다.
-  동일 group×key source row가 둘 이상이면 자동 집계하지 않고 오류다. explicit domain 밖의 관측 key도 오류다.
+  동일 group×key의 반복 관측은 입력 순서와 원본 cell을 각각 보존하며 자동 집계하지 않는다.
+  해당 pair가 하나도 없을 때만 합성 row 하나를 만든다. explicit domain 밖의 관측 key는 오류다.
 - Output: group first appearance와 domain order를 따른다. 원본 row의 모든 cell을 보존하고 합성 row는 key와
   group fields를 채운 뒤 나머지 source-field union을 `fill[field]` 또는 `null`로 채운다. `fill`은 key,
   group 또는 members field를 바꿀 수 없다.
 - `members`: 생략 가능 output field다. 지정하면 원본 row는 `[sourceIndex]`, 합성 row는 `[]`를 갖는다.
   기존 source field와 충돌하면 오류다.
-- Bounds and replay: allocation 전에 output 10,000-row 한도를 검사한다. `complete`는 statistical facet
+- Bounds and replay: 반복 관측과 합성 row를 모두 포함해 allocation 전에 output 10,000-row 한도를 검사한다. `complete`는 statistical facet
   topology라 각 child의 local source rows에서 domain/group completion을 다시 계산한다.
 - Errors: invalid/duplicate ID, unknown/ambiguous source, unknown option, missing field, mixed/non-scalar key,
-  duplicate domain/group×key, invalid sequence/fill/members, field collision와 output budget 초과를 첫 state change
+  duplicate domain, invalid sequence/fill/members, field collision와 output budget 초과를 첫 state change
   전에 거부한다.
 
 ### Formal values — `createCompleteData`
