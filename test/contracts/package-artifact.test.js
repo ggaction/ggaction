@@ -178,6 +178,9 @@ test("packed scale compaction preserves exports and numeric color results", asyn
     assert.deepEqual(Object.keys(module), Object.keys(await import(url.href)));
     return module;
   };
+  const grids = await compactModule("../../actions/guides/grids/resolve");
+  assert.doesNotThrow(() => grids.validateGridCreateArgs({ zIndex: 2, bandPosition: "boundary", values: ["A", "B"] }, "createVerticalGrid"));
+  assert.throws(() => grids.validateGridCreateArgs({ zIndex: Infinity }, "createVerticalGrid"), /finite/);
   const definitions = await compactModule("../../actions/scales/definitions");
   assert.deepEqual(definitions.resolveQuantitativeColorScaleDefinition({semanticSpec:{scales:[]}},"quantitative",{type:"log",range:["black","white"]}),
     {id:"color",type:"log",domain:"auto",range:["black","white"],interpolate:"rgb",base:10});

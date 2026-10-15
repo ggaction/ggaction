@@ -17818,6 +17818,16 @@
       },
       "options": [
         {
+          "name": "zIndex",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "bandPosition",
+          "required": false,
+          "type": "\"boundary\" | \"center\" | undefined"
+        },
+        {
           "name": "scale",
           "required": false,
           "type": "string | undefined"
@@ -17835,7 +17845,7 @@
         {
           "name": "values",
           "required": false,
-          "type": "readonly number[] | undefined"
+          "type": "readonly CategoryValue[] | undefined"
         },
         {
           "name": "color",
@@ -17854,7 +17864,7 @@
         }
       ],
       "callPatterns": [
-        "createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })"
+        "createHorizontalGrid({ scale?, coordinate?, zIndex?, bandPosition?, count?, values?, color?, lineWidth? })"
       ],
       "snippet": "program.createHorizontalGrid({})",
       "errors": [],
@@ -17938,6 +17948,16 @@
       },
       "options": [
         {
+          "name": "zIndex",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "bandPosition",
+          "required": false,
+          "type": "\"boundary\" | \"center\" | undefined"
+        },
+        {
           "name": "scale",
           "required": false,
           "type": "string | undefined"
@@ -17955,7 +17975,7 @@
         {
           "name": "values",
           "required": false,
-          "type": "readonly number[] | undefined"
+          "type": "readonly CategoryValue[] | undefined"
         },
         {
           "name": "color",
@@ -17974,7 +17994,7 @@
         }
       ],
       "callPatterns": [
-        "createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })"
+        "createVerticalGrid({ scale?, coordinate?, zIndex?, bandPosition?, count?, values?, color?, lineWidth? })"
       ],
       "snippet": "program.createVerticalGrid({})",
       "errors": [],
@@ -18043,6 +18063,16 @@
       },
       "options": [
         {
+          "name": "zIndex",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "bandPosition",
+          "required": false,
+          "type": "\"boundary\" | \"center\" | undefined"
+        },
+        {
           "name": "count",
           "required": false,
           "type": "number | undefined"
@@ -18050,7 +18080,7 @@
         {
           "name": "values",
           "required": false,
-          "type": "\"auto\" | readonly number[] | undefined"
+          "type": "\"auto\" | readonly CategoryValue[] | undefined"
         },
         {
           "name": "color",
@@ -18069,9 +18099,9 @@
         }
       ],
       "callPatterns": [
-        "editHorizontalGrid({ count?, values?, color?, lineWidth?, strokeDash? })"
+        "editHorizontalGrid({ zIndex?, bandPosition?, count?, values?, color?, lineWidth?, strokeDash? })"
       ],
-      "snippet": "program.editHorizontalGrid({ count: 5 })",
+      "snippet": "program.editHorizontalGrid({ zIndex: 1 })",
       "errors": [],
       "route": "/reference/actions/guides/#edithorizontalgrid"
     },
@@ -18138,6 +18168,16 @@
       },
       "options": [
         {
+          "name": "zIndex",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "bandPosition",
+          "required": false,
+          "type": "\"boundary\" | \"center\" | undefined"
+        },
+        {
           "name": "count",
           "required": false,
           "type": "number | undefined"
@@ -18145,7 +18185,7 @@
         {
           "name": "values",
           "required": false,
-          "type": "\"auto\" | readonly number[] | undefined"
+          "type": "\"auto\" | readonly CategoryValue[] | undefined"
         },
         {
           "name": "color",
@@ -18164,9 +18204,9 @@
         }
       ],
       "callPatterns": [
-        "editVerticalGrid({ count?, values?, color?, lineWidth?, strokeDash? })"
+        "editVerticalGrid({ zIndex?, bandPosition?, count?, values?, color?, lineWidth?, strokeDash? })"
       ],
-      "snippet": "program.editVerticalGrid({ count: 5 })",
+      "snippet": "program.editVerticalGrid({ zIndex: 1 })",
       "errors": [],
       "route": "/reference/actions/guides/#editverticalgrid"
     },

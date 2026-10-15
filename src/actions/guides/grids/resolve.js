@@ -1,3 +1,4 @@
+import { isNominalValue } from "../../../grammar/scales/fields.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -8,6 +9,7 @@ import {
 } from "../../../core/validation.js";
 import {
   isTransformedScaleType,
+  mapOrdinalPositionValues,
   mapContinuousScaleValues
 } from "../../../grammar/scales/index.js";
 import { resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
@@ -20,14 +22,15 @@ import {
 } from "../tickValues.js";
 import {
   findGraphicParent,
+  graphicSiblings,
   walkGraphicDrawOrder
 } from "../../../grammar/schemas/graphicTree.js";
 
 const GRID_OPTIONS = Object.freeze([
-  "scale", "coordinate", "count", "values", "color", "lineWidth", "strokeDash"
+  "scale", "coordinate", "count", "values", "color", "lineWidth", "strokeDash", "zIndex", "bandPosition"
 ]);
 const GRID_EDIT_OPTIONS = Object.freeze([
-  "count", "values", "color", "lineWidth", "strokeDash"
+  "count", "values", "color", "lineWidth", "strokeDash", "zIndex", "bandPosition"
 ]);
 const DEFAULT_STYLE = Object.freeze({
   color: DEFAULT_COLORS.grid,
@@ -75,9 +78,9 @@ export function validateGridCreateArgs(args, operation) {
   if (Object.hasOwn(args, "values") && (
     !Array.isArray(args.values) ||
     args.values.length === 0 ||
-    !args.values.every(Number.isFinite)
+    !args.values.every(isNominalValue)
   )) {
-    throw new TypeError("Grid values must be a non-empty finite number array.");
+    throw new TypeError("Grid values must be a non-empty finite number array or nominal category array; continuous grids require finite numbers.");
   }
   if (Object.hasOwn(args, "color")) {
     validateNonEmptyString(args.color, "Grid color");
@@ -85,6 +88,8 @@ export function validateGridCreateArgs(args, operation) {
   if (Object.hasOwn(args, "lineWidth")) {
     validateNonNegativeFinite(args.lineWidth, "Grid lineWidth");
   }
+  if (Object.hasOwn(args, "bandPosition") && !["center", "boundary"].includes(args.bandPosition)) throw new TypeError("Grid bandPosition must be center or boundary.");
+  if (Object.hasOwn(args, "zIndex") && !Number.isFinite(args.zIndex)) throw new TypeError("Grid zIndex must be a finite number.");
   if (Object.hasOwn(args, "strokeDash")) validateStrokeDash(args.strokeDash);
 }
 
@@ -109,7 +114,7 @@ export function validateGridEditArgs(args, operation) {
   if (Object.hasOwn(args, "values") && args.values !== "auto" && (
     !Array.isArray(args.values) ||
     args.values.length === 0 ||
-    !args.values.every(Number.isFinite)
+    !args.values.every(isNominalValue)
   )) {
     throw new TypeError(
       'Grid values must be "auto" or a non-empty finite number array.'
@@ -121,6 +126,8 @@ export function validateGridEditArgs(args, operation) {
   if (Object.hasOwn(args, "lineWidth")) {
     validateNonNegativeFinite(args.lineWidth, "Grid lineWidth");
   }
+  if (Object.hasOwn(args, "bandPosition") && !["center", "boundary"].includes(args.bandPosition)) throw new TypeError("Grid bandPosition must be center or boundary.");
+  if (Object.hasOwn(args, "zIndex") && !Number.isFinite(args.zIndex)) throw new TypeError("Grid zIndex must be a finite number.");
   if (Object.hasOwn(args, "strokeDash")) validateStrokeDash(args.strokeDash);
 }
 
@@ -163,10 +170,10 @@ export function resolveGridResources(program, direction, args) {
   }
   const scale = requestedScale ?? scaleIds[0];
   if (
-    !["linear", "time"].includes(program.resolvedScales[scale]?.type) &&
+    !["linear", "time", "band", "point"].includes(program.resolvedScales[scale]?.type) &&
     !isTransformedScaleType(program.resolvedScales[scale]?.type)
   ) {
-    throw new Error(`${direction} grid requires resolved continuous scale "${scale}".`);
+    throw new Error(`${direction} grid requires resolved continuous, band or point scale "${scale}".`);
   }
   const sourceIds = new Set(layers.map(layer => layer.id));
   const relatedLayers = [...layers, ...program.semanticSpec.layers.filter(layer =>
@@ -177,8 +184,9 @@ export function resolveGridResources(program, direction, args) {
     return leader === undefined ? [layer.id] : [leader, layer.id];
   }));
   let before;
+  let after;
   walkGraphicDrawOrder(program.graphicSpec, ({ id }) => {
-    if (before === undefined && related.has(id)) before = id;
+    if (related.has(id)) { if (before === undefined) before = id; after = id; }
   });
   if (before === undefined) throw new Error(`${direction} grid requires related mark graphics.`);
   const owner = findGraphicParent(program.graphicSpec, before);
@@ -187,6 +195,7 @@ export function resolveGridResources(program, direction, args) {
     coordinate,
     scale,
     before,
+    after,
     ...(owner?.kind === "parent" ? { parent: owner.id } : {})
   };
 }
@@ -201,6 +210,8 @@ export function resolveGridConfig(program, direction, args, resources) {
       : inferGridTickConfig(program, resources.channel, resources.scale);
   return {
     direction,
+    ...(args.bandPosition === undefined ? {} : { bandPosition: args.bandPosition }),
+    ...(args.zIndex === undefined ? {} : { zIndex: args.zIndex }),
     scale: resources.scale,
     coordinate: resources.coordinate,
     ...explicit,
@@ -255,16 +266,29 @@ export function resolveGridGeometry(program, config) {
     channel
   });
   if ((
-    !["linear", "time"].includes(scale?.type) &&
+    !["linear", "time", "band", "point"].includes(scale?.type) &&
     !isTransformedScaleType(scale?.type)
   ) || bounds === undefined) {
-    throw new Error("Grid materialization requires a continuous scale and Canvas bounds.");
+    throw new Error("Grid materialization requires a continuous, band or point scale and Canvas bounds.");
+  }
+  if (config.bandPosition !== undefined && scale.type !== "band") throw new Error("Grid bandPosition requires a band scale.");
+  if (["band", "point"].includes(scale.type)) {
+    if (config.mode === "count") throw new Error("Categorical grid values cannot use count.");
+    const values = valuesFromTickConfig(program, config);
+    if (!values.every(value => scale.domain.includes(value))) throw new RangeError("Grid values must be inside the scale domain.");
+    const centers = mapOrdinalPositionValues(values, scale);
+    const direction = scale.range[1] >= scale.range[0] ? 1 : -1;
+    const positions = config.bandPosition === "boundary"
+      ? [...new Set(centers.flatMap(center => [center - direction * scale.bandwidth / 2, center + direction * scale.bandwidth / 2]))].sort((a, b) => direction * (a - b))
+      : centers;
+    validateGeneratedItemLimit(positions.length, "Grid value count");
+    return resolveGridLineGeometry({ direction: config.direction, values: positions, positions, bounds });
   }
   const values = valuesFromTickConfig(program, config);
   validateGeneratedItemLimit(values.length, "Grid value count");
   const low = Math.min(...scale.domain);
   const high = Math.max(...scale.domain);
-  if (!values.every(value => value >= low && value <= high)) {
+  if (!values.every(value => Number.isFinite(value) && value >= low && value <= high)) {
     throw new RangeError("Grid values must be inside the scale domain.");
   }
   const positions = mapContinuousScaleValues(values, scale);
@@ -274,4 +298,24 @@ export function resolveGridGeometry(program, config) {
     positions,
     bounds
   });
+}
+
+
+export function resolveGridPlacement(program, config) {
+  const resources = resolveGridResources(program, config.direction, { scale: config.scale, coordinate: config.coordinate });
+  const id = gridNames(config.direction).graphic;
+  const siblings = graphicSiblings(program.graphicSpec, resources.before);
+  const rank = direction => [program.guideConfigs.grid?.[direction]?.zIndex ?? 0, direction === "horizontal" ? 0 : 1];
+  const ownRank = [config.zIndex ?? 0, config.direction === "horizontal" ? 0 : 1];
+  const compare = (a, b) => a[0] - b[0] || a[1] - b[1];
+  const neighbors = ["horizontal", "vertical"].filter(direction => {
+    const other = gridNames(direction).graphic;
+    return other !== id && siblings.includes(other) && ((rank(direction)[0] > 0) === (ownRank[0] > 0));
+  }).sort((a, b) => compare(rank(a), rank(b)));
+  const greater = neighbors.find(direction => compare(rank(direction), ownRank) > 0);
+  const lower = neighbors.filter(direction => compare(rank(direction), ownRank) < 0).at(-1);
+  return {
+    ...(resources.parent === undefined ? {} : { parent: resources.parent }),
+    ...(greater ? { before: gridNames(greater).graphic } : lower ? { after: gridNames(lower).graphic } : ownRank[0] > 0 ? { after: resources.after } : { before: resources.before })
+  };
 }

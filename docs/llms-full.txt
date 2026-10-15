@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:0cd507e63b4d251f894a1de470ece66a709d97d9d9ed957f6951e2389b5954ef. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:7d303636cb4d42a549dff3768f80b17044369703dfa73b7b21fdba49fe1d2a2e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12321,6 +12321,10 @@ has one semantic axis, so parallel duplicate axes cannot be created.
 
 ## `createGrid(options?)`
 
+Cartesian grids accept continuous, band and point scales. Band grids use centers by default; set `bandPosition: "boundary"` for both edges of each selected cell. Categorical grids accept category `values` and reject `count`.
+
+Set Cartesian `zIndex` to a finite rank: positive values draw above related marks, zero or negative values draw behind them. Grids on each side sort by rank, with horizontal before vertical on a tie. Editors and resizing retain the chosen order.
+
 Creates Cartesian or Polar grid geometry from encoded scales. Cartesian
 defaults to horizontal only. A Polar-only chart creates theta spokes when theta
 is encoded and radial circles when radius is encoded; charts with both channels
@@ -24114,10 +24118,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `values` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `values` | Optional / branch-dependent | `readonly CategoryValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
@@ -24142,10 +24148,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `values` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `values` | Optional / branch-dependent | `readonly CategoryValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
@@ -24170,8 +24178,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
+| `values` | Optional / branch-dependent | `"auto" \| readonly CategoryValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
@@ -24196,8 +24206,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
+| `values` | Optional / branch-dependent | `"auto" \| readonly CategoryValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
@@ -30481,13 +30493,19 @@ Related types: [`EditGridOptions`](./reference/types/#type-editgridoptions) · [
 
 ```typescript
 export interface EditGridOptions {
+  /** Preserve omitted order; finite values sort Cartesian grids relative to marks at zero. */
+  zIndex?: number;
+  /** Band centers by default; boundary draws both edges of each selected band. */
+  bandPosition?: "center" | "boundary";
   count?: number;
-  values?: readonly number[] | "auto";
+  values?: readonly CategoryValue[] | "auto";
   color?: string;
   lineWidth?: number;
   strokeDash?: readonly number[];
 }
 ```
+
+Related types: [`CategoryValue`](./reference/types/#type-categoryvalue).
 
 ### `EditHorizonOptions` {#type-edithorizonoptions}
 
@@ -31966,15 +31984,21 @@ export type GraphicType =
 
 ```typescript
 export interface GridDirectionOptions {
+  /** Grid draw order relative to marks at zero: positive above, nonpositive behind. */
+  zIndex?: number;
+  /** Band centers by default; boundary draws both edges of each selected band. */
+  bandPosition?: "center" | "boundary";
   scale?: string;
   coordinate?: string;
   count?: number;
-  values?: readonly number[];
+  values?: readonly CategoryValue[];
   color?: string;
   lineWidth?: number;
   strokeDash?: readonly number[];
 }
 ```
+
+Related types: [`CategoryValue`](./reference/types/#type-categoryvalue).
 
 ### `GroupEncodingOptions` {#type-groupencodingoptions}
 
@@ -38775,7 +38799,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:0cd507e63b4d251f894a1de470ece66a709d97d9d9ed957f6951e2389b5954ef` |
+| Contract fingerprint | `sha256:7d303636cb4d42a549dff3768f80b17044369703dfa73b7b21fdba49fe1d2a2e` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

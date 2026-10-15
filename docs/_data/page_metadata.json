@@ -457,7 +457,7 @@
   },
   "/api/grids/": {
     "title": "Grids",
-    "description": "Creates Cartesian or Polar grid geometry from encoded scales. Cartesian defaults to horizontal only.",
+    "description": "Cartesian grids accept continuous, band and point scales. Band grids use centers by default; set bandPosition: \"boundary\" for both edges of each selected cell.",
     "image": "/assets/images/cars-histogram.png"
   },
   "/api/legends/": {

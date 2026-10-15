@@ -4,15 +4,17 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## Shared grid-direction contract
 
-- `scale`: optional continuous scale ID; horizontal은 y, vertical은 x에서 유일하게 추론한다.
+- `scale`: optional continuous/band/point scale ID; horizontal은 y, vertical은 x에서 유일하게 추론한다.
 - `coordinate`: optional Cartesian coordinate ID; encoded layers에서 추론한다.
-- `count`: positive integer, `values`와 mutually exclusive다.
-- `values`: non-empty finite number array이며 scale domain 안에 있어야 한다.
+- `bandPosition`: band scale에서 center(default) 또는 boundary. Boundary는 각 selected band 양끝을 중복제거해 그린다. Non-band 명시는 오류다. Categorical grid는 domain 전체 또는 explicit category values를 사용하며 count는 거부한다.
+- `count`: continuous에서 positive integer, `values`와 mutually exclusive다.
+- `values`: non-empty category-value array (continuous는 finite numbers)이며 scale domain 안에 있어야 한다.
 - `color`: non-empty string, 기본 `"#e2e8f0"`.
 - `lineWidth`: non-negative finite number, 기본 `1`.
+- `zIndex`: Cartesian grid의 finite draw rank, 기본0은 mark 뒤, 양수는 mark 앞이다. 같은 면의 grid는 값 오름차순, 동점은 horizontal/vertical 순서다. 생략 edit는 보존하며 resize/scale/axis refresh도 명시 rank를 유지한다. Polar에는 적용하지 않는다.
 - `strokeDash`: even-length non-negative finite number array, 기본 `[]`.
 - Effect: semantic guide에는 scale/coordinate, graphical config에는 tick policy/style, concrete line
-  collection에는 endpoints를 저장한다. 관련 mark와 label leader보다 앞에 graphic을 배치한다.
+  collection에는 endpoints를 저장한다. 기본 graphic은 관련 mark와 label leader보다 앞에 배치하며 명시 positive zIndex는 그 뒤에 배치한다.
   Creation order, same-value Canvas edits, and scale rematerialization preserve that drawing order and pixels.
   Automatic tick reuse도 live dependency다. Matching Cartesian axis의 tick 생성/편집은 해당 inferred grid를
   즉시 wrapped rematerialization으로 갱신한다. Explicit grid count/values는 axis edit에 영향받지 않는다.
@@ -21,17 +23,21 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ```typescript
 type GridDirectionOptions = {
+  zIndex?: Finite;
+  bandPosition?: "center" | "boundary";
   scale?: UserId;
   coordinate?: UserId;
   count?: PositiveInteger;
-  values?: readonly Finite[];
+  values?: readonly CategoryValue[];
   color?: NonEmptyString;
   lineWidth?: NonNegativeFinite;
   strokeDash?: DashPattern;
 };
 type EditGridOptions = {
+  zIndex?: Finite;
+  bandPosition?: "center" | "boundary";
   count?: PositiveInteger;
-  values?: readonly Finite[] | "auto";
+  values?: readonly CategoryValue[] | "auto";
   color?: NonEmptyString;
   lineWidth?: NonNegativeFinite;
   strokeDash?: DashPattern;

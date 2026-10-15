@@ -1117,10 +1117,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `values` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `values` | Optional / branch-dependent | `readonly CategoryValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
@@ -1150,10 +1152,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `values` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `values` | Optional / branch-dependent | `readonly CategoryValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
@@ -1183,8 +1187,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
+| `values` | Optional / branch-dependent | `"auto" \| readonly CategoryValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
@@ -1214,8 +1220,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
+| `values` | Optional / branch-dependent | `"auto" \| readonly CategoryValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |

@@ -295,6 +295,7 @@ Standalone Cartesian axis 기능 추가 시 packed artifact가765,714bytes로 �
 이 변경 당시 Entry552 및 unpacked3,900,000bytes 한도는 유지했다.
 이후 독립된 Text plot facade 모듈 추가로 entry 한도를553으로 조정한다.
 Packed/unpacked bytes 한도는 유지하며 이전 한도 통과로 보고하지 않는다.
+Cartesian band/point grid 및 explicit draw rank 지원 뒤 packed 실측775,736bytes로 기존775,000bytes를 초과했다. 해당 기능 증가분에 대해 packed 예산을780,000bytes로 조정하며 entries553 및 unpacked3,900,000bytes는 유지한다. 이전 한도 통과로 보고하지 않는다.
 Text plot 공개 문서/검색 항목 추가 후 search-index는801,260bytes로 측정되어
 검색 payload 한도를800,000에서810,000bytes로 조정한다. 기존 content를 삭제해 기능 증가를 숨기지 않는다.
 

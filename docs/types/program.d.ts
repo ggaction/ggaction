@@ -1496,17 +1496,25 @@ export interface EditRadialAxisOptions
 }
 
 export interface GridDirectionOptions {
+  /** Grid draw order relative to marks at zero: positive above, nonpositive behind. */
+  zIndex?: number;
+  /** Band centers by default; boundary draws both edges of each selected band. */
+  bandPosition?: "center" | "boundary";
   scale?: string;
   coordinate?: string;
   count?: number;
-  values?: readonly number[];
+  values?: readonly CategoryValue[];
   color?: string;
   lineWidth?: number;
   strokeDash?: readonly number[];
 }
 export interface EditGridOptions {
+  /** Preserve omitted order; finite values sort Cartesian grids relative to marks at zero. */
+  zIndex?: number;
+  /** Band centers by default; boundary draws both edges of each selected band. */
+  bandPosition?: "center" | "boundary";
   count?: number;
-  values?: readonly number[] | "auto";
+  values?: readonly CategoryValue[] | "auto";
   color?: string;
   lineWidth?: number;
   strokeDash?: readonly number[];

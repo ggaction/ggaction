@@ -11,7 +11,7 @@ Apply these instructions to semantic-to-graphic realization and rematerializatio
 - Resolve row eligibility once at the final item grain and reuse it for scale domains, mark graphics, legends, labels, and selections.
 - When a semantic change affects concrete output, refresh every affected consumer in dependency order. Coordinate-aware marks use the same owner rematerializer across coordinate families.
 - Canvas, scale, data revision, grouping, appearance, selection, and highlight changes must not leave stale concrete geometry.
-- Treat drawing order as explicit graphical state. Preserve grids behind marks and axes, labels, and legends in their owned placement.
+- Treat drawing order as explicit graphical state. Preserve default grids behind marks, honor explicit Cartesian grid drawing order, and keep axes, labels, and legends in their owned placement.
 - Derive dependent component geometry from the concrete owner geometry rather than duplicating scale, band, width, endpoint, or bounds calculations.
 - Reconcile stable graphic IDs when representation or collection cardinality changes. Remove stale children and incompatible properties.
 - Rematerialize highlights from the unhighlighted baseline, reevaluate stable final-item identities, and apply selection/complement appearance without accumulating edits.
