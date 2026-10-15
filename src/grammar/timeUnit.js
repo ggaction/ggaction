@@ -122,7 +122,8 @@ export function validateTimeUnitTransform(transform) {
 }
 
 export function normalizeTimeUnitTransform(args = {}) {
-  const { field, unit, as, temporalUnit, timeZone } = args;
+  const { field, unit, temporalUnit, timeZone } = args;
+  const as = args.as === undefined ? `${field}_${unit}` : args.as;
   const transform = { type: "timeUnit", field, unit, as,
     ...(temporalUnit === undefined ? {} : { temporalUnit }),
     ...(timeZone === undefined ? {} : { timeZone }) };

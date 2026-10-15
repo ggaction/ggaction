@@ -2524,8 +2524,8 @@
         },
         {
           "name": "as",
-          "required": true,
-          "type": "string"
+          "required": false,
+          "type": "string | undefined"
         },
         {
           "name": "timeZone",
@@ -2549,9 +2549,9 @@
         }
       ],
       "callPatterns": [
-        "createTimeUnitData({ id, field, as, unit, source?, temporalUnit?, timeZone?, weekStartsOn? })"
+        "createTimeUnitData({ id, field, unit, source?, temporalUnit?, as?, timeZone?, weekStartsOn? })"
       ],
-      "snippet": "program.createTimeUnitData({ id: \"time-unit-data-1\", field: \"value\", as: \"derived\", unit: \"month\" })",
+      "snippet": "program.createTimeUnitData({ id: \"time-unit-data-1\", field: \"value\", unit: \"month\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createtimeunitdata"
     },

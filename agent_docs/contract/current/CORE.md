@@ -1230,7 +1230,7 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 
 ## `createTimeUnitData`
 
-- Signature: `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })`
+- Signature: `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })`
 - Lifecycle: standalone 호출은 stable logical owner를 만들고 `editTimeUnitData`가 immutable revision을 생성해
   consumer를 rebind한다. `id`는 최초 생성 시 필수 새 derived dataset ID다.
 - `source`: existing dataset ID다. 생략하면 current data를 사용하며 안전하게 추론할 수 없으면 오류다.
@@ -1238,7 +1238,7 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
   ISO/date string 또는 four-digit year를 받는다. `temporalUnit`은 입력 해석만 제어하며 transform에 보존된다.
 - `unit`: `"year" | "quarter" | "month" | "day" | "hour" | "minute" | "second" | "week" | "weekday"`의
   closed vocabulary다.
-- `as`: source의 어느 row에도 존재하지 않는 새 output field다. Input field와 달라야 한다.
+- `as`: optional 새 output field이며 생략은 `${field}_${unit}`이다. Source의 어느 row에도 존재하지 않아야 하고 input field와 달라야 한다. Inference도 같은 collision 검증을 적용하고 numbered fallback을 만들지 않는다. Canonical stored transform은 항상 resolved as를 가진다.
 - `timeZone`: optional non-empty IANA name이다. 생략은 `"UTC"` 계산과 같지만 기존 7-unit 호출은 이전 stored
   transform shape를 유지한다. host local timezone과 locale에 의존하지 않는다.
 - Week policy: `unit:"week"`에서 `weekStartsOn` 기본은 Monday `1`, `weekRule` 기본은 `"calendar"`다.
@@ -1269,7 +1269,7 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 - `timeZone`
   - ✅ Covered: UTC/Seoul/New_York/Kolkata/Lord_Howe/Apia, hour/half-hour offsets, DST gap/fold와 skipped date.
 - `field`, `as`
-  - ✅ Covered: timestamp/ISO/date/year inputs, missing/invalid input, distinct output와 collision rejection.
+  - ✅ Covered: timestamp/ISO/date/year inputs, missing/invalid input, default/explicit distinct output와 collision rejection.
 - Lifecycle and integration
   - ✅ Covered: current/explicit source, immutable provenance/rows/options, action hierarchy, direct transform schema,
     temporal position consumption, registered replay와 explicit-anchor facet rederivation.

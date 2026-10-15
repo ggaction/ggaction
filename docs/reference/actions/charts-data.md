@@ -710,7 +710,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `field` | Required | `string` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
-| `as` | Required | `string` |
+| `as` | Optional / branch-dependent | `string \| undefined` |
 | `timeZone` | Optional / branch-dependent | `string \| undefined` |
 | `unit` | Required | `"day" \| "hour" \| "minute" \| "month" \| "quarter" \| "second" \| "week" \| "weekday" \| "year"` |
 | `weekStartsOn` | Optional / branch-dependent | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| undefined` |
@@ -721,11 +721,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })
+createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })
 ```
 
 Create an immutable row-preserving dataset with one UTC or IANA-zone calendar
 bucket timestamp, including week, or a nominal local weekday field.
+Omit `as` to use `${field}_${unit}`; output-name collisions are rejected.
 [Time-unit data transforms](../../api/data/time-units.md)
 
 

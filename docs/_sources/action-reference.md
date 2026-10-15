@@ -1109,11 +1109,12 @@ resolved provenance stores every positive denominator. [Data](../api/data.md)
 ### `createTimeUnitData`
 
 ```javascript
-createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })
+createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })
 ```
 
 Create an immutable row-preserving dataset with one UTC or IANA-zone calendar
 bucket timestamp, including week, or a nominal local weekday field.
+Omit `as` to use `${field}_${unit}`; output-name collisions are rejected.
 [Time-unit data transforms](../api/data/time-units.md)
 
 ### `createWindowData`

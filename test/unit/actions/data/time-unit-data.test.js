@@ -235,3 +235,18 @@ test("keeps explicit zones in provenance and rejects week-policy conflicts", () 
     }), error);
   });
 });
+
+
+test("infers a collision-checked time-unit output with three options", () => {
+  const source = sourceProgram();
+  const result = source.createTimeUnitData({ id: "weekdays", field: "date", unit: "weekday" });
+  const derived = result.semanticSpec.datasets.find(d => d.id === "weekdays");
+  assert.equal(derived.transform[0].as, "date_weekday");
+  assert.deepEqual(derived.values.map(r => r.date_weekday), [3, 4, 1, 0]);
+  assert.deepEqual(source.semanticSpec.datasets[0].values, rows);
+  assert.ok(derived.values.every((r, i) => r.date === rows[i].date));
+  const colliding = chart().createData({ values: [{ date: "2024-01-01", date_month: 1 }] });
+  const before = JSON.stringify(colliding);
+  assert.throws(() => colliding.createTimeUnitData({ id: "monthly", field: "date", unit: "month" }), /already exists/);
+  assert.equal(JSON.stringify(colliding), before);
+});

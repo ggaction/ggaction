@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:f65ce5cc8480d96697d6092cfb80ad1ea9d8e4a73e6d1d645b7847668e5b60a8. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:269936acb70ea983ffb5b16d6459eb1879fdfa4b38c2a1596943bf8a257784a9. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -5435,7 +5435,9 @@ the dataset removes it.
 every source row. Use it when timestamps within the same calendar unit need a
 shared value before a later encoding, filter, aggregation, or window operation.
 
-## `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })`
+Omit `as` to name the new field `${field}_${unit}`. The name must be absent from every source row; collisions are errors. Explicit `as` keeps your chosen output name.
+
+## `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })`
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -16062,7 +16064,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `field` | Required | `string` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
-| `as` | Required | `string` |
+| `as` | Optional / branch-dependent | `string \| undefined` |
 | `timeZone` | Optional / branch-dependent | `string \| undefined` |
 | `unit` | Required | `"day" \| "hour" \| "minute" \| "month" \| "quarter" \| "second" \| "week" \| "weekday" \| "year"` |
 | `weekStartsOn` | Optional / branch-dependent | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| undefined` |
@@ -16071,11 +16073,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })
+createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })
 ```
 
 Create an immutable row-preserving dataset with one UTC or IANA-zone calendar
 bucket timestamp, including week, or a nominal local weekday field.
+Omit `as` to use `${field}_${unit}`; output-name collisions are rejected.
 [Time-unit data transforms](./api/data/time-units/)
 
 ## `createBin2DData`
@@ -35816,7 +35819,8 @@ type TimeUnitDataBaseOptions = {
   source?: string;
   field: string;
   temporalUnit?: TemporalInputUnit;
-  as: string;
+  /** Defaults to `${field}_${unit}`; collisions are rejected. */
+  as?: string;
   timeZone?: string;
 };
 ```
@@ -38801,7 +38805,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:f65ce5cc8480d96697d6092cfb80ad1ea9d8e4a73e6d1d645b7847668e5b60a8` |
+| Contract fingerprint | `sha256:269936acb70ea983ffb5b16d6459eb1879fdfa4b38c2a1596943bf8a257784a9` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

@@ -2277,7 +2277,8 @@ type TimeUnitDataBaseOptions = {
   source?: string;
   field: string;
   temporalUnit?: TemporalInputUnit;
-  as: string;
+  /** Defaults to `${field}_${unit}`; collisions are rejected. */
+  as?: string;
   timeZone?: string;
 };
 export type TimeUnitDataOptions = TimeUnitDataBaseOptions & (
