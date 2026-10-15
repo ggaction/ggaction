@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:9c671b1494ba5a2348c53422eecc3660f424ccdd33ed609f3c81c6d25a98a51f. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:3e3a3443f12c1ff07f87cc90c420e8e5bac55b7de65b9b1d756ca8dc74dc3b95. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -11492,6 +11492,8 @@ restrictions, use the [scale-family matrix](./api/scales/) and
 | `base` | positive finite number except `1` | `10`; log only |
 | `exponent` | positive finite number | `1`; pow only |
 | `constant` | positive finite number | `1`; symlog only |
+
+Explicit numeric time ranges are honored for centered temporal bars as well as their shared line/rule/text consumers. Only automatic temporal-bar ranges receive the usual center inset. Explicit ranges remain fixed after Canvas edits; `reverse` applies last. Bandwidth follows the minimum mapped time gap; when subtracting two finite endpoints would overflow, a finite conservative slot estimate is retained.
 
 Automatic ranges use current plot bounds. For automatic linear domains,
 `zero: true` includes zero and `nice: true` then expands to rounded boundaries.
@@ -38984,7 +38986,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:9c671b1494ba5a2348c53422eecc3660f424ccdd33ed609f3c81c6d25a98a51f` |
+| Contract fingerprint | `sha256:3e3a3443f12c1ff07f87cc90c420e8e5bac55b7de65b9b1d756ca8dc74dc3b95` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

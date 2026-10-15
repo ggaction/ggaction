@@ -49,6 +49,10 @@ test("keeps shared temporal centers aligned through Canvas and scale edits", () 
     reversed.graphicSpec.objects.bars.items.at(-1).properties.x
   );
   assertAligned(original);
+  const explicit = original.editScale({ id: "x", range: [60, 300] });
+  assert.deepEqual(explicit.resolvedScales.x.range, [60, 300]);
+  assertAligned(explicit);
+  assertAligned(explicit.editScale({ id: "x", reverse: true }));
 });
 
 test("keeps temporal bar geometry finite across a full explicit range", () => {

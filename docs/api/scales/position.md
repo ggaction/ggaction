@@ -45,6 +45,8 @@ restrictions, use the [scale-family matrix](../scales.md) and
 | `exponent` | positive finite number | `1`; pow only |
 | `constant` | positive finite number | `1`; symlog only |
 
+Explicit numeric time ranges are honored for centered temporal bars as well as their shared line/rule/text consumers. Only automatic temporal-bar ranges receive the usual center inset. Explicit ranges remain fixed after Canvas edits; `reverse` applies last. Bandwidth follows the minimum mapped time gap; when subtracting two finite endpoints would overflow, a finite conservative slot estimate is retained.
+
 Automatic ranges use current plot bounds. For automatic linear domains,
 `zero: true` includes zero and `nice: true` then expands to rounded boundaries.
 Automatic temporal `nice` expands to UTC calendar boundaries. Time scales

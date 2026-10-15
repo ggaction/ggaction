@@ -1538,7 +1538,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   Explicit transformed pair는 계속 distinct해야 한다. Ordinal은 non-empty unique values를 사용한다.
   Threshold는 strictly increasing explicit boundaries가 필수다.
 - `range`: `"auto"` 또는 consumer-compatible array. continuous position은 finite pair, ordinal은
-  channel에 따라 colors, shapes 또는 dash patterns가 될 수 있다. Sequential은 최소 두 colors,
+  channel에 따라 colors, shapes 또는 dash patterns가 될 수 있다. Temporal centered bar도 explicit numeric position range를 그대로 유지하며 legacy center inset은 auto range에만 적용한다. Bandwidth는 실제 explicit mapping의 최소 gap이고 finite endpoint 차이가 overflow하면 기존 finite conservative slot estimate를 쓴다. Canvas replay는 explicit range를 재추론하지 않으며 reverse는 마지막에 적용한다. Sequential은 최소 두 colors,
   discretized color는 최소 두 colors를 사용하며 threshold는 domain보다 정확히 하나 더 필요하다.
 - `nice`: boolean, continuous position scale의 auto domain에 적용된다.
 - `zero`: boolean, `linear | pow | sqrt | symlog` auto domain에 적용되며 log에서는 오류다.

@@ -7,7 +7,7 @@ import {
   interpolateNumber,
   inverseLerp
 } from "../../../grammar/numeric.js";
-export function resolveTemporalBarBand(valuesByConsumer, domain, range, markConfigs = {}) {
+export function resolveTemporalBarBand(valuesByConsumer, domain, range, markConfigs = {}, preserveRange = false) {
   const temporalBars = valuesByConsumer.filter(({ consumer }) => {
     const channels = resolveBarChannels(consumer.layer);
     return [BAR_GRAINS.aggregate, BAR_GRAINS.ranged].includes(resolveBarGrain(consumer.layer)) &&
@@ -64,7 +64,7 @@ export function resolveTemporalBarBand(valuesByConsumer, domain, range, markConf
       interpolateNumber(range[0], range[1], bandwidthFraction) - range[0]
     )
     : directBandwidth;
-  const resolvedRange = stable
+  const resolvedRange = preserveRange ? [...range] : stable
     ? [
         interpolateNumber(range[0], range[1], bandwidthFraction / 2),
         interpolateNumber(range[0], range[1], 1 - bandwidthFraction / 2)
@@ -84,10 +84,12 @@ export function resolveTemporalBarBand(valuesByConsumer, domain, range, markConf
   });
   let bandwidth = Infinity;
   for (let index = 1; index < positions.length; index += 1) {
-    bandwidth = Math.min(
-      bandwidth,
-      Math.abs(positions[index] - positions[index - 1])
-    );
+    const gap = Math.abs(positions[index] - positions[index - 1]);
+    // Keep a finite conservative slot when an explicitly requested span itself
+    // exceeds the representable difference of two finite endpoints.
+    bandwidth = Math.min(bandwidth,
+      preserveRange && !Number.isFinite(gap) ? estimatedBandwidth : gap);
+
   }
   if (![estimatedBandwidth, bandwidth, ...resolvedRange].every(Number.isFinite)) {
     throw new RangeError("Temporal bar position exceeds the finite numeric range.");

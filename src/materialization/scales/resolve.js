@@ -441,7 +441,8 @@ export function resolveScaleMaterialization(options) {
       valuesByConsumer,
       domain,
       range,
-      markConfigs
+      markConfigs,
+      Array.isArray(scale.range)
     );
     if (temporalBarBand !== undefined) {
       resolvedScale = {
