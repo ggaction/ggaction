@@ -11446,6 +11446,8 @@ export interface TitleOptions {
   position?: "top" | "bottom" | "left" | "right";
   align?: "left" | "center" | "right";
   offset?: number;
+  /** Signed logical-pixel shift along the selected edge; defaults to zero. */
+  alongOffset?: number;
   gap?: number;
   maxWidth?: number;
   wrap?: "word" | "character";

@@ -545,7 +545,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 ## `createTitle`
 
-- Signature: `createTitle({ text, subtitle?, position?, align?, offset?, gap?, maxWidth?, wrap?, lineHeight?, titleStyle?, subtitleStyle? })`.
+- Signature: `createTitle({ text, subtitle?, position?, align?, offset?, alongOffset?, gap?, maxWidth?, wrap?, lineHeight?, titleStyle?, subtitleStyle? })`.
 - `text`: 필수 non-empty string; `subtitle`은 optional non-empty string이다. 두 문자열의 LF/CRLF/CR explicit line break를 보존하고 각 hard line에 maxWidth wrapping을 적용한다. 빈 hard line은 줄 간격을 예약한다. Renderers에는 newline 없는 concrete text item만 전달한다. Font/color 문자열은 여전히 newline을 거부한다. Evidence: `test/unit/actions/guides/title-hard-breaks.test.js`.
 - `position`: `"top" | "bottom" | "left" | "right"`; 기본 top. top/bottom rotation은 0, left는
   `-Math.PI / 2`, right는 `Math.PI / 2`다.
@@ -554,6 +554,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
 - top/bottom align은 plot의 x start/center/end이고 left/right align은 edge 진행 방향의
   top/center/bottom이다.
 - `offset`: finite number, 기본 `0`; top/bottom은 y, left/right는 x Canvas axis에서 block을 이동한다.
+- `alongOffset`: finite signed logical pixel, 기본 `0`. Top/bottom의 title/subtitle 전체 block을 X 방향, left/right는 Y 방향으로 같은 양만큼 옮긴다. 양수는 right/down이며 기존 outward `offset`과 독립이다. 실제 bounds/guide 충돌 검증은 이동 후 적용하고 edit/reset/Canvas replay에서도 유지한다.
 - `gap`: non-negative finite number, 기본 `8`; title/subtitle 사이 거리다.
 - `maxWidth`: positive finite reading-axis width. 지정하면 wrapping이 활성화되고 `wrap` 기본값은 `"word"`다.
 - `wrap`: `"word" | "character"`; `maxWidth` 없이 지정하면 오류다. word mode의 oversized token은
@@ -569,7 +570,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 ### Formal values — `createTitle`
 
-- Implemented: `createTitle({ text: NonEmptyString; subtitle?: NonEmptyString; position?: TitlePosition; align?: "left" | "center" | "right"; offset?: Finite; gap?: NonNegativeFinite; maxWidth?: PositiveFinite; wrap?: TitleWrap; lineHeight?: PositiveFinite; titleStyle?: TextStyle; subtitleStyle?: TextStyle })`
+- Implemented: `createTitle({ text: NonEmptyString; subtitle?: NonEmptyString; position?: TitlePosition; align?: "left" | "center" | "right"; offset?: Finite; alongOffset?: Finite; gap?: NonNegativeFinite; maxWidth?: PositiveFinite; wrap?: TitleWrap; lineHeight?: PositiveFinite; titleStyle?: TextStyle; subtitleStyle?: TextStyle })`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -596,7 +597,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 ## `editTitle`
 
-- Signature: `editTitle({ text?, subtitle?, position?, align?, offset?, gap?, maxWidth?, wrap?, lineHeight?, titleStyle?, subtitleStyle? })`.
+- Signature: `editTitle({ text?, subtitle?, position?, align?, offset?, alongOffset?, gap?, maxWidth?, wrap?, lineHeight?, titleStyle?, subtitleStyle? })`.
 - 기존 chart title이 필수이며 최소 한 option을 요구한다. Omitted property는 기존 값을 유지한다.
 - `text`와 string `subtitle`은 semantic text를 교체하고 `subtitle: false`는 semantic subtitle과 concrete
   subtitle graphics를 제거한다. 이후 string subtitle로 다시 만들 수 있다.
@@ -608,7 +609,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 ### Formal values — `editTitle`
 
-- Implemented: `editTitle({ text?: NonEmptyString; subtitle?: NonEmptyString | false; position?: TitlePosition; align?: "left" | "center" | "right"; offset?: Finite; gap?: NonNegativeFinite; maxWidth?: PositiveFinite; wrap?: TitleWrap; lineHeight?: PositiveFinite; titleStyle?: TextStyle; subtitleStyle?: TextStyle })`
+- Implemented: `editTitle({ text?: NonEmptyString; subtitle?: NonEmptyString | false; position?: TitlePosition; align?: "left" | "center" | "right"; offset?: Finite; alongOffset?: Finite; gap?: NonNegativeFinite; maxWidth?: PositiveFinite; wrap?: TitleWrap; lineHeight?: PositiveFinite; titleStyle?: TextStyle; subtitleStyle?: TextStyle })`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -619,6 +620,8 @@ config normalization과 rematerialization을 공유한다. Evidence:
 - ✅ Covered: single/collection reconciliation, rotation-property reconciliation, trace and immutability.
 - ✅ Covered: Canvas/edit action-order convergence, insufficient margin, guide collision and exact variant equivalence.
 - Evidence: `test/unit/actions/guides/title-actions.test.js` and density-area wrapped-title variant tests.
+
+Along-offset evidence: `test/unit/actions/guides/title-along-offset.test.js`는 네 edge의 전체 title/subtitle 이동, default/reset, create/edit convergence, Canvas replay, semantic/previous-program immutability와 invalid/overflow rejection을 검증한다. `test/contracts/text-metrics-types.test.js`가 공개 numeric option을 검증한다.
 
 ## `removeTitle`
 

@@ -1798,6 +1798,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `position` | Optional / branch-dependent | `"bottom" \| "left" \| "right" \| "top" \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `gap` | Optional / branch-dependent | `number \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
@@ -1811,7 +1812,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createTitle({
-  text, subtitle?, position?, align?, offset?, gap?,
+  text, subtitle?, position?, align?, offset?, alongOffset?, gap?,
   maxWidth?, wrap?, lineHeight?,
   titleStyle?, subtitleStyle?
 })
@@ -1844,6 +1845,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `position` | Optional / branch-dependent | `"bottom" \| "left" \| "right" \| "top" \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `gap` | Optional / branch-dependent | `number \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
@@ -1857,7 +1859,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 editTitle({
-  text?, subtitle?, position?, align?, offset?, gap?,
+  text?, subtitle?, position?, align?, offset?, alongOffset?, gap?,
   maxWidth?, wrap?, lineHeight?,
   titleStyle?, subtitleStyle?
 })

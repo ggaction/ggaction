@@ -160,6 +160,11 @@ including borders and combined categorical/size groups. Creating the title first
 or last follows the same rule. Canvas and scale updates check the final positions
 of dependent guides; rejected changes leave the earlier program unchanged.
 
+## Shift a title along its edge
+
+Use `alongOffset` in `createTitle` or `editTitle` to move the complete title/subtitle block along its selected edge. The signed finite logical-pixel value defaults to zero: positive moves top/bottom titles right and left/right titles down. It is independent of the existing outward `offset`. The shift remains through Canvas edits, and all occupied-bounds and guide-collision checks still apply. Set it to zero to restore the normal alignment anchor.
+
+
 ## Related
 
 [Canvas](./canvas.md) · [Guides](./guides.md) ·

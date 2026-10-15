@@ -23,7 +23,7 @@ import { findCanvasGraphic } from
   "../../materialization/graphicHierarchy.js";
 
 const OPTIONS = Object.freeze([
-  "text", "subtitle", "position", "align", "offset", "gap", "titleStyle",
+  "text", "subtitle", "position", "align", "offset", "alongOffset", "gap", "titleStyle",
   "subtitleStyle", "maxWidth", "wrap", "lineHeight"
 ]);
 const STYLE_OPTIONS = Object.freeze([
@@ -36,6 +36,7 @@ const DEFAULTS = Object.freeze({
   position: "top",
   align: "left",
   offset: 0,
+  alongOffset: 0,
   gap: 8,
   titleStyle: Object.freeze({
     color: DEFAULT_COLORS.strongText,
@@ -83,6 +84,7 @@ function normalizeConfig(args, defaults, { hasSubtitle }) {
   const align = args.align ?? defaults.align;
   const offset = args.offset ?? defaults.offset;
   const gap = args.gap ?? defaults.gap;
+  const alongOffset = args.alongOffset ?? defaults.alongOffset ?? 0;
   const titleStyle = normalizeStyle(
     args.titleStyle,
     defaults.titleStyle,
@@ -105,6 +107,7 @@ function normalizeConfig(args, defaults, { hasSubtitle }) {
   if (!Number.isFinite(offset)) {
     throw new TypeError("Chart title offset must be a finite number.");
   }
+  if (!Number.isFinite(alongOffset)) throw new TypeError("Chart title alongOffset must be a finite number.");
   validateNonNegativeFinite(gap, "Chart title gap");
   if (maxWidth !== undefined) {
     validatePositiveFinite(maxWidth, "Chart title maxWidth");
@@ -126,6 +129,7 @@ function normalizeConfig(args, defaults, { hasSubtitle }) {
     position,
     align,
     offset,
+    alongOffset,
     gap,
     titleStyle,
     subtitleStyle,
@@ -229,7 +233,7 @@ export function resolveTitleLayout(program, config) {
   }
   let component;
   if (horizontal) {
-    const x = alignedTextAnchor(plot.x, plot.width, config.align);
+    const x = alignedTextAnchor(plot.x, plot.width, config.align) + (config.alongOffset ?? 0);
     const blockTop = automatic ? titleEdge - (near ? block.height : 0)
       : config.position === "top"
       ? 16 + config.offset
@@ -244,7 +248,7 @@ export function resolveTitleLayout(program, config) {
     });
   } else {
     const rotation = config.position === "left" ? -Math.PI / 2 : Math.PI / 2;
-    const y = alignedTitleAnchor(plot.y, plot.height, block.width, config.align);
+    const y = alignedTitleAnchor(plot.y, plot.height, block.width, config.align) + (config.alongOffset ?? 0);
     const edge = automatic ? titleEdge + (near ? -block.height : block.height)
       : config.position === "left"
       ? 16 + config.offset

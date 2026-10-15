@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:3e3a3443f12c1ff07f87cc90c420e8e5bac55b7de65b9b1d756ca8dc74dc3b95. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:2a6cd370a720ea1e559de330a53817022e551e8a1552f88bdd637fc7e2c1c1b3. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -8905,6 +8905,10 @@ The collision check includes Cartesian axis components and every legend family,
 including borders and combined categorical/size groups. Creating the title first
 or last follows the same rule. Canvas and scale updates check the final positions
 of dependent guides; rejected changes leave the earlier program unchanged.
+
+## Shift a title along its edge
+
+Use `alongOffset` in `createTitle` or `editTitle` to move the complete title/subtitle block along its selected edge. The signed finite logical-pixel value defaults to zero: positive moves top/bottom titles right and left/right titles down. It is independent of the existing outward `offset`. The shift remains through Canvas edits, and all occupied-bounds and guide-collision checks still apply. Set it to zero to restore the normal alignment anchor.
 
 ## Related
 
@@ -24761,6 +24765,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `position` | Optional / branch-dependent | `"bottom" \| "left" \| "right" \| "top" \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `gap` | Optional / branch-dependent | `number \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
@@ -24772,7 +24777,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createTitle({
-  text, subtitle?, position?, align?, offset?, gap?,
+  text, subtitle?, position?, align?, offset?, alongOffset?, gap?,
   maxWidth?, wrap?, lineHeight?,
   titleStyle?, subtitleStyle?
 })
@@ -24803,6 +24808,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `position` | Optional / branch-dependent | `"bottom" \| "left" \| "right" \| "top" \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `gap` | Optional / branch-dependent | `number \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
@@ -24814,7 +24820,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 editTitle({
-  text?, subtitle?, position?, align?, offset?, gap?,
+  text?, subtitle?, position?, align?, offset?, alongOffset?, gap?,
   maxWidth?, wrap?, lineHeight?,
   titleStyle?, subtitleStyle?
 })
@@ -36030,6 +36036,8 @@ export interface TitleOptions {
   position?: "top" | "bottom" | "left" | "right";
   align?: "left" | "center" | "right";
   offset?: number;
+  /** Signed logical-pixel shift along the selected edge; defaults to zero. */
+  alongOffset?: number;
   gap?: number;
   maxWidth?: number;
   wrap?: "word" | "character";
@@ -38986,7 +38994,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:3e3a3443f12c1ff07f87cc90c420e8e5bac55b7de65b9b1d756ca8dc74dc3b95` |
+| Contract fingerprint | `sha256:2a6cd370a720ea1e559de330a53817022e551e8a1552f88bdd637fc7e2c1c1b3` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

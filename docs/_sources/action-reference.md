@@ -2711,7 +2711,7 @@ visibility, layout and item order; automatic symbols are inferred again. [Legend
 
 ```javascript
 createTitle({
-  text, subtitle?, position?, align?, offset?, gap?,
+  text, subtitle?, position?, align?, offset?, alongOffset?, gap?,
   maxWidth?, wrap?, lineHeight?,
   titleStyle?, subtitleStyle?
 })
@@ -2723,7 +2723,7 @@ Create a chart title and optional subtitle. [Titles](../api/titles.md)
 
 ```javascript
 editTitle({
-  text?, subtitle?, position?, align?, offset?, gap?,
+  text?, subtitle?, position?, align?, offset?, alongOffset?, gap?,
   maxWidth?, wrap?, lineHeight?,
   titleStyle?, subtitleStyle?
 })

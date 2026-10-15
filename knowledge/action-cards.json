@@ -19713,6 +19713,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "maxWidth",
           "unit": "logical-pixel"
         },
@@ -19759,6 +19763,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "gap",
           "required": false,
           "type": "number | undefined"
@@ -19790,7 +19799,7 @@
         }
       ],
       "callPatterns": [
-        "createTitle({ text, subtitle?, position?, align?, offset?, gap?, maxWidth?, wrap? })"
+        "createTitle({ text, subtitle?, position?, align?, offset?, alongOffset?, gap?, maxWidth? })"
       ],
       "snippet": "program.createTitle({ text: \"Chart title\" })",
       "errors": [],
@@ -19841,6 +19850,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "maxWidth",
           "unit": "logical-pixel"
         },
@@ -19885,6 +19898,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "gap",
           "required": false,
           "type": "number | undefined"
@@ -19916,7 +19934,7 @@
         }
       ],
       "callPatterns": [
-        "editTitle({ text?, subtitle?, position?, align?, offset?, gap?, maxWidth?, wrap? })"
+        "editTitle({ text?, subtitle?, position?, align?, offset?, alongOffset?, gap?, maxWidth? })"
       ],
       "snippet": "program.editTitle({ text: \"Chart title\" })",
       "errors": [],
