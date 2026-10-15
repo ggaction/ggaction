@@ -338,3 +338,20 @@ test("facets preserve computed provenance and filter its row-preserving output",
     assert.equal(child.semanticSpec.layers[0].data, filtered.id);
   }
 });
+
+
+test("explicit decimal conversion preserves raw text and supports typed chart positions", () => {
+  const values = [{ x: 1, text: " 1.25 " }, { x: 2, text: "-.5e1" }, { x: 3, text: 7 }];
+  const before = chart().createCanvas({ width: 400, height: 300 }).createData({ id: "raw", values });
+  const program = before.createComputedData({ id: "numeric", as: "value", expression: { op: "toNumber", operand: { field: "text" } } });
+  assert.deepEqual(program.semanticSpec.datasets[1].values.map(row => row.value), [1.25, -5, 7]);
+  assert.deepEqual(program.semanticSpec.datasets[0].values, values);
+  assert.equal(before.semanticSpec.datasets.length, 1);
+  const plotted = program.createLinePlot({ x: "x", y: "value", guides: false });
+  assert.equal(plotted.graphicSpec.objects.linePlot.items[0].properties.commands.length, 3);
+  for (const text of ["", " ", "no", "0x10", "Infinity", "1e999", null, true]) {
+    const bad = chart().createData({ id: "raw", values: [{ text }] });
+    assert.throws(() => bad.createComputedData({ id: "numeric", as: "value", expression: { op: "toNumber", operand: { field: "text" } } }), /finite|decimal/);
+    assert.equal(bad.semanticSpec.datasets.length, 1);
+  }
+});

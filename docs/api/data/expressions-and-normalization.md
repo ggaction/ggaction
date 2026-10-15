@@ -34,10 +34,12 @@ const shares = program.createComputedData({
 
 Leaves are `{ field }` and `{ constant }`; constants may be finite numbers,
 strings, booleans, or null. The closed union includes arithmetic, comparison,
-boolean logic, `if`, `coalesce`, `concat`, `log`, and `sqrt`. Conditional
+boolean logic, `if`, `coalesce`, `concat`, `log`, `sqrt`, and `toNumber`. Conditional
 and boolean nodes short-circuit value evaluation, while every branch and field
 name is structurally checked first. The action stores this data AST as
 provenance and never evaluates callbacks, source strings, or arbitrary code.
+
+Use `{ op: "toNumber", operand: { field: "amountText" } }` to explicitly convert a decimal or scientific-notation string into a finite number in a new derived field. Surrounding whitespace is trimmed. Empty strings, null, booleans, hexadecimal text and non-finite results reject. Finite numeric inputs remain unchanged.
 
 Arithmetic remains finite and strictly numeric. Other operations do not coerce
 types. Undefined cells normalize to null, but a missing field name is an error.

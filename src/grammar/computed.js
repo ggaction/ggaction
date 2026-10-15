@@ -78,7 +78,7 @@ function inspectExpression(expression, depth, state) {
       inspectExpression(expression.right, depth + 1, state);
       return;
     }
-    if (NUMERIC_UNARY.has(expression.op) || BOOLEAN_UNARY.has(expression.op)) {
+    if (NUMERIC_UNARY.has(expression.op) || BOOLEAN_UNARY.has(expression.op) || expression.op === "toNumber") {
       rejectUnknownKeys(expression, ["op", "operand"], "computed unary expression");
       requireNode(expression, "operand", expression.op);
       inspectExpression(expression.operand, depth + 1, state);
@@ -271,6 +271,14 @@ function evaluate(expression, row, rowIndex) {
     return operation === "isNull"
       ? value === null
       : !boolean(value, operation, rowIndex);
+  }
+  if (operation === "toNumber") {
+    const value = evaluate(expression.operand, row, rowIndex);
+    if (typeof value === "number") return number(value, operation, rowIndex);
+    if (typeof value !== "string" || !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(value.trim())) {
+      throw new TypeError(`Computed toNumber requires a finite number or decimal string at row ${rowIndex}.`);
+    }
+    return number(Number(value.trim()), operation, rowIndex);
   }
   if (NUMERIC_UNARY.has(operation)) {
     const value = number(evaluate(expression.operand, row, rowIndex), operation, rowIndex);

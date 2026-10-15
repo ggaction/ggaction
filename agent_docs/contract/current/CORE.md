@@ -598,6 +598,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   number/string/boolean/null `{ constant }`다. 산술, 비교, boolean, `if`, `coalesce`, `concat`,
   `log`, `sqrt`의 닫힌 node union을 지원한다. `if`·`and`·`or`·`coalesce`는 값 평가를
   short-circuit하지만 모든 branch의 구조와 field 존재는 먼저 검증한다.
+- `toNumber` unary node는 finite number를 보존하고 trim된 signed decimal/scientific string을 finite number로 변환한다. Empty/whitespace, null, boolean, hex, invalid 및 non-finite 값은 거부한다. 다른 연산의 strict numeric 계약은 유지한다.
 - Effect: source row와 모든 existing cell을 보존하고 각 row에 한 primitive 또는 null output을 추가한다.
   Serialized transform 자체가 exact formula provenance다. Facet replay에서는 row-preserving transform으로
   처리한다. undefined cell은 null로 평가하지만 field key 자체가 없는 row는 오류다. 한 materialization의
@@ -612,7 +613,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 - Implemented: `createComputedData({ id: UserId; source?: UserId; as: FieldName; expression: ComputedExpression }): ChartProgram`
 - Implemented nodes: field; number/string/boolean/null constant; add/subtract/multiply/divide;
-  negate/absolute/log/sqrt; eq/neq/lt/lte/gt/gte; and/or/not/isNull; if/coalesce/concat.
+  negate/absolute/log/sqrt/toNumber; eq/neq/lt/lte/gt/gte; and/or/not/isNull; if/coalesce/concat.
 - Proposed (NOT IMPLEMENTED): callbacks, expression strings, group aggregates, arbitrary regex와 arbitrary code evaluation.
 
 ### Value coverage — `createComputedData`

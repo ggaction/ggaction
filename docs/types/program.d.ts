@@ -790,7 +790,7 @@ export type ComputedExpression =
   | { readonly field: string }
   | { readonly constant: number | string | boolean | null }
   | {
-      readonly op: "negate" | "absolute" | "log" | "sqrt" | "not" | "isNull";
+      readonly op: "negate" | "absolute" | "log" | "sqrt" | "not" | "isNull" | "toNumber";
       readonly operand: ComputedExpression;
     }
   | {
