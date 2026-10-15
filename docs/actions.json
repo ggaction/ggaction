@@ -15920,6 +15920,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "flush",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
@@ -16110,6 +16115,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "flush",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
@@ -16268,6 +16278,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "flush",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
@@ -16314,7 +16329,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, alongOffset? })"
+        "editXAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, flush? })"
       ],
       "snippet": "program.editXAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
@@ -16441,6 +16456,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "flush",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
@@ -16487,7 +16507,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, alongOffset? })"
+        "editYAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, flush? })"
       ],
       "snippet": "program.editYAxisLabels({ labelMap: \"auto\" })",
       "errors": [],

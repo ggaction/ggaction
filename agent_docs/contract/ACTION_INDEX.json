@@ -2583,7 +2583,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editXAxisLabels` edits style, layout, and typed categorical display labels; signed along-axis displacement is preserved during replay",
+      "update": "`editXAxisLabels` edits style, layout, and typed categorical display labels; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2601,7 +2601,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editYAxisLabels` edits style, layout, and typed categorical display labels; signed along-axis displacement is preserved during replay",
+      "update": "`editYAxisLabels` edits style, layout, and typed categorical display labels; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2619,7 +2619,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits x-axis label style/layout and sets or resets a typed categorical labelMap; signed along-axis displacement is preserved during replay",
+      "update": "Edits x-axis label style/layout and sets or resets a typed categorical labelMap; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2637,7 +2637,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits y-axis label style/layout and sets or resets a typed categorical labelMap; signed along-axis displacement is preserved during replay",
+      "update": "Edits y-axis label style/layout and sets or resets a typed categorical labelMap; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
