@@ -333,14 +333,14 @@ function createArcPrimitiveProgram(values, settings) {
       length: legend.domain.length
     })
     .editGraphics({ target: "colorLegendLabels", property: "x", value: legend.labelX })
-    .editGraphics({ target: "colorLegendLabels", property: "y", value: legend.itemY })
+    .editGraphics({ target: "colorLegendLabels", property: "y", value: legend.itemY.map(y => y - 6) })
     .editGraphics({ target: "colorLegendLabels", property: "text", value: legend.domain })
     .editGraphics({ target: "colorLegendLabels", property: "fill", value: "#334155" })
     .editGraphics({ target: "colorLegendLabels", property: "fontSize", value: 12 })
     .editGraphics({ target: "colorLegendLabels", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "colorLegendLabels", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "colorLegendLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "colorLegendLabels", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "colorLegendLabels", property: "textBaseline", value: "top" })
     .createGraphics({ id: "colorLegendTitle", parent: "canvas", type: "text" })
     .editGraphics({ target: "colorLegendTitle", property: "x", value: legend.titleX })
     .editGraphics({ target: "colorLegendTitle", property: "y", value: legend.titleY })
@@ -350,7 +350,7 @@ function createArcPrimitiveProgram(values, settings) {
     .editGraphics({ target: "colorLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "colorLegendTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "colorLegendTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "colorLegendTitle", property: "textBaseline", value: "middle" });
+    .editGraphics({ target: "colorLegendTitle", property: "textBaseline", value: "top" });
 }
 
 export function createCarsOriginDonutPrimitives(rows) {

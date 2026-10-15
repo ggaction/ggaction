@@ -575,7 +575,8 @@ export function createCarsRegressionScatterplotValues(
   const originLegendX = bounds.x + bounds.width + 30;
   const sizeLegendX = originLegendX;
   const originLegendItems = groupDomain.map((group, index) => {
-    const y = bounds.y + 52 + index * 28;
+    // The 13px title starts at the plot top; retain the existing title-to-item gap.
+    const y = bounds.y + 38.5 + index * 28;
     const radius = Math.sqrt(64 / Math.PI);
     const side = radius * Math.sqrt(Math.PI);
     const shape = shapeRange[index];
@@ -636,7 +637,7 @@ export function createCarsRegressionScatterplotValues(
         strokeDash: []
       },
       symbol,
-      label: { x: originLegendX + 44, y, text: group }
+      label: { x: originLegendX + 44, y: y - 6, text: group }
     };
   });
   const sizeLegendValues = Array.from(
@@ -645,10 +646,11 @@ export function createCarsRegressionScatterplotValues(
       index / (DEFAULT_SIZE_LEGEND_COUNT - 1) *
       (sizeDomain[1] - sizeDomain[0])
   );
-  const sizeLegendTitleY = bounds.y + 89 + (groupDomain.length - 1) * 28;
+  // A 24px block gap follows the last 12px category label.
+  const sizeLegendTitleY = bounds.y + 68.5 + (groupDomain.length - 1) * 28;
   const sizeLegendItems = sizeLegendValues.map((value, index) => {
     const area = mapValue(value, sizeDomain, sizeRange);
-    const y = sizeLegendTitleY + 32 + index * 40;
+    const y = sizeLegendTitleY + 38.5 + index * 40;
     return {
       value,
       symbol: {
@@ -660,7 +662,7 @@ export function createCarsRegressionScatterplotValues(
       },
       label: {
         x: sizeLegendX + 44,
-        y,
+        y: y - 6,
         text: String(+value.toPrecision(3))
       }
     };
@@ -749,7 +751,7 @@ export function createCarsRegressionScatterplotValues(
     },
     legends: {
       origin: {
-        title: { x: originLegendX, y: bounds.y + 20, text: groupField },
+        title: { x: originLegendX, y: bounds.y, text: groupField },
         items: originLegendItems
       },
       size: {

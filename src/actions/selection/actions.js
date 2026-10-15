@@ -19,7 +19,6 @@ import {
   findSelectionPolicy,
   requireSelectionPolicy
 } from "../../materialization/selection/policies/index.js";
-import { legendGraphicIds } from "../../materialization/guides/resources.js";
 import {
   normalizeDimOthers,
   validateUnitInterval
@@ -84,18 +83,7 @@ function categoricalLegendKinds(program, target) {
 function resetCategoricalLegendSymbols(program, target) {
   const kinds = categoricalLegendKinds(program, target);
   if (kinds.length === 0) return program;
-  let next = program;
-  for (const kind of kinds) {
-    for (const id of legendGraphicIds(kind).filter(id => id.includes("Symbol"))) {
-      const graphic = next.graphicSpec.objects[id];
-      if (graphic === undefined) continue;
-      next = graphic.type === "collection"
-        ? next.editGraphics({ target: id, property: "items", value: [] })
-        : next.editGraphics({ target: id, property: "length", value: 0 });
-    }
-    next = next.rematerializeLegendSymbols({ kind });
-  }
-  return next;
+  return program.rematerializeLegend();
 }
 
 function targetHighlightEntries(program, target) {

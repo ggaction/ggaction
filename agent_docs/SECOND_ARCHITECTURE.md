@@ -280,8 +280,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 379,000 bytes |
-| `ggaction/basic` | 180,000 bytes |
+| `ggaction` | 382,000 bytes |
+| `ggaction/basic` | 183,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -1935,6 +1935,7 @@ Canvas의 opt-in 내부 크기 intent는 기존 materializationConfigs.canvas가
 Guide domain transaction이 실제 측정 overflow를 읽고 Canvas 및 margin을 함께 확장한 뒤
 공통 Canvas rematerialization plan을 명시적으로 실행한다. 실패한 시도는 immutable branch로
 폐기하며 generic action completion hook이나 renderer compiler를 추가하지 않는다.
+Unit guide transaction은 sibling materialization 완료 뒤 side lane을 명시적으로 최종 배치하고 그 다음 title 및 충돌 검사를 수행한다. Composition의 shared-guide 배치는 composition owner에 남으며 unit action을 호출하지 않는다.
 세부 sizing/충돌 계약은 Current CORE와 AXES, LEGEND_AND_TITLE이 소유한다.
 
 Full bundle은 summary mapping/pixel span/whisker lifecycle 추가 후375,809bytes로 측정되어
@@ -1959,3 +1960,5 @@ visible prefix와 hidden count를 derive한다. Symbol은 prefix만, labels/layo
 소비한다. Plot corner anchor는 measured painted bounds를 plot 내부로 이동하며 outer lane을
 사용하지 않는다. Raw Cartesian singleton line은 source identity와 scale domain을 유지하는
 M-only path다. Shared graphic schema가 이를 허용하며 renderer는 별도 의미 추론을 하지 않는다.
+
+Side legend 전체 occupied-top 정렬과 guide transaction replay 보강 후 packed browser gzip 실측은 Full381,388bytes / Basic182,240bytes다. 기존379,000/180,000bytes를 초과하여 한도를382,000/183,000bytes로 조정한다. SVG 한도는 유지한다.

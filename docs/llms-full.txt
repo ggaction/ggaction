@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:2a6cd370a720ea1e559de330a53817022e551e8a1552f88bdd637fc7e2c1c1b3. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:cf8095d4d715f4a63383d580b7b98bbabe3465a3020b1624bb3a7877c41576aa. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12528,6 +12528,13 @@ Cartesian or Polar coordinate. Ambiguous resources require explicit IDs.
 Legends are inferred from final mark encodings and materialized as concrete
 graphics. Start with the family that matches the encoded channel and use the
 editing page when changing an existing guide.
+
+Right and left legends start at the top of the actual plot, excluding the chart title.
+The complete legend includes its visible title, symbols, labels, and optional border.
+Multiple blocks share one stack whose top aligns with the plot; blocks retain their spacing.
+Shared facet legends align with the top of the translated child plots.
+The horizontal `offset` still controls the gap beside the plot.
+Top, bottom, and in-plot corner positions keep their own alignment rules.
 
 ## Supported legend families
 
@@ -30710,6 +30717,7 @@ Related types: [`LegendTextOptions`](./reference/types/#type-legendtextoptions).
 export interface EditLegendLayoutOptions {
   target?: string;
   layout?: "edge" | "legacy-bottom";
+  /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
@@ -32703,6 +32711,7 @@ export interface LegendOptions {
   target?: string;
   /** Exact requested content; omission infers encoded point color/shape/size. Explicit subsets include size only when listed. */
   channels?: readonly ("color" | "stroke" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
+  /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
@@ -38994,7 +39003,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:2a6cd370a720ea1e559de330a53817022e551e8a1552f88bdd637fc7e2c1c1b3` |
+| Contract fingerprint | `sha256:cf8095d4d715f4a63383d580b7b98bbabe3465a3020b1624bb3a7877c41576aa` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

@@ -8,6 +8,12 @@ const edgeReferences = {
   right: { x: [790.25,790.25], y: [252,280], labelX: [812.5,812.5], title: [790,220], align: "left" },
   left: { x: [165.07,165.07], y: [252,280], labelX: [187.32,187.32], title: [164.82,220], align: "left" },
 };
+// Side title bounds start at the 200px plot top, 13.5px above their old bounds.
+for (const edge of ["left", "right"]) {
+  const r = edgeReferences[edge];
+  r.y = r.y.map(y => y - 13.5);
+  r.title[1] = 200;
+}
 // Two occupied slots14.5, label widths16.32/22.68 and column gap28.
 for (const edge of ["top", "bottom"]) {
   const first = 240 + (520 - (38.82 + 45.18 + 28)) / 2;
@@ -24,7 +30,7 @@ function intervalBase() {
     .encodeX({field:"x"}).encodeY({field:"y"}).encodeColor({field:"m",fieldType:"quantitative",scale:{type:"quantize",range:["#4c78a8","#f58518"]}});
 }
 function intervalPrimitive(base, edge) {
-  const r=edgeReferences[edge];
+  const r=edgeReferences[edge], side = ["left", "right"].includes(edge);
   return base.createGraphics({id:"colorLegendSymbols",type:"rect",length:2,parent:"canvas"})
     .editGraphics({target:"colorLegendSymbols",property:"x",value:r.x})
     .editGraphics({target:"colorLegendSymbols",property:"y",value:r.y.map(y=>y-6)})
@@ -35,14 +41,14 @@ function intervalPrimitive(base, edge) {
     .editGraphics({target:"colorLegendSymbols",property:"strokeWidth",value:0.5})
     .createGraphics({id:"colorLegendLabels",type:"text",length:2,parent:"canvas"})
     .editGraphics({target:"colorLegendLabels",property:"x",value:r.labelX})
-    .editGraphics({target:"colorLegendLabels",property:"y",value:r.y})
+    .editGraphics({target:"colorLegendLabels",property:"y",value:r.y.map(y => y - (side ? 6 : 0))})
     .editGraphics({target:"colorLegendLabels",property:"text",value:["< 5","≥ 5"]})
     .editGraphics({target:"colorLegendLabels",property:"fill",value:"#334155"})
     .editGraphics({target:"colorLegendLabels",property:"fontSize",value:12})
     .editGraphics({target:"colorLegendLabels",property:"fontFamily",value:"sans-serif"})
     .editGraphics({target:"colorLegendLabels",property:"fontWeight",value:"normal"})
     .editGraphics({target:"colorLegendLabels",property:"textAlign",value:"left"})
-    .editGraphics({target:"colorLegendLabels",property:"textBaseline",value:"middle"})
+    .editGraphics({target:"colorLegendLabels",property:"textBaseline",value:side ? "top" : "middle"})
     .createGraphics({id:"colorLegendTitle",type:"text",parent:"canvas"})
     .editGraphics({target:"colorLegendTitle",property:"x",value:r.title[0]})
     .editGraphics({target:"colorLegendTitle",property:"y",value:r.title[1]})
@@ -52,7 +58,7 @@ function intervalPrimitive(base, edge) {
     .editGraphics({target:"colorLegendTitle",property:"fontFamily",value:"sans-serif"})
     .editGraphics({target:"colorLegendTitle",property:"fontWeight",value:600})
     .editGraphics({target:"colorLegendTitle",property:"textAlign",value:r.align})
-    .editGraphics({target:"colorLegendTitle",property:"textBaseline",value:"middle"});
+    .editGraphics({target:"colorLegendTitle",property:"textBaseline",value:side ? "top" : "middle"});
 }
 
 test("places interval legends at four edges with exact primitive graphics and pixels", async () => {

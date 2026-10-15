@@ -31,7 +31,7 @@ export function createCarsWeightedRulePrimitives(cars) {
     (_, index) => WEIGHT_DOMAIN[0] + index / 4 *
       (WEIGHT_DOMAIN[1] - WEIGHT_DOMAIN[0])
   );
-  const legendY = legendValues.map((_, index) => MARGIN.top + 52 + index * 32);
+  const legendY = legendValues.map((_, index) => MARGIN.top + 38.5 + index * 32);
   const legendX = WIDTH - MARGIN.right + 30;
 
   return chart()
@@ -106,7 +106,7 @@ export function createCarsWeightedRulePrimitives(cars) {
     })
     .createGraphics({ id: "strokeWidthLegendLabels", parent: "canvas", type: "text", length: 5 })
     .editGraphics({ target: "strokeWidthLegendLabels", property: "x", value: legendValues.map(() => legendX + 32 + 8 + 12) })
-    .editGraphics({ target: "strokeWidthLegendLabels", property: "y", value: legendY })
+    .editGraphics({ target: "strokeWidthLegendLabels", property: "y", value: legendY.map(y => y - 6) })
     .editGraphics({
       target: "strokeWidthLegendLabels",
       property: "text",
@@ -117,15 +117,15 @@ export function createCarsWeightedRulePrimitives(cars) {
     .editGraphics({ target: "strokeWidthLegendLabels", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "strokeWidthLegendLabels", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "strokeWidthLegendLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "strokeWidthLegendLabels", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "strokeWidthLegendLabels", property: "textBaseline", value: "top" })
     .createGraphics({ id: "strokeWidthLegendTitle", parent: "canvas", type: "text" })
     .editGraphics({ target: "strokeWidthLegendTitle", property: "x", value: legendX })
-    .editGraphics({ target: "strokeWidthLegendTitle", property: "y", value: MARGIN.top + 20 })
+    .editGraphics({ target: "strokeWidthLegendTitle", property: "y", value: MARGIN.top })
     .editGraphics({ target: "strokeWidthLegendTitle", property: "text", value: "Weight_in_lbs" })
     .editGraphics({ target: "strokeWidthLegendTitle", property: "fill", value: "#0f172a" })
     .editGraphics({ target: "strokeWidthLegendTitle", property: "fontSize", value: 13 })
     .editGraphics({ target: "strokeWidthLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "strokeWidthLegendTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "strokeWidthLegendTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "strokeWidthLegendTitle", property: "textBaseline", value: "middle" });
+    .editGraphics({ target: "strokeWidthLegendTitle", property: "textBaseline", value: "top" });
 }

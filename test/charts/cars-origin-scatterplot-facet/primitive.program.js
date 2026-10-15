@@ -232,7 +232,7 @@ export function createCarsOriginScatterplotFacetPrimitives(cars) {
   });
   program = addLegend(program, {
     x: values.scatter.width - 132,
-    y: 82,
+    y: Math.min(...values.scatter.cells.map(cell => cell.y + 34)),
     domain: values.cylinders,
     colors: values.colorRange,
     symbol: "circle"
@@ -256,7 +256,7 @@ export function createCarsOriginHistogramFacetPrimitives(cars) {
   });
   program = addLegend(program, {
     x: values.histogram.width - 132,
-    y: 96,
+    y: Math.min(...values.histogram.cells.map(cell => cell.y + 34)),
     domain: values.cylinders,
     colors: values.colorRange,
     symbol: "rect"

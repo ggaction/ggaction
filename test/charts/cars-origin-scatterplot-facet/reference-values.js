@@ -462,7 +462,7 @@ export function createDirectFacetValues(cars) {
       ),
       legendItems: legendItems(
         scatterLayout.width + LEGEND_GAP,
-        TITLE_HEIGHT + 30,
+        Math.min(...scatterCells.map(cell => cell.y + 34)),
         "circle"
       )
     }),
@@ -481,7 +481,7 @@ export function createDirectFacetValues(cars) {
       ),
       legendItems: legendItems(
         histogramLayout.width + LEGEND_GAP,
-        TITLE_HEIGHT + 44,
+        Math.min(...histogramCells.map(cell => cell.y + 34)),
         "rect"
       )
     })

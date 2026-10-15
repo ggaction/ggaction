@@ -9,6 +9,12 @@ const edgeReferences = {
   top: { x: [424.02,517.3399999999999], y: [164,164], labelX: [473.02,566.3399999999999], title: [500,139.5], align: "center" },
   bottom: { x: [424.02,517.3399999999999], y: [561,561], labelX: [473.02,566.3399999999999], title: [500,536.5], align: "center" }
 };
+// Side title bounds start at the 200px plot top, 13.5px above their old bounds.
+for (const edge of ["left", "right"]) {
+  const r = edgeReferences[edge];
+  r.y = r.y.map(y => y - 13.5);
+  r.title[1] = 200;
+}
 // Align the literal occupied content, including sample strokes or unused slots.
 for (const edge of ["top", "bottom"]) {
   const r = edgeReferences[edge], dx = 500 - (r.x[0] + (r.labelX[1] + 14.64)) / 2;
@@ -23,7 +29,7 @@ function widthBase() {
     .encodeStrokeWidth({field:"m",scale:{domain:[0,10],range:[2,10]}});
 }
 function widthPrimitive(base, edge) {
-  const r=edgeReferences[edge];
+  const r=edgeReferences[edge], side = ["left", "right"].includes(edge);
   return base.createGraphics({id:"strokeWidthLegendSymbols",type:"line",length:2,parent:"canvas"})
     .editGraphics({target:"strokeWidthLegendSymbols",property:"x1",value:r.x})
     .editGraphics({target:"strokeWidthLegendSymbols",property:"x2",value:r.x.map(x=>x+32)})
@@ -33,14 +39,14 @@ function widthPrimitive(base, edge) {
     .editGraphics({target:"strokeWidthLegendSymbols",property:"strokeWidth",value:[2,10]})
     .createGraphics({id:"strokeWidthLegendLabels",type:"text",length:2,parent:"canvas"})
     .editGraphics({target:"strokeWidthLegendLabels",property:"x",value:r.labelX})
-    .editGraphics({target:"strokeWidthLegendLabels",property:"y",value:r.y})
+    .editGraphics({target:"strokeWidthLegendLabels",property:"y",value:r.y.map(y => y - (side ? 6 : 0))})
     .editGraphics({target:"strokeWidthLegendLabels",property:"text",value:["0","10"]})
     .editGraphics({target:"strokeWidthLegendLabels",property:"fill",value:"#334155"})
     .editGraphics({target:"strokeWidthLegendLabels",property:"fontSize",value:12})
     .editGraphics({target:"strokeWidthLegendLabels",property:"fontFamily",value:"sans-serif"})
     .editGraphics({target:"strokeWidthLegendLabels",property:"fontWeight",value:"normal"})
     .editGraphics({target:"strokeWidthLegendLabels",property:"textAlign",value:"left"})
-    .editGraphics({target:"strokeWidthLegendLabels",property:"textBaseline",value:"middle"})
+    .editGraphics({target:"strokeWidthLegendLabels",property:"textBaseline",value:side ? "top" : "middle"})
     .createGraphics({id:"strokeWidthLegendTitle",type:"text",parent:"canvas"})
     .editGraphics({target:"strokeWidthLegendTitle",property:"x",value:r.title[0]})
     .editGraphics({target:"strokeWidthLegendTitle",property:"y",value:r.title[1]})
@@ -50,7 +56,7 @@ function widthPrimitive(base, edge) {
     .editGraphics({target:"strokeWidthLegendTitle",property:"fontFamily",value:"sans-serif"})
     .editGraphics({target:"strokeWidthLegendTitle",property:"fontWeight",value:600})
     .editGraphics({target:"strokeWidthLegendTitle",property:"textAlign",value:r.align})
-    .editGraphics({target:"strokeWidthLegendTitle",property:"textBaseline",value:"middle"});
+    .editGraphics({target:"strokeWidthLegendTitle",property:"textBaseline",value:side ? "top" : "middle"});
 }
 
 test("places stroke-width legends at four edges with exact primitive graphics and pixels", async () => {

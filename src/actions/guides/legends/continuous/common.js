@@ -349,9 +349,9 @@ export function resolveLegendTextBounds(position, text, style, profile) {
 }
 
 export function assertLegendBoundsInsideCanvas(bounds, canvas, label, config) {
-  // Horizontal content is intrinsic until the shared lane places its actual
-  // concrete bounds. Only that final placement can determine Canvas fit.
-  if (isHorizontalEdgeLegend(config)) return;
+  // Outside content is intrinsic until its shared edge lane places the final
+  // concrete bounds. In-plot and legacy layouts validate their own anchors.
+  if (isHorizontalEdgeLegend(config) || ["left", "right"].includes(config?.position)) return;
   if (bounds.some(item =>
     item.left < 0 || item.right > canvas.width ||
     item.top < 0 || item.bottom > canvas.height
@@ -383,7 +383,7 @@ export function resolveLegendBackgroundFromBounds(
   y -= border.padding;
   right += border.padding;
   bottom += border.padding;
-  if (!isHorizontalEdgeLegend(config) && (
+  if (!isHorizontalEdgeLegend(config) && !["left", "right"].includes(config?.position) && (
     x - strokeExtent < 0 || y - strokeExtent < 0 ||
     right + strokeExtent > canvas.width ||
     bottom + strokeExtent > canvas.height

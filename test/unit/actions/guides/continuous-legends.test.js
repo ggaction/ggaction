@@ -82,7 +82,7 @@ test("creates the approved right gradient legend as concrete strips", () => {
   assert.equal(strips.length, 60);
   assert.deepEqual(strips[0].properties, {
     x: 640,
-    y: 76,
+    y: 62.5,
     width: 12,
     height: 2,
     fill: "#f8e722",
@@ -372,7 +372,7 @@ test("rejects incompatible options and insufficient margins atomically", () => {
     .encodeColor({ field: "value", fieldType: "quantitative" });
   assert.throws(
     () => color.createLegend({ channels: ["color"] }),
-    /more Canvas margin space/
+    /more right-margin or Canvas space/
   );
   assert.throws(
     () => color.createLegend({ channels: ["color"], columns: 2 }),

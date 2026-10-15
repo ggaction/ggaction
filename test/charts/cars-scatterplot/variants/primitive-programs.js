@@ -26,7 +26,7 @@ function editLegendText(program, id, values) {
     .editGraphics({ target: id, property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: id, property: "fontWeight", value: "normal" })
     .editGraphics({ target: id, property: "textAlign", value: "left" })
-    .editGraphics({ target: id, property: "textBaseline", value: "middle" });
+    .editGraphics({ target: id, property: "textBaseline", value: "top" });
 }
 
 function editLegendTitle(program, id, title) {
@@ -39,7 +39,7 @@ function editLegendTitle(program, id, title) {
     .editGraphics({ target: id, property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: id, property: "fontWeight", value: 600 })
     .editGraphics({ target: id, property: "textAlign", value: "left" })
-    .editGraphics({ target: id, property: "textBaseline", value: "middle" });
+    .editGraphics({ target: id, property: "textBaseline", value: "top" });
 }
 
 export function createEncodingReassignmentPrimitives(cars) {
@@ -348,7 +348,7 @@ export function createShapeVocabularyPrimitives(cars) {
     .editGraphics({
       target: "seriesLegendLabels",
       property: "textBaseline",
-      value: "middle"
+      value: "top"
     })
     .createGraphics({ id: "seriesLegendTitle", parent: "canvas", type: "text" })
     .editGraphics({
@@ -378,7 +378,7 @@ export function createShapeVocabularyPrimitives(cars) {
     .editGraphics({
       target: "seriesLegendTitle",
       property: "textBaseline",
-      value: "middle"
+      value: "top"
     });
 }
 
@@ -479,7 +479,7 @@ export function createCategoricalPalettePrimitives(cars) {
     .editGraphics({
       target: "colorLegendLabels",
       property: "textBaseline",
-      value: "middle"
+      value: "top"
     })
     .createGraphics({ id: "colorLegendTitle", parent: "canvas", type: "text" })
     .editGraphics({
@@ -509,7 +509,7 @@ export function createCategoricalPalettePrimitives(cars) {
     .editGraphics({
       target: "colorLegendTitle",
       property: "textBaseline",
-      value: "middle"
+      value: "top"
     });
 }
 

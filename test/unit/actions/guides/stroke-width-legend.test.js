@@ -62,9 +62,9 @@ test("creates and rematerializes a quantitative stroke-width legend", () => {
     ),
     ["2", "5", "8"]
   );
-  assert.equal(
-    program.trace.children.at(-1).children.at(-1).op,
-    "createStrokeWidthLegend"
+  assert.deepEqual(
+    program.trace.children.at(-1).children.map(child => child.op),
+    ["createStrokeWidthLegend", "rematerializeLegend", "rematerializeSideLegendLane"]
   );
 
   const edited = program.editScale({ id: "strokeWidth", range: [2, 10] });

@@ -267,14 +267,14 @@ export function createGapminderTransformedScalePrimitives(gapminder) {
       property: "x",
       value: legend.gradient[0].x + legend.gradient[0].width + 7.2
     })
-    .editGraphics({ target: "colorGradientLabels", property: "y", value: legend.positions })
+    .editGraphics({ target: "colorGradientLabels", property: "y", value: legend.labelPositions })
     .editGraphics({ target: "colorGradientLabels", property: "text", value: legend.labels })
     .editGraphics({ target: "colorGradientLabels", property: "fill", value: AXIS })
     .editGraphics({ target: "colorGradientLabels", property: "fontSize", value: 11 })
     .editGraphics({ target: "colorGradientLabels", property: "fontFamily", value: FONT })
     .editGraphics({ target: "colorGradientLabels", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "colorGradientLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "colorGradientLabels", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "colorGradientLabels", property: "textBaseline", value: "top" })
     .createGraphics({ id: "colorGradientTitle", parent: "canvas", type: "text" })
     .editGraphics({
       target: "colorGradientTitle",
@@ -284,7 +284,7 @@ export function createGapminderTransformedScalePrimitives(gapminder) {
     .editGraphics({
       target: "colorGradientTitle",
       property: "y",
-      value: bounds.top + 20
+      value: bounds.top
     })
     .editGraphics({ target: "colorGradientTitle", property: "text", value: "Life expectancy" })
     .editGraphics({ target: "colorGradientTitle", property: "fill", value: AXIS })
@@ -292,7 +292,7 @@ export function createGapminderTransformedScalePrimitives(gapminder) {
     .editGraphics({ target: "colorGradientTitle", property: "fontFamily", value: FONT })
     .editGraphics({ target: "colorGradientTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "colorGradientTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "colorGradientTitle", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "colorGradientTitle", property: "textBaseline", value: "top" })
     .createGraphics({ id: "chartTitle", parent: "canvas", type: "text" })
     .editGraphics({ target: "chartTitle", property: "x", value: bounds.left })
     .editGraphics({ target: "chartTitle", property: "y", value: scaled(30) })

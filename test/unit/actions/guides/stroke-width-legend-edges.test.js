@@ -74,12 +74,12 @@ test("stroke-width overflow and invalid options reject immutably", () => {
     assert.equal(JSON.stringify(p), before);
     assert.equal(JSON.stringify(source), sourceBefore);
   }
-  assert.throws(() => p.editCanvas({ width: 600, margin: { right: 20 } }), /margin space/);
-  assert.throws(() => p.editScale({ id: "strokeWidth", range: [1, 500] }), /margin space/);
+  assert.throws(() => p.editCanvas({ width: 600, margin: { right: 20 } }), /more right-margin or Canvas space/);
+  assert.throws(() => p.editScale({ id: "strokeWidth", range: [1, 500] }), /more right-margin or Canvas space/);
   const large = source.editCanvas({ width: 2000, margin: { right: 1200 } }).createLegend({ title: "W".repeat(60) });
   const hidden = large.editLegend({ title: false }).editCanvas({ width: 1000, margin: { right: 250 } });
   assert.equal(hidden.guideConfigs.legend.strokeWidth.title, "W".repeat(60));
-  assert.throws(() => hidden.editLegend({ title: "W".repeat(60) }), /margin space/);
+  assert.throws(() => hidden.editLegend({ title: "W".repeat(60) }), /more right-margin or Canvas space/);
   assert.equal(JSON.stringify(p), before);
 });
 
@@ -101,7 +101,7 @@ test("thick side samples keep a visible gap below the title", () => {
   for (const position of ["left", "right"]) {
     const p = base().editScale({ id: "strokeWidth", range: [60, 60] }).createLegend({ position, count: 3 });
     const title = p.graphicSpec.objects.strokeWidthLegendTitle.properties;
-    assert.equal(samples(p)[0].y1 - 30 - (title.y + title.fontSize / 2), 12);
+    assert.equal(samples(p)[0].y1 - 30 - (title.y + title.fontSize), 12);
     assert.equal(samples(p)[1].y1 - samples(p)[0].y1, 60);
     assert.deepEqual(p.editLegend({ title: false }).graphicSpec,
       base().createLegend({ position, count: 3 }).editLegend({ title: false })
@@ -114,6 +114,6 @@ test("large side labels keep their occupied box below a large title", () => {
     .createLegend({ count: 2, labels: { fontSize: 64 }, titleStyle: { fontSize: 48 } });
   const title = p.graphicSpec.objects.strokeWidthLegendTitle.properties;
   const label = p.graphicSpec.objects.strokeWidthLegendLabels.items[0].properties;
-  assert.equal(label.y - 32 - (title.y + 24), 12);
-  assert.equal(label.y, 338);
+  assert.equal(label.y - (title.y + 48), 12);
+  assert.equal(label.y, 310);
 });

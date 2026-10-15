@@ -55,18 +55,16 @@ function legendTranslation(prepared, plot, layout) {
   const strips = prepared.source.graphicSpec.objects[`${prefix}Strips`];
   if (strips?.items?.[0] !== undefined) {
     const properties = strips.items[0].properties;
-    const length = prepared.source.guideConfigs.legend[gradientKind].gradient.length;
     return {
       x: layout.legend.x - (position === "left"
         ? prepared.bounds.left
         : properties.x),
-      y: plot.y + (plot.height - length) / 2 - properties.y
+      y: plot.y - prepared.bounds.top
     };
   }
-  const height = prepared.bounds.bottom - prepared.bounds.top;
   return {
     x: layout.legend.x - prepared.bounds.left,
-    y: plot.y + Math.max(0, (plot.height - height) / 2) - prepared.bounds.top
+    y: plot.y - prepared.bounds.top
   };
 }
 
@@ -153,7 +151,10 @@ export function applyFacetGuideComposition(program, { layout, plot } = {}) {
   let id;
   if (prepared.mode === "legacyCategorical") {
     id = `${program.compositionSpec.id}-legend`;
-    next = materializeLegacyCategoricalLegend(next, prepared, layout);
+    next = materializeLegacyCategoricalLegend(next, prepared, {
+      ...layout,
+      legend: { ...layout.legend, y: plot.y }
+    });
   } else {
     id = `${program.compositionSpec.id}-shared-legend`;
     next = attachParentLegend(next, prepared, plot, layout);

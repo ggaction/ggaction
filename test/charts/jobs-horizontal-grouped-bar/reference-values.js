@@ -158,7 +158,7 @@ export function createHorizontalGroupedBarValues(
     position: bounds.y + (index + 0.5) * categoryStep
   }));
   const legendX = bounds.x + bounds.width + 8;
-  const legendY = bounds.y + 20;
+  const legendY = bounds.y;
 
   return deepFreeze({
     width,
@@ -225,11 +225,11 @@ export function createHorizontalGroupedBarValues(
         label: group,
         color: COLORS[index % COLORS.length],
         x: legendX + 0.25,
-        y: bounds.y + 46 + index * 28,
+        y: bounds.y + 32.5 + index * 28,
         width: 14,
         height: 12,
         labelX: legendX + 22.5,
-        labelY: bounds.y + 52 + index * 28
+        labelY: bounds.y + 32.5 + index * 28
       }))
     },
     title: {

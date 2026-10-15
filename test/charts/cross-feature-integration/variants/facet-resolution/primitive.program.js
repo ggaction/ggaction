@@ -244,7 +244,8 @@ function compactPopulation(value) {
 function addPopulationLegend(program, values) {
   const layout = OUTER_GUIDE_LAYOUT;
   const x = values.width + layout.legendGap;
-  const y = values.plot.y + (values.plot.height - layout.gradientHeight) / 2;
+  // The inferred 11px title is shifted 8px down in its source; its final top owns the shared plot anchor.
+  const y = values.plot.y + 23.5;
   const ratios = Array.from(
     { length: layout.gradientSteps },
     (_, index) => 1 - (index + 0.5) / layout.gradientSteps
@@ -284,27 +285,27 @@ function addPopulationLegend(program, values) {
   }, { length: tickValues.length });
   next = graphic(next, "populationGradientLabels", "text", {
     x: tickValues.map(() => x + layout.gradientWidth + 9),
-    y: tickY,
+    y: tickY.map(y => y - 5),
     text: tickValues.map(compactPopulation),
     fill: "#334155",
     fontSize: 10,
     fontFamily: FONT,
     fontWeight: "normal",
     textAlign: "left",
-    textBaseline: "middle",
+    textBaseline: "top",
     rotation: 0,
     opacity: 1
   }, { length: tickValues.length });
   return graphic(next, "populationGradientTitle", "text", {
     x,
-    y: y - 18,
+    y: values.plot.y,
     text: "pop",
     fill: "#0f172a",
     fontSize: 11,
     fontFamily: FONT,
     fontWeight: 600,
     textAlign: "left",
-    textBaseline: "middle"
+    textBaseline: "top"
   });
 }
 

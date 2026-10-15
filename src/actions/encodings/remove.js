@@ -26,6 +26,7 @@ import { findDataset } from "../../selectors/datasets.js";
 import { assertPathGroupCompatible, validatePathGroupAppearance } from "../../materialization/marks/grouping.js";
 import { assertEncodingSelectionCompatibility } from "../../materialization/selection/compatibility.js";
 import { planLegendBlockTransitions } from "../guides/legends/transition.js";
+import { withGuideLayoutValidation } from "../../materialization/guides/layout.js";
 
 const OPTIONS = Object.freeze(["target", "channel"]);
 const REMOVABLE_CHANNELS = Object.freeze([
@@ -208,7 +209,7 @@ export const removeEncoding = /* @__PURE__ */ closedAction(
     op: "removeEncoding",
     description: "Remove one semantic encoding and its owned materialized state."
   }, OPTIONS,
-  function (args = {}) {
+  withGuideLayoutValidation(function (args = {}) {
     if (!REMOVABLE_CHANNELS.includes(args.channel)) {
       throw new Error(
         `Unsupported removable encoding channel "${args.channel}".`
@@ -259,7 +260,7 @@ export const removeEncoding = /* @__PURE__ */ closedAction(
     next = cleanupLegends(next, layer.id, channels);
     next = cleanupPositionGuides(next, removedPositions);
     return applyDetachedScaleRematerialization(rematerializeTarget(next, layer.id), [layer]);
-  }
+  })
 );
 
 export function registerEncodingRemovalAction(ProgramClass) {

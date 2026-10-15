@@ -152,7 +152,7 @@ test("rejects a right offset that cannot fit labels without partial state", () =
       position: "right",
       offset: 210
     }),
-    /more Canvas margin space/
+    /more right-margin or Canvas space/
   );
   assert.equal(prior.graphicSpec.objects.colorLegendSymbols, undefined);
   assert.equal(prior.guideConfigs.legend?.color, undefined);

@@ -43,19 +43,19 @@ test("creates an inferred right-side histogram color legend", () => {
     ["USA", "Europe", "Japan"]
   );
   assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.x, 300);
-  assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.y, 100);
+  assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.y, 80);
   assert.equal(symbols.every((child, index) =>
-    child.properties.y === 126 + index * 28
+    child.properties.y === 112.5 + index * 28
   ), true);
   assert.equal(labels.every((child, index) =>
-    child.properties.y === 132 + index * 28
+    child.properties.y === 112.5 + index * 28
   ), true);
   assert.equal(program.graphicSpec.objects.colorLegendBackground, undefined);
   assert.equal(before.semanticSpec.guides.legend, undefined);
 
   const node = program.trace.children.at(-1);
   assert.deepEqual(node.children.map(child => child.op), [
-    "createCategoricalLegend"
+    "createCategoricalLegend", "rematerializeLegend", "rematerializeSideLegendLane"
   ]);
   assert.deepEqual(node.children[0].children.map(child => child.op), [
     "editSemantic",
@@ -106,7 +106,7 @@ test("rematerializes a right histogram legend after Canvas and domain changes", 
     resized.graphicSpec.objects.colorLegendSymbols.items[0].properties.x,
     before.graphicSpec.objects.colorLegendSymbols.items[0].properties.x
   );
-  assert.equal(resized.graphicSpec.objects.colorLegendTitle.properties.y, 100);
+  assert.equal(resized.graphicSpec.objects.colorLegendTitle.properties.y, 80);
   assert.deepEqual(
     reordered.graphicSpec.objects.colorLegendLabels.items.map(
       child => child.properties.text

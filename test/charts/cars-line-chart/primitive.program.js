@@ -339,7 +339,7 @@ export function createCarsLineChartPrimitiveProgram(
       property: "x",
       value: values.legend.items.map(item => item.labelX)
     })
-    .editGraphics({ target: "seriesLegendLabels", property: "y", value: legendY })
+    .editGraphics({ target: "seriesLegendLabels", property: "y", value: compositeLegend ? legendY : legendY.map(y => y - 6) })
     .editGraphics({
       target: "seriesLegendLabels",
       property: "text",
@@ -350,7 +350,7 @@ export function createCarsLineChartPrimitiveProgram(
     .editGraphics({ target: "seriesLegendLabels", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "seriesLegendLabels", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "seriesLegendLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "seriesLegendLabels", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "seriesLegendLabels", property: "textBaseline", value: compositeLegend ? "middle" : "top" })
     .createGraphics({ id: "seriesLegendTitle", parent: "canvas", type: "text" })
     .editGraphics({ target: "seriesLegendTitle", property: "x", value: values.legend.title.x })
     .editGraphics({ target: "seriesLegendTitle", property: "y", value: values.legend.title.y })
@@ -366,7 +366,7 @@ export function createCarsLineChartPrimitiveProgram(
         ? "center"
         : "left"
     })
-    .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: compositeLegend ? "middle" : "top" })
     .createGraphics({ id: "chartTitle", parent: "canvas", type: "text" })
     .editGraphics({ target: "chartTitle", property: "x", value: values.title.x })
     .editGraphics({ target: "chartTitle", property: "y", value: values.title.titleY })

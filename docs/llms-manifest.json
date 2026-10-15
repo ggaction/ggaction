@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:2a6cd370a720ea1e559de330a53817022e551e8a1552f88bdd637fc7e2c1c1b3",
+    "contractId": "sha256:cf8095d4d715f4a63383d580b7b98bbabe3465a3020b1624bb3a7877c41576aa",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1606,8 +1606,8 @@
         "put-a-compact-categorical-legend-inside-the-plot",
         "related"
       ],
-      "bytes": 5742,
-      "sha256": "011340cf7a1c85f9b1bff5d9958336aa063e4be636fd0ebc495c3bc47fdaa552"
+      "bytes": 6218,
+      "sha256": "0af5e6c2d2a5456eda8d62b77ad83d81cda43bb8864161954accc9410cdeacbb"
     },
     {
       "order": 98,
@@ -2971,8 +2971,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 324882,
-      "sha256": "a8e80d5901bbfc3c710c93868fd2a0edaa2549a2cb828d1b4714d7cdc7101a4a"
+      "bytes": 325136,
+      "sha256": "9c9c0988768a9c8568ded6d74856ea9b77ecbd3b4b547c09429719b20a9320f4"
     },
     {
       "order": 127,
@@ -3325,7 +3325,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "d4cd4150694a7f4a05078bc1d215bc1105362544a112996de09c255f2dad4e06"
+      "sha256": "a028d2bcb53b0f17687bdfe7ecfc8b6ece15bd1d130edf8943f491923f56afda"
     },
     {
       "order": 150,

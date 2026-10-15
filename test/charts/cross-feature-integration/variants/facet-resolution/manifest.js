@@ -212,9 +212,9 @@ const outerRegions = [
   {
     name: "population-legend",
     x: outer.width + OUTER_GUIDE_LAYOUT.legendGap,
-    y: outer.plot.y + (outer.plot.height - OUTER_GUIDE_LAYOUT.gradientHeight) / 2 - 22,
+    y: outer.plot.y,
     width: 82,
-    height: OUTER_GUIDE_LAYOUT.gradientHeight + 24,
+    height: OUTER_GUIDE_LAYOUT.gradientHeight + 30,
     minimumInkPixels: 120
   }
 ];

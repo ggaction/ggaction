@@ -19,8 +19,7 @@ import { legendResourcePolicies } from
   "../../../../materialization/guides/resources.js";
 import {
   hasHorizontalLegendLane,
-  hasLegendLane,
-  hasMultiSideLegendLane
+  hasLegendLane
 } from "../lane.js";
 import {
   resolveCurrentDefinition,
@@ -163,9 +162,6 @@ export const rematerializeLegend = /* @__PURE__ */ action(
           config.titleVisible !== false);
         next = next[policy.rematerializeOp]();
       }
-    }
-    if (hasMultiSideLegendLane(next)) {
-      next = next.rematerializeSideLegendLane();
     }
     if (hasHorizontalLegendLane(next)) {
       next = next.rematerializeHorizontalLegendLane();

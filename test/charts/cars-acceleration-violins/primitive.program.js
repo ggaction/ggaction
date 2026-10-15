@@ -241,7 +241,7 @@ export function createCarsViolinPrimitiveResult(cars, { split = false } = {}) {
       .editGraphics({
         target: "colorLegendLabels",
         property: "y",
-        value: legend.items.map(item => item.y + 8)
+        value: legend.items.map(item => item.y + 1.5)
       })
       .editGraphics({
         target: "colorLegendLabels",
@@ -253,7 +253,7 @@ export function createCarsViolinPrimitiveResult(cars, { split = false } = {}) {
       .editGraphics({ target: "colorLegendLabels", property: "fontFamily", value: "sans-serif" })
       .editGraphics({ target: "colorLegendLabels", property: "fontWeight", value: "normal" })
       .editGraphics({ target: "colorLegendLabels", property: "textAlign", value: "left" })
-      .editGraphics({ target: "colorLegendLabels", property: "textBaseline", value: "middle" })
+      .editGraphics({ target: "colorLegendLabels", property: "textBaseline", value: "top" })
       .createGraphics({ id: "colorLegendTitle", parent: "canvas", type: "text" })
       .editGraphics({ target: "colorLegendTitle", property: "x", value: legend.title.x })
       .editGraphics({ target: "colorLegendTitle", property: "y", value: legend.title.y })
@@ -263,7 +263,7 @@ export function createCarsViolinPrimitiveResult(cars, { split = false } = {}) {
       .editGraphics({ target: "colorLegendTitle", property: "fontFamily", value: "sans-serif" })
       .editGraphics({ target: "colorLegendTitle", property: "fontWeight", value: 600 })
       .editGraphics({ target: "colorLegendTitle", property: "textAlign", value: "left" })
-      .editGraphics({ target: "colorLegendTitle", property: "textBaseline", value: "middle" });
+      .editGraphics({ target: "colorLegendTitle", property: "textBaseline", value: "top" });
   }
 
   program = program

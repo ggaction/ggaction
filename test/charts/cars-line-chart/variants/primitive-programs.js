@@ -122,14 +122,14 @@ export function createNamedDashVocabularyPrimitives(cars) {
     .editGraphics({ target: "seriesLegendSymbols", property: "strokeDash", value: dashes })
     .createGraphics({ id: "seriesLegendLabels", parent: "canvas", type: "text", length: values.keys.length })
     .editGraphics({ target: "seriesLegendLabels", property: "x", value: values.legend.labelX })
-    .editGraphics({ target: "seriesLegendLabels", property: "y", value: values.legend.itemY })
+    .editGraphics({ target: "seriesLegendLabels", property: "y", value: values.legend.itemY.map(y => y - 6) })
     .editGraphics({ target: "seriesLegendLabels", property: "text", value: values.keys.map(String) })
     .editGraphics({ target: "seriesLegendLabels", property: "fill", value: "#334155" })
     .editGraphics({ target: "seriesLegendLabels", property: "fontSize", value: 12 })
     .editGraphics({ target: "seriesLegendLabels", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "seriesLegendLabels", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "seriesLegendLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "seriesLegendLabels", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "seriesLegendLabels", property: "textBaseline", value: "top" })
     .createGraphics({ id: "seriesLegendTitle", parent: "canvas", type: "text" })
     .editGraphics({ target: "seriesLegendTitle", property: "x", value: values.legend.titleX })
     .editGraphics({ target: "seriesLegendTitle", property: "y", value: values.legend.titleY })
@@ -139,7 +139,7 @@ export function createNamedDashVocabularyPrimitives(cars) {
     .editGraphics({ target: "seriesLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "seriesLegendTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "seriesLegendTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "middle" });
+    .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "top" });
 }
 
 export function createConstantDashPrimitives(cars) {
@@ -295,14 +295,14 @@ export function createDashReassignmentPrimitives(cars) {
     .editGraphics({ target: "seriesLegendSymbols", property: "strokeDash", value: dashes })
     .createGraphics({ id: "seriesLegendLabels", parent: "canvas", type: "text", length: values.keys.length })
     .editGraphics({ target: "seriesLegendLabels", property: "x", value: values.legend.labelX })
-    .editGraphics({ target: "seriesLegendLabels", property: "y", value: values.legend.itemY })
+    .editGraphics({ target: "seriesLegendLabels", property: "y", value: values.legend.itemY.map(y => y - 6) })
     .editGraphics({ target: "seriesLegendLabels", property: "text", value: values.keys.map(String) })
     .editGraphics({ target: "seriesLegendLabels", property: "fill", value: "#334155" })
     .editGraphics({ target: "seriesLegendLabels", property: "fontSize", value: 12 })
     .editGraphics({ target: "seriesLegendLabels", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "seriesLegendLabels", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "seriesLegendLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "seriesLegendLabels", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "seriesLegendLabels", property: "textBaseline", value: "top" })
     .createGraphics({ id: "seriesLegendTitle", parent: "canvas", type: "text" })
     .editGraphics({ target: "seriesLegendTitle", property: "x", value: values.legend.titleX })
     .editGraphics({ target: "seriesLegendTitle", property: "y", value: values.legend.titleY })
@@ -312,7 +312,7 @@ export function createDashReassignmentPrimitives(cars) {
     .editGraphics({ target: "seriesLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "seriesLegendTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "seriesLegendTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "middle" });
+    .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "top" });
 }
 
 export function createAggregateMedianPrimitives(cars) {

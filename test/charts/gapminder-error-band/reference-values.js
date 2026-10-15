@@ -182,7 +182,7 @@ export function createGapminderErrorBandReferenceValues(gapminder, {
   ));
   const legendSymbolX = bounds.x + bounds.width + 8;
   const legendItems = Object.freeze(clusters.map((cluster, index) => {
-    const centerY = bounds.y + 52 + index * 28;
+    const centerY = bounds.y + 38.5 + index * 28;
     return Object.freeze({
       cluster,
       color: ERROR_BAND_COLORS[index],
@@ -191,7 +191,7 @@ export function createGapminderErrorBandReferenceValues(gapminder, {
       width: 14,
       height: 12,
       labelX: legendSymbolX + 22.5,
-      labelY: centerY
+      labelY: centerY - 6
     });
   }));
   const transform = Object.freeze({
@@ -263,7 +263,7 @@ export function createGapminderErrorBandReferenceValues(gapminder, {
     legend: Object.freeze({
       title: Object.freeze({
         x: legendSymbolX,
-        y: bounds.y + 20,
+        y: bounds.y,
         text: "cluster"
       }),
       items: legendItems

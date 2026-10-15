@@ -65,15 +65,7 @@ function horizontalExtent(blocks, labelStart) {
 }
 
 function placeBlock(block, cursor, labelStart) {
-  let dy;
-  if (block.title === undefined) {
-    dy = cursor - block.bounds.top;
-  } else {
-    const desiredTitleY = Math.ceil(cursor + block.title.fontSize / 2);
-    dy = desiredTitleY - block.title.y;
-    const futureTop = block.bounds.top + dy;
-    if (futureTop < cursor) dy += cursor - futureTop;
-  }
+  const dy = cursor - block.bounds.top;
   const bounds = {
     left: block.bounds.left,
     right: block.bounds.right,
@@ -123,10 +115,7 @@ export function resolveSideLegendLane({
     : plot.x - offset - laneExtent.right;
   const symbolCenterX = titleStartX + SIDE_LEGEND_SYMBOL_CENTER;
   const labelStartX = titleStartX + labelStart;
-  const first = blocks[0];
-  let cursor = first.title === undefined
-    ? plot.y + 12
-    : plot.y + 20 - first.title.fontSize / 2;
+  let cursor = plot.y;
   const placements = [];
   const backgrounds = [];
   const occupiedGroups = [];
@@ -175,7 +164,11 @@ export function resolveSideLegendLane({
     cursor = occupied.bottom + SIDE_LEGEND_BLOCK_GAP;
   }
 
-  const occupied = unionBounds(occupiedGroups);
+  // The lane starts at the plot, including the first group's border padding
+  // and stroke. Chart titles and the outer Canvas do not set this anchor.
+  const intrinsic = unionBounds(occupiedGroups);
+  const dy = plot.y - intrinsic.top;
+  const occupied = translateBounds(intrinsic, 0, dy);
   if (
     occupied.left < 0 || occupied.right > canvas.width ||
     occupied.top < 0 || occupied.bottom > canvas.height
@@ -190,10 +183,24 @@ export function resolveSideLegendLane({
     titleStartX,
     symbolCenterX,
     labelStartX,
-    placements,
-    backgrounds,
+    placements: placements.map(item => ({ ...item, dy: item.dy + dy,
+      bounds: translateBounds(item.bounds, 0, dy) })),
+    backgrounds: backgrounds.map(item => ({ ...item, y: item.y + dy })),
     occupied
   };
+}
+
+export function resolveSingleSideLegendPlacement({ side, plot, canvas, bounds }) {
+  if (!["left", "right"].includes(side)) {
+    throw new Error("Single side legend placement requires a left or right edge.");
+  }
+  const dy = plot.y - bounds.top;
+  const occupied = translateBounds(bounds, 0, dy);
+  if (occupied.left < 0 || occupied.right > canvas.width ||
+    occupied.top < 0 || occupied.bottom > canvas.height) {
+    throw canvasOverflowError(`Legend layout requires more ${side}-margin or Canvas space.`, [occupied], canvas);
+  }
+  return { dy, occupied };
 }
 
 function translateBounds(bounds, dx, dy) {

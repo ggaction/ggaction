@@ -75,18 +75,18 @@ test("creates a combined series legend from color and strokeDash", () => {
   ), [
     {
       x1: 289,
-      y1: 72,
+      y1: 58.5,
       x2: 321,
-      y2: 72,
+      y2: 58.5,
       stroke: "#4c78a8",
       strokeWidth: 2,
       strokeDash: []
     },
     {
       x1: 289,
-      y1: 100,
+      y1: 86.5,
       x2: 321,
-      y2: 100,
+      y2: 86.5,
       stroke: "#f58518",
       strokeWidth: 2,
       strokeDash: [8, 4]
@@ -109,7 +109,7 @@ test("records semantic and component actions beneath createLegend", () => {
 
   assert.equal(node.op, "createLegend");
   assert.deepEqual(node.children.map(child => child.op), [
-    "createCategoricalLegend"
+    "createCategoricalLegend", "rematerializeLegend", "rematerializeSideLegendLane"
   ]);
   const categorical = node.children[0];
   assert.deepEqual(categorical.children.map(child => child.op), [
@@ -327,7 +327,7 @@ test("creates and renders an optional background before legend content", () => {
     type: "rect",
     properties: {
       x: 276,
-      y: 21.5,
+      y: 20.5,
       width: 75.32,
       height: 96.5,
       fill: "white",

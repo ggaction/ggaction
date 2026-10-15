@@ -23,6 +23,10 @@ export function withGuideLayoutTransaction(program, apply) {
         candidate = applyMaterializationPlan(candidate, planCanvasRematerialization(candidate));
       }
       result = apply(candidate);
+      if (result.compositionSpec === undefined && Object.values(result.guideConfigs.legend ?? {}).some(config =>
+        ["left", "right"].includes(config.position))) {
+        result = result.rematerializeSideLegendLane();
+      }
       if (plot !== undefined && result.titleConfig !== undefined) result = result.rematerializeTitle();
       break;
     } catch (error) {

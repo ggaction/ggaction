@@ -13,5 +13,6 @@ Apply these instructions to Canvas and plot bounds, guides, titles, facets, and 
 - Resolve text wrapping, Unicode boundaries, measurement policy, and line positions deterministically during layout and store concrete text children in `graphicSpec`.
 - Layout-resource edits and Canvas edits must converge to the same `graphicSpec` for equivalent final options.
 - Share scales and guides across layers or child programs only after validating semantic compatibility, not merely matching IDs or channel names.
+- Align the complete outside side-legend stack to the actual plot top, including its occupied border, and exclude the chart title from that anchor.
 - Give each guide family one chart-independent default; alternate placement requires an explicit public option.
 - Keep exact composition, guide, title, and facet behavior in `COMPOSITION.md`, `AXES.md`, `GRID.md`, and `LEGEND_AND_TITLE.md` under `agent_docs/contract/current/`.

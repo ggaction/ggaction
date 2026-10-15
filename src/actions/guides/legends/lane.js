@@ -12,7 +12,8 @@ import {
   resolveHorizontalLegendGroup,
   resolveSingleHorizontalLegendPlacement,
   isHorizontalEdgeLegend,
-  resolveSideLegendLane
+  resolveSideLegendLane,
+  resolveSingleSideLegendPlacement
 } from "../../../layout/legendLane.js";
 import { findCanvasGraphic } from
   "../../../materialization/graphicHierarchy.js";
@@ -226,8 +227,8 @@ function edgeKinds(program, edge) {
     );
 }
 
-export function hasMultiSideLegendLane(program) {
-  return ["right", "left"].some(side => edgeKinds(program, side).length > 1);
+export function hasSideLegendLane(program) {
+  return ["right", "left"].some(side => edgeKinds(program, side).length > 0);
 }
 
 export function hasHorizontalLegendLane(program) {
@@ -237,7 +238,7 @@ export function hasHorizontalLegendLane(program) {
 }
 
 export function hasLegendLane(program) {
-  return hasMultiSideLegendLane(program) ||
+  return hasSideLegendLane(program) ||
     hasHorizontalLegendLane(program);
 }
 
@@ -303,6 +304,29 @@ function translateGraphic(program, id, dx, dy) {
   for (const [property, value] of Object.entries(properties)) {
     if (value !== graphic.properties[property]) {
       next = next.editGraphics({ target: id, property, value });
+    }
+  }
+  return next;
+}
+
+// Use the declared text-box top as the renderer anchor. A middle SVG baseline
+// depends on the font's x-height and otherwise protrudes above that box.
+function alignSideTextBoxes(program, ids) {
+  const normalize = properties => properties.textBaseline === "middle"
+    ? { ...properties, y: properties.y - properties.fontSize / 2, textBaseline: "top" }
+    : properties;
+  let next = program;
+  for (const id of ids) {
+    const graphic = next.graphicSpec.objects[id];
+    if (graphic.type !== "text") continue;
+    if (graphic.items !== undefined) {
+      if (!graphic.items.some(item => item.properties.textBaseline === "middle")) continue;
+      next = next.editGraphics({ target: id, property: "items", value: graphic.items.map(item => ({
+        type: item.type ?? graphic.type, properties: normalize(item.properties)
+      })) });
+    } else if (graphic.properties.textBaseline === "middle") {
+      next = next.editGraphics({ target: id, property: "y", value: normalize(graphic.properties).y })
+        .editGraphics({ target: id, property: "textBaseline", value: "top" });
     }
   }
   return next;
@@ -390,7 +414,8 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
     const configs = this.guideConfigs.legend ?? {};
     const plans = ["right", "left"].flatMap(side => {
       const entries = edgeKinds(this, side);
-      if (entries.length < 2) return [];
+      if (entries.length === 0) return [];
+      if (entries.length === 1) return [{ side, entries }];
       const blocks = entries.map(([kind, config]) =>
         blockDescriptor(this, kind, config)
       );
@@ -400,10 +425,11 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
         canvas,
         groups: groupBlocks(blocks, configs)
       });
-      return [{ plan, blocks }];
+      return [{ plan, blocks, side, entries }];
     });
     let next = this;
-    for (const { plan, blocks } of plans) {
+    for (const { plan, blocks, side, entries } of plans) {
+      if (plan === undefined) continue;
       const byId = new Map(blocks.map(block => [block.id, block]));
       for (const placement of plan.placements) {
         const block = byId.get(placement.id);
@@ -453,6 +479,13 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
           });
         }
       }
+    }
+    for (const { side, entries } of plans) {
+      const ids = entries.flatMap(([kind]) => existingIds(next, kind));
+      next = alignSideTextBoxes(next, ids);
+      const bounds = unionLegendBounds(next, ids);
+      const { dy } = resolveSingleSideLegendPlacement({ side, plot, canvas, bounds });
+      for (const id of ids) next = translateGraphic(next, id, 0, dy);
     }
     return next;
   }

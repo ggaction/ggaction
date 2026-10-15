@@ -43,7 +43,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
   size, or opacity recipe to a parent-owned concrete guide. Independent or otherwise incompatible child guide
   definitions are rejected before a facet result is returned. Promotion preserves the concrete child legend's
   configured `"left" | "right" | "top" | "bottom"` edge and the horizontal alignment of top/bottom legends. The
-  parent reserves width only for a side legend and height only for a horizontal legend. An inferred legacy
+  parent reserves width only for a side legend and height only for a horizontal legend. Shared side legends align their complete occupied top (including border strokes) to the translated child-plot union top; parent titles and headers do not set this anchor. This also applies to inferred categorical shared legends and layout/guide-policy replay. An inferred legacy
   categorical legend defaults to `"right"`; facet itself has no separate legend-position option.
 - The result is a composition parent whose `children` retain immutable filtered programs and whose `graphicSpec` contains the complete namespaced nested-Canvas snapshot.
 - Canonical title order is `.facet(...).createTitle(...)`. A valid title authored before `facet` is promoted once to the parent.

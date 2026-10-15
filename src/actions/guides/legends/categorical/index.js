@@ -68,6 +68,10 @@ function createLegendHighlightAction() {
     },
     function (args = {}) {
       noOptions(args, "rematerializeLegendHighlights");
+      if (this.context.deferGuideLayoutValidation !== true &&
+          Object.values(this.guideConfigs.legend ?? {}).some(config => ["left", "right"].includes(config.position))) {
+        return this.rematerializeLegend();
+      }
       const kinds = args.kind === undefined
         ? ["series", "color", "stroke"].filter(
             kind => this.guideConfigs.legend?.[kind] !== undefined

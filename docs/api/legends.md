@@ -29,6 +29,13 @@ Legends are inferred from final mark encodings and materialized as concrete
 graphics. Start with the family that matches the encoded channel and use the
 editing page when changing an existing guide.
 
+Right and left legends start at the top of the actual plot, excluding the chart title.
+The complete legend includes its visible title, symbols, labels, and optional border.
+Multiple blocks share one stack whose top aligns with the plot; blocks retain their spacing.
+Shared facet legends align with the top of the translated child plots.
+The horizontal `offset` still controls the gap beside the plot.
+Top, bottom, and in-plot corner positions keep their own alignment rules.
+
 ## Supported legend families
 
 <!-- action-capabilities:legends:start -->
