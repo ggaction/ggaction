@@ -200,10 +200,13 @@ function resolveGeometry(program, channel, config) {
   if (!canvas || !textBoundsFitCanvas(resolvedBounds, canvas)) {
     throw canvasOverflowError(`The ${channel}-axis title does not fit the Canvas margin.`, [resolvedBounds], canvas);
   }
-  const labelsBounds = program.graphicSpec.objects[`${channel}AxisLabels`]
-    ? resolveConcreteGraphicBounds(program.graphicSpec, `${channel}AxisLabels`, program.materializationConfigs.textMetrics)
-    : undefined;
-  if (labelsBounds && textBoundsIntersect(resolvedBounds, labelsBounds)) {
+  const labels = program.graphicSpec.objects[`${channel}AxisLabels`];
+  const labelBounds = labels?.items?.map(item => resolveConcreteGraphicBounds(
+    program.graphicSpec, item.id, program.materializationConfigs.textMetrics
+  )) ?? (labels ? [resolveConcreteGraphicBounds(
+    program.graphicSpec, `${channel}AxisLabels`, program.materializationConfigs.textMetrics
+  )] : []);
+  if (labelBounds.some(bounds => bounds && textBoundsIntersect(resolvedBounds, bounds))) {
     throw new Error(`The ${channel}-axis title overlaps the axis labels.`);
   }
   return geometry;

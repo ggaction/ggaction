@@ -85,6 +85,9 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - `lineHeight`: fontSize 이상의 finite number다. 생략하면 `fontSize * 1.2`다.
 - `overlap`: `"error" | "allow"`, 기본값은 `"error"`다. Allow는 label-label 교차만 허용하며 Canvas
   overflow와 explicit axis-title collision은 계속 거부한다.
+  Axis title과 label의 교차는 실제 개별 concrete label item의 occupied bounds로 검사한다.
+  Label collection 전체를 감싼 union의 빈 공간은 충돌로 보지 않으며 title/label 작성 순서와 무관하게
+  같은 최종 배치를 허용한다. 개별 label과 실제로 교차하는 explicit title은 계속 거부한다.
 - `labelMap`: categorical/continuous Cartesian scale에서 쓰는 typed
   `readonly { value: DatasetScalar; label: string }[] | "auto"`다. `1`과 `"1"`은 서로 다른 key이고,
   `0`과 `-0`은 같은 key다. 중복 raw key는 거부하고 중복 label과 빈 label은 허용한다. Array는

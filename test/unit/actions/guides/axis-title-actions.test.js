@@ -162,3 +162,25 @@ test("rejects mirrored titles when the requested margin is too small", () => {
     /does not fit the Canvas margin/
   );
 });
+
+for (const channel of ["X", "Y"]) {
+  test(`accepts a ${channel.toLowerCase()}-axis title in the actual gap between sparse labels`, () => {
+    const base = chart()
+      .createCanvas({ width: 400, height: 300, margin: { left: 200, right: 40, top: 40, bottom: 40 } })
+      .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
+      .createPointMark()
+      .encodeX({ field: "x", scale: { domain: [0, 10] } })
+      .encodeY({ field: "y", scale: { domain: [0, 10] } });
+    const labels = { values: [0, 10], fontSize: 12, offset: 12 };
+    const title = { text: "Gap", fontSize: 12, offset: 14, rotation: 0 };
+    const snapshot = JSON.stringify(base.graphicSpec);
+    const labelsFirst = base[`create${channel}AxisLabels`](labels)[`create${channel}AxisTitle`](title);
+    const titleFirst = base[`create${channel}AxisTitle`](title)[`create${channel}AxisLabels`](labels);
+    const prefix = channel.toLowerCase();
+    assert.deepEqual(labelsFirst.graphicSpec.objects[`${prefix}AxisTitle`], titleFirst.graphicSpec.objects[`${prefix}AxisTitle`]);
+    assert.deepEqual(labelsFirst.graphicSpec.objects[`${prefix}AxisLabels`], titleFirst.graphicSpec.objects[`${prefix}AxisLabels`]);
+    assert.equal(JSON.stringify(base.graphicSpec), snapshot);
+    assert.throws(() => labelsFirst[`edit${channel}AxisTitle`]({ at: 0 }), /overlaps the axis labels/);
+    assert.equal(labelsFirst.guideConfigs.axis[prefix].title.at, "center");
+  });
+}
