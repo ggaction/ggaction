@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:342e009ddcc974852777a9f48db9c5893bc9a6aeafaac98f175284dae2e78f97",
+    "contractId": "sha256:6aeb9032f089260004ba07ee4afc135961cbaee0ce8fbde660ccef0847c1a7e9",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -2775,6 +2775,7 @@
         "type-parallelguideoptions",
         "type-parallelmissingpolicy",
         "type-parameterizedaggregateoperation",
+        "type-parsetimeformat",
         "type-pathlegendoptions",
         "type-pathorderencodingoptions",
         "type-piecategory",
@@ -2962,8 +2963,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 322309,
-      "sha256": "bb8c838e9b9865d72a3778c19e7af41e9a4ae8946fae161ca0f92db54eb2af89"
+      "bytes": 322684,
+      "sha256": "90b6f2fe68110d850ae96c1e1a518d1a2702b62ee677571298036674af40b4a0"
     },
     {
       "order": 127,
@@ -3021,8 +3022,8 @@
         "createcomputeddata-id-source-as-expression",
         "createnormalizeddata-id-source-field-as-groupby-method"
       ],
-      "bytes": 3415,
-      "sha256": "401931c69b0dd21928a48564dec944c3684977b5f4c64180ea5aa3fb1a89d364"
+      "bytes": 3984,
+      "sha256": "23be78032f977f0e00440a77b1aa28abde5eae2023090b20e5b8a69655447399"
     },
     {
       "order": 131,
@@ -3316,7 +3317,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "db4e4a3a14f153e08339fd263b631da91ad05e694e6d429694a5a3df0100fc53"
+      "sha256": "2ed3faa14e47fefcdc6f092821f54e120935bf0bcf00349aaf4ac1991639f47c"
     },
     {
       "order": 150,

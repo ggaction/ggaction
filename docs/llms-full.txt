@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:342e009ddcc974852777a9f48db9c5893bc9a6aeafaac98f175284dae2e78f97. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:6aeb9032f089260004ba07ee4afc135961cbaee0ce8fbde660ccef0847c1a7e9. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -28055,6 +28055,11 @@ export type ComputedExpression =
   | { readonly field: string }
   | { readonly constant: number | string | boolean | null }
   | {
+      readonly op: "parseTime";
+      readonly operand: ComputedExpression;
+      readonly format?: ParseTimeFormat;
+    }
+  | {
       readonly op: "negate" | "absolute" | "log" | "sqrt" | "not" | "isNull" | "toNumber";
       readonly operand: ComputedExpression;
     }
@@ -28079,6 +28084,8 @@ export type ComputedExpression =
       readonly else: ComputedExpression;
     };
 ```
+
+Related types: [`ParseTimeFormat`](./reference/types/#type-parsetimeformat).
 
 ### `ConfidenceIntervalMethod` {#type-confidenceintervalmethod}
 
@@ -33544,6 +33551,14 @@ export type ParameterizedAggregateOperation =
 
 Related types: [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod).
 
+### `ParseTimeFormat` {#type-parsetimeformat}
+
+ Expand ParseTimeFormat
+
+```typescript
+export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
+```
+
 ### `PathLegendOptions` {#type-pathlegendoptions}
 
  Expand PathLegendOptions
@@ -36989,6 +37004,15 @@ provenance and never evaluates callbacks, source strings, or arbitrary code.
 
 Use `{ op: "toNumber", operand: { field: "amountText" } }` to explicitly convert a decimal or scientific-notation string into a finite number in a new derived field. Surrounding whitespace is trimmed. Empty strings, null, booleans, hexadecimal text and non-finite results reject. Finite numeric inputs remain unchanged.
 
+Use `{ op: "parseTime", operand: { field: "dateText" }, format: "%d/%m/%Y" }`
+for an explicit day/month/year date. The closed formats are `%Y-%m-%d`,
+`%d/%m/%Y`, `%m/%d/%Y`, and `auto` (the default, reusing ordinary temporal
+normalization). Explicit calendar formats produce UTC millisecond timestamps;
+invalid calendar dates, unparseable input, and nullish values produce `null`.
+Preserve the raw field and apply an existing filter or missing-data policy to
+these nulls before assigning a position. This typed node accepts no arbitrary
+format expression or callback.
+
 Arithmetic remains finite and strictly numeric. Other operations do not coerce
 types. Undefined cells normalize to null, but a missing field name is an error.
 Non-null results must have one primitive type across all rows. Expressions are
@@ -38869,7 +38893,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:342e009ddcc974852777a9f48db9c5893bc9a6aeafaac98f175284dae2e78f97` |
+| Contract fingerprint | `sha256:6aeb9032f089260004ba07ee4afc135961cbaee0ce8fbde660ccef0847c1a7e9` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

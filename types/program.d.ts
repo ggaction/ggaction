@@ -786,9 +786,15 @@ export interface DatasetFoldTransform {
     readonly value: string;
   };
 }
+export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
 export type ComputedExpression =
   | { readonly field: string }
   | { readonly constant: number | string | boolean | null }
+  | {
+      readonly op: "parseTime";
+      readonly operand: ComputedExpression;
+      readonly format?: ParseTimeFormat;
+    }
   | {
       readonly op: "negate" | "absolute" | "log" | "sqrt" | "not" | "isNull" | "toNumber";
       readonly operand: ComputedExpression;

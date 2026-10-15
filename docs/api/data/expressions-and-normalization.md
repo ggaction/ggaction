@@ -41,6 +41,15 @@ provenance and never evaluates callbacks, source strings, or arbitrary code.
 
 Use `{ op: "toNumber", operand: { field: "amountText" } }` to explicitly convert a decimal or scientific-notation string into a finite number in a new derived field. Surrounding whitespace is trimmed. Empty strings, null, booleans, hexadecimal text and non-finite results reject. Finite numeric inputs remain unchanged.
 
+Use `{ op: "parseTime", operand: { field: "dateText" }, format: "%d/%m/%Y" }`
+for an explicit day/month/year date. The closed formats are `%Y-%m-%d`,
+`%d/%m/%Y`, `%m/%d/%Y`, and `auto` (the default, reusing ordinary temporal
+normalization). Explicit calendar formats produce UTC millisecond timestamps;
+invalid calendar dates, unparseable input, and nullish values produce `null`.
+Preserve the raw field and apply an existing filter or missing-data policy to
+these nulls before assigning a position. This typed node accepts no arbitrary
+format expression or callback.
+
 Arithmetic remains finite and strictly numeric. Other operations do not coerce
 types. Undefined cells normalize to null, but a missing field name is an error.
 Non-null results must have one primitive type across all rows. Expressions are

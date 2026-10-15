@@ -1,3 +1,4 @@
+import {parseTimeValue,validateParseTimeFormat} from "./parseTime.js";
 import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation.js";
 import { requireStringValue as requireField } from "../core/validation.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
@@ -76,6 +77,13 @@ function inspectExpression(expression, depth, state) {
       requireNode(expression, "right", expression.op);
       inspectExpression(expression.left, depth + 1, state);
       inspectExpression(expression.right, depth + 1, state);
+      return;
+    }
+    if (expression.op === "parseTime") {
+      rejectUnknownKeys(expression, ["op", "operand", "format"], "computed time expression");
+      requireNode(expression, "operand", expression.op);
+      validateParseTimeFormat(expression.format);
+      inspectExpression(expression.operand, depth + 1, state);
       return;
     }
     if (NUMERIC_UNARY.has(expression.op) || BOOLEAN_UNARY.has(expression.op) || expression.op === "toNumber") {
@@ -271,6 +279,9 @@ function evaluate(expression, row, rowIndex) {
     return operation === "isNull"
       ? value === null
       : !boolean(value, operation, rowIndex);
+  }
+  if (operation === "parseTime") {
+    return parseTimeValue(evaluate(expression.operand, row, rowIndex), expression.format);
   }
   if (operation === "toNumber") {
     const value = evaluate(expression.operand, row, rowIndex);

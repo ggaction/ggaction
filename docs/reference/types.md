@@ -2004,6 +2004,11 @@ export type ComputedExpression =
   | { readonly field: string }
   | { readonly constant: number | string | boolean | null }
   | {
+      readonly op: "parseTime";
+      readonly operand: ComputedExpression;
+      readonly format?: ParseTimeFormat;
+    }
+  | {
       readonly op: "negate" | "absolute" | "log" | "sqrt" | "not" | "isNull" | "toNumber";
       readonly operand: ComputedExpression;
     }
@@ -2030,6 +2035,8 @@ export type ComputedExpression =
 ```
 
 </details>
+
+Related types: [`ParseTimeFormat`](#type-parsetimeformat).
 
 ### `ConfidenceIntervalMethod` {#type-confidenceintervalmethod}
 
@@ -8514,6 +8521,17 @@ export type ParameterizedAggregateOperation =
 </details>
 
 Related types: [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod).
+
+### `ParseTimeFormat` {#type-parsetimeformat}
+
+<details markdown="1">
+<summary>Expand ParseTimeFormat</summary>
+
+```typescript
+export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
+```
+
+</details>
 
 ### `PathLegendOptions` {#type-pathlegendoptions}
 
