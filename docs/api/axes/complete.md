@@ -52,6 +52,8 @@ Each x/y axis option supports:
 | `ticksAndLabels` | `false` or `{ count?, values?, ticks?, labels? }` |
 | `title` | `false` or title options including `text`, `at`, `offset`, and font styling |
 
+Cartesian `ticksAndLabels.labels.colorMap` accepts typed `{ value, color }` entries. It overrides individual raw tick colors and falls back to `labels.color`; it does not depend on the displayed text. Use `"auto"` to remove the map. Continuous keys must be finite numeric/timestamp values.
+
 Use `ticksAndLabels.labels.flush: true` to keep unrotated X or Y label bounds inside the mapped axis span. It defaults to false and preserves the normal overlap policy; use explicit `overlap: "allow"` when neighboring labels intentionally overlap. Text, fonts and tick positions are retained. Rotated labels and a label wider than the entire span are rejected.
 
 Cartesian `ticksAndLabels.ticks.alongOffset` and `ticksAndLabels.labels.alongOffset` independently shift mapped positions in logical pixels. Positive moves right for X and down for Y; the default is zero. This preserves scale data and the outward label `offset`.

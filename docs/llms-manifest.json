@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:527b5ac962c04e14b1946dbcaf8fba2647f266bb9428e3f97c46a0ba1bc6341e",
+    "contractId": "sha256:9ae1c6e2523bcdc8d8a141af21397a3f1e04aaad1fde52163171d773588e6d26",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1559,6 +1559,7 @@
         "axes",
         "at-a-glance",
         "keep-endpoint-labels-inside-the-axis-span",
+        "color-individual-tick-labels",
         "override-displayed-tick-text",
         "shift-ticks-and-labels-along-an-axis",
         "standalone-cartesian-axes",
@@ -1570,8 +1571,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 12090,
-      "sha256": "5d1587aede73b3ca6fe0a2118c329764ebb120e4cdde5d0a79219a5be5cfaecd"
+      "bytes": 12765,
+      "sha256": "1d1f28a9011c1130de2e73236b809872cd1e405bfc449b19e538b3d22cb50a23"
     },
     {
       "order": 96,
@@ -2268,8 +2269,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 119367,
-      "sha256": "8b0baf20532f540dc89b758b6d115ad3d8af374c6badb0296c0fa00ab7e7e13b"
+      "bytes": 119807,
+      "sha256": "50352737407c39f1c935d5e2f78ffc5c02ad58ac41c3249abfe832ec90220c41"
     },
     {
       "order": 123,
@@ -2406,6 +2407,7 @@
         "type-cpathguides",
         "type-canvasoptions",
         "type-cartesianaxesoptions",
+        "type-cartesianaxislabelcolormap",
         "type-cartesianaxislabelstyleoptions",
         "type-cartesianaxistickstyleoptions",
         "type-cartesiancategoricalguideoptions",
@@ -2967,8 +2969,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 323812,
-      "sha256": "7f39c2be43cf83fec14a97c5e242f4a38c8435539ccfbfa3ae146067ab30eaeb"
+      "bytes": 324348,
+      "sha256": "29b2ce0f553a49df7facbd0e5b1b17cd143985354084c83d79d01f46dbe7a3d4"
     },
     {
       "order": 127,
@@ -3321,7 +3323,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "38deccec3af3672b32b58b808188924aff036c58a81ca0512e2e820750a748d4"
+      "sha256": "07dc94db19fbabc480c2955d05dba2aec8ca29db79b51fd8b36bb31c95dfc613"
     },
     {
       "order": 150,
@@ -3332,8 +3334,8 @@
         "complete-axes-and-labels",
         "createaxesoptions"
       ],
-      "bytes": 14040,
-      "sha256": "70080c7d77535c2c10382c04fa25f735ff3cc8a9bb5af626004897832842ce31"
+      "bytes": 14331,
+      "sha256": "3bf23d431b49e227cb42eae1c0783b88665adb58983560b08a21f5e11b325ecb"
     }
   ]
 }

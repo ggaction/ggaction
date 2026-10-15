@@ -33,7 +33,8 @@ const LABEL_OPTIONS = Object.freeze([
   "overlap",
   "labelMap",
   "alongOffset",
-  "flush"
+  "flush",
+  "colorMap"
 ]);
 const SHARED_CREATE = Object.freeze(["scale", "position", "count", "values"]);
 const SHARED_EDIT = Object.freeze(["position", "count", "values"]);

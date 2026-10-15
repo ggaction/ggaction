@@ -1453,6 +1453,22 @@ type CartesianAxesOptions = Omit<
 
 Related types: [`CreateAxesOptions`](#type-createaxesoptions).
 
+### `CartesianAxisLabelColorMap` {#type-cartesianaxislabelcolormap}
+
+<details markdown="1">
+<summary>Expand CartesianAxisLabelColorMap</summary>
+
+```typescript
+export type CartesianAxisLabelColorMap = ReadonlyArray<Readonly<{
+  value: DatasetScalar;
+  color: string;
+}>>;
+```
+
+</details>
+
+Related types: [`DatasetScalar`](#type-datasetscalar).
+
 ### `CartesianAxisLabelStyleOptions` {#type-cartesianaxislabelstyleoptions}
 
 <details markdown="1">
@@ -1460,6 +1476,8 @@ Related types: [`CreateAxesOptions`](#type-createaxesoptions).
 
 ```typescript
 export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Typed raw-tick color overrides; missing entries use color. Auto removes the map. */
+  colorMap?: CartesianAxisLabelColorMap | "auto";
   /** Keep unrotated label bounds inside the mapped axis span; defaults to false. */
   flush?: boolean;
   /** Signed displacement from the mapped tick position, independent of outward offset. */
@@ -1469,7 +1487,7 @@ export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
 
 </details>
 
-Related types: [`AxisLabelStyleOptions`](#type-axislabelstyleoptions).
+Related types: [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`CartesianAxisLabelColorMap`](#type-cartesianaxislabelcolormap).
 
 ### `CartesianAxisTickStyleOptions` {#type-cartesianaxistickstyleoptions}
 

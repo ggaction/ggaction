@@ -1321,7 +1321,13 @@ export interface AxisLabelStyleOptions {
   fontFamily?: string;
   fontWeight?: string | number;
 }
+export type CartesianAxisLabelColorMap = ReadonlyArray<Readonly<{
+  value: DatasetScalar;
+  color: string;
+}>>;
 export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Typed raw-tick color overrides; missing entries use color. Auto removes the map. */
+  colorMap?: CartesianAxisLabelColorMap | "auto";
   /** Keep unrotated label bounds inside the mapped axis span; defaults to false. */
   flush?: boolean;
   /** Signed displacement from the mapped tick position, independent of outward offset. */

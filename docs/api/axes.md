@@ -35,6 +35,10 @@ Set Cartesian labels `flush: true` to keep unrotated text bounds inside the mapp
 
 Flush preserves the existing overlap policy. When adjacent labels intentionally overlap, request `overlap: "allow"`; this does not disable Canvas or title collision checks. Specify required flush geometry at complete-axis creation so the initial axis also fits.
 
+## Color individual tick labels
+
+Use Cartesian labels `colorMap: [{ value, color }]` for per-value colors. Lookup uses raw typed tick values, independently of `labelMap` display text. Missing entries use the existing global `color`; `[]` stores an empty map and `"auto"` removes it. Continuous/time keys must be finite numbers or Unix milliseconds; categorical keys preserve their types. Duplicate keys, extra entry fields and empty colors are rejected. Wrapped lines share their tick color. Complete, whole-axis, grouped and focused label actions use the same policy, and tick/Canvas/scale changes preserve it. Polar and Parallel axes do not accept this option.
+
 ## Override displayed tick text
 
 Cartesian label `labelMap` works with categorical values, numeric ticks and time ticks. Provide typed `{ value, label }` entries. Continuous keys must be finite numbers; time keys use Unix milliseconds. Missing entries retain the normal formatter, and `"auto"` clears the map. Scale domains, tick positions and raw data are preserved. Use focused labels, nested ticks-and-labels or whole-axis editors to update the same policy.
@@ -228,7 +232,7 @@ axis throws before anything changes.
 | `position` | x: `"bottom"/"top"`; y: `"left"/"right"` |
 | `line` | `false` or `{ color?, lineWidth? }` |
 | `ticks` | `false` or `{ count?, values?, length?, color?, lineWidth?, alongOffset? }` |
-| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, alongOffset?, labelMap?, flush? }` |
+| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, alongOffset?, labelMap?, flush?, colorMap? }` |
 | `ticksAndLabels` | `false` or `{ count?, values?, ticks?, labels? }` |
 | `title` | `false` or `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight? }` |
 

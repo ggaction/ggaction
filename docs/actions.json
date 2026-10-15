@@ -15852,6 +15852,10 @@
           "strategy": "documented-auto"
         },
         {
+          "input": "colorMap",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "omitted optional options",
           "strategy": "documented-default"
         }
@@ -15918,6 +15922,11 @@
           "name": "fontWeight",
           "required": false,
           "type": "string | number | undefined"
+        },
+        {
+          "name": "colorMap",
+          "required": false,
+          "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
         },
         {
           "name": "flush",
@@ -16047,6 +16056,10 @@
           "strategy": "documented-auto"
         },
         {
+          "input": "colorMap",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "omitted optional options",
           "strategy": "documented-default"
         }
@@ -16113,6 +16126,11 @@
           "name": "fontWeight",
           "required": false,
           "type": "string | number | undefined"
+        },
+        {
+          "name": "colorMap",
+          "required": false,
+          "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
         },
         {
           "name": "flush",
@@ -16231,6 +16249,10 @@
         {
           "input": "labelMap",
           "strategy": "documented-auto"
+        },
+        {
+          "input": "colorMap",
+          "strategy": "documented-auto"
         }
       ],
       "completionRequirements": {
@@ -16276,6 +16298,11 @@
           "name": "fontWeight",
           "required": false,
           "type": "string | number | undefined"
+        },
+        {
+          "name": "colorMap",
+          "required": false,
+          "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
         },
         {
           "name": "flush",
@@ -16329,7 +16356,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, flush? })"
+        "editXAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, colorMap? })"
       ],
       "snippet": "program.editXAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
@@ -16409,6 +16436,10 @@
         {
           "input": "labelMap",
           "strategy": "documented-auto"
+        },
+        {
+          "input": "colorMap",
+          "strategy": "documented-auto"
         }
       ],
       "completionRequirements": {
@@ -16454,6 +16485,11 @@
           "name": "fontWeight",
           "required": false,
           "type": "string | number | undefined"
+        },
+        {
+          "name": "colorMap",
+          "required": false,
+          "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
         },
         {
           "name": "flush",
@@ -16507,7 +16543,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, flush? })"
+        "editYAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, colorMap? })"
       ],
       "snippet": "program.editYAxisLabels({ labelMap: \"auto\" })",
       "errors": [],

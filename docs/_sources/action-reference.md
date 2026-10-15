@@ -2938,19 +2938,19 @@ editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth?, alongO
 
 createXAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 createYAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 editXAxisLabels({
   position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 editYAxisLabels({
   position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 ```
 
