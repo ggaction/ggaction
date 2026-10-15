@@ -266,9 +266,10 @@ function resolve(program, channel, config) {
     })
   };
   const resolved = expandWrappedLabels(geometry, text, config, channel, program.materializationConfigs.textMetrics);
-  if (program.materializationConfigs.canvas?.plot !== undefined && channel === "x" && Math.abs(Math.sin(config.rotation)) > 1e-9) {
+  if (channel === "x" && Math.abs(Math.sin(config.rotation)) > 1e-9) {
     const outward = config.position === "bottom" ? 1 : -1;
     resolved.textAlign = Math.sin(config.rotation) * outward < 0 ? "right" : "left";
+    resolved.textBaseline = "middle";
   }
   const canvas = findCanvasGraphic(program)?.properties;
   let labelBounds = resolved.text.map((value, index) => resolveTextBounds({
@@ -282,7 +283,7 @@ function resolve(program, channel, config) {
     textBaseline: resolved.textBaseline,
     rotation: config.rotation
   }, program.materializationConfigs.textMetrics));
-  if (program.materializationConfigs.canvas?.plot !== undefined) {
+  if (program.materializationConfigs.canvas?.plot !== undefined || config.rotation !== 0) {
     const horizontal = channel === "x";
     const near = ["bottom", "right"].includes(config.position);
     const edge = horizontal ? bounds.y + (near ? bounds.height : 0)
@@ -300,7 +301,7 @@ function resolve(program, channel, config) {
         : { ...item, left: item.left + delta, right: item.right + delta };
     });
   }
-  const rotatedOverlap = program.materializationConfigs.canvas?.plot !== undefined && config.rotation !== 0;
+  const rotatedOverlap = config.rotation !== 0;
   const collisionBounds = rotatedOverlap ? resolved.text.map((text, index) => {
     const x = Array.isArray(resolved.x) ? resolved.x[index] : resolved.x;
     const y = Array.isArray(resolved.y) ? resolved.y[index] : resolved.y;

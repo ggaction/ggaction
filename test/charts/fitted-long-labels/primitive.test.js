@@ -10,7 +10,7 @@ test("keeps the explicit fitted-margin primitive baseline", () => {
   assert.deepEqual(program.materializationConfigs.canvas.margin, {
     top: 60,
     right: 4,
-    bottom: 81.5,
+    bottom: 92.75,
     left: 39.75
   });
   assert.equal(program.graphicSpec.objects.xAxisLabels.items.length, 10);

@@ -22,6 +22,13 @@ and Canvas or scale updates, regardless of authoring order. Increase the margin
 or change offsets when space is insufficient; a failed action preserves the
 earlier program.
 
+Rotated Cartesian labels stay outside their selected plot edge in both fixed-size
+and automatic-plot Canvases. `offset` measures the gap to the complete rotated
+text bounds. Vertical X-axis labels are centered over their ticks; slanted labels
+use an end anchor inferred from their rotation and axis side. Reserve enough
+margin for the full label length and the axis title. Rotation does not enlarge a
+fixed Canvas or change its margins.
+
 ## Standalone Cartesian axes
 
 An axis does not need an invisible mark or dataset. Supply an existing Cartesian

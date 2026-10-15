@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:3cb0a49bd38b0d396a4339a25328d86effadc6c900356b3b9460f7e71ab3ca74. Status: development. Runtime source: f34a5560a689e31f88db30a4251512fcbda92cab. Release baseline: v0.0.13.
+Contract: sha256:407dcdec2da98c13a5b35dce6926123342ccfc5aab09fabd3ea2ad69baa4dcbe. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/f34a5560a689e31f88db30a4251512fcbda92cab/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/f34a5560a689e31f88db30a4251512fcbda92cab/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12099,6 +12099,13 @@ legend on the same edge. This applies to creation, focused and whole-axis edits,
 and Canvas or scale updates, regardless of authoring order. Increase the margin
 or change offsets when space is insufficient; a failed action preserves the
 earlier program.
+
+Rotated Cartesian labels stay outside their selected plot edge in both fixed-size
+and automatic-plot Canvases. `offset` measures the gap to the complete rotated
+text bounds. Vertical X-axis labels are centered over their ticks; slanted labels
+use an end anchor inferred from their rotation and axis side. Reserve enough
+margin for the full label length and the axis title. Rotation does not enlarge a
+fixed Canvas or change its margins.
 
 ## Standalone Cartesian axes
 
@@ -36632,12 +36639,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f34a5560a689e31f88db30a4251512fcbda92cab/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f34a5560a689e31f88db30a4251512fcbda92cab/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -38744,9 +38751,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:3cb0a49bd38b0d396a4339a25328d86effadc6c900356b3b9460f7e71ab3ca74` |
+| Contract fingerprint | `sha256:407dcdec2da98c13a5b35dce6926123342ccfc5aab09fabd3ea2ad69baa4dcbe` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `f34a5560a689e31f88db30a4251512fcbda92cab` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |

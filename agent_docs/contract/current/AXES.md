@@ -68,6 +68,11 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
   `fontWeight`: string 또는 finite number.
 - `rotation`: `RotationInput`이며 숫자는 radians, 구조형 값은 radians/degrees를 명시한다. 기본값은 `0`이고
   materialization config에는 radians로 정규화한다.
+  회전된 Cartesian label의 전체 occupied bounds는 고정 Canvas와 자동 plot 크기 모두에서
+  선택한 축 바깥쪽에 `offset` 간격으로 배치한다. X축의 기울어진 label은 회전 방향과
+  top/bottom 위치에서 문자열 끝 정렬을 추론하고 middle baseline을 사용하므로 세로 글리프가
+  tick 위에 수평으로 가운데 정렬된다. 회전된 동일 collection의 충돌은 공통 회전 좌표계에서
+  검사하며, 공간이 부족하면 Canvas나 여백을 변경하지 않고 거부한다.
 - `maxWidth`: positive finite measured width다. 지정하면 각 tick text를 deterministic shared text metric으로
   concrete line item에 줄바꿈한다. Edit의 `false`는 wrap policy를 제거하며 같은 호출에서 `wrap`이나
   `lineHeight`와 함께 쓸 수 없다.
