@@ -48,6 +48,12 @@ export function planCanvasRematerialization(program) {
 const LAYOUT_CONSUMER_POLICIES = Object.freeze([
   Object.freeze({
     applies(program) {
+      return program.compositionSpec === undefined && program.materializationConfigs?.canvas?.plotBorder !== undefined;
+    },
+    step: Object.freeze({ op: "rematerializePlotBorder" })
+  }),
+  Object.freeze({
+    applies(program) {
       return program.semanticSpec.title.text !== undefined &&
         program.titleConfig !== undefined;
     },

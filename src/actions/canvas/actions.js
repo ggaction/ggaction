@@ -1,8 +1,10 @@
 import { action } from "../../core/action.js";
+import { findLayer } from "../../selectors/layers.js";
 import {
   DEFAULT_CANVAS,
   DEFAULT_MARGIN,
   normalizeMargin,
+  normalizePlotBorder,
   resolveCanvasPlot,
   validateCanvasState
 } from "../../layout/canvas.js";
@@ -24,7 +26,8 @@ const CANVAS_OPTIONS = Object.freeze([
   "height",
   "background",
   "margin",
-  "plot"
+  "plot",
+  "plotBorder"
 ]);
 
 function validateOptions(args, operation, { allowEmpty = false } = {}) {
@@ -48,6 +51,7 @@ function resolveCanvasState(properties, args, config = {}) {
     width: properties.width, height: properties.height, background: properties.background,
     ...args,
     margin: Object.hasOwn(args, "margin") ? normalizeMargin(args.margin, baseMargin) : baseMargin,
+    plotBorder: normalizePlotBorder(Object.hasOwn(args, "plotBorder") ? args.plotBorder : (config.plotBorder ?? false)),
     size: {
       width: Object.hasOwn(args, "width") ? "explicit" : baseSize.width,
       height: Object.hasOwn(args, "height") ? "explicit" : baseSize.height
@@ -73,7 +77,15 @@ function applyCanvasState(program, args, state) {
     }
   }
   return next._withCanvasConfig({ margin: state.margin, size: state.size,
-    ...(state.plot === undefined ? {} : { plot: state.plot }) });
+    ...(state.plot === undefined ? {} : { plot: state.plot }),
+    ...(state.plotBorder === false ? {} : { plotBorder: state.plotBorder }) });
+}
+
+function assertBorderAvailable(program, state) {
+  if (state.plotBorder !== false && program.materializationConfigs.canvas?.plotBorder === undefined &&
+      (program.graphicSpec.objects.plotBorder !== undefined || findLayer(program, "plotBorder") !== undefined)) {
+    throw new Error('Canvas plotBorder requires the reserved graphic id "plotBorder".');
+  }
 }
 
 function createHierarchy(program) {
@@ -94,7 +106,12 @@ export const editCanvas = /* @__PURE__ */ action(
   function (args = {}) {
     validateOptions(args, "editCanvas");
     const state = resolveCanvasState(requireCanvas(this).properties, args, this.materializationConfigs.canvas);
-    let next = applyCanvasState(this, args, state);
+    assertBorderAvailable(this, state);
+    let next = this;
+    if (state.plotBorder === false && this.materializationConfigs.canvas?.plotBorder !== undefined) {
+      next = next.editGraphics({ target: "plotBorder", remove: true });
+    }
+    next = applyCanvasState(next, args, state);
 
     if (
       Object.hasOwn(args, "width") ||
@@ -105,6 +122,8 @@ export const editCanvas = /* @__PURE__ */ action(
         next,
         planCanvasRematerialization(next)
       );
+    } else if (state.plotBorder !== false && Object.hasOwn(args, "plotBorder")) {
+      next = next.rematerializePlotBorder();
     }
 
     return next;
@@ -141,6 +160,8 @@ export const createBasicCanvas = /* @__PURE__ */ action(
     validateOptions(args, "createCanvas", { allowEmpty: true });
     assertCanvasHierarchyAvailable(this);
     const state = resolveCanvasState(DEFAULT_CANVAS, args, { size: initialSize(args) });
-    return applyCanvasState(createHierarchy(this), state, state);
+    assertBorderAvailable(this, state);
+    const next = applyCanvasState(createHierarchy(this), state, state);
+    return state.plotBorder === false ? next : next.rematerializePlotBorder();
   }
 );

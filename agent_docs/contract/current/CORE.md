@@ -4,7 +4,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createCanvas`
 
-- Signature: `createCanvas({ width?, height?, background?, margin?, plot? })`
+- Signature: `createCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })`
 - 목적과 필수 state: Canvas가 없는 program에 logical Canvas와 plot bounds를 만든다.
 - `width`
   - Status: Implemented. 양의 finite number이며 기본값은 `640`이다.
@@ -30,6 +30,18 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     plot edge에서 offset만큼 바깥으로 배치한다. Title은 기존 guide 바깥에 배치한다.
   - Coverage: `test/unit/actions/canvas/inner-plot-size.test.js`의 Full/Basic, 충돌 옵션,
     resize, persistence, text metrics, title와 고정 외부 모드 회귀를 검증한다.
+- `plotBorder`
+  - Status: Implemented. Full/Basic 공통이며 기본값은 `false`다. `false`는 비활성화하고
+    `{ color?: NonEmptyString, lineWidth?: PositiveFinite }`는 내부 플롯 테두리를 활성화한다.
+    `{}`의 기본 style은 `color: "#ddd"`, `lineWidth: 1`이다. `true`, 비객체와 unknown key는 거부한다.
+  - `lineWidth`는 resolved plot width와 height 중 작은 값보다 엄격히 작아야 한다.
+    stroke 중심은 plot edge에서 반 폭만큼 안으로 들어가므로 painted outer bounds는 plot bounds와 같다.
+  - Effect: immutable Canvas materialization config에 저장하며 stable internal rectangle `plotBorder`로 그린다.
+    ordinary marks 위, axes 아래에 배치하고 mark/scales/plot size/margins/clipping은 변경하지 않는다.
+    내부 wrapped `rematerializePlotBorder`가 Canvas, scale, data 및 facet replay에서 최종 plot bounds를 따른다.
+    semantic state나 public direct action을 추가하지 않는다. 생략한 기존 차트는 테두리가 생기지 않는다.
+  - Coverage: `test/unit/actions/canvas/plot-border.test.js`의 Full/Basic, default off, style default,
+    stroke inset, plot bounds, draw order, invalid style 및 immutable replay 계약을 검증한다.
 - 오류와 상호작용: unknown option, invalid dimension/color/margin, 두 번째 Canvas를 거부한다.
 - Coverage: `test/unit/actions/canvas/create-canvas.test.js`,
   `test/unit/grammar/layout/canvas-layout.test.js`가 defaults, partial options, invalid values와
@@ -37,7 +49,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createCanvas`
 
-- Implemented: `createCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite } } = {})`
+- Implemented: `createCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite }; plotBorder?: false | { color?: NonEmptyString; lineWidth?: PositiveFinite } } = {})`
 - Proposed (NOT IMPLEMENTED): `{ width?: "auto"; height?: "auto"; margin?: "auto" }`
 
 ### Value coverage — `createCanvas`
@@ -57,7 +69,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `editCanvas`
 
-- Signature: `editCanvas({ width?, height?, background?, margin?, plot? })`
+- Signature: `editCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })`
 - 목적과 필수 state: 기존 Canvas의 한 개 이상 property를 immutable하게 편집한다.
 - `width`, `height`, `background`, `margin`
   - Status: Implemented. 값 계약은 `createCanvas`와 같다. 생략한 property는 기존 값을 유지한다.
@@ -65,13 +77,19 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     deterministic materialization plan을 실행한다. background만 바꾸면 consumer를 다시 만들지 않는다.
   - Interaction: explicit scale range는 Canvas bounds 변경으로 재계산되지 않는다.
 - `plot`: 생략하면 기존 모드를 유지한다. 새 내부 크기 또는 `false`로 전환할 수 있다. 활성 모드에서 margin 편집은 내부 크기를 유지하며 외부 Canvas를 재계산한다.
+- `plotBorder`: 생략하면 현재 설정을 유지한다. `false`는 설정을 비활성화하고 concrete border를 제거한다.
+  객체는 complete style configuration이며 partial patch가 아니다. 생략한 style field는 이전 값 대신
+  기본 `color: "#ddd"`, `lineWidth: 1`로 돌아간다. 다른 값/배치/검증 규칙은 `createCanvas`와 같다.
+  테두리만 편집해도 mark/scales의 의미나 geometry는 바뀌지 않는다. 새 plot 크기에 폭이 맞지 않으면 immutable하게 거부한다.
+  - Coverage: `test/unit/actions/canvas/plot-border.test.js`가 omission 보존, complete object reset,
+    `false` 제거, bounds 변경과 source/facet replay 및 실패 시 이전 program 보존을 검증한다.
 - 오류: 빈 edit, Canvas 부재, unknown option과 invalid resolved bounds를 거부한다.
 - Coverage: `test/unit/actions/canvas/edit-canvas.test.js`가 partial edit, margin-only edit,
   auto/explicit range 차이와 rematerialization을 검증한다.
 
 ### Formal values — `editCanvas`
 
-- Implemented: `editCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite } })`; 최소 한 property가 필요하다.
+- Implemented: `editCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite }; plotBorder?: false | { color?: NonEmptyString; lineWidth?: PositiveFinite } })`; 최소 한 property가 필요하다.
 - Proposed (NOT IMPLEMENTED): `createCanvas`의 `"auto"` dimension/margin과 동일하다.
 
 ### Value coverage — `editCanvas`

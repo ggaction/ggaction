@@ -23,8 +23,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 554, // One bounded calendar parser module in the public grammar.
-  packedBytes: 780_000,
+  entries: 555, // One optional plot-border action module.
+  packedBytes: 782_000,
   unpackedBytes: 3_900_000
 });
 

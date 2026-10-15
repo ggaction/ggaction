@@ -65,7 +65,16 @@ export function normalizeMargin(margin, base = DEFAULT_MARGIN) {
   });
 }
 
-export function validateCanvasState({ width, height, background, margin }) {
+export function normalizePlotBorder(value) {
+  if (value === false) return false;
+  validateOptionObject(value, ["color", "lineWidth"], "Canvas plotBorder");
+  const border = { color: "#ddd", lineWidth: 1, ...value };
+  validateNonEmptyString(border.color, "Canvas plotBorder color");
+  validatePositiveFinite(border.lineWidth, "Canvas plotBorder lineWidth");
+  return cloneAndFreeze(border);
+}
+
+export function validateCanvasState({ width, height, background, margin, plotBorder = false }) {
   validatePositiveFinite(width, "Canvas width");
   validatePositiveFinite(height, "Canvas height");
 
@@ -81,6 +90,11 @@ export function validateCanvasState({ width, height, background, margin }) {
 
   if (margin.top + margin.bottom >= height) {
     throw new RangeError("Canvas vertical margins must be smaller than height.");
+  }
+  if (plotBorder !== false && plotBorder.lineWidth >= Math.min(
+    width - margin.left - margin.right, height - margin.top - margin.bottom
+  )) {
+    throw new RangeError("Canvas plotBorder lineWidth must be smaller than both plot dimensions.");
   }
 }
 

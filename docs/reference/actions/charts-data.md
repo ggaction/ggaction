@@ -32,6 +32,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `background` | Optional / branch-dependent | `string \| undefined` |
 | `margin` | Optional / branch-dependent | `number \| Partial<Record<"bottom" \| "left" \| "right" \| "top", number>> \| undefined` |
 | `plot` | Optional / branch-dependent | `false \| { width: number; height: number; } \| undefined` |
+| `plotBorder` | Optional / branch-dependent | `false \| { color?: string \| undefined; lineWidth?: number \| undefined; } \| undefined` |
 
 </details>
 
@@ -68,6 +69,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `background` | Optional / branch-dependent | `string \| undefined` |
 | `margin` | Optional / branch-dependent | `number \| Partial<Record<"bottom" \| "left" \| "right" \| "top", number>> \| undefined` |
 | `plot` | Optional / branch-dependent | `false \| { width: number; height: number; } \| undefined` |
+| `plotBorder` | Optional / branch-dependent | `false \| { color?: string \| undefined; lineWidth?: number \| undefined; } \| undefined` |
 
 </details>
 

@@ -3035,6 +3035,16 @@ async function testTypeScriptConsumer(directory) {
     program.editFacetHeaders(facetHeaderOptions);
     // @ts-expect-error Canvas fitting is Full only
     basicChart().fitCanvas(fitOptions);
+    program.createCanvas({ plotBorder: {} });
+    program.editCanvas({ plotBorder: { color: "#ddd", lineWidth: 1 } });
+    program.editCanvas({ plotBorder: false });
+    basicChart().createCanvas({ plotBorder: { lineWidth: 2 } });
+    // @ts-expect-error The border switch accepts false or a style object.
+    program.editCanvas({ plotBorder: true });
+    // @ts-expect-error Border line width is numeric.
+    program.editCanvas({ plotBorder: { lineWidth: "1" } });
+    // @ts-expect-error The border style vocabulary is closed.
+    program.editCanvas({ plotBorder: { opacity: 0.5 } });
     const roseOptions: import("ggaction").CreateRosePlotOptions = { category: "category", radiusScale: { range: [70, 140] } };
     program.createScale({ id: "midpoint", type: "sequential", midpoint: 0 });
     program.editScale({ id: "midpoint", midpoint: "auto" });
@@ -3046,7 +3056,7 @@ async function testTypeScriptConsumer(directory) {
     program.createRadialBarPlot(radialOptions);
     // @ts-expect-error measured facades are Full only
     basicChart().createRosePlot(roseOptions);
-    // @ts-expect-error value requires explicit sum
+    // A supplied radial value infers sum.
     program.createRadialBarPlot({ category: "category", value: "value" });
     // @ts-expect-error measured padding is zero
     program.createRosePlot({ category: "category", arc: { padAngle: 1 } });
@@ -3062,7 +3072,7 @@ async function testTypeScriptConsumer(directory) {
     basicChart().createPiePlot({ category: "category" });
     // @ts-expect-error A pie requires its category role.
     program.createPiePlot({});
-    // @ts-expect-error A weighted pie requires explicit sum.
+    // A supplied pie value infers sum.
     program.createPiePlot({ category: "category", value: "value" });
     // @ts-expect-error Count cannot receive a weight field.
     program.createPiePlot({ category: "category", value: "value", aggregate: "count" });

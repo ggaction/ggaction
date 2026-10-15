@@ -95,10 +95,15 @@
           "name": "plot",
           "required": false,
           "type": "false | { width: number; height: number; } | undefined"
+        },
+        {
+          "name": "plotBorder",
+          "required": false,
+          "type": "false | { color?: string | undefined; lineWidth?: number | undefined; } | undefined"
         }
       ],
       "callPatterns": [
-        "createCanvas({ width?, height?, background?, margin?, plot? })"
+        "createCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })"
       ],
       "snippet": "program.createCanvas({})",
       "errors": [],
@@ -197,10 +202,15 @@
           "name": "plot",
           "required": false,
           "type": "false | { width: number; height: number; } | undefined"
+        },
+        {
+          "name": "plotBorder",
+          "required": false,
+          "type": "false | { color?: string | undefined; lineWidth?: number | undefined; } | undefined"
         }
       ],
       "callPatterns": [
-        "editCanvas({ width?, height?, background?, margin?, plot? })"
+        "editCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })"
       ],
       "snippet": "program.editCanvas({ width: 640 })",
       "errors": [],

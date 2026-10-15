@@ -537,6 +537,18 @@
   {
     "file": "api/canvas.md",
     "block": 2,
+    "heading": "Exact inner dimensions",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "f17807b9900bcd66d3f760cd5ad9b074488b1b7a864b5733f554dd246dd2ae40",
+    "executable": false
+  },
+  {
+    "file": "api/canvas.md",
+    "block": 3,
     "heading": "`editCanvas(options)`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -550,7 +562,7 @@
   },
   {
     "file": "api/canvas.md",
-    "block": 3,
+    "block": 4,
     "heading": "`fitCanvas(options?)`",
     "mode": "fragment",
     "environment": "esm-context",

@@ -1962,3 +1962,7 @@ visible prefix와 hidden count를 derive한다. Symbol은 prefix만, labels/layo
 M-only path다. Shared graphic schema가 이를 허용하며 renderer는 별도 의미 추론을 하지 않는다.
 
 Side legend 전체 occupied-top 정렬과 guide transaction replay 보강 후 packed browser gzip 실측은 Full381,388bytes / Basic182,240bytes다. 기존379,000/180,000bytes를 초과하여 한도를382,000/183,000bytes로 조정한다. SVG 한도는 유지한다.
+
+Opt-in plot border intent는 기존 materializationConfigs.canvas.plotBorder가 소유한다. Canvas domain action은 wrapped rematerializePlotBorder를 명시적으로 호출하며 기존 layout dependency plan이 Canvas/guide sizing replay에 이를 포함한다. 기존 rect schema/renderer만 소비하고 compiler나 새 backend state를 추가하지 않는다. 선은 plot 안쪽이며 ordinary mark placement는 frame 앞을 사용하여 axes 아래의 frame 순서를 보존한다.
+Plot border 전용 wrapped-action module 1개 추가로 packed entry 실측555가 기존554한도를 초과하므로 entries 한도만555로 조정한다. Byte 한도는 유지한다.
+Plot border 포함 packed 실측780,011bytes와 검색 payload810,074bytes가 기존780,000/810,000한도를 넘었다. 각각782,000/811,000bytes로 좁게 조정하며 unpacked byte 및 SVG 한도는 유지한다.

@@ -5174,6 +5174,7 @@
       "rematerializeMarkHighlights",
       "rematerializeOpacityLegend",
       "rematerializeParallelAxes",
+      "rematerializePlotBorder",
       "rematerializePointMark",
       "rematerializeRadialGrid",
       "rematerializeRectMark",
