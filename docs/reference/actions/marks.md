@@ -1054,10 +1054,10 @@ semantic encodings. [Marks](../../api/marks.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
-Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
+Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`FillPaint`](./../types.md#type-fillpaint) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1078,7 +1078,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
-| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -1107,10 +1107,10 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
-Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
+Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`FillPaint`](./../types.md#type-fillpaint) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1129,7 +1129,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
-| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |

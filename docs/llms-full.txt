@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:a7b9baff160a0be41b0b2869becaf03d9ac74446c4664aa64e5d0000fe80f5bd. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:5b8b07ad3f8c7af4cb298298ad97916161ca891ae9da5d21448ffc37e06c4fe1. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -6402,6 +6402,13 @@ program.editBarMark({
   strokeWidth: 1.5
 });
 ```
+
+`fill` accepts a solid color string or the existing `FillPaint` linear gradient:
+`{ type: "linear-gradient", from: { x: 0, y: 1 }, to: { x: 0, y: 0 },
+stops: [{ offset: 0, color: "red" }, { offset: 1, color: "blue" }] }`.
+Endpoints use normalized item-local coordinates; ordered stops must have offsets
+from zero to one. This works in creation, `bar.fill` facade options, and edits,
+including rounded bars and later resizing.
 
 The current or only bar is inferred when `target` is omitted. Constant fill
 conflicts with field-driven color, while opacity and outline remain editable.
@@ -19714,10 +19721,10 @@ semantic encodings. [Marks](./api/marks/)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
-Named option contracts: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
+Named option contracts: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
 
  Declared options
 
@@ -19737,7 +19744,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
-| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -19763,10 +19770,10 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
-Named option contracts: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
+Named option contracts: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
 
  Declared options
 
@@ -19784,7 +19791,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
-| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -26410,8 +26417,8 @@ interface ChartProgramActions {
   removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
   createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
@@ -28209,7 +28216,7 @@ export type CreateBarPlotOptions = {
   color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target" | "interval">;
   bar?: RectStyleDetails & {
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -28222,7 +28229,7 @@ export type CreateBarPlotOptions = {
 );
 ```
 
-Related types: [`BarColorChannel`](./reference/types/#type-barcolorchannel) · [`BarWidthOptions`](./reference/types/#type-barwidthoptions) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`ColorGuides`](./reference/types/#type-colorguides) · [`BarFieldPosition`](./reference/types/#type-barfieldposition) · [`BandPositionChannel`](./reference/types/#type-bandpositionchannel) · [`BarYPositionChannel`](./reference/types/#type-barypositionchannel) · [`BarRangePositionChannel`](./reference/types/#type-barrangepositionchannel) · [`BarRangeOppositePositionChannel`](./reference/types/#type-barrangeoppositepositionchannel).
+Related types: [`BarColorChannel`](./reference/types/#type-barcolorchannel) · [`BarWidthOptions`](./reference/types/#type-barwidthoptions) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`ColorGuides`](./reference/types/#type-colorguides) · [`BarFieldPosition`](./reference/types/#type-barfieldposition) · [`BandPositionChannel`](./reference/types/#type-bandpositionchannel) · [`BarYPositionChannel`](./reference/types/#type-barypositionchannel) · [`BarRangePositionChannel`](./reference/types/#type-barrangepositionchannel) · [`BarRangeOppositePositionChannel`](./reference/types/#type-barrangeoppositepositionchannel).
 
 ### `CreateBeeswarmPlotOptions` {#type-createbeeswarmplotoptions}
 
@@ -28436,7 +28443,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   field: string;
   color?: HistogramCategoricalColorChannel;
   bar?: RectStyleDetails & {
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -28445,7 +28452,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
 };
 ```
 
-Related types: [`BasicHistogramEncoding`](./reference/types/#type-basichistogramencoding) · [`HistogramCategoricalColorChannel`](./reference/types/#type-histogramcategoricalcolorchannel) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`CartesianCategoricalGuideOptions`](./reference/types/#type-cartesiancategoricalguideoptions).
+Related types: [`BasicHistogramEncoding`](./reference/types/#type-basichistogramencoding) · [`HistogramCategoricalColorChannel`](./reference/types/#type-histogramcategoricalcolorchannel) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`CartesianCategoricalGuideOptions`](./reference/types/#type-cartesiancategoricalguideoptions).
 
 ### `CreateHorizonPlotOptions` {#type-createhorizonplotoptions}
 
@@ -31637,6 +31644,16 @@ Related types: [`FacetScaleResolution`](./reference/types/#type-facetscaleresolu
 export type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";
 ```
 
+### `FillPaint` {#type-fillpaint}
+
+ Expand FillPaint
+
+```typescript
+export type FillPaint = string | LinearGradientPaint;
+```
+
+Related types: [`LinearGradientPaint`](./reference/types/#type-lineargradientpaint).
+
 ### `FilledMarkLegendOptions` {#type-filledmarklegendoptions}
 
  Expand FilledMarkLegendOptions
@@ -32770,6 +32787,47 @@ type LineYPositionChannel =
 ```
 
 Related types: [`AggregateOperation`](./reference/types/#type-aggregateoperation) · [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](./reference/types/#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](./reference/types/#type-nonpointtemporalpositionscaleoptions).
+
+### `LinearGradientPaint` {#type-lineargradientpaint}
+
+ Expand LinearGradientPaint
+
+```typescript
+export interface LinearGradientPaint {
+  readonly type: "linear-gradient";
+  readonly from: LinearGradientPoint;
+  readonly to: LinearGradientPoint;
+  readonly stops: readonly [
+    LinearGradientStop,
+    LinearGradientStop,
+    ...LinearGradientStop[]
+  ];
+}
+```
+
+Related types: [`LinearGradientPoint`](./reference/types/#type-lineargradientpoint) · [`LinearGradientStop`](./reference/types/#type-lineargradientstop).
+
+### `LinearGradientPoint` {#type-lineargradientpoint}
+
+ Expand LinearGradientPoint
+
+```typescript
+export interface LinearGradientPoint {
+  readonly x: number;
+  readonly y: number;
+}
+```
+
+### `LinearGradientStop` {#type-lineargradientstop}
+
+ Expand LinearGradientStop
+
+```typescript
+export interface LinearGradientStop {
+  readonly offset: number;
+  readonly color: string;
+}
+```
 
 ### `MarkGraphicProperty` {#type-markgraphicproperty}
 
@@ -38806,7 +38864,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:a7b9baff160a0be41b0b2869becaf03d9ac74446c4664aa64e5d0000fe80f5bd` |
+| Contract fingerprint | `sha256:5b8b07ad3f8c7af4cb298298ad97916161ca891ae9da5d21448ffc37e06c4fe1` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

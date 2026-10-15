@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:a7b9baff160a0be41b0b2869becaf03d9ac74446c4664aa64e5d0000fe80f5bd",
+    "contractId": "sha256:5b8b07ad3f8c7af4cb298298ad97916161ca891ae9da5d21448ffc37e06c4fe1",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -949,8 +949,8 @@
         "independent-corners",
         "related"
       ],
-      "bytes": 5070,
-      "sha256": "d0c4509c7a9cc5e12de865b6890da4d4c763a902d99f6704a970bec2f33285cd"
+      "bytes": 5497,
+      "sha256": "cf72473c4677bc034f776ea0e23ec4de08ab7be23b479f36365d2e2ba8157ac6"
     },
     {
       "order": 60,
@@ -2062,8 +2062,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 69361,
-      "sha256": "700903b3730d21260261c16018f36dfa422ed3218a0009c199fc107d0f86b368"
+      "bytes": 69477,
+      "sha256": "bac5d0a3243281cad7e63fca55f6723b9326ba997c18e7fbaff1d3a2faa9fadf"
     },
     {
       "order": 120,
@@ -2650,6 +2650,7 @@
         "type-facetscaleresolution",
         "type-facetscaleresolutions",
         "type-fieldtype",
+        "type-fillpaint",
         "type-filledmarklegendoptions",
         "type-filledmarkstroke",
         "type-filterbound",
@@ -2725,6 +2726,9 @@
         "type-linecategoricalcolorchannel",
         "type-linexpositionchannel",
         "type-lineypositionchannel",
+        "type-lineargradientpaint",
+        "type-lineargradientpoint",
+        "type-lineargradientstop",
         "type-markgraphicproperty",
         "type-marklabelanchor",
         "type-marklabelplacement",
@@ -2958,8 +2962,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 321078,
-      "sha256": "2aaaf03a4be2f3410c772f0507e791b4740c2d896febee3d9d9b54dd3200bdd0"
+      "bytes": 322308,
+      "sha256": "1ec8ee752a1454fa6e31603ffed9f41b88357fc1354cb90e615ebb6bb8d168b4"
     },
     {
       "order": 127,
@@ -3312,7 +3316,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "0f2a1175f9664d01096db50d2b5fe71f2ef511067796640ddc1396f3d605fc31"
+      "sha256": "2cce47e9dfbec137eb645c26ede2f1f1373a83a78fedb8fcd0d56f168998540e"
     },
     {
       "order": 150,

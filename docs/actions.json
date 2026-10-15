@@ -7650,7 +7650,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic bar mark and empty rect collection.",
-      "signature": "createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: \"vertical\" | \"horizontal\"; missing?: \"error\" | \"skip\"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: \"vertical\" | \"horizontal\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "create bar mark",
         "create",
@@ -7781,7 +7781,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -7812,7 +7812,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit whole-bar appearance and rematerialize every concrete rectangle.",
-      "signature": "editBarMark(options: RectStyleDetails & { target?: string; missing?: \"error\" | \"skip\"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "editBarMark(options: RectStyleDetails & { target?: string; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "edit bar mark",
         "edit",
@@ -7921,7 +7921,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",

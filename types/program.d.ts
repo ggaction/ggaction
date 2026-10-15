@@ -3581,7 +3581,7 @@ export type CreateBarPlotOptions = {
   color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target" | "interval">;
   bar?: RectStyleDetails & {
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -3600,7 +3600,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   field: string;
   color?: HistogramCategoricalColorChannel;
   bar?: RectStyleDetails & {
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -4909,7 +4909,7 @@ export class ChartProgram {
     data?: string;
     orientation?: "vertical" | "horizontal";
     missing?: "error" | "skip";
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -4917,7 +4917,7 @@ export class ChartProgram {
   editBarMark(options: RectStyleDetails & {
     target?: string;
     missing?: "error" | "skip";
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;

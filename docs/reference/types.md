@@ -83,8 +83,8 @@ interface ChartProgramActions {
   removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
   createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
@@ -2195,7 +2195,7 @@ export type CreateBarPlotOptions = {
   color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target" | "interval">;
   bar?: RectStyleDetails & {
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -2210,7 +2210,7 @@ export type CreateBarPlotOptions = {
 
 </details>
 
-Related types: [`BarColorChannel`](#type-barcolorchannel) · [`BarWidthOptions`](#type-barwidthoptions) · [`RectStyleDetails`](#type-rectstyledetails) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`ColorGuides`](#type-colorguides) · [`BarFieldPosition`](#type-barfieldposition) · [`BandPositionChannel`](#type-bandpositionchannel) · [`BarYPositionChannel`](#type-barypositionchannel) · [`BarRangePositionChannel`](#type-barrangepositionchannel) · [`BarRangeOppositePositionChannel`](#type-barrangeoppositepositionchannel).
+Related types: [`BarColorChannel`](#type-barcolorchannel) · [`BarWidthOptions`](#type-barwidthoptions) · [`RectStyleDetails`](#type-rectstyledetails) · [`FillPaint`](#type-fillpaint) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`ColorGuides`](#type-colorguides) · [`BarFieldPosition`](#type-barfieldposition) · [`BandPositionChannel`](#type-bandpositionchannel) · [`BarYPositionChannel`](#type-barypositionchannel) · [`BarRangePositionChannel`](#type-barrangepositionchannel) · [`BarRangeOppositePositionChannel`](#type-barrangeoppositepositionchannel).
 
 ### `CreateBeeswarmPlotOptions` {#type-createbeeswarmplotoptions}
 
@@ -2458,7 +2458,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   field: string;
   color?: HistogramCategoricalColorChannel;
   bar?: RectStyleDetails & {
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -2469,7 +2469,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
 
 </details>
 
-Related types: [`BasicHistogramEncoding`](#type-basichistogramencoding) · [`HistogramCategoricalColorChannel`](#type-histogramcategoricalcolorchannel) · [`RectStyleDetails`](#type-rectstyledetails) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions).
+Related types: [`BasicHistogramEncoding`](#type-basichistogramencoding) · [`HistogramCategoricalColorChannel`](#type-histogramcategoricalcolorchannel) · [`RectStyleDetails`](#type-rectstyledetails) · [`FillPaint`](#type-fillpaint) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions).
 
 ### `CreateHorizonPlotOptions` {#type-createhorizonplotoptions}
 
@@ -6240,6 +6240,19 @@ export type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";
 
 </details>
 
+### `FillPaint` {#type-fillpaint}
+
+<details markdown="1">
+<summary>Expand FillPaint</summary>
+
+```typescript
+export type FillPaint = string | LinearGradientPaint;
+```
+
+</details>
+
+Related types: [`LinearGradientPaint`](#type-lineargradientpaint).
+
 ### `FilledMarkLegendOptions` {#type-filledmarklegendoptions}
 
 <details markdown="1">
@@ -7598,6 +7611,56 @@ type LineYPositionChannel =
 </details>
 
 Related types: [`AggregateOperation`](#type-aggregateoperation) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions).
+
+### `LinearGradientPaint` {#type-lineargradientpaint}
+
+<details markdown="1">
+<summary>Expand LinearGradientPaint</summary>
+
+```typescript
+export interface LinearGradientPaint {
+  readonly type: "linear-gradient";
+  readonly from: LinearGradientPoint;
+  readonly to: LinearGradientPoint;
+  readonly stops: readonly [
+    LinearGradientStop,
+    LinearGradientStop,
+    ...LinearGradientStop[]
+  ];
+}
+```
+
+</details>
+
+Related types: [`LinearGradientPoint`](#type-lineargradientpoint) · [`LinearGradientStop`](#type-lineargradientstop).
+
+### `LinearGradientPoint` {#type-lineargradientpoint}
+
+<details markdown="1">
+<summary>Expand LinearGradientPoint</summary>
+
+```typescript
+export interface LinearGradientPoint {
+  readonly x: number;
+  readonly y: number;
+}
+```
+
+</details>
+
+### `LinearGradientStop` {#type-lineargradientstop}
+
+<details markdown="1">
+<summary>Expand LinearGradientStop</summary>
+
+```typescript
+export interface LinearGradientStop {
+  readonly offset: number;
+  readonly color: string;
+}
+```
+
+</details>
 
 ### `MarkGraphicProperty` {#type-markgraphicproperty}
 

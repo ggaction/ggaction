@@ -458,7 +458,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createBarMark`
 
-- Implemented: `createBarMark({ id?: UserId; data?: UserId; orientation?: "vertical" | "horizontal"; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createBarMark({ id?: UserId; data?: UserId; orientation?: "vertical" | "horizontal"; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createBarMark`
@@ -472,13 +472,13 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - `orientation:"vertical"|"horizontal"`은 raw numeric-center bar의 의미 방향이다. 두 위치는 quantitative이며
   bin/aggregate/stack/weight는 거부한다. 생략한 기존 category/histogram 방향 추론은 유지한다.
   group/stack/width는 계속 encoding action이 소유한다. Evidence: `numeric-bar-centers.test.js`.
-- Evidence: `test/unit/actions/marks/create-bar-mark.test.js`.
+- Evidence: `test/unit/actions/marks/create-bar-mark.test.js` 및 `test/unit/actions/marks/bar-gradient-fill.test.js`.
 
 ## `editBarMark`
 
 - Signature: `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`: current compatible bar, unique bar, or explicit existing bar ID.
-- `fill`: non-empty constant color. Field-driven color encoding과 함께 사용할 수 없다.
+- `fill`: non-empty constant color 또는 기존 `FillPaint` item-local linear gradient다. 정규화된 from/to와 단조 stops를 shared paint validator로 검증한다. Field-driven color encoding과 함께 사용할 수 없다.
 - `opacity`: unit interval. `stroke`: non-empty color or `false`; false는 concrete transparent zero-width outline로
   materialize한다. `strokeWidth`는 non-negative finite이며 removed stroke에 단독 적용할 수 없다.
 - Effect: mark materialization config를 immutable하게 갱신하고 complete histogram/aggregate/grouped/ranged bar를
@@ -486,7 +486,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editBarMark`
 
-- Implemented: `editBarMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editBarMark({ target?: UserId; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -497,7 +497,9 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - ✅ Covered: uncolored/color histogram, Canvas rematerialization and compatibility with selected bar overrides.
 - Evidence: `test/unit/actions/marks/edit-bar-mark.test.js` and
   `test/charts/mark-selection-bars/public.test.js`.
-- Evidence: `test/unit/actions/marks/create-bar-mark.test.js`.
+- Evidence: `test/unit/actions/marks/create-bar-mark.test.js` 및 `test/unit/actions/marks/bar-gradient-fill.test.js`.
+
+- ✅ Covered: create/edit/facade gradient fill, immutable caller input, malformed paint rejection, rounded paths and Canvas/scale rematerialization in `test/unit/actions/marks/bar-gradient-fill.test.js`.
 
 ## `createAreaMark`
 

@@ -14,6 +14,7 @@ import { requestedRectStyleDetails, RECT_RADIUS_PROPERTIES } from
 import { STROKE_STYLE_PROPERTIES } from
   "../../../grammar/strokeStyle.js";
 import { rematerializeExistingLegend } from "../../encodings/shared.js";
+import { validateFillPaint } from "../../../grammar/paint.js";
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const EDIT_OPTIONS = Object.freeze([
@@ -75,7 +76,7 @@ export const editBarMark = /* @__PURE__ */ action(
     const appearance = { ...config.barAppearance };
     Object.assign(appearance, styleDetails);
     if (Object.hasOwn(args, "fill")) {
-      appearance.fill = validateNonEmptyString(args.fill, "Bar fill");
+      appearance.fill = validateFillPaint(args.fill, "Bar fill");
     }
     if (Object.hasOwn(args, "opacity")) {
       appearance.opacity = validateUnitInterval(args.opacity, "Bar opacity");

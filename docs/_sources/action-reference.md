@@ -54,8 +54,8 @@ interface ChartProgramActions {
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  createBarMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+  createBarMark(options?: { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   createArcMark(options?: { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
