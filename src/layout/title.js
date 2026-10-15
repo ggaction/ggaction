@@ -5,13 +5,17 @@ function lineCenters(lines, style, lineHeight, start) {
   return lines.map((_, index) => start + style.fontSize / 2 + index * lineHeight);
 }
 
+function wrapTitleLines(text, options) {
+  return text.split(/\r\n|\r|\n/u).flatMap(line => line === "" ? [""] : wrapText(line, options));
+}
+
 export function buildTitleReadingBlock({ text, subtitle }, config, profile) {
-  const titleLines = wrapText(text, {
+  const titleLines = wrapTitleLines(text, {
     maxWidth: config.maxWidth,
     mode: config.wrap,
     style: config.titleStyle, profile
   });
-  const subtitleLines = subtitle === undefined ? [] : wrapText(subtitle, {
+  const subtitleLines = subtitle === undefined ? [] : wrapTitleLines(subtitle, {
     maxWidth: config.maxWidth,
     mode: config.wrap,
     style: config.subtitleStyle, profile

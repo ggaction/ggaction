@@ -107,3 +107,28 @@ test(`${browserName} keeps vertical and slanted axis labels outside fixed plots 
     assertNoBrowserErrors(errors, "rotated axis labels");await page.close();
   } finally { await context.close(); }
 });
+
+
+test(`${browserName} renders hard title breaks as concrete Canvas and SVG text lines`, async () => {
+  const context = await browser.newContext();
+  try {
+    const { page, errors } = await openBrowserPage(context, server.baseUrl, { waitFor: () => window.compatibility !== undefined });
+    const actual = await page.evaluate(async () => {
+      const { chart, render } = await import("/node_modules/ggaction/src/index.js");
+      const { renderToSVG } = await import("/node_modules/ggaction/src/renderers/svg.js");
+      const p = chart().createCanvas({ width: 600, height: 500, margin: 180 })
+        .createTitle({ text: "Headline\nDetails", subtitle: "Credit\r\nSource" });
+      const canvas = document.createElement("canvas"), ctx = canvas.getContext("2d");
+      render(p, ctx, { pixelRatio: 1 });
+      const data = ctx.getImageData(0, 0, 600, 180).data;
+      let ink = 0;
+      for (let i = 0; i < data.length; i += 4) if (data[i] < 200 && data[i+1] < 200 && data[i+2] < 200 && data[i+3] > 100) ink++;
+      const host = document.createElement("div"); host.innerHTML = renderToSVG(p); document.body.append(host);
+      const labels = [...host.querySelectorAll("text")].map(n => n.textContent);host.remove();
+      return { labels, ink };
+    });
+    assert.deepEqual(actual.labels, ["Headline", "Details", "Credit", "Source"]);
+    assert.ok(actual.ink > 100);
+    assertNoBrowserErrors(errors, "hard title breaks");await page.close();
+  } finally { await context.close(); }
+});

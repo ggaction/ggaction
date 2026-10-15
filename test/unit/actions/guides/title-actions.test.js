@@ -390,7 +390,7 @@ test("validates wrapping, editing, and edge layout atomically", () => {
     maxWidth: 100,
     lineHeight: 10
   }), /cover every visible fontSize/);
-  assert.throws(() => base.createTitle({ text: "Title\nSecond" }), /newlines/);
+  assert.throws(() => base.createTitle({ text: "Title", titleStyle: { fontFamily: "Invalid\nFont" } }), /newlines/);
   assert.throws(() => base.editTitle({ text: "Missing" }), /existing chart title/);
 
   const title = base.createTitle({ text: "Stable" });

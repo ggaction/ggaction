@@ -51,9 +51,9 @@ const DEFAULTS = Object.freeze({
   })
 });
 
-export function validateTitleString(value, label) {
+export function validateTitleString(value, label, multiline = false) {
   validateNonEmptyString(value, label);
-  if (/\r|\n/u.test(value)) {
+  if (!multiline && /\r|\n/u.test(value)) {
     throw new Error(`${label} does not accept explicit newlines.`);
   }
   return value;
@@ -137,10 +137,10 @@ function normalizeConfig(args, defaults, { hasSubtitle }) {
 
 export function normalizeTitleOptions(args) {
   validateOptionObject(args, OPTIONS, "createTitle");
-  const text = validateTitleString(args.text, "Chart title text");
+  const text = validateTitleString(args.text, "Chart title text", true);
   const subtitle = args.subtitle === undefined
     ? undefined
-    : validateTitleString(args.subtitle, "Chart subtitle");
+    : validateTitleString(args.subtitle, "Chart subtitle", true);
   return {
     text,
     subtitle,
@@ -156,12 +156,12 @@ export function normalizeTitleEditOptions(args, previous, semanticTitle) {
   });
   const text = args.text === undefined
     ? semanticTitle.text
-    : validateTitleString(args.text, "Chart title text");
+    : validateTitleString(args.text, "Chart title text", true);
   const subtitle = args.subtitle === false
     ? undefined
     : args.subtitle === undefined
       ? semanticTitle.subtitle
-      : validateTitleString(args.subtitle, "Chart subtitle");
+      : validateTitleString(args.subtitle, "Chart subtitle", true);
   if (args.subtitle !== undefined && args.subtitle !== false && typeof args.subtitle !== "string") {
     throw new TypeError("Chart subtitle must be a non-empty string or false.");
   }
@@ -207,12 +207,12 @@ export function resolveTitleLayout(program, config) {
     throw new Error("Chart title layout requires Canvas bounds and dimensions.");
   }
   const block = buildTitleReadingBlock({
-    text: validateTitleString(program.semanticSpec.title.text, "Chart title text"),
+    text: validateTitleString(program.semanticSpec.title.text, "Chart title text", true),
     subtitle: program.semanticSpec.title.subtitle === undefined
       ? undefined
       : validateTitleString(
           program.semanticSpec.title.subtitle,
-          "Chart subtitle"
+          "Chart subtitle", true
         )
   }, config, program.materializationConfigs.textMetrics);
   const automatic = program.materializationConfigs.canvas?.plot !== undefined;

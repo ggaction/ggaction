@@ -92,8 +92,10 @@ whitespace and falls back to Unicode-safe character wrapping for an oversized
 word. Character wrapping always splits on Unicode code-point boundaries. The
 library uses deterministic text metrics so the same program produces the same
 line breaks in browsers and Node. Renderers draw the concrete lines already in
-`graphicSpec`; they do not wrap text again. Explicit newline characters are
-not accepted.
+`graphicSpec`; they do not wrap text again. Title and subtitle strings accept
+explicit newline characters. Each hard line wraps independently when `maxWidth`
+is set; blank lines reserve vertical spacing. Font-family and color values remain
+single-line strings.
 
 The requested margin must contain the actual title block. A title must also
 avoid guides reserved on the same edge. Creation fails instead of expanding
