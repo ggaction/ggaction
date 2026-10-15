@@ -332,3 +332,16 @@ export function deriveTimeUnitRows(rows, transform) {
   });
   return cloneAndFreeze(values);
 }
+
+export function offsetUtcTimeUnit(timestamp, unit) {
+  const date = new Date(timestamp);
+  if (unit === "year") return utcTimestamp(date.getUTCFullYear() + 1);
+  if (unit === "quarter" || unit === "month") {
+    return utcTimestamp(date.getUTCFullYear(), date.getUTCMonth() + (unit === "quarter" ? 3 : 1));
+  }
+  if (unit === "day") return timestamp + 24 * 60 * 60 * 1000;
+  if (unit === "hour") return timestamp + 60 * 60 * 1000;
+  if (unit === "minute") return timestamp + 60 * 1000;
+  return timestamp + 1000;
+}
+

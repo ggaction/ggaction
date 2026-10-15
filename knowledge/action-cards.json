@@ -12258,10 +12258,15 @@
           "name": "pixels",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "interval",
+          "required": false,
+          "type": "{ unit: \"day\" | \"hour\" | \"minute\" | \"month\" | \"quarter\" | \"second\" | \"year\"; insetStart?: number | undefined; insetEnd?: number | undefined; } | undefined"
         }
       ],
       "callPatterns": [
-        "encodeBarWidth({ target?, band?, pixels? })"
+        "encodeBarWidth({ target?, band?, pixels?, interval? })"
       ],
       "snippet": "program.encodeBarWidth({ band: 1 })",
       "errors": [],
@@ -30800,7 +30805,7 @@
         {
           "name": "width",
           "required": false,
-          "type": "Omit<BarWidthOptions, \"target\"> | undefined"
+          "type": "Omit<BarWidthOptions, \"interval\" | \"target\"> | undefined"
         },
         {
           "name": "bar",

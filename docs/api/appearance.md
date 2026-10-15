@@ -20,7 +20,7 @@ title: Appearance Encodings
 | `encodeStrokeDash` | line, rule | nominal or constant | ordinal for field; none for constant | complete line series or rule item; series values must agree |
 | `encodeAngle` | point, tick | quantitative or constant | none | item; clockwise degrees; circles retain the angle as a visual no-op |
 | `encodePointRadius` / `encodeRadius` | point | constant | none | glyph radius in logical pixels; independent from Polar position r |
-| `encodeBarWidth` | bar | constant band fraction or pixels | parent category band or temporal/quantitative slot | aggregate or ranged bar; histogram bins own their width |
+| `encodeBarWidth` | bar | constant band fraction, pixels, or UTC calendar interval | parent category band, temporal interval, or quantitative slot | aggregate or ranged bar; histogram bins own their width |
 
 <!-- action-capabilities:appearance:end -->
 

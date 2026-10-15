@@ -7,7 +7,7 @@ import {
   interpolateNumber,
   inverseLerp
 } from "../../../grammar/numeric.js";
-export function resolveTemporalBarBand(valuesByConsumer, domain, range) {
+export function resolveTemporalBarBand(valuesByConsumer, domain, range, markConfigs = {}) {
   const temporalBars = valuesByConsumer.filter(({ consumer }) => {
     const channels = resolveBarChannels(consumer.layer);
     return [BAR_GRAINS.aggregate, BAR_GRAINS.ranged].includes(resolveBarGrain(consumer.layer)) &&
@@ -15,6 +15,11 @@ export function resolveTemporalBarBand(valuesByConsumer, domain, range) {
       consumer.encoding.fieldType === "temporal";
   });
   if (temporalBars.length === 0) return undefined;
+  const intervalBars = temporalBars.filter(({consumer}) => markConfigs[consumer.layer.id]?.barWidth?.interval !== undefined);
+  if (intervalBars.length > 0) {
+    if (intervalBars.length !== temporalBars.length) throw new Error("Temporal interval and centered bar widths cannot share a position scale.");
+    return undefined;
+  }
   const temporalFields = new Set(
     temporalBars.map(({ consumer }) => consumer.encoding.field)
   );

@@ -67,7 +67,7 @@ The tables below are generated from the same reviewed capability registry used b
 | `encodeStrokeDash` | line, rule | nominal or constant | ordinal for field; none for constant | complete line series or rule item; series values must agree |
 | `encodeAngle` | point, tick | quantitative or constant | none | item; clockwise degrees; circles retain the angle as a visual no-op |
 | `encodePointRadius` / `encodeRadius` | point | constant | none | glyph radius in logical pixels; independent from Polar position r |
-| `encodeBarWidth` | bar | constant band fraction or pixels | parent category band or temporal/quantitative slot | aggregate or ranged bar; histogram bins own their width |
+| `encodeBarWidth` | bar | constant band fraction, pixels, or UTC calendar interval | parent category band, temporal interval, or quantitative slot | aggregate or ranged bar; histogram bins own their width |
 
 ### Selection and guides
 
@@ -236,6 +236,10 @@ Temporal bindings accept `temporalUnit: "auto" | "year" | "timestamp"`; see
 [temporal inputs](./position/temporal.md#explicit-input-units). The option changes
 input interpretation without modifying raw rows or the existing mean Bar and
 nominal numeric color defaults.
+
+## Calendar interval bar widths
+
+After a temporal bar facade, use `.encodeBarWidth({ interval: { unit: "year", insetStart: 1 } })` to fill each UTC calendar year with a one-pixel gap at its beginning. This contextual fragment requires an existing ungrouped aggregate bar, UTC interval-start category values, and an explicit temporal domain covering every interval end. It preserves leap-year and varying-month spans without modifying source data. `unit` accepts year, quarter, month, day, hour, minute or second; optional `insetStart` and `insetEnd` are non-negative logical pixels and default to zero. Insets follow calendar edge identity when the scale reverses. Interval, band and pixel modes are mutually exclusive. This mode rejects grouped, ranged, numeric-center and histogram bars, mixed interval/centered temporal Bar consumers, non-boundary category values and insets leaving no positive width.
 
 ## Related
 

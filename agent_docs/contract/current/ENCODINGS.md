@@ -1520,10 +1520,12 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeBarWidth`
 
-- Signature: `encodeBarWidth({ band?, pixels?, target? })`
+- Signature: `encodeBarWidth({ band?, pixels?, interval?, target? })`
 - `band`: `(0, 1]` finite number. Resolved category/offset slot 중 rect가 차지하는 비율이다.
 - `pixels`: positive finite logical Canvas pixel width. `band`와 mutually exclusive이며 PNG `pixelRatio`와
   무관하다.
+- `interval`: `{ unit: "year"|"quarter"|"month"|"day"|"hour"|"minute"|"second", insetStart?: NonNegativeFinite, insetEnd?: NonNegativeFinite }`. Band/pixels와 mutually exclusive다. Group 없는 aggregate temporal category의 UTC interval start를 해당 달력 구간 끝까지 그린다. Insets는 calendar-start/end 쪽 logical px이며 기본0이다. UTC 경계가 아닌 값, category interval 밖 domain, non-positive inset 결과, grouped/ranged/centered/histogram은 거부한다. 이 width는 data를 bucket/aggregate하지 않으며 source 값은 이미 interval start여야 한다.
+- Interval mode는 temporal bar의 center-slot half-band inset을 사용하지 않는다. 같은 position scale의 interval/centered temporal Bar 혼합은 거부한다. Source explicit domain은 모든 끝점을 포함해야 한다. Canvas/scale edits와 persistence replay가 같은 width를 rematerialize한다.
 - Complete aggregate/ranged bar는 action 호출 전에도 implicit `{ band: 0.72 }`로 즉시 materialize된다.
   첫 assignment에서 width mode를 생략하면 그 기본값을 config에 저장하고, reassignment에서 생략하면 current
   mode와 value를 유지한다. Group slot spacing은 directional offset action이 소유한다.
@@ -1531,7 +1533,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   보존한다. 숫자 center는 공유된 continuous scale의 그대로인 좌표를 사용하며 half-width inset을 적용하지 않는다.
 - `target`: optional Bar ID. 위치가 없는 valid partial Bar도 받는다. 완성된 group layout은 matching offset를
   추가로 요구한다.
-- Effect: graphical mark config에 exactly one width mode를 저장하고 centered rect x/width를
+- Effect: graphical mark config에 exactly one width mode를 저장하고 rect category position/width를
   rematerialize한다. Band width는 Canvas resize에 반응하고 pixel width는 고정된다. Slot보다 큰 explicit
   pixel width와 overlap은 허용한다.
 - 위치가 미완성일 때는 기존 barWidth config만 저장하고 items를 생성하지 않는다. 나중에 category/measure
@@ -1547,6 +1549,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ### Formal values — `encodeBarWidth`
 
 - Implemented: mutually exclusive `encodeBarWidth({ band?: number; pixels?: never; target?: UserId } | { band?: never; pixels: PositiveFinite; target?: UserId })`; complete bar implicit default and first-assignment default are both `{ band: 0.72 }`.
+- Implemented: additional mutually exclusive interval branch with UTC calendar units and start/end pixel insets.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -1563,7 +1566,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: explicit mode switching, omitted-mode retention와 immutable concrete rematerialization.
 - Resize/order
   - ✅ Covered: band responsive, pixels fixed, width/padding action-order convergence와 2× PNG parity.
-- Evidence: grouped-bar width and chart reference tests, `test/unit/actions/encodings/bar-authoring-order.test.js`.
+- Evidence: grouped-bar width and chart reference tests, `test/unit/actions/encodings/bar-authoring-order.test.js`, `test/unit/actions/encodings/temporal-interval-width.test.js`.
 
 ## `encodeText`
 

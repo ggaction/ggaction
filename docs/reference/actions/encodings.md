@@ -1471,6 +1471,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `band` | Optional / branch-dependent | `number \| undefined` |
 | `pixels` | Optional / branch-dependent | `number \| undefined` |
+| `interval` | Optional / branch-dependent | `{ unit: "day" \| "hour" \| "minute" \| "month" \| "quarter" \| "second" \| "year"; insetStart?: number \| undefined; insetEnd?: number \| undefined; } \| undefined` |
 
 </details>
 

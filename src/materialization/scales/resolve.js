@@ -440,7 +440,8 @@ export function resolveScaleMaterialization(options) {
     const temporalBarBand = resolveTemporalBarBand(
       valuesByConsumer,
       domain,
-      range
+      range,
+      markConfigs
     );
     if (temporalBarBand !== undefined) {
       resolvedScale = {

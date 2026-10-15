@@ -1,5 +1,5 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
-import { utcTimestamp, validTimestamp } from "../timeUnit.js";
+import { utcTimestamp, validTimestamp, offsetUtcTimeUnit } from "../timeUnit.js";
 
 const TIME_UNITS = [
   { span: 2 * 365 * 24 * 60 * 60 * 1000, unit: "year" },
@@ -56,17 +56,6 @@ function floorUtc(timestamp, unit) {
   return Math.floor(timestamp / 1000) * 1000;
 }
 
-function offsetUtc(timestamp, unit) {
-  const date = new Date(timestamp);
-  if (unit === "year") return utcTimestamp(date.getUTCFullYear() + 1);
-  if (unit === "month") {
-    return utcTimestamp(date.getUTCFullYear(), date.getUTCMonth() + 1);
-  }
-  if (unit === "day") return timestamp + 24 * 60 * 60 * 1000;
-  if (unit === "hour") return timestamp + 60 * 60 * 1000;
-  if (unit === "minute") return timestamp + 60 * 1000;
-  return timestamp + 1000;
-}
 
 export function niceTimeDomain(domain) {
   const [minimum, maximum] = requireTimeDomain(domain);
@@ -74,7 +63,7 @@ export function niceTimeDomain(domain) {
   const unit = TIME_UNITS.find(item => maximum - minimum >= item.span).unit;
   const start = floorUtc(minimum, unit);
   const endFloor = floorUtc(maximum, unit);
-  const end = endFloor === maximum ? maximum : offsetUtc(endFloor, unit);
+  const end = endFloor === maximum ? maximum : offsetUtcTimeUnit(endFloor, unit);
   if (![start, end].every(validTimestamp)) {
     throw new RangeError("Nice time domain exceeds the supported date range.");
   }

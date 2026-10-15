@@ -3270,7 +3270,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `color` | Optional / branch-dependent | `BarColorChannel \| undefined` |
-| `width` | Optional / branch-dependent | `Omit<BarWidthOptions, "target"> \| undefined` |
+| `width` | Optional / branch-dependent | `Omit<BarWidthOptions, "interval" \| "target"> \| undefined` |
 | `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
 | `x` | Required | `BarRangePositionChannel \| BarRangeOppositePositionChannel \| (Omit<PositionEncodingBase, "coordinate" \| "target"> & { ...; } & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; })` |

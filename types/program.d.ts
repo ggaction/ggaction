@@ -3567,7 +3567,7 @@ export type CreateBarPlotOptions = {
   coordinate?: string;
   orientation?: "vertical" | "horizontal";
   color?: BarColorChannel;
-  width?: Omit<BarWidthOptions, "target">;
+  width?: Omit<BarWidthOptions, "target" | "interval">;
   bar?: RectStyleDetails & {
     fill?: string;
     opacity?: number;
@@ -4081,8 +4081,9 @@ export interface CreateTextPlotOptions {
 }
 
 export type BarWidthOptions = { target?: string } & (
-  | { band?: number; pixels?: never }
-  | { band?: never; pixels: number }
+  | { band?: number; pixels?: never; interval?: never }
+  | { band?: never; pixels: number; interval?: never }
+  | { band?: never; pixels?: never; interval: { unit: Exclude<TimeUnit, "week" | "weekday">; insetStart?: number; insetEnd?: number } }
 );
 
 export interface DashScaleOptions {

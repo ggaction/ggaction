@@ -642,8 +642,8 @@
       "marks": [
         "bar"
       ],
-      "fieldTypes": "constant band fraction or pixels",
-      "scales": "parent category band or temporal/quantitative slot",
+      "fieldTypes": "constant band fraction, pixels, or UTC calendar interval",
+      "scales": "parent category band, temporal interval, or quantitative slot",
       "grain": "aggregate or ranged bar; histogram bins own their width"
     }
   ]

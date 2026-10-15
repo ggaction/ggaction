@@ -16,6 +16,7 @@ import {
 
 export function deriveRangedRectangles(required, program, width) {
   const { layer, dataset } = required;
+  if (width?.interval !== undefined) throw new Error("Bar interval width requires ungrouped aggregate temporal categories.");
   const centered = resolveBarGrain(layer) === BAR_GRAINS.centered;
   const vertical = centered ? resolveBarChannels(layer).orientation === "vertical" : layer.encoding?.y2 !== undefined;
   const categoryChannel = vertical ? "x" : "y";

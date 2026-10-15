@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:d9a240cf84d4607759a6d3843c226da74f5c509132b9c37282c50211ae5f85da. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:2159663887199ac101f5fb1142fc6b4836b546cf4669a40705c5023d0a0c94a7. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -7040,7 +7040,7 @@ The tables below are generated from the same reviewed capability registry used b
 | `encodeStrokeDash` | line, rule | nominal or constant | ordinal for field; none for constant | complete line series or rule item; series values must agree |
 | `encodeAngle` | point, tick | quantitative or constant | none | item; clockwise degrees; circles retain the angle as a visual no-op |
 | `encodePointRadius` / `encodeRadius` | point | constant | none | glyph radius in logical pixels; independent from Polar position r |
-| `encodeBarWidth` | bar | constant band fraction or pixels | parent category band or temporal/quantitative slot | aggregate or ranged bar; histogram bins own their width |
+| `encodeBarWidth` | bar | constant band fraction, pixels, or UTC calendar interval | parent category band, temporal interval, or quantitative slot | aggregate or ranged bar; histogram bins own their width |
 
 ### Selection and guides
 
@@ -7199,6 +7199,10 @@ Temporal bindings accept `temporalUnit: "auto" | "year" | "timestamp"`; see
 [temporal inputs](./api/position/temporal/#explicit-input-units). The option changes
 input interpretation without modifying raw rows or the existing mean Bar and
 nominal numeric color defaults.
+
+## Calendar interval bar widths
+
+After a temporal bar facade, use `.encodeBarWidth({ interval: { unit: "year", insetStart: 1 } })` to fill each UTC calendar year with a one-pixel gap at its beginning. This contextual fragment requires an existing ungrouped aggregate bar, UTC interval-start category values, and an explicit temporal domain covering every interval end. It preserves leap-year and varying-month spans without modifying source data. `unit` accepts year, quarter, month, day, hour, minute or second; optional `insetStart` and `insetEnd` are non-negative logical pixels and default to zero. Insets follow calendar edge identity when the scale reverses. Interval, band and pixel modes are mutually exclusive. This mode rejects grouped, ranged, numeric-center and histogram bars, mixed interval/centered temporal Bar consumers, non-boundary category values and insets leaving no positive width.
 
 ## Related
 
@@ -10680,7 +10684,7 @@ See [Scale options](./api/scales/) and [Legends](./api/legends/).
 | `encodeStrokeDash` | line, rule | nominal or constant | ordinal for field; none for constant | complete line series or rule item; series values must agree |
 | `encodeAngle` | point, tick | quantitative or constant | none | item; clockwise degrees; circles retain the angle as a visual no-op |
 | `encodePointRadius` / `encodeRadius` | point | constant | none | glyph radius in logical pixels; independent from Polar position r |
-| `encodeBarWidth` | bar | constant band fraction or pixels | parent category band or temporal/quantitative slot | aggregate or ranged bar; histogram bins own their width |
+| `encodeBarWidth` | bar | constant band fraction, pixels, or UTC calendar interval | parent category band, temporal interval, or quantitative slot | aggregate or ranged bar; histogram bins own their width |
 
 ## At a glance
 
@@ -18333,7 +18337,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `color` | Optional / branch-dependent | `BarColorChannel \| undefined` |
-| `width` | Optional / branch-dependent | `Omit<BarWidthOptions, "target"> \| undefined` |
+| `width` | Optional / branch-dependent | `Omit<BarWidthOptions, "interval" \| "target"> \| undefined` |
 | `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
 | `x` | Required | `BarRangePositionChannel \| BarRangeOppositePositionChannel \| (Omit<PositionEncodingBase, "coordinate" \| "target"> & { ...; } & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; })` |
@@ -21458,6 +21462,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `band` | Optional / branch-dependent | `number \| undefined` |
 | `pixels` | Optional / branch-dependent | `number \| undefined` |
+| `interval` | Optional / branch-dependent | `{ unit: "day" \| "hour" \| "minute" \| "month" \| "quarter" \| "second" \| "year"; insetStart?: number \| undefined; insetEnd?: number \| undefined; } \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -27034,10 +27039,13 @@ Related types: [`NonPointZeroSupportingPositionScaleOptions`](./reference/types/
 
 ```typescript
 export type BarWidthOptions = { target?: string } & (
-  | { band?: number; pixels?: never }
-  | { band?: never; pixels: number }
+  | { band?: number; pixels?: never; interval?: never }
+  | { band?: never; pixels: number; interval?: never }
+  | { band?: never; pixels?: never; interval: { unit: Exclude<TimeUnit, "week" | "weekday">; insetStart?: number; insetEnd?: number } }
 );
 ```
+
+Related types: [`TimeUnit`](./reference/types/#type-timeunit).
 
 ### `BarYPositionChannel` {#type-barypositionchannel}
 
@@ -28179,7 +28187,7 @@ export type CreateBarPlotOptions = {
   coordinate?: string;
   orientation?: "vertical" | "horizontal";
   color?: BarColorChannel;
-  width?: Omit<BarWidthOptions, "target">;
+  width?: Omit<BarWidthOptions, "target" | "interval">;
   bar?: RectStyleDetails & {
     fill?: string;
     opacity?: number;
@@ -38759,7 +38767,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:d9a240cf84d4607759a6d3843c226da74f5c509132b9c37282c50211ae5f85da` |
+| Contract fingerprint | `sha256:2159663887199ac101f5fb1142fc6b4836b546cf4669a40705c5023d0a0c94a7` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

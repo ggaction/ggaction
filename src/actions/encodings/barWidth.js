@@ -4,11 +4,12 @@ import {
   BAR_GRAINS,
   resolveBarColorLayout,
   resolveBarOffsetChannel,
+  resolveBarChannels,
   resolveBarGrain
 } from "../../grammar/bars/policy.js";
 import { normalizeBarWidth } from "../../grammar/bars/geometry.js";
 
-const OPTIONS = Object.freeze(["band", "pixels", "target"]);
+const OPTIONS = Object.freeze(["band", "pixels", "interval", "target"]);
 
 const encodeBarWidth = /* @__PURE__ */ action(
   {
@@ -38,6 +39,12 @@ const encodeBarWidth = /* @__PURE__ */ action(
       layer.encoding?.x === undefined || layer.encoding?.y === undefined
     )) {
       return this._withMarkConfig(target, { ...this.markConfigs[target], barWidth: width });
+    }
+    if (width.interval !== undefined && grain !== undefined) {
+      const category = resolveBarChannels(layer)?.category;
+      if (grain !== BAR_GRAINS.aggregate || grouped || layer.encoding?.[category]?.fieldType !== "temporal") {
+        throw new Error("Bar interval width requires ungrouped aggregate temporal categories.");
+      }
     }
     if (grain === BAR_GRAINS.histogram) {
       throw new Error("encodeBarWidth requires an aggregate or ranged category slot, not histogram bins.");
