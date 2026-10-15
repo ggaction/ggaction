@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:633e10de4fa15c94c2f62bec47bb8d89ade49bef79a91a799fce0ca5b64f597f. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:4f9e932879a34502b99e2b2f4e770e7f150909c40e3a14ecfc7026f28b830268. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12126,6 +12126,10 @@ use an end anchor inferred from their rotation and axis side. Reserve enough
 margin for the full label length and the axis title. Rotation does not enlarge a
 fixed Canvas or change its margins.
 
+## Override displayed tick text
+
+Cartesian label `labelMap` works with categorical values, numeric ticks and time ticks. Provide typed `{ value, label }` entries. Continuous keys must be finite numbers; time keys use Unix milliseconds. Missing entries retain the normal formatter, and `"auto"` clears the map. Scale domains, tick positions and raw data are preserved. Use focused labels, nested ticks-and-labels or whole-axis editors to update the same policy.
+
 ## Shift ticks and labels along an axis
 
 Cartesian ticks and labels accept `alongOffset`, a signed finite displacement in logical pixels. Positive values move X-axis items right and Y-axis items down, including top/right axes and reversed scales. It defaults to zero and leaves the scale and axis baseline unchanged. Tick and label offsets are independent absolute values: set both when both should move. The existing label `offset` remains the outward gap from the plot edge. Complete axes, whole-axis editors and focused editors accept the same options; Canvas and scale updates preserve them. Polar and Parallel axes do not accept this option.
@@ -12299,7 +12303,7 @@ axis throws before anything changes.
 | `position` | x: `"bottom"/"top"`; y: `"left"/"right"` |
 | `line` | `false` or `{ color?, lineWidth? }` |
 | `ticks` | `false` or `{ count?, values?, length?, color?, lineWidth?, alongOffset? }` |
-| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, alongOffset? }` |
+| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, alongOffset?, labelMap? }` |
 | `ticksAndLabels` | `false` or `{ count?, values?, ticks?, labels? }` |
 | `title` | `false` or `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight? }` |
 
@@ -26918,6 +26922,7 @@ export interface AxisTickOptions<P extends string>
   count?: number;
   values?: readonly AxisValue[];
 }
+/** Cartesian label maps use typed category values or finite numeric/timestamp keys on continuous scales. */
 ```
 
 Related types: [`CartesianAxisTickStyleOptions`](./reference/types/#type-cartesianaxistickstyleoptions) · [`AxisValue`](./reference/types/#type-axisvalue).
@@ -27556,11 +27561,11 @@ Related types: [`CompleteAxisOptions`](./reference/types/#type-completeaxisoptio
 
 ```typescript
 type CAxisTicks<P extends string> = Omit<AxisTicksAndLabelsOptions<P>, "labels"> & {
-  labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions;
+  labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 };
 ```
 
-Related types: [`AxisTicksAndLabelsOptions`](./reference/types/#type-axisticksandlabelsoptions) · [`CartesianAxisLabelStyleOptions`](./reference/types/#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](./reference/types/#type-axislabellayoutoptions).
+Related types: [`AxisTicksAndLabelsOptions`](./reference/types/#type-axisticksandlabelsoptions) · [`CartesianAxisLabelStyleOptions`](./reference/types/#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](./reference/types/#type-axislabellayoutoptions) · [`DisplayLabelOptions`](./reference/types/#type-displaylabeloptions).
 
 ### `CCategoricalGuides` {#type-ccategoricalguides}
 
@@ -38918,7 +38923,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:633e10de4fa15c94c2f62bec47bb8d89ade49bef79a91a799fce0ca5b64f597f` |
+| Contract fingerprint | `sha256:4f9e932879a34502b99e2b2f4e770e7f150909c40e3a14ecfc7026f28b830268` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
@@ -39029,8 +39034,8 @@ subset in the requested order. Discrete axes reject `count` so categories are
 not silently omitted. Reversed ranges and Canvas rematerialization preserve
 the stored category values.
 
-Categorical Cartesian labels and categorical theta labels can replace display
-text without changing raw categories:
+Cartesian labels and categorical theta labels can replace display
+text without changing raw values:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -39048,9 +39053,7 @@ Map lookup uses the typed raw value, so `1` and `"1"` remain distinct. Values
 missing from the map use the normal formatter. Repeated visible labels do not
 merge scale entries, ticks, legend symbols, or selections. An empty label
 hides that text while retaining its item; `labelMap: []` stores an explicit
-empty map and `labelMap: "auto"` removes the map. Cartesian continuous axes,
-continuous theta axes, radial axes, and Parallel dimension axes reject this
-option. The same option is available in focused label actions, nested
+empty map and `labelMap: "auto"` removes the map. On continuous Cartesian axes, keys must be finite numbers or Unix-millisecond timestamps. Numeric strings, booleans, null and non-finite keys are rejected. A map only changes the displayed text; it does not change scale domains, tick positions or data. New ticks absent from the map use the existing numeric or UTC formatter. Continuous theta axes, radial axes, and Parallel dimension axes reject this option. The same option is available in focused label actions, nested
 ticks-and-labels options, complete Cartesian axes, and categorical theta
 facades.
 

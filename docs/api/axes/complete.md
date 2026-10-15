@@ -75,8 +75,8 @@ subset in the requested order. Discrete axes reject `count` so categories are
 not silently omitted. Reversed ranges and Canvas rematerialization preserve
 the stored category values.
 
-Categorical Cartesian labels and categorical theta labels can replace display
-text without changing raw categories:
+Cartesian labels and categorical theta labels can replace display
+text without changing raw values:
 
 <!-- snippet-context:start -->
 
@@ -98,9 +98,7 @@ Map lookup uses the typed raw value, so `1` and `"1"` remain distinct. Values
 missing from the map use the normal formatter. Repeated visible labels do not
 merge scale entries, ticks, legend symbols, or selections. An empty label
 hides that text while retaining its item; `labelMap: []` stores an explicit
-empty map and `labelMap: "auto"` removes the map. Cartesian continuous axes,
-continuous theta axes, radial axes, and Parallel dimension axes reject this
-option. The same option is available in focused label actions, nested
+empty map and `labelMap: "auto"` removes the map. On continuous Cartesian axes, keys must be finite numbers or Unix-millisecond timestamps. Numeric strings, booleans, null and non-finite keys are rejected. A map only changes the displayed text; it does not change scale domains, tick positions or data. New ticks absent from the map use the existing numeric or UTC formatter. Continuous theta axes, radial axes, and Parallel dimension axes reject this option. The same option is available in focused label actions, nested
 ticks-and-labels options, complete Cartesian axes, and categorical theta
 facades.
 

@@ -84,12 +84,12 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - `lineHeight`: fontSize 이상의 finite number다. 생략하면 `fontSize * 1.2`다.
 - `overlap`: `"error" | "allow"`, 기본값은 `"error"`다. Allow는 label-label 교차만 허용하며 Canvas
   overflow와 explicit axis-title collision은 계속 거부한다.
-- `labelMap`: band/point/ordinal Cartesian scale에서만 쓰는 typed
+- `labelMap`: categorical/continuous Cartesian scale에서 쓰는 typed
   `readonly { value: DatasetScalar; label: string }[] | "auto"`다. `1`과 `"1"`은 서로 다른 key이고,
   `0`과 `-0`은 같은 key다. 중복 raw key는 거부하고 중복 label과 빈 label은 허용한다. Array는
   전체 교체하며 `[]`는 명시적 empty map, `"auto"`는 저장된 map 제거다. Mapping이 있으면 raw
   tick value로 먼저 찾고, 없는 값만 기존 formatter를 사용한다. Raw scale domain과 tick values는
-  바뀌지 않는다. Continuous Cartesian scale은 array와 `"auto"`를 모두 거부한다.
+  바뀌지 않는다. Continuous scale의 key는 finite number 또는 Unix-millisecond timestamp만 허용하며 numeric string, boolean, null, nonfinite는 거부한다. Explicit 미래 tick의 유효한 numeric key는 현재 domain 밖이어도 저장할 수 있다. `"auto"`와 `[]`는 categorical과 같은 reset/empty 의미다.
 - Effect: formatted text, aligned data-space coordinates와 font style을 text collection에 저장한다.
   Time `auto`는 domain-span precision에서 시작해 distinct resolved ticks가 같은 label이면 최소 한 단계씩
   precision을 높인다. Empty-string nominal values는 semantic domain에는 그대로 남고 visible label은
@@ -101,12 +101,14 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
   stored policy와 원래 tick value text에서 같은 concrete line을 재생성한다. Total concrete label line은
   `10,000`개를 넘을 수 없다.
 
+Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-labels.test.js`는 finite raw key lookup, numeric/UTC fallback, reset, new ticks, whole/group/focused edits, Canvas·scale replay, invalid key atomicity를 검증한다. `test/unit/actions/guides/axis-display-labels.test.js`의 기존 categorical typed key 동작도 유지한다. Expression evaluator는 제공하지 않는다.
+
 ## Shared ticks-and-labels contract
 
 - Create: `scale?`, `position?`, `count?`, `values?`, `ticks?`, `labels?`.
 - Edit: create option에서 scale을 제외하며 빈 edit는 오류다.
 - `ticks`: `{ length?, color?, lineWidth?, alongOffset? }`.
-- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, labelMap?, alongOffset? }`; `labelMap`은 categorical Cartesian scale 전용이다.
+- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, labelMap?, alongOffset? }`; `labelMap`은 categorical/continuous Cartesian scale에 적용한다.
 - Effect: shared count/values를 tick과 label child에 원자적으로 전달한다. nested appearance는 해당 child만 바꾼다.
 
 ## Shared axis-title contract
@@ -852,7 +854,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 ### Formal values — `createXAxisLabels`
 
-- Implemented: `createXAxisLabels({ scale?: UserId; position?: AxisPositionX; count?: PositiveInteger; values?: readonly TickValue[]; labelMap?: DisplayLabelMap | "auto"; ...LabelOptions } = {})`; `count | values` 중 최대 하나이며 `labelMap`은 categorical scale 전용이다.
+- Implemented: `createXAxisLabels({ scale?: UserId; position?: AxisPositionX; count?: PositiveInteger; values?: readonly TickValue[]; labelMap?: DisplayLabelMap | "auto"; ...LabelOptions } = {})`; `count | values` 중 최대 하나이며 continuous `labelMap`의 key는 finite numeric/timestamp다.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createXAxisLabels`
