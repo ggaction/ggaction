@@ -579,3 +579,16 @@ test("validates final horizontal lane space without premature intrinsic rejectio
   assert.equal(program.guideConfigs.legend.opacity, undefined);
   assert.equal(program.graphicSpec.objects.opacityLegendSymbols, undefined);
 });
+
+
+test("explicit size legend edge stays independent of a categorical edge", () => {
+  const encoded = base({ height: 520, right: 230 }).encodeColor({ field: "group" }).encodeSize({ field: "amount" });
+  const bottom = encoded.createLegend({ channels: ["color"], position: "bottom", labels: { fontSize: 10 } });
+  const independent = bottom.createLegend({ channels: ["size"], position: "right", labels: { fontSize: 10 } });
+  assert.equal(independent.guideConfigs.legend.size.inheritPosition, false);
+  assert.ok(independent.graphicSpec.objects.sizeLegendLabels.items.every(i => i.properties.x > 530));
+  const resized = independent.editCanvas({ height: 540 });
+  assert.equal(resized.guideConfigs.legend.size.inheritPosition, false);
+  assert.ok(resized.graphicSpec.objects.sizeLegendLabels.items.every(i => i.properties.x > 530));
+  assert.equal(bottom.guideConfigs.legend.size, undefined);
+});

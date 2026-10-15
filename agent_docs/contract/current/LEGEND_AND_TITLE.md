@@ -687,3 +687,7 @@ Title은 해당 side의 기존 guide 바깥에서 16px + offset 간격으로 배
 최종 occupied bounds가 바깥 Canvas expansion을 결정한다. 명시적 내부 plot 크기는 변하지 않는다.
 고정 외부 크기 모드의 plot-width restriction과 collision 오류는 유지한다.
 Evidence: `test/unit/actions/canvas/inner-plot-size.test.js`, `test/unit/grammar/layout/canvas-overflow.test.js`.
+
+### Explicit size legend edge
+
+Standalone `createLegend({channels:["size"],position:...})`의 명시 position은 같은 target의 categorical edge보다 우선한다. Position 생략은 기존 categorical edge inference를 유지한다. 명시 size edge가 categorical과 다르면 별도 lane으로 materialize하며 same-edge는 기존 combined geometry를 유지한다. `editLegend`의 size-only position 편집도 명시 선택을 보존한다. Categorical+size를 함께 명시해 생성하는 요청은 기존 size block을 다시 같은 edge에 결합하고 자체 position은 제거 후 복원을 위해 보존한다. 생성/resize/scale refresh에서 같은 규칙을 사용한다. Private config `inheritPosition`은 omission inference를 저장하며 이전 snapshot의 생략 상태는 기존 inheritance로 읽는다.

@@ -21,7 +21,8 @@ export function resolveGuideCollisionBlocks(graphicSpec, guideConfigs, titleConf
   const configs = guideConfigs.legend ?? {};
   const categorical = policies.find(policy => policy.family === "categorical" && configs[policy.kind] !== undefined);
   const combined = categorical !== undefined && configs.size !== undefined &&
-    configs[categorical.kind].target === configs.size.target;
+    configs[categorical.kind].target === configs.size.target &&
+    (configs.size.inheritPosition !== false || configs[categorical.kind].position === configs.size.position);
   for (const policy of policies) {
     const config = configs[policy.kind];
     if (config === undefined || combined && policy.kind === "size") continue;

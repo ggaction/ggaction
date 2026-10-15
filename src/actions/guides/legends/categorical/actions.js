@@ -397,6 +397,9 @@ export function applyLegendCreationPlan(program, plan) {
   let next = program;
   for (const step of plan.steps) {
     const existingSize = next.guideConfigs.legend?.size;
+    if (plan.combined && existingSize !== undefined && step.op === "createCategoricalLegend") {
+      next = next._withLegendConfig("size", { ...existingSize, inheritPosition: true });
+    }
     // The plan already validated that a retained size block is compatible.
     if (!(plan.combined && step.op === "createSizeLegend" && existingSize !== undefined)) {
       next = next[step.op](step.args);

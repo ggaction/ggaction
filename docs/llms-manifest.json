@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:7d303636cb4d42a549dff3768f80b17044369703dfa73b7b21fdba49fe1d2a2e",
+    "contractId": "sha256:f65ce5cc8480d96697d6092cfb80ad1ea9d8e4a73e6d1d645b7847668e5b60a8",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1601,8 +1601,8 @@
         "put-a-compact-categorical-legend-inside-the-plot",
         "related"
       ],
-      "bytes": 5509,
-      "sha256": "09488de70c248c5c258e6fe2061ca64d0e01a150dec145d1da56c9e8acb0842f"
+      "bytes": 5742,
+      "sha256": "011340cf7a1c85f9b1bff5d9958336aa063e4be636fd0ebc495c3bc47fdaa552"
     },
     {
       "order": 98,
@@ -3312,7 +3312,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "ed3e463e83ecd5445468c39ea3ccebf2365135073e82b6ce2e9b71775b9b50b6"
+      "sha256": "567e5db6fb4046b359accb36bf95122427f423d9f941586ee3591d64e924582f"
     },
     {
       "order": 150,

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:7d303636cb4d42a549dff3768f80b17044369703dfa73b7b21fdba49fe1d2a2e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:f65ce5cc8480d96697d6092cfb80ad1ea9d8e4a73e6d1d645b7847668e5b60a8. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12551,6 +12551,8 @@ for supported anchors and layout restrictions.
 ## Related
 [Guides](./api/guides/) · [Series encodings](./api/series-encodings/) ·
 [Canvas](./api/canvas/) · [Troubleshooting](./troubleshooting/)
+
+When creating a separate size legend, an explicit `position` is honored even if a color or shape legend for the same mark uses another edge. Omit size `position` to inherit the categorical legend edge. Resizing retains that choice.
 
 <!-- Source: /api/legends/categorical/ -->
 
@@ -38799,7 +38801,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:7d303636cb4d42a549dff3768f80b17044369703dfa73b7b21fdba49fe1d2a2e` |
+| Contract fingerprint | `sha256:f65ce5cc8480d96697d6092cfb80ad1ea9d8e4a73e6d1d645b7847668e5b60a8` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

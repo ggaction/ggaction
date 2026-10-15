@@ -297,7 +297,7 @@ function resolveSampledLegendEdit(program, kind, previous, args) {
     ...(ordinalSize && (args.overflow !== undefined || previous.overflow !== undefined)
       ? { overflow: normalizeLegendOverflow(args.overflow === undefined ? previous.overflow : args.overflow) }
       : {}),
-    ...(size ? { inheritAppearance: false } : {}),
+    ...(size ? { inheritAppearance: false, ...(args.position === undefined ? {} : { inheritPosition: false }) } : {}),
     labels: normalizeLegendTextOptions(
       args.labels,
       "editLegend.labels",

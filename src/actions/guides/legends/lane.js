@@ -39,7 +39,7 @@ function categoricalFor(program, target) {
 }
 
 function legendPosition(program, kind, config) {
-  if (kind === "size") {
+  if (kind === "size" && config.inheritPosition !== false) {
     return categoricalFor(program, config.target)?.position ?? config.position;
   }
   return config.position;

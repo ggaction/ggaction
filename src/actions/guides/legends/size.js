@@ -74,7 +74,8 @@ export function resolveSizeLegendLayout(program, config) {
     program.guideConfigs.legend?.color,
     program.guideConfigs.legend?.stroke
   ]
-    .find(candidate => candidate?.target === config.target);
+    .find(candidate => candidate?.target === config.target &&
+      (config.inheritPosition !== false || candidate.position === config.position));
   const inherit = config.inheritAppearance === true && categorical !== undefined;
   const inheritedLabels = inherit ? { ...categorical.labels, offset: config.labels.offset } : config.labels;
   const inheritedTitleStyle = inherit ? categorical.titleStyle : config.titleStyle;
@@ -214,6 +215,7 @@ export function resolveSizeLegendConfig(program, args = {}) {
     domain: scale.domain,
     ...(discrete ? { count } : { sampling }),
     inheritAppearance: args.inheritAppearance === true,
+    inheritPosition: args.position === undefined,
 
   };
 }

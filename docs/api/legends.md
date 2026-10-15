@@ -95,3 +95,5 @@ for supported anchors and layout restrictions.
 ## Related
 [Guides](./guides.md) · [Series encodings](./series-encodings.md) ·
 [Canvas](./canvas.md) · [Troubleshooting](../troubleshooting.md)
+
+When creating a separate size legend, an explicit `position` is honored even if a color or shape legend for the same mark uses another edge. Omit size `position` to inherit the categorical legend edge. Resizing retains that choice.
