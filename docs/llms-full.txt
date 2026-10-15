@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:be199913dfaff5231229208fc9a7f57dbb2955ed81e654e4c5b3e15fdc074991. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:0cd507e63b4d251f894a1de470ece66a709d97d9d9ed957f6951e2389b5954ef. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -10745,6 +10745,8 @@ properties listed on the focused selection page.
 [Marks](./api/marks/) · [Position encodings](./api/position-encodings/) ·
 [Series encodings](./api/series-encodings/) · [Legends](./api/legends/)
 
+Explicit shape ranges may reuse supported shapes for different categories. Provide an entry for every domain value; automatic ranges remain distinct and do not cycle.
+
 <!-- Source: /api/appearance/selection-and-highlighting/ -->
 
 # Selection and Highlighting
@@ -20508,6 +20510,7 @@ encodeShape({ field, target?, fieldType?, scale? })
 ```
 
 Encode or replace a nominal field with the shared 12-value point-shape vocabulary.
+Explicit ranges may repeat shapes; provide one entry per domain value. Automatic ranges remain distinct.
 [Appearance encodings](./api/appearance/)
 
 ## `encodeAngle`
@@ -35039,6 +35042,7 @@ Related types: [`ShapeScaleOptions`](./reference/types/#type-shapescaleoptions).
 export type ShapeScaleOptions = ScaleFields<"id"> & {
   type?: "ordinal";
   domain?: "auto" | readonly unknown[];
+  /** One entry per domain value; explicit repeated shapes are allowed. Auto uses distinct shapes. */
   range?: "auto" | readonly PointShape[];
   unknown?: PointShape;
 };
@@ -38771,7 +38775,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:be199913dfaff5231229208fc9a7f57dbb2955ed81e654e4c5b3e15fdc074991` |
+| Contract fingerprint | `sha256:0cd507e63b4d251f894a1de470ece66a709d97d9d9ed957f6951e2389b5954ef` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

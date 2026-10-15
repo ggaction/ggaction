@@ -2085,6 +2085,7 @@ encodeShape({ field, target?, fieldType?, scale? })
 ```
 
 Encode or replace a nominal field with the shared 12-value point-shape vocabulary.
+Explicit ranges may repeat shapes; provide one entry per domain value. Automatic ranges remain distinct.
 [Appearance encodings](../api/appearance.md)
 
 ### `encodeOpacity`

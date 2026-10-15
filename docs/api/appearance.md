@@ -88,3 +88,5 @@ properties listed on the focused selection page.
 
 [Marks](./marks.md) · [Position encodings](./position-encodings.md) ·
 [Series encodings](./series-encodings.md) · [Legends](./legends.md)
+
+Explicit shape ranges may reuse supported shapes for different categories. Provide an entry for every domain value; automatic ranges remain distinct and do not cycle.

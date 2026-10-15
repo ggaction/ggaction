@@ -1814,6 +1814,7 @@ export type SizeScaleOptions =
 export type ShapeScaleOptions = ScaleFields<"id"> & {
   type?: "ordinal";
   domain?: "auto" | readonly unknown[];
+  /** One entry per domain value; explicit repeated shapes are allowed. Auto uses distinct shapes. */
   range?: "auto" | readonly PointShape[];
   unknown?: PointShape;
 };
