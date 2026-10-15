@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:6aeb9032f089260004ba07ee4afc135961cbaee0ce8fbde660ccef0847c1a7e9",
-    "sourceCommit": null,
+    "contractId": "sha256:876940220a0d3d460d6a351d5b5f4645678ecac734071d99f9fe7a1a234ae4a1",
+    "sourceCommit": "2baa90be781a45316fb528745e7b9a7e439e8ee6",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11024,
-      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
+      "bytes": 11096,
+      "sha256": "1cbaf1061713fcd70c1e6c1fcc32f447bebf58963cf925c85a51e6d4e5e38a2e"
     },
     {
       "order": 4,
@@ -1558,6 +1558,9 @@
       "headings": [
         "axes",
         "at-a-glance",
+        "keep-endpoint-labels-inside-the-axis-span",
+        "override-displayed-tick-text",
+        "shift-ticks-and-labels-along-an-axis",
         "standalone-cartesian-axes",
         "polar-component-creation",
         "omit-remove-and-restore-components",
@@ -1567,8 +1570,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 10223,
-      "sha256": "88272599f8e6e069635f06d4e3b912a8d20cf467fd3c28744c5ff3b0a15292dd"
+      "bytes": 12090,
+      "sha256": "5d1587aede73b3ca6fe0a2118c329764ebb120e4cdde5d0a79219a5be5cfaecd"
     },
     {
       "order": 96,
@@ -1584,8 +1587,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 6879,
-      "sha256": "5bd336957b85587def815eda20147601b1be767a3ac9a9a0f43ffa6184cc32ac"
+      "bytes": 7281,
+      "sha256": "ba9fa92a708038c59609b571f400dd3c19791bd6d8c7ddd1e125a8a3945251fb"
     },
     {
       "order": 97,
@@ -2265,8 +2268,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 117947,
-      "sha256": "2877b71634e4146a18cf2ffe0d21bf9bac0b9f240d37cab519f6703bccc5ed27"
+      "bytes": 119367,
+      "sha256": "8b0baf20532f540dc89b758b6d115ad3d8af374c6badb0296c0fa00ab7e7e13b"
     },
     {
       "order": 123,
@@ -2403,6 +2406,8 @@
         "type-cpathguides",
         "type-canvasoptions",
         "type-cartesianaxesoptions",
+        "type-cartesianaxislabelstyleoptions",
+        "type-cartesianaxistickstyleoptions",
         "type-cartesiancategoricalguideoptions",
         "type-cartesiangridoptions",
         "type-cartesianguideoptions",
@@ -2963,8 +2968,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 322684,
-      "sha256": "90b6f2fe68110d850ae96c1e1a518d1a2702b62ee677571298036674af40b4a0"
+      "bytes": 324187,
+      "sha256": "5bd81ed12e8343b9855027b032ccc197e23928760217be3ad2e1f09f0412d992"
     },
     {
       "order": 127,
@@ -2994,8 +2999,8 @@
         "editgraphics-target-property-value-remove",
         "scale-materialization"
       ],
-      "bytes": 16887,
-      "sha256": "bd8e7c8dbfed631d08e448b205d9b5e06c7906da395bebeaf3d20cdfeabccbf7"
+      "bytes": 16959,
+      "sha256": "04df8f81d8be86aa9daf43fe898a324d244d534548ce6e279d3840c22a243ff0"
     },
     {
       "order": 129,
@@ -3316,8 +3321,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3000,
-      "sha256": "2ed3faa14e47fefcdc6f092821f54e120935bf0bcf00349aaf4ac1991639f47c"
+      "bytes": 3033,
+      "sha256": "fdabbfe933448ea323a1ab5d73825a43826a26b067194c5644d974e1243c7cb3"
     },
     {
       "order": 150,
@@ -3328,8 +3333,8 @@
         "complete-axes-and-labels",
         "createaxesoptions"
       ],
-      "bytes": 13131,
-      "sha256": "301aac60a687c6c2cba8edb9b33a1fd18eb93fe0dc6e15dbf300b379fc4f1069"
+      "bytes": 14040,
+      "sha256": "70080c7d77535c2c10382c04fa25f735ff3cc8a9bb5af626004897832842ce31"
     }
   ]
 }
