@@ -1460,6 +1460,8 @@ Related types: [`CreateAxesOptions`](#type-createaxesoptions).
 
 ```typescript
 export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Keep unrotated label bounds inside the mapped axis span; defaults to false. */
+  flush?: boolean;
   /** Signed displacement from the mapped tick position, independent of outward offset. */
   alongOffset?: number;
 }

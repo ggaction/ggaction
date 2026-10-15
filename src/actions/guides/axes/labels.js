@@ -48,7 +48,7 @@ import {
 const OPTIONS = [
   "scale", "position", "count", "values", "offset", "format", "color",
   "fontSize", "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
-  "lineHeight", "overlap", "labelMap", "alongOffset"
+  "lineHeight", "overlap", "labelMap", "alongOffset", "flush"
 ];
 
 const DEFAULTS = {
@@ -88,6 +88,7 @@ function validateOptions(args, operation, create) {
     create ? OPTIONS : OPTIONS.filter(key => key !== "scale"),
     operation
   );
+  if (Object.hasOwn(args, "flush") && typeof args.flush !== "boolean") throw new TypeError("Label flush must be a boolean.");
   if (Object.hasOwn(args, "alongOffset") && !Number.isFinite(args.alongOffset)) throw new TypeError("Label alongOffset must be a finite number.");
   if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) {
     throw new Error(`${operation} cannot use count and values together.`);
@@ -115,6 +116,7 @@ function validateConfig(channel, config) {
   validateNonNegativeFinite(config.offset, "Label offset");
   validateTextStyle(config, "Label");
   validateAxisFormat(config.format);
+  if (config.flush === true && config.rotation !== 0) throw new Error("Label flush requires unrotated Cartesian labels.");
   if (!Number.isFinite(config.rotation)) {
     throw new TypeError("Label rotation must resolve to finite radians.");
   }
@@ -305,6 +307,28 @@ function resolve(program, channel, config) {
       const delta = shifts[resolved.groups[index]];
       return horizontal ? { ...item, top: item.top + delta, bottom: item.bottom + delta }
         : { ...item, left: item.left + delta, right: item.right + delta };
+    });
+  }
+  if (config.flush === true) {
+    const along = channel === "x" ? "x" : "y";
+    const lowKey = channel === "x" ? "left" : "top";
+    const highKey = channel === "x" ? "right" : "bottom";
+    const low = Math.min(...scale.range) + (config.alongOffset ?? 0);
+    const high = Math.max(...scale.range) + (config.alongOffset ?? 0);
+    const grouped = unionLabelBounds(labelBounds.map((bounds, index) => ({ bounds, group: resolved.groups[index] })));
+    const shifts = grouped.map(item => {
+      if (item[highKey] - item[lowKey] > high - low + 1e-9) {
+        throw new Error(`The ${channel}-axis label cannot flush inside the scale span.`);
+      }
+      return item[lowKey] < low ? low - item[lowKey]
+        : item[highKey] > high ? high - item[highKey] : 0;
+    });
+    const positions = resolved[along];
+    resolved[along] = resolved.text.map((_, index) =>
+      (Array.isArray(positions) ? positions[index] : positions) + shifts[resolved.groups[index]]);
+    labelBounds = labelBounds.map((item, index) => {
+      const delta = shifts[resolved.groups[index]];
+      return { ...item, [lowKey]: item[lowKey] + delta, [highKey]: item[highKey] + delta };
     });
   }
   const rotatedOverlap = config.rotation !== 0;

@@ -61,7 +61,7 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 
 - Create parameters: `scale?`, `position?`, `count?`, `values?`, `offset?`, `format?`, `color?`,
   `fontSize?`, `fontFamily?`, `fontWeight?`, `rotation?`, `maxWidth?`, `wrap?`, `lineHeight?`,
-  `overlap?`, `labelMap?`, `alongOffset?`; edit에서는 scale을 제외한다.
+  `overlap?`, `labelMap?`, `alongOffset?`, `flush?`; edit에서는 scale을 제외한다.
 - `count`/`values`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
 - `offset`: non-negative finite number; x default `18`, y default `12`.
 - `alongOffset`: signed finite logical pixels, 기본 `0`. Mapped label 위치에서 X는 오른쪽, Y는 아래쪽으로 이동한다. Tick offset을 상속하지 않는 독립 절대값이다. 기존 `offset`은 축 바깥쪽 간격으로 유지된다.
@@ -70,6 +70,7 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
   sequence이며 literal percent는 `%%`다. Unknown/dangling directive는 거부하고 ordinal은 auto만 허용한다.
 - `color`: non-empty string; `fontSize`: positive finite; `fontFamily`: non-empty string;
   `fontWeight`: string 또는 finite number.
+- `flush`: boolean, 기본 `false`. Cartesian unrotated label의 실제 occupied bounds를 mapped scale span 안으로 이동한다. X/Y 모두 지원하고 alongOffset을 span에도 더한다. Tick, domain, font, text와 바깥쪽 offset은 바꾸지 않는다. Wrapped label은 group 전체를 같은 거리만큼 이동한다. Label이 span보다 크면 오류이며 rotation이 0이 아니면 true를 거부한다. Label-label overlap은 기존 overlap 정책을 그대로 사용하므로 flush가 overlap을 묵시적으로 허용하지 않는다.
 - `rotation`: `RotationInput`이며 숫자는 radians, 구조형 값은 radians/degrees를 명시한다. 기본값은 `0`이고
   materialization config에는 radians로 정규화한다.
   회전된 Cartesian label의 전체 occupied bounds는 고정 Canvas와 자동 plot 크기 모두에서
@@ -101,6 +102,8 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
   stored policy와 원래 tick value text에서 같은 concrete line을 재생성한다. Total concrete label line은
   `10,000`개를 넘을 수 없다.
 
+Flush evidence: `test/unit/actions/guides/axis-label-flush.test.js`는 full timestamp text, fixed 200px span, both axes, alongOffset, wrapped groups, reverse/replay, complete/group/focused/whole edits와 boolean/rotation/overflow atomic rejection을 검증한다.
+
 Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-labels.test.js`는 finite raw key lookup, numeric/UTC fallback, reset, new ticks, whole/group/focused edits, Canvas·scale replay, invalid key atomicity를 검증한다. `test/unit/actions/guides/axis-display-labels.test.js`의 기존 categorical typed key 동작도 유지한다. Expression evaluator는 제공하지 않는다.
 
 ## Shared ticks-and-labels contract
@@ -108,7 +111,7 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
 - Create: `scale?`, `position?`, `count?`, `values?`, `ticks?`, `labels?`.
 - Edit: create option에서 scale을 제외하며 빈 edit는 오류다.
 - `ticks`: `{ length?, color?, lineWidth?, alongOffset? }`.
-- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, labelMap?, alongOffset? }`; `labelMap`은 categorical/continuous Cartesian scale에 적용한다.
+- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, labelMap?, alongOffset?, flush? }`; `labelMap`은 categorical/continuous Cartesian scale에 적용한다.
 - Effect: shared count/values를 tick과 label child에 원자적으로 전달한다. nested appearance는 해당 child만 바꾼다.
 
 ## Shared axis-title contract

@@ -32,7 +32,8 @@ const LABEL_OPTIONS = Object.freeze([
   "lineHeight",
   "overlap",
   "labelMap",
-  "alongOffset"
+  "alongOffset",
+  "flush"
 ]);
 const SHARED_CREATE = Object.freeze(["scale", "position", "count", "values"]);
 const SHARED_EDIT = Object.freeze(["position", "count", "values"]);
