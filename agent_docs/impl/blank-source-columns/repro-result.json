@@ -1,0 +1,30 @@
+{
+  "status": "confirmed-stored-row-schema-boundary",
+  "rows": [
+    {
+      "x": 1,
+      "y": 2,
+      "": "unreferenced CSV cell"
+    }
+  ],
+  "results": [
+    {
+      "name": "inferred-schema",
+      "error": "Dataset schema field 2 name must be a non-empty string.",
+      "previousProgramUnchanged": true,
+      "callerInputUnchanged": true
+    },
+    {
+      "name": "declared-schema-omits-unused-column",
+      "error": "createData row 0 contains undeclared field \"\".",
+      "previousProgramUnchanged": true,
+      "callerInputUnchanged": true
+    },
+    {
+      "name": "declared-schema-preserves-column",
+      "error": "Dataset schema field 2 name must be a non-empty string.",
+      "previousProgramUnchanged": true,
+      "callerInputUnchanged": true
+    }
+  ]
+}
