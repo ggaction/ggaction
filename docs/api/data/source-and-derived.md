@@ -226,7 +226,7 @@ See [Expressions and Normalization](./expressions-and-normalization.md#createnor
 
 See [Missing Keys and Values](./missing-data.md#createcompletedata-id-source-key-groupby-values-sequence-fill-members) for this contract and its examples.
 
-## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
+## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
 
 See [Missing Keys and Values](./missing-data.md#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap) for this contract and its examples.
 

@@ -700,12 +700,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createImputedData`
 
-- Signature: `createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })`
+- Signature: `createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })`
 - Lifecycle: Full-only immutable create action이다. source row grain과 최종 source order를 유지한다.
 - `fields`: non-empty unique field 하나 또는 배열이다. missing은 `null`/`undefined`만이며 `NaN`/`Infinity`는
   invalid value다. 한 group 안의 각 target field는 하나의 non-null scalar type이어야 한다.
 - `groupBy`: 기본 `[]`; anchor와 missing run은 group 밖으로 넘어가지 않는다. `sortBy`는 stable lexicographic
   sort이고 order 기본은 ascending이다. 계산 뒤 output은 원래 row order로 복원한다.
+- `method` 생략은 `"mean"`이다. Mean은 group별 각 field의 observed finite-number 평균을 한 번 계산해 nullish cells를 대체한다. Input type은 numeric이어야 하며 원본 row/cell은 보존한다. Sorting은 선택 사항이고 anchor가 없는 group은 edges keep/error를 따른다.
 - `constant`: `value`가 필수이며 target field type과 일치해야 한다. `sortBy`는 선택 사항이다.
 - `forward`/`backward`: `value`를 금지하고 non-empty `sortBy`가 필요하다. 각각 이전/다음 non-missing anchor를 쓴다.
 - `linear`: `value`를 금지하고 정확히 하나의 ascending numeric 또는 temporal-string sort field가 필요하다.
@@ -720,7 +721,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Formal values — `createImputedData`
 
 - Implemented: `createImputedData(options: ImputedDataOptions): ChartProgram` (Full only).
-- Implemented methods: `"constant" | "forward" | "backward" | "linear"`; edges `"keep" | "error"`.
+- Implemented methods: `"mean" (default) | "constant" | "forward" | "backward" | "linear"`; edges `"keep" | "error"`.
 - Proposed (NOT IMPLEMENTED): spline/model imputation, callback functions, automatic aggregation과 source replacement.
 
 ### Value coverage — `createImputedData`

@@ -1817,7 +1817,7 @@
       "name": "createImputedData",
       "layer": "user-facing",
       "domain": "statistics",
-      "summary": "Replace nullish cells by constant, forward, backward, or distance-based linear imputation while preserving group boundaries and final source order.",
+      "summary": "Replace nullish cells by group mean (the default), constant, forward, backward, or distance-based linear imputation while preserving group boundaries and final source order.",
       "signature": "createImputedData(options: ImputedDataOptions): ChartProgram;",
       "intents": [
         "create imputed data",
@@ -1906,8 +1906,8 @@
         },
         {
           "name": "method",
-          "required": true,
-          "type": "\"backward\" | \"constant\" | \"forward\" | \"linear\""
+          "required": false,
+          "type": "\"backward\" | \"constant\" | \"forward\" | \"linear\" | \"mean\" | undefined"
         },
         {
           "name": "value",
@@ -1921,6 +1921,7 @@
         }
       ],
       "callPatterns": [
+        "createImputedData({ id, fields, source?, groupBy?, method?: \"mean\" })",
         "createImputedData({ id, fields, method: \"constant\", value, source?, groupBy? })",
         "createImputedData({ id, fields, method: \"forward\" | \"backward\" | \"linear\", sortBy, source?, groupBy? })"
       ],
@@ -4612,7 +4613,7 @@
         {
           "name": "method",
           "required": false,
-          "type": "\"backward\" | \"constant\" | \"forward\" | \"linear\" | undefined"
+          "type": "\"backward\" | \"constant\" | \"forward\" | \"linear\" | \"mean\" | undefined"
         },
         {
           "name": "value",

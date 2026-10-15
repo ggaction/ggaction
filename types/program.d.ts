@@ -877,6 +877,7 @@ type DatasetImputedBaseTransform = {
   readonly maxGap?: number;
 };
 export type DatasetImputedTransform = DatasetImputedBaseTransform & (
+  | { readonly method: "mean"; readonly value?: never; readonly sortBy: readonly DatasetWindowSort[]; }
   | {
       readonly method: "constant";
       readonly value: DatasetScalar;
@@ -2389,6 +2390,7 @@ type ImputedDataBaseOptions = {
   maxGap?: number;
 };
 export type ImputedDataOptions = ImputedDataBaseOptions & (
+  | { method?: "mean"; value?: never; sortBy?: readonly WindowSort[]; }
   | {
       method: "constant";
       value: DatasetScalar;

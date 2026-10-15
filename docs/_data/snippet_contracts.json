@@ -1072,7 +1072,7 @@
   {
     "file": "api/data/missing-data.md",
     "block": 2,
-    "heading": "`createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}",
+    "heading": "`createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [

@@ -3537,6 +3537,7 @@ type DatasetImputedBaseTransform = {
 
 ```typescript
 export type DatasetImputedTransform = DatasetImputedBaseTransform & (
+  | { readonly method: "mean"; readonly value?: never; readonly sortBy: readonly DatasetWindowSort[]; }
   | {
       readonly method: "constant";
       readonly value: DatasetScalar;
@@ -3557,7 +3558,7 @@ export type DatasetImputedTransform = DatasetImputedBaseTransform & (
 
 </details>
 
-Related types: [`DatasetImputedBaseTransform`](#type-datasetimputedbasetransform) · [`DatasetScalar`](#type-datasetscalar) · [`DatasetWindowSort`](#type-datasetwindowsort).
+Related types: [`DatasetImputedBaseTransform`](#type-datasetimputedbasetransform) · [`DatasetWindowSort`](#type-datasetwindowsort) · [`DatasetScalar`](#type-datasetscalar).
 
 ### `DatasetIntervalOutputFields` {#type-datasetintervaloutputfields}
 
@@ -7031,6 +7032,7 @@ type ImputedDataBaseOptions = {
 
 ```typescript
 export type ImputedDataOptions = ImputedDataBaseOptions & (
+  | { method?: "mean"; value?: never; sortBy?: readonly WindowSort[]; }
   | {
       method: "constant";
       value: DatasetScalar;
@@ -7051,7 +7053,7 @@ export type ImputedDataOptions = ImputedDataBaseOptions & (
 
 </details>
 
-Related types: [`ImputedDataBaseOptions`](#type-imputeddatabaseoptions) · [`DatasetScalar`](#type-datasetscalar) · [`WindowSort`](#type-windowsort).
+Related types: [`ImputedDataBaseOptions`](#type-imputeddatabaseoptions) · [`WindowSort`](#type-windowsort) · [`DatasetScalar`](#type-datasetscalar).
 
 ### `InferredRuleDatumPositionEncodingOptions` {#type-inferredruledatumpositionencodingoptions}
 

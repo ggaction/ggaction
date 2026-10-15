@@ -3,7 +3,7 @@ import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation
 import { requireStringValue as requireField } from "../core/validation.js";
 import { IMPUTE_REQUIRED_OPTIONS } from "../core/optionRequirements.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
-import { interpolateNumber, inverseLerp } from "./numeric.js";
+import { interpolateNumber, inverseLerp, stableFiniteMean } from "./numeric.js";
 import { normalizeTemporalValue } from "./scales/fields.js";
 
 const TRANSFORM_KEYS = Object.freeze([
@@ -70,7 +70,7 @@ export function validateImputeTransform(transform) {
     scalarType(transform.value, "Impute constant value");
   } else {
     if (hasValue) throw new Error(`Impute value is not available for ${transform.method}.`);
-    if (transform.sortBy.length === 0) {
+    if (transform.method !== "mean" && transform.sortBy.length === 0) {
       throw new Error(`Impute ${transform.method} requires non-empty sortBy.`);
     }
   }
@@ -95,7 +95,7 @@ export function normalizeImputeTransform(args = {}) {
     fields: normalizeFieldList(args.fields),
     groupBy: normalizeFieldList(args.groupBy, { allowEmpty: true }),
     sortBy: normalizeSortBy(args.sortBy),
-    method: args.method,
+    method: args.method ?? "mean",
     edges: args.edges ?? "keep"
   };
   if (Object.hasOwn(args, "value")) transform.value = args.value;
@@ -175,9 +175,9 @@ function validateFieldTypes(entries, transform) {
     if (types.size > 1) {
       throw new TypeError(`Impute field "${field}" must contain one scalar type.`);
     }
-    if (transform.method === "linear" &&
+    if (["linear", "mean"].includes(transform.method) &&
       (types.size > 0 && !types.has("number"))) {
-      throw new TypeError(`Impute linear field "${field}" must contain finite numbers.`);
+      throw new TypeError(`Impute ${transform.method} field "${field}" must contain finite numbers.`);
     }
   }
 }
@@ -241,10 +241,18 @@ function setField(row, field, value) {
   });
 }
 
-function fillRun(partition, field, run, transform, positions) {
+function fillRun(partition, field, run, transform, positions, mean) {
   const [start, end] = run;
   const length = end - start + 1;
   if (transform.maxGap !== undefined && length > transform.maxGap) return;
+  if (transform.method === "mean") {
+    if (mean === undefined) {
+      if (transform.edges === "error") throw new RangeError(`Impute mean requires an observed value in field "${field}".`);
+      return;
+    }
+    for (let index = start; index <= end; index += 1) setField(partition[index].row, field, mean);
+    return;
+  }
   if (transform.method === "constant") {
     for (let index = start; index <= end; index += 1) {
       setField(partition[index].row, field, transform.value);
@@ -295,8 +303,10 @@ export function deriveImputedRows(rows, transform) {
     partition.sort((left, right) => compareEntries(left, right, transform.sortBy));
     const positions = linearPositions(partition, transform);
     for (const field of transform.fields) {
+      const observed = transform.method === "mean" ? partition.map(entry => entry.row[field]).filter(value => value !== null && value !== undefined) : [];
+      const mean = observed.length ? stableFiniteMean(observed, "Impute group mean") : undefined;
       for (const run of missingRuns(partition, field)) {
-        fillRun(partition, field, run, transform, positions);
+        fillRun(partition, field, run, transform, positions, mean);
       }
     }
   }

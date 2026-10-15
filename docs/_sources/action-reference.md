@@ -589,10 +589,10 @@ explicit fill and source-membership provenance for synthesized rows.
 ### `createImputedData`
 
 ```javascript
-createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })
+createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })
 ```
 
-Replace nullish cells by constant, forward, backward, or distance-based linear
+Replace nullish cells by group mean (the default), constant, forward, backward, or distance-based linear
 imputation while preserving group boundaries and final source order.
 [Source and Derived Data](../api/data/source-and-derived.md#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap)
 

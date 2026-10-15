@@ -20,6 +20,10 @@ declare const p: ChartProgram;
 declare const basic: BasicChartProgram;
 p.createCompleteData({ id: "complete", key: "t", values: [1, 2, 3], members: "rows" });
 p.createCompleteData({ id: "sequence", key: "t", sequence: { start: 0, end: 2, step: 1 } });
+p.createImputedData({ id: "mean", fields: "x", groupBy: "g" });
+p.createImputedData({ id: "meanExplicit", fields: "x", method: "mean" });
+// @ts-expect-error mean does not take a constant value
+p.createImputedData({ id: "badMean", fields: "x", method: "mean", value: 0 });
 p.createImputedData({ id: "constant", fields: ["x"], method: "constant", value: null });
 p.createImputedData({ id: "forward", fields: "x", method: "forward", sortBy: [{ field: "t" }] });
 p.createImputedData({ id: "linear", fields: ["x"], method: "linear", sortBy: [{ field: "t", order: "ascending" }] });

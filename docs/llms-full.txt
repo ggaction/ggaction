@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:2159663887199ac101f5fb1142fc6b4836b546cf4669a40705c5023d0a0c94a7. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:be199913dfaff5231229208fc9a7f57dbb2955ed81e654e4c5b3e15fdc074991. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -5076,7 +5076,7 @@ See [Expressions and Normalization](./api/data/expressions-and-normalization/#cr
 
 See [Missing Keys and Values](./api/data/missing-data/#createcompletedata-id-source-key-groupby-values-sequence-fill-members) for this contract and its examples.
 
-## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
+## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
 
 See [Missing Keys and Values](./api/data/missing-data/#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap) for this contract and its examples.
 
@@ -21805,17 +21805,17 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `edges` | Optional / branch-dependent | `"error" \| "keep" \| undefined` |
 | `maxGap` | Optional / branch-dependent | `number \| undefined` |
-| `method` | Required | `"backward" \| "constant" \| "forward" \| "linear"` |
+| `method` | Optional / branch-dependent | `"backward" \| "constant" \| "forward" \| "linear" \| "mean" \| undefined` |
 | `value` | Optional / branch-dependent | `DatasetScalar \| undefined` |
 | `sortBy` | Optional / branch-dependent | `readonly WindowSort[] \| readonly [{ field: string; order?: "ascending" \| undefined; }] \| readonly [WindowSort, ...WindowSort[]] \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })
+createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })
 ```
 
-Replace nullish cells by constant, forward, backward, or distance-based linear
+Replace nullish cells by group mean (the default), constant, forward, backward, or distance-based linear
 imputation while preserving group boundaries and final source order.
 [Source and Derived Data](./api/data/source-and-derived/#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap)
 
@@ -22163,7 +22163,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `edges` | Optional / branch-dependent | `"error" \| "keep" \| undefined` |
 | `maxGap` | Optional / branch-dependent | `number \| undefined` |
-| `method` | Optional / branch-dependent | `"backward" \| "constant" \| "forward" \| "linear" \| undefined` |
+| `method` | Optional / branch-dependent | `"backward" \| "constant" \| "forward" \| "linear" \| "mean" \| undefined` |
 | `value` | Optional / branch-dependent | `DatasetScalar \| undefined` |
 | `sortBy` | Optional / branch-dependent | `readonly WindowSort[] \| readonly [{ field: string; order?: "ascending" \| undefined; }] \| readonly [WindowSort, ...WindowSort[]] \| undefined` |
 
@@ -29348,6 +29348,7 @@ type DatasetImputedBaseTransform = {
 
 ```typescript
 export type DatasetImputedTransform = DatasetImputedBaseTransform & (
+  | { readonly method: "mean"; readonly value?: never; readonly sortBy: readonly DatasetWindowSort[]; }
   | {
       readonly method: "constant";
       readonly value: DatasetScalar;
@@ -29366,7 +29367,7 @@ export type DatasetImputedTransform = DatasetImputedBaseTransform & (
 );
 ```
 
-Related types: [`DatasetImputedBaseTransform`](./reference/types/#type-datasetimputedbasetransform) · [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`DatasetWindowSort`](./reference/types/#type-datasetwindowsort).
+Related types: [`DatasetImputedBaseTransform`](./reference/types/#type-datasetimputedbasetransform) · [`DatasetWindowSort`](./reference/types/#type-datasetwindowsort) · [`DatasetScalar`](./reference/types/#type-datasetscalar).
 
 ### `DatasetIntervalOutputFields` {#type-datasetintervaloutputfields}
 
@@ -32269,6 +32270,7 @@ type ImputedDataBaseOptions = {
 
 ```typescript
 export type ImputedDataOptions = ImputedDataBaseOptions & (
+  | { method?: "mean"; value?: never; sortBy?: readonly WindowSort[]; }
   | {
       method: "constant";
       value: DatasetScalar;
@@ -32287,7 +32289,7 @@ export type ImputedDataOptions = ImputedDataBaseOptions & (
 );
 ```
 
-Related types: [`ImputedDataBaseOptions`](./reference/types/#type-imputeddatabaseoptions) · [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`WindowSort`](./reference/types/#type-windowsort).
+Related types: [`ImputedDataBaseOptions`](./reference/types/#type-imputeddatabaseoptions) · [`WindowSort`](./reference/types/#type-windowsort) · [`DatasetScalar`](./reference/types/#type-datasetscalar).
 
 ### `InferredRuleDatumPositionEncodingOptions` {#type-inferredruledatumpositionencodingoptions}
 
@@ -36964,7 +36966,7 @@ When `members` is present, original rows contain their source index and syntheti
 rows contain `[]`. Output follows group first appearance and key-domain order and
 is capped at 10,000 rows before allocation.
 
-## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
+## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
 
 Replace explicit `null` or `undefined` cells without changing row grain or final
 source order:
@@ -36981,6 +36983,8 @@ const imputed = completed.createImputedData({
   edges: "keep"
 });
 ```
+
+Omitted `method` means `"mean"`: each numeric field uses the observed finite-value mean within its group. For example, `completed.createImputedData({ id: "means", fields: "amount", groupBy: "region" })` preserves all other cells and row order. A group with no observed value follows `edges`; sort order is optional.
 
 `constant` requires `value`. `forward` and `backward` copy the nearest available
 anchor in the requested stable group order. `linear` requires one ascending
@@ -38767,7 +38771,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:2159663887199ac101f5fb1142fc6b4836b546cf4669a40705c5023d0a0c94a7` |
+| Contract fingerprint | `sha256:be199913dfaff5231229208fc9a7f57dbb2955ed81e654e4c5b3e15fdc074991` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

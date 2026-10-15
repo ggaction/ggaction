@@ -242,3 +242,26 @@ test("facets replay completion, imputation, and duration windows from local sour
     assert.equal(child.semanticSpec.layers[0].data, output.id);
   }
 });
+
+test("mean imputation defaults explicitly, respects groups and preserves completed row grain", () => {
+  const rows=[{t:0,g:'A',v:2},{t:1,g:'A',v:4},{t:2,g:'A',v:6},{t:0,g:'B',v:10},{t:1,g:'B',v:20}];
+  const raw=chart().createData({id:'raw',values:rows}),complete=raw.createCompleteData({id:'complete',key:'t',groupBy:'g'});
+  const p=complete.createImputedData({id:'imputed',fields:'v',groupBy:'g'});
+  const ds=dataset(p,'imputed');assert.equal(ds.values.length,6);assert.equal(ds.values.find(r=>r.g==='B'&&r.t===2).v,15);
+  assert.equal(ds.transform[0].method,'mean');assert.deepEqual(dataset(p,'raw').values,rows);
+  assert.equal(dataset(complete,'complete').values.find(r=>r.g==='B'&&r.t===2).v,null);
+  const explicit=complete.createImputedData({id:'other',fields:'v',groupBy:'g',method:'mean'});
+  assert.deepEqual(dataset(explicit,'other').values,ds.values);
+});
+
+test("mean imputation is finite, order independent and obeys missing-run policies", () => {
+  const source=chart().createData({id:'raw',values:[{v:1e308},{v:null},{v:1e308}]});
+  const p=source.createImputedData({id:'mean',fields:'v'});assert.equal(dataset(p,'mean').values[1].v,1e308);
+  const none=chart().createData({id:'raw',values:[{v:null},{v:null}]});
+  assert.deepEqual(dataset(none.createImputedData({id:'keep',fields:'v'}),'keep').values,[{v:null},{v:null}]);
+  assert.throws(()=>none.createImputedData({id:'error',fields:'v',edges:'error'}),/observed value/);
+  const gap=chart().createData({id:'raw',values:[{v:1},{v:null},{v:null},{v:3}]}).createImputedData({id:'limited',fields:'v',maxGap:1});
+  assert.deepEqual(dataset(gap,'limited').values.map(r=>r.v),[1,null,null,3]);
+  assert.throws(()=>chart().createData({values:[{v:'1'},{v:null}]}).createImputedData({id:'bad',fields:'v'}),/finite numbers/);
+  assert.throws(()=>source.createImputedData({id:'bad',fields:'v',method:'mean',value:0}),/not available/);
+});

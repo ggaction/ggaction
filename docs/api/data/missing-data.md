@@ -45,7 +45,7 @@ When `members` is present, original rows contain their source index and syntheti
 rows contain `[]`. Output follows group first appearance and key-domain order and
 is capped at 10,000 rows before allocation.
 
-## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
+## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
 
 Replace explicit `null` or `undefined` cells without changing row grain or final
 source order:
@@ -66,6 +66,8 @@ const imputed = completed.createImputedData({
   edges: "keep"
 });
 ```
+
+Omitted `method` means `"mean"`: each numeric field uses the observed finite-value mean within its group. For example, `completed.createImputedData({ id: "means", fields: "amount", groupBy: "region" })` preserves all other cells and row order. A group with no observed value follows `edges`; sort order is optional.
 
 `constant` requires `value`. `forward` and `backward` copy the nearest available
 anchor in the requested stable group order. `linear` requires one ascending

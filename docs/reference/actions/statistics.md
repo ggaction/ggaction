@@ -312,7 +312,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `edges` | Optional / branch-dependent | `"error" \| "keep" \| undefined` |
 | `maxGap` | Optional / branch-dependent | `number \| undefined` |
-| `method` | Required | `"backward" \| "constant" \| "forward" \| "linear"` |
+| `method` | Optional / branch-dependent | `"backward" \| "constant" \| "forward" \| "linear" \| "mean" \| undefined` |
 | `value` | Optional / branch-dependent | `DatasetScalar \| undefined` |
 | `sortBy` | Optional / branch-dependent | `readonly WindowSort[] \| readonly [{ field: string; order?: "ascending" \| undefined; }] \| readonly [WindowSort, ...WindowSort[]] \| undefined` |
 
@@ -321,10 +321,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })
+createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })
 ```
 
-Replace nullish cells by constant, forward, backward, or distance-based linear
+Replace nullish cells by group mean (the default), constant, forward, backward, or distance-based linear
 imputation while preserving group boundaries and final source order.
 [Source and Derived Data](../../api/data/source-and-derived.md#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap)
 
@@ -728,7 +728,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `edges` | Optional / branch-dependent | `"error" \| "keep" \| undefined` |
 | `maxGap` | Optional / branch-dependent | `number \| undefined` |
-| `method` | Optional / branch-dependent | `"backward" \| "constant" \| "forward" \| "linear" \| undefined` |
+| `method` | Optional / branch-dependent | `"backward" \| "constant" \| "forward" \| "linear" \| "mean" \| undefined` |
 | `value` | Optional / branch-dependent | `DatasetScalar \| undefined` |
 | `sortBy` | Optional / branch-dependent | `readonly WindowSort[] \| readonly [{ field: string; order?: "ascending" \| undefined; }] \| readonly [WindowSort, ...WindowSort[]] \| undefined` |
 

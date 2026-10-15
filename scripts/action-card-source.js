@@ -474,11 +474,12 @@ function callPatterns(action, options, intentSource) {
   if (action.name === "createImputedData") {
     const branches = new Map();
     for (const [method, required] of Object.entries(IMPUTE_REQUIRED_OPTIONS)) {
+      if (method === "mean") continue;
       const key = required.join(", ");
       branches.set(key, [...(branches.get(key) ?? []), JSON.stringify(method)]);
     }
-    return [...branches].map(([required, methods]) =>
-      `${action.name}({ id, fields, method: ${methods.join(" | ")}, ${required}, source?, groupBy? })`);
+    return [`${action.name}({ id, fields, source?, groupBy?, method?: "mean" })`, ...[...branches].map(([required, methods]) =>
+      `${action.name}({ id, fields, method: ${methods.join(" | ")}, ${required}, source?, groupBy? })`)];
   }
   return intentSource.callPatternOverrides[action.name] ?? [callPattern(action, options)];
 }
@@ -533,7 +534,7 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
     }
     if (
       card.callPatterns.length < 1 ||
-      card.callPatterns.length > 2 ||
+      card.callPatterns.length > 3 ||
       new Set(card.callPatterns).size !== card.callPatterns.length ||
       card.callPatterns.some(pattern => !pattern.startsWith(`${card.name}(`))
     ) {
