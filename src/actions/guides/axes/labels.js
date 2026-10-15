@@ -42,13 +42,15 @@ import { resolveConcreteGraphicBounds } from
 import { wrapText } from "../../../layout/text.js";
 import {
   normalizeDisplayLabelMap,
+  normalizeDisplayColorMap,
+  resolveDisplayLabelColor,
   resolveDisplayLabel
 } from "../../../grammar/displayLabels.js";
 
 const OPTIONS = [
   "scale", "position", "count", "values", "offset", "format", "color",
   "fontSize", "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
-  "lineHeight", "overlap", "labelMap", "alongOffset", "flush"
+  "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "colorMap"
 ];
 
 const DEFAULTS = {
@@ -138,26 +140,27 @@ function validateConfig(channel, config) {
   }
 }
 
-function normalizeAxisLabelMap(program, config, args, operation) {
-  if (!Object.hasOwn(args, "labelMap")) return config;
+function normalizeAxisLabelMaps(program, config, args, operation) {
   const next = { ...config };
-  if (args.labelMap === "auto") {
-    delete next.labelMap;
-  } else {
-    next.labelMap = normalizeDisplayLabelMap(
-      args.labelMap,
-      `${operation} labelMap`
-    );
+  for (const [property, normalize] of [
+    ["labelMap", normalizeDisplayLabelMap],
+    ["colorMap", normalizeDisplayColorMap]
+  ]) {
+    if (!Object.hasOwn(args, property)) continue;
+    if (args[property] === "auto") delete next[property];
+    else next[property] = normalize(args[property], `${operation} ${property}`);
   }
   validateAxisLabelMapScale(next, program.resolvedScales[config.scale], operation);
   return next;
 }
 
 function validateAxisLabelMapScale(config, scale, operation = "Axis") {
-  if (config.labelMap !== undefined &&
-      !["ordinal", "band", "point"].includes(scale?.type) &&
-      !config.labelMap.every(entry => Number.isFinite(entry.value))) {
-    throw new TypeError(`${operation} continuous labelMap values must be finite numbers or timestamps.`);
+  if (["ordinal", "band", "point"].includes(scale?.type)) return;
+  for (const property of ["labelMap", "colorMap"]) {
+    if (config[property] !== undefined &&
+        !config[property].every(entry => Number.isFinite(entry.value))) {
+      throw new TypeError(`${operation} continuous ${property} values must be finite numbers or timestamps.`);
+    }
   }
 }
 
@@ -392,7 +395,7 @@ function makeEdit(channel) {
       ...(explicitMode ? { inferredValues: false } : {}),
       mode
     }, args, op);
-    config = normalizeAxisLabelMap(this, config, args, op);
+    config = normalizeAxisLabelMaps(this, config, args, op);
     if (mode === "values") delete config.count; else delete config.values;
     validateConfig(channel, config);
     assertTickCompatibility(this.guideConfigs.axis?.[channel]?.ticks, config, op);
@@ -403,7 +406,9 @@ function makeEdit(channel) {
       x: resolved.x,
       y: resolved.y,
       text: resolved.text,
-      fill: config.color,
+      fill: config.colorMap === undefined ? config.color
+        : resolved.text.map((_, index) => resolveDisplayLabelColor(
+          resolved.values[resolved.groups[index]], config.colorMap, config.color)),
       fontSize: config.fontSize,
       fontFamily: config.fontFamily,
       fontWeight: config.fontWeight,
@@ -466,7 +471,7 @@ function makeCreate(channel) {
         (ticks?.inferredValues === true || inferredDiscreteValues !== undefined),
       mode
     }, args, op);
-    config = normalizeAxisLabelMap(this, config, args, op);
+    config = normalizeAxisLabelMaps(this, config, args, op);
     if (mode === "values") {
       config.values ??= ticks?.values ?? inferredDiscreteValues;
     } else {
