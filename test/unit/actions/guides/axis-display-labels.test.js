@@ -54,7 +54,7 @@ test("maps categorical Cartesian labels by typed raw value and resets to fallbac
   });
   assert.deepEqual(
     empty.graphicSpec.objects.xAxisLabels.items.map(item => item.properties.text),
-    ["1", "", "KR", "XX"]
+    ["1", "KR", "XX"]
   );
   const reset = empty.editXAxisLabels({ labelMap: "auto" });
   assert.equal(Object.hasOwn(reset.guideConfigs.axis.x.labels, "labelMap"), false);

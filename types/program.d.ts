@@ -1394,7 +1394,7 @@ export interface AxisTickOptions<P extends string>
   count?: number;
   values?: readonly AxisValue[];
 }
-/** Cartesian label maps use typed category values or finite numeric/timestamp keys on continuous scales. */
+/** Cartesian label maps use typed category values or finite numeric/timestamp keys on continuous scales. Empty mapped labels are omitted without removing ticks. */
 export interface AxisLabelOptions<P extends string>
   extends CartesianAxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
   scale?: string;

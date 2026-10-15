@@ -252,3 +252,5 @@ has one semantic axis, so parallel duplicate axes cannot be created.
 
 [Guides](./guides.md) · [Grids](./grids.md) ·
 [Advanced axis components](../advanced/axis-components.md)
+
+An explicit Cartesian `labelMap` entry with `label: ""` hides only that displayed label. Tick marks, stored tick values and scale domains stay unchanged. Empty labels remain suppressed after Canvas/scale replay; clear the map with `"auto"` to restore the normal formatter.

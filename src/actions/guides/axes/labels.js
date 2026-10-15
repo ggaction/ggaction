@@ -238,7 +238,7 @@ function resolve(program, channel, config) {
     !isTransformedScaleType(scale?.type)
   ) || !bounds) throw new Error("Axis labels require a supported resolved scale and Canvas bounds.");
   if (discrete && config.mode !== "values") throw new Error("Discrete axis labels require explicit or inferred values, not count.");
-  const values = valuesFromTickConfig(program, config);
+  let values = valuesFromTickConfig(program, config);
   validateGeneratedItemLimit(values.length, "Label value count");
   if (discrete) {
     const domainValues = new Set(scale.domain);
@@ -247,7 +247,7 @@ function resolve(program, channel, config) {
     const low = Math.min(...scale.domain), high = Math.max(...scale.domain);
     if (!values.every(value => value >= low && value <= high)) throw new RangeError("Label values must be inside the scale domain.");
   }
-  const positions = discrete
+  let positions = discrete
     ? mapOrdinalPositionValues(values, scale)
     : mapContinuousScaleValues(values, scale);
   const fallback = value => formatAxisValue(
@@ -263,9 +263,18 @@ function resolve(program, channel, config) {
   const automaticTimeLabels = scale.type === "time" && config.format === "auto"
     ? formatTimeTicks(values, scale.domain)
     : undefined;
-  const text = values.map((value, index) =>
+  let text = values.map((value, index) =>
     resolveDisplayLabel(value, config.labelMap, raw =>
       automaticTimeLabels?.[index] ?? fallback(raw)));
+  // Empty mapped text suppresses the label, never its raw tick or scale value.
+  // Filter all aligned arrays before wrapping so group/color indices stay dense.
+  if (text.includes("")) {
+    const visible = text.map((value, index) => value === "" ? -1 : index)
+      .filter(index => index !== -1);
+    values = visible.map(index => values[index]);
+    positions = visible.map(index => positions[index]);
+    text = visible.map(index => text[index]);
+  }
   const geometry = {
     values,
     ...resolveAxisLabelGeometry({

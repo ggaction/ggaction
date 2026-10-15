@@ -91,7 +91,7 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
   `0`과 `-0`은 같은 key다. 중복 raw key는 거부하고 중복 label과 빈 label은 허용한다. Array는
   전체 교체하며 `[]`는 명시적 empty map, `"auto"`는 저장된 map 제거다. Mapping이 있으면 raw
   tick value로 먼저 찾고, 없는 값만 기존 formatter를 사용한다. Raw scale domain과 tick values는
-  바뀌지 않는다. Continuous scale의 key는 finite number 또는 Unix-millisecond timestamp만 허용하며 numeric string, boolean, null, nonfinite는 거부한다. Explicit 미래 tick의 유효한 numeric key는 현재 domain 밖이어도 저장할 수 있다. `"auto"`와 `[]`는 categorical과 같은 reset/empty 의미다.
+  바뀌지 않는다. Explicit mapped `label: ""`는 해당 concrete text만 생략하고 raw label/tick values와 scale domain은 유지한다. 모든 label이 비어도 유효한 empty collection이며 reset/edit/Canvas·scale replay에서 같은 정책을 적용한다. Continuous scale의 key는 finite number 또는 Unix-millisecond timestamp만 허용하며 numeric string, boolean, null, nonfinite는 거부한다. Explicit 미래 tick의 유효한 numeric key는 현재 domain 밖이어도 저장할 수 있다. `"auto"`와 `[]`는 categorical과 같은 reset/empty 의미다.
 - Effect: formatted text, aligned data-space coordinates와 font style을 text collection에 저장한다.
   Time `auto`는 domain-span precision에서 시작해 distinct resolved ticks가 같은 label이면 최소 한 단계씩
   precision을 높인다. Empty-string nominal values는 semantic domain에는 그대로 남고 visible label은

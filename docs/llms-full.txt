@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:d3f3f372c70867148b23cfae70d48f5ba316cb37bb4b4d7548ae415c77fb0782. Status: development. Runtime source: 9ba3b75136a587d947368cfb87bfbc26e2adad1c. Release baseline: v0.0.13.
+Contract: sha256:9c671b1494ba5a2348c53422eecc3660f424ccdd33ed609f3c81c6d25a98a51f. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/9ba3b75136a587d947368cfb87bfbc26e2adad1c/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/9ba3b75136a587d947368cfb87bfbc26e2adad1c/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12333,6 +12333,8 @@ has one semantic axis, so parallel duplicate axes cannot be created.
 
 [Guides](./api/guides/) · [Grids](./api/grids/) ·
 [Advanced axis components](./advanced/axis-components/)
+
+An explicit Cartesian `labelMap` entry with `label: ""` hides only that displayed label. Tick marks, stored tick values and scale domains stay unchanged. Empty labels remain suppressed after Canvas/scale replay; clear the map with `"auto"` to restore the normal formatter.
 
 <!-- Source: /api/grids/ -->
 
@@ -26940,7 +26942,7 @@ export interface AxisTickOptions<P extends string>
   count?: number;
   values?: readonly AxisValue[];
 }
-/** Cartesian label maps use typed category values or finite numeric/timestamp keys on continuous scales. */
+/** Cartesian label maps use typed category values or finite numeric/timestamp keys on continuous scales. Empty mapped labels are omitted without removing ticks. */
 ```
 
 Related types: [`CartesianAxisTickStyleOptions`](./reference/types/#type-cartesianaxistickstyleoptions) · [`AxisValue`](./reference/types/#type-axisvalue).
@@ -36851,12 +36853,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/9ba3b75136a587d947368cfb87bfbc26e2adad1c/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/9ba3b75136a587d947368cfb87bfbc26e2adad1c/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -38982,9 +38984,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:d3f3f372c70867148b23cfae70d48f5ba316cb37bb4b4d7548ae415c77fb0782` |
+| Contract fingerprint | `sha256:9c671b1494ba5a2348c53422eecc3660f424ccdd33ed609f3c81c6d25a98a51f` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `9ba3b75136a587d947368cfb87bfbc26e2adad1c` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |
@@ -39290,3 +39292,5 @@ For individual lines, ticks, labels, and titles, see
 [Advanced axis components](./advanced/axis-components/).
 
 Numeric labels also accept `","` for grouped integers and `",.0f"` through `",.12f"` for grouped fixed decimals. UTC formats accept `%a` for an English weekday abbreviation, such as `%a %d` → `Mon 01`. These formats use the shared axis, legend and text formatter.
+
+An explicit Cartesian `labelMap` entry with `label: ""` hides only that displayed label. Tick marks, stored tick values and scale domains stay unchanged. Empty labels remain suppressed after Canvas/scale replay; clear the map with `"auto"` to restore the normal formatter.
