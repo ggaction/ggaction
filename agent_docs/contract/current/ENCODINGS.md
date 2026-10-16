@@ -1523,7 +1523,10 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Signature: `encodeBarWidth({ band?, pixels?, interval?, target? })`
 - `band`: `(0, 1]` finite number. Resolved category/offset slot 중 rect가 차지하는 비율이다.
 - `pixels`: positive finite logical Canvas pixel width. `band`와 mutually exclusive이며 PNG `pixelRatio`와
-  무관하다.
+  무관하다. 같은 time position scale의 모든 temporal Bar consumer가 explicit pixel width를 쓰면
+  center는 auto plot range 전체에 매핑되며 half-slot inset을 적용하지 않는다. 하나라도 implicit/band
+  width면 공유 scale의 기존 inferred-slot inset을 유지한다. Explicit numeric scale range는 두 경우
+  모두 그대로 보존한다. Width mode 변경은 공유 line/rule/text와 axis guide를 함께 rematerialize한다.
 - `interval`: `{ unit: "year"|"quarter"|"month"|"day"|"hour"|"minute"|"second", insetStart?: NonNegativeFinite, insetEnd?: NonNegativeFinite }`. Band/pixels와 mutually exclusive다. Group 없는 aggregate temporal category의 UTC interval start를 해당 달력 구간 끝까지 그린다. Insets는 calendar-start/end 쪽 logical px이며 기본0이다. UTC 경계가 아닌 값, category interval 밖 domain, non-positive inset 결과, grouped/ranged/centered/histogram은 거부한다. 이 width는 data를 bucket/aggregate하지 않으며 source 값은 이미 interval start여야 한다.
 - Interval mode는 temporal bar의 center-slot half-band inset을 사용하지 않는다. 같은 position scale의 interval/centered temporal Bar 혼합은 거부한다. Source explicit domain은 모든 끝점을 포함해야 한다. Canvas/scale edits와 persistence replay가 같은 width를 rematerialize한다.
 - Complete aggregate/ranged bar는 action 호출 전에도 implicit `{ band: 0.72 }`로 즉시 materialize된다.
@@ -1560,6 +1563,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `pixels`
   - ✅ Covered: representative fixed width, slot보다 큰 overlap, zero/negative/non-finite rejection와
     `band` mutual exclusion.
+  - ✅ Covered: temporal full plot range, 양방향/authoring order/reverse/resize/persistence,
+    explicit range override, shared line/rule/text/axis refresh와 mixed band consumer 보존.
+    Evidence: `test/unit/actions/scales/temporal-bar-line-sharing.test.js`.
 - `target`
   - ✅ Covered: inferred/explicit aggregate/grouped/ranged bar, both ranged orientations와 incomplete prerequisites.
 - Reassignment

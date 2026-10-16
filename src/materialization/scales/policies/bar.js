@@ -36,6 +36,11 @@ export function resolveTemporalBarBand(valuesByConsumer, domain, range, markConf
       "A temporal bar position scale requires compatible bar, line, rule, or text consumers of one field."
     );
   }
+  // Explicit pixel widths do not need an inferred half-slot inset. Keep one
+  // common range when a shared scale also has band-width bar consumers.
+  preserveRange ||= temporalBars.every(({ consumer }) =>
+    markConfigs[consumer.layer.id]?.barWidth?.pixels !== undefined
+  );
   const values = temporalBars.flatMap(item => item.values);
   const ordered = [...new Set(values)].sort((left, right) => left - right);
   if (ordered.length < 2) {

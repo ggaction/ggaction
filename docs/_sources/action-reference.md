@@ -2140,6 +2140,10 @@ Set aggregate or ranged bar width before or after its positions are complete.
 Incomplete bars retain the width without creating items; histogram bins do not
 accept it. The modes are mutually exclusive. The first omitted mode defaults to
 `band: 0.72`; later omission retains the current mode.
+When every temporal bar sharing a position scale uses pixel width, bar centers
+use the full plot range. If any bar still uses band width, the shared scale keeps
+its inferred half-slot inset. An explicit numeric scale range is preserved in
+both cases. Switching width modes also refreshes shared marks and axis guides.
 [Constant appearance](../api/appearance.md)
 
 ### `createRegression`

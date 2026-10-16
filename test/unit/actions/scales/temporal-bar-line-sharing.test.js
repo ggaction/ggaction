@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart } from "../../../../src/index.js";
+import { serializeProgram, deserializeProgram } from "../../../../src/persistence.js";
 
 const rows = Object.freeze([
   Object.freeze({ year: "2000-01-01", otherYear: "2005-01-01", value: 10 }),
@@ -192,4 +193,111 @@ test("owns source rows instead of exposing a mutable data refresh path", () => {
   assert.equal(program.semanticSpec.datasets[0].values.length, rows.length);
   assert.equal(program.graphicSpec, before);
   assertAligned(program);
+});
+
+
+const day = 24 * 60 * 60 * 1000;
+const start = Date.UTC(2000, 0, 1);
+const pixelRows = Object.freeze([
+  Object.freeze({ time: start, value: 10 }),
+  Object.freeze({ time: start + 2 * day, value: 20 })
+]);
+
+function pixelWidthProgram(horizontal = false, widthFirst = false) {
+  const category = horizontal ? "y" : "x";
+  const measure = horizontal ? "x" : "y";
+  let p = chart()
+    .createCanvas({ width: 400, height: 300, margin: 50 })
+    .createData({ values: pixelRows })
+    .createBarMark({ id: "bars" });
+  if (widthFirst) p = p.encodeBarWidth({ pixels: 5 });
+  p = p[category === "x" ? "encodeX" : "encodeY"]({
+    field: "time", fieldType: "temporal", temporalUnit: "timestamp",
+    scale: { domain: [start - day, start + 3 * day], nice: false }
+  })[measure === "x" ? "encodeX" : "encodeY"]({
+    field: "value", scale: { domain: [0, 20], nice: false }
+  });
+  return widthFirst ? p : p.encodeBarWidth({ pixels: 5 });
+}
+
+function categoryCenters(p, horizontal = false) {
+  return p.graphicSpec.objects.bars.items.map(({ properties: item }) =>
+    horizontal ? item.y + item.height / 2 : item.x + item.width / 2
+  );
+}
+
+for (const horizontal of [false, true]) {
+  test(`keeps explicit pixel-width temporal centers on the full ${horizontal ? "vertical" : "horizontal"} plot range`, () => {
+    const p = pixelWidthProgram(horizontal);
+    const first = pixelWidthProgram(horizontal, true);
+    const axis = horizontal ? "y" : "x";
+    const expectedRange = horizontal ? [250, 50] : [50, 350];
+    const expectedCenters = horizontal ? [200, 100] : [125, 275];
+    assert.deepEqual(p.resolvedScales[axis].range, expectedRange);
+    assert.deepEqual(categoryCenters(p, horizontal), expectedCenters);
+    assert.deepEqual(first.graphicSpec, p.graphicSpec);
+    assert.equal(p.graphicSpec.objects.bars.items.every(({ properties: r }) =>
+      (horizontal ? r.height : r.width) === 5), true);
+    const reversed = p.editScale({ id: axis, reverse: true });
+    assert.deepEqual(categoryCenters(reversed, horizontal), [...expectedCenters].reverse());
+    const resized = p.editCanvas(horizontal ? { height: 400 } : { width: 500 });
+    assert.deepEqual(categoryCenters(resized, horizontal), horizontal ? [275, 125] : [150, 350]);
+    assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec, p.graphicSpec);
+    assert.deepEqual(categoryCenters(p, horizontal), expectedCenters);
+  });
+}
+
+test("refreshes shared line and axis consumers when temporal width switches modes", () => {
+  const band = pixelWidthProgram().encodeBarWidth({ band: 0.72 })
+    .createLineMark({ id: "trend" })
+    .createXAxis({ ticksAndLabels: { values: [start, start + 2 * day] }, title: false });
+  const originalGraphic = band.graphicSpec;
+  assertAligned(band);
+  assert.deepEqual(categoryCenters(band), [150, 250]);
+  const pixels = band.encodeBarWidth({ target: "bars", pixels: 5 });
+  assertAligned(pixels);
+  assert.deepEqual(categoryCenters(pixels), [125, 275]);
+  const ticks = pixels.graphicSpec.objects.xAxisTicks.items;
+  assert.deepEqual(ticks.map(item => item.properties.x1), [125, 275]);
+  const restoredBand = pixels.encodeBarWidth({ target: "bars", band: 0.72 });
+  assert.deepEqual(restoredBand.graphicSpec, originalGraphic);
+  assert.deepEqual(band.graphicSpec, originalGraphic);
+});
+
+test("retains an explicit temporal range without applying pixel-width compensation twice", () => {
+  const p = pixelWidthProgram().editScale({ id: "x", range: [60, 300] });
+  assert.deepEqual(p.resolvedScales.x.range, [60, 300]);
+  assert.deepEqual(categoryCenters(p), [120, 240]);
+  assert.deepEqual(p.editCanvas({ width: 600 }).resolvedScales.x.range, [60, 300]);
+  assert.deepEqual(p.encodeBarWidth({ band: 0.5 }).resolvedScales.x.range, [60, 300]);
+});
+
+test("refreshes temporal rule and text positions after pixel-width selection", () => {
+  const band = pixelWidthProgram().encodeBarWidth({ band: 0.72 })
+    .createRuleMark({ id: "events", data: "data" })
+    .encodeX({ target: "events", field: "time", fieldType: "temporal", temporalUnit: "timestamp", scale: { id: "x" } })
+    .createTextMark({ id: "labels", data: "data" })
+    .encodeX({ target: "labels", field: "time", fieldType: "temporal", temporalUnit: "timestamp", scale: { id: "x" } })
+    .encodeY({ target: "labels", field: "value", scale: { id: "y" } })
+    .encodeText({ target: "labels", field: "value" });
+  const p = band.encodeBarWidth({ target: "bars", pixels: 5 });
+  assert.deepEqual(p.graphicSpec.objects.events.items.map(item => item.properties.x1), [125, 275]);
+  assert.deepEqual(p.graphicSpec.objects.labels.items.map(item => item.properties.x), [125, 275]);
+  assert.deepEqual(band.graphicSpec.objects.events.items.map(item => item.properties.x1), [150, 250]);
+});
+
+test("retains inferred slots while any shared temporal bar consumer uses band width", () => {
+  const pixels = pixelWidthProgram();
+  const mixed = pixels.createBarMark({ id: "second", data: "data" })
+    .encodeY({ target: "second", field: "value", scale: { id: "y" } })
+    .encodeX({ target: "second", field: "time", fieldType: "temporal", temporalUnit: "timestamp", scale: { id: "x" } });
+  assert.deepEqual(mixed.resolvedScales.x.range, [100, 300]);
+  const bothPixels = mixed.encodeBarWidth({ target: "second", pixels: 8 });
+  assert.deepEqual(bothPixels.resolvedScales.x.range, [50, 350]);
+  assert.deepEqual(categoryCenters(bothPixels), [125, 275]);
+  assert.deepEqual(bothPixels.graphicSpec.objects.second.items.map(item =>
+    item.properties.x + item.properties.width / 2), [125, 275]);
+  const bandAgain = bothPixels.encodeBarWidth({ target: "second", band: 0.5 });
+  assert.deepEqual(bandAgain.resolvedScales.x.range, [100, 300]);
+  assert.deepEqual(categoryCenters(bandAgain), [150, 250]);
 });
