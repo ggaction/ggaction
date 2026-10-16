@@ -1,13 +1,22 @@
 {
-  "status": "ready-for-review",
+  "status": "approved",
   "classification": "Proposed",
   "implemented": false,
   "currentOrPlannedInventoryModified": false,
   "publicOption": "representation?: gradient | symbols",
   "scope": "continuous color legend only",
   "canonicalOwner": "existing guideConfigs.legend.gradient",
-  "defaults": {"representation": "gradient", "symbolCount": 5, "symbolRadius": 7},
+  "defaults": {
+    "representation": "gradient",
+    "symbolCount": 5,
+    "symbolRadius": 7
+  },
   "sampling": "existing continuous-domain sampler; explicit finite ascending values within domain override it",
   "visualEvidence": "source SVG DOM measurement and declarative target.svg; no chart pixels inspected per user instruction",
-  "approval": null
+  "approval": {
+    "reviewRevision": "cb61e5f24c3ebff52f632a9050af6a3128f92c80",
+    "userAnswer": "설계대로 구현 (권장)",
+    "questionItemId": "[\"request_user_input_async\",\"call_df0ed8208722478eb0972a7a87125436\",0]",
+    "scope": "complete API/state/default/transition/consumer contract in PROPOSAL.md; no publishing, deployment or PR authorization"
+  }
 }

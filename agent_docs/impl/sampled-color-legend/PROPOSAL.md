@@ -5,10 +5,10 @@
 - [x] 현재 public API의 최소 재현과 실패 조건 확인
 - [x] 실제 참조 SVG DOM에서 네 개의 원형 샘플 확인
 - [x] API·저장 소유자·전환·기본값·호환성·검증 범위 구체화
-- [ ] 사용자 승인
+- [x] 사용자 승인
 - [ ] 구현과 전체 소비 경로 검증
 
-Gate 상태: **ready-for-review**. `decisions.json`의 항목은 Proposed이며 현재 API나 Planned inventory에 넣지 않았다. 승인 전 구현하지 않는다. 독립적인 범례 배치·글꼴·축 수정과 기존 차트 검증은 계속한다. PR·패키지 출판·문서 배포는 포함하지 않는다.
+Gate 상태: **approved**. 사용자가 검토 revision `cb61e5f24c3ebff52f632a9050af6a3128f92c80`에 대해 “설계대로 구현 (권장)”이라고 명시적으로 승인했다. 승인 기록은 `decisions.json`에 있다. `decisions.json`의 항목은 Proposed이며 현재 API나 Planned inventory에 넣지 않았다. 승인된 설계 범위를 구현한다. 독립적인 범례 배치·글꼴·축 수정과 기존 차트 검증은 계속한다. PR·패키지 출판·문서 배포는 포함하지 않는다.
 
 ## 관찰과 재현
 
