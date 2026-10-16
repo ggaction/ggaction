@@ -1,0 +1,18 @@
+{
+  "operation": {
+    "accepted": false,
+    "name": "Error",
+    "message": "Unsupported computed operation \"floor\"."
+  },
+  "existingNullNumericPolicy": {
+    "accepted": false,
+    "name": "TypeError",
+    "message": "Computed sqrt requires finite numbers at row 0."
+  },
+  "existingMissingNumericPolicy": {
+    "accepted": false,
+    "name": "Error",
+    "message": "Dataset \"data\" does not contain field \"value\"."
+  },
+  "nativeSignedZero": true
+}

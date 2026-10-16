@@ -1,0 +1,58 @@
+{
+  "reviewer": "codex",
+  "sourceSha256": "bd40fdbf10eb1ef3ec138123b0f1eb572c3ec3d1fcf68404f50e2734a8207bff",
+  "rawSha256": "2a0b94cc86e91266fda7547f90bea0292fc5f8e5888e5e87f09acbec303687f7",
+  "rawRows": 5000,
+  "sourceRectangles": 5000,
+  "orderedEndpointsVerified": 20000,
+  "allOrderedRawFieldsPreserved": true,
+  "maximumEndpointDifference": 0,
+  "axes": {
+    "x": {
+      "width": 5,
+      "origin": 0,
+      "calculation": "floor(value / 5) * 5"
+    },
+    "y": {
+      "width": 1000,
+      "origin": 0,
+      "calculation": "floor(value / 1000) * 1000"
+    }
+  },
+  "sourceGeometryNote": "Source rectangle positions also include a consistent half-pixel translation. This evidence proves interval-data equality, not complete native chart geometry or color equivalence; ordinary source/runtime verification remains required.",
+  "bindings": [
+    {
+      "pathEncoding": "base64-utf8-absolute",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wMDg0L3NvdXJjZS52bC5qc29u",
+      "sha256": "bd40fdbf10eb1ef3ec138123b0f1eb572c3ec3d1fcf68404f50e2734a8207bff"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wMDg0L2RhdGEuanNvbg==",
+      "sha256": "2a0b94cc86e91266fda7547f90bea0292fc5f8e5888e5e87f09acbec303687f7"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wMDg0L3JlZmVyZW5jZS9jb21waWxlZC52ZWdhLmpzb24=",
+      "sha256": "57470f69687476129ed8a85a98afe87cdd5447f97ceff788c4c1bf2c666f58b9"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wMDg0L3JlZmVyZW5jZS9jaGFydC5zdmc=",
+      "sha256": "bf4ac41b44c85a05393793538acf636b6bab6ca61f48d02c94fa3113e5c1b8f5"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wMDg0L3JlZmVyZW5jZS9pbml0aWFsLXN0YXRlLmpzb24=",
+      "sha256": "8514f952d9bb71fd40be881ecfad69f0c0b79c7b2b7e8f80ce503b32f1011d21"
+    }
+  ],
+  "independentProof": {
+    "pathEncoding": "base64-utf8-absolute",
+    "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9yZXBvcnRzL3YxMi0wMDg0LWZsb29yLXNvdXJjZS1wcm9vZi5qc29u",
+    "sha256": "f489cbb44f2ce3688d766a10a65b7f7c9382b4e99772da29c54d70d4ea9d5d8d"
+  },
+  "newModelCalls": 0,
+  "chartPixelsInspected": false,
+  "implementationStarted": false
+}
