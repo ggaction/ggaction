@@ -1,0 +1,9 @@
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import {chart} from '../../../src/index.js';
+const rows=[{x:0,y:2.1},{x:1,y:2.7},{x:2,y:4.6},{x:3,y:5.7},{x:4,y:9.2}];
+function fit(weighted){const W=rows.reduce((s,r)=>s+(weighted?r.y:1),0),mx=rows.reduce((s,r)=>s+(weighted?r.y:1)*r.x,0)/W,mz=rows.reduce((s,r)=>s+(weighted?r.y:1)*Math.log(r.y),0)/W;const rate=rows.reduce((s,r)=>s+(weighted?r.y:1)*(r.x-mx)*(Math.log(r.y)-mz),0)/rows.reduce((s,r)=>s+(weighted?r.y:1)*(r.x-mx)**2,0),logAmplitude=mz-rate*mx;return{amplitude:Math.exp(logAmplitude),rate,predictions:rows.map(r=>Math.exp(logAmplitude+rate*r.x))};}
+const input=JSON.stringify(rows),parent=chart().createData({values:rows}),before=JSON.stringify(parent),linear=parent.createRegressionData({id:'fit',x:'x',y:'y'});assert.equal(linear.semanticSpec.datasets.at(-1).values.length,5);
+let rejection;try{parent.createRegressionData({id:'fit',x:'x',y:'y',method:'exp'});assert.fail('Expected current public method rejection');}catch(error){rejection={name:error.name,message:error.message};assert.match(error.message,/Unsupported regression method "exp"/);}
+const weighted=fit(true),ordinary=fit(false),maxDifference=Math.max(...weighted.predictions.map((v,i)=>Math.abs(v-ordinary.predictions[i])));assert.ok(maxDifference>.01);assert.equal(JSON.stringify(parent),before);assert.equal(JSON.stringify(rows),input);
+const report={gate:'ready-for-review',currentMethodRejection:rejection,weightedReference:weighted,ordinaryLogLinearReference:ordinary,maximumObservedPredictionDifference:maxDifference,parentAndCallerUnchanged:true,newModelResponses:0,chartPixelsInspected:false};await fs.writeFile(new URL('./rejection-evidence.json',import.meta.url),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));

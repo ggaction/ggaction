@@ -1,0 +1,69 @@
+{
+  "reviewer": "codex",
+  "gate": "ready-for-review",
+  "frozenStudy": "positive-response-demand",
+  "runtimeCommit": "7971cc4cd9a1e5f26aa690e2d2083a60df8bb0a2",
+  "bindings": [
+    {
+      "pathEncoding": "base64-utf8-absolute",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNjM4L3NvdXJjZS52bC5qc29u",
+      "sha256": "aedc19b4e1b805b3ab91751bf36e03831736b09d071d70ac1a2fe99296bbd568"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNjM4L2RhdGEuanNvbg==",
+      "sha256": "fb962e106c9b6f5ad601d05afd5197d59c3c3c8310c2cd4d6a15ccaf5deb5073"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNjM4L3Jlc29sdmVkLXNvdXJjZS52bC5qc29u",
+      "sha256": "e267d66886ef2d191bb07ab990ea7ed3c9094af5224b096c0365eea902fd5eb3"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNjM4L3JlZmVyZW5jZS9jb21waWxlZC52ZWdhLmpzb24=",
+      "sha256": "07dde6df69fc1d83789ad64d11f5c0d6c9b27bec4384508e7bff87a84630f4a5"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNjM4L3JlZmVyZW5jZS9pbml0aWFsLXN0YXRlLmpzb24=",
+      "sha256": "b9746a4145904b3a5996154dbfe0a0263ff5c253f0f433086b2d1a1fae6c48d6"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNjM4L3JlZmVyZW5jZS9jaGFydC5zdmc=",
+      "sha256": "b03ecacfd7da2288f2ee56e5f1e679553e28101885ead725d2ccbf2d6d9b6b68"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNjM4L0cxL2F0dGVtcHQtMDEvY2FuZGlkYXRlLmdnLm1qcw==",
+      "sha256": "d8b6c0aa41752cdf3ca64f2fc930594a45c46d4def3cc544348c1c6773578e38"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNjM4L0cxL2F0dGVtcHQtMDEvcmVxdWVzdHMuanNvbg==",
+      "sha256": "7452a9d787921b8364105fbfd2760fc1d0ddbbbf94f67e9c4b17c5f50c16dbd4"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNjM4L0cxL2F0dGVtcHQtMDEvdXNhZ2UuanNvbg==",
+      "sha256": "ca51fbfc0a333f1b9b416508d9a754299506306dce1fe5f79654c83574e449bc"
+    }
+  ],
+  "rawRows": 9,
+  "sourceCurveVertices": 60,
+  "sourceMethod": "exp",
+  "responseWeighting": "w=y on log(y)",
+  "sourceCoefficients": [
+    99.34821249324142,
+    -0.047313342099378895
+  ],
+  "rSquared": 0.9643884390969467,
+  "curveMaximumIndependentRecomputationError": 1.4210854715202004e-14,
+  "ordinaryLogLinearMaximumSourceVertexError": 23.66494431030233,
+  "currentPublicRejection": "Unsupported regression method \"exp\".",
+  "paidCallsByHost": 0,
+  "chartPixelsInspected": false,
+  "retainedDraftMissingCurve": true,
+  "retainedDraftFalseGeneralRegressionClaim": "Existing linear, polynomial and LOESS methods are supported; only this exponential estimator is missing."
+}

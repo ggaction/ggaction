@@ -1,0 +1,33 @@
+{
+  "gate": "ready-for-review",
+  "currentMethodRejection": {
+    "name": "Error",
+    "message": "Unsupported regression method \"exp\"."
+  },
+  "weightedReference": {
+    "amplitude": 2.0093182292311282,
+    "rate": 0.37447730109728017,
+    "predictions": [
+      2.0093182292311282,
+      2.9220130405199245,
+      4.249282211626402,
+      6.179438306282069,
+      8.986331309477993
+    ]
+  },
+  "ordinaryLogLinearReference": {
+    "amplitude": 2.021487607901475,
+    "rate": 0.3701746680481456,
+    "predictions": [
+      2.021487607901475,
+      2.9270888073120798,
+      4.2383880328536945,
+      6.1371329329544775,
+      8.886491832460914
+    ]
+  },
+  "maximumObservedPredictionDifference": 0.0998394770170794,
+  "parentAndCallerUnchanged": true,
+  "newModelResponses": 0,
+  "chartPixelsInspected": false
+}
