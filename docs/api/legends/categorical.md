@@ -178,6 +178,11 @@ label column. Side rows expand for large labels or symbols, with at least
 borders use the same extents; inline titles are vertically centered beside
 the complete grid. Hidden titles reserve no space.
 
+Plot-corner item blocks measure that 12-pixel title-to-content gap from actual
+painted bounds. They do not inherit the outside side legend's fixed first-row
+anchor. The native corner inset and item pitch remain unchanged; content that
+still exceeds the inset plot fails without resizing or moving the plot.
+
 A categorical legend resolves at most 10,000 domain items. A layered symbol
 recipe contains at most one line, one point, and one swatch layer.
 

@@ -59,8 +59,19 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
     });
     symbolX = grid.cells.map(cell => columnStarts[cell.column] - sampleLeft);
     labelX = grid.cells.map(cell => columnStarts[cell.column] + sampleWidth + config.labels.offset);
-    const firstY = Math.max(plot.y + 52, titleVisible
+    let firstY = Math.max(plot.y + 52, titleVisible
       ? plot.y + 20 + titleHeight / 2 + 12 + itemHeight / 2 : plot.y + 52);
+    if ((inside || config.groupCorner === true) && titleVisible) {
+      const titleBounds = resolveTextBounds({ x: x, y: plot.y + 20,
+        text: config.title, ...config.titleStyle, lines: titleText.lines,
+        textAlign: "left", textBaseline: "middle" }, profile);
+      const labelTops = labels.map(text => resolveTextBounds({
+        x: 0, y: 0, text, ...config.labels,
+        textAlign: "left", textBaseline: "middle"
+      }, profile).top);
+      const itemTop = Math.min(...sampleBounds.map(bounds => bounds.top), ...labelTops);
+      firstY = titleBounds.bottom + 12 - itemTop;
+    }
     itemY = grid.cells.map(cell => firstY + cell.row * pitch);
     title = { x, y: plot.y + 20, align: "left" };
   } else {

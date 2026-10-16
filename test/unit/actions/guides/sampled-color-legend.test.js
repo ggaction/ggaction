@@ -207,10 +207,10 @@ test('literal four-sample geometry reaches SVG, Canvas, PNG and PDF without rend
     .createData({values:[{x:1,y:1,v:1},{x:2,y:2,v:9}]}).createScatterPlot({x:'x',y:'y',guides:false})
     .encodeColor({field:'v',fieldType:'quantitative'}).createLegend({representation:'symbols',values:samples,position:'top-left',symbol:{radius:5,strokeWidth:1.5},labels:{fontSize:10},titleStyle:{fontSize:11,fontWeight:700}});
   const expected=[
-    {x:113.75,y:145.5,radius:5,fill:'#472d7b',stroke:'#472d7b',strokeWidth:1.5,opacity:1},
-    {x:113.75,y:163.5,radius:5,fill:'#2c728e',stroke:'#2c728e',strokeWidth:1.5,opacity:1},
-    {x:113.75,y:181.5,radius:5,fill:'#28ae80',stroke:'#28ae80',strokeWidth:1.5,opacity:1},
-    {x:113.75,y:199.5,radius:5,fill:'#abdc32',stroke:'#abdc32',strokeWidth:1.5,opacity:1}
+    {x:113.75,y:136.75,radius:5,fill:'#472d7b',stroke:'#472d7b',strokeWidth:1.5,opacity:1},
+    {x:113.75,y:154.75,radius:5,fill:'#2c728e',stroke:'#2c728e',strokeWidth:1.5,opacity:1},
+    {x:113.75,y:172.75,radius:5,fill:'#28ae80',stroke:'#28ae80',strokeWidth:1.5,opacity:1},
+    {x:113.75,y:190.75,radius:5,fill:'#abdc32',stroke:'#abdc32',strokeWidth:1.5,opacity:1}
   ];
   assert.deepEqual(symbols(p),expected);
   const {render}=await import('../../../../src/renderers/canvas/index.js');

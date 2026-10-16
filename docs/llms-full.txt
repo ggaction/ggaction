@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:8d6992f81c2905e44e4ca55f689f5acb445433c20e354c09303f597ed1d09ee3. Status: development. Runtime source: 10041d6e1f70bf4a97c1e7e03e997a0fbd0d7620. Release baseline: v0.0.13.
+Contract: sha256:4600c3fb55c4bfe992d36491610ebf377079395ba045fbce9c48ae299c82aa56. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/10041d6e1f70bf4a97c1e7e03e997a0fbd0d7620/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/10041d6e1f70bf4a97c1e7e03e997a0fbd0d7620/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12799,6 +12799,11 @@ label column. Side rows expand for large labels or symbols, with at least
 12 pixels between the visible title and item content. Horizontal grids and
 borders use the same extents; inline titles are vertically centered beside
 the complete grid. Hidden titles reserve no space.
+
+Plot-corner item blocks measure that 12-pixel title-to-content gap from actual
+painted bounds. They do not inherit the outside side legend's fixed first-row
+anchor. The native corner inset and item pitch remain unchanged; content that
+still exceeds the inset plot fails without resizing or moving the plot.
 
 A categorical legend resolves at most 10,000 domain items. A layered symbol
 recipe contains at most one line, one point, and one swatch layer.
@@ -37149,12 +37154,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/10041d6e1f70bf4a97c1e7e03e997a0fbd0d7620/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/10041d6e1f70bf4a97c1e7e03e997a0fbd0d7620/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39280,9 +39285,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:8d6992f81c2905e44e4ca55f689f5acb445433c20e354c09303f597ed1d09ee3` |
+| Contract fingerprint | `sha256:4600c3fb55c4bfe992d36491610ebf377079395ba045fbce9c48ae299c82aa56` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `10041d6e1f70bf4a97c1e7e03e997a0fbd0d7620` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |
