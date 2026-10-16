@@ -13,6 +13,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ### Fixed
 
+- Inferred Y-axis title ink clearance no longer introduces label collisions in
+  tight fixed margins. Automatic fitting retains space for the ink reserve.
 - Cartesian axis titles now materialize explicit hard line breaks before bounds
   checks, preserving line order through edits, resizing, facets and snapshots.
 

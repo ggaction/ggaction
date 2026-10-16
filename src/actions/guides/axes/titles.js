@@ -62,6 +62,34 @@ function titleBounds(geometry, config, text, profile) {
   }, profile);
 }
 
+function resolveTitleAlong(scale, config) {
+  const discrete = ["ordinal", "band", "point"].includes(scale?.type);
+  let along;
+  if (config.at === "center") {
+    along = finiteMidpoint(scale.range[0], scale.range[1]);
+  } else if (config.at === "start" || config.at === "end") {
+    along = scale.range[config.at === "start" ? 0 : 1];
+  } else {
+    if (discrete) {
+      if (!scale.domain.includes(config.at)) throw new RangeError("Axis title at value must be inside the scale domain.");
+      along = mapOrdinalPositionValues([config.at], scale)[0];
+    } else {
+      const low = Math.min(...scale.domain), high = Math.max(...scale.domain);
+      if (config.at < low || config.at > high) throw new RangeError("Axis title at value must be inside the scale domain.");
+      along = mapContinuousScaleValues([config.at], scale)[0];
+    }
+  }
+  return along;
+}
+
+function axisLabelBounds(program, channel) {
+  const id = `${channel}AxisLabels`, labels = program.graphicSpec.objects[id];
+  const bounds = target => resolveConcreteGraphicBounds(
+    program.graphicSpec, target, program.materializationConfigs.textMetrics
+  );
+  return labels?.items?.map(item => bounds(item.id)) ?? (labels ? [bounds(id)] : []);
+}
+
 function inferredTitleOffset(program, channel, config) {
   const plot = resolveGuideCoordinateBounds(program, {
     coordinate: program.semanticSpec.guides.axis?.[channel]?.coordinate,
@@ -97,8 +125,20 @@ function inferredTitleOffset(program, channel, config) {
   const inkClearance = channel === "y" &&
     Math.abs(Math.cos(config.rotation)) < 1e-10
     ? config.fontSize / 4 : 0;
-  return preferred + (program.materializationConfigs.canvas?.plot !== undefined
-    ? Math.max(0, needed) : Math.min(available - inkClearance, Math.max(0, needed)));
+  if (program.materializationConfigs.canvas?.plot !== undefined) {
+    return preferred + Math.max(0, needed);
+  }
+  const legacyAdjustment = Math.min(available, Math.max(0, needed));
+  if (inkClearance === 0) return preferred + legacyAdjustment;
+  const adjustment = Math.min(available - inkClearance, Math.max(0, needed));
+  const candidateBounds = titleBounds(resolveAxisTitleGeometry({
+    bounds: plot, channel, position: config.position,
+    along: resolveTitleAlong(program.resolvedScales[config.scale], config),
+    offset: preferred + adjustment
+  }), config, program.semanticSpec.guides.axis?.[channel]?.title ?? "", program.materializationConfigs.textMetrics);
+  // Optional ink reserve must not introduce a label collision.
+  return preferred + (axisLabelBounds(program, channel).some(label => label && textBoundsIntersect(candidateBounds, label))
+    ? legacyAdjustment : adjustment);
 }
 
 const CREATE_OPTIONS = [
@@ -181,26 +221,11 @@ function resolveGeometry(program, channel, config) {
     scale: config.scale,
     channel
   });
-  const discrete = ["ordinal", "band", "point"].includes(scale?.type);
   if ((
     !["linear", "time", "ordinal", "band", "point"].includes(scale?.type) &&
     !isTransformedScaleType(scale?.type)
   ) || !bounds) throw new Error("Axis title requires a supported resolved scale and Canvas bounds.");
-  let along;
-  if (config.at === "center") {
-    along = finiteMidpoint(scale.range[0], scale.range[1]);
-  } else if (config.at === "start" || config.at === "end") {
-    along = scale.range[config.at === "start" ? 0 : 1];
-  } else {
-    if (discrete) {
-      if (!scale.domain.includes(config.at)) throw new RangeError("Axis title at value must be inside the scale domain.");
-      along = mapOrdinalPositionValues([config.at], scale)[0];
-    } else {
-      const low = Math.min(...scale.domain), high = Math.max(...scale.domain);
-      if (config.at < low || config.at > high) throw new RangeError("Axis title at value must be inside the scale domain.");
-      along = mapContinuousScaleValues([config.at], scale)[0];
-    }
-  }
+  const along = resolveTitleAlong(scale, config);
   const geometry = resolveAxisTitleGeometry({
     bounds,
     channel,
@@ -217,12 +242,7 @@ function resolveGeometry(program, channel, config) {
   if (!canvas || !textBoundsFitCanvas(resolvedBounds, canvas)) {
     throw canvasOverflowError(`The ${channel}-axis title does not fit the Canvas margin.`, [resolvedBounds], canvas);
   }
-  const labels = program.graphicSpec.objects[`${channel}AxisLabels`];
-  const labelBounds = labels?.items?.map(item => resolveConcreteGraphicBounds(
-    program.graphicSpec, item.id, program.materializationConfigs.textMetrics
-  )) ?? (labels ? [resolveConcreteGraphicBounds(
-    program.graphicSpec, `${channel}AxisLabels`, program.materializationConfigs.textMetrics
-  )] : []);
+  const labelBounds = axisLabelBounds(program, channel);
   if (labelBounds.some(bounds => bounds && textBoundsIntersect(resolvedBounds, bounds))) {
     throw new Error(`The ${channel}-axis title overlaps the axis labels.`);
   }

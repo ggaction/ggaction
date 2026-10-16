@@ -1176,7 +1176,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 Canvas `plot` 모드에서는 label offset이 plot edge와 가장 가까운 측정 text edge 사이 간격이다.
 회전된 x label은 바깥 방향의 text 끝점을 anchor로 사용한다. 같은 회전각의 label rectangle을
 공통 회전 좌표계에서 비교하여 실제로 떨어진 대각선 label을 bounding-box overlap으로 거부하지 않는다.
-모든 fontSize의 inferred rotated y-axis title offset이 Canvas edge에 제한될 때 estimated text box 바깥에 `fontSize / 4` ink clearance를 남긴다. middle baseline과 회전에서 실제 glyph ink가 1em box를 넘는 경우를 위한 기존 fit 보정이다. Explicit offset, 충분한 margin의 preferred offset, typography, plot 크기는 바꾸지 않는다. Font/Canvas replay와 저장·복원도 inferred marker를 재사용한다. Evidence: `test/unit/actions/guides/axis-title-inferred-ink-clearance.test.js`.
+모든 fontSize의 inferred rotated y-axis title offset이 Canvas edge에 제한될 때 estimated text box 바깥에 `fontSize / 4` ink clearance를 남긴다. 단, 추가 reserve가 실제 label item과 충돌하면 기존 Canvas-fit offset을 유지하여 새 label 충돌을 만들지 않는다. `fitCanvas`의 margin 탐색은 inferred ink reserve를 유지할 수 있는 배치를 선택한다. middle baseline과 회전에서 실제 glyph ink가 1em box를 넘는 경우를 위한 기존 fit 보정이다. Explicit offset, 충분한 margin의 preferred offset, typography, plot 크기는 바꾸지 않는다. Font/Canvas replay와 저장·복원도 inferred marker를 재사용한다. Evidence: `test/unit/actions/guides/axis-title-inferred-ink-clearance.test.js`.
 
 Wrapped line은 같은 원본 label group으로 처리한다. 자동 axis title offset은 기존 margin에
 제한되지 않으며 측정 overflow를 Canvas guide transaction이 수용한다. 명시적 overlap:error와
