@@ -175,6 +175,12 @@ use this same renderer policy.
 ## `encodeText({ target?, field?, value?, content?, normalizeBy?, format? })`
 
 Provide exactly one of `field`, constant `value`, or semantic `content`.
+
+A filtered dataset with no remaining rows can still bind a field retained in its
+known schema. An explicitly declared empty source schema works the same way. No
+placeholder labels are created; source revisions materialize the matching rows
+and validate their actual content. Unknown fields and an unknown empty source
+schema still reject field bindings.
 `format` defaults to `"auto"`. Numeric formats are `".0f"`–`".12f"`,
 `".0%"`–`".12%"`, and `".0e"`–`".12e"`. UTC date formats compose `%Y`, `%m`,
 `%d`, and `%b`, such as `"%Y-%m-%d"`. Time components are `%H` (24-hour hour),

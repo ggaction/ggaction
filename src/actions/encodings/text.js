@@ -1,4 +1,5 @@
 import { action } from "../../core/action.js";
+import { schemaField } from "../../grammar/datasetSchema.js";
 import { formatTextValue, validateTextFormat } from "../../grammar/text.js";
 import { normalizeMarkLabelContent, resolveMarkLabelValues } from "../../grammar/markLabels.js";
 import { canMaterializeText } from "../../materialization/marks/index.js";
@@ -14,11 +15,13 @@ import { applyRequestedItemMissingPolicy } from
 
 const OPTIONS = Object.freeze(["target", "field", "value", "content", "normalizeBy", "format"]);
 
-function validateTextField(rows, field, format) {
+function validateTextField(dataset, field, format) {
+  const rows = dataset.values;
   if (typeof field !== "string" || field.length === 0) {
     throw new TypeError("encodeText field must be a non-empty string.");
   }
-  let found = false;
+  let found = rows.length === 0 && dataset.schema !== undefined &&
+    schemaField(dataset.schema, field) !== undefined;
   for (const row of rows) {
     if (!Object.hasOwn(row, field)) continue;
     found = true;
@@ -57,7 +60,7 @@ export const encodeText = /* @__PURE__ */ action(
     const content = hasContent
       ? normalizeMarkLabelContent(findLayer(this, layer.source), args)
       : undefined;
-    if (hasField) validateTextField(dataset.values, args.field, format);
+    if (hasField) validateTextField(dataset, args.field, format);
     else if (hasValue && formatTextValue(args.value, format) === undefined) {
       throw new Error("encodeText value must produce non-empty text.");
     }

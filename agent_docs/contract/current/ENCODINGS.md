@@ -1584,7 +1584,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - Signature: `encodeText({ target?, field?, value?, content?, normalizeBy?, format? })` with exactly one of `field`, `value`, or `content`.
 - `target`: current compatible text mark, otherwise one unique text mark; ambiguity requires an explicit ID.
-- `field`: a field present on the text dataset. For a source-owned aggregate bar annotation, a matching measure field
+- `field`: a field present on the text dataset. An empty effective dataset may bind a field retained in its known schema; unknown-schema and absent fields still reject. It preserves the text intent with zero items, and later source revisions validate/format actual values normally. For a source-owned aggregate bar annotation, a matching measure field
   resolves to the final aggregate endpoint rather than an arbitrary source row. A measured Arc's radius field uses its
   final category aggregate. Common fields retain their common-item content. Use semantic `content:"value"` for the
   source statistic before stacking or normalization instead of interpreting a field as cumulative geometry.

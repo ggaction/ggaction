@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:1d96e7227d63b34625c3091c316d606607b676f618089b23316e4ebf9874d7e2. Status: development. Runtime source: af22f2f244dda2f708adfa96d1e2b53b761b5ccd. Release baseline: v0.0.13.
+Contract: sha256:62fbf3d6e6a5bef679a42ddfd87c6046b71769067afdd996753c2924bb230c62. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/af22f2f244dda2f708adfa96d1e2b53b761b5ccd/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/af22f2f244dda2f708adfa96d1e2b53b761b5ccd/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -6787,6 +6787,12 @@ use this same renderer policy.
 ## `encodeText({ target?, field?, value?, content?, normalizeBy?, format? })`
 
 Provide exactly one of `field`, constant `value`, or semantic `content`.
+
+A filtered dataset with no remaining rows can still bind a field retained in its
+known schema. An explicitly declared empty source schema works the same way. No
+placeholder labels are created; source revisions materialize the matching rows
+and validate their actual content. Unknown fields and an unknown empty source
+schema still reject field bindings.
 `format` defaults to `"auto"`. Numeric formats are `".0f"`–`".12f"`,
 `".0%"`–`".12%"`, and `".0e"`–`".12e"`. UTC date formats compose `%Y`, `%m`,
 `%d`, and `%b`, such as `"%Y-%m-%d"`. Time components are `%H` (24-hour hour),
@@ -37203,12 +37209,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/af22f2f244dda2f708adfa96d1e2b53b761b5ccd/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/af22f2f244dda2f708adfa96d1e2b53b761b5ccd/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39353,9 +39359,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:1d96e7227d63b34625c3091c316d606607b676f618089b23316e4ebf9874d7e2` |
+| Contract fingerprint | `sha256:62fbf3d6e6a5bef679a42ddfd87c6046b71769067afdd996753c2924bb230c62` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `af22f2f244dda2f708adfa96d1e2b53b761b5ccd` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |
