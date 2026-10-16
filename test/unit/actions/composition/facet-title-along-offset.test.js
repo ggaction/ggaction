@@ -72,5 +72,7 @@ test("unit title resolution stays unchanged and invalid facet offsets fail atomi
     assert.throws(() => facet.editTitle({ alongOffset }), /finite number/);
   }
   for (const alongOffset of [-10000, 10000]) assert.throws(() => facet.editTitle({ alongOffset }), /outside the Canvas/);
+  assert.throws(() => unit().facet({ field: "group" }).createTitle({ text: "Long title ".repeat(100) }), /outside the Canvas/);
+  assert.throws(() => facet.editTitle({ subtitle: "Long subtitle ".repeat(100) }), /outside the Canvas/);
   assert.equal(serializeProgram(facet), saved);
 });
