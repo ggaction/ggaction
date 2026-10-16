@@ -31,6 +31,14 @@ const program = chart()
 
 The two requested block positions cannot both survive the one-anchor target group. The immutable source/raw/compiled/SVG hashes and requested anchors are recorded in [source-evidence.json](./source-evidence.json). Diagnosis uses source and concrete/reference metadata; no chart pixels were inspected and no additional model call was made.
 
+Run the exact executable reproduction from the repository root:
+
+```sh
+node agent_docs/impl/independent-legend-block-placement/REPRODUCE.mjs
+```
+
+[REPRODUCTION.json](./REPRODUCTION.json) records the actual result. The first color block starts at occupied top158, then moves to429.2026916606628 when the bottom-left size block is created. Both effective anchors become bottom-left, although the stored color family still says top-left. If the first block explicitly creates a group, the second call instead rejects with `New legend block anchor conflicts with its target group.` The script verifies that the earlier parent remains immutable, and that concrete data marks, datasets, scale definitions, layers, and coordinate definitions remain unchanged. Its runtime module hashes bind the observed group behavior.
+
 ## Proposed focused public option
 
 Add optional `position` to the existing `editLegendBlock` action:

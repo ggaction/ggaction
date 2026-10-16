@@ -1,0 +1,60 @@
+{
+  "status": "gap-confirmed",
+  "expected": {
+    "color": "top-left",
+    "size": "bottom-left"
+  },
+  "actual": {
+    "group": {
+      "placement": {
+        "position": "bottom-left",
+        "align": "center",
+        "offset": 8
+      },
+      "blockLayout": "row",
+      "inferredOffset": true
+    },
+    "storedColorPosition": "top-left",
+    "storedSizePosition": "bottom-left",
+    "effectiveColorAnchor": "bottom-left",
+    "effectiveSizeAnchor": "bottom-left",
+    "colorBoundsBefore": {
+      "left": 158,
+      "top": 158,
+      "right": 188.1496,
+      "bottom": 213.5
+    },
+    "colorBoundsAfter": {
+      "left": 158,
+      "top": 429.2026916606628,
+      "right": 188.1496,
+      "bottom": 484.7026916606628
+    },
+    "sizeBounds": {
+      "left": 212.14959999999996,
+      "top": 429.2026916606628,
+      "right": 263.46959999999996,
+      "bottom": 542
+    }
+  },
+  "explicitExistingGroupRejection": {
+    "name": "Error",
+    "message": "New legend block anchor conflicts with its target group."
+  },
+  "parentImmutable": true,
+  "marksUnchanged": true,
+  "dataScalesLayersCoordinatesUnchanged": true,
+  "sourceModuleBindings": [
+    {
+      "path": "src/actions/guides/legends/group.js",
+      "sha256": "3e39d187bba5ce08e074b1d2a17437b68ba319ba99f4f707c7a56e76aa8fc3bc"
+    },
+    {
+      "path": "src/materialization/legendGroups.js",
+      "sha256": "4091765576fa5c3dacee6b99fa4befe196d75e8c953de2f68b672523214b914a"
+    }
+  ],
+  "newPublicAPIImplemented": false,
+  "modelCalls": 0,
+  "chartPixelsInspected": false
+}
