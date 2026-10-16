@@ -1,0 +1,13 @@
+{
+  "reviewer": "codex",
+  "scope": "proposal-only",
+  "implementationAuthorized": false,
+  "publicReproductionAssertions": "pass against synchronized d7 runtime",
+  "newProposalTerminology": "all four initial files source-neutral",
+  "packageBoundaryTests": {"pass": 5, "fail": 1, "failure": "Inherited area-fill-paint/source-evidence.json terminology; outside this proposal, no unrelated mutation"},
+  "declarationsInspected": ["types/program.d.ts: LegendTitleStyleOptions, LegendOptions, EditLegendTitleOptions"],
+  "runtimeOwnersInspected": ["src/actions/guides/legends/group.js", "src/materialization/legendGroups.js", "src/layout/legendItems.js", "src/actions/guides/legends/categorical/components.js", "src/actions/guides/legends/continuous/common.js"],
+  "currentContractsInspected": ["agent_docs/contract/current/LEGEND_AND_TITLE.md", "agent_docs/impl/legend-placement-restoration/PROPOSAL.md"],
+  "newModelResponses": 0,
+  "chartPixelsInspected": false
+}

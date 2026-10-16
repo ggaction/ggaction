@@ -1,0 +1,77 @@
+{
+  "reviewer": "codex",
+  "status": "proposal-only-source-bound-geometry",
+  "case": "bound-initial-view",
+  "rawRows": 52,
+  "sourceSha256": "c06f3b1fa26429f0bf07fca940128dc718dcb095c2fac12baa36ca12e927d20a",
+  "dataSha256": "3e83cbf0d8d3bcadc31581839e2be41365ea8e4e5eb01fabd40093502ffc3879",
+  "sourceSvgSha256": "e741f8abf05a1b9eaa445e3c31df5b4da4f14a180e449e83c94f9395584d4cf1",
+  "runtimeCommit": "d7cc93da3f32c134a651f02d3e3882e587618373",
+  "sourceLegendAnchor": {
+    "x": -49,
+    "y": 359
+  },
+  "sourceTitleBounds": {
+    "left": 5,
+    "right": 79.546875,
+    "top": 399,
+    "bottom": 412
+  },
+  "sourceAxisTitleBounds": {
+    "left": 148.6015625,
+    "right": 400.3984375,
+    "top": 400.5,
+    "bottom": 413.5
+  },
+  "nativeTitleBounds": {
+    "left": 145.7224,
+    "right": 215.2776,
+    "top": 399,
+    "bottom": 410
+  },
+  "nativeIntersection": {
+    "left": 148.6015625,
+    "right": 215.2776,
+    "top": 400.5,
+    "bottom": 410
+  },
+  "bindings": [
+    {
+      "pathEncoding": "base64-utf8",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wOTAxL3NvdXJjZS52bC5qc29u",
+      "sha256": "c06f3b1fa26429f0bf07fca940128dc718dcb095c2fac12baa36ca12e927d20a"
+    },
+    {
+      "pathEncoding": "base64-utf8",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wOTAxL3Jlc29sdmVkLXNvdXJjZS52bC5qc29u",
+      "sha256": "e8e61f2408b1cf8336080a288484c837e34d7a1a7291fb457add28e3f36ee201"
+    },
+    {
+      "pathEncoding": "base64-utf8",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wOTAxL2RhdGEuanNvbg==",
+      "sha256": "3e83cbf0d8d3bcadc31581839e2be41365ea8e4e5eb01fabd40093502ffc3879"
+    },
+    {
+      "pathEncoding": "base64-utf8",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wOTAxL3JlZmVyZW5jZS9jaGFydC5zdmc=",
+      "sha256": "e741f8abf05a1b9eaa445e3c31df5b4da4f14a180e449e83c94f9395584d4cf1"
+    },
+    {
+      "pathEncoding": "base64-utf8",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wOTAxL3JlZmVyZW5jZS9jb21waWxlZC52ZWdhLmpzb24=",
+      "sha256": "fbd28e2c5106ce852e26ea80119500043b6cd951c2f865c9c69cf3efe8ac201c"
+    },
+    {
+      "pathEncoding": "base64-utf8",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wOTAxL2V4aXN0aW5nLXB1YmxpYy1uZWdhdGl2ZS1vZmZzZXQtZnVsbC1heGlzLWNhbmFyeS5qc29u",
+      "sha256": "7cab6ed8c136177a60a86024f22edb6a164ce76b0906f82cc310af537ea7964d"
+    },
+    {
+      "pathEncoding": "base64-utf8",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wOTAxL2V4aXN0aW5nLXB1YmxpYy10aXRsZS1wbGFjZW1lbnQtY29udHJhY3QtZGlhZ25vc2lzLmpzb24=",
+      "sha256": "d71cfd70ece7725f682fe1c62ee190932814e4990ed2a85709de538b7388ca17"
+    }
+  ],
+  "chartPixelsInspected": false,
+  "newModelResponses": 0
+}
