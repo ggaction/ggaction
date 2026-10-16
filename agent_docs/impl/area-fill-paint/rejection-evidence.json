@@ -1,0 +1,43 @@
+{
+  "reviewer": "codex",
+  "gate": "ready-for-review",
+  "runtimeCommit": "8700172097655fb229745f26161b56403fe03822",
+  "kind": "existing-public-area-gradient-rejection",
+  "requestedPaint": {
+    "type": "linear-gradient",
+    "from": {
+      "x": 0,
+      "y": 1
+    },
+    "to": {
+      "x": 0,
+      "y": 0
+    },
+    "stops": [
+      {
+        "offset": 0,
+        "color": "white"
+      },
+      {
+        "offset": 1,
+        "color": "#fc6721"
+      }
+    ]
+  },
+  "errors": [
+    {
+      "action": "editAreaMark",
+      "name": "TypeError",
+      "message": "Area fill must be a non-empty string."
+    },
+    {
+      "action": "createAreaPlot",
+      "name": "TypeError",
+      "message": "Area fill must be a non-empty string."
+    }
+  ],
+  "priorProgramUnchanged": true,
+  "syntheticRows": 3,
+  "chartPixelsInspected": false,
+  "modelCalls": 0
+}
