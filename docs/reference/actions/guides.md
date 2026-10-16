@@ -1373,6 +1373,13 @@ Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Interval legends support all four
 edges with layout `"edge"`, side single columns and horizontal item grids. Explicit `channels` creates exactly
 the selected content; include `"size"` in a point categorical-and-size request.
+For outside top/bottom legends, omitting `offset` places the occupied legend after
+the same-side axis line, ticks, labels, and title, with the family's native gap
+(8 pixels for categorical legends, 30 for continuous families). Axis edits and
+removal recompute that gap. An explicit numeric `offset`, including zero or the
+native value, remains measured from the plot edge. Free coordinates, plot corners,
+and `legacy-bottom` keep their existing anchors. Older saved programs retain
+their fixed offsets.
 Automatic symbol recipes refresh when matching companion lines or their color
 bindings change; explicit recipes retain their layers and order.
 Omitted point channels infer the available categorical color, shape, and

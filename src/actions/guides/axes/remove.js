@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { validateKeys } from "../../../core/validation.js";
 import { axisGraphicIds } from
@@ -20,7 +21,7 @@ function makeRemoveAxis(channel) {
       op: operation,
       description: `Remove the complete ${channel}-axis resource.`
     },
-    function (args = {}) {
+    withGuideLayoutValidation(function (args = {}) {
       validateKeys(args, OPTIONS, operation);
       const semantic = this.semanticSpec.guides.axis?.[channel];
       const config = this.guideConfigs.axis?.[channel];
@@ -50,7 +51,7 @@ function makeRemoveAxis(channel) {
         }
       }
       return next._withoutMaterializationConfig(["guides", "axis", channel]);
-    }
+    })
   );
 }
 

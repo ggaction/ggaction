@@ -1,3 +1,4 @@
+import { legendResourcePolicy } from "../../../materialization/guides/resources.js";
 import { LEGEND_POSITIONS, LEGEND_BLOCK_LAYOUTS } from "../../../core/vocabulary.js";
 import { validateLegendGroupState } from "../../../grammar/legendGroups.js";
 import { validateOptionObject, validateNonNegativeFinite } from "../../../core/validation.js";
@@ -103,4 +104,35 @@ export function creationLegendTarget(program, args) {
       : channels.every(channel => layer.encoding?.[channel]?.scale !== undefined));
   if (candidates.length !== 1) throw new Error("Legend group requires one eligible target or an explicit target.");
   return candidates[0].id;
+}
+
+
+// Keep omission distinct from an explicit numeric offset, including the native
+// default. Older snapshots have no marker and retain their fixed placement.
+export function recordLegendOffsetIntent(before, after, args, { creation = false } = {}) {
+  let next = after;
+  for (const [kind, config] of Object.entries(after.guideConfigs.legend ?? {})) {
+    const previous = before.guideConfigs.legend?.[kind];
+    if (creation && previous !== undefined || !creation && config === previous) continue;
+    const prior = previous ?? Object.entries(before.guideConfigs.legend ?? {}).find(([oldKind, old]) =>
+      old.target === config.target && legendResourcePolicy(oldKind).semanticKind === legendResourcePolicy(kind).semanticKind)?.[1];
+    const inferredOffset = args.offset !== undefined ? false : creation ? true : prior?.inferredOffset === true;
+    next = next._withLegendConfig(kind, { ...config, inferredOffset });
+  }
+  for (const [target, group] of Object.entries(after.guideConfigs.legendGroups ?? {})) {
+    if (group.placement.at !== undefined) {
+      if (group.inferredOffset !== undefined) {
+        const { inferredOffset: _inferred, ...fixed } = group;
+        next = next._withMaterializationConfig(["guides", "legendGroups", target], fixed);
+      }
+      continue;
+    }
+    const previous = before.guideConfigs.legendGroups?.[target];
+    if (group === previous) continue;
+    const inferredOffset = args.offset !== undefined ? false
+      : previous?.placement.at !== undefined ? true : previous !== undefined ? previous.inferredOffset === true
+        : Object.values(next.guideConfigs.legend ?? {}).filter(c=>c.target === target).every(c=>c.inferredOffset === true);
+    next = next._withMaterializationConfig(["guides", "legendGroups", target], { ...group, inferredOffset });
+  }
+  return next;
 }

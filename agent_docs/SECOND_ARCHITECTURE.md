@@ -1998,3 +1998,5 @@ Plot border 포함 packed 실측780,011bytes와 검색 payload810,074bytes가 �
 연속형 color symbols API의 새 문서와 generated signature를 모두 검색에 유지한 payload는811,989bytes로 기존811,000bytes를 초과한다. 측정된 증가만 반영해 공유 검색 한도를813,000bytes로 조정하며 검색 대상이나 기존 내용을 줄이지 않는다.
 
 최종 installed packed consumer의 browser gzip은 Full387,444bytes / Basic186,768bytes / SVG7,161bytes이며, 실제 packed788,122bytes·unpacked3,876,966bytes·560entries다. 위의 좁은 한도 안에서 전체 승인 기능과 모든 검색 내용을 유지한다.
+
+외부 top/bottom 범례의 생략한 기본 offset이 실제 같은 쪽 axis occupied lane을 따르도록 고친 뒤 packed 실측은789,911bytes다. Private helper는 기존 group/resources owner 안에 두어560entries를 유지했다. 기존 승인된 최소1,000bytes 단위 정책에 따라 packed 한도만789,000에서790,000bytes로 조정하며 unpacked3,900,000bytes 한도는 유지한다. 이전789,000bytes 한도 통과로 보고하지 않는다.

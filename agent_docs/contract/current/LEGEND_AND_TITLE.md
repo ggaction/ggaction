@@ -7,6 +7,8 @@
 
 - Color/stroke/series/gradient/interval/size/opacity/strokeWidth의 네 edge에 같은 검증을 적용한다. 같은 target의 categorical+size는 하나의 group이며 retained border도 bounds에 포함한다.
 - Axis line/ticks/labels/title는 각자의 position과 실제 stroke·rotation·collection bounds를 사용한다. Axis 내부 component 제약은 axis owner가 별도로 담당한다.
+- 외부 top/bottom legend의 offset을 생략하면 같은 edge의 실제 axis line/ticks/labels/title occupied bounds 뒤에 해당 family의 기존 기본 간격(categorical 8, continuous 30)을 둔다. 저장한 offset 수치는 바꾸지 않고 최종 배치에서 clearance를 계산한다. 명시한 offset(0·8·30 포함)은 계속 plot 기준이며 free `at`, plot corner와 legacy-bottom은 이 추론을 사용하지 않는다.
+- 기본 간격의 생략 여부는 private `inferredOffset` boolean으로 보존하며 creation order, axis 편집·제거, Canvas replay, group과 저장·복원에서도 다시 계산한다. 이 marker가 없는 이전 snapshot은 고정 offset으로 보수적으로 읽는다. 잘못된 marker 타입은 저장·복원 시 거부한다.
 - 서로 독립적인 legend group과 title↔axis, title↔legend, axis↔legend의 strict intersection은 오류다. 경계가 닿는 것만으로는 오류가 아니다.
 - Create/edit와 Canvas/scale/dependent replay는 해당 aggregate의 최종 guide geometry를 검증한다. 실패 시 이전 program의 semantic/graphic/config/context/trace는 변하지 않는다.
 - 공간이 부족하면 margin 또는 offset을 명시적으로 바꿔야 한다. Canvas 자동 확대나 임의 재배치는 없다. Public extension primitive의 의도된 overlay는 이 domain 검증에 포함하지 않는다.
@@ -101,7 +103,7 @@ type TitleWrap = "word" | "character";
   title y=height−52이며 align/itemGap/recipe/styles/border를 지원한다. Columns, vertical direction, left title,
   offset≠8은 edge에서만 지원한다. Legacy mode에서 다른 edge로 옮길 때 layout edge도 같은 edit에 명시한다.
   기존 compact examples는 legacy-bottom으로 migration한다. Interval은 layout:"edge"를 지원하며 legacy-bottom은 거부한다. Stroke-width도 layout:"edge"를 지원한다. Size도 layout:"edge"를 지원한다. Gradient/opacity의 layout option은 아직 지원하지 않는다.
-- `offset`: non-negative finite number, 기본 `8`; plot과 legend block 간 거리다.
+- `offset`: non-negative finite number, 기본 `8`; 명시하면 plot과 legend block 간 거리다. 외부 top/bottom에서 생략한 기본값은 위 shared guide collision 계약의 실제 axis lane 뒤에 놓인다.
 - `titlePosition`: `"top" | "left"`, 기본 top. `"left"`는 horizontal categorical과 sampled opacity
   legend에서 title, symbol, label을 한 reading line으로 배치한다. Gradient와 side opacity는 `"top"`만 지원한다.
 - `title`: non-empty string 또는 `false`; 생략하면 encoded source field를 사용한다.

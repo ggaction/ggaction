@@ -1,3 +1,4 @@
+import { legendResourcePolicy } from "../../../materialization/guides/resources.js";
 import { isContinuousColorScaleType } from "../../../grammar/scales/types.js";
 import { isDiscretizedColorScaleType } from "../../../grammar/scales/types.js";
 import { normalizeContinuousLegend } from "./continuous/common.js";
@@ -88,7 +89,7 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   } catch (error) {
     throw new Error(`${channel} legend transition has incompatible layout or style: ${error.message}`);
   }
-  return { args, channel, titleVisible: stored.titleVisible !== false, blockOverride };
+  return { args, channel, titleVisible: stored.titleVisible !== false, inferredOffset: stored.inferredOffset, blockOverride };
 }
 
 export function planColorLegendTransitions(program, scale, nextType) {
@@ -100,6 +101,11 @@ export function planColorLegendTransitions(program, scale, nextType) {
 
 export function applyColorLegendTransition(program, plan) {
   let next = program.createLegend(plan.args);
+  for (const [kind, config] of Object.entries(next.guideConfigs.legend ?? {})) {
+    if (config.target === plan.args.target && legendResourcePolicy(kind).semanticKind === plan.channel) {
+      next = next._withLegendConfig(kind, { ...config, inferredOffset: plan.inferredOffset === true });
+    }
+  }
   if (!plan.titleVisible) {
     next = next.editLegend({ target: plan.args.target, title: false });
   }

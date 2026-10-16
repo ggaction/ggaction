@@ -165,3 +165,33 @@ export function legendResourcePolicies() {
 export function allLegendGraphicIds(kinds) {
   return [...new Set(kinds.flatMap(legendGraphicIds))];
 }
+
+
+// A default outside horizontal legend follows the actual occupied axis lane.
+// Explicit offsets, plot corners, free coordinates and legacy layouts retain
+// their authored anchor. This returns a derived offset, never stored geometry.
+export function resolveLegendAxisOffset(program, config, plot) {
+  if (config.inferredOffset !== true || !["top", "bottom"].includes(config.position) || config.layout === "legacy-bottom") return config.offset;
+  const axes = resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs, undefined,
+    program.materializationConfigs.textMetrics).filter(block=>block.kind === "axis" && block.position === config.position);
+  const clearance = config.position === "bottom"
+    ? Math.max(0, ...axes.map(block=>block.bounds.bottom - plot.y - plot.height))
+    : Math.max(0, ...axes.map(block=>plot.y - block.bounds.top));
+  return config.offset + clearance;
+}
+
+export function effectiveLegendOffsetConfig(program, kind, config) {
+  if (kind !== "size" || config.inheritPosition === false) return config;
+  const categorical = ["series", "color", "stroke"].map(k=>program.guideConfigs.legend?.[k]).find(c=>c?.target === config.target);
+  return categorical === undefined ? config : { ...config, position: categorical.position,
+    offset: categorical.offset, inferredOffset: categorical.inferredOffset };
+}
+
+export function needsLegendAxisReflow(before, after) {
+  const inferred = [before, after].some(program => Object.entries(program.guideConfigs.legend ?? {}).some(([kind, config]) => {
+    const effective = effectiveLegendOffsetConfig(program, kind, config);
+    return effective.inferredOffset === true && ["top", "bottom"].includes(effective.position) && effective.layout !== "legacy-bottom";
+  }) || Object.values(program.guideConfigs.legendGroups ?? {}).some(group=>group.inferredOffset === true && ["top","bottom"].includes(group.placement.position)));
+  return inferred && [before, after].some(program=>resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs,
+    undefined, program.materializationConfigs.textMetrics).some(block=>block.kind === "axis" && ["top","bottom"].includes(block.position)));
+}

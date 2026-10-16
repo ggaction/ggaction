@@ -1,3 +1,4 @@
+import { resolveLegendAxisOffset, effectiveLegendOffsetConfig } from "../../../materialization/guides/resources.js";
 import { resolveLegendGroupPlacement } from "../../../layout/legendGroup.js";
 import { legendGroup } from "../../../materialization/legendGroups.js";
 import { editLegendBackground, resolveLegendBackgroundFromBounds } from "./continuous/common.js";
@@ -510,17 +511,25 @@ export const rematerializeHorizontalLegendLane = /* @__PURE__ */ action(
     for (const edge of ["top", "bottom"]) {
       const entries = edgeKinds(next, edge).filter(
         ([, config]) => isHorizontalEdgeLegend({ ...config, position: edge })
-      );
+      ).map(([kind, config]) => [kind, effectiveLegendOffsetConfig(next, kind, config)]);
       if (entries.length === 0) continue;
       if (entries.length === 1) {
         const [kind, config] = entries[0];
         const ids = existingIds(next, kind);
         const bounds = unionConcreteGraphicBounds(next.graphicSpec, ids, next.materializationConfigs.textMetrics);
         const { dx, dy } = resolveSingleHorizontalLegendPlacement({
-          plot, canvas, config, bounds
+          plot, canvas, config: { ...config, offset: resolveLegendAxisOffset(next, config, plot) }, bounds
         });
         for (const id of ids) next = translateGraphic(next, id, dx, dy);
         continue;
+      }
+      for (const [kind, config] of entries) {
+        if (config.inferredOffset !== true || resolveLegendAxisOffset(next, config, plot) === config.offset) continue;
+        const ids = existingIds(next, kind);
+        const bounds = unionConcreteGraphicBounds(next.graphicSpec, ids, next.materializationConfigs.textMetrics);
+        const { dx, dy } = resolveSingleHorizontalLegendPlacement({ plot, canvas,
+          config: { ...config, offset: resolveLegendAxisOffset(next, config, plot) }, bounds });
+        for (const id of ids) next = translateGraphic(next, id, dx, dy);
       }
       let groups = groupBlocks(entries.map(([kind, config]) =>
         blockDescriptor(next, kind, config)), configs);
@@ -532,7 +541,7 @@ export const rematerializeHorizontalLegendLane = /* @__PURE__ */ action(
         }))).map(child => ({ ...child, element: child.content }));
         const plan = resolveHorizontalLegendGroup({ edge, plot, canvas, groups: children,
           allowOverflow: next.materializationConfigs.canvas?.plot !== undefined,
-          align: config.align, offset: config.offset, border: group.border,
+          align: config.align, offset: resolveLegendAxisOffset(next, config, plot), border: group.border,
           backgroundId: group.backgroundId });
         next = applyHorizontalPlan(next, children, plan);
       }
@@ -566,7 +575,9 @@ export const rematerializeLegendGroups = /* @__PURE__ */ action(
       next = alignLegendTextBoxes(next, entries.flatMap(([kind]) => existingIds(next, kind)));
       const blocks = entries.map(([kind]) => ({ id: kind, ids: existingIds(next, kind),
         bounds: unionLegendBounds(next, existingIds(next, kind)) }));
-      const placements = resolveLegendGroupPlacement({ blocks, group, plot, canvas,
+      const effectiveGroup = group.placement.at !== undefined ? group : { ...group, placement: { ...group.placement,
+        offset: resolveLegendAxisOffset(next, { ...group.placement, inferredOffset: group.inferredOffset }, plot) } };
+      const placements = resolveLegendGroupPlacement({ blocks, group: effectiveGroup, plot, canvas,
         allowOverflow: next.materializationConfigs.canvas?.plot !== undefined });
       for (const placement of placements) {
         const block = blocks.find(item => item.id === placement.id);

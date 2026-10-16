@@ -6,10 +6,11 @@ export function validateLegendGroupState(groups) {
   validateOptionObject(groups, undefined, "Legend groups");
   for (const [target, group] of Object.entries(groups)) {
     validateUserId(target, "Legend group target");
-    validateOptionObject(group, ["placement", "blockLayout"], "Legend group");
+    validateOptionObject(group, ["placement", "blockLayout", "inferredOffset"], "Legend group");
     if (!LEGEND_BLOCK_LAYOUTS.includes(group.blockLayout)) {
       throw new Error("Legend group blockLayout must be row, column or wrap.");
     }
+    if (group.inferredOffset !== undefined && typeof group.inferredOffset !== "boolean") throw new TypeError("Legend group inferredOffset must be boolean.");
     const placement = group.placement;
     validateOptionObject(placement, ["at", "position", "align", "offset"], "Legend group placement");
     if (Object.hasOwn(placement, "at")) {

@@ -1,3 +1,4 @@
+import { recordLegendOffsetIntent } from "../group.js";
 import { prepareLegendGroup, creationLegendTarget, validateLegendGroupOptions } from "../group.js";
 import { PLOT_LEGEND_POSITIONS } from "../../../../layout/legend.js";
 import { normalizeInitialLegendTitle } from "../continuous/common.js";
@@ -455,7 +456,7 @@ export function applyLegendCreationPlan(program, plan) {
 export const createLegend = /* @__PURE__ */ action(
   { op: "createLegend", description: "Create an inferred legend for selected channels." },
   withGuideLayoutValidation(function (args = {}) {
-    return applyLegendCreationPlan(this, resolveLegendCreationPlan(this, args));
+    return recordLegendOffsetIntent(this, applyLegendCreationPlan(this, resolveLegendCreationPlan(this, args)), args, { creation: true });
   })
 );
 

@@ -147,6 +147,7 @@ export function validateProgramState(program, path) {
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
+    if (config.inferredOffset !== undefined && typeof config.inferredOffset !== "boolean") throw invalidSnapshot("Invalid legend offset inference.", path);
     if (config.representation === undefined) continue;
     if (kind !== "gradient" || !["symbols", "gradient"].includes(config.representation)) throw invalidSnapshot("Invalid continuous color legend representation.", path);
     if (config.representation === "symbols") {

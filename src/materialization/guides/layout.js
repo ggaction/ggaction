@@ -1,3 +1,4 @@
+import { needsLegendAxisReflow } from "./resources.js";
 import { getErrorDetails } from "../../core/diagnostics.js";
 import { planCanvasRematerialization } from "../layout.js";
 import { applyMaterializationPlan } from "../planner.js";
@@ -26,6 +27,9 @@ export function withGuideLayoutTransaction(program, apply) {
       if (result.compositionSpec === undefined && Object.values(result.guideConfigs.legend ?? {}).some(config =>
         ["left", "right"].includes(config.position))) {
         result = result.rematerializeSideLegendLane();
+      }
+      if (result.compositionSpec === undefined && needsLegendAxisReflow(program, result)) {
+        result = result.rematerializeHorizontalLegendLane();
       }
       if (result.compositionSpec === undefined && Object.keys(result.guideConfigs.legendGroups ?? {}).length > 0) {
         result = result.rematerializeLegendGroups();

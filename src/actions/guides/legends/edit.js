@@ -1,3 +1,4 @@
+import { recordLegendOffsetIntent } from "./group.js";
 import { prepareLegendGroup } from "./group.js";
 import { PLOT_LEGEND_POSITIONS } from "../../../layout/legend.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
@@ -713,5 +714,7 @@ function editLegendImplementation(args = {}, skipGroup = false) {
 
 export const editLegend = /* @__PURE__ */ action(
   { op: "editLegend", description: "Edit one stable legend content, layout or appearance." },
-  withGuideLayoutValidation(editLegendImplementation)
+  withGuideLayoutValidation(function (args = {}) {
+    return recordLegendOffsetIntent(this, editLegendImplementation.call(this, args), args);
+  })
 );

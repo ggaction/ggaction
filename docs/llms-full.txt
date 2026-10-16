@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:ecee8994c9a70f67d00d462e1e3d1ef70d56f0d91980a95a7a87c4b030fc322e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:528b235c586b843e55ed61fa4e82ae353457aeac5e6dce364104daa0f581d621. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -24561,6 +24561,13 @@ Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Interval legends support all four
 edges with layout `"edge"`, side single columns and horizontal item grids. Explicit `channels` creates exactly
 the selected content; include `"size"` in a point categorical-and-size request.
+For outside top/bottom legends, omitting `offset` places the occupied legend after
+the same-side axis line, ticks, labels, and title, with the family's native gap
+(8 pixels for categorical legends, 30 for continuous families). Axis edits and
+removal recompute that gap. An explicit numeric `offset`, including zero or the
+native value, remains measured from the plot edge. Free coordinates, plot corners,
+and `legacy-bottom` keep their existing anchors. Older saved programs retain
+their fixed offsets.
 Automatic symbol recipes refresh when matching companion lines or their color
 bindings change; explicit recipes retain their layers and order.
 Omitted point channels infer the available categorical color, shape, and
@@ -39223,7 +39230,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:ecee8994c9a70f67d00d462e1e3d1ef70d56f0d91980a95a7a87c4b030fc322e` |
+| Contract fingerprint | `sha256:528b235c586b843e55ed61fa4e82ae353457aeac5e6dce364104daa0f581d621` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

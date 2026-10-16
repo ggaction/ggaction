@@ -24,7 +24,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 560, // Adds one continuous-color symbol materializer.
-  packedBytes: 789_000, // Sampled-color feature plus synchronized generated metadata measured 788,122 bytes.
+  packedBytes: 790_000, // Axis-aware default legend placement measured 789,911 bytes; unchanged entry/unpacked limits.
   unpackedBytes: 3_900_000
 });
 
