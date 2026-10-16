@@ -1071,7 +1071,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Optional / branch-dependent | `ErrorBandIntervalChannel \| ErrorBandPositionChannel \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
 | `boundaries` | Optional / branch-dependent | `false \| (StrokeStyleDetails & { stroke?: string \| undefined; strokeWidth?: number \| undefined; strokeDash?: DashPattern \| DashStyle \| undefined; opacity?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
@@ -1123,7 +1123,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `x` | Optional / branch-dependent | `ErrorBandIntervalChannel \| ErrorBandPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `ErrorBandIntervalChannel \| ErrorBandPositionChannel \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
-| `fill` | Optional / branch-dependent | `string \| false \| undefined` |
+| `fill` | Optional / branch-dependent | `false \| FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
 | `statistics` | Optional / branch-dependent | `{ center?: IntervalCenter \| undefined; extent?: IntervalExtent \| undefined; method?: ConfidenceIntervalMethod \| undefined; level?: number \| undefined; } \| undefined` |
@@ -1641,7 +1641,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `valueScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
 | `densityScale` | Optional / branch-dependent | `NonPointZeroSupportingPositionScaleOptions \| undefined` |
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; layout?: "overlay" \| undefined; } \| undefined` |
-| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| DensityPlotGuideOptions \| undefined` |
 
 </details>

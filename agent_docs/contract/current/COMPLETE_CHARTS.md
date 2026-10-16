@@ -614,7 +614,7 @@ Default id는 `horizonPlot`, lifecycle은 Aggregate create-only다.
   Explicit range and baseline conflict. Crossing endpoints retain their roles without sorting or swapping.
 - Optional id defaults to areaPlot; data/coordinate follow the shared facade resolver. GroupBy is an explicit
   nominal field or unique nonempty tuple. Color is optional nominal/ordinal field appearance, constant within each
-  series; it does not infer a group. Area accepts fill/opacity/stroke/strokeWidth/curve; opacity defaults to .2.
+  series; it does not infer a group. Area accepts FillPaint fill/opacity/stroke/strokeWidth/curve; opacity defaults to .2. Existing structured linear gradients use each concrete area path bounds and are forwarded unchanged.
   Explicit fill conflicts with field color. Unknown keys, nested target/coordinate, aggregate/bin/stack are errors.
 - Layout defaults to overlay; stack/fill/diverging require one field and baseline 0 on an aligned unique group grid.
   Center additionally requires vertical nonnegative values. Missing defaults to error; break accepts null/undefined

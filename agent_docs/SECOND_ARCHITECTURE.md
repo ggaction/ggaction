@@ -280,7 +280,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 389,000 bytes |
+| `ggaction` | 390,000 bytes |
 | `ggaction/basic` | 189,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -2012,3 +2012,8 @@ Plot border 포함 packed 실측780,011bytes와 검색 payload810,074bytes가 �
 ### 축 title hard break의 concrete line 소유권
 
 기존 축 title 문자열의 명시적 hard break는 같은 core line resolver와 concrete text `lines`를 재사용한다. 축 title domain action은 기존 위치·회전·원자적 bounds 검증을 유지하며, optional derived line property의 추가·제거는 `materialization/textLines.js`가 소유한다. 기존 범례 materializer도 이 좁은 helper를 호출하므로 action 계층의 직접 graphicSpec 복제나 renderer newline 추론을 추가하지 않는다. 새 공개 API나 persisted schema는 없다. 새 private module 하나에 따라 package entry 한도만562에서563으로 조정한다. Packed 실측791,403bytes와 unpacked3,887,466bytes는 기존792,000/3,900,000bytes 한도 안에 있으며 browser/SVG 한도는 유지한다. 이전 entry 한도 통과로 보고하지 않는다.
+
+
+### Area fallback fill uses the existing paint grammar
+
+Approved area fallback fills reuse `FillPaint` on the existing area mark configuration and concrete path properties. `grammar/areaPaint.js` owns the shared action/import compatibility guard: a structured fill cannot implicitly become a solid outline. Area, density, violin and error-band facades forward the same value; categorical swatches inherit it only without a data-driven color encoding. Renderers and persisted schema remain unchanged. The private validator adds one packed entry (563→564). Measured packed791,934bytes/unpacked3,889,220bytes remain within792,000/3,900,000bytes; the installed full browser gzip389,164bytes exceeds389,000, so only that limit increases to390,000bytes. Basic189,000 and SVG25,000 limits remain unchanged. These measurements do not claim the previous entry/full-browser limits passed.

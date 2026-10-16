@@ -1,3 +1,4 @@
+import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
 import { validateLegendGroupState } from "../grammar/legendGroups.js";
@@ -201,6 +202,9 @@ export function validateProgramState(program, path) {
   }
   for (const id of Object.keys(program.markConfigs)) {
     if (!resources.get("mark").has(id)) throw invalidSnapshot(`Mark config "${id}" has no layer owner.`, path);
+    if (resources.get("mark").get(id).mark.type === "area") {
+      validateAreaPaintConfig(program.markConfigs[id]);
+    }
   }
   for (const kind of ["data", "mark"]) {
     const visited = new Set();

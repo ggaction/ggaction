@@ -12,7 +12,7 @@ test("area endpoint declarations accept mixed bounds and reject ambiguous consta
   try {
     const file = path.join(directory, "area.mts");
     await writeFile(file, `
-import type { ChartProgram } from ${JSON.stringify(path.join(root, "types/program.js"))};
+import type { ChartProgram, FillPaint } from ${JSON.stringify(path.join(root, "types/program.js"))};
 import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 declare const program: ChartProgram;
 declare const basic: BasicChartProgram;
@@ -44,6 +44,19 @@ program.createAreaPlot({ x: "time", y: { field: "value", aggregate: "sum" } });
 program.createAreaPlot({ x: "value", y: { field: "category", fieldType: "ordinal", scale: { type: "point" } }, valueChannel: "x" });
 // @ts-expect-error categorical positions cannot use quantitative scales
 program.createAreaPlot({ x: { field: "category", fieldType: "nominal", scale: { type: "log" } }, y: "value" });
+const fill: FillPaint = { type: "linear-gradient", from: { x: 0, y: 1 }, to: { x: 0, y: 0 }, stops: [{ offset: 0, color: "white" }, { offset: 1, color: "orange" }] };
+program.createAreaMark({ fill });
+program.editAreaMark({ fill });
+program.createAreaPlot({ x: "time", y: "value", area: { fill } });
+program.createDensityPlot({ field: "value", area: { fill } });
+program.createViolinPlot({ x: "group", y: "value", area: { fill } });
+program.createErrorBand({ x: { field: "time" }, y: { field: "value" }, fill });
+program.editErrorBand({ fill });
+program.editErrorBand({ fill: false });
+// @ts-expect-error Stroke is still a solid string, not FillPaint
+program.editAreaMark({ stroke: fill });
+// @ts-expect-error The area extension does not widen arc fill
+program.editArcMark({ fill });
 program.createAreaMark({ missing: "break" });
 program.editAreaMark({ missing: "error" });
 program.encodeYRange({ lower: "value", upper: { datum: 0 } });

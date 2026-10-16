@@ -84,7 +84,7 @@ function makeEditSymbol(type) {
         )) {
           next = next.editGraphics({ target: id, property, value });
         }
-        return applyLayerOpacity(next, id, layer.opacity);
+        return applyLayerOpacity(next, id, layer.opacity ?? appearance.opacity);
       }
       if (type === "point") {
         const x = layout.symbolX.map(value => value + symbolWidth(config) / 2);
@@ -101,7 +101,7 @@ function makeEditSymbol(type) {
                 ? appearance.strokes[index]
                 : layer.stroke,
               strokeWidth: layer.strokeWidth,
-              opacity: layer.opacity,
+              opacity: layer.opacity ?? appearance.opacity,
               ...requestedStrokeDetails(layer, "Legend point symbol")
             });
           });
@@ -130,7 +130,7 @@ function makeEditSymbol(type) {
         )) {
           next = next.editGraphics({ target: id, property, value });
         }
-        return applyLayerOpacity(next, id, layer.opacity);
+        return applyLayerOpacity(next, id, layer.opacity ?? appearance.opacity);
       }
       const x = layout.symbolX.map(
         value => value + (symbolWidth(config) - layer.width) / 2
@@ -154,7 +154,7 @@ function makeEditSymbol(type) {
           fill: fills[index],
           stroke: strokes[index],
           strokeWidth: layer.strokeWidth,
-          ...(layer.opacity === undefined ? {} : { opacity: layer.opacity }),
+          ...((layer.opacity ?? appearance.opacity) === undefined ? {} : { opacity: layer.opacity ?? appearance.opacity }),
           ...requestedStrokeDetails(details, "Legend swatch symbol")
         }, details))
       );
