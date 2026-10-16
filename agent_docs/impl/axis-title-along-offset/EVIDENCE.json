@@ -1,0 +1,81 @@
+{
+  "status": "gap-confirmed",
+  "runtime": "c53d1edda3625376b75f3157f798a3b099e1a750",
+  "plot": {
+    "left": 104,
+    "width": 375
+  },
+  "desiredAnchorX": 376.5,
+  "desiredLocalAlong": 272.5,
+  "currentAnchors": [
+    {
+      "at": "start",
+      "status": "accepted",
+      "titleConfig": null,
+      "graphic": {
+        "type": "text",
+        "properties": {
+          "x": 104,
+          "y": 244,
+          "text": "Source attribution",
+          "fill": "#334155",
+          "fontSize": 11,
+          "fontFamily": "sans-serif",
+          "fontWeight": 300,
+          "textAlign": "center",
+          "textBaseline": "middle",
+          "rotation": 0
+        }
+      }
+    },
+    {
+      "at": "center",
+      "status": "accepted",
+      "titleConfig": null,
+      "graphic": {
+        "type": "text",
+        "properties": {
+          "x": 291.5,
+          "y": 244,
+          "text": "Source attribution",
+          "fill": "#334155",
+          "fontSize": 11,
+          "fontFamily": "sans-serif",
+          "fontWeight": 300,
+          "textAlign": "center",
+          "textBaseline": "middle",
+          "rotation": 0
+        }
+      }
+    },
+    {
+      "at": "end",
+      "status": "rejected",
+      "error": "The x-axis title does not fit the Canvas margin."
+    },
+    {
+      "at": 1,
+      "status": "rejected",
+      "error": "Axis title at value must be inside the scale domain."
+    },
+    {
+      "at": 2,
+      "status": "rejected",
+      "error": "Axis title at value must be inside the scale domain."
+    },
+    {
+      "at": 3,
+      "status": "rejected",
+      "error": "Axis title at value must be inside the scale domain."
+    },
+    {
+      "at": 272.5,
+      "status": "rejected",
+      "error": "Axis title at value must be inside the scale domain."
+    }
+  ],
+  "parentUnchanged": true,
+  "proposalOnly": true,
+  "implementationAdded": false,
+  "chartPixelsInspected": false
+}

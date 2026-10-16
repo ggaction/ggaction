@@ -1,0 +1,148 @@
+{
+  "sourceEvidence": [
+    {
+      "id": "0263",
+      "sourceSha256": "beddfc586b224debb3a3daf5cfdf62e80e1c8412fd003c99e9dddc03a1d2d41c",
+      "contractSha256": "f18c5f10e6c445fb55e60fb3db8f29309a0927acb29130e9fca7dbeb00db84f3",
+      "referenceSvgSha256": "b60d32f9eca07600ed6dd0aa3454c3bb1f17d8b24b50c9f5b5eb2afabffa5ac2",
+      "sourceCanvas": {
+        "width": 485,
+        "height": 510,
+        "margin": {
+          "left": 104,
+          "top": 34,
+          "right": 6,
+          "bottom": 57
+        }
+      },
+      "plot": {
+        "width": 375,
+        "height": 419
+      },
+      "compiledXAxis": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Source: trafford.gov.uk | @traffordDataLab",
+          "description": "Source: trafford.gov.uk | @traffordDataLab",
+          "labels": false,
+          "titleColor": "#707070",
+          "titleFont": "sans-serif",
+          "titleFontWeight": 300,
+          "titleX": 272,
+          "titleY": 10,
+          "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
+          "zindex": 1
+        }
+      ],
+      "actualTitleSvg": [
+        {
+          "role": "axis-title",
+          "text": "Source: trafford.gov.uk | @traffordDataLab",
+          "x": 376.5,
+          "y": 472.5,
+          "font": "sans-serif",
+          "fontSize": 11,
+          "fontWeight": "300",
+          "fontStyle": "normal",
+          "fill": "rgb(112, 112, 112)",
+          "effectiveOpacity": 1,
+          "visible": true,
+          "angle": 0,
+          "bounds": {
+            "left": 273.4609375,
+            "right": 479.5390625,
+            "top": 462.5,
+            "bottom": 475.5
+          }
+        }
+      ],
+      "sourceExplicitAxes": {
+        "labels": false,
+        "description": "Source: trafford.gov.uk | @traffordDataLab",
+        "title": "Source: trafford.gov.uk | @traffordDataLab",
+        "titleX": 272,
+        "titleY": 10,
+        "titleFont": "sans-serif",
+        "titleFontWeight": 300,
+        "titleColor": "#707070"
+      }
+    },
+    {
+      "id": "0264",
+      "sourceSha256": "f505fea56685243b3a54de75fab1d6764749adae40955db43aad70125c91df49",
+      "contractSha256": "2c5941200ffb3968739c8118f2d980293663d59a902b94132eb3e0099df57fa3",
+      "referenceSvgSha256": "0fbed817da76a744af37f5ce2c8adccfcb819083079272c087626ef833d40727",
+      "sourceCanvas": {
+        "width": 485,
+        "height": 510,
+        "margin": {
+          "left": 104,
+          "top": 34,
+          "right": 6,
+          "bottom": 57
+        }
+      },
+      "plot": {
+        "width": 375,
+        "height": 419
+      },
+      "compiledXAxis": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Source: trafford.gov.uk | @traffordDataLab",
+          "description": "Source: trafford.gov.uk | @traffordDataLab",
+          "labels": false,
+          "titleColor": "#707070",
+          "titleFont": "sans-serif",
+          "titleFontWeight": 300,
+          "titleX": 272,
+          "titleY": 10,
+          "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
+          "zindex": 1
+        }
+      ],
+      "actualTitleSvg": [
+        {
+          "role": "axis-title",
+          "text": "Source: trafford.gov.uk | @traffordDataLab",
+          "x": 376.5,
+          "y": 472.5,
+          "font": "sans-serif",
+          "fontSize": 11,
+          "fontWeight": "300",
+          "fontStyle": "normal",
+          "fill": "rgb(112, 112, 112)",
+          "effectiveOpacity": 1,
+          "visible": true,
+          "angle": 0,
+          "bounds": {
+            "left": 273.4609375,
+            "right": 479.5390625,
+            "top": 462.5,
+            "bottom": 475.5
+          }
+        }
+      ],
+      "sourceExplicitAxes": {
+        "labels": false,
+        "description": "Source: trafford.gov.uk | @traffordDataLab",
+        "title": "Source: trafford.gov.uk | @traffordDataLab",
+        "titleX": 272,
+        "titleY": 10,
+        "titleFont": "sans-serif",
+        "titleFontWeight": 300,
+        "titleColor": "#707070"
+      }
+    }
+  ],
+  "chartPixelsInspected": false,
+  "sourceDataModified": false
+}
