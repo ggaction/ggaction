@@ -49,5 +49,11 @@
     "-1.74%"
   ],
   "modelCalls": 0,
-  "chartPixelsInspected": false
+  "chartPixelsInspected": false,
+  "nonNumericVolumeAfterSourceRange": {
+    "sentinel": "#VALUE!",
+    "rows": 8,
+    "existingHandling": "Use existing typed conditional null or explicit source-equivalent validity filtering, preserving immutable raw rows; this is separate from proposed literal replacement."
+  },
+  "actualSourcePaintedAfterExistingValidity": 1979
 }
