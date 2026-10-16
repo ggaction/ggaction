@@ -1,5 +1,5 @@
 {
-  "status": "integrated-checks-pass",
+  "status": "integrated-library-checkpoint-verified",
   "parents": {
     "sampledColor": "5e84274996147637a11697e227bc12f7a80d4cb5",
     "verticalSpacing": "d07c98e8866fa2f145847e8e2efca49369c9a4b3"
@@ -26,14 +26,15 @@
     "fullGzip": 387473,
     "basicGzip": 186773,
     "svgGzip": 7161,
-    "note": "source-complete merged worktree, before metadata-only provenance rebind"
+    "note": "verified again after exact committed-source provenance rebind; packed bytes are identical"
   },
   "remaining": [
-    "exact committed-source provenance rebind and final package check",
     "independent neutral probe against retained d07 legacy source",
     "translation runtime/docs pin and designated-model chart corrections",
     "all500 source/stage revalidation and frozen report delivery"
   ],
   "chartPixelsInspected": false,
-  "paidTranslationCallsAddedByIntegration": 0
+  "paidTranslationCallsAddedByIntegration": 0,
+  "sourceCommit": "26e870f50380e3d893966a18a3dad389514d5c6d",
+  "pinnedProvenanceDocsPass": 120
 }
