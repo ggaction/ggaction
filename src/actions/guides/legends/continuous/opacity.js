@@ -1,4 +1,5 @@
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
+import { resolveLegendTitleText } from "../../../../layout/legendText.js";
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 import { action, closedAction } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
@@ -98,6 +99,8 @@ function resolveOpacityLayout(program, config, scale) {
     config.labels.format
   );
   const symbolExtent = config.symbol.radius + (config.symbol.strokeWidth ?? 0) / 2;
+  const titleText = config.titleVisible === false ? { width: 0, height: 0 }
+    : resolveLegendTitleText(config.title, config.titleStyle, program.materializationConfigs.textMetrics);
   const labelWidths = texts.map(text => measureTextWidth(text, config.labels, program.materializationConfigs.textMetrics));
   let symbols;
   let labels;
@@ -109,7 +112,7 @@ function resolveOpacityLayout(program, config, scale) {
     const itemHeight = Math.max(symbolExtent * 2, legendLabelLineHeight(config.labels.fontSize));
     const pitch = Math.max(config.itemGap, itemHeight);
     const firstY = Math.max(plot.y + 46, config.titleVisible === false ? plot.y + 46
-      : plot.y + 20 + config.titleStyle.fontSize / 2 + 12 + itemHeight / 2);
+      : plot.y + 20 + titleText.height / 2 + 12 + itemHeight / 2);
     const y = values.map((_, index) => firstY + index * pitch);
     symbols = y.map(itemY => ({
       x: config.position === "right" ? baseX + symbolExtent : baseX - symbolExtent,
@@ -128,7 +131,7 @@ function resolveOpacityLayout(program, config, scale) {
       align: config.position === "right" ? "left" : "right"
     };
   } else if (config.titlePosition === "left") {
-    const titleWidth = config.titleVisible === false ? 0 : measureTextWidth(config.title, config.titleStyle, program.materializationConfigs.textMetrics);
+    const titleWidth = titleText.width;
     const titlePrefix = config.titleVisible === false ? 0 : titleWidth + 20;
     const samplesWidth = labelWidths.reduce(
       (sum, width) => sum + symbolExtent * 2 + config.labels.offset + width,
@@ -141,7 +144,7 @@ function resolveOpacityLayout(program, config, scale) {
     const height = Math.max(
       symbolExtent * 2,
       config.labels.fontSize,
-      config.titleVisible === false ? 0 : config.titleStyle.fontSize
+      titleText.height
     );
     const centerY = config.position === "top"
       ? plot.y - config.offset - height / 2
@@ -164,13 +167,13 @@ function resolveOpacityLayout(program, config, scale) {
     const startX = config.align === "left" ? plot.x
       : config.align === "right" ? plot.x + plot.width - width
         : plot.x + (plot.width - width) / 2;
-    const titleHalf = config.titleStyle.fontSize / 2;
+    const titleHalf = titleText.height / 2;
     const labelHalf = config.labels.fontSize / 2;
     const y = config.position === "top"
       ? plot.y - config.offset - config.labels.fontSize -
         config.labels.offset - symbolExtent
       : plot.y + plot.height + config.offset +
-        (config.titleVisible === false ? 0 : config.titleStyle.fontSize + 12) + symbolExtent;
+        (config.titleVisible === false ? 0 : titleText.height + 12) + symbolExtent;
     const samplePitch = values.length === 1 ? 0 : width / (values.length - 1);
     symbols = values.map((_, index) => ({
       x: startX + index * samplePitch,
@@ -191,7 +194,7 @@ function resolveOpacityLayout(program, config, scale) {
     title,
     config.title,
     config.titleStyle
-  , program.materializationConfigs.textMetrics);
+  , program.materializationConfigs.textMetrics, { hardBreaks: true });
   const labelBounds = labels.map((label, index) =>
     resolveLegendTextBounds(label, texts[index], config.labels, program.materializationConfigs.textMetrics)
   );

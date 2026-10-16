@@ -482,7 +482,7 @@
   },
   "/api/legends/editing/": {
     "title": "Editing Legends",
-    "description": "direction and columns arrange items inside one block. blockLayout arranges all legend blocks owned by one target, such as color, size, and opacity:",
+    "description": "Use newline characters in a title string, for example program.editLegendTitle({ title: \"Revenue\\nUSD millions\" }), to keep an explicit line break.",
     "image": "/assets/images/cars-density-area.png"
   },
   "/concepts/chart-program/": {

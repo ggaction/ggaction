@@ -7513,6 +7513,7 @@ export interface LegendOptions {
   offset?: number;
   titlePosition?: "top" | "left";
   /** false hides the title while retaining its inferred field text. */
+  /** LF, CRLF and CR preserve explicit title lines, including blank lines. */
   title?: string | false;
   /** Exact ascending samples for continuous size, opacity, stroke-width, or color with representation symbols. Cannot be combined with count. */
   values?: readonly number[];

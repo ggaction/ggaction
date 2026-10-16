@@ -7,6 +7,17 @@ title: Editing Legends
 
 {% include chart-example.html id="density" lead=true %}
 
+## Keep explicit title lines
+
+Use newline characters in a title string, for example
+`program.editLegendTitle({ title: "Revenue\nUSD millions" })`, to keep an explicit
+line break. Every legend family preserves the line order and blank lines, with
+line spacing equal to 1.2 times the title font size. Layout reserves the longest
+line's width and the full block height before placing items, borders, and other
+legend blocks. SVG and Canvas draw the same resolved lines. Editing the title
+back to one line removes the old line layout; font changes, Canvas changes, and
+saved programs preserve the intended text. This does not enable automatic wrapping.
+
 ## Place several legend blocks
 
 `direction` and `columns` arrange items inside one block. `blockLayout` arranges

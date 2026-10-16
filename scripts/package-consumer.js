@@ -89,6 +89,20 @@ async function testNodeConsumer(directory) {
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
+    for (const factory of [chart, basicChart]) for (const continuous of [false, true]) {
+      const base = factory().createCanvas({ width: 800, height: 600, margin: 150 })
+        .createData({ values: [{ x: 1, y: 2, g: "A", n: 1 }, { x: 2, y: 3, g: "B", n: 2 }] })
+        .createScatterPlot({ x: "x", y: "y", guides: false })
+        .encodeColor({ field: continuous ? "n" : "g", fieldType: continuous ? "quantitative" : "nominal" });
+      const multiline = base.createLegend({ title: "Alpha\\nBeta" });
+      const title = Object.values(multiline.graphicSpec.objects).find(o => o.properties?.text === "Alpha\\nBeta");
+      assert.deepEqual(title.properties.lines.map(line => line.text), ["Alpha", "Beta"]);
+      assert.match(renderToSVG(multiline), /<tspan[^>]*>Alpha<\\/tspan><tspan[^>]*>Beta<\\/tspan>/);
+      const restored = deserializeProgram(serializeProgram(multiline));
+      assert.deepEqual(restored.graphicSpec, multiline.graphicSpec);
+      assert.deepEqual(restored.editLegend({ title: "One" }).graphicSpec, base.createLegend({ title: "One" }).graphicSpec);
+    }
+
     for (const factory of [chart, basicChart]) {
       let grouped = factory().createCanvas({ width: 1000, height: 800, margin: 100 })
         .createData({ values: [{ x: 1, y: 2, g: "A", n: 1 }, { x: 2, y: 3, g: "B", n: 2 }] })
@@ -99,7 +113,7 @@ async function testNodeConsumer(directory) {
         .createLegend({ channels: ["size"], count: 2 });
       if (factory === chart) grouped = grouped.createLegend({ channels: ["opacity"], count: 2 });
       assert.deepEqual(grouped.guideConfigs.legendGroups.groupedPoints, {
-        placement: { position: "top-left", align: "center", offset: 8 }, blockLayout: "row"
+        placement: { position: "top-left", align: "center", offset: 8 }, blockLayout: "row", inferredOffset: true
       });
       assert.ok(renderToSVG(grouped).includes("<svg"));
       if (factory === chart) {

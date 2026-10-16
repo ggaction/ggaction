@@ -107,6 +107,12 @@ type TitleWrap = "word" | "character";
 - `titlePosition`: `"top" | "left"`, 기본 top. `"left"`는 horizontal categorical과 sampled opacity
   legend에서 title, symbol, label을 한 reading line으로 배치한다. Gradient와 side opacity는 `"top"`만 지원한다.
 - `title`: non-empty string 또는 `false`; 생략하면 encoded source field를 사용한다.
+  문자열 안의 LF, CRLF, CR은 모든 범례 family에서 명시적 줄바꿈이다. 순서와 빈 줄을
+  유지하며 행 간격은 title fontSize의 1.2배다. 가장 긴 행의 폭과 전체 행 높이를 layout,
+  border, group lane과 collision 계산에 사용하고 SVG/Canvas는 materialized text lines를
+  그대로 그린다. Title 편집·글꼴 편집·Canvas replay·저장 복원에서도 유지하며 한 줄로
+  돌아가면 stale lines를 제거한다. 새 public 옵션이나 자동 wrapping은 추가하지 않는다.
+  Evidence: `test/unit/actions/guides/legend-title-hard-breaks.test.js`.
   `false`는 추론된 title 문자열을 유지하면서 처음부터 titleVisible:false로 생성한다. Layout 검증 전에
   제목을 제외하므로 사용하지 않을 긴 제목 때문에 생성이 실패하지 않는다. createLegend 뒤 editLegend({title:false})와
   같은 semantic/config/graphic 결과이며 editLegend({title:"auto"})로 복원할 수 있다. Combined categorical+size에서는

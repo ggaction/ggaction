@@ -1,4 +1,5 @@
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
+import { materializeLegendTitleLines } from "../../../../materialization/legendText.js";
 import { action } from "../../../../core/action.js";
 import {
   activeConfig,
@@ -69,7 +70,7 @@ export const rematerializeLegendTitle = /* @__PURE__ */ action(
       throw new Error("rematerializeLegendTitle requires an existing legend title.");
     }
     const layout = resolveLayout(this, config);
-    return editGraphicProperties(this, id, {
+    const next = editGraphicProperties(this, id, {
       x: layout.titleX,
       y: layout.titleY,
       text: config.title,
@@ -87,6 +88,7 @@ export const rematerializeLegendTitle = /* @__PURE__ */ action(
           : "left"
       })
       .editGraphics({ target: id, property: "textBaseline", value: "middle" });
+    return materializeLegendTitleLines(next, id, config.title, config.titleStyle);
   }
 );
 

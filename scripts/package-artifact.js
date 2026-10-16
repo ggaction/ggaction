@@ -23,8 +23,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 560, // Adds one continuous-color symbol materializer.
-  packedBytes: 790_000, // Axis-aware default legend placement measured 789,911 bytes; unchanged entry/unpacked limits.
+  entries: 562, // Shared legend title geometry and optional-line materialization owners.
+  packedBytes: 791_000, // Explicit title-line support; exact measured growth recorded in architecture.
   unpackedBytes: 3_900_000
 });
 
@@ -99,6 +99,8 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/actions/guides/legends/edit.js",
   "src/grammar/legendGroups.js",
   "src/layout/legendGroup.js",
+  "src/layout/legendText.js",
+  "src/materialization/legendText.js",
   "src/materialization/legendGroups.js"
 ]);
 

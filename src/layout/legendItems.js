@@ -1,5 +1,6 @@
 import { measureTextWidth, resolveTextBounds } from "../core/textMetrics.js";
 import { alignLegendStart, resolveLegendGrid, isPlotLegend, legendLabelLineHeight } from "./legend.js";
+import { resolveLegendTitleText } from "./legendText.js";
 
 // Measure item content before choosing its edge. Family owners supply the
 // sample dimensions and formatted labels; this module does not inspect scales.
@@ -20,8 +21,10 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
   const inside = isPlotLegend(config);
   const side = inside || ["left", "right"].includes(config.position);
   const titleVisible = config.titleVisible !== false;
-  const titleWidth = titleVisible ? measureTextWidth(config.title, config.titleStyle, profile) : 0;
-  const titleHeight = titleVisible ? config.titleStyle.fontSize : 0;
+  const titleText = titleVisible ? resolveLegendTitleText(config.title, config.titleStyle, profile)
+    : { width: 0, height: 0 };
+  const titleWidth = titleVisible ? titleText.width : 0;
+  const titleHeight = titleVisible ? titleText.height : 0;
   let symbolX;
   let labelX;
   let itemY;
@@ -88,7 +91,9 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
     x, y, text, ...style, textAlign: align, textBaseline: "middle"
   }, profile);
   const bounds = [
-    ...(titleVisible ? [textBounds(title.x, title.y, config.title, config.titleStyle, title.align)] : []),
+    ...(titleVisible ? [resolveTextBounds({ x: title.x, y: title.y,
+      text: config.title, ...config.titleStyle, lines: titleText.lines,
+      textAlign: title.align, textBaseline: "middle" }, profile)] : []),
     ...labels.map((label, index) => textBounds(labelX[index], itemY[index], label, config.labels)),
     ...symbolX.map((x, index) => {
       const local = sampleBounds[index];

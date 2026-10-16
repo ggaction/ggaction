@@ -2,6 +2,8 @@ import { PLOT_LEGEND_POSITIONS, isPlotLegend } from "../../../../layout/legend.j
 import { isContinuousColorScaleType } from "../../../../grammar/scales/types.js";
 import { isPlainObject } from "../../../../core/immutable.js";
 import { resolveTextBounds } from "../../../../core/textMetrics.js";
+import { resolveLegendTitleText } from "../../../../layout/legendText.js";
+import { materializeLegendTitleLines } from "../../../../materialization/legendText.js";
 import {
   validateKeys,
   validateFontWeight,
@@ -332,7 +334,7 @@ export function styleContinuousText(
   style,
   { align = "left" } = {}
 ) {
-  return editGraphicProperties(program, id, {
+  const next = editGraphicProperties(program, id, {
     fill: style.color,
     fontSize: style.fontSize,
     fontFamily: style.fontFamily,
@@ -340,14 +342,18 @@ export function styleContinuousText(
     textAlign: align,
     textBaseline: "middle"
   });
+  return id.endsWith("Title")
+    ? materializeLegendTitleLines(next, id, next.graphicSpec.objects[id].properties.text, style)
+    : next;
 }
 
-export function resolveLegendTextBounds(position, text, style, profile) {
+export function resolveLegendTextBounds(position, text, style, profile, { hardBreaks = false } = {}) {
   return resolveTextBounds({
     x: position.x,
     y: position.y,
     text: String(text),
     ...style,
+    ...(hardBreaks ? { lines: resolveLegendTitleText(text, style, profile).lines } : {}),
     textAlign: position.align ?? "left",
     textBaseline: "middle"
   }, profile);

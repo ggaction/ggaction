@@ -1,4 +1,5 @@
 import { normalizeColorSymbols, resolveColorSymbolsLayout, materializeColorSymbols } from "./colorSymbols.js";
+import { resolveLegendTitleText } from "../../../../layout/legendText.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { mapContinuousScaleValues, transformedTicks } from "../../../../grammar/scales/index.js";
 import { action, closedAction } from "../../../../core/action.js";
@@ -37,15 +38,17 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
   const vertical = ["right", "left"].includes(config.position);
   const length = config.gradient.length;
   const thickness = config.gradient.thickness;
+  const titleText = config.titleVisible === false ? { height: 0, extraHeight: 0 }
+    : resolveLegendTitleText(config.title, config.titleStyle, program.materializationConfigs.textMetrics);
   const titleGap = config.blockGap ?? 12;
   let x;
   let y;
   if (config.position === "right") {
     x = plot.x + plot.width + config.offset;
-    y = plot.y + 46 + titleGap - 12;
+    y = plot.y + 46 + titleGap - 12 + titleText.extraHeight / 2;
   } else if (config.position === "left") {
     x = plot.x - config.offset - thickness;
-    y = plot.y + 46 + titleGap - 12;
+    y = plot.y + 46 + titleGap - 12 + titleText.extraHeight / 2;
   } else {
     x = config.align === "left" ? plot.x
       : config.align === "right" ? plot.x + plot.width - length
@@ -54,13 +57,13 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
       ? plot.y - config.offset - thickness - config.labels.offset -
         config.labels.fontSize
       : plot.y + plot.height + config.offset +
-        (config.titleVisible === false ? 0 : config.titleStyle.fontSize + titleGap);
+        (config.titleVisible === false ? 0 : titleText.height + titleGap);
   }
   const title = vertical
     ? { x, y: plot.y + 20, align: "left" }
     : {
         x: x + length / 2,
-        y: y - titleGap - config.titleStyle.fontSize / 2,
+        y: y - titleGap - titleText.height / 2,
         align: "center"
       };
   const transformed = ["log", "sqrt", "symlog"].includes(scale.type);
@@ -129,7 +132,7 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
     title,
     config.title,
     config.titleStyle
-  , program.materializationConfigs.textMetrics);
+  , program.materializationConfigs.textMetrics, { hardBreaks: true });
   const occupiedBounds = [stripBounds, ...tickBounds, ...labelBounds,
     ...(config.titleVisible === false ? [] : [titleBounds])];
   assertLegendBoundsInsideCanvas(

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:528b235c586b843e55ed61fa4e82ae353457aeac5e6dce364104daa0f581d621. Status: development. Runtime source: 8853fdcc784c06d4e1be53016d2a222c96df1f7c. Release baseline: v0.0.13.
+Contract: sha256:7a383b031598b3995fff794ec9f987ed8c574059c2071984d64ce0799b73a27f. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/8853fdcc784c06d4e1be53016d2a222c96df1f7c/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/8853fdcc784c06d4e1be53016d2a222c96df1f7c/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -13269,6 +13269,17 @@ The background is rendered before every symbol layer, label, and title.
 <!-- Source: /api/legends/editing/ -->
 
 # Editing Legends
+
+## Keep explicit title lines
+
+Use newline characters in a title string, for example
+`program.editLegendTitle({ title: "Revenue\nUSD millions" })`, to keep an explicit
+line break. Every legend family preserves the line order and blank lines, with
+line spacing equal to 1.2 times the title font size. Layout reserves the longest
+line's width and the full block height before placing items, borders, and other
+legend blocks. SVG and Canvas draw the same resolved lines. Editing the title
+back to one line removes the old line layout; font changes, Canvas changes, and
+saved programs preserve the intended text. This does not enable automatic wrapping.
 
 ## Place several legend blocks
 
@@ -32947,6 +32958,7 @@ export interface LegendOptions {
   offset?: number;
   titlePosition?: "top" | "left";
   /** false hides the title while retaining its inferred field text. */
+  /** LF, CRLF and CR preserve explicit title lines, including blank lines. */
   title?: string | false;
   /** Exact ascending samples for continuous size, opacity, stroke-width, or color with representation symbols. Cannot be combined with count. */
   values?: readonly number[];
@@ -37099,12 +37111,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/8853fdcc784c06d4e1be53016d2a222c96df1f7c/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/8853fdcc784c06d4e1be53016d2a222c96df1f7c/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39230,9 +39242,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:528b235c586b843e55ed61fa4e82ae353457aeac5e6dce364104daa0f581d621` |
+| Contract fingerprint | `sha256:7a383b031598b3995fff794ec9f987ed8c574059c2071984d64ce0799b73a27f` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `8853fdcc784c06d4e1be53016d2a222c96df1f7c` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |

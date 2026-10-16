@@ -280,8 +280,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 388,000 bytes |
-| `ggaction/basic` | 187,000 bytes |
+| `ggaction` | 389,000 bytes |
+| `ggaction/basic` | 189,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -2000,3 +2000,9 @@ Plot border 포함 packed 실측780,011bytes와 검색 payload810,074bytes가 �
 최종 installed packed consumer의 browser gzip은 Full387,444bytes / Basic186,768bytes / SVG7,161bytes이며, 실제 packed788,122bytes·unpacked3,876,966bytes·560entries다. 위의 좁은 한도 안에서 전체 승인 기능과 모든 검색 내용을 유지한다.
 
 외부 top/bottom 범례의 생략한 기본 offset이 실제 같은 쪽 axis occupied lane을 따르도록 고친 뒤 packed 실측은789,911bytes다. Private helper는 기존 group/resources owner 안에 두어560entries를 유지했다. 기존 승인된 최소1,000bytes 단위 정책에 따라 packed 한도만789,000에서790,000bytes로 조정하며 unpacked3,900,000bytes 한도는 유지한다. 이전789,000bytes 한도 통과로 보고하지 않는다.
+
+범례 title의 명시적 hard break는 기존 concrete text `lines`를 재사용한다. 기존 text-mark line resolver를 `core/textMetrics.js`로 옮기고 grammar가 같은 함수를 재수출하여 layout→grammar 역방향 의존과 별도 줄바꿈 정책을 피한다. Title block 측정은 `layout/legendText.js`, optional `lines`의 불변 materialization/reconciliation은 `materialization/legendText.js`가 각각 소유한다. 새 공개 API·state schema·renderer newline 추론 없이 두 shared responsibility를 추가하므로 packed entry 한도를560에서562로 조정한다. 기존 staging compaction을 두 owner에 적용한 packed 최종 실측790,694bytes는 이전790,000bytes를 초과한다. 기존 최소1,000bytes 단위 정책에 따라 packed 한도를791,000bytes로만 조정하며 unpacked 실측3,885,070bytes와3,900,000bytes 한도는 유지한다. 이전 entry/packed 한도 통과로 보고하지 않는다.
+
+명시적 범례 title hard break와 같은 쪽 axis lane의 누적 installed-consumer gzip 실측은 Full388,723bytes / Basic188,244bytes다. 기존388,000/187,000bytes 한도를 넘으므로 기능 증가분과 회귀 검증을 유지하는 최소1,000bytes 단위 한도를389,000/189,000bytes로 좁게 조정한다. SVG25,000bytes 한도는 유지하며 이전 browser 예산 통과로 보고하지 않는다.
+
+동일 title의 single-line concrete graphics는 변경 직전 commit과11범례 family×4edge의44경우에서 정확히 일치했다. Multiline 회귀는11family×4edge의 ordered lines, SVG/Canvas, blank/CRLF/CR, creation/edit convergence, persistence, immutable overflow를 검증한다. Unit2,966/2,966, contracts532/532, docs120/120, 마지막 boundary/package/bundle-truth focused15/15와 installed public basic/full consumer를 통과했다. 기존 lane의 private `inferredOffset` marker assertion도 현재 persisted grammar와 동기화했다.
