@@ -3,7 +3,7 @@
 ## Status
 
 - Gate: `approved` — public option and persisted gradient schema; [approval](./APPROVAL.md).
-- Implementation: **in progress in an isolated worktree**. No package, documentation deployment, or release is requested.
+- Implementation: **implemented and verified in an isolated worktree**. No package, documentation deployment, or release is requested.
 - Scope: continuous color and stroke gradient bodies only; preserve existing layout and text.
 - This proposal is in English for the requested external review package.
 
@@ -58,4 +58,4 @@ The owning continuous legend action explicitly materializes each strip's opacity
 
 ## Decision requested
 
-Approve this explicit nested `gradient.opacity` option with default `1`, body-only semantics, both fill and stroke gradients, and legacy persistence compatibility. Until that decision, runtime source, declarations, and current contracts remain unchanged.
+The user approved this exact nested option. Approval is recorded in [APPROVAL.md](./APPROVAL.md); implementation and verification are recorded in [CHECKPOINT.md](./CHECKPOINT.md). Runtime integration remains with the parent workstream; publication and deployment are outside this checkpoint.
