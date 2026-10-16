@@ -1,0 +1,7 @@
+{
+  "runtimeCommit": "9c32a273db0bb79191a5e2bb718148d3e7ab963f",
+  "operation": "chart().createData({values:[{x:0,y:0,v:0,\"\":\"index-cell\"},{x:1,y:1,v:25,\"\":\"second\"},{x:2,y:2,v:100,\"\":\"third\"}]})",
+  "actualError": "Dataset schema field 3 name must be a non-empty string.",
+  "chartPixelsInspected": false,
+  "implementationPerformed": false
+}
