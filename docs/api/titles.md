@@ -94,8 +94,10 @@ library uses deterministic text metrics so the same program produces the same
 line breaks in browsers and Node. Renderers draw the concrete lines already in
 `graphicSpec`; they do not wrap text again. Title and subtitle strings accept
 explicit newline characters. Each hard line wraps independently when `maxWidth`
-is set; blank lines reserve vertical spacing. Font-family and color values remain
-single-line strings.
+is set. Leading, interior, and trailing blank lines reserve vertical spacing
+without creating empty painted text. Each title or subtitle must contain at
+least one non-empty hard line. Font-family and color values remain single-line
+strings.
 
 The requested margin must contain the actual title block. A title must also
 avoid guides reserved on the same edge. Creation fails instead of expanding

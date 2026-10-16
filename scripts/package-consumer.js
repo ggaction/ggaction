@@ -89,6 +89,14 @@ async function testNodeConsumer(directory) {
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
+    const blankLines = chart().createCanvas({ width: 600, height: 500, margin: 160 })
+      .createTitle({ text: "\\nTitle\\n", subtitle: "First\\n\\nLast\\n", titleStyle: { fontSize: 12 } });
+    assert.equal(blankLines.graphicSpec.objects.chartTitle.properties.text, "Title");
+    assert.deepEqual(blankLines.graphicSpec.objects.chartSubtitle.items.map(item => item.properties.text), ["First", "Last"]);
+    assert.doesNotThrow(() => renderToSVG(blankLines));
+    assert.deepEqual(deserializeProgram(serializeProgram(blankLines)).graphicSpec, blankLines.graphicSpec);
+    assert.ok((await renderToPNGBuffer(blankLines)).buffer.length > 1000);
+
     for (const factory of [chart, basicChart]) for (const continuous of [false, true]) {
       const base = factory().createCanvas({ width: 800, height: 600, margin: 150 })
         .createData({ values: [{ x: 1, y: 2, g: "A", n: 1 }, { x: 2, y: 3, g: "B", n: 2 }] })

@@ -1833,7 +1833,9 @@ createTitle({
 })
 ```
 
-Create a chart title and optional subtitle. [Titles](../../api/titles.md)
+Create a chart title and optional subtitle. Explicit newlines retain their line
+spacing; blank lines reserve space without painted text. Each string requires
+at least one non-empty hard line. [Titles](../../api/titles.md)
 
 
 ## `editTitle`

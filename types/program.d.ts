@@ -4796,7 +4796,9 @@ export interface RemoveCategoryOrderOptions {
 }
 
 export interface TitleOptions {
+  /** Explicit hard lines are retained; blank lines reserve spacing without painted text. */
   text: string;
+  /** Multiline subtitle with at least one non-empty hard line. */
   subtitle?: string;
   position?: "top" | "bottom" | "left" | "right";
   align?: "left" | "center" | "right";

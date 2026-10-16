@@ -577,7 +577,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
 ## `createTitle`
 
 - Signature: `createTitle({ text, subtitle?, position?, align?, offset?, alongOffset?, gap?, maxWidth?, wrap?, lineHeight?, titleStyle?, subtitleStyle? })`.
-- `text`: 필수 non-empty string; `subtitle`은 optional non-empty string이다. 두 문자열의 LF/CRLF/CR explicit line break를 보존하고 각 hard line에 maxWidth wrapping을 적용한다. 빈 hard line은 줄 간격을 예약한다. Renderers에는 newline 없는 concrete text item만 전달한다. Font/color 문자열은 여전히 newline을 거부한다. Evidence: `test/unit/actions/guides/title-hard-breaks.test.js`.
+- `text`: 필수 non-empty string; `subtitle`은 optional non-empty string이다. 두 문자열의 LF/CRLF/CR explicit line break를 보존하고 각 hard line에 maxWidth wrapping을 적용한다. 빈 hard line은 원래 index와 줄 간격을 예약하지만 빈 text graphic은 만들지 않는다. 각 전체 문자열에는 하나 이상의 non-empty hard line이 필요하다. Renderers에는 newline 없는 non-empty concrete text item만 전달한다. Font/color 문자열은 여전히 newline을 거부한다. Evidence: `test/unit/actions/guides/title-hard-breaks.test.js`, `test/unit/actions/guides/title-blank-lines.test.js`.
 - `position`: `"top" | "bottom" | "left" | "right"`; 기본 top. top/bottom rotation은 0, left는
   `-Math.PI / 2`, right는 `Math.PI / 2`다.
 - `align`: `"left" | "center" | "right"`, 기본 left; plot bounds 기준이다. Facet parent title은 translated child

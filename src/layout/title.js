@@ -94,6 +94,17 @@ export function unionTitleBounds(bounds) {
   return unionBounds(bounds);
 }
 
+export function paintedTitleComponent(component) {
+  const indices = component.lines.flatMap((line, index) => line === "" ? [] : [index]);
+  const selected = value => Array.isArray(value) ? indices.map(index => value[index]) : value;
+  return {
+    ...component,
+    lines: indices.map(index => component.lines[index]),
+    x: selected(component.x),
+    y: selected(component.y)
+  };
+}
+
 export { textBoundsIntersect as layoutBoundsIntersect } from "../core/textMetrics.js";
 
 

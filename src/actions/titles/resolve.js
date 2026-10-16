@@ -54,6 +54,9 @@ const DEFAULTS = Object.freeze({
 
 export function validateTitleString(value, label, multiline = false) {
   validateNonEmptyString(value, label);
+  if (multiline && value.split(/\r\n|\r|\n/u).every(line => line === "")) {
+    throw new Error(`${label} requires at least one non-empty line.`);
+  }
   if (!multiline && /\r|\n/u.test(value)) {
     throw new Error(`${label} does not accept explicit newlines.`);
   }

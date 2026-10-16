@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:7a383b031598b3995fff794ec9f987ed8c574059c2071984d64ce0799b73a27f. Status: development. Runtime source: cb11792966210688a6978c464755adfab0fb78a0. Release baseline: v0.0.13.
+Contract: sha256:bf7d22744fd3de543cb99306b3c92d9c102bc0f1e46f020de175f3d82fdbc52d. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/cb11792966210688a6978c464755adfab0fb78a0/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/cb11792966210688a6978c464755adfab0fb78a0/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -8884,8 +8884,10 @@ library uses deterministic text metrics so the same program produces the same
 line breaks in browsers and Node. Renderers draw the concrete lines already in
 `graphicSpec`; they do not wrap text again. Title and subtitle strings accept
 explicit newline characters. Each hard line wraps independently when `maxWidth`
-is set; blank lines reserve vertical spacing. Font-family and color values remain
-single-line strings.
+is set. Leading, interior, and trailing blank lines reserve vertical spacing
+without creating empty painted text. Each title or subtitle must contain at
+least one non-empty hard line. Font-family and color values remain single-line
+strings.
 
 The requested margin must contain the actual title block. A title must also
 avoid guides reserved on the same edge. Creation fails instead of expanding
@@ -24987,7 +24989,9 @@ createTitle({
 })
 ```
 
-Create a chart title and optional subtitle. [Titles](./api/titles/)
+Create a chart title and optional subtitle. Explicit newlines retain their line
+spacing; blank lines reserve space without painted text. Each string requires
+at least one non-empty hard line. [Titles](./api/titles/)
 
 ## `editTitle`
 
@@ -36279,7 +36283,9 @@ Related types: [`TimeUnitDataBaseOptions`](./reference/types/#type-timeunitdatab
 
 ```typescript
 export interface TitleOptions {
+  /** Explicit hard lines are retained; blank lines reserve spacing without painted text. */
   text: string;
+  /** Multiline subtitle with at least one non-empty hard line. */
   subtitle?: string;
   position?: "top" | "bottom" | "left" | "right";
   align?: "left" | "center" | "right";
@@ -37111,12 +37117,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/cb11792966210688a6978c464755adfab0fb78a0/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/cb11792966210688a6978c464755adfab0fb78a0/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39242,9 +39248,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:7a383b031598b3995fff794ec9f987ed8c574059c2071984d64ce0799b73a27f` |
+| Contract fingerprint | `sha256:bf7d22744fd3de543cb99306b3c92d9c102bc0f1e46f020de175f3d82fdbc52d` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `cb11792966210688a6978c464755adfab0fb78a0` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |

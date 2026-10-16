@@ -6,6 +6,7 @@ import { resolvePlacedPlotBounds } from "../layout/composition.js";
 import {
   alignedTextAnchor,
   buildTitleReadingBlock,
+  paintedTitleComponent,
   titleTextProperties
 } from "../layout/title.js";
 import { resolveFacetLayout } from "../layout/facets.js";
@@ -56,17 +57,18 @@ function titleLayout(program) {
 function materializeTitleComponent(program, id, lines, centers, style, plot, top) {
   if (lines.length === 0) return program;
   const x = alignedTextAnchor(plot.x, plot.width, program.titleConfig.align);
-  const count = lines.length;
+  const component = paintedTitleComponent({
+    x, y: centers.map(center => top + center), lines,
+    textAlign: program.titleConfig.align
+  });
+  const count = component.lines.length;
   let next = program.createGraphics({
     id,
     type: "text",
     ...(count > 1 ? { length: count } : {}),
     parent: "canvas"
   });
-  for (const [property, value] of Object.entries(titleTextProperties({
-    x, y: centers.map(center => top + center), lines,
-    textAlign: program.titleConfig.align
-  }, style))) {
+  for (const [property, value] of Object.entries(titleTextProperties(component, style))) {
     next = next.editGraphics({ target: id, property, value });
   }
   return next;
