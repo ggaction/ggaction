@@ -109,6 +109,10 @@ preserves its remaining shape legend.
 | `gradient` | `{ length?, thickness? }` with positive values | `{ length: 120, thickness: 12 }` |
 
 Pass `position: "bottom"` explicitly to place the legend below the plot.
+Vertical items reserve the larger of `itemGap`, painted sample height, and
+`labels.fontSize * 1.2`. This conservative line-height allowance retains the
+18-pixel pitch for ordinary 12-pixel labels and grows for larger labels; it is
+not a font-specific glyph-height guarantee. Horizontal grids are unchanged.
 For a combined categorical-and-size legend, `title: false` hides the categorical
 title; the size block retains its independent title, matching `editLegend`.
 Bottom legends use the same item grid as top legends and can use left, center,

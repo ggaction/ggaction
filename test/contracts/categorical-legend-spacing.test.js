@@ -11,11 +11,12 @@ function base(kind = "color") {
   return kind === "shape" ? p.encodeShape({field:"g",scale:{range:["square","circle"]}})
     : kind === "line" ? p.encodeGroup({field:"g"}).encodeStrokeDash({field:"g"}) : p.encodeColor({field:"g"});
 }
-// The 80px title top moves from 580 to the 600px plot top; samples shift +20px.
+// Title top600 + height80 + gap12 + half of the96px label line = center740.
+// The second center is836; 80px glyph boxes and12px samples keep their own heights.
 function primitive_right_large_text(){return base("color")
     .createGraphics({"id":"colorLegendSymbols","type":"rect","parent":"canvas","length":2})
     .editGraphics({"target":"colorLegendSymbols","property":"x","value":[1860,1860]})
-    .editGraphics({"target":"colorLegendSymbols","property":"y","value":[726,806]})
+    .editGraphics({"target":"colorLegendSymbols","property":"y","value":[734,830]})
     .editGraphics({"target":"colorLegendSymbols","property":"width","value":14})
     .editGraphics({"target":"colorLegendSymbols","property":"height","value":12})
     .editGraphics({"target":"colorLegendSymbols","property":"fill","value":["#4c78a8","#f58518"]})
@@ -23,7 +24,7 @@ function primitive_right_large_text(){return base("color")
     .editGraphics({"target":"colorLegendSymbols","property":"strokeWidth","value":40})
     .createGraphics({"id":"colorLegendLabels","type":"text","parent":"canvas","length":2})
     .editGraphics({"target":"colorLegendLabels","property":"x","value":[1902,1902]})
-    .editGraphics({"target":"colorLegendLabels","property":"y","value":[692,772]})
+    .editGraphics({"target":"colorLegendLabels","property":"y","value":[700,796]})
     .editGraphics({"target":"colorLegendLabels","property":"text","value":["A","B"]})
     .editGraphics({"target":"colorLegendLabels","property":"fill","value":"#334155"})
     .editGraphics({"target":"colorLegendLabels","property":"fontSize","value":80})

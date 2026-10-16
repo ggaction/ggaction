@@ -115,6 +115,7 @@ test("large side labels keep their occupied box below a large title", () => {
     .createLegend({ count: 2, labels: { fontSize: 64 }, titleStyle: { fontSize: 48 } });
   const title = p.graphicSpec.objects.strokeWidthLegendTitle.properties;
   const label = p.graphicSpec.objects.strokeWidthLegendLabels.items[0].properties;
-  assert.equal(label.y - (title.y + 48), 12);
-  assert.equal(label.y, 310);
+  // A 64px label reserves a 76.8px line: the extra half-height is 6.4px.
+  assert.ok(Math.abs(label.y - (title.y + 48) - 18.4) < 1e-9);
+  assert.ok(Math.abs(label.y - 316.4) < 1e-9);
 });

@@ -100,7 +100,9 @@ offset measures the visible edge-to-edge gap; its non-inline default is 12.
 
 Vertical sampled and interval legends default to `itemGap: 18`. At either side,
 `itemGap` is a minimum center pitch and grows to fit the largest
-sample or label. A visible title keeps at least 12 pixels before the first item.
+sample or a conservative label line height of `fontSize * 1.2`. This allowance
+does not guarantee the exact height of every font. A visible title keeps at
+least 12 pixels before the first item.
 Top/bottom legends with a top title use equal center spacing of at least 56
 pixels and twice `itemGap`, enlarged when needed to keep `itemGap` between
 neighbouring sample or label bounds. Inline legends keep `itemGap` between

@@ -1,0 +1,39 @@
+{
+  "status": "integrated-checks-pass",
+  "parents": {
+    "sampledColor": "5e84274996147637a11697e227bc12f7a80d4cb5",
+    "verticalSpacing": "d07c98e8866fa2f145847e8e2efca49369c9a4b3"
+  },
+  "newPublicApproval": "70711afb",
+  "sourceChangesAfterMerge": "none; generated provenance conflicts resolved with canonical generators",
+  "checks": {
+    "unit": 2925,
+    "contracts": 532,
+    "docs": 120,
+    "charts": 578,
+    "installedPackage": true
+  },
+  "commands": [
+    "npm run docs:generate",
+    "npm run test:unit",
+    "npm run test:contracts",
+    "npm run test:docs",
+    "npm run test:charts",
+    "npm run test:package"
+  ],
+  "installedSourceConsumer": {
+    "tarSha256": "f559c30af8f775c5f4ff7f5c0812c8e83b97697dabb1d2d619f34cebfccb8142",
+    "fullGzip": 387473,
+    "basicGzip": 186773,
+    "svgGzip": 7161,
+    "note": "source-complete merged worktree, before metadata-only provenance rebind"
+  },
+  "remaining": [
+    "exact committed-source provenance rebind and final package check",
+    "independent neutral probe against retained d07 legacy source",
+    "translation runtime/docs pin and designated-model chart corrections",
+    "all500 source/stage revalidation and frozen report delivery"
+  ],
+  "chartPixelsInspected": false,
+  "paidTranslationCallsAddedByIntegration": 0
+}
