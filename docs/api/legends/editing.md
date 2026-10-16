@@ -311,7 +311,9 @@ const localized = program.editLegendBlock({
 
 Unmapped categories keep their normal visible text. Duplicate display labels
 and empty labels are valid and do not merge symbols. `labelMap: []` stores an
-empty map; `labelMap: "auto"` removes only this block override. Sampled numeric,
+empty map. An empty mapped label omits only its text; its category, symbol and
+item slot remain through layout, resizing and shared facet legends.
+`labelMap: "auto"` removes only this block override. Sampled numeric,
 gradient, and interval blocks reject display maps because their labels describe
 numeric intervals or samples rather than categorical identities.
 

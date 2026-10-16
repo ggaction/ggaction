@@ -4687,6 +4687,7 @@ export interface EditLegendBlockOptions {
   gap?: number;
   text?: LegendBlockTextPatch;
   symbol?: LegendBlockSymbolPatch;
+  /** An empty mapped label omits only text; its category and symbol remain. */
   labelMap?: DisplayLabelMap | "auto";
 }
 

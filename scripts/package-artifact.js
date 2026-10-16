@@ -24,7 +24,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 562, // Shared legend title geometry and optional-line materialization owners.
-  packedBytes: 791_000, // Explicit title-line support; exact measured growth recorded in architecture.
+  packedBytes: 792_000, // Empty legend-label restoration; exact measured growth recorded in architecture.
   unpackedBytes: 3_900_000
 });
 

@@ -362,6 +362,8 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
   `readonly { value: DatasetScalar; label: string }[] | "auto"`다. Raw typed value를 표시 문자열로만
   바꾸며 semantic domain, order, symbol count와 selection identity는 유지한다. 같은 label을 여러
   category에 쓰거나 `""`로 text를 숨길 수 있다. Array는 전체 교체하고 `[]`는 empty map을 저장하며
+  빈 label은 concrete text item만 생략하고 원래 category/symbol/item slot을 유지한다. 모두 숨겨도
+  빈 text collection은 유효하며 lane/persistence/facet replay는 남은 symbol bounds를 사용한다.
   `"auto"`는 이 block의 map override만 제거한다. Sampled size/opacity/strokeWidth, gradient와 interval
   block은 map을 거부한다.
 - `gap`은 non-negative finite block-internal spacing이다. Root position, align, direction, columns와

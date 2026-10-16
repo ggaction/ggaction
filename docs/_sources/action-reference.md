@@ -2673,7 +2673,7 @@ dependent replay that would invalidate a stored exact sample fails atomically.
 
 ```javascript
 editLegendBlock({
-  target, channel, title?, values?, count?, order?, gap?, text?, symbol?
+  target, channel, title?, values?, count?, order?, gap?, text?, symbol?, labelMap?
 })
 ```
 
@@ -2688,6 +2688,8 @@ automatic `count`; categorical blocks accept an exact full-domain `order`.
 sample appearance, and `gap` changes internal spacing. Empty `text` or `symbol`
 objects restore the base style. A symbol property that would replace the data
 mapping is rejected. Empty `title` hides the selected block. Full programs only.
+Categorical `labelMap` may map a value to `""`: only its text is omitted, while
+the category, symbol, item slot, and typed identity remain.
 [Editing legends](../api/legends/editing.md#editing-one-legend-block)
 
 ### Focused legend edits

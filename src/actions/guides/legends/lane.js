@@ -95,6 +95,7 @@ function legendGraphicBounds(program, id) {
 
 function unionLegendBounds(program, ids) {
   return ids.map(id => legendGraphicBounds(program, id))
+    .filter(bounds => bounds !== undefined)
     .reduce((result, bounds) => result === undefined
       ? bounds
       : {
@@ -131,6 +132,7 @@ function blockDescriptor(program, kind, config) {
     program.graphicSpec,
     components.labelId
   , program.materializationConfigs.textMetrics);
+  const emptyLabels = program.graphicSpec.objects[components.labelId].items?.length === 0;
   const title = components.titleId === undefined
     ? undefined
     : (() => {
@@ -147,7 +149,7 @@ function blockDescriptor(program, kind, config) {
           bounds: titleBounds
         };
       })();
-  if ([bounds, symbolAnchor, symbolBounds, labels].includes(undefined)) {
+  if ([bounds, symbolAnchor, symbolBounds].includes(undefined) || (labels === undefined && !emptyLabels)) {
     throw new Error(`Legend lane could not measure ${kind} graphics.`);
   }
   return {
@@ -166,8 +168,8 @@ function blockDescriptor(program, kind, config) {
       bounds: symbolAnchor
     },
     labels: {
-      x: textAnchor(program, components.labelId),
-      width: labels.right - labels.left
+      x: emptyLabels ? symbolBounds.right + config.labels.offset : textAnchor(program, components.labelId),
+      width: emptyLabels ? 0 : labels.right - labels.left
     },
     occupiedBounds: unionLegendBounds(program, [
       ...foregroundIds,

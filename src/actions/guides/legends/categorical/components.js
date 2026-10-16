@@ -20,15 +20,17 @@ export const rematerializeLegendLabels = /* @__PURE__ */ action(
       throw new Error("rematerializeLegendLabels requires existing legend labels.");
     }
     const layout = resolveLayout(this, config);
+    const labels = categoricalLegendLabels(config);
+    const visible = labels.flatMap((text, index) => text === "" ? [] : [index]);
     return editGraphicProperties(editGraphicProperties(this, id, {
-      length: categoricalLegendLabels(config).length,
-      x: layout.labelX,
-      y: layout.itemY
+      length: visible.length,
+      x: visible.map(index => layout.labelX[index]),
+      y: visible.map(index => layout.itemY[index])
     })
       .editGraphics({
         target: id,
         property: "text",
-        value: categoricalLegendLabels(config)
+        value: visible.map(index => labels[index])
       }), id, {
       fill: config.labels.color,
       fontSize: config.labels.fontSize,

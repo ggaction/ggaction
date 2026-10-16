@@ -97,6 +97,17 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(deserializeProgram(serializeProgram(blankLines)).graphicSpec, blankLines.graphicSpec);
     assert.ok((await renderToPNGBuffer(blankLines)).buffer.length > 1000);
 
+    const blankLegend = chart().createCanvas({ width: 600, height: 500, margin: 160 })
+      .createData({ values: [{ x: 1, y: 2, g: "" }, { x: 2, y: 3, g: "A" }] })
+      .createScatterPlot({ x: "x", y: "y", color: "g", guides: false })
+      .createLegend({ title: false })
+      .editLegendBlock({ target: "scatterPlot", channel: "color", labelMap: [{ value: "", label: "" }] });
+    assert.deepEqual(blankLegend.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.text), ["A"]);
+    assert.equal(blankLegend.graphicSpec.objects.colorLegendSymbols.items.length, 2);
+    assert.doesNotThrow(() => renderToSVG(blankLegend));
+    assert.deepEqual(deserializeProgram(serializeProgram(blankLegend)).graphicSpec, blankLegend.graphicSpec);
+    assert.ok((await renderToPNGBuffer(blankLegend)).buffer.length > 1000);
+
     for (const factory of [chart, basicChart]) for (const continuous of [false, true]) {
       const base = factory().createCanvas({ width: 800, height: 600, margin: 150 })
         .createData({ values: [{ x: 1, y: 2, g: "A", n: 1 }, { x: 2, y: 3, g: "B", n: 2 }] })
