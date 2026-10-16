@@ -2124,7 +2124,11 @@ recompute per cell. Text needs x/y scales and a text encoding.
 `guides: { legend: "shared" }` promotes one compatible parent-owned legend at
 the child legend's configured `left`, `right`, `top`, or `bottom` edge. Top and
 bottom promotion also preserves the child legend's horizontal alignment;
-author those options with `createLegend` before calling `facet`.
+author those options with `createLegend` before calling `facet`. Promoted outside
+legends use the existing recipe offset from the combined panel plots. Omitted
+offsets clear retained axis and header text; explicit colliding offsets reject.
+Child Canvas dimensions and margins remain intact, and the inferred parent
+Canvas contains the child snapshots and the complete legend bounds.
 See [Program composition](../../api/composition.md#repeat-the-current-chart-by-a-field).
 
 Creation options for `facet`, `facetGrid`, and `repeatCharts` accept `headers`.

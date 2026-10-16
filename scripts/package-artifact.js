@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 566, // Shared legend title-style grammar adds one entry.
-  packedBytes: 795_000, // Approved title alignment measured794192 bytes; narrow1000-byte budget step.
-  unpackedBytes: 3_902_000 // Facet title displacement and bounds measured3,901,241 bytes; narrow1000-byte step.
+  entries: 567, // Promoted facet guide layout adds one private owner.
+  packedBytes: 796_000, // Plot-anchored facet guide layout measured795791 bytes; narrow1000-byte step.
+  unpackedBytes: 3_905_000 // Plot-anchored facet guide layout measured3,904,102 bytes; bounded3000-byte step.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -91,6 +91,7 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/layout/facets.js",
   "src/layout/legendLane.js",
   "src/materialization/facets.js",
+  "src/materialization/facetGuides/layout.js",
   "src/materialization/facetHeaders.js",
   "src/materialization/guides/layout.js",
   "src/materialization/guides/resources.js",

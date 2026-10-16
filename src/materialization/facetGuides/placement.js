@@ -37,6 +37,7 @@ function removeNamespacedGraphics(program, namespace, ids) {
 }
 
 function legendTranslation(prepared, plot, layout) {
+  if (layout.legend?.translation !== undefined) return layout.legend.translation;
   if (prepared.occupiedGroup !== undefined) {
     const [placement] = resolveLegendGroupPlacement({ blocks: [{ id: "shared", bounds: prepared.bounds }],
       group: prepared.occupiedGroup, plot, canvas: layout });

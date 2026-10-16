@@ -203,7 +203,7 @@ test("preserves the configured shared legend edge and horizontal alignment", () 
     }
     assert.equal(
       faceted.graphicSpec.objects.canvas.properties.width,
-      ["top", "bottom"].includes(position) ? 700 : 850
+      700
     );
   }
 });

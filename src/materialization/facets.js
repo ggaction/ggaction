@@ -13,6 +13,7 @@ import {
 import { resolveFacetLayout } from "../layout/facets.js";
 import { namespaceGraphicId, namespaceGraphicSnapshot } from "./compositionSnapshot.js";
 import { prepareSharedFacetLegend } from "./facetGuides/index.js";
+import { resolvePromotedFacetLegendLayout } from "./facetGuides/layout.js";
 import {
   attachSnapshotObject,
   clearCompositionChildren,
@@ -109,6 +110,7 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
   if (program.compositionSpec.type !== "facet") {
     throw new Error("resolveFacetProgramLayout requires a facet composition.");
   }
+  preparedLegend ??= prepareSharedFacetLegend(program);
   const title = titleLayout(program);
   const spec = program.compositionSpec;
   const preparedHeaders = prepareFacetHeaders(
@@ -118,7 +120,7 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
   const gridCells = new Map(
     (spec.facet.grid?.cells ?? []).map(cell => [cell.id, cell])
   );
-  const layout = resolveFacetLayout({
+  let layout = resolveFacetLayout({
     children: spec.children.map((id, index) => ({
       ...compositionChildDescriptor(id, program.children[id]),
       value: spec.facet.values[index],
@@ -135,7 +137,7 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
     padding: spec.padding,
     titleHeight: title.height,
     headerLayout: preparedHeaders.headerLayout,
-    sharedLegend: spec.facet.guides.legend === "shared",
+    sharedLegend: spec.facet.guides.legend === "shared" && preparedLegend?.mode !== "promoted",
     ...(preparedLegend === undefined ? {} : {
       sharedLegendGap: preparedLegend.reservation.gap,
       sharedLegendWidth: preparedLegend.reservation.width,
@@ -147,10 +149,13 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
     id,
     ...resolveGraphicBounds(program.children[id])
   }));
-  const plot = resolvePlacedPlotBounds({
+  let plot = resolvePlacedPlotBounds({
     placements: layout.children,
     plots
   });
+  ({ layout, plot } = resolvePromotedFacetLegendLayout(
+    program, { layout, plot, plots, title, preparedHeaders, prepared: preparedLegend }
+  ));
   return { layout, title, plot, plots, preparedHeaders };
 }
 

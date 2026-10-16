@@ -60,11 +60,11 @@
   title: Repeated metric charts
   image: /assets/images/repeat-charts.png
   alt: Three aligned scatterplots comparing speed quality and cost against score with a shared group legend
-  width: 1676
+  width: 1376
   height: 300
   thumbnail: /assets/images/repeat-charts-thumb.png
   thumbnail_width: 640
-  thumbnail_height: 115
+  thumbnail_height: 140
   caption: Three fields replace the x encoding while score and group remain comparable.
   summary: Repeat one positional encoding across fields with explicit scale and guide policies.
   actions: repeatCharts · editFacetSource · editCompositionLayout

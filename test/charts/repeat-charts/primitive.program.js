@@ -103,9 +103,9 @@ export function createRepeatChartsPrimitive() {
     programs: [speed, quality, cost],
     gap: 14
   })
-    .editGraphics({ target: "canvas", property: "width", value: 838 })
+    .editGraphics({ target: "canvas", property: "width", value: 688 })
     .createGraphics({ id: "sharedLegend", type: "canvas", parent: "canvas" })
-    .editGraphics({ target: "sharedLegend", property: "x", value: 550 })
+    .editGraphics({ target: "sharedLegend", property: "x", value: 468 })
     // The shared title top (32px) equals the first row plot top.
     .editGraphics({ target: "sharedLegend", property: "y", value: 0 })
     .editGraphics({ target: "sharedLegend", property: "width", value: 220 })
@@ -118,7 +118,7 @@ export function createRepeatChartsPrimitive() {
       parent: "sharedLegend"
     })
     .editGraphics({ target: "legendSymbols", property: "x", value: [156.25, 156.25] })
-    .editGraphics({ target: "legendSymbols", property: "y", value: [64.5, 92.5] })
+    .editGraphics({ target: "legendSymbols", property: "y", value: [64.5, 82.5] })
     .editGraphics({ target: "legendSymbols", property: "width", value: 14 })
     .editGraphics({ target: "legendSymbols", property: "height", value: 12 })
     .editGraphics({
@@ -135,7 +135,7 @@ export function createRepeatChartsPrimitive() {
       parent: "sharedLegend"
     })
     .editGraphics({ target: "legendLabels", property: "x", value: 178.5 })
-    .editGraphics({ target: "legendLabels", property: "y", value: [64.5, 92.5] })
+    .editGraphics({ target: "legendLabels", property: "y", value: [64.5, 82.5] })
     .editGraphics({ target: "legendLabels", property: "text", value: ["A", "B"] })
     .editGraphics({ target: "legendLabels", property: "fill", value: "#334155" })
     .editGraphics({ target: "legendLabels", property: "fontSize", value: 12 })

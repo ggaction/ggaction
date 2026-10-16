@@ -317,6 +317,15 @@ step yields 391000 / 190000 and retains 25000 for SVG. The generated search payl
 measures 813061 bytes; its independent cap becomes 814000. These are measured
 feature growth adjustments, not claims of passing the previous limits.
 
+The existing facet title displacement/bounds repair and plot-anchored shared-guide
+repair retain the same explicit composition materializer and immutable child
+snapshots. The latter adds one private placement owner, measuring 567 package
+entries, 795791 packed bytes and 3904102 unpacked bytes. Measured ceilings become
+567 / 796000 / 3905000; installed browser gzip is 391525 Full / 189258 Basic /
+7176 SVG bytes, requiring only the Full ceiling step to 392000. The Basic190000
+and SVG25000 ceilings remain unchanged. These measured growth updates do not
+claim the previous ceilings passed.
+
 ## 실행 계약의 위치
 
 이 문서는 상태 소유권, 계층 간 의존성과 실행 흐름을 설명한다. 메서드별 매개변수·기본값·추론·지원 조합·오류는 아래 Current 계약이 소유하며 이 문서에 복제하지 않는다. 구현 상태와 direct/internal 분류는 [ACTION_INDEX.json](contract/ACTION_INDEX.json), 선언은 `types/`, 자동화된 value vocabulary는 owning runtime registry를 사용한다.

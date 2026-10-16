@@ -318,6 +318,20 @@ async function testNodeConsumer(directory) {
     assert.equal(shiftedFacetTitle.graphicSpec.objects.chartSubtitle.properties.x, shiftedFacetTitle.graphicSpec.objects.chartTitle.properties.x);
     assert.deepEqual(deserializeProgram(serializeProgram(shiftedFacetTitle)).graphicSpec, shiftedFacetTitle.graphicSpec);
     assert.throws(() => facetTitle.editTitle({ alongOffset: 10000 }), /outside the Canvas/);
+    const plotAnchoredFacet = chart().createCanvas({ width: 400, height: 280,
+      margin: { left: 80, right: 200, top: 40, bottom: 40 } })
+      .createData({ values: [{ panel: "A", category: "u", x: 1, y: 2 }, { panel: "B", category: "v", x: 2, y: 3 }] })
+      .createScatterPlot({ x: "x", y: "y", guides: false }).encodeColor({ field: "category" })
+      .createLegend().facet({ field: "panel", guides: { legend: "shared" } });
+    assert.equal(plotAnchoredFacet.graphicSpec.objects.canvas.properties.width, 816);
+    const promotedLegendCanvas = plotAnchoredFacet.graphicSpec.objects["facet-shared-legend"].properties;
+    const promotedLegendTitle = plotAnchoredFacet.graphicSpec.objects.colorLegendTitle.properties;
+    assert.equal(promotedLegendCanvas.x + promotedLegendTitle.x, 624);
+    assert.equal(promotedLegendCanvas.y + promotedLegendTitle.y, 40);
+    assert(Object.values(plotAnchoredFacet.children).every(child =>
+      child.graphicSpec.objects.canvas.properties.width === 400 && child.materializationConfigs.canvas.margin.right === 200));
+    assert.deepEqual(deserializeProgram(serializeProgram(plotAnchoredFacet)).graphicSpec, plotAnchoredFacet.graphicSpec);
+
 
 
     for (const factory of [chart, basicChart]) {
