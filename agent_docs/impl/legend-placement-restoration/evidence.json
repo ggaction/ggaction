@@ -1,0 +1,325 @@
+{
+  "reviewer": "codex",
+  "recordedAt": "2026-10-16T04:53:51.691Z",
+  "runtimeRevision": "292adc07fe3c71b9c6be7ede344e300d46a5e318",
+  "status": "current-limitations-reproduced-proposal-not-implemented",
+  "chartPixelsInspected": false,
+  "paidCalls": 0,
+  "changedRuntimeOrSource": false,
+  "reproduceCommand": "node agent_docs/impl/legend-placement-restoration/reproduce.mjs",
+  "reproduceSha256": "11cc82c85db157b53e354c7f704558e8582d251cb7e8d12e8c7718a0b1348e88",
+  "proposalSha256": "3c8a330913e80d0bdaaf0129a025cd46d5e5bd8beb91451c95e13f307f1fc3cc",
+  "decisionsSha256": "339c81570aa7e0273f25d2f768b0a0692cbcfca426d9fcf1361f3b35abafa8ac",
+  "reproduction": {
+    "kind": "pre-implementation-public-api-reproduction",
+    "plot": {
+      "width": 300,
+      "height": 300
+    },
+    "canvas": {
+      "width": 1200,
+      "height": 700
+    },
+    "chartPixelsInspected": false,
+    "paidCalls": 0,
+    "previousProgramUnchanged": true,
+    "probes": [
+      {
+        "name": "color-top-left",
+        "call": ".createLegend({\"channels\":[\"color\"],\"position\":\"top-left\"})",
+        "status": "supported",
+        "legendKinds": [
+          "color"
+        ]
+      },
+      {
+        "name": "color-top-right",
+        "call": ".createLegend({\"channels\":[\"color\"],\"position\":\"top-right\"})",
+        "status": "supported",
+        "legendKinds": [
+          "color"
+        ]
+      },
+      {
+        "name": "color-bottom-left",
+        "call": ".createLegend({\"channels\":[\"color\"],\"position\":\"bottom-left\"})",
+        "status": "supported",
+        "legendKinds": [
+          "color"
+        ]
+      },
+      {
+        "name": "color-bottom-right",
+        "call": ".createLegend({\"channels\":[\"color\"],\"position\":\"bottom-right\"})",
+        "status": "supported",
+        "legendKinds": [
+          "color"
+        ]
+      },
+      {
+        "name": "size-top-left",
+        "call": ".createLegend({\"channels\":[\"size\"],\"position\":\"top-left\"})",
+        "status": "unsupported",
+        "message": "Unsupported legend position \"top-left\"."
+      },
+      {
+        "name": "size-top-right",
+        "call": ".createLegend({\"channels\":[\"size\"],\"position\":\"top-right\"})",
+        "status": "unsupported",
+        "message": "Unsupported legend position \"top-right\"."
+      },
+      {
+        "name": "size-bottom-left",
+        "call": ".createLegend({\"channels\":[\"size\"],\"position\":\"bottom-left\"})",
+        "status": "unsupported",
+        "message": "Unsupported legend position \"bottom-left\"."
+      },
+      {
+        "name": "size-bottom-right",
+        "call": ".createLegend({\"channels\":[\"size\"],\"position\":\"bottom-right\"})",
+        "status": "unsupported",
+        "message": "Unsupported legend position \"bottom-right\"."
+      },
+      {
+        "name": "opacity-top-left",
+        "call": ".createLegend({\"channels\":[\"opacity\"],\"position\":\"top-left\"})",
+        "status": "unsupported",
+        "message": "Unsupported legend position \"top-left\"."
+      },
+      {
+        "name": "opacity-top-right",
+        "call": ".createLegend({\"channels\":[\"opacity\"],\"position\":\"top-right\"})",
+        "status": "unsupported",
+        "message": "Unsupported legend position \"top-right\"."
+      },
+      {
+        "name": "opacity-bottom-left",
+        "call": ".createLegend({\"channels\":[\"opacity\"],\"position\":\"bottom-left\"})",
+        "status": "unsupported",
+        "message": "Unsupported legend position \"bottom-left\"."
+      },
+      {
+        "name": "opacity-bottom-right",
+        "call": ".createLegend({\"channels\":[\"opacity\"],\"position\":\"bottom-right\"})",
+        "status": "unsupported",
+        "message": "Unsupported legend position \"bottom-right\"."
+      },
+      {
+        "name": "wide-top",
+        "call": ".createLegend({\"channels\":[\"color\",\"size\"],\"position\":\"top\",\"align\":\"left\"})",
+        "status": "unsupported",
+        "message": "Horizontal legend block requires more plot width."
+      },
+      {
+        "name": "wide-bottom",
+        "call": ".createLegend({\"channels\":[\"color\",\"size\"],\"position\":\"bottom\",\"align\":\"left\"})",
+        "status": "unsupported",
+        "message": "Horizontal legend block requires more plot width."
+      },
+      {
+        "name": "new-block-row",
+        "call": ".editLegendLayout({position:'top',blockLayout:'row'})",
+        "status": "unsupported",
+        "message": "Unknown editLegendLayout option \"blockLayout\"."
+      },
+      {
+        "name": "new-free-at",
+        "call": ".editLegendLayout({at:{x:201,y:79}})",
+        "status": "unsupported",
+        "message": "Unknown editLegendLayout option \"at\"."
+      }
+    ]
+  },
+  "referenceMethod": "동결된 실제 SVG의 browser DOM text/symbol/group bounds와 소스 SHA. 픽셀/스크린샷을 읽지 않음.",
+  "references": [
+    {
+      "id": "vl_1722",
+      "sourceSha256": "ceecfcc29e35a3a8bc4c194b20eeb05c463b7769c8a2ac5ef2ec6d1fb821a066",
+      "referenceSvgSha256": "6e0ca492d4a50bf7be0a93027bd6c091b3f16180e374a514663f3b65d08874c8",
+      "sourcePlot": {
+        "width": 300,
+        "height": 300
+      },
+      "sourceCanvas": {
+        "width": 776,
+        "height": 397,
+        "margin": {
+          "left": 39,
+          "top": 60,
+          "right": 437,
+          "bottom": 37
+        }
+      },
+      "requestedPosition": "top",
+      "groupDomBounds": {
+        "left": 39,
+        "top": 4,
+        "right": 771,
+        "bottom": 42
+      },
+      "historicalPrograms": 8
+    },
+    {
+      "id": "vl_1725",
+      "sourceSha256": "75e750f3c733e7e98b80e63709c14bf79c7e60c626c8af27b054c312871d4646",
+      "referenceSvgSha256": "b314b19af25d024f73b79b87f7dec34fb68423c57108767e04bc928ed9b456d9",
+      "sourcePlot": {
+        "width": 300,
+        "height": 300
+      },
+      "sourceCanvas": {
+        "width": 345,
+        "height": 347,
+        "margin": {
+          "left": 39,
+          "top": 10,
+          "right": 6,
+          "bottom": 37
+        }
+      },
+      "requestedPosition": "bottom-right",
+      "groupDomBounds": {
+        "left": 117,
+        "top": 166,
+        "right": 321,
+        "bottom": 292
+      },
+      "historicalPrograms": 8
+    },
+    {
+      "id": "vl_1726",
+      "sourceSha256": "7f5507c31b4bc43614c7cdb2751bc132a4d87d8177907d2b0c5d51eedf4b0f23",
+      "referenceSvgSha256": "ae7f8a28fa5e9304348c0cfa7e6a015753d92a10c238efc5c713fe109b0a9526",
+      "sourcePlot": {
+        "width": 300,
+        "height": 300
+      },
+      "sourceCanvas": {
+        "width": 776,
+        "height": 402,
+        "margin": {
+          "left": 39,
+          "top": 10,
+          "right": 437,
+          "bottom": 92
+        }
+      },
+      "requestedPosition": "bottom",
+      "groupDomBounds": {
+        "left": 39,
+        "top": 359,
+        "right": 771,
+        "bottom": 397
+      },
+      "historicalPrograms": 8
+    },
+    {
+      "id": "vl_1727",
+      "sourceSha256": "8bf3859fff5a8b9bc3a20d1f7413af400b41b7395c8076ba1095ab7348fa640f",
+      "referenceSvgSha256": "c2267186571c273f9735488240348429e549d5b08b9a8739bfc30c032667cf77",
+      "sourcePlot": {
+        "width": 300,
+        "height": 300
+      },
+      "sourceCanvas": {
+        "width": 345,
+        "height": 347,
+        "margin": {
+          "left": 39,
+          "top": 10,
+          "right": 6,
+          "bottom": 37
+        }
+      },
+      "requestedPosition": "bottom-left",
+      "groupDomBounds": {
+        "left": 57,
+        "top": 166,
+        "right": 261,
+        "bottom": 292
+      },
+      "historicalPrograms": 8
+    },
+    {
+      "id": "vl_1729",
+      "sourceSha256": "3f2a0b52f848f8b25b38589a975fee909cc71fd06b4eefcac64ada617fd2ee1e",
+      "referenceSvgSha256": "b5d1521a789a13c70fc219509d7980ff5567518b2785da216702659e8afd9661",
+      "sourcePlot": {
+        "width": 300,
+        "height": 300
+      },
+      "sourceCanvas": {
+        "width": 345,
+        "height": 347,
+        "margin": {
+          "left": 39,
+          "top": 10,
+          "right": 6,
+          "bottom": 37
+        }
+      },
+      "requestedPosition": "top-left",
+      "groupDomBounds": {
+        "left": 57,
+        "top": 27,
+        "right": 261,
+        "bottom": 153
+      },
+      "historicalPrograms": 8
+    },
+    {
+      "id": "vl_0946",
+      "sourceSha256": "984f7b7eda2f2771ce3e3af2457420cfd7699da0e4c462665eacf5f3a4950218",
+      "referenceSvgSha256": "43a10850ab727320299b6684072f7316acddac76cd27f152f6a482e359cd240a",
+      "sourcePlot": {
+        "width": 200,
+        "height": 200
+      },
+      "sourceCanvas": {
+        "width": 438,
+        "height": 227,
+        "margin": {
+          "left": 109,
+          "top": 22,
+          "right": 129,
+          "bottom": 5
+        }
+      },
+      "requestedPosition": "free",
+      "groupDomBounds": {
+        "left": 309,
+        "top": 101,
+        "right": 433,
+        "bottom": 139.1435546875
+      },
+      "paintedTextSymbolUnion": {
+        "left": 310,
+        "top": 101,
+        "right": 432.28125,
+        "bottom": 139.1435546875
+      },
+      "occupiedAnchor": {
+        "x": 201,
+        "y": 79
+      },
+      "rawGroupAnchor": {
+        "x": 200,
+        "y": 80
+      },
+      "historicalPrograms": 4
+    }
+  ],
+  "requiredHistoricalPrograms": 44,
+  "testsPlanned": "PROPOSAL.md 구현 후 검증 조건; 현재 repro 성공4개/예상지원불가12개와 이전 program 불변성 확인.",
+  "limitations": [
+    "제안한 새 API는 아직 구현되지 않았다.",
+    "새 runtime의 렌더/DOM/primitive-public parity는 승인 뒤 검증한다.",
+    "기존 reference의 그룹 DOM 사각형은 투명 layout 배경을 포함할 수 있어 free at에는 실제 visible text/symbol union을 별도로 사용한다."
+  ],
+  "worktreeMove": {
+    "initialReproductionRevision": "fa1e290ee9f3e5e4ae64799061a80e2659fc5870",
+    "activeReproductionRevision": "292adc07fe3c71b9c6be7ede344e300d46a5e318",
+    "onlyFourProposalFilesCopied": true,
+    "sourceRuntimeChanged": false
+  }
+}
