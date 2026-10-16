@@ -1,0 +1,15 @@
+{
+  "status": "current-behavior-reproduction-not-an-implementation",
+  "reviewer": "codex",
+  "genericRows": 2,
+  "markOpacity": 0.7,
+  "gradientStripCount": 60,
+  "gradientEffectiveOpacities": [
+    1
+  ],
+  "unsupportedExistingPatch": "editLegendBlock symbol.opacity is unsupported for gradient blocks.",
+  "proposedDefault": 1,
+  "publicAPIImplemented": false,
+  "newModelCalls": 0,
+  "chartPixelsInspected": false
+}
