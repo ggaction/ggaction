@@ -1,0 +1,115 @@
+{
+  "status": "reproduced-missing-public-capability",
+  "runtimeImplementationCommit": "02661f6607e964cca7f158524e93ade5861a63a7",
+  "syntheticRows": 2,
+  "actual": {
+    "storedKinds": [
+      "gradient",
+      "size"
+    ],
+    "titleObjects": [
+      "colorGradientTitle",
+      "sizeLegendTitle"
+    ],
+    "colorSamples": [
+      {
+        "radius": 7,
+        "fill": "#cfe1f2",
+        "opacity": 1
+      },
+      {
+        "radius": 7,
+        "fill": "#86bcdc",
+        "opacity": 1
+      },
+      {
+        "radius": 7,
+        "fill": "#3887c0",
+        "opacity": 1
+      },
+      {
+        "radius": 7,
+        "fill": "#0a4a90",
+        "opacity": 1
+      }
+    ],
+    "sizeSamples": [
+      {
+        "radius": 1,
+        "fill": "#94a3b8",
+        "opacity": 0.7
+      },
+      {
+        "radius": 4.828301978956992,
+        "fill": "#94a3b8",
+        "opacity": 0.7
+      },
+      {
+        "radius": 6.754628043053147,
+        "fill": "#94a3b8",
+        "opacity": 0.7
+      },
+      {
+        "radius": 8.242420760917268,
+        "fill": "#94a3b8",
+        "opacity": 0.7
+      },
+      {
+        "radius": 9.5,
+        "fill": "#94a3b8",
+        "opacity": 0.7
+      }
+    ]
+  },
+  "expected": {
+    "blocks": 1,
+    "titleLists": 1,
+    "labelLists": 1,
+    "channels": [
+      "color",
+      "size"
+    ],
+    "samples": [
+      {
+        "value": 0,
+        "fill": "#cfe1f2",
+        "radius": 1,
+        "opacity": 1
+      },
+      {
+        "value": 100,
+        "fill": "#86bcdc",
+        "radius": 5.545268253204709,
+        "opacity": 1
+      },
+      {
+        "value": 200,
+        "fill": "#3887c0",
+        "radius": 7.7781745930520225,
+        "opacity": 1
+      },
+      {
+        "value": 300,
+        "fill": "#0a4a90",
+        "radius": 9.5,
+        "opacity": 1
+      }
+    ]
+  },
+  "existingPublicAlternativesRejected": [
+    {
+      "name": "size-symbol-fill-array",
+      "error": "editLegendBlock symbol.fill must be a non-empty string."
+    },
+    {
+      "name": "sampled-color-radius-array",
+      "error": "Sampled color symbol radius must be a positive finite number."
+    }
+  ],
+  "parentImmutable": true,
+  "actualSvgSha256": "21ff447963e466fce2b6d9c1e951b87d1bbdbb66845a43325851aa6693239f83",
+  "scriptSha256": "b6006f32e3006b974f52f223ce29b49e1410faa810e091e976414cfb4152579c",
+  "newApiImplemented": false,
+  "paidCalls": 0,
+  "chartPixelsInspected": false
+}

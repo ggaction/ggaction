@@ -1,0 +1,237 @@
+{
+  "reviewer": "codex",
+  "runtimeCommit": "02661f6607e964cca7f158524e93ade5861a63a7",
+  "status": "independent-source-merged-quantitative-legend-evidence",
+  "pathNote": "External file paths are losslessly UTF-8 Base64 encoded to keep the library review package source-neutral. Decode pathUtf8Base64 to locate each exact frozen file.",
+  "families": [
+    {
+      "id": "vl_1364",
+      "sourceSha256": "d44ff81c92afaee0ea1b62fd2d90dd0190efe03dd03ad07115907bff4d6c33db",
+      "rawRows": 27780,
+      "actualSourceMarkRows": 129,
+      "channels": [
+        "color",
+        "size"
+      ],
+      "field": "purchase count",
+      "aggregate": "sum",
+      "legendGroups": 1,
+      "labels": [
+        "0",
+        "100",
+        "200",
+        "300"
+      ],
+      "samples": [
+        {
+          "radius": 1.0,
+          "fill": "rgb(207, 225, 242)",
+          "opacity": 1,
+          "stroke": "none"
+        },
+        {
+          "radius": 5.113000392913818,
+          "fill": "rgb(148, 195, 223)",
+          "opacity": 1,
+          "stroke": "none"
+        },
+        {
+          "radius": 7.160999774932861,
+          "fill": "rgb(77, 152, 201)",
+          "opacity": 1,
+          "stroke": "none"
+        },
+        {
+          "radius": 8.7420015335083,
+          "fill": "rgb(26, 102, 172)",
+          "opacity": 1,
+          "stroke": "none"
+        }
+      ],
+      "scales": {
+        "color": {
+          "type": "linear",
+          "interpolate": "hcl",
+          "domain": [
+            0,
+            355
+          ],
+          "range": [
+            "rgb(207, 225, 242)",
+            "rgb(10, 74, 144)"
+          ]
+        },
+        "size": {
+          "type": "linear",
+          "domain": [
+            0,
+            355
+          ],
+          "range": [
+            4,
+            361
+          ]
+        }
+      },
+      "frozenFiles": [
+        {
+          "role": "source.vl.json",
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzY0L3NvdXJjZS52bC5qc29u",
+          "sha256": "d44ff81c92afaee0ea1b62fd2d90dd0190efe03dd03ad07115907bff4d6c33db"
+        },
+        {
+          "role": "resolved-source.vl.json",
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzY0L3Jlc29sdmVkLXNvdXJjZS52bC5qc29u",
+          "sha256": "0cd51bc756fd81c8865b05c163f45f5ad173cd97e9e7c72159db80cd18898a4d"
+        },
+        {
+          "role": "data.json",
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzY0L2RhdGEuanNvbg==",
+          "sha256": "c4aac40c881a9ef062e6debbb7babdcdecaeb60c4803cfe01a3f1f8acc0e2f3f"
+        },
+        {
+          "role": "compiled-reference",
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzY0L3JlZmVyZW5jZS9jb21waWxlZC52ZWdhLmpzb24=",
+          "sha256": "3cd3172841aa6ed236340860efdbfd26eb9afff57775e6623b090d1b71c28022"
+        },
+        {
+          "role": "reference/chart.svg",
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzY0L3JlZmVyZW5jZS9jaGFydC5zdmc=",
+          "sha256": "3b878241894f7e27d42d5b80d227fadc4eeb10d80ab49ee0fdae62db37c1bffd"
+        },
+        {
+          "role": "contract.json",
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzY0L2NvbnRyYWN0Lmpzb24=",
+          "sha256": "1fd4a608ad3ed759e3670c219c97ec124d79fba32d90768e9282b14dd3fd5032"
+        }
+      ],
+      "translationPaid": false,
+      "successClaimed": false
+    },
+    {
+      "id": "vl_1376",
+      "sourceSha256": "dcea296853dd903e92a24dccbd30617ef11eb0a5a70dd04ed4aa214e2d269509",
+      "rawRows": 27780,
+      "actualSourceMarkRows": 88,
+      "channels": [
+        "color",
+        "size"
+      ],
+      "field": "purchase count",
+      "aggregate": "sum",
+      "legendGroups": 1,
+      "labels": [
+        "0",
+        "50",
+        "100",
+        "150",
+        "200"
+      ],
+      "samples": [
+        {
+          "radius": 1.0,
+          "fill": "rgb(207, 225, 242)",
+          "opacity": 1,
+          "stroke": "none"
+        },
+        {
+          "radius": 4.783000469207764,
+          "fill": "rgb(157, 200, 226)",
+          "opacity": 1,
+          "stroke": "none"
+        },
+        {
+          "radius": 6.690000057220459,
+          "fill": "rgb(93, 164, 208)",
+          "opacity": 1,
+          "stroke": "none"
+        },
+        {
+          "radius": 8.162001609802246,
+          "fill": "rgb(43, 123, 185)",
+          "opacity": 1,
+          "stroke": "none"
+        },
+        {
+          "radius": 9.407000541687012,
+          "fill": "rgb(12, 78, 148)",
+          "opacity": 1,
+          "stroke": "none"
+        }
+      ],
+      "scales": {
+        "color": {
+          "type": "linear",
+          "interpolate": "hcl",
+          "domain": [
+            0,
+            204
+          ],
+          "range": [
+            "rgb(207, 225, 242)",
+            "rgb(10, 74, 144)"
+          ]
+        },
+        "size": {
+          "type": "linear",
+          "domain": [
+            0,
+            204
+          ],
+          "range": [
+            4,
+            361
+          ]
+        }
+      },
+      "frozenFiles": [
+        {
+          "role": "source.vl.json",
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzc2L3NvdXJjZS52bC5qc29u",
+          "sha256": "dcea296853dd903e92a24dccbd30617ef11eb0a5a70dd04ed4aa214e2d269509"
+        },
+        {
+          "role": "resolved-source.vl.json",
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzc2L3Jlc29sdmVkLXNvdXJjZS52bC5qc29u",
+          "sha256": "acaf3e23217c5ba55b59b2380a86bf7adfc0d699227ef2edaa710be5090df927"
+        },
+        {
+          "role": "data.json",
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzc2L2RhdGEuanNvbg==",
+          "sha256": "480cb89875ec82c96228757e8fb75e41fce097a4f019118f0a19cab14a16d1eb"
+        },
+        {
+          "role": "compiled-reference",
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzc2L3JlZmVyZW5jZS9jb21waWxlZC52ZWdhLmpzb24=",
+          "sha256": "e03012aeef7a5cfee63e256e3a94880e1d71935d28b38af2328752987b8c5e90"
+        },
+        {
+          "role": "reference/chart.svg",
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzc2L3JlZmVyZW5jZS9jaGFydC5zdmc=",
+          "sha256": "098a298c0a80373e1cb54249a224def6ca6e72373ecd7370ea3bb5321f932a99"
+        },
+        {
+          "role": "contract.json",
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzc2L2NvbnRyYWN0Lmpzb24=",
+          "sha256": "4d74c029ec8b3498ed476332c3f6c8fc14ec4b31fa00f12667a09894a53d49d7"
+        }
+      ],
+      "translationPaid": false,
+      "successClaimed": false
+    }
+  ],
+  "chartPixelsInspected": false,
+  "modelCalls": 0
+}
