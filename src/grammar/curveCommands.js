@@ -1,6 +1,5 @@
 import { freezeOwned, isPlainObject } from "../core/immutable.js";
-import { validateGeneratedItemLimit } from "../core/validation.js";
-import { buildLinearPathCommands } from "./pathCommands.js";
+import { buildLinearPathCommands, validatePathCommandCount } from "./pathCommands.js";
 
 export const CURVE_INTERPOLATIONS = Object.freeze([
   "linear",
@@ -314,7 +313,7 @@ export function buildCurvePathCommands(points, curve = "linear", tension) {
   validateCardinalTension(tension, curve);
   const validatedPoints = validatePoints(points);
   const validatedCurve = validateCurveInterpolation(curve);
-  validateGeneratedItemLimit(
+  validatePathCommandCount(
     curveCommandCount(validatedPoints.length, validatedCurve),
     "Curve path command count"
   );
@@ -322,6 +321,7 @@ export function buildCurvePathCommands(points, curve = "linear", tension) {
     validatedPoints,
     validatedCurve, tension
   );
+  validatePathCommandCount(direct.length, "Curve path command count");
   if (finiteCommands(direct)) return direct;
 
   let xScale = 0;
@@ -351,6 +351,7 @@ export function buildCurvePathCommands(points, curve = "linear", tension) {
   if (!finiteCommands(restored)) {
     throw new RangeError("Curve interpolation exceeds the finite numeric range.");
   }
+  validatePathCommandCount(restored.length, "Curve path command count");
   return ownCommands(restored);
 }
 
@@ -413,7 +414,7 @@ export function buildAreaCurvePathCommands(
   const validatedCurve = validateCurveInterpolation(curve);
   const validatedLower = validatePoints(lowerPoints);
   const validatedUpper = validatePoints(upperPoints);
-  validateGeneratedItemLimit(
+  validatePathCommandCount(
     curveCommandCount(validatedLower.length, validatedCurve) +
       curveCommandCount(validatedUpper.length, validatedCurve) + 1,
     "Area path command count"
@@ -426,10 +427,12 @@ export function buildAreaCurvePathCommands(
   const upper = reverseOpenPathCommands(
     buildOrientedCurvePathCommands(validatedUpper, validatedCurve, independentAxis)
   );
-  return ownCommands([
+  const commands = [
     ...lower,
     { op: "L", x: upper[0].x, y: upper[0].y },
     ...upper.slice(1),
     { op: "Z" }
-  ]);
+  ];
+  validatePathCommandCount(commands.length, "Area path command count");
+  return ownCommands(commands);
 }

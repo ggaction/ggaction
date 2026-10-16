@@ -213,18 +213,18 @@ test("rejects curve and area command expansion before oversized allocation", () 
     (_, index) => ({ x: index, y: index % 2 })
   );
 
-  assert.equal(buildCurvePathCommands(makePoints(3_334), "step").length, 10_000);
+  assert.equal(buildCurvePathCommands(makePoints(6_667), "step").length, 19_999);
   assert.throws(
-    () => buildCurvePathCommands(makePoints(3_335), "step"),
-    /Curve path command count must not exceed 10000/
+    () => buildCurvePathCommands(makePoints(6_668), "step"),
+    /Curve path command count must not exceed 20000/
   );
   assert.equal(
-    buildAreaCurvePathCommands(makePoints(4_999), makePoints(4_999)).length,
-    9_999
+    buildAreaCurvePathCommands(makePoints(9_999), makePoints(9_999)).length,
+    19_999
   );
   assert.throws(
-    () => buildAreaCurvePathCommands(makePoints(5_000), makePoints(5_000)),
-    /Area path command count must not exceed 10000/
+    () => buildAreaCurvePathCommands(makePoints(10_000), makePoints(10_000)),
+    /Area path command count must not exceed 20000/
   );
 });
 

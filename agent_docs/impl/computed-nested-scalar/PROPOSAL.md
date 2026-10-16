@@ -6,7 +6,7 @@
 - [x] Actual nested source paths and missing-row facts frozen by hashes
 - [x] Concrete expression, errors, persistence and test contract prepared
 - [x] Explicit user approval
-- [ ] Implementation and full consumer verification
+- [x] Implementation and full consumer verification
 
 Gate: **approved**. User approval recorded before implementation in `APPROVAL.json`. Root `AGENTS.md` requires explicit approval for the new public computed-expression operation and persisted expression shape. Only two affected families wait; independent work continues. Package publishing, deployment and PR creation are outside this decision.
 
@@ -60,3 +60,7 @@ No existing computed operation changes meaning. No dotted-name field lookup chan
 5. Add computed grammar/action contracts, closed expression types, action cards/knowledge, official examples and generated references together; run focused tests, full unit/contracts/docs and installed-package consumer checks.
 
 There is no new visual primitive or renderer behavior in this proposal. Existing chart families still require source-definedness, geometry, mark/style, guide and within-family verification after model-authored extraction code exists.
+
+## Implementation checkpoint
+
+Implemented within the approved scope; see [shared verification](../computed-and-path-verification.md). Stable runtime integration and dependent chart retranslation remain coordinated separately.

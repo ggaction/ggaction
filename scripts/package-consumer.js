@@ -89,6 +89,25 @@ async function testNodeConsumer(directory) {
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
+    const extracted = chart().createCanvas({ width: 440, height: 340, margin: 20 })
+      .createData({ values: [{ item: { value: 1 }, text: "1.5%" }, { text: "2%" }] })
+      .createComputedData({ id: "nested", as: "x", expression: { op: "getPath", operand: { field: "item" }, path: ["value"] } })
+      .createComputedData({ id: "stripped", as: "numberText", expression: { op: "replaceLiteral", operand: { field: "text" }, search: "%", replacement: "" } })
+      .createComputedData({ id: "numbers", as: "y", expression: { op: "toNumber", operand: { field: "numberText" } } })
+      .filterData({ id: "defined", field: "x", noneOf: [null] })
+      .createScatterPlot({ x: "x", y: "y", guides: false });
+    assert.deepEqual(extracted.semanticSpec.datasets.find(d => d.id === "nested").values.map(row => row.x), [1, null]);
+    assert.equal(extracted.graphicSpec.objects.scatterPlot.items.length, 1);
+    assert.deepEqual(deserializeProgram(serializeProgram(extracted)).graphicSpec, extracted.graphicSpec);
+    assert.ok((await renderToPNGBuffer(extracted)).buffer.length > 100);
+    const longLine = chart().createCanvas({ width: 440, height: 340, margin: 20 })
+      .createData({ values: Array.from({ length: 12070 }, (_, i) => ({ x: i, y: i % 11 })) })
+      .createLinePlot({ x: "x", y: "y", guides: false });
+    assert.equal(longLine.graphicSpec.objects.linePlot.items[0].properties.commands.length, 12070);
+    assert.deepEqual(deserializeProgram(serializeProgram(longLine)).graphicSpec, longLine.graphicSpec);
+    assert.ok(renderToSVG(longLine).includes("<path"));
+    assert.ok((await renderToPNGBuffer(longLine)).buffer.length > 100);
+
     const blankLines = chart().createCanvas({ width: 600, height: 500, margin: 160 })
       .createTitle({ text: "\\nTitle\\n", subtitle: "First\\n\\nLast\\n", titleStyle: { fontSize: 12 } });
     assert.equal(blankLines.graphicSpec.objects.chartTitle.properties.text, "Title");

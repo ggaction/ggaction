@@ -121,7 +121,7 @@ Supported curves are `linear`, `step`, `step-before`, `step-after`, `basis`,
 two-point series fall back to linear. Monotone paths require strictly increasing
 or decreasing materialized x values; duplicate or non-monotonic x is rejected.
 Materialization rejects any line or complete area that would expand beyond
-10,000 backend-neutral path commands before allocating that command array.
+20,000 backend-neutral path commands before allocating that command array.
 
 For Cartesian cardinal lines, `tension` is a finite number from 0 to 1,
 with default 0 preserving the existing curve. It multiplies each tangent by

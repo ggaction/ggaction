@@ -164,7 +164,8 @@ createComputedData({ id, source?, as, expression })
 ```
 
 Materialize a typed primitive or null field from a serializable, closed
-expression. [Source and Derived Data](../../api/data/source-and-derived.md#createcomputeddata-id-source-as-expression)
+expression, including explicit nested scalar `getPath` and first-occurrence
+`replaceLiteral` operations. [Source and Derived Data](../../api/data/source-and-derived.md#createcomputeddata-id-source-as-expression)
 
 
 ## `createNormalizedData`

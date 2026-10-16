@@ -6,7 +6,7 @@
 - [x] Preserve actual source/data/compiled/SVG hashes and string-value facts
 - [x] Specify the public expression, errors, persistence and verification scope
 - [x] Explicit user approval
-- [ ] Implementation and full consumer verification
+- [x] Implementation and full consumer verification
 
 Gate: **approved**. User approval recorded before implementation in `APPROVAL.json`. Root `AGENTS.md` requires explicit approval for this new public expression and persisted node shape. Independent chart translation continues. Package publication, documentation deployment and PR creation are outside this Gate.
 
@@ -63,3 +63,7 @@ The computed grammar owns validation, field-dependency collection and evaluation
 5. Synchronize the closed types, current data contract, official expression documentation, action cards/generated references and installed-package consumer. Run focused tests, full unit/contracts/docs and installed-consumer checks.
 
 There is no new visual primitive or renderer behavior. Only the dependent source family waits for approval; independent chart work continues.
+
+## Implementation checkpoint
+
+Implemented within the approved scope; see [shared verification](../computed-and-path-verification.md). Stable runtime integration and dependent chart retranslation remain coordinated separately.

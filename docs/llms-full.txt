@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:00332d137571d2587b9e51e546f80ec4d3036d03f720411701f1e85c9a287d54. Status: development. Runtime source: 76d08a167f91cbefe4e9cf1268562c90bdba85cb. Release baseline: v0.0.13.
+Contract: sha256:b05d2599f3dde0f366f7d1338b230d4eeb507650400bd5bfe1ca799e703f1e22. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/76d08a167f91cbefe4e9cf1268562c90bdba85cb/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/76d08a167f91cbefe4e9cf1268562c90bdba85cb/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -6193,7 +6193,7 @@ Supported curves are `linear`, `step`, `step-before`, `step-after`, `basis`,
 two-point series fall back to linear. Monotone paths require strictly increasing
 or decreasing materialized x values; duplicate or non-monotonic x is rejected.
 Materialization rejects any line or complete area that would expand beyond
-10,000 backend-neutral path commands before allocating that command array.
+20,000 backend-neutral path commands before allocating that command array.
 
 For Cartesian cardinal lines, `tension` is a finite number from 0 to 1,
 with default 0 preserving the existing curve. It multiplies each tangent by
@@ -14292,7 +14292,8 @@ same measurement unless the product question is end-to-end latency.
 ## Generated-work limits
 
 Many expansion operations cap generated items at 10,000 per operation. This
-applies to generated path commands, grid values, and aggregate layout cells;
+applies to grid values, symbols, and aggregate layout cells. Paths have a separate
+20,000-command bound, counting interpolation expansion and area closure;
 it is not a universal source-row limit. Work-intensive calculations such as
 label collision planning also have a 10,000,000-work-item budget. The shared
 validator reports `resource-limit` with the named quantity, `limit`, and
@@ -21912,7 +21913,8 @@ createComputedData({ id, source?, as, expression })
 ```
 
 Materialize a typed primitive or null field from a serializable, closed
-expression. [Source and Derived Data](./api/data/source-and-derived/#createcomputeddata-id-source-as-expression)
+expression, including explicit nested scalar `getPath` and first-occurrence
+`replaceLiteral` operations. [Source and Derived Data](./api/data/source-and-derived/#createcomputeddata-id-source-as-expression)
 
 ## `createNormalizedData`
 
@@ -28376,6 +28378,17 @@ Related types: [`ComputedExpression`](./reference/types/#type-computedexpression
 export type ComputedExpression =
   | { readonly field: string }
   | { readonly constant: number | string | boolean | null }
+  | {
+      readonly op: "getPath";
+      readonly operand: { readonly field: string };
+      readonly path: readonly [string, ...string[]];
+    }
+  | {
+      readonly op: "replaceLiteral";
+      readonly operand: ComputedExpression;
+      readonly search: string;
+      readonly replacement: string;
+    }
   | {
       readonly op: "parseTime";
       readonly operand: ComputedExpression;
@@ -37047,7 +37060,7 @@ Path graphics use backend-neutral `path.commands` arrays rather than renderer-sp
 path strings. The closed command vocabulary is `M`, `L`, `C`, and `Z`. A path starts
 with one `M`; `L` and `C` draw straight and cubic segments; an optional final `Z`
 closes the path. At least one `L` or `C` segment is required. Coordinates and cubic
-control points must be finite numbers, and one path may contain at most 10,000
+control points must be finite numbers, and one path may contain at most 20,000
 commands. Generated linear and closed paths enforce the same limit before allocation.
 TypeScript users can import the `ConcretePathCommand` union from `ggaction`.
 `path.strokeDash` and `line.strokeDash` accept non-negative finite number arrays;
@@ -37129,12 +37142,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/76d08a167f91cbefe4e9cf1268562c90bdba85cb/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/76d08a167f91cbefe4e9cf1268562c90bdba85cb/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -37364,7 +37377,7 @@ const shares = program.createComputedData({
 
 Leaves are `{ field }` and `{ constant }`; constants may be finite numbers,
 strings, booleans, or null. The closed union includes arithmetic, comparison,
-boolean logic, `if`, `coalesce`, `concat`, `log`, `sqrt`, and `toNumber`. Conditional
+boolean logic, `if`, `coalesce`, `concat`, `log`, `sqrt`, `toNumber`, `getPath`, and `replaceLiteral`. Conditional
 and boolean nodes short-circuit value evaluation, while every branch and field
 name is structurally checked first. The action stores this data AST as
 provenance and never evaluates callbacks, source strings, or arbitrary code.
@@ -37380,8 +37393,27 @@ Preserve the raw field and apply an existing filter or missing-data policy to
 these nulls before assigning a position. This typed node accepts no arbitrary
 format expression or callback.
 
+Use `{ op: "getPath", operand: { field: "item" }, path: ["nested", "value"] }`
+to extract a scalar from nested plain records. The operand is exactly one literal
+root-field reference; the path has 1–8 nonempty string keys. Keys containing dots
+remain literal. Traversal reads only own data properties, never getters, arrays,
+prototypes, callbacks or dynamic expressions. Missing properties and nullish
+intermediates produce `null`; present non-record intermediates, non-scalar leaves
+and nonfinite numbers reject. A root absent from the entire dataset rejects;
+a known root missing in some rows yields `null`. Reserved path keys
+`__proto__`, `prototype`, and `constructor` reject. Ordinary `{ field: "item.value" }`
+still names one literal top-level field.
+
+Use `{ op: "replaceLiteral", operand: { field: "amountText" }, search: "%", replacement: "" }`
+to remove the first exact, case-sensitive `%`. Both search and replacement are
+literal strings; search must be nonempty. No match preserves the input. Dollar
+characters such as `$&`, `$1`, and `$$` remain literal replacement text. The
+operand must evaluate to a string; null, numbers, booleans and structured values
+reject without coercion. Compose with `toNumber` and arithmetic for percent
+values. Regular expressions, flags and dynamic search/replacement are unsupported.
+
 Arithmetic remains finite and strictly numeric. Other operations do not coerce
-types. Undefined cells normalize to null, but a missing field name is an error.
+types. Undefined scalar cells normalize to null; ordinary field references still reject missing row keys. The explicit `getPath` missing-root policy above applies only to that operation.
 Non-null results must have one primitive type across all rows. Expressions are
 bounded to depth 16 and 128 nodes, with at most 10,000,000 row-nodes.
 
@@ -39260,9 +39292,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:00332d137571d2587b9e51e546f80ec4d3036d03f720411701f1e85c9a287d54` |
+| Contract fingerprint | `sha256:b05d2599f3dde0f366f7d1338b230d4eeb507650400bd5bfe1ca799e703f1e22` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `76d08a167f91cbefe4e9cf1268562c90bdba85cb` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |

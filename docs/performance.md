@@ -64,7 +64,8 @@ same measurement unless the product question is end-to-end latency.
 ## Generated-work limits
 
 Many expansion operations cap generated items at 10,000 per operation. This
-applies to generated path commands, grid values, and aggregate layout cells;
+applies to grid values, symbols, and aggregate layout cells. Paths have a separate
+20,000-command bound, counting interpolation expansion and area closure;
 it is not a universal source-row limit. Work-intensive calculations such as
 label collision planning also have a 10,000,000-work-item budget. The shared
 validator reports `resource-limit` with the named quantity, `limit`, and

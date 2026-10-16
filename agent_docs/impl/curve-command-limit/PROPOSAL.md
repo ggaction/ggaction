@@ -6,7 +6,7 @@
 - [x] Preserve the actual 12,070-vertex source/data/compiled/output proof
 - [x] Define the exact limit, compatibility and verification scope
 - [x] Explicit user approval
-- [ ] Implementation and full consumer verification
+- [x] Implementation and full consumer verification
 
 Gate: **approved**. User approval recorded before implementation in `APPROVAL.json`. The root `AGENTS.md` requires explicit approval for this material change to public bounded-resource behavior. No runtime, declaration or persisted-schema implementation is included. Independent chart translation continues; only the affected source waits. Publication, deployment and PR creation are outside this Gate.
 
@@ -58,3 +58,7 @@ The larger bound permits at most twice the previous per-path storage and process
 - Synchronize owning current contracts, public documentation/generated cards and installed-package consumer checks. Run focused tests, full unit/contracts/docs and package-consumer verification.
 
 There is no new visual primitive or renderer design. `reproduce.mjs` and `rejection-evidence.json` are generic source-neutral evidence. `source-evidence.json` binds the actual affected input and full-row proof without embedding or rewriting its raw rows.
+
+## Implementation checkpoint
+
+Implemented within the approved scope; see [shared verification](../computed-and-path-verification.md). Stable runtime integration and dependent chart retranslation remain coordinated separately.
