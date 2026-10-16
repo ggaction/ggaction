@@ -1,24 +1,24 @@
-# 계산 데이터의 명시적 리터럴 문자열 치환
+# Explicit literal replacement in computed data
 
-## 진행 상태
+## Status and scope
 
-- [x] 기존 숫자 변환과 제안 연산의 거절을 재현
-- [x] 실제 원본/데이터/컴파일 결과/SVG 해시와 문자열 분포 보존
-- [x] 공개 표현식·오류·지속성·검증 범위 구체화
-- [ ] 사용자 명시적 승인
-- [ ] 구현 및 전체 소비자 검증
+- [x] Reproduce rejection by existing numeric conversion and the proposed operation
+- [x] Preserve actual source/data/compiled/SVG hashes and string-value facts
+- [x] Specify the public expression, errors, persistence and verification scope
+- [ ] Explicit user approval
+- [ ] Implementation and full consumer verification
 
-Gate: **ready-for-review**. 제안만 준비했으며 런타임·타입·저장 스키마를 수정하지 않았다. 루트 `AGENTS.md`의 새 공개 API/저장 표현식 승인 규칙을 따른다. 독립적인 다른 차트 번역은 계속한다. 패키지 배포·문서 배포·PR 생성은 이 Gate에 포함되지 않는다.
+Gate: **ready-for-review**. Proposal only; no runtime, type or stored-schema change. Root `AGENTS.md` requires explicit approval for this new public expression and persisted node shape. Independent chart translation continues. Package publication, documentation deployment and PR creation are outside this Gate.
 
-## 필요한 동작
+## Required behavior
 
-원본 문자열 `"1.15%"`에서 첫 `%`를 지우고 숫자로 바꾼 뒤 100으로 나누어 `0.0115`를 만들어야 한다. 기존 `toNumber`는 유한 십진수 문자열만 허용하므로 `%`가 있는 문자열을 거절한다. 기존 닫힌 계산 표현식에는 문자열 치환 연산이 없다. 원본 행을 호스트에서 변경하거나 다른 가격 필드로 변화를 추정하면 원본 계산의 의미가 사라진다.
+The raw string `"1.15%"` must lose its first literal `%`, be explicitly converted to a number, and be divided by100 to produce `0.0115`. Existing `toNumber` accepts finite decimal strings and correctly rejects the percent suffix. The closed computed-expression grammar has no string replacement. Rewriting raw rows on the host or deriving an estimate from a different price field would lose the original calculation's meaning.
 
-`source-evidence.json`은 원본 1,988행의 모든 `Change` 값, 실제 렌더링 1,979점, 원본 계산과 입력 파일 해시를 묶는다. 동일한 원본 데이터의 `%` 제거와 범위 필터를 공개 도메인 액션으로 표현하는 것이 목표다.
+`source-evidence.json` binds all1,988 raw `Change` values, the actual1,979 painted points, original transforms and input-file hashes. The goal is to express the actual percent removal and range filter with public domain actions.
 
-## 제안 API
+## Proposed public expression
 
-기존 `createComputedData` 표현식에 **`replaceLiteral` 연산 하나**를 추가한다.
+Add exactly one operation, **`replaceLiteral`**, to the existing `createComputedData` expression union:
 
 ```js
 program.createComputedData({
@@ -40,26 +40,26 @@ program.createComputedData({
 });
 ```
 
-액션의 최상위 옵션은 `id/as/expression` 세 개다. `operand`는 기존 계산 표현식이며 평가 결과가 문자열이어야 한다. `search`는 비어 있지 않은 리터럴 문자열, `replacement`는 빈 문자열도 허용하는 리터럴 문자열이다. 정규식·플래그·콜백·동적 검색/대체 표현식은 지원하지 않는다.
+The action has three top-level options: `id/as/expression`. `operand` is an existing expression whose evaluated value must be a string. `search` is a nonempty literal string; `replacement` is a literal string and may be empty. Regular expressions, flags, callbacks and dynamic search/replacement expressions are unsupported.
 
-### 정확한 결과와 오류 정책
+### Exact result and error policy
 
-- 대소문자를 구별하며 **첫 번째 정확한 부분 문자열 하나**만 치환한다. 일치가 없으면 원래 문자열을 반환한다.
-- `$&`, `$1`, `$$` 등은 특별한 치환 문법이 없는 일반 문자다. 리터럴 검색/대체만 수행한다.
-- 빈 검색 문자열, 문자열이 아닌 검색/대체 값, 알 수 없는 키는 표현식 전체 검증 중 원자적으로 거절한다.
-- 평가된 피연산자가 null/undefined/숫자/불리언/배열/객체이면 명시적 오류를 낸다. 암묵적 문자열 변환이나 누락값의 빈 문자열 대체를 추가하지 않는다. 기존 `if`의 지연 평가로 누락 정책을 명시할 수 있다.
-- 기존 표현식 깊이16/노드128/행×노드 작업량 한도를 유지한다. 새로운 정규식 엔진, 비결정적 로캘 동작, 데이터 행 복사 우회 경로를 만들지 않는다.
+- Replace **only the first exact, case-sensitive substring occurrence**. If no match exists, return the original string.
+- `$&`, `$1`, `$$` and similar characters are ordinary literal text, without replacement-template expansion.
+- Empty search strings, nonstring search/replacement values and unknown node keys fail atomically during structural expression validation.
+- An evaluated operand that is null/undefined/a number/boolean/array/object is an explicit error. Do not add implicit string conversion or missing-to-empty coercion. Existing lazy `if` can express a missing-value policy explicitly.
+- Preserve the existing maximum depth16, node count128 and row×node work limit. Add no regular-expression engine, locale-dependent behavior or raw-data rewriting path.
 
-## 소유권과 호환성
+## Ownership and compatibility
 
-계산 문법이 새 노드의 검증·의존 필드 수집·평가를 소유한다. 기존 데이터 액션이 원본 불변 데이터셋을 보존하고 파생 데이터셋에 문자열/숫자 결과와 표현식 출처를 저장한다. 렌더러는 변경하지 않는다. `toNumber` 및 다른 기존 표현식의 의미는 바꾸지 않는다. 퍼센트 문자열을 암묵적으로 허용하는 숫자 변환이나 범용 문자열 유틸리티 모음도 추가하지 않는다.
+The computed grammar owns validation, field-dependency collection and evaluation. Existing data actions preserve immutable raw datasets and append ordinary derived rows with their original expression provenance. Renderers remain unchanged. Existing `toNumber` and every other expression retain their meanings. This does not add implicit percent-number parsing or a general string utility library.
 
-## 구현 후 필요한 검증
+## Required implementation evidence
 
-1. `%` 제거→`toNumber`→나눗셈, 일치 없음, 첫 번째만 치환, 문자열 시작/중간/끝, 빈 대체, 유니코드, 정규식 메타문자와 `$` 대체 문자가 모두 리터럴임을 검증한다.
-2. 잘못된 키/타입/빈 검색/없는 필드와 문자열이 아닌 평가 결과를 거절한다. 지연 `if`, 구조 선검증, 기존 표현식 한도, 실패 원자성을 검증한다.
-3. 호출자 표현식·원본 행·이전 프로그램 불변성, 정확한 의존성, 지속성 왕복과 파생 데이터 수정 후 재구체화를 검증한다.
-4. 실제 모양/좌표는 기존 공개 계산→필터→산점도 흐름으로 검증한다. 원본 데이터 1,988행과 범위 필터 후 1,987행이 유지되어야 한다. 그중 기존 숫자/누락값 정책으로 처리하는 Volume의 #VALUE! 8행은 실제 잉크를 만들지 않으므로 원본과 같은 1,979점이 그려져야 한다. 차트 코드는 승인 후 모델이 작성하며 이 제안에서 호스트가 번역 코드를 작성하지 않는다.
-5. 닫힌 타입, 현재 데이터 계약, 공식 표현식 문서, 액션 카드/생성 문서와 설치 패키지 소비자를 동기화하고 focused/unit/contracts/docs/installed-consumer 검사를 통과한다.
+1. Percent removal→`toNumber`→division, no match, first occurrence only, beginning/middle/end, empty replacement, Unicode, regular-expression metacharacters and dollar replacement characters remain literal.
+2. Invalid keys/types/empty search/unknown fields and nonstring evaluated operands reject. Verify lazy `if`, structural preflight, existing expression limits and failure atomicity.
+3. Caller expressions, raw rows and previous programs remain immutable. Verify exact dependencies, persistence round-trip and derived-data rematerialization after edits.
+4. Verify an ordinary public computed→filter→scatter flow. All1,988 raw rows and1,987 rows after the source range filter remain accounted for. Eight retained `Volume: "#VALUE!"` rows do not paint under existing explicit missing-value handling, yielding the original1,979 painted points. After approval, chart code is model-authored; this proposal contains no host-authored translation.
+5. Synchronize the closed types, current data contract, official expression documentation, action cards/generated references and installed-package consumer. Run focused tests, full unit/contracts/docs and installed-consumer checks.
 
-외형을 바꾸는 새 그래픽 primitive나 renderer 동작은 없다. 승인 전에는 이 기능에 의존하는 원본 가족만 보류한다.
+There is no new visual primitive or renderer behavior. Only the dependent source family waits for approval; independent chart work continues.
