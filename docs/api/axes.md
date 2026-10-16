@@ -22,6 +22,10 @@ and Canvas or scale updates, regardless of authoring order. Increase the margin
 or change offsets when space is insufficient; a failed action preserves the
 earlier program.
 
+An omitted offset for a vertical Y-axis title reserves a quarter-em ink gap when
+its estimated text box is clamped to the Canvas edge. This applies at every font
+size. Explicit offsets and preferred placement with sufficient margin stay exact.
+
 Rotated Cartesian labels stay outside their selected plot edge in both fixed-size
 and automatic-plot Canvases. `offset` measures the gap to the complete rotated
 text bounds. Vertical X-axis labels are centered over their ticks; slanted labels

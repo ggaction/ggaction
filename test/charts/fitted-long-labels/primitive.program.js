@@ -5,7 +5,7 @@ export function createFittedLongLabelsPrimitive(rows) {
     .createCanvas({
       width: 680,
       height: 420,
-      margin: { top: 60, right: 4, bottom: 79.75, left: 39.75 }
+      margin: { top: 60, right: 4, bottom: 79.75, left: 43 }
     })
     .createData({ values: rows })
     .createScatterPlot({

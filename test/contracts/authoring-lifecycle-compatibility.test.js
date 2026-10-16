@@ -151,7 +151,7 @@ const intervalRows = Object.freeze([
 
 test("keeps removed boundaries and axis components absent after revision replay", () => {
   const original = chart()
-    .createCanvas({ width: 280, height: 200, margin: 45 })
+    .createCanvas({ width: 280, height: 200, margin: 49 })
     .createData({ id: "samples", values: intervalRows })
     .createErrorBand({
       id: "band",

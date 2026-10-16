@@ -8,3 +8,22 @@ test("inferred tight-margin rotated title reserves ink clearance beyond its one-
 test("larger margins retain ordinary preferred offsets and explicit offsets stay exact",()=>{const spacious=titled(100);assert.equal(spacious.guideConfigs.axis.y.title.offset,52);const explicit=base().createAxes({x:{title:false},y:{title:{text:"Vertical total",fontSize:14,fontWeight:700,offset:44}}});assert.equal(explicit.graphicSpec.objects.yAxisTitle.properties.x,7);assert.equal(explicit.guideConfigs.axis.y.title.inferredOffset,false);});
 test("font edits, Canvas replay and persistence preserve inferred clearance without mutating earlier state",()=>{const old=titled(),edited=old.editYAxisTitle({fontSize:18}),restored=deserializeProgram(serializeProgram(edited));assert.equal(old.graphicSpec.objects.yAxisTitle.properties.x,10.5);assert.equal(edited.graphicSpec.objects.yAxisTitle.properties.x,13.5);assert.deepEqual(restored.graphicSpec,edited.graphicSpec);const resized=restored.editCanvas({width:454,margin:{left:54,top:20,right:60,bottom:80}});assert.equal(resized.graphicSpec.objects.yAxisTitle.properties.x,13.5);});
 test("inferred title edges remain mirrored for left and right axis placement",()=>{const left=titled(),right=base().createAxes({x:{title:false},y:{position:"right",title:{text:"Vertical total",fontSize:14,fontWeight:700}}});assert(left.graphicSpec.objects.yAxisTitle.properties.x>=10.5);const p=right.graphicSpec.objects.yAxisTitle.properties;assert(p.x<=451-10.5);assert.equal(p.rotation,Math.PI/2);});
+
+for (const fontSize of [11, 13, 14, 18]) {
+  test(`edge-clamped ${fontSize}px Y titles reserve ink clearance without changing explicit or spacious placement`, () => {
+    const options = {text:"Vertical total", fontSize, fontWeight:700};
+    const left = base().createAxes({x:{title:false}, y:{title:options}});
+    assert.equal(left.graphicSpec.objects.yAxisTitle.properties.x, fontSize * .75);
+    const right = base(51).editCanvas({margin:{left:51,top:20,right:51,bottom:80}})
+      .createAxes({x:{title:false}, y:{position:"right",title:options}});
+    assert.equal(right.graphicSpec.objects.yAxisTitle.properties.x, 451 - fontSize * .75);
+    const spacious = base(100).createAxes({x:{title:false},y:{title:options}});
+    assert.equal(spacious.guideConfigs.axis.y.title.offset, 52);
+    const explicit = base(100).createAxes({x:{title:false},y:{title:{...options,offset:44}}});
+    assert.equal(explicit.graphicSpec.objects.yAxisTitle.properties.x, 56);
+    const restored = deserializeProgram(serializeProgram(left));
+    assert.deepEqual(restored.graphicSpec, left.graphicSpec);
+    const resized = restored.editCanvas({width:454,margin:{left:54,top:20,right:60,bottom:80}});
+    assert.equal(resized.graphicSpec.objects.yAxisTitle.properties.x, fontSize * .75);
+  });
+}

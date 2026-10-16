@@ -94,7 +94,7 @@ function inferredTitleOffset(program, channel, config) {
   // Font ink can extend beyond the one-em layout box, especially after
   // rotating a middle-baseline title. Keep inferred edge-clamped placement
   // inside the Canvas; explicit offsets retain their exact geometry.
-  const inkClearance = channel === "y" && config.fontSize > AXIS_TITLE_FONT_SIZE &&
+  const inkClearance = channel === "y" &&
     Math.abs(Math.cos(config.rotation)) < 1e-10
     ? config.fontSize / 4 : 0;
   return preferred + (program.materializationConfigs.canvas?.plot !== undefined
