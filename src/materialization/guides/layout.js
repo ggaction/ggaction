@@ -27,6 +27,9 @@ export function withGuideLayoutTransaction(program, apply) {
         ["left", "right"].includes(config.position))) {
         result = result.rematerializeSideLegendLane();
       }
+      if (result.compositionSpec === undefined && Object.keys(result.guideConfigs.legendGroups ?? {}).length > 0) {
+        result = result.rematerializeLegendGroups();
+      }
       if (plot !== undefined && result.titleConfig !== undefined) result = result.rematerializeTitle();
       break;
     } catch (error) {

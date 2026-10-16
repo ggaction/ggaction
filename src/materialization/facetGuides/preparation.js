@@ -1,3 +1,4 @@
+import { PLOT_LEGEND_POSITIONS } from "../../layout/legend.js";
 import { isContinuousColorScaleType } from "../../grammar/scales/types.js";
 import {
   unionConcreteGraphicBounds
@@ -203,7 +204,13 @@ export function prepareSharedFacetLegend(program) {
     throw new Error("Shared facet legend has no measurable concrete bounds.");
   }
   const gradient = kinds.some(kind => ["gradient", "strokeGradient"].includes(kind));
-  const placement = promotedLegendPlacement(source, kinds);
+  const targets = new Set(kinds.map(kind => source.guideConfigs.legend[kind].target));
+  const group = targets.size === 1 ? source.guideConfigs.legendGroups?.[[...targets][0]] : undefined;
+  const insideGroup = group !== undefined && (group.placement.at !== undefined || PLOT_LEGEND_POSITIONS.includes(group.placement.position));
+  const placement = group === undefined ? promotedLegendPlacement(source, kinds)
+    : { position: insideGroup ? "right" : group.placement.position,
+        align: group.placement.align ?? "left" };
+
   const width = Math.ceil(bounds.right - bounds.left);
   return {
     mode: "promoted",
@@ -213,11 +220,12 @@ export function prepareSharedFacetLegend(program) {
     roots,
     bounds,
     compatibility,
+    ...(group === undefined ? {} : { occupiedGroup: group }),
     reservation: {
       ...placement,
-      gap: gradient ? 24 : 18,
-      width: Math.max(gradient ? 112 : 132, width),
-      height: Math.ceil(bounds.bottom - bounds.top)
+      gap: insideGroup ? 0 : gradient ? 24 : 18,
+      width: insideGroup ? 0 : Math.max(gradient ? 112 : 132, width),
+      height: insideGroup ? 0 : Math.ceil(bounds.bottom - bounds.top)
     }
   };
 }

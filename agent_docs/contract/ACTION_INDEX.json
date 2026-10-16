@@ -5164,6 +5164,7 @@
       "rematerializeLegend",
       "rematerializeLegendBackground",
       "rematerializeLegendHighlights",
+      "rematerializeLegendGroups",
       "rematerializeLegendLabels",
       "rematerializeLegendSymbolLines",
       "rematerializeLegendSymbolPoints",

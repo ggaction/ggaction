@@ -1,3 +1,4 @@
+import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { validateOptionObject } from "../../../../core/validation.js";
 import { mapOrdinalValues } from "../../../../grammar/scales/index.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
@@ -155,6 +156,7 @@ function resolveSampleBounds(program, config, width) {
 }
 
 export function resolveLayout(program, config) {
+  config = intrinsicLegendConfig(program, config);
   config = categoricalLegendView(config);
   const { plot, canvas } = resolveContinuousBounds(program,
     "Legend layout requires Canvas bounds, width, and height.");

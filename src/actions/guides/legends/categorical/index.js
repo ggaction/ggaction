@@ -29,6 +29,7 @@ import {
 } from "./symbols.js";
 import { activeConfig, noOptions, symbolGraphic } from "./layout.js";
 import {
+  rematerializeLegendGroups,
   rematerializeHorizontalLegendLane,
   rematerializeSideLegendLane
 } from "../lane.js";
@@ -138,6 +139,7 @@ export function registerBasicCategoricalLegendActions(ProgramClass) {
   ProgramClass.prototype.createLegendTitle = createLegendTitle;
   ProgramClass.prototype.rematerializeLegendTitle = rematerializeLegendTitle;
   ProgramClass.prototype.rematerializeLegend = rematerializeLegend;
+  ProgramClass.prototype.rematerializeLegendGroups = rematerializeLegendGroups;
   ProgramClass.prototype.rematerializeSideLegendLane =
     rematerializeSideLegendLane;
   ProgramClass.prototype.rematerializeHorizontalLegendLane =

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:db99d8f590787c051e844f71e607d3e1cf1447353114abc48b452129a0c157bf. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:f7b2373d7b1f9b723f8f545213f57ed32617331b3f298fa58b78aa745aa0a070. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12593,7 +12593,7 @@ Combined point-series and size legends support every edge. Continuous size
 blocks sample the domain; discrete size blocks show every interval.
 Side positions stack the blocks; horizontal positions place them in rows. A left block must
 fit outside any left y-axis guides; use sufficient margin and offset.
-Stroke-width legends support all four edges through `createLegend` and
+Stroke-width legends support all four edges and plot corners through `createLegend` and
 `editLegendLayout`. Use `layout: "edge"`, `offset`, `itemGap`, and horizontal
 `align`, `direction`, `columns`, and `titlePosition` controls. Title, count,
 label/title styles, and border are editable. Side positions require vertical
@@ -12654,7 +12654,7 @@ program.createLegend({ channels: ["size"], position: "right", count: 4 });
 
 With one size-encoded point mark, both `createLegend()` and `createGuides()`
 infer the same block. Multiple size-encoded point marks require `target`.
-Standalone size legends support all four positions, edge layout, grid controls,
+Standalone size legends support four edges and four plot corners, edge layout, grid controls,
 text styles, and borders. A size block paired with a categorical point legend
 supports every edge. Continuous size scales use evenly sampled domain values.
 Quantize, quantile, and threshold size scales show every interval and reject an
@@ -12689,7 +12689,7 @@ Every categorical legend uses the same right-side default:
 | point | inferred or selected `color` only | `right` | swatch |
 | point | inferred or selected `shape` only | `right` | typed point |
 | point + matching line | `color` + `shape` | `right` | line over typed point |
-| quantitative point size | `size` | all four edges, standalone or combined | five equal-area circles |
+| quantitative point size | `size` | four edges and four corners, standalone or combined | five equal-area circles |
 | quantitative/temporal point color | `color` | `right` | continuous gradient with five labels |
 | discretized quantitative point color | `color` | `right/left/top/bottom` | ordered interval swatches |
 | categorical supported-mark stroke | `stroke` | `right/left/top/bottom` | actual fill with mapped outline |
@@ -12705,7 +12705,9 @@ preserves its remaining shape legend.
 | `target` | compatible mark ID | current or unique compatible mark |
 | `channels` | compatible channel array; continuous guides use one `color` or `opacity` | compatible encoded channels |
 | `order` | `"scale"`, `{ values: [...] }`, or `{ channel: "x"/"y"/"theta" }`; categorical only | `"scale"` |
-| `position` | `right/left/bottom/top` | `"right"` |
+| `position` | four outside edges or `top-left/top-right/bottom-left/bottom-right` inside the plot | `"right"` |
+| `blockLayout` | `"row"`, `"column"`, or `"wrap"`; layout of all blocks owned by one target | existing edge flow; new corner group uses row |
+| `at` | finite `{ x, y }`; occupied group top-left relative to the plot | no free anchor |
 | `layout` | categorical `"edge"` or `"legacy-bottom"` | `"edge"` |
 | `align` | `"left"`, `"center"`, or `"right"` | `"center"` |
 | `direction` | `"horizontal"` or `"vertical"` | `"vertical"` at either side; `"horizontal"` at top/bottom |
@@ -12881,17 +12883,22 @@ type as the plotted consumer: an opacity legend uses point samples even for a Li
 
 | Family | Consumer and scale | Samples | Display recipe | Composition and edges |
 | --- | --- | --- | --- | --- |
-| Color gradient | Point, aggregate Bar, Rect; sequential quantitative/temporal color | Tick `count`; no explicit sampled `values` | Gradient rectangle; rejects `symbol` | Separate block; all four edges |
-| Stroke gradient | Supported stroke marks; sequential quantitative/temporal stroke | Tick `count` | Gradient rectangle; rejects `symbol` | Separate stroke block; all four edges |
-| Color/stroke interval | Compatible quantize, quantile, threshold consumer | Every interval | Filled or outlined swatches, respectively | Ordered interval block; all four edges |
-| Opacity | Point, Line; quantitative linear opacity | `count` or explicit ascending `values` | One point recipe; `type` omitted or `"point"` | Separate block; all four edges |
-| Size | Point; continuous numeric size or discrete area scale | Continuous `count`/`values`; every discrete interval | Area-scaled point symbol | Separate block; all four edges |
-| Stroke width | Line, Rule; quantitative width | `count` or explicit ascending `values` | Line sample with scaled width | Separate block; all four edges |
+| Color gradient | Point, aggregate Bar, Rect; sequential quantitative/temporal color | Tick `count`; no explicit sampled `values` | Gradient rectangle; rejects `symbol` | Separate block; four edges and four plot corners |
+| Stroke gradient | Supported stroke marks; sequential quantitative/temporal stroke | Tick `count` | Gradient rectangle; rejects `symbol` | Separate stroke block; four edges and four plot corners |
+| Color/stroke interval | Compatible quantize, quantile, threshold consumer | Every interval | Filled or outlined swatches, respectively | Ordered interval block; four edges and four plot corners |
+| Opacity | Point, Line; quantitative linear opacity | `count` or explicit ascending `values` | One point recipe; `type` omitted or `"point"` | Separate block; four edges and four plot corners |
+| Size | Point; continuous numeric size or discrete area scale | Continuous `count`/`values`; every discrete interval | Area-scaled point symbol | Separate block; four edges and four plot corners |
+| Stroke width | Line, Rule; quantitative width | `count` or explicit ascending `values` | Line sample with scaled width | Separate block; four edges and four plot corners |
 
 The [canonical compatibility tables](./api/legends/) list exact consumers; the
 [legend editor](./api/legends/editing/) owns combining and selecting blocks. Equal visible
 labels do not make independent channels a valid categorical composite. For all
 families, requested margins must contain labels, symbols, titles, and borders.
+
+Corner gradients and sampled-opacity blocks use vertical content. A corner
+anchors the complete occupied group inside the plot, including borders and
+strokes. Use [`blockLayout` and `at`](./api/legends/editing/#place-several-legend-blocks)
+to arrange independent blocks together or choose a plot-relative free anchor.
 
 ## Continuous color, stroke, and opacity
 
@@ -13015,7 +13022,7 @@ Categorical legends keep their identity labels and accept `"auto"` only.
 
 For a `quantize`, `quantile`, or `threshold` point-color or supported stroke scale, the same call
 creates ordered swatches and concrete interval labels. Interval
-legends support all four positions with `layout: "edge"`. Side legends use a
+legends support four edges and four plot corners with `layout: "edge"`. Side legends use a
 single vertical column, center alignment and a top title. At top/bottom, use
 `align`, `direction`, `columns` and `titlePosition` to arrange the item grid.
 `titlePosition: "left"` places the title beside the grid. The same controls
@@ -13177,6 +13184,47 @@ The background is rendered before every symbol layer, label, and title.
 
 # Editing Legends
 
+## Place several legend blocks
+
+`direction` and `columns` arrange items inside one block. `blockLayout` arranges
+all legend blocks owned by one target, such as color, size, and opacity:
+
+| Option | Result |
+| --- | --- |
+| `blockLayout: "row"` | One row of complete blocks, with their occupied tops aligned; never wraps |
+| `blockLayout: "column"` | A vertical stack of complete blocks |
+| `blockLayout: "wrap"` | Existing edge flow; corner wrapping uses the available inset plot width |
+| `at: { x, y }` | Complete occupied group top-left at plot origin plus the finite logical-pixel coordinates |
+
+For example, after a target's legends exist, call
+`program.editLegendLayout({ position: "bottom-right", blockLayout: "row" })`
+to move the complete group inside that plot corner. A top or bottom row may be
+wider than the plot if it fits the declared Canvas. It retains every sample,
+font, symbol and block's own item direction. An in-plot group must fit entirely
+inside its plot inset. Insufficient space produces an error; no content is
+hidden, shrunk, wrapped into an unrequested row or moved to another edge.
+
+The new fields opt into whole-target grouping. Omit `target` only when one
+eligible target is inferable. An established group supplies placement to later
+member creation when that placement is omitted; an explicitly conflicting
+member anchor is an error. A group edit moves every member atomically. If a
+layout edit supplies only `blockLayout` and existing anchors differ, supply a
+new `position` or `at` too. Calls without the new fields retain their previous
+behavior unless that target already has an established group. New multi-block
+corners default to a row; existing sides use a column and existing top/bottom
+edges retain wrapping. Native corner inset is 8 pixels, corner block gap is 24,
+and external row gap is 40.
+
+For a free anchor, use `program.editLegendLayout({ at: { x: 120, y: 40 } })`.
+The anchor measures the complete visible group, including borders and strokes,
+from the plot rectangle's origin. Negative finite coordinates are allowed when
+the group still fits the Canvas. Do not combine `at` with `position`, `align`,
+or `offset` in the same call. A later explicit `position` clears the free
+anchor; an `at` edit replaces the edge anchor. Previously stored default
+alignment and offset do not conflict with a new free anchor. New free groups
+default to a column; existing groups retain their block policy. Data, scales,
+Canvas, styles and content changes recompute the same requested placement.
+
 ## Updates and trace
 
 Legend creation and editing check the final occupied bounds against chart titles,
@@ -13222,7 +13270,7 @@ sample positions stay fixed, with a border around the visible items. Gradient an
 kind-compatible options. Both require center alignment at the left or right
 side. Gradient title placement accepts `titlePosition: "top"` through creation,
 `editLegend` and `editLegendLayout`. Every legend title style accepts only
-color and typography; use `labels.offset` for label spacing. Interval legends support all four positions and
+color and typography; use `labels.offset` for label spacing. Interval legends support the four edges and four plot corners and
 `layout: "edge"`; top/bottom grids also accept alignment, direction, columns
 and inline titles. Side positions require vertical flow, center alignment,
 a top title and one column. When changing position, omitted direction follows
@@ -13236,7 +13284,7 @@ circle stroke. Hidden titles use no space; restoring a title checks the newly
 occupied bounds before returning a program.
 
 Standalone size legends support `title`, `count`, `labels`, `titleStyle`, border,
-and four-edge layout through the same editing actions. On a Full program
+and edge/corner layout through the same editing actions. On a Full program
 with an existing standalone size legend, this fragment edits its sampled content:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -13286,15 +13334,15 @@ Size labels use a default gap of 12 pixels after the sample slot, editable throu
 32 pixels wide and expands to fit the largest circle. This replaces the previous
 center-relative offset of 28; explicit offsets now measure from the slot edge. Defaults remain size 12/normal for labels and size 13/600 for titles.
 Side size legends use title/item centers at plot top plus 20/52, an offset of 30,
-and item pitch of at least 40. Large circles or fonts expand the required spacing.
+and item pitch of at least 18. Large circles or fonts expand the required spacing.
 Partial styles and title visibility survive Canvas, scale and data updates.
 
-Stroke-width legends additionally support four-edge layout and borders on creation
+Stroke-width legends additionally support edge/corner layout and borders on creation
 and editing. Their line samples remain 32 pixels long; sample widths come from
 the encoded scale. Their common sample slot includes the widest stroke at
 both line ends. `labels.offset` is the minimum gap after this occupied slot,
 defaulting to 12 pixels. Thinner samples retain the same label column.
-The default offset is 30 and item gap is 32. Side title and
+The default offset is 30 and vertical item gap is 18. Side title and
 first sample centers are 20 and 52 pixels below the plot top. Thick side samples and large labels
 move down as needed to keep a 12-pixel gap below the title. Horizontal grids
 measure the thickest sample when allocating rows. Hidden titles do not occupy
@@ -13437,7 +13485,7 @@ program
 
 | Action | Accepted component options |
 | --- | --- |
-| `editLegendLayout` | `position`, `layout`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap` |
+| `editLegendLayout` | `position`, `blockLayout`, `at`, `layout`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap` |
 | `editLegendLabels` | `offset`, `color`, `fontSize`, `fontFamily`, `fontWeight`, continuous `format` |
 | `editLegendTitle` | `title`, `color`, `fontSize`, `fontFamily`, `fontWeight` |
 | `editLegendSymbols` | `symbol`, `count`, `gradient` |
@@ -24388,6 +24436,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
+| `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
+| `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
@@ -24485,6 +24535,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `order` | Optional / branch-dependent | `LegendOrder \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
+| `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
+| `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
@@ -24602,6 +24654,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
+| `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
+| `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
@@ -30756,6 +30810,10 @@ export interface EditLegendLayoutOptions {
   layout?: "edge" | "legacy-bottom";
   /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  /** Opt into whole-target legend group layout; a requested row never wraps. */
+  blockLayout?: "row" | "column" | "wrap";
+  /** Move the complete occupied group top-left to plot-relative logical pixels. A later position clears this anchor. */
+  at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
   /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
@@ -32751,6 +32809,10 @@ export interface LegendOptions {
   channels?: readonly ("color" | "stroke" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
   /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  /** Arrange every legend block owned by the selected target. Item direction and columns remain independent. */
+  blockLayout?: "row" | "column" | "wrap";
+  /** Occupied group top-left relative to the plot. Cannot be supplied with position, align, or offset in the same call. */
+  at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
   /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
@@ -39042,7 +39104,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:db99d8f590787c051e844f71e607d3e1cf1447353114abc48b452129a0c157bf` |
+| Contract fingerprint | `sha256:f7b2373d7b1f9b723f8f545213f57ed32617331b3f298fa58b78aa745aa0a070` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

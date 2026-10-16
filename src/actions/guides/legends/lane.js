@@ -1,3 +1,5 @@
+import { resolveLegendGroupPlacement } from "../../../layout/legendGroup.js";
+import { legendGroup } from "../../../materialization/legendGroups.js";
 import { editLegendBackground, resolveLegendBackgroundFromBounds } from "./continuous/common.js";
 import { action } from "../../../core/action.js";
 import { noOptions } from "../../../core/validation.js";
@@ -220,7 +222,7 @@ function edgeKinds(program, edge) {
     (layer, index) => [layer.id, index]
   ));
   return Object.entries(configs)
-    .filter(([kind, config]) => legendPosition(program, kind, config) === edge)
+    .filter(([kind, config]) => legendGroup(program, config.target) === undefined && legendPosition(program, kind, config) === edge)
     .sort(([kindA, configA], [kindB, configB]) =>
       (layerOrder.get(configA.target) - layerOrder.get(configB.target)) ||
       (FAMILY_ORDER[kindA] - FAMILY_ORDER[kindB])
@@ -311,7 +313,7 @@ function translateGraphic(program, id, dx, dy) {
 
 // Use the declared text-box top as the renderer anchor. A middle SVG baseline
 // depends on the font's x-height and otherwise protrudes above that box.
-function alignSideTextBoxes(program, ids) {
+function alignLegendTextBoxes(program, ids) {
   const normalize = properties => properties.textBaseline === "middle"
     ? { ...properties, y: properties.y - properties.fontSize / 2, textBaseline: "top" }
     : properties;
@@ -482,7 +484,7 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
     }
     for (const { side, entries } of plans) {
       const ids = entries.flatMap(([kind]) => existingIds(next, kind));
-      next = alignSideTextBoxes(next, ids);
+      next = alignLegendTextBoxes(next, ids);
       const bounds = unionLegendBounds(next, ids);
       const { dy } = resolveSingleSideLegendPlacement({ side, plot, canvas, bounds });
       for (const id of ids) next = translateGraphic(next, id, 0, dy);
@@ -546,6 +548,30 @@ export const rematerializeHorizontalLegendLane = /* @__PURE__ */ action(
         allowOverflow: next.materializationConfigs.canvas?.plot !== undefined
       });
       next = applyHorizontalPlan(next, horizontal, plan);
+    }
+    return next;
+  }
+);
+
+export const rematerializeLegendGroups = /* @__PURE__ */ action(
+  { op: "rematerializeLegendGroups", description: "Place each opted-in target legend group from occupied bounds." },
+  function (args = {}) {
+    noOptions(args, "rematerializeLegendGroups");
+    let next = this;
+    const plot = resolveGraphicBounds(next);
+    const canvas = findCanvasGraphic(next)?.properties;
+    for (const [target, group] of Object.entries(next.guideConfigs.legendGroups ?? {})) {
+      const entries = Object.entries(next.guideConfigs.legend ?? {}).filter(([, config]) => config.target === target)
+        .sort(([a], [b]) => FAMILY_ORDER[a] - FAMILY_ORDER[b]);
+      next = alignLegendTextBoxes(next, entries.flatMap(([kind]) => existingIds(next, kind)));
+      const blocks = entries.map(([kind]) => ({ id: kind, ids: existingIds(next, kind),
+        bounds: unionLegendBounds(next, existingIds(next, kind)) }));
+      const placements = resolveLegendGroupPlacement({ blocks, group, plot, canvas,
+        allowOverflow: next.materializationConfigs.canvas?.plot !== undefined });
+      for (const placement of placements) {
+        const block = blocks.find(item => item.id === placement.id);
+        for (const id of block.ids) next = translateGraphic(next, id, placement.dx, placement.dy);
+      }
     }
     return next;
   }

@@ -20,7 +20,7 @@ function makeFocusedLegendEdit({ name, options, map }) {
 const editLegendLayout = /* @__PURE__ */ makeFocusedLegendEdit({
   name: "editLegendLayout",
   options: [
-    "position", "layout", "align", "direction", "columns", "offset",
+    "position", "layout", "align", "direction", "columns", "offset", "blockLayout", "at",
     "titlePosition", "itemGap"
   ],
   map: args => args

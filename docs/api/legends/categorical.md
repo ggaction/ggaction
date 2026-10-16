@@ -39,7 +39,7 @@ program.createLegend({ channels: ["size"], position: "right", count: 4 });
 
 With one size-encoded point mark, both `createLegend()` and `createGuides()`
 infer the same block. Multiple size-encoded point marks require `target`.
-Standalone size legends support all four positions, edge layout, grid controls,
+Standalone size legends support four edges and four plot corners, edge layout, grid controls,
 text styles, and borders. A size block paired with a categorical point legend
 supports every edge. Continuous size scales use evenly sampled domain values.
 Quantize, quantile, and threshold size scales show every interval and reject an
@@ -74,7 +74,7 @@ Every categorical legend uses the same right-side default:
 | point | inferred or selected `color` only | `right` | swatch |
 | point | inferred or selected `shape` only | `right` | typed point |
 | point + matching line | `color` + `shape` | `right` | line over typed point |
-| quantitative point size | `size` | all four edges, standalone or combined | five equal-area circles |
+| quantitative point size | `size` | four edges and four corners, standalone or combined | five equal-area circles |
 | quantitative/temporal point color | `color` | `right` | continuous gradient with five labels |
 | discretized quantitative point color | `color` | `right/left/top/bottom` | ordered interval swatches |
 | categorical supported-mark stroke | `stroke` | `right/left/top/bottom` | actual fill with mapped outline |
@@ -90,7 +90,9 @@ preserves its remaining shape legend.
 | `target` | compatible mark ID | current or unique compatible mark |
 | `channels` | compatible channel array; continuous guides use one `color` or `opacity` | compatible encoded channels |
 | `order` | `"scale"`, `{ values: [...] }`, or `{ channel: "x"/"y"/"theta" }`; categorical only | `"scale"` |
-| `position` | `right/left/bottom/top` | `"right"` |
+| `position` | four outside edges or `top-left/top-right/bottom-left/bottom-right` inside the plot | `"right"` |
+| `blockLayout` | `"row"`, `"column"`, or `"wrap"`; layout of all blocks owned by one target | existing edge flow; new corner group uses row |
+| `at` | finite `{ x, y }`; occupied group top-left relative to the plot | no free anchor |
 | `layout` | categorical `"edge"` or `"legacy-bottom"` | `"edge"` |
 | `align` | `"left"`, `"center"`, or `"right"` | `"center"` |
 | `direction` | `"horizontal"` or `"vertical"` | `"vertical"` at either side; `"horizontal"` at top/bottom |

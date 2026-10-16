@@ -18644,6 +18644,16 @@
           "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
         },
         {
+          "name": "blockLayout",
+          "required": false,
+          "type": "\"column\" | \"row\" | \"wrap\" | undefined"
+        },
+        {
+          "name": "at",
+          "required": false,
+          "type": "{ x: number; y: number; } | undefined"
+        },
+        {
           "name": "align",
           "required": false,
           "type": "\"center\" | \"left\" | \"right\" | undefined"
@@ -18715,7 +18725,7 @@
         }
       ],
       "callPatterns": [
-        "createLegend({ target?, layout?, overflow?, order?, channels?, position?, align?, direction? })"
+        "createLegend({ target?, layout?, overflow?, order?, channels?, position?, blockLayout?, at? })"
       ],
       "snippet": "program.createLegend({})",
       "errors": [],
@@ -18835,6 +18845,16 @@
           "name": "position",
           "required": false,
           "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
+        },
+        {
+          "name": "blockLayout",
+          "required": false,
+          "type": "\"column\" | \"row\" | \"wrap\" | undefined"
+        },
+        {
+          "name": "at",
+          "required": false,
+          "type": "{ x: number; y: number; } | undefined"
         },
         {
           "name": "align",
@@ -19115,6 +19135,16 @@
           "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
         },
         {
+          "name": "blockLayout",
+          "required": false,
+          "type": "\"column\" | \"row\" | \"wrap\" | undefined"
+        },
+        {
+          "name": "at",
+          "required": false,
+          "type": "{ x: number; y: number; } | undefined"
+        },
+        {
           "name": "align",
           "required": false,
           "type": "\"center\" | \"left\" | \"right\" | undefined"
@@ -19146,7 +19176,7 @@
         }
       ],
       "callPatterns": [
-        "editLegendLayout({ target?, layout?, position?, align?, direction?, columns?, offset?, titlePosition? })"
+        "editLegendLayout({ target?, layout?, position?, blockLayout?, at?, align?, direction?, columns? })"
       ],
       "snippet": "program.editLegendLayout({ layout: \"edge\" })",
       "errors": [],

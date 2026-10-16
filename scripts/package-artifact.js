@@ -23,8 +23,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 555, // One optional plot-border action module.
-  packedBytes: 782_000,
+  entries: 559, // Four target-owned legend-group modules.
+  packedBytes: 787_000, // Measured 784,495 bytes after scoped JavaScript compaction.
   unpackedBytes: 3_900_000
 });
 
@@ -92,7 +92,13 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/materialization/facets.js",
   "src/materialization/facetHeaders.js",
   "src/materialization/guides/layout.js",
-  "src/materialization/guides/resources.js"
+  "src/materialization/guides/resources.js",
+  "src/actions/guides/legends/group.js",
+  "src/actions/guides/legends/lane.js",
+  "src/actions/guides/legends/edit.js",
+  "src/grammar/legendGroups.js",
+  "src/layout/legendGroup.js",
+  "src/materialization/legendGroups.js"
 ]);
 
 export function compactPackageJavaScript(source, { keepNames = true } = {}) {

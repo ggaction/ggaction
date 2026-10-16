@@ -89,6 +89,35 @@ async function testNodeConsumer(directory) {
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
+    for (const factory of [chart, basicChart]) {
+      let grouped = factory().createCanvas({ width: 1000, height: 800, margin: 100 })
+        .createData({ values: [{ x: 1, y: 2, g: "A", n: 1 }, { x: 2, y: 3, g: "B", n: 2 }] })
+        .createPointMark({ id: "groupedPoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+        .encodeColor({ field: "g" }).encodeSize({ field: "n" });
+      if (factory === chart) grouped = grouped.encodeOpacity({ field: "n" });
+      grouped = grouped.createLegend({ channels: ["color"], position: "top-left", blockLayout: "row" })
+        .createLegend({ channels: ["size"], count: 2 });
+      if (factory === chart) grouped = grouped.createLegend({ channels: ["opacity"], count: 2 });
+      assert.deepEqual(grouped.guideConfigs.legendGroups.groupedPoints, {
+        placement: { position: "top-left", align: "center", offset: 8 }, blockLayout: "row"
+      });
+      assert.ok(renderToSVG(grouped).includes("<svg"));
+      if (factory === chart) {
+        const free = grouped.editLegendLayout({ at: { x: 201, y: 79 } });
+        assert.deepEqual(free.guideConfigs.legendGroups.groupedPoints, {
+          placement: { at: { x: 201, y: 79 } }, blockLayout: "row"
+        });
+        const restored = deserializeProgram(serializeProgram(free));
+        assert.deepEqual(restored.graphicSpec, free.graphicSpec);
+        assert.deepEqual(restored.editCanvas({ width: 1001 }).editCanvas({ width: 1000 }).graphicSpec, free.graphicSpec);
+        const removedOwner = free.removeLegend()
+          .createLegend({ channels: ["opacity"], at: { x: 10, y: 10 } })
+          .encodeOpacity({ value: 0.5 }).removeMark({ target: "groupedPoints" });
+        assert.equal(removedOwner.guideConfigs.legendGroups, undefined);
+        assert.doesNotThrow(() => deserializeProgram(serializeProgram(removedOwner)));
+      }
+    }
+
     const program = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
       .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
@@ -1461,7 +1490,7 @@ async function testNodeConsumer(directory) {
       const columns = source.createLegend({ position, columns: 2 });
       assert.equal(new Set(columns.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.x)).size, 2);
       if (factory === chart) {
-        assert.deepEqual(source.createLegend({ position: "top", columns: 2, itemGap: 28 })
+        assert.deepEqual(source.createLegend({ position: "top", columns: 2, itemGap: 18 })
           .editLegendLayout({ position, columns: 1 }).graphicSpec, p.graphicSpec);
       }
     }
@@ -1692,7 +1721,7 @@ async function testNodeConsumer(directory) {
       assert.ok(renderToSVG(edge).startsWith("<svg "));
       if (create === chart) {
         assert.deepEqual(edge.editLegend({ position: "top", columns: 2, title: false }).graphicSpec,
-          source.createLegend({ channels: ["size"], position: "top", columns: 2, count: 3, border: true })
+          source.createLegend({ channels: ["size"], position: "top", columns: 2, count: 3, border: true, itemGap: ["left", "right"].includes(position) ? 18 : 40 })
             .editLegend({ title: false }).graphicSpec);
       }
     }
@@ -1852,7 +1881,7 @@ async function testNodeConsumer(directory) {
       const edge = roomy.createLegend({ channels: ["strokeWidth"], position, count: 3, border: true });
       assert.equal(edge.guideConfigs.legend.strokeWidth.position, position);
       assert.deepEqual(edge.editLegend({ position: "top", columns: 2, title: false }).graphicSpec,
-        roomy.createLegend({ channels: ["strokeWidth"], position: "top", columns: 2, count: 3, border: true })
+        roomy.createLegend({ channels: ["strokeWidth"], position: "top", columns: 2, count: 3, border: true, itemGap: ["left", "right"].includes(position) ? 18 : 32 })
           .editLegend({ title: false }).graphicSpec);
       assert.ok(renderToSVG(edge).includes("stroke-width"));
     }
@@ -4666,6 +4695,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "violin-plot",
       "polar-radar-rug-strip-ecdf-facades",
       "right-categorical-legend-offset",
+      "grouped-corner-and-free-legend-placement",
       "sequential-palette-count",
       "typescript",
       "basic-entry-runtime-and-types",

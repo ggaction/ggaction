@@ -16,17 +16,22 @@ type as the plotted consumer: an opacity legend uses point samples even for a Li
 
 | Family | Consumer and scale | Samples | Display recipe | Composition and edges |
 | --- | --- | --- | --- | --- |
-| Color gradient | Point, aggregate Bar, Rect; sequential quantitative/temporal color | Tick `count`; no explicit sampled `values` | Gradient rectangle; rejects `symbol` | Separate block; all four edges |
-| Stroke gradient | Supported stroke marks; sequential quantitative/temporal stroke | Tick `count` | Gradient rectangle; rejects `symbol` | Separate stroke block; all four edges |
-| Color/stroke interval | Compatible quantize, quantile, threshold consumer | Every interval | Filled or outlined swatches, respectively | Ordered interval block; all four edges |
-| Opacity | Point, Line; quantitative linear opacity | `count` or explicit ascending `values` | One point recipe; `type` omitted or `"point"` | Separate block; all four edges |
-| Size | Point; continuous numeric size or discrete area scale | Continuous `count`/`values`; every discrete interval | Area-scaled point symbol | Separate block; all four edges |
-| Stroke width | Line, Rule; quantitative width | `count` or explicit ascending `values` | Line sample with scaled width | Separate block; all four edges |
+| Color gradient | Point, aggregate Bar, Rect; sequential quantitative/temporal color | Tick `count`; no explicit sampled `values` | Gradient rectangle; rejects `symbol` | Separate block; four edges and four plot corners |
+| Stroke gradient | Supported stroke marks; sequential quantitative/temporal stroke | Tick `count` | Gradient rectangle; rejects `symbol` | Separate stroke block; four edges and four plot corners |
+| Color/stroke interval | Compatible quantize, quantile, threshold consumer | Every interval | Filled or outlined swatches, respectively | Ordered interval block; four edges and four plot corners |
+| Opacity | Point, Line; quantitative linear opacity | `count` or explicit ascending `values` | One point recipe; `type` omitted or `"point"` | Separate block; four edges and four plot corners |
+| Size | Point; continuous numeric size or discrete area scale | Continuous `count`/`values`; every discrete interval | Area-scaled point symbol | Separate block; four edges and four plot corners |
+| Stroke width | Line, Rule; quantitative width | `count` or explicit ascending `values` | Line sample with scaled width | Separate block; four edges and four plot corners |
 
 The [canonical compatibility tables](../legends.md) list exact consumers; the
 [legend editor](./editing.md) owns combining and selecting blocks. Equal visible
 labels do not make independent channels a valid categorical composite. For all
 families, requested margins must contain labels, symbols, titles, and borders.
+
+Corner gradients and sampled-opacity blocks use vertical content. A corner
+anchors the complete occupied group inside the plot, including borders and
+strokes. Use [`blockLayout` and `at`](./editing.md#place-several-legend-blocks)
+to arrange independent blocks together or choose a plot-relative free anchor.
 
 ## Continuous color, stroke, and opacity
 
@@ -170,7 +175,7 @@ Categorical legends keep their identity labels and accept `"auto"` only.
 
 For a `quantize`, `quantile`, or `threshold` point-color or supported stroke scale, the same call
 creates ordered swatches and concrete interval labels. Interval
-legends support all four positions with `layout: "edge"`. Side legends use a
+legends support four edges and four plot corners with `layout: "edge"`. Side legends use a
 single vertical column, center alignment and a top title. At top/bottom, use
 `align`, `direction`, `columns` and `titlePosition` to arrange the item grid.
 `titlePosition: "left"` places the title beside the grid. The same controls

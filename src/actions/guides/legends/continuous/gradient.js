@@ -1,3 +1,4 @@
+import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { mapContinuousScaleValues, transformedTicks } from "../../../../grammar/scales/index.js";
 import { action, closedAction } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
@@ -29,6 +30,7 @@ export const DEFAULT_GRADIENT_SIZE = Object.freeze({ length: 120, thickness: 12 
 const GRADIENT_OPTIONS = Object.freeze(["length", "thickness"]);
 
 export function resolveGradientLayout(program, config, scale, label = "Gradient legend") {
+  config = intrinsicLegendConfig(program, config);
   const { plot, canvas } = resolveContinuousBounds(program);
   const vertical = ["right", "left"].includes(config.position);
   const length = config.gradient.length;

@@ -1,3 +1,4 @@
+import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { resolveLegendItemLayout } from "../../../../layout/legendItems.js";
 import { action, closedAction } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
@@ -104,6 +105,7 @@ export function resolveIntervalConfig(program, stored, channel = "color") {
 }
 
 export function resolveIntervalLayout(program, config, scale, label = "Interval legend") {
+  config = intrinsicLegendConfig(program, config);
   const { plot, canvas } = resolveContinuousBounds(program);
   const labels = formatDiscretizedIntervals(scale.thresholds, config.labels.format);
   const layout = resolveLegendItemLayout(plot, config, labels, config.symbol, undefined, program.materializationConfigs.textMetrics);

@@ -1218,6 +1218,18 @@ Family action은 scale/content/appearance를 검증하고 intrinsic concrete rec
 
 `layout/legendLane.js`는 family-independent concrete block을 edge별로 배치한다. Wrapped side/horizontal lane owner만 그 계산 결과를 graphics에 적용한다. Border와 title을 포함한 occupied bounds로 최종 Canvas/guide collision을 검증한다. Multi-block packaging과 single-block alignment를 혼동하지 않는다. Legacy-bottom은 별도 명시된 placement 계약이며 option 존재 여부로 추측하지 않는다.
 
+Opt-in 다중 블록 배치와 자유 좌표는 `materializationConfigs.guides.legendGroups[target]`이 소유한다.
+이 map의 placement와 blockLayout이 그룹의 유일한 effective anchor/packing intent이며 멤버 목록은 현재 target의
+legend config에서 도출한다. 기존 family config는 항목·스타일·legacy 배치 intent를 유지하고,
+`materialization/legendGroups.js`가 그룹 상태를 읽어 임시 intrinsic frame을 투영한다. 이 투영값을 저장하거나
+renderer에 의미 상태를 전달하지 않는다. 모든 family가 concrete block을 만든 뒤 기존 guide transaction이
+wrapped `rematerializeLegendGroups`를 명시적으로 호출한다. 순수 `layout/legendGroup.js`는 stroke·text·border를
+포함한 occupied 사각형을 packing하고 전체 그룹의 위치를 계산한다. 새 필드 없는 비그룹 경로는 기존 lane을
+그대로 사용한다. 그룹 상태의 closed schema는 `grammar/legendGroups.js`가 authoring과 persistence에 공유하며,
+target map key는 기존 resource reference collector에 mark reference로 등록한다. Shared facet/repeat는 retained
+source의 그룹 정책을 검증·승격하고 composed plot bounds에서 같은 occupied placement를 적용한다.
+정확한 옵션·전환·공간 부족 계약은 [LEGEND_AND_TITLE](contract/current/LEGEND_AND_TITLE.md)이 소유한다.
+
 `actions/guides/legends/lifecycle.js`가 categorical creation/content replacement/removal의 공통 owner다. Automatic symbol recipe는 현재 companion에서 다시 결정하고 explicit recipe는 보존한다. Stable logical block override는 channel-set identity로 config에 저장하며 graphic ID/display index를 authoritative state로 쓰지 않는다. Family transition은 compatible override만 이동시키고 충돌을 원자적으로 거부한다.
 
 `grammar/valueFormat.js`는 명시된 numeric/UTC token parsing과 formatting을 공유한다. Auto formatting은 각 surface의 기존 의미를 유지한다. Semantic label을 그리는 renderer가 format이나 sample을 다시 추론하지 않는다. Option, spacing, edge, block lifecycle의 상세는 [LEGEND_AND_TITLE](contract/current/LEGEND_AND_TITLE.md)가 소유한다.
@@ -1966,3 +1978,7 @@ Side legend 전체 occupied-top 정렬과 guide transaction replay 보강 후 pa
 Opt-in plot border intent는 기존 materializationConfigs.canvas.plotBorder가 소유한다. Canvas domain action은 wrapped rematerializePlotBorder를 명시적으로 호출하며 기존 layout dependency plan이 Canvas/guide sizing replay에 이를 포함한다. 기존 rect schema/renderer만 소비하고 compiler나 새 backend state를 추가하지 않는다. 선은 plot 안쪽이며 ordinary mark placement는 frame 앞을 사용하여 axes 아래의 frame 순서를 보존한다.
 Plot border 전용 wrapped-action module 1개 추가로 packed entry 실측555가 기존554한도를 초과하므로 entries 한도만555로 조정한다. Byte 한도는 유지한다.
 Plot border 포함 packed 실측780,011bytes와 검색 payload810,074bytes가 기존780,000/810,000한도를 넘었다. 각각782,000/811,000bytes로 좁게 조정하며 unpacked byte 및 SVG 한도는 유지한다.
+
+승인된 그룹 범례 배치에 authoring preflight, closed grammar, pure packing, materialization owner의 runtime module4개가 추가되어 packed entry 한도를555에서559로 조정한다. 새4module과 변경된lane/edit에 기존 staging compaction을 적용한 뒤 packed 실측784,495bytes가 기존782,000bytes를 초과하여 한도를787,000bytes로 조정한다. Unpacked3,900,000bytes 한도는 유지하며 이전 entry/packed 한도 통과로 보고하지 않는다.
+
+그룹 범례 배치의 installed browser consumer 실측 gzip은 Full385,290bytes / Basic185,611bytes로 기존382,000/183,000bytes를 초과한다. 기능을 유지하며 각각386,000/186,000bytes로 한도를 조정하고 SVG25,000bytes는 유지한다. 이전 한도 통과로 보고하지 않는다.

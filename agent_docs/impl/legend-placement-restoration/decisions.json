@@ -41,12 +41,15 @@
   "atToPositionClearsAt": true,
   "positionToAtReplacesAnchor": true,
   "inheritance": "확립된 same-target 그룹은 이후 생략된 멤버 placement를 상속한다. 명시적 충돌은 거부하며 그룹 편집은 전원을 함께 옮긴다.",
-  "implementationStarted": false,
+  "implementationStarted": true,
   "requestApprovalBeforeImplementation": true,
   "approval": {
     "source": "direct human reply in the translation task",
     "questionItemId": "[\"request_user_input_async\",\"call_c7ab5eaa31f44ae28c5aa8b2cecaf75b\",0]",
     "answer": "설계대로 구현 (권장)",
     "recordedAt": "2026-10-16T05:04:32.871229+00:00"
-  }
+  },
+  "implementationStatus": "library-implemented-validated",
+  "translationIntegrationAtLibraryCheckpoint": "pending-exact-pin-and-existing-family-retranslation",
+  "implementationEvidence": "implementation-evidence.json"
 }

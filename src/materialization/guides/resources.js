@@ -23,8 +23,14 @@ export function resolveGuideCollisionBlocks(graphicSpec, guideConfigs, titleConf
   const combined = categorical !== undefined && configs.size !== undefined &&
     configs[categorical.kind].target === configs.size.target &&
     (configs.size.inheritPosition !== false || configs[categorical.kind].position === configs.size.position);
+  const groups = guideConfigs.legendGroups ?? {};
+  for (const [target, group] of Object.entries(groups)) {
+    const ids = policies.filter(policy => configs[policy.kind]?.target === target).flatMap(policy => policy.graphicIds);
+    append(`${target} legend group`, "legend", group.placement.position ?? "free", ids);
+  }
   for (const policy of policies) {
     const config = configs[policy.kind];
+    if (groups[config?.target] !== undefined) continue;
     if (config === undefined || combined && policy.kind === "size") continue;
     const ids = combined && policy === categorical
       ? [...policy.graphicIds, ...policies.find(item => item.kind === "size").graphicIds]

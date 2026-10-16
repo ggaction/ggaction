@@ -482,7 +482,7 @@
   },
   "/api/legends/editing/": {
     "title": "Editing Legends",
-    "description": "Legend creation and editing check the final occupied bounds against chart titles, Cartesian axis components and independent legend groups on the same edge.",
+    "description": "direction and columns arrange items inside one block. blockLayout arranges all legend blocks owned by one target, such as color, size, and opacity:",
     "image": "/assets/images/cars-density-area.png"
   },
   "/concepts/chart-program/": {

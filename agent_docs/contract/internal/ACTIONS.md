@@ -58,6 +58,7 @@ domain action을 통해서만 실행한다.
 | `rematerializeGrid` | grid aggregate and Canvas actions |
 | `rematerializeHorizontalGrid` | horizontal grid and Canvas actions |
 | `rematerializeHorizontalLegendLane` | top/bottom single occupied-bound alignment, multi-block packing and final Canvas fit |
+| `rematerializeLegendGroups` | Target-owned group occupied-bounds packing and final plot/Canvas fit |
 | `rematerializeRadialGrid` | radial grid, scale, and Canvas actions |
 | `rematerializeLegend` | legend, encoding, scale, and Canvas actions |
 | `rematerializeLegendBackground` | categorical legend border/background component |

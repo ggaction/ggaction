@@ -1,3 +1,4 @@
+import { PLOT_LEGEND_POSITIONS, isPlotLegend } from "../../../../layout/legend.js";
 import { isContinuousColorScaleType } from "../../../../grammar/scales/types.js";
 import { isPlainObject } from "../../../../core/immutable.js";
 import { resolveTextBounds } from "../../../../core/textMetrics.js";
@@ -46,7 +47,7 @@ const TEXT_OPTIONS = [
 const BORDER_OPTIONS = [
   "color", "lineWidth", "padding", "background"
 ];
-const POSITIONS = ["right", "left", "top", "bottom"];
+const POSITIONS = ["right", "left", "top", "bottom", ...PLOT_LEGEND_POSITIONS];
 const DEFAULT_LABELS = {
   offset: 12,
   color: DEFAULT_COLORS.text,
@@ -75,7 +76,7 @@ export function normalizeInitialLegendTitle(title, fallback) {
 }
 
 export function normalizeItemLegendConfig(args, encoding, itemGap) {
-  const side = ["right", "left"].includes(args.position ?? "right");
+  const side = ["right", "left"].includes(args.position ?? "right") || isPlotLegend(args);
   const direction = args.direction ?? (side ? "vertical" : "horizontal");
   const defaultGap = direction === "vertical" ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : itemGap;
   return {
@@ -173,7 +174,7 @@ export function normalizeContinuousLegend(args, kind) {
     }
     validateGeneratedItemLimit(count, "Continuous legend count");
   }
-  const offset = args.offset ?? 30;
+  const offset = args.offset ?? (isPlotLegend({ position }) ? 8 : 30);
   validateNonNegative(offset, "Legend offset");
   const titlePosition = args.titlePosition ?? "top";
   if (!["top", "left"].includes(titlePosition)) {
@@ -187,7 +188,7 @@ export function normalizeContinuousLegend(args, kind) {
       "Only horizontal opacity legends support left titlePosition."
     );
   }
-  const itemGap = args.itemGap ?? (kind === "opacity" && ["right", "left"].includes(position)
+  const itemGap = args.itemGap ?? (kind === "opacity" && (["right", "left"].includes(position) || isPlotLegend({ position }))
     ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : titlePosition === "left" ? 20 : 28);
   validatePositive(itemGap, "Legend itemGap");
   if (kind === "gradient") {
@@ -355,7 +356,7 @@ export function resolveLegendTextBounds(position, text, style, profile) {
 export function assertLegendBoundsInsideCanvas(bounds, canvas, label, config) {
   // Outside content is intrinsic until its shared edge lane places the final
   // concrete bounds. In-plot and legacy layouts validate their own anchors.
-  if (isHorizontalEdgeLegend(config) || ["left", "right"].includes(config?.position)) return;
+  if (config?.groupIntrinsic || isHorizontalEdgeLegend(config) || ["left", "right"].includes(config?.position)) return;
   if (bounds.some(item =>
     item.left < 0 || item.right > canvas.width ||
     item.top < 0 || item.bottom > canvas.height
@@ -387,7 +388,7 @@ export function resolveLegendBackgroundFromBounds(
   y -= border.padding;
   right += border.padding;
   bottom += border.padding;
-  if (!isHorizontalEdgeLegend(config) && !["left", "right"].includes(config?.position) && (
+  if (!config?.groupIntrinsic && !isHorizontalEdgeLegend(config) && !["left", "right"].includes(config?.position) && (
     x - strokeExtent < 0 || y - strokeExtent < 0 ||
     right + strokeExtent > canvas.width ||
     bottom + strokeExtent > canvas.height
@@ -412,8 +413,8 @@ export function editLegendBackground(program, id, bounds, border) {
 
 export function normalizeItemLegendLayout(args) {
   const position = args.position ?? "right";
-  if (!["right", "left", "top", "bottom"].includes(position)) throw new Error(`Unsupported legend position "${position}".`);
-  const side = ["left", "right"].includes(position);
+  if (!POSITIONS.includes(position)) throw new Error(`Unsupported legend position "${position}".`);
+  const side = ["left", "right"].includes(position) || isPlotLegend({ position });
   const layout = args.layout === undefined ? "edge" : args.layout;
   if (layout !== "edge") throw new Error('This legend requires layout "edge".');
   const align = args.align ?? "center";
@@ -427,7 +428,7 @@ export function normalizeItemLegendLayout(args) {
   if (side && (direction !== "vertical" || align !== "center" || (columns !== undefined && columns !== 1) || titlePosition !== "top")) {
     throw new Error("Side item legends require vertical direction, center alignment, top title and one column.");
   }
-  const offset = args.offset ?? 30;
+  const offset = args.offset ?? (isPlotLegend({ position }) ? 8 : 30);
   const itemGap = args.itemGap ?? (direction === "vertical" ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : 28);
   validateNonNegative(offset, "Legend offset");
   validatePositive(itemGap, "Legend itemGap");

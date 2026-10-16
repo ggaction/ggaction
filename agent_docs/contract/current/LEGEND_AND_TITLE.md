@@ -41,8 +41,8 @@ type TitleWrap = "word" | "character";
 - Sampled opacity legend는 active quantitative opacity scale이 있는 Point와 Line을 지원한다.
   Line도 기존 circle sample recipe를 사용하며 constant assignment는 자신의 opacity block만 제거한다.
 
-- Signature: `createLegend({ target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
-- Categorical-only `position`은 plot 내부 네 corner도 지원한다. Offset은 painted border/content의
+- Signature: `createLegend({ target?, channels?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
+- 모든 legend family의 `position`은 plot 내부 네 corner도 지원한다. Corner gradient는 vertical이며 sampled opacity는 vertical items를 사용한다. Offset은 painted border/content의
   plot 안쪽 간격이며 border padding을 추가 예약한다. 기본 vertical/1-column/top-title,
   align center다. 전체 내용이 plot에 맞지 않으면 atomic 오류이며 outer lane은 예약하지 않는다.
 - `overflow?: false | { maxItems: PositiveInteger; summary?: "ellipsis-count" }`는 categorical
@@ -51,6 +51,11 @@ type TitleWrap = "word" | "character";
   materialized label text와 wrapped text update trace에 노출한다. Order/labelMap/scale/data 수정,
   resize, editLegend 및 overflow:false reset을 지원한다. Continuous/sampled combined와 shared
   facet promotion은 기존 edge 계약을 유지한다.
+- `blockLayout?: "row" | "column" | "wrap"`과 `at?: {x:Finite,y:Finite}`는 선택된 하나의 target이 소유한 모든 범례 block의 명시적 그룹 배치다. `direction`/`columns`는 각 block 내부 items만 다루며 group 배치가 sample·글꼴·심볼·순서를 바꾸지 않는다. Target이 모호하면 명시해야 하며 첫 resource를 선택하지 않는다.
+- 새 옵션 없는 기존 edge call은 기존 선택/배치를 보존한다. 새 옵션 또는 새 multi-corner가 group에 opt-in한다. 그룹의 effective placement는 target-owned group 설정이 권위이며 각 family의 intrinsic legacy position은 이를 덮어쓰지 않는다. Group의 새 member는 생략된 placement를 상속하며 명시적으로 충돌하는 anchor는 거부한다. Group layout edit는 전원을 원자적으로 옮긴다. `blockLayout`만 주었는데 기존 anchor가 여럿이면 새 position/at를 요구한다.
+- `row`는 occupied top을 맞춰 한 줄, `column`은 세로 stack, `wrap`은 edge별 기존 wrapping이다. Corner wrap은 inset 폭을 사용한다. Stable family order를 유지한다. 기존 side column/top-bottom wrap은 바꾸지 않고 새 multi-corner 기본은 row, 새 free group 기본은 column이다. Corner inset8, corner block gap24, external row gap40이며 명시적 group offset은 finite/nonnegative다. Corner로 새로 들어갈 때 offset 생략은8로 정규화하며 기존 member의 normalized8/30 차이를 충돌로 보지 않는다.
+- External row는 plot 폭을 넘을 수 있지만 모든 occupied content/border/stroke가 Canvas 안에 들어가야 한다. Corner group은 전체 union이 plot inset 안에 들어가야 한다. 공간 부족은 atomic error이며 자동 wrap·글꼴/심볼 축소·항목 생략·Canvas 확대·오른쪽 fallback을 하지 않는다.
+- `at`는 occupied group top-left를 `(plot.left+x,plot.top+y)`에 고정한다. 유한한 음수도 Canvas 안에 들어가면 허용하며 누락/추가 key·NaN·Infinity는 거부한다. 같은 call의 position/align/offset과 충돌하지만 기존 normalized default는 충돌이 아니다. at edit는 edge anchor를 대체하고 position edit는 at를 해제한다. Group policy는 data/scale/Canvas/content/style 및 remove/recreate 재생을 통해 유지되며 입력/이전 program은 불변이다.
 - `target`: compatible mark ID; 생략하면 current 또는 유일한 eligible mark를 추론한다. Sequential gradient는
   point와 aggregate bar를 지원한다.
 - `order`: categorical 전용 `"scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" }`.
@@ -86,8 +91,7 @@ type TitleWrap = "word" | "character";
   공존하고 size scale edit, Canvas edit, persistence replay로 같은 geometry를 유지한다.
 - Explicit `["strokeWidth"]` 또는 유일한 stroke-width-only line/rule은 standalone stroke-width legend를 선택한다.
   Full에서 encoded quantitative scale을 사용하며 count와 네 방향 edge/grid/layout, text styles, border를 지원한다. Basic에는 strokeWidth encoding/family가 없으며 이 변경에서 추가하지 않는다.
-- `position`: categorical과 continuous color/stroke/opacity는 left를 포함한 네 방향을 지원한다.
-  combined point-size legend도 네 방향 edge position을 사용한다. chart-independent default는 `"right"`다.
+- `position`: 모든 family는 네 edge와 네 plot corner를 지원한다. chart-independent default는 `"right"`다.
 - `align`: `"left" | "center" | "right"`, 기본 center. right와 left side position은
   모든 family에서 center만 허용한다. Gradient/opacity도 non-center side alignment를 거절한다. Horizontal non-center legend를 side로 옮길 때는 같은 edit에서 align center를 명시해야 한다.
 - `direction`: `"horizontal" | "vertical"`; top/bottom item-grid fill order는 기본 horizontal이다. Categorical left/right는 기본/필수 vertical이며 columns는 양의 정수, 기본1이다. titlePosition top만 허용한다. Horizontal direction/left title은 오류다. 기존 horizontal grid를 side로 옮길 때 열 수는 유지할 수 있고 titlePosition top으로 맞춘다. Evidence: `test/unit/actions/guides/categorical-side-options.test.js`.
@@ -163,11 +167,14 @@ type TitleWrap = "word" | "character";
 
 ### Formal values — `createLegend`
 
-- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; position?: LegendPosition; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; values?: readonly number[]; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
+- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; position?: LegendPosition; blockLayout?: "row" | "column" | "wrap"; at?: { x: Finite; y: Finite }; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; values?: readonly number[]; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createLegend`
+
+- ✅ Covered: 모든 Full/Basic 지원 family의 네 corner와 free occupied anchor, 3-block row, plot보다 넓은 external row의 Canvas fit, invalid/conflicting anchor 및 불변성 (`test/unit/actions/guides/grouped-legend-placement.test.js`, 독립 `test/oracles/legend-occupied.js`).
+- ✅ Covered: group 단일 owner, member inheritance, atomic anchor 전환, persisted state validation와 removal (`test/unit/actions/guides/legend-group-state.test.js`).
 
 - ✅ Covered: interval four edges in Full/Basic, all16 edge edits, columns/direction/inline title, content replacement, remove/recreate, multi-block lane and Canvas replay (`test/unit/actions/guides/interval-legend-edges.test.js`, `test/contracts/interval-legend-edges.test.js`).
 - ✅ Covered: hidden gradient/opacity/interval title bounds, borders, Canvas resize and atomic title restoration, inline opacity (`test/unit/actions/guides/hidden-legend-bounds.test.js`).
@@ -249,7 +256,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegend`
 
-- Signature: `editLegend({ target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
+- Signature: `editLegend({ target?, channels?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
 - `target` selects an existing logical legend by mark ID. It may be omitted only when exactly one target owns all
   active blocks; independent targets are ambiguous.
 - At least one non-target change is required. Mark encodings and scale bindings remain unchanged.
@@ -262,16 +269,16 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - Exact values survive legend layout/style/title, theme and Canvas replay. Scale, data, encoding or facet replay that makes a stored exact value invalid fails before returning a new program. Shared facets validate against the shared effective domain; independent facets require the values to fit every participating domain. A combined categorical+size target rejects root `values` until an explicit block selector chooses one sampled block.
 - Categorical `layout` omission은 stored edge/legacy-bottom을 보존한다. Style/title/border edit나 Canvas/scale/encoding replay가
   mode를 바꾸지 않는다. Explicit editLegend/editLegendLayout({layout})만 mode를 전환한다.
-- Categorical and combined point-size legends accept all four edges. Left requires center alignment and vertical flow. Edge 변경 시 omitted direction은 새 edge의 default로 추론한다. `count` rematerializes an existing size block.
+- All legend families accept four edges and four plot corners. Left requires center alignment and vertical flow. Edge 변경 시 omitted direction은 새 edge의 default로 추론한다. `count` rematerializes an existing size block.
 - Gradient의 titlePosition top은 createLegend/editLegend/editLegendLayout 모두 허용하고 left는 모두 거절한다. Side alignment와 titleStyle의 동일 validation/immutable rejection evidence는 `test/unit/actions/guides/legend-option-parity.test.js`다.
 - Gradient edits own `count` and `gradient`; opacity edits own `count`, `itemGap`, and a single point symbol recipe.
   Horizontal opacity edits also own `titlePosition`; entering `"left"` without explicit spacing selects the inline
   8-pixel symbol-label and 20-pixel sample defaults.
   Interval edits own all four positions, layout:"edge", horizontal align/direction/columns/titlePosition, swatch recipe, text style와 title visibility. Side는 vertical, center align, top title, single column이며 columns1은 허용한다. Position 변경 시 omitted direction은 새 edge에 맞춰 추론한다. 다른 명시된 layout controls는 유지하며 incompatible side controls는 오류다.
   Kind-incompatible options fail before the prior program changes.
-- Standalone size edits own four-edge/grid layout, border, `title`, `count`, `labels`, and `titleStyle`, including focused title/label/count actions. Continuous count is 2..10,000; discrete size legends reject explicit count and always materialize every interval. Custom/auto/hidden title and partial styles survive Canvas/scale/filter replay. Labels default to font12/normal and offset12 after the sample slot; titles to font13/600. Side 전체 occupied top은 plot.y이며 item pitch는 최소40이다. Equal-area scale mapping, formatter와 symbol defaults를 유지한다. Unrelated categorical targets never supply inherited appearance or placement. Basic creates size legends but does not expose editors. Symbol, gradient and order remain unsupported for standalone size.
+- Standalone size edits own edge/corner/grid layout, border, `title`, `count`, `labels`, and `titleStyle`, including focused title/label/count actions. Continuous count is 2..10,000; discrete size legends reject explicit count and always materialize every interval. Custom/auto/hidden title and partial styles survive Canvas/scale/filter replay. Labels default to font12/normal and offset12 after the sample slot; titles to font13/600. Side 전체 occupied top은 plot.y이며 item pitch는 최소18이다. Equal-area scale mapping, formatter와 symbol defaults를 유지한다. Unrelated categorical targets never supply inherited appearance or placement. Basic creates size legends but does not expose editors. Symbol, gradient and order remain unsupported for standalone size.
 - Sampled size/stroke-width titleStyle accepts only color/fontSize/fontFamily/fontWeight; offset belongs to labels.
-- Stroke-width edits own four-edge layout/grid/border, `title`, `count`, `labels`, and `titleStyle`. Symbol, gradient and order options are rejected. Label `offset` controls the minimum distance after the occupied sample slot (32-pixel line plus the widest stroke). Exact current item placement is defined in the stroke-width item layout section below.
+- Stroke-width edits own edge/corner layout/grid/border, `title`, `count`, `labels`, and `titleStyle`. Symbol, gradient and order options are rejected. Label `offset` controls the minimum distance after the occupied sample slot (32-pixel line plus the widest stroke). Exact current item placement is defined in the stroke-width item layout section below.
 - Effect: stores graphical config immutably and invokes the corresponding wrapped rematerialization action.
   Categorical symbol recipe changes reconcile concrete graphic types without leaving stale objects. If the
   edited block participates in a side lane, all sibling blocks rematerialize before the lane is placed again.
@@ -380,7 +387,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendLayout`
 
-- Signature: `editLegendLayout({ target?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, itemGap? })`.
+- Signature: `editLegendLayout({ target?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, itemGap? })`.
 - Layout-only facade이며 최소 한 layout change를 요구하고 wrapped `editLegend`를 호출한다.
 
 ### Formal values — `editLegendLayout`
@@ -642,7 +649,7 @@ Along-offset evidence: `test/unit/actions/guides/title-along-offset.test.js`는 
 
 ### Stroke-width item layout
 
-Full의 createLegend/editLegend/editLegendLayout은 position right/left/top/bottom, layout edge, align/direction/columns/titlePosition, offset/itemGap과 border를 지원한다. Side는 vertical/center/one column/top title이다. Default offset30, side itemGap32, line length32, label offset12와 기존 font/color/scale formatter를 유지한다. 공통 item layout 뒤 전체 occupied top을 plot.y에 맞춘다. Side에서 두꺼운 sample/큰 label/title이 기본 시작 좌표를 넘으면 title 아래 gap12를 확보하도록 첫 sample을 내린다. Horizontal은 maximum sample stroke width를 row height에 포함하며 각 sample stroke extent와 실제 visible labels/title을 Canvas bounds 및 border 계산에 포함한다. Hidden title은 제외하고 stored title은 보존한다. 생성·편집·Canvas/scale replay 모두 공간 부족을 오류로 반환한다.
+Full의 createLegend/editLegend/editLegendLayout은 position right/left/top/bottom, layout edge, align/direction/columns/titlePosition, offset/itemGap과 border를 지원한다. Side는 vertical/center/one column/top title이다. Default offset30, side itemGap18, line length32, label offset12와 기존 font/color/scale formatter를 유지한다. 공통 item layout 뒤 전체 occupied top을 plot.y에 맞춘다. Side에서 두꺼운 sample/큰 label/title이 기본 시작 좌표를 넘으면 title 아래 gap12를 확보하도록 첫 sample을 내린다. Horizontal은 maximum sample stroke width를 row height에 포함하며 각 sample stroke extent와 실제 visible labels/title을 Canvas bounds 및 border 계산에 포함한다. Hidden title은 제외하고 stored title은 보존한다. 생성·편집·Canvas/scale replay 모두 공간 부족을 오류로 반환한다.
 
 Basic의 기존 export/encoding/family 경계는 유지한다. Width는 Full-only이며 새 direct action은 없다. Symbol recipe/gradient/order는 거부한다. TitleStyle의 offset도 거부하며 labels offset은 허용한다.
 
@@ -650,7 +657,7 @@ Evidence: `test/unit/actions/guides/stroke-width-legend-edges.test.js`, `test/co
 
 ### Size item layout와 side label 간격
 
-Size는 실제 최대 diameter와 minimum slot width32를 측정하고 circle을 slot 중앙에 둔다. Labels.offset은 slot 오른쪽 기준(default12)으로 통일했다. 기존 center-relative28의 explicit value는 새 기준으로 해석하므로 기존 offset≥16에서 같은 상대 위치를 원하면 16을 뺀 값을 사용한다(radius≤16의 slot32인 경우). 큰 radius는 slot을 확장하여 default sample-label gap12를 확보한다. Font/color/area mapping/count/formatter는 유지한다. Side item pitch는 max(40, diameter, label font size)이며 큰 title/item은 제목 아래 gap12를 확보한다.
+Size는 실제 최대 diameter와 minimum slot width32를 측정하고 circle을 slot 중앙에 둔다. Labels.offset은 slot 오른쪽 기준(default12)으로 통일했다. 기존 center-relative28의 explicit value는 새 기준으로 해석하므로 기존 offset≥16에서 같은 상대 위치를 원하면 16을 뺀 값을 사용한다(radius≤16의 slot32인 경우). 큰 radius는 slot을 확장하여 default sample-label gap12를 확보한다. Font/color/area mapping/count/formatter는 유지한다. Side item pitch는 max(18, diameter, label font size)이며 큰 title/item은 제목 아래 gap12를 확보한다.
 
 Full/Basic의 standalone create는 네 방향과 layout edge, horizontal align/direction/columns/titlePosition, offset/itemGap, text styles 및 border를 지원한다. Full edits와 Canvas/scale/filter/content replay가 같은 owner를 사용한다. Side item controls는 interval/width와 같은 vertical/center/one column/top title 계약이다. Visible circle/text/background가 Canvas를 벗어나면 실패하고 hidden title은 제외한다.
 

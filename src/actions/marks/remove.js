@@ -163,6 +163,7 @@ export function removeOwnedMark(program, id, partial = false) {
     next = next.editGraphics({ target: id, remove: true });
   }
   return next
+    ._withoutMaterializationConfig(["guides", "legendGroups", id])
     ._withoutMaterializationConfig(["marks", id])
     ._withContext({
       ...(program.context.currentMark === id ? { currentMark: undefined } : {}),
@@ -262,6 +263,7 @@ export const removeMark = /* @__PURE__ */ closedAction(
       if (next.graphicSpec.objects[id] !== undefined) {
         next = next.editGraphics({ target: id, remove: true });
       }
+      next = next._withoutMaterializationConfig(["guides", "legendGroups", id]);
       next = next._withoutMaterializationConfig(["marks", id]);
       next = next._withoutMaterializationConfig(["jitters", id]);
       next = next._withoutMaterializationConfig(["pointPacking", id]);

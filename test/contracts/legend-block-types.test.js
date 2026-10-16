@@ -24,6 +24,16 @@ import type {
 import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 declare const program: ChartProgram;
 declare const basic: BasicChartProgram;
+program.createLegend({ target: "points", at: { x: -20, y: 10 }, blockLayout: "row" });
+program.editLegend({ target: "points", position: "bottom-right", blockLayout: "column" });
+program.editLegendLayout({ target: "points", at: { x: 201, y: 79 }, blockLayout: "wrap" });
+basic.createLegend({ position: "top-left", blockLayout: "row" });
+// @ts-expect-error block layout values are closed.
+program.editLegendLayout({ blockLayout: "diagonal" });
+// @ts-expect-error free anchors require both coordinates.
+program.createLegend({ at: { x: 1 } });
+// @ts-expect-error free anchor coordinates are numeric.
+basic.createLegend({ at: { x: "1", y: 2 } });
 const channel: LegendChannel = "strokeWidth";
 const text: LegendBlockTextPatch = { fontSize: 14, fontFamily: "Inter", fontWeight: 600, color: "navy" };
 const symbol: LegendBlockSymbolPatch = { size: 64, fill: "white", stroke: "black", strokeWidth: 2, opacity: 0.6 };

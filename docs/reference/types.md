@@ -5061,6 +5061,10 @@ export interface EditLegendLayoutOptions {
   layout?: "edge" | "legacy-bottom";
   /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  /** Opt into whole-target legend group layout; a requested row never wraps. */
+  blockLayout?: "row" | "column" | "wrap";
+  /** Move the complete occupied group top-left to plot-relative logical pixels. A later position clears this anchor. */
+  at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
   /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
@@ -7467,6 +7471,10 @@ export interface LegendOptions {
   channels?: readonly ("color" | "stroke" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
   /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  /** Arrange every legend block owned by the selected target. Item direction and columns remain independent. */
+  blockLayout?: "row" | "column" | "wrap";
+  /** Occupied group top-left relative to the plot. Cannot be supplied with position, align, or offset in the same call. */
+  at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
   /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */

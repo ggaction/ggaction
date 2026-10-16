@@ -1,3 +1,4 @@
+import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 import { action, closedAction } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
@@ -85,6 +86,7 @@ function resolveOpacityConfig(program, config) {
 }
 
 function resolveOpacityLayout(program, config, scale) {
+  config = intrinsicLegendConfig(program, config);
   const { plot, canvas } = resolveContinuousBounds(program);
   const vertical = ["right", "left"].includes(config.position);
   const values = resolveLegendSampleValues(config, scale, "Opacity legend");

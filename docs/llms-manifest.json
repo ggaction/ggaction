@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:db99d8f590787c051e844f71e607d3e1cf1447353114abc48b452129a0c157bf",
+    "contractId": "sha256:f7b2373d7b1f9b723f8f545213f57ed32617331b3f298fa58b78aa745aa0a070",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1606,8 +1606,8 @@
         "put-a-compact-categorical-legend-inside-the-plot",
         "related"
       ],
-      "bytes": 6218,
-      "sha256": "0af5e6c2d2a5456eda8d62b77ad83d81cda43bb8864161954accc9410cdeacbb"
+      "bytes": 6235,
+      "sha256": "fd7295b01de2d9401dd88f5b4f704a25706675194a102683a9d73d6199055704"
     },
     {
       "order": 98,
@@ -1621,8 +1621,8 @@
         "combined-categorical-and-size-layout",
         "related"
       ],
-      "bytes": 13272,
-      "sha256": "2fd1b224da40f8a33a82daec677719357aab01852a7726d40b7511c348af5cad"
+      "bytes": 13594,
+      "sha256": "d04224867dea4411f1e82bd23a2d77279b8a38c0a62f155ee02f37b5031a4020"
     },
     {
       "order": 99,
@@ -1635,8 +1635,8 @@
         "continuous-color-stroke-and-opacity",
         "related"
       ],
-      "bytes": 10780,
-      "sha256": "616db24ee358b5a81e40537295deb4fc1e3bb27cf7902316a7fcbf0ccb98abdf"
+      "bytes": 11221,
+      "sha256": "a1e154151bb4da3a9eb4a9ce3cc771a7fec5893e0bf0ac330a3842a3fdcd9be9"
     },
     {
       "order": 100,
@@ -1660,6 +1660,7 @@
       "source": "api/legends/editing.md",
       "headings": [
         "editing-legends",
+        "place-several-legend-blocks",
         "updates-and-trace",
         "replacing-legend-content",
         "editing-one-legend-block",
@@ -1667,8 +1668,8 @@
         "removing-a-legend",
         "related"
       ],
-      "bytes": 18290,
-      "sha256": "bf02ac2fc707b558e660e30a09b3a56eff6068fc60532878adb820ab3890fe0e"
+      "bytes": 20874,
+      "sha256": "18901810e89ef912a1ef95cddfe1be9f0c622af9ab015f934cfa5c3e57b70009"
     },
     {
       "order": 102,
@@ -2270,8 +2271,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 119979,
-      "sha256": "3f4d5517cbc4602dabfbf3aa33ab67d04eba3aae6f331a30975a3c3d9cd2fbc1"
+      "bytes": 120504,
+      "sha256": "bc98aec39c06997115bb037bab2d2ea5767b0c211f17c894877a5eebe53f71a0"
     },
     {
       "order": 123,
@@ -2971,8 +2972,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 325627,
-      "sha256": "e2dd9cd3fa54cc6fee8e9741b2e19aa160a1071e56ab248cffc2440ef312b828"
+      "bytes": 326218,
+      "sha256": "3d54330615b53fbf0b4e8dc32c20c47d8536a857c372ca77c9fae2197e4b41c6"
     },
     {
       "order": 127,
@@ -3325,7 +3326,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "44bb5f9c6e474428ff45878b8c4b8b640d8ec7e9079838fff28c13c62f527713"
+      "sha256": "7d9baa8c5dabdfde3b4240dca43294c9f3551500972775d72430ab8801214e3d"
     },
     {
       "order": 150,

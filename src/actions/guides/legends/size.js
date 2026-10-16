@@ -1,3 +1,4 @@
+import { intrinsicLegendConfig, legendGroup } from "../../../materialization/legendGroups.js";
 import { formatVisibleText } from "../../../core/textMetrics.js";
 import { action, closedAction } from "../../../core/action.js";
 import {
@@ -68,13 +69,14 @@ function requireScale(program, id) {
 }
 
 export function resolveSizeLegendLayout(program, config) {
+  config = intrinsicLegendConfig(program, config);
   const scale = requireScale(program, config.scale);
   const categorical = [
     program.guideConfigs.legend?.series,
     program.guideConfigs.legend?.color,
     program.guideConfigs.legend?.stroke
   ]
-    .find(candidate => candidate?.target === config.target &&
+    .find(candidate => legendGroup(program, config.target) === undefined && candidate?.target === config.target &&
       (config.inheritPosition !== false || candidate.position === config.position));
   const inherit = config.inheritAppearance === true && categorical !== undefined;
   const inheritedLabels = inherit ? { ...categorical.labels, offset: config.labels.offset } : config.labels;

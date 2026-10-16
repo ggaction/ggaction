@@ -72,7 +72,7 @@ Combined point-series and size legends support every edge. Continuous size
 blocks sample the domain; discrete size blocks show every interval.
 Side positions stack the blocks; horizontal positions place them in rows. A left block must
 fit outside any left y-axis guides; use sufficient margin and offset.
-Stroke-width legends support all four edges through `createLegend` and
+Stroke-width legends support all four edges and plot corners through `createLegend` and
 `editLegendLayout`. Use `layout: "edge"`, `offset`, `itemGap`, and horizontal
 `align`, `direction`, `columns`, and `titlePosition` controls. Title, count,
 label/title styles, and border are editable. Side positions require vertical

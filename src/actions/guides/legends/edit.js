@@ -1,3 +1,5 @@
+import { prepareLegendGroup } from "./group.js";
+import { PLOT_LEGEND_POSITIONS } from "../../../layout/legend.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { resolveLegendStepConfig } from "./creation.js";
 import { normalizeLegendOrder } from "../../../grammar/categoryOrder.js";
@@ -46,7 +48,7 @@ import { planLegendBlockTransitions } from "./transition.js";
 const OPTIONS = Object.freeze([
   "target", "channels", "position", "layout", "align", "direction", "columns", "offset",
   "titlePosition", "title", "symbol", "labels", "titleStyle", "itemGap",
-  "border", "count", "values", "gradient", "order", "overflow"
+  "border", "count", "values", "gradient", "order", "overflow", "blockLayout", "at"
 ]);
 
 function mergeObject(previous, patch) {
@@ -551,9 +553,7 @@ function editLegendContent(program, target, args) {
   return next.rematerializeLegend();
 }
 
-export const editLegend = /* @__PURE__ */ action(
-  { op: "editLegend", description: "Edit one stable legend content, layout or appearance." },
-  withGuideLayoutValidation(function (args = {}) {
+function editLegendImplementation(args = {}, skipGroup = false) {
     validateOptionObject(args, OPTIONS, "editLegend");
     const changes = Object.keys(args).filter(key => key !== "target");
     if (changes.length === 0) {
@@ -565,6 +565,38 @@ export const editLegend = /* @__PURE__ */ action(
       throw new TypeError('editLegend title must be a non-empty string, "auto", or false.');
     }
     const target = resolveLegendTarget(this, args.target, "editLegend");
+    const existingGroup = this.guideConfigs.legendGroups?.[target];
+    const needsGroup = !skipGroup && (existingGroup !== undefined || args.blockLayout !== undefined || args.at !== undefined ||
+      PLOT_LEGEND_POSITIONS.includes(args.position) && Object.values(this.guideConfigs.legend ?? {}).some(config => config.target === target && config.kind === undefined));
+    if (needsGroup) {
+      const prepared = prepareLegendGroup(this, args, target, { corner: PLOT_LEGEND_POSITIONS.includes(args.position) });
+      const { channels, ...patch } = prepared.options;
+      if (channels !== undefined) return editLegendContent(prepared.program, target, prepared.options);
+      const layoutKeys = ["position", "layout", "align", "direction", "columns", "offset", "titlePosition", "itemGap"];
+      const layoutOnly = Object.keys(patch).every(key => key === "target" || layoutKeys.includes(key));
+      if (layoutOnly) {
+        let next = prepared.program;
+        const entries = Object.entries(next.guideConfigs.legend ?? {}).filter(([, config]) => config.target === target);
+        for (const [kind] of entries) {
+          const previous = next.guideConfigs.legend[kind];
+          const familyPatch = { ...patch };
+          if (["gradient", "strokeGradient", "opacity"].includes(kind)) {
+            for (const key of ["layout", "columns", "direction"]) {
+              if (Object.hasOwn(args, key)) throw new Error(`${kind} legend does not accept ${key}.`);
+              delete familyPatch[key];
+            }
+          }
+          if (["gradient", "strokeGradient"].includes(kind)) delete familyPatch.itemGap;
+          if (["series", "color", "stroke"].includes(kind)) next = editCategorical(next, kind, previous, undefined, familyPatch);
+          else if (["size", "strokeWidth"].includes(kind)) next = editSampledLegend(next, kind, previous, familyPatch);
+          else if (["interval", "strokeInterval"].includes(kind)) next = editInterval(next, previous, familyPatch, kind === "strokeInterval" ? "stroke" : "color");
+          else next = editContinuous(next, kind, previous, familyPatch);
+        }
+        return next.rematerializeLegend();
+      }
+      // Appearance/content ownership continues through the original editor.
+      return editLegendImplementation.call(prepared.program, prepared.options, true);
+    }
     if (args.channels !== undefined) return editLegendContent(this, target, args);
     const configs = this.guideConfigs.legend ?? {};
     const ownedKinds = Object.keys(configs).filter(
@@ -609,5 +641,9 @@ export const editLegend = /* @__PURE__ */ action(
       kind => configs[kind]?.target === target
     );
     return editContinuous(this, continuousKind, configs[continuousKind], args);
-  })
+}
+
+export const editLegend = /* @__PURE__ */ action(
+  { op: "editLegend", description: "Edit one stable legend content, layout or appearance." },
+  withGuideLayoutValidation(editLegendImplementation)
 );

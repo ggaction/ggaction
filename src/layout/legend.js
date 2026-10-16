@@ -1,3 +1,4 @@
+import { PLOT_LEGEND_POSITIONS } from "../core/vocabulary.js";
 import {
   formatVisibleText,
   measureTextWidth
@@ -45,9 +46,7 @@ export function alignLegendStart(bounds, width, align) {
 }
 
 
-export const PLOT_LEGEND_POSITIONS = Object.freeze([
-  "top-left", "top-right", "bottom-left", "bottom-right"
-]);
+export { PLOT_LEGEND_POSITIONS } from "../core/vocabulary.js";
 
 export function isPlotLegend(config) {
   return PLOT_LEGEND_POSITIONS.includes(config.position);
