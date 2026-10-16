@@ -2,13 +2,13 @@
 
 ## Gate and scope
 
-Gate: **ready-for-review**. This is a public-contract proposal only. Implementation requires explicit user approval under root `AGENTS.md`. No runtime, declaration, persisted schema, current contract or generated reference changes in this checkpoint.
+Gate: **approved**. The user explicitly approved issue204 and exact proposal revision72637f47 on2026-10-16, including the edit-only auto reset. Implementation proceeds on an isolated branch from synchronized runtimed7cc93da; the active translation runtime/documentation pin remains unchanged until the parent integration checkpoint.
 
 - [x] Inspect the existing shared title-style type and every legend family
 - [x] Reproduce unsupported alignment and the distinct existing placement controls through public actions
 - [x] Bind the motivating overlap to the original initial-render geometry
 - [x] Specify defaults, validation, geometry and consumer requirements
-- [ ] Explicit user approval
+- [x] Explicit user approval
 - [ ] Implementation and complete consumer verification
 
 ## Problem and existing behavior
