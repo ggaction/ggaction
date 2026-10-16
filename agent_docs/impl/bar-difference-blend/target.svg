@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="240" viewBox="0 0 440 240">
+ <defs><linearGradient id="paint"><stop offset="0" stop-color="orange"/><stop offset="1" stop-color="cyan"/></linearGradient></defs>
+ <rect width="440" height="240" fill="white"/>
+ <text x="20" y="24" font-family="sans-serif" font-size="13">Proposed difference compositing over plot and grid</text>
+ <g stroke="#ddd" stroke-width="2"><path d="M30 70H410M30 110H410M30 150H410M30 190H410"/></g>
+ <g style="mix-blend-mode:difference"><rect x="65" y="60" width="115" height="150" rx="10" fill="url(#paint)" stroke="yellow" stroke-width="4"/><rect x="245" y="105" width="115" height="105" rx="10" fill="url(#paint)" stroke="yellow" stroke-width="4"/></g>
+</svg>

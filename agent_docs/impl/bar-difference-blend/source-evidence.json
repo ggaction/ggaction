@@ -1,0 +1,46 @@
+{
+  "reviewer": "codex",
+  "status": "confirmed-existing-public-gap-no-implementation",
+  "runtimeCommit": "c53d1edda3625376b75f3157f798a3b099e1a750",
+  "sourceSha256": "b6fd2585e76e2e43ad9dce6219eb9af298cefb5d1ef972247997944bfd4617b9",
+  "dataSha256": "ab3753bf8cd9bfe866822a3b89bb80e9621393d58384b5134ad45e8f50a03c92",
+  "rawRows": 1461,
+  "visibleSourceRecords": 12,
+  "innerPlot": {
+    "width": 400,
+    "height": 300
+  },
+  "bindings": [
+    {
+      "pathEncoding": "base64-utf8-absolute-path",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNjk0L3NvdXJjZS52bC5qc29u",
+      "sha256": "b6fd2585e76e2e43ad9dce6219eb9af298cefb5d1ef972247997944bfd4617b9"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute-path",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNjk0L2RhdGEuanNvbg==",
+      "sha256": "ab3753bf8cd9bfe866822a3b89bb80e9621393d58384b5134ad45e8f50a03c92"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute-path",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNjk0L3JlZmVyZW5jZS9jb21waWxlZC52ZWdhLmpzb24=",
+      "sha256": "278d8a9bb889f42fbf4a4a4806bcd0b0a5f45803c11e9eca3528db4670b823fc"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute-path",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNjk0L3JlZmVyZW5jZS9jaGFydC5zdmc=",
+      "sha256": "a78cd3af310025e9306a404cf4f87bd9e4457b5101af442460351220147bc9e8"
+    }
+  ],
+  "observed": {
+    "paintedMonthlyBars": 12,
+    "sourceBlend": "difference",
+    "fill": "linear gradient orange to cyan",
+    "stroke": "yellow",
+    "strokeWidth": 4,
+    "cornerRadius": 10
+  },
+  "pixelsInspected": false,
+  "newModelCalls": 0,
+  "newRuntimeCode": false
+}
