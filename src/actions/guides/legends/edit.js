@@ -17,6 +17,7 @@ import { categoricalSymbolIds, reconcileCategoricalSymbols, createCategoricalLeg
 import { normalizeColorSymbols } from "./continuous/colorSymbols.js";
 import { readLegendSampling } from "./sampling.js";
 import { createGradientLegendFromConfig } from "./continuous/gradient.js";
+import { normalizeLegendGradient } from "../../../grammar/legendGradient.js";
 import {
   normalizeItemLegendLayout,
   normalizeLegendBorder,
@@ -113,9 +114,7 @@ function resolveColorRepresentationEdit(program, previous, args) {
     }, switching ? { count: previous.count } : previous, "edit");
   } else {
     normalized = normalizeContinuousLegend({ ...common, count: args.count ?? (switching ? readLegendSampling(previous).count : previous.count) }, "gradient");
-    const gradient = switching ? { length: 120, thickness: 12, ...args.gradient } : mergeObject(previous.gradient, args.gradient);
-    validateOptionObject(gradient, ["length", "thickness"], "Legend gradient");
-    validatePositive(gradient.length, "Gradient length"); validatePositive(gradient.thickness, "Gradient thickness");
+    const gradient = normalizeLegendGradient(args.gradient, switching ? undefined : previous.gradient);
     normalized.gradient = gradient;
   }
   const { representation: _rep, sampling: _sampling, symbol: _symbol, layout: _layout, direction: _direction, columns: _columns, gradient: _gradient, count: _count, ...retained } = previous;
@@ -190,9 +189,7 @@ function resolveContinuousEdit(program, kind, previous, args) {
     titleVisible
   };
   if (gradient) {
-    const gradient = mergeObject(previous.gradient, args.gradient);
-    validatePositive(gradient.length, "Gradient length");
-    validatePositive(gradient.thickness, "Gradient thickness");
+    const gradient = normalizeLegendGradient(args.gradient, previous.gradient);
     config.gradient = gradient;
   } else {
     config.symbol = normalizeOpacitySymbol(args.symbol ?? previous.symbol);

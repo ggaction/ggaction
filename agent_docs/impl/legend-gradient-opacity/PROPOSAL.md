@@ -2,8 +2,8 @@
 
 ## Status
 
-- Gate: `ready-for-review` — public option and persisted gradient schema.
-- Implementation: **not started**. No package, documentation deployment, or release is requested.
+- Gate: `approved` — public option and persisted gradient schema; [approval](./APPROVAL.md).
+- Implementation: **in progress in an isolated worktree**. No package, documentation deployment, or release is requested.
 - Scope: continuous color and stroke gradient bodies only; preserve existing layout and text.
 - This proposal is in English for the requested external review package.
 

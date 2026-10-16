@@ -108,6 +108,21 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(deserializeProgram(serializeProgram(blankLegend)).graphicSpec, blankLegend.graphicSpec);
     assert.ok((await renderToPNGBuffer(blankLegend)).buffer.length > 1000);
 
+    for (const factory of [chart, basicChart]) for (const channel of ["color", "stroke"]) {
+      let ramp = factory().createCanvas({ width: 800, height: 600, margin: 150 })
+        .createData({ values: [{ x: 1, y: 2, n: 1 }, { x: 2, y: 3, n: 2 }] })
+        .createScatterPlot({ x: "x", y: "y", guides: false,
+          ...(channel === "stroke" ? { stroke: { field: "n", fieldType: "quantitative" } } : {}) });
+      if (channel === "color") ramp = ramp.encodeColor({ field: "n", fieldType: "quantitative" });
+      const translucent = ramp.createLegend({ channels: [channel], gradient: { opacity: 0.7 } });
+      const strips = translucent.graphicSpec.objects[channel + "GradientStrips"].items;
+      assert.equal(strips.length, 60);
+      assert.ok(strips.every(item => item.properties.opacity === 0.7));
+      assert.deepEqual(deserializeProgram(serializeProgram(translucent)).graphicSpec, translucent.graphicSpec);
+      assert.ok(renderToSVG(translucent).includes('opacity="0.7"'));
+      assert.ok((await renderToPNGBuffer(translucent)).buffer.length > 1000);
+    }
+
     for (const factory of [chart, basicChart]) for (const continuous of [false, true]) {
       const base = factory().createCanvas({ width: 800, height: 600, margin: 150 })
         .createData({ values: [{ x: 1, y: 2, g: "A", n: 1 }, { x: 2, y: 3, g: "B", n: 2 }] })
@@ -3615,6 +3630,11 @@ async function testTypeScriptConsumer(directory) {
     program.createLegend({ order: { channel: "theta" } }).editLegend({ order: "scale" });
     program.editLegend({ order: { values: ["C", 1, false] } });
     program.createLegend({ channels: ["size"], values: [1, 2, 3] });
+    program.createLegend({ channels: ["color"], gradient: { opacity: 0.7 } })
+      .editLegend({ gradient: { opacity: 0 } }).editLegendSymbols({ gradient: { opacity: 1 } });
+    basicChart().createGuides({ axes: false, grid: false, legend: { channels: ["color"], gradient: { opacity: 0.7 } } });
+    // @ts-expect-error Gradient opacity must be numeric.
+    program.createLegend({ gradient: { opacity: "half" } });
     program.editLegend({ values: [1, 2, 3] }).editLegend({ values: "auto", count: 4 });
     program.editLegend({ channels: ["color", "shape", "size"], count: 3 });
     program.editLegendLayout({ position: "top", layout: "edge", direction: "horizontal", columns: 2, titlePosition: "left" });

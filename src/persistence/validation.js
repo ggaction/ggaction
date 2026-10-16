@@ -1,6 +1,7 @@
 import { validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
 import { validateLegendGroupState } from "../grammar/legendGroups.js";
+import { validateLegendGradient } from "../grammar/legendGradient.js";
 import { normalizeTextMetricProfile } from "../core/textMetricProfile.js";
 import { isPlainObject } from "../core/immutable.js";
 import { validateUserId } from "../core/identifiers.js";
@@ -148,6 +149,9 @@ export function validateProgramState(program, path) {
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
     if (config.inferredOffset !== undefined && typeof config.inferredOffset !== "boolean") throw invalidSnapshot("Invalid legend offset inference.", path);
+    if (["gradient", "strokeGradient"].includes(kind) && config.representation !== "symbols") {
+      validateLegendGradient(config.gradient, "Stored legend gradient");
+    }
     if (config.representation === undefined) continue;
     if (kind !== "gradient" || !["symbols", "gradient"].includes(config.representation)) throw invalidSnapshot("Invalid continuous color legend representation.", path);
     if (config.representation === "symbols") {

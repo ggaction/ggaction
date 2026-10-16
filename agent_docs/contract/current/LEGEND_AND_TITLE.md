@@ -19,6 +19,15 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## Shared formal types
 
+`gradient.opacity?: UnitInterval`은 color/stroke ramp body만 한 번 투명하게 한다.
+생성 생략과 legacy 저장값의 effective 기본값은1이며 편집 생략은 기존 값을 보존한다.
+0이어도 strip geometry와 layout slot은 유지하고 제목·눈금·라벨·배경·mark opacity는 바꾸지 않는다.
+Mapper가 만든 paint는 그대로 보존하며 renderer가 concrete opacity를 적용한다.
+`grammar/legendGradient.js`가 생성·편집·저장의 closed length/thickness/opacity 검증을 공유한다.
+symbols representation은 gradient를 거부하며 gradient로 돌아올 때 기존 reset 규칙에 따라 기본값1로 돌아간다.
+잘못된 수치·알 수 없는 key는 immutable action 및 복원 전에 거부한다.
+Evidence: `test/unit/actions/guides/gradient-opacity.test.js`, 설치 package consumer.
+
 ```typescript
 type LegendPosition = "right" | "bottom" | "top" | "left" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
 type LegendAlign = "left" | "center" | "right";
@@ -188,7 +197,7 @@ type TitleWrap = "word" | "character";
 
 ### Formal values — `createLegend`
 
-- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; representation?: "gradient" | "symbols"; position?: LegendPosition; blockLayout?: "row" | "column" | "wrap"; at?: { x: Finite; y: Finite }; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; values?: readonly number[]; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
+- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; representation?: "gradient" | "symbols"; position?: LegendPosition; blockLayout?: "row" | "column" | "wrap"; at?: { x: Finite; y: Finite }; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; values?: readonly number[]; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite; opacity?: UnitInterval }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 

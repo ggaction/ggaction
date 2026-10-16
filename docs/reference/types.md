@@ -5125,7 +5125,7 @@ export interface EditLegendSymbolsOptions {
   target?: string;
   symbol?: LegendSymbolRecipe;
   count?: number;
-  gradient?: { length?: number; thickness?: number };
+  gradient?: { length?: number; thickness?: number; opacity?: number };
 }
 ```
 
@@ -7520,7 +7520,8 @@ export interface LegendOptions {
   /** Exact ascending samples for continuous size, opacity, stroke-width, or color with representation symbols. Cannot be combined with count. */
   values?: readonly number[];
   count?: number;
-  gradient?: { length?: number; thickness?: number };
+  /** Body-only opacity defaults to 1; edits preserve omitted fields. */
+  gradient?: { length?: number; thickness?: number; opacity?: number };
   symbol?: LegendSymbolRecipe;
   labels?: LegendTextOptions;
   /** New categorical+size blocks share typography on every edge; retained standalone size styles remain independent. */

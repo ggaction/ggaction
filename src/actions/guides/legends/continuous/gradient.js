@@ -4,7 +4,7 @@ import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.
 import { mapContinuousScaleValues, transformedTicks } from "../../../../grammar/scales/index.js";
 import { action, closedAction } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
-import { validateKeys } from "../../../../core/validation.js";
+import { normalizeLegendGradient, DEFAULT_LEGEND_GRADIENT } from "../../../../grammar/legendGradient.js";
 import { mapScaleConsumerValues } from "../../../../materialization/scales/map.js";
 import { inverseLerp, interpolateNumber } from "../../../../grammar/numeric.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
@@ -20,16 +20,13 @@ import {
   resolveLegendBackgroundFromBounds,
   resolveLegendTextBounds,
   sampleContinuousValues,
-  styleContinuousText,
-  validatePositive
+  styleContinuousText
 } from "./common.js";
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
 import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
 
-export const DEFAULT_GRADIENT_SIZE = Object.freeze({ length: 120, thickness: 12 });
-
-const GRADIENT_OPTIONS = Object.freeze(["length", "thickness"]);
+export const DEFAULT_GRADIENT_SIZE = DEFAULT_LEGEND_GRADIENT;
 
 export function resolveGradientLayout(program, config, scale, label = "Gradient legend") {
   if (config.representation === "symbols") return resolveColorSymbolsLayout(program, config, scale);
@@ -219,6 +216,9 @@ export function materializeGradientLegend(program, resolved, appearance) {
   for (const property of ["x", "y", "width", "height", "fill", "stroke", "strokeWidth"]) {
     next = next.editGraphics({ target: `${prefix}Strips`, property, value: strips.map(strip => strip[property]) });
   }
+  if (config.gradient.opacity !== undefined) {
+    next = next.editGraphics({ target: `${prefix}Strips`, property: "opacity", value: config.gradient.opacity });
+  }
   next = next.editGraphics({ target: `${prefix}Ticks`, property: "length", value: layout.ticks.length });
   for (const property of ["x1", "y1", "x2", "y2"]) {
     next = next.editGraphics({ target: `${prefix}Ticks`, property, value: layout.ticks.map(tick => tick[property]) });
@@ -264,19 +264,7 @@ export function resolveGradientLegendCreation(program, args = {}, channel = "col
   if (args.gradient !== undefined && !isPlainObject(args.gradient)) {
     throw new TypeError("createLegend.gradient must be a plain object.");
   }
-  validateKeys(
-    args.gradient ?? {},
-    GRADIENT_OPTIONS,
-    "createLegend.gradient"
-  );
-  if (config.representation !== "symbols") config.gradient = {
-    length: args.gradient?.length ?? DEFAULT_GRADIENT_SIZE.length,
-    thickness: args.gradient?.thickness ?? DEFAULT_GRADIENT_SIZE.thickness
-  };
-  if (config.gradient !== undefined) {
-    validatePositive(config.gradient.length, "Gradient length");
-    validatePositive(config.gradient.thickness, "Gradient thickness");
-  }
+  if (config.representation !== "symbols") config.gradient = normalizeLegendGradient(args.gradient);
   const resolved = resolveGradientConfig(program, config, channel);
   return resolved;
 }

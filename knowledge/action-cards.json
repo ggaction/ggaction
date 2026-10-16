@@ -18701,7 +18701,7 @@
         {
           "name": "gradient",
           "required": false,
-          "type": "{ length?: number | undefined; thickness?: number | undefined; } | undefined"
+          "type": "{ length?: number | undefined; thickness?: number | undefined; opacity?: number | undefined; } | undefined"
         },
         {
           "name": "symbol",
@@ -18899,7 +18899,7 @@
         {
           "name": "gradient",
           "required": false,
-          "type": "{ length?: number | undefined; thickness?: number | undefined; } | undefined"
+          "type": "{ length?: number | undefined; thickness?: number | undefined; opacity?: number | undefined; } | undefined"
         },
         {
           "name": "symbol",
@@ -19481,7 +19481,7 @@
         {
           "name": "gradient",
           "required": false,
-          "type": "{ length?: number | undefined; thickness?: number | undefined; } | undefined"
+          "type": "{ length?: number | undefined; thickness?: number | undefined; opacity?: number | undefined; } | undefined"
         }
       ],
       "callPatterns": [
