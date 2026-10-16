@@ -16,5 +16,6 @@ export function intrinsicLegendConfig(program, config) {
       ? config.direction === "horizontal" ? "top" : "right"
       : config.position ?? "right");
   return { ...config, position, offset: 0, align: "left", groupIntrinsic: true,
+    ...(corner ? { groupCorner: true } : {}),
     ...(position === "right" ? { align: "center" } : {}) };
 }

@@ -139,6 +139,7 @@ type TitleWrap = "word" | "character";
   temporal에는 UTC token만 허용한다. Categorical identity label은 `"auto"`만 허용한다. 모든 family의
   titleStyle.offset/format은 거절한다.
 - `itemGap`: positive finite number; vertical item의 기본값은18이다. Categorical top/bottom horizontal은24/20, sampled family의 horizontal 기본 간격은 기존 값을 유지한다. Side에서는 최소 center pitch이며 symbol paint 높이와 보수적인 label line-height(fontSize×1.2) 중 큰 값을 확보한다. 이 line-height는 특정 폰트 glyph 높이 보장이 아니며 horizontal grid 규칙은 그대로다. Explicit 값과 저장된 기존 config는 보존한다.
+- Corner item block의 title과 첫 item은 실제 painted title bottom/item top 사이 기존12px gap을 측정한다. 외부 side의 fixed first-row anchor52를 corner에 복사하지 않는다. Native corner inset8과 기본 pitch18, 전체 inset plot fit 검증은 유지하며 grouped intrinsic frame도 같은 corner 의도를 전달한다.
 - `border`: `false | true | { color?, lineWidth?, padding?, background? }`; false가 default이며 true는
   default bordered background를 만든다.
 - `count`: integer `2..10,000`; size, stroke-width, gradient tick-label, sampled-color 또는 opacity sample count이며 default `5`.

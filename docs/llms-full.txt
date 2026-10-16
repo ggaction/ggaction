@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:bfc5ae9bef75cf650bb20f6d0e44ac20c26c0cc946d7718805990670063bc669. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:c9a81382058ecd2c313f645db43e00d4d49da2b134798c3f981adbab31c16eac. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12826,6 +12826,11 @@ label column. Side rows expand for large labels or symbols, with at least
 12 pixels between the visible title and item content. Horizontal grids and
 borders use the same extents; inline titles are vertically centered beside
 the complete grid. Hidden titles reserve no space.
+
+Plot-corner item blocks measure that 12-pixel title-to-content gap from actual
+painted bounds. They do not inherit the outside side legend's fixed first-row
+anchor. The native corner inset and item pitch remain unchanged; content that
+still exceeds the inset plot fails without resizing or moving the plot.
 
 A categorical legend resolves at most 10,000 domain items. A layered symbol
 recipe contains at most one line, one point, and one swatch layer.
@@ -39339,7 +39344,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:bfc5ae9bef75cf650bb20f6d0e44ac20c26c0cc946d7718805990670063bc669` |
+| Contract fingerprint | `sha256:c9a81382058ecd2c313f645db43e00d4d49da2b134798c3f981adbab31c16eac` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
