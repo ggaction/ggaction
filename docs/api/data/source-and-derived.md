@@ -13,7 +13,7 @@ title: Source and Derived Data
 | --- | --- | --- |
 | `id` | string containing letters, numbers, `_`, or `-` | no; first dataset defaults to `"data"` |
 | `values` | array of plain row objects | yes |
-| `schema` | `{ fields: Record<string, DatasetFieldSchema> }` | no |
+| `schema` | `{ fields: SourceSchemaField[] }` | no |
 
 <!-- snippet-context:start -->
 
@@ -49,6 +49,15 @@ set of declared fields. Derived transforms validate their input fields and
 publish their output schema. `getDatasetSchema(program, id)` from
 `ggaction/inspection` returns the immutable normalized result, including
 lineage and whether it was declared, inferred, or derived.
+
+Source row keys are stored exactly, including `""` and whitespace. An unused
+unnamed column is neither renamed nor dropped. A declared schema uses the same
+exact `name`; omitted columns still fail closed-schema validation. Empty names
+remain invalid as chart or transform field references and as generated field
+names or resource IDs. Row-preserving transforms, source revisions, facets and
+editable snapshots retain these cells; projections keep their existing column
+policy. Dataset schema version 1 is unchanged. Reading snapshots with empty
+field names requires a runtime that supports these source keys.
 
 The most recently created dataset becomes the default for `createPointMark`,
 `createLineMark`, or `createBarMark`. Creating data records semantic state only

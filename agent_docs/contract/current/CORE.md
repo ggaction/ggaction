@@ -281,7 +281,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createData`
 
-- Signature: `createData({ id?, values })`
+- Signature: `createData({ id?, values, schema? })`
 - `id`
   - Status: Implemented. Optional user-defined ID다. 첫 dataset에서 생략하면 deterministic role ID
     `"data"`를 사용한다. Dataset이 이미 있으면 생략은 ambiguous하므로 explicit ID가 필요하다.
@@ -293,6 +293,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     누락된 row는 index를 포함한 오류로 첫 저장 전에 거부한다.
   - Effect: caller-owned 값을 deep clone/freeze하여 immutable source dataset으로 저장한다.
     graphic output은 만들지 않는다.
+- 원본 행 키와 schema의 `name`은 빈 문자열·공백을 포함하여 손실 없이 보존한다. 미사용 빈 열을 제거하거나 이름을 바꾸지 않는다. 명시 schema의 누락 열, 중복 이름, storageType/nullable/optional 검사는 그대로다. Schema version 1을 유지하며 빈 키가 있는 새 snapshot은 지원 런타임을 필요로 한다.
+- 차트/변환 입력·생성 필드 참조, lineage 입력과 resource ID의 non-empty 검증은 완화하지 않는다. 행 보존 변환·revision·facet·persistence는 빈 셀을 유지하고 summary/fold 등은 기존 열 투영 정책을 따른다.
 - 오류: ambiguous omitted ID, invalid/duplicate ID, non-array와 non-object row를 거부한다.
 - Coverage: `test/unit/actions/data/create-data.test.js`가 empty/multiple data, ownership,
   trace summary, invalid values와 duplicates를 검증한다.
@@ -317,6 +319,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     completion 정책이 먼저 필요하다.
 - Evidence: `test/unit/actions/data/create-data.test.js`, `test/contracts/input-boundaries.test.js`,
   `test/contracts/source-data-types.test.js`.
+- ✅ Covered: 빈/공백 원본 키의 추론·명시 schema, nullable/optional/중복·미선언·타입 실패, 입력/이전 프로그램 불변성, 행 보존/투영, source revision, Full/Basic persistence·정상 이름의 동일 SVG, facet. Evidence: `test/unit/actions/data/raw-row-keys.test.js`.
 
 ## `reviseData`
 

@@ -10739,6 +10739,7 @@ Related types: [`SortKey`](#type-sortkey).
 
 ```typescript
 export interface SourceSchemaField {
+  /** Exact source row key, including an empty string or whitespace. */
   name: string;
   storageType: Exclude<DatasetStorageType, "unknown" | "mixed">;
   nullable?: boolean;

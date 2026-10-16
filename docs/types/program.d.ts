@@ -1192,6 +1192,7 @@ export interface DatasetFieldLineage {
   readonly role: string;
 }
 export interface DatasetSchemaField {
+  /** Lossless stored row key; empty names cannot be used as action field references. */
   readonly name: string;
   readonly storageType: DatasetStorageType;
   readonly nullable: boolean;
@@ -1205,6 +1206,7 @@ export interface DatasetSchema {
   readonly fields: readonly DatasetSchemaField[];
 }
 export interface SourceSchemaField {
+  /** Exact source row key, including an empty string or whitespace. */
   name: string;
   storageType: Exclude<DatasetStorageType, "unknown" | "mixed">;
   nullable?: boolean;

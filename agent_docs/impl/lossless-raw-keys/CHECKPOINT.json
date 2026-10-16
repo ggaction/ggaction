@@ -1,0 +1,33 @@
+{
+  "status": "verified",
+  "approval": "09fca069",
+  "isolatedBase": "b750e8bc",
+  "sourceNeutral": true,
+  "schemaVersionUnchanged": 1,
+  "newPublicOptions": 0,
+  "checks": [
+    {
+      "suite": "v12-raw-keys-isolated-unit.log",
+      "pass": 2954,
+      "fail": 0,
+      "logSha256": "605744048849ef22c97c19f21f8126d10da79240c328187ad12d6c66e7c4414d"
+    },
+    {
+      "suite": "v12-raw-keys-isolated-contracts.log",
+      "pass": 532,
+      "fail": 0,
+      "logSha256": "75ec37c35cd65932d53807e005fbe7f46adf49aa1b9067939d7f438dba943d4f"
+    },
+    {
+      "suite": "v12-raw-keys-isolated-docs.log",
+      "pass": 120,
+      "fail": 0,
+      "logSha256": "609f4e9c9c63667e98918ede0b384ebd75ce7be47bfd12d2e4e388aed70e6fde"
+    }
+  ],
+  "focusedLifecycleChecks": 262,
+  "runtimeFile": "src/grammar/datasetSchema.js",
+  "runtimeSha256": "09c8b3e692a7bd1420eb7e54842d37edff38af6f3d0cecbf4d22e1c8a608e1e1",
+  "generatedDocumentationIsolatedFromConcurrentLegendEdits": true,
+  "publishingPerformed": false
+}

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:70fd85057681aceac16ab3ba88854b78c7bfd46440707077ceedc3e9060229bb. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:ecee8994c9a70f67d00d462e1e3d1ef70d56f0d91980a95a7a87c4b030fc322e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -4906,7 +4906,7 @@ creating state, and a failed action leaves the earlier program unchanged.
 | --- | --- | --- |
 | `id` | string containing letters, numbers, `_`, or `-` | no; first dataset defaults to `"data"` |
 | `values` | array of plain row objects | yes |
-| `schema` | `{ fields: Record<string, DatasetFieldSchema> }` | no |
+| `schema` | `{ fields: SourceSchemaField[] }` | no |
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -4938,6 +4938,15 @@ set of declared fields. Derived transforms validate their input fields and
 publish their output schema. `getDatasetSchema(program, id)` from
 `ggaction/inspection` returns the immutable normalized result, including
 lineage and whether it was declared, inferred, or derived.
+
+Source row keys are stored exactly, including `""` and whitespace. An unused
+unnamed column is neither renamed nor dropped. A declared schema uses the same
+exact `name`; omitted columns still fail closed-schema validation. Empty names
+remain invalid as chart or transform field references and as generated field
+names or resource IDs. Row-preserving transforms, source revisions, facets and
+editable snapshots retain these cells; projections keep their existing column
+policy. Dataset schema version 1 is unchanged. Reading snapshots with empty
+field names requires a runtime that supports these source keys.
 
 The most recently created dataset becomes the default for `createPointMark`,
 `createLineMark`, or `createBarMark`. Creating data records semantic state only
@@ -35620,6 +35629,7 @@ Related types: [`SortKey`](./reference/types/#type-sortkey).
 
 ```typescript
 export interface SourceSchemaField {
+  /** Exact source row key, including an empty string or whitespace. */
   name: string;
   storageType: Exclude<DatasetStorageType, "unknown" | "mixed">;
   nullable?: boolean;
@@ -39213,7 +39223,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:70fd85057681aceac16ab3ba88854b78c7bfd46440707077ceedc3e9060229bb` |
+| Contract fingerprint | `sha256:ecee8994c9a70f67d00d462e1e3d1ef70d56f0d91980a95a7a87c4b030fc322e` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
