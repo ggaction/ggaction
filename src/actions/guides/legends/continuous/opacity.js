@@ -24,6 +24,7 @@ import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
 import { resolveLegendSampleValues } from "../sampling.js";
 import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
+import { legendLabelLineHeight } from "../../../../layout/legend.js";
 
 const SYMBOL_OPTIONS = Object.freeze([
   "type", "radius", "fill", "stroke", "strokeWidth"
@@ -105,7 +106,7 @@ function resolveOpacityLayout(program, config, scale) {
     const baseX = config.position === "right"
       ? plot.x + plot.width + config.offset
       : plot.x - config.offset;
-    const itemHeight = Math.max(symbolExtent * 2, config.labels.fontSize);
+    const itemHeight = Math.max(symbolExtent * 2, legendLabelLineHeight(config.labels.fontSize));
     const pitch = Math.max(config.itemGap, itemHeight);
     const firstY = Math.max(plot.y + 46, config.titleVisible === false ? plot.y + 46
       : plot.y + 20 + config.titleStyle.fontSize / 2 + 12 + itemHeight / 2);

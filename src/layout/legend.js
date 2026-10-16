@@ -8,6 +8,11 @@ export function measureLegendTextWidth(value, style = { fontSize: 12 }, profile)
   return measureTextWidth(formatVisibleText(value), style, profile);
 }
 
+// A conservative line-height reserve, not a font-specific glyph measurement.
+export function legendLabelLineHeight(fontSize) {
+  return fontSize * 1.2;
+}
+
 export function resolveLegendGrid(config, width, count, symbolHeight, profile) {
   const labels = config.domain.map(formatVisibleText);
   const itemWidths = labels.map(

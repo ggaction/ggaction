@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:61fa5a0c4dfb02e86aa51be39c1ff82292c81e5f604d4ac7f23de7690278852e. Status: development. Runtime source: 3ca5a32325eb220229154a5b0f67fbe2e5f87655. Release baseline: v0.0.13.
+Contract: sha256:a953b357b1dacb255c2e5be5c4dc967ee5edb97047e0be519cf572caecb389fc. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/3ca5a32325eb220229154a5b0f67fbe2e5f87655/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/3ca5a32325eb220229154a5b0f67fbe2e5f87655/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12724,6 +12724,10 @@ preserves its remaining shape legend.
 | `gradient` | `{ length?, thickness? }` with positive values | `{ length: 120, thickness: 12 }` |
 
 Pass `position: "bottom"` explicitly to place the legend below the plot.
+Vertical items reserve the larger of `itemGap`, painted sample height, and
+`labels.fontSize * 1.2`. This conservative line-height allowance retains the
+18-pixel pitch for ordinary 12-pixel labels and grows for larger labels; it is
+not a font-specific glyph-height guarantee. Horizontal grids are unchanged.
 For a combined categorical-and-size legend, `title: false` hides the categorical
 title; the size block retains its independent title, matching `editLegend`.
 Bottom legends use the same item grid as top legends and can use left, center,
@@ -12958,7 +12962,9 @@ offset measures the visible edge-to-edge gap; its non-inline default is 12.
 
 Vertical sampled and interval legends default to `itemGap: 18`. At either side,
 `itemGap` is a minimum center pitch and grows to fit the largest
-sample or label. A visible title keeps at least 12 pixels before the first item.
+sample or a conservative label line height of `fontSize * 1.2`. This allowance
+does not guarantee the exact height of every font. A visible title keeps at
+least 12 pixels before the first item.
 Top/bottom legends with a top title use equal center spacing of at least 56
 pixels and twice `itemGap`, enlarged when needed to keep `itemGap` between
 neighbouring sample or label bounds. Inline legends keep `itemGap` between
@@ -36976,12 +36982,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3ca5a32325eb220229154a5b0f67fbe2e5f87655/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3ca5a32325eb220229154a5b0f67fbe2e5f87655/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39107,9 +39113,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:61fa5a0c4dfb02e86aa51be39c1ff82292c81e5f604d4ac7f23de7690278852e` |
+| Contract fingerprint | `sha256:a953b357b1dacb255c2e5be5c4dc967ee5edb97047e0be519cf572caecb389fc` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `3ca5a32325eb220229154a5b0f67fbe2e5f87655` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |

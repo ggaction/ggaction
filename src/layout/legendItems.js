@@ -1,5 +1,5 @@
 import { measureTextWidth, resolveTextBounds } from "../core/textMetrics.js";
-import { alignLegendStart, resolveLegendGrid, isPlotLegend } from "./legend.js";
+import { alignLegendStart, resolveLegendGrid, isPlotLegend, legendLabelLineHeight } from "./legend.js";
 
 // Measure item content before choosing its edge. Family owners supply the
 // sample dimensions and formatted labels; this module does not inspect scales.
@@ -46,7 +46,7 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
     const width = Math.max(grid.gridWidth, titleWidth);
     const x = config.position === "right" ? plot.x + plot.width + config.offset
       : plot.x - config.offset - width;
-    const itemHeight = Math.max(sampleHeight, config.labels.fontSize);
+    const itemHeight = Math.max(sampleHeight, legendLabelLineHeight(config.labels.fontSize));
     const pitch = Math.max(config.itemGap, itemHeight);
     let cursor = x;
     const columnStarts = grid.columnWidths.map(columnWidth => {
