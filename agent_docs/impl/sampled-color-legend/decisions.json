@@ -1,0 +1,13 @@
+{
+  "status": "ready-for-review",
+  "classification": "Proposed",
+  "implemented": false,
+  "currentOrPlannedInventoryModified": false,
+  "publicOption": "representation?: gradient | symbols",
+  "scope": "continuous color legend only",
+  "canonicalOwner": "existing guideConfigs.legend.gradient",
+  "defaults": {"representation": "gradient", "symbolCount": 5, "symbolRadius": 7},
+  "sampling": "existing continuous-domain sampler; explicit finite ascending values within domain override it",
+  "visualEvidence": "source SVG DOM measurement and declarative target.svg; no chart pixels inspected per user instruction",
+  "approval": null
+}
