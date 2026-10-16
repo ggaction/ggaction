@@ -366,6 +366,22 @@ async function testNodeConsumer(directory) {
     assert.equal(categoryPNG.readUInt32BE(20), 500);
     assert.ok(categoryPNG.length > 1000);
 
+    const boundedCombinedSeed = chart().createCanvas({ width: 900, height: 700,
+      margin: { left: 40, top: 40, right: 400, bottom: 40 } })
+      .createData({ values: ["A", "B", "C", "D", "E"].map((group, i) => ({ x: i, y: i, group })) })
+      .createScatterPlot({ x: "x", y: "y", guides: false })
+      .encodeColor({ field: "group" }).encodeSize({ field: "group", fieldType: "nominal" });
+    const boundedCombined = boundedCombinedSeed.createGuides({ axes: false, grid: false,
+      legend: { channels: ["color", "size"], overflow: { maxItems: 2 } } });
+    for (const kind of ["color", "size"]) {
+      assert.deepEqual(boundedCombined.graphicSpec.objects[kind + "LegendLabels"].items.map(item => item.properties.text),
+        ["A", "B", "…3 entries"]);
+      assert.equal(boundedCombined.graphicSpec.objects[kind + "LegendSymbols"].items.length, 2);
+    }
+    const restoredCombined = deserializeProgram(serializeProgram(boundedCombined));
+    assert.deepEqual(restoredCombined.editLegend({ overflow: false }).graphicSpec,
+      boundedCombinedSeed.createLegend({ channels: ["color", "size"] }).graphicSpec);
+
     const alternative = exportAccessibleData(program);
     assert.equal(alternative.views[0].rows.length, 2);
     assert.ok(Object.isFrozen(alternative.views[0].rows));

@@ -1424,8 +1424,10 @@ The optional `summary` value is `"ellipsis-count"`. All categories remain in
 the appearance scale and legend domain, including categories omitted from the
 visible legend. The limit follows the effective legend order and label map.
 Omission or `false` displays every category. This option also works on edge
-categorical legends and standalone ordinal size legends. Continuous and combined sampled legends retain their
-existing edge-only contracts. Shared facet promotion requires an edge position.
+categorical legends and ordinal size legends. When a categorical block and an
+ordinal size block are created or edited together, the same limit applies to both
+blocks. Quantitative size sampling is unchanged by a categorical overflow limit.
+Continuous and combined sampled legends retain their existing edge-only contracts. Shared facet promotion requires an edge position.
 
 
 ## `editLegend`

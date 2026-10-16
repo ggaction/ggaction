@@ -62,6 +62,9 @@ type TitleWrap = "word" | "character";
   materialized label text와 wrapped text update trace에 노출한다. Order/labelMap/scale/data 수정,
   resize, editLegend 및 overflow:false reset을 지원한다. Continuous/sampled combined와 shared
   facet promotion은 기존 edge 계약을 유지한다.
+  Combined categorical/ordinal-size creation and editing forward the same overflow limit
+  to both blocks, including false reset; quantitative size sampling is unchanged.
+  Evidence: `test/unit/actions/guides/combined-size-legend-overflow.test.js`.
 - `blockLayout?: "row" | "column" | "wrap"`과 `at?: {x:Finite,y:Finite}`는 선택된 하나의 target이 소유한 모든 범례 block의 명시적 그룹 배치다. `direction`/`columns`는 각 block 내부 items만 다루며 group 배치가 sample·글꼴·심볼·순서를 바꾸지 않는다. Target이 모호하면 명시해야 하며 첫 resource를 선택하지 않는다.
 - 새 옵션 없는 기존 edge call은 기존 선택/배치를 보존한다. 새 옵션 또는 새 multi-corner가 group에 opt-in한다. 그룹의 effective placement는 target-owned group 설정이 권위이며 각 family의 intrinsic legacy position은 이를 덮어쓰지 않는다. Group의 새 member는 생략된 placement를 상속하며 명시적으로 충돌하는 anchor는 거부한다. Group layout edit는 전원을 원자적으로 옮긴다. `blockLayout`만 주었는데 기존 anchor가 여럿이면 새 position/at를 요구한다.
 - `row`는 occupied top을 맞춰 한 줄, `column`은 세로 stack, `wrap`은 edge별 기존 wrapping이다. Corner wrap은 inset 폭을 사용한다. Stable family order를 유지한다. 기존 side column/top-bottom wrap은 바꾸지 않고 새 multi-corner 기본은 row, 새 free group 기본은 column이다. Corner inset8, corner block gap24, external row gap40이며 명시적 group offset은 finite/nonnegative다. Corner로 새로 들어갈 때 offset 생략은8로 정규화하며 기존 member의 normalized8/30 차이를 충돌로 보지 않는다.

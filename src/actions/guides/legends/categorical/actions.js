@@ -376,6 +376,9 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
     if (combined) steps.push({ op: "createSizeLegend", args: {
       target: requestedPoint.id,
       ...(count === undefined ? {} : { count }),
+      ...(categoricalArgs.overflow !== undefined &&
+        findSemanticScale(program, requestedPoint.encoding.size.scale)?.type === "ordinal"
+        ? { overflow: categoricalArgs.overflow } : {}),
       ...(categoricalArgs.labels === undefined ? {} : { labels: {
         ...(categoricalArgs.labels.offset === undefined ? {} : { offset: categoricalArgs.labels.offset }),
         ...(sizeFormat === undefined ? {} : { format: sizeFormat })

@@ -409,7 +409,9 @@ function resolveCompanionSizeEdit(program, previous, size, args) {
   const canonicalSize = discrete ? size : continuousSize;
   const config = {
     ...canonicalSize,
-    ...(discrete ? {} : { sampling })
+    ...(discrete ? {} : { sampling }),
+    ...(args.overflow !== undefined && program.resolvedScales[size.scale]?.type === "ordinal"
+      ? { overflow: normalizeLegendOverflow(args.overflow) } : {})
   };
   if (args.labels === undefined && args.titleStyle === undefined) return config;
   const labels = size.inheritAppearance
