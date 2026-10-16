@@ -263,6 +263,14 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
   const continuousColor = requestedCandidate(
     program, args.target, continuousColorCandidates
   );
+  if (args.representation !== undefined && channels !== undefined && channels.length > 1) {
+    if (!continuousColor || !channels.includes("color")) throw new Error("Legend representation requires selected continuous color.");
+    const { representation, values, count, symbol, gradient, ...common } = args;
+    const steps = channels.flatMap(channel => resolveRawLegendCreationPlan(program,
+      channel === "color" ? { ...args, channels: [channel] }
+        : { ...common, channels: [channel] }, layers).steps);
+    return { steps, finish: "always" };
+  }
   if (
     (channels?.length === 1 && channels[0] === "color" && continuousColor) ||
     (channels === undefined && continuousColor)

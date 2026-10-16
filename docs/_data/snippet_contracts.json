@@ -2039,7 +2039,19 @@
   {
     "file": "api/legends/continuous.md",
     "block": 5,
-    "heading": "Continuous color, stroke, and opacity",
+    "heading": "Show a continuous color scale as symbols",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "e30cf524f54b8e467c3fb71f40bb9e199b4bb93c56375fdb1a392598e5597c7d",
+    "executable": false
+  },
+  {
+    "file": "api/legends/continuous.md",
+    "block": 6,
+    "heading": "Show a continuous color scale as symbols",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -2052,8 +2064,8 @@
   },
   {
     "file": "api/legends/continuous.md",
-    "block": 6,
-    "heading": "Continuous color, stroke, and opacity",
+    "block": 7,
+    "heading": "Show a continuous color scale as symbols",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [

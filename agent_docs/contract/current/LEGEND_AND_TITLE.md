@@ -41,7 +41,7 @@ type TitleWrap = "word" | "character";
 - Sampled opacity legend는 active quantitative opacity scale이 있는 Point와 Line을 지원한다.
   Line도 기존 circle sample recipe를 사용하며 constant assignment는 자신의 opacity block만 제거한다.
 
-- Signature: `createLegend({ target?, channels?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
+- Signature: `createLegend({ target?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
 - 모든 legend family의 `position`은 plot 내부 네 corner도 지원한다. Corner gradient는 vertical이며 sampled opacity는 vertical items를 사용한다. Offset은 painted border/content의
   plot 안쪽 간격이며 border padding을 추가 예약한다. 기본 vertical/1-column/top-title,
   align center다. 전체 내용이 plot에 맞지 않으면 atomic 오류이며 outer lane은 예약하지 않는다.
@@ -124,8 +124,8 @@ type TitleWrap = "word" | "character";
 - `itemGap`: positive finite number; vertical item의 기본값은18이다. Categorical top/bottom horizontal은24/20, sampled family의 horizontal 기본 간격은 기존 값을 유지한다. Side에서는 최소 center pitch이며 실제 symbol/text 높이가 더 크면 그 높이를 사용한다. Explicit 값과 저장된 기존 config는 보존한다.
 - `border`: `false | true | { color?, lineWidth?, padding?, background? }`; false가 default이며 true는
   default bordered background를 만든다.
-- `count`: integer `2..10,000`; size, stroke-width, gradient tick-label 또는 opacity sample count이며 default `5`.
-- `values`: continuous size, opacity, stroke-width sampled legend 전용 `readonly number[]`다. 길이 `1..100`, 모든 값이 finite이고 엄격히 오름차순이어야 하며 caller 순서를 정렬하거나 중복을 제거하지 않는다. `-0` 뒤의 `0`도 중복으로 거절한다. `count`와 같은 호출에 함께 쓸 수 없다. Discrete size, categorical/combined legend와 color/stroke gradient는 거절한다.
+- `count`: integer `2..10,000`; size, stroke-width, gradient tick-label, sampled-color 또는 opacity sample count이며 default `5`.
+- `values`: continuous size, opacity, stroke-width 및 representation symbols인 continuous color sampled legend 전용 `readonly number[]`다. 길이 `1..100`, 모든 값이 finite이고 엄격히 오름차순이어야 하며 caller 순서를 정렬하거나 중복을 제거하지 않는다. `-0` 뒤의 `0`도 중복으로 거절한다. `count`와 같은 호출에 함께 쓸 수 없다. Discrete size, categorical/combined legend와 strip 표현인 color/stroke gradient는 거절한다.
 - Exact sample은 effective scale domain 안에 있어야 하고 log scale에서는 모두 양수여야 한다. Label 순서는 supplied value 순서이며 reverse는 이 순서를 바꾸지 않고 실제 channel mapper의 symbol appearance만 뒤집는다. Area/opacity/stroke-width가 0이어도 label과 item slot은 유지한다. Exact sample은 mark encoding이나 scale domain을 변경하지 않는다.
 - Interval item content는 공통 pure layout에서 text/swatch를 측정한 뒤 edge에 배치한다. Right 기본 horizontal origin은 plot.right+offset30이다. Side item pitch는 max(itemGap18,symbolHeight,labelFontSize)이며 최종 전체 occupied top을 plot.y에 맞춘다. Left는 visible content 전체 폭을 빼고 label을 swatch 오른쪽에 둔다. Top/bottom은 plot 폭에 align하며 top title-grid gap12, inline title-grid gap20이다. Horizontal columns omission은 전 항목 한 row이며 direction은 cell fill 순서를 정한다. Hidden title은 grid/border 측정에서 제외한다. Interval background도 multi-block lane의 group bounds에 포함한다.
 - Categorical color/series의 hidden title은 grid height, inline prefix/gap과 border/fit에 포함하지 않는다. Hidden titleStyle/text/titlePosition 변경은 visible content geometry를 바꾸지 않는다. Legacy-bottom의 sample anchors는 고정하며 hidden border는 실제 item top에서 시작한다. Title 복원은 저장한 style을 사용하고 visible text가 Canvas를 넘으면 실패한다. Evidence: `test/unit/actions/guides/hidden-legend-bounds.test.js`, `test/contracts/hidden-categorical-layout.test.js`.
@@ -165,9 +165,22 @@ type TitleWrap = "word" | "character";
 - Left categorical/point-composite/size는 vertical block order와 symbol→label/domain order를 유지한다.
 - Proposed: —
 
+### 연속형 color의 symbols 표현
+
+- `representation?: "gradient" | "symbols"`는 연속형 color에만 적용한다. 신규 생략은 기존 gradient이고 편집 생략은 현재 표현을 보존한다. 지원 scale은 현재 continuous-color인 sequential/log/symlog이며 midpoint는 기존 sequential 계약을 사용한다. 새로운 scale type이나 stroke-symbol 표현은 추가하지 않는다. 범주형·구간·stroke-only 요청에서 지정하면 실패한다.
+- `editLegend`의 channels 생략은 현재 content 집합을 유지하고 color 표현만 바꾼다. 명시적 channels는 기존처럼 target의 최종 content 집합을 교체한다. representation을 명시한 최종 집합에 color가 없으면 실패한다. 함께 남는 size/opacity 등은 표현 변경 때문에 바꾸지 않는다. 모호한 target은 명시해야 한다.
+- Symbols는 기존 count 기본5와 continuous-domain sampler를 사용한다. 정확한 values는 기존 길이1..100/finite/strictly ascending/도메인 포함 검증을 재사용하고 동일 resolved mark color mapper로 paint한다. values와 count의 동시 명시는 실패한다. `values:"auto"`는 symbols를 유지하며 기억한 automatic count로 돌아간다. Exact value가 data/scale/facet 변경 뒤 domain을 벗어나면 이전 program을 보존하며 실패한다.
+- 기본/auto symbol은 단일 point recipe radius7이며 fill과 기본 stroke는 sampled color, 기본 strokeWidth1이다. `{type?:"point",radius?,stroke?,strokeWidth?}`를 받는다. Fill override 및 line/swatch/layered recipe는 거부한다. `editLegendBlock({target,channel:"color",symbol:{...}})`는 기존 size/stroke/strokeWidth/opacity 단위·범위를 사용하지만 고정 fill은 거부한다. Labels/title의 기존 formatting/typography/hide 계약을 사용한다.
+- Symbols의 layout은 공통 item layout이다. Side/corner 기본 vertical pitch18, top/bottom horizontal 기본 gap20이며 명시적 direction/columns/itemGap을 지원한다. Painted sample/text의 안전 최소 pitch를 보존한다. Group row/column/wrap과 항목 방향은 독립적이다. gradient.length/thickness를 symbols와 같은 호출에 명시하면 실패한다.
+- Canonical owner는 기존 `guideConfigs.legend.gradient`다. Representation·sampling·recipe·item layout만 그 owner에 보관하며 semantic color scale/title, mark data/domain/range와 target-owned legendGroups는 그대로다. 이전 저장 결과의 representation 생략은 gradient로 해석한다. Persistence validator와 resource references도 같은 discriminator를 검증한다.
+- Symbols는 `colorGradientSymbols`, 기존 prefix의 Labels/Title/Background concrete graphics를 만들며 Strips/Ticks를 만들지 않는다. 표현 전환은 이전 전용 graphic만 정리한다. Gradient→symbols의 values 생략은 자동 샘플이며 기존 count를 재사용한다. Symbols→gradient는 exact samples와 symbol-only layout/recipe를 지우고 gradient defaults120/12로 돌아간다. 공통 title/text/font/position/group/border는 유지하며 이전 표현 snapshot을 숨겨 보관하지 않는다.
+- Focused editor는 기존 적용 범위/모호성 계약을 유지한다. 다중 블록에서 한 color 블록만의 text/symbol/sample 편집은 `editLegendBlock({target,channel:"color",...})`로 지정한다. Scale family 전환·remove/recreate·Canvas·facet/repeat/shared guide replay는 같은 owner를 사용한다. 렌더러는 symbols/strip을 추론하지 않고 concrete graphicSpec만 읽는다.
+- 선언 검증: `test/contracts/sampled-color-legend-types.test.js`는 Full/Basic 생성, Full 편집, scatter/heatmap nested guides, closed representation vocabulary와 categorical/Pie/Basic 경계를 검증한다.
+- Basic은 기존 생성 경로를 제공하고 Full은 편집 lifecycle을 제공한다. Point/aggregate Bar/Rect/Text의 기존 continuous-color 소비 경로를 그대로 사용한다. 동작의 검증 증거는 이 기능의 unit/contracts/package consumer tests와 구현 완료 기록에 연결한다. 아직 실행되지 않은 조합은 coverage complete라고 표시하지 않는다.
+
 ### Formal values — `createLegend`
 
-- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; position?: LegendPosition; blockLayout?: "row" | "column" | "wrap"; at?: { x: Finite; y: Finite }; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; values?: readonly number[]; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
+- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; representation?: "gradient" | "symbols"; position?: LegendPosition; blockLayout?: "row" | "column" | "wrap"; at?: { x: Finite; y: Finite }; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; values?: readonly number[]; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -256,7 +269,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegend`
 
-- Signature: `editLegend({ target?, channels?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
+- Signature: `editLegend({ target?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
 - `target` selects an existing logical legend by mark ID. It may be omitted only when exactly one target owns all
   active blocks; independent targets are ambiguous.
 - At least one non-target change is required. Mark encodings and scale bindings remain unchanged.
@@ -266,7 +279,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - Categorical+size의 labels/titleStyle patch는 각 block의 유효 스타일에 요청한 leaf만 병합한다. Title/count만 바꾸면 size의 자체 스타일과 inheritance를 보존한다. Inherited size label offset은 sample slot edge 기준 default12다. 생성 시 명시한 shared labels.offset은 size에도 보존하고 후속 inherited typography 편집에서도 유지한다.
 - Omitted properties remain unchanged. Nested `labels`, `titleStyle`, `border`, and `gradient` objects merge supplied
   leaves. `title` accepts a custom non-empty string, `"auto"` for field inference, or `false` to hide its graphic.
-- Continuous sampled size/opacity/stroke-width blocks accept `values: readonly number[] | "auto"`. An exact array enters or replaces exact mode while retaining the last automatic count. `values: "auto"` restores that count; it may accompany `count` to choose a new automatic count. Exact mode rejects a count-only edit and every edit rejects an exact array combined with count. New writes use canonical `{ sampling: { mode: "auto", count } }` or `{ sampling: { mode: "values", values, count } }`; legacy root `count` remains readable and is removed from continuous sampled configs on the next write.
+- Continuous sampled size/opacity/stroke-width/color-symbol blocks accept `values: readonly number[] | "auto"`. An exact array enters or replaces exact mode while retaining the last automatic count. `values: "auto"` restores that count; it may accompany `count` to choose a new automatic count. Exact mode rejects a count-only edit and every edit rejects an exact array combined with count. New writes use canonical `{ sampling: { mode: "auto", count } }` or `{ sampling: { mode: "values", values, count } }`; legacy root `count` remains readable and is removed from continuous sampled configs on the next write.
 - Exact values survive legend layout/style/title, theme and Canvas replay. Scale, data, encoding or facet replay that makes a stored exact value invalid fails before returning a new program. Shared facets validate against the shared effective domain; independent facets require the values to fit every participating domain. A combined categorical+size target rejects root `values` until an explicit block selector chooses one sampled block.
 - Categorical `layout` omission은 stored edge/legacy-bottom을 보존한다. Style/title/border edit나 Canvas/scale/encoding replay가
   mode를 바꾸지 않는다. Explicit editLegend/editLegendLayout({layout})만 mode를 전환한다.
@@ -330,9 +343,9 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
   block을 바꾸지 않는다.
 - `title`은 string이며 `""`는 그 block title graphic을 숨긴다. Nonempty title은 semantic guide title과
   block override를 함께 갱신하고 field inference를 해제한다.
-- `values`와 `count`는 continuous size, opacity, strokeWidth sampled block에서 기존 exact-sampling 계약을
+- `values`와 `count`는 continuous size, opacity, strokeWidth 및 continuous color-symbol sampled block에서 기존 exact-sampling 계약을
   사용한다. `values:"auto"`는 기억한 automatic count로 돌아간다. Categorical, discrete size,
-  color/stroke gradient와 interval block은 이를 거부한다.
+  strip 표현인 color/stroke gradient와 interval block은 이를 거부한다.
 - `order`는 현재 categorical domain의 typed scalar 전체를 정확히 한 번 포함한 permutation이어야 한다.
   Partial list, duplicate, missing/extra value와 display text 기반 비교는 거부한다. 결과는 기존 semantic
   legend order owner에 `{ values }`로 저장된다.

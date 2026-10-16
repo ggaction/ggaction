@@ -16,7 +16,7 @@ type as the plotted consumer: an opacity legend uses point samples even for a Li
 
 | Family | Consumer and scale | Samples | Display recipe | Composition and edges |
 | --- | --- | --- | --- | --- |
-| Color gradient | Point, aggregate Bar, Rect; sequential quantitative/temporal color | Tick `count`; no explicit sampled `values` | Gradient rectangle; rejects `symbol` | Separate block; four edges and four plot corners |
+| Continuous color | Point, aggregate Bar, Rect, Text; existing continuous color scale | Gradient tick `count`; symbols accepts `count` or exact `values` | Default gradient rectangle; `representation: "symbols"` uses colored points | Separate block; four edges and four plot corners |
 | Stroke gradient | Supported stroke marks; sequential quantitative/temporal stroke | Tick `count` | Gradient rectangle; rejects `symbol` | Separate stroke block; four edges and four plot corners |
 | Color/stroke interval | Compatible quantize, quantile, threshold consumer | Every interval | Filled or outlined swatches, respectively | Ordered interval block; four edges and four plot corners |
 | Opacity | Point, Line; quantitative linear opacity | `count` or explicit ascending `values` | One point recipe; `type` omitted or `"point"` | Separate block; four edges and four plot corners |
@@ -136,9 +136,79 @@ edit. Title styles accept color and typography; `offset` belongs to `labels`.
 Gradient `titlePosition: "top"` is accepted by both creation and editing,
 including `editLegendLayout`; `"left"` is unsupported.
 
+## Show a continuous color scale as symbols
+
+`representation: "symbols"` displays sample colors as points while preserving
+the continuous color mapping used by marks. Omit it to keep the existing
+gradient. The option supports the existing sequential, log, and symlog color
+scales, including the existing sequential midpoint mapping. It does not add a
+new scale type or change a continuous scale into categories.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 600, height: 400, margin: 100 })
+  .createData({ values: [
+    { x: 1, y: 2, amount: 1 },
+    { x: 2, y: 1, amount: 9 }
+  ] })
+  .createPointMark({ id: "points" })
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" })
+  .encodeColor({ field: "amount", fieldType: "quantitative" })
+  .createLegend({
+    representation: "symbols",
+    values: [2, 4, 6, 8],
+    position: "top-left"
+  })
+  .editLegendSymbols({ symbol: { type: "point", radius: 5 } });
+```
+
+With no exact `values`, symbols uses five samples by default; `count` chooses
+the automatic count. Exact samples must be finite, strictly ascending, and
+inside the effective domain. `values: "auto"` in an editor returns to the
+remembered automatic count and keeps the symbols representation.
+
+The default point radius is 7 logical pixels. Fill and the default stroke use
+the mapped sample color; the default stroke width is 1. Use the point recipe's
+`radius`, `stroke`, and `strokeWidth` to edit its appearance. A fixed fill, line,
+swatch, or layered recipe is rejected because this representation explains the
+sampled color scale. Item `direction`, `columns`, and `itemGap` remain separate
+from whole-group `blockLayout`. Side and corner items default to vertical,
+with a minimum pitch of 18 that grows for larger painted content. Horizontal
+items default to a gap of 20.
+
+Use `editLegend({ representation: "gradient" })` to return to a gradient.
+Common titles, fonts, border, position, and whole-target group placement remain;
+symbol-only settings and exact samples are cleared, and gradient dimensions
+return to 120 by 12. Do not supply `gradient` dimensions in a symbols call.
+On the reverse switch, omitted sample values use automatic sampling and the
+remembered count. No hidden snapshot of the previous representation is kept.
+
+In an editor, omitted `channels` preserves the current content set. Explicit
+`channels` still replaces the target's final content set; it is not a selector.
+The selected set must contain continuous color when `representation` is given.
+Other retained legend blocks keep their own content and style. To edit one
+color block's samples, text, or symbol in a multi-block target, use
+`editLegendBlock({ target: "points", channel: "color", ... })`. An ambiguous
+target must be named. Categorical, interval, and stroke-only legends reject
+`representation`.
+
+Canvas, scale, data, composition, and persistence changes preserve the selected
+representation. If an exact sample becomes invalid for the new domain, the
+edit fails without changing the previous program. Basic supports creation;
+use the full entry point for the editing flow above.
+
 Their requested sample `count` is limited to the inclusive range `2`–`10,000`.
 
-Continuous size, opacity, and stroke-width legends can instead show exact
+Continuous size, opacity, stroke-width, and color-symbol legends can instead show exact
 numeric samples. Pass a finite, strictly increasing array with 1–100 values.
 The array is used as written: ggaction does not sort or deduplicate it. Every
 value must lie inside the effective scale domain, and log scales require

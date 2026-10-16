@@ -87,7 +87,7 @@ const LEGEND_RESOURCE_POLICIES = Object.freeze({
     family: "continuous",
     rematerializeOp: "rematerializeGradientLegend",
     graphicIds: Object.freeze([
-      "colorGradientBackground", "colorGradientStrips", "colorGradientTicks",
+      "colorGradientBackground", "colorGradientStrips", "colorGradientTicks", "colorGradientSymbols",
       "colorGradientLabels", "colorGradientTitle"
     ])
   }),

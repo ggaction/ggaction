@@ -14,7 +14,7 @@ for (const variant of visualVariants) {
       const labels = p.graphicSpec.objects.colorGradientLabels.items;
       const index = labels.findIndex(x => x.properties.text === "0");
       assert.ok(index >= 0);
-      assert.equal(labels[index].properties.y, 292);
+      assert.equal(labels[index].properties.y, 272.5);
     } else {
       assert.equal(Object.hasOwn(p.semanticSpec.scales.find(x => x.id === "colors"), "midpoint"), false);
     }

@@ -1605,11 +1605,14 @@ type CAxes = Omit<CartesianAxesOptions, "x" | "y"> & {
   y?: false | CAxis<YAxisPosition>;
 };
 type CartesianGridOptions = Pick<CreateGridOptions, "horizontal" | "vertical">;
-type FilledMarkLegendOptions = Omit<LegendOptions, "symbol"> & {
-  symbol?: "auto"
-    | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
-    | { layers: readonly LegendSymbolLayer[] };
-};
+type FilledLegendSymbolRecipe = "auto"
+  | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
+  | { layers: readonly LegendSymbolLayer[] };
+type FilledMarkLegendOptions = Omit<LegendOptions, "symbol" | "representation"> & (
+  | { representation?: "gradient"; symbol?: FilledLegendSymbolRecipe }
+  | { representation: "symbols"; symbol?: "auto" | { type?: "point"; radius?: number; stroke?: string; strokeWidth?: number } }
+);
+type DistributiveLegendOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
 type CategoricalLegendTextOptions = {
   offset?: number;
   color?: string;
@@ -1620,7 +1623,7 @@ type CategoricalLegendTextOptions = {
 };
 type PathLegendOptions = Omit<
   LegendOptions,
-  "symbol" | "gradient" | "count" | "values" | "labels"
+  "symbol" | "gradient" | "count" | "values" | "labels" | "representation"
 > & {
   symbol?: "auto" | { length?: number; lineWidth?: number }
     | { layers: readonly LegendSymbolLayer[] };
@@ -1629,7 +1632,7 @@ type PathLegendOptions = Omit<
 type CartesianGuideOptions = {
   axes?: false | CartesianAxesOptions;
   grid?: false | CartesianGridOptions;
-  legend?: false | (Omit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
+  legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
 };
 type CartesianPathGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
   legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
@@ -1637,8 +1640,9 @@ type CartesianPathGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
 type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
   legend?: false | (Omit<
     FilledMarkLegendOptions,
-    "count" | "values" | "gradient" | "labels" | "order"
+    "count" | "values" | "gradient" | "labels" | "order" | "representation" | "symbol"
   > & {
+    symbol?: FilledLegendSymbolRecipe;
     labels?: CategoricalLegendTextOptions;
     order?: CartesianLegendOrder;
   });
@@ -1650,7 +1654,7 @@ type CCategoricalGuides = Omit<CartesianCategoricalGuideOptions, "axes"> & {
   axes?: false | CAxes;
 };
 type ColorGuides = Omit<CartesianGuideOptions, "legend"> & {
-  legend?: false | (Omit<FilledMarkLegendOptions, "values" | "order"> & {
+  legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & {
     order?: CartesianLegendOrder;
   });
 };
@@ -3242,7 +3246,7 @@ type PolarLegendOrder = LegendValueOrder | { channel: "theta"; values?: never };
 type PolarPathLegendOptions = Omit<PathLegendOptions, "order"> & {
   order?: PolarLegendOrder;
 };
-type PolarPointLegendOptions = Omit<FilledMarkLegendOptions, "order"> & {
+type PolarPointLegendOptions = DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & {
   order?: PolarLegendOrder;
 };
 export type PolarPathGuideOptions = Omit<PolarChartGuideOptions, "legend"> & {
@@ -3709,8 +3713,9 @@ export type PieColor = string | {
 };
 export type PieLegendOptions = Omit<
   FilledMarkLegendOptions,
-  "count" | "values" | "gradient" | "channels" | "order" | "labels"
+  "count" | "values" | "gradient" | "channels" | "order" | "labels" | "representation" | "symbol"
 > & {
+  symbol?: FilledLegendSymbolRecipe;
   channels?: readonly ["color"];
   order?: LegendValueOrder | { channel: "theta"; values?: never };
   labels?: CategoricalLegendTextOptions;
@@ -4610,6 +4615,8 @@ export type LegendOrder = LegendValueOrder |
   { channel: "x" | "y" | "theta"; values?: never };
 
 export interface LegendOptions {
+  /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
+  representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
   layout?: "edge" | "legacy-bottom";
   /** Categorical and ordinal-size display limit; omitted or false shows every item. */
@@ -4636,7 +4643,7 @@ export interface LegendOptions {
   titlePosition?: "top" | "left";
   /** false hides the title while retaining its inferred field text. */
   title?: string | false;
-  /** Exact ascending samples for continuous size, opacity, or stroke-width legends. Cannot be combined with count. */
+  /** Exact ascending samples for continuous size, opacity, stroke-width, or color with representation symbols. Cannot be combined with count. */
   values?: readonly number[];
   count?: number;
   gradient?: { length?: number; thickness?: number };

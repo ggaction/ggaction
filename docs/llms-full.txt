@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:61fa5a0c4dfb02e86aa51be39c1ff82292c81e5f604d4ac7f23de7690278852e. Status: development. Runtime source: 3ca5a32325eb220229154a5b0f67fbe2e5f87655. Release baseline: v0.0.13.
+Contract: sha256:fac81959bde1a0bda1c5701380136b0e632626dbcf0c0aa8854c8a931aa74018. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/3ca5a32325eb220229154a5b0f67fbe2e5f87655/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/3ca5a32325eb220229154a5b0f67fbe2e5f87655/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12599,7 +12599,7 @@ Stroke-width legends support all four edges and plot corners through `createLege
 label/title styles, and border are editable. Side positions require vertical
 direction, center alignment, one column, and a top title. Symbol recipes,
 gradient, and order are unsupported; edit quantitative mapping through `editScale`.
-Continuous size, opacity, and stroke-width legends accept `values` for exact
+Continuous size, opacity, stroke-width, and color-symbol legends accept `values` for exact
 ascending samples. Exact values must fit the effective domain and cannot be
 combined with `count`; use `editLegend({ values: "auto" })` to return to the
 remembered automatic sample count. Use `editLegendBlock()` when a target has
@@ -12690,7 +12690,7 @@ Every categorical legend uses the same right-side default:
 | point | inferred or selected `shape` only | `right` | typed point |
 | point + matching line | `color` + `shape` | `right` | line over typed point |
 | quantitative point size | `size` | four edges and four corners, standalone or combined | five equal-area circles |
-| quantitative/temporal point color | `color` | `right` | continuous gradient with five labels |
+| quantitative/temporal point color | `color` | `right` | continuous gradient with five labels; explicit symbols representation shows sampled points |
 | discretized quantitative point color | `color` | `right/left/top/bottom` | ordered interval swatches |
 | categorical supported-mark stroke | `stroke` | `right/left/top/bottom` | actual fill with mapped outline |
 | quantitative point opacity | `opacity` | `right` | five constant-size circles with sampled opacity |
@@ -12886,7 +12886,7 @@ type as the plotted consumer: an opacity legend uses point samples even for a Li
 
 | Family | Consumer and scale | Samples | Display recipe | Composition and edges |
 | --- | --- | --- | --- | --- |
-| Color gradient | Point, aggregate Bar, Rect; sequential quantitative/temporal color | Tick `count`; no explicit sampled `values` | Gradient rectangle; rejects `symbol` | Separate block; four edges and four plot corners |
+| Continuous color | Point, aggregate Bar, Rect, Text; existing continuous color scale | Gradient tick `count`; symbols accepts `count` or exact `values` | Default gradient rectangle; `representation: "symbols"` uses colored points | Separate block; four edges and four plot corners |
 | Stroke gradient | Supported stroke marks; sequential quantitative/temporal stroke | Tick `count` | Gradient rectangle; rejects `symbol` | Separate stroke block; four edges and four plot corners |
 | Color/stroke interval | Compatible quantize, quantile, threshold consumer | Every interval | Filled or outlined swatches, respectively | Ordered interval block; four edges and four plot corners |
 | Opacity | Point, Line; quantitative linear opacity | `count` or explicit ascending `values` | One point recipe; `type` omitted or `"point"` | Separate block; four edges and four plot corners |
@@ -12990,9 +12990,75 @@ edit. Title styles accept color and typography; `offset` belongs to `labels`.
 Gradient `titlePosition: "top"` is accepted by both creation and editing,
 including `editLegendLayout`; `"left"` is unsupported.
 
+## Show a continuous color scale as symbols
+
+`representation: "symbols"` displays sample colors as points while preserving
+the continuous color mapping used by marks. Omit it to keep the existing
+gradient. The option supports the existing sequential, log, and symlog color
+scales, including the existing sequential midpoint mapping. It does not add a
+new scale type or change a continuous scale into categories.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 600, height: 400, margin: 100 })
+  .createData({ values: [
+    { x: 1, y: 2, amount: 1 },
+    { x: 2, y: 1, amount: 9 }
+  ] })
+  .createPointMark({ id: "points" })
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" })
+  .encodeColor({ field: "amount", fieldType: "quantitative" })
+  .createLegend({
+    representation: "symbols",
+    values: [2, 4, 6, 8],
+    position: "top-left"
+  })
+  .editLegendSymbols({ symbol: { type: "point", radius: 5 } });
+```
+
+With no exact `values`, symbols uses five samples by default; `count` chooses
+the automatic count. Exact samples must be finite, strictly ascending, and
+inside the effective domain. `values: "auto"` in an editor returns to the
+remembered automatic count and keeps the symbols representation.
+
+The default point radius is 7 logical pixels. Fill and the default stroke use
+the mapped sample color; the default stroke width is 1. Use the point recipe's
+`radius`, `stroke`, and `strokeWidth` to edit its appearance. A fixed fill, line,
+swatch, or layered recipe is rejected because this representation explains the
+sampled color scale. Item `direction`, `columns`, and `itemGap` remain separate
+from whole-group `blockLayout`. Side and corner items default to vertical,
+with a minimum pitch of 18 that grows for larger painted content. Horizontal
+items default to a gap of 20.
+
+Use `editLegend({ representation: "gradient" })` to return to a gradient.
+Common titles, fonts, border, position, and whole-target group placement remain;
+symbol-only settings and exact samples are cleared, and gradient dimensions
+return to 120 by 12. Do not supply `gradient` dimensions in a symbols call.
+On the reverse switch, omitted sample values use automatic sampling and the
+remembered count. No hidden snapshot of the previous representation is kept.
+
+In an editor, omitted `channels` preserves the current content set. Explicit
+`channels` still replaces the target's final content set; it is not a selector.
+The selected set must contain continuous color when `representation` is given.
+Other retained legend blocks keep their own content and style. To edit one
+color block's samples, text, or symbol in a multi-block target, use
+`editLegendBlock({ target: "points", channel: "color", ... })`. An ambiguous
+target must be named. Categorical, interval, and stroke-only legends reject
+`representation`.
+
+Canvas, scale, data, composition, and persistence changes preserve the selected
+representation. If an exact sample becomes invalid for the new domain, the
+edit fails without changing the previous program. Basic supports creation;
+use the full entry point for the editing flow above.
+
 Their requested sample `count` is limited to the inclusive range `2`–`10,000`.
 
-Continuous size, opacity, and stroke-width legends can instead show exact
+Continuous size, opacity, stroke-width, and color-symbol legends can instead show exact
 numeric samples. Pass a finite, strictly increasing array with 1–100 values.
 The array is used as written: ggaction does not sort or deduplicate it. Every
 value must lie inside the effective scale domain, and log scales require
@@ -13303,7 +13369,7 @@ const restored = edited.editLegendTitle({ title: false })
   .editLegendTitle({ title: "auto" });
 ```
 
-For continuous size, opacity, and stroke-width legends, `values` replaces the
+For continuous size, opacity, stroke-width, and color-symbol legends, `values` replaces the
 automatic samples with exact values:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -13428,7 +13494,7 @@ earlier block-local value.
 
 The action accepts `title`, `values`, `count`, `order`, `gap`, `text`, `symbol`,
 and `labelMap`. An empty title hides only that block's title. Exact `values` and
-`count` apply to continuous size, opacity, and stroke-width blocks. `order`
+`count` apply to continuous size, opacity, stroke-width, and color-symbol blocks. `order`
 applies to a categorical block and must list every current category exactly
 once. `text` changes item-label typography and color. `symbol.size` is point
 area in square pixels. Empty `text` or `symbol` objects remove that local patch
@@ -24433,6 +24499,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
 | `order` | Optional / branch-dependent | `LegendOrder \| undefined` |
@@ -24533,6 +24600,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
+| `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
 | `order` | Optional / branch-dependent | `LegendOrder \| undefined` |
@@ -27801,15 +27869,16 @@ Related types: [`AxisTickStyleOptions`](./reference/types/#type-axistickstyleopt
 type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
   legend?: false | (Omit<
     FilledMarkLegendOptions,
-    "count" | "values" | "gradient" | "labels" | "order"
+    "count" | "values" | "gradient" | "labels" | "order" | "representation" | "symbol"
   > & {
+    symbol?: FilledLegendSymbolRecipe;
     labels?: CategoricalLegendTextOptions;
     order?: CartesianLegendOrder;
   });
 };
 ```
 
-Related types: [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions) · [`FilledMarkLegendOptions`](./reference/types/#type-filledmarklegendoptions) · [`CategoricalLegendTextOptions`](./reference/types/#type-categoricallegendtextoptions) · [`CartesianLegendOrder`](./reference/types/#type-cartesianlegendorder).
+Related types: [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions) · [`FilledMarkLegendOptions`](./reference/types/#type-filledmarklegendoptions) · [`FilledLegendSymbolRecipe`](./reference/types/#type-filledlegendsymbolrecipe) · [`CategoricalLegendTextOptions`](./reference/types/#type-categoricallegendtextoptions) · [`CartesianLegendOrder`](./reference/types/#type-cartesianlegendorder).
 
 ### `CartesianGridOptions` {#type-cartesiangridoptions}
 
@@ -27829,11 +27898,11 @@ Related types: [`CreateGridOptions`](./reference/types/#type-creategridoptions).
 type CartesianGuideOptions = {
   axes?: false | CartesianAxesOptions;
   grid?: false | CartesianGridOptions;
-  legend?: false | (Omit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
+  legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
 };
 ```
 
-Related types: [`CartesianAxesOptions`](./reference/types/#type-cartesianaxesoptions) · [`CartesianGridOptions`](./reference/types/#type-cartesiangridoptions) · [`FilledMarkLegendOptions`](./reference/types/#type-filledmarklegendoptions) · [`CartesianLegendOrder`](./reference/types/#type-cartesianlegendorder).
+Related types: [`CartesianAxesOptions`](./reference/types/#type-cartesianaxesoptions) · [`CartesianGridOptions`](./reference/types/#type-cartesiangridoptions) · [`DistributiveLegendOmit`](./reference/types/#type-distributivelegendomit) · [`FilledMarkLegendOptions`](./reference/types/#type-filledmarklegendoptions) · [`CartesianLegendOrder`](./reference/types/#type-cartesianlegendorder).
 
 ### `CartesianLegendOrder` {#type-cartesianlegendorder}
 
@@ -28092,13 +28161,13 @@ Related types: [`CategoricalEncodingOptions`](./reference/types/#type-categorica
 
 ```typescript
 type ColorGuides = Omit<CartesianGuideOptions, "legend"> & {
-  legend?: false | (Omit<FilledMarkLegendOptions, "values" | "order"> & {
+  legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & {
     order?: CartesianLegendOrder;
   });
 };
 ```
 
-Related types: [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions) · [`FilledMarkLegendOptions`](./reference/types/#type-filledmarklegendoptions) · [`CartesianLegendOrder`](./reference/types/#type-cartesianlegendorder).
+Related types: [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions) · [`DistributiveLegendOmit`](./reference/types/#type-distributivelegendomit) · [`FilledMarkLegendOptions`](./reference/types/#type-filledmarklegendoptions) · [`CartesianLegendOrder`](./reference/types/#type-cartesianlegendorder).
 
 ### `ColorLayout` {#type-colorlayout}
 
@@ -30194,6 +30263,14 @@ export interface DisplayLabelOptions {
 
 Related types: [`DisplayLabelMap`](./reference/types/#type-displaylabelmap).
 
+### `DistributiveLegendOmit` {#type-distributivelegendomit}
+
+ Expand DistributiveLegendOmit
+
+```typescript
+type DistributiveLegendOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
+```
+
 ### `DurationWindowFrame` {#type-durationwindowframe}
 
  Expand DurationWindowFrame
@@ -31865,19 +31942,30 @@ export type FillPaint = string | LinearGradientPaint;
 
 Related types: [`LinearGradientPaint`](./reference/types/#type-lineargradientpaint).
 
+### `FilledLegendSymbolRecipe` {#type-filledlegendsymbolrecipe}
+
+ Expand FilledLegendSymbolRecipe
+
+```typescript
+type FilledLegendSymbolRecipe = "auto"
+  | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
+  | { layers: readonly LegendSymbolLayer[] };
+```
+
+Related types: [`LegendSymbolLayer`](./reference/types/#type-legendsymbollayer).
+
 ### `FilledMarkLegendOptions` {#type-filledmarklegendoptions}
 
  Expand FilledMarkLegendOptions
 
 ```typescript
-type FilledMarkLegendOptions = Omit<LegendOptions, "symbol"> & {
-  symbol?: "auto"
-    | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
-    | { layers: readonly LegendSymbolLayer[] };
-};
+type FilledMarkLegendOptions = Omit<LegendOptions, "symbol" | "representation"> & (
+  | { representation?: "gradient"; symbol?: FilledLegendSymbolRecipe }
+  | { representation: "symbols"; symbol?: "auto" | { type?: "point"; radius?: number; stroke?: string; strokeWidth?: number } }
+);
 ```
 
-Related types: [`LegendOptions`](./reference/types/#type-legendoptions) · [`LegendSymbolLayer`](./reference/types/#type-legendsymbollayer).
+Related types: [`LegendOptions`](./reference/types/#type-legendoptions) · [`FilledLegendSymbolRecipe`](./reference/types/#type-filledlegendsymbolrecipe).
 
 ### `FilledMarkStroke` {#type-filledmarkstroke}
 
@@ -32801,6 +32889,8 @@ Related types: [`LegendOptions`](./reference/types/#type-legendoptions).
 
 ```typescript
 export interface LegendOptions {
+  /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
+  representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
   layout?: "edge" | "legacy-bottom";
   /** Categorical and ordinal-size display limit; omitted or false shows every item. */
@@ -32827,7 +32917,7 @@ export interface LegendOptions {
   titlePosition?: "top" | "left";
   /** false hides the title while retaining its inferred field text. */
   title?: string | false;
-  /** Exact ascending samples for continuous size, opacity, or stroke-width legends. Cannot be combined with count. */
+  /** Exact ascending samples for continuous size, opacity, stroke-width, or color with representation symbols. Cannot be combined with count. */
   values?: readonly number[];
   count?: number;
   gradient?: { length?: number; thickness?: number };
@@ -33778,7 +33868,7 @@ export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
 ```typescript
 type PathLegendOptions = Omit<
   LegendOptions,
-  "symbol" | "gradient" | "count" | "values" | "labels"
+  "symbol" | "gradient" | "count" | "values" | "labels" | "representation"
 > & {
   symbol?: "auto" | { length?: number; lineWidth?: number }
     | { layers: readonly LegendSymbolLayer[] };
@@ -33837,15 +33927,16 @@ Related types: [`NonPointCategoricalColorScaleOptions`](./reference/types/#type-
 ```typescript
 export type PieLegendOptions = Omit<
   FilledMarkLegendOptions,
-  "count" | "values" | "gradient" | "channels" | "order" | "labels"
+  "count" | "values" | "gradient" | "channels" | "order" | "labels" | "representation" | "symbol"
 > & {
+  symbol?: FilledLegendSymbolRecipe;
   channels?: readonly ["color"];
   order?: LegendValueOrder | { channel: "theta"; values?: never };
   labels?: CategoricalLegendTextOptions;
 };
 ```
 
-Related types: [`FilledMarkLegendOptions`](./reference/types/#type-filledmarklegendoptions) · [`LegendValueOrder`](./reference/types/#type-legendvalueorder) · [`CategoricalLegendTextOptions`](./reference/types/#type-categoricallegendtextoptions).
+Related types: [`FilledMarkLegendOptions`](./reference/types/#type-filledmarklegendoptions) · [`FilledLegendSymbolRecipe`](./reference/types/#type-filledlegendsymbolrecipe) · [`LegendValueOrder`](./reference/types/#type-legendvalueorder) · [`CategoricalLegendTextOptions`](./reference/types/#type-categoricallegendtextoptions).
 
 ### `PieRadiusChannel` {#type-pieradiuschannel}
 
@@ -34083,12 +34174,12 @@ Related types: [`PolarChartGuideOptions`](./reference/types/#type-polarchartguid
  Expand PolarPointLegendOptions
 
 ```typescript
-type PolarPointLegendOptions = Omit<FilledMarkLegendOptions, "order"> & {
+type PolarPointLegendOptions = DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & {
   order?: PolarLegendOrder;
 };
 ```
 
-Related types: [`FilledMarkLegendOptions`](./reference/types/#type-filledmarklegendoptions) · [`PolarLegendOrder`](./reference/types/#type-polarlegendorder).
+Related types: [`DistributiveLegendOmit`](./reference/types/#type-distributivelegendomit) · [`FilledMarkLegendOptions`](./reference/types/#type-filledmarklegendoptions) · [`PolarLegendOrder`](./reference/types/#type-polarlegendorder).
 
 ### `PolarRadiusChannel` {#type-polarradiuschannel}
 
@@ -36976,12 +37067,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3ca5a32325eb220229154a5b0f67fbe2e5f87655/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3ca5a32325eb220229154a5b0f67fbe2e5f87655/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39107,9 +39198,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:61fa5a0c4dfb02e86aa51be39c1ff82292c81e5f604d4ac7f23de7690278852e` |
+| Contract fingerprint | `sha256:fac81959bde1a0bda1c5701380136b0e632626dbcf0c0aa8854c8a931aa74018` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `3ca5a32325eb220229154a5b0f67fbe2e5f87655` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |

@@ -1,0 +1,574 @@
+{
+  "chartPixelsViewed": false,
+  "parentRuntime": "70711afbbd939e055b6475ce29d258ee1e46cd93",
+  "modified": 56,
+  "unchangedFromParentRerender": 56,
+  "rows": [
+    {
+      "path": "docs/assets/images/cars-density-area-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "b40a3031ffbba8412718c8797c95a40d2a61cc2576bc1096b51f911de568c692",
+      "regeneratedPngSha256": "faad80514dac939c67f2ff86a814f7f614902b35ad6c33e52a23855d62be1570",
+      "freshParentRuntimePngSha256": "faad80514dac939c67f2ff86a814f7f614902b35ad6c33e52a23855d62be1570"
+    },
+    {
+      "path": "docs/assets/images/cars-density-area.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "a047db18b7599776313e83e191fd9cb2f794baf370ee1ecb09760c5293f79129",
+      "regeneratedPngSha256": "b2e9d85832aeddef597ed39481a2117ee6ca70472f3676c54987396541b7d960",
+      "freshParentRuntimePngSha256": "b2e9d85832aeddef597ed39481a2117ee6ca70472f3676c54987396541b7d960"
+    },
+    {
+      "path": "docs/assets/images/cars-line-chart-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "d712dfe7c5345d6117285a55713ca24ce5c12731eccdeb46f52030778d698c9b",
+      "regeneratedPngSha256": "8d191ab1860eb3599ab5b776ea671f9426bead92717fcd7fd4a43be3f7b287d1",
+      "freshParentRuntimePngSha256": "8d191ab1860eb3599ab5b776ea671f9426bead92717fcd7fd4a43be3f7b287d1"
+    },
+    {
+      "path": "docs/assets/images/cars-line-chart.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "1bd5c55b412f2b8e32f7c8fc843974d1476f18b3499372c538fbb23fdfcd8784",
+      "regeneratedPngSha256": "83ce7a91093a69b084cd5fbc5dbb2faf72087fa8cc997ac1292608742f246e59",
+      "freshParentRuntimePngSha256": "83ce7a91093a69b084cd5fbc5dbb2faf72087fa8cc997ac1292608742f246e59"
+    },
+    {
+      "path": "docs/assets/images/cars-origin-donut-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "01dfc8e4f2945bb908f2bfbb8fb9bcb4a30a8dc2e3b3d7270155e2afdf721edd",
+      "regeneratedPngSha256": "a18f431a5aa367ade2b93bd11f8ed6333bd4fef033c6d1058805ddf7dd50034f",
+      "freshParentRuntimePngSha256": "a18f431a5aa367ade2b93bd11f8ed6333bd4fef033c6d1058805ddf7dd50034f"
+    },
+    {
+      "path": "docs/assets/images/cars-origin-donut.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "c4c52d2e603f4d88b9d63b77ef0a2471d1b0db0d01dbd7df693f5421671e6870",
+      "regeneratedPngSha256": "4e8957ccbad41ea9d409c3bcc76225ee4b424ff9029049d84b27f3652d54f092",
+      "freshParentRuntimePngSha256": "4e8957ccbad41ea9d409c3bcc76225ee4b424ff9029049d84b27f3652d54f092"
+    },
+    {
+      "path": "docs/assets/images/cars-parallel-coordinates-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "3ac59d59c8f8d01d9bad7f1118fda5b31a09f81eec2aafe7896b9f49d8352aa4",
+      "regeneratedPngSha256": "d52b6491d2bcd6bdb1d128c1dab07017f84ef4be3c611a8969c001006cd42315",
+      "freshParentRuntimePngSha256": "d52b6491d2bcd6bdb1d128c1dab07017f84ef4be3c611a8969c001006cd42315"
+    },
+    {
+      "path": "docs/assets/images/cars-parallel-coordinates.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "d8e485efcf13d7f643834d91c5f30e76c67b696985f83ba828b7a75b6d8ab2ab",
+      "regeneratedPngSha256": "7771f50c3a48c9303334703557ceeba619d5b972c0f09d1d92172bc648e71da3",
+      "freshParentRuntimePngSha256": "7771f50c3a48c9303334703557ceeba619d5b972c0f09d1d92172bc648e71da3"
+    },
+    {
+      "path": "docs/assets/images/cars-regression-scatterplot-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "ba424b2f1d44ec049ec4db23666835e3f528f31547d9a9e87e83862c0f7670fb",
+      "regeneratedPngSha256": "0be6e87596ae83895cf320ed04537c0ad1187b7e18cf5ed6f4791ea2fc93bcf8",
+      "freshParentRuntimePngSha256": "0be6e87596ae83895cf320ed04537c0ad1187b7e18cf5ed6f4791ea2fc93bcf8"
+    },
+    {
+      "path": "docs/assets/images/cars-regression-scatterplot.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "fbb29d80ca83a5afd06de2957d9e2bedae3e848fc7e942a0ddd53ee99ae0f4fc",
+      "regeneratedPngSha256": "f17430e8fd8e8a6b76f8aa685557f03f03cb13d155d54dfde05ca570ffec0001",
+      "freshParentRuntimePngSha256": "f17430e8fd8e8a6b76f8aa685557f03f03cb13d155d54dfde05ca570ffec0001"
+    },
+    {
+      "path": "docs/assets/images/cars-weighted-rules-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "c0b79648ae3d367dbaa63decba23c66400ffc44e4804e12e0eed067ca1b10e8b",
+      "regeneratedPngSha256": "e7f840fbdf9f8c64de89460778bce2cf720f4524f118c025c4efa04e6c83f436",
+      "freshParentRuntimePngSha256": "e7f840fbdf9f8c64de89460778bce2cf720f4524f118c025c4efa04e6c83f436"
+    },
+    {
+      "path": "docs/assets/images/cars-weighted-rules.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "87eb5ac903e744863aba20b36b747864e0aa08752618bf7490071e820ba48128",
+      "regeneratedPngSha256": "a95b9b1f8b4af112037d38318665593eb035df8e087fd8154e2e2559ef5ec0e8",
+      "freshParentRuntimePngSha256": "a95b9b1f8b4af112037d38318665593eb035df8e087fd8154e2e2559ef5ec0e8"
+    },
+    {
+      "path": "docs/assets/images/cars-window-rank-scatterplot-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "3edccf71c63f3251b19068731280bcd3df473efc1bd7cdb05716ff58ba659675",
+      "regeneratedPngSha256": "481d645f7d0f66a842c9c96fa562a79bbdbb70216dd0079ccd3905ff6a29d8f1",
+      "freshParentRuntimePngSha256": "481d645f7d0f66a842c9c96fa562a79bbdbb70216dd0079ccd3905ff6a29d8f1"
+    },
+    {
+      "path": "docs/assets/images/cars-window-rank-scatterplot.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "98adc5d5ae95387ed6632e89249e130d61297c7076b716574d29c39826821625",
+      "regeneratedPngSha256": "b8a57227382498db733a7f8e4e8d0b2995d2fd68004611e9851c439f49573da4",
+      "freshParentRuntimePngSha256": "b8a57227382498db733a7f8e4e8d0b2995d2fd68004611e9851c439f49573da4"
+    },
+    {
+      "path": "docs/assets/images/centered-area-stream-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "78b7cdb6e5df6b1ff1e67901ddb5efcd68c87e93a6bce76db6f99df320960631",
+      "regeneratedPngSha256": "1a3f7fffcdad4205347c34d19cb7577be438921d1201a0ca8bfc608881ddce75",
+      "freshParentRuntimePngSha256": "1a3f7fffcdad4205347c34d19cb7577be438921d1201a0ca8bfc608881ddce75"
+    },
+    {
+      "path": "docs/assets/images/centered-area-stream.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "f09560d49e29c88a59c2654e13f5b9fce0563c91fe31eb28b61ffe340415be17",
+      "regeneratedPngSha256": "041f388260f2a46c765b54e337b40eab68163ef6e3655cad10733ecc180c81ac",
+      "freshParentRuntimePngSha256": "041f388260f2a46c765b54e337b40eab68163ef6e3655cad10733ecc180c81ac"
+    },
+    {
+      "path": "docs/assets/images/color-transitions-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "30f4403b4be20bce426fe4fc3bc9f51d59e4821efd884a87e9cdebf7bf33a3a2",
+      "regeneratedPngSha256": "576973dd73ef206c6d2756bd46a19c77ae3dd5f3dd1cac114a848705b82b481d",
+      "freshParentRuntimePngSha256": "576973dd73ef206c6d2756bd46a19c77ae3dd5f3dd1cac114a848705b82b481d"
+    },
+    {
+      "path": "docs/assets/images/color-transitions.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "03929da3442ea9d2362eee65179df6b9e5888b856df5141296b6a8d9bdf6a201",
+      "regeneratedPngSha256": "bd9492cf352a2c30d932fb97c364b842478345430789474ddbf5806f85ce2369",
+      "freshParentRuntimePngSha256": "bd9492cf352a2c30d932fb97c364b842478345430789474ddbf5806f85ce2369"
+    },
+    {
+      "path": "docs/assets/images/cross-feature-dashboard-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "e16fa8f6685a6d0cd74efbe45c8c4e6a530c2aba3d757f47ecca6ea174a472d0",
+      "regeneratedPngSha256": "513e9477228d202823c206b911e0637352af083f3e319e565215f5c0b7eecf15",
+      "freshParentRuntimePngSha256": "513e9477228d202823c206b911e0637352af083f3e319e565215f5c0b7eecf15"
+    },
+    {
+      "path": "docs/assets/images/cross-feature-dashboard.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "fe5a58587cae634f2b847803eee661501d5a082fa57694ee968d9baa32b2024b",
+      "regeneratedPngSha256": "80091f966e3e0ecc0b42cfb094a5e7207c7df69739bd8110b232b857d4fe1be9",
+      "freshParentRuntimePngSha256": "80091f966e3e0ecc0b42cfb094a5e7207c7df69739bd8110b232b857d4fe1be9"
+    },
+    {
+      "path": "docs/assets/images/dark-theme-scatterplot-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "53aeb1389dad2b07a57667bbda1847afd93134c0050fe4b432a1f60d4075b6a4",
+      "regeneratedPngSha256": "60ca2100745c7ec6a35c50ea852f204f804ee531234df997de13cdfa346207b2",
+      "freshParentRuntimePngSha256": "60ca2100745c7ec6a35c50ea852f204f804ee531234df997de13cdfa346207b2"
+    },
+    {
+      "path": "docs/assets/images/dark-theme-scatterplot.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "7357c68e6193623d31c8bce581b3a45048e3ccebc73a288a07f0116f3001badd",
+      "regeneratedPngSha256": "bcd9d86a5e0a904ea8b6aa92c50998998cf0ed72626598eb1b13e97487c94a83",
+      "freshParentRuntimePngSha256": "bcd9d86a5e0a904ea8b6aa92c50998998cf0ed72626598eb1b13e97487c94a83"
+    },
+    {
+      "path": "docs/assets/images/gapminder-development-trajectories-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "2e597cedaaf5b797f04f4241d7770677776c99140ce55de8fd89c931678e2560",
+      "regeneratedPngSha256": "8b4c0189196267c79a559b103f076a452f526f451ba3392c97b6cda4ab48a97e",
+      "freshParentRuntimePngSha256": "8b4c0189196267c79a559b103f076a452f526f451ba3392c97b6cda4ab48a97e"
+    },
+    {
+      "path": "docs/assets/images/gapminder-development-trajectories.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "76e4c4bddd542d0e815dae42d4a272412dbeeb139dc7f50cfc93aec130733351",
+      "regeneratedPngSha256": "568c772a64e16fb5e485a725e625508d88528e15316c8245c67f887dd3f2df5c",
+      "freshParentRuntimePngSha256": "568c772a64e16fb5e485a725e625508d88528e15316c8245c67f887dd3f2df5c"
+    },
+    {
+      "path": "docs/assets/images/gapminder-error-band-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "d1d2c88fbca0ce6c7503fa85b3a18233276a185c8202abe3f3f26dec82269f4f",
+      "regeneratedPngSha256": "ed1ef6d442a93781b433264344dd23fb458f41198e097554ebae23c855429db6",
+      "freshParentRuntimePngSha256": "ed1ef6d442a93781b433264344dd23fb458f41198e097554ebae23c855429db6"
+    },
+    {
+      "path": "docs/assets/images/gapminder-error-band.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "a55a9c5d7acbaf3fd1dd8f6b667cce83af0f685a4a45a1d300811bc71aac71b9",
+      "regeneratedPngSha256": "8511f681b4eece34765a3b102403730f1f6de04e4ea1d3873375ed584a531e99",
+      "freshParentRuntimePngSha256": "8511f681b4eece34765a3b102403730f1f6de04e4ea1d3873375ed584a531e99"
+    },
+    {
+      "path": "docs/assets/images/gapminder-polar-trends-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "23a010dfe454625499689a8b91a3f1123c4be3fb231f4173b088fb41d609e177",
+      "regeneratedPngSha256": "2aca81733829954432002d56b8730e753b151373d05fa4258bfe0d9d6bf41d18",
+      "freshParentRuntimePngSha256": "2aca81733829954432002d56b8730e753b151373d05fa4258bfe0d9d6bf41d18"
+    },
+    {
+      "path": "docs/assets/images/gapminder-polar-trends.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "95fc27c6c7791ebc3f097d568dca7d8240cb08f93b9df6e88b4fea6226009b46",
+      "regeneratedPngSha256": "57da2384f8f303e610103c16be40a40be0e3fc9e8efbadf3f2beec2331f6c606",
+      "freshParentRuntimePngSha256": "57da2384f8f303e610103c16be40a40be0e3fc9e8efbadf3f2beec2331f6c606"
+    },
+    {
+      "path": "docs/assets/images/gapminder-population-donut-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "b8ab1bdc938285b04f484466461f9f36bccc1b6d06b572c52b4c3fb88ce4fa6a",
+      "regeneratedPngSha256": "53ba72fe2ebf54c21b5968f10485e5fbc591c0b9365468140c9a58f7f1c5f186",
+      "freshParentRuntimePngSha256": "53ba72fe2ebf54c21b5968f10485e5fbc591c0b9365468140c9a58f7f1c5f186"
+    },
+    {
+      "path": "docs/assets/images/gapminder-population-donut.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "6dad00d0fab22f53c100c180a0a12848f76a55ef7ca1eb10d6c1eab8fb100a2a",
+      "regeneratedPngSha256": "dfd57a3aae09b4657d2f13c920759f3290041e14d800aeb45d258027febe5330",
+      "freshParentRuntimePngSha256": "dfd57a3aae09b4657d2f13c920759f3290041e14d800aeb45d258027febe5330"
+    },
+    {
+      "path": "docs/assets/images/gapminder-radial-bars-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "15d5607cab5c88d2de2f56165cd29d717863cd88ed7e892765eff213480c96d1",
+      "regeneratedPngSha256": "19c79feba2cddeb64021572cc607f9344fa20d170ec2e16ea16ff03675340aea",
+      "freshParentRuntimePngSha256": "19c79feba2cddeb64021572cc607f9344fa20d170ec2e16ea16ff03675340aea"
+    },
+    {
+      "path": "docs/assets/images/gapminder-radial-bars.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "2e4f4ede1f729a3dae499a173847825123a607726a4faf162c5f83b9067f3213",
+      "regeneratedPngSha256": "c8f1fe02b64bd44aaae34783525c49bf3fed3e09500e1d42bb719aea004ad909",
+      "freshParentRuntimePngSha256": "c8f1fe02b64bd44aaae34783525c49bf3fed3e09500e1d42bb719aea004ad909"
+    },
+    {
+      "path": "docs/assets/images/getting-started-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "ef4ec9df8e3ce9996bf35e2cb6daf121dd0073a0ae3b1ef118a5ec11e3943296",
+      "regeneratedPngSha256": "df50516b7dbeb7bff77f81be33ac63a854f52a24eb79a96cc7115299d3d42e2e",
+      "freshParentRuntimePngSha256": "df50516b7dbeb7bff77f81be33ac63a854f52a24eb79a96cc7115299d3d42e2e"
+    },
+    {
+      "path": "docs/assets/images/getting-started.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "8487669d6b129118d27d983f3011aaea7dd9098714d220c174f8d4ece7cdfc21",
+      "regeneratedPngSha256": "741f5816b9c9e27075ab46177515a1cd7a7a50b18a7da099f71f8f1d2be26283",
+      "freshParentRuntimePngSha256": "741f5816b9c9e27075ab46177515a1cd7a7a50b18a7da099f71f8f1d2be26283"
+    },
+    {
+      "path": "docs/assets/images/jobs-grouped-bar-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "3f0b2a82580181b3627ea2a687e8b2d6de350b5b0e02f959812128e1bc03930b",
+      "regeneratedPngSha256": "18bbfdef447299ba265cab2c292c3861da2945a1a95e727c6a0a0230a3d46e37",
+      "freshParentRuntimePngSha256": "18bbfdef447299ba265cab2c292c3861da2945a1a95e727c6a0a0230a3d46e37"
+    },
+    {
+      "path": "docs/assets/images/jobs-grouped-bar.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "9231e408be20f70070c434af8b0fa6c3592ea8eb7700a2c253418740323749b5",
+      "regeneratedPngSha256": "f7bf9bcb19bc95643e61969d80896814d7425fffd5de6764beced9996878c84f",
+      "freshParentRuntimePngSha256": "f7bf9bcb19bc95643e61969d80896814d7425fffd5de6764beced9996878c84f"
+    },
+    {
+      "path": "docs/assets/images/jobs-horizontal-grouped-bar-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "a1609b8753136a4aef0bb71237142699cb10fe5b31928e20555f15fccd47a7a3",
+      "regeneratedPngSha256": "59ab8bd352e82e3ff797bdb87005f4f4d722d6a715a93cbf4a44192842ad8599",
+      "freshParentRuntimePngSha256": "59ab8bd352e82e3ff797bdb87005f4f4d722d6a715a93cbf4a44192842ad8599"
+    },
+    {
+      "path": "docs/assets/images/jobs-horizontal-grouped-bar.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "058bd26b45a4f7dc7047873eab0f08728ecea6c577363d81a247f3e167bce67d",
+      "regeneratedPngSha256": "19a13f7d93b3e0c62ef3c88fc282cfd5438fdc8d95517d903d8574a61ea494ac",
+      "freshParentRuntimePngSha256": "19a13f7d93b3e0c62ef3c88fc282cfd5438fdc8d95517d903d8574a61ea494ac"
+    },
+    {
+      "path": "docs/assets/images/jobs-radar-chart-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "97199a7720574cc9fd696d013df1fbcbd37a7c85309a4ba01a6803cc4b435109",
+      "regeneratedPngSha256": "30d30597bc59cabba6c15cf0f46676cec84adc0c6bda004ee62811b8cde6d23a",
+      "freshParentRuntimePngSha256": "30d30597bc59cabba6c15cf0f46676cec84adc0c6bda004ee62811b8cde6d23a"
+    },
+    {
+      "path": "docs/assets/images/jobs-radar-chart.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "c2d6f631ca1fc4f1a08a9fcdda1e115c771d4f131f2a37e926f2df278d67e282",
+      "regeneratedPngSha256": "4e8437b7b809ee04c2f79bf9ebe511864ce1674e83b4e019af6e9c77303ba9f1",
+      "freshParentRuntimePngSha256": "4e8437b7b809ee04c2f79bf9ebe511864ce1674e83b4e019af6e9c77303ba9f1"
+    },
+    {
+      "path": "docs/assets/images/mark-selection-lines-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "b6c1c37c36d9fdbc1bcca06efabbd106ff388b690959773cd4cba571d653f6ba",
+      "regeneratedPngSha256": "89c596a79ca1468474c67b86dd1ddc26df6fe585487f110fd95950b74bc0c118",
+      "freshParentRuntimePngSha256": "89c596a79ca1468474c67b86dd1ddc26df6fe585487f110fd95950b74bc0c118"
+    },
+    {
+      "path": "docs/assets/images/mark-selection-lines.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "8105bbf319d4f5caf4d050275689f46444b1204921c4b3613500446c003180e9",
+      "regeneratedPngSha256": "c243987ddc456476d986c58b1f00c7090a44ce3434f6a8ecf92b87892c3f02ce",
+      "freshParentRuntimePngSha256": "c243987ddc456476d986c58b1f00c7090a44ce3434f6a8ecf92b87892c3f02ce"
+    },
+    {
+      "path": "docs/assets/images/mark-selection-points-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "ecdda593cf40e37ef544a015277ed4b42bf61539b6ed91f398e4104d4401fd2b",
+      "regeneratedPngSha256": "dad7683782407acbad771c961ce104528fd72efb7b7d2617b62255bb164c5d20",
+      "freshParentRuntimePngSha256": "dad7683782407acbad771c961ce104528fd72efb7b7d2617b62255bb164c5d20"
+    },
+    {
+      "path": "docs/assets/images/mark-selection-points.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "1119fbe6c59d2ac471709f1c23ad742f047ee0cbcff9ab021aa8b7d7fd93d711",
+      "regeneratedPngSha256": "42869310ef2e80674fe6949be80f3357065a35e8b026a4f4599810922722ad03",
+      "freshParentRuntimePngSha256": "42869310ef2e80674fe6949be80f3357065a35e8b026a4f4599810922722ad03"
+    },
+    {
+      "path": "docs/assets/images/nightingale-rose-chart-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "e1e2ee1153a10f0860c9508b8fb911761522d3862fbaa8c45e4de0cb48d29716",
+      "regeneratedPngSha256": "58dea2e48d7630c2c2d58f23a41619815578766d02f596d0ea290264b19ecd39",
+      "freshParentRuntimePngSha256": "58dea2e48d7630c2c2d58f23a41619815578766d02f596d0ea290264b19ecd39"
+    },
+    {
+      "path": "docs/assets/images/nightingale-rose-chart.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "0e95713163761f70fcd1ef848244fc089affa465423fca5a7fafe1a4df0e43a8",
+      "regeneratedPngSha256": "fb22710da24633a710824da1e53e3085c3d4fca294faadf24826d57f7d4d07cb",
+      "freshParentRuntimePngSha256": "fb22710da24633a710824da1e53e3085c3d4fca294faadf24826d57f7d4d07cb"
+    },
+    {
+      "path": "docs/assets/images/pie-plot-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "d90aa5d73a70d126409e72032be5d97d5e8714ece86a244500e1061056486e70",
+      "regeneratedPngSha256": "92bd820ad6d02e888461db822e4d6f8d88fb77241214605d063a3036459a2571",
+      "freshParentRuntimePngSha256": "92bd820ad6d02e888461db822e4d6f8d88fb77241214605d063a3036459a2571"
+    },
+    {
+      "path": "docs/assets/images/pie-plot.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "b07dd5e79ff6a0bd8f379bf7dd22e227c1ecfee27a8242d756850f7490460f73",
+      "regeneratedPngSha256": "0483e647ce90036811ad7c6634f68bd9ca757e3c04ceb9213b54511f2f856b60",
+      "freshParentRuntimePngSha256": "0483e647ce90036811ad7c6634f68bd9ca757e3c04ceb9213b54511f2f856b60"
+    },
+    {
+      "path": "docs/assets/images/radial-sectors-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "f534600c9bfe4bf5ba08d59f3861d14204d4214a6fc4d18749e66ea39fa52da6",
+      "regeneratedPngSha256": "17983d6d0969f3dd2be4e65d849f10113d18fe5e64c759354d3a3001ec318f46",
+      "freshParentRuntimePngSha256": "17983d6d0969f3dd2be4e65d849f10113d18fe5e64c759354d3a3001ec318f46"
+    },
+    {
+      "path": "docs/assets/images/radial-sectors.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "2066a061a131ac67dea220c0e9eec89405e42ec1014b396ca101ec556969089e",
+      "regeneratedPngSha256": "273f2e23620c9a396af7682a5e64444633707f793680958af4354ea58cd531da",
+      "freshParentRuntimePngSha256": "273f2e23620c9a396af7682a5e64444633707f793680958af4354ea58cd531da"
+    },
+    {
+      "path": "docs/assets/images/repeat-charts-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "e8f0299453459de1ff4c8fcfdb209c5e4d888b4e20e16575aa47a2baf62baebe",
+      "regeneratedPngSha256": "a89d6b95ce0874c95198dc23714a9fd27a3b18e116333a1f2b6703c6f513649e",
+      "freshParentRuntimePngSha256": "a89d6b95ce0874c95198dc23714a9fd27a3b18e116333a1f2b6703c6f513649e"
+    },
+    {
+      "path": "docs/assets/images/repeat-charts.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "9fd460f1f031f1b34225105c288b34b842a0204190e1e07b7652fb9488047277",
+      "regeneratedPngSha256": "a81013b646e8d500835d54d2618c5b49aef9833462bd28f6beb4c979d153062d",
+      "freshParentRuntimePngSha256": "a81013b646e8d500835d54d2618c5b49aef9833462bd28f6beb4c979d153062d"
+    },
+    {
+      "path": "docs/assets/images/series-identity-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "bd469dc4938f3adc5b0d53a337d5c2d79eed60c965fa98a725f935c7599b4ab0",
+      "regeneratedPngSha256": "2c2641cbdab54123fed56c9da08a9ce749db377b3544720c005bfe1eea3520c1",
+      "freshParentRuntimePngSha256": "2c2641cbdab54123fed56c9da08a9ce749db377b3544720c005bfe1eea3520c1"
+    },
+    {
+      "path": "docs/assets/images/series-identity.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "271219e8c812530a3ee0e59ffe0b12e16cfb7c0199c86315d8131ef9517bceba",
+      "regeneratedPngSha256": "390850b0384fc925217b950be1d18b6415d3ff2e7f1eaebef7a29d317c426321",
+      "freshParentRuntimePngSha256": "390850b0384fc925217b950be1d18b6415d3ff2e7f1eaebef7a29d317c426321"
+    },
+    {
+      "path": "docs/assets/images/theta-legend-order-thumb.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "ce75f041c8254bf242de14821b7f917540fce823d4d49dfb176e3e14eacbb342",
+      "regeneratedPngSha256": "1468295f113a9d698c475d93040a111d43706e5a2b1911d575083babe1f02de9",
+      "freshParentRuntimePngSha256": "1468295f113a9d698c475d93040a111d43706e5a2b1911d575083babe1f02de9"
+    },
+    {
+      "path": "docs/assets/images/theta-legend-order.png",
+      "byteEqual": false,
+      "decodedPixelsEqual": false,
+      "parentRerenderByteEqual": true,
+      "parentRerenderDecodedEqual": true,
+      "committedParentPngSha256": "1d2c68f3b55fbdcb6f10d572b92595728175f5233c65df040d0ef2a532b313cb",
+      "regeneratedPngSha256": "839b61948b08e4e7575cbb7d5988140fabe9a3963cfd3c5e07c1ccd2e89dd0dc",
+      "freshParentRuntimePngSha256": "839b61948b08e4e7575cbb7d5988140fabe9a3963cfd3c5e07c1ccd2e89dd0dc"
+    }
+  ],
+  "interpretation": "Prior parent asset drift synchronized. All 56 changed PNGs equal a fresh render from the untouched approved parent in both encoded bytes and decoded RGBA. Feature no-opt-in pixel delta: 0.",
+  "reproduction": [
+    "Archive parentRuntime to a temporary checkout; symlink the same node_modules.",
+    "Run node scripts/generate-doc-images.js in both current and archived parent trees.",
+    "Compare all listed PNG bytes and decode RGBA with @napi-rs/canvas; no chart pixels viewed."
+  ]
+}

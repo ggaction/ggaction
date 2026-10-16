@@ -131,7 +131,7 @@ const restored = edited.editLegendTitle({ title: false })
   .editLegendTitle({ title: "auto" });
 ```
 
-For continuous size, opacity, and stroke-width legends, `values` replaces the
+For continuous size, opacity, stroke-width, and color-symbol legends, `values` replaces the
 automatic samples with exact values:
 
 <!-- snippet-context:start -->
@@ -272,7 +272,7 @@ earlier block-local value.
 
 The action accepts `title`, `values`, `count`, `order`, `gap`, `text`, `symbol`,
 and `labelMap`. An empty title hides only that block's title. Exact `values` and
-`count` apply to continuous size, opacity, and stroke-width blocks. `order`
+`count` apply to continuous size, opacity, stroke-width, and color-symbol blocks. `order`
 applies to a categorical block and must list every current category exactly
 once. `text` changes item-label typography and color. `symbol.size` is point
 area in square pixels. Empty `text` or `symbol` objects remove that local patch

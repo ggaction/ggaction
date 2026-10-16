@@ -280,8 +280,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 386,000 bytes |
-| `ggaction/basic` | 186,000 bytes |
+| `ggaction` | 388,000 bytes |
+| `ggaction/basic` | 187,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -1214,6 +1214,14 @@ Parallel의 field lifecycle은 `actions/guides/axes/parallel/lifecycle.js`, pure
 
 ### Legend
 
+연속형 color의 gradient strip과 sampled point 표현은 같은 `guideConfigs.legend.gradient` 소유자를
+사용한다. 선택적 `representation` discriminator가 concrete recipe를 고르며 생략한 이전 저장 상태는
+기존 gradient다. Symbols mode의 exact/auto sampling과 point recipe는 그 config에만 저장하고,
+semantic color scale/domain/data는 바꾸지 않는다. 기존 continuous consumer mapper로 sample paint를
+계산한 뒤 domain action이 strips/ticks 또는 symbols를 명시적으로 materialize한다. 표현 전환은
+그 표현 전용 graphics만 reconcile하며 target-owned group과 공통 스타일을 보존한다.
+Renderer는 representation을 해석하지 않고 완성된 concrete primitives만 읽는다.
+
 Family action은 scale/content/appearance를 검증하고 intrinsic concrete recipe를 만든다. `layout/legendItems.js`는 실제 sample stroke/path bounds와 formatted text를 측정해 공통 occupied item slot을 계산한다. Size/interval/stroke-width는 categorical symbol implementation을 복제하지 않고 같은 layout owner에 자기 recipe를 제공한다.
 
 `layout/legendLane.js`는 family-independent concrete block을 edge별로 배치한다. Wrapped side/horizontal lane owner만 그 계산 결과를 graphics에 적용한다. Border와 title을 포함한 occupied bounds로 최종 Canvas/guide collision을 검증한다. Multi-block packaging과 single-block alignment를 혼동하지 않는다. Legacy-bottom은 별도 명시된 placement 계약이며 option 존재 여부로 추측하지 않는다.
@@ -1982,3 +1990,11 @@ Plot border 포함 packed 실측780,011bytes와 검색 payload810,074bytes가 �
 승인된 그룹 범례 배치에 authoring preflight, closed grammar, pure packing, materialization owner의 runtime module4개가 추가되어 packed entry 한도를555에서559로 조정한다. 새4module과 변경된lane/edit에 기존 staging compaction을 적용한 뒤 packed 실측784,495bytes가 기존782,000bytes를 초과하여 한도를787,000bytes로 조정한다. Unpacked3,900,000bytes 한도는 유지하며 이전 entry/packed 한도 통과로 보고하지 않는다.
 
 그룹 범례 배치의 installed browser consumer 실측 gzip은 Full385,290bytes / Basic185,611bytes로 기존382,000/183,000bytes를 초과한다. 기능을 유지하며 각각386,000/186,000bytes로 한도를 조정하고 SVG25,000bytes는 유지한다. 이전 한도 통과로 보고하지 않는다.
+
+승인된 연속형 color symbols 표현은 기존 gradient owner와 renderer primitive를 재사용하며 전용 materializer module1개를 추가한다. Packed entry 한도는559에서560으로 조정한다. 부모80bf checkpoint의 browser gzip Full385,362/Basic185,627bytes 대비 현재 source 실측 Full387,449/Basic186,810bytes로 기존386,000/186,000bytes를 초과하여388,000/187,000bytes로 좁게 조정한다. SVG7,161bytes와25,000bytes 한도는 유지하며 이전 한도 통과로 보고하지 않는다.
+
+새 module에 기존 staging compaction을 적용한 packed size는787,745bytes였으며 source/type/generated metadata 동기화 후788,122bytes가788,000bytes 한도를 초과했다. 승인된 최소1,000bytes 단위 갱신으로 packed 한도를789,000bytes로 조정한다. Unpacked3,900,000bytes는 그대로 유지한다.
+
+연속형 color symbols API의 새 문서와 generated signature를 모두 검색에 유지한 payload는811,989bytes로 기존811,000bytes를 초과한다. 측정된 증가만 반영해 공유 검색 한도를813,000bytes로 조정하며 검색 대상이나 기존 내용을 줄이지 않는다.
+
+최종 installed packed consumer의 browser gzip은 Full387,444bytes / Basic186,768bytes / SVG7,161bytes이며, 실제 packed788,122bytes·unpacked3,876,966bytes·560entries다. 위의 좁은 한도 안에서 전체 승인 기능과 모든 검색 내용을 유지한다.

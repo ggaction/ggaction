@@ -42,7 +42,9 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   if (overrideKeys.some(key => key !== oldDescriptor.key)) {
     throw new Error(`${channel} legend transition found stale legend block overrides.`);
   }
-  const blockOverride = stored.blockOverrides?.[oldDescriptor.key];
+  const storedOverride = stored.blockOverrides?.[oldDescriptor.key];
+  const { symbol: _sampleSymbol, labelMap: _sampleMap, gap: _sampleGap, ...commonOverride } = storedOverride ?? {};
+  const blockOverride = stored.representation === "symbols" && storedOverride !== undefined ? commonOverride : storedOverride;
   const side = ["left", "right"].includes(stored.position);
   const categorical = ["color", "stroke"].includes(from);
   const gradientFamily = from.toLowerCase().endsWith("gradient");
@@ -51,7 +53,8 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   const comparableSymbol = channel === "stroke" && stored.inferredStrokeWidth === true
     ? { ...stored.symbol, strokeWidth: defaults.symbol?.strokeWidth }
     : stored.symbol;
-  const custom = categorical
+  const sampledColor = from === "gradient" && stored.representation === "symbols";
+  const custom = sampledColor ? false : categorical
     ? categoricalFamilyCustom(program, from, stored)
     : gradientFamily
     ? stored.count !== defaults.count || !same(stored.gradient, DEFAULT_GRADIENT_SIZE) || stored.itemGap !== defaults.itemGap
@@ -72,7 +75,7 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   const args = {
     target: stored.target, channels: [channel], position: stored.position,
     labels: stored.labels, titleStyle: stored.titleStyle, border: stored.border,
-    align: stored.align, offset: stored.offset, titlePosition: stored.titlePosition,
+    align: stored.align, offset: stored.offset, titlePosition: sampledColor ? "top" : stored.titlePosition,
     ...(stored.inferredTitle ? {} : { title: stored.title })
   };
   try {
@@ -162,6 +165,9 @@ export function planLegendBlockTransitions(program, target, plans) {
     let override;
     if (incoming.length === 1 && incoming[0].key === descriptor.key) {
       override = incoming[0].config.blockOverrides?.[incoming[0].key];
+      if (incoming[0].config.representation === "symbols" && descriptor.kind === "gradient" && descriptor.config.representation !== "symbols" && override !== undefined) {
+        const { symbol: _symbol, labelMap: _labelMap, ...common } = override; override = common;
+      }
     } else if (incoming.length === 1) {
       const old = incoming[0];
       override = old.config.blockOverrides?.[old.key];

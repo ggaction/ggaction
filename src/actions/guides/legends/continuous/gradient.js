@@ -1,3 +1,4 @@
+import { normalizeColorSymbols, resolveColorSymbolsLayout, materializeColorSymbols } from "./colorSymbols.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { mapContinuousScaleValues, transformedTicks } from "../../../../grammar/scales/index.js";
 import { action, closedAction } from "../../../../core/action.js";
@@ -30,6 +31,7 @@ export const DEFAULT_GRADIENT_SIZE = Object.freeze({ length: 120, thickness: 12 
 const GRADIENT_OPTIONS = Object.freeze(["length", "thickness"]);
 
 export function resolveGradientLayout(program, config, scale, label = "Gradient legend") {
+  if (config.representation === "symbols") return resolveColorSymbolsLayout(program, config, scale);
   config = intrinsicLegendConfig(program, config);
   const { plot, canvas } = resolveContinuousBounds(program);
   const vertical = ["right", "left"].includes(config.position);
@@ -181,6 +183,7 @@ export function materializeGradientLegend(program, resolved, appearance) {
   const prefix = `${channel}Gradient`;
   const { scale, encoding, config: currentConfig } = resolved;
   const config = resolveEffectiveLegendBlockConfig(program, kind, currentConfig);
+  if (!stroke && config.representation === "symbols") return materializeColorSymbols(program, resolved, config);
   const layout = resolveGradientLayout(program, config, scale,
     stroke ? "Stroke gradient legend" : "Gradient legend");
   const stripCount = 60;
@@ -243,7 +246,10 @@ export const rematerializeGradientLegend = /* @__PURE__ */ closedAction(
 
 
 export function resolveGradientLegendCreation(program, args = {}, channel = "color") {
-  const config = normalizeContinuousLegend(args, "gradient");
+  const { representation, ...options } = args;
+  if (representation !== undefined && !["gradient", "symbols"].includes(representation)) throw new Error("Legend representation must be gradient or symbols.");
+  if (channel !== "color" && representation !== undefined) throw new Error("Legend representation requires continuous color.");
+  const config = representation === "symbols" ? normalizeColorSymbols(options) : normalizeContinuousLegend(options, "gradient");
   if (args.channels !== undefined && (
     !Array.isArray(args.channels) ||
     args.channels.length !== 1 ||
@@ -259,12 +265,14 @@ export function resolveGradientLegendCreation(program, args = {}, channel = "col
     GRADIENT_OPTIONS,
     "createLegend.gradient"
   );
-  config.gradient = {
+  if (config.representation !== "symbols") config.gradient = {
     length: args.gradient?.length ?? DEFAULT_GRADIENT_SIZE.length,
     thickness: args.gradient?.thickness ?? DEFAULT_GRADIENT_SIZE.thickness
   };
-  validatePositive(config.gradient.length, "Gradient length");
-  validatePositive(config.gradient.thickness, "Gradient thickness");
+  if (config.gradient !== undefined) {
+    validatePositive(config.gradient.length, "Gradient length");
+    validatePositive(config.gradient.thickness, "Gradient thickness");
+  }
   const resolved = resolveGradientConfig(program, config, channel);
   return resolved;
 }
@@ -291,7 +299,9 @@ export function createGradientLegendFromConfig(program, config, channel = "color
       ...resolveLegendGraphicPlacement(next)
     });
   }
-  next = next
+  if (resolved.config.representation === "symbols") {
+    next = next.createGraphics({ id: `${prefix}Symbols`, type: "circle", length: 0, ...resolveLegendGraphicPlacement(next) });
+  } else next = next
     .createGraphics({
       id: `${prefix}Strips`,
       type: "rect",
@@ -305,8 +315,8 @@ export function createGradientLegendFromConfig(program, config, channel = "color
       type: "line",
       length: 0,
       ...resolveLegendGraphicPlacement(next)
-    })
-    .createGraphics({
+    });
+  next = next.createGraphics({
       id: `${prefix}Labels`,
       type: "text",
       length: 0,
@@ -330,7 +340,7 @@ export const createGradientLegend = /* @__PURE__ */ action(
   function (args = {}) {
     const resolved = resolveGradientLegendCreation(this, args);
     resolveGradientLayout(this, resolved.config, resolved.scale);
-    if (this.graphicSpec.objects.colorGradientStrips !== undefined) {
+    if (this.guideConfigs.legend?.gradient !== undefined) {
       throw new Error(
         "createGradientLegend requires a missing gradient legend."
       );

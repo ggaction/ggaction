@@ -1,7 +1,7 @@
 {
   "status": "approved",
-  "classification": "Proposed",
-  "implemented": false,
+  "classification": "Current",
+  "implemented": true,
   "currentOrPlannedInventoryModified": false,
   "publicOption": "representation?: gradient | symbols",
   "scope": "continuous color legend only",
@@ -18,5 +18,7 @@
     "userAnswer": "설계대로 구현 (권장)",
     "questionItemId": "[\"request_user_input_async\",\"call_df0ed8208722478eb0972a7a87125436\",0]",
     "scope": "complete API/state/default/transition/consumer contract in PROPOSAL.md; no publishing, deployment or PR authorization"
-  }
+  },
+  "currentActionOptionsUpdated": true,
+  "newActionCount": 0
 }

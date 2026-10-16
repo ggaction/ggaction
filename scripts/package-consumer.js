@@ -118,6 +118,24 @@ async function testNodeConsumer(directory) {
       }
     }
 
+    for (const factory of [chart, basicChart]) {
+      const sampled = factory().createCanvas({ width: 500, height: 400, margin: 100 })
+        .createData({ values: [{ x: 1, y: 1, v: 1 }, { x: 2, y: 2, v: 9 }] })
+        .createScatterPlot({ x: "x", y: "y", color: { field: "v", fieldType: "quantitative" }, guides: {
+          axes: false, grid: false, legend: { representation: "symbols", values: [2, 4, 6, 8], position: "top-left", symbol: { radius: 5 } }
+        } });
+      const items = sampled.graphicSpec.objects.colorGradientSymbols.items;
+      assert.deepEqual(items.map(item => item.properties.fill), ["#472d7b", "#2c728e", "#28ae80", "#abdc32"]);
+      assert.ok(items.every(item => item.properties.radius === 5));
+      assert.equal(sampled.graphicSpec.objects.colorGradientStrips, undefined);
+      assert.deepEqual(deserializeProgram(serializeProgram(sampled)).graphicSpec, sampled.graphicSpec);
+      if (factory === chart) {
+        const gradient = sampled.editLegend({ representation: "gradient" });
+        assert.ok(gradient.graphicSpec.objects.colorGradientStrips);
+        assert.equal(gradient.graphicSpec.objects.colorGradientSymbols, undefined);
+      }
+    }
+
     const program = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
       .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })

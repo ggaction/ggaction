@@ -1521,8 +1521,9 @@ Related types: [`AxisTickStyleOptions`](#type-axistickstyleoptions).
 type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
   legend?: false | (Omit<
     FilledMarkLegendOptions,
-    "count" | "values" | "gradient" | "labels" | "order"
+    "count" | "values" | "gradient" | "labels" | "order" | "representation" | "symbol"
   > & {
+    symbol?: FilledLegendSymbolRecipe;
     labels?: CategoricalLegendTextOptions;
     order?: CartesianLegendOrder;
   });
@@ -1531,7 +1532,7 @@ type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & 
 
 </details>
 
-Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`FilledLegendSymbolRecipe`](#type-filledlegendsymbolrecipe) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
 
 ### `CartesianGridOptions` {#type-cartesiangridoptions}
 
@@ -1555,13 +1556,13 @@ Related types: [`CreateGridOptions`](#type-creategridoptions).
 type CartesianGuideOptions = {
   axes?: false | CartesianAxesOptions;
   grid?: false | CartesianGridOptions;
-  legend?: false | (Omit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
+  legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
 };
 ```
 
 </details>
 
-Related types: [`CartesianAxesOptions`](#type-cartesianaxesoptions) · [`CartesianGridOptions`](#type-cartesiangridoptions) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
+Related types: [`CartesianAxesOptions`](#type-cartesianaxesoptions) · [`CartesianGridOptions`](#type-cartesiangridoptions) · [`DistributiveLegendOmit`](#type-distributivelegendomit) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
 
 ### `CartesianLegendOrder` {#type-cartesianlegendorder}
 
@@ -1872,7 +1873,7 @@ Related types: [`CategoricalEncodingOptions`](#type-categoricalencodingoptions) 
 
 ```typescript
 type ColorGuides = Omit<CartesianGuideOptions, "legend"> & {
-  legend?: false | (Omit<FilledMarkLegendOptions, "values" | "order"> & {
+  legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & {
     order?: CartesianLegendOrder;
   });
 };
@@ -1880,7 +1881,7 @@ type ColorGuides = Omit<CartesianGuideOptions, "legend"> & {
 
 </details>
 
-Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`DistributiveLegendOmit`](#type-distributivelegendomit) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
 
 ### `ColorLayout` {#type-colorlayout}
 
@@ -4327,6 +4328,17 @@ export interface DisplayLabelOptions {
 
 Related types: [`DisplayLabelMap`](#type-displaylabelmap).
 
+### `DistributiveLegendOmit` {#type-distributivelegendomit}
+
+<details markdown="1">
+<summary>Expand DistributiveLegendOmit</summary>
+
+```typescript
+type DistributiveLegendOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
+```
+
+</details>
+
 ### `DurationWindowFrame` {#type-durationwindowframe}
 
 <details markdown="1">
@@ -6328,22 +6340,36 @@ export type FillPaint = string | LinearGradientPaint;
 
 Related types: [`LinearGradientPaint`](#type-lineargradientpaint).
 
+### `FilledLegendSymbolRecipe` {#type-filledlegendsymbolrecipe}
+
+<details markdown="1">
+<summary>Expand FilledLegendSymbolRecipe</summary>
+
+```typescript
+type FilledLegendSymbolRecipe = "auto"
+  | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
+  | { layers: readonly LegendSymbolLayer[] };
+```
+
+</details>
+
+Related types: [`LegendSymbolLayer`](#type-legendsymbollayer).
+
 ### `FilledMarkLegendOptions` {#type-filledmarklegendoptions}
 
 <details markdown="1">
 <summary>Expand FilledMarkLegendOptions</summary>
 
 ```typescript
-type FilledMarkLegendOptions = Omit<LegendOptions, "symbol"> & {
-  symbol?: "auto"
-    | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
-    | { layers: readonly LegendSymbolLayer[] };
-};
+type FilledMarkLegendOptions = Omit<LegendOptions, "symbol" | "representation"> & (
+  | { representation?: "gradient"; symbol?: FilledLegendSymbolRecipe }
+  | { representation: "symbols"; symbol?: "auto" | { type?: "point"; radius?: number; stroke?: string; strokeWidth?: number } }
+);
 ```
 
 </details>
 
-Related types: [`LegendOptions`](#type-legendoptions) · [`LegendSymbolLayer`](#type-legendsymbollayer).
+Related types: [`LegendOptions`](#type-legendoptions) · [`FilledLegendSymbolRecipe`](#type-filledlegendsymbolrecipe).
 
 ### `FilledMarkStroke` {#type-filledmarkstroke}
 
@@ -7460,6 +7486,8 @@ Related types: [`LegendOptions`](#type-legendoptions).
 
 ```typescript
 export interface LegendOptions {
+  /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
+  representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
   layout?: "edge" | "legacy-bottom";
   /** Categorical and ordinal-size display limit; omitted or false shows every item. */
@@ -7486,7 +7514,7 @@ export interface LegendOptions {
   titlePosition?: "top" | "left";
   /** false hides the title while retaining its inferred field text. */
   title?: string | false;
-  /** Exact ascending samples for continuous size, opacity, or stroke-width legends. Cannot be combined with count. */
+  /** Exact ascending samples for continuous size, opacity, stroke-width, or color with representation symbols. Cannot be combined with count. */
   values?: readonly number[];
   count?: number;
   gradient?: { length?: number; thickness?: number };
@@ -8617,7 +8645,7 @@ export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
 ```typescript
 type PathLegendOptions = Omit<
   LegendOptions,
-  "symbol" | "gradient" | "count" | "values" | "labels"
+  "symbol" | "gradient" | "count" | "values" | "labels" | "representation"
 > & {
   symbol?: "auto" | { length?: number; lineWidth?: number }
     | { layers: readonly LegendSymbolLayer[] };
@@ -8688,8 +8716,9 @@ Related types: [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategorica
 ```typescript
 export type PieLegendOptions = Omit<
   FilledMarkLegendOptions,
-  "count" | "values" | "gradient" | "channels" | "order" | "labels"
+  "count" | "values" | "gradient" | "channels" | "order" | "labels" | "representation" | "symbol"
 > & {
+  symbol?: FilledLegendSymbolRecipe;
   channels?: readonly ["color"];
   order?: LegendValueOrder | { channel: "theta"; values?: never };
   labels?: CategoricalLegendTextOptions;
@@ -8698,7 +8727,7 @@ export type PieLegendOptions = Omit<
 
 </details>
 
-Related types: [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`LegendValueOrder`](#type-legendvalueorder) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions).
+Related types: [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`FilledLegendSymbolRecipe`](#type-filledlegendsymbolrecipe) · [`LegendValueOrder`](#type-legendvalueorder) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions).
 
 ### `PieRadiusChannel` {#type-pieradiuschannel}
 
@@ -8988,14 +9017,14 @@ Related types: [`PolarChartGuideOptions`](#type-polarchartguideoptions) · [`Pol
 <summary>Expand PolarPointLegendOptions</summary>
 
 ```typescript
-type PolarPointLegendOptions = Omit<FilledMarkLegendOptions, "order"> & {
+type PolarPointLegendOptions = DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & {
   order?: PolarLegendOrder;
 };
 ```
 
 </details>
 
-Related types: [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`PolarLegendOrder`](#type-polarlegendorder).
+Related types: [`DistributiveLegendOmit`](#type-distributivelegendomit) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`PolarLegendOrder`](#type-polarlegendorder).
 
 ### `PolarRadiusChannel` {#type-polarradiuschannel}
 

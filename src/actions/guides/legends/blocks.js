@@ -78,6 +78,7 @@ function validateSymbolSupport(descriptor, property) {
     }
     return;
   }
+  if (kind === "gradient" && property === "fill") throw new Error("editLegendBlock symbol.fill conflicts with the color mapping.");
   if (kind === "size" && property === "size") {
     throw new Error("editLegendBlock symbol.size conflicts with the size mapping.");
   }
@@ -239,7 +240,7 @@ export function resolveEffectiveLegendBlockConfig(program, kind, config) {
       blockSymbol: override.symbol
     };
   }
-  if (kind === "opacity") {
+  if (kind === "opacity" || kind === "gradient" && config.representation === "symbols") {
     return {
       ...effective,
       symbol: {
@@ -289,6 +290,7 @@ export function reconcileLegendBlockTitleGraphic(program, kind, visible) {
 }
 
 const SPECIALIZED_SYMBOLS = Object.freeze({
+  gradient: Object.freeze({ id: "colorGradientSymbols", type: "circle" }),
   size: Object.freeze({ id: "sizeLegendSymbols", type: "circle" }),
   opacity: Object.freeze({ id: "opacityLegendSymbols", type: "circle" }),
   strokeWidth: Object.freeze({ id: "strokeWidthLegendSymbols", type: "line" }),

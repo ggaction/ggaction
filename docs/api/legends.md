@@ -78,7 +78,7 @@ Stroke-width legends support all four edges and plot corners through `createLege
 label/title styles, and border are editable. Side positions require vertical
 direction, center alignment, one column, and a top title. Symbol recipes,
 gradient, and order are unsupported; edit quantitative mapping through `editScale`.
-Continuous size, opacity, and stroke-width legends accept `values` for exact
+Continuous size, opacity, stroke-width, and color-symbol legends accept `values` for exact
 ascending samples. Exact values must fit the effective domain and cannot be
 combined with `count`; use `editLegend({ values: "auto" })` to return to the
 remembered automatic sample count. Use `editLegendBlock()` when a target has

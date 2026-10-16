@@ -1,3 +1,5 @@
+import { validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
+import { isContinuousColorScaleType } from "../grammar/scales/types.js";
 import { validateLegendGroupState } from "../grammar/legendGroups.js";
 import { normalizeTextMetricProfile } from "../core/textMetricProfile.js";
 import { isPlainObject } from "../core/immutable.js";
@@ -144,6 +146,35 @@ export function validateProgramState(program, path) {
   for (const key of ["marks", "guides"]) requireObject(program.materializationConfigs[key], `${path}.materializationConfigs.${key}`);
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
+  for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
+    if (config.representation === undefined) continue;
+    if (kind !== "gradient" || !["symbols", "gradient"].includes(config.representation)) throw invalidSnapshot("Invalid continuous color legend representation.", path);
+    if (config.representation === "symbols") {
+      if (config.gradient !== undefined) throw invalidSnapshot("Symbol color legend cannot store gradient dimensions.", path);
+      requireObject(config.sampling, path);
+      const sample = config.sampling;
+      exactKeys(sample, sample.mode === "values" ? ["mode", "values", "count"] : ["mode", "count"], path);
+      if (!["auto", "values"].includes(sample.mode)) throw invalidSnapshot("Invalid color legend sample mode.", path);
+      if (!Number.isInteger(sample.count) || sample.count < 2) throw invalidSnapshot("Invalid color legend sample count.", path);
+      validateGeneratedItemLimit(sample.count, "Color legend sample count");
+      const scale = program.resolvedScales[config.scale];
+      if (!isContinuousColorScaleType(scale?.type)) throw invalidSnapshot("Sampled color legend requires a continuous color scale.", path);
+      if (sample.mode === "values") {
+        requireArray(sample.values, path);
+        if (!sample.values.length || sample.values.length > 100 || sample.values.some((value, index) => !Number.isFinite(value) || index > 0 && value <= sample.values[index - 1] || value < Math.min(...scale.domain) || value > Math.max(...scale.domain) || scale.type === "log" && value <= 0)) throw invalidSnapshot("Invalid exact color legend samples.", path);
+      }
+      requireObject(config.symbol, path);
+      validateKeys(config.symbol, ["type", "radius", "stroke", "strokeWidth"], "Stored sampled color symbol");
+      if (config.symbol.type !== "point") throw invalidSnapshot("Invalid sampled color symbol type.", path);
+      validatePositiveFinite(config.symbol.radius, "Stored sampled color radius");
+      validateNonNegativeFinite(config.symbol.strokeWidth, "Stored sampled color strokeWidth");
+      if (config.symbol.stroke !== undefined) validateNonEmptyString(config.symbol.stroke, "Stored sampled color stroke");
+      if (!["left", "right", "top", "bottom", "top-left", "top-right", "bottom-left", "bottom-right"].includes(config.position) || !["horizontal", "vertical"].includes(config.direction) || config.layout !== "edge" || !["left", "center", "right"].includes(config.align) || !["top", "left"].includes(config.titlePosition) || config.columns !== undefined && (!Number.isInteger(config.columns) || config.columns < 1)) throw invalidSnapshot("Invalid sampled color item layout.", path);
+      validatePositiveFinite(config.itemGap, "Stored sampled color itemGap");
+      validateNonNegativeFinite(config.offset, "Stored sampled color offset");
+    } else if (["sampling", "symbol", "columns", "direction", "layout"].some(key => config[key] !== undefined)) throw invalidSnapshot("Gradient color legend cannot store symbol representation settings.", path);
+  }
+
   const selections = program.materializationConfigs.selections ?? {};
   requireObject(selections, `${path}.materializationConfigs.selections`);
   for (const [id, selection] of Object.entries(selections)) {

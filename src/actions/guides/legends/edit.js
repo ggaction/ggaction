@@ -13,6 +13,8 @@ import { resolveLegendSymbol } from "./categorical/recipes.js";
 import { resolveLayout } from "./categorical/layout.js";
 import { resolveLegendCreationPlan } from "./categorical/actions.js";
 import { categoricalSymbolIds, reconcileCategoricalSymbols, createCategoricalLegendFromConfig, resolveCategoricalLegendRevision, removeLegendKinds } from "./lifecycle.js";
+import { normalizeColorSymbols } from "./continuous/colorSymbols.js";
+import { readLegendSampling } from "./sampling.js";
 import { createGradientLegendFromConfig } from "./continuous/gradient.js";
 import {
   normalizeItemLegendLayout,
@@ -48,7 +50,7 @@ import { planLegendBlockTransitions } from "./transition.js";
 const OPTIONS = Object.freeze([
   "target", "channels", "position", "layout", "align", "direction", "columns", "offset",
   "titlePosition", "title", "symbol", "labels", "titleStyle", "itemGap",
-  "border", "count", "values", "gradient", "order", "overflow", "blockLayout", "at"
+  "border", "count", "values", "gradient", "representation", "order", "overflow", "blockLayout", "at"
 ]);
 
 function mergeObject(previous, patch) {
@@ -79,11 +81,60 @@ function reconcileGraphic(program, id, shouldExist, definition) {
   return program;
 }
 
+function resolveColorRepresentationEdit(program, previous, args) {
+  const representation = args.representation ?? previous.representation ?? "gradient";
+  if (!["gradient", "symbols"].includes(representation)) throw new Error("Legend representation must be gradient or symbols.");
+  const allowed = ["target", "representation", "position", "align", "offset", "title", "labels", "titleStyle", "titlePosition", "border", "count", ...(representation === "symbols" ? ["symbol", "values", "itemGap", "layout", "direction", "columns"] : ["gradient"])];
+  for (const key of Object.keys(args)) if (!allowed.includes(key)) throw new Error(`Color ${representation} legend does not accept ${key}.`);
+  const switching = (previous.representation ?? "gradient") !== representation;
+  const titleMode = args.title;
+  const title = titleMode === "auto" ? findLayer(program, previous.target)?.encoding?.color?.field : typeof titleMode === "string" ? titleMode : previous.title;
+  const common = {
+    target: previous.target, position: args.position ?? previous.position,
+    align: args.align ?? previous.align, offset: args.offset ?? previous.offset,
+    title, labels: mergeObject(previous.labels, args.labels), titleStyle: mergeObject(previous.titleStyle, args.titleStyle),
+    border: mergeBorder(previous.border, args.border),
+    titlePosition: args.titlePosition ?? (switching && representation === "gradient" ? "top" : previous.titlePosition)
+  };
+  let normalized;
+  if (representation === "symbols") {
+    if (args.symbol !== undefined && args.symbol !== "auto") validateOptionObject(args.symbol, ["type", "radius", "stroke", "strokeWidth"], "Sampled color symbol");
+    const sample = switching ? { count: previous.count } : {};
+    for (const key of ["values", "count"]) if (Object.hasOwn(args, key)) sample[key] = args[key];
+    if (Object.hasOwn(args, "values")) delete sample.count;
+    if (Object.hasOwn(args, "count")) sample.count = args.count;
+    normalized = normalizeColorSymbols({ ...common, ...sample,
+      layout: args.layout ?? (switching ? undefined : previous.layout),
+      direction: args.direction ?? (switching || args.position !== undefined && args.position !== previous.position ? undefined : previous.direction),
+      columns: args.columns ?? (switching ? undefined : previous.columns),
+      itemGap: args.itemGap ?? (switching ? undefined : previous.itemGap),
+      symbol: args.symbol === "auto" ? "auto" : args.symbol === undefined ? (switching ? undefined : previous.symbol) : { ...(switching ? {} : previous.symbol), ...args.symbol }
+    }, switching ? { count: previous.count } : previous, "edit");
+  } else {
+    normalized = normalizeContinuousLegend({ ...common, count: args.count ?? (switching ? readLegendSampling(previous).count : previous.count) }, "gradient");
+    const gradient = switching ? { length: 120, thickness: 12, ...args.gradient } : mergeObject(previous.gradient, args.gradient);
+    validateOptionObject(gradient, ["length", "thickness"], "Legend gradient");
+    validatePositive(gradient.length, "Gradient length"); validatePositive(gradient.thickness, "Gradient thickness");
+    normalized.gradient = gradient;
+  }
+  const { representation: _rep, sampling: _sampling, symbol: _symbol, layout: _layout, direction: _direction, columns: _columns, gradient: _gradient, count: _count, ...retained } = previous;
+  const blockOverrides = switching && representation === "gradient" && previous.blockOverrides !== undefined
+    ? Object.fromEntries(Object.entries(previous.blockOverrides).map(([key, value]) => {
+      const { symbol: _symbol, labelMap: _labelMap, ...common } = value; return [key, common];
+    })) : previous.blockOverrides;
+  return { config: { ...retained, ...normalized,
+    ...(blockOverrides === undefined ? {} : { blockOverrides }),
+    inferredTitle: titleMode === "auto" ? true : typeof titleMode === "string" ? false : previous.inferredTitle,
+    titleVisible: titleMode === false ? false : titleMode === undefined ? previous.titleVisible !== false : true
+  }, titleMode, title, titleVisible: titleMode === false ? false : titleMode === undefined ? previous.titleVisible !== false : true };
+}
+
 function resolveContinuousEdit(program, kind, previous, args) {
+  if (kind === "gradient" && (previous.representation === "symbols" || args.representation !== undefined)) return resolveColorRepresentationEdit(program, previous, args);
   const gradient = ["gradient", "strokeGradient"].includes(kind);
   const allowed = gradient
     ? ["target", "position", "align", "offset", "title", "labels",
-      "titleStyle", "titlePosition", "border", "count", "gradient"]
+      "titleStyle", "titlePosition", "border", "count", "gradient", "representation"]
     : ["target", "position", "align", "offset", "title", "symbol", "labels",
       "titleStyle", "titlePosition", "itemGap", "border", "count", "values"];
   for (const key of Object.keys(args)) {
@@ -150,6 +201,9 @@ function resolveContinuousEdit(program, kind, previous, args) {
 
 function editContinuous(program, kind, previous, args) {
   const { config, titleMode, title, titleVisible } = resolveContinuousEdit(program, kind, previous, args);
+  if (kind === "gradient" && (previous.representation ?? "gradient") !== (config.representation ?? "gradient")) {
+    return createGradientLegendFromConfig(removeLegendKinds(program, [kind]), config).rematerializeLegend();
+  }
   const prefix = kind === "gradient" ? "colorGradient"
     : kind === "strokeGradient" ? "strokeGradient" : "opacityLegend";
   const semanticKind = kind === "gradient" ? "color"
@@ -165,7 +219,7 @@ function editContinuous(program, kind, previous, args) {
   next = reconcileGraphic(next, `${prefix}Background`, config.border !== false, {
     type: "rect",
     before: ["gradient", "strokeGradient"].includes(kind)
-      ? `${prefix}Strips`
+      ? `${prefix}${config.representation === "symbols" ? "Symbols" : "Strips"}`
       : "opacityLegendSymbols"
   });
   next = reconcileGraphic(next, `${prefix}Title`, titleVisible, { type: "text" });
@@ -486,7 +540,9 @@ function editLegendContent(program, target, args) {
   const previous = program.guideConfigs.legend ?? {};
   const removed = Object.keys(previous).filter(kind => previous[kind].target === target);
   let view = removed.reduce((next, kind) => next._withoutMaterializationConfig(["guides", "legend", kind]), program);
-  const creation = resolveLegendCreationPlan(view, { target, channels });
+  const colorRepresentation = patch.representation ?? (channels.includes("color") && previous.gradient?.target === target ? previous.gradient.representation : undefined);
+  if (patch.representation !== undefined && !channels.includes("color")) throw new Error("Legend representation requires selected continuous color.");
+  const creation = resolveLegendCreationPlan(view, { target, channels, ...(colorRepresentation === undefined ? {} : { representation: colorRepresentation }) });
   const oldCategorical = removed.find(kind =>
     ["series", "color", "stroke"].includes(kind)
   );
@@ -508,7 +564,11 @@ function editLegendContent(program, target, args) {
     ["series", "color", "stroke"].includes(plan.kind)
   );
   const size = plans.find(plan => plan.kind === "size");
-  if (categorical !== undefined) {
+  if (patch.representation !== undefined || plans.some(plan => plan.kind === "gradient" && plan.config.representation === "symbols")) {
+    const color = plans.find(plan => plan.kind === "gradient");
+    if (color === undefined) throw new Error("Legend representation requires continuous color.");
+    color.config = resolveContinuousEdit(view, "gradient", color.config, patch).config;
+  } else if (categorical !== undefined) {
     if (size !== undefined && previous.size?.target !== target) {
       size.config = { ...size.config, inheritAppearance: categorical.config.position === "left" ||
         patch.position === "left" || patch.labels !== undefined || patch.titleStyle !== undefined };
@@ -581,13 +641,13 @@ function editLegendImplementation(args = {}, skipGroup = false) {
         for (const [kind] of entries) {
           const previous = next.guideConfigs.legend[kind];
           const familyPatch = { ...patch };
-          if (["gradient", "strokeGradient", "opacity"].includes(kind)) {
+          if (["gradient", "strokeGradient", "opacity"].includes(kind) && previous.representation !== "symbols") {
             for (const key of ["layout", "columns", "direction"]) {
               if (Object.hasOwn(args, key)) throw new Error(`${kind} legend does not accept ${key}.`);
               delete familyPatch[key];
             }
           }
-          if (["gradient", "strokeGradient"].includes(kind)) delete familyPatch.itemGap;
+          if (["gradient", "strokeGradient"].includes(kind) && previous.representation !== "symbols") delete familyPatch.itemGap;
           if (["series", "color", "stroke"].includes(kind)) next = editCategorical(next, kind, previous, undefined, familyPatch);
           else if (["size", "strokeWidth"].includes(kind)) next = editSampledLegend(next, kind, previous, familyPatch, true);
           else if (["interval", "strokeInterval"].includes(kind)) next = editInterval(next, previous, familyPatch, kind === "strokeInterval" ? "stroke" : "color");
@@ -603,6 +663,13 @@ function editLegendImplementation(args = {}, skipGroup = false) {
     const ownedKinds = Object.keys(configs).filter(
       kind => configs[kind]?.target === target
     );
+    if (args.representation !== undefined) {
+      if (configs.gradient?.target !== target) throw new Error("Legend representation requires continuous color.");
+      return editContinuous(this, "gradient", configs.gradient, args);
+    }
+    if (configs.gradient?.target === target && configs.gradient.representation === "symbols" && ownedKinds.length > 1) {
+      throw new Error("Multiple legend blocks require editLegendBlock with an explicit channel for appearance or samples.");
+    }
     if (args.values !== undefined && ownedKinds.length > 1) {
       throw new Error(
         "A target with multiple legend blocks requires a channel block selector for exact values."

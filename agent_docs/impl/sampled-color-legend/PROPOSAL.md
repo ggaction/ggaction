@@ -6,15 +6,15 @@
 - [x] 실제 참조 SVG DOM에서 네 개의 원형 샘플 확인
 - [x] API·저장 소유자·전환·기본값·호환성·검증 범위 구체화
 - [x] 사용자 승인
-- [ ] 구현과 전체 소비 경로 검증
+- [x] 구현과 전체 소비 경로 검증
 
-Gate 상태: **approved**. 사용자가 검토 revision `cb61e5f24c3ebff52f632a9050af6a3128f92c80`에 대해 “설계대로 구현 (권장)”이라고 명시적으로 승인했다. 승인 기록은 `decisions.json`에 있다. `decisions.json`의 항목은 Proposed이며 현재 API나 Planned inventory에 넣지 않았다. 승인된 설계 범위를 구현한다. 독립적인 범례 배치·글꼴·축 수정과 기존 차트 검증은 계속한다. PR·패키지 출판·문서 배포는 포함하지 않는다.
+Gate 상태: **approved**. 사용자가 검토 revision `cb61e5f24c3ebff52f632a9050af6a3128f92c80`에 대해 “설계대로 구현 (권장)”이라고 명시적으로 승인했다. 승인 기록은 `decisions.json`에 있다. 승인된 설계 범위 구현을 완료하여 기존 Current action의 옵션 계약으로 반영했다. 새 action이나 kind는 추가하지 않았다. 검증과 패키지 측정은 `IMPLEMENTATION.md`에 있다. 독립적인 범례 배치·글꼴·축 수정과 기존 차트 검증은 계속한다. PR·패키지 출판·문서 배포는 포함하지 않는다.
 
 ## 관찰과 재현
 
 참조 0392의 settled 색상 scale은 domain `[1,9]`인 연속형 linear다. 실제 SVG에는 gradient strip 없이 `2,4,6,8` 네 개의 원형 색상 샘플이 세로로 있다. 원은 반지름5이며 같은 sample color가 fill과 stroke에 사용된다. 범주형 scale로 바꾸면 차트의 색상 의미가 달라지므로 해법이 아니다. DOM 측정·입력 해시는 `evidence.json`에 있다.
 
-`node agent_docs/impl/sampled-color-legend/reproduce.mjs`는 현재 default가 gradient인 점과 정확한 sample 요청이 `Gradient legends do not support exact sample values.`로 실패하는 점을 검증한다. 이전 immutable program도 그대로인지 검사한다. `target.svg`는 요청할 심볼/레이블 구조를 보여 주는 독립적인 선언형 목표이며 새 API의 실행 결과라고 주장하지 않는다. 사용자가 차트 이미지를 보지 말라고 지시하여 승인·검증 근거는 SVG 구조와 DOM 좌표다.
+승인 전 checkpoint `cb61e5f24c3ebff52f632a9050af6a3128f92c80`에서 `node agent_docs/impl/sampled-color-legend/reproduce.mjs`는 당시 default가 gradient인 점과 정확한 sample 요청이 `Gradient legends do not support exact sample values.`로 실패하는 점을 검증했다. 이 재현은 승인 전 gap의 역사적 증거이며 새 구현의 회귀 테스트가 아니다. 현재 구현 검증은 capability 단위 테스트가 소유한다. 이전 immutable program도 그대로인지 검사했다. `target.svg`는 요청할 심볼/레이블 구조를 보여 주는 독립적인 선언형 목표이며 새 API의 실행 결과라고 주장하지 않는다. 사용자가 차트 이미지를 보지 말라고 지시하여 승인·검증 근거는 SVG 구조와 DOM 좌표다.
 
 ## 승인할 public 계약
 

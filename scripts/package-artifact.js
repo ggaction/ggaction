@@ -23,8 +23,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 559, // Four target-owned legend-group modules.
-  packedBytes: 787_000, // Measured 784,495 bytes after scoped JavaScript compaction.
+  entries: 560, // Adds one continuous-color symbol materializer.
+  packedBytes: 789_000, // Sampled-color feature plus synchronized generated metadata measured 788,122 bytes.
   unpackedBytes: 3_900_000
 });
 
@@ -81,6 +81,7 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/grammar/scales/appearance.js",
   "src/grammar/numeric.js",
   "src/actions/guides/legends/continuous/common.js",
+  "src/actions/guides/legends/continuous/colorSymbols.js",
   "src/grammar/scales/transformed.js",
   "src/grammar/scales/definition.js",
   "src/actions/scales/definitions.js",

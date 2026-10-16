@@ -121,7 +121,7 @@ function blockDescriptor(program, kind, config) {
     ...(components.titleId === undefined ? [] : [components.titleId])
   ];
   const bounds = unionLegendBounds(program, foregroundIds);
-  const symbolAnchorIds = ["gradient", "strokeGradient"].includes(kind)
+  const symbolAnchorIds = ["gradient", "strokeGradient"].includes(kind) && config.representation !== "symbols"
     ? [kind === "gradient" ? "colorGradientStrips" : "strokeGradientStrips"]
     : components.symbolIds;
   const symbolAnchor = unionLegendBounds(program, symbolAnchorIds);
@@ -152,7 +152,7 @@ function blockDescriptor(program, kind, config) {
   return {
     id: kind,
     kind,
-    preserveGrid: ["series", "color", "stroke"].includes(kind) && (config.columns ?? 1) > 1,
+    preserveGrid: (["series", "color", "stroke"].includes(kind) || config.representation === "symbols") && (config.columns ?? 1) > 1,
     target: config.target,
     border: borderFor(kind, config),
     offset: requestedOffset(config),

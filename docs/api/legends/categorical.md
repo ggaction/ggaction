@@ -75,7 +75,7 @@ Every categorical legend uses the same right-side default:
 | point | inferred or selected `shape` only | `right` | typed point |
 | point + matching line | `color` + `shape` | `right` | line over typed point |
 | quantitative point size | `size` | four edges and four corners, standalone or combined | five equal-area circles |
-| quantitative/temporal point color | `color` | `right` | continuous gradient with five labels |
+| quantitative/temporal point color | `color` | `right` | continuous gradient with five labels; explicit symbols representation shows sampled points |
 | discretized quantitative point color | `color` | `right/left/top/bottom` | ordered interval swatches |
 | categorical supported-mark stroke | `stroke` | `right/left/top/bottom` | actual fill with mapped outline |
 | quantitative point opacity | `opacity` | `right` | five constant-size circles with sampled opacity |

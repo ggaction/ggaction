@@ -203,7 +203,7 @@ export function prepareSharedFacetLegend(program) {
   if (bounds === undefined) {
     throw new Error("Shared facet legend has no measurable concrete bounds.");
   }
-  const gradient = kinds.some(kind => ["gradient", "strokeGradient"].includes(kind));
+  const gradient = kinds.some(kind => ["gradient", "strokeGradient"].includes(kind) && source.guideConfigs.legend[kind].representation !== "symbols");
   const targets = new Set(kinds.map(kind => source.guideConfigs.legend[kind].target));
   const group = targets.size === 1 ? source.guideConfigs.legendGroups?.[[...targets][0]] : undefined;
   const insideGroup = group !== undefined && (group.placement.at !== undefined || PLOT_LEGEND_POSITIONS.includes(group.placement.position));

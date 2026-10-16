@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:61fa5a0c4dfb02e86aa51be39c1ff82292c81e5f604d4ac7f23de7690278852e",
-    "sourceCommit": "3ca5a32325eb220229154a5b0f67fbe2e5f87655",
+    "contractId": "sha256:fac81959bde1a0bda1c5701380136b0e632626dbcf0c0aa8854c8a931aa74018",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "6f554f0b358fca692548ad5bcbe2f21c7ce63069ea93aa25721a4ad9d45a1f1f"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -1606,8 +1606,8 @@
         "put-a-compact-categorical-legend-inside-the-plot",
         "related"
       ],
-      "bytes": 6235,
-      "sha256": "fd7295b01de2d9401dd88f5b4f704a25706675194a102683a9d73d6199055704"
+      "bytes": 6249,
+      "sha256": "5ca9daea08e5dc4158460b74f2c1e9a13eba71d5d4b3ff550dccae6eddd71b2b"
     },
     {
       "order": 98,
@@ -1621,8 +1621,8 @@
         "combined-categorical-and-size-layout",
         "related"
       ],
-      "bytes": 13843,
-      "sha256": "2215f221b78fb586d141795c9e3e00ac4b5fb8e02020063f7b4e7be6c77d8836"
+      "bytes": 13897,
+      "sha256": "3ccb88dd34245de748f069d1d4f44a1b78f6ec20108289893c1af683136bcf59"
     },
     {
       "order": 99,
@@ -1633,10 +1633,11 @@
         "continuous-legends",
         "match-the-channel-and-sample-recipe",
         "continuous-color-stroke-and-opacity",
+        "show-a-continuous-color-scale-as-symbols",
         "related"
       ],
-      "bytes": 11221,
-      "sha256": "a1e154151bb4da3a9eb4a9ce3cc771a7fec5893e0bf0ac330a3842a3fdcd9be9"
+      "bytes": 14657,
+      "sha256": "c9ae5b596249b50138a576ab7aced5b5a8865c4ffac734719592d517eb8e33b2"
     },
     {
       "order": 100,
@@ -1668,8 +1669,8 @@
         "removing-a-legend",
         "related"
       ],
-      "bytes": 20874,
-      "sha256": "18901810e89ef912a1ef95cddfe1be9f0c622af9ab015f934cfa5c3e57b70009"
+      "bytes": 20902,
+      "sha256": "f09b69e64ebb357e6184de3b139fc84ade6873e787be12ef31eda32ddc418313"
     },
     {
       "order": 102,
@@ -2271,8 +2272,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 120504,
-      "sha256": "bc98aec39c06997115bb037bab2d2ea5767b0c211f17c894877a5eebe53f71a0"
+      "bytes": 120688,
+      "sha256": "096bdffbf7141d49104349a0585015ba6bc0b4820bba06e51450ca0dff5e7b1b"
     },
     {
       "order": 123,
@@ -2550,6 +2551,7 @@
         "type-discretizedcolorscaleoptions",
         "type-displaylabelmap",
         "type-displaylabeloptions",
+        "type-distributivelegendomit",
         "type-durationwindowframe",
         "type-durationwindowunit",
         "type-dynamicreferencebinding",
@@ -2660,6 +2662,7 @@
         "type-facetscaleresolutions",
         "type-fieldtype",
         "type-fillpaint",
+        "type-filledlegendsymbolrecipe",
         "type-filledmarklegendoptions",
         "type-filledmarkstroke",
         "type-filterbound",
@@ -2972,8 +2975,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 326218,
-      "sha256": "3d54330615b53fbf0b4e8dc32c20c47d8536a857c372ca77c9fae2197e4b41c6"
+      "bytes": 327668,
+      "sha256": "eb875e642ea337943e1b34ba3da71c229c3c68553178ffff1079d51f73292dbb"
     },
     {
       "order": 127,
@@ -3003,8 +3006,8 @@
         "editgraphics-target-property-value-remove",
         "scale-materialization"
       ],
-      "bytes": 16959,
-      "sha256": "c3f115ce73dd5873c835a441e858646b6d903b9376acec63db18ec8c77a9fc40"
+      "bytes": 16887,
+      "sha256": "bd8e7c8dbfed631d08e448b205d9b5e06c7906da395bebeaf3d20cdfeabccbf7"
     },
     {
       "order": 129,
@@ -3325,8 +3328,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "e84ddd9621c37ed6d28cc17f368fed64132df8fe0fe3ca45a672a83654ed3a34"
+      "bytes": 3000,
+      "sha256": "a3084a202a4a160c81ef22214edaaebe695347d8f852e8d1abff1adbc5998b36"
     },
     {
       "order": 150,

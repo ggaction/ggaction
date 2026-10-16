@@ -18614,6 +18614,11 @@
       },
       "options": [
         {
+          "name": "representation",
+          "required": false,
+          "type": "\"gradient\" | \"symbols\" | undefined"
+        },
+        {
           "name": "layout",
           "required": false,
           "type": "\"edge\" | \"legacy-bottom\" | undefined"
@@ -18725,7 +18730,7 @@
         }
       ],
       "callPatterns": [
-        "createLegend({ target?, layout?, overflow?, order?, channels?, position?, blockLayout?, at? })"
+        "createLegend({ target?, representation?, layout?, overflow?, order?, channels?, position?, blockLayout? })"
       ],
       "snippet": "program.createLegend({})",
       "errors": [],
@@ -18820,6 +18825,11 @@
           "name": "values",
           "required": false,
           "type": "\"auto\" | readonly number[] | undefined"
+        },
+        {
+          "name": "representation",
+          "required": false,
+          "type": "\"gradient\" | \"symbols\" | undefined"
         },
         {
           "name": "layout",
@@ -18918,7 +18928,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, channels?, title?, values?, layout?, overflow?, order?, position? })"
+        "editLegend({ target?, channels?, title?, values?, representation?, layout?, overflow?, order? })"
       ],
       "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],

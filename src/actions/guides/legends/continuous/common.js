@@ -411,7 +411,7 @@ export function editLegendBackground(program, id, bounds, border) {
   });
 }
 
-export function normalizeItemLegendLayout(args) {
+export function normalizeItemLegendLayout(args, { multiColumnSide = false } = {}) {
   const position = args.position ?? "right";
   if (!POSITIONS.includes(position)) throw new Error(`Unsupported legend position "${position}".`);
   const side = ["left", "right"].includes(position) || isPlotLegend({ position });
@@ -425,7 +425,7 @@ export function normalizeItemLegendLayout(args) {
   if (columns !== undefined && (!Number.isInteger(columns) || columns < 1)) throw new RangeError("Legend columns must be a positive integer.");
   const titlePosition = args.titlePosition ?? "top";
   if (!["top", "left"].includes(titlePosition)) throw new Error(`Unsupported legend titlePosition "${titlePosition}".`);
-  if (side && (direction !== "vertical" || align !== "center" || (columns !== undefined && columns !== 1) || titlePosition !== "top")) {
+  if (side && (align !== "center" || titlePosition !== "top" || !multiColumnSide && (direction !== "vertical" || (columns !== undefined && columns !== 1)))) {
     throw new Error("Side item legends require vertical direction, center alignment, top title and one column.");
   }
   const offset = args.offset ?? (isPlotLegend({ position }) ? 8 : 30);

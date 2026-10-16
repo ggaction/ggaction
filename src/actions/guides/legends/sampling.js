@@ -133,7 +133,7 @@ export function resolveLegendSampleValues(config, scale, label = "Legend") {
 }
 
 export function hasExactLegendSamplingForScale(program, scaleId) {
-  return ["size", "opacity", "strokeWidth"].some(kind => {
+  return ["size", "opacity", "strokeWidth", "gradient"].some(kind => {
     const config = program.guideConfigs.legend?.[kind];
     return config?.scale === scaleId && readLegendSampling(config).mode === "values";
   });
