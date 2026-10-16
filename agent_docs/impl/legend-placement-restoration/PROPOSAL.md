@@ -5,10 +5,10 @@
 - [x] 기존 public API로 최소 재현
 - [x] 실제 원본 SVG DOM 좌표·방향·해시 확인
 - [x] API·저장 상태·기본값·호환성·검증 범위 구체화
-- [ ] 사용자 승인
+- [x] 사용자 승인
 - [ ] 구현·현재 계약·타입·문서·회귀 검증
 
-Gate 상태: **ready-for-review**. 아직 기능을 구현하지 않았다. `decisions.json`이 승인 대상 결정을 기록하고, `reproduce.mjs`와 `evidence.json`이 현재 동작을 재현한다. 이 패키지 자체를 commit/push한 원격 revision을 확인한 뒤 승인을 요청한다. 승인 기록 전에는 새 API나 저장 상태를 구현하지 않는다.
+Gate 상태: **approved**. 사용자가 검토 revision `705aa19f1e310ca7d7e653957aac37bce8ed2c57`에 대해 “설계대로 구현 (권장)”이라고 명시적으로 승인했다. 아직 기능을 구현하지 않았다. `decisions.json`이 승인 대상 결정을 기록하고, `reproduce.mjs`와 `evidence.json`이 현재 동작을 재현한다. 이 패키지 자체를 commit/push한 원격 revision을 확인한 뒤 승인을 요청한다. 승인 기록 전에는 새 API나 저장 상태를 구현하지 않는다.
 
 루트 `AGENTS.md`는 public API·persisted schema·핵심 아키텍처의 미해결 중요 결정에 대해 구체적 제안과 명시적 승인을 요구한다. 이 제안의 두 필드, target 단위 그룹 상태, 상속·전환 규칙, 새 모서리 기본값이 그 결정이다. 독립적인 기존 기능 수정은 계속할 수 있다. 배포·출판·PR 생성 승인은 포함하지 않는다.
 
