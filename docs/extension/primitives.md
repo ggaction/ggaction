@@ -226,7 +226,7 @@ Path graphics use backend-neutral `path.commands` arrays rather than renderer-sp
 path strings. The closed command vocabulary is `M`, `L`, `C`, and `Z`. A path starts
 with one `M`; `L` and `C` draw straight and cubic segments; an optional final `Z`
 closes the path. At least one `L` or `C` segment is required. Coordinates and cubic
-control points must be finite numbers, and one path may contain at most 10,000
+control points must be finite numbers, and one path may contain at most 20,000
 commands. Generated linear and closed paths enforce the same limit before allocation.
 TypeScript users can import the `ConcretePathCommand` union from `ggaction`.
 `path.strokeDash` and `line.strokeDash` accept non-negative finite number arrays;

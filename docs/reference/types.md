@@ -2066,6 +2066,17 @@ export type ComputedExpression =
   | { readonly field: string }
   | { readonly constant: number | string | boolean | null }
   | {
+      readonly op: "getPath";
+      readonly operand: { readonly field: string };
+      readonly path: readonly [string, ...string[]];
+    }
+  | {
+      readonly op: "replaceLiteral";
+      readonly operand: ComputedExpression;
+      readonly search: string;
+      readonly replacement: string;
+    }
+  | {
       readonly op: "parseTime";
       readonly operand: ComputedExpression;
       readonly format?: ParseTimeFormat;

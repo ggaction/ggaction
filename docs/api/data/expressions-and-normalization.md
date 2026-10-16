@@ -34,7 +34,7 @@ const shares = program.createComputedData({
 
 Leaves are `{ field }` and `{ constant }`; constants may be finite numbers,
 strings, booleans, or null. The closed union includes arithmetic, comparison,
-boolean logic, `if`, `coalesce`, `concat`, `log`, `sqrt`, and `toNumber`. Conditional
+boolean logic, `if`, `coalesce`, `concat`, `log`, `sqrt`, `toNumber`, `getPath`, and `replaceLiteral`. Conditional
 and boolean nodes short-circuit value evaluation, while every branch and field
 name is structurally checked first. The action stores this data AST as
 provenance and never evaluates callbacks, source strings, or arbitrary code.
@@ -50,8 +50,27 @@ Preserve the raw field and apply an existing filter or missing-data policy to
 these nulls before assigning a position. This typed node accepts no arbitrary
 format expression or callback.
 
+Use `{ op: "getPath", operand: { field: "item" }, path: ["nested", "value"] }`
+to extract a scalar from nested plain records. The operand is exactly one literal
+root-field reference; the path has 1–8 nonempty string keys. Keys containing dots
+remain literal. Traversal reads only own data properties, never getters, arrays,
+prototypes, callbacks or dynamic expressions. Missing properties and nullish
+intermediates produce `null`; present non-record intermediates, non-scalar leaves
+and nonfinite numbers reject. A root absent from the entire dataset rejects;
+a known root missing in some rows yields `null`. Reserved path keys
+`__proto__`, `prototype`, and `constructor` reject. Ordinary `{ field: "item.value" }`
+still names one literal top-level field.
+
+Use `{ op: "replaceLiteral", operand: { field: "amountText" }, search: "%", replacement: "" }`
+to remove the first exact, case-sensitive `%`. Both search and replacement are
+literal strings; search must be nonempty. No match preserves the input. Dollar
+characters such as `$&`, `$1`, and `$$` remain literal replacement text. The
+operand must evaluate to a string; null, numbers, booleans and structured values
+reject without coercion. Compose with `toNumber` and arithmetic for percent
+values. Regular expressions, flags and dynamic search/replacement are unsupported.
+
 Arithmetic remains finite and strictly numeric. Other operations do not coerce
-types. Undefined cells normalize to null, but a missing field name is an error.
+types. Undefined scalar cells normalize to null; ordinary field references still reject missing row keys. The explicit `getPath` missing-root policy above applies only to that operation.
 Non-null results must have one primitive type across all rows. Expressions are
 bounded to depth 16 and 128 nodes, with at most 10,000,000 row-nodes.
 

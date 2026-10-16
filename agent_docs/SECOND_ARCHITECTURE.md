@@ -280,7 +280,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 389,000 bytes |
+| `ggaction` | 390,000 bytes |
 | `ggaction/basic` | 189,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -2012,3 +2012,7 @@ Plot border 포함 packed 실측780,011bytes와 검색 payload810,074bytes가 �
 ### 축 title hard break의 concrete line 소유권
 
 기존 축 title 문자열의 명시적 hard break는 같은 core line resolver와 concrete text `lines`를 재사용한다. 축 title domain action은 기존 위치·회전·원자적 bounds 검증을 유지하며, optional derived line property의 추가·제거는 `materialization/textLines.js`가 소유한다. 기존 범례 materializer도 이 좁은 helper를 호출하므로 action 계층의 직접 graphicSpec 복제나 renderer newline 추론을 추가하지 않는다. 새 공개 API나 persisted schema는 없다. 새 private module 하나에 따라 package entry 한도만562에서563으로 조정한다. Packed 실측791,403bytes와 unpacked3,887,466bytes는 기존792,000/3,900,000bytes 한도 안에 있으며 browser/SVG 한도는 유지한다. 이전 entry 한도 통과로 보고하지 않는다.
+
+승인된 computed getPath/replaceLiteral은 기존 순수 computed owner에서 검증·평가하고 기존 derived-data/schema/persistence 흐름을 그대로 재사용한다. Path command ceiling은 기존 pathCommands owner의 단일 상수/검증 helper가 소유하고 line/curve/area와 concrete validation이 함께 사용한다. Generic generated-item10,000 한도는 유지한다. 새 module/entry 없이 packed 실측792,129bytes가792,000bytes를 초과하여 기존 최소1,000bytes 갱신 정책으로 packed 예산만793,000bytes로 조정한다. Entry563와 unpacked3,900,000bytes 예산은 유지하며 이전 packed 예산 통과로 보고하지 않는다.
+
+같은 승인 기능의 installed consumer는 Node/TypeScript/MCP/tutorial 및 nested→filter→scatter/12,070연결점 SVG·Canvas 검사를 통과했다. Full browser gzip 실측389,521bytes가389,000bytes를 초과하므로 좁은1,000bytes 갱신으로 Full 한도만390,000bytes로 조정한다. Basic189,000 및 SVG25,000bytes 한도는 유지하며 이전 Full 예산 통과로 보고하지 않는다.

@@ -1430,7 +1430,7 @@
       "name": "createComputedData",
       "layer": "user-facing",
       "domain": "statistics",
-      "summary": "Materialize a typed primitive or null field from a serializable, closed expression.",
+      "summary": "Materialize a typed primitive or null field from a serializable, closed expression, including explicit nested scalar getPath and first-occurrence replaceLiteral operations.",
       "signature": "createComputedData(options: ComputedDataOptions): ChartProgram;",
       "intents": [
         "create computed data",

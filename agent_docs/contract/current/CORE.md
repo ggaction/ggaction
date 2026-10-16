@@ -621,9 +621,11 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   short-circuit하지만 모든 branch의 구조와 field 존재는 먼저 검증한다.
 - `toNumber` unary node는 finite number를 보존하고 trim된 signed decimal/scientific string을 finite number로 변환한다. Empty/whitespace, null, boolean, hex, invalid 및 non-finite 값은 거부한다. 다른 연산의 strict numeric 계약은 유지한다.
 - `parseTime` node는 `{ op: "parseTime", operand, format? }`다. Format은 `"auto"`(기본), `"%Y-%m-%d"`, `"%d/%m/%Y"`, `"%m/%d/%Y"`의 closed union이다. Explicit calendar formats는 UTC millisecond timestamp를 만들고 잘못된 일자 rollover를 거부한다. Auto는 기존 temporal scalar normalization을 재사용한다. Invalid/nullish input은 null이므로 filter/impute 등 기존 명시적 missing-data 정책으로 처리한다. Raw field는 덮어쓰지 않는다.
+- `getPath` node는 `{ op: "getPath", operand: { field: root }, path }`다. Path는 1–8개의 non-empty literal string key이며 dot splitting, arrays/indices, dynamic expressions, prototype traversal를 지원하지 않는다. `__proto__`/`prototype`/`constructor`와 unknown node keys는 거부한다. Plain record의 own data property만 읽고 getter는 실행하지 않는다. Missing own property와 nullish intermediate는 null, present non-record intermediate/accessor/nonscalar 또는 nonfinite leaf는 atomic error다. Dataset 전체에서 unknown root는 오류지만 known optional root가 없는 row는 null이다. Ordinary literal field reference의 기존 의미와 missing-row 오류는 유지한다. Root field는 schema lineage dependency다.
+- `replaceLiteral` node는 `{ op: "replaceLiteral", operand, search, replacement }`다. Operand는 기존 recursive expression이며 평가 결과는 string이어야 한다. Search는 non-empty literal string, replacement는 empty를 허용하는 literal string이다. 첫 case-sensitive exact substring만 교체하고 no match는 원본을 보존한다. Dollar sequences는 literal이며 regex/flags/callback/dynamic search와 coercion은 지원하지 않는다. Null/nonstring operand와 malformed keys/types는 atomic error다. 기존 depth/node/work bounds와 lazy conditional 평가를 유지한다.
 - Effect: source row와 모든 existing cell을 보존하고 각 row에 한 primitive 또는 null output을 추가한다.
   Serialized transform 자체가 exact formula provenance다. Facet replay에서는 row-preserving transform으로
-  처리한다. undefined cell은 null로 평가하지만 field key 자체가 없는 row는 오류다. 한 materialization의
+  처리한다. undefined scalar cell은 null로 평가하지만 ordinary field key 자체가 없는 row는 오류다. Explicit getPath의 known optional root는 위 missing 정책을 따른다. 한 materialization의
   non-null output type은 하나여야 한다.
 - 오류: missing/structured operand, typed-operation mismatch, divide-by-zero, invalid log/sqrt,
   overflow/non-finite result, mixed output type, output collision, unknown 또는 malformed expression node를
@@ -635,7 +637,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 - Implemented: `createComputedData({ id: UserId; source?: UserId; as: FieldName; expression: ComputedExpression }): ChartProgram`
 - Implemented nodes: field; number/string/boolean/null constant; add/subtract/multiply/divide;
-  negate/absolute/log/sqrt/toNumber; parseTime(operand, format?); eq/neq/lt/lte/gt/gte; and/or/not/isNull; if/coalesce/concat.
+  negate/absolute/log/sqrt/toNumber; parseTime(operand, format?); eq/neq/lt/lte/gt/gte; and/or/not/isNull; if/coalesce/concat; getPath(literal root field, 1–8 literal keys); replaceLiteral(operand, nonempty literal search, literal replacement).
 - Proposed (NOT IMPLEMENTED): callbacks, expression strings, group aggregates, arbitrary regex와 arbitrary code evaluation.
 
 ### Value coverage — `createComputedData`
@@ -646,7 +648,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: missing/invalid typed input, lazy value evaluation with eager structural/field validation,
   zero denominator, invalid domains, finite overflow, mixed output and collision rejection.
 - ✅ Covered: strict node shape/vocabulary, immutable deep ownership, row grain, depth/node/work bounds.
-- Evidence: `test/unit/actions/data/computed-data.test.js`.
+- Evidence: `test/unit/actions/data/computed-data.test.js`, `test/unit/actions/data/computed-access-and-replacement.test.js`, `test/contracts/computed-access-replacement-types.test.js`.
 
 ## `createNormalizedData`
 
