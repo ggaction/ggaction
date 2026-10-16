@@ -27,11 +27,13 @@ export function resolveSeriesLayoutDomain({
       seriesLayouts[index] === undefined &&
       !isSourceOwnedText(consumer.layer)
   );
+  const layout = activeLayouts[0].layout;
   const compatibleDirect = directConsumers.every(({ consumer }) =>
     layoutConsumers.every(({ consumer: layoutConsumer }) => {
       const aggregate = layoutConsumer.encoding.aggregate;
       const directEncoding = consumer.encoding;
       return directEncoding.fieldType === "quantitative" && (
+        layout === "overlay" ||
         Object.hasOwn(directEncoding, "datum") ||
         (
           aggregate !== "count" &&
@@ -45,7 +47,6 @@ export function resolveSeriesLayoutDomain({
       `Series layout scale "${id}" cannot be shared with another policy.`
     );
   }
-  const layout = activeLayouts[0].layout;
   const values = [
     ...activeLayouts.flatMap(item => item.values),
     ...directConsumers.flatMap(item => item.values)

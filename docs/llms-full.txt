@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:bbf5b5249cdce290c289bd97a2bdf87ece25e41f8836d1430bcbb5a70450a1b4. Status: development. Runtime source: dae4b5b76b8b136a14dd11ed994aa8cfe21c56c4. Release baseline: v0.0.13.
+Contract: sha256:1d96e7227d63b34625c3091c316d606607b676f618089b23316e4ebf9874d7e2. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/dae4b5b76b8b136a14dd11ed994aa8cfe21c56c4/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/dae4b5b76b8b136a14dd11ed994aa8cfe21c56c4/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -10487,6 +10487,12 @@ program.encodeColor({
 Top-level `palette` is a shorthand for `scale.palette`, and `scale.palette` is the
 concise form of `scale.range: { palette: "tableau10" }`. Provide only one of these
 forms. Automatic domains preserve first-appearance order.
+
+An overlaid bar's quantitative measure scale can also position a rule, point,
+or line bound to another quantitative field. A shared automatic domain includes
+the final bar aggregates and the direct values; explicit domains still need to
+contain the bar's zero baseline. Other series layout compatibility checks remain
+unchanged.
 
 Use `fieldType: "ordinal"` when the values are ordered categories rather than
 continuous magnitudes. They still receive discrete palette colors and legend
@@ -37197,12 +37203,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/dae4b5b76b8b136a14dd11ed994aa8cfe21c56c4/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/dae4b5b76b8b136a14dd11ed994aa8cfe21c56c4/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39347,9 +39353,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:bbf5b5249cdce290c289bd97a2bdf87ece25e41f8836d1430bcbb5a70450a1b4` |
+| Contract fingerprint | `sha256:1d96e7227d63b34625c3091c316d606607b676f618089b23316e4ebf9874d7e2` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `dae4b5b76b8b136a14dd11ed994aa8cfe21c56c4` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |

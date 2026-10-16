@@ -295,7 +295,11 @@ type AggregateOperation =
   partition을 합계 1로 정규화하고 automatic y domain을 `[0, 1]`로 고정한다. 합계가 0인 partition은
   graphic을 만들지 않는다. Aggregate bar의 group/overlay는 `stack: null`이어도 semantic start endpoint
   `0`을 domain과 geometry가 함께 사용한다. Automatic domain은 `zero: false`와 무관하게 이 endpoint를
-  포함하며 explicit domain이 0을 제외하면 preflight에서 거부한다. `"center"`는 nominal group을 가진
+  포함하며 explicit domain이 0을 제외하면 preflight에서 거부한다.
+  `overlay`의 quantitative measure scale은 같은 scale의 일반 quantitative rule/point/line consumer와
+  field 이름이 달라도 공유할 수 있다. Automatic domain은 최종 overlay aggregate와 직접 consumer의
+  값을 함께 포함하며 explicit domain과0-baseline 검증은 유지한다. Group/stack/fill/diverging/center의
+  기존 변환-policy 충돌 검증은 완화하지 않는다. `"center"`는 nominal group을 가진
   non-negative raw/density area의 y에서만 허용한다. 모든 group은 같은 x position을 정확히 한 번씩 가져야
   하며 각 partition은 deterministic first-appearance group order로 `-total / 2`부터 쌓인다. Missing position,
   duplicate group/x, ranged area, negative value와 bar center stack은 atomic하게 거부한다.

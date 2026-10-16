@@ -60,6 +60,12 @@ Top-level `palette` is a shorthand for `scale.palette`, and `scale.palette` is t
 concise form of `scale.range: { palette: "tableau10" }`. Provide only one of these
 forms. Automatic domains preserve first-appearance order.
 
+An overlaid bar's quantitative measure scale can also position a rule, point,
+or line bound to another quantitative field. A shared automatic domain includes
+the final bar aggregates and the direct values; explicit domains still need to
+contain the bar's zero baseline. Other series layout compatibility checks remain
+unchanged.
+
 Use `fieldType: "ordinal"` when the values are ordered categories rather than
 continuous magnitudes. They still receive discrete palette colors and legend
 entries:
