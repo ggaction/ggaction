@@ -1,0 +1,171 @@
+{
+  "status": "proposal-evidence",
+  "sources": [
+    {
+      "sourceId": "vl_0461",
+      "required": {
+        "color": {
+          "orient": "top-left"
+        },
+        "size": {
+          "orient": "bottom-left"
+        }
+      },
+      "compiledLegends": [
+        {
+          "orient": "top-left",
+          "title": "Item type",
+          "fill": "color",
+          "symbolType": "circle",
+          "encode": {
+            "symbols": {
+              "update": {
+                "opacity": {
+                  "value": 0.8
+                }
+              }
+            }
+          }
+        },
+        {
+          "orient": "bottom-left",
+          "title": "Price",
+          "size": "size",
+          "symbolType": "circle",
+          "encode": {
+            "symbols": {
+              "update": {
+                "fill": {
+                  "value": "black"
+                },
+                "fillOpacity": {
+                  "value": 0.8
+                },
+                "opacity": {
+                  "value": 0.8
+                },
+                "stroke": {
+                  "value": "transparent"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "rawRows": 602,
+      "bindings": [
+        {
+          "role": "source.vl.json",
+          "sha256": "a9c882d9e70b810858b7530336624346b40b5b59e0b0971e241c44ef06796082",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNDYxL3NvdXJjZS52bC5qc29u"
+        },
+        {
+          "role": "data.json",
+          "sha256": "0f596825d2fbc08b13426cb671734b0008d0e6df48eb5813d9b86c062c72fef0",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNDYxL2RhdGEuanNvbg=="
+        },
+        {
+          "role": "compiled-reference-specification",
+          "sha256": "2a51e9ca54cce426e7ee9ad05338b3566d5b8558a02ac398b31a3cdf5e6e0dfe",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNDYxL3JlZmVyZW5jZS9jb21waWxlZC52ZWdhLmpzb24="
+        },
+        {
+          "role": "reference/chart.svg",
+          "sha256": "2055752defb802f9001853ef02831595601ef76f7ea558af27c61e6169d4b566",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNDYxL3JlZmVyZW5jZS9jaGFydC5zdmc="
+        },
+        {
+          "role": "contract.json",
+          "sha256": "622af11809f8aeba64a325a48d15ed190b85f17951e627f01de0606657097552",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNDYxL2NvbnRyYWN0Lmpzb24="
+        }
+      ]
+    },
+    {
+      "sourceId": "vl_0459",
+      "required": {
+        "color": {
+          "orient": "bottom",
+          "columns": 2
+        },
+        "size": {
+          "orient": "top-right"
+        }
+      },
+      "compiledLegends": [
+        {
+          "columns": 2,
+          "orient": "bottom",
+          "title": "Item type",
+          "fill": "color",
+          "direction": "horizontal",
+          "symbolType": "circle",
+          "encode": {
+            "symbols": {
+              "update": {
+                "opacity": {
+                  "value": 0.8
+                }
+              }
+            }
+          }
+        },
+        {
+          "orient": "top-right",
+          "title": "Price",
+          "size": "size",
+          "symbolType": "circle",
+          "encode": {
+            "symbols": {
+              "update": {
+                "fill": {
+                  "value": "black"
+                },
+                "fillOpacity": {
+                  "value": 0.8
+                },
+                "opacity": {
+                  "value": 0.8
+                },
+                "stroke": {
+                  "value": "transparent"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "rawRows": 602,
+      "bindings": [
+        {
+          "role": "source.vl.json",
+          "sha256": "c374bce112b8fdb2d0908088db9dad26146f958bf3bcc49055e4b07bf44528a1",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNDU5L3NvdXJjZS52bC5qc29u"
+        },
+        {
+          "role": "data.json",
+          "sha256": "0f596825d2fbc08b13426cb671734b0008d0e6df48eb5813d9b86c062c72fef0",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNDU5L2RhdGEuanNvbg=="
+        },
+        {
+          "role": "compiled-reference-specification",
+          "sha256": "49644435d83de09c188b062eb09ce62bfa6c5008db834d17e2b92f9bf142bf3c",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNDU5L3JlZmVyZW5jZS9jb21waWxlZC52ZWdhLmpzb24="
+        },
+        {
+          "role": "reference/chart.svg",
+          "sha256": "1e78b39d47f215cd20f10ba0683e805ed3ac6616484ef4fb75619a5459a6d961",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNDU5L3JlZmVyZW5jZS9jaGFydC5zdmc="
+        },
+        {
+          "role": "contract.json",
+          "sha256": "78ba03d7ae972e02ebc1329707d609f45b24d6e4b364dbd263e475aafb927600",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wNDU5L2NvbnRyYWN0Lmpzb24="
+        }
+      ]
+    }
+  ],
+  "pathEncoding": "Base64 UTF-8 absolute source paths",
+  "modelCalls": 0,
+  "chartPixelsInspected": false
+}
