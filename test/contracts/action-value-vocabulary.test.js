@@ -132,7 +132,7 @@ test("keeps accepted planned capabilities linked and non-public", () => {
     currentCorpus,
     /"color" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "shape" \| "size" \| "opacity"/
   );
-  assert.match(currentCorpus, /gradient\?: \{ length\?: PositiveFinite; thickness\?: PositiveFinite \}/);
+  assert.match(currentCorpus, /gradient\?: \{ length\?: PositiveFinite; thickness\?: PositiveFinite; opacity\?: UnitInterval \}/);
   assert.doesNotMatch(currentCorpus, /minArea|maxArea/);
   assert.doesNotMatch(currentCorpus, /unit\?: "radius" \| "area"/);
   assert.match(currentCorpus, /## Position field-type compatibility/);

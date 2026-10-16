@@ -2597,6 +2597,11 @@ and `legacy-bottom` keep their existing anchors. Older saved programs retain
 their fixed offsets.
 Automatic symbol recipes refresh when matching companion lines or their color
 bindings change; explicit recipes retain their layers and order.
+Continuous color and stroke ramps accept
+`gradient: { length?, thickness?, opacity? }`. Body opacity is finite in `[0, 1]`,
+defaults to `1`, and preserves space at zero. It never fades marks, text, ticks,
+or borders. Whole and focused legend edits preserve omitted gradient fields;
+switching from symbols back to a gradient resets exclusive gradient settings.
 Omitted point channels infer the available categorical color, shape, and
 quantitative size with the same result as explicit selection. Color-only uses
 swatches; shape uses typed symbols; a size encoding adds its own sample block.

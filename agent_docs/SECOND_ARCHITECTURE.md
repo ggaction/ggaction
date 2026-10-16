@@ -993,6 +993,7 @@ Consumer resolution은 mark policy를 고려한다.
 - histogram x는 shared bin policy를, y는 final stacked count를 사용한다.
 - appearance scale은 deterministic ordinal domain과 palette/range를 사용한다.
 - Continuous color의 Point/aggregate Bar/Rect consumer validation은 grammar/scales/colorConsumers.js가 생성·scale 편집·materialization에 공통 제공한다. Full의 scale type 편집은 연결된 mark와 guide를 포함한 immutable candidate를 검증한 뒤 같은 child plan을 적용한다. Gradient/interval의 교체는 legend transition owner가 네 edge의 common layout/style 보존과 family-only 설정 충돌을 검사하며 removeLegend/createLegend/editLegend를 조합한다. Basic은 typed interval legend 생성을 완성하지만 editScale과 구조적 type 전환은 Full 경계에 남긴다.
+- Continuous legend ramp의 선택적 body opacity는 replayable gradient config 한 곳에 저장한다. `grammar/legendGradient.js`가 생성·편집·저장의 closed 수치 검증을 공유하며 기존 domain materializer가 strip opacity를 명시적으로 갱신한다. Legacy 생략값은1이고 renderer는 concrete paint와 opacity만 읽는다. 정확한 공개 계약은 Current LEGEND_AND_TITLE이 소유한다.
 - quantitative sequential midpoint는 semantic scale 한 곳에 저장한다. Color grammar가 두 구간 mapping과 범위 검증을 소유하며 mark와 gradient strip은 같은 mapper를 사용한다. Legend의 값 위치와 midpoint tick은 value-linear다. Exact policy는 Current CORE/ENCODINGS/LEGEND_AND_TITLE을 따른다.
 - point-item `unknown`이 있으면 invalid inputs를 domain inference에서 제외하고 final mapping에서 channel-valid
   fallback을 적용한다.

@@ -50,9 +50,23 @@ tick lines, and text to `graphicSpec`; renderers do not interpolate colors.
 program.createLegend({
   channels: ["color"],
   count: 5,
-  gradient: { length: 120, thickness: 12 }
+  gradient: { length: 120, thickness: 12, opacity: 0.7 }
 });
 ~~~
+
+`gradient.opacity` is a finite number from `0` to `1`, defaulting to `1`.
+It fades only the color or stroke ramp body, including its strip outlines;
+titles, ticks, labels, borders, marks, and layout stay unchanged. Zero keeps the
+ramp's geometry and space. Mark opacity is independent and is never inferred
+into this option. Ramp opacity applies once and does not rewrite mapped colors.
+The existing continuous-color vocabulary is unchanged.
+
+Use `editLegend({ gradient: { opacity: 0.4 } })` or
+`editLegendSymbols({ gradient: { opacity: 0.4 } })` to revise it. Omitted fields
+retain their stored values. `representation: "symbols"` rejects `gradient`;
+switching back to a gradient resets its dimensions and opacity to their creation
+defaults unless the switching call supplies them. Existing saved ramps without
+opacity remain fully opaque.
 
 A Point or Line field-driven quantitative `opacity` encoding produces representative point
 samples in ascending domain order. Reversing the opacity range changes symbol

@@ -1350,7 +1350,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `readonly number[] \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; } \| undefined` |
+| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
 | `labels` | Optional / branch-dependent | `LegendTextOptions \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `LegendTitleStyleOptions \| undefined` |
@@ -1382,6 +1382,11 @@ and `legacy-bottom` keep their existing anchors. Older saved programs retain
 their fixed offsets.
 Automatic symbol recipes refresh when matching companion lines or their color
 bindings change; explicit recipes retain their layers and order.
+Continuous color and stroke ramps accept
+`gradient: { length?, thickness?, opacity? }`. Body opacity is finite in `[0, 1]`,
+defaults to `1`, and preserves space at zero. It never fades marks, text, ticks,
+or borders. Whole and focused legend edits preserve omitted gradient fields;
+switching from symbols back to a gradient resets exclusive gradient settings.
 Omitted point channels infer the available categorical color, shape, and
 quantitative size with the same result as explicit selection. Color-only uses
 swatches; shape uses typed symbols; a size encoding adds its own sample block.
@@ -1459,7 +1464,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"left" \| "top" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; } \| undefined` |
+| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
 | `labels` | Optional / branch-dependent | `LegendTextOptions \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `LegendTitleStyleOptions \| undefined` |
@@ -1682,7 +1687,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; } \| undefined` |
+| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 
 </details>
 

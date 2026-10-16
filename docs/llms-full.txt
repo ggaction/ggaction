@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:0ccdecaddbc1e7d0b4e2f5f8ba22cf75087d164b1705ceabf5df564583c5f56f. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:bfc5ae9bef75cf650bb20f6d0e44ac20c26c0cc946d7718805990670063bc669. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12960,9 +12960,23 @@ tick lines, and text to `graphicSpec`; renderers do not interpolate colors.
 program.createLegend({
   channels: ["color"],
   count: 5,
-  gradient: { length: 120, thickness: 12 }
+  gradient: { length: 120, thickness: 12, opacity: 0.7 }
 });
 ~~~
+
+`gradient.opacity` is a finite number from `0` to `1`, defaulting to `1`.
+It fades only the color or stroke ramp body, including its strip outlines;
+titles, ticks, labels, borders, marks, and layout stay unchanged. Zero keeps the
+ramp's geometry and space. Mark opacity is independent and is never inferred
+into this option. Ramp opacity applies once and does not rewrite mapped colors.
+The existing continuous-color vocabulary is unchanged.
+
+Use `editLegend({ gradient: { opacity: 0.4 } })` or
+`editLegendSymbols({ gradient: { opacity: 0.4 } })` to revise it. Omitted fields
+retain their stored values. `representation: "symbols"` rejects `gradient`;
+switching back to a gradient resets its dimensions and opacity to their creation
+defaults unless the switching call supplies them. Existing saved ramps without
+opacity remain fully opaque.
 
 A Point or Line field-driven quantitative `opacity` encoding produces representative point
 samples in ascending domain order. Reversing the opacity range changes symbol
@@ -24584,7 +24598,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `readonly number[] \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; } \| undefined` |
+| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
 | `labels` | Optional / branch-dependent | `LegendTextOptions \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `LegendTitleStyleOptions \| undefined` |
@@ -24614,6 +24628,11 @@ and `legacy-bottom` keep their existing anchors. Older saved programs retain
 their fixed offsets.
 Automatic symbol recipes refresh when matching companion lines or their color
 bindings change; explicit recipes retain their layers and order.
+Continuous color and stroke ramps accept
+`gradient: { length?, thickness?, opacity? }`. Body opacity is finite in `[0, 1]`,
+defaults to `1`, and preserves space at zero. It never fades marks, text, ticks,
+or borders. Whole and focused legend edits preserve omitted gradient fields;
+switching from symbols back to a gradient resets exclusive gradient settings.
 Omitted point channels infer the available categorical color, shape, and
 quantitative size with the same result as explicit selection. Color-only uses
 swatches; shape uses typed symbols; a size encoding adds its own sample block.
@@ -24689,7 +24708,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"left" \| "top" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; } \| undefined` |
+| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
 | `labels` | Optional / branch-dependent | `LegendTextOptions \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `LegendTitleStyleOptions \| undefined` |
@@ -24889,7 +24908,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; } \| undefined` |
+| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused legend edits](./reference/actions/guides/#focused-legend-edits).
 
@@ -31032,7 +31051,7 @@ export interface EditLegendSymbolsOptions {
   target?: string;
   symbol?: LegendSymbolRecipe;
   count?: number;
-  gradient?: { length?: number; thickness?: number };
+  gradient?: { length?: number; thickness?: number; opacity?: number };
 }
 ```
 
@@ -33019,7 +33038,8 @@ export interface LegendOptions {
   /** Exact ascending samples for continuous size, opacity, stroke-width, or color with representation symbols. Cannot be combined with count. */
   values?: readonly number[];
   count?: number;
-  gradient?: { length?: number; thickness?: number };
+  /** Body-only opacity defaults to 1; edits preserve omitted fields. */
+  gradient?: { length?: number; thickness?: number; opacity?: number };
   symbol?: LegendSymbolRecipe;
   labels?: LegendTextOptions;
   /** New categorical+size blocks share typography on every edge; retained standalone size styles remain independent. */
@@ -39319,7 +39339,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:0ccdecaddbc1e7d0b4e2f5f8ba22cf75087d164b1705ceabf5df564583c5f56f` |
+| Contract fingerprint | `sha256:bfc5ae9bef75cf650bb20f6d0e44ac20c26c0cc946d7718805990670063bc669` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
