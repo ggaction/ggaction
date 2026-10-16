@@ -1,0 +1,159 @@
+{
+  "reviewer": "codex",
+  "kind": "opaque-reference-hash-bindings-only",
+  "runtimeCommit": "7971cc4cd9a1e5f26aa690e2d2083a60df8bb0a2",
+  "originalArtifactsRemainImmutableInOwningEvaluationWorkspace": true,
+  "cases": [
+    {
+      "caseId": "0679",
+      "sourceSpecSha256": "2f1aa028bd5381151f0629fcc3bd8cb53bef444b78d2fc482ae153c07c189f5d",
+      "resolvedSourceSha256": "0b5ee2a2393ed39edd63fe9ac305555bd0850b4822d0ebd650c16b7cb52f9ae5",
+      "rawDataSha256": "a28dfee99a4b662e499daa3611f2cf8d03762344ec54d34406332c53fc0f0568",
+      "compiledProgramSha256": "9aee9bbf8b1b3b0dbf9096399e11c7c2ce4546568c52f1d0305b3a71677d4257",
+      "actualSvgSha256": "f019382966c29817f76ec00e403fe33509d8f43f2621e76cc1083fc98c7fdecf",
+      "rawRows": 10,
+      "independentPositionScaleRequest": "independent",
+      "compiledVerticalAxes": [
+        {
+          "scale": "layer_0_y",
+          "orient": "left",
+          "title": "SSA",
+          "grid": false
+        },
+        {
+          "scale": "layer_1_y",
+          "orient": "right",
+          "title": "UKR",
+          "grid": false
+        }
+      ],
+      "allLayersAndIndependentScalesRequired": true,
+      "chartPixelsInspected": false
+    },
+    {
+      "caseId": "1029",
+      "sourceSpecSha256": "343cb7fe98ed3cda2830c40506b79dd86ef7124c1132eabee69a2ef7dad8a7cf",
+      "resolvedSourceSha256": "de51650538b8996cf80873f71c6427926de3e21ec9daab0ed502cdfe59ac1dcf",
+      "rawDataSha256": "ca8f6433f8e7cd85b35472bc9f786a61ad3b3475e909ba092d9bbd32d4c041a5",
+      "compiledProgramSha256": "a66a3515854344e71dca1c535061744410cc6236ef72626655495e3ddc0b20aa",
+      "actualSvgSha256": "3eb953c182d360504317de80cff1a8a561c8761d6adc4238b249adce4a9b117e",
+      "rawRows": 16,
+      "independentPositionScaleRequest": "independent",
+      "compiledVerticalAxes": [
+        {
+          "scale": "layer_0_y",
+          "orient": "left",
+          "grid": true,
+          "labels": false,
+          "ticks": false
+        },
+        {
+          "scale": "layer_0_y",
+          "orient": "left",
+          "title": "First-time buyers",
+          "grid": false
+        },
+        {
+          "scale": "layer_1_y",
+          "orient": "right",
+          "title": "Percentage of total Buyers",
+          "grid": false
+        }
+      ],
+      "allLayersAndIndependentScalesRequired": true,
+      "chartPixelsInspected": false
+    },
+    {
+      "caseId": "1355",
+      "sourceSpecSha256": "fb8902af12496fd71a17129d3fb4d9f3f6d450f3bfc4e1844ed8b2a5256e9aa5",
+      "resolvedSourceSha256": "9d4d101682fe872fcb35c574e4ac5bc127dc695058152ff282415ae113b0c384",
+      "rawDataSha256": "50c94a64975cc205f4917f4d4562cca6da32c136a4e9a0f8e09af60bae133686",
+      "compiledProgramSha256": "a1d736fce248a2a91735f09d8758ac5d0045591c0132521bf4ffa0a02b14278f",
+      "actualSvgSha256": "04b9968fec5e918844e365731e3e338bbf5c954f883b4806aa1c419366ffa3af",
+      "rawRows": 27,
+      "independentPositionScaleRequest": "independent",
+      "compiledVerticalAxes": [
+        {
+          "scale": "layer_0_y",
+          "orient": "left",
+          "grid": true,
+          "labels": false,
+          "ticks": false
+        },
+        {
+          "scale": "layer_0_y",
+          "orient": "left",
+          "title": "Total Houses Sold England",
+          "grid": false
+        },
+        {
+          "scale": "layer_1_y",
+          "orient": "right",
+          "title": "Total Household Goods sold",
+          "grid": false
+        }
+      ],
+      "allLayersAndIndependentScalesRequired": true,
+      "chartPixelsInspected": false
+    },
+    {
+      "caseId": "0161",
+      "sourceSpecSha256": "9943933c15def9d492777679c030fb0ea6021e053da64fb62421d4e3fdcf0435",
+      "resolvedSourceSha256": "611b048ea72f65d63a374444e744662ddc4d4292ed6d91c19e69be17af6167b3",
+      "rawDataSha256": "e55817928d4dcaff8bf808f1d0d9341c76292526cb35b6c075979bf0250ec97e",
+      "compiledProgramSha256": "006ce205124ea5fbf322ca8c79d60ea6a0a70325dddc6aa6ab442dc99506b773",
+      "actualSvgSha256": "d714637a05fb2d73256092ba853c65bec579d24867742a8cda7c3d7e6a807bf4",
+      "rawRows": 52,
+      "independentPositionScaleRequest": "independent",
+      "compiledVerticalAxes": [
+        {
+          "scale": "layer_0_y",
+          "orient": "left",
+          "title": "Spending (% of GDP)",
+          "grid": false
+        },
+        {
+          "scale": "layer_1_y",
+          "orient": "right",
+          "title": "Caseload (% of adult population)",
+          "grid": false
+        }
+      ],
+      "allLayersAndIndependentScalesRequired": true,
+      "chartPixelsInspected": false
+    },
+    {
+      "caseId": "0817",
+      "sourceSpecSha256": "677706471854958769012a1cbcd1d1571a0b96023353258b48049e521ae58907",
+      "resolvedSourceSha256": "f482b576d84856e0c98ef223400542a93ad8d22f9fec71a1224814073eef60ec",
+      "rawDataSha256": "519bcea9032a47d9b5d674721c9351bfb7087e44d9cf77ff4535be0ef744d409",
+      "compiledProgramSha256": "c2e71b89434654dd2ca2f2e1af40ba66ae73c234aa3eb4c0583949139c06a908",
+      "actualSvgSha256": "540040a6cea36cd970249e684aae2e9a33c7fa40349d751aaf9346c12b26ad93",
+      "rawRows": 195,
+      "independentPositionScaleRequest": "independent",
+      "compiledVerticalAxes": [
+        {
+          "scale": "layer_0_y",
+          "orient": "left",
+          "grid": true,
+          "labels": false,
+          "ticks": false
+        },
+        {
+          "scale": "layer_0_y",
+          "orient": "left",
+          "title": "Market Value (£ Millions)",
+          "grid": false
+        },
+        {
+          "scale": "layer_1_y",
+          "orient": "right",
+          "title": "Club Weekly Wages (£ Millions)",
+          "grid": false
+        }
+      ],
+      "allLayersAndIndependentScalesRequired": true,
+      "chartPixelsInspected": false
+    }
+  ]
+}

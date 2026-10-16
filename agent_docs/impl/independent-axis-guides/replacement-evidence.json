@@ -1,0 +1,90 @@
+{
+  "reviewer": "codex",
+  "gate": "ready-for-review",
+  "runtimeCommit": "7971cc4cd9a1e5f26aa690e2d2083a60df8bb0a2",
+  "syntheticRows": 3,
+  "publicIndependentPositionScalesWork": true,
+  "simultaneousAxisGuideResources": false,
+  "currentBehavior": "Second complete Y-axis throws because the canonical y-axis line already exists. Removing that axis before creating the right one leaves only the right guide; simultaneous independent guide resources cannot be expressed.",
+  "rejection": {
+    "name": "Error",
+    "message": "createYAxisLine requires a missing y-axis line."
+  },
+  "before": {
+    "binding": {
+      "scale": "y",
+      "title": "Left quantity"
+    },
+    "line": {
+      "type": "line",
+      "properties": {
+        "x1": 60,
+        "y1": 220,
+        "x2": 60,
+        "y2": 20,
+        "stroke": "#334155",
+        "strokeWidth": 1
+      }
+    },
+    "title": {
+      "type": "text",
+      "properties": {
+        "x": 25,
+        "y": 120,
+        "text": "Left quantity",
+        "fill": "#334155",
+        "fontSize": 11,
+        "fontFamily": "sans-serif",
+        "fontWeight": 600,
+        "textAlign": "center",
+        "textBaseline": "middle",
+        "rotation": -1.5707963267948966
+      }
+    }
+  },
+  "after": {
+    "binding": {
+      "scale": "secondaryY",
+      "title": "Right quantity"
+    },
+    "line": {
+      "type": "line",
+      "properties": {
+        "x1": 380,
+        "y1": 220,
+        "x2": 380,
+        "y2": 20,
+        "stroke": "#334155",
+        "strokeWidth": 1
+      }
+    },
+    "title": {
+      "type": "text",
+      "properties": {
+        "x": 415,
+        "y": 120,
+        "text": "Right quantity",
+        "fill": "#334155",
+        "fontSize": 11,
+        "fontFamily": "sans-serif",
+        "fontWeight": 600,
+        "textAlign": "center",
+        "textBaseline": "middle",
+        "rotation": 1.5707963267948966
+      }
+    },
+    "yAxisLineCount": 1
+  },
+  "priorImmutableProgramUnchanged": true,
+  "additionalIndependentMarkPreserved": true,
+  "owningFiles": [
+    "src/actions/guides/axes/lines.js",
+    "src/actions/guides/axes/ticks.js",
+    "src/actions/guides/axes/labels.js",
+    "src/actions/guides/axes/titles.js",
+    "src/actions/guides/axes/axis.js"
+  ],
+  "reproSha256": "eeb721ee50bbdcb02eb2b263af8909ea392248d7a2ab5c16412d5bdba67be3a4",
+  "modelCalls": 0,
+  "chartPixelsInspected": false
+}
