@@ -304,6 +304,8 @@ Text plot 공개 문서/검색 항목 추가 후 search-index는801,260bytes로 
 Gzip 크기는 같은 minified bytes라도 Node가 포함한 zlib 버전에 따라 달라질 수 있으므로 지원하는
 Node 20·22·24 matrix의 최댓값을 포함해야 한다.
 
+2026-10-16 승인 기능 5개와 기존 corner 범례 occupied-bounds 수정의 통합 checkpoint는 두 shared grammar module을 합쳐565entries다. 통합 packed 실측793,051bytes가793,000bytes를 초과하여 기존 최소1,000bytes 갱신 정책에 따라 packed 한도만794,000bytes로 조정한다. Unpacked3,900,000bytes 및 browser Full390,000/Basic189,000/SVG25,000bytes 한도는 유지한다. 개별 feature checkpoint의 측정은 각 기록의 독립 기준선이며, 통합 결과가 이전 packed 한도를 통과했다고 보고하지 않는다.
+
 ## 실행 계약의 위치
 
 이 문서는 상태 소유권, 계층 간 의존성과 실행 흐름을 설명한다. 메서드별 매개변수·기본값·추론·지원 조합·오류는 아래 Current 계약이 소유하며 이 문서에 복제하지 않는다. 구현 상태와 direct/internal 분류는 [ACTION_INDEX.json](contract/ACTION_INDEX.json), 선언은 `types/`, 자동화된 value vocabulary는 owning runtime registry를 사용한다.

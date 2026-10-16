@@ -24,7 +24,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 565, // Shared area-paint and legend-gradient validators add two entries.
-  packedBytes: 793_000, // Approved computed operations and area paint; combined measurement follows.
+  packedBytes: 794_000, // Combined approved capabilities measured 793051 bytes; narrow 1000-byte budget step.
   unpackedBytes: 3_900_000
 });
 
