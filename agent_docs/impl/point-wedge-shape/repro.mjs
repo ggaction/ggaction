@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {chart} from '../../../src/index.js';
+const base=chart().createCanvas({width:240,height:180}).createData({values:[{x:1,y:1,direction:90}]}).createScatterPlot({x:'x',y:'y',guides:false});
+assert.throws(()=>base.editPointMark({shape:'wedge'}),/Unsupported point shape/);
+assert.doesNotThrow(()=>base.encodeAngle({field:'direction'}));
+const vertices=[{x:0,y:-2/Math.sqrt(3)},{x:-.25,y:1/Math.sqrt(3)},{x:.25,y:1/Math.sqrt(3)}];
+const centroid=vertices.reduce((r,p)=>({x:r.x+p.x/3,y:r.y+p.y/3}),{x:0,y:0});
+assert(Math.abs(centroid.x)<1e-12&&Math.abs(centroid.y)<1e-12);
+const area=Math.abs(vertices.reduce((a,p,i)=>{const q=vertices[(i+1)%3];return a+p.x*q.y-p.y*q.x;},0))/2;
+assert(Math.abs(area-Math.sqrt(3)/4)<1e-12);
+assert(Math.abs((Math.sqrt(3)/1.5)/(.5/Math.sqrt(3))-4)<1e-12);
+console.log(JSON.stringify({status:'confirmed-current-public-gap',closedValue:'wedge',existingAngleSupported:true,vertices,centroid,area,equilateralWidthMultiplierAtEqualHeight:4,pixelsInspected:false}));

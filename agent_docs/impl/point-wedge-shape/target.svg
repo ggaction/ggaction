@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="170" viewBox="0 0 480 170">
+ <rect width="480" height="170" fill="#111"/>
+ <g font-family="sans-serif" font-size="13" fill="white"><text x="20" y="24">Proposed centered wedge · clockwise rotation</text><text x="66" y="148">0°</text><text x="182" y="148">90°</text><text x="300" y="148">180°</text><text x="408" y="148">270°</text></g>
+ <g fill="none" stroke="#4cdebf" stroke-width="2" opacity="0.7">
+  <path transform="translate(80 90) scale(28)" vector-effect="non-scaling-stroke" d="M0,-1.154700538 L-.25,.577350269 L.25,.577350269 Z"/>
+  <path transform="translate(200 90) rotate(90) scale(28)" vector-effect="non-scaling-stroke" d="M0,-1.154700538 L-.25,.577350269 L.25,.577350269 Z"/>
+  <path transform="translate(320 90) rotate(180) scale(28)" vector-effect="non-scaling-stroke" d="M0,-1.154700538 L-.25,.577350269 L.25,.577350269 Z"/>
+  <path transform="translate(430 90) rotate(270) scale(28)" vector-effect="non-scaling-stroke" d="M0,-1.154700538 L-.25,.577350269 L.25,.577350269 Z"/>
+ </g>
+</svg>

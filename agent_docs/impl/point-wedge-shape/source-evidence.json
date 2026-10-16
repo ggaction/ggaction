@@ -1,0 +1,72 @@
+{
+  "reviewer": "codex",
+  "status": "confirmed-existing-public-gap-no-implementation",
+  "runtimeCommit": "c53d1edda3625376b75f3157f798a3b099e1a750",
+  "sourceSha256": "cbe09183c586b0bfd23d3a2ee41ec294413abd80817d428434311de4ce27a474",
+  "dataSha256": "e5d23a2d19dc956b046813e6362c0a7e1f49a29af274821e4f91df36b239c868",
+  "rawRows": 4800,
+  "visibleSourceRecords": 4800,
+  "innerPlot": {
+    "width": 800,
+    "height": 600
+  },
+  "bindings": [
+    {
+      "pathEncoding": "base64-utf8-absolute-path",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNzUxL3NvdXJjZS52bC5qc29u",
+      "sha256": "cbe09183c586b0bfd23d3a2ee41ec294413abd80817d428434311de4ce27a474"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute-path",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNzUxL2RhdGEuanNvbg==",
+      "sha256": "e5d23a2d19dc956b046813e6362c0a7e1f49a29af274821e4f91df36b239c868"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute-path",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNzUxL3JlZmVyZW5jZS9jb21waWxlZC52ZWdhLmpzb24=",
+      "sha256": "c3194e6fa86679af3f995ee9c8eaa390ceb16872a9f533f9fae3d95ee772b716"
+    },
+    {
+      "pathEncoding": "base64-utf8-absolute-path",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNzUxL3JlZmVyZW5jZS9jaGFydC5zdmc=",
+      "sha256": "1fbede85306925967ed09ace5eba4b52e421ebf244f4edb375935e954d0f599c"
+    }
+  ],
+  "observed": {
+    "allShapesWedge": true,
+    "pointCount": 4800,
+    "fill": "transparent",
+    "strokeWidth": 2,
+    "opacity": 0.7,
+    "rawSpeedRange": [
+      0.01,
+      12.18
+    ],
+    "rawDirectionRange": [
+      0,
+      360
+    ],
+    "sourceAngleDomain": [
+      0,
+      360
+    ],
+    "sourceAngleRange": [
+      180,
+      540
+    ],
+    "sourceSizeScale": {
+      "type": "linear",
+      "domain": [
+        0,
+        12.18
+      ],
+      "range": [
+        4,
+        90.25
+      ]
+    }
+  },
+  "pixelsInspected": false,
+  "newModelCalls": 0,
+  "newRuntimeCode": false
+}
