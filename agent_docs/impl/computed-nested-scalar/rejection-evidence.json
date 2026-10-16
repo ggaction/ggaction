@@ -1,0 +1,41 @@
+{
+  "reviewer": "codex",
+  "gate": "ready-for-review",
+  "runtimeCommit": "8700172097655fb229745f26161b56403fe03822",
+  "kind": "existing-public-computed-nested-scalar-gap",
+  "syntheticRawRows": [
+    {
+      "venue": {
+        "name": "North",
+        "capacity": 100
+      }
+    },
+    {
+      "venue": {
+        "name": "South",
+        "capacity": 200
+      }
+    },
+    {}
+  ],
+  "errors": [
+    {
+      "kind": "literal dotted field",
+      "name": "Error",
+      "message": "Dataset \"data\" does not contain field \"venue.name\"."
+    },
+    {
+      "kind": "proposed explicit nested accessor",
+      "name": "Error",
+      "message": "Unsupported computed operation \"getPath\"."
+    }
+  ],
+  "priorProgramAndCallerRowsUnchanged": true,
+  "proposedResult": [
+    "North",
+    "South",
+    null
+  ],
+  "modelCalls": 0,
+  "chartPixelsInspected": false
+}

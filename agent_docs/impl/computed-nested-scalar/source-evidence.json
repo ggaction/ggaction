@@ -1,0 +1,160 @@
+{
+  "reviewer": "codex",
+  "sources": [
+    {
+      "sourceId": "1548",
+      "sourceSha256": "0db68f0db7ccf356b520c51318d0de444d50443ee759d486361b0b15eb9df9cd",
+      "rawRows": 150,
+      "referenceVertices": 150,
+      "paths": [
+        {
+          "path": [
+            "_source",
+            "species"
+          ],
+          "present": 150,
+          "absent": 0,
+          "null": 0,
+          "types": [
+            "str"
+          ]
+        },
+        {
+          "path": [
+            "_source",
+            "petalLength"
+          ],
+          "present": 150,
+          "absent": 0,
+          "null": 0,
+          "types": [
+            "float",
+            "int"
+          ]
+        },
+        {
+          "path": [
+            "_source",
+            "petalWidth"
+          ],
+          "present": 150,
+          "absent": 0,
+          "null": 0,
+          "types": [
+            "float",
+            "int"
+          ]
+        },
+        {
+          "path": [
+            "_source",
+            "sepalLength"
+          ],
+          "present": 150,
+          "absent": 0,
+          "null": 0,
+          "types": [
+            "float",
+            "int"
+          ]
+        },
+        {
+          "path": [
+            "_source",
+            "sepalWidth"
+          ],
+          "present": 150,
+          "absent": 0,
+          "null": 0,
+          "types": [
+            "float",
+            "int"
+          ]
+        },
+        {
+          "path": [
+            "_source",
+            "ml",
+            "species_prediction"
+          ],
+          "present": 150,
+          "absent": 0,
+          "null": 0,
+          "types": [
+            "str"
+          ]
+        }
+      ],
+      "bindings": [
+        {
+          "path": "/Users/hyeonjeon/Projects/vegalite-ggaction-translation/artifacts/v12-glm-thousand-chart-adaptive/vl_1548/source.vl.json",
+          "sha256": "0db68f0db7ccf356b520c51318d0de444d50443ee759d486361b0b15eb9df9cd"
+        },
+        {
+          "path": "/Users/hyeonjeon/Projects/vegalite-ggaction-translation/artifacts/v12-glm-thousand-chart-adaptive/vl_1548/data.json",
+          "sha256": "1079082000473e2ee0facbe30f0edd55bfade29615d04ee91ff81e242e3a698c"
+        },
+        {
+          "path": "/Users/hyeonjeon/Projects/vegalite-ggaction-translation/artifacts/v12-glm-thousand-chart-adaptive/vl_1548/reference/compiled.vega.json",
+          "sha256": "06d3bcb316cfdef9484bab4c7122760ddf1f60e28edcb7718897fb5aebfafea6"
+        },
+        {
+          "path": "/Users/hyeonjeon/Projects/vegalite-ggaction-translation/artifacts/v12-glm-thousand-chart-adaptive/vl_1548/reference/chart.svg",
+          "sha256": "b2288386d124becd0345ce566a5dd15da68d9f4af81bf84d8b925afb1a4bf135"
+        }
+      ]
+    },
+    {
+      "sourceId": "0529",
+      "sourceSha256": "068264f52e4b285b56c655eb794918d3c395e453892eca991198cc81cf8ba0cf",
+      "rawRows": 382,
+      "referenceVertices": 18,
+      "paths": [
+        {
+          "path": [
+            "venue",
+            "name"
+          ],
+          "present": 343,
+          "absent": 39,
+          "null": 0,
+          "types": [
+            "str"
+          ]
+        },
+        {
+          "path": [
+            "venue",
+            "capacity"
+          ],
+          "present": 343,
+          "absent": 39,
+          "null": 0,
+          "types": [
+            "int"
+          ]
+        }
+      ],
+      "bindings": [
+        {
+          "path": "/Users/hyeonjeon/Projects/vegalite-ggaction-translation/artifacts/v12-glm-thousand-chart-adaptive/vl_0529/source.vl.json",
+          "sha256": "068264f52e4b285b56c655eb794918d3c395e453892eca991198cc81cf8ba0cf"
+        },
+        {
+          "path": "/Users/hyeonjeon/Projects/vegalite-ggaction-translation/artifacts/v12-glm-thousand-chart-adaptive/vl_0529/data.json",
+          "sha256": "c90e2b943137ce7d1aa20c9616b2d7c656095017111d931505a8431b1ae737f1"
+        },
+        {
+          "path": "/Users/hyeonjeon/Projects/vegalite-ggaction-translation/artifacts/v12-glm-thousand-chart-adaptive/vl_0529/reference/compiled.vega.json",
+          "sha256": "20bf7fc4a30c346fb0e6561417e22da0050fb8440ebf231964d1d85dec86d477"
+        },
+        {
+          "path": "/Users/hyeonjeon/Projects/vegalite-ggaction-translation/artifacts/v12-glm-thousand-chart-adaptive/vl_0529/reference/chart.svg",
+          "sha256": "67823a531a3b8e7718815f514faead74540a367a09f7665f864d5efb9d902332"
+        }
+      ]
+    }
+  ],
+  "modelCalls": 0,
+  "chartPixelsInspected": false
+}
