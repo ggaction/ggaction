@@ -313,6 +313,11 @@ async function testNodeConsumer(directory) {
     const facetTitle = compactFacet.createTitle({ text: "Panel groups", titleStyle: { fontStyle: "italic" } });
     assert.equal(facetTitle.graphicSpec.objects.chartTitle.properties.fontStyle, "italic");
     assert.equal(facetTitle.editCompositionLayout({ gap: 11 }).graphicSpec.objects.chartTitle.properties.fontStyle, "italic");
+    const shiftedFacetTitle = facetTitle.editTitle({ alongOffset: -10, subtitle: "Notes" });
+    assert.equal(shiftedFacetTitle.graphicSpec.objects.chartTitle.properties.x, facetTitle.graphicSpec.objects.chartTitle.properties.x - 10);
+    assert.equal(shiftedFacetTitle.graphicSpec.objects.chartSubtitle.properties.x, shiftedFacetTitle.graphicSpec.objects.chartTitle.properties.x);
+    assert.deepEqual(deserializeProgram(serializeProgram(shiftedFacetTitle)).graphicSpec, shiftedFacetTitle.graphicSpec);
+    assert.throws(() => facetTitle.editTitle({ alongOffset: 10000 }), /outside the Canvas/);
 
 
     for (const factory of [chart, basicChart]) {

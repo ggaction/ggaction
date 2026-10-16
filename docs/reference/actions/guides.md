@@ -1852,7 +1852,9 @@ createTitle({
 
 Create a chart title and optional subtitle. Explicit newlines retain their line
 spacing; blank lines reserve space without painted text. Each string requires
-at least one non-empty hard line. [Titles](../../api/titles.md)
+at least one non-empty hard line. On facet parents, `alongOffset` shifts the full
+title/subtitle block horizontally from the translated child-plot alignment anchor.
+Text outside the composed Canvas is rejected. [Titles](../../api/titles.md)
 
 
 ## `editTitle`

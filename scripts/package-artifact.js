@@ -25,7 +25,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 566, // Shared legend title-style grammar adds one entry.
   packedBytes: 795_000, // Approved title alignment measured794192 bytes; narrow1000-byte budget step.
-  unpackedBytes: 3_901_000 // Title clearance plus fitting measured3,900,981 bytes.
+  unpackedBytes: 3_902_000 // Facet title displacement and bounds measured3,901,241 bytes; narrow1000-byte step.
 });
 
 const REQUIRED_FILES = Object.freeze([

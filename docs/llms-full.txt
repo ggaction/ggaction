@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:4f7a1fb5083a6da0082a77eddec19e18382c8362ddbe43fddf5ba5a75be935c5. Status: development. Runtime source: f9e0aa65e94f57fb258a3c9f5b1c9ff613f17c78. Release baseline: v0.0.13.
+Contract: sha256:a81a5fd552d34a871dd7c6b9a1406f2b1d7fb8f665738b42fddf3c3005b6e7a7. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/f9e0aa65e94f57fb258a3c9f5b1c9ff613f17c78/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/f9e0aa65e94f57fb258a3c9f5b1c9ff613f17c78/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -8979,7 +8979,7 @@ of dependent guides; rejected changes leave the earlier program unchanged.
 
 ## Shift a title along its edge
 
-Use `alongOffset` in `createTitle` or `editTitle` to move the complete title/subtitle block along its selected edge. The signed finite logical-pixel value defaults to zero: positive moves top/bottom titles right and left/right titles down. It is independent of the existing outward `offset`. The shift remains through Canvas edits, and all occupied-bounds and guide-collision checks still apply. Set it to zero to restore the normal alignment anchor.
+Use `alongOffset` in `createTitle` or `editTitle` to move the complete title/subtitle block along its selected edge. The signed finite logical-pixel value defaults to zero: positive moves top/bottom titles right and left/right titles down. It is independent of the existing outward `offset`. On facet parents, the horizontal shift uses the translated child-plot union and remains through facet layout, guide, and scale edits. Facet title and subtitle text must fit the composed Canvas. The shift remains through Canvas edits, and all occupied-bounds and guide-collision checks still apply. Set it to zero to restore the normal alignment anchor.
 
 ## Related
 
@@ -25098,7 +25098,9 @@ createTitle({
 
 Create a chart title and optional subtitle. Explicit newlines retain their line
 spacing; blank lines reserve space without painted text. Each string requires
-at least one non-empty hard line. [Titles](./api/titles/)
+at least one non-empty hard line. On facet parents, `alongOffset` shifts the full
+title/subtitle block horizontally from the translated child-plot alignment anchor.
+Text outside the composed Canvas is rejected. [Titles](./api/titles/)
 
 ## `editTitle`
 
@@ -37259,12 +37261,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f9e0aa65e94f57fb258a3c9f5b1c9ff613f17c78/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f9e0aa65e94f57fb258a3c9f5b1c9ff613f17c78/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39409,9 +39411,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:4f7a1fb5083a6da0082a77eddec19e18382c8362ddbe43fddf5ba5a75be935c5` |
+| Contract fingerprint | `sha256:a81a5fd552d34a871dd7c6b9a1406f2b1d7fb8f665738b42fddf3c3005b6e7a7` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `f9e0aa65e94f57fb258a3c9f5b1c9ff613f17c78` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |

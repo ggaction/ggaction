@@ -670,6 +670,8 @@ config normalization과 rematerialization을 공유한다. Evidence:
 - ✅ Covered: Canvas/edit action-order convergence, insufficient margin, guide collision and exact variant equivalence.
 - Evidence: `test/unit/actions/guides/title-actions.test.js` and density-area wrapped-title variant tests.
 
+Facet parents apply the same horizontal displacement to every painted title/subtitle line relative to the translated child-plot union and reject text outside the composed Canvas. Previously ignored nonzero offsets and previously accepted overflowing facet titles are corrected; valid zero-offset output remains unchanged. Evidence: `test/unit/actions/composition/facet-title-along-offset.test.js`.
+
 Along-offset evidence: `test/unit/actions/guides/title-along-offset.test.js`는 네 edge의 전체 title/subtitle 이동, default/reset, create/edit convergence, Canvas replay, semantic/previous-program immutability와 invalid/overflow rejection을 검증한다. `test/contracts/text-metrics-types.test.js`가 공개 numeric option을 검증한다.
 
 ## `removeTitle`

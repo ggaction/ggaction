@@ -47,7 +47,11 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
   categorical legend defaults to `"right"`; facet itself has no separate legend-position option.
 - The result is a composition parent whose `children` retain immutable filtered programs and whose `graphicSpec` contains the complete namespaced nested-Canvas snapshot.
 - Canonical title order is `.facet(...).createTitle(...)`. A valid title authored before `facet` is promoted once to the parent.
-- Parent title alignment uses the translated child-plot union. Legacy facet headers remain one item per cell and
+- Parent title alignment uses the translated child-plot union. The existing signed `alongOffset` shifts every
+  painted title/subtitle line horizontally from that anchor on creation, editing, title promotion, and layout/scale/guide replay.
+  Painted text outside the composed Canvas is rejected atomically; no title is clipped or hidden. Valid omitted-offset
+  output is unchanged. Evidence: `test/unit/actions/composition/facet-title-along-offset.test.js`.
+  Legacy facet headers remain one item per cell and
   align to each translated child plot. Explicit row/column role headers align to the occupied translated plot union
   for their row or column; neither long-axis anchor uses the child Canvas, axis-reserved margin, facet padding, or
   shared legend extent.

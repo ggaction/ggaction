@@ -1,5 +1,5 @@
 import { resolveConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js";
-import { textBoundsIntersect, resolveTextBounds } from "../core/textMetrics.js";
+import { textBoundsFitCanvas, textBoundsIntersect, resolveTextBounds } from "../core/textMetrics.js";
 import { axisGraphicIds, allLegendGraphicIds } from "./guides/resources.js";
 import { resolveGraphicBounds } from "../layout/canvas.js";
 import { resolvePlacedPlotBounds } from "../layout/composition.js";
@@ -7,6 +7,7 @@ import {
   alignedTextAnchor,
   buildTitleReadingBlock,
   paintedTitleComponent,
+  resolveTitleComponentBounds,
   titleTextProperties
 } from "../layout/title.js";
 import { resolveFacetLayout } from "../layout/facets.js";
@@ -56,11 +57,16 @@ function titleLayout(program) {
 
 function materializeTitleComponent(program, id, lines, centers, style, plot, top) {
   if (lines.length === 0) return program;
-  const x = alignedTextAnchor(plot.x, plot.width, program.titleConfig.align);
+  const x = alignedTextAnchor(plot.x, plot.width, program.titleConfig.align) +
+    (program.titleConfig.alongOffset ?? 0);
   const component = paintedTitleComponent({
     x, y: centers.map(center => top + center), lines,
     textAlign: program.titleConfig.align
   });
+  const bounds = resolveTitleComponentBounds(component, style, program.materializationConfigs.textMetrics);
+  if (!textBoundsFitCanvas(bounds, program.graphicSpec.objects.canvas.properties)) {
+    throw new Error("Facet parent title places text outside the Canvas.");
+  }
   const count = component.lines.length;
   let next = program.createGraphics({
     id,
