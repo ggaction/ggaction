@@ -34,7 +34,7 @@ const editLegendLabels = /* @__PURE__ */ makeFocusedLegendEdit({
 
 const editLegendTitle = /* @__PURE__ */ makeFocusedLegendEdit({
   name: "editLegendTitle",
-  options: ["title", "color", "fontSize", "fontFamily", "fontWeight"],
+  options: ["title", "color", "fontSize", "fontFamily", "fontWeight", "align"],
   map: ({ target, title, ...titleStyle }) => ({
     target,
     ...(title === undefined ? {} : { title }),

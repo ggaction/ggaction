@@ -1,5 +1,5 @@
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
-import { resolveLegendTitleText } from "../../../../layout/legendText.js";
+import { alignLegendTitle, resolveLegendTitleText } from "../../../../layout/legendText.js";
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 import { action, closedAction } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
@@ -190,11 +190,6 @@ function resolveOpacityLayout(program, config, scale) {
       align: "center"
     };
   }
-  const titleBounds = config.titleVisible === false ? undefined : resolveLegendTextBounds(
-    title,
-    config.title,
-    config.titleStyle
-  , program.materializationConfigs.textMetrics, { hardBreaks: true });
   const labelBounds = labels.map((label, index) =>
     resolveLegendTextBounds(label, texts[index], config.labels, program.materializationConfigs.textMetrics)
   );
@@ -204,6 +199,13 @@ function resolveOpacityLayout(program, config, scale) {
     top: symbol.y - symbolExtent,
     bottom: symbol.y + symbolExtent
   }));
+  if (config.titleVisible !== false) title = alignLegendTitle(title, config.title, config.titleStyle,
+    [...labelBounds, ...symbolBounds], program.materializationConfigs.textMetrics);
+  const titleBounds = config.titleVisible === false ? undefined : resolveLegendTextBounds(
+    title,
+    config.title,
+    config.titleStyle
+  , program.materializationConfigs.textMetrics, { hardBreaks: true });
   const occupiedBounds = [...(config.titleVisible === false ? [] : [titleBounds]), ...labelBounds, ...symbolBounds];
   assertLegendBoundsInsideCanvas(
     occupiedBounds,

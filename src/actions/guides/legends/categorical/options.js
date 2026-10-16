@@ -1,3 +1,4 @@
+import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../../../../grammar/legendTitleStyle.js";
 import { PLOT_LEGEND_POSITIONS, isPlotLegend } from "../../../../layout/legend.js";
 import { validateOptionObject } from "../../../../core/validation.js";
 import { CATEGORICAL_LEGEND_CHANNELS } from "../../../../core/vocabulary.js";
@@ -53,12 +54,7 @@ export function normalizeLegendOverflow(value) {
   }
   return { maxItems: value.maxItems, summary: "ellipsis-count" };
 }
-const TITLE_OPTIONS = Object.freeze([
-  "color",
-  "fontSize",
-  "fontFamily",
-  "fontWeight"
-]);
+
 const BORDER_OPTIONS = Object.freeze([
   "color",
   "lineWidth",
@@ -113,7 +109,7 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
   if (Object.hasOwn(args, "titleStyle")) {
     validateObject(
       args.titleStyle,
-      TITLE_OPTIONS,
+      LEGEND_TITLE_STYLE_KEYS,
       "createLegend.titleStyle"
     );
   }
@@ -141,6 +137,7 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
   const columns = args.columns;
   const offset = args.offset ?? 8;
   const titlePosition = args.titlePosition ?? "top";
+  validateLegendTitleAlignment(titleStyle, titlePosition);
   const itemGap = args.itemGap ?? (direction === "vertical"
     ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP
     : position === "top" ? 24 : 20);

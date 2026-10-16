@@ -280,8 +280,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 390,000 bytes |
-| `ggaction/basic` | 189,000 bytes |
+| `ggaction` | 391,000 bytes |
+| `ggaction/basic` | 190,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -305,6 +305,17 @@ Gzip 크기는 같은 minified bytes라도 Node가 포함한 zlib 버전에 따�
 Node 20·22·24 matrix의 최댓값을 포함해야 한다.
 
 2026-10-16 승인 기능 5개와 기존 corner 범례 occupied-bounds 수정의 통합 checkpoint는 두 shared grammar module을 합쳐565entries다. 통합 packed 실측793,051bytes가793,000bytes를 초과하여 기존 최소1,000bytes 갱신 정책에 따라 packed 한도만794,000bytes로 조정한다. Unpacked3,900,000bytes 및 browser Full390,000/Basic189,000/SVG25,000bytes 한도는 유지한다. 개별 feature checkpoint의 측정은 각 기록의 독립 기준선이며, 통합 결과가 이전 packed 한도를 통과했다고 보고하지 않는다.
+
+The subsequently approved top-title alignment checkpoint keeps the same state
+owners and explicit materialization flow. One shared pure title-style grammar
+module owns its closed alignment enum/reset policy and saved-state validation.
+The canonical artifact now measures 566 entries, 794210 packed bytes and 3899166
+unpacked bytes: entry and packed ceilings become 566 and 795000, while the
+3900000 unpacked ceiling stays unchanged. Installed minimal browser measurements
+are 390419 Full / 189139 Basic / 7176 SVG gzip bytes, so the existing 1000-byte budget
+step yields 391000 / 190000 and retains 25000 for SVG. The generated search payload
+measures 813061 bytes; its independent cap becomes 814000. These are measured
+feature growth adjustments, not claims of passing the previous limits.
 
 ## 실행 계약의 위치
 

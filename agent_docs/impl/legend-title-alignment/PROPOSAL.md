@@ -9,7 +9,7 @@ Gate: **approved**. The user explicitly approved issue204 and exact proposal rev
 - [x] Bind the motivating overlap to the original initial-render geometry
 - [x] Specify defaults, validation, geometry and consumer requirements
 - [x] Explicit user approval
-- [ ] Implementation and complete consumer verification
+- [x] Implementation and complete consumer verification
 
 ## Problem and existing behavior
 
@@ -91,4 +91,4 @@ This scope is separate from shared legend promotion across repeated/faceted view
 6. Actual SVG/Canvas text alignment and measured collision behavior using identical concrete graphics, including the motivating no-overlap geometry. Under the translation task's no-pixel policy, inspect DOM/graphic bounds and preserve renderer evidence without chart-pixel viewing.
 7. Synchronize types, current legend contract, official docs, action cards, generated references and machine/MCP schema; run focused tests, full unit/contracts/docs and installed package consumers.
 
-No implementation, publication, deployment or pull-request creation is authorized by this proposal checkpoint. Independent translations continue while the dependent view waits.
+The original proposal checkpoint did not authorize implementation. The subsequent explicit approval is recorded in `approval.json`; the implemented, verified scope is recorded in `implementation-evidence.json`. Publication, deployment, active translation runtime integration and pull-request creation remain separate operations. The original `reproduce.mjs`/`evidence.json` files preserve the pre-implementation rejection baseline; they are historical evidence, not assertions about the implemented API.

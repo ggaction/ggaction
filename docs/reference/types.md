@@ -5113,7 +5113,8 @@ export interface EditLegendLayoutOptions {
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle"> {
+  titleStyle?: LegendTitleStyleEditOptions;
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
   title?: string | "auto" | false;
@@ -5124,7 +5125,7 @@ export interface EditLegendOptions
 
 </details>
 
-Related types: [`LegendOptions`](#type-legendoptions).
+Related types: [`LegendOptions`](#type-legendoptions) · [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions).
 
 ### `EditLegendSymbolsOptions` {#type-editlegendsymbolsoptions}
 
@@ -5150,7 +5151,7 @@ Related types: [`LegendSymbolRecipe`](#type-legendsymbolrecipe).
 <summary>Expand EditLegendTitleOptions</summary>
 
 ```typescript
-export interface EditLegendTitleOptions extends LegendTitleStyleOptions {
+export interface EditLegendTitleOptions extends LegendTitleStyleEditOptions {
   target?: string;
   title?: string | "auto" | false;
 }
@@ -5158,7 +5159,7 @@ export interface EditLegendTitleOptions extends LegendTitleStyleOptions {
 
 </details>
 
-Related types: [`LegendTitleStyleOptions`](#type-legendtitlestyleoptions).
+Related types: [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions).
 
 ### `EditMarkLabelPlacementOptions` {#type-editmarklabelplacementoptions}
 
@@ -7632,6 +7633,21 @@ export interface LegendTextOptions {
 
 Related types: [`ValueFormat`](#type-valueformat).
 
+### `LegendTitleStyleEditOptions` {#type-legendtitlestyleeditoptions}
+
+<details markdown="1">
+<summary>Expand LegendTitleStyleEditOptions</summary>
+
+```typescript
+export interface LegendTitleStyleEditOptions extends Omit<LegendTitleStyleOptions, "align"> {
+  align?: "left" | "center" | "right" | "auto";
+}
+```
+
+</details>
+
+Related types: [`LegendTitleStyleOptions`](#type-legendtitlestyleoptions).
+
 ### `LegendTitleStyleOptions` {#type-legendtitlestyleoptions}
 
 <details markdown="1">
@@ -7639,6 +7655,8 @@ Related types: [`ValueFormat`](#type-valueformat).
 
 ```typescript
 export interface LegendTitleStyleOptions {
+  /** Align a top title inside its measured content block; omission keeps native layout defaults. */
+  align?: "left" | "center" | "right";
   color?: string;
   fontSize?: number;
   fontFamily?: string;

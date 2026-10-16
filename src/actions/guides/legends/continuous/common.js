@@ -1,3 +1,4 @@
+import { LEGEND_TITLE_STYLE_KEYS, mergeLegendTitleStyle, validateLegendTitleAlignment } from "../../../../grammar/legendTitleStyle.js";
 import { PLOT_LEGEND_POSITIONS, isPlotLegend } from "../../../../layout/legend.js";
 import { isContinuousColorScaleType } from "../../../../grammar/scales/types.js";
 import { isPlainObject } from "../../../../core/immutable.js";
@@ -123,11 +124,11 @@ export function normalizeLegendTextOptions(value, label, defaults) {
   return result;
 }
 
-export function normalizeLegendTitleOptions(value, label, defaults) {
-  if (value !== undefined) {
-    validateOptionObject(value, ["color", "fontSize", "fontFamily", "fontWeight"], label);
-  }
-  return normalizeLegendTextOptions(value, label, defaults);
+export function normalizeLegendTitleOptions(value, label, defaults, edit = false) {
+  if (value !== undefined) validateOptionObject(value, LEGEND_TITLE_STYLE_KEYS, label);
+  const merged = mergeLegendTitleStyle(defaults, value, { edit });
+  const { align, ...text } = merged;
+  return { ...normalizeLegendTextOptions(text, label, {}), ...(align === undefined ? {} : { align }) };
 }
 
 export function normalizeLegendBorder(value) {
@@ -179,6 +180,7 @@ export function normalizeContinuousLegend(args, kind) {
   const offset = args.offset ?? (isPlotLegend({ position }) ? 8 : 30);
   validateNonNegative(offset, "Legend offset");
   const titlePosition = args.titlePosition ?? "top";
+  validateLegendTitleAlignment(args.titleStyle, titlePosition);
   if (!["top", "left"].includes(titlePosition)) {
     throw new Error(`Unsupported legend titlePosition "${titlePosition}".`);
   }
@@ -430,6 +432,7 @@ export function normalizeItemLegendLayout(args, { multiColumnSide = false } = {}
   const columns = args.columns;
   if (columns !== undefined && (!Number.isInteger(columns) || columns < 1)) throw new RangeError("Legend columns must be a positive integer.");
   const titlePosition = args.titlePosition ?? "top";
+  validateLegendTitleAlignment(args.titleStyle, titlePosition);
   if (!["top", "left"].includes(titlePosition)) throw new Error(`Unsupported legend titlePosition "${titlePosition}".`);
   if (side && (align !== "center" || titlePosition !== "top" || !multiColumnSide && (direction !== "vertical" || (columns !== undefined && columns !== 1)))) {
     throw new Error("Side item legends require vertical direction, center alignment, top title and one column.");

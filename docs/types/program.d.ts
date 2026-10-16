@@ -4584,6 +4584,8 @@ export interface LegendTextOptions {
 }
 
 export interface LegendTitleStyleOptions {
+  /** Align a top title inside its measured content block; omission keeps native layout defaults. */
+  align?: "left" | "center" | "right";
   color?: string;
   fontSize?: number;
   fontFamily?: string;
@@ -4704,8 +4706,13 @@ export interface EditLegendBlockOptions {
   labelMap?: DisplayLabelMap | "auto";
 }
 
+export interface LegendTitleStyleEditOptions extends Omit<LegendTitleStyleOptions, "align"> {
+  align?: "left" | "center" | "right" | "auto";
+}
+
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle"> {
+  titleStyle?: LegendTitleStyleEditOptions;
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
   title?: string | "auto" | false;
@@ -4739,7 +4746,7 @@ export interface EditLegendLabelsOptions extends LegendTextOptions {
   target?: string;
 }
 
-export interface EditLegendTitleOptions extends LegendTitleStyleOptions {
+export interface EditLegendTitleOptions extends LegendTitleStyleEditOptions {
   target?: string;
   title?: string | "auto" | false;
 }

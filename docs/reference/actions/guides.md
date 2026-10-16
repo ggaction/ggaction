@@ -1380,6 +1380,13 @@ removal recompute that gap. An explicit numeric `offset`, including zero or the
 native value, remains measured from the plot edge. Free coordinates, plot corners,
 and `legacy-bottom` keep their existing anchors. Older saved programs retain
 their fixed offsets.
+Top-title style accepts `align: "left" | "center" | "right"` within the
+measured title/body content block. This applies to every legend family; omission
+preserves each layout's current alignment. It does not move the complete group,
+change item spacing, or include border padding. Inline `titlePosition: "left"`
+rejects an explicit title alignment. Whole/focused title edits accept `"auto"`
+to remove an explicit alignment; creation and saved state accept only the three
+alignment values. Hidden titles retain their style for restoration.
 Automatic symbol recipes refresh when matching companion lines or their color
 bindings change; explicit recipes retain their layers and order.
 Continuous color and stroke ramps accept
@@ -1449,6 +1456,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `titleStyle` | Optional / branch-dependent | `LegendTitleStyleEditOptions \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
@@ -1469,7 +1477,6 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
 | `labels` | Optional / branch-dependent | `LegendTextOptions \| undefined` |
-| `titleStyle` | Optional / branch-dependent | `LegendTitleStyleOptions \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
 | `border` | Optional / branch-dependent | `boolean \| LegendBorderOptions \| undefined` |
 
@@ -1660,6 +1667,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"auto" \| "center" \| "left" \| "right" \| undefined` |
 
 </details>
 
@@ -3052,7 +3060,7 @@ editLegendLayout({
 })
 editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
-  target?, title?, color?, fontSize?, fontFamily?, fontWeight?
+  target?, title?, color?, fontSize?, fontFamily?, fontWeight?, align?
 })
 editLegendSymbols({ target?, symbol?, count?, gradient? })
 editLegendBorder({ target?, border })

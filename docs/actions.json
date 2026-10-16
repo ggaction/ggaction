@@ -18812,6 +18812,11 @@
       },
       "options": [
         {
+          "name": "titleStyle",
+          "required": false,
+          "type": "LegendTitleStyleEditOptions | undefined"
+        },
+        {
           "name": "channels",
           "required": false,
           "type": "readonly (\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\")[] | undefined"
@@ -18912,11 +18917,6 @@
           "type": "LegendTextOptions | undefined"
         },
         {
-          "name": "titleStyle",
-          "required": false,
-          "type": "LegendTitleStyleOptions | undefined"
-        },
-        {
           "name": "itemGap",
           "required": false,
           "type": "number | undefined"
@@ -18928,7 +18928,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, channels?, title?, values?, representation?, layout?, overflow?, order? })"
+        "editLegend({ target?, titleStyle?, channels?, title?, values?, representation?, layout?, overflow? })"
       ],
       "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],
@@ -19352,6 +19352,10 @@
         {
           "input": "target",
           "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "align",
+          "strategy": "documented-auto"
         }
       ],
       "completionRequirements": {
@@ -19392,10 +19396,15 @@
           "name": "fontWeight",
           "required": false,
           "type": "string | number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "\"auto\" | \"center\" | \"left\" | \"right\" | undefined"
         }
       ],
       "callPatterns": [
-        "editLegendTitle({ target?, title?, color?, fontSize?, fontFamily?, fontWeight? })"
+        "editLegendTitle({ target?, title?, color?, fontSize?, fontFamily?, fontWeight?, align? })"
       ],
       "snippet": "program.editLegendTitle({ title: \"title\" })",
       "errors": [],

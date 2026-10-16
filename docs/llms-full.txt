@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:bdde0b345af278416b5d06d52a37ff5f01e3a8dc21aacf7788895eec18bc29a0. Status: development. Runtime source: 18d4528500f79b928548ec66d0bc01f2f7d6f411. Release baseline: v0.0.13.
+Contract: sha256:1162e3e3b2335d6932d61ccfbd04835d0408d424a79dea31d3a0adf7a2558fb4. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/18d4528500f79b928548ec66d0bc01f2f7d6f411/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/18d4528500f79b928548ec66d0bc01f2f7d6f411/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12674,6 +12674,22 @@ legend. The limit changes the displayed guide only, preserving every data row
 and color assignment. See the [exact legend contract](./reference/actions/guides/#createlegend)
 for supported anchors and layout restrictions.
 
+**Title alignment.**
+
+Use `titleStyle: {align: "left"}` to align a top title inside the measured
+legend content block. The same style accepts `"center"` and `"right"` for
+categorical, gradient, interval, size, opacity and stroke-width legends. This
+text alignment is separate from the complete legend's placement `align`.
+Omitting it preserves the native layout's current default.
+
+On an existing legend, `editLegendTitle({align: "right"})` changes only that
+choice. `editLegendTitle({align: "auto"})` restores the native default; the
+whole edit equivalent is `editLegend({titleStyle: {align: "auto"}})`. These
+are fragments requiring an existing legend. A top-to-inline title transition
+can reset the choice in the same whole edit; inline `titlePosition: "left"`
+rejects an explicit title alignment. Border padding, group anchors, item
+positions and spacing retain their existing rules.
+
 ## Related
 [Guides](./api/guides/) · [Series encodings](./api/series-encodings/) ·
 [Canvas](./api/canvas/) · [Troubleshooting](./troubleshooting/)
@@ -24652,6 +24668,13 @@ removal recompute that gap. An explicit numeric `offset`, including zero or the
 native value, remains measured from the plot edge. Free coordinates, plot corners,
 and `legacy-bottom` keep their existing anchors. Older saved programs retain
 their fixed offsets.
+Top-title style accepts `align: "left" | "center" | "right"` within the
+measured title/body content block. This applies to every legend family; omission
+preserves each layout's current alignment. It does not move the complete group,
+change item spacing, or include border padding. Inline `titlePosition: "left"`
+rejects an explicit title alignment. Whole/focused title edits accept `"auto"`
+to remove an explicit alignment; creation and saved state accept only the three
+alignment values. Hidden titles retain their style for restoration.
 Automatic symbol recipes refresh when matching companion lines or their color
 bindings change; explicit recipes retain their layers and order.
 Continuous color and stroke ramps accept
@@ -24719,6 +24742,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `titleStyle` | Optional / branch-dependent | `LegendTitleStyleEditOptions \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
@@ -24739,7 +24763,6 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
 | `labels` | Optional / branch-dependent | `LegendTextOptions \| undefined` |
-| `titleStyle` | Optional / branch-dependent | `LegendTitleStyleOptions \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
 | `border` | Optional / branch-dependent | `boolean \| LegendBorderOptions \| undefined` |
 
@@ -24912,6 +24935,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"auto" \| "center" \| "left" \| "right" \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused legend edits](./reference/actions/guides/#focused-legend-edits).
 
@@ -26166,7 +26190,7 @@ editLegendLayout({
 })
 editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
-  target?, title?, color?, fontSize?, fontFamily?, fontWeight?
+  target?, title?, color?, fontSize?, fontFamily?, fontWeight?, align?
 })
 editLegendSymbols({ target?, symbol?, count?, gradient? })
 editLegendBorder({ target?, border })
@@ -31059,7 +31083,8 @@ export interface EditLegendLayoutOptions {
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle"> {
+  titleStyle?: LegendTitleStyleEditOptions;
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
   title?: string | "auto" | false;
@@ -31068,7 +31093,7 @@ export interface EditLegendOptions
 }
 ```
 
-Related types: [`LegendOptions`](./reference/types/#type-legendoptions).
+Related types: [`LegendOptions`](./reference/types/#type-legendoptions) · [`LegendTitleStyleEditOptions`](./reference/types/#type-legendtitlestyleeditoptions).
 
 ### `EditLegendSymbolsOptions` {#type-editlegendsymbolsoptions}
 
@@ -31090,13 +31115,13 @@ Related types: [`LegendSymbolRecipe`](./reference/types/#type-legendsymbolrecipe
  Expand EditLegendTitleOptions
 
 ```typescript
-export interface EditLegendTitleOptions extends LegendTitleStyleOptions {
+export interface EditLegendTitleOptions extends LegendTitleStyleEditOptions {
   target?: string;
   title?: string | "auto" | false;
 }
 ```
 
-Related types: [`LegendTitleStyleOptions`](./reference/types/#type-legendtitlestyleoptions).
+Related types: [`LegendTitleStyleEditOptions`](./reference/types/#type-legendtitlestyleeditoptions).
 
 ### `EditMarkLabelPlacementOptions` {#type-editmarklabelplacementoptions}
 
@@ -33153,12 +33178,26 @@ export interface LegendTextOptions {
 
 Related types: [`ValueFormat`](./reference/types/#type-valueformat).
 
+### `LegendTitleStyleEditOptions` {#type-legendtitlestyleeditoptions}
+
+ Expand LegendTitleStyleEditOptions
+
+```typescript
+export interface LegendTitleStyleEditOptions extends Omit<LegendTitleStyleOptions, "align"> {
+  align?: "left" | "center" | "right" | "auto";
+}
+```
+
+Related types: [`LegendTitleStyleOptions`](./reference/types/#type-legendtitlestyleoptions).
+
 ### `LegendTitleStyleOptions` {#type-legendtitlestyleoptions}
 
  Expand LegendTitleStyleOptions
 
 ```typescript
 export interface LegendTitleStyleOptions {
+  /** Align a top title inside its measured content block; omission keeps native layout defaults. */
+  align?: "left" | "center" | "right";
   color?: string;
   fontSize?: number;
   fontFamily?: string;
@@ -37217,12 +37256,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/18d4528500f79b928548ec66d0bc01f2f7d6f411/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/18d4528500f79b928548ec66d0bc01f2f7d6f411/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39367,9 +39406,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:bdde0b345af278416b5d06d52a37ff5f01e3a8dc21aacf7788895eec18bc29a0` |
+| Contract fingerprint | `sha256:1162e3e3b2335d6932d61ccfbd04835d0408d424a79dea31d3a0adf7a2558fb4` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `18d4528500f79b928548ec66d0bc01f2f7d6f411` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |

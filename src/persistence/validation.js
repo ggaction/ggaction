@@ -1,5 +1,6 @@
+import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
-import { validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
+import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
 import { validateLegendGroupState } from "../grammar/legendGroups.js";
 import { validateLegendGradient } from "../grammar/legendGradient.js";
@@ -149,6 +150,10 @@ export function validateProgramState(program, path) {
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
+    if (config.titleStyle !== undefined) {
+      validateOptionObject(config.titleStyle, LEGEND_TITLE_STYLE_KEYS, "Stored legend title style");
+      validateLegendTitleAlignment(config.titleStyle, config.titlePosition);
+    }
     if (config.inferredOffset !== undefined && typeof config.inferredOffset !== "boolean") throw invalidSnapshot("Invalid legend offset inference.", path);
     if (["gradient", "strokeGradient"].includes(kind) && config.representation !== "symbols") {
       validateLegendGradient(config.gradient, "Stored legend gradient");

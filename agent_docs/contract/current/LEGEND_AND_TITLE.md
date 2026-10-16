@@ -137,7 +137,7 @@ type TitleWrap = "word" | "character";
 - Point의 자동 typed recipe는 selected shape를 설명하며, selected color가 있을 때만 matching line을 합친다.
   Config의 inferredSymbol이 omission/auto와 caller recipe를 구분한다. Edit symbol auto, encoding 제거·재연결, matching companion mark 추가·제거와 Canvas/scale/data dependency replay는
   자동 recipe를 재추론하고 concrete symbol type·순서를 reconcile한다. Explicit recipe는 보존한다. Recipe의 layer 순서는 생성과 편집 모두 실제 drawing order다.
-- `labels`, `titleStyle`: color/fontSize/fontFamily/fontWeight style object. Labels만 offset을 받는다. Continuous
+- `labels`: color/fontSize/fontFamily/fontWeight style object with offset. `titleStyle` shares those typography fields and additionally accepts the top-title align choice specified below. Continuous
   gradient/opacity/size/stroke-width/interval labels는 `format?: ValueFormat`도 받으며 quantitative에는 numeric,
   temporal에는 UTC token만 허용한다. Categorical identity label은 `"auto"`만 허용한다. 모든 family의
   titleStyle.offset/format은 거절한다.
@@ -312,7 +312,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
   Interval edits own all four positions, layout:"edge", horizontal align/direction/columns/titlePosition, swatch recipe, text style와 title visibility. Side는 vertical, center align, top title, single column이며 columns1은 허용한다. Position 변경 시 omitted direction은 새 edge에 맞춰 추론한다. 다른 명시된 layout controls는 유지하며 incompatible side controls는 오류다.
   Kind-incompatible options fail before the prior program changes.
 - Standalone size edits own edge/corner/grid layout, border, `title`, `count`, `labels`, and `titleStyle`, including focused title/label/count actions. Continuous count is 2..10,000; discrete size legends reject explicit count and always materialize every interval. Custom/auto/hidden title and partial styles survive Canvas/scale/filter replay. Labels default to font12/normal and offset12 after the sample slot; titles to font13/600. Side 전체 occupied top은 plot.y이며 item pitch는 최소18이다. Equal-area scale mapping, formatter와 symbol defaults를 유지한다. Unrelated categorical targets never supply inherited appearance or placement. Basic creates size legends but does not expose editors. Symbol, gradient and order remain unsupported for standalone size.
-- Sampled size/stroke-width titleStyle accepts only color/fontSize/fontFamily/fontWeight; offset belongs to labels.
+- Sampled size/stroke-width titleStyle accepts color/fontSize/fontFamily/fontWeight/align; offset belongs to labels.
 - 독립적으로 명시한 size edge는 같은 target의 categorical `legacy-bottom` 배치를 상속하지 않는다. 서로 다른 edge의 두 범례는 자체 typography를 보존하며 생성 순서, Canvas/scale 변경 및 persistence replay와 무관하게 유지된다. 실제 placement를 결합해 상속하는 경우의 `layout:"edge"` 제약은 유지한다. Evidence: `test/unit/actions/guides/independent-size-legend-placement.test.js`.
 - Stroke-width edits own edge/corner layout/grid/border, `title`, `count`, `labels`, and `titleStyle`. Symbol, gradient and order options are rejected. Label `offset` controls the minimum distance after the occupied sample slot (32-pixel line plus the widest stroke). Exact current item placement is defined in the stroke-width item layout section below.
 - Effect: stores graphical config immutably and invokes the corresponding wrapped rematerialization action.
@@ -462,7 +462,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendTitle`
 
-- Signature: `editLegendTitle({ target?, title?, color?, fontSize?, fontFamily?, fontWeight? })`.
+- Signature: `editLegendTitle({ target?, title?, color?, fontSize?, fontFamily?, fontWeight?, align? })`.
 - `title`은 `NonEmptyString | "auto" | false`; 나머지는 `titleStyle`로 전달한다.
 
 ### Formal values — `editLegendTitle`
@@ -743,3 +743,30 @@ Evidence: `test/unit/actions/canvas/inner-plot-size.test.js`, `test/unit/grammar
 ### Explicit size legend edge
 
 Standalone `createLegend({channels:["size"],position:...})`의 명시 position은 같은 target의 categorical edge보다 우선한다. Position 생략은 기존 categorical edge inference를 유지한다. 명시 size edge가 categorical과 다르면 별도 lane으로 materialize하며 same-edge는 기존 combined geometry를 유지한다. `editLegend`의 size-only position 편집도 명시 선택을 보존한다. Categorical+size를 함께 명시해 생성하는 요청은 기존 size block을 다시 같은 edge에 결합하고 자체 position은 제거 후 복원을 위해 보존한다. 생성/resize/scale refresh에서 같은 규칙을 사용한다. Private config `inheritPosition`은 omission inference를 저장하며 이전 snapshot의 생략 상태는 기존 inheritance로 읽는다.
+
+## Explicit alignment of top legend titles
+
+- `LegendTitleStyleOptions.align?: "left" | "center" | "right"` aligns the top
+  title within the existing measured content span, including title/body width
+  and excluding border padding/strokes. Every categorical, series/stroke,
+  color/stroke gradient, color/stroke interval, sampled size, opacity and
+  stroke-width family supports it on its existing placements. Multiline title
+  lines share the anchor; body layout, vertical gap and semantic values remain
+  unchanged. Actual occupied bounds, group translation and fit/collision checks
+  are recomputed normally.
+- Omission preserves each native family/layout's previous concrete result and
+  does not store a new resolved default. Whole `editLegend.titleStyle` and
+  focused `editLegendTitle.align` additionally accept edit-only `"auto"` to
+  remove the key and restore the layout default. Creation and stored snapshots
+  reject `"auto"`, unknown values and invalid types.
+- An explicit alignment conflicts with inline `titlePosition:"left"`, including
+  hidden titles. A whole edit can reset alignment and change titlePosition
+  together. Hidden top titles retain explicit style for restoration.
+- Nested guide/facade creation and combined block style inheritance preserve
+  the option. Existing per-block shared label/title `text` patches do not gain
+  a title-only alignment field. Existing facet promotion restrictions remain.
+- Pure title layout owns anchors; the legend style grammar owns enum/reset
+  validation; saved state stores only optional explicit enums. Materializers
+  explicitly publish concrete text alignment and renderers remain unchanged.
+- Evidence: `test/unit/actions/guides/legend-title-alignment.test.js` and
+  `test/browser/legend-title-alignment.browser.js`.

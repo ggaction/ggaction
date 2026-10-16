@@ -1,5 +1,5 @@
 import { normalizeColorSymbols, resolveColorSymbolsLayout, materializeColorSymbols } from "./colorSymbols.js";
-import { resolveLegendTitleText } from "../../../../layout/legendText.js";
+import { alignLegendTitle, resolveLegendTitleText } from "../../../../layout/legendText.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { mapContinuousScaleValues, transformedTicks } from "../../../../grammar/scales/index.js";
 import { action, closedAction } from "../../../../core/action.js";
@@ -28,7 +28,7 @@ import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
 
 export const DEFAULT_GRADIENT_SIZE = DEFAULT_LEGEND_GRADIENT;
 
-export function resolveGradientLayout(program, config, scale, label = "Gradient legend") {
+export function resolveGradientLayout(program, config, scale, label = "Gradient legend", stripStrokeWidth = 0) {
   if (config.representation === "symbols") return resolveColorSymbolsLayout(program, config, scale);
   config = intrinsicLegendConfig(program, config);
   const { plot, canvas } = resolveContinuousBounds(program);
@@ -56,7 +56,7 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
       : plot.y + plot.height + config.offset +
         (config.titleVisible === false ? 0 : titleText.height + titleGap);
   }
-  const title = vertical
+  let title = vertical
     ? { x, y: plot.y + 20, align: "left" }
     : {
         x: x + length / 2,
@@ -125,6 +125,10 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
   const labelBounds = labels.map((label, index) =>
     resolveLegendTextBounds(label, texts[index], config.labels, program.materializationConfigs.textMetrics)
   );
+  if (config.titleVisible !== false) title = alignLegendTitle(title, config.title, config.titleStyle,
+    [{ left: stripBounds.left - stripStrokeWidth / 2, right: stripBounds.right + stripStrokeWidth / 2,
+      top: stripBounds.top - stripStrokeWidth / 2, bottom: stripBounds.bottom + stripStrokeWidth / 2 },
+      ...tickBounds, ...labelBounds], program.materializationConfigs.textMetrics);
   const titleBounds = config.titleVisible === false ? undefined : resolveLegendTextBounds(
     title,
     config.title,
@@ -186,7 +190,7 @@ export function materializeGradientLegend(program, resolved, appearance) {
   const config = resolveEffectiveLegendBlockConfig(program, kind, currentConfig);
   if (!stroke && config.representation === "symbols") return materializeColorSymbols(program, resolved, config);
   const layout = resolveGradientLayout(program, config, scale,
-    stroke ? "Stroke gradient legend" : "Gradient legend");
+    stroke ? "Stroke gradient legend" : "Gradient legend", appearance?.strokeWidth ?? 0);
   const stripCount = 60;
   const stripSize = layout.length / stripCount;
   const strips = Array.from({ length: stripCount }, (_, index) => {

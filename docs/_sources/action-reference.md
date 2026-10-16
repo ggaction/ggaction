@@ -2595,6 +2595,13 @@ removal recompute that gap. An explicit numeric `offset`, including zero or the
 native value, remains measured from the plot edge. Free coordinates, plot corners,
 and `legacy-bottom` keep their existing anchors. Older saved programs retain
 their fixed offsets.
+Top-title style accepts `align: "left" | "center" | "right"` within the
+measured title/body content block. This applies to every legend family; omission
+preserves each layout's current alignment. It does not move the complete group,
+change item spacing, or include border padding. Inline `titlePosition: "left"`
+rejects an explicit title alignment. Whole/focused title edits accept `"auto"`
+to remove an explicit alignment; creation and saved state accept only the three
+alignment values. Hidden titles retain their style for restoration.
 Automatic symbol recipes refresh when matching companion lines or their color
 bindings change; explicit recipes retain their layers and order.
 Continuous color and stroke ramps accept
@@ -2709,7 +2716,7 @@ editLegendLayout({
 })
 editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
-  target?, title?, color?, fontSize?, fontFamily?, fontWeight?
+  target?, title?, color?, fontSize?, fontFamily?, fontWeight?, align?
 })
 editLegendSymbols({ target?, symbol?, count?, gradient? })
 editLegendBorder({ target?, border })

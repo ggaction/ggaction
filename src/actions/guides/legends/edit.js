@@ -1,3 +1,4 @@
+import { mergeLegendTitleStyle } from "../../../grammar/legendTitleStyle.js";
 import { recordLegendOffsetIntent } from "./group.js";
 import { prepareLegendGroup } from "./group.js";
 import { PLOT_LEGEND_POSITIONS } from "../../../layout/legend.js";
@@ -94,7 +95,7 @@ function resolveColorRepresentationEdit(program, previous, args) {
   const common = {
     target: previous.target, position: args.position ?? previous.position,
     align: args.align ?? previous.align, offset: args.offset ?? previous.offset,
-    title, labels: mergeObject(previous.labels, args.labels), titleStyle: mergeObject(previous.titleStyle, args.titleStyle),
+    title, labels: mergeObject(previous.labels, args.labels), titleStyle: mergeLegendTitleStyle(previous.titleStyle, args.titleStyle, { edit: true }),
     border: mergeBorder(previous.border, args.border),
     titlePosition: args.titlePosition ?? (switching && representation === "gradient" ? "top" : previous.titlePosition)
   };
@@ -173,7 +174,7 @@ function resolveContinuousEdit(program, kind, previous, args) {
     labels: enteringInline && args.labels?.offset === undefined
       ? { ...labels, offset: 8 }
       : labels,
-    titleStyle: mergeObject(previous.titleStyle, args.titleStyle),
+    titleStyle: mergeLegendTitleStyle(previous.titleStyle, args.titleStyle, { edit: true }),
     border: mergeBorder(previous.border, args.border),
     ...(kind === "opacity" ? {
       itemGap: args.itemGap ?? (enteringInline ? 20 : previous.itemGap),
@@ -257,7 +258,7 @@ function resolveIntervalEdit(program, previous, args, channel = "color") {
     title,
     symbol: mergeObject(previous.symbol, args.symbol),
     labels: mergeObject(previous.labels, args.labels),
-    titleStyle: mergeObject(previous.titleStyle, args.titleStyle),
+    titleStyle: mergeLegendTitleStyle(previous.titleStyle, args.titleStyle, { edit: true }),
     itemGap: args.itemGap ?? previous.itemGap,
     border: mergeBorder(previous.border, args.border)
   });
@@ -361,10 +362,10 @@ function resolveSampledLegendEdit(program, kind, previous, args, preserveAppeara
     titleStyle: normalizeLegendTitleOptions(
       args.titleStyle,
       "editLegend.titleStyle",
-      previous.titleStyle ?? (size ? SIZE_LEGEND_TITLE_STYLE : STROKE_WIDTH_LEGEND_TITLE_STYLE)
+      previous.titleStyle ?? (size ? SIZE_LEGEND_TITLE_STYLE : STROKE_WIDTH_LEGEND_TITLE_STYLE), true
     )
   };
-  Object.assign(config, normalizeItemLegendLayout({ ...previous, ...args,
+  Object.assign(config, normalizeItemLegendLayout({ ...previous, ...args, titleStyle: config.titleStyle,
     direction: args.direction ?? (args.position !== undefined && args.position !== previous.position
       ? undefined : previous.direction) }));
   config.border = normalizeLegendBorder(mergeBorder(previous.border, args.border));
@@ -420,7 +421,7 @@ function resolveCompanionSizeEdit(program, previous, size, args) {
     ? previous.titleStyle : size.titleStyle ?? SIZE_LEGEND_TITLE_STYLE;
   return { ...config, inheritAppearance: false,
     labels: normalizeLegendTextOptions(args.labels, "editLegend.labels", labels),
-    titleStyle: normalizeLegendTitleOptions(args.titleStyle, "editLegend.titleStyle", titleStyle) };
+    titleStyle: normalizeLegendTitleOptions(args.titleStyle, "editLegend.titleStyle", titleStyle, true) };
 }
 
 function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder = program.semanticSpec.guides.legend?.[kind]?.order) {
@@ -475,7 +476,7 @@ function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder
           kind
         ),
     labels: categoricalLabels,
-    titleStyle: mergeObject(previous.titleStyle, args.titleStyle),
+    titleStyle: mergeLegendTitleStyle(previous.titleStyle, args.titleStyle, { edit: true }),
     itemGap: args.itemGap ?? previous.itemGap,
     border: mergeBorder(previous.border, args.border)
   }, kind, { internalSymbol: inferredSymbol });

@@ -99,6 +99,22 @@ legend. The limit changes the displayed guide only, preserving every data row
 and color assignment. See the [exact legend contract](../reference/actions/guides.md#createlegend)
 for supported anchors and layout restrictions.
 
+**Title alignment.**
+
+Use `titleStyle: {align: "left"}` to align a top title inside the measured
+legend content block. The same style accepts `"center"` and `"right"` for
+categorical, gradient, interval, size, opacity and stroke-width legends. This
+text alignment is separate from the complete legend's placement `align`.
+Omitting it preserves the native layout's current default.
+
+On an existing legend, `editLegendTitle({align: "right"})` changes only that
+choice. `editLegendTitle({align: "auto"})` restores the native default; the
+whole edit equivalent is `editLegend({titleStyle: {align: "auto"}})`. These
+are fragments requiring an existing legend. A top-to-inline title transition
+can reset the choice in the same whole edit; inline `titlePosition: "left"`
+rejects an explicit title alignment. Border padding, group anchors, item
+positions and spacing retain their existing rules.
+
 ## Related
 [Guides](./guides.md) · [Series encodings](./series-encodings.md) ·
 [Canvas](./canvas.md) · [Troubleshooting](../troubleshooting.md)

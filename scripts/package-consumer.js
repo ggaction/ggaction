@@ -1740,6 +1740,12 @@ async function testNodeConsumer(directory) {
       item.properties.text), ["4.0", "6.5", "9.0"]);
     assert.deepEqual(editedContent.editLegend({ channels: ["shape"] }).guideConfigs.legend.series.channels, ["shape"]);
     assert.match(renderToSVG(editedContent), /<svg /);
+    const alignedLegendTitle = legendContentBase.createLegend({title: "Aligned legend title", titleStyle: {align: "left"}});
+    const alignedTitleObject = Object.values(alignedLegendTitle.graphicSpec.objects).find(o => o.properties?.text === "Aligned legend title");
+    assert.equal(alignedTitleObject.properties.textAlign, "left");
+    const resetLegendTitle = alignedLegendTitle.editLegendTitle({align: "auto"});
+    assert.deepEqual(resetLegendTitle.graphicSpec, legendContentBase.createLegend({title: "Aligned legend title"}).graphicSpec);
+    assert.ok(Object.values(deserializeProgram(serializeProgram(alignedLegendTitle)).guideConfigs.legend).some(config => config.titleStyle?.align === "left"));
     const hiddenContent = legendContentBase.createLegend({ count: 3 }).editLegend({ title: false });
     const hiddenCategorical = legendContentBase.editCanvas({ width: 1200, height: 1000, margin: 300 })
       .createLegend({ channels: ["color"], position: "bottom", border: true }).editLegend({ title: false });
@@ -3314,6 +3320,9 @@ async function testTypeScriptConsumer(directory) {
     program.createLinePlot({ x: "x", y: "y", guides: { legend: { symbol: { width: 20 } } } });
     // @ts-expect-error Box plots have no appearance encoding for an owned legend.
     program.createBoxPlot({ x: "x", y: "y", guides: { legend: { title: "Group" } } });
+    program.createLegend({titleStyle: {align: "left"}}).editLegend({titleStyle: {align: "auto"}}).editLegendTitle({align: "right"});
+    // @ts-expect-error auto resets only an existing title style.
+    program.createLegend({titleStyle: {align: "auto"}});
     // @ts-expect-error Histogram legends are categorical.
     program.createHistogram({ field: "x", guides: { legend: { gradient: { length: 100 } } } });
     // @ts-expect-error Non-temporal inputs do not accept temporal units.
