@@ -233,7 +233,9 @@ export function resolveSequentialColorScaleDefinition(
     return value === undefined ? [] : [[key, value]];
   }));
   if (type !== "sequential") {
-    Object.assign(scale, normalizeTransformParameters(type, parameters));
+    const normalized = normalizeTransformParameters(type, parameters);
+    if (type === "log") scale.base = normalized.base;
+    if (type === "symlog") scale.constant = normalized.constant;
     if (scale.domain !== "auto") validateTransformedDomain(type, scale.domain, parameters);
   } else if (Object.keys(parameters).length) {
     throw new Error("Sequential color does not support transform parameters.");

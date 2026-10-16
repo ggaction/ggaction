@@ -1556,7 +1556,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   Explicit transformed pair는 계속 distinct해야 한다. Ordinal은 non-empty unique values를 사용한다.
   Threshold는 strictly increasing explicit boundaries가 필수다.
 - `range`: `"auto"` 또는 consumer-compatible array. continuous position은 finite pair, ordinal은
-  channel에 따라 colors, shapes 또는 dash patterns가 될 수 있다. Temporal centered bar도 explicit numeric position range를 그대로 유지하며 legacy center inset은 auto range에만 적용한다. Bandwidth는 실제 explicit mapping의 최소 gap이고 finite endpoint 차이가 overflow하면 기존 finite conservative slot estimate를 쓴다. Canvas replay는 explicit range를 재추론하지 않으며 reverse는 마지막에 적용한다. Sequential은 최소 두 colors,
+  channel에 따라 colors, shapes 또는 dash patterns가 될 수 있다. Temporal centered bar도 explicit numeric position range를 그대로 유지하며 legacy center inset은 auto range에만 적용한다. Bandwidth는 실제 explicit mapping의 최소 gap이고 finite endpoint 차이가 overflow하면 기존 finite conservative slot estimate를 쓴다. Canvas replay는 explicit range를 재추론하지 않으며 reverse는 마지막에 적용한다. Continuous color는 최소 두 colors,
   discretized color는 최소 두 colors를 사용하며 threshold는 domain보다 정확히 하나 더 필요하다.
 - `nice`: boolean, continuous position scale의 auto domain에 적용된다.
 - `zero`: boolean, `linear | pow | sqrt | symlog` auto domain에 적용되며 log에서는 오류다.
@@ -1564,8 +1564,8 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 - `clamp`: compatible continuous mapping을 resolved output extent로 제한한다. `reverse`는 final range direction을 뒤집는다.
 - `band`는 `paddingInner` 기본 `0`, `paddingOuter` 기본 `0`, `align` 기본 `0.5`; `point`는
   `padding` 기본 `0.5`, `align` 기본 `0.5`를 저장한다. Bandwidth는 band만 positive다.
-- `palette`는 sequential/log/symlog/discretized color range descriptor이며 explicit `range`와 mutually exclusive다.
-  Unattached log/symlog는 color range, palette 또는 interpolate로 color intent를 판별한다.
+- `palette`는 sequential/log/sqrt/symlog/discretized color range descriptor이며 explicit `range`와 mutually exclusive다.
+  Unattached log/sqrt/symlog는 color range, palette 또는 interpolate로 color intent를 판별한다.
   Color 범위와 numeric position 범위는 공유할 수 없다. Transform parameter는 position과 동일한 owner를 쓴다.
   Sequential descriptor의 `count`는 2 이상의 gradient-stop count이며 top-level `palette`와
   `range.palette`가 같은 validation과 resolution을 사용한다. `interpolate`는 continuous color 전용이고

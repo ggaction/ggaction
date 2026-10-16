@@ -88,7 +88,7 @@ export const createScale = /* @__PURE__ */ action(
     const id = validateUserId(args.id, "Scale id");
     const type = validateScaleType(args.type ?? "linear");
     const colorType = isColorScaleType(type) && (
-      !["log", "symlog"].includes(type) || args.palette !== undefined ||
+      !["log", "sqrt", "symlog"].includes(type) || args.palette !== undefined ||
       args.interpolate !== undefined || (Array.isArray(args.range) && typeof args.range[0] === "string") ||
       args.range?.palette !== undefined
     );

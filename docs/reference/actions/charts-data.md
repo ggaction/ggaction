@@ -1479,7 +1479,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "symlog" \| "threshold" \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |
@@ -1517,7 +1517,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Required | `string` |
 | `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "symlog" \| "threshold" \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |

@@ -7982,7 +7982,7 @@ Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionsc
 export type NonPointContinuousColorScaleOptions = ScaleFields<
   "id" | "interpolate" | "midpoint" | "clamp" | "reverse"
 > & {
-  type?: "sequential" | "log" | "symlog";
+  type?: "sequential" | "log" | "sqrt" | "symlog";
   base?: number;
   constant?: number;
   domain?: "auto" | readonly [unknown, unknown];

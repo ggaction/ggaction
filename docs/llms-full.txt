@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:f65e884ab6875cba68efb5d77f87888894ffd5af3dafd82cd36c2744e23b64ca. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:70fd85057681aceac16ab3ba88854b78c7bfd46440707077ceedc3e9060229bb. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -15223,7 +15223,7 @@ complete support limit of its underlying mark.
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable source rows, filtering, computation, normalization, completion, imputation, folding, summaries, stacks, 1D/2D bins, windows, calendar buckets, regression, intervals, KDE, ECDF, and explicit derived revision replay |
 | Coordinates | Named Cartesian, Polar, and Parallel resources; x/y use Cartesian, theta/radius use Polar, and ordered dimensions use Parallel |
-| Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position with semantic explicit/count/category/summary ordering, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset/yOffset |
+| Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position with semantic explicit/count/category/summary ordering, ordinal/sequential/log/sqrt/symlog/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset/yOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
 | Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge categorical, interval, and continuous legends, and channel-identified block editing |
 | Titles | One four-edge title with an optional subtitle, deterministic word/character wrapping, and partial editing |
@@ -16932,7 +16932,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "symlog" \| "threshold" \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |
@@ -16965,7 +16965,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Required | `string` |
 | `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "symlog" \| "threshold" \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |
@@ -20524,8 +20524,11 @@ bar color, rect fill, or arc-sector fill. Nominal and ordinal categories share a
 ordinal fields may contain ordered numeric categories. Categorical bar layout accepts `stack`, `fill`, `group`, `overlay`,
 and `diverging`; area also accepts `center` and rejects only `group` from the
 shared layout vocabulary. Quantitative and temporal
-point fields use a sequential scale; quantitative fields also accept log/symlog
-with matching gradient legends, while quantitative Point, aggregate Bar, and Rect fields also accept
+point fields use a sequential scale; quantitative fields also accept log/sqrt/symlog
+with matching gradient legends. Square-root color normalizes sign-preserving square roots across the original
+numeric domain; negative, zero-crossing, and reversed domains are supported. Its exponent is fixed,
+and `base`, `constant`, and numeric `midpoint` are rejected. Sampled symbol legends use the same mapping.
+Quantitative Point, aggregate Bar, and Rect fields also accept
 `quantize`, `quantile`, and `threshold` color classes. Categorical
 grouped bars record `encodeXOffset` or `encodeYOffset` as a child according to
 orientation. Reassigning grouped color also atomically reassigns its offset and
@@ -33325,7 +33328,7 @@ Related types: [`NonPointBandPositionScaleOptions`](./reference/types/#type-nonp
 export type NonPointContinuousColorScaleOptions = ScaleFields<
   "id" | "interpolate" | "midpoint" | "clamp" | "reverse"
 > & {
-  type?: "sequential" | "log" | "symlog";
+  type?: "sequential" | "log" | "sqrt" | "symlog";
   base?: number;
   constant?: number;
   domain?: "auto" | readonly [unknown, unknown];
@@ -39210,7 +39213,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:f65e884ab6875cba68efb5d77f87888894ffd5af3dafd82cd36c2744e23b64ca` |
+| Contract fingerprint | `sha256:70fd85057681aceac16ab3ba88854b78c7bfd46440707077ceedc3e9060229bb` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

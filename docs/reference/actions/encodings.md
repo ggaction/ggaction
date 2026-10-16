@@ -202,8 +202,11 @@ bar color, rect fill, or arc-sector fill. Nominal and ordinal categories share a
 ordinal fields may contain ordered numeric categories. Categorical bar layout accepts `stack`, `fill`, `group`, `overlay`,
 and `diverging`; area also accepts `center` and rejects only `group` from the
 shared layout vocabulary. Quantitative and temporal
-point fields use a sequential scale; quantitative fields also accept log/symlog
-with matching gradient legends, while quantitative Point, aggregate Bar, and Rect fields also accept
+point fields use a sequential scale; quantitative fields also accept log/sqrt/symlog
+with matching gradient legends. Square-root color normalizes sign-preserving square roots across the original
+numeric domain; negative, zero-crossing, and reversed domains are supported. Its exponent is fixed,
+and `base`, `constant`, and numeric `midpoint` are rejected. Sampled symbol legends use the same mapping.
+Quantitative Point, aggregate Bar, and Rect fields also accept
 `quantize`, `quantile`, and `threshold` color classes. Categorical
 grouped bars record `encodeXOffset` or `encodeYOffset` as a child according to
 orientation. Reassigning grouped color also atomically reassigns its offset and

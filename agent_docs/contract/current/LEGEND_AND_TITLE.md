@@ -167,7 +167,7 @@ type TitleWrap = "word" | "character";
 
 ### 연속형 color의 symbols 표현
 
-- `representation?: "gradient" | "symbols"`는 연속형 color에만 적용한다. 신규 생략은 기존 gradient이고 편집 생략은 현재 표현을 보존한다. 지원 scale은 현재 continuous-color인 sequential/log/symlog이며 midpoint는 기존 sequential 계약을 사용한다. 새로운 scale type이나 stroke-symbol 표현은 추가하지 않는다. 범주형·구간·stroke-only 요청에서 지정하면 실패한다.
+- `representation?: "gradient" | "symbols"`는 연속형 color에만 적용한다. 신규 생략은 기존 gradient이고 편집 생략은 현재 표현을 보존한다. 지원 scale은 현재 continuous-color인 sequential/log/sqrt/symlog이며 midpoint는 기존 sequential 계약을 사용한다. 새로운 scale type이나 stroke-symbol 표현은 추가하지 않는다. 범주형·구간·stroke-only 요청에서 지정하면 실패한다.
 - `editLegend`의 channels 생략은 현재 content 집합을 유지하고 color 표현만 바꾼다. 명시적 channels는 기존처럼 target의 최종 content 집합을 교체한다. representation을 명시한 최종 집합에 color가 없으면 실패한다. 함께 남는 size/opacity 등은 표현 변경 때문에 바꾸지 않는다. 모호한 target은 명시해야 한다.
 - Symbols는 기존 count 기본5와 continuous-domain sampler를 사용한다. 정확한 values는 기존 길이1..100/finite/strictly ascending/도메인 포함 검증을 재사용하고 동일 resolved mark color mapper로 paint한다. values와 count의 동시 명시는 실패한다. `values:"auto"`는 symbols를 유지하며 기억한 automatic count로 돌아간다. Exact value가 data/scale/facet 변경 뒤 domain을 벗어나면 이전 program을 보존하며 실패한다.
 - 기본/auto symbol은 단일 point recipe radius7이며 fill과 기본 stroke는 sampled color, 기본 strokeWidth1이다. `{type?:"point",radius?,stroke?,strokeWidth?}`를 받는다. Fill override 및 line/swatch/layered recipe는 거부한다. `editLegendBlock({target,channel:"color",symbol:{...}})`는 기존 size/stroke/strokeWidth/opacity 단위·범위를 사용하지만 고정 fill은 거부한다. Labels/title의 기존 formatting/typography/hide 계약을 사용한다.

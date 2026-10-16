@@ -21744,7 +21744,7 @@
         {
           "name": "type",
           "required": false,
-          "type": "\"log\" | \"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"symlog\" | \"threshold\" | undefined"
+          "type": "\"log\" | \"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"sqrt\" | \"symlog\" | \"threshold\" | undefined"
         },
         {
           "name": "domain",
@@ -21876,7 +21876,7 @@
         {
           "name": "type",
           "required": false,
-          "type": "\"log\" | \"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"symlog\" | \"threshold\" | undefined"
+          "type": "\"log\" | \"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"sqrt\" | \"symlog\" | \"threshold\" | undefined"
         },
         {
           "name": "domain",
