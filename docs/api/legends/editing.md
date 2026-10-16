@@ -327,7 +327,10 @@ Block state follows its channel set through layout, Canvas, theme, data, and
 compatible scale-family updates. Removing a block discards its local state.
 Changing membership rejects a title, order, or display map whose destination would be
 ambiguous, and merging independently edited blocks requires their local styles
-to agree. `editLegendBlock()` is available on Full programs only.
+to agree. For a size block, setting `symbol.stroke` without `symbol.strokeWidth`
+uses its base no-outline width of `0`; set a positive width to draw an outline.
+An omitted stroke retains the existing unoutlined sample.
+`editLegendBlock()` is available on Full programs only.
 
 ## Focused edits
 

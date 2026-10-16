@@ -185,7 +185,8 @@ export const rematerializeSizeLegend = /* @__PURE__ */ closedAction(
       },
       optional: {
         stroke: layout.config.blockSymbol?.stroke,
-        strokeWidth: layout.config.blockSymbol?.strokeWidth
+        strokeWidth: layout.config.blockSymbol?.strokeWidth ??
+          (layout.config.blockSymbol?.stroke === undefined ? undefined : 0)
       }
     });
   }

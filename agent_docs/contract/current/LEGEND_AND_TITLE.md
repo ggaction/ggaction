@@ -384,6 +384,9 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - `symbol`은 `size`, `fill`, `stroke`, `strokeWidth`, `opacity`만 받는 closed object다. `size`는 point
   glyph area px²이고 내부 radius로 한 번 변환된다. 객체는 전체 교체이므로 생략한 이전 속성은 base
   recipe로 돌아가며 `symbol:{}`는 override를 완전히 지운다.
+  Size sample에 `stroke`만 지정하고 `strokeWidth`를 생략하면 base의 no-outline 폭0을
+  concrete circle에 명시하여 모든 renderer와 editable snapshot에서 유효한 값을 유지한다.
+  명시 폭은 그대로 쓰며 `stroke` 자체도 생략한 sample의 기존 concrete shape는 바꾸지 않는다.
 - Mapping channel을 덮는 symbol property는 오류다: size block의 size, opacity block의 opacity,
   strokeWidth block의 strokeWidth, categorical color block의 fill, categorical stroke block의 stroke,
   color interval의 fill, stroke interval의 stroke. Gradient block은 모든 symbol property를 거부한다.
