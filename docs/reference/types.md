@@ -85,7 +85,7 @@ interface ChartProgramActions {
   editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+  createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
@@ -104,7 +104,7 @@ interface ChartProgramActions {
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
-  editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+  editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   encodeX(options: PositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
   encodeY(options: YPositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;
@@ -2225,7 +2225,7 @@ export type CreateAreaPlotOptions = {
   groupBy?: string | readonly [string, ...string[]];
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
-  area?: StrokeStyleDetails & { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | DensityPlotGuideOptions;
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
@@ -2237,7 +2237,7 @@ export type CreateAreaPlotOptions = {
 
 </details>
 
-Related types: [`ColorLayout`](#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation) · [`DensityPlotGuideOptions`](#type-densityplotguideoptions) · [`AreaPlotIndependentChannel`](#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](#type-areaplotmeasurechannel).
+Related types: [`ColorLayout`](#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`FillPaint`](#type-fillpaint) · [`CurveInterpolation`](#type-curveinterpolation) · [`DensityPlotGuideOptions`](#type-densityplotguideoptions) · [`AreaPlotIndependentChannel`](#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](#type-areaplotmeasurechannel).
 
 ### `CreateAxesOptions` {#type-createaxesoptions}
 
@@ -2386,14 +2386,14 @@ export interface CreateDensityPlotOptions {
     palette?: Palette;
     layout?: "overlay";
   };
-  area?: StrokeStyleDetails & { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | DensityPlotGuideOptions;
 }
 ```
 
 </details>
 
-Related types: [`DensityKernel`](#type-densitykernel) · [`DensityNormalization`](#type-densitynormalization) · [`StatisticalWeight`](#type-statisticalweight) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`NonPointZeroSupportingPositionScaleOptions`](#type-nonpointzerosupportingpositionscaleoptions) · [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation) · [`DensityPlotGuideOptions`](#type-densityplotguideoptions).
+Related types: [`DensityKernel`](#type-densitykernel) · [`DensityNormalization`](#type-densitynormalization) · [`StatisticalWeight`](#type-statisticalweight) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`NonPointZeroSupportingPositionScaleOptions`](#type-nonpointzerosupportingpositionscaleoptions) · [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`FillPaint`](#type-fillpaint) · [`CurveInterpolation`](#type-curveinterpolation) · [`DensityPlotGuideOptions`](#type-densityplotguideoptions).
 
 ### `CreateDerivedDataOptions` {#type-createderiveddataoptions}
 
@@ -4778,7 +4778,7 @@ export interface EditErrorBandOptions extends StrokeStyleDetails {
   x?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
   y?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
   groupBy?: string | false;
-  fill?: string | false;
+  fill?: FillPaint | false;
   opacity?: number;
   curve?: CurveInterpolation;
   statistics?: {
@@ -4799,7 +4799,7 @@ export interface EditErrorBandOptions extends StrokeStyleDetails {
 
 </details>
 
-Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`ErrorBandPositionChannel`](#type-errorbandpositionchannel) · [`ErrorBandIntervalChannel`](#type-errorbandintervalchannel) · [`CurveInterpolation`](#type-curveinterpolation) · [`IntervalCenter`](#type-intervalcenter) · [`IntervalExtent`](#type-intervalextent) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern).
+Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`ErrorBandPositionChannel`](#type-errorbandpositionchannel) · [`ErrorBandIntervalChannel`](#type-errorbandintervalchannel) · [`FillPaint`](#type-fillpaint) · [`CurveInterpolation`](#type-curveinterpolation) · [`IntervalCenter`](#type-intervalcenter) · [`IntervalExtent`](#type-intervalextent) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern).
 
 ### `EditErrorBarOptions` {#type-editerrorbaroptions}
 
@@ -5934,7 +5934,7 @@ export interface ErrorBandOptions extends StrokeStyleDetails {
   y?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
   groupBy?: string;
   coordinate?: string;
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   curve?: CurveInterpolation;
   boundaries?: false | (StrokeStyleDetails & {
@@ -5949,7 +5949,7 @@ export interface ErrorBandOptions extends StrokeStyleDetails {
 
 </details>
 
-Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`ErrorBandPositionChannel`](#type-errorbandpositionchannel) · [`ErrorBandIntervalChannel`](#type-errorbandintervalchannel) · [`CurveInterpolation`](#type-curveinterpolation) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern).
+Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`ErrorBandPositionChannel`](#type-errorbandpositionchannel) · [`ErrorBandIntervalChannel`](#type-errorbandintervalchannel) · [`FillPaint`](#type-fillpaint) · [`CurveInterpolation`](#type-curveinterpolation) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern).
 
 ### `ErrorBandPositionChannel` {#type-errorbandpositionchannel}
 
@@ -11600,7 +11600,7 @@ Related types: [`ValueFormatDigit`](#type-valueformatdigit).
 
 ```typescript
 export interface ViolinPlotAreaOptions extends StrokeStyleDetails {
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   stroke?: string;
   strokeWidth?: number;
@@ -11610,7 +11610,7 @@ export interface ViolinPlotAreaOptions extends StrokeStyleDetails {
 
 </details>
 
-Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation).
+Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`FillPaint`](#type-fillpaint) · [`CurveInterpolation`](#type-curveinterpolation).
 
 ### `ViolinPlotColorOptions` {#type-violinplotcoloroptions}
 

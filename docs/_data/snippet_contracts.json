@@ -2491,6 +2491,18 @@
   {
     "file": "api/marks/line-area.md",
     "block": 8,
+    "heading": "`createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "0f65a78a3a0e92b68107f65e8786deae7ca214c7584652ea6d3d8bf07e170fc7",
+    "executable": false
+  },
+  {
+    "file": "api/marks/line-area.md",
+    "block": 9,
     "heading": "`editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2504,7 +2516,7 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 9,
+    "block": 10,
     "heading": "`createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2516,7 +2528,7 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 10,
+    "block": 11,
     "heading": "`editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`",
     "mode": "fragment",
     "environment": "esm-context",

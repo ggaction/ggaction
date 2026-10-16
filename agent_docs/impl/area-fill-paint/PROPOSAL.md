@@ -5,10 +5,10 @@
 - [x] Existing public API rejection reproduced without changing runtime code
 - [x] Concrete API, persisted state, materialization, compatibility and verification plan
 - [x] Source-gradient structure and synthetic target recorded without viewing chart pixels
-- [ ] Explicit user approval of the public contract
-- [ ] Implementation and consumer-matrix verification
+- [x] Explicit user approval of the public contract — see `APPROVAL.md`
+- [x] Implementation and consumer-matrix verification
 
-Gate: **ready-for-review**. This is a proposal-only checkpoint. No new public behavior is implemented. Root `AGENTS.md` requires explicit approval before an unresolved material public-API decision. PR creation, package publishing and documentation deployment are outside this proposal.
+Gate: **approved**. The user approved the exact proposal; the implementation and consumer-matrix evidence are recorded in `IMPLEMENTATION.md`. Root `AGENTS.md` requires explicit approval before an unresolved material public-API decision. PR creation, package publishing and documentation deployment are outside this proposal.
 
 ## Problem and current evidence
 

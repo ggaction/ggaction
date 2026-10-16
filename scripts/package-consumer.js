@@ -1198,6 +1198,14 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(areaFacade.resolvedScales.y.domain, [0, 5]);
     assert.match(renderToSVG(areaFacade), /<path/);
     assert.deepEqual(areaFacade.layoutSeries({ mode: "fill" }).resolvedScales.y.domain, [0, 1]);
+    const areaPaint = { type: "linear-gradient", from: { x: 0, y: 1 }, to: { x: 0, y: 0 },
+      stops: [{ offset: 0, color: "white" }, { offset: 1, color: "orange" }] };
+    const gradientArea = areaFacade.editAreaMark({ fill: areaPaint, opacity: 0.7 });
+    assert.ok(gradientArea.graphicSpec.objects.areaPlot.items.every(item =>
+      item.properties.fill.type === "linear-gradient" && item.properties.opacity === 0.7));
+    assert.match(renderToSVG(gradientArea), /<linearGradient/);
+    assert.deepEqual(gradientArea.editCanvas({ width: 180 }).markConfigs.areaPlot.fill, areaPaint);
+
     const basicSeries = basicChart().createCanvas({ width: 160, height: 120, margin: 20 })
       .createData({ values: areaRows }).createBarPlot({ x: "category", y: { field: "value", aggregate: "sum" }, guides: false })
       .encodeGroup({ field: "series" }).layoutSeries({ mode: "group" });
@@ -3185,6 +3193,18 @@ async function testTypeScriptConsumer(directory) {
     program.createPiePlot({ category: "category", guides: { legend: { channels: ["size"] } } });
     // @ts-expect-error Pie color has no area layout option.
     program.createPiePlot({ category: "category", color: { field: "category", layout: "stack" } });
+    const sharedAreaPaint: import("ggaction").FillPaint = {
+      type: "linear-gradient", from: { x: 0, y: 1 }, to: { x: 0, y: 0 },
+      stops: [{ offset: 0, color: "white" }, { offset: 1, color: "orange" }]
+    };
+    program.createAreaMark({ fill: sharedAreaPaint }).editAreaMark({ fill: sharedAreaPaint });
+    program.createAreaPlot({ x: "x", y: "value", area: { fill: sharedAreaPaint } });
+    program.createDensityPlot({ field: "value", area: { fill: sharedAreaPaint } });
+    program.createViolinPlot({ x: "group", y: "value", area: { fill: sharedAreaPaint, stroke: "black" } });
+    program.createErrorBand({ x: { field: "x" }, y: { center: "value", lower: "low", upper: "high" }, fill: sharedAreaPaint })
+      .editErrorBand({ fill: sharedAreaPaint }).editErrorBand({ fill: false });
+    // @ts-expect-error Area outlines remain solid colors.
+    program.editAreaMark({ stroke: sharedAreaPaint });
     const densityOptions: import("ggaction").CreateDensityPlotOptions = { field: "value", groupBy: false, guides: false };
     program.createDensityPlot(densityOptions).editDensity({ target: "densityPlot", bandwidth: 1 });
     program.createDensityPlot({ field: "value", groupBy: "group", color: { field: "group", layout: "overlay" },

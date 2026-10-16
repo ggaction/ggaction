@@ -505,7 +505,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 - Signature: `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`, `data`: 첫 unnamed area의 deterministic `"area"` 또는 explicit 새 ID와 optional existing/current dataset이다.
-- `fill`: Implemented, non-empty color string. 기본값은 theme mark color `"#4c78a8"`다.
+- `fill`: Implemented, 기존 `FillPaint`의 non-empty color string 또는 path-local linear gradient. 기본값은 theme mark color `"#4c78a8"`다. 구조화된 paint는 shared grammar로 검증하고 immutable config와 concrete path에 보존한다.
 - `opacity`: Implemented, `[0, 1]` finite number. 기본값은 `0.2`다.
 - `stroke`, `strokeWidth`: Implemented. optional non-empty outline string과 non-negative finite width다.
   Stroke가 있으면 width 기본값은 `1`이며 stroke 없이 width만 지정할 수 없다.
@@ -518,7 +518,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createAreaMark`
 
-- Implemented: `createAreaMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break"; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createAreaMark({ id?: UserId; data?: UserId; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break"; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -527,7 +527,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - `id`, `data`
   - ✅ Covered: omission→`"area"`, current/explicit derived dataset, second unnamed ambiguity와 invalid resources.
 - `fill`
-  - ✅ Covered: omission/theme default, explicit color and direct empty/non-string rejection.
+  - ✅ Covered: omission/theme default, explicit solid/structured paint, malformed gradient rejection; 이전 string 결과는 유지한다.
 - `opacity`
   - ✅ Covered: default `0.2`, representative values, exact 0/1 endpoints and out-of-range rejection.
 - `stroke`, `strokeWidth`
@@ -549,6 +549,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   explicit target을 요구한다.
 - `fill`, `opacity`: constant graphical appearance다. Field-driven color encoding이 있으면 fill edit는
   오류지만 opacity는 독립적으로 수정할 수 있다.
+- Structured fill은 각 concrete path bounds를 기준으로 적용된다. 기존 color encoding은 fallback fill보다 우선하며 color encoding 제거 시 persisted gradient가 복원된다. 기존 encoded-fill edit 충돌 오류는 유지한다.
+- `configureAreaStrokeFromFill`은 gradient fallback과 함께 사용할 수 없다. Gradient와 solid stroke를 한 edit에 지정하여 기존 fill-owned outline을 교체하는 것은 허용한다.
 - `stroke`: non-empty string은 outline을 생성/교체하고 `false`는 outline과 stored width를 제거한다.
 - `strokeWidth`: non-negative finite number. Width-only edit은 active outline을 요구한다.
 - `curve`: shared 8-value interpolation. Complete area는 즉시 concrete commands를 다시 만든다.
@@ -558,7 +560,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editAreaMark`
 
-- Implemented: `editAreaMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break"; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editAreaMark({ target?: UserId; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break"; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -1167,3 +1169,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - blockAlign first는 첫 줄의 baseline을 anchor에 놓고 middle은 전체 block의 세로 bounds를 가운데 놓는다. 각 줄은 동일한 align/baseline을 쓰며 회전은 공통 anchor 기준이다.
 - 내부 빈 줄은 유지하고 null/undefined/빈 전체 문자열 정책은 기존과 같다. 배열은 특별한 줄 입력 형식으로 해석하지 않는다.
 - Evidence: `test/unit/actions/marks/multiline-text.test.js`, `test/browser/multiline-text.browser.js`.
+
+### Area structured-paint evidence
+
+- `test/unit/actions/marks/area-gradient-fill.test.js`: constructor/editor/facade parity, orientations, ranged/stacked/missing paths, immutable rematerialization, stroke swatches/opacity, color precedence, atomic failures, persistence/selection restoration, SVG/PNG/PDF exports.
+- Density, violin and error-band fill properties delegate the same `FillPaint`; horizon palette ownership and solid regression `color` options are unchanged.

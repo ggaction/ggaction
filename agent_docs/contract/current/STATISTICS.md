@@ -191,7 +191,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   `errorBandIntervalData`. The aggregate calls wrapped `createAreaMark`, independent position encoding, atomic
   `encodeYRange` or `encodeXRange`, and optional `encodeGroup`. It does not duplicate field-driven color; call
   `encodeColor` on the resulting area.
-- `fill` and `opacity` use the area mark contract; defaults are the shared mark color and `0.2`. Existing
+- `fill` (existing `FillPaint`, including path-local linear gradients) and `opacity` use the area mark contract; defaults are the shared mark color and `0.2`. Existing
   `encodeColor` supports grouped ranged areas with inferred overlay layout and rematerializes concrete fills.
 - The result is an ordinary area layer and immutable derived dataset, not a composite registry. Canvas and
   compatible scale changes rematerialize the same namespaced closed paths.

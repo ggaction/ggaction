@@ -94,3 +94,5 @@ editViolinPlot({ target?, data?, x?, y?, split?, density? })
 - ✅ Covered: statistical weight preservation and explicit removal.
 - Evidence: `test/unit/actions/charts/violin-plot-facade.test.js`,
   `test/unit/actions/encodings/edit-density.test.js`.
+
+- `area.fill`은 area mark와 같은 `FillPaint`를 사용한다. Gradient fill은 명시적 solid outline과 함께 사용할 수 있지만 stroke 없이 strokeWidth만 지정하는 fill-owned outline은 gradient에서 atomic하게 거부한다.

@@ -2812,7 +2812,7 @@ export type ViolinPlotColorOptions =
     };
 
 export interface ViolinPlotAreaOptions extends StrokeStyleDetails {
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   stroke?: string;
   strokeWidth?: number;
@@ -3564,7 +3564,7 @@ export type CreateAreaPlotOptions = {
   groupBy?: string | readonly [string, ...string[]];
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
-  area?: StrokeStyleDetails & { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | DensityPlotGuideOptions;
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
@@ -3710,7 +3710,7 @@ export interface CreateDensityPlotOptions {
     palette?: Palette;
     layout?: "overlay";
   };
-  area?: StrokeStyleDetails & { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | DensityPlotGuideOptions;
 }
 
@@ -3858,7 +3858,7 @@ export interface ErrorBandOptions extends StrokeStyleDetails {
   y?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
   groupBy?: string;
   coordinate?: string;
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   curve?: CurveInterpolation;
   boundaries?: false | (StrokeStyleDetails & {
@@ -3876,7 +3876,7 @@ export interface EditErrorBandOptions extends StrokeStyleDetails {
   x?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
   y?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
   groupBy?: string | false;
-  fill?: string | false;
+  fill?: FillPaint | false;
   opacity?: number;
   curve?: CurveInterpolation;
   statistics?: {
@@ -4998,7 +4998,7 @@ export class ChartProgram {
   createAreaMark(options?: StrokeStyleDetails & {
     id?: string;
     data?: string;
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: string;
     strokeWidth?: number;
@@ -5042,7 +5042,7 @@ export class ChartProgram {
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
   editAreaMark(options: StrokeStyleDetails & {
     target?: string;
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;

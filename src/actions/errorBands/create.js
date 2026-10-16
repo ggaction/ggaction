@@ -1,7 +1,7 @@
+import { validateFillPaint } from "../../grammar/paint.js";
 import { editGraphicProperties } from "../primitives/graphicProperties.js";
 import { action, closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
-import { validateNonEmptyString } from "../../core/validation.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
 import {
@@ -176,7 +176,7 @@ export const createErrorBand = /* @__PURE__ */ closedAction(
     const resolved = resolveErrorBand(this, args);
     const curve = validateCurveInterpolation(args.curve ?? "linear");
     const boundaries = resolveBoundaries(args.boundaries, curve);
-    if (args.fill !== undefined) validateNonEmptyString(args.fill, "Error-band fill");
+    if (args.fill !== undefined) validateFillPaint(args.fill, "Error-band fill");
     let next = createResolvedIntervalData(this, resolved);
     next = next.createAreaMark({
       id: resolved.id,

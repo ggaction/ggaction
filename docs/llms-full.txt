@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:b05d2599f3dde0f366f7d1338b230d4eeb507650400bd5bfe1ca799e703f1e22. Status: development. Runtime source: 0f4ea9512c6098f238d6c89bbce01398f0eb52be. Release baseline: v0.0.13.
+Contract: sha256:0ccdecaddbc1e7d0b4e2f5f8ba22cf75087d164b1705ceabf5df564583c5f56f. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/0f4ea9512c6098f238d6c89bbce01398f0eb52be/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/0f4ea9512c6098f238d6c89bbce01398f0eb52be/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -6263,6 +6263,30 @@ const area = chart()
 ```
 
 Area fill defaults to `"#4c78a8"`, opacity to `0.2`, and curve to `"linear"`.
+Area `fill` also accepts the existing `FillPaint` linear gradient. Coordinates
+are normalized within each closed path, so grouped or broken paths each retain
+the same local paint direction. The paint survives resizing, data/scale edits,
+selection restoration, and editable or graphic persistence. Density, violin,
+and error-band fill options share this contract. Use an explicit solid outline
+when needed; a gradient cannot supply one inferred outline color.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+const gradientArea = chart()
+  .createCanvas({ width: 300, height: 200, margin: 30 })
+  .createData({ values: [{ x: 0, y: 1 }, { x: 1, y: 3 }, { x: 2, y: 2 }] })
+  .createAreaPlot({ x: "x", y: "y", guides: false })
+  .editAreaMark({
+    fill: {
+      type: "linear-gradient", from: { x: 0, y: 1 }, to: { x: 0, y: 0 },
+      stops: [{ offset: 0, color: "white" }, { offset: 1, color: "#fc6721" }]
+    },
+    opacity: 0.7
+  });
+```
+
 An area becomes renderable with exactly one ranged orientation, a complete
 density value/density pair, or aligned grouped x/y values whose y encoding uses
 `stack: "center"`. `encodeGroup` creates one closed path per nominal group
@@ -6286,7 +6310,10 @@ program.editAreaMark({
 `stroke: false` removes both outline and stored width. A width-only edit
 requires an active outline. Constant fill cannot replace a field-driven color
 encoding. Complete paths rematerialize immediately; incomplete paths retain the
-configuration until their encodings become renderable.
+configuration until their encodings become renderable. A later field color encoding
+uses its scale while retaining the fallback paint; removing that encoding reveals
+the stored fill. Without a field color, stroke-legend swatches preserve a gradient
+area's paint and opacity.
 Area stroke details use the same shared Mark Style contract as Line.
 
 ## Arc marks
@@ -18876,7 +18903,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `layout` | Optional / branch-dependent | `"center" \| "diverging" \| "fill" \| "overlay" \| "stack" \| undefined` |
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; } \| undefined` |
-| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| DensityPlotGuideOptions \| undefined` |
 | `valueChannel` | Optional / branch-dependent | `"x" \| "y" \| undefined` |
 | `x` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |
@@ -20036,10 +20063,10 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
+Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
 
  Declared options
 
@@ -20052,7 +20079,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
-| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -20155,10 +20182,10 @@ accepts the same styles. [Rule marks](./api/marks/rule/)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
+Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
 
  Declared options
 
@@ -20170,7 +20197,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -22720,7 +22747,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Optional / branch-dependent | `ErrorBandIntervalChannel \| ErrorBandPositionChannel \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
 | `boundaries` | Optional / branch-dependent | `false \| (StrokeStyleDetails & { stroke?: string \| undefined; strokeWidth?: number \| undefined; strokeDash?: DashPattern \| DashStyle \| undefined; opacity?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
@@ -22768,7 +22795,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `x` | Optional / branch-dependent | `ErrorBandIntervalChannel \| ErrorBandPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `ErrorBandIntervalChannel \| ErrorBandPositionChannel \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
-| `fill` | Optional / branch-dependent | `string \| false \| undefined` |
+| `fill` | Optional / branch-dependent | `false \| FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
 | `statistics` | Optional / branch-dependent | `{ center?: IntervalCenter \| undefined; extent?: IntervalExtent \| undefined; method?: ConfidenceIntervalMethod \| undefined; level?: number \| undefined; } \| undefined` |
@@ -23232,7 +23259,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `valueScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
 | `densityScale` | Optional / branch-dependent | `NonPointZeroSupportingPositionScaleOptions \| undefined` |
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; layout?: "overlay" \| undefined; } \| undefined` |
-| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| DensityPlotGuideOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -26690,7 +26717,7 @@ interface ChartProgramActions {
   editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+  createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
@@ -26709,7 +26736,7 @@ interface ChartProgramActions {
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
-  editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+  editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   encodeX(options: PositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
   encodeY(options: YPositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;
@@ -28514,7 +28541,7 @@ export type CreateAreaPlotOptions = {
   groupBy?: string | readonly [string, ...string[]];
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
-  area?: StrokeStyleDetails & { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | DensityPlotGuideOptions;
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
@@ -28524,7 +28551,7 @@ export type CreateAreaPlotOptions = {
 );
 ```
 
-Related types: [`ColorLayout`](./reference/types/#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](./reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](./reference/types/#type-palette) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`DensityPlotGuideOptions`](./reference/types/#type-densityplotguideoptions) · [`AreaPlotIndependentChannel`](./reference/types/#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](./reference/types/#type-areaplotmeasurechannel).
+Related types: [`ColorLayout`](./reference/types/#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](./reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](./reference/types/#type-palette) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`DensityPlotGuideOptions`](./reference/types/#type-densityplotguideoptions) · [`AreaPlotIndependentChannel`](./reference/types/#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](./reference/types/#type-areaplotmeasurechannel).
 
 ### `CreateAxesOptions` {#type-createaxesoptions}
 
@@ -28657,12 +28684,12 @@ export interface CreateDensityPlotOptions {
     palette?: Palette;
     layout?: "overlay";
   };
-  area?: StrokeStyleDetails & { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | DensityPlotGuideOptions;
 }
 ```
 
-Related types: [`DensityKernel`](./reference/types/#type-densitykernel) · [`DensityNormalization`](./reference/types/#type-densitynormalization) · [`StatisticalWeight`](./reference/types/#type-statisticalweight) · [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`NonPointZeroSupportingPositionScaleOptions`](./reference/types/#type-nonpointzerosupportingpositionscaleoptions) · [`NonPointCategoricalColorScaleOptions`](./reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](./reference/types/#type-palette) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`DensityPlotGuideOptions`](./reference/types/#type-densityplotguideoptions).
+Related types: [`DensityKernel`](./reference/types/#type-densitykernel) · [`DensityNormalization`](./reference/types/#type-densitynormalization) · [`StatisticalWeight`](./reference/types/#type-statisticalweight) · [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`NonPointZeroSupportingPositionScaleOptions`](./reference/types/#type-nonpointzerosupportingpositionscaleoptions) · [`NonPointCategoricalColorScaleOptions`](./reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](./reference/types/#type-palette) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`DensityPlotGuideOptions`](./reference/types/#type-densityplotguideoptions).
 
 ### `CreateDerivedDataOptions` {#type-createderiveddataoptions}
 
@@ -30701,7 +30728,7 @@ export interface EditErrorBandOptions extends StrokeStyleDetails {
   x?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
   y?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
   groupBy?: string | false;
-  fill?: string | false;
+  fill?: FillPaint | false;
   opacity?: number;
   curve?: CurveInterpolation;
   statistics?: {
@@ -30720,7 +30747,7 @@ export interface EditErrorBandOptions extends StrokeStyleDetails {
 }
 ```
 
-Related types: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ErrorBandPositionChannel`](./reference/types/#type-errorbandpositionchannel) · [`ErrorBandIntervalChannel`](./reference/types/#type-errorbandintervalchannel) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`IntervalCenter`](./reference/types/#type-intervalcenter) · [`IntervalExtent`](./reference/types/#type-intervalextent) · [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod) · [`DashStyle`](./reference/types/#type-dashstyle) · [`DashPattern`](./reference/types/#type-dashpattern).
+Related types: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ErrorBandPositionChannel`](./reference/types/#type-errorbandpositionchannel) · [`ErrorBandIntervalChannel`](./reference/types/#type-errorbandintervalchannel) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`IntervalCenter`](./reference/types/#type-intervalcenter) · [`IntervalExtent`](./reference/types/#type-intervalextent) · [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod) · [`DashStyle`](./reference/types/#type-dashstyle) · [`DashPattern`](./reference/types/#type-dashpattern).
 
 ### `EditErrorBarOptions` {#type-editerrorbaroptions}
 
@@ -31662,7 +31689,7 @@ export interface ErrorBandOptions extends StrokeStyleDetails {
   y?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
   groupBy?: string;
   coordinate?: string;
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   curve?: CurveInterpolation;
   boundaries?: false | (StrokeStyleDetails & {
@@ -31675,7 +31702,7 @@ export interface ErrorBandOptions extends StrokeStyleDetails {
 }
 ```
 
-Related types: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ErrorBandPositionChannel`](./reference/types/#type-errorbandpositionchannel) · [`ErrorBandIntervalChannel`](./reference/types/#type-errorbandintervalchannel) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`DashStyle`](./reference/types/#type-dashstyle) · [`DashPattern`](./reference/types/#type-dashpattern).
+Related types: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ErrorBandPositionChannel`](./reference/types/#type-errorbandpositionchannel) · [`ErrorBandIntervalChannel`](./reference/types/#type-errorbandintervalchannel) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`DashStyle`](./reference/types/#type-dashstyle) · [`DashPattern`](./reference/types/#type-dashpattern).
 
 ### `ErrorBandPositionChannel` {#type-errorbandpositionchannel}
 
@@ -36386,7 +36413,7 @@ Related types: [`ValueFormatDigit`](./reference/types/#type-valueformatdigit).
 
 ```typescript
 export interface ViolinPlotAreaOptions extends StrokeStyleDetails {
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   stroke?: string;
   strokeWidth?: number;
@@ -36394,7 +36421,7 @@ export interface ViolinPlotAreaOptions extends StrokeStyleDetails {
 }
 ```
 
-Related types: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
+Related types: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
 
 ### `ViolinPlotColorOptions` {#type-violinplotcoloroptions}
 
@@ -37142,12 +37169,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0f4ea9512c6098f238d6c89bbce01398f0eb52be/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0f4ea9512c6098f238d6c89bbce01398f0eb52be/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39292,9 +39319,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:b05d2599f3dde0f366f7d1338b230d4eeb507650400bd5bfe1ca799e703f1e22` |
+| Contract fingerprint | `sha256:0ccdecaddbc1e7d0b4e2f5f8ba22cf75087d164b1705ceabf5df564583c5f56f` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `0f4ea9512c6098f238d6c89bbce01398f0eb52be` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |

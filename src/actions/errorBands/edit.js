@@ -1,3 +1,4 @@
+import { validateFillPaint } from "../../grammar/paint.js";
 import { currentIntervalRoleArgs, resolveIntervalRoleScales, applyIntervalStatistics } from "../intervals/revision.js";
 import { closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
@@ -333,7 +334,7 @@ export const editErrorBand = /* @__PURE__ */ closedAction(
         if (owner.encoding?.color !== undefined) {
           throw new Error("editErrorBand fill conflicts with a color encoding; remove the color encoding first.");
         }
-        errorBand.fill = validateNonEmptyString(args.fill, "Error-band fill");
+        errorBand.fill = validateFillPaint(args.fill, "Error-band fill");
         config.fill = errorBand.fill;
       }
     }

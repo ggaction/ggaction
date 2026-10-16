@@ -1,3 +1,5 @@
+import { findLayer } from "../../../../selectors/layers.js";
+import { isLinearGradientPaint } from "../../../../grammar/paint.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { validateOptionObject } from "../../../../core/validation.js";
 import { mapOrdinalValues } from "../../../../grammar/scales/index.js";
@@ -105,7 +107,7 @@ function resolveSampleBounds(program, config, width) {
           stroke: layer.stroke ?? (config.channels.includes("stroke")
             ? appearance.strokes[index]
             : appearance.colors[index]),
-          strokeWidth: layer.lineWidth, opacity: layer.opacity,
+          strokeWidth: layer.lineWidth, opacity: layer.opacity ?? appearance.opacity,
           ...requestedStrokeDetails(layer, "Legend line symbol") } };
       }
       if (layer.type === "swatch") {
@@ -115,21 +117,21 @@ function resolveSampleBounds(program, config, width) {
           stroke: config.channels.includes("stroke")
             ? appearance.strokes[index]
             : layer.stroke,
-          opacity: layer.opacity,
+          opacity: layer.opacity ?? appearance.opacity,
           ...requestedStrokeDetails(details, "Legend swatch symbol")
         }, details);
       }
       if (config.channels.includes("shape")) {
         return createPointShapeGraphic({ shape: appearance.shapes[index], x: width / 2, y: 0,
           area: Math.PI * layer.size ** 2, fill: layer.fill ?? appearance.colors[index],
-          stroke: layer.stroke, strokeWidth: layer.strokeWidth, opacity: layer.opacity,
+          stroke: layer.stroke, strokeWidth: layer.strokeWidth, opacity: layer.opacity ?? appearance.opacity,
           ...requestedStrokeDetails(layer, "Legend point symbol") });
       }
       return { type: "circle", properties: { x: width / 2, y: 0, radius: layer.size,
         stroke: config.channels.includes("stroke")
           ? appearance.strokes[index]
           : layer.stroke,
-        strokeWidth: layer.strokeWidth, opacity: layer.opacity,
+        strokeWidth: layer.strokeWidth, opacity: layer.opacity ?? appearance.opacity,
         ...requestedStrokeDetails(layer, "Legend point symbol") } };
     });
     return items.map((item, itemIndex) => {
@@ -171,7 +173,14 @@ export function resolveLayout(program, config) {
 }
 
 export function resolveAppearance(program, config) {
-  let colors = config.domain.map(() => DEFAULT_COLORS.mark);
+  const target = findLayer(program, config.target);
+  const gradientFallback = target?.mark?.type === "area" &&
+    target.encoding.color === undefined &&
+    !config.channels.includes("color") &&
+    isLinearGradientPaint(program.markConfigs[target.id]?.fill);
+  const fallback = gradientFallback
+    ? program.markConfigs[target.id].fill : DEFAULT_COLORS.mark;
+  let colors = config.domain.map(() => fallback);
   let strokes = config.domain.map(() => "white");
   let dashes = config.domain.map(() => []);
   let shapes = config.domain.map(() => "circle");
@@ -183,7 +192,8 @@ export function resolveAppearance(program, config) {
     if (config.channels[index] === "strokeDash") dashes = values;
     if (config.channels[index] === "shape") shapes = values;
   }
-  return { colors, strokes, dashes, shapes };
+  return { colors, strokes, dashes, shapes,
+    ...(gradientFallback ? { opacity: program.markConfigs[target.id].opacity } : {}) };
 }
 
 export function noOptions(args, operation) {
