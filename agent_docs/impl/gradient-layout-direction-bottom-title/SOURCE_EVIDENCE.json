@@ -1,0 +1,346 @@
+{
+  "reviewer": "codex",
+  "sources": [
+    {
+      "id": "vl_0962",
+      "bindings": [
+        {
+          "role": "source.vl.json",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wOTYyL3NvdXJjZS52bC5qc29u",
+          "sha256": "c1239cecd74d3fb9c03693c96fb4f95ab430e4eb3411223ccf36ec470b595213"
+        },
+        {
+          "role": "data.json",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wOTYyL2RhdGEuanNvbg==",
+          "sha256": "48d4f52380526810a2afd3292448e4ee5b7d93004be604834abda6e7bd47a77b"
+        },
+        {
+          "role": "contract.json",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wOTYyL2NvbnRyYWN0Lmpzb24=",
+          "sha256": "3c1f4ff956e62269181480b21da3a839d98b02b2b3f3581763673a03f2696442"
+        },
+        {
+          "role": "reference/chart.svg",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wOTYyL3JlZmVyZW5jZS9jaGFydC5zdmc=",
+          "sha256": "e9e88ce2fe1b2a65ed5c92776c6a6fe65e6ef8a6e6d81e68e17245f7ddb20f2f"
+        },
+        {
+          "role": "reference/compiled.vega.json",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wOTYyL3JlZmVyZW5jZS9jb21waWxlZC52ZWdhLmpzb24=",
+          "sha256": "5a6a0f1e05ca56d04f26beb6a5687342860b201660a9d2c671e3d04194bbf92b"
+        }
+      ],
+      "authoredLegend": [
+        {
+          "direction": "horizontal",
+          "gradientLength": 120,
+          "title": "PP Score",
+          "fill": "color"
+        }
+      ],
+      "canvas": {
+        "width": 359,
+        "height": 256,
+        "margin": {
+          "left": 66,
+          "top": 40,
+          "right": 143,
+          "bottom": 66
+        }
+      },
+      "actualSvgElements": [
+        {
+          "attributes": {
+            "class": "mark-rect role-legend-gradient",
+            "pointer-events": "none"
+          },
+          "children": [
+            {
+              "attributes": {
+                "d": "M0,0h120v16h-120Z",
+                "fill": "url(#gradient_0)",
+                "stroke": "#ddd",
+                "stroke-width": "0",
+                "opacity": "1"
+              },
+              "text": ""
+            }
+          ]
+        },
+        {
+          "attributes": {
+            "class": "mark-text role-legend-title",
+            "pointer-events": "none"
+          },
+          "children": [
+            {
+              "attributes": {
+                "text-anchor": "start",
+                "transform": "translate(0,9)",
+                "font-family": "sans-serif",
+                "font-size": "11px",
+                "font-weight": "bold",
+                "fill": "#000",
+                "opacity": "1"
+              },
+              "text": "PP Score"
+            }
+          ]
+        }
+      ],
+      "actualTitleTextEvidence": [
+        {
+          "role": "legend-title",
+          "text": "PP Score",
+          "x": 234,
+          "y": 49,
+          "font": "sans-serif",
+          "fontSize": 11,
+          "fontWeight": "700",
+          "fontStyle": "normal",
+          "fill": "rgb(0, 0, 0)",
+          "effectiveOpacity": 1,
+          "visible": true,
+          "angle": 0,
+          "bounds": {
+            "left": 234,
+            "right": 282.109375,
+            "top": 39,
+            "bottom": 52
+          }
+        }
+      ],
+      "interpretation": "Authored horizontal strip at right, actual120x16 with visible title."
+    },
+    {
+      "id": "vl_1790",
+      "bindings": [
+        {
+          "role": "source.vl.json",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNzkwL3NvdXJjZS52bC5qc29u",
+          "sha256": "c7d79b0c6deeb0158efa86cfd78e85fd4755117e20a18f80d636fa12ee57497d"
+        },
+        {
+          "role": "data.json",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNzkwL2RhdGEuanNvbg==",
+          "sha256": "e0925483a1174eb585654d6d8e388e8272c6f9d85b80ed795d1a6773a5e9966b"
+        },
+        {
+          "role": "contract.json",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNzkwL2NvbnRyYWN0Lmpzb24=",
+          "sha256": "86eff4b9fb0c4869c2edfe9507c95956daeabdb4db8c412a06d5c6a04b35dbaa"
+        },
+        {
+          "role": "reference/chart.svg",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNzkwL3JlZmVyZW5jZS9jaGFydC5zdmc=",
+          "sha256": "8985f7b317edbb158e00cdf7a2c104bbf2de37cdf55cdb6e339f70e714d12182"
+        },
+        {
+          "role": "reference/compiled.vega.json",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNzkwL3JlZmVyZW5jZS9jb21waWxlZC52ZWdhLmpzb24=",
+          "sha256": "25698b9384713c2a5a64c04c6f2074a2093104e52a9456924b6ddc65f1a9f770"
+        }
+      ],
+      "authoredLegend": [
+        {
+          "gradientLength": 100,
+          "labelOffset": 10,
+          "padding": 16,
+          "tickCount": 1,
+          "title": "Score",
+          "titleOrient": "bottom",
+          "fill": "color"
+        }
+      ],
+      "canvas": {
+        "width": 498,
+        "height": 223,
+        "margin": {
+          "left": 180,
+          "top": 36,
+          "right": 118,
+          "bottom": 37
+        }
+      },
+      "actualSvgElements": [
+        {
+          "attributes": {
+            "class": "mark-rect role-legend-gradient",
+            "pointer-events": "none"
+          },
+          "children": [
+            {
+              "attributes": {
+                "d": "M0,0h16v100h-16Z",
+                "fill": "url(#gradient_0)",
+                "stroke": "#ddd",
+                "stroke-width": "0",
+                "opacity": "1"
+              },
+              "text": ""
+            }
+          ]
+        },
+        {
+          "attributes": {
+            "class": "mark-text role-legend-title",
+            "pointer-events": "none"
+          },
+          "children": [
+            {
+              "attributes": {
+                "text-anchor": "start",
+                "transform": "translate(16,130)",
+                "font-family": "'JetBrains Mono', monospace",
+                "font-size": "11px",
+                "font-weight": "bold",
+                "fill": "var(--color-text-emphasis)",
+                "opacity": "1"
+              },
+              "text": "Score"
+            }
+          ]
+        }
+      ],
+      "actualTitleTextEvidence": [
+        {
+          "role": "legend-title",
+          "text": "Score",
+          "x": 414,
+          "y": 166,
+          "font": "\"JetBrains Mono\", monospace",
+          "fontSize": 11,
+          "fontWeight": "700",
+          "fontStyle": "normal",
+          "fill": "none",
+          "effectiveOpacity": 1,
+          "visible": false,
+          "angle": 0,
+          "bounds": {
+            "left": 414,
+            "right": 447.015625,
+            "top": 156,
+            "bottom": 169
+          }
+        }
+      ],
+      "interpretation": "Authored bottom title of vertical16x100 strip. Frozen standalone CSS variable title paint resolves to none: bounds/position retained, no visible title ink claimed."
+    },
+    {
+      "id": "vl_1791",
+      "bindings": [
+        {
+          "role": "source.vl.json",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNzkxL3NvdXJjZS52bC5qc29u",
+          "sha256": "711efb9d5c7df45491e4ce43398cea0b6a275d412255e11692c828bf4ac9a927"
+        },
+        {
+          "role": "data.json",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNzkxL2RhdGEuanNvbg==",
+          "sha256": "216846d21ec1aaae2c4e46a544d7061c33fd3f5bebe9a863ccd09f917bc80ca8"
+        },
+        {
+          "role": "contract.json",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNzkxL2NvbnRyYWN0Lmpzb24=",
+          "sha256": "a3e7186db10315cffd16d07aeb4233cb82599f02c41e11b4da60dedec5c344f8"
+        },
+        {
+          "role": "reference/chart.svg",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNzkxL3JlZmVyZW5jZS9jaGFydC5zdmc=",
+          "sha256": "e276ea512c6743445094a3c940ef28960cff035f7a9b7bccd0145cd8cd2b6fec"
+        },
+        {
+          "role": "reference/compiled.vega.json",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xNzkxL3JlZmVyZW5jZS9jb21waWxlZC52ZWdhLmpzb24=",
+          "sha256": "5285c3cb09bf4356c7054a070e940146ff316d6631278dc73608fca862adcefd"
+        }
+      ],
+      "authoredLegend": [
+        {
+          "gradientLength": 100,
+          "labelOffset": 10,
+          "padding": 20,
+          "tickCount": 1,
+          "title": "Score",
+          "titleOrient": "bottom",
+          "fill": "color"
+        }
+      ],
+      "canvas": {
+        "width": 500,
+        "height": 223,
+        "margin": {
+          "left": 180,
+          "top": 36,
+          "right": 120,
+          "bottom": 37
+        }
+      },
+      "actualSvgElements": [
+        {
+          "attributes": {
+            "class": "mark-rect role-legend-gradient",
+            "pointer-events": "none"
+          },
+          "children": [
+            {
+              "attributes": {
+                "d": "M0,0h16v100h-16Z",
+                "fill": "url(#gradient_0)",
+                "stroke": "#ddd",
+                "stroke-width": "0",
+                "opacity": "1"
+              },
+              "text": ""
+            }
+          ]
+        },
+        {
+          "attributes": {
+            "class": "mark-text role-legend-title",
+            "pointer-events": "none"
+          },
+          "children": [
+            {
+              "attributes": {
+                "text-anchor": "start",
+                "transform": "translate(20,134)",
+                "font-family": "'JetBrains Mono', monospace",
+                "font-size": "11px",
+                "font-weight": "bold",
+                "fill": "var(--color-text-emphasis)",
+                "opacity": "1"
+              },
+              "text": "Score"
+            }
+          ]
+        }
+      ],
+      "actualTitleTextEvidence": [
+        {
+          "role": "legend-title",
+          "text": "Score",
+          "x": 418,
+          "y": 170,
+          "font": "\"JetBrains Mono\", monospace",
+          "fontSize": 11,
+          "fontWeight": "700",
+          "fontStyle": "normal",
+          "fill": "none",
+          "effectiveOpacity": 1,
+          "visible": false,
+          "angle": 0,
+          "bounds": {
+            "left": 418,
+            "right": 451.015625,
+            "top": 160,
+            "bottom": 173
+          }
+        }
+      ],
+      "interpretation": "Authored bottom title of vertical16x100 strip. Frozen standalone CSS variable title paint resolves to none: bounds/position retained, no visible title ink claimed."
+    }
+  ],
+  "chartPixelsInspected": false,
+  "implementationAdded": false
+}

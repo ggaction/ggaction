@@ -1,0 +1,59 @@
+{
+  "status": "existing-public-gap-confirmed",
+  "runtimeCommit": "c53d1edda3625376b75f3157f798a3b099e1a750",
+  "syntheticPublicProbe": true,
+  "desired": [
+    {
+      "position": "right",
+      "direction": "horizontal",
+      "stripWidth": 120,
+      "stripHeight": 16,
+      "titlePosition": "top"
+    },
+    {
+      "position": "right",
+      "direction": "vertical",
+      "stripWidth": 16,
+      "stripHeight": 100,
+      "titlePosition": "bottom"
+    }
+  ],
+  "variants": [
+    {
+      "name": "legacy-right",
+      "status": "accepted",
+      "objects": {},
+      "svgBytes": 8350
+    },
+    {
+      "name": "legacy-top",
+      "status": "accepted",
+      "objects": {},
+      "svgBytes": 8072
+    },
+    {
+      "name": "right-horizontal",
+      "status": "rejected",
+      "message": "Gradient legend does not accept direction."
+    },
+    {
+      "name": "right-bottom-title",
+      "status": "rejected",
+      "message": "Unsupported legend titlePosition \"bottom\"."
+    },
+    {
+      "name": "edit-horizontal",
+      "status": "rejected",
+      "message": "gradient legend does not accept direction."
+    },
+    {
+      "name": "edit-bottom-title",
+      "status": "rejected",
+      "message": "Unsupported legend titlePosition \"bottom\"."
+    }
+  ],
+  "parentUnchanged": true,
+  "proposalOnly": true,
+  "implementationAdded": false,
+  "chartPixelsInspected": false
+}
