@@ -5,10 +5,10 @@
 - [x] Reproduce the current boundary through ordinary public line actions
 - [x] Preserve the actual 12,070-vertex source/data/compiled/output proof
 - [x] Define the exact limit, compatibility and verification scope
-- [ ] Explicit user approval
+- [x] Explicit user approval
 - [ ] Implementation and full consumer verification
 
-Gate: **ready-for-review**. Proposal only. The root `AGENTS.md` requires explicit approval for this material change to public bounded-resource behavior. No runtime, declaration or persisted-schema implementation is included. Independent chart translation continues; only the affected source waits. Publication, deployment and PR creation are outside this Gate.
+Gate: **approved**. User approval recorded before implementation in `APPROVAL.json`. The root `AGENTS.md` requires explicit approval for this material change to public bounded-resource behavior. No runtime, declaration or persisted-schema implementation is included. Independent chart translation continues; only the affected source waits. Publication, deployment and PR creation are outside this Gate.
 
 ## Problem and proposed behavior
 

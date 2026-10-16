@@ -1,0 +1,8 @@
+{
+  "gate": "approved",
+  "recordedAt": "2026-10-16",
+  "authority": "Explicit human user reply conveyed by parent agent /root before implementation",
+  "approvedScope": "Exact public contract and verification scope of adjacent PROPOSAL.md; no publication, deployment or stable runtime update",
+  "issue": "https://github.com/ggaction/ggaction/issues/192",
+  "approvalEvidence": "Parent task message: USER EXPLICITLY APPROVED all six pending answers now. Please prioritize implement BOTH computed getPath (8fb5dfc0 proposal#189) and replaceLiteral(d7f33b89#190), plus curve command bound20k(d2c1aa8a#192) if capacity."
+}

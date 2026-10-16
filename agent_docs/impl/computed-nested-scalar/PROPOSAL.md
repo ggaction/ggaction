@@ -5,10 +5,10 @@
 - [x] Existing literal-field behavior and missing explicit accessor reproduced
 - [x] Actual nested source paths and missing-row facts frozen by hashes
 - [x] Concrete expression, errors, persistence and test contract prepared
-- [ ] Explicit user approval
+- [x] Explicit user approval
 - [ ] Implementation and full consumer verification
 
-Gate: **ready-for-review**. Proposal only; no runtime/type/schema change. Root `AGENTS.md` requires explicit approval for the new public computed-expression operation and persisted expression shape. Only two affected families wait; independent work continues. Package publishing, deployment and PR creation are outside this decision.
+Gate: **approved**. User approval recorded before implementation in `APPROVAL.json`. Root `AGENTS.md` requires explicit approval for the new public computed-expression operation and persisted expression shape. Only two affected families wait; independent work continues. Package publishing, deployment and PR creation are outside this decision.
 
 ## Problem
 
