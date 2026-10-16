@@ -258,6 +258,9 @@ edge, including the default title color `#334155`. Each block retains its own
 title text, sample sizes, and label gap. A size legend created independently
 keeps its stored styles when added to a categorical legend; its standalone
 default title color remains `#0f172a`.
+Opting into `blockLayout` or moving the group to a corner or free anchor retains
+this typography inheritance and each symbol's paint. Placement and typography
+inheritance are independent, including after Canvas, scale, data, and persistence replay.
 Title spacing also includes labels that are taller than the samples.
 A size border retained from an earlier standalone legend stays inside the
 shared outer border. Other legends place this complete group as one block.

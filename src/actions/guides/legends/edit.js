@@ -252,7 +252,7 @@ function editInterval(program, previous, args, channel = "color") {
   return next.rematerializeLegend();
 }
 
-function resolveSampledLegendEdit(program, kind, previous, args) {
+function resolveSampledLegendEdit(program, kind, previous, args, preserveAppearance = false) {
   const size = kind === "size";
   const label = size ? "size" : "stroke-width";
   const allowed = ["target", "title", "count", "values", "labels", "titleStyle",
@@ -299,7 +299,8 @@ function resolveSampledLegendEdit(program, kind, previous, args) {
     ...(ordinalSize && (args.overflow !== undefined || previous.overflow !== undefined)
       ? { overflow: normalizeLegendOverflow(args.overflow === undefined ? previous.overflow : args.overflow) }
       : {}),
-    ...(size ? { inheritAppearance: false, ...(args.position === undefined ? {} : { inheritPosition: false }) } : {}),
+    ...(size ? { inheritAppearance: preserveAppearance && previous.inheritAppearance === true,
+      ...(args.position === undefined ? {} : { inheritPosition: false }) } : {}),
     labels: normalizeLegendTextOptions(
       args.labels,
       "editLegend.labels",
@@ -319,8 +320,8 @@ function resolveSampledLegendEdit(program, kind, previous, args) {
   return { config, titleMode, title, titleVisible };
 }
 
-function editSampledLegend(program, kind, previous, args) {
-  const { config, titleMode, title, titleVisible } = resolveSampledLegendEdit(program, kind, previous, args);
+function editSampledLegend(program, kind, previous, args, preserveAppearance = false) {
+  const { config, titleMode, title, titleVisible } = resolveSampledLegendEdit(program, kind, previous, args, preserveAppearance);
   const prefix = kind === "size" ? "sizeLegend" : "strokeWidthLegend";
   let next = program;
   if (titleMode === "auto" || typeof titleMode === "string") {
@@ -588,7 +589,7 @@ function editLegendImplementation(args = {}, skipGroup = false) {
           }
           if (["gradient", "strokeGradient"].includes(kind)) delete familyPatch.itemGap;
           if (["series", "color", "stroke"].includes(kind)) next = editCategorical(next, kind, previous, undefined, familyPatch);
-          else if (["size", "strokeWidth"].includes(kind)) next = editSampledLegend(next, kind, previous, familyPatch);
+          else if (["size", "strokeWidth"].includes(kind)) next = editSampledLegend(next, kind, previous, familyPatch, true);
           else if (["interval", "strokeInterval"].includes(kind)) next = editInterval(next, previous, familyPatch, kind === "strokeInterval" ? "stroke" : "color");
           else next = editContinuous(next, kind, previous, familyPatch);
         }

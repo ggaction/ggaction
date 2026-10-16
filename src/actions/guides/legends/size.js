@@ -76,8 +76,7 @@ export function resolveSizeLegendLayout(program, config) {
     program.guideConfigs.legend?.color,
     program.guideConfigs.legend?.stroke
   ]
-    .find(candidate => legendGroup(program, config.target) === undefined && candidate?.target === config.target &&
-      (config.inheritPosition !== false || candidate.position === config.position));
+    .find(candidate => candidate?.target === config.target);
   const inherit = config.inheritAppearance === true && categorical !== undefined;
   const inheritedLabels = inherit ? { ...categorical.labels, offset: config.labels.offset } : config.labels;
   const inheritedTitleStyle = inherit ? categorical.titleStyle : config.titleStyle;
@@ -88,11 +87,15 @@ export function resolveSizeLegendLayout(program, config) {
   });
   const labels = effective.labels;
   const titleStyle = effective.titleStyle;
-  const position = categorical?.position ?? config.position;
+  // Group ownership replaces placement inheritance, never shared typography.
+  const placementCategorical = legendGroup(program, config.target) === undefined &&
+    (config.inheritPosition !== false || categorical?.position === config.position)
+    ? categorical : undefined;
+  const position = placementCategorical?.position ?? config.position;
   if (categorical?.layout === "legacy-bottom") {
     throw new Error('Combined size legends require layout "edge".');
   }
-  const horizontal = categorical !== undefined && ["top", "bottom"].includes(position);
+  const horizontal = placementCategorical !== undefined && ["top", "bottom"].includes(position);
   const geometry = horizontal ? {
     position, align: categorical.align, direction: categorical.direction,
     columns: categorical.columns, titlePosition: categorical.titlePosition,
