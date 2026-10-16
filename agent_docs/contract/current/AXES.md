@@ -132,6 +132,12 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
   explicit rotation은 position default보다 우선한다.
 - font/color contract는 labels와 같고 default font size는 `13`, weight는 `600`이다.
 - Effect: semantic axis title text와 graphical layout/style을 분리 저장한다.
+- `text`의 LF/CRLF/CR hard break는 기존 string 안의 순서·빈 줄을 유지한다. 각 줄은 중심 정렬,
+  `fontSize * 1.2` 간격의 centered block으로 concrete `lines`에 materialize하며 rotation을 block 전체에
+  적용한다. Canvas/label collision은 같은 줄들의 occupied bounds를 사용한다. Single-line은 기존
+  graphic properties를 그대로 유지하고 multiline→single 편집은 stale `lines`만 제거한다.
+- Evidence: `test/unit/actions/guides/axis-title-hard-breaks.test.js` (네 방향, explicit rotation, blank lines,
+  SVG/Canvas, immutable edit, Canvas/scale/facet replay, persistence, overflow/collision atomicity).
 
 ## Shared grid-direction contract
 

@@ -1,3 +1,4 @@
+import { materializeTextLines } from "../../../materialization/textLines.js";
 import { axisThemeTypography } from "../../theme/state.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
@@ -30,6 +31,7 @@ import { findCanvasGraphic, resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import {
   resolveTextBounds,
+  resolveTextLines,
   textBoundsFitCanvas,
   textBoundsIntersect
 } from "../../../core/textMetrics.js";
@@ -38,10 +40,19 @@ import { resolveConcreteGraphicBounds } from
 import { validateAxisTextStyle } from "./labels.js";
 import { resolveRotation } from "../../../grammar/rotation.js";
 
+function titleLines(text, config) {
+  if (!/[\r\n]/u.test(text)) return undefined;
+  const lines = resolveTextLines(text, {
+    fontSize: config.fontSize, align: "center", baseline: "middle", blockAlign: "middle"
+  });
+  return lines.length > 1 ? lines : undefined;
+}
+
 function titleBounds(geometry, config, text, profile) {
   return resolveTextBounds({
     ...geometry,
     text,
+    lines: titleLines(text, config),
     fontSize: config.fontSize,
     fontFamily: config.fontFamily,
     fontWeight: config.fontWeight,
@@ -272,7 +283,7 @@ function makeEdit(channel) {
       rotation: config.rotation
     };
     for (const [property, value] of Object.entries(properties)) next = next.editGraphics({ target: operation.graphic, property, value });
-    return next;
+    return materializeTextLines(next, operation.graphic, titleLines(resolvedText, config));
   }));
 }
 

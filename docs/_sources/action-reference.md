@@ -3004,6 +3004,12 @@ editYAxisTitle({
 })
 ```
 
+Cartesian title `text` keeps explicit line breaks (LF, CRLF, or CR), including
+blank lines. Lines form a centered block with spacing of `fontSize * 1.2`;
+rotation applies to the complete block. Creation, editing, Canvas/scale updates,
+facets and saved programs retain the same lines. Canvas and label-clearance
+checks use their full bounds. Returning to single-line text removes the old lines.
+
 Cartesian title `rotation` accepts a finite legacy number in radians or
 `{ value, unit: "degrees" | "radians" }`. Both forms normalize to concrete
 radians. Polar component `angle` remains degree-valued placement.

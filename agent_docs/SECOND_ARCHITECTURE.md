@@ -2008,3 +2008,7 @@ Plot border 포함 packed 실측780,011bytes와 검색 payload810,074bytes가 �
 동일 title의 single-line concrete graphics는 변경 직전 commit과11범례 family×4edge의44경우에서 정확히 일치했다. Multiline 회귀는11family×4edge의 ordered lines, SVG/Canvas, blank/CRLF/CR, creation/edit convergence, persistence, immutable overflow를 검증한다. Unit2,966/2,966, contracts532/532, docs120/120, 마지막 boundary/package/bundle-truth focused15/15와 installed public basic/full consumer를 통과했다. 기존 lane의 private `inferredOffset` marker assertion도 현재 persisted grammar와 동기화했다.
 
 기존 categorical `labelMap`의 빈 표시 문자열은 category/symbol/item slot을 보존하며 concrete text item만 생략한다. 기존 categorical materializer와 lane owner가 빈 label collection을 처리하므로 새 module, state owner, renderer inference는 없다. Title 빈 줄 수정과 이 복원을 포함한 packed 최종 실측791,041bytes가791,000bytes 한도를 초과하여 기존 최소1,000bytes 단위 정책으로 packed 한도만792,000bytes로 조정한다. Entry562와 unpacked3,886,248bytes는 기존562/3,900,000 한도 내이며 browser/SVG 한도는 유지한다. 이전 packed 한도 통과로 보고하지 않는다.
+
+### 축 title hard break의 concrete line 소유권
+
+기존 축 title 문자열의 명시적 hard break는 같은 core line resolver와 concrete text `lines`를 재사용한다. 축 title domain action은 기존 위치·회전·원자적 bounds 검증을 유지하며, optional derived line property의 추가·제거는 `materialization/textLines.js`가 소유한다. 기존 범례 materializer도 이 좁은 helper를 호출하므로 action 계층의 직접 graphicSpec 복제나 renderer newline 추론을 추가하지 않는다. 새 공개 API나 persisted schema는 없다. 새 private module 하나에 따라 package entry 한도만562에서563으로 조정한다. Packed 실측791,403bytes와 unpacked3,887,466bytes는 기존792,000/3,900,000bytes 한도 안에 있으며 browser/SVG 한도는 유지한다. 이전 entry 한도 통과로 보고하지 않는다.

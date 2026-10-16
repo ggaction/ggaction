@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:6bf3466e5b330ff481e0fdf4ebf69e3dd0e6536d38bc7ebe6fdf21d6052ed15d. Status: development. Runtime source: 21a2ad91a3f333dce199b81da89fa490fca94579. Release baseline: v0.0.13.
+Contract: sha256:00332d137571d2587b9e51e546f80ec4d3036d03f720411701f1e85c9a287d54. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/21a2ad91a3f333dce199b81da89fa490fca94579/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/21a2ad91a3f333dce199b81da89fa490fca94579/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -26034,6 +26034,12 @@ editYAxisTitle({
 })
 ```
 
+Cartesian title `text` keeps explicit line breaks (LF, CRLF, or CR), including
+blank lines. Lines form a centered block with spacing of `fontSize * 1.2`;
+rotation applies to the complete block. Creation, editing, Canvas/scale updates,
+facets and saved programs retain the same lines. Canvas and label-clearance
+checks use their full bounds. Returning to single-line text removes the old lines.
+
 Cartesian title `rotation` accepts a finite legacy number in radians or
 `{ value, unit: "degrees" | "radians" }`. Both forms normalize to concrete
 radians. Polar component `angle` remains degree-valued placement.
@@ -27202,6 +27208,7 @@ Related types: [`AxisValue`](./reference/types/#type-axisvalue) · [`CartesianAx
 
 ```typescript
 export interface AxisTitleOptions<P extends string> {
+  /** Hard breaks retain ordered centered lines, spaced at 1.2 times fontSize. */
   text?: string;
   scale?: string;
   position?: P;
@@ -37122,12 +37129,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/21a2ad91a3f333dce199b81da89fa490fca94579/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/21a2ad91a3f333dce199b81da89fa490fca94579/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39253,9 +39260,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:6bf3466e5b330ff481e0fdf4ebf69e3dd0e6536d38bc7ebe6fdf21d6052ed15d` |
+| Contract fingerprint | `sha256:00332d137571d2587b9e51e546f80ec4d3036d03f720411701f1e85c9a287d54` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `21a2ad91a3f333dce199b81da89fa490fca94579` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |
@@ -39449,6 +39456,10 @@ intersection while Canvas overflow and axis-title collisions still fail.
 that reset cannot include `wrap` or `lineHeight` in the same call. Canvas and
 scale replay rebuild the same lines from the stored policy. The 10,000-item
 limit applies after wrapping.
+
+Cartesian title text preserves explicit hard line breaks as a centered block.
+See [axis-title text and rotation](./reference/actions/guides/#ticklabel-groups-and-axis-titles)
+for line spacing, blank lines and bounds checks.
 
 Cartesian title `rotation` accepts a finite legacy number in radians or an
 explicit `{ value, unit: "degrees" | "radians" }` object. Both forms normalize

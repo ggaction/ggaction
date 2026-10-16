@@ -173,6 +173,10 @@ that reset cannot include `wrap` or `lineHeight` in the same call. Canvas and
 scale replay rebuild the same lines from the stored policy. The 10,000-item
 limit applies after wrapping.
 
+Cartesian title text preserves explicit hard line breaks as a centered block.
+See [axis-title text and rotation](../../reference/actions/guides.md#ticklabel-groups-and-axis-titles)
+for line spacing, blank lines and bounds checks.
+
 Cartesian title `rotation` accepts a finite legacy number in radians or an
 explicit `{ value, unit: "degrees" | "radians" }` object. Both forms normalize
 to radians before materialization. This does not change the degree-valued

@@ -1367,6 +1367,7 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
   labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 }
 export interface AxisTitleOptions<P extends string> {
+  /** Hard breaks retain ordered centered lines, spaced at 1.2 times fontSize. */
   text?: string;
   scale?: string;
   position?: P;
