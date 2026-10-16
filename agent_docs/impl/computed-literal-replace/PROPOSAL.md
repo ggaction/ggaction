@@ -5,10 +5,10 @@
 - [x] Reproduce rejection by existing numeric conversion and the proposed operation
 - [x] Preserve actual source/data/compiled/SVG hashes and string-value facts
 - [x] Specify the public expression, errors, persistence and verification scope
-- [ ] Explicit user approval
+- [x] Explicit user approval
 - [ ] Implementation and full consumer verification
 
-Gate: **ready-for-review**. Proposal only; no runtime, type or stored-schema change. Root `AGENTS.md` requires explicit approval for this new public expression and persisted node shape. Independent chart translation continues. Package publication, documentation deployment and PR creation are outside this Gate.
+Gate: **approved**. User approval recorded before implementation in `APPROVAL.json`. Root `AGENTS.md` requires explicit approval for this new public expression and persisted node shape. Independent chart translation continues. Package publication, documentation deployment and PR creation are outside this Gate.
 
 ## Required behavior
 
