@@ -269,6 +269,8 @@ Title spacing also includes labels that are taller than the samples.
 A size border retained from an earlier standalone legend stays inside the
 shared outer border. Other legends place this complete group as one block.
 Combined legends require `layout: "edge"`; `"legacy-bottom"` is unsupported.
+A separately positioned size legend can coexist with a categorical
+`"legacy-bottom"` legend on another edge. Each keeps its own placement and styles.
 
 ## Related
 

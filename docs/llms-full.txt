@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:fac41fd66393fd4e1a07c7a94df35e464997b9150c58a5e7d28c184e1ecc45df. Status: development. Runtime source: 26e870f50380e3d893966a18a3dad389514d5c6d. Release baseline: v0.0.13.
+Contract: sha256:c9a0868c2a7da1e802731add96abdbd1a059cf9998c4d54a68db0aa700d1f65e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/26e870f50380e3d893966a18a3dad389514d5c6d/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/26e870f50380e3d893966a18a3dad389514d5c6d/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12872,6 +12872,8 @@ Title spacing also includes labels that are taller than the samples.
 A size border retained from an earlier standalone legend stays inside the
 shared outer border. Other legends place this complete group as one block.
 Combined legends require `layout: "edge"`; `"legacy-bottom"` is unsupported.
+A separately positioned size legend can coexist with a categorical
+`"legacy-bottom"` legend on another edge. Each keeps its own placement and styles.
 
 ## Related
 
@@ -37073,12 +37075,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/26e870f50380e3d893966a18a3dad389514d5c6d/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/26e870f50380e3d893966a18a3dad389514d5c6d/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39204,9 +39206,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:fac41fd66393fd4e1a07c7a94df35e464997b9150c58a5e7d28c184e1ecc45df` |
+| Contract fingerprint | `sha256:c9a0868c2a7da1e802731add96abdbd1a059cf9998c4d54a68db0aa700d1f65e` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
-| Runtime source commit | `26e870f50380e3d893966a18a3dad389514d5c6d` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |

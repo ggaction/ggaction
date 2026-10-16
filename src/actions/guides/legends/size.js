@@ -92,7 +92,7 @@ export function resolveSizeLegendLayout(program, config) {
     (config.inheritPosition !== false || categorical?.position === config.position)
     ? categorical : undefined;
   const position = placementCategorical?.position ?? config.position;
-  if (categorical?.layout === "legacy-bottom") {
+  if (placementCategorical?.layout === "legacy-bottom") {
     throw new Error('Combined size legends require layout "edge".');
   }
   const horizontal = placementCategorical !== undefined && ["top", "bottom"].includes(position);
