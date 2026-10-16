@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.17.
 
-Contract: sha256:415c8ea1bda42de7bd271176e79191473d54756d303564521fe1f6542a4669d7. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:a9b3b17a7bd2f0e0cb2b6fe97e4ab0b961198a4566d98511f93107002fc7986e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -15257,7 +15257,9 @@ program.editXAxisTitle({ text: "Engine horsepower", at: "start" });
 
 Default title placement is centered. x uses offset 42 and rotation 0. y uses
 offset 52 with rotation `-Math.PI / 2` on the left or `Math.PI / 2` on the
-right. An explicit rotation remains unchanged when the position is edited.
+right. When labels require a tight Canvas margin, an inferred rotated y title larger than the default title size reserves a
+quarter of the title font size beyond its estimated text box for font ink.
+Explicit offsets keep their exact placement. An explicit rotation remains unchanged when the position is edited.
 The legacy numeric form remains radians. For a unit-visible call, use for
 example `rotation: { value: -90, unit: "degrees" }`; the stored concrete title
 rotation is normalized to radians. Radial-axis `angle` remains a separate
@@ -39361,7 +39363,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:415c8ea1bda42de7bd271176e79191473d54756d303564521fe1f6542a4669d7` |
+| Contract fingerprint | `sha256:a9b3b17a7bd2f0e0cb2b6fe97e4ab0b961198a4566d98511f93107002fc7986e` |
 | Example and dataset source | `69353bac611e6c5b4f5d50288842f540ba5470cd` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
