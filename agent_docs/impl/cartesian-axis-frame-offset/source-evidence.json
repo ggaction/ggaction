@@ -1,0 +1,79 @@
+{
+  "reviewer": "codex",
+  "status": "confirmed-existing-public-gap-pending-root-review",
+  "runtimeCommit": "7971cc4cd9a1e5f26aa690e2d2083a60df8bb0a2",
+  "sourceAuthoredOffsets": {
+    "x": 20,
+    "y": 20
+  },
+  "compiledOffsets": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "offset": 20
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "offset": 20
+    }
+  ],
+  "actualSourceSvgAxisLocalTranslations": [
+    "0.5,520.5",
+    "-19.5,0.5"
+  ],
+  "sourcePlot": {
+    "width": 600,
+    "height": 500
+  },
+  "genericPublicRejection": {
+    "message": "Unknown createXAxis option \"offset\".",
+    "name": "Error"
+  },
+  "genericLabelOffsetSurrogate": {
+    "xAxisLine": {
+      "x1": 100,
+      "y1": 600,
+      "x2": 700,
+      "y2": 600,
+      "stroke": "#334155",
+      "strokeWidth": 1
+    },
+    "yAxisLine": {
+      "x1": 100,
+      "y1": 600,
+      "x2": 100,
+      "y2": 100,
+      "stroke": "#334155",
+      "strokeWidth": 1
+    },
+    "expectedOutwardAxisY": 620,
+    "expectedOutwardAxisX": 80,
+    "reason": "Moving labels alone does not displace axis domain/ticks; source applies20px to completeaxis."
+  },
+  "bindings": [
+    {
+      "sha256": "ffd405b292fcf4c487e99db07e2d07cc41e952b6a78b9f9ac7175e6247f01537",
+      "role": "source.vl.json",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wMTEzL3NvdXJjZS52bC5qc29u"
+    },
+    {
+      "sha256": "e91f5e35faeb6cf3387995c5c72b3fbcf9920912882839dd21780519198af7bf",
+      "role": "data.json",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wMTEzL2RhdGEuanNvbg=="
+    },
+    {
+      "sha256": "cad4f47e013357373315a142df60f24cf3c986e5ab909a6b32a6cc3516533c2b",
+      "role": "compiled-reference-specification",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wMTEzL3JlZmVyZW5jZS9jb21waWxlZC52ZWdhLmpzb24="
+    },
+    {
+      "sha256": "bb7190377a7a3b5fd9403c53a4fead1260f9a0d269031403326005a996540065",
+      "role": "reference/chart.svg",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wMTEzL3JlZmVyZW5jZS9jaGFydC5zdmc="
+    }
+  ],
+  "modelCalls": 0,
+  "chartPixelsInspected": false,
+  "pathEncoding": "Base64 UTF-8 absolute source-evidence paths"
+}

@@ -1,0 +1,68 @@
+{
+  "status": "gap-confirmed",
+  "rejections": [
+    {
+      "operation": "complete creation",
+      "name": "Error",
+      "message": "Unknown createXAxis option \"offset\"."
+    },
+    {
+      "operation": "whole X edit",
+      "name": "Error",
+      "message": "Unknown editXAxis option \"offset\"."
+    },
+    {
+      "operation": "whole Y edit",
+      "name": "Error",
+      "message": "Unknown editYAxis option \"offset\"."
+    }
+  ],
+  "parentImmutable": true,
+  "marksUnchanged": true,
+  "genericPlot": {
+    "left": 100,
+    "top": 100,
+    "width": 600,
+    "height": 500
+  },
+  "requestedOutwardOffset": 20,
+  "labelOnlySurrogate": {
+    "xAxisLine": {
+      "x1": 100,
+      "y1": 600,
+      "x2": 700,
+      "y2": 600,
+      "stroke": "#334155",
+      "strokeWidth": 1
+    },
+    "yAxisLine": {
+      "x1": 100,
+      "y1": 600,
+      "x2": 100,
+      "y2": 100,
+      "stroke": "#334155",
+      "strokeWidth": 1
+    }
+  },
+  "expectedCompleteFrame": {
+    "bottomAxisY": 620,
+    "leftAxisX": 80
+  },
+  "sourceModuleBindings": [
+    {
+      "path": "src/actions/guides/axes/axis.js",
+      "sha256": "35d3a48195ffc22aaad42ce8a8873b5253d881fd024eb47f28cade30a3735cbb"
+    },
+    {
+      "path": "src/actions/guides/axes/edit.js",
+      "sha256": "bf0553fb1b12024ead93dbf61a29fa6b44ab5228e8a8f22738f94a187fd3d4c2"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "a445200294d25cfa5ad81f35410c6389ef31ca5bdf70cb09b26eb577611bc7d4"
+    }
+  ],
+  "newPublicAPIImplemented": false,
+  "modelCalls": 0,
+  "chartPixelsInspected": false
+}
