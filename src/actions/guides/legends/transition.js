@@ -9,6 +9,7 @@ import {
   resolveLegendBlock
 } from "./target.js";
 import { validateLegendBlockOverride } from "./blocks.js";
+import { DEFAULT_VERTICAL_LEGEND_ITEM_GAP } from "../../../theme/defaults.js";
 
 const family = (channel, type) => isContinuousColorScaleType(type)
   ? channel === "stroke" ? "strokeGradient" : "gradient"
@@ -22,7 +23,7 @@ const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 function categoricalFamilyCustom(program, kind, stored) {
   const side = ["left", "right"].includes(stored.position);
   const direction = side ? "vertical" : "horizontal";
-  const itemGap = side ? 28 : stored.position === "top" ? 24 : 20;
+  const itemGap = side ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : stored.position === "top" ? 24 : 20;
   const order = program.semanticSpec.guides.legend?.[kind]?.order;
   return stored.inferredSymbol !== true ||
     stored.direction !== direction ||

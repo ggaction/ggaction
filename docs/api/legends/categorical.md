@@ -101,7 +101,7 @@ preserves its remaining shape legend.
 | `symbol` | `"auto"`, shorthand object, or layered recipe | inferred from mark |
 | `labels` | label style object | default sans-serif label style |
 | `titleStyle` | title style object | default sans-serif title style |
-| `itemGap` | positive number | `28` at either side, `24` at top, `20` at bottom |
+| `itemGap` | positive number | `18` for vertical items; horizontal items keep `24` at top and `20` at bottom |
 | `border` | boolean or border style object | `false` |
 | `count` | size-legend symbol count from `2` through `10,000` | `5` for point legends |
 | `gradient` | `{ length?, thickness? }` with positive values | `{ length: 120, thickness: 12 }` |

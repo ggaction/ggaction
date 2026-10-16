@@ -31,7 +31,7 @@ export function createCarsWeightedRulePrimitives(cars) {
     (_, index) => WEIGHT_DOMAIN[0] + index / 4 *
       (WEIGHT_DOMAIN[1] - WEIGHT_DOMAIN[0])
   );
-  const legendY = legendValues.map((_, index) => MARGIN.top + 38.5 + index * 32);
+  const legendY = legendValues.map((_, index) => MARGIN.top + 38.5 + index * 18);
   const legendX = WIDTH - MARGIN.right + 30;
 
   return chart()

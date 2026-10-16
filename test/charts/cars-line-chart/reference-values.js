@@ -171,7 +171,7 @@ export function createCarsLineChartValues(cars, { width, height, margin }) {
       strokeDash: item.strokeDash,
       x1: width - margin.right + 9,
       x2: width - margin.right + 41,
-      y: bounds.y + 38.5 + index * 28,
+      y: bounds.y + 38.5 + index * 18,
       labelX: width - margin.right + 52
     }))
   };

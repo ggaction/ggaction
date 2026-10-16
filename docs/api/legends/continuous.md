@@ -93,7 +93,8 @@ before the next sample. `labels.offset` and `itemGap` override those distances.
 All sample spacing includes half the stroke width around the circle. Label
 offset measures the visible edge-to-edge gap; its non-inline default is 12.
 
-At either side, `itemGap` is a minimum center pitch and grows to fit the largest
+Vertical sampled and interval legends default to `itemGap: 18`. At either side,
+`itemGap` is a minimum center pitch and grows to fit the largest
 sample or label. A visible title keeps at least 12 pixels before the first item.
 Top/bottom legends with a top title use equal center spacing of at least 56
 pixels and twice `itemGap`, enlarged when needed to keep `itemGap` between

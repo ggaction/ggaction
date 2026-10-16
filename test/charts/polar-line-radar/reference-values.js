@@ -301,7 +301,7 @@ function buildLegend(target, domain, title, colors) {
     x1: domain.map(() => x + 1),
     x2: domain.map(() => x + 33),
     labelX: domain.map(() => x + 44),
-    itemY: domain.map((_, index) => target.margin.top + 38.5 + index * 28),
+    itemY: domain.map((_, index) => target.margin.top + 38.5 + index * 18),
     titleX: x,
     titleY: target.margin.top
   };

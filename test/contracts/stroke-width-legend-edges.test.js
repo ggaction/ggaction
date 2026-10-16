@@ -4,8 +4,8 @@ import { assertChartProgramsEquivalent } from "../support/chart-equivalence.js";
 import { chart } from "../../src/index.js";
 import { assertRenderedPNG } from "../support/png.js";
 const edgeReferences = {
-  right: { x: [795,795], y: [252,284], labelX: [844,844], title: [790,220], align: "left" },
-  left: { x: [146.36,146.36], y: [252,284], labelX: [195.36,195.36], title: [141.36,220], align: "left" },
+  right: { x: [795,795], y: [252,270], labelX: [844,844], title: [790,220], align: "left" },
+  left: { x: [146.36,146.36], y: [252,270], labelX: [195.36,195.36], title: [141.36,220], align: "left" },
   top: { x: [424.02,517.3399999999999], y: [164,164], labelX: [473.02,566.3399999999999], title: [500,139.5], align: "center" },
   bottom: { x: [424.02,517.3399999999999], y: [561,561], labelX: [473.02,566.3399999999999], title: [500,536.5], align: "center" }
 };

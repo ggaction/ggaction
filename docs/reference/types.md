@@ -5070,6 +5070,7 @@ export interface EditLegendLayoutOptions {
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
   titlePosition?: "top" | "left";
+  /** Explicit spacing override; vertical creation defaults to 18 logical pixels. */
   itemGap?: number;
 }
 ```
@@ -7485,6 +7486,7 @@ export interface LegendOptions {
   labels?: LegendTextOptions;
   /** New categorical+size blocks share typography on every edge; retained standalone size styles remain independent. */
   titleStyle?: LegendTitleStyleOptions;
+  /** Vertical items default to 18 logical pixels; the pitch grows to fit samples and labels. */
   itemGap?: number;
   border?: boolean | LegendBorderOptions;
 }

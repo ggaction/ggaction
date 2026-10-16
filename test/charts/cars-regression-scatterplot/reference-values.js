@@ -576,7 +576,7 @@ export function createCarsRegressionScatterplotValues(
   const sizeLegendX = originLegendX;
   const originLegendItems = groupDomain.map((group, index) => {
     // The 13px title starts at the plot top; retain the existing title-to-item gap.
-    const y = bounds.y + 38.5 + index * 28;
+    const y = bounds.y + 38.5 + index * 18;
     const radius = Math.sqrt(64 / Math.PI);
     const side = radius * Math.sqrt(Math.PI);
     const shape = shapeRange[index];
@@ -594,14 +594,16 @@ export function createCarsRegressionScatterplotValues(
           }
         };
     } else if (shape === "diamond") {
+      // Build the polygon before translating the whole side lane up13.5px.
+      // This preserves the literal coordinate addition order of the primitive.
       const diamondRadius = Math.sqrt(64 / 2);
       symbol = {
         type: "path",
         properties: {
           commands: [
-            { op: "M", x: originLegendX + 16, y: y - diamondRadius },
+            { op: "M", x: originLegendX + 16, y: (y + 13.5 - diamondRadius) - 13.5 },
             { op: "L", x: originLegendX + 16 + diamondRadius, y },
-            { op: "L", x: originLegendX + 16, y: y + diamondRadius },
+            { op: "L", x: originLegendX + 16, y: (y + 13.5 + diamondRadius) - 13.5 },
             { op: "L", x: originLegendX + 16 - diamondRadius, y },
             { op: "Z" }
           ],
@@ -647,10 +649,10 @@ export function createCarsRegressionScatterplotValues(
       (sizeDomain[1] - sizeDomain[0])
   );
   // A 24px block gap follows the last 12px category label.
-  const sizeLegendTitleY = bounds.y + 68.5 + (groupDomain.length - 1) * 28;
+  const sizeLegendTitleY = bounds.y + 68.5 + (groupDomain.length - 1) * 18;
   const sizeLegendItems = sizeLegendValues.map((value, index) => {
     const area = mapValue(value, sizeDomain, sizeRange);
-    const y = sizeLegendTitleY + 38.5 + index * 40;
+    const y = sizeLegendTitleY + 38.5 + index * 18;
     return {
       value,
       symbol: {

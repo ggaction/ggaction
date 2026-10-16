@@ -5,8 +5,8 @@ import { chart } from "../../src/index.js";
 import { assertRenderedPNG } from "../support/png.js";
 // Stroke0.5 expands each14px swatch slot to14.5px; label gap remains8px.
 const edgeReferences = {
-  right: { x: [790.25,790.25], y: [252,280], labelX: [812.5,812.5], title: [790,220], align: "left" },
-  left: { x: [165.07,165.07], y: [252,280], labelX: [187.32,187.32], title: [164.82,220], align: "left" },
+  right: { x: [790.25,790.25], y: [252,270], labelX: [812.5,812.5], title: [790,220], align: "left" },
+  left: { x: [165.07,165.07], y: [252,270], labelX: [187.32,187.32], title: [164.82,220], align: "left" },
 };
 // Side title bounds start at the 200px plot top, 13.5px above their old bounds.
 for (const edge of ["left", "right"]) {

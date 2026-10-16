@@ -325,7 +325,7 @@ export function createCategoricalPalettePrimitiveValues(cars) {
   const domain = Object.freeze(["USA", "Japan", "Europe"]);
   const range = Object.freeze(SET2_COLORS.slice(0, domain.length));
   const itemStartY = 62.5;
-  const itemGap = 28;
+  const itemGap = 18;
   return Object.freeze({
     baseline,
     domain,
@@ -445,7 +445,7 @@ export function createFieldOpacityPrimitiveValues(cars) {
     mapLinear(index, [0, count - 1], domain)
   );
   const legendStartY = CONTINUOUS_LEGEND.startY + CONTINUOUS_LEGEND.sideTitleShift;
-  const legendGap = 28;
+  const legendGap = 18;
 
   return Object.freeze({
     baseline,

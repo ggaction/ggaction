@@ -153,7 +153,7 @@ function buildLegend(
   const symbolWidth = 14;
   const symbolHeight = 12;
   const labelOffset = 8;
-  const itemGap = 24;
+  const itemGap = 18;
   const titleGap = 20;
   const titleText = "Origin";
   const textWidth = (text, fontSize, weightFactor = 1) => [...String(text)]

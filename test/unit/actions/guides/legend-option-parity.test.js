@@ -47,10 +47,11 @@ test("moving a continuous legend to a side preserves alignment intent until expl
       const base = source(kind);
       const p = base.createLegend({ position, align, border: true });
       rejectsUnchanged(p, () => p.editLegendLayout({ position: side }), /center alignment/);
+      const spacing = kind === "gradient" ? {} : { itemGap: p.guideConfigs.legend[kind].itemGap };
       const q = p.editLegendLayout({ position: side, align: "center" });
-      assert.deepEqual(q.graphicSpec, base.createLegend({ position: side, align: "center", border: true }).graphicSpec);
+      assert.deepEqual(q.graphicSpec, base.createLegend({ position: side, align: "center", border: true, ...spacing }).graphicSpec);
       assert.deepEqual(q.editCanvas({ width: 1240 }).graphicSpec,
-        base.editCanvas({ width: 1240 }).createLegend({ position: side, border: true }).graphicSpec);
+        base.editCanvas({ width: 1240 }).createLegend({ position: side, border: true, ...spacing }).graphicSpec);
     }
   }
 });

@@ -21,7 +21,7 @@ import {
 } from "../../../../grammar/numeric.js";
 import { resolveGraphicBounds, canvasOverflowError } from "../../../../layout/canvas.js";
 import { isHorizontalEdgeLegend } from "../../../../layout/legendLane.js";
-import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
+import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY, DEFAULT_VERTICAL_LEGEND_ITEM_GAP } from
   "../../../../theme/defaults.js";
 import { findLayer } from "../../../../selectors/layers.js";
 import { isOpacityLegendLayer } from "../../../../materialization/legends.js";
@@ -75,8 +75,11 @@ export function normalizeInitialLegendTitle(title, fallback) {
 }
 
 export function normalizeItemLegendConfig(args, encoding, itemGap) {
+  const side = ["right", "left"].includes(args.position ?? "right");
+  const direction = args.direction ?? (side ? "vertical" : "horizontal");
+  const defaultGap = direction === "vertical" ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : itemGap;
   return {
-    ...normalizeItemLegendLayout({ ...args, itemGap: args.itemGap ?? itemGap }),
+    ...normalizeItemLegendLayout({ ...args, itemGap: args.itemGap ?? defaultGap }),
     ...normalizeInitialLegendTitle(args.title, encoding.field),
     labels: normalizeLegendTextOptions(args.labels, "createLegend.labels", ITEM_LEGEND_LABELS),
     titleStyle: normalizeLegendTitleOptions(args.titleStyle, "createLegend.titleStyle", ITEM_LEGEND_TITLE_STYLE),
@@ -184,7 +187,8 @@ export function normalizeContinuousLegend(args, kind) {
       "Only horizontal opacity legends support left titlePosition."
     );
   }
-  const itemGap = args.itemGap ?? (titlePosition === "left" ? 20 : 28);
+  const itemGap = args.itemGap ?? (kind === "opacity" && ["right", "left"].includes(position)
+    ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : titlePosition === "left" ? 20 : 28);
   validatePositive(itemGap, "Legend itemGap");
   if (kind === "gradient") {
     for (const key of ["symbol", "columns", "direction", "itemGap"]) {
@@ -424,7 +428,7 @@ export function normalizeItemLegendLayout(args) {
     throw new Error("Side item legends require vertical direction, center alignment, top title and one column.");
   }
   const offset = args.offset ?? 30;
-  const itemGap = args.itemGap ?? 28;
+  const itemGap = args.itemGap ?? (direction === "vertical" ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : 28);
   validateNonNegative(offset, "Legend offset");
   validatePositive(itemGap, "Legend itemGap");
   return { position, layout, align, direction, columns, titlePosition, offset, itemGap };

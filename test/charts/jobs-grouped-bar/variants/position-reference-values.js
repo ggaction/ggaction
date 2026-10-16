@@ -86,11 +86,11 @@ function legend(groups, bounds, title = "sex") {
       label: group,
       color: COLORS[index % COLORS.length],
       x: x + 0.25,
-      y: bounds.y + 32.5 + index * 28,
+      y: bounds.y + 32.5 + index * 18,
       width: 14,
       height: 12,
       labelX: x + 22.5,
-      labelY: bounds.y + 32.5 + index * 28
+      labelY: bounds.y + 32.5 + index * 18
     }))
   };
 }

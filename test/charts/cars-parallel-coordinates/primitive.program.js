@@ -16,7 +16,7 @@ export function createCarsParallelPrimitiveResult(cars) {
   const legend = Object.entries(PARALLEL_COLORS).map(([label, color], index) => ({
     color,
     label,
-    y: 148.5 + index * 28
+    y: 148.5 + index * 18
   }));
   const program = chart()
     .createCanvas({

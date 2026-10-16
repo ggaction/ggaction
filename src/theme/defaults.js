@@ -4,6 +4,7 @@ export { DEFAULT_FONT_FAMILY };
 export const DEFAULT_POINT_RADIUS = 3;
 export const AXIS_LABEL_FONT_SIZES = Object.freeze({ cartesian: 12, polar: 11, parallel: 11 });
 export const AXIS_TITLE_FONT_SIZE = 13;
+export const DEFAULT_VERTICAL_LEGEND_ITEM_GAP = 18;
 
 export const DEFAULT_COLORS = Object.freeze({
   mark: "#4c78a8",

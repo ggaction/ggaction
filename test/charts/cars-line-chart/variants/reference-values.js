@@ -262,7 +262,7 @@ function createSeriesValues(
     throw new Error("Every line-series primitive requires at least two points.");
   }
 
-  const legendY = Object.freeze(keys.map((_, index) => 118.5 + index * 28));
+  const legendY = Object.freeze(keys.map((_, index) => 118.5 + index * 18));
   return Object.freeze({
     validCars: Object.freeze(rows.map(item => item.row)),
     keys: Object.freeze(keys),

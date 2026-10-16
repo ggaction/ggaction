@@ -10,7 +10,7 @@ import {
   validateKeys,
   validateObject
 } from "./validation.js";
-import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
+import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY, DEFAULT_VERTICAL_LEGEND_ITEM_GAP } from
   "../../../../theme/defaults.js";
 
 export const CHANNELS = CATEGORICAL_LEGEND_CHANNELS;
@@ -141,8 +141,8 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
   const columns = args.columns;
   const offset = args.offset ?? 8;
   const titlePosition = args.titlePosition ?? "top";
-  const itemGap = args.itemGap ?? (["right", "left"].includes(position)
-    ? 28
+  const itemGap = args.itemGap ?? (direction === "vertical"
+    ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP
     : position === "top" ? 24 : 20);
   const layout = args.layout === undefined ? "edge" : args.layout;
   if (!["edge", "legacy-bottom"].includes(layout)) {

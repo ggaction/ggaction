@@ -21,7 +21,7 @@ test("edits standalone size content and replays exact equal-area samples and sty
   const args = { count: 3, title: "Mass", labels: { color: "#123456", fontWeight: 700 }, titleStyle: { color: "#654321" } };
   const q = p.editLegend(args);
   assert.deepEqual(props(q, "sizeLegendSymbols", "radius"), [2, Math.sqrt(20), 6]);
-  assert.deepEqual(props(q, "sizeLegendSymbols", "y"), [78.5, 118.5, 158.5]);
+  assert.deepEqual(props(q, "sizeLegendSymbols", "y"), [78.5, 96.5, 114.5]);
   assert.deepEqual(props(q, "sizeLegendLabels", "text"), ["10", "20", "30"]);
   assert.deepEqual(props(q, "sizeLegendLabels", "x"), [534, 534, 534]);
   assert.equal(q.semanticSpec.guides.legend.size.title, "Mass");

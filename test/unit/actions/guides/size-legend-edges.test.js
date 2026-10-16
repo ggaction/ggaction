@@ -27,12 +27,13 @@ test("Full and Basic create size content with four-edge layout and sampled areas
 test("size edge edits and content replacement converge with direct creation and Canvas replay", () => {
   for (const from of edges) for (const position of edges) {
     const original = base().createLegend({ position: from, border: true });
+    const itemGap = original.guideConfigs.legend.size.itemGap;
     const actual = original.editLegendLayout({ position });
-    assert.deepEqual(actual.graphicSpec, base().createLegend({ position, border: true }).graphicSpec);
+    assert.deepEqual(actual.graphicSpec, base().createLegend({ position, border: true, itemGap }).graphicSpec);
     assert.deepEqual(actual.editCanvas({ width: 1100 }).graphicSpec,
       original.editCanvas({ width: 1100 }).editLegend({ position }).graphicSpec);
     assert.deepEqual(actual.editLegend({ channels: ["size"], position }).graphicSpec, actual.graphicSpec);
-    assert.deepEqual(actual.removeLegend().createLegend({ position, border: true }).graphicSpec, actual.graphicSpec);
+    assert.deepEqual(actual.removeLegend().createLegend({ position, border: true, itemGap }).graphicSpec, actual.graphicSpec);
     const noBorder = actual.editLegend({ border: false });
     assert.equal(noBorder.graphicSpec.objects.sizeLegendBackground, undefined);
     assert.deepEqual(noBorder.editLegend({ border: true }).graphicSpec, actual.graphicSpec);

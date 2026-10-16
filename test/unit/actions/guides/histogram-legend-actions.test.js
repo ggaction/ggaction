@@ -45,10 +45,10 @@ test("creates an inferred right-side histogram color legend", () => {
   assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.x, 300);
   assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.y, 80);
   assert.equal(symbols.every((child, index) =>
-    child.properties.y === 112.5 + index * 28
+    child.properties.y === 112.5 + index * 18
   ), true);
   assert.equal(labels.every((child, index) =>
-    child.properties.y === 112.5 + index * 28
+    child.properties.y === 112.5 + index * 18
   ), true);
   assert.equal(program.graphicSpec.objects.colorLegendBackground, undefined);
   assert.equal(before.semanticSpec.guides.legend, undefined);
