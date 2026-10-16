@@ -317,14 +317,13 @@ step yields 391000 / 190000 and retains 25000 for SVG. The generated search payl
 measures 813061 bytes; its independent cap becomes 814000. These are measured
 feature growth adjustments, not claims of passing the previous limits.
 
-The existing facet title displacement/bounds repair and plot-anchored shared-guide
-repair retain the same explicit composition materializer and immutable child
-snapshots. The latter adds one private placement owner, measuring 567 package
-entries, 795791 packed bytes and 3904102 unpacked bytes. Measured ceilings become
-567 / 796000 / 3905000; installed browser gzip is 391525 Full / 189258 Basic /
-7176 SVG bytes, requiring only the Full ceiling step to 392000. The Basic190000
-and SVG25000 ceilings remain unchanged. These measured growth updates do not
-claim the previous ceilings passed.
+기존 facet 제목의 위치·경계 수정과 plot 기준 공유 guide 배치 수정은 명시적
+composition materializer와 불변 자식 snapshot을 유지한다. 후자는 비공개 배치
+소유자 하나를 추가한다. 패키지 측정값은 파일 567개, 압축 795791바이트,
+압축 해제 3904102바이트이며, 측정에 따른 상한은 567 / 796000 / 3905000이다.
+설치한 브라우저 bundle의 gzip 크기는 Full 391525 / Basic 189258 / SVG 7176바이트다.
+Full 상한만 392000으로 조정하고 Basic190000과 SVG25000은 유지한다.
+이는 실제 증가량을 반영한 조정이며, 이전 상한을 통과했다고 주장하지 않는다.
 
 ## 실행 계약의 위치
 

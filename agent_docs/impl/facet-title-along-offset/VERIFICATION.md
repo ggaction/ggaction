@@ -1,19 +1,19 @@
-# Facet parent title displacement
+# Facet 부모 제목의 위치 이동
 
-This corrects the existing `alongOffset` option and existing title Canvas-fit contract. It introduces no public option, default, persisted shape, or renderer behavior. The baseline is `02661f6607e964cca7f158524e93ade5861a63a7`.
+기존 `alongOffset` 옵션과 제목의 Canvas 내부 배치 계약을 바로잡는다. 공개 옵션, 기본값, 영속 상태 구조, renderer 동작은 추가하지 않는다. 기준 커밋은 `02661f6607e964cca7f158524e93ade5861a63a7`이다.
 
-The facet materializer now adds the resolved signed offset to its translated child-plot alignment anchor for every painted title and subtitle line. Actual occupied text bounds must fit the composed Canvas. Previously ignored offsets now move the text, and previously accepted overflowing facet titles fail atomically. Valid omitted-offset output remains unchanged.
+Facet materializer는 실제로 그리는 모든 제목·부제 줄의 자식 plot 정렬 기준점에, 해석된 부호 있는 offset을 더한다. 실제 텍스트 점유 경계는 합성 Canvas 안에 있어야 한다. 이전에 무시하던 offset은 이제 텍스트를 이동시키며, 이전에 허용하던 facet 제목의 Canvas 초과는 원자적으로 실패한다. 유효한 offset 생략 결과는 유지된다.
 
-## Verification
+## 검증
 
-- Focused title/facet tests: 7 passed, covering signed offsets/all alignments, multiline title/subtitle, creation/edit/promotion convergence, grouped row/column and side headers, layout/scales/guides replay, persistence, unit behavior, invalid input, overflow, and previous-program immutability.
-- Unit suite: 3,076 passed.
-- Contract suite: 533 passed.
-- Documentation suite: 120 passed.
-- Installed package consumer: passed, including facet title/subtitle displacement, persistence, and overflow rejection.
-- Six independent baseline comparisons (one-field/grid facets, left/center/right alignment) preserved the entire valid omitted-offset graphic and semantic snapshots exactly.
-- An independent eight-row, four-panel public canary retained all panel data and all eight bar geometries/paints; `alongOffset: -20` moved both parent title anchors from x=30 to x=10. No chart pixels were inspected.
-- Package: 566 entries, 794,779 packed bytes, 3,901,241 unpacked bytes. Only the unpacked cap grows by 1,000 bytes to 3,902,000; other caps remain unchanged.
-- Installed browser gzip: full 390,749 bytes; Basic 189,258 bytes; SVG 7,176 bytes.
+- 제목·facet 집중 테스트 **7개 통과**: 양·음수 offset과 모든 정렬, 여러 줄 제목·부제, 생성·편집·승격 결과의 일치, 행·열 그룹과 옆쪽 header, layout·scale·guide 재실행, 영속화, unit 동작, 잘못된 입력, Canvas 초과, 기존 프로그램의 불변성을 확인했다.
+- Unit 전체 **3,076개 통과**.
+- Contract 전체 **533개 통과**.
+- 문서 전체 **120개 통과**.
+- 설치한 패키지 consumer 통과: facet 제목·부제 이동, 영속화, Canvas 초과 거절을 포함한다.
+- 독립적인 기준 비교 6개에서 유효한 offset 생략 시 전체 graphic·semantic snapshot이 정확히 같았다. 한 필드·grid facet과 left·center·right 정렬을 포함한다.
+- 원본 8행·4개 panel을 사용하는 독립 공개 API canary에서 모든 panel 데이터와 막대 8개의 좌표·색을 유지했다. `alongOffset: -20`은 부모 제목과 부제의 기준점을 모두 x=30에서 x=10으로 이동시켰다. 차트 픽셀은 검사하지 않았다.
+- 패키지 측정: 파일 566개, 압축 794,779바이트, 압축 해제 3,901,241바이트. 압축 해제 상한만 1,000바이트 늘려 3,902,000으로 조정하며 다른 상한은 유지한다.
+- 설치한 브라우저 bundle의 gzip 크기: Full 390,749바이트, Basic 189,258바이트, SVG 7,176바이트.
 
-The implementation is isolated until the translation coordinator integrates the runtime and documentation checkpoint. This evidence does not claim completed corpus revalidation, publication, or deployment.
+번역 조정자가 runtime·문서 checkpoint를 통합하기 전까지 구현은 격리 상태다. 이 기록은 전체 corpus 재검증 완료, 패키지 발행, 배포를 주장하지 않는다.
