@@ -1,0 +1,78 @@
+{
+  "status": "gap-confirmed",
+  "newPublicAPIImplemented": false,
+  "modelCalls": 0,
+  "chartPixelsInspected": false,
+  "rejections": [
+    {
+      "operation": "complete-axis creation",
+      "name": "Error",
+      "message": "Unknown createYAxisTicksAndLabels.labels option \"align\"."
+    },
+    {
+      "operation": "whole-axis edit",
+      "name": "Error",
+      "message": "Unknown editYAxis.ticksAndLabels.labels option \"align\"."
+    },
+    {
+      "operation": "focused-label edit",
+      "name": "Error",
+      "message": "Unknown editYAxisLabels option \"align\"."
+    }
+  ],
+  "labels": [
+    {
+      "text": "Short",
+      "anchor": {
+        "x": 175,
+        "y": 132.5
+      },
+      "currentAlign": "right",
+      "actualBounds": {
+        "left": 150.1,
+        "right": 175,
+        "top": 127.5,
+        "bottom": 137.5
+      },
+      "expectedLeftAnchoredBounds": {
+        "left": 175,
+        "right": 199.9,
+        "top": 127.5,
+        "bottom": 137.5
+      }
+    },
+    {
+      "text": "Long category",
+      "anchor": {
+        "x": 175,
+        "y": 277.5
+      },
+      "currentAlign": "right",
+      "actualBounds": {
+        "left": 114.39999999999999,
+        "right": 175,
+        "top": 272.5,
+        "bottom": 282.5
+      },
+      "expectedLeftAnchoredBounds": {
+        "left": 175,
+        "right": 235.60000000000002,
+        "top": 272.5,
+        "bottom": 282.5
+      }
+    }
+  ],
+  "parentImmutable": true,
+  "marksUnchanged": true,
+  "note": "Expected bounds are a pure text-anchor calculation; no proposed axis API is implemented.",
+  "sourceModuleBindings": [
+    {
+      "path": "src/actions/guides/axes/labels.js",
+      "sha256": "6f52bd3ce157a8962511251ddb482196a6f3e5cfcc2471287cd3e841b7daed33"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "a445200294d25cfa5ad81f35410c6389ef31ca5bdf70cb09b26eb577611bc7d4"
+    }
+  ]
+}

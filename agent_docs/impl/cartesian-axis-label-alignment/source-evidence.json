@@ -1,0 +1,229 @@
+{
+  "reviewer": "codex",
+  "sourceId": "vl_1390",
+  "requestedLabelAlignment": "left",
+  "requestedLabelPadding": 75,
+  "sourcePlot": {
+    "width": 600,
+    "height": 180
+  },
+  "sourceCanvas": {
+    "width": 706,
+    "height": 239,
+    "margin": {
+      "left": 100,
+      "top": 22,
+      "right": 6,
+      "bottom": 37
+    }
+  },
+  "actualSourceLabelBounds": [
+    {
+      "role": "axis-label",
+      "text": "Christian",
+      "x": 20.5,
+      "y": 35,
+      "font": "sans-serif",
+      "fontSize": 10,
+      "fontWeight": "400",
+      "fontStyle": "normal",
+      "fill": "rgb(0, 0, 0)",
+      "effectiveOpacity": 1,
+      "visible": true,
+      "angle": 0,
+      "bounds": {
+        "left": 20.5,
+        "right": 59.96875,
+        "top": 25,
+        "bottom": 37
+      }
+    },
+    {
+      "role": "axis-label",
+      "text": "No Religion",
+      "x": 20.5,
+      "y": 55,
+      "font": "sans-serif",
+      "fontSize": 10,
+      "fontWeight": "400",
+      "fontStyle": "normal",
+      "fill": "rgb(0, 0, 0)",
+      "effectiveOpacity": 1,
+      "visible": true,
+      "angle": 0,
+      "bounds": {
+        "left": 20.5,
+        "right": 72.203125,
+        "top": 45,
+        "bottom": 57.2119140625
+      }
+    },
+    {
+      "role": "axis-label",
+      "text": "Not Stated",
+      "x": 20.5,
+      "y": 75,
+      "font": "sans-serif",
+      "fontSize": 10,
+      "fontWeight": "400",
+      "fontStyle": "normal",
+      "fill": "rgb(0, 0, 0)",
+      "effectiveOpacity": 1,
+      "visible": true,
+      "angle": 0,
+      "bounds": {
+        "left": 20.5,
+        "right": 67.765625,
+        "top": 65,
+        "bottom": 77
+      }
+    },
+    {
+      "role": "axis-label",
+      "text": "Muslim",
+      "x": 20.5,
+      "y": 95,
+      "font": "sans-serif",
+      "fontSize": 10,
+      "fontWeight": "400",
+      "fontStyle": "normal",
+      "fill": "rgb(0, 0, 0)",
+      "effectiveOpacity": 1,
+      "visible": true,
+      "angle": 0,
+      "bounds": {
+        "left": 20.5,
+        "right": 52.171875,
+        "top": 85,
+        "bottom": 97
+      }
+    },
+    {
+      "role": "axis-label",
+      "text": "Jewish",
+      "x": 20.5,
+      "y": 115,
+      "font": "sans-serif",
+      "fontSize": 10,
+      "fontWeight": "400",
+      "fontStyle": "normal",
+      "fill": "rgb(0, 0, 0)",
+      "effectiveOpacity": 1,
+      "visible": true,
+      "angle": 0,
+      "bounds": {
+        "left": 20.5,
+        "right": 51.078125,
+        "top": 105,
+        "bottom": 117
+      }
+    },
+    {
+      "role": "axis-label",
+      "text": "Hindu",
+      "x": 20.5,
+      "y": 135,
+      "font": "sans-serif",
+      "fontSize": 10,
+      "fontWeight": "400",
+      "fontStyle": "normal",
+      "fill": "rgb(0, 0, 0)",
+      "effectiveOpacity": 1,
+      "visible": true,
+      "angle": 0,
+      "bounds": {
+        "left": 20.5,
+        "right": 46.640625,
+        "top": 125,
+        "bottom": 137
+      }
+    },
+    {
+      "role": "axis-label",
+      "text": "Sikh",
+      "x": 20.5,
+      "y": 155,
+      "font": "sans-serif",
+      "fontSize": 10,
+      "fontWeight": "400",
+      "fontStyle": "normal",
+      "fill": "rgb(0, 0, 0)",
+      "effectiveOpacity": 1,
+      "visible": true,
+      "angle": 0,
+      "bounds": {
+        "left": 20.5,
+        "right": 39.953125,
+        "top": 145,
+        "bottom": 157
+      }
+    },
+    {
+      "role": "axis-label",
+      "text": "Buddhist",
+      "x": 20.5,
+      "y": 175,
+      "font": "sans-serif",
+      "fontSize": 10,
+      "fontWeight": "400",
+      "fontStyle": "normal",
+      "fill": "rgb(0, 0, 0)",
+      "effectiveOpacity": 1,
+      "visible": true,
+      "angle": 0,
+      "bounds": {
+        "left": 20.5,
+        "right": 59.421875,
+        "top": 165,
+        "bottom": 177
+      }
+    },
+    {
+      "role": "axis-label",
+      "text": "Other Religion",
+      "x": 20.5,
+      "y": 195,
+      "font": "sans-serif",
+      "fontSize": 10,
+      "fontWeight": "400",
+      "fontStyle": "normal",
+      "fill": "rgb(0, 0, 0)",
+      "effectiveOpacity": 1,
+      "visible": true,
+      "angle": 0,
+      "bounds": {
+        "left": 20.5,
+        "right": 84.421875,
+        "top": 185,
+        "bottom": 197.2119140625
+      }
+    }
+  ],
+  "sharedActualLeft": 20.5,
+  "variableRightEdges": true,
+  "newPublicAPIImplemented": false,
+  "chartPixelsInspected": false,
+  "modelCalls": 0,
+  "frozenInputBindings": [
+    {
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzkwL3NvdXJjZS52bC5qc29u",
+      "encoding": "base64-utf8-absolute-path",
+      "sha256": "35cc42e6b964c9df00197f39efdb7cbc6937f1a6fa8787ba9125f85d69e68f52"
+    },
+    {
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzkwL2RhdGEuanNvbg==",
+      "encoding": "base64-utf8-absolute-path",
+      "sha256": "a7c083426d8fc081f8f3abafbc0ce35cfbd607c80d78aab1d05796b969391d74"
+    },
+    {
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzkwL3JlZmVyZW5jZS9jaGFydC5zdmc=",
+      "encoding": "base64-utf8-absolute-path",
+      "sha256": "f3ca669763987d66adb4a245c55656d8742f72f57bb7d85dedb0f6aa6f741b7e"
+    },
+    {
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8xMzkwL3JlZmVyZW5jZS9jb21waWxlZC52ZWdhLmpzb24=",
+      "encoding": "base64-utf8-absolute-path",
+      "sha256": "e8ff60b89f7fbc68ef01f9c317230d5e73a801eeebdac4703c7b023050577851"
+    }
+  ]
+}
