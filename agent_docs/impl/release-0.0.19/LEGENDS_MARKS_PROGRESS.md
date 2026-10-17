@@ -30,3 +30,13 @@
 - packed installed consumer에 Full/Basic 두 shape의 실제 생성·PNG·persistence 호출을 추가해 PASS했다.
 - unpacked 실측 3,909,563 bytes가 기존 3,908,000 bytes를 초과해 한도만 3,910,000으로
   좁게 갱신하고 architecture budget 기록을 남겼다. 다른 예산은 유지한다.
+
+
+## Checkpoint 3 — Canvas no-paint correction
+
+- 실제 Chromium에서 `stroke:"none"`가 invalid color assignment라 기존 불투명색을 유지하는 버그를 재현했다.
+- 기존 shared fill owner가 exact `"none"`만 transparent color로 바꾸고 stroke/circle/text/background가 재사용한다.
+- geometry, stroke bounds, graphicSpec, opacity, 일반 color와 API/schema는 유지한다.
+- 원·사각형·path·line·빈 fill·text의 실제8bit interior/outline 픽셀과 SVG raster를 비교했다.
+- 전체 renderer + 새 atomic preflight/native/browser regressions 73 PASS, docs120 PASS.
+- unpacked 실측3,910,160 bytes에 따라 해당 한도만3,911,000으로 조정했다.

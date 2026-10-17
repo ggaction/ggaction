@@ -281,6 +281,11 @@ exceeding the prior 3,908,000 ceiling; its narrow ceiling becomes 3,910,000. Ent
 packed bytes, browser budgets and all existing tests remain unchanged. This is measured
 feature growth, not a claim that the previous unpacked limit passed.
 
+Canvas no-paint uses the existing shared fill owner to translate the concrete `"none"`
+sentinel into a transparent backend color for fill, stroke, text and backgrounds. It neither
+changes stored graphics nor introduces semantic inference. Unpacked size is 3,910,160 bytes,
+so only its ceiling grows from 3,910,000 to 3,911,000; all other limits remain unchanged.
+
 ### Browser bundle regression ceilings
 
 Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 않아야 한다.
