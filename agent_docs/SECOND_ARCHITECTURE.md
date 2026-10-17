@@ -2085,3 +2085,16 @@ Approved area fallback fills reuse `FillPaint` on the existing area mark configu
 승인된 연속 범례 body opacity는 creation/edit/persistence가 공유하는 closed grammar owner `grammar/legendGradient.js` 하나를 추가한다. 이에 따른 packed entry 한도는563에서564로만 조정한다. 최종 실측564entries·packed791,661bytes·unpacked3,888,408bytes는 기존792,000/3,900,000bytes 안에 있다. Browser gzip Full388,931bytes·Basic188,433bytes와 기존389,000/189,000bytes, SVG25,000bytes 한도는 유지한다. 생략 시 default graphic/SVG24경우의 byte identity와 명시적0/.7/1의 body-only materialization을 검증하며 renderer 추론은 추가하지 않는다.
 
 Corner item block은 기존 layout owner가 실제 title/item bounds와12px gap으로 측정한다. Group materialization의 ephemeral corner 의도를 같은 owner에 전달하며 state/schema나 renderer owner를 추가하지 않는다. 외부 SIDE의 fixed20/52 anchors는24조합에서 byte-identical이다. 이 수정 뒤 installed Full gzip389,027bytes가389,000 한도를27bytes 초과하므로 기존 최소1,000bytes 단위 정책에 따라 Full 한도만390,000으로 조정한다. Basic189,000/SVG25,000 및 package564entries/792,000packed/3,900,000unpacked 한도는 유지한다.
+
+### Gradient direction and bottom title checkpoint
+
+The complete editLegend card is 3,609 UTF-8 bytes after exposing gradient-only
+edit direction auto and bottom title. Its individual ceiling moves from 3,600
+to 3,620 bytes; all other cards retain 3,360 bytes. No public enum or option is
+removed to fit. Existing family config owns optional gradientDirection; symbols
+keep their separate direction. No renderer orientation or text rotation is added.
+
+This checkpoint measures 569 entries / 799,016 packed bytes / 3,917,456
+unpacked bytes. Entry count stays 569; packed/unpacked limits become
+800,000 / 3,918,000 bytes. Search remains below 816,000 bytes and browser
+budgets remain unchanged. The previous package limits were exceeded, not passed.

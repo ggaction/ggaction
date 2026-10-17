@@ -153,10 +153,14 @@ function blockDescriptor(program, kind, config) {
   if ([bounds, symbolAnchor, symbolBounds].includes(undefined) || (labels === undefined && !emptyLabels)) {
     throw new Error(`Legend lane could not measure ${kind} graphics.`);
   }
+  const preserveGradientLayout = ["gradient", "strokeGradient"].includes(kind) &&
+    config.representation !== "symbols" &&
+    (config.gradientDirection === "horizontal" || config.titlePosition === "bottom");
   return {
     id: kind,
     kind,
-    preserveGrid: (["series", "color", "stroke"].includes(kind) || config.representation === "symbols") && (config.columns ?? 1) > 1,
+    preserveAlignment: preserveGradientLayout,
+    preserveGrid: preserveGradientLayout || (["series", "color", "stroke"].includes(kind) || config.representation === "symbols") && (config.columns ?? 1) > 1,
     target: config.target,
     border: borderFor(kind, config),
     offset: requestedOffset(config),
@@ -439,10 +443,9 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
             block.titleId,
             placement.titleDx,
             placement.dy
-          ).editGraphics({
-            target: block.titleId,
-            property: "textAlign",
-            value: "left"
+          );
+          if (!block.preserveAlignment) next = next.editGraphics({
+            target: block.titleId, property: "textAlign", value: "left"
           });
         }
         for (const id of block.symbolIds) {
@@ -458,10 +461,9 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
           block.labelId,
           placement.labelDx,
           placement.dy
-        ).editGraphics({
-          target: block.labelId,
-          property: "textAlign",
-          value: "left"
+        );
+        if (!block.preserveAlignment) next = next.editGraphics({
+          target: block.labelId, property: "textAlign", value: "left"
         });
       }
       for (const block of blocks) {

@@ -1730,7 +1730,9 @@ function buildScaleVocabulary(factors) {
       border: { color: "#cbd5e1", lineWidth: 1, padding: 10, background: "#ffffff" }
     };
     program = program
-      .createLegend(gradientLegend)
+      .createLegend({...gradientLegend,direction:"horizontal",titlePosition:"bottom"})
+      .editLegendLayout({channel:"color",direction:"vertical",titlePosition:"top"})
+      .editLegendLayout({channel:"color",direction:"auto"})
       .editLegend({
         target: "points",
         count: 4,

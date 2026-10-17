@@ -24,8 +24,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 569, // Dashed legend frames add pure dash policy and shared materializer owners.
-  packedBytes: 799_000, // Dashed legend frames measured 798338 packed bytes.
-  unpackedBytes: 3_915_000 // Dashed legend frames measured 3914211 unpacked bytes.
+  packedBytes: 800_000, // Independent gradient layout measured 799016 packed bytes.
+  unpackedBytes: 3_918_000 // Independent gradient layout measured 3917456 unpacked bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

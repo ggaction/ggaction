@@ -18681,7 +18681,7 @@
         {
           "name": "titlePosition",
           "required": false,
-          "type": "\"left\" | \"top\" | undefined"
+          "type": "\"bottom\" | \"left\" | \"top\" | undefined"
         },
         {
           "name": "title",
@@ -18794,6 +18794,10 @@
       ],
       "inference": [
         {
+          "input": "direction",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "values",
           "strategy": "documented-auto"
         },
@@ -18815,6 +18819,11 @@
           "name": "channel",
           "required": false,
           "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+        },
+        {
+          "name": "direction",
+          "required": false,
+          "type": "\"auto\" | \"horizontal\" | \"vertical\" | undefined"
         },
         {
           "name": "titleStyle",
@@ -18882,11 +18891,6 @@
           "type": "\"center\" | \"left\" | \"right\" | undefined"
         },
         {
-          "name": "direction",
-          "required": false,
-          "type": "\"horizontal\" | \"vertical\" | undefined"
-        },
-        {
           "name": "columns",
           "required": false,
           "type": "number | undefined"
@@ -18899,7 +18903,7 @@
         {
           "name": "titlePosition",
           "required": false,
-          "type": "\"left\" | \"top\" | undefined"
+          "type": "\"bottom\" | \"left\" | \"top\" | undefined"
         },
         {
           "name": "count",
@@ -18933,7 +18937,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, channel?, titleStyle?, channels?, title?, values?, representation?, layout? })"
+        "editLegend({ target?, channel?, direction?, titleStyle?, channels?, title?, values?, representation? })"
       ],
       "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],
@@ -19123,6 +19127,10 @@
         {
           "input": "target",
           "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "direction",
+          "strategy": "documented-auto"
         }
       ],
       "completionRequirements": {
@@ -19172,7 +19180,7 @@
         {
           "name": "direction",
           "required": false,
-          "type": "\"horizontal\" | \"vertical\" | undefined"
+          "type": "\"auto\" | \"horizontal\" | \"vertical\" | undefined"
         },
         {
           "name": "columns",
@@ -19187,7 +19195,7 @@
         {
           "name": "titlePosition",
           "required": false,
-          "type": "\"left\" | \"top\" | undefined"
+          "type": "\"bottom\" | \"left\" | \"top\" | undefined"
         },
         {
           "name": "itemGap",

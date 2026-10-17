@@ -40,6 +40,13 @@ const symbol: LegendBlockSymbolPatch = { size: 64, fill: "white", stroke: "black
 const options: EditLegendBlockOptions = { target: "points", channel: "size", values: [10], text: {}, symbol: {} };
 const labels: DisplayLabelMap = [{ value: 1, label: "one" }, { value: "1", label: "string one" }];
 program.editLegendBlock(options);
+program.createLegend({position:"right",direction:"horizontal",titlePosition:"bottom"});
+basic.createLegend({position:"top",direction:"vertical",titlePosition:"bottom"});
+program.editLegendLayout({channel:"color",direction:"auto",titlePosition:"top"});
+// @ts-expect-error auto direction is edit-only
+program.createLegend({direction:"auto"});
+// @ts-expect-error gradient direction is closed
+program.editLegendLayout({direction:"diagonal"});
 program.createLegend({border:{strokeDash:[4,2,6,1]}});
 program.editLegendBorder({border:{strokeDash:[]}});
 // @ts-expect-error dash entries are numeric

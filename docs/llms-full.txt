@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:7a2504e0191bab3af774e191726faf462748e6c8b7e9275a33c87d06ec6e8ed8. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:d45afb231220ed07808a509036571e9bdaa95e17ae073ca9d8efe535b8a80dc2. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -13094,9 +13094,8 @@ program.createLegend({
 });
 ~~~
 
-Gradient legends reject categorical-only `symbol`, `columns`, `direction`, and
-`itemGap`. Opacity legends reject `columns`, `direction`, and `gradient`.
-Gradient and side-positioned opacity legends require `titlePosition: "top"`.
+Gradient legends reject categorical-only `symbol`, `columns`, and `itemGap`. Opacity legends reject `columns`, `direction`, and `gradient`.
+Side-positioned opacity legends require `titlePosition: "top"`.
 For a single top or bottom legend, `align` uses the complete visible outer
 bounds, including endpoint labels, symbol strokes and any border. `offset` is
 the gap between the plot and the nearest outer legend edge. This rule also
@@ -13105,8 +13104,25 @@ requested Canvas margin and never resize the Canvas.
 Side gradient and opacity legends accept only `align: "center"`. When moving
 a non-centered horizontal legend to a side, set `align: "center"` in the same
 edit. Title styles accept color and typography; `offset` belongs to `labels`.
-Gradient `titlePosition: "top"` is accepted by both creation and editing,
-including `editLegendLayout`; `"left"` is unsupported.
+Gradient `direction: "horizontal" | "vertical"` is independent of position.
+Omission at creation retains the position-derived default; an omitted edit
+preserves explicit intent. Gradient-only edit `direction: "auto"` restores the
+default. Length follows the ramp direction and thickness is perpendicular.
+Horizontal values run left to right with labels below; vertical values run
+bottom to top with labels on the left at a left anchor and on the right otherwise.
+Scale reverse and transformed-scale sampling retain their existing behavior.
+
+Gradient titles accept `titlePosition: "top" | "bottom"` in creation and editing,
+including `editLegendLayout`; `"left"` is unsupported. A bottom title clears the
+complete strip, tick and label bounds by 12 pixels. Its default anchor is the
+strip center for a horizontal ramp and the strip left for a vertical ramp;
+`titleStyle.align` still applies. Explicit line breaks and blank lines are retained.
+Hidden titles occupy no space. All visible content must fit the requested Canvas.
+
+Gradient orientation intent remains inactive while color uses `representation:
+"symbols"`; symbol direction is separate. Returning to a gradient restores its
+orientation. Changing to a different scale family cannot silently discard an
+explicit gradient direction; reset it with `"auto"` or remove and recreate the legend.
 
 ## Show a continuous color scale as symbols
 
@@ -13466,8 +13482,10 @@ gap to the grid or border. Changing its stored text style leaves the visible
 legend unchanged; restoration checks that the visible title fits. Legacy-bottom
 sample positions stay fixed, with a border around the visible items. Gradient and opacity legends accept only their
 kind-compatible options. Both require center alignment at the left or right
-side. Gradient title placement accepts `titlePosition: "top"` through creation,
-`editLegend` and `editLegendLayout`. Every legend title style accepts only
+side. Gradient title placement accepts `titlePosition: "top" | "bottom"` through
+creation, `editLegend` and `editLegendLayout`. Gradient direction is independent
+of its position; editing `direction: "auto"` removes the explicit orientation.
+Bottom titles follow the complete strip/tick/label bounds with a 12-pixel gap. Every legend title style accepts only
 color and typography; use `labels.offset` for label spacing. Interval legends support the four edges and four plot corners and
 `layout: "edge"`; top/bottom grids also accept alignment, direction, columns
 and inline titles. Side positions require vertical flow, center alignment,
@@ -24692,7 +24710,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
-| `titlePosition` | Optional / branch-dependent | `"left" \| "top" \| undefined` |
+| `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `readonly number[] \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -24799,6 +24817,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
+| `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `LegendTitleStyleEditOptions \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
@@ -24812,10 +24831,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
 | `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
-| `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
-| `titlePosition` | Optional / branch-dependent | `"left" \| "top" \| undefined` |
+| `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
@@ -24938,10 +24956,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
 | `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
-| `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
+| `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
-| `titlePosition` | Optional / branch-dependent | `"left" \| "top" \| undefined` |
+| `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused legend edits](./reference/actions/guides/#focused-legend-edits).
@@ -31140,13 +31158,14 @@ export interface EditLegendLayoutOptions {
   at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
-  /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
-  direction?: "horizontal" | "vertical";
+  /** Gradient orientation is independent of position; auto is gradient-only. Categorical sides require vertical. */
+  direction?: "horizontal" | "vertical" | "auto";
   /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
-  titlePosition?: "top" | "left";
+  /** bottom is gradient-only; left retains the existing categorical/opacity rules. */
+  titlePosition?: "top" | "left" | "bottom";
   /** Explicit spacing override; vertical creation defaults to 18 logical pixels. */
   itemGap?: number;
 }
@@ -31160,9 +31179,11 @@ Related types: [`LegendChannel`](./reference/types/#type-legendchannel).
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction"> {
   /** Select one existing block; cannot accompany channels. */
   channel?: LegendChannel;
+  /** Gradient-only auto resets orientation. */
+  direction?: "horizontal" | "vertical" | "auto";
   titleStyle?: LegendTitleStyleEditOptions;
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
@@ -33163,13 +33184,14 @@ export interface LegendOptions {
   at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
-  /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
+  /** Gradient orientation is independent of position; auto is gradient-only. Categorical sides require vertical. */
   direction?: "horizontal" | "vertical";
   /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
-  titlePosition?: "top" | "left";
+  /** bottom is gradient-only; left retains the existing categorical/opacity rules. */
+  titlePosition?: "top" | "left" | "bottom";
   /** false hides the title while retaining its inferred field text. */
   /** LF, CRLF and CR preserve explicit title lines, including blank lines. */
   title?: string | false;
@@ -39493,7 +39515,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:7a2504e0191bab3af774e191726faf462748e6c8b7e9275a33c87d06ec6e8ed8` |
+| Contract fingerprint | `sha256:d45afb231220ed07808a509036571e9bdaa95e17ae073ca9d8efe535b8a80dc2` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

@@ -6,7 +6,7 @@ import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
 import { validateLegendGroupState } from "../grammar/legendGroups.js";
-import { validateLegendGradient } from "../grammar/legendGradient.js";
+import { normalizeGradientDirection, validateLegendGradient } from "../grammar/legendGradient.js";
 import { normalizeTextMetricProfile } from "../core/textMetricProfile.js";
 import { isPlainObject } from "../core/immutable.js";
 import { validateUserId } from "../core/identifiers.js";
@@ -153,6 +153,13 @@ export function validateProgramState(program, path) {
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
+    if (config.gradientDirection !== undefined) {
+      if (!["gradient", "strokeGradient"].includes(kind)) throw invalidSnapshot("Gradient direction requires a gradient owner.", path);
+      normalizeGradientDirection(config.gradientDirection, "Stored gradient direction");
+    }
+    if (["gradient", "strokeGradient"].includes(kind) && config.representation !== "symbols" && !["top", "bottom"].includes(config.titlePosition)) {
+      throw invalidSnapshot("Gradient titlePosition requires top or bottom.", path);
+    }
     if (config.border && Object.hasOwn(config.border, "strokeDash")) {
       normalizeLegendBorderDash(config.border.strokeDash, "Stored legend border strokeDash");
     }

@@ -61,3 +61,22 @@
   실제3데이터셋×5 public lifecycle/SVG15 PASS, installed consumer 실제dash/Persistence/PNG PASS.
 - 실측569entries/798,338packed/3,914,211unpacked로 해당한도569/799,000/3,915,000만 갱신했다.
   search815,026bytes에 한도816,000, browser기존한도는 유지한다.
+
+## Checkpoint 6 — independent gradient direction and bottom titles
+
+- #200 A/B: gradient/stroke-gradient accept direction independently from all8anchors,
+  optional gradientDirection persists intent; edit-only auto restores edge default.
+  Symbols keep a separate direction and restore inactive gradient intent on return.
+- Bottom titles clear strip/tick/label fullbounds by native12px, preserve hardbreaks,
+  hidden titles and explicit align. Side multi-block lanes retain rigid ramp geometry.
+- Existing and new guide/type/card/facet regression679 PASS, docs120 PASS;
+  new group/transformed/log/sqrt/symlog/reverse/opacity/Canvas/facet/persistence5 PASS.
+- Actual Chromium8edge/direction strip pixel outputs EXACT independent fill rectangles;
+  actual real3datasets×5 public/SVG lifecycles15 PASS. Installed consumer actual
+  direction/bottom/auto/persistence/PNG and complete package checks PASS.
+- Canvas width0 bug discovered by that oracle was separately fixed in d8d9e7e0;
+  no default concrete graphic or stored placement fields were rewritten.
+- Complete editLegend card3609B→onlyits limit3620B. Package569entries,
+  799016packed/3917456unpacked→800000/3918000limits; search/browserlimits unchanged.
+- Full final realistic option/literal coverage suite remains required before integration;
+  these repeated real-data lifecycles are actual calls, not a claim of full matrix closure.

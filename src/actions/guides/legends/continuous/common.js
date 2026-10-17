@@ -1,3 +1,4 @@
+import { normalizeGradientDirection } from "../../../../grammar/legendGradient.js";
 import { normalizeLegendBorderDash } from "../../../../grammar/legendBorder.js";
 import { materializeLegendBorder } from "../../../../materialization/legendBorder.js";
 import { LEGEND_TITLE_STYLE_KEYS, mergeLegendTitleStyle, validateLegendTitleAlignment } from "../../../../grammar/legendTitleStyle.js";
@@ -184,7 +185,7 @@ export function normalizeContinuousLegend(args, kind) {
   validateNonNegative(offset, "Legend offset");
   const titlePosition = args.titlePosition ?? "top";
   validateLegendTitleAlignment(args.titleStyle, titlePosition);
-  if (!["top", "left"].includes(titlePosition)) {
+  if (!(kind === "gradient" ? ["top", "left", "bottom"] : ["top", "left"]).includes(titlePosition)) {
     throw new Error(`Unsupported legend titlePosition "${titlePosition}".`);
   }
   if (
@@ -199,7 +200,7 @@ export function normalizeContinuousLegend(args, kind) {
     ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : titlePosition === "left" ? 20 : 28);
   validatePositive(itemGap, "Legend itemGap");
   if (kind === "gradient") {
-    for (const key of ["symbol", "columns", "direction", "itemGap"]) {
+    for (const key of ["symbol", "columns", "itemGap"]) {
       if (Object.hasOwn(args, key)) {
         throw new Error(`Gradient legend does not accept ${key}.`);
       }
@@ -216,7 +217,9 @@ export function normalizeContinuousLegend(args, kind) {
     position,
     align,
     offset,
-    ...(kind === "gradient" ? { count } : { sampling }),
+    ...(kind === "gradient" ? { count,
+      ...(args.direction === undefined ? {} : { gradientDirection: normalizeGradientDirection(args.direction) })
+    } : { sampling }),
     ...normalizeInitialLegendTitle(args.title),
     labels: normalizeLegendTextOptions(
       args.labels,

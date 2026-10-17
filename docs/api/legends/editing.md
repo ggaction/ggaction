@@ -106,8 +106,10 @@ gap to the grid or border. Changing its stored text style leaves the visible
 legend unchanged; restoration checks that the visible title fits. Legacy-bottom
 sample positions stay fixed, with a border around the visible items. Gradient and opacity legends accept only their
 kind-compatible options. Both require center alignment at the left or right
-side. Gradient title placement accepts `titlePosition: "top"` through creation,
-`editLegend` and `editLegendLayout`. Every legend title style accepts only
+side. Gradient title placement accepts `titlePosition: "top" | "bottom"` through
+creation, `editLegend` and `editLegendLayout`. Gradient direction is independent
+of its position; editing `direction: "auto"` removes the explicit orientation.
+Bottom titles follow the complete strip/tick/label bounds with a 12-pixel gap. Every legend title style accepts only
 color and typography; use `labels.offset` for label spacing. Interval legends support the four edges and four plot corners and
 `layout: "edge"`; top/bottom grids also accept alignment, direction, columns
 and inline titles. Side positions require vertical flow, center alignment,

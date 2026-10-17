@@ -1346,7 +1346,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
-| `titlePosition` | Optional / branch-dependent | `"left" \| "top" \| undefined` |
+| `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `readonly number[] \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -1457,6 +1457,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
+| `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `LegendTitleStyleEditOptions \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
@@ -1470,10 +1471,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
 | `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
-| `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
-| `titlePosition` | Optional / branch-dependent | `"left" \| "top" \| undefined` |
+| `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
@@ -1604,10 +1604,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
 | `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
-| `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
+| `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
-| `titlePosition` | Optional / branch-dependent | `"left" \| "top" \| undefined` |
+| `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
 
 </details>

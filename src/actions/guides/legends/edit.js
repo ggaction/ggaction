@@ -87,7 +87,7 @@ function reconcileGraphic(program, id, shouldExist, definition) {
 function resolveColorRepresentationEdit(program, previous, args) {
   const representation = args.representation ?? previous.representation ?? "gradient";
   if (!["gradient", "symbols"].includes(representation)) throw new Error("Legend representation must be gradient or symbols.");
-  const allowed = ["target", "representation", "position", "align", "offset", "title", "labels", "titleStyle", "titlePosition", "border", "count", ...(representation === "symbols" ? ["symbol", "values", "itemGap", "layout", "direction", "columns"] : ["gradient"])];
+  const allowed = ["target", "representation", "position", "align", "offset", "title", "labels", "titleStyle", "titlePosition", "border", "count", ...(representation === "symbols" ? ["symbol", "values", "itemGap", "layout", "direction", "columns"] : ["gradient", "direction"])];
   for (const key of Object.keys(args)) if (!allowed.includes(key)) throw new Error(`Color ${representation} legend does not accept ${key}.`);
   const switching = (previous.representation ?? "gradient") !== representation;
   const titleMode = args.title;
@@ -97,7 +97,7 @@ function resolveColorRepresentationEdit(program, previous, args) {
     align: args.align ?? previous.align, offset: args.offset ?? previous.offset,
     title, labels: mergeObject(previous.labels, args.labels), titleStyle: mergeLegendTitleStyle(previous.titleStyle, args.titleStyle, { edit: true }),
     border: mergeBorder(previous.border, args.border),
-    titlePosition: args.titlePosition ?? (switching && representation === "gradient" ? "top" : previous.titlePosition)
+    titlePosition: args.titlePosition ?? (switching && (representation === "gradient" || previous.titlePosition === "bottom") ? "top" : previous.titlePosition)
   };
   let normalized;
   if (representation === "symbols") {
@@ -114,7 +114,10 @@ function resolveColorRepresentationEdit(program, previous, args) {
       symbol: args.symbol === "auto" ? "auto" : args.symbol === undefined ? (switching ? undefined : previous.symbol) : { ...(switching ? {} : previous.symbol), ...args.symbol }
     }, switching ? { count: previous.count } : previous, "edit");
   } else {
-    normalized = normalizeContinuousLegend({ ...common, count: args.count ?? (switching ? readLegendSampling(previous).count : previous.count) }, "gradient");
+    normalized = normalizeContinuousLegend({ ...common,
+      ...(args.direction === "auto" ? {} : args.direction !== undefined
+        ? { direction: args.direction } : previous.gradientDirection === undefined ? {} : { direction: previous.gradientDirection }),
+      count: args.count ?? (switching ? readLegendSampling(previous).count : previous.count) }, "gradient");
     const gradient = normalizeLegendGradient(args.gradient, switching ? undefined : previous.gradient);
     normalized.gradient = gradient;
   }
@@ -123,6 +126,7 @@ function resolveColorRepresentationEdit(program, previous, args) {
     ? Object.fromEntries(Object.entries(previous.blockOverrides).map(([key, value]) => {
       const { symbol: _symbol, labelMap: _labelMap, ...common } = value; return [key, common];
     })) : previous.blockOverrides;
+  if (representation === "gradient" && args.direction === "auto") delete retained.gradientDirection;
   return { config: { ...retained, ...normalized,
     ...(blockOverrides === undefined ? {} : { blockOverrides }),
     inferredTitle: titleMode === "auto" ? true : typeof titleMode === "string" ? false : previous.inferredTitle,
@@ -135,7 +139,7 @@ function resolveContinuousEdit(program, kind, previous, args) {
   const gradient = ["gradient", "strokeGradient"].includes(kind);
   const allowed = gradient
     ? ["target", "position", "align", "offset", "title", "labels",
-      "titleStyle", "titlePosition", "border", "count", "gradient", "representation"]
+      "titleStyle", "titlePosition", "border", "count", "gradient", "representation", "direction"]
     : ["target", "position", "align", "offset", "title", "symbol", "labels",
       "titleStyle", "titlePosition", "itemGap", "border", "count", "values"];
   for (const key of Object.keys(args)) {
@@ -168,7 +172,9 @@ function resolveContinuousEdit(program, kind, previous, args) {
     position: args.position ?? previous.position,
     align: args.align ?? previous.align,
     offset: args.offset ?? previous.offset,
-    ...(gradient ? { count: args.count ?? previous.count } : {}),
+    ...(gradient ? { count: args.count ?? previous.count,
+      ...(args.direction === "auto" ? {} : args.direction !== undefined ? { direction: args.direction }
+        : previous.gradientDirection === undefined ? {} : { direction: previous.gradientDirection }) } : {}),
     titlePosition,
     title,
     labels: enteringInline && args.labels?.offset === undefined
@@ -190,6 +196,7 @@ function resolveContinuousEdit(program, kind, previous, args) {
     titleVisible
   };
   if (gradient) {
+    if (args.direction === "auto") delete config.gradientDirection;
     const gradient = normalizeLegendGradient(args.gradient, previous.gradient);
     config.gradient = gradient;
   } else {
@@ -679,7 +686,7 @@ function editLegendImplementation(args = {}, skipGroup = false) {
           const previous = next.guideConfigs.legend[kind];
           const familyPatch = { ...patch };
           if (["gradient", "strokeGradient", "opacity"].includes(kind) && previous.representation !== "symbols") {
-            for (const key of ["layout", "columns", "direction"]) {
+            for (const key of kind === "opacity" ? ["layout", "columns", "direction"] : ["layout", "columns"]) {
               if (Object.hasOwn(args, key)) throw new Error(`${kind} legend does not accept ${key}.`);
               delete familyPatch[key];
             }

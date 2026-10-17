@@ -116,8 +116,8 @@ type TitleWrap = "word" | "character";
   offset≠8은 edge에서만 지원한다. Legacy mode에서 다른 edge로 옮길 때 layout edge도 같은 edit에 명시한다.
   기존 compact examples는 legacy-bottom으로 migration한다. Interval은 layout:"edge"를 지원하며 legacy-bottom은 거부한다. Stroke-width도 layout:"edge"를 지원한다. Size도 layout:"edge"를 지원한다. Gradient/opacity의 layout option은 아직 지원하지 않는다.
 - `offset`: non-negative finite number, 기본 `8`; 명시하면 plot과 legend block 간 거리다. 외부 top/bottom에서 생략한 기본값은 위 shared guide collision 계약의 실제 axis lane 뒤에 놓인다.
-- `titlePosition`: `"top" | "left"`, 기본 top. `"left"`는 horizontal categorical과 sampled opacity
-  legend에서 title, symbol, label을 한 reading line으로 배치한다. Gradient와 side opacity는 `"top"`만 지원한다.
+- `titlePosition`: `"top" | "left" | "bottom"`, 기본 top. `"left"`는 horizontal categorical과 sampled opacity
+  legend에서 title, symbol, label을 한 reading line으로 배치한다. Gradient는 top/bottom, side opacity는 top만 지원한다.
 - `title`: non-empty string 또는 `false`; 생략하면 encoded source field를 사용한다.
   문자열 안의 LF, CRLF, CR은 모든 범례 family에서 명시적 줄바꿈이다. 순서와 빈 줄을
   유지하며 행 간격은 title fontSize의 1.2배다. 가장 긴 행의 폭과 전체 행 높이를 layout,
@@ -201,7 +201,7 @@ type TitleWrap = "word" | "character";
 
 ### Formal values — `createLegend`
 
-- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; representation?: "gradient" | "symbols"; position?: LegendPosition; blockLayout?: "row" | "column" | "wrap"; at?: { x: Finite; y: Finite }; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; values?: readonly number[]; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite; opacity?: UnitInterval }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
+- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; representation?: "gradient" | "symbols"; position?: LegendPosition; blockLayout?: "row" | "column" | "wrap"; at?: { x: Finite; y: Finite }; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left" | "bottom"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; values?: readonly number[]; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite; opacity?: UnitInterval }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -331,7 +331,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - Categorical `layout` omission은 stored edge/legacy-bottom을 보존한다. Style/title/border edit나 Canvas/scale/encoding replay가
   mode를 바꾸지 않는다. Explicit editLegend/editLegendLayout({layout})만 mode를 전환한다.
 - All legend families accept four edges and four plot corners. Left requires center alignment and vertical flow. Edge 변경 시 omitted direction은 새 edge의 default로 추론한다. `count` rematerializes an existing size block.
-- Gradient의 titlePosition top은 createLegend/editLegend/editLegendLayout 모두 허용하고 left는 모두 거절한다. Side alignment와 titleStyle의 동일 validation/immutable rejection evidence는 `test/unit/actions/guides/legend-option-parity.test.js`다.
+- Gradient의 titlePosition top/bottom은 createLegend/editLegend/editLegendLayout 모두 허용하고 left는 모두 거절한다. Side alignment와 titleStyle의 동일 validation/immutable rejection evidence는 `test/unit/actions/guides/legend-option-parity.test.js`다.
 - Gradient edits own `count` and `gradient`; opacity edits own `count`, `itemGap`, and a single point symbol recipe.
   Horizontal opacity edits also own `titlePosition`; entering `"left"` without explicit spacing selects the inline
   8-pixel symbol-label and 20-pixel sample defaults.
@@ -805,3 +805,11 @@ Standalone `createLegend({channels:["size"],position:...})`의 명시 position�
   explicitly publish concrete text alignment and renderers remain unchanged.
 - Evidence: `test/unit/actions/guides/legend-title-alignment.test.js` and
   `test/browser/legend-title-alignment.browser.js`.
+
+### Independent gradient orientation and bottom titles (#200)
+
+- Color/stroke gradient direction horizontal/vertical is independent of all eight anchors. Creation omission preserves historical position-derived orientation; editing omission preserves explicit intent, and edit-only auto removes it. The optional canonical gradientDirection belongs to the existing family config; symbols.direction remains independent and the inactive gradient intent survives representation switching.
+- Horizontal ramps use length×thickness, values left→right and labels below. Vertical ramps use thickness×length, values bottom→top, labels left only at the left anchor. Existing transformed/reverse/midpoint evaluators remain authoritative.
+- Gradient-only bottom title occupies the complete strip/tick/label union plus native gap12; horizontal strip-center / vertical strip-left anchors respect titleStyle.align. Hidden title has no occupied bounds; hard breaks/blank lines persist.
+- Side lanes move horizontal/bottom-title ramps as rigid content, preserving text alignment. Group/facet/Canvas/data/scale persistence reuse existing placement and fit checks; no Canvas auto-growth. Explicit gradient direction cannot silently disappear during a scale-family transition.
+- Evidence: test/unit/actions/guides/gradient-layout.test.js.

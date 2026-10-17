@@ -113,6 +113,17 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(deserializeProgram(serializeProgram(mappedSize)).graphicSpec,mappedSize.graphicSpec);
     assert.ok((await renderToPNGBuffer(mappedSize)).buffer.length>100);
 
+    const independentRamp=chart().createCanvas({width:900,height:700,margin:200})
+      .createData({values:[{x:0,y:0,v:0},{x:1,y:1,v:10}]})
+      .createScatterPlot({x:"x",y:"y",guides:false})
+      .encodeColor({field:"v",fieldType:"quantitative"})
+      .createLegend({position:"right",direction:"horizontal",titlePosition:"bottom",gradient:{length:120,thickness:16}});
+    assert.equal(independentRamp.graphicSpec.objects.colorGradientLabels.items[0].properties.textAlign,"center");
+    assert.equal(independentRamp.guideConfigs.legend.gradient.gradientDirection,"horizontal");
+    assert.deepEqual(deserializeProgram(serializeProgram(independentRamp)).graphicSpec,independentRamp.graphicSpec);
+    assert.equal(independentRamp.editLegendLayout({direction:"auto",titlePosition:"top"}).guideConfigs.legend.gradient.gradientDirection,undefined);
+    assert.ok((await renderToPNGBuffer(independentRamp)).buffer.length>100);
+
     const extracted = chart().createCanvas({ width: 440, height: 340, margin: 20 })
       .createData({ values: [{ item: { value: 1 }, text: "1.5%" }, { text: "2%" }] })
       .createComputedData({ id: "nested", as: "x", expression: { op: "getPath", operand: { field: "item" }, path: ["value"] } })
