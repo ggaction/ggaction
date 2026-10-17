@@ -30,4 +30,4 @@ export function createPrimitiveProgram(){
   .editGraphics({target:'colorLegendLabels',property:'textBaseline',value:'top'});
 }
 
-export {createGradientBlockPrimitive,createRecipeOpacityPrimitive} from "./target-primitive.program.js";
+export {createGradientBlockPrimitive,createRecipeOpacityPrimitive} from "./appearance-primitive.program.js";

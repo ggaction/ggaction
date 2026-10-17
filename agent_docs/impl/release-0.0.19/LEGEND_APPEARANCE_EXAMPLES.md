@@ -47,5 +47,10 @@ API만으로 연결한다. 새 runtime/API/schema/renderer 경계는 추가하�
 - Search payload 실측829884bytes에 cap만830000으로 좁게 갱신한다. 나머지
   budget/inventory/coverage 기준과 모든 기존 테스트를 유지한다.
 - 기존 gradient/dash/local/opacity/source-boundary 계약 **26/26 PASS**.
-- 문서120·built 검사는 canonical source commit 후 최종 기록한다.
+- Source `91ae232b` 이후 docs 전체 재생성, **120/120 docs PASS**.
+  descriptor/capability/example-index freshness도 PASS했다.
+  Ruby3.2 Jekyll build 및150builtpages의 link/asset 정적 검사가 PASS했다.
+- Stable 검사 파일은 appearance-primitive.program.js, appearance-vector.render.js,
+  layout-and-recipe.test.js이며 review 이력을 정식 실행 이름으로 유지하지 않는다.
+  파일명 정리 뒤 같은40개 실행도 모두 PASS했다.
 - 이미지 관찰/VLM/유료·학교 모델 API 호출은 하지 않았다.
