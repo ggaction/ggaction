@@ -100,3 +100,16 @@ focused-opacity variant, legend-layout, legend-recipe-opacity를 기존 목표�
 
 개발 source28의 기존1154개/8335개 frozen SVG 전량 비교는 차이0·오류0으로 완료했다.
 브라우저는153.0.8010.12였다. 이는 출판 artifact 검증을 대체하지 않는다.
+
+## 최종 소스 보호 검사
+
+부모 범례의 quantitative color-size 의미 복원 `12306f8e`와 좁은 private adapter
+회귀 `f1fae3bd`까지 통합했다. 부모 실제 증언은26profiles×3hosts×5회=390programs,
+248options+168literals 및4diversity 요구를 모두 만족했다. 새로운 public 입력이나
+임의 composition edit 경로는 추가하지 않았다.
+
+`f1fae3bd`의 전체 normal coverage는837files,4585/4585PASS,skip0이며
+95.35lines/92.58branches/98.68functions 및133/133critical floors를 통과했다.
+정확한 원시 증거와 재현은 [CRITICAL_POLICY_COVERAGE.md](CRITICAL_POLICY_COVERAGE.md)가 소유한다.
+마지막 facade legend의 타입 경계/실제 옵션 증언 및 최종 versioned artifact 검사는 별도다.
+공식 realistic runner의 메모리·동시성 인자를 생략한 실행을 최종 증거로 사용하지 않는다.
