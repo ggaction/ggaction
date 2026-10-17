@@ -2485,3 +2485,13 @@ are removed.
 Node24.19.0 통합 staged 입력은840502packed/4082583unpackedbytes로 측정됐다.
 기존836000/4064000 검사가 실패하여 최소1000bytes 단계841000/4083000만 적용한다.
 591개 entry와 모든 기존 옵션·데이터·coverage 기준은 유지한다.
+
+
+### Facade capability declaration checkpoint
+
+런타임과 범용 범례 action은 그대로 유지하고, facade 선언의 point owner 역량과
+gradient 전용 bottom title 계약만 정정한다. 동기화된 선언/참조의 unpacked 실측은
+4083894bytes이므로 다음 최소1000bytes 단계4083000→4084000만 적용한다.
+부모 통합 실측 Full414152/Basic203485gzip의415000/204000 상한과 search831000을
+보존하며 SVG25000은 유지한다. Cartesian830차트와 hierarchical/guide-scale의
+실제 호출 ledger는5회/3개실데이터 기준과 모든 기존 profile을 유지한다.

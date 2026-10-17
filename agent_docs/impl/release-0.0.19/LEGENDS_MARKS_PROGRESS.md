@@ -245,3 +245,31 @@
   canonical source-link freshness mismatch; regenerate immediately afterward.
 - Remaining assigned closure: exhaustive realistic option/literal witnesses.
   ROOT delegated the full legend-appearance target to data/color in parallel.
+
+## 실제 facade 범례 증명 마감
+
+- 사용자 승인 범위를 그대로 소비자 타입에 반영했다. #171은 하나의 point owner를
+  요구하므로 PolarScatter에서도 유지한다. #205만 Cartesian circle을 요구한다.
+  Scatter/Regression/Strip/Beeswarm은 두 결합을 유지하고, enabled Raincloud
+  points는 categorical size-shape만 유지한다. 실제 pair 입력을 만들 수 없는
+  non-point/interval/endpoint facade의 불가능한 combine 광고만 separate로 정정했다.
+- 실제 gradient 분기가 없는 categorical/path consumer의 bottom 제목 광고만
+  top/left로 좁혔다. generic createLegend/createGuides/parent 및 gradient 가능
+  consumer는 그대로다. source runtime 변경과 coverage 예외는 없다.
+- 기존 Cartesian41개 profile은 전부 유지하고 Scatter 결합2개를 추가했다.
+  실제830차트/full6tests PASS. hierarchy도 기존 profile과 palette witness를 유지한다.
+  guide/scale739 projected/599 actual ledger 및 factor/process replay3tests PASS.
+- 각 editor의7개 channel selector,9개 local position, combine3종, sample window,
+  layer opacity0/.7/1, dash를 실제3개 TidyTuesday 데이터에서5회 실행하는 새 strict
+  receipt PASS. 공개 함수를 실제 immutable program에 그대로 호출하는 Proxy가
+  trace의 배열 요약 전 인자만 기록한다. 추정/fingerprint만으로 충족하지 않는다.
+- negative TS 및 유효 baseline에서 시작하는 owner/원자성16tests PASS.
+  원본 raw는 보존하며 numeric witness는 기존 source-order rank를 사용한다.
+  installed Full/Basic/runtime/types/renderers/MCP/tutorial PASS, gzip414152/203485/
+  SVG7325. docs120/120 PASS. unpacked4083894 실측의 최소다음4084000만 적용하고
+  부모의415000/204000/search831000 상한을 보존했다. root 통합에서 최종 재측정한다.
+- hierarchy8-source strict 최종 실행도215.08초에 PASS했다. 최초 직접호출의
+  무제한 heap GC 정체 로그와,512MB 첫 실행의 Strip/Beeswarm 전용 opacity2경로
+  누락 실패는 보존했다. 실제 fused symbol.opacity=.7 호출을 명시한 뒤 동일8개
+  source/모든 기존 profile/5회·3데이터 기준으로 재실행해 전체 경로를 닫았다.
+  새 유료/학교 API 호출, 이미지 눈/VLM 검사, 버전 변경/출판은 하지 않았다.

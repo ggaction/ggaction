@@ -2607,7 +2607,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `category` | Required | `EndpointCategoryChannel` |
 | `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `summary` | Optional / branch-dependent | `EndpointPlotSummary \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| CartesianSeparateGuideOptions \| undefined` |
 
 </details>
 
@@ -2651,7 +2651,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `category` | Required | `EndpointCategoryChannel` |
 | `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `summary` | Optional / branch-dependent | `EndpointPlotSummary \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| CartesianSeparateGuideOptions \| undefined` |
 
 </details>
 
@@ -2696,7 +2696,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `category` | Required | `EndpointCategoryChannel` |
 | `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `summary` | Optional / branch-dependent | `EndpointPlotSummary \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| CartesianSeparateGuideOptions \| undefined` |
 
 </details>
 
@@ -2871,7 +2871,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `errorBar` | Optional / branch-dependent | `IntervalPlotErrorBarOptions \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| CartesianSeparateGuideOptions \| undefined` |
 | `x` | Required | `string \| ErrorBarIntervalChannel \| ErrorBarPositionChannel` |
 | `y` | Required | `string \| ErrorBarIntervalChannel \| ErrorBarPositionChannel` |
 
@@ -3289,7 +3289,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `summary` | Optional / branch-dependent | `false \| RaincloudSummaryOptions \| undefined` |
 | `points` | Optional / branch-dependent | `false \| RaincloudPointsOptions \| undefined` |
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| CartesianCategoricalGuideOptions \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| CartesianCategoricalPointGuideOptions \| undefined` |
 
 </details>
 
@@ -3471,7 +3471,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `rect` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| CartesianSeparateGuideOptions \| undefined` |
 
 </details>
 

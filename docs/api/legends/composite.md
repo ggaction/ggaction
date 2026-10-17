@@ -141,6 +141,18 @@ program.createLegend({
 
 The background is rendered before every symbol layer, label, and title.
 
+## Facade combinations
+
+A facade legend belongs to that facade's own mark. Scatter, Regression, Strip,
+and Beeswarm can combine compatible point mappings. PolarScatter also supports
+categorical `size-shape`; quantitative `color-size` requires Cartesian circle
+points. Raincloud supports `size-shape` when its point component is enabled.
+Facades without both compatible point channels accept `combine: "separate"`.
+A legend on another mark cannot supply the missing channels.
+
+A bottom title belongs to a continuous gradient legend. Categorical-only facade
+legends retain top and left titles.
+
 ## Related
 
 [Legend overview](../legends.md) · [Categorical legends](./categorical.md) · [Series encodings](../series-encodings.md)

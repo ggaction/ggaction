@@ -29653,7 +29653,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianGuideOptions | undefined"
+          "type": "false | CartesianSeparateGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -29795,7 +29795,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianGuideOptions | undefined"
+          "type": "false | CartesianSeparateGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -29942,7 +29942,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianGuideOptions | undefined"
+          "type": "false | CartesianSeparateGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -30460,7 +30460,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianGuideOptions | undefined"
+          "type": "false | CartesianSeparateGuideOptions | undefined"
         },
         {
           "name": "x",
@@ -31700,7 +31700,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianCategoricalGuideOptions | undefined"
+          "type": "false | CartesianCategoricalPointGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -32258,7 +32258,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianGuideOptions | undefined"
+          "type": "false | CartesianSeparateGuideOptions | undefined"
         }
       ],
       "callPatterns": [
