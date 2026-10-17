@@ -194,6 +194,31 @@ edit or encoding reassignment preserves it. Direct `createScale` accepts the
 same option. Scale-family changes follow the [color transition rules](./discretized-color.md#changing-color-scale-families),
 including atomic replacement of compatible legends on all four edges.
 
+## Lab white point comparison
+
+{% include chart-example.html id="color-white-point" %}
+
+The first row uses the default D65 convention. The second starts with the same
+Lab scale, then calls `editColorScale({ target: "d50", whitePoint: "d50" })`.
+Both rows contain nine identical source values from 0 to 1, with the same red
+and blue endpoints. Their intermediate colors reveal the selected white point.
+The [complete runnable program](https://github.com/ggaction/ggaction/blob/main/examples/color-white-point/program.js)
+creates the rectangles, assigns their color scales, then edits the second scale.
+
+## Color gamma and signed-power
+
+{% include chart-example.html id="color-controls" %}
+
+Read the three rows from top to bottom: default cubehelix gamma 1, the same
+scale edited with `editColorScale({ target: "gamma22", gamma: 2.2 })`, and a
+blue-to-red scale edited with
+`editColorScale({ target: "power", type: "pow", exponent: 3 })`.
+The cubehelix rows use the exact 8-bit endpoints `#75190b` and `#90f2a4`.
+The last row retains values from -2 to 2; the cubic transform changes where those
+values fall within the palette without changing the source values.
+The [complete runnable program](https://github.com/ggaction/ggaction/blob/main/examples/color-controls/program.js)
+uses the same rectangle geometry for every row.
+
 ## Related
 
 [Scale overview](../scales.md) · [Encodings](../encodings.md) · [Troubleshooting](../../troubleshooting.md)

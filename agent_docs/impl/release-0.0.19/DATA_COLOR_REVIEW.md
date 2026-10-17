@@ -8,7 +8,7 @@ Gate: **approved**. 이슈 #167, #168, #169, #172, #196, #198, #202, #207, #209�
 - [x] 기존 floor·exponential·summary 제안의 정확한 결정 재검토
 - [x] 새 중요 선택마다 권고안과 이유, 호환성·검증 조건 작성
 - [x] 통합 리뷰 패키지의 원격 revision 및 사용자 설계 승인 기록: bad3f346, PROPOSAL.md 승인 기록
-- [ ] 승인 후 구현, focused/cumulative/installed 소비자 검증
+- [x] 승인 후9개 구현, focused/cumulative/installed 소비자 검증: 아래 마지막 누적 checkpoint
 - [x] 실제 색상 출력 비교의 시각 Gate 증거 및 사용자 확인: 초기 승인과 감마 보정 목표 `4f2f985c`, 승인 기록 `e670508b`
 
 검토 기준은 현재 작업트리의 0.0.18 공개 표면이다. 이 문서는 계약의 새 canonical 사본이 아니라 구현 전 검토 자료다. 구현 시 정확한 현재 계약은 해당 `agent_docs/contract/current/` 소유 파일에 반영하고 이 문서에는 승인·완료 근거만 연결한다. 데이터·색상 계산은 grammar, 의미·소유권·명시적 재물질화는 domain action, 이미 계산된 출력은 renderer가 담당한다. renderer에 데이터 변환이나 fitting을 추가하지 않는다.
@@ -419,3 +419,83 @@ program.createSummaryData({
   unpacked3939523, browser Full395462/Basic190821/SVG7176gzip. package570/804000/3940000과
   Full396000만 최소 상향했다. Basic191000/SVG25000과 computed/work/path/일반graphics 한도는 유지한다.
 - 전체9개 기능의 realistic 새옵션/리터럴/action 실제5회·3TT데이터셋 증언은 다음 필수 checkpoint다.
+
+## 9개 기능의 실제 데이터 증언 checkpoint
+
+- source가 아닌 검증 계층의 checkpoint다. 공개 runtime9개(#167/#168/#169/#172/#196/#198/#202/#207/#209)는 앞선 커밋대로 유지한다.
+- `realistic-data-color-contracts.test.js`는 고정159requirements(78paths/81literals,
+  SHA256 `945f57c2d544486480599f6730c944b55f3f25eb74ba4e06a249f4f92950c071`)를
+  실제100개 프로그램과 다섯 pinned TT source에서 최소5회·3dataset으로 검증했다.
+  실제 사용 source는 Penguins, London Marathon Winners, Astronauts, US Births, Chocolate Ratings다.
+  새 함수 두 개의 source/target 및 computed floor/datePart create/edit, exp create/edit/data/facade,
+  모든 공개 color/stroke whitePoint/gamma/pow consumer와 기존 position/size pow를 포함한다.
+- 처음135개 계획은 전체 기존 miscellaneous/regression recipe를 반복해 새로운 증언과 무관한
+  수백 개 facade를 매번 재실행했다. 같은 pinned `realisticRecordView`와 공개 helper를 재사용해
+  필요한100개로 정리했다. 원래159개 요구와 SHA, 최소5/3은 그대로다. 다섯 서로 다른 원본의
+  선택 행·sourceRowIndex·원본 열은 보존하고 양수/명시 interval alias만 기록된 산식으로 만든다.
+  회귀 count·coefficients·R²와 floor는 독립 계산으로 대조한다. 그림을 관찰하거나 새번역하지 않았다.
+- 전용 color 양성 profile은 signed-power/Lab/HCL/cubehelix의 실제 적용이 있는 scatter/bar5종과
+  기존 scale/heatmap profile이다. 관련 없는 log+CI의 부호 제약 조합은 이 추가 증언에 넣지 않는다.
+  기존 전체 broad matrix, negative와 public admission 검증은 별도로 그대로 유지했다.
+- color union이8→9가 되면서 기존 small-family 임계값8을 넘는 문제를 발견했다. 전역 임계값은
+  바꾸지 않고 정확한 closed9color vocabulary만 path-values로 유지한다. 원래8종과 pow가 모든
+  공개 path마다 계속 필수이며, 다른9종 calendar union은 기존 family-values다. 이를 검증하는
+  positive/negative inventory assertions를 추가했다. 단순 fingerprint 변경으로 실행 증언을 대체하지 않았다.
+- 최신 출시 main `0447acaf`를 병합한 `be874696`에 R의 실제sqrt 증언과 실행 불가능한band 선언
+  정정을 보존했다. 기존 recipe의 행·sample·정책은 바꾸지 않았다. 새pow profile은 기존 feature
+  ordinal 뒤에 추가해 원래 quantile 등 역할의 실행을 그대로 유지한다.
+- broad actual matrix: Cartesian720, encoding15, facade255, guide739선택/599실제build,
+  statistical465. 옵션·리터럴의 증가분은 정확한 count/digest와 실제 최소5/3 실행을 함께 검사한다.
+  과거918개 gap partition은 그대로 두고 새statistics2개는 별도159개 증언 소유자에 포함한다.
+- 새 파일의 성공 실측은18273.828792ms(macOS/Node22.23.1/npm10.9.8)다. shard timing에18274ms를
+  등록하고 해당 항목의 환경 override를 남겼다. 기존 Ubuntu 측정값과 일반 sharding 기준은 유지한다.
+- 일반unit runtime3135개가 통과했고 새파일 timing누락으로 실패했던 shard 검사3개도 정정 후 통과했다.
+  최종 broad/statistical 재검증 결과와 stable 색상 artifact 증거는 후속 checkpoint에 기록한다.
+
+- 최종 재실행 Cartesian6개와 statistical7개가 모두 통과했다. 전용100프로그램159요구, timing/sharding3개도 통과했다. 출시 main병합 뒤 installed package unpacked실측3941633바이트로 기존3940000을 초과해 다음 최소1000단계인3942000만 적용했다. Entry570/packed804000/browser/search한도는 유지하며 macOS/Node22.23.1/npm10.9.8 환경이다.
+
+## 색상 승인 목표의 정식 예제 승격 checkpoint
+
+- 원래 승인된 chart body를 그대로 보존했다. `lab-white-point`는 D65/D50 각각9개,
+  `color-math`는 gamma1/gamma2.2 각각9개와 signed-power9개다. Gamma의 공개 range는
+  추가 승인 `4f2f985c`/기록 `e670508b`의 `['#75190b','#90f2a4']`로 고정했다.
+- 실행 소유자는 `test/charts/color-controls/`이고 public program은 각각
+  `examples/color-white-point/program.js`, `examples/color-controls/program.js` 한 개다.
+  첫 선언 뒤 `editColorScale`로 D50/gamma2.2/pow를 적용한다. Primitive는 독립 literal RGB와
+  concrete rectangle만 사용하는 명시적 createGraphics/editGraphics chain이다.
+  기존 독립 Lab행렬/cubehelix 역변환/signed-power oracle과45개 literal을 대조한다.
+- Manifest가 exact top-level public 호출, 크기480×270, row geometry/색상, artifact 소유자를
+  기록한다. 두 variant의 graphicSpec/order/Canvas호출/전체518400RGBA바이트와 PNG가 exact다.
+  SVG와 PDF의 concrete vector stream도 exact이며 raster image를 포함하지 않는다.
+  Rectangle전용 PDF에는 path move가 아니라 rectangle명령 `re`가 있으므로 shared vector
+  검사도 실제 요청 geometry에 맞는 명령을 요구한다. 기존 경로/원형 검사는 계속 `m`을 요구한다.
+- 재현: `node --test test/charts/color-controls/{public.test,png.render,vector.render}.js`.
+  PNG는 `.artifacts/test/png/charts/color-scales/color-white-point/lab-white-point/`와
+  `.artifacts/test/png/charts/color-scales/color-controls/color-math/`
+  아래 `primitive.png`, `user-facing.png`, exact호출의 `variant.json`이다.
+  Roadmap/review 디렉터리는 정식 테스트의 실행 의존성이 아니다.
+- Public registry/shared browser host/catalog/API설명을 연결했다. BrowserCanvas2개와
+  browser-safeSVG2개가 실제 Chromium에서 통과했고, SVG는 native Node 출력/모든 rectangle수와 exact다.
+  기존 vector2개를 포함한 대표9검사, hierarchy/source-boundary9검사가 통과했다.
+- 전체일반 unit3136/3136 통과(95.536초), installed packed consumer도 앞선 checkpoint 뒤 통과했다.
+  새예제 source-link검사는 HEAD의 canonical source를 검사하므로 source commit 뒤 provenance를
+  재생성하고 문서120개를 재실행한다. 문서 site는 로컬 기본Ruby2.6 PATH오류를 기록하고,
+  이미 설치된Ruby3.2.11을 명시해 preflight/build/built검증을 실행한다.
+- 검색 payload817927바이트의 새예제/사용법을 유지하며 cap은 다음 최소1000단계818000만 적용했다.
+  이 기록은 승인시각 목표의 코드·자동 검사 증거이며 새 VLM/이미지 관찰이나 유료번역은 실행하지 않았다.
+
+### 마지막 누적 검증
+
+- 일반unit3136/3136, normal contracts548/548, docs120/120 모두 통과했다.
+  계약 검사가 찾은 새slice의 primitive.test누락과 realistic discovery22→23을 보완했고,
+  모든 원래 검사와 파일별실제timing을 유지했다. Public pair의 호출은 subset만이 아니라
+  요약된 전체 trace arguments와 manifest 호출을 exact 비교한다.
+- Ruby3.2.11의 명시 PATH로 Jekyll build와150개 built pages/links/assets/search 검사를 통과했다.
+  전체 responsive/a11y/browser sweep은150페이지를320/390/768px에서 검사하고 desktop검색,
+  keyboard/mobile메뉴, JavaScript없는탐색을 포함해 통과했다. Stable예제를 포함한 실제 packed
+  installed소비자도 runtime/TypeScript/Basic/browser/MCP까지 최종 통과했다.
+  명시primitive2개와 registry/discovery를 포함한 focused23개 및 exacttrace5개도 모두 통과했다.
+- 통합 중 axes 작업에서 별도로 발견한 object|array union의 숨은valid leaf 복원은
+  현재branch의 검증 입력에 아직 들어 있지 않다. 그 parser변경 후 복원되는 requirement의
+  실제증언과 전체 통합 검사는 root가 합친 뒤 추가로 확인해야 한다. 여기의159개/기존closed9
+  color전수 및5/3증언은 그대로 보존하며 새통합 입력의 성공으로 과장하지 않는다.

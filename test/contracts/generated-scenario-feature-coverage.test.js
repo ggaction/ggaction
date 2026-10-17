@@ -240,6 +240,18 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createParallelCoordinates.color.layout"), false);
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:encodeY.bin"), false);
+  const closedColorFamily = inventory.literalFamilies.find(family =>
+    family.values.map(value => value.key).join("|") ===
+      ["log","ordinal","pow","quantile","quantize","sequential","sqrt","symlog","threshold"]
+        .map(value => `string:${value}`).join("|"));
+  assert.equal(closedColorFamily.size,9);
+  assert.equal(closedColorFamily.open,false);
+  assert.equal(closedColorFamily.policy,"path-values");
+  for (const path of closedColorFamily.requiredPaths) {
+    assert.equal(inventory.pathLiteralRequirements.filter(requirement => requirement.optionPath===path).length,9,path);
+  }
+  const otherNine = inventory.literalFamilies.find(family => family.values.some(value => value.key==="string:weekday") && family.size===9);
+  assert.equal(otherNine.policy,"family-values","the general threshold remains eight");
   const optionById = new Map(inventory.optionPaths.map(option => [option.id, option]));
   for (const action of ["removeData", "removeScale", "removeCoordinate"]) {
     assert.equal(
@@ -342,7 +354,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
   );
   assert.equal(scaleTypePaths.length, 148);
-  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 675);
+  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 687);
   assert.equal(inventory.excludedOptionPaths.every(option =>
     optionById.get(option.replacement)?.required === true
   ), true);

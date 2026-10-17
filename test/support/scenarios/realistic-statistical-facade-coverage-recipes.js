@@ -1,3 +1,4 @@
+import { realisticColorControls } from "./realistic-color-controls.js";
 import { chart } from "../../../src/index.js";
 
 import {
@@ -349,7 +350,8 @@ const HEATMAP_FEATURE_PROFILES = freeze([
     temporalColor: true,
     requiresTemporal: true,
     reverseX: true
-  }
+  },
+  { id:"heatmap-powered-color",bins:{x:10,y:10},colorType:"pow" }
 ].map((profile, featureIndex) => ({
   ...profile,
   featureIndex,
@@ -847,7 +849,7 @@ function createOwnedFacade(base, action, args) {
     !["quantize", "quantile", "threshold"].includes(candidate.resolvedScales[layer.encoding.color.scale].type)) {
     legend = { ...requested.legend, target: layer.id, channels: ["color"] };
     if (["quantitative", "temporal"].includes(layer.encoding.color.fieldType)) {
-      const continuous = ["sequential", "log", "symlog"].includes(
+      const continuous = ["sequential", "log", "symlog", "pow", "sqrt"].includes(
         candidate.resolvedScales[layer.encoding.color.scale].type
       );
       const allowed = ["target", "channels", "title", "labels", "titleStyle", "border", "offset"];
@@ -1384,13 +1386,18 @@ function heatmapColor(profile, ordinal) {
       type: "sequential",
       domain: "auto",
       interpolate: COLOR_INTERPOLATIONS[ordinal % COLOR_INTERPOLATIONS.length],
+      ...realisticColorControls(COLOR_INTERPOLATIONS[ordinal % COLOR_INTERPOLATIONS.length], ordinal),
       clamp: ordinal % 2 === 0,
       reverse: ordinal % 3 === 0
     }
   };
 }
 
-function heatmapBinnedColor(ordinal) {
+function heatmapBinnedColor(ordinal, type) {
+  if (type !== undefined) return {scale:{
+    id:`createheatmap-color-${ordinal}`,type,domain:"auto",palette:"viridis",
+    ...(type==="pow"?{exponent:2}:{}),interpolate:"lab",whitePoint:"d50",clamp:true
+  }};
   const index = ordinal % 12;
   const id = `createheatmap-color-${ordinal}`;
   if (index < COLOR_INTERPOLATIONS.length) {
@@ -1399,6 +1406,7 @@ function heatmapBinnedColor(ordinal) {
       type: "sequential",
       domain: "auto",
       interpolate: COLOR_INTERPOLATIONS[index],
+      ...realisticColorControls(COLOR_INTERPOLATIONS[index], index),
       midpoint: "auto",
       clamp: index % 2 === 0,
       reverse: index % 3 === 0
@@ -1413,14 +1421,14 @@ function heatmapBinnedColor(ordinal) {
         return {
           scale: {
             id, type: "log", domain: "auto", range: "auto", base: 10,
-            interpolate: COLOR_INTERPOLATIONS[index], clamp: true, reverse: false
+            interpolate: COLOR_INTERPOLATIONS[index], ...realisticColorControls(COLOR_INTERPOLATIONS[index], index), clamp: true, reverse: false
           }
         };
       case 5:
         return {
           scale: {
             id, type: "symlog", domain: "auto", range: "auto", constant: 1,
-            interpolate: COLOR_INTERPOLATIONS[index], clamp: false, reverse: true
+            interpolate: COLOR_INTERPOLATIONS[index], ...realisticColorControls(COLOR_INTERPOLATIONS[index], index), clamp: false, reverse: true
           }
         };
       case 6:
@@ -1587,7 +1595,7 @@ function buildHeatmap(factors) {
             }
           : {})
       },
-      color: heatmapBinnedColor(ordinal + (profile.paletteOffset ?? 0)),
+      color: heatmapBinnedColor(ordinal + (profile.paletteOffset ?? 0), profile.colorType),
       guides: guideOptions(profile, resources, context, ordinal, "createHeatmap")
     });
   }

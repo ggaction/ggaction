@@ -413,6 +413,10 @@ npm10.9.8에서 압축 해제3,913,392바이트로 기존3,908,000바이트를 �
 바이트로 이전393,000을12바이트 초과하여 Full만394,000으로 조정한다.
 Basic191,000/SVG25,000은 유지하며 Node/zlib 차이를 포함한 최종 통합 검증은 별도다.
 
+line facade의 실행 불가능한 horizontal bandPosition 선언을 수정하고 공개 문서를
+동기화한 Node24.21.0/npm11.19.0 패키지는 798,062바이트다. 이 선언 수정분을
+포함하도록 압축 상한만 다음 1,000바이트 단계인 799,000으로 조정한다.
+
 이 문서는 상태 소유권, 계층 간 의존성과 실행 흐름을 설명한다. 메서드별 매개변수·기본값·추론·지원 조합·오류는 아래 Current 계약이 소유하며 이 문서에 복제하지 않는다. 구현 상태와 direct/internal 분류는 [ACTION_INDEX.json](contract/ACTION_INDEX.json), 선언은 `types/`, 자동화된 value vocabulary는 owning runtime registry를 사용한다.
 
 | 결정 | 정확한 계약 |
@@ -2390,3 +2394,6 @@ Normal Node/browser/PDF reference checks use zero added color tolerance.
 한도582/826000/4025000을 적용한다. 이전581/825000/4022000은 실패했고 내용은 보존했다.
 Released0.0.18 결합 뒤 동일 feature artifact는3994170unpacked bytes, 검색821174bytes다.
 기능을 제거하지 않고 이 두 최소 한도만3995000/822000으로 갱신한다.
+Released-main integration `0447acaf` with the approved nine data/color features measures 3,941,633 unpacked bytes on macOS/Node22.23.1/npm10.9.8. Only the unpacked cap grows from3,940,000 to3,942,000 (the next minimum1,000-byte step); entry570, packed804,000, browser and search caps remain unchanged. This does not claim the previous unpacked cap passed.
+
+승인된 색상 목표의 정식 public example 두 개와 연속 색상 사용법을 보존한 검색 payload는817,927바이트다. macOS/Node22.23.1/npm10.9.8에서 기존817,000을 초과해 다음 최소1,000바이트 단위인818,000으로만 조정한다. 검색 항목/내용/기준은 유지하며 이전 한도 통과로 보고하지 않는다.

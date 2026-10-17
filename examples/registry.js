@@ -1,3 +1,5 @@
+import { createColorControls } from "./color-controls/program.js";
+import { createWhitePointComparison } from "./color-white-point/program.js";
 import { createHierarchicalAuthoring } from "./hierarchical-authoring/program.js";
 import { createResourceRemovalWorkflow } from "./remove-dependent-resources/program.js";
 import { createFacetSourceWorkflow } from "./edit-facet-source/program.js";
@@ -146,6 +148,11 @@ export const DOCUMENTATION_WORKFLOWS = Object.freeze([
 
 // Chart-family examples retain their independent primitive/public baselines.
 export const PUBLIC_CHARTS = Object.freeze([
+  example({ id: "color-controls", data: {}, width: 480, height: 270, docsGroup: "tutorials", testDirectory: "color-controls", createProgram: createColorControls,
+    browser: { path: "color-controls/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "color-controls", width: 480, height: 270 } } } }),
+  example({ id: "color-white-point", data: {}, width: 480, height: 270, docsGroup: "tutorials", testDirectory: "color-controls", createProgram: createWhitePointComparison,
+    browser: { path: "color-white-point/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "color-white-point", width: 480, height: 270 } } } }),
+
   example({ id: "cars-origin-histogram-facet", data: "cars", width: 756, height: 578, createProgram: createCarsOriginHistogramFacet, testDirectory: "cars-origin-scatterplot-facet", browser: { path: "browser-host/?chart=cars-origin-histogram-facet", canvas: "#chart" } }),
   example({ id: "cars-weighted-rules", data: "cars", width: 520, height: 320, createProgram: createCarsWeightedRules, testDirectory: "cars-error-bar", browser: { path: "browser-host/?chart=cars-weighted-rules", canvas: "#chart" } }),
   example({

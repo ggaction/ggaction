@@ -1885,6 +1885,17 @@ function buildRegressionCoverage(factors) {
     span: 0.6
   });
 
+  // The positive response is an explicit absolute-value source projection;
+  // exponential and linear coefficients describe the same retained observations.
+  program = addRegressionPoint(program, "regression-exponential", 0.08)
+    .createRegression({target:"regression-exponential",method:"exp",groupBy:"group",band:false})
+    .editRegression({target:"regression-exponential",method:"exp",line:{strokeWidth:2.3}})
+    .createRegressionData({id:"directExponentialFit",source:"directRows",x:"rowOrdinal",y:"positiveY",groupBy:"group",method:"exp"})
+    .editRegressionData({target:"directExponentialFit",method:"exp",predict:{domain:[1,view.rows.length],steps:48}})
+    .createRegressionData({id:"directLinearFit",source:"directRows",x:"rowOrdinal",y:"positiveY",groupBy:"group",interval:false})
+    .createRegressionStatisticsData({id:"directFitStatistics",source:"directLinearFit"})
+    .createRegressionData({id:"directAlternateFit",source:"directRows",x:"rowOrdinal",y:"positiveX",groupBy:"group",interval:false})
+    .editRegressionStatisticsData({target:"directFitStatistics",source:"directAlternateFit"});
   for (const [index, curve] of CURVES.entries()) {
     program = program.createRegressionBand({
       id: `direct-regression-band-${curve}`,
@@ -2053,6 +2064,20 @@ function buildMiscellaneousCoverage(factors) {
         right: { field: "positiveY" }
       }
     })
+    .createComputedData({
+      id: "directFloored", source: "directComputed", as: "lowerCombinedValue",
+      expression: { op: "floor", operand: { field: "combinedValue" } }
+    })
+    .createComputedData({
+      id: "directCalendarYear", source: "analysisRows", as: "sourceYear",
+      expression: { op: "datePart", part: "year", timeZone: "UTC",
+        operand: { op: "parseTime", operand: { field: "timeUnique" } } }
+    })
+    .editComputedData({target:"directFloored",as:"roundedCombinedValue",
+      expression:{op:"floor",operand:{field:"combinedValue"}}})
+    .editComputedData({target:"directCalendarYear",
+      expression:{op:"datePart",part:"year",timeZone:"Europe/Copenhagen",
+        operand:{op:"parseTime",operand:{field:"timeUnique"}}}})
     .createStackData({
       id: "directStack",
       source: "directSummary",
@@ -2575,6 +2600,7 @@ const REGRESSION_RECIPE = makeRecipe({
   build: buildRegressionCoverage,
   expectedDirectActions: [
     "createRegression", "editRegression", "createRegressionData",
+    "createRegressionStatisticsData", "editRegressionStatisticsData",
     "createRegressionBand", "editRegressionBand",
     "createRegressionLine", "editRegressionLine"
   ]
