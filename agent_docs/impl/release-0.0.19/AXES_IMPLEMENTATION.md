@@ -164,3 +164,29 @@ EOF
   facade nested counts가 부모 option occurrence만 기록하고 숨겨진 object leaf를 허위 기록하지
   않음을 확인했다. Alias 목록/array exclusion/coverage 하한은 변경하지 않았다. Named-array
   입력의 actual5×3와 복원된 object branch의 실제 증거는 서로 대체하지 않는다.
+
+
+## Named axis·parent legend 실제 데이터 checkpoint
+
+- 독립 realistic test에서 원본3TT 데이터셋(tour winners, marathon winners, penguins)을
+  변경하지 않고 각각5회 실행했다. Named 축의 complete/focused/aggregate object/array 경로,
+  독립 y scale 두 개, 6가지 title baseline·3가지 align, dash map, frame 이동, grid reset을
+  실제 public action으로 호출하고 매 단계 import 재생성·기하·이전 프로그램 불변성을 확인한다.
+  별도 facade named-array 실행도 기록하므로 object branch 증언으로 array를 대신하지 않는다.
+- 같은3×5 실행에서 부모 object 범례를 child60px·final union 기준으로 만들고 whole/focused/
+  block 편집, local 위치, reflow, 최종 removal·재배치 후 비복원, 저장/불러오기와 실제 PNG를
+  검증했다. 원본 긴 facet header는 글자·내용을 유지하고 명시적 간격과 여백으로 배치한다.
+  모든 child plot width는60px로 유지한다. 최종3/3 PASS, 실제 합산17031.924125ms를
+  canonical realistic timings에 기록했다.
+- 기존 guide-scale actual recipe도 동일 named-owner helper를 실제로 호출한다. Clone/reorder/
+  fresh-process replay 계약은1/1 PASS다. Test discovery는 새 authentic test와 sibling combined
+  test를 명시하고 realistic24개를 정상/coverage suite와 분리한다.
+- 기존 hierarchy8dataset 전체 실행은 기본 heap에서14분간 완료되지 않아 로그를 보존하고
+  본인 프로세스만 중단했다. 같은 기준을512MB old-space로 실행하면214초에 실제 전체 호출을
+  마치고 strict witness assertion에 도달했다. 남은89항목은 palette·새 sibling 범례와 일부
+  Rug/Strip 축 literal fixture 보강 의무다. Runtime/bounds/coverage 기준은 완화하지 않았다.
+  이 checkpoint로 전체 realistic 또는 전체 feature 완료를 주장하지 않는다.
+
+- CI의 정식 realistic runner도512MiB old-space를 명시한다. Normal/coverage 실행과 기존
+  private generation/execution child의 더 좁은 명시적 한도는 유지한다. 데이터·반복·deadline·
+  RSS·coverage 정책은 변경하지 않는다. Normal discovery/source/inventory22회귀 PASS.

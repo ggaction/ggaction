@@ -10,6 +10,7 @@
     "contracts/generated-scenario-feature-coverage.test.js": 44770,
     "contracts/generated-scenarios.test.js": 24465,
     "contracts/realistic-arc-legend-layout.test.js": 67117,
+    "contracts/realistic-axis-facet-owner-witness.test.js": 17032,
     "contracts/realistic-cartesian-facade-coverage-recipes.test.js": 134704,
     "contracts/realistic-combined-legend-witness.test.js": 454,
     "contracts/realistic-complete-chart-facades.test.js": 3510,
@@ -33,6 +34,11 @@
       "environment": "Darwin, Node 22",
       "source": "local integration run",
       "measuredDurationMs": 453.667499
+    },
+    "contracts/realistic-axis-facet-owner-witness.test.js": {
+      "environment": "Darwin, Node 22",
+      "source": "actual three TT datasets, five flows per dataset",
+      "measuredDurationMs": 17031.924125
     }
   }
 }

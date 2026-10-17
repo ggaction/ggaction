@@ -1,3 +1,4 @@
+import { exerciseCartesianAxisOwners } from "./cartesian-axis-owner-witness.js";
 import { createHash } from "node:crypto";
 
 import { chart } from "../../../src/index.js";
@@ -873,7 +874,7 @@ function exerciseCartesianGuides(factors, base) {
     position: oppositeY === "left" ? "right" : "left"
   };
   const { channels: _axesLegendChannels, ...editableMovedAxesLegend } = movedAxesLegend;
-  let program = base.program.createGuides({
+  let program = exerciseCartesianAxisOwners(base.program).createGuides({
     axes: {
       coordinate: { id: "main", type: ordinal % 2 === 0 ? "cartesian" : "auto" },
       x: xAxis,
