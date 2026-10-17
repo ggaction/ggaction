@@ -482,6 +482,24 @@
       },
       "sourceHash": "33963526c9d2ca315f518be9e1b8f5e151534e9668317b92c23d931ce2816db8"
     },
+    "legend-layout": {
+      "width": 960,
+      "height": 540,
+      "thumbnail": {
+        "width": 640,
+        "height": 360
+      },
+      "sourceHash": "75d1ed0b5d64fa2f9551642cf8dc876ce58bfaba9a288c02f3fc79524baf1f72"
+    },
+    "legend-recipe-opacity": {
+      "width": 960,
+      "height": 540,
+      "thumbnail": {
+        "width": 640,
+        "height": 360
+      },
+      "sourceHash": "d1f3346d57e001b58415b9118c14a64a7b2510b1effbf427f76371be7e4950e0"
+    },
     "legend-appearance": {
       "width": 800,
       "height": 480,

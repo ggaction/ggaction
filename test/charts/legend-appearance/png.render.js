@@ -36,3 +36,7 @@ test("whole-symbol opacity has a stable literal/public PNG pair",async()=>{
     },null,2)+"\n");
   }
 });
+
+import{registerVisualVariantTests}from'../../support/visual-variants.js';
+import{appearanceVariants}from'./manifest.js';
+registerVisualVariantTests(appearanceVariants);

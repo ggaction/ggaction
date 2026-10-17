@@ -1441,3 +1441,35 @@
   actions: encodeColor · encodeSize · createLegend · editLegend
   tasks: comparison
   url: /api/legends/categorical/#quantitative-color-and-size
+
+- id: legend-layout
+  example: /examples/legend-layout/
+  title: Independent legend layout and border
+  image: /assets/images/legend-layout.png
+  alt: Horizontal color gradient with a dashed frame and bottom title above an independent size legend in the bottom left
+  width: 960
+  height: 540
+  thumbnail: /assets/images/legend-layout-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 360
+  caption: A 120 by 16 color ramp clears its bottom title by 12 pixels; only the size block moves to the bottom left.
+  summary: Start with legend blocks, then edit orientation, title, border and one local anchor.
+  actions: createLegend · editLegendLayout · editLegendBorder · editLegendBlock
+  tasks: appearance guide editing
+  url: /api/legends/categorical/#independent-legend-appearance
+
+- id: legend-recipe-opacity
+  example: /examples/legend-recipe-opacity/
+  title: Opacity of a layered legend recipe
+  image: /assets/images/legend-recipe-opacity.png
+  alt: A line and outlined orange point with an explicit opacity of 0.7 beside an unchanged text label
+  width: 960
+  height: 540
+  thumbnail: /assets/images/legend-recipe-opacity-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 360
+  caption: Line and point layers carry explicit opacity while the label remains opaque.
+  summary: Style an existing legend with a complete line and point recipe.
+  actions: createLegend · editLegendLabels · editLegendSymbols
+  tasks: appearance guide editing
+  url: /api/legends/categorical/#layered-recipe-opacity

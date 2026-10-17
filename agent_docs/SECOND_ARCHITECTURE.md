@@ -2489,3 +2489,12 @@ are removed.
 Node24.19.0 통합 staged 입력은840502packed/4082583unpackedbytes로 측정됐다.
 기존836000/4064000 검사가 실패하여 최소1000bytes 단계841000/4083000만 적용한다.
 591개 entry와 모든 기존 옵션·데이터·coverage 기준은 유지한다.
+
+
+### Legend appearance canonical example discovery budget
+
+기존.7single-point 예제를 보존하고 독립 gradient/local-size 및 composite recipe
+opacity0/.7/1 안정 variant를 추가한 search payload는829884bytes(Node22.23.1/
+npm10.9.8/macOS)다. 이전829000 한도를 초과해 최소1000단위830000으로만
+조정한다. 항목/공개옵션/enum을 숨기지 않으며 runtime/package/browser/coverage
+한도는 변경하지 않는다.
