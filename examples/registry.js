@@ -231,8 +231,8 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "browser-host/?chart=theta-legend-order", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "theta-legend-order", width: 1000, height: 700 } } }
   }),
-  example({id:"combined-legends",data:{},width:600,height:300,docsGroup:"tutorials",createProgram:createCombinedLegendsProgram,
-    browser:{path:"combined-legends/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"combined-legends",width:600,height:300}}}}),
+  example({id:"combined-legends",data:{},width:1224,height:300,docsGroup:"tutorials",createProgram:createCombinedLegendsProgram,
+    browser:{path:"combined-legends/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"combined-legends",width:1224,height:300}}}}),
   example({id:"legend-layout",data:{},width:480,height:270,docsGroup:"tutorials",testDirectory:"legend-appearance",createProgram:createGradientBlockProgram,
     browser:{path:"legend-layout/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"legend-layout",width:480,height:270}}}}),
   example({id:"legend-recipe-opacity",data:{},width:480,height:270,docsGroup:"tutorials",testDirectory:"legend-appearance",createProgram:()=>createRecipeOpacityProgram(.7),
