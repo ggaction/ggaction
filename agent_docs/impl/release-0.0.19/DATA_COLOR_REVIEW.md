@@ -93,6 +93,26 @@ Renderer와 transform shape는 기존 소유자를 유지한다.
   Basic191,000·SVG25,000·567entries는 유지했다. 측정과 이전 한도 통과를 혼동하지 않는다.
 - 새 exp literal의 realistic 최소5회·3실데이터셋 실제 증언과 최종 누적 검사는 남아 있다.
 
+### 구현 checkpoint — cached linear fit statistics
+
+#202의 두 공개 action과 내부 materializer, 닫힌 transform/typed schema·topology·DAG replay,
+fit-owned 최소cache·legacy 명시 계산·snapshot validation·remove/release cleanup을 구현했다.
+정확한 계약은 CORE, state 경계는 SECOND_ARCHITECTURE가 소유한다.
+
+- 독립 OLS/SSE literal, grouped typed first-seen·missing·constant R²null, prediction count 독립성,
+  cache reuse와 구 snapshot의 명시 fit1회, source 교체/revise·주석 갱신·순환/삭제·method 오류 원자성,
+  chart-owned edit/follow/facet와 기존 extreme numeric·tampered cache/행 일치 검사12개 통과.
+- 기존 fit trace는 createDerivedData→materializeRegressionData 그대로다. semanticSpec/graphicSpec/
+  prediction rows는 유지하며 editable state에 작은 cache만 추가된다. 구 snapshot 로드에서 fit하지 않는다.
+- 전체 unit3,124개, contracts532/533(유일 package-budget 실패는 실측 한도 정정 후 해당4개 통과),
+  docs120개와 Full/Basic TypeScript를 통과했다. 뒤이어 추가한 cache/source/facet/cycle12개도 통과했다.
+  실제 packed npm 설치에서 새 create/edit·coefficients/count/R²·snapshot·Full-only surface와
+  기존 browser/MCP 소비자까지 통과했다.
+- macOS/Node22.23.1/npm10.9.8 실제569entries, packed802,032/unpacked3,935,479와
+  search816,102바이트를 기준으로 최소 예산만 갱신했다. 별도 global test/coverage threshold는 유지했다.
+- 최종 realistic의 두 새 action과 옵션 최소5회·3실데이터셋 증언, #207 point capacity와
+  나머지 신규 computed/color/exp vocabulary의 누적 현실 데이터 검증은 아직 남아 있다.
+
 ## 1. 공통 결정
 
 1. 일반 작성 호출은 기존 domain action을 유지한다. 함수의 핵심 옵션을 보통 세 개 이하로 작성할 수 있도록 focused edit를 사용한다. 중첩 AST의 필수 피연산자까지 세 개를 강제하여 의미를 손상시키지는 않는다.

@@ -1,6 +1,7 @@
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
+import { validateRegressionFitStatistics, requireRegressionStatisticsSource, regressionStatisticsRows } from "../grammar/regression/statistics.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
 import { normalizeColorInterpolationOptions } from "../grammar/scales/color.js";
 import { normalizeTransformParameters } from "../grammar/scales/transformed.js";
@@ -192,6 +193,27 @@ export function validateProgramState(program, path) {
       validatePositiveFinite(config.itemGap, "Stored sampled color itemGap");
       validateNonNegativeFinite(config.offset, "Stored sampled color offset");
     } else if (["sampling", "symbol", "columns", "direction", "layout"].some(key => config[key] !== undefined)) throw invalidSnapshot("Gradient color legend cannot store symbol representation settings.", path);
+  }
+
+  const regressionFits = program.materializationConfigs.regressionFits ?? {};
+  requireObject(regressionFits, `${path}.materializationConfigs.regressionFits`);
+  for (const [id, cache] of Object.entries(regressionFits)) {
+    const dataset = resources.get("data").get(id);
+    validateRegressionFitStatistics(cache, dataset, resources.get("data").get(dataset?.source));
+  }
+  for (const dataset of semantic.datasets) {
+    if (dataset.transform?.[0]?.type !== "regressionStatistics") continue;
+    const fit = resources.get("data").get(dataset.source);
+    requireRegressionStatisticsSource(fit);
+    if (regressionFits[fit.id] === undefined) throw invalidSnapshot("Regression statistics requires its linear fit cache.", path);
+    if (dataset.values !== undefined) {
+      const expected = regressionStatisticsRows(regressionFits[fit.id], fit);
+      if (dataset.values.length !== expected.length || dataset.values.some((row, index) =>
+        !isPlainObject(row) || Object.keys(row).length !== Object.keys(expected[index]).length ||
+        Object.entries(expected[index]).some(([key, value]) => !Object.hasOwn(row, key) || !Object.is(row[key], value)))) {
+        throw invalidSnapshot("Regression statistics values do not match their linear fit cache.", path);
+      }
+    }
   }
 
   const selections = program.materializationConfigs.selections ?? {};

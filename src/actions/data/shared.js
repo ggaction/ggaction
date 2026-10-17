@@ -35,9 +35,11 @@ export function requireDerivedDataset(program, id, type) {
   return { id: validatedId, dataset, source, transform: dataset.transform[0] };
 }
 
-export function derivedMaterializer(op, description, type, derive, resolve) {
+export function derivedMaterializer(op, description, type, derive, resolve, { before, after } = {}) {
   return action({ op, description }, function (args = {}) {
     validateKeys(args, MATERIALIZE_OPTIONS, op);
+    const existing = before?.(this, args);
+    if (existing !== undefined) return existing;
     const { id, source, transform } = requireDerivedDataset(
       this,
       args.id,
@@ -51,6 +53,7 @@ export function derivedMaterializer(op, description, type, derive, resolve) {
     const values = Array.isArray(result) ? result : result.values;
     const schema = deriveTransformSchema(source.schema, transform, values, {
       sourceId: source.id,
+      sourceTransform: source.transform?.[0],
       ownerId: id
     });
     validateRowsAgainstSchema(values, schema, `Derived dataset "${id}"`);
@@ -75,7 +78,7 @@ export function derivedMaterializer(op, description, type, derive, resolve) {
         report
       );
     }
-    return next;
+    return after === undefined ? next : after(next, { id, source, transform, result });
   });
 }
 

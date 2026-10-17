@@ -89,6 +89,7 @@ export const releaseDerivedData = /* @__PURE__ */ closedAction(
     next = next._withoutMaterializationConfig([
       "calculations", "datasets", validatedId
     ]);
+    next = next._withoutMaterializationConfig(["regressionFits", validatedId]);
     for (const owner of selfOwners) {
       const [, family, ownerId] = owner.path;
       next = next._withoutMaterializationConfig(["data", family, ownerId]);

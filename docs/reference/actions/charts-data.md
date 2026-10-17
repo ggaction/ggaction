@@ -640,11 +640,47 @@ createRegressionData({
 })
 ```
 
-Create immutable linear, polynomial, or LOESS fitted rows at observed unique x
+Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x
 values. Linear and polynomial fits support normal or Student-t mean or prediction bounds;
 LOESS is line-only. Optional `robustIterations` (integer `0..32`, default `0`)
 adds residual reweighting; see [regression](../../api/regression.md) for the estimator policy.
 [Data](../../api/data.md)
+
+
+## `createRegressionStatisticsData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
+```
+
+Named option contracts: [`RegressionStatisticsDataOptions`](./../types.md#type-regressionstatisticsdataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `source` | Required | `string` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createRegressionStatisticsData({ id, source })
+```
+
+Create observation counts, intercepts, slopes, and R-squared from an explicit existing linear fit.
+Grouped fits retain their original grouping field and typed first-seen group order.
+Constant responses produce `rSquared: null`.
+[Linear fit statistics](../../api/data/statistical-transforms.md#fit-statistics)
 
 
 ## `createWindowData`
@@ -1030,6 +1066,41 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 Behavior, inference, resets, and errors: [Focused core data editing](./charts-data.md#focused-core-data-editing).
 
+
+
+## `editRegressionStatisticsData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
+```
+
+Named option contracts: [`EditRegressionStatisticsDataOptions`](./../types.md#type-editregressionstatisticsdataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editRegressionStatisticsData({ target?, source? })
+```
+
+Revise a standalone statistics owner's linear fit source and replay its consumers atomically.
+Omitted source preserves the current fit. Target omission requires a current or unique statistics owner.
+[Linear fit statistics](../../api/data/statistical-transforms.md#fit-statistics)
 
 
 ## `createCoordinate`

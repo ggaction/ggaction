@@ -1318,6 +1318,67 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
   `test/unit/actions/data/time-unit-data.test.js`, `test/contracts/transform-registry.test.js`,
   `test/unit/actions/data/derived-data.test.js`, `scripts/package-consumer.js`.
 
+## `createRegressionStatisticsData`
+
+- Signature: `createRegressionStatisticsData({ id, source })`.
+- 두 UserId는 필수다. Source는 명시적 existing materialized linear regression dataset이며 current
+  data나 첫 dataset을 추론하지 않는다. Logical fit owner는 현재 physical revision으로 해석한다.
+- 닫힌 transform은 `{type:"regressionStatistics"}` 하나며 dataset.source는 fit ID다.
+  Fixed columns는 count/intercept/slope/rSquared다. Grouped fit은 원래 groupBy field를 typed key와
+  first-appearance 순서로 추가한다. 그 이름이 fixed column과 충돌하면 거부한다.
+- Count는 missing 정책 이후 실제 관측 수이며 prediction grid 수와 무관하다. 기존 선형 모델의
+  intercept/slope를 재사용하고 같은 관측의 scaled SSE/SST로 `1-SSE/SST`를 계산한다.
+  Constant y의 rSquared는 null이며 임의 clamp나 다른 estimator는 없다.
+- Fit-owned cache는 materializationConfigs.regressionFits[fitId]의
+  `{version:1,method:"linear",groups:[{group?,count,intercept,slope,rSquared}]}`다.
+  Raw rows/full model/prediction arrays는 복제하지 않는다. 기존 fit trace·semantic/graphic/prediction은
+  유지하지만 editable snapshot bytes는 cache 때문에 달라질 수 있다.
+- 구 snapshot의 cache 없는 fit은 로드 때 계산하지 않는다. 첫 statistics 생성이 wrapped
+  materializeRegressionData를 한 번 명시 호출하여 cache만 복원하고 prediction rows는 유지한다.
+  Cache가 있으면 다시 fit하지 않는다. Stats node에 대응 cache가 없는 snapshot은 거부한다.
+- Raw source·polynomial/LOESS/exp, alias/unknown option, malformed cache는 오류다. Full 전용이다.
+- Lifecycle: standalone logical data owner다. Fit/source edit는 fit cache→stats→consumer 순으로
+  갱신한다. Stats가 붙은 fit의 unsupported method 변경은 원자적으로 거부한다. RemoveData와 derived
+  release는 자기 cache를 정리하고 live stats/source 삭제는 기존 dependency guard가 막는다.
+- Coverage: `test/unit/actions/data/regression-statistics.test.js`는 독립 OLS/SSE oracle, constant/typed/missing,
+  prediction count 독립성, reuse/legacy explicit fit count, source/editor/annotation/removal,
+  chart-owned transition과 extreme finite·persistence tamper를 검증한다.
+
+### Formal values — `createRegressionStatisticsData`
+
+- Implemented: `createRegressionStatisticsData({ id: UserId; source: UserId }): ChartProgram`.
+- Planned (NOT IMPLEMENTED): —
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createRegressionStatisticsData`
+
+- ✅ Covered: fixed schema, explicit linear source, grouped typed order, coefficients/count/SSE and null constant response.
+- ✅ Covered: reuse, old snapshot explicit materialization, immutable state and malformed persisted cache rejection.
+- Evidence: `test/unit/actions/data/regression-statistics.test.js`, `test/contracts/derived-editing-types.test.js`.
+
+## `editRegressionStatisticsData`
+
+- Signature: `editRegressionStatisticsData({ target?, source? })`.
+- Target는 standalone statistics logical owner/current physical revision이다. 생략하면 current data가
+  eligible owner일 때 그것을, 아니면 유일한 standalone owner를 사용하며 ambiguity는 오류다.
+- Source 생략은 기존 source 보존이다. 같은 source나 빈 옵션은 no-op이다. Explicit source는 create와
+  같은 linear fit/column 충돌 검사를 통과해야 한다.
+- Source 변경은 immutable stats revision과 전체 dependent data/visual/annotation 재계산을 원자적으로
+  실행한다. 두 옵션만 받으며 dependents/bypass/aliases는 없다. Cycle·consumer schema/type 오류는
+  원래 program을 보존한다.
+- Coverage: `regression-statistics.test.js`의 source 교체·revision·annotation/제거·오류 원자성.
+
+### Formal values — `editRegressionStatisticsData`
+
+- Implemented: `editRegressionStatisticsData({ target?: UserId; source?: UserId }): ChartProgram`.
+- Planned (NOT IMPLEMENTED): —
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editRegressionStatisticsData`
+
+- ✅ Covered: inferred/explicit owner, preserved source, immutable revision and downstream annotation replay.
+- Evidence: `test/unit/actions/data/regression-statistics.test.js`, `test/contracts/derived-editing-types.test.js`.
+
 ## `createWindowData`
 
 결과 field 이름은 일반 own data property로 저장한다. __proto__, constructor, toString도 허용하며

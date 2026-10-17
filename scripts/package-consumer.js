@@ -1258,6 +1258,15 @@ async function testNodeConsumer(directory) {
     });
     assert.equal(normalRegression.semanticSpec.datasets.at(-1).transform[0].confidenceMethod, "normal");
     assert.equal(normalRegression.semanticSpec.datasets.at(-1).transform[0].level, 0.9);
+    const regressionStatistics = normalRegression.createRegressionStatisticsData({id:"fitStatistics",source:"normalRegression"});
+    assert.equal(regressionStatistics.semanticSpec.datasets.at(-1).values[0].count,3);
+    assert.equal(regressionStatistics.semanticSpec.datasets.at(-1).values[0].slope,1.5);
+    assert.equal(regressionStatistics.semanticSpec.datasets.at(-1).values[0].rSquared,27/28);
+    const statisticsRevision = regressionStatistics.createRegressionData({id:"anotherFit",source:"data",x:"x",y:"y",interval:false})
+      .editRegressionStatisticsData({source:"anotherFit"});
+    assert.equal(statisticsRevision.semanticSpec.datasets.at(-1).source,"anotherFit");
+    assert.deepEqual(deserializeProgram(serializeProgram(statisticsRevision)).semanticSpec,statisticsRevision.semanticSpec);
+    assert.equal(typeof basicChart().createRegressionStatisticsData,"undefined");
     assert.equal(basicScatter.createRegression, undefined);
     assert.equal(typeof basicRender, "function");
     const horizon = chart()
@@ -3358,6 +3367,12 @@ async function testTypeScriptConsumer(directory) {
     program.createRegression({ groupBy: false, confidenceMethod: "normal", level: 0.9 });
     program.createRegressionData({ id: "typedFit", x: "x", y: "y", confidenceMethod: "normal", level: 0.9 });
     program.createRegressionData({id:"typedExponentialFit",x:"x",y:"y",method:"exp"});
+    program.createRegressionStatisticsData({id:"typedFitStatistics",source:"typedFit"})
+      .editRegressionStatisticsData({source:"typedFit"});
+    const typedStatistics: import("ggaction").RegressionStatisticsDataOptions = {id:"typedStats",source:"typedFit"};
+    void typedStatistics;
+    // @ts-expect-error statistics require an explicit fitted source
+    program.createRegressionStatisticsData({id:"invalidStats"});
     program.createRegressionPlot({x:"x",y:"y",method:"exp",band:false});
     // @ts-expect-error exponential fits have no confidence level
     program.createRegressionData({id:"invalidExponentialFit",x:"x",y:"y",method:"exp",level:.95});
@@ -4857,6 +4872,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
     },
     checks: [
       "node",
+      "linear-regression-statistics-cache-and-source-revision",
       "extension",
       "pdf",
       "png",

@@ -5,7 +5,7 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 394_000, // Approved exponential fit measured393012 on Node22; next1000-byte step.
+  ggaction: 395_000, // Approved fit statistics measured394841 on Node22; next1000-byte step.
   "ggaction/basic": 191_000, // Approved color controls measured190001 on Node22; next1000-byte step.
   "ggaction/svg": 25_000
 });

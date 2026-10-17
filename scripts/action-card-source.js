@@ -190,6 +190,9 @@ function actionResources(action, optionNames, intentSource) {
   const aliases = aliasesForSubject(intentSource, subject);
   const resource = aliases[0];
   const prerequisites = [];
+  if (action.name === "createRegressionStatisticsData" || action.name === "editRegressionStatisticsData") {
+    prerequisites.push("materialized linear regression dataset");
+  }
 
   if (action.name === "createMarkLabels") {
     prerequisites.push("existing eligible source mark");

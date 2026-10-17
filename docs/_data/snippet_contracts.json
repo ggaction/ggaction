@@ -1229,6 +1229,20 @@
   {
     "file": "api/data/statistical-transforms.md",
     "block": 2,
+    "heading": "Linear fit statistics {#fit-statistics}",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [
+      "source: \"fit\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: \"fit\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "4af4c56b2e903da2fa622c903fb6c8fbcd0f7ab6fda3d0dd9a10fc325196105c",
+    "executable": false
+  },
+  {
+    "file": "api/data/statistical-transforms.md",
+    "block": 3,
     "heading": "`createIntervalData({ id, source?, field, groupBy?, center?, extent?, method?, level?, missing?, as? })` {#create-interval-data}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1242,7 +1256,7 @@
   },
   {
     "file": "api/data/statistical-transforms.md",
-    "block": 3,
+    "block": 4,
     "heading": "`createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, weight?, missing?, as? })`",
     "mode": "fragment",
     "environment": "esm-context",

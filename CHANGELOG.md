@@ -4,6 +4,12 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+### Added
+
+- `createRegressionStatisticsData` reuses a linear fit for observation counts,
+  coefficients, and R-squared. `editRegressionStatisticsData` changes its source
+  and replays consumers atomically; editable snapshots retain compact fit statistics.
+
 ## [0.0.18] - 2026-10-17
 
 ### Added

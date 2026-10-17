@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:7e0df8af37d3722afe4caf4a0c5796f3e30b8c25fcbc8898866fd917b88a2a9c",
-    "sourceCommit": "33e399ec27a2d6d99a823894d74c9b7b6e73dfb7",
+    "contractId": "sha256:2fb611e2bbc4eec453a8b690dbea322865312a6aac37b20ff3d47d842f0126f7",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "ef4e2e27f8bb572aed6db4063aaf5ca91184df1d59d3fa33298dd4ac8f521738"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -806,8 +806,8 @@
         "removedata-id",
         "related"
       ],
-      "bytes": 13216,
-      "sha256": "57e0aa37664abbc02d05000dd4eb15c7509b766ddc38a0b07be2767df9508cfe"
+      "bytes": 13332,
+      "sha256": "5fd40d0165379d6875966b02a01b55483bcf705eb02319f3977607c44c8f710b"
     },
     {
       "order": 51,
@@ -832,12 +832,13 @@
       "headings": [
         "statistical-data-transforms",
         "createregressiondata-id-source-x-y-groupby-method-degree-span-confidencemethod-level-confidence-interval-predict-missing",
+        "fit-statistics",
         "create-interval-data",
         "createdensitydata-id-source-field-groupby-bandwidth-extent-steps-kernel-normalization-weight-missing-as",
         "related"
       ],
-      "bytes": 7816,
-      "sha256": "2c42e92a029669efc46e0c004e3ed318944a8e30b7d27fdadab7bed26b827c30"
+      "bytes": 10307,
+      "sha256": "f8cb50df63ed1b8c99f73d44ff24abf287a982abf95bf781f73c7a12a5c2a353"
     },
     {
       "order": 53,
@@ -1923,8 +1924,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 30362,
-      "sha256": "bf0243749661f88768b46bae3ef4fa89599ce874814ae31422e5ec3b0058af68"
+      "bytes": 30618,
+      "sha256": "a5559b98d9616e54632a272581572f322b751848f2557c857042b8fe7ca6d113"
     },
     {
       "order": 118,
@@ -1949,6 +1950,7 @@
         "filterdata",
         "createdensitydata",
         "createregressiondata",
+        "createregressionstatisticsdata",
         "createwindowdata",
         "createtimeunitdata",
         "createbin2ddata",
@@ -1959,6 +1961,7 @@
         "editwindowdata",
         "editdensitydata",
         "editregressiondata",
+        "editregressionstatisticsdata",
         "createcoordinate",
         "editcoordinate",
         "createscale",
@@ -2025,8 +2028,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 161869,
-      "sha256": "3f4077bf28572ecfd167996071380b9f876952c4b98ce53cb1a5361260d98815"
+      "bytes": 164288,
+      "sha256": "b493f63138965b5af0d5f320c0b5238d4fdd3d19a168e93e05f205a87bf7dca3"
     },
     {
       "order": 119,
@@ -2522,6 +2525,7 @@
         "type-datasetnormalizebaselinetransform",
         "type-datasetnormalizedbasetransform",
         "type-datasetnormalizedtransform",
+        "type-datasetregressionstatisticstransform",
         "type-datasetregressiontransform",
         "type-datasetscalar",
         "type-datasetsorttransform",
@@ -2610,6 +2614,7 @@
         "type-editrectmarkoptions",
         "type-editregressiondataoptions",
         "type-editregressionoptions",
+        "type-editregressionstatisticsdataoptions",
         "type-editscaleoptions",
         "type-editsemanticoptions",
         "type-editshapescaleoptions",
@@ -2862,6 +2867,7 @@
         "type-regressionplotpositionchannel",
         "type-regressionplotstatisticaloptions",
         "type-regressionpredictoptions",
+        "type-regressionstatisticsdataoptions",
         "type-removeaxisoptions",
         "type-removecategoryorderoptions",
         "type-removecompositionchildoptions",
@@ -2978,8 +2984,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 330839,
-      "sha256": "8de4a9bb1373052c773329a00d9d51565736d53b5144fce50c98478c45bd319f"
+      "bytes": 331892,
+      "sha256": "e0c7d1f78484ca18b4ce9aa403b0969f05a1b6ac0ce34a05c698def10286ead2"
     },
     {
       "order": 127,
@@ -3009,8 +3015,8 @@
         "editgraphics-target-property-value-remove",
         "scale-materialization"
       ],
-      "bytes": 16959,
-      "sha256": "d65a241b561ba1ca6796425736fc134c4c1e1e884734999fca503a6d0c0f5bec"
+      "bytes": 16887,
+      "sha256": "6290b807e031ee8069a7df5b38464bea8906ecdd59f5124a91617d4a1de87f96"
     },
     {
       "order": 129,
@@ -3331,8 +3337,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "eff0e83dd093c1f18003eeb73b3605bb690244255e8a9462c88c71dd0d45eb01"
+      "bytes": 3000,
+      "sha256": "6ed8f6dbc92e05d07959a9c384d1971e729b859eedbb7ae19e172bf9cf4565ef"
     },
     {
       "order": 150,

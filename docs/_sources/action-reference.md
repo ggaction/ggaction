@@ -1069,11 +1069,32 @@ createRegressionData({
 })
 ```
 
-Create immutable linear, polynomial, or LOESS fitted rows at observed unique x
+Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x
 values. Linear and polynomial fits support normal or Student-t mean or prediction bounds;
 LOESS is line-only. Optional `robustIterations` (integer `0..32`, default `0`)
 adds residual reweighting; see [regression](../api/regression.md) for the estimator policy.
 [Data](../api/data.md)
+
+### `createRegressionStatisticsData`
+
+```javascript
+createRegressionStatisticsData({ id, source })
+```
+
+Create observation counts, intercepts, slopes, and R-squared from an explicit existing linear fit.
+Grouped fits retain their original grouping field and typed first-seen group order.
+Constant responses produce `rSquared: null`.
+[Linear fit statistics](../api/data/statistical-transforms.md#fit-statistics)
+
+### `editRegressionStatisticsData`
+
+```javascript
+editRegressionStatisticsData({ target?, source? })
+```
+
+Revise a standalone statistics owner's linear fit source and replay its consumers atomically.
+Omitted source preserves the current fit. Target omission requires a current or unique statistics owner.
+[Linear fit statistics](../api/data/statistical-transforms.md#fit-statistics)
 
 ### `createDensityData`
 

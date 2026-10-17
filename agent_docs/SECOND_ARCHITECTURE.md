@@ -280,7 +280,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 394,000 bytes |
+| `ggaction` | 395,000 bytes |
 | `ggaction/basic` | 191,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -720,6 +720,30 @@ mark family에 종속된 계산은 `materialization/scales/policies/`가 소유�
 `rematerializeScale` action은 consumer 조회, immutable state 반영, mark와 guide의 ordered
 rematerialization만 담당한다. 따라서 순수 scale 계산은 trace를 만들거나 Program을
 변경하지 않고, renderer도 scale 의미를 다시 추론하지 않는다.
+
+### Reusable linear fit statistics
+
+승인된 linear statistics 기능은 fit dataset별 compact cache를
+`materializationConfigs.regressionFits[fitId]` 한 곳에 둔다. 기존 fit grammar가 계산한
+모델에서 observation count·coefficients·scaled SSE/SST를 추출하며 raw rows나 full
+model/prediction arrays를 복제하지 않는다. 기존 semanticSpec/graphicSpec/fit trace는
+유지하고 editable snapshot bytes만 cache로 늘어날 수 있다.
+
+`regressionStatistics`는 fit을 source로 참조하는 독립 derived dataset이다. 같은
+typed schema·transform topology·DAG planner가 fit→statistics→annotation 순서를
+소유한다. Chart-owned regression editor도 dependent statistics가 있으면 그 planner를
+재사용한다. 새 renderer나 자동 semantic compiler는 없다. 이전 snapshot은 cache 없이
+로드하고 첫 명시 statistics 요청만 wrapped fit materialization으로 cache를 복원한다.
+Full-state validation은 cache owner·version·group/order/count·finite coefficient를 검증하고,
+domain remove/release는 fit cache를 함께 정리한다. 정확한 공개 계약은 CORE가 소유한다.
+
+이 checkpoint의 macOS/Node22.23.1/npm10.9.8 실제 artifact는569entries,
+packed802,032/unpacked3,935,479바이트다. 새 grammar/action 두 모듈과 타입·machine metadata
+증가를 반영해 entry569, packed803,000, unpacked3,936,000으로 최소 단위 갱신한다.
+Search payload816,102바이트는 기존814,000을 초과하여817,000으로 조정했다.
+설치 Full bundle 최종394,855 gzip바이트를 측정하여 Full 한도만395,000으로
+갱신했고 Basic191,000/SVG25,000은 유지한다. 이전 한도 통과나 지원 Node 간
+압축 동일성을 주장하지 않으며 최종 통합에서 다시 측정한다.
 
 ## `materializationConfigs`
 

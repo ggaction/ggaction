@@ -506,6 +506,31 @@ function fitExponentialGroup(rows, { x, y, group }) {
   return { count: rows.length, amplitude, rate, logAmplitude };
 }
 
+export function linearRegressionStatistics(rows, model, { x, y }) {
+  const responseScale = maximumMagnitude(rows.map(row => row[y])) || 1;
+  const [coordinates, xScale] = normalizedCoordinates(rows.map(row => row[x]), model.meanX);
+  const normalizedSlope = model.normalizedResponseSlope ?? (
+    Number.isFinite(model.slope * xScale) && (model.slope * xScale !== 0 || model.slope === 0)
+      ? model.slope * xScale / responseScale
+      : restoreFiniteRatio(model.slope, xScale, responseScale, "Linear regression normalized slope")
+  );
+  let residualSquares = 0;
+  let totalSquares = 0;
+  rows.forEach((row, index) => {
+    const difference = row[y] - model.meanY;
+    const centered = Number.isFinite(difference)
+      ? difference / responseScale
+      : row[y] / responseScale - model.meanY / responseScale;
+    const residual = centered - normalizedSlope * coordinates[index];
+    totalSquares += centered ** 2;
+    residualSquares += residual ** 2;
+  });
+  return {
+    count: rows.length, intercept: model.intercept, slope: model.slope,
+    rSquared: totalSquares === 0 ? null : 1 - residualSquares / totalSquares
+  };
+}
+
 export function fitRegressionGroup(rows, { x, y, group, parameters }) {
   if (parameters.method === "exp") return fitExponentialGroup(rows, { x, y, group });
   if (parameters.method === "linear") {

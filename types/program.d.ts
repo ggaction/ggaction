@@ -956,6 +956,7 @@ export type DatasetTransform =
   | DatasetFilterTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
+  | DatasetRegressionStatisticsTransform
   | DatasetSortTransform
   | DatasetDensityTransform
   | DatasetECDFTransform
@@ -4535,6 +4536,18 @@ export type RegressionDataOptions = {
   missing?: "error" | "drop";
 } & RegressionParameterOptions;
 
+export interface DatasetRegressionStatisticsTransform {
+  readonly type: "regressionStatistics";
+}
+export interface RegressionStatisticsDataOptions {
+  id: string;
+  source: string;
+}
+export interface EditRegressionStatisticsDataOptions {
+  target?: string;
+  source?: string;
+}
+
 type RegressionCommonOptions = {
   target?: string;
   x?: string;
@@ -4935,6 +4948,8 @@ export class ChartProgram {
   createImputedData(options: ImputedDataOptions): ChartProgram;
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
+  createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
+  editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createECDFData(options: ECDFDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;

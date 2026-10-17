@@ -3,7 +3,7 @@ import {
   readNominalField,
   readQuantitativeField
 } from "../scales/index.js";
-import { fitRegressionGroup, predictRegressionAt } from "./models.js";
+import { fitRegressionGroup, predictRegressionAt, linearRegressionStatistics } from "./models.js";
 import { requireFiniteResult } from "../numeric.js";
 import {
   validateGeneratedItemLimit,
@@ -81,6 +81,7 @@ export function deriveRegression(values, {
   }
   const groups = [...groupedRows.keys()];
   const models = [];
+  const statistics = [];
   const rows = [];
   let work = 0;
 
@@ -119,6 +120,10 @@ export function deriveRegression(values, {
       parameters
     });
     models.push({ ...(groupBy === undefined ? {} : { group }), ...model, xValues });
+    if (parameters.method === "linear") statistics.push({
+      ...(groupBy === undefined ? {} : { group }),
+      ...linearRegressionStatistics(groupRows, model, { x, y })
+    });
 
     for (const xValue of xValues) {
       const prediction = predictRegressionAt(model, xValue, parameters);
@@ -163,6 +168,9 @@ export function deriveRegression(values, {
     parameters,
     groups,
     models,
+    ...(parameters.method === "linear" ? {
+      fitStatistics: { version: 1, method: "linear", groups: statistics }
+    } : {}),
     values: rows,
     ...(missing === undefined ? {} : {
       report: {

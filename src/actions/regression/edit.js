@@ -19,6 +19,7 @@ import { findLayer } from "../../selectors/layers.js";
 import { removeOwnedMark } from "../marks/remove.js";
 import { removeOwnedColorLegends } from "../guides/legends/remove.js";
 import { requireRegressionField } from "./resolve.js";
+import { buildSourceRevisionPlan, applyRevisionPlan } from "../data/edit.js";
 
 const OPTIONS = Object.freeze([
   "target", "data", "x", "y", "groupBy", "method", "degree", "span", "robustIterations",
@@ -295,6 +296,11 @@ export const editRegression = /* @__PURE__ */ closedAction(
     const changesParameters = JSON.stringify(parameters) !==
       JSON.stringify(current.parameters);
     const changesStatistics = changesProvenance || changesParameters;
+    const hasStatistics = this.semanticSpec.datasets.some(dataset =>
+      dataset.source === current.dataId && dataset.transform?.[0]?.type === "regressionStatistics");
+    if (hasStatistics && parameters.method !== "linear") {
+      throw new Error("Remove dependent regression statistics before changing the linear fit method.");
+    }
     const bandPatch = Object.hasOwn(args, "band")
       ? validateBandPatch(args.band)
       : undefined;
@@ -323,6 +329,8 @@ export const editRegression = /* @__PURE__ */ closedAction(
           ]
         })
       : undefined;
+    const statisticsRevision = changesStatistics && hasStatistics
+      ? buildSourceRevisionPlan(this, current.dataId, revision.id) : undefined;
 
     const applyEdit = program => {
       let dataId = current.dataId;
@@ -414,6 +422,8 @@ export const editRegression = /* @__PURE__ */ closedAction(
         }
       });
       if (changesStatistics) {
+        if (statisticsRevision !== undefined) next = applyRevisionPlan(next, undefined,
+          statisticsRevision, { retain: new Set([current.dataId]) });
         next = next.releaseDerivedData(revision.release);
       }
       const binding = findLayer(next, owner.id)?.derivedBindings?.regression;

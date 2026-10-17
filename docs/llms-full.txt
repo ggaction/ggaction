@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:7e0df8af37d3722afe4caf4a0c5796f3e30b8c25fcbc8898866fd917b88a2a9c. Status: development. Runtime source: 33e399ec27a2d6d99a823894d74c9b7b6e73dfb7. Release baseline: v0.0.13.
+Contract: sha256:2fb611e2bbc4eec453a8b690dbea322865312a6aac37b20ff3d47d842f0126f7. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/33e399ec27a2d6d99a823894d74c9b7b6e73dfb7/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/33e399ec27a2d6d99a823894d74c9b7b6e73dfb7/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -4996,6 +4996,7 @@ corresponding higher-level action when the library should materialize values:
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
+| `"regressionStatistics"` | `{ type }`, with an existing linear fit as source | `createRegressionStatisticsData` |
 | `"sort"` | `{ type, sortBy }` | `createSortedData` |
 | `"density"` | `{ type, field, groupBy?, bandwidth, extent, steps, kernel?, normalization?, weight?, as, resolve: "shared", resolved? }` | `createDensityData` |
 | `"ecdf"` | `{ type, field, groupBy, weight?, missing, as, resolved? }` | `createECDFData` |
@@ -5335,7 +5336,7 @@ program.createRegressionData({
 | `source` | existing dataset ID | current dataset |
 | `x`, `y` | finite quantitative field names | required |
 | `groupBy` | nominal field name | one ungrouped model |
-| `method` | `"linear"`, `"polynomial"`, or `"loess"` | `"linear"` |
+| `method` | `"linear"`, `"polynomial"`, `"loess"`, or `"exp"` | `"linear"` |
 | `degree` | integer from `1` through `32` for polynomial | `2` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
 | `confidenceMethod` | `"normal"` or `"student-t"`; not accepted by LOESS | `"student-t"` |
@@ -5361,6 +5362,49 @@ Source values remain unchanged.
 Regression output is limited to 10,000 unique group/x rows. Polynomial and
 LOESS fitting reject inputs whose estimated work exceeds 10,000,000 units,
 before allocating or entering the expensive fit.
+
+Exponential fits use positive-response-weighted least squares on `log(y)`;
+omitted or `false` intervals produce no confidence fields. Confidence options,
+degree, span, and robust iterations are rejected. See the [regression API](./api/regression/)
+for the positive-response and representable-result requirements.
+
+## Linear fit statistics {#fit-statistics}
+
+`createRegressionStatisticsData({ id, source })` creates reusable rows from an
+explicit existing **linear** regression dataset. Both options are required.
+It reuses the existing fit and does not infer a source from the current dataset.
+This advanced data action is available in the full entry.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "fit"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createData({ values: [{ x: 0, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createRegressionData({ id: "fit", x: "x", y: "y" })
+  .createRegressionStatisticsData({ id: "fitStatistics", source: "fit" });
+```
+
+Each row contains fixed `count`, `intercept`, `slope`, and `rSquared` fields.
+`count` describes eligible observed pairs, independent of prediction-grid size.
+R-squared is `1 - SSE / SST`; a constant response has `rSquared: null`.
+Grouped fits add their original typed grouping field in first source appearance
+order. Group fields named like a fixed output are rejected. Polynomial, LOESS,
+exponential, and ordinary raw datasets are unsupported sources.
+
+`editRegressionStatisticsData({ target?, source? })` changes the fit source and
+replays dependent data and annotations atomically. Omitted `source` preserves
+it. Omitted `target` uses the current statistics owner, otherwise the unique
+standalone owner; ambiguous ownership fails. Fixed output names have no aliases
+or reset options. Data revisions update fit statistics before their consumers.
+Remove dependent statistics and consumers before changing a fit to an
+unsupported model or deleting its source.
+
+Editable snapshots retain compact fit statistics for reuse. Earlier snapshots
+without them still load without recalculation; the first explicit statistics
+request computes and retains the fit once. Existing prediction rows, graphics,
+and authoring trace remain unchanged, although serialized bytes can increase.
 
 ## `createIntervalData({ id, source?, field, groupBy?, center?, extent?, method?, level?, missing?, as? })` {#create-interval-data}
 
@@ -15566,6 +15610,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createRegressionData`](./reference/actions/charts-data/#createregressiondata) | H2 | user-facing | core |
 | [`createRegressionLine`](./reference/actions/statistics/#createregressionline) | H1 | user-facing | statistics |
 | [`createRegressionPlot`](./reference/actions/charts-data/#createregressionplot) | H0, H1 | user-facing | charts |
+| [`createRegressionStatisticsData`](./reference/actions/charts-data/#createregressionstatisticsdata) | H2 | user-facing | core |
 | [`createRosePlot`](./reference/actions/charts-data/#createroseplot) | H0 | user-facing | charts |
 | [`createRugPlot`](./reference/actions/charts-data/#createrugplot) | H0 | user-facing | charts |
 | [`createRuleMark`](./reference/actions/marks/#createrulemark) | H2 | user-facing | marks |
@@ -15663,6 +15708,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editRegressionBand`](./reference/actions/statistics/#editregressionband) | H1, H3 | user-facing | statistics |
 | [`editRegressionData`](./reference/actions/charts-data/#editregressiondata) | H2 | user-facing | core |
 | [`editRegressionLine`](./reference/actions/statistics/#editregressionline) | H1, H3 | user-facing | statistics |
+| [`editRegressionStatisticsData`](./reference/actions/charts-data/#editregressionstatisticsdata) | H2 | user-facing | core |
 | [`editRScale`](./reference/actions/charts-data/#editrscale) | H2 | user-facing | core |
 | [`editRuleMark`](./reference/actions/marks/#editrulemark) | H3 | user-facing | marks |
 | [`editScale`](./reference/actions/charts-data/#editscale) | H2 | user-facing | core |
@@ -16354,11 +16400,43 @@ createRegressionData({
 })
 ```
 
-Create immutable linear, polynomial, or LOESS fitted rows at observed unique x
+Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x
 values. Linear and polynomial fits support normal or Student-t mean or prediction bounds;
 LOESS is line-only. Optional `robustIterations` (integer `0..32`, default `0`)
 adds residual reweighting; see [regression](./api/regression/) for the estimator policy.
 [Data](./api/data/)
+
+## `createRegressionStatisticsData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
+```
+
+Named option contracts: [`RegressionStatisticsDataOptions`](./reference/types/#type-regressionstatisticsdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `source` | Required | `string` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createRegressionStatisticsData({ id, source })
+```
+
+Create observation counts, intercepts, slopes, and R-squared from an explicit existing linear fit.
+Grouped fits retain their original grouping field and typed first-seen group order.
+Constant responses produce `rSquared: null`.
+[Linear fit statistics](./api/data/statistical-transforms/#fit-statistics)
 
 ## `createWindowData`
 
@@ -16698,6 +16776,37 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused core data editing](./reference/actions/charts-data/#focused-core-data-editing).
+
+## `editRegressionStatisticsData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
+```
+
+Named option contracts: [`EditRegressionStatisticsDataOptions`](./reference/types/#type-editregressionstatisticsdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editRegressionStatisticsData({ target?, source? })
+```
+
+Revise a standalone statistics owner's linear fit source and replay its consumers atomically.
+Omitted source preserves the current fit. Target omission requires a current or unique statistics owner.
+[Linear fit statistics](./api/data/statistical-transforms/#fit-statistics)
 
 ## `createCoordinate`
 
@@ -26824,6 +26933,8 @@ interface ChartProgramActions {
   createImputedData(options: ImputedDataOptions): ChartProgram;
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
+  createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
+  editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createECDFData(options: ECDFDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
@@ -30012,6 +30123,16 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
 
 Related types: [`DatasetNormalizedBaseTransform`](./reference/types/#type-datasetnormalizedbasetransform) · [`NormalizeZeroDenominator`](./reference/types/#type-normalizezerodenominator) · [`DatasetNormalizeBaselineTransform`](./reference/types/#type-datasetnormalizebaselinetransform).
 
+### `DatasetRegressionStatisticsTransform` {#type-datasetregressionstatisticstransform}
+
+ Expand DatasetRegressionStatisticsTransform
+
+```typescript
+export interface DatasetRegressionStatisticsTransform {
+  readonly type: "regressionStatistics";
+}
+```
+
 ### `DatasetRegressionTransform` {#type-datasetregressiontransform}
 
  Expand DatasetRegressionTransform
@@ -30203,6 +30324,7 @@ export type DatasetTransform =
   | DatasetFilterTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
+  | DatasetRegressionStatisticsTransform
   | DatasetSortTransform
   | DatasetDensityTransform
   | DatasetECDFTransform
@@ -30215,7 +30337,7 @@ export type DatasetTransform =
   | DatasetWindowTransform;
 ```
 
-Related types: [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetSortTransform`](./reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
+Related types: [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](./reference/types/#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](./reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -31428,6 +31550,17 @@ export interface EditRegressionOptions {
 ```
 
 Related types: [`RegressionMethod`](./reference/types/#type-regressionmethod) · [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod) · [`RegressionInterval`](./reference/types/#type-regressioninterval) · [`RegressionPredictOptions`](./reference/types/#type-regressionpredictoptions) · [`RegressionBandOptions`](./reference/types/#type-regressionbandoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
+
+### `EditRegressionStatisticsDataOptions` {#type-editregressionstatisticsdataoptions}
+
+ Expand EditRegressionStatisticsDataOptions
+
+```typescript
+export interface EditRegressionStatisticsDataOptions {
+  target?: string;
+  source?: string;
+}
+```
 
 ### `EditScaleOptions` {#type-editscaleoptions}
 
@@ -35224,6 +35357,17 @@ export type RegressionPredictOptions =
   | { values?: never; domain: readonly [number, number]; steps: number };
 ```
 
+### `RegressionStatisticsDataOptions` {#type-regressionstatisticsdataoptions}
+
+ Expand RegressionStatisticsDataOptions
+
+```typescript
+export interface RegressionStatisticsDataOptions {
+  id: string;
+  source: string;
+}
+```
+
 ### `RemoveAxisOptions` {#type-removeaxisoptions}
 
  Expand RemoveAxisOptions
@@ -37369,12 +37513,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/33e399ec27a2d6d99a823894d74c9b7b6e73dfb7/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/33e399ec27a2d6d99a823894d74c9b7b6e73dfb7/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39541,11 +39685,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:7e0df8af37d3722afe4caf4a0c5796f3e30b8c25fcbc8898866fd917b88a2a9c` |
+| Contract fingerprint | `sha256:2fb611e2bbc4eec453a8b690dbea322865312a6aac37b20ff3d47d842f0126f7` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
-| Runtime source commit | `33e399ec27a2d6d99a823894d74c9b7b6e73dfb7` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 282 |
+| Declared actions here | 284 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

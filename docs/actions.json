@@ -3,7 +3,7 @@
   "packageVersion": "0.0.18",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 282,
+  "count": 284,
   "cards": [
     {
       "schemaVersion": 3,
@@ -2196,7 +2196,7 @@
       "name": "createRegressionData",
       "layer": "user-facing",
       "domain": "core",
-      "summary": "Create immutable linear, polynomial, or LOESS fitted rows at observed unique x values.",
+      "summary": "Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x values.",
       "signature": "createRegressionData(options: RegressionDataOptions): ChartProgram;",
       "intents": [
         "create regression data",
@@ -2335,6 +2335,84 @@
       "snippet": "program.createRegressionData({ id: \"regression-data-1\", x: \"x\", y: \"y\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createregressiondata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createRegressionStatisticsData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Create observation counts, intercepts, slopes, and R-squared from an explicit existing linear fit.",
+      "signature": "createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;",
+      "intents": [
+        "create regression statistics data",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "regression statistics dataset",
+        "linear fit coefficients"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "materialized linear regression dataset",
+          "source dataset"
+        ],
+        "owns": [
+          "regression statistics dataset"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "createDerivedData"
+      ],
+      "editableVia": [
+        "editRegressionStatisticsData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "materialized linear regression dataset",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "createRegressionStatisticsData({ id, source })"
+      ],
+      "snippet": "program.createRegressionStatisticsData({ id: \"fitStatistics\", source: \"fit\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createregressionstatisticsdata"
     },
     {
       "schemaVersion": 3,
@@ -4011,6 +4089,88 @@
       "snippet": "program.editRegressionData({ target: \"regression\", method: \"loess\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editregressiondata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editRegressionStatisticsData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Revise a standalone statistics owner's linear fit source and replay its consumers atomically.",
+      "signature": "editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;",
+      "intents": [
+        "edit regression statistics data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "regression statistics dataset",
+        "linear fit coefficients"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "materialized linear regression dataset",
+          "existing regression statistics dataset",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "source"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "createDerivedData"
+      ],
+      "editableVia": [
+        "editRegressionStatisticsData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "source",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "materialized linear regression dataset",
+          "existing regression statistics dataset",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editRegressionStatisticsData({ target?, source? })"
+      ],
+      "snippet": "program.editRegressionStatisticsData({ target: \"fitStatistics\", source: \"anotherFit\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editregressionstatisticsdata"
     },
     {
       "schemaVersion": 3,
