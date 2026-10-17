@@ -9016,7 +9016,7 @@
         {
           "name": "scale",
           "required": false,
-          "type": "DiscretizedColorScaleOptions | CategoricalColorScaleOptions | ContinuousColorScaleOptions | (Omit<...> & { ...; }) | undefined"
+          "type": "ContinuousColorScaleOptions | DiscretizedColorScaleOptions | CategoricalColorScaleOptions | (Omit<...> & { ...; }) | undefined"
         },
         {
           "name": "palette",
@@ -9243,7 +9243,7 @@
         {
           "name": "scale",
           "required": false,
-          "type": "DiscretizedColorScaleOptions | CategoricalColorScaleOptions | ContinuousColorScaleOptions | (Omit<...> & { ...; }) | undefined"
+          "type": "ContinuousColorScaleOptions | DiscretizedColorScaleOptions | CategoricalColorScaleOptions | (Omit<...> & { ...; }) | undefined"
         }
       ],
       "callPatterns": [
@@ -20388,6 +20388,16 @@
           "type": "ContinuousColorInterpolation | undefined"
         },
         {
+          "name": "whitePoint",
+          "required": false,
+          "type": "\"d50\" | \"d65\" | undefined"
+        },
+        {
+          "name": "gamma",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "midpoint",
           "required": false,
           "type": "number | \"auto\" | undefined"
@@ -20466,6 +20476,14 @@
       "inference": [
         {
           "input": "domain",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "whitePoint",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "gamma",
           "strategy": "documented-auto"
         },
         {
@@ -20575,6 +20593,16 @@
           "name": "interpolate",
           "required": false,
           "type": "ContinuousColorInterpolation | undefined"
+        },
+        {
+          "name": "whitePoint",
+          "required": false,
+          "type": "\"auto\" | \"d50\" | \"d65\" | undefined"
+        },
+        {
+          "name": "gamma",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
         },
         {
           "name": "midpoint",
@@ -21723,6 +21751,14 @@
           "strategy": "documented-auto"
         },
         {
+          "input": "whitePoint",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "gamma",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "midpoint",
           "strategy": "documented-auto"
         }
@@ -21746,16 +21782,6 @@
           "type": "string | undefined"
         },
         {
-          "name": "palette",
-          "required": false,
-          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 60 more ... | undefined"
-        },
-        {
-          "name": "type",
-          "required": false,
-          "type": "\"log\" | \"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"sqrt\" | \"symlog\" | \"threshold\" | undefined"
-        },
-        {
           "name": "domain",
           "required": false,
           "type": "\"auto\" | readonly unknown[] | readonly number[] | readonly [unknown, unknown] | readonly [number, number] | undefined"
@@ -21766,9 +21792,29 @@
           "type": "\"auto\" | readonly string[] | { readonly palette: Palette; } | readonly [string, string, ...string[]] | undefined"
         },
         {
+          "name": "palette",
+          "required": false,
+          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 60 more ... | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"log\" | \"ordinal\" | \"pow\" | \"quantile\" | \"quantize\" | \"sequential\" | \"sqrt\" | \"symlog\" | \"threshold\" | undefined"
+        },
+        {
           "name": "unknown",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "whitePoint",
+          "required": false,
+          "type": "\"auto\" | \"d50\" | \"d65\" | undefined"
+        },
+        {
+          "name": "gamma",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
         },
         {
           "name": "clamp",
@@ -21799,10 +21845,15 @@
           "name": "constant",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "exponent",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "editColorScale({ id?, target?, palette?, type?, domain?, range?, unknown?, clamp? })"
+        "editColorScale({ id?, target?, domain?, range?, palette?, type?, unknown?, whitePoint? })"
       ],
       "snippet": "program.editColorScale({ palette: \"set2\" })",
       "errors": [],
@@ -21856,11 +21907,23 @@
           "strategy": "explicit"
         },
         {
+          "input": "whitePoint",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "gamma",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "domain",
           "strategy": "documented-auto"
         },
         {
           "input": "range",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "midpoint",
           "strategy": "documented-auto"
         }
       ],
@@ -21878,14 +21941,14 @@
           "type": "string"
         },
         {
-          "name": "palette",
+          "name": "whitePoint",
           "required": false,
-          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 60 more ... | undefined"
+          "type": "\"auto\" | \"d50\" | \"d65\" | undefined"
         },
         {
-          "name": "type",
+          "name": "gamma",
           "required": false,
-          "type": "\"log\" | \"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"sqrt\" | \"symlog\" | \"threshold\" | undefined"
+          "type": "number | \"auto\" | undefined"
         },
         {
           "name": "domain",
@@ -21898,13 +21961,58 @@
           "type": "\"auto\" | readonly string[] | { readonly palette: Palette; } | readonly [string, string, ...string[]] | undefined"
         },
         {
+          "name": "palette",
+          "required": false,
+          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 60 more ... | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"log\" | \"ordinal\" | \"pow\" | \"quantile\" | \"quantize\" | \"sequential\" | \"sqrt\" | \"symlog\" | \"threshold\" | undefined"
+        },
+        {
           "name": "unknown",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "clamp",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reverse",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "interpolate",
+          "required": false,
+          "type": "ContinuousColorInterpolation | undefined"
+        },
+        {
+          "name": "midpoint",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
+          "name": "base",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "constant",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "exponent",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "editStrokeScale({ target, palette?, type?, domain?, range?, unknown? })"
+        "editStrokeScale({ target, whitePoint?, gamma?, domain?, range?, palette?, type?, unknown? })"
       ],
       "snippet": "program.editStrokeScale({ target: \"points\", palette: \"set1\" })",
       "errors": [],

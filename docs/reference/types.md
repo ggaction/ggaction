@@ -906,7 +906,7 @@ type BasicColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 ```
@@ -1857,7 +1857,7 @@ export type ColorEncodingOptions =
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
       layout?: never;
     };
@@ -4553,8 +4553,8 @@ Related types: [`BoxPlotSummaryFields`](#type-boxplotsummaryfields) · [`BoxPlot
 
 ```typescript
 export type EditColorScaleOptions = FocusedScaleSelection & WithoutScaleId<
-  CategoricalColorScaleOptions | ContinuousColorScaleOptions | DiscretizedColorScaleOptions
->;
+  CategoricalColorScaleOptions | Omit<ContinuousColorScaleOptions, "whitePoint" | "gamma"> | DiscretizedColorScaleOptions
+> & { whitePoint?: "d65" | "d50" | "auto"; gamma?: number | "auto" };
 ```
 
 </details>
@@ -5456,6 +5456,8 @@ export interface EditScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  whitePoint?: "d65" | "d50" | "auto";
+  gamma?: number | "auto";
   midpoint?: number | "auto";
   unknown?: unknown;
 }
@@ -5554,15 +5556,12 @@ Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`Witho
 <summary>Expand EditStrokeScaleOptions</summary>
 
 ```typescript
-export type EditStrokeScaleOptions = { target: string } & Omit<
-  EditColorScaleOptions,
-  "id" | "target"
->;
+export type EditStrokeScaleOptions = { target: string } & WithoutScaleSelection<EditColorScaleOptions>;
 ```
 
 </details>
 
-Related types: [`EditColorScaleOptions`](#type-editcolorscaleoptions).
+Related types: [`WithoutScaleSelection`](#type-withoutscaleselection) · [`EditColorScaleOptions`](#type-editcolorscaleoptions).
 
 ### `EditStrokeWidthScaleOptions` {#type-editstrokewidthscaleoptions}
 
@@ -8019,9 +8018,8 @@ Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionsc
 
 ```typescript
 export type NonPointContinuousColorScaleOptions = ScaleFields<
-  "id" | "interpolate" | "midpoint" | "clamp" | "reverse"
+  "id" | "interpolate" | "whitePoint" | "gamma" | "midpoint" | "clamp" | "reverse"
 > & {
-  type?: "sequential" | "log" | "sqrt" | "symlog";
   base?: number;
   constant?: number;
   domain?: "auto" | readonly [unknown, unknown];
@@ -8030,7 +8028,10 @@ export type NonPointContinuousColorScaleOptions = ScaleFields<
     name: PaletteName;
     extent?: readonly [number, number];
   };
-};
+} & (
+  | { type: "pow"; exponent?: number }
+  | { type?: "sequential" | "log" | "sqrt" | "symlog"; exponent?: never }
+);
 ```
 
 </details>
@@ -9657,7 +9658,7 @@ type RectColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 ```
@@ -10461,6 +10462,8 @@ export interface ScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  whitePoint?: "d65" | "d50";
+  gamma?: number;
   midpoint?: number | "auto";
   unknown?: unknown;
 }
@@ -11855,6 +11858,17 @@ type WithoutEncodingTarget<T> = T extends unknown
 
 ```typescript
 type WithoutScaleId<T> = T extends unknown ? Omit<T, "id"> : never;
+```
+
+</details>
+
+### `WithoutScaleSelection` {#type-withoutscaleselection}
+
+<details markdown="1">
+<summary>Expand WithoutScaleSelection</summary>
+
+```typescript
+type WithoutScaleSelection<T> = T extends unknown ? Omit<T, "id" | "target"> : never;
 ```
 
 </details>

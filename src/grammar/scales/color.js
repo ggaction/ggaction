@@ -139,13 +139,19 @@ function encodedRgb(channel) {
     : 1.055 * channel ** (1 / 2.4) - 0.055;
 }
 
-function rgbToLab(color) {
+function rgbToLab(color, whitePoint = "d65") {
   const r = linearRgb(color.r);
   const g = linearRgb(color.g);
   const b = linearRgb(color.b);
-  const x = (0.4124564 * r + 0.3575761 * g + 0.1804375 * b) / 0.95047;
-  const y = 0.2126729 * r + 0.7151522 * g + 0.072175 * b;
-  const z = (0.0193339 * r + 0.119192 * g + 0.9503041 * b) / 1.08883;
+  const x = whitePoint === "d50"
+    ? (0.4360747 * r + 0.3850649 * g + 0.1430804 * b) / 0.96422
+    : (0.4124564 * r + 0.3575761 * g + 0.1804375 * b) / 0.95047;
+  const y = whitePoint === "d50"
+    ? 0.2225045 * r + 0.7168786 * g + 0.0606169 * b
+    : 0.2126729 * r + 0.7151522 * g + 0.072175 * b;
+  const z = whitePoint === "d50"
+    ? (0.0139322 * r + 0.0971045 * g + 0.7141733 * b) / 0.82521
+    : (0.0193339 * r + 0.119192 * g + 0.9503041 * b) / 1.08883;
   const convert = value => value > 216 / 24389
     ? Math.cbrt(value)
     : 841 / 108 * value + 4 / 29;
@@ -155,16 +161,21 @@ function rgbToLab(color) {
   return { l: 116 * fy - 16, a: 500 * (fx - fy), b: 200 * (fy - fz) };
 }
 
-function labToRgb({ l, a, b }) {
+function labToRgb({ l, a, b }, whitePoint = "d65") {
   const fy = (l + 16) / 116;
   const fx = fy + a / 500;
   const fz = fy - b / 200;
   const convert = value => value ** 3 > 216 / 24389
     ? value ** 3
     : 108 / 841 * (value - 4 / 29);
-  const x = 0.95047 * convert(fx);
+  const x = (whitePoint === "d50" ? 0.96422 : 0.95047) * convert(fx);
   const y = convert(fy);
-  const z = 1.08883 * convert(fz);
+  const z = (whitePoint === "d50" ? 0.82521 : 1.08883) * convert(fz);
+  if (whitePoint === "d50") return {
+    r: encodedRgb(3.1338561 * x - 1.6168667 * y - 0.4906146 * z),
+    g: encodedRgb(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z),
+    b: encodedRgb(0.0719453 * x - 0.2289914 * y + 1.4052427 * z)
+  };
   return {
     r: encodedRgb(3.2404542 * x - 1.5371385 * y - 0.4985314 * z),
     g: encodedRgb(-0.969266 * x + 1.8760108 * y + 0.041556 * z),
@@ -219,7 +230,8 @@ function interpolateHue(left, right, amount, long) {
   return hue(left + delta * amount);
 }
 
-function mix(left, right, amount, method) {
+function mix(left, right, amount, method, options) {
+  const whitePoint = options.whitePoint ?? "d65";
   if (method.startsWith("hsl")) {
     const a = rgbToHsl(left);
     const b = rgbToHsl(right);
@@ -230,29 +242,33 @@ function mix(left, right, amount, method) {
     });
   }
   if (method === "lab") {
-    const a = rgbToLab(left);
-    const b = rgbToLab(right);
+    const a = rgbToLab(left, whitePoint);
+    const b = rgbToLab(right, whitePoint);
     return labToRgb({
       l: a.l + (b.l - a.l) * amount,
       a: a.a + (b.a - a.a) * amount,
       b: a.b + (b.b - a.b) * amount
-    });
+    }, whitePoint);
   }
   if (method.startsWith("hcl")) {
-    const a = labToHcl(rgbToLab(left));
-    const b = labToHcl(rgbToLab(right));
+    const a = labToHcl(rgbToLab(left, whitePoint));
+    const b = labToHcl(rgbToLab(right, whitePoint));
     return labToRgb(hclToLab({
       h: interpolateHue(a.h, b.h, amount, method.endsWith("-long")),
       c: a.c + (b.c - a.c) * amount,
       l: a.l + (b.l - a.l) * amount
-    }));
+    }), whitePoint);
   }
   const a = rgbToCubehelix(left);
   const b = rgbToCubehelix(right);
+  const lightnessAmount = amount ** (options.gamma ?? 1);
+  if (!Number.isFinite(lightnessAmount)) {
+    throw new RangeError("Continuous cubehelix gamma produced a nonfinite interpolation.");
+  }
   return cubehelixToRgb({
     h: interpolateHue(a.h, b.h, amount, method.endsWith("-long")),
     s: a.s + (b.s - a.s) * amount,
-    l: a.l + (b.l - a.l) * amount
+    l: a.l + (b.l - a.l) * lightnessAmount
   });
 }
 
@@ -261,6 +277,29 @@ export function validateContinuousColorInterpolation(value) {
     throw new Error(`Unsupported continuous color interpolation "${value}".`);
   }
   return value;
+}
+
+export function normalizeColorInterpolationOptions(interpolation, options = {}) {
+  const result = {};
+  if (options.whitePoint !== undefined) {
+    if (!["lab", "hcl", "hcl-long"].includes(interpolation)) {
+      throw new Error("Scale whitePoint requires Lab or HCL interpolation.");
+    }
+    if (!["d65", "d50"].includes(options.whitePoint)) {
+      throw new Error("Scale whitePoint must be d65 or d50.");
+    }
+    result.whitePoint = options.whitePoint;
+  }
+  if (options.gamma !== undefined) {
+    if (!["cubehelix", "cubehelix-long"].includes(interpolation)) {
+      throw new Error("Scale gamma requires cubehelix interpolation.");
+    }
+    if (!Number.isFinite(options.gamma) || options.gamma <= 0) {
+      throw new RangeError("Scale gamma must be a positive finite number.");
+    }
+    result.gamma = options.gamma;
+  }
+  return result;
 }
 
 export function validateSequentialColorRange(value) {
@@ -297,7 +336,7 @@ export function resolveSequentialColorStops(value) {
     : resolveContinuousPalette(range.palette);
 }
 
-function interpolateColors(colors, position, method, shouldClamp) {
+function interpolateColors(colors, position, method, shouldClamp, options = {}) {
   const bounded = shouldClamp ? clamp(position) : position;
   const scaled = bounded * (colors.length - 1);
   const left = Math.max(0, Math.min(colors.length - 2, Math.floor(scaled)));
@@ -314,7 +353,7 @@ function interpolateColors(colors, position, method, shouldClamp) {
       )).toString(16).padStart(2, "0")
     ).join("")}`;
   }
-  return rgbToHex(mix(colors[left], colors[right], amount, method));
+  return rgbToHex(mix(colors[left], colors[right], amount, method, options));
 }
 
 export function interpolateColorStops(stops, position, interpolation = "rgb") {
@@ -350,11 +389,13 @@ export function mapSequentialColors(
   options = {}
 ) {
   const { interpolation = "rgb", clamp: shouldClamp = false } = options;
-  if (["log", "sqrt", "symlog"].includes(options.type)) {
+  normalizeColorInterpolationOptions(interpolation, options);
+  if (["log", "pow", "sqrt", "symlog"].includes(options.type)) {
     validateSequentialMidpoint(options.midpoint, options.type, domain);
     const normalized = mapTransformedValues(values, domain, [0, 1], {
       type: options.type, clamp: shouldClamp,
       ...(options.type === "log" ? { base: options.base } : {}),
+      ...(options.type === "pow" ? { exponent: options.exponent } : {}),
       ...(options.type === "symlog" ? { constant: options.constant } : {}),
       ...(Object.hasOwn(options, "unknown") ? { unknown: NaN } : {})
     });
@@ -388,6 +429,6 @@ export function mapSequentialColors(
       : (end > start ? value <= midpoint : value >= midpoint)
         ? inverseLerp(value, start, midpoint) / 2
         : 0.5 + inverseLerp(value, midpoint, end) / 2;
-    return interpolateColors(colors, raw, method, shouldClamp);
+    return interpolateColors(colors, raw, method, shouldClamp, options);
   }));
 }

@@ -63,10 +63,11 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
         y: y - titleGap - titleText.height / 2,
         align: "center"
       };
-  const transformed = ["log", "sqrt", "symlog"].includes(scale.type);
+  const transformed = ["log", "pow", "sqrt", "symlog"].includes(scale.type);
   const values = transformed
     ? transformedTicks(scale.type, scale.domain, config.count,
         scale.type === "log" ? {base: scale.base}
+          : scale.type === "pow" ? {exponent: scale.exponent}
           : scale.type === "symlog" ? {constant: scale.constant} : {})
     : [...sampleContinuousValues(scale.domain, config.count)];
   if (scale.midpoint !== undefined && !values.includes(scale.midpoint)) {

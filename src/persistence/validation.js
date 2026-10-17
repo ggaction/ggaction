@@ -2,6 +2,8 @@ import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../gramma
 import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
+import { normalizeColorInterpolationOptions } from "../grammar/scales/color.js";
+import { normalizeTransformParameters } from "../grammar/scales/transformed.js";
 import { validateLegendGroupState } from "../grammar/legendGroups.js";
 import { validateLegendGradient } from "../grammar/legendGradient.js";
 import { normalizeTextMetricProfile } from "../core/textMetricProfile.js";
@@ -136,6 +138,12 @@ export function validateProgramState(program, path) {
     }
     resources.set(referenceKind, entries);
     for (const resource of entries.values()) {
+      if (kind === "scale") {
+        normalizeColorInterpolationOptions(resource.interpolate, resource);
+        if (resource.type === "pow") normalizeTransformParameters("pow", {
+          ...(resource.exponent === undefined ? {} : {exponent:resource.exponent})
+        });
+      }
       for (const [key, value] of Object.entries(resource)) {
         if (key !== "id") validateSemanticProperties(program, value, `${kind}[${resource.id}].${key}`);
       }
@@ -205,6 +213,10 @@ export function validateProgramState(program, path) {
     requireObject(scale, `${path}.resolvedScales.${id}`);
     requireArray(scale.domain, `${path}.resolvedScales.${id}.domain`);
     requireArray(scale.range, `${path}.resolvedScales.${id}.range`);
+    normalizeColorInterpolationOptions(scale.interpolate, scale);
+    if (scale.type === "pow") normalizeTransformParameters("pow", {
+      ...(scale.exponent === undefined ? {} : {exponent:scale.exponent})
+    });
     if (!resources.get("scale").has(id) || scale.type !== resources.get("scale").get(id).type) {
       throw invalidSnapshot(`Resolved scale "${id}" has no matching semantic owner/type.`, path);
     }

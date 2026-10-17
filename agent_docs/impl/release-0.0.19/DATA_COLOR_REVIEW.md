@@ -9,7 +9,7 @@ Gate: **approved**. 이슈 #167, #168, #169, #172, #196, #198, #202, #207, #209�
 - [x] 새 중요 선택마다 권고안과 이유, 호환성·검증 조건 작성
 - [x] 통합 리뷰 패키지의 원격 revision 및 사용자 설계 승인 기록: bad3f346, PROPOSAL.md 승인 기록
 - [ ] 승인 후 구현, focused/cumulative/installed 소비자 검증
-- [ ] 실제 색상 출력 비교의 시각 Gate 증거 및 사용자 확인
+- [x] 실제 색상 출력 비교의 시각 Gate 증거 및 사용자 확인: 초기 승인과 감마 보정 목표 `4f2f985c`, 승인 기록 `e670508b`
 
 검토 기준은 현재 작업트리의 0.0.18 공개 표면이다. 이 문서는 계약의 새 canonical 사본이 아니라 구현 전 검토 자료다. 구현 시 정확한 현재 계약은 해당 `agent_docs/contract/current/` 소유 파일에 반영하고 이 문서에는 승인·완료 근거만 연결한다. 데이터·색상 계산은 grammar, 의미·소유권·명시적 재물질화는 domain action, 이미 계산된 출력은 renderer가 담당한다. renderer에 데이터 변환이나 fitting을 추가하지 않는다.
 
@@ -28,6 +28,28 @@ Year의 IANA/BCE 처리는 기존 calendar owner를 사용하고 era를 읽어 a
   실제 5,000행에 explicit toNumber/floor 조합을 실행했다. 기존 독립 source proof와 같은
   20,000개 ordered interval endpoints를 대조하여 최대오차 0, raw/derived 5,000행과 raw fields를 보존했다.
 - 유료 모델 호출·새 번역·차트 픽셀 관찰 없이 검증했다. 나머지 일곱 요구는 계속 구현 대상이다.
+
+### 구현 checkpoint — continuous color controls
+
+#168 D50/D65 whitePoint, #169 cubehelix gamma와 #172 signed-power color를 기존
+color grammar·scale action·materialization·persistence 소유자에 구현했다. 새 renderer
+분기나 공개 액션은 없다. 생략된 기본값을 저장 metadata에 추가하지 않으며, 편집의
+`"auto"` reset과 interpolation 변경 시 inherited control 제거를 구분한다.
+Stroke editor의 비분배 Omit 때문에 누락되던 기존 실행 가능한 타입 표면도 정정했다.
+
+- 감마의 양자화 공개 range `['#75190b','#90f2a4']` 목표는 사용자에게 재승인받았다.
+  검토 revision `4f2f985c`, 승인 기록 `e670508b`의 GAMMA_TARGET_REVIEW.md를 따른다.
+  기존8bit endpoint 정책은 바꾸지 않았다. 독립 Gaussian 역산·literal18 RGB·실제
+  public swatches의 전체480×270 RGBA가 오차 없이 일치했다. D50/D65·pow도 같은
+  primitive/public 픽셀 검증을 통과했다. 이미지 관찰/VLM은 사용하지 않았다.
+- 전체 unit3,101개, contracts533개, docs120개 통과. 뒤이어 multi-stop·역순·clamp와
+  source revision·shared facet lifecycle를 추가한 focused12개도 통과했다.
+- 실제 packed npm 설치 후 runtime·TypeScript·Full/Basic·stroke·sampled legend·snapshot,
+  browser/MCP 소비자가 통과했다. macOS/Node22.23.1/npm10.9.8에서 Full392,560,
+  Basic190,001, SVG7,176 gzip바이트다. 실측 unpacked3,913,392에 따라 unpacked만
+  3,914,000, Basic만191,000으로 최소 단위 갱신했다. 다른 예산은 유지했다.
+- 누적 통합 전에 computed와 색상 새 옵션의 realistic corpus 최소5회·3실데이터셋
+  실제 실행 증언을 추가해야 한다. 이 의무와 이후 회귀·통계·capacity 구현은 남아 있다.
 
 ## 1. 공통 결정
 

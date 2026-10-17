@@ -106,6 +106,21 @@ async function testNodeConsumer(directory) {
     assert.equal(calendar.semanticSpec.datasets.find(d => d.id === "years").values[0].year, 2024);
     assert.equal(calendar.semanticSpec.datasets.find(d => d.id === "rounded").values[0].lower, -2);
     assert.deepEqual(deserializeProgram(serializeProgram(calendar)).semanticSpec, calendar.semanticSpec);
+    for (const [settings, expected] of [
+      [{interpolate:"lab",whitePoint:"d50",range:["red","blue"]}, "#c10088"],
+      [{type:"pow",exponent:3,range:["black","white"]}, "#202020"],
+      [{interpolate:"cubehelix",gamma:2.2,range:["black","white"]}, "#373737"]
+    ]) {
+      const controls = chart().createCanvas({width:600,height:500,margin:{left:70,top:70,right:180,bottom:70}})
+        .createData({values:[{x:0,y:0,v:0},{x:1,y:1,v:.5},{x:2,y:2,v:1}]})
+        .createScatterPlot({x:"x",y:"y",guides:false})
+        .encodeColor({field:"v",fieldType:"quantitative",scale:{domain:[0,1],...settings}})
+        .createLegend({representation:"symbols",values:[0,.5,1],title:false});
+      assert.equal(controls.graphicSpec.objects.scatterPlot.items[1].properties.fill, expected);
+      assert.equal(controls.graphicSpec.objects.colorGradientSymbols.items[1].properties.fill, expected);
+      assert.deepEqual(deserializeProgram(serializeProgram(controls)).graphicSpec,controls.graphicSpec);
+      assert.ok((await renderToPNGBuffer(controls)).buffer.length>100);
+    }
     const longLine = chart().createCanvas({ width: 440, height: 340, margin: 20 })
       .createData({ values: Array.from({ length: 12070 }, (_, i) => ({ x: i, y: i % 11 })) })
       .createLinePlot({ x: "x", y: "y", guides: false });
@@ -4125,6 +4140,13 @@ async function testTypeScriptConsumer(directory) {
       operand: { op: "parseTime", operand: { field: "date" } }
     };
     const floorExpression: ComputedExpression = { op: "floor", operand: { field: "measurement" } };
+    chart().createData({values:[{x:1,y:2,v:3}]})
+      .createScatterPlot({x:"x",y:"y",guides:false})
+      .encodeColor({field:"v",fieldType:"quantitative",scale:{interpolate:"lab",whitePoint:"d50"}})
+      .editColorScale({whitePoint:"auto"})
+      .editColorScale({type:"pow",exponent:3})
+      .editColorScale({type:"sequential",interpolate:"cubehelix",gamma:2.2})
+      .editColorScale({gamma:"auto"});
     const computedOptions: ComputedDataOptions = {
       id: "shares",
       as: "share",

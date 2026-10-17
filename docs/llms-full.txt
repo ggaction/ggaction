@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:fdf6670a30100bc6be5e9babd65e5e5d05bfa5462cdc9a1d077736a49eecdf8f. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:d2a456d6f472b4d62a8daf05e7c15f9557acf241c236d35041252beb21dbab41. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -11775,6 +11775,26 @@ color ranges are also limited to 10,000 stops. `interpolate` accepts
 `hcl`, `hcl-long`, `cubehelix`, or `cubehelix-long`. `clamp` and `reverse`
 affect both points and a connected gradient legend.
 
+Lab, HCL and HCL-long interpolation use D65 by default. Set
+`whitePoint: "d50"` together with one of those interpolation modes to use
+D50-adapted sRGB/XYZ matrices. An explicit white point with another interpolation
+mode rejects, including `"d65"`. `editColorScale({ whitePoint: "auto" })`
+removes the explicit choice and restores D65. Changing interpolation clears
+an incompatible inherited white point; supplying an incompatible choice in
+the same edit rejects. Marks, field-driven strokes, gradient legends and sampled
+color legends use the same selected convention.
+
+Cubehelix and cubehelix-long interpolation accept a positive finite `gamma`.
+The default is `1`; `editColorScale({ gamma: "auto" })` restores that default.
+Within each range segment, hue and saturation use the original position `t`,
+while lightness uses `t ** gamma`. Gamma does not exponentiate the complete
+color or alter hue progression. Other interpolation modes reject explicit
+gamma, including `1`. A nonfinite real result during unclamped extrapolation
+rejects atomically; clamping occurs before gamma. Range endpoints retain the
+ordinary 8-bit RGB normalization, and final channels use the same byte rounding
+as other interpolation modes. Changing interpolation clears an incompatible
+inherited gamma; an explicitly incompatible pair in one edit rejects.
+
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 ```javascript
@@ -11813,6 +11833,22 @@ together. Temporal color remains sequential; numeric `midpoint` is available
 only on sequential scales. Switching type clears incompatible transform options.
 An unattached direct log/symlog color scale needs a color range, palette, or
 interpolation option to distinguish it from a numeric position scale.
+
+**Signed power color**
+
+Quantitative color and stroke accept `scale: { type: "pow", exponent: 3 }`.
+The exponent is positive and finite; omission defaults to `1`. Values use
+`f(v) = sign(v) * abs(v) ** exponent`, then interpolate between `f(domain[0])`
+and `f(domain[1])`. Transforming the already normalized position is a different
+mapping: for domain `[8, 24.8]`, the raw endpoints are cubed before normalization.
+Negative and zero-crossing domains retain their signs. Clamping and reversal
+keep their usual meaning, while numeric `midpoint` is unsupported.
+
+Gradient ticks and sampled color labels retain original data values, using
+the same transformed positions as marks. Set `exponent: 1` to reset the power
+mapping; changing scale type clears the inherited exponent. Explicit exponents
+on other color scale types reject. An unattached power color scale needs a
+color range, palette or interpolation option to distinguish it from a position scale.
 
 ## Explicit color midpoint
 
@@ -16737,6 +16773,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `number \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
 | `interpolate` | Optional / branch-dependent | `ContinuousColorInterpolation \| undefined` |
+| `whitePoint` | Optional / branch-dependent | `"d50" \| "d65" \| undefined` |
+| `gamma` | Optional / branch-dependent | `number \| undefined` |
 | `midpoint` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `unknown` | Optional / branch-dependent | `unknown` |
 
@@ -16779,6 +16817,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `number \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
 | `interpolate` | Optional / branch-dependent | `ContinuousColorInterpolation \| undefined` |
+| `whitePoint` | Optional / branch-dependent | `"auto" \| "d50" \| "d65" \| undefined` |
+| `gamma` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `midpoint` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `unknown` | Optional / branch-dependent | `unknown` |
 
@@ -17042,17 +17082,20 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
+| `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "pow" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |
+| `whitePoint` | Optional / branch-dependent | `"auto" \| "d50" \| "d65" \| undefined` |
+| `gamma` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `clamp` | Optional / branch-dependent | `boolean \| undefined` |
 | `reverse` | Optional / branch-dependent | `boolean \| undefined` |
 | `interpolate` | Optional / branch-dependent | `ContinuousColorInterpolation \| undefined` |
 | `midpoint` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `base` | Optional / branch-dependent | `number \| undefined` |
 | `constant` | Optional / branch-dependent | `number \| undefined` |
+| `exponent` | Optional / branch-dependent | `number \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused channel scale editors](./reference/actions/charts-data/#focused-channel-scale-editors).
 
@@ -17075,11 +17118,20 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Required | `string` |
-| `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
+| `whitePoint` | Optional / branch-dependent | `"auto" \| "d50" \| "d65" \| undefined` |
+| `gamma` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
+| `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "pow" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |
+| `clamp` | Optional / branch-dependent | `boolean \| undefined` |
+| `reverse` | Optional / branch-dependent | `boolean \| undefined` |
+| `interpolate` | Optional / branch-dependent | `ContinuousColorInterpolation \| undefined` |
+| `midpoint` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `base` | Optional / branch-dependent | `number \| undefined` |
+| `constant` | Optional / branch-dependent | `number \| undefined` |
+| `exponent` | Optional / branch-dependent | `number \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused channel scale editors](./reference/actions/charts-data/#focused-channel-scale-editors).
 
@@ -20614,7 +20666,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `field` | Required | `string` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
-| `scale` | Optional / branch-dependent | `DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| ContinuousColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
+| `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
 | `layout` | Optional / branch-dependent | `ColorLayout \| undefined` |
 | `aggregate` | Optional / branch-dependent | `AggregateOperation \| undefined` |
@@ -20718,7 +20770,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
-| `scale` | Optional / branch-dependent | `DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| ContinuousColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
+| `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -27524,7 +27576,7 @@ type BasicColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 ```
@@ -28313,7 +28365,7 @@ export type ColorEncodingOptions =
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
       layout?: never;
     };
@@ -30622,8 +30674,8 @@ Related types: [`BoxPlotSummaryFields`](./reference/types/#type-boxplotsummaryfi
 
 ```typescript
 export type EditColorScaleOptions = FocusedScaleSelection & WithoutScaleId<
-  CategoricalColorScaleOptions | ContinuousColorScaleOptions | DiscretizedColorScaleOptions
->;
+  CategoricalColorScaleOptions | Omit<ContinuousColorScaleOptions, "whitePoint" | "gamma"> | DiscretizedColorScaleOptions
+> & { whitePoint?: "d65" | "d50" | "auto"; gamma?: number | "auto" };
 ```
 
 Related types: [`FocusedScaleSelection`](./reference/types/#type-focusedscaleselection) · [`WithoutScaleId`](./reference/types/#type-withoutscaleid) · [`CategoricalColorScaleOptions`](./reference/types/#type-categoricalcolorscaleoptions) · [`ContinuousColorScaleOptions`](./reference/types/#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](./reference/types/#type-discretizedcolorscaleoptions).
@@ -31381,6 +31433,8 @@ export interface EditScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  whitePoint?: "d65" | "d50" | "auto";
+  gamma?: number | "auto";
   midpoint?: number | "auto";
   unknown?: unknown;
 }
@@ -31458,13 +31512,10 @@ Related types: [`FocusedScaleSelection`](./reference/types/#type-focusedscalesel
  Expand EditStrokeScaleOptions
 
 ```typescript
-export type EditStrokeScaleOptions = { target: string } & Omit<
-  EditColorScaleOptions,
-  "id" | "target"
->;
+export type EditStrokeScaleOptions = { target: string } & WithoutScaleSelection<EditColorScaleOptions>;
 ```
 
-Related types: [`EditColorScaleOptions`](./reference/types/#type-editcolorscaleoptions).
+Related types: [`WithoutScaleSelection`](./reference/types/#type-withoutscaleselection) · [`EditColorScaleOptions`](./reference/types/#type-editcolorscaleoptions).
 
 ### `EditStrokeWidthScaleOptions` {#type-editstrokewidthscaleoptions}
 
@@ -33512,9 +33563,8 @@ Related types: [`NonPointBandPositionScaleOptions`](./reference/types/#type-nonp
 
 ```typescript
 export type NonPointContinuousColorScaleOptions = ScaleFields<
-  "id" | "interpolate" | "midpoint" | "clamp" | "reverse"
+  "id" | "interpolate" | "whitePoint" | "gamma" | "midpoint" | "clamp" | "reverse"
 > & {
-  type?: "sequential" | "log" | "sqrt" | "symlog";
   base?: number;
   constant?: number;
   domain?: "auto" | readonly [unknown, unknown];
@@ -33523,7 +33573,10 @@ export type NonPointContinuousColorScaleOptions = ScaleFields<
     name: PaletteName;
     extent?: readonly [number, number];
   };
-};
+} & (
+  | { type: "pow"; exponent?: number }
+  | { type?: "sequential" | "log" | "sqrt" | "symlog"; exponent?: never }
+);
 ```
 
 Related types: [`ScaleFields`](./reference/types/#type-scalefields) · [`PaletteName`](./reference/types/#type-palettename).
@@ -34877,7 +34930,7 @@ type RectColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 ```
@@ -35534,6 +35587,8 @@ export interface ScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  whitePoint?: "d65" | "d50";
+  gamma?: number;
   midpoint?: number | "auto";
   unknown?: unknown;
 }
@@ -36709,6 +36764,14 @@ type WithoutEncodingTarget<T> = T extends unknown
 
 ```typescript
 type WithoutScaleId<T> = T extends unknown ? Omit<T, "id"> : never;
+```
+
+### `WithoutScaleSelection` {#type-withoutscaleselection}
+
+ Expand WithoutScaleSelection
+
+```typescript
+type WithoutScaleSelection<T> = T extends unknown ? Omit<T, "id" | "target"> : never;
 ```
 
 ### `XAxisPosition` {#type-xaxisposition}
@@ -39438,7 +39501,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:fdf6670a30100bc6be5e9babd65e5e5d05bfa5462cdc9a1d077736a49eecdf8f` |
+| Contract fingerprint | `sha256:d2a456d6f472b4d62a8daf05e7c15f9557acf241c236d35041252beb21dbab41` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
