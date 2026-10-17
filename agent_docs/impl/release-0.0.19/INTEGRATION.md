@@ -53,3 +53,19 @@ Bar/legend appearance의 canonical registry/pair 연결은 각 owner가 완성�
 95.29lines/92.44branches/98.62functions이지만 이 run은 위 기존4검사실패로 PASS가 아니다.
 별도critical 확인은 legend transition.functions96.30과 transforms.functions98이 각100floor에 부족했다.
 각 owner가 실제 회귀를 보강하며 임계값은 내리지 않는다. 최종 combined전체검사는 여전히 필요하다.
+
+## 27개 source 및 보안 통합 checkpoint
+
+`c1a420d6`은 #176 clipping window, 실제 ordinal palette 추가 증언, 부모 범례의 블록별
+복원과 내부 clip ID 정정까지 통합했다. 일반 facet/concat 및 서로 다른 범례 블록의 독립성을
+함께 검사했다. 전체 unit3264/3264와 재생성 후 문서120/120이 통과했다.
+첫 문서 run의 2개 실패는 병합 직후 provenance가 `uncommitted`를 가리킨 생성물 불일치였고,
+정확한 runtime source 재생성 후 해결했다. 실패 로그는 보존했다.
+
+PR215의 문서 의존성 정리와 bounded generation heap 정정도 main6635afea에서 통합했다.
+GitHub의 rubyzip Dependabot alert12는 병합 후 `fixed`이며 현재 열린 alert는 없다.
+문서의150페이지 build 및 데스크톱 검색/320·390·768px responsive 검증은 앞선27개 소스로
+통과했다. 최종28개 및 배포 artifact에 대한 누적 검증과 재동기화는 아직 남아 있다.
+
+아직 #205 및 승인 목표 named-shapes/legend-appearance의 전체 stable pair를 완료하지 않았다.
+개별 기능의 unit/browser 통과를 전체 시각 목표의 canonical pair 완료로 대체하지 않는다.
