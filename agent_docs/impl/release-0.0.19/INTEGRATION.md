@@ -160,3 +160,9 @@ Global3600registry에는 이 별도 recipe owner가 없으므로 global target13
 360 최댓값은 child305414144B/combined399491072B/reference369541120B이고
 900초 경계·heap/RSS 기준을 그대로 유지했다. 최종 팔레트·smoke fixture를 합친 원격
 PR CI는 별도로 다시 실행하며, 이 baseline을 그 최종 입력의 검증으로 대체하지 않는다.
+
+두 번째 CI39035968471의 realistic7은 실패 진단 fixture 한 곳의 오래된 `quota:11`로
+실패했다. 실제 진단은 승인된 새 계획의simple quota7을 정확히 보고했으며, source 동작을
+바꾸지 않고 기대값만7로 동기화했다. 메모리·deadline·실패 분류/동결/진단 내용 보존 검사
+그대로 집중 회귀1/1PASS(1261.27ms), 원본 `/tmp/ggaction-217-second-realistic-7.log`와
+성공 `/tmp/ggaction-217-diagnostic-quota-final.log`를 보존한다.
