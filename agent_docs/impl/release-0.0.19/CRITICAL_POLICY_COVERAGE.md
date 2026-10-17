@@ -18,6 +18,11 @@ legend grammar와 facet guide scaffolding에 자동 prefix family를 적용했�
 - 이전 source28 전체 coverage는95.33/92.52/98.66 및 기존103개 floor를 통과했다.
   확장된 floor를 포함한 최종 전체 coverage는 별도 실행하며 이 기록을 그 성공으로 대체하지 않는다.
 
+부모 color-size meaning 복원 뒤에는 semantic primitive owner에도95/90/100 floor를 추가했다.
+기존 public composition guard를 넓히지 않는 좁은 private adapter의 잘못된 host/임의 key 거부,
+원래 program 불변과 composition 보존을 추가 회귀로 검사했다. 관련28개 unit 통과이며
+최종 전체 gate는133개 floor를 적용한다. 아래132개 raw 결과는 그 이전 입력의 증거로 보존한다.
+
 ## 통합 입력의 132개 floor 실행
 
 - 입력: `a5634be5c4cf66e7530cd0b1707cf7457fcd7438` — `5827527e` 정책과
