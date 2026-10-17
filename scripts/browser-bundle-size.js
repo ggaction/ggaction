@@ -6,7 +6,7 @@ import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 393_000, // Supported Linux/Node24 measured392303 gzip bytes; narrow1000-byte step.
-  "ggaction/basic": 190_000, // Shared title style measured189139 gzip bytes.
+  "ggaction/basic": 191_000, // Cartesian frame/text placement measured190093 gzip bytes.
   "ggaction/svg": 25_000
 });
 

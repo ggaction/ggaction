@@ -1,4 +1,5 @@
 import { materializeTextLines } from "../../../materialization/textLines.js";
+import { axisTitleTextLines as titleLines, validateAxisTextPlacement } from "../../../grammar/axisTextPlacement.js";
 import { axisThemeTypography } from "../../theme/state.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
@@ -7,10 +8,9 @@ import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
   validateKeys,
-  validateNonEmptyString,
-  validateNonNegativeFinite
+  validateNonEmptyString
 } from "../../../core/validation.js";
-import { axisScaleBindings, resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
+import { axisScaleBindings, resolveCartesianAxisFrameBounds } from "../../../materialization/coordinateBounds.js";
 import {
   isTransformedScaleType,
   mapContinuousScaleValues,
@@ -31,7 +31,6 @@ import { findCanvasGraphic, resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import {
   resolveTextBounds,
-  resolveTextLines,
   textBoundsFitCanvas,
   textBoundsIntersect
 } from "../../../core/textMetrics.js";
@@ -39,14 +38,6 @@ import { resolveConcreteGraphicBounds } from
   "../../../grammar/schemas/graphicBounds.js";
 import { validateAxisTextStyle } from "./labels.js";
 import { resolveRotation } from "../../../grammar/rotation.js";
-
-function titleLines(text, config) {
-  if (!/[\r\n]/u.test(text)) return undefined;
-  const lines = resolveTextLines(text, {
-    fontSize: config.fontSize, align: "center", baseline: "middle", blockAlign: "middle"
-  });
-  return lines.length > 1 ? lines : undefined;
-}
 
 function titleBounds(geometry, config, text, profile) {
   return resolveTextBounds({
@@ -56,8 +47,8 @@ function titleBounds(geometry, config, text, profile) {
     fontSize: config.fontSize,
     fontFamily: config.fontFamily,
     fontWeight: config.fontWeight,
-    textAlign: "center",
-    textBaseline: "middle",
+    textAlign: config.align ?? "center",
+    textBaseline: config.baseline ?? "middle",
     rotation: config.rotation
   }, profile);
 }
@@ -79,7 +70,7 @@ function resolveTitleAlong(scale, config) {
       along = mapContinuousScaleValues([config.at], scale)[0];
     }
   }
-  return along;
+  return along + (config.alongOffset ?? 0);
 }
 
 function axisLabelBounds(program, channel) {
@@ -91,11 +82,7 @@ function axisLabelBounds(program, channel) {
 }
 
 function inferredTitleOffset(program, channel, config) {
-  const plot = resolveGuideCoordinateBounds(program, {
-    coordinate: program.semanticSpec.guides.axis?.[channel]?.coordinate,
-    scale: config.scale,
-    channel
-  });
+  const plot = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale);
   const canvas = findCanvasGraphic(program)?.properties;
   const labels = program.graphicSpec.objects[`${channel}AxisLabels`]
     ? resolveConcreteGraphicBounds(program.graphicSpec, `${channel}AxisLabels`, program.materializationConfigs.textMetrics)
@@ -143,7 +130,7 @@ function inferredTitleOffset(program, channel, config) {
 
 const CREATE_OPTIONS = [
   "text", "scale", "position", "at", "offset", "rotation", "color",
-  "fontSize", "fontFamily", "fontWeight"
+  "fontSize", "fontFamily", "fontWeight", "alongOffset", "align", "baseline"
 ];
 const EDIT_OPTIONS = CREATE_OPTIONS.filter(key => key !== "scale");
 const DEFAULTS = {
@@ -160,7 +147,7 @@ function validateText(text) {
 function validateConfig(channel, config) {
   validateAxisPosition(channel, config.position);
   if (!["start", "center", "end"].includes(config.at) && !Number.isFinite(config.at)) throw new TypeError("Axis title at must be start, center, end, or a finite number.");
-  validateNonNegativeFinite(config.offset, "Axis title offset");
+  validateAxisTextPlacement(config, { title: true });
   if (!Number.isFinite(config.rotation)) throw new TypeError("Axis title rotation must be finite radians.");
   validateAxisTextStyle(config, "Axis title");
 }
@@ -216,11 +203,7 @@ export function inferAxisTitleText(program, channel, scaleId) {
 
 function resolveGeometry(program, channel, config) {
   const scale = program.resolvedScales[config.scale];
-  const bounds = resolveGuideCoordinateBounds(program, {
-    coordinate: program.semanticSpec.guides.axis?.[channel]?.coordinate,
-    scale: config.scale,
-    channel
-  });
+  const bounds = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale);
   if ((
     !["linear", "time", "ordinal", "band", "point"].includes(scale?.type) &&
     !isTransformedScaleType(scale?.type)
@@ -258,6 +241,7 @@ function makeEdit(channel) {
   const operation = names(channel);
   return action({ op: operation.edit, description: `Edit the ${channel}-axis title.` }, withGuideLayoutValidation(function (args = {}) {
       validateKeys(args, EDIT_OPTIONS, operation.edit);
+    validateAxisTextPlacement(args, { title: true });
     if (this.graphicSpec.objects[operation.graphic]?.type !== "text") throw new Error(`${operation.edit} requires an existing axis title.`);
     const previous = this.guideConfigs.axis?.[channel]?.title;
     if (!previous) throw new Error(`${operation.edit} requires title configuration.`);
@@ -305,7 +289,7 @@ function makeEdit(channel) {
     const properties = {
       x: geometry.x, y: geometry.y, text: resolvedText, fill: config.color,
       fontSize: config.fontSize, fontFamily: config.fontFamily,
-      fontWeight: config.fontWeight, textAlign: "center", textBaseline: "middle",
+      fontWeight: config.fontWeight, textAlign: config.align ?? "center", textBaseline: config.baseline ?? "middle",
       rotation: config.rotation
     };
     for (const [property, value] of Object.entries(properties)) next = next.editGraphics({ target: operation.graphic, property, value });
@@ -320,6 +304,7 @@ function makeCreate(channel) {
   const operation = names(channel);
   return action({ op: operation.create, description: `Create the ${channel}-axis title.` }, withGuideLayoutValidation(function (args = {}) {
       validateKeys(args, CREATE_OPTIONS, operation.create);
+    validateAxisTextPlacement(args, { title: true });
     const {
       text: requestedText,
       scale: requestedScale,

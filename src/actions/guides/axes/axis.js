@@ -3,7 +3,7 @@ import { withGuideLayoutValidation } from "../../../materialization/guides/layou
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateUserId } from "../../../core/identifiers.js";
-import { validateKeys } from "../../../core/validation.js";
+import { validateKeys, validateNonNegativeFinite } from "../../../core/validation.js";
 import { hasCoordinate } from "../../../selectors/index.js";
 import { validateEnabledAxisComponents } from "./components.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
@@ -15,7 +15,8 @@ const TOP_OPTIONS = Object.freeze([
   "position",
   "line",
   "ticksAndLabels",
-  "title"
+  "title",
+  "offset"
 ]);
 const LINE_OPTIONS = Object.freeze(["color", "lineWidth"]);
 const TICK_GROUP_OPTIONS = Object.freeze([
@@ -32,7 +33,8 @@ const TITLE_OPTIONS = Object.freeze([
   "color",
   "fontSize",
   "fontFamily",
-  "fontWeight"
+  "fontWeight",
+  "alongOffset", "align", "baseline"
 ]);
 
 function validateNested(value, supported, label) {
@@ -45,6 +47,7 @@ function validateNested(value, supported, label) {
 
 export function validateAxisArgs(args, operation) {
   validateKeys(args, TOP_OPTIONS, operation);
+  if (Object.hasOwn(args, "offset")) validateNonNegativeFinite(args.offset, "Axis frame offset");
 
   validateEnabledAxisComponents(args, operation);
   if (Object.hasOwn(args, "line") && args.line !== false) {
@@ -87,7 +90,8 @@ function makeCreateAxis(channel) {
       const shared = {};
       if (Object.hasOwn(args, "scale")) shared.scale = args.scale;
       if (Object.hasOwn(args, "position")) shared.position = args.position;
-      let next = this;
+      let next = Object.hasOwn(args, "offset")
+        ? this._withGuideConfig(channel, "frame", { offset: args.offset }) : this;
 
       if (Object.hasOwn(args, "coordinate")) {
         const coordinate = validateUserId(args.coordinate, "Coordinate id");

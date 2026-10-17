@@ -1359,6 +1359,8 @@ export type CartesianAxisLabelColorMap = ReadonlyArray<Readonly<{
   color: string;
 }>>;
 export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Local text alignment before rotation; omitted edits retain existing intent. */
+  align?: "left" | "center" | "right";
   /** Typed raw-tick color overrides; missing entries use color. Auto removes the map. */
   colorMap?: CartesianAxisLabelColorMap | "auto";
   /** Keep unrotated label bounds inside the mapped axis span; defaults to false. */
@@ -1385,11 +1387,16 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
   labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 }
 export interface AxisTitleOptions<P extends string> {
-  /** Hard breaks retain ordered centered lines, spaced at 1.2 times fontSize. */
+  /** Signed logical pixels: positive right for x, down for y, independent of scale reversal. */
+  alongOffset?: number;
+  align?: "left" | "center" | "right";
+  baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom";
+  /** Hard breaks retain ordered lines with the chosen block baseline, spaced at 1.2 times fontSize. */
   text?: string;
   scale?: string;
   position?: P;
   at?: "start" | "center" | "end" | number;
+  /** Signed distance from the axis frame: positive outward, negative inward. */
   offset?: number;
   rotation?: RotationInput;
   color?: string;
@@ -1398,6 +1405,8 @@ export interface AxisTitleOptions<P extends string> {
   fontWeight?: string | number;
 }
 export interface CompleteAxisOptions<P extends string> {
+  /** Non-negative outward displacement of the complete axis frame in logical pixels. */
+  offset?: number;
   scale?: string;
   coordinate?: string;
   position?: P;
@@ -4773,6 +4782,8 @@ export interface EditLegendBorderOptions {
 }
 
 export interface EditAxisOptions<P extends string> {
+  /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
+  offset?: number;
   position?: P;
   line?: false | AxisLineStyleOptions;
   ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position">;

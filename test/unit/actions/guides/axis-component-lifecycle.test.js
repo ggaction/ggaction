@@ -130,7 +130,7 @@ test("preflights every selected operation before returning any state or trace", 
   const configs = before.materializationConfigs;
   const options = Object.freeze({
     line: false,
-    title: Object.freeze({ offset: -1 })
+    title: Object.freeze({ offset: Infinity })
   });
 
   assert.throws(() => before.editXAxis(options), /offset/);
@@ -138,7 +138,7 @@ test("preflights every selected operation before returning any state or trace", 
   assert.equal(before.graphicSpec, graphicSpec);
   assert.equal(before.materializationConfigs, configs);
   assert.ok(before.graphicSpec.objects.xAxisLine);
-  assert.deepEqual(options, { line: false, title: { offset: -1 } });
+  assert.deepEqual(options, { line: false, title: { offset: Infinity } });
 });
 
 test("rejects missing removals and group-leaf conflicts before cleanup", () => {

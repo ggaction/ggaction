@@ -16,6 +16,17 @@ package entry 한도는567→568이다. Staging compaction 후 실제797471packe
 검색 payload는 typed dash 옵션과 공개 예제를 모두 유지한814283bytes로 기존814000을
 초과하여 공유 search 한도만815000으로 갱신했다. 이전 search 한도 통과를 주장하지 않는다.
 
+승인된 Cartesian frame은 기존 guideConfigs.axis의 frame.offset 한 곳이 소유하며,
+coordinateBounds의 axis 전용 resolver가 perpendicular plot frame을 해결한다. Marks와
+grids는 원래 plot bounds를 소비한다. 순수 axisTextPlacement grammar가 local align/baseline,
+signed title offset과 multiline 배치를 검증하고 기존 textLines materializer를 재사용한다.
+새 module1개로 entry569, 실제798803packed/3918633unpacked bytes여서 최소1000bytes 단위
+한도를799000/3919000으로 조정했다. 검색815236bytes는816000한도로 갱신하며 payload를
+줄이지 않는다. 설치 consumer Basic gzip190093bytes가190000을 초과하여191000으로만
+조정하고 Full393000/SVG25000은 유지한다. 이전 한도를 통과했다고 보고하지 않는다.
+최종 compact action-card median은 승인된 축 옵션을 유지한1865bytes여서 기존1856을9bytes
+초과한다. 해당 regression ceiling만 실측1865로 갱신하고 최대3360한도(실측3358)는 유지한다.
+
 이 문서는 `ggaction`의 초기 차트 구현 단계가 끝난 뒤 실제 코드에서 확립된 현재
 아키텍처를 기록한다. `INITIAL_ARCHITECTURE.md`는 최초 설계 의도와 논의의 출발점을
 보존하는 역사적 문서다. 이 문서는 그 설계를 Phase 1–6의 구현, 테스트, 리팩토링을

@@ -9,7 +9,7 @@ import {
   validateNonEmptyString,
   validateNonNegativeFinite
 } from "../../../core/validation.js";
-import { axisScaleBindings, resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
+import { axisScaleBindings, resolveCartesianAxisFrameBounds } from "../../../materialization/coordinateBounds.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import {
   defaultAxisPosition,
@@ -55,11 +55,7 @@ function resolveGeometry(program, channel, scaleId, position) {
 
   const resolvedScale = program.resolvedScales[scaleId];
   const range = resolvedScale?.range;
-  const bounds = resolveGuideCoordinateBounds(program, {
-    coordinate: program.semanticSpec.guides.axis?.[channel]?.coordinate,
-    scale: scaleId,
-    channel
-  });
+  const bounds = resolveCartesianAxisFrameBounds(program, channel, position, scaleId);
 
   if (!Array.isArray(range) || range.length !== 2 || !range.every(Number.isFinite)) {
     throw new Error(`Axis line requires a resolved numeric scale "${scaleId}".`);

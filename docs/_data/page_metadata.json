@@ -699,7 +699,7 @@
   },
   "/api/axes/complete/": {
     "title": "Complete Axes and Labels",
-    "description": "Create a complete axis first, then refine its native ticks. On an existing Cartesian program with a quantitative y encoding, this fragment keeps the zero tick solid:",
+    "description": "On an existing Cartesian program, create the full axis before focused text edits:",
     "image": "/assets/images/cars-line-chart.png"
   }
 }

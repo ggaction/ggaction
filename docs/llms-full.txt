@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:a0f85f6b1efcb6e7507ebaf0ad66e75bbfc91dce3779df8f20b9f22fd9d61ad9. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:af4caf79d3c38d006ac5730c0bdd4c047e9d3697b2beba89540b1b8f19eedf1e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -23682,6 +23682,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
@@ -23709,6 +23710,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
@@ -23967,6 +23969,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
@@ -24007,6 +24010,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
@@ -24043,6 +24047,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
@@ -24082,6 +24087,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
@@ -24220,6 +24226,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
@@ -24251,6 +24260,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
@@ -24282,6 +24294,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
@@ -24312,6 +24327,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
@@ -24342,6 +24360,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
 | `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<XAxisPosition>, "position" \| "scale"> \| undefined` |
@@ -24369,6 +24388,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
 | `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<YAxisPosition>, "position" \| "scale"> \| undefined` |
@@ -27336,11 +27356,16 @@ Related types: [`AxisValue`](./reference/types/#type-axisvalue) · [`CartesianAx
 
 ```typescript
 export interface AxisTitleOptions<P extends string> {
-  /** Hard breaks retain ordered centered lines, spaced at 1.2 times fontSize. */
+  /** Signed logical pixels: positive right for x, down for y, independent of scale reversal. */
+  alongOffset?: number;
+  align?: "left" | "center" | "right";
+  baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom";
+  /** Hard breaks retain ordered lines with the chosen block baseline, spaced at 1.2 times fontSize. */
   text?: string;
   scale?: string;
   position?: P;
   at?: "start" | "center" | "end" | number;
+  /** Signed distance from the axis frame: positive outward, negative inward. */
   offset?: number;
   rotation?: RotationInput;
   color?: string;
@@ -28022,6 +28047,8 @@ Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar).
 
 ```typescript
 export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Local text alignment before rotation; omitted edits retain existing intent. */
+  align?: "left" | "center" | "right";
   /** Typed raw-tick color overrides; missing entries use color. Auto removes the map. */
   colorMap?: CartesianAxisLabelColorMap | "auto";
   /** Keep unrotated label bounds inside the mapped axis span; defaults to false. */
@@ -28390,6 +28417,8 @@ export type ColorLayout =
 
 ```typescript
 export interface CompleteAxisOptions<P extends string> {
+  /** Non-negative outward displacement of the complete axis frame in logical pixels. */
+  offset?: number;
   scale?: string;
   coordinate?: string;
   position?: P;
@@ -30565,6 +30594,8 @@ export interface ECDFOutputFields {
 
 ```typescript
 export interface EditAxisOptions<P extends string> {
+  /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
+  offset?: number;
   position?: P;
   line?: false | AxisLineStyleOptions;
   ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position">;
@@ -39452,7 +39483,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:a0f85f6b1efcb6e7507ebaf0ad66e75bbfc91dce3779df8f20b9f22fd9d61ad9` |
+| Contract fingerprint | `sha256:af4caf79d3c38d006ac5730c0bdd4c047e9d3697b2beba89540b1b8f19eedf1e` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
@@ -39501,7 +39532,39 @@ forms described in their references.
 
 [Axis family overview](./api/axes/)
 
-## Value-specific Cartesian tick dashes
+## Moving a complete axis and refining its text
+
+On an existing Cartesian program, create the full axis before focused text edits:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+program
+  .createXAxis({ offset: 20, title: { text: "Measurement" } })
+  .editXAxisTitle({ offset: -40, alongOffset: 30, align: "right" })
+  .editXAxisTitle({ baseline: "bottom" })
+  .editXAxisLabels({ align: "left" });
+```
+
+The complete-axis `offset` moves its line, ticks, labels and title outward together.
+It must be non-negative; zero restores the plot edge. Marks and grids stay fixed.
+The nested title `offset` is signed: positive outward, negative into the plot.
+`alongOffset` is a separate translation along the axis: positive right for X and
+down for Y, even with a reversed scale. Numeric `at` still means a scale-domain value.
+
+Title alignment (`left`, `center`, `right`) and baseline (`top`, `hanging`, `middle`,
+`alphabetic`, `ideographic`, `bottom`) apply before rotation. Defaults remain center/middle.
+Multiline titles keep their text and 1.2×font-size spacing; top/hanging/alphabetic
+anchor the first line, bottom/ideographic the last, and middle centers the block.
+Omitted edits retain explicit settings. Explicit defaults restore alignment/baseline;
+remove and recreate a title without `offset` to restore automatic title clearance.
+
+Explicit label `align` changes text anchoring before rotation while keeping existing
+resolved label positions. It takes precedence over inferred side/flush anchoring.
+Remove and recreate labels without alignment to restore inference. All final rotated
+bounds must still fit, and axis-title/label collision checks remain active.
+
+## Styling native tick dashes
 
 Create a complete axis first, then refine its native ticks. On an existing Cartesian
 program with a quantitative y encoding, this fragment keeps the zero tick solid:

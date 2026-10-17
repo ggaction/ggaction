@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 568, // Shared Cartesian guide dash grammar adds one private owner.
-  packedBytes: 798_000, // Supported Linux/Node24 release candidate measured797971bytes.
-  unpackedBytes: 3_912_000 // Native dash API measured3911785bytes; retain a bounded1000-byte step.
+  entries: 569, // Cartesian axis text placement adds one private grammar owner.
+  packedBytes: 799_000, // Cartesian frame/text placement measured798803bytes.
+  unpackedBytes: 3_919_000 // Cartesian frame/text placement measured3918633bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -73,6 +73,7 @@ const COMPACT_JSON_FILES = Object.freeze([
   "knowledge/task-packet.schema.json"
 ]);
 const COMPACT_JAVASCRIPT_FILES = Object.freeze([
+  "src/grammar/axisTextPlacement.js",
   "src/grammar/guideDash.js",
   "knowledge/task-resolver.js",
   "src/grammar/scales/color.js",

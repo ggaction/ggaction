@@ -1,4 +1,5 @@
 import { axisThemeTypography } from "../../theme/state.js";
+import { validateAxisTextPlacement } from "../../../grammar/axisTextPlacement.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
@@ -11,7 +12,7 @@ import {
   validateNonNegativeFinite,
   validatePositiveFinite
 } from "../../../core/validation.js";
-import { resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
+import { resolveCartesianAxisFrameBounds } from "../../../materialization/coordinateBounds.js";
 import {
   isTransformedScaleType,
   mapContinuousScaleValues,
@@ -50,7 +51,7 @@ import {
 const OPTIONS = [
   "scale", "position", "count", "values", "offset", "format", "color",
   "fontSize", "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
-  "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "colorMap"
+  "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "colorMap", "align"
 ];
 
 const DEFAULTS = {
@@ -85,6 +86,7 @@ function normalizeLabelLayout(config, args, operation) {
 export { validateTextStyle as validateAxisTextStyle };
 
 function validateOptions(args, operation, create) {
+  validateAxisTextPlacement(args);
   validateOptionObject(
     args,
     create ? OPTIONS : OPTIONS.filter(key => key !== "scale"),
@@ -98,6 +100,7 @@ function validateOptions(args, operation, create) {
 }
 
 function validateConfig(channel, config) {
+  validateAxisTextPlacement(config);
   validateAxisPosition(channel, config.position);
   if (config.mode === "count") {
     if (!Number.isInteger(config.count) || config.count <= 0) throw new RangeError("Label count must be a positive integer.");
@@ -226,11 +229,7 @@ function unionLabelBounds(records) {
 
 function resolve(program, channel, config) {
   const scale = program.resolvedScales[config.scale];
-  const bounds = resolveGuideCoordinateBounds(program, {
-    coordinate: program.semanticSpec.guides.axis?.[channel]?.coordinate,
-    scale: config.scale,
-    channel
-  });
+  const bounds = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale);
   const discrete = ["ordinal", "band", "point"].includes(scale?.type);
   validateAxisLabelMapScale(config, scale);
   if ((
@@ -292,7 +291,7 @@ function resolve(program, channel, config) {
     resolved.textBaseline = "middle";
   }
   const canvas = findCanvasGraphic(program)?.properties;
-  let labelBounds = resolved.text.map((value, index) => resolveTextBounds({
+  const measuredBounds = () => resolved.text.map((value, index) => resolveTextBounds({
     x: Array.isArray(resolved.x) ? resolved.x[index] : resolved.x,
     y: Array.isArray(resolved.y) ? resolved.y[index] : resolved.y,
     text: value,
@@ -303,6 +302,7 @@ function resolve(program, channel, config) {
     textBaseline: resolved.textBaseline,
     rotation: config.rotation
   }, program.materializationConfigs.textMetrics));
+  let labelBounds = measuredBounds();
   if (program.materializationConfigs.canvas?.plot !== undefined || config.rotation !== 0) {
     const horizontal = channel === "x";
     const near = ["bottom", "right"].includes(config.position);
@@ -342,6 +342,10 @@ function resolve(program, channel, config) {
       const delta = shifts[resolved.groups[index]];
       return { ...item, [lowKey]: item[lowKey] + delta, [highKey]: item[highKey] + delta };
     });
+  }
+  if (config.align !== undefined) {
+    resolved.textAlign = config.align;
+    labelBounds = measuredBounds();
   }
   const rotatedOverlap = config.rotation !== 0;
   const collisionBounds = rotatedOverlap ? resolved.text.map((text, index) => {

@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:a0f85f6b1efcb6e7507ebaf0ad66e75bbfc91dce3779df8f20b9f22fd9d61ad9",
+    "contractId": "sha256:af4caf79d3c38d006ac5730c0bdd4c047e9d3697b2beba89540b1b8f19eedf1e",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -2273,8 +2273,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 124469,
-      "sha256": "2c1b6f487654d345aa5d76d1b458b11edefafceaea04cf7e06815293e74c54b8"
+      "bytes": 126289,
+      "sha256": "addb279fef98e230d443c3ed8158429ea009f6b566027c97c0de32ab2b99911d"
     },
     {
       "order": 123,
@@ -2978,8 +2978,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 330295,
-      "sha256": "809c9f1ed0265189654c7e20c2517080a78b1d09c323c0c66bb9c58292537771"
+      "bytes": 330972,
+      "sha256": "bcb69ab768bd299d36508bafe0dd88728c3d091da73f66aff7828cf464783a32"
     },
     {
       "order": 127,
@@ -3332,7 +3332,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "2788cc52c0dd4c290dd3fdb2e66087c1765fd2ac902c3b3dc66376401348db69"
+      "sha256": "c01e9105e1ebd440a1724b397b1d53102e02e97bb9c4bc09f578b47629225958"
     },
     {
       "order": 150,
@@ -3341,11 +3341,12 @@
       "source": "api/axes/complete.md",
       "headings": [
         "complete-axes-and-labels",
-        "value-specific-cartesian-tick-dashes",
+        "moving-a-complete-axis-and-refining-its-text",
+        "styling-native-tick-dashes",
         "createaxesoptions"
       ],
-      "bytes": 15936,
-      "sha256": "5b3d29ff57c2442bc74426f649003104666b6f396f187f5409847495d8db2722"
+      "bytes": 17772,
+      "sha256": "dc4898f74ef9bbd420c7a9ebc9fe3f9908a615472dedbd486317ac4b256e5441"
     }
   ]
 }
