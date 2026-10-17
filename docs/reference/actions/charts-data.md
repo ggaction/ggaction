@@ -3430,7 +3430,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `field` | Required | `string` |
 | `color` | Optional / branch-dependent | `HistogramCategoricalColorChannel \| undefined` |
 | `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| CartesianCategoricalGuideOptions \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| (Omit<CartesianCategoricalGuideOptions, "grid"> & { grid?: false \| ContinuousCartesianGridOptions \| undefined; }) \| undefined` |
 
 </details>
 

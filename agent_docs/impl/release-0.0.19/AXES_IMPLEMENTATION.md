@@ -164,3 +164,72 @@ EOF
   facade nested counts가 부모 option occurrence만 기록하고 숨겨진 object leaf를 허위 기록하지
   않음을 확인했다. Alias 목록/array exclusion/coverage 하한은 변경하지 않았다. Named-array
   입력의 actual5×3와 복원된 object branch의 실제 증거는 서로 대체하지 않는다.
+
+
+## Named axis·parent legend 실제 데이터 checkpoint
+
+- 독립 realistic test에서 원본3TT 데이터셋(tour winners, marathon winners, penguins)을
+  변경하지 않고 각각5회 실행했다. Named 축의 complete/focused/aggregate object/array 경로,
+  독립 y scale 두 개, 6가지 title baseline·3가지 align, dash map, frame 이동, grid reset을
+  실제 public action으로 호출하고 매 단계 import 재생성·기하·이전 프로그램 불변성을 확인한다.
+  별도 facade named-array 실행도 기록하므로 object branch 증언으로 array를 대신하지 않는다.
+- 같은3×5 실행에서 부모 object 범례를 child60px·final union 기준으로 만들고 whole/focused/
+  block 편집, local 위치, reflow, 최종 removal·재배치 후 비복원, 저장/불러오기와 실제 PNG를
+  검증했다. 원본 긴 facet header는 글자·내용을 유지하고 명시적 간격과 여백으로 배치한다.
+  모든 child plot width는60px로 유지한다. 최종3/3 PASS, 실제 합산17031.924125ms를
+  canonical realistic timings에 기록했다.
+- 기존 guide-scale actual recipe도 동일 named-owner helper를 실제로 호출한다. Clone/reorder/
+  fresh-process replay 계약은1/1 PASS다. Test discovery는 새 authentic test와 sibling combined
+  test를 명시하고 realistic24개를 정상/coverage suite와 분리한다.
+- 기존 hierarchy8dataset 전체 실행은 기본 heap에서14분간 완료되지 않아 로그를 보존하고
+  본인 프로세스만 중단했다. 같은 기준을512MB old-space로 실행하면214초에 실제 전체 호출을
+  마치고 strict witness assertion에 도달했다. 남은89항목은 palette·새 sibling 범례와 일부
+  Rug/Strip 축 literal fixture 보강 의무다. Runtime/bounds/coverage 기준은 완화하지 않았다.
+  이 checkpoint로 전체 realistic 또는 전체 feature 완료를 주장하지 않는다.
+
+- CI의 정식 realistic runner도512MiB old-space를 명시한다. Normal/coverage 실행과 기존
+  private generation/execution child의 더 좁은 명시적 한도는 유지한다. 데이터·반복·deadline·
+  RSS·coverage 정책은 변경하지 않는다. Normal discovery/source/inventory22회귀 PASS.
+
+
+## Restored option surface의 실제 증명
+
+- Data/color `6e4b2397`과 결합하고 기존 범례/축 증거를 모두 유지했다. Cartesian은 원래36개에
+  object palette3개와 string palette2개를 더한41profiles·820charts다. Statistical은 원래465개를
+  유지하고 palette75개를 추가한540charts다. 각 variant는5회·최소3TT원본을 그대로 사용한다.
+  Hierarchy는 원래33profiles를 유지하고 두 string palette profile을 실제 최대 흐름에도 연결한다.
+- Cartesian 전체 actual 실행은94.7초에5PASS/1FAIL이며 strict 미충족20개는 신규 sibling 범례의
+  border dash/combine/title bottom뿐이다. Hierarchy8원본 전체는267.7초에 strict assert까지
+  도달했고 미충족55개도 같은 sibling 범례뿐이다. 모든 축/frame/title/label/map와 palette의
+  object·name·string diversity는 두 실제 흐름에서 요구5/3을 충족한다. 범례 누락을 면제하거나
+  전체 suite PASS로 기록하지 않는다. 해당 범례 helper 후속은 범례 담당자에게 넘겼다.
+- Statistical에 모든 실행 가능한 axis/grid option·literal의 실제 ledger5/3 검사를 추가했다.
+  기존319개 누락을 label style, tick offset, 양방향 grid, component false, 회전 단위·baseline,
+  pregridded guide 흐름에서 직접 호출해 채웠다. 이전 프로그램/원본 선택·기존 profile은 보존했다.
+  새 baseline/frame 조합에서 y 제목이2.762px 벗어난 fixture는 제목 offset280→260으로 맞췄다.
+  Runtime Canvas 경계를 느슨하게 하지 않았다. 최종 전체7/7 PASS,540charts·50dataset,
+  counterfactual·정확한 profile fingerprint·palette diversity12개와 legacy191paths/189literals PASS다.
+- Histogram은 bin extent x와 count/stack y가 모두 continuous라 bandPosition의 두 방향 역할이
+  불가능함을 확인했다. 기존 shared continuous grid 타입만 재사용해 해당2path/4literal 광고를
+  정정했다.4stack modes×2방향·두 band 값·auxiliary band resource의 실제 원자적 거부,
+  fresh/nonfresh 타입 검사와 inventory 회귀5/5 PASS다. 유효한 count/value/map/offset/zIndex는
+  유지했다. Current·영문 문서·generated reference/types/cards와 global inventory를 동기화했다.
+  현재16901paths/12248required/8886path literals/21734ledger를 실제 계산·normal1/1로 확인했다.
+- 실제 binned Heatmap이 title:false·named array를 거부하는 기존 consumer 버그는 root의
+  `44aac78e`를 가져왔다.3TT×5 named array/두 y owner/false·custom 제목/원본 행·import
+  검증을 기존 actual witness에 추가해3/3 PASS다. Root의 독립18회귀와 별도로 실행한 증거다.
+- Source/discovery/type/runtime normal30/30, named axis·parent lifecycle37/37, docs120/120 PASS.
+  첫 docs 검사는 generated descriptor 뒤 provenance가 달라져119/120이었다. 동일 generation을
+  다시 수행해 고정점과 전체120PASS를 확인했다. Installed Full/Basic runtime·types·PNG/PDF·
+  tutorial·MCP/browser consumer가 PASS했다. Artifact SHA256은
+  `a921ba03d73484d8478c50376e4be615118f09111882441cecd3e01aaceea519`다.
+- Package587entries/829785packed/4049330unpacked다. 기존4049000초과 실패를 보존하고
+  unpacked만4050000으로 올려 재검증했다. Root 통합의 더 큰 실제 누적 예산을 낮추지 않는다.
+  실제 gzip은 Full409541/Basic199761/SVG7325다. 소스/이미지 눈·VLM 확인이나 유료 API 호출은 없다.
+- Guide-scale 전체 추가 실행은12/14로 reserved strict·clone/process는 PASS했고 두50dataset
+  flow에서 새 helper의 긴 숫자 label/title 겹침을 발견했다. Character wrap과 y title offset220으로
+  전체 정보를 보존해 고쳤고 동일3TT×5는 다시 PASS했다. Named helper는 기존 scheduled numeric
+  variant 하나의5회/3원본 흐름에만 연결해 나머지500개 기본 guide sweep의 중복을 줄인다.
+  데이터·원래50dataset/모든 variant·coverage 기준은 유지한다. 전체14회귀는 같은 source에서 재실행 중이다.
+- #176/#205 parent coupling과 두 stable pair의 최종 독립 baseline 통합은 root가 소유한다.
+  전체28feature 또는 release 완료를 주장하지 않는다.

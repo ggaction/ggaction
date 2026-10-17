@@ -3730,7 +3730,10 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CartesianCategoricalGuideOptions;
+  guides?: false | (Omit<CartesianCategoricalGuideOptions, "grid"> & {
+    /** Bin position and count axes are continuous; neither grid has categorical band edges. */
+    grid?: false | ContinuousCartesianGridOptions;
+  });
 };
 
 export type HorizonPlotGuideOptions = {

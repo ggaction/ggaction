@@ -2621,13 +2621,16 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CartesianCategoricalGuideOptions;
+  guides?: false | (Omit<CartesianCategoricalGuideOptions, "grid"> & {
+    /** Bin position and count axes are continuous; neither grid has categorical band edges. */
+    grid?: false | ContinuousCartesianGridOptions;
+  });
 };
 ```
 
 </details>
 
-Related types: [`BasicHistogramEncoding`](#type-basichistogramencoding) · [`HistogramCategoricalColorChannel`](#type-histogramcategoricalcolorchannel) · [`RectStyleDetails`](#type-rectstyledetails) · [`FillPaint`](#type-fillpaint) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions).
+Related types: [`BasicHistogramEncoding`](#type-basichistogramencoding) · [`HistogramCategoricalColorChannel`](#type-histogramcategoricalcolorchannel) · [`RectStyleDetails`](#type-rectstyledetails) · [`FillPaint`](#type-fillpaint) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions) · [`ContinuousCartesianGridOptions`](#type-continuouscartesiangridoptions).
 
 ### `CreateHorizonPlotOptions` {#type-createhorizonplotoptions}
 

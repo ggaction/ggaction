@@ -57,7 +57,7 @@ const CURVES = Object.freeze([
   "step-after", "step-before"
 ]);
 const DASH_VALUES = Object.freeze(["solid", "dashed", "dotted", "dashdot"]);
-const PROFILE_COUNT = 39;
+const PROFILE_COUNT = 41;
 const CANVAS = Object.freeze({
   width: 2_300,
   height: 1_220,
@@ -311,7 +311,7 @@ function aggregateChannel(field, id, index) {
 }
 
 function paletteEncoding(index, field = "category") {
-  if(index>=36) return {field,fieldType:"nominal",scale:{id:"mainColor",type:"ordinal",domain:"auto",range:realisticPaletteRange(index-36)}};
+  if(index>=36) return {field,fieldType:"nominal",scale:{id:"mainColor",type:"ordinal",domain:"auto",range:index >= 39 ? { palette: ["viridis", "magma"][index - 39] } : realisticPaletteRange(index-36)}};
   const base = {
     field,
     fieldType: index % 2 === 0 ? "nominal" : "ordinal",
@@ -749,13 +749,15 @@ function lineStyle() {
   return { color: "#475569", lineWidth: 1.2 };
 }
 
-function tickStyle() {
-  return { color: "#64748b", lineWidth: 1, length: 7, alongOffset: 1 };
+function tickStyle(index = 0) {
+  return { color: "#64748b", lineWidth: 1, length: 7, alongOffset: 1,
+    strokeDash: [2, 2], strokeDashMap: index % 2 ? "auto" : [{ value: 0, strokeDash: [] }] };
 }
 
 function labelStyle(format, index) {
   return {
     offset: 11,
+    align: ["left", "center", "right"][index % 3],
     format,
     color: "#334155",
     fontSize: 11,
@@ -790,6 +792,9 @@ function titleStyle(text, at, index) {
     text,
     ...(at === undefined ? {} : { at }),
     offset: text.includes("secondary") ? 360 : 82,
+    alongOffset: index % 2 ? -2 : 2,
+    align: ["left", "center", "right"][index % 3],
+    baseline: ["top", "hanging", "middle", "alphabetic", "ideographic", "bottom"][index % 6],
     rotation: {
       value: text.includes("secondary")
         ? index % 2 === 0 ? -90 : -Math.PI / 2
@@ -806,6 +811,8 @@ function titleStyle(text, at, index) {
 function cartesianAxis(channel, format, policy, index) {
   const values = policy === "values" ? undefined : undefined;
   return {
+    id: channel,
+    offset: 4,
     scale: channel === "x" ? "guideX" : "guideY",
     coordinate: "main",
     position: channel === "x"
@@ -814,7 +821,7 @@ function cartesianAxis(channel, format, policy, index) {
     line: lineStyle(),
     ticksAndLabels: {
       ...(policy === "count" ? { count: 4 } : { values }),
-      ticks: tickStyle(),
+      ticks: tickStyle(index),
       labels: labelStyle(format, index)
     },
     title: titleStyle(
@@ -930,7 +937,7 @@ function guideOptions(variant, program, options, action) {
           ? false
           : {
               ...ticks,
-              ticks: tickStyle(),
+              ticks: tickStyle(index),
               labels: {
                 ...labelStyle(format, index),
                 labelMap: "auto"
@@ -946,7 +953,7 @@ function guideOptions(variant, program, options, action) {
       };
       grid[direction] = disabled === channel ? false : guide.kind.includes("booleans") && !categorical ? true : {
         scale: scaleId, coordinate: layer.coordinate, ...ticks,
-        color: channel === "x" ? "#dbeafe" : "#e2e8f0", lineWidth: 0.8, strokeDash: [2, 3],
+        color: channel === "x" ? "#dbeafe" : "#e2e8f0", lineWidth: 0.8, strokeDash: [2, 3], strokeDashMap: index % 2 ? "auto" : [{ value: 0, strokeDash: [] }],
         alongOffset: 1, zIndex: channel === "x" ? -1 : 1,
         ...(scale.type === "band" ? { bandPosition: index % 3 === 1 ? "boundary" : "center" } : {})
       };

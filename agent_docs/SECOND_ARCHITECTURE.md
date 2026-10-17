@@ -2453,3 +2453,7 @@ staged artifact는4063287unpacked bytes로 측정됐다. 기존4062000 검사는
 다음 최소1000bytes 단계4064000으로만 올린다. Node24.19.0의 동일 staged 입력은
 835531packed bytes로 기존834000을 초과하여 다음 단계836000만 적용한다.
 entries589, browser 및 전체 기능/coverage 기준은 유지한다.
+
+Histogram의 실제 연속형 grid 역할과 동기화한 문서를 포함한 macOS/Node22.23.1/npm10.9.8
+artifact는 unpacked4,049,330bytes다. 기존4,049,000한도 실패 로그를 보존하고 unpacked만
+다음 최소1,000bytes 단위4,050,000으로 올렸다. Entries587·packed832,000 한도는 유지한다.

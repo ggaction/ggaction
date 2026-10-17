@@ -295,6 +295,9 @@ The stable default mark ID is `histogram`. The default is `maxBins: 10`.
 Choose exactly one of `maxBins`, `binStep`, or `binBoundaries`. Optional
 `xScale`, `yScale`, `stack`, `color`, and `bar` values use the corresponding
 histogram, color, and bar contracts.
+Both histogram position axes use continuous scales: x represents bin extents and
+y represents count or stacked mass. Grid `count` and explicit `values` remain
+available; categorical `bandPosition` is unavailable in both directions.
 
 ## `createHeatmap`
 

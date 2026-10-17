@@ -147,7 +147,12 @@ export function parseTestShard(argument) {
 
 export function testRunnerArguments(suite, files, shard) {
   const concurrency = suite === "realistic" ? 2 : 4;
-  const args = ["--test", `--test-concurrency=${concurrency}`];
+  // Keep long synchronous corpus sweeps under regular GC pressure. Private
+  // generation/execution children retain their separately explicit heap limits.
+  const args = [
+    ...(suite === "realistic" ? ["--max-old-space-size=512"] : []),
+    "--test", `--test-concurrency=${concurrency}`
+  ];
   const selected = shard === undefined ? files : partitionTestFiles(files, shard.total)[shard.index - 1].files;
   if (suite === "coverage") {
     args.push(
