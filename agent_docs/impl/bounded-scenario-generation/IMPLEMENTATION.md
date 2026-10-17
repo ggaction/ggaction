@@ -17,3 +17,19 @@ deadline을 바꾸지 않는다. 실제 렌더 worker의 별도224MiB 설정도 
 - 같은 RSS 문제가 생기면 peak를 즉시 읽도록 기존 검사에 bounded resource diagnostic만 추가했다.
   assertion을 제거하거나 기준을 올리지는 않았다.
 - 최종 Linux CI 재검증은 이 commit의 PR에서 수행한다. 로컬 통과를 Linux 완료로 주장하지 않는다.
+
+## Linux 재발과 전체 V8 세대 한도
+
+8073b8ec의 Linux CI39027148064에서는 old-space256MiB만 줄인 상태에서도 reference360
+peak480477184bytes로448MiB를 넘었다. 해당 로그를 보존했다. Isolated child365338624와
+coordinator110829568, combined476168192는 기존 한도 이내였으므로 문제는 reference peak였다.
+
+Private generation child의 old-space를224MiB, semi-space를8MiB로 설정해 old/young 두 영역에
+모두 유한한 여유를 둔다. 실행 worker224MiB, source 알고리즘/데이터/descriptor수/parity/frozen검사,
+448MiB child·512MiB combined RSS와900초 공유deadline은 그대로다. 새 옵션/API/저장값은 없다.
+
+- Node20 macOS의 원래216/360 generation-isolation3검사 모두PASS(총857397ms).
+-360 reference peak388038656bytes, isolated child322125824bytes,
+ combined410599424bytes.360 검사596183ms, generation shareddeadline도 그대로 지켰다.
+- timeout/crash/protocol 기존 검사1개PASS(동일SIGKILL/advanced serialization 및 두 V8 인자).
+- 이 로컬 결과를 Linux 완료라고 주장하지 않는다. 같은 PR의 새 commit에서 LinuxCI를 검증한다.
