@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:663403f6dc102b75b97bc2415271c2dbe92ef5466ebba6528f277d586aa594dd",
-    "sourceCommit": "8ec8f0d860ee96b4bd2559725f2ec1c9741d494f",
+    "contractId": "sha256:2536924f03faf920bf54903a6f62431db10e181dde2e98d1c327716c46fc4c70",
+    "sourceCommit": "aa6e6f1dd35c9da20570b0970128615493a712ea",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,7 +65,7 @@
         "related"
       ],
       "bytes": 11096,
-      "sha256": "567096f458d934b2a56e19ac255c9c0c6e8803df4a82335b2b38efbb9e9e9155"
+      "sha256": "ad59187e5a7f21f5f217b39c0970480bde45cc83556381b6da9f0f097e3589f4"
     },
     {
       "order": 4,
@@ -911,8 +911,8 @@
         "continue-with-encodings",
         "errors-and-limitations"
       ],
-      "bytes": 6445,
-      "sha256": "8e813474596e87cca564b6f4ff7c48319660b21e7bfdcb7bf6cc7e810a79776b"
+      "bytes": 6662,
+      "sha256": "3f0c4ce8d05fb46c8f2339660f437089f78d6dd56b98aedac5f9b1dbc80d593b"
     },
     {
       "order": 58,
@@ -1197,8 +1197,8 @@
         "accessible-data-alternatives",
         "related"
       ],
-      "bytes": 19400,
-      "sha256": "deff30908f50a23c9d094568f26bc606a678a0e24b9d93332fa04ff6a78c80c0"
+      "bytes": 19554,
+      "sha256": "c7141b259dc96e2468219712be2494801f28dc3d6c437058cc0523f6f4c16fb7"
     },
     {
       "order": 73,
@@ -1504,8 +1504,8 @@
         "explicit-color-midpoint",
         "related"
       ],
-      "bytes": 7745,
-      "sha256": "5ea1a7167ad62ceca20d58fc5425930eedbb0e7b1cdf86fb100278b78dd144ca"
+      "bytes": 10035,
+      "sha256": "9158f127b14b4f533e3a9c76d907656e89e797862a6f5d42b554d10616fcc053"
     },
     {
       "order": 92,
@@ -1669,10 +1669,11 @@
         "editing-one-legend-block",
         "focused-edits",
         "removing-a-legend",
+        "numeric-sample-display-labels",
         "related"
       ],
-      "bytes": 21897,
-      "sha256": "87d621c40eaedd2acc131d5e95575b84fc7bec691a3ee1afaee9d7d344919df3"
+      "bytes": 22844,
+      "sha256": "44555474efd0b78258de77697fb61bcae3a6ab6061ecc6caf71b05d25f42cde9"
     },
     {
       "order": 102,
@@ -2026,8 +2027,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 160660,
-      "sha256": "b68dd1f451a8602f24541af72d21bada01051597c8dd710bbe6517f88b31ac3b"
+      "bytes": 161899,
+      "sha256": "8687cdb1f2f5df9ad9c55297b248fd9cc9cc9639ab510383a8ad5c2628785cbd"
     },
     {
       "order": 119,
@@ -2122,7 +2123,7 @@
         "related"
       ],
       "bytes": 60973,
-      "sha256": "07aa26ec675aebe640a5f86d4898ee169448c890a6f26f31831171731ce05ffd"
+      "sha256": "3a20a0e2743f23d03c999e8099beb762ffa3d188ab7b81ac11b01169dc2e9f28"
     },
     {
       "order": 121,
@@ -2274,8 +2275,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 125601,
-      "sha256": "8dfa8ac7210de00c815277a1ab4e4914d5d72a24e7ce394ec9e8eb2886531259"
+      "bytes": 127595,
+      "sha256": "b6b32b59c47059f1b00ef70e801d508dd0ffc6fd6e5f06f4c567741a70c1d223"
     },
     {
       "order": 123,
@@ -2970,6 +2971,7 @@
         "type-windowsortorder",
         "type-withoutencodingtarget",
         "type-withoutscaleid",
+        "type-withoutscaleselection",
         "type-xaxisposition",
         "type-xoffsetencodingoptions",
         "type-yaxisposition",
@@ -2979,8 +2981,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 331823,
-      "sha256": "b431b991cb3ac7762754f1e84ecfa0e93f08c91b32ab93c69f64d6ec4bbca9f2"
+      "bytes": 333174,
+      "sha256": "808635cac74cbecb0ecd9e310b73cd8955ffb2eeebee13bc31eb3af19887f26f"
     },
     {
       "order": 127,
@@ -3011,7 +3013,7 @@
         "scale-materialization"
       ],
       "bytes": 16959,
-      "sha256": "5c42fc9dae467e6e9f17a849186386b1ee2eb7a18824f688d7164c560910e8bb"
+      "sha256": "e738e9e12734f07eb3c67b081c0ec218d3f23b9eb011e75356c5dafcca004bc8"
     },
     {
       "order": 129,
@@ -3333,7 +3335,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3033,
-      "sha256": "c5991e7300d5ff5c752c6e9e072ad11871592d2ca40a12ced966c3e588635238"
+      "sha256": "22cb8603d9e79f40f7dcf115860c02e692b54f07b833ff4e0d27ad543403d631"
     },
     {
       "order": 150,
@@ -3342,11 +3344,12 @@
       "source": "api/axes/complete.md",
       "headings": [
         "complete-axes-and-labels",
-        "value-specific-cartesian-tick-dashes",
+        "moving-a-complete-axis-and-refining-its-text",
+        "styling-native-tick-dashes",
         "createaxesoptions"
       ],
-      "bytes": 15936,
-      "sha256": "5b3d29ff57c2442bc74426f649003104666b6f396f187f5409847495d8db2722"
+      "bytes": 17772,
+      "sha256": "dc4898f74ef9bbd420c7a9ebc9fe3f9908a615472dedbd486317ac4b256e5441"
     }
   ]
 }

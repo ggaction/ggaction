@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:663403f6dc102b75b97bc2415271c2dbe92ef5466ebba6528f277d586aa594dd. Status: development. Runtime source: 8ec8f0d860ee96b4bd2559725f2ec1c9741d494f. Release baseline: v0.0.13.
+Contract: sha256:2536924f03faf920bf54903a6f62431db10e181dde2e98d1c327716c46fc4c70. Status: development. Runtime source: aa6e6f1dd35c9da20570b0970128615493a712ea. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/8ec8f0d860ee96b4bd2559725f2ec1c9741d494f/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/aa6e6f1dd35c9da20570b0970128615493a712ea/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/8ec8f0d860ee96b4bd2559725f2ec1c9741d494f/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/aa6e6f1dd35c9da20570b0970128615493a712ea/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -6020,8 +6020,10 @@ const diamonds = program.editPointMark({
 
 `target` may be omitted for the current or only point mark. Supported shapes
 are `circle`, `square`, `diamond`, four directional triangles, `plus`, `cross`,
-`star`, `hexagon`, and `wye`. Every recipe preserves the same logical target
-area. A constant shape conflicts with field-driven `encodeShape`, and constant
+`star`, `hexagon`, `wye`, `wedge`, and `arrow`. Every recipe preserves the same logical target
+area. `wedge` is a narrow upward triangle centered at its centroid; `arrow` is an upward
+seven-vertex arrow anchored at its bounding-box center. Angle encodings rotate either clockwise around
+that anchor. A constant shape conflicts with field-driven `encodeShape`, and constant
 fill conflicts with a semantic color encoding.
 
 Pass `stroke: false` to disable an existing outline. This removes its stored
@@ -9272,7 +9274,8 @@ their distinct title and axis-label origins in PDF output.
 The current renderers support concrete canvas, collection, circle, rect, line,
 text, and `M/L/C/Z` command-path graphics. Path and line strokes may use concrete
 dash arrays. They validate values with the same concrete property contract used
-by `editGraphics`.
+by `editGraphics`. The paint string `"none"` draws no fill or stroke in every backend,
+including text fill and Canvas backgrounds. It never reuses an earlier drawing color.
 
 Rect and closed-path fills may be solid strings or item-local linear-gradient
 paint values. Gradient endpoints are normalized against the final fill geometry;
@@ -11781,6 +11784,26 @@ color ranges are also limited to 10,000 stops. `interpolate` accepts
 `hcl`, `hcl-long`, `cubehelix`, or `cubehelix-long`. `clamp` and `reverse`
 affect both points and a connected gradient legend.
 
+Lab, HCL and HCL-long interpolation use D65 by default. Set
+`whitePoint: "d50"` together with one of those interpolation modes to use
+D50-adapted sRGB/XYZ matrices. An explicit white point with another interpolation
+mode rejects, including `"d65"`. `editColorScale({ whitePoint: "auto" })`
+removes the explicit choice and restores D65. Changing interpolation clears
+an incompatible inherited white point; supplying an incompatible choice in
+the same edit rejects. Marks, field-driven strokes, gradient legends and sampled
+color legends use the same selected convention.
+
+Cubehelix and cubehelix-long interpolation accept a positive finite `gamma`.
+The default is `1`; `editColorScale({ gamma: "auto" })` restores that default.
+Within each range segment, hue and saturation use the original position `t`,
+while lightness uses `t ** gamma`. Gamma does not exponentiate the complete
+color or alter hue progression. Other interpolation modes reject explicit
+gamma, including `1`. A nonfinite real result during unclamped extrapolation
+rejects atomically; clamping occurs before gamma. Range endpoints retain the
+ordinary 8-bit RGB normalization, and final channels use the same byte rounding
+as other interpolation modes. Changing interpolation clears an incompatible
+inherited gamma; an explicitly incompatible pair in one edit rejects.
+
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 ```javascript
@@ -11819,6 +11842,22 @@ together. Temporal color remains sequential; numeric `midpoint` is available
 only on sequential scales. Switching type clears incompatible transform options.
 An unattached direct log/symlog color scale needs a color range, palette, or
 interpolation option to distinguish it from a numeric position scale.
+
+**Signed power color**
+
+Quantitative color and stroke accept `scale: { type: "pow", exponent: 3 }`.
+The exponent is positive and finite; omission defaults to `1`. Values use
+`f(v) = sign(v) * abs(v) ** exponent`, then interpolate between `f(domain[0])`
+and `f(domain[1])`. Transforming the already normalized position is a different
+mapping: for domain `[8, 24.8]`, the raw endpoints are cubed before normalization.
+Negative and zero-crossing domains retain their signs. Clamping and reversal
+keep their usual meaning, while numeric `midpoint` is unsupported.
+
+Gradient ticks and sampled color labels retain original data values, using
+the same transformed positions as marks. Set `exponent: 1` to reset the power
+mapping; changing scale type clears the inherited exponent. Explicit exponents
+on other color scale types reject. An unattached power color scale needs a
+color range, palette or interpolation option to distinguish it from a position scale.
 
 ## Explicit color midpoint
 
@@ -13664,9 +13703,8 @@ Unmapped categories keep their normal visible text. Duplicate display labels
 and empty labels are valid and do not merge symbols. `labelMap: []` stores an
 empty map. An empty mapped label omits only its text; its category, symbol and
 item slot remain through layout, resizing and shared facet legends.
-`labelMap: "auto"` removes only this block override. Sampled numeric,
-gradient, and interval blocks reject display maps because their labels describe
-numeric intervals or samples rather than categorical identities.
+`labelMap: "auto"` removes only this block override. Continuous size supports numeric keys as described below.
+Opacity, stroke-width, discrete-size, gradient and interval blocks reject display maps.
 
 Symbol properties cannot replace the mapping the block explains. For example,
 a size block rejects `symbol.size`, an opacity block rejects `symbol.opacity`,
@@ -13789,6 +13827,24 @@ bottom the categorical layout controls position both blocks. The size block's
 own stored layout returns when the categorical channels are removed. A title
 edit changes the categorical title; the size block retains its own title and
 visibility. Whole-content replacement preserves both retained blocks' settings.
+
+### Numeric sample display labels
+
+Continuous size blocks accept exact numeric display maps, including keys not currently sampled:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+// Fragment: program already owns a continuous size legend on points.
+program.editLegendBlock({
+  target: "points", channel: "size",
+  labelMap: [{ value: 3.14159, label: "0" }, { value: 10, label: "" }]
+});
+```
+
+Empty strings hide text while preserving the sample and its glyph. Unmatched values keep the existing
+formatter. Use `labelMap: "auto"` to remove the override. Opacity, stroke-width and discrete-size blocks
+reject this map. Values are compared exactly, so zero and negative zero are duplicate keys.
 
 ## Related
 
@@ -16770,6 +16826,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `number \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
 | `interpolate` | Optional / branch-dependent | `ContinuousColorInterpolation \| undefined` |
+| `whitePoint` | Optional / branch-dependent | `"d50" \| "d65" \| undefined` |
+| `gamma` | Optional / branch-dependent | `number \| undefined` |
 | `midpoint` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `unknown` | Optional / branch-dependent | `unknown` |
 
@@ -16812,6 +16870,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `number \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
 | `interpolate` | Optional / branch-dependent | `ContinuousColorInterpolation \| undefined` |
+| `whitePoint` | Optional / branch-dependent | `"auto" \| "d50" \| "d65" \| undefined` |
+| `gamma` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `midpoint` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `unknown` | Optional / branch-dependent | `unknown` |
 
@@ -17075,17 +17135,20 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
+| `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "pow" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |
+| `whitePoint` | Optional / branch-dependent | `"auto" \| "d50" \| "d65" \| undefined` |
+| `gamma` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `clamp` | Optional / branch-dependent | `boolean \| undefined` |
 | `reverse` | Optional / branch-dependent | `boolean \| undefined` |
 | `interpolate` | Optional / branch-dependent | `ContinuousColorInterpolation \| undefined` |
 | `midpoint` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `base` | Optional / branch-dependent | `number \| undefined` |
 | `constant` | Optional / branch-dependent | `number \| undefined` |
+| `exponent` | Optional / branch-dependent | `number \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused channel scale editors](./reference/actions/charts-data/#focused-channel-scale-editors).
 
@@ -17108,11 +17171,20 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Required | `string` |
-| `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
+| `whitePoint` | Optional / branch-dependent | `"auto" \| "d50" \| "d65" \| undefined` |
+| `gamma` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
+| `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "pow" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |
+| `clamp` | Optional / branch-dependent | `boolean \| undefined` |
+| `reverse` | Optional / branch-dependent | `boolean \| undefined` |
+| `interpolate` | Optional / branch-dependent | `ContinuousColorInterpolation \| undefined` |
+| `midpoint` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `base` | Optional / branch-dependent | `number \| undefined` |
+| `constant` | Optional / branch-dependent | `number \| undefined` |
+| `exponent` | Optional / branch-dependent | `number \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused channel scale editors](./reference/actions/charts-data/#focused-channel-scale-editors).
 
@@ -20647,7 +20719,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `field` | Required | `string` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
-| `scale` | Optional / branch-dependent | `DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| ContinuousColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
+| `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
 | `layout` | Optional / branch-dependent | `ColorLayout \| undefined` |
 | `aggregate` | Optional / branch-dependent | `AggregateOperation \| undefined` |
@@ -20751,7 +20823,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
-| `scale` | Optional / branch-dependent | `DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| ContinuousColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
+| `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -23708,6 +23780,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
@@ -23735,6 +23808,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
@@ -23993,6 +24067,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
@@ -24033,6 +24108,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
@@ -24069,6 +24145,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
@@ -24108,6 +24185,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
@@ -24246,6 +24324,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
@@ -24277,6 +24358,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
@@ -24308,6 +24392,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
@@ -24338,6 +24425,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
@@ -24368,6 +24458,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
 | `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<XAxisPosition>, "position" \| "scale"> \| undefined` |
@@ -24395,6 +24486,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
 | `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<YAxisPosition>, "position" \| "scale"> \| undefined` |
@@ -24903,8 +24995,10 @@ automatic `count`; categorical blocks accept an exact full-domain `order`.
 sample appearance, and `gap` changes internal spacing. Empty `text` or `symbol`
 objects restore the base style. A symbol property that would replace the data
 mapping is rejected. Empty `title` hides the selected block. Full programs only.
-Categorical `labelMap` may map a value to `""`: only its text is omitted, while
-the category, symbol, item slot, and typed identity remain.
+Categorical and continuous-size `labelMap` may map a value to `""`: only text is omitted,
+while the sample, symbol, item slot and typed identity remain. Continuous size accepts finite
+numeric keys only; unmatched samples keep their normal formatter. `"auto"` removes the map and
+`[]` stores an explicit empty map.
 [Editing legends](./api/legends/editing/#editing-one-legend-block)
 
 ## `editLegendLayout`
@@ -27371,11 +27465,16 @@ Related types: [`AxisValue`](./reference/types/#type-axisvalue) · [`CartesianAx
 
 ```typescript
 export interface AxisTitleOptions<P extends string> {
-  /** Hard breaks retain ordered centered lines, spaced at 1.2 times fontSize. */
+  /** Signed logical pixels: positive right for x, down for y, independent of scale reversal. */
+  alongOffset?: number;
+  align?: "left" | "center" | "right";
+  baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom";
+  /** Hard breaks retain ordered lines with the chosen block baseline, spaced at 1.2 times fontSize. */
   text?: string;
   scale?: string;
   position?: P;
   at?: "start" | "center" | "end" | number;
+  /** Signed distance from the axis frame: positive outward, negative inward. */
   offset?: number;
   rotation?: RotationInput;
   color?: string;
@@ -27578,7 +27677,7 @@ type BasicColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 ```
@@ -28057,6 +28156,8 @@ Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar).
 
 ```typescript
 export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Local text alignment before rotation; omitted edits retain existing intent. */
+  align?: "left" | "center" | "right";
   /** Typed raw-tick color overrides; missing entries use color. Auto removes the map. */
   colorMap?: CartesianAxisLabelColorMap | "auto";
   /** Keep unrotated label bounds inside the mapped axis span; defaults to false. */
@@ -28383,7 +28484,7 @@ export type ColorEncodingOptions =
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
       layout?: never;
     };
@@ -28425,6 +28526,8 @@ export type ColorLayout =
 
 ```typescript
 export interface CompleteAxisOptions<P extends string> {
+  /** Non-negative outward displacement of the complete axis frame in logical pixels. */
+  offset?: number;
   scale?: string;
   coordinate?: string;
   position?: P;
@@ -30612,6 +30715,8 @@ export interface ECDFOutputFields {
 
 ```typescript
 export interface EditAxisOptions<P extends string> {
+  /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
+  offset?: number;
   position?: P;
   line?: false | AxisLineStyleOptions;
   ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position">;
@@ -30698,8 +30803,8 @@ Related types: [`BoxPlotSummaryFields`](./reference/types/#type-boxplotsummaryfi
 
 ```typescript
 export type EditColorScaleOptions = FocusedScaleSelection & WithoutScaleId<
-  CategoricalColorScaleOptions | ContinuousColorScaleOptions | DiscretizedColorScaleOptions
->;
+  CategoricalColorScaleOptions | Omit<ContinuousColorScaleOptions, "whitePoint" | "gamma"> | DiscretizedColorScaleOptions
+> & { whitePoint?: "d65" | "d50" | "auto"; gamma?: number | "auto" };
 ```
 
 Related types: [`FocusedScaleSelection`](./reference/types/#type-focusedscaleselection) · [`WithoutScaleId`](./reference/types/#type-withoutscaleid) · [`CategoricalColorScaleOptions`](./reference/types/#type-categoricalcolorscaleoptions) · [`ContinuousColorScaleOptions`](./reference/types/#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](./reference/types/#type-discretizedcolorscaleoptions).
@@ -31109,7 +31214,7 @@ export interface EditLegendBlockOptions {
   gap?: number;
   text?: LegendBlockTextPatch;
   symbol?: LegendBlockSymbolPatch;
-  /** An empty mapped label omits only text; its category and symbol remain. */
+  /** Display-only: categorical keys, or finite numeric keys for continuous size samples. Empty labels omit text only. */
   labelMap?: DisplayLabelMap | "auto";
 }
 ```
@@ -31472,6 +31577,8 @@ export interface EditScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  whitePoint?: "d65" | "d50" | "auto";
+  gamma?: number | "auto";
   midpoint?: number | "auto";
   unknown?: unknown;
 }
@@ -31549,13 +31656,10 @@ Related types: [`FocusedScaleSelection`](./reference/types/#type-focusedscalesel
  Expand EditStrokeScaleOptions
 
 ```typescript
-export type EditStrokeScaleOptions = { target: string } & Omit<
-  EditColorScaleOptions,
-  "id" | "target"
->;
+export type EditStrokeScaleOptions = { target: string } & WithoutScaleSelection<EditColorScaleOptions>;
 ```
 
-Related types: [`EditColorScaleOptions`](./reference/types/#type-editcolorscaleoptions).
+Related types: [`WithoutScaleSelection`](./reference/types/#type-withoutscaleselection) · [`EditColorScaleOptions`](./reference/types/#type-editcolorscaleoptions).
 
 ### `EditStrokeWidthScaleOptions` {#type-editstrokewidthscaleoptions}
 
@@ -33604,9 +33708,8 @@ Related types: [`NonPointBandPositionScaleOptions`](./reference/types/#type-nonp
 
 ```typescript
 export type NonPointContinuousColorScaleOptions = ScaleFields<
-  "id" | "interpolate" | "midpoint" | "clamp" | "reverse"
+  "id" | "interpolate" | "whitePoint" | "gamma" | "midpoint" | "clamp" | "reverse"
 > & {
-  type?: "sequential" | "log" | "sqrt" | "symlog";
   base?: number;
   constant?: number;
   domain?: "auto" | readonly [unknown, unknown];
@@ -33615,7 +33718,10 @@ export type NonPointContinuousColorScaleOptions = ScaleFields<
     name: PaletteName;
     extent?: readonly [number, number];
   };
-};
+} & (
+  | { type: "pow"; exponent?: number }
+  | { type?: "sequential" | "log" | "sqrt" | "symlog"; exponent?: never }
+);
 ```
 
 Related types: [`ScaleFields`](./reference/types/#type-scalefields) · [`PaletteName`](./reference/types/#type-palettename).
@@ -34307,7 +34413,9 @@ export type PointShape =
   | "cross"
   | "star"
   | "hexagon"
-  | "wye";
+  | "wye"
+  | "wedge"
+  | "arrow";
 ```
 
 ### `PolarAxisTickSelection` {#type-polaraxistickselection}
@@ -34969,7 +35077,7 @@ type RectColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 ```
@@ -35626,6 +35734,8 @@ export interface ScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  whitePoint?: "d65" | "d50";
+  gamma?: number;
   midpoint?: number | "auto";
   unknown?: unknown;
 }
@@ -36803,6 +36913,14 @@ type WithoutEncodingTarget<T> = T extends unknown
 type WithoutScaleId<T> = T extends unknown ? Omit<T, "id"> : never;
 ```
 
+### `WithoutScaleSelection` {#type-withoutscaleselection}
+
+ Expand WithoutScaleSelection
+
+```typescript
+type WithoutScaleSelection<T> = T extends unknown ? Omit<T, "id" | "target"> : never;
+```
+
 ### `XAxisPosition` {#type-xaxisposition}
 
  Expand XAxisPosition
@@ -37363,12 +37481,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/8ec8f0d860ee96b4bd2559725f2ec1c9741d494f/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/aa6e6f1dd35c9da20570b0970128615493a712ea/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/8ec8f0d860ee96b4bd2559725f2ec1c9741d494f/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/aa6e6f1dd35c9da20570b0970128615493a712ea/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39530,9 +39648,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:663403f6dc102b75b97bc2415271c2dbe92ef5466ebba6528f277d586aa594dd` |
+| Contract fingerprint | `sha256:2536924f03faf920bf54903a6f62431db10e181dde2e98d1c327716c46fc4c70` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
-| Runtime source commit | `8ec8f0d860ee96b4bd2559725f2ec1c9741d494f` |
+| Runtime source commit | `aa6e6f1dd35c9da20570b0970128615493a712ea` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |
@@ -39579,7 +39697,39 @@ forms described in their references.
 
 [Axis family overview](./api/axes/)
 
-## Value-specific Cartesian tick dashes
+## Moving a complete axis and refining its text
+
+On an existing Cartesian program, create the full axis before focused text edits:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+program
+  .createXAxis({ offset: 20, title: { text: "Measurement" } })
+  .editXAxisTitle({ offset: -40, alongOffset: 30, align: "right" })
+  .editXAxisTitle({ baseline: "bottom" })
+  .editXAxisLabels({ align: "left" });
+```
+
+The complete-axis `offset` moves its line, ticks, labels and title outward together.
+It must be non-negative; zero restores the plot edge. Marks and grids stay fixed.
+The nested title `offset` is signed: positive outward, negative into the plot.
+`alongOffset` is a separate translation along the axis: positive right for X and
+down for Y, even with a reversed scale. Numeric `at` still means a scale-domain value.
+
+Title alignment (`left`, `center`, `right`) and baseline (`top`, `hanging`, `middle`,
+`alphabetic`, `ideographic`, `bottom`) apply before rotation. Defaults remain center/middle.
+Multiline titles keep their text and 1.2×font-size spacing; top/hanging/alphabetic
+anchor the first line, bottom/ideographic the last, and middle centers the block.
+Omitted edits retain explicit settings. Explicit defaults restore alignment/baseline;
+remove and recreate a title without `offset` to restore automatic title clearance.
+
+Explicit label `align` changes text anchoring before rotation while keeping existing
+resolved label positions. It takes precedence over inferred side/flush anchoring.
+Remove and recreate labels without alignment to restore inference. All final rotated
+bounds must still fit, and axis-title/label collision checks remain active.
+
+## Styling native tick dashes
 
 Create a complete axis first, then refine its native ticks. On an existing Cartesian
 program with a quantitative y encoding, this fragment keeps the zero tick solid:
