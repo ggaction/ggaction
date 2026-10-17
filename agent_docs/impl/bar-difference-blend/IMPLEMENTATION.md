@@ -59,3 +59,15 @@ npm run test:package
 
 일반 SVG omission/reset의 byte 보존과 기존 렌더의 생략 동작도 회귀검증한다.
 최종 combined inventory/strict realistic 및 release는 전체 기능 통합에서 수행한다.
+
+## 안정된 시각 재현 쌍
+
+`test/charts/bar-compositing/manifest.js`가 public call chain·200×200 크기·3배경×2opacity를
+소유한다. 독립 literal primitive는 runtime geometry나 public state를 읽지 않는다.
+`approved-pair.render.js`로6개 실제 decoded PNG 쌍·plot ink·trace를 정확히 검증하고
+`.artifacts/test/png/charts/bar-compositing/single-source/`에 variant metadata와 출력한다.
+
+이 독립 primitive가 root Canvas의 형제인 collection인 경로에서 새 isolated helper의
+preflight stack에 viewport frame이 없던 오류를 재현했다. 항상 render viewport base frame을
+유지해 고쳤다. 자원 한도/새 API/저장 의미는 바꾸지 않는다. 관련13개와 실제 Chromium32조합·
+PDF8조합을 재실행해 모두 통과했다.
