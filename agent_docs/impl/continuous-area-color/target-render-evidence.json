@@ -1,0 +1,98 @@
+{
+  "status": "pass-independent-primitive-target-only",
+  "method": "Actual SVG DOM bounds/paint/path-length checks and PNG render; no chart pixels inspected",
+  "dimensions": {
+    "width": 320,
+    "height": 220
+  },
+  "positivePlotInkBounds": true,
+  "pathCount": 9,
+  "measured": [
+    {
+      "left": 20,
+      "top": 182,
+      "width": 280,
+      "height": 18,
+      "fill": "rgb(217, 217, 243)",
+      "opacity": 0.7,
+      "pathLength": 578.5780029296875
+    },
+    {
+      "left": 20,
+      "top": 164,
+      "width": 280,
+      "height": 27,
+      "fill": "rgb(81, 193, 255)",
+      "opacity": 0.7,
+      "pathLength": 580.8828125
+    },
+    {
+      "left": 20,
+      "top": 146,
+      "width": 280,
+      "height": 36,
+      "fill": "rgb(0, 138, 255)",
+      "opacity": 0.7,
+      "pathLength": 585.4644165039062
+    },
+    {
+      "left": 20,
+      "top": 128,
+      "width": 280,
+      "height": 45,
+      "fill": "rgb(9, 48, 175)",
+      "opacity": 0.7,
+      "pathLength": 592.2686157226562
+    },
+    {
+      "left": 20,
+      "top": 110,
+      "width": 280,
+      "height": 54,
+      "fill": "rgb(0, 0, 128)",
+      "opacity": 0.7,
+      "pathLength": 601.2177734375
+    },
+    {
+      "left": 20,
+      "top": 92,
+      "width": 280,
+      "height": 63,
+      "fill": "rgb(9, 48, 175)",
+      "opacity": 0.7,
+      "pathLength": 612.2155151367188
+    },
+    {
+      "left": 20,
+      "top": 74,
+      "width": 280,
+      "height": 72,
+      "fill": "rgb(0, 138, 255)",
+      "opacity": 0.7,
+      "pathLength": 625.150634765625
+    },
+    {
+      "left": 20,
+      "top": 56,
+      "width": 280,
+      "height": 81,
+      "fill": "rgb(81, 193, 255)",
+      "opacity": 0.7,
+      "pathLength": 639.9027099609375
+    },
+    {
+      "left": 20,
+      "top": 38,
+      "width": 280,
+      "height": 90,
+      "fill": "rgb(217, 217, 243)",
+      "opacity": 0.7,
+      "pathLength": 656.345947265625
+    }
+  ],
+  "pngBytes": 7982,
+  "pngSha256": "7e31cec13ba65bc7c1260baa77b181a06c9401b1384b65164bb0677f5df61b91",
+  "localPngPath": ".artifacts/test/png/review/continuous-area-color/nine-series-hcl/target.png",
+  "publicProgramImplemented": false,
+  "publicPrimitiveEquality": "pending implementation after approval"
+}

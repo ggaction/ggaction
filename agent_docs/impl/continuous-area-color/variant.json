@@ -1,0 +1,21 @@
+{
+  "capability": "continuous-area-color",
+  "chart": "stacked-area",
+  "variant": "nine-series-hcl",
+  "displayTitle": "Nine area series with one quantitative color scale",
+  "source": "fixture.mjs#proposedProgram",
+  "primitive": "target.svg",
+  "width": 320,
+  "height": 220,
+  "expectedPublicTrace": [
+    "createCanvas",
+    "createData",
+    "createAreaPlot",
+    "encodeGroup",
+    "encodeColor",
+    "layoutSeries",
+    "editAreaMark"
+  ],
+  "publicTraceVerified": false,
+  "reason": "Public execution is intentionally blocked at the unsupported color call until design approval and implementation."
+}
