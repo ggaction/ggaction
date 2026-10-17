@@ -33,6 +33,7 @@ function drawLine(context, child, collectionId) {
     throw new Error(`Graphic "${graphicId}" requires opacity from 0 to 1.`);
   }
 
+  if (strokeWidth === 0) return;
   context.globalAlpha = opacity;
   applyCanvasStroke(context, properties, properties.strokeDash ?? []);
   context.beginPath();
