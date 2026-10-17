@@ -166,6 +166,11 @@ The accepted types are `linear`, `log`, `pow`, `sqrt`, `symlog`, `time`,
 `threshold`. A later encoding attachment validates whether the type, range,
 and fallback are compatible with that channel and mark.
 
+Before an ordinal scale has a consumer, `editScale({ range: ... })` accepts the
+same numeric pair, color array, dash patterns, or palette range object as
+`createScale`. Attaching a consumer applies that channel's range restrictions;
+position scales continue to reject palette ranges.
+
 Generic `editScale` allows `id` to be omitted when the current scale or the program's only scale is
 unambiguous. At least one editable option is required. Use `"auto"` to reset
 domain or range; omission preserves the current value. Quantitative position

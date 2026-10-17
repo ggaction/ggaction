@@ -1,4 +1,4 @@
-import { realisticColorControls } from "./realistic-color-controls.js";
+import { realisticColorControls, realisticPaletteRange } from "./realistic-color-controls.js";
 import { chart } from "../../../src/index.js";
 
 import {
@@ -475,7 +475,7 @@ function heatmapColorScale(variant) {
     };
   }
   if (["pow","sqrt"].includes(variant.colorType)) return {
-    id,type:variant.colorType,domain:"auto",range:"auto",
+    id,type:variant.colorType,domain:"auto",range:variant.colorType==="pow"?realisticPaletteRange(0):"auto",
     ...(variant.colorType==="pow"?{exponent:2}:{}),interpolate:variant.interpolate,
     ...realisticColorControls(variant.interpolate,0),clamp:true,reverse:false
   };

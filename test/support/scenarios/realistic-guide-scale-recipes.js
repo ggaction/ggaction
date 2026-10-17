@@ -1,4 +1,4 @@
-import { realisticColorControls } from "./realistic-color-controls.js";
+import { realisticColorControls, realisticPaletteRange } from "./realistic-color-controls.js";
 import { createHash } from "node:crypto";
 
 import { chart } from "../../../src/index.js";
@@ -1528,7 +1528,9 @@ function colorScaleOptions(variant, {
         type: "sequential",
         domain: "auto",
         midpoint: "auto",
-        palette: sequentialPalette(variant, createObjectPalette),
+        ...(createObjectPalette && variant.paletteOrdinal%3===0
+          ? {range:{palette:sequentialPalette(variant,true)}}
+          : {palette:sequentialPalette(variant,createObjectPalette)}),
         interpolate: variant.interpolate,
         ...realisticColorControls(variant.interpolate, variant.interpolationOrdinal),
         clamp: initial,
@@ -1540,7 +1542,9 @@ function colorScaleOptions(variant, {
         type: "sequential",
         domain: [0, 1],
         midpoint: initial ? "auto" : 0.4,
-        palette: sequentialPalette(variant, !createObjectPalette, true),
+        ...(!createObjectPalette && variant.paletteOrdinal%3===0
+          ? {range:{palette:sequentialPalette(variant,true,true)}}
+          : {palette:sequentialPalette(variant,!createObjectPalette,true)}),
         interpolate: variant.interpolate,
         ...realisticColorControls(variant.interpolate, variant.interpolationOrdinal),
         clamp: !initial,
@@ -1550,9 +1554,9 @@ function colorScaleOptions(variant, {
     };
   }
   if (variant.type === "pow") return {
-    create: { id, type:"pow", domain:"auto", range:["#eff6ff","#1e3a8a"], exponent:2,
+    create: { id, type:"pow", domain:"auto", range:realisticPaletteRange(variant.interpolationOrdinal??0), exponent:2,
       interpolate:"lab", whitePoint:"d50", clamp:initial, reverse:initial },
-    edit: { id, type:"pow", domain:"auto", range:["#eff6ff","#1e3a8a"], exponent:.5,
+    edit: { id, type:"pow", domain:"auto", range:realisticPaletteRange((variant.interpolationOrdinal??0)+1), exponent:.5,
       interpolate:"cubehelix", gamma:2.2, clamp:!initial, reverse:!initial }
   };
   const range = ["#eff6ff", "#93c5fd", "#3b82f6", "#1e3a8a"];
@@ -2553,7 +2557,7 @@ function variantHasDirectActionEvidence(program, variant) {
   if (variant.palette !== undefined) {
     return directTraceEntries(program, "createScale").some(({ args }) =>
       args.type === "sequential" &&
-      scalePaletteName(args.palette) === variant.palette &&
+      scalePaletteName(args.palette ?? args.range?.palette) === variant.palette &&
       args.interpolate === variant.interpolate
     );
   }

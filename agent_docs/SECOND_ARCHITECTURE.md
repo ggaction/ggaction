@@ -331,8 +331,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 405,000 bytes |
-| `ggaction/basic` | 198,000 bytes |
+| `ggaction` | 410,000 bytes |
+| `ggaction/basic` | 200,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -2400,3 +2400,10 @@ Released-main integration `0447acaf` with the approved nine data/color features 
 예산은587/832000/4049000으로 측정된 최소1000bytes 단위만 조정한다. 검색827188bytes는
 828000 한도를 적용한다. 옵션과 실행 증언을 줄이지 않았고 browser 한도405000/198000/25000은
 최종 installed 측정 전까지 유지한다.
+
+통합 `08329df4`와 ordinal range validator복원 뒤 macOS/Node22.23.1/npm10.9.8 실제 installed
+artifact는587entries/829705packed/4048931unpackedbytes다. Node24의831438packed측정과 함께
+기존587/832000/4049000 package한도 안이다. 실제 browser gzip은 Full409512/Basic199726/SVG7325다.
+승인된 기능 증가분의 최소1000bytes정책으로 Full410000/Basic200000만 갱신하고 SVG25000과
+다른 global test/coverage 기준은 유지한다. 이전405000/198000 한도는 실패했으며 그 성공으로
+보고하지 않는다. 숫자 변경은 새로운 renderer/state 경계를 추가하지 않는다.

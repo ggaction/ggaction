@@ -19,6 +19,11 @@ All notable changes to `ggaction` are recorded in this file.
 - Closed Canvas rectangle outlines at all four corners so the first corner
   uses its authored join instead of two open end caps.
 
+### Fixed
+
+- Unattached ordinal scale edits validate palette ranges like creation, including
+  rebuilding Raincloud colors without losing their channel-specific checks.
+
 ## [0.0.18] - 2026-10-17
 
 ### Added

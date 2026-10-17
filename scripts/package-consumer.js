@@ -895,12 +895,15 @@ async function testNodeConsumer(directory) {
     });
     const raincloud = polarBase.createRaincloudPlot({
       id: "packageRaincloud",
+      color: {field:"group",fieldType:"nominal",scale:{id:"packageRaincloudColor",type:"ordinal",range:{palette:{name:"viridis",count:5,extent:[0.1,0.9]}}}},
       category: { field: "group", fieldType: "nominal" },
       value: { field: "distance", fieldType: "quantitative" },
       density: { steps: 16 },
       points: { type: "beeswarm", packing: { key: "angle", overflow: "overlap" } },
       guides: false
-    }).editRaincloudPlot({ target: "packageRaincloud", side: "after" });
+    }).editRaincloudPlot({ target: "packageRaincloud", side: "after",
+      color:{field:"group",fieldType:"nominal",scale:{id:"packageRaincloudColor",type:"ordinal",range:{palette:{name:"magma",count:7,extent:[0.08,0.92]}}}} });
+    assert.equal(raincloud.semanticSpec.scales.find(scale=>scale.id==="packageRaincloudColor").range.palette.name,"magma");
     const ecdfData = polarBase.createECDFData({
       id: "packageECDFData", field: "distance", groupBy: "group"
     });
@@ -3312,6 +3315,7 @@ async function testTypeScriptConsumer(directory) {
       packing: { key: "id", padding: 1 }, guides: false
     };
     const raincloudOptions: CreateRaincloudPlotOptions = {
+      color:{field:"category",fieldType:"nominal",scale:{id:"typedRaincloudColor",type:"ordinal",range:{palette:{name:"viridis",count:5,extent:[0.1,0.9]}}}},
       category: { field: "category", fieldType: "nominal" },
       value: { field: "value", fieldType: "quantitative" },
       density: { steps: 16 },
@@ -3320,6 +3324,7 @@ async function testTypeScriptConsumer(directory) {
       guides: false
     };
     const raincloudEditOptions: EditRaincloudPlotOptions = {
+      color:{field:"category",fieldType:"nominal",scale:{id:"typedRaincloudColor",type:"ordinal",range:{palette:{name:"magma",count:7,extent:[0.08,0.92]}}}},
       side: "after", points: { type: "strip", jitter: { maxOffset: { band: 0.1 } } }
     };
     const ecdfDataOptions: ECDFDataOptions = {
