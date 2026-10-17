@@ -34,7 +34,8 @@ letters/numbers/underscore/hyphen ID 정책은 그대로 유지한다.
 - Ruby3.2 Jekyll build +150builtpages 검사 PASS.
 - 최종 installed package runtime/Full-Basic/TypeScript/MCP/browser 검사 **PASS**.
   원래 package 및 bundle cap 실패는 위 실측 조정 이후 재실행으로 해소했다.
-- postcommit provenance freshness는 source commit 이후 별도 재생성·확인한다.
+- source commit `2a778841` 이후 docs 전체 재생성 및 normal docs **120/120 PASS**.
+  commit 전 stale provenance1건은 source revision 고정 후 재생성으로 해소했다.
 
 ## 측정된 package 예산
 
