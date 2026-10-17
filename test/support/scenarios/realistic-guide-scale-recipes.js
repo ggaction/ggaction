@@ -1018,11 +1018,13 @@ function exerciseCartesianGuides(factors, base) {
     })
     .createLegend(movedAxesLegend)
     .editLegend({
+      channel: "color",
       ...editableMovedAxesLegend,
       title: ordinal % 3 === 0 ? false : ordinal % 3 === 1 ? "auto" : `${base.context.dimensionText} group`
     })
     .editLegendLayout({
       target: "points",
+      channel: "color",
       position: movedAxesLegend.position,
       align: "center",
       direction: "vertical",
@@ -1034,6 +1036,7 @@ function exerciseCartesianGuides(factors, base) {
     })
     .editLegendLabels({
       target: "points",
+      channel: "color",
       color: "#334155",
       fontSize: 12,
       fontFamily: "sans-serif",
@@ -1041,6 +1044,7 @@ function exerciseCartesianGuides(factors, base) {
     })
     .editLegendTitle({
       target: "points",
+      channel: "color",
       title: ordinal % 3 === 0 ? false : ordinal % 3 === 1 ? "auto" : base.context.dimensionText,
       color: "#0f172a",
       fontSize: 13,
@@ -1049,10 +1053,12 @@ function exerciseCartesianGuides(factors, base) {
     })
     .editLegendSymbols({
       target: "points",
+      channel: "color",
       symbol: legend.symbol
     })
     .editLegendBorder({
       target: "points",
+      channel: "color",
       border: ordinal % 3 === 0
         ? false
         : ordinal % 3 === 1 ? true : {

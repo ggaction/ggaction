@@ -38,7 +38,7 @@ import {
 import { findLayer } from "../../../selectors/layers.js";
 import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
-import { resolveLegendTarget, validateLegendChannels } from "./target.js";
+import { resolveLegendBlock, resolveLegendTarget, validateLegendChannels } from "./target.js";
 import { isEnumeratedSizeScaleType } from "../../../grammar/scales/index.js";
 import { SIZE_LEGEND_LABELS, SIZE_LEGEND_TITLE_STYLE, resolveSizeLegendLayout, createSizeLegendFromConfig } from "./size.js";
 import {
@@ -51,7 +51,7 @@ import { normalizeLegendSampling } from "./sampling.js";
 import { planLegendBlockTransitions } from "./transition.js";
 
 const OPTIONS = Object.freeze([
-  "target", "channels", "position", "layout", "align", "direction", "columns", "offset",
+  "target", "channel", "channels", "position", "layout", "align", "direction", "columns", "offset",
   "titlePosition", "title", "symbol", "labels", "titleStyle", "itemGap",
   "border", "count", "values", "gradient", "representation", "order", "overflow", "blockLayout", "at"
 ]);
@@ -617,7 +617,7 @@ function editLegendContent(program, target, args) {
 
 function editLegendImplementation(args = {}, skipGroup = false) {
     validateOptionObject(args, OPTIONS, "editLegend");
-    const changes = Object.keys(args).filter(key => key !== "target");
+    const changes = Object.keys(args).filter(key => key !== "target" && key !== "channel");
     if (changes.length === 0) {
       throw new Error("editLegend requires at least one change.");
     }
@@ -627,6 +627,42 @@ function editLegendImplementation(args = {}, skipGroup = false) {
       throw new TypeError('editLegend title must be a non-empty string, "auto", or false.');
     }
     const target = resolveLegendTarget(this, args.target, "editLegend");
+    if (Object.hasOwn(args, "channel")) {
+      if (Object.hasOwn(args, "channels")) {
+        throw new Error("editLegend cannot combine channel and channels.");
+      }
+      if (args.blockLayout !== undefined || args.at !== undefined) {
+        throw new Error("Selected legend blocks do not accept whole-group blockLayout or at.");
+      }
+      let program = this;
+      const descriptor = resolveLegendBlock(program, args, "editLegend");
+      const size = program.guideConfigs.legend?.size;
+      const categorical = ["series", "color", "stroke"]
+        .map(kind => program.guideConfigs.legend?.[kind])
+        .find(config => config?.target === target);
+      // A selected edit must not propagate through legacy shared typography.
+      if (size?.target === target && size.inheritAppearance === true && categorical &&
+          (descriptor.kind === "size" || ["series", "color", "stroke"].includes(descriptor.kind))) {
+        program = program._withLegendConfig("size", {
+          ...size, inheritAppearance: false,
+          labels: { ...categorical.labels, offset: size.labels.offset },
+          titleStyle: { ...categorical.titleStyle }
+        });
+      }
+      const { kind } = descriptor;
+      const config = program.guideConfigs.legend[kind];
+      const { channel: _channel, ...patch } = args;
+      if (["series", "color", "stroke"].includes(kind)) {
+        return editCategorical(program, kind, config, undefined, patch);
+      }
+      if (["size", "strokeWidth"].includes(kind)) {
+        return editSampledLegend(program, kind, config, patch);
+      }
+      if (["interval", "strokeInterval"].includes(kind)) {
+        return editInterval(program, config, patch, kind === "strokeInterval" ? "stroke" : "color");
+      }
+      return editContinuous(program, kind, config, patch);
+    }
     const existingGroup = this.guideConfigs.legendGroups?.[target];
     const needsGroup = !skipGroup && (existingGroup !== undefined || args.blockLayout !== undefined || args.at !== undefined ||
       PLOT_LEGEND_POSITIONS.includes(args.position) && Object.values(this.guideConfigs.legend ?? {}).some(config => config.target === target && config.kind === undefined));

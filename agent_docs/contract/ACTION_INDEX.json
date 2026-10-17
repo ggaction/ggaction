@@ -3015,7 +3015,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Replace whole-target legend content, edit categorical, continuous, interval, size, and stroke-width appearance, or enter/reset exact sampled values",
+      "update": "Edit whole-target content or select one existing channel block for layout, appearance and samples",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3051,7 +3051,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Delegates focused layout changes to editLegend",
+      "update": "Edit one focused component, optionally selecting an existing channel block",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3069,7 +3069,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Delegates focused label changes to editLegend",
+      "update": "Edit one focused component, optionally selecting an existing channel block",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3087,7 +3087,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Delegates focused title changes to editLegend",
+      "update": "Edit one focused component, optionally selecting an existing channel block",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3105,7 +3105,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Delegates focused symbol changes to editLegend",
+      "update": "Edit one focused component, optionally selecting an existing channel block",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3123,7 +3123,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Delegates focused border changes to editLegend",
+      "update": "Edit one focused component, optionally selecting an existing channel block",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

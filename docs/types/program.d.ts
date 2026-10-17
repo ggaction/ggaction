@@ -4733,6 +4733,8 @@ export interface LegendTitleStyleEditOptions extends Omit<LegendTitleStyleOption
 
 export interface EditLegendOptions
   extends Omit<LegendOptions, "title" | "values" | "titleStyle"> {
+  /** Select one existing block; cannot accompany channels. */
+  channel?: LegendChannel;
   titleStyle?: LegendTitleStyleEditOptions;
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
@@ -4743,6 +4745,8 @@ export interface EditLegendOptions
 
 export interface EditLegendLayoutOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   layout?: "edge" | "legacy-bottom";
   /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
@@ -4765,15 +4769,21 @@ export interface EditLegendLayoutOptions {
 
 export interface EditLegendLabelsOptions extends LegendTextOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
 }
 
 export interface EditLegendTitleOptions extends LegendTitleStyleEditOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   title?: string | "auto" | false;
 }
 
 export interface EditLegendSymbolsOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   symbol?: LegendSymbolRecipe;
   count?: number;
   gradient?: { length?: number; thickness?: number; opacity?: number };
@@ -4781,6 +4791,8 @@ export interface EditLegendSymbolsOptions {
 
 export interface EditLegendBorderOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   border: boolean | LegendBorderOptions;
 }
 

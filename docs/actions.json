@@ -18835,7 +18835,7 @@
       "name": "editLegend",
       "layer": "user-facing",
       "domain": "legend_and_title",
-      "summary": "Partially edit one existing legend.",
+      "summary": "Singular channel selects one existing block without changing sibling typography.",
       "signature": "editLegend(options: EditLegendOptions): ChartProgram;",
       "intents": [
         "edit legend",
@@ -18905,6 +18905,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "channel",
+          "required": false,
+          "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+        },
         {
           "name": "titleStyle",
           "required": false,
@@ -19022,7 +19027,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, titleStyle?, channels?, title?, values?, representation?, layout?, overflow? })"
+        "editLegend({ target?, channel?, titleStyle?, channels?, title?, values?, representation?, layout? })"
       ],
       "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],
@@ -19229,6 +19234,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "channel",
+          "required": false,
+          "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+        },
+        {
           "name": "layout",
           "required": false,
           "type": "\"edge\" | \"legacy-bottom\" | undefined"
@@ -19280,9 +19290,9 @@
         }
       ],
       "callPatterns": [
-        "editLegendLayout({ target?, layout?, position?, blockLayout?, at?, align?, direction?, columns? })"
+        "editLegendLayout({ target?, channel?, layout?, position?, blockLayout?, at?, align?, direction? })"
       ],
-      "snippet": "program.editLegendLayout({ layout: \"edge\" })",
+      "snippet": "program.editLegendLayout({ channel: \"color\" })",
       "errors": [],
       "route": "/reference/actions/guides/#editlegendlayout"
     },
@@ -19358,6 +19368,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "channel",
+          "required": false,
+          "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+        },
+        {
           "name": "offset",
           "required": false,
           "type": "number | undefined"
@@ -19389,9 +19404,9 @@
         }
       ],
       "callPatterns": [
-        "editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })"
+        "editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })"
       ],
-      "snippet": "program.editLegendLabels({ offset: 1 })",
+      "snippet": "program.editLegendLabels({ channel: \"color\" })",
       "errors": [],
       "route": "/reference/actions/guides/#editlegendlabels"
     },
@@ -19467,6 +19482,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "channel",
+          "required": false,
+          "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+        },
+        {
           "name": "title",
           "required": false,
           "type": "string | false | undefined"
@@ -19498,9 +19518,9 @@
         }
       ],
       "callPatterns": [
-        "editLegendTitle({ target?, title?, color?, fontSize?, fontFamily?, fontWeight?, align? })"
+        "editLegendTitle({ target?, channel?, title?, color?, fontSize?, fontFamily?, fontWeight?, align? })"
       ],
-      "snippet": "program.editLegendTitle({ title: \"title\" })",
+      "snippet": "program.editLegendTitle({ channel: \"color\" })",
       "errors": [],
       "route": "/reference/actions/guides/#editlegendtitle"
     },
@@ -19572,6 +19592,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "channel",
+          "required": false,
+          "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+        },
+        {
           "name": "symbol",
           "required": false,
           "type": "LegendSymbolRecipe | undefined"
@@ -19588,7 +19613,7 @@
         }
       ],
       "callPatterns": [
-        "editLegendSymbols({ target?, symbol?, count?, gradient? })"
+        "editLegendSymbols({ target?, channel?, symbol?, count?, gradient? })"
       ],
       "snippet": "program.editLegendSymbols({ count: 5 })",
       "errors": [],
@@ -19657,13 +19682,18 @@
           "type": "string | undefined"
         },
         {
+          "name": "channel",
+          "required": false,
+          "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+        },
+        {
           "name": "border",
           "required": true,
           "type": "boolean | LegendBorderOptions"
         }
       ],
       "callPatterns": [
-        "editLegendBorder({ border, target? })"
+        "editLegendBorder({ border, target?, channel? })"
       ],
       "snippet": "program.editLegendBorder({ border: true })",
       "errors": [],
