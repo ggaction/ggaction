@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "capability": "bootstrap-mean-ci",
+  "chart": "skewed-five-groups",
+  "variant": "percentile-seed1",
+  "displayTitle": "Mean and percentile bootstrap interval",
+  "targetPublicCallChain": "See fixture.mjs proposedProgram(): raw25 rows -> createSummaryData grouping x, mean/ciLower/ciUpper method bootstrap seed1 level0.95",
+  "proposedProgramImplemented": false
+}
