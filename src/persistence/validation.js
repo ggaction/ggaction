@@ -2,6 +2,8 @@ import { AXIS_RESOURCE_CHANNELS } from "../core/vocabulary.js";
 import { cartesianAxisOwners, assertCartesianAxisSideAvailable } from "../selectors/axes.js";
 import { axisGraphicIds } from "../selectors/axes.js";
 
+
+import {validateLegendLayerOpacity}from"../grammar/legendOpacity.js";
 import { isSizeShapeChannels, resolveSizeShapeMapping } from "../grammar/legendCombinations.js";
 import { describeLegendBlock } from "../grammar/legendBlocks.js";
 import { localLegendPosition } from "../grammar/legendGroups.js";
@@ -236,6 +238,7 @@ export function validateProgramState(program, path) {
         if (override.position !== undefined && key !== descriptor.key) throw invalidSnapshot("Local position requires its existing block owner.", path);
       }
     }
+    for(const layer of config.symbol?.layers??[])validateLegendLayerOpacity(layer.opacity);
     if (config.combine !== undefined) {
       if (config.combine !== "size-shape" || kind !== "series" || !isSizeShapeChannels(config.channels)) throw invalidSnapshot("Invalid combined legend owner.", path);
       const layer = semantic.layers.find(layer=>layer.id===config.target);

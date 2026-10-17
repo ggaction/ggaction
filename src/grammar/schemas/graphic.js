@@ -52,6 +52,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "lineJoin",
     "miterLimit",
     "opacity",
+    "blend",
     "length"
   ]),
   rect: new Set([

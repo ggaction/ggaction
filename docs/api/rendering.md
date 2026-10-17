@@ -439,6 +439,16 @@ DOM `textContent` for user-controlled titles, column labels, and values; do not
 insert them as HTML. Keep the alternative synchronized by exporting the updated
 program after an edit.
 
+## Explicit whole-glyph opacity
+
+Concrete rect/path nodes accept `blend:'normal'` as an explicit whole-glyph
+source-over instruction; circles accept only that normal marker. The renderer
+paints fill and outline together, attenuates the source once, and composites it.
+This marker is emitted for explicit legend recipe-layer opacity. Omission keeps
+legacy painting unchanged; line/text/containers do not accept blend markers.
+The bar action's `blend:'normal'` remains a semantic reset which removes its
+optional concrete blend field. Normal does not enable circle difference blending.
+
 ## Related
 
 [Canvas](./canvas.md) · [Semantic and graphical state](../concepts/semantic-and-graphics.md) ·

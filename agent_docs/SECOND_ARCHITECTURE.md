@@ -2203,6 +2203,7 @@ materialization layer에 역방향 의존하지 않는다. 기존 package stagin
 갱신한다. Card max3358은3360 한도 안이다. Installed consumer의 actual gzip은 Full396214/Basic193136bytes이므로 최소1000bytes 단위로397000/194000으로만 조정한다. SVG25000은 유지한다.
 
 
+
 ### Gradient direction and bottom title checkpoint
 
 The complete editLegend card is 3,609 UTF-8 bytes after exposing gradient-only
@@ -2227,6 +2228,44 @@ move only to 801,000 / 3,923,000 bytes. Facet parent-union normalization is a
 coordinated #206 integration seam; no override keeps the existing promotion path.
 The installed Full browser bundle measured393,508 gzip bytes, above393,000;
 its ceiling is394,000. Basic also measured190,409 above190,000 and moves to191,000; SVG stays25,000.
+
+
+
+### Explicit categorical size-shape block
+
+The opt-in `size-shape` combination reuses the categorical series owner and its
+ordered typed domain. `grammar/legendCombinations.js` owns the pure mapping
+eligibility and physical-area mapping used by action resolution and snapshot
+validation; actions alone create/revise the owner. Explicit group placement is
+retained through split/recombine, while independent color stays a separate
+block. Pure block descriptors/local placement queries and graphic-property loops
+are shared with the axes checkpoint without persistence depending on actions or
+materialization.
+
+Measured complete createLegend/editLegend cards are3438/3704bytes; only those
+ceilings become3440/3710bytes, retaining every public option and enum. Measured
+package573entries/803727packed/3934180unpacked uses573/804000/3935000limits.
+Browser Full395897/Basic191800bytes uses396000/192000gzip limits. Existing
+coverage and per-file floors remain unchanged. These are feature-growth budgets,
+not a declaration that the full realistic option matrix has completed.
+
+### 첫 네 기능 통합의 검색 측정
+
+계산 두 옵션·Cartesian dash·범례 channel selector의 통합 검색 JSON은 815157bytes다.
+기존815000을 초과하므로 내용과 예제를 유지하고 공유 한도만 최소1000bytes 단위인816000으로 갱신했다.
+
+### 열네 승인 기능의 누적 통합 측정
+
+색상 세 옵션·축 배치 네 옵션·point shape 두 종류·sampled size label map을 합친
+Node24.21.0/npm11.19.0 staged package는569entries, packed803290/unpacked3932847bytes다.
+독립 branch 한도를 누적 결과에 적용할 수 없어 최소1000bytes 단위로804000/3933000으로
+조정했다. 검색은816898bytes로817000 한도를 적용했다. 전체 옵션·예제를 보존했으며
+이전 한도 통과를 주장하지 않는다.
+
+누적 설치 소비자14기능의 동일 minified bundle은 Node22에서 Full394038/Basic191023,
+Node24에서 Full394803/Basic191552 gzip bytes다. 공유 owner와 canonical table/README를
+Full395000·Basic192000으로 동기화하고 SVG25000은 유지했다. 1000bytes 최소 단계이며
+기존393000/191000을 통과한 것으로 보고하지 않는다.
 
 ### 단일 glyph source의 명시적인 합성
 
@@ -2320,3 +2359,21 @@ Size-shape 통합 뒤 검색은823539bytes이며 최종 공개 옵션을 유지�
 
 24개 통합 staged package의 실제581entries/824408packed/4021086unpackedbytes에 따라
 한도는581/825000/4022000으로 좁게 갱신한다. 이전579/822000/4010000은 실패했다.
+
+### Explicit whole-glyph normal opacity
+
+The approved normal concrete marker shares the existing bounded isolated-glyph
+allocation owner with difference, while preserving the omitted renderer path.
+Only explicit recipe-layer opacity lowers to normal; legacy block patches and
+fallback numbers do not infer a marker. Normal source attenuation uses one
+native destination-in mask before source-over at alpha1. Source arc/transform/
+mask and target composition capabilities are checked before destination changes.
+The pure `grammar/legendOpacity.js` validator is shared by creation/edit/import.
+No source surface or backend state enters stored graphical or semantic data.
+
+The cumulative artifact after bar/data/color integration and normal-opacity
+implementation measures578entries/811763packed/3968822unpackedbytes; narrow
+limits are578/812000/3969000. Full399940/Basic195539gzipbytes require only
+400000/196000; SVG remains25000. Search819631bytes uses820000. Complete
+createLegend/editLegend card caps3440/3710 and coverage thresholds stay unchanged.
+Normal Node/browser/PDF reference checks use zero added color tolerance.
