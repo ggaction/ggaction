@@ -31,3 +31,11 @@
 결합6개 검사(새guide4/Chromium1/bar pair1), source와bar20개, named-axis type·card11개,
 문서120개가 통과했다. Staged package581/824408/4021086은 측정된 최소 예산
 581/825000/4022000 안이다. 전체 누적 unit·consumer 및 남은 기능 결합은 최종 통합에서 재검증한다.
+
+## 25개 source checkpoint
+
+#208 명시적 whole-glyph opacity를 통합했다. 누적 unit3212/3212, opacity+bar 집중18개,
+문서120/120, staged package582/825420/4024438 통과. 예산582/826000/4025000 및
+검색825000은 실제 누적값에서만 갱신했다. Bar의 설치된 Chromium/Firefox/WebKit
+각64조합도 독립native/SVG 기준과 전체RGBA가 정확히 일치했다.
+이 checkpoint의 최종 누적 installed consumer와 전체 inventory는 나머지 기능 통합에서 검증한다.

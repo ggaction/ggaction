@@ -2377,3 +2377,8 @@ limits are578/812000/3969000. Full399940/Basic195539gzipbytes require only
 400000/196000; SVG remains25000. Search819631bytes uses820000. Complete
 createLegend/editLegend card caps3440/3710 and coverage thresholds stay unchanged.
 Normal Node/browser/PDF reference checks use zero added color tolerance.
+
+명시적 whole-glyph opacity 결합 검색은824703bytes이며825000으로만 갱신한다.
+
+25개 결합 staged package 실측582entries/825420packed/4024438unpackedbytes에 따라
+한도582/826000/4025000을 적용한다. 이전581/825000/4022000은 실패했고 내용은 보존했다.

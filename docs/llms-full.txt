@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:5b56ded600d541827089c04b7b0f44260fe0716590d6eb35785fd2272faa9a87. Status: development. Runtime source: 2d1f928e8b835a3351f32e04db41a90860a99a11. Release baseline: v0.0.13.
+Contract: sha256:c3e0edb53f57b5a044059506dd85dc1ca5c8b39e84985d053c18271edfc2d449. Status: development. Runtime source: 93d97e13a70b6fdf1197498a18043cb58181f298. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/2d1f928e8b835a3351f32e04db41a90860a99a11/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/93d97e13a70b6fdf1197498a18043cb58181f298/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/2d1f928e8b835a3351f32e04db41a90860a99a11/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/93d97e13a70b6fdf1197498a18043cb58181f298/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -9474,6 +9474,16 @@ DOM `textContent` for user-controlled titles, column labels, and values; do not
 insert them as HTML. Keep the alternative synchronized by exporting the updated
 program after an edit.
 
+## Explicit whole-glyph opacity
+
+Concrete rect/path nodes accept `blend:'normal'` as an explicit whole-glyph
+source-over instruction; circles accept only that normal marker. The renderer
+paints fill and outline together, attenuates the source once, and composites it.
+This marker is emitted for explicit legend recipe-layer opacity. Omission keeps
+legacy painting unchanged; line/text/containers do not accept blend markers.
+The bar action's `blend:'normal'` remains a semantic reset which removes its
+optional concrete blend field. Normal does not enable circle difference blending.
+
 ## Related
 
 [Canvas](./api/canvas/) · [Semantic and graphical state](./concepts/semantic-and-graphics/) ·
@@ -13144,6 +13154,32 @@ size overrides conflict with the mapping; stroke, fill, opacity, labels and
 categorical item order retain their existing controls. Zero mapped area retains
 its category and text slot. Current data and scale revisions revalidate both
 encodings, so an invalid revision fails instead of silently splitting the block.
+
+## Recipe layer opacity
+
+Each `symbol.layers` line, point or swatch accepts optional `opacity` in0..1.
+The supplied value applies once to that layer's complete fill and outline;
+it does not change other recipe layers, labels, title or frame. Omission keeps
+historical fallback appearance. Replacing a recipe without opacity, including
+`symbol:'auto'`, removes its explicit layer opacity.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+program.createLegend({
+  channels: ['shape'],
+  symbol: {layers: [
+    {type: 'line', opacity: 0.3},
+    {type: 'point', fill: 'red', stroke: 'blue', strokeWidth: 4, opacity: 0.7}
+  ]}
+});
+```
+
+A mapped size-shape block retains its mapped shape and physical area when the
+point layer supplies opacity. Canvas uses a bounded transparent glyph source;
+SVG uses whole-element opacity. PDF rasterizes only the explicitly affected
+glyph, preserving surrounding vector output. Existing block symbol-opacity
+patches retain their established behavior and do not opt into this new path.
 
 ## Related
 
@@ -33685,7 +33721,7 @@ Related types: [`LegendValueOrder`](./reference/types/#type-legendvalueorder).
 
 ```typescript
 export type LegendSymbolLayer =
-  | { type: "line"; length?: number; lineWidth?: number }
+  | { type: "line"; length?: number; lineWidth?: number; opacity?: number }
   | {
       type: "point";
       shape?: "circle";
@@ -33693,6 +33729,7 @@ export type LegendSymbolLayer =
       fill?: string;
       stroke?: string;
       strokeWidth?: number;
+      opacity?: number;
     }
   | {
       type: "swatch";
@@ -33700,6 +33737,7 @@ export type LegendSymbolLayer =
       height?: number;
       stroke?: string;
       strokeWidth?: number;
+      opacity?: number;
     };
 ```
 
@@ -37870,12 +37908,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/2d1f928e8b835a3351f32e04db41a90860a99a11/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/93d97e13a70b6fdf1197498a18043cb58181f298/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/2d1f928e8b835a3351f32e04db41a90860a99a11/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/93d97e13a70b6fdf1197498a18043cb58181f298/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -40042,9 +40080,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:5b56ded600d541827089c04b7b0f44260fe0716590d6eb35785fd2272faa9a87` |
+| Contract fingerprint | `sha256:c3e0edb53f57b5a044059506dd85dc1ca5c8b39e84985d053c18271edfc2d449` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
-| Runtime source commit | `2d1f928e8b835a3351f32e04db41a90860a99a11` |
+| Runtime source commit | `93d97e13a70b6fdf1197498a18043cb58181f298` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 284 |
 | Declared actions in that release | 234 |
