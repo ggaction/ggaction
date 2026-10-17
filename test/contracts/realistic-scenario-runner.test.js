@@ -1156,7 +1156,8 @@ test("terminates timed-out generation children and reports process crashes", asy
   assert.deepEqual(timedOut.killSignals, ["SIGKILL"]);
   assert.deepEqual(spawnOptions.execArgv, [
     "--expose-gc",
-    "--max-old-space-size=288"
+    "--max-old-space-size=224",
+    "--max-semi-space-size=8"
   ]);
   assert.equal(spawnOptions.serialization, "advanced");
 
