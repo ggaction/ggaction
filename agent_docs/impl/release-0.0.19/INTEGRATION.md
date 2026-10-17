@@ -142,3 +142,21 @@ statistics 생성→source편집을 추가했다. 원래 recipe·관측값·모�
 통계의 source 전이와 count4/intercept0/slope1/rSquared1을 직접 검증한다.
 공식 realistic 선택 실행에서 integrity/SVG/직접277actions/최종상태3/3PASS(8890.93ms).
 원본 실패는 CI39034674598 realistic5, 로컬 성공은 `/tmp/ggaction-217-direct-stats-smoke.log`다.
+
+## 첫 서버 CI 전체 결과와 수정 수합
+
+CI39034674598의 normal4592/4592, browser140/140, render240/240 및 coverage
+95.35/92.57/98.68·133floors가 모두 통과했다. 문서·Windows/macOS·Firefox/WebKit도
+통과했다. 이 성공을 실패했던 package24와 실제 데이터 shard의 성공으로 확대하지 않는다.
+
+Direct palette298paths/296literals/11diversity의 실제3/3, 별도 facade315programs의
+191paths/189literals/12diversity·전체10/10, 기존 고정 palette 계약3/3을 통과했다.
+새4range variants를3facade에 더한60programs는 별도315schedule에만 속한다.
+Global3600registry에는 이 별도 recipe owner가 없으므로 global target1338/1527은 불변이다.
+실제 보고서와 집중 planning2/2로 확인하여 불필요한 quota증가를 적용하지 않았다.
+최종 global quota는7/27/31/7이며72×50=3600과 모든5/3 조건을 유지한다.
+
+같은 quota의 e7adb3eb scenario-generator21/21 및216/360 strict isolation3/3이 통과했다.
+360 최댓값은 child305414144B/combined399491072B/reference369541120B이고
+900초 경계·heap/RSS 기준을 그대로 유지했다. 최종 팔레트·smoke fixture를 합친 원격
+PR CI는 별도로 다시 실행하며, 이 baseline을 그 최종 입력의 검증으로 대체하지 않는다.
