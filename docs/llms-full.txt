@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:8dd8216eca7cdb977f9577f48fb5a1b3bf22eece64bc44f23eb535743be5ace8. Status: development. Runtime source: be959aac36073f6c546ae1472b97492850030a6a. Release baseline: v0.0.13.
+Contract: sha256:7e0df8af37d3722afe4caf4a0c5796f3e30b8c25fcbc8898866fd917b88a2a9c. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/be959aac36073f6c546ae1472b97492850030a6a/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/be959aac36073f6c546ae1472b97492850030a6a/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -7292,7 +7292,7 @@ After a temporal bar facade, use `.encodeBarWidth({ interval: { unit: "year", in
 
 # Regression
 
-`createRegression()` layers grouped linear, polynomial, or LOESS fits over an
+`createRegression()` layers grouped linear, polynomial, LOESS, or exponential fits over an
 existing quantitative point mark. Linear and polynomial fits can include mean
 or prediction interval bands; LOESS is line-only.
 
@@ -7339,7 +7339,7 @@ program.createRegression({
 | `target` | eligible point mark ID | inferred |
 | `x`, `y` | quantitative field names | target x/y fields |
 | `groupBy` | nominal field name or `false` (legacy explicit `undefined` also supported) | unique color/shape field |
-| `method` | `"linear"`, `"polynomial"`, or `"loess"` | `"linear"` |
+| `method` | `"linear"`, `"polynomial"`, `"loess"`, or `"exp"` | `"linear"` |
 | `degree` | integer from `1` through `32` for polynomial | `2` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
 | `robustIterations` | LOESS residual reweighting passes, integer `0..32` | `0` |
@@ -7368,6 +7368,7 @@ Choose another model or interval without coordinating its child layers:
 points.createRegression({ method: "polynomial", degree: 2 });
 points.createRegression({ method: "loess", span: 0.55 });
 points.createRegression({ method: "loess", span: 0.55, robustIterations: 2 });
+points.createRegression({ method: "exp" });
 points.createRegression({ interval: "prediction" });
 points.createRegression({ interval: false, band: false });
 ```
@@ -7378,6 +7379,16 @@ and are therefore at least as wide as matching mean intervals. LOESS does not
 accept `confidenceMethod`, `level`, `confidence`, `interval`, or a band object; its omitted or `false` band
 produces only the fitted line. Linear and polynomial bands can also be disabled
 with `band: false`.
+
+`method: "exp"` fits `y = amplitude * exp(rate * x)` using response weights
+`w = y` on `log(y)`. This differs from ordinary unweighted log regression.
+Every eligible response must be strictly positive, and each group needs at
+least two observations with varying x. Missing-value policy runs first;
+zero and negative responses are errors. Omitted or `false` `interval` gives
+point estimates with no band or interval columns. Confidence options, degree,
+span, robust iterations, interval objects, and band objects are rejected.
+Unrepresentable coefficients or nonpositive/nonfinite predictions fail
+atomically. Existing explicit prediction positions remain available.
 
 `sourceBinding: "fixed"` keeps the regression attached to the source snapshot
 used at creation. `"follow"` refits when `reviseData` advances that logical
@@ -7454,7 +7465,7 @@ component, and releases the old revision when nothing references it.
 coordinate, and position scale IDs remain stable. A request containing only
 `band` or `line` appearance retains the existing fitted rows.
 
-Set `band: false` or switch to LOESS to remove the owned band. Switching back
+Set `band: false` or switch to LOESS or exponential regression to remove the owned band. Switching back
 to linear or polynomial regression recreates the band by default; a band
 object can also restore it explicitly. Target omission uses the current or
 only regression owner and fails on ambiguity.
@@ -16324,14 +16335,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Required | `string` |
 | `groupBy` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
-| `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
+| `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
 | `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -16672,14 +16683,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Required | `string` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
-| `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
+| `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
 | `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 | `x` | Optional / branch-dependent | `string \| undefined` |
 | `y` | Optional / branch-dependent | `string \| undefined` |
@@ -18302,14 +18313,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
 | `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
-| `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
+| `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
 | `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
@@ -18323,8 +18334,8 @@ The following call patterns are abbreviated examples; the declaration above owns
 createRegressionPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, groupBy?, method?, band?, line?, guides? })
 ```
 
-Create a complete scatter plot with an existing regression data, line, and
-optional interval-band hierarchy. `groupBy: false` is preserved as an explicit
+Create a scatter plot with fitted regression data, a line, and optional interval bands.
+`groupBy: false` is preserved as an explicit
 ungrouped model request.
 
 ## `createLinePlot`
@@ -22656,14 +22667,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `sourceBinding` | Optional / branch-dependent | `"fixed" \| "follow" \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
-| `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
+| `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
 | `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 | `band` | Optional / branch-dependent | `false \| RegressionBandOptions \| undefined` |
 
@@ -30031,6 +30042,16 @@ export type DatasetRegressionTransform = {
       | { confidence: number; confidenceMethod?: never; level?: never }
     ))))
   | {
+      method: "exp";
+      interval: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+    }
+  | {
       method: "loess";
       span: number;
       robustIterations?: number;
@@ -35067,7 +35088,7 @@ export type RegressionInterval = "mean" | "prediction";
  Expand RegressionMethod
 
 ```typescript
-export type RegressionMethod = "linear" | "polynomial" | "loess";
+export type RegressionMethod = "linear" | "polynomial" | "loess" | "exp";
 ```
 
 ### `RegressionOptions` {#type-regressionoptions}
@@ -35076,6 +35097,9 @@ export type RegressionMethod = "linear" | "polynomial" | "loess";
 
 ```typescript
 export type RegressionOptions = RegressionCommonOptions & (
+  | (Extract<RegressionParameterOptions, { method: "exp" }> & {
+      band?: false;
+    })
   | (Extract<RegressionParameterOptions, { method?: "linear" }> & {
       band?: false | RegressionBandOptions;
     })
@@ -35096,6 +35120,17 @@ Related types: [`RegressionCommonOptions`](./reference/types/#type-regressioncom
 
 ```typescript
 type RegressionParameterOptions =
+  | {
+      method: "exp";
+      interval?: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+      predict?: RegressionPredictOptions;
+    }
   | {
       method?: "linear";
       degree?: never;
@@ -35132,7 +35167,7 @@ type RegressionParameterOptions =
     };
 ```
 
-Related types: [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod) · [`RegressionInterval`](./reference/types/#type-regressioninterval) · [`RegressionPredictOptions`](./reference/types/#type-regressionpredictoptions).
+Related types: [`RegressionPredictOptions`](./reference/types/#type-regressionpredictoptions) · [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod) · [`RegressionInterval`](./reference/types/#type-regressioninterval).
 
 ### `RegressionPlotBaseOptions` {#type-regressionplotbaseoptions}
 
@@ -37334,12 +37369,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/be959aac36073f6c546ae1472b97492850030a6a/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/be959aac36073f6c546ae1472b97492850030a6a/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39506,9 +39541,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:8dd8216eca7cdb977f9577f48fb5a1b3bf22eece64bc44f23eb535743be5ace8` |
+| Contract fingerprint | `sha256:7e0df8af37d3722afe4caf4a0c5796f3e30b8c25fcbc8898866fd917b88a2a9c` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
-| Runtime source commit | `be959aac36073f6c546ae1472b97492850030a6a` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |

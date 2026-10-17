@@ -1237,6 +1237,14 @@ async function testNodeConsumer(directory) {
     ] }).createScatterPlot({ x: "x", y: "y", color: "group", guides: false })
       .createRegression(JSON.parse(JSON.stringify({ groupBy: false, band: false })));
     assert.equal(regressionOptOut.semanticSpec.datasets.at(-1).transform[0].groupBy, undefined);
+    const exponentialRegression = chart().createCanvas({width:500,height:350,margin:70})
+      .createData({values:[{x:0,y:1},{x:1,y:3},{x:2,y:8}]})
+      .createRegressionPlot({x:"x",y:"y",method:"exp",guides:false});
+    assert.equal(exponentialRegression.semanticSpec.datasets.at(-1).transform[0].interval,false);
+    assert.equal(exponentialRegression.markConfigs.regressionPlot.regression.bandId,undefined);
+    assert.ok(Math.abs(exponentialRegression.semanticSpec.datasets.at(-1).values[0].y-1.0490780630894252)<1e-12);
+    assert.deepEqual(deserializeProgram(serializeProgram(exponentialRegression)).graphicSpec,exponentialRegression.graphicSpec);
+    assert.ok((await renderToPNGBuffer(exponentialRegression)).buffer.length>500);
     const normalInterval = chart().createData({ values: [
       { value: 1 }, { value: 2 }, { value: 3 }
     ] }).createIntervalData({ id: "normalInterval", field: "value", method: "normal" });
@@ -3349,6 +3357,10 @@ async function testTypeScriptConsumer(directory) {
     program.createTimeUnitData({ id: "seconds", field: "time", unit: "second", as: "bucket", temporalUnit: inputUnit });
     program.createRegression({ groupBy: false, confidenceMethod: "normal", level: 0.9 });
     program.createRegressionData({ id: "typedFit", x: "x", y: "y", confidenceMethod: "normal", level: 0.9 });
+    program.createRegressionData({id:"typedExponentialFit",x:"x",y:"y",method:"exp"});
+    program.createRegressionPlot({x:"x",y:"y",method:"exp",band:false});
+    // @ts-expect-error exponential fits have no confidence level
+    program.createRegressionData({id:"invalidExponentialFit",x:"x",y:"y",method:"exp",level:.95});
     program.createIntervalData({ id: "typedInterval", field: "y", method: "normal", level: 0.9 });
     program.encodeY({ field: "y", aggregate: { op: "ciUpper", method: "student-t", level: 0.95 } });
     program.encodeDensity({ field: "y", groupBy: false });

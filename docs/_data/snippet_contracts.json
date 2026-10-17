@@ -3115,7 +3115,7 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `points`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "b30dc5b4fb5d1281a6d9245bdd18b0c4e2312440d4aad669cd125b943965b63c",
+    "sha256": "45554c55ffdcbd3afc7bd74bf95f08c7d37f51f66cdcc69777fff1da6547eac0",
     "executable": false
   },
   {

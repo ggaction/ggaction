@@ -128,7 +128,7 @@ function resolveParameters(previous, args) {
         raw[key] = previous[key];
       }
     }
-  } else if (method !== "loess" && previous.method !== "loess" && args.interval !== false) {
+  } else if (!["loess", "exp"].includes(method) && !["loess", "exp"].includes(previous.method) && args.interval !== false) {
     for (const key of ["confidenceMethod", "level", "interval"]) {
       if (
         !Object.hasOwn(raw, key) &&
@@ -302,14 +302,16 @@ export const editRegression = /* @__PURE__ */ closedAction(
       ? validateLinePatch(args.line)
       : undefined;
     if ((parameters.method === "loess" || parameters.interval === false) && bandPatch !== undefined && bandPatch !== false) {
-      throw new Error("LOESS regression does not support a band object.");
+      throw new Error(parameters.method === "loess"
+        ? "LOESS regression does not support a band object."
+        : "Regression interval false cannot include a band object.");
     }
 
     const hadBand = current.bandId !== undefined;
     const wantsBand = parameters.method !== "loess" && parameters.interval !== false &&
       (bandPatch === false
         ? false
-        : hadBand || bandPatch !== undefined || current.parameters.method === "loess");
+        : hadBand || bandPatch !== undefined || ["loess", "exp"].includes(current.parameters.method));
     const revision = changesStatistics
       ? planDerivedDataRevision(this, {
           owner: owner.id,

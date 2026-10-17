@@ -1,0 +1,10 @@
+{
+  "rawSha256": "fb962e106c9b6f5ad601d05afd5197d59c3c3c8310c2cd4d6a15ccaf5deb5073",
+  "rawRows": 9,
+  "sampleCount": 60,
+  "maximumResponseError": 1.8474111129762605e-13,
+  "maximumCoordinateError": 5.684341886080801e-13,
+  "rawRowsUnchanged": true,
+  "canvasWholeRgbaExact": true,
+  "chartPixelsInspected": false
+}

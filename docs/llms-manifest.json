@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:8dd8216eca7cdb977f9577f48fb5a1b3bf22eece64bc44f23eb535743be5ace8",
-    "sourceCommit": "be959aac36073f6c546ae1472b97492850030a6a",
+    "contractId": "sha256:7e0df8af37d3722afe4caf4a0c5796f3e30b8c25fcbc8898866fd917b88a2a9c",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "9f6caf2bd95a0632d605796e4f06e52fcc7ee768d328fa311b56fca2b59c30ac"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -1047,8 +1047,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 10337,
-      "sha256": "0685225565db44b2cdf14e967f6f8599ac5a88aabda7977dc157ca755160e33c"
+      "bytes": 11096,
+      "sha256": "13ba61fa222e2c94198f12443517c36fca71813416bf6f70cddc0a0dc6a42b87"
     },
     {
       "order": 65,
@@ -2025,8 +2025,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 161863,
-      "sha256": "7d0f1aabf0e323e91369ce216ada99957445d63a7b97de0082c5f2f8c0734eea"
+      "bytes": 161869,
+      "sha256": "3f4077bf28572ecfd167996071380b9f876952c4b98ce53cb1a5361260d98815"
     },
     {
       "order": 119,
@@ -2176,8 +2176,8 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 78790,
-      "sha256": "d56a81ce4fe2a6853fd089b296cabb21a6d31ea2e4250a2c36e18be85b64aa0e"
+      "bytes": 78799,
+      "sha256": "91b655f5235e989b452f25bad76778f8c1c39f79d2808526d7c9eba9e56d6207"
     },
     {
       "order": 122,
@@ -2978,8 +2978,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 330279,
-      "sha256": "ab38653ed211440209c12df8d45f6c386d1162731039669b20615c5df152e2d6"
+      "bytes": 330839,
+      "sha256": "8de4a9bb1373052c773329a00d9d51565736d53b5144fce50c98478c45bd319f"
     },
     {
       "order": 127,
@@ -3009,8 +3009,8 @@
         "editgraphics-target-property-value-remove",
         "scale-materialization"
       ],
-      "bytes": 16959,
-      "sha256": "a36de3c22263060954963dd41d6446ece42475f981bed6ba7aa21fd8e5c9a109"
+      "bytes": 16887,
+      "sha256": "6290b807e031ee8069a7df5b38464bea8906ecdd59f5124a91617d4a1de87f96"
     },
     {
       "order": 129,
@@ -3331,8 +3331,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "c682cefef9865bc57dafa3b9bae31c387cd76daa8662d116bdf21ccdc87eca48"
+      "bytes": 3000,
+      "sha256": "51063e9387cbc91931ddd022ab33e892d6485d74a61012e2ffbc889994ae842b"
     },
     {
       "order": 150,

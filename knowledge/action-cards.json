@@ -2286,7 +2286,12 @@
         {
           "name": "method",
           "required": false,
-          "type": "\"linear\" | \"loess\" | \"polynomial\" | undefined"
+          "type": "\"exp\" | \"linear\" | \"loess\" | \"polynomial\" | undefined"
+        },
+        {
+          "name": "interval",
+          "required": false,
+          "type": "false | RegressionInterval | undefined"
         },
         {
           "name": "degree",
@@ -2319,18 +2324,13 @@
           "type": "number | undefined"
         },
         {
-          "name": "interval",
-          "required": false,
-          "type": "false | RegressionInterval | undefined"
-        },
-        {
           "name": "predict",
           "required": false,
           "type": "RegressionPredictOptions | undefined"
         }
       ],
       "callPatterns": [
-        "createRegressionData({ id, x, y, source?, groupBy?, missing?, method?, degree? })"
+        "createRegressionData({ id, x, y, source?, groupBy?, missing?, method?, interval? })"
       ],
       "snippet": "program.createRegressionData({ id: \"regression-data-1\", x: \"x\", y: \"y\" })",
       "errors": [],
@@ -3942,7 +3942,12 @@
         {
           "name": "method",
           "required": false,
-          "type": "\"linear\" | \"loess\" | \"polynomial\" | undefined"
+          "type": "\"exp\" | \"linear\" | \"loess\" | \"polynomial\" | undefined"
+        },
+        {
+          "name": "interval",
+          "required": false,
+          "type": "false | RegressionInterval | undefined"
         },
         {
           "name": "degree",
@@ -3975,11 +3980,6 @@
           "type": "number | undefined"
         },
         {
-          "name": "interval",
-          "required": false,
-          "type": "false | RegressionInterval | undefined"
-        },
-        {
           "name": "predict",
           "required": false,
           "type": "RegressionPredictOptions | undefined"
@@ -4006,7 +4006,7 @@
         }
       ],
       "callPatterns": [
-        "editRegressionData({ target, dependents?, method?, degree?, span?, robustIterations?, confidenceMethod?, level? })"
+        "editRegressionData({ target, dependents?, method?, interval?, degree?, span?, robustIterations?, confidenceMethod? })"
       ],
       "snippet": "program.editRegressionData({ target: \"regression\", method: \"loess\" })",
       "errors": [],
@@ -12384,7 +12384,12 @@
         {
           "name": "method",
           "required": false,
-          "type": "\"linear\" | \"loess\" | \"polynomial\" | undefined"
+          "type": "\"exp\" | \"linear\" | \"loess\" | \"polynomial\" | undefined"
+        },
+        {
+          "name": "interval",
+          "required": false,
+          "type": "false | RegressionInterval | undefined"
         },
         {
           "name": "degree",
@@ -12415,11 +12420,6 @@
           "name": "confidence",
           "required": false,
           "type": "number | undefined"
-        },
-        {
-          "name": "interval",
-          "required": false,
-          "type": "false | RegressionInterval | undefined"
         },
         {
           "name": "predict",
@@ -29734,7 +29734,7 @@
       "name": "createRegressionPlot",
       "layer": "user-facing",
       "domain": "charts",
-      "summary": "Create a complete scatter plot with an existing regression data, line, and optional interval-band hierarchy.",
+      "summary": "Create a scatter plot with fitted regression data, a line, and optional interval bands.",
       "signature": "createRegressionPlot(options: CreateRegressionPlotOptions): ChartProgram;",
       "intents": [
         "create regression plot",
@@ -29849,7 +29849,12 @@
         {
           "name": "method",
           "required": false,
-          "type": "\"linear\" | \"loess\" | \"polynomial\" | undefined"
+          "type": "\"exp\" | \"linear\" | \"loess\" | \"polynomial\" | undefined"
+        },
+        {
+          "name": "interval",
+          "required": false,
+          "type": "false | RegressionInterval | undefined"
         },
         {
           "name": "degree",
@@ -29880,11 +29885,6 @@
           "name": "confidence",
           "required": false,
           "type": "number | undefined"
-        },
-        {
-          "name": "interval",
-          "required": false,
-          "type": "false | RegressionInterval | undefined"
         },
         {
           "name": "predict",

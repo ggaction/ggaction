@@ -3790,6 +3790,16 @@ export type DatasetRegressionTransform = {
       | { confidence: number; confidenceMethod?: never; level?: never }
     ))))
   | {
+      method: "exp";
+      interval: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+    }
+  | {
       method: "loess";
       span: number;
       robustIterations?: number;
@@ -9825,7 +9835,7 @@ export type RegressionInterval = "mean" | "prediction";
 <summary>Expand RegressionMethod</summary>
 
 ```typescript
-export type RegressionMethod = "linear" | "polynomial" | "loess";
+export type RegressionMethod = "linear" | "polynomial" | "loess" | "exp";
 ```
 
 </details>
@@ -9837,6 +9847,9 @@ export type RegressionMethod = "linear" | "polynomial" | "loess";
 
 ```typescript
 export type RegressionOptions = RegressionCommonOptions & (
+  | (Extract<RegressionParameterOptions, { method: "exp" }> & {
+      band?: false;
+    })
   | (Extract<RegressionParameterOptions, { method?: "linear" }> & {
       band?: false | RegressionBandOptions;
     })
@@ -9860,6 +9873,17 @@ Related types: [`RegressionCommonOptions`](#type-regressioncommonoptions) · [`R
 
 ```typescript
 type RegressionParameterOptions =
+  | {
+      method: "exp";
+      interval?: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+      predict?: RegressionPredictOptions;
+    }
   | {
       method?: "linear";
       degree?: never;
@@ -9898,7 +9922,7 @@ type RegressionParameterOptions =
 
 </details>
 
-Related types: [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval) · [`RegressionPredictOptions`](#type-regressionpredictoptions).
+Related types: [`RegressionPredictOptions`](#type-regressionpredictoptions) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval).
 
 ### `RegressionPlotBaseOptions` {#type-regressionplotbaseoptions}
 

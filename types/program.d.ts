@@ -426,6 +426,16 @@ export type DatasetRegressionTransform = {
       | { confidence: number; confidenceMethod?: never; level?: never }
     ))))
   | {
+      method: "exp";
+      interval: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+    }
+  | {
       method: "loess";
       span: number;
       robustIterations?: number;
@@ -4427,7 +4437,7 @@ export interface EncodeChannelsOptions {
   channels: AtLeastOne<EncodingChannelAssignments>;
 }
 
-export type RegressionMethod = "linear" | "polynomial" | "loess";
+export type RegressionMethod = "linear" | "polynomial" | "loess" | "exp";
 export type RegressionInterval = "mean" | "prediction";
 
 export interface RegressionBandOptions extends StrokeStyleDetails {
@@ -4470,6 +4480,17 @@ export interface CreateRegressionLineOptions extends StrokeStyleDetails {
 }
 
 type RegressionParameterOptions =
+  | {
+      method: "exp";
+      interval?: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+      predict?: RegressionPredictOptions;
+    }
   | {
       method?: "linear";
       degree?: never;
@@ -4525,6 +4546,9 @@ type RegressionCommonOptions = {
 };
 
 export type RegressionOptions = RegressionCommonOptions & (
+  | (Extract<RegressionParameterOptions, { method: "exp" }> & {
+      band?: false;
+    })
   | (Extract<RegressionParameterOptions, { method?: "linear" }> & {
       band?: false | RegressionBandOptions;
     })

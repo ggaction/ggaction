@@ -297,7 +297,7 @@
   },
   "/api/regression/": {
     "title": "Regression",
-    "description": "createRegression() layers grouped linear, polynomial, or LOESS fits over an existing quantitative point mark.",
+    "description": "createRegression() layers grouped linear, polynomial, LOESS, or exponential fits over an existing quantitative point mark.",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
   "/api/error-bars/": {

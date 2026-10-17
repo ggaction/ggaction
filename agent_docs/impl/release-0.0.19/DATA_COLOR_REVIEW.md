@@ -70,6 +70,29 @@ Stroke editor의 비분배 Omit 때문에 누락되던 기존 실행 가능한 �
   앞선 Basic budget 변경의 README·architecture canonical table 누락이었고 두 곳을
   동기화한 documentation-truth3개가 통과했다. 최종 누적 검사에서 재확인한다.
 
+### 구현 checkpoint — response-weighted exponential regression
+
+#196은 기존 regression method union에`exp`를 추가했다. Log response를 실제 y weight로
+계산하고, positive finite amplitude/rate·prediction 검사와 interval:false 정규화를
+데이터 action·facade·editor·follow/facet replay·persistence에 동일하게 적용했다.
+Renderer와 transform shape는 기존 소유자를 유지한다.
+
+- 독립 weighted raw moments와50자리 Decimal 교차검사 literal, noisy/정확한 지수,
+  극단 predictor와1e-300/1e300 response, missing·typed group·양수/옵션 오류,
+  band 제거/복원·원자성·follow/facet·snapshot을 검사했다. Focused8개와 기존 회귀46개 통과.
+- Primitive를 직접 그린400×300 Canvas 전체 RGBA가 public flow와 정확히 일치했다.
+  [실제 보존 source proof](exponential-source-proof.mjs)는 원본9행과 실제60개 sample 위치를
+  보존한다. [결과](exponential-source-evidence.json)는 원본 곡선 대비 최대 response오차
+  1.8474111129762605e-13, 좌표오차5.684341886080801e-13이며 전체360×360 RGBA는 정확히 같다.
+  고정 EPS 이내 수치 비교이며 pixel tolerance는 추가하지 않았다. 이미지를 관찰하지 않았다.
+- 전체 unit3,113개, docs120개, 실제 npm설치 runtime·TS·PNG/SVG·Full/Basic·MCP 통과.
+  Contracts531/533의 compact-card3바이트 초과와 측정 package 초과를 정정한14개가 통과했다.
+  Card의 모든 옵션을 유지하고 부정확했던 설명 문장만 짧게 다듬었으며3360 ceiling은 유지했다.
+- macOS/Node22.23.1/npm10.9.8에서 packed798,553/unpacked3,916,961,
+  Full393,012 gzip바이트를 측정했다. 최소 단계로799,000/3,917,000/394,000만 갱신하고
+  Basic191,000·SVG25,000·567entries는 유지했다. 측정과 이전 한도 통과를 혼동하지 않는다.
+- 새 exp literal의 realistic 최소5회·3실데이터셋 실제 증언과 최종 누적 검사는 남아 있다.
+
 ## 1. 공통 결정
 
 1. 일반 작성 호출은 기존 domain action을 유지한다. 함수의 핵심 옵션을 보통 세 개 이하로 작성할 수 있도록 focused edit를 사용한다. 중첩 AST의 필수 피연산자까지 세 개를 강제하여 의미를 손상시키지는 않는다.

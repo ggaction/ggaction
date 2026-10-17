@@ -280,7 +280,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 393,000 bytes |
+| `ggaction` | 394,000 bytes |
 | `ggaction/basic` | 191,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -345,6 +345,13 @@ npm10.9.8에서 압축 해제3,913,392바이트로 기존3,908,000바이트를 �
 파일567개·packed798,000, Full393,000 및 SVG25,000은 유지한다.
 지원 Node 버전의 압축 차이와 최종 통합 크기는 별도로 다시 측정한다.
 이 조정은 이전 한도 통과나 테스트 기준의 완화를 뜻하지 않는다.
+
+승인된 exponential regression checkpoint의 macOS/Node22.23.1/npm10.9.8
+패키지는 packed798,553 / unpacked3,916,961바이트로 기존 한도를 초과했다.
+각각 다음 최소1,000바이트 단계인799,000 /3,917,000으로 조정한다.
+모듈·entry 증가나 renderer 경계 변경은 없다. 설치한 Full browser bundle은393,012 gzip
+바이트로 이전393,000을12바이트 초과하여 Full만394,000으로 조정한다.
+Basic191,000/SVG25,000은 유지하며 Node/zlib 차이를 포함한 최종 통합 검증은 별도다.
 
 이 문서는 상태 소유권, 계층 간 의존성과 실행 흐름을 설명한다. 메서드별 매개변수·기본값·추론·지원 조합·오류는 아래 Current 계약이 소유하며 이 문서에 복제하지 않는다. 구현 상태와 direct/internal 분류는 [ACTION_INDEX.json](contract/ACTION_INDEX.json), 선언은 `types/`, 자동화된 value vocabulary는 owning runtime registry를 사용한다.
 

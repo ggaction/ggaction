@@ -203,7 +203,7 @@ function normalizeRegressionEdit(transform, patch) {
       delete base.span;
       delete base.robustIterations;
     }
-    if (method === "loess" || base.method === "loess") {
+    if (["loess", "exp"].includes(method) || ["loess", "exp"].includes(base.method)) {
       for (const key of [
         "confidenceMethod", "level", "confidence", "interval"
       ]) delete base[key];

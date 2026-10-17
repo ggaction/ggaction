@@ -804,7 +804,14 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `x`, `y`: Implemented. 필수 quantitative field 이름이다. finite numeric values가 필요하다.
 - `groupBy`: Implemented. optional field 이름이며 생략 시 하나의 regression을 만든다. 값의 first
   appearance order가 group order다.
-- `method`: Implemented `"linear" | "polynomial" | "loess"`. 기본값은 `"linear"`다.
+- `method`: Implemented `"linear" | "polynomial" | "loess" | "exp"`. 기본값은 `"linear"`다.
+- `exp`는 strictly positive finite y를 weight로 사용한 log(y)의 weighted least squares다.
+  각 group은 최소2행·varying x가 필요하다. `rate=cov_w(x,log(y))/var_w(x)`,
+  `logAmplitude=mean_w(log(y))-rate*mean_w(x)`와 `exp(logAmplitude+rate*x)`를 사용한다.
+  Centered/scaled arithmetic으로 계산하며 amplitude·rate와 모든 요청 prediction이
+  representable finite/positive여야 한다. Missing policy 이후0/음수 y는 제거하지 않고 거부한다.
+  생략/false interval은 `false`로 저장하고 CI columns를 만들지 않는다. Degree/span/robustIterations,
+  confidenceMethod/level/confidence 및 mean/prediction interval은 명시적으로 거부한다.
 - `degree`, `span`: Implemented method-specific parameter다. polynomial degree 기본값은 `2`, LOESS
   span 기본값은 `0.75`이며 다른 method와 함께 주면 오류다. Degree는 `1..32`다.
 - `robustIterations`: LOESS 전용 정수 `0..32`, 기본 `0`. 양수만 provenance에 저장한다.
@@ -833,7 +840,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createRegressionData`
 
-- Implemented: `createRegressionData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; groupBy?: FieldName } & ({ method?: "linear"; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "polynomial"; degree?: PositiveInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "loess"; span?: UnitIntervalExclusiveZero; robustIterations?: NonNegativeInteger }))`
+- Implemented: `createRegressionData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; groupBy?: FieldName } & ({ method?: "linear"; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "polynomial"; degree?: PositiveInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "loess"; span?: UnitIntervalExclusiveZero; robustIterations?: NonNegativeInteger } | { method: "exp"; interval?: false }))`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -842,7 +849,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`, `source`, `x`, `y`, `groupBy`
   - ✅ Covered: inferred/explicit source, grouped/ungrouped, missing fields, non-finite data와 degenerate groups.
 - `method`
-  - ✅ Covered: all three methods, unknown rejection, degree/span defaults and boundaries, deterministic provenance/output ordering.
+  - ✅ Covered: all four methods, unknown rejection, degree/span defaults and boundaries, deterministic provenance/output ordering.
+  - ✅ Covered: exponential response weighting, positive-pair checks, no-interval normalization,
+    prediction positions and immutable source/edit/facade/persistence lifecycle in `exponential-regression.test.js`.
 - `confidenceMethod`, `level`, `confidence`
   - ✅ Covered: Student-t/normal, default `0.95`, compatibility alias, alias conflict, invalid method와 0/1 boundaries.
   - ✅ Covered: near-zero positive level normalization과 numerical kernels have
