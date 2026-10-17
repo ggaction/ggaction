@@ -265,7 +265,8 @@ function serializeRect(state, graphicId, properties) {
     ["stroke", properties.stroke],
     ["stroke-width", formatNumber(strokeWidth)],
     ...strokeDetailAttributes(properties, strokeWidth),
-    ["opacity", formatNumber(requireOpacity(properties, graphicId))]
+    ["opacity", formatNumber(requireOpacity(properties, graphicId))],
+    ["style", properties.blend === "difference" ? "mix-blend-mode:difference" : undefined]
   ]);
 }
 
@@ -362,7 +363,8 @@ function serializePath(state, graphicId, properties) {
     ["stroke-dasharray", strokeDash.length === 0
       ? undefined
       : strokeDash.map(formatNumber).join(" ")],
-    ["opacity", formatNumber(requireOpacity(properties, graphicId))]
+    ["opacity", formatNumber(requireOpacity(properties, graphicId))],
+    ["style", properties.blend === "difference" ? "mix-blend-mode:difference" : undefined]
   ]);
 }
 
@@ -582,6 +584,10 @@ export function renderToSVG(program, options = {}) {
     resourceNamespace:
       resolvedOptions.resourceNamespace ?? resourceNamespace(graphicSpec)
   };
+  walkGraphicTreeEvents(graphicSpec, {
+    enter({object}) { if (object.properties?.blend === "difference") state.hasBlend = true; },
+    item({object}) { if (object.properties?.blend === "difference") state.hasBlend = true; }
+  });
   const body = serializeBody(
     graphicSpec,
     rootId,
@@ -605,6 +611,7 @@ export function renderToSVG(program, options = {}) {
     ["xmlns", SVG_NAMESPACE],
     ["width", formatNumber(width)],
     ["height", formatNumber(height)],
-    ["viewBox", `0 0 ${formatNumber(width)} ${formatNumber(height)}`]
+    ["viewBox", `0 0 ${formatNumber(width)} ${formatNumber(height)}`],
+    ["style", state.hasBlend ? "isolation:isolate" : undefined]
   ], `${accessible}${definitions}${body}`);
 }

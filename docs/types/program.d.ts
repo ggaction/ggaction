@@ -1240,7 +1240,7 @@ export interface SemanticLayer {
   readonly data?: string;
   readonly source?: string;
   readonly coordinate?: string;
-  readonly mark?: Readonly<{ type?: string; missing?: "error" | "break" | "skip"; [key: string]: unknown }>;
+  readonly mark?: Readonly<{ type?: string; missing?: "error" | "break" | "skip"; blend?: "difference"; [key: string]: unknown }>;
   readonly layout?: Readonly<{ mode?: ColorLayout }>;
   readonly derivedBindings?: Readonly<{ regression?: Readonly<{ mode: "follow"; roles: readonly ["data", "x", "y"] }> }>;
   readonly encoding?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
@@ -5047,6 +5047,7 @@ export class ChartProgram {
   }): ChartProgram;
   editBarMark(options: RectStyleDetails & {
     target?: string;
+    blend?: "normal" | "difference";
     missing?: "error" | "skip";
     fill?: FillPaint;
     opacity?: number;

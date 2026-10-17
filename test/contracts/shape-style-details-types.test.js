@@ -51,6 +51,15 @@ basic.createScatterPlot({x:"x",y:"y",point:{shape:"wedge"}});
 // @ts-expect-error directional shapes remain a closed named vocabulary
 p.editPointMark({shape:"arbitrary-arrow"});
 p.createTickMark(stroke).editTickMark(stroke);
+p.editBarMark({blend:"difference"}).editBarMark({blend:"normal"});
+// @ts-expect-error blend is a closed vocabulary
+p.editBarMark({blend:"multiply"});
+// @ts-expect-error blend refines an existing bar, not mark creation
+p.createBarMark({blend:"difference"});
+// @ts-expect-error other families do not expose bar compositing
+p.editPointMark({blend:"difference"});
+// @ts-expect-error Basic has no public bar editor
+basic.editBarMark({blend:"difference"});
 p.createBarPlot({ x: "category", y: { lower: "lo", upper: "hi" } });
 p.createBarPlot({ x: { lower: "lo", upper: "hi" }, y: "category" });
 // @ts-expect-error both channels cannot be intervals

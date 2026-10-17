@@ -18,20 +18,20 @@ import { validateFillPaint } from "../../../grammar/paint.js";
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const EDIT_OPTIONS = Object.freeze([
-  "target", "missing", "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
+  "target", "missing", "blend", "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
   ...STROKE_STYLE_PROPERTIES
 ]);
 
 export const editBarMark = /* @__PURE__ */ action(
   {
     op: "editBarMark",
-    description: "Edit whole-bar fill, opacity, and outline appearance."
+    description: "Edit whole-bar fill, opacity, outline, and compositing appearance."
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editBarMark");
     const styleDetails = requestedRectStyleDetails(args, "editBarMark");
     const changes = [
-      "missing", "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
+      "missing", "blend", "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!changes.some(key => Object.hasOwn(args, key))) {
@@ -66,13 +66,12 @@ export const editBarMark = /* @__PURE__ */ action(
       );
     }
 
-    const semantic = Object.hasOwn(args, "missing")
-      ? this.editSemantic({
-          property: `layer[${layer.id}].mark.missing`,
-          value: validateItemMissing(args.missing, "Bar missing")
-        })
-      : this;
-    const config = { ...semantic.markConfigs[layer.id] };
+    if (Object.hasOwn(args, "blend") && !["normal", "difference"].includes(args.blend)) {
+      throw new Error("Bar blend must be normal or difference.");
+    }
+    const missing = Object.hasOwn(args, "missing")
+      ? validateItemMissing(args.missing, "Bar missing") : undefined;
+    const config = { ...this.markConfigs[layer.id] };
     const appearance = { ...config.barAppearance };
     Object.assign(appearance, styleDetails);
     if (Object.hasOwn(args, "fill")) {
@@ -106,10 +105,22 @@ export const editBarMark = /* @__PURE__ */ action(
       );
     }
 
-    const next = semantic._withMarkConfig(layer.id, {
+    let semantic = missing === undefined ? this : this.editSemantic({
+      property: `layer[${layer.id}].mark.missing`, value: missing
+    });
+    if (Object.hasOwn(args, "blend")) {
+      if (args.blend === "difference") {
+        semantic = semantic.editSemantic({property: `layer[${layer.id}].mark.blend`, value: "difference"});
+      } else if (layer.mark.blend !== undefined) {
+        semantic = semantic.editSemantic({property: `layer[${layer.id}].mark.blend`, remove: true});
+      }
+    }
+    const editsAppearance = changes.some(key => key !== "missing" && key !== "blend" &&
+      Object.hasOwn(args, key));
+    const next = editsAppearance ? semantic._withMarkConfig(layer.id, {
       ...config,
       barAppearance: appearance
-    });
+    }) : semantic;
     const materialized = canMaterializeBar(next, layer)
       ? next.rematerializeBarMark({ id: layer.id })
       : next;

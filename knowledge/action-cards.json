@@ -7822,7 +7822,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit whole-bar appearance and rematerialize every concrete rectangle.",
-      "signature": "editBarMark(options: RectStyleDetails & { target?: string; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "editBarMark(options: RectStyleDetails & { target?: string; blend?: \"normal\" | \"difference\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "edit bar mark",
         "edit",
@@ -7922,6 +7922,11 @@
           "name": "target",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "\"difference\" | \"normal\" | undefined"
         },
         {
           "name": "missing",

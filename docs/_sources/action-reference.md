@@ -55,7 +55,7 @@ interface ChartProgramActions {
   createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   createBarMark(options?: { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: { target?: string; blend?: "normal" | "difference"; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   createArcMark(options?: { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
@@ -1333,10 +1333,12 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 ### `editBarMark`
 
 ```javascript
-editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
+editBarMark({ target?, blend?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit whole-bar appearance and rematerialize every concrete rectangle.
+Use `blend: "difference"` to composite each bar fill and outline once over earlier
+content; `blend: "normal"` restores ordinary painting. Omission preserves the current mode.
 `stroke: false` removes the visible outline; constant fill conflicts with a
 field-driven color encoding. [Marks](../api/marks.md)
 

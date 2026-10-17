@@ -376,7 +376,7 @@ function hasActiveStroke(properties) {
     (properties.strokeWidth ?? 0) > 0;
 }
 
-function primitiveBounds(type, properties = {}, profile) {
+export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
   const strokeExtent = hasActiveStroke(properties)
     ? properties.strokeWidth / 2
     : 0;
@@ -475,9 +475,9 @@ function objectBounds(graphicSpec, id, object, ancestors, x, y, profile) {
   }
   ancestors.add(id);
   let result = object.items === undefined
-    ? translateBounds(primitiveBounds(object.type, object.properties, profile), x, y)
+    ? translateBounds(resolvePrimitiveGraphicBounds(object.type, object.properties, profile), x, y)
     : unionBounds(object.items.map(item => translateBounds(
-        primitiveBounds(item.type ?? object.type, item.properties, profile),
+        resolvePrimitiveGraphicBounds(item.type ?? object.type, item.properties, profile),
         x,
         y
       )));
@@ -506,7 +506,7 @@ export function resolveConcreteGraphicBounds(graphicSpec, target, profile) {
   const [x, y] = ancestorOffset(graphicSpec, target);
   return requireFiniteBounds(found.kind === "item"
     ? translateBounds(
-      primitiveBounds(found.object.type ?? found.owner.type, found.object.properties, profile),
+      resolvePrimitiveGraphicBounds(found.object.type ?? found.owner.type, found.object.properties, profile),
       x,
       y
     )

@@ -323,8 +323,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 395,000 bytes |
-| `ggaction/basic` | 192,000 bytes |
+| `ggaction` | 397,000 bytes |
+| `ggaction/basic` | 194,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -2134,3 +2134,26 @@ Node24.21.0/npm11.19.0 staged package는569entries, packed803290/unpacked3932847
 Node24에서 Full394803/Basic191552 gzip bytes다. 공유 owner와 canonical table/README를
 Full395000·Basic192000으로 동기화하고 SVG25000은 유지했다. 1000bytes 최소 단계이며
 기존393000/191000을 통과한 것으로 보고하지 않는다.
+
+### 단일 glyph source의 명시적인 합성
+
+Bar editor의 optional semantic mark.blend 한 곳이 per-bar difference 의도를 소유한다.
+기존 materializer는 rect/path item에만 concrete blend를 명시적으로 물질화한다.
+Renderer는 이 concrete property만 소비하며 의미를 해석하지 않는다. SVG는 한 element의
+fill+stroke와 root isolation을 사용한다. Canvas의 private isolated owner는 기존 pure
+graphicBounds로 visible stroke bounds를 구하고 전체 capability/자원 preflight 후
+한 transparent surface를 재사용한다. Glyph source를 opacity1로 그린 뒤 destination에
+mark opacity와 difference를 한 번 적용한다. 공유 raster limits는 private limits owner다.
+DOM/Offscreen/native 동형 constructor와 Node PNG/PDF가 전달한 private createCanvas를
+사용하며 native import가 browser entry에 유입되지 않는다. Surface/plan은 ephemeral이고
+프로그램 저장 모양에는 backend object가 없다. PDF의 해당 glyph source만 raster다.
+독립 PDF8bit검사는 Poppler를 쓰며 renderer CI/release job에서 decoder를 설치한다.
+
+신규 private owner2개를 포함한 Node24.21.0/npm11.19.0 staged package는
+571entries, packed806317/unpacked3943154bytes다. 한도는571/807000/3944000으로
+최소1000bytes 단위 갱신했다. 기존569/804000/3933000 통과로 보고하지 않는다.
+
+같은 installed consumer의 Full/Basic gzip은 Node22에서395629/192616,
+Node24에서396420/193109bytes다. 공유 예산을 최소1000bytes 단위397000/194000으로
+갱신하고 SVG25000은 유지했다. README/current architecture table도 같은 owner 값이다.
+공개 검색은817417bytes이며 내용 축소 없이818000 한도를 적용했다.

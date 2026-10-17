@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:2536924f03faf920bf54903a6f62431db10e181dde2e98d1c327716c46fc4c70. Status: development. Runtime source: aa6e6f1dd35c9da20570b0970128615493a712ea. Release baseline: v0.0.13.
+Contract: sha256:653e358ea25bab0ef255035440c71c52b637c49cf19e163ae5e65affc4299afb. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/aa6e6f1dd35c9da20570b0970128615493a712ea/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/aa6e6f1dd35c9da20570b0970128615493a712ea/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -6462,7 +6462,7 @@ width, before or after assigning positions; otherwise the default band fraction
 uses the smallest observed time gap. Both orientations support ISO dates and
 explicit timestamp units.
 
-## `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}
+## `editBarMark({ target?, blend?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -6497,6 +6497,22 @@ Each value is a finite non-negative logical-pixel radius, clamped independently
 to half the smaller item side. An explicit zero keeps that corner square.
 Omitted corners use the global radius or zero. Edits retain unspecified
 overrides, so resetting the global radius alone does not clear them.
+
+## Blend with underlying content
+
+After creating a bar chart, call `program.editBarMark({ blend: "difference" })`.
+Each bar combines its fill and outline first, then applies its opacity and
+composites that source once over the existing plot, grid, and earlier marks.
+Bars retain their drawing order. The RGB operation is the absolute difference
+between the source and backdrop colors. This changes paint, never data or sizes.
+
+Use `blend: "normal"` to return to ordinary source-over painting. Omission preserves
+the current mode. This refinement belongs to the Full bar editor; creation,
+facade appearance objects, and other mark families do not accept it.
+
+SVG, browser Canvas, PNG, and PDF support the same concrete effect. PDF rasterizes
+only the opted-in bar source; other content remains vector. Isolated sources obey
+the [renderer allocation limits](./api/rendering/#browser-canvas).
 
 ## Related
 
@@ -9168,6 +9184,12 @@ Canvas and PNG preflight the complete allocation before changing the backing
 store: each physical side is limited to `32767` pixels and the complete image
 to `16777216` pixels.
 
+An explicit bar `blend: "difference"` also allocates one transparent glyph source
+within its visible stroke bounds. It obeys the same per-surface limits, including
+pixel ratio and nested clips, and is reused while painting individual bars.
+Unsupported custom Canvas contexts fail before resizing or clearing the chart;
+ordinary drawing does not require the extra surface/compositing capabilities.
+
 ## SVG output
 
 The browser-safe SVG entry returns a complete SVG document string without
@@ -9266,8 +9288,10 @@ Metadata is optional; it accepts only non-empty `title`, `author`, and `subject`
 strings plus an array of non-empty `keywords`.
 
 Text remains selectable/searchable PDF text. Paths, strokes, fills, clipping,
-opacity, dashes, and linear gradients remain vector output; the adapter does not
-rasterize the chart or accept `pixelRatio`. Nested Canvas translations apply to
+opacity, dashes, and linear gradients remain vector output. An explicit bar
+`blend: "difference"` rasterizes only that bar's fill-and-outline source for native
+PDF compositing; the rest of the page stays vector. The adapter does not
+rasterize the complete chart or accept `pixelRatio`. Nested Canvas translations apply to
 text as well as shapes, so concat children with different plot margins retain
 their distinct title and axis-label origins in PDF output.
 
@@ -20181,7 +20205,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+editBarMark(options: RectStyleDetails & { target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
@@ -20201,6 +20225,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `blend` | Optional / branch-dependent | `"difference" \| "normal" \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -20210,10 +20235,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
+editBarMark({ target?, blend?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit whole-bar appearance and rematerialize every concrete rectangle.
+Use `blend: "difference"` to composite each bar fill and outline once over earlier
+content; `blend: "normal"` restores ordinary painting. Omission preserves the current mode.
 `stroke: false` removes the visible outline; constant fill conflicts with a
 field-driven color encoding. [Marks](./api/marks/)
 
@@ -26944,7 +26971,7 @@ interface ChartProgramActions {
   createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: RectStyleDetails & { target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
@@ -37481,12 +37508,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/aa6e6f1dd35c9da20570b0970128615493a712ea/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/aa6e6f1dd35c9da20570b0970128615493a712ea/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39648,9 +39675,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:2536924f03faf920bf54903a6f62431db10e181dde2e98d1c327716c46fc4c70` |
+| Contract fingerprint | `sha256:653e358ea25bab0ef255035440c71c52b637c49cf19e163ae5e65affc4299afb` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
-| Runtime source commit | `aa6e6f1dd35c9da20570b0970128615493a712ea` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |
