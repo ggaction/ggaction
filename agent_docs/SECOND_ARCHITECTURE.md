@@ -337,6 +337,12 @@ Full 상한만 392000으로 조정하고 Basic190000과 SVG25000은 유지한다
 
 ## 실행 계약의 위치
 
+연도/floor 계산, native guide dash, 선택한 범례 block 편집을 통합한 첫0.0.19
+개발 artifact는 Node24.21.0/npm11.19.0에서568개 파일, 압축799,928바이트,
+압축 해제3,916,967바이트다. 동일 source를 stage/pack한 tarball을 직접 측정했다.
+기능 증가분에 따라 압축 상한은800,000, 압축 해제 상한은3,917,000바이트로
+최소1,000바이트 단위만 조정하며 이전 한도 통과로 보고하지 않는다.
+
 0.0.18 릴리스의 기능별 변경 내역을 추가한 패키지는 압축796,344바이트로
 이전796,000바이트 한도를 초과했다. Linux/Node24에서도797,971바이트를
 확인하여 압축 한도를798,000바이트로 조정하고,
@@ -2069,3 +2075,8 @@ Approved area fallback fills reuse `FillPaint` on the existing area mark configu
 승인된 연속 범례 body opacity는 creation/edit/persistence가 공유하는 closed grammar owner `grammar/legendGradient.js` 하나를 추가한다. 이에 따른 packed entry 한도는563에서564로만 조정한다. 최종 실측564entries·packed791,661bytes·unpacked3,888,408bytes는 기존792,000/3,900,000bytes 안에 있다. Browser gzip Full388,931bytes·Basic188,433bytes와 기존389,000/189,000bytes, SVG25,000bytes 한도는 유지한다. 생략 시 default graphic/SVG24경우의 byte identity와 명시적0/.7/1의 body-only materialization을 검증하며 renderer 추론은 추가하지 않는다.
 
 Corner item block은 기존 layout owner가 실제 title/item bounds와12px gap으로 측정한다. Group materialization의 ephemeral corner 의도를 같은 owner에 전달하며 state/schema나 renderer owner를 추가하지 않는다. 외부 SIDE의 fixed20/52 anchors는24조합에서 byte-identical이다. 이 수정 뒤 installed Full gzip389,027bytes가389,000 한도를27bytes 초과하므로 기존 최소1,000bytes 단위 정책에 따라 Full 한도만390,000으로 조정한다. Basic189,000/SVG25,000 및 package564entries/792,000packed/3,900,000unpacked 한도는 유지한다.
+
+### 첫 네 기능 통합의 검색 측정
+
+계산 두 옵션·Cartesian dash·범례 channel selector의 통합 검색 JSON은 815157bytes다.
+기존815000을 초과하므로 내용과 예제를 유지하고 공유 한도만 최소1000bytes 단위인816000으로 갱신했다.

@@ -24,8 +24,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 568, // Shared Cartesian guide dash grammar adds one private owner.
-  packedBytes: 799_000, // Preserve the supported Node24 release budget during integration.
-  unpackedBytes: 3_912_000 // Native dash API measured3911785bytes before integration.
+  packedBytes: 800_000, // Integrated computed/dash/legend selector: Node24/npm11 measured799928bytes.
+  unpackedBytes: 3_917_000 // Same exact staged artifact measured3916967bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
