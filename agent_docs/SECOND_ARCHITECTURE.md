@@ -1946,6 +1946,10 @@ Global 평균과 별개로 `scripts/coverage-policy.js`는 immutable update, are
 grammar, concrete graphic schema, Canvas dispatch와 PNG adapter에 critical-file floor를
 적용한다. Native Node coverage table은 Node 22의 TAP `#` prefix와 Node 23의 `ℹ` prefix를
 모두 받아 source-relative path로 parse하며 parser와 failure policy 자체도 unit test한다.
+Legend grammar와 facet guide scaffolding은 prefix family로 새 모듈에도 자동 적용한다.
+새 결합/축/용량 정책과 facet parent 소유권의 핵심 owner에는 더 엄격한 별도 floor를
+적용한다. 결합 sample의 연결 순서와 잘못된 물리 면적, 중복 point ownership은 독립
+정책 회귀로 검증하며 global/기존 critical floor를 낮추지 않는다.
 Pure numeric grammar는 고정 fixture 외에도 monotonic mapping,
 histogram count conservation, non-negative unit-area density, stable group order와 regression
 interval containment을 deterministic invariant로 검증한다.
