@@ -71,3 +71,11 @@ npm run test:package
 preflight stack에 viewport frame이 없던 오류를 재현했다. 항상 render viewport base frame을
 유지해 고쳤다. 자원 한도/새 API/저장 의미는 바꾸지 않는다. 관련13개와 실제 Chromium32조합·
 PDF8조합을 재실행해 모두 통과했다.
+
+## 설치 패키지의 세 브라우저 검증
+
+기존 backend compatibility owner에 공개 bar flow의 독립 source/literal SVG 대조를
+추가했다. Chromium·Firefox·WebKit 각각64조합(4배경×4opacity×2outline×DPR1/2)에서
+Canvas 전체RGBA가 독립 native source와, SVG 전체RGBA가 독립 literal SVG와 정확히
+일치했다. Runtime package는 한 번 packed한 같은 tarball을 사용했고 각 설치 consumer는
+격리했다. 이는 엔진 사이의 AA 픽셀이 서로 같다는 주장이 아니다. 새 tolerance는 없다.
