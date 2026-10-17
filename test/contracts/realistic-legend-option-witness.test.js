@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {chart} from '../../src/index.js';
 import {realisticRecordView} from '../support/scenarios/realistic-data.js';
+import {appendFacadeLegendCombinations} from '../support/scenarios/realistic-facade-legend-combinations.js';
 import {appendLegendCombinationLifecycle} from '../support/scenarios/realistic-legend-combination-lifecycle.js';
 
 function at(value,path){return path.split('.').reduce((value,key)=>value?.[key],value);}
@@ -47,4 +48,13 @@ test('new legend option and selector witnesses retain five calls and three authe
   }
  }
  assert.deepEqual([...stats].filter(([,v])=>v.calls<5||v.datasets.size<3).map(([id,v])=>`${id}: ${v.calls}/${v.datasets.size}`),[]);
+});
+
+for(const dataset of ['tt-tour-de-france-winners','tt-london-marathon-winners','tt-penguins']) test(`point-owned facade combinations execute five times on ${dataset}`,()=>{
+ const view=realisticRecordView(dataset,{rowLimit:24});
+ const p=chart().createCanvas({width:3000,height:2200,margin:700}).createData({id:'analysisRows',values:view.rows});
+ for(let repetition=0;repetition<5;repetition++) for(const action of ['createScatterPlot','createPolarScatterPlot','createStripPlot','createBeeswarmPlot','createRaincloudPlot']) {
+  const result=appendFacadeLegendCombinations(p,{action,xField:'orderNumeric',yField:'value',numberField:'value',categoryField:'category',modes:action==='createPolarScatterPlot'||action==='createRaincloudPlot'?['size-shape']:['size-shape','color-size']});
+  assert.deepEqual(result.semanticSpec.datasets.find(d=>d.id==='analysisRows').values,view.rows);
+ }
 });
