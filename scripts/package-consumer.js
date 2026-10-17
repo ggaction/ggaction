@@ -195,6 +195,24 @@ async function testNodeConsumer(directory) {
       assert.ok((await renderToPNGBuffer(translucent)).buffer.length>100);
     }
 
+    for(const factory of [chart,basicChart]){
+      const combined=factory().createCanvas({width:1000,height:800,margin:250})
+        .createData({values:[{x:0,y:0,v:0},{x:1,y:1,v:10}]})
+        .createScatterPlot({x:"x",y:"y",guides:false})
+        .encodeColor({field:"v",fieldType:"quantitative",scale:{domain:[0,10],range:["black","white"]}})
+        .encodeSize({field:"v",scale:{domain:[0,10],range:[Math.PI,9*Math.PI]}})
+        .createLegend({combine:"color-size",values:[0,5,10]});
+      assert.deepEqual(combined.graphicSpec.objects.colorSizeLegendSymbols.items.map(item=>item.properties.radius),[1,Math.sqrt(5),3]);
+      assert.deepEqual(deserializeProgram(serializeProgram(combined)).graphicSpec,combined.graphicSpec);
+      assert.ok((await renderToPNGBuffer(combined)).buffer.length>100);
+      if(factory===chart){
+        const edited=combined.editLegendSymbols({channel:"color",symbol:{opacity:0.7}})
+          .editLegendBlock({target:"scatterPlot",channel:"size",labelMap:[{value:5,label:"middle"}],clipHeight:2});
+        assert.deepEqual(deserializeProgram(serializeProgram(edited)).graphicSpec,edited.graphicSpec);
+        const split=edited.editLegend({combine:"separate"});assert.ok(split.guideConfigs.legend.gradient);assert.ok(split.guideConfigs.legend.size);
+      }
+    }
+
     const extracted = chart().createCanvas({ width: 440, height: 340, margin: 20 })
       .createData({ values: [{ item: { value: 1 }, text: "1.5%" }, { text: "2%" }] })
       .createComputedData({ id: "nested", as: "x", expression: { op: "getPath", operand: { field: "item" }, path: ["value"] } })

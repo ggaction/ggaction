@@ -18856,7 +18856,7 @@
         {
           "name": "combine",
           "required": false,
-          "type": "\"separate\" | \"size-shape\" | undefined"
+          "type": "\"color-size\" | \"separate\" | \"size-shape\" | undefined"
         },
         {
           "name": "representation",
@@ -19107,7 +19107,7 @@
         {
           "name": "combine",
           "required": false,
-          "type": "\"separate\" | \"size-shape\" | undefined"
+          "type": "\"color-size\" | \"separate\" | \"size-shape\" | undefined"
         },
         {
           "name": "representation",

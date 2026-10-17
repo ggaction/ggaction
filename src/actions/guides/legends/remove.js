@@ -15,6 +15,7 @@ const OPTIONS = Object.freeze(["target", "channels"]);
 function legendKindChannels(kind, config) {
   if (["series", "color", "stroke"].includes(kind)) return config.channels;
   return {
+    colorSize: ["color","size"],
     size: ["size"],
     gradient: ["color"],
     interval: ["color"],
@@ -38,7 +39,7 @@ function resolveRequestedRemoval(program, target, channels) {
     if (overlap.length === 0) continue;
     kinds.push(kind);
     for (const channel of overlap) matched.add(channel);
-    if (overlap.length !== owned.length && config.combine !== "size-shape") {
+    if (overlap.length !== owned.length && !["size-shape","color-size"].includes(config.combine)) {
       partial = { kind, config, channels: owned.filter(channel => !requested.has(channel)) };
     }
   }
@@ -62,7 +63,7 @@ function resolveRequestedRemoval(program, target, channels) {
 export function removeOwnedColorLegends(program, target) {
   const kinds = Object.entries(program.guideConfigs.legend ?? {})
     .filter(([kind, config]) => config?.target === target && (
-      config.channels?.includes("color") || ["gradient", "interval"].includes(kind)
+      config.channels?.includes("color") || ["gradient", "interval", "colorSize"].includes(kind)
     )).map(([kind]) => kind);
   return kinds.length === 0 ? program : removeLegendKinds(program, kinds);
 }

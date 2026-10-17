@@ -2249,3 +2249,14 @@ limits401800/197400 cover only that measured growth. SVG remains25000bytes.
 
 Final authored-anchor/reset handling measures Full401927/Basic197371gzipbytes;
 Full ceiling402000 and Basic197400 retain the measured next small steps.
+
+The quantitative color-size combined mode adds one closed combine literal to
+the existing cards. Measured createLegend3524/editLegend3855bytes require only
+3530/3860byte card ceilings; all other cards remain3360bytes.
+
+The same combined numeric legend adds two packed source owners (583entries),
+measured820007packed/4000493unpackedbytes. Narrow ceilings become
+820500/4002000; Full404727 and Basic199306gzipbytes use405000/199500.
+The complete searchable option inventory measures821151bytes (ceiling821200).
+SVG remains25000gzipbytes; no public options, card fields or coverage floors
+are removed.

@@ -4,8 +4,8 @@ import { legendResourcePolicy } from "../../materialization/guides/resources.js"
 import { assertGuideOptions, guideConflict, sameGuideValue } from "./reuse.js";
 
 function compatibleLegend(program, kind, requested, existing, explicit) {
-  const expectedScales = requested.scales ?? [requested.scale];
-  const actualScales = existing.scales ?? [existing.scale];
+  const expectedScales = kind === "colorSize" ? [requested.colorScale,requested.sizeScale] : requested.scales ?? [requested.scale];
+  const actualScales = kind === "colorSize" ? [existing.colorScale,existing.sizeScale] : existing.scales ?? [existing.scale];
   if (!sameGuideValue(expectedScales, actualScales) ||
     !sameGuideValue(requested.channels, existing.channels)) {
     guideConflict(`${kind} legend uses different channels or scales`);
@@ -18,7 +18,7 @@ function compatibleLegend(program, kind, requested, existing, explicit) {
     requested.symbol.layers.map(layer => layer.type), existing.symbol?.layers?.map(layer => layer.type)
   )) guideConflict(`${kind} legend uses a different symbol recipe`);
   if (explicit.representation !== undefined && (requested.representation ?? "gradient") !== (existing.representation ?? "gradient")) guideConflict(`${kind} legend uses a different color representation`);
-  if (requested.representation === "symbols") {
+  if (requested.representation === "symbols" || kind === "colorSize") {
     if (explicit.values !== undefined && !sameGuideValue(requested.sampling.values, existing.sampling?.values)) guideConflict(`${kind} legend uses different exact samples`);
     if (explicit.count !== undefined && (existing.sampling?.mode !== "auto" || requested.sampling.count !== existing.sampling?.count)) guideConflict(`${kind} legend uses a different sample count`);
   }

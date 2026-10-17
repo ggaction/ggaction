@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 581, // Adds the three shared sample-window policy/materialization owners.
-  packedBytes: 815_500, // Sample-window artifact measured815276bytes.
-  unpackedBytes: 3_983_000 // Sample-window artifact measured3982153bytes.
+  entries: 583, // Adds the pure color-size eligibility and private materializer owners.
+  packedBytes: 820_500, // Combined numeric legend artifact measured820007bytes.
+  unpackedBytes: 4_002_000 // Combined numeric legend artifact measured4000493bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

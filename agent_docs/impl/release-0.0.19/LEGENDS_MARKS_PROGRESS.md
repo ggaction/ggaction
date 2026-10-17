@@ -189,3 +189,29 @@
   Stable symbol-window uses area5000/full circle, H30 crop, radius15 comparator;
   legend-appearance has exact state+pixels and both examples use shared browser
   host/status/accessibility. No image was inspected by eye or VLM.
+
+
+## Quantitative combined legend source checkpoint
+
+- Added the explicit color-size numeric owner with independent continuous scale
+  evaluation, one sampler, aliased color/size block selection, focused/whole/block
+  edits, numeric labels, windows, local placement and gradient+size split/reset.
+  Persistence recomputes eligibility and both live scale references; incompatible
+  shape/field/grain/domain edits and mapped fill/area overrides reject atomically.
+- Full unit3183/3183 PASS, then the sampled-color-to-combined edge passed its
+  focused regression. Two additional pure eligibility/symbol tests also exercise
+  malformed grains, transforms, endpoints and appearance. Installed Full/Basic
+  runtime/type/renderer/MCP/tutorial suite PASS, with final source recheck below.
+- Stable combined-legends numeric0/5/10 target independently specifies black,
+  gray and white samples with radii1/2/3. Graph/order/native calls/fullRGBA exact,
+  Chromium DOM/Offscreen x3DPR x3background=18 exact, SVG all6circle positions
+  exact, independently drawn native PDF exact. Three real datasets x5 actual
+  lifecycle repetitions PASS (canonical exhaustive corpus closure remains pending).
+- Restored root's completed bar-compositing slice from8bfd70ff, preserving its
+  6862f486 native trace comparison. No bar source behavior changed here.
+- Current docs119/120 before source commit; sole failure is the new canonical
+  example's source URL not yet existing in this branch commit. Provenance is
+  regenerated immediately after commit. No eye/VLM image inspection performed.
+- Pending overall scope: canonical full legend-appearance layout target, parent
+  color-size integration, and exhaustive realistic option/literal witnesses.
+  Named-shapes stable target is delegated by ROOT to data/color owner.

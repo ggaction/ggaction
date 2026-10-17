@@ -1,0 +1,41 @@
+import {chart} from '../../../src/index.js';
+// Independent physical target: x10/205/400, y290/150/10, areas π/4π/9π.
+// One 6px sample slot, 12px label gap and 18px row pitch. The ordinary
+// side group aligns its occupied title top at10 and left at400+30.
+export function createPrimitiveProgram(){
+ return chart().createCanvas({width:600,height:300,margin:{left:10,right:200,top:10,bottom:10}})
+  .createGraphics({id:'plot-main',type:'collection',parent:'canvas'})
+  .createGraphics({id:'scatterPlot',type:'circle',parent:'plot-main',length:3})
+  .editGraphics({target:'scatterPlot',property:'x',value:[10,205,400]})
+  .editGraphics({target:'scatterPlot',property:'y',value:[290,150,10]})
+  .editGraphics({target:'scatterPlot',property:'radius',value:[1,2,3]})
+  .editGraphics({target:'scatterPlot',property:'fill',value:['#000000','#808080','#ffffff']})
+  .createGraphics({id:'colorSizeLegendSymbols',type:'circle',parent:'canvas',length:3})
+  .editGraphics({target:'colorSizeLegendSymbols',property:'x',value:433})
+  .editGraphics({target:'colorSizeLegendSymbols',property:'y',value:[48.5,66.5,84.5]})
+  .editGraphics({target:'colorSizeLegendSymbols',property:'radius',value:[1,2,3]})
+  .editGraphics({target:'colorSizeLegendSymbols',property:'fill',value:['#000000','#808080','#ffffff']})
+  .editGraphics({target:'colorSizeLegendSymbols',property:'stroke',value:['#000000','#808080','#ffffff']})
+  .editGraphics({target:'colorSizeLegendSymbols',property:'strokeWidth',value:0})
+  .editGraphics({target:'colorSizeLegendSymbols',property:'opacity',value:1})
+  .createGraphics({id:'colorSizeLegendLabels',type:'text',parent:'canvas',length:3})
+  .editGraphics({target:'colorSizeLegendLabels',property:'x',value:448})
+  .editGraphics({target:'colorSizeLegendLabels',property:'y',value:[42.5,60.5,78.5]})
+  .editGraphics({target:'colorSizeLegendLabels',property:'text',value:['0','5','10']})
+  .editGraphics({target:'colorSizeLegendLabels',property:'fontSize',value:12})
+  .editGraphics({target:'colorSizeLegendLabels',property:'fontFamily',value:'sans-serif'})
+  .editGraphics({target:'colorSizeLegendLabels',property:'fontWeight',value:'normal'})
+  .editGraphics({target:'colorSizeLegendLabels',property:'fill',value:'#334155'})
+  .editGraphics({target:'colorSizeLegendLabels',property:'textAlign',value:'left'})
+  .editGraphics({target:'colorSizeLegendLabels',property:'textBaseline',value:'top'})
+  .createGraphics({id:'colorSizeLegendTitle',type:'text',parent:'canvas'})
+  .editGraphics({target:'colorSizeLegendTitle',property:'x',value:430})
+  .editGraphics({target:'colorSizeLegendTitle',property:'y',value:10})
+  .editGraphics({target:'colorSizeLegendTitle',property:'text',value:'Value'})
+  .editGraphics({target:'colorSizeLegendTitle',property:'fontSize',value:13})
+  .editGraphics({target:'colorSizeLegendTitle',property:'fontFamily',value:'sans-serif'})
+  .editGraphics({target:'colorSizeLegendTitle',property:'fontWeight',value:600})
+  .editGraphics({target:'colorSizeLegendTitle',property:'fill',value:'#0f172a'})
+  .editGraphics({target:'colorSizeLegendTitle',property:'textAlign',value:'left'})
+  .editGraphics({target:'colorSizeLegendTitle',property:'textBaseline',value:'top'});
+}
