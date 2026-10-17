@@ -290,10 +290,22 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegend`
 
-- Signature: `editLegend({ target?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
+- Signature: `editLegend({ target?, channel?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
 - `target` selects an existing logical legend by mark ID. It may be omitted only when exactly one target owns all
   active blocks; independent targets are ambiguous.
-- At least one non-target change is required. Mark encodings and scale bindings remain unchanged.
+- At least one non-selector change is required. Mark encodings and scale bindings remain unchanged.
+- `channel?: LegendChannel` selects exactly one existing block of the resolved target. It cannot accompany
+  `channels`, `blockLayout`, or `at`; it never creates, removes, or replaces content. Combined member aliases
+  select the same block. Missing or ambiguous channels fail atomically, and a channel cannot disambiguate
+  multiple mark targets. All five focused editors forward this selector through the same family validation.
+- Selected edits do not propagate categorical typography to a sibling size block. The current effective size
+  typography is preserved and detached from legacy shared inheritance before a selected categorical or size
+  edit. Omitted selectors retain existing sharing and priority behavior. Selectors remain trace inputs;
+  the changed family configuration is the only stored owner.
+- Evidence: `test/unit/actions/guides/legend-focused-channel.test.js` covers focused/whole equivalence,
+  sibling typography, absent/ambiguous selectors, persistence and data/scale/Canvas replay.
+- The complete generated `editLegend` card retains all selector literals under a 3,600-byte budget;
+  other action cards retain the existing 3,360-byte budget.
 - Explicit `channels`는 target 전체의 최종 non-empty content 집합이다. 기존 createLegend의 compatible subset만 허용하며 child selector가 아니다. Omission은 기존 content를 유지한다. 같은 kind의 config/count/title visibility를 보존하고 categorical color↔series revision은 styles/order/compatible explicit recipe를 보존한다. 새 block은 생성 기본값을 사용하고 제외된 block과 그 설정은 제거한다. 같은 호출의 style/layout patch는 최종 content에 적용한다. 다른 target의 occupied resource나 unsupported combination은 오류다.
 - 새 categorical+size의 size block은 위치와 무관하게 categorical labels/titleStyle을 상속한다. Default title color는 두 block 모두#334155다. 기존 standalone size를 결합하면 저장된 자체 style을 보존하며 standalone default title#0f172a는 유지한다. Size label offset default12 및 명시 shared offset도 유지한다. Evidence: `test/unit/actions/guides/combined-legend-appearance.test.js`, `test/contracts/combined-legend-appearance.test.js`, `test/unit/actions/guides/legend-family-lifecycle.test.js`.
   Group placement에 opt-in하거나 edge/corner/free anchor를 바꿔도 기존 typography 상속은 유지하며, placement 상속과 독립적이다. Label/title의 color/fontSize/fontFamily/fontWeight 및 symbol paint는 Canvas/scale/data/persistence replay에도 보존한다. Evidence: `test/unit/actions/guides/grouped-legend-appearance.test.js`.
@@ -323,7 +335,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ### Formal values — `editLegend`
 
-- Implemented: the signature above with `title?: NonEmptyString | "auto" | false`, `channels?: readonly LegendChannel[]` for whole-target replacement, and `values?: readonly number[] | "auto"` for standalone sampled content.
+- Implemented: the signature above with `channel?: LegendChannel`, `title?: NonEmptyString | "auto" | false`, `channels?: readonly LegendChannel[]` for whole-target replacement, and `values?: readonly number[] | "auto"` for standalone sampled content.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -428,7 +440,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendLayout`
 
-- Signature: `editLegendLayout({ target?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, itemGap? })`.
+- Signature: `editLegendLayout({ target?, channel?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, itemGap? })`.
 - Layout-only facade이며 최소 한 layout change를 요구하고 wrapped `editLegend`를 호출한다.
 
 ### Formal values — `editLegendLayout`
@@ -444,7 +456,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendLabels`
 
-- Signature: `editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })`.
+- Signature: `editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })`.
 - Label style/format만 `editLegend({ labels })`로 전달한다. 최소 한 change가 필요하다. `format`은 continuous
   family에서만 지원하고 explicit token의 결과가 겹치더라도 그대로 유지한다.
 
@@ -462,7 +474,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendTitle`
 
-- Signature: `editLegendTitle({ target?, title?, color?, fontSize?, fontFamily?, fontWeight?, align? })`.
+- Signature: `editLegendTitle({ target?, channel?, title?, color?, fontSize?, fontFamily?, fontWeight?, align? })`.
 - `title`은 `NonEmptyString | "auto" | false`; 나머지는 `titleStyle`로 전달한다.
 
 ### Formal values — `editLegendTitle`
@@ -478,7 +490,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendSymbols`
 
-- Signature: `editLegendSymbols({ target?, symbol?, count?, gradient?, order?, overflow? })`.
+- Signature: `editLegendSymbols({ target?, channel?, symbol?, count?, gradient?, order?, overflow? })`.
 - Legend kind별 기존 symbol/count/gradient validation을 그대로 사용한다.
 
 ### Formal values — `editLegendSymbols`
@@ -494,7 +506,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendBorder`
 
-- Signature: `editLegendBorder({ target?, border })`.
+- Signature: `editLegendBorder({ target?, channel?, border })`.
 - `border`는 `boolean | LegendBorderOptions`이며 required다.
 
 ### Formal values — `editLegendBorder`
@@ -507,6 +519,8 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - ✅ Covered: partial border merge, invalid boundary and exact Gate parity.
 - No proposal: border removal은 `border: false`로 표현한다.
 - Evidence: `test/unit/actions/guides/legend-edit-actions.test.js` and Roadmap 3 focused-editing Gate.
+
+Focused actions accept `channel?: LegendChannel` with the same existing-block selection and errors as `editLegend`.
 
 Focused actions는 별도 stored schema를 만들지 않고 `editLegend`의 target resolution, closed kind policy,
 config normalization과 rematerialization을 공유한다. Evidence:

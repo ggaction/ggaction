@@ -36,6 +36,25 @@ Shared facet legends align with the top of the translated child plots.
 The horizontal `offset` still controls the gap beside the plot.
 Top, bottom, and in-plot corner positions keep their own alignment rules.
 
+## Editing one block
+
+Use the optional singular `channel` on `editLegend` or a focused editor to select one existing block:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+// Fragment: program already owns color and opacity legends for one point mark.
+program.editLegendLabels({ channel: "opacity", fontSize: 10 });
+```
+
+This changes only the selected block. It preserves sibling typography and sample values. Specify `target`
+when more than one mark owns legends. Singular `channel` cannot accompany plural `channels`, which replaces
+whole-target content, or whole-group `blockLayout`/`at` controls.
+
 ## Supported legend families
 
 <!-- action-capabilities:legends:start -->

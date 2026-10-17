@@ -5052,13 +5052,15 @@ Related types: [`LegendChannel`](#type-legendchannel) · [`CategoryValue`](#type
 ```typescript
 export interface EditLegendBorderOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   border: boolean | LegendBorderOptions;
 }
 ```
 
 </details>
 
-Related types: [`LegendBorderOptions`](#type-legendborderoptions).
+Related types: [`LegendChannel`](#type-legendchannel) · [`LegendBorderOptions`](#type-legendborderoptions).
 
 ### `EditLegendLabelsOptions` {#type-editlegendlabelsoptions}
 
@@ -5068,12 +5070,14 @@ Related types: [`LegendBorderOptions`](#type-legendborderoptions).
 ```typescript
 export interface EditLegendLabelsOptions extends LegendTextOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
 }
 ```
 
 </details>
 
-Related types: [`LegendTextOptions`](#type-legendtextoptions).
+Related types: [`LegendTextOptions`](#type-legendtextoptions) · [`LegendChannel`](#type-legendchannel).
 
 ### `EditLegendLayoutOptions` {#type-editlegendlayoutoptions}
 
@@ -5083,6 +5087,8 @@ Related types: [`LegendTextOptions`](#type-legendtextoptions).
 ```typescript
 export interface EditLegendLayoutOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   layout?: "edge" | "legacy-bottom";
   /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
@@ -5106,6 +5112,8 @@ export interface EditLegendLayoutOptions {
 
 </details>
 
+Related types: [`LegendChannel`](#type-legendchannel).
+
 ### `EditLegendOptions` {#type-editlegendoptions}
 
 <details markdown="1">
@@ -5114,6 +5122,8 @@ export interface EditLegendLayoutOptions {
 ```typescript
 export interface EditLegendOptions
   extends Omit<LegendOptions, "title" | "values" | "titleStyle"> {
+  /** Select one existing block; cannot accompany channels. */
+  channel?: LegendChannel;
   titleStyle?: LegendTitleStyleEditOptions;
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
@@ -5125,7 +5135,7 @@ export interface EditLegendOptions
 
 </details>
 
-Related types: [`LegendOptions`](#type-legendoptions) · [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions).
+Related types: [`LegendOptions`](#type-legendoptions) · [`LegendChannel`](#type-legendchannel) · [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions).
 
 ### `EditLegendSymbolsOptions` {#type-editlegendsymbolsoptions}
 
@@ -5135,6 +5145,8 @@ Related types: [`LegendOptions`](#type-legendoptions) · [`LegendTitleStyleEditO
 ```typescript
 export interface EditLegendSymbolsOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   symbol?: LegendSymbolRecipe;
   count?: number;
   gradient?: { length?: number; thickness?: number; opacity?: number };
@@ -5143,7 +5155,7 @@ export interface EditLegendSymbolsOptions {
 
 </details>
 
-Related types: [`LegendSymbolRecipe`](#type-legendsymbolrecipe).
+Related types: [`LegendChannel`](#type-legendchannel) · [`LegendSymbolRecipe`](#type-legendsymbolrecipe).
 
 ### `EditLegendTitleOptions` {#type-editlegendtitleoptions}
 
@@ -5153,13 +5165,15 @@ Related types: [`LegendSymbolRecipe`](#type-legendsymbolrecipe).
 ```typescript
 export interface EditLegendTitleOptions extends LegendTitleStyleEditOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   title?: string | "auto" | false;
 }
 ```
 
 </details>
 
-Related types: [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions).
+Related types: [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions) · [`LegendChannel`](#type-legendchannel).
 
 ### `EditMarkLabelPlacementOptions` {#type-editmarklabelplacementoptions}
 

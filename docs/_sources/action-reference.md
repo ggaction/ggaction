@@ -2659,10 +2659,13 @@ Continuous and combined sampled legends retain their existing edge-only contract
 
 ```javascript
 editLegend({
-  target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
+  target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
   title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow?
 })
 ```
+
+Singular `channel` selects one existing block without changing sibling typography. It cannot
+accompany `channels`, `blockLayout`, or `at`. A channel never disambiguates mark targets.
 
 Partially edit one existing legend. Categorical `overflow` can be replaced or reset
 with `false`; data/scale/order revisions recompute the hidden count and remove stale
@@ -2715,15 +2718,15 @@ the category, symbol, item slot, and typed identity remain.
 
 ```javascript
 editLegendLayout({
-  target?, position?, layout?, align?, direction?, columns?, offset?,
+  target?, channel?, position?, layout?, align?, direction?, columns?, offset?,
   titlePosition?, itemGap?
 })
-editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
+editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
-  target?, title?, color?, fontSize?, fontFamily?, fontWeight?, align?
+  target?, channel?, title?, color?, fontSize?, fontFamily?, fontWeight?, align?
 })
-editLegendSymbols({ target?, symbol?, count?, gradient? })
-editLegendBorder({ target?, border })
+editLegendSymbols({ target?, channel?, symbol?, count?, gradient? })
+editLegendBorder({ target?, channel?, border })
 ```
 
 Edit one legend component without constructing the nested options accepted by

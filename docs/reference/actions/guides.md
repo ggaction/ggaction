@@ -1456,6 +1456,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `LegendTitleStyleEditOptions \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
@@ -1486,10 +1487,13 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 editLegend({
-  target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
+  target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
   title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow?
 })
 ```
+
+Singular `channel` selects one existing block without changing sibling typography. It cannot
+accompany `channels`, `blockLayout`, or `at`. A channel never disambiguates mark targets.
 
 Partially edit one existing legend. Categorical `overflow` can be replaced or reset
 with `false`; data/scale/order revisions recompute the hidden count and remove stale
@@ -1520,7 +1524,7 @@ dependent replay that would invalidate a stored exact sample fails atomically.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editLegendBlock(options: EditLegendBlockOptions): ChartProgram;
@@ -1592,6 +1596,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
@@ -1629,6 +1634,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -1662,6 +1668,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -1695,6 +1702,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
@@ -1725,6 +1733,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `border` | Required | `boolean \| LegendBorderOptions` |
 
 </details>
@@ -3057,15 +3066,15 @@ See [Coordinates](../../api/coordinates.md) and
 
 ```javascript
 editLegendLayout({
-  target?, position?, layout?, align?, direction?, columns?, offset?,
+  target?, channel?, position?, layout?, align?, direction?, columns?, offset?,
   titlePosition?, itemGap?
 })
-editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
+editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
-  target?, title?, color?, fontSize?, fontFamily?, fontWeight?, align?
+  target?, channel?, title?, color?, fontSize?, fontFamily?, fontWeight?, align?
 })
-editLegendSymbols({ target?, symbol?, count?, gradient? })
-editLegendBorder({ target?, border })
+editLegendSymbols({ target?, channel?, symbol?, count?, gradient? })
+editLegendBorder({ target?, channel?, border })
 ```
 
 Edit one legend component without constructing the nested options accepted by
