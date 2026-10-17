@@ -39,3 +39,17 @@
 검색825000은 실제 누적값에서만 갱신했다. Bar의 설치된 Chromium/Firefox/WebKit
 각64조합도 독립native/SVG 기준과 전체RGBA가 정확히 일치했다.
 이 checkpoint의 최종 누적 installed consumer와 전체 inventory는 나머지 기능 통합에서 검증한다.
+
+## 26개 source checkpoint
+
+#206 parent shared legend와 union object/array traversal 복원을 합친4135e971의 unit3234/3234가
+통과했다. Parser는 기존 옵션을 삭제하지 않고 두 branch를 함께 읽는다. 이 결합의 inventory는
+277publicactions/16903paths/12250required/4653redacted-array이며 렌더 요구를 제외한ledger21740다.
+기존 정책을 보존한 32개 focused contracts, 검색 관련31개 docs 교정 검사도 통과했다.
+
+Normalcontracts567개 중4개는 결합 metadata/registry/budget/discovery 불일치였다. architecture중복제목,
+실측 package587/831438/4048672와 검색827188의 최소예산, 실제 realistic파일24개 등록은 교정했다.
+Bar/legend appearance의 canonical registry/pair 연결은 각 owner가 완성한다. 전체coverage의 global값은
+95.29lines/92.44branches/98.62functions이지만 이 run은 위 기존4검사실패로 PASS가 아니다.
+별도critical 확인은 legend transition.functions96.30과 transforms.functions98이 각100floor에 부족했다.
+각 owner가 실제 회귀를 보강하며 임계값은 내리지 않는다. 최종 combined전체검사는 여전히 필요하다.
