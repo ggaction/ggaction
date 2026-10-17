@@ -120,7 +120,11 @@ function assertSharedLegendFits(program, id, layout, plot, occupiedGroup) {
   return program;
 }
 
-function attachAuthoredParentLegend(program, prepared, layout) {
+function attachAuthoredParentLegend(program, prepared, layout, synchronizeColorSizeMeaning) {
+  const meaning = prepared.source.semanticSpec.guides.legend?.colorSize;
+  if (meaning !== undefined || program.semanticSpec.guides.legend?.colorSize !== undefined) {
+    program = synchronizeColorSizeMeaning(program, meaning);
+  }
   const id = `${program.compositionSpec.id}-shared-legend`;
   let next = program._withoutMaterializationConfig(["guides", "legend"])
     ._withoutMaterializationConfig(["guides", "legendGroups"]);
@@ -141,7 +145,7 @@ function attachAuthoredParentLegend(program, prepared, layout) {
     compositionSpec: { ...spec, facet: { ...spec.facet, guides: { ...spec.facet.guides, legend: prepared.intent } } } });
 }
 
-export function applyFacetGuideComposition(program, { layout, plot } = {}) {
+export function applyFacetGuideComposition(program, { layout, plot, synchronizeColorSizeMeaning } = {}) {
   if (!isPlainObject(layout) || !Array.isArray(layout.children)) {
     throw new TypeError("Facet guide composition requires a resolved layout.");
   }
@@ -189,10 +193,15 @@ export function applyFacetGuideComposition(program, { layout, plot } = {}) {
       );
     }
   }
-  if (prepared === undefined) return next._withoutMaterializationConfig(["guides", "legend"])
-    ._withoutMaterializationConfig(["guides", "legendGroups"]);
+  if (prepared === undefined) {
+    if (next.semanticSpec.guides.legend?.colorSize !== undefined) {
+      next = synchronizeColorSizeMeaning(next, undefined);
+    }
+    return next._withoutMaterializationConfig(["guides", "legend"])
+      ._withoutMaterializationConfig(["guides", "legendGroups"]);
+  }
   if (prepared.mode === "authored") {
-    next = attachAuthoredParentLegend(next, prepared, layout);
+    next = attachAuthoredParentLegend(next, prepared, layout, synchronizeColorSizeMeaning);
     return assertSharedLegendFits(next, `${program.compositionSpec.id}-shared-legend`, layout, plot, {});
   }
   let id;

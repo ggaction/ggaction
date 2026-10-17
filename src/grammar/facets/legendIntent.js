@@ -29,7 +29,7 @@ export function validateAuthoredFacetLegend(program, intent) {
   for (const [kind, block] of Object.entries(intent.blocks)) {
     if (!LEGEND_CONFIG_KINDS.includes(kind)) throw new Error("Stored parent legend has an unknown block kind.");
     validateOptionObject(block, ["config", "guide"], "Stored parent legend block");
-    validateOptionObject(block.config, CONFIG_KEYS, "Stored parent legend config");
+    validateOptionObject(block.config, kind === "colorSize" ? [...CONFIG_KEYS, "colorScale", "sizeScale"] : CONFIG_KEYS, "Stored parent legend config");
     const config = block.config;
     validateUserId(config.target, "Parent legend target");
     if (!LEGEND_POSITIONS.includes(config.position)) throw new Error("Stored parent legend requires a native position.");
@@ -38,7 +38,11 @@ export function validateAuthoredFacetLegend(program, intent) {
     }
     const descriptor = describeLegendBlock(program, kind, config);
     if (block.guide !== undefined) {
-      validateOptionObject(block.guide, ["scale", "scales", "channels", "title", "order"], "Stored parent legend meaning");
+      validateOptionObject(block.guide, kind === "colorSize" ? ["colorScale", "sizeScale", "title"]
+        : ["scale", "scales", "channels", "title", "order"], "Stored parent legend meaning");
+      if (kind === "colorSize" && (block.guide.colorScale !== config.colorScale || block.guide.sizeScale !== config.sizeScale)) {
+        throw new Error("Stored parent color-size meaning must match both block scale bindings.");
+      }
       if (block.guide.title !== undefined) validateNonEmptyString(block.guide.title, "Parent legend title");
       if (block.guide.channels !== undefined && !same([...block.guide.channels].sort(), descriptor.channels)) {
         throw new Error("Stored parent legend meaning must match its block channels.");

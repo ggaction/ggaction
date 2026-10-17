@@ -3014,3 +3014,6 @@ export function realisticGuideScaleCoverageFactors(recipe) {
     throw new Error(`${recipe.id} has no eligible dataset for variant "${variantId}".`);
   }));
 }
+
+// Shared authoring vocabulary for actual unit and parent guide witnesses.
+export { legendOptions as realisticLegendOptions };

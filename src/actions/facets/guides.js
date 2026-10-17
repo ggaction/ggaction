@@ -1,3 +1,4 @@
+import { synchronizeFacetColorSizeMeaning } from "../primitives/semanticAction.js";
 import { closedAction } from "../../core/action.js";
 
 import { applyFacetGuideComposition } from
@@ -10,6 +11,6 @@ export const composeFacetGuides = /* @__PURE__ */ closedAction(
     scope: "composition"
   }, ["layout", "plot"],
   function ({ layout, plot } = {}) {
-    return applyFacetGuideComposition(this, { layout, plot });
+    return applyFacetGuideComposition(this, { layout, plot, synchronizeColorSizeMeaning: synchronizeFacetColorSizeMeaning });
   }
 );

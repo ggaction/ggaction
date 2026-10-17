@@ -155,3 +155,30 @@ test("rejects incompatible legend definitions and resolved scales", () => {
     /occupied more than once/
   );
 });
+
+test("shared color-size legends compare both scale owners without mutating their inputs", () => {
+  const child = id => ({ id, guideConfigs: { legend: { colorSize: {
+    target: `${id}-points`, colorScale: "color", sizeScale: "size", field: "amount",
+    domain: [0, 10], combine: "color-size", sampling: { mode: "count", count: 3 }
+  } } }, resolvedScales: {
+    color: { type: "sequential", domain: [0, 10], range: ["#fff", "#06f"] },
+    size: { type: "linear", domain: [0, 10], range: [100, 900] }
+  } });
+  const children = [child("a"), child("b")], original = structuredClone(children);
+  const result = resolveSharedFacetLegends(children);
+  assert.equal(result.entries[0].family, "color-size");
+  assert.deepEqual(result.entries[0].scales, ["color", "size"]);
+  assert.deepEqual(result.entries[0].resolvedScales, children[0].resolvedScales);
+  assert.ok(Object.isFrozen(result.entries[0].resolvedScales.size));
+  assert.deepEqual(children, original);
+  for (const scale of ["color", "size"]) {
+    const missing = child("b"); delete missing.resolvedScales[scale];
+    assert.throws(() => resolveSharedFacetLegends([child("a"), missing]), /incompatible resolved legend scale/u);
+    const changed = child("b"); changed.resolvedScales[scale].domain = [0, 11];
+    assert.throws(() => resolveSharedFacetLegends([child("a"), changed]), /incompatible resolved legend scale/u);
+  }
+  const noSizeOwner = child("a"); delete noSizeOwner.guideConfigs.legend.colorSize.sizeScale;
+  assert.throws(() => resolveSharedFacetLegends([noSizeOwner]), /requires resolved scale ids/u);
+  const changedDomain = child("b"); changedDomain.guideConfigs.legend.colorSize.domain = [0, 11];
+  assert.throws(() => resolveSharedFacetLegends([child("a"), changedDomain]), /incompatible colorSize legend config/u);
+});

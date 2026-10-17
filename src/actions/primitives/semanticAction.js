@@ -226,6 +226,31 @@ export function withoutPreviewLayerEncodings(program, { id, channels }) {
   return program._clone({ semanticSpec });
 }
 
+// Composition materialization may retain this native two-scale guide meaning.
+// Use the existing semantic primitives on a private unit adapter; this does not
+// relax the public composition guard or accept arbitrary semantic paths.
+export function synchronizeFacetColorSizeMeaning(program, meaning) {
+  if (program.compositionSpec?.type !== "facet") {
+    throw new Error("Color-size parent meaning requires a facet composition.");
+  }
+  if (meaning !== undefined && (!isPlainObject(meaning) ||
+      Object.keys(meaning).some(key => !["colorScale", "sizeScale", "title"].includes(key)))) {
+    throw new Error("Color-size parent meaning requires its native scale bindings and title.");
+  }
+  let unit = new program.constructor({ semanticSpec: program.semanticSpec, graphicSpec: program.graphicSpec,
+    resolvedScales: program.resolvedScales, materializationConfigs: program.materializationConfigs,
+    context: program.context, trace: program.trace, actionStack: program.actionStack,
+    actionSequence: program._actionSequence });
+  if (unit.semanticSpec.guides.legend?.colorSize !== undefined) {
+    unit = unit.editSemantic({ property: "guide.legend.colorSize", remove: true });
+  }
+  if (meaning !== undefined) for (const [property, value] of Object.entries(meaning)) {
+    unit = unit.editSemantic({ property: `guide.legend.colorSize.${property}`, value });
+  }
+  return program._clone({ semanticSpec: unit.semanticSpec, context: unit.context,
+    trace: unit.trace, actionStack: unit.actionStack, actionSequence: unit._actionSequence });
+}
+
 export function createSemanticPrimitiveAction(validateSemanticValue, planNamedRemoval) {
   return closedAction(
     {

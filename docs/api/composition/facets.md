@@ -62,6 +62,13 @@ clipped size block can share its owner with an unclipped color gradient.
 Use `editLegendBlock({ target: "scatterPlot", channel: "size", clipHeight: "auto" })`
 to remove only the selected block window.
 
+A color-size combination also works on a parent: use `combine: "color-size"`
+with `channels: ["color", "size"]` for one Cartesian circle-point source whose
+color and size encode the same quantitative field with matching domain endpoints.
+The two channels select one combined block. Both scale bindings, samples and
+`clipHeight` survive saving, loading and layout edits; removing that block leaves
+other parent legend blocks intact.
+
 ## Repeat the current chart by a field
 
 {% include chart-example.html id="facet" %}
