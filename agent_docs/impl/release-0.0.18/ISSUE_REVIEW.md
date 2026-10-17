@@ -114,3 +114,8 @@
   runtime·TypeScript 음성 증거로 선언에서 바로잡았다. Area의 두 band 방향은
   실제 원본 집계로 보존했다. 상세 증거는
   [구현 기록](../hierarchical-facade-coverage/IMPLEMENTATION.md)에 있다.
+
+최종 누적 검사에서 기존 primitive 회귀 한 곳만 폭0인80rect+1circle의
+불필요한 stroke 호출을 기대했다. 저장 geometry와 실제 양의 선18개는 그대로
+검증하고 호출 기대를18로 수정했다. 수정 후 전체216개 renderer 회귀가 통과했다.
+직전 CI는4328개 중 이1개 외4327개를 통과했으며 새 head에서 전체를 다시 검사한다.
