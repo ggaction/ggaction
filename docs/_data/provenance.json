@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "status": "development",
+  "status": "published-release",
   "packageVersion": "0.0.18",
   "contractId": "sha256:b883e33e7f8664aaf612f08ae21173ad7d4285fe6627922b1e20e3df5e211c28",
-  "sourceCommit": null,
-  "sourceRef": "main",
+  "sourceCommit": "1aaf0a4b9d77c53d7f64b2ccd501d7a6b6211894",
+  "sourceRef": "1aaf0a4b9d77c53d7f64b2ccd501d7a6b6211894",
   "exampleSourceRef": "b90ce36d35d3f91c1d3045db54412f9bc8341228",
   "baseline": {
     "tag": "v0.0.13",
@@ -24,11 +24,13 @@
     },
     "applyTextMetrics": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "removeTextMetrics": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "applyTheme": {
       "availableBy": "v0.0.13"
@@ -41,19 +43,23 @@
     },
     "reviseData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "removeData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "removeScale": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "removeCoordinate": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "bindMarkData": {
       "availableBy": "v0.0.13"
@@ -99,15 +105,18 @@
     },
     "createNormalizedData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "createCompleteData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "createImputedData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "createStackData": {
       "availableBy": "v0.0.13"
@@ -132,75 +141,93 @@
     },
     "createSortedData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editDerivedData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editComputedData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editFilteredData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editFoldData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editSummaryData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editBinData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editTimeUnitData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editWindowData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editDensityData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editStackData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editRegressionData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editSortedData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editIntervalData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editECDFData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editNormalizedData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editCompleteData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editImputedData": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editBin2DData": {
       "availableBy": "v0.0.13"
@@ -267,22 +294,26 @@
     },
     "createTextPlot": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "createMarkLabels": {
       "availableBy": "v0.0.13"
     },
     "editMarkLabelSelection": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editMarkLabelPlacement": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "removeMarkLabels": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "createAnnotation": {
       "availableBy": "v0.0.13"
@@ -415,7 +446,8 @@
     },
     "encodeChannels": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "createRegression": {
       "availableBy": "v0.0.13"
@@ -746,7 +778,8 @@
     },
     "editLegendBlock": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editLegendLayout": {
       "availableBy": "v0.0.13"
@@ -783,7 +816,8 @@
     },
     "editCoordinate": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "createScale": {
       "availableBy": "v0.0.13"
@@ -793,59 +827,73 @@
     },
     "editXScale": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editYScale": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editXOffsetScale": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editYOffsetScale": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editParallelScale": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editThetaScale": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editRScale": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editColorScale": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editStrokeScale": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editSizeScale": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editOpacityScale": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editShapeScale": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editStrokeWidthScale": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "editStrokeDashScale": {
       "introducedAfter": "v0.0.13",
-      "status": "development"
+      "availableBy": "v0.0.18",
+      "status": "published-release"
     },
     "createDerivedData": {
       "availableBy": "v0.0.13"
