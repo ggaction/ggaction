@@ -50,7 +50,7 @@ test("owns the implemented semantic and legend vocabularies in one module", () =
     "color", "stroke", "strokeDash", "shape"
   ]);
   assert.deepEqual(LEGEND_CONFIG_KINDS, [
-    "series", "color", "stroke", "size", "gradient", "interval",
+    "colorSize", "series", "color", "stroke", "size", "gradient", "interval",
     "strokeGradient", "strokeInterval", "opacity", "strokeWidth"
   ]);
   assert.deepEqual(COLOR_LAYOUTS, [

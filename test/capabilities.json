@@ -125,6 +125,14 @@
       {
         "type": "prefix",
         "path": "charts/polar-guides/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/axis-owners/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/shared-facet-owner/"
       }
     ],
     "horizon": [
@@ -194,6 +202,7 @@
       }
     ],
     "marks": [
+      { "type": "prefix", "path": "charts/named-shapes/" },
       {
         "type": "prefix",
         "path": "charts/directional-tick-plot/"

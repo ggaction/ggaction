@@ -11,7 +11,7 @@ const CONFIG_KEYS = Object.freeze([
   "inferredTitle", "inferredSymbol", "inferredStrokeWidth", "inferredOffset", "position", "align", "offset", "direction", "columns",
   "titlePosition", "symbol", "labels", "titleStyle", "itemGap", "layout", "overflow", "border", "gradient",
   "count", "sampling", "representation", "gradientDirection", "inheritAppearance", "inheritPosition", "blockOverrides",
-  "combine", "sizeAreas"
+  "combine", "sizeAreas", "clipHeight"
 ]);
 
 export function isAuthoredFacetLegend(value) {

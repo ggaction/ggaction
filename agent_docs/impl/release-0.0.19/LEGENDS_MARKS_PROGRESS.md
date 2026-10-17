@@ -148,3 +148,76 @@
   runtime tests passed; the single new-file sharding inventory failure was fixed
   by recording its actually measured1338ms and the3scheduling tests then PASS.
   Focused straight/premultiplied source-over12cases also PASS without tolerance.
+
+## Sample windows (#176)
+
+- Positive finite clipHeight is one canonical block option; whole/focused/block
+  editors preserve omission and reset with auto. Unsupported non-point samples
+  reject it atomically. Typed samples, mapped areas, paths, glyph IDs and
+  opacity-zero geometry remain intact; each composite sample shares one window.
+- Nested Canvas visible bounds intersect ancestor windows while root overflow
+  remains strict. Asymmetric shapes use their actual glyph anchor, not bbox
+  midpoint. Common translation is byte-identical to axes checkpoint d213eaab.
+- Focused lifecycle/bounds11 PASS; previous guide regressions702 PASS. Chromium
+  DOM/Offscreen36, NodePNG12 and nativePDF4 entireRGBA pairs are exact, with
+  independent literal geometry. Stable symbol-window public/primitive PNG+trace
+  also exact. Three authentic datasets×five repetitions×three recipe opacities
+  cover create/whole/focused/block clip edits, reset, split/remerge and persistence.
+- Measured package581/815276/3982153→limits581/815500/3983000; bundles
+  401727/197312→401800/197400, search820275→820500. Complete cards
+  3507/3838→3510/3840. All other limits and coverage floors remain intact.
+
+- Final full unit3173/3173 PASS; installed Full/Basic/runtime/type/renderer/MCP/
+  tutorial consumers PASS. Basic retains its existing creation/rematerialization
+  surface; only Full calls its focused editors. Both canonical browser examples
+  pass; legend-appearance additionally has exact independent concrete state.
+  New example source-link docs checks run immediately after the first commit
+  because their canonical branch URLs cannot resolve an uncommitted new file.
+
+- Restored #171 authored local-position conflict checks: group-derived defaults
+  no longer masquerade as an explicitly requested reset. Actual public conflicts
+  reject atomically; inherited matching anchors and explicit reposition pass.
+  Private call intent adds no public/stored fields. V8 confirms the formerly
+  uncovered equality callback executes6times in genuine lifecycle regressions.
+- Final reset+representation replacement validates final intent together. Updated
+  measurements815323packed/3982388unpacked and Full401927/Basic197371gzip
+  remain within815500/3983000/402000/197400.
+
+- Coherent final source: full unit3175/3175 PASS, installed consumer suite PASS,
+  source-boundaries/compact/type20 PASS. Docs119/120 PASS before first commit;
+  only canonical branch source URLs for new examples require that commit.
+  Stable symbol-window uses area5000/full circle, H30 crop, radius15 comparator;
+  legend-appearance has exact state+pixels and both examples use shared browser
+  host/status/accessibility. No image was inspected by eye or VLM.
+
+
+## Quantitative combined legend source checkpoint
+
+- Added the explicit color-size numeric owner with independent continuous scale
+  evaluation, one sampler, aliased color/size block selection, focused/whole/block
+  edits, numeric labels, windows, local placement and gradient+size split/reset.
+  Persistence recomputes eligibility and both live scale references; incompatible
+  shape/field/grain/domain edits and mapped fill/area overrides reject atomically.
+- Full unit3183/3183 PASS, then the sampled-color-to-combined edge passed its
+  focused regression. Two additional pure eligibility/symbol tests also exercise
+  malformed grains, transforms, endpoints and appearance. Installed Full/Basic
+  runtime/type/renderer/MCP/tutorial suite PASS, with final source recheck below.
+- Stable combined-legends numeric0/5/10 target independently specifies black,
+  gray and white samples with radii1/2/3. Graph/order/native calls/fullRGBA exact,
+  Chromium DOM/Offscreen x3DPR x3background=18 exact, SVG all6circle positions
+  exact, independently drawn native PDF exact. Three real datasets x5 actual
+  lifecycle repetitions PASS (canonical exhaustive corpus closure remains pending).
+- Restored root's completed bar-compositing slice from8bfd70ff, preserving its
+  6862f486 native trace comparison. No bar source behavior changed here.
+- Current docs119/120 before source commit; sole failure is the new canonical
+  example's source URL not yet existing in this branch commit. Provenance is
+  regenerated immediately after commit. No eye/VLM image inspection performed.
+- Pending overall scope: canonical full legend-appearance layout target, parent
+  color-size integration, and exhaustive realistic option/literal witnesses.
+  Named-shapes stable target is delegated by ROOT to data/color owner.
+
+- Postcommit source d2b49552: docs120/120 PASS and the exact final-source
+  installed consumer suite PASS (Full404646/Basic199430gzip measurement as
+  recorded by the consumer log; final integration remeasures cumulative size).
+  Full/Basic numeric combined creation and Full aliases/map/clip/split persisted
+  and rendered from the installed tarball, not source-relative imports.

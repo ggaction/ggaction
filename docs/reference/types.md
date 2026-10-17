@@ -5142,6 +5142,8 @@ Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`Int
 
 ```typescript
 export interface EditLegendBlockOptions {
+  /** Reset only the sample window with auto. */
+  clipHeight?: number | "auto";
   target: string;
   channel: LegendChannel;
   /** Block-local anchor; inherit removes only this override. */
@@ -5240,7 +5242,8 @@ Related types: [`LegendChannel`](#type-legendchannel).
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight"> {
+  clipHeight?: number | "auto";
   /** Select one existing block; cannot accompany channels. */
   channel?: LegendChannel;
   /** inherit is allowed only with a singular channel selector. */
@@ -5267,6 +5270,7 @@ Related types: [`LegendOptions`](#type-legendoptions) · [`LegendChannel`](#type
 
 ```typescript
 export interface EditLegendSymbolsOptions {
+  clipHeight?: number | "auto";
   target?: string;
   /** Select one existing block without changing its content. */
   channel?: LegendChannel;
@@ -6527,9 +6531,10 @@ Related types: [`LegendSymbolLayer`](#type-legendsymbollayer).
 <summary>Expand FilledMarkLegendOptions</summary>
 
 ```typescript
-type FilledMarkLegendOptions = Omit<LegendOptions, "symbol" | "representation"> & (
-  | { representation?: "gradient"; symbol?: FilledLegendSymbolRecipe }
-  | { representation: "symbols"; symbol?: "auto" | { type?: "point"; radius?: number; stroke?: string; strokeWidth?: number } }
+type FilledMarkLegendOptions = Omit<LegendOptions, "symbol" | "representation" | "combine"> & (
+  | { combine?: "separate" | "size-shape"; representation?: "gradient"; symbol?: FilledLegendSymbolRecipe }
+  | { combine?: "separate" | "size-shape"; representation: "symbols"; symbol?: "auto" | { type?: "point"; radius?: number; stroke?: string; strokeWidth?: number } }
+  | { combine: "color-size"; representation?: never; symbol?: "auto" | { type?: "point"; stroke?: string; strokeWidth?: number; opacity?: number } }
 );
 ```
 
@@ -7655,8 +7660,10 @@ Related types: [`LegendOptions`](#type-legendoptions).
 
 ```typescript
 export interface LegendOptions {
-  /** Explicitly combine compatible ordinal size and shape samples. Omission retains separate blocks. */
-  combine?: "separate" | "size-shape";
+  /** Positive sample window height. Clips point-bearing glyphs without changing mapped area. */
+  clipHeight?: number;
+  /** Explicitly combine ordinal size/shape or same-field quantitative color/size circle samples. Omission retains separate blocks. */
+  combine?: "separate" | "size-shape" | "color-size";
   /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
   representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
@@ -7758,7 +7765,7 @@ export type LegendSymbolLayer =
 export type LegendSymbolRecipe =
   | "auto"
   /** Sampled opacity uses a single point recipe; radius defaults to 7 and must be positive. */
-  | { type?: "point"; radius?: number; fill?: string; stroke?: string; strokeWidth?: number }
+  | { type?: "point"; radius?: number; fill?: string; stroke?: string; strokeWidth?: number; opacity?: number }
   | { length?: number; lineWidth?: number }
   | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
   | { layers: readonly LegendSymbolLayer[] };

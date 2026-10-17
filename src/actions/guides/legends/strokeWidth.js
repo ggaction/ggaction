@@ -1,3 +1,4 @@
+import {validateLegendClip} from "../../../grammar/legendClip.js";
 import { intrinsicLegendConfig } from "../../../materialization/legendGroups.js";
 import { action, closedAction } from "../../../core/action.js";
 import {
@@ -64,6 +65,7 @@ function requireScale(program, id) {
 }
 
 export function resolveStrokeWidthLegendLayout(program, config) {
+  validateLegendClip("strokeWidth", config);
   config = intrinsicLegendConfig(program, config);
   const effective = resolveEffectiveLegendBlockConfig(program, "strokeWidth", config);
   const scale = requireScale(program, config.scale);

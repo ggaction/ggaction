@@ -52,7 +52,7 @@ test("compact action cards are generated from the current action contract", asyn
   assert.match(artifact.errorPolicy, /curated error override/);
   assert.equal(stats.count, context.actions.length);
   for (const card of artifact.cards) {
-    const limit = card.name === "editLegend" ? 3710 : card.name === "createLegend" ? 3440 : 3360;
+    const limit = card.name === "editLegend" ? 3860 : card.name === "createLegend" ? 3530 : 3360;
     assert.ok(Buffer.byteLength(JSON.stringify(card)) <= limit, card.name);
   }
   assert.ok(artifact.cards.find(card => card.name === "editLegend").options

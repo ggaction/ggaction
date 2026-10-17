@@ -569,7 +569,7 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
     assertSnippet(action, declaration, card.snippet);
     const bytes = Buffer.byteLength(JSON.stringify(card), "utf8");
     // Keep every public selector literal in the complete editLegend option inventory.
-    const byteLimit = card.name === "editLegend" ? 3710 : card.name === "createLegend" ? 3440 : 3360;
+    const byteLimit = card.name === "editLegend" ? 3860 : card.name === "createLegend" ? 3530 : 3360;
     if (bytes > byteLimit) throw new Error(`${card.name} compact card is ${bytes} bytes (limit ${byteLimit}).`);
     maxBytes = Math.max(maxBytes, bytes);
     totalBytes += bytes;

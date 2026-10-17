@@ -331,8 +331,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 410,000 bytes |
-| `ggaction/basic` | 200,000 bytes |
+| `ggaction` | 412,000 bytes |
+| `ggaction/basic` | 202,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -2407,7 +2407,70 @@ artifact는587entries/829705packed/4048931unpackedbytes다. Node24의831438packe
 승인된 기능 증가분의 최소1000bytes정책으로 Full410000/Basic200000만 갱신하고 SVG25000과
 다른 global test/coverage 기준은 유지한다. 이전405000/198000 한도는 실패했으며 그 성공으로
 보고하지 않는다. 숫자 변경은 새로운 renderer/state 경계를 추가하지 않는다.
+### Sample-window concrete materialization
+
+Point-bearing legend clipHeight is one stored block option. The materializer
+wraps each complete sample in a transparent nested Canvas and retains generated
+glyph IDs and physical geometry. Pure visible bounds intersect nested frames;
+root overflow remains observable. Unit and parent placement share the pure
+graphicTranslation owner rather than translating nested descendants twice.
+Actual full option inventories measure createLegend3507/editLegend3838bytes;
+only those card ceilings rise to3510/3840bytes. No options/enums or coverage
+thresholds are removed.
+
+Sample-window artifact measured581entries/815276packed/3982153unpacked;
+ceilings581/815500/3983000 reflect only the three policy/materialization owners.
+Search820275bytes uses820500bytes, preserving the complete option inventory.
+
+Installed minimal browser bundles measure Full401727/Basic197312gzipbytes;
+limits401800/197400 cover only that measured growth. SVG remains25000bytes.
+
+Final authored-anchor/reset handling measures Full401927/Basic197371gzipbytes;
+Full ceiling402000 and Basic197400 retain the measured next small steps.
+
+
+### Parent sample-window identity and replay integration
+
+부모 범례와 일반 child composition은 기존 graphic namespace owner를 재사용하여
+clip Canvas와 그 glyph를 공개 primitive의 기존 valid-ID 정책에 맞게 생성한다.
+공개 ID 정규식과 state schema는 확장하지 않는다. 복원 scaffold는 저장된 block별
+channels/combine/representation/명시 symbol을 사용하며 window는 각 원래 config의
+최종 materialization에서만 적용한다. 이로써 gradient strip에 형제 size의 window가
+전파되지 않는다. 미지정12사례는 이전 JSON/SVG/전체RGBA와 정확히 동일하다.
+
+macOS/Node22.23.1/npm10.9.8의 통합 staged artifact는589entries/833342packed/
+4061404unpacked bytes다. clip의 새 grammar/materialization2모듈을 포함해 허용entries는
+589로, 크기 한도는 다음 최소1000bytes인834000/4062000으로 조정한다.
+기존832000/4049000 한도 통과로 보고하지 않으며 browser/global coverage 기준은 유지한다.
+
+동일 installed consumer의 실제 browser gzip은 Full411464/Basic201346bytes다.
+기존410000/200000을 초과해 최소1000bytes 단위412000/202000으로만 갱신한다.
+SVG25000 및 모든 기능/coverage 검사는 그대로 유지한다. 원래 한도 검사는 실제로
+실패했으며 성공 증거로 재사용하지 않는다.
+
+히트맵의 기존 title:false/named-axis 동작 복원과 통합 release notes를 포함한 Node22
+staged artifact는4063287unpacked bytes로 측정됐다. 기존4062000 검사는 실패했으므로
+다음 최소1000bytes 단계4064000으로만 올린다. Node24.19.0의 동일 staged 입력은
+835531packed bytes로 기존834000을 초과하여 다음 단계836000만 적용한다.
+entries589, browser 및 전체 기능/coverage 기준은 유지한다.
 
 Histogram의 실제 연속형 grid 역할과 동기화한 문서를 포함한 macOS/Node22.23.1/npm10.9.8
 artifact는 unpacked4,049,330bytes다. 기존4,049,000한도 실패 로그를 보존하고 unpacked만
 다음 최소1,000bytes 단위4,050,000으로 올렸다. Entries587·packed832,000 한도는 유지한다.
+
+### Named-shape canonical example discovery budget
+
+승인된 wedge/arrow 정식 예제와 공개 설명을 추가한 compact search payload의 실측은
+828580bytes(macOS/Node22.23.1/npm10.9.8)다. 기존828000 검사2개는 실패했으며
+모든 검색 항목·action·옵션을 유지하고 최소1000단위829000으로만 갱신한다.
+공개 runtime/패키지/browser 또는 coverage 한도는 이 예제 연결로 바꾸지 않는다.
+The quantitative color-size combined mode adds one closed combine literal to
+the existing cards. Measured createLegend3524/editLegend3855bytes require only
+3530/3860byte card ceilings; all other cards remain3360bytes.
+
+The same combined numeric legend adds two packed source owners (583entries),
+measured820007packed/4000493unpackedbytes. Narrow ceilings become
+820500/4002000; Full404727 and Basic199306gzipbytes use405000/199500.
+The complete searchable option inventory measures821151bytes (ceiling821200).
+SVG remains25000gzipbytes; no public options, card fields or coverage floors
+are removed.

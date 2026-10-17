@@ -199,6 +199,20 @@ async function testNodeConsumer(directory) {
       assert.equal(combined.graphicSpec.objects.seriesLegendSymbolPoints.items[1].properties.width,10);
       assert.deepEqual(deserializeProgram(serializeProgram(combined)).graphicSpec,combined.graphicSpec);
       assert.ok((await renderToPNGBuffer(combined)).buffer.length>100);
+      const windowed=combinedBase.createLegend({combine:"size-shape",clipHeight:6});
+      assert.equal(windowed.guideConfigs.legend.series.clipHeight,6);
+      assert.ok(windowed.graphicSpec.objects.seriesLegendSymbolPoints.children.length>0);
+      if (factory === chart) assert.deepEqual(windowed.editLegendSymbols({channel:"shape",clipHeight:"auto"}).graphicSpec,combined.graphicSpec);
+      assert.deepEqual(deserializeProgram(serializeProgram(windowed)).graphicSpec,windowed.graphicSpec);
+      if(factory===chart){
+        const windowParent=combinedBase.facet({field:"g",columns:2,guides:{legend:{combine:"size-shape",position:"top-left",clipHeight:6}}})
+          .editLegendSymbols({channel:"size",clipHeight:8}).editCompositionLayout({gap:10});
+        assert.equal(windowParent.guideConfigs.legend.series.clipHeight,8);
+        assert.deepEqual(deserializeProgram(serializeProgram(windowParent)).graphicSpec,windowParent.graphicSpec);
+        const windowPair=hconcat({programs:[windowed,windowed]});
+        assert.deepEqual(deserializeProgram(serializeProgram(windowPair)).graphicSpec,windowPair.graphicSpec);
+        assert.ok(Object.keys(windowPair.graphicSpec.objects).every(id=>/^[A-Za-z0-9_-]+$/.test(id)));
+      }
       const translucent=combinedBase.createLegend({combine:"size-shape",symbol:{layers:[{type:"point",opacity:0.7}]}});
       assert.equal(translucent.graphicSpec.objects.seriesLegendSymbolPoints.items[0].properties.blend,"normal");
       assert.deepEqual(deserializeProgram(serializeProgram(translucent)).graphicSpec,translucent.graphicSpec);
@@ -218,6 +232,24 @@ async function testNodeConsumer(directory) {
     assert.ok((await renderToPNGBuffer(parentLegend)).buffer.length>100);
     assert.ok((await renderToPDFBuffer(parentLegend)).buffer.length>100);
     assert.equal(parentLegend.removeLegend().editCompositionLayout({gap:8}).compositionSpec.facet.guides.legend,false);
+    for(const factory of [chart,basicChart]){
+      const combined=factory().createCanvas({width:1000,height:800,margin:250})
+        .createData({values:[{x:0,y:0,v:0},{x:1,y:1,v:10}]})
+        .createScatterPlot({x:"x",y:"y",guides:false})
+        .encodeColor({field:"v",fieldType:"quantitative",scale:{domain:[0,10],range:["black","white"]}})
+        .encodeSize({field:"v",scale:{domain:[0,10],range:[Math.PI,9*Math.PI]}})
+        .createLegend({combine:"color-size",values:[0,5,10]});
+      assert.deepEqual(combined.graphicSpec.objects.colorSizeLegendSymbols.items.map(item=>item.properties.radius),[1,Math.sqrt(5),3]);
+      assert.deepEqual(deserializeProgram(serializeProgram(combined)).graphicSpec,combined.graphicSpec);
+      assert.ok((await renderToPNGBuffer(combined)).buffer.length>100);
+      if(factory===chart){
+        const edited=combined.editLegendSymbols({channel:"color",symbol:{opacity:0.7}})
+          .editLegendBlock({target:"scatterPlot",channel:"size",labelMap:[{value:5,label:"middle"}],clipHeight:2});
+        assert.deepEqual(deserializeProgram(serializeProgram(edited)).graphicSpec,edited.graphicSpec);
+        const split=edited.editLegend({combine:"separate"});assert.ok(split.guideConfigs.legend.gradient);assert.ok(split.guideConfigs.legend.size);
+      }
+    }
+
     const extracted = chart().createCanvas({ width: 440, height: 340, margin: 20 })
       .createData({ values: [{ item: { value: 1 }, text: "1.5%" }, { text: "2%" }] })
       .createComputedData({ id: "nested", as: "x", expression: { op: "getPath", operand: { field: "item" }, path: ["value"] } })
@@ -4969,7 +5001,11 @@ async function testTypeScriptConsumer(directory) {
       .editLegend({ symbol: { radius: 11 }, labels: { format: ".1%" } })
       .editLegendSymbols({ symbol: { type: "point", radius: 13 } })
       .editLegendLabels({ offset: 10, format: ".2e" });
-    opacityLegendTypes.createGuides({ legend: { channels: ["opacity"], symbol: { radius: 9 } } });
+    opacityLegendTypes.createGuides({ legend: { channels: ["opacity"], symbol: { radius: 9 }, clipHeight: 12 } });
+    opacityLegendTypes.editLegendSymbols({clipHeight:"auto"});
+    opacityLegendTypes.editLegendBlock({target:"points",channel:"opacity",clipHeight:8});
+    // @ts-expect-error Creation does not accept edit-only auto.
+    opacityLegendTypes.createLegend({clipHeight:"auto"});
     // @ts-expect-error Opacity symbol radius must be numeric.
     opacityLegendTypes.createLegend({ channels: ["opacity"], symbol: { radius: "9" } });
     // @ts-expect-error Legend precision cannot exceed twelve.

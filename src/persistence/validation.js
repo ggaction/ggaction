@@ -4,6 +4,11 @@ import { cartesianAxisOwners, assertCartesianAxisSideAvailable } from "../select
 import { axisGraphicIds } from "../selectors/axes.js";
 
 
+
+import {findLayer} from '../selectors/layers.js';
+import {findCoordinate} from '../selectors/coordinates.js';
+import {resolveColorSizeMapping,normalizeColorSizeSymbol} from '../grammar/colorSizeLegend.js';
+import{validateLegendClip}from"../grammar/legendClip.js";
 import {validateLegendLayerOpacity}from"../grammar/legendOpacity.js";
 import { isSizeShapeChannels, resolveSizeShapeMapping } from "../grammar/legendCombinations.js";
 import { describeLegendBlock } from "../grammar/legendBlocks.js";
@@ -236,6 +241,7 @@ export function validateProgramState(program, path) {
   }
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
+    validateLegendClip(kind,config);
     if (localLegendPosition(config) !== undefined) {
       const descriptor = describeLegendBlock(program, kind, config);
       for (const [key, override] of Object.entries(config.blockOverrides)) {
@@ -243,7 +249,24 @@ export function validateProgramState(program, path) {
       }
     }
     for(const layer of config.symbol?.layers??[])validateLegendLayerOpacity(layer.opacity);
-    if (config.combine !== undefined) {
+    if(kind==='colorSize') {
+      if(config.combine!=='color-size')throw invalidSnapshot('Color-size legend requires its combined owner.',path);
+      const layer=findLayer(program,config.target);
+      const mapping=resolveColorSizeMapping({layer,scales:program.resolvedScales,pointConfig:program.markConfigs[layer?.id],coordinate:findCoordinate(program,layer?.coordinate)});
+      for(const key of ['target','field','fieldType','colorScale','sizeScale','domain'])if(JSON.stringify(config[key])!==JSON.stringify(mapping[key]))throw invalidSnapshot('Stale color-size mapping.',path);
+      const guide=semantic.guides.legend?.colorSize;
+      if(guide?.colorScale!==mapping.colorScale||guide?.sizeScale!==mapping.sizeScale||guide.title!==config.title)throw invalidSnapshot('Stale color-size semantic owner.',path);
+      requireObject(config.symbol,path);normalizeColorSizeSymbol(config.symbol);
+      if(config.symbol.type!=='point'||!Object.hasOwn(config.symbol,'strokeWidth')||!Object.hasOwn(config.symbol,'opacity'))throw invalidSnapshot('Color-size symbol requires point type.',path);
+      const sample=config.sampling;requireObject(sample,path);
+      exactKeys(sample,sample.mode==='values'?['mode','count','values']:['mode','count'],path);
+      if(!['auto','values'].includes(sample.mode)||!Number.isInteger(sample.count)||sample.count<2)throw invalidSnapshot('Invalid color-size samples.',path);
+      validateGeneratedItemLimit(sample.count,'Color-size samples');
+      if(sample.mode==='values'){
+        requireArray(sample.values,path);
+        if(!sample.values.length||sample.values.length>100||sample.values.some((v,i)=>!Number.isFinite(v)||i>0&&v<=sample.values[i-1]||v<Math.min(...mapping.domain)||v>Math.max(...mapping.domain)||[mapping.colorScale,mapping.sizeScale].some(id=>program.resolvedScales[id].type==='log'&&v<=0)))throw invalidSnapshot('Invalid exact color-size samples.',path);
+      }
+    } else if (config.combine !== undefined) {
       if (config.combine !== "size-shape" || kind !== "series" || !isSizeShapeChannels(config.channels)) throw invalidSnapshot("Invalid combined legend owner.", path);
       const layer = semantic.layers.find(layer=>layer.id===config.target);
       const definition = resolveSizeShapeMapping({layer,scales:program.resolvedScales,
@@ -261,10 +284,10 @@ export function validateProgramState(program, path) {
     if (config.border && Object.hasOwn(config.border, "strokeDash")) {
       normalizeLegendBorderDash(config.border.strokeDash, "Stored legend border strokeDash");
     }
-    if (kind === "size" && config.blockOverrides !== undefined) {
+    if (["size","colorSize"].includes(kind) && config.blockOverrides !== undefined) {
       for (const [key, override] of Object.entries(config.blockOverrides)) {
         if (override.labelMap === undefined) continue;
-        if (key !== '["size"]' || !isContinuousSizeScaleType(program.resolvedScales[config.scale]?.type)) {
+        if (key !== (kind==='colorSize'?'["color","size"]':'["size"]') || !isContinuousSizeScaleType(program.resolvedScales[kind==='colorSize'?config.sizeScale:config.scale]?.type)) {
           throw invalidSnapshot("Numeric display labels require a continuous size legend block.", path);
         }
         normalizeNumericDisplayLabelMap(override.labelMap, "Stored size legend labelMap");

@@ -26,6 +26,7 @@ import { legendResourcePolicy } from
   "../../../materialization/guides/resources.js";
 
 const FAMILY_ORDER = Object.freeze({
+  colorSize: 0,
   series: 0,
   color: 0,
   stroke: 0,
@@ -189,7 +190,7 @@ function blockDescriptor(program, kind, config) {
 function borderFor(kind, config) {
   return [
     "series", "color", "stroke", "gradient", "strokeGradient", "opacity",
-    "interval", "strokeInterval", "strokeWidth", "size"
+    "interval", "strokeInterval", "strokeWidth", "size", "colorSize"
   ].includes(kind)
     ? config.border
     : false;

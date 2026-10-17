@@ -1,3 +1,4 @@
+import {resolveColorSizeConfig} from "./colorSize.js";
 import { resolveCategoricalLegendConfig } from "./categorical/actions.js";
 import { resolveGradientLegendCreation } from "./continuous/gradient.js";
 import { resolveOpacityLegendCreation } from "./continuous/opacity.js";
@@ -11,6 +12,7 @@ import {
 
 export function resolveLegendStepConfig(program, step) {
   switch (step.op) {
+    case "createColorSizeLegend": return {kind:"colorSize",config:resolveColorSizeConfig(program,step.args)};
     case "createCategoricalLegend": {
       const config = resolveCategoricalLegendConfig(program, step.args);
       return { kind: config.kind, config };

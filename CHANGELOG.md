@@ -6,18 +6,42 @@ All notable changes to `ggaction` are recorded in this file.
 
 ### Added
 
-- Point layers preserve up to 50,000 selected observations in one collection,
-  including source revisions, facets, editing, and editable snapshots.
+- Named independent Cartesian axes retain their own scales, physical sides,
+  frame offsets, labels and titles across edits, facets and editable snapshots.
+  Complete axes support dashed ticks and per-value dash maps; focused text
+  editors support explicit alignment, baselines and along-axis title offsets.
+- Facet parents can declare and edit a shared legend against the complete plot
+  union without enlarging individual panels. Selected blocks retain independent
+  anchors through layout and data replay.
+- Added sampled size label maps, explicit categorical size-shape legend
+  combinations, channel-selected text editors, dashed legend borders,
+  independent gradient directions and bottom titles.
+- Sampled point-bearing legends support a clipping window without shrinking
+  encoded areas. Explicit symbol-layer opacity applies once to the complete
+  fill and outline, including SVG, Canvas, PNG and glyph-only PDF rasterization.
+- Added native wedge and arrow point shapes with consistent area and anchors.
+- Continuous color scales support signed-power transforms, cubehelix lightness
+  gamma and an explicit D50 white point for Lab/HCL interpolation. Existing
+  interpolation defaults and original-value legend labels are preserved.
+- Computed expressions support calendar-year extraction and finite floor.
+  Exponential regression fits positive responses through existing regression APIs.
+- `createRegressionStatisticsData` exposes observation counts, coefficients and
+  R-squared from the same linear fit. `editRegressionStatisticsData` replays
+  consumers atomically; editable snapshots retain compact fit statistics.
+- Point layers preserve up to 50,000 selected observations and summaries retain
+  up to 30,000 groups without reducing source data; editing, facets and snapshots
+  retain those bounded results.
+- Added opt-in difference compositing through `editBarMark`, with one source
+  for fill and outline, concrete SVG/Canvas output and glyph-only PDF rasterization.
 
-- `createRegressionStatisticsData` reuses a linear fit for observation counts,
-  coefficients, and R-squared. `editRegressionStatisticsData` changes its source
-  and replays consumers atomically; editable snapshots retain compact fit statistics.
-
-- Added opt-in difference compositing through `editBarMark`, with isolated
-  fill and outline opacity, concrete SVG/Canvas output, and glyph-only PDF rasterization.
+### Fixed
 
 - Closed Canvas rectangle outlines at all four corners so the first corner
   uses its authored join instead of two open end caps.
+- Combining categorical size and shape legends rejects conflicting inherited
+  block anchors unless the author explicitly repositions the combined block.
+- Binned heatmaps preserve disabled axis titles and named axis arrays through
+  the same guide-owner validation used by other Cartesian charts.
 
 ### Fixed
 

@@ -537,3 +537,8 @@ program.createSummaryData({
   각각410000/200000/25000의 실측최소cap 안이며 package587/829705/4048931은
   587/832000/4049000 안이다. Package entry나unpacked/packed한도는08329df4 그대로다.
   Budget truth/timing sharding6개도 통과했다.
+- Source6e4b2397 기준으로 provenance/LLM을 재생성한 docs120/120과 Ruby3.2.11
+  Jekyll build/150built pages 정적검사도 통과했다. 전체통합 normal vertical검사에는
+  별도 bar-compositing/legend-appearance 디렉터리의 public registry미등록이 남아
+  root에 보고했다. Palette두정식chart는 등록되어 있으며 이 기록을 전체통합suite성공으로
+  제시하지 않는다. 나머지 broad axis/palette 결합 검증도 마지막통합 checkpoint에 남긴다.

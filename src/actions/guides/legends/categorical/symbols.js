@@ -1,3 +1,4 @@
+import{hasLegendClipGraphics,applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 import { action } from "../../../../core/action.js";
 import {
@@ -41,6 +42,7 @@ function makeEditSymbol(type) {
     { op, description: `Rematerialize categorical legend ${type} symbols.` },
     function (args = {}) {
       noOptions(args, op);
+      if(hasLegendClipGraphics(this))return this.rematerializeLegend();
       const { kind, config: stored } = activeConfig(this, args.kind);
       const config = categoricalLegendView(stored);
       const layer = layerFor(config, type);
@@ -247,6 +249,7 @@ export const rematerializeLegendSymbols = /* @__PURE__ */ action(
   { op: "rematerializeLegendSymbols", description: "Rematerialize layered legend symbols." },
   function (args = {}) {
     noOptions(args, "rematerializeLegendSymbols");
+    if (hasLegendClipGraphics(this)) return this.rematerializeLegend();
     const { config: stored } = activeConfig(this, args.kind);
     const config = categoricalLegendView(stored);
     let next = this;

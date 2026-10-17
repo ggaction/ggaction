@@ -26,7 +26,7 @@ const SINGLE_CHANNELS = Object.freeze({
 const asciiCompare = (left, right) => left < right ? -1 : left > right ? 1 : 0;
 
 export function legendBlockChannels(kind, config) {
-  const channels = CATEGORICAL_KINDS.includes(kind)
+  const channels = kind === "colorSize" ? ["color", "size"] : CATEGORICAL_KINDS.includes(kind)
     ? config?.channels
     : SINGLE_CHANNELS[kind] === undefined
       ? undefined
@@ -50,7 +50,7 @@ export function describeLegendBlock(program, kind, config) {
     throw new Error(`Unknown legend block kind "${kind}".`);
   }
   const channels = legendBlockChannels(kind, config);
-  const scaleIds = CATEGORICAL_KINDS.includes(kind)
+  const scaleIds = kind === "colorSize" ? [config.colorScale, config.sizeScale] : CATEGORICAL_KINDS.includes(kind)
     ? config?.scales
     : [config?.scale];
   if (!Array.isArray(scaleIds) || scaleIds.length === 0 ||
@@ -59,7 +59,7 @@ export function describeLegendBlock(program, kind, config) {
   }
   const family = CATEGORICAL_KINDS.includes(kind)
     ? "categorical"
-    : kind === "size"
+    : kind === "colorSize" ? "sampled" : kind === "size"
       ? isEnumeratedSizeScaleType(program.resolvedScales[scaleIds[0]].type)
         ? "discrete-size"
         : "sampled"
@@ -79,3 +79,8 @@ export function describeLegendBlock(program, kind, config) {
   });
 }
 
+
+export function categoricalLegendSymbolId(config,type){
+ const single=config.symbol.layers.length===1&&((config.kind==="series"&&type==="line")||(["color","stroke"].includes(config.kind)&&type==="swatch"));
+ return single?`${config.kind}LegendSymbols`:`${config.kind}LegendSymbol${{line:"Lines",point:"Points",swatch:"Swatches"}[type]}`;
+}

@@ -1391,7 +1391,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `combine` | Optional / branch-dependent | `"separate" \| "size-shape" \| undefined` |
+| `clipHeight` | Optional / branch-dependent | `number \| undefined` |
+| `combine` | Optional / branch-dependent | `"color-size" \| "separate" \| "size-shape" \| undefined` |
 | `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
@@ -1515,6 +1516,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
@@ -1522,7 +1524,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
-| `combine` | Optional / branch-dependent | `"separate" \| "size-shape" \| undefined` |
+| `combine` | Optional / branch-dependent | `"color-size" \| "separate" \| "size-shape" \| undefined` |
 | `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
@@ -1599,6 +1601,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `target` | Required | `string` |
 | `channel` | Required | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth"` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
@@ -1764,6 +1767,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |

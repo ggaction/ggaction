@@ -1,3 +1,4 @@
+import{hasLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { action } from "../../../../core/action.js";
 import { editLegend } from "../edit.js";
 import { resolveStoredSelection } from
@@ -69,6 +70,7 @@ function createLegendHighlightAction() {
     },
     function (args = {}) {
       noOptions(args, "rematerializeLegendHighlights");
+      if(hasLegendClipGraphics(this))return this.rematerializeLegend();
       if (this.context.deferGuideLayoutValidation !== true &&
           Object.values(this.guideConfigs.legend ?? {}).some(config => ["left", "right"].includes(config.position))) {
         return this.rematerializeLegend();

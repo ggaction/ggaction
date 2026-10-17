@@ -1,4 +1,6 @@
 import { editFacetParentLegend } from "../../../materialization/facetGuides/edit.js";
+
+import {patchLegendClipHeight, validateLegendClip} from "../../../grammar/legendClip.js";
 import { LEGEND_POSITIONS } from "../../../core/vocabulary.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
@@ -29,7 +31,7 @@ import { normalizeDisplayLabelMap, normalizeNumericDisplayLabelMap } from "../..
 
 const OPTIONS = Object.freeze([
   "target", "channel", "title", "values", "count", "order", "gap", "text", "symbol",
-  "labelMap", "position"
+  "labelMap", "position", "clipHeight"
 ]);
 const TEXT_OPTIONS = Object.freeze(["fontSize", "fontFamily", "fontWeight", "color"]);
 const SYMBOL_OPTIONS = Object.freeze(["size", "fill", "stroke", "strokeWidth", "opacity"]);
@@ -65,6 +67,7 @@ function categoricalSupports(config, property) {
 
 function validateSymbolSupport(descriptor, property) {
   const { channels, family, kind, config } = descriptor;
+  if(kind === "colorSize" && ["fill","size"].includes(property)) throw new Error("Color-size symbols cannot override mapped fill or size.");
   if (family === "gradient") {
     throw new Error(`editLegendBlock symbol.${property} is unsupported for gradient blocks.`);
   }
@@ -129,7 +132,7 @@ function normalizeSymbolPatch(value, descriptor) {
 }
 
 function normalizeBlockLabelMap(descriptor, map) {
-  if (descriptor.kind === "size" && descriptor.family === "sampled") {
+  if (["size","colorSize"].includes(descriptor.kind) && descriptor.family === "sampled") {
     return normalizeNumericDisplayLabelMap(map, "editLegendBlock labelMap");
   }
   if (descriptor.family !== "categorical") {
@@ -221,7 +224,7 @@ function applyCategoricalSymbol(symbol, patch) {
 }
 
 export function resolveEffectiveLegendBlockConfig(program, kind, config) {
-  const channels = kind === "series" || kind === "color" || kind === "stroke"
+  const channels = kind === "colorSize" ? ["color","size"] : kind === "series" || kind === "color" || kind === "stroke"
     ? config.channels
     : [{ size: "size", opacity: "opacity", strokeWidth: "strokeWidth",
       gradient: "color", interval: "color", strokeGradient: "stroke",
@@ -246,6 +249,7 @@ export function resolveEffectiveLegendBlockConfig(program, kind, config) {
       : {})
   };
   if (override.symbol === undefined) return effective;
+  if(kind === "colorSize") return {...effective,symbol:{...config.symbol,...override.symbol}};
   if (["series", "color", "stroke"].includes(kind)) {
     return {
       ...effective,
@@ -303,6 +307,7 @@ export function reconcileLegendBlockTitleGraphic(program, kind, visible) {
 }
 
 const SPECIALIZED_SYMBOLS = Object.freeze({
+  colorSize: Object.freeze({id:"colorSizeLegendSymbols",type:"circle"}),
   gradient: Object.freeze({ id: "colorGradientSymbols", type: "circle" }),
   size: Object.freeze({ id: "sizeLegendSymbols", type: "circle" }),
   opacity: Object.freeze({ id: "opacityLegendSymbols", type: "circle" }),
@@ -392,7 +397,9 @@ export const editLegendBlock = /* @__PURE__ */ action(
       throw new Error("editLegendBlock values and count require a sampled legend block.");
     }
     const patch = normalizeBlockPatch(args, descriptor);
-    let config = descriptor.config;
+    let config = Object.hasOwn(args, "clipHeight")
+      ? patchLegendClipHeight(descriptor.config, args.clipHeight) : descriptor.config;
+    validateLegendClip(descriptor.kind, config);
     const blockOverrides = patchLegendBlockOverride(config, descriptor.key, patch);
     if (blockOverrides === undefined) {
       const { blockOverrides: _removed, ...rest } = config;
