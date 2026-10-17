@@ -204,7 +204,7 @@ function guideModes() {
 const GUIDE_MODES = guideModes();
 
 function variantsFor(action) {
-  return freeze(Array.from({ length: PROFILE_COUNT }, (_, index) => ({
+  return freeze(Array.from({ length: action === "createScatterPlot" ? PROFILE_COUNT + 2 : PROFILE_COUNT }, (_, index) => ({
     id: `${slug(action)}-orthogonal-${String(index + 1).padStart(2, "0")}`,
     ordinal: index,
     guide: GUIDE_MODES[index % GUIDE_MODES.length]
@@ -912,6 +912,7 @@ function categoricalLegendSymbol(index) {
 }
 
 function guideOptions(variant, program, options, action) {
+  if (action === "createScatterPlot" && variant.ordinal >= PROFILE_COUNT) return {axes:false,grid:false,legend:{combine:variant.ordinal === PROFILE_COUNT ? "size-shape" : "color-size",border:{strokeDash:[4,2,6,1]},clipHeight:8,...(variant.ordinal === PROFILE_COUNT + 1 ? {symbol:{opacity:0.7}}:{})}};
   const guide = variant.guide;
   if (guide.kind === "off") return false;
   const layer = program.semanticSpec.layers.find(layer => layer.id === options.id);
@@ -1051,6 +1052,13 @@ function guideOptions(variant, program, options, action) {
     axes.y.position = legend.position === "right" ? "left" : "right";
   }
   if (legend !== false) {
+    legend.combine = "separate";
+    if (legend.symbol?.layers?.some(layer => layer.type === "point")) {
+      legend.clipHeight=8;
+      legend.symbol={layers:legend.symbol.layers.map(layer=>({...layer,opacity:[0,0.7,1][index%3]}))};
+    }
+    if (legend.border && typeof legend.border === "object") legend.border.strokeDash = [4,2,6,1];
+    if (legend.representation === "gradient") legend.titlePosition = "bottom";
     if (legend.titlePosition !== "left" && legend.layout !== "legacy-bottom") {
       legend.titleStyle = { ...legend.titleStyle, align: ["left", "center", "right"][index % 3] };
     }
@@ -1093,6 +1101,15 @@ function finish(program, context, action, variant) {
 }
 
 function scatterOptions(factors, view) {
+  if (factors.variant.ordinal >= PROFILE_COUNT) {
+    const domain = extent(view.rows,"positiveValue");
+    const categorical = factors.variant.ordinal === PROFILE_COUNT;
+    return {id:"mainScatter",data:"analysisRows",coordinate:"main",x:"sourcePosition",y:"positiveSecondary",point:{shape:"circle"},
+      ...(categorical ? {shape:{field:"subgroup",fieldType:"nominal",scale:{id:"mainShape",type:"ordinal",domain:"auto",range:"auto"}},
+        size:{field:"subgroup",fieldType:"ordinal",scale:{id:"mainSize",type:"ordinal",domain:"auto",range:[25,100,225]}}}
+      : {color:{field:"positiveValue",fieldType:"quantitative",scale:{id:"mainColor",type:"sequential",domain,range:["black","white"]}},
+        size:{field:"positiveValue",fieldType:"quantitative",scale:{id:"mainSize",type:"linear",domain,range:[25,100]}}})};
+  }
   const position = scatterPosition(factors.variant, view.rows);
   const index = factors.variant.ordinal;
   return {
@@ -1416,8 +1433,7 @@ export const REALISTIC_CARTESIAN_FACADE_COVERAGE_AGGREGATES = AGGREGATE_OPERATIO
 export const REALISTIC_CARTESIAN_FACADE_COVERAGE_COUNTS = freeze({
   recipes: REALISTIC_CARTESIAN_FACADE_COVERAGE_RECIPES.length,
   advanced: REALISTIC_CARTESIAN_FACADE_COVERAGE_RECIPES.length,
-  variantsPerRecipe: PROFILE_COUNT,
-  minimumSelectionsPerRecipe: PROFILE_COUNT * 5,
+  variantsPerAction: Object.fromEntries(ACTIONS.map(action => [action,VARIANTS[action].length])),
   minimumSelections: REALISTIC_CARTESIAN_FACADE_COVERAGE_RECIPES.reduce(
     (sum, recipe) => sum + recipe.minimumSelections,
     0

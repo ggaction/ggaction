@@ -1684,6 +1684,8 @@ type FilledMarkLegendOptions = Omit<LegendOptions, "symbol" | "representation" |
   | { combine: "color-size"; representation?: never; symbol?: "auto" | { type?: "point"; stroke?: string; strokeWidth?: number; opacity?: number } }
 );
 type DistributiveLegendOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
+type SeparateFilledLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "combine"> & { combine?: "separate" };
+type CategoricalPointLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "representation">;
 type CategoricalLegendTextOptions = {
   offset?: number;
   color?: string;
@@ -1694,8 +1696,10 @@ type CategoricalLegendTextOptions = {
 };
 type PathLegendOptions = Omit<
   LegendOptions,
-  "symbol" | "gradient" | "count" | "values" | "labels" | "representation"
+  "symbol" | "gradient" | "count" | "values" | "labels" | "representation" | "combine" | "titlePosition"
 > & {
+  titlePosition?: "top" | "left";
+  combine?: "separate";
   symbol?: "auto" | { length?: number; lineWidth?: number }
     | { layers: readonly LegendSymbolLayer[] };
   labels?: CategoricalLegendTextOptions;
@@ -1708,11 +1712,21 @@ type CartesianGuideOptions = {
 type CartesianPathGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
   legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
 };
+type CartesianSeparateGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (DistributiveLegendOmit<SeparateFilledLegendOptions, "order"> & { order?: CartesianLegendOrder });
+};
+type CartesianCategoricalPointGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (Omit<CategoricalPointLegendOptions, "count" | "values" | "gradient" | "labels" | "order" | "symbol" | "titlePosition"> & {
+    titlePosition?: "top" | "left";
+    symbol?: FilledLegendSymbolRecipe; labels?: CategoricalLegendTextOptions; order?: CartesianLegendOrder;
+  });
+};
 type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
   legend?: false | (Omit<
-    FilledMarkLegendOptions,
-    "count" | "values" | "gradient" | "labels" | "order" | "representation" | "symbol"
+    SeparateFilledLegendOptions,
+    "count" | "values" | "gradient" | "labels" | "order" | "representation" | "symbol" | "titlePosition"
   > & {
+    titlePosition?: "top" | "left";
     symbol?: FilledLegendSymbolRecipe;
     labels?: CategoricalLegendTextOptions;
     order?: CartesianLegendOrder;
@@ -1725,7 +1739,7 @@ type CCategoricalGuides = Omit<CartesianCategoricalGuideOptions, "axes"> & {
   axes?: false | CAxes;
 };
 type ColorGuides = Omit<CartesianGuideOptions, "legend"> & {
-  legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & {
+  legend?: false | (DistributiveLegendOmit<SeparateFilledLegendOptions, "order"> & {
     order?: CartesianLegendOrder;
   });
 };
@@ -3182,7 +3196,7 @@ type IntervalPlotBaseOptions = {
   color?: BasicColorChannel;
   point?: CreateScatterPlotOptions["point"];
   errorBar?: IntervalPlotErrorBarOptions;
-  guides?: false | CartesianGuideOptions;
+  guides?: false | CartesianSeparateGuideOptions;
 };
 export type CreateIntervalPlotOptions = IntervalPlotBaseOptions & (
   | {
@@ -3246,7 +3260,7 @@ type EndpointPlotBaseOptions = {
   category: EndpointCategoryChannel;
   orientation?: "horizontal" | "vertical";
   summary?: EndpointPlotSummary;
-  guides?: false | CartesianGuideOptions;
+  guides?: false | CartesianSeparateGuideOptions;
 };
 export interface CreateDotPlotOptions extends EndpointPlotBaseOptions {
   value: EndpointValueChannel;
@@ -3319,7 +3333,7 @@ type PolarLegendOrder = LegendValueOrder | { channel: "theta"; values?: never };
 type PolarPathLegendOptions = Omit<PathLegendOptions, "order"> & {
   order?: PolarLegendOrder;
 };
-type PolarPointLegendOptions = DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & {
+type PolarPointLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "order"> & {
   order?: PolarLegendOrder;
 };
 export type PolarPathGuideOptions = Omit<PolarChartGuideOptions, "legend"> & {
@@ -3595,7 +3609,7 @@ export interface CreateRaincloudPlotOptions {
   summary?: false | RaincloudSummaryOptions;
   points?: false | RaincloudPointsOptions;
   color?: LineCategoricalColorChannel;
-  guides?: false | CartesianCategoricalGuideOptions;
+  guides?: false | CartesianCategoricalPointGuideOptions;
 }
 export interface EditRaincloudPlotOptions {
   target?: string;
@@ -3804,9 +3818,10 @@ export type PieColor = string | {
   palette?: Palette;
 };
 export type PieLegendOptions = Omit<
-  FilledMarkLegendOptions,
-  "count" | "values" | "gradient" | "channels" | "order" | "labels" | "representation" | "symbol"
+  SeparateFilledLegendOptions,
+  "count" | "values" | "gradient" | "channels" | "order" | "labels" | "representation" | "symbol" | "titlePosition"
 > & {
+  titlePosition?: "top" | "left";
   symbol?: FilledLegendSymbolRecipe;
   channels?: readonly ["color"];
   order?: LegendValueOrder | { channel: "theta"; values?: never };
@@ -3848,7 +3863,7 @@ export interface HeatmapBaseOptions {
     stroke?: string | false;
     strokeWidth?: number;
   };
-  guides?: false | CartesianGuideOptions;
+  guides?: false | CartesianSeparateGuideOptions;
 }
 
 export type HeatmapCategoryPositionChannel =

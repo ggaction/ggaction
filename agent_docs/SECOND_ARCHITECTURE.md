@@ -2511,3 +2511,11 @@ SVG25000과 기능/coverage 기준은 유지하며 README와 위 canonical table
 최종 parent-guide 통합의 Node24.19.0 staged packed 크기는841241bytes로 기존841000을
 넘었다. 동일 소스의 Node22 측정은839439packed/4085322unpackedbytes다. packed만
 다음 최소1000bytes 단계842000으로 갱신하며 entries591·unpacked4086000은 유지한다.
+### Facade capability declaration checkpoint
+
+런타임과 범용 범례 action은 그대로 유지하고, facade 선언의 point owner 역량과
+gradient 전용 bottom title 계약만 정정한다. 동기화된 선언/참조의 unpacked 실측은
+4083894bytes이므로 다음 최소1000bytes 단계4083000→4084000만 적용한다.
+부모 통합 실측 Full414152/Basic203485gzip의415000/204000 상한과 search831000을
+보존하며 SVG25000은 유지한다. Cartesian830차트와 hierarchical/guide-scale의
+실제 호출 ledger는5회/3개실데이터 기준과 모든 기존 profile을 유지한다.
