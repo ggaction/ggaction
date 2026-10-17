@@ -468,6 +468,18 @@ Choose the smallest action that expresses the intended chart change.
 
 Representative actions: `createScatterPlot`, `createPointMark`, `editPointMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchical-authoring/).
 
+### [Cubehelix gamma and signed-power color](./color-controls/)
+
+Edit lightness interpolation and transform original color values.
+
+Representative actions: `createRectMark`, `encodeColor`, `editColorScale`. [Documentation](https://ggaction.github.io/ggaction/api/scales/continuous-color/#color-gamma-and-signed-power).
+
+### [Lab white point comparison](./color-white-point/)
+
+Choose a white point and edit it without changing the source values.
+
+Representative actions: `createRectMark`, `encodeColor`, `editColorScale`. [Documentation](https://ggaction.github.io/ggaction/api/scales/continuous-color/#lab-white-point-comparison).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

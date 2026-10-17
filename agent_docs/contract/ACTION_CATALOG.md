@@ -33,6 +33,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createStackData`](current/CORE.md#createstackdata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createDensityData`](current/CORE.md#createdensitydata) | core | Mutable resource | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createRegressionData`](current/CORE.md#createregressiondata) | core | Mutable resource | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createRegressionStatisticsData`](current/CORE.md#createregressionstatisticsdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createWindowData`](current/CORE.md#createwindowdata) | core | Mutable resource | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createTimeUnitData`](current/CORE.md#createtimeunitdata) | core | Mutable resource | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createBin2DData`](current/CORE.md#createbin2ddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -48,6 +49,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editDensityData`](current/CORE.md#editdensitydata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editStackData`](current/CORE.md#editstackdata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editRegressionData`](current/CORE.md#editregressiondata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editRegressionStatisticsData`](current/CORE.md#editregressionstatisticsdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editIntervalData`](current/CORE.md#editintervaldata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editECDFData`](current/CORE.md#editecdfdata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editNormalizedData`](current/CORE.md#editnormalizeddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |

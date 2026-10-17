@@ -117,3 +117,34 @@
 - create/edit card3438/3704B만3440/3710으로 조정했다. Package573 entries,
   803727/3934180 bytes, browser395897/191800 gzip 실측에만 좁게 조정했다.
 - 전체 realistic 옵션별5회/3dataset matrix는 최종 통합 의무로 남아 있다.
+
+
+## Checkpoint 9 — recipe layer opacity (#208)
+
+- 사용자 승인 faba5a7b/92b4235f normal concrete signal을 구현했다.
+  명시 recipe layer만 opt-in하며 기존 block opacity/fallback을 추론하지 않는다.
+- root ad99e879/16724999 source-once helper와 viewport fix를 통합했다.
+  정상 합성은 완성 glyph source에 destination-in mask를 한 번 적용하여 native
+  drawImage(globalAlpha)의2단계 quantization을 피한다. Default/difference 경로는
+  변경하지 않는다. Circle은 normal만, rect/path는 normal/difference만 허용한다.
+- 독립 literal bounds/pad/clip로 Node432조합, DOM+Offscreen864조합 전체RGBA
+  exact, source alpha8bit 식 exact. Transparent/intrinsic alpha, fractional
+  DPR1/1.5/2, nested clip, fill/stroke 교차를 포함한다. PDF27조합은 독립 bounded
+  glyph를 native PDF로 embed한 결과와 Poppler 전체RGBA exact. 새 tolerance0.
+- fullSurface와 boundedSurface의 native intrinsic circle AA/RGB 차이는 Gate
+  증거에 남긴다. 독립 reference는 runtime bound/spec을 읽지 않고 literal
+  geometry의 stroke bounds와 device1px padding을 계산한다.
+- 지원 capability 부족은 target clear/resize 전 거부하며 persistence/replay,
+  opacity0/.7/1, recipe reset, 기존 block default의 불변을 검증한다.
+
+- SVG54 literal whole-element references also decode exact in Chromium; legacy
+  12cases compare to16724999 with GraphicSpec JSON/SVG bytes and decodedRGBA
+  unchanged. Actual3datasets×5repetitions×3opacities exercise all3recipe layers.
+- Cumulative merged package578entries/811763packed/3968822unpacked measured;
+  limits578/812000/3969000. Full399940/Basic195539gzip→400000/196000 only,
+  search819631→820000; all existing cards/coverage floors retained.
+
+- Docs120/compact-boundary-type19/installed consumer all PASS. Full unit3158
+  runtime tests passed; the single new-file sharding inventory failure was fixed
+  by recording its actually measured1338ms and the3scheduling tests then PASS.
+  Focused straight/premultiplied source-over12cases also PASS without tolerance.

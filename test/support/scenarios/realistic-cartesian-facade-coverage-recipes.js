@@ -1,3 +1,4 @@
+import { realisticColorControls, realisticPaletteRange } from "./realistic-color-controls.js";
 import { chart } from "../../../src/index.js";
 import { summarizeArgs } from "../../../src/core/action.js";
 import { releaseTidyTuesdaySourceCache } from "../datasets/tidytuesday.js";
@@ -56,7 +57,7 @@ const CURVES = Object.freeze([
   "step-after", "step-before"
 ]);
 const DASH_VALUES = Object.freeze(["solid", "dashed", "dotted", "dashdot"]);
-const PROFILE_COUNT = 36;
+const PROFILE_COUNT = 39;
 const CANVAS = Object.freeze({
   width: 2_300,
   height: 1_220,
@@ -310,6 +311,7 @@ function aggregateChannel(field, id, index) {
 }
 
 function paletteEncoding(index, field = "category") {
+  if(index>=36) return {field,fieldType:"nominal",scale:{id:"mainColor",type:"ordinal",domain:"auto",range:realisticPaletteRange(index-36)}};
   const base = {
     field,
     fieldType: index % 2 === 0 ? "nominal" : "ordinal",
@@ -335,7 +337,7 @@ function paletteEncoding(index, field = "category") {
 function continuousColor(index, aggregate) {
   const interpolate = INTERPOLATIONS[index % INTERPOLATIONS.length];
   const type = index % 8 === 0 ? "log" : index % 8 === 1 ? "symlog"
-    : index % 8 === 2 ? "sqrt" : "sequential";
+    : index % 8 === 2 ? "sqrt" : index % 8 === 3 ? "pow" : "sequential";
   return {
     field: "positiveValue",
     fieldType: "quantitative",
@@ -346,9 +348,11 @@ function continuousColor(index, aggregate) {
       domain: "auto",
       ...(type === "sequential" ? { midpoint: "auto" } : {}),
       ...(type === "log" ? { base: 10 } : {}),
+      ...(type === "pow" ? { exponent: 2 } : {}),
       ...(type === "symlog" ? { constant: 0.1 } : {}),
       palette: index % 2 === 0 ? "viridis" : { name: "magma", extent: [0.1, 0.9] },
       interpolate,
+      ...realisticColorControls(interpolate, index),
       clamp: index % 2 === 0,
       reverse: index % 3 === 0,
       unknown: "#94a3b8"
@@ -357,6 +361,7 @@ function continuousColor(index, aggregate) {
 }
 
 function scatterStroke(index) {
+  if(index>=36) {const color=paletteEncoding(index,"subgroup");return {...color,scale:{...color.scale,id:"mainStroke"}};}
   if (index < 8 || index >= 19 && index < 25) {
     const encoding = paletteEncoding(index, "subgroup");
     const { palette, ...channel } = encoding;
@@ -383,6 +388,7 @@ function scatterStroke(index) {
       id: "mainStroke", type: "sequential", domain: "auto",
       ...(index === 27 ? { range: "auto" } : { palette: "viridis" }),
       interpolate: INTERPOLATIONS[index % INTERPOLATIONS.length],
+      ...realisticColorControls(INTERPOLATIONS[index % INTERPOLATIONS.length], index),
       midpoint: "auto", clamp: index % 2 === 0, reverse: index % 3 === 0,
       unknown: "#94a3b8"
     }
@@ -566,6 +572,7 @@ function barPosition(variant, rows) {
 }
 
 function barColor(index, rows) {
+  if(index>=36) return paletteEncoding(index);
   if ([21, 22, 23, 32].includes(index)) return undefined;
   if (index === 29) {
     return {
@@ -705,6 +712,7 @@ function linePosition(variant, rows) {
 }
 
 function categoricalFacadeColor(index) {
+  if(index>=36) return paletteEncoding(index);
   if (index === 35) return undefined;
   if (index === 30) {
     return {
@@ -1095,7 +1103,7 @@ function scatterOptions(factors, view) {
           field: "positiveSecondary", fieldType: "quantitative",
           scale: sizeScale("mainSize", index)
         } }),
-    ...(index < 28 ? { stroke: scatterStroke(index) } : {}),
+    ...(index < 28 || index >=36 ? { stroke: scatterStroke(index) } : {}),
     shape: {
       field: "subgroup", fieldType: "nominal",
       scale: {
@@ -1108,7 +1116,7 @@ function scatterOptions(factors, view) {
       shape: index % 2 === 0 ? "circle" : "square",
       ...(index === 35 ? { fill: "#2563eb", radius: 4 } : {}),
       opacity: 0.6 + index / 100,
-      ...(index < 28 ? { strokeWidth: 0.8 }
+      ...(index < 28 || index >=36 ? { strokeWidth: 0.8 }
         : index === 28 ? { stroke: false } : { stroke: "#ffffff", strokeWidth: 0.8 })
     },
   };

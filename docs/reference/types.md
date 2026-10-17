@@ -49,6 +49,8 @@ interface ChartProgramActions {
   createImputedData(options: ImputedDataOptions): ChartProgram;
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
+  createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
+  editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createECDFData(options: ECDFDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
@@ -84,7 +86,7 @@ interface ChartProgramActions {
   createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: RectStyleDetails & { target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
@@ -919,7 +921,7 @@ type BasicColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 ```
@@ -1891,7 +1893,7 @@ export type ColorEncodingOptions =
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
       layout?: never;
     };
@@ -2115,12 +2117,18 @@ export type ComputedExpression =
       readonly replacement: string;
     }
   | {
+      readonly op: "datePart";
+      readonly part: "year";
+      readonly operand: ComputedExpression;
+      readonly timeZone?: string;
+    }
+  | {
       readonly op: "parseTime";
       readonly operand: ComputedExpression;
       readonly format?: ParseTimeFormat;
     }
   | {
-      readonly op: "negate" | "absolute" | "log" | "sqrt" | "not" | "isNull" | "toNumber";
+      readonly op: "negate" | "absolute" | "log" | "sqrt" | "floor" | "not" | "isNull" | "toNumber";
       readonly operand: ComputedExpression;
     }
   | {
@@ -3829,6 +3837,19 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
 
 Related types: [`DatasetNormalizedBaseTransform`](#type-datasetnormalizedbasetransform) · [`NormalizeZeroDenominator`](#type-normalizezerodenominator) · [`DatasetNormalizeBaselineTransform`](#type-datasetnormalizebaselinetransform).
 
+### `DatasetRegressionStatisticsTransform` {#type-datasetregressionstatisticstransform}
+
+<details markdown="1">
+<summary>Expand DatasetRegressionStatisticsTransform</summary>
+
+```typescript
+export interface DatasetRegressionStatisticsTransform {
+  readonly type: "regressionStatistics";
+}
+```
+
+</details>
+
 ### `DatasetRegressionTransform` {#type-datasetregressiontransform}
 
 <details markdown="1">
@@ -3859,6 +3880,16 @@ export type DatasetRegressionTransform = {
       | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
       | { confidence: number; confidenceMethod?: never; level?: never }
     ))))
+  | {
+      method: "exp";
+      interval: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+    }
   | {
       method: "loess";
       span: number;
@@ -4038,6 +4069,7 @@ export type DatasetTransform =
   | DatasetFilterTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
+  | DatasetRegressionStatisticsTransform
   | DatasetSortTransform
   | DatasetDensityTransform
   | DatasetECDFTransform
@@ -4052,7 +4084,7 @@ export type DatasetTransform =
 
 </details>
 
-Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
+Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -4627,8 +4659,8 @@ Related types: [`BoxPlotSummaryFields`](#type-boxplotsummaryfields) · [`BoxPlot
 
 ```typescript
 export type EditColorScaleOptions = FocusedScaleSelection & WithoutScaleId<
-  CategoricalColorScaleOptions | ContinuousColorScaleOptions | DiscretizedColorScaleOptions
->;
+  CategoricalColorScaleOptions | Omit<ContinuousColorScaleOptions, "whitePoint" | "gamma"> | DiscretizedColorScaleOptions
+> & { whitePoint?: "d65" | "d50" | "auto"; gamma?: number | "auto" };
 ```
 
 </details>
@@ -5526,6 +5558,20 @@ export interface EditRegressionOptions {
 
 Related types: [`RegressionMethod`](#type-regressionmethod) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval) · [`RegressionPredictOptions`](#type-regressionpredictoptions) · [`RegressionBandOptions`](#type-regressionbandoptions) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation).
 
+### `EditRegressionStatisticsDataOptions` {#type-editregressionstatisticsdataoptions}
+
+<details markdown="1">
+<summary>Expand EditRegressionStatisticsDataOptions</summary>
+
+```typescript
+export interface EditRegressionStatisticsDataOptions {
+  target?: string;
+  source?: string;
+}
+```
+
+</details>
+
 ### `EditScaleOptions` {#type-editscaleoptions}
 
 <details markdown="1">
@@ -5552,6 +5598,8 @@ export interface EditScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  whitePoint?: "d65" | "d50" | "auto";
+  gamma?: number | "auto";
   midpoint?: number | "auto";
   unknown?: unknown;
 }
@@ -5650,15 +5698,12 @@ Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`Witho
 <summary>Expand EditStrokeScaleOptions</summary>
 
 ```typescript
-export type EditStrokeScaleOptions = { target: string } & Omit<
-  EditColorScaleOptions,
-  "id" | "target"
->;
+export type EditStrokeScaleOptions = { target: string } & WithoutScaleSelection<EditColorScaleOptions>;
 ```
 
 </details>
 
-Related types: [`EditColorScaleOptions`](#type-editcolorscaleoptions).
+Related types: [`WithoutScaleSelection`](#type-withoutscaleselection) · [`EditColorScaleOptions`](#type-editcolorscaleoptions).
 
 ### `EditStrokeWidthScaleOptions` {#type-editstrokewidthscaleoptions}
 
@@ -7679,7 +7724,7 @@ Related types: [`LegendValueOrder`](#type-legendvalueorder).
 
 ```typescript
 export type LegendSymbolLayer =
-  | { type: "line"; length?: number; lineWidth?: number }
+  | { type: "line"; length?: number; lineWidth?: number; opacity?: number }
   | {
       type: "point";
       shape?: "circle";
@@ -7687,6 +7732,7 @@ export type LegendSymbolLayer =
       fill?: string;
       stroke?: string;
       strokeWidth?: number;
+      opacity?: number;
     }
   | {
       type: "swatch";
@@ -7694,6 +7740,7 @@ export type LegendSymbolLayer =
       height?: number;
       stroke?: string;
       strokeWidth?: number;
+      opacity?: number;
     };
 ```
 
@@ -8136,9 +8183,8 @@ Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionsc
 
 ```typescript
 export type NonPointContinuousColorScaleOptions = ScaleFields<
-  "id" | "interpolate" | "midpoint" | "clamp" | "reverse"
+  "id" | "interpolate" | "whitePoint" | "gamma" | "midpoint" | "clamp" | "reverse"
 > & {
-  type?: "sequential" | "log" | "sqrt" | "symlog";
   base?: number;
   constant?: number;
   domain?: "auto" | readonly [unknown, unknown];
@@ -8147,7 +8193,10 @@ export type NonPointContinuousColorScaleOptions = ScaleFields<
     name: PaletteName;
     extent?: readonly [number, number];
   };
-};
+} & (
+  | { type: "pow"; exponent?: number }
+  | { type?: "sequential" | "log" | "sqrt" | "symlog"; exponent?: never }
+);
 ```
 
 </details>
@@ -9776,7 +9825,7 @@ type RectColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 ```
@@ -9943,7 +9992,7 @@ export type RegressionInterval = "mean" | "prediction";
 <summary>Expand RegressionMethod</summary>
 
 ```typescript
-export type RegressionMethod = "linear" | "polynomial" | "loess";
+export type RegressionMethod = "linear" | "polynomial" | "loess" | "exp";
 ```
 
 </details>
@@ -9955,6 +10004,9 @@ export type RegressionMethod = "linear" | "polynomial" | "loess";
 
 ```typescript
 export type RegressionOptions = RegressionCommonOptions & (
+  | (Extract<RegressionParameterOptions, { method: "exp" }> & {
+      band?: false;
+    })
   | (Extract<RegressionParameterOptions, { method?: "linear" }> & {
       band?: false | RegressionBandOptions;
     })
@@ -9978,6 +10030,17 @@ Related types: [`RegressionCommonOptions`](#type-regressioncommonoptions) · [`R
 
 ```typescript
 type RegressionParameterOptions =
+  | {
+      method: "exp";
+      interval?: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+      predict?: RegressionPredictOptions;
+    }
   | {
       method?: "linear";
       degree?: never;
@@ -10016,7 +10079,7 @@ type RegressionParameterOptions =
 
 </details>
 
-Related types: [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval) · [`RegressionPredictOptions`](#type-regressionpredictoptions).
+Related types: [`RegressionPredictOptions`](#type-regressionpredictoptions) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval).
 
 ### `RegressionPlotBaseOptions` {#type-regressionplotbaseoptions}
 
@@ -10081,6 +10144,20 @@ type RegressionPlotStatisticalOptions<T> = T extends unknown
 export type RegressionPredictOptions =
   | { values: readonly [number, ...number[]]; domain?: never; steps?: never }
   | { values?: never; domain: readonly [number, number]; steps: number };
+```
+
+</details>
+
+### `RegressionStatisticsDataOptions` {#type-regressionstatisticsdataoptions}
+
+<details markdown="1">
+<summary>Expand RegressionStatisticsDataOptions</summary>
+
+```typescript
+export interface RegressionStatisticsDataOptions {
+  id: string;
+  source: string;
+}
 ```
 
 </details>
@@ -10582,6 +10659,8 @@ export interface ScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  whitePoint?: "d65" | "d50";
+  gamma?: number;
   midpoint?: number | "auto";
   unknown?: unknown;
 }
@@ -11976,6 +12055,17 @@ type WithoutEncodingTarget<T> = T extends unknown
 
 ```typescript
 type WithoutScaleId<T> = T extends unknown ? Omit<T, "id"> : never;
+```
+
+</details>
+
+### `WithoutScaleSelection` {#type-withoutscaleselection}
+
+<details markdown="1">
+<summary>Expand WithoutScaleSelection</summary>
+
+```typescript
+type WithoutScaleSelection<T> = T extends unknown ? Omit<T, "id" | "target"> : never;
 ```
 
 </details>

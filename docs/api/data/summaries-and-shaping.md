@@ -39,6 +39,11 @@ one. Output aliases, group fields, and the optional `members` alias must be
 distinct. The result contains concrete values and can be used immediately by
 marks or `bindMarkData`.
 
+The result supports at most 30,000 observed groups, including exactly 30,000.
+The limit counts distinct typed grouping keys, rather than input rows. A result
+of 30,001 groups fails atomically. Graphic item, path command, and work limits
+remain independent; a large summary does not increase those capacities.
+
 An ungrouped empty input produces one aggregate row, so a row count is `0`.
 A grouped empty input produces no observed groups. The action does not synthesize
 unobserved categorical combinations.

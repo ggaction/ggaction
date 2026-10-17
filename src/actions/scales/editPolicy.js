@@ -12,6 +12,7 @@ import {
   validateDiscretizedColorDomain,
   validateDiscretizedColorRange,
   validateOrdinalDomain,
+  validateOrdinalRange,
   validateScaleDomain,
   validateScaleRange,
   validateScaleType,
@@ -66,6 +67,7 @@ function validateRangeForChannel(scale, channel, value) {
   if (channel === "strokeDash") return validateStrokeDashRange(value);
   if (channel === "size") return validateSizeRange(value);
   if (channel === "strokeWidth") return validateStrokeWidthRange(value);
+  if (channel === undefined) return validateOrdinalRange(value);
   return validateScaleRange(value);
 }
 
@@ -217,6 +219,7 @@ function normalizeDefinition(program, scale, channel, consumers, patch) {
     patch: normalizedPatch,
     retainCoreOnTypeChange: true,
     retainCompatibleOnTypeChange: true,
+    allowColorReset: true,
     allowOrdinalBandParameters: offset,
     validateDomain: (scaleType, value) =>
       isDiscretizedColorScaleType(scaleType)

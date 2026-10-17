@@ -1,3 +1,4 @@
+import { realisticColorControls, realisticPaletteRange } from "./realistic-color-controls.js";
 import { chart } from "../../../src/index.js";
 
 import {
@@ -603,12 +604,21 @@ function addColorScales(program) {
           ? { range: "auto" }
           : { palette: { name: index % 2 === 0 ? "viridis" : "magma", extent: [0.08, 0.92] } }),
         interpolate,
+        ...realisticColorControls(interpolate, index),
         clamp: index % 2 === 0,
         reverse: index % 3 === 0,
         unknown: "#94a3b8"
       }
     });
   }
+  next = positionedPoint(next, "powered-color").encodeColor({
+    target:"powered-color",field:"y",fieldType:"quantitative",
+    scale:{id:"powered-color-scale",type:"pow",exponent:2,interpolate:"lab",whitePoint:"d50",range:realisticPaletteRange(0)}
+  }).editColorScale({target:"powered-color",whitePoint:"d50",range:realisticPaletteRange(1)})
+    .editColorScale({target:"powered-color",type:"pow",interpolate:"hcl",whitePoint:"d65",exponent:.5})
+    .editColorScale({target:"powered-color",whitePoint:"auto"})
+    .editColorScale({target:"powered-color",interpolate:"cubehelix",gamma:2.2})
+    .editColorScale({target:"powered-color",gamma:"auto"});
   const discrete = [
     { type: "quantize", domain: "auto", palette: { name: "blues", count: 5 } },
     { type: "quantile", domain: "auto", palette: { name: "reds", count: 5 } },

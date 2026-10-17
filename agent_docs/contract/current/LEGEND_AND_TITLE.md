@@ -836,3 +836,15 @@ Standalone `createLegend({channels:["size"],position:...})`의 명시 position�
 - Omitted create/separate preserve previous output; omitted edit retains an existing combination. Omitted channels infer the pair and keep color independent; explicit pair selection must be exactly shape+size. New combinations use supplied styles or combined native defaults. Split copies shared title/text/placement and retains independent color.
 - Either alias edits/moves/removes the entire block; removal leaves mark encodings. Fixed shape/size overrides reject. Existing local position, mapped label order, opacity and shared style controls remain available. Invalid data/scale revision rejects atomically; malformed/stale persisted combination/areas reject.
 - Native group planner packs these explicitly combined independent blocks; no renderer rotation or fake data is introduced. Evidence: test/unit/actions/guides/size-shape-legend.test.js.
+
+
+### Explicit recipe layer opacity (#208)
+
+- `symbol.layers` line/point/swatch opacity is optional finite0..1. Omission
+  preserves fallback graphics; replacement omission/auto removes explicit intent.
+- A point/swatch recipe's authored opacity emits concrete normal only for that
+  recipe, not for an existing block override or inherited fallback. Fill/stroke
+  are attenuated once; lines use their single-stroke opacity. Mapped size-shape
+  physical geometry remains unchanged. Labels/title/frame have independent paint.
+- Shared pure opacity validation rejects invalid create/edit/load input.
+  Source/data/scale/Canvas replay retains ownership and immutable inputs.

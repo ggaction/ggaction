@@ -83,7 +83,7 @@ const LEGACY_SCALE_INVENTORY_COUNTS = Object.freeze({
   createBoxPlot: Object.freeze({ paths: 30, literals: 32, diversity: 0 }),
   createGradientPlot: Object.freeze({ paths: 30, literals: 32, diversity: 0 }),
   createViolinPlot: Object.freeze({ paths: 39, literals: 35, diversity: 2 }),
-  createHeatmap: Object.freeze({ paths: 45, literals: 55, diversity: 2 }),
+  createHeatmap: Object.freeze({ paths: 48, literals: 58, diversity: 2 }),
   createHistogram: Object.freeze({ paths: 32, literals: 32, diversity: 2 })
 });
 const TAIL_LITERAL_REQUIREMENT_IDS = Object.freeze([
@@ -417,15 +417,15 @@ function legacyScaleInventory(inventory) {
   });
 }
 
-contractTest("defines five bounded statistical facade schedules totaling 460 real charts", () => {
+contractTest("defines five bounded statistical facade schedules totaling 465 real charts", () => {
   assert.deepEqual(REALISTIC_STATISTICAL_FACADE_COVERAGE_COUNTS, {
     recipes: 5,
     minimumVariantsPerRecipe: 14,
-    maximumVariantsPerRecipe: 27,
-    minimumSelections: 460,
-    maximumRecipeSelections: 135,
-    maximumFamilySelections: 460,
-    intermediateSelections: 285,
+    maximumVariantsPerRecipe: 28,
+    minimumSelections: 465,
+    maximumRecipeSelections: 140,
+    maximumFamilySelections: 465,
+    intermediateSelections: 290,
     advancedSelections: 175,
     targetRequirements: 847
   });
@@ -453,7 +453,7 @@ contractTest("defines five bounded statistical facade schedules totaling 460 rea
     REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES
       .filter(recipe => recipe.complexity === "intermediate")
       .reduce((sum, recipe) => sum + recipe.minimumSelections, 0),
-    285
+    290
   );
   assert.equal(
     REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES
@@ -523,9 +523,9 @@ contractTest("locks the corrected audit target counts and exact requirement-set 
   );
 });
 
-contractTest("460 actual direct-root witnesses close every corrected action target and diversity", async () => {
+contractTest("465 actual direct-root witnesses close every corrected action target and diversity", async () => {
   const projection = await buildProjection();
-  assert.equal(projection.results.length, 460);
+  assert.equal(projection.results.length, 465);
   const details = new Map(projection.report.requirements.map(detail => [detail.id, detail]));
   const inventory = await inventoryPromise;
   const actionSet = new Set(REALISTIC_STATISTICAL_FACADE_COVERAGE_EXPECTED_ACTIONS);
@@ -575,7 +575,7 @@ contractTest("460 actual direct-root witnesses close every corrected action targ
   );
 });
 
-contractTest("the exact 460-chart tail counterfactual fails before and passes after real root evidence", async () => {
+contractTest("the exact 465-chart tail counterfactual fails before and passes after real root evidence", async () => {
   const projection = await buildProjection();
   const inventory = await inventoryPromise;
   const counterfactualResults = projection.results.map(withoutStatisticalFacadeTailEvidence);
@@ -659,7 +659,7 @@ contractTest("the exact 460-chart tail counterfactual fails before and passes af
   );
 });
 
-contractTest("the 460-chart projection losslessly subsumes the retired facade scale surface", async () => {
+contractTest("the 465-chart projection losslessly subsumes the retired facade scale surface", async () => {
   const projection = await buildProjection();
   const inventory = await inventoryPromise;
   const target = legacyScaleInventory(inventory);
@@ -685,7 +685,7 @@ contractTest("the 460-chart projection losslessly subsumes the retired facade sc
   assert.deepEqual(byAction, LEGACY_SCALE_INVENTORY_COUNTS);
   assert.equal(
     hashIds([...target.options, ...target.literals].map(item => item.id)),
-    "6cf04ec70a5a30c4bfe5d527770e4d2e2493ebbd448f723a09efbb2f1808a964"
+    "cbbe1bf2da13198db1fb8fd803940b5537fc28249ba352e974864738c6f9c648"
   );
   assert.deepEqual(
     {
@@ -693,7 +693,7 @@ contractTest("the 460-chart projection losslessly subsumes the retired facade sc
       literals: target.literals.length,
       diversity: target.diversity.length
     },
-    { paths: 176, literals: 186, diversity: 6 }
+    { paths: 179, literals: 189, diversity: 6 }
   );
   assert.deepEqual(
     [...target.options, ...target.literals].filter(requirement =>

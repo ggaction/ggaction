@@ -193,6 +193,12 @@ Canvas and PNG preflight the complete allocation before changing the backing
 store: each physical side is limited to `32767` pixels and the complete image
 to `16777216` pixels.
 
+An explicit bar `blend: "difference"` also allocates one transparent glyph source
+within its visible stroke bounds. It obeys the same per-surface limits, including
+pixel ratio and nested clips, and is reused while painting individual bars.
+Unsupported custom Canvas contexts fail before resizing or clearing the chart;
+ordinary drawing does not require the extra surface/compositing capabilities.
+
 ## SVG output
 
 The browser-safe SVG entry returns a complete SVG document string without
@@ -307,8 +313,10 @@ Metadata is optional; it accepts only non-empty `title`, `author`, and `subject`
 strings plus an array of non-empty `keywords`.
 
 Text remains selectable/searchable PDF text. Paths, strokes, fills, clipping,
-opacity, dashes, and linear gradients remain vector output; the adapter does not
-rasterize the chart or accept `pixelRatio`. Nested Canvas translations apply to
+opacity, dashes, and linear gradients remain vector output. An explicit bar
+`blend: "difference"` rasterizes only that bar's fill-and-outline source for native
+PDF compositing; the rest of the page stays vector. The adapter does not
+rasterize the complete chart or accept `pixelRatio`. Nested Canvas translations apply to
 text as well as shapes, so concat children with different plot margins retain
 their distinct title and axis-label origins in PDF output.
 
@@ -430,6 +438,16 @@ The host supplies meaningful captions, HTML tables, and ARIA relationships. Use
 DOM `textContent` for user-controlled titles, column labels, and values; do not
 insert them as HTML. Keep the alternative synchronized by exporting the updated
 program after an edit.
+
+## Explicit whole-glyph opacity
+
+Concrete rect/path nodes accept `blend:'normal'` as an explicit whole-glyph
+source-over instruction; circles accept only that normal marker. The renderer
+paints fill and outline together, attenuates the source once, and composites it.
+This marker is emitted for explicit legend recipe-layer opacity. Omission keeps
+legacy painting unchanged; line/text/containers do not accept blend markers.
+The bar action's `blend:'normal'` remains a semantic reset which removes its
+optional concrete blend field. Normal does not enable circle difference blending.
 
 ## Related
 

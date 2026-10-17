@@ -1298,3 +1298,35 @@
   tasks: comparison
   url: /tutorials/hierarchical-authoring/
   tutorial_order: 1
+
+- id: color-controls
+  example: /examples/color-controls/
+  title: Cubehelix gamma and signed-power color
+  image: /assets/images/color-controls.png
+  alt: Two cubehelix color rows and a blue to red signed-power row
+  width: 960
+  height: 540
+  thumbnail: /assets/images/color-controls-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 360
+  caption: Rows compare default gamma, gamma2.2 and cubic signed-power mapping.
+  summary: Edit lightness interpolation and transform original color values.
+  actions: createRectMark · encodeColor · editColorScale
+  tasks: continuous color editing
+  url: /api/scales/continuous-color/#color-gamma-and-signed-power
+
+- id: color-white-point
+  example: /examples/color-white-point/
+  title: Lab white point comparison
+  image: /assets/images/color-white-point.png
+  alt: Two red to blue color rows computed with D65 and D50 Lab white points
+  width: 960
+  height: 540
+  thumbnail: /assets/images/color-white-point-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 360
+  caption: D65 and D50 share original values and endpoints.
+  summary: Choose a white point and edit it without changing the source values.
+  actions: createRectMark · encodeColor · editColorScale
+  tasks: continuous color editing
+  url: /api/scales/continuous-color/#lab-white-point-comparison

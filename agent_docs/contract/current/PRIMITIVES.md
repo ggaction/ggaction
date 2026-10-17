@@ -73,7 +73,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`: 필수 global graphic ID. tree depth와 무관하게 unique하며 equivalent repeated definition과
   attachment는 idempotent하다.
 - `type`: `"canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path"`.
-- `length`: `0..10,000` integer. homogeneous drawable type에 지정하면 generated `items`를 만들며
+- `length`: 일반 graphic은 `0..10,000` integer. semantic point layer와 selected materialized
+  dataset 및 graphic ID/type의 소유권이 증명된 circle/rect/path/collection만 50,000 inclusive다.
+  retained child의 namespace도 실제 child owner까지 추적한다. 우회 flag나 trace 문자열은 사용하지 않는다.
+  homogeneous drawable type에 지정하면 generated `items`를 만들며
   생략 시 single graphic, `0`이면 empty collection이다. heterogeneous `collection`은 `items` edit로 채운다.
 - `parent`: optional existing `canvas | collection` ID. 지정하면 새 named graphic을 parent의 direct
   `children` ID list에 붙인다. 생략하면 top-level `order`에 둔다.
@@ -113,6 +116,16 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   `test/contracts/graphic-hierarchy-migration.test.js`,
   `test/contracts/graphic-tree-equivalence.test.js`.
 
+`layer[id].mark.blend`는 bar에만 optional `"difference"`를 저장하고 leaf 제거로
+normal로 돌아간다. Concrete rect/path만 optional `blend:"difference"`를 받는다.
+생략은 source-over이며 collection, circle, line, text와 explicit normal/unknown enum은
+거부한다. 각 glyph의 fill+outline source를 한 번 합성한다. 저장/renderer는 같은
+closed grammar로 검증하며 backend state를 프로그램에 저장하지 않는다.
+
+Concrete rectangle의 outline은 네 모서리 모두 closed join을 갖는다. Canvas의
+단순 lineTo 복귀는 이를 대신하지 않는다. `test/contracts/rect-outline.test.js`가
+세 join과 세 cap의 전체 RGBA를 독립 native rectangle과 정확히 대조한다.
+
 ## `editGraphics`
 
 - Signature: `editGraphics({ target, property, value }) | editGraphics({ target, remove: true })`.
@@ -124,11 +137,11 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - collection + outer array: item count와 길이가 같으면 index별 distribute. path `commands`처럼 property
     자체가 nested array인 경우 한 item value 단위를 보존한다.
   - `items`: heterogeneous collection의 typed concrete item array를 원자적으로 교체하며 최대 길이는
-    `10,000`이다.
+    일반 graphic은 `10,000`, 위에서 정의한 point-owned collection만 `50,000`이다.
 - `remove`: `true`일 때 property/value 없이 named graphic과 owned named subtree를 삭제하고 parent의
   `children` 또는 top-level `order`에서 detach한다. Canvas root와 generated item의 독립 삭제는 허용하지 않는다.
 - Effect: concrete graphic path만 structural copy한다. semantic state나 automatic compiler는 관여하지 않는다.
-- 오류: unknown target/property, incompatible child type, `length`/`items` cardinality `10,000` 초과,
+- 오류: unknown target/property, incompatible child type, `length`/`items` cardinality의 해당 소유권 한도 초과,
   mismatched distributed length, non-finite geometry,
   negative dimensions/strokes, opacity 밖의 값과 invalid Canvas text vocabulary를 거부한다.
 - Coverage: `test/unit/actions/primitives/edit-graphics.test.js`와
@@ -181,3 +194,11 @@ Measured radius의 양수 값이 수치 정밀도 때문에 inner radius와 구�
 ### Concrete text lines
 
 Text의 optional `lines`는 `{text: string, x: finite, y: finite}` 배열이다. 각 좌표는 text anchor에 상대적이고 공통 rotation을 따른다. renderer는 줄을 재분할/측정하지 않고 이 좌표를 그린다. `text`는 전체 논리 문자열을 유지한다.
+
+
+Concrete rect/path blend is optional normal|difference; circle blend is optional
+normal only. Other graphic types reject blend. Normal is an explicit source-over
+whole-glyph paint instruction, with bounded source attenuation once; omitted
+legacy output and semantic bar normal reset remain unchanged. The approved normal
+path adds no numerical tolerance. Preflight checks source arc/transform/mask and
+target compositing support before destination resize or clear.

@@ -490,6 +490,24 @@
       }
     },
     {
+      "name": "createRegressionStatisticsData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical fit-statistics owner; revise its source with editRegressionStatisticsData",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createregressionstatisticsdata"
+      }
+    },
+    {
       "name": "createWindowData",
       "layer": "user-facing",
       "domain": "core",
@@ -757,6 +775,24 @@
       "contract": {
         "file": "agent_docs/contract/current/CORE.md",
         "anchor": "editregressiondata"
+      }
+    },
+    {
+      "name": "editRegressionStatisticsData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Revise the explicit linear-fit source and dependent statistics consumers",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editregressionstatisticsdata"
       }
     },
     {
@@ -1323,7 +1359,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits whole-bar appearance",
+      "update": "Edits whole-bar appearance and optional per-bar compositing",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -5142,6 +5178,7 @@
       "materializeIntervalData",
       "materializeNormalizedData",
       "materializeRegressionData",
+      "materializeRegressionStatisticsData",
       "materializeSummaryData",
       "materializeStackData",
       "materializeStatisticalReferenceData",

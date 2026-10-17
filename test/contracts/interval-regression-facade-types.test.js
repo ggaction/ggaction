@@ -24,6 +24,18 @@ p.createIntervalPlot({ x: { center: "center", lower: "low", upper: "high" }, y: 
 p.createRegressionPlot({ x: "x", y: "y", groupBy: false });
 p.createRegressionPlot({ x: { field: "x", scale: { zero: false } }, y: "y", method: "polynomial", degree: 2, interval: "prediction", band: false });
 p.createRegressionPlot({ x: "x", y: "y", method: "loess", span: 0.4, band: false });
+p.createRegressionPlot({ x: "x", y: "y", method: "exp", interval: false });
+p.createRegressionData({ id: "exp", x: "x", y: "y", method: "exp" });
+p.createRegression({ method: "exp", band: false });
+p.editRegressionData({ target: "exp", method: "exp" });
+// @ts-expect-error exponential regression has no intervals
+p.createRegressionData({ id: "exp", x: "x", y: "y", method: "exp", interval: "mean" });
+// @ts-expect-error exponential regression has no confidence method
+p.createRegressionData({ id: "exp", x: "x", y: "y", method: "exp", level: .95 });
+// @ts-expect-error exponential regression has no band
+p.createRegressionPlot({ x: "x", y: "y", method: "exp", band: {} });
+// @ts-expect-error exponential regression has no degree
+p.createRegression({ method: "exp", degree: 2 });
 // @ts-expect-error interval plot requires both axes
 p.createIntervalPlot({ x: "category" });
 // @ts-expect-error errorBar style has a closed vocabulary

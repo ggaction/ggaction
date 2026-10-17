@@ -4,6 +4,26 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+### Added
+
+- Point layers preserve up to 50,000 selected observations in one collection,
+  including source revisions, facets, editing, and editable snapshots.
+
+- `createRegressionStatisticsData` reuses a linear fit for observation counts,
+  coefficients, and R-squared. `editRegressionStatisticsData` changes its source
+  and replays consumers atomically; editable snapshots retain compact fit statistics.
+
+- Added opt-in difference compositing through `editBarMark`, with isolated
+  fill and outline opacity, concrete SVG/Canvas output, and glyph-only PDF rasterization.
+
+- Closed Canvas rectangle outlines at all four corners so the first corner
+  uses its authored join instead of two open end caps.
+
+### Fixed
+
+- Unattached ordinal scale edits validate palette ranges like creation, including
+  rebuilding Raincloud colors without losing their channel-specific checks.
+
 ## [0.0.18] - 2026-10-17
 
 ### Added

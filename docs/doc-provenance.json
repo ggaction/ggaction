@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.18",
-  "contractId": "sha256:78e342b371b0ce619d7edf63cb0af90d467d5ddd4a0f44af07837a61bb84a2ab",
+  "contractId": "sha256:11fd9997b5c3b2835cd82a934e0878f4e5f167c8797bf9d7699a94f6f95ce5b6",
   "sourceCommit": null,
   "sourceRef": "main",
-  "exampleSourceRef": "b90ce36d35d3f91c1d3045db54412f9bc8341228",
+  "exampleSourceRef": "2d6081ea84999114784691eea84e68c87de576c7",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 282,
+  "actionCount": 284,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -114,6 +114,14 @@
     },
     "createRegressionData": {
       "availableBy": "v0.0.13"
+    },
+    "createRegressionStatisticsData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editRegressionStatisticsData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
     },
     "createIntervalData": {
       "availableBy": "v0.0.13"

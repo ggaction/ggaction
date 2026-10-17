@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { chart } from "../../../../src/index.js";
+import { chart as basicChart } from "../../../../src/basic.js";
 import {
   assertAtomicFailures,
   requireTestScale
@@ -189,4 +190,45 @@ test("rejects invalid, empty, unknown, incompatible, and ambiguous edits atomica
     operation: () => ambiguous.editScale({ reverse: true }),
     error: /requires id/
   }]);
+});
+
+test("unbound ordinal editing uses the same palette range validation as creation", () => {
+  const initial={palette:{name:"viridis",count:5,extent:[0.1,0.9]}};
+  const revised={palette:{name:"magma",count:7,extent:[0.08,0.92]}};
+  const original=chart().createScale({id:"unbound",type:"ordinal",domain:[1,"1",true],range:initial});
+  const before=JSON.stringify(original.semanticSpec);
+  const input=JSON.stringify(revised);
+  const edited=original.editScale({id:"unbound",range:revised});
+  assert.deepEqual(requireTestScale(edited,"unbound").range,revised);
+  assert.deepEqual(requireTestScale(edited,"unbound").domain,[1,"1",true]);
+  assert.equal(JSON.stringify(original.semanticSpec),before);
+  assert.equal(JSON.stringify(revised),input);
+  assert.deepEqual(requireTestScale(original,"unbound").range,initial);
+  assertAtomicFailures(original,[
+    {operation:()=>original.editScale({id:"unbound",range:{palette:{name:"viridis",count:0}}}),error:/positive|count/i},
+    {operation:()=>original.editScale({id:"unbound",range:{palette:{name:"viridis",extent:[-0.1,0.8]}}}),error:/extent/i},
+    {operation:()=>original.editScale({id:"unbound",range:{palette:"viridis",extra:true}}),error:/only|palette/i}
+  ]);
+});
+
+test("position-bound discrete scales still reject palette ranges atomically", () => {
+  const program=chart().createCanvas({width:400,height:300,margin:40})
+    .createData({values:[{group:"a",value:1},{group:"b",value:2}]})
+    .createPointMark({id:"positions"})
+    .encodeX({field:"group",fieldType:"nominal",scale:{id:"position",type:"point"}})
+    .encodeY({field:"value"});
+  assertAtomicFailures(program,[{operation:()=>program.editScale({id:"position",range:{palette:{name:"viridis",count:5}}}),error:/two finite numbers|range/i}]);
+});
+
+test("Basic keeps palette range creation and the Full-only generic edit boundary", () => {
+  const original=basicChart().createScale({id:"color",type:"ordinal",domain:[1,"1",true],
+    range:{palette:{name:"viridis",count:5,extent:[0.1,0.9]}}});
+  assert.equal(typeof original.editScale,"undefined");
+  const attached=original.createCanvas({width:400,height:300,margin:40})
+    .createData({values:[{x:0,y:1,group:1},{x:1,y:2,group:"1"},{x:2,y:3,group:true}]})
+    .createPointMark({id:"points"}).encodeX({field:"x"}).encodeY({field:"y"})
+    .encodeColor({field:"group",fieldType:"nominal",scale:{id:"color"}});
+  assert.equal(attached.graphicSpec.objects.points.items.length,3);
+  assert.deepEqual(requireTestScale(attached,"color").domain,[1,"1",true]);
+  assert.equal(requireTestScale(original,"color").range.palette.name,"viridis");
 });

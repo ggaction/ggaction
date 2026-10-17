@@ -41,6 +41,10 @@ const options: EditLegendBlockOptions = { target: "points", channel: "size", val
 const labels: DisplayLabelMap = [{ value: 1, label: "one" }, { value: "1", label: "string one" }];
 program.editLegendBlock(options);
 program.createLegend({combine:"size-shape",channels:["shape","size"]});
+program.createLegend({symbol:{layers:[{type:"point",opacity:0},{type:"line",opacity:0.7},{type:"swatch",opacity:1}]}});
+basic.createLegend({symbol:{layers:[{type:"point",opacity:0.7}]}});
+// @ts-expect-error recipe opacity is numeric
+program.createLegend({symbol:{layers:[{type:"point",opacity:"0.7"}]}});
 basic.createLegend({combine:"size-shape"});
 program.editLegend({combine:"separate"});
 // @ts-expect-error combination values are closed

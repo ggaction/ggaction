@@ -1279,6 +1279,20 @@
   {
     "file": "api/data/statistical-transforms.md",
     "block": 2,
+    "heading": "Linear fit statistics {#fit-statistics}",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [
+      "source: \"fit\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: \"fit\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "4af4c56b2e903da2fa622c903fb6c8fbcd0f7ab6fda3d0dd9a10fc325196105c",
+    "executable": false
+  },
+  {
+    "file": "api/data/statistical-transforms.md",
+    "block": 3,
     "heading": "`createIntervalData({ id, source?, field, groupBy?, center?, extent?, method?, level?, missing?, as? })` {#create-interval-data}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1292,7 +1306,7 @@
   },
   {
     "file": "api/data/statistical-transforms.md",
-    "block": 3,
+    "block": 4,
     "heading": "`createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, weight?, missing?, as? })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1979,6 +1993,20 @@
     "executable": false
   },
   {
+    "file": "api/legends/categorical.md",
+    "block": 6,
+    "heading": "Recipe layer opacity",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "60628d1a86ca95954a28c9ae000b19d7a954dbc0798fffa38c6c1cd252bc85c8",
+    "executable": false
+  },
+  {
     "file": "api/legends/composite.md",
     "block": 1,
     "heading": "Layered symbols",
@@ -2379,7 +2407,7 @@
   {
     "file": "api/marks/bar.md",
     "block": 3,
-    "heading": "`editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}",
+    "heading": "`editBarMark({ target?, blend?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -3209,7 +3237,7 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `points`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "b30dc5b4fb5d1281a6d9245bdd18b0c4e2312440d4aad669cd125b943965b63c",
+    "sha256": "45554c55ffdcbd3afc7bd74bf95f08c7d37f51f66cdcc69777fff1da6547eac0",
     "executable": false
   },
   {

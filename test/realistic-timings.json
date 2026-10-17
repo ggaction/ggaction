@@ -12,7 +12,6 @@
     "contracts/realistic-arc-legend-layout.test.js": 67117,
     "contracts/realistic-axis-facet-owner-witness.test.js": 17032,
     "contracts/realistic-cartesian-facade-coverage-recipes.test.js": 134704,
-    "contracts/realistic-combined-legend-witness.test.js": 454,
     "contracts/realistic-complete-chart-facades.test.js": 3510,
     "contracts/realistic-data-mark-recipes.test.js": 151354,
     "contracts/realistic-direct-lifecycle-coverage-recipes.test.js": 799519,
@@ -27,7 +26,15 @@
     "contracts/realistic-scenario-generation-isolation.test.js": 945678,
     "contracts/realistic-scenario-generator.test.js": 535185,
     "contracts/realistic-scenario-runner.test.js": 99611,
-    "contracts/realistic-statistical-facade-coverage-recipes.test.js": 159323
+    "contracts/realistic-statistical-facade-coverage-recipes.test.js": 159323,
+    "contracts/realistic-combined-legend-witness.test.js": 1338,
+    "contracts/realistic-data-color-contracts.test.js": 50176
+  },
+  "localMeasurementNotes": {
+    "contracts/realistic-combined-legend-witness.test.js": {
+      "environment": "macOS, Node22.23.1",
+      "measurement": "Sum of actual three test durations556.128334+354.670833+426.879375ms, rounded up; three authentic TidyTuesday datasets, each five repetitions and three recipe opacities. Scheduling estimate only."
+    }
   },
   "localMeasurements": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -39,6 +46,13 @@
       "environment": "Darwin, Node 22",
       "source": "actual three TT datasets, five flows per dataset",
       "measuredDurationMs": 17031.924125
+    }
+  },
+  "measurementOverrides": {
+    "contracts/realistic-data-color-contracts.test.js": {
+      "environment": "macOS, Node22.23.1, npm10.9.8",
+      "measurement": "Successful local complete file duration_ms, rounded upward; unchanged159 requirements/100 programs plus restored124 palette paths/135 programs across the same five pinned datasets. Includes truthful redacted-array presence checks; no coverage instrumentation.",
+      "durationMs": 50176
     }
   }
 }

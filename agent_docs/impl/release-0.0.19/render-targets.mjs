@@ -60,12 +60,26 @@ add('shared-facet-owner','6. One shared legend owned by the parent',[193,206],
  {cellPlotWidth:60,finalPlotUnionWidth:375,legendWidth:270,parentOwners:1});
 function cube(h,s,L){const a=s*L*(1-L),rad=(h+120)*Math.PI/180;return [L+a*(-.14861*Math.cos(rad)+1.78277*Math.sin(rad)),L+a*(-.29227*Math.cos(rad)-.90649*Math.sin(rad)),L+a*(1.97294*Math.cos(rad))].map(v=>Math.round(Math.max(0,Math.min(1,v))*255));}
 const color=v=>'rgb('+v.join(',')+')';
+function cubeFromRGB(rgb){
+ const rows=[[1,-.14861,1.78277,rgb[0]/255],[1,-.29227,-.90649,rgb[1]/255],[1,1.97294,0,rgb[2]/255]];
+ for(let k=0;k<3;k++){
+  let pivot=k;for(let i=k+1;i<3;i++)if(Math.abs(rows[i][k])>Math.abs(rows[pivot][k]))pivot=i;
+  [rows[k],rows[pivot]]=[rows[pivot],rows[k]];
+  const d=rows[k][k];for(let j=k;j<4;j++)rows[k][j]/=d;
+  for(let i=0;i<3;i++)if(i!==k){const factor=rows[i][k];for(let j=k;j<4;j++)rows[i][j]-=factor*rows[k][j];}
+ }
+ const [L,X,Y]=rows.map(row=>row[3]);
+ return {h:((Math.atan2(Y,X)*180/Math.PI-120)%360+360)%360,s:Math.hypot(X,Y)/(L*(1-L)),l:L};
+}
+const range=['#75190b','#90f2a4'],start=cubeFromRGB([117,25,11]),end=cubeFromRGB([144,242,164]);
+let hueDelta=end.h-start.h;if(hueDelta<-180)hueDelta+=360;if(hueDelta>180)hueDelta-=360;
 b=text(30,55,'cubehelix gamma 1 / 2.2')+text(30,160,'signed power, domain [-2, 2], exponent 3');
-const colors=[];for(let j=0;j<2;j++)for(let i=0;i<9;i++){const t=i/8,L=.2+.6*t**[1,2.2][j],rgb=cube(120*t,1,L);colors.push({gamma:[1,2.2][j],t,rgb});b+=rect(30+i*46,65+j*32,46,25,color(rgb));}
+const colors=[];for(let j=0;j<2;j++)for(let i=0;i<9;i++){const t=i/8,L=start.l+(end.l-start.l)*t**[1,2.2][j],rgb=cube(start.h+hueDelta*t,start.s+(end.s-start.s)*t,L);colors.push({gamma:[1,2.2][j],t,rgb});b+=rect(30+i*46,65+j*32,46,25,color(rgb));}
+b+=text(30,250,'cubehelix range: #75190b → #90f2a4');
 for(let i=0;i<9;i++){const v=-2+i*.5,t=(Math.sign(v)*Math.abs(v)**3+8)/16;assert.ok(t>=0&&t<=1);b+=rect(30+i*46,175,46,25,color([Math.round(255*t),0,Math.round(255*(1-t))]))+text(30+i*46,220,String(v));}
 add('color-math','7. Gamma affects lightness; pow uses raw values',[169,172],
- ["program.editColorScale({interpolate:'cubehelix',gamma:2.2})","program.editColorScale({type:'pow',exponent:3})"],b,
- {cubehelixSamples:colors,powerDomain:[-2,2],powerExponent:3});
+ ["program.editColorScale({range:['#75190b','#90f2a4'],interpolate:'cubehelix',gamma:2.2})","program.editColorScale({type:'pow',exponent:3})"],b,
+ {cubehelixRange:range,endpointCubehelix:[start,end],cubehelixSamples:colors,powerDomain:[-2,2],powerExponent:3});
 b='';for(let i=0;i<3;i++){const bg=['#fff','#808080','#336699'][i];b+=rect(30+i*145,65,125,125,bg)+rect(55+i*145,90,75,75,'#f00000','stroke="#ffff00" stroke-width="8" style="mix-blend-mode:difference"')+text(30+i*145,220,bg);}
 add('difference-source','8. Each bar fill + stroke is composited once',[203],
  ["program.editBarMark({blend:'difference'})"],b,

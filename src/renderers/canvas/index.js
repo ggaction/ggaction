@@ -1,3 +1,5 @@
+import { MAX_RASTER_DIMENSION, MAX_RASTER_PIXELS } from "./limits.js";
+import { prepareIsolatedGlyphs, drawIsolatedGlyph } from "./isolated.js";
 import { resolveCanvasSolidPaint } from "./fill.js";
 import { annotateError } from "../../core/diagnostics.js";
 import { drawCircleGraphic } from "./circle.js";
@@ -40,8 +42,6 @@ const DRAWING_CONTEXT_METHODS = Object.freeze([
   "rotate",
   "fillText"
 ]);
-const MAX_RASTER_DIMENSION = 32_767;
-const MAX_RASTER_PIXELS = 16_777_216;
 
 function requireDrawingContext(context) {
   if (context === null || typeof context !== "object") {
@@ -144,9 +144,10 @@ export function resolveGraphicRenderTarget(graphicSpec) {
   });
 }
 
-export function drawResolvedGraphicSpec(target, context) {
+export function drawResolvedGraphicSpec(target, context, options = {}) {
   requireDrawingContext(context);
   const { graphicSpec, canvasId, canvas, width, height } = target;
+  const isolated = options.isolated ?? prepareIsolatedGlyphs(target, context, options);
 
   fillCanvasBackground(context, canvasId, canvas, width, height);
 
@@ -162,14 +163,14 @@ export function drawResolvedGraphicSpec(target, context) {
         return;
       }
       if (!Array.isArray(object.items)) {
-        drawConcreteGraphic(context, id, object);
+        drawConcreteGraphic(context, id, object, isolated);
       }
     },
     item({ id, object, owner }) {
       drawConcreteGraphic(context, id, {
         ...object,
         type: object.type ?? owner.type
-      });
+      }, isolated);
     },
     exit({ id, object }) {
       if (
@@ -182,7 +183,7 @@ export function drawResolvedGraphicSpec(target, context) {
   });
 }
 
-export function render(program, context, { pixelRatio = 1 } = {}) {
+export function renderCanvasProgram(program, context, { pixelRatio = 1 } = {}, createCanvas) {
   const graphicSpec = requireProgramGraphicSpec(program);
 
   requireCanvasContext(context);
@@ -220,6 +221,7 @@ export function render(program, context, { pixelRatio = 1 } = {}) {
     ), { code: "resource-limit", operation: "render", optionPath: "physicalPixels", limit: MAX_RASTER_PIXELS, actual: physicalWidth * physicalHeight });
   }
   preflightCanvasGraphicSpec(target, pixelRatio);
+  const isolated = prepareIsolatedGlyphs(target, context, {pixelRatio, createCanvas});
 
   context.canvas.width = physicalWidth;
   context.canvas.height = physicalHeight;
@@ -235,16 +237,20 @@ export function render(program, context, { pixelRatio = 1 } = {}) {
   try {
     context.scale(pixelRatio, pixelRatio);
     context.clearRect(0, 0, width, height);
-    drawResolvedGraphicSpec(target, context);
+    drawResolvedGraphicSpec(target, context, {isolated, pixelRatio, createCanvas});
   } finally {
     context.restore();
   }
 }
 
-function drawConcreteGraphic(context, id, graphic) {
+export function render(program, context, options) {
+  return renderCanvasProgram(program, context, options);
+}
+
+function drawConcreteGraphic(context, id, graphic, isolated) {
   if (graphic.type === "collection") {
     for (const item of graphic.items ?? []) {
-      drawConcreteGraphic(context, item.id ?? id, item);
+      drawConcreteGraphic(context, item.id ?? id, item, isolated);
     }
     return;
   }
@@ -252,5 +258,9 @@ function drawConcreteGraphic(context, id, graphic) {
   if (draw === undefined) {
     throw new Error(`Canvas renderer does not support "${graphic.type}" yet.`);
   }
-  draw(context, id, graphic);
+  if (["normal","difference"].includes(graphic.properties?.blend)) {
+    drawIsolatedGlyph(context, id, graphic, draw, isolated);
+  } else {
+    draw(context, id, graphic);
+  }
 }

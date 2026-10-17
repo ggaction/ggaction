@@ -200,6 +200,8 @@ function resolveContinuousScale({
             }
           : {}),
     ...(isSequentialColor ? { interpolate: scale.interpolate ?? "rgb" } : {}),
+    ...(scale.whitePoint === undefined ? {} : {whitePoint: scale.whitePoint}),
+    ...(scale.gamma === undefined ? {} : {gamma: scale.gamma}),
     ...(Object.hasOwn(scale, "unknown") ? { unknown: scale.unknown } : {})
   };
 }

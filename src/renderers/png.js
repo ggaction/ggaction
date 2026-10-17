@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
-import { render } from "./canvas/index.js";
+import { renderCanvasProgram } from "./canvas/index.js";
 import { validateRendererOptions } from "./options.js";
 import { loadNativeBackend } from "./nativeBackend.js";
 
@@ -12,7 +12,7 @@ export async function renderToPNGBuffer(program, options = {}) {
   const { pixelRatio = 1 } = options;
   const { createCanvas } = await loadNativeBackend();
   const canvas = createCanvas(1, 1);
-  render(program, canvas.getContext("2d"), { pixelRatio });
+  renderCanvasProgram(program, canvas.getContext("2d"), { pixelRatio }, createCanvas);
   // Canvas drawing is synchronous; encoding uses the native async worker.
   const buffer = await canvas.encode("png");
   return Object.freeze({

@@ -170,7 +170,7 @@ automatic undo stack; the application chooses which to retain or render.
 
 Use `createLinePlot`, `createBarPlot`, `createHistogram`, and `createHeatmap` for
 the other basic Cartesian charts. The `ggaction/basic` entry keeps this common
-creation path at or below the current 190,000-byte gzip regression ceiling while
+creation path at or below the current 200,000-byte gzip regression ceiling while
 each facade still records its mark, encoding, and guide actions as trace
 children. Import from
 `ggaction` when you need editing, selection, composition, alternative
@@ -257,6 +257,10 @@ npm test
 npm run test:render
 npm run test:docs
 ```
+
+The renderer development suite also needs Poppler's `pdftoppm` on `PATH` for
+independent PDF pixel checks. The CI and protected release jobs install
+`poppler-utils` explicitly; this is not a runtime package dependency.
 
 ## Related Links
 

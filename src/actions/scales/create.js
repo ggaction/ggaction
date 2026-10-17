@@ -38,7 +38,7 @@ const CREATE_SCALE_OPTIONS = Object.freeze([
   "padding",
   "align",
   "palette",
-  "interpolate", "midpoint",
+  "interpolate", "whitePoint", "gamma", "midpoint",
   "radialMapping", "unknown"
 ]);
 
@@ -88,7 +88,7 @@ export const createScale = /* @__PURE__ */ action(
     const id = validateUserId(args.id, "Scale id");
     const type = validateScaleType(args.type ?? "linear");
     const colorType = isColorScaleType(type) && (
-      !["log", "sqrt", "symlog"].includes(type) || args.palette !== undefined ||
+      !["log", "pow", "sqrt", "symlog"].includes(type) || args.palette !== undefined ||
       args.interpolate !== undefined || (Array.isArray(args.range) && typeof args.range[0] === "string") ||
       args.range?.palette !== undefined
     );
@@ -171,7 +171,7 @@ export const createScale = /* @__PURE__ */ action(
 
     for (const property of [
       "emptyDomain", "nice", "zero", "clamp", "reverse", "base", "exponent", "constant",
-      "paddingInner", "paddingOuter", "padding", "align", "interpolate", "midpoint",
+      "paddingInner", "paddingOuter", "padding", "align", "interpolate", "whitePoint", "gamma", "midpoint",
       "radialMapping", "unknown"
     ]) {
       if (definition[property] === undefined) continue;

@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:78e342b371b0ce619d7edf63cb0af90d467d5ddd4a0f44af07837a61bb84a2ab",
+    "contractId": "sha256:11fd9997b5c3b2835cd82a934e0878f4e5f167c8797bf9d7699a94f6f95ce5b6",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -47,7 +47,7 @@
         "next"
       ],
       "bytes": 6112,
-      "sha256": "b9d4c06ae1e2babc58035a01cc3c7b81987027c9c7a719a75ba2912e8e14b2c3"
+      "sha256": "002bf3b42f82b60bbd8a27c920a8e7985e6ee35a2d7e6cf5dbb68b2bd6648ec2"
     },
     {
       "order": 3,
@@ -109,7 +109,7 @@
         "run-and-continue"
       ],
       "bytes": 5438,
-      "sha256": "c4a6d40acd36c41fe0adb5c509e31fa4554b367316062df12c3cbf6b6db275a8"
+      "sha256": "9f215d88be0ccf08347f4121081e19ff11b3d1bbdc8ec42e6718419c7afe5289"
     },
     {
       "order": 7,
@@ -125,7 +125,7 @@
         "related"
       ],
       "bytes": 3562,
-      "sha256": "9615b3ba358fce0c8e026e8bea19116eb0c7e0c79a923cc5f5cfffaa8406ca2d"
+      "sha256": "b145596a0173b694194ea8dc7f6f47dfa5ab7ce4272159350ad817c73160ea61"
     },
     {
       "order": 8,
@@ -140,7 +140,7 @@
         "related"
       ],
       "bytes": 3449,
-      "sha256": "2c54511d6bb0b485d5dfab620548c8f772b3ce70cfc1659b048e382b9f946b94"
+      "sha256": "9da9f0818bbce541d5112bf61b93d57961b75958602eeaf1fc692e6ba4eea962"
     },
     {
       "order": 9,
@@ -161,7 +161,7 @@
         "related"
       ],
       "bytes": 9986,
-      "sha256": "7533c59b87dac6d570109a992d9e1265c4554e46e6c910ef630641ff7db59f2b"
+      "sha256": "cd7c1e1c677fbf3d12b9372131869177ef53c52a3d531672a6e759fea9257f5f"
     },
     {
       "order": 10,
@@ -178,7 +178,7 @@
         "run-and-continue"
       ],
       "bytes": 4781,
-      "sha256": "db9c78d03687563eae4af71f8e8dc863a186378c004191f1705b03655eea3477"
+      "sha256": "af2457a019d04b02a6b340e9182f0e6db18ddbbfc442f327cd1c39f7198a53ee"
     },
     {
       "order": 11,
@@ -193,7 +193,7 @@
         "run-and-continue"
       ],
       "bytes": 4380,
-      "sha256": "1aed4535d6d56603884fb82bf8245a59ac520618d0324db3f5062eed971499a2"
+      "sha256": "0266a4be5e174a6affe73d90876114f84a72b9690fc4c3e9b1a8c2d27530734b"
     },
     {
       "order": 12,
@@ -209,7 +209,7 @@
         "run-and-continue"
       ],
       "bytes": 4153,
-      "sha256": "560a650a9b5d0a10ee803e7cc506c65a761ec8bd66bb1ed07b976adfcd330a7e"
+      "sha256": "76b1c758118e8955487e65f3288c6e6521877dccec6ac7fd1c896e5c85632967"
     },
     {
       "order": 13,
@@ -224,7 +224,7 @@
         "run-and-continue"
       ],
       "bytes": 4216,
-      "sha256": "88bc06f3e4668870bdf6f7550edea92e7a6c09533ca198010b33564a2647ecba"
+      "sha256": "989979b0dad8b1eaf081daa0e50462ecd4de7003f04e0bdc598b1bd5796867e8"
     },
     {
       "order": 14,
@@ -239,7 +239,7 @@
         "keep-gaps-explicit"
       ],
       "bytes": 3527,
-      "sha256": "54553218e3728ea915223a27e2b83efe5e1f30c9ce032d49e37aa529b4974b7a"
+      "sha256": "391601a7b49604a808c18bcbecd81e4a3c0e455900e9e75650a835f9300398ed"
     },
     {
       "order": 15,
@@ -256,7 +256,7 @@
         "run-and-continue"
       ],
       "bytes": 6267,
-      "sha256": "ef1f8ba12f71ab85c6c2038b77d34124a1a53c62bb0cc2beea06a7115db0fc39"
+      "sha256": "1058cef0e16ee245b6832cd96d1d9f1bef198d68d3195e0b2733a9ed55dccd5f"
     },
     {
       "order": 16,
@@ -272,7 +272,7 @@
         "key-action-trace"
       ],
       "bytes": 4650,
-      "sha256": "fe83dc1b2f3b062e22a72117e2fa3cb65a5a09c19af7e5311f1211a274ddba2f"
+      "sha256": "563eae45b805fa70cc298e2fb87f3a24f052da35561e04ca9124374cd34d4587"
     },
     {
       "order": 17,
@@ -288,7 +288,7 @@
         "run-and-continue"
       ],
       "bytes": 3587,
-      "sha256": "4fa3f07a34edb9ca148ab1297d1a41525f158850006a10d4e59e28108bbaa1b9"
+      "sha256": "2b9cb9439b746cb25f9bb6de9edc2283af67bb37d9ed26e4277b20dbcbb2acd4"
     },
     {
       "order": 18,
@@ -304,7 +304,7 @@
         "run-and-continue"
       ],
       "bytes": 3811,
-      "sha256": "6d7d727fdf3c934d5ef2a01411de8dfd418febb96dbe85d7dded45fa20c5f20a"
+      "sha256": "5ff798c3c8d5c4067a4c41b9d3355336686c71d9bf516cf2acdc745c3d697c75"
     },
     {
       "order": 19,
@@ -321,7 +321,7 @@
         "run-and-continue"
       ],
       "bytes": 6372,
-      "sha256": "c247154055a5c91acabd8a10a08cfec4351e3abc6e372e9ff438b2ba893ee34e"
+      "sha256": "e7588d999f55106c218487821f45fb106ec867d74f2a35afdeaa34c5a1d01405"
     },
     {
       "order": 20,
@@ -348,7 +348,7 @@
         "revise-the-statistical-source"
       ],
       "bytes": 3876,
-      "sha256": "9f8f20e164d4365337941dea9b35fe48058412db12e1781a88557518517f85ed"
+      "sha256": "ca70b2f6b27b277e3325021dcffbd61c50bb9c79d9d70db2e1bcc1a5c5e639f2"
     },
     {
       "order": 22,
@@ -806,8 +806,8 @@
         "removedata-id",
         "related"
       ],
-      "bytes": 13216,
-      "sha256": "57e0aa37664abbc02d05000dd4eb15c7509b766ddc38a0b07be2767df9508cfe"
+      "bytes": 13332,
+      "sha256": "5fd40d0165379d6875966b02a01b55483bcf705eb02319f3977607c44c8f710b"
     },
     {
       "order": 51,
@@ -832,12 +832,13 @@
       "headings": [
         "statistical-data-transforms",
         "createregressiondata-id-source-x-y-groupby-method-degree-span-confidencemethod-level-confidence-interval-predict-missing",
+        "fit-statistics",
         "create-interval-data",
         "createdensitydata-id-source-field-groupby-bandwidth-extent-steps-kernel-normalization-weight-missing-as",
         "related"
       ],
-      "bytes": 7816,
-      "sha256": "2c42e92a029669efc46e0c004e3ed318944a8e30b7d27fdadab7bed26b827c30"
+      "bytes": 10307,
+      "sha256": "f8cb50df63ed1b8c99f73d44ff24abf287a982abf95bf781f73c7a12a5c2a353"
     },
     {
       "order": 53,
@@ -864,7 +865,7 @@
         "related"
       ],
       "bytes": 5887,
-      "sha256": "0825e6525b1155907e8e3e8555e8ba2dfeef75f25e4ff682fcd55f17a8796046"
+      "sha256": "3867d1cdb89ec59f2e9c38bf725eb7aac626b0631fddecf83c87efdaea758c9c"
     },
     {
       "order": 55,
@@ -911,8 +912,8 @@
         "continue-with-encodings",
         "errors-and-limitations"
       ],
-      "bytes": 6662,
-      "sha256": "3f0c4ce8d05fb46c8f2339660f437089f78d6dd56b98aedac5f9b1dbc80d593b"
+      "bytes": 7228,
+      "sha256": "e028f582edbca873ad3253849e63fd19beb633452e5605e0aea1ca6b34d81ab0"
     },
     {
       "order": 58,
@@ -947,10 +948,11 @@
         "createbarmark-id-data-missing-fill-opacity-stroke-strokewidth-cornerradius-cornerradiustopleft-cornerradiustopright-cornerradiusbottomright-cornerradiusbottomleft-linecap-linejoin-miterlimit",
         "edit-bar-mark",
         "independent-corners",
+        "blend-with-underlying-content",
         "related"
       ],
-      "bytes": 5497,
-      "sha256": "cf72473c4677bc034f776ea0e23ec4de08ab7be23b479f36365d2e2ba8157ac6"
+      "bytes": 6396,
+      "sha256": "bd716536e1e1aacc96cf8d734cf8eaa27267acfdf76f25d4526bc499d6068655"
     },
     {
       "order": 60,
@@ -1047,8 +1049,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 10337,
-      "sha256": "0685225565db44b2cdf14e967f6f8599ac5a88aabda7977dc157ca755160e33c"
+      "bytes": 11096,
+      "sha256": "13ba61fa222e2c94198f12443517c36fca71813416bf6f70cddc0a0dc6a42b87"
     },
     {
       "order": 65,
@@ -1195,10 +1197,11 @@
         "pdf-in-memory",
         "errors-and-limitations",
         "accessible-data-alternatives",
+        "explicit-whole-glyph-opacity",
         "related"
       ],
-      "bytes": 19554,
-      "sha256": "c7141b259dc96e2468219712be2494801f28dc3d6c437058cc0523f6f4c16fb7"
+      "bytes": 20698,
+      "sha256": "1d0620f9a4ab446655f663a669bc742185fb40b76f9b6fd4b71f3e839c597dd2"
     },
     {
       "order": 73,
@@ -1221,7 +1224,7 @@
         "state-trace-and-action-scope"
       ],
       "bytes": 6953,
-      "sha256": "a78a3aae75861e328a9c7793c039ae472e59700b42509d2b4e7ae4a67ae77257"
+      "sha256": "9840e5fe77fb800d40afeec30fd91ac62520c68e15f8d9e0c3c7fbbd21e1a940"
     },
     {
       "order": 74,
@@ -1272,7 +1275,7 @@
         "related"
       ],
       "bytes": 7299,
-      "sha256": "4b6b6cdcf01127e98f9aac6eae8c2903a58c11bb9cb1dc341ae49c11a13f36af"
+      "sha256": "8869570f7e174ff85ac8c642a1d61e09a1cd542e10d26f0a1af4f9ec146cbba8"
     },
     {
       "order": 77,
@@ -1353,7 +1356,7 @@
         "related"
       ],
       "bytes": 5518,
-      "sha256": "7282c8c0005191f39b0afb27dd935cd0c000228c7abf23ca69ebe9fd125f6a3b"
+      "sha256": "1b74fc262081289d71f458aedb0e91589c6730810f1ecef8702dc7a21485b234"
     },
     {
       "order": 82,
@@ -1458,8 +1461,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 12659,
-      "sha256": "d03d8362d08115b69af4f04bff7718010a989d3602f857bdd2f863dcc9ed1c6e"
+      "bytes": 12944,
+      "sha256": "e723b5738df6e64791b01965cdf69835d665f40eb82cdfc01da6f23c97e01e3e"
     },
     {
       "order": 89,
@@ -1502,10 +1505,12 @@
         "named-palettes",
         "continuous-point-and-aggregate-bar-color",
         "explicit-color-midpoint",
+        "lab-white-point-comparison",
+        "color-gamma-and-signed-power",
         "related"
       ],
-      "bytes": 7745,
-      "sha256": "5ea1a7167ad62ceca20d58fc5425930eedbb0e7b1cdf86fb100278b78dd144ca"
+      "bytes": 11248,
+      "sha256": "a067bf1f083c8b86c2bd408edb4c32b076185a8adae3fb5b373de17edad74046"
     },
     {
       "order": 92,
@@ -1622,10 +1627,11 @@
         "item-order-without-changing-color",
         "combined-categorical-and-size-layout",
         "combine-ordinal-size-and-shape",
+        "recipe-layer-opacity",
         "related"
       ],
-      "bytes": 16159,
-      "sha256": "c7c9ccb1d5cf45eedcb6a63b447019e7b3f656f95f9a379285abf367ea77528d"
+      "bytes": 17395,
+      "sha256": "1efb0296c5329a3d1f859b6e9b2f1917d64bea1b69edee4d21c48ff1456ca697"
     },
     {
       "order": 99,
@@ -1929,8 +1935,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 30362,
-      "sha256": "bf0243749661f88768b46bae3ef4fa89599ce874814ae31422e5ec3b0058af68"
+      "bytes": 30618,
+      "sha256": "a5559b98d9616e54632a272581572f322b751848f2557c857042b8fe7ca6d113"
     },
     {
       "order": 118,
@@ -1955,6 +1961,7 @@
         "filterdata",
         "createdensitydata",
         "createregressiondata",
+        "createregressionstatisticsdata",
         "createwindowdata",
         "createtimeunitdata",
         "createbin2ddata",
@@ -1965,6 +1972,7 @@
         "editwindowdata",
         "editdensitydata",
         "editregressiondata",
+        "editregressionstatisticsdata",
         "createcoordinate",
         "editcoordinate",
         "createscale",
@@ -2031,8 +2039,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 161464,
-      "sha256": "486485f3c7652cedeeb0141b8cc41222e647f527f01f35b7cc1719e6be2829c6"
+      "bytes": 165128,
+      "sha256": "e7196377ad84f503fc453310ffc5bb74597428cecd3d487354d3b6ea28eefbf8"
     },
     {
       "order": 119,
@@ -2076,8 +2084,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 69593,
-      "sha256": "431dfb73197b975f333107ee76723893a2677872f5cb9017f3d3c4382dcce45a"
+      "bytes": 69893,
+      "sha256": "1db4eebb58dbad26b5c84a5a1c208341b3f755c9dffd4a7f73437a9b6ed1e570"
     },
     {
       "order": 120,
@@ -2127,7 +2135,7 @@
         "related"
       ],
       "bytes": 60973,
-      "sha256": "07aa26ec675aebe640a5f86d4898ee169448c890a6f26f31831171731ce05ffd"
+      "sha256": "3a20a0e2743f23d03c999e8099beb762ffa3d188ab7b81ac11b01169dc2e9f28"
     },
     {
       "order": 121,
@@ -2182,8 +2190,8 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 78977,
-      "sha256": "b8b3d1963368603ab09251578713ea5d6e5ec7c31e892bd4ec8ca056e3cfcbed"
+      "bytes": 78986,
+      "sha256": "7e5afefb2d714bf5aa3e454ecb877903b0c8ce0595edcafe0edfa45d3807e781"
     },
     {
       "order": 122,
@@ -2531,6 +2539,7 @@
         "type-datasetnormalizebaselinetransform",
         "type-datasetnormalizedbasetransform",
         "type-datasetnormalizedtransform",
+        "type-datasetregressionstatisticstransform",
         "type-datasetregressiontransform",
         "type-datasetscalar",
         "type-datasetsorttransform",
@@ -2619,6 +2628,7 @@
         "type-editrectmarkoptions",
         "type-editregressiondataoptions",
         "type-editregressionoptions",
+        "type-editregressionstatisticsdataoptions",
         "type-editscaleoptions",
         "type-editsemanticoptions",
         "type-editshapescaleoptions",
@@ -2872,6 +2882,7 @@
         "type-regressionplotpositionchannel",
         "type-regressionplotstatisticaloptions",
         "type-regressionpredictoptions",
+        "type-regressionstatisticsdataoptions",
         "type-removeaxisoptions",
         "type-removecategoryorderoptions",
         "type-removecompositionchildoptions",
@@ -2978,6 +2989,7 @@
         "type-windowsortorder",
         "type-withoutencodingtarget",
         "type-withoutscaleid",
+        "type-withoutscaleselection",
         "type-xaxisposition",
         "type-xoffsetencodingoptions",
         "type-yaxisposition",
@@ -2987,8 +2999,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 336202,
-      "sha256": "4152b22b01d34e26cb0bc2e0f94d3531aaa7a80f9fbb65a7905912e09a94dd88"
+      "bytes": 338682,
+      "sha256": "2d1636476521eadb9d1ad4435918588d5d121cf800ef8417aa64e922788c07b7"
     },
     {
       "order": 127,
@@ -3033,8 +3045,8 @@
         "createfolddata-id-source-fields-as",
         "createstackdata-id-source-category-group-value-mode-as"
       ],
-      "bytes": 6451,
-      "sha256": "733d05c5a8b3ff0bc3d3ceafa557c7ddcb30fcedc2d0586c79a5146102aa4737"
+      "bytes": 6761,
+      "sha256": "81f67567b7b515fa9ab2e89956077d100d004ad452afa7415981a131d56f4f87"
     },
     {
       "order": 130,
@@ -3046,8 +3058,8 @@
         "createcomputeddata-id-source-as-expression",
         "createnormalizeddata-id-source-field-as-groupby-method"
       ],
-      "bytes": 5450,
-      "sha256": "0463f9b2cc47b8f4d9f630d8b92ce5ac4f2f51f7aac1d335b4686b1f4ca2e546"
+      "bytes": 6660,
+      "sha256": "b4c12fa0493bd538aad6e85afb30c9281bf92210eb44461c046ef7bc7cd7b499"
     },
     {
       "order": 131,
@@ -3090,7 +3102,7 @@
         "space-between-plots"
       ],
       "bytes": 17887,
-      "sha256": "53621f698a7d6cbb296e2bf62e94313bf8cf6ea9e9aee156231fa8c8619fe2a8"
+      "sha256": "8cba5c73eeebab7003df34387dcd4fefd21f6d73fd5d137dbc0ef228c0ea4c18"
     },
     {
       "order": 134,
@@ -3134,7 +3146,7 @@
         "removelabellayoutoptions"
       ],
       "bytes": 2614,
-      "sha256": "1e7b07c148df7876776897404b2e3fdd85d3571d1239cea917d423677d24f104"
+      "sha256": "54ce10d961eab1f14b6e3bc389dc6b55cb7d363f0998dd31ee6d35c82cc9c469"
     },
     {
       "order": 137,
@@ -3342,7 +3354,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "6db2c92829457f68a2cca96a98264f4a3b8dc73fbbed0d62eeed74b740ae310d"
+      "sha256": "90070eef52ee0944b3a70d1720af88a99b6c1d69db3d6b08f5da18f28abf7b2f"
     },
     {
       "order": 150,

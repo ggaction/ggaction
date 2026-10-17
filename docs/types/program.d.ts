@@ -434,6 +434,16 @@ export type DatasetRegressionTransform = {
       | { confidence: number; confidenceMethod?: never; level?: never }
     ))))
   | {
+      method: "exp";
+      interval: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+    }
+  | {
       method: "loess";
       span: number;
       robustIterations?: number;
@@ -810,12 +820,18 @@ export type ComputedExpression =
       readonly replacement: string;
     }
   | {
+      readonly op: "datePart";
+      readonly part: "year";
+      readonly operand: ComputedExpression;
+      readonly timeZone?: string;
+    }
+  | {
       readonly op: "parseTime";
       readonly operand: ComputedExpression;
       readonly format?: ParseTimeFormat;
     }
   | {
-      readonly op: "negate" | "absolute" | "log" | "sqrt" | "not" | "isNull" | "toNumber";
+      readonly op: "negate" | "absolute" | "log" | "sqrt" | "floor" | "not" | "isNull" | "toNumber";
       readonly operand: ComputedExpression;
     }
   | {
@@ -948,6 +964,7 @@ export type DatasetTransform =
   | DatasetFilterTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
+  | DatasetRegressionStatisticsTransform
   | DatasetSortTransform
   | DatasetDensityTransform
   | DatasetECDFTransform
@@ -1242,7 +1259,7 @@ export interface SemanticLayer {
   readonly data?: string;
   readonly source?: string;
   readonly coordinate?: string;
-  readonly mark?: Readonly<{ type?: string; missing?: "error" | "break" | "skip"; [key: string]: unknown }>;
+  readonly mark?: Readonly<{ type?: string; missing?: "error" | "break" | "skip"; blend?: "difference"; [key: string]: unknown }>;
   readonly layout?: Readonly<{ mode?: ColorLayout }>;
   readonly derivedBindings?: Readonly<{ regression?: Readonly<{ mode: "follow"; roles: readonly ["data", "x", "y"] }> }>;
   readonly encoding?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
@@ -1785,6 +1802,8 @@ export interface ScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  whitePoint?: "d65" | "d50";
+  gamma?: number;
   midpoint?: number | "auto";
   unknown?: unknown;
 }
@@ -1940,6 +1959,8 @@ export interface EditScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  whitePoint?: "d65" | "d50" | "auto";
+  gamma?: number | "auto";
   midpoint?: number | "auto";
   unknown?: unknown;
 }
@@ -1966,12 +1987,10 @@ export type EditRScaleOptions = FocusedScaleSelection & WithoutScaleId<RadiusSca
   radialMapping?: RadialMapping;
 };
 export type EditColorScaleOptions = FocusedScaleSelection & WithoutScaleId<
-  CategoricalColorScaleOptions | ContinuousColorScaleOptions | DiscretizedColorScaleOptions
->;
-export type EditStrokeScaleOptions = { target: string } & Omit<
-  EditColorScaleOptions,
-  "id" | "target"
->;
+  CategoricalColorScaleOptions | Omit<ContinuousColorScaleOptions, "whitePoint" | "gamma"> | DiscretizedColorScaleOptions
+> & { whitePoint?: "d65" | "d50" | "auto"; gamma?: number | "auto" };
+type WithoutScaleSelection<T> = T extends unknown ? Omit<T, "id" | "target"> : never;
+export type EditStrokeScaleOptions = { target: string } & WithoutScaleSelection<EditColorScaleOptions>;
 type ExistingSizeScaleEditPatch = {
   type?: never;
   domain?: "auto" | readonly [string | number | boolean, ...(string | number | boolean)[]];
@@ -2998,7 +3017,7 @@ type BasicColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 type NonPointCategoricalColorChannel =
@@ -3063,7 +3082,7 @@ type RectColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 export type BasicSizeChannel = string | WithoutEncodingTarget<SizeEncodingOptions>;
@@ -4230,9 +4249,8 @@ export type StrokeDashEncodingOptions =
     };
 
 export type NonPointContinuousColorScaleOptions = ScaleFields<
-  "id" | "interpolate" | "midpoint" | "clamp" | "reverse"
+  "id" | "interpolate" | "whitePoint" | "gamma" | "midpoint" | "clamp" | "reverse"
 > & {
-  type?: "sequential" | "log" | "sqrt" | "symlog";
   base?: number;
   constant?: number;
   domain?: "auto" | readonly [unknown, unknown];
@@ -4241,7 +4259,10 @@ export type NonPointContinuousColorScaleOptions = ScaleFields<
     name: PaletteName;
     extent?: readonly [number, number];
   };
-};
+} & (
+  | { type: "pow"; exponent?: number }
+  | { type?: "sequential" | "log" | "sqrt" | "symlog"; exponent?: never }
+);
 
 export type ContinuousColorScaleOptions =
   NonPointContinuousColorScaleOptions & { unknown?: string };
@@ -4298,7 +4319,7 @@ export type ColorEncodingOptions =
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
       layout?: never;
     };
@@ -4472,7 +4493,7 @@ export interface EncodeChannelsOptions {
   channels: AtLeastOne<EncodingChannelAssignments>;
 }
 
-export type RegressionMethod = "linear" | "polynomial" | "loess";
+export type RegressionMethod = "linear" | "polynomial" | "loess" | "exp";
 export type RegressionInterval = "mean" | "prediction";
 
 export interface RegressionBandOptions extends StrokeStyleDetails {
@@ -4515,6 +4536,17 @@ export interface CreateRegressionLineOptions extends StrokeStyleDetails {
 }
 
 type RegressionParameterOptions =
+  | {
+      method: "exp";
+      interval?: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+      predict?: RegressionPredictOptions;
+    }
   | {
       method?: "linear";
       degree?: never;
@@ -4559,6 +4591,18 @@ export type RegressionDataOptions = {
   missing?: "error" | "drop";
 } & RegressionParameterOptions;
 
+export interface DatasetRegressionStatisticsTransform {
+  readonly type: "regressionStatistics";
+}
+export interface RegressionStatisticsDataOptions {
+  id: string;
+  source: string;
+}
+export interface EditRegressionStatisticsDataOptions {
+  target?: string;
+  source?: string;
+}
+
 type RegressionCommonOptions = {
   target?: string;
   x?: string;
@@ -4570,6 +4614,9 @@ type RegressionCommonOptions = {
 };
 
 export type RegressionOptions = RegressionCommonOptions & (
+  | (Extract<RegressionParameterOptions, { method: "exp" }> & {
+      band?: false;
+    })
   | (Extract<RegressionParameterOptions, { method?: "linear" }> & {
       band?: false | RegressionBandOptions;
     })
@@ -4649,7 +4696,7 @@ export interface LegendTitleStyleOptions {
 }
 
 export type LegendSymbolLayer =
-  | { type: "line"; length?: number; lineWidth?: number }
+  | { type: "line"; length?: number; lineWidth?: number; opacity?: number }
   | {
       type: "point";
       shape?: "circle";
@@ -4657,6 +4704,7 @@ export type LegendSymbolLayer =
       fill?: string;
       stroke?: string;
       strokeWidth?: number;
+      opacity?: number;
     }
   | {
       type: "swatch";
@@ -4664,6 +4712,7 @@ export type LegendSymbolLayer =
       height?: number;
       stroke?: string;
       strokeWidth?: number;
+      opacity?: number;
     };
 
 export type LegendSymbolRecipe =
@@ -4984,6 +5033,8 @@ export class ChartProgram {
   createImputedData(options: ImputedDataOptions): ChartProgram;
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
+  createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
+  editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createECDFData(options: ECDFDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
@@ -5009,6 +5060,7 @@ export class ChartProgram {
   editImputedData(options: EditImputedDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
 
+  /** One point layer accepts at most 50,000 selected rows, before missing-value filtering. */
   createPointMark(options?: StrokeStyleDetails & {
     id?: string;
     data?: string;
@@ -5080,6 +5132,7 @@ export class ChartProgram {
   }): ChartProgram;
   editBarMark(options: RectStyleDetails & {
     target?: string;
+    blend?: "normal" | "difference";
     missing?: "error" | "skip";
     fill?: FillPaint;
     opacity?: number;

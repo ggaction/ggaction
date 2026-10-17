@@ -55,7 +55,7 @@ interface ChartProgramActions {
   createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   createBarMark(options?: { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: { target?: string; blend?: "normal" | "difference"; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   createArcMark(options?: { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
@@ -726,8 +726,8 @@ the call order dependent.
 createRegressionPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, groupBy?, method?, band?, line?, guides? })
 ```
 
-Create a complete scatter plot with an existing regression data, line, and
-optional interval-band hierarchy. `groupBy: false` is preserved as an explicit
+Create a scatter plot with fitted regression data, a line, and optional interval bands.
+`groupBy: false` is preserved as an explicit
 ungrouped model request.
 
 ### `createLinePlot`
@@ -1082,11 +1082,32 @@ createRegressionData({
 })
 ```
 
-Create immutable linear, polynomial, or LOESS fitted rows at observed unique x
+Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x
 values. Linear and polynomial fits support normal or Student-t mean or prediction bounds;
 LOESS is line-only. Optional `robustIterations` (integer `0..32`, default `0`)
 adds residual reweighting; see [regression](../api/regression.md) for the estimator policy.
 [Data](../api/data.md)
+
+### `createRegressionStatisticsData`
+
+```javascript
+createRegressionStatisticsData({ id, source })
+```
+
+Create observation counts, intercepts, slopes, and R-squared from an explicit existing linear fit.
+Grouped fits retain their original grouping field and typed first-seen group order.
+Constant responses produce `rSquared: null`.
+[Linear fit statistics](../api/data/statistical-transforms.md#fit-statistics)
+
+### `editRegressionStatisticsData`
+
+```javascript
+editRegressionStatisticsData({ target?, source? })
+```
+
+Revise a standalone statistics owner's linear fit source and replay its consumers atomically.
+Omitted source preserves the current fit. Target omission requires a current or unique statistics owner.
+[Linear fit statistics](../api/data/statistical-transforms.md#fit-statistics)
 
 ### `createDensityData`
 
@@ -1346,10 +1367,12 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 ### `editBarMark`
 
 ```javascript
-editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
+editBarMark({ target?, blend?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit whole-bar appearance and rematerialize every concrete rectangle.
+Use `blend: "difference"` to composite each bar fill and outline once over earlier
+content; `blend: "normal"` restores ordinary painting. Omission preserves the current mode.
 `stroke: false` removes the visible outline; constant fill conflicts with a
 field-driven color encoding. [Marks](../api/marks.md)
 

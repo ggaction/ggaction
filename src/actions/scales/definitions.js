@@ -8,6 +8,7 @@ import {
   normalizeTransformParameters,
   validateTransformedDomain,
   validateContinuousColorInterpolation,
+  normalizeColorInterpolationOptions,
   validateSequentialMidpoint,
   validateLinearScaleType,
   validateOpacityRange,
@@ -58,7 +59,7 @@ const POSITION_OPTIONS = [
 const COLOR_OPTIONS = [...BASE_OPTIONS, "palette", "unknown"];
 const SEQUENTIAL_COLOR_OPTIONS = [
   ...COLOR_OPTIONS,
-  "interpolate", "midpoint", "base", "constant",
+  "interpolate", "whitePoint", "gamma", "midpoint", "base", "exponent", "constant",
   ...CLAMP_REVERSE
 ];
 const OPACITY_OPTIONS = [...BASE_OPTIONS, ...BOOLEAN_OPTIONS, "unknown"];
@@ -225,16 +226,25 @@ export function resolveSequentialColorScaleDefinition(
       options.interpolate ?? previous?.interpolate ?? "rgb"
     )
   };
+  const interpolationChanged = Object.hasOwn(options, "interpolate") &&
+    options.interpolate !== previous?.interpolate;
+  const interpolationOptions = Object.fromEntries(["whitePoint", "gamma"].flatMap(key => {
+    const value = Object.hasOwn(options, key) ? options[key]
+      : interpolationChanged ? undefined : previous?.[key];
+    return value === undefined ? [] : [[key, value]];
+  }));
+  Object.assign(scale, normalizeColorInterpolationOptions(scale.interpolate, interpolationOptions));
   if (type !== "sequential" && fieldType !== "quantitative") {
     throw new Error(`Scale type "${type}" requires quantitative color.`);
   }
-  const parameters = Object.fromEntries(["base", "constant"].flatMap(key => {
-    const value = options[key] ?? previous?.[key];
+  const parameters = Object.fromEntries(["base", "exponent", "constant"].flatMap(key => {
+    const value = options[key] ?? (type === previous?.type ? previous?.[key] : undefined);
     return value === undefined ? [] : [[key, value]];
   }));
   if (type !== "sequential") {
     const normalized = normalizeTransformParameters(type, parameters);
     if (type === "log") scale.base = normalized.base;
+    if (type === "pow") scale.exponent = normalized.exponent;
     if (type === "symlog") scale.constant = normalized.constant;
     if (scale.domain !== "auto") validateTransformedDomain(type, scale.domain, parameters);
   } else if (Object.keys(parameters).length) {

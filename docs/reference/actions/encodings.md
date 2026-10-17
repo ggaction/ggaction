@@ -171,7 +171,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `field` | Required | `string` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
-| `scale` | Optional / branch-dependent | `DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| ContinuousColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
+| `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
 | `layout` | Optional / branch-dependent | `ColorLayout \| undefined` |
 | `aggregate` | Optional / branch-dependent | `AggregateOperation \| undefined` |
@@ -287,7 +287,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
-| `scale` | Optional / branch-dependent | `DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| ContinuousColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
+| `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
 
 </details>
 

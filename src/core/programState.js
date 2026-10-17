@@ -44,6 +44,10 @@ export function releaseNamedResourceOwnership(program, { kind, id, dataOwner }) 
     materializationConfigs,
     ["calculations", "datasets", dataOwner?.current ?? id]
   ).value;
+  materializationConfigs = removeMaterializationConfig(
+    materializationConfigs,
+    ["regressionFits", dataOwner?.current ?? id]
+  ).value;
   const context = program.context.currentData === id
     ? freezeOwned({ ...program.context, currentData: undefined })
     : program.context;

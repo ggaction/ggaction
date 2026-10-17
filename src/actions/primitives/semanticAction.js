@@ -57,7 +57,7 @@ function updateEntity(spec, parsed, value) {
         source.schema,
         value[0],
         undefined,
-        { sourceId: source.id, ownerId: parsed.id }
+        { sourceId: source.id, ownerId: parsed.id, sourceTransform: source.transform?.[0] }
       ));
     }
   }
@@ -72,6 +72,7 @@ function updateEntity(spec, parsed, value) {
     const schema = source?.schema !== undefined && current.transform?.length === 1
       ? deriveTransformSchema(source.schema, current.transform[0], value, {
           sourceId: source.id,
+          sourceTransform: source.transform?.[0],
           ownerId: parsed.id
         })
       : inferDatasetSchema(value);
