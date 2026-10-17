@@ -24,8 +24,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 569, // Integrated shared Cartesian grammar owners.
-  packedBytes: 800_000, // Combined measurement follows source integration.
-  unpackedBytes: 3_919_000 // Preserve the larger measured branch limit.
+  packedBytes: 804_000, // Node24/npm11 combined artifact measured803290bytes.
+  unpackedBytes: 3_933_000 // Combined artifact measured3932847unpacked bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

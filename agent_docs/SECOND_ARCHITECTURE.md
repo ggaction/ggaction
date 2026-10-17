@@ -2121,3 +2121,11 @@ Corner item block은 기존 layout owner가 실제 title/item bounds와12px gap�
 
 계산 두 옵션·Cartesian dash·범례 channel selector의 통합 검색 JSON은 815157bytes다.
 기존815000을 초과하므로 내용과 예제를 유지하고 공유 한도만 최소1000bytes 단위인816000으로 갱신했다.
+
+### 열네 승인 기능의 누적 통합 측정
+
+색상 세 옵션·축 배치 네 옵션·point shape 두 종류·sampled size label map을 합친
+Node24.21.0/npm11.19.0 staged package는569entries, packed803290/unpacked3932847bytes다.
+독립 branch 한도를 누적 결과에 적용할 수 없어 최소1000bytes 단위로804000/3933000으로
+조정했다. 검색은816898bytes로817000 한도를 적용했다. 전체 옵션·예제를 보존했으며
+이전 한도 통과를 주장하지 않는다.
