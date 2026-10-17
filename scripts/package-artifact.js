@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 570, // Named Cartesian axes add one shared selector owner.
-  packedBytes: 806_000, // Named axes measured805143bytes; minimum1000-byte step.
-  unpackedBytes: 3_949_000 // Named axes measured3948224bytes; minimum1000-byte step.
+  entries: 571, // Isolated glyph painting and shared raster limit owners.
+  packedBytes: 807_000, // Node24/npm11 isolated-source artifact measured806317bytes.
+  unpackedBytes: 3_949_000 // Exact staged artifact measured3943154unpacked bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

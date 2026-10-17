@@ -89,6 +89,23 @@ async function testNodeConsumer(directory) {
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
+    const blendedBar = chart().createCanvas({width:200,height:200,margin:40})
+      .createData({values:[{category:"a",value:1}]})
+      .createBarPlot({x:"category",y:{field:"value",aggregate:"sum"},guides:false})
+      .encodeBarWidth({pixels:80})
+      .editBarMark({fill:"#f00000",stroke:"#ffff00",strokeWidth:8})
+      .editBarMark({blend:"difference"});
+    assert.equal(blendedBar.semanticSpec.layers[0].mark.blend,"difference");
+    assert.equal(blendedBar.graphicSpec.objects.barPlot.items[0].properties.blend,"difference");
+    assert.deepEqual(deserializeProgram(serializeProgram(blendedBar)).graphicSpec,blendedBar.graphicSpec);
+    assert.match(renderToSVG(blendedBar),/mix-blend-mode:difference/);
+    const {createCanvas: blendCanvas,loadImage: blendImage} = await import("@napi-rs/canvas");
+    const blendPNG=await renderToPNGBuffer(blendedBar),blendContext=blendCanvas(200,200).getContext("2d");
+    blendContext.drawImage(await blendImage(blendPNG.buffer),0,0);
+    assert.deepEqual([...blendContext.getImageData(100,100,1,1).data],[15,255,255,255]);
+    assert.ok((await renderToPDFBuffer(blendedBar)).buffer.length>100);
+    assert.equal(blendedBar.editBarMark({blend:"normal"}).semanticSpec.layers[0].mark.blend,undefined);
+
     for (const create of [chart, basicChart]) {
       const placedAxis = create().createCanvas({ width: 900, height: 800, margin: 200 })
         .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
@@ -3115,6 +3132,14 @@ async function testTypeScriptConsumer(directory) {
       type ProgramComparison,
       type ProgramInspection
     } from "ggaction/inspection";
+
+    chart().editBarMark({blend:"difference"}).editBarMark({blend:"normal"});
+    // @ts-expect-error only the bar editor owns blend
+    chart().createBarMark({blend:"difference"});
+    // @ts-expect-error blend is a closed vocabulary
+    chart().editBarMark({blend:"multiply"});
+    // @ts-expect-error Basic does not expose appearance editing
+    basicChart().editBarMark({blend:"difference"});
 
     chart().createCanvas({ plot: { width: 30, height: 30 } })
       .editCanvas({ plot: { width: 60, height: 45 } })

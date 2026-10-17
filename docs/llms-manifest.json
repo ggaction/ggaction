@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:2536924f03faf920bf54903a6f62431db10e181dde2e98d1c327716c46fc4c70",
-    "sourceCommit": "aa6e6f1dd35c9da20570b0970128615493a712ea",
+    "contractId": "sha256:653e358ea25bab0ef255035440c71c52b637c49cf19e163ae5e65affc4299afb",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "ad59187e5a7f21f5f217b39c0970480bde45cc83556381b6da9f0f097e3589f4"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -947,10 +947,11 @@
         "createbarmark-id-data-missing-fill-opacity-stroke-strokewidth-cornerradius-cornerradiustopleft-cornerradiustopright-cornerradiusbottomright-cornerradiusbottomleft-linecap-linejoin-miterlimit",
         "edit-bar-mark",
         "independent-corners",
+        "blend-with-underlying-content",
         "related"
       ],
-      "bytes": 5497,
-      "sha256": "cf72473c4677bc034f776ea0e23ec4de08ab7be23b479f36365d2e2ba8157ac6"
+      "bytes": 6396,
+      "sha256": "bd716536e1e1aacc96cf8d734cf8eaa27267acfdf76f25d4526bc499d6068655"
     },
     {
       "order": 60,
@@ -1197,8 +1198,8 @@
         "accessible-data-alternatives",
         "related"
       ],
-      "bytes": 19554,
-      "sha256": "c7141b259dc96e2468219712be2494801f28dc3d6c437058cc0523f6f4c16fb7"
+      "bytes": 20113,
+      "sha256": "7bdb2b7baf421f5b326de6783c51f25576f1e822e0d4d1b0732466e750bcc81b"
     },
     {
       "order": 73,
@@ -2072,8 +2073,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 69593,
-      "sha256": "431dfb73197b975f333107ee76723893a2677872f5cb9017f3d3c4382dcce45a"
+      "bytes": 69893,
+      "sha256": "1db4eebb58dbad26b5c84a5a1c208341b3f755c9dffd4a7f73437a9b6ed1e570"
     },
     {
       "order": 120,
@@ -2981,8 +2982,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 333174,
-      "sha256": "808635cac74cbecb0ecd9e310b73cd8955ffb2eeebee13bc31eb3af19887f26f"
+      "bytes": 333207,
+      "sha256": "4bee7ad64d4a177b3407b2b47c7b00cd1f56f3d46280ff8e61e501365d8a99c3"
     },
     {
       "order": 127,
@@ -3012,8 +3013,8 @@
         "editgraphics-target-property-value-remove",
         "scale-materialization"
       ],
-      "bytes": 16959,
-      "sha256": "e738e9e12734f07eb3c67b081c0ec218d3f23b9eb011e75356c5dafcca004bc8"
+      "bytes": 16887,
+      "sha256": "6290b807e031ee8069a7df5b38464bea8906ecdd59f5124a91617d4a1de87f96"
     },
     {
       "order": 129,
@@ -3334,8 +3335,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "22cb8603d9e79f40f7dcf115860c02e692b54f07b833ff4e0d27ad543403d631"
+      "bytes": 3000,
+      "sha256": "acfe44c1133b84c8ac98ff0afc0934812c899680767f0fc94c6010c61f16c641"
     },
     {
       "order": 150,

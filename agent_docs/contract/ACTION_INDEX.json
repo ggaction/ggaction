@@ -1359,7 +1359,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits whole-bar appearance",
+      "update": "Edits whole-bar appearance and optional per-bar compositing",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

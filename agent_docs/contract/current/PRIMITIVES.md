@@ -116,6 +116,16 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   `test/contracts/graphic-hierarchy-migration.test.js`,
   `test/contracts/graphic-tree-equivalence.test.js`.
 
+`layer[id].mark.blend`는 bar에만 optional `"difference"`를 저장하고 leaf 제거로
+normal로 돌아간다. Concrete rect/path만 optional `blend:"difference"`를 받는다.
+생략은 source-over이며 collection, circle, line, text와 explicit normal/unknown enum은
+거부한다. 각 glyph의 fill+outline source를 한 번 합성한다. 저장/renderer는 같은
+closed grammar로 검증하며 backend state를 프로그램에 저장하지 않는다.
+
+Concrete rectangle의 outline은 네 모서리 모두 closed join을 갖는다. Canvas의
+단순 lineTo 복귀는 이를 대신하지 않는다. `test/contracts/rect-outline.test.js`가
+세 join과 세 cap의 전체 RGBA를 독립 native rectangle과 정확히 대조한다.
+
 ## `editGraphics`
 
 - Signature: `editGraphics({ target, property, value }) | editGraphics({ target, remove: true })`.

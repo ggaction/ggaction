@@ -1,3 +1,4 @@
+import { findLayer } from "../../../selectors/layers.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -20,9 +21,13 @@ const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
 
 function editRectangles(program, id, rectangles) {
   const appearance = program.markConfigs[id]?.barAppearance ?? {};
+  const blend = findLayer(program, id)?.mark?.blend;
+  if (blend !== undefined) rectangles = rectangles.map(rect => ({...rect, blend}));
   const hasShapeStyle = RECT_STYLE_PROPERTIES
     .some(property => Object.hasOwn(appearance, property));
-  if (hasShapeStyle) {
+  const previousBlend = program.graphicSpec.objects[id]?.items?.some(item =>
+    item.properties?.blend !== undefined);
+  if (hasShapeStyle || blend !== undefined || previousBlend) {
     const radius = appearance;
     return replaceGraphicItems(
       program,

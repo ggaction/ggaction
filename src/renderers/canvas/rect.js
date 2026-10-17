@@ -51,7 +51,7 @@ function drawRect(context, child, collectionId) {
     context.lineTo(x + width, y);
     context.lineTo(x + width, y + height);
     context.lineTo(x, y + height);
-    context.lineTo(x, y);
+    context.closePath();
     context.stroke();
   }
 }

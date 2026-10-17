@@ -73,10 +73,10 @@ export async function renderToPDFBuffer(program, options = {}) {
   const target = resolveGraphicRenderTarget(graphicSpec);
   requirePDFPageDimensions(target);
   preflightCanvasGraphicSpec(target);
-  const { PDFDocument } = await loadNativeBackend();
+  const { PDFDocument, createCanvas } = await loadNativeBackend();
   const document = new PDFDocument(metadata);
   const context = document.beginPage(target.width, target.height);
-  drawResolvedGraphicSpec(target, context);
+  drawResolvedGraphicSpec(target, context, {createCanvas});
   document.endPage();
   const buffer = document.close();
   return Object.freeze({

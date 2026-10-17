@@ -494,17 +494,22 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editBarMark`
 
-- Signature: `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editBarMark({ target?, blend?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`: current compatible bar, unique bar, or explicit existing bar ID.
 - `fill`: non-empty constant color 또는 기존 `FillPaint` item-local linear gradient다. 정규화된 from/to와 단조 stops를 shared paint validator로 검증한다. Field-driven color encoding과 함께 사용할 수 없다.
 - `opacity`: unit interval. `stroke`: non-empty color or `false`; false는 concrete transparent zero-width outline로
   materialize한다. `strokeWidth`는 non-negative finite이며 removed stroke에 단독 적용할 수 없다.
-- Effect: mark materialization config를 immutable하게 갱신하고 complete histogram/aggregate/grouped/ranged bar를
+- `blend`: 생략은 보존, `"difference"`는 bar 하나의 fill+outline을 합친 source에
+  sRGB difference를 한 번 적용하고 `"normal"`은 source-over로 복구한다. Semantic
+  `layer[id].mark.blend`의 optional difference만 소유하며 normal은 key를 제거한다.
+  Creation/facade 및 다른 mark family에는 공개하지 않는다. concrete rect/path item의
+  optional `blend:"difference"`를 명시적으로 물질화하고 parent collection은 상속하지 않는다.
+- Effect: appearance config와 선택적인 blend semantic intent를 immutable하게 갱신하고 complete histogram/aggregate/grouped/ranged bar를
   `rematerializeBarMark`로 다시 만든다. Data, encoding, scale, bin, group과 stack semantics는 바꾸지 않는다.
 
 ### Formal values — `editBarMark`
 
-- Implemented: `editBarMark({ target?: UserId; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editBarMark({ target?: UserId; blend?: "normal" | "difference"; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -518,6 +523,11 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - Evidence: `test/unit/actions/marks/create-bar-mark.test.js` 및 `test/unit/actions/marks/bar-gradient-fill.test.js`.
 
 - ✅ Covered: create/edit/facade gradient fill, immutable caller input, malformed paint rejection, rounded paths and Canvas/scale rematerialization in `test/unit/actions/marks/bar-gradient-fill.test.js`.
+
+- Evidence: `test/contracts/bar-blend.test.js`, `test/browser/bar-blend.browser.js` 및
+  `test/charts/bar-compositing/pdf.render.js`가 독립 수식·실제 DOM/Offscreen/PNG/PDF·
+  primitive 전체 RGBA·reset/불변성/재계산/저장을 검증한다. PDF의 opt-in source만
+  raster이며 반투명 RGB의 native 양자화1단계만 허용한다. 불투명/alpha는 exact다.
 
 ## `createAreaMark`
 
