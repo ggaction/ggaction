@@ -580,6 +580,15 @@ try {
   await mobile.goto(`${baseUrl}api/marks/point/`, { waitUntil: "networkidle" });
   assert.equal(await mobile.locator(".docs-action-heading").count(), 4);
   assert.equal(await mobile.locator(".docs-action-signature").count(), 4);
+  const overflowingSignature = mobile.locator('.docs-action-signature[tabindex="0"]').first();
+  assert.ok(await overflowingSignature.count(), "overflowing signatures are keyboard reachable");
+  await overflowingSignature.focus();
+  assert.equal(await overflowingSignature.evaluate(element => document.activeElement === element), true);
+  const scrollBefore = await overflowingSignature.evaluate(element => element.scrollLeft);
+  await mobile.keyboard.press("ArrowRight");
+  await mobile.waitForFunction(element => element.scrollLeft > 0, await overflowingSignature.elementHandle());
+  assert.ok(await overflowingSignature.evaluate(element => element.scrollLeft) > scrollBefore);
+  await assertAccessible(mobile, "mobile point action signatures");
   assert.equal(
     await mobile.locator(".docs-action-heading code").first().innerText(),
     "createPointMark"
