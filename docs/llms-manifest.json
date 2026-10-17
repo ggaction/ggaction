@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:037baa9c8e8aa2f40f6f8eb7b39229783d2bb082cc0238af23feb33527d305a1",
+    "contractId": "sha256:4dc220b103ac47451716bab17d2483761bad3907b05ba047781797022957fb5c",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1220,8 +1220,8 @@
         "insert-remove-and-reorder-named-concat-children",
         "state-trace-and-action-scope"
       ],
-      "bytes": 6913,
-      "sha256": "14cd2ad402a0aa8cd8700fbae9709211d6cfb40d0036a45519b35dedd32c62c5"
+      "bytes": 6953,
+      "sha256": "a78a3aae75861e328a9c7793c039ae472e59700b42509d2b4e7ae4a67ae77257"
     },
     {
       "order": 74,
@@ -1621,10 +1621,11 @@
         "createlegendoptions",
         "item-order-without-changing-color",
         "combined-categorical-and-size-layout",
+        "combine-ordinal-size-and-shape",
         "related"
       ],
-      "bytes": 14662,
-      "sha256": "9bf095c17baa48db38e937b89600cd8cbaca71907bc7871d4e86775a4e53a8bc"
+      "bytes": 16159,
+      "sha256": "c7c9ccb1d5cf45eedcb6a63b447019e7b3f656f95f9a379285abf367ea77528d"
     },
     {
       "order": 99,
@@ -1663,6 +1664,7 @@
       "source": "api/legends/editing.md",
       "headings": [
         "editing-legends",
+        "edit-a-facet-parent-legend",
         "keep-explicit-title-lines",
         "place-several-legend-blocks",
         "updates-and-trace",
@@ -1674,8 +1676,8 @@
         "dashed-frames",
         "related"
       ],
-      "bytes": 24661,
-      "sha256": "cd48a4faf3c0b9069f3d7fb573073a2a5ddc5a30de088847c20f623c562fa423"
+      "bytes": 25287,
+      "sha256": "a60b234a483c429345a2b33ee5bdd3823106e37c593744774fcce070df494073"
     },
     {
       "order": 102,
@@ -2029,8 +2031,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 160624,
-      "sha256": "d2261bff31e2be53843ff3030de33ffdb3a03c45460d1002dbe26d74981fa44c"
+      "bytes": 161248,
+      "sha256": "2df47d45c0f59a13c89797b297052c5721981642ca8a774cb1c54dd27f358a88"
     },
     {
       "order": 119,
@@ -2277,8 +2279,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 130005,
-      "sha256": "cc79fb0b73c25a98e406aef98b03f1b0397004d3f3c126a3b30ddd66ef0caee1"
+      "bytes": 130181,
+      "sha256": "0ba055919f520a662a65c8fd857460ea41afd0d9bc9735393e4576c19f2f7dd4"
     },
     {
       "order": 123,
@@ -2983,8 +2985,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 334251,
-      "sha256": "bdc09ce7c7449c02bc54ff902c5e1a84f0a2c50d4496b83332c237571779185c"
+      "bytes": 334485,
+      "sha256": "17919a57af5a6e7e5a58f76e3612e844ccac26703fffe9ad3d79edc9262f955c"
     },
     {
       "order": 127,
@@ -3079,13 +3081,14 @@
       "source": "api/composition/facets.md",
       "headings": [
         "facets-and-field-repetition",
+        "declare-a-legend-for-the-complete-facet",
         "repeat-the-current-chart-by-a-field",
         "build-a-row-and-column-facet-grid",
         "repeat-a-positional-encoding-across-fields",
         "space-between-plots"
       ],
-      "bytes": 15534,
-      "sha256": "6270a181b4bd430d49f8df862b8b18e934eb01b884941c5bec5cce5644ba6ee8"
+      "bytes": 17887,
+      "sha256": "53621f698a7d6cbb296e2bf62e94313bf8cf6ea9e9aee156231fa8c8619fe2a8"
     },
     {
       "order": 134,
@@ -3337,7 +3340,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "d26dccb69286e1b095ddf61e0ddb6deaef092ce9ceef63de654d0cee121a43b5"
+      "sha256": "e63917db2d235a061b91dffc0e3a8dc0a1b11b6e54e86c932c8477aa546321c7"
     },
     {
       "order": 150,

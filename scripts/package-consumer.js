@@ -172,6 +172,31 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(localSize.editLegendLayout({channel:"size",position:"inherit"}).graphicSpec,mappedSize.graphicSpec);
     assert.ok((await renderToPNGBuffer(localSize)).buffer.length>100);
 
+    for(const factory of [chart,basicChart]){
+      const combined=factory().createCanvas({width:1000,height:800,margin:250})
+        .createData({values:[{x:0,y:0,g:"A"},{x:1,y:1,g:"B"}]})
+        .createPointMark({id:"p"}).encodeX({field:"x"}).encodeY({field:"y"})
+        .encodeShape({field:"g",scale:{range:["circle","square"]}})
+        .encodeSize({field:"g",fieldType:"ordinal",scale:{range:[25,100]}})
+        .createLegend({combine:"size-shape"});
+      assert.equal(combined.graphicSpec.objects.seriesLegendSymbolPoints.items[1].properties.width,10);
+      assert.deepEqual(deserializeProgram(serializeProgram(combined)).graphicSpec,combined.graphicSpec);
+      assert.ok((await renderToPNGBuffer(combined)).buffer.length>100);
+    }
+
+    const parentLegend=chart().createCanvas({plot:{width:60,height:275},margin:{top:35,right:5,bottom:60,left:45}})
+      .createData({values:Array.from({length:8},(_,i)=>({x:i,y:i+1,g:i%2?"B":"A",panel:String(i%4)}))})
+      .createScatterPlot({x:"x",y:"y",color:"g",guides:false})
+      .facet({field:"panel",columns:4,spacing:"plot",gap:2,guides:{legend:{position:"top-left"}}})
+      .editLegendTitle({fontSize:11}).editLegendLabels({channel:"color",fontSize:10})
+      .editLegendLayout({channel:"color",position:"bottom-right"});
+    assert.equal(parentLegend.compositionSpec.facet.guides.legend.type,"authored-legend");
+    assert.equal(parentLegend.guideConfigs.legend.color.labels.fontSize,10);
+    assert.deepEqual(deserializeProgram(serializeProgram(parentLegend)).editCompositionLayout({gap:8}).graphicSpec,
+      parentLegend.editCompositionLayout({gap:8}).graphicSpec);
+    assert.ok((await renderToPNGBuffer(parentLegend)).buffer.length>100);
+    assert.ok((await renderToPDFBuffer(parentLegend)).buffer.length>100);
+    assert.equal(parentLegend.removeLegend().editCompositionLayout({gap:8}).compositionSpec.facet.guides.legend,false);
     const extracted = chart().createCanvas({ width: 440, height: 340, margin: 20 })
       .createData({ values: [{ item: { value: 1 }, text: "1.5%" }, { text: "2%" }] })
       .createComputedData({ id: "nested", as: "x", expression: { op: "getPath", operand: { field: "item" }, path: ["value"] } })
@@ -3646,6 +3671,14 @@ async function testTypeScriptConsumer(directory) {
     // @ts-expect-error Polar axis removal does not select named Cartesian resources.
     chart().removeThetaAxis({ target: "share" });
     void [namedAxes, basicNamedAxes];
+    const parentLegend: ChartProgram = chart().createCanvas().createData({values:[{x:1,y:2,panel:"A",g:"B"}]})
+      .createScatterPlot({x:"x",y:"y",color:"g",guides:false})
+      .facet({field:"panel",guides:{legend:{position:"top-left",target:"scatterPlot"}}})
+      .editLegendTitle({channel:"color",fontSize:11})
+      .editFacetGuides({legend:{at:{x:10,y:20}}}).removeLegend({channels:["color"]});
+    // @ts-expect-error Parent declarations do not accept private persisted intent tags.
+    chart().editFacetGuides({legend:{type:"authored-legend",blocks:{},groups:{}}});
+    void parentLegend;
     const horizonOptions: HorizonEncodingOptions = {
       x: { field: "time", fieldType: "temporal" },
       y: "value",

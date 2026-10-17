@@ -201,9 +201,17 @@ export interface FacetScaleResolutions {
   strokeDash?: FacetScaleResolution;
   parallelDimensions?: FacetScaleResolution;
 }
+interface StoredFacetLegendIntent {
+  readonly type: "authored-legend";
+  readonly blocks: Readonly<Record<string, {
+    readonly config: Readonly<Record<string, unknown>>;
+    readonly guide?: Readonly<Record<string, unknown>>;
+  }>>;
+  readonly groups: Readonly<Record<string, unknown>>;
+}
 export interface FacetGuideOptions {
   axes?: "each" | "outer";
-  legend?: false | "shared";
+  legend?: false | "shared" | LegendOptions;
 }
 export interface FacetOptions {
   id?: string;
@@ -315,7 +323,7 @@ export interface FacetCompositionSpec {
     readonly scales: Readonly<Required<FacetScaleResolutions>>;
     readonly guides: {
       readonly axes: "each" | "outer";
-      readonly legend: false | "shared";
+      readonly legend: false | "shared" | Readonly<LegendOptions> | StoredFacetLegendIntent;
     };
   };
 }
@@ -4665,6 +4673,8 @@ export type LegendOrder = LegendValueOrder |
   { channel: "x" | "y" | "theta"; values?: never };
 
 export interface LegendOptions {
+  /** Explicitly combine compatible ordinal size and shape samples. Omission retains separate blocks. */
+  combine?: "separate" | "size-shape";
   /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
   representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */

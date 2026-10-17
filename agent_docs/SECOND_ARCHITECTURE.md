@@ -2162,3 +2162,46 @@ Search818889bytes는819000으로만 늘리고 card median1896과 editLegend3620/
 설치 소비자 결합 실측은 Full398463/Basic194351/SVG7176gzipbytes다. 앞의397000/194000을
 초과한 실패 로그를 보존하고 최소1000bytes 한도399000/195000으로만 갱신한다. New public
 옵션을 줄이지 않았고 SVG25000은 유지한다.
+### Explicit categorical size-shape block
+
+The opt-in `size-shape` combination reuses the categorical series owner and its
+ordered typed domain. `grammar/legendCombinations.js` owns the pure mapping
+eligibility and physical-area mapping used by action resolution and snapshot
+validation; actions alone create/revise the owner. Explicit group placement is
+retained through split/recombine, while independent color stays a separate
+block. Pure block descriptors/local placement queries and graphic-property loops
+are shared with the axes checkpoint without persistence depending on actions or
+materialization.
+
+Measured complete createLegend/editLegend cards are3438/3704bytes; only those
+ceilings become3440/3710bytes, retaining every public option and enum. Measured
+package573entries/803727packed/3934180unpacked uses573/804000/3935000limits.
+Browser Full395897/Basic191800bytes uses396000/192000gzip limits. Existing
+coverage and per-file floors remain unchanged. These are feature-growth budgets,
+not a declaration that the full realistic option matrix has completed.
+
+
+### Facet parent의 native shared 범례
+
+Parent 선언/편집의 canonical intent는 `compositionSpec.facet.guides.legend` 한 곳에 둔다.
+False/shared 문자열은 기존 의미를 유지하고 새 객체는 private closed tagged block normal form으로
+정규화한다. 각 block은 기존 unit config/inference flags와 semantic guide 의미를 재사용한다.
+`materialization/facetGuides/owner.js`가 retained source의 transient intrinsic 측정과 shared scale/recipe
+검증을, `ownerLayout.js`가 final inner-plot union의 inherited/local partition과 실제 경계를 소유한다.
+Child Canvas/margin은 바꾸지 않고 transient flag는 반환 parent/context나 저장 state에 남지 않는다.
+Parent native guide configs와 fully concrete graphics는 파생 결과이며 renderer는 새 해석을 하지 않는다.
+Unit scope인 createLegend는 그대로이며 기존 edit/focused/block/remove만 parent router를 소비한다.
+Theme는 derived config를 recolor한 동일 transaction에서 parent canonical appearance를 갱신하므로
+다음 reflow가 자동 색상/font 변경을 되돌리지 않는다. Source replay는 public 선언에 internal tag를
+넘기지 않고 기존 child 생성 뒤 parent intent를 다시 연결한다. Exact API는 Current COMPOSITION과
+LEGEND_AND_TITLE에서만 정의한다. Source layer 경계를 완화하지 않는다.
+
+부모 범례 배치는 `materialization/graphicTranslation.js`의 동일한 primitive 이동 owner를
+사용한다. Collection은 자손을 이동하고 nested Canvas는 자신의 local frame만 이동하므로
+clip 내부 glyph를 두 번 이동하지 않는다. 이 규칙은 unit lane과 facet parent가 공유한다.
+
+Parent/combined 범례 checkpoint 실측은 package581entries/818028packed/3992869unpacked,
+search820648bytes, browser Full403710/Basic196120/SVG7176gzip bytes다. 추가한
+단일 책임5모듈은 기존 staging-only syntax compaction으로 배포하며 source는 읽기 쉽게 유지한다.
+한도는 최소581/819000/3993000, 검색821000, browser404000/197000/기존25000으로 둔다.
+옵션·리터럴·실제 호출 coverage 기준은 바꾸지 않는다.

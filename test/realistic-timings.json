@@ -11,6 +11,7 @@
     "contracts/generated-scenarios.test.js": 24465,
     "contracts/realistic-arc-legend-layout.test.js": 67117,
     "contracts/realistic-cartesian-facade-coverage-recipes.test.js": 134704,
+    "contracts/realistic-combined-legend-witness.test.js": 454,
     "contracts/realistic-complete-chart-facades.test.js": 3510,
     "contracts/realistic-data-mark-recipes.test.js": 151354,
     "contracts/realistic-direct-lifecycle-coverage-recipes.test.js": 799519,
@@ -26,5 +27,12 @@
     "contracts/realistic-scenario-generator.test.js": 535185,
     "contracts/realistic-scenario-runner.test.js": 99611,
     "contracts/realistic-statistical-facade-coverage-recipes.test.js": 159323
+  },
+  "localMeasurements": {
+    "contracts/realistic-combined-legend-witness.test.js": {
+      "environment": "Darwin, Node 22",
+      "source": "local integration run",
+      "measuredDurationMs": 453.667499
+    }
   }
 }

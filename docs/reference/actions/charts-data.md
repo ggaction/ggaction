@@ -2129,6 +2129,13 @@ legends use the existing recipe offset from the combined panel plots. Omitted
 offsets clear retained axis and header text; explicit colliding offsets reject.
 Child Canvas dimensions and margins remain intact, and the inferred parent
 Canvas contains the child snapshots and the complete legend bounds.
+A `guides.legend` object declares a native parent legend against the final child-plot
+union using ordinary `LegendOptions` defaults. Existing whole/focused/block legend
+editors and removal accept that facet, grid or repeat parent. Declare an absent
+owner with `editFacetGuides({ legend: {...} })`; post-facet `createLegend` stays
+unit-only. Target IDs name source marks. Corners/free coordinates and block-local
+anchors use the union and preserve child dimensions, automatic policies and editable
+persistence. See [parent legend creation](../../api/composition/facets.md#declare-a-legend-for-the-complete-facet).
 See [Program composition](../../api/composition.md#repeat-the-current-chart-by-a-field).
 
 Creation options for `facet`, `facetGrid`, and `repeatCharts` accept `headers`.
@@ -2384,7 +2391,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `axes` | Optional / branch-dependent | `"each" \| "outer" \| undefined` |
-| `legend` | Optional / branch-dependent | `"shared" \| false \| undefined` |
+| `legend` | Optional / branch-dependent | `"shared" \| false \| LegendOptions \| undefined` |
 
 </details>
 

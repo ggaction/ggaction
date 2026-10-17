@@ -202,10 +202,10 @@ function validateFacetSpec(compositionSpec) {
     !isPlainObject(guides) ||
     Object.keys(guides).some(key => !["axes", "legend"].includes(key)) ||
     !["each", "outer"].includes(guides.axes) ||
-    ![false, "shared"].includes(guides.legend)
+    (![false, "shared"].includes(guides.legend) && !isPlainObject(guides.legend))
   ) {
     throw new Error(
-      'compositionSpec.facet.guides requires axes "each" or "outer" and legend false or "shared".'
+      'compositionSpec.facet.guides requires axes "each" or "outer" and legend false, "shared", or parent legend options.'
     );
   }
 }

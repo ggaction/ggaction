@@ -1,6 +1,8 @@
+import { validateAuthoredFacetLegend } from "../grammar/facets/legendIntent.js";
 import { AXIS_RESOURCE_CHANNELS } from "../core/vocabulary.js";
 import { cartesianAxisOwners, assertCartesianAxisSideAvailable } from "../selectors/axes.js";
 import { axisGraphicIds } from "../selectors/axes.js";
+import { isSizeShapeChannels, resolveSizeShapeMapping } from "../grammar/legendCombinations.js";
 import { describeLegendBlock } from "../grammar/legendBlocks.js";
 import { localLegendPosition } from "../grammar/legendGroups.js";
 import { normalizeLegendBorderDash } from "../grammar/legendBorder.js";
@@ -157,6 +159,9 @@ export function validateProgramState(program, path) {
   }
   for (const key of ["resolvedScales", "materializationConfigs", "context"]) requireObject(program[key], `${path}.${key}`);
   for (const key of ["marks", "guides"]) requireObject(program.materializationConfigs[key], `${path}.materializationConfigs.${key}`);
+  if (program.compositionSpec?.type === "facet" && isPlainObject(program.compositionSpec.facet.guides.legend)) {
+    validateAuthoredFacetLegend(program, program.compositionSpec.facet.guides.legend);
+  }
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   for (const config of [
     ...Object.values(program.guideConfigs.axis ?? {}).map(axis => axis.ticks),
@@ -222,6 +227,14 @@ export function validateProgramState(program, path) {
       for (const [key, override] of Object.entries(config.blockOverrides)) {
         if (override.position !== undefined && key !== descriptor.key) throw invalidSnapshot("Local position requires its existing block owner.", path);
       }
+    }
+    if (config.combine !== undefined) {
+      if (config.combine !== "size-shape" || kind !== "series" || !isSizeShapeChannels(config.channels)) throw invalidSnapshot("Invalid combined legend owner.", path);
+      const layer = semantic.layers.find(layer=>layer.id===config.target);
+      const definition = resolveSizeShapeMapping({layer,scales:program.resolvedScales,
+        order:semantic.guides.legend?.series?.order,rows:resolveDatasetReference(program,layer.data).values});
+      if (!Array.isArray(config.sizeAreas) || config.sizeAreas.length !== definition.sizeAreas.length ||
+          config.sizeAreas.some((area,index)=>!Object.is(area,definition.sizeAreas[index]))) throw invalidSnapshot("Stale combined legend size mapping.", path);
     }
     if (config.gradientDirection !== undefined) {
       if (!["gradient", "strokeGradient"].includes(kind)) throw invalidSnapshot("Gradient direction requires a gradient owner.", path);

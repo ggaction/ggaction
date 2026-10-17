@@ -1,3 +1,4 @@
+import { resolveAuthoredFacetLegendLayout } from "./ownerLayout.js";
 import { cartesianAxisOwners } from "../../selectors/axes.js";
 import { PLOT_LEGEND_POSITIONS } from "../../layout/legend.js";
 import { resolveConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
@@ -53,6 +54,8 @@ function placedBounds(bounds, plot, position, align, offset) {
 export function resolvePromotedFacetLegendLayout(program, {
   layout, plot, plots, title, preparedHeaders, prepared
 }) {
+  if (prepared?.mode === "authored") return resolveAuthoredFacetLegendLayout(program, { layout, plot, title, prepared,
+    guides: retainedGuideBounds(program, layout, plots, preparedHeaders) });
   if (prepared?.mode !== "promoted") return { layout, plot };
   const group = prepared.occupiedGroup;
   if (group?.placement.at !== undefined ||

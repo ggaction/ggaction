@@ -302,6 +302,15 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - Evidence: `test/unit/actions/guides/legend-border-dash.test.js` covers family/edge geometry, exact solid bounds,
   reset/removal, malformed input/state, shared-facet replay and immutable state.
 
+## Facet parent legend lifecycle
+
+Existing whole/focused/block legend editors and `removeLegend` also operate on an existing facet,
+facetGrid or repeat parent shared guide. Source target/channel resolution and native family validation
+are identical to unit actions. Declare or replace the parent through facet `guides.legend: LegendOptions`
+or `editFacetGuides`; post-composition `createLegend` remains unavailable. The complete owner, final
+plot-union fit, persistence and replay contract is in [COMPOSITION](COMPOSITION.md). Concat parents
+and absent shared owners reject. Selected member removal follows native fused-block ownership.
+
 ## `editLegend`
 
 - Signature: `editLegend({ target?, channel?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
@@ -820,3 +829,10 @@ Standalone `createLegend({channels:["size"],position:...})`의 명시 position�
 - Materializers use transient local frames; inherited/local partition occurs before packing. Local occupied bounds place independently with native edge gaps/axis lane and8px corner inset. Group placement/at/layout changes cannot overwrite local anchors. Collision and insufficient Canvas reject atomically; no auto-growth/new coordinate/offset API.
 - Local positions survive scale/data/Canvas rematerialization and persistence. Canonical block key is checked on load; ambiguous/wrong-owner stored positions reject. Different local anchors cannot merge silently; explicit group position resets placement conflicts only.
 - Unit evidence: test/unit/actions/guides/legend-local-position.test.js. Facet parent final-union integration is coordinated with #206, using localLegendPosition/localLegendPlacement pure exports; legacy shared promotion stays unchanged without overrides.
+
+### Ordinal size-shape combination (#171)
+
+- create/editLegend.combine separate|size-shape uses the existing categorical series owner for paired channels shape,size and their two ordinal scales. One point owner, same categorical field/data/grain and identical typed ordered domains are mandatory. Physical mapped areas and shapes use the same native evaluators as marks.
+- Omitted create/separate preserve previous output; omitted edit retains an existing combination. Omitted channels infer the pair and keep color independent; explicit pair selection must be exactly shape+size. New combinations use supplied styles or combined native defaults. Split copies shared title/text/placement and retains independent color.
+- Either alias edits/moves/removes the entire block; removal leaves mark encodings. Fixed shape/size overrides reject. Existing local position, mapped label order, opacity and shared style controls remain available. Invalid data/scale revision rejects atomically; malformed/stale persisted combination/areas reject.
+- Native group planner packs these explicitly combined independent blocks; no renderer rotation or fake data is introduced. Evidence: test/unit/actions/guides/size-shape-legend.test.js.

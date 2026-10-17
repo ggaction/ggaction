@@ -158,6 +158,6 @@ the retained child programs. Facet source, scale, and guide edits rederive stabl
 from the parent-retained unit state before replacing the parent snapshot.
 Ordinary data, mark, encoding, scale, and guide
 actions apply only to unit programs and reject a composition parent. Facet
-titles and facet-header edits are explicit parent-owned exceptions. Edit a
+titles, facet-header edits and existing shared-legend editors/removal are explicit parent-owned exceptions. Edit a
 child first, then replace its slot when a concat dashboard needs a changed
 chart.

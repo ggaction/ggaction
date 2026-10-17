@@ -46,8 +46,9 @@ export function resolveCategoricalLegendRevision(program, kind, previous, channe
   const layer = findLayer(program, previous.target);
   const definition = resolveDefinition(program, layer, channels,
     previous.inferredTitle ? undefined : previous.title, order);
+  const {combine: _combine, sizeAreas: _areas, ...shared} = previous;
   const config = {
-    ...previous,
+    ...shared,
     ...definition,
     symbol: normalizeRecipe(resolveLegendSymbol(
       program,

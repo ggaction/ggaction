@@ -1,3 +1,4 @@
+import { editFacetParentLegend } from "../../../materialization/facetGuides/edit.js";
 import { LEGEND_POSITIONS } from "../../../core/vocabulary.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
@@ -68,6 +69,7 @@ function validateSymbolSupport(descriptor, property) {
     throw new Error(`editLegendBlock symbol.${property} is unsupported for gradient blocks.`);
   }
   if (family === "categorical") {
+    if (property === "size" && channels.includes("size")) throw new Error("Combined size-shape block cannot override mapped size.");
     if (property === "fill" && channels.includes("color")) {
       throw new Error("editLegendBlock symbol.fill conflicts with the color mapping.");
     }
@@ -369,10 +371,11 @@ function normalizeBlockPatch(args, descriptor) {
 
 export const editLegendBlock = /* @__PURE__ */ action(
   {
-    op: "editLegendBlock",
+    op: "editLegendBlock", scope: "any",
     description: "Edit one logical legend block selected by channel."
   },
   withGuideLayoutValidation(function (args = {}) {
+    if (this.compositionSpec !== undefined) return editFacetParentLegend(this, "editLegendBlock", args);
     validateOptionObject(args, OPTIONS, "editLegendBlock");
     if (!Object.hasOwn(args, "target") || typeof args.target !== "string") {
       throw new TypeError("editLegendBlock target must be an explicit legend target id.");

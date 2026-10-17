@@ -7,6 +7,15 @@ title: Editing Legends
 
 {% include chart-example.html id="density" lead=true %}
 
+## Edit a facet parent legend
+
+Whole, focused and block editors and `removeLegend` also accept an existing shared
+legend on a facet, row-column facet grid or field-repeat parent. Targets name source
+marks, and channel selectors keep their normal meaning. Declare a missing parent with
+`editFacetGuides({ legend: { position: "top-left" } })`; the complete placement and
+lifecycle contract is in [Facets and Field Repetition](../composition/facets.md#declare-a-legend-for-the-complete-facet).
+Concat parents do not support these operations.
+
 ## Keep explicit title lines
 
 Use newline characters in a title string, for example
@@ -261,7 +270,7 @@ packing and are measured independently, including titles, labels and frames.
 Corners use the existing 8px plot inset; outside edges retain native family gaps
 and the existing axis-lane policy. No coordinates, automatic Canvas growth, or
 extra offset option is introduced. Conflicting occupied guides fail atomically.
-A merged block moves through either member alias. Merging different local anchors
+A merged block moves through either member alias. `combine` is a whole-target content control and cannot accompany singular `channel`. Merging different local anchors
 requires resetting them or supplying an explicit whole-group position.
 
 

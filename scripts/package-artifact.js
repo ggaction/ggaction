@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 574, // Axis/legend integration adds shared pure query and graphic-edit owners.
-  packedBytes: 810_000, // Axis/legend integration measured809241bytes.
-  unpackedBytes: 3_965_000 // Axis/legend integration measured3964563bytes.
+  entries: 581, // Native combined legend and parent owner add seven responsible modules.
+  packedBytes: 819_000, // Parent/combined legend integration measured818028bytes.
+  unpackedBytes: 3_993_000 // Parent/combined legend integration measured3992869bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -73,6 +73,11 @@ const COMPACT_JSON_FILES = Object.freeze([
   "knowledge/task-packet.schema.json"
 ]);
 const COMPACT_JAVASCRIPT_FILES = Object.freeze([
+  "src/grammar/facets/legendIntent.js",
+  "src/materialization/facetGuides/owner.js",
+  "src/materialization/facetGuides/ownerLayout.js",
+  "src/materialization/facetGuides/edit.js",
+  "src/materialization/graphicTranslation.js",
   "src/selectors/axes.js",
   "src/grammar/legendBlocks.js",
   "src/core/graphicProperties.js",

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:037baa9c8e8aa2f40f6f8eb7b39229783d2bb082cc0238af23feb33527d305a1. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:4dc220b103ac47451716bab17d2483761bad3907b05ba047781797022957fb5c. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -9532,7 +9532,7 @@ the retained child programs. Facet source, scale, and guide edits rederive stabl
 from the parent-retained unit state before replacing the parent snapshot.
 Ordinary data, mark, encoding, scale, and guide
 actions apply only to unit programs and reject a composition parent. Facet
-titles and facet-header edits are explicit parent-owned exceptions. Edit a
+titles, facet-header edits and existing shared-legend editors/removal are explicit parent-owned exceptions. Edit a
 child first, then replace its slot when a concat dashboard needs a changed
 chart.
 
@@ -12985,6 +12985,31 @@ Combined legends require `layout: "edge"`; `"legacy-bottom"` is unsupported.
 A separately positioned size legend can coexist with a categorical
 `"legacy-bottom"` legend on another edge. Each keeps its own placement and styles.
 
+## Combine ordinal size and shape
+
+`createLegend({ combine: "size-shape" })` draws one categorical block whose
+sample uses both the mapped shape and the mapped physical area. It requires
+one point owner, the same nominal or ordinal field for both encodings, and
+identical typed, ordered ordinal domains. Explicit `channels` must contain
+exactly `"shape"` and `"size"`; with omitted channels, an encoded color legend
+remains an independent block. Different owners, fields, grain, numeric size
+scales, or domain order are rejected.
+
+Omitting `combine`, or creating with `"separate"`, preserves the previous output.
+An edited combination is retained unless explicitly changed. Whole-target
+`editLegend({ combine: "separate" })` splits the pair and copies shared text,
+title and placement styles; combining independent blocks uses supplied styles
+or the combined native defaults, rather than choosing one old block's styles.
+A split preserves an independent color block. Incompatible display maps must
+be reset before splitting.
+
+Either member selects the same combined block. Removing either member removes
+the entire block without removing either mark encoding. Fixed sample shape or
+size overrides conflict with the mapping; stroke, fill, opacity, labels and
+categorical item order retain their existing controls. Zero mapped area retains
+its category and text slot. Current data and scale revisions revalidate both
+encodings, so an invalid revision fails instead of silently splitting the block.
+
 ## Related
 
 [Legend overview](./api/legends/) · [Composite symbols](./api/legends/composite/) · [Editing legends](./api/legends/editing/)
@@ -13401,6 +13426,15 @@ The background is rendered before every symbol layer, label, and title.
 
 # Editing Legends
 
+## Edit a facet parent legend
+
+Whole, focused and block editors and `removeLegend` also accept an existing shared
+legend on a facet, row-column facet grid or field-repeat parent. Targets name source
+marks, and channel selectors keep their normal meaning. Declare a missing parent with
+`editFacetGuides({ legend: { position: "top-left" } })`; the complete placement and
+lifecycle contract is in [Facets and Field Repetition](./api/composition/facets/#declare-a-legend-for-the-complete-facet).
+Concat parents do not support these operations.
+
 ## Keep explicit title lines
 
 Use newline characters in a title string, for example
@@ -13635,7 +13669,7 @@ packing and are measured independently, including titles, labels and frames.
 Corners use the existing 8px plot inset; outside edges retain native family gaps
 and the existing axis-lane policy. No coordinates, automatic Canvas growth, or
 extra offset option is introduced. Conflicting occupied guides fail atomically.
-A merged block moves through either member alias. Merging different local anchors
+A merged block moves through either member alias. `combine` is a whole-target content control and cannot accompany singular `channel`. Merging different local anchors
 requires resetting them or supplying an explicit whole-group position.
 
 Use `editLegendBlock()` when one mark has several legend blocks and an edit
@@ -17709,6 +17743,13 @@ legends use the existing recipe offset from the combined panel plots. Omitted
 offsets clear retained axis and header text; explicit colliding offsets reject.
 Child Canvas dimensions and margins remain intact, and the inferred parent
 Canvas contains the child snapshots and the complete legend bounds.
+A `guides.legend` object declares a native parent legend against the final child-plot
+union using ordinary `LegendOptions` defaults. Existing whole/focused/block legend
+editors and removal accept that facet, grid or repeat parent. Declare an absent
+owner with `editFacetGuides({ legend: {...} })`; post-facet `createLegend` stays
+unit-only. Target IDs name source marks. Corners/free coordinates and block-local
+anchors use the union and preserve child dimensions, automatic policies and editable
+persistence. See [parent legend creation](./api/composition/facets/#declare-a-legend-for-the-complete-facet).
 See [Program composition](./api/composition/#repeat-the-current-chart-by-a-field).
 
 Creation options for `facet`, `facetGrid`, and `repeatCharts` accept `headers`.
@@ -17942,7 +17983,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `axes` | Optional / branch-dependent | `"each" \| "outer" \| undefined` |
-| `legend` | Optional / branch-dependent | `"shared" \| false \| undefined` |
+| `legend` | Optional / branch-dependent | `"shared" \| false \| LegendOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -24782,6 +24823,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `combine` | Optional / branch-dependent | `"separate" \| "size-shape" \| undefined` |
 | `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
@@ -24908,6 +24950,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
+| `combine` | Optional / branch-dependent | `"separate" \| "size-shape" \| undefined` |
 | `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
@@ -32230,9 +32273,11 @@ Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar).
 ```typescript
 export interface FacetGuideOptions {
   axes?: "each" | "outer";
-  legend?: false | "shared";
+  legend?: false | "shared" | LegendOptions;
 }
 ```
+
+Related types: [`LegendOptions`](./reference/types/#type-legendoptions).
 
 ### `FacetHeaderAlign` {#type-facetheaderalign}
 
@@ -33295,6 +33340,8 @@ Related types: [`LegendOptions`](./reference/types/#type-legendoptions).
 
 ```typescript
 export interface LegendOptions {
+  /** Explicitly combine compatible ordinal size and shape samples. Omission retains separate blocks. */
+  combine?: "separate" | "size-shape";
   /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
   representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
@@ -38075,6 +38122,47 @@ offer cross-child removal; call the action in the program that owns the resource
 
 [Family overview](./api/composition/) · [Exact action lookup](./reference/actions/)
 
+## Declare a legend for the complete facet
+
+Pass a legend object to `guides.legend` to create it against the combined inner plots.
+This runnable example keeps each child plot 60 pixels wide while its parent legend uses
+the 246-pixel union of four plots and three 2-pixel gaps:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ plot: { width: 60, height: 275 }, margin: { top: 35, right: 5, bottom: 60, left: 45 } })
+  .createData({ values: Array.from({ length: 8 }, (_, i) => ({
+    x: i, y: i + 1, group: i % 2 ? "B" : "A", panel: String(i % 4)
+  })) })
+  .createScatterPlot({ x: "x", y: "y", color: "group", guides: false })
+  .facet({ field: "panel", columns: 4, spacing: "plot", gap: 2,
+    guides: { axes: "outer", legend: { position: "top-left" } } })
+  .editLegendTitle({ fontSize: 11 })
+  .editLegendLabels({ fontSize: 10 });
+```
+
+The object uses ordinary `LegendOptions` defaults. `target` refers to the source mark;
+it is inferred only when unique. Child legend styles are independent. Use `"shared"`
+to promote or infer the template legend with its existing behavior, and `false` for
+no parent shared guide. Child dimensions and margins stay fixed.
+
+Existing legend editors, channel/block selectors and removal work on facet, grid and
+repeat parents. A missing parent legend can be declared with
+`editFacetGuides({ legend: { position: "top-left" } })`. Removing the final block keeps
+it absent during later edits. `"shared"` restores template promotion; an object replaces
+the parent declaration. `createLegend` remains an action for unit charts.
+
+Corners and free `at` coordinates use the final plot union. Explicit local block anchors
+use the same union. Occupied text, symbols and border must fit and clear retained axes,
+headers and the chart title. A layout edit that makes the union too small fails without
+changing the previous program. Parent styles and automatic title/sample/offset policies
+survive data, source, scale, theme, text-metric and layout changes and editable persistence.
+Shared appearance scales and compatible source mark recipes are required in every child.
+
 ## Repeat the current chart by a field
 
 Call `facet` on one complete unit chart to repeat it for each observed field
@@ -39656,7 +39744,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:037baa9c8e8aa2f40f6f8eb7b39229783d2bb082cc0238af23feb33527d305a1` |
+| Contract fingerprint | `sha256:4dc220b103ac47451716bab17d2483761bad3907b05ba047781797022957fb5c` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

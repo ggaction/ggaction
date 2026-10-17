@@ -1,3 +1,6 @@
+import { localLegendPosition } from "../../grammar/legendGroups.js";
+import { prepareAuthoredFacetLegend, facetLegendIntent } from "./owner.js";
+import { isPlainObject } from "../../core/immutable.js";
 import { PLOT_LEGEND_POSITIONS } from "../../layout/legend.js";
 import { isContinuousColorScaleType } from "../../grammar/scales/types.js";
 import {
@@ -178,6 +181,7 @@ function promotedLegendPlacement(source, kinds) {
 }
 
 export function prepareSharedFacetLegend(program) {
+  if (isPlainObject(program.compositionSpec.facet.guides.legend)) return prepareAuthoredFacetLegend(program);
   if (program.compositionSpec.facet.guides.legend !== "shared") {
     return undefined;
   }
@@ -190,6 +194,9 @@ export function prepareSharedFacetLegend(program) {
   }
   const source = inferred ? prepareAutoLegendSource(first) : first;
   const kinds = legendKinds(source);
+  if (kinds.some(kind => localLegendPosition(source.guideConfigs.legend[kind]) !== undefined)) {
+    return { ...prepareAuthoredFacetLegend(program, facetLegendIntent(source)), keepShared: true };
+  }
   const compatibility = resolveSharedFacetLegends(
     compatibleLegendChildren(program, source, inferred)
   );
