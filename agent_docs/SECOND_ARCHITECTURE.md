@@ -2519,3 +2519,7 @@ gradient 전용 bottom title 계약만 정정한다. 동기화된 선언/참조�
 부모 통합 실측 Full414152/Basic203485gzip의415000/204000 상한과 search831000을
 보존하며 SVG25000은 유지한다. Cartesian830차트와 hierarchical/guide-scale의
 실제 호출 ledger는5회/3개실데이터 기준과 모든 기존 profile을 유지한다.
+
+버전0.0.19와 facade 선언까지 동기화한 Node24 staged unpacked 실측4086545bytes는
+기존4086000을 초과한다. unpacked만 최소다음1000bytes 단계4087000으로 갱신하며
+entries591/packed842000과 browser/search/coverage 기준은 유지한다.
