@@ -217,6 +217,7 @@ function normalizeDefinition(program, scale, channel, consumers, patch) {
     patch: normalizedPatch,
     retainCoreOnTypeChange: true,
     retainCompatibleOnTypeChange: true,
+    allowColorReset: true,
     allowOrdinalBandParameters: offset,
     validateDomain: (scaleType, value) =>
       isDiscretizedColorScaleType(scaleType)

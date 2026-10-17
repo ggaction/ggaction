@@ -28,7 +28,7 @@ import { hasExactLegendSamplingForScale } from
 const OPTIONS = Object.freeze([
   "id", "type", "domain", "range", "emptyDomain", "nice", "zero", "clamp", "reverse",
   "base", "exponent", "constant", "paddingInner", "paddingOuter", "padding",
-  "align", "interpolate", "midpoint", "unknown", "palette", "radialMapping"
+  "align", "interpolate", "whitePoint", "gamma", "midpoint", "unknown", "palette", "radialMapping"
 ]);
 const EDITABLE = Object.freeze(
   OPTIONS.filter(option => !["id", "palette"].includes(option))

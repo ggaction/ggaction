@@ -7,7 +7,7 @@ export function validateContinuousColorConsumer(layer, encoding, scale, {
   channel = "color"
 } = {}) {
   const kind = layer.mark?.type;
-  if (["log", "sqrt", "symlog"].includes(scale.type) && encoding.fieldType !== "quantitative") {
+  if (["log", "pow", "sqrt", "symlog"].includes(scale.type) && encoding.fieldType !== "quantitative") {
     throw new Error(`Scale type "${scale.type}" requires quantitative color.`);
   }
   if (channel === "stroke") {
