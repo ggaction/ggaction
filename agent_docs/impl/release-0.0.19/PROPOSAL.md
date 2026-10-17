@@ -38,7 +38,7 @@ grid 타입 정정은 실제 가능한 API를 그대로 유지하므로 새 제�
    양의 반응값 weighted fit, 새 회귀 통계 dataset은 linear만 지원하고 상수 y의
    R²는 null이다. 기존 prediction rows는 유지하되 최소 fit cache로 새 snapshot
    byte가 달라질 수 있다. point 한도는 owner가 증명된 레이어만 50,000,
-   summary 입력만 30,000이며 일반 graphic/tick/path/work 한도는 유지한다.
+   summary의 distinct group 한도만 30,000이며 일반 graphic/tick/path/work 한도는 유지한다.
 7. **difference는 bar 하나의 fill+stroke를 합쳐 한 번 적용한다.** concrete
    rect/path에 optional enum, SVG isolation, bounded Canvas surface를 사용한다.
    PDF는 해당 opt-in glyph의 source만 raster가 될 수 있다. native 사전 실험에서
@@ -63,7 +63,7 @@ grid 타입 정정은 실제 가능한 API를 그대로 유지하므로 새 제�
 | #175 | arrow named point shape | [범례·마크 B175](LEGENDS_MARKS_REVIEW.md#175--named-arrow) |
 | #176 | 큰 범례 symbol clip window | [범례·마크 B176](LEGENDS_MARKS_REVIEW.md#176--encoded-size를-보존하는-symbol-clip-window) |
 | #177 | 특정 범례 block의 focused 편집 | [범례·마크 A1/B177](LEGENDS_MARKS_REVIEW.md#a1-block-선택과-융합은-다른-차원이다) |
-| #193 | block별 edge/corner 위치 | [범례·마크 B193](LEGENDS_MARKS_REVIEW.md#193--block별-edgecorner-position) |
+| #193 | block별 edge/corner 위치 | [범례·마크 B193](LEGENDS_MARKS_REVIEW.md#193--block별-독립-anchor) |
 | #194 | 축 frame 바깥 offset | [축 4](AXES_FACET_REVIEW.md#4-174--194--199-축-frame과-제목-배치) |
 | #195 | 축 레이블 local 정렬 | [축 5](AXES_FACET_REVIEW.md#5-195-축-레이블의-명시적-정렬) |
 | #196 | exponential regression | [데이터 6](DATA_COLOR_REVIEW.md#6-196--양의-반응값-지수-회귀) |
@@ -77,7 +77,7 @@ grid 타입 정정은 실제 가능한 API를 그대로 유지하므로 새 제�
 | #206 | parent가 소유하는 shared facet 범례 | [축 7](AXES_FACET_REVIEW.md#7-206-최종-facet-plot-union을-소유하는-shared-범례) |
 | #207 | point 레이어 50,000 items | [데이터 9](DATA_COLOR_REVIEW.md#9-207--한-점-레이어의-50000개-item) |
 | #208 | recipe layer opacity | [범례·마크 B208](LEGENDS_MARKS_REVIEW.md#208--categorical-recipe-layer-opacity) |
-| #209 | summary 입력 30,000행 | [데이터 10](DATA_COLOR_REVIEW.md) |
+| #209 | summary distinct group 30,000개 | [데이터 10](DATA_COLOR_REVIEW.md) |
 
 새 공개 action은 #202의 `createRegressionStatisticsData`와
 `editRegressionStatisticsData` 두 개다. 나머지는 기존 action/scale/mark 옵션을

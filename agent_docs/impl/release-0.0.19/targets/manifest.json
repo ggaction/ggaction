@@ -13,7 +13,7 @@
       ],
       "calls": [
         "program.editPointMark({shape:'wedge'})",
-        "program.editPointMark({shape:'arrow', angle:90})"
+        "program.editPointMark({shape:'arrow'}).encodeAngle({value:90})"
       ],
       "checks": {
         "wedgeArea": 0.4330127018922194,

@@ -24,7 +24,7 @@ const wedge=[[0,-2/Math.sqrt(3)],[-.25,1/Math.sqrt(3)],[.25,1/Math.sqrt(3)]];
 const arrow=[[-1/7,1],[1/7,1],[1/7,-1/8],[2/5,-1/8],[0,-1],[-2/5,-1/8],[-1/7,-1/8]];
 assert.ok(Math.abs(area(wedge)-Math.sqrt(3)/4)<1e-12);assert.ok(Math.abs(area(arrow)-47/70)<1e-12);
 add('named-shapes','1. Wedge / arrow: physical area, fixed anchor',[170,175],
- ["program.editPointMark({shape:'wedge'})","program.editPointMark({shape:'arrow', angle:90})"],
+ ["program.editPointMark({shape:'wedge'})","program.editPointMark({shape:'arrow'}).encodeAngle({value:90})"],
  [wedge,arrow].map((ps,i)=>[100,225].map((A,j)=>polygon(ps,A,85+j*110,100+i*80,j*90)+text(60+j*110,137+i*80,`area ${A}, ${j*90}°`)).join('')).join(''),
  {wedgeArea:area(wedge),arrowArea:area(arrow),wedgeAnchor:'centroid',arrowAnchor:'bounds-center'});
 let b=text(45,65,'Size + shape')+text(275,65,'Color + size');
