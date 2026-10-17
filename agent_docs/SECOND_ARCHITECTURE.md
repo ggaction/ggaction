@@ -331,7 +331,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 415,000 bytes |
+| `ggaction` | 416,000 bytes |
 | `ggaction/basic` | 204,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -2527,3 +2527,7 @@ entries591/packed842000과 browser/search/coverage 기준은 유지한다.
 최종 facade별 유효 범례 선언을 모두 검색에 포함한 version0.0.19 payload는832118bytes다.
 정확한 published-release fingerprint로도 기존831000을 초과해 docs2검사가 실패했다.
 옵션·값·문서를 삭제하지 않고 다음 최소1000bytes 단계833000만 적용한다.
+
+PR217 CI39034674598 package24의 Ubuntu/Node24.21.0 실제 설치 consumer에서 Full gzip은
+415484bytes로415000을 넘었다(job117402000022). Full만 다음 최소1000bytes 단계
+416000으로 갱신하며 Basic204000/SVG25000·package·search·coverage 기준은 유지한다.

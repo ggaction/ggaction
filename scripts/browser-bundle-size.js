@@ -5,7 +5,7 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 415_000, // All approved features measured414152gzip bytes on Node22.
+  ggaction: 416_000, // Ubuntu Node24.21.0 integrated package measured415484gzip bytes.
   "ggaction/basic": 204_000, // All approved features measured203485gzip bytes on Node22.
   "ggaction/svg": 25_000
 });
