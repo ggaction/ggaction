@@ -2407,3 +2407,23 @@ artifact는587entries/829705packed/4048931unpackedbytes다. Node24의831438packe
 승인된 기능 증가분의 최소1000bytes정책으로 Full410000/Basic200000만 갱신하고 SVG25000과
 다른 global test/coverage 기준은 유지한다. 이전405000/198000 한도는 실패했으며 그 성공으로
 보고하지 않는다. 숫자 변경은 새로운 renderer/state 경계를 추가하지 않는다.
+### Sample-window concrete materialization
+
+Point-bearing legend clipHeight is one stored block option. The materializer
+wraps each complete sample in a transparent nested Canvas and retains generated
+glyph IDs and physical geometry. Pure visible bounds intersect nested frames;
+root overflow remains observable. Unit and parent placement share the pure
+graphicTranslation owner rather than translating nested descendants twice.
+Actual full option inventories measure createLegend3507/editLegend3838bytes;
+only those card ceilings rise to3510/3840bytes. No options/enums or coverage
+thresholds are removed.
+
+Sample-window artifact measured581entries/815276packed/3982153unpacked;
+ceilings581/815500/3983000 reflect only the three policy/materialization owners.
+Search820275bytes uses820500bytes, preserving the complete option inventory.
+
+Installed minimal browser bundles measure Full401727/Basic197312gzipbytes;
+limits401800/197400 cover only that measured growth. SVG remains25000bytes.
+
+Final authored-anchor/reset handling measures Full401927/Basic197371gzipbytes;
+Full ceiling402000 and Basic197400 retain the measured next small steps.

@@ -1,5 +1,12 @@
+import { createAxisOwners } from "./axis-owners/program.js";
+import { createSharedFacetOwner } from "./shared-facet-owner/program.js";
 import { createColorControls } from "./color-controls/program.js";
 import { createWhitePointComparison } from "./color-white-point/program.js";
+
+import { createBlendProgram } from "./bar-compositing/program.js";
+
+import {createLegendAppearanceProgram} from "./legend-appearance/program.js";
+import {createSymbolWindowProgram} from "./symbol-window/program.js";
 import { createHierarchicalAuthoring } from "./hierarchical-authoring/program.js";
 import { createResourceRemovalWorkflow } from "./remove-dependent-resources/program.js";
 import { createFacetSourceWorkflow } from "./edit-facet-source/program.js";
@@ -148,11 +155,18 @@ export const DOCUMENTATION_WORKFLOWS = Object.freeze([
 
 // Chart-family examples retain their independent primitive/public baselines.
 export const PUBLIC_CHARTS = Object.freeze([
+  example({ id: "axis-owners", data: {}, width: 470, height: 270, docsGroup: "tutorials", createProgram: () => createAxisOwners(),
+    browser: { path: "axis-owners/", canvas: "#chart" } }),
+  example({ id: "shared-facet-owner", data: {}, width: 445, height: 220, docsGroup: "tutorials", createProgram: () => createSharedFacetOwner(),
+    browser: { path: "shared-facet-owner/", canvas: "#chart" } }),
   example({ id: "color-controls", data: {}, width: 480, height: 270, docsGroup: "tutorials", testDirectory: "color-controls", createProgram: createColorControls,
     browser: { path: "color-controls/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "color-controls", width: 480, height: 270 } } } }),
   example({ id: "color-white-point", data: {}, width: 480, height: 270, docsGroup: "tutorials", testDirectory: "color-controls", createProgram: createWhitePointComparison,
     browser: { path: "color-white-point/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "color-white-point", width: 480, height: 270 } } } }),
 
+
+  example({ id: "bar-compositing", data: {}, width: 200, height: 200, docsGroup: "tutorials", createProgram: () => createBlendProgram(),
+    browser: { path: "bar-compositing/", canvas: "#chart" } }),
   example({ id: "cars-origin-histogram-facet", data: "cars", width: 756, height: 578, createProgram: createCarsOriginHistogramFacet, testDirectory: "cars-origin-scatterplot-facet", browser: { path: "browser-host/?chart=cars-origin-histogram-facet", canvas: "#chart" } }),
   example({ id: "cars-weighted-rules", data: "cars", width: 520, height: 320, createProgram: createCarsWeightedRules, testDirectory: "cars-error-bar", browser: { path: "browser-host/?chart=cars-weighted-rules", canvas: "#chart" } }),
   example({
@@ -211,6 +225,10 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "browser-host/?chart=theta-legend-order", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "theta-legend-order", width: 1000, height: 700 } } }
   }),
+  example({id:"legend-appearance",data:{},width:400,height:240,docsGroup:"tutorials",createProgram:createLegendAppearanceProgram,
+    browser:{path:"legend-appearance/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"legend-appearance",width:400,height:240}}}}),
+  example({id:"symbol-window",data:{},width:400,height:200,docsGroup:"tutorials",createProgram:createSymbolWindowProgram,
+    browser:{path:"symbol-window/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"symbol-window",width:400,height:200}}}}),
   example({
     id: "area-layout", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
     createProgram: () => createAreaSimple(),

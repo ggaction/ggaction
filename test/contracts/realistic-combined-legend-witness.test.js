@@ -15,8 +15,11 @@ for(const dataset of ['tt-tour-de-france-winners','tt-london-marathon-winners','
     .encodeX({field:'orderNumeric'}).encodeY({field:'value'})
     .encodeShape({field:'category',scale:{domain}})
     .encodeSize({field:'category',fieldType:'ordinal',scale:{domain,range:domain.map((_,i)=>25+4*i)}});
-   const combined=seed.createLegend({channels:['shape','size'],combine:'size-shape',symbol:{layers:[{type:'line',opacity},{type:'point',opacity},{type:'swatch',opacity}]}})
+   const combined=seed.createLegend({channels:['shape','size'],combine:'size-shape',clipHeight:8,symbol:{layers:[{type:'line',opacity},{type:'point',opacity},{type:'swatch',opacity}]}})
     .editLegend({channel:'size',labels:{color:'#334155'}})
+    .editLegendSymbols({channel:'shape',clipHeight:6})
+    .editLegendBlock({target:'points',channel:'size',clipHeight:'auto'})
+    .editLegend({channel:'shape',clipHeight:8})
     .editLegendLayout({channel:'shape',position:repetition%2?'top-right':'right'});
    const split=combined.editLegendLayout({channel:'shape',position:'inherit'}).editLegend({combine:'separate'});
    assert.ok(split.guideConfigs.legend.size);

@@ -1330,3 +1330,83 @@
   actions: createRectMark · encodeColor · editColorScale
   tasks: continuous color editing
   url: /api/scales/continuous-color/#lab-white-point-comparison
+
+- id: bar-compositing
+  example: /examples/bar-compositing/
+  title: Bar difference compositing
+  image: /assets/images/bar-compositing.png
+  alt: A cyan bar with a blue outline produced by difference compositing on white
+  width: 400
+  height: 400
+  thumbnail: /assets/images/bar-compositing-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 640
+  caption: Fill and outline form one source before difference compositing.
+  summary: Refine a complete bar with one compositing edit.
+  actions: createBarPlot · editBarMark
+  tasks: appearance editing
+  url: /api/marks/bar/#blend-with-underlying-content
+
+- id: axis-owners
+  example: /examples/axis-owners/
+  title: Independent Cartesian axis owners
+  image: /assets/images/axis-owners.png
+  alt: A scatterplot with separate quantity and share axes and an inside horizontal title
+  width: 940
+  height: 540
+  thumbnail: /assets/images/axis-owners-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 368
+  caption: Each named axis retains its scale, frame offset, tick style and text alignment.
+  summary: Create complete named axes before focused placement and text edits.
+  actions: createAxes · editYAxis · editYAxisLabels
+  tasks: axis editing
+  url: /api/axes/complete/#independent-named-cartesian-axes
+
+- id: shared-facet-owner
+  example: /examples/shared-facet-owner/
+  title: A shared legend across narrow facet panels
+  image: /assets/images/shared-facet-owner.png
+  alt: Four narrow scatterplot panels above one horizontal legend owned by their parent
+  width: 890
+  height: 440
+  thumbnail: /assets/images/shared-facet-owner-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 316
+  caption: The 270-pixel legend fits the 375-pixel plot union without expanding 60-pixel panels.
+  summary: Declare and edit one parent legend across a repeated chart.
+  actions: facet · editLegendLayout
+  tasks: composition and guide editing
+  url: /api/composition/facets/#declare-a-legend-for-the-complete-facet
+
+- id: symbol-window
+  example: /examples/symbol-window/
+  title: Encoded area symbol window
+  image: /assets/images/symbol-window.png
+  alt: Full circles in a scatterplot and a vertically cropped circle in its size legend
+  width: 800
+  height: 400
+  thumbnail: /assets/images/symbol-window-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 320
+  caption: A sample keeps its encoded radius while a centered window crops its visible height.
+  summary: Clip an oversized sample without changing its physical area.
+  actions: encodeSize · createLegend · editLegendSymbols
+  tasks: comparison
+  url: /api/legends/categorical/#sample-windows
+
+- id: legend-appearance
+  example: /examples/legend-appearance/
+  title: Whole symbol opacity
+  image: /assets/images/legend-appearance.png
+  alt: Red and green legend circles with blue outlines composed at one shared layer opacity
+  width: 800
+  height: 480
+  thumbnail: /assets/images/legend-appearance-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 384
+  caption: The complete fill and outline form one translucent sample without a darker overlap.
+  summary: Apply opacity to one recipe layer while retaining labels and mapped colors.
+  actions: createLegend · editLegendSymbols
+  tasks: comparison
+  url: /api/legends/categorical/#recipe-layer-opacity

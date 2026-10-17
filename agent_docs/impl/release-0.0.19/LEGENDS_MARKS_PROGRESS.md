@@ -148,3 +148,44 @@
   runtime tests passed; the single new-file sharding inventory failure was fixed
   by recording its actually measured1338ms and the3scheduling tests then PASS.
   Focused straight/premultiplied source-over12cases also PASS without tolerance.
+
+## Sample windows (#176)
+
+- Positive finite clipHeight is one canonical block option; whole/focused/block
+  editors preserve omission and reset with auto. Unsupported non-point samples
+  reject it atomically. Typed samples, mapped areas, paths, glyph IDs and
+  opacity-zero geometry remain intact; each composite sample shares one window.
+- Nested Canvas visible bounds intersect ancestor windows while root overflow
+  remains strict. Asymmetric shapes use their actual glyph anchor, not bbox
+  midpoint. Common translation is byte-identical to axes checkpoint d213eaab.
+- Focused lifecycle/bounds11 PASS; previous guide regressions702 PASS. Chromium
+  DOM/Offscreen36, NodePNG12 and nativePDF4 entireRGBA pairs are exact, with
+  independent literal geometry. Stable symbol-window public/primitive PNG+trace
+  also exact. Three authentic datasets×five repetitions×three recipe opacities
+  cover create/whole/focused/block clip edits, reset, split/remerge and persistence.
+- Measured package581/815276/3982153→limits581/815500/3983000; bundles
+  401727/197312→401800/197400, search820275→820500. Complete cards
+  3507/3838→3510/3840. All other limits and coverage floors remain intact.
+
+- Final full unit3173/3173 PASS; installed Full/Basic/runtime/type/renderer/MCP/
+  tutorial consumers PASS. Basic retains its existing creation/rematerialization
+  surface; only Full calls its focused editors. Both canonical browser examples
+  pass; legend-appearance additionally has exact independent concrete state.
+  New example source-link docs checks run immediately after the first commit
+  because their canonical branch URLs cannot resolve an uncommitted new file.
+
+- Restored #171 authored local-position conflict checks: group-derived defaults
+  no longer masquerade as an explicitly requested reset. Actual public conflicts
+  reject atomically; inherited matching anchors and explicit reposition pass.
+  Private call intent adds no public/stored fields. V8 confirms the formerly
+  uncovered equality callback executes6times in genuine lifecycle regressions.
+- Final reset+representation replacement validates final intent together. Updated
+  measurements815323packed/3982388unpacked and Full401927/Basic197371gzip
+  remain within815500/3983000/402000/197400.
+
+- Coherent final source: full unit3175/3175 PASS, installed consumer suite PASS,
+  source-boundaries/compact/type20 PASS. Docs119/120 PASS before first commit;
+  only canonical branch source URLs for new examples require that commit.
+  Stable symbol-window uses area5000/full circle, H30 crop, radius15 comparator;
+  legend-appearance has exact state+pixels and both examples use shared browser
+  host/status/accessibility. No image was inspected by eye or VLM.

@@ -11,6 +11,8 @@ title: Facets and Field Repetition
 
 ## Declare a legend for the complete facet
 
+{% include chart-example.html id="shared-facet-owner" %}
+
 Pass a legend object to `guides.legend` to create it against the combined inner plots.
 This runnable example keeps each child plot 60 pixels wide while its parent legend uses
 the 246-pixel union of four plots and three 2-pixel gaps:

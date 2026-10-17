@@ -1,3 +1,4 @@
+import {resetLegendClipGraphics,applyLegendClipGraphics,restoreLegendClipContext}from"../../../../materialization/legendClip.js";
 import {validateLegendCombine,resolveSizeShapeCreation} from "../combine.js";
 import { recordLegendOffsetIntent } from "../group.js";
 import { prepareLegendGroup, creationLegendTarget, validateLegendGroupOptions } from "../group.js";
@@ -38,7 +39,7 @@ import {
 } from "../blocks.js";
 
 function finishLegend(program) {
-  return hasLegendLane(program) || Object.keys(program.guideConfigs.legendGroups ?? {}).length > 0
+  return Object.values(program.guideConfigs.legend??{}).some(config=>config.clipHeight!==undefined)||hasLegendLane(program) || Object.keys(program.guideConfigs.legendGroups ?? {}).length > 0
     ? program.rematerializeLegend() : program;
 }
 
@@ -60,7 +61,8 @@ export const rematerializeLegend = /* @__PURE__ */ action(
   { op: "rematerializeLegend", description: "Rematerialize every existing legend component." },
   withGuideLayoutValidation(function (args = {}) {
     noOptions(args, "rematerializeLegend");
-    let next = this;
+    const oldClipContext=this.context.deferLegendClip;
+    let next = resetLegendClipGraphics(this)._withContext({deferLegendClip:true});
     const categoricalKinds = ["series", "color", "stroke"].filter(
       kind => this.guideConfigs.legend?.[kind] !== undefined
     );
@@ -170,6 +172,10 @@ export const rematerializeLegend = /* @__PURE__ */ action(
         next = next[policy.rematerializeOp]();
       }
     }
+    const clipAnchors = Object.fromEntries(categoricalKinds.filter(kind => next.guideConfigs.legend[kind].clipHeight !== undefined)
+      .map(kind => [kind, resolveLayout(next, resolveEffectiveLegendBlockConfig(next, kind, next.guideConfigs.legend[kind])).itemY]));
+    next=applyLegendClipGraphics(next,{force:true,anchors:clipAnchors});
+    next=restoreLegendClipContext(next,oldClipContext);
     if (hasHorizontalLegendLane(next)) {
       next = next.rematerializeHorizontalLegendLane();
     }
@@ -213,6 +219,7 @@ export function resolveCategoricalLegendConfig(program, args = {}) {
     titleStyle: options.titleStyle,
     itemGap: options.itemGap,
     layout: options.layout,
+    ...(options.clipHeight === undefined ? {} : {clipHeight:options.clipHeight}),
     ...(options.overflow === undefined ? {} : { overflow: options.overflow }),
     border: options.border
   };
