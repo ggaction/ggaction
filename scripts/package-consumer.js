@@ -103,6 +103,11 @@ async function testNodeConsumer(directory) {
       .createScatterPlot({x:"x",y:"y",size:"v",guides:false})
       .createLegend({channels:["size"],values:[0,5,10]})
       .editLegendBlock({target:"scatterPlot",channel:"size",labelMap:[{value:5,label:"middle"}]});
+    const dashedSize=mappedSize.editLegendBorder({border:{strokeDash:[4,2,6,1]}});
+    assert.equal(dashedSize.graphicSpec.objects.sizeLegendBackground.type,"path");
+    assert.deepEqual(dashedSize.graphicSpec.objects.sizeLegendBackground.properties.strokeDash,[4,2,6,1]);
+    assert.deepEqual(deserializeProgram(serializeProgram(dashedSize)).graphicSpec,dashedSize.graphicSpec);
+    assert.ok((await renderToPNGBuffer(dashedSize)).buffer.length>100);
     assert.deepEqual(mappedSize.graphicSpec.objects.sizeLegendLabels.items.map(item=>item.properties.text),["0","middle","10"]);
     assert.equal(mappedSize.graphicSpec.objects.sizeLegendSymbols.items.length,3);
     assert.deepEqual(deserializeProgram(serializeProgram(mappedSize)).graphicSpec,mappedSize.graphicSpec);

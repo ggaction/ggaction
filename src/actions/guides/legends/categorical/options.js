@@ -1,3 +1,4 @@
+import { normalizeLegendBorderDash } from "../../../../grammar/legendBorder.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../../../../grammar/legendTitleStyle.js";
 import { PLOT_LEGEND_POSITIONS, isPlotLegend } from "../../../../layout/legend.js";
 import { validateOptionObject } from "../../../../core/validation.js";
@@ -59,7 +60,8 @@ const BORDER_OPTIONS = Object.freeze([
   "color",
   "lineWidth",
   "padding",
-  "background"
+  "background",
+  "strokeDash"
 ]);
 const COMMON_DEFAULTS = Object.freeze({
   labels: Object.freeze({
@@ -95,7 +97,8 @@ function normalizeBorder(border) {
   nonEmptyString(normalized.background, "Legend border background");
   nonNegative(normalized.lineWidth, "Legend border lineWidth");
   nonNegative(normalized.padding, "Legend border padding");
-  return normalized;
+  const dash = normalizeLegendBorderDash(normalized.strokeDash);
+  return { ...normalized, ...(dash === undefined ? {} : { strokeDash: dash }) };
 }
 
 export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {

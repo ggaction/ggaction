@@ -473,6 +473,24 @@ formatter. Use `labelMap: "auto"` to remove the override. Opacity, stroke-width 
 reject this map. Values are compared exactly, so zero and negative zero are duplicate keys.
 
 
+### Dashed frames
+
+Pass an even-length dash sequence on a legend border:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+// Fragment: program already owns one legend.
+program.editLegendBorder({ border: { strokeDash: [4, 2, 6, 1] } });
+```
+
+The pattern continues around all four sides. Use `strokeDash: []` for a solid frame or `border: false`
+to remove it. Dash entries must be finite and nonnegative; odd-length arrays are rejected.
+
 ## Related
 
 [Legend overview](../legends.md) · [Guides](../guides.md) · [Canvas](../canvas.md)

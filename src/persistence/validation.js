@@ -1,3 +1,4 @@
+import { normalizeLegendBorderDash } from "../grammar/legendBorder.js";
 import { normalizeNumericDisplayLabelMap } from "../grammar/displayLabels.js";
 import { isContinuousSizeScaleType } from "../grammar/scales/size.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
@@ -152,6 +153,9 @@ export function validateProgramState(program, path) {
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
+    if (config.border && Object.hasOwn(config.border, "strokeDash")) {
+      normalizeLegendBorderDash(config.border.strokeDash, "Stored legend border strokeDash");
+    }
     if (kind === "size" && config.blockOverrides !== undefined) {
       for (const [key, override] of Object.entries(config.blockOverrides)) {
         if (override.labelMap === undefined) continue;

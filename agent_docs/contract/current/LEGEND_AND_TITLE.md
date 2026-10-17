@@ -143,7 +143,7 @@ type TitleWrap = "word" | "character";
   titleStyle.offset/format은 거절한다.
 - `itemGap`: positive finite number; vertical item의 기본값은18이다. Categorical top/bottom horizontal은24/20, sampled family의 horizontal 기본 간격은 기존 값을 유지한다. Side에서는 최소 center pitch이며 symbol paint 높이와 보수적인 label line-height(fontSize×1.2) 중 큰 값을 확보한다. 이 line-height는 특정 폰트 glyph 높이 보장이 아니며 horizontal grid 규칙은 그대로다. Explicit 값과 저장된 기존 config는 보존한다.
 - Corner item block의 title과 첫 item은 실제 painted title bottom/item top 사이 기존12px gap을 측정한다. 외부 side의 fixed first-row anchor52를 corner에 복사하지 않는다. Native corner inset8과 기본 pitch18, 전체 inset plot fit 검증은 유지하며 grouped intrinsic frame도 같은 corner 의도를 전달한다.
-- `border`: `false | true | { color?, lineWidth?, padding?, background? }`; false가 default이며 true는
+- `border`: `false | true | { color?, lineWidth?, padding?, background?, strokeDash? }`; false가 default이며 true는
   default bordered background를 만든다.
 - `count`: integer `2..10,000`; size, stroke-width, gradient tick-label, sampled-color 또는 opacity sample count이며 default `5`.
 - `values`: continuous size, opacity, stroke-width 및 representation symbols인 continuous color sampled legend 전용 `readonly number[]`다. 길이 `1..100`, 모든 값이 finite이고 엄격히 오름차순이어야 하며 caller 순서를 정렬하거나 중복을 제거하지 않는다. `-0` 뒤의 `0`도 중복으로 거절한다. `count`와 같은 호출에 함께 쓸 수 없다. Discrete size, categorical/combined legend와 strip 표현인 color/stroke gradient는 거절한다.
@@ -287,6 +287,20 @@ type TitleWrap = "word" | "character";
 encoding removal/recreation, combined legend와 Polar 가이드를 검증한다. `test/charts/theta-legend-order/`는
 독립 수치 oracle, primitive/public graphic·Canvas·decoded PNG·SVG/PDF 동등성을 검사한다.
 `test/contracts/category-legend-order-types.test.js`는 positive/negative declaration 계약을 검사한다.
+
+### Dashed legend borders
+
+- `border.strokeDash?: readonly number[]` accepts only even-length arrays of finite nonnegative numbers.
+  Empty arrays restore solid frames; omission preserves the existing border merge/creation semantics.
+  Odd length, sparse arrays, negative/nonfinite entries, nonarrays and unknown border keys fail atomically.
+  Inputs are cloned and frozen. All-zero patterns retain the existing concrete dash policy.
+- A nonempty pattern materializes one closed rectangular path starting at top-left, with a single dash phase
+  around all four sides. It never restarts a line on each edge. The frame keeps its logical ID, graphic parent,
+  placement/painter order, padding and complete stroke bounds. Dash/solid transitions replace path/rect atomically.
+- Omitted and empty patterns retain the existing solid rect graphic and SVG output. Border removal remains
+  `false`. Every legend family, grouped placement and parent shared guide uses the same stored border owner.
+- Evidence: `test/unit/actions/guides/legend-border-dash.test.js` covers family/edge geometry, exact solid bounds,
+  reset/removal, malformed input/state, shared-facet replay and immutable state.
 
 ## `editLegend`
 

@@ -7485,6 +7485,8 @@ export interface LegendBlockTextPatch {
 
 ```typescript
 export interface LegendBorderOptions {
+  /** Even-length non-negative finite dash sequence; [] restores a solid frame. */
+  strokeDash?: readonly number[];
   color?: string;
   lineWidth?: number;
   padding?: number;

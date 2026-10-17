@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:27610bdeb9e65f49ec12dc7c8ca975bf5425649afc3a0daf81eaef9aea0b4921. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:7a2504e0191bab3af774e191726faf462748e6c8b7e9275a33c87d06ec6e8ed8. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -13791,6 +13791,20 @@ program.editLegendBlock({
 Empty strings hide text while preserving the sample and its glyph. Unmatched values keep the existing
 formatter. Use `labelMap: "auto"` to remove the override. Opacity, stroke-width and discrete-size blocks
 reject this map. Values are compared exactly, so zero and negative zero are duplicate keys.
+
+### Dashed frames
+
+Pass an even-length dash sequence on a legend border:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+// Fragment: program already owns one legend.
+program.editLegendBorder({ border: { strokeDash: [4, 2, 6, 1] } });
+```
+
+The pattern continues around all four sides. Use `strokeDash: []` for a solid frame or `border: false`
+to remove it. Dash entries must be finite and nonnegative; odd-length arrays are rejected.
 
 ## Related
 
@@ -33105,6 +33119,8 @@ export interface LegendBlockTextPatch {
 
 ```typescript
 export interface LegendBorderOptions {
+  /** Even-length non-negative finite dash sequence; [] restores a solid frame. */
+  strokeDash?: readonly number[];
   color?: string;
   lineWidth?: number;
   padding?: number;
@@ -39477,7 +39493,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:27610bdeb9e65f49ec12dc7c8ca975bf5425649afc3a0daf81eaef9aea0b4921` |
+| Contract fingerprint | `sha256:7a2504e0191bab3af774e191726faf462748e6c8b7e9275a33c87d06ec6e8ed8` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

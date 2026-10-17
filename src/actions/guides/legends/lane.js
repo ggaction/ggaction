@@ -1,3 +1,4 @@
+import { editLegendBorderBounds } from "../../../materialization/legendBorder.js";
 import { resolveLegendAxisOffset, effectiveLegendOffsetConfig } from "../../../materialization/guides/resources.js";
 import { resolveLegendGroupPlacement } from "../../../layout/legendGroup.js";
 import { legendGroup } from "../../../materialization/legendGroups.js";
@@ -389,17 +390,11 @@ function applyHorizontalPlan(program, groups, plan) {
       next = translateGraphic(next, id, placement.dx, placement.contentDy);
     }
     if (placement.background !== undefined) {
-      for (const property of ["x", "y", "width", "height"]) {
-        next = next.editGraphics({ target: placement.background.id, property,
-          value: placement.background[property] });
-      }
+      next = editLegendBorderBounds(next, placement.background.id, placement.background);
     }
   }
   if (plan.background !== undefined) {
-    for (const property of ["x", "y", "width", "height"]) {
-      next = next.editGraphics({ target: plan.background.id, property,
-        value: plan.background[property] });
-    }
+    next = editLegendBorderBounds(next, plan.background.id, plan.background);
   }
   return next;
 }
@@ -476,13 +471,7 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
         next = editLegendBackground(next, block.backgroundId, background, block.border);
       }
       for (const background of plan.backgrounds) {
-        for (const property of ["x", "y", "width", "height"]) {
-          next = next.editGraphics({
-            target: background.id,
-            property,
-            value: background[property]
-          });
-        }
+        next = editLegendBorderBounds(next, background.id, background);
       }
     }
     for (const { side, entries } of plans) {

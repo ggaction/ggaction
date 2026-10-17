@@ -40,6 +40,10 @@ const symbol: LegendBlockSymbolPatch = { size: 64, fill: "white", stroke: "black
 const options: EditLegendBlockOptions = { target: "points", channel: "size", values: [10], text: {}, symbol: {} };
 const labels: DisplayLabelMap = [{ value: 1, label: "one" }, { value: "1", label: "string one" }];
 program.editLegendBlock(options);
+program.createLegend({border:{strokeDash:[4,2,6,1]}});
+program.editLegendBorder({border:{strokeDash:[]}});
+// @ts-expect-error dash entries are numeric
+program.editLegendBorder({border:{strokeDash:["dash",2]}});
 program.editLegendBlock({target:"points",channel:"size",labelMap:[{value:3.14159,label:"zero"}]});
 program.editLegendBlock({ target: "points", channel, count: 3, gap: 0, title: "Weight", text, symbol });
 program.editLegendBlock({ target: "points", channel: "color", values: "auto", order: [1, "2", true] });

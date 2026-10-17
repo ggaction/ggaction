@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 567, // Promoted facet guide layout adds one private owner.
-  packedBytes: 798_000, // Supported Linux/Node24 release candidate measured797971bytes.
-  unpackedBytes: 3_912_000 // Numeric sampled-size display maps measured 3911967 unpacked bytes.
+  entries: 569, // Dashed legend frames add pure dash policy and shared materializer owners.
+  packedBytes: 799_000, // Dashed legend frames measured 798338 packed bytes.
+  unpackedBytes: 3_915_000 // Dashed legend frames measured 3914211 unpacked bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

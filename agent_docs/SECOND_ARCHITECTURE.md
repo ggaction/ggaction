@@ -296,6 +296,14 @@ Numeric size display-map public documentation and generated signatures produce a
 search index. Its independent ceiling increases only from 814,000 to 815,000 bytes; the search corpus,
 option literals and existing regression assertions stay complete.
 
+Dashed legend borders add two private owners: pure even-array grammar and a shared stable-ID
+rect/closed-path frame materializer. Existing family rematerializers and lane placement explicitly
+invoke the same owner; renderers keep consuming concrete path commands. A nonempty pattern is one
+closed path with a continuous dash phase. Default solid rects and their output remain unchanged.
+Measured artifact growth is 569 entries / 798,338 packed / 3,914,211 unpacked bytes. The narrow
+ceilings become 569 / 799,000 / 3,915,000, keeping browser limits unchanged. Search is 815,026 bytes;
+its independent ceiling becomes 816,000. These are growth adjustments, not previous-limit passes.
+
 ### Browser bundle regression ceilings
 
 Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 않아야 한다.

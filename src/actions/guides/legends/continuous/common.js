@@ -1,3 +1,5 @@
+import { normalizeLegendBorderDash } from "../../../../grammar/legendBorder.js";
+import { materializeLegendBorder } from "../../../../materialization/legendBorder.js";
 import { LEGEND_TITLE_STYLE_KEYS, mergeLegendTitleStyle, validateLegendTitleAlignment } from "../../../../grammar/legendTitleStyle.js";
 import { PLOT_LEGEND_POSITIONS, isPlotLegend } from "../../../../layout/legend.js";
 import { isContinuousColorScaleType } from "../../../../grammar/scales/types.js";
@@ -48,7 +50,7 @@ const TEXT_OPTIONS = [
   "offset", "color", "fontSize", "fontFamily", "fontWeight", "format"
 ];
 const BORDER_OPTIONS = [
-  "color", "lineWidth", "padding", "background"
+  "color", "lineWidth", "padding", "background", "strokeDash"
 ];
 const POSITIONS = ["right", "left", "top", "bottom", ...PLOT_LEGEND_POSITIONS];
 const DEFAULT_LABELS = {
@@ -143,7 +145,8 @@ export function normalizeLegendBorder(value) {
   }
   validateNonNegative(border.lineWidth, "Legend border lineWidth");
   validateNonNegative(border.padding, "Legend border padding");
-  return border;
+  const dash = normalizeLegendBorderDash(border.strokeDash);
+  return { ...border, ...(dash === undefined ? {} : { strokeDash: dash }) };
 }
 
 export function normalizeContinuousLegend(args, kind) {
@@ -411,12 +414,7 @@ export function resolveLegendBackgroundFromBounds(
 
 export function editLegendBackground(program, id, bounds, border) {
   if (bounds === undefined) return program;
-  return editGraphicProperties(program, id, {
-    ...bounds,
-    fill: border.background,
-    stroke: border.color,
-    strokeWidth: border.lineWidth
-  });
+  return materializeLegendBorder(program, id, bounds, border);
 }
 
 export function normalizeItemLegendLayout(args, { multiColumnSide = false } = {}) {

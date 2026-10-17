@@ -3123,7 +3123,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edit one focused component, optionally selecting an existing channel block",
+      "update": "Edit solid or even-array dashed legend frames, optionally selecting one existing channel block",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

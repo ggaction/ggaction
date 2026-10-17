@@ -50,3 +50,14 @@
   data/scale/Canvas 관련 기존 회귀685 PASS, 추가 label-map4 PASS, 실제3데이터셋×5 public/SVG15 PASS.
 - unpacked3,911,967 bytes→3,912,000 ceiling, search814,532 bytes→815,000 ceiling만 좁게 갱신했다.
   공개 옵션/enum이나 검색 내용을 숨기지 않았다. 기존 한도 통과로 보고하지 않는다.
+
+## Checkpoint 5 — dashed legend borders
+
+- border.strokeDash의 finite/nonnegative/even dense-array grammar와 stable-ID rect↔closed-path materializer를 추가했다.
+- 한 닫힌 경로의 네 변 전체에 단일 dash phase를 유지한다. 기본/[]는 기존 rect graphic과 정확히 동일하다.
+- 모든11family×4edge geometry/bounds, mutable input clone/freeze, invalid/sparse/odd atomic rejection,
+  reset/remove/group/sharedfacet/persistence를 검증했다. guide/persistence/browser 회귀676 PASS.
+- 실제 Chromium4edge의 전체 pixels가 독립 continuous-path primitive와 정확히 일치한다.
+  실제3데이터셋×5 public lifecycle/SVG15 PASS, installed consumer 실제dash/Persistence/PNG PASS.
+- 실측569entries/798,338packed/3,914,211unpacked로 해당한도569/799,000/3,915,000만 갱신했다.
+  search815,026bytes에 한도816,000, browser기존한도는 유지한다.

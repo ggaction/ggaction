@@ -1068,6 +1068,8 @@ function exerciseCartesianGuides(factors, base) {
             background: "#ffffff"
           }
     })
+    .editLegendBorder({target:"points",channel:"color",border:{strokeDash:[4,2,6,1]}})
+    .editLegendBorder({target:"points",channel:"color",border:{strokeDash:[]}})
     .createTitle(titleOptions(base.context, variant))
     .editTitle({
       ...titleOptions(base.context, variant),
