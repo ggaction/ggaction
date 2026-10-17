@@ -40,6 +40,11 @@ const symbol: LegendBlockSymbolPatch = { size: 64, fill: "white", stroke: "black
 const options: EditLegendBlockOptions = { target: "points", channel: "size", values: [10], text: {}, symbol: {} };
 const labels: DisplayLabelMap = [{ value: 1, label: "one" }, { value: "1", label: "string one" }];
 program.editLegendBlock(options);
+program.createLegend({combine:"size-shape",channels:["shape","size"]});
+basic.createLegend({combine:"size-shape"});
+program.editLegend({combine:"separate"});
+// @ts-expect-error combination values are closed
+program.createLegend({combine:"shape-color"});
 program.editLegendBlock({target:"points",channel:"size",position:"bottom-left"});
 program.editLegendLayout({channel:"color",position:"inherit"});
 // @ts-expect-error local reset grammar is inherit, not auto

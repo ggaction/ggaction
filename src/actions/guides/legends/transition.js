@@ -169,7 +169,11 @@ export function planLegendBlockTransitions(program, target, plans, position) {
     const descriptor = nextDescriptors[index];
     const incoming = oldDescriptors.filter(old => intersects(old, descriptor));
     let override;
-    if (incoming.length === 1 && incoming[0].key === descriptor.key) {
+    if (descriptor.config.combine === "size-shape" && incoming.length > 1) {
+      const positions = incoming.map(old=>old.config.blockOverrides?.[old.key]?.position);
+      if (position === undefined && !positions.every(value=>value===positions[0])) transitionError(target, incoming, descriptor, "position");
+      override = position === undefined && positions[0] !== undefined ? {position: positions[0]} : undefined;
+    } else if (incoming.length === 1 && incoming[0].key === descriptor.key) {
       override = incoming[0].config.blockOverrides?.[incoming[0].key];
       if (incoming[0].config.representation === "symbols" && descriptor.kind === "gradient" && descriptor.config.representation !== "symbols" && override !== undefined) {
         const { symbol: _symbol, labelMap: _labelMap, ...common } = override; override = common;
@@ -177,6 +181,9 @@ export function planLegendBlockTransitions(program, target, plans, position) {
     } else if (incoming.length === 1) {
       const old = incoming[0];
       override = old.config.blockOverrides?.[old.key];
+      if (incoming[0].config.combine === "size-shape" && override !== undefined) {
+        const {title: _title, ...rest} = override; override = Object.keys(rest).length ? rest : undefined;
+      }
       if (override?.title !== undefined) {
         transitionError(target, incoming, descriptor, "title");
       }

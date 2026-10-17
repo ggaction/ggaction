@@ -4728,6 +4728,8 @@ export type LegendOrder = LegendValueOrder |
   { channel: "x" | "y" | "theta"; values?: never };
 
 export interface LegendOptions {
+  /** Explicitly combine compatible ordinal size and shape samples. Omission retains separate blocks. */
+  combine?: "separate" | "size-shape";
   /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
   representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */

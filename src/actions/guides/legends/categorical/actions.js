@@ -1,3 +1,4 @@
+import {validateLegendCombine,resolveSizeShapeCreation} from "../combine.js";
 import { recordLegendOffsetIntent } from "../group.js";
 import { prepareLegendGroup, creationLegendTarget, validateLegendGroupOptions } from "../group.js";
 import { PLOT_LEGEND_POSITIONS } from "../../../../layout/legend.js";
@@ -85,6 +86,7 @@ export const rematerializeLegend = /* @__PURE__ */ action(
         !sameValues(stored.domain, definition.domain) ||
         !sameValues(stored.scales, definition.scales) ||
         stored.field !== definition.field ||
+        !sameValues(stored.sizeAreas ?? [], definition.sizeAreas ?? []) ||
         stored.title !== definition.title;
       next = changed
         ? next._withLegendConfig(kind, {
@@ -93,6 +95,7 @@ export const rematerializeLegend = /* @__PURE__ */ action(
             channels: definition.channels,
             scales: definition.scales,
             field: definition.field,
+            ...(definition.combine === undefined ? {} : {combine: definition.combine, sizeAreas: definition.sizeAreas}),
             title: definition.title,
             domain: definition.domain
           })
@@ -231,7 +234,13 @@ export const createCategoricalLegend = /* @__PURE__ */ action(
   })
 );
 
-function resolveRawLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers) {
+function resolveRawLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers, internalChannels) {
+  if (Object.hasOwn(args, "combine")) {
+    validateLegendCombine(args.combine);
+    if (args.combine === "size-shape") return resolveSizeShapeCreation(program, args, layers, resolveRawLegendCreationPlan, internalChannels);
+    const {combine: _combine, ...separate} = args;
+    return resolveRawLegendCreationPlan(program, separate, layers);
+  }
   validateOptionObject(args, undefined, "createLegend");
   const candidates = args.target === undefined ? layers : layers.filter(layer => layer.id === args.target);
   const channels = args.channels;
@@ -403,7 +412,7 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
   return { steps: [{ op: "createCategoricalLegend", args }], finish: "auto" };
 }
 
-export function resolveLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers) {
+export function resolveLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers, internalChannels) {
   validateLegendGroupOptions(args);
   const { blockLayout: _layout, at: _at, ...raw } = args;
   const groups = program.guideConfigs.legendGroups ?? {};
@@ -418,7 +427,7 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
   }
   if (raw.position === undefined && args.direction === "horizontal" &&
       (args.at !== undefined || Object.keys(groups).length > 0)) raw.position = "top";
-  const initial = resolveRawLegendCreationPlan(program, raw, layers);
+  const initial = resolveRawLegendCreationPlan(program, raw, layers, internalChannels);
   const inherited = Object.keys(program.guideConfigs.legendGroups ?? {}).length > 0;
   const corner = PLOT_LEGEND_POSITIONS.includes(args.position) &&
     (initial.steps.length > 1 || initial.steps[0]?.op !== "createCategoricalLegend" ||
@@ -434,7 +443,7 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
   if (prepared.options.position === undefined && raw.position !== undefined) {
     prepared.options.position = raw.position;
   }
-  return { ...resolveRawLegendCreationPlan(prepared.program, prepared.options, layers),
+  return { ...resolveRawLegendCreationPlan(prepared.program, prepared.options, layers, internalChannels),
     legendGroup: { target, config: prepared.program.guideConfigs.legendGroups[target] } };
 }
 

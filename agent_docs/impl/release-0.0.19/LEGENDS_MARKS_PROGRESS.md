@@ -99,3 +99,21 @@
 - #206 agent owns final facet parent-union local partition/placement using exports
   localLegendPosition(config)/localLegendPlacement(config). This unit checkpoint does
   not claim that remaining parent integration or the full realistic matrix is closed.
+
+
+## Checkpoint 8 — categorical size-shape fusion (#171)
+
+- 기존 categorical series owner에 explicit size-shape policy를 저장하고 같은
+  typed domain의 shape/physical area를 함께 materialize한다. 별도 color owner를
+  보존하고 alias edits/removal, split/recombine, scale/Canvas replay를 검증했다.
+- split 시 target group owner를 보존해 많은 실제 category도 겹침 없이 pack한다.
+  서로 같은 독립 local anchor를 복사해 실제 겹치면 기존 immutable collision
+  rejection을 유지한다. local override를 inherit으로 되돌리면 group pack한다.
+- axes f3f85def의 순수 block/local query/core property 경계 정리를 동일하게
+  적용했다. snapshot의 paired mapping 검증은 pure grammar를 재사용한다.
+- 기존 guide/color transition695개, focused4개, source-boundaries8개,
+  독립 Chromium 전체 glyph pixels, 3개 실제 TidyTuesday 각5회 lifecycle PASS.
+  Full/Basic installed consumer와 docs120/contracts19 PASS.
+- create/edit card3438/3704B만3440/3710으로 조정했다. Package573 entries,
+  803727/3934180 bytes, browser395897/191800 gzip 실측에만 좁게 조정했다.
+- 전체 realistic 옵션별5회/3dataset matrix는 최종 통합 의무로 남아 있다.

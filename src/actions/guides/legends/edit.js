@@ -1,3 +1,5 @@
+import { validateLegendCombine, validateMappedSizeShapeSymbol } from "../../../grammar/legendCombinations.js";
+import { legendBlockDescriptors } from "./target.js";
 import { localLegendPosition, localLegendPlacement } from "../../../materialization/legendGroups.js";
 import { mergeLegendTitleStyle } from "../../../grammar/legendTitleStyle.js";
 import { recordLegendOffsetIntent } from "./group.js";
@@ -56,7 +58,7 @@ import { planLegendBlockTransitions } from "./transition.js";
 const OPTIONS = Object.freeze([
   "target", "channel", "channels", "position", "layout", "align", "direction", "columns", "offset",
   "titlePosition", "title", "symbol", "labels", "titleStyle", "itemGap",
-  "border", "count", "values", "gradient", "representation", "order", "overflow", "blockLayout", "at"
+  "border", "count", "values", "gradient", "representation", "order", "overflow", "blockLayout", "at", "combine"
 ]);
 
 function mergeObject(previous, patch) {
@@ -506,6 +508,7 @@ function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder
 }
 
 function editCategorical(program, kind, previous, size, args) {
+  if (previous.combine === "size-shape") validateMappedSizeShapeSymbol(args.symbol);
   const { config, order, titleMode, title, titleVisible, sizeConfig } = resolveCategoricalEdit(program, kind, previous, size, args);
   const newSymbols = categoricalSymbolIds(config);
   let next = program;
@@ -547,13 +550,30 @@ function editCategorical(program, kind, previous, size, args) {
 
 function editLegendContent(program, target, args) {
   validateLegendChannels(args.channels, "editLegend");
-  const { channels, target: _target, ...patch } = args;
+  const { channels, target: _target, combine: requestedCombine, ...patch } = args;
   const previous = program.guideConfigs.legend ?? {};
   const removed = Object.keys(previous).filter(kind => previous[kind].target === target);
   let view = removed.reduce((next, kind) => next._withoutMaterializationConfig(["guides", "legend", kind]), program);
   const colorRepresentation = patch.representation ?? (channels.includes("color") && previous.gradient?.target === target ? previous.gradient.representation : undefined);
   if (patch.representation !== undefined && !channels.includes("color")) throw new Error("Legend representation requires selected continuous color.");
-  const creation = resolveLegendCreationPlan(view, { target, channels, ...(colorRepresentation === undefined ? {} : { representation: colorRepresentation }) });
+  const oldCombined = Object.values(previous).find(config=>config.target===target&&config.combine==="size-shape");
+  const hasPair = channels.includes("shape") && channels.includes("size");
+  if (oldCombined && requestedCombine === undefined && !hasPair && channels.some(channel=>["shape","size"].includes(channel))) {
+    throw new Error("An edited combined legend keeps its combination; explicitly choose separate to split it.");
+  }
+  const combine = requestedCombine ?? (oldCombined && hasPair ? "size-shape" : undefined);
+  let creation;
+  if (requestedCombine === "separate" && oldCombined) {
+    const pair = channels.filter(channel=>["shape","size"].includes(channel));
+    const plans = [pair, ...channels.filter(channel=>!["shape","size"].includes(channel)).map(channel=>[channel])]
+      .filter(channels=>channels.length).map(channels=>resolveLegendCreationPlan(view,{target,channels}));
+    creation = {steps: plans.flatMap(plan=>plan.steps),
+      ...(program.guideConfigs.legendGroups?.[target] === undefined ? {} : {legendGroup:{target,config:program.guideConfigs.legendGroups[target]}})};
+  } else creation = resolveLegendCreationPlan(view, { target, channels,
+    ...(combine === undefined ? {} : {combine}),
+    ...(colorRepresentation === undefined ? {} : { representation: colorRepresentation }) }, program.semanticSpec.layers, channels);
+  if (creation.legendGroup !== undefined) view = view._withMaterializationConfig(
+    ["guides", "legendGroups", target], creation.legendGroup.config);
   const oldCategorical = removed.find(kind =>
     ["series", "color", "stroke"].includes(kind)
   );
@@ -563,10 +583,16 @@ function editLegendContent(program, target, args) {
     if (previous[kind] !== undefined && previous[kind].target !== target) {
       throw new Error(`Legend ${kind} content already belongs to another target.`);
     }
+    if (descriptor.config.combine === "size-shape" && previous.series?.combine !== "size-shape") return descriptor;
+    if (kind === "size" && oldCombined) {
+      const shared = Object.fromEntries(["title", "inferredTitle", "titleVisible", "labels", "titleStyle", "position", "align", "direction", "columns", "offset", "titlePosition", "itemGap", "border", "layout"].map(key=>[key,oldCombined[key]]));
+      return {...descriptor,config:{...descriptor.config,...shared,inheritAppearance:false}};
+    }
     if (["series", "color", "stroke"].includes(kind) && oldCategorical !== undefined) {
-      const order = patch.order === undefined ? program.semanticSpec.guides.legend?.[oldCategorical]?.order
+      const priorKind = previous[kind]?.target === target ? kind : oldCategorical;
+      const order = patch.order === undefined ? program.semanticSpec.guides.legend?.[priorKind]?.order
         : normalizeLegendOrder(patch.order);
-      return { ...resolveCategoricalLegendRevision(view, oldCategorical, previous[oldCategorical],
+      return { ...resolveCategoricalLegendRevision(view, priorKind, previous[priorKind],
         descriptor.config.channels, { order, validateLayout: false }), kind };
     }
     return { ...descriptor, config: previous[kind]?.target === target ? previous[kind] : descriptor.config };
@@ -612,6 +638,8 @@ function editLegendContent(program, target, args) {
   for (const { kind, config } of plans) view = view._withLegendConfig(kind, config);
   if (categorical !== undefined) resolveLayout(view, categorical.config);
   let next = removeLegendKinds(program, removed);
+  if (creation.legendGroup !== undefined) next = next._withMaterializationConfig(
+    ["guides", "legendGroups", target], creation.legendGroup.config);
   for (const { kind, config, order } of plans) {
     if (["series", "color", "stroke"].includes(kind)) {
       next = createCategoricalLegendFromConfig(next, config, order);
@@ -641,6 +669,7 @@ function editLegendImplementation(args = {}, skipGroup = false) {
       if (Object.hasOwn(args, "channels")) {
         throw new Error("editLegend cannot combine channel and channels.");
       }
+      if (Object.hasOwn(args, "combine")) throw new Error("Selected legend edits cannot change combine.");
       if (args.blockLayout !== undefined || args.at !== undefined) {
         throw new Error("Selected legend blocks do not accept whole-group blockLayout or at.");
       }
@@ -726,6 +755,15 @@ function editLegendImplementation(args = {}, skipGroup = false) {
         }
         return next.rematerializeLegend();
       }
+      if (args.combine === undefined && Object.values(this.guideConfigs.legend ?? {}).some(config=>config.target===target&&config.combine==="size-shape")) {
+        let edited = prepared.program;
+        const shared = {...args};
+        for (const key of ["position","align","offset","blockLayout","at"]) delete shared[key];
+        for (const block of legendBlockDescriptors(edited, target)) {
+          edited = editLegendImplementation.call(edited,{...shared,target,channel:block.channels[0]},true);
+        }
+        return edited.rematerializeLegend();
+      }
       // Shared appearance edits still use their established owner. Preserve the
       // local frame when a whole-group anchor accompanies those edits.
       let edited = editLegendImplementation.call(prepared.program, prepared.options, true);
@@ -737,6 +775,15 @@ function editLegendImplementation(args = {}, skipGroup = false) {
           ...(args.direction === undefined ? {direction: previous.direction} : {})});
       }
       return edited.rematerializeLegend();
+    }
+    if (Object.hasOwn(args, "combine")) {
+      validateLegendCombine(args.combine);
+      if (args.combine === "size-shape" && args.channels !== undefined &&
+        !(args.channels.length === 2 && args.channels.includes("size") && args.channels.includes("shape"))) {
+        throw new Error("size-shape combine requires exactly shape and size channels.");
+      }
+      const channels = args.channels ?? [...new Set(legendBlockDescriptors(this, target).flatMap(block=>block.channels))];
+      return editLegendContent(this, target, {...args, channels});
     }
     if (args.channels !== undefined) return editLegendContent(this, target, args);
     const configs = this.guideConfigs.legend ?? {};

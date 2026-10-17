@@ -38,7 +38,7 @@ function resolveRequestedRemoval(program, target, channels) {
     if (overlap.length === 0) continue;
     kinds.push(kind);
     for (const channel of overlap) matched.add(channel);
-    if (overlap.length !== owned.length) {
+    if (overlap.length !== owned.length && config.combine !== "size-shape") {
       partial = { kind, config, channels: owned.filter(channel => !requested.has(channel)) };
     }
   }

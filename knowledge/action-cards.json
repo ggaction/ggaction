@@ -19281,6 +19281,11 @@
       },
       "options": [
         {
+          "name": "combine",
+          "required": false,
+          "type": "\"separate\" | \"size-shape\" | undefined"
+        },
+        {
           "name": "representation",
           "required": false,
           "type": "\"gradient\" | \"symbols\" | undefined"
@@ -19397,7 +19402,7 @@
         }
       ],
       "callPatterns": [
-        "createLegend({ target?, representation?, layout?, overflow?, order?, channels?, position?, blockLayout? })"
+        "createLegend({ target?, combine?, representation?, layout?, overflow?, order?, channels?, position? })"
       ],
       "snippet": "program.createLegend({})",
       "errors": [],
@@ -19516,6 +19521,11 @@
           "name": "values",
           "required": false,
           "type": "\"auto\" | readonly number[] | undefined"
+        },
+        {
+          "name": "combine",
+          "required": false,
+          "type": "\"separate\" | \"size-shape\" | undefined"
         },
         {
           "name": "representation",

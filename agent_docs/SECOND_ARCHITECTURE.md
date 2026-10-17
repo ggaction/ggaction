@@ -2295,3 +2295,22 @@ packed822000/unpacked4010000으로만 갱신한다. 이전574/810000/3965000은 
 누적 실제 설치 consumer는 Node24에서 Full404564/Basic197642/SVG7315 gzipbytes다.
 기존399000/195000은 실패했고, canonical table와 README 및 공유 owner만
 최소1000bytes 단위405000/198000으로 동기화한다. SVG25000은 유지한다.
+
+
+### Explicit categorical size-shape block
+
+The opt-in `size-shape` combination reuses the categorical series owner and its
+ordered typed domain. `grammar/legendCombinations.js` owns the pure mapping
+eligibility and physical-area mapping used by action resolution and snapshot
+validation; actions alone create/revise the owner. Explicit group placement is
+retained through split/recombine, while independent color stays a separate
+block. Pure block descriptors/local placement queries and graphic-property loops
+are shared with the axes checkpoint without persistence depending on actions or
+materialization.
+
+Measured complete createLegend/editLegend cards are3438/3704bytes; only those
+ceilings become3440/3710bytes, retaining every public option and enum. Measured
+package573entries/803727packed/3934180unpacked uses573/804000/3935000limits.
+Browser Full395897/Basic191800bytes uses396000/192000gzip limits. Existing
+coverage and per-file floors remain unchanged. These are feature-growth budgets,
+not a declaration that the full realistic option matrix has completed.
