@@ -46,8 +46,8 @@
         "runnable-repository-examples",
         "next"
       ],
-      "bytes": 6088,
-      "sha256": "dbeb36ad64a200681b6ea4a567ad54d7a223e8ed15710d3bdc3c0ab6060a4a3e"
+      "bytes": 6112,
+      "sha256": "d87b1b67316aca8006adc00d22a0fdf5dcc9a3f813ec9d9c066acb63493513c4"
     },
     {
       "order": 3,
@@ -108,8 +108,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 5390,
-      "sha256": "f4378a91f527de863dd9aa87ac6bdce08f124da8d319daa411f378d5729585aa"
+      "bytes": 5438,
+      "sha256": "09100fbb736f002f91aa20b0ebc026c0b2f6eccd220c6eb3a20828d809a5ad9e"
     },
     {
       "order": 7,
@@ -124,8 +124,8 @@
         "current-boundary",
         "related"
       ],
-      "bytes": 3550,
-      "sha256": "3e571a3cdf69bd982ecf3b7723ee9c50b37ed4883997bc9b09f62e7d73849c7a"
+      "bytes": 3562,
+      "sha256": "c5ffd02b2d3f383306e3ec2b0efa9b5b8cb805edf2dbe17737685b1b5fd01c8e"
     },
     {
       "order": 8,
@@ -139,8 +139,8 @@
         "closed-radar-paths",
         "related"
       ],
-      "bytes": 3437,
-      "sha256": "3312ff0c00abbc37333ffd57a6eb00028d9ce1fc294a6662771e8fa396391962"
+      "bytes": 3449,
+      "sha256": "ccdffaaa82a057c0b1b93144a495357488813eebdaff1d8e5d99ef65e02c1477"
     },
     {
       "order": 9,
@@ -160,8 +160,8 @@
         "editing-an-arc",
         "related"
       ],
-      "bytes": 9974,
-      "sha256": "79b1866d2596e65810ae04e55a9b0492e20c5cf830d736bcad2bc962054fadaf"
+      "bytes": 9986,
+      "sha256": "e04433c20f477773de4a02ec6672b5814f2553be090836206bc99e5fb5f907d6"
     },
     {
       "order": 10,
@@ -177,8 +177,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4733,
-      "sha256": "b2cb48e49a3fea3c7fd56c50f6c14b9d87a09ec4de501c53b43779288f946bf8"
+      "bytes": 4781,
+      "sha256": "145b6f21230dce5dd9e8fbd6312a21924cdac4d7f69d9070f8a12f0dc8380197"
     },
     {
       "order": 11,
@@ -192,8 +192,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4332,
-      "sha256": "03b01be0bbf05422f25c4ac6befa68ad075a978cdc805e4e04269dbed8711a31"
+      "bytes": 4380,
+      "sha256": "e81c61f254899d83d5c37888d2635fb342528f28245992d971a322f9a3aec22f"
     },
     {
       "order": 12,
@@ -208,8 +208,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4105,
-      "sha256": "9e44728be94d31dd20b16ecf13311c1b4a1be9ccbe75ceb05f0b1c0f340427f7"
+      "bytes": 4153,
+      "sha256": "eea0b9a8f6a0bcff0a09979c659c77d425d8b42661d2b67c8600e800ca5f85b1"
     },
     {
       "order": 13,
@@ -223,8 +223,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4180,
-      "sha256": "5c2c25db16079bc5064139a7d774e38e44f70e9c7c8a8390a1b63889ffe40036"
+      "bytes": 4216,
+      "sha256": "464effd627dee8765d16a7ef26ef70bdb10bbf75b9365ffb469c1a39377ff934"
     },
     {
       "order": 14,
@@ -238,8 +238,8 @@
         "separate-series-identity-placement-and-color",
         "keep-gaps-explicit"
       ],
-      "bytes": 3515,
-      "sha256": "76284ec3f70ccfcbf26893094c571ad453a389e5a12707ab82f0130597ac86c9"
+      "bytes": 3527,
+      "sha256": "e4553fcedadd743d5a2e14266a0601d0823ea9cd081d15e5294fa41e455d63ef"
     },
     {
       "order": 15,
@@ -255,8 +255,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 6207,
-      "sha256": "f5fc9bdc2f66d58432fccd5a2fee151d5f8c6dfecf1b2ed149be24b29f29a8c6"
+      "bytes": 6267,
+      "sha256": "3412ec3a0b163b7ad59c761f630ad86c69ff5ce21684a955e20176e5af96c947"
     },
     {
       "order": 16,
@@ -271,8 +271,8 @@
         "revise-without-mutation",
         "key-action-trace"
       ],
-      "bytes": 4614,
-      "sha256": "6bed6cafb80420c8ac3b0c479cf333122d1d9ae01a7a3eba922ff68073631438"
+      "bytes": 4650,
+      "sha256": "18f9d352ea4759ff0c30c002206dbd1a0781a03696726157e3d6c04cfde840dc"
     },
     {
       "order": 17,
@@ -287,8 +287,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3551,
-      "sha256": "7ad62659b16d01ec17e930dc323706e63fb90d7fc68ec5e89cb1094d32614b8c"
+      "bytes": 3587,
+      "sha256": "fc16ae25976c1ac60489ad0f38815badb68d9b17accd37adae22fec9d98c947b"
     },
     {
       "order": 18,
@@ -303,8 +303,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3775,
-      "sha256": "7e317c5fd02b33d562ae9a3e367ef52287f55e3a714ca3d43b138f951ae8f68a"
+      "bytes": 3811,
+      "sha256": "f70687a86d10628d1bda130d7d73a27d3f859dd57034248a922e49b7a8d3b21d"
     },
     {
       "order": 19,
@@ -320,8 +320,8 @@
         "choose-filtering-reusable-selection-or-highlighting",
         "run-and-continue"
       ],
-      "bytes": 6336,
-      "sha256": "537d2bd13c7dd90eccf24fba2d6b86b57f9f7f656d0e9d0bbe7a10ac90b06e7d"
+      "bytes": 6372,
+      "sha256": "694217b6c4142a79b9d003fe54a5ff1511ee48272e9f2666976ee6acd0aaccfb"
     },
     {
       "order": 20,
@@ -347,8 +347,8 @@
         "missing-values-and-grouping",
         "revise-the-statistical-source"
       ],
-      "bytes": 3864,
-      "sha256": "ca065a1cfcde86e46785cfe3b363ab4556dd44641705b7a34456d92ec30bd548"
+      "bytes": 3876,
+      "sha256": "f3e9fbbef0d608bdd03b63fb96c4270f68051efd075ff769b6241d30e0a32ae2"
     },
     {
       "order": 22,
@@ -863,8 +863,8 @@
         "createwindowdata-id-source-partitionby-sortby-operations-temporalunit",
         "related"
       ],
-      "bytes": 5875,
-      "sha256": "fabf24235fb6667a66959b216aa91d9ca1778a228cdf9210228eab02057fc109"
+      "bytes": 5887,
+      "sha256": "22178fb0292bf84bb188c02fbcc32bde157ff87dc0d77885fb836a256c0cfe87"
     },
     {
       "order": 55,
@@ -1222,8 +1222,8 @@
         "insert-remove-and-reorder-named-concat-children",
         "state-trace-and-action-scope"
       ],
-      "bytes": 6889,
-      "sha256": "b515d57f1a5e87d8375d02b2a350a4c4441935b4fe9003d883e04cb0eba03ae5"
+      "bytes": 6913,
+      "sha256": "96277cf87059080c41bcb664e5cec96dba9f1a2d33ba8127cff6389b3d171a22"
     },
     {
       "order": 74,
@@ -1273,8 +1273,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 7287,
-      "sha256": "a7a1f30309720e57e7eb4579095b658577216c12210b6781b2a6c02d4f7e2653"
+      "bytes": 7299,
+      "sha256": "4166ecdaabbafc8612255faf19674202d79ca18746685bd515a1708852e712cc"
     },
     {
       "order": 77,
@@ -1354,8 +1354,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 5506,
-      "sha256": "724406f4d5a2212596494fcac68df519c275b5b9b43f33a1293b2f3e2aea9740"
+      "bytes": 5518,
+      "sha256": "9ad6549f0f9558f3507364561957e943050027efe9383e69d9dc2c6c487b1e89"
     },
     {
       "order": 82,
@@ -3089,8 +3089,8 @@
         "repeat-a-positional-encoding-across-fields",
         "space-between-plots"
       ],
-      "bytes": 15498,
-      "sha256": "ff7a8ccc67bf2b470382944a690b30e2a7e0d6042802b9728c0d8752f0c1cd84"
+      "bytes": 15534,
+      "sha256": "208b43dde4e2aae0807e484b64265c9fb0b0c6e4c84d5367c854f8fb953f6823"
     },
     {
       "order": 134,
@@ -3133,8 +3133,8 @@
         "layoutlabelsoptions",
         "removelabellayoutoptions"
       ],
-      "bytes": 2602,
-      "sha256": "6d3b17c95e14111c37083cb8859c46a48b672e07b96fc55456e2f0029478172f"
+      "bytes": 2614,
+      "sha256": "8d76c7d21e24334c2ab449c7691d51419df2c259076522e0a43aedbe263d59df"
     },
     {
       "order": 137,
@@ -3341,8 +3341,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3021,
-      "sha256": "3e4ebf993ddba12ccbd22e3cba7fe517202498f5ed97205949f6ba33fa4eb40c"
+      "bytes": 3033,
+      "sha256": "2d356ffb0d05c2e7f7331aa532d58e84fcc015147b8f9d12b3289a18a5030f39"
     },
     {
       "order": 150,
