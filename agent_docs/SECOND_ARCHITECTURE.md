@@ -2447,3 +2447,9 @@ macOS/Node22.23.1/npm10.9.8의 통합 staged artifact는589entries/833342packed/
 기존410000/200000을 초과해 최소1000bytes 단위412000/202000으로만 갱신한다.
 SVG25000 및 모든 기능/coverage 검사는 그대로 유지한다. 원래 한도 검사는 실제로
 실패했으며 성공 증거로 재사용하지 않는다.
+
+히트맵의 기존 title:false/named-axis 동작 복원과 통합 release notes를 포함한 Node22
+staged artifact는4063287unpacked bytes로 측정됐다. 기존4062000 검사는 실패했으므로
+다음 최소1000bytes 단계4064000으로만 올린다. Node24.19.0의 동일 staged 입력은
+835531packed bytes로 기존834000을 초과하여 다음 단계836000만 적용한다.
+entries589, browser 및 전체 기능/coverage 기준은 유지한다.

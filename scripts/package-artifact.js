@@ -24,8 +24,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 589, // Integrated sample-window materialization adds two runtime owners.
-  packedBytes: 834_000, // Node22 staged sample-window integration measured833342packed bytes.
-  unpackedBytes: 4_062_000 // Node22 staged sample-window integration measured4061404unpacked bytes.
+  packedBytes: 836_000, // Node24 integrated source measured835531packed bytes.
+  unpackedBytes: 4_064_000 // Integrated heatmap fix and release notes measured4063287unpacked bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
