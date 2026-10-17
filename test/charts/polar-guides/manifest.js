@@ -34,10 +34,11 @@ export const visualVariants = Object.freeze([
     visualSignature: {
       inkRatio: { min: 0.0438, max: 0.0537 },
       inkBounds: {
-        x: 51.5,
-        y: 60.25,
-        width: 519,
-        height: 528,
+        // Native platform fonts have distinct ink extents; keep the same tolerance
+        // and exact same-run primitive/public pixels on each supported platform.
+        ...(process.platform === "linux"
+          ? { x: 50.5, y: 64, width: 520.5, height: 525 }
+          : { x: 51.5, y: 60.25, width: 519, height: 528 }),
         tolerance: { x: 2.5, y: 1.5, width: 4.5, height: 1.5 }
       }
     },

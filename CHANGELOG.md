@@ -45,6 +45,10 @@ All notable changes to `ggaction` are recorded in this file.
   checks, preserving line order through edits, resizing, facets and snapshots.
 - Updated the optional MCP SDK pin to 1.32.1 and refreshed affected transitive
   dependencies to resolve the remaining dependency audit findings.
+- Canvas now renders the existing `none` fill/stroke/background keyword as no
+  paint instead of retaining a preceding opaque color.
+- Canvas skips zero-width outlines and lines instead of reusing the preceding
+  positive line width.
 
 ## [0.0.17] - 2026-09-15
 

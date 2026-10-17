@@ -2064,3 +2064,10 @@ Canvas의 기존 fill owner는 정확한 CSS sentinel `none`을 투명 paint로 
 같은 owner를 circle/stroke/text/background가 재사용하며 저장된 concrete 값과
 기하·opacity·일반 색상은 유지한다. Renderer의 source-over/difference 정책을
 새로 추론하거나 의미 상태를 읽지 않는다. 이는 기존 no-paint 계약의 backend 버그 수정이다.
+
+### 기존 Canvas 수정 및 실데이터 facade 검증 동기화
+
+0.0.18의 none paint 수정과 실행 불가능한 continuous band 선언5개 정정 후
+Node24.21.0/npm11.19.0 staged artifact의 unpacked 실측은3908217bytes다.
+기존3908000을 초과하므로 한도만 최소1000bytes 단위인3909000으로 조정하고
+packed799000 및 browser 예산은 유지한다. 이전 unpacked 한도 통과를 주장하지 않는다.

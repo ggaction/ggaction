@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:d9f6668449d0f49e0a9f6151f0a66965826bec3afd44f623dc1d9a8a656eb3ba. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:8d3628b9075fb186cf6efbac890c3d03c0b719869d428bc7cef1e52c5c897a34. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -9272,7 +9272,8 @@ their distinct title and axis-label origins in PDF output.
 The current renderers support concrete canvas, collection, circle, rect, line,
 text, and `M/L/C/Z` command-path graphics. Path and line strokes may use concrete
 dash arrays. They validate values with the same concrete property contract used
-by `editGraphics`.
+by `editGraphics`. The paint string `"none"` draws no fill or stroke in every backend,
+including text fill and Canvas backgrounds. It never reuses an earlier drawing color.
 
 Rect and closed-path fills may be solid strings or item-local linear-gradient
 paint values. Gradient endpoints are normalized against the final fill geometry;
@@ -39466,7 +39467,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:d9f6668449d0f49e0a9f6151f0a66965826bec3afd44f623dc1d9a8a656eb3ba` |
+| Contract fingerprint | `sha256:8d3628b9075fb186cf6efbac890c3d03c0b719869d428bc7cef1e52c5c897a34` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

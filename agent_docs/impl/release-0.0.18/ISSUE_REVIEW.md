@@ -89,3 +89,28 @@
 [bad3f346 검토 패키지](https://github.com/ggaction/ggaction/blob/bad3f346/agent_docs/impl/release-0.0.19/PROPOSAL.md)에 게시했다.
 사용자는 “설계와 시각 목표 모두 승인하고 구현”으로 구체적 API·저장·시각 목표도
 승인했다. 승인 기록은 별도 검토 branch의 `f53dd78a`이며 세 구현 worktree에서 진행 중이다.
+
+## 추가 릴리스 검증에서 발견한 기존 문제
+
+- [#212](https://github.com/ggaction/ggaction/issues/212): Canvas의 `none` paint가
+  이전 검정 fill/stroke를 유지하던 기존 버그를 공통 paint owner에서 수정했다.
+  원본690767d5와 수정소스의 동일 public graphicSpec에서 `(28,140)` pixel이
+  검정→의도한 흰 바탕으로 바뀌는 것을 실제 native PNG로 확인했다. 새API는 없다.
+- Polar PNG3종의 native font ink bounds는 macOS와Linux에서 y가3.5px까지
+  다르다. [실측](evidence/polar-native-fonts.json)은 각각의 플랫폼에서
+  primitive/public3쌍의 decoded pixels가 정확히 같음을 증명한다. 동일 tolerance를
+  유지하고Linux의 측정 중심만 분리한다. ink ratio/영역/색/정확한 pixel parity는
+  유지하며 차트의 public/primitive program이나 geometric target을 바꾸지 않는다.
+- 전체50개실데이터 facet 회귀는 최대폭4,364px, 최대높이2,210px로 확인했다.
+  새 guide 배치의 축소된 폭만 exact resource signature에 반영하고50개 build,
+  모든 facet/legend label·data integrity 및RSS 제한은 유지한다.
+
+- [#213](https://github.com/ggaction/ggaction/issues/213): Canvas에서 strokeWidth0을
+  대입해도 이전 양의 lineWidth가 남으므로 네 drawer가 stroke 호출을 생략하도록
+  기존 계약을 복구했다. 실제 Native/Chromium/SVG8bit 표본과 이전 양의 선을 검사한다.
+  [수정 근거](../canvas-zero-stroke/IMPLEMENTATION.md)는 별도 기능 제안과 분리했다.
+- Hierarchical facade의 모든 옵션·리터럴은 원본 기준5회/3실데이터셋 이상과
+  최종8데이터셋 검증을 통과했다. 실제 불가능한 continuous bandPosition5경로만
+  runtime·TypeScript 음성 증거로 선언에서 바로잡았다. Area의 두 band 방향은
+  실제 원본 집계로 보존했다. 상세 증거는
+  [구현 기록](../hierarchical-facade-coverage/IMPLEMENTATION.md)에 있다.
