@@ -482,7 +482,7 @@
   },
   "/api/legends/editing/": {
     "title": "Editing Legends",
-    "description": "Use newline characters in a title string, for example program.editLegendTitle({ title: \"Revenue\\nUSD millions\" }), to keep an explicit line break.",
+    "description": "Whole, focused and block editors and removeLegend also accept an existing shared legend on a facet, row column facet grid or field repeat parent.",
     "image": "/assets/images/cars-density-area.png"
   },
   "/concepts/chart-program/": {
@@ -616,7 +616,7 @@
   },
   "/api/composition/facets/": {
     "title": "Facets and Field Repetition",
-    "description": "Call facet on one complete unit chart to repeat it for each observed field value:",
+    "description": "Pass a legend object to guides.legend to create it against the combined inner plots.",
     "image": "/assets/images/facet-grid.png"
   },
   "/api/composition/editing/": {

@@ -6357,11 +6357,13 @@ Related types: [`DatasetScalar`](#type-datasetscalar).
 ```typescript
 export interface FacetGuideOptions {
   axes?: "each" | "outer";
-  legend?: false | "shared";
+  legend?: false | "shared" | LegendOptions;
 }
 ```
 
 </details>
+
+Related types: [`LegendOptions`](#type-legendoptions).
 
 ### `FacetHeaderAlign` {#type-facetheaderalign}
 

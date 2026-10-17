@@ -1,3 +1,4 @@
+import { editFacetParentLegend } from "../../../materialization/facetGuides/edit.js";
 import { closedAction } from "../../../core/action.js";
 
 import {
@@ -68,8 +69,9 @@ export function removeOwnedColorLegends(program, target) {
 }
 
 export const removeLegend = /* @__PURE__ */ closedAction(
-  { op: "removeLegend", description: "Remove selected legend content or every block owned by one mark." }, OPTIONS,
+  { op: "removeLegend", description: "Remove selected legend content or every block owned by one mark.", scope: "any" }, OPTIONS,
   function (args = {}) {
+    if (this.compositionSpec !== undefined) return editFacetParentLegend(this, "removeLegend", args);
     const target = resolveLegendTarget(this, args.target, "removeLegend");
     const targetKinds = Object.entries(this.guideConfigs.legend ?? {})
       .filter(([, config]) => config?.target === target)

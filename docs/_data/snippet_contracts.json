@@ -733,13 +733,13 @@
   {
     "file": "api/composition/facets.md",
     "block": 1,
-    "heading": "Repeat the current chart by a field",
+    "heading": "Declare a legend for the complete facet",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "33b794a4af3053a7ead8c4c4e4abded49656926802e8f19bc264ca743f03a668",
+    "sha256": "cac60340f1e8ae5e82683d646f09038b63cfe144588d5c2fb2921101b8df52c4",
     "executable": false
   },
   {
@@ -751,12 +751,24 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "6a697b4af9d94353ab03b8e04be59c294c6d724e26d1ea1ae4d24f4543b3281c",
+    "sha256": "33b794a4af3053a7ead8c4c4e4abded49656926802e8f19bc264ca743f03a668",
     "executable": false
   },
   {
     "file": "api/composition/facets.md",
     "block": 3,
+    "heading": "Repeat the current chart by a field",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "6a697b4af9d94353ab03b8e04be59c294c6d724e26d1ea1ae4d24f4543b3281c",
+    "executable": false
+  },
+  {
+    "file": "api/composition/facets.md",
+    "block": 4,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -771,7 +783,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 4,
+    "block": 5,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -785,7 +797,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 5,
+    "block": 6,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -797,7 +809,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 6,
+    "block": 7,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -809,7 +821,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 7,
+    "block": 8,
     "heading": "Build a row and column facet grid",
     "mode": "fragment",
     "environment": "esm-context",
@@ -823,7 +835,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 8,
+    "block": 9,
     "heading": "Repeat a positional encoding across fields",
     "mode": "fragment",
     "environment": "esm-context",
@@ -839,7 +851,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 9,
+    "block": 10,
     "heading": "Repeat a positional encoding across fields",
     "mode": "fragment",
     "environment": "esm-context",

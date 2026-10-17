@@ -9,7 +9,8 @@ const LEGEND_FAMILIES = Object.freeze({
   strokeGradient: "gradient",
   strokeInterval: "discretized",
   size: "size",
-  opacity: "opacity"
+  opacity: "opacity",
+  strokeWidth: "stroke-width"
 });
 
 function requirePlacements(placements) {
@@ -138,7 +139,7 @@ function comparableConfig(config) {
   return stableValue(rest);
 }
 
-function sameValue(left, right) {
+export function sameFacetGuideValue(left, right) {
   return JSON.stringify(stableValue(left)) === JSON.stringify(stableValue(right));
 }
 
@@ -175,7 +176,7 @@ export function resolveSharedFacetLegends(children) {
   const normalized = requireLegendChildren(children);
   const first = normalized[0];
   for (const child of normalized.slice(1)) {
-    if (!sameValue(first.guideConfigs.legendGroups, child.guideConfigs.legendGroups)) {
+    if (!sameFacetGuideValue(first.guideConfigs.legendGroups, child.guideConfigs.legendGroups)) {
       throw new Error(`Facet child "${child.id}" has incompatible legend group placement.`);
     }
   }
@@ -204,14 +205,14 @@ export function resolveSharedFacetLegends(children) {
       const candidate = child.legends[kind];
       if (
         !isPlainObject(candidate) ||
-        !sameValue(comparableConfig(config), comparableConfig(candidate))
+        !sameFacetGuideValue(comparableConfig(config), comparableConfig(candidate))
       ) {
         throw new Error(
           `Facet child "${child.id}" has an incompatible ${kind} legend config.`
         );
       }
       for (const id of scales) {
-        if (!sameValue(resolvedScales[id], child.resolvedScales[id])) {
+        if (!sameFacetGuideValue(resolvedScales[id], child.resolvedScales[id])) {
           throw new Error(
             `Facet child "${child.id}" has an incompatible resolved legend scale "${id}".`
           );
@@ -222,7 +223,7 @@ export function resolveSharedFacetLegends(children) {
   });
   for (const child of normalized.slice(1)) {
     const childKinds = Object.keys(child.legends);
-    if (!sameValue([...kinds].sort(), [...childKinds].sort())) {
+    if (!sameFacetGuideValue([...kinds].sort(), [...childKinds].sort())) {
       throw new Error(`Facet child "${child.id}" has incompatible legend kinds.`);
     }
   }
@@ -243,7 +244,7 @@ export function planFacetGuideOwnership({
   if (!["each", "outer"].includes(axes)) {
     throw new Error("Facet axes must be each or outer.");
   }
-  if (![false, "shared"].includes(legend)) {
+  if (![false, "shared"].includes(legend) && !isPlainObject(legend)) {
     throw new Error("Facet legend must be false or shared.");
   }
   const byId = new Map(children.map(child => [child.id, child]));
@@ -252,7 +253,7 @@ export function planFacetGuideOwnership({
   }
   const outer = resolveFacetOuterAxes({ placements: cells });
   const sides = resolveFacetOuterSides({ placements: cells });
-  if (legend === "shared" && !isPlainObject(sharedLegends)) {
+  if (legend !== false && !isPlainObject(sharedLegends)) {
     throw new Error("Shared facet legend ownership requires a compatibility plan.");
   }
   return cloneAndFreeze({
@@ -275,10 +276,10 @@ export function planFacetGuideOwnership({
         keepAxes,
         removeAxes: presentAxes.filter(channel => !keepAxes.includes(channel)),
         ...(records === undefined ? {} : { removeAxisComponents: removed }),
-        removeLegends: legend === "shared" ? descriptor.legendKinds ?? [] : []
+        removeLegends: legend !== false ? descriptor.legendKinds ?? [] : []
       }];
     })),
-    parent: legend === "shared"
+    parent: legend !== false
       ? { legends: sharedLegends.entries, promoteFrom: sharedLegends.source }
       : { legends: [] }
   });

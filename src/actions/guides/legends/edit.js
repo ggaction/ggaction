@@ -1,5 +1,6 @@
 import { validateLegendCombine, validateMappedSizeShapeSymbol } from "../../../grammar/legendCombinations.js";
 import { legendBlockDescriptors } from "./target.js";
+import { editFacetParentLegend } from "../../../materialization/facetGuides/edit.js";
 import { localLegendPosition, localLegendPlacement } from "../../../materialization/legendGroups.js";
 import { mergeLegendTitleStyle } from "../../../grammar/legendTitleStyle.js";
 import { recordLegendOffsetIntent } from "./group.js";
@@ -839,8 +840,9 @@ function editLegendImplementation(args = {}, skipGroup = false) {
 }
 
 export const editLegend = /* @__PURE__ */ action(
-  { op: "editLegend", description: "Edit one stable legend content, layout or appearance." },
+  { op: "editLegend", description: "Edit one stable legend content, layout or appearance.", scope: "any" },
   withGuideLayoutValidation(function (args = {}) {
+    if (this.compositionSpec !== undefined) return editFacetParentLegend(this, "editLegend", args);
     return recordLegendOffsetIntent(this, editLegendImplementation.call(this, args), args);
   })
 );

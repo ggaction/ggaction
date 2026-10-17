@@ -2231,6 +2231,22 @@ its ceiling is394,000. Basic also measured190,409 above190,000 and moves to191,0
 
 
 
+축·범례 기능 통합에서는 descriptor validation과 block key/query를 pure
+`grammar/legendBlocks.js`로, local position query를 기존 `grammar/legendGroups.js`로
+모았다. 기존 actions/materialization 경로는 재수출하여 downstream 소유자의 이동을
+강요하지 않는다. Persistence는 이 grammar를 읽으므로 actions/materialization import를
+허용하도록 경계를 넓히지 않는다. 범용 immutable graphic-edit loop는
+`core/graphicProperties.js`가 소유하고 primitive helper도 재수출한다. 실제 편집은 여전히
+public editGraphics primitive를 호출하며 직접 state clone/mutation을 추가하지 않는다.
+
+이 결합 checkpoint의 staging compaction 뒤 actual package는574entries,
+809241packed/3964563unpackedbytes이며 한도는574/810000/3965000이다.
+Search818889bytes는819000으로만 늘리고 card median1896과 editLegend3620/other3360은
+유지한다. Native/runtime unit3142/3142와 source-boundaries8/8을 검증했다.
+
+설치 소비자 결합 실측은 Full398463/Basic194351/SVG7176gzipbytes다. 앞의397000/194000을
+초과한 실패 로그를 보존하고 최소1000bytes 한도399000/195000으로만 갱신한다. New public
+옵션을 줄이지 않았고 SVG25000은 유지한다.
 ### Explicit categorical size-shape block
 
 The opt-in `size-shape` combination reuses the categorical series owner and its
@@ -2251,21 +2267,7 @@ not a declaration that the full realistic option matrix has completed.
 
 ### 첫 네 기능 통합의 검색 측정
 
-계산 두 옵션·Cartesian dash·범례 channel selector의 통합 검색 JSON은 815157bytes다.
-기존815000을 초과하므로 내용과 예제를 유지하고 공유 한도만 최소1000bytes 단위인816000으로 갱신했다.
-
 ### 열네 승인 기능의 누적 통합 측정
-
-색상 세 옵션·축 배치 네 옵션·point shape 두 종류·sampled size label map을 합친
-Node24.21.0/npm11.19.0 staged package는569entries, packed803290/unpacked3932847bytes다.
-독립 branch 한도를 누적 결과에 적용할 수 없어 최소1000bytes 단위로804000/3933000으로
-조정했다. 검색은816898bytes로817000 한도를 적용했다. 전체 옵션·예제를 보존했으며
-이전 한도 통과를 주장하지 않는다.
-
-누적 설치 소비자14기능의 동일 minified bundle은 Node22에서 Full394038/Basic191023,
-Node24에서 Full394803/Basic191552 gzip bytes다. 공유 owner와 canonical table/README를
-Full395000·Basic192000으로 동기화하고 SVG25000은 유지했다. 1000bytes 최소 단계이며
-기존393000/191000을 통과한 것으로 보고하지 않는다.
 
 ### 단일 glyph source의 명시적인 합성
 
@@ -2299,15 +2301,35 @@ Node24에서396420/193109bytes다. 공유 예산을 최소1000bytes 단위397000
 `core/graphicProperties.js`가 소유하고 primitive helper도 재수출한다. 실제 편집은 여전히
 public editGraphics primitive를 호출하며 직접 state clone/mutation을 추가하지 않는다.
 
-이 결합 checkpoint의 staging compaction 뒤 actual package는574entries,
-809241packed/3964563unpackedbytes이며 한도는574/810000/3965000이다.
-Search818889bytes는819000으로만 늘리고 card median1896과 editLegend3620/other3360은
-유지한다. Native/runtime unit3142/3142와 source-boundaries8/8을 검증했다.
-
 설치 소비자 결합 실측은 Full398463/Basic194351/SVG7176gzipbytes다. 앞의397000/194000을
 초과한 실패 로그를 보존하고 최소1000bytes 한도399000/195000으로만 갱신한다. New public
 옵션을 줄이지 않았고 SVG25000은 유지한다.
 
+
+### Facet parent의 native shared 범례
+
+Parent 선언/편집의 canonical intent는 `compositionSpec.facet.guides.legend` 한 곳에 둔다.
+False/shared 문자열은 기존 의미를 유지하고 새 객체는 private closed tagged block normal form으로
+정규화한다. 각 block은 기존 unit config/inference flags와 semantic guide 의미를 재사용한다.
+`materialization/facetGuides/owner.js`가 retained source의 transient intrinsic 측정과 shared scale/recipe
+검증을, `ownerLayout.js`가 final inner-plot union의 inherited/local partition과 실제 경계를 소유한다.
+Child Canvas/margin은 바꾸지 않고 transient flag는 반환 parent/context나 저장 state에 남지 않는다.
+Parent native guide configs와 fully concrete graphics는 파생 결과이며 renderer는 새 해석을 하지 않는다.
+Unit scope인 createLegend는 그대로이며 기존 edit/focused/block/remove만 parent router를 소비한다.
+Theme는 derived config를 recolor한 동일 transaction에서 parent canonical appearance를 갱신하므로
+다음 reflow가 자동 색상/font 변경을 되돌리지 않는다. Source replay는 public 선언에 internal tag를
+넘기지 않고 기존 child 생성 뒤 parent intent를 다시 연결한다. Exact API는 Current COMPOSITION과
+LEGEND_AND_TITLE에서만 정의한다. Source layer 경계를 완화하지 않는다.
+
+부모 범례 배치는 `materialization/graphicTranslation.js`의 동일한 primitive 이동 owner를
+사용한다. Collection은 자손을 이동하고 nested Canvas는 자신의 local frame만 이동하므로
+clip 내부 glyph를 두 번 이동하지 않는다. 이 규칙은 unit lane과 facet parent가 공유한다.
+
+Parent/combined 범례 checkpoint 실측은 package581entries/818028packed/3992869unpacked,
+search820648bytes, browser Full403710/Basic196120/SVG7176gzip bytes다. 추가한
+단일 책임5모듈은 기존 staging-only syntax compaction으로 배포하며 source는 읽기 쉽게 유지한다.
+한도는 최소581/819000/3993000, 검색821000, browser404000/197000/기존25000으로 둔다.
+옵션·리터럴·실제 호출 coverage 기준은 바꾸지 않는다.
 Canvas의 기존 fill owner는 정확한 CSS sentinel `none`을 투명 paint로 해석한다.
 같은 owner를 circle/stroke/text/background가 재사용하며 저장된 concrete 값과
 기하·opacity·일반 색상은 유지한다. Renderer의 source-over/difference 정책을
@@ -2338,22 +2360,6 @@ packed822000/unpacked4010000으로만 갱신한다. 이전574/810000/3965000은 
 
 ### Explicit categorical size-shape block
 
-The opt-in `size-shape` combination reuses the categorical series owner and its
-ordered typed domain. `grammar/legendCombinations.js` owns the pure mapping
-eligibility and physical-area mapping used by action resolution and snapshot
-validation; actions alone create/revise the owner. Explicit group placement is
-retained through split/recombine, while independent color stays a separate
-block. Pure block descriptors/local placement queries and graphic-property loops
-are shared with the axes checkpoint without persistence depending on actions or
-materialization.
-
-Measured complete createLegend/editLegend cards are3438/3704bytes; only those
-ceilings become3440/3710bytes, retaining every public option and enum. Measured
-package573entries/803727packed/3934180unpacked uses573/804000/3935000limits.
-Browser Full395897/Basic191800bytes uses396000/192000gzip limits. Existing
-coverage and per-file floors remain unchanged. These are feature-growth budgets,
-not a declaration that the full realistic option matrix has completed.
-
 Size-shape 통합 뒤 검색은823539bytes이며 최종 공개 옵션을 유지한 채824000으로만
 갱신한다. 범례 새 public 흐름·독립 Chromium·bar stable pair의 결합6검사가 통과했다.
 
@@ -2382,3 +2388,5 @@ Normal Node/browser/PDF reference checks use zero added color tolerance.
 
 25개 결합 staged package 실측582entries/825420packed/4024438unpackedbytes에 따라
 한도582/826000/4025000을 적용한다. 이전581/825000/4022000은 실패했고 내용은 보존했다.
+Released0.0.18 결합 뒤 동일 feature artifact는3994170unpacked bytes, 검색821174bytes다.
+기능을 제거하지 않고 이 두 최소 한도만3995000/822000으로 갱신한다.

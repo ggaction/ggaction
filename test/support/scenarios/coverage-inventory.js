@@ -264,9 +264,13 @@ function collectActionPaths({
         });
       }
       for (const element of elements) {
-        visit(element, arrayPath, depth + 1, nextAncestry);
+        // An array index is not a property segment. Keep the same property
+        // depth and only add this branch owner to cycle detection; a union's
+        // non-array interface may also occur inside its named tuple element.
+        visit(element, arrayPath, depth, new Set([...ancestry, type.id]));
       }
-      return;
+      // A type can also have a non-array object branch. Preserve its leaves
+      // alongside the explicitly redacted element paths.
     }
 
     for (const property of structuredProperties(

@@ -29230,7 +29230,7 @@
         {
           "name": "legend",
           "required": false,
-          "type": "\"shared\" | false | undefined"
+          "type": "\"shared\" | false | LegendOptions | undefined"
         }
       ],
       "callPatterns": [

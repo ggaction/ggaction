@@ -18,6 +18,14 @@ import { chart as basic } from ${JSON.stringify(path.join(root, "types/basic.js"
 declare const p: ChartProgram;
 const right: NamedCompleteAxis<YAxisPosition> = {id:"share",position:"right",scale:"percent"};
 p.createLinePlot({x:"x",y:"y",guides:{axes:{y:[{id:"share",position:"right"}]}}});
+p.facet({field:"panel",guides:{legend:{position:"top-left",blockLayout:"column",target:"points"}}})
+ .editLegendTitle({channel:"color",fontSize:11}).editLegendLabels({fontSize:10})
+ .editLegendBlock({target:"points",channel:"size",position:"bottom-left"}).removeLegend({channels:["size"]});
+p.editFacetGuides({legend:{at:{x:10,y:20},channels:["color"]}});
+// @ts-expect-error Public facet declarations do not accept internal normalized state.
+p.facet({field:"panel",guides:{legend:{type:"authored-legend",blocks:{},groups:{}}}});
+// @ts-expect-error Internal tags are not accepted by the parent declaration editor.
+p.editFacetGuides({legend:{type:"authored-legend",blocks:{},groups:{}}});
 p.createYAxis(right).editYAxis({target:"share",position:"left",offset:10});
 p.createAxes({x:false,y:[right,{id:"count",position:"left"}]}).createGuides({axes:{x:[{id:"top",position:"top"}],y:false},grid:false,legend:false});
 p.createYAxisLine({target:"share",color:"red"}).editYAxisLine({target:"share",lineWidth:2});

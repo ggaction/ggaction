@@ -11,7 +11,8 @@ export function legendGroup(program, target) {
 // intrinsic frame; they never write that derived frame back into stored intent.
 export function intrinsicLegendConfig(program, config) {
   const local = localLegendPlacement(config);
-  const group = local === undefined ? legendGroup(program, config.target) : {placement: local};
+  const group = local === undefined ? legendGroup(program, config.target) ??
+    (program.context.facetLegendIntrinsic === true ? { placement: { position: config.position } } : undefined) : {placement: local};
   if (group === undefined) return config;
   const anchor = group.placement.position;
   const corner = PLOT_LEGEND_POSITIONS.includes(anchor);

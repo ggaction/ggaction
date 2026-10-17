@@ -1,3 +1,4 @@
+import { synchronizeFacetLegendAppearance } from "../../materialization/facetGuides/owner.js";
 import { rematerializeTypography } from "../../materialization/typography.js";
 import { AXIS_LABEL_FONT_SIZES, AXIS_TITLE_FONT_SIZE, themeTokens } from "../../theme/defaults.js";
 import {
@@ -1018,6 +1019,11 @@ function explicitOverrides(program, node) {
   if (op === "editLegendBlock") {
     addLegendBlockOverrides(overrides, program, args);
   }
+  const parentLegendOptions = op === "editFacetGuides" ? args.legend
+    : ["facet", "facetGrid", "repeatCharts"].includes(op) ? args.guides?.legend : undefined;
+  if (parentLegendOptions !== null && typeof parentLegendOptions === "object") {
+    addLegendOverrides(overrides, program, parentLegendOptions);
+  }
   if (op === "editFacetHeaders") {
     addFacetOverrides(overrides, program, args);
   }
@@ -1102,6 +1108,8 @@ export function reconcileProgramTheme(program, { source, metadata }) {
   if (configs.changed && configs.value.facets !== undefined) {
     next = next._withMaterializationConfig(["facets"], configs.value.facets);
   }
+
+  if (configs.changed) next = synchronizeFacetLegendAppearance(next);
 
   const facetsChanged = configs.value.facets !==
     themed.materializationConfigs.facets;

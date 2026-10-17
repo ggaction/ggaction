@@ -35,4 +35,3 @@ export function resolveSizeShapeCreation(program,args,layers,standard,internalCh
   const prepared=prepareLegendGroup(program,{...common,blockLayout},layer.id,{creation:true,nativeOffset:8});
   return {steps,finish:'always',legendGroup:{target:layer.id,config:prepared.program.guideConfigs.legendGroups[layer.id]}};
 }
-

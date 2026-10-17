@@ -12,9 +12,9 @@
 Gate: **approved**. 사용자2026-10-17의 “설계와 시각 목표 모두 승인하고 구현”을
 [통합 승인 기록](PROPOSAL.md)의 commit `f53dd78a`에서 확인했다.
 승인 대상은 원격 `bad3f346`의 구체 계약과 시각 목표9종이다.
-이 문서는 런타임 구현이나 테스트 통과 보고가 아니다. 아래의 제안 호출은 현재
-런타임에서 실행 가능한 API라고 주장하지 않는다. 부모 작업이 다른 담당 문서와
-함께 검증된 검토 commit을 원격에 게시하고 승인을 요청한다.
+이 문서는 승인 시점의 검토 계약을 보존한다. 승인 후 source/types/Current/영문 문서와
+normal 검증은 [구현 기록](AXES_IMPLEMENTATION.md)의 checkpoint에 연결한다. 전체 완료는
+남은 authentic realistic 반복 호출과 stable primitive/public 시각 증거까지 통합한 뒤 기록한다.
 
 조사 기준: `7a215304f3110e2e161bd9c5ec23b91fe51de3a0`.
 렌더러나 원시 행은 바꾸지 않았다. 유료 모델 요청과 차트 픽셀 검사는 하지 않았다.

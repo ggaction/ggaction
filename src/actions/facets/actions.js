@@ -60,7 +60,7 @@ const HEADER_STYLE_OPTIONS = Object.freeze([
   "fontSize", "fontFamily", "fontWeight", "color", "offset", "align"
 ]);
 
-function normalizeGuides(guides) {
+function normalizeGuides(guides, allowStored = false) {
   if (guides === undefined) return { axes: "each", legend: false };
   validateOptionObject(guides, GUIDE_OPTIONS, "facet.guides");
   const axes = guides.axes ?? "each";
@@ -68,8 +68,11 @@ function normalizeGuides(guides) {
     throw new Error('facet guides.axes must be "each" or "outer".');
   }
   const legend = guides.legend ?? false;
-  if (legend !== false && legend !== "shared") {
-    throw new Error('facet guides.legend must be false or "shared".');
+  if (legend !== false && legend !== "shared" && !isPlainObject(legend)) {
+    throw new Error('facet guides.legend must be false, "shared", or legend options.');
+  }
+  if (!allowStored && isPlainObject(legend) && Object.hasOwn(legend, "type")) {
+    throw new Error("Facet legend options do not accept internal type tags.");
   }
   return { axes, legend };
 }
@@ -617,7 +620,8 @@ export const editFacetGuides = /* @__PURE__ */ action(
       emptyMessage: "editFacetGuides requires at least one guide policy."
     });
     const current = this.compositionSpec.facet;
-    const guides = normalizeGuides({ ...current.guides, ...args });
+    if (Object.hasOwn(args, "legend")) normalizeGuides({ legend: args.legend });
+    const guides = normalizeGuides({ ...current.guides, ...args }, true);
     const family = resolveFacetFamily(this.semanticSpec).family;
     if (family !== "cartesian" && guides.axes === "outer") {
       throw new Error("Polar and Parallel facets do not support outer axes.");
@@ -688,6 +692,8 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
     const current = this.compositionSpec;
     const facetConfig = this.materializationConfigs.facets?.[current.id];
     const base = adoptUnitState(args.program, this);
+    const authored = isPlainObject(current.facet.guides.legend);
+    const guides = authored ? { ...current.facet.guides, legend: false } : current.facet.guides;
     let revised;
     const scales = usedFacetScalePolicies(base, current.facet.scales);
     if (current.facet.grid !== undefined) {
@@ -702,7 +708,7 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
         align: current.align,
         padding: current.padding,
         scales,
-        guides: current.facet.guides
+        guides
       });
     } else if (current.facet.repeat !== undefined) {
       revised = base.repeatCharts({
@@ -714,7 +720,7 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
         align: current.align,
         padding: current.padding,
         scales,
-        guides: current.facet.guides
+        guides
       });
     } else {
       revised = base.facet({
@@ -728,8 +734,13 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
         align: current.align,
         padding: current.padding,
         scales,
-        guides: current.facet.guides
+        guides
       });
+    }
+    if (authored) {
+      const spec = revised.compositionSpec;
+      revised = revised._withCompositionState({ children: revised.children,
+        compositionSpec: { ...spec, facet: { ...spec.facet, guides: current.facet.guides } } });
     }
     if (facetConfig !== undefined) {
       revised = revised

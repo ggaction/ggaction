@@ -33,5 +33,12 @@
       "environment": "macOS, Node22.23.1",
       "measurement": "Sum of actual three test durations556.128334+354.670833+426.879375ms, rounded up; three authentic TidyTuesday datasets, each five repetitions and three recipe opacities. Scheduling estimate only."
     }
+  },
+  "localMeasurements": {
+    "contracts/realistic-combined-legend-witness.test.js": {
+      "environment": "Darwin, Node 22",
+      "source": "local integration run",
+      "measuredDurationMs": 453.667499
+    }
   }
 }

@@ -1,3 +1,4 @@
+import { validateAuthoredFacetLegend } from "../grammar/facets/legendIntent.js";
 import { AXIS_RESOURCE_CHANNELS } from "../core/vocabulary.js";
 import { cartesianAxisOwners, assertCartesianAxisSideAvailable } from "../selectors/axes.js";
 import { axisGraphicIds } from "../selectors/axes.js";
@@ -172,6 +173,9 @@ export function validateProgramState(program, path) {
   }
   for (const key of ["resolvedScales", "materializationConfigs", "context"]) requireObject(program[key], `${path}.${key}`);
   for (const key of ["marks", "guides"]) requireObject(program.materializationConfigs[key], `${path}.materializationConfigs.${key}`);
+  if (program.compositionSpec?.type === "facet" && isPlainObject(program.compositionSpec.facet.guides.legend)) {
+    validateAuthoredFacetLegend(program, program.compositionSpec.facet.guides.legend);
+  }
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   for (const config of [
     ...Object.values(program.guideConfigs.axis ?? {}).map(axis => axis.ticks),
