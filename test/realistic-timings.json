@@ -19,7 +19,7 @@
     "contracts/realistic-facade-option-recipes.test.js": 331156,
     "contracts/realistic-facet-column-factors.test.js": 165289,
     "contracts/realistic-facet-raster-bounds.test.js": 82744,
-    "contracts/realistic-guide-scale-recipes.test.js": 487640,
+    "contracts/realistic-guide-scale-recipes.test.js": 268329,
     "contracts/realistic-hierarchical-facade-matrix.test.js": 367033,
     "contracts/realistic-lifecycle-factor-effects.test.js": 63898,
     "contracts/realistic-lifecycle-provenance.test.js": 106,
@@ -51,6 +51,11 @@
       "environment": "Darwin, Node 22",
       "source": "540 scheduled real charts; strict axis/grid and palette evidence",
       "measuredDurationMs": 98393.283417
+    },
+    "contracts/realistic-guide-scale-recipes.test.js": {
+      "environment": "Darwin, Node 22",
+      "source": "all fourteen guide/scale contracts including fifty-dataset replay and strict 5/3 witnesses",
+      "measuredDurationMs": 268329.086127
     }
   },
   "measurementOverrides": {

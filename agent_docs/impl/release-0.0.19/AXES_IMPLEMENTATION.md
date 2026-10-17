@@ -233,3 +233,15 @@ EOF
   데이터·원래50dataset/모든 variant·coverage 기준은 유지한다. 전체14회귀는 같은 source에서 재실행 중이다.
 - #176/#205 parent coupling과 두 stable pair의 최종 독립 baseline 통합은 root가 소유한다.
   전체28feature 또는 release 완료를 주장하지 않는다.
+
+
+### Guide-scale 최종 결과
+
+- 같은 체크포인트 source의 전체 guide-scale14/14가268.6초에 PASS했다. 모든 eligible temporal
+  display policy,50TT×10variant structured-clone, 순서 변경·새 프로세스 replay와 strict reserved
+  option/literal/diversity5/3 검증을 모두 유지했다. 실제 합산 test duration은 canonical timings에 기록했다.
+- `b6b2e65e` source 체크포인트 후 `23ca146e`로 provenance/LLM을 정확한 source ref에 고정했다.
+  Post-commit docs120/120 PASS다. 이번 결과 기록은 runtime/type/시각 입력을 바꾸지 않는다.
+- Parent actual3원본×5회는 lifecycle/최종 union/선택 편집/저장을 증명한다. `facet.guides.legend`
+  전체 중첩 LegendOptions의 모든 literal을 별도 strict ledger로 전수 증명했다고 주장하지 않는다.
+  Root의 #176/#205 parent coupling·범례 담당의 신규 옵션 actual 증명과 함께 최종 통합할 의무다.
