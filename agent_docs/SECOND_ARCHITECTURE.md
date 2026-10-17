@@ -2523,3 +2523,7 @@ gradient 전용 bottom title 계약만 정정한다. 동기화된 선언/참조�
 버전0.0.19와 facade 선언까지 동기화한 Node24 staged unpacked 실측4086545bytes는
 기존4086000을 초과한다. unpacked만 최소다음1000bytes 단계4087000으로 갱신하며
 entries591/packed842000과 browser/search/coverage 기준은 유지한다.
+
+최종 facade별 유효 범례 선언을 모두 검색에 포함한 version0.0.19 payload는832118bytes다.
+정확한 published-release fingerprint로도 기존831000을 초과해 docs2검사가 실패했다.
+옵션·값·문서를 삭제하지 않고 다음 최소1000bytes 단계833000만 적용한다.
