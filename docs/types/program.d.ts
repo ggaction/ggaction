@@ -4700,6 +4700,8 @@ export interface LegendBlockSymbolPatch {
 export interface EditLegendBlockOptions {
   target: string;
   channel: LegendChannel;
+  /** Block-local anchor; inherit removes only this override. */
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   title?: string;
   values?: readonly [number, ...number[]] | "auto";
   count?: number;
@@ -4716,9 +4718,11 @@ export interface LegendTitleStyleEditOptions extends Omit<LegendTitleStyleOption
 }
 
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position"> {
   /** Select one existing block; cannot accompany channels. */
   channel?: LegendChannel;
+  /** inherit is allowed only with a singular channel selector. */
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   /** Gradient-only auto resets orientation. */
   direction?: "horizontal" | "vertical" | "auto";
   titleStyle?: LegendTitleStyleEditOptions;
@@ -4735,7 +4739,7 @@ export interface EditLegendLayoutOptions {
   channel?: LegendChannel;
   layout?: "edge" | "legacy-bottom";
   /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
-  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   /** Opt into whole-target legend group layout; a requested row never wraps. */
   blockLayout?: "row" | "column" | "wrap";
   /** Move the complete occupied group top-left to plot-relative logical pixels. A later position clears this anchor. */

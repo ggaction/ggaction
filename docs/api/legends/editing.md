@@ -251,6 +251,20 @@ title or count preserves independent size styles. Other targets remain intact.
 
 ## Editing one legend block
 
+A block-local `position` accepts the eight named anchors. `"inherit"` removes
+only that override, restoring the target group's placement or the legacy family
+placement. The same override is used by `editLegend({ channel, position })` and
+`editLegendLayout({ channel, position })`; without a singular selector, position
+continues to move the whole group. Group position, `at`, and block-layout edits
+preserve local overrides. Locally placed blocks are excluded from inherited
+packing and are measured independently, including titles, labels and frames.
+Corners use the existing 8px plot inset; outside edges retain native family gaps
+and the existing axis-lane policy. No coordinates, automatic Canvas growth, or
+extra offset option is introduced. Conflicting occupied guides fail atomically.
+A merged block moves through either member alias. Merging different local anchors
+requires resetting them or supplying an explicit whole-group position.
+
+
 Use `editLegendBlock()` when one mark has several legend blocks and an edit
 must apply to only one of them. Both selectors are required: `target` is the
 owning mark ID and `channel` identifies the logical block.
@@ -284,7 +298,7 @@ block, selecting either member edits that same block; a later call replaces the
 earlier block-local value.
 
 The action accepts `title`, `values`, `count`, `order`, `gap`, `text`, `symbol`,
-and `labelMap`. An empty title hides only that block's title. Exact `values` and
+`labelMap`, and `position`. An empty title hides only that block's title. Exact `values` and
 `count` apply to continuous size, opacity, stroke-width, and color-symbol blocks. `order`
 applies to a categorical block and must list every current category exactly
 once. `text` changes item-label typography and color. `symbol.size` is point

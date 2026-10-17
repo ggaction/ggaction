@@ -80,3 +80,22 @@
   799016packed/3917456unpacked→800000/3918000limits; search/browserlimits unchanged.
 - Full final realistic option/literal coverage suite remains required before integration;
   these repeated real-data lifecycles are actual calls, not a claim of full matrix closure.
+
+## Checkpoint 7 — unit block-local positions (#193)
+
+- Existing blockOverrides[key].position owns8anchors; inherit removes only that leaf.
+  Selected editLegend/focused layout delegate to the same owner. Existing family
+  frame stays separate; local native frames remain transient.
+- Local blocks partition before inherited group packing, including group position/at
+  or shared appearance edits. Corners retain8px inset, native edge gaps and existing
+  explicit family offset/alignment controls reuse their existing owner. Full occupied
+  guide bounds detect collisions/overflow atomically. No Canvas growth/new coordinate API.
+- Ten existing families×8anchors, alias/merge conflict/reset, wrong persisted owner,
+  styles/Canvas/scale/persistence replay5tests and guide/block/type/card/facet regression698 PASS.
+  Docs120 PASS; actual3datasets×5 Cartesian public/SVG calls15 PASS; installed consumer PASS.
+- Full/Basic installed browsergzip measured393508/190409 above old393000/190000;
+  narrowceilings394000/191000. Package569entries/800270packed/3922635unpacked,
+  limits801000/3923000. Complete editLegend card3617B stayswithin3620.
+- #206 agent owns final facet parent-union local partition/placement using exports
+  localLegendPosition(config)/localLegendPlacement(config). This unit checkpoint does
+  not claim that remaining parent integration or the full realistic matrix is closed.

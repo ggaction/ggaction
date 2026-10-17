@@ -18821,6 +18821,11 @@
           "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
         },
         {
+          "name": "position",
+          "required": false,
+          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"inherit\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
+        },
+        {
           "name": "direction",
           "required": false,
           "type": "\"auto\" | \"horizontal\" | \"vertical\" | undefined"
@@ -18869,11 +18874,6 @@
           "name": "target",
           "required": false,
           "type": "string | undefined"
-        },
-        {
-          "name": "position",
-          "required": false,
-          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
         },
         {
           "name": "blockLayout",
@@ -18937,7 +18937,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, channel?, direction?, titleStyle?, channels?, title?, values?, representation? })"
+        "editLegend({ target?, channel?, position?, direction?, titleStyle?, channels?, title?, values? })"
       ],
       "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],
@@ -19022,6 +19022,11 @@
           "name": "channel",
           "required": true,
           "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\""
+        },
+        {
+          "name": "position",
+          "required": false,
+          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"inherit\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
         },
         {
           "name": "title",
@@ -19160,7 +19165,7 @@
         {
           "name": "position",
           "required": false,
-          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
+          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"inherit\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
         },
         {
           "name": "blockLayout",

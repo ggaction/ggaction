@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:d45afb231220ed07808a509036571e9bdaa95e17ae073ca9d8efe535b8a80dc2. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:b22a5b6f853439ab65b47e6d237feefbbd939d47796ef2a689dd8bff893aa71e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -13611,6 +13611,19 @@ title or count preserves independent size styles. Other targets remain intact.
 
 ## Editing one legend block
 
+A block-local `position` accepts the eight named anchors. `"inherit"` removes
+only that override, restoring the target group's placement or the legacy family
+placement. The same override is used by `editLegend({ channel, position })` and
+`editLegendLayout({ channel, position })`; without a singular selector, position
+continues to move the whole group. Group position, `at`, and block-layout edits
+preserve local overrides. Locally placed blocks are excluded from inherited
+packing and are measured independently, including titles, labels and frames.
+Corners use the existing 8px plot inset; outside edges retain native family gaps
+and the existing axis-lane policy. No coordinates, automatic Canvas growth, or
+extra offset option is introduced. Conflicting occupied guides fail atomically.
+A merged block moves through either member alias. Merging different local anchors
+requires resetting them or supplying an explicit whole-group position.
+
 Use `editLegendBlock()` when one mark has several legend blocks and an edit
 must apply to only one of them. Both selectors are required: `target` is the
 owning mark ID and `channel` identifies the logical block.
@@ -13640,7 +13653,7 @@ block, selecting either member edits that same block; a later call replaces the
 earlier block-local value.
 
 The action accepts `title`, `values`, `count`, `order`, `gap`, `text`, `symbol`,
-and `labelMap`. An empty title hides only that block's title. Exact `values` and
+`labelMap`, and `position`. An empty title hides only that block's title. Exact `values` and
 `count` apply to continuous size, opacity, stroke-width, and color-symbol blocks. `order`
 applies to a categorical block and must list every current category exactly
 once. `text` changes item-label typography and color. `symbol.size` is point
@@ -24817,6 +24830,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
+| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `LegendTitleStyleEditOptions \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
@@ -24827,7 +24841,6 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
 | `order` | Optional / branch-dependent | `LegendOrder \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
 | `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
@@ -24897,6 +24910,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Required | `string` |
 | `channel` | Required | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth"` |
+| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `title` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Optional / branch-dependent | `"auto" \| readonly [number, ...number[]] \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -24952,7 +24966,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
-| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
+| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
 | `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
@@ -31097,6 +31111,8 @@ Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderived
 export interface EditLegendBlockOptions {
   target: string;
   channel: LegendChannel;
+  /** Block-local anchor; inherit removes only this override. */
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   title?: string;
   values?: readonly [number, ...number[]] | "auto";
   count?: number;
@@ -31151,7 +31167,7 @@ export interface EditLegendLayoutOptions {
   channel?: LegendChannel;
   layout?: "edge" | "legacy-bottom";
   /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
-  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   /** Opt into whole-target legend group layout; a requested row never wraps. */
   blockLayout?: "row" | "column" | "wrap";
   /** Move the complete occupied group top-left to plot-relative logical pixels. A later position clears this anchor. */
@@ -31179,9 +31195,11 @@ Related types: [`LegendChannel`](./reference/types/#type-legendchannel).
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position"> {
   /** Select one existing block; cannot accompany channels. */
   channel?: LegendChannel;
+  /** inherit is allowed only with a singular channel selector. */
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   /** Gradient-only auto resets orientation. */
   direction?: "horizontal" | "vertical" | "auto";
   titleStyle?: LegendTitleStyleEditOptions;
@@ -39515,7 +39533,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:d45afb231220ed07808a509036571e9bdaa95e17ae073ca9d8efe535b8a80dc2` |
+| Contract fingerprint | `sha256:b22a5b6f853439ab65b47e6d237feefbbd939d47796ef2a689dd8bff893aa71e` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

@@ -813,3 +813,10 @@ Standalone `createLegend({channels:["size"],position:...})`의 명시 position�
 - Gradient-only bottom title occupies the complete strip/tick/label union plus native gap12; horizontal strip-center / vertical strip-left anchors respect titleStyle.align. Hidden title has no occupied bounds; hard breaks/blank lines persist.
 - Side lanes move horizontal/bottom-title ramps as rigid content, preserving text alignment. Group/facet/Canvas/data/scale persistence reuse existing placement and fit checks; no Canvas auto-growth. Explicit gradient direction cannot silently disappear during a scale-family transition.
 - Evidence: test/unit/actions/guides/gradient-layout.test.js.
+
+### Block-local position (#193)
+
+- editLegendBlock.position accepts8anchors or inherit; reset removes only blockOverrides[key].position. Selected editLegend/editLegendLayout use that same owner. No selector retains existing whole-group position.
+- Materializers use transient local frames; inherited/local partition occurs before packing. Local occupied bounds place independently with native edge gaps/axis lane and8px corner inset. Group placement/at/layout changes cannot overwrite local anchors. Collision and insufficient Canvas reject atomically; no auto-growth/new coordinate/offset API.
+- Local positions survive scale/data/Canvas rematerialization and persistence. Canonical block key is checked on load; ambiguous/wrong-owner stored positions reject. Different local anchors cannot merge silently; explicit group position resets placement conflicts only.
+- Unit evidence: test/unit/actions/guides/legend-local-position.test.js. Facet parent final-union integration is coordinated with #206, using localLegendPosition/localLegendPlacement pure exports; legacy shared promotion stays unchanged without overrides.

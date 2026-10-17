@@ -1,3 +1,4 @@
+import { localLegendPosition, localLegendPlacement } from "../../../materialization/legendGroups.js";
 import { mergeLegendTitleStyle } from "../../../grammar/legendTitleStyle.js";
 import { recordLegendOffsetIntent } from "./group.js";
 import { prepareLegendGroup } from "./group.js";
@@ -48,6 +49,8 @@ import {
   createStrokeWidthLegendFromConfig
 } from "./strokeWidth.js";
 import { normalizeLegendSampling } from "./sampling.js";
+import { patchLegendBlockOverride } from "./blocks.js";
+import { LEGEND_POSITIONS } from "../../../core/vocabulary.js";
 import { planLegendBlockTransitions } from "./transition.js";
 
 const OPTIONS = Object.freeze([
@@ -604,7 +607,7 @@ function editLegendContent(program, target, args) {
     }
     else plan.config = resolveContinuousEdit(view, plan.kind, plan.config, patch).config;
   }
-  plans = planLegendBlockTransitions(program, target, plans);
+  plans = planLegendBlockTransitions(program, target, plans, args.position);
   // The complete final content and styles are validated before removing resources.
   for (const { kind, config } of plans) view = view._withLegendConfig(kind, config);
   if (categorical !== undefined) resolveLayout(view, categorical.config);
@@ -643,6 +646,16 @@ function editLegendImplementation(args = {}, skipGroup = false) {
       }
       let program = this;
       const descriptor = resolveLegendBlock(program, args, "editLegend");
+      const selectedPositionChanged = Object.hasOwn(args, "position");
+      if (selectedPositionChanged) {
+        if (args.position !== "inherit" && !LEGEND_POSITIONS.includes(args.position)) throw new Error("Selected legend position requires an anchor or inherit.");
+        const blockOverrides = patchLegendBlockOverride(descriptor.config, descriptor.key,
+          args.position === "inherit" ? {removePosition: true} : {position: args.position});
+        const {blockOverrides: _old, ...config} = descriptor.config;
+        program = program._withLegendConfig(descriptor.kind, blockOverrides === undefined ? config : {...config, blockOverrides});
+        const {position: _position, ...rest} = args;
+        args = rest;
+      }
       const size = program.guideConfigs.legend?.size;
       const categorical = ["series", "color", "stroke"]
         .map(kind => program.guideConfigs.legend?.[kind])
@@ -659,16 +672,27 @@ function editLegendImplementation(args = {}, skipGroup = false) {
       const { kind } = descriptor;
       const config = program.guideConfigs.legend[kind];
       const { channel: _channel, ...patch } = args;
+      // Validate layout leaves in the local frame without adding another stored
+      // placement owner. The existing family frame is restored after editing.
+      const local = localLegendPlacement(config);
+      const selectedFrame = local === undefined ? config : {...config, ...local};
+      const selected = selectedPositionChanged && !["gradient", "strokeGradient", "opacity"].includes(kind)
+        ? {...selectedFrame, direction: undefined} : selectedFrame;
+      const finish = result => local === undefined ? result : result._withLegendConfig(kind, {
+        ...result.guideConfigs.legend[kind], position: config.position,
+        ...(patch.align === undefined ? {align: config.align} : {}),
+        ...(patch.offset === undefined ? {offset: config.offset, inferredOffset: config.inferredOffset} : {})
+      }).rematerializeLegend();
       if (["series", "color", "stroke"].includes(kind)) {
-        return editCategorical(program, kind, config, undefined, patch);
+        return finish(editCategorical(program, kind, selected, undefined, patch));
       }
       if (["size", "strokeWidth"].includes(kind)) {
-        return editSampledLegend(program, kind, config, patch);
+        return finish(editSampledLegend(program, kind, selected, patch));
       }
       if (["interval", "strokeInterval"].includes(kind)) {
-        return editInterval(program, config, patch, kind === "strokeInterval" ? "stroke" : "color");
+        return finish(editInterval(program, selected, patch, kind === "strokeInterval" ? "stroke" : "color"));
       }
-      return editContinuous(program, kind, config, patch);
+      return finish(editContinuous(program, kind, selected, patch));
     }
     const existingGroup = this.guideConfigs.legendGroups?.[target];
     const needsGroup = !skipGroup && (existingGroup !== undefined || args.blockLayout !== undefined || args.at !== undefined ||
@@ -685,6 +709,9 @@ function editLegendImplementation(args = {}, skipGroup = false) {
         for (const [kind] of entries) {
           const previous = next.guideConfigs.legend[kind];
           const familyPatch = { ...patch };
+          if (localLegendPosition(previous) !== undefined) {
+            for (const key of ["position", "align", "offset"]) delete familyPatch[key];
+          }
           if (["gradient", "strokeGradient", "opacity"].includes(kind) && previous.representation !== "symbols") {
             for (const key of kind === "opacity" ? ["layout", "columns", "direction"] : ["layout", "columns"]) {
               if (Object.hasOwn(args, key)) throw new Error(`${kind} legend does not accept ${key}.`);
@@ -699,8 +726,17 @@ function editLegendImplementation(args = {}, skipGroup = false) {
         }
         return next.rematerializeLegend();
       }
-      // Appearance/content ownership continues through the original editor.
-      return editLegendImplementation.call(prepared.program, prepared.options, true);
+      // Shared appearance edits still use their established owner. Preserve the
+      // local frame when a whole-group anchor accompanies those edits.
+      let edited = editLegendImplementation.call(prepared.program, prepared.options, true);
+      for (const [kind, previous] of Object.entries(this.guideConfigs.legend ?? {})) {
+        if (previous.target !== target || localLegendPosition(previous) === undefined || edited.guideConfigs.legend[kind] === undefined) continue;
+        edited = edited._withLegendConfig(kind, {...edited.guideConfigs.legend[kind],
+          position: previous.position, align: previous.align, offset: previous.offset,
+          inferredOffset: previous.inferredOffset,
+          ...(args.direction === undefined ? {direction: previous.direction} : {})});
+      }
+      return edited.rematerializeLegend();
     }
     if (args.channels !== undefined) return editLegendContent(this, target, args);
     const configs = this.guideConfigs.legend ?? {};

@@ -40,6 +40,10 @@ const symbol: LegendBlockSymbolPatch = { size: 64, fill: "white", stroke: "black
 const options: EditLegendBlockOptions = { target: "points", channel: "size", values: [10], text: {}, symbol: {} };
 const labels: DisplayLabelMap = [{ value: 1, label: "one" }, { value: "1", label: "string one" }];
 program.editLegendBlock(options);
+program.editLegendBlock({target:"points",channel:"size",position:"bottom-left"});
+program.editLegendLayout({channel:"color",position:"inherit"});
+// @ts-expect-error local reset grammar is inherit, not auto
+program.editLegendBlock({target:"points",channel:"size",position:"auto"});
 program.createLegend({position:"right",direction:"horizontal",titlePosition:"bottom"});
 basic.createLegend({position:"top",direction:"vertical",titlePosition:"bottom"});
 program.editLegendLayout({channel:"color",direction:"auto",titlePosition:"top"});

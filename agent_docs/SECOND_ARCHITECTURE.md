@@ -2098,3 +2098,15 @@ This checkpoint measures 569 entries / 799,016 packed bytes / 3,917,456
 unpacked bytes. Entry count stays 569; packed/unpacked limits become
 800,000 / 3,918,000 bytes. Search remains below 816,000 bytes and browser
 budgets remain unchanged. The previous package limits were exceeded, not passed.
+
+### Local legend block placement checkpoint
+
+Local placement reuses blockOverrides[key].position and transient intrinsic
+frames, so no renderer/semantic placement field is added. Unit inherited/local
+blocks partition before packing, use full occupied bounds, and reject collisions.
+The complete editLegend card is 3,617 bytes, within its 3,620 ceiling. Package
+measurement is 569 entries / 800,270 packed / 3,922,635 unpacked bytes after layout-validation preservation; limits
+move only to 801,000 / 3,923,000 bytes. Facet parent-union normalization is a
+coordinated #206 integration seam; no override keeps the existing promotion path.
+The installed Full browser bundle measured393,508 gzip bytes, above393,000;
+its ceiling is394,000. Basic also measured190,409 above190,000 and moves to191,000; SVG stays25,000.

@@ -124,6 +124,12 @@ async function testNodeConsumer(directory) {
     assert.equal(independentRamp.editLegendLayout({direction:"auto",titlePosition:"top"}).guideConfigs.legend.gradient.gradientDirection,undefined);
     assert.ok((await renderToPNGBuffer(independentRamp)).buffer.length>100);
 
+    const localSize=mappedSize.editLegendBlock({target:"scatterPlot",channel:"size",position:"top-left"});
+    assert.equal(localSize.guideConfigs.legend.size.blockOverrides['["size"]'].position,"top-left");
+    assert.deepEqual(deserializeProgram(serializeProgram(localSize)).graphicSpec,localSize.graphicSpec);
+    assert.deepEqual(localSize.editLegendLayout({channel:"size",position:"inherit"}).graphicSpec,mappedSize.graphicSpec);
+    assert.ok((await renderToPNGBuffer(localSize)).buffer.length>100);
+
     const extracted = chart().createCanvas({ width: 440, height: 340, margin: 20 })
       .createData({ values: [{ item: { value: 1 }, text: "1.5%" }, { text: "2%" }] })
       .createComputedData({ id: "nested", as: "x", expression: { op: "getPath", operand: { field: "item" }, path: ["value"] } })

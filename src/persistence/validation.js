@@ -1,3 +1,5 @@
+import { describeLegendBlock } from "../actions/guides/legends/target.js";
+import { localLegendPosition } from "../materialization/legendGroups.js";
 import { normalizeLegendBorderDash } from "../grammar/legendBorder.js";
 import { normalizeNumericDisplayLabelMap } from "../grammar/displayLabels.js";
 import { isContinuousSizeScaleType } from "../grammar/scales/size.js";
@@ -153,6 +155,12 @@ export function validateProgramState(program, path) {
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
+    if (localLegendPosition(config) !== undefined) {
+      const descriptor = describeLegendBlock(program, kind, config);
+      for (const [key, override] of Object.entries(config.blockOverrides)) {
+        if (override.position !== undefined && key !== descriptor.key) throw invalidSnapshot("Local position requires its existing block owner.", path);
+      }
+    }
     if (config.gradientDirection !== undefined) {
       if (!["gradient", "strokeGradient"].includes(kind)) throw invalidSnapshot("Gradient direction requires a gradient owner.", path);
       normalizeGradientDirection(config.gradientDirection, "Stored gradient direction");
