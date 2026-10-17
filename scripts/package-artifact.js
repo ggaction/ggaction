@@ -25,7 +25,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 581, // Native combined legend and parent owner add seven responsible modules.
   packedBytes: 819_000, // Parent/combined legend integration measured818028bytes.
-  unpackedBytes: 3_993_000 // Parent/combined legend integration measured3992869bytes.
+  unpackedBytes: 3_995_000 // Parent owner with released documentation/SDK measured3994170bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

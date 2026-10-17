@@ -169,6 +169,12 @@ explicit Polar mark and encoding actions for closed Polar paths. A field
 materialized by `createWindowData` can be used directly as the quantitative y
 position without applying another aggregate.
 
+Line y positions use quantitative or temporal scales, so
+`guides.grid.horizontal` does not accept `bandPosition`. A categorical x with
+`scale: { type: "band" }` can use `guides.grid.vertical.bandPosition` set to
+`"center"` or `"boundary"`. Facade grids belong to the line's own position
+scales; an unrelated band scale cannot replace its y scale.
+
 For named x categories, set `fieldType: "ordinal"` or `"nominal"` and optionally
 provide `scale.domain` for their order. Point/band centers align with companion
 marks. See [ordered categories](marks/line-area.md#ordered-categories) for

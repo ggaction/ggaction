@@ -136,3 +136,13 @@ EOF
   Artifact SHA256: `bfd896594fd9b12b568e9a76d3a405330657e61a4082144de6933f69b8ba0fbf`.
   Same-run gzip 결과는 위 실측과 동일하다. 최종 source/type/card/translation/parent42회귀 PASS,
   `git diff --check HEAD` PASS. 눈이나 VLM으로 이미지를 확인했다고 주장하지 않는다.
+
+## Released baseline 결합
+
+- Released main `0447acaf`의 SDK1.32.1 보안 수정, none-paint backend 수정, C5 actual facade
+  profiles, continuous grid negative/type 회귀를 결합했다. Public runtime source 충돌은 없었고
+  architecture 기록은 양쪽을 유지했다. Generated artifacts는 현재 merged source로 재생성했다.
+- `npm ci` audit0, focused52/52, full unit3170/3170, docs120/120, package check와 installed
+  Full/Basic runtime/TS/PNG/PDF/persistence/MCP/tutorial/browser 모두 PASS. Artifact `6b0b27b2a30e8f13c8410df73a65bbe0d24a1f74e989b960f5b4710e25957429`.
+- 실제 package581entries/818367packed/3994170unpacked, 검색821174bytes다. 기존 예산 초과
+  실패 로그를 보존하고 unpacked/search만 최소3995000/822000으로 갱신했다.

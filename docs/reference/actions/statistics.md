@@ -1666,6 +1666,8 @@ are outside this facade. This action is available from `ggaction` and is absent 
 
 See the [complete density workflow](../../tutorials/density-area.md#complete-density-facade).
 
+Both value and density grid directions follow continuous scales and reject explicit `bandPosition`.
+
 
 ## `createHorizonPlot`
 
@@ -1718,6 +1720,8 @@ The original x axis and vertical grid are the only automatic guides. Folded y/ho
 band legend options accept only false. Palette owns fill; area appearance accepts opacity, stroke,
 strokeWidth and curve. Explicit opacity is applied after encoding. Revise statistics with editHorizon
 and style with editAreaMark. See the [Horizon tutorial](../../tutorials/horizon.md).
+
+The vertical grid follows continuous original x and rejects explicit `bandPosition`.
 
 
 ## Focused statistical data editing

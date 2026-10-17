@@ -26,6 +26,11 @@ Band-boundary grids use the first selected band's pattern for a shared edge.
 
 Cartesian grids accept continuous, band and point scales. Band grids use centers by default; set `bandPosition: "boundary"` for both edges of each selected cell. Categorical grids accept category `values` and reject `count`.
 
+An explicit `bandPosition`, including `"center"`, requires a band scale; continuous
+and point scales reject it. In `createLinePlot`, only a categorical x band scale
+can use it through `guides.grid.vertical`. The horizontal grid follows the
+line's continuous y scale and does not accept band positioning. Density plots use continuous value and density scales; Horizon and Rug plots use continuous quantitative or temporal measure scales. Their facade grids also reject explicit band positioning. Area plots retain categorical band grids on the independent channel: vertical for `valueChannel: "y"`, horizontal for `valueChannel: "x"`.
+
 Set Cartesian `zIndex` to a finite rank: positive values draw above related marks, zero or negative values draw behind them. Grids on each side sort by rank, with horizontal before vertical on a tie. Editors and resizing retain the chosen order.
 
 Creates Cartesian or Polar grid geometry from encoded scales. Cartesian

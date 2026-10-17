@@ -30491,7 +30491,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | (Omit<CPathGuides, \"legend\"> & { legend?: false | (Omit<PathLegendOptions, \"order\"> & { order?: { channel: \"x\"; values?: undefined; } | LegendValueOrder | undefined; }) | undefined; }) | undefined"
+          "type": "false | (Omit<CPathGuides, \"grid\" | \"legend\"> & { grid?: false | (Omit<CartesianGridOptions, \"horizontal\"> & { horizontal?: boolean | ... 1 more ... | undefined; }) | undefined; legend?: false | ... 1 more ... | undefined; }) | undefined"
         }
       ],
       "callPatterns": [
@@ -33269,7 +33269,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | DensityPlotGuideOptions | undefined"
+          "type": "false | (Omit<DensityPlotGuideOptions, \"grid\"> & { grid?: false | CartesianGridOptions | undefined; }) | undefined"
         },
         {
           "name": "valueChannel",

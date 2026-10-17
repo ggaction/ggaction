@@ -23,6 +23,30 @@ test("interval:false fits two-point linear data without inventing bounds", () =>
   assert.equal(Object.hasOwn(fit.values[0], "__regression_ci_lower"), false);
 });
 
+test("interval:false preserves polynomial predictions and rejects invalid degrees atomically", () => {
+  const source = chart().createData({ id: "source", values: [
+    { x: 0, y: 1 }, { x: 1, y: 4 }, { x: 2, y: 9 }, { x: 3, y: 16 }
+  ] });
+  const before = JSON.stringify(source);
+  for (const degree of [undefined, 2]) {
+    const fit = source.createRegressionData({
+      id: "fit", x: "x", y: "y", method: "polynomial", interval: false,
+      ...(degree === undefined ? {} : { degree }), predict: { values: [0, 0.5, 2, 3] }
+    }).semanticSpec.datasets.at(-1);
+    assert.deepEqual(fit.values.map(row => row.x), [0, 0.5, 2, 3]);
+    fit.values.forEach((row, index) => {
+      assert.ok(Math.abs(row.y - [1, 2.25, 9, 16][index]) < 1e-10);
+      assert.deepEqual(Object.keys(row), ["x", "y"]);
+    });
+  }
+  for (const degree of [0, -1, 1.5, 33]) {
+    assert.throws(() => source.createRegressionData({
+      id: "invalid", x: "x", y: "y", method: "polynomial", degree, interval: false
+    }), /degree/);
+    assert.equal(JSON.stringify(source), before);
+  }
+});
+
 test("explicit prediction grids are evaluated independently for each group", () => {
   const program = chart()
     .createData({ id: "source", values: rows })

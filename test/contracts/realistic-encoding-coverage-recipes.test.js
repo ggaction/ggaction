@@ -26,8 +26,8 @@ const inventoryPromise = buildPublicOptionInventory(actionCards);
 const EXPECTED = Object.freeze({
   paths: 291,
   pathSha256: "edd3dce5d47804a36482574b0437e1bd724acf25c65c3a4fdf569eb384f7df9a",
-  literals: 292,
-  literalSha256: "f80de4d78c52fd23fc89d2271ce572b5c6bf9e2181a17610a630ab44c9831812",
+  literals: 293,
+  literalSha256: "2782a374189a1fb2c22dce055733d4b84ad9bcc87b0f93351ce868fb3ef3d2b0",
   diversity: 9,
   diversitySha256: "bd6a602f3ed8ec4c3b838ea75503e7bc1c3a7005962add809467c01190c57906"
 });

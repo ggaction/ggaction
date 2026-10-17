@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:4dc220b103ac47451716bab17d2483761bad3907b05ba047781797022957fb5c",
+    "contractId": "sha256:78e342b371b0ce619d7edf63cb0af90d467d5ddd4a0f44af07837a61bb84a2ab",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -727,8 +727,8 @@
         "advanced-authoring",
         "createtextplot"
       ],
-      "bytes": 17671,
-      "sha256": "c2667c4b712746f17f449e8a17b4e52d0cff50f6c6cfb2277dbcb0aa36d6c60f"
+      "bytes": 18019,
+      "sha256": "fdb456397a4a9aa66475eb40392b1d741a416375548fe233c8645a4dce545045"
     },
     {
       "order": 47,
@@ -1590,8 +1590,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 7787,
-      "sha256": "61d55cbac2211cb4a4bf3366ad7f37991b1f4758c5c6c729b7f5bf7e1f5afe2a"
+      "bytes": 8422,
+      "sha256": "c744f1b82b64da06e698e5e3c942484201c66c9f2032e5c414961d4b57173f09"
     },
     {
       "order": 97,
@@ -2031,8 +2031,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 161248,
-      "sha256": "2df47d45c0f59a13c89797b297052c5721981642ca8a774cb1c54dd27f358a88"
+      "bytes": 161464,
+      "sha256": "486485f3c7652cedeeb0141b8cc41222e647f527f01f35b7cc1719e6be2829c6"
     },
     {
       "order": 119,
@@ -2182,8 +2182,8 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 78790,
-      "sha256": "d56a81ce4fe2a6853fd089b296cabb21a6d31ea2e4250a2c36e18be85b64aa0e"
+      "bytes": 78977,
+      "sha256": "b8b3d1963368603ab09251578713ea5d6e5ec7c31e892bd4ec8ca056e3cfcbed"
     },
     {
       "order": 122,
@@ -2454,8 +2454,10 @@
         "type-computeddataoptions",
         "type-computedexpression",
         "type-confidenceintervalmethod",
+        "type-continuouscartesiangridoptions",
         "type-continuouscolorinterpolation",
         "type-continuouscolorscaleoptions",
+        "type-continuousgriddirectionoptions",
         "type-continuoussizescaleoptions",
         "type-coordinateaspect",
         "type-coordinateaspectalign",
@@ -2985,8 +2987,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 334485,
-      "sha256": "17919a57af5a6e7e5a58f76e3612e844ccac26703fffe9ad3d79edc9262f955c"
+      "bytes": 336202,
+      "sha256": "4152b22b01d34e26cb0bc2e0f94d3531aaa7a80f9fbb65a7905912e09a94dd88"
     },
     {
       "order": 127,
@@ -3340,7 +3342,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "e63917db2d235a061b91dffc0e3a8dc0a1b11b6e54e86c932c8477aa546321c7"
+      "sha256": "6db2c92829457f68a2cca96a98264f4a3b8dc73fbbed0d62eeed74b740ae310d"
     },
     {
       "order": 150,

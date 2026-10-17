@@ -1461,7 +1461,7 @@ function heatmapBinnedColor(ordinal) {
   }
   return {
     scale: {
-      id, type: "sequential", domain: "auto", range: "auto",
+      id, type: "sqrt", domain: "auto", range: "auto",
       interpolate: "rgb", clamp: false, reverse: false
     }
   };

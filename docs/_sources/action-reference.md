@@ -785,6 +785,8 @@ Create a one-dimensional distribution from quantitative or temporal observations
 Ticks use an explicit plot edge as their constant position, so no dummy field is
 needed. The default guide contains only the measure axis.
 
+Its measure grid follows a continuous quantitative or temporal scale and rejects explicit `bandPosition`.
+
 ### `createStripPlot`
 
 ```javascript
@@ -868,6 +870,8 @@ band legend options accept only false. Palette owns fill; area appearance accept
 strokeWidth and curve. Explicit opacity is applied after encoding. Revise statistics with editHorizon
 and style with editAreaMark. See the [Horizon tutorial](../tutorials/horizon.md).
 
+The vertical grid follows continuous original x and rejects explicit `bandPosition`.
+
 ### `createAreaPlot`
 
 ```javascript
@@ -929,6 +933,8 @@ Use `editDensity`, `editAreaMark`, and scale/guide editors for revisions. Catego
 are outside this facade. This action is available from `ggaction` and is absent from `ggaction/basic`.
 
 See the [complete density workflow](../tutorials/density-area.md#complete-density-facade).
+
+Both value and density grid directions follow continuous scales and reject explicit `bandPosition`.
 
 ### `createPiePlot`
 

@@ -122,6 +122,7 @@ createLinePlot({
 ```
 
 - Stable default ID is `linePlot`.
+- Line y는 quantitative/temporal이므로 `guides.grid.horizontal.bandPosition`은 허용하지 않는다. Categorical x가 band scale일 때만 `guides.grid.vertical.bandPosition: "center" | "boundary"`를 사용한다. Facade grid는 자기 line의 channel/scale/coordinate만 참조하며 별도 auxiliary band scale로 이 제약을 우회하지 않는다. Evidence: `test/contracts/line-grid-role-contract.test.js`.
 - `line.tension`은 cardinal 곡선의 `[0,1]` 장력을 `createLineMark`에 전달한다. 생략은 기존 0이다.
 - Hierarchy: `createLineMark`, `encodeX`, `encodeY`, optional `encodeGroup` then `encodeColor`/`encodeStrokeDash`,
   optional `createGuides`.

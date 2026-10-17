@@ -154,6 +154,20 @@ test('persistence validates discriminator and sampling while restored program re
   }
 });
 
+test('stored gradient representation rejects every stale symbol-only property',()=>{
+  const p=source().createLegend(), before=serializeProgram(p);
+  for(const [key,value] of Object.entries({
+    sampling:{mode:'auto',count:5},symbol:{type:'point',radius:5,strokeWidth:1},
+    columns:2,direction:'horizontal',layout:'edge'
+  })) {
+    const corrupt=p._withLegendConfig('gradient',{
+      ...config(p),representation:'gradient',[key]:value
+    });
+    assert.throws(()=>serializeProgram(corrupt),/Gradient color legend cannot store symbol representation settings/);
+    assert.equal(serializeProgram(p),before);
+  }
+});
+
 test('remove and recreate do not leave exclusive graphics or stale semantic resources',()=>{
   const p=source().createLegend({representation:'symbols',values:samples});
   const q=p.removeLegend({target:'scatterPlot'}); assert.equal(q.graphicSpec.objects.colorGradientSymbols,undefined);
