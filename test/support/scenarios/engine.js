@@ -16,9 +16,11 @@ import {
 } from "./recipes.js";
 
 export const REALISTIC_DATASET_QUOTAS = Object.freeze({
-  simple: 11,
-  intermediate: 26,
-  advanced: 28,
+  // Preserve 72 charts/source while reserving the smallest whole-source slots
+  // for current 1338 intermediate and 1527 advanced factor-selection targets.
+  simple: 7,
+  intermediate: 27,
+  advanced: 31,
   composite: 7
 });
 const REALISTIC_COMPLEXITIES = Object.freeze(Object.keys(REALISTIC_DATASET_QUOTAS));

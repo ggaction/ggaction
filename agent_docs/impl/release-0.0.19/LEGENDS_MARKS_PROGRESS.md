@@ -284,3 +284,19 @@
   `npm run test:realistic -- test/contracts/realistic-legend-option-witness.test.js`
   실행으로 동일한 실제4tests PASS(5회/3데이터 유지). runtime 및 공개 타입/문서
   내용은 변경하지 않았으며,0.19 provenance는 부모 통합에서 재생성한다.
+
+
+### PR217 planning 용량 정정
+
+- 최종 실행 가능한 profile의 현재 minimum/factor target은 simple90/179,
+  intermediate1154/1338, advanced1505/1527, composite100/113이다.
+  이전 advanced1400 및 intermediate1300 slot은 모두 부족했다.
+- 총72 charts/자료,50자료,3600전체를 유지하면서 여유 simple에서4 slot만
+  재배분한다: simple7/intermediate27/advanced31/composite7, 전체 용량은
+  350/1350/1550/350. intermediate/advanced 각각 한 slot 적으면 해당 factor
+  요구를 만족하지 못한다는 검증도 추가했다. 모든 recipe/option,5회/3자료,
+  용량 fail-closed guard는 유지한다.
+- heatmap은 실제33 variants×5=165 assignments로 기존27/135 기대만 정정한다.
+  초기 focused planning 증명 후216/360 strict descriptor/state parity는 동일한
+ 512MB runner/448MB child/512MB combined/900초 shared deadline으로 별도 실행한다.
+  긴 실제 실행이 끝나기 전에는 전체 PASS로 기록하지 않는다.
