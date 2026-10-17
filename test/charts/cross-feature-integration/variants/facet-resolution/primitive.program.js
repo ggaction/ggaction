@@ -243,9 +243,15 @@ function compactPopulation(value) {
 
 function addPopulationLegend(program, values) {
   const layout = OUTER_GUIDE_LAYOUT;
-  const x = layout.legendX;
+  // Keep one translated Canvas so both renderers perform the same arithmetic
+  // for fractional guide coordinates, rather than flattening them early.
+  const x = 500;
   // The inferred 11px title is shifted 8px down in its source; its final top owns the shared plot anchor.
-  const y = values.plot.y + 23.5;
+  const y = 71.5;
+  program = graphic(program, "populationLegend", "canvas", {
+    x: layout.legendX - x, y: values.plot.y - 48,
+    width: 640, height: 400, background: "transparent"
+  });
   const ratios = Array.from(
     { length: layout.gradientSteps },
     (_, index) => 1 - (index + 0.5) / layout.gradientSteps
@@ -265,7 +271,7 @@ function addPopulationLegend(program, values) {
     stroke: fills,
     strokeWidth: 0,
     opacity: 1
-  }, { length: layout.gradientSteps });
+  }, { length: layout.gradientSteps, parent: "populationLegend" });
   const [minimum, maximum] = values.shared.color;
   const tickValues = Array.from(
     { length: 5 },
@@ -282,7 +288,7 @@ function addPopulationLegend(program, values) {
     stroke: "#64748b",
     strokeWidth: 1,
     opacity: 1
-  }, { length: tickValues.length });
+  }, { length: tickValues.length, parent: "populationLegend" });
   next = graphic(next, "populationGradientLabels", "text", {
     x: tickValues.map(() => x + layout.gradientWidth + 9),
     y: tickY.map(y => y - 5),
@@ -295,10 +301,10 @@ function addPopulationLegend(program, values) {
     textBaseline: "top",
     rotation: 0,
     opacity: 1
-  }, { length: tickValues.length });
+  }, { length: tickValues.length, parent: "populationLegend" });
   return graphic(next, "populationGradientTitle", "text", {
     x,
-    y: values.plot.y,
+    y: 48,
     text: "pop",
     fill: "#0f172a",
     fontSize: 11,
@@ -306,7 +312,7 @@ function addPopulationLegend(program, values) {
     fontWeight: 600,
     textAlign: "left",
     textBaseline: "top"
-  });
+  }, { parent: "populationLegend" });
 }
 
 export function createGapminderRegressionFacetPrimitives(rows, options = {}) {

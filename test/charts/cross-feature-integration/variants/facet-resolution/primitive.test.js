@@ -9,7 +9,7 @@ import { createGapminderOuterGuideFacetPrimitives } from
 
 function nestedCanvases(program) {
   return Object.entries(program.graphicSpec.objects)
-    .filter(([id, object]) => id !== "canvas" && object.type === "canvas")
+    .filter(([id, object]) => !["canvas", "populationLegend"].includes(id) && object.type === "canvas")
     .map(([, object]) => object);
 }
 

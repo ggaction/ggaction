@@ -24,7 +24,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 567, // Promoted facet guide layout adds one private owner.
-  packedBytes: 797_000, // Release notes add to the measured796344-byte package.
+  packedBytes: 798_000, // Supported Linux/Node24 release candidate measured797971bytes.
   unpackedBytes: 3_908_000 // Release documentation growth; retain a bounded3000-byte step.
 });
 
