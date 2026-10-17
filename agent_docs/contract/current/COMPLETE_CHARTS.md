@@ -6,6 +6,9 @@ Data는 explicit/current/unique, coordinate는 explicit/bound/unique/family defa
 새 mark에 resolved data를 명시해 다른 mark의 encoding을 우연히 상속하지 않는다.
 Guide 생략/{}는 자기 layer의 compatible guide를 확보하고 false는 이번 확보만 생략한다.
 기존 guide를 삭제하거나 충돌하는 resource를 덮지 않는다. 모든 실패는 caller와 이전 program/trace를 보존한다.
+Continuous facade의 band grid 역할·auxiliary scale 거절과 Area 양방향 band 지원은
+`test/contracts/continuous-facade-grid-role-contract.test.js`가 runtime·declaration·inventory를 함께 검증한다.
+Nested 옵션·리터럴의 실제 데이터 5회/3셋 증거는 `test/contracts/realistic-hierarchical-facade-matrix.test.js`가 소유한다.
 
 Every existing nested strokable mark style forwards `lineCap`, `lineJoin`, and `miterLimit` to its ordinary mark
 owner. Bar/Rect-owned nested styles also forward `cornerRadius`. This includes Polar, endpoint, statistical,
@@ -292,6 +295,7 @@ lifecycle은 Aggregate create-only다.
   dummy field나 hidden dataset을 만들지 않는다.
 - x measure Tick은 0도 세로선, y measure Tick은 90도 가로선이다. Tick 모양은 기존 Tick owner가 맡는다.
 - 기본 guide는 measure axis 하나다. Constant anchor axis/grid와 legend는 허용하지 않는다.
+  Measure는 quantitative/temporal continuous scale이므로 해당 grid의 explicit `bandPosition`은 center/boundary 모두 오류다.
 - Effects: `createTickMark → measure position → constant position → encodeAngle → scoped guide fulfillment`.
   Scale, Canvas와 Tick appearance 편집은 기존 lower owner가 재물질화한다.
 
@@ -542,6 +546,7 @@ Default id는 `densityPlot`, lifecycle은 Aggregate create-only다.
 - Area는 fill/opacity/stroke/strokeWidth/curve다. 기본 opacity .2. Explicit field color와 scalar fill은 충돌한다.
   StrokeWidth는 stroke가 필요하며 create stroke:false는 미지원이다. Optional undefined는 생략과 같다.
 - Guides는 Cartesian axes, horizontal/vertical grid, categorical color legend만 지원한다.
+  Value/density 양쪽 scale은 continuous이므로 두 grid 모두 explicit `bandPosition`을 허용하지 않는다.
   두 orientation의 자동 grid는 현행 y축 기준 horizontal이다. Explicit color가 없는데 legend를 요구하면 오류다.
 - Effects: `createAreaMark → encodeDensity → encodeColor? → guide fulfillment`의 실제 wrapped trace다.
   KDE·derived revision·area closure는 lower owner가 수행한다. Source/statistical provenance는 dataset,
@@ -579,6 +584,7 @@ Default id는 `horizonPlot`, lifecycle은 Aggregate create-only다.
 - Area는 opacity/stroke/strokeWidth/curve만. Palette가 internal band color를 소유하므로 fill/generic color는 오류다.
   기본 opacity 1이며 explicit opacity는 encodeHorizon 뒤 editAreaMark로 적용한다. Optional undefined는 생략과 같다.
 - Guides는 original x axis와 vertical grid만 확보한다. Axes.y, grid.horizontal, legend는 false만 받는다.
+  Original x는 quantitative/temporal continuous scale이므로 vertical grid의 explicit `bandPosition`은 오류다.
   Lower createYAxis/createLegend를 명시적으로 호출하는 경로는 유지하지만 folded amplitude와 internal band key를
   원본 측정값의 y축·legend라고 추론하지 않는다.
 - All-baseline data는 original x domain과 resolved extent 0을 가진 정당한 empty path collection이다.

@@ -353,6 +353,10 @@ npm10.9.8에서 압축 해제3,913,392바이트로 기존3,908,000바이트를 �
 바이트로 이전393,000을12바이트 초과하여 Full만394,000으로 조정한다.
 Basic191,000/SVG25,000은 유지하며 Node/zlib 차이를 포함한 최종 통합 검증은 별도다.
 
+line facade의 실행 불가능한 horizontal bandPosition 선언을 수정하고 공개 문서를
+동기화한 Node24.21.0/npm11.19.0 패키지는 798,062바이트다. 이 선언 수정분을
+포함하도록 압축 상한만 다음 1,000바이트 단계인 799,000으로 조정한다.
+
 이 문서는 상태 소유권, 계층 간 의존성과 실행 흐름을 설명한다. 메서드별 매개변수·기본값·추론·지원 조합·오류는 아래 Current 계약이 소유하며 이 문서에 복제하지 않는다. 구현 상태와 direct/internal 분류는 [ACTION_INDEX.json](contract/ACTION_INDEX.json), 선언은 `types/`, 자동화된 value vocabulary는 owning runtime registry를 사용한다.
 
 | 결정 | 정확한 계약 |
@@ -2108,3 +2112,16 @@ retained child owner까지 추적하며 별도 bypass state를 저장하지 않�
 Node22.23.1/npm10.9.8/macOS canonical artifact 실측은570entries, packed803124, unpacked3939523이다.
 승인된 유한 기능 증가에 따라 entries570/packed804000/unpacked3940000으로 최소 상향했다.
 Browser gzip Full395462는396000으로 상향하고 Basic190821/SVG7176은 기존191000/25000을 유지한다.
+
+Canvas의 기존 fill owner는 정확한 CSS sentinel `none`을 투명 paint로 해석한다.
+같은 owner를 circle/stroke/text/background가 재사용하며 저장된 concrete 값과
+기하·opacity·일반 색상은 유지한다. Renderer의 source-over/difference 정책을
+새로 추론하거나 의미 상태를 읽지 않는다. 이는 기존 no-paint 계약의 backend 버그 수정이다.
+
+### 기존 Canvas 수정 및 실데이터 facade 검증 동기화
+
+0.0.18의 none paint 수정과 실행 불가능한 continuous band 선언5개 정정 후
+중간 development artifact는3908217unpacked bytes였다. 정확한 release provenance를
+갱신한 Node24.21.0/npm11.19.0 최종 staged package는567entries,
+packed798617/unpacked3907920bytes로 기존567/799000/3908000 한도 안이다.
+따라서 최종 package 한도를 올리지 않으며 browser 예산도 유지한다.

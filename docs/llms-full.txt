@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:c32c5c5635bac52fdc0e3c2921f25e81adf86a6c0f08aa20064ea3e8389c9621. Status: development. Runtime source: d6d24651f8cf66417e5d41057f6b29f00f7dddaa. Release baseline: v0.0.13.
+Contract: sha256:739bacd97beec1393ee97256ab3c1709ba0abdd8c21487dd638999220cfb2f16. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/d6d24651f8cf66417e5d41057f6b29f00f7dddaa/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/d6d24651f8cf66417e5d41057f6b29f00f7dddaa/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -4293,6 +4293,12 @@ accepted because it could mean either a field or a named dash style; use
 explicit Polar mark and encoding actions for closed Polar paths. A field
 materialized by `createWindowData` can be used directly as the quantitative y
 position without applying another aggregate.
+
+Line y positions use quantitative or temporal scales, so
+`guides.grid.horizontal` does not accept `bandPosition`. A categorical x with
+`scale: { type: "band" }` can use `guides.grid.vertical.bandPosition` set to
+`"center"` or `"boundary"`. Facade grids belong to the line's own position
+scales; an unrelated band scale cannot replace its y scale.
 
 For named x categories, set `fieldType: "ordinal"` or `"nominal"` and optionally
 provide `scale.domain` for their order. Point/band centers align with companion
@@ -9330,7 +9336,8 @@ their distinct title and axis-label origins in PDF output.
 The current renderers support concrete canvas, collection, circle, rect, line,
 text, and `M/L/C/Z` command-path graphics. Path and line strokes may use concrete
 dash arrays. They validate values with the same concrete property contract used
-by `editGraphics`.
+by `editGraphics`. The paint string `"none"` draws no fill or stroke in every backend,
+including text fill and Canvas backgrounds. It never reuses an earlier drawing color.
 
 Rect and closed-path fills may be solid strings or item-local linear-gradient
 paint values. Gradient endpoints are normalized against the final fill geometry;
@@ -12541,6 +12548,11 @@ An explicit Cartesian `labelMap` entry with `label: ""` hides only that displaye
 ## `createGrid(options?)`
 
 Cartesian grids accept continuous, band and point scales. Band grids use centers by default; set `bandPosition: "boundary"` for both edges of each selected cell. Categorical grids accept category `values` and reject `count`.
+
+An explicit `bandPosition`, including `"center"`, requires a band scale; continuous
+and point scales reject it. In `createLinePlot`, only a categorical x band scale
+can use it through `guides.grid.vertical`. The horizontal grid follows the
+line's continuous y scale and does not accept band positioning. Density plots use continuous value and density scales; Horizon and Rug plots use continuous quantitative or temporal measure scales. Their facade grids also reject explicit band positioning. Area plots retain categorical band grids on the independent channel: vertical for `valueChannel: "y"`, horizontal for `valueChannel: "x"`.
 
 Set Cartesian `zIndex` to a finite rank: positive values draw above related marks, zero or negative values draw behind them. Grids on each side sort by rank, with horizontal before vertical on a tie. Editors and resizing retain the chosen order.
 
@@ -18483,7 +18495,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "legend"> & { legend?: false \| (Omit<PathLegendOptions, "order"> & { order?: { channel: "x"; values?: undefined; } \| LegendValueOrder \| undefined; }) \| undefined; }) \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "grid" \| "legend"> & { grid?: false \| (Omit<CartesianGridOptions, "horizontal"> & { horizontal?: boolean \| ... 1 more ... \| undefined; }) \| undefined; legend?: false \| ... 1 more ... \| undefined; }) \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -18655,6 +18667,8 @@ createRugPlot({ id?, data?, y, edge: "left" | "right", tick?, guides? })
 Create a one-dimensional distribution from quantitative or temporal observations.
 Ticks use an explicit plot edge as their constant position, so no dummy field is
 needed. The default guide contains only the measure axis.
+
+Its measure grid follows a continuous quantitative or temporal scale and rejects explicit `bandPosition`.
 
 ## `createStripPlot`
 
@@ -19148,7 +19162,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; } \| undefined` |
 | `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| DensityPlotGuideOptions \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false \| CartesianGridOptions \| undefined; }) \| undefined` |
 | `valueChannel` | Optional / branch-dependent | `"x" \| "y" \| undefined` |
 | `x` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |
 | `y` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |
@@ -23525,6 +23539,8 @@ are outside this facade. This action is available from `ggaction` and is absent 
 
 See the [complete density workflow](./tutorials/density-area/#complete-density-facade).
 
+Both value and density grid directions follow continuous scales and reject explicit `bandPosition`.
+
 ## `createHorizonPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
@@ -23573,6 +23589,8 @@ The original x axis and vertical grid are the only automatic guides. Folded y/ho
 band legend options accept only false. Palette owns fill; area appearance accepts opacity, stroke,
 strokeWidth and curve. Explicit opacity is applied after encoding. Revise statistics with editHorizon
 and style with editAreaMark. See the [Horizon tutorial](./tutorials/horizon/).
+
+The vertical grid follows continuous original x and rejects explicit `bandPosition`.
 
 ## Focused statistical data editing
 
@@ -28726,6 +28744,19 @@ Related types: [`ParseTimeFormat`](./reference/types/#type-parsetimeformat).
 export type ConfidenceIntervalMethod = "normal" | "student-t";
 ```
 
+### `ContinuousCartesianGridOptions` {#type-continuouscartesiangridoptions}
+
+ Expand ContinuousCartesianGridOptions
+
+```typescript
+type ContinuousCartesianGridOptions = {
+  vertical?: boolean | ContinuousGridDirectionOptions;
+  horizontal?: boolean | ContinuousGridDirectionOptions;
+};
+```
+
+Related types: [`ContinuousGridDirectionOptions`](./reference/types/#type-continuousgriddirectionoptions).
+
 ### `ContinuousColorInterpolation` {#type-continuouscolorinterpolation}
 
  Expand ContinuousColorInterpolation
@@ -28752,6 +28783,19 @@ export type ContinuousColorScaleOptions =
 ```
 
 Related types: [`NonPointContinuousColorScaleOptions`](./reference/types/#type-nonpointcontinuouscolorscaleoptions).
+
+### `ContinuousGridDirectionOptions` {#type-continuousgriddirectionoptions}
+
+ Expand ContinuousGridDirectionOptions
+
+```typescript
+type ContinuousGridDirectionOptions = Omit<GridDirectionOptions, "bandPosition"> & {
+  /** Continuous position scales do not have categorical band edges. */
+  bandPosition?: never;
+};
+```
+
+Related types: [`GridDirectionOptions`](./reference/types/#type-griddirectionoptions).
 
 ### `ContinuousSizeScaleOptions` {#type-continuoussizescaleoptions}
 
@@ -28811,7 +28855,7 @@ export type CreateAreaPlotOptions = {
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
   area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
-  guides?: false | DensityPlotGuideOptions;
+  guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
@@ -28820,7 +28864,7 @@ export type CreateAreaPlotOptions = {
 );
 ```
 
-Related types: [`ColorLayout`](./reference/types/#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](./reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](./reference/types/#type-palette) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`DensityPlotGuideOptions`](./reference/types/#type-densityplotguideoptions) · [`AreaPlotIndependentChannel`](./reference/types/#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](./reference/types/#type-areaplotmeasurechannel).
+Related types: [`ColorLayout`](./reference/types/#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](./reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](./reference/types/#type-palette) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`DensityPlotGuideOptions`](./reference/types/#type-densityplotguideoptions) · [`CartesianGridOptions`](./reference/types/#type-cartesiangridoptions) · [`AreaPlotIndependentChannel`](./reference/types/#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](./reference/types/#type-areaplotmeasurechannel).
 
 ### `CreateAxesOptions` {#type-createaxesoptions}
 
@@ -29159,7 +29203,13 @@ export interface CreateLinePlotOptions {
     opacity?: number;
     closed?: false;
   };
-  guides?: false | (Omit<CPathGuides, "legend"> & {
+  guides?: false | (Omit<CPathGuides, "legend" | "grid"> & {
+    grid?: false | (Omit<CartesianGridOptions, "horizontal"> & {
+      horizontal?: boolean | (Omit<GridDirectionOptions, "bandPosition"> & {
+        /** Line y is continuous; band positioning is available only for categorical x grids. */
+        bandPosition?: never;
+      });
+    });
     legend?: false | (Omit<PathLegendOptions, "order"> & {
       order?: LegendValueOrder | { channel: "x"; values?: never };
     });
@@ -29167,7 +29217,7 @@ export interface CreateLinePlotOptions {
 }
 ```
 
-Related types: [`LineXPositionChannel`](./reference/types/#type-linexpositionchannel) · [`LineYPositionChannel`](./reference/types/#type-lineypositionchannel) · [`LineCategoricalColorChannel`](./reference/types/#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](./reference/types/#type-basicstrokedashchannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`CPathGuides`](./reference/types/#type-cpathguides) · [`PathLegendOptions`](./reference/types/#type-pathlegendoptions) · [`LegendValueOrder`](./reference/types/#type-legendvalueorder).
+Related types: [`LineXPositionChannel`](./reference/types/#type-linexpositionchannel) · [`LineYPositionChannel`](./reference/types/#type-lineypositionchannel) · [`LineCategoricalColorChannel`](./reference/types/#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](./reference/types/#type-basicstrokedashchannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`CPathGuides`](./reference/types/#type-cpathguides) · [`CartesianGridOptions`](./reference/types/#type-cartesiangridoptions) · [`GridDirectionOptions`](./reference/types/#type-griddirectionoptions) · [`PathLegendOptions`](./reference/types/#type-pathlegendoptions) · [`LegendValueOrder`](./reference/types/#type-legendvalueorder).
 
 ### `CreateLollipopPlotOptions` {#type-createlollipopplotoptions}
 
@@ -30579,12 +30629,13 @@ Related types: [`DensityWidthResolution`](./reference/types/#type-densitywidthre
  Expand DensityPlotGuideOptions
 
 ```typescript
-export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend"> & {
+export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend" | "grid"> & {
+  grid?: false | ContinuousCartesianGridOptions;
   legend?: false | DensityPlotLegendOptions;
 };
 ```
 
-Related types: [`CCategoricalGuides`](./reference/types/#type-ccategoricalguides) · [`DensityPlotLegendOptions`](./reference/types/#type-densityplotlegendoptions).
+Related types: [`CCategoricalGuides`](./reference/types/#type-ccategoricalguides) · [`ContinuousCartesianGridOptions`](./reference/types/#type-continuouscartesiangridoptions) · [`DensityPlotLegendOptions`](./reference/types/#type-densityplotlegendoptions).
 
 ### `DensityPlotLegendOptions` {#type-densityplotlegendoptions}
 
@@ -32929,12 +32980,12 @@ Related types: [`Palette`](./reference/types/#type-palette).
 ```typescript
 export type HorizonPlotGuideOptions = {
   axes?: false | (Omit<CAxes, "y"> & { y?: false });
-  grid?: false | (Pick<CartesianGridOptions, "vertical"> & { horizontal?: false });
+  grid?: false | { vertical?: boolean | ContinuousGridDirectionOptions; horizontal?: false };
   legend?: false;
 };
 ```
 
-Related types: [`CAxes`](./reference/types/#type-caxes) · [`CartesianGridOptions`](./reference/types/#type-cartesiangridoptions).
+Related types: [`CAxes`](./reference/types/#type-caxes) · [`ContinuousGridDirectionOptions`](./reference/types/#type-continuousgriddirectionoptions).
 
 ### `HorizonResolution` {#type-horizonresolution}
 
@@ -35644,13 +35695,14 @@ export type RowWindowFrame = {
  Expand RugGuideOptions
 
 ```typescript
-export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend"> & {
+export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend" | "grid"> & {
   axes?: false | CAxes;
+  grid?: false | ContinuousCartesianGridOptions;
   legend?: false;
 };
 ```
 
-Related types: [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions) · [`CAxes`](./reference/types/#type-caxes).
+Related types: [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions) · [`CAxes`](./reference/types/#type-caxes) · [`ContinuousCartesianGridOptions`](./reference/types/#type-continuouscartesiangridoptions).
 
 ### `RugMeasureChannel` {#type-rugmeasurechannel}
 
@@ -37522,12 +37574,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d6d24651f8cf66417e5d41057f6b29f00f7dddaa/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d6d24651f8cf66417e5d41057f6b29f00f7dddaa/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39694,9 +39746,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:c32c5c5635bac52fdc0e3c2921f25e81adf86a6c0f08aa20064ea3e8389c9621` |
+| Contract fingerprint | `sha256:739bacd97beec1393ee97256ab3c1709ba0abdd8c21487dd638999220cfb2f16` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
-| Runtime source commit | `d6d24651f8cf66417e5d41057f6b29f00f7dddaa` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 284 |
 | Declared actions in that release | 234 |

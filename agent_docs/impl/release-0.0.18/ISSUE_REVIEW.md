@@ -7,7 +7,7 @@
 - [x] 의존성 PR3개를 릴리스 브랜치에 merge하여 원본 커밋 ancestry 보존
 - [ ] 최신 의존성에 대한 전체 CI와 태그 릴리스 검증
 - [ ] main 반영 뒤 구현된 이슈17개를 검증 링크와 함께 종료
-- [ ] 남은28개 미구현 공개 계약 제안의 처리 범위 결정
+- [x] 남은28개도 설계 검토 후 모두 구현한다는 사용자 범위 승인
 
 ## 구현된 이슈
 
@@ -76,6 +76,46 @@
 
 세 브랜치를 #211에 실제 merge했다. main merge 뒤 기존 PR이 자동 종료되는지 확인하며, 자동 종료되지 않으면 포함된 커밋 근거로 정리한다.
 
+최신 audit 재검사에서는 SDK1.30.1, fast-uri3.1.7, source-map-js1.2.1의
+3건이 남았다. SDK의 dev/optional-peer pin을1.32.1로 함께 올리고 나머지 두
+전이 의존성은 기존 range 안에서 수정 버전으로 갱신했다. 이 checkpoint의
+`npm audit` 결과는0건이며 실제 MCP/설치 소비자 검증을 다시 수행한다.
+
 ## 승인 경계
 
 저장소 루트 AGENTS.md의 공개 API/저장 스키마/핵심 구조에 대한 명시적 설계 승인 규칙을 따른다. 현재 사용자 요청은 전체 검토·기존 수정 통합·PR 정리·릴리스를 승인한다. 미구현 기능의 구체적인 새 계약은 기존 승인에 포함된 것으로 기록하지 않는다.
+
+28개 설계와 독립 primitive 목표는 별도 검토 branch의
+[bad3f346 검토 패키지](https://github.com/ggaction/ggaction/blob/bad3f346/agent_docs/impl/release-0.0.19/PROPOSAL.md)에 게시했다.
+사용자는 “설계와 시각 목표 모두 승인하고 구현”으로 구체적 API·저장·시각 목표도
+승인했다. 승인 기록은 별도 검토 branch의 `f53dd78a`이며 세 구현 worktree에서 진행 중이다.
+
+## 추가 릴리스 검증에서 발견한 기존 문제
+
+- [#212](https://github.com/ggaction/ggaction/issues/212): Canvas의 `none` paint가
+  이전 검정 fill/stroke를 유지하던 기존 버그를 공통 paint owner에서 수정했다.
+  원본690767d5와 수정소스의 동일 public graphicSpec에서 `(28,140)` pixel이
+  검정→의도한 흰 바탕으로 바뀌는 것을 실제 native PNG로 확인했다. 새API는 없다.
+- Polar PNG3종의 native font ink bounds는 macOS와Linux에서 y가3.5px까지
+  다르다. [실측](evidence/polar-native-fonts.json)은 각각의 플랫폼에서
+  primitive/public3쌍의 decoded pixels가 정확히 같음을 증명한다. 동일 tolerance를
+  유지하고Linux의 측정 중심만 분리한다. ink ratio/영역/색/정확한 pixel parity는
+  유지하며 차트의 public/primitive program이나 geometric target을 바꾸지 않는다.
+- 전체50개실데이터 facet 회귀는 최대폭4,364px, 최대높이2,210px로 확인했다.
+  새 guide 배치의 축소된 폭만 exact resource signature에 반영하고50개 build,
+  모든 facet/legend label·data integrity 및RSS 제한은 유지한다.
+
+- [#213](https://github.com/ggaction/ggaction/issues/213): Canvas에서 strokeWidth0을
+  대입해도 이전 양의 lineWidth가 남으므로 네 drawer가 stroke 호출을 생략하도록
+  기존 계약을 복구했다. 실제 Native/Chromium/SVG8bit 표본과 이전 양의 선을 검사한다.
+  [수정 근거](../canvas-zero-stroke/IMPLEMENTATION.md)는 별도 기능 제안과 분리했다.
+- Hierarchical facade의 모든 옵션·리터럴은 원본 기준5회/3실데이터셋 이상과
+  최종8데이터셋 검증을 통과했다. 실제 불가능한 continuous bandPosition5경로만
+  runtime·TypeScript 음성 증거로 선언에서 바로잡았다. Area의 두 band 방향은
+  실제 원본 집계로 보존했다. 상세 증거는
+  [구현 기록](../hierarchical-facade-coverage/IMPLEMENTATION.md)에 있다.
+
+최종 누적 검사에서 기존 primitive 회귀 한 곳만 폭0인80rect+1circle의
+불필요한 stroke 호출을 기대했다. 저장 geometry와 실제 양의 선18개는 그대로
+검증하고 호출 기대를18로 수정했다. 수정 후 전체216개 renderer 회귀가 통과했다.
+직전 CI는4328개 중 이1개 외4327개를 통과했으며 새 head에서 전체를 다시 검사한다.

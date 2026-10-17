@@ -29,17 +29,17 @@ const actionCards = JSON.parse(readFileSync(
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const ACTIONS = new Set(REALISTIC_CARTESIAN_FACADE_COVERAGE_EXPECTED_ACTIONS);
 const EXPECTED_TARGETS = Object.freeze({
-  createScatterPlot: Object.freeze({ requirements: 443, diversity: 10 }),
-  createBarPlot: Object.freeze({ requirements: 399, diversity: 9 }),
-  createLinePlot: Object.freeze({ requirements: 335, diversity: 6 }),
-  createParallelCoordinates: Object.freeze({ requirements: 123, diversity: 3 })
+  createScatterPlot: Object.freeze({ requirements: 487, diversity: 10 }),
+  createBarPlot: Object.freeze({ requirements: 452, diversity: 9 }),
+  createLinePlot: Object.freeze({ requirements: 371, diversity: 6 }),
+  createParallelCoordinates: Object.freeze({ requirements: 134, diversity: 3 })
 });
 const EXPECTED_REQUIREMENT_DIGESTS = Object.freeze({
   // Locked after public declarations match the runtime-supported facade branches.
-  createScatterPlot: "45a388444a1fc7d5b87e6111d149dc5159819d010574b93f623f100dc5b1e9a0",
-  createBarPlot: "4c6ba0fb0f8b6d2be44db38102af77f1ee0e18f1dede2e6f76782c26c994c976",
-  createLinePlot: "f45bcb4625d4930b6bc48e594268e7caf0b635f937f94398994066764420cabd",
-  createParallelCoordinates: "f51d8a714eb5a4077ea1c16bd8b06b86992ed1db01f8a6c4a59c042f51c4b2e5"
+  createScatterPlot: "4468efe88a71e62d4d0ec32a6d3c83c8cc8905c79325e187bd849be201fce03c",
+  createBarPlot: "a9fbebab0f63c84c855b79a650bdf2129755b461ec8f03f486d81651298dfe40",
+  createLinePlot: "e19af9cbdf326409efbab748204d049f635226eeebb1f97d739d9596830aaf48",
+  createParallelCoordinates: "305496589211e1ba24cc62ab67d43e870ea7a7159e7565e5e76ecd6f1eeb0ade"
 });
 const EXPECTED_DIVERSITY_DIGESTS = Object.freeze({
   createScatterPlot: "36a216bd355e0f544ebb5926de0978c6ff653ea23d0eb508a21761c76508b195",
@@ -342,6 +342,69 @@ function assertMetadata(recipe, factors, program, metadata, label) {
   ), label);
 }
 
+function assertMaterializedFacadeOptions(program, facade, label) {
+  const guides = facade.args.guides;
+  if (guides && typeof guides === "object") {
+    for (const channel of ["x", "y"]) {
+      const requested = guides.axes?.[channel]?.ticksAndLabels;
+      if (!requested || requested === false) continue;
+      const config = program.guideConfigs.axis[channel];
+      assert.equal(config.ticks.alongOffset, 1, `${label} ${channel} tick displacement`);
+      assert.equal(config.labels.alongOffset, 1, `${label} ${channel} label displacement`);
+      assert.equal(config.labels.flush, requested.labels.flush, `${label} ${channel} flush policy`);
+      assert.equal(config.labels.colorMap, undefined, `${label} ${channel} automatic label colors`);
+      const labels = program.graphicSpec.objects[`${channel}AxisLabels`];
+      assert.ok(labels.items.every(item => item.properties.fill === "#334155"), `${label} ${channel} label paint`);
+    }
+    for (const direction of ["horizontal", "vertical"]) {
+      const requested = guides.grid?.[direction];
+      if (!requested || typeof requested !== "object") continue;
+      const config = program.guideConfigs.grid[direction];
+      assert.equal(config.alongOffset, 1, `${label} ${direction} grid displacement`);
+      assert.equal(config.zIndex, direction === "vertical" ? -1 : 1, `${label} ${direction} grid order`);
+      if (config.bandPosition === undefined) continue;
+      const scale = program.resolvedScales[config.scale];
+      assert.equal(scale.type, "band", `${label} ${direction} categorical grid scale`);
+      const channel = direction === "vertical" ? "x" : "y";
+      const layer = program.semanticSpec.layers.find(candidate => candidate.id === facade.args.id);
+      const rows = program.semanticSpec.datasets.find(dataset => dataset.id === "analysisRows").values;
+      assert.ok(scale.domain.every(value => rows.some(row => row[layer.encoding[channel].field] === value)), `${label} ${direction} authentic grid categories`);
+      const sign = Math.sign(scale.step) || 1;
+      const centers = config.values.map(value => scale.start + scale.domain.indexOf(value) * scale.step + sign * scale.bandwidth / 2);
+      const expected = config.bandPosition === "boundary"
+        ? [...new Set(centers.flatMap(center => [center - sign * scale.bandwidth / 2, center + sign * scale.bandwidth / 2]))].sort((left, right) => sign * (left - right))
+        : centers;
+      const lines = program.graphicSpec.objects[`${direction}GridLines`].items;
+      assert.equal(lines.length, expected.length, `${label} ${direction} grid cardinality`);
+      for (const [index, line] of lines.entries()) {
+        assert.ok(Math.abs(line.properties[`${channel}1`] - expected[index] - 1) < 1e-8, `${label} ${direction} concrete grid position`);
+      }
+    }
+    const legend = guides.legend;
+    if (legend && typeof legend === "object") {
+      const group = program.materializationConfigs.guides?.legendGroups?.[facade.args.id];
+      if (legend.blockLayout !== undefined) assert.equal(group.blockLayout, legend.blockLayout, `${label} block packing`);
+      if (legend.at !== undefined) assert.deepEqual(group.placement.at, { x: 8, y: 8 }, `${label} plot-relative legend anchor`);
+      const config = Object.values(program.guideConfigs.legend).find(candidate => candidate.target === facade.args.id);
+      if (legend.titleStyle?.align !== undefined) assert.equal(config.titleStyle.align, legend.titleStyle.align, `${label} legend title alignment`);
+      if (legend.representation === "symbols") {
+        assert.equal(config.representation, "symbols", `${label} sampled color representation`);
+        const symbols = program.graphicSpec.objects.colorGradientSymbols.items;
+        assert.equal(symbols.length, config.sampling.values.length, `${label} sampled color values`);
+        assert.ok(symbols.every(item => item.properties.radius === 6), `${label} sampled color radius`);
+      } else if (legend.representation === "gradient") {
+        assert.equal(config.gradient.opacity, 0.7, `${label} gradient opacity intent`);
+        assert.ok(program.graphicSpec.objects.colorGradientStrips.items.every(item => item.properties.opacity === 0.7), `${label} gradient opacity materialization`);
+      }
+    }
+  }
+  if (facade.args.bar?.fill?.type === "linear-gradient") {
+    const bars = program.graphicSpec.objects[facade.args.id].items;
+    assert.ok(bars.length > 0, `${label} gradient bars`);
+    assert.ok(bars.every(item => item.properties.fill.type === "linear-gradient"), `${label} materialized bar gradients`);
+  }
+}
+
 function groupByDataset(plans) {
   const groups = new Map();
   for (const plan of plans) {
@@ -400,6 +463,7 @@ async function buildProjection() {
           const direct = directEntries(program, action);
           assert.equal(direct.length, 1, `${label} direct root action`);
           assertMetadata(recipe, factors, program, metadata, label);
+          assertMaterializedFacadeOptions(program, direct[0], label);
           assert.deepEqual(
             new Set(recipe.observeFactors(program, factors).map(effect => effect.factor)),
             new Set(["fieldPair", "variant"]),
@@ -656,9 +720,9 @@ test("locks the exact assigned option, literal, aggregate, and diversity target 
     actionRequirementCount += requirementIds.length;
     diversityCount += diversityIds.length;
   }
-  assert.equal(actionRequirementCount, 1300);
+  assert.equal(actionRequirementCount, 1444);
   assert.equal(target.familyLiterals.length, 15);
-  assert.equal(actionRequirementCount + target.familyLiterals.length, 1315);
+  assert.equal(actionRequirementCount + target.familyLiterals.length, 1459);
   assert.equal(diversityCount, 28);
 });
 
@@ -671,9 +735,11 @@ test("keeps every orthogonal profile materially distinct under one authentic wit
       const domains = recipe.factorsForDataset(dataset);
       assert.ok(domains !== undefined, `${recipe.id} witness eligibility`);
       const fieldPair = domains.fieldPair[0];
-      const hashes = recipe.factors.variant.map(variant => strippedFingerprint(
-        recipe.build({ dataset, fieldPair, variant })
-      ));
+      const hashes = recipe.factors.variant.map(variant => {
+        const program = recipe.build({ dataset, fieldPair, variant });
+        assertMaterializedFacadeOptions(program, directEntries(program, recipe.expectedDirectActions[0])[0], `${recipe.id}/${variant.id}`);
+        return strippedFingerprint(program);
+      });
       assert.equal(hashes.length, 36, `${recipe.id} fingerprints`);
       assert.equal(new Set(hashes).size, 36, `${recipe.id} material distinction`);
     }

@@ -3307,7 +3307,19 @@ async function testTypeScriptConsumer(directory) {
     };
     program.createAreaMark({ fill: sharedAreaPaint }).editAreaMark({ fill: sharedAreaPaint });
     program.createAreaPlot({ x: "x", y: "value", area: { fill: sharedAreaPaint } });
+    program.createAreaPlot({ x: { field: "group", fieldType: "nominal", scale: { type: "band" } }, y: "value", guides: { grid: { vertical: { bandPosition: "center" } } } });
+    program.createAreaPlot({ valueChannel: "x", x: "value", y: { field: "group", fieldType: "nominal", scale: { type: "band" } }, guides: { grid: { horizontal: { bandPosition: "boundary" } } } });
     program.createDensityPlot({ field: "value", area: { fill: sharedAreaPaint } });
+    // @ts-expect-error Density value and density scales are continuous.
+    program.createDensityPlot({ field: "value", guides: { grid: { vertical: { bandPosition: "center" } } } });
+    // @ts-expect-error Density has no horizontal band role either.
+    program.createDensityPlot({ field: "value", guides: { grid: { horizontal: { bandPosition: "boundary" } } } });
+    // @ts-expect-error Rug quantitative/temporal measure scales have no band edges.
+    program.createRugPlot({ x: "x", edge: "bottom", guides: { grid: { vertical: { bandPosition: "center" } } } });
+    // @ts-expect-error Rug's other orientation also has a continuous measure scale.
+    program.createRugPlot({ y: "value", edge: "left", guides: { grid: { horizontal: { bandPosition: "boundary" } } } });
+    // @ts-expect-error Horizon original x is continuous.
+    program.createHorizonPlot({ x: "x", y: "value", guides: { grid: { vertical: { bandPosition: "center" } } } });
     program.createViolinPlot({ x: "group", y: "value", area: { fill: sharedAreaPaint, stroke: "black" } });
     program.createErrorBand({ x: { field: "x" }, y: { center: "value", lower: "low", upper: "high" }, fill: sharedAreaPaint })
       .editErrorBand({ fill: sharedAreaPaint }).editErrorBand({ fill: false });

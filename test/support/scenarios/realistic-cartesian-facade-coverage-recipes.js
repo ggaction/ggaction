@@ -334,7 +334,8 @@ function paletteEncoding(index, field = "category") {
 
 function continuousColor(index, aggregate) {
   const interpolate = INTERPOLATIONS[index % INTERPOLATIONS.length];
-  const type = index % 8 === 0 ? "log" : index % 8 === 1 ? "symlog" : "sequential";
+  const type = index % 8 === 0 ? "log" : index % 8 === 1 ? "symlog"
+    : index % 8 === 2 ? "sqrt" : "sequential";
   return {
     field: "positiveValue",
     fieldType: "quantitative",
@@ -626,6 +627,10 @@ function barColor(index, rows) {
 
 function linePosition(variant, rows) {
   const index = variant.ordinal;
+  if (index === 20) return {
+    x: { field: "category", fieldType: "ordinal", scale: categoricalScale("mainX", "band", index) },
+    y: { field: "positiveValue", fieldType: "quantitative", scale: quantitativeScale("mainY", "linear", { index }) }
+  };
   if (index === 18 || index === 19) {
     const type = index === 18 ? "point" : "band";
     return {
@@ -737,7 +742,7 @@ function lineStyle() {
 }
 
 function tickStyle() {
-  return { color: "#64748b", lineWidth: 1, length: 7 };
+  return { color: "#64748b", lineWidth: 1, length: 7, alongOffset: 1 };
 }
 
 function labelStyle(format, index) {
@@ -748,6 +753,9 @@ function labelStyle(format, index) {
     fontSize: 11,
     fontFamily: "sans-serif",
     fontWeight: 500,
+    alongOffset: 1,
+    colorMap: "auto",
+    flush: index % 2 === 0,
     rotation: {
       value: 0,
       unit: index % 2 === 0 ? "degrees" : "radians"
@@ -766,7 +774,7 @@ function labelStyle(format, index) {
 function exactScaleSamples(scale) {
   const low = Math.min(...scale.domain);
   const high = Math.max(...scale.domain);
-  return [low, low + (high - low) / 2, high];
+  return [...new Set([low, low + (high - low) / 2, high])];
 }
 
 function titleStyle(text, at, index) {
@@ -917,7 +925,7 @@ function guideOptions(variant, program, options, action) {
               ticks: tickStyle(),
               labels: {
                 ...labelStyle(format, index),
-                ...(categorical ? { labelMap: "auto" } : {})
+                labelMap: "auto"
               }
             },
         title: index === 10
@@ -928,9 +936,11 @@ function guideOptions(variant, program, options, action) {
               index
             )
       };
-      grid[direction] = categorical || disabled === channel ? false : guide.kind.includes("booleans") ? true : {
+      grid[direction] = disabled === channel ? false : guide.kind.includes("booleans") && !categorical ? true : {
         scale: scaleId, coordinate: layer.coordinate, ...ticks,
-        color: channel === "x" ? "#dbeafe" : "#e2e8f0", lineWidth: 0.8, strokeDash: [2, 3]
+        color: channel === "x" ? "#dbeafe" : "#e2e8f0", lineWidth: 0.8, strokeDash: [2, 3],
+        alongOffset: 1, zIndex: channel === "x" ? -1 : 1,
+        ...(scale.type === "band" ? { bandPosition: index % 3 === 1 ? "boundary" : "center" } : {})
       };
     }
   }
@@ -971,9 +981,14 @@ function guideOptions(variant, program, options, action) {
     // A line sample remains a useful legend recipe for an explicitly grouped path.
     if (guide.kind === "line-legend" && layer.mark.type === "line") legend.symbol = { length: 28, lineWidth: 2.4 };
   }
-  if (color !== undefined && program.resolvedScales[color.scale].type === "sequential") {
+  if (color !== undefined && ["sequential", "log", "sqrt", "symlog"].includes(program.resolvedScales[color.scale].type)) {
+    const representation = index % 2 === 0 ? "gradient" : "symbols";
     legend = { target: options.id, channels: ["color"], position: "right", title: color.field,
-      count: 4, gradient: { length: 150, thickness: 14 },
+      representation,
+      ...(representation === "gradient"
+        ? { count: 4, gradient: { length: 150, thickness: 14, opacity: 0.7 } }
+        : { values: exactScaleSamples(program.resolvedScales[color.scale]),
+            symbol: { type: "point", radius: 6, stroke: "#334155", strokeWidth: 1 } }),
       labels: {
         offset: 8, color: "#334155", fontSize: 11,
         fontFamily: "sans-serif", fontWeight: 500,
@@ -1019,6 +1034,18 @@ function guideOptions(variant, program, options, action) {
   }
   if (!parallel && axes.y && ["left", "right"].includes(legend.position)) {
     axes.y.position = legend.position === "right" ? "left" : "right";
+  }
+  if (legend !== false) {
+    if (legend.titlePosition !== "left" && legend.layout !== "legacy-bottom") {
+      legend.titleStyle = { ...legend.titleStyle, align: ["left", "center", "right"][index % 3] };
+    }
+    if (legend.layout !== "legacy-bottom") {
+      legend.blockLayout = ["row", "column", "wrap"][index % 3];
+      if (index % 4 === 0 && index !== 28) {
+        const { position: _position, align: _align, offset: _offset, ...anchored } = legend;
+        legend = { ...anchored, at: { x: 8, y: 8 } };
+      }
+    }
   }
   const legendOnly = guide.kind.endsWith("legend") ||
     action === "createScatterPlot" && index === 24;
@@ -1109,7 +1136,8 @@ function barOptions(factors, view) {
           : index % 2 === 0 ? { band: 0.72 } : { pixels: 18 } }),
     bar: {
       ...rectDetails(index),
-      ...(index === 35 ? { fill: "#2563eb" } : {}),
+      ...(index === 35 ? { fill: { type: "linear-gradient", from: { x: 0, y: 0 },
+        to: { x: 1, y: 1 }, stops: [{ offset: 0, color: "#2563eb" }, { offset: 1, color: "#93c5fd" }] } } : {}),
       opacity: 0.55 + index / 100,
       ...(index === 0 ? { stroke: false } : { stroke: "#ffffff", strokeWidth: 0.7 })
     },
@@ -1125,7 +1153,7 @@ function lineOptions(factors, view) {
   const aggregateLine = index === 5 || (index >= 6 && index <= 14) ||
     index === 16 || index === 17;
   const color = categoricalFacadeColor(index);
-  const curve = index === 18 || index === 19 ? "linear" : CURVES[index % CURVES.length];
+  const curve = index >= 18 && index <= 21 ? "linear" : CURVES[index % CURVES.length];
   return {
     id: "mainLines",
     data: "analysisRows",

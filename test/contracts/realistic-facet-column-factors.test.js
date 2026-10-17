@@ -5,6 +5,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 import { renderToSVG } from "../../src/renderers/svg.js";
+import { resolveTextBounds } from "../../src/core/textMetrics.js";
 import { assertAnalyticLayerIntegrity } from "../oracles/analytic-layer-integrity.js";
 import { assertGraphicIntegrity } from "../oracles/graphic-integrity.js";
 import { assertSvgIntegrity } from "../oracles/svg-integrity.js";
@@ -291,6 +292,58 @@ test("reserves data-aware facet guide space for the exact Christmas-song case", 
     for (const song of CHRISTMAS_SONG_LABELS) assert.ok(svg.includes(song), song);
   } finally {
     if (factors !== undefined) analysisRecipe.releaseResolution(factors);
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
+test("wraps complete long facet titles and questions inside the final Canvas", () => {
+  const dataset = "tt-volcanoes";
+  try {
+    const domains = analysisRecipe.factorsForDataset(dataset);
+    const fieldPair = domains.fieldPair.find(value =>
+      value.bindingId === "eligible:population_within_100_km-by-tectonic_settings"
+    );
+    assert.ok(fieldPair, "the long authentic volcano binding remains eligible");
+    for (const titleAlign of ["left", "center", "right"]) {
+      const factors = baselineFactors(dataset, domains, {
+        fieldPair,
+        titleAlign,
+        columns: 2,
+        facetScales: "independent",
+        facetAxes: "each",
+        gap: 16,
+        padding: 18
+      });
+      try {
+        const program = analysisRecipe.build(factors);
+        const metadata = analysisRecipe.describe(factors);
+        const canvas = program.graphicSpec.objects.canvas.properties;
+        assertGraphicIntegrity(program, `${dataset}/${titleAlign}/long-title`);
+        assert.equal(program.semanticSpec.title.text, metadata.title);
+        assert.equal(program.semanticSpec.title.subtitle, metadata.analysisQuestion);
+        for (const [id, expected] of [
+          ["chartTitle", metadata.title],
+          ["chartSubtitle", metadata.analysisQuestion]
+        ]) {
+          const object = program.graphicSpec.objects[id];
+          const items = object.items ?? [object];
+          assert.ok(items.length > 1, `${titleAlign}/${id} wraps rather than truncates`);
+          assert.equal(items.map(item => item.properties.text).join(" "), expected);
+          for (const item of items) {
+            const bounds = resolveTextBounds(item.properties);
+            assert.ok(bounds.left >= 0 && bounds.right <= canvas.width,
+              `${titleAlign}/${item.id ?? id} fits horizontally`);
+            assert.ok(bounds.top >= 0 && bounds.bottom <= canvas.height,
+              `${titleAlign}/${item.id ?? id} fits vertically`);
+            assert.equal(item.properties.textAlign, titleAlign);
+          }
+        }
+        assertSvgIntegrity(renderToSVG(program), `${dataset}/${titleAlign}/long-title`);
+      } finally {
+        analysisRecipe.releaseResolution(factors);
+      }
+    }
+  } finally {
     releaseTidyTuesdaySourceCache(dataset);
   }
 });
