@@ -100,6 +100,12 @@ async function testNodeConsumer(directory) {
     assert.equal(extracted.graphicSpec.objects.scatterPlot.items.length, 1);
     assert.deepEqual(deserializeProgram(serializeProgram(extracted)).graphicSpec, extracted.graphicSpec);
     assert.ok((await renderToPNGBuffer(extracted)).buffer.length > 100);
+    const calendar = chart().createData({ values: [{ issued: "1986-12-30", redeemed: "2024-07-17", value: -1.8 }] })
+      .createComputedData({ id: "years", as: "year", expression: { op: "datePart", part: "year", operand: { op: "parseTime", operand: { field: "redeemed" } } } })
+      .createComputedData({ id: "rounded", as: "lower", expression: { op: "floor", operand: { field: "value" } } });
+    assert.equal(calendar.semanticSpec.datasets.find(d => d.id === "years").values[0].year, 2024);
+    assert.equal(calendar.semanticSpec.datasets.find(d => d.id === "rounded").values[0].lower, -2);
+    assert.deepEqual(deserializeProgram(serializeProgram(calendar)).semanticSpec, calendar.semanticSpec);
     const longLine = chart().createCanvas({ width: 440, height: 340, margin: 20 })
       .createData({ values: Array.from({ length: 12070 }, (_, i) => ({ x: i, y: i % 11 })) })
       .createLinePlot({ x: "x", y: "y", guides: false });
@@ -4114,6 +4120,11 @@ async function testTypeScriptConsumer(directory) {
       left: { field: "part" },
       right: { field: "whole" }
     };
+    const calendarYearExpression: ComputedExpression = {
+      op: "datePart", part: "year", timeZone: "UTC",
+      operand: { op: "parseTime", operand: { field: "date" } }
+    };
+    const floorExpression: ComputedExpression = { op: "floor", operand: { field: "measurement" } };
     const computedOptions: ComputedDataOptions = {
       id: "shares",
       as: "share",
