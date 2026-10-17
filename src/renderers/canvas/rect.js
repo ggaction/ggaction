@@ -43,14 +43,17 @@ function drawRect(context, child, collectionId) {
     bottom: y + height
   }, graphicId);
   context.fillRect(x, y, width, height);
-  applyCanvasStroke(context, properties);
-  context.beginPath();
-  context.moveTo(x, y);
-  context.lineTo(x + width, y);
-  context.lineTo(x + width, y + height);
-  context.lineTo(x, y + height);
-  context.lineTo(x, y);
-  context.stroke();
+  // Canvas ignores lineWidth = 0 and would retain a previous nonzero width.
+  if (strokeWidth > 0) {
+    applyCanvasStroke(context, properties);
+    context.beginPath();
+    context.moveTo(x, y);
+    context.lineTo(x + width, y);
+    context.lineTo(x + width, y + height);
+    context.lineTo(x, y + height);
+    context.lineTo(x, y);
+    context.stroke();
+  }
 }
 
 export function drawRectGraphic(context, id, graphic) {
