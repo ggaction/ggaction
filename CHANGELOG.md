@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.19] - 2026-10-17
+
 ### Added
 
 - Named independent Cartesian axes retain their own scales, physical sides,
