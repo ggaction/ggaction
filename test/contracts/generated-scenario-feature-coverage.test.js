@@ -215,15 +215,15 @@ test("derives a bounded public option inventory without runtime prototype paths"
   const inventory = await buildPublicOptionInventory(actionCards);
 
   assert.equal(inventory.counts.publicActions, 277);
-  assert.equal(inventory.counts.topLevelOptionPaths, 2377);
-  assert.equal(inventory.counts.nestedOptionPaths, 14524);
-  assert.equal(inventory.counts.optionPaths, 16901);
-  assert.equal(inventory.counts.requiredOptionPaths, 12248);
+  assert.equal(inventory.counts.topLevelOptionPaths, 2381);
+  assert.equal(inventory.counts.nestedOptionPaths, 14566);
+  assert.equal(inventory.counts.optionPaths, 16947);
+  assert.equal(inventory.counts.requiredOptionPaths, 12294);
   assert.equal(inventory.counts.excludedOptionPaths, 4653);
-  assert.equal(inventory.counts.topLevelCategoricalPaths, 802);
-  assert.equal(inventory.counts.topLevelLiteralValues, 3158);
-  assert.equal(inventory.counts.literalFamilies, 177);
-  assert.equal(inventory.counts.pathLiteralRequirements, 8886);
+  assert.equal(inventory.counts.topLevelCategoricalPaths, 805);
+  assert.equal(inventory.counts.topLevelLiteralValues, 3163);
+  assert.equal(inventory.counts.literalFamilies, 180);
+  assert.equal(inventory.counts.pathLiteralRequirements, 8868);
   assert.equal(inventory.counts.familyLiteralRequirements, 319);
   assert.equal(inventory.counts.pathDiversityRequirements, 369);
   assert.equal(inventory.optionPaths.some(option => option.id ===
@@ -240,6 +240,28 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createParallelCoordinates.color.layout"), false);
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:encodeY.bin"), false);
+  const clipHeightPaths = [
+    ...["createLegend", "editLegend", "editLegendBlock", "editLegendSymbols"].map(action => `${action}.clipHeight`),
+    ...["createGuides", "editFacetGuides"].map(action => `${action}.legend.clipHeight`),
+    ...["createAreaPlot", "createBarPlot", "createBeeswarmPlot", "createDensityPlot", "createDotPlot",
+      "createDumbbellPlot", "createECDFPlot", "createHeatmap", "createHistogram", "createIntervalPlot",
+      "createLinePlot", "createLollipopPlot", "createParallelCoordinates", "createPiePlot", "createPolarLinePlot",
+      "createPolarScatterPlot", "createRadarPlot", "createRadialBarPlot", "createRaincloudPlot", "createRegressionPlot",
+      "createRosePlot", "createScatterPlot", "createStripPlot", "createTextPlot", "createViolinPlot",
+      "facet", "facetGrid", "repeatCharts"].map(action => `${action}.guides.legend.clipHeight`)
+  ].map(path => `option-path:${path}`).sort((a, b) => a.localeCompare(b));
+  assert.deepEqual(inventory.optionPaths.filter(option => option.path === "clipHeight" ||
+    option.path.endsWith(".clipHeight")).map(option => option.id), clipHeightPaths,
+  "point-bearing sample windows remain observable in direct, facade and parent inputs");
+  const opacityPaths = [
+    ...["createLegend", "editLegend", "editLegendBlock", "editLegendSymbols"].map(action => `${action}.symbol.opacity`),
+    ...["createGuides", "editFacetGuides"].map(action => `${action}.legend.symbol.opacity`),
+    ...["createBeeswarmPlot", "createRegressionPlot", "createScatterPlot", "createStripPlot", "facet", "facetGrid",
+      "repeatCharts"].map(action => `${action}.guides.legend.symbol.opacity`)
+  ].map(path => `option-path:${path}`).sort((a, b) => a.localeCompare(b));
+  assert.deepEqual(inventory.optionPaths.filter(option => option.path === "symbol.opacity" ||
+    option.path.endsWith(".symbol.opacity")).map(option => option.id), opacityPaths,
+  "combined quantitative samples retain their flat point opacity option");
   const closedColorFamily = inventory.literalFamilies.find(family =>
     family.values.map(value => value.key).join("|") ===
       ["log","ordinal","pow","quantile","quantize","sequential","sqrt","symlog","threshold"]
@@ -253,6 +275,32 @@ test("derives a bounded public option inventory without runtime prototype paths"
   const otherNine = inventory.literalFamilies.find(family => family.values.some(value => value.key==="string:weekday") && family.size===9);
   assert.equal(otherNine.policy,"family-values","the general threshold remains eight");
   const optionById = new Map(inventory.optionPaths.map(option => [option.id, option]));
+  for (const action of ["editLegend", "editLegendBlock", "editLegendSymbols"]) {
+    assert.deepEqual(optionById.get(`option-path:${action}.clipHeight`).values, ["string:auto"]);
+  }
+  for (const action of ["createAreaPlot", "createBarPlot", "createDensityPlot", "createDotPlot", "createDumbbellPlot",
+    "createECDFPlot", "createHeatmap", "createHistogram", "createIntervalPlot", "createLinePlot", "createLollipopPlot",
+    "createParallelCoordinates", "createPiePlot", "createPolarLinePlot", "createRadarPlot", "createRadialBarPlot",
+    "createRosePlot", "createTextPlot", "createViolinPlot"]) {
+    assert.deepEqual(optionById.get(`option-path:${action}.guides.legend.combine`).values, ["string:separate"],
+      `${action} cannot author both encoded point fields on its facade target`);
+  }
+  for (const action of ["createAreaPlot", "createDensityPlot", "createECDFPlot", "createHistogram", "createLinePlot",
+    "createParallelCoordinates", "createPiePlot", "createPolarLinePlot", "createRadarPlot", "createRadialBarPlot",
+    "createRaincloudPlot", "createRosePlot", "createViolinPlot"]) {
+    assert.deepEqual(optionById.get(`option-path:${action}.guides.legend.titlePosition`).values, ["string:left", "string:top"],
+      `${action} cannot create the continuous gradient that owns bottom titles`);
+  }
+  for (const path of ["createLegend.combine", "editLegend.combine", "createGuides.legend.combine", "editFacetGuides.legend.combine",
+    ...["createBeeswarmPlot", "createRegressionPlot", "createScatterPlot", "createStripPlot", "facet", "facetGrid", "repeatCharts"]
+      .map(action => `${action}.guides.legend.combine`)]) {
+    assert.deepEqual(optionById.get(`option-path:${path}`).values,
+      ["string:color-size", "string:separate", "string:size-shape"], `${path} retains both approved combinations`);
+  }
+  for (const action of ["createPolarScatterPlot", "createRaincloudPlot"]) {
+    assert.deepEqual(optionById.get(`option-path:${action}.guides.legend.combine`).values,
+      ["string:separate", "string:size-shape"], `${action} retains categorical point fusion`);
+  }
   for (const action of ["removeData", "removeScale", "removeCoordinate"]) {
     assert.equal(
       inventory.publicActions.some(candidate => candidate.name === action),
@@ -369,7 +417,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 21734);
+  assert.equal(ledger.requirements.length, 21762);
   assert.throws(() => createScenarioCoverageLedger({
     publicInventory: inventory,
     rendererFeatures: [],
