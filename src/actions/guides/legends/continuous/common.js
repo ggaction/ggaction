@@ -458,8 +458,12 @@ export function materializeItemLegend(program, kind, config, layout, {
     length: symbolLength,
     ...symbols
   });
+  const labelIndices = layout.labelItemIndices;
+  const selectLabels = values => labelIndices === undefined || !Array.isArray(values)
+    ? values : labelIndices.map(index => values[index]);
   next = editGraphicProperties(next, `${prefix}Labels`, {
-    length: text.length, x: layout.labelX, y: layout.itemY, text
+    length: labelIndices?.length ?? text.length,
+    x: selectLabels(layout.labelX), y: selectLabels(layout.itemY), text: selectLabels(text)
   });
   next = editLegendBackground(next, `${prefix}Background`, layout.background, config.border);
   next = editGraphicProperties(next, `${prefix}Symbols`, Object.fromEntries(

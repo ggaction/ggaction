@@ -286,6 +286,16 @@ sentinel into a transparent backend color for fill, stroke, text and backgrounds
 changes stored graphics nor introduces semantic inference. Unpacked size is 3,910,160 bytes,
 so only its ceiling grows from 3,910,000 to 3,911,000; all other limits remain unchanged.
 
+Continuous-size display maps reuse the existing block override owner and typed display-label
+grammar. A numeric-only guard is shared by edits and saved-state validation; materialization
+omits empty text items while retaining every sample glyph. No new state owner is introduced.
+Measured unpacked size is 3,911,967 bytes, so only that ceiling changes from 3,911,000 to
+3,912,000; entry, packed and browser budgets remain unchanged.
+
+Numeric size display-map public documentation and generated signatures produce an 814,532-byte
+search index. Its independent ceiling increases only from 814,000 to 815,000 bytes; the search corpus,
+option literals and existing regression assertions stay complete.
+
 ### Browser bundle regression ceilings
 
 Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 않아야 한다.

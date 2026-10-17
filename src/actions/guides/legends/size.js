@@ -1,3 +1,4 @@
+import { resolveDisplayLabel } from "../../../grammar/displayLabels.js";
 import { intrinsicLegendConfig, legendGroup } from "../../../materialization/legendGroups.js";
 import { formatVisibleText } from "../../../core/textMetrics.js";
 import { action, closedAction } from "../../../core/action.js";
@@ -134,7 +135,10 @@ export function resolveSizeLegendLayout(program, config) {
         "quantitative",
         config.labels.format
       );
-  const text = hiddenCount > 0 ? [...itemText, `…${hiddenCount} entries`] : itemText;
+  const mappedText = !discrete && !ordinalSize && effective.labelMap !== undefined
+    ? itemText.map((label, index) => resolveDisplayLabel(values[index], effective.labelMap, () => label))
+    : itemText;
+  const text = hiddenCount > 0 ? [...mappedText, `…${hiddenCount} entries`] : mappedText;
   const symbolStroke = effective.blockSymbol?.strokeWidth ?? 0;
   const symbolExtent = symbolStroke / 2;
   const sampleWidth = width + symbolStroke;
@@ -151,7 +155,9 @@ export function resolveSizeLegendLayout(program, config) {
   const background = resolveLegendBackgroundFromBounds(layout.bounds, effective.border, canvas, "Size legend", { ...effective, ...geometry });
   return { ...layout, symbolX: layout.symbolX.slice(0, radii.length).map(x => x + sampleWidth / 2),
     symbolY: layout.itemY.slice(0, radii.length), radii, text,
-    labels, titleStyle, background, config: effective };
+    ...(effective.labelMap === undefined ? {} : {
+      labelItemIndices: text.flatMap((label, index) => label === "" ? [] : [index])
+    }), labels, titleStyle, background, config: effective };
 }
 
 export const rematerializeSizeLegend = /* @__PURE__ */ closedAction(

@@ -40,3 +40,13 @@
 - 원·사각형·path·line·빈 fill·text의 실제8bit interior/outline 픽셀과 SVG raster를 비교했다.
 - 전체 renderer + 새 atomic preflight/native/browser regressions 73 PASS, docs120 PASS.
 - unpacked 실측3,910,160 bytes에 따라 해당 한도만3,911,000으로 조정했다.
+
+## Checkpoint 4 — numeric size sample labels
+
+- continuous sampled size의 기존 block override에 finite numeric display map을 허용했다.
+- exact key(0/-0 중복), empty-label text-only 생략, inactive key 보존, []/auto, formatter fallback을 검증한다.
+- opacity/strokeWidth/discrete size/gradient/interval은 계속 거부한다. malformed stored numeric map도 거부한다.
+- 기본/empty-map graphic identity, domain/raw/area/symbol identity, edges4종, theme/sharedfacet/persistence와
+  data/scale/Canvas 관련 기존 회귀685 PASS, 추가 label-map4 PASS, 실제3데이터셋×5 public/SVG15 PASS.
+- unpacked3,911,967 bytes→3,912,000 ceiling, search814,532 bytes→815,000 ceiling만 좁게 갱신했다.
+  공개 옵션/enum이나 검색 내용을 숨기지 않았다. 기존 한도 통과로 보고하지 않는다.

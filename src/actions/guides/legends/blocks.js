@@ -23,7 +23,7 @@ import {
   resolveLegendBlock
 } from "./target.js";
 import { validateFontWeight } from "./categorical/validation.js";
-import { normalizeDisplayLabelMap } from "../../../grammar/displayLabels.js";
+import { normalizeDisplayLabelMap, normalizeNumericDisplayLabelMap } from "../../../grammar/displayLabels.js";
 
 const OPTIONS = Object.freeze([
   "target", "channel", "title", "values", "count", "order", "gap", "text", "symbol",
@@ -125,13 +125,20 @@ function normalizeSymbolPatch(value, descriptor) {
   return { ...value };
 }
 
+function normalizeBlockLabelMap(descriptor, map) {
+  if (descriptor.kind === "size" && descriptor.family === "sampled") {
+    return normalizeNumericDisplayLabelMap(map, "editLegendBlock labelMap");
+  }
+  if (descriptor.family !== "categorical") {
+    throw new Error("editLegendBlock labelMap requires a categorical or continuous size block.");
+  }
+  return normalizeDisplayLabelMap(map, "editLegendBlock labelMap");
+}
+
 export function validateLegendBlockOverride(descriptor, override) {
   if (override.symbol !== undefined) normalizeSymbolPatch(override.symbol, descriptor);
   if (override.labelMap !== undefined) {
-    if (descriptor.family !== "categorical") {
-      throw new Error("editLegendBlock labelMap requires a categorical block.");
-    }
-    normalizeDisplayLabelMap(override.labelMap, "editLegendBlock labelMap");
+    normalizeBlockLabelMap(descriptor, override.labelMap);
   }
   return override;
 }
@@ -341,16 +348,10 @@ function normalizeBlockPatch(args, descriptor) {
     patch.symbol = normalizeSymbolPatch(args.symbol, descriptor);
   }
   if (Object.hasOwn(args, "labelMap")) {
-    if (descriptor.family !== "categorical") {
-      throw new Error("editLegendBlock labelMap requires a categorical block.");
-    }
+    // Validate eligibility even for a reset, without introducing an empty map owner.
+    const map = normalizeBlockLabelMap(descriptor, args.labelMap === "auto" ? [] : args.labelMap);
     if (args.labelMap === "auto") patch.removeLabelMap = true;
-    else {
-      patch.labelMap = normalizeDisplayLabelMap(
-        args.labelMap,
-        "editLegendBlock labelMap"
-      );
-    }
+    else patch.labelMap = map;
   }
   return patch;
 }
