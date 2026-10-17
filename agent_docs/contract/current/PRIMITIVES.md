@@ -113,6 +113,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   `test/contracts/graphic-hierarchy-migration.test.js`,
   `test/contracts/graphic-tree-equivalence.test.js`.
 
+Concrete rectangle의 outline은 네 모서리 모두 closed join을 갖는다. Canvas의
+단순 lineTo 복귀는 이를 대신하지 않는다. `test/contracts/rect-outline.test.js`가
+세 join과 세 cap의 전체 RGBA를 독립 native rectangle과 정확히 대조한다.
+
 ## `editGraphics`
 
 - Signature: `editGraphics({ target, property, value }) | editGraphics({ target, remove: true })`.
