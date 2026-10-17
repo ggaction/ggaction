@@ -1,4 +1,4 @@
-import { realisticColorControls } from "./realistic-color-controls.js";
+import { realisticColorControls, realisticPaletteRange } from "./realistic-color-controls.js";
 import { chart } from "../../../src/index.js";
 
 import {
@@ -613,8 +613,8 @@ function addColorScales(program) {
   }
   next = positionedPoint(next, "powered-color").encodeColor({
     target:"powered-color",field:"y",fieldType:"quantitative",
-    scale:{id:"powered-color-scale",type:"pow",exponent:2,interpolate:"lab",whitePoint:"d50"}
-  }).editColorScale({target:"powered-color",whitePoint:"d50"})
+    scale:{id:"powered-color-scale",type:"pow",exponent:2,interpolate:"lab",whitePoint:"d50",range:realisticPaletteRange(0)}
+  }).editColorScale({target:"powered-color",whitePoint:"d50",range:realisticPaletteRange(1)})
     .editColorScale({target:"powered-color",type:"pow",interpolate:"hcl",whitePoint:"d65",exponent:.5})
     .editColorScale({target:"powered-color",whitePoint:"auto"})
     .editColorScale({target:"powered-color",interpolate:"cubehelix",gamma:2.2})

@@ -24,7 +24,8 @@ export function appendRealisticColorControls(program) {
     x:{field:"category",fieldType:"nominal",scale:{id:"color-control-position-bar-x",type:"band"}},
     y:{field:"positiveY",aggregate:"mean",scale:{id:"color-control-position-bar-y",type:"pow",exponent:2}}})
     .removeMark({target:"color-control-position-bar"});
-  for (const [ordinal, scale] of profiles.entries()) {
+  for (const [ordinal, profile] of profiles.entries()) {
+    const scale = {...profile,range:realisticPaletteRange(ordinal)};
     for (const action of ["createPolarScatterPlot","createStripPlot","createBeeswarmPlot",
       "createIntervalPlot","createRegressionPlot","createTextPlot"]) {
       const id = `color-control-${action}-${ordinal}`;
@@ -52,10 +53,31 @@ export function appendRealisticColorControls(program) {
       .encodeX({target:id,coordinate:`${id}-coordinate`,field:"positiveX",scale:{id:`${id}-x`,type:"linear"}})
       .encodeY({target:id,coordinate:`${id}-coordinate`,field:"positiveY",scale:{id:`${id}-y`,type:"linear"}})
       .encodeStroke({target:id,field:"positiveY",fieldType:"quantitative",scale:{id:`${id}-stroke`,...scale}})
-      .editStrokeScale({target:id,...scale});
+      .editStrokeScale({target:id,...scale})
+      .encodeColor({target:id,field:"positiveY",fieldType:"quantitative",scale:{id:`${id}-color`,...scale}})
+      .editColorScale({target:id,...scale});
     if (scale.whitePoint) next=next.editStrokeScale({target:id,whitePoint:"auto"});
     if (scale.gamma) next=next.editStrokeScale({target:id,gamma:"auto"});
     next=next.removeMark({target:id});
+    const color={field:"category",fieldType:"nominal",scale:{type:"ordinal",range:realisticPaletteRange(ordinal)}};
+    const ecdf=`color-control-ecdf-${ordinal}`;
+    next=next.createECDFPlot({id:ecdf,data:"analysisRows",coordinate:`${ecdf}-coordinate`,
+      field:"positiveY",groupBy:"category",color:{...color,scale:{...color.scale,id:`${ecdf}-color`}},guides:false})
+      .editECDFPlot({target:ecdf,color:{...color,scale:{...color.scale,id:`${ecdf}-color`}}})
+      .removeMark({target:ecdf});
+    const raincloud=`color-control-raincloud-${ordinal}`;
+    next=next.createRaincloudPlot({id:raincloud,data:"analysisRows",coordinate:`${raincloud}-coordinate`,
+      category:"category",value:"positiveY",density:false,summary:false,points:{type:"strip",jitter:false},
+      color:{...color,scale:{...color.scale,id:`${raincloud}-color`}},guides:false})
+      .editRaincloudPlot({target:raincloud,color:{...color,scale:{...color.scale,id:`${raincloud}-color`}}})
+      .removeMark({});
   }
   return next;
+}
+
+// The range-object spelling is a real public alternative to scale.palette.
+// Continuous palettes keep extent valid for both ordinal and continuous uses.
+export function realisticPaletteRange(ordinal = 0) {
+  return { palette: { name: ["viridis", "magma", "plasma"][ordinal % 3],
+    count: 7, extent: [0.08, 0.92] } };
 }

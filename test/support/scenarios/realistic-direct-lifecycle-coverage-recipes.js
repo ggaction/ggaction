@@ -1,3 +1,4 @@
+import { appendRealisticColorControls } from "./realistic-color-controls.js";
 import { chart } from "../../../src/index.js";
 import { measureTextWidth } from "../../../src/core/textMetrics.js";
 
@@ -14,7 +15,7 @@ import {
   REALISTIC_GUIDE_SCALE_RECIPES,
   realisticGuideScaleWitnessFactors
 } from "./realistic-guide-scale-recipes.js";
-import { appendHierarchicalFacadeCoverage } from
+import { appendHierarchicalFacadeCoverage, appendHierarchicalPaletteRangeCoverage } from
   "./realistic-hierarchical-facade-matrix.js";
 
 const PROFILES = Object.freeze([Object.freeze({ id: "maximal" })]);
@@ -3147,4 +3148,14 @@ export function realisticDirectLifecycleCoverageFactors(recipe, datasets = recip
     }
     throw new Error(`${recipe.id} has no eligible dataset for profile ${variantId}.`);
   }));
+}
+
+// Reuse the same original temporal projection without rerunning unrelated
+// selection, window and regression branches for a color-only witness.
+export function realisticDirectPaletteRangeProgram(dataset) {
+  const {view,program}=createBase(dataset,"temporal");
+  const prepared=program.createScatterPlot({id:"paletteObservations",data:"analysisRows",
+    x:"positiveX",y:"positiveY",guides:false});
+  const result=appendHierarchicalPaletteRangeCoverage(appendRealisticColorControls(prepared));
+  return {program:result,provenance:view.provenance};
 }

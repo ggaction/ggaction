@@ -204,6 +204,15 @@ async function testNodeConsumer(directory) {
       assert.ok(windowed.graphicSpec.objects.seriesLegendSymbolPoints.children.length>0);
       if (factory === chart) assert.deepEqual(windowed.editLegendSymbols({channel:"shape",clipHeight:"auto"}).graphicSpec,combined.graphicSpec);
       assert.deepEqual(deserializeProgram(serializeProgram(windowed)).graphicSpec,windowed.graphicSpec);
+      if(factory===chart){
+        const windowParent=combinedBase.facet({field:"g",columns:2,guides:{legend:{combine:"size-shape",position:"top-left",clipHeight:6}}})
+          .editLegendSymbols({channel:"size",clipHeight:8}).editCompositionLayout({gap:10});
+        assert.equal(windowParent.guideConfigs.legend.series.clipHeight,8);
+        assert.deepEqual(deserializeProgram(serializeProgram(windowParent)).graphicSpec,windowParent.graphicSpec);
+        const windowPair=hconcat({programs:[windowed,windowed]});
+        assert.deepEqual(deserializeProgram(serializeProgram(windowPair)).graphicSpec,windowPair.graphicSpec);
+        assert.ok(Object.keys(windowPair.graphicSpec.objects).every(id=>/^[A-Za-z0-9_-]+$/.test(id)));
+      }
       const translucent=combinedBase.createLegend({combine:"size-shape",symbol:{layers:[{type:"point",opacity:0.7}]}});
       assert.equal(translucent.graphicSpec.objects.seriesLegendSymbolPoints.items[0].properties.blend,"normal");
       assert.deepEqual(deserializeProgram(serializeProgram(translucent)).graphicSpec,translucent.graphicSpec);
@@ -900,12 +909,15 @@ async function testNodeConsumer(directory) {
     });
     const raincloud = polarBase.createRaincloudPlot({
       id: "packageRaincloud",
+      color: {field:"group",fieldType:"nominal",scale:{id:"packageRaincloudColor",type:"ordinal",range:{palette:{name:"viridis",count:5,extent:[0.1,0.9]}}}},
       category: { field: "group", fieldType: "nominal" },
       value: { field: "distance", fieldType: "quantitative" },
       density: { steps: 16 },
       points: { type: "beeswarm", packing: { key: "angle", overflow: "overlap" } },
       guides: false
-    }).editRaincloudPlot({ target: "packageRaincloud", side: "after" });
+    }).editRaincloudPlot({ target: "packageRaincloud", side: "after",
+      color:{field:"group",fieldType:"nominal",scale:{id:"packageRaincloudColor",type:"ordinal",range:{palette:{name:"magma",count:7,extent:[0.08,0.92]}}}} });
+    assert.equal(raincloud.semanticSpec.scales.find(scale=>scale.id==="packageRaincloudColor").range.palette.name,"magma");
     const ecdfData = polarBase.createECDFData({
       id: "packageECDFData", field: "distance", groupBy: "group"
     });
@@ -3317,6 +3329,7 @@ async function testTypeScriptConsumer(directory) {
       packing: { key: "id", padding: 1 }, guides: false
     };
     const raincloudOptions: CreateRaincloudPlotOptions = {
+      color:{field:"category",fieldType:"nominal",scale:{id:"typedRaincloudColor",type:"ordinal",range:{palette:{name:"viridis",count:5,extent:[0.1,0.9]}}}},
       category: { field: "category", fieldType: "nominal" },
       value: { field: "value", fieldType: "quantitative" },
       density: { steps: 16 },
@@ -3325,6 +3338,7 @@ async function testTypeScriptConsumer(directory) {
       guides: false
     };
     const raincloudEditOptions: EditRaincloudPlotOptions = {
+      color:{field:"category",fieldType:"nominal",scale:{id:"typedRaincloudColor",type:"ordinal",range:{palette:{name:"magma",count:7,extent:[0.08,0.92]}}}},
       side: "after", points: { type: "strip", jitter: { maxOffset: { band: 0.1 } } }
     };
     const ecdfDataOptions: ECDFDataOptions = {

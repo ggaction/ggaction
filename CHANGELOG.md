@@ -43,6 +43,11 @@ All notable changes to `ggaction` are recorded in this file.
 - Binned heatmaps preserve disabled axis titles and named axis arrays through
   the same guide-owner validation used by other Cartesian charts.
 
+### Fixed
+
+- Unattached ordinal scale edits validate palette ranges like creation, including
+  rebuilding Raincloud colors without losing their channel-specific checks.
+
 ## [0.0.18] - 2026-10-17
 
 ### Added

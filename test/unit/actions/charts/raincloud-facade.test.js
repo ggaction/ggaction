@@ -193,3 +193,27 @@ test("removes the parent closure and every owned derived dataset", () => {
   assert.deepEqual(removed.semanticSpec.datasets.map(dataset => dataset.id), ["source"]);
   assert.equal(owner(removed), undefined);
 });
+
+test("raincloud palette range edits rebuild retained roles and preserve immutable source", async () => {
+  const {serializeProgram,deserializeProgram}=await import("../../../../src/persistence.js");
+  const color={field:"category",fieldType:"nominal",scale:{id:"rainColors",type:"ordinal",
+    range:{palette:{name:"viridis",count:5,extent:[0.1,0.9]}}}};
+  const original=create({color});
+  const before=serializeProgram(original);
+  const revised={...color,scale:{...color.scale,range:{palette:{name:"magma",count:7,extent:[0.08,0.92]}}}};
+  const input=JSON.stringify(revised);
+  const edited=original.editRaincloudPlot({target:"rain",color:revised});
+  assert.equal(serializeProgram(original),before);
+  assert.equal(JSON.stringify(revised),input);
+  assert.deepEqual(edited.semanticSpec.scales.find(scale=>scale.id==="rainColors").range,revised.scale.range);
+  assert.deepEqual(edited.semanticSpec.datasets.find(data=>data.id==="source").values,rows);
+  assert.deepEqual(owner(edited)[1].raincloudPlot.childIds,owner(original)[1].raincloudPlot.childIds);
+  const restored=deserializeProgram(serializeProgram(edited));
+  assert.deepEqual(restored.graphicSpec,edited.graphicSpec);
+  const horizontal=restored.editRaincloudPlot({target:"rain",orientation:"horizontal"});
+  assert.equal(owner(horizontal)[1].raincloudPlot.orientation,"horizontal");
+  assert.deepEqual(horizontal.semanticSpec.scales.find(scale=>scale.id==="rainColors").range,revised.scale.range);
+  assert.throws(()=>edited.editRaincloudPlot({target:"rain",color:{...color,scale:{...color.scale,
+    range:{palette:{name:"viridis",count:0}}}}}),/count|positive/i);
+  assert.deepEqual(edited.graphicSpec,restored.graphicSpec);
+});

@@ -1719,6 +1719,7 @@ type ScaleType =
 - 최소 한 editable property가 필요하다. `unknown: undefined`는 existing fallback을 제거한다.
 - `domain`/`range`의 `"auto"`는 reset이고 omission은 기존 값을 보존한다. Explicit domain은
   `nice`/`zero`보다 우선하며 `reverse`는 auto 또는 explicit 최종 range에 적용된다.
+- Consumer가 없는 ordinal의 `range` 편집은 생성과 같은 ordinal validator를 사용한다. Numeric pair, color array, dash patterns 및 `range: {palette}`를 원자적으로 검증하며, consumer가 붙으면 해당 channel의 더 엄격한 range 검증을 유지한다.
 - `palette`는 color scale의 top-level shorthand이며 canonical `range: { palette }`로 저장한다.
   같은 call의 `range`와는 mutually exclusive다.
 - `type`은 unattached scale 또는 compatible consumers에서 atomic하게 전환한다. Quantitative position은

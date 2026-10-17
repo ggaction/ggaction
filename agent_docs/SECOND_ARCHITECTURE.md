@@ -331,8 +331,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 405,000 bytes |
-| `ggaction/basic` | 198,000 bytes |
+| `ggaction` | 412,000 bytes |
+| `ggaction/basic` | 202,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -2401,6 +2401,12 @@ Released-main integration `0447acaf` with the approved nine data/color features 
 828000 한도를 적용한다. 옵션과 실행 증언을 줄이지 않았고 browser 한도405000/198000/25000은
 최종 installed 측정 전까지 유지한다.
 
+통합 `08329df4`와 ordinal range validator복원 뒤 macOS/Node22.23.1/npm10.9.8 실제 installed
+artifact는587entries/829705packed/4048931unpackedbytes다. Node24의831438packed측정과 함께
+기존587/832000/4049000 package한도 안이다. 실제 browser gzip은 Full409512/Basic199726/SVG7325다.
+승인된 기능 증가분의 최소1000bytes정책으로 Full410000/Basic200000만 갱신하고 SVG25000과
+다른 global test/coverage 기준은 유지한다. 이전405000/198000 한도는 실패했으며 그 성공으로
+보고하지 않는다. 숫자 변경은 새로운 renderer/state 경계를 추가하지 않는다.
 ### Sample-window concrete materialization
 
 Point-bearing legend clipHeight is one stored block option. The materializer
@@ -2421,3 +2427,23 @@ limits401800/197400 cover only that measured growth. SVG remains25000bytes.
 
 Final authored-anchor/reset handling measures Full401927/Basic197371gzipbytes;
 Full ceiling402000 and Basic197400 retain the measured next small steps.
+
+
+### Parent sample-window identity and replay integration
+
+부모 범례와 일반 child composition은 기존 graphic namespace owner를 재사용하여
+clip Canvas와 그 glyph를 공개 primitive의 기존 valid-ID 정책에 맞게 생성한다.
+공개 ID 정규식과 state schema는 확장하지 않는다. 복원 scaffold는 저장된 block별
+channels/combine/representation/명시 symbol을 사용하며 window는 각 원래 config의
+최종 materialization에서만 적용한다. 이로써 gradient strip에 형제 size의 window가
+전파되지 않는다. 미지정12사례는 이전 JSON/SVG/전체RGBA와 정확히 동일하다.
+
+macOS/Node22.23.1/npm10.9.8의 통합 staged artifact는589entries/833342packed/
+4061404unpacked bytes다. clip의 새 grammar/materialization2모듈을 포함해 허용entries는
+589로, 크기 한도는 다음 최소1000bytes인834000/4062000으로 조정한다.
+기존832000/4049000 한도 통과로 보고하지 않으며 browser/global coverage 기준은 유지한다.
+
+동일 installed consumer의 실제 browser gzip은 Full411464/Basic201346bytes다.
+기존410000/200000을 초과해 최소1000bytes 단위412000/202000으로만 갱신한다.
+SVG25000 및 모든 기능/coverage 검사는 그대로 유지한다. 원래 한도 검사는 실제로
+실패했으며 성공 증거로 재사용하지 않는다.

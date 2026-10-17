@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:ea65fcc5e4d10f5af00b2c45bef28424fc0b3cfb6cbf995a10943e8cdce0c0cb. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:8d89f0c548a315ac6ebccc9af182c98c9cc4aae61a41c5f99aca7d075cce9cef. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -11562,6 +11562,11 @@ The accepted types are `linear`, `log`, `pow`, `sqrt`, `symlog`, `time`,
 `band`, `point`, `ordinal`, `sequential`, `quantize`, `quantile`, and
 `threshold`. A later encoding attachment validates whether the type, range,
 and fallback are compatible with that channel and mark.
+
+Before an ordinal scale has a consumer, `editScale({ range: ... })` accepts the
+same numeric pair, color array, dash patterns, or palette range object as
+`createScale`. Attaching a consumer applies that channel's range restrictions;
+position scales continue to reject palette ranges.
 
 Generic `editScale` allows `id` to be omitted when the current scale or the program's only scale is
 unambiguous. At least one editable option is required. Use `"auto"` to reset
@@ -38614,6 +38619,12 @@ changing the previous program. Parent styles and automatic title/sample/offset p
 survive data, source, scale, theme, text-metric and layout changes and editable persistence.
 Shared appearance scales and compatible source mark recipes are required in every child.
 
+Point-bearing parent legend blocks support `clipHeight` just like unit legends.
+Each block retains its own window during layout edits and editable import; a
+clipped size block can share its owner with an unclipped color gradient.
+Use `editLegendBlock({ target: "scatterPlot", channel: "size", clipHeight: "auto" })`
+to remove only the selected block window.
+
 ## Repeat the current chart by a field
 
 Call `facet` on one complete unit chart to repeat it for each observed field
@@ -40195,7 +40206,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:ea65fcc5e4d10f5af00b2c45bef28424fc0b3cfb6cbf995a10943e8cdce0c0cb` |
+| Contract fingerprint | `sha256:8d89f0c548a315ac6ebccc9af182c98c9cc4aae61a41c5f99aca7d075cce9cef` |
 | Example and dataset source | `19c43475b15c5b279fb15cb363306e9ddb3979a5` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

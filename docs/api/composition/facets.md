@@ -56,6 +56,12 @@ changing the previous program. Parent styles and automatic title/sample/offset p
 survive data, source, scale, theme, text-metric and layout changes and editable persistence.
 Shared appearance scales and compatible source mark recipes are required in every child.
 
+Point-bearing parent legend blocks support `clipHeight` just like unit legends.
+Each block retains its own window during layout edits and editable import; a
+clipped size block can share its owner with an unclipped color gradient.
+Use `editLegendBlock({ target: "scatterPlot", channel: "size", clipHeight: "auto" })`
+to remove only the selected block window.
+
 ## Repeat the current chart by a field
 
 {% include chart-example.html id="facet" %}

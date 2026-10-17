@@ -47,7 +47,12 @@ function targets(inventory) {
 }
 function valuesAt(args,path){
   let values=[args];
-  for(const name of path.split("."))values=values.flatMap(value=>value&&typeof value==="object"&&Object.hasOwn(value,name)?[value[name]]:[]);
+  for(const name of path.split("."))values=values.flatMap(value=>{
+    if(!value||typeof value!=="object")return [];
+    if(Object.hasOwn(value,name))return [value[name]];
+    const count=value[`${name}Count`];
+    return Number.isInteger(count)&&count>0?[{summarizedArray:true,length:count}]:[];
+  });
   return values.filter(value=>value!==undefined);
 }
 function digest(ids){return createHash("sha256").update(ids.sort().join("\n")).digest("hex");}
@@ -154,4 +159,85 @@ test("computed, fit, statistics and color additions have actual public 5/3 witne
   assert.deepEqual([...expressionStats].filter(([,value])=>value.occurrences<5||value.datasets.size<3),[]);
   assert.equal(builds,100);
   console.log(JSON.stringify({requirementCount:stats.size,requirementSha256:digest([...stats.keys()]),actualBuilds:builds,minimumOccurrences:5,minimumDatasets:3}));
+});
+
+// Restored object branches are additional obligations; the original fixed159
+// test above is intentionally unchanged. Exercise public consumers rather than
+// count inventory declarations as observations.
+test("palette range objects have actual public 5/3 witnesses at every restored consumer",{timeout:600000},async()=>{
+  const {realisticDirectPaletteRangeProgram}=await import("../support/scenarios/realistic-direct-lifecycle-coverage-recipes.js");
+  const {REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES:statisticalRecipes}=await import("../support/scenarios/realistic-statistical-facade-coverage-recipes.js");
+  const inventory=await buildPublicOptionInventory(JSON.parse(readFileSync(new URL("../../knowledge/action-cards.json",import.meta.url))));
+  const options=inventory.optionPaths.filter(option=>option.required&&/(?:^|\.)range\.palette(?:\.|$)/u.test(option.path));
+  assert.equal(options.length,124);
+  assert.equal(digest(options.map(value=>value.id)),"7dd3a0dccf3b59ec06d048dfb05b1f36bf055ef63c9281aa0f5a8f24b9cfcfaa");
+  const stats=new Map(options.map(option=>[option.id,{occurrences:0,datasets:new Set(),values:new Set()}]));
+  let builds=0;
+  function record(program,dataset,metadata){
+    const observed=new Map();
+    for(const entry of program.trace.children??[]){
+      for(const option of options){
+        if(option.action!==entry.op)continue;
+        const values=valuesAt(entry.args,option.path);
+        if(!values.length)continue;
+        if(option.path.endsWith(".extent"))assert.ok(values.every(value=>
+          Array.isArray(value)?value.length===2:value.summarizedArray===true&&value.length===2));
+        const seen=observed.get(option.id)??new Set();
+        for(const value of values)seen.add(literalValueKey(value));
+        observed.set(option.id,seen);
+      }
+    }
+    for(const [id,values] of observed){const value=stats.get(id);value.occurrences++;value.datasets.add(dataset);for(const key of values)value.values.add(key);}
+    assert.equal(datasetDefinition(dataset).corpus,"tidytuesday");
+    const raw=program.semanticSpec.datasets.find(data=>data.id==="analysisRows");
+    assert.ok(raw?.values.length>0);
+    assert.equal(metadata.provenance.sourceRowIndexBasis,"zero-based-data-row-in-pinned-csv");
+    assert.match(metadata.provenance.sourceSelectionSha256,/^[a-f0-9]{64}$/u);
+    assert.equal(metadata.provenance.indexEncoding,"sorted-zero-based-indexes-sha256-v1");
+    assert.match(renderToSVG(program),/<(?:circle|path|rect)\b/u);
+    builds++;
+  }
+  function build(recipe,dataset,variant){
+    const domains=recipe.factorsForDataset(dataset);assert.ok(domains,`${recipe.id} ${dataset}`);
+    const factors={dataset,...(domains.fieldPair?{fieldPair:domains.fieldPair[0]}:{}),
+      ...(domains.profile?{profile:domains.profile[0]}:{}),...(variant?{variant}:domains.variant?{variant:domains.variant[0]}:{})};
+    const program=recipe.build(factors);const metadata=recipe.describe(factors);
+    assert.equal(metadata.provenance.sourceDataset,dataset);
+    assert.ok(metadata.provenance.sourceRowCount>0);
+    record(program,dataset,metadata);
+  }
+  for(const dataset of DATASETS){
+    try{
+      const direct=realisticDirectPaletteRangeProgram(dataset);
+      record(direct.program,dataset,{provenance:direct.provenance});
+      const guide=guideRecipes.find(recipe=>recipe.factors.variant?.some(variant=>variant.id==="color-pow"));
+      build(guide,dataset,guide.factors.variant.find(variant=>variant.id==="color-pow"));
+      for(const id of ["color-sequential-reds-lab","color-sequential-greenblue-lab","color-sequential-purpleorange-lab"]) {
+        const owner=guideRecipes.find(recipe=>recipe.factors.variant?.some(variant=>variant.id===id));
+        build(owner,dataset,owner.factors.variant.find(variant=>variant.id===id));
+      }
+      build(encodingRecipes.find(recipe=>recipe.id.includes("appearance")),dataset);
+      for(const recipe of cartesianRecipes){
+        const variants=recipe.factorsForDataset(dataset).variant.filter(variant=>variant.ordinal>=36);
+        assert.equal(variants.length,3);
+        for(const variant of variants)build(recipe,dataset,variant);
+      }
+      for(const recipe of statisticalRecipes.filter(recipe=>["createViolinPlot","createHistogram","createHeatmap"].includes(recipe.expectedDirectActions[0]))){
+        const variants=recipe.factorsForDataset(dataset).variant.filter(variant=>variant.rangePalette!==undefined);
+        assert.equal(variants.length,3);
+        for(const variant of variants)build(recipe,dataset,variant);
+      }
+      console.log(JSON.stringify({paletteDataset:dataset,actualBuilds:builds}));
+    }finally{releaseTidyTuesdaySourceCache(dataset);}
+  }
+  const missing=[...stats].filter(([id,value])=>value.occurrences<5||value.datasets.size<3||id.endsWith(".name")&&value.values.size<3).map(([id,value])=>({id,occurrences:value.occurrences,datasets:[...value.datasets],values:[...value.values]}));
+  assert.deepEqual(missing,[]);
+  assert.equal(builds,135);
+  console.log(JSON.stringify({paletteRequirementCount:options.length,paletteRequirementSha256:digest(options.map(value=>value.id)),actualBuilds:builds,minimumOccurrences:5,minimumDatasets:3}));
+});
+
+test("direct trace array summaries witness presence without inventing extent values",()=>{
+  assert.deepEqual(valuesAt({range:{palette:{extentCount:2}}},"range.palette.extent"),[{summarizedArray:true,length:2}]);
+  for(const count of [0,-1,1.5,"2",undefined])assert.deepEqual(valuesAt({range:{palette:{extentCount:count}}},"range.palette.extent"),[]);
+  assert.deepEqual(valuesAt({range:{palette:{extentCount:2}}},"range.palette.extent.missing"),[]);
 });

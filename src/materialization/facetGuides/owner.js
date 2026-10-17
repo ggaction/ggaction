@@ -37,18 +37,19 @@ export function intrinsicFacetLegendSource(program) {
 }
 
 export function restoreFacetLegendIntent(source, intent) {
-  const byTarget = new Map();
+  const scaffolds = [];
   for (const [kind, { config }] of Object.entries(intent.blocks)) {
     const descriptor = describeLegendBlock(source, kind, config);
-    const entry = byTarget.get(config.target) ?? { target: config.target, channels: [] };
-    entry.channels.push(...descriptor.channels);
+    const entry = { target: config.target, channels: [...descriptor.channels] };
     if (descriptor.channels.includes("shape") && descriptor.channels.includes("size")) entry.combine = "size-shape";
     if (kind === "colorSize") entry.combine = "color-size";
     if (descriptor.family === "categorical" && config.inferredSymbol === false && entry.combine === undefined) entry.symbol = config.symbol;
     if (kind === "gradient" && config.representation === "symbols") entry.representation = "symbols";
-    byTarget.set(config.target, entry);
+    scaffolds.push(entry);
   }
-  for (const args of byTarget.values()) source = source.createLegend(args);
+  // Build unclipped resources first; each authored block restores its own window below.
+  // A global scaffold option would also reach gradient strips or overwrite sibling windows.
+  for (const args of scaffolds) source = source.createLegend(args);
   for (const [kind, { config, guide }] of Object.entries(intent.blocks)) {
     source = source._withLegendConfig(kind, config);
     const background = legendResourcePolicy(kind).graphicIds.find(id => id.endsWith("Background"));

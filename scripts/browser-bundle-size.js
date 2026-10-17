@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 405_000, // Combined Node24 installed consumer measured404564gzip bytes.
-  "ggaction/basic": 198_000, // Combined Node24 installed consumer measured197642gzip bytes.
+  ggaction: 412_000, // Integrated sample windows measured411464gzip bytes on Node22.
+  "ggaction/basic": 202_000, // Integrated sample windows measured201346gzip bytes on Node22.
   "ggaction/svg": 25_000
 });
 

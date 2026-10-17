@@ -1,4 +1,4 @@
-import { realisticColorControls, appendRealisticColorControls } from "./realistic-color-controls.js";
+import { realisticColorControls, realisticPaletteRange, appendRealisticColorControls } from "./realistic-color-controls.js";
 const POSITION_TYPES = Object.freeze(["linear", "log", "pow", "sqrt", "symlog"]);
 const THETA_TYPES = Object.freeze(["linear", "time", "band", "point"]);
 const TEMPORAL_UNITS = Object.freeze(["auto", "year", "timestamp"]);
@@ -182,6 +182,7 @@ function areaBaseline(index) {
 
 function colorScale(id, index, categorical = false) {
   if (categorical || index < 8) {
+    if ([7,16,25].includes(index)) return {id,type:"ordinal",domain:"auto",range:realisticPaletteRange(Math.floor(index/9))};
     const palette = PALETTES[index % PALETTES.length];
     if (index % 3 === 0) return { id, type: "ordinal", domain: "auto", range: "auto" };
     if (index % 3 === 1) return { id, type: "ordinal", domain: "auto", palette };
@@ -1926,7 +1927,21 @@ function appendRadial(program, action, index) {
 export function appendHierarchicalFacadeCoverage(program) {
   let next = appendRealisticColorControls(program);
   for (let index = 0; index < REALISTIC_HIERARCHICAL_FACADE_PROFILE_COUNT; index += 1) {
-    const steps = [
+    const steps = hierarchicalSteps();
+    for (const [action, append] of steps) {
+      try {
+        next = append(next, index);
+      } catch (error) {
+        error.message = `Hierarchical facade profile ${index} ${action}: ${error.message}`;
+        throw error;
+      }
+    }
+  }
+  return next;
+}
+
+function hierarchicalSteps() {
+  return [
       ["createAreaPlot", appendArea],
       ["createDensityPlot", appendDensity],
       ["createHorizonPlot", appendHorizon],
@@ -1941,13 +1956,13 @@ export function appendHierarchicalFacadeCoverage(program) {
       ["createBeeswarmPlot", appendBeeswarm],
       ["createRaincloudPlot", appendRaincloud]
     ];
-    for (const [action, append] of steps) {
-      try {
-        next = append(next, index);
-      } catch (error) {
-        error.message = `Hierarchical facade profile ${index} ${action}: ${error.message}`;
-        throw error;
-      }
+}
+
+export function appendHierarchicalPaletteRangeCoverage(program) {
+  let next=program;
+  for(const index of [7,16,25]) {
+    for(const [action,append] of hierarchicalSteps().filter(([action])=>!["createHorizonPlot","createRugPlot"].includes(action))) {
+      try {next=append(next,index);} catch(error) {error.message=`Palette range ${index} ${action}: ${error.message}`;throw error;}
     }
   }
   return next;

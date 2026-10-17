@@ -499,3 +499,46 @@ program.createSummaryData({
   현재branch의 검증 입력에 아직 들어 있지 않다. 그 parser변경 후 복원되는 requirement의
   실제증언과 전체 통합 검사는 root가 합친 뒤 추가로 확인해야 한다. 여기의159개/기존closed9
   color전수 및5/3증언은 그대로 보존하며 새통합 입력의 성공으로 과장하지 않는다.
+
+## 복원된 palette range 경로의 실제 증언
+
+- Root통합4135e971와 metadata/cap08329df4를 병합했다. 검사기의 object|array union 복원에서
+  드러난 정확124경로(31consumer×palette/name/count/extent), SHA256
+  `7dd3a0dccf3b59ec06d048dfb05b1f36bf055ef63c9281aa0f5a8f24b9cfcfaa`를 별도로 고정했다.
+  기존159요구·SHA·closed9 color전수 정책과 최소5회/3원본은 그대로다.
+- 새124경로는135개 실제public프로그램/다섯 pinned TT원본에서 모두 최소5회·3dataset,
+  모든name경로는 실제3개서로다른palette까지 통과했다. 원래159/100과 합친 전체파일의
+  actual235프로그램/3tests가 통과했고 실측50175.726291ms를 shard에50176ms로 등록했다.
+  원본지표를 보존하며 fresh numeric/group/temporal aliases는 기존 lifecycle projection의
+  정확한 원본 행선택/fieldBinding/변환 provenance와SHA로 확인한다.
+- Cartesian 원래36profile와 선택적 생략/음성조합은 그대로 두고 palette-range3profile을
+  뒤에 append했다(총39, 실제schedule780). Statistical Violin/Histogram/Heatmap 뒤에 각각
+  3profile을 append했다(기존feature ordinal불변). Direct/encoding/guide/facade/hierarchical
+  생성과 ECDF/Raincloud편집도 실제 public calls로 증언한다. Palette-only flow는 기존
+  source projection과 공개facade의3profile을 재사용하여 무관한33×13전체반복을 피한다.
+- 배열을 숨기는 trace정책을 바꾸지 않았다. `extentCount:2`의 실제 호출 증거를 기존 ledger와
+  같은 array-presence 방식으로 읽고 정확한길이2를 검사한다. 지워진 extent값을 복원하지
+  않으며 count0/음수/비정수/문자열과 count아래의 가짜nested경로는 negative로 거부한다.
+- 실제 증언에서 Raincloud색상재생성이 기존소비자없는ordinal palette range를 숫자쌍으로
+  오판하는 버그를 발견했다. `editScale`의 unboundordinal에 생성과 같은 기존
+  validateOrdinalRange를 재사용했다. 새옵션/타입/저장상태/역할추론은 없다. Atomically
+  malformedpalette를 거부하고 boundposition은 계속 numeric range만 허용한다.
+  Typed mixed-domain[1,'1',true], 원본/caller불변성, Raincloud색상·회전재생성·snapshot,
+  Full기능과 Basic의 기존genericedit미노출을 포함한18개 focused검사가 통과했다.
+  Installed runtime/TypeScript소비자에도 같은palette create/edit를 추가했다.
+- 전체unit3240/3240, inventory/union/source-boundary16/16, docs120/120 통과했다.
+  Root의 나머지axis복원profile과 결합한 전체broad requirement count/digest·actual최소 검사는
+  root가 마지막통합에서 재계산한다. 여기의 성공은 정확124팔레트와기존159에 한정한다.
+- 원래transform함수coverage누락은 별도488b62e3의 정식statistics policy2tests로 보완했다.
+  고정output roles/독립객체와닫힌edit/replay스키마를검사하며 RawV8에서normalizeEdit4회,
+  outputRoles2회 실행을 확인했다. Critical floor와global coverage기준은 그대로다.
+- 마지막 installed packed검사도 runtime/TypeScript·Raincloud palette lifecycle·Full/Basic경계,
+  browser bundle과MCP까지 통과했다. Full409512/Basic199726/SVG7325 gzip은
+  각각410000/200000/25000의 실측최소cap 안이며 package587/829705/4048931은
+  587/832000/4049000 안이다. Package entry나unpacked/packed한도는08329df4 그대로다.
+  Budget truth/timing sharding6개도 통과했다.
+- Source6e4b2397 기준으로 provenance/LLM을 재생성한 docs120/120과 Ruby3.2.11
+  Jekyll build/150built pages 정적검사도 통과했다. 전체통합 normal vertical검사에는
+  별도 bar-compositing/legend-appearance 디렉터리의 public registry미등록이 남아
+  root에 보고했다. Palette두정식chart는 등록되어 있으며 이 기록을 전체통합suite성공으로
+  제시하지 않는다. 나머지 broad axis/palette 결합 검증도 마지막통합 checkpoint에 남긴다.

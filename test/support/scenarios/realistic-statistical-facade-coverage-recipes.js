@@ -1,4 +1,4 @@
-import { realisticColorControls } from "./realistic-color-controls.js";
+import { realisticColorControls, realisticPaletteRange } from "./realistic-color-controls.js";
 import { chart } from "../../../src/index.js";
 
 import {
@@ -390,7 +390,10 @@ function profilesForAction(action) {
     createHeatmap: HEATMAP_FEATURE_PROFILES,
     createHistogram: HISTOGRAM_FEATURE_PROFILES
   }[action] ?? [];
-  return freeze([...GUIDE_PROFILES, ...featureProfiles]);
+  const rangeProfiles=["createViolinPlot","createHistogram","createHeatmap"].includes(action)
+    ? [0,1,2].map(index=>({id:`${slug(action)}-range-palette-${index}`,guideMode:"none",orientation:"vertical",
+      tickMode:"values",format:".1f",rangePalette:realisticPaletteRange(index)})) : [];
+  return freeze([...GUIDE_PROFILES, ...featureProfiles, ...rangeProfiles]);
 }
 
 const viewCache = new Map();
@@ -1158,7 +1161,9 @@ function palette(ordinal) {
   };
 }
 
-function categoricalColor(action, field, ordinal, layout) {
+function categoricalColor(action, field, ordinal, layout, rangePalette) {
+  if(rangePalette) return {field,fieldType:"ordinal",...(layout===undefined?{}:{layout}),
+    scale:{id:`${slug(action)}-color-${ordinal}`,type:"ordinal",domain:"auto",range:rangePalette}};
   const id = `${slug(action)}-color-${ordinal}`;
   const base = {
     field,
@@ -1310,7 +1315,8 @@ function violinColor(profile, layout) {
       "createViolinPlot",
       "distributionHalf",
       profile.ordinal,
-      layout
+      layout,
+      profile.rangePalette
     ),
     fieldType: profile.ordinal % 2 === 0 ? "nominal" : "ordinal"
   };
@@ -1395,7 +1401,7 @@ function heatmapColor(profile, ordinal) {
 
 function heatmapBinnedColor(ordinal, type) {
   if (type !== undefined) return {scale:{
-    id:`createheatmap-color-${ordinal}`,type,domain:"auto",palette:"viridis",
+    id:`createheatmap-color-${ordinal}`,type,domain:"auto",range:realisticPaletteRange(0),
     ...(type==="pow"?{exponent:2}:{}),interpolate:"lab",whitePoint:"d50",clamp:true
   }};
   const index = ordinal % 12;
@@ -1595,7 +1601,8 @@ function buildHeatmap(factors) {
             }
           : {})
       },
-      color: heatmapBinnedColor(ordinal + (profile.paletteOffset ?? 0), profile.colorType),
+      color: profile.rangePalette ? {scale:{id:`createheatmap-color-${ordinal}`,type:"sequential",domain:"auto",range:profile.rangePalette}}
+        : heatmapBinnedColor(ordinal + (profile.paletteOffset ?? 0), profile.colorType),
       guides: guideOptions(profile, resources, context, ordinal, "createHeatmap")
     });
   }
@@ -1669,7 +1676,8 @@ function buildHistogram(factors) {
         "createHistogram",
         "category",
         ordinal,
-        profile.histogramLayout ?? ["diverging", "group", "overlay"][ordinal % 3]
+        profile.histogramLayout ?? ["diverging", "group", "overlay"][ordinal % 3],
+        profile.rangePalette
       )
     }),
     bar: {
