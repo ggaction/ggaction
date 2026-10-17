@@ -1,6 +1,8 @@
 # Gamma 목표 입력의 정수화 보정
 
-Gate: **ready-for-review**. #169의 public API·계산법·기존 색상 정책은 바꾸지 않는다.
+Gate: **approved**. 사용자는2026-10-17에 원격 `4f2f985c`의 보정된 그림과
+18개 정확한 색상값에 대해 **“보정된 목표 승인하고 계속 구현”**으로 명시 승인했다.
+#169의 public API·계산법·기존 색상 정책은 바꾸지 않는다.
 기존 검토 그림의 이상적인 실수 endpoint를 실제 공개 API로 입력할 수 있는 두
 8bit 색상으로 명시하여 primitive 목표를 보정한다. 다른27개 기능은 계속 구현한다.
 
@@ -38,5 +40,5 @@ program.editColorScale({
 
 이미 승인한 gamma API와 기본 동작 유지 결정은 그대로다. 변경된 시각 목표의
 확인은 `agent_docs/impl/AGENTS.md`의 “A changed target requires renewed
-confirmation” 요구에 따른다. 사용자 확인 전 이 목표를 승인됐다고 기록하거나
-#169를 완료/Current로 승격하지 않는다.
+confirmation” 요구에 따라 받았다. 이 승인은 수정된 목표의 구현·검증 경계를
+열며 #169의 구현 완료나 검증 통과를 의미하지 않는다.
