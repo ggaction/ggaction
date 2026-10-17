@@ -1391,6 +1391,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clipHeight` | Optional / branch-dependent | `number \| undefined` |
 | `combine` | Optional / branch-dependent | `"separate" \| "size-shape" \| undefined` |
 | `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
@@ -1515,6 +1516,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
@@ -1599,6 +1601,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `target` | Required | `string` |
 | `channel` | Required | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth"` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
@@ -1764,6 +1767,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |

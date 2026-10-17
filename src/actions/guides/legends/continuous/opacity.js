@@ -1,3 +1,5 @@
+import{validateLegendClip}from"../../../../grammar/legendClip.js";
+import{hasLegendClipGraphics,applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { alignLegendTitle, resolveLegendTitleText } from "../../../../layout/legendText.js";
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
@@ -88,6 +90,7 @@ function resolveOpacityConfig(program, config) {
 }
 
 function resolveOpacityLayout(program, config, scale) {
+  validateLegendClip("opacity",config);
   config = intrinsicLegendConfig(program, config);
   const { plot, canvas } = resolveContinuousBounds(program);
   const vertical = ["right", "left"].includes(config.position);
@@ -99,6 +102,7 @@ function resolveOpacityLayout(program, config, scale) {
     config.labels.format
   );
   const symbolExtent = config.symbol.radius + (config.symbol.strokeWidth ?? 0) / 2;
+  const visibleExtent=Math.min(symbolExtent,config.clipHeight===undefined?Infinity:config.clipHeight/2);
   const titleText = config.titleVisible === false ? { width: 0, height: 0 }
     : resolveLegendTitleText(config.title, config.titleStyle, program.materializationConfigs.textMetrics);
   const labelWidths = texts.map(text => measureTextWidth(text, config.labels, program.materializationConfigs.textMetrics));
@@ -109,7 +113,7 @@ function resolveOpacityLayout(program, config, scale) {
     const baseX = config.position === "right"
       ? plot.x + plot.width + config.offset
       : plot.x - config.offset;
-    const itemHeight = Math.max(symbolExtent * 2, legendLabelLineHeight(config.labels.fontSize));
+    const itemHeight = Math.max(visibleExtent * 2, legendLabelLineHeight(config.labels.fontSize));
     const pitch = Math.max(config.itemGap, itemHeight);
     const firstY = Math.max(plot.y + 46, config.titleVisible === false ? plot.y + 46
       : plot.y + 20 + titleText.height / 2 + 12 + itemHeight / 2);
@@ -142,7 +146,7 @@ function resolveOpacityLayout(program, config, scale) {
       : config.align === "right" ? plot.x + plot.width - width
         : plot.x + (plot.width - width) / 2;
     const height = Math.max(
-      symbolExtent * 2,
+      visibleExtent * 2,
       config.labels.fontSize,
       titleText.height
     );
@@ -171,9 +175,9 @@ function resolveOpacityLayout(program, config, scale) {
     const labelHalf = config.labels.fontSize / 2;
     const y = config.position === "top"
       ? plot.y - config.offset - config.labels.fontSize -
-        config.labels.offset - symbolExtent
+        config.labels.offset - visibleExtent
       : plot.y + plot.height + config.offset +
-        (config.titleVisible === false ? 0 : titleText.height + 12) + symbolExtent;
+        (config.titleVisible === false ? 0 : titleText.height + 12) + visibleExtent;
     const samplePitch = values.length === 1 ? 0 : width / (values.length - 1);
     symbols = values.map((_, index) => ({
       x: startX + index * samplePitch,
@@ -181,12 +185,12 @@ function resolveOpacityLayout(program, config, scale) {
     }));
     labels = symbols.map(symbol => ({
       x: symbol.x,
-      y: symbol.y + symbolExtent + config.labels.offset + labelHalf,
+      y: symbol.y + visibleExtent + config.labels.offset + labelHalf,
       align: "center"
     }));
     title = {
       x: startX + width / 2,
-      y: y - symbolExtent - 12 - titleHalf,
+      y: y - visibleExtent - 12 - titleHalf,
       align: "center"
     };
   }
@@ -196,8 +200,8 @@ function resolveOpacityLayout(program, config, scale) {
   const symbolBounds = symbols.map(symbol => ({
     left: symbol.x - symbolExtent,
     right: symbol.x + symbolExtent,
-    top: symbol.y - symbolExtent,
-    bottom: symbol.y + symbolExtent
+    top: symbol.y - visibleExtent,
+    bottom: symbol.y + visibleExtent
   }));
   if (config.titleVisible !== false) title = alignLegendTitle(title, config.title, config.titleStyle,
     [...labelBounds, ...symbolBounds], program.materializationConfigs.textMetrics);
@@ -227,6 +231,7 @@ export const rematerializeOpacityLegend = /* @__PURE__ */ closedAction(
     description: "Rematerialize a field-opacity sample legend."
   }, [],
   function (args = {}) {
+    if(hasLegendClipGraphics(this))return this.rematerializeLegend();
     const stored = this.guideConfigs.legend?.opacity;
     if (stored === undefined) {
       throw new Error("Opacity legend requires stored configuration.");
@@ -286,18 +291,18 @@ export const rematerializeOpacityLegend = /* @__PURE__ */ closedAction(
       config.labels,
       { align: layout.labels[0].align }
     );
-    if (config.titleVisible === false) return next;
+    if (config.titleVisible === false) return applyLegendClipGraphics(next);
     next = editGraphicProperties(next, "opacityLegendTitle", {
       x: layout.title.x,
       y: layout.title.y,
       text: config.title
     });
-    return styleContinuousText(
+    return applyLegendClipGraphics(styleContinuousText(
       next,
       "opacityLegendTitle",
       config.titleStyle,
       { align: layout.title.align }
-    );
+    ));
   }
 );
 

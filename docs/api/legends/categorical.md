@@ -332,6 +332,34 @@ SVG uses whole-element opacity. PDF rasterizes only the explicitly affected
 glyph, preserving surrounding vector output. Existing block symbol-opacity
 patches retain their established behavior and do not opt into this new path.
 
+## Sample windows
+
+Keep an encoded size while showing only a vertical slice of its symbol:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+program.createLegend({ channels: ["size"], clipHeight: 30 });
+program.editLegendSymbols({ channel: "size", clipHeight: 24 });
+program.editLegendBlock({ target: "points", channel: "size", clipHeight: "auto" });
+```
+
+A positive finite `clipHeight` centers the window on each glyph anchor. The
+original radius, physical area, shape and stroke remain intact; the symbol is
+cropped rather than shrunk. Labels, titles and frames stay outside the window.
+Item spacing uses the visible sample and label bounds. Smaller symbols retain
+their original height.
+
+This applies to sampled size, opacity and color-symbol legends, combined legends,
+and categorical recipes containing a point. Every layer of a composite sample
+shares its window. Gradient ramps, interval swatches, line-only recipes and
+stroke-width samples reject this option. Editing with `"auto"` removes the window;
+omitting it preserves the current setting.
+
 ## Related
 
 [Legend overview](../legends.md) · [Composite symbols](./composite.md) · [Editing legends](./editing.md)

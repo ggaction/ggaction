@@ -22,6 +22,14 @@ p.createLegend({ channels: ["opacity"], symbol: { type: "point" } });
 p.editLegend({ symbol: { radius: 11 } });
 const symbols: EditLegendSymbolsOptions = { symbol: { type: "point", radius: 13 } };
 p.editLegendSymbols(symbols);
+p.createLegend({channels:["size"],clipHeight:30});
+p.editLegend({clipHeight:"auto"});
+p.editLegendSymbols({channel:"opacity",clipHeight:20});
+p.editLegendBlock({target:"points",channel:"size",clipHeight:"auto"});
+// @ts-expect-error Auto is an edit-only reset.
+p.createLegend({clipHeight:"auto"});
+// @ts-expect-error Heights are numbers.
+p.editLegendSymbols({clipHeight:"30"});
 p.createGuides({ legend: options });
 p.createGuides({ legend: { channels: ["opacity"], symbol: { radius: 9 } } });
 // Existing categorical recipes retain their forms.

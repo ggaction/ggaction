@@ -19281,6 +19281,11 @@
       },
       "options": [
         {
+          "name": "clipHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "combine",
           "required": false,
           "type": "\"separate\" | \"size-shape\" | undefined"
@@ -19402,7 +19407,7 @@
         }
       ],
       "callPatterns": [
-        "createLegend({ target?, combine?, representation?, layout?, overflow?, order?, channels?, position? })"
+        "createLegend({ target?, clipHeight?, combine?, representation?, layout?, overflow?, order?, channels? })"
       ],
       "snippet": "program.createLegend({})",
       "errors": [],
@@ -19466,6 +19471,10 @@
       ],
       "inference": [
         {
+          "input": "clipHeight",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "direction",
           "strategy": "documented-auto"
         },
@@ -19487,6 +19496,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "clipHeight",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
         {
           "name": "channel",
           "required": false,
@@ -19614,7 +19628,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, channel?, position?, direction?, titleStyle?, channels?, title?, values? })"
+        "editLegend({ target?, clipHeight?, channel?, position?, direction?, titleStyle?, channels?, title? })"
       ],
       "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],
@@ -19669,6 +19683,10 @@
       ],
       "inference": [
         {
+          "input": "clipHeight",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "target",
           "strategy": "explicit"
         },
@@ -19690,6 +19708,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "clipHeight",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
         {
           "name": "target",
           "required": true,
@@ -20169,6 +20192,10 @@
       ],
       "inference": [
         {
+          "input": "clipHeight",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "target",
           "strategy": "explicit-current-unique-or-error"
         }
@@ -20182,6 +20209,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "clipHeight",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
         {
           "name": "target",
           "required": false,
@@ -20209,7 +20241,7 @@
         }
       ],
       "callPatterns": [
-        "editLegendSymbols({ target?, channel?, symbol?, count?, gradient? })"
+        "editLegendSymbols({ target?, clipHeight?, channel?, symbol?, count?, gradient? })"
       ],
       "snippet": "program.editLegendSymbols({ count: 5 })",
       "errors": [],

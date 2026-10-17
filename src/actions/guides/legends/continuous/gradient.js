@@ -1,3 +1,5 @@
+import{validateLegendClip}from"../../../../grammar/legendClip.js";
+import{hasLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { normalizeColorSymbols, resolveColorSymbolsLayout, materializeColorSymbols } from "./colorSymbols.js";
 import { alignLegendTitle, resolveLegendTitleText } from "../../../../layout/legendText.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
@@ -29,6 +31,7 @@ import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
 export const DEFAULT_GRADIENT_SIZE = DEFAULT_LEGEND_GRADIENT;
 
 export function resolveGradientLayout(program, config, scale, label = "Gradient legend", stripStrokeWidth = 0) {
+  validateLegendClip("gradient",config);
   if (config.representation === "symbols") return resolveColorSymbolsLayout(program, config, scale);
   config = intrinsicLegendConfig(program, config);
   const { plot, canvas } = resolveContinuousBounds(program);
@@ -254,6 +257,7 @@ export const rematerializeGradientLegend = /* @__PURE__ */ closedAction(
     description: "Rematerialize a continuous color gradient legend."
   }, [],
   function (args = {}) {
+    if(hasLegendClipGraphics(this))return this.rematerializeLegend();
     const stored = this.guideConfigs.legend?.gradient;
     if (stored === undefined) {
       throw new Error("Gradient legend requires stored configuration.");

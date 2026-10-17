@@ -71,3 +71,18 @@ test('combined eligibility rejects different fields, continuous size and ambiguo
  assert.throws(()=>targeted.editLegend({combine:'unknown'}),/combine/);
  assert.equal(JSON.stringify(targeted),before);
 });
+test('combining local anchors preserves authored intent and rejects conflicts atomically',()=>{
+ const separate=source().createLegend({channels:['shape']}).createLegend({channels:['size']});
+ const ordinary=separate.editLegend({combine:'size-shape'});
+ assert.equal(ordinary.guideConfigs.legend.series.combine,'size-shape');
+ assert.equal(ordinary.guideConfigs.legend.series.blockOverrides,undefined);
+ const conflict=separate.editLegendBlock({target:'p',channel:'shape',position:'top-left'})
+  .editLegendBlock({target:'p',channel:'size',position:'bottom-right'}),before=JSON.stringify(conflict);
+ assert.throws(()=>conflict.editLegend({combine:'size-shape'}),/conflicts on position/);
+ assert.equal(JSON.stringify(conflict),before);
+ const moved=conflict.editLegend({combine:'size-shape',position:'right'});
+ assert.equal(moved.guideConfigs.legend.series.blockOverrides,undefined);
+ assert.equal(moved.guideConfigs.legendGroups.p.placement.position,'right');
+ assert.equal(Object.hasOwn(moved.context,'positionIntent'),false);
+ assert.equal(JSON.stringify(moved.materializationConfigs).includes('positionIntent'),false);
+});

@@ -2007,6 +2007,22 @@
     "executable": false
   },
   {
+    "file": "api/legends/categorical.md",
+    "block": 7,
+    "heading": "Sample windows",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [
+      "target: \"points\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: \"points\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "a196969cb3ce029f18a36fd2d22d772ad726c3afff56fbe43e8b9376103a4ef3",
+    "executable": false
+  },
+  {
     "file": "api/legends/composite.md",
     "block": 1,
     "heading": "Layered symbols",

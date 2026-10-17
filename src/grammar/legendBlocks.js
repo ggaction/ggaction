@@ -79,3 +79,8 @@ export function describeLegendBlock(program, kind, config) {
   });
 }
 
+
+export function categoricalLegendSymbolId(config,type){
+ const single=config.symbol.layers.length===1&&((config.kind==="series"&&type==="line")||(["color","stroke"].includes(config.kind)&&type==="swatch"));
+ return single?`${config.kind}LegendSymbols`:`${config.kind}LegendSymbol${{line:"Lines",point:"Points",swatch:"Swatches"}[type]}`;
+}
