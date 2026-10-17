@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 571, // Isolated glyph painting and shared raster limit owners.
-  packedBytes: 807_000, // Node24/npm11 isolated-source artifact measured806317bytes.
-  unpackedBytes: 3_949_000 // Exact staged artifact measured3943154unpacked bytes.
+  entries: 574, // Axis/legend integration adds shared pure query and graphic-edit owners.
+  packedBytes: 810_000, // Axis/legend integration measured809241bytes.
+  unpackedBytes: 3_965_000 // Axis/legend integration measured3964563bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -74,6 +74,8 @@ const COMPACT_JSON_FILES = Object.freeze([
 ]);
 const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/selectors/axes.js",
+  "src/grammar/legendBlocks.js",
+  "src/core/graphicProperties.js",
   "src/grammar/axisTextPlacement.js",
   "src/grammar/guideDash.js",
   "knowledge/task-resolver.js",

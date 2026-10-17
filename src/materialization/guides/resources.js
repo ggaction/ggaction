@@ -1,7 +1,7 @@
 import { axisGraphicIds } from "../../selectors/axes.js";
 export { axisGraphicIds };
-import { resolveConcreteGraphicBounds, unionConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
 import { localLegendPosition } from "../legendGroups.js";
+import { resolveConcreteGraphicBounds, unionConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
 
 // Only domain-owned guides participate. Extension primitives may deliberately
 // overlap, and a combined categorical/size legend is one occupied group.

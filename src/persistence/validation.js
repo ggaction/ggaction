@@ -1,13 +1,12 @@
-import { describeLegendBlock } from "../actions/guides/legends/target.js";
-import { localLegendPosition } from "../materialization/legendGroups.js";
+import { AXIS_RESOURCE_CHANNELS } from "../core/vocabulary.js";
+import { cartesianAxisOwners, assertCartesianAxisSideAvailable } from "../selectors/axes.js";
+import { axisGraphicIds } from "../selectors/axes.js";
+import { describeLegendBlock } from "../grammar/legendBlocks.js";
+import { localLegendPosition } from "../grammar/legendGroups.js";
 import { normalizeLegendBorderDash } from "../grammar/legendBorder.js";
 import { normalizeNumericDisplayLabelMap } from "../grammar/displayLabels.js";
 import { isContinuousSizeScaleType } from "../grammar/scales/size.js";
 import { validateGraphicItemLimit } from "../core/validation.js";
-
-import { AXIS_RESOURCE_CHANNELS } from "../core/vocabulary.js";
-import { cartesianAxisOwners, assertCartesianAxisSideAvailable } from "../selectors/axes.js";
-import { axisGraphicIds } from "../selectors/axes.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
 import { validateAxisTextPlacement } from "../grammar/axisTextPlacement.js";

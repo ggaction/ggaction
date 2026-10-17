@@ -2196,6 +2196,7 @@ Node22.23.1/npm10.9.8/macOS canonical artifact 실측은570entries, packed803124
 Browser gzip Full395462는396000으로 상향하고 Basic190821/SVG7176은 기존191000/25000을 유지한다.
 
 
+
 Named Cartesian axes는 기존 source boundary를 유지하는 selector owner 하나를 더한다. Native ID
 resolver는 `selectors/axes.js`가 소유하고 materialization은 이를 재수출하므로 persistence가
 materialization layer에 역방향 의존하지 않는다. 기존 package staging compaction을 새 selector에
@@ -2203,6 +2204,7 @@ materialization layer에 역방향 의존하지 않는다. 기존 package stagin
 한도를570/806000/3949000으로 좁게 갱신하고 이전569/799000/3919000 통과로 보고하지 않는다.
 전체 승인 옵션을 보존한 search816932bytes는817000으로, action-card median1896bytes는1896으로
 갱신한다. Card max3358은3360 한도 안이다. Installed consumer의 actual gzip은 Full396214/Basic193136bytes이므로 최소1000bytes 단위로397000/194000으로만 조정한다. SVG25000은 유지한다.
+
 
 ### Gradient direction and bottom title checkpoint
 
@@ -2251,3 +2253,21 @@ DOM/Offscreen/native 동형 constructor와 Node PNG/PDF가 전달한 private cre
 Node24에서396420/193109bytes다. 공유 예산을 최소1000bytes 단위397000/194000으로
 갱신하고 SVG25000은 유지했다. README/current architecture table도 같은 owner 값이다.
 공개 검색은817417bytes이며 내용 축소 없이818000 한도를 적용했다.
+
+
+축·범례 기능 통합에서는 descriptor validation과 block key/query를 pure
+`grammar/legendBlocks.js`로, local position query를 기존 `grammar/legendGroups.js`로
+모았다. 기존 actions/materialization 경로는 재수출하여 downstream 소유자의 이동을
+강요하지 않는다. Persistence는 이 grammar를 읽으므로 actions/materialization import를
+허용하도록 경계를 넓히지 않는다. 범용 immutable graphic-edit loop는
+`core/graphicProperties.js`가 소유하고 primitive helper도 재수출한다. 실제 편집은 여전히
+public editGraphics primitive를 호출하며 직접 state clone/mutation을 추가하지 않는다.
+
+이 결합 checkpoint의 staging compaction 뒤 actual package는574entries,
+809241packed/3964563unpackedbytes이며 한도는574/810000/3965000이다.
+Search818889bytes는819000으로만 늘리고 card median1896과 editLegend3620/other3360은
+유지한다. Native/runtime unit3142/3142와 source-boundaries8/8을 검증했다.
+
+설치 소비자 결합 실측은 Full398463/Basic194351/SVG7176gzipbytes다. 앞의397000/194000을
+초과한 실패 로그를 보존하고 최소1000bytes 한도399000/195000으로만 갱신한다. New public
+옵션을 줄이지 않았고 SVG25000은 유지한다.
