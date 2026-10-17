@@ -304,6 +304,8 @@ encodings, so an invalid revision fails instead of silently splitting the block.
 
 ## Recipe layer opacity
 
+{% include chart-example.html id="legend-appearance" %}
+
 Each `symbol.layers` line, point or swatch accepts optional `opacity` in0..1.
 The supplied value applies once to that layer's complete fill and outline;
 it does not change other recipe layers, labels, title or frame. Omission keeps
@@ -331,6 +333,28 @@ point layer supplies opacity. Canvas uses a bounded transparent glyph source;
 SVG uses whole-element opacity. PDF rasterizes only the explicitly affected
 glyph, preserving surrounding vector output. Existing block symbol-opacity
 patches retain their established behavior and do not opt into this new path.
+
+## Independent legend appearance {#independent-legend-appearance}
+
+{% include chart-example.html id="legend-layout" %}
+
+The complete example starts with a color legend, then edits its gradient,
+orientation, title and border. Its horizontal ramp measures 120 by 16 logical
+pixels. The bottom title clears the full strip, ticks and labels by 12 pixels.
+The border uses one continuous `[4, 2, 6, 1]` dash pattern around the frame.
+A later block edit moves only the size legend to `"bottom-left"`; the gradient
+keeps its own placement.
+
+## Layered recipe opacity {#layered-recipe-opacity}
+
+{% include chart-example.html id="legend-recipe-opacity" %}
+
+The linked canonical source has a `createRecipeOpacityProgram(opacity)` factory.
+It builds one line-and-point recipe with an explicit opacity of 0, 0.7 or 1
+on both layers. These are separate authored recipes; the categorical legend
+does not infer opacity from individual categories. Each case retains the same
+40-pixel line, 6-pixel point radius, outline and opaque label. The original
+single-point opacity example remains available above.
 
 ## Sample windows
 

@@ -29,3 +29,5 @@ export function createPrimitiveProgram(){
   .editGraphics({target:'colorLegendLabels',property:'textAlign',value:'left'})
   .editGraphics({target:'colorLegendLabels',property:'textBaseline',value:'top'});
 }
+
+export {createGradientBlockPrimitive,createRecipeOpacityPrimitive} from "./target-primitive.program.js";

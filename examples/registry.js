@@ -7,6 +7,8 @@ import { createWhitePointComparison } from "./color-white-point/program.js";
 import { createBlendProgram } from "./bar-compositing/program.js";
 
 import {createLegendAppearanceProgram} from "./legend-appearance/program.js";
+import {createGradientBlockProgram} from "./legend-layout/program.js";
+import {createRecipeOpacityProgram} from "./legend-recipe-opacity/program.js";
 import {createSymbolWindowProgram} from "./symbol-window/program.js";
 import { createHierarchicalAuthoring } from "./hierarchical-authoring/program.js";
 import { createResourceRemovalWorkflow } from "./remove-dependent-resources/program.js";
@@ -228,6 +230,10 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "browser-host/?chart=theta-legend-order", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "theta-legend-order", width: 1000, height: 700 } } }
   }),
+  example({id:"legend-layout",data:{},width:480,height:270,docsGroup:"tutorials",testDirectory:"legend-appearance",createProgram:createGradientBlockProgram,
+    browser:{path:"legend-layout/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"legend-layout",width:480,height:270}}}}),
+  example({id:"legend-recipe-opacity",data:{},width:480,height:270,docsGroup:"tutorials",testDirectory:"legend-appearance",createProgram:()=>createRecipeOpacityProgram(.7),
+    browser:{path:"legend-recipe-opacity/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"legend-recipe-opacity",width:480,height:270}}}}),
   example({id:"legend-appearance",data:{},width:400,height:240,docsGroup:"tutorials",createProgram:createLegendAppearanceProgram,
     browser:{path:"legend-appearance/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"legend-appearance",width:400,height:240}}}}),
   example({id:"symbol-window",data:{},width:400,height:200,docsGroup:"tutorials",createProgram:createSymbolWindowProgram,

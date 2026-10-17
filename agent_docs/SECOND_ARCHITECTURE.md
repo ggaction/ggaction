@@ -2455,3 +2455,12 @@ SVG25000 및 모든 기능/coverage 검사는 그대로 유지한다. 원래 한
 828580bytes(macOS/Node22.23.1/npm10.9.8)다. 기존828000 검사2개는 실패했으며
 모든 검색 항목·action·옵션을 유지하고 최소1000단위829000으로만 갱신한다.
 공개 runtime/패키지/browser 또는 coverage 한도는 이 예제 연결로 바꾸지 않는다.
+
+
+### Legend appearance canonical example discovery budget
+
+기존.7single-point 예제를 보존하고 독립 gradient/local-size 및 composite recipe
+opacity0/.7/1 안정 variant를 추가한 search payload는829884bytes(Node22.23.1/
+npm10.9.8/macOS)다. 이전829000 한도를 초과해 최소1000단위830000으로만
+조정한다. 항목/공개옵션/enum을 숨기지 않으며 runtime/package/browser/coverage
+한도는 변경하지 않는다.
