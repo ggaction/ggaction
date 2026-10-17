@@ -202,6 +202,7 @@
       }
     ],
     "marks": [
+      { "type": "prefix", "path": "charts/named-shapes/" },
       {
         "type": "prefix",
         "path": "charts/directional-tick-plot/"

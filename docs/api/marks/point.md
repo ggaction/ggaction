@@ -96,6 +96,20 @@ The cap, join, and miter options follow the shared
 contract. They are retained even though a circular glyph has no visible cap or
 corner, so a later shape or stroke replay does not discard authored style.
 
+## Directional shapes and area {#directional-shapes-and-area}
+
+{% include chart-example.html id="named-shapes" %}
+
+This complete example uses the same four source rows for shapes, areas, angles
+and labels. Start with `createScatterPlot`, then use `encodeShape`, `encodeSize`
+and `encodeAngle` to refine it. Areas 100 and 225 remain physical areas in logical
+square pixels after rotation; the larger symbol has 1.5 times the linear scale.
+The upper wedges rotate about their centroid and the lower arrows about the
+center of their bounding box. An angle field contains degrees directly.
+
+The example source linked above is the same program used by the standalone
+browser example and the exact primitive comparison.
+
 ## `jitterPoints({ target?, channel, maxOffset, seed?, key? })`
 
 Use bounded jitter to separate overlapping Cartesian points without changing

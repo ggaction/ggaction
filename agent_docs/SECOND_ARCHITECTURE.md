@@ -2447,3 +2447,11 @@ macOS/Node22.23.1/npm10.9.8의 통합 staged artifact는589entries/833342packed/
 기존410000/200000을 초과해 최소1000bytes 단위412000/202000으로만 갱신한다.
 SVG25000 및 모든 기능/coverage 검사는 그대로 유지한다. 원래 한도 검사는 실제로
 실패했으며 성공 증거로 재사용하지 않는다.
+
+
+### Named-shape canonical example discovery budget
+
+승인된 wedge/arrow 정식 예제와 공개 설명을 추가한 compact search payload의 실측은
+828580bytes(macOS/Node22.23.1/npm10.9.8)다. 기존828000 검사2개는 실패했으며
+모든 검색 항목·action·옵션을 유지하고 최소1000단위829000으로만 갱신한다.
+공개 runtime/패키지/browser 또는 coverage 한도는 이 예제 연결로 바꾸지 않는다.

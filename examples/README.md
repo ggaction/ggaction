@@ -510,6 +510,12 @@ Apply opacity to one recipe layer while retaining labels and mapped colors.
 
 Representative actions: `createLegend`, `editLegendSymbols`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#recipe-layer-opacity).
 
+### [Directional point shapes preserve area](./named-shapes/)
+
+Refine a complete scatterplot with shape, physical area and angle encodings.
+
+Representative actions: `createScatterPlot`, `encodeShape`, `encodeSize`, `encodeAngle`. [Documentation](https://ggaction.github.io/ggaction/api/marks/point/#directional-shapes-and-area).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started
