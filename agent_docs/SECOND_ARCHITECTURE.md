@@ -2314,3 +2314,6 @@ package573entries/803727packed/3934180unpacked uses573/804000/3935000limits.
 Browser Full395897/Basic191800bytes uses396000/192000gzip limits. Existing
 coverage and per-file floors remain unchanged. These are feature-growth budgets,
 not a declaration that the full realistic option matrix has completed.
+
+Size-shape 통합 뒤 검색은823539bytes이며 최종 공개 옵션을 유지한 채824000으로만
+갱신한다. 범례 새 public 흐름·독립 Chromium·bar stable pair의 결합6검사가 통과했다.
