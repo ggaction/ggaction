@@ -51,6 +51,25 @@ Stroke editor의 비분배 Omit 때문에 누락되던 기존 실행 가능한 �
 - 누적 통합 전에 computed와 색상 새 옵션의 realistic corpus 최소5회·3실데이터셋
   실제 실행 증언을 추가해야 한다. 이 의무와 이후 회귀·통계·capacity 구현은 남아 있다.
 
+### 구현 checkpoint — summary group capacity
+
+#209는 summary grammar의 단일 output-group ceiling만30,000 inclusive로 올린다.
+타입/schema/action trace와 계산·키 순서는 그대로며 새 bypass 옵션은 없다.
+현재 계약과 공개 shaping 설명을 동기화했다.
+
+- 9,999/10,000/10,001/29,999/30,000/30,001 경계,60,000행의30,000그룹,
+  typed/multifield keys·weighted members, revision/editor·30,000 snapshot·facet replay,
+  실패 부모 불변성과 독립10,000 graphic limit을 검사했다. Focused capacity5개 통과.
+- [source evidence](summary-source-evidence.json)와 [공개 재현](summary-source-proof.mjs)은
+  보존 입력 SHA256 `1ae3e91972addcbdba23e94c13e30fce6708b402efe315403b1ed8b2d23ffd02`
+  26,265행의 전체 membership을 검사한다. Clock/hour/minute19,194/10,968/25,909그룹이
+  독립 날짜 키·합계/건수 oracle과 순서·평균 오차0으로 일치하며 raw 문자열은 보존했다.
+  마지막25,909점 단일 경로의 독립20,000명령 hold는 유지한다.
+- 전체 unit3,106개와 docs120개 통과, 설치 package의10,001그룹·snapshot 소비자 통과.
+  뒤이어 추가한 facet capacity 사례5개도 통과했다. Contracts532/533의 한 실패는
+  앞선 Basic budget 변경의 README·architecture canonical table 누락이었고 두 곳을
+  동기화한 documentation-truth3개가 통과했다. 최종 누적 검사에서 재확인한다.
+
 ## 1. 공통 결정
 
 1. 일반 작성 호출은 기존 domain action을 유지한다. 함수의 핵심 옵션을 보통 세 개 이하로 작성할 수 있도록 focused edit를 사용한다. 중첩 AST의 필수 피연산자까지 세 개를 강제하여 의미를 손상시키지는 않는다.

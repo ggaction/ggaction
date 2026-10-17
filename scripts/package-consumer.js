@@ -916,6 +916,11 @@ async function testNodeConsumer(directory) {
         { region: "West", total: 4, records: 1 }
       ]
     );
+    const largeSummary = chart().createData({ values: Array.from({length: 10001}, (_,group) => ({group,value:group%17})) })
+      .createSummaryData({id:"largeSummary",groupBy:"group",aggregates:[{op:"mean",field:"value",as:"average"}]});
+    assert.equal(largeSummary.semanticSpec.datasets.at(-1).values.length,10001);
+    assert.equal(largeSummary.semanticSpec.datasets.at(-1).values.at(-1).average,10000%17);
+    assert.deepEqual(deserializeProgram(serializeProgram(largeSummary)).semanticSpec,largeSummary.semanticSpec);
     const weightedSummary = chart()
       .createData({ id: "weighted", values: [
         { value: 1, weight: 1 },

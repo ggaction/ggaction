@@ -526,7 +526,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   source는 aggregate identity를 표현하는 한 row를 만들며 `count`는 0이다. Grouped empty source는
   observed group이 없으므로 `[]`다. Missing 수치 결과는 기존 aggregate owner와 동일하게 `undefined`다.
 - 오류: missing source/group/aggregate/order field, duplicate group/output, incompatible aggregate field
-  type, non-scalar group key, unsupported op와 10,000 group 초과를 첫 semantic change 전에 거부한다.
+  type, non-scalar group key, unsupported op와 30,000 group 초과를 첫 semantic change 전에 거부한다.
+  이 상한은 실제 distinct typed group 수이며 input 행 수가 아니다. 다른 mark/path/work 한도는 바꾸지 않는다.
 - Coverage: `test/unit/actions/data/summary-data.test.js`가 multi-aggregate, ordered aggregate, members,
   stable group order, empty grain, ownership, mark consumption과 invalid matrix를 검증한다.
 

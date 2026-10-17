@@ -1,0 +1,30 @@
+{
+  "sha256": "1ae3e91972addcbdba23e94c13e30fce6708b402efe315403b1ed8b2d23ffd02",
+  "rawRows": 26265,
+  "evidence": [
+    {
+      "kind": "clock",
+      "groups": 19194,
+      "memberCount": 26265,
+      "maximumAbsoluteMeanError": 0,
+      "rawRowsUnchanged": true,
+      "pathHold": false
+    },
+    {
+      "kind": "hour",
+      "groups": 10968,
+      "memberCount": 26265,
+      "maximumAbsoluteMeanError": 0,
+      "rawRowsUnchanged": true,
+      "pathHold": false
+    },
+    {
+      "kind": "minute",
+      "groups": 25909,
+      "memberCount": 26265,
+      "maximumAbsoluteMeanError": 0,
+      "rawRowsUnchanged": true,
+      "pathHold": true
+    }
+  ]
+}
