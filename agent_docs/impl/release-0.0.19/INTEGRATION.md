@@ -113,3 +113,25 @@ focused-opacity variant, legend-layout, legend-recipe-opacity를 기존 목표�
 정확한 원시 증거와 재현은 [CRITICAL_POLICY_COVERAGE.md](CRITICAL_POLICY_COVERAGE.md)가 소유한다.
 마지막 facade legend의 타입 경계/실제 옵션 증언 및 최종 versioned artifact 검사는 별도다.
 공식 realistic runner의 메모리·동시성 인자를 생략한 실행을 최종 증거로 사용하지 않는다.
+
+## 버전0.0.19 최종 로컬 검증 및 PR217
+
+최종 facade 선언은 실제 point owner의 결합과 categorical/gradient title 계약을 구분하며
+유효한 옵션은 보존한다. Cartesian830개·hierarchy8sources·guide ledger와 direct raw-option
+실제 증언을 검증했다. 네트워크 데이터4검사는 전용 realistic 파일로 분리했고26파일을
+7개 서로 겹치지 않는 CI shard에 배분한다. normal에는 타입/거부/불변성 검사만 남긴다.
+
+- Node24.19.0 정식 staged package591entries/841429packed/4086545unpacked 통과.
+- Node22 및 Node24 설치된 Full/Basic/types/renderer/MCP/tutorial 소비자 전체 통과.
+  Node24 Full415484/Basic203851/SVG7338gzipbytes.
+- 최종0.0.19 contract `abe42a91764c5c08ff179037de1b0554106775c77aa18d73f52b16b1f5a5e435`: 문서120/120,
+  Ruby3.2.11 preflight/build,150builtpages와 정식 desktop/mobile320·390·768px 순회,
+  검색·키보드·focus·Axe·no-JS 검사를 모두 통과했다.
+  로컬 로그는 `/tmp/ggaction-v19-docs-*-final.log`다.
+- PR217 첫CI39034674598은 package24 Full415484>415000와 테스트 planning1505>1400,
+  heatmap profile165>이전135·encoding inventory 집계 불일치로 아직 전체 PASS가 아니다.
+  문서·Windows/macOS·Firefox/WebKit은 이 입력에서 통과했으며 실패 원본 로그는 보존했다.
+  측정한 Full 최소416000, planning 전체3600 유지 재배분과 실제 inventory 증언을 수정한다.
+
+최종 main/tag/OIDC출판·동일 registry artifact 검증·dataset1154/8335 재동기화와 Pages
+배포는 여전히 남아 있다. 로컬 package/문서 성공을 실제0.0.19 출판으로 표시하지 않는다.
