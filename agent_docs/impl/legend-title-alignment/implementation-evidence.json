@@ -1,0 +1,136 @@
+{
+  "status": "pass",
+  "reviewer": "codex",
+  "issue": 204,
+  "approvedProposalRevision": "72637f47",
+  "approvalCommit": "55cbbab5",
+  "baseRuntime": "d7cc93da3f32c134a651f02d3e3882e587618373",
+  "scope": "Shared top-title left/center/right alignment; edit-only auto removes stored alignment; existing inline title incompatibility and omitted defaults preserved.",
+  "checks": {
+    "unit": {
+      "status": "pass",
+      "tests": 3069,
+      "command": "npm run test:unit",
+      "pathUtf8Base64": "L3ByaXZhdGUvdG1wL2xlZ2VuZC10aXRsZS1hbGlnbm1lbnQtdW5pdC1maW5hbDIubG9n",
+      "sha256": "8a19c0f638190386fa674e1bbd30e2db7edaa6f2f1f660ba052b232f9dd51605"
+    },
+    "contracts": {
+      "status": "pass",
+      "tests": 533,
+      "command": "npm run test:contracts",
+      "pathUtf8Base64": "L3ByaXZhdGUvdG1wL2xlZ2VuZC10aXRsZS1hbGlnbm1lbnQtY29udHJhY3RzLWNvbXBsZXRlLmxvZw==",
+      "sha256": "82abd0fdbc6a5710ff30b5d03aafcd1133568d952ec295c2f3d270361813d9ef"
+    },
+    "docs": {
+      "status": "pass",
+      "tests": 120,
+      "command": "npm run test:docs",
+      "pathUtf8Base64": "L3ByaXZhdGUvdG1wL2xlZ2VuZC10aXRsZS1hbGlnbm1lbnQtZG9jcy1jbGVhbi1yZWFkeS5sb2c=",
+      "sha256": "87d8a057a67762b67387a1c56a921412c80d1c218b327e34676346e9aecaca7a"
+    },
+    "focused": {
+      "status": "pass",
+      "tests": 19,
+      "command": "focused legend unit suites",
+      "pathUtf8Base64": "L3ByaXZhdGUvdG1wL2xlZ2VuZC10aXRsZS1hbGlnbm1lbnQtZmluYWwtZm9jdXNlZDE5LmxvZw==",
+      "sha256": "eaa20fd99b6feba3fed370bce0b904a243b2e16d87bf98a3807c1c1b8fff3a06"
+    },
+    "browser": {
+      "status": "pass",
+      "tests": 1,
+      "command": "node scripts/run-tests.js browser browser/legend-title-alignment.browser.js",
+      "pathUtf8Base64": "L3ByaXZhdGUvdG1wL2xlZ2VuZC10aXRsZS1hbGlnbm1lbnQtYnJvd3Nlci1maW5hbC5sb2c=",
+      "sha256": "02825b0e690acb6d1bde9d31ccbb0ed8dce6250cd651cf1be22bafb07b32e5e2"
+    },
+    "installedConsumer": {
+      "status": "pass",
+      "tests": null,
+      "command": "npm run test:package",
+      "pathUtf8Base64": "L3ByaXZhdGUvdG1wL2xlZ2VuZC10aXRsZS1hbGlnbm1lbnQtcGFja2FnZS1maW5hbDIubG9n",
+      "sha256": "6c80b17e61d4f5a24dec4dcaa7381b41265d5292862b6352d72d623b72c381e4"
+    }
+  },
+  "defaultCompatibility": {
+    "cases": 114,
+    "status": "pass",
+    "file": "default-parity.json",
+    "sha256": "eb9ea0b2affcae5c98508b18738f4ca30611a03ed7d7219b90d12526ace528c1",
+    "comparisons": [
+      "graphicSpec",
+      "semanticSpec",
+      "materializationConfigs",
+      "SVG bytes"
+    ],
+    "omittedAlignmentOutputUnchanged": true
+  },
+  "package": {
+    "entries": 566,
+    "packedBytes": 794210,
+    "unpackedBytes": 3899166,
+    "ceilings": {
+      "entries": 566,
+      "packedBytes": 795000,
+      "unpackedBytes": 3900000
+    }
+  },
+  "browserBundleGzipBytes": {
+    "Full": 390419,
+    "Basic": 189139,
+    "SVG": 7176,
+    "ceilings": {
+      "Full": 391000,
+      "Basic": 190000,
+      "SVG": 25000
+    }
+  },
+  "documentSearchIndexBytes": {
+    "actual": 813061,
+    "ceiling": 814000
+  },
+  "actualSourceDOM": {
+    "pathEncoding": "Base64 UTF-8 absolute path",
+    "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wOTAxL2FwcHJvdmVkLXRpdGxlLWFsaWdubWVudC1hY3R1YWwtZG9tLmpzb24=",
+    "sha256": "df37353edf0b4f713d6444c8dd89473b28be3bf3a8e6cbda29c8b60e94b3e843",
+    "rawRows": 52,
+    "sourceTitleBounds": {
+      "left": 5,
+      "right": 79.546875,
+      "top": 399,
+      "bottom": 412
+    },
+    "nativeTitleBounds": {
+      "left": 5,
+      "right": 79.546875,
+      "top": 399,
+      "bottom": 412
+    },
+    "titleAxisOverlap": false,
+    "componentCanaryOnly": true,
+    "translatedCandidateNotClaimed": true
+  },
+  "implementationFiles": {
+    "scripts/browser-bundle-size.js": "80a91e23d878a44aa7cd33b420150b3935b7811f33a228a0c274bef722be1f63",
+    "scripts/generate-doc-search-index.js": "9095323e49300a24f0e7f34edcf0538da5bf5504bb38dccc59ccdb812a72aab6",
+    "scripts/package-artifact.js": "d267ea6d94c39d30ea28fb1c129cca4ca7cd0bf2a6b5945520850c77692acce3",
+    "scripts/package-consumer.js": "d756474fb07c1034bfa3c59f7ace43a3a5108bb90719fa536367500852008038",
+    "src/actions/guides/legends/categorical/components.js": "1557f3005d75bd38cc5afdacbe46af36e465efe30e0e505df21d525363dd240f",
+    "src/actions/guides/legends/categorical/options.js": "9a7b23665621243187c2c3f46d41de598b7bcda4f6d49dc2e447892ffbd20953",
+    "src/actions/guides/legends/continuous/common.js": "fd9de78a634dbf14e57adf74fc7119a8bb8ad9044cf900d9de8ded6bc886a841",
+    "src/actions/guides/legends/continuous/gradient.js": "acd86c0d1dfb7803ea2641c48dbc1e2319b15ce072a9b108d32cf259dd2e0960",
+    "src/actions/guides/legends/continuous/opacity.js": "bf66ae85830a078cf80caeec7cb83c2eb494e8a0833228e2e8e697177688bb87",
+    "src/actions/guides/legends/edit.js": "41f3a2fafed1369d640acaaa287c336208f9b18ba22027888eac50ca9ebdc642",
+    "src/actions/guides/legends/focused.js": "9a47f1ae835dfa600127deaa9522e962f766c59e51351a9d59e9bd96aa472813",
+    "src/inspectionDescriptors.js": "b45ffe591e98d0dab3b1eb8dea4bfd2810c1e7f187445c51e5188c852894f387",
+    "src/layout/legendItems.js": "2ec87b0ba9f8ac448c933129e5fa28118865623bbf9144ec6c1782bd5e7a5b5a",
+    "src/layout/legendText.js": "400275bd61d9c5867921e688c640c39fbe2a08f7ed4808f4608a0fcff42df491",
+    "src/persistence/validation.js": "6cd3c3dba7818cdc54b05ba205530f9af8e385e1707369c1de1cc9bc4e038055",
+    "types/program.d.ts": "ba569b1d05589e478559c985011c3cd0f6303fc970a6451533fb0ed5545840a4",
+    "src/grammar/legendTitleStyle.js": "ec60412a235ed0f53dedae6739a232978e9fb228a024ad96ff4ec4713bbed73a",
+    "test/unit/actions/guides/legend-title-alignment.test.js": "7762748d4277313b4ded53a19ee19f43d84a3e55e2736e0bee61c9fcbc80d663",
+    "test/browser/legend-title-alignment.browser.js": "6e031fe1518260cfa39258442c7b2313219c1f0e09b839be4e46ec1695706aaf"
+  },
+  "chartPixelsInspected": false,
+  "newModelResponses": 0,
+  "activeRuntimeAndDocsPinUnchanged": true,
+  "published": false
+}

@@ -258,11 +258,11 @@ export function createJobsGroupedBarValues(
     label: group,
     color: COLORS[index % COLORS.length],
     x: legendX + 0.25,
-    y: bounds.y + 46 + index * 28,
+    y: bounds.y + 32.5 + index * 18,
     width: 14,
     height: 12,
     labelX: legendX + 22.5,
-    labelY: bounds.y + 52 + index * 28
+    labelY: bounds.y + 32.5 + index * 18
   }));
 
   return {
@@ -335,7 +335,7 @@ export function createJobsGroupedBarValues(
       }
     },
     legend: {
-      title: { x: legendX, y: bounds.y + 20, text: legendTitle },
+      title: { x: legendX, y: bounds.y, text: legendTitle },
       items: legendItems
     }
   };

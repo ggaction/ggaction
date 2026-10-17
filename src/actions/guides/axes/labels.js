@@ -42,13 +42,15 @@ import { resolveConcreteGraphicBounds } from
 import { wrapText } from "../../../layout/text.js";
 import {
   normalizeDisplayLabelMap,
+  normalizeDisplayColorMap,
+  resolveDisplayLabelColor,
   resolveDisplayLabel
 } from "../../../grammar/displayLabels.js";
 
 const OPTIONS = [
   "scale", "position", "count", "values", "offset", "format", "color",
   "fontSize", "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
-  "lineHeight", "overlap", "labelMap"
+  "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "colorMap"
 ];
 
 const DEFAULTS = {
@@ -88,6 +90,8 @@ function validateOptions(args, operation, create) {
     create ? OPTIONS : OPTIONS.filter(key => key !== "scale"),
     operation
   );
+  if (Object.hasOwn(args, "flush") && typeof args.flush !== "boolean") throw new TypeError("Label flush must be a boolean.");
+  if (Object.hasOwn(args, "alongOffset") && !Number.isFinite(args.alongOffset)) throw new TypeError("Label alongOffset must be a finite number.");
   if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) {
     throw new Error(`${operation} cannot use count and values together.`);
   }
@@ -110,9 +114,11 @@ function validateConfig(channel, config) {
   if (config.mode === "values") {
     validateGeneratedItemLimit(config.values.length, "Label value count");
   }
+  if (config.alongOffset !== undefined && !Number.isFinite(config.alongOffset)) throw new TypeError("Label alongOffset must be a finite number.");
   validateNonNegativeFinite(config.offset, "Label offset");
   validateTextStyle(config, "Label");
   validateAxisFormat(config.format);
+  if (config.flush === true && config.rotation !== 0) throw new Error("Label flush requires unrotated Cartesian labels.");
   if (!Number.isFinite(config.rotation)) {
     throw new TypeError("Label rotation must resolve to finite radians.");
   }
@@ -134,22 +140,28 @@ function validateConfig(channel, config) {
   }
 }
 
-function normalizeAxisLabelMap(program, config, args, operation) {
-  if (!Object.hasOwn(args, "labelMap")) return config;
-  const scale = program.resolvedScales[config.scale];
-  if (!["ordinal", "band", "point"].includes(scale?.type)) {
-    throw new Error(`${operation} labelMap requires a categorical scale.`);
-  }
+function normalizeAxisLabelMaps(program, config, args, operation) {
   const next = { ...config };
-  if (args.labelMap === "auto") {
-    delete next.labelMap;
-  } else {
-    next.labelMap = normalizeDisplayLabelMap(
-      args.labelMap,
-      `${operation} labelMap`
-    );
+  for (const [property, normalize] of [
+    ["labelMap", normalizeDisplayLabelMap],
+    ["colorMap", normalizeDisplayColorMap]
+  ]) {
+    if (!Object.hasOwn(args, property)) continue;
+    if (args[property] === "auto") delete next[property];
+    else next[property] = normalize(args[property], `${operation} ${property}`);
   }
+  validateAxisLabelMapScale(next, program.resolvedScales[config.scale], operation);
   return next;
+}
+
+function validateAxisLabelMapScale(config, scale, operation = "Axis") {
+  if (["ordinal", "band", "point"].includes(scale?.type)) return;
+  for (const property of ["labelMap", "colorMap"]) {
+    if (config[property] !== undefined &&
+        !config[property].every(entry => Number.isFinite(entry.value))) {
+      throw new TypeError(`${operation} continuous ${property} values must be finite numbers or timestamps.`);
+    }
+  }
 }
 
 function assertTickCompatibility(ticks, config, operation) {
@@ -220,15 +232,13 @@ function resolve(program, channel, config) {
     channel
   });
   const discrete = ["ordinal", "band", "point"].includes(scale?.type);
-  if (config.labelMap !== undefined && !discrete) {
-    throw new Error("Axis labelMap requires a categorical scale.");
-  }
+  validateAxisLabelMapScale(config, scale);
   if ((
     !["linear", "time", "ordinal", "band", "point"].includes(scale?.type) &&
     !isTransformedScaleType(scale?.type)
   ) || !bounds) throw new Error("Axis labels require a supported resolved scale and Canvas bounds.");
   if (discrete && config.mode !== "values") throw new Error("Discrete axis labels require explicit or inferred values, not count.");
-  const values = valuesFromTickConfig(program, config);
+  let values = valuesFromTickConfig(program, config);
   validateGeneratedItemLimit(values.length, "Label value count");
   if (discrete) {
     const domainValues = new Set(scale.domain);
@@ -237,7 +247,7 @@ function resolve(program, channel, config) {
     const low = Math.min(...scale.domain), high = Math.max(...scale.domain);
     if (!values.every(value => value >= low && value <= high)) throw new RangeError("Label values must be inside the scale domain.");
   }
-  const positions = discrete
+  let positions = discrete
     ? mapOrdinalPositionValues(values, scale)
     : mapContinuousScaleValues(values, scale);
   const fallback = value => formatAxisValue(
@@ -250,25 +260,36 @@ function resolve(program, channel, config) {
             ? formatTransformedTick(scale.type, item)
             : String(item)
       );
-  const text = discrete
-    ? values.map(value => resolveDisplayLabel(value, config.labelMap, fallback))
-    : scale.type === "time" && config.format === "auto"
-      ? formatTimeTicks(values, scale.domain)
-      : values.map(fallback);
+  const automaticTimeLabels = scale.type === "time" && config.format === "auto"
+    ? formatTimeTicks(values, scale.domain)
+    : undefined;
+  let text = values.map((value, index) =>
+    resolveDisplayLabel(value, config.labelMap, raw =>
+      automaticTimeLabels?.[index] ?? fallback(raw)));
+  // Empty mapped text suppresses the label, never its raw tick or scale value.
+  // Filter all aligned arrays before wrapping so group/color indices stay dense.
+  if (text.includes("")) {
+    const visible = text.map((value, index) => value === "" ? -1 : index)
+      .filter(index => index !== -1);
+    values = visible.map(index => values[index]);
+    positions = visible.map(index => positions[index]);
+    text = visible.map(index => text[index]);
+  }
   const geometry = {
     values,
     ...resolveAxisLabelGeometry({
       bounds,
       channel,
       position: config.position,
-      positions,
+      positions: positions.map(value => value + (config.alongOffset ?? 0)),
       offset: config.offset
     })
   };
   const resolved = expandWrappedLabels(geometry, text, config, channel, program.materializationConfigs.textMetrics);
-  if (program.materializationConfigs.canvas?.plot !== undefined && channel === "x" && Math.abs(Math.sin(config.rotation)) > 1e-9) {
+  if (channel === "x" && Math.abs(Math.sin(config.rotation)) > 1e-9) {
     const outward = config.position === "bottom" ? 1 : -1;
     resolved.textAlign = Math.sin(config.rotation) * outward < 0 ? "right" : "left";
+    resolved.textBaseline = "middle";
   }
   const canvas = findCanvasGraphic(program)?.properties;
   let labelBounds = resolved.text.map((value, index) => resolveTextBounds({
@@ -282,7 +303,7 @@ function resolve(program, channel, config) {
     textBaseline: resolved.textBaseline,
     rotation: config.rotation
   }, program.materializationConfigs.textMetrics));
-  if (program.materializationConfigs.canvas?.plot !== undefined) {
+  if (program.materializationConfigs.canvas?.plot !== undefined || config.rotation !== 0) {
     const horizontal = channel === "x";
     const near = ["bottom", "right"].includes(config.position);
     const edge = horizontal ? bounds.y + (near ? bounds.height : 0)
@@ -300,7 +321,29 @@ function resolve(program, channel, config) {
         : { ...item, left: item.left + delta, right: item.right + delta };
     });
   }
-  const rotatedOverlap = program.materializationConfigs.canvas?.plot !== undefined && config.rotation !== 0;
+  if (config.flush === true) {
+    const along = channel === "x" ? "x" : "y";
+    const lowKey = channel === "x" ? "left" : "top";
+    const highKey = channel === "x" ? "right" : "bottom";
+    const low = Math.min(...scale.range) + (config.alongOffset ?? 0);
+    const high = Math.max(...scale.range) + (config.alongOffset ?? 0);
+    const grouped = unionLabelBounds(labelBounds.map((bounds, index) => ({ bounds, group: resolved.groups[index] })));
+    const shifts = grouped.map(item => {
+      if (item[highKey] - item[lowKey] > high - low + 1e-9) {
+        throw new Error(`The ${channel}-axis label cannot flush inside the scale span.`);
+      }
+      return item[lowKey] < low ? low - item[lowKey]
+        : item[highKey] > high ? high - item[highKey] : 0;
+    });
+    const positions = resolved[along];
+    resolved[along] = resolved.text.map((_, index) =>
+      (Array.isArray(positions) ? positions[index] : positions) + shifts[resolved.groups[index]]);
+    labelBounds = labelBounds.map((item, index) => {
+      const delta = shifts[resolved.groups[index]];
+      return { ...item, [lowKey]: item[lowKey] + delta, [highKey]: item[highKey] + delta };
+    });
+  }
+  const rotatedOverlap = config.rotation !== 0;
   const collisionBounds = rotatedOverlap ? resolved.text.map((text, index) => {
     const x = Array.isArray(resolved.x) ? resolved.x[index] : resolved.x;
     const y = Array.isArray(resolved.y) ? resolved.y[index] : resolved.y;
@@ -361,7 +404,7 @@ function makeEdit(channel) {
       ...(explicitMode ? { inferredValues: false } : {}),
       mode
     }, args, op);
-    config = normalizeAxisLabelMap(this, config, args, op);
+    config = normalizeAxisLabelMaps(this, config, args, op);
     if (mode === "values") delete config.count; else delete config.values;
     validateConfig(channel, config);
     assertTickCompatibility(this.guideConfigs.axis?.[channel]?.ticks, config, op);
@@ -372,7 +415,9 @@ function makeEdit(channel) {
       x: resolved.x,
       y: resolved.y,
       text: resolved.text,
-      fill: config.color,
+      fill: config.colorMap === undefined ? config.color
+        : resolved.text.map((_, index) => resolveDisplayLabelColor(
+          resolved.values[resolved.groups[index]], config.colorMap, config.color)),
       fontSize: config.fontSize,
       fontFamily: config.fontFamily,
       fontWeight: config.fontWeight,
@@ -435,7 +480,7 @@ function makeCreate(channel) {
         (ticks?.inferredValues === true || inferredDiscreteValues !== undefined),
       mode
     }, args, op);
-    config = normalizeAxisLabelMap(this, config, args, op);
+    config = normalizeAxisLabelMaps(this, config, args, op);
     if (mode === "values") {
       config.values ??= ticks?.values ?? inferredDiscreteValues;
     } else {

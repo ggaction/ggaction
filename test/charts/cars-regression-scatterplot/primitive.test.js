@@ -197,7 +197,9 @@ test("authors and renders the complete primitive regression scatterplot", () => 
   assert.equal(findCanvasCalls(context, "fillRect").length, 81);
   assert.equal(findCanvasCalls(context, "closePath").length, 2);
   assert.equal(findCanvasCalls(context, "fillText").length, 20);
-  assert.equal(findCanvasCalls(context, "stroke").length, 99);
+  // Eighty rects and one circle have width zero and deliberately produce no stroke.
+  // Keep the eighteen authored positive-width grid/axis/legend/regression strokes.
+  assert.equal(findCanvasCalls(context, "stroke").length, 18);
 
   const topLevelOps = new Set(program.trace.children.map(node => node.op));
   assert.deepEqual([...topLevelOps], [

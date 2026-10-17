@@ -72,7 +72,7 @@ for (const [operation, id, mapping] of [["createRosePlot", "rosePlot", "area"], 
     assert.equal(JSON.stringify(p), before);
   });
   test(`${operation} validates its closed options and measurement constraints atomically`, () => {
-    for (const args of [{}, {category:"category",value:"value"}, {...options,aggregate:"count"},
+    for (const args of [{}, {...options,aggregate:"count"},
       {...options,mapping:"area"}, {...options,arc:{padAngle:1}}, {...options,arc:{fill:"red"}},
       {...options,radiusScale:{nice:true}}, {...options,radiusScale:{zero:false}}, {...options,radiusScale:{type:"sqrt"}},
       {...options,radiusScale:{range:[70,140]},arc:{innerRadius:0.2}},

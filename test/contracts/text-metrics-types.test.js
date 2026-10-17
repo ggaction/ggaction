@@ -23,7 +23,10 @@ const next: ChartProgram = full.applyTextMetrics({profile}).removeTextMetrics();
 void next;
 full.applyTextMetrics({profile:{...profile,measurements:[{...row,fontStyle:"italic"}]}});
 full.createTitle({text:"Title",titleStyle:{fontStyle:"normal"},subtitleStyle:{fontStyle:"italic"}});
-full.editTitle({titleStyle:{fontStyle:"italic"}});
+full.editTitle({titleStyle:{fontStyle:"italic"},alongOffset:-20});
+full.createTitle({text:"Shifted",alongOffset:20});
+// @ts-expect-error along-edge shift requires finite numeric input at runtime
+full.editTitle({alongOffset:"20"});
 // @ts-expect-error style is a closed vocabulary
 full.editTitle({titleStyle:{fontStyle:"oblique"}});
 // @ts-expect-error measurement style is a closed vocabulary

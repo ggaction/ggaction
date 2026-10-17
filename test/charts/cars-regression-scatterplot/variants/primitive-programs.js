@@ -115,6 +115,10 @@ export function createLeftLegendPrimitives(cars) {
       property: "x",
       value: origin.items.map(item => item.label.x)
     })
+    .editGraphics({ target: "seriesLegendSymbolLines", property: "y1", value: origin.items.map(item => item.line.y1) })
+    .editGraphics({ target: "seriesLegendSymbolLines", property: "y2", value: origin.items.map(item => item.line.y2) })
+    .editGraphics({ target: "seriesLegendLabels", property: "y", value: origin.items.map(item => item.label.y) })
+    .editGraphics({ target: "seriesLegendTitle", property: "y", value: origin.title.y })
     .editGraphics({ target: "seriesLegendTitle", property: "x", value: origin.title.x })
     .editGraphics({
       target: "sizeLegendSymbols",
@@ -126,6 +130,9 @@ export function createLeftLegendPrimitives(cars) {
       property: "x",
       value: size.items.map(item => item.label.x)
     })
+    .editGraphics({ target: "sizeLegendSymbols", property: "y", value: size.items.map(item => item.symbol.y) })
+    .editGraphics({ target: "sizeLegendLabels", property: "y", value: size.items.map(item => item.label.y) })
+    .editGraphics({ target: "sizeLegendTitle", property: "y", value: size.title.y })
     .editGraphics({ target: "sizeLegendTitle", property: "x", value: size.title.x });
 
   program = editTextStyle(program, "seriesLegendLabels", labelStyle);

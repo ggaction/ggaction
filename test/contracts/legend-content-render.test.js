@@ -17,7 +17,7 @@ function colorPrimitive(base, size, sizeTitleFill = "#334155") {
   const color = base
     .createGraphics({ id: "colorLegendSymbols", type: "rect", length: 2, parent: "canvas" })
     .editGraphics({ target: "colorLegendSymbols", property: "x", value: 508.25 })
-    .editGraphics({ target: "colorLegendSymbols", property: "y", value: [76, 104] })
+    .editGraphics({ target: "colorLegendSymbols", property: "y", value: [62.5, 80.5] })
     .editGraphics({ target: "colorLegendSymbols", property: "width", value: 14 })
     .editGraphics({ target: "colorLegendSymbols", property: "height", value: 12 })
     .editGraphics({ target: "colorLegendSymbols", property: "fill", value: ["#4c78a8", "#f58518"] })
@@ -25,83 +25,84 @@ function colorPrimitive(base, size, sizeTitleFill = "#334155") {
     .editGraphics({ target: "colorLegendSymbols", property: "strokeWidth", value: 0.5 })
     .createGraphics({ id: "colorLegendLabels", type: "text", length: 2, parent: "canvas" })
     .editGraphics({ target: "colorLegendLabels", property: "x", value: 530.5 })
-    .editGraphics({ target: "colorLegendLabels", property: "y", value: [82, 110] })
+    .editGraphics({ target: "colorLegendLabels", property: "y", value: [62.5, 80.5] })
     .editGraphics({ target: "colorLegendLabels", property: "text", value: ["A", "B"] })
     .editGraphics({ target: "colorLegendLabels", property: "fill", value: "#334155" })
     .editGraphics({ target: "colorLegendLabels", property: "fontSize", value: 12 })
     .editGraphics({ target: "colorLegendLabels", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "colorLegendLabels", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "colorLegendLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "colorLegendLabels", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "colorLegendLabels", property: "textBaseline", value: "top" })
     .createGraphics({ id: "colorLegendTitle", type: "text", parent: "canvas" })
     .editGraphics({ target: "colorLegendTitle", property: "x", value: 508 })
-    .editGraphics({ target: "colorLegendTitle", property: "y", value: 50 })
+    .editGraphics({ target: "colorLegendTitle", property: "y", value: 30 })
     .editGraphics({ target: "colorLegendTitle", property: "text", value: "g" })
     .editGraphics({ target: "colorLegendTitle", property: "fill", value: "#334155" })
     .editGraphics({ target: "colorLegendTitle", property: "fontSize", value: 13 })
     .editGraphics({ target: "colorLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "colorLegendTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "colorLegendTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "colorLegendTitle", property: "textBaseline", value: "middle" });
+    .editGraphics({ target: "colorLegendTitle", property: "textBaseline", value: "top" });
   if (!size) return color;
+  // The last 12px swatch includes a .25px stroke beyond the label; the next block starts 24px below it.
   return color
     .editGraphics({ target: "colorLegendSymbols", property: "x", value: 539 })
     .editGraphics({ target: "colorLegendLabels", property: "x", value: 574 })
     .editGraphics({ target: "colorLegendTitle", property: "x", value: 530 })
     .createGraphics({ id: "sizeLegendSymbols", type: "circle", length: 3, parent: "canvas" })
     .editGraphics({ target: "sizeLegendSymbols", property: "x", value: 546 })
-    .editGraphics({ target: "sizeLegendSymbols", property: "y", value: [179, 219, 259] })
+    .editGraphics({ target: "sizeLegendSymbols", property: "y", value: [155.25, 173.25, 191.25] })
     .editGraphics({ target: "sizeLegendSymbols", property: "radius", value: [Math.sqrt(24 / Math.PI), Math.sqrt(110 / Math.PI), Math.sqrt(196 / Math.PI)] })
     .editGraphics({ target: "sizeLegendSymbols", property: "fill", value: "#94a3b8" })
     .editGraphics({ target: "sizeLegendSymbols", property: "opacity", value: 0.7 })
     .createGraphics({ id: "sizeLegendLabels", type: "text", length: 3, parent: "canvas" })
     .editGraphics({ target: "sizeLegendLabels", property: "x", value: 574 })
-    .editGraphics({ target: "sizeLegendLabels", property: "y", value: [179, 219, 259] })
+    .editGraphics({ target: "sizeLegendLabels", property: "y", value: [149.25, 167.25, 185.25] })
     .editGraphics({ target: "sizeLegendLabels", property: "text", value: ["4", "14.5", "25"] })
     .editGraphics({ target: "sizeLegendLabels", property: "fill", value: "#334155" })
     .editGraphics({ target: "sizeLegendLabels", property: "fontSize", value: 12 })
     .editGraphics({ target: "sizeLegendLabels", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "sizeLegendLabels", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "sizeLegendLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "sizeLegendLabels", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "sizeLegendLabels", property: "textBaseline", value: "top" })
     .createGraphics({ id: "sizeLegendTitle", type: "text", parent: "canvas" })
     .editGraphics({ target: "sizeLegendTitle", property: "x", value: 530 })
-    .editGraphics({ target: "sizeLegendTitle", property: "y", value: 147 })
+    .editGraphics({ target: "sizeLegendTitle", property: "y", value: 116.75 })
     .editGraphics({ target: "sizeLegendTitle", property: "text", value: "m" })
     .editGraphics({ target: "sizeLegendTitle", property: "fill", value: sizeTitleFill })
     .editGraphics({ target: "sizeLegendTitle", property: "fontSize", value: 13 })
     .editGraphics({ target: "sizeLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "sizeLegendTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "sizeLegendTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "sizeLegendTitle", property: "textBaseline", value: "middle" });
+    .editGraphics({ target: "sizeLegendTitle", property: "textBaseline", value: "top" });
 }
 
 function shapePrimitive(base) {
   return base
     .createGraphics({ id: "seriesLegendSymbolPoints", type: "collection", parent: "canvas" })
     .editGraphics({ target: "seriesLegendSymbolPoints", property: "items", value: [
-      { type: "circle", properties: { x: 512.5135166683821, y: 82, radius: 4.51351666838205,
+      { type: "circle", properties: { x: 512.5135166683821, y: 68.5, radius: 4.51351666838205,
         fill: "#4c78a8", stroke: "white", strokeWidth: 0 } },
-      { type: "rect", properties: { x: 508.51351666838207, y: 106, width: 7.999999999999999,
+      { type: "rect", properties: { x: 508.51351666838207, y: 82.5, width: 7.999999999999999,
         height: 7.999999999999999, fill: "#4c78a8", stroke: "white", strokeWidth: 0 } }
     ] })
     .createGraphics({ id: "seriesLegendLabels", type: "text", length: 2, parent: "canvas" })
     .editGraphics({ target: "seriesLegendLabels", property: "items", value: [
-      { type: "text", properties: { x: 527.0270333367641, y: 82, text: "A", fill: "#334155",
-        fontSize: 12, fontFamily: "sans-serif", fontWeight: "normal", textAlign: "left", textBaseline: "middle" } },
-      { type: "text", properties: { x: 527.0270333367641, y: 110, text: "B", fill: "#334155",
-        fontSize: 12, fontFamily: "sans-serif", fontWeight: "normal", textAlign: "left", textBaseline: "middle" } }
+      { type: "text", properties: { x: 527.0270333367641, y: 62.5, text: "A", fill: "#334155",
+        fontSize: 12, fontFamily: "sans-serif", fontWeight: "normal", textAlign: "left", textBaseline: "top" } },
+      { type: "text", properties: { x: 527.0270333367641, y: 80.5, text: "B", fill: "#334155",
+        fontSize: 12, fontFamily: "sans-serif", fontWeight: "normal", textAlign: "left", textBaseline: "top" } }
     ] })
     .createGraphics({ id: "seriesLegendTitle", type: "text", parent: "canvas" })
     .editGraphics({ target: "seriesLegendTitle", property: "x", value: 508 })
-    .editGraphics({ target: "seriesLegendTitle", property: "y", value: 50 })
+    .editGraphics({ target: "seriesLegendTitle", property: "y", value: 30 })
     .editGraphics({ target: "seriesLegendTitle", property: "text", value: "g" })
     .editGraphics({ target: "seriesLegendTitle", property: "fill", value: "#334155" })
     .editGraphics({ target: "seriesLegendTitle", property: "fontSize", value: 13 })
     .editGraphics({ target: "seriesLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "seriesLegendTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "seriesLegendTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "middle" });
+    .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "top" });
 }
 
 test("matches exact point legend content to independent graphic primitives", async () => {
@@ -199,9 +200,9 @@ test("matches point content replacement to the existing independent graphic targ
 function colorShapePrimitive(base, withLine) {
   let primitive = shapePrimitive(base)
     .editGraphics({ target: "seriesLegendSymbolPoints", property: "items", value: [
-      { type: "circle", properties: { x: withLine ? 525.5 : 512.5135166683821, y: 82, radius: 4.51351666838205,
+      { type: "circle", properties: { x: withLine ? 525.5 : 512.5135166683821, y: 68.5, radius: 4.51351666838205,
         fill: "#4c78a8", stroke: "white", strokeWidth: 0 } },
-      { type: "rect", properties: { x: withLine ? 521.5 : 508.51351666838207, y: 106, width: 7.999999999999999,
+      { type: "rect", properties: { x: withLine ? 521.5 : 508.51351666838207, y: 82.5, width: 7.999999999999999,
         height: 7.999999999999999, fill: "#f58518", stroke: "white", strokeWidth: 0 } }
     ] });
   if (!withLine) return primitive;
@@ -210,8 +211,8 @@ function colorShapePrimitive(base, withLine) {
     .createGraphics({ id: "seriesLegendSymbolLines", type: "line", length: 2, parent: "canvas", before: "seriesLegendSymbolPoints" })
     .editGraphics({ target: "seriesLegendSymbolLines", property: "x1", value: 509.5 })
     .editGraphics({ target: "seriesLegendSymbolLines", property: "x2", value: 541.5 })
-    .editGraphics({ target: "seriesLegendSymbolLines", property: "y1", value: [82, 110] })
-    .editGraphics({ target: "seriesLegendSymbolLines", property: "y2", value: [82, 110] })
+    .editGraphics({ target: "seriesLegendSymbolLines", property: "y1", value: [68.5, 86.5] })
+    .editGraphics({ target: "seriesLegendSymbolLines", property: "y2", value: [68.5, 86.5] })
     .editGraphics({ target: "seriesLegendSymbolLines", property: "stroke", value: ["#4c78a8", "#f58518"] })
     .editGraphics({ target: "seriesLegendSymbolLines", property: "strokeWidth", value: 3 })
     .editGraphics({ target: "seriesLegendSymbolLines", property: "strokeDash", value: [[], []] });

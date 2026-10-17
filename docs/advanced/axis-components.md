@@ -197,7 +197,9 @@ program.editXAxisTitle({ text: "Engine horsepower", at: "start" });
 
 Default title placement is centered. x uses offset 42 and rotation 0. y uses
 offset 52 with rotation `-Math.PI / 2` on the left or `Math.PI / 2` on the
-right. An explicit rotation remains unchanged when the position is edited.
+right. When labels require a tight Canvas margin, an inferred rotated y title larger than the default title size reserves a
+quarter of the title font size beyond its estimated text box for font ink.
+Explicit offsets keep their exact placement. An explicit rotation remains unchanged when the position is edited.
 The legacy numeric form remains radians. For a unit-visible call, use for
 example `rotation: { value: -90, unit: "degrees" }`; the stored concrete title
 rotation is normalized to radians. Radial-axis `angle` remains a separate

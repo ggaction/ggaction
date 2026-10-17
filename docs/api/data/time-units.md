@@ -15,7 +15,9 @@ title: Time-Unit Data Transforms
 every source row. Use it when timestamps within the same calendar unit need a
 shared value before a later encoding, filter, aggregation, or window operation.
 
-## `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })`
+Omit `as` to name the new field `${field}_${unit}`. The name must be absent from every source row; collisions are errors. Explicit `as` keeps your chosen output name.
+
+## `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })`
 
 <!-- snippet-context:start -->
 

@@ -1,3 +1,4 @@
+import { resolveLegendGroupPlacement } from "../../layout/legendGroup.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { resolveConcreteGraphicBounds } from
   "../../grammar/schemas/graphicBounds.js";
@@ -18,6 +19,9 @@ function copyLegendConfig(program, source) {
   for (const [kind, config] of Object.entries(source.guideConfigs.legend ?? {})) {
     next = next._withLegendConfig(kind, config);
   }
+  for (const [target, group] of Object.entries(source.guideConfigs.legendGroups ?? {})) {
+    next = next._withMaterializationConfig(["guides", "legendGroups", target], group);
+  }
   return next;
 }
 
@@ -33,6 +37,12 @@ function removeNamespacedGraphics(program, namespace, ids) {
 }
 
 function legendTranslation(prepared, plot, layout) {
+  if (layout.legend?.translation !== undefined) return layout.legend.translation;
+  if (prepared.occupiedGroup !== undefined) {
+    const [placement] = resolveLegendGroupPlacement({ blocks: [{ id: "shared", bounds: prepared.bounds }],
+      group: prepared.occupiedGroup, plot, canvas: layout });
+    return { x: placement.dx, y: placement.dy };
+  }
   const position = prepared.reservation.position;
   if (["top", "bottom"].includes(position)) {
     const width = prepared.bounds.right - prepared.bounds.left;
@@ -55,18 +65,16 @@ function legendTranslation(prepared, plot, layout) {
   const strips = prepared.source.graphicSpec.objects[`${prefix}Strips`];
   if (strips?.items?.[0] !== undefined) {
     const properties = strips.items[0].properties;
-    const length = prepared.source.guideConfigs.legend[gradientKind].gradient.length;
     return {
       x: layout.legend.x - (position === "left"
         ? prepared.bounds.left
         : properties.x),
-      y: plot.y + (plot.height - length) / 2 - properties.y
+      y: plot.y - prepared.bounds.top
     };
   }
-  const height = prepared.bounds.bottom - prepared.bounds.top;
   return {
     x: layout.legend.x - prepared.bounds.left,
-    y: plot.y + Math.max(0, (plot.height - height) / 2) - prepared.bounds.top
+    y: plot.y - prepared.bounds.top
   };
 }
 
@@ -91,7 +99,7 @@ function attachParentLegend(program, prepared, plot, layout) {
   return next;
 }
 
-function assertSharedLegendFits(program, id, layout, plot) {
+function assertSharedLegendFits(program, id, layout, plot, occupiedGroup) {
   const bounds = resolveConcreteGraphicBounds(program.graphicSpec, id, program.materializationConfigs.textMetrics);
   if (bounds === undefined) {
     throw new Error("Facet shared legend requires measurable concrete bounds.");
@@ -102,7 +110,7 @@ function assertSharedLegendFits(program, id, layout, plot) {
       Math.max(bounds.left, plot.x) &&
     Math.min(bounds.bottom, plot.y + plot.height) >
       Math.max(bounds.top, plot.y);
-  if (outside || overlapsPlot) {
+  if (outside || overlapsPlot && occupiedGroup === undefined) {
     throw new Error(
       "Facet shared legend requires more space than the composed Canvas provides."
     );
@@ -153,10 +161,13 @@ export function applyFacetGuideComposition(program, { layout, plot } = {}) {
   let id;
   if (prepared.mode === "legacyCategorical") {
     id = `${program.compositionSpec.id}-legend`;
-    next = materializeLegacyCategoricalLegend(next, prepared, layout);
+    next = materializeLegacyCategoricalLegend(next, prepared, {
+      ...layout,
+      legend: { ...layout.legend, y: plot.y }
+    });
   } else {
     id = `${program.compositionSpec.id}-shared-legend`;
     next = attachParentLegend(next, prepared, plot, layout);
   }
-  return assertSharedLegendFits(next, id, layout, plot);
+  return assertSharedLegendFits(next, id, layout, plot, prepared.occupiedGroup);
 }

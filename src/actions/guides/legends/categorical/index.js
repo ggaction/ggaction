@@ -29,6 +29,7 @@ import {
 } from "./symbols.js";
 import { activeConfig, noOptions, symbolGraphic } from "./layout.js";
 import {
+  rematerializeLegendGroups,
   rematerializeHorizontalLegendLane,
   rematerializeSideLegendLane
 } from "../lane.js";
@@ -68,6 +69,10 @@ function createLegendHighlightAction() {
     },
     function (args = {}) {
       noOptions(args, "rematerializeLegendHighlights");
+      if (this.context.deferGuideLayoutValidation !== true &&
+          Object.values(this.guideConfigs.legend ?? {}).some(config => ["left", "right"].includes(config.position))) {
+        return this.rematerializeLegend();
+      }
       const kinds = args.kind === undefined
         ? ["series", "color", "stroke"].filter(
             kind => this.guideConfigs.legend?.[kind] !== undefined
@@ -134,6 +139,7 @@ export function registerBasicCategoricalLegendActions(ProgramClass) {
   ProgramClass.prototype.createLegendTitle = createLegendTitle;
   ProgramClass.prototype.rematerializeLegendTitle = rematerializeLegendTitle;
   ProgramClass.prototype.rematerializeLegend = rematerializeLegend;
+  ProgramClass.prototype.rematerializeLegendGroups = rematerializeLegendGroups;
   ProgramClass.prototype.rematerializeSideLegendLane =
     rematerializeSideLegendLane;
   ProgramClass.prototype.rematerializeHorizontalLegendLane =

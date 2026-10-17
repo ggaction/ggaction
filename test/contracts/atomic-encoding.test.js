@@ -264,7 +264,7 @@ test("transposes aggregate bar roles from one final x/y state", () => {
   assert.equal(base.semanticSpec.layers[0].encoding.y.field, "amount");
 });
 
-test("rejects a transpose when its final categorical channel cannot own a continuous grid", () => {
+test("rejects a transpose when its final categorical channel retains an explicit numeric grid count", () => {
   const base = chart()
     .createCanvas({
       width: 420,
@@ -281,7 +281,7 @@ test("rejects a transpose when its final categorical channel cannot own a contin
     .createBarMark({ id: "bars" })
     .encodeX({ target: "bars", field: "category", fieldType: "nominal" })
     .encodeY({ target: "bars", field: "amount" })
-    .createHorizontalGrid();
+    .createHorizontalGrid({ count: 3 });
   const before = stateWithoutTrace(base);
   const trace = base.trace;
 
@@ -297,7 +297,7 @@ test("rejects a transpose when its final categorical channel cannot own a contin
         }
       }
     }),
-    /continuous scale/
+    /Categorical grid values cannot use count/
   );
   assert.deepEqual(stateWithoutTrace(base), before);
   assert.strictEqual(base.trace, trace);

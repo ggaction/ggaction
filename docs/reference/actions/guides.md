@@ -403,6 +403,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 
 </details>
 
@@ -436,6 +437,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 
 </details>
 
@@ -465,6 +467,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -497,6 +500,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -537,6 +541,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
+| `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
@@ -579,6 +586,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
+| `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
@@ -617,6 +627,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
+| `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
@@ -658,6 +671,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
+| `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
@@ -696,8 +712,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
-| `ticks` | Optional / branch-dependent | `AxisTickStyleOptions \| undefined` |
-| `labels` | Optional / branch-dependent | `(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
+| `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
 
 </details>
 
@@ -728,8 +744,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
-| `ticks` | Optional / branch-dependent | `AxisTickStyleOptions \| undefined` |
-| `labels` | Optional / branch-dependent | `(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
+| `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
 
 </details>
 
@@ -759,8 +775,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
-| `ticks` | Optional / branch-dependent | `AxisTickStyleOptions \| undefined` |
-| `labels` | Optional / branch-dependent | `(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
+| `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
 
 </details>
 
@@ -790,8 +806,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
-| `ticks` | Optional / branch-dependent | `AxisTickStyleOptions \| undefined` |
-| `labels` | Optional / branch-dependent | `(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
+| `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
 
 </details>
 
@@ -1117,10 +1133,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `values` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `values` | Optional / branch-dependent | `readonly CategoryValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
@@ -1150,10 +1169,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `values` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `values` | Optional / branch-dependent | `readonly CategoryValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
@@ -1183,8 +1205,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
+| `values` | Optional / branch-dependent | `"auto" \| readonly CategoryValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
@@ -1214,8 +1239,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
+| `values` | Optional / branch-dependent | `"auto" \| readonly CategoryValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
@@ -1305,12 +1333,15 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
 | `order` | Optional / branch-dependent | `LegendOrder \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
+| `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
+| `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
@@ -1319,7 +1350,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `readonly number[] \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; } \| undefined` |
+| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
 | `labels` | Optional / branch-dependent | `LegendTextOptions \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `LegendTitleStyleOptions \| undefined` |
@@ -1342,8 +1373,27 @@ Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Interval legends support all four
 edges with layout `"edge"`, side single columns and horizontal item grids. Explicit `channels` creates exactly
 the selected content; include `"size"` in a point categorical-and-size request.
+For outside top/bottom legends, omitting `offset` places the occupied legend after
+the same-side axis line, ticks, labels, and title, with the family's native gap
+(8 pixels for categorical legends, 30 for continuous families). Axis edits and
+removal recompute that gap. An explicit numeric `offset`, including zero or the
+native value, remains measured from the plot edge. Free coordinates, plot corners,
+and `legacy-bottom` keep their existing anchors. Older saved programs retain
+their fixed offsets.
+Top-title style accepts `align: "left" | "center" | "right"` within the
+measured title/body content block. This applies to every legend family; omission
+preserves each layout's current alignment. It does not move the complete group,
+change item spacing, or include border padding. Inline `titlePosition: "left"`
+rejects an explicit title alignment. Whole/focused title edits accept `"auto"`
+to remove an explicit alignment; creation and saved state accept only the three
+alignment values. Hidden titles retain their style for restoration.
 Automatic symbol recipes refresh when matching companion lines or their color
 bindings change; explicit recipes retain their layers and order.
+Continuous color and stroke ramps accept
+`gradient: { length?, thickness?, opacity? }`. Body opacity is finite in `[0, 1]`,
+defaults to `1`, and preserves space at zero. It never fades marks, text, ticks,
+or borders. Whole and focused legend edits preserve omitted gradient fields;
+switching from symbols back to a gradient resets exclusive gradient settings.
 Omitted point channels infer the available categorical color, shape, and
 quantitative size with the same result as explicit selection. Color-only uses
 swatches; shape uses typed symbols; a size encoding adds its own sample block.
@@ -1381,8 +1431,10 @@ The optional `summary` value is `"ellipsis-count"`. All categories remain in
 the appearance scale and legend domain, including categories omitted from the
 visible legend. The limit follows the effective legend order and label map.
 Omission or `false` displays every category. This option also works on edge
-categorical legends and standalone ordinal size legends. Continuous and combined sampled legends retain their
-existing edge-only contracts. Shared facet promotion requires an edge position.
+categorical legends and ordinal size legends. When a categorical block and an
+ordinal size block are created or edited together, the same limit applies to both
+blocks. Quantitative size sampling is unchanged by a categorical overflow limit.
+Continuous and combined sampled legends retain their existing edge-only contracts. Shared facet promotion requires an edge position.
 
 
 ## `editLegend`
@@ -1404,24 +1456,27 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `titleStyle` | Optional / branch-dependent | `LegendTitleStyleEditOptions \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
+| `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
 | `order` | Optional / branch-dependent | `LegendOrder \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
+| `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
+| `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"left" \| "top" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; } \| undefined` |
+| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
 | `labels` | Optional / branch-dependent | `LegendTextOptions \| undefined` |
-| `titleStyle` | Optional / branch-dependent | `LegendTitleStyleOptions \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
 | `border` | Optional / branch-dependent | `boolean \| LegendBorderOptions \| undefined` |
 
@@ -1465,7 +1520,7 @@ dependent replay that would invalidate a stored exact sample fails atomically.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editLegendBlock(options: EditLegendBlockOptions): ChartProgram;
@@ -1497,7 +1552,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 editLegendBlock({
-  target, channel, title?, values?, count?, order?, gap?, text?, symbol?
+  target, channel, title?, values?, count?, order?, gap?, text?, symbol?, labelMap?
 })
 ```
 
@@ -1512,6 +1567,8 @@ automatic `count`; categorical blocks accept an exact full-domain `order`.
 sample appearance, and `gap` changes internal spacing. Empty `text` or `symbol`
 objects restore the base style. A symbol property that would replace the data
 mapping is rejected. Empty `title` hides the selected block. Full programs only.
+Categorical `labelMap` may map a value to `""`: only its text is omitted, while
+the category, symbol, item slot, and typed identity remain.
 [Editing legends](../../api/legends/editing.md#editing-one-legend-block)
 
 
@@ -1537,6 +1594,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
+| `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
+| `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
@@ -1608,6 +1667,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"auto" \| "center" \| "left" \| "right" \| undefined` |
 
 </details>
 
@@ -1637,7 +1697,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
-| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; } \| undefined` |
+| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 
 </details>
 
@@ -1770,6 +1830,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `position` | Optional / branch-dependent | `"bottom" \| "left" \| "right" \| "top" \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `gap` | Optional / branch-dependent | `number \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
@@ -1783,13 +1844,17 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createTitle({
-  text, subtitle?, position?, align?, offset?, gap?,
+  text, subtitle?, position?, align?, offset?, alongOffset?, gap?,
   maxWidth?, wrap?, lineHeight?,
   titleStyle?, subtitleStyle?
 })
 ```
 
-Create a chart title and optional subtitle. [Titles](../../api/titles.md)
+Create a chart title and optional subtitle. Explicit newlines retain their line
+spacing; blank lines reserve space without painted text. Each string requires
+at least one non-empty hard line. On facet parents, `alongOffset` shifts the full
+title/subtitle block horizontally from the translated child-plot alignment anchor.
+Text outside the composed Canvas is rejected. [Titles](../../api/titles.md)
 
 
 ## `editTitle`
@@ -1816,6 +1881,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `position` | Optional / branch-dependent | `"bottom" \| "left" \| "right" \| "top" \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `gap` | Optional / branch-dependent | `number \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
@@ -1829,7 +1895,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 editTitle({
-  text?, subtitle?, position?, align?, offset?, gap?,
+  text?, subtitle?, position?, align?, offset?, alongOffset?, gap?,
   maxWidth?, wrap?, lineHeight?,
   titleStyle?, subtitleStyle?
 })
@@ -2885,26 +2951,26 @@ createYAxisLine({ scale?, position?, color?, lineWidth? })
 editXAxisLine({ position?, color?, lineWidth? })
 editYAxisLine({ position?, color?, lineWidth? })
 
-createXAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth? })
-createYAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth? })
-editXAxisTicks({ position?, count?, values?, length?, color?, lineWidth? })
-editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth? })
+createXAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+createYAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+editXAxisTicks({ position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
 
 createXAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 createYAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 editXAxisLabels({
   position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 editYAxisLabels({
   position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 ```
 
@@ -2940,6 +3006,12 @@ editYAxisTitle({
 })
 ```
 
+Cartesian title `text` keeps explicit line breaks (LF, CRLF, or CR), including
+blank lines. Lines form a centered block with spacing of `fontSize * 1.2`;
+rotation applies to the complete block. Creation, editing, Canvas/scale updates,
+facets and saved programs retain the same lines. Canvas and label-clearance
+checks use their full bounds. Returning to single-line text removes the old lines.
+
 Cartesian title `rotation` accepts a finite legacy number in radians or
 `{ value, unit: "degrees" | "radians" }`. Both forms normalize to concrete
 radians. Polar component `angle` remains degree-valued placement.
@@ -2957,8 +3029,8 @@ resource. [Axes](../../api/axes.md)
 ## Directional grids
 
 ```javascript
-createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })
-createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })
+createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })
+createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })
 editHorizontalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
 editVerticalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
 editGrid({
@@ -2990,7 +3062,7 @@ editLegendLayout({
 })
 editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
-  target?, title?, color?, fontSize?, fontFamily?, fontWeight?
+  target?, title?, color?, fontSize?, fontFamily?, fontWeight?, align?
 })
 editLegendSymbols({ target?, symbol?, count?, gradient? })
 editLegendBorder({ target?, border })

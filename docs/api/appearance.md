@@ -15,12 +15,12 @@ title: Appearance Encodings
 | --- | --- | --- | --- | --- |
 | `encodeSize` | point | quantitative, nominal, ordinal | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; remove explicit radius first |
 | `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
-| `encodeOpacity` | point, line, rule | quantitative or constant | linear for field; none for constant | point/rule item or complete line series; values within one series must agree |
+| `encodeOpacity` | point, line, rule, bar | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree |
 | `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
 | `encodeStrokeDash` | line, rule | nominal or constant | ordinal for field; none for constant | complete line series or rule item; series values must agree |
 | `encodeAngle` | point, tick | quantitative or constant | none | item; clockwise degrees; circles retain the angle as a visual no-op |
 | `encodePointRadius` / `encodeRadius` | point | constant | none | glyph radius in logical pixels; independent from Polar position r |
-| `encodeBarWidth` | bar | constant band fraction or pixels | parent category band or temporal/quantitative slot | aggregate or ranged bar; histogram bins own their width |
+| `encodeBarWidth` | bar | constant band fraction, pixels, or UTC calendar interval | parent category band, temporal interval, or quantitative slot | aggregate or ranged bar; histogram bins own their width |
 
 <!-- action-capabilities:appearance:end -->
 
@@ -88,3 +88,5 @@ properties listed on the focused selection page.
 
 [Marks](./marks.md) · [Position encodings](./position-encodings.md) ·
 [Series encodings](./series-encodings.md) · [Legends](./legends.md)
+
+Explicit shape ranges may reuse supported shapes for different categories. Provide an entry for every domain value; automatic ranges remain distinct and do not cycle.

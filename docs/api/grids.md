@@ -17,6 +17,15 @@ title: Grids
 
 ## `createGrid(options?)`
 
+Cartesian grids accept continuous, band and point scales. Band grids use centers by default; set `bandPosition: "boundary"` for both edges of each selected cell. Categorical grids accept category `values` and reject `count`.
+
+An explicit `bandPosition`, including `"center"`, requires a band scale; continuous
+and point scales reject it. In `createLinePlot`, only a categorical x band scale
+can use it through `guides.grid.vertical`. The horizontal grid follows the
+line's continuous y scale and does not accept band positioning. Density plots use continuous value and density scales; Horizon and Rug plots use continuous quantitative or temporal measure scales. Their facade grids also reject explicit band positioning. Area plots retain categorical band grids on the independent channel: vertical for `valueChannel: "y"`, horizontal for `valueChannel: "x"`.
+
+Set Cartesian `zIndex` to a finite rank: positive values draw above related marks, zero or negative values draw behind them. Grids on each side sort by rank, with horizontal before vertical on a tie. Editors and resizing retain the chosen order.
+
 Creates Cartesian or Polar grid geometry from encoded scales. Cartesian
 defaults to horizontal only. A Polar-only chart creates theta spokes when theta
 is encoded and radial circles when radius is encoded; charts with both channels
@@ -66,12 +75,15 @@ Direction options are:
 | `values` | Exact finite data-space values; mutually exclusive with `count` |
 | `color` | Stroke color; default `#e2e8f0` |
 | `lineWidth` | Non-negative stroke width; default `1` |
+| `alongOffset` | Signed finite logical-pixel displacement; vertical lines right, horizontal lines down; default `0` |
 | `strokeDash` | Even-length non-negative dash array; default `[]` |
 
 When values and count are omitted, a grid reuses compatible existing axis
 ticks. Without an axis it uses histogram bin boundaries for a binned x scale,
 or five nice ticks for another continuous scale. Explicit values and count
 always take precedence.
+
+`alongOffset` is independent of tick and label displacement. It applies after scale mapping and band-boundary construction, survives edits and Canvas/scale updates, and does not change the scale domain or mark positions. Use zero to reset it. Polar grids do not accept this option.
 
 Horizontal lines span the plot width at y-scale positions. Vertical lines span
 the plot height at x-scale positions. Grid graphics are inserted before the

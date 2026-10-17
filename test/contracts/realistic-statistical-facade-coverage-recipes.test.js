@@ -83,12 +83,13 @@ const LEGACY_SCALE_INVENTORY_COUNTS = Object.freeze({
   createBoxPlot: Object.freeze({ paths: 30, literals: 32, diversity: 0 }),
   createGradientPlot: Object.freeze({ paths: 30, literals: 32, diversity: 0 }),
   createViolinPlot: Object.freeze({ paths: 39, literals: 35, diversity: 2 }),
-  createHeatmap: Object.freeze({ paths: 45, literals: 54, diversity: 2 }),
+  createHeatmap: Object.freeze({ paths: 45, literals: 55, diversity: 2 }),
   createHistogram: Object.freeze({ paths: 32, literals: 32, diversity: 2 })
 });
 const TAIL_LITERAL_REQUIREMENT_IDS = Object.freeze([
   "option-value:createGradientPlot.y.fieldType=string:nominal",
   "option-value:createHeatmap.color.fieldType=string:nominal",
+  "option-value:createHeatmap.color.scale.type=string:sqrt",
   "option-value:createViolinPlot.area.curve=string:basis",
   "option-value:createViolinPlot.color.fieldType=string:nominal",
   "option-value:createViolinPlot.y.fieldType=string:nominal"
@@ -204,6 +205,11 @@ function withoutStatisticalFacadeTailEvidence(result) {
     if (entry.op === "createHeatmap" && args.color?.fieldType === "nominal") {
       args = { ...args, color: { ...args.color, fieldType: "ordinal" } };
     }
+    if (entry.op === "createHeatmap" && args.color?.scale?.type === "sqrt") {
+      args = { ...args, color: { ...args.color, scale: {
+        ...args.color.scale, type: "sequential"
+      } } };
+    }
     if (entry.op === "createViolinPlot") {
       args = {
         ...args,
@@ -264,6 +270,14 @@ async function buildProjectionChunk(planDescriptors) {
           `${label} independently observed factors`
         );
         assertMetadata(recipe, factors, program, metadata, label);
+        const heatmapColor = directEntries(program, "createHeatmap")[0]?.args.color?.scale;
+        if (heatmapColor?.type === "sqrt") {
+          assert.equal(program.semanticSpec.scales.find(scale =>
+            scale.id === heatmapColor.id
+          )?.type, "sqrt", `${label} semantic square-root color scale`);
+          assert.equal(program.resolvedScales[heatmapColor.id]?.type, "sqrt",
+            `${label} resolved square-root color scale`);
+        }
         if (action === "createHistogram" && factors.variant.guideMode === "polar") {
           assert.equal(
             program.semanticSpec.layers.some(layer =>
@@ -593,7 +607,7 @@ contractTest("the exact 460-chart tail counterfactual fails before and passes af
       counterfactualRequirements.get(id)?.meetsMinimum
     ),
     [],
-    "the prior ordinal-only and curve-limited projection leaves all five literals open"
+    "the prior ordinal-only, sequential-color and curve-limited projection leaves all six literals open"
   );
   for (const id of TAIL_LITERAL_REQUIREMENT_IDS) {
     const detail = actualRequirements.get(id);
@@ -601,6 +615,12 @@ contractTest("the exact 460-chart tail counterfactual fails before and passes af
     assert.ok(detail.occurrences >= 5, id);
     assert.ok(detail.datasetCount >= 3, id);
   }
+  const sqrtWitnesses = projection.results.filter(result => result.directTrace.some(entry =>
+    entry.op === "createHeatmap" && entry.args.color?.scale?.type === "sqrt"
+  ));
+  assert.equal(sqrtWitnesses.length, 5, "actual direct-root square-root heatmaps");
+  assert.ok(new Set(sqrtWitnesses.map(result => result.dataset)).size >= 3,
+    "authentic square-root heatmap dataset diversity");
 
   assert.deepEqual(
     TAIL_DIVERSITY_REQUIREMENT_IDS.filter(id =>
@@ -663,13 +683,17 @@ contractTest("the 460-chart projection losslessly subsumes the retired facade sc
     ])
   );
   assert.deepEqual(byAction, LEGACY_SCALE_INVENTORY_COUNTS);
+  assert.equal(
+    hashIds([...target.options, ...target.literals].map(item => item.id)),
+    "6cf04ec70a5a30c4bfe5d527770e4d2e2493ebbd448f723a09efbb2f1808a964"
+  );
   assert.deepEqual(
     {
       paths: target.options.length,
       literals: target.literals.length,
       diversity: target.diversity.length
     },
-    { paths: 176, literals: 185, diversity: 6 }
+    { paths: 176, literals: 186, diversity: 6 }
   );
   assert.deepEqual(
     [...target.options, ...target.literals].filter(requirement =>

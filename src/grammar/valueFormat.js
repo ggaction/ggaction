@@ -1,5 +1,7 @@
 const NUMERIC_FORMAT = /^\.(0?\d|1[0-2])(f|%|e)$/;
-const TIME_DIRECTIVES = new Set(["Y", "m", "d", "b", "H", "M", "S", "L", "%"]);
+const GROUPED_NUMERIC_FORMAT = /^,(?:\.(0?\d|1[0-2])f)?$/;
+const WEEKDAY_NAMES = Object.freeze(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
+const TIME_DIRECTIVES = new Set(["Y", "m", "d", "b", "a", "H", "M", "S", "L", "%"]);
 const MONTH_NAMES = Object.freeze([
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -33,12 +35,12 @@ export function validateValueFormat(format, label = "Label format", {
     if (allowDecimalsObject) return format;
   }
   if (typeof format === "string" && (
-    NUMERIC_FORMAT.test(format) || isUtcValueFormat(format)
+    NUMERIC_FORMAT.test(format) || GROUPED_NUMERIC_FORMAT.test(format) || isUtcValueFormat(format)
   )) {
     return format;
   }
   const numericCandidate = typeof format === "string"
-    ? format.match(/^\.(\d+)(f|%|e)$/)
+    ? format.match(/^,?\.(\d+)(f|%|e)$/)
     : undefined;
   if (numericCandidate && Number(numericCandidate[1]) > 12) {
     throw new RangeError(`${label} numeric format supports at most 12 decimals.`);
@@ -62,12 +64,13 @@ function formatUtcValue(value, format, label) {
     m: pad(date.getUTCMonth() + 1),
     d: pad(date.getUTCDate()),
     b: MONTH_NAMES[date.getUTCMonth()],
+    a: WEEKDAY_NAMES[date.getUTCDay()],
     H: pad(date.getUTCHours()),
     M: pad(date.getUTCMinutes()),
     S: pad(date.getUTCSeconds()),
     L: pad(date.getUTCMilliseconds(), 3)
   };
-  return format.replace(/%([YmdbHMSL%])/g, (_, directive) =>
+  return format.replace(/%([YmdbaHMSL%])/g, (_, directive) =>
     directive === "%" ? "%" : values[directive]
   );
 }
@@ -102,6 +105,11 @@ export function formatValue(value, {
     throw new TypeError(`${label} "${typeof resolved === "string" ? resolved : "decimals"}" requires a finite number.`);
   }
   if (typeof resolved === "object") return value.toFixed(resolved.decimals);
+  const grouped = resolved.match(GROUPED_NUMERIC_FORMAT);
+  if (grouped) {
+    const precision = grouped[1] === undefined ? 0 : Number(grouped[1]);
+    return new Intl.NumberFormat("en-US", { useGrouping: true, minimumFractionDigits: precision, maximumFractionDigits: precision }).format(value);
+  }
   const match = resolved.match(NUMERIC_FORMAT);
   const precision = Number(match[1]);
   if (match[2] === "f") return value.toFixed(precision);

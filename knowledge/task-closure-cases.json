@@ -642,7 +642,6 @@
         {
           "id": "action.createTimeUnitData",
           "options": [
-            "as",
             "field",
             "id",
             "unit"

@@ -1,3 +1,4 @@
+import { intrinsicLegendConfig } from "../../../materialization/legendGroups.js";
 import { action, closedAction } from "../../../core/action.js";
 import {
   validateKeys
@@ -63,6 +64,7 @@ function requireScale(program, id) {
 }
 
 export function resolveStrokeWidthLegendLayout(program, config) {
+  config = intrinsicLegendConfig(program, config);
   const effective = resolveEffectiveLegendBlockConfig(program, "strokeWidth", config);
   const scale = requireScale(program, config.scale);
   const { plot, canvas } = resolveContinuousBounds(program);

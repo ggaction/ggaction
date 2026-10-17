@@ -91,6 +91,13 @@ program.editBarMark({
 });
 ```
 
+`fill` accepts a solid color string or the existing `FillPaint` linear gradient:
+`{ type: "linear-gradient", from: { x: 0, y: 1 }, to: { x: 0, y: 0 },
+stops: [{ offset: 0, color: "red" }, { offset: 1, color: "blue" }] }`.
+Endpoints use normalized item-local coordinates; ordered stops must have offsets
+from zero to one. This works in creation, `bar.fill` facade options, and edits,
+including rounded bars and later resizing.
+
 The current or only bar is inferred when `target` is omitted. Constant fill
 conflicts with field-driven color, while opacity and outline remain editable.
 Geometry and semantic aggregation are unchanged and appearance is reapplied

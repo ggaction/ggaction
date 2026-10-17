@@ -1,5 +1,3 @@
-import { validateGeneratedItemLimit } from "../core/validation.js";
-import { resolveTextBounds } from "../core/textMetrics.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { validateConcreteGraphicValue } from "./schemas/concreteGraphic.js";
 import {
@@ -95,14 +93,4 @@ export function normalizeTextMarkConfig(options, base = DEFAULT_TEXT_MARK) {
   return cloneAndFreeze(config);
 }
 
-export function resolveTextLines(text, config) {
-  const parts = text.split(/\r\n|\r|\n/u);
-  if (parts.length === 1 && config.blockAlign !== "middle") return undefined;
-  validateGeneratedItemLimit(parts.length, "Text line count");
-  const lineHeight = config.lineHeight ?? config.fontSize * 1.2;
-  const bounds = resolveTextBounds({ x: 0, y: 0, text: "", fontSize: config.fontSize,
-    textBaseline: config.baseline, textAlign: config.align });
-  const offset = config.blockAlign === "middle"
-    ? -(bounds.top + bounds.bottom + (parts.length - 1) * lineHeight) / 2 : 0;
-  return parts.map((text, index) => ({ text, x: 0, y: offset + index * lineHeight }));
-}
+export { resolveTextLines } from "../core/textMetrics.js";

@@ -25,6 +25,8 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - Effect: line → ticks/labels → title wrapped action 순서로 semantic guide와 concrete graphics를 만든다.
 - Complete axis는 선택한 position을 line, ticks/labels와 title child 모두에 전달한다.
 
+- Shared value format은 quantitative `","` (thousands grouped integer), `",.0f"`–`",.12f"`와 UTC `%a` (English abbreviated weekday)를 지원한다. Grouping/weekday는 축·범례·text가 같은 formatter를 사용하며 입력/precision/family 검증을 공유한다.
+
 ## Shared axis-line contract
 
 - Create parameters: `scale?`, `position?`, `color?`, `lineWidth?`.
@@ -34,13 +36,12 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - `color`: non-empty string, 기본 theme text color.
 - `lineWidth`: non-negative finite number, 기본값 `1`; 0은 보이지 않는 line을 허용한다.
 - Effect: endpoint는 resolved scale range와 Canvas plot bounds에서 항상 재추론한다. Temporal aggregate-bar
-  time scale은 bar-center mapping을 위해 inset된 range를 유지하지만, axis line만 grid와 같은 complete plot
-  span을 사용해 baseline end cap을 노출하지 않는다. Reverse direction은 endpoint order에 반영한다. semantic
+  time scale의 auto range는 bar-center mapping을 위해 inset되지만 explicit numeric range는 그대로 유지한다. Auto range의 axis line은 grid와 같은 complete plot span을 사용해 baseline end cap을 노출하지 않는다. Explicit range의 line endpoint는 실제 range를 따른다. Reverse direction은 endpoint order에 반영한다. semantic
   guide에는 scale만 저장하고 style과 endpoints는 graphical state다.
 
 ## Shared axis-tick contract
 
-- Create parameters: `scale?`, `position?`, `count?`, `values?`, `length?`, `color?`, `lineWidth?`.
+- Create parameters: `scale?`, `position?`, `count?`, `values?`, `length?`, `color?`, `lineWidth?`, `alongOffset?`.
 - Edit parameters는 `scale`을 제외하고 동일하다.
 - `count`: positive integer, 기본값 `5`, 최대 `10,000`; `values`와 mutually exclusive다.
 - `values`: scale domain 안의 finite number/timestamp 또는 ordinal scalar array. histogram x는 둘 다
@@ -48,6 +49,7 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
   `10,000`이다.
 - Shared histogram scale의 자동 boundaries는 모든 binned consumer가 같은 boundary array를 계산할 때만
   유일한 결과로 재사용한다. 서로 다른 boundaries면 explicit values 또는 독립 scale이 필요하다.
+- `alongOffset`: signed finite logical-pixel displacement, 기본 `0`. X는 오른쪽, Y는 아래쪽이 양수다. Scale domain/range, axis line, label/grid 위치를 바꾸지 않고 mapped tick 위치에 더한다.
 - `length`: non-negative finite number, 기본 `6`.
 - `color`: non-empty string, 기본 `"#64748b"`.
 - `lineWidth`: non-negative finite number, 기본 `1`.
@@ -58,16 +60,24 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 
 - Create parameters: `scale?`, `position?`, `count?`, `values?`, `offset?`, `format?`, `color?`,
   `fontSize?`, `fontFamily?`, `fontWeight?`, `rotation?`, `maxWidth?`, `wrap?`, `lineHeight?`,
-  `overlap?`, `labelMap?`; edit에서는 scale을 제외한다.
+  `overlap?`, `labelMap?`, `alongOffset?`, `flush?`, `colorMap?`; edit에서는 scale을 제외한다.
 - `count`/`values`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
 - `offset`: non-negative finite number; x default `18`, y default `12`.
+- `alongOffset`: signed finite logical pixels, 기본 `0`. Mapped label 위치에서 X는 오른쪽, Y는 아래쪽으로 이동한다. Tick offset을 상속하지 않는 독립 절대값이다. 기존 `offset`은 축 바깥쪽 간격으로 유지된다.
 - `format`: `"auto" | { decimals: nonNegativeInteger } | AxisFormatString`. Numeric token은 `.0`–`.12`
-  precision과 `f | % | e` suffix이며 quantitative에서만 허용한다. Time format은 `%Y | %m | %d | %b | %H | %M | %S | %L` UTC directive 하나 이상과 literal의
+  precision과 `f | % | e` suffix이며 quantitative에서만 허용한다. Time format은 `%Y | %m | %d | %b | %a | %H | %M | %S | %L` UTC directive 하나 이상과 literal의
   sequence이며 literal percent는 `%%`다. Unknown/dangling directive는 거부하고 ordinal은 auto만 허용한다.
+- `colorMap`: Cartesian label 전용 `readonly { value: DatasetScalar; color: NonEmptyString }[] | "auto"`. Raw typed tick value로 lookup하며 없는 key는 global `color`를 사용한다. `labelMap`의 display text와 독립이다. Categorical key는 기존 typed scalar 규칙을 쓰고 continuous/time key는 finite numeric/timestamp만 허용한다. Entry는 value/color 두 key만 허용하며 중복 typed key와 빈/비문자열 color를 거부한다. `[]`는 명시 empty map, `"auto"`는 map 제거, partial entry 편집은 없고 array 전체를 교체한다. Wrapped text는 raw tick의 모든 line에 같은 color를 적용한다. 이전 caller map/program은 immutable하고 tick/Canvas/scale replay에서도 map과 fallback을 유지한다. Polar/Parallel에는 이 옵션이 없다.
 - `color`: non-empty string; `fontSize`: positive finite; `fontFamily`: non-empty string;
   `fontWeight`: string 또는 finite number.
+- `flush`: boolean, 기본 `false`. Cartesian unrotated label의 실제 occupied bounds를 mapped scale span 안으로 이동한다. X/Y 모두 지원하고 alongOffset을 span에도 더한다. Tick, domain, font, text와 바깥쪽 offset은 바꾸지 않는다. Wrapped label은 group 전체를 같은 거리만큼 이동한다. Label이 span보다 크면 오류이며 rotation이 0이 아니면 true를 거부한다. Label-label overlap은 기존 overlap 정책을 그대로 사용하므로 flush가 overlap을 묵시적으로 허용하지 않는다.
 - `rotation`: `RotationInput`이며 숫자는 radians, 구조형 값은 radians/degrees를 명시한다. 기본값은 `0`이고
   materialization config에는 radians로 정규화한다.
+  회전된 Cartesian label의 전체 occupied bounds는 고정 Canvas와 자동 plot 크기 모두에서
+  선택한 축 바깥쪽에 `offset` 간격으로 배치한다. X축의 기울어진 label은 회전 방향과
+  top/bottom 위치에서 문자열 끝 정렬을 추론하고 middle baseline을 사용하므로 세로 글리프가
+  tick 위에 수평으로 가운데 정렬된다. 회전된 동일 collection의 충돌은 공통 회전 좌표계에서
+  검사하며, 공간이 부족하면 Canvas나 여백을 변경하지 않고 거부한다.
 - `maxWidth`: positive finite measured width다. 지정하면 각 tick text를 deterministic shared text metric으로
   concrete line item에 줄바꿈한다. Edit의 `false`는 wrap policy를 제거하며 같은 호출에서 `wrap`이나
   `lineHeight`와 함께 쓸 수 없다.
@@ -75,12 +85,15 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - `lineHeight`: fontSize 이상의 finite number다. 생략하면 `fontSize * 1.2`다.
 - `overlap`: `"error" | "allow"`, 기본값은 `"error"`다. Allow는 label-label 교차만 허용하며 Canvas
   overflow와 explicit axis-title collision은 계속 거부한다.
-- `labelMap`: band/point/ordinal Cartesian scale에서만 쓰는 typed
+  Axis title과 label의 교차는 실제 개별 concrete label item의 occupied bounds로 검사한다.
+  Label collection 전체를 감싼 union의 빈 공간은 충돌로 보지 않으며 title/label 작성 순서와 무관하게
+  같은 최종 배치를 허용한다. 개별 label과 실제로 교차하는 explicit title은 계속 거부한다.
+- `labelMap`: categorical/continuous Cartesian scale에서 쓰는 typed
   `readonly { value: DatasetScalar; label: string }[] | "auto"`다. `1`과 `"1"`은 서로 다른 key이고,
   `0`과 `-0`은 같은 key다. 중복 raw key는 거부하고 중복 label과 빈 label은 허용한다. Array는
   전체 교체하며 `[]`는 명시적 empty map, `"auto"`는 저장된 map 제거다. Mapping이 있으면 raw
   tick value로 먼저 찾고, 없는 값만 기존 formatter를 사용한다. Raw scale domain과 tick values는
-  바뀌지 않는다. Continuous Cartesian scale은 array와 `"auto"`를 모두 거부한다.
+  바뀌지 않는다. Explicit mapped `label: ""`는 해당 concrete text만 생략하고 raw label/tick values와 scale domain은 유지한다. 모든 label이 비어도 유효한 empty collection이며 reset/edit/Canvas·scale replay에서 같은 정책을 적용한다. Continuous scale의 key는 finite number 또는 Unix-millisecond timestamp만 허용하며 numeric string, boolean, null, nonfinite는 거부한다. Explicit 미래 tick의 유효한 numeric key는 현재 domain 밖이어도 저장할 수 있다. `"auto"`와 `[]`는 categorical과 같은 reset/empty 의미다.
 - Effect: formatted text, aligned data-space coordinates와 font style을 text collection에 저장한다.
   Time `auto`는 domain-span precision에서 시작해 distinct resolved ticks가 같은 label이면 최소 한 단계씩
   precision을 높인다. Empty-string nominal values는 semantic domain에는 그대로 남고 visible label은
@@ -92,12 +105,18 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
   stored policy와 원래 tick value text에서 같은 concrete line을 재생성한다. Total concrete label line은
   `10,000`개를 넘을 수 없다.
 
+Color map evidence: `test/unit/actions/guides/axis-label-color-map.test.js`는 typed categorical/numeric/time lookup, global fallback/labelMap 독립성, wrapped line, create/edit/reset, Canvas·scale·tick replay, malformed/duplicate map과 atomic immutability를 검증한다. 공개 type은 `test/contracts/axis-grid-offset-types.test.js`가 검증한다.
+
+Flush evidence: `test/unit/actions/guides/axis-label-flush.test.js`는 full timestamp text, fixed 200px span, both axes, alongOffset, wrapped groups, reverse/replay, complete/group/focused/whole edits와 boolean/rotation/overflow atomic rejection을 검증한다.
+
+Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-labels.test.js`는 finite raw key lookup, numeric/UTC fallback, reset, new ticks, whole/group/focused edits, Canvas·scale replay, invalid key atomicity를 검증한다. `test/unit/actions/guides/axis-display-labels.test.js`의 기존 categorical typed key 동작도 유지한다. Expression evaluator는 제공하지 않는다.
+
 ## Shared ticks-and-labels contract
 
 - Create: `scale?`, `position?`, `count?`, `values?`, `ticks?`, `labels?`.
 - Edit: create option에서 scale을 제외하며 빈 edit는 오류다.
-- `ticks`: `{ length?, color?, lineWidth? }`.
-- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, labelMap? }`; `labelMap`은 categorical Cartesian scale 전용이다.
+- `ticks`: `{ length?, color?, lineWidth?, alongOffset? }`.
+- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, labelMap?, alongOffset?, flush?, colorMap? }`; `labelMap`은 categorical/continuous Cartesian scale에 적용한다.
 - Effect: shared count/values를 tick과 label child에 원자적으로 전달한다. nested appearance는 해당 child만 바꾼다.
 
 ## Shared axis-title contract
@@ -113,6 +132,12 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
   explicit rotation은 position default보다 우선한다.
 - font/color contract는 labels와 같고 default font size는 `13`, weight는 `600`이다.
 - Effect: semantic axis title text와 graphical layout/style을 분리 저장한다.
+- `text`의 LF/CRLF/CR hard break는 기존 string 안의 순서·빈 줄을 유지한다. 각 줄은 중심 정렬,
+  `fontSize * 1.2` 간격의 centered block으로 concrete `lines`에 materialize하며 rotation을 block 전체에
+  적용한다. Canvas/label collision은 같은 줄들의 occupied bounds를 사용한다. Single-line은 기존
+  graphic properties를 그대로 유지하고 multiline→single 편집은 stale `lines`만 제거한다.
+- Evidence: `test/unit/actions/guides/axis-title-hard-breaks.test.js` (네 방향, explicit rotation, blank lines,
+  SVG/Canvas, immutable edit, Canvas/scale/facet replay, persistence, overflow/collision atomicity).
 
 ## Shared grid-direction contract
 
@@ -125,6 +150,12 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - `strokeDash`: even-length non-negative finite number array, 기본 `[]`.
 - Effect: semantic guide에는 scale/coordinate, graphical config에는 tick policy/style, concrete line
   collection에는 endpoints를 저장한다. 관련 mark보다 앞에 graphic을 배치한다.
+
+## Cartesian along-axis displacement evidence
+
+Ticks, labels, Cartesian grid는 각자의 `alongOffset`을 private materialization config에 저장하고 create/edit/Canvas·scale replay에서 같은 mapped 위치에 더한다. Signed finite 입력만 허용하며 null, string, NaN, Infinity와 명시 undefined를 거부한다. 이전 program과 caller input은 immutable하다. Polar/Parallel에는 이 옵션이 없다.
+
+Evidence: `test/unit/actions/guides/axis-grid-along-offset.test.js`, `test/contracts/axis-grid-offset-types.test.js`. 독립 offset, 양음수, top/right/reverse scale, complete/group/focused 경로, band-boundary grid, Canvas·scale replay와 atomic errors를 검증한다. Grid의 규범 계약은 [GRID.md](GRID.md)가 소유한다.
 
 ## Optional component lifecycle
 
@@ -763,7 +794,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 ### Formal values — `createXAxisTicks`
 
-- Implemented: `createXAxisTicks({ scale?: UserId; position?: AxisPositionX; count?: PositiveInteger; values?: readonly TickValue[]; length?: NonNegativeFinite; color?: NonEmptyString; lineWidth?: NonNegativeFinite } = {})`; `count | values` 중 최대 하나.
+- Implemented: `createXAxisTicks({ scale?: UserId; position?: AxisPositionX; count?: PositiveInteger; values?: readonly TickValue[]; length?: NonNegativeFinite; color?: NonEmptyString; lineWidth?: NonNegativeFinite; alongOffset?: Finite } = {})`; `count | values` 중 최대 하나.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createXAxisTicks`
@@ -837,7 +868,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 ### Formal values — `createXAxisLabels`
 
-- Implemented: `createXAxisLabels({ scale?: UserId; position?: AxisPositionX; count?: PositiveInteger; values?: readonly TickValue[]; labelMap?: DisplayLabelMap | "auto"; ...LabelOptions } = {})`; `count | values` 중 최대 하나이며 `labelMap`은 categorical scale 전용이다.
+- Implemented: `createXAxisLabels({ scale?: UserId; position?: AxisPositionX; count?: PositiveInteger; values?: readonly TickValue[]; labelMap?: DisplayLabelMap | "auto"; ...LabelOptions } = {})`; `count | values` 중 최대 하나이며 continuous `labelMap`의 key는 finite numeric/timestamp다.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createXAxisLabels`
@@ -1145,6 +1176,8 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 Canvas `plot` 모드에서는 label offset이 plot edge와 가장 가까운 측정 text edge 사이 간격이다.
 회전된 x label은 바깥 방향의 text 끝점을 anchor로 사용한다. 같은 회전각의 label rectangle을
 공통 회전 좌표계에서 비교하여 실제로 떨어진 대각선 label을 bounding-box overlap으로 거부하지 않는다.
+모든 fontSize의 inferred rotated y-axis title offset이 Canvas edge에 제한될 때 estimated text box 바깥에 `fontSize / 4` ink clearance를 남긴다. 단, 추가 reserve가 실제 label item과 충돌하면 기존 Canvas-fit offset을 유지하여 새 label 충돌을 만들지 않는다. `fitCanvas`의 margin 탐색은 inferred ink reserve를 유지할 수 있는 배치를 선택한다. middle baseline과 회전에서 실제 glyph ink가 1em box를 넘는 경우를 위한 기존 fit 보정이다. Explicit offset, 충분한 margin의 preferred offset, typography, plot 크기는 바꾸지 않는다. Font/Canvas replay와 저장·복원도 inferred marker를 재사용한다. Evidence: `test/unit/actions/guides/axis-title-inferred-ink-clearance.test.js`.
+
 Wrapped line은 같은 원본 label group으로 처리한다. 자동 axis title offset은 기존 margin에
 제한되지 않으며 측정 overflow를 Canvas guide transaction이 수용한다. 명시적 overlap:error와
 실제 label 충돌은 여전히 오류다. 고정 외부 Canvas 동작은 변경하지 않는다.

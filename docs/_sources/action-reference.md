@@ -54,8 +54,8 @@ interface ChartProgramActions {
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  createBarMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+  createBarMark(options?: { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   createArcMark(options?: { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
@@ -392,7 +392,11 @@ recompute per cell. Text needs x/y scales and a text encoding.
 `guides: { legend: "shared" }` promotes one compatible parent-owned legend at
 the child legend's configured `left`, `right`, `top`, or `bottom` edge. Top and
 bottom promotion also preserves the child legend's horizontal alignment;
-author those options with `createLegend` before calling `facet`.
+author those options with `createLegend` before calling `facet`. Promoted outside
+legends use the existing recipe offset from the combined panel plots. Omitted
+offsets clear retained axis and header text; explicit colliding offsets reject.
+Child Canvas dimensions and margins remain intact, and the inferred parent
+Canvas contains the child snapshots and the complete legend bounds.
 See [Program composition](../api/composition.md#repeat-the-current-chart-by-a-field).
 
 Creation options for `facet`, `facetGrid`, and `repeatCharts` accept `headers`.
@@ -564,7 +568,8 @@ createComputedData({ id, source?, as, expression })
 ```
 
 Materialize a typed primitive or null field from a serializable, closed
-expression. [Source and Derived Data](../api/data/source-and-derived.md#createcomputeddata-id-source-as-expression)
+expression, including explicit nested scalar `getPath` and first-occurrence
+`replaceLiteral` operations. [Source and Derived Data](../api/data/source-and-derived.md#createcomputeddata-id-source-as-expression)
 
 ### `createNormalizedData`
 
@@ -589,17 +594,17 @@ explicit fill and source-membership provenance for synthesized rows.
 ### `createImputedData`
 
 ```javascript
-createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })
+createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })
 ```
 
-Replace nullish cells by constant, forward, backward, or distance-based linear
+Replace nullish cells by group mean (the default), constant, forward, backward, or distance-based linear
 imputation while preserving group boundaries and final source order.
 [Source and Derived Data](../api/data/source-and-derived.md#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap)
 
 ### `createStackData`
 
 ```javascript
-createStackData({ id, source?, category, group, value, mode?, as? })
+createStackData({ id?, source?, category, group, value, mode?, as? })
 ```
 
 Materialize reusable start/end/value/share rows with the same stack math used
@@ -773,6 +778,8 @@ Create a one-dimensional distribution from quantitative or temporal observations
 Ticks use an explicit plot edge as their constant position, so no dummy field is
 needed. The default guide contains only the measure axis.
 
+Its measure grid follows a continuous quantitative or temporal scale and rejects explicit `bandPosition`.
+
 ### `createStripPlot`
 
 ```javascript
@@ -856,6 +863,8 @@ band legend options accept only false. Palette owns fill; area appearance accept
 strokeWidth and curve. Explicit opacity is applied after encoding. Revise statistics with editHorizon
 and style with editAreaMark. See the [Horizon tutorial](../tutorials/horizon.md).
 
+The vertical grid follows continuous original x and rejects explicit `bandPosition`.
+
 ### `createAreaPlot`
 
 ```javascript
@@ -918,6 +927,8 @@ are outside this facade. This action is available from `ggaction` and is absent 
 
 See the [complete density workflow](../tutorials/density-area.md#complete-density-facade).
 
+Both value and density grid directions follow continuous scales and reject explicit `bandPosition`.
+
 ### `createPiePlot`
 
 ```javascript
@@ -926,7 +937,7 @@ createPiePlot({ id?, data?, coordinate?, category, value?, aggregate?, color?, r
 
 Create one sector per category in the full package. `category` is required and
 defaults to nominal count, including numeric categories. For weights, provide
-both `value` and `aggregate: "sum"`; values must be finite and nonnegative with
+`value`; this infers `aggregate: "sum"`. Values must be finite and nonnegative with
 a positive total. Color defaults to the category. Use `color: false` for a
 scalar `arc.fill`; otherwise each slice must resolve to one categorical color.
 
@@ -953,7 +964,7 @@ scales and legend actions. [Pie and donut tutorial](../tutorials/polar-arcs.md#c
 createRosePlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })
 ```
 
-Create equal-angle sectors whose sector area, excluding the hole is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
+Create equal-angle sectors whose sector area, excluding the hole is proportional to category count or sum. Category is required; omit value for count or provide value to infer aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
 
 The default id is `rosePlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit the resolved Polar frame. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
 
@@ -965,7 +976,7 @@ The default id is `rosePlot`. Radius scales are linear and zero-based; explicit 
 createRadialBarPlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })
 ```
 
-Create equal-angle sectors whose radial length measured from the inner edge is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
+Create equal-angle sectors whose radial length measured from the inner edge is proportional to category count or sum. Category is required; omit value for count or provide value to infer aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
 
 The default id is `radialBarPlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit the resolved Polar frame. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
 
@@ -1109,11 +1120,12 @@ resolved provenance stores every positive denominator. [Data](../api/data.md)
 ### `createTimeUnitData`
 
 ```javascript
-createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })
+createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })
 ```
 
 Create an immutable row-preserving dataset with one UTC or IANA-zone calendar
 bucket timestamp, including week, or a nominal local weekday field.
+Omit `as` to use `${field}_${unit}`; output-name collisions are rejected.
 [Time-unit data transforms](../api/data/time-units.md)
 
 ### `createWindowData`
@@ -1977,8 +1989,11 @@ bar color, rect fill, or arc-sector fill. Nominal and ordinal categories share a
 ordinal fields may contain ordered numeric categories. Categorical bar layout accepts `stack`, `fill`, `group`, `overlay`,
 and `diverging`; area also accepts `center` and rejects only `group` from the
 shared layout vocabulary. Quantitative and temporal
-point fields use a sequential scale; quantitative fields also accept log/symlog
-with matching gradient legends, while quantitative Point, aggregate Bar, and Rect fields also accept
+point fields use a sequential scale; quantitative fields also accept log/sqrt/symlog
+with matching gradient legends. Square-root color normalizes sign-preserving square roots across the original
+numeric domain; negative, zero-crossing, and reversed domains are supported. Its exponent is fixed,
+and `base`, `constant`, and numeric `midpoint` are rejected. Sampled symbol legends use the same mapping.
+Quantitative Point, aggregate Bar, and Rect fields also accept
 `quantize`, `quantile`, and `threshold` color classes. Categorical
 grouped bars record `encodeXOffset` or `encodeYOffset` as a child according to
 orientation. Reassigning grouped color also atomically reassigns its offset and
@@ -2085,6 +2100,7 @@ encodeShape({ field, target?, fieldType?, scale? })
 ```
 
 Encode or replace a nominal field with the shared 12-value point-shape vocabulary.
+Explicit ranges may repeat shapes; provide one entry per domain value. Automatic ranges remain distinct.
 [Appearance encodings](../api/appearance.md)
 
 ### `encodeOpacity`
@@ -2138,6 +2154,10 @@ Set aggregate or ranged bar width before or after its positions are complete.
 Incomplete bars retain the width without creating items; histogram bins do not
 accept it. The modes are mutually exclusive. The first omitted mode defaults to
 `band: 0.72`; later omission retains the current mode.
+When every temporal bar sharing a position scale uses pixel width, bar centers
+use the full plot range. If any bar still uses band width, the shared scale keeps
+its inferred half-slot inset. An explicit numeric scale range is preserved in
+both cases. Switching width modes also refreshes shared marks and axis guides.
 [Constant appearance](../api/appearance.md)
 
 ### `createRegression`
@@ -2578,8 +2598,27 @@ Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Interval legends support all four
 edges with layout `"edge"`, side single columns and horizontal item grids. Explicit `channels` creates exactly
 the selected content; include `"size"` in a point categorical-and-size request.
+For outside top/bottom legends, omitting `offset` places the occupied legend after
+the same-side axis line, ticks, labels, and title, with the family's native gap
+(8 pixels for categorical legends, 30 for continuous families). Axis edits and
+removal recompute that gap. An explicit numeric `offset`, including zero or the
+native value, remains measured from the plot edge. Free coordinates, plot corners,
+and `legacy-bottom` keep their existing anchors. Older saved programs retain
+their fixed offsets.
+Top-title style accepts `align: "left" | "center" | "right"` within the
+measured title/body content block. This applies to every legend family; omission
+preserves each layout's current alignment. It does not move the complete group,
+change item spacing, or include border padding. Inline `titlePosition: "left"`
+rejects an explicit title alignment. Whole/focused title edits accept `"auto"`
+to remove an explicit alignment; creation and saved state accept only the three
+alignment values. Hidden titles retain their style for restoration.
 Automatic symbol recipes refresh when matching companion lines or their color
 bindings change; explicit recipes retain their layers and order.
+Continuous color and stroke ramps accept
+`gradient: { length?, thickness?, opacity? }`. Body opacity is finite in `[0, 1]`,
+defaults to `1`, and preserves space at zero. It never fades marks, text, ticks,
+or borders. Whole and focused legend edits preserve omitted gradient fields;
+switching from symbols back to a gradient resets exclusive gradient settings.
 Omitted point channels infer the available categorical color, shape, and
 quantitative size with the same result as explicit selection. Color-only uses
 swatches; shape uses typed symbols; a size encoding adds its own sample block.
@@ -2617,8 +2656,10 @@ The optional `summary` value is `"ellipsis-count"`. All categories remain in
 the appearance scale and legend domain, including categories omitted from the
 visible legend. The limit follows the effective legend order and label map.
 Omission or `false` displays every category. This option also works on edge
-categorical legends and standalone ordinal size legends. Continuous and combined sampled legends retain their
-existing edge-only contracts. Shared facet promotion requires an edge position.
+categorical legends and ordinal size legends. When a categorical block and an
+ordinal size block are created or edited together, the same limit applies to both
+blocks. Quantitative size sampling is unchanged by a categorical overflow limit.
+Continuous and combined sampled legends retain their existing edge-only contracts. Shared facet promotion requires an edge position.
 
 ### `editLegend`
 
@@ -2657,7 +2698,7 @@ dependent replay that would invalidate a stored exact sample fails atomically.
 
 ```javascript
 editLegendBlock({
-  target, channel, title?, values?, count?, order?, gap?, text?, symbol?
+  target, channel, title?, values?, count?, order?, gap?, text?, symbol?, labelMap?
 })
 ```
 
@@ -2672,6 +2713,8 @@ automatic `count`; categorical blocks accept an exact full-domain `order`.
 sample appearance, and `gap` changes internal spacing. Empty `text` or `symbol`
 objects restore the base style. A symbol property that would replace the data
 mapping is rejected. Empty `title` hides the selected block. Full programs only.
+Categorical `labelMap` may map a value to `""`: only its text is omitted, while
+the category, symbol, item slot, and typed identity remain.
 [Editing legends](../api/legends/editing.md#editing-one-legend-block)
 
 ### Focused legend edits
@@ -2683,7 +2726,7 @@ editLegendLayout({
 })
 editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
-  target?, title?, color?, fontSize?, fontFamily?, fontWeight?
+  target?, title?, color?, fontSize?, fontFamily?, fontWeight?, align?
 })
 editLegendSymbols({ target?, symbol?, count?, gradient? })
 editLegendBorder({ target?, border })
@@ -2709,19 +2752,23 @@ visibility, layout and item order; automatic symbols are inferred again. [Legend
 
 ```javascript
 createTitle({
-  text, subtitle?, position?, align?, offset?, gap?,
+  text, subtitle?, position?, align?, offset?, alongOffset?, gap?,
   maxWidth?, wrap?, lineHeight?,
   titleStyle?, subtitleStyle?
 })
 ```
 
-Create a chart title and optional subtitle. [Titles](../api/titles.md)
+Create a chart title and optional subtitle. Explicit newlines retain their line
+spacing; blank lines reserve space without painted text. Each string requires
+at least one non-empty hard line. On facet parents, `alongOffset` shifts the full
+title/subtitle block horizontally from the translated child-plot alignment anchor.
+Text outside the composed Canvas is rejected. [Titles](../api/titles.md)
 
 ### `editTitle`
 
 ```javascript
 editTitle({
-  text?, subtitle?, position?, align?, offset?, gap?,
+  text?, subtitle?, position?, align?, offset?, alongOffset?, gap?,
   maxWidth?, wrap?, lineHeight?,
   titleStyle?, subtitleStyle?
 })
@@ -2929,26 +2976,26 @@ createYAxisLine({ scale?, position?, color?, lineWidth? })
 editXAxisLine({ position?, color?, lineWidth? })
 editYAxisLine({ position?, color?, lineWidth? })
 
-createXAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth? })
-createYAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth? })
-editXAxisTicks({ position?, count?, values?, length?, color?, lineWidth? })
-editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth? })
+createXAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+createYAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+editXAxisTicks({ position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
 
 createXAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 createYAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 editXAxisLabels({
   position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 editYAxisLabels({
   position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
 })
 ```
 
@@ -2984,6 +3031,12 @@ editYAxisTitle({
 })
 ```
 
+Cartesian title `text` keeps explicit line breaks (LF, CRLF, or CR), including
+blank lines. Lines form a centered block with spacing of `fontSize * 1.2`;
+rotation applies to the complete block. Creation, editing, Canvas/scale updates,
+facets and saved programs retain the same lines. Canvas and label-clearance
+checks use their full bounds. Returning to single-line text removes the old lines.
+
 Cartesian title `rotation` accepts a finite legacy number in radians or
 `{ value, unit: "degrees" | "radians" }`. Both forms normalize to concrete
 radians. Polar component `angle` remains degree-valued placement.
@@ -2991,8 +3044,8 @@ radians. Polar component `angle` remains degree-valued placement.
 ### Directional grids
 
 ```javascript
-createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })
-createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })
+createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })
+createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })
 editHorizontalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
 editVerticalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
 editGrid({

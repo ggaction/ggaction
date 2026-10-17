@@ -151,7 +151,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: type-specific canvas/circle/rect/line/text/path properties, `length`, heterogeneous `items`.
   - ✅ Covered: the shared concrete-property schema is table-tested by type and `editGraphics` exercises single,
     broadcast, distributed and heterogeneous application paths.
-  - ✅ Covered: finite `M | L | C | Z` path command arrays, maximum 10,000 commands, and command-order validation.
+  - ✅ Covered: finite `M | L | C | Z` path command arrays, maximum 20,000 commands, and command-order validation.
     A single initial M is a valid position-only path with no painted segment; longer paths require L/C.
 - `value` distribution
   - ✅ Covered: scalar broadcast, outer array distribution, mismatched length, nested points arrays preserved,
@@ -163,6 +163,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     identity while rendering no glyph. High-level titles, annotations and author-supplied text contracts keep their
     own non-empty validation.
   - ✅ Covered: finite/non-negative/unit-interval boundaries and font/text vocabularies are shared with renderers.
+    The exact string `"none"` means no paint for fill, stroke, text fill and canvas background across SVG
+    and Canvas-backed outputs. Canvas assigns a real transparent color for this sentinel, so a previous
+    opaque context paint cannot leak into a later graphic. Geometry, opacity and stroke bounds are unchanged.
+    Evidence: `test/contracts/none-paint.test.js` and `test/browser/none-paint.browser.js`.
     Exhaustive backend parsing of arbitrary accepted color strings is outside library validation. Renderer output
     capacity is checked separately and atomically: Canvas/PNG enforce physical side and total-pixel limits; all
     Canvas-backed outputs cap native geometry/style magnitude at `16777216`; PDF additionally requires an exactly

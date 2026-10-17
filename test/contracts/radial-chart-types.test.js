@@ -30,7 +30,7 @@ p.createRosePlot({ category: "category", guides: { grid: { theta: { count: 4 } }
 p.createRadialBarPlot({ category: "category", guides: { legend: { labels: { format: ".1f" } } } });
 // @ts-expect-error category is required
 p.createRosePlot({});
-// @ts-expect-error sum must be explicit when a value is present
+// A value field infers sum and leaves room for guides:false.
 p.createRadialBarPlot({ category: "category", value: "value" });
 // @ts-expect-error count does not consume value
 p.createRosePlot({ category: "category", value: "value", aggregate: "count" });

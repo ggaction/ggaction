@@ -243,8 +243,15 @@ function compactPopulation(value) {
 
 function addPopulationLegend(program, values) {
   const layout = OUTER_GUIDE_LAYOUT;
-  const x = values.width + layout.legendGap;
-  const y = values.plot.y + (values.plot.height - layout.gradientHeight) / 2;
+  // Keep one translated Canvas so both renderers perform the same arithmetic
+  // for fractional guide coordinates, rather than flattening them early.
+  const x = 500;
+  // The inferred 11px title is shifted 8px down in its source; its final top owns the shared plot anchor.
+  const y = 71.5;
+  program = graphic(program, "populationLegend", "canvas", {
+    x: layout.legendX - x, y: values.plot.y - 48,
+    width: 640, height: 400, background: "transparent"
+  });
   const ratios = Array.from(
     { length: layout.gradientSteps },
     (_, index) => 1 - (index + 0.5) / layout.gradientSteps
@@ -264,7 +271,7 @@ function addPopulationLegend(program, values) {
     stroke: fills,
     strokeWidth: 0,
     opacity: 1
-  }, { length: layout.gradientSteps });
+  }, { length: layout.gradientSteps, parent: "populationLegend" });
   const [minimum, maximum] = values.shared.color;
   const tickValues = Array.from(
     { length: 5 },
@@ -281,31 +288,31 @@ function addPopulationLegend(program, values) {
     stroke: "#64748b",
     strokeWidth: 1,
     opacity: 1
-  }, { length: tickValues.length });
+  }, { length: tickValues.length, parent: "populationLegend" });
   next = graphic(next, "populationGradientLabels", "text", {
     x: tickValues.map(() => x + layout.gradientWidth + 9),
-    y: tickY,
+    y: tickY.map(y => y - 5),
     text: tickValues.map(compactPopulation),
     fill: "#334155",
     fontSize: 10,
     fontFamily: FONT,
     fontWeight: "normal",
     textAlign: "left",
-    textBaseline: "middle",
+    textBaseline: "top",
     rotation: 0,
     opacity: 1
-  }, { length: tickValues.length });
+  }, { length: tickValues.length, parent: "populationLegend" });
   return graphic(next, "populationGradientTitle", "text", {
     x,
-    y: y - 18,
+    y: 48,
     text: "pop",
     fill: "#0f172a",
     fontSize: 11,
     fontFamily: FONT,
     fontWeight: 600,
     textAlign: "left",
-    textBaseline: "middle"
-  });
+    textBaseline: "top"
+  }, { parent: "populationLegend" });
 }
 
 export function createGapminderRegressionFacetPrimitives(rows, options = {}) {
@@ -358,8 +365,7 @@ export function createGapminderOuterGuideFacetPrimitives(rows) {
     clusters: OUTER_GUIDE_CLUSTERS
   });
   const owners = outerAxisOwners(values.cells);
-  const width = values.width + OUTER_GUIDE_LAYOUT.legendGap +
-    OUTER_GUIDE_LAYOUT.legendWidth;
+  const width = OUTER_GUIDE_LAYOUT.canvasWidth;
   let program = graphic(chart(), "canvas", "canvas", {
     width,
     height: values.height,

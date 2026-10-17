@@ -1,0 +1,47 @@
+{
+  "kind": "pre-implementation-api-gap",
+  "probes": [
+    {
+      "args": {
+        "channels": [
+          "color"
+        ]
+      },
+      "status": "supported",
+      "kinds": [
+        "gradient"
+      ]
+    },
+    {
+      "args": {
+        "channels": [
+          "color"
+        ],
+        "values": [
+          2,
+          4,
+          6,
+          8
+        ]
+      },
+      "status": "unsupported",
+      "error": "Gradient legends do not support exact sample values."
+    },
+    {
+      "args": {
+        "representation": "symbols",
+        "values": [
+          2,
+          4,
+          6,
+          8
+        ]
+      },
+      "status": "unsupported",
+      "error": "Unknown createLegend option \"representation\"."
+    }
+  ],
+  "previousProgramUnchanged": true,
+  "chartPixelsInspected": false,
+  "paidCalls": 0
+}

@@ -15,7 +15,7 @@ function base(values = rows) {
     .createData({ values });
 }
 
-test("creates the shortest pre-gridded heatmap with one rect per observed row", () => {
+test("creates a colored pre-gridded heatmap with one rect per observed row", () => {
   const source = base().editCanvas({ margin: { right: 80 } });
   const program = source.createHeatmap({
     x: { field: "x", fieldType: "ordinal" },
@@ -116,7 +116,7 @@ test("rejects missing and conflicting heatmap facade options atomically", () => 
   };
 
   assert.throws(
-    () => source.createHeatmap(position),
+    () => source.createHeatmap({ ...position, color: null }),
     /createHeatmap color must be a field string or a plain object/
   );
   assert.throws(
@@ -391,4 +391,21 @@ test("rematerializes a binned facade after Canvas, scale, and data revision chan
   ), true);
   assert.equal(program.semanticSpec.layers[0].data, "heatmapBin2DData");
   assert.equal(program.graphicSpec.objects.heatmap.items.length, 4);
+});
+
+
+test("declares observed heatmap cells before assigning color", () => {
+  const source = base(), before = JSON.stringify(source);
+  const initial = source.createHeatmap({ x: "x", y: "y", guides: false });
+  assert.equal(initial.semanticSpec.layers[0].encoding.color, undefined);
+  assert.equal(initial.graphicSpec.objects.heatmap.items.length, 3);
+  assert.equal(initial.resolvedScales.color, undefined);
+  assert.equal(JSON.stringify(source), before);
+  const colored = initial.encodeColor({ field: "value", fieldType: "quantitative" });
+  const direct = source.createHeatmap({ x: "x", y: "y", color: { field: "value", fieldType: "quantitative" }, guides: false });
+  assert.deepEqual(colored.graphicSpec, direct.graphicSpec);
+  assert.equal(initial.semanticSpec.layers[0].encoding.color, undefined);
+  const resized = colored.editCanvas({ width: 440 });
+  assert.equal(resized.graphicSpec.objects.heatmap.items.length, 3);
+  assert.deepEqual(initial.trace.children.at(-1).children.map(c => c.op), ["createRectMark", "encodeX", "encodeY"]);
 });

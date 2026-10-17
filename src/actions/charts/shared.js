@@ -191,9 +191,9 @@ export function normalizeArcCategory(value, operation) {
 }
 
 export function normalizeCategoryAggregate(args, operation) {
-  const aggregate = args.aggregate === undefined ? "count" : args.aggregate;
+  const aggregate = args.aggregate === undefined ? args.value === undefined ? "count" : "sum" : args.aggregate;
   if (!["count", "sum"].includes(aggregate) || (aggregate === "sum") !== (args.value !== undefined)) {
-    throw new Error(`${operation} requires count without value or explicit sum with value.`);
+    throw new Error(`${operation} requires count without value or sum with value.`);
   }
   if (args.value !== undefined) validateNonEmptyString(args.value, `${operation} value`);
   return aggregate;

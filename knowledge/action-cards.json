@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "packageVersion": "0.0.17",
+  "packageVersion": "0.0.18",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
   "count": 282,
@@ -95,10 +95,15 @@
           "name": "plot",
           "required": false,
           "type": "false | { width: number; height: number; } | undefined"
+        },
+        {
+          "name": "plotBorder",
+          "required": false,
+          "type": "false | { color?: string | undefined; lineWidth?: number | undefined; } | undefined"
         }
       ],
       "callPatterns": [
-        "createCanvas({ width?, height?, background?, margin?, plot? })"
+        "createCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })"
       ],
       "snippet": "program.createCanvas({})",
       "errors": [],
@@ -197,10 +202,15 @@
           "name": "plot",
           "required": false,
           "type": "false | { width: number; height: number; } | undefined"
+        },
+        {
+          "name": "plotBorder",
+          "required": false,
+          "type": "false | { color?: string | undefined; lineWidth?: number | undefined; } | undefined"
         }
       ],
       "callPatterns": [
-        "editCanvas({ width?, height?, background?, margin?, plot? })"
+        "editCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })"
       ],
       "snippet": "program.editCanvas({ width: 640 })",
       "errors": [],
@@ -1420,7 +1430,7 @@
       "name": "createComputedData",
       "layer": "user-facing",
       "domain": "statistics",
-      "summary": "Materialize a typed primitive or null field from a serializable, closed expression.",
+      "summary": "Materialize a typed primitive or null field from a serializable, closed expression, including explicit nested scalar getPath and first-occurrence replaceLiteral operations.",
       "signature": "createComputedData(options: ComputedDataOptions): ChartProgram;",
       "intents": [
         "create computed data",
@@ -1817,7 +1827,7 @@
       "name": "createImputedData",
       "layer": "user-facing",
       "domain": "statistics",
-      "summary": "Replace nullish cells by constant, forward, backward, or distance-based linear imputation while preserving group boundaries and final source order.",
+      "summary": "Replace nullish cells by group mean (the default), constant, forward, backward, or distance-based linear imputation while preserving group boundaries and final source order.",
       "signature": "createImputedData(options: ImputedDataOptions): ChartProgram;",
       "intents": [
         "create imputed data",
@@ -1906,8 +1916,8 @@
         },
         {
           "name": "method",
-          "required": true,
-          "type": "\"backward\" | \"constant\" | \"forward\" | \"linear\""
+          "required": false,
+          "type": "\"backward\" | \"constant\" | \"forward\" | \"linear\" | \"mean\" | undefined"
         },
         {
           "name": "value",
@@ -1921,6 +1931,7 @@
         }
       ],
       "callPatterns": [
+        "createImputedData({ id, fields, source?, groupBy?, method?: \"mean\" })",
         "createImputedData({ id, fields, method: \"constant\", value, source?, groupBy? })",
         "createImputedData({ id, fields, method: \"forward\" | \"backward\" | \"linear\", sortBy, source?, groupBy? })"
       ],
@@ -1992,8 +2003,8 @@
       "options": [
         {
           "name": "id",
-          "required": true,
-          "type": "string"
+          "required": false,
+          "type": "string | undefined"
         },
         {
           "name": "source",
@@ -2027,7 +2038,7 @@
         }
       ],
       "callPatterns": [
-        "createStackData({ id, category, group, value, source?, mode?, as? })"
+        "createStackData({ category, group, value, id?, source?, mode?, as? })"
       ],
       "snippet": "program.createStackData({ id: \"stacked\", category: \"category\", group: \"series\", value: \"amount\" })",
       "errors": [],
@@ -2523,8 +2534,8 @@
         },
         {
           "name": "as",
-          "required": true,
-          "type": "string"
+          "required": false,
+          "type": "string | undefined"
         },
         {
           "name": "timeZone",
@@ -2548,9 +2559,9 @@
         }
       ],
       "callPatterns": [
-        "createTimeUnitData({ id, field, as, unit, source?, temporalUnit?, timeZone?, weekStartsOn? })"
+        "createTimeUnitData({ id, field, unit, source?, temporalUnit?, as?, timeZone?, weekStartsOn? })"
       ],
-      "snippet": "program.createTimeUnitData({ id: \"time-unit-data-1\", field: \"value\", as: \"derived\", unit: \"month\" })",
+      "snippet": "program.createTimeUnitData({ id: \"time-unit-data-1\", field: \"value\", unit: \"month\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createtimeunitdata"
     },
@@ -4612,7 +4623,7 @@
         {
           "name": "method",
           "required": false,
-          "type": "\"backward\" | \"constant\" | \"forward\" | \"linear\" | undefined"
+          "type": "\"backward\" | \"constant\" | \"forward\" | \"linear\" | \"mean\" | undefined"
         },
         {
           "name": "value",
@@ -7649,7 +7660,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic bar mark and empty rect collection.",
-      "signature": "createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: \"vertical\" | \"horizontal\"; missing?: \"error\" | \"skip\"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: \"vertical\" | \"horizontal\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "create bar mark",
         "create",
@@ -7780,7 +7791,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -7811,7 +7822,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit whole-bar appearance and rematerialize every concrete rectangle.",
-      "signature": "editBarMark(options: RectStyleDetails & { target?: string; missing?: \"error\" | \"skip\"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "editBarMark(options: RectStyleDetails & { target?: string; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "edit bar mark",
         "edit",
@@ -7920,7 +7931,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -7951,7 +7962,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic area mark and empty path collection.",
-      "signature": "createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
+      "signature": "createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
       "intents": [
         "create area mark",
         "create",
@@ -8045,7 +8056,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -8337,7 +8348,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit constant area appearance.",
-      "signature": "editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
+      "signature": "editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
       "intents": [
         "edit area mark",
         "edit",
@@ -8416,7 +8427,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -12258,10 +12269,15 @@
           "name": "pixels",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "interval",
+          "required": false,
+          "type": "{ unit: \"day\" | \"hour\" | \"minute\" | \"month\" | \"quarter\" | \"second\" | \"year\"; insetStart?: number | undefined; insetEnd?: number | undefined; } | undefined"
         }
       ],
       "callPatterns": [
-        "encodeBarWidth({ target?, band?, pixels? })"
+        "encodeBarWidth({ target?, band?, pixels?, interval? })"
       ],
       "snippet": "program.encodeBarWidth({ band: 1 })",
       "errors": [],
@@ -13069,7 +13085,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -13203,7 +13219,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | false | undefined"
+          "type": "false | FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -15340,6 +15356,10 @@
         {
           "path": "length",
           "unit": "logical-pixel"
+        },
+        {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
         }
       ],
       "inference": [
@@ -15394,10 +15414,15 @@
           "name": "length",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "createXAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length? })"
+        "createXAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length?, alongOffset? })"
       ],
       "snippet": "program.createXAxisTicks({})",
       "errors": [],
@@ -15460,6 +15485,10 @@
         {
           "path": "length",
           "unit": "logical-pixel"
+        },
+        {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
         }
       ],
       "inference": [
@@ -15514,10 +15543,15 @@
           "name": "length",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "createYAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length? })"
+        "createYAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length?, alongOffset? })"
       ],
       "snippet": "program.createYAxisTicks({})",
       "errors": [],
@@ -15572,6 +15606,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "count",
           "unit": "count"
         }
@@ -15602,6 +15640,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "XAxisPosition | undefined"
@@ -15618,7 +15661,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisTicks({ color?, lineWidth?, length?, position?, count?, values? })"
+        "editXAxisTicks({ color?, lineWidth?, length?, alongOffset?, position?, count?, values? })"
       ],
       "snippet": "program.editXAxisTicks({ color: \"#f28e2b\" })",
       "errors": [],
@@ -15673,6 +15716,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "count",
           "unit": "count"
         }
@@ -15703,6 +15750,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "YAxisPosition | undefined"
@@ -15719,7 +15771,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisTicks({ color?, lineWidth?, length?, position?, count?, values? })"
+        "editYAxisTicks({ color?, lineWidth?, length?, alongOffset?, position?, count?, values? })"
       ],
       "snippet": "program.editYAxisTicks({ color: \"#f28e2b\" })",
       "errors": [],
@@ -15784,6 +15836,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "rotation",
           "unit": "angle"
         },
@@ -15803,6 +15859,10 @@
         },
         {
           "input": "labelMap",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "colorMap",
           "strategy": "documented-auto"
         },
         {
@@ -15872,6 +15932,21 @@
           "name": "fontWeight",
           "required": false,
           "type": "string | number | undefined"
+        },
+        {
+          "name": "colorMap",
+          "required": false,
+          "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
+        },
+        {
+          "name": "flush",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
         },
         {
           "name": "rotation",
@@ -15965,6 +16040,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "rotation",
           "unit": "angle"
         },
@@ -15984,6 +16063,10 @@
         },
         {
           "input": "labelMap",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "colorMap",
           "strategy": "documented-auto"
         },
         {
@@ -16053,6 +16136,21 @@
           "name": "fontWeight",
           "required": false,
           "type": "string | number | undefined"
+        },
+        {
+          "name": "colorMap",
+          "required": false,
+          "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
+        },
+        {
+          "name": "flush",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
         },
         {
           "name": "rotation",
@@ -16137,6 +16235,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "rotation",
           "unit": "angle"
         },
@@ -16156,6 +16258,10 @@
       "inference": [
         {
           "input": "labelMap",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "colorMap",
           "strategy": "documented-auto"
         }
       ],
@@ -16204,6 +16310,21 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "colorMap",
+          "required": false,
+          "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
+        },
+        {
+          "name": "flush",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "rotation",
           "required": false,
           "type": "RotationInput | undefined"
@@ -16245,7 +16366,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation? })"
+        "editXAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, colorMap? })"
       ],
       "snippet": "program.editXAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
@@ -16301,6 +16422,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "rotation",
           "unit": "angle"
         },
@@ -16320,6 +16445,10 @@
       "inference": [
         {
           "input": "labelMap",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "colorMap",
           "strategy": "documented-auto"
         }
       ],
@@ -16368,6 +16497,21 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "colorMap",
+          "required": false,
+          "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
+        },
+        {
+          "name": "flush",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "rotation",
           "required": false,
           "type": "RotationInput | undefined"
@@ -16409,7 +16553,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation? })"
+        "editYAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, colorMap? })"
       ],
       "snippet": "program.editYAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
@@ -16506,12 +16650,12 @@
         {
           "name": "ticks",
           "required": false,
-          "type": "AxisTickStyleOptions | undefined"
+          "type": "CartesianAxisTickStyleOptions | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
+          "type": "(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
         }
       ],
       "callPatterns": [
@@ -16612,12 +16756,12 @@
         {
           "name": "ticks",
           "required": false,
-          "type": "AxisTickStyleOptions | undefined"
+          "type": "CartesianAxisTickStyleOptions | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
+          "type": "(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
         }
       ],
       "callPatterns": [
@@ -16701,12 +16845,12 @@
         {
           "name": "ticks",
           "required": false,
-          "type": "AxisTickStyleOptions | undefined"
+          "type": "CartesianAxisTickStyleOptions | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
+          "type": "(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
         }
       ],
       "callPatterns": [
@@ -16790,12 +16934,12 @@
         {
           "name": "ticks",
           "required": false,
-          "type": "AxisTickStyleOptions | undefined"
+          "type": "CartesianAxisTickStyleOptions | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
+          "type": "(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
         }
       ],
       "callPatterns": [
@@ -17781,6 +17925,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "count",
           "unit": "count"
         },
@@ -17812,6 +17960,21 @@
       },
       "options": [
         {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "zIndex",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "bandPosition",
+          "required": false,
+          "type": "\"boundary\" | \"center\" | undefined"
+        },
+        {
           "name": "scale",
           "required": false,
           "type": "string | undefined"
@@ -17829,7 +17992,7 @@
         {
           "name": "values",
           "required": false,
-          "type": "readonly number[] | undefined"
+          "type": "readonly CategoryValue[] | undefined"
         },
         {
           "name": "color",
@@ -17848,7 +18011,7 @@
         }
       ],
       "callPatterns": [
-        "createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })"
+        "createHorizontalGrid({ scale?, coordinate?, alongOffset?, zIndex?, bandPosition?, count?, values?, color? })"
       ],
       "snippet": "program.createHorizontalGrid({})",
       "errors": [],
@@ -17901,6 +18064,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "count",
           "unit": "count"
         },
@@ -17932,6 +18099,21 @@
       },
       "options": [
         {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "zIndex",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "bandPosition",
+          "required": false,
+          "type": "\"boundary\" | \"center\" | undefined"
+        },
+        {
           "name": "scale",
           "required": false,
           "type": "string | undefined"
@@ -17949,7 +18131,7 @@
         {
           "name": "values",
           "required": false,
-          "type": "readonly number[] | undefined"
+          "type": "readonly CategoryValue[] | undefined"
         },
         {
           "name": "color",
@@ -17968,7 +18150,7 @@
         }
       ],
       "callPatterns": [
-        "createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })"
+        "createVerticalGrid({ scale?, coordinate?, alongOffset?, zIndex?, bandPosition?, count?, values?, color? })"
       ],
       "snippet": "program.createVerticalGrid({})",
       "errors": [],
@@ -18013,6 +18195,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "count",
           "unit": "count"
         },
@@ -18037,6 +18223,21 @@
       },
       "options": [
         {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "zIndex",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "bandPosition",
+          "required": false,
+          "type": "\"boundary\" | \"center\" | undefined"
+        },
+        {
           "name": "count",
           "required": false,
           "type": "number | undefined"
@@ -18044,7 +18245,7 @@
         {
           "name": "values",
           "required": false,
-          "type": "\"auto\" | readonly number[] | undefined"
+          "type": "\"auto\" | readonly CategoryValue[] | undefined"
         },
         {
           "name": "color",
@@ -18063,9 +18264,9 @@
         }
       ],
       "callPatterns": [
-        "editHorizontalGrid({ count?, values?, color?, lineWidth?, strokeDash? })"
+        "editHorizontalGrid({ alongOffset?, zIndex?, bandPosition?, count?, values?, color?, lineWidth?, strokeDash? })"
       ],
-      "snippet": "program.editHorizontalGrid({ count: 5 })",
+      "snippet": "program.editHorizontalGrid({ alongOffset: 1 })",
       "errors": [],
       "route": "/reference/actions/guides/#edithorizontalgrid"
     },
@@ -18108,6 +18309,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "count",
           "unit": "count"
         },
@@ -18132,6 +18337,21 @@
       },
       "options": [
         {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "zIndex",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "bandPosition",
+          "required": false,
+          "type": "\"boundary\" | \"center\" | undefined"
+        },
+        {
           "name": "count",
           "required": false,
           "type": "number | undefined"
@@ -18139,7 +18359,7 @@
         {
           "name": "values",
           "required": false,
-          "type": "\"auto\" | readonly number[] | undefined"
+          "type": "\"auto\" | readonly CategoryValue[] | undefined"
         },
         {
           "name": "color",
@@ -18158,9 +18378,9 @@
         }
       ],
       "callPatterns": [
-        "editVerticalGrid({ count?, values?, color?, lineWidth?, strokeDash? })"
+        "editVerticalGrid({ alongOffset?, zIndex?, bandPosition?, count?, values?, color?, lineWidth?, strokeDash? })"
       ],
-      "snippet": "program.editVerticalGrid({ count: 5 })",
+      "snippet": "program.editVerticalGrid({ alongOffset: 1 })",
       "errors": [],
       "route": "/reference/actions/guides/#editverticalgrid"
     },
@@ -18394,6 +18614,11 @@
       },
       "options": [
         {
+          "name": "representation",
+          "required": false,
+          "type": "\"gradient\" | \"symbols\" | undefined"
+        },
+        {
           "name": "layout",
           "required": false,
           "type": "\"edge\" | \"legacy-bottom\" | undefined"
@@ -18422,6 +18647,16 @@
           "name": "position",
           "required": false,
           "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
+        },
+        {
+          "name": "blockLayout",
+          "required": false,
+          "type": "\"column\" | \"row\" | \"wrap\" | undefined"
+        },
+        {
+          "name": "at",
+          "required": false,
+          "type": "{ x: number; y: number; } | undefined"
         },
         {
           "name": "align",
@@ -18466,7 +18701,7 @@
         {
           "name": "gradient",
           "required": false,
-          "type": "{ length?: number | undefined; thickness?: number | undefined; } | undefined"
+          "type": "{ length?: number | undefined; thickness?: number | undefined; opacity?: number | undefined; } | undefined"
         },
         {
           "name": "symbol",
@@ -18495,7 +18730,7 @@
         }
       ],
       "callPatterns": [
-        "createLegend({ target?, layout?, overflow?, order?, channels?, position?, align?, direction? })"
+        "createLegend({ target?, representation?, layout?, overflow?, order?, channels?, position?, blockLayout? })"
       ],
       "snippet": "program.createLegend({})",
       "errors": [],
@@ -18577,6 +18812,11 @@
       },
       "options": [
         {
+          "name": "titleStyle",
+          "required": false,
+          "type": "LegendTitleStyleEditOptions | undefined"
+        },
+        {
           "name": "channels",
           "required": false,
           "type": "readonly (\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\")[] | undefined"
@@ -18590,6 +18830,11 @@
           "name": "values",
           "required": false,
           "type": "\"auto\" | readonly number[] | undefined"
+        },
+        {
+          "name": "representation",
+          "required": false,
+          "type": "\"gradient\" | \"symbols\" | undefined"
         },
         {
           "name": "layout",
@@ -18615,6 +18860,16 @@
           "name": "position",
           "required": false,
           "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
+        },
+        {
+          "name": "blockLayout",
+          "required": false,
+          "type": "\"column\" | \"row\" | \"wrap\" | undefined"
+        },
+        {
+          "name": "at",
+          "required": false,
+          "type": "{ x: number; y: number; } | undefined"
         },
         {
           "name": "align",
@@ -18649,7 +18904,7 @@
         {
           "name": "gradient",
           "required": false,
-          "type": "{ length?: number | undefined; thickness?: number | undefined; } | undefined"
+          "type": "{ length?: number | undefined; thickness?: number | undefined; opacity?: number | undefined; } | undefined"
         },
         {
           "name": "symbol",
@@ -18660,11 +18915,6 @@
           "name": "labels",
           "required": false,
           "type": "LegendTextOptions | undefined"
-        },
-        {
-          "name": "titleStyle",
-          "required": false,
-          "type": "LegendTitleStyleOptions | undefined"
         },
         {
           "name": "itemGap",
@@ -18678,7 +18928,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, channels?, title?, values?, layout?, overflow?, order?, position? })"
+        "editLegend({ target?, titleStyle?, channels?, title?, values?, representation?, layout?, overflow? })"
       ],
       "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],
@@ -18895,6 +19145,16 @@
           "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
         },
         {
+          "name": "blockLayout",
+          "required": false,
+          "type": "\"column\" | \"row\" | \"wrap\" | undefined"
+        },
+        {
+          "name": "at",
+          "required": false,
+          "type": "{ x: number; y: number; } | undefined"
+        },
+        {
           "name": "align",
           "required": false,
           "type": "\"center\" | \"left\" | \"right\" | undefined"
@@ -18926,7 +19186,7 @@
         }
       ],
       "callPatterns": [
-        "editLegendLayout({ target?, layout?, position?, align?, direction?, columns?, offset?, titlePosition? })"
+        "editLegendLayout({ target?, layout?, position?, blockLayout?, at?, align?, direction?, columns? })"
       ],
       "snippet": "program.editLegendLayout({ layout: \"edge\" })",
       "errors": [],
@@ -19092,6 +19352,10 @@
         {
           "input": "target",
           "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "align",
+          "strategy": "documented-auto"
         }
       ],
       "completionRequirements": {
@@ -19132,10 +19396,15 @@
           "name": "fontWeight",
           "required": false,
           "type": "string | number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "\"auto\" | \"center\" | \"left\" | \"right\" | undefined"
         }
       ],
       "callPatterns": [
-        "editLegendTitle({ target?, title?, color?, fontSize?, fontFamily?, fontWeight? })"
+        "editLegendTitle({ target?, title?, color?, fontSize?, fontFamily?, fontWeight?, align? })"
       ],
       "snippet": "program.editLegendTitle({ title: \"title\" })",
       "errors": [],
@@ -19221,7 +19490,7 @@
         {
           "name": "gradient",
           "required": false,
-          "type": "{ length?: number | undefined; thickness?: number | undefined; } | undefined"
+          "type": "{ length?: number | undefined; thickness?: number | undefined; opacity?: number | undefined; } | undefined"
         }
       ],
       "callPatterns": [
@@ -19503,6 +19772,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "maxWidth",
           "unit": "logical-pixel"
         },
@@ -19549,6 +19822,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "gap",
           "required": false,
           "type": "number | undefined"
@@ -19580,7 +19858,7 @@
         }
       ],
       "callPatterns": [
-        "createTitle({ text, subtitle?, position?, align?, offset?, gap?, maxWidth?, wrap? })"
+        "createTitle({ text, subtitle?, position?, align?, offset?, alongOffset?, gap?, maxWidth? })"
       ],
       "snippet": "program.createTitle({ text: \"Chart title\" })",
       "errors": [],
@@ -19631,6 +19909,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "maxWidth",
           "unit": "logical-pixel"
         },
@@ -19675,6 +19957,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "gap",
           "required": false,
           "type": "number | undefined"
@@ -19706,7 +19993,7 @@
         }
       ],
       "callPatterns": [
-        "editTitle({ text?, subtitle?, position?, align?, offset?, gap?, maxWidth?, wrap? })"
+        "editTitle({ text?, subtitle?, position?, align?, offset?, alongOffset?, gap?, maxWidth? })"
       ],
       "snippet": "program.editTitle({ text: \"Chart title\" })",
       "errors": [],
@@ -21466,7 +21753,7 @@
         {
           "name": "type",
           "required": false,
-          "type": "\"log\" | \"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"symlog\" | \"threshold\" | undefined"
+          "type": "\"log\" | \"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"sqrt\" | \"symlog\" | \"threshold\" | undefined"
         },
         {
           "name": "domain",
@@ -21598,7 +21885,7 @@
         {
           "name": "type",
           "required": false,
-          "type": "\"log\" | \"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"symlog\" | \"threshold\" | undefined"
+          "type": "\"log\" | \"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"sqrt\" | \"symlog\" | \"threshold\" | undefined"
         },
         {
           "name": "domain",
@@ -29649,7 +29936,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | (Omit<CPathGuides, \"legend\"> & { legend?: false | (Omit<PathLegendOptions, \"order\"> & { order?: { channel: \"x\"; values?: undefined; } | LegendValueOrder | undefined; }) | undefined; }) | undefined"
+          "type": "false | (Omit<CPathGuides, \"grid\" | \"legend\"> & { grid?: false | (Omit<CartesianGridOptions, \"horizontal\"> & { horizontal?: boolean | ... 1 more ... | undefined; }) | undefined; legend?: false | ... 1 more ... | undefined; }) | undefined"
         }
       ],
       "callPatterns": [
@@ -30800,7 +31087,7 @@
         {
           "name": "width",
           "required": false,
-          "type": "Omit<BarWidthOptions, \"target\"> | undefined"
+          "type": "Omit<BarWidthOptions, \"interval\" | \"target\"> | undefined"
         },
         {
           "name": "bar",
@@ -32133,7 +32420,7 @@
         {
           "name": "area",
           "required": false,
-          "type": "(StrokeStyleDetails & { fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -32422,12 +32709,12 @@
         {
           "name": "area",
           "required": false,
-          "type": "(StrokeStyleDetails & { fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
         },
         {
           "name": "guides",
           "required": false,
-          "type": "false | DensityPlotGuideOptions | undefined"
+          "type": "false | (Omit<DensityPlotGuideOptions, \"grid\"> & { grid?: false | CartesianGridOptions | undefined; }) | undefined"
         },
         {
           "name": "valueChannel",

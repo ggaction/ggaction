@@ -280,8 +280,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 379,000 bytes |
-| `ggaction/basic` | 180,000 bytes |
+| `ggaction` | 393,000 bytes |
+| `ggaction/basic` | 190,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -295,6 +295,7 @@ Standalone Cartesian axis 기능 추가 시 packed artifact가765,714bytes로 �
 이 변경 당시 Entry552 및 unpacked3,900,000bytes 한도는 유지했다.
 이후 독립된 Text plot facade 모듈 추가로 entry 한도를553으로 조정한다.
 Packed/unpacked bytes 한도는 유지하며 이전 한도 통과로 보고하지 않는다.
+Cartesian band/point grid 및 explicit draw rank 지원 뒤 packed 실측775,736bytes로 기존775,000bytes를 초과했다. 해당 기능 증가분에 대해 packed 예산을780,000bytes로 조정하며 entries553 및 unpacked3,900,000bytes는 유지한다. 이전 한도 통과로 보고하지 않는다.
 Text plot 공개 문서/검색 항목 추가 후 search-index는801,260bytes로 측정되어
 검색 payload 한도를800,000에서810,000bytes로 조정한다. 기존 content를 삭제해 기능 증가를 숨기지 않는다.
 
@@ -303,7 +304,42 @@ Text plot 공개 문서/검색 항목 추가 후 search-index는801,260bytes로 
 Gzip 크기는 같은 minified bytes라도 Node가 포함한 zlib 버전에 따라 달라질 수 있으므로 지원하는
 Node 20·22·24 matrix의 최댓값을 포함해야 한다.
 
+2026-10-16 승인 기능 5개와 기존 corner 범례 occupied-bounds 수정의 통합 checkpoint는 두 shared grammar module을 합쳐565entries다. 통합 packed 실측793,051bytes가793,000bytes를 초과하여 기존 최소1,000bytes 갱신 정책에 따라 packed 한도만794,000bytes로 조정한다. Unpacked3,900,000bytes 및 browser Full390,000/Basic189,000/SVG25,000bytes 한도는 유지한다. 개별 feature checkpoint의 측정은 각 기록의 독립 기준선이며, 통합 결과가 이전 packed 한도를 통과했다고 보고하지 않는다.
+
+The subsequently approved top-title alignment checkpoint keeps the same state
+owners and explicit materialization flow. One shared pure title-style grammar
+module owns its closed alignment enum/reset policy and saved-state validation.
+The canonical artifact now measures 566 entries, 794210 packed bytes and 3899166
+unpacked bytes: entry and packed ceilings become 566 and 795000, while the
+3900000 unpacked ceiling stays unchanged. Installed minimal browser measurements
+are 390419 Full / 189139 Basic / 7176 SVG gzip bytes, so the existing 1000-byte budget
+step yields 391000 / 190000 and retains 25000 for SVG. The generated search payload
+measures 813061 bytes; its independent cap becomes 814000. These are measured
+feature growth adjustments, not claims of passing the previous limits.
+
+기존 facet 제목의 위치·경계 수정과 plot 기준 공유 guide 배치 수정은 명시적
+composition materializer와 불변 자식 snapshot을 유지한다. 후자는 비공개 배치
+소유자 하나를 추가한다. 패키지 측정값은 파일 567개, 압축 795791바이트,
+압축 해제 3904102바이트이며, 측정에 따른 상한은 567 / 796000 / 3905000이다.
+설치한 브라우저 bundle의 gzip 크기는 Full 391525 / Basic 189258 / SVG 7176바이트다.
+Full 상한만 392000으로 조정하고 Basic190000과 SVG25000은 유지한다.
+이는 실제 증가량을 반영한 조정이며, 이전 상한을 통과했다고 주장하지 않는다.
+
 ## 실행 계약의 위치
+
+0.0.18 릴리스의 기능별 변경 내역을 추가한 패키지는 압축796,344바이트로
+이전796,000바이트 한도를 초과했다. Linux/Node24에서도797,971바이트를
+확인하여 압축 한도를798,000바이트로 조정하고,
+릴리스 문서 증가분에 대해 압축 해제 한도만 기존3,000바이트 단위로
+3,908,000바이트까지 조정한다. 파일567개 및 browser bundle 한도는 유지한다.
+
+동일한0.0.18 패키지의 Full bundle은 macOS/Node22에서391,525 gzip바이트,
+Linux/Node24에서392,303바이트다. 지원 환경의 zlib 차이를 포함하도록
+Full 한도를393,000바이트로 한 단계 조정한다. Basic190,000 및 SVG25,000은 유지한다.
+
+line facade의 실행 불가능한 horizontal bandPosition 선언을 수정하고 공개 문서를
+동기화한 Node24.21.0/npm11.19.0 패키지는 798,062바이트다. 이 선언 수정분을
+포함하도록 압축 상한만 다음 1,000바이트 단계인 799,000으로 조정한다.
 
 이 문서는 상태 소유권, 계층 간 의존성과 실행 흐름을 설명한다. 메서드별 매개변수·기본값·추론·지원 조합·오류는 아래 Current 계약이 소유하며 이 문서에 복제하지 않는다. 구현 상태와 direct/internal 분류는 [ACTION_INDEX.json](contract/ACTION_INDEX.json), 선언은 `types/`, 자동화된 value vocabulary는 owning runtime registry를 사용한다.
 
@@ -992,6 +1028,7 @@ Consumer resolution은 mark policy를 고려한다.
 - histogram x는 shared bin policy를, y는 final stacked count를 사용한다.
 - appearance scale은 deterministic ordinal domain과 palette/range를 사용한다.
 - Continuous color의 Point/aggregate Bar/Rect consumer validation은 grammar/scales/colorConsumers.js가 생성·scale 편집·materialization에 공통 제공한다. Full의 scale type 편집은 연결된 mark와 guide를 포함한 immutable candidate를 검증한 뒤 같은 child plan을 적용한다. Gradient/interval의 교체는 legend transition owner가 네 edge의 common layout/style 보존과 family-only 설정 충돌을 검사하며 removeLegend/createLegend/editLegend를 조합한다. Basic은 typed interval legend 생성을 완성하지만 editScale과 구조적 type 전환은 Full 경계에 남긴다.
+- Continuous legend ramp의 선택적 body opacity는 replayable gradient config 한 곳에 저장한다. `grammar/legendGradient.js`가 생성·편집·저장의 closed 수치 검증을 공유하며 기존 domain materializer가 strip opacity를 명시적으로 갱신한다. Legacy 생략값은1이고 renderer는 concrete paint와 opacity만 읽는다. 정확한 공개 계약은 Current LEGEND_AND_TITLE이 소유한다.
 - quantitative sequential midpoint는 semantic scale 한 곳에 저장한다. Color grammar가 두 구간 mapping과 범위 검증을 소유하며 mark와 gradient strip은 같은 mapper를 사용한다. Legend의 값 위치와 midpoint tick은 value-linear다. Exact policy는 Current CORE/ENCODINGS/LEGEND_AND_TITLE을 따른다.
 - point-item `unknown`이 있으면 invalid inputs를 domain inference에서 제외하고 final mapping에서 channel-valid
   fallback을 적용한다.
@@ -1213,9 +1250,29 @@ Parallel의 field lifecycle은 `actions/guides/axes/parallel/lifecycle.js`, pure
 
 ### Legend
 
+연속형 color의 gradient strip과 sampled point 표현은 같은 `guideConfigs.legend.gradient` 소유자를
+사용한다. 선택적 `representation` discriminator가 concrete recipe를 고르며 생략한 이전 저장 상태는
+기존 gradient다. Symbols mode의 exact/auto sampling과 point recipe는 그 config에만 저장하고,
+semantic color scale/domain/data는 바꾸지 않는다. 기존 continuous consumer mapper로 sample paint를
+계산한 뒤 domain action이 strips/ticks 또는 symbols를 명시적으로 materialize한다. 표현 전환은
+그 표현 전용 graphics만 reconcile하며 target-owned group과 공통 스타일을 보존한다.
+Renderer는 representation을 해석하지 않고 완성된 concrete primitives만 읽는다.
+
 Family action은 scale/content/appearance를 검증하고 intrinsic concrete recipe를 만든다. `layout/legendItems.js`는 실제 sample stroke/path bounds와 formatted text를 측정해 공통 occupied item slot을 계산한다. Size/interval/stroke-width는 categorical symbol implementation을 복제하지 않고 같은 layout owner에 자기 recipe를 제공한다.
 
 `layout/legendLane.js`는 family-independent concrete block을 edge별로 배치한다. Wrapped side/horizontal lane owner만 그 계산 결과를 graphics에 적용한다. Border와 title을 포함한 occupied bounds로 최종 Canvas/guide collision을 검증한다. Multi-block packaging과 single-block alignment를 혼동하지 않는다. Legacy-bottom은 별도 명시된 placement 계약이며 option 존재 여부로 추측하지 않는다.
+
+Opt-in 다중 블록 배치와 자유 좌표는 `materializationConfigs.guides.legendGroups[target]`이 소유한다.
+이 map의 placement와 blockLayout이 그룹의 유일한 effective anchor/packing intent이며 멤버 목록은 현재 target의
+legend config에서 도출한다. 기존 family config는 항목·스타일·legacy 배치 intent를 유지하고,
+`materialization/legendGroups.js`가 그룹 상태를 읽어 임시 intrinsic frame을 투영한다. 이 투영값을 저장하거나
+renderer에 의미 상태를 전달하지 않는다. 모든 family가 concrete block을 만든 뒤 기존 guide transaction이
+wrapped `rematerializeLegendGroups`를 명시적으로 호출한다. 순수 `layout/legendGroup.js`는 stroke·text·border를
+포함한 occupied 사각형을 packing하고 전체 그룹의 위치를 계산한다. 새 필드 없는 비그룹 경로는 기존 lane을
+그대로 사용한다. 그룹 상태의 closed schema는 `grammar/legendGroups.js`가 authoring과 persistence에 공유하며,
+target map key는 기존 resource reference collector에 mark reference로 등록한다. Shared facet/repeat는 retained
+source의 그룹 정책을 검증·승격하고 composed plot bounds에서 같은 occupied placement를 적용한다.
+정확한 옵션·전환·공간 부족 계약은 [LEGEND_AND_TITLE](contract/current/LEGEND_AND_TITLE.md)이 소유한다.
 
 `actions/guides/legends/lifecycle.js`가 categorical creation/content replacement/removal의 공통 owner다. Automatic symbol recipe는 현재 companion에서 다시 결정하고 explicit recipe는 보존한다. Stable logical block override는 channel-set identity로 config에 저장하며 graphic ID/display index를 authoritative state로 쓰지 않는다. Family transition은 compatible override만 이동시키고 충돌을 원자적으로 거부한다.
 
@@ -1934,6 +1991,7 @@ Canvas의 opt-in 내부 크기 intent는 기존 materializationConfigs.canvas가
 Guide domain transaction이 실제 측정 overflow를 읽고 Canvas 및 margin을 함께 확장한 뒤
 공통 Canvas rematerialization plan을 명시적으로 실행한다. 실패한 시도는 immutable branch로
 폐기하며 generic action completion hook이나 renderer compiler를 추가하지 않는다.
+Unit guide transaction은 sibling materialization 완료 뒤 side lane을 명시적으로 최종 배치하고 그 다음 title 및 충돌 검사를 수행한다. Composition의 shared-guide 배치는 composition owner에 남으며 unit action을 호출하지 않는다.
 세부 sizing/충돌 계약은 Current CORE와 AXES, LEGEND_AND_TITLE이 소유한다.
 
 Full bundle은 summary mapping/pixel span/whisker lifecycle 추가 후375,809bytes로 측정되어
@@ -1958,3 +2016,59 @@ visible prefix와 hidden count를 derive한다. Symbol은 prefix만, labels/layo
 소비한다. Plot corner anchor는 measured painted bounds를 plot 내부로 이동하며 outer lane을
 사용하지 않는다. Raw Cartesian singleton line은 source identity와 scale domain을 유지하는
 M-only path다. Shared graphic schema가 이를 허용하며 renderer는 별도 의미 추론을 하지 않는다.
+
+Side legend 전체 occupied-top 정렬과 guide transaction replay 보강 후 packed browser gzip 실측은 Full381,388bytes / Basic182,240bytes다. 기존379,000/180,000bytes를 초과하여 한도를382,000/183,000bytes로 조정한다. SVG 한도는 유지한다.
+
+Opt-in plot border intent는 기존 materializationConfigs.canvas.plotBorder가 소유한다. Canvas domain action은 wrapped rematerializePlotBorder를 명시적으로 호출하며 기존 layout dependency plan이 Canvas/guide sizing replay에 이를 포함한다. 기존 rect schema/renderer만 소비하고 compiler나 새 backend state를 추가하지 않는다. 선은 plot 안쪽이며 ordinary mark placement는 frame 앞을 사용하여 axes 아래의 frame 순서를 보존한다.
+Plot border 전용 wrapped-action module 1개 추가로 packed entry 실측555가 기존554한도를 초과하므로 entries 한도만555로 조정한다. Byte 한도는 유지한다.
+Plot border 포함 packed 실측780,011bytes와 검색 payload810,074bytes가 기존780,000/810,000한도를 넘었다. 각각782,000/811,000bytes로 좁게 조정하며 unpacked byte 및 SVG 한도는 유지한다.
+
+승인된 그룹 범례 배치에 authoring preflight, closed grammar, pure packing, materialization owner의 runtime module4개가 추가되어 packed entry 한도를555에서559로 조정한다. 새4module과 변경된lane/edit에 기존 staging compaction을 적용한 뒤 packed 실측784,495bytes가 기존782,000bytes를 초과하여 한도를787,000bytes로 조정한다. Unpacked3,900,000bytes 한도는 유지하며 이전 entry/packed 한도 통과로 보고하지 않는다.
+
+그룹 범례 배치의 installed browser consumer 실측 gzip은 Full385,290bytes / Basic185,611bytes로 기존382,000/183,000bytes를 초과한다. 기능을 유지하며 각각386,000/186,000bytes로 한도를 조정하고 SVG25,000bytes는 유지한다. 이전 한도 통과로 보고하지 않는다.
+
+승인된 연속형 color symbols 표현은 기존 gradient owner와 renderer primitive를 재사용하며 전용 materializer module1개를 추가한다. Packed entry 한도는559에서560으로 조정한다. 부모80bf checkpoint의 browser gzip Full385,362/Basic185,627bytes 대비 현재 source 실측 Full387,449/Basic186,810bytes로 기존386,000/186,000bytes를 초과하여388,000/187,000bytes로 좁게 조정한다. SVG7,161bytes와25,000bytes 한도는 유지하며 이전 한도 통과로 보고하지 않는다.
+
+새 module에 기존 staging compaction을 적용한 packed size는787,745bytes였으며 source/type/generated metadata 동기화 후788,122bytes가788,000bytes 한도를 초과했다. 승인된 최소1,000bytes 단위 갱신으로 packed 한도를789,000bytes로 조정한다. Unpacked3,900,000bytes는 그대로 유지한다.
+
+연속형 color symbols API의 새 문서와 generated signature를 모두 검색에 유지한 payload는811,989bytes로 기존811,000bytes를 초과한다. 측정된 증가만 반영해 공유 검색 한도를813,000bytes로 조정하며 검색 대상이나 기존 내용을 줄이지 않는다.
+
+최종 installed packed consumer의 browser gzip은 Full387,444bytes / Basic186,768bytes / SVG7,161bytes이며, 실제 packed788,122bytes·unpacked3,876,966bytes·560entries다. 위의 좁은 한도 안에서 전체 승인 기능과 모든 검색 내용을 유지한다.
+
+외부 top/bottom 범례의 생략한 기본 offset이 실제 같은 쪽 axis occupied lane을 따르도록 고친 뒤 packed 실측은789,911bytes다. Private helper는 기존 group/resources owner 안에 두어560entries를 유지했다. 기존 승인된 최소1,000bytes 단위 정책에 따라 packed 한도만789,000에서790,000bytes로 조정하며 unpacked3,900,000bytes 한도는 유지한다. 이전789,000bytes 한도 통과로 보고하지 않는다.
+
+범례 title의 명시적 hard break는 기존 concrete text `lines`를 재사용한다. 기존 text-mark line resolver를 `core/textMetrics.js`로 옮기고 grammar가 같은 함수를 재수출하여 layout→grammar 역방향 의존과 별도 줄바꿈 정책을 피한다. Title block 측정은 `layout/legendText.js`, optional `lines`의 불변 materialization/reconciliation은 `materialization/legendText.js`가 각각 소유한다. 새 공개 API·state schema·renderer newline 추론 없이 두 shared responsibility를 추가하므로 packed entry 한도를560에서562로 조정한다. 기존 staging compaction을 두 owner에 적용한 packed 최종 실측790,694bytes는 이전790,000bytes를 초과한다. 기존 최소1,000bytes 단위 정책에 따라 packed 한도를791,000bytes로만 조정하며 unpacked 실측3,885,070bytes와3,900,000bytes 한도는 유지한다. 이전 entry/packed 한도 통과로 보고하지 않는다.
+
+명시적 범례 title hard break와 같은 쪽 axis lane의 누적 installed-consumer gzip 실측은 Full388,723bytes / Basic188,244bytes다. 기존388,000/187,000bytes 한도를 넘으므로 기능 증가분과 회귀 검증을 유지하는 최소1,000bytes 단위 한도를389,000/189,000bytes로 좁게 조정한다. SVG25,000bytes 한도는 유지하며 이전 browser 예산 통과로 보고하지 않는다.
+
+동일 title의 single-line concrete graphics는 변경 직전 commit과11범례 family×4edge의44경우에서 정확히 일치했다. Multiline 회귀는11family×4edge의 ordered lines, SVG/Canvas, blank/CRLF/CR, creation/edit convergence, persistence, immutable overflow를 검증한다. Unit2,966/2,966, contracts532/532, docs120/120, 마지막 boundary/package/bundle-truth focused15/15와 installed public basic/full consumer를 통과했다. 기존 lane의 private `inferredOffset` marker assertion도 현재 persisted grammar와 동기화했다.
+
+기존 categorical `labelMap`의 빈 표시 문자열은 category/symbol/item slot을 보존하며 concrete text item만 생략한다. 기존 categorical materializer와 lane owner가 빈 label collection을 처리하므로 새 module, state owner, renderer inference는 없다. Title 빈 줄 수정과 이 복원을 포함한 packed 최종 실측791,041bytes가791,000bytes 한도를 초과하여 기존 최소1,000bytes 단위 정책으로 packed 한도만792,000bytes로 조정한다. Entry562와 unpacked3,886,248bytes는 기존562/3,900,000 한도 내이며 browser/SVG 한도는 유지한다. 이전 packed 한도 통과로 보고하지 않는다.
+
+### 축 title hard break의 concrete line 소유권
+
+기존 축 title 문자열의 명시적 hard break는 같은 core line resolver와 concrete text `lines`를 재사용한다. 축 title domain action은 기존 위치·회전·원자적 bounds 검증을 유지하며, optional derived line property의 추가·제거는 `materialization/textLines.js`가 소유한다. 기존 범례 materializer도 이 좁은 helper를 호출하므로 action 계층의 직접 graphicSpec 복제나 renderer newline 추론을 추가하지 않는다. 새 공개 API나 persisted schema는 없다. 새 private module 하나에 따라 package entry 한도만562에서563으로 조정한다. Packed 실측791,403bytes와 unpacked3,887,466bytes는 기존792,000/3,900,000bytes 한도 안에 있으며 browser/SVG 한도는 유지한다. 이전 entry 한도 통과로 보고하지 않는다.
+
+승인된 computed getPath/replaceLiteral은 기존 순수 computed owner에서 검증·평가하고 기존 derived-data/schema/persistence 흐름을 그대로 재사용한다. Path command ceiling은 기존 pathCommands owner의 단일 상수/검증 helper가 소유하고 line/curve/area와 concrete validation이 함께 사용한다. Generic generated-item10,000 한도는 유지한다. 새 module/entry 없이 packed 실측792,129bytes가792,000bytes를 초과하여 기존 최소1,000bytes 갱신 정책으로 packed 예산만793,000bytes로 조정한다. Entry563와 unpacked3,900,000bytes 예산은 유지하며 이전 packed 예산 통과로 보고하지 않는다.
+
+같은 승인 기능의 installed consumer는 Node/TypeScript/MCP/tutorial 및 nested→filter→scatter/12,070연결점 SVG·Canvas 검사를 통과했다. Full browser gzip 실측389,521bytes가389,000bytes를 초과하므로 좁은1,000bytes 갱신으로 Full 한도만390,000bytes로 조정한다. Basic189,000 및 SVG25,000bytes 한도는 유지하며 이전 Full 예산 통과로 보고하지 않는다.
+
+### Area fallback fill uses the existing paint grammar
+
+Approved area fallback fills reuse `FillPaint` on the existing area mark configuration and concrete path properties. `grammar/areaPaint.js` owns the shared action/import compatibility guard: a structured fill cannot implicitly become a solid outline. Area, density, violin and error-band facades forward the same value; categorical swatches inherit it only without a data-driven color encoding. Renderers and persisted schema remain unchanged. The private validator adds one packed entry (563→564). Measured packed791,934bytes/unpacked3,889,220bytes remain within792,000/3,900,000bytes; the installed full browser gzip389,164bytes exceeds389,000, so only that limit increases to390,000bytes. Basic189,000 and SVG25,000 limits remain unchanged. These measurements do not claim the previous entry/full-browser limits passed.
+승인된 연속 범례 body opacity는 creation/edit/persistence가 공유하는 closed grammar owner `grammar/legendGradient.js` 하나를 추가한다. 이에 따른 packed entry 한도는563에서564로만 조정한다. 최종 실측564entries·packed791,661bytes·unpacked3,888,408bytes는 기존792,000/3,900,000bytes 안에 있다. Browser gzip Full388,931bytes·Basic188,433bytes와 기존389,000/189,000bytes, SVG25,000bytes 한도는 유지한다. 생략 시 default graphic/SVG24경우의 byte identity와 명시적0/.7/1의 body-only materialization을 검증하며 renderer 추론은 추가하지 않는다.
+
+Corner item block은 기존 layout owner가 실제 title/item bounds와12px gap으로 측정한다. Group materialization의 ephemeral corner 의도를 같은 owner에 전달하며 state/schema나 renderer owner를 추가하지 않는다. 외부 SIDE의 fixed20/52 anchors는24조합에서 byte-identical이다. 이 수정 뒤 installed Full gzip389,027bytes가389,000 한도를27bytes 초과하므로 기존 최소1,000bytes 단위 정책에 따라 Full 한도만390,000으로 조정한다. Basic189,000/SVG25,000 및 package564entries/792,000packed/3,900,000unpacked 한도는 유지한다.
+
+Canvas의 기존 fill owner는 정확한 CSS sentinel `none`을 투명 paint로 해석한다.
+같은 owner를 circle/stroke/text/background가 재사용하며 저장된 concrete 값과
+기하·opacity·일반 색상은 유지한다. Renderer의 source-over/difference 정책을
+새로 추론하거나 의미 상태를 읽지 않는다. 이는 기존 no-paint 계약의 backend 버그 수정이다.
+
+### 기존 Canvas 수정 및 실데이터 facade 검증 동기화
+
+0.0.18의 none paint 수정과 실행 불가능한 continuous band 선언5개 정정 후
+중간 development artifact는3908217unpacked bytes였다. 정확한 release provenance를
+갱신한 Node24.21.0/npm11.19.0 최종 staged package는567entries,
+packed798617/unpacked3907920bytes로 기존567/799000/3908000 한도 안이다.
+따라서 최종 package 한도를 올리지 않으며 browser 예산도 유지한다.

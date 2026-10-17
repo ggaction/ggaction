@@ -4,7 +4,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createCanvas`
 
-- Signature: `createCanvas({ width?, height?, background?, margin?, plot? })`
+- Signature: `createCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })`
 - 목적과 필수 state: Canvas가 없는 program에 logical Canvas와 plot bounds를 만든다.
 - `width`
   - Status: Implemented. 양의 finite number이며 기본값은 `640`이다.
@@ -30,6 +30,18 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     plot edge에서 offset만큼 바깥으로 배치한다. Title은 기존 guide 바깥에 배치한다.
   - Coverage: `test/unit/actions/canvas/inner-plot-size.test.js`의 Full/Basic, 충돌 옵션,
     resize, persistence, text metrics, title와 고정 외부 모드 회귀를 검증한다.
+- `plotBorder`
+  - Status: Implemented. Full/Basic 공통이며 기본값은 `false`다. `false`는 비활성화하고
+    `{ color?: NonEmptyString, lineWidth?: PositiveFinite }`는 내부 플롯 테두리를 활성화한다.
+    `{}`의 기본 style은 `color: "#ddd"`, `lineWidth: 1`이다. `true`, 비객체와 unknown key는 거부한다.
+  - `lineWidth`는 resolved plot width와 height 중 작은 값보다 엄격히 작아야 한다.
+    stroke 중심은 plot edge에서 반 폭만큼 안으로 들어가므로 painted outer bounds는 plot bounds와 같다.
+  - Effect: immutable Canvas materialization config에 저장하며 stable internal rectangle `plotBorder`로 그린다.
+    ordinary marks 위, axes 아래에 배치하고 mark/scales/plot size/margins/clipping은 변경하지 않는다.
+    내부 wrapped `rematerializePlotBorder`가 Canvas, scale, data 및 facet replay에서 최종 plot bounds를 따른다.
+    semantic state나 public direct action을 추가하지 않는다. 생략한 기존 차트는 테두리가 생기지 않는다.
+  - Coverage: `test/unit/actions/canvas/plot-border.test.js`의 Full/Basic, default off, style default,
+    stroke inset, plot bounds, draw order, invalid style 및 immutable replay 계약을 검증한다.
 - 오류와 상호작용: unknown option, invalid dimension/color/margin, 두 번째 Canvas를 거부한다.
 - Coverage: `test/unit/actions/canvas/create-canvas.test.js`,
   `test/unit/grammar/layout/canvas-layout.test.js`가 defaults, partial options, invalid values와
@@ -37,7 +49,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createCanvas`
 
-- Implemented: `createCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite } } = {})`
+- Implemented: `createCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite }; plotBorder?: false | { color?: NonEmptyString; lineWidth?: PositiveFinite } } = {})`
 - Proposed (NOT IMPLEMENTED): `{ width?: "auto"; height?: "auto"; margin?: "auto" }`
 
 ### Value coverage — `createCanvas`
@@ -57,7 +69,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `editCanvas`
 
-- Signature: `editCanvas({ width?, height?, background?, margin?, plot? })`
+- Signature: `editCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })`
 - 목적과 필수 state: 기존 Canvas의 한 개 이상 property를 immutable하게 편집한다.
 - `width`, `height`, `background`, `margin`
   - Status: Implemented. 값 계약은 `createCanvas`와 같다. 생략한 property는 기존 값을 유지한다.
@@ -65,13 +77,19 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     deterministic materialization plan을 실행한다. background만 바꾸면 consumer를 다시 만들지 않는다.
   - Interaction: explicit scale range는 Canvas bounds 변경으로 재계산되지 않는다.
 - `plot`: 생략하면 기존 모드를 유지한다. 새 내부 크기 또는 `false`로 전환할 수 있다. 활성 모드에서 margin 편집은 내부 크기를 유지하며 외부 Canvas를 재계산한다.
+- `plotBorder`: 생략하면 현재 설정을 유지한다. `false`는 설정을 비활성화하고 concrete border를 제거한다.
+  객체는 complete style configuration이며 partial patch가 아니다. 생략한 style field는 이전 값 대신
+  기본 `color: "#ddd"`, `lineWidth: 1`로 돌아간다. 다른 값/배치/검증 규칙은 `createCanvas`와 같다.
+  테두리만 편집해도 mark/scales의 의미나 geometry는 바뀌지 않는다. 새 plot 크기에 폭이 맞지 않으면 immutable하게 거부한다.
+  - Coverage: `test/unit/actions/canvas/plot-border.test.js`가 omission 보존, complete object reset,
+    `false` 제거, bounds 변경과 source/facet replay 및 실패 시 이전 program 보존을 검증한다.
 - 오류: 빈 edit, Canvas 부재, unknown option과 invalid resolved bounds를 거부한다.
 - Coverage: `test/unit/actions/canvas/edit-canvas.test.js`가 partial edit, margin-only edit,
   auto/explicit range 차이와 rematerialization을 검증한다.
 
 ### Formal values — `editCanvas`
 
-- Implemented: `editCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite } })`; 최소 한 property가 필요하다.
+- Implemented: `editCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite }; plotBorder?: false | { color?: NonEmptyString; lineWidth?: PositiveFinite } })`; 최소 한 property가 필요하다.
 - Proposed (NOT IMPLEMENTED): `createCanvas`의 `"auto"` dimension/margin과 동일하다.
 
 ### Value coverage — `editCanvas`
@@ -263,7 +281,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createData`
 
-- Signature: `createData({ id?, values })`
+- Signature: `createData({ id?, values, schema? })`
 - `id`
   - Status: Implemented. Optional user-defined ID다. 첫 dataset에서 생략하면 deterministic role ID
     `"data"`를 사용한다. Dataset이 이미 있으면 생략은 ambiguous하므로 explicit ID가 필요하다.
@@ -275,6 +293,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     누락된 row는 index를 포함한 오류로 첫 저장 전에 거부한다.
   - Effect: caller-owned 값을 deep clone/freeze하여 immutable source dataset으로 저장한다.
     graphic output은 만들지 않는다.
+- 원본 행 키와 schema의 `name`은 빈 문자열·공백을 포함하여 손실 없이 보존한다. 미사용 빈 열을 제거하거나 이름을 바꾸지 않는다. 명시 schema의 누락 열, 중복 이름, storageType/nullable/optional 검사는 그대로다. Schema version 1을 유지하며 빈 키가 있는 새 snapshot은 지원 런타임을 필요로 한다.
+- 차트/변환 입력·생성 필드 참조, lineage 입력과 resource ID의 non-empty 검증은 완화하지 않는다. 행 보존 변환·revision·facet·persistence는 빈 셀을 유지하고 summary/fold 등은 기존 열 투영 정책을 따른다.
 - 오류: ambiguous omitted ID, invalid/duplicate ID, non-array와 non-object row를 거부한다.
 - Coverage: `test/unit/actions/data/create-data.test.js`가 empty/multiple data, ownership,
   trace summary, invalid values와 duplicates를 검증한다.
@@ -299,6 +319,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     completion 정책이 먼저 필요하다.
 - Evidence: `test/unit/actions/data/create-data.test.js`, `test/contracts/input-boundaries.test.js`,
   `test/contracts/source-data-types.test.js`.
+- ✅ Covered: 빈/공백 원본 키의 추론·명시 schema, nullable/optional/중복·미선언·타입 실패, 입력/이전 프로그램 불변성, 행 보존/투영, source revision, Full/Basic persistence·정상 이름의 동일 SVG, facet. Evidence: `test/unit/actions/data/raw-row-keys.test.js`.
 
 ## `reviseData`
 
@@ -598,9 +619,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   number/string/boolean/null `{ constant }`다. 산술, 비교, boolean, `if`, `coalesce`, `concat`,
   `log`, `sqrt`의 닫힌 node union을 지원한다. `if`·`and`·`or`·`coalesce`는 값 평가를
   short-circuit하지만 모든 branch의 구조와 field 존재는 먼저 검증한다.
+- `toNumber` unary node는 finite number를 보존하고 trim된 signed decimal/scientific string을 finite number로 변환한다. Empty/whitespace, null, boolean, hex, invalid 및 non-finite 값은 거부한다. 다른 연산의 strict numeric 계약은 유지한다.
+- `parseTime` node는 `{ op: "parseTime", operand, format? }`다. Format은 `"auto"`(기본), `"%Y-%m-%d"`, `"%d/%m/%Y"`, `"%m/%d/%Y"`의 closed union이다. Explicit calendar formats는 UTC millisecond timestamp를 만들고 잘못된 일자 rollover를 거부한다. Auto는 기존 temporal scalar normalization을 재사용한다. Invalid/nullish input은 null이므로 filter/impute 등 기존 명시적 missing-data 정책으로 처리한다. Raw field는 덮어쓰지 않는다.
+- `getPath` node는 `{ op: "getPath", operand: { field: root }, path }`다. Path는 1–8개의 non-empty literal string key이며 dot splitting, arrays/indices, dynamic expressions, prototype traversal를 지원하지 않는다. `__proto__`/`prototype`/`constructor`와 unknown node keys는 거부한다. Plain record의 own data property만 읽고 getter는 실행하지 않는다. Missing own property와 nullish intermediate는 null, present non-record intermediate/accessor/nonscalar 또는 nonfinite leaf는 atomic error다. Dataset 전체에서 unknown root는 오류지만 known optional root가 없는 row는 null이다. Ordinary literal field reference의 기존 의미와 missing-row 오류는 유지한다. Root field는 schema lineage dependency다.
+- `replaceLiteral` node는 `{ op: "replaceLiteral", operand, search, replacement }`다. Operand는 기존 recursive expression이며 평가 결과는 string이어야 한다. Search는 non-empty literal string, replacement는 empty를 허용하는 literal string이다. 첫 case-sensitive exact substring만 교체하고 no match는 원본을 보존한다. Dollar sequences는 literal이며 regex/flags/callback/dynamic search와 coercion은 지원하지 않는다. Null/nonstring operand와 malformed keys/types는 atomic error다. 기존 depth/node/work bounds와 lazy conditional 평가를 유지한다.
 - Effect: source row와 모든 existing cell을 보존하고 각 row에 한 primitive 또는 null output을 추가한다.
   Serialized transform 자체가 exact formula provenance다. Facet replay에서는 row-preserving transform으로
-  처리한다. undefined cell은 null로 평가하지만 field key 자체가 없는 row는 오류다. 한 materialization의
+  처리한다. undefined scalar cell은 null로 평가하지만 ordinary field key 자체가 없는 row는 오류다. Explicit getPath의 known optional root는 위 missing 정책을 따른다. 한 materialization의
   non-null output type은 하나여야 한다.
 - 오류: missing/structured operand, typed-operation mismatch, divide-by-zero, invalid log/sqrt,
   overflow/non-finite result, mixed output type, output collision, unknown 또는 malformed expression node를
@@ -612,16 +637,18 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 - Implemented: `createComputedData({ id: UserId; source?: UserId; as: FieldName; expression: ComputedExpression }): ChartProgram`
 - Implemented nodes: field; number/string/boolean/null constant; add/subtract/multiply/divide;
-  negate/absolute/log/sqrt; eq/neq/lt/lte/gt/gte; and/or/not/isNull; if/coalesce/concat.
+  negate/absolute/log/sqrt/toNumber; parseTime(operand, format?); eq/neq/lt/lte/gt/gte; and/or/not/isNull; if/coalesce/concat; getPath(literal root field, 1–8 literal keys); replaceLiteral(operand, nonempty literal search, literal replacement).
 - Proposed (NOT IMPLEMENTED): callbacks, expression strings, group aggregates, arbitrary regex와 arbitrary code evaluation.
 
 ### Value coverage — `createComputedData`
+
+- ✅ Covered: closed UTC date formats, day/month order, leap dates, invalid/null output, auto temporal normalization, typed AST validation and filtered mark consumption in `test/unit/actions/data/parse-time-data.test.js` and `test/contracts/parse-time-types.test.js`.
 
 - ✅ Covered: arithmetic, comparison, logic, conditional, coalesce/concat, log/sqrt and all primitive constants.
 - ✅ Covered: missing/invalid typed input, lazy value evaluation with eager structural/field validation,
   zero denominator, invalid domains, finite overflow, mixed output and collision rejection.
 - ✅ Covered: strict node shape/vocabulary, immutable deep ownership, row grain, depth/node/work bounds.
-- Evidence: `test/unit/actions/data/computed-data.test.js`.
+- Evidence: `test/unit/actions/data/computed-data.test.js`, `test/unit/actions/data/computed-access-and-replacement.test.js`, `test/contracts/computed-access-replacement-types.test.js`.
 
 ## `createNormalizedData`
 
@@ -669,16 +696,17 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   array다. `sequence`는 finite `start <= end`, positive `step`을 받고 `start + i * step <= end`를 생성한다.
   둘 다 없으면 source 전체 key의 typed first-appearance domain을 사용한다.
 - Group semantics: 실제 관측된 group tuple만 사용하고 group field별 Cartesian product를 만들지 않는다.
-  동일 group×key source row가 둘 이상이면 자동 집계하지 않고 오류다. explicit domain 밖의 관측 key도 오류다.
+  동일 group×key의 반복 관측은 입력 순서와 원본 cell을 각각 보존하며 자동 집계하지 않는다.
+  해당 pair가 하나도 없을 때만 합성 row 하나를 만든다. explicit domain 밖의 관측 key는 오류다.
 - Output: group first appearance와 domain order를 따른다. 원본 row의 모든 cell을 보존하고 합성 row는 key와
   group fields를 채운 뒤 나머지 source-field union을 `fill[field]` 또는 `null`로 채운다. `fill`은 key,
   group 또는 members field를 바꿀 수 없다.
 - `members`: 생략 가능 output field다. 지정하면 원본 row는 `[sourceIndex]`, 합성 row는 `[]`를 갖는다.
   기존 source field와 충돌하면 오류다.
-- Bounds and replay: allocation 전에 output 10,000-row 한도를 검사한다. `complete`는 statistical facet
+- Bounds and replay: 반복 관측과 합성 row를 모두 포함해 allocation 전에 output 10,000-row 한도를 검사한다. `complete`는 statistical facet
   topology라 각 child의 local source rows에서 domain/group completion을 다시 계산한다.
 - Errors: invalid/duplicate ID, unknown/ambiguous source, unknown option, missing field, mixed/non-scalar key,
-  duplicate domain/group×key, invalid sequence/fill/members, field collision와 output budget 초과를 첫 state change
+  duplicate domain, invalid sequence/fill/members, field collision와 output budget 초과를 첫 state change
   전에 거부한다.
 
 ### Formal values — `createCompleteData`
@@ -699,12 +727,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createImputedData`
 
-- Signature: `createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })`
+- Signature: `createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })`
 - Lifecycle: Full-only immutable create action이다. source row grain과 최종 source order를 유지한다.
 - `fields`: non-empty unique field 하나 또는 배열이다. missing은 `null`/`undefined`만이며 `NaN`/`Infinity`는
   invalid value다. 한 group 안의 각 target field는 하나의 non-null scalar type이어야 한다.
 - `groupBy`: 기본 `[]`; anchor와 missing run은 group 밖으로 넘어가지 않는다. `sortBy`는 stable lexicographic
   sort이고 order 기본은 ascending이다. 계산 뒤 output은 원래 row order로 복원한다.
+- `method` 생략은 `"mean"`이다. Mean은 group별 각 field의 observed finite-number 평균을 한 번 계산해 nullish cells를 대체한다. Input type은 numeric이어야 하며 원본 row/cell은 보존한다. Sorting은 선택 사항이고 anchor가 없는 group은 edges keep/error를 따른다.
 - `constant`: `value`가 필수이며 target field type과 일치해야 한다. `sortBy`는 선택 사항이다.
 - `forward`/`backward`: `value`를 금지하고 non-empty `sortBy`가 필요하다. 각각 이전/다음 non-missing anchor를 쓴다.
 - `linear`: `value`를 금지하고 정확히 하나의 ascending numeric 또는 temporal-string sort field가 필요하다.
@@ -719,7 +748,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Formal values — `createImputedData`
 
 - Implemented: `createImputedData(options: ImputedDataOptions): ChartProgram` (Full only).
-- Implemented methods: `"constant" | "forward" | "backward" | "linear"`; edges `"keep" | "error"`.
+- Implemented methods: `"mean" (default) | "constant" | "forward" | "backward" | "linear"`; edges `"keep" | "error"`.
 - Proposed (NOT IMPLEMENTED): spline/model imputation, callback functions, automatic aggregation과 source replacement.
 
 ### Value coverage — `createImputedData`
@@ -733,9 +762,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createStackData`
 
-- Signature: `createStackData({ id, source?, category, group, value, mode?, as? })`
+- Signature: `createStackData({ id?, source?, category, group, value, mode?, as? })`
 - `id`, `source`: 새 immutable derived dataset ID와 existing materialized source다. `source` 생략 시
-  current data를 사용한다.
+  current data를 사용한다. `id` 생략 시 deterministic `"stacked"` role을 사용하고 해당 ID 또는 owner가 이미 있으면 거부한다. 두 번째 stack은 explicit 새 ID가 필요하며 자동 번호나 첫 dataset 선택은 하지 않는다.
 - `category`, `group`, `value`: 서로 다른 field다. 각 source row는 한 unique category/group cell이며
   value는 finite number다. Category와 group은 null/string/boolean/finite-number scalar identity를 쓴다.
 - `mode`: `"stack" | "fill" | "center" | "diverging"`, 기본 `"stack"`이다. Phase 4의
@@ -753,7 +782,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createStackData`
 
-- Implemented: `createStackData({ id: UserId; source?: UserId; category: FieldName; group: FieldName; value: FieldName; mode?: "stack" | "fill" | "center" | "diverging"; as?: StackDataOutputFields }): ChartProgram`
+- Implemented: `createStackData({ id?: UserId; source?: UserId; category: FieldName; group: FieldName; value: FieldName; mode?: "stack" | "fill" | "center" | "diverging"; as?: StackDataOutputFields }): ChartProgram`
 - Proposed (NOT IMPLEMENTED): duplicate-cell aggregation, missing-cell synthesis와 explicit series order.
 
 ### Value coverage — `createStackData`
@@ -762,6 +791,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: mixed-sign diverging and negative rejection in non-negative modes.
 - ✅ Covered: missing/duplicate/non-finite cells, role/output uniqueness, source collision and immutable rejection.
 - Evidence: `test/unit/actions/data/stack-data.test.js`, `test/unit/grammar/transforms/series-layout.test.js`.
+
+- ✅ Covered: 생략 ID와 explicit `"stacked"` convergence, default ID collision, second explicit ID와 missing-source failure in `test/unit/actions/data/stack-data.test.js`.
 
 ## `createRegressionData`
 
@@ -1228,7 +1259,7 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 
 ## `createTimeUnitData`
 
-- Signature: `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })`
+- Signature: `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })`
 - Lifecycle: standalone 호출은 stable logical owner를 만들고 `editTimeUnitData`가 immutable revision을 생성해
   consumer를 rebind한다. `id`는 최초 생성 시 필수 새 derived dataset ID다.
 - `source`: existing dataset ID다. 생략하면 current data를 사용하며 안전하게 추론할 수 없으면 오류다.
@@ -1236,7 +1267,7 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
   ISO/date string 또는 four-digit year를 받는다. `temporalUnit`은 입력 해석만 제어하며 transform에 보존된다.
 - `unit`: `"year" | "quarter" | "month" | "day" | "hour" | "minute" | "second" | "week" | "weekday"`의
   closed vocabulary다.
-- `as`: source의 어느 row에도 존재하지 않는 새 output field다. Input field와 달라야 한다.
+- `as`: optional 새 output field이며 생략은 `${field}_${unit}`이다. Source의 어느 row에도 존재하지 않아야 하고 input field와 달라야 한다. Inference도 같은 collision 검증을 적용하고 numbered fallback을 만들지 않는다. Canonical stored transform은 항상 resolved as를 가진다.
 - `timeZone`: optional non-empty IANA name이다. 생략은 `"UTC"` 계산과 같지만 기존 7-unit 호출은 이전 stored
   transform shape를 유지한다. host local timezone과 locale에 의존하지 않는다.
 - Week policy: `unit:"week"`에서 `weekStartsOn` 기본은 Monday `1`, `weekRule` 기본은 `"calendar"`다.
@@ -1267,7 +1298,7 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 - `timeZone`
   - ✅ Covered: UTC/Seoul/New_York/Kolkata/Lord_Howe/Apia, hour/half-hour offsets, DST gap/fold와 skipped date.
 - `field`, `as`
-  - ✅ Covered: timestamp/ISO/date/year inputs, missing/invalid input, distinct output와 collision rejection.
+  - ✅ Covered: timestamp/ISO/date/year inputs, missing/invalid input, default/explicit distinct output와 collision rejection.
 - Lifecycle and integration
   - ✅ Covered: current/explicit source, immutable provenance/rows/options, action hierarchy, direct transform schema,
     temporal position consumption, registered replay와 explicit-anchor facet rederivation.
@@ -1530,7 +1561,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   Explicit transformed pair는 계속 distinct해야 한다. Ordinal은 non-empty unique values를 사용한다.
   Threshold는 strictly increasing explicit boundaries가 필수다.
 - `range`: `"auto"` 또는 consumer-compatible array. continuous position은 finite pair, ordinal은
-  channel에 따라 colors, shapes 또는 dash patterns가 될 수 있다. Sequential은 최소 두 colors,
+  channel에 따라 colors, shapes 또는 dash patterns가 될 수 있다. Temporal centered bar도 explicit numeric position range를 그대로 유지하며 legacy center inset은 auto range에만 적용한다. Bandwidth는 실제 explicit mapping의 최소 gap이고 finite endpoint 차이가 overflow하면 기존 finite conservative slot estimate를 쓴다. Canvas replay는 explicit range를 재추론하지 않으며 reverse는 마지막에 적용한다. Continuous color는 최소 두 colors,
   discretized color는 최소 두 colors를 사용하며 threshold는 domain보다 정확히 하나 더 필요하다.
 - `nice`: boolean, continuous position scale의 auto domain에 적용된다.
 - `zero`: boolean, `linear | pow | sqrt | symlog` auto domain에 적용되며 log에서는 오류다.
@@ -1538,8 +1569,8 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 - `clamp`: compatible continuous mapping을 resolved output extent로 제한한다. `reverse`는 final range direction을 뒤집는다.
 - `band`는 `paddingInner` 기본 `0`, `paddingOuter` 기본 `0`, `align` 기본 `0.5`; `point`는
   `padding` 기본 `0.5`, `align` 기본 `0.5`를 저장한다. Bandwidth는 band만 positive다.
-- `palette`는 sequential/log/symlog/discretized color range descriptor이며 explicit `range`와 mutually exclusive다.
-  Unattached log/symlog는 color range, palette 또는 interpolate로 color intent를 판별한다.
+- `palette`는 sequential/log/sqrt/symlog/discretized color range descriptor이며 explicit `range`와 mutually exclusive다.
+  Unattached log/sqrt/symlog는 color range, palette 또는 interpolate로 color intent를 판별한다.
   Color 범위와 numeric position 범위는 공유할 수 없다. Transform parameter는 position과 동일한 owner를 쓴다.
   Sequential descriptor의 `count`는 2 이상의 gradient-stop count이며 top-level `palette`와
   `range.palette`가 같은 validation과 resolution을 사용한다. `interpolate`는 continuous color 전용이고

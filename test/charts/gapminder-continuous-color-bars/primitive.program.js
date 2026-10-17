@@ -316,15 +316,15 @@ export function createGapminderContinuousColorBarPrimitives(gapminder, variant) 
   });
   program = text(program, "colorGradientLabels", {
     x: legend.x + legend.thickness + 13,
-    y: legend.positions,
+    y: legend.positions.map(y => y - 5),
     text: legend.labels
-  }, { fontSize: 10, textAlign: "left" });
+  }, { fontSize: 10, textAlign: "left", textBaseline: "top" });
   program = program.createGraphics({ id: "colorGradientTitle", parent: "canvas", type: "text" });
   program = text(program, "colorGradientTitle", {
     x: legend.x,
-    y: bounds.top + 20,
+    y: bounds.top,
     text: legend.title
-  }, { fontSize: 10, fontWeight: 600, textAlign: "left" });
+  }, { fontSize: 10, fontWeight: 600, textAlign: "left", textBaseline: "top" });
 
   program = program.createGraphics({ id: "chartTitle", parent: "canvas", type: "text" });
   program = text(program, "chartTitle", {

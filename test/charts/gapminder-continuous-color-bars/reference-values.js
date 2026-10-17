@@ -143,7 +143,8 @@ export function createContinuousColorBarReference(gapminder, variant) {
   }));
   const gradientRange = reverse ? [...VIRIDIS].reverse() : [...VIRIDIS];
   const gradientX = bounds.right + 24;
-  const gradientY = bounds.top + 46;
+  // A 10px title has top=plot.top; retain the gradient-to-title spacing.
+  const gradientY = bounds.top + 31;
   const gradientLength = 120;
   const gradientThickness = 10;
   const strips = Object.freeze(Array.from({ length: 60 }, (_, index) => {

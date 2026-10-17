@@ -22,6 +22,38 @@ and Canvas or scale updates, regardless of authoring order. Increase the margin
 or change offsets when space is insufficient; a failed action preserves the
 earlier program.
 
+An omitted offset for a vertical Y-axis title reserves a quarter-em ink gap when
+its estimated text box is clamped to the Canvas edge. This applies at every font
+size when the extra reserve fits beside the actual axis labels. If it would
+introduce a label collision, placement keeps the existing Canvas-fit offset.
+Automatic margin fitting keeps space for the inferred ink reserve.
+Explicit offsets and preferred placement with sufficient margin stay exact.
+
+Rotated Cartesian labels stay outside their selected plot edge in both fixed-size
+and automatic-plot Canvases. `offset` measures the gap to the complete rotated
+text bounds. Vertical X-axis labels are centered over their ticks; slanted labels
+use an end anchor inferred from their rotation and axis side. Reserve enough
+margin for the full label length and the axis title. Rotation does not enlarge a
+fixed Canvas or change its margins.
+
+## Keep endpoint labels inside the axis span
+
+Set Cartesian labels `flush: true` to keep unrotated text bounds inside the mapped scale span. This moves text inward only when its bounds cross an endpoint, without changing tick positions, text, font sizes or the outward gap. It works on X and Y axes, retains `alongOffset`, and moves wrapped lines together. The default is `false`. Rotated labels and text wider than the entire span are rejected.
+
+Flush preserves the existing overlap policy. When adjacent labels intentionally overlap, request `overlap: "allow"`; this does not disable Canvas or title collision checks. Specify required flush geometry at complete-axis creation so the initial axis also fits.
+
+## Color individual tick labels
+
+Use Cartesian labels `colorMap: [{ value, color }]` for per-value colors. Lookup uses raw typed tick values, independently of `labelMap` display text. Missing entries use the existing global `color`; `[]` stores an empty map and `"auto"` removes it. Continuous/time keys must be finite numbers or Unix milliseconds; categorical keys preserve their types. Duplicate keys, extra entry fields and empty colors are rejected. Wrapped lines share their tick color. Complete, whole-axis, grouped and focused label actions use the same policy, and tick/Canvas/scale changes preserve it. Polar and Parallel axes do not accept this option.
+
+## Override displayed tick text
+
+Cartesian label `labelMap` works with categorical values, numeric ticks and time ticks. Provide typed `{ value, label }` entries. Continuous keys must be finite numbers; time keys use Unix milliseconds. Missing entries retain the normal formatter, and `"auto"` clears the map. Scale domains, tick positions and raw data are preserved. Use focused labels, nested ticks-and-labels or whole-axis editors to update the same policy.
+
+## Shift ticks and labels along an axis
+
+Cartesian ticks and labels accept `alongOffset`, a signed finite displacement in logical pixels. Positive values move X-axis items right and Y-axis items down, including top/right axes and reversed scales. It defaults to zero and leaves the scale and axis baseline unchanged. Tick and label offsets are independent absolute values: set both when both should move. The existing label `offset` remains the outward gap from the plot edge. Complete axes, whole-axis editors and focused editors accept the same options; Canvas and scale updates preserve them. Polar and Parallel axes do not accept this option.
+
 ## Standalone Cartesian axes
 
 An axis does not need an invisible mark or dataset. Supply an existing Cartesian
@@ -206,8 +238,8 @@ axis throws before anything changes.
 | --- | --- |
 | `position` | x: `"bottom"/"top"`; y: `"left"/"right"` |
 | `line` | `false` or `{ color?, lineWidth? }` |
-| `ticks` | `false` or `{ count?, values?, length?, color?, lineWidth? }` |
-| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap? }` |
+| `ticks` | `false` or `{ count?, values?, length?, color?, lineWidth?, alongOffset? }` |
+| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, alongOffset?, labelMap?, flush?, colorMap? }` |
 | `ticksAndLabels` | `false` or `{ count?, values?, ticks?, labels? }` |
 | `title` | `false` or `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight? }` |
 
@@ -227,3 +259,5 @@ has one semantic axis, so parallel duplicate axes cannot be created.
 
 [Guides](./guides.md) · [Grids](./grids.md) ·
 [Advanced axis components](../advanced/axis-components.md)
+
+An explicit Cartesian `labelMap` entry with `label: ""` hides only that displayed label. Tick marks, stored tick values and scale domains stay unchanged. Empty labels remain suppressed after Canvas/scale replay; clear the map with `"auto"` to restore the normal formatter.

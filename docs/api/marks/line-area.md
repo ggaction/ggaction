@@ -121,7 +121,7 @@ Supported curves are `linear`, `step`, `step-before`, `step-after`, `basis`,
 two-point series fall back to linear. Monotone paths require strictly increasing
 or decreasing materialized x values; duplicate or non-monotonic x is rejected.
 Materialization rejects any line or complete area that would expand beyond
-10,000 backend-neutral path commands before allocating that command array.
+20,000 backend-neutral path commands before allocating that command array.
 
 For Cartesian cardinal lines, `tension` is a finite number from 0 to 1,
 with default 0 preserving the existing curve. It multiplies each tangent by
@@ -203,6 +203,34 @@ const area = chart()
 ```
 
 Area fill defaults to `"#4c78a8"`, opacity to `0.2`, and curve to `"linear"`.
+Area `fill` also accepts the existing `FillPaint` linear gradient. Coordinates
+are normalized within each closed path, so grouped or broken paths each retain
+the same local paint direction. The paint survives resizing, data/scale edits,
+selection restoration, and editable or graphic persistence. Density, violin,
+and error-band fill options share this contract. Use an explicit solid outline
+when needed; a gradient cannot supply one inferred outline color.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+const gradientArea = chart()
+  .createCanvas({ width: 300, height: 200, margin: 30 })
+  .createData({ values: [{ x: 0, y: 1 }, { x: 1, y: 3 }, { x: 2, y: 2 }] })
+  .createAreaPlot({ x: "x", y: "y", guides: false })
+  .editAreaMark({
+    fill: {
+      type: "linear-gradient", from: { x: 0, y: 1 }, to: { x: 0, y: 0 },
+      stops: [{ offset: 0, color: "white" }, { offset: 1, color: "#fc6721" }]
+    },
+    opacity: 0.7
+  });
+```
+
 An area becomes renderable with exactly one ranged orientation, a complete
 density value/density pair, or aligned grouped x/y values whose y encoding uses
 `stack: "center"`. `encodeGroup` creates one closed path per nominal group
@@ -230,7 +258,10 @@ program.editAreaMark({
 `stroke: false` removes both outline and stored width. A width-only edit
 requires an active outline. Constant fill cannot replace a field-driven color
 encoding. Complete paths rematerialize immediately; incomplete paths retain the
-configuration until their encodings become renderable.
+configuration until their encodings become renderable. A later field color encoding
+uses its scale while retaining the fallback paint; removing that encoding reveals
+the stored fill. Without a field color, stroke-legend swatches preserve a gradient
+area's paint and opacity.
 Area stroke details use the same shared Mark Style contract as Line.
 
 ## Arc marks

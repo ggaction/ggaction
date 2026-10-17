@@ -1,4 +1,5 @@
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
+import { materializeLegendTitleLines } from "../../../../materialization/legendText.js";
 import { action } from "../../../../core/action.js";
 import {
   activeConfig,
@@ -19,15 +20,17 @@ export const rematerializeLegendLabels = /* @__PURE__ */ action(
       throw new Error("rematerializeLegendLabels requires existing legend labels.");
     }
     const layout = resolveLayout(this, config);
+    const labels = categoricalLegendLabels(config);
+    const visible = labels.flatMap((text, index) => text === "" ? [] : [index]);
     return editGraphicProperties(editGraphicProperties(this, id, {
-      length: categoricalLegendLabels(config).length,
-      x: layout.labelX,
-      y: layout.itemY
+      length: visible.length,
+      x: visible.map(index => layout.labelX[index]),
+      y: visible.map(index => layout.itemY[index])
     })
       .editGraphics({
         target: id,
         property: "text",
-        value: categoricalLegendLabels(config)
+        value: visible.map(index => labels[index])
       }), id, {
       fill: config.labels.color,
       fontSize: config.labels.fontSize,
@@ -69,7 +72,7 @@ export const rematerializeLegendTitle = /* @__PURE__ */ action(
       throw new Error("rematerializeLegendTitle requires an existing legend title.");
     }
     const layout = resolveLayout(this, config);
-    return editGraphicProperties(this, id, {
+    const next = editGraphicProperties(this, id, {
       x: layout.titleX,
       y: layout.titleY,
       text: config.title,
@@ -81,12 +84,13 @@ export const rematerializeLegendTitle = /* @__PURE__ */ action(
       .editGraphics({
         target: id,
         property: "textAlign",
-        value: ["top", "bottom"].includes(config.position) &&
+        value: config.titleStyle.align ?? (["top", "bottom"].includes(config.position) &&
           config.titlePosition === "top"
           ? "center"
-          : "left"
+          : "left")
       })
       .editGraphics({ target: id, property: "textBaseline", value: "middle" });
+    return materializeLegendTitleLines(next, id, config.title, config.titleStyle);
   }
 );
 

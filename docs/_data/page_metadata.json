@@ -457,7 +457,7 @@
   },
   "/api/grids/": {
     "title": "Grids",
-    "description": "Creates Cartesian or Polar grid geometry from encoded scales. Cartesian defaults to horizontal only.",
+    "description": "Cartesian grids accept continuous, band and point scales. Band grids use centers by default; set bandPosition: \"boundary\" for both edges of each selected cell.",
     "image": "/assets/images/cars-histogram.png"
   },
   "/api/legends/": {
@@ -482,7 +482,7 @@
   },
   "/api/legends/editing/": {
     "title": "Editing Legends",
-    "description": "Legend creation and editing check the final occupied bounds against chart titles, Cartesian axis components and independent legend groups on the same edge.",
+    "description": "Use newline characters in a title string, for example program.editLegendTitle({ title: \"Revenue\\nUSD millions\" }), to keep an explicit line break.",
     "image": "/assets/images/cars-density-area.png"
   },
   "/concepts/chart-program/": {

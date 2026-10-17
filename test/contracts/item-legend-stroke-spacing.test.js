@@ -9,7 +9,7 @@ function intervalBase() {
     .encodeX({field:"x"}).encodeY({field:"y"}).encodeColor({field:"m",fieldType:"quantitative",scale:{type:"quantize",range:["#4c78a8","#f58518"]}});
 }
 function intervalPrimitive(base, edge) {
-  const r={x:[810,810],y:[264.5,316.5],labelX:[852,852],title:[790,220],align:"left"};
+  const r={x:[810,810],y:[251,303],labelX:[852,852],title:[790,200],align:"left"};
   return base.createGraphics({id:"colorLegendSymbols",type:"rect",length:2,parent:"canvas"})
     .editGraphics({target:"colorLegendSymbols",property:"x",value:r.x})
     .editGraphics({target:"colorLegendSymbols",property:"y",value:r.y.map(y=>y-6)})
@@ -20,14 +20,14 @@ function intervalPrimitive(base, edge) {
     .editGraphics({target:"colorLegendSymbols",property:"strokeWidth",value:40})
     .createGraphics({id:"colorLegendLabels",type:"text",length:2,parent:"canvas"})
     .editGraphics({target:"colorLegendLabels",property:"x",value:r.labelX})
-    .editGraphics({target:"colorLegendLabels",property:"y",value:r.y})
+    .editGraphics({target:"colorLegendLabels",property:"y",value:r.y.map(y=>y-6)})
     .editGraphics({target:"colorLegendLabels",property:"text",value:["< 5","≥ 5"]})
     .editGraphics({target:"colorLegendLabels",property:"fill",value:"#334155"})
     .editGraphics({target:"colorLegendLabels",property:"fontSize",value:12})
     .editGraphics({target:"colorLegendLabels",property:"fontFamily",value:"sans-serif"})
     .editGraphics({target:"colorLegendLabels",property:"fontWeight",value:"normal"})
     .editGraphics({target:"colorLegendLabels",property:"textAlign",value:"left"})
-    .editGraphics({target:"colorLegendLabels",property:"textBaseline",value:"middle"})
+    .editGraphics({target:"colorLegendLabels",property:"textBaseline",value:"top"})
     .createGraphics({id:"colorLegendTitle",type:"text",parent:"canvas"})
     .editGraphics({target:"colorLegendTitle",property:"x",value:r.title[0]})
     .editGraphics({target:"colorLegendTitle",property:"y",value:r.title[1]})
@@ -37,7 +37,7 @@ function intervalPrimitive(base, edge) {
     .editGraphics({target:"colorLegendTitle",property:"fontFamily",value:"sans-serif"})
     .editGraphics({target:"colorLegendTitle",property:"fontWeight",value:600})
     .editGraphics({target:"colorLegendTitle",property:"textAlign",value:r.align})
-    .editGraphics({target:"colorLegendTitle",property:"textBaseline",value:"middle"});
+    .editGraphics({target:"colorLegendTitle",property:"textBaseline",value:"top"});
 }
 
 function widthBase() {

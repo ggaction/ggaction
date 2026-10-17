@@ -4,11 +4,12 @@ import { chart } from "../../src/index.js";
 import { assertChartProgramsEquivalent } from "../support/chart-equivalence.js";
 import { assertRenderedPNG } from "../support/png.js";
 function base() { return chart().createCanvas({width:2400,height:2000,margin:500}).createData({values:[{x:0,y:0,m:0},{x:10,y:10,m:10}]}).createPointMark().encodeX({field:'x'}).encodeY({field:'y'}).encodeOpacity({field:'m'}); }
+// The 60px title starts at 500; samples shift 10px and 50px labels use top anchors.
 function primitive_right() {
   return base()
     .createGraphics({"id":"opacityLegendSymbols","type":"circle","parent":"canvas","length":3})
     .editGraphics({"target":"opacityLegendSymbols","property":"x","value":[1980,1980,1980]})
-    .editGraphics({"target":"opacityLegendSymbols","property":"y","value":[602,682,762]})
+    .editGraphics({"target":"opacityLegendSymbols","property":"y","value":[612,692,772]})
     .editGraphics({"target":"opacityLegendSymbols","property":"radius","value":[30,30,30]})
     .editGraphics({"target":"opacityLegendSymbols","property":"fill","value":["#4c78a8","#4c78a8","#4c78a8"]})
     .editGraphics({"target":"opacityLegendSymbols","property":"opacity","value":[0.2,0.6000000000000001,1]})
@@ -16,24 +17,24 @@ function primitive_right() {
     .editGraphics({"target":"opacityLegendSymbols","property":"strokeWidth","value":[20,20,20]})
     .createGraphics({"id":"opacityLegendLabels","type":"text","parent":"canvas","length":3})
     .editGraphics({"target":"opacityLegendLabels","property":"x","value":[2032,2032,2032]})
-    .editGraphics({"target":"opacityLegendLabels","property":"y","value":[602,682,762]})
+    .editGraphics({"target":"opacityLegendLabels","property":"y","value":[587,667,747]})
     .editGraphics({"target":"opacityLegendLabels","property":"text","value":["0","5","10"]})
     .editGraphics({"target":"opacityLegendLabels","property":"fill","value":["#334155","#334155","#334155"]})
     .editGraphics({"target":"opacityLegendLabels","property":"fontSize","value":[50,50,50]})
     .editGraphics({"target":"opacityLegendLabels","property":"fontFamily","value":["sans-serif","sans-serif","sans-serif"]})
     .editGraphics({"target":"opacityLegendLabels","property":"fontWeight","value":["normal","normal","normal"]})
     .editGraphics({"target":"opacityLegendLabels","property":"textAlign","value":["left","left","left"]})
-    .editGraphics({"target":"opacityLegendLabels","property":"textBaseline","value":["middle","middle","middle"]})
+    .editGraphics({"target":"opacityLegendLabels","property":"textBaseline","value":["top","top","top"]})
     .createGraphics({"id":"opacityLegendTitle","type":"text","parent":"canvas"})
     .editGraphics({"target":"opacityLegendTitle","property":"x","value":1940})
-    .editGraphics({"target":"opacityLegendTitle","property":"y","value":520})
+    .editGraphics({"target":"opacityLegendTitle","property":"y","value":500})
     .editGraphics({"target":"opacityLegendTitle","property":"text","value":"m"})
     .editGraphics({"target":"opacityLegendTitle","property":"fill","value":"#334155"})
     .editGraphics({"target":"opacityLegendTitle","property":"fontSize","value":60})
     .editGraphics({"target":"opacityLegendTitle","property":"fontFamily","value":"sans-serif"})
     .editGraphics({"target":"opacityLegendTitle","property":"fontWeight","value":600})
     .editGraphics({"target":"opacityLegendTitle","property":"textAlign","value":"left"})
-    .editGraphics({"target":"opacityLegendTitle","property":"textBaseline","value":"middle"});
+    .editGraphics({"target":"opacityLegendTitle","property":"textBaseline","value":"top"});
 }
 function primitive_stacked() {
   return base()
@@ -101,11 +102,12 @@ function primitive_inline() {
 
 function laneBase(){return chart().createCanvas({width:2400,height:2000,margin:500}).createData({values:[{x:0,y:0,m:0},{x:10,y:10,m:10}]}).createPointMark().encodeX({field:'x'}).encodeY({field:'y'}).encodeOpacity({field:'m'}).encodeColor({field:'m',fieldType:'nominal'});}
 // Mirrored label distance is 40 + 12 = 52, so the shared label column is 16 + 52 = 68, replacing 44.
+// A quarter-pixel swatch stroke owns the first block bottom; retain the 24px lane gap.
 function primitive_lane() {
   return laneBase()
     .createGraphics({"id":"colorLegendSymbols","type":"rect","parent":"canvas","length":2})
     .editGraphics({"target":"colorLegendSymbols","property":"x","value":[340,340]})
-    .editGraphics({"target":"colorLegendSymbols","property":"y","value":[546,574]})
+    .editGraphics({"target":"colorLegendSymbols","property":"y","value":[532.5,550.5]})
     .editGraphics({"target":"colorLegendSymbols","property":"width","value":[14,14]})
     .editGraphics({"target":"colorLegendSymbols","property":"height","value":[12,12]})
     .editGraphics({"target":"colorLegendSymbols","property":"fill","value":["#4c78a8","#f58518"]})
@@ -113,27 +115,27 @@ function primitive_lane() {
     .editGraphics({"target":"colorLegendSymbols","property":"strokeWidth","value":[0.5,0.5]})
     .createGraphics({"id":"colorLegendLabels","type":"text","parent":"canvas","length":2})
     .editGraphics({"target":"colorLegendLabels","property":"x","value":[399,399]})
-    .editGraphics({"target":"colorLegendLabels","property":"y","value":[552,580]})
+    .editGraphics({"target":"colorLegendLabels","property":"y","value":[532.5,550.5]})
     .editGraphics({"target":"colorLegendLabels","property":"text","value":["0","10"]})
     .editGraphics({"target":"colorLegendLabels","property":"fill","value":["#334155","#334155"]})
     .editGraphics({"target":"colorLegendLabels","property":"fontSize","value":[12,12]})
     .editGraphics({"target":"colorLegendLabels","property":"fontFamily","value":["sans-serif","sans-serif"]})
     .editGraphics({"target":"colorLegendLabels","property":"fontWeight","value":["normal","normal"]})
     .editGraphics({"target":"colorLegendLabels","property":"textAlign","value":["left","left"]})
-    .editGraphics({"target":"colorLegendLabels","property":"textBaseline","value":["middle","middle"]})
+    .editGraphics({"target":"colorLegendLabels","property":"textBaseline","value":["top","top"]})
     .createGraphics({"id":"colorLegendTitle","type":"text","parent":"canvas"})
     .editGraphics({"target":"colorLegendTitle","property":"x","value":331})
-    .editGraphics({"target":"colorLegendTitle","property":"y","value":520})
+    .editGraphics({"target":"colorLegendTitle","property":"y","value":500})
     .editGraphics({"target":"colorLegendTitle","property":"text","value":"m"})
     .editGraphics({"target":"colorLegendTitle","property":"fill","value":"#334155"})
     .editGraphics({"target":"colorLegendTitle","property":"fontSize","value":13})
     .editGraphics({"target":"colorLegendTitle","property":"fontFamily","value":"sans-serif"})
     .editGraphics({"target":"colorLegendTitle","property":"fontWeight","value":600})
     .editGraphics({"target":"colorLegendTitle","property":"textAlign","value":"left"})
-    .editGraphics({"target":"colorLegendTitle","property":"textBaseline","value":"middle"})
+    .editGraphics({"target":"colorLegendTitle","property":"textBaseline","value":"top"})
     .createGraphics({"id":"opacityLegendBackground","type":"rect","parent":"canvas"})
     .editGraphics({"target":"opacityLegendBackground","property":"x","value":295})
-    .editGraphics({"target":"opacityLegendBackground","property":"y","value":611})
+    .editGraphics({"target":"opacityLegendBackground","property":"y","value":587.25})
     .editGraphics({"target":"opacityLegendBackground","property":"width","value":177})
     .editGraphics({"target":"opacityLegendBackground","property":"height","value":336})
     .editGraphics({"target":"opacityLegendBackground","property":"fill","value":"transparent"})
@@ -141,7 +143,7 @@ function primitive_lane() {
     .editGraphics({"target":"opacityLegendBackground","property":"strokeWidth","value":1})
     .createGraphics({"id":"opacityLegendSymbols","type":"circle","parent":"canvas","length":3})
     .editGraphics({"target":"opacityLegendSymbols","property":"x","value":[347,347,347]})
-    .editGraphics({"target":"opacityLegendSymbols","property":"y","value":[735,815,895]})
+    .editGraphics({"target":"opacityLegendSymbols","property":"y","value":[711.25,791.25,871.25]})
     .editGraphics({"target":"opacityLegendSymbols","property":"radius","value":[30,30,30]})
     .editGraphics({"target":"opacityLegendSymbols","property":"fill","value":["#4c78a8","#4c78a8","#4c78a8"]})
     .editGraphics({"target":"opacityLegendSymbols","property":"opacity","value":[0.2,0.6000000000000001,1]})
@@ -149,24 +151,24 @@ function primitive_lane() {
     .editGraphics({"target":"opacityLegendSymbols","property":"strokeWidth","value":[20,20,20]})
     .createGraphics({"id":"opacityLegendLabels","type":"text","parent":"canvas","length":3})
     .editGraphics({"target":"opacityLegendLabels","property":"x","value":[399,399,399]})
-    .editGraphics({"target":"opacityLegendLabels","property":"y","value":[735,815,895]})
+    .editGraphics({"target":"opacityLegendLabels","property":"y","value":[686.25,766.25,846.25]})
     .editGraphics({"target":"opacityLegendLabels","property":"text","value":["0","5","10"]})
     .editGraphics({"target":"opacityLegendLabels","property":"fill","value":["#334155","#334155","#334155"]})
     .editGraphics({"target":"opacityLegendLabels","property":"fontSize","value":[50,50,50]})
     .editGraphics({"target":"opacityLegendLabels","property":"fontFamily","value":["sans-serif","sans-serif","sans-serif"]})
     .editGraphics({"target":"opacityLegendLabels","property":"fontWeight","value":["normal","normal","normal"]})
     .editGraphics({"target":"opacityLegendLabels","property":"textAlign","value":["left","left","left"]})
-    .editGraphics({"target":"opacityLegendLabels","property":"textBaseline","value":["middle","middle","middle"]})
+    .editGraphics({"target":"opacityLegendLabels","property":"textBaseline","value":["top","top","top"]})
     .createGraphics({"id":"opacityLegendTitle","type":"text","parent":"canvas"})
     .editGraphics({"target":"opacityLegendTitle","property":"x","value":331})
-    .editGraphics({"target":"opacityLegendTitle","property":"y","value":653})
+    .editGraphics({"target":"opacityLegendTitle","property":"y","value":599.25})
     .editGraphics({"target":"opacityLegendTitle","property":"text","value":"m"})
     .editGraphics({"target":"opacityLegendTitle","property":"fill","value":"#334155"})
     .editGraphics({"target":"opacityLegendTitle","property":"fontSize","value":60})
     .editGraphics({"target":"opacityLegendTitle","property":"fontFamily","value":"sans-serif"})
     .editGraphics({"target":"opacityLegendTitle","property":"fontWeight","value":600})
     .editGraphics({"target":"opacityLegendTitle","property":"textAlign","value":"left"})
-    .editGraphics({"target":"opacityLegendTitle","property":"textBaseline","value":"middle"});
+    .editGraphics({"target":"opacityLegendTitle","property":"textBaseline","value":"top"});
 }
 
 const cases = [{"id":"right","options":{"channels":["opacity"],"count":3,"offset":40,"position":"right","symbol":{"radius":30,"stroke":"black","strokeWidth":20},"labels":{"fontSize":50},"titleStyle":{"fontSize":60}}},{"id":"stacked","options":{"channels":["opacity"],"count":3,"offset":40,"position":"top","symbol":{"radius":40,"stroke":"black","strokeWidth":20},"labels":{"fontSize":80},"titleStyle":{"fontSize":60}}},{"id":"inline","options":{"channels":["opacity"],"count":3,"offset":40,"position":"bottom","titlePosition":"left","symbol":{"radius":30,"stroke":"black","strokeWidth":20},"labels":{"fontSize":50},"titleStyle":{"fontSize":60}}}];

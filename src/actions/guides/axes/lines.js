@@ -1,3 +1,4 @@
+import { requireSemanticScale } from "../../../selectors/scales.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
@@ -27,10 +28,10 @@ function validateStyle({ color, lineWidth }) {
   validateNonNegativeFinite(lineWidth, "Axis lineWidth");
 }
 
-function resolveLineRange(resolvedScale, bounds, channel) {
+function resolveLineRange(resolvedScale, bounds, channel, explicitRange) {
   const range = resolvedScale?.range;
   if (
-    resolvedScale?.type !== "time" ||
+    explicitRange || resolvedScale?.type !== "time" ||
     !Number.isFinite(resolvedScale.bandwidth)
   ) return range;
   const plotRange = channel === "x"
@@ -75,7 +76,7 @@ function resolveGeometry(program, channel, scaleId, position) {
     bounds,
     channel,
     position,
-    resolveLineRange(resolvedScale, bounds, channel)
+    resolveLineRange(resolvedScale, bounds, channel, Array.isArray(requireSemanticScale(program, scaleId).range))
   );
 }
 

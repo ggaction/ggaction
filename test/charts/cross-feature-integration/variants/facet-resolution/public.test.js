@@ -132,7 +132,7 @@ test("keeps axes on occupied outer cells and promotes one shared gradient", () =
     ).length,
     1
   );
-  assert.equal(program.graphicSpec.objects.canvas.properties.width, 1044);
+  assert.equal(program.graphicSpec.objects.canvas.properties.width, 971);
   assert.equal(program.graphicSpec.objects.canvas.properties.height, 588);
 });
 

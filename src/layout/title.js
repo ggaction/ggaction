@@ -5,13 +5,17 @@ function lineCenters(lines, style, lineHeight, start) {
   return lines.map((_, index) => start + style.fontSize / 2 + index * lineHeight);
 }
 
+function wrapTitleLines(text, options) {
+  return text.split(/\r\n|\r|\n/u).flatMap(line => line === "" ? [""] : wrapText(line, options));
+}
+
 export function buildTitleReadingBlock({ text, subtitle }, config, profile) {
-  const titleLines = wrapText(text, {
+  const titleLines = wrapTitleLines(text, {
     maxWidth: config.maxWidth,
     mode: config.wrap,
     style: config.titleStyle, profile
   });
-  const subtitleLines = subtitle === undefined ? [] : wrapText(subtitle, {
+  const subtitleLines = subtitle === undefined ? [] : wrapTitleLines(subtitle, {
     maxWidth: config.maxWidth,
     mode: config.wrap,
     style: config.subtitleStyle, profile
@@ -88,6 +92,17 @@ export function resolveTitleComponentBounds(component, style, profile) {
 
 export function unionTitleBounds(bounds) {
   return unionBounds(bounds);
+}
+
+export function paintedTitleComponent(component) {
+  const indices = component.lines.flatMap((line, index) => line === "" ? [] : [index]);
+  const selected = value => Array.isArray(value) ? indices.map(index => value[index]) : value;
+  return {
+    ...component,
+    lines: indices.map(index => component.lines[index]),
+    x: selected(component.x),
+    y: selected(component.y)
+  };
 }
 
 export { textBoundsIntersect as layoutBoundsIntersect } from "../core/textMetrics.js";

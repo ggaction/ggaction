@@ -1,0 +1,42 @@
+{
+  "reviewer": "codex",
+  "gate": "ready-for-review",
+  "kind": "existing-public-computed-literal-string-replace-gap",
+  "runtimeCommit": "8700172097655fb229745f26161b56403fe03822",
+  "syntheticRawRows": [
+    {
+      "Change": "1.15%"
+    },
+    {
+      "Change": "-2.50%"
+    },
+    {
+      "Change": "0%"
+    }
+  ],
+  "errors": [
+    {
+      "kind": "existing finite decimal conversion",
+      "name": "TypeError",
+      "message": "Computed toNumber requires a finite number or decimal string at row 0."
+    },
+    {
+      "kind": "proposed literal-only replacement",
+      "name": "Error",
+      "message": "Unsupported computed operation \"replaceLiteral\"."
+    }
+  ],
+  "priorProgramAndCallerRowsUnchanged": true,
+  "proposedReplacedStrings": [
+    "1.15",
+    "-2.50",
+    "0"
+  ],
+  "proposedNumericShares": [
+    0.0115,
+    -0.025,
+    0
+  ],
+  "modelCalls": 0,
+  "chartPixelsInspected": false
+}

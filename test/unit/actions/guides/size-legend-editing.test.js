@@ -21,12 +21,12 @@ test("edits standalone size content and replays exact equal-area samples and sty
   const args = { count: 3, title: "Mass", labels: { color: "#123456", fontWeight: 700 }, titleStyle: { color: "#654321" } };
   const q = p.editLegend(args);
   assert.deepEqual(props(q, "sizeLegendSymbols", "radius"), [2, Math.sqrt(20), 6]);
-  assert.deepEqual(props(q, "sizeLegendSymbols", "y"), [92, 132, 172]);
+  assert.deepEqual(props(q, "sizeLegendSymbols", "y"), [78.5, 96.5, 114.5]);
   assert.deepEqual(props(q, "sizeLegendLabels", "text"), ["10", "20", "30"]);
   assert.deepEqual(props(q, "sizeLegendLabels", "x"), [534, 534, 534]);
   assert.equal(q.semanticSpec.guides.legend.size.title, "Mass");
   assert.equal(q.graphicSpec.objects.sizeLegendTitle.properties.x, 490);
-  assert.equal(q.graphicSpec.objects.sizeLegendTitle.properties.y, 60);
+  assert.equal(q.graphicSpec.objects.sizeLegendTitle.properties.y, 40);
   const replay = q.editLegend({ labels: { offset: 32 } }).editCanvas({ width: 740 })
     .editScale({ id: "size", domain: [0, 40] });
   assert.deepEqual(props(replay, "sizeLegendLabels", "text"), ["0", "20", "40"]);
@@ -67,7 +67,7 @@ test("keeps content edits through filtered data and independent categorical owne
     .encodeY({ field: "y", scale: { id: "otherY" } }).encodeColor({ field: "group" })
     .createLegend({ target: "other", channels: ["color"], position: "left", labels: { color: "red" } });
   const q = independent.editLegendLabels({ target: "points", color: "blue" });
-  assert.equal(q.graphicSpec.objects.sizeLegendTitle.properties.y, 60);
+  assert.equal(q.graphicSpec.objects.sizeLegendTitle.properties.y, 40);
   assert.equal(q.graphicSpec.objects.sizeLegendLabels.items[0].properties.fill, "blue");
   assert.equal(q.guideConfigs.legend.color.labels.color, "red");
   const resizedContent = independent.editLegend({ target: "points", count: 2, title: "Longer size title" });
@@ -87,7 +87,7 @@ test("rejects unsupported standalone size options and invalid proposals atomical
     failures.push({ [option]: {} });
   }
   assertAtomicFailures(p, failures.map(args => ({ operation: () => p.editLegend(args), inputs: [args] })));
-  assert.throws(() => p.editLegendLayout({ position: "left" }), /margin space/);
+  assert.throws(() => p.editLegendLayout({ position: "left" }), /more left-margin or Canvas space/);
   const basic = basicChart().createCanvas({ margin: { right: 180 } }).createData({ values: [{ x: 1, y: 2, m: 3 }] })
     .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" }).encodeSize({ field: "m" });
   const basicLegend = basic.createLegend({ channels: ["size"] });

@@ -291,7 +291,7 @@ keeps its percentage of the complete source.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
@@ -333,7 +333,7 @@ rebound with this action or removed.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
@@ -377,7 +377,7 @@ Pass `"auto"` to restore the legacy source anchor and remove the owned placement
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
@@ -1054,10 +1054,10 @@ semantic encodings. [Marks](../../api/marks.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
-Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
+Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`FillPaint`](./../types.md#type-fillpaint) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1078,7 +1078,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
-| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -1107,10 +1107,10 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
-Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
+Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`FillPaint`](./../types.md#type-fillpaint) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1129,7 +1129,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
-| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -1162,10 +1162,10 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`FillPaint`](./../types.md#type-fillpaint) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1179,7 +1179,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
-| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -1293,10 +1293,10 @@ accepts the same styles. [Rule marks](../../api/marks/rule.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`FillPaint`](./../types.md#type-fillpaint) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1309,7 +1309,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |

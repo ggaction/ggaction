@@ -153,12 +153,12 @@ export const createHeatmap = /* @__PURE__ */ action(
     if (args.bin === undefined) {
       const x = normalizePosition(args.x, "x", true);
       const y = normalizePosition(args.y, "y", true);
-      const color = normalizeFieldEncoding(args.color, `${OPERATION} color`);
-      const next = this
+      const color = args.color === undefined ? undefined : normalizeFieldEncoding(args.color, `${OPERATION} color`);
+      let next = this
         .createRectMark({ id, data, ...rect })
         .encodeX(positionArgs(x, { target: id, coordinate: args.coordinate }))
-        .encodeY(positionArgs(y, { target: id, coordinate: args.coordinate }))
-        .encodeColor(targetArgs(color, id));
+        .encodeY(positionArgs(y, { target: id, coordinate: args.coordinate }));
+      if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
       return applyFacadeGuides(next, guides, id);
     }
 

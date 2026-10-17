@@ -25,6 +25,7 @@ encodings.
 | `width` | positive finite number | `640` |
 | `height` | positive finite number | `400` |
 | `plot` | `{ width, height }` or `false` | Fixed outer dimensions |
+| `plotBorder` | `false` or `{ color?, lineWidth? }` | `false` |
 | `background` | non-empty string | `"white"` |
 | `margin` | non-negative number or side object | `{ top: 30, right: 30, bottom: 60, left: 70 }` |
 
@@ -58,10 +59,38 @@ updates rerun the same measured layout. Explicit scale ranges retain their usual
 fixed-coordinate behavior. Automatic margins do not resolve overlapping labels
 or other incompatible guide geometry; those errors still reject the action.
 
+**Plot outline.**
+
+Set `plotBorder: {}` to draw an outline around the data region in Full or Basic.
+The default style is `color: "#ddd"` and `lineWidth: 1`. The stroke sits entirely
+inside the plot: its outer painted edge matches the plot bounds. It draws above
+ordinary marks and below axes, without changing mark positions, scale ranges,
+plot size, margins, or clipping.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+const bordered = chart().createCanvas({ plotBorder: {} });
+const recolored = bordered.editCanvas({ plotBorder: { color: "#888" } });
+const unbordered = recolored.editCanvas({ plotBorder: false });
+```
+
+On Full, omitting `plotBorder` from `editCanvas` preserves its setting. An object
+replaces the complete border style: omitted `color` or `lineWidth` returns to its
+default, rather than keeping an earlier value. `false` removes the outline.
+Colors must be non-empty strings. Line width must be positive and finite, and
+strictly smaller than both resolved plot dimensions. Resizing, scale or data
+edits, and facet replay preserve the border setting and update its bounds.
+
 ## `editCanvas(options)`
 
 Updates one or more existing canvas options. Omitted values are preserved. A
 numeric margin applies to every side; a partial object updates only named sides.
+The `plotBorder` object replaces its complete style as described above.
 
 <!-- snippet-context:start -->
 
@@ -129,6 +158,8 @@ called; later edits are fitted by another explicit call.
 Only one Canvas can exist in a program. Dimensions must remain positive and
 margins must leave positive plot bounds. `fitCanvas` is a Full unit action;
 Basic does not expose it and compositions reject it.
+An enabled plot border must fit strictly inside both plot dimensions, including
+after Canvas edits. `plotBorder: true` and unknown border style keys are rejected.
 
 ## Related
 

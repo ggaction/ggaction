@@ -52,6 +52,12 @@ Each x/y axis option supports:
 | `ticksAndLabels` | `false` or `{ count?, values?, ticks?, labels? }` |
 | `title` | `false` or title options including `text`, `at`, `offset`, and font styling |
 
+Cartesian `ticksAndLabels.labels.colorMap` accepts typed `{ value, color }` entries. It overrides individual raw tick colors and falls back to `labels.color`; it does not depend on the displayed text. Use `"auto"` to remove the map. Continuous keys must be finite numeric/timestamp values.
+
+Use `ticksAndLabels.labels.flush: true` to keep unrotated X or Y label bounds inside the mapped axis span. It defaults to false and preserves the normal overlap policy; use explicit `overlap: "allow"` when neighboring labels intentionally overlap. Text, fonts and tick positions are retained. Rotated labels and a label wider than the entire span are rejected.
+
+Cartesian `ticksAndLabels.ticks.alongOffset` and `ticksAndLabels.labels.alongOffset` independently shift mapped positions in logical pixels. Positive moves right for X and down for Y; the default is zero. This preserves scale data and the outward label `offset`.
+
 Use either `count` or exact data-space `values` for ticks. Ambiguous coordinates
 or scales must be selected explicitly. `createAxes` reads stored coordinates;
 it never creates or repairs them. Tick, label, and grid `count` values and
@@ -73,8 +79,8 @@ subset in the requested order. Discrete axes reject `count` so categories are
 not silently omitted. Reversed ranges and Canvas rematerialization preserve
 the stored category values.
 
-Categorical Cartesian labels and categorical theta labels can replace display
-text without changing raw categories:
+Cartesian labels and categorical theta labels can replace display
+text without changing raw values:
 
 <!-- snippet-context:start -->
 
@@ -96,9 +102,7 @@ Map lookup uses the typed raw value, so `1` and `"1"` remain distinct. Values
 missing from the map use the normal formatter. Repeated visible labels do not
 merge scale entries, ticks, legend symbols, or selections. An empty label
 hides that text while retaining its item; `labelMap: []` stores an explicit
-empty map and `labelMap: "auto"` removes the map. Cartesian continuous axes,
-continuous theta axes, radial axes, and Parallel dimension axes reject this
-option. The same option is available in focused label actions, nested
+empty map and `labelMap: "auto"` removes the map. On continuous Cartesian axes, keys must be finite numbers or Unix-millisecond timestamps. Numeric strings, booleans, null and non-finite keys are rejected. A map only changes the displayed text; it does not change scale domains, tick positions or data. New ticks absent from the map use the existing numeric or UTC formatter. Continuous theta axes, radial axes, and Parallel dimension axes reject this option. The same option is available in focused label actions, nested
 ticks-and-labels options, complete Cartesian axes, and categorical theta
 facades.
 
@@ -168,6 +172,10 @@ intersection while Canvas overflow and axis-title collisions still fail.
 that reset cannot include `wrap` or `lineHeight` in the same call. Canvas and
 scale replay rebuild the same lines from the stored policy. The 10,000-item
 limit applies after wrapping.
+
+Cartesian title text preserves explicit hard line breaks as a centered block.
+See [axis-title text and rotation](../../reference/actions/guides.md#ticklabel-groups-and-axis-titles)
+for line spacing, blank lines and bounds checks.
 
 Cartesian title `rotation` accepts a finite legacy number in radians or an
 explicit `{ value, unit: "degrees" | "radians" }` object. Both forms normalize
@@ -282,3 +290,7 @@ remains encoded. Recreate missing components through `createParallelAxis`.
 
 For individual lines, ticks, labels, and titles, see
 [Advanced axis components](./../../advanced/axis-components.md).
+
+Numeric labels also accept `","` for grouped integers and `",.0f"` through `",.12f"` for grouped fixed decimals. UTC formats accept `%a` for an English weekday abbreviation, such as `%a %d` → `Mon 01`. These formats use the shared axis, legend and text formatter.
+
+An explicit Cartesian `labelMap` entry with `label: ""` hides only that displayed label. Tick marks, stored tick values and scale domains stay unchanged. Empty labels remain suppressed after Canvas/scale replay; clear the map with `"auto"` to restore the normal formatter.

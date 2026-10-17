@@ -16,7 +16,7 @@ export function createCarsParallelPrimitiveResult(cars) {
   const legend = Object.entries(PARALLEL_COLORS).map(([label, color], index) => ({
     color,
     label,
-    y: 162 + index * 28
+    y: 148.5 + index * 18
   }));
   const program = chart()
     .createCanvas({
@@ -255,24 +255,24 @@ export function createCarsParallelPrimitiveResult(cars) {
       length: legend.length
     })
     .editGraphics({ target: "seriesLegendLabels", property: "x", value: 779 })
-    .editGraphics({ target: "seriesLegendLabels", property: "y", value: legend.map(item => item.y) })
+    .editGraphics({ target: "seriesLegendLabels", property: "y", value: legend.map(item => item.y - 6) })
     .editGraphics({ target: "seriesLegendLabels", property: "text", value: legend.map(item => item.label) })
     .editGraphics({ target: "seriesLegendLabels", property: "fill", value: "#334155" })
     .editGraphics({ target: "seriesLegendLabels", property: "fontSize", value: 12 })
     .editGraphics({ target: "seriesLegendLabels", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "seriesLegendLabels", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "seriesLegendLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "seriesLegendLabels", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "seriesLegendLabels", property: "textBaseline", value: "top" })
     .createGraphics({ id: "seriesLegendTitle", parent: "canvas", type: "text" })
     .editGraphics({ target: "seriesLegendTitle", property: "x", value: 742 })
-    .editGraphics({ target: "seriesLegendTitle", property: "y", value: 130 })
+    .editGraphics({ target: "seriesLegendTitle", property: "y", value: 110 })
     .editGraphics({ target: "seriesLegendTitle", property: "text", value: "Origin" })
     .editGraphics({ target: "seriesLegendTitle", property: "fill", value: "#1e293b" })
     .editGraphics({ target: "seriesLegendTitle", property: "fontSize", value: 13 })
     .editGraphics({ target: "seriesLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "seriesLegendTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "seriesLegendTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "top" })
     .createGraphics({ id: "chartTitle", parent: "canvas", type: "text" })
     .editGraphics({ target: "chartTitle", property: "x", value: values.title.x })
     .editGraphics({ target: "chartTitle", property: "y", value: 28 })

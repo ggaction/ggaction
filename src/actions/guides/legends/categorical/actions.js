@@ -1,3 +1,6 @@
+import { recordLegendOffsetIntent } from "../group.js";
+import { prepareLegendGroup, creationLegendTarget, validateLegendGroupOptions } from "../group.js";
+import { PLOT_LEGEND_POSITIONS } from "../../../../layout/legend.js";
 import { normalizeInitialLegendTitle } from "../continuous/common.js";
 import { isContinuousColorScaleType } from "../../../../grammar/scales/types.js";
 import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
@@ -19,8 +22,7 @@ import { legendResourcePolicies } from
   "../../../../materialization/guides/resources.js";
 import {
   hasHorizontalLegendLane,
-  hasLegendLane,
-  hasMultiSideLegendLane
+  hasLegendLane
 } from "../lane.js";
 import {
   resolveCurrentDefinition,
@@ -35,7 +37,8 @@ import {
 } from "../blocks.js";
 
 function finishLegend(program) {
-  return hasLegendLane(program) ? program.rematerializeLegend() : program;
+  return hasLegendLane(program) || Object.keys(program.guideConfigs.legendGroups ?? {}).length > 0
+    ? program.rematerializeLegend() : program;
 }
 
 function requestedCandidate(program, target, candidates) {
@@ -164,9 +167,6 @@ export const rematerializeLegend = /* @__PURE__ */ action(
         next = next[policy.rematerializeOp]();
       }
     }
-    if (hasMultiSideLegendLane(next)) {
-      next = next.rematerializeSideLegendLane();
-    }
     if (hasHorizontalLegendLane(next)) {
       next = next.rematerializeHorizontalLegendLane();
     }
@@ -231,7 +231,7 @@ export const createCategoricalLegend = /* @__PURE__ */ action(
   })
 );
 
-export function resolveLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers) {
+function resolveRawLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers) {
   validateOptionObject(args, undefined, "createLegend");
   const candidates = args.target === undefined ? layers : layers.filter(layer => layer.id === args.target);
   const channels = args.channels;
@@ -264,6 +264,14 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
   const continuousColor = requestedCandidate(
     program, args.target, continuousColorCandidates
   );
+  if (args.representation !== undefined && channels !== undefined && channels.length > 1) {
+    if (!continuousColor || !channels.includes("color")) throw new Error("Legend representation requires selected continuous color.");
+    const { representation, values, count, symbol, gradient, ...common } = args;
+    const steps = channels.flatMap(channel => resolveRawLegendCreationPlan(program,
+      channel === "color" ? { ...args, channels: [channel] }
+        : { ...common, channels: [channel] }, layers).steps);
+    return { steps, finish: "always" };
+  }
   if (
     (channels?.length === 1 && channels[0] === "color" && continuousColor) ||
     (channels === undefined && continuousColor)
@@ -368,6 +376,9 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
     if (combined) steps.push({ op: "createSizeLegend", args: {
       target: requestedPoint.id,
       ...(count === undefined ? {} : { count }),
+      ...(categoricalArgs.overflow !== undefined &&
+        findSemanticScale(program, requestedPoint.encoding.size.scale)?.type === "ordinal"
+        ? { overflow: categoricalArgs.overflow } : {}),
       ...(categoricalArgs.labels === undefined ? {} : { labels: {
         ...(categoricalArgs.labels.offset === undefined ? {} : { offset: categoricalArgs.labels.offset }),
         ...(sizeFormat === undefined ? {} : { format: sizeFormat })
@@ -392,11 +403,50 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
   return { steps: [{ op: "createCategoricalLegend", args }], finish: "auto" };
 }
 
+export function resolveLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers) {
+  validateLegendGroupOptions(args);
+  const { blockLayout: _layout, at: _at, ...raw } = args;
+  const groups = program.guideConfigs.legendGroups ?? {};
+  if (Object.keys(groups).length > 0 && raw.position === undefined) {
+    const target = creationLegendTarget(program, args);
+    const placement = groups[target]?.placement;
+    if (placement?.position !== undefined) {
+      raw.position = placement.position;
+      raw.align = args.align ?? placement.align;
+      raw.offset = args.offset ?? placement.offset;
+    }
+  }
+  if (raw.position === undefined && args.direction === "horizontal" &&
+      (args.at !== undefined || Object.keys(groups).length > 0)) raw.position = "top";
+  const initial = resolveRawLegendCreationPlan(program, raw, layers);
+  const inherited = Object.keys(program.guideConfigs.legendGroups ?? {}).length > 0;
+  const corner = PLOT_LEGEND_POSITIONS.includes(args.position) &&
+    (initial.steps.length > 1 || initial.steps[0]?.op !== "createCategoricalLegend" ||
+      Object.keys(program.guideConfigs.legend ?? {}).length > 0);
+  if (args.blockLayout === undefined && args.at === undefined && !inherited && !corner) return initial;
+  const target = creationLegendTarget(program, args);
+  const first = initial.steps[0];
+  const nativeOffset = program.guideConfigs.legendGroups?.[target] !== undefined ? 30 : first?.op === "createCategoricalLegend"
+    ? resolveCategoricalLegendConfig(program, first.args).offset
+    : first?.op === "createSizeLegend" ? resolveSizeLegendConfig(program, first.args).offset : 30;
+  const prepared = prepareLegendGroup(program, args, target, { creation: true, corner, nativeOffset });
+  if (!prepared.grouped) return initial;
+  if (prepared.options.position === undefined && raw.position !== undefined) {
+    prepared.options.position = raw.position;
+  }
+  return { ...resolveRawLegendCreationPlan(prepared.program, prepared.options, layers),
+    legendGroup: { target, config: prepared.program.guideConfigs.legendGroups[target] } };
+}
+
 export function applyLegendCreationPlan(program, plan) {
   if (plan.steps.length === 0) return program;
-  let next = program;
+  let next = plan.legendGroup === undefined ? program : program._withMaterializationConfig(
+    ["guides", "legendGroups", plan.legendGroup.target], plan.legendGroup.config);
   for (const step of plan.steps) {
     const existingSize = next.guideConfigs.legend?.size;
+    if (plan.combined && existingSize !== undefined && step.op === "createCategoricalLegend") {
+      next = next._withLegendConfig("size", { ...existingSize, inheritPosition: true });
+    }
     // The plan already validated that a retained size block is compatible.
     if (!(plan.combined && step.op === "createSizeLegend" && existingSize !== undefined)) {
       next = next[step.op](step.args);
@@ -409,7 +459,7 @@ export function applyLegendCreationPlan(program, plan) {
 export const createLegend = /* @__PURE__ */ action(
   { op: "createLegend", description: "Create an inferred legend for selected channels." },
   withGuideLayoutValidation(function (args = {}) {
-    return applyLegendCreationPlan(this, resolveLegendCreationPlan(this, args));
+    return recordLegendOffsetIntent(this, applyLegendCreationPlan(this, resolveLegendCreationPlan(this, args)), args, { creation: true });
   })
 );
 

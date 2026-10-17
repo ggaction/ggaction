@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "status": "verified",
+  "approvedProposalCommit": "d27b372f",
+  "baseCommit": "d2c1aa8a4b1647c9e27499ee47db7ea1f4961bd6",
+  "checks": {
+    "unit": {
+      "status": "pass",
+      "tests": 3000,
+      "logSha256": "2c019aaadf9d37d51fd014de8b930a87368b6e794ed4d3321e34815f7fc6e675"
+    },
+    "contracts": {
+      "status": "pass",
+      "tests": 532,
+      "logSha256": "01cc006512be24b75e434a614389a6734ae5e170d4c4438c1148ae09f4036904"
+    },
+    "docs": {
+      "status": "pass",
+      "tests": 120,
+      "logSha256": "9b0d8f82d72b830e93f676da398b3678a197a2f96dfea2082710442b23c06372"
+    },
+    "focused": {
+      "status": "pass",
+      "tests": 10,
+      "logSha256": "e38d60958614b3b4c47e633058a799b8fb67799c88ff8c725e8492ebd1ea2192"
+    },
+    "browser": {
+      "status": "pass",
+      "tests": 1,
+      "logSha256": "c3367f93e82c753e9d5802756b609a4368f69ddbd167930689eeb16ea06b5fef"
+    },
+    "installedConsumer": {
+      "status": "pass",
+      "tests": null,
+      "logSha256": "ef9838053b63c082ab8a1d859a5bec01946d45c5047043863188790dfe98e100"
+    },
+    "package": {
+      "status": "pass",
+      "tests": null,
+      "logSha256": "9606641c31501872281497b885d0cff20a9801d3f69ea6a982ca2067e06910d7"
+    }
+  },
+  "package": {
+    "entries": 564,
+    "packedBytes": 791934,
+    "unpackedBytes": 3889220,
+    "browserGzip": {
+      "full": 389164,
+      "basic": 188486,
+      "svg": 7161
+    }
+  },
+  "chartPixelsInspected": false,
+  "modelCalls": 0,
+  "stableRuntimePinChanged": false,
+  "cleanRuntimeProvenance": {
+    "runtimeCommit": "1ee52aa0a12014562ecc86a74143a08e9ccf1782",
+    "status": "pass",
+    "documentationTests": 120,
+    "logSha256": "5b08dc1de98e67707b44e0267163bddd0e0efa952e641f3026c0888857788609"
+  }
+}

@@ -171,3 +171,33 @@ test("validates aggregate grid patches before editing either direction", () => {
   );
   assert.equal(program.guideConfigs.grid.horizontal.color, initialColor);
 });
+
+
+test("explicit Cartesian grid ranks survive edits and canvas rematerialization", () => {
+  const source = pointGrid();
+  const ranked = source.editHorizontalGrid({ zIndex: 1 }).editVerticalGrid({ zIndex: 2 });
+  function children(p) { return Object.values(p.graphicSpec.objects).find(o => o.children?.includes("points")).children; }
+  const before = children(source), after = children(ranked);
+  assert.ok(before.indexOf("horizontalGridLines") < before.indexOf("points"));
+  assert.ok(after.indexOf("points") < after.indexOf("horizontalGridLines"));
+  assert.ok(after.indexOf("horizontalGridLines") < after.indexOf("verticalGridLines"));
+  const resized = ranked.editCanvas({ width: 300 });
+  assert.deepEqual(children(resized), after);
+  const back = resized.editHorizontalGrid({ zIndex: -1 });
+  assert.ok(children(back).indexOf("horizontalGridLines") < children(back).indexOf("points"));
+  assert.ok(children(back).indexOf("verticalGridLines") > children(back).indexOf("points"));
+  assert.throws(() => source.editHorizontalGrid({ zIndex: NaN }), /finite/);
+});
+
+test("band grid boundaries use concrete cell edges including reversed ranges", () => {
+  const source = chart().createCanvas({ width: 200, height: 140, margin: 20 }).createData({ values: [{ x: "A", y: "Q", value: 1 }, { x: "B", y: "R", value: 2 }] }).createHeatmap({ x: { field: "x", scale: { paddingInner: 0, paddingOuter: 0 } }, y: { field: "y", scale: { paddingInner: 0, paddingOuter: 0 } }, guides: false });
+  const p = source.createGrid({ horizontal: { bandPosition: "boundary", zIndex: 1 }, vertical: { bandPosition: "boundary", zIndex: 2 } });
+  assert.deepEqual(p.graphicSpec.objects.verticalGridLines.items.map(i => i.properties.x1), [20, 100, 180]);
+  const ys = p.graphicSpec.objects.horizontalGridLines.items.map(i => i.properties.y1).sort((a,b) => a-b);
+  assert.deepEqual(ys, [20, 70, 120]);
+  const reversed = p.editXScale({ reverse: true });
+  assert.deepEqual(reversed.graphicSpec.objects.verticalGridLines.items.map(i => i.properties.x1), [180, 100, 20]);
+  assert.throws(() => source.createVerticalGrid({ count: 3 }), /count/);
+  assert.throws(() => pointGrid().editHorizontalGrid({ bandPosition: "boundary" }), /band scale/);
+  assert.throws(() => source.createVerticalGrid({ values: ["missing"] }), /inside/);
+});

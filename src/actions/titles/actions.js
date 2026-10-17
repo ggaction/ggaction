@@ -1,4 +1,4 @@
-import { titleTextProperties } from "../../layout/title.js";
+import { paintedTitleComponent, titleTextProperties } from "../../layout/title.js";
 import { withGuideLayoutValidation } from "../../materialization/guides/layout.js";
 import { action } from "../../core/action.js";
 import { noOptions } from "../../core/validation.js";
@@ -85,10 +85,11 @@ function titleTextAction(kind, create) {
     if (create && this.graphicSpec.objects[id] !== undefined) {
       throw new Error(`${op} requires a missing chart ${kind} graphic.`);
     }
-    const component = resolveTitleLayout(this, config)[kind];
-    if (component === undefined) {
+    const layout = resolveTitleLayout(this, config)[kind];
+    if (layout === undefined) {
       throw new Error(`${op} requires semantic subtitle text.`);
     }
+    const component = paintedTitleComponent(layout);
     if (!create) {
       return editTextGraphic(this, id, component, config[`${kind}Style`]);
     }

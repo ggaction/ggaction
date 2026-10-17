@@ -87,11 +87,12 @@ export function derivedCreator(
   sourceLabel,
   transform,
   materialize,
-  requireSource = false
+  requireSource = false,
+  defaultId
 ) {
   return action({ op, description }, function (args = {}) {
     validateKeys(args, options, op);
-    const id = validateUserId(args.id, idLabel);
+    const id = validateUserId(args.id === undefined ? defaultId : args.id, idLabel);
     const requestedSource = validateUserId(
       requireSource ? args.source : args.source ?? this.context.currentData,
       sourceLabel

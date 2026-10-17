@@ -1,7 +1,10 @@
+import { normalizeColorSymbols, resolveColorSymbolsLayout, materializeColorSymbols } from "./colorSymbols.js";
+import { alignLegendTitle, resolveLegendTitleText } from "../../../../layout/legendText.js";
+import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { mapContinuousScaleValues, transformedTicks } from "../../../../grammar/scales/index.js";
 import { action, closedAction } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
-import { validateKeys } from "../../../../core/validation.js";
+import { normalizeLegendGradient, DEFAULT_LEGEND_GRADIENT } from "../../../../grammar/legendGradient.js";
 import { mapScaleConsumerValues } from "../../../../materialization/scales/map.js";
 import { inverseLerp, interpolateNumber } from "../../../../grammar/numeric.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
@@ -17,31 +20,32 @@ import {
   resolveLegendBackgroundFromBounds,
   resolveLegendTextBounds,
   sampleContinuousValues,
-  styleContinuousText,
-  validatePositive
+  styleContinuousText
 } from "./common.js";
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
 import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
 
-export const DEFAULT_GRADIENT_SIZE = Object.freeze({ length: 120, thickness: 12 });
+export const DEFAULT_GRADIENT_SIZE = DEFAULT_LEGEND_GRADIENT;
 
-const GRADIENT_OPTIONS = Object.freeze(["length", "thickness"]);
-
-export function resolveGradientLayout(program, config, scale, label = "Gradient legend") {
+export function resolveGradientLayout(program, config, scale, label = "Gradient legend", stripStrokeWidth = 0) {
+  if (config.representation === "symbols") return resolveColorSymbolsLayout(program, config, scale);
+  config = intrinsicLegendConfig(program, config);
   const { plot, canvas } = resolveContinuousBounds(program);
   const vertical = ["right", "left"].includes(config.position);
   const length = config.gradient.length;
   const thickness = config.gradient.thickness;
+  const titleText = config.titleVisible === false ? { height: 0, extraHeight: 0 }
+    : resolveLegendTitleText(config.title, config.titleStyle, program.materializationConfigs.textMetrics);
   const titleGap = config.blockGap ?? 12;
   let x;
   let y;
   if (config.position === "right") {
     x = plot.x + plot.width + config.offset;
-    y = plot.y + 46 + titleGap - 12;
+    y = plot.y + 46 + titleGap - 12 + titleText.extraHeight / 2;
   } else if (config.position === "left") {
     x = plot.x - config.offset - thickness;
-    y = plot.y + 46 + titleGap - 12;
+    y = plot.y + 46 + titleGap - 12 + titleText.extraHeight / 2;
   } else {
     x = config.align === "left" ? plot.x
       : config.align === "right" ? plot.x + plot.width - length
@@ -50,19 +54,20 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
       ? plot.y - config.offset - thickness - config.labels.offset -
         config.labels.fontSize
       : plot.y + plot.height + config.offset +
-        (config.titleVisible === false ? 0 : config.titleStyle.fontSize + titleGap);
+        (config.titleVisible === false ? 0 : titleText.height + titleGap);
   }
-  const title = vertical
+  let title = vertical
     ? { x, y: plot.y + 20, align: "left" }
     : {
         x: x + length / 2,
-        y: y - titleGap - config.titleStyle.fontSize / 2,
+        y: y - titleGap - titleText.height / 2,
         align: "center"
       };
-  const transformed = ["log", "symlog"].includes(scale.type);
+  const transformed = ["log", "sqrt", "symlog"].includes(scale.type);
   const values = transformed
     ? transformedTicks(scale.type, scale.domain, config.count,
-        scale.type === "log" ? {base: scale.base} : {constant: scale.constant})
+        scale.type === "log" ? {base: scale.base}
+          : scale.type === "symlog" ? {constant: scale.constant} : {})
     : [...sampleContinuousValues(scale.domain, config.count)];
   if (scale.midpoint !== undefined && !values.includes(scale.midpoint)) {
     values.push(scale.midpoint);
@@ -120,11 +125,15 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
   const labelBounds = labels.map((label, index) =>
     resolveLegendTextBounds(label, texts[index], config.labels, program.materializationConfigs.textMetrics)
   );
+  if (config.titleVisible !== false) title = alignLegendTitle(title, config.title, config.titleStyle,
+    [{ left: stripBounds.left - stripStrokeWidth / 2, right: stripBounds.right + stripStrokeWidth / 2,
+      top: stripBounds.top - stripStrokeWidth / 2, bottom: stripBounds.bottom + stripStrokeWidth / 2 },
+      ...tickBounds, ...labelBounds], program.materializationConfigs.textMetrics);
   const titleBounds = config.titleVisible === false ? undefined : resolveLegendTextBounds(
     title,
     config.title,
     config.titleStyle
-  , program.materializationConfigs.textMetrics);
+  , program.materializationConfigs.textMetrics, { hardBreaks: true });
   const occupiedBounds = [stripBounds, ...tickBounds, ...labelBounds,
     ...(config.titleVisible === false ? [] : [titleBounds])];
   assertLegendBoundsInsideCanvas(
@@ -179,8 +188,9 @@ export function materializeGradientLegend(program, resolved, appearance) {
   const prefix = `${channel}Gradient`;
   const { scale, encoding, config: currentConfig } = resolved;
   const config = resolveEffectiveLegendBlockConfig(program, kind, currentConfig);
+  if (!stroke && config.representation === "symbols") return materializeColorSymbols(program, resolved, config);
   const layout = resolveGradientLayout(program, config, scale,
-    stroke ? "Stroke gradient legend" : "Gradient legend");
+    stroke ? "Stroke gradient legend" : "Gradient legend", appearance?.strokeWidth ?? 0);
   const stripCount = 60;
   const stripSize = layout.length / stripCount;
   const strips = Array.from({ length: stripCount }, (_, index) => {
@@ -209,6 +219,9 @@ export function materializeGradientLegend(program, resolved, appearance) {
   if (stroke) next = next.editGraphics({ target: `${prefix}Strips`, property: "length", value: strips.length });
   for (const property of ["x", "y", "width", "height", "fill", "stroke", "strokeWidth"]) {
     next = next.editGraphics({ target: `${prefix}Strips`, property, value: strips.map(strip => strip[property]) });
+  }
+  if (config.gradient.opacity !== undefined) {
+    next = next.editGraphics({ target: `${prefix}Strips`, property: "opacity", value: config.gradient.opacity });
   }
   next = next.editGraphics({ target: `${prefix}Ticks`, property: "length", value: layout.ticks.length });
   for (const property of ["x1", "y1", "x2", "y2"]) {
@@ -241,7 +254,10 @@ export const rematerializeGradientLegend = /* @__PURE__ */ closedAction(
 
 
 export function resolveGradientLegendCreation(program, args = {}, channel = "color") {
-  const config = normalizeContinuousLegend(args, "gradient");
+  const { representation, ...options } = args;
+  if (representation !== undefined && !["gradient", "symbols"].includes(representation)) throw new Error("Legend representation must be gradient or symbols.");
+  if (channel !== "color" && representation !== undefined) throw new Error("Legend representation requires continuous color.");
+  const config = representation === "symbols" ? normalizeColorSymbols(options) : normalizeContinuousLegend(options, "gradient");
   if (args.channels !== undefined && (
     !Array.isArray(args.channels) ||
     args.channels.length !== 1 ||
@@ -252,17 +268,7 @@ export function resolveGradientLegendCreation(program, args = {}, channel = "col
   if (args.gradient !== undefined && !isPlainObject(args.gradient)) {
     throw new TypeError("createLegend.gradient must be a plain object.");
   }
-  validateKeys(
-    args.gradient ?? {},
-    GRADIENT_OPTIONS,
-    "createLegend.gradient"
-  );
-  config.gradient = {
-    length: args.gradient?.length ?? DEFAULT_GRADIENT_SIZE.length,
-    thickness: args.gradient?.thickness ?? DEFAULT_GRADIENT_SIZE.thickness
-  };
-  validatePositive(config.gradient.length, "Gradient length");
-  validatePositive(config.gradient.thickness, "Gradient thickness");
+  if (config.representation !== "symbols") config.gradient = normalizeLegendGradient(args.gradient);
   const resolved = resolveGradientConfig(program, config, channel);
   return resolved;
 }
@@ -289,7 +295,9 @@ export function createGradientLegendFromConfig(program, config, channel = "color
       ...resolveLegendGraphicPlacement(next)
     });
   }
-  next = next
+  if (resolved.config.representation === "symbols") {
+    next = next.createGraphics({ id: `${prefix}Symbols`, type: "circle", length: 0, ...resolveLegendGraphicPlacement(next) });
+  } else next = next
     .createGraphics({
       id: `${prefix}Strips`,
       type: "rect",
@@ -303,8 +311,8 @@ export function createGradientLegendFromConfig(program, config, channel = "color
       type: "line",
       length: 0,
       ...resolveLegendGraphicPlacement(next)
-    })
-    .createGraphics({
+    });
+  next = next.createGraphics({
       id: `${prefix}Labels`,
       type: "text",
       length: 0,
@@ -328,7 +336,7 @@ export const createGradientLegend = /* @__PURE__ */ action(
   function (args = {}) {
     const resolved = resolveGradientLegendCreation(this, args);
     resolveGradientLayout(this, resolved.config, resolved.scale);
-    if (this.graphicSpec.objects.colorGradientStrips !== undefined) {
+    if (this.guideConfigs.legend?.gradient !== undefined) {
       throw new Error(
         "createGradientLegend requires a missing gradient legend."
       );

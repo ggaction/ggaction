@@ -98,9 +98,9 @@ function halfPath(profile, center, maxHalfWidth, maxDensity, bounds, side) {
 
 function legend(layout) {
   const x = layout.width - layout.margin.right + 28;
-  const y = layout.margin.top + 44;
+  const y = layout.margin.top + 31;
   return Object.freeze({
-    title: Object.freeze({ x, y: y - 24, text: "Model era" }),
+    title: Object.freeze({ x, y: layout.margin.top, text: "Model era" }),
     items: Object.freeze(ERA_DOMAIN.map((label, index) => Object.freeze({
       label,
       fill: ERA_COLORS[index],

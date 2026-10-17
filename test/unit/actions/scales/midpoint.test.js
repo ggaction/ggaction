@@ -26,7 +26,7 @@ test("reassignment preserves or explicitly resets midpoint and updates guides", 
 test("reverses colors while retaining value-linear midpoint ticks", () => {
   const p = createMidpoint().editScale({ id: "colors", reverse: true, clamp: true });
   assert.deepEqual(fills(p), ["#ff0000", "#ffffff", "#8080ff", "#0000ff"]);
-  assert.equal(p.graphicSpec.objects.colorGradientLabels.items.find(x => x.properties.text === "0").properties.y, 292);
+  assert.equal(p.graphicSpec.objects.colorGradientLabels.items.find(x => x.properties.text === "0").properties.y, 182.5 + 120 * 0.8 - 6);
   // Vertical strip 47 samples fraction 5/24, i.e. value 1/12, just above the midpoint.
   assert.equal(p.graphicSpec.objects.colorGradientStrips.items[47].properties.fill, "#fcfcff");
 });

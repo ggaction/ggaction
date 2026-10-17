@@ -1,0 +1,59 @@
+{
+  "reviewer": "codex",
+  "sourceId": "vl_0651",
+  "sourceSha256": "5c32db5ba67f9ed9b35517095bd975bd84c5c99bef3010b911d4ae49f94ef84d",
+  "resolvedSourceSha256": "46e9e86ca403971e84ba7bec1156bfd5d573df9da0fc5de4b3536eae37a3a5a6",
+  "rawDataSha256": "0abc7ebb345ac622d3251cfc0013e9f12184afa58be142de8dc3449b459ceb14",
+  "sourceSvgSha256": "884903a8545c9086bd875e7a149c8758edceddb1fe090b398f19f460ea94d429",
+  "compiledSourceSha256": "290ffacf36362cd8ebf7dbac97666cbfb1dd9ece89600f2091b142e99e997754",
+  "originalTransforms": [
+    {
+      "calculate": "replace(datum.Change,'%','')/100",
+      "as": "change"
+    },
+    {
+      "filter": {
+        "field": "change",
+        "range": [
+          -0.3,
+          0.3
+        ]
+      }
+    },
+    {
+      "calculate": "log(datum.Volume)",
+      "as": "logVol"
+    }
+  ],
+  "rawRows": 1988,
+  "rawField": "Change",
+  "rawFieldTypes": [
+    "string"
+  ],
+  "percentOccurrences": [
+    1
+  ],
+  "nonDecimalAfterLiteralRemoval": [],
+  "allInputValuesSha256": "4168fdcfb13a765db2db8511ac9496af1e394a4a96c44a768dcb465b30b49a2d",
+  "sourceRangeFilter": {
+    "min": -0.3,
+    "max": 0.3
+  },
+  "exactRowsAfterSourcePercentAndRange": 1987,
+  "actualSourcePoints": 1979,
+  "examples": [
+    "1.15%",
+    "-4.23%",
+    "-4.87%",
+    "1.35%",
+    "-1.74%"
+  ],
+  "modelCalls": 0,
+  "chartPixelsInspected": false,
+  "nonNumericVolumeAfterSourceRange": {
+    "sentinel": "#VALUE!",
+    "rows": 8,
+    "existingHandling": "Use existing typed conditional null or explicit source-equivalent validity filtering, preserving immutable raw rows; this is separate from proposed literal replacement."
+  },
+  "actualSourcePaintedAfterExistingValidity": 1979
+}

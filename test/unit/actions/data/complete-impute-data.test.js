@@ -84,7 +84,6 @@ test("createCompleteData rejects ambiguous or oversized definitions atomically",
   ] });
   const before = JSON.stringify(source);
   const invalid = [
-    [{ key: "t", groupBy: "g", values: [1, 2] }, /duplicate group and key/],
     [{ key: "missing", values: [1] }, /does not contain field/],
     [{ key: "t", values: [1, 1] }, /must be unique/],
     [{ key: "t", values: [1, "2"] }, /one scalar type/],
@@ -241,4 +240,44 @@ test("facets replay completion, imputation, and duration windows from local sour
     assert.deepEqual(output.values.map(row => row.mean), expected.get(output.values[0].facet));
     assert.equal(child.semanticSpec.layers[0].data, output.id);
   }
+});
+
+test("mean imputation defaults explicitly, respects groups and preserves completed row grain", () => {
+  const rows=[{t:0,g:'A',v:2},{t:1,g:'A',v:4},{t:2,g:'A',v:6},{t:0,g:'B',v:10},{t:1,g:'B',v:20}];
+  const raw=chart().createData({id:'raw',values:rows}),complete=raw.createCompleteData({id:'complete',key:'t',groupBy:'g'});
+  const p=complete.createImputedData({id:'imputed',fields:'v',groupBy:'g'});
+  const ds=dataset(p,'imputed');assert.equal(ds.values.length,6);assert.equal(ds.values.find(r=>r.g==='B'&&r.t===2).v,15);
+  assert.equal(ds.transform[0].method,'mean');assert.deepEqual(dataset(p,'raw').values,rows);
+  assert.equal(dataset(complete,'complete').values.find(r=>r.g==='B'&&r.t===2).v,null);
+  const explicit=complete.createImputedData({id:'other',fields:'v',groupBy:'g',method:'mean'});
+  assert.deepEqual(dataset(explicit,'other').values,ds.values);
+});
+
+test("mean imputation is finite, order independent and obeys missing-run policies", () => {
+  const source=chart().createData({id:'raw',values:[{v:1e308},{v:null},{v:1e308}]});
+  const p=source.createImputedData({id:'mean',fields:'v'});assert.equal(dataset(p,'mean').values[1].v,1e308);
+  const none=chart().createData({id:'raw',values:[{v:null},{v:null}]});
+  assert.deepEqual(dataset(none.createImputedData({id:'keep',fields:'v'}),'keep').values,[{v:null},{v:null}]);
+  assert.throws(()=>none.createImputedData({id:'error',fields:'v',edges:'error'}),/observed value/);
+  const gap=chart().createData({id:'raw',values:[{v:1},{v:null},{v:null},{v:3}]}).createImputedData({id:'limited',fields:'v',maxGap:1});
+  assert.deepEqual(dataset(gap,'limited').values.map(r=>r.v),[1,null,null,3]);
+  assert.throws(()=>chart().createData({values:[{v:'1'},{v:null}]}).createImputedData({id:'bad',fields:'v'}),/finite numbers/);
+  assert.throws(()=>source.createImputedData({id:'bad',fields:'v',method:'mean',value:0}),/not available/);
+});
+
+
+test("completion preserves repeated observations and fills only absent group keys", () => {
+  const rows = [{g:"B",t:2,v:5},{g:"A",t:1,v:2},{g:"A",t:1,v:4},{g:"B",t:1,v:8}];
+  const before = chart().createData({id:"raw",values:rows});
+  const actual = before.createCompleteData({id:"filled",key:"t",groupBy:"g",values:[1,2,3],members:"indices"});
+  assert.deepEqual(dataset(actual,"filled").values,[
+    {g:"B",t:1,v:8,indices:[3]},{g:"B",t:2,v:5,indices:[0]},{g:"B",t:3,v:null,indices:[]},
+    {g:"A",t:1,v:2,indices:[1]},{g:"A",t:1,v:4,indices:[2]},{g:"A",t:2,v:null,indices:[]},{g:"A",t:3,v:null,indices:[]}
+  ]);
+  assert.deepEqual(dataset(before,"raw").values,rows);
+  assert.equal(before.semanticSpec.datasets.length,1);
+  const huge = chart().createData({values:Array.from({length:10_000},()=>({t:1,v:2}))});
+  assert.equal(dataset(huge.createCompleteData({id:"same",key:"t"}),"same").values.length,10_000);
+  assert.throws(()=>huge.createCompleteData({id:"tooMany",key:"t",values:[1,2]}),/cannot exceed 10000/);
+  assert.equal(huge.semanticSpec.datasets.length,1);
 });

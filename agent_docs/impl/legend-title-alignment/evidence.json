@@ -1,0 +1,90 @@
+{
+  "reviewer": "codex",
+  "status": "proposal-only-current-behavior",
+  "chartPixelsInspected": false,
+  "newModelResponses": 0,
+  "results": [
+    {
+      "name": "centeredTop",
+      "pass": true,
+      "title": {
+        "type": "text",
+        "properties": {
+          "x": 134.3,
+          "y": 380,
+          "text": "Group",
+          "fill": "#334155",
+          "fontSize": 11,
+          "fontFamily": "sans-serif",
+          "fontWeight": 600,
+          "textAlign": "center",
+          "textBaseline": "top"
+        }
+      },
+      "bounds": {
+        "left": 120.05720000000001,
+        "right": 148.5428,
+        "top": 380,
+        "bottom": 391
+      }
+    },
+    {
+      "name": "inlineLeft",
+      "pass": true,
+      "title": {
+        "type": "text",
+        "properties": {
+          "x": 20,
+          "y": 380.75,
+          "text": "Group",
+          "fill": "#334155",
+          "fontSize": 11,
+          "fontFamily": "sans-serif",
+          "fontWeight": 600,
+          "textAlign": "left",
+          "textBaseline": "top"
+        }
+      },
+      "bounds": {
+        "left": 20,
+        "right": 48.485600000000005,
+        "top": 380.75,
+        "bottom": 391.75
+      }
+    },
+    {
+      "name": "simultaneousAnchor",
+      "pass": false,
+      "error": "Legend at conflicts with position, align and offset in the same call."
+    },
+    {
+      "name": "cornerThenFree",
+      "pass": true,
+      "title": {
+        "type": "text",
+        "properties": {
+          "x": 130.3,
+          "y": 380,
+          "text": "Group",
+          "fill": "#334155",
+          "fontSize": 11,
+          "fontFamily": "sans-serif",
+          "fontWeight": 600,
+          "textAlign": "left",
+          "textBaseline": "top"
+        }
+      },
+      "bounds": {
+        "left": 130.3,
+        "right": 158.78560000000002,
+        "top": 380,
+        "bottom": 391
+      }
+    },
+    {
+      "name": "requestedTitleAlignment",
+      "pass": false,
+      "error": "Unknown createLegend.titleStyle option \"align\"."
+    }
+  ]
+}

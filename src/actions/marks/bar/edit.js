@@ -14,6 +14,7 @@ import { requestedRectStyleDetails, RECT_RADIUS_PROPERTIES } from
 import { STROKE_STYLE_PROPERTIES } from
   "../../../grammar/strokeStyle.js";
 import { rematerializeExistingLegend } from "../../encodings/shared.js";
+import { validateFillPaint } from "../../../grammar/paint.js";
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const EDIT_OPTIONS = Object.freeze([
@@ -56,6 +57,9 @@ export const editBarMark = /* @__PURE__ */ action(
         "editBarMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
       );
     }
+    if (Object.hasOwn(args, "opacity") && layer.encoding?.opacity !== undefined) {
+      throw new Error("editBarMark opacity conflicts with a field encoding; use encodeOpacity with value to replace it.");
+    }
     if (args.stroke === false && Object.hasOwn(args, "strokeWidth")) {
       throw new Error(
         "editBarMark cannot set strokeWidth while removing stroke."
@@ -72,7 +76,7 @@ export const editBarMark = /* @__PURE__ */ action(
     const appearance = { ...config.barAppearance };
     Object.assign(appearance, styleDetails);
     if (Object.hasOwn(args, "fill")) {
-      appearance.fill = validateNonEmptyString(args.fill, "Bar fill");
+      appearance.fill = validateFillPaint(args.fill, "Bar fill");
     }
     if (Object.hasOwn(args, "opacity")) {
       appearance.opacity = validateUnitInterval(args.opacity, "Bar opacity");

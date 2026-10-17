@@ -377,7 +377,7 @@ export function resolveScaleMaterialization(options) {
   validateMeasuredRadiusConsumers({ scale, domain, range, consumers, markConfigs, thetaScales });
   if (channel === "shape" && domain.length > range.length) {
     throw new Error(
-      `Shape scale "${id}" requires at least one distinct shape per domain value.`
+      `Shape scale "${id}" requires at least one shape entry per domain value.`
     );
   }
 
@@ -440,7 +440,9 @@ export function resolveScaleMaterialization(options) {
     const temporalBarBand = resolveTemporalBarBand(
       valuesByConsumer,
       domain,
-      range
+      range,
+      markConfigs,
+      Array.isArray(scale.range)
     );
     if (temporalBarBand !== undefined) {
       resolvedScale = {

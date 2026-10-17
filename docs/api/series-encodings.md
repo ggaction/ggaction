@@ -12,7 +12,7 @@ title: Series Encodings
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
 | `encodeGroup` | `encodeGroup({ field: "country" })` or `{ fields: ["country", "scenario"] }` | Current Line/Area; nominal fields | Explicit path identity without a scale |
-| `encodeOpacity` | `encodeOpacity({ field: "quality" })` | Current Point/Rule/Line; quantitative field | One opacity per item or series |
+| `encodeOpacity` | `encodeOpacity({ field: "quality" })` | Current Point/Rule/Line/Bar; quantitative field | One opacity per item, series, or bar cell |
 | `encodeColor` | `encodeColor({ field: "group" })` | Current mark, nominal default or explicit ordinal field type, color scale | Semantic grouping and concrete color |
 | `encodeStroke` | `encodeStroke({ field: "status" })` | Current supported mark; independent stroke scale | Item or series outline color without replacing fill |
 | `encodeStrokeDash` | `encodeStrokeDash({ field: "group" })` | Current line/rule mark and dash scale | Field-driven or constant concrete dash |

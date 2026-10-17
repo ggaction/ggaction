@@ -19,7 +19,7 @@ export const setQuantitativeColorScale = /* @__PURE__ */ closedAction(
     description: "Create or update an internal quantitative color scale."
   }, OPTIONS,
   function (args = {}) {
-    if (!["sequential", "log", "symlog", "quantize", "quantile", "threshold"].includes(args.type)) {
+    if (!["sequential", "log", "sqrt", "symlog", "quantize", "quantile", "threshold"].includes(args.type)) {
       throw new Error(`Unsupported quantitative color scale type "${args.type}".`);
     }
     const existing = findSemanticScale(this, args.id);

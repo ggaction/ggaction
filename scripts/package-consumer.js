@@ -89,6 +89,120 @@ async function testNodeConsumer(directory) {
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
+    const extracted = chart().createCanvas({ width: 440, height: 340, margin: 20 })
+      .createData({ values: [{ item: { value: 1 }, text: "1.5%" }, { text: "2%" }] })
+      .createComputedData({ id: "nested", as: "x", expression: { op: "getPath", operand: { field: "item" }, path: ["value"] } })
+      .createComputedData({ id: "stripped", as: "numberText", expression: { op: "replaceLiteral", operand: { field: "text" }, search: "%", replacement: "" } })
+      .createComputedData({ id: "numbers", as: "y", expression: { op: "toNumber", operand: { field: "numberText" } } })
+      .filterData({ id: "defined", field: "x", noneOf: [null] })
+      .createScatterPlot({ x: "x", y: "y", guides: false });
+    assert.deepEqual(extracted.semanticSpec.datasets.find(d => d.id === "nested").values.map(row => row.x), [1, null]);
+    assert.equal(extracted.graphicSpec.objects.scatterPlot.items.length, 1);
+    assert.deepEqual(deserializeProgram(serializeProgram(extracted)).graphicSpec, extracted.graphicSpec);
+    assert.ok((await renderToPNGBuffer(extracted)).buffer.length > 100);
+    const longLine = chart().createCanvas({ width: 440, height: 340, margin: 20 })
+      .createData({ values: Array.from({ length: 12070 }, (_, i) => ({ x: i, y: i % 11 })) })
+      .createLinePlot({ x: "x", y: "y", guides: false });
+    assert.equal(longLine.graphicSpec.objects.linePlot.items[0].properties.commands.length, 12070);
+    assert.deepEqual(deserializeProgram(serializeProgram(longLine)).graphicSpec, longLine.graphicSpec);
+    assert.ok(renderToSVG(longLine).includes("<path"));
+    assert.ok((await renderToPNGBuffer(longLine)).buffer.length > 100);
+
+    const blankLines = chart().createCanvas({ width: 600, height: 500, margin: 160 })
+      .createTitle({ text: "\\nTitle\\n", subtitle: "First\\n\\nLast\\n", titleStyle: { fontSize: 12 } });
+    assert.equal(blankLines.graphicSpec.objects.chartTitle.properties.text, "Title");
+    assert.deepEqual(blankLines.graphicSpec.objects.chartSubtitle.items.map(item => item.properties.text), ["First", "Last"]);
+    assert.doesNotThrow(() => renderToSVG(blankLines));
+    assert.deepEqual(deserializeProgram(serializeProgram(blankLines)).graphicSpec, blankLines.graphicSpec);
+    assert.ok((await renderToPNGBuffer(blankLines)).buffer.length > 1000);
+
+    const blankLegend = chart().createCanvas({ width: 600, height: 500, margin: 160 })
+      .createData({ values: [{ x: 1, y: 2, g: "" }, { x: 2, y: 3, g: "A" }] })
+      .createScatterPlot({ x: "x", y: "y", color: "g", guides: false })
+      .createLegend({ title: false })
+      .editLegendBlock({ target: "scatterPlot", channel: "color", labelMap: [{ value: "", label: "" }] });
+    assert.deepEqual(blankLegend.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.text), ["A"]);
+    assert.equal(blankLegend.graphicSpec.objects.colorLegendSymbols.items.length, 2);
+    assert.doesNotThrow(() => renderToSVG(blankLegend));
+    assert.deepEqual(deserializeProgram(serializeProgram(blankLegend)).graphicSpec, blankLegend.graphicSpec);
+    assert.ok((await renderToPNGBuffer(blankLegend)).buffer.length > 1000);
+
+    for (const factory of [chart, basicChart]) for (const channel of ["color", "stroke"]) {
+      let ramp = factory().createCanvas({ width: 800, height: 600, margin: 150 })
+        .createData({ values: [{ x: 1, y: 2, n: 1 }, { x: 2, y: 3, n: 2 }] })
+        .createScatterPlot({ x: "x", y: "y", guides: false,
+          ...(channel === "stroke" ? { stroke: { field: "n", fieldType: "quantitative" } } : {}) });
+      if (channel === "color") ramp = ramp.encodeColor({ field: "n", fieldType: "quantitative" });
+      const translucent = ramp.createLegend({ channels: [channel], gradient: { opacity: 0.7 } });
+      const strips = translucent.graphicSpec.objects[channel + "GradientStrips"].items;
+      assert.equal(strips.length, 60);
+      assert.ok(strips.every(item => item.properties.opacity === 0.7));
+      assert.deepEqual(deserializeProgram(serializeProgram(translucent)).graphicSpec, translucent.graphicSpec);
+      assert.ok(renderToSVG(translucent).includes('opacity="0.7"'));
+      assert.ok((await renderToPNGBuffer(translucent)).buffer.length > 1000);
+    }
+
+    for (const factory of [chart, basicChart]) for (const continuous of [false, true]) {
+      const base = factory().createCanvas({ width: 800, height: 600, margin: 150 })
+        .createData({ values: [{ x: 1, y: 2, g: "A", n: 1 }, { x: 2, y: 3, g: "B", n: 2 }] })
+        .createScatterPlot({ x: "x", y: "y", guides: false })
+        .encodeColor({ field: continuous ? "n" : "g", fieldType: continuous ? "quantitative" : "nominal" });
+      const multiline = base.createLegend({ title: "Alpha\\nBeta" });
+      const title = Object.values(multiline.graphicSpec.objects).find(o => o.properties?.text === "Alpha\\nBeta");
+      assert.deepEqual(title.properties.lines.map(line => line.text), ["Alpha", "Beta"]);
+      assert.match(renderToSVG(multiline), /<tspan[^>]*>Alpha<\\/tspan><tspan[^>]*>Beta<\\/tspan>/);
+      const restored = deserializeProgram(serializeProgram(multiline));
+      assert.deepEqual(restored.graphicSpec, multiline.graphicSpec);
+      assert.deepEqual(restored.editLegend({ title: "One" }).graphicSpec, base.createLegend({ title: "One" }).graphicSpec);
+    }
+
+    for (const factory of [chart, basicChart]) {
+      let grouped = factory().createCanvas({ width: 1000, height: 800, margin: 100 })
+        .createData({ values: [{ x: 1, y: 2, g: "A", n: 1 }, { x: 2, y: 3, g: "B", n: 2 }] })
+        .createPointMark({ id: "groupedPoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+        .encodeColor({ field: "g" }).encodeSize({ field: "n" });
+      if (factory === chart) grouped = grouped.encodeOpacity({ field: "n" });
+      grouped = grouped.createLegend({ channels: ["color"], position: "top-left", blockLayout: "row" })
+        .createLegend({ channels: ["size"], count: 2 });
+      if (factory === chart) grouped = grouped.createLegend({ channels: ["opacity"], count: 2 });
+      assert.deepEqual(grouped.guideConfigs.legendGroups.groupedPoints, {
+        placement: { position: "top-left", align: "center", offset: 8 }, blockLayout: "row", inferredOffset: true
+      });
+      assert.ok(renderToSVG(grouped).includes("<svg"));
+      if (factory === chart) {
+        const free = grouped.editLegendLayout({ at: { x: 201, y: 79 } });
+        assert.deepEqual(free.guideConfigs.legendGroups.groupedPoints, {
+          placement: { at: { x: 201, y: 79 } }, blockLayout: "row"
+        });
+        const restored = deserializeProgram(serializeProgram(free));
+        assert.deepEqual(restored.graphicSpec, free.graphicSpec);
+        assert.deepEqual(restored.editCanvas({ width: 1001 }).editCanvas({ width: 1000 }).graphicSpec, free.graphicSpec);
+        const removedOwner = free.removeLegend()
+          .createLegend({ channels: ["opacity"], at: { x: 10, y: 10 } })
+          .encodeOpacity({ value: 0.5 }).removeMark({ target: "groupedPoints" });
+        assert.equal(removedOwner.guideConfigs.legendGroups, undefined);
+        assert.doesNotThrow(() => deserializeProgram(serializeProgram(removedOwner)));
+      }
+    }
+
+    for (const factory of [chart, basicChart]) {
+      const sampled = factory().createCanvas({ width: 500, height: 400, margin: 100 })
+        .createData({ values: [{ x: 1, y: 1, v: 1 }, { x: 2, y: 2, v: 9 }] })
+        .createScatterPlot({ x: "x", y: "y", color: { field: "v", fieldType: "quantitative" }, guides: {
+          axes: false, grid: false, legend: { representation: "symbols", values: [2, 4, 6, 8], position: "top-left", symbol: { radius: 5 } }
+        } });
+      const items = sampled.graphicSpec.objects.colorGradientSymbols.items;
+      assert.deepEqual(items.map(item => item.properties.fill), ["#472d7b", "#2c728e", "#28ae80", "#abdc32"]);
+      assert.ok(items.every(item => item.properties.radius === 5));
+      assert.equal(sampled.graphicSpec.objects.colorGradientStrips, undefined);
+      assert.deepEqual(deserializeProgram(serializeProgram(sampled)).graphicSpec, sampled.graphicSpec);
+      if (factory === chart) {
+        const gradient = sampled.editLegend({ representation: "gradient" });
+        assert.ok(gradient.graphicSpec.objects.colorGradientStrips);
+        assert.equal(gradient.graphicSpec.objects.colorGradientSymbols, undefined);
+      }
+    }
+
     const program = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
       .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
@@ -199,6 +313,25 @@ async function testNodeConsumer(directory) {
     const facetTitle = compactFacet.createTitle({ text: "Panel groups", titleStyle: { fontStyle: "italic" } });
     assert.equal(facetTitle.graphicSpec.objects.chartTitle.properties.fontStyle, "italic");
     assert.equal(facetTitle.editCompositionLayout({ gap: 11 }).graphicSpec.objects.chartTitle.properties.fontStyle, "italic");
+    const shiftedFacetTitle = facetTitle.editTitle({ alongOffset: -10, subtitle: "Notes" });
+    assert.equal(shiftedFacetTitle.graphicSpec.objects.chartTitle.properties.x, facetTitle.graphicSpec.objects.chartTitle.properties.x - 10);
+    assert.equal(shiftedFacetTitle.graphicSpec.objects.chartSubtitle.properties.x, shiftedFacetTitle.graphicSpec.objects.chartTitle.properties.x);
+    assert.deepEqual(deserializeProgram(serializeProgram(shiftedFacetTitle)).graphicSpec, shiftedFacetTitle.graphicSpec);
+    assert.throws(() => facetTitle.editTitle({ alongOffset: 10000 }), /outside the Canvas/);
+    const plotAnchoredFacet = chart().createCanvas({ width: 400, height: 280,
+      margin: { left: 80, right: 200, top: 40, bottom: 40 } })
+      .createData({ values: [{ panel: "A", category: "u", x: 1, y: 2 }, { panel: "B", category: "v", x: 2, y: 3 }] })
+      .createScatterPlot({ x: "x", y: "y", guides: false }).encodeColor({ field: "category" })
+      .createLegend().facet({ field: "panel", guides: { legend: "shared" } });
+    assert.equal(plotAnchoredFacet.graphicSpec.objects.canvas.properties.width, 816);
+    const promotedLegendCanvas = plotAnchoredFacet.graphicSpec.objects["facet-shared-legend"].properties;
+    const promotedLegendTitle = plotAnchoredFacet.graphicSpec.objects.colorLegendTitle.properties;
+    assert.equal(promotedLegendCanvas.x + promotedLegendTitle.x, 624);
+    assert.equal(promotedLegendCanvas.y + promotedLegendTitle.y, 40);
+    assert(Object.values(plotAnchoredFacet.children).every(child =>
+      child.graphicSpec.objects.canvas.properties.width === 400 && child.materializationConfigs.canvas.margin.right === 200));
+    assert.deepEqual(deserializeProgram(serializeProgram(plotAnchoredFacet)).graphicSpec, plotAnchoredFacet.graphicSpec);
+
 
 
     for (const factory of [chart, basicChart]) {
@@ -251,6 +384,22 @@ async function testNodeConsumer(directory) {
     assert.equal(categoryPNG.readUInt32BE(16), 800);
     assert.equal(categoryPNG.readUInt32BE(20), 500);
     assert.ok(categoryPNG.length > 1000);
+
+    const boundedCombinedSeed = chart().createCanvas({ width: 900, height: 700,
+      margin: { left: 40, top: 40, right: 400, bottom: 40 } })
+      .createData({ values: ["A", "B", "C", "D", "E"].map((group, i) => ({ x: i, y: i, group })) })
+      .createScatterPlot({ x: "x", y: "y", guides: false })
+      .encodeColor({ field: "group" }).encodeSize({ field: "group", fieldType: "nominal" });
+    const boundedCombined = boundedCombinedSeed.createGuides({ axes: false, grid: false,
+      legend: { channels: ["color", "size"], overflow: { maxItems: 2 } } });
+    for (const kind of ["color", "size"]) {
+      assert.deepEqual(boundedCombined.graphicSpec.objects[kind + "LegendLabels"].items.map(item => item.properties.text),
+        ["A", "B", "…3 entries"]);
+      assert.equal(boundedCombined.graphicSpec.objects[kind + "LegendSymbols"].items.length, 2);
+    }
+    const restoredCombined = deserializeProgram(serializeProgram(boundedCombined));
+    assert.deepEqual(restoredCombined.editLegend({ overflow: false }).graphicSpec,
+      boundedCombinedSeed.createLegend({ channels: ["color", "size"] }).graphicSpec);
 
     const alternative = exportAccessibleData(program);
     assert.equal(alternative.views[0].rows.length, 2);
@@ -1099,6 +1248,14 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(areaFacade.resolvedScales.y.domain, [0, 5]);
     assert.match(renderToSVG(areaFacade), /<path/);
     assert.deepEqual(areaFacade.layoutSeries({ mode: "fill" }).resolvedScales.y.domain, [0, 1]);
+    const areaPaint = { type: "linear-gradient", from: { x: 0, y: 1 }, to: { x: 0, y: 0 },
+      stops: [{ offset: 0, color: "white" }, { offset: 1, color: "orange" }] };
+    const gradientArea = areaFacade.editAreaMark({ fill: areaPaint, opacity: 0.7 });
+    assert.ok(gradientArea.graphicSpec.objects.areaPlot.items.every(item =>
+      item.properties.fill.type === "linear-gradient" && item.properties.opacity === 0.7));
+    assert.match(renderToSVG(gradientArea), /<linearGradient/);
+    assert.deepEqual(gradientArea.editCanvas({ width: 180 }).markConfigs.areaPlot.fill, areaPaint);
+
     const basicSeries = basicChart().createCanvas({ width: 160, height: 120, margin: 20 })
       .createData({ values: areaRows }).createBarPlot({ x: "category", y: { field: "value", aggregate: "sum" }, guides: false })
       .encodeGroup({ field: "series" }).layoutSeries({ mode: "group" });
@@ -1461,7 +1618,7 @@ async function testNodeConsumer(directory) {
       const columns = source.createLegend({ position, columns: 2 });
       assert.equal(new Set(columns.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.x)).size, 2);
       if (factory === chart) {
-        assert.deepEqual(source.createLegend({ position: "top", columns: 2, itemGap: 28 })
+        assert.deepEqual(source.createLegend({ position: "top", columns: 2, itemGap: 18 })
           .editLegendLayout({ position, columns: 1 }).graphicSpec, p.graphicSpec);
       }
     }
@@ -1602,6 +1759,12 @@ async function testNodeConsumer(directory) {
       item.properties.text), ["4.0", "6.5", "9.0"]);
     assert.deepEqual(editedContent.editLegend({ channels: ["shape"] }).guideConfigs.legend.series.channels, ["shape"]);
     assert.match(renderToSVG(editedContent), /<svg /);
+    const alignedLegendTitle = legendContentBase.createLegend({title: "Aligned legend title", titleStyle: {align: "left"}});
+    const alignedTitleObject = Object.values(alignedLegendTitle.graphicSpec.objects).find(o => o.properties?.text === "Aligned legend title");
+    assert.equal(alignedTitleObject.properties.textAlign, "left");
+    const resetLegendTitle = alignedLegendTitle.editLegendTitle({align: "auto"});
+    assert.deepEqual(resetLegendTitle.graphicSpec, legendContentBase.createLegend({title: "Aligned legend title"}).graphicSpec);
+    assert.ok(Object.values(deserializeProgram(serializeProgram(alignedLegendTitle)).guideConfigs.legend).some(config => config.titleStyle?.align === "left"));
     const hiddenContent = legendContentBase.createLegend({ count: 3 }).editLegend({ title: false });
     const hiddenCategorical = legendContentBase.editCanvas({ width: 1200, height: 1000, margin: 300 })
       .createLegend({ channels: ["color"], position: "bottom", border: true }).editLegend({ title: false });
@@ -1692,7 +1855,7 @@ async function testNodeConsumer(directory) {
       assert.ok(renderToSVG(edge).startsWith("<svg "));
       if (create === chart) {
         assert.deepEqual(edge.editLegend({ position: "top", columns: 2, title: false }).graphicSpec,
-          source.createLegend({ channels: ["size"], position: "top", columns: 2, count: 3, border: true })
+          source.createLegend({ channels: ["size"], position: "top", columns: 2, count: 3, border: true, itemGap: ["left", "right"].includes(position) ? 18 : 40 })
             .editLegend({ title: false }).graphicSpec);
       }
     }
@@ -1852,7 +2015,7 @@ async function testNodeConsumer(directory) {
       const edge = roomy.createLegend({ channels: ["strokeWidth"], position, count: 3, border: true });
       assert.equal(edge.guideConfigs.legend.strokeWidth.position, position);
       assert.deepEqual(edge.editLegend({ position: "top", columns: 2, title: false }).graphicSpec,
-        roomy.createLegend({ channels: ["strokeWidth"], position: "top", columns: 2, count: 3, border: true })
+        roomy.createLegend({ channels: ["strokeWidth"], position: "top", columns: 2, count: 3, border: true, itemGap: ["left", "right"].includes(position) ? 18 : 32 })
           .editLegend({ title: false }).graphicSpec);
       assert.ok(renderToSVG(edge).includes("stroke-width"));
     }
@@ -3035,6 +3198,16 @@ async function testTypeScriptConsumer(directory) {
     program.editFacetHeaders(facetHeaderOptions);
     // @ts-expect-error Canvas fitting is Full only
     basicChart().fitCanvas(fitOptions);
+    program.createCanvas({ plotBorder: {} });
+    program.editCanvas({ plotBorder: { color: "#ddd", lineWidth: 1 } });
+    program.editCanvas({ plotBorder: false });
+    basicChart().createCanvas({ plotBorder: { lineWidth: 2 } });
+    // @ts-expect-error The border switch accepts false or a style object.
+    program.editCanvas({ plotBorder: true });
+    // @ts-expect-error Border line width is numeric.
+    program.editCanvas({ plotBorder: { lineWidth: "1" } });
+    // @ts-expect-error The border style vocabulary is closed.
+    program.editCanvas({ plotBorder: { opacity: 0.5 } });
     const roseOptions: import("ggaction").CreateRosePlotOptions = { category: "category", radiusScale: { range: [70, 140] } };
     program.createScale({ id: "midpoint", type: "sequential", midpoint: 0 });
     program.editScale({ id: "midpoint", midpoint: "auto" });
@@ -3046,7 +3219,7 @@ async function testTypeScriptConsumer(directory) {
     program.createRadialBarPlot(radialOptions);
     // @ts-expect-error measured facades are Full only
     basicChart().createRosePlot(roseOptions);
-    // @ts-expect-error value requires explicit sum
+    // A supplied radial value infers sum.
     program.createRadialBarPlot({ category: "category", value: "value" });
     // @ts-expect-error measured padding is zero
     program.createRosePlot({ category: "category", arc: { padAngle: 1 } });
@@ -3062,7 +3235,7 @@ async function testTypeScriptConsumer(directory) {
     basicChart().createPiePlot({ category: "category" });
     // @ts-expect-error A pie requires its category role.
     program.createPiePlot({});
-    // @ts-expect-error A weighted pie requires explicit sum.
+    // A supplied pie value infers sum.
     program.createPiePlot({ category: "category", value: "value" });
     // @ts-expect-error Count cannot receive a weight field.
     program.createPiePlot({ category: "category", value: "value", aggregate: "count" });
@@ -3076,6 +3249,30 @@ async function testTypeScriptConsumer(directory) {
     program.createPiePlot({ category: "category", guides: { legend: { channels: ["size"] } } });
     // @ts-expect-error Pie color has no area layout option.
     program.createPiePlot({ category: "category", color: { field: "category", layout: "stack" } });
+    const sharedAreaPaint: import("ggaction").FillPaint = {
+      type: "linear-gradient", from: { x: 0, y: 1 }, to: { x: 0, y: 0 },
+      stops: [{ offset: 0, color: "white" }, { offset: 1, color: "orange" }]
+    };
+    program.createAreaMark({ fill: sharedAreaPaint }).editAreaMark({ fill: sharedAreaPaint });
+    program.createAreaPlot({ x: "x", y: "value", area: { fill: sharedAreaPaint } });
+    program.createAreaPlot({ x: { field: "group", fieldType: "nominal", scale: { type: "band" } }, y: "value", guides: { grid: { vertical: { bandPosition: "center" } } } });
+    program.createAreaPlot({ valueChannel: "x", x: "value", y: { field: "group", fieldType: "nominal", scale: { type: "band" } }, guides: { grid: { horizontal: { bandPosition: "boundary" } } } });
+    program.createDensityPlot({ field: "value", area: { fill: sharedAreaPaint } });
+    // @ts-expect-error Density value and density scales are continuous.
+    program.createDensityPlot({ field: "value", guides: { grid: { vertical: { bandPosition: "center" } } } });
+    // @ts-expect-error Density has no horizontal band role either.
+    program.createDensityPlot({ field: "value", guides: { grid: { horizontal: { bandPosition: "boundary" } } } });
+    // @ts-expect-error Rug quantitative/temporal measure scales have no band edges.
+    program.createRugPlot({ x: "x", edge: "bottom", guides: { grid: { vertical: { bandPosition: "center" } } } });
+    // @ts-expect-error Rug's other orientation also has a continuous measure scale.
+    program.createRugPlot({ y: "value", edge: "left", guides: { grid: { horizontal: { bandPosition: "boundary" } } } });
+    // @ts-expect-error Horizon original x is continuous.
+    program.createHorizonPlot({ x: "x", y: "value", guides: { grid: { vertical: { bandPosition: "center" } } } });
+    program.createViolinPlot({ x: "group", y: "value", area: { fill: sharedAreaPaint, stroke: "black" } });
+    program.createErrorBand({ x: { field: "x" }, y: { center: "value", lower: "low", upper: "high" }, fill: sharedAreaPaint })
+      .editErrorBand({ fill: sharedAreaPaint }).editErrorBand({ fill: false });
+    // @ts-expect-error Area outlines remain solid colors.
+    program.editAreaMark({ stroke: sharedAreaPaint });
     const densityOptions: import("ggaction").CreateDensityPlotOptions = { field: "value", groupBy: false, guides: false };
     program.createDensityPlot(densityOptions).editDensity({ target: "densityPlot", bandwidth: 1 });
     program.createDensityPlot({ field: "value", groupBy: "group", color: { field: "group", layout: "overlay" },
@@ -3154,6 +3351,9 @@ async function testTypeScriptConsumer(directory) {
     program.createLinePlot({ x: "x", y: "y", guides: { legend: { symbol: { width: 20 } } } });
     // @ts-expect-error Box plots have no appearance encoding for an owned legend.
     program.createBoxPlot({ x: "x", y: "y", guides: { legend: { title: "Group" } } });
+    program.createLegend({titleStyle: {align: "left"}}).editLegend({titleStyle: {align: "auto"}}).editLegendTitle({align: "right"});
+    // @ts-expect-error auto resets only an existing title style.
+    program.createLegend({titleStyle: {align: "auto"}});
     // @ts-expect-error Histogram legends are categorical.
     program.createHistogram({ field: "x", guides: { legend: { gradient: { length: 100 } } } });
     // @ts-expect-error Non-temporal inputs do not accept temporal units.
@@ -3525,6 +3725,11 @@ async function testTypeScriptConsumer(directory) {
     program.createLegend({ order: { channel: "theta" } }).editLegend({ order: "scale" });
     program.editLegend({ order: { values: ["C", 1, false] } });
     program.createLegend({ channels: ["size"], values: [1, 2, 3] });
+    program.createLegend({ channels: ["color"], gradient: { opacity: 0.7 } })
+      .editLegend({ gradient: { opacity: 0 } }).editLegendSymbols({ gradient: { opacity: 1 } });
+    basicChart().createGuides({ axes: false, grid: false, legend: { channels: ["color"], gradient: { opacity: 0.7 } } });
+    // @ts-expect-error Gradient opacity must be numeric.
+    program.createLegend({ gradient: { opacity: "half" } });
     program.editLegend({ values: [1, 2, 3] }).editLegend({ values: "auto", count: 4 });
     program.editLegend({ channels: ["color", "shape", "size"], count: 3 });
     program.editLegendLayout({ position: "top", layout: "edge", direction: "horizontal", columns: 2, titlePosition: "left" });
@@ -4656,6 +4861,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "violin-plot",
       "polar-radar-rug-strip-ecdf-facades",
       "right-categorical-legend-offset",
+      "grouped-corner-and-free-legend-placement",
       "sequential-palette-count",
       "typescript",
       "basic-entry-runtime-and-types",

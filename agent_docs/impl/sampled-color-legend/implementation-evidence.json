@@ -1,0 +1,126 @@
+{
+  "status": "implemented-and-verified",
+  "approvedRevision": "cb61e5f24c3ebff52f632a9050af6a3128f92c80",
+  "approvalRecord": "70711afb",
+  "scope": "Existing continuous-color legend representation only; no new action, scale type, resource kind or renderer primitive.",
+  "chartPixelsViewed": false,
+  "checks": {
+    "focusedSampledColor": 26,
+    "fullUnit": 2921,
+    "contracts": 532,
+    "documentation": 120,
+    "charts": 578,
+    "newModuleCoverage": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "independentReview": {
+      "focused": 25,
+      "additionalNeutralChecks": 18,
+      "findings": []
+    },
+    "packedConsumer": {
+      "status": "pass",
+      "sha256": "e19592909ed1fc1b3dd35655fbce6a5bcafe94883ed286df351e8d62985fe1a6",
+      "browserBundles": {
+        "full": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 493,
+          "minifiedBytes": 1441479,
+          "gzipBytes": 387444
+        },
+        "basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 283,
+          "minifiedBytes": 669378,
+          "gzipBytes": 186768
+        },
+        "svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 18,
+          "minifiedBytes": 22204,
+          "gzipBytes": 7161
+        }
+      }
+    }
+  },
+  "package": {
+    "entryCount": 560,
+    "packedBytes": 788122,
+    "unpackedBytes": 3876966,
+    "limits": {
+      "entries": 560,
+      "packedBytes": 789000,
+      "unpackedBytes": 3900000,
+      "fullGzipBytes": 388000,
+      "basicGzipBytes": 187000,
+      "svgGzipBytes": 25000
+    },
+    "baseline80bf": {
+      "fullGzipBytes": 385362,
+      "basicGzipBytes": 185627
+    },
+    "packedHistory": [
+      {
+        "stage": "before-new-module-compaction",
+        "bytes": 788003
+      },
+      {
+        "stage": "with-new-module-compaction",
+        "bytes": 787745
+      },
+      {
+        "stage": "after-final-runtime-type-generated-sync",
+        "bytes": 788122
+      }
+    ]
+  },
+  "search": {
+    "bytes": 811989,
+    "previousLimit": 811000,
+    "limit": 813000,
+    "contentRemoved": false
+  },
+  "priorBaselineSynchronization": {
+    "pngEvidence": "no-optin-doc-image-evidence.json",
+    "modifiedPngCount": 56,
+    "featureNoOptInPixelDelta": 0,
+    "fixtureParentReproduction": "Untouched archived approved parent70711afb independently reproduces all three same failures.",
+    "fixtures": [
+      {
+        "path": "test/charts/color-midpoint/public.test.js",
+        "cause": "Previously changed occupied-side-top alignment",
+        "before": 292,
+        "after": 272.5
+      },
+      {
+        "path": "test/charts/fitted-long-labels/primitive.test.js",
+        "cause": "Previously changed rotated-label anchoring",
+        "bottomBefore": 92.75,
+        "bottomAfter": 79.75
+      },
+      {
+        "path": "test/charts/gapminder-temporal-discrete-scales/primitive.program.js",
+        "cause": "Previously approved default vertical pitch18",
+        "pitchBefore": 28,
+        "pitchAfter": 18
+      }
+    ],
+    "allEqualityAndGeometryGuardsPreserved": true
+  },
+  "historicalUnsupportedReproduction": {
+    "path": "reproduce.mjs",
+    "runAtRevision": "cb61e5f24c3ebff52f632a9050af6a3128f92c80",
+    "currentRegression": false
+  },
+  "remainingIntegration": [
+    "Merge independently verified minimum16 text-safety pitch checkpoint from sibling branch.",
+    "Re-run affected integration checks on merged runtime; bind docs and global translation pin.",
+    "Perform source-bound model correction and all-stage rerender in translation overlay; library implementation does not claim those already complete."
+  ],
+  "publishingOrDeployment": false
+}

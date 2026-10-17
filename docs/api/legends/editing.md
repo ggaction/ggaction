@@ -7,6 +7,58 @@ title: Editing Legends
 
 {% include chart-example.html id="density" lead=true %}
 
+## Keep explicit title lines
+
+Use newline characters in a title string, for example
+`program.editLegendTitle({ title: "Revenue\nUSD millions" })`, to keep an explicit
+line break. Every legend family preserves the line order and blank lines, with
+line spacing equal to 1.2 times the title font size. Layout reserves the longest
+line's width and the full block height before placing items, borders, and other
+legend blocks. SVG and Canvas draw the same resolved lines. Editing the title
+back to one line removes the old line layout; font changes, Canvas changes, and
+saved programs preserve the intended text. This does not enable automatic wrapping.
+
+## Place several legend blocks
+
+`direction` and `columns` arrange items inside one block. `blockLayout` arranges
+all legend blocks owned by one target, such as color, size, and opacity:
+
+| Option | Result |
+| --- | --- |
+| `blockLayout: "row"` | One row of complete blocks, with their occupied tops aligned; never wraps |
+| `blockLayout: "column"` | A vertical stack of complete blocks |
+| `blockLayout: "wrap"` | Existing edge flow; corner wrapping uses the available inset plot width |
+| `at: { x, y }` | Complete occupied group top-left at plot origin plus the finite logical-pixel coordinates |
+
+For example, after a target's legends exist, call
+`program.editLegendLayout({ position: "bottom-right", blockLayout: "row" })`
+to move the complete group inside that plot corner. A top or bottom row may be
+wider than the plot if it fits the declared Canvas. It retains every sample,
+font, symbol and block's own item direction. An in-plot group must fit entirely
+inside its plot inset. Insufficient space produces an error; no content is
+hidden, shrunk, wrapped into an unrequested row or moved to another edge.
+
+The new fields opt into whole-target grouping. Omit `target` only when one
+eligible target is inferable. An established group supplies placement to later
+member creation when that placement is omitted; an explicitly conflicting
+member anchor is an error. A group edit moves every member atomically. If a
+layout edit supplies only `blockLayout` and existing anchors differ, supply a
+new `position` or `at` too. Calls without the new fields retain their previous
+behavior unless that target already has an established group. New multi-block
+corners default to a row; existing sides use a column and existing top/bottom
+edges retain wrapping. Native corner inset is 8 pixels, corner block gap is 24,
+and external row gap is 40.
+
+For a free anchor, use `program.editLegendLayout({ at: { x: 120, y: 40 } })`.
+The anchor measures the complete visible group, including borders and strokes,
+from the plot rectangle's origin. Negative finite coordinates are allowed when
+the group still fits the Canvas. Do not combine `at` with `position`, `align`,
+or `offset` in the same call. A later explicit `position` clears the free
+anchor; an `at` edit replaces the edge anchor. Previously stored default
+alignment and offset do not conflict with a new free anchor. New free groups
+default to a column; existing groups retain their block policy. Data, scales,
+Canvas, styles and content changes recompute the same requested placement.
+
 ## Updates and trace
 
 Legend creation and editing check the final occupied bounds against chart titles,
@@ -56,7 +108,7 @@ sample positions stay fixed, with a border around the visible items. Gradient an
 kind-compatible options. Both require center alignment at the left or right
 side. Gradient title placement accepts `titlePosition: "top"` through creation,
 `editLegend` and `editLegendLayout`. Every legend title style accepts only
-color and typography; use `labels.offset` for label spacing. Interval legends support all four positions and
+color and typography; use `labels.offset` for label spacing. Interval legends support the four edges and four plot corners and
 `layout: "edge"`; top/bottom grids also accept alignment, direction, columns
 and inline titles. Side positions require vertical flow, center alignment,
 a top title and one column. When changing position, omitted direction follows
@@ -70,7 +122,7 @@ circle stroke. Hidden titles use no space; restoring a title checks the newly
 occupied bounds before returning a program.
 
 Standalone size legends support `title`, `count`, `labels`, `titleStyle`, border,
-and four-edge layout through the same editing actions. On a Full program
+and edge/corner layout through the same editing actions. On a Full program
 with an existing standalone size legend, this fragment edits its sampled content:
 
 <!-- snippet-context:start -->
@@ -90,7 +142,7 @@ const restored = edited.editLegendTitle({ title: false })
   .editLegendTitle({ title: "auto" });
 ```
 
-For continuous size, opacity, and stroke-width legends, `values` replaces the
+For continuous size, opacity, stroke-width, and color-symbol legends, `values` replaces the
 automatic samples with exact values:
 
 <!-- snippet-context:start -->
@@ -128,15 +180,15 @@ Size labels use a default gap of 12 pixels after the sample slot, editable throu
 32 pixels wide and expands to fit the largest circle. This replaces the previous
 center-relative offset of 28; explicit offsets now measure from the slot edge. Defaults remain size 12/normal for labels and size 13/600 for titles.
 Side size legends use title/item centers at plot top plus 20/52, an offset of 30,
-and item pitch of at least 40. Large circles or fonts expand the required spacing.
+and item pitch of at least 18. Large circles or fonts expand the required spacing.
 Partial styles and title visibility survive Canvas, scale and data updates.
 
-Stroke-width legends additionally support four-edge layout and borders on creation
+Stroke-width legends additionally support edge/corner layout and borders on creation
 and editing. Their line samples remain 32 pixels long; sample widths come from
 the encoded scale. Their common sample slot includes the widest stroke at
 both line ends. `labels.offset` is the minimum gap after this occupied slot,
 defaulting to 12 pixels. Thinner samples retain the same label column.
-The default offset is 30 and item gap is 32. Side title and
+The default offset is 30 and vertical item gap is 18. Side title and
 first sample centers are 20 and 52 pixels below the plot top. Thick side samples and large labels
 move down as needed to keep a 12-pixel gap below the title. Horizontal grids
 measure the thickest sample when allocating rows. Hidden titles do not occupy
@@ -231,7 +283,7 @@ earlier block-local value.
 
 The action accepts `title`, `values`, `count`, `order`, `gap`, `text`, `symbol`,
 and `labelMap`. An empty title hides only that block's title. Exact `values` and
-`count` apply to continuous size, opacity, and stroke-width blocks. `order`
+`count` apply to continuous size, opacity, stroke-width, and color-symbol blocks. `order`
 applies to a categorical block and must list every current category exactly
 once. `text` changes item-label typography and color. `symbol.size` is point
 area in square pixels. Empty `text` or `symbol` objects remove that local patch
@@ -259,7 +311,9 @@ const localized = program.editLegendBlock({
 
 Unmapped categories keep their normal visible text. Duplicate display labels
 and empty labels are valid and do not merge symbols. `labelMap: []` stores an
-empty map; `labelMap: "auto"` removes only this block override. Sampled numeric,
+empty map. An empty mapped label omits only its text; its category, symbol and
+item slot remain through layout, resizing and shared facet legends.
+`labelMap: "auto"` removes only this block override. Sampled numeric,
 gradient, and interval blocks reject display maps because their labels describe
 numeric intervals or samples rather than categorical identities.
 
@@ -273,7 +327,10 @@ Block state follows its channel set through layout, Canvas, theme, data, and
 compatible scale-family updates. Removing a block discards its local state.
 Changing membership rejects a title, order, or display map whose destination would be
 ambiguous, and merging independently edited blocks requires their local styles
-to agree. `editLegendBlock()` is available on Full programs only.
+to agree. For a size block, setting `symbol.stroke` without `symbol.strokeWidth`
+uses its base no-outline width of `0`; set a positive width to draw an outline.
+An omitted stroke retains the existing unoutlined sample.
+`editLegendBlock()` is available on Full programs only.
 
 ## Focused edits
 
@@ -299,7 +356,7 @@ program
 
 | Action | Accepted component options |
 | --- | --- |
-| `editLegendLayout` | `position`, `layout`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap` |
+| `editLegendLayout` | `position`, `blockLayout`, `at`, `layout`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap` |
 | `editLegendLabels` | `offset`, `color`, `fontSize`, `fontFamily`, `fontWeight`, continuous `format` |
 | `editLegendTitle` | `title`, `color`, `fontSize`, `fontFamily`, `fontWeight` |
 | `editLegendSymbols` | `symbol`, `count`, `gradient` |

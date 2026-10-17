@@ -22,5 +22,7 @@ export const createStackData = /* @__PURE__ */ derivedCreator(
   "Stack dataset id",
   "Stack source dataset id",
   normalizeStackTransform,
-  "materializeStackData"
+  "materializeStackData",
+  false,
+  "stacked"
 );

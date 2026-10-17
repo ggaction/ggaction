@@ -103,10 +103,11 @@ export function createRepeatChartsPrimitive() {
     programs: [speed, quality, cost],
     gap: 14
   })
-    .editGraphics({ target: "canvas", property: "width", value: 838 })
+    .editGraphics({ target: "canvas", property: "width", value: 688 })
     .createGraphics({ id: "sharedLegend", type: "canvas", parent: "canvas" })
-    .editGraphics({ target: "sharedLegend", property: "x", value: 550 })
-    .editGraphics({ target: "sharedLegend", property: "y", value: -3.875 })
+    .editGraphics({ target: "sharedLegend", property: "x", value: 468 })
+    // The shared title top (32px) equals the first row plot top.
+    .editGraphics({ target: "sharedLegend", property: "y", value: 0 })
     .editGraphics({ target: "sharedLegend", property: "width", value: 220 })
     .editGraphics({ target: "sharedLegend", property: "height", value: 150 })
     .editGraphics({ target: "sharedLegend", property: "background", value: "transparent" })
@@ -117,7 +118,7 @@ export function createRepeatChartsPrimitive() {
       parent: "sharedLegend"
     })
     .editGraphics({ target: "legendSymbols", property: "x", value: [156.25, 156.25] })
-    .editGraphics({ target: "legendSymbols", property: "y", value: [78, 106] })
+    .editGraphics({ target: "legendSymbols", property: "y", value: [64.5, 82.5] })
     .editGraphics({ target: "legendSymbols", property: "width", value: 14 })
     .editGraphics({ target: "legendSymbols", property: "height", value: 12 })
     .editGraphics({
@@ -134,22 +135,22 @@ export function createRepeatChartsPrimitive() {
       parent: "sharedLegend"
     })
     .editGraphics({ target: "legendLabels", property: "x", value: 178.5 })
-    .editGraphics({ target: "legendLabels", property: "y", value: [84, 112] })
+    .editGraphics({ target: "legendLabels", property: "y", value: [64.5, 82.5] })
     .editGraphics({ target: "legendLabels", property: "text", value: ["A", "B"] })
     .editGraphics({ target: "legendLabels", property: "fill", value: "#334155" })
     .editGraphics({ target: "legendLabels", property: "fontSize", value: 12 })
     .editGraphics({ target: "legendLabels", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "legendLabels", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "legendLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "legendLabels", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "legendLabels", property: "textBaseline", value: "top" })
     .createGraphics({ id: "legendTitle", type: "text", parent: "sharedLegend" })
     .editGraphics({ target: "legendTitle", property: "x", value: 156 })
-    .editGraphics({ target: "legendTitle", property: "y", value: 52 })
+    .editGraphics({ target: "legendTitle", property: "y", value: 32 })
     .editGraphics({ target: "legendTitle", property: "text", value: "group" })
     .editGraphics({ target: "legendTitle", property: "fill", value: "#334155" })
     .editGraphics({ target: "legendTitle", property: "fontSize", value: 13 })
     .editGraphics({ target: "legendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "legendTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "legendTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "legendTitle", property: "textBaseline", value: "middle" });
+    .editGraphics({ target: "legendTitle", property: "textBaseline", value: "top" });
 }

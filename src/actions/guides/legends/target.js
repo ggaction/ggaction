@@ -91,7 +91,7 @@ export function describeLegendBlock(program, kind, config) {
       ? isEnumeratedSizeScaleType(program.resolvedScales[scaleIds[0]].type)
         ? "discrete-size"
         : "sampled"
-      : ["opacity", "strokeWidth"].includes(kind)
+      : ["opacity", "strokeWidth"].includes(kind) || kind === "gradient" && config.representation === "symbols"
         ? "sampled"
         : ["gradient", "strokeGradient"].includes(kind)
           ? "gradient"

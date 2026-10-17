@@ -1,0 +1,12 @@
+{
+  "runtimeCommit": "9c32a273db0bb79191a5e2bb718148d3e7ab963f",
+  "operation": "chart().createCanvas({width:300,height:260,margin:40}).createData({values:[{x:0,y:0,v:0},{x:1,y:1,v:25},{x:2,y:2,v:100}]}).createScatterPlot({x:\"x\",y:\"y\",guides:false}).encodeColor({field:\"v\",fieldType:\"quantitative\",scale:{type:\"sqrt\",domain:[0,100]}})",
+  "actualError": "Scale type \"sqrt\" is not valid for discretized-color.",
+  "expectedNormalizedValues": [
+    0,
+    0.5,
+    1
+  ],
+  "chartPixelsInspected": false,
+  "implementationPerformed": false
+}

@@ -81,6 +81,9 @@ export const removeLegend = /* @__PURE__ */ closedAction(
     if (revision !== undefined) {
       next = createCategoricalLegendFromConfig(next, revision.config, revision.order);
     }
+    if (!Object.values(next.guideConfigs.legend ?? {}).some(config => config.target === target)) {
+      next = next._withoutMaterializationConfig(["guides", "legendGroups", target]);
+    }
     const retainedKinds = Object.keys(next.guideConfigs.legend ?? {});
     if (args.channels === undefined) {
       return retainedKinds.length === 0

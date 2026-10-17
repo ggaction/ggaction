@@ -56,3 +56,16 @@ test("UTC sub-day components preserve padding, offsets, and calendar boundaries"
   assert.throws(() => validateValueFormat("%H:%"), /supported format string/u);
   assert.throws(() => formatValue(1, { format: "%H", valueType: "quantitative" }), /cannot use a UTC/u);
 });
+
+
+test("grouped decimal and UTC weekday formats share the guide and text formatter", () => {
+  assert.equal(formatValue(1234567, { format: ",", valueType: "quantitative" }), "1,234,567");
+  assert.equal(formatValue(-12345.678, { format: ",.2f", valueType: "quantitative" }), "-12,345.68");
+  assert.equal(formatValue(12, { format: ",.2f", valueType: "quantitative" }), "12.00");
+  assert.equal(formatValue(1e21, { format: ",", valueType: "quantitative" }), "1,000,000,000,000,000,000,000");
+  assert.equal(formatValue(0, { format: ",.0f", valueType: "quantitative" }), "0");
+  assert.equal(formatValue("2024-01-01T00:00:00Z", { format: "%a %d", valueType: "temporal" }), "Mon 01");
+  assert.equal(formatValue("2023-12-31T23:59:59Z", { format: "%a", valueType: "temporal" }), "Sun");
+  assert.throws(() => validateValueFormat(",.13f"), /at most 12/);
+  assert.throws(() => formatValue(0, { format: ",", valueType: "temporal" }), /UTC format/);
+});

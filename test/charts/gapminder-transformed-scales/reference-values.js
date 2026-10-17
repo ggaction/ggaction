@@ -105,12 +105,14 @@ export function createGapminderTransformedScaleValues(
     (_, index) => colorDomain[0] +
       index / 4 * (colorDomain[1] - colorDomain[0])
   ));
+  // Derive the independent 10px title-box translation before shifting strips.
+  const sideTitleShift = bounds.top - (bounds.top + 20 - 10 / 2);
   const gradientSteps = 60;
   const gradient = Object.freeze(Array.from({ length: gradientSteps }, (_, index) => {
     const ratio = (index + 0.5) / gradientSteps;
     return Object.freeze({
       x: bounds.right + 21.6,
-      y: bounds.top + 46 + index * (132 / gradientSteps),
+      y: bounds.top + 46 + index * (132 / gradientSteps) + sideTitleShift,
       width: 9.6,
       height: 132 / gradientSteps,
       fill: samplePalette(1 - ratio)
@@ -146,7 +148,10 @@ export function createGapminderTransformedScaleValues(
       gradient,
       ticks: legendTicks,
       positions: Object.freeze(legendTicks.map((_, index) =>
-        bounds.top + 46 + 132 * (1 - index / (legendTicks.length - 1))
+        bounds.top + 46 + 132 * (1 - index / (legendTicks.length - 1)) + sideTitleShift
+      )),
+      labelPositions: Object.freeze(legendTicks.map((_, index) =>
+        bounds.top + 46 + 132 * (1 - index / (legendTicks.length - 1)) - 11 / 2 + sideTitleShift
       )),
       labels: Object.freeze(legendTicks.map(value =>
         Number.isInteger(value) ? String(value) : value.toFixed(1)

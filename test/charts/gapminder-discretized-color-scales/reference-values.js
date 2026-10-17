@@ -109,7 +109,7 @@ export function createDiscretizedColorReference(gapminder, type) {
   );
   const itemY = Object.freeze(Array.from(
     { length: DISCRETIZED_COLORS.length },
-    (_, index) => base.bounds.top + 52 + index * 28
+    (_, index) => base.bounds.top + 37 + index * 28
   ));
   const symbolX = base.bounds.right + 30;
   const points = Object.freeze(base.points.map((point, index) => Object.freeze({
@@ -138,7 +138,7 @@ export function createDiscretizedColorReference(gapminder, type) {
       itemY,
       labelX: symbolX + 14 + 0.5 + 8,
       titleX: symbolX,
-      titleY: base.bounds.top + 20
+      titleY: base.bounds.top
     })
   });
 }

@@ -8,6 +8,7 @@ import {
   refreshGridConfig,
   resolveGridConfig,
   resolveGridGeometry,
+  resolveGridPlacement,
   resolveGridResources,
   validateGridCreateArgs,
   validateGridEditArgs
@@ -60,7 +61,12 @@ function makeRematerialize(direction) {
 
       const config = refreshGridConfig(this, storedConfig);
       const geometry = resolveGridGeometry(this, config);
-      let next = this._withGridConfig(direction, config).editGraphics({
+      let next = this._withGridConfig(direction, config);
+      if (config.zIndex !== undefined) {
+        const placement = resolveGridPlacement(next, config);
+        next = next.editGraphics({ target: operation.graphic, remove: true }).createGraphics({ id: operation.graphic, type: "line", length: 0, ...placement });
+      }
+      next = next.editGraphics({
         target: operation.graphic,
         property: "length",
         value: geometry.values.length

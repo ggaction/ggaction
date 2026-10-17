@@ -1,0 +1,10 @@
+{
+  "gate": "approved",
+  "proposalRevision": "72637f47",
+  "issue": 204,
+  "date": "2026-10-16",
+  "approvalEvidence": "Parent relayed explicit human approval: USER JUST APPROVED204 legendtitlealignment exact72637f47proposal includingedit-onlyauto.",
+  "scope": "Exact proposal: shared top-title align left/center/right, edit-only auto reset, inline conflict, persistence, omission parity and all listed consumers.",
+  "baseRuntime": "d7cc93da3f32c134a651f02d3e3882e587618373",
+  "activeRuntimeMustRemainUnchanged": true
+}

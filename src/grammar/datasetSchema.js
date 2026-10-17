@@ -56,7 +56,8 @@ function normalizeField(value, index, { declared = false } = {}) {
     declared ? SOURCE_FIELD_KEYS : FIELD_KEYS,
     `dataset schema field ${index}`
   );
-  const name = requireName(value.name, `Dataset schema field ${index} name`);
+  // Stored row keys are lossless; action field references still require non-empty names.
+  const name = value.name === "" ? "" : requireName(value.name, `Dataset schema field ${index} name`);
   const allowed = declared ? DECLARED_STORAGE_TYPES : STORAGE_TYPES;
   if (!allowed.has(value.storageType)) {
     throw new Error(`Unsupported dataset schema storageType "${value.storageType}".`);

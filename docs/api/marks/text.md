@@ -175,6 +175,12 @@ use this same renderer policy.
 ## `encodeText({ target?, field?, value?, content?, normalizeBy?, format? })`
 
 Provide exactly one of `field`, constant `value`, or semantic `content`.
+
+A filtered dataset with no remaining rows can still bind a field retained in its
+known schema. An explicitly declared empty source schema works the same way. No
+placeholder labels are created; source revisions materialize the matching rows
+and validate their actual content. Unknown fields and an unknown empty source
+schema still reject field bindings.
 `format` defaults to `"auto"`. Numeric formats are `".0f"`–`".12f"`,
 `".0%"`–`".12%"`, and `".0e"`–`".12e"`. UTC date formats compose `%Y`, `%m`,
 `%d`, and `%b`, such as `"%Y-%m-%d"`. Time components are `%H` (24-hour hour),
@@ -317,3 +323,5 @@ line using `baseline`; `"middle"` centers the complete block on the anchor.
 Each line shares horizontal alignment. Blank internal lines consume spacing;
 missing values and empty whole labels retain the existing omission policy.
 Rotation, collision layout, and overflow bounds include every resolved line.
+
+Numeric labels also accept `","` for grouped integers and `",.0f"` through `",.12f"` for grouped fixed decimals. UTC formats accept `%a` for an English weekday abbreviation, such as `%a %d` → `Mon 01`. These formats use the shared axis, legend and text formatter.

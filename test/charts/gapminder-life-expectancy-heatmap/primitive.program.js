@@ -260,13 +260,14 @@ export function createGapminderHeatmapPrimitives(gapminder) {
     x: legend.labels.map(label => label.x),
     y: legend.labels.map(label => label.y),
     text: legend.labels.map(label => label.text)
-  }, { fontSize: 12, textAlign: "left" });
+  }, { fontSize: 12, textAlign: "left", textBaseline: "top" });
   program = program.createGraphics({
     id: "colorGradientTitle",
     parent: "canvas",
     type: "text"
   });
   program = editText(program, "colorGradientTitle", legend.title, {
+    textBaseline: "top",
     fontSize: 13,
     fontWeight: 600,
     textAlign: "left"

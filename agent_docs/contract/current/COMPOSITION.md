@@ -43,11 +43,19 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
   size, or opacity recipe to a parent-owned concrete guide. Independent or otherwise incompatible child guide
   definitions are rejected before a facet result is returned. Promotion preserves the concrete child legend's
   configured `"left" | "right" | "top" | "bottom"` edge and the horizontal alignment of top/bottom legends. The
-  parent reserves width only for a side legend and height only for a horizontal legend. An inferred legacy
+  promoted outside legend uses its existing recipe offset from the translated child-plot union, rather than adding
+  another lane beyond the explicit child Canvas margins. Omitted offsets clear the actual retained axis/header
+  lane; an explicit offset that collides with retained text rejects atomically. Explicit child Canvas dimensions
+  and margins remain unchanged. The inferred parent Canvas contains both the child snapshots and the occupied
+  legend bounds, translating the complete child layout when a left/top guide needs additional space. Shared side legends align their complete occupied top (including border strokes) to the translated child-plot union top; parent titles and headers do not set this anchor. This also applies to inferred categorical shared legends and layout/guide-policy replay. An inferred legacy
   categorical legend defaults to `"right"`; facet itself has no separate legend-position option.
 - The result is a composition parent whose `children` retain immutable filtered programs and whose `graphicSpec` contains the complete namespaced nested-Canvas snapshot.
 - Canonical title order is `.facet(...).createTitle(...)`. A valid title authored before `facet` is promoted once to the parent.
-- Parent title alignment uses the translated child-plot union. Legacy facet headers remain one item per cell and
+- Parent title alignment uses the translated child-plot union. The existing signed `alongOffset` shifts every
+  painted title/subtitle line horizontally from that anchor on creation, editing, title promotion, and layout/scale/guide replay.
+  Painted text outside the composed Canvas is rejected atomically; no title is clipped or hidden. Valid omitted-offset
+  output is unchanged. Evidence: `test/unit/actions/composition/facet-title-along-offset.test.js`.
+  Legacy facet headers remain one item per cell and
   align to each translated child plot. Explicit row/column role headers align to the occupied translated plot union
   for their row or column; neither long-axis anchor uses the child Canvas, axis-reserved margin, facet padding, or
   shared legend extent.
@@ -79,6 +87,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
   `test/unit/grammar/facet-scales.test.js`, `test/unit/actions/composition/facet-derivation.test.js`,
   `test/unit/actions/composition/facet.test.js`, `test/unit/actions/composition/facet-derived-families.test.js`,
   `test/unit/actions/composition/facet-editing.test.js`,
+  `test/unit/actions/composition/facet-shared-legend-placement.test.js`,
   `test/unit/actions/composition/facet-legend-families.test.js`,
   `test/unit/actions/composition/polar-facets.test.js`,
   `test/unit/actions/composition/parallel-facets.test.js`,

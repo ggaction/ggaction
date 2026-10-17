@@ -94,7 +94,7 @@ test("compact action cards satisfy the bounded typed public schema projection", 
     assert.equal(card.summary.length >= 20 && card.summary.length <= 420, true, card.name);
     assert.equal(card.intents.length >= 3 && card.intents.length <= 7, true, card.name);
     assert.equal(new Set(card.intents).size, card.intents.length, card.name);
-    assert.equal(card.callPatterns.length >= 1 && card.callPatterns.length <= 2, true, card.name);
+    assert.equal(card.callPatterns.length >= 1 && card.callPatterns.length <= 3, true, card.name);
     assert.equal(card.errors.length <= 2, true, card.name);
     assert.equal(card.options.every(option =>
       typeof option.type === "string" && option.type.length > 0
@@ -247,8 +247,9 @@ test("every compact snippet type-checks against the exact ChartProgram declarati
 test("imputation call patterns preserve method-specific requirements", async () => {
   const artifact = JSON.parse(await readFile(new URL("../../knowledge/action-cards.json", import.meta.url), "utf8"));
   const card = artifact.cards.find(card => card.name === "createImputedData");
-  assert.match(card.callPatterns[0], /method: "constant", value/);
-  assert.match(card.callPatterns[1], /method: "forward" \| "backward" \| "linear", sortBy/);
+  assert.match(card.callPatterns[0], /method\?: "mean"/);
+  assert.match(card.callPatterns[1], /method: "constant", value/);
+  assert.match(card.callPatterns[2], /method: "forward" \| "backward" \| "linear", sortBy/);
   assert.equal(card.options.find(option => option.name === "groupBy").required, false);
 });
 

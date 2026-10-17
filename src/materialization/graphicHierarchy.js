@@ -56,7 +56,7 @@ export function resolveMarkGraphicPlacement(program, { data, markType }) {
     : undefined;
   if (transform?.type !== "regression") {
     const axis = program.graphicSpec.objects[PLOT_GRAPHIC_ID]?.children?.find(
-      id => /^(x|y)Axis/.test(id)
+      id => id === "plotBorder" || /^(x|y)Axis/.test(id)
     );
     return resolvePlotGraphicPlacement(
       program,

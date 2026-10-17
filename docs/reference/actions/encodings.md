@@ -202,8 +202,11 @@ bar color, rect fill, or arc-sector fill. Nominal and ordinal categories share a
 ordinal fields may contain ordered numeric categories. Categorical bar layout accepts `stack`, `fill`, `group`, `overlay`,
 and `diverging`; area also accepts `center` and rejects only `group` from the
 shared layout vocabulary. Quantitative and temporal
-point fields use a sequential scale; quantitative fields also accept log/symlog
-with matching gradient legends, while quantitative Point, aggregate Bar, and Rect fields also accept
+point fields use a sequential scale; quantitative fields also accept log/sqrt/symlog
+with matching gradient legends. Square-root color normalizes sign-preserving square roots across the original
+numeric domain; negative, zero-crossing, and reversed domains are supported. Its exponent is fixed,
+and `base`, `constant`, and numeric `midpoint` are rejected. Sampled symbol legends use the same mapping.
+Quantitative Point, aggregate Bar, and Rect fields also accept
 `quantize`, `quantile`, and `threshold` color classes. Categorical
 grouped bars record `encodeXOffset` or `encodeYOffset` as a child according to
 orientation. Reassigning grouped color also atomically reassigns its offset and
@@ -415,6 +418,7 @@ encodeShape({ field, target?, fieldType?, scale? })
 ```
 
 Encode or replace a nominal field with the shared 12-value point-shape vocabulary.
+Explicit ranges may repeat shapes; provide one entry per domain value. Automatic ranges remain distinct.
 [Appearance encodings](../../api/appearance.md)
 
 
@@ -1471,6 +1475,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `band` | Optional / branch-dependent | `number \| undefined` |
 | `pixels` | Optional / branch-dependent | `number \| undefined` |
+| `interval` | Optional / branch-dependent | `{ unit: "day" \| "hour" \| "minute" \| "month" \| "quarter" \| "second" \| "year"; insetStart?: number \| undefined; insetEnd?: number \| undefined; } \| undefined` |
 
 </details>
 
@@ -1484,6 +1489,10 @@ Set aggregate or ranged bar width before or after its positions are complete.
 Incomplete bars retain the width without creating items; histogram bins do not
 accept it. The modes are mutually exclusive. The first omitted mode defaults to
 `band: 0.72`; later omission retains the current mode.
+When every temporal bar sharing a position scale uses pixel width, bar centers
+use the full plot range. If any bar still uses band width, the shared scale keeps
+its inferred half-slot inset. An explicit numeric scale range is preserved in
+both cases. Switching width modes also refreshes shared marks and axis guides.
 [Constant appearance](../../api/appearance.md)
 
 

@@ -94,8 +94,8 @@ function selectedRows(gapminder) {
 
 function createLegend(domain, bounds) {
   const x = bounds.right + 30;
-  const titleY = bounds.top + 20;
-  const y = bounds.top + 46;
+  const titleY = bounds.top;
+  const y = bounds.top + 32.5;
   const length = 120;
   const thickness = 12;
   const stripCount = 60;
@@ -130,7 +130,7 @@ function createLegend(domain, bounds) {
     })),
     labels: values.map((value, index) => ({
       x: x + thickness + 12,
-      y: positions[index],
+      y: positions[index] - 6,
       text: String(+value.toPrecision(3))
     }))
   });

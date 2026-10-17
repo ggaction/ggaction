@@ -1,3 +1,4 @@
+import { intrinsicLegendConfig, legendGroup } from "../../../materialization/legendGroups.js";
 import { formatVisibleText } from "../../../core/textMetrics.js";
 import { action, closedAction } from "../../../core/action.js";
 import {
@@ -68,6 +69,7 @@ function requireScale(program, id) {
 }
 
 export function resolveSizeLegendLayout(program, config) {
+  config = intrinsicLegendConfig(program, config);
   const scale = requireScale(program, config.scale);
   const categorical = [
     program.guideConfigs.legend?.series,
@@ -85,11 +87,15 @@ export function resolveSizeLegendLayout(program, config) {
   });
   const labels = effective.labels;
   const titleStyle = effective.titleStyle;
-  const position = categorical?.position ?? config.position;
-  if (categorical?.layout === "legacy-bottom") {
+  // Group ownership replaces placement inheritance, never shared typography.
+  const placementCategorical = legendGroup(program, config.target) === undefined &&
+    (config.inheritPosition !== false || categorical?.position === config.position)
+    ? categorical : undefined;
+  const position = placementCategorical?.position ?? config.position;
+  if (placementCategorical?.layout === "legacy-bottom") {
     throw new Error('Combined size legends require layout "edge".');
   }
-  const horizontal = categorical !== undefined && ["top", "bottom"].includes(position);
+  const horizontal = placementCategorical !== undefined && ["top", "bottom"].includes(position);
   const geometry = horizontal ? {
     position, align: categorical.align, direction: categorical.direction,
     columns: categorical.columns, titlePosition: categorical.titlePosition,
@@ -179,7 +185,8 @@ export const rematerializeSizeLegend = /* @__PURE__ */ closedAction(
       },
       optional: {
         stroke: layout.config.blockSymbol?.stroke,
-        strokeWidth: layout.config.blockSymbol?.strokeWidth
+        strokeWidth: layout.config.blockSymbol?.strokeWidth ??
+          (layout.config.blockSymbol?.stroke === undefined ? undefined : 0)
       }
     });
   }
@@ -214,6 +221,7 @@ export function resolveSizeLegendConfig(program, args = {}) {
     domain: scale.domain,
     ...(discrete ? { count } : { sampling }),
     inheritAppearance: args.inheritAppearance === true,
+    inheritPosition: args.position === undefined,
 
   };
 }

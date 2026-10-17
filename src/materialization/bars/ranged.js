@@ -1,3 +1,4 @@
+import { resolveBarCellOpacities } from "./resolve.js";
 import {
   mapContinuousScaleValues,
   mapOrdinalPositionValues,
@@ -15,6 +16,7 @@ import {
 
 export function deriveRangedRectangles(required, program, width) {
   const { layer, dataset } = required;
+  if (width?.interval !== undefined) throw new Error("Bar interval width requires ungrouped aggregate temporal categories.");
   const centered = resolveBarGrain(layer) === BAR_GRAINS.centered;
   const vertical = centered ? resolveBarChannels(layer).orientation === "vertical" : layer.encoding?.y2 !== undefined;
   const categoryChannel = vertical ? "x" : "y";
@@ -58,6 +60,7 @@ export function deriveRangedRectangles(required, program, width) {
     program.resolvedScales[stroke.scale],
     "stroke"
   );
+  const opacities = resolveBarCellOpacities(program, layer, dataset.values.map(row => [row]));
   return dataset.values.map((_, index) => vertical ? {
     x: centers[index] - band / 2, y: Math.min(first[index], second[index]), width: band,
     height: Math.abs(second[index] - first[index]), fill: fills[index],
@@ -67,7 +70,8 @@ export function deriveRangedRectangles(required, program, width) {
       color === undefined ? DEFAULT_BAR_STROKE : fills[index],
       1
     ),
-    ...(strokes === undefined ? {} : { stroke: strokes[index] })
+    ...(strokes === undefined ? {} : { stroke: strokes[index] }),
+    ...(opacities === undefined ? {} : { opacity: opacities[index] })
   } : {
     x: Math.min(first[index], second[index]), y: centers[index] - band / 2,
     width: Math.abs(second[index] - first[index]), height: band, fill: fills[index],
@@ -77,6 +81,7 @@ export function deriveRangedRectangles(required, program, width) {
       color === undefined ? DEFAULT_BAR_STROKE : fills[index],
       1
     ),
-    ...(strokes === undefined ? {} : { stroke: strokes[index] })
+    ...(strokes === undefined ? {} : { stroke: strokes[index] }),
+    ...(opacities === undefined ? {} : { opacity: opacities[index] })
   });
 }

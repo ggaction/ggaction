@@ -786,11 +786,28 @@ export interface DatasetFoldTransform {
     readonly value: string;
   };
 }
+export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
 export type ComputedExpression =
   | { readonly field: string }
   | { readonly constant: number | string | boolean | null }
   | {
-      readonly op: "negate" | "absolute" | "log" | "sqrt" | "not" | "isNull";
+      readonly op: "getPath";
+      readonly operand: { readonly field: string };
+      readonly path: readonly [string, ...string[]];
+    }
+  | {
+      readonly op: "replaceLiteral";
+      readonly operand: ComputedExpression;
+      readonly search: string;
+      readonly replacement: string;
+    }
+  | {
+      readonly op: "parseTime";
+      readonly operand: ComputedExpression;
+      readonly format?: ParseTimeFormat;
+    }
+  | {
+      readonly op: "negate" | "absolute" | "log" | "sqrt" | "not" | "isNull" | "toNumber";
       readonly operand: ComputedExpression;
     }
   | {
@@ -877,6 +894,7 @@ type DatasetImputedBaseTransform = {
   readonly maxGap?: number;
 };
 export type DatasetImputedTransform = DatasetImputedBaseTransform & (
+  | { readonly method: "mean"; readonly value?: never; readonly sortBy: readonly DatasetWindowSort[]; }
   | {
       readonly method: "constant";
       readonly value: DatasetScalar;
@@ -1185,6 +1203,7 @@ export interface DatasetFieldLineage {
   readonly role: string;
 }
 export interface DatasetSchemaField {
+  /** Lossless stored row key; empty names cannot be used as action field references. */
   readonly name: string;
   readonly storageType: DatasetStorageType;
   readonly nullable: boolean;
@@ -1198,6 +1217,7 @@ export interface DatasetSchema {
   readonly fields: readonly DatasetSchemaField[];
 }
 export interface SourceSchemaField {
+  /** Exact source row key, including an empty string or whitespace. */
   name: string;
   storageType: Exclude<DatasetStorageType, "unknown" | "mixed">;
   nullable?: boolean;
@@ -1271,6 +1291,13 @@ export interface CanvasOptions {
   margin?: number | Partial<Record<"top" | "right" | "bottom" | "left", number>>;
   /** Exact inner dimensions with automatic outer guide margins; false disables this mode. */
   plot?: { width: number; height: number } | false;
+  /** Optional inner plot outline. Defaults off; an object replaces the complete style on edit. */
+  plotBorder?: false | {
+    /** Non-empty color string. Defaults to #ddd. */
+    color?: string;
+    /** Positive finite width smaller than both plot dimensions. Defaults to 1. */
+    lineWidth?: number;
+  };
 }
 
 export interface FitCanvasOptions {
@@ -1308,6 +1335,10 @@ export interface AxisLineStyleOptions {
 export interface AxisTickStyleOptions extends AxisLineStyleOptions {
   length?: number;
 }
+export interface CartesianAxisTickStyleOptions extends AxisTickStyleOptions {
+  /** Signed logical pixels along the axis: positive right for x, down for y. */
+  alongOffset?: number;
+}
 export interface AxisLabelStyleOptions {
   offset?: number;
   format?: AxisFormat;
@@ -1315,6 +1346,18 @@ export interface AxisLabelStyleOptions {
   fontSize?: number;
   fontFamily?: string;
   fontWeight?: string | number;
+}
+export type CartesianAxisLabelColorMap = ReadonlyArray<Readonly<{
+  value: DatasetScalar;
+  color: string;
+}>>;
+export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Typed raw-tick color overrides; missing entries use color. Auto removes the map. */
+  colorMap?: CartesianAxisLabelColorMap | "auto";
+  /** Keep unrotated label bounds inside the mapped axis span; defaults to false. */
+  flush?: boolean;
+  /** Signed displacement from the mapped tick position, independent of outward offset. */
+  alongOffset?: number;
 }
 export interface AxisLabelLayoutOptions {
   /** Legacy numbers are radians; structured values make radians or degrees explicit. */
@@ -1331,10 +1374,11 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
   position?: P;
   count?: number;
   values?: readonly AxisValue[];
-  ticks?: AxisTickStyleOptions;
-  labels?: AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
+  ticks?: CartesianAxisTickStyleOptions;
+  labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 }
 export interface AxisTitleOptions<P extends string> {
+  /** Hard breaks retain ordered centered lines, spaced at 1.2 times fontSize. */
   text?: string;
   scale?: string;
   position?: P;
@@ -1365,14 +1409,15 @@ export interface CreateAxesOptions {
   radius?: false | CompleteRadialAxisOptions;
 }
 export interface AxisTickOptions<P extends string>
-  extends AxisTickStyleOptions {
+  extends CartesianAxisTickStyleOptions {
   scale?: string;
   position?: P;
   count?: number;
   values?: readonly AxisValue[];
 }
+/** Cartesian label maps use typed category values or finite numeric/timestamp keys on continuous scales. Empty mapped labels are omitted without removing ticks. */
 export interface AxisLabelOptions<P extends string>
-  extends AxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
+  extends CartesianAxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
   scale?: string;
   position?: P;
   count?: number;
@@ -1495,17 +1540,29 @@ export interface EditRadialAxisOptions
 }
 
 export interface GridDirectionOptions {
+  /** Signed logical pixels along the scale: vertical lines right, horizontal lines down. */
+  alongOffset?: number;
+  /** Grid draw order relative to marks at zero: positive above, nonpositive behind. */
+  zIndex?: number;
+  /** Band centers by default; boundary draws both edges of each selected band. */
+  bandPosition?: "center" | "boundary";
   scale?: string;
   coordinate?: string;
   count?: number;
-  values?: readonly number[];
+  values?: readonly CategoryValue[];
   color?: string;
   lineWidth?: number;
   strokeDash?: readonly number[];
 }
 export interface EditGridOptions {
+  /** Absolute signed logical-pixel displacement; omission preserves the current value. */
+  alongOffset?: number;
+  /** Preserve omitted order; finite values sort Cartesian grids relative to marks at zero. */
+  zIndex?: number;
+  /** Band centers by default; boundary draws both edges of each selected band. */
+  bandPosition?: "center" | "boundary";
   count?: number;
-  values?: readonly number[] | "auto";
+  values?: readonly CategoryValue[] | "auto";
   color?: string;
   lineWidth?: number;
   strokeDash?: readonly number[];
@@ -1552,7 +1609,7 @@ type CartesianAxesOptions = Omit<
   coordinate?: { id?: string; type?: "auto" | "cartesian" };
 };
 type CAxisTicks<P extends string> = Omit<AxisTicksAndLabelsOptions<P>, "labels"> & {
-  labels?: AxisLabelStyleOptions & AxisLabelLayoutOptions;
+  labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 };
 type CAxis<P extends string> = Omit<CompleteAxisOptions<P>, "ticksAndLabels"> & {
   ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position">;
@@ -1562,11 +1619,14 @@ type CAxes = Omit<CartesianAxesOptions, "x" | "y"> & {
   y?: false | CAxis<YAxisPosition>;
 };
 type CartesianGridOptions = Pick<CreateGridOptions, "horizontal" | "vertical">;
-type FilledMarkLegendOptions = Omit<LegendOptions, "symbol"> & {
-  symbol?: "auto"
-    | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
-    | { layers: readonly LegendSymbolLayer[] };
-};
+type FilledLegendSymbolRecipe = "auto"
+  | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
+  | { layers: readonly LegendSymbolLayer[] };
+type FilledMarkLegendOptions = Omit<LegendOptions, "symbol" | "representation"> & (
+  | { representation?: "gradient"; symbol?: FilledLegendSymbolRecipe }
+  | { representation: "symbols"; symbol?: "auto" | { type?: "point"; radius?: number; stroke?: string; strokeWidth?: number } }
+);
+type DistributiveLegendOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
 type CategoricalLegendTextOptions = {
   offset?: number;
   color?: string;
@@ -1577,7 +1637,7 @@ type CategoricalLegendTextOptions = {
 };
 type PathLegendOptions = Omit<
   LegendOptions,
-  "symbol" | "gradient" | "count" | "values" | "labels"
+  "symbol" | "gradient" | "count" | "values" | "labels" | "representation"
 > & {
   symbol?: "auto" | { length?: number; lineWidth?: number }
     | { layers: readonly LegendSymbolLayer[] };
@@ -1586,7 +1646,7 @@ type PathLegendOptions = Omit<
 type CartesianGuideOptions = {
   axes?: false | CartesianAxesOptions;
   grid?: false | CartesianGridOptions;
-  legend?: false | (Omit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
+  legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
 };
 type CartesianPathGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
   legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
@@ -1594,8 +1654,9 @@ type CartesianPathGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
 type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
   legend?: false | (Omit<
     FilledMarkLegendOptions,
-    "count" | "values" | "gradient" | "labels" | "order"
+    "count" | "values" | "gradient" | "labels" | "order" | "representation" | "symbol"
   > & {
+    symbol?: FilledLegendSymbolRecipe;
     labels?: CategoricalLegendTextOptions;
     order?: CartesianLegendOrder;
   });
@@ -1607,7 +1668,7 @@ type CCategoricalGuides = Omit<CartesianCategoricalGuideOptions, "axes"> & {
   axes?: false | CAxes;
 };
 type ColorGuides = Omit<CartesianGuideOptions, "legend"> & {
-  legend?: false | (Omit<FilledMarkLegendOptions, "values" | "order"> & {
+  legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & {
     order?: CartesianLegendOrder;
   });
 };
@@ -1813,6 +1874,7 @@ export type SizeScaleOptions =
 export type ShapeScaleOptions = ScaleFields<"id"> & {
   type?: "ordinal";
   domain?: "auto" | readonly unknown[];
+  /** One entry per domain value; explicit repeated shapes are allowed. Auto uses distinct shapes. */
   range?: "auto" | readonly PointShape[];
   unknown?: PointShape;
 };
@@ -2267,7 +2329,8 @@ type TimeUnitDataBaseOptions = {
   source?: string;
   field: string;
   temporalUnit?: TemporalInputUnit;
-  as: string;
+  /** Defaults to `${field}_${unit}`; collisions are rejected. */
+  as?: string;
   timeZone?: string;
 };
 export type TimeUnitDataOptions = TimeUnitDataBaseOptions & (
@@ -2389,6 +2452,7 @@ type ImputedDataBaseOptions = {
   maxGap?: number;
 };
 export type ImputedDataOptions = ImputedDataBaseOptions & (
+  | { method?: "mean"; value?: never; sortBy?: readonly WindowSort[]; }
   | {
       method: "constant";
       value: DatasetScalar;
@@ -2406,7 +2470,7 @@ export type ImputedDataOptions = ImputedDataBaseOptions & (
     }
 );
 export interface StackDataOptions {
-  id: string;
+  id?: string;
   source?: string;
   category: string;
   group: string;
@@ -2748,7 +2812,7 @@ export type ViolinPlotColorOptions =
     };
 
 export interface ViolinPlotAreaOptions extends StrokeStyleDetails {
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   stroke?: string;
   strokeWidth?: number;
@@ -3196,7 +3260,7 @@ type PolarLegendOrder = LegendValueOrder | { channel: "theta"; values?: never };
 type PolarPathLegendOptions = Omit<PathLegendOptions, "order"> & {
   order?: PolarLegendOrder;
 };
-type PolarPointLegendOptions = Omit<FilledMarkLegendOptions, "order"> & {
+type PolarPointLegendOptions = DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & {
   order?: PolarLegendOrder;
 };
 export type PolarPathGuideOptions = Omit<PolarChartGuideOptions, "legend"> & {
@@ -3321,8 +3385,17 @@ export interface RugTickOptions extends StrokeStyleDetails {
   strokeWidth?: number;
   opacity?: number;
 }
-export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend"> & {
+type ContinuousGridDirectionOptions = Omit<GridDirectionOptions, "bandPosition"> & {
+  /** Continuous position scales do not have categorical band edges. */
+  bandPosition?: never;
+};
+type ContinuousCartesianGridOptions = {
+  vertical?: boolean | ContinuousGridDirectionOptions;
+  horizontal?: boolean | ContinuousGridDirectionOptions;
+};
+export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend" | "grid"> & {
   axes?: false | CAxes;
+  grid?: false | ContinuousCartesianGridOptions;
   legend?: false;
 };
 export type CreateRugPlotOptions = {
@@ -3500,8 +3573,8 @@ export type CreateAreaPlotOptions = {
   groupBy?: string | readonly [string, ...string[]];
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
-  area?: StrokeStyleDetails & { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
-  guides?: false | DensityPlotGuideOptions;
+  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
@@ -3526,7 +3599,13 @@ export interface CreateLinePlotOptions {
     opacity?: number;
     closed?: false;
   };
-  guides?: false | (Omit<CPathGuides, "legend"> & {
+  guides?: false | (Omit<CPathGuides, "legend" | "grid"> & {
+    grid?: false | (Omit<CartesianGridOptions, "horizontal"> & {
+      horizontal?: boolean | (Omit<GridDirectionOptions, "bandPosition"> & {
+        /** Line y is continuous; band positioning is available only for categorical x grids. */
+        bandPosition?: never;
+      });
+    });
     legend?: false | (Omit<PathLegendOptions, "order"> & {
       order?: LegendValueOrder | { channel: "x"; values?: never };
     });
@@ -3567,9 +3646,9 @@ export type CreateBarPlotOptions = {
   coordinate?: string;
   orientation?: "vertical" | "horizontal";
   color?: BarColorChannel;
-  width?: Omit<BarWidthOptions, "target">;
+  width?: Omit<BarWidthOptions, "target" | "interval">;
   bar?: RectStyleDetails & {
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -3588,7 +3667,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   field: string;
   color?: HistogramCategoricalColorChannel;
   bar?: RectStyleDetails & {
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -3598,7 +3677,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
 
 export type HorizonPlotGuideOptions = {
   axes?: false | (Omit<CAxes, "y"> & { y?: false });
-  grid?: false | (Pick<CartesianGridOptions, "vertical"> & { horizontal?: false });
+  grid?: false | { vertical?: boolean | ContinuousGridDirectionOptions; horizontal?: false };
   legend?: false;
 };
 export interface CreateHorizonPlotOptions {
@@ -3620,7 +3699,8 @@ export interface CreateHorizonPlotOptions {
 }
 
 export type DensityPlotLegendOptions = Omit<PieLegendOptions, "order"> & { order?: LegendValueOrder };
-export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend"> & {
+export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend" | "grid"> & {
+  grid?: false | ContinuousCartesianGridOptions;
   legend?: false | DensityPlotLegendOptions;
 };
 export interface CreateDensityPlotOptions {
@@ -3646,7 +3726,7 @@ export interface CreateDensityPlotOptions {
     palette?: Palette;
     layout?: "overlay";
   };
-  area?: StrokeStyleDetails & { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | DensityPlotGuideOptions;
 }
 
@@ -3663,8 +3743,9 @@ export type PieColor = string | {
 };
 export type PieLegendOptions = Omit<
   FilledMarkLegendOptions,
-  "count" | "values" | "gradient" | "channels" | "order" | "labels"
+  "count" | "values" | "gradient" | "channels" | "order" | "labels" | "representation" | "symbol"
 > & {
+  symbol?: FilledLegendSymbolRecipe;
   channels?: readonly ["color"];
   order?: LegendValueOrder | { channel: "theta"; values?: never };
   labels?: CategoricalLegendTextOptions;
@@ -3682,7 +3763,7 @@ export type CreatePiePlotOptions = {
   radius?: PieRadiusChannel;
   arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
-} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
+} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 
 export type MeasuredRadialGuideOptions = {
   axes?: false | CategoricalPolarAxesOptions;
@@ -3693,7 +3774,7 @@ export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" 
   radiusScale?: MeasuredRadiusScaleOptions;
   arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | MeasuredRadialGuideOptions;
-} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
+} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 export type CreateRadialBarPlotOptions = CreateRosePlotOptions;
 
 export interface HeatmapBaseOptions {
@@ -3720,7 +3801,7 @@ export interface PreGriddedHeatmapOptions extends HeatmapBaseOptions {
   x: HeatmapCategoryPositionChannel;
   y: HeatmapCategoryPositionChannel;
   bin?: never;
-  color: RectColorChannel;
+  color?: RectColorChannel;
 }
 
 export interface BinnedHeatmapPositionChannel {
@@ -3793,7 +3874,7 @@ export interface ErrorBandOptions extends StrokeStyleDetails {
   y?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
   groupBy?: string;
   coordinate?: string;
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   curve?: CurveInterpolation;
   boundaries?: false | (StrokeStyleDetails & {
@@ -3811,7 +3892,7 @@ export interface EditErrorBandOptions extends StrokeStyleDetails {
   x?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
   y?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
   groupBy?: string | false;
-  fill?: string | false;
+  fill?: FillPaint | false;
   opacity?: number;
   curve?: CurveInterpolation;
   statistics?: {
@@ -4081,8 +4162,9 @@ export interface CreateTextPlotOptions {
 }
 
 export type BarWidthOptions = { target?: string } & (
-  | { band?: number; pixels?: never }
-  | { band?: never; pixels: number }
+  | { band?: number; pixels?: never; interval?: never }
+  | { band?: never; pixels: number; interval?: never }
+  | { band?: never; pixels?: never; interval: { unit: Exclude<TimeUnit, "week" | "weekday">; insetStart?: number; insetEnd?: number } }
 );
 
 export interface DashScaleOptions {
@@ -4111,7 +4193,7 @@ export type StrokeDashEncodingOptions =
 export type NonPointContinuousColorScaleOptions = ScaleFields<
   "id" | "interpolate" | "midpoint" | "clamp" | "reverse"
 > & {
-  type?: "sequential" | "log" | "symlog";
+  type?: "sequential" | "log" | "sqrt" | "symlog";
   base?: number;
   constant?: number;
   domain?: "auto" | readonly [unknown, unknown];
@@ -4518,6 +4600,8 @@ export interface LegendTextOptions {
 }
 
 export interface LegendTitleStyleOptions {
+  /** Align a top title inside its measured content block; omission keeps native layout defaults. */
+  align?: "left" | "center" | "right";
   color?: string;
   fontSize?: number;
   fontFamily?: string;
@@ -4563,6 +4647,8 @@ export type LegendOrder = LegendValueOrder |
   { channel: "x" | "y" | "theta"; values?: never };
 
 export interface LegendOptions {
+  /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
+  representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
   layout?: "edge" | "legacy-bottom";
   /** Categorical and ordinal-size display limit; omitted or false shows every item. */
@@ -4572,7 +4658,12 @@ export interface LegendOptions {
   target?: string;
   /** Exact requested content; omission infers encoded point color/shape/size. Explicit subsets include size only when listed. */
   channels?: readonly ("color" | "stroke" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
+  /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  /** Arrange every legend block owned by the selected target. Item direction and columns remain independent. */
+  blockLayout?: "row" | "column" | "wrap";
+  /** Occupied group top-left relative to the plot. Cannot be supplied with position, align, or offset in the same call. */
+  at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
   /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
@@ -4583,15 +4674,18 @@ export interface LegendOptions {
   offset?: number;
   titlePosition?: "top" | "left";
   /** false hides the title while retaining its inferred field text. */
+  /** LF, CRLF and CR preserve explicit title lines, including blank lines. */
   title?: string | false;
-  /** Exact ascending samples for continuous size, opacity, or stroke-width legends. Cannot be combined with count. */
+  /** Exact ascending samples for continuous size, opacity, stroke-width, or color with representation symbols. Cannot be combined with count. */
   values?: readonly number[];
   count?: number;
-  gradient?: { length?: number; thickness?: number };
+  /** Body-only opacity defaults to 1; edits preserve omitted fields. */
+  gradient?: { length?: number; thickness?: number; opacity?: number };
   symbol?: LegendSymbolRecipe;
   labels?: LegendTextOptions;
   /** New categorical+size blocks share typography on every edge; retained standalone size styles remain independent. */
   titleStyle?: LegendTitleStyleOptions;
+  /** Vertical items default to 18 logical pixels; the pitch grows to fit samples and labels. */
   itemGap?: number;
   border?: boolean | LegendBorderOptions;
 }
@@ -4624,11 +4718,17 @@ export interface EditLegendBlockOptions {
   gap?: number;
   text?: LegendBlockTextPatch;
   symbol?: LegendBlockSymbolPatch;
+  /** An empty mapped label omits only text; its category and symbol remain. */
   labelMap?: DisplayLabelMap | "auto";
 }
 
+export interface LegendTitleStyleEditOptions extends Omit<LegendTitleStyleOptions, "align"> {
+  align?: "left" | "center" | "right" | "auto";
+}
+
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle"> {
+  titleStyle?: LegendTitleStyleEditOptions;
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
   title?: string | "auto" | false;
@@ -4639,7 +4739,12 @@ export interface EditLegendOptions
 export interface EditLegendLayoutOptions {
   target?: string;
   layout?: "edge" | "legacy-bottom";
+  /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  /** Opt into whole-target legend group layout; a requested row never wraps. */
+  blockLayout?: "row" | "column" | "wrap";
+  /** Move the complete occupied group top-left to plot-relative logical pixels. A later position clears this anchor. */
+  at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
   /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
@@ -4649,6 +4754,7 @@ export interface EditLegendLayoutOptions {
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
   titlePosition?: "top" | "left";
+  /** Explicit spacing override; vertical creation defaults to 18 logical pixels. */
   itemGap?: number;
 }
 
@@ -4656,7 +4762,7 @@ export interface EditLegendLabelsOptions extends LegendTextOptions {
   target?: string;
 }
 
-export interface EditLegendTitleOptions extends LegendTitleStyleOptions {
+export interface EditLegendTitleOptions extends LegendTitleStyleEditOptions {
   target?: string;
   title?: string | "auto" | false;
 }
@@ -4665,7 +4771,7 @@ export interface EditLegendSymbolsOptions {
   target?: string;
   symbol?: LegendSymbolRecipe;
   count?: number;
-  gradient?: { length?: number; thickness?: number };
+  gradient?: { length?: number; thickness?: number; opacity?: number };
 }
 
 export interface EditLegendBorderOptions {
@@ -4727,11 +4833,15 @@ export interface RemoveCategoryOrderOptions {
 }
 
 export interface TitleOptions {
+  /** Explicit hard lines are retained; blank lines reserve spacing without painted text. */
   text: string;
+  /** Multiline subtitle with at least one non-empty hard line. */
   subtitle?: string;
   position?: "top" | "bottom" | "left" | "right";
   align?: "left" | "center" | "right";
   offset?: number;
+  /** Signed logical-pixel shift along the selected edge; defaults to zero. */
+  alongOffset?: number;
   gap?: number;
   maxWidth?: number;
   wrap?: "word" | "character";
@@ -4896,7 +5006,7 @@ export class ChartProgram {
     data?: string;
     orientation?: "vertical" | "horizontal";
     missing?: "error" | "skip";
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -4904,7 +5014,7 @@ export class ChartProgram {
   editBarMark(options: RectStyleDetails & {
     target?: string;
     missing?: "error" | "skip";
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -4912,7 +5022,7 @@ export class ChartProgram {
   createAreaMark(options?: StrokeStyleDetails & {
     id?: string;
     data?: string;
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: string;
     strokeWidth?: number;
@@ -4956,7 +5066,7 @@ export class ChartProgram {
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
   editAreaMark(options: StrokeStyleDetails & {
     target?: string;
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;
@@ -5115,7 +5225,7 @@ export class ChartProgram {
   editRadialGrid(options: EditPolarGridOptions): ChartProgram;
   editGrid(options: EditGridDirectionsOptions): ChartProgram;
   removeGrid(options?: RemoveGridOptions): ChartProgram;
-  /** Combined categorical and size legends support all four edges with layout "edge". */
+  /** Combined categorical and size legends support all four edges and plot corners with layout "edge". */
   createLegend(options?: LegendOptions): ChartProgram;
   editLegend(options: EditLegendOptions): ChartProgram;
   editLegendBlock(options: EditLegendBlockOptions): ChartProgram;

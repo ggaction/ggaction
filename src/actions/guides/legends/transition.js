@@ -1,3 +1,4 @@
+import { legendResourcePolicy } from "../../../materialization/guides/resources.js";
 import { isContinuousColorScaleType } from "../../../grammar/scales/types.js";
 import { isDiscretizedColorScaleType } from "../../../grammar/scales/types.js";
 import { normalizeContinuousLegend } from "./continuous/common.js";
@@ -9,6 +10,7 @@ import {
   resolveLegendBlock
 } from "./target.js";
 import { validateLegendBlockOverride } from "./blocks.js";
+import { DEFAULT_VERTICAL_LEGEND_ITEM_GAP } from "../../../theme/defaults.js";
 
 const family = (channel, type) => isContinuousColorScaleType(type)
   ? channel === "stroke" ? "strokeGradient" : "gradient"
@@ -22,7 +24,7 @@ const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 function categoricalFamilyCustom(program, kind, stored) {
   const side = ["left", "right"].includes(stored.position);
   const direction = side ? "vertical" : "horizontal";
-  const itemGap = side ? 28 : stored.position === "top" ? 24 : 20;
+  const itemGap = side ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : stored.position === "top" ? 24 : 20;
   const order = program.semanticSpec.guides.legend?.[kind]?.order;
   return stored.inferredSymbol !== true ||
     stored.direction !== direction ||
@@ -41,7 +43,9 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   if (overrideKeys.some(key => key !== oldDescriptor.key)) {
     throw new Error(`${channel} legend transition found stale legend block overrides.`);
   }
-  const blockOverride = stored.blockOverrides?.[oldDescriptor.key];
+  const storedOverride = stored.blockOverrides?.[oldDescriptor.key];
+  const { symbol: _sampleSymbol, labelMap: _sampleMap, gap: _sampleGap, ...commonOverride } = storedOverride ?? {};
+  const blockOverride = stored.representation === "symbols" && storedOverride !== undefined ? commonOverride : storedOverride;
   const side = ["left", "right"].includes(stored.position);
   const categorical = ["color", "stroke"].includes(from);
   const gradientFamily = from.toLowerCase().endsWith("gradient");
@@ -50,10 +54,11 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   const comparableSymbol = channel === "stroke" && stored.inferredStrokeWidth === true
     ? { ...stored.symbol, strokeWidth: defaults.symbol?.strokeWidth }
     : stored.symbol;
-  const custom = categorical
+  const sampledColor = from === "gradient" && stored.representation === "symbols";
+  const custom = sampledColor ? false : categorical
     ? categoricalFamilyCustom(program, from, stored)
     : gradientFamily
-    ? stored.count !== defaults.count || !same(stored.gradient, DEFAULT_GRADIENT_SIZE) || stored.itemGap !== defaults.itemGap
+    ? stored.count !== defaults.count || !same({ ...stored.gradient, opacity: stored.gradient?.opacity ?? 1 }, { ...DEFAULT_GRADIENT_SIZE, opacity: 1 }) || stored.itemGap !== defaults.itemGap
     : !same(comparableSymbol, defaults.symbol) || stored.itemGap !== defaults.itemGap ||
       stored.direction !== defaults.direction || (stored.columns !== undefined && !(side && stored.columns === 1));
   if (custom) {
@@ -71,7 +76,7 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   const args = {
     target: stored.target, channels: [channel], position: stored.position,
     labels: stored.labels, titleStyle: stored.titleStyle, border: stored.border,
-    align: stored.align, offset: stored.offset, titlePosition: stored.titlePosition,
+    align: stored.align, offset: stored.offset, titlePosition: sampledColor ? "top" : stored.titlePosition,
     ...(stored.inferredTitle ? {} : { title: stored.title })
   };
   try {
@@ -84,7 +89,7 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   } catch (error) {
     throw new Error(`${channel} legend transition has incompatible layout or style: ${error.message}`);
   }
-  return { args, channel, titleVisible: stored.titleVisible !== false, blockOverride };
+  return { args, channel, titleVisible: stored.titleVisible !== false, inferredOffset: stored.inferredOffset, blockOverride };
 }
 
 export function planColorLegendTransitions(program, scale, nextType) {
@@ -96,6 +101,11 @@ export function planColorLegendTransitions(program, scale, nextType) {
 
 export function applyColorLegendTransition(program, plan) {
   let next = program.createLegend(plan.args);
+  for (const [kind, config] of Object.entries(next.guideConfigs.legend ?? {})) {
+    if (config.target === plan.args.target && legendResourcePolicy(kind).semanticKind === plan.channel) {
+      next = next._withLegendConfig(kind, { ...config, inferredOffset: plan.inferredOffset === true });
+    }
+  }
   if (!plan.titleVisible) {
     next = next.editLegend({ target: plan.args.target, title: false });
   }
@@ -161,6 +171,9 @@ export function planLegendBlockTransitions(program, target, plans) {
     let override;
     if (incoming.length === 1 && incoming[0].key === descriptor.key) {
       override = incoming[0].config.blockOverrides?.[incoming[0].key];
+      if (incoming[0].config.representation === "symbols" && descriptor.kind === "gradient" && descriptor.config.representation !== "symbols" && override !== undefined) {
+        const { symbol: _symbol, labelMap: _labelMap, ...common } = override; override = common;
+      }
     } else if (incoming.length === 1) {
       const old = incoming[0];
       override = old.config.blockOverrides?.[old.key];

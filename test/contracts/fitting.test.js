@@ -67,11 +67,11 @@ test("publishes Cartesian label layout without leaking it to Parallel labels", (
   assert.match(program, /^export interface AxisLabelLayoutOptions \{$/m);
   assert.match(
     program,
-    /extends AxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions \{/u
+    /extends CartesianAxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions \{/u
   );
   assert.match(
     program,
-    /labels\?: AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;/u
+    /labels\?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;/u
   );
   assert.match(program, /ParallelAxisLabelsOptions = AxisLabelStyleOptions & ParallelAxisTickSelection;/u);
   assert.doesNotMatch(

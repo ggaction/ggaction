@@ -29,6 +29,13 @@ Legends are inferred from final mark encodings and materialized as concrete
 graphics. Start with the family that matches the encoded channel and use the
 editing page when changing an existing guide.
 
+Right and left legends start at the top of the actual plot, excluding the chart title.
+The complete legend includes its visible title, symbols, labels, and optional border.
+Multiple blocks share one stack whose top aligns with the plot; blocks retain their spacing.
+Shared facet legends align with the top of the translated child plots.
+The horizontal `offset` still controls the gap beside the plot.
+Top, bottom, and in-plot corner positions keep their own alignment rules.
+
 ## Supported legend families
 
 <!-- action-capabilities:legends:start -->
@@ -42,7 +49,7 @@ editing page when changing an existing guide.
 | Discretized color interval | point, aggregate bar, rect | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
 | Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
-| Opacity | point, line | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
+| Opacity | point, line, bar | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
 | Stroke width | line, rule | quantitative strokeWidth samples; line symbol |
 
 <!-- action-capabilities:legends:end -->
@@ -65,13 +72,13 @@ Combined point-series and size legends support every edge. Continuous size
 blocks sample the domain; discrete size blocks show every interval.
 Side positions stack the blocks; horizontal positions place them in rows. A left block must
 fit outside any left y-axis guides; use sufficient margin and offset.
-Stroke-width legends support all four edges through `createLegend` and
+Stroke-width legends support all four edges and plot corners through `createLegend` and
 `editLegendLayout`. Use `layout: "edge"`, `offset`, `itemGap`, and horizontal
 `align`, `direction`, `columns`, and `titlePosition` controls. Title, count,
 label/title styles, and border are editable. Side positions require vertical
 direction, center alignment, one column, and a top title. Symbol recipes,
 gradient, and order are unsupported; edit quantitative mapping through `editScale`.
-Continuous size, opacity, and stroke-width legends accept `values` for exact
+Continuous size, opacity, stroke-width, and color-symbol legends accept `values` for exact
 ascending samples. Exact values must fit the effective domain and cannot be
 combined with `count`; use `editLegend({ values: "auto" })` to return to the
 remembered automatic sample count. Use `editLegendBlock()` when a target has
@@ -92,6 +99,24 @@ legend. The limit changes the displayed guide only, preserving every data row
 and color assignment. See the [exact legend contract](../reference/actions/guides.md#createlegend)
 for supported anchors and layout restrictions.
 
+**Title alignment.**
+
+Use `titleStyle: {align: "left"}` to align a top title inside the measured
+legend content block. The same style accepts `"center"` and `"right"` for
+categorical, gradient, interval, size, opacity and stroke-width legends. This
+text alignment is separate from the complete legend's placement `align`.
+Omitting it preserves the native layout's current default.
+
+On an existing legend, `editLegendTitle({align: "right"})` changes only that
+choice. `editLegendTitle({align: "auto"})` restores the native default; the
+whole edit equivalent is `editLegend({titleStyle: {align: "auto"}})`. These
+are fragments requiring an existing legend. A top-to-inline title transition
+can reset the choice in the same whole edit; inline `titlePosition: "left"`
+rejects an explicit title alignment. Border padding, group anchors, item
+positions and spacing retain their existing rules.
+
 ## Related
 [Guides](./guides.md) · [Series encodings](./series-encodings.md) ·
 [Canvas](./canvas.md) · [Troubleshooting](../troubleshooting.md)
+
+When creating a separate size legend, an explicit `position` is honored even if a color or shape legend for the same mark uses another edge. Omit size `position` to inherit the categorical legend edge. Resizing retains that choice.

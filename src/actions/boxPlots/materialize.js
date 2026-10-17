@@ -159,7 +159,8 @@ export const materializeBoxPlot = /* @__PURE__ */ action(
         id: ownerId,
         type: "rect",
         length: 0,
-        ...resolvePlotGraphicPlacement(next)
+        ...resolvePlotGraphicPlacement(next, next.graphicSpec.objects.plotBorder === undefined
+          ? {} : { before: "plotBorder" })
       })
       .rematerializeBarMark({ id: ownerId })
       .createBoxMedian({

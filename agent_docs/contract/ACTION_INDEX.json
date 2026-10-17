@@ -2403,7 +2403,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "X-axis component edits, including typed categorical display labels",
+      "update": "X-axis component edits, including typed Cartesian display labels",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -2421,7 +2421,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "Y-axis component edits, including typed categorical display labels",
+      "update": "Y-axis component edits, including typed Cartesian display labels",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -2511,7 +2511,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editXAxisTicks`",
+      "update": "`editXAxisTicks`; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2529,7 +2529,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editYAxisTicks`",
+      "update": "`editYAxisTicks`; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2547,7 +2547,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits x-axis ticks",
+      "update": "Edits x-axis ticks; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2565,7 +2565,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits y-axis ticks",
+      "update": "Edits y-axis ticks; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2583,7 +2583,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editXAxisLabels` edits style, layout, and typed categorical display labels",
+      "update": "`editXAxisLabels` edits style, layout, and typed categorical display labels; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span; typed per-value color overrides retain global fallback",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2601,7 +2601,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editYAxisLabels` edits style, layout, and typed categorical display labels",
+      "update": "`editYAxisLabels` edits style, layout, and typed categorical display labels; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span; typed per-value color overrides retain global fallback",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2619,7 +2619,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits x-axis label style/layout and sets or resets a typed categorical labelMap",
+      "update": "Edits x-axis label style/layout and sets or resets a typed categorical labelMap; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span; typed per-value color overrides retain global fallback",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2637,7 +2637,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits y-axis label style/layout and sets or resets a typed categorical labelMap",
+      "update": "Edits y-axis label style/layout and sets or resets a typed categorical labelMap; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span; typed per-value color overrides retain global fallback",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2655,7 +2655,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editXAxisTicksAndLabels` edits ticks and label style/layout, including typed categorical display labels",
+      "update": "`editXAxisTicksAndLabels` edits ticks and label style/layout, including typed Cartesian display labels",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2673,7 +2673,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editYAxisTicksAndLabels` edits ticks and label style/layout, including typed categorical display labels",
+      "update": "`editYAxisTicksAndLabels` edits ticks and label style/layout, including typed Cartesian display labels",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2799,7 +2799,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits or removes selected existing x-axis components, including typed categorical display labels",
+      "update": "Edits or removes selected existing x-axis components, including typed Cartesian display labels",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2817,7 +2817,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits or removes selected existing y-axis components, including typed categorical display labels",
+      "update": "Edits or removes selected existing y-axis components, including typed Cartesian display labels",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2889,7 +2889,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editHorizontalGrid`",
+      "update": "`editHorizontalGrid`; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2907,7 +2907,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editVerticalGrid`",
+      "update": "`editVerticalGrid`; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2925,7 +2925,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits one horizontal grid",
+      "update": "Edits one horizontal grid; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2943,7 +2943,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits one vertical grid",
+      "update": "Edits one vertical grid; signed along-axis displacement is preserved during replay",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3033,7 +3033,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edit one channel-identified legend block, including typed categorical display labels, without changing sibling blocks",
+      "update": "Edit one channel-identified legend block, including typed Cartesian display labels, without changing sibling blocks",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3861,7 +3861,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "Focused theta-axis edits, including typed categorical display labels",
+      "update": "Focused theta-axis edits, including typed Cartesian display labels",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3897,7 +3897,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits selected theta-axis components, including typed categorical display labels",
+      "update": "Edits selected theta-axis components, including typed Cartesian display labels",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4113,7 +4113,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edited by editThetaAxisLabels, including typed categorical display labels; removed with the owning complete axis",
+      "update": "Edited by editThetaAxisLabels, including typed Cartesian display labels; removed with the owning complete axis",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -5164,6 +5164,7 @@
       "rematerializeLegend",
       "rematerializeLegendBackground",
       "rematerializeLegendHighlights",
+      "rematerializeLegendGroups",
       "rematerializeLegendLabels",
       "rematerializeLegendSymbolLines",
       "rematerializeLegendSymbolPoints",
@@ -5174,6 +5175,7 @@
       "rematerializeMarkHighlights",
       "rematerializeOpacityLegend",
       "rematerializeParallelAxes",
+      "rematerializePlotBorder",
       "rematerializePointMark",
       "rematerializeRadialGrid",
       "rematerializeRectMark",

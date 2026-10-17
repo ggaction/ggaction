@@ -1,4 +1,5 @@
 import { isPlainObject } from "../core/immutable.js";
+import { validateNonEmptyString } from "../core/validation.js";
 
 const ENTRY_KEYS = Object.freeze(["value", "label"]);
 
@@ -54,4 +55,31 @@ export function resolveDisplayLabel(value, map, fallback) {
     throw new TypeError("Display label fallback must return a string.");
   }
   return resolved;
+}
+
+
+export function normalizeDisplayColorMap(value, label = "colorMap") {
+  if (!Array.isArray(value)) throw new TypeError(`${label} must be an array.`);
+  const normalized = [];
+  for (const [index, entry] of value.entries()) {
+    if (!isPlainObject(entry)) throw new TypeError(`${label}[${index}] must be a plain object.`);
+    if (Reflect.ownKeys(entry).length !== 2 ||
+        !Object.hasOwn(entry, "value") || !Object.hasOwn(entry, "color")) {
+      throw new Error(`${label}[${index}] must contain exactly value and color.`);
+    }
+    if (!isDisplayLabelValue(entry.value)) {
+      throw new TypeError(`${label}[${index}].value must be a string, boolean, null, or finite number.`);
+    }
+    validateNonEmptyString(entry.color, `${label}[${index}].color`);
+    if (normalized.some(previous => sameDisplayLabelValue(previous.value, entry.value))) {
+      throw new Error(`${label} contains a duplicate typed value.`);
+    }
+    normalized.push(Object.freeze({ value: entry.value, color: entry.color }));
+  }
+  return Object.freeze(normalized);
+}
+
+export function resolveDisplayLabelColor(value, map, fallback) {
+  const entry = map?.find(entry => sameDisplayLabelValue(entry.value, value));
+  return entry?.color ?? fallback;
 }

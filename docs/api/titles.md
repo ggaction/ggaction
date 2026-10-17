@@ -92,8 +92,12 @@ whitespace and falls back to Unicode-safe character wrapping for an oversized
 word. Character wrapping always splits on Unicode code-point boundaries. The
 library uses deterministic text metrics so the same program produces the same
 line breaks in browsers and Node. Renderers draw the concrete lines already in
-`graphicSpec`; they do not wrap text again. Explicit newline characters are
-not accepted.
+`graphicSpec`; they do not wrap text again. Title and subtitle strings accept
+explicit newline characters. Each hard line wraps independently when `maxWidth`
+is set. Leading, interior, and trailing blank lines reserve vertical spacing
+without creating empty painted text. Each title or subtitle must contain at
+least one non-empty hard line. Font-family and color values remain single-line
+strings.
 
 The requested margin must contain the actual title block. A title must also
 avoid guides reserved on the same edge. Creation fails instead of expanding
@@ -157,6 +161,11 @@ The collision check includes Cartesian axis components and every legend family,
 including borders and combined categorical/size groups. Creating the title first
 or last follows the same rule. Canvas and scale updates check the final positions
 of dependent guides; rejected changes leave the earlier program unchanged.
+
+## Shift a title along its edge
+
+Use `alongOffset` in `createTitle` or `editTitle` to move the complete title/subtitle block along its selected edge. The signed finite logical-pixel value defaults to zero: positive moves top/bottom titles right and left/right titles down. It is independent of the existing outward `offset`. On facet parents, the horizontal shift uses the translated child-plot union and remains through facet layout, guide, and scale edits. Facet title and subtitle text must fit the composed Canvas. The shift remains through Canvas edits, and all occupied-bounds and guide-collision checks still apply. Set it to zero to restore the normal alignment anchor.
+
 
 ## Related
 

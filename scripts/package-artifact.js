@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 553,
-  packedBytes: 775_000,
-  unpackedBytes: 3_900_000
+  entries: 567, // Promoted facet guide layout adds one private owner.
+  packedBytes: 799_000, // Node24/npm11 release candidate with corrected declarations: 798062 bytes.
+  unpackedBytes: 3_908_000 // Release documentation growth; retain a bounded3000-byte step.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -81,6 +81,7 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/grammar/scales/appearance.js",
   "src/grammar/numeric.js",
   "src/actions/guides/legends/continuous/common.js",
+  "src/actions/guides/legends/continuous/colorSymbols.js",
   "src/grammar/scales/transformed.js",
   "src/grammar/scales/definition.js",
   "src/actions/scales/definitions.js",
@@ -90,9 +91,18 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/layout/facets.js",
   "src/layout/legendLane.js",
   "src/materialization/facets.js",
+  "src/materialization/facetGuides/layout.js",
   "src/materialization/facetHeaders.js",
   "src/materialization/guides/layout.js",
-  "src/materialization/guides/resources.js"
+  "src/materialization/guides/resources.js",
+  "src/actions/guides/legends/group.js",
+  "src/actions/guides/legends/lane.js",
+  "src/actions/guides/legends/edit.js",
+  "src/grammar/legendGroups.js",
+  "src/layout/legendGroup.js",
+  "src/layout/legendText.js",
+  "src/materialization/legendText.js",
+  "src/materialization/legendGroups.js"
 ]);
 
 export function compactPackageJavaScript(source, { keepNames = true } = {}) {

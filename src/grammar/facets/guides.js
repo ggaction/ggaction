@@ -165,6 +165,11 @@ function scaleIds(config) {
 export function resolveSharedFacetLegends(children) {
   const normalized = requireLegendChildren(children);
   const first = normalized[0];
+  for (const child of normalized.slice(1)) {
+    if (!sameValue(first.guideConfigs.legendGroups, child.guideConfigs.legendGroups)) {
+      throw new Error(`Facet child "${child.id}" has incompatible legend group placement.`);
+    }
+  }
   const kinds = Object.keys(first.legends);
   const entries = kinds.map(kind => {
     const family = LEGEND_FAMILIES[kind];

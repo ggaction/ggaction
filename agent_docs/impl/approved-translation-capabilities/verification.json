@@ -1,0 +1,74 @@
+{
+  "status": "pass",
+  "at": "2026-10-16T14:30:17.778Z",
+  "runtimeSourceCommit": "ba1929190283f2c1dc855471f84760fdffc0a171",
+  "features": [
+    "area FillPaint",
+    "computed getPath",
+    "computed replaceLiteral",
+    "legend gradient.opacity",
+    "path command bound20000"
+  ],
+  "existingContractFix": "Corner legend title/item spacing uses actual occupied bounds and native12px gap; outside side anchors unchanged.",
+  "checks": {
+    "unit": {
+      "pass": true,
+      "tests": 3026,
+      "path": "/tmp/ggaction-approved-combined-unit.log",
+      "sha256": "d162d65ee468e7757f4a3752615b44ce86a9ab98acf2fb3009a7898144166bc5"
+    },
+    "contracts": {
+      "pass": true,
+      "tests": 533,
+      "path": "/tmp/ggaction-approved-combined-contracts.log",
+      "sha256": "7849f157031ea3742628b1e327cc7b912d013da925ad626a1b9e2a5679924a90"
+    },
+    "docs": {
+      "pass": true,
+      "tests": 120,
+      "path": "/tmp/ggaction-approved-combined-docs-final.log",
+      "sha256": "8253528d0cb0a06dd1e8a0bb5c184aaaa40f245acb4e7cfa5ee947143560b993"
+    },
+    "installedConsumer": {
+      "pass": true,
+      "tests": null,
+      "path": "/tmp/ggaction-approved-combined-consumer.log",
+      "sha256": "bab5f2c2a450adf8a41c31d203e6ab8c7f7e6c05adbdbeaa65709b61bba2a040"
+    },
+    "package": {
+      "pass": true,
+      "tests": null,
+      "path": "/tmp/ggaction-approved-combined-package-final.log",
+      "sha256": "3b32f38131921a6335348f087e96933d7dffd0b13c6780ac5da20c6c7dbec08d"
+    },
+    "focused": {
+      "pass": true,
+      "tests": 32,
+      "path": "/tmp/ggaction-approved-combined-focused.log",
+      "sha256": "05cf7922c0fb996211a9cea3ccb6ce93e4675065709e67b0005da90528a50535"
+    }
+  },
+  "package": {
+    "entries": 565,
+    "packedBytes": 793051,
+    "unpackedBytes": 3894604,
+    "ceilings": {
+      "entries": 565,
+      "packedBytes": 794000,
+      "unpackedBytes": 3900000
+    }
+  },
+  "browserGzip": {
+    "full": 389805,
+    "basic": 188622,
+    "svg": 7176,
+    "ceilings": {
+      "full": 390000,
+      "basic": 189000,
+      "svg": 25000
+    }
+  },
+  "chartPixelsInspected": false,
+  "schoolModelCalls": 0,
+  "release": "Unreleased0.0.17 development revision; no npm publication, documentation deployment or PR."
+}

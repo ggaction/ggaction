@@ -65,3 +65,70 @@ for (const ratio of [1, 2]) {
     } finally { await context.close(); }
   });
 }
+
+test(`${browserName} keeps vertical and slanted axis labels outside fixed plots in Canvas and SVG`, async () => {
+  const context = await browser.newContext();
+  try {
+    const { page, errors } = await openBrowserPage(context, server.baseUrl, { waitFor: () => window.compatibility !== undefined });
+    const records = await page.evaluate(async () => {
+      const { chart, render } = await import("/node_modules/ggaction/src/index.js");
+      const { renderToSVG } = await import("/node_modules/ggaction/src/renderers/svg.js");
+      const output = [];
+      for (const angle of [-90, -45, 45, 90]) {
+        const program = chart().createCanvas({ width: 640, height: 440, margin: { left: 60, top: 40, right: 80, bottom: 200 } })
+          .createData({ values: ["Alpha category", "Beta category", "Gamma category"].map((category, i) => ({ category, value: i + 1 })) })
+          .createScatterPlot({ x: { field: "category", fieldType: "nominal" }, y: "value", guides: false })
+          .createXAxis({ title: false, ticksAndLabels: { labels: { rotation: { value: angle, unit: "degrees" }, fontSize: 10, color: "black", offset: 7 } } });
+        const labels = program.graphicSpec.objects.xAxisLabels;
+        const scene = { graphicSpec: { order: ["canvas"], objects: { canvas: { type: "canvas", properties: { width: 640, height: 440, background: "white" }, children: ["xAxisLabels"] }, xAxisLabels: labels } } };
+        const canvas = document.createElement("canvas"), ctx = canvas.getContext("2d");
+        render(scene, ctx, { pixelRatio: 1 });
+        const pixels = ctx.getImageData(0, 0, 640, 440).data;
+        let top = Infinity, bottom = -Infinity, count = 0;
+        for (let y = 0; y < 440; y++) for (let x = 0; x < 640; x++) {
+          const i = (y * 640 + x) * 4;
+          if (pixels[i] < 80 && pixels[i + 1] < 80 && pixels[i + 2] < 80 && pixels[i + 3] > 128) { top = Math.min(top, y); bottom = Math.max(bottom, y); count++; }
+        }
+        const host = document.createElement("div");host.innerHTML = renderToSVG(scene);document.body.append(host);
+        const root = host.querySelector("svg").getBoundingClientRect();
+        const bounds = [...host.querySelectorAll("text")].map(n => { const b = n.getBoundingClientRect();return { top: b.top - root.top, bottom: b.bottom - root.top, centerX: (b.left + b.right) / 2 - root.left }; });
+        output.push({ angle, canvas: { top, bottom, count }, bounds, anchors: labels.items.map(i => i.properties.x) });host.remove();
+      }
+      return output;
+    });
+    for (const record of records) {
+      assert.ok(record.canvas.count > 50);
+      assert.ok(record.canvas.top >= 243 && record.canvas.bottom < 440, JSON.stringify(record));
+      for (const [i, bound] of record.bounds.entries()) {
+        assert.ok(bound.top >= 243 && bound.bottom <= 440);
+        if (Math.abs(record.angle) === 90) assert.ok(Math.abs(bound.centerX - record.anchors[i]) < 3);
+      }
+    }
+    assertNoBrowserErrors(errors, "rotated axis labels");await page.close();
+  } finally { await context.close(); }
+});
+
+
+test(`${browserName} renders hard title breaks as concrete Canvas and SVG text lines`, async () => {
+  const context = await browser.newContext();
+  try {
+    const { page, errors } = await openBrowserPage(context, server.baseUrl, { waitFor: () => window.compatibility !== undefined });
+    const actual = await page.evaluate(async () => {
+      const { chart, render } = await import("/node_modules/ggaction/src/index.js");
+      const { renderToSVG } = await import("/node_modules/ggaction/src/renderers/svg.js");
+      const p = chart().createCanvas({ width: 600, height: 500, margin: 180 })
+        .createTitle({ text: "Headline\nDetails", subtitle: "Credit\r\nSource" });
+      const canvas = document.createElement("canvas"), ctx = canvas.getContext("2d");
+      render(p, ctx, { pixelRatio: 1 });
+      const data = ctx.getImageData(0, 0, 600, 180).data;
+      let ink = 0;
+      for (let i = 0; i < data.length; i += 4) if (data[i] < 200 && data[i+1] < 200 && data[i+2] < 200 && data[i+3] > 100) ink++;
+      const host = document.createElement("div"); host.innerHTML = renderToSVG(p); document.body.append(host);
+      const labels = [...host.querySelectorAll("text")].map(n => n.textContent);host.remove();
+      return { labels, ink };
+    });
+    assert.deepEqual(actual.labels, ["Headline", "Details", "Credit", "Source"]);
+    assert.ok(actual.ink > 100);
+    assertNoBrowserErrors(errors, "hard title breaks");await page.close();
+  } finally { await context.close(); }
+});

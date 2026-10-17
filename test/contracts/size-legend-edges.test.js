@@ -4,11 +4,17 @@ import { assertChartProgramsEquivalent } from "../support/chart-equivalence.js";
 import { chart } from "../../src/index.js";
 import { assertRenderedPNG } from "../support/png.js";
 const edgeReferences = {
-  right: { x: [790,790], y: [252,292], labelX: [834,834], title: [790,220], align: "left" },
-  left: { x: [151.36,151.36], y: [252,292], labelX: [195.36,195.36], title: [151.36,220], align: "left" },
+  right: { x: [790,790], y: [252,270], labelX: [834,834], title: [790,220], align: "left" },
+  left: { x: [151.36,151.36], y: [252,270], labelX: [195.36,195.36], title: [151.36,220], align: "left" },
   top: { x: [425.02,516.3399999999999], y: [164,164], labelX: [469.02,560.3399999999999], title: [500,139.5], align: "center" },
   bottom: { x: [425.02,516.3399999999999], y: [561,561], labelX: [469.02,560.3399999999999], title: [500,536.5], align: "center" }
 };
+// Side title bounds start at the 200px plot top, 13.5px above their old bounds.
+for (const edge of ["left", "right"]) {
+  const r = edgeReferences[edge];
+  r.y = r.y.map(y => y - 13.5);
+  r.title[1] = 200;
+}
 // Align the literal occupied content, including sample strokes or unused slots.
 for (const edge of ["top", "bottom"]) {
   const r = edgeReferences[edge], dx = 500 - ((r.x[0] + 16 - 2) + (r.labelX[1] + 14.64)) / 2;
@@ -23,7 +29,7 @@ function sizeBase() {
     .encodeSize({field:"m",scale:{domain:[0,10],range:[4*Math.PI,36*Math.PI]}});
 }
 function sizePrimitive(base, edge) {
-  const r=edgeReferences[edge];
+  const r=edgeReferences[edge], side = ["left", "right"].includes(edge);
   return base.createGraphics({id:"sizeLegendSymbols",type:"circle",length:2,parent:"canvas"})
     .editGraphics({target:"sizeLegendSymbols",property:"x",value:r.x.map(x=>x+16)})
     .editGraphics({target:"sizeLegendSymbols",property:"y",value:r.y})
@@ -32,14 +38,14 @@ function sizePrimitive(base, edge) {
     .editGraphics({target:"sizeLegendSymbols",property:"opacity",value:0.7})
     .createGraphics({id:"sizeLegendLabels",type:"text",length:2,parent:"canvas"})
     .editGraphics({target:"sizeLegendLabels",property:"x",value:r.labelX})
-    .editGraphics({target:"sizeLegendLabels",property:"y",value:r.y})
+    .editGraphics({target:"sizeLegendLabels",property:"y",value:r.y.map(y => y - (side ? 6 : 0))})
     .editGraphics({target:"sizeLegendLabels",property:"text",value:["0","10"]})
     .editGraphics({target:"sizeLegendLabels",property:"fill",value:"#334155"})
     .editGraphics({target:"sizeLegendLabels",property:"fontSize",value:12})
     .editGraphics({target:"sizeLegendLabels",property:"fontFamily",value:"sans-serif"})
     .editGraphics({target:"sizeLegendLabels",property:"fontWeight",value:"normal"})
     .editGraphics({target:"sizeLegendLabels",property:"textAlign",value:"left"})
-    .editGraphics({target:"sizeLegendLabels",property:"textBaseline",value:"middle"})
+    .editGraphics({target:"sizeLegendLabels",property:"textBaseline",value:side ? "top" : "middle"})
     .createGraphics({id:"sizeLegendTitle",type:"text",parent:"canvas"})
     .editGraphics({target:"sizeLegendTitle",property:"x",value:r.title[0]})
     .editGraphics({target:"sizeLegendTitle",property:"y",value:r.title[1]})
@@ -49,7 +55,7 @@ function sizePrimitive(base, edge) {
     .editGraphics({target:"sizeLegendTitle",property:"fontFamily",value:"sans-serif"})
     .editGraphics({target:"sizeLegendTitle",property:"fontWeight",value:600})
     .editGraphics({target:"sizeLegendTitle",property:"textAlign",value:r.align})
-    .editGraphics({target:"sizeLegendTitle",property:"textBaseline",value:"middle"});
+    .editGraphics({target:"sizeLegendTitle",property:"textBaseline",value:side ? "top" : "middle"});
 }
 
 test("places size legends at four edges with exact primitive graphics and pixels", async () => {

@@ -9,7 +9,7 @@ import { createGapminderOuterGuideFacetPrimitives } from
 
 function nestedCanvases(program) {
   return Object.entries(program.graphicSpec.objects)
-    .filter(([id, object]) => id !== "canvas" && object.type === "canvas")
+    .filter(([id, object]) => !["canvas", "populationLegend"].includes(id) && object.type === "canvas")
     .map(([, object]) => object);
 }
 
@@ -53,7 +53,7 @@ function decodeLocalGraphicId(id) {
 test("keeps outer axes on occupied edges and one parent population legend", () => {
   const program = createGapminderOuterGuideFacetPrimitives(loadGapminder());
   const canvases = nestedCanvases(program);
-  assert.equal(program.graphicSpec.objects.canvas.properties.width, 1044);
+  assert.equal(program.graphicSpec.objects.canvas.properties.width, 971);
   assert.equal(program.graphicSpec.objects.canvas.properties.height, 588);
   assert.equal(canvases.length, 5);
 

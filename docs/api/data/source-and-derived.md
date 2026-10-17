@@ -13,7 +13,7 @@ title: Source and Derived Data
 | --- | --- | --- |
 | `id` | string containing letters, numbers, `_`, or `-` | no; first dataset defaults to `"data"` |
 | `values` | array of plain row objects | yes |
-| `schema` | `{ fields: Record<string, DatasetFieldSchema> }` | no |
+| `schema` | `{ fields: SourceSchemaField[] }` | no |
 
 <!-- snippet-context:start -->
 
@@ -49,6 +49,15 @@ set of declared fields. Derived transforms validate their input fields and
 publish their output schema. `getDatasetSchema(program, id)` from
 `ggaction/inspection` returns the immutable normalized result, including
 lineage and whether it was declared, inferred, or derived.
+
+Source row keys are stored exactly, including `""` and whitespace. An unused
+unnamed column is neither renamed nor dropped. A declared schema uses the same
+exact `name`; omitted columns still fail closed-schema validation. Empty names
+remain invalid as chart or transform field references and as generated field
+names or resource IDs. Row-preserving transforms, source revisions, facets and
+editable snapshots retain these cells; projections keep their existing column
+policy. Dataset schema version 1 is unchanged. Reading snapshots with empty
+field names requires a runtime that supports these source keys.
 
 The most recently created dataset becomes the default for `createPointMark`,
 `createLineMark`, or `createBarMark`. Creating data records semantic state only
@@ -226,11 +235,11 @@ See [Expressions and Normalization](./expressions-and-normalization.md#createnor
 
 See [Missing Keys and Values](./missing-data.md#createcompletedata-id-source-key-groupby-values-sequence-fill-members) for this contract and its examples.
 
-## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
+## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
 
 See [Missing Keys and Values](./missing-data.md#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap) for this contract and its examples.
 
-## `createStackData({ id, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}
+## `createStackData({ id?, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}
 
 See [Summaries, Bins, and Data Shaping](./summaries-and-shaping.md#createstackdata-id-source-category-group-value-mode-as) for this contract and its examples.
 

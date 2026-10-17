@@ -54,7 +54,7 @@ test("maps categorical Cartesian labels by typed raw value and resets to fallbac
   });
   assert.deepEqual(
     empty.graphicSpec.objects.xAxisLabels.items.map(item => item.properties.text),
-    ["1", "", "KR", "XX"]
+    ["1", "KR", "XX"]
   );
   const reset = empty.editXAxisLabels({ labelMap: "auto" });
   assert.equal(Object.hasOwn(reset.guideConfigs.axis.x.labels, "labelMap"), false);
@@ -70,7 +70,7 @@ test("maps categorical Cartesian labels by typed raw value and resets to fallbac
   );
 });
 
-test("passes display maps through Cartesian aggregate labels and rejects continuous scales", () => {
+test("passes display maps through Cartesian aggregate labels on categorical and continuous scales", () => {
   const aggregate = categoricalAxis().createXAxisTicksAndLabels({
     values: [1, "1", "KR", "XX"],
     labels: { labelMap: map }
@@ -86,14 +86,10 @@ test("passes display maps through Cartesian aggregate labels and rejects continu
     .createPointMark()
     .encodeX({ field: "x" });
   const snapshot = JSON.stringify(continuous);
-  assert.throws(
-    () => continuous.createXAxisLabels({ values: [0, 1], labelMap: [] }),
-    /labelMap requires a categorical scale/
-  );
-  assert.throws(
-    () => continuous.createXAxisLabels({ values: [0, 1], labelMap: "auto" }),
-    /labelMap requires a categorical scale/
-  );
+  for (const labelMap of [[], "auto"]) {
+    const created = continuous.createXAxisLabels({ values: [0, 1], labelMap });
+    assert.deepEqual(created.graphicSpec.objects.xAxisLabels.items.map(item => item.properties.text), ["0", "1"]);
+  }
   assert.equal(JSON.stringify(continuous), snapshot);
 });
 

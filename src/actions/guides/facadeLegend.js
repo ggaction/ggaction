@@ -17,9 +17,14 @@ function compatibleLegend(program, kind, requested, existing, explicit) {
   if (requested.symbol?.layers !== undefined && !sameGuideValue(
     requested.symbol.layers.map(layer => layer.type), existing.symbol?.layers?.map(layer => layer.type)
   )) guideConflict(`${kind} legend uses a different symbol recipe`);
+  if (explicit.representation !== undefined && (requested.representation ?? "gradient") !== (existing.representation ?? "gradient")) guideConflict(`${kind} legend uses a different color representation`);
+  if (requested.representation === "symbols") {
+    if (explicit.values !== undefined && !sameGuideValue(requested.sampling.values, existing.sampling?.values)) guideConflict(`${kind} legend uses different exact samples`);
+    if (explicit.count !== undefined && (existing.sampling?.mode !== "auto" || requested.sampling.count !== existing.sampling?.count)) guideConflict(`${kind} legend uses a different sample count`);
+  }
   const appearance = {};
   for (const [key, value] of Object.entries(explicit)) {
-    if (["target", "channels"].includes(key) || requested[key] === undefined) continue;
+    if (["target", "channels", "representation", "values"].includes(key) || requested[key] === undefined) continue;
     if (key === "title") {
       appearance.titleVisible = value !== false;
       if (value !== false) appearance.title = value;

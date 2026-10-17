@@ -344,8 +344,7 @@ function assertLegacyHeadersFit(items, layout, plotById, profile) {
   }
 }
 
-export function materializeFacetHeaders(program, layout, plots, prepared) {
-  const profile = program.materializationConfigs.textMetrics;
+export function resolveFacetHeaderItems(layout, plots, prepared) {
   const cells = new Map(layout.children.map(cell => [cell.id, cell]));
   const plotById = new Map(plots.map(plot => [plot.id, plot]));
   const records = prepared.descriptors.map(descriptor => {
@@ -354,7 +353,12 @@ export function materializeFacetHeaders(program, layout, plots, prepared) {
     }
     return roleItem(descriptor, cells, plotById, layout.spacing);
   });
-  const items = records.map(styledItem);
+  return { records, items: records.map(styledItem), plotById };
+}
+
+export function materializeFacetHeaders(program, layout, plots, prepared) {
+  const profile = program.materializationConfigs.textMetrics;
+  const { records, items, plotById } = resolveFacetHeaderItems(layout, plots, prepared);
   if (prepared.headers.mode === "legacy") {
     assertLegacyHeadersFit(items, layout, plotById, profile);
   } else {

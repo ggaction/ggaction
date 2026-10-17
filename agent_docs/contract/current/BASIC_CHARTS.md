@@ -122,6 +122,7 @@ createLinePlot({
 ```
 
 - Stable default ID is `linePlot`.
+- Line y는 quantitative/temporal이므로 `guides.grid.horizontal.bandPosition`은 허용하지 않는다. Categorical x가 band scale일 때만 `guides.grid.vertical.bandPosition: "center" | "boundary"`를 사용한다. Facade grid는 자기 line의 channel/scale/coordinate만 참조하며 별도 auxiliary band scale로 이 제약을 우회하지 않는다. Evidence: `test/contracts/line-grid-role-contract.test.js`.
 - `line.tension`은 cardinal 곡선의 `[0,1]` 장력을 `createLineMark`에 전달한다. 생략은 기존 0이다.
 - Hierarchy: `createLineMark`, `encodeX`, `encodeY`, optional `encodeGroup` then `encodeColor`/`encodeStrokeDash`,
   optional `createGuides`.
@@ -283,10 +284,10 @@ createHeatmap({
 ```
 
 - Stable default ID is `heatmap`.
-- Pre-gridded hierarchy: `createRectMark`, `encodeX`, `encodeY`, `encodeColor`, optional `createGuides`.
+- Pre-gridded hierarchy: `createRectMark`, `encodeX`, `encodeY`, optional `encodeColor`, optional `createGuides`.
 - Binned hierarchy: `createBin2DData`, `createRectMark`, `encodeX`, `encodeX2`, `encodeY`, `encodeY2`, `encodeColor`,
   optional `createGuides`.
-- Without `bin`, pre-gridded behavior is unchanged: x/y/color are required, only observed combinations are emitted, and
+- Without `bin`, pre-gridded x/y are required and color is optional. Omitted color keeps the default cell fill and no color scale/legend; a later encodeColor assigns it. Only observed combinations are emitted, and
   missing combinations are not synthesized.
 - With `bin`, x/y are raw quantitative fields and color field ownership moves to the generated count. `color` is optional
   and may configure only the continuous/discretized scale or palette.
@@ -307,7 +308,7 @@ createHeatmap({
 
 - Implemented: `createHeatmap(options: CreateHeatmapOptions): ChartProgram`.
 - Required in every mode: `x`, `y`.
-- Pre-gridded required: `color`; optional: `id`, `data`, `coordinate`, `rect`, `guides`.
+- Pre-gridded optional: `color`, `id`, `data`, `coordinate`, `rect`, `guides`.
 - Binned required: `bin`; optional: `id`, `data`, `coordinate`, `color`, `rect`, `guides`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
@@ -317,7 +318,7 @@ createHeatmap({
 - ✅ Covered: shortest pre-gridded call, stable/explicit ID and explicit/current data.
 - ✅ Covered: quantitative continuous color, nominal shorthand, opacity/outline appearance and guide disable.
 - ✅ Covered: observed-cell cardinality, missing-combination omission, Canvas/scale rematerialization and caller ownership.
-- ✅ Covered: required color, rejected fill/target conflicts and immutable failure.
+- ✅ Covered: omitted color, later encodeColor parity, rejected invalid color/fill/target conflicts and immutable failure.
 - ✅ Covered: Browser Canvas, Node PNG, post-facade text layering and approved primitive equality.
 - ✅ Covered: shortest binned call, scalar/per-axis bins, auto/explicit extent, empty-cell default, generated count color,
   source-facing guide titles and wrapped child hierarchy.

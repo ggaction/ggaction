@@ -69,7 +69,8 @@ test("partially edits one combined legend and preserves earlier state", () => {
     "#111827");
   assert.deepEqual(after.trace.children.at(-1).children.map(node => node.op), [
     "editSemantic",
-    "rematerializeLegend"
+    "rematerializeLegend",
+    "rematerializeSideLegendLane"
   ]);
 });
 
@@ -178,7 +179,7 @@ test("validates selectors, edits, kind options, and left margin atomically", () 
   assert.throws(() => gradient.editLegend({ columns: 2 }),
     /does not accept columns/);
   assert.throws(() => right.editLegend({ position: "left" }),
-    /Categorical legend layout requires more Canvas margin space/);
+    /Legend lane requires more left-margin or vertical Canvas space/);
   assert.ok(right.graphicSpec.objects.seriesLegendTitle);
 });
 

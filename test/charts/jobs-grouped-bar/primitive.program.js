@@ -349,7 +349,7 @@ export function createJobsGroupedBarPrimitives(
     .editGraphics({ target: "colorLegendLabels", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "colorLegendLabels", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "colorLegendLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "colorLegendLabels", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "colorLegendLabels", property: "textBaseline", value: "top" })
     .createGraphics({ id: "colorLegendTitle", parent: "canvas", type: "text" })
     .editGraphics({ target: "colorLegendTitle", property: "x", value: values.legend.title.x })
     .editGraphics({ target: "colorLegendTitle", property: "y", value: values.legend.title.y })
@@ -359,7 +359,7 @@ export function createJobsGroupedBarPrimitives(
     .editGraphics({ target: "colorLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "colorLegendTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "colorLegendTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "colorLegendTitle", property: "textBaseline", value: "middle" });
+    .editGraphics({ target: "colorLegendTitle", property: "textBaseline", value: "top" });
 }
 
 export function renderJobsGroupedBarPrimitives(program, canvasContext) {

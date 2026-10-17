@@ -1,3 +1,6 @@
+import { validateOptionObject } from "../../core/validation.js";
+import { floorUtcTimeUnit, offsetUtcTimeUnit, TIME_UNITS, validTimestamp } from "../timeUnit.js";
+import { mapContinuousScaleValues } from "../scales/mapping.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 
 export const DEFAULT_BAR_WIDTH = Object.freeze({ band: 0.72 });
@@ -9,8 +12,16 @@ export const DEFAULT_OFFSET_PADDING = Object.freeze({
 export function normalizeBarWidth(options = {}, existing) {
   const hasBand = options.band !== undefined;
   const hasPixels = options.pixels !== undefined;
-  if (hasBand && hasPixels) {
-    throw new Error("encodeBarWidth band and pixels are mutually exclusive.");
+  const hasInterval = options.interval !== undefined;
+  if (Number(hasBand) + Number(hasPixels) + Number(hasInterval) > 1) {
+    throw new Error("encodeBarWidth band, pixels, and interval are mutually exclusive.");
+  }
+  if (hasInterval) {
+    validateOptionObject(options.interval, ["unit", "insetStart", "insetEnd"], "Bar width interval");
+    const { unit, insetStart = 0, insetEnd = 0 } = options.interval;
+    if (!TIME_UNITS.includes(unit) || ["week", "weekday"].includes(unit)) throw new Error("Bar width interval requires year, quarter, month, day, hour, minute, or second.");
+    if (![insetStart, insetEnd].every(v => Number.isFinite(v) && v >= 0)) throw new RangeError("Bar interval insets must be non-negative finite pixels.");
+    return cloneAndFreeze({ interval: { unit, insetStart, insetEnd } });
   }
   if (!hasBand && !hasPixels) {
     return cloneAndFreeze(existing ?? DEFAULT_BAR_WIDTH);
@@ -96,4 +107,19 @@ export function resolveBarWidth(config, slotBandwidth) {
     throw new Error("Bar width requires a positive resolved slot bandwidth.");
   }
   return normalized.pixels ?? slotBandwidth * normalized.band;
+}
+
+
+// Width intent never buckets or aggregates data: category values are interval starts.
+export function resolveBarInterval(config, value, scale) {
+  if (scale.type !== "time") throw new Error("Bar interval width requires a temporal category scale.");
+  const { unit, insetStart, insetEnd } = normalizeBarWidth(config).interval;
+  const start = floorUtcTimeUnit(value, unit);
+  if (start !== value) throw new Error("Bar interval category values must be UTC interval starts.");
+  const end = offsetUtcTimeUnit(start, unit);
+  if (!validTimestamp(end)) throw new RangeError("Bar interval end exceeds the supported Date range.");
+  if (start < Math.min(...scale.domain) || end > Math.max(...scale.domain)) throw new RangeError("Bar interval endpoints must be inside the temporal scale domain; set an explicit covering domain.");
+  const [a, b] = mapContinuousScaleValues([start, end], scale), width = Math.abs(b - a) - insetStart - insetEnd;
+  if (width <= 0) throw new RangeError("Bar interval insets must leave a positive width.");
+  return { position: Math.min(a, b) + (b >= a ? insetStart : insetEnd), width };
 }

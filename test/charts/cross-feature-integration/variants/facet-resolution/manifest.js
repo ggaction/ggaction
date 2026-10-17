@@ -198,8 +198,7 @@ const regions = shared.cells.map(cell => ({
   height: 154,
   minimumInkPixels: 80
 }));
-const outerWidth = outer.width + OUTER_GUIDE_LAYOUT.legendGap +
-  OUTER_GUIDE_LAYOUT.legendWidth;
+const outerWidth = OUTER_GUIDE_LAYOUT.canvasWidth;
 const outerRegions = [
   ...outer.cells.map(cell => ({
     name: `cluster-${cell.cluster}`,
@@ -211,10 +210,10 @@ const outerRegions = [
   })),
   {
     name: "population-legend",
-    x: outer.width + OUTER_GUIDE_LAYOUT.legendGap,
-    y: outer.plot.y + (outer.plot.height - OUTER_GUIDE_LAYOUT.gradientHeight) / 2 - 22,
-    width: 82,
-    height: OUTER_GUIDE_LAYOUT.gradientHeight + 24,
+    x: OUTER_GUIDE_LAYOUT.legendX,
+    y: outer.plot.y,
+    width: OUTER_GUIDE_LAYOUT.legendWidth,
+    height: OUTER_GUIDE_LAYOUT.gradientHeight + 30,
     minimumInkPixels: 120
   }
 ];

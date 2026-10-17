@@ -1,3 +1,4 @@
+import {parseTimeValue,validateParseTimeFormat} from "./parseTime.js";
 import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation.js";
 import { requireStringValue as requireField } from "../core/validation.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
@@ -9,6 +10,7 @@ const NUMERIC_UNARY = new Set(["negate", "absolute", "log", "sqrt"]);
 const BOOLEAN_UNARY = new Set(["not", "isNull"]);
 const LOGICAL = new Set(["and", "or"]);
 const VARIADIC = new Set(["coalesce", "concat"]);
+const RESERVED_PATH_KEYS = new Set(["__proto__", "prototype", "constructor"]);
 const MAX_DEPTH = 16;
 const MAX_NODES = 128;
 const MAX_WORK = 10_000_000;
@@ -40,7 +42,7 @@ function validateOperands(expression, minimum) {
   }
 }
 
-function inspectExpression(expression, depth, state) {
+function inspectExpression(expression, depth, state, optionalPathRoot = false) {
   if (!isPlainObject(expression)) {
     throw new TypeError("Computed expression nodes must be plain objects.");
   }
@@ -62,7 +64,9 @@ function inspectExpression(expression, depth, state) {
     }
     if (kinds[0] === "field") {
       rejectUnknownKeys(expression, ["field"], "computed field expression");
-      state.fields.add(requireField(expression.field, "Computed expression field"));
+      const field = requireField(expression.field, "Computed expression field");
+      state.fields.add(field);
+      if (!optionalPathRoot) state.requiredFields.add(field);
       return;
     }
     if (kinds[0] === "constant") {
@@ -78,7 +82,39 @@ function inspectExpression(expression, depth, state) {
       inspectExpression(expression.right, depth + 1, state);
       return;
     }
-    if (NUMERIC_UNARY.has(expression.op) || BOOLEAN_UNARY.has(expression.op)) {
+    if (expression.op === "getPath") {
+      rejectUnknownKeys(expression, ["op", "operand", "path"], "computed path expression");
+      if (!isPlainObject(expression.operand) ||
+          Object.keys(expression.operand).length !== 1 ||
+          !Object.hasOwn(expression.operand, "field")) {
+        throw new TypeError("Computed getPath operand must be a literal field reference.");
+      }
+      if (!Array.isArray(expression.path) || expression.path.length < 1 ||
+          expression.path.length > 8 || !Array.from(expression.path).every(key =>
+            typeof key === "string" && key.length > 0 && !RESERVED_PATH_KEYS.has(key))) {
+        throw new TypeError("Computed getPath path must contain 1 to 8 nonempty, nonreserved string keys.");
+      }
+      inspectExpression(expression.operand, depth + 1, state, true);
+      return;
+    }
+    if (expression.op === "replaceLiteral") {
+      rejectUnknownKeys(expression, ["op", "operand", "search", "replacement"], "computed literal replacement");
+      requireNode(expression, "operand", expression.op);
+      if (typeof expression.search !== "string" || expression.search.length === 0 ||
+          typeof expression.replacement !== "string") {
+        throw new TypeError("Computed replaceLiteral requires a nonempty string search and string replacement.");
+      }
+      inspectExpression(expression.operand, depth + 1, state);
+      return;
+    }
+    if (expression.op === "parseTime") {
+      rejectUnknownKeys(expression, ["op", "operand", "format"], "computed time expression");
+      requireNode(expression, "operand", expression.op);
+      validateParseTimeFormat(expression.format);
+      inspectExpression(expression.operand, depth + 1, state);
+      return;
+    }
+    if (NUMERIC_UNARY.has(expression.op) || BOOLEAN_UNARY.has(expression.op) || expression.op === "toNumber") {
       rejectUnknownKeys(expression, ["op", "operand"], "computed unary expression");
       requireNode(expression, "operand", expression.op);
       inspectExpression(expression.operand, depth + 1, state);
@@ -121,7 +157,7 @@ function inspectComputedTransform(transform) {
     throw new Error(`Unsupported computed transform "${transform.type}".`);
   }
   requireField(transform.as, "Computed output field");
-  const state = { nodes: 0, fields: new Set(), ancestors: new WeakSet() };
+  const state = { nodes: 0, fields: new Set(), requiredFields: new Set(), ancestors: new WeakSet() };
   inspectExpression(transform.expression, 1, state);
   return state;
 }
@@ -223,6 +259,27 @@ function compare(left, right, operation, rowIndex) {
         : order >= 0;
 }
 
+function ownDataProperty(record, key, rowIndex) {
+  const descriptor = Object.getOwnPropertyDescriptor(record, key);
+  if (descriptor === undefined) return undefined;
+  if (!Object.hasOwn(descriptor, "value")) {
+    throw new TypeError(`Computed getPath cannot read an accessor at row ${rowIndex}.`);
+  }
+  return descriptor.value;
+}
+
+function nestedScalar(expression, row, rowIndex) {
+  let value = ownDataProperty(row, expression.operand.field, rowIndex);
+  for (const key of expression.path) {
+    if (value === undefined || value === null) return null;
+    if (!isPlainObject(value)) {
+      throw new TypeError(`Computed getPath requires plain records at row ${rowIndex}.`);
+    }
+    value = ownDataProperty(value, key, rowIndex);
+  }
+  return scalar(value, "Computed getPath result", rowIndex);
+}
+
 function evaluate(expression, row, rowIndex) {
   if (Object.hasOwn(expression, "field")) {
     return scalar(
@@ -233,6 +290,16 @@ function evaluate(expression, row, rowIndex) {
   }
   if (Object.hasOwn(expression, "constant")) return expression.constant;
   const operation = expression.op;
+  if (operation === "getPath") return nestedScalar(expression, row, rowIndex);
+  if (operation === "replaceLiteral") {
+    const value = evaluate(expression.operand, row, rowIndex);
+    if (typeof value !== "string") {
+      throw new TypeError(`Computed replaceLiteral requires a string at row ${rowIndex}.`);
+    }
+    const index = value.indexOf(expression.search);
+    return index < 0 ? value
+      : value.slice(0, index) + expression.replacement + value.slice(index + expression.search.length);
+  }
   if (operation === "if") {
     return boolean(evaluate(expression.condition, row, rowIndex), operation, rowIndex)
       ? evaluate(expression.then, row, rowIndex)
@@ -272,6 +339,17 @@ function evaluate(expression, row, rowIndex) {
       ? value === null
       : !boolean(value, operation, rowIndex);
   }
+  if (operation === "parseTime") {
+    return parseTimeValue(evaluate(expression.operand, row, rowIndex), expression.format);
+  }
+  if (operation === "toNumber") {
+    const value = evaluate(expression.operand, row, rowIndex);
+    if (typeof value === "number") return number(value, operation, rowIndex);
+    if (typeof value !== "string" || !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(value.trim())) {
+      throw new TypeError(`Computed toNumber requires a finite number or decimal string at row ${rowIndex}.`);
+    }
+    return number(Number(value.trim()), operation, rowIndex);
+  }
   if (NUMERIC_UNARY.has(operation)) {
     const value = number(evaluate(expression.operand, row, rowIndex), operation, rowIndex);
     if (operation === "log" && value <= 0) {
@@ -308,7 +386,7 @@ function evaluate(expression, row, rowIndex) {
 }
 
 export function deriveComputedRows(rows, transform) {
-  const { nodes, fields } = inspectComputedTransform(transform);
+  const { nodes, fields, requiredFields } = inspectComputedTransform(transform);
   if (rows.length * nodes > MAX_WORK) {
     throw new RangeError(`Computed work cannot exceed ${MAX_WORK} row-nodes.`);
   }
@@ -316,15 +394,14 @@ export function deriveComputedRows(rows, transform) {
     throw new Error(`Computed output field "${transform.as}" already exists.`);
   }
   if (rows.length > 0) {
-    rows.forEach((row, index) => {
-      for (const field of fields) {
-        if (!Object.hasOwn(row, field)) {
-          throw new Error(
-            `Computed source does not contain field "${field}" at row ${index}.`
-          );
+    for (const field of fields) {
+      const knownOptional = !requiredFields.has(field) && rows.some(row => Object.hasOwn(row, field));
+      rows.forEach((row, index) => {
+        if (!knownOptional && !Object.hasOwn(row, field)) {
+          throw new Error(`Computed source does not contain field "${field}" at row ${index}.`);
         }
-      }
-    });
+      });
+    }
   }
   let outputType;
   return rows.map((row, index) => {

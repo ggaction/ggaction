@@ -295,7 +295,11 @@ type AggregateOperation =
   partition을 합계 1로 정규화하고 automatic y domain을 `[0, 1]`로 고정한다. 합계가 0인 partition은
   graphic을 만들지 않는다. Aggregate bar의 group/overlay는 `stack: null`이어도 semantic start endpoint
   `0`을 domain과 geometry가 함께 사용한다. Automatic domain은 `zero: false`와 무관하게 이 endpoint를
-  포함하며 explicit domain이 0을 제외하면 preflight에서 거부한다. `"center"`는 nominal group을 가진
+  포함하며 explicit domain이 0을 제외하면 preflight에서 거부한다.
+  `overlay`의 quantitative measure scale은 같은 scale의 일반 quantitative rule/point/line consumer와
+  field 이름이 달라도 공유할 수 있다. Automatic domain은 최종 overlay aggregate와 직접 consumer의
+  값을 함께 포함하며 explicit domain과0-baseline 검증은 유지한다. Group/stack/fill/diverging/center의
+  기존 변환-policy 충돌 검증은 완화하지 않는다. `"center"`는 nominal group을 가진
   non-negative raw/density area의 y에서만 허용한다. 모든 group은 같은 x position을 정확히 한 번씩 가져야
   하며 각 partition은 deterministic first-appearance group order로 `-total / 2`부터 쌓인다. Missing position,
   duplicate group/x, ranged area, negative value와 bar center stack은 atomic하게 거부한다.
@@ -1119,11 +1123,13 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `aggregate`: aggregate bar continuous color에서만 사용한다. Color field가 measure field와 같으면 measure
   aggregate를 상속하고, 다른 field는 compatible aggregate를 명시해야 한다. 집계는 최종 category rect
   grain에서 독립적으로 계산한다.
-- Quantitative color/stroke는 `log`(base 기본 10), `symlog`(constant 기본 1)도 지원한다.
+- Quantitative color/stroke는 `log`(base 기본 10), `sqrt`(부호 보존 제곱근), `symlog`(constant 기본 1)도 지원한다.
+  Sqrt는 f(v)=sign(v)*sqrt(abs(v)) 후 domain 양 끝으로 정규화하며 음수·zero-crossing·역방향 domain을 지원한다.
+  원래 데이터와 수치 domain을 저장하고 exponent/base/constant를 받지 않으며 midpoint는 sequential 전용이다.
   Position과 동일한 변환을 색상 비율과 gradient 눈금 위치에 적용한다. Temporal은 sequential만 허용한다.
   Log는 같은 부호의 nonzero domain/values, symlog는 양수 constant를 요구한다.
   Transform edit는 mark와 legend를 함께 갱신하고 type 변경은 이전 전용 parameter를 제거한다.
-  Evidence: `test/unit/actions/scales/transformed-color.test.js`.
+  Evidence: `test/unit/actions/scales/transformed-color.test.js`, `test/unit/actions/scales/square-root-color.test.js`.
 - Quantitative sequential nested scale은 `midpoint:number|"auto"`를 지원한다. Omission은 기존 scale policy를 보존하고 auto는 제거한다. 값은 최종 domain 내부에 있어야 하며 공통 mapper를 통해 mark/gradient legend에 적용한다. Temporal encoding은 numeric midpoint를 거부한다. Exact policy: CORE createScale/editScale. Evidence: `test/unit/actions/scales/midpoint.test.js`, `test/charts/color-midpoint/`.
 - `scale`: nominal은 ordinal, continuous point/bar/rect color는 internal sequential scale이다. Quantitative point/aggregate bar/rect는
   `quantize | quantile | threshold`도 지원한다. `palette` 또는
@@ -1283,7 +1289,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - Signature: `encodeShape({ field, target?, fieldType?, scale? })`
 - `field`, `target`, `fieldType`: nominal field, optional point ID, nominal-only type다.
-- `scale`: ordinal shape scale. Shared `PointShape` 12종을 non-repeating automatic range로 사용한다.
+- `scale`: ordinal shape scale. Shared `PointShape` 12종을 non-repeating automatic range로 사용한다. Explicit range는 category별 shape entry를 제공하며 의도적인 shape 재사용을 허용한다. Domain보다 짧은 range는 오류이고 암묵적 cycling은 하지 않는다.
 - Effect: point graphic을 heterogeneous collection으로 바꾸고 각 datum의 concrete primitive type과
   legend symbol을 rematerialize한다.
 - Coverage: regression scatterplot과 point/legend tests가 circle/square mapping을 검증한다.
@@ -1300,7 +1306,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `field`, `target`, `fieldType`
   - ✅ Covered: nominal point field와 invalid alternatives.
 - `scale.domain/range`
-  - ✅ Covered: automatic and explicit 12-shape range, unique validation, capacity error and heterogeneous output.
+  - ✅ Covered: automatic and explicit 12-shape range, supported-value validation, explicit repeated assignments, capacity error and heterogeneous output.
   - ✅ Covered: equal-area mark/legend recipes and Canvas path-ready concrete geometry.
 - Evidence: point appearance, mark-schema and regression chart/guide tests.
 
@@ -1341,14 +1347,16 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Signature: `encodeOpacity({ value, target? } | { field, target?, fieldType?, scale? })`
 - 상수로 전환할 때 target이 소유한 opacity legend만 제거하며 다른 layer의 범례는 보존한다.
 - `value`: field와 mutually exclusive인 finite `[0, 1]` number.
-- `field`: value와 mutually exclusive인 quantitative point/rule/line field. auto linear range는 `[0.2, 1]`이다.
-- `target`: optional point, rule 또는 line ID.
+- `field`: value와 mutually exclusive인 quantitative point/rule/line/bar field. auto linear range는 `[0.2, 1]`이다.
+- `target`: optional point, rule, line 또는 bar ID.
 - Effect: constant는 graphical config, field는 semantic encoding과 linear scale을 저장한다. 같은 target에
   다시 호출하면 constant↔field 또는 field↔field를 structural copy로 교체하고 target mark/legend를 rematerialize한다.
 - Line은 final-series grain이며 모든 source row의 field 값이 같아야 한다. Width처럼 implicit grouping을
   만들지 않는다. Constant mode는 fieldType/scale 및 opacity-channel selection과 충돌하고 field/own legend만
   정리한다. Field mode는 constant override를 제거한다. Line은 unknown fallback을 지원하지 않는다.
 - Field Line opacity는 scale/Canvas/filter/highlight replay와 sampled opacity legend를 지원한다.
+- Bar는 ranged item 또는 final aggregate/bin/series cell마다 하나의 field 값을 요구하며 opacity로 새로운 그룹을 만들지 않는다. 값이 다른 cell은 거부한다. 상수↔field 전환 시 `barAppearance.opacity`도 정리하며 `editBarMark({ opacity })`는 field mode와 충돌한다. Position 이전의 field 지정, scale/Canvas/persistence replay와 opacity sample legend를 지원한다.
+- Evidence: `test/unit/actions/encodings/bar-opacity.test.js` covers constant/field replacement, aggregate rejection, grouped/ranged/histogram cells, scale/Canvas edits, persistence and legend cleanup.
 - Coverage: point/rule/regression 및 line-appearance-modes tests가 replacement와 invalid range를 검증한다.
 
 ### Formal values — `encodeOpacity`
@@ -1362,7 +1370,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `value`
   - ✅ Covered: representative value, 0, 1, below/above range와 non-finite rejection.
 - `target`
-  - ✅ Covered: inferred/explicit point, rule and line, unknown/incompatible target.
+  - ✅ Covered: inferred/explicit point, rule, line and bar, unknown/incompatible target.
 - Reassignment
   - ✅ Covered: constant↔constant, field↔field and constant↔field immutable replacement.
 - ✅ Covered: auto/explicit descending range, clamp/reverse, continuous sample legend and constant-mode cleanup.
@@ -1518,10 +1526,15 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeBarWidth`
 
-- Signature: `encodeBarWidth({ band?, pixels?, target? })`
+- Signature: `encodeBarWidth({ band?, pixels?, interval?, target? })`
 - `band`: `(0, 1]` finite number. Resolved category/offset slot 중 rect가 차지하는 비율이다.
 - `pixels`: positive finite logical Canvas pixel width. `band`와 mutually exclusive이며 PNG `pixelRatio`와
-  무관하다.
+  무관하다. 같은 time position scale의 모든 temporal Bar consumer가 explicit pixel width를 쓰면
+  center는 auto plot range 전체에 매핑되며 half-slot inset을 적용하지 않는다. 하나라도 implicit/band
+  width면 공유 scale의 기존 inferred-slot inset을 유지한다. Explicit numeric scale range는 두 경우
+  모두 그대로 보존한다. Width mode 변경은 공유 line/rule/text와 axis guide를 함께 rematerialize한다.
+- `interval`: `{ unit: "year"|"quarter"|"month"|"day"|"hour"|"minute"|"second", insetStart?: NonNegativeFinite, insetEnd?: NonNegativeFinite }`. Band/pixels와 mutually exclusive다. Group 없는 aggregate temporal category의 UTC interval start를 해당 달력 구간 끝까지 그린다. Insets는 calendar-start/end 쪽 logical px이며 기본0이다. UTC 경계가 아닌 값, category interval 밖 domain, non-positive inset 결과, grouped/ranged/centered/histogram은 거부한다. 이 width는 data를 bucket/aggregate하지 않으며 source 값은 이미 interval start여야 한다.
+- Interval mode는 temporal bar의 center-slot half-band inset을 사용하지 않는다. 같은 position scale의 interval/centered temporal Bar 혼합은 거부한다. Source explicit domain은 모든 끝점을 포함해야 한다. Canvas/scale edits와 persistence replay가 같은 width를 rematerialize한다.
 - Complete aggregate/ranged bar는 action 호출 전에도 implicit `{ band: 0.72 }`로 즉시 materialize된다.
   첫 assignment에서 width mode를 생략하면 그 기본값을 config에 저장하고, reassignment에서 생략하면 current
   mode와 value를 유지한다. Group slot spacing은 directional offset action이 소유한다.
@@ -1529,7 +1542,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   보존한다. 숫자 center는 공유된 continuous scale의 그대로인 좌표를 사용하며 half-width inset을 적용하지 않는다.
 - `target`: optional Bar ID. 위치가 없는 valid partial Bar도 받는다. 완성된 group layout은 matching offset를
   추가로 요구한다.
-- Effect: graphical mark config에 exactly one width mode를 저장하고 centered rect x/width를
+- Effect: graphical mark config에 exactly one width mode를 저장하고 rect category position/width를
   rematerialize한다. Band width는 Canvas resize에 반응하고 pixel width는 고정된다. Slot보다 큰 explicit
   pixel width와 overlap은 허용한다.
 - 위치가 미완성일 때는 기존 barWidth config만 저장하고 items를 생성하지 않는다. 나중에 category/measure
@@ -1545,6 +1558,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ### Formal values — `encodeBarWidth`
 
 - Implemented: mutually exclusive `encodeBarWidth({ band?: number; pixels?: never; target?: UserId } | { band?: never; pixels: PositiveFinite; target?: UserId })`; complete bar implicit default and first-assignment default are both `{ band: 0.72 }`.
+- Implemented: additional mutually exclusive interval branch with UTC calendar units and start/end pixel insets.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -1555,19 +1569,22 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `pixels`
   - ✅ Covered: representative fixed width, slot보다 큰 overlap, zero/negative/non-finite rejection와
     `band` mutual exclusion.
+  - ✅ Covered: temporal full plot range, 양방향/authoring order/reverse/resize/persistence,
+    explicit range override, shared line/rule/text/axis refresh와 mixed band consumer 보존.
+    Evidence: `test/unit/actions/scales/temporal-bar-line-sharing.test.js`.
 - `target`
   - ✅ Covered: inferred/explicit aggregate/grouped/ranged bar, both ranged orientations와 incomplete prerequisites.
 - Reassignment
   - ✅ Covered: explicit mode switching, omitted-mode retention와 immutable concrete rematerialization.
 - Resize/order
   - ✅ Covered: band responsive, pixels fixed, width/padding action-order convergence와 2× PNG parity.
-- Evidence: grouped-bar width and chart reference tests, `test/unit/actions/encodings/bar-authoring-order.test.js`.
+- Evidence: grouped-bar width and chart reference tests, `test/unit/actions/encodings/bar-authoring-order.test.js`, `test/unit/actions/encodings/temporal-interval-width.test.js`.
 
 ## `encodeText`
 
 - Signature: `encodeText({ target?, field?, value?, content?, normalizeBy?, format? })` with exactly one of `field`, `value`, or `content`.
 - `target`: current compatible text mark, otherwise one unique text mark; ambiguity requires an explicit ID.
-- `field`: a field present on the text dataset. For a source-owned aggregate bar annotation, a matching measure field
+- `field`: a field present on the text dataset. An empty effective dataset may bind a field retained in its known schema; unknown-schema and absent fields still reject. It preserves the text intent with zero items, and later source revisions validate/format actual values normally. For a source-owned aggregate bar annotation, a matching measure field
   resolves to the final aggregate endpoint rather than an arbitrary source row. A measured Arc's radius field uses its
   final category aggregate. Common fields retain their common-item content. Use semantic `content:"value"` for the
   source statistic before stacking or normalization instead of interpreting a field as cumulative geometry.

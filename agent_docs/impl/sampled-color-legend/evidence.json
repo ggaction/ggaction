@@ -1,0 +1,102 @@
+{
+  "sourceSha256": "9b6b2bd13c9d64aa3bfe88bc479c20c194082caea19de2c3c04ca3a4fe4b5878",
+  "sourceSvgSha256": "55caed5ca3cd18aa908e21fda9e325602a9b2d978c32c027c370ac4bd67bfdbd",
+  "settledRuntimeColorScale": {
+    "type": "linear",
+    "interpolate": "hcl",
+    "domain": [
+      1,
+      9
+    ],
+    "range": [
+      "rgb(68, 1, 84)",
+      "rgb(253, 231, 37)"
+    ]
+  },
+  "actualSourceDom": {
+    "representation": "four-circle-symbols",
+    "labels": [
+      "2",
+      "4",
+      "6",
+      "8"
+    ],
+    "columns": 1,
+    "direction": "vertical",
+    "noGradientStrip": true,
+    "evidence": {
+      "path": "api-gap-evidence/source-actual-legend-dom.json",
+      "sha256": "b087751f48e6cb86c028764dd9719e2a56337ff697dba565c57e3ac8af9bcb62"
+    }
+  },
+  "conclusion": "The settled color scale is continuous linear, not ordinal. Source SVG paints sampled symbol entries. Public color legend dispatch selects a gradient and rejects exact samples; current values option documents only size/opacity/strokeWidth. Restoring a gradient would not restore this source legend.",
+  "referenceId": "0392",
+  "chartPixelsInspected": false,
+  "paidCalls": 0,
+  "paintedEntries": [
+    {
+      "label": "2",
+      "fill": "rgb(71, 45, 123)",
+      "stroke": "rgb(71, 45, 123)",
+      "bounds": {
+        "left": 71,
+        "top": 53,
+        "width": 10,
+        "height": 10
+      }
+    },
+    {
+      "label": "4",
+      "fill": "rgb(44, 114, 142)",
+      "stroke": "rgb(44, 114, 142)",
+      "bounds": {
+        "left": 71,
+        "top": 69,
+        "width": 10,
+        "height": 10
+      }
+    },
+    {
+      "label": "6",
+      "fill": "rgb(40, 174, 128)",
+      "stroke": "rgb(40, 174, 128)",
+      "bounds": {
+        "left": 71,
+        "top": 85,
+        "width": 10,
+        "height": 10
+      }
+    },
+    {
+      "label": "8",
+      "fill": "rgb(171, 220, 50)",
+      "stroke": "rgb(171, 220, 50)",
+      "bounds": {
+        "left": 71,
+        "top": 101,
+        "width": 10,
+        "height": 10
+      }
+    }
+  ],
+  "sourceDomEvidenceSha256": "b087751f48e6cb86c028764dd9719e2a56337ff697dba565c57e3ac8af9bcb62",
+  "independentReview": {
+    "reviewer": "legend_refresh_pipeline",
+    "mode": "read-only source and SVG DOM; no pixels",
+    "reproduction": "pass",
+    "previousProgramImmutable": true,
+    "clarificationsResolved": [
+      "public scale scope restricted to sequential/log/symlog",
+      "channels preserves existing final-content-set replacement meaning"
+    ],
+    "nativeSampleColors": [
+      "#472d7b",
+      "#2c728e",
+      "#28ae80",
+      "#abdc32"
+    ],
+    "nativeMapperMatchesTarget": true,
+    "newApiImplemented": false
+  },
+  "reproductionRuntimeCommit": "80bf03537d2f19eed02d3266f4dc4230c1c0fa12"
+}

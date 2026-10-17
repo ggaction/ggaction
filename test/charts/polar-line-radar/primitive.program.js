@@ -367,14 +367,14 @@ function createPolarLinePrimitiveProgram(values, settings) {
       length: legend.domain.length
     })
     .editGraphics({ target: "seriesLegendLabels", property: "x", value: legend.labelX })
-    .editGraphics({ target: "seriesLegendLabels", property: "y", value: legend.itemY })
+    .editGraphics({ target: "seriesLegendLabels", property: "y", value: legend.itemY.map(y => y - 6) })
     .editGraphics({ target: "seriesLegendLabels", property: "text", value: legend.domain })
     .editGraphics({ target: "seriesLegendLabels", property: "fill", value: "#334155" })
     .editGraphics({ target: "seriesLegendLabels", property: "fontSize", value: 12 })
     .editGraphics({ target: "seriesLegendLabels", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "seriesLegendLabels", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "seriesLegendLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "seriesLegendLabels", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "seriesLegendLabels", property: "textBaseline", value: "top" })
     .createGraphics({ id: "seriesLegendTitle", parent: "canvas", type: "text" })
     .editGraphics({ target: "seriesLegendTitle", property: "x", value: legend.titleX })
     .editGraphics({ target: "seriesLegendTitle", property: "y", value: legend.titleY })
@@ -384,7 +384,7 @@ function createPolarLinePrimitiveProgram(values, settings) {
     .editGraphics({ target: "seriesLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "seriesLegendTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "seriesLegendTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "middle" });
+    .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "top" });
 }
 
 export function createGapminderPolarLinePrimitives(rows) {

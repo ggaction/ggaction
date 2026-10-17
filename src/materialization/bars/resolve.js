@@ -1,3 +1,23 @@
+import { readScaleField } from "../../grammar/scales/index.js";
+import { mapScaleConsumerValues } from "../scales/map.js";
+
+// Appearance belongs to a final bar cell and never introduces another group.
+export function resolveBarCellOpacities(program, layer, rowsByCell) {
+  const encoding = layer.encoding?.opacity;
+  if (encoding === undefined) return undefined;
+  const scale = program.resolvedScales[encoding.scale];
+  const values = rowsByCell.map(rows => {
+    const values = readScaleField(rows, encoding.field, encoding.fieldType, {
+      allowUnknown: Object.hasOwn(scale, "unknown")
+    });
+    if (new Set(values).size !== 1) {
+      throw new Error("Bar opacity requires one value within each final cell.");
+    }
+    return values[0];
+  });
+  return mapScaleConsumerValues(values, scale, "opacity");
+}
+
 import { hasRectRadius } from "../../grammar/roundedRect.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { findDataset } from "../../selectors/datasets.js";

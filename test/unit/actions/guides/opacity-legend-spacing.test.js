@@ -69,7 +69,7 @@ test("opacity style, count, content and filtering edits converge on fresh layout
       .editLegendSymbols({ symbol: options.symbol, count: 3 }).editLegendLabels(options.labels)
       .editLegendTitle(options.titleStyle);
     assert.deepEqual(p.graphicSpec, expected.graphicSpec);
-    assert.deepEqual(source.createLegend({ channels: ["color"] }).editLegend(options).graphicSpec, expected.graphicSpec);
+    assert.deepEqual(source.createLegend({ channels: ["color"] }).editLegend({ ...options, itemGap: expected.guideConfigs.legend.opacity.itemGap }).graphicSpec, expected.graphicSpec);
     const count = p.editLegendSymbols({ count: 5 });
     assertSpacing(count);
     assert.deepEqual(count.graphicSpec, source.createLegend({ ...options, count: 5 }).graphicSpec);

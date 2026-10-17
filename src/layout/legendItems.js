@@ -1,5 +1,6 @@
 import { measureTextWidth, resolveTextBounds } from "../core/textMetrics.js";
-import { alignLegendStart, resolveLegendGrid, isPlotLegend } from "./legend.js";
+import { alignLegendStart, resolveLegendGrid, isPlotLegend, legendLabelLineHeight } from "./legend.js";
+import { alignLegendTitle, resolveLegendTitleText } from "./legendText.js";
 
 // Measure item content before choosing its edge. Family owners supply the
 // sample dimensions and formatted labels; this module does not inspect scales.
@@ -20,8 +21,10 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
   const inside = isPlotLegend(config);
   const side = inside || ["left", "right"].includes(config.position);
   const titleVisible = config.titleVisible !== false;
-  const titleWidth = titleVisible ? measureTextWidth(config.title, config.titleStyle, profile) : 0;
-  const titleHeight = titleVisible ? config.titleStyle.fontSize : 0;
+  const titleText = titleVisible ? resolveLegendTitleText(config.title, config.titleStyle, profile)
+    : { width: 0, height: 0 };
+  const titleWidth = titleVisible ? titleText.width : 0;
+  const titleHeight = titleVisible ? titleText.height : 0;
   let symbolX;
   let labelX;
   let itemY;
@@ -46,7 +49,7 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
     const width = Math.max(grid.gridWidth, titleWidth);
     const x = config.position === "right" ? plot.x + plot.width + config.offset
       : plot.x - config.offset - width;
-    const itemHeight = Math.max(sampleHeight, config.labels.fontSize);
+    const itemHeight = Math.max(sampleHeight, legendLabelLineHeight(config.labels.fontSize));
     const pitch = Math.max(config.itemGap, itemHeight);
     let cursor = x;
     const columnStarts = grid.columnWidths.map(columnWidth => {
@@ -56,8 +59,19 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
     });
     symbolX = grid.cells.map(cell => columnStarts[cell.column] - sampleLeft);
     labelX = grid.cells.map(cell => columnStarts[cell.column] + sampleWidth + config.labels.offset);
-    const firstY = Math.max(plot.y + 52, titleVisible
+    let firstY = Math.max(plot.y + 52, titleVisible
       ? plot.y + 20 + titleHeight / 2 + 12 + itemHeight / 2 : plot.y + 52);
+    if ((inside || config.groupCorner === true) && titleVisible) {
+      const titleBounds = resolveTextBounds({ x: x, y: plot.y + 20,
+        text: config.title, ...config.titleStyle, lines: titleText.lines,
+        textAlign: "left", textBaseline: "middle" }, profile);
+      const labelTops = labels.map(text => resolveTextBounds({
+        x: 0, y: 0, text, ...config.labels,
+        textAlign: "left", textBaseline: "middle"
+      }, profile).top);
+      const itemTop = Math.min(...sampleBounds.map(bounds => bounds.top), ...labelTops);
+      firstY = titleBounds.bottom + 12 - itemTop;
+    }
     itemY = grid.cells.map(cell => firstY + cell.row * pitch);
     title = { x, y: plot.y + 20, align: "left" };
   } else {
@@ -87,14 +101,20 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
   const textBounds = (x, y, text, style, align = "left") => resolveTextBounds({
     x, y, text, ...style, textAlign: align, textBaseline: "middle"
   }, profile);
-  const bounds = [
-    ...(titleVisible ? [textBounds(title.x, title.y, config.title, config.titleStyle, title.align)] : []),
+  const bodyBounds = [
     ...labels.map((label, index) => textBounds(labelX[index], itemY[index], label, config.labels)),
     ...symbolX.map((x, index) => {
       const local = sampleBounds[index];
       return { left: x + local.left, right: x + local.right,
         top: itemY[index] + local.top, bottom: itemY[index] + local.bottom };
     })
+  ];
+  if (titleVisible) title = alignLegendTitle(title, config.title, config.titleStyle, bodyBounds, profile);
+  const bounds = [
+    ...(titleVisible ? [resolveTextBounds({ x: title.x, y: title.y,
+      text: config.title, ...config.titleStyle, lines: titleText.lines,
+      textAlign: title.align, textBaseline: "middle" }, profile)] : []),
+    ...bodyBounds
   ];
   if (config.layout === "legacy-bottom") {
     const itemBounds = titleVisible ? bounds.slice(1) : bounds;

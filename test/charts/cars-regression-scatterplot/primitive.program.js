@@ -578,7 +578,7 @@ export function createCarsRegressionScatterplotPrimitives(cars, {
     .editGraphics({ target: "seriesLegendLabels", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "seriesLegendLabels", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "seriesLegendLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "seriesLegendLabels", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "seriesLegendLabels", property: "textBaseline", value: "top" })
     .createGraphics({
       id: "seriesLegendTitle",
       type: "text",
@@ -592,7 +592,7 @@ export function createCarsRegressionScatterplotPrimitives(cars, {
     .editGraphics({ target: "seriesLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "seriesLegendTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "seriesLegendTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "seriesLegendTitle", property: "textBaseline", value: "top" })
     .createGraphics({
       id: "sizeLegendSymbols",
       type: "circle",
@@ -642,7 +642,7 @@ export function createCarsRegressionScatterplotPrimitives(cars, {
     .editGraphics({ target: "sizeLegendLabels", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "sizeLegendLabels", property: "fontWeight", value: "normal" })
     .editGraphics({ target: "sizeLegendLabels", property: "textAlign", value: "left" })
-    .editGraphics({ target: "sizeLegendLabels", property: "textBaseline", value: "middle" })
+    .editGraphics({ target: "sizeLegendLabels", property: "textBaseline", value: "top" })
     .createGraphics({
       id: "sizeLegendTitle",
       type: "text",
@@ -656,7 +656,7 @@ export function createCarsRegressionScatterplotPrimitives(cars, {
     .editGraphics({ target: "sizeLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "sizeLegendTitle", property: "fontWeight", value: 600 })
     .editGraphics({ target: "sizeLegendTitle", property: "textAlign", value: "left" })
-    .editGraphics({ target: "sizeLegendTitle", property: "textBaseline", value: "middle" });
+    .editGraphics({ target: "sizeLegendTitle", property: "textBaseline", value: "top" });
 }
 
 export function renderCarsRegressionScatterplotPrimitives(program, context) {

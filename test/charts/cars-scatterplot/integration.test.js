@@ -55,7 +55,8 @@ test("converges after scale editing and Canvas resizing in either order", () => 
       "rematerializeScale",
       "rematerializeScale",
       "rematerializePointMark",
-      "rematerializeLegend"
+      "rematerializeLegend",
+      "rematerializeSideLegendLane"
     ]
   );
 });

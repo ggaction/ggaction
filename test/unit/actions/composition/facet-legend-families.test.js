@@ -203,8 +203,30 @@ test("preserves the configured shared legend edge and horizontal alignment", () 
     }
     assert.equal(
       faceted.graphicSpec.objects.canvas.properties.width,
-      ["top", "bottom"].includes(position) ? 700 : 850
+      700
     );
+  }
+});
+
+test("shared side legends align their complete bounds with the translated child plots", () => {
+  const sources = [
+    ...families.map(family => family.build(pointBase())),
+    pointBase().encodeColor({ field: "value", fieldType: "quantitative" }).createLegend({ border: true }),
+    pointBase().encodeColor({ field: "category" })
+  ];
+  for (const original of sources) {
+    const inferred = original.guideConfigs.legend === undefined;
+    for (const position of inferred ? ["right"] : ["left", "right"]) {
+      const sized = original.editCanvas({ width: 700, margin: { left: 220, right: 220 } });
+      const source = inferred ? sized : sized.editLegend({ position });
+      const before = JSON.stringify(source);
+      const p = source.facet({ field: "group", guides: { legend: "shared" } });
+      const id = inferred ? "facet-legend" : "facet-shared-legend";
+      assert.equal(resolveConcreteGraphicBounds(p.graphicSpec, id).top, facetPlotUnion(p).top);
+      const moved = p.editCompositionLayout({ gap: 30, padding: { top: 60 } });
+      assert.equal(resolveConcreteGraphicBounds(moved.graphicSpec, id).top, facetPlotUnion(moved).top);
+      assert.equal(JSON.stringify(source), before);
+    }
   }
 });
 

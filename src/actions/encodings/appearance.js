@@ -1,3 +1,4 @@
+import { canMaterializeBar } from "../../materialization/marks/index.js";
 import { action } from "../../core/action.js";
 import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
 import { assertEncodingSelectionCompatibility } from "../../materialization/selection/compatibility.js";
@@ -177,6 +178,17 @@ const clearOpacityEncoding = /* @__PURE__ */ action(
   }
 );
 
+function withoutConstantOpacity(program, target) {
+  const { opacity, ...config } = program.markConfigs[target] ?? {};
+  void opacity;
+  if (config.barAppearance?.opacity !== undefined) {
+    const { opacity: barOpacity, ...appearance } = config.barAppearance;
+    void barOpacity;
+    config.barAppearance = appearance;
+  }
+  return program._withMarkConfig(target, config);
+}
+
 const encodeOpacity = /* @__PURE__ */ action(
   {
     op: "encodeOpacity",
@@ -195,14 +207,13 @@ const encodeOpacity = /* @__PURE__ */ action(
     const { id: target, dataset: sourceDataset, layer } = resolveTarget(
       this,
       args.target,
-      ["point", "rule", "line"],
-      "point, rule or line mark"
+      ["point", "rule", "line", "bar"],
+      "point, rule, line or bar mark"
     );
     if (hasValue) {
       validateOpacityValue(args.value, "encodeOpacity");
       assertEncodingSelectionCompatibility(this, target, ["opacity"]);
-      const { opacity, ...config } = this.markConfigs[target] ?? {};
-      void opacity;
+      const config = withoutConstantOpacity(this, target).markConfigs[target];
       const withoutLegend = this.guideConfigs.legend?.opacity?.target === target
         ? this.removeOpacityLegend()
         : this;
@@ -212,6 +223,11 @@ const encodeOpacity = /* @__PURE__ */ action(
         ._withMarkConfig(target, { ...config, opacity: args.value });
       if (layer.mark.type === "line") {
         return rematerializeEncoding(next, target, "opacity", undefined, layer);
+      }
+      if (layer.mark.type === "bar") {
+        return canMaterializeBar(next, findLayer(next, target))
+          ? applyDetachedScaleRematerialization(next.rematerializeBarMark({ id: target }), [layer])
+          : next;
       }
       const materialized = layer.mark.type === "rule"
         ? next.rematerializeRuleMark({ id: target })
@@ -243,7 +259,7 @@ const encodeOpacity = /* @__PURE__ */ action(
     const { opacity, ...config } = this.markConfigs[target] ?? {};
     void opacity;
     let next = setEncodingProperties(
-      this._withoutMaterializationConfig(["marks", target, "opacity"]),
+      withoutConstantOpacity(this, target),
       target,
       "opacity",
       { field: args.field, fieldType, scale: scale.id }
@@ -251,6 +267,9 @@ const encodeOpacity = /* @__PURE__ */ action(
     next = applyEncodingScale(next, scale, requestedScale, {
       reassignment: previous?.scale === scale.id
     });
+    if (layer.mark.type === "bar" && !canMaterializeBar(next, findLayer(next, target))) {
+      return next.rematerializeScale({ id: scale.id });
+    }
     return rematerializeEncoding(next, target, "opacity", scale.id, layer);
   }
 );

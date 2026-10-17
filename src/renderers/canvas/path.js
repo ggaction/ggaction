@@ -82,7 +82,7 @@ function drawPath(context, child, collectionId) {
     applyCanvasFill(context, properties.fill, bounds, graphicId);
     context.fill();
   }
-  if (hasStroke) {
+  if (hasStroke && strokeWidth > 0) {
     applyCanvasStroke(context, properties, strokeDash);
     context.stroke();
   }

@@ -7,7 +7,7 @@ import {
   interpolateNumber,
   inverseLerp
 } from "../../../grammar/numeric.js";
-export function resolveTemporalBarBand(valuesByConsumer, domain, range) {
+export function resolveTemporalBarBand(valuesByConsumer, domain, range, markConfigs = {}, preserveRange = false) {
   const temporalBars = valuesByConsumer.filter(({ consumer }) => {
     const channels = resolveBarChannels(consumer.layer);
     return [BAR_GRAINS.aggregate, BAR_GRAINS.ranged].includes(resolveBarGrain(consumer.layer)) &&
@@ -15,6 +15,11 @@ export function resolveTemporalBarBand(valuesByConsumer, domain, range) {
       consumer.encoding.fieldType === "temporal";
   });
   if (temporalBars.length === 0) return undefined;
+  const intervalBars = temporalBars.filter(({consumer}) => markConfigs[consumer.layer.id]?.barWidth?.interval !== undefined);
+  if (intervalBars.length > 0) {
+    if (intervalBars.length !== temporalBars.length) throw new Error("Temporal interval and centered bar widths cannot share a position scale.");
+    return undefined;
+  }
   const temporalFields = new Set(
     temporalBars.map(({ consumer }) => consumer.encoding.field)
   );
@@ -31,6 +36,11 @@ export function resolveTemporalBarBand(valuesByConsumer, domain, range) {
       "A temporal bar position scale requires compatible bar, line, rule, or text consumers of one field."
     );
   }
+  // Explicit pixel widths do not need an inferred half-slot inset. Keep one
+  // common range when a shared scale also has band-width bar consumers.
+  preserveRange ||= temporalBars.every(({ consumer }) =>
+    markConfigs[consumer.layer.id]?.barWidth?.pixels !== undefined
+  );
   const values = temporalBars.flatMap(item => item.values);
   const ordered = [...new Set(values)].sort((left, right) => left - right);
   if (ordered.length < 2) {
@@ -59,7 +69,7 @@ export function resolveTemporalBarBand(valuesByConsumer, domain, range) {
       interpolateNumber(range[0], range[1], bandwidthFraction) - range[0]
     )
     : directBandwidth;
-  const resolvedRange = stable
+  const resolvedRange = preserveRange ? [...range] : stable
     ? [
         interpolateNumber(range[0], range[1], bandwidthFraction / 2),
         interpolateNumber(range[0], range[1], 1 - bandwidthFraction / 2)
@@ -79,10 +89,12 @@ export function resolveTemporalBarBand(valuesByConsumer, domain, range) {
   });
   let bandwidth = Infinity;
   for (let index = 1; index < positions.length; index += 1) {
-    bandwidth = Math.min(
-      bandwidth,
-      Math.abs(positions[index] - positions[index - 1])
-    );
+    const gap = Math.abs(positions[index] - positions[index - 1]);
+    // Keep a finite conservative slot when an explicitly requested span itself
+    // exceeds the representable difference of two finite endpoints.
+    bandwidth = Math.min(bandwidth,
+      preserveRange && !Number.isFinite(gap) ? estimatedBandwidth : gap);
+
   }
   if (![estimatedBandwidth, bandwidth, ...resolvedRange].every(Number.isFinite)) {
     throw new RangeError("Temporal bar position exceeds the finite numeric range.");

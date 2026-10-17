@@ -30,12 +30,13 @@ test("Full places every quantitative stroke-width scale at each edge", () => {
 test("stroke-width edge edits, content replacement and removal converge with creation and Canvas replay", () => {
   for (const from of edges) for (const position of edges) {
     const original = base().createLegend({ position: from, border: true });
+    const itemGap = original.guideConfigs.legend.strokeWidth.itemGap;
     const actual = original.editLegendLayout({ position });
-    assert.deepEqual(actual.graphicSpec, base().createLegend({ position, border: true }).graphicSpec);
+    assert.deepEqual(actual.graphicSpec, base().createLegend({ position, border: true, itemGap }).graphicSpec);
     assert.deepEqual(actual.editCanvas({ width: 1100 }).graphicSpec,
       original.editCanvas({ width: 1100 }).editLegend({ position }).graphicSpec);
     assert.deepEqual(actual.editLegend({ channels: ["strokeWidth"], position }).graphicSpec, actual.graphicSpec);
-    assert.deepEqual(actual.removeLegend().createLegend({ position, border: true }).graphicSpec, actual.graphicSpec);
+    assert.deepEqual(actual.removeLegend().createLegend({ position, border: true, itemGap }).graphicSpec, actual.graphicSpec);
     const noBorder = actual.editLegend({ border: false });
     assert.equal(noBorder.graphicSpec.objects.strokeWidthLegendBackground, undefined);
     assert.deepEqual(noBorder.editLegend({ border: true }).graphicSpec, actual.graphicSpec);
@@ -74,12 +75,12 @@ test("stroke-width overflow and invalid options reject immutably", () => {
     assert.equal(JSON.stringify(p), before);
     assert.equal(JSON.stringify(source), sourceBefore);
   }
-  assert.throws(() => p.editCanvas({ width: 600, margin: { right: 20 } }), /margin space/);
-  assert.throws(() => p.editScale({ id: "strokeWidth", range: [1, 500] }), /margin space/);
+  assert.throws(() => p.editCanvas({ width: 600, margin: { right: 20 } }), /more right-margin or Canvas space/);
+  assert.throws(() => p.editScale({ id: "strokeWidth", range: [1, 500] }), /more right-margin or Canvas space/);
   const large = source.editCanvas({ width: 2000, margin: { right: 1200 } }).createLegend({ title: "W".repeat(60) });
   const hidden = large.editLegend({ title: false }).editCanvas({ width: 1000, margin: { right: 250 } });
   assert.equal(hidden.guideConfigs.legend.strokeWidth.title, "W".repeat(60));
-  assert.throws(() => hidden.editLegend({ title: "W".repeat(60) }), /margin space/);
+  assert.throws(() => hidden.editLegend({ title: "W".repeat(60) }), /more right-margin or Canvas space/);
   assert.equal(JSON.stringify(p), before);
 });
 
@@ -101,7 +102,7 @@ test("thick side samples keep a visible gap below the title", () => {
   for (const position of ["left", "right"]) {
     const p = base().editScale({ id: "strokeWidth", range: [60, 60] }).createLegend({ position, count: 3 });
     const title = p.graphicSpec.objects.strokeWidthLegendTitle.properties;
-    assert.equal(samples(p)[0].y1 - 30 - (title.y + title.fontSize / 2), 12);
+    assert.equal(samples(p)[0].y1 - 30 - (title.y + title.fontSize), 12);
     assert.equal(samples(p)[1].y1 - samples(p)[0].y1, 60);
     assert.deepEqual(p.editLegend({ title: false }).graphicSpec,
       base().createLegend({ position, count: 3 }).editLegend({ title: false })
@@ -114,6 +115,7 @@ test("large side labels keep their occupied box below a large title", () => {
     .createLegend({ count: 2, labels: { fontSize: 64 }, titleStyle: { fontSize: 48 } });
   const title = p.graphicSpec.objects.strokeWidthLegendTitle.properties;
   const label = p.graphicSpec.objects.strokeWidthLegendLabels.items[0].properties;
-  assert.equal(label.y - 32 - (title.y + 24), 12);
-  assert.equal(label.y, 338);
+  // A 64px label reserves a 76.8px line: the extra half-height is 6.4px.
+  assert.ok(Math.abs(label.y - (title.y + 48) - 18.4) < 1e-9);
+  assert.ok(Math.abs(label.y - 316.4) < 1e-9);
 });

@@ -1,0 +1,16 @@
+{
+  "status": "source-checkpoint-verified",
+  "sourceCommit": "dd84bf1b265b2f993d1c005153b5aa0f8117f4d7",
+  "branch": "fix/sampled-color-legend",
+  "pushed": true,
+  "runtimeContractId": "sha256:fac81959bde1a0bda1c5701380136b0e632626dbcf0c0aa8854c8a931aa74018",
+  "documentationProvenanceSourceCommit": "dd84bf1b265b2f993d1c005153b5aa0f8117f4d7",
+  "implementationEvidence": "implementation-evidence.json",
+  "chartPixelsViewed": false,
+  "remainingIntegrationOwner": "root",
+  "remainingIntegration": [
+    "Merge sibling minimum16 text safety pitch checkpoint",
+    "Run final affected integration checks and refresh exact docs pin",
+    "Translate sampled color source via designated model and rerender correction overlay"
+  ]
+}

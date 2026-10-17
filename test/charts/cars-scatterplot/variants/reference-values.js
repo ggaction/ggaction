@@ -50,8 +50,10 @@ const VIRIDIS_COLORS = Object.freeze([
 
 const CONTINUOUS_LEGEND = Object.freeze({
   x: 640,
-  titleY: 50,
+  // The 13px side-title box begins at the 30px plot top.
+  titleY: 30,
   startY: 76,
+  sideTitleShift: -13.5,
   length: 120,
   thickness: 12,
   count: 5
@@ -275,6 +277,7 @@ export function createShapeVocabularyPrimitiveValues(cars) {
   const legendX = 618 - sampleLeft + 5;
   const legendLabelX = 618 + (sampleRight - sampleLeft) + 10;
   const legendStartY = 82;
+  const sideTitleShift = -13.5;
   const legendGap = 24;
   return Object.freeze({
     baseline,
@@ -289,20 +292,28 @@ export function createShapeVocabularyPrimitiveValues(cars) {
       })
     )),
     legend: Object.freeze({
-      title: Object.freeze({ x: 618, y: 50, text: "Shape" }),
-      symbols: Object.freeze(POINT_SHAPES.map((shape, index) =>
-        createShapeGraphic(shape, {
+      title: Object.freeze({ x: 618, y: 30, text: "Shape" }),
+      symbols: Object.freeze(POINT_SHAPES.map((shape, index) => {
+        const item = createShapeGraphic(shape, {
           x: legendX,
           y: legendStartY + index * legendGap,
           area: legendArea,
           fill: "#4c78a8",
           stroke: "white",
           strokeWidth: 0
-        })
-      )),
+        });
+        // Translate the independently constructed polygon after evaluating its
+        // vertices, retaining the same floating-point addition order.
+        const p = item.properties;
+        return { ...item, properties: { ...p,
+          ...(p.y === undefined ? {} : { y: p.y + sideTitleShift }),
+          ...(p.commands === undefined ? {} : { commands: p.commands.map(command =>
+            command.y === undefined ? command : { ...command, y: command.y + sideTitleShift }) })
+        } };
+      })),
       labels: Object.freeze(POINT_SHAPES.map((shape, index) => ({
         x: legendLabelX,
-        y: legendStartY + index * legendGap,
+        y: legendStartY - 6 + index * legendGap + sideTitleShift,
         text: shape
       })))
     })
@@ -313,8 +324,8 @@ export function createCategoricalPalettePrimitiveValues(cars) {
   const baseline = createCarsScatterplotPrimitiveValues(cars);
   const domain = Object.freeze(["USA", "Japan", "Europe"]);
   const range = Object.freeze(SET2_COLORS.slice(0, domain.length));
-  const itemStartY = 76;
-  const itemGap = 28;
+  const itemStartY = 62.5;
+  const itemGap = 18;
   return Object.freeze({
     baseline,
     domain,
@@ -323,7 +334,7 @@ export function createCategoricalPalettePrimitiveValues(cars) {
       baseline.validCars.map(row => SET2_ORIGIN_COLORS[row.Origin])
     ),
     legend: Object.freeze({
-      title: Object.freeze({ x: 618, y: 50, text: "Origin" }),
+      title: Object.freeze({ x: 618, y: 30, text: "Origin" }),
       symbols: Object.freeze(domain.map((value, index) => ({
         x: 618.25,
         y: itemStartY + index * itemGap,
@@ -335,7 +346,7 @@ export function createCategoricalPalettePrimitiveValues(cars) {
       }))),
       labels: Object.freeze(domain.map((value, index) => ({
         x: 640.5,
-        y: itemStartY + 6 + index * itemGap,
+        y: itemStartY + index * itemGap,
         text: value
       })))
     })
@@ -372,12 +383,12 @@ function sampleViridis(ratio) {
 }
 
 function createContinuousLegendValues(domain) {
-  const { x, titleY, startY, length, thickness, count } = CONTINUOUS_LEGEND;
+  const { x, titleY, startY, length, thickness, count, sideTitleShift } = CONTINUOUS_LEGEND;
   const stripCount = 60;
   const stripHeight = length / stripCount;
   const strips = Array.from({ length: stripCount }, (_, index) => ({
     x,
-    y: startY + index * stripHeight,
+    y: startY + index * stripHeight + sideTitleShift,
     width: thickness,
     height: stripHeight,
     fill: sampleViridis(1 - (index + 0.5) / stripCount),
@@ -388,7 +399,7 @@ function createContinuousLegendValues(domain) {
     mapLinear(index, [0, count - 1], domain)
   );
   const positions = values.map(value =>
-    mapLinear(value, domain, [startY + length, startY])
+    mapLinear(value, domain, [startY + length, startY]) + sideTitleShift
   );
 
   return Object.freeze({
@@ -402,7 +413,7 @@ function createContinuousLegendValues(domain) {
     }))),
     labels: Object.freeze(values.map((value, index) => ({
       x: x + thickness + 12,
-      y: positions[index],
+      y: positions[index] - 6,
       text: Number(value.toFixed(1)).toString()
     })))
   });
@@ -433,8 +444,8 @@ export function createFieldOpacityPrimitiveValues(cars) {
   const legendValues = Array.from({ length: count }, (_, index) =>
     mapLinear(index, [0, count - 1], domain)
   );
-  const legendStartY = CONTINUOUS_LEGEND.startY;
-  const legendGap = 28;
+  const legendStartY = CONTINUOUS_LEGEND.startY + CONTINUOUS_LEGEND.sideTitleShift;
+  const legendGap = 18;
 
   return Object.freeze({
     baseline,
@@ -456,7 +467,7 @@ export function createFieldOpacityPrimitiveValues(cars) {
       }))),
       labels: Object.freeze(legendValues.map((value, index) => ({
         x: CONTINUOUS_LEGEND.x + 14 + 12,
-        y: legendStartY + index * legendGap,
+        y: legendStartY - 6 + index * legendGap,
         text: Number(value.toFixed(1)).toString()
       })))
     })

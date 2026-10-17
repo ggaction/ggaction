@@ -111,9 +111,9 @@ test("rematerializes both legend blocks after Canvas edits", () => {
     "rematerializeLegendSymbols",
     "rematerializeLegendLabels",
     "rematerializeLegendTitle",
-    "rematerializeSizeLegend",
-    "rematerializeSideLegendLane"
+    "rematerializeSizeLegend"
   ]);
+  assert.equal(after.trace.children.at(-1).children.at(-1).op, "rematerializeSideLegendLane");
 });
 
 test("supports an explicit quantitative symbol count and validates point legends", () => {

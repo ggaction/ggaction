@@ -29,6 +29,14 @@ p.editYScale({ id: "y", type: "band", paddingInner: 0.2 });
 p.editThetaScale({ reverse: true, range: [0, 270] });
 p.editRScale({ domain: [0, 10], radialMapping: "area" });
 p.editColorScale({ range: ["#111", "#eee"] });
+p.editColorScale({ type: "sqrt", domain: [-100, 100], range: ["black", "white"] });
+p.editStrokeScale({ target: "points", type: "sqrt", domain: [0, 100] });
+p.encodeColor({ field: "m", fieldType: "quantitative", scale: { type: "sqrt" } });
+basic.encodeColor({ field: "m", fieldType: "quantitative", scale: { type: "sqrt" } });
+// @ts-expect-error square-root color has fixed exponent
+p.encodeColor({ field: "m", fieldType: "quantitative", scale: { type: "sqrt", exponent: 0.5 } });
+// @ts-expect-error temporal color remains sequential
+p.encodeColor({ field: "date", fieldType: "temporal", scale: { type: "sqrt" } });
 p.editColorScale({ type: "sequential", palette: "viridis", midpoint: "auto" });
 p.editStrokeScale({ target: "points", type: "sequential", palette: "viridis" });
 p.editSizeScale({ range: [20, 200], unknown: 20 });

@@ -23,12 +23,13 @@ test("Full and Basic create interval legends at every edge", () => {
 test("interval edge edits and content revisions converge with direct creation and Canvas replay", () => {
   for (const from of edges) for (const position of edges) {
     const original = base().createLegend({ position: from, border: true });
+    const itemGap = original.guideConfigs.legend.interval.itemGap;
     const actual = original.editLegend({ position });
-    assert.deepEqual(actual.graphicSpec, base().createLegend({ position, border: true }).graphicSpec);
+    assert.deepEqual(actual.graphicSpec, base().createLegend({ position, border: true, itemGap }).graphicSpec);
     assert.deepEqual(actual.editCanvas({ width: 1100 }).graphicSpec,
       original.editCanvas({ width: 1100 }).editLegend({ position }).graphicSpec);
     assert.deepEqual(actual.editLegend({ channels: ["color"], position }).graphicSpec, actual.graphicSpec);
-    assert.deepEqual(actual.removeLegend().createLegend({ position, border: true }).graphicSpec, actual.graphicSpec);
+    assert.deepEqual(actual.removeLegend().createLegend({ position, border: true, itemGap }).graphicSpec, actual.graphicSpec);
   }
 });
 

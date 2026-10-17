@@ -39,7 +39,7 @@ test("creates an inferred right-side grouped bar legend", () => {
   assert.deepEqual(symbols.map(child => child.properties), [
     {
       x: 588.25,
-      y: 86,
+      y: 72.5,
       width: 14,
       height: 12,
       fill: "#4c78a8",
@@ -48,7 +48,7 @@ test("creates an inferred right-side grouped bar legend", () => {
     },
     {
       x: 588.25,
-      y: 114,
+      y: 90.5,
       width: 14,
       height: 12,
       fill: "#f58518",
@@ -58,9 +58,9 @@ test("creates an inferred right-side grouped bar legend", () => {
   ]);
   assert.deepEqual(labels.map(child => child.properties.text), ["men", "women"]);
   assert.deepEqual(labels.map(child => child.properties.x), [610.5, 610.5]);
-  assert.deepEqual(labels.map(child => child.properties.y), [92, 120]);
+  assert.deepEqual(labels.map(child => child.properties.y), [72.5, 90.5]);
   assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.x, 588);
-  assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.y, 60);
+  assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.y, 40);
   assert.equal(before.semanticSpec.guides.legend, undefined);
 });
 

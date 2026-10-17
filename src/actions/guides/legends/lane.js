@@ -1,3 +1,6 @@
+import { resolveLegendAxisOffset, effectiveLegendOffsetConfig } from "../../../materialization/guides/resources.js";
+import { resolveLegendGroupPlacement } from "../../../layout/legendGroup.js";
+import { legendGroup } from "../../../materialization/legendGroups.js";
 import { editLegendBackground, resolveLegendBackgroundFromBounds } from "./continuous/common.js";
 import { action } from "../../../core/action.js";
 import { noOptions } from "../../../core/validation.js";
@@ -12,7 +15,8 @@ import {
   resolveHorizontalLegendGroup,
   resolveSingleHorizontalLegendPlacement,
   isHorizontalEdgeLegend,
-  resolveSideLegendLane
+  resolveSideLegendLane,
+  resolveSingleSideLegendPlacement
 } from "../../../layout/legendLane.js";
 import { findCanvasGraphic } from
   "../../../materialization/graphicHierarchy.js";
@@ -39,7 +43,7 @@ function categoricalFor(program, target) {
 }
 
 function legendPosition(program, kind, config) {
-  if (kind === "size") {
+  if (kind === "size" && config.inheritPosition !== false) {
     return categoricalFor(program, config.target)?.position ?? config.position;
   }
   return config.position;
@@ -91,6 +95,7 @@ function legendGraphicBounds(program, id) {
 
 function unionLegendBounds(program, ids) {
   return ids.map(id => legendGraphicBounds(program, id))
+    .filter(bounds => bounds !== undefined)
     .reduce((result, bounds) => result === undefined
       ? bounds
       : {
@@ -118,7 +123,7 @@ function blockDescriptor(program, kind, config) {
     ...(components.titleId === undefined ? [] : [components.titleId])
   ];
   const bounds = unionLegendBounds(program, foregroundIds);
-  const symbolAnchorIds = ["gradient", "strokeGradient"].includes(kind)
+  const symbolAnchorIds = ["gradient", "strokeGradient"].includes(kind) && config.representation !== "symbols"
     ? [kind === "gradient" ? "colorGradientStrips" : "strokeGradientStrips"]
     : components.symbolIds;
   const symbolAnchor = unionLegendBounds(program, symbolAnchorIds);
@@ -127,6 +132,7 @@ function blockDescriptor(program, kind, config) {
     program.graphicSpec,
     components.labelId
   , program.materializationConfigs.textMetrics);
+  const emptyLabels = program.graphicSpec.objects[components.labelId].items?.length === 0;
   const title = components.titleId === undefined
     ? undefined
     : (() => {
@@ -143,13 +149,13 @@ function blockDescriptor(program, kind, config) {
           bounds: titleBounds
         };
       })();
-  if ([bounds, symbolAnchor, symbolBounds, labels].includes(undefined)) {
+  if ([bounds, symbolAnchor, symbolBounds].includes(undefined) || (labels === undefined && !emptyLabels)) {
     throw new Error(`Legend lane could not measure ${kind} graphics.`);
   }
   return {
     id: kind,
     kind,
-    preserveGrid: ["series", "color", "stroke"].includes(kind) && (config.columns ?? 1) > 1,
+    preserveGrid: (["series", "color", "stroke"].includes(kind) || config.representation === "symbols") && (config.columns ?? 1) > 1,
     target: config.target,
     border: borderFor(kind, config),
     offset: requestedOffset(config),
@@ -162,8 +168,8 @@ function blockDescriptor(program, kind, config) {
       bounds: symbolAnchor
     },
     labels: {
-      x: textAnchor(program, components.labelId),
-      width: labels.right - labels.left
+      x: emptyLabels ? symbolBounds.right + config.labels.offset : textAnchor(program, components.labelId),
+      width: emptyLabels ? 0 : labels.right - labels.left
     },
     occupiedBounds: unionLegendBounds(program, [
       ...foregroundIds,
@@ -219,15 +225,15 @@ function edgeKinds(program, edge) {
     (layer, index) => [layer.id, index]
   ));
   return Object.entries(configs)
-    .filter(([kind, config]) => legendPosition(program, kind, config) === edge)
+    .filter(([kind, config]) => legendGroup(program, config.target) === undefined && legendPosition(program, kind, config) === edge)
     .sort(([kindA, configA], [kindB, configB]) =>
       (layerOrder.get(configA.target) - layerOrder.get(configB.target)) ||
       (FAMILY_ORDER[kindA] - FAMILY_ORDER[kindB])
     );
 }
 
-export function hasMultiSideLegendLane(program) {
-  return ["right", "left"].some(side => edgeKinds(program, side).length > 1);
+export function hasSideLegendLane(program) {
+  return ["right", "left"].some(side => edgeKinds(program, side).length > 0);
 }
 
 export function hasHorizontalLegendLane(program) {
@@ -237,7 +243,7 @@ export function hasHorizontalLegendLane(program) {
 }
 
 export function hasLegendLane(program) {
-  return hasMultiSideLegendLane(program) ||
+  return hasSideLegendLane(program) ||
     hasHorizontalLegendLane(program);
 }
 
@@ -303,6 +309,29 @@ function translateGraphic(program, id, dx, dy) {
   for (const [property, value] of Object.entries(properties)) {
     if (value !== graphic.properties[property]) {
       next = next.editGraphics({ target: id, property, value });
+    }
+  }
+  return next;
+}
+
+// Use the declared text-box top as the renderer anchor. A middle SVG baseline
+// depends on the font's x-height and otherwise protrudes above that box.
+function alignLegendTextBoxes(program, ids) {
+  const normalize = properties => properties.textBaseline === "middle"
+    ? { ...properties, y: properties.y - properties.fontSize / 2, textBaseline: "top" }
+    : properties;
+  let next = program;
+  for (const id of ids) {
+    const graphic = next.graphicSpec.objects[id];
+    if (graphic.type !== "text") continue;
+    if (graphic.items !== undefined) {
+      if (!graphic.items.some(item => item.properties.textBaseline === "middle")) continue;
+      next = next.editGraphics({ target: id, property: "items", value: graphic.items.map(item => ({
+        type: item.type ?? graphic.type, properties: normalize(item.properties)
+      })) });
+    } else if (graphic.properties.textBaseline === "middle") {
+      next = next.editGraphics({ target: id, property: "y", value: normalize(graphic.properties).y })
+        .editGraphics({ target: id, property: "textBaseline", value: "top" });
     }
   }
   return next;
@@ -390,7 +419,8 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
     const configs = this.guideConfigs.legend ?? {};
     const plans = ["right", "left"].flatMap(side => {
       const entries = edgeKinds(this, side);
-      if (entries.length < 2) return [];
+      if (entries.length === 0) return [];
+      if (entries.length === 1) return [{ side, entries }];
       const blocks = entries.map(([kind, config]) =>
         blockDescriptor(this, kind, config)
       );
@@ -400,10 +430,11 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
         canvas,
         groups: groupBlocks(blocks, configs)
       });
-      return [{ plan, blocks }];
+      return [{ plan, blocks, side, entries }];
     });
     let next = this;
-    for (const { plan, blocks } of plans) {
+    for (const { plan, blocks, side, entries } of plans) {
+      if (plan === undefined) continue;
       const byId = new Map(blocks.map(block => [block.id, block]));
       for (const placement of plan.placements) {
         const block = byId.get(placement.id);
@@ -454,6 +485,13 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
         }
       }
     }
+    for (const { side, entries } of plans) {
+      const ids = entries.flatMap(([kind]) => existingIds(next, kind));
+      next = alignLegendTextBoxes(next, ids);
+      const bounds = unionLegendBounds(next, ids);
+      const { dy } = resolveSingleSideLegendPlacement({ side, plot, canvas, bounds });
+      for (const id of ids) next = translateGraphic(next, id, 0, dy);
+    }
     return next;
   }
 );
@@ -475,17 +513,25 @@ export const rematerializeHorizontalLegendLane = /* @__PURE__ */ action(
     for (const edge of ["top", "bottom"]) {
       const entries = edgeKinds(next, edge).filter(
         ([, config]) => isHorizontalEdgeLegend({ ...config, position: edge })
-      );
+      ).map(([kind, config]) => [kind, effectiveLegendOffsetConfig(next, kind, config)]);
       if (entries.length === 0) continue;
       if (entries.length === 1) {
         const [kind, config] = entries[0];
         const ids = existingIds(next, kind);
         const bounds = unionConcreteGraphicBounds(next.graphicSpec, ids, next.materializationConfigs.textMetrics);
         const { dx, dy } = resolveSingleHorizontalLegendPlacement({
-          plot, canvas, config, bounds
+          plot, canvas, config: { ...config, offset: resolveLegendAxisOffset(next, config, plot) }, bounds
         });
         for (const id of ids) next = translateGraphic(next, id, dx, dy);
         continue;
+      }
+      for (const [kind, config] of entries) {
+        if (config.inferredOffset !== true || resolveLegendAxisOffset(next, config, plot) === config.offset) continue;
+        const ids = existingIds(next, kind);
+        const bounds = unionConcreteGraphicBounds(next.graphicSpec, ids, next.materializationConfigs.textMetrics);
+        const { dx, dy } = resolveSingleHorizontalLegendPlacement({ plot, canvas,
+          config: { ...config, offset: resolveLegendAxisOffset(next, config, plot) }, bounds });
+        for (const id of ids) next = translateGraphic(next, id, dx, dy);
       }
       let groups = groupBlocks(entries.map(([kind, config]) =>
         blockDescriptor(next, kind, config)), configs);
@@ -497,7 +543,7 @@ export const rematerializeHorizontalLegendLane = /* @__PURE__ */ action(
         }))).map(child => ({ ...child, element: child.content }));
         const plan = resolveHorizontalLegendGroup({ edge, plot, canvas, groups: children,
           allowOverflow: next.materializationConfigs.canvas?.plot !== undefined,
-          align: config.align, offset: config.offset, border: group.border,
+          align: config.align, offset: resolveLegendAxisOffset(next, config, plot), border: group.border,
           backgroundId: group.backgroundId });
         next = applyHorizontalPlan(next, children, plan);
       }
@@ -513,6 +559,32 @@ export const rematerializeHorizontalLegendLane = /* @__PURE__ */ action(
         allowOverflow: next.materializationConfigs.canvas?.plot !== undefined
       });
       next = applyHorizontalPlan(next, horizontal, plan);
+    }
+    return next;
+  }
+);
+
+export const rematerializeLegendGroups = /* @__PURE__ */ action(
+  { op: "rematerializeLegendGroups", description: "Place each opted-in target legend group from occupied bounds." },
+  function (args = {}) {
+    noOptions(args, "rematerializeLegendGroups");
+    let next = this;
+    const plot = resolveGraphicBounds(next);
+    const canvas = findCanvasGraphic(next)?.properties;
+    for (const [target, group] of Object.entries(next.guideConfigs.legendGroups ?? {})) {
+      const entries = Object.entries(next.guideConfigs.legend ?? {}).filter(([, config]) => config.target === target)
+        .sort(([a], [b]) => FAMILY_ORDER[a] - FAMILY_ORDER[b]);
+      next = alignLegendTextBoxes(next, entries.flatMap(([kind]) => existingIds(next, kind)));
+      const blocks = entries.map(([kind]) => ({ id: kind, ids: existingIds(next, kind),
+        bounds: unionLegendBounds(next, existingIds(next, kind)) }));
+      const effectiveGroup = group.placement.at !== undefined ? group : { ...group, placement: { ...group.placement,
+        offset: resolveLegendAxisOffset(next, { ...group.placement, inferredOffset: group.inferredOffset }, plot) } };
+      const placements = resolveLegendGroupPlacement({ blocks, group: effectiveGroup, plot, canvas,
+        allowOverflow: next.materializationConfigs.canvas?.plot !== undefined });
+      for (const placement of placements) {
+        const block = blocks.find(item => item.id === placement.id);
+        for (const id of block.ids) next = translateGraphic(next, id, placement.dx, placement.dy);
+      }
     }
     return next;
   }

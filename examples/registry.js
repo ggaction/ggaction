@@ -392,7 +392,7 @@ export const PUBLIC_CHARTS = Object.freeze([
   example({
     id: "repeat-charts",
     data: {},
-    width: 838,
+    width: 688,
     height: 150,
     createProgram: () => createRepeatChartsExample(),
     docsGroup: "charts",

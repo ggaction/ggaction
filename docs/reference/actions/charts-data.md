@@ -32,6 +32,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `background` | Optional / branch-dependent | `string \| undefined` |
 | `margin` | Optional / branch-dependent | `number \| Partial<Record<"bottom" \| "left" \| "right" \| "top", number>> \| undefined` |
 | `plot` | Optional / branch-dependent | `false \| { width: number; height: number; } \| undefined` |
+| `plotBorder` | Optional / branch-dependent | `false \| { color?: string \| undefined; lineWidth?: number \| undefined; } \| undefined` |
 
 </details>
 
@@ -68,6 +69,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `background` | Optional / branch-dependent | `string \| undefined` |
 | `margin` | Optional / branch-dependent | `number \| Partial<Record<"bottom" \| "left" \| "right" \| "top", number>> \| undefined` |
 | `plot` | Optional / branch-dependent | `false \| { width: number; height: number; } \| undefined` |
+| `plotBorder` | Optional / branch-dependent | `false \| { color?: string \| undefined; lineWidth?: number \| undefined; } \| undefined` |
 
 </details>
 
@@ -126,7 +128,7 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
@@ -160,7 +162,7 @@ exact profile format, matching rules, propagation, and executable example.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 removeTextMetrics(): ChartProgram;
@@ -326,7 +328,7 @@ Create one immutable named dataset. [Data](../../api/data.md)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;
@@ -363,7 +365,7 @@ See [Data updates](../../data-updates.md#revise-a-source-and-its-dependent-chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 removeData(options: RemoveResourceOptions): ChartProgram;
@@ -400,7 +402,7 @@ does not infer, cascade, or change graphics.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 removeScale(options: RemoveResourceOptions): ChartProgram;
@@ -435,7 +437,7 @@ graphics. [Scale Options](../../api/scales.md#removescale-id)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 removeCoordinate(options: RemoveResourceOptions): ChartProgram;
@@ -710,7 +712,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `field` | Required | `string` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
-| `as` | Required | `string` |
+| `as` | Optional / branch-dependent | `string \| undefined` |
 | `timeZone` | Optional / branch-dependent | `string \| undefined` |
 | `unit` | Required | `"day" \| "hour" \| "minute" \| "month" \| "quarter" \| "second" \| "week" \| "weekday" \| "year"` |
 | `weekStartsOn` | Optional / branch-dependent | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| undefined` |
@@ -721,11 +723,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })
+createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })
 ```
 
 Create an immutable row-preserving dataset with one UTC or IANA-zone calendar
 bucket timestamp, including week, or a nominal local weekday field.
+Omit `as` to use `${field}_${unit}`; output-name collisions are rejected.
 [Time-unit data transforms](../../api/data/time-units.md)
 
 
@@ -824,7 +827,7 @@ rebind direct visual consumers, and safely release the prior revision.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editDerivedData(options: EditDerivedDataOptions): ChartProgram;
@@ -853,7 +856,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editFilteredData(options: EditFilteredDataOptions): ChartProgram;
@@ -887,7 +890,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram;
@@ -922,7 +925,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editWindowData(options: EditWindowDataOptions): ChartProgram;
@@ -954,7 +957,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editDensityData(options: EditDensityDataOptions): ChartProgram;
@@ -992,7 +995,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editRegressionData(options: EditRegressionDataOptions): ChartProgram;
@@ -1062,7 +1065,7 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editCoordinate(options: EditCoordinateOptions): ChartProgram;
@@ -1185,7 +1188,7 @@ Behavior, inference, resets, and errors: [Extension and scale contracts](./exten
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editXScale(options: EditXScaleOptions): ChartProgram;
@@ -1228,7 +1231,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editYScale(options: EditYScaleOptions): ChartProgram;
@@ -1271,7 +1274,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;
@@ -1304,7 +1307,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editYOffsetScale(options: EditYOffsetScaleOptions): ChartProgram;
@@ -1337,7 +1340,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editParallelScale(options: EditParallelScaleOptions): ChartProgram;
@@ -1380,7 +1383,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editThetaScale(options: EditThetaScaleOptions): ChartProgram;
@@ -1419,7 +1422,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editRScale(options: EditRScaleOptions): ChartProgram;
@@ -1458,7 +1461,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editColorScale(options: EditColorScaleOptions): ChartProgram;
@@ -1476,7 +1479,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "symlog" \| "threshold" \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |
@@ -1497,7 +1500,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;
@@ -1514,7 +1517,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Required | `string` |
 | `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "symlog" \| "threshold" \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |
@@ -1529,7 +1532,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editSizeScale(options: EditSizeScaleOptions): ChartProgram;
@@ -1565,7 +1568,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;
@@ -1601,7 +1604,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editShapeScale(options: EditShapeScaleOptions): ChartProgram;
@@ -1633,7 +1636,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;
@@ -1671,7 +1674,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;
@@ -2121,7 +2124,11 @@ recompute per cell. Text needs x/y scales and a text encoding.
 `guides: { legend: "shared" }` promotes one compatible parent-owned legend at
 the child legend's configured `left`, `right`, `top`, or `bottom` edge. Top and
 bottom promotion also preserves the child legend's horizontal alignment;
-author those options with `createLegend` before calling `facet`.
+author those options with `createLegend` before calling `facet`. Promoted outside
+legends use the existing recipe offset from the combined panel plots. Omitted
+offsets clear retained axis and header text; explicit colliding offsets reject.
+Child Canvas dimensions and margins remain intact, and the inferred parent
+Canvas contains the child snapshots and the complete legend bounds.
 See [Program composition](../../api/composition.md#repeat-the-current-chart-by-a-field).
 
 Creation options for `facet`, `facetGrid`, and `repeatCharts` accept `headers`.
@@ -2440,7 +2447,7 @@ appearance encodings. [Basic Charts](../../api/basic-charts.md#createscatterplot
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.18. See [release compatibility](../../version.md).
 
 ```typescript
 createTextPlot(options: CreateTextPlotOptions): ChartProgram;
@@ -2875,7 +2882,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "legend"> & { legend?: false \| (Omit<PathLegendOptions, "order"> & { order?: { channel: "x"; values?: undefined; } \| LegendValueOrder \| undefined; }) \| undefined; }) \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "grid" \| "legend"> & { grid?: false \| (Omit<CartesianGridOptions, "horizontal"> & { horizontal?: boolean \| ... 1 more ... \| undefined; }) \| undefined; legend?: false \| ... 1 more ... \| undefined; }) \| undefined` |
 
 </details>
 
@@ -3065,6 +3072,8 @@ createRugPlot({ id?, data?, y, edge: "left" | "right", tick?, guides? })
 Create a one-dimensional distribution from quantitative or temporal observations.
 Ticks use an explicit plot edge as their constant position, so no dummy field is
 needed. The default guide contains only the measure axis.
+
+Its measure grid follows a continuous quantitative or temporal scale and rejects explicit `bandPosition`.
 
 
 ## `createStripPlot`
@@ -3270,7 +3279,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `color` | Optional / branch-dependent | `BarColorChannel \| undefined` |
-| `width` | Optional / branch-dependent | `Omit<BarWidthOptions, "target"> \| undefined` |
+| `width` | Optional / branch-dependent | `Omit<BarWidthOptions, "interval" \| "target"> \| undefined` |
 | `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
 | `x` | Required | `BarRangePositionChannel \| BarRangeOppositePositionChannel \| (Omit<PositionEncodingBase, "coordinate" \| "target"> & { ...; } & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; }) \| (Omit<...> & ... 1 more ... & { ...; })` |
@@ -3465,7 +3474,7 @@ createPiePlot({ id?, data?, coordinate?, category, value?, aggregate?, color?, r
 
 Create one sector per category in the full package. `category` is required and
 defaults to nominal count, including numeric categories. For weights, provide
-both `value` and `aggregate: "sum"`; values must be finite and nonnegative with
+`value`; this infers `aggregate: "sum"`. Values must be finite and nonnegative with
 a positive total. Color defaults to the category. Use `color: false` for a
 scalar `arc.fill`; otherwise each slice must resolve to one categorical color.
 
@@ -3525,7 +3534,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 createRosePlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })
 ```
 
-Create equal-angle sectors whose sector area, excluding the hole is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
+Create equal-angle sectors whose sector area, excluding the hole is proportional to category count or sum. Category is required; omit value for count or provide value to infer aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
 
 The default id is `rosePlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit the resolved Polar frame. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
 
@@ -3570,7 +3579,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 createRadialBarPlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })
 ```
 
-Create equal-angle sectors whose radial length measured from the inner edge is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
+Create equal-angle sectors whose radial length measured from the inner edge is proportional to category count or sum. Category is required; omit value for count or provide value to infer aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
 
 The default id is `radialBarPlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit the resolved Polar frame. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
 
@@ -3603,8 +3612,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `layout` | Optional / branch-dependent | `"center" \| "diverging" \| "fill" \| "overlay" \| "stack" \| undefined` |
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; } \| undefined` |
-| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| DensityPlotGuideOptions \| undefined` |
+| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false \| CartesianGridOptions \| undefined; }) \| undefined` |
 | `valueChannel` | Optional / branch-dependent | `"x" \| "y" \| undefined` |
 | `x` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |
 | `y` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |

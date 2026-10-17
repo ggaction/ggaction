@@ -1,3 +1,4 @@
+import { PLOT_LEGEND_POSITIONS } from "../core/vocabulary.js";
 import {
   formatVisibleText,
   measureTextWidth
@@ -5,6 +6,11 @@ import {
 
 export function measureLegendTextWidth(value, style = { fontSize: 12 }, profile) {
   return measureTextWidth(formatVisibleText(value), style, profile);
+}
+
+// A conservative line-height reserve, not a font-specific glyph measurement.
+export function legendLabelLineHeight(fontSize) {
+  return fontSize * 1.2;
 }
 
 export function resolveLegendGrid(config, width, count, symbolHeight, profile) {
@@ -45,9 +51,7 @@ export function alignLegendStart(bounds, width, align) {
 }
 
 
-export const PLOT_LEGEND_POSITIONS = Object.freeze([
-  "top-left", "top-right", "bottom-left", "bottom-right"
-]);
+export { PLOT_LEGEND_POSITIONS } from "../core/vocabulary.js";
 
 export function isPlotLegend(config) {
   return PLOT_LEGEND_POSITIONS.includes(config.position);

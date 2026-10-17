@@ -1,0 +1,70 @@
+{
+  "reviewer": "codex",
+  "sourceSha256": "bc83ed75385e77b14b84dda6cf8869ea1b86dad2c85f2834a6b360134cc1f21f",
+  "bindings": [
+    {
+      "sha256": "bc83ed75385e77b14b84dda6cf8869ea1b86dad2c85f2834a6b360134cc1f21f",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wMTM3L3NvdXJjZS52bC5qc29u"
+    },
+    {
+      "sha256": "04eb826124165634a413ce361f88dea176b87f717cee62f79fc3036b0e9c6f0b",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wMTM3L2RhdGEuanNvbg=="
+    },
+    {
+      "sha256": "4a7da6064040d87cf7fdba952fd141c6dd4a6e21ca1cf47fc3959c2f7fb08da6",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wMTM3L3JlZmVyZW5jZS9jb21waWxlZC52ZWdhLmpzb24="
+    },
+    {
+      "sha256": "c5172e469aaedcc4b97583fb5a68086579ad7305dc3af375a75493db8e8330c4",
+      "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9hcnRpZmFjdHMvdjEyLWdsbS10aG91c2FuZC1jaGFydC1hZGFwdGl2ZS92bF8wMTM3L3JlZmVyZW5jZS9jaGFydC5zdmc="
+    }
+  ],
+  "referenceVertices": 54,
+  "markCounts": {
+    "area": 27,
+    "line": 27
+  },
+  "actualGradients": [
+    {
+      "attributes": {
+        "id": "gradient_0",
+        "x1": "1",
+        "x2": "1",
+        "y1": "1",
+        "y2": "0"
+      },
+      "stops": [
+        {
+          "offset": "0",
+          "stop-color": "white"
+        },
+        {
+          "offset": "1",
+          "stop-color": "#fc6721"
+        }
+      ]
+    }
+  ],
+  "actualMarkPaths": [
+    {
+      "aria-label": "year (year): 1990; internetUsers: 0%",
+      "role": "graphics-symbol",
+      "aria-roledescription": "area mark",
+      "d": "M0,199.953L46.663,199.908L93.326,199.803L140.116,199.5L186.779,199.378L233.442,198.36L280.105,196.76L326.895,192.8L373.558,186.44L420.221,152.8L466.884,110.6L513.674,86.8L560.337,81.2L607,69L653.663,54.6L700.453,53L747.116,43.8L793.779,42.4L840.442,38L887.233,36.8L933.895,32.6L980.558,32.4L1027.221,31.8L1074.012,30.4L1120.674,24.8L1167.337,20.8L1214,14.4L1214,200L1167.337,200L1120.674,200L1074.012,200L1027.221,200L980.558,200L933.895,200L887.233,200L840.442,200L793.779,200L747.116,200L700.453,200L653.663,200L607,200L560.337,200L513.674,200L466.884,200L420.221,200L373.558,200L326.895,200L280.105,200L233.442,200L186.779,200L140.116,200L93.326,200L46.663,200L0,200Z",
+      "fill": "url(#gradient_0)",
+      "opacity": "0.7"
+    },
+    {
+      "aria-label": "year (year): 1990; internetUsers: 0%",
+      "role": "graphics-symbol",
+      "aria-roledescription": "line mark",
+      "d": "M0,199.953L46.663,199.908L93.326,199.803L140.116,199.5L186.779,199.378L233.442,198.36L280.105,196.76L326.895,192.8L373.558,186.44L420.221,152.8L466.884,110.6L513.674,86.8L560.337,81.2L607,69L653.663,54.6L700.453,53L747.116,43.8L793.779,42.4L840.442,38L887.233,36.8L933.895,32.6L980.558,32.4L1027.221,31.8L1074.012,30.4L1120.674,24.8L1167.337,20.8L1214,14.4",
+      "stroke": "#fc6721",
+      "stroke-width": "2"
+    }
+  ],
+  "targetSvgSha256": "a8bce276f581ca857d9af11c8169d21eabcf75c057ed435a7c1f1f61e0d13ece",
+  "chartPixelsInspected": false,
+  "modelCalls": 0,
+  "pathEncoding": "Base64-encoded UTF-8 absolute source-evidence paths; decode to resolve the unchanged SHA-bound external artifacts."
+}

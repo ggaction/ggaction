@@ -1,16 +1,19 @@
 import { resolveConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js";
-import { textBoundsIntersect, resolveTextBounds } from "../core/textMetrics.js";
+import { textBoundsFitCanvas, textBoundsIntersect, resolveTextBounds } from "../core/textMetrics.js";
 import { axisGraphicIds, allLegendGraphicIds } from "./guides/resources.js";
 import { resolveGraphicBounds } from "../layout/canvas.js";
 import { resolvePlacedPlotBounds } from "../layout/composition.js";
 import {
   alignedTextAnchor,
   buildTitleReadingBlock,
+  paintedTitleComponent,
+  resolveTitleComponentBounds,
   titleTextProperties
 } from "../layout/title.js";
 import { resolveFacetLayout } from "../layout/facets.js";
 import { namespaceGraphicId, namespaceGraphicSnapshot } from "./compositionSnapshot.js";
 import { prepareSharedFacetLegend } from "./facetGuides/index.js";
+import { resolvePromotedFacetLegendLayout } from "./facetGuides/layout.js";
 import {
   attachSnapshotObject,
   clearCompositionChildren,
@@ -55,18 +58,24 @@ function titleLayout(program) {
 
 function materializeTitleComponent(program, id, lines, centers, style, plot, top) {
   if (lines.length === 0) return program;
-  const x = alignedTextAnchor(plot.x, plot.width, program.titleConfig.align);
-  const count = lines.length;
+  const x = alignedTextAnchor(plot.x, plot.width, program.titleConfig.align) +
+    (program.titleConfig.alongOffset ?? 0);
+  const component = paintedTitleComponent({
+    x, y: centers.map(center => top + center), lines,
+    textAlign: program.titleConfig.align
+  });
+  const bounds = resolveTitleComponentBounds(component, style, program.materializationConfigs.textMetrics);
+  if (!textBoundsFitCanvas(bounds, program.graphicSpec.objects.canvas.properties)) {
+    throw new Error("Facet parent title places text outside the Canvas.");
+  }
+  const count = component.lines.length;
   let next = program.createGraphics({
     id,
     type: "text",
     ...(count > 1 ? { length: count } : {}),
     parent: "canvas"
   });
-  for (const [property, value] of Object.entries(titleTextProperties({
-    x, y: centers.map(center => top + center), lines,
-    textAlign: program.titleConfig.align
-  }, style))) {
+  for (const [property, value] of Object.entries(titleTextProperties(component, style))) {
     next = next.editGraphics({ target: id, property, value });
   }
   return next;
@@ -101,6 +110,7 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
   if (program.compositionSpec.type !== "facet") {
     throw new Error("resolveFacetProgramLayout requires a facet composition.");
   }
+  preparedLegend ??= prepareSharedFacetLegend(program);
   const title = titleLayout(program);
   const spec = program.compositionSpec;
   const preparedHeaders = prepareFacetHeaders(
@@ -110,7 +120,7 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
   const gridCells = new Map(
     (spec.facet.grid?.cells ?? []).map(cell => [cell.id, cell])
   );
-  const layout = resolveFacetLayout({
+  let layout = resolveFacetLayout({
     children: spec.children.map((id, index) => ({
       ...compositionChildDescriptor(id, program.children[id]),
       value: spec.facet.values[index],
@@ -127,7 +137,7 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
     padding: spec.padding,
     titleHeight: title.height,
     headerLayout: preparedHeaders.headerLayout,
-    sharedLegend: spec.facet.guides.legend === "shared",
+    sharedLegend: spec.facet.guides.legend === "shared" && preparedLegend?.mode !== "promoted",
     ...(preparedLegend === undefined ? {} : {
       sharedLegendGap: preparedLegend.reservation.gap,
       sharedLegendWidth: preparedLegend.reservation.width,
@@ -139,10 +149,13 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
     id,
     ...resolveGraphicBounds(program.children[id])
   }));
-  const plot = resolvePlacedPlotBounds({
+  let plot = resolvePlacedPlotBounds({
     placements: layout.children,
     plots
   });
+  ({ layout, plot } = resolvePromotedFacetLegendLayout(
+    program, { layout, plot, plots, title, preparedHeaders, prepared: preparedLegend }
+  ));
   return { layout, title, plot, plots, preparedHeaders };
 }
 

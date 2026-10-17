@@ -45,7 +45,7 @@ for all H0 chart families and their package and editing paths.
 | `createLinePlot` | `{ x, y }` | applicable guides |
 | `createBarPlot` | `{ x, y }` | applicable guides |
 | `createHistogram` | `{ field }` | applicable guides |
-| `createHeatmap` | `{ x, y, color }`, or `{ x, y, bin: {} }` | applicable guides |
+| `createHeatmap` | `{ x, y }`, or `{ x, y, bin: {} }` | applicable guides |
 
 These facades create a complete common Cartesian chart from fields. After
 creation, editing returns to the action that owns the decision; for example,
@@ -168,6 +168,12 @@ accepted because it could mean either a field or a named dash style; use
 explicit Polar mark and encoding actions for closed Polar paths. A field
 materialized by `createWindowData` can be used directly as the quantitative y
 position without applying another aggregate.
+
+Line y positions use quantitative or temporal scales, so
+`guides.grid.horizontal` does not accept `bandPosition`. A categorical x with
+`scale: { type: "band" }` can use `guides.grid.vertical.bandPosition` set to
+`"center"` or `"boundary"`. Facade grids belong to the line's own position
+scales; an unrelated band scale cannot replace its y scale.
 
 For named x categories, set `fieldType: "ordinal"` or `"nominal"` and optionally
 provide `scale.domain` for their order. Point/band centers align with companion
@@ -296,9 +302,9 @@ histogram, color, and bar contracts.
 createHeatmap(options: CreateHeatmapOptions): ChartProgram
 ```
 
-`createHeatmap` supports two explicit modes. Without `bin`, `x`, `y`, and
-`color` describe pre-gridded rows and the action creates one cell for each valid
-observed row. With `bin`, raw quantitative `x` and `y` fields are divided into a
+`createHeatmap` supports two explicit modes. Without `bin`, `x` and `y` describe pre-gridded rows and the action creates
+one cell for each valid observed row. `color` is optional; omit it to declare the
+cell layout first, then assign a field with `encodeColor`. With `bin`, raw quantitative `x` and `y` fields are divided into a
 rectangular grid and cell color represents the generated count.
 
 <!-- snippet-context:start -->

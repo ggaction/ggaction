@@ -20,7 +20,7 @@ function makeFocusedLegendEdit({ name, options, map }) {
 const editLegendLayout = /* @__PURE__ */ makeFocusedLegendEdit({
   name: "editLegendLayout",
   options: [
-    "position", "layout", "align", "direction", "columns", "offset",
+    "position", "layout", "align", "direction", "columns", "offset", "blockLayout", "at",
     "titlePosition", "itemGap"
   ],
   map: args => args
@@ -34,7 +34,7 @@ const editLegendLabels = /* @__PURE__ */ makeFocusedLegendEdit({
 
 const editLegendTitle = /* @__PURE__ */ makeFocusedLegendEdit({
   name: "editLegendTitle",
-  options: ["title", "color", "fontSize", "fontFamily", "fontWeight"],
+  options: ["title", "color", "fontSize", "fontFamily", "fontWeight", "align"],
   map: ({ target, title, ...titleStyle }) => ({
     target,
     ...(title === undefined ? {} : { title }),

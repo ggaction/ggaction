@@ -269,12 +269,12 @@ test("materializes all twelve shapes in marks and a shape-only legend", () => {
       .createData({ id: "overflow", values: overflowRows })
       .createPointMark({ id: "points" })
       .encodeShape({ field: "shape" }),
-    /one distinct shape per domain value/
+    /one shape entry per domain value/
   );
-  assert.throws(
-    () => base().encodeShape({ field: "group", scale: { range: ["circle", "circle"] } }),
-    /unique supported point shapes/
-  );
+  const repeated = base().encodeX({ field: "x" }).encodeY({ field: "y" }).encodeShape({ field: "group", scale: { range: ["circle", "circle"] } });
+  assert.deepEqual(repeated.resolvedScales.shape.range, ["circle", "circle"]);
+  assert.equal(repeated.graphicSpec.objects.points.type, "circle");
+  assert.throws(() => base().encodeShape({ field: "group", scale: { range: ["circle", "unsupported"] } }), /supported point shapes/);
 });
 
 test("matches the regression scatterplot primitive point collection", () => {
@@ -308,4 +308,22 @@ test("matches the regression scatterplot primitive point collection", () => {
       properties: child.properties
     }))
   );
+});
+
+
+test("explicit repeated shape assignments preserve category legends and replay", () => {
+  const names = Array.from({ length: 10 }, (_, i) => String.fromCharCode(97 + i));
+  const range = ["circle", "square", "triangle-up", "cross", "diamond", "triangle-right", "triangle-down", "triangle-left", "circle", "square"];
+  const rows = names.map((category, i) => ({ category, x: i, y: i }));
+  const source = chart().createCanvas({ width: 500, height: 350, margin: { left: 40, top: 20, right: 120, bottom: 40 } }).createData({ values: rows }).createScatterPlot({ x: { field: "x" }, y: { field: "y" }, guides: false });
+  const result = source.encodeShape({ field: "category", scale: { domain: names, range } }).createLegend({ channels: ["shape"] });
+  assert.equal(source.semanticSpec.scales.some(s => s.id === "shape"), false);
+  assert.deepEqual(range, result.resolvedScales.shape.range);
+  assert.equal(result.graphicSpec.objects.seriesLegendLabels.items.length, 10);
+  const symbols = result.graphicSpec.objects.scatterPlot.items;
+  assert.equal(symbols[0].type, symbols[8].type);
+  assert.equal(symbols[1].type, symbols[9].type);
+  const resized = result.editCanvas({ width: 520 });
+  assert.deepEqual(resized.resolvedScales.shape.range, range);
+  assert.deepEqual(resized.graphicSpec.objects.scatterPlot.items.map(i => i.type), symbols.map(i => i.type));
 });

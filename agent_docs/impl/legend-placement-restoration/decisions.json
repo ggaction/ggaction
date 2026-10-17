@@ -1,0 +1,55 @@
+{
+  "gate": "legend-placement-restoration",
+  "state": "approved",
+  "approved": true,
+  "reviewRevision": "705aa19f1e310ca7d7e653957aac37bce8ed2c57",
+  "protectedDecisions": [
+    "기존 corner position의 sampled/gradient family 지원",
+    "blockLayout/at public 옵션",
+    "target별 legendGroups 저장 상태와 멤버 상속/충돌 규칙",
+    "corner inset8/블록간24/외부row40 기본값",
+    "occupied top-left 좌표와 편집 전환"
+  ],
+  "publicFields": {
+    "blockLayout": [
+      "row",
+      "column",
+      "wrap"
+    ],
+    "at": {
+      "x": "finite number",
+      "y": "finite number"
+    }
+  },
+  "groupStateOwner": "materializationConfigs.guides.legendGroups[target]",
+  "defaults": {
+    "legacySide": "column unchanged",
+    "legacyTopBottom": "wrap unchanged",
+    "newCorner": "row",
+    "newFree": "column",
+    "cornerInset": 8,
+    "cornerBlockGap": 24,
+    "externalRowGap": 40
+  },
+  "compatibility": "새 필드/새 multi-corner 없는 기존 프로그램은 변경하지 않고 저장 migration을 강제하지 않는다.",
+  "atSameCallConflicts": [
+    "position",
+    "align",
+    "offset"
+  ],
+  "atStoredDefaultConflict": false,
+  "atToPositionClearsAt": true,
+  "positionToAtReplacesAnchor": true,
+  "inheritance": "확립된 same-target 그룹은 이후 생략된 멤버 placement를 상속한다. 명시적 충돌은 거부하며 그룹 편집은 전원을 함께 옮긴다.",
+  "implementationStarted": true,
+  "requestApprovalBeforeImplementation": true,
+  "approval": {
+    "source": "direct human reply in the translation task",
+    "questionItemId": "[\"request_user_input_async\",\"call_c7ab5eaa31f44ae28c5aa8b2cecaf75b\",0]",
+    "answer": "설계대로 구현 (권장)",
+    "recordedAt": "2026-10-16T05:04:32.871229+00:00"
+  },
+  "implementationStatus": "library-implemented-validated",
+  "translationIntegrationAtLibraryCheckpoint": "pending-exact-pin-and-existing-family-retranslation",
+  "implementationEvidence": "implementation-evidence.json"
+}

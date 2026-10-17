@@ -537,6 +537,18 @@
   {
     "file": "api/canvas.md",
     "block": 2,
+    "heading": "Exact inner dimensions",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "f17807b9900bcd66d3f760cd5ad9b074488b1b7a864b5733f554dd246dd2ae40",
+    "executable": false
+  },
+  {
+    "file": "api/canvas.md",
+    "block": 3,
     "heading": "`editCanvas(options)`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -550,7 +562,7 @@
   },
   {
     "file": "api/canvas.md",
-    "block": 3,
+    "block": 4,
     "heading": "`fitCanvas(options?)`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1072,7 +1084,7 @@
   {
     "file": "api/data/missing-data.md",
     "block": 2,
-    "heading": "`createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}",
+    "heading": "`createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -1293,7 +1305,7 @@
   {
     "file": "api/data/summaries-and-shaping.md",
     "block": 4,
-    "heading": "`createStackData({ id, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}",
+    "heading": "`createStackData({ id?, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -1309,7 +1321,7 @@
   {
     "file": "api/data/time-units.md",
     "block": 1,
-    "heading": "`createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })`",
+    "heading": "`createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -1981,7 +1993,7 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "93b639ac55196dee96266e9864c1af42d64b2feb8086a62c1c7ff9db9d58f9b4",
+    "sha256": "dd80d75d53eee63f6db36bdcc49fdbe8fd112fce8264179b3476f70d5588d60e",
     "executable": false
   },
   {
@@ -2027,7 +2039,19 @@
   {
     "file": "api/legends/continuous.md",
     "block": 5,
-    "heading": "Continuous color, stroke, and opacity",
+    "heading": "Show a continuous color scale as symbols",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "e30cf524f54b8e467c3fb71f40bb9e199b4bb93c56375fdb1a392598e5597c7d",
+    "executable": false
+  },
+  {
+    "file": "api/legends/continuous.md",
+    "block": 6,
+    "heading": "Show a continuous color scale as symbols",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -2040,8 +2064,8 @@
   },
   {
     "file": "api/legends/continuous.md",
-    "block": 6,
-    "heading": "Continuous color, stroke, and opacity",
+    "block": 7,
+    "heading": "Show a continuous color scale as symbols",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -2467,6 +2491,18 @@
   {
     "file": "api/marks/line-area.md",
     "block": 8,
+    "heading": "`createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "0f65a78a3a0e92b68107f65e8786deae7ca214c7584652ea6d3d8bf07e170fc7",
+    "executable": false
+  },
+  {
+    "file": "api/marks/line-area.md",
+    "block": 9,
     "heading": "`editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2480,7 +2516,7 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 9,
+    "block": 10,
     "heading": "`createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2492,7 +2528,7 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 10,
+    "block": 11,
     "heading": "`editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`",
     "mode": "fragment",
     "environment": "esm-context",

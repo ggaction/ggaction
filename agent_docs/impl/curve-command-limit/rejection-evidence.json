@@ -1,0 +1,53 @@
+{
+  "reviewer": "codex",
+  "gate": "ready-for-review",
+  "currentLimit": 10000,
+  "proposedLimit": 20000,
+  "method": "Ordinary public createLinePlot with finite synthetic points; no chart pixels or model calls.",
+  "records": [
+    {
+      "observations": 10000,
+      "accepted": true,
+      "commands": 10000,
+      "callerAndPreviousProgramUnchanged": true
+    },
+    {
+      "observations": 10001,
+      "accepted": false,
+      "error": {
+        "name": "RangeError",
+        "message": "Curve path command count must not exceed 10000."
+      },
+      "callerAndPreviousProgramUnchanged": true
+    },
+    {
+      "observations": 12070,
+      "accepted": false,
+      "error": {
+        "name": "RangeError",
+        "message": "Curve path command count must not exceed 10000."
+      },
+      "callerAndPreviousProgramUnchanged": true
+    },
+    {
+      "observations": 20000,
+      "accepted": false,
+      "error": {
+        "name": "RangeError",
+        "message": "Curve path command count must not exceed 10000."
+      },
+      "callerAndPreviousProgramUnchanged": true
+    },
+    {
+      "observations": 20001,
+      "accepted": false,
+      "error": {
+        "name": "RangeError",
+        "message": "Curve path command count must not exceed 10000."
+      },
+      "callerAndPreviousProgramUnchanged": true
+    }
+  ],
+  "newModelResponses": 0,
+  "chartPixelsInspected": false
+}

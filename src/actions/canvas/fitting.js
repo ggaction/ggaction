@@ -7,6 +7,8 @@ import {
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { findCanvasGraphic } from
   "../../materialization/graphicHierarchy.js";
+import { resolveConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
+import { textBoundsFitCanvas } from "../../core/textMetrics.js";
 
 const OPTIONS = Object.freeze([
   "padding",
@@ -45,7 +47,17 @@ function normalizeOptions(args) {
 
 function probe(program, margin) {
   try {
-    return { ok: true, program: program.editCanvas({ margin }) };
+    const next = program.editCanvas({ margin });
+    const title = next.guideConfigs.axis?.y?.title;
+    if (title?.inferredOffset && Math.abs(Math.cos(title.rotation)) < 1e-10) {
+      const bounds = resolveConcreteGraphicBounds(next.graphicSpec, "yAxisTitle", next.materializationConfigs.textMetrics);
+      const edge = title.position === "right" ? "right" : "left";
+      const reserve = title.fontSize / 4 * (edge === "right" ? 1 : -1);
+      if (!textBoundsFitCanvas({...bounds, [edge]: bounds[edge] + reserve}, findCanvasGraphic(next).properties)) {
+        return {ok:false, message:"Fitting retains inferred axis-title ink clearance."};
+      }
+    }
+    return { ok: true, program: next };
   } catch (error) {
     return {
       ok: false,

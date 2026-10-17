@@ -27,12 +27,13 @@ test("Full and Basic create size content with four-edge layout and sampled areas
 test("size edge edits and content replacement converge with direct creation and Canvas replay", () => {
   for (const from of edges) for (const position of edges) {
     const original = base().createLegend({ position: from, border: true });
+    const itemGap = original.guideConfigs.legend.size.itemGap;
     const actual = original.editLegendLayout({ position });
-    assert.deepEqual(actual.graphicSpec, base().createLegend({ position, border: true }).graphicSpec);
+    assert.deepEqual(actual.graphicSpec, base().createLegend({ position, border: true, itemGap }).graphicSpec);
     assert.deepEqual(actual.editCanvas({ width: 1100 }).graphicSpec,
       original.editCanvas({ width: 1100 }).editLegend({ position }).graphicSpec);
     assert.deepEqual(actual.editLegend({ channels: ["size"], position }).graphicSpec, actual.graphicSpec);
-    assert.deepEqual(actual.removeLegend().createLegend({ position, border: true }).graphicSpec, actual.graphicSpec);
+    assert.deepEqual(actual.removeLegend().createLegend({ position, border: true, itemGap }).graphicSpec, actual.graphicSpec);
     const noBorder = actual.editLegend({ border: false });
     assert.equal(noBorder.graphicSpec.objects.sizeLegendBackground, undefined);
     assert.deepEqual(noBorder.editLegend({ border: true }).graphicSpec, actual.graphicSpec);
@@ -69,7 +70,7 @@ test("large circles reserve real sample width, title separation and label gaps",
     if (["left", "right"].includes(position)) {
       assert.equal(samples(p)[1].y - samples(p)[0].y, 80);
       const title = p.graphicSpec.objects.sizeLegendTitle.properties;
-      assert.ok(samples(p)[0].y - samples(p)[0].radius - title.y - title.fontSize / 2 >= 12);
+      assert.ok(samples(p)[0].y - samples(p)[0].radius - title.y - title.fontSize >= 12);
     }
   }
 });
@@ -86,12 +87,12 @@ test("size bounds and incompatible options reject immutably while hidden titles 
     assert.throws(() => source.createLegend(patch), JSON.stringify(patch));
     assert.equal(JSON.stringify(p), before);
   }
-  assert.throws(() => p.editCanvas({ width: 600, margin: { right: 20 } }), /margin space/);
-  assert.throws(() => p.editScale({ id: "size", range: [1, 1e8] }), /margin space/);
+  assert.throws(() => p.editCanvas({ width: 600, margin: { right: 20 } }), /more right-margin or Canvas space/);
+  assert.throws(() => p.editScale({ id: "size", range: [1, 1e8] }), /more right-margin or Canvas space/);
   const large = source.editCanvas({ width: 2000, margin: { right: 1200 } }).createLegend({ title: "W".repeat(60) });
   const hidden = large.editLegend({ title: false }).editCanvas({ width: 1000, margin: { right: 250 } });
   assert.equal(hidden.guideConfigs.legend.size.title, "W".repeat(60));
-  assert.throws(() => hidden.editLegend({ title: "W".repeat(60) }), /margin space/);
+  assert.throws(() => hidden.editLegend({ title: "W".repeat(60) }), /more right-margin or Canvas space/);
 });
 
 test("combined side lanes retain nested size borders and accommodate large circles and requested label offsets", () => {

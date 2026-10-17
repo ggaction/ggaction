@@ -1,3 +1,5 @@
+import { validateFillPaint } from "../../../grammar/paint.js";
+import { validateAreaPaintConfig } from "../../../grammar/areaPaint.js";
 import { validateAreaMissing } from "../../../grammar/areaEndpoints.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -81,7 +83,7 @@ const createAreaMark = /* @__PURE__ */ action(
     if (missing === "break" && ["density", "horizon"].some(type => findUpstreamTransform(this, findDataset(this, data), type))) {
       throw new Error("Area missing:break does not reinterpret density or horizon data.");
     }
-    const fill = validateNonEmptyString(args.fill ?? DEFAULT_COLORS.mark, "Area fill");
+    const fill = validateFillPaint(args.fill ?? DEFAULT_COLORS.mark, "Area fill");
     const opacity = validateUnitInterval(args.opacity ?? 0.2, "Area opacity");
     const curve = validateCurveInterpolation(args.curve ?? "linear");
     const { stroke, strokeWidth } = validateAreaCreateOutline(args);
@@ -127,14 +129,14 @@ const configureAreaStrokeFromFill = /* @__PURE__ */ action(
     }
     const { stroke: _stroke, ...config } = this.markConfigs[id] ?? {};
     void _stroke;
-    return this._withMarkConfig(id, {
+    return this._withMarkConfig(id, validateAreaPaintConfig({
       ...config,
       strokeFromFill: true,
       strokeWidth: validateNonNegativeFinite(
         args.strokeWidth ?? 1,
         "Area strokeWidth"
       )
-    });
+    }));
   }
 );
 
@@ -199,7 +201,7 @@ const rematerializeAreaMark = /* @__PURE__ */ action(
     if (args.scales !== false && strokeEncoding?.scale !== undefined) {
       resolved = resolved.rematerializeScale({ id: strokeEncoding.scale });
     }
-    const config = this.markConfigs[id];
+    const config = validateAreaPaintConfig(this.markConfigs[id]);
     const { paths, fills, strokes } = resolveAreaMaterialization({
       rows: dataset.values,
       layer,
@@ -273,7 +275,7 @@ const editAreaMark = /* @__PURE__ */ action(
     let config = { ...this.markConfigs[layer.id] };
     Object.assign(config, strokeDetails);
     if (Object.hasOwn(args, "fill")) {
-      config.fill = validateNonEmptyString(args.fill, "Area fill");
+      config.fill = validateFillPaint(args.fill, "Area fill");
       if (config.errorBand !== undefined) config.errorBand = { ...config.errorBand, fill: config.fill };
     }
     if (Object.hasOwn(args, "opacity")) {
@@ -314,6 +316,7 @@ const editAreaMark = /* @__PURE__ */ action(
       );
     }
 
+    validateAreaPaintConfig(config);
     let next = this._withMarkConfig(layer.id, config);
     if (Object.hasOwn(args, "missing")) {
       const missing = validateAreaMissing(args.missing);

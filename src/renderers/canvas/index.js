@@ -1,3 +1,4 @@
+import { resolveCanvasSolidPaint } from "./fill.js";
 import { annotateError } from "../../core/diagnostics.js";
 import { drawCircleGraphic } from "./circle.js";
 import { drawLineGraphic } from "./line.js";
@@ -81,7 +82,7 @@ function fillCanvasBackground(context, id, canvas, width, height) {
     );
   }
   context.globalAlpha = 1;
-  context.fillStyle = canvas.properties.background;
+  context.fillStyle = resolveCanvasSolidPaint(canvas.properties.background);
   context.fillRect(0, 0, width, height);
 }
 

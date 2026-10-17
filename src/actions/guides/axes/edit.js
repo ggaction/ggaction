@@ -16,12 +16,12 @@ const OPTIONS = Object.freeze([
 ]);
 const LINE_OPTIONS = Object.freeze(["color", "lineWidth"]);
 const TICK_OPTIONS = Object.freeze([
-  "count", "values", "length", "color", "lineWidth"
+  "count", "values", "length", "color", "lineWidth", "alongOffset"
 ]);
 const LABEL_OPTIONS = Object.freeze([
   "count", "values", "offset", "format", "color", "fontSize",
   "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
-  "lineHeight", "overlap"
+  "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "colorMap"
 ]);
 const GROUP_OPTIONS = Object.freeze(["count", "values", "ticks", "labels"]);
 const TITLE_OPTIONS = Object.freeze([
@@ -59,12 +59,12 @@ function validateArgs(args, operation) {
     );
   }
   if (args.ticksAndLabels !== false && args.ticksAndLabels?.ticks !== undefined) {
-    validateNested(args.ticksAndLabels, "ticks", ["length", "color", "lineWidth"], `${operation}.ticksAndLabels`);
+    validateNested(args.ticksAndLabels, "ticks", ["length", "color", "lineWidth", "alongOffset"], `${operation}.ticksAndLabels`);
   }
   if (args.ticksAndLabels !== false && args.ticksAndLabels?.labels !== undefined) {
     validateNested(args.ticksAndLabels, "labels", [
       "offset", "format", "color", "fontSize", "fontFamily", "fontWeight",
-      "rotation", "maxWidth", "wrap", "lineHeight", "overlap"
+      "rotation", "maxWidth", "wrap", "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "colorMap"
     ], `${operation}.ticksAndLabels`);
   }
 }

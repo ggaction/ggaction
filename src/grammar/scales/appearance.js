@@ -85,11 +85,10 @@ export function validateShapeRange(range) {
   if (
     !Array.isArray(range) ||
     range.length === 0 ||
-    !range.every(shape => POINT_SHAPES.includes(shape)) ||
-    new Set(range).size !== range.length
+    !range.every(shape => POINT_SHAPES.includes(shape))
   ) {
     throw new TypeError(
-      "Shape range must contain unique supported point shapes."
+      "Shape range must contain supported point shapes."
     );
   }
   return cloneAndFreeze(range);

@@ -1,0 +1,49 @@
+{
+  "reviewer": "codex",
+  "sourceId": "0358",
+  "sourceSnapshotSha256": "f77b46fb2979b11c3ff7c50fa344668d23cf6adb53fd06dae60284ddeb021dcf",
+  "rawDataSha256": "56bbcee36bf28c97c0c4b532a69db77f76b46b33b160b30be8329a3a59061c09",
+  "compiledSnapshotSha256": "e675c6f88b9b02895c91059dfe10e8521a89c16580167edbf0fac62ebfcbba44",
+  "sourceSvgSha256": "2c30cdcb21a64481ac0aa0ebda3100893b7f4c72c71885a7ce4f9cfac73c9cb0",
+  "sourceMarkEvidenceSha256": "f5d2e3beb750b3eb031b70b62751a382b086716fae2a6b2b43538607020f5ace",
+  "fullRowTemporalProofSha256": "5fdcdd49ba48c7e70d7894b391abd4fe13dd03bfe6244e68c2454f2dec336d91",
+  "fullRowTemporalProofFacts": {
+    "rawRows": 12070,
+    "paintedVertices": 12070,
+    "allRawDatesEqualSourceEpochs": true,
+    "sourceInitial1975to2022FilterIdentity": true,
+    "allOtherRawValuesExact": true
+  },
+  "rawRows": 12070,
+  "finiteOrderedPaintedVertices": 12070,
+  "continuousSeries": 1,
+  "requiredConnectingSegments": 12069,
+  "scaleDomains": {
+    "x": [
+      157852800000,
+      1664406000000
+    ],
+    "y": [
+      0.5,
+      2.5
+    ]
+  },
+  "sourcePaint": {
+    "stroke": "rgb(230, 50, 50)",
+    "strokeWidth": 2,
+    "opacity": 1
+  },
+  "candidateSha256": "4c68a27dfda14a80e8d78b736075629c1a241485663f6a2ebe55df952e3a93d8",
+  "observedPublicError": {
+    "message": "Curve path command count must not exceed 10000.",
+    "runtimeDiagnosis": {
+      "code": "resource-limit",
+      "operation": "rematerializeLineMark",
+      "optionPath": "Curve path command count"
+    }
+  },
+  "hostRawRowsRewritten": false,
+  "hostChartCodeAuthored": false,
+  "newModelResponses": 0,
+  "chartPixelsInspected": false
+}

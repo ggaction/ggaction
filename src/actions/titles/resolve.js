@@ -23,7 +23,7 @@ import { findCanvasGraphic } from
   "../../materialization/graphicHierarchy.js";
 
 const OPTIONS = Object.freeze([
-  "text", "subtitle", "position", "align", "offset", "gap", "titleStyle",
+  "text", "subtitle", "position", "align", "offset", "alongOffset", "gap", "titleStyle",
   "subtitleStyle", "maxWidth", "wrap", "lineHeight"
 ]);
 const STYLE_OPTIONS = Object.freeze([
@@ -36,6 +36,7 @@ const DEFAULTS = Object.freeze({
   position: "top",
   align: "left",
   offset: 0,
+  alongOffset: 0,
   gap: 8,
   titleStyle: Object.freeze({
     color: DEFAULT_COLORS.strongText,
@@ -51,9 +52,12 @@ const DEFAULTS = Object.freeze({
   })
 });
 
-export function validateTitleString(value, label) {
+export function validateTitleString(value, label, multiline = false) {
   validateNonEmptyString(value, label);
-  if (/\r|\n/u.test(value)) {
+  if (multiline && value.split(/\r\n|\r|\n/u).every(line => line === "")) {
+    throw new Error(`${label} requires at least one non-empty line.`);
+  }
+  if (!multiline && /\r|\n/u.test(value)) {
     throw new Error(`${label} does not accept explicit newlines.`);
   }
   return value;
@@ -83,6 +87,7 @@ function normalizeConfig(args, defaults, { hasSubtitle }) {
   const align = args.align ?? defaults.align;
   const offset = args.offset ?? defaults.offset;
   const gap = args.gap ?? defaults.gap;
+  const alongOffset = args.alongOffset ?? defaults.alongOffset ?? 0;
   const titleStyle = normalizeStyle(
     args.titleStyle,
     defaults.titleStyle,
@@ -105,6 +110,7 @@ function normalizeConfig(args, defaults, { hasSubtitle }) {
   if (!Number.isFinite(offset)) {
     throw new TypeError("Chart title offset must be a finite number.");
   }
+  if (!Number.isFinite(alongOffset)) throw new TypeError("Chart title alongOffset must be a finite number.");
   validateNonNegativeFinite(gap, "Chart title gap");
   if (maxWidth !== undefined) {
     validatePositiveFinite(maxWidth, "Chart title maxWidth");
@@ -126,6 +132,7 @@ function normalizeConfig(args, defaults, { hasSubtitle }) {
     position,
     align,
     offset,
+    alongOffset,
     gap,
     titleStyle,
     subtitleStyle,
@@ -137,10 +144,10 @@ function normalizeConfig(args, defaults, { hasSubtitle }) {
 
 export function normalizeTitleOptions(args) {
   validateOptionObject(args, OPTIONS, "createTitle");
-  const text = validateTitleString(args.text, "Chart title text");
+  const text = validateTitleString(args.text, "Chart title text", true);
   const subtitle = args.subtitle === undefined
     ? undefined
-    : validateTitleString(args.subtitle, "Chart subtitle");
+    : validateTitleString(args.subtitle, "Chart subtitle", true);
   return {
     text,
     subtitle,
@@ -156,12 +163,12 @@ export function normalizeTitleEditOptions(args, previous, semanticTitle) {
   });
   const text = args.text === undefined
     ? semanticTitle.text
-    : validateTitleString(args.text, "Chart title text");
+    : validateTitleString(args.text, "Chart title text", true);
   const subtitle = args.subtitle === false
     ? undefined
     : args.subtitle === undefined
       ? semanticTitle.subtitle
-      : validateTitleString(args.subtitle, "Chart subtitle");
+      : validateTitleString(args.subtitle, "Chart subtitle", true);
   if (args.subtitle !== undefined && args.subtitle !== false && typeof args.subtitle !== "string") {
     throw new TypeError("Chart subtitle must be a non-empty string or false.");
   }
@@ -207,12 +214,12 @@ export function resolveTitleLayout(program, config) {
     throw new Error("Chart title layout requires Canvas bounds and dimensions.");
   }
   const block = buildTitleReadingBlock({
-    text: validateTitleString(program.semanticSpec.title.text, "Chart title text"),
+    text: validateTitleString(program.semanticSpec.title.text, "Chart title text", true),
     subtitle: program.semanticSpec.title.subtitle === undefined
       ? undefined
       : validateTitleString(
           program.semanticSpec.title.subtitle,
-          "Chart subtitle"
+          "Chart subtitle", true
         )
   }, config, program.materializationConfigs.textMetrics);
   const automatic = program.materializationConfigs.canvas?.plot !== undefined;
@@ -229,7 +236,7 @@ export function resolveTitleLayout(program, config) {
   }
   let component;
   if (horizontal) {
-    const x = alignedTextAnchor(plot.x, plot.width, config.align);
+    const x = alignedTextAnchor(plot.x, plot.width, config.align) + (config.alongOffset ?? 0);
     const blockTop = automatic ? titleEdge - (near ? block.height : 0)
       : config.position === "top"
       ? 16 + config.offset
@@ -244,7 +251,7 @@ export function resolveTitleLayout(program, config) {
     });
   } else {
     const rotation = config.position === "left" ? -Math.PI / 2 : Math.PI / 2;
-    const y = alignedTitleAnchor(plot.y, plot.height, block.width, config.align);
+    const y = alignedTitleAnchor(plot.y, plot.height, block.width, config.align) + (config.alongOffset ?? 0);
     const edge = automatic ? titleEdge + (near ? -block.height : block.height)
       : config.position === "left"
       ? 16 + config.offset
