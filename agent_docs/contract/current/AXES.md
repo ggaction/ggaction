@@ -125,7 +125,7 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
   `fontFamily?`, `fontWeight?`; edit에서는 scale을 제외한다.
 - `text`: non-empty string. 생략하면 unique connected field/aggregate 또는 density provenance에서 추론한다.
 - `at`: `"start" | "center" | "end"` 또는 continuous scale domain 안의 finite number; 기본 center.
-- `offset`: non-negative finite; x default `42`, y default `52`.
+- `offset`: signed finite; positive outward, negative inward; inferred preferred defaults x `42`, y `52`.
 - `rotation`: `RotationInput = Finite | { value: Finite; unit: "degrees" | "radians" }`. 기존 finite 숫자는
   radians 의미를 유지하고 구조형 입력은 단위를 명시한다. 둘 다 stored materialization config에서 radians로
   정규화한다. x bottom/top default `0`, y left default `-Math.PI / 2`, y right default `Math.PI / 2`이며
@@ -278,6 +278,7 @@ type TickOptions = {
   lineWidth?: NonNegativeFinite;
 };
 type LabelOptions = {
+  align?: "left" | "center" | "right";
   offset?: NonNegativeFinite;
   format?: "auto" | { decimals: NonNegativeInteger } | AxisFormatString;
   color?: NonEmptyString;
@@ -295,10 +296,14 @@ type AxisTitleOptions<P extends string> = TextStyle & {
   text?: NonEmptyString;
   position?: P;
   at?: "start" | "center" | "end" | Finite;
-  offset?: NonNegativeFinite;
+  offset?: Finite;
+  alongOffset?: Finite;
+  align?: "left" | "center" | "right";
+  baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom";
   rotation?: RotationInput;
 };
 type CompleteAxisOptions<P extends string> = {
+  offset?: NonNegativeFinite;
   scale?: UserId;
   coordinate?: UserId;
   position?: P;
@@ -310,7 +315,44 @@ type CompleteAxisOptions<P extends string> = {
 
 ## `createAxes`
 
-### Cartesian tick dash contract
+### Cartesian frame and text placement
+
+Complete Cartesian creators (`createXAxis`, `createYAxis`, nested `createAxes` and
+`createGuides.axes`) and whole-axis editors accept `offset`: finite non-negative outward
+logical pixels, creation default0, edit omission preserves the stored value, explicit0
+restores the plot edge. One `guideConfigs.axis[channel].frame.offset` owns that intent.
+Line, ticks, labels and title move together; all local component offsets remain relative
+to that frame. Marks, scale range, plot dimensions and grids remain fixed. Changing side
+applies the same distance in its new outward direction; component recreation inherits it.
+
+Cartesian title `offset` now accepts finite signed logical pixels: positive outward and
+negative inward. Its omitted inferred placement remains unchanged; an explicit number
+disables inference. To restore inference remove/recreate the title without offset.
+`alongOffset` defaults0 and moves X titles screen-right or Y titles screen-down for
+positive values, independent of side and reversed scales. Resolve scale-domain `at`
+first; numeric `at` remains a domain value. Rotation is around the translated anchor.
+
+Title `align` is left/center/right (defaultcenter), `baseline` is
+top/hanging/middle/alphabetic/ideographic/bottom (defaultmiddle), applied in the local text
+frame before rotation. For multiline text top/hanging/alphabetic anchor the first line,
+bottom/ideographic anchor the last line, middle centers the whole block; spacing remains
+1.2×fontSize. Omitted edits preserve explicit style; explicitcenter/middle/alongOffset0
+restore those defaults. These same options reach complete/whole/focused creation/editing.
+
+Cartesian labels accept explicit local-before-rotation `align` left/center/right. Creation
+omission keeps side/rotation/flush inference; edit omission preserves prior intent. Explicit
+align supersedes inferred anchoring while retaining the previous resolved label positions,
+values, offsets, format/maps, wrapping and stored flush intent. Side changes preserve explicit
+align. Removing/recreating labels without align restores inference; no auto/null reset literal
+is added. Bounds are recomputed for the final glyph alignment and rotation.
+
+Finite/enum validation, measured Canvas/own-label-title collisions, immutable failure,
+refresh/Canvas/theme/facet and persistence apply to every new option. Inward titles do not
+introduce a new mark-overlap prohibition or automatic fit mode. Legacy no-option output
+remains identical. Evidence: `axis-text-placement.test.js`, `axis-frame-offset.test.js`
+under `test/unit/actions/guides/`, with independent `test/oracles/cartesian-axis-geometry.js`.
+
+### Cartesian tick dash values
 
 Cartesian tick component creation/whole/group/focused editing accepts uniform
 `strokeDash` and typed `strokeDashMap:[{value,strokeDash}]`. A pattern is an even-length
@@ -1048,7 +1090,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 - `scale`: ✅ Covered default/explicit/conflicting scale.
 - `position`: ✅ Covered bottom/top, default rotation, margin failure and invalid values.
 - `at`: ✅ Covered `"start" | "center" | "end"`, in-domain number and out-of-domain/invalid.
-- `offset`: ✅ Covered default `42`, zero/positive, negative rejection.
+- `offset`: ✅ Covered default `42`, signed negative/zero/positive, Canvas/collision rejection.
 - `rotation`: ✅ Covered default `0`, finite explicit and non-finite rejection.
 - `color`, `fontSize`, `fontFamily`, `fontWeight`: ✅ Covered defaults, representatives and invalid classes.
 - Evidence: `test/unit/actions/guides/axis-title-actions.test.js`.

@@ -90,6 +90,18 @@ async function testNodeConsumer(directory) {
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
     for (const create of [chart, basicChart]) {
+      const placedAxis = create().createCanvas({ width: 900, height: 800, margin: 200 })
+        .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
+        .createScatterPlot({ x: "x", y: "y", guides: false })
+        .createXAxis({ offset: 20, title: {
+          text: "Inside", offset: -50, alongOffset: 85, align: "right", baseline: "bottom"
+        }, ticksAndLabels: { labels: { align: "left" } } });
+      assert.equal(placedAxis.graphicSpec.objects.xAxisLine.properties.y1, 620);
+      assert.equal(placedAxis.graphicSpec.objects.xAxisTitle.properties.x, 535);
+      assert.equal(placedAxis.graphicSpec.objects.xAxisTitle.properties.y, 570);
+      assert.deepEqual(deserializeProgram(serializeProgram(placedAxis)).graphicSpec, placedAxis.graphicSpec);
+      assert.ok((await renderToPNGBuffer(placedAxis)).buffer.length > 100);
+      assert.ok((await renderToPDFBuffer(placedAxis)).buffer.length > 100);
       const dashedGuides = create().createCanvas({ width: 700, height: 500, margin: 100 })
         .createData({ values: [{ x: 0, y: 0 }, { x: 1, y: 2 }] })
         .createScatterPlot({ x: "x", y: "y", guides: false })
@@ -3553,6 +3565,24 @@ async function testTypeScriptConsumer(directory) {
       .createData({ values: [{ x: 1, y: 2 }] })
       .createScatterPlot(scatterOptions);
     const basicDraw: typeof basicRender = basicRender;
+    const axisTextFlow: ChartProgram = chart().createCanvas()
+      .createData({ values: [{ x: 0, y: 0 }, { x: 1, y: 1 }] })
+      .createScatterPlot({ x: "x", y: "y", guides: false })
+      .createXAxis({ offset: 20, title: { offset: -30, alongOffset: 10, align: "right", baseline: "bottom" },
+        ticksAndLabels: { labels: { align: "left" }, ticks: {
+          strokeDash: [2, 2], strokeDashMap: [{ value: 0, strokeDash: [] }]
+        } } })
+      .editXAxis({ offset: 0, title: { baseline: "alphabetic" } })
+      .editXAxisLabels({ align: "center" })
+      .editXAxisTicks({ strokeDashMap: "auto" });
+    // @ts-expect-error Axis title baselines use the closed text-baseline vocabulary.
+    axisTextFlow.editXAxisTitle({ baseline: "center" });
+    const basicAxisTextFlow: BasicChartProgram = basicChart().createCanvas()
+      .createData({ values: [{ x: 0, y: 0 }, { x: 1, y: 1 }] })
+      .createScatterPlot({ x: "x", y: "y", guides: false })
+      .createXAxis({ offset: 20, title: { offset: -30, alongOffset: 10, align: "left", baseline: "top" },
+        ticksAndLabels: { labels: { align: "right" } } });
+    void [axisTextFlow, basicAxisTextFlow];
     const horizonOptions: HorizonEncodingOptions = {
       x: { field: "time", fieldType: "temporal" },
       y: "value",

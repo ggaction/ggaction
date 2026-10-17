@@ -1,5 +1,6 @@
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
+import { validateAxisTextPlacement } from "../grammar/axisTextPlacement.js";
 import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
@@ -155,6 +156,15 @@ export function validateProgramState(program, path) {
   ]) {
     if (config?.strokeDash !== undefined) validateGuideDash(config.strokeDash);
     if (config?.strokeDashMap !== undefined) normalizeGuideDashMap(config.strokeDashMap, { reset: false });
+  }
+  for (const channel of ["x", "y"]) {
+    const axis = program.guideConfigs.axis?.[channel];
+    if (axis?.frame !== undefined) {
+      exactKeys(axis.frame, ["offset"], `${path}.guides.axis.${channel}.frame`);
+      validateNonNegativeFinite(axis.frame.offset, "Axis frame offset");
+    }
+    if (axis?.labels !== undefined) validateAxisTextPlacement(axis.labels);
+    if (axis?.title !== undefined) validateAxisTextPlacement(axis.title, { title: true });
   }
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {

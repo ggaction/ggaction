@@ -14780,7 +14780,12 @@
           "basic"
         ]
       },
-      "units": [],
+      "units": [
+        {
+          "path": "offset",
+          "unit": "logical-pixel"
+        }
+      ],
       "inference": [
         {
           "input": "scale",
@@ -14803,6 +14808,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "offset",
+          "required": false,
+          "type": "number | undefined"
+        },
         {
           "name": "scale",
           "required": false,
@@ -14835,7 +14845,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })"
+        "createXAxis({ scale?, coordinate?, offset?, position?, line?, ticksAndLabels?, title? })"
       ],
       "snippet": "program.createXAxis({})",
       "errors": [],
@@ -14888,7 +14898,12 @@
           "basic"
         ]
       },
-      "units": [],
+      "units": [
+        {
+          "path": "offset",
+          "unit": "logical-pixel"
+        }
+      ],
       "inference": [
         {
           "input": "scale",
@@ -14911,6 +14926,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "offset",
+          "required": false,
+          "type": "number | undefined"
+        },
         {
           "name": "scale",
           "required": false,
@@ -14943,7 +14963,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })"
+        "createYAxis({ scale?, coordinate?, offset?, position?, line?, ticksAndLabels?, title? })"
       ],
       "snippet": "program.createYAxis({})",
       "errors": [],
@@ -15992,6 +16012,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "colorMap",
           "required": false,
           "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
@@ -16196,6 +16221,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "colorMap",
           "required": false,
           "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
@@ -16368,6 +16398,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "colorMap",
           "required": false,
           "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
@@ -16424,7 +16459,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, colorMap? })"
+        "editXAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, align? })"
       ],
       "snippet": "program.editXAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
@@ -16555,6 +16590,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "colorMap",
           "required": false,
           "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
@@ -16611,7 +16651,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, colorMap? })"
+        "editYAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, align? })"
       ],
       "snippet": "program.editYAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
@@ -17054,6 +17094,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -17084,6 +17128,21 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+        },
         {
           "name": "text",
           "required": false,
@@ -17136,7 +17195,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisTitle({ scale?, text?, position?, at?, offset?, rotation?, color?, fontSize? })"
+        "createXAxisTitle({ scale?, alongOffset?, align?, baseline?, text?, position?, at?, offset? })"
       ],
       "snippet": "program.createXAxisTitle({})",
       "errors": [],
@@ -17189,6 +17248,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -17219,6 +17282,21 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+        },
         {
           "name": "text",
           "required": false,
@@ -17271,7 +17349,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisTitle({ scale?, text?, position?, at?, offset?, rotation?, color?, fontSize? })"
+        "createYAxisTitle({ scale?, alongOffset?, align?, baseline?, text?, position?, at?, offset? })"
       ],
       "snippet": "program.createYAxisTitle({})",
       "errors": [],
@@ -17319,6 +17397,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -17341,6 +17423,21 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+        },
         {
           "name": "text",
           "required": false,
@@ -17388,9 +17485,9 @@
         }
       ],
       "callPatterns": [
-        "editXAxisTitle({ text?, position?, at?, offset?, rotation?, color?, fontSize?, fontFamily? })"
+        "editXAxisTitle({ alongOffset?, align?, baseline?, text?, position?, at?, offset?, rotation? })"
       ],
-      "snippet": "program.editXAxisTitle({ text: \"Chart title\" })",
+      "snippet": "program.editXAxisTitle({ alongOffset: 1 })",
       "errors": [],
       "route": "/reference/actions/guides/#editxaxistitle"
     },
@@ -17436,6 +17533,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -17458,6 +17559,21 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+        },
         {
           "name": "text",
           "required": false,
@@ -17505,9 +17621,9 @@
         }
       ],
       "callPatterns": [
-        "editYAxisTitle({ text?, position?, at?, offset?, rotation?, color?, fontSize?, fontFamily? })"
+        "editYAxisTitle({ alongOffset?, align?, baseline?, text?, position?, at?, offset?, rotation? })"
       ],
-      "snippet": "program.editYAxisTitle({ text: \"Chart title\" })",
+      "snippet": "program.editYAxisTitle({ alongOffset: 1 })",
       "errors": [],
       "route": "/reference/actions/guides/#edityaxistitle"
     },
@@ -17553,7 +17669,12 @@
           "default"
         ]
       },
-      "units": [],
+      "units": [
+        {
+          "path": "offset",
+          "unit": "logical-pixel"
+        }
+      ],
       "inference": [],
       "completionRequirements": {
         "state": "contextual",
@@ -17564,6 +17685,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "offset",
+          "required": false,
+          "type": "number | undefined"
+        },
         {
           "name": "position",
           "required": false,
@@ -17596,7 +17722,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxis({ position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
+        "editXAxis({ offset?, position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
       ],
       "snippet": "program.editXAxis({ position: \"bottom\" })",
       "errors": [],
@@ -17642,7 +17768,12 @@
           "default"
         ]
       },
-      "units": [],
+      "units": [
+        {
+          "path": "offset",
+          "unit": "logical-pixel"
+        }
+      ],
       "inference": [],
       "completionRequirements": {
         "state": "contextual",
@@ -17653,6 +17784,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "offset",
+          "required": false,
+          "type": "number | undefined"
+        },
         {
           "name": "position",
           "required": false,
@@ -17685,7 +17821,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxis({ position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
+        "editYAxis({ offset?, position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
       ],
       "snippet": "program.editYAxis({ position: \"left\" })",
       "errors": [],
