@@ -62,7 +62,8 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
   } finally { context.restore(); }
 
   const plans = new Map();
-  const frames = [];
+  // Ordered root graphics may be siblings of the Canvas, not its descendants.
+  const frames = [{offset:[0,0],clip:{left:0,top:0,right:target.width,bottom:target.height}}];
   function plan(id, object, type) {
     const properties = object.properties;
     if (properties?.blend !== "difference") return;
@@ -101,10 +102,10 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
         const properties = object.properties;
         const local = {left: offset[0], top: offset[1],
           right: offset[0] + properties.width, bottom: offset[1] + properties.height};
-        const clip = parent ? {
+        const clip = {
           left: Math.max(parent.clip.left, local.left), top: Math.max(parent.clip.top, local.top),
           right: Math.min(parent.clip.right, local.right), bottom: Math.min(parent.clip.bottom, local.bottom)
-        } : local;
+        };
         frames.push({offset, clip});
       }
       if (!object.items) plan(id, object, object.type);
