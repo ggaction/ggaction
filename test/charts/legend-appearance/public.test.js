@@ -1,3 +1,15 @@
-import assert from 'node:assert/strict';import test from 'node:test';
-import {createPublicProgram,createPrimitiveProgram} from './manifest.js';
-test('public whole-symbol opacity has exact independent literal concrete state',()=>{assert.deepEqual(createPublicProgram().graphicSpec,createPrimitiveProgram().graphicSpec);});
+import assert from "node:assert/strict";
+import test from "node:test";
+import { visualVariants } from "./manifest.js";
+import { assertDisplayedProgram } from "../../support/visual-variants.js";
+import { renderWithNativeTrace } from "../../support/native-canvas-trace.js";
+for (const variant of visualVariants) {
+  test("whole-symbol opacity preserves literal graphics, order, native calls and all pixels", () => {
+    const actual = variant.userFacing(), expected = variant.primitive();
+    assertDisplayedProgram(variant, actual);
+    assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
+    assert.deepEqual(actual.graphicSpec.order, expected.graphicSpec.order);
+    const dimensions = { width: variant.width, height: variant.height };
+    assert.deepEqual(renderWithNativeTrace(actual, dimensions), renderWithNativeTrace(expected, dimensions));
+  });
+}
