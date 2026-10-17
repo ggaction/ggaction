@@ -2077,12 +2077,18 @@ export type ComputedExpression =
       readonly replacement: string;
     }
   | {
+      readonly op: "datePart";
+      readonly part: "year";
+      readonly operand: ComputedExpression;
+      readonly timeZone?: string;
+    }
+  | {
       readonly op: "parseTime";
       readonly operand: ComputedExpression;
       readonly format?: ParseTimeFormat;
     }
   | {
-      readonly op: "negate" | "absolute" | "log" | "sqrt" | "not" | "isNull" | "toNumber";
+      readonly op: "negate" | "absolute" | "log" | "sqrt" | "floor" | "not" | "isNull" | "toNumber";
       readonly operand: ComputedExpression;
     }
   | {
