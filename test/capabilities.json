@@ -125,6 +125,14 @@
       {
         "type": "prefix",
         "path": "charts/polar-guides/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/axis-owners/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/shared-facet-owner/"
       }
     ],
     "horizon": [

@@ -1,3 +1,5 @@
+import { createAxisOwners } from "./axis-owners/program.js";
+import { createSharedFacetOwner } from "./shared-facet-owner/program.js";
 import { createColorControls } from "./color-controls/program.js";
 import { createWhitePointComparison } from "./color-white-point/program.js";
 
@@ -150,6 +152,10 @@ export const DOCUMENTATION_WORKFLOWS = Object.freeze([
 
 // Chart-family examples retain their independent primitive/public baselines.
 export const PUBLIC_CHARTS = Object.freeze([
+  example({ id: "axis-owners", data: {}, width: 470, height: 270, docsGroup: "tutorials", createProgram: () => createAxisOwners(),
+    browser: { path: "axis-owners/", canvas: "#chart" } }),
+  example({ id: "shared-facet-owner", data: {}, width: 445, height: 220, docsGroup: "tutorials", createProgram: () => createSharedFacetOwner(),
+    browser: { path: "shared-facet-owner/", canvas: "#chart" } }),
   example({ id: "color-controls", data: {}, width: 480, height: 270, docsGroup: "tutorials", testDirectory: "color-controls", createProgram: createColorControls,
     browser: { path: "color-controls/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "color-controls", width: 480, height: 270 } } } }),
   example({ id: "color-white-point", data: {}, width: 480, height: 270, docsGroup: "tutorials", testDirectory: "color-controls", createProgram: createWhitePointComparison,

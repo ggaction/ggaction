@@ -1346,3 +1346,35 @@
   actions: createBarPlot · editBarMark
   tasks: appearance editing
   url: /api/marks/bar/#blend-with-underlying-content
+
+- id: axis-owners
+  example: /examples/axis-owners/
+  title: Independent Cartesian axis owners
+  image: /assets/images/axis-owners.png
+  alt: A scatterplot with separate quantity and share axes and an inside horizontal title
+  width: 940
+  height: 540
+  thumbnail: /assets/images/axis-owners-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 368
+  caption: Each named axis retains its scale, frame offset, tick style and text alignment.
+  summary: Create complete named axes before focused placement and text edits.
+  actions: createAxes · editYAxis · editYAxisLabels
+  tasks: axis editing
+  url: /api/axes/complete/#independent-named-cartesian-axes
+
+- id: shared-facet-owner
+  example: /examples/shared-facet-owner/
+  title: A shared legend across narrow facet panels
+  image: /assets/images/shared-facet-owner.png
+  alt: Four narrow scatterplot panels above one horizontal legend owned by their parent
+  width: 890
+  height: 440
+  thumbnail: /assets/images/shared-facet-owner-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 316
+  caption: The 270-pixel legend fits the 375-pixel plot union without expanding 60-pixel panels.
+  summary: Declare and edit one parent legend across a repeated chart.
+  actions: facet · editLegendLayout
+  tasks: composition and guide editing
+  url: /api/composition/facets/#declare-a-legend-for-the-complete-facet

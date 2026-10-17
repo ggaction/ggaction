@@ -311,6 +311,24 @@
     }
   },
   "tutorials": {
+    "axis-owners": {
+      "width": 940,
+      "height": 540,
+      "thumbnail": {
+        "width": 640,
+        "height": 368
+      },
+      "sourceHash": "6802eb048e5201a902eda65c1345412bc0fcfbe468cc4b7a2b2d37a7ee5f05e3"
+    },
+    "shared-facet-owner": {
+      "width": 890,
+      "height": 440,
+      "thumbnail": {
+        "width": 640,
+        "height": 316
+      },
+      "sourceHash": "9ed159eb9653f550e5bc2250ea0adfa15ce5e8ec38049780813bc3d472925bb4"
+    },
     "color-controls": {
       "width": 960,
       "height": 540,
@@ -328,6 +346,15 @@
         "height": 360
       },
       "sourceHash": "9d1a9f38e7b50275d9a8d76d17b23478bc77e3d945f9c7f0f82feab7559c9008"
+    },
+    "bar-compositing": {
+      "width": 400,
+      "height": 400,
+      "thumbnail": {
+        "width": 400,
+        "height": 400
+      },
+      "sourceHash": "c3f5947dc1186cbe6bb528af9579d1436bbc14dd8b1284b2ccfc936a85ef556e"
     },
     "cars-origin-histogram-facet": {
       "width": 1512,

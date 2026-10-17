@@ -5,7 +5,7 @@
   "contractId": "sha256:b3e93431e7ba284a54c4aa4167f478c81a2b4f8662dd03219db9b1d2c83d0629",
   "sourceCommit": "51aca6260e296adbfca2eb38a739fe4bfd01bc1e",
   "sourceRef": "51aca6260e296adbfca2eb38a739fe4bfd01bc1e",
-  "exampleSourceRef": "2d6081ea84999114784691eea84e68c87de576c7",
+  "exampleSourceRef": "codex/feature-review-0.0.19",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
