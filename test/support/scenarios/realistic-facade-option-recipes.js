@@ -89,8 +89,9 @@ function bandScale(action, channel, variant, reverse) {
   };
 }
 
-function categoricalColorScale(action, variant, ordinal) {
+function categoricalColorScale(action, variant, ordinal, rangePalette) {
   const id = `${slug(action)}-color-${slug(variant)}`;
+  if (rangePalette !== undefined) return { id, type: "ordinal", domain: "auto", range: { palette: rangePalette } };
   switch (ordinal % 5) {
     case 0:
       return { id, type: "ordinal", domain: "auto", palette: "tableau10" };
@@ -123,6 +124,19 @@ function distributionVariants() {
 }
 
 const DISTRIBUTION_VARIANTS = distributionVariants();
+
+function paletteRangeVariants(base) {
+  return ["viridis", "magma"].flatMap(name => [
+    { ...base, id: `range-palette-string-${name}`, rangePalette: name },
+    { ...base, id: `range-palette-object-${name}`,
+      rangePalette: { name, count: 7, extent: [0.08, 0.92] } }
+  ]);
+}
+const VIOLIN_VARIANTS = freeze([
+  ...DISTRIBUTION_VARIANTS,
+  ...paletteRangeVariants({ orientation: "vertical", type: "linear", typeIndex: 0 })
+]);
+
 
 const HEATMAP_VARIANTS = freeze([
   ...INTERPOLATIONS.map((interpolate, index) => ({
@@ -177,15 +191,16 @@ const HEATMAP_VARIANTS = freeze([
     colorType: "ordinal",
     positionType: "band",
     profileIndex: 0
-  }
+  },
+  ...paletteRangeVariants({ colorType: "sequential", interpolate: "rgb", positionType: "linear", profileIndex: 0 })
 ]);
 
-const HISTOGRAM_VARIANTS = freeze(QUANTITATIVE_TYPES.map((xType, index) => ({
+const HISTOGRAM_VARIANTS = freeze([...QUANTITATIVE_TYPES.map((xType, index) => ({
   id: `${xType}-${ZERO_SUPPORTING_TYPES[index % ZERO_SUPPORTING_TYPES.length]}`,
   xType,
   yType: ZERO_SUPPORTING_TYPES[index % ZERO_SUPPORTING_TYPES.length],
   profileIndex: index
-})));
+})), ...paletteRangeVariants({ xType: "linear", yType: "linear", profileIndex: 0 })]);
 
 const TRANSFORMED_VIEW_CACHE_LIMIT = 16;
 const ELIGIBLE_FIELD_PAIR_CACHE_LIMIT = 6;
@@ -345,7 +360,11 @@ function questionFor(context, variant, family) {
     : variant.type !== undefined
       ? `${variant.orientation} layout with a ${variant.type} measure axis`
       : `${variant.xType} value and ${variant.yType} count axes`;
-  return `How does the positive-shifted ${context.measureText} distribution across ${context.dimensionText} read with ${policy} in this ${FAMILY_LABELS[family] ?? context.familyLabel}?`;
+  const palette = variant.rangePalette;
+  const colorPolicy = palette === undefined ? "" : typeof palette === "string"
+    ? ` using the full ${palette} palette`
+    : ` using ${palette.count} ${palette.name} colors from 8% to 92% of the palette`;
+  return `How does the positive-shifted ${context.measureText} distribution across ${context.dimensionText} read with ${policy}${colorPolicy} in this ${FAMILY_LABELS[family] ?? context.familyLabel}?`;
 }
 
 function sourceProgram(view) {
@@ -422,7 +441,7 @@ function buildViolin(factors) {
   const view = transformedView(factors, "distribution");
   const family = "facade-scale-violin-plot";
   const context = contextFor(factors.dataset, view, family);
-  const variantOrdinal = DISTRIBUTION_VARIANTS.findIndex(variant =>
+  const variantOrdinal = VIOLIN_VARIANTS.findIndex(variant =>
     variant.id === factors.variant.id
   );
   if (variantOrdinal < 0) {
@@ -438,7 +457,8 @@ function buildViolin(factors) {
       scale: categoricalColorScale(
         "createViolinPlot",
         factors.variant.id,
-        variantOrdinal
+        variantOrdinal,
+        factors.variant.rangePalette
       )
     },
     density: {
@@ -452,6 +472,9 @@ function buildViolin(factors) {
 
 function heatmapColorScale(variant) {
   const id = `createheatmap-color-${slug(variant.id)}`;
+  if (variant.rangePalette !== undefined) return {
+    id, type: "sequential", domain: "auto", range: { palette: variant.rangePalette }, interpolate: "rgb"
+  };
   if (variant.colorType === "ordinal") {
     return { id, type: "ordinal", domain: "auto", palette: { name: "set2", count: 6 } };
   }
@@ -587,7 +610,7 @@ function buildHistogram(factors) {
       field: "category",
       fieldType: "nominal",
       layout: "stack",
-      scale: categoricalColorScale("createHistogram", variant.id, variant.profileIndex)
+      scale: categoricalColorScale("createHistogram", variant.id, variant.profileIndex, variant.rangePalette)
     },
     bar: { opacity: 0.86, stroke: "#ffffff", strokeWidth: 0.6 },
     guides: false
@@ -692,7 +715,13 @@ function makeRecipe({ id, complexity, family, capability, variants, action, buil
         program.semanticSpec.title?.text === title;
       const variantObserved = direct !== undefined &&
         scaleTypeSignature(direct.args).includes(values.variant.positionType ?? values.variant.type ?? values.variant.xType) &&
-        program.semanticSpec.title?.subtitle === question;
+        program.semanticSpec.title?.subtitle === question &&
+        (values.variant.rangePalette === undefined || sameValue(
+          direct.args.color?.scale?.range?.palette,
+          typeof values.variant.rangePalette === "string" ? values.variant.rangePalette : {
+            name: values.variant.rangePalette.name, count: 7, extentCount: 2
+          }
+        ));
       return freeze([
         ...(fieldPairObserved ? [{
           factor: "fieldPair",
@@ -754,7 +783,7 @@ const VIOLIN_RECIPE = makeRecipe({
   complexity: "advanced",
   family: "facade-scale-violin-plot",
   capability: "distribution",
-  variants: DISTRIBUTION_VARIANTS,
+  variants: VIOLIN_VARIANTS,
   action: "createViolinPlot",
   build: buildViolin
 });

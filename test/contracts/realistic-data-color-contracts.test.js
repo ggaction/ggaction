@@ -218,12 +218,15 @@ test("palette range objects have actual public 5/3 witnesses at every restored c
       }
       build(encodingRecipes.find(recipe=>recipe.id.includes("appearance")),dataset);
       for(const recipe of cartesianRecipes){
-        const variants=recipe.factorsForDataset(dataset).variant.filter(variant=>variant.ordinal>=36);
-        assert.equal(variants.length,3);
+        // This fixed124-leaf contract owns the original three named-object recipes.
+        // Later string-palette and combined-legend variants have independent strict ledgers.
+        const variants=recipe.factorsForDataset(dataset).variant.filter(variant=>variant.ordinal>=36&&variant.ordinal<=38);
+        assert.deepEqual(variants.map(variant=>variant.ordinal),[36,37,38]);
         for(const variant of variants)build(recipe,dataset,variant);
       }
       for(const recipe of statisticalRecipes.filter(recipe=>["createViolinPlot","createHistogram","createHeatmap"].includes(recipe.expectedDirectActions[0]))){
-        const variants=recipe.factorsForDataset(dataset).variant.filter(variant=>variant.rangePalette!==undefined);
+        const variants=recipe.factorsForDataset(dataset).variant.filter(variant=>
+          variant.rangePalette?.palette!==null&&typeof variant.rangePalette?.palette==="object");
         assert.equal(variants.length,3);
         for(const variant of variants)build(recipe,dataset,variant);
       }
