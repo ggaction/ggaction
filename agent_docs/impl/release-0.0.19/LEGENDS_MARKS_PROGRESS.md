@@ -221,3 +221,27 @@
   recorded by the consumer log; final integration remeasures cumulative size).
   Full/Basic numeric combined creation and Full aliases/map/clip/split persisted
   and rendered from the installed tarball, not source-relative imports.
+
+
+## Full combined legend stable target
+
+- The canonical combined-legends example now presents the categorical and
+  numeric combined blocks side by side with existing hconcat. Five stable
+  cases bind issues164/171/177/205: areas25/100/225 (circle/square/triangle),
+  numeric radii1/2/3 with the target gray outline, numeric display5→Five while
+  preserving typed samples, and coexisting opacity labels alone at10px.
+- Public/primitive graphs, order, native Canvas calls and whole RGBA match in
+  all5 cases. The triangle oracle constructs its regular unit vertices and
+  independently normalizes shoelace area; it consumes no runtime geometry.
+  Both complete child action chains are checked in the concatenated target.
+- Chromium DOM/Offscreen x3DPR x3background x5cases=90 fullRGBA comparisons
+  PASS; every complete SVG is byte exact using the documented common explicit
+  resourceNamespace (avoids incidental JSON-key-order hashes for clip IDs).
+  Numeric independent native PDF and real registry browser example PASS.
+- Stable artifacts include user-facing/primitive PNG pairs and evidence.json
+  with source/primitive hashes, exact native-call hashes and actual root/child
+  traces under .artifacts/test/png/charts/combined-legends/combined-legends/.
+  No images were viewed by eye or VLM. Docs119/120 before commit: sole expected
+  canonical source-link freshness mismatch; regenerate immediately afterward.
+- Remaining assigned closure: exhaustive realistic option/literal witnesses.
+  ROOT delegated the full legend-appearance target to data/color in parallel.

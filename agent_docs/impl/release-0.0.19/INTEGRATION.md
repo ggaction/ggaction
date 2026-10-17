@@ -69,3 +69,34 @@ GitHub의 rubyzip Dependabot alert12는 병합 후 `fixed`이며 현재 열린 a
 
 아직 #205 및 승인 목표 named-shapes/legend-appearance의 전체 stable pair를 완료하지 않았다.
 개별 기능의 unit/browser 통과를 전체 시각 목표의 canonical pair 완료로 대체하지 않는다.
+
+## 28개 소스 통합 checkpoint
+
+`23bbd5c0`은 마지막 #205 소스와 축/팔레트 실제 증언 보강, named-shapes canonical 예제를
+합친 상태다. 누적 unit3274/3274, 문서120/120, 공개 예제 hierarchy·SVG·PDF 및 package
+집중7/7을 통과했다. Node24.19.0 staged package591entries/840502packed/4082583unpacked,
+compact search829294bytes를 측정해 실제 초과분에만 다음 최소1000bytes 한도를 적용했다.
+
+이전27개 source coverage run은4549개 중3개의 legacy Canvas 호출 수 기대가 실패했다.
+원인은 승인된 사각형 closed-path 수정이었으며 관련 primitive/public9개 검사는 정정 후 통과했다.
+해당 run의 global95.31lines/92.50branches/98.65functions와 중요 파일별 floor는 통과했지만,
+실패한 run을 전체 coverage PASS로 보고하지 않는다. 최종28개 coverage는 별도로 필요하다.
+
+부모 facet 범례의 중첩 옵션 전수 실제 증언, combined/appearance 전체 시각 목표,
+최종 installed/browser/문서 build와 배포·dataset 동기화 의무는 아직 남아 있다.
+
+이후 source28 전체 normal contracts567/567, 모바일 키보드 수정 결합 후 문서120/120도
+통과했다. 개발 source 기준 기존1154개/8335개 코드의 frozen SVG 전량 비교는 진행 중이며,
+이는 최종 tagged/npm artifact 증명을 대체하지 않는다.
+
+## 9개 시각 목표의 안정 예제 통합
+
+`b7a3fdaf`까지 named-shapes, combined-legends 전체 모음과 개별 categorical/numeric/label-map/
+focused-opacity variant, legend-layout, legend-recipe-opacity를 기존 목표들과 함께 통합했다.
+전체 chart616/616, 문서120/120, 공개 gallery hierarchy/SVG/PDF3/3 통과.
+별도 tree의 같은 runtime source 및 새132개 critical floor 검사는 모두 통과했으나 그 run은
+갤러리 기대목록1개·검색 한도2개 실패가 있어 전체 suite 성공으로 표시하지 않는다.
+이3개는 root 통합의 정식 목록/실측831000 한도에 반영했다.
+
+개발 source28의 기존1154개/8335개 frozen SVG 전량 비교는 차이0·오류0으로 완료했다.
+브라우저는153.0.8010.12였다. 이는 출판 artifact 검증을 대체하지 않는다.

@@ -4,7 +4,7 @@ import { visualVariants } from "./manifest.js";
 import { assertDisplayedProgram } from "../../support/visual-variants.js";
 import { renderWithNativeTrace } from "../../support/native-canvas-trace.js";
 for (const variant of visualVariants) {
-  test("whole-symbol opacity preserves literal graphics, order, native calls and all pixels", () => {
+  test(`${variant.variant} preserves literal graphics, order, native calls and all pixels`, () => {
     const actual = variant.userFacing(), expected = variant.primitive();
     assertDisplayedProgram(variant, actual);
     assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
