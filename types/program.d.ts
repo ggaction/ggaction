@@ -426,6 +426,16 @@ export type DatasetRegressionTransform = {
       | { confidence: number; confidenceMethod?: never; level?: never }
     ))))
   | {
+      method: "exp";
+      interval: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+    }
+  | {
       method: "loess";
       span: number;
       robustIterations?: number;
@@ -946,6 +956,7 @@ export type DatasetTransform =
   | DatasetFilterTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
+  | DatasetRegressionStatisticsTransform
   | DatasetSortTransform
   | DatasetDensityTransform
   | DatasetECDFTransform
@@ -4453,7 +4464,7 @@ export interface EncodeChannelsOptions {
   channels: AtLeastOne<EncodingChannelAssignments>;
 }
 
-export type RegressionMethod = "linear" | "polynomial" | "loess";
+export type RegressionMethod = "linear" | "polynomial" | "loess" | "exp";
 export type RegressionInterval = "mean" | "prediction";
 
 export interface RegressionBandOptions extends StrokeStyleDetails {
@@ -4496,6 +4507,17 @@ export interface CreateRegressionLineOptions extends StrokeStyleDetails {
 }
 
 type RegressionParameterOptions =
+  | {
+      method: "exp";
+      interval?: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+      predict?: RegressionPredictOptions;
+    }
   | {
       method?: "linear";
       degree?: never;
@@ -4540,6 +4562,18 @@ export type RegressionDataOptions = {
   missing?: "error" | "drop";
 } & RegressionParameterOptions;
 
+export interface DatasetRegressionStatisticsTransform {
+  readonly type: "regressionStatistics";
+}
+export interface RegressionStatisticsDataOptions {
+  id: string;
+  source: string;
+}
+export interface EditRegressionStatisticsDataOptions {
+  target?: string;
+  source?: string;
+}
+
 type RegressionCommonOptions = {
   target?: string;
   x?: string;
@@ -4551,6 +4585,9 @@ type RegressionCommonOptions = {
 };
 
 export type RegressionOptions = RegressionCommonOptions & (
+  | (Extract<RegressionParameterOptions, { method: "exp" }> & {
+      band?: false;
+    })
   | (Extract<RegressionParameterOptions, { method?: "linear" }> & {
       band?: false | RegressionBandOptions;
     })
@@ -4951,6 +4988,8 @@ export class ChartProgram {
   createImputedData(options: ImputedDataOptions): ChartProgram;
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
+  createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
+  editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createECDFData(options: ECDFDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
@@ -4976,6 +5015,7 @@ export class ChartProgram {
   editImputedData(options: EditImputedDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
 
+  /** One point layer accepts at most 50,000 selected rows, before missing-value filtering. */
   createPointMark(options?: StrokeStyleDetails & {
     id?: string;
     data?: string;

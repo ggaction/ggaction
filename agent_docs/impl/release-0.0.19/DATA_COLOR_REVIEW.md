@@ -51,6 +51,68 @@ Stroke editor의 비분배 Omit 때문에 누락되던 기존 실행 가능한 �
 - 누적 통합 전에 computed와 색상 새 옵션의 realistic corpus 최소5회·3실데이터셋
   실제 실행 증언을 추가해야 한다. 이 의무와 이후 회귀·통계·capacity 구현은 남아 있다.
 
+### 구현 checkpoint — summary group capacity
+
+#209는 summary grammar의 단일 output-group ceiling만30,000 inclusive로 올린다.
+타입/schema/action trace와 계산·키 순서는 그대로며 새 bypass 옵션은 없다.
+현재 계약과 공개 shaping 설명을 동기화했다.
+
+- 9,999/10,000/10,001/29,999/30,000/30,001 경계,60,000행의30,000그룹,
+  typed/multifield keys·weighted members, revision/editor·30,000 snapshot·facet replay,
+  실패 부모 불변성과 독립10,000 graphic limit을 검사했다. Focused capacity5개 통과.
+- [source evidence](summary-source-evidence.json)와 [공개 재현](summary-source-proof.mjs)은
+  보존 입력 SHA256 `1ae3e91972addcbdba23e94c13e30fce6708b402efe315403b1ed8b2d23ffd02`
+  26,265행의 전체 membership을 검사한다. Clock/hour/minute19,194/10,968/25,909그룹이
+  독립 날짜 키·합계/건수 oracle과 순서·평균 오차0으로 일치하며 raw 문자열은 보존했다.
+  마지막25,909점 단일 경로의 독립20,000명령 hold는 유지한다.
+- 전체 unit3,106개와 docs120개 통과, 설치 package의10,001그룹·snapshot 소비자 통과.
+  뒤이어 추가한 facet capacity 사례5개도 통과했다. Contracts532/533의 한 실패는
+  앞선 Basic budget 변경의 README·architecture canonical table 누락이었고 두 곳을
+  동기화한 documentation-truth3개가 통과했다. 최종 누적 검사에서 재확인한다.
+
+### 구현 checkpoint — response-weighted exponential regression
+
+#196은 기존 regression method union에`exp`를 추가했다. Log response를 실제 y weight로
+계산하고, positive finite amplitude/rate·prediction 검사와 interval:false 정규화를
+데이터 action·facade·editor·follow/facet replay·persistence에 동일하게 적용했다.
+Renderer와 transform shape는 기존 소유자를 유지한다.
+
+- 독립 weighted raw moments와50자리 Decimal 교차검사 literal, noisy/정확한 지수,
+  극단 predictor와1e-300/1e300 response, missing·typed group·양수/옵션 오류,
+  band 제거/복원·원자성·follow/facet·snapshot을 검사했다. Focused8개와 기존 회귀46개 통과.
+- Primitive를 직접 그린400×300 Canvas 전체 RGBA가 public flow와 정확히 일치했다.
+  [실제 보존 source proof](exponential-source-proof.mjs)는 원본9행과 실제60개 sample 위치를
+  보존한다. [결과](exponential-source-evidence.json)는 원본 곡선 대비 최대 response오차
+  1.8474111129762605e-13, 좌표오차5.684341886080801e-13이며 전체360×360 RGBA는 정확히 같다.
+  고정 EPS 이내 수치 비교이며 pixel tolerance는 추가하지 않았다. 이미지를 관찰하지 않았다.
+- 전체 unit3,113개, docs120개, 실제 npm설치 runtime·TS·PNG/SVG·Full/Basic·MCP 통과.
+  Contracts531/533의 compact-card3바이트 초과와 측정 package 초과를 정정한14개가 통과했다.
+  Card의 모든 옵션을 유지하고 부정확했던 설명 문장만 짧게 다듬었으며3360 ceiling은 유지했다.
+- macOS/Node22.23.1/npm10.9.8에서 packed798,553/unpacked3,916,961,
+  Full393,012 gzip바이트를 측정했다. 최소 단계로799,000/3,917,000/394,000만 갱신하고
+  Basic191,000·SVG25,000·567entries는 유지했다. 측정과 이전 한도 통과를 혼동하지 않는다.
+- 새 exp literal의 realistic 최소5회·3실데이터셋 실제 증언과 최종 누적 검사는 남아 있다.
+
+### 구현 checkpoint — cached linear fit statistics
+
+#202의 두 공개 action과 내부 materializer, 닫힌 transform/typed schema·topology·DAG replay,
+fit-owned 최소cache·legacy 명시 계산·snapshot validation·remove/release cleanup을 구현했다.
+정확한 계약은 CORE, state 경계는 SECOND_ARCHITECTURE가 소유한다.
+
+- 독립 OLS/SSE literal, grouped typed first-seen·missing·constant R²null, prediction count 독립성,
+  cache reuse와 구 snapshot의 명시 fit1회, source 교체/revise·주석 갱신·순환/삭제·method 오류 원자성,
+  chart-owned edit/follow/facet와 기존 extreme numeric·tampered cache/행 일치 검사12개 통과.
+- 기존 fit trace는 createDerivedData→materializeRegressionData 그대로다. semanticSpec/graphicSpec/
+  prediction rows는 유지하며 editable state에 작은 cache만 추가된다. 구 snapshot 로드에서 fit하지 않는다.
+- 전체 unit3,124개, contracts532/533(유일 package-budget 실패는 실측 한도 정정 후 해당4개 통과),
+  docs120개와 Full/Basic TypeScript를 통과했다. 뒤이어 추가한 cache/source/facet/cycle12개도 통과했다.
+  실제 packed npm 설치에서 새 create/edit·coefficients/count/R²·snapshot·Full-only surface와
+  기존 browser/MCP 소비자까지 통과했다.
+- macOS/Node22.23.1/npm10.9.8 실제569entries, packed802,032/unpacked3,935,479와
+  search816,102바이트를 기준으로 최소 예산만 갱신했다. 별도 global test/coverage threshold는 유지했다.
+- 최종 realistic의 두 새 action과 옵션 최소5회·3실데이터셋 증언, #207 point capacity와
+  나머지 신규 computed/color/exp vocabulary의 누적 현실 데이터 검증은 아직 남아 있다.
+
 ## 1. 공통 결정
 
 1. 일반 작성 호출은 기존 domain action을 유지한다. 함수의 핵심 옵션을 보통 세 개 이하로 작성할 수 있도록 focused edit를 사용한다. 중첩 AST의 필수 피연산자까지 세 개를 강제하여 의미를 손상시키지는 않는다.
@@ -335,3 +397,25 @@ program.createSummaryData({
 
 새 공개 계약 승인 전에는 구현 완료/Current 승격/이슈 해결로 기록하지 않는다. 승인 이후 실제 구현과 소비자 행렬·문서·배포 패키지까지 확인한 이슈만 해결한다. 범위에 포함된 능력을 구현하지 않은 상태로 미래 기능으로 옮기거나 단순히 닫아 정리하지 않는다.
 
+
+## #207 구현 checkpoint
+
+- 상태: approved 설계를 구현했다. source/types/Current/public docs/installed consumer를 함께 동기화했다.
+- `selectors/graphicCapacity.js`는 실제 semantic point + materialized selected data + connected graphic
+  ID/type와 retained child namespace 소유권만 증명한다. 실제 bound와 structured diagnosis는 core
+  validation이 소유한다. composition materializer의 기존 namespace export는 재사용 re-export다.
+- create/editGraphics와 point materializer, source rebind preflight, editable persistence가 공통 guard를
+  사용한다. raw selected cardinality는 missing skip보다 먼저 확인하고 graphic-only 구조 검증은
+  기존 의미/capacity 미검사 경계를 유지한다. 새 action·옵션·state·trace-string 우회는 없다.
+- focused7개: Full/Basic9999/10000/10001/49999/50000/50001, shape/mixed/property arrays,
+  primitive negative 및 일반 mark/path/work 독립 한도, source revision/missing skip,50k selection/
+  highlight/accessibility/Canvas resize/Canvas/SVG/저장복원, facet/nested composition을 검증했다.
+- 보존된 두 실제 source는 [실행 CLI](point-source-proof.mjs)와 [증거](point-source-evidence.json)로
+  44992/20707전체 raw rows·문자열 타입·순서·item identity, 전체 좌표 오차0, editable/graphic-only
+  Canvas/SVG/accessibility를 확인했다. API 요청·새번역·이미지 시각 검사는 하지 않았다.
+- 누적 unit3134, contracts533, docs120통과. 설치 package의 Full/Basic50k, TypeScript,
+  persistence/Canvas/PNG/SVG/PDF/tutorial, MCP, browser bundle 소비자도 통과했다.
+- Node22.23.1/npm10.9.8/macOS에서 기능 증가분을 측정했다. canonical570entries/packed803124/
+  unpacked3939523, browser Full395462/Basic190821/SVG7176gzip. package570/804000/3940000과
+  Full396000만 최소 상향했다. Basic191000/SVG25000과 computed/work/path/일반graphics 한도는 유지한다.
+- 전체9개 기능의 realistic 새옵션/리터럴/action 실제5회·3TT데이터셋 증언은 다음 필수 checkpoint다.

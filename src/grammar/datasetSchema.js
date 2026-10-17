@@ -1,6 +1,7 @@
 import { requireStringValue as requireName } from "../core/validation.js";
 import { annotateError } from "../core/diagnostics.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import { requireRegressionStatisticsSource, REGRESSION_STATISTIC_FIELDS } from "./regression/statistics.js";
 
 const STORAGE_TYPES = new Set([
   "number", "string", "boolean", "array", "object", "unknown", "mixed"
@@ -267,7 +268,7 @@ function generatedField(name, storageType, transform, role, inputs = []) {
   };
 }
 
-export function deriveTransformSchema(inputSchema, transform, values, { sourceId, ownerId } = {}) {
+export function deriveTransformSchema(inputSchema, transform, values, { sourceId, ownerId, sourceTransform } = {}) {
   const input = validateDatasetSchema(inputSchema);
   const definition = { ...transform, __sourceId: sourceId, __ownerId: ownerId };
   const retain = ["filter", "markFilter", "sort", "computed", "timeUnit", "window", "normalize", "stack", "impute", "complete"];
@@ -300,6 +301,12 @@ export function deriveTransformSchema(inputSchema, transform, values, { sourceId
       generatedField(transform.as.count, "number", definition, "count", [transform.x, transform.y])
     ];
     if (transform.as.members !== undefined) push(generatedField(transform.as.members, "array", definition, "members"));
+  } else if (transform.type === "regressionStatistics") {
+    const fit = requireRegressionStatisticsSource({ transform: sourceTransform === undefined ? [] : [sourceTransform] });
+    fields = [
+      ...(fit.groupBy === undefined ? [] : [inheritedField(input, fit.groupBy)]),
+      ...REGRESSION_STATISTIC_FIELDS.map(name => generatedField(name, "number", definition, name))
+    ].filter(Boolean);
   } else if (transform.type === "regression") {
     fields = [inheritedField(input, transform.x), inheritedField(input, transform.y)].filter(Boolean);
     if (transform.groupBy !== undefined) fields.unshift(inheritedField(input, transform.groupBy));
@@ -367,7 +374,8 @@ export function deriveTransformSchema(inputSchema, transform, values, { sourceId
       if (planned.lineage === undefined && !["complete", "impute"].includes(transform.type)) {
         return planned;
       }
-      return { ...planned, storageType: field.storageType, nullable: field.nullable, optional: field.optional };
+      return { ...planned, storageType: transform.type === "regressionStatistics" && planned.storageType === "number"
+        ? "number" : field.storageType, nullable: field.nullable, optional: field.optional };
     });
     for (const field of inferred.fields) {
       if (!fields.some(planned => planned.name === field.name)) fields.push(field);

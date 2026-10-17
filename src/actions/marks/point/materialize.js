@@ -1,3 +1,4 @@
+import { validateGraphicItemLimit } from "../../../core/validation.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -29,6 +30,8 @@ import {
 } from "../../../theme/defaults.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { findLayer } from "../../../selectors/layers.js";
+import { resolveGraphicItemCapacity } from "../../../selectors/graphicCapacity.js";
+import { getMarkGraphicTypes } from "../../../core/vocabulary.js";
 import { canMaterializePoint } from "../../../materialization/marks/capabilities.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import {
@@ -335,13 +338,14 @@ export const rematerializePointMark = /* @__PURE__ */ action(
     if (layer?.mark?.type !== "point") {
       throw new Error(`Unknown point mark "${id}".`);
     }
-    if (!["circle", "rect", "path", "collection"].includes(graphic?.type)) {
+    if (!getMarkGraphicTypes("point").includes(graphic?.type)) {
       throw new Error(`Point mark "${id}" requires point graphics.`);
     }
     const sourceDataset = findDataset(resolved, layer.data);
     if (sourceDataset === undefined) {
       throw new Error(`Point mark "${id}" requires an existing dataset.`);
     }
+    validateGraphicItemLimit(sourceDataset.values.length, resolveGraphicItemCapacity(resolved, { id, label: "Point mark item count" }));
     const dataset = applyItemMissingPolicy(layer, sourceDataset);
 
     if (graphic.items.length === 0 && !canMaterializePoint(resolved, layer)) {

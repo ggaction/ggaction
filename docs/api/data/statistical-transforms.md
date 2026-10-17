@@ -33,7 +33,7 @@ program.createRegressionData({
 | `source` | existing dataset ID | current dataset |
 | `x`, `y` | finite quantitative field names | required |
 | `groupBy` | nominal field name | one ungrouped model |
-| `method` | `"linear"`, `"polynomial"`, or `"loess"` | `"linear"` |
+| `method` | `"linear"`, `"polynomial"`, `"loess"`, or `"exp"` | `"linear"` |
 | `degree` | integer from `1` through `32` for polynomial | `2` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
 | `confidenceMethod` | `"normal"` or `"student-t"`; not accepted by LOESS | `"student-t"` |
@@ -59,6 +59,53 @@ Source values remain unchanged.
 Regression output is limited to 10,000 unique group/x rows. Polynomial and
 LOESS fitting reject inputs whose estimated work exceeds 10,000,000 units,
 before allocating or entering the expensive fit.
+
+Exponential fits use positive-response-weighted least squares on `log(y)`;
+omitted or `false` intervals produce no confidence fields. Confidence options,
+degree, span, and robust iterations are rejected. See the [regression API](../regression.md)
+for the positive-response and representable-result requirements.
+
+## Linear fit statistics {#fit-statistics}
+
+`createRegressionStatisticsData({ id, source })` creates reusable rows from an
+explicit existing **linear** regression dataset. Both options are required.
+It reuses the existing fit and does not infer a source from the current dataset.
+This advanced data action is available in the full entry.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "fit"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createData({ values: [{ x: 0, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createRegressionData({ id: "fit", x: "x", y: "y" })
+  .createRegressionStatisticsData({ id: "fitStatistics", source: "fit" });
+```
+
+Each row contains fixed `count`, `intercept`, `slope`, and `rSquared` fields.
+`count` describes eligible observed pairs, independent of prediction-grid size.
+R-squared is `1 - SSE / SST`; a constant response has `rSquared: null`.
+Grouped fits add their original typed grouping field in first source appearance
+order. Group fields named like a fixed output are rejected. Polynomial, LOESS,
+exponential, and ordinary raw datasets are unsupported sources.
+
+`editRegressionStatisticsData({ target?, source? })` changes the fit source and
+replays dependent data and annotations atomically. Omitted `source` preserves
+it. Omitted `target` uses the current statistics owner, otherwise the unique
+standalone owner; ambiguous ownership fails. Fixed output names have no aliases
+or reset options. Data revisions update fit statistics before their consumers.
+Remove dependent statistics and consumers before changing a fit to an
+unsupported model or deleting its source.
+
+Editable snapshots retain compact fit statistics for reuse. Earlier snapshots
+without them still load without recalculation; the first explicit statistics
+request computes and retains the fit once. Existing prediction rows, graphics,
+and authoring trace remain unchanged, although serialized bytes can increase.
 
 ## `createIntervalData({ id, source?, field, groupBy?, center?, extent?, method?, level?, missing?, as? })` {#create-interval-data}
 

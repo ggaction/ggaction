@@ -1,4 +1,5 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import { validateRegressionStatisticsTransform } from "./regression/statistics.js";
 import { validateBoxTransform } from "./boxPlot.js";
 import { normalizeBinTransform, validateBinTransform } from "./bin.js";
 import {
@@ -203,7 +204,7 @@ function normalizeRegressionEdit(transform, patch) {
       delete base.span;
       delete base.robustIterations;
     }
-    if (method === "loess" || base.method === "loess") {
+    if (["loess", "exp"].includes(method) || ["loess", "exp"].includes(base.method)) {
       for (const key of [
         "confidenceMethod", "level", "confidence", "interval"
       ]) delete base[key];
@@ -445,6 +446,15 @@ const TRANSFORM_POLICIES = Object.freeze({
     editable: true,
     normalizeEdit: normalizeRegressionEdit,
     outputRoles: () => ({})
+  }),
+  regressionStatistics: Object.freeze({
+    ...findTransformTopology("regressionStatistics"),
+    validate: validateRegressionStatisticsTransform,
+    materializeOp: "materializeRegressionStatisticsData",
+    replayTransform: requestedTransform,
+    editable: true,
+    normalizeEdit: (transform, patch) => validateRegressionStatisticsTransform({ ...transform, ...patch }),
+    outputRoles: () => ({ count: "count", intercept: "intercept", slope: "slope", rSquared: "rSquared" })
   }),
   sort: Object.freeze({
     ...findTransformTopology("sort"),

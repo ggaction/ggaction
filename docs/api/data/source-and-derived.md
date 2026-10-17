@@ -111,6 +111,7 @@ corresponding higher-level action when the library should materialize values:
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
+| `"regressionStatistics"` | `{ type }`, with an existing linear fit as source | `createRegressionStatisticsData` |
 | `"sort"` | `{ type, sortBy }` | `createSortedData` |
 | `"density"` | `{ type, field, groupBy?, bandwidth, extent, steps, kernel?, normalization?, weight?, as, resolve: "shared", resolved? }` | `createDensityData` |
 | `"ecdf"` | `{ type, field, groupBy, weight?, missing, as, resolved? }` | `createECDFData` |

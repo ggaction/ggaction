@@ -49,6 +49,8 @@ interface ChartProgramActions {
   createImputedData(options: ImputedDataOptions): ChartProgram;
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
+  createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
+  editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createECDFData(options: ECDFDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
@@ -3793,6 +3795,19 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
 
 Related types: [`DatasetNormalizedBaseTransform`](#type-datasetnormalizedbasetransform) · [`NormalizeZeroDenominator`](#type-normalizezerodenominator) · [`DatasetNormalizeBaselineTransform`](#type-datasetnormalizebaselinetransform).
 
+### `DatasetRegressionStatisticsTransform` {#type-datasetregressionstatisticstransform}
+
+<details markdown="1">
+<summary>Expand DatasetRegressionStatisticsTransform</summary>
+
+```typescript
+export interface DatasetRegressionStatisticsTransform {
+  readonly type: "regressionStatistics";
+}
+```
+
+</details>
+
 ### `DatasetRegressionTransform` {#type-datasetregressiontransform}
 
 <details markdown="1">
@@ -3823,6 +3838,16 @@ export type DatasetRegressionTransform = {
       | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
       | { confidence: number; confidenceMethod?: never; level?: never }
     ))))
+  | {
+      method: "exp";
+      interval: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+    }
   | {
       method: "loess";
       span: number;
@@ -4002,6 +4027,7 @@ export type DatasetTransform =
   | DatasetFilterTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
+  | DatasetRegressionStatisticsTransform
   | DatasetSortTransform
   | DatasetDensityTransform
   | DatasetECDFTransform
@@ -4016,7 +4042,7 @@ export type DatasetTransform =
 
 </details>
 
-Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
+Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -5480,6 +5506,20 @@ export interface EditRegressionOptions {
 </details>
 
 Related types: [`RegressionMethod`](#type-regressionmethod) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval) · [`RegressionPredictOptions`](#type-regressionpredictoptions) · [`RegressionBandOptions`](#type-regressionbandoptions) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation).
+
+### `EditRegressionStatisticsDataOptions` {#type-editregressionstatisticsdataoptions}
+
+<details markdown="1">
+<summary>Expand EditRegressionStatisticsDataOptions</summary>
+
+```typescript
+export interface EditRegressionStatisticsDataOptions {
+  target?: string;
+  source?: string;
+}
+```
+
+</details>
 
 ### `EditScaleOptions` {#type-editscaleoptions}
 
@@ -9879,7 +9919,7 @@ export type RegressionInterval = "mean" | "prediction";
 <summary>Expand RegressionMethod</summary>
 
 ```typescript
-export type RegressionMethod = "linear" | "polynomial" | "loess";
+export type RegressionMethod = "linear" | "polynomial" | "loess" | "exp";
 ```
 
 </details>
@@ -9891,6 +9931,9 @@ export type RegressionMethod = "linear" | "polynomial" | "loess";
 
 ```typescript
 export type RegressionOptions = RegressionCommonOptions & (
+  | (Extract<RegressionParameterOptions, { method: "exp" }> & {
+      band?: false;
+    })
   | (Extract<RegressionParameterOptions, { method?: "linear" }> & {
       band?: false | RegressionBandOptions;
     })
@@ -9914,6 +9957,17 @@ Related types: [`RegressionCommonOptions`](#type-regressioncommonoptions) · [`R
 
 ```typescript
 type RegressionParameterOptions =
+  | {
+      method: "exp";
+      interval?: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+      predict?: RegressionPredictOptions;
+    }
   | {
       method?: "linear";
       degree?: never;
@@ -9952,7 +10006,7 @@ type RegressionParameterOptions =
 
 </details>
 
-Related types: [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval) · [`RegressionPredictOptions`](#type-regressionpredictoptions).
+Related types: [`RegressionPredictOptions`](#type-regressionpredictoptions) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval).
 
 ### `RegressionPlotBaseOptions` {#type-regressionplotbaseoptions}
 
@@ -10017,6 +10071,20 @@ type RegressionPlotStatisticalOptions<T> = T extends unknown
 export type RegressionPredictOptions =
   | { values: readonly [number, ...number[]]; domain?: never; steps?: never }
   | { values?: never; domain: readonly [number, number]; steps: number };
+```
+
+</details>
+
+### `RegressionStatisticsDataOptions` {#type-regressionstatisticsdataoptions}
+
+<details markdown="1">
+<summary>Expand RegressionStatisticsDataOptions</summary>
+
+```typescript
+export interface RegressionStatisticsDataOptions {
+  id: string;
+  source: string;
+}
 ```
 
 </details>

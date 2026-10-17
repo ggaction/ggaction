@@ -96,7 +96,7 @@ function migrateStateSchemas(state) {
         sourceSchema,
         dataset.transform?.[0] ?? {},
         dataset.values,
-        { sourceId: dataset.source, ownerId: dataset.id }
+        { sourceId: dataset.source, ownerId: dataset.id, sourceTransform: byId.get(dataset.source)?.transform?.[0] }
       );
     }
     active.delete(id);

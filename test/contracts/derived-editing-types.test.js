@@ -61,6 +61,21 @@ p.editWindowData({ target: "window", operations: [{ op: "rank", as: "rank" }] })
 p.editDensityData({ target: "density", bandwidth: "auto", weight: false });
 p.editStackData({ target: "stack", mode: "fill" });
 p.editRegressionData({ target: "fit", method: "polynomial", degree: 2 });
+p.createRegressionStatisticsData({id:"statistics",source:"fit"});
+p.editRegressionStatisticsData({source:"anotherFit"});
+p.editRegressionStatisticsData();
+const statisticsTransform: import(${JSON.stringify(path.join(root, "types/index.js"))}).DatasetRegressionStatisticsTransform = {type:"regressionStatistics"};
+void statisticsTransform;
+// @ts-expect-error fit source is explicit and mandatory
+p.createRegressionStatisticsData({id:"statistics"});
+// @ts-expect-error statistic outputs are fixed
+p.createRegressionStatisticsData({id:"statistics",source:"fit",as:{slope:"coefficient"}});
+// @ts-expect-error this editor exposes no generic dependent policy
+p.editRegressionStatisticsData({target:"statistics",dependents:"recompute"});
+// @ts-expect-error Full only
+basic.createRegressionStatisticsData({id:"statistics",source:"fit"});
+// @ts-expect-error Full only
+basic.editRegressionStatisticsData({source:"fit"});
 p.editIntervalData({ target: "interval", center: "median", extent: "iqr" });
 p.editECDFData({ target: "ecdf", weight: false });
 p.editNormalizedData({ target: "normalized", method: "zscore", variance: "sample" });

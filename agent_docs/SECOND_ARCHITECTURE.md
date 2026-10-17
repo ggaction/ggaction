@@ -323,7 +323,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 395,000 bytes |
+| `ggaction` | 396,000 bytes |
 | `ggaction/basic` | 192,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -397,6 +397,13 @@ npm10.9.8에서 압축 해제3,913,392바이트로 기존3,908,000바이트를 �
 파일567개·packed798,000, Full393,000 및 SVG25,000은 유지한다.
 지원 Node 버전의 압축 차이와 최종 통합 크기는 별도로 다시 측정한다.
 이 조정은 이전 한도 통과나 테스트 기준의 완화를 뜻하지 않는다.
+
+승인된 exponential regression checkpoint의 macOS/Node22.23.1/npm10.9.8
+패키지는 packed798,553 / unpacked3,916,961바이트로 기존 한도를 초과했다.
+각각 다음 최소1,000바이트 단계인799,000 /3,917,000으로 조정한다.
+모듈·entry 증가나 renderer 경계 변경은 없다. 설치한 Full browser bundle은393,012 gzip
+바이트로 이전393,000을12바이트 초과하여 Full만394,000으로 조정한다.
+Basic191,000/SVG25,000은 유지하며 Node/zlib 차이를 포함한 최종 통합 검증은 별도다.
 
 이 문서는 상태 소유권, 계층 간 의존성과 실행 흐름을 설명한다. 메서드별 매개변수·기본값·추론·지원 조합·오류는 아래 Current 계약이 소유하며 이 문서에 복제하지 않는다. 구현 상태와 direct/internal 분류는 [ACTION_INDEX.json](contract/ACTION_INDEX.json), 선언은 `types/`, 자동화된 value vocabulary는 owning runtime registry를 사용한다.
 
@@ -521,6 +528,9 @@ Automatic statistical parameter의 요청과 계산값은 서로 다른 provenan
 action은 기존 instance를 바꾸지 않고 새로운 instance를 반환한다.
 
 Named dataset, layer, scale, coordinate의 exact ID lookup은 `selectors/`만 소유한다.
+`selectors/graphicCapacity.js`는 semantic point owner와 retained child namespace identity를
+추적한다. namespace encoding도 이 순수 selector owner가 소유하며 composition materializer는
+이를 재사용한다. 수치 한도 검증은 core validation에 남고 persistence는 materializer를 호출하지 않는다.
 Action과 materializer는 semantic resource array에 직접 `.find(id)` 또는 identity `.some()`을
 작성하지 않는다. 이 경계는 source contract test가 기계적으로 검사한다. Eligibility filter와
 relationship scan은 exact resource lookup이 아니므로 해당 domain module에 남을 수 있다.
@@ -765,6 +775,30 @@ mark family에 종속된 계산은 `materialization/scales/policies/`가 소유�
 `rematerializeScale` action은 consumer 조회, immutable state 반영, mark와 guide의 ordered
 rematerialization만 담당한다. 따라서 순수 scale 계산은 trace를 만들거나 Program을
 변경하지 않고, renderer도 scale 의미를 다시 추론하지 않는다.
+
+### Reusable linear fit statistics
+
+승인된 linear statistics 기능은 fit dataset별 compact cache를
+`materializationConfigs.regressionFits[fitId]` 한 곳에 둔다. 기존 fit grammar가 계산한
+모델에서 observation count·coefficients·scaled SSE/SST를 추출하며 raw rows나 full
+model/prediction arrays를 복제하지 않는다. 기존 semanticSpec/graphicSpec/fit trace는
+유지하고 editable snapshot bytes만 cache로 늘어날 수 있다.
+
+`regressionStatistics`는 fit을 source로 참조하는 독립 derived dataset이다. 같은
+typed schema·transform topology·DAG planner가 fit→statistics→annotation 순서를
+소유한다. Chart-owned regression editor도 dependent statistics가 있으면 그 planner를
+재사용한다. 새 renderer나 자동 semantic compiler는 없다. 이전 snapshot은 cache 없이
+로드하고 첫 명시 statistics 요청만 wrapped fit materialization으로 cache를 복원한다.
+Full-state validation은 cache owner·version·group/order/count·finite coefficient를 검증하고,
+domain remove/release는 fit cache를 함께 정리한다. 정확한 공개 계약은 CORE가 소유한다.
+
+이 checkpoint의 macOS/Node22.23.1/npm10.9.8 실제 artifact는569entries,
+packed802,032/unpacked3,935,479바이트다. 새 grammar/action 두 모듈과 타입·machine metadata
+증가를 반영해 entry569, packed803,000, unpacked3,936,000으로 최소 단위 갱신한다.
+Search payload816,102바이트는 기존814,000을 초과하여817,000으로 조정했다.
+설치 Full bundle 최종394,855 gzip바이트를 측정하여 Full 한도만395,000으로
+갱신했고 Basic191,000/SVG25,000은 유지한다. 이전 한도 통과나 지원 Node 간
+압축 동일성을 주장하지 않으며 최종 통합에서 다시 측정한다.
 
 ## `materializationConfigs`
 
@@ -2134,3 +2168,13 @@ Node24.21.0/npm11.19.0 staged package는569entries, packed803290/unpacked3932847
 Node24에서 Full394803/Basic191552 gzip bytes다. 공유 owner와 canonical table/README를
 Full395000·Basic192000으로 동기화하고 SVG25000은 유지했다. 1000bytes 최소 단계이며
 기존393000/191000을 통과한 것으로 보고하지 않는다.
+
+### Point-owned graphic capacity
+
+Point 생성·편집과 editable persistence는 selector가 증명한 semantic point/selected values/graphic
+ID·type 소유권을 공통 core guard에 전달한다. Namespace가 적용된 composition snapshot은 실제
+retained child owner까지 추적하며 별도 bypass state를 저장하지 않는다. 일반 generated-item/work
+및 graphic-only structural validation 경계는 바꾸지 않았다. 정확한 수치는 MARKS/PRIMITIVES가 소유한다.
+Node22.23.1/npm10.9.8/macOS canonical artifact 실측은570entries, packed803124, unpacked3939523이다.
+승인된 유한 기능 증가에 따라 entries570/packed804000/unpacked3940000으로 최소 상향했다.
+Browser gzip Full395462는396000으로 상향하고 Basic190821/SVG7176은 기존191000/25000을 유지한다.

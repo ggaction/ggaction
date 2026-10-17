@@ -7,7 +7,7 @@ title: Regression
 
 {% include chart-example.html id="regression" lead=true %}
 
-`createRegression()` layers grouped linear, polynomial, or LOESS fits over an
+`createRegression()` layers grouped linear, polynomial, LOESS, or exponential fits over an
 existing quantitative point mark. Linear and polynomial fits can include mean
 or prediction interval bands; LOESS is line-only.
 
@@ -62,7 +62,7 @@ program.createRegression({
 | `target` | eligible point mark ID | inferred |
 | `x`, `y` | quantitative field names | target x/y fields |
 | `groupBy` | nominal field name or `false` (legacy explicit `undefined` also supported) | unique color/shape field |
-| `method` | `"linear"`, `"polynomial"`, or `"loess"` | `"linear"` |
+| `method` | `"linear"`, `"polynomial"`, `"loess"`, or `"exp"` | `"linear"` |
 | `degree` | integer from `1` through `32` for polynomial | `2` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
 | `robustIterations` | LOESS residual reweighting passes, integer `0..32` | `0` |
@@ -95,6 +95,7 @@ Choose another model or interval without coordinating its child layers:
 points.createRegression({ method: "polynomial", degree: 2 });
 points.createRegression({ method: "loess", span: 0.55 });
 points.createRegression({ method: "loess", span: 0.55, robustIterations: 2 });
+points.createRegression({ method: "exp" });
 points.createRegression({ interval: "prediction" });
 points.createRegression({ interval: false, band: false });
 ```
@@ -105,6 +106,16 @@ and are therefore at least as wide as matching mean intervals. LOESS does not
 accept `confidenceMethod`, `level`, `confidence`, `interval`, or a band object; its omitted or `false` band
 produces only the fitted line. Linear and polynomial bands can also be disabled
 with `band: false`.
+
+`method: "exp"` fits `y = amplitude * exp(rate * x)` using response weights
+`w = y` on `log(y)`. This differs from ordinary unweighted log regression.
+Every eligible response must be strictly positive, and each group needs at
+least two observations with varying x. Missing-value policy runs first;
+zero and negative responses are errors. Omitted or `false` `interval` gives
+point estimates with no band or interval columns. Confidence options, degree,
+span, robust iterations, interval objects, and band objects are rejected.
+Unrepresentable coefficients or nonpositive/nonfinite predictions fail
+atomically. Existing explicit prediction positions remain available.
 
 `sourceBinding: "fixed"` keeps the regression attached to the source snapshot
 used at creation. `"follow"` refits when `reviseData` advances that logical
@@ -189,7 +200,7 @@ component, and releases the old revision when nothing references it.
 coordinate, and position scale IDs remain stable. A request containing only
 `band` or `line` appearance retains the existing fitted rows.
 
-Set `band: false` or switch to LOESS to remove the owned band. Switching back
+Set `band: false` or switch to LOESS or exponential regression to remove the owned band. Switching back
 to linear or polynomial regression recreates the band by default; a band
 object can also restore it explicitly. Target omission uses the current or
 only regression owner and fails on ambiguity.

@@ -176,7 +176,7 @@ span?, confidenceMethod?, level?, confidence?, interval?, band?, line?, guides? 
 - X/y는 quantitative Scatter position이다. Point appearance와 color/size/shape는 `createScatterPlot`, model과
   band/line은 `createRegression`의 현재 vocabulary를 그대로 사용한다.
 - `groupBy:false`는 inferred color/shape series를 끄는 명시적 ungrouped 요청이며 trace와 JSON에서 보존된다.
-  Linear/polynomial/LOESS의 method-specific option과 band 지원 경계는 regression owner가 검증한다.
+  Linear/polynomial/LOESS/exp의 method-specific option과 band 지원 경계는 regression owner가 검증한다.
 - Facade는 Scatter를 guide 없이 먼저 만들고 regression derived data·band·line을 같은 position scale에 연결한
   뒤 scoped guides를 한 번 확보한다. Regression이 확장한 domain과 최종 guide가 같은 scale 결과를 소비한다.
 - Effects: `createScatterPlot(guides:false) → createRegression → scoped guides`. Generated regression data/band/line

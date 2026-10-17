@@ -477,7 +477,62 @@ function predictLoessAt(model, xValue) {
   }, "LOESS regression prediction").prediction;
 }
 
+function fitExponentialGroup(rows, { x, y, group }) {
+  const label = `Regression group "${group === undefined ? "all" : String(group)}"`;
+  if (rows.length < 2) throw new Error(`${label} requires at least two rows.`);
+  if (rows.some(row => !(row[y] > 0))) {
+    throw new RangeError("Exponential regression y values must be strictly positive.");
+  }
+  const xValues = rows.map(row => row[x]);
+  if (new Set(xValues).size < 2) throw new Error(`${label} requires varying x values.`);
+  const responseScale = maximumMagnitude(rows.map(row => row[y]));
+  const xMagnitude = maximumMagnitude(xValues) || 1;
+  const weights = rows.map(row => row[y] / responseScale);
+  const weightSum = weights.reduce((sum, value) => sum + value, 0);
+  const logs = rows.map(row => Math.log(row[y]));
+  const meanX = restoreFiniteScale(rows.reduce((sum, row, index) =>
+    sum + weights[index] * (row[x] / xMagnitude), 0) / weightSum,
+  xMagnitude, `${label} weighted x mean`);
+  const meanLogY = logs.reduce((sum, value, index) => sum + weights[index] * value, 0) / weightSum;
+  const [centeredX, xScale] = normalizedCoordinates(xValues, meanX);
+  const variance = centeredX.reduce((sum, value, index) => sum + weights[index] * value ** 2, 0);
+  if (variance === 0) throw new Error(`${label} requires varying x values.`);
+  const covariance = centeredX.reduce((sum, value, index) =>
+    sum + weights[index] * value * (logs[index] - meanLogY), 0);
+  const rate = restoreFiniteRatio(covariance / variance, 1, xScale, `${label} exponential rate`);
+  const logAmplitude = requireFiniteResult(meanLogY - rate * meanX, `${label} exponential log amplitude`);
+  const amplitude = requireFiniteResult(Math.exp(logAmplitude), `${label} exponential amplitude`);
+  if (amplitude === 0) throw new RangeError("Exponential regression amplitude must be positive and representable.");
+  return { count: rows.length, amplitude, rate, logAmplitude };
+}
+
+export function linearRegressionStatistics(rows, model, { x, y }) {
+  const responseScale = maximumMagnitude(rows.map(row => row[y])) || 1;
+  const [coordinates, xScale] = normalizedCoordinates(rows.map(row => row[x]), model.meanX);
+  const normalizedSlope = model.normalizedResponseSlope ?? (
+    Number.isFinite(model.slope * xScale) && (model.slope * xScale !== 0 || model.slope === 0)
+      ? model.slope * xScale / responseScale
+      : restoreFiniteRatio(model.slope, xScale, responseScale, "Linear regression normalized slope")
+  );
+  let residualSquares = 0;
+  let totalSquares = 0;
+  rows.forEach((row, index) => {
+    const difference = row[y] - model.meanY;
+    const centered = Number.isFinite(difference)
+      ? difference / responseScale
+      : row[y] / responseScale - model.meanY / responseScale;
+    const residual = centered - normalizedSlope * coordinates[index];
+    totalSquares += centered ** 2;
+    residualSquares += residual ** 2;
+  });
+  return {
+    count: rows.length, intercept: model.intercept, slope: model.slope,
+    rSquared: totalSquares === 0 ? null : 1 - residualSquares / totalSquares
+  };
+}
+
 export function fitRegressionGroup(rows, { x, y, group, parameters }) {
+  if (parameters.method === "exp") return fitExponentialGroup(rows, { x, y, group });
   if (parameters.method === "linear") {
     return fitLinearGroup(rows, {
       x,
@@ -509,9 +564,14 @@ export function predictRegressionAt(model, xValue, parameters) {
     : undefined;
   const prediction = parameters.method === "linear"
     ? linearPrediction(model, xValue)
+    : parameters.method === "exp"
+      ? requireFiniteResult(Math.exp(model.logAmplitude + model.rate * xValue), "Exponential regression prediction")
     : parameters.method === "polynomial"
       ? polynomial.prediction
       : predictLoessAt(model, xValue);
+  if (parameters.method === "exp" && prediction === 0) {
+    throw new RangeError("Exponential regression prediction must be positive and representable.");
+  }
   if (parameters.method === "loess" || parameters.interval === false) return { prediction };
   const leverage = parameters.method === "linear"
     ? model.normalizedSxx !== undefined

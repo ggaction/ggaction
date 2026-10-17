@@ -342,6 +342,10 @@ function derivedEditingPrograms() {
     .createRegressionData({
       id: "editRegression", source: "editSource", x: "x", y: "y"
     })
+    .createRegressionData({ id: "statisticsFit", source: "editSource", x: "x", y: "y" })
+    .createRegressionStatisticsData({ id: "fitStatistics", source: "statisticsFit" })
+    .editRegressionStatisticsData({ target: "fitStatistics", source: "editRegression" })
+    .removeData({ id: "fitStatistics" })
     .editRegressionData({ target: "editRegression", method: "polynomial" })
     .createIntervalData({
       id: "editInterval", source: "editSource", field: "value"
