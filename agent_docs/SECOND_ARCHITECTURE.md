@@ -2068,6 +2068,7 @@ Canvas의 기존 fill owner는 정확한 CSS sentinel `none`을 투명 paint로 
 ### 기존 Canvas 수정 및 실데이터 facade 검증 동기화
 
 0.0.18의 none paint 수정과 실행 불가능한 continuous band 선언5개 정정 후
-Node24.21.0/npm11.19.0 staged artifact의 unpacked 실측은3908217bytes다.
-기존3908000을 초과하므로 한도만 최소1000bytes 단위인3909000으로 조정하고
-packed799000 및 browser 예산은 유지한다. 이전 unpacked 한도 통과를 주장하지 않는다.
+중간 development artifact는3908217unpacked bytes였다. 정확한 release provenance를
+갱신한 Node24.21.0/npm11.19.0 최종 staged package는567entries,
+packed798617/unpacked3907920bytes로 기존567/799000/3908000 한도 안이다.
+따라서 최종 package 한도를 올리지 않으며 browser 예산도 유지한다.
