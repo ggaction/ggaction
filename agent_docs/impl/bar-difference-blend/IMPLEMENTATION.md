@@ -64,8 +64,8 @@ npm run test:package
 
 `test/charts/bar-compositing/manifest.js`가 public call chain·200×200 크기·3배경×2opacity를
 소유한다. 독립 literal primitive는 runtime geometry나 public state를 읽지 않는다.
-`approved-pair.render.js`로6개 실제 decoded PNG 쌍·plot ink·trace를 정확히 검증하고
-`.artifacts/test/png/charts/bar-compositing/single-source/`에 variant metadata와 출력한다.
+`png.render.js`로6개 실제 decoded PNG 쌍·plot ink·trace를 정확히 검증하고
+`.artifacts/test/png/charts/bar-compositing/bar-compositing/`에 variant metadata와 출력한다.
 
 이 독립 primitive가 root Canvas의 형제인 collection인 경로에서 새 isolated helper의
 preflight stack에 viewport frame이 없던 오류를 재현했다. 항상 render viewport base frame을
@@ -79,3 +79,13 @@ PDF8조합을 재실행해 모두 통과했다.
 Canvas 전체RGBA가 독립 native source와, SVG 전체RGBA가 독립 literal SVG와 정확히
 일치했다. Runtime package는 한 번 packed한 같은 tarball을 사용했고 각 설치 consumer는
 격리했다. 이는 엔진 사이의 AA 픽셀이 서로 같다는 주장이 아니다. 새 tolerance는 없다.
+
+### 공개 예제의 canonical 연결
+
+공개 action chain은 examples/bar-compositing/program.js 한 곳에서 소유한다. 기존 test support는
+이를 재수출하며 registry·browser host·문서 figure·독립 primitive/normal/PNG 검사가 같은 함수를
+실행한다. Literal primitive는 plot-main/barPlot의 실제 concrete 구조와 order까지 독립 상수로
+구성한다.3배경×2opacity 모두 graphicSpec·order·전체 native Canvas 호출(격리 source RGBA
+hash 포함)·전체RGBA가 정확히 같다.8개 paired 검사,15개 bar/registry 계약, 실제browser1개
+통과. 문서119/120의 유일한 사전 commit 실패는 새 source의 git-ref가 아직 없기 때문이며
+commit 뒤 같은120개를 재실행한다.

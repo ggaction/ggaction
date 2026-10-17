@@ -1,3 +1,4 @@
+import { createBlendProgram } from "./bar-compositing/program.js";
 import { createHierarchicalAuthoring } from "./hierarchical-authoring/program.js";
 import { createResourceRemovalWorkflow } from "./remove-dependent-resources/program.js";
 import { createFacetSourceWorkflow } from "./edit-facet-source/program.js";
@@ -146,6 +147,8 @@ export const DOCUMENTATION_WORKFLOWS = Object.freeze([
 
 // Chart-family examples retain their independent primitive/public baselines.
 export const PUBLIC_CHARTS = Object.freeze([
+  example({ id: "bar-compositing", data: {}, width: 200, height: 200, docsGroup: "tutorials", createProgram: () => createBlendProgram(),
+    browser: { path: "bar-compositing/", canvas: "#chart" } }),
   example({ id: "cars-origin-histogram-facet", data: "cars", width: 756, height: 578, createProgram: createCarsOriginHistogramFacet, testDirectory: "cars-origin-scatterplot-facet", browser: { path: "browser-host/?chart=cars-origin-histogram-facet", canvas: "#chart" } }),
   example({ id: "cars-weighted-rules", data: "cars", width: 520, height: 320, createProgram: createCarsWeightedRules, testDirectory: "cars-error-bar", browser: { path: "browser-host/?chart=cars-weighted-rules", canvas: "#chart" } }),
   example({

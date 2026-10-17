@@ -468,6 +468,12 @@ Choose the smallest action that expresses the intended chart change.
 
 Representative actions: `createScatterPlot`, `createPointMark`, `editPointMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchical-authoring/).
 
+### [Bar difference compositing](./bar-compositing/)
+
+Refine a complete bar with one compositing edit.
+
+Representative actions: `createBarPlot`, `editBarMark`. [Documentation](https://ggaction.github.io/ggaction/api/marks/bar/#blend-with-underlying-content).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

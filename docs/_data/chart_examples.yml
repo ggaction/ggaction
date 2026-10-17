@@ -1298,3 +1298,19 @@
   tasks: comparison
   url: /tutorials/hierarchical-authoring/
   tutorial_order: 1
+
+- id: bar-compositing
+  example: /examples/bar-compositing/
+  title: Bar difference compositing
+  image: /assets/images/bar-compositing.png
+  alt: A cyan bar with a blue outline produced by difference compositing on white
+  width: 400
+  height: 400
+  thumbnail: /assets/images/bar-compositing-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 640
+  caption: Fill and outline form one source before difference compositing.
+  summary: Refine a complete bar with one compositing edit.
+  actions: createBarPlot · editBarMark
+  tasks: appearance editing
+  url: /api/marks/bar/#blend-with-underlying-content
