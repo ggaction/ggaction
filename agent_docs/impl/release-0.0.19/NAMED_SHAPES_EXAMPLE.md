@@ -26,9 +26,19 @@ anchor85/195×100/180, clockwise0·90도 및 원래 area/angle labels다.
 
 - primitive/public/PNG/SVG/PDF/browser/vertical/discovery 집중 **19/19 PASS**.
 - 기존 directional shape/type/source-boundary **13/13 PASS**.
-- 문서120개 검사는 canonical source commit 이후 재생성하여 최종 기록한다.
+- Source `eee964e0` 이후 전체 문서120/120 및 descriptor/capability/example-index freshness가 PASS했다.
+  Ruby3.2 Jekyll build와150builtpages의 link/asset 정적 검사도 PASS했다.
   선행 검사의 search-budget2개 실패는 실측828580bytes에 따라 cap만829000으로
   좁게 조정한다. 새 source 링크1개 실패는 commit 전 canonical 경로가 없어 발생했다.
   Runtime/package/browser/coverage 한도는 변경하지 않는다.
 - artifacts: `.artifacts/test/png/charts/point-shapes/named-shapes/area-and-rotation/`
   아래 `primitive.png`, `user-facing.png`, exact public call chain의 `variant.json`.
+
+
+## 통합 담당자에게 전달한 별도 문서 접근성 문제
+
+추가320px built Point API page Axe에서 기존 generated `.docs-action-signature`의
+`scrollable-region-focusable` serious 오류를 발견했다(createPointMark/editPointMark/
+jitterPoints signature). 새 그림의 viewport overflow는 없었으나 이 페이지 전체의
+mobile accessibility 성공으로 보고하지 않는다. 기존 docs-content.js의 scroll focus
+owner 적용 범위 문제로 root에 전달했으며 이 예제 연결 범위에서 문서 JS를 바꾸지 않았다.

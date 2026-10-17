@@ -5,7 +5,7 @@
   "contractId": "sha256:8d89f0c548a315ac6ebccc9af182c98c9cc4aae61a41c5f99aca7d075cce9cef",
   "sourceCommit": "c1a420d63d9a7ecf1b7c377852267f6250e07dcc",
   "sourceRef": "c1a420d63d9a7ecf1b7c377852267f6250e07dcc",
-  "exampleSourceRef": "codex/features-data-color",
+  "exampleSourceRef": "eee964e0bf520b44e8fc6adf3e655fa0eab0945d",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
