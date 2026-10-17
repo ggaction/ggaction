@@ -619,6 +619,20 @@ function addColorScales(program) {
     .editColorScale({target:"powered-color",whitePoint:"auto"})
     .editColorScale({target:"powered-color",interpolate:"cubehelix",gamma:2.2})
     .editColorScale({target:"powered-color",gamma:"auto"});
+  // Exercise both string and object branches of the public range palette union.
+  // The object branch keeps count and extent visible in the direct action trace.
+  const rangePalettes = [
+    { palette: "viridis" },
+    { palette: "magma" },
+    realisticPaletteRange(1)
+  ];
+  for (const [index, range] of rangePalettes.entries()) {
+    const id = `range-palette-color-${index}`;
+    next = positionedPoint(next, id).encodeColor({
+      target: id, field: "y", fieldType: "quantitative",
+      scale: { id: `${id}-scale`, type: "sequential", range }
+    });
+  }
   const discrete = [
     { type: "quantize", domain: "auto", palette: { name: "blues", count: 5 } },
     { type: "quantile", domain: "auto", palette: { name: "reds", count: 5 } },
