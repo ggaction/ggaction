@@ -96,9 +96,11 @@ try{
    const clearance=await page.locator('text').evaluateAll(es=>{const title=es.find(t=>t.textContent==='Bottom title').getBBox();const labels=es.filter(t=>['0','10'].includes(t.textContent)).map(t=>t.getBBox());return title.y-Math.max(...labels.map(b=>b.y+b.height));});
    assert.equal(clearance,12);
   }
-  await page.locator('svg').screenshot({path:path.join(artifacts,p.id+'.png')});
+  const variantDirectory=path.join(artifacts,p.id);
+  await mkdir(variantDirectory,{recursive:true});
+  await page.locator('svg').screenshot({path:path.join(variantDirectory,'target.png')});
   const metadata={capability:'proposed-capabilities',chart:p.id,variant:'target',displayTitle:p.title,targetPublicCallChain:p.calls,status:'proposed-primitive-only',primitiveSha256:hash,checks:p.checks};
-  await writeFile(path.join(artifacts,p.id+'.variant.json'),JSON.stringify(metadata,null,2)+'\n');
+  await writeFile(path.join(variantDirectory,'variant.json'),JSON.stringify(metadata,null,2)+'\n');
  }
  const html='<html><body style="margin:0;background:white;display:grid;grid-template-columns:480px 480px;gap:10px">'+panels.map(svgFor).join('')+'</body></html>';
  await writeFile(path.join(here,'targets/index.html'),html+'\n');await page.setContent(html);
