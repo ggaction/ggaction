@@ -1,3 +1,4 @@
+import { realisticColorControls } from "./realistic-color-controls.js";
 import { chart } from "../../../src/index.js";
 
 import {
@@ -131,6 +132,7 @@ const HEATMAP_VARIANTS = freeze([
     positionType: ["linear", "log", "pow", "sqrt", "symlog", "linear", "pow", "band"][index],
     profileIndex: index
   })),
+  { id:"pow-lab", colorType:"pow", interpolate:"lab", positionType:"linear", profileIndex:0 },
   {
     id: "sqrt-rgb",
     colorType: "sqrt",
@@ -472,22 +474,21 @@ function heatmapColorScale(variant) {
       reverse: true
     };
   }
+  if (["pow","sqrt"].includes(variant.colorType)) return {
+    id,type:variant.colorType,domain:"auto",range:"auto",
+    ...(variant.colorType==="pow"?{exponent:2}:{}),interpolate:variant.interpolate,
+    ...realisticColorControls(variant.interpolate,0),clamp:true,reverse:false
+  };
   if (variant.colorType === "log") {
     return {
       id, type: "log", domain: "auto", range: "auto",
       base: 10, interpolate: variant.interpolate, clamp: true, reverse: false
     };
   }
-  if (variant.colorType === "sqrt") {
-    return {
-      id, type: "sqrt", domain: "auto", range: "auto",
-      interpolate: variant.interpolate, clamp: true, reverse: false
-    };
-  }
   if (variant.colorType === "symlog") {
     return {
       id, type: "symlog", domain: "auto", range: "auto",
-      constant: 1, interpolate: variant.interpolate, clamp: false, reverse: true
+      constant: 1, interpolate: variant.interpolate, ...realisticColorControls(variant.interpolate, 1), clamp: false, reverse: true
     };
   }
   const index = INTERPOLATIONS.indexOf(variant.interpolate);
@@ -497,6 +498,7 @@ function heatmapColorScale(variant) {
     domain: "auto",
     midpoint: "auto",
     interpolate: variant.interpolate,
+    ...realisticColorControls(variant.interpolate, index),
     clamp: index % 2 === 0,
     reverse: index % 3 === 0
   };

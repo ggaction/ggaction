@@ -214,17 +214,17 @@ function smallPolicy(overrides = {}) {
 test("derives a bounded public option inventory without runtime prototype paths", async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
 
-  assert.equal(inventory.counts.publicActions, 275);
-  assert.equal(inventory.counts.topLevelOptionPaths, 2289);
-  assert.equal(inventory.counts.nestedOptionPaths, 10685);
-  assert.equal(inventory.counts.optionPaths, 12974);
-  assert.equal(inventory.counts.requiredOptionPaths, 11238);
-  assert.equal(inventory.counts.excludedOptionPaths, 1736);
-  assert.equal(inventory.counts.topLevelCategoricalPaths, 761);
-  assert.equal(inventory.counts.topLevelLiteralValues, 2996);
-  assert.equal(inventory.counts.literalFamilies, 170);
-  assert.equal(inventory.counts.pathLiteralRequirements, 7754);
-  assert.equal(inventory.counts.familyLiteralRequirements, 304);
+  assert.equal(inventory.counts.publicActions, 277);
+  assert.equal(inventory.counts.topLevelOptionPaths, 2309);
+  assert.equal(inventory.counts.nestedOptionPaths, 10729);
+  assert.equal(inventory.counts.optionPaths, 13038);
+  assert.equal(inventory.counts.requiredOptionPaths, 11300);
+  assert.equal(inventory.counts.excludedOptionPaths, 1738);
+  assert.equal(inventory.counts.topLevelCategoricalPaths, 772);
+  assert.equal(inventory.counts.topLevelLiteralValues, 3030);
+  assert.equal(inventory.counts.literalFamilies, 173);
+  assert.equal(inventory.counts.pathLiteralRequirements, 7827);
+  assert.equal(inventory.counts.familyLiteralRequirements, 308);
   assert.equal(inventory.counts.pathDiversityRequirements, 300);
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:createCanvas.margin.top"), true);
@@ -240,6 +240,18 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createParallelCoordinates.color.layout"), false);
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:encodeY.bin"), false);
+  const closedColorFamily = inventory.literalFamilies.find(family =>
+    family.values.map(value => value.key).join("|") ===
+      ["log","ordinal","pow","quantile","quantize","sequential","sqrt","symlog","threshold"]
+        .map(value => `string:${value}`).join("|"));
+  assert.equal(closedColorFamily.size,9);
+  assert.equal(closedColorFamily.open,false);
+  assert.equal(closedColorFamily.policy,"path-values");
+  for (const path of closedColorFamily.requiredPaths) {
+    assert.equal(inventory.pathLiteralRequirements.filter(requirement => requirement.optionPath===path).length,9,path);
+  }
+  const otherNine = inventory.literalFamilies.find(family => family.values.some(value => value.key==="string:weekday") && family.size===9);
+  assert.equal(otherNine.policy,"family-values","the general threshold remains eight");
   const optionById = new Map(inventory.optionPaths.map(option => [option.id, option]));
   for (const action of ["removeData", "removeScale", "removeCoordinate"]) {
     assert.equal(
@@ -313,7 +325,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 1736 }
+    { "redacted-array": 1738 }
   );
   const values = id => optionById.get(id)?.values ?? [];
   assert.equal(optionById.has("option-path:createScatterPlot.x.scale.palette"), false);
@@ -342,7 +354,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
   );
   assert.equal(scaleTypePaths.length, 148);
-  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 675);
+  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 687);
   assert.equal(inventory.excludedOptionPaths.every(option =>
     optionById.get(option.replacement)?.required === true
   ), true);
@@ -357,7 +369,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 19575);
+  assert.equal(ledger.requirements.length, 19716);
   assert.throws(() => createScenarioCoverageLedger({
     publicInventory: inventory,
     rendererFeatures: [],

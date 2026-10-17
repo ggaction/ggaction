@@ -419,3 +419,37 @@ program.createSummaryData({
   unpacked3939523, browser Full395462/Basic190821/SVG7176gzip. package570/804000/3940000과
   Full396000만 최소 상향했다. Basic191000/SVG25000과 computed/work/path/일반graphics 한도는 유지한다.
 - 전체9개 기능의 realistic 새옵션/리터럴/action 실제5회·3TT데이터셋 증언은 다음 필수 checkpoint다.
+
+## 9개 기능의 실제 데이터 증언 checkpoint
+
+- source가 아닌 검증 계층의 checkpoint다. 공개 runtime9개(#167/#168/#169/#172/#196/#198/#202/#207/#209)는 앞선 커밋대로 유지한다.
+- `realistic-data-color-contracts.test.js`는 고정159requirements(78paths/81literals,
+  SHA256 `945f57c2d544486480599f6730c944b55f3f25eb74ba4e06a249f4f92950c071`)를
+  실제100개 프로그램과 다섯 pinned TT source에서 최소5회·3dataset으로 검증했다.
+  실제 사용 source는 Penguins, London Marathon Winners, Astronauts, US Births, Chocolate Ratings다.
+  새 함수 두 개의 source/target 및 computed floor/datePart create/edit, exp create/edit/data/facade,
+  모든 공개 color/stroke whitePoint/gamma/pow consumer와 기존 position/size pow를 포함한다.
+- 처음135개 계획은 전체 기존 miscellaneous/regression recipe를 반복해 새로운 증언과 무관한
+  수백 개 facade를 매번 재실행했다. 같은 pinned `realisticRecordView`와 공개 helper를 재사용해
+  필요한100개로 정리했다. 원래159개 요구와 SHA, 최소5/3은 그대로다. 다섯 서로 다른 원본의
+  선택 행·sourceRowIndex·원본 열은 보존하고 양수/명시 interval alias만 기록된 산식으로 만든다.
+  회귀 count·coefficients·R²와 floor는 독립 계산으로 대조한다. 그림을 관찰하거나 새번역하지 않았다.
+- 전용 color 양성 profile은 signed-power/Lab/HCL/cubehelix의 실제 적용이 있는 scatter/bar5종과
+  기존 scale/heatmap profile이다. 관련 없는 log+CI의 부호 제약 조합은 이 추가 증언에 넣지 않는다.
+  기존 전체 broad matrix, negative와 public admission 검증은 별도로 그대로 유지했다.
+- color union이8→9가 되면서 기존 small-family 임계값8을 넘는 문제를 발견했다. 전역 임계값은
+  바꾸지 않고 정확한 closed9color vocabulary만 path-values로 유지한다. 원래8종과 pow가 모든
+  공개 path마다 계속 필수이며, 다른9종 calendar union은 기존 family-values다. 이를 검증하는
+  positive/negative inventory assertions를 추가했다. 단순 fingerprint 변경으로 실행 증언을 대체하지 않았다.
+- 최신 출시 main `0447acaf`를 병합한 `be874696`에 R의 실제sqrt 증언과 실행 불가능한band 선언
+  정정을 보존했다. 기존 recipe의 행·sample·정책은 바꾸지 않았다. 새pow profile은 기존 feature
+  ordinal 뒤에 추가해 원래 quantile 등 역할의 실행을 그대로 유지한다.
+- broad actual matrix: Cartesian720, encoding15, facade255, guide739선택/599실제build,
+  statistical465. 옵션·리터럴의 증가분은 정확한 count/digest와 실제 최소5/3 실행을 함께 검사한다.
+  과거918개 gap partition은 그대로 두고 새statistics2개는 별도159개 증언 소유자에 포함한다.
+- 새 파일의 성공 실측은18273.828792ms(macOS/Node22.23.1/npm10.9.8)다. shard timing에18274ms를
+  등록하고 해당 항목의 환경 override를 남겼다. 기존 Ubuntu 측정값과 일반 sharding 기준은 유지한다.
+- 일반unit runtime3135개가 통과했고 새파일 timing누락으로 실패했던 shard 검사3개도 정정 후 통과했다.
+  최종 broad/statistical 재검증 결과와 stable 색상 artifact 증거는 후속 checkpoint에 기록한다.
+
+- 최종 재실행 Cartesian6개와 statistical7개가 모두 통과했다. 전용100프로그램159요구, timing/sharding3개도 통과했다. 출시 main병합 뒤 installed package unpacked실측3941633바이트로 기존3940000을 초과해 다음 최소1000단계인3942000만 적용했다. Entry570/packed804000/browser/search한도는 유지하며 macOS/Node22.23.1/npm10.9.8 환경이다.

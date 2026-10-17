@@ -1,0 +1,157 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import {readFileSync} from "node:fs";
+import {createHash} from "node:crypto";
+import {buildPublicOptionInventory} from "../support/scenarios/coverage-inventory.js";
+import {literalValueKey} from "../support/scenarios/coverage-ledger.js";
+import {releaseTidyTuesdaySourceCache} from "../support/datasets/tidytuesday.js";
+import {datasetDefinition} from "../support/datasets/catalog.js";
+import {chart} from "../../src/index.js";
+import {realisticRecordView} from "../support/scenarios/realistic-data.js";
+import {appendRealisticColorControls} from "../support/scenarios/realistic-color-controls.js";
+import {REALISTIC_ENCODING_COVERAGE_RECIPES as encodingRecipes} from "../support/scenarios/realistic-encoding-coverage-recipes.js";
+import {REALISTIC_GUIDE_SCALE_RECIPES as guideRecipes} from "../support/scenarios/realistic-guide-scale-recipes.js";
+import {REALISTIC_CARTESIAN_FACADE_COVERAGE_RECIPES as cartesianRecipes} from "../support/scenarios/realistic-cartesian-facade-coverage-recipes.js";
+import {REALISTIC_FACADE_OPTION_RECIPES as facadeRecipes} from "../support/scenarios/realistic-facade-option-recipes.js";
+import {referenceLinearStatistics} from "../oracles/regression-statistics.js";
+import {renderToSVG} from "../../src/renderers/svg.js";
+
+const DATASETS = ["tt-penguins","tt-london-marathon-winners","tt-astronauts",
+  "tt-us-births","tt-chocolate-ratings"];
+const COLOR_ACTIONS = new Set(["createScale","editScale","editColorScale","editStrokeScale",
+  "encodeColor","encodeStroke","createScatterPlot","createBarPlot","createHeatmap",
+  "createPolarScatterPlot","createStripPlot","createBeeswarmPlot","createIntervalPlot",
+  "createRegressionPlot","createTextPlot"]);
+const FIT_ACTIONS = new Set(["createRegression","editRegression","createRegressionData",
+  "editRegressionData","createRegressionPlot"]);
+const COMPUTED_ACTIONS = new Set(["createComputedData","editComputedData"]);
+const STATISTICS_ACTIONS = new Set(["createRegressionStatisticsData","editRegressionStatisticsData"]);
+
+function targets(inventory) {
+  const options=inventory.optionPaths.filter(option=>option.required && (
+    COLOR_ACTIONS.has(option.action) && /(?:^|\.)(?:whitePoint|gamma|exponent)$/u.test(option.path) &&
+      (["createScale","editScale","editColorScale","editStrokeScale"].includes(option.action)||/(?:color|stroke|scale)/iu.test(option.path)) ||
+    COMPUTED_ACTIONS.has(option.action) && ["expression.part","expression.timeZone"].includes(option.path) ||
+    STATISTICS_ACTIONS.has(option.action)
+  ));
+  const optionIds=new Set(options.map(option=>option.id));
+  const literals=inventory.pathLiteralRequirements.filter(requirement=>{
+    if(optionIds.has(requirement.optionPath))return true;
+    const option=inventory.optionPaths.find(option=>option.id===requirement.optionPath);
+    return COLOR_ACTIONS.has(option.action) && /(?:^|\.)type$/u.test(option.path) &&
+      requirement.valueKey==="string:pow" &&
+      (["createScale","editScale","editColorScale","editStrokeScale"].includes(option.action)||/(?:color|stroke|scale)/iu.test(option.path)) ||
+      FIT_ACTIONS.has(option.action) && option.path==="method" && requirement.valueKey==="string:exp";
+  });
+  return {options,literals};
+}
+function valuesAt(args,path){
+  let values=[args];
+  for(const name of path.split("."))values=values.flatMap(value=>value&&typeof value==="object"&&Object.hasOwn(value,name)?[value[name]]:[]);
+  return values.filter(value=>value!==undefined);
+}
+function digest(ids){return createHash("sha256").update(ids.sort().join("\n")).digest("hex");}
+function close(actual,expected){assert.ok(Math.abs(actual-expected)<=1e-9*Math.max(1,Math.abs(expected)),`${actual} versus ${expected}`);}
+
+// Existing pinned real-data projections and recipes supply the observations.
+// This test locks the new contract surface and requires direct execution on each source;
+// a changed inventory fingerprint alone cannot satisfy a requirement.
+test("computed, fit, statistics and color additions have actual public 5/3 witnesses",{timeout:600000},async()=>{
+  const inventory=await buildPublicOptionInventory(JSON.parse(readFileSync(new URL("../../knowledge/action-cards.json",import.meta.url))));
+  const target=targets(inventory);
+  assert.deepEqual({options:target.options.length,literals:target.literals.length,sha256:digest([...target.options,...target.literals].map(value=>value.id))},
+    {options:78,literals:81,sha256:"945f57c2d544486480599f6730c944b55f3f25eb74ba4e06a249f4f92950c071"});
+  const stats=new Map([...target.options,...target.literals].map(value=>[value.id,{occurrences:0,datasets:new Set()}]));
+  const expressionStats=new Map(["createComputedData:floor","createComputedData:datePart","editComputedData:floor","editComputedData:datePart"].map(id=>[id,{occurrences:0,datasets:new Set()}]));
+  const optionsByAction=new Map();
+  for(const option of target.options){const list=optionsByAction.get(option.action)??[];list.push(option);optionsByAction.set(option.action,list);}
+  const literalOptions=new Map(inventory.optionPaths.map(option=>[option.id,option]));
+  let builds=0;
+  function record(program,dataset){
+    const observed=new Set();
+    for(const entry of program.trace.children??[]){
+      for(const option of optionsByAction.get(entry.op)??[])if(valuesAt(entry.args,option.path).length)observed.add(option.id);
+      for(const requirement of target.literals){const option=literalOptions.get(requirement.optionPath);
+        if(option.action===entry.op && valuesAt(entry.args,option.path).some(value=>literalValueKey(value)===requirement.valueKey))observed.add(requirement.id);}
+      const expressionId=`${entry.op}:${entry.args?.expression?.op}`;
+      if(expressionStats.has(expressionId)){expressionStats.get(expressionId).occurrences++;expressionStats.get(expressionId).datasets.add(dataset);}
+    }
+    for(const id of observed){stats.get(id).occurrences++;stats.get(id).datasets.add(dataset);}
+    assert.match(renderToSVG(program),/<(?:circle|path|rect)\b/u);
+    builds++;
+  }
+  function build(recipe,dataset,variant){
+    const domains=recipe.factorsForDataset(dataset);assert.ok(domains,`${recipe.id} ${dataset}`);
+    const factors={dataset,...(domains.fieldPair?{fieldPair:domains.fieldPair[0]}:{}),
+      ...(domains.profile?{profile:domains.profile[0]}:{}),...(variant?{variant}:domains.variant?{variant:domains.variant[0]}:{})};
+    const program=recipe.build(factors);const metadata=recipe.describe(factors);
+    assert.equal(datasetDefinition(dataset).corpus,"tidytuesday");
+    assert.equal(metadata.provenance.sourceDataset,dataset);
+    assert.ok(metadata.provenance.sourceRowCount>0);
+    record(program,dataset);return program;
+  }
+  for(const dataset of DATASETS){
+    try{
+      const view=realisticRecordView(dataset,{includeSecondaryMeasure:true,includeSecondaryDimension:true,
+        deriveSubgroup:true,rowLimit:96,groupLimit:8});
+      const rows=view.rows.map(row=>({...row,positiveX:row.sourceRowIndex+1,
+        positiveY:Math.abs(row.value)+1,lower:(Math.abs(row.value)+1)*.88,
+        upper:(Math.abs(row.value)+1)*1.12}));
+      assert.equal(view.provenance.sourceDataset,dataset);
+      assert.deepEqual(rows.map(row=>row.sourceRowIndex),view.rows.map(row=>row.sourceRowIndex));
+      const sourceSnapshot=JSON.stringify(rows);
+      let program=chart().createCanvas({width:1200,height:800,margin:100})
+        .createData({id:"analysisRows",values:rows})
+        .createScatterPlot({id:"observations",x:{field:"positiveX",scale:{id:"observation-x",type:"pow",exponent:2}},
+          y:{field:"positiveY",scale:{id:"observation-y",type:"pow",exponent:2}},
+          size:{field:"positiveY",scale:{id:"observation-size",type:"pow",exponent:2}},guides:false})
+        .createComputedData({id:"rounded",source:"analysisRows",as:"roundedValue",
+          expression:{op:"floor",operand:{field:"positiveY"}}})
+        .editComputedData({target:"rounded",as:"lowerValue",expression:{op:"floor",operand:{field:"positiveY"}}})
+        .createComputedData({id:"year",source:"analysisRows",as:"sourceYear",expression:{op:"datePart",part:"year",timeZone:"UTC",
+          operand:{op:"parseTime",operand:{field:"time"}}}})
+        .editComputedData({target:"year",expression:{op:"datePart",part:"year",timeZone:"Europe/Copenhagen",
+          operand:{op:"parseTime",operand:{field:"time"}}}})
+        .createRegression({target:"observations",method:"exp",band:false})
+        .editRegression({target:"observations",method:"exp",line:{strokeWidth:2.3}})
+        .createRegressionData({id:"exponentialFit",source:"analysisRows",x:"positiveX",y:"positiveY",method:"exp"})
+        .editRegressionData({target:"exponentialFit",method:"exp",predict:{domain:[rows[0].positiveX,rows.at(-1).positiveX],steps:48}})
+        .createRegressionData({id:"linearFit",source:"analysisRows",x:"positiveX",y:"positiveY",interval:false})
+        .createRegressionStatisticsData({id:"statistics",source:"linearFit"})
+        .createRegressionData({id:"alternateFit",source:"analysisRows",x:"positiveY",y:"positiveX",interval:false})
+        .editRegressionStatisticsData({target:"statistics",source:"alternateFit"});
+      program=appendRealisticColorControls(program);
+      assert.deepEqual(program.semanticSpec.datasets[0].values,rows);
+      assert.equal(JSON.stringify(rows),sourceSnapshot);
+      const rounded=program.semanticSpec.datasets.find(data=>data.transform?.[0]?.as==="lowerValue").values;
+      rounded.forEach((row,index)=>assert.equal(row.lowerValue,Math.floor(rows[index].positiveY)));
+      const statistics=program.semanticSpec.datasets.find(data=>data.transform?.[0]?.type==="regressionStatistics").values[0];
+      const expected=referenceLinearStatistics(rows,"positiveY","positiveX");
+      assert.equal(statistics.count,expected.count);close(statistics.intercept,expected.intercept);close(statistics.slope,expected.slope);
+      if(expected.rSquared===null)assert.equal(statistics.rSquared,null);else close(statistics.rSquared,expected.rSquared);
+      record(program,dataset);
+      build(encodingRecipes.find(recipe=>recipe.id.includes("appearance")),dataset);
+      for(const variantId of ["color-sequential-viridis-lab","color-sequential-viridis-hcl","color-sequential-viridis-cubehelix","color-pow"]){
+        // Palette/interpolation pairs are distributed between the two existing
+        // schedules, so resolve the exact owner instead of inventing a variant.
+        const owner=guideRecipes.find(recipe=>recipe.factors.variant?.some(variant=>variant.id===variantId));
+        assert.ok(owner,variantId);build(owner,dataset,owner.factors.variant.find(variant=>variant.id===variantId));
+      }
+      for(const suffix of ["scatter","bar"]){const recipe=cartesianRecipes.find(recipe=>recipe.id.endsWith(suffix));
+        for(const ordinal of suffix==="scatter"?[11,12,13,14,15]:[3,4,5,6,7]){
+          const variant=recipe.factorsForDataset(dataset).variant.find(variant=>variant.ordinal===ordinal);assert.ok(variant);build(recipe,dataset,variant);
+        }
+      }
+      const heatmap=facadeRecipes.find(recipe=>recipe.expectedDirectActions[0]==="createHeatmap");
+      for(const id of ["sequential-lab","sequential-hcl","sequential-cubehelix","pow-lab"]){
+        const variant=heatmap.factorsForDataset(dataset).variant.find(variant=>variant.id===id);assert.ok(variant,id);build(heatmap,dataset,variant);
+      }
+      console.log(JSON.stringify({completedDataset:dataset,actualBuilds:builds}));
+    }finally{releaseTidyTuesdaySourceCache(dataset);}
+  }
+  const missing=[...stats].filter(([,value])=>value.occurrences<5||value.datasets.size<3).map(([id,value])=>({id,occurrences:value.occurrences,datasets:[...value.datasets]}));
+  assert.deepEqual(missing,[]);
+  assert.deepEqual([...expressionStats].filter(([,value])=>value.occurrences<5||value.datasets.size<3),[]);
+  assert.equal(builds,100);
+  console.log(JSON.stringify({requirementCount:stats.size,requirementSha256:digest([...stats.keys()]),actualBuilds:builds,minimumOccurrences:5,minimumDatasets:3}));
+});

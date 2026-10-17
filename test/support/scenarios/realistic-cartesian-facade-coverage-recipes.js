@@ -1,3 +1,4 @@
+import { realisticColorControls } from "./realistic-color-controls.js";
 import { chart } from "../../../src/index.js";
 import { summarizeArgs } from "../../../src/core/action.js";
 import { releaseTidyTuesdaySourceCache } from "../datasets/tidytuesday.js";
@@ -335,7 +336,7 @@ function paletteEncoding(index, field = "category") {
 function continuousColor(index, aggregate) {
   const interpolate = INTERPOLATIONS[index % INTERPOLATIONS.length];
   const type = index % 8 === 0 ? "log" : index % 8 === 1 ? "symlog"
-    : index % 8 === 2 ? "sqrt" : "sequential";
+    : index % 8 === 2 ? "sqrt" : index % 8 === 3 ? "pow" : "sequential";
   return {
     field: "positiveValue",
     fieldType: "quantitative",
@@ -346,9 +347,11 @@ function continuousColor(index, aggregate) {
       domain: "auto",
       ...(type === "sequential" ? { midpoint: "auto" } : {}),
       ...(type === "log" ? { base: 10 } : {}),
+      ...(type === "pow" ? { exponent: 2 } : {}),
       ...(type === "symlog" ? { constant: 0.1 } : {}),
       palette: index % 2 === 0 ? "viridis" : { name: "magma", extent: [0.1, 0.9] },
       interpolate,
+      ...realisticColorControls(interpolate, index),
       clamp: index % 2 === 0,
       reverse: index % 3 === 0,
       unknown: "#94a3b8"
@@ -383,6 +386,7 @@ function scatterStroke(index) {
       id: "mainStroke", type: "sequential", domain: "auto",
       ...(index === 27 ? { range: "auto" } : { palette: "viridis" }),
       interpolate: INTERPOLATIONS[index % INTERPOLATIONS.length],
+      ...realisticColorControls(INTERPOLATIONS[index % INTERPOLATIONS.length], index),
       midpoint: "auto", clamp: index % 2 === 0, reverse: index % 3 === 0,
       unknown: "#94a3b8"
     }

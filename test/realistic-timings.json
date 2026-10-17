@@ -12,6 +12,7 @@
     "contracts/realistic-arc-legend-layout.test.js": 67117,
     "contracts/realistic-cartesian-facade-coverage-recipes.test.js": 134704,
     "contracts/realistic-complete-chart-facades.test.js": 3510,
+    "contracts/realistic-data-color-contracts.test.js": 18274,
     "contracts/realistic-data-mark-recipes.test.js": 151354,
     "contracts/realistic-direct-lifecycle-coverage-recipes.test.js": 799519,
     "contracts/realistic-encoding-coverage-recipes.test.js": 35752,
@@ -26,5 +27,12 @@
     "contracts/realistic-scenario-generator.test.js": 535185,
     "contracts/realistic-scenario-runner.test.js": 99611,
     "contracts/realistic-statistical-facade-coverage-recipes.test.js": 159323
+  },
+  "measurementOverrides": {
+    "contracts/realistic-data-color-contracts.test.js": {
+      "environment": "macOS, Node22.23.1, npm10.9.8",
+      "measurement": "Successful local test duration_ms, rounded upward; same 159 requirements and 100 authentic programs across five pinned datasets.",
+      "durationMs": 18274
+    }
   }
 }

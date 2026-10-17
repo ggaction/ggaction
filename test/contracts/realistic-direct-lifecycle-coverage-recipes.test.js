@@ -959,7 +959,7 @@ test("locks the disjoint corrected hard-requirement partition at 918", async () 
     REALISTIC_DIRECT_LIFECYCLE_COVERAGE_EXPECTED_ACTIONS.filter(action =>
       !targetActions.has(action)
     ),
-    ["removeEncoding"]
+    ["removeEncoding", "createRegressionStatisticsData", "editRegressionStatisticsData"]
   );
   assert.deepEqual(
     [...targetActions].filter(action =>

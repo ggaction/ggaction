@@ -1,3 +1,4 @@
+import { realisticColorControls, appendRealisticColorControls } from "./realistic-color-controls.js";
 const POSITION_TYPES = Object.freeze(["linear", "log", "pow", "sqrt", "symlog"]);
 const THETA_TYPES = Object.freeze(["linear", "time", "band", "point"]);
 const TEMPORAL_UNITS = Object.freeze(["auto", "year", "timestamp"]);
@@ -238,6 +239,7 @@ function colorChannel(id, index, { categorical = false, layout = false, temporal
   }
   if (temporal && index === 12) scale.interpolate = "lab";
   if (temporal && index === 13) scale.interpolate = "cubehelix";
+  Object.assign(scale, realisticColorControls(scale.interpolate, index));
   return {
     field: temporal ? temporalField(temporalUnit) : categorical || index < 8 ? "group" : "positiveY",
     fieldType: temporal ? "temporal" : categorical || index < 8
@@ -1922,7 +1924,7 @@ function appendRadial(program, action, index) {
 }
 
 export function appendHierarchicalFacadeCoverage(program) {
-  let next = program;
+  let next = appendRealisticColorControls(program);
   for (let index = 0; index < REALISTIC_HIERARCHICAL_FACADE_PROFILE_COUNT; index += 1) {
     const steps = [
       ["createAreaPlot", appendArea],
