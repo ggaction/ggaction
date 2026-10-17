@@ -453,3 +453,32 @@ program.createSummaryData({
   최종 broad/statistical 재검증 결과와 stable 색상 artifact 증거는 후속 checkpoint에 기록한다.
 
 - 최종 재실행 Cartesian6개와 statistical7개가 모두 통과했다. 전용100프로그램159요구, timing/sharding3개도 통과했다. 출시 main병합 뒤 installed package unpacked실측3941633바이트로 기존3940000을 초과해 다음 최소1000단계인3942000만 적용했다. Entry570/packed804000/browser/search한도는 유지하며 macOS/Node22.23.1/npm10.9.8 환경이다.
+
+## 색상 승인 목표의 정식 예제 승격 checkpoint
+
+- 원래 승인된 chart body를 그대로 보존했다. `lab-white-point`는 D65/D50 각각9개,
+  `color-math`는 gamma1/gamma2.2 각각9개와 signed-power9개다. Gamma의 공개 range는
+  추가 승인 `4f2f985c`/기록 `e670508b`의 `['#75190b','#90f2a4']`로 고정했다.
+- 실행 소유자는 `test/charts/color-controls/`이고 public program은 각각
+  `examples/color-white-point/program.js`, `examples/color-controls/program.js` 한 개다.
+  첫 선언 뒤 `editColorScale`로 D50/gamma2.2/pow를 적용한다. Primitive는 독립 literal RGB와
+  concrete rectangle만 사용하는 명시적 createGraphics/editGraphics chain이다.
+  기존 독립 Lab행렬/cubehelix 역변환/signed-power oracle과45개 literal을 대조한다.
+- Manifest가 exact top-level public 호출, 크기480×270, row geometry/색상, artifact 소유자를
+  기록한다. 두 variant의 graphicSpec/order/Canvas호출/전체518400RGBA바이트와 PNG가 exact다.
+  SVG와 PDF의 concrete vector stream도 exact이며 raster image를 포함하지 않는다.
+  Rectangle전용 PDF에는 path move가 아니라 rectangle명령 `re`가 있으므로 shared vector
+  검사도 실제 요청 geometry에 맞는 명령을 요구한다. 기존 경로/원형 검사는 계속 `m`을 요구한다.
+- 재현: `node --test test/charts/color-controls/{public.test,png.render,vector.render}.js`.
+  PNG는 `.artifacts/test/png/charts/color-scales/color-controls/{lab-white-point,color-math}/`
+  아래 `primitive.png`, `user-facing.png`, exact호출의 `variant.json`이다.
+  Roadmap/review 디렉터리는 정식 테스트의 실행 의존성이 아니다.
+- Public registry/shared browser host/catalog/API설명을 연결했다. BrowserCanvas2개와
+  browser-safeSVG2개가 실제 Chromium에서 통과했고, SVG는 native Node 출력/모든 rectangle수와 exact다.
+  기존 vector2개를 포함한 대표9검사, hierarchy/source-boundary9검사가 통과했다.
+- 전체일반 unit3136/3136 통과(95.536초), installed packed consumer도 앞선 checkpoint 뒤 통과했다.
+  새예제 source-link검사는 HEAD의 canonical source를 검사하므로 source commit 뒤 provenance를
+  재생성하고 문서120개를 재실행한다. 문서 site는 로컬 기본Ruby2.6 PATH오류를 기록하고,
+  이미 설치된Ruby3.2.11을 명시해 preflight/build/built검증을 실행한다.
+- 검색 payload817927바이트의 새예제/사용법을 유지하며 cap은 다음 최소1000단계818000만 적용했다.
+  이 기록은 승인시각 목표의 코드·자동 검사 증거이며 새 VLM/이미지 관찰이나 유료번역은 실행하지 않았다.

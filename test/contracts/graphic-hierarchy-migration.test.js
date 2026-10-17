@@ -25,6 +25,8 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "color-controls": ["canvas", "gamma1", "gamma22", "power"],
+  "color-white-point": ["canvas", "d65", "d50"],
   "cars-origin-histogram-facet": [],
   "cars-weighted-rules": ["canvas", "cars", "strokeWidthLegendSymbols", "strokeWidthLegendLabels", "strokeWidthLegendTitle"],
   "facet-grid": [],

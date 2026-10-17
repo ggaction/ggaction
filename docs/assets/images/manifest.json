@@ -311,6 +311,24 @@
     }
   },
   "tutorials": {
+    "color-controls": {
+      "width": 960,
+      "height": 540,
+      "thumbnail": {
+        "width": 640,
+        "height": 360
+      },
+      "sourceHash": "3b9db746572c11d9106ea31a525d64f7529204c89bc6762bca11401364910b21"
+    },
+    "color-white-point": {
+      "width": 960,
+      "height": 540,
+      "thumbnail": {
+        "width": 640,
+        "height": 360
+      },
+      "sourceHash": "f500430a8a605aaf31d36cbdfcb918e28b3dcf80365a8e5f530a1cb321eedd6c"
+    },
     "cars-origin-histogram-facet": {
       "width": 1512,
       "height": 1156,

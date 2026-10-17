@@ -2127,3 +2127,5 @@ packed798617/unpacked3907920bytes로 기존567/799000/3908000 한도 안이다.
 따라서 최종 package 한도를 올리지 않으며 browser 예산도 유지한다.
 
 Released-main integration `0447acaf` with the approved nine data/color features measures 3,941,633 unpacked bytes on macOS/Node22.23.1/npm10.9.8. Only the unpacked cap grows from3,940,000 to3,942,000 (the next minimum1,000-byte step); entry570, packed804,000, browser and search caps remain unchanged. This does not claim the previous unpacked cap passed.
+
+승인된 색상 목표의 정식 public example 두 개와 연속 색상 사용법을 보존한 검색 payload는817,927바이트다. macOS/Node22.23.1/npm10.9.8에서 기존817,000을 초과해 다음 최소1,000바이트 단위인818,000으로만 조정한다. 검색 항목/내용/기준은 유지하며 이전 한도 통과로 보고하지 않는다.
