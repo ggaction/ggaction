@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:e53df0408015666bebd601dd65848994f6dd20d82fe4e7649549e4899e6c0d1d. Status: development. Runtime source: 75edfc24a5559c26b8ef616a90fdb27c1ca9d46f. Release baseline: v0.0.13.
+Contract: sha256:663403f6dc102b75b97bc2415271c2dbe92ef5466ebba6528f277d586aa594dd. Status: development. Runtime source: 8ec8f0d860ee96b4bd2559725f2ec1c9741d494f. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/75edfc24a5559c26b8ef616a90fdb27c1ca9d46f/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/8ec8f0d860ee96b4bd2559725f2ec1c9741d494f/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/75edfc24a5559c26b8ef616a90fdb27c1ca9d46f/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/8ec8f0d860ee96b4bd2559725f2ec1c9741d494f/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12638,6 +12638,21 @@ Shared facet legends align with the top of the translated child plots.
 The horizontal `offset` still controls the gap beside the plot.
 Top, bottom, and in-plot corner positions keep their own alignment rules.
 
+## Editing one block
+
+Use the optional singular `channel` on `editLegend` or a focused editor to select one existing block:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+// Fragment: program already owns color and opacity legends for one point mark.
+program.editLegendLabels({ channel: "opacity", fontSize: 10 });
+```
+
+This changes only the selected block. It preserves sibling typography and sample values. Specify `target`
+when more than one mark owns legends. Singular `channel` cannot accompany plural `channels`, which replaces
+whole-target content, or whole-group `blockLayout`/`at` controls.
+
 ## Supported legend families
 
 | Legend family | Supported marks | Channels |
@@ -24779,6 +24794,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `LegendTitleStyleEditOptions \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
@@ -24807,10 +24823,13 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 editLegend({
-  target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
+  target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
   title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow?
 })
 ```
+
+Singular `channel` selects one existing block without changing sibling typography. It cannot
+accompany `channels`, `blockLayout`, or `at`. A channel never disambiguates mark targets.
 
 Partially edit one existing legend. Categorical `overflow` can be replaced or reset
 with `false`; data/scale/order revisions recompute the hidden count and remove stale
@@ -24907,6 +24926,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
@@ -24939,6 +24959,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -24967,6 +24988,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -24995,6 +25017,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
@@ -25020,6 +25043,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `border` | Required | `boolean \| LegendBorderOptions` |
 
 Behavior, inference, resets, and errors: [Focused legend edits](./reference/actions/guides/#focused-legend-edits).
@@ -26224,15 +26248,15 @@ See [Coordinates](./api/coordinates/) and
 
 ```javascript
 editLegendLayout({
-  target?, position?, layout?, align?, direction?, columns?, offset?,
+  target?, channel?, position?, layout?, align?, direction?, columns?, offset?,
   titlePosition?, itemGap?
 })
-editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
+editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
-  target?, title?, color?, fontSize?, fontFamily?, fontWeight?, align?
+  target?, channel?, title?, color?, fontSize?, fontFamily?, fontWeight?, align?
 })
-editLegendSymbols({ target?, symbol?, count?, gradient? })
-editLegendBorder({ target?, border })
+editLegendSymbols({ target?, channel?, symbol?, count?, gradient? })
+editLegendBorder({ target?, channel?, border })
 ```
 
 Edit one legend component without constructing the nested options accepted by
@@ -31099,11 +31123,13 @@ Related types: [`LegendChannel`](./reference/types/#type-legendchannel) · [`Cat
 ```typescript
 export interface EditLegendBorderOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   border: boolean | LegendBorderOptions;
 }
 ```
 
-Related types: [`LegendBorderOptions`](./reference/types/#type-legendborderoptions).
+Related types: [`LegendChannel`](./reference/types/#type-legendchannel) · [`LegendBorderOptions`](./reference/types/#type-legendborderoptions).
 
 ### `EditLegendLabelsOptions` {#type-editlegendlabelsoptions}
 
@@ -31112,10 +31138,12 @@ Related types: [`LegendBorderOptions`](./reference/types/#type-legendborderoptio
 ```typescript
 export interface EditLegendLabelsOptions extends LegendTextOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
 }
 ```
 
-Related types: [`LegendTextOptions`](./reference/types/#type-legendtextoptions).
+Related types: [`LegendTextOptions`](./reference/types/#type-legendtextoptions) · [`LegendChannel`](./reference/types/#type-legendchannel).
 
 ### `EditLegendLayoutOptions` {#type-editlegendlayoutoptions}
 
@@ -31124,6 +31152,8 @@ Related types: [`LegendTextOptions`](./reference/types/#type-legendtextoptions).
 ```typescript
 export interface EditLegendLayoutOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   layout?: "edge" | "legacy-bottom";
   /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
@@ -31145,6 +31175,8 @@ export interface EditLegendLayoutOptions {
 }
 ```
 
+Related types: [`LegendChannel`](./reference/types/#type-legendchannel).
+
 ### `EditLegendOptions` {#type-editlegendoptions}
 
  Expand EditLegendOptions
@@ -31152,6 +31184,8 @@ export interface EditLegendLayoutOptions {
 ```typescript
 export interface EditLegendOptions
   extends Omit<LegendOptions, "title" | "values" | "titleStyle"> {
+  /** Select one existing block; cannot accompany channels. */
+  channel?: LegendChannel;
   titleStyle?: LegendTitleStyleEditOptions;
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
@@ -31161,7 +31195,7 @@ export interface EditLegendOptions
 }
 ```
 
-Related types: [`LegendOptions`](./reference/types/#type-legendoptions) · [`LegendTitleStyleEditOptions`](./reference/types/#type-legendtitlestyleeditoptions).
+Related types: [`LegendOptions`](./reference/types/#type-legendoptions) · [`LegendChannel`](./reference/types/#type-legendchannel) · [`LegendTitleStyleEditOptions`](./reference/types/#type-legendtitlestyleeditoptions).
 
 ### `EditLegendSymbolsOptions` {#type-editlegendsymbolsoptions}
 
@@ -31170,13 +31204,15 @@ Related types: [`LegendOptions`](./reference/types/#type-legendoptions) · [`Leg
 ```typescript
 export interface EditLegendSymbolsOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   symbol?: LegendSymbolRecipe;
   count?: number;
   gradient?: { length?: number; thickness?: number; opacity?: number };
 }
 ```
 
-Related types: [`LegendSymbolRecipe`](./reference/types/#type-legendsymbolrecipe).
+Related types: [`LegendChannel`](./reference/types/#type-legendchannel) · [`LegendSymbolRecipe`](./reference/types/#type-legendsymbolrecipe).
 
 ### `EditLegendTitleOptions` {#type-editlegendtitleoptions}
 
@@ -31185,11 +31221,13 @@ Related types: [`LegendSymbolRecipe`](./reference/types/#type-legendsymbolrecipe
 ```typescript
 export interface EditLegendTitleOptions extends LegendTitleStyleEditOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   title?: string | "auto" | false;
 }
 ```
 
-Related types: [`LegendTitleStyleEditOptions`](./reference/types/#type-legendtitlestyleeditoptions).
+Related types: [`LegendTitleStyleEditOptions`](./reference/types/#type-legendtitlestyleeditoptions) · [`LegendChannel`](./reference/types/#type-legendchannel).
 
 ### `EditMarkLabelPlacementOptions` {#type-editmarklabelplacementoptions}
 
@@ -37325,12 +37363,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/75edfc24a5559c26b8ef616a90fdb27c1ca9d46f/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/8ec8f0d860ee96b4bd2559725f2ec1c9741d494f/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/75edfc24a5559c26b8ef616a90fdb27c1ca9d46f/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/8ec8f0d860ee96b4bd2559725f2ec1c9741d494f/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39492,9 +39530,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:e53df0408015666bebd601dd65848994f6dd20d82fe4e7649549e4899e6c0d1d` |
+| Contract fingerprint | `sha256:663403f6dc102b75b97bc2415271c2dbe92ef5466ebba6528f277d586aa594dd` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
-| Runtime source commit | `75edfc24a5559c26b8ef616a90fdb27c1ca9d46f` |
+| Runtime source commit | `8ec8f0d860ee96b4bd2559725f2ec1c9741d494f` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |
