@@ -273,3 +273,14 @@
   누락 실패는 보존했다. 실제 fused symbol.opacity=.7 호출을 명시한 뒤 동일8개
   source/모든 기존 profile/5회·3데이터 기준으로 재실행해 전체 경로를 닫았다.
   새 유료/학교 API 호출, 이미지 눈/VLM 검사, 버전 변경/출판은 하지 않았다.
+
+
+### 실행 분류 후속 정리
+
+- 실제 TT 데이터3개를 쓰는 facade positive3tests는 전용 realistic 파일로 이동했다.
+  일반 owner 파일에는 비네트워크 negative/원자성/gradient6tests만 남긴다.
+  새 realistic 파일을 capability/discovery26개와 실측 shard timing에 등록했다.
+- 캐시 환경변수 없이 discovery/sharding/owner/types23tests PASS. 공식
+  `npm run test:realistic -- test/contracts/realistic-legend-option-witness.test.js`
+  실행으로 동일한 실제4tests PASS(5회/3데이터 유지). runtime 및 공개 타입/문서
+  내용은 변경하지 않았으며,0.19 provenance는 부모 통합에서 재생성한다.

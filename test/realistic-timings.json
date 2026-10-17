@@ -28,12 +28,17 @@
     "contracts/realistic-scenario-runner.test.js": 99611,
     "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393,
     "contracts/realistic-combined-legend-witness.test.js": 1338,
-    "contracts/realistic-data-color-contracts.test.js": 50176
+    "contracts/realistic-data-color-contracts.test.js": 50176,
+    "contracts/realistic-legend-option-witness.test.js": 5886
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
       "environment": "macOS, Node22.23.1",
       "measurement": "Sum of actual three test durations556.128334+354.670833+426.879375ms, rounded up; three authentic TidyTuesday datasets, each five repetitions and three recipe opacities. Scheduling estimate only."
+    },
+    "contracts/realistic-legend-option-witness.test.js": {
+      "environment": "macOS, Node22.23.1, max-old-space-size512",
+      "measurement": "Sum of the four successful actual test durations from the official realistic selector, 5885.861667ms, rounded up; three authentic TidyTuesday datasets, five public facade/legend lifecycle repetitions. Scheduling weight only; no coverage instrumentation."
     }
   },
   "localMeasurements": {
@@ -56,6 +61,11 @@
       "environment": "Darwin, Node 22",
       "source": "all fourteen guide/scale contracts including fifty-dataset replay and strict 5/3 witnesses",
       "measuredDurationMs": 268329.086127
+    },
+    "contracts/realistic-legend-option-witness.test.js": {
+      "environment": "macOS, Node22.23.1, max-old-space-size512",
+      "source": "local official npm run test:realistic selector",
+      "measuredDurationMs": 5885.861667
     }
   },
   "measurementOverrides": {
