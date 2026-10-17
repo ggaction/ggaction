@@ -1,3 +1,4 @@
+import{validateLegendClip}from"../grammar/legendClip.js";
 import {validateLegendLayerOpacity}from"../grammar/legendOpacity.js";
 import { isSizeShapeChannels, resolveSizeShapeMapping } from "../grammar/legendCombinations.js";
 import { describeLegendBlock } from "../grammar/legendBlocks.js";
@@ -183,6 +184,7 @@ export function validateProgramState(program, path) {
   }
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
+    validateLegendClip(kind,config);
     if (localLegendPosition(config) !== undefined) {
       const descriptor = describeLegendBlock(program, kind, config);
       for (const [key, override] of Object.entries(config.blockOverrides)) {

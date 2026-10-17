@@ -1,3 +1,4 @@
+import {patchLegendClipHeight, validateLegendClip} from "../../../grammar/legendClip.js";
 import { LEGEND_POSITIONS } from "../../../core/vocabulary.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
@@ -28,7 +29,7 @@ import { normalizeDisplayLabelMap, normalizeNumericDisplayLabelMap } from "../..
 
 const OPTIONS = Object.freeze([
   "target", "channel", "title", "values", "count", "order", "gap", "text", "symbol",
-  "labelMap", "position"
+  "labelMap", "position", "clipHeight"
 ]);
 const TEXT_OPTIONS = Object.freeze(["fontSize", "fontFamily", "fontWeight", "color"]);
 const SYMBOL_OPTIONS = Object.freeze(["size", "fill", "stroke", "strokeWidth", "opacity"]);
@@ -390,7 +391,9 @@ export const editLegendBlock = /* @__PURE__ */ action(
       throw new Error("editLegendBlock values and count require a sampled legend block.");
     }
     const patch = normalizeBlockPatch(args, descriptor);
-    let config = descriptor.config;
+    let config = Object.hasOwn(args, "clipHeight")
+      ? patchLegendClipHeight(descriptor.config, args.clipHeight) : descriptor.config;
+    validateLegendClip(descriptor.kind, config);
     const blockOverrides = patchLegendBlockOverride(config, descriptor.key, patch);
     if (blockOverrides === undefined) {
       const { blockOverrides: _removed, ...rest } = config;

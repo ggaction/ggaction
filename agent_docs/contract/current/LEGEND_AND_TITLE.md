@@ -839,3 +839,20 @@ Standalone `createLegend({channels:["size"],position:...})`의 명시 position�
   physical geometry remains unchanged. Labels/title/frame have independent paint.
 - Shared pure opacity validation rejects invalid create/edit/load input.
   Source/data/scale/Canvas replay retains ownership and immutable inputs.
+
+### Sample symbol windows (#176)
+
+`clipHeight?: PositiveFinite` on creation clips eligible point-bearing samples to
+an anchor-centered logical-height window. Whole/focused symbol/block edits also
+accept `"auto"` to remove only that window; omission preserves it. Size, opacity,
+sampled color, and point-bearing categorical or combined recipes are supported.
+Gradient bodies, interval swatches, line-only recipes and stroke-width samples
+reject it. Every layer of one composite sample shares one nested concrete Canvas.
+Its horizontal extent includes the original stroke; vertical bounds intersect the
+window. Areas, radii, paths, sample values, opacity-zero geometry and generated
+item identities remain unchanged. Labels, titles and borders are never clipped.
+Pitch uses visible glyph bounds and label bounds with the original minimum gap.
+Small glyphs are not enlarged. Nested Canvas bounds intersect every ancestor
+window; root Canvas overflow checks still see geometry outside that root.
+Persistence, immutable edits, data/scale/Canvas replay and removal share the same
+materializer. Evidence: legend-symbol-window unit and browser tests.

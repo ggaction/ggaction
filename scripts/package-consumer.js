@@ -184,6 +184,11 @@ async function testNodeConsumer(directory) {
       assert.equal(combined.graphicSpec.objects.seriesLegendSymbolPoints.items[1].properties.width,10);
       assert.deepEqual(deserializeProgram(serializeProgram(combined)).graphicSpec,combined.graphicSpec);
       assert.ok((await renderToPNGBuffer(combined)).buffer.length>100);
+      const windowed=combinedBase.createLegend({combine:"size-shape",clipHeight:6});
+      assert.equal(windowed.guideConfigs.legend.series.clipHeight,6);
+      assert.ok(windowed.graphicSpec.objects.seriesLegendSymbolPoints.children.length>0);
+      if (factory === chart) assert.deepEqual(windowed.editLegendSymbols({channel:"shape",clipHeight:"auto"}).graphicSpec,combined.graphicSpec);
+      assert.deepEqual(deserializeProgram(serializeProgram(windowed)).graphicSpec,windowed.graphicSpec);
       const translucent=combinedBase.createLegend({combine:"size-shape",symbol:{layers:[{type:"point",opacity:0.7}]}});
       assert.equal(translucent.graphicSpec.objects.seriesLegendSymbolPoints.items[0].properties.blend,"normal");
       assert.deepEqual(deserializeProgram(serializeProgram(translucent)).graphicSpec,translucent.graphicSpec);
@@ -4862,7 +4867,11 @@ async function testTypeScriptConsumer(directory) {
       .editLegend({ symbol: { radius: 11 }, labels: { format: ".1%" } })
       .editLegendSymbols({ symbol: { type: "point", radius: 13 } })
       .editLegendLabels({ offset: 10, format: ".2e" });
-    opacityLegendTypes.createGuides({ legend: { channels: ["opacity"], symbol: { radius: 9 } } });
+    opacityLegendTypes.createGuides({ legend: { channels: ["opacity"], symbol: { radius: 9 }, clipHeight: 12 } });
+    opacityLegendTypes.editLegendSymbols({clipHeight:"auto"});
+    opacityLegendTypes.editLegendBlock({target:"points",channel:"opacity",clipHeight:8});
+    // @ts-expect-error Creation does not accept edit-only auto.
+    opacityLegendTypes.createLegend({clipHeight:"auto"});
     // @ts-expect-error Opacity symbol radius must be numeric.
     opacityLegendTypes.createLegend({ channels: ["opacity"], symbol: { radius: "9" } });
     // @ts-expect-error Legend precision cannot exceed twelve.

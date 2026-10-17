@@ -1,0 +1,106 @@
+{
+  "status": "pass",
+  "baseline": "0e373e71",
+  "cases": 12,
+  "graphicJSONByteExact": true,
+  "svgByteExact": true,
+  "decodedRGBAExact": true,
+  "results": [
+    {
+      "kind": "shape",
+      "recipe": "auto",
+      "override": false,
+      "graphic": "ac22c3cfb620398a9b744c76fab468ca503676e69afce934b681ee70e6d17109",
+      "svg": "79f2ae289e4f78d1b23ce6b6ed942bfee1839b8ffbf7e4896a4a04736ad8277e",
+      "pixels": "89cf1e05ce16c70cea28c0b2d20447c3d27e5b0d26c9fa08f3e44cd10c214420"
+    },
+    {
+      "kind": "shape",
+      "recipe": "auto",
+      "override": true,
+      "graphic": "7c6cbffd04788919d8933b4ebf5861f0948e80d3b6975d5d78e2ae383eda69da",
+      "svg": "b7863ab29ca1a7c42ae32d0291d427dc080c609f49b5bb23f106ca6e64bad26e",
+      "pixels": "b0977bf23e0f1ed2036d52073383df94a6c3145ed89485cf5d8ff5d95b0a907c"
+    },
+    {
+      "kind": "shape",
+      "recipe": "point",
+      "override": false,
+      "graphic": "1106aad71dc5e8837ffca729956b897c1ef4abcffe3705617081451d6c2bfb57",
+      "svg": "4c8a0b67eff4dc8ac2625f7015eeec01fdba44069df770eb4b337315f6d8d1bb",
+      "pixels": "143daaeca8499ea6ed4edf5ac15ed95a15997e4673994c2ca747f31dfc7f2045"
+    },
+    {
+      "kind": "shape",
+      "recipe": "point",
+      "override": true,
+      "graphic": "a3e32cd0ec2f0b9ae914196a16c5abccf82611251836fa786f2d600e2b92778e",
+      "svg": "63719a5061b6309287bb60fe2f122c65571fd1c93663a1d182de16ef40cf5a0f",
+      "pixels": "441ef5afef75d711946c7f9a30e5909f95332afd7399e37b4187b9b81a5476f7"
+    },
+    {
+      "kind": "shape",
+      "recipe": "swatch",
+      "override": false,
+      "graphic": "93f034ee44eef5a1998d5d078e18d2b2d300c713023841025961d6b9ecaac371",
+      "svg": "2a118f98fac857665ac72f4e29477b6fc93bef4c9ac153d549a20b33f752cd48",
+      "pixels": "946de75f660c88541beb10f176c55bdfe175c25896087ce85f06721477d87392"
+    },
+    {
+      "kind": "shape",
+      "recipe": "swatch",
+      "override": true,
+      "graphic": "fe4d5fcc312302697529419c7ded42c2cccad395de6b66011a1f259a7cd41743",
+      "svg": "068cf3d17bd455ba9ddd491fb41a6b640229b8f99a19ec2eea377621b3e9484b",
+      "pixels": "11e13b68944427cbb241f6df58c782269ea83a50710a97164b995df0faa9fcdc"
+    },
+    {
+      "kind": "color",
+      "recipe": "auto",
+      "override": false,
+      "graphic": "efe156fe6ca30c808c2671d97be59b1fe82a595f8b93e8a20e2c3adcbb9bd7a2",
+      "svg": "ef98701f95a1a7b5bd63c2a1f388bd2e14042a47689b7cf175ce32264c3b27e6",
+      "pixels": "f88180537cae51a5b7b81f4b9afe9ea4c3182339a77ab7402e6a939f302f91a4"
+    },
+    {
+      "kind": "color",
+      "recipe": "auto",
+      "override": true,
+      "graphic": "e6cc6c01319128fbc0199c3f3dca35e8165267a9d9a2bef0d272f88335ad4851",
+      "svg": "5e9724891358a766a96ccc0c743d3fe1014871c755ed625034d8581741e59d5a",
+      "pixels": "c71be8e2e3d4e1133dd7269b3c4364008364c6a4b169c2a4ea55137a81d37edf"
+    },
+    {
+      "kind": "color",
+      "recipe": "point",
+      "override": false,
+      "graphic": "6290bd1fe4ea22fadaeb99bebefc8e9802f542eca9c454d39697c9877d5f33b1",
+      "svg": "483758fb1be7bb60316ecb7b1269d85830b2fff791eadeda470dec2d37b16abb",
+      "pixels": "00585aa34b39b761d8f7532a14c68598d22c88abf097b55565cd42a9b6f3e107"
+    },
+    {
+      "kind": "color",
+      "recipe": "point",
+      "override": true,
+      "graphic": "fc50a799b806d6e6a06aaa682c24c248ac68fdfc22ac58e7e03fb78a54837234",
+      "svg": "27268de960e7546c2a918c903ec44f13a6885535768a36df60ceb252429f95bc",
+      "pixels": "8d9081c174371b10eab4520cfbfeb38a31a4dadb4496a1eb52bcfd9124521463"
+    },
+    {
+      "kind": "color",
+      "recipe": "swatch",
+      "override": false,
+      "graphic": "37f67a2c42f017ab771856b7125f64dbfaec773ff1ccd8ef04301562e1005edb",
+      "svg": "29e3abdc3573ca87206f15089e964b3fa323a7785e1fc2d7cc4b4e712707851e",
+      "pixels": "6b27250b8a7e006327aa957b4dfaef94f5e0eeac7f43fdb107f7d7fe732d7338"
+    },
+    {
+      "kind": "color",
+      "recipe": "swatch",
+      "override": true,
+      "graphic": "3a215d51ef0e5d8b1a773c219c1d3081221624a160b36a33fcd775152abc25e4",
+      "svg": "5887c8223af2f299afa9a72b10dc9545cbe40d9f2c8978354b657a54b3f0bf56",
+      "pixels": "61e59c3030cbb13fcaad715d0cb20f241d2d30f16c86e4f65734bcae5ff614a3"
+    }
+  ]
+}

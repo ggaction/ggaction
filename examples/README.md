@@ -468,6 +468,18 @@ Choose the smallest action that expresses the intended chart change.
 
 Representative actions: `createScatterPlot`, `createPointMark`, `editPointMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchical-authoring/).
 
+### [Encoded area symbol window](./symbol-window/)
+
+Clip an oversized sample without changing its physical area.
+
+Representative actions: `encodeSize`, `createLegend`, `editLegendSymbols`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#sample-windows).
+
+### [Whole symbol opacity](./legend-appearance/)
+
+Apply opacity to one recipe layer while retaining labels and mapped colors.
+
+Representative actions: `createLegend`, `editLegendSymbols`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#recipe-layer-opacity).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

@@ -1,3 +1,4 @@
+import {translateGraphic}from"../../../materialization/graphicTranslation.js";
 import { editLegendBorderBounds } from "../../../materialization/legendBorder.js";
 import { resolveLegendAxisOffset, effectiveLegendOffsetConfig } from "../../../materialization/guides/resources.js";
 import { resolveLegendGroupPlacement } from "../../../layout/legendGroup.js";
@@ -252,72 +253,6 @@ export function hasLegendLane(program) {
     hasHorizontalLegendLane(program);
 }
 
-function translateCommands(commands, dx, dy) {
-  return commands.map(command => {
-    if (command.op === "Z") return { ...command };
-    const next = {
-      ...command,
-      x: command.x + dx,
-      y: command.y + dy
-    };
-    if (command.op === "C") {
-      next.x1 = command.x1 + dx;
-      next.y1 = command.y1 + dy;
-      next.x2 = command.x2 + dx;
-      next.y2 = command.y2 + dy;
-    }
-    return next;
-  });
-}
-
-function translatedProperties(type, properties, dx, dy) {
-  const next = { ...properties };
-  if (["circle", "rect", "text"].includes(type)) {
-    next.x += dx;
-    next.y += dy;
-  } else if (type === "line") {
-    next.x1 += dx;
-    next.x2 += dx;
-    next.y1 += dy;
-    next.y2 += dy;
-  } else if (type === "path") {
-    next.commands = translateCommands(next.commands, dx, dy);
-  }
-  return next;
-}
-
-function translateGraphic(program, id, dx, dy) {
-  const graphic = program.graphicSpec.objects[id];
-  if (dx === 0 && dy === 0) return program;
-  if (graphic.items !== undefined) {
-    return program.editGraphics({
-      target: id,
-      property: "items",
-      value: graphic.items.map(item => ({
-        type: item.type ?? graphic.type,
-        properties: translatedProperties(
-          item.type ?? graphic.type,
-          item.properties,
-          dx,
-          dy
-        )
-      }))
-    });
-  }
-  let next = program;
-  const properties = translatedProperties(
-    graphic.type,
-    graphic.properties,
-    dx,
-    dy
-  );
-  for (const [property, value] of Object.entries(properties)) {
-    if (value !== graphic.properties[property]) {
-      next = next.editGraphics({ target: id, property, value });
-    }
-  }
-  return next;
-}
 
 // Use the declared text-box top as the renderer anchor. A middle SVG baseline
 // depends on the font's x-height and otherwise protrudes above that box.

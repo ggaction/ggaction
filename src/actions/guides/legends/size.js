@@ -1,3 +1,5 @@
+import{validateLegendClip,clippedSampleBounds}from"../../../grammar/legendClip.js";
+import{hasLegendClipGraphics}from"../../../materialization/legendClip.js";
 import { resolveDisplayLabel } from "../../../grammar/displayLabels.js";
 import { intrinsicLegendConfig, legendGroup } from "../../../materialization/legendGroups.js";
 import { formatVisibleText } from "../../../core/textMetrics.js";
@@ -70,6 +72,7 @@ function requireScale(program, id) {
 }
 
 export function resolveSizeLegendLayout(program, config) {
+  validateLegendClip("size",config);
   config = intrinsicLegendConfig(program, config);
   const scale = requireScale(program, config.scale);
   const categorical = [
@@ -143,13 +146,13 @@ export function resolveSizeLegendLayout(program, config) {
   const symbolExtent = symbolStroke / 2;
   const sampleWidth = width + symbolStroke;
   const layout = resolveLegendItemLayout(plot, { ...effective, ...geometry, labels, titleStyle }, text, {
-    width: sampleWidth, height: radius * 2 + symbolStroke,
-    itemBounds: radii.map(r => ({
+    width: sampleWidth, height: Math.min(radius * 2 + symbolStroke, effective.clipHeight??Infinity),
+    itemBounds: radii.map(r => clippedSampleBounds({
       left: sampleWidth / 2 - r - symbolExtent,
       right: sampleWidth / 2 + r + symbolExtent,
       top: -r - symbolExtent,
       bottom: r + symbolExtent
-    }))
+    },effective.clipHeight))
   }, undefined, program.materializationConfigs.textMetrics);
   assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Size legend layout", { ...effective, ...geometry });
   const background = resolveLegendBackgroundFromBounds(layout.bounds, effective.border, canvas, "Size legend", { ...effective, ...geometry });
@@ -166,6 +169,7 @@ export const rematerializeSizeLegend = /* @__PURE__ */ closedAction(
     description: "Rematerialize a point-size legend."
   }, [],
   function (args = {}) {
+    if(hasLegendClipGraphics(this))return this.rematerializeLegend();
     const config = this.guideConfigs.legend?.size;
     if (config === undefined) throw new Error("Size legend requires stored configuration.");
     const layer = findLayer(this, config.target);

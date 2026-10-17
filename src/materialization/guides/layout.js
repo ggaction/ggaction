@@ -1,3 +1,4 @@
+import {resetLegendClipGraphics, hasLegendClipGraphics}from"../legendClip.js";
 import { localLegendPosition } from "../legendGroups.js";
 import { needsLegendAxisReflow } from "./resources.js";
 import { getErrorDetails } from "../../core/diagnostics.js";
@@ -16,7 +17,7 @@ export function withGuideLayoutTransaction(program, apply) {
   let result;
   for (let attempt = 0; ; attempt += 1) {
     try {
-      let candidate = program._withContext({ deferGuideLayoutValidation: true });
+      let candidate = resetLegendClipGraphics(program)._withContext({ deferGuideLayoutValidation: true });
       if (attempt > 0) {
         candidate = candidate
           .editGraphics({ target: "canvas", property: "width", value: plot.width + margin.left + margin.right })
@@ -25,6 +26,10 @@ export function withGuideLayoutTransaction(program, apply) {
         candidate = applyMaterializationPlan(candidate, planCanvasRematerialization(candidate));
       }
       result = apply(candidate);
+      if (hasLegendClipGraphics(program) && !hasLegendClipGraphics(result) &&
+          Object.values(result.guideConfigs.legend ?? {}).some(config => config.clipHeight !== undefined)) {
+        result = result.rematerializeLegend();
+      }
       if (result.compositionSpec === undefined && Object.values(result.guideConfigs.legend ?? {}).some(config =>
         ["left", "right"].includes(config.position))) {
         result = result.rematerializeSideLegendLane();

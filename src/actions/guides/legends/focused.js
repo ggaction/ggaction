@@ -45,7 +45,7 @@ const editLegendTitle = /* @__PURE__ */ makeFocusedLegendEdit({
 
 const editLegendSymbols = /* @__PURE__ */ makeFocusedLegendEdit({
   name: "editLegendSymbols",
-  options: ["symbol", "count", "gradient"],
+  options: ["symbol", "count", "gradient", "clipHeight"],
   map: args => args
 });
 

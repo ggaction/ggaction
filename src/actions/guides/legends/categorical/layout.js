@@ -1,3 +1,6 @@
+import{validateLegendClip,clippedSampleBounds}from"../../../../grammar/legendClip.js";
+import {categoricalLegendSymbolId as symbolGraphic}from"../../../../grammar/legendBlocks.js";
+export {symbolGraphic};
 import { findLayer } from "../../../../selectors/layers.js";
 import { isLinearGradientPaint } from "../../../../grammar/paint.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
@@ -60,14 +63,6 @@ function prefix(config) {
   return `${config.kind}Legend`;
 }
 
-export function symbolGraphic(config, type) {
-  const onlyDefault = config.symbol.layers.length === 1 &&
-    ((config.kind === "series" && type === "line") ||
-      (["color", "stroke"].includes(config.kind) && type === "swatch"));
-  if (onlyDefault) return `${prefix(config)}Symbols`;
-  const suffix = { line: "Lines", point: "Points", swatch: "Swatches" }[type];
-  return `${prefix(config)}Symbol${suffix}`;
-}
 
 export function graphic(config, component) {
   return `${prefix(config)}${component}`;
@@ -134,7 +129,7 @@ function resolveSampleBounds(program, config, width) {
         strokeWidth: layer.strokeWidth, opacity: layer.opacity ?? appearance.opacity,
         ...requestedStrokeDetails(layer, "Legend point symbol") } };
     });
-    return items.map((item, itemIndex) => {
+    return clippedSampleBounds(items.map((item, itemIndex) => {
       const bounds = resolveConcreteGraphicBounds({
         objects: { sample: item },
         order: ["sample"]
@@ -153,11 +148,12 @@ function resolveSampleBounds(program, config, width) {
           right: Math.max(result.right, bounds.right),
           top: Math.min(result.top, bounds.top),
           bottom: Math.max(result.bottom, bounds.bottom)
-        }, undefined);
+        }, undefined),config.clipHeight);
   });
 }
 
 export function resolveLayout(program, config) {
+  validateLegendClip(config.kind,config);
   config = intrinsicLegendConfig(program, config);
   config = categoricalLegendView(config);
   const { plot, canvas } = resolveContinuousBounds(program,

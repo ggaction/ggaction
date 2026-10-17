@@ -4671,6 +4671,8 @@ export type LegendOrder = LegendValueOrder |
   { channel: "x" | "y" | "theta"; values?: never };
 
 export interface LegendOptions {
+  /** Positive sample window height. Clips point-bearing glyphs without changing mapped area. */
+  clipHeight?: number;
   /** Explicitly combine compatible ordinal size and shape samples. Omission retains separate blocks. */
   combine?: "separate" | "size-shape";
   /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
@@ -4736,6 +4738,8 @@ export interface LegendBlockSymbolPatch {
 }
 
 export interface EditLegendBlockOptions {
+  /** Reset only the sample window with auto. */
+  clipHeight?: number | "auto";
   target: string;
   channel: LegendChannel;
   /** Block-local anchor; inherit removes only this override. */
@@ -4756,7 +4760,8 @@ export interface LegendTitleStyleEditOptions extends Omit<LegendTitleStyleOption
 }
 
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight"> {
+  clipHeight?: number | "auto";
   /** Select one existing block; cannot accompany channels. */
   channel?: LegendChannel;
   /** inherit is allowed only with a singular channel selector. */
@@ -4810,6 +4815,7 @@ export interface EditLegendTitleOptions extends LegendTitleStyleEditOptions {
 }
 
 export interface EditLegendSymbolsOptions {
+  clipHeight?: number | "auto";
   target?: string;
   /** Select one existing block without changing its content. */
   channel?: LegendChannel;
