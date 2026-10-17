@@ -2882,7 +2882,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "legend"> & { legend?: false \| (Omit<PathLegendOptions, "order"> & { order?: { channel: "x"; values?: undefined; } \| LegendValueOrder \| undefined; }) \| undefined; }) \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "grid" \| "legend"> & { grid?: false \| (Omit<CartesianGridOptions, "horizontal"> & { horizontal?: boolean \| ... 1 more ... \| undefined; }) \| undefined; legend?: false \| ... 1 more ... \| undefined; }) \| undefined` |
 
 </details>
 

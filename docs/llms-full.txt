@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:6b176fe7643acc12fb9d65f31bf9abd682aa64c98585088b9ae1c7b7fa67768a. Status: published-release. Runtime source: ff4a69ed0c2987e12c6a5a4b2cd24a5a1e65be5c. Release baseline: v0.0.13.
+Contract: sha256:784c53bd85dd7f7aba86550e79244a105d9a206cbabf39d731d27ff876fc4192. Status: published-release. Runtime source: 1aaf0a4b9d77c53d7f64b2ccd501d7a6b6211894. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/ff4a69ed0c2987e12c6a5a4b2cd24a5a1e65be5c/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/1aaf0a4b9d77c53d7f64b2ccd501d7a6b6211894/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/ff4a69ed0c2987e12c6a5a4b2cd24a5a1e65be5c/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/1aaf0a4b9d77c53d7f64b2ccd501d7a6b6211894/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -4293,6 +4293,12 @@ accepted because it could mean either a field or a named dash style; use
 explicit Polar mark and encoding actions for closed Polar paths. A field
 materialized by `createWindowData` can be used directly as the quantitative y
 position without applying another aggregate.
+
+Line y positions use quantitative or temporal scales, so
+`guides.grid.horizontal` does not accept `bandPosition`. A categorical x with
+`scale: { type: "band" }` can use `guides.grid.vertical.bandPosition` set to
+`"center"` or `"boundary"`. Facade grids belong to the line's own position
+scales; an unrelated band scale cannot replace its y scale.
 
 For named x categories, set `fieldType: "ordinal"` or `"nominal"` and optionally
 provide `scale.domain` for their order. Point/band centers align with companion
@@ -12442,6 +12448,11 @@ An explicit Cartesian `labelMap` entry with `label: ""` hides only that displaye
 
 Cartesian grids accept continuous, band and point scales. Band grids use centers by default; set `bandPosition: "boundary"` for both edges of each selected cell. Categorical grids accept category `values` and reject `count`.
 
+An explicit `bandPosition`, including `"center"`, requires a band scale; continuous
+and point scales reject it. In `createLinePlot`, only a categorical x band scale
+can use it through `guides.grid.vertical`. The horizontal grid follows the
+line's continuous y scale and does not accept band positioning.
+
 Set Cartesian `zIndex` to a finite rank: positive values draw above related marks, zero or negative values draw behind them. Grids on each side sort by rank, with horizontal before vertical on a tie. Editors and resizing retain the chosen order.
 
 Creates Cartesian or Polar grid geometry from encoded scales. Cartesian
@@ -18302,7 +18313,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "legend"> & { legend?: false \| (Omit<PathLegendOptions, "order"> & { order?: { channel: "x"; values?: undefined; } \| LegendValueOrder \| undefined; }) \| undefined; }) \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "grid" \| "legend"> & { grid?: false \| (Omit<CartesianGridOptions, "horizontal"> & { horizontal?: boolean \| ... 1 more ... \| undefined; }) \| undefined; legend?: false \| ... 1 more ... \| undefined; }) \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -28970,7 +28981,13 @@ export interface CreateLinePlotOptions {
     opacity?: number;
     closed?: false;
   };
-  guides?: false | (Omit<CPathGuides, "legend"> & {
+  guides?: false | (Omit<CPathGuides, "legend" | "grid"> & {
+    grid?: false | (Omit<CartesianGridOptions, "horizontal"> & {
+      horizontal?: boolean | (Omit<GridDirectionOptions, "bandPosition"> & {
+        /** Line y is continuous; band positioning is available only for categorical x grids. */
+        bandPosition?: never;
+      });
+    });
     legend?: false | (Omit<PathLegendOptions, "order"> & {
       order?: LegendValueOrder | { channel: "x"; values?: never };
     });
@@ -28978,7 +28995,7 @@ export interface CreateLinePlotOptions {
 }
 ```
 
-Related types: [`LineXPositionChannel`](./reference/types/#type-linexpositionchannel) · [`LineYPositionChannel`](./reference/types/#type-lineypositionchannel) · [`LineCategoricalColorChannel`](./reference/types/#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](./reference/types/#type-basicstrokedashchannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`CPathGuides`](./reference/types/#type-cpathguides) · [`PathLegendOptions`](./reference/types/#type-pathlegendoptions) · [`LegendValueOrder`](./reference/types/#type-legendvalueorder).
+Related types: [`LineXPositionChannel`](./reference/types/#type-linexpositionchannel) · [`LineYPositionChannel`](./reference/types/#type-lineypositionchannel) · [`LineCategoricalColorChannel`](./reference/types/#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](./reference/types/#type-basicstrokedashchannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`CPathGuides`](./reference/types/#type-cpathguides) · [`CartesianGridOptions`](./reference/types/#type-cartesiangridoptions) · [`GridDirectionOptions`](./reference/types/#type-griddirectionoptions) · [`PathLegendOptions`](./reference/types/#type-pathlegendoptions) · [`LegendValueOrder`](./reference/types/#type-legendvalueorder).
 
 ### `CreateLollipopPlotOptions` {#type-createlollipopplotoptions}
 
@@ -37265,12 +37282,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/ff4a69ed0c2987e12c6a5a4b2cd24a5a1e65be5c/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/1aaf0a4b9d77c53d7f64b2ccd501d7a6b6211894/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/ff4a69ed0c2987e12c6a5a4b2cd24a5a1e65be5c/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/1aaf0a4b9d77c53d7f64b2ccd501d7a6b6211894/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39415,9 +39432,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:6b176fe7643acc12fb9d65f31bf9abd682aa64c98585088b9ae1c7b7fa67768a` |
+| Contract fingerprint | `sha256:784c53bd85dd7f7aba86550e79244a105d9a206cbabf39d731d27ff876fc4192` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
-| Runtime source commit | `ff4a69ed0c2987e12c6a5a4b2cd24a5a1e65be5c` |
+| Runtime source commit | `1aaf0a4b9d77c53d7f64b2ccd501d7a6b6211894` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |

@@ -2625,7 +2625,13 @@ export interface CreateLinePlotOptions {
     opacity?: number;
     closed?: false;
   };
-  guides?: false | (Omit<CPathGuides, "legend"> & {
+  guides?: false | (Omit<CPathGuides, "legend" | "grid"> & {
+    grid?: false | (Omit<CartesianGridOptions, "horizontal"> & {
+      horizontal?: boolean | (Omit<GridDirectionOptions, "bandPosition"> & {
+        /** Line y is continuous; band positioning is available only for categorical x grids. */
+        bandPosition?: never;
+      });
+    });
     legend?: false | (Omit<PathLegendOptions, "order"> & {
       order?: LegendValueOrder | { channel: "x"; values?: never };
     });
@@ -2635,7 +2641,7 @@ export interface CreateLinePlotOptions {
 
 </details>
 
-Related types: [`LineXPositionChannel`](#type-linexpositionchannel) · [`LineYPositionChannel`](#type-lineypositionchannel) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation) · [`CPathGuides`](#type-cpathguides) · [`PathLegendOptions`](#type-pathlegendoptions) · [`LegendValueOrder`](#type-legendvalueorder).
+Related types: [`LineXPositionChannel`](#type-linexpositionchannel) · [`LineYPositionChannel`](#type-lineypositionchannel) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation) · [`CPathGuides`](#type-cpathguides) · [`CartesianGridOptions`](#type-cartesiangridoptions) · [`GridDirectionOptions`](#type-griddirectionoptions) · [`PathLegendOptions`](#type-pathlegendoptions) · [`LegendValueOrder`](#type-legendvalueorder).
 
 ### `CreateLollipopPlotOptions` {#type-createlollipopplotoptions}
 

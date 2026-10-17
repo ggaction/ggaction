@@ -3590,7 +3590,13 @@ export interface CreateLinePlotOptions {
     opacity?: number;
     closed?: false;
   };
-  guides?: false | (Omit<CPathGuides, "legend"> & {
+  guides?: false | (Omit<CPathGuides, "legend" | "grid"> & {
+    grid?: false | (Omit<CartesianGridOptions, "horizontal"> & {
+      horizontal?: boolean | (Omit<GridDirectionOptions, "bandPosition"> & {
+        /** Line y is continuous; band positioning is available only for categorical x grids. */
+        bandPosition?: never;
+      });
+    });
     legend?: false | (Omit<PathLegendOptions, "order"> & {
       order?: LegendValueOrder | { channel: "x"; values?: never };
     });
