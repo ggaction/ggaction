@@ -89,6 +89,15 @@ async function testNodeConsumer(directory) {
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
+    for (const factory of [chart, basicChart]) for (const shape of ["wedge", "arrow"]) {
+      const directional = factory().createCanvas({width: 300, height: 200, margin: 50})
+        .createData({values:[{x:0,y:0,g:"A"},{x:1,y:1,g:"B"}]})
+        .createScatterPlot({x:"x",y:"y",point:{shape},guides:false});
+      assert.equal(directional.graphicSpec.objects.scatterPlot.items[0].type, "path");
+      assert.deepEqual(deserializeProgram(serializeProgram(directional)).graphicSpec, directional.graphicSpec);
+      assert.ok((await renderToPNGBuffer(directional)).buffer.length > 100);
+    }
+
     const extracted = chart().createCanvas({ width: 440, height: 340, margin: 20 })
       .createData({ values: [{ item: { value: 1 }, text: "1.5%" }, { text: "2%" }] })
       .createComputedData({ id: "nested", as: "x", expression: { op: "getPath", operand: { field: "item" }, path: ["value"] } })

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:fd6b8a67bb002c85ebd6a349b133f00ea8d8302d9580d484721322b5bec83239. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:0e737f4208ad59e76d092df8609ae8911f93d6d8864e192e99d5ced885a7073d. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -6014,8 +6014,10 @@ const diamonds = program.editPointMark({
 
 `target` may be omitted for the current or only point mark. Supported shapes
 are `circle`, `square`, `diamond`, four directional triangles, `plus`, `cross`,
-`star`, `hexagon`, and `wye`. Every recipe preserves the same logical target
-area. A constant shape conflicts with field-driven `encodeShape`, and constant
+`star`, `hexagon`, `wye`, `wedge`, and `arrow`. Every recipe preserves the same logical target
+area. `wedge` is a narrow upward triangle centered at its centroid; `arrow` is an upward
+seven-vertex arrow anchored at its bounding-box center. Angle encodings rotate either clockwise around
+that anchor. A constant shape conflicts with field-driven `encodeShape`, and constant
 fill conflicts with a semantic color encoding.
 
 Pass `stroke: false` to disable an existing outline. This removes its stored
@@ -34247,7 +34249,9 @@ export type PointShape =
   | "cross"
   | "star"
   | "hexagon"
-  | "wye";
+  | "wye"
+  | "wedge"
+  | "arrow";
 ```
 
 ### `PolarAxisTickSelection` {#type-polaraxistickselection}
@@ -39453,7 +39457,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:fd6b8a67bb002c85ebd6a349b133f00ea8d8302d9580d484721322b5bec83239` |
+| Contract fingerprint | `sha256:0e737f4208ad59e76d092df8609ae8911f93d6d8864e192e99d5ced885a7073d` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

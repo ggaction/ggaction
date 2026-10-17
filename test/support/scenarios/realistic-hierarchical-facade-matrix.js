@@ -8,7 +8,7 @@ const CURVES = Object.freeze([
 const DASHES = Object.freeze(["solid", "dashed", "dotted", "dashdot"]);
 const POINT_SHAPES = Object.freeze([
   "circle", "cross", "diamond", "hexagon", "plus", "square", "star",
-  "triangle-down", "triangle-left", "triangle-right", "triangle-up", "wye"
+  "triangle-down", "triangle-left", "triangle-right", "triangle-up", "wye", "wedge", "arrow"
 ]);
 const FORMATS = Object.freeze(["auto", ".0f", ".1f", ".2f"]);
 const PALETTES = Object.freeze([

@@ -8865,7 +8865,9 @@ export type PointShape =
   | "cross"
   | "star"
   | "hexagon"
-  | "wye";
+  | "wye"
+  | "wedge"
+  | "arrow";
 ```
 
 </details>

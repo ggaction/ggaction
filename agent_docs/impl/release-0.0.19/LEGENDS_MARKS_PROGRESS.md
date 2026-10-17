@@ -18,3 +18,15 @@
   `GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT`로 지정했다. 테스트가 canonical manifest/hash를 검증한다.
 - types, Current, ACTION_INDEX, public reference, generated cards/signatures/machine docs를 동기화했다.
 - 전체 새 옵션 literal의 realistic witness 소비자 행렬은 후속 기능 checkpoint와 함께 최종 검증한다.
+
+## Checkpoint 2 — directional named point shapes
+
+- `wedge`/`arrow`를 기존 named shape grammar 끝에 추가했다. 기존 12종의 automatic range 순서는 유지한다.
+- 독립 raw vertices/area/0·90·270도 회전/arrow bounding-box 중심을 검증했다.
+- constant create/edit, field shape range, highlight, legend 및 Full/Basic 타입을 동기화했다.
+- 기존/확장 unit 34 PASS; shape/type/legend geometry 10 PASS; 실제 Chromium 8조합의
+  Canvas pixels가 독립 polygon과 정확히 일치한다. Node PNG도 독립 primitive와 정확히 일치하고
+  SVG/PDF/저장·복원/Canvas replay가 통과했다. 이미지를 눈이나 VLM으로 보지 않았다.
+- packed installed consumer에 Full/Basic 두 shape의 실제 생성·PNG·persistence 호출을 추가해 PASS했다.
+- unpacked 실측 3,909,563 bytes가 기존 3,908,000 bytes를 초과해 한도만 3,910,000으로
+  좁게 갱신하고 architecture budget 기록을 남겼다. 다른 예산은 유지한다.

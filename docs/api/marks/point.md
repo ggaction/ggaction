@@ -72,8 +72,10 @@ const diamonds = program.editPointMark({
 
 `target` may be omitted for the current or only point mark. Supported shapes
 are `circle`, `square`, `diamond`, four directional triangles, `plus`, `cross`,
-`star`, `hexagon`, and `wye`. Every recipe preserves the same logical target
-area. A constant shape conflicts with field-driven `encodeShape`, and constant
+`star`, `hexagon`, `wye`, `wedge`, and `arrow`. Every recipe preserves the same logical target
+area. `wedge` is a narrow upward triangle centered at its centroid; `arrow` is an upward
+seven-vertex arrow anchored at its bounding-box center. Angle encodings rotate either clockwise around
+that anchor. A constant shape conflicts with field-driven `encodeShape`, and constant
 fill conflicts with a semantic color encoding.
 
 Pass `stroke: false` to disable an existing outline. This removes its stored

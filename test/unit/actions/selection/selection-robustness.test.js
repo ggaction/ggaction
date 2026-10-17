@@ -220,7 +220,7 @@ test("uses every supported point shape as a highlighted replacement", () => {
   for (const shape of [
     "circle", "square", "diamond", "triangle-up", "triangle-down",
     "triangle-left", "triangle-right", "plus", "cross", "star",
-    "hexagon", "wye"
+    "hexagon", "wye", "wedge", "arrow"
   ]) {
     const result = pointProgram().highlightMarks({
       select: { field: "x", op: "max" },

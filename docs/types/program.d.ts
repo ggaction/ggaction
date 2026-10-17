@@ -1117,7 +1117,9 @@ export type PointShape =
   | "cross"
   | "star"
   | "hexagon"
-  | "wye";
+  | "wye"
+  | "wedge"
+  | "arrow";
 export type StrokeStyleDetails = {
   lineCap?: "butt" | "round" | "square";
   lineJoin?: "miter" | "round" | "bevel";

@@ -1444,7 +1444,7 @@ function categoryScaleOptions(variant, view) {
 function ordinalShapeScaleOptions(variant, view) {
   const shapes = [
     "circle", "square", "diamond", "triangle-up", "triangle-down", "triangle-left",
-    "triangle-right", "plus", "cross", "star", "hexagon", "wye"
+    "triangle-right", "plus", "cross", "star", "hexagon", "wye", "wedge", "arrow"
   ];
   return {
     create: {

@@ -274,6 +274,13 @@ Static built-in `action(...)` declaration에만 pure-call annotation을 둔다. 
 Package staging은 task resolver와 scale definition/color/quantitative transform, polar/arc geometry 및 Canvas/facet/guide layout 모듈을 기존 esbuild 정책으로 compact한다.
 Repository 원본과 module 경로/export는 유지하고, packed math equivalence와 artifact size를 검사한다.
 
+The approved wedge and arrow shapes reuse the existing named point-shape grammar,
+concrete path materializer, shape scales, legends and renderers. They introduce no new state
+owner or primitive. The complete installed artifact measured 3,909,563 unpacked bytes,
+exceeding the prior 3,908,000 ceiling; its narrow ceiling becomes 3,910,000. Entry count,
+packed bytes, browser budgets and all existing tests remain unchanged. This is measured
+feature growth, not a claim that the previous unpacked limit passed.
+
 ### Browser bundle regression ceilings
 
 Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 않아야 한다.
