@@ -8,7 +8,8 @@ export const visualVariants = [
   ["lab-white-point", "Lab interpolation with D65 and D50 white points", createWhitePointComparison, createWhitePointPrimitive, whitePointCalls, ["d65", "d50"]],
   ["color-math", "Cubehelix lightness gamma and signed-power color", createColorControls, createColorControlsPrimitive, colorCalls, ["gamma1", "gamma22", "power"]]
 ].map(([variant, title, userFacing, primitive, calls, rows]) => defineVisualVariant({
-  chart: "color-controls", variant, title, ...layout, userFacing, primitive,
+  chart: variant === "lab-white-point" ? "color-white-point" : "color-controls",
+  variant, title, ...layout, userFacing, primitive,
   callChain: "chart()\n" + calls.map(({ op, args }) => `  .${op}(${JSON.stringify(args)})`).join("\n") + ";",
   compareSemanticSpec: false,
   artifact: { scope: "charts", capability: "color-scales" },

@@ -2,9 +2,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { createCanvas } from "@napi-rs/canvas";
 import { render } from "../../../src/index.js";
+import { summarizeArgs } from "../../../src/core/action.js";
 import { referenceLabColor, referenceCubehelixColor, referenceSignedPower } from "../../oracles/color-interpolation.js";
 import { assertChartProgramsEquivalent } from "../../support/chart-equivalence.js";
-import { assertDisplayedProgram } from "../../support/visual-variants.js";
+import { assertDisplayedProgram, displayedActionCalls } from "../../support/visual-variants.js";
 import { visualVariants } from "./manifest.js";
 import { literalColors, rowGeometry } from "./fixtures.js";
 
@@ -13,6 +14,8 @@ for (const variant of visualVariants) {
     const program = variant.userFacing();
     const primitive = variant.primitive();
     assertDisplayedProgram(variant, program);
+    assert.deepEqual(program.trace.children.map(({op,args}) => ({op,args})),
+      displayedActionCalls(variant.callChain).map(({op,args}) => ({op,args:summarizeArgs(args)})));
     assertChartProgramsEquivalent({ publicProgram: program, primitiveProgram: primitive, compareSemanticSpec: false });
     for (const region of variant.regions) {
       assert.deepEqual(program.graphicSpec.objects[region.name].items.map(item => item.properties.fill), literalColors[region.name]);

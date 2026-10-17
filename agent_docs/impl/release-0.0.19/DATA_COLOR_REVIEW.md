@@ -8,7 +8,7 @@ Gate: **approved**. 이슈 #167, #168, #169, #172, #196, #198, #202, #207, #209�
 - [x] 기존 floor·exponential·summary 제안의 정확한 결정 재검토
 - [x] 새 중요 선택마다 권고안과 이유, 호환성·검증 조건 작성
 - [x] 통합 리뷰 패키지의 원격 revision 및 사용자 설계 승인 기록: bad3f346, PROPOSAL.md 승인 기록
-- [ ] 승인 후 구현, focused/cumulative/installed 소비자 검증
+- [x] 승인 후9개 구현, focused/cumulative/installed 소비자 검증: 아래 마지막 누적 checkpoint
 - [x] 실제 색상 출력 비교의 시각 Gate 증거 및 사용자 확인: 초기 승인과 감마 보정 목표 `4f2f985c`, 승인 기록 `e670508b`
 
 검토 기준은 현재 작업트리의 0.0.18 공개 표면이다. 이 문서는 계약의 새 canonical 사본이 아니라 구현 전 검토 자료다. 구현 시 정확한 현재 계약은 해당 `agent_docs/contract/current/` 소유 파일에 반영하고 이 문서에는 승인·완료 근거만 연결한다. 데이터·색상 계산은 grammar, 의미·소유권·명시적 재물질화는 domain action, 이미 계산된 출력은 renderer가 담당한다. renderer에 데이터 변환이나 fitting을 추가하지 않는다.
@@ -470,7 +470,8 @@ program.createSummaryData({
   Rectangle전용 PDF에는 path move가 아니라 rectangle명령 `re`가 있으므로 shared vector
   검사도 실제 요청 geometry에 맞는 명령을 요구한다. 기존 경로/원형 검사는 계속 `m`을 요구한다.
 - 재현: `node --test test/charts/color-controls/{public.test,png.render,vector.render}.js`.
-  PNG는 `.artifacts/test/png/charts/color-scales/color-controls/{lab-white-point,color-math}/`
+  PNG는 `.artifacts/test/png/charts/color-scales/color-white-point/lab-white-point/`와
+  `.artifacts/test/png/charts/color-scales/color-controls/color-math/`
   아래 `primitive.png`, `user-facing.png`, exact호출의 `variant.json`이다.
   Roadmap/review 디렉터리는 정식 테스트의 실행 의존성이 아니다.
 - Public registry/shared browser host/catalog/API설명을 연결했다. BrowserCanvas2개와
@@ -482,3 +483,19 @@ program.createSummaryData({
   이미 설치된Ruby3.2.11을 명시해 preflight/build/built검증을 실행한다.
 - 검색 payload817927바이트의 새예제/사용법을 유지하며 cap은 다음 최소1000단계818000만 적용했다.
   이 기록은 승인시각 목표의 코드·자동 검사 증거이며 새 VLM/이미지 관찰이나 유료번역은 실행하지 않았다.
+
+### 마지막 누적 검증
+
+- 일반unit3136/3136, normal contracts548/548, docs120/120 모두 통과했다.
+  계약 검사가 찾은 새slice의 primitive.test누락과 realistic discovery22→23을 보완했고,
+  모든 원래 검사와 파일별실제timing을 유지했다. Public pair의 호출은 subset만이 아니라
+  요약된 전체 trace arguments와 manifest 호출을 exact 비교한다.
+- Ruby3.2.11의 명시 PATH로 Jekyll build와150개 built pages/links/assets/search 검사를 통과했다.
+  전체 responsive/a11y/browser sweep은150페이지를320/390/768px에서 검사하고 desktop검색,
+  keyboard/mobile메뉴, JavaScript없는탐색을 포함해 통과했다. Stable예제를 포함한 실제 packed
+  installed소비자도 runtime/TypeScript/Basic/browser/MCP까지 최종 통과했다.
+  명시primitive2개와 registry/discovery를 포함한 focused23개 및 exacttrace5개도 모두 통과했다.
+- 통합 중 axes 작업에서 별도로 발견한 object|array union의 숨은valid leaf 복원은
+  현재branch의 검증 입력에 아직 들어 있지 않다. 그 parser변경 후 복원되는 requirement의
+  실제증언과 전체 통합 검사는 root가 합친 뒤 추가로 확인해야 한다. 여기의159개/기존closed9
+  color전수 및5/3증언은 그대로 보존하며 새통합 입력의 성공으로 과장하지 않는다.
