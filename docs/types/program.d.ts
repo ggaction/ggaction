@@ -4975,6 +4975,7 @@ export class ChartProgram {
   editImputedData(options: EditImputedDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
 
+  /** One point layer accepts at most 50,000 selected rows, before missing-value filtering. */
   createPointMark(options?: StrokeStyleDetails & {
     id?: string;
     data?: string;

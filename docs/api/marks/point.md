@@ -40,10 +40,19 @@ const program = chart()
   .encodeY({ field: "Miles_per_Gallon" });
 ```
 
-The collection remains empty until compatible position encodings exist. When a
+The initial collection reserves one item per selected data row; items receive
+visible positions when compatible position encodings exist. When a
 point is layered after one compatible source, omitted data, coordinate, x, and y
 encodings are inherited and persisted. Ambiguous sources require an explicit
 target or resource ID.
+
+A point layer supports at most **50,000 selected data rows**, including rows
+subsequently skipped by the missing-value policy. Creation, data revisions,
+property-array edits, facets, and editable snapshots use the same inclusive
+boundary. A 50,001-row point layer fails atomically with the structured
+`resource-limit` diagnostic `Point mark item count`. No sampling or layer
+splitting occurs. Ordinary extension graphics retain their 10,000-item limit;
+path-command and work limits are independent.
 
 Radius is an encoding-owned graphical value rather than a `createPointMark`
 option. Until a constant or field-driven size is authored, materialization uses

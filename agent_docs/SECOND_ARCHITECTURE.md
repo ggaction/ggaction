@@ -280,7 +280,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 395,000 bytes |
+| `ggaction` | 396,000 bytes |
 | `ggaction/basic` | 191,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -476,6 +476,9 @@ Automatic statistical parameter의 요청과 계산값은 서로 다른 provenan
 action은 기존 instance를 바꾸지 않고 새로운 instance를 반환한다.
 
 Named dataset, layer, scale, coordinate의 exact ID lookup은 `selectors/`만 소유한다.
+`selectors/graphicCapacity.js`는 semantic point owner와 retained child namespace identity를
+추적한다. namespace encoding도 이 순수 selector owner가 소유하며 composition materializer는
+이를 재사용한다. 수치 한도 검증은 core validation에 남고 persistence는 materializer를 호출하지 않는다.
 Action과 materializer는 semantic resource array에 직접 `.find(id)` 또는 identity `.some()`을
 작성하지 않는다. 이 경계는 source contract test가 기계적으로 검사한다. Eligibility filter와
 relationship scan은 exact resource lookup이 아니므로 해당 domain module에 남을 수 있다.
@@ -2095,3 +2098,13 @@ Approved area fallback fills reuse `FillPaint` on the existing area mark configu
 승인된 연속 범례 body opacity는 creation/edit/persistence가 공유하는 closed grammar owner `grammar/legendGradient.js` 하나를 추가한다. 이에 따른 packed entry 한도는563에서564로만 조정한다. 최종 실측564entries·packed791,661bytes·unpacked3,888,408bytes는 기존792,000/3,900,000bytes 안에 있다. Browser gzip Full388,931bytes·Basic188,433bytes와 기존389,000/189,000bytes, SVG25,000bytes 한도는 유지한다. 생략 시 default graphic/SVG24경우의 byte identity와 명시적0/.7/1의 body-only materialization을 검증하며 renderer 추론은 추가하지 않는다.
 
 Corner item block은 기존 layout owner가 실제 title/item bounds와12px gap으로 측정한다. Group materialization의 ephemeral corner 의도를 같은 owner에 전달하며 state/schema나 renderer owner를 추가하지 않는다. 외부 SIDE의 fixed20/52 anchors는24조합에서 byte-identical이다. 이 수정 뒤 installed Full gzip389,027bytes가389,000 한도를27bytes 초과하므로 기존 최소1,000bytes 단위 정책에 따라 Full 한도만390,000으로 조정한다. Basic189,000/SVG25,000 및 package564entries/792,000packed/3,900,000unpacked 한도는 유지한다.
+
+### Point-owned graphic capacity
+
+Point 생성·편집과 editable persistence는 selector가 증명한 semantic point/selected values/graphic
+ID·type 소유권을 공통 core guard에 전달한다. Namespace가 적용된 composition snapshot은 실제
+retained child owner까지 추적하며 별도 bypass state를 저장하지 않는다. 일반 generated-item/work
+및 graphic-only structural validation 경계는 바꾸지 않았다. 정확한 수치는 MARKS/PRIMITIVES가 소유한다.
+Node22.23.1/npm10.9.8/macOS canonical artifact 실측은570entries, packed803124, unpacked3939523이다.
+승인된 유한 기능 증가에 따라 entries570/packed804000/unpacked3940000으로 최소 상향했다.
+Browser gzip Full395462는396000으로 상향하고 Basic190821/SVG7176은 기존191000/25000을 유지한다.

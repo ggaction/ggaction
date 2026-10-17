@@ -1,4 +1,6 @@
 import { cloneAndFreeze, freezeOwned, isPlainObject } from "../core/immutable.js";
+import { namespaceGraphicId } from "../selectors/graphicCapacity.js";
+export { namespaceGraphicId } from "../selectors/graphicCapacity.js";
 import {
   requireSingleOrderedGraphicByType,
   walkGraphicTreeEvents
@@ -26,13 +28,6 @@ function validateCanvas(canvas, id) {
   if (!Number.isFinite(height) || height <= 0) {
     throw new RangeError(`Child Canvas "${id}" height must be a positive finite number.`);
   }
-}
-
-export function namespaceGraphicId(namespace, id) {
-  const encode = value => Array.from(value, character =>
-    character.codePointAt(0).toString(16).padStart(6, "0")
-  ).join("");
-  return `g${encode(namespace)}_${id}`;
 }
 
 function rewriteItem(item, namespace) {

@@ -1,4 +1,6 @@
 import { closedAction } from "../../core/action.js";
+import { validateGraphicItemLimit } from "../../core/validation.js";
+import { resolveGraphicItemCapacity } from "../../selectors/graphicCapacity.js";
 import { validateUserId } from "../../core/identifiers.js";
 
 import {
@@ -111,9 +113,16 @@ export const rebindLayerData = /* @__PURE__ */ closedAction(
       requestedData,
       "Layer dataset"
     ).id;
-    requireLayer(this, id);
+    const layer = requireLayer(this, id);
     if (!hasDataset(this, data)) {
       throw new Error(`Layer dataset "${data}" does not exist.`);
+    }
+    const dataset = findDataset(this, data);
+    if (layer.mark?.type === "point" && Array.isArray(dataset.values)) {
+      validateGraphicItemLimit(dataset.values.length, {
+        ...resolveGraphicItemCapacity(this, { id, label: "Point mark item count" }),
+        rawCount: dataset.values.length
+      });
     }
     return this.editSemantic({
       property: `layer[${id}].data`,

@@ -1,7 +1,9 @@
+import { validateGraphicItemLimit } from "../core/validation.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
 import { validateRegressionFitStatistics, requireRegressionStatisticsSource, regressionStatisticsRows } from "../grammar/regression/statistics.js";
+import { resolveGraphicItemCapacity } from "../selectors/graphicCapacity.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
 import { normalizeColorInterpolationOptions } from "../grammar/scales/color.js";
 import { normalizeTransformParameters } from "../grammar/scales/transformed.js";
@@ -263,4 +265,9 @@ export function validateProgramState(program, path) {
     for (const resource of resources.get(kind).values()) visit(resource);
   }
   validateGraphic(program.graphicSpec, `${path}.graphicSpec`);
+  for (const [id, graphic] of Object.entries(program.graphicSpec.objects)) {
+    if (graphic.items !== undefined) validateGraphicItemLimit(graphic.items.length, resolveGraphicItemCapacity(program, {
+      id, label: "Graphic collection length"
+    }));
+  }
 }

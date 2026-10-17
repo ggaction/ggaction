@@ -397,3 +397,25 @@ program.createSummaryData({
 
 새 공개 계약 승인 전에는 구현 완료/Current 승격/이슈 해결로 기록하지 않는다. 승인 이후 실제 구현과 소비자 행렬·문서·배포 패키지까지 확인한 이슈만 해결한다. 범위에 포함된 능력을 구현하지 않은 상태로 미래 기능으로 옮기거나 단순히 닫아 정리하지 않는다.
 
+
+## #207 구현 checkpoint
+
+- 상태: approved 설계를 구현했다. source/types/Current/public docs/installed consumer를 함께 동기화했다.
+- `selectors/graphicCapacity.js`는 실제 semantic point + materialized selected data + connected graphic
+  ID/type와 retained child namespace 소유권만 증명한다. 실제 bound와 structured diagnosis는 core
+  validation이 소유한다. composition materializer의 기존 namespace export는 재사용 re-export다.
+- create/editGraphics와 point materializer, source rebind preflight, editable persistence가 공통 guard를
+  사용한다. raw selected cardinality는 missing skip보다 먼저 확인하고 graphic-only 구조 검증은
+  기존 의미/capacity 미검사 경계를 유지한다. 새 action·옵션·state·trace-string 우회는 없다.
+- focused7개: Full/Basic9999/10000/10001/49999/50000/50001, shape/mixed/property arrays,
+  primitive negative 및 일반 mark/path/work 독립 한도, source revision/missing skip,50k selection/
+  highlight/accessibility/Canvas resize/Canvas/SVG/저장복원, facet/nested composition을 검증했다.
+- 보존된 두 실제 source는 [실행 CLI](point-source-proof.mjs)와 [증거](point-source-evidence.json)로
+  44992/20707전체 raw rows·문자열 타입·순서·item identity, 전체 좌표 오차0, editable/graphic-only
+  Canvas/SVG/accessibility를 확인했다. API 요청·새번역·이미지 시각 검사는 하지 않았다.
+- 누적 unit3134, contracts533, docs120통과. 설치 package의 Full/Basic50k, TypeScript,
+  persistence/Canvas/PNG/SVG/PDF/tutorial, MCP, browser bundle 소비자도 통과했다.
+- Node22.23.1/npm10.9.8/macOS에서 기능 증가분을 측정했다. canonical570entries/packed803124/
+  unpacked3939523, browser Full395462/Basic190821/SVG7176gzip. package570/804000/3940000과
+  Full396000만 최소 상향했다. Basic191000/SVG25000과 computed/work/path/일반graphics 한도는 유지한다.
+- 전체9개 기능의 realistic 새옵션/리터럴/action 실제5회·3TT데이터셋 증언은 다음 필수 checkpoint다.

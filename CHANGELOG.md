@@ -6,6 +6,9 @@ All notable changes to `ggaction` are recorded in this file.
 
 ### Added
 
+- Point layers preserve up to 50,000 selected observations in one collection,
+  including source revisions, facets, editing, and editable snapshots.
+
 - `createRegressionStatisticsData` reuses a linear fit for observation counts,
   coefficients, and R-squared. `editRegressionStatisticsData` changes its source
   and replays consumers atomically; editable snapshots retain compact fit statistics.

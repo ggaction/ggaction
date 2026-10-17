@@ -76,7 +76,7 @@ test("large summaries replay revisions, logical editors and snapshots without ch
   assert.deepEqual(deserializeProgram(serializeProgram(edited)).semanticSpec, edited.semanticSpec);
   assert.throws(() => program.reviseData({ source: "raw", id: "overflow", values: rows(30001) }), /30000 groups/);
   assert.equal(serializeProgram(program), before);
-  assert.throws(() => program.createCanvas().createPointMark({ data: "summary" }), /10000/);
+  assert.throws(() => program.createGraphics({ id: "ordinary", type: "circle", length: 10001 }), /10000/);
 });
 
 test("facet replay uses the same summary group capacity before downstream reduction", () => {

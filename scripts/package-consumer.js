@@ -267,6 +267,15 @@ async function testNodeConsumer(directory) {
       assert.deepEqual(deserializeProgram(serializeProgram(scoped)).graphicSpec, scoped.graphicSpec);
       assert.ok((await renderToPNGBuffer(scoped)).buffer.length > 1000);
     }
+    for (const factory of [chart, basicChart]) {
+      const dense = factory().createCanvas({width:250,height:250,margin:25})
+        .createData({values:Array.from({length:50000},(_,x)=>({x,y:x%11}))})
+        .createScatterPlot({x:"x",y:"y",guides:false});
+      assert.equal(dense.graphicSpec.objects.scatterPlot.items.length,50000);
+      assert.deepEqual(deserializeProgram(serializeProgram(dense)).graphicSpec,dense.graphicSpec);
+      assert.equal(dense.graphicSpec.objects.scatterPlot.items.at(-1).id,"scatterPlot:49999");
+      assert.throws(()=>factory().createGraphics({id:"unowned",type:"circle",length:10001}),/10000/);
+    }
     const initialHeaders = chart().createCanvas({ width: 250, height: 200, margin: 50 })
       .createData({ values: [{ x: 1, y: 2, group: "A" }, { x: 2, y: 3, group: "B" }] })
       .createScatterPlot({ x: "x", y: "y", guides: false })

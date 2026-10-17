@@ -108,6 +108,13 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - `fill`, `opacity`, `stroke`, `strokeWidth`: Implemented creation-time appearance shorthand. 각각
   `editPointMark`와 같은 validation/config persistence를 사용하며 wrapped `editPointMark`로 적용한다.
   `stroke: false`는 outline과 width를 끈다. Field-driven color와 constant fill은 충돌한다.
+- Capacity: selected materialized raw dataset은 layer별 50,000개 inclusive다. missing skip 이전 raw
+  cardinality와 concrete collection 양쪽을 검사한다. 50,001은 `resource-limit`,
+  `optionPath: "Point mark item count"`, `limit: 50000`, `actual: 50001`로 원자적으로 거부한다.
+  Full/Basic initial/incomplete, createScatterPlot, source revision/rebind, property arrays,
+  mixed shapes, Canvas/scale replay, selection/highlight, accessibility, facet/nested composition,
+  editable persistence가 같은 소유권 정책을 사용한다. Graphic-only structural validation은 기존
+  의미·capacity 미검사 경계를 유지한다. Evidence: `test/unit/actions/marks/point-capacity.test.js`.
 - Effect: dataset cardinality와 같은 길이의 point graphic collection을 만들며 아직 위치 property가
   없으므로 encoding 전에는 보이지 않을 수 있다.
 - Default glyph size: compatible Cartesian x/y 또는 Polar theta/r position이 완성되면 materializer가
