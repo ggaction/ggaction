@@ -1,0 +1,47 @@
+{
+  "runtimeCommit": "690767d53415b93d22321c7915b0e2eddda24071",
+  "proposalOnly": true,
+  "implemented": false,
+  "cases": [
+    {
+      "groups": 10000,
+      "currentAccepted": true,
+      "proposedAccepted": true,
+      "callerInputUnchanged": true,
+      "parentSemanticAndGraphicUnchanged": true
+    },
+    {
+      "groups": 10001,
+      "currentAccepted": false,
+      "proposedAccepted": true,
+      "error": {
+        "name": "RangeError",
+        "message": "Summary output cannot exceed 10000 groups."
+      },
+      "callerInputUnchanged": true,
+      "parentSemanticAndGraphicUnchanged": true
+    },
+    {
+      "groups": 30000,
+      "currentAccepted": false,
+      "proposedAccepted": true,
+      "error": {
+        "name": "RangeError",
+        "message": "Summary output cannot exceed 10000 groups."
+      },
+      "callerInputUnchanged": true,
+      "parentSemanticAndGraphicUnchanged": true
+    },
+    {
+      "groups": 30001,
+      "currentAccepted": false,
+      "proposedAccepted": false,
+      "error": {
+        "name": "RangeError",
+        "message": "Summary output cannot exceed 10000 groups."
+      },
+      "callerInputUnchanged": true,
+      "parentSemanticAndGraphicUnchanged": true
+    }
+  ]
+}

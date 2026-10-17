@@ -1,0 +1,136 @@
+{
+  "reviewer": "codex",
+  "status": "source-and-public-rejection-evidence-only-not-approved",
+  "runtimeCommit": "690767d53415b93d22321c7915b0e2eddda24071",
+  "rows": [
+    {
+      "sourceId": "vl_1765",
+      "rawRows": 26265,
+      "actualSourceMeanGroups": 19194,
+      "publicSummaryFailure": "Summary output cannot exceed 10000 groups.",
+      "pathCommandSecondaryLimit": "Full unsplit 19194-vertex linear path is within the existing 20000-command ceiling; no path-limit increase inferred.",
+      "frozenInputs": [
+        {
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL29yZGluYXJ5LW5leHQtdGVtcG9yYWwtc2l4LXNvdXJjZS1uYXRpdmUtNjkwL3ZsXzE3NjUvc291cmNlLW9yaWdpbmFsLnZsLmpzb24=",
+          "sha256": "accc0f9da43c0fed408ffdf6ec536e4cec1db9a8d9db76e76787034f20c85417"
+        },
+        {
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL29yZGluYXJ5LW5leHQtdGVtcG9yYWwtc2l4LXNvdXJjZS1uYXRpdmUtNjkwL3ZsXzE3NjUvZGF0YS5qc29u",
+          "sha256": "1ae3e91972addcbdba23e94c13e30fce6708b402efe315403b1ed8b2d23ffd02"
+        },
+        {
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL29yZGluYXJ5LW5leHQtdGVtcG9yYWwtc2l4LXNvdXJjZS1uYXRpdmUtNjkwL3ZsXzE3NjUvcmVmZXJlbmNlL2NvbXBpbGVkLnZlZ2EuanNvbg==",
+          "sha256": "e5204939e1f0beb61cef6ac17071177d515601e547e6b6fc36e0aa3f7b27a65e"
+        },
+        {
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL29yZGluYXJ5LW5leHQtdGVtcG9yYWwtc2l4LXNvdXJjZS1uYXRpdmUtNjkwL3ZsXzE3NjUvcmVmZXJlbmNlL2NoYXJ0LnN2Zw==",
+          "sha256": "2e2972e26d48366ff2874225d2ab45983e563fe9a9a9465320ddd52885477c40"
+        },
+        {
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL29yZGluYXJ5LW5leHQtdGVtcG9yYWwtc2l4LXNvdXJjZS1uYXRpdmUtNjkwL3ZsXzE3NjUvcmVmZXJlbmNlL3JlZmVyZW5jZS1ldmlkZW5jZS5qc29u",
+          "sha256": "fe2239025e69d6097fc37cd9dea6a46819c1356aaa1379a5eff36c291b3026ae"
+        }
+      ]
+    },
+    {
+      "sourceId": "vl_1773",
+      "rawRows": 26265,
+      "actualSourceMeanGroups": 10968,
+      "publicSummaryFailure": "Summary output cannot exceed 10000 groups.",
+      "pathCommandSecondaryLimit": "Full unsplit 10968-vertex linear path is within the existing 20000-command ceiling; no path-limit increase inferred.",
+      "frozenInputs": [
+        {
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL29yZGluYXJ5LW5leHQtdGVtcG9yYWwtc2l4LXNvdXJjZS1uYXRpdmUtNjkwL3ZsXzE3NzMvc291cmNlLW9yaWdpbmFsLnZsLmpzb24=",
+          "sha256": "786176e9ba410d8e4c0e549153023386399f6b5426c9270d5737a1cd6f61fca9"
+        },
+        {
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL29yZGluYXJ5LW5leHQtdGVtcG9yYWwtc2l4LXNvdXJjZS1uYXRpdmUtNjkwL3ZsXzE3NzMvZGF0YS5qc29u",
+          "sha256": "1ae3e91972addcbdba23e94c13e30fce6708b402efe315403b1ed8b2d23ffd02"
+        },
+        {
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL29yZGluYXJ5LW5leHQtdGVtcG9yYWwtc2l4LXNvdXJjZS1uYXRpdmUtNjkwL3ZsXzE3NzMvcmVmZXJlbmNlL2NvbXBpbGVkLnZlZ2EuanNvbg==",
+          "sha256": "d3f78a732af161dbcfa03935ce0c2b0527c377f5fad6b2ebcaade9b5023143a6"
+        },
+        {
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL29yZGluYXJ5LW5leHQtdGVtcG9yYWwtc2l4LXNvdXJjZS1uYXRpdmUtNjkwL3ZsXzE3NzMvcmVmZXJlbmNlL2NoYXJ0LnN2Zw==",
+          "sha256": "4633995c3d2aaeb36b53058936a0bd6a3b98db631ae55b8b02494aa164566dbb"
+        },
+        {
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL29yZGluYXJ5LW5leHQtdGVtcG9yYWwtc2l4LXNvdXJjZS1uYXRpdmUtNjkwL3ZsXzE3NzMvcmVmZXJlbmNlL3JlZmVyZW5jZS1ldmlkZW5jZS5qc29u",
+          "sha256": "f14e693b448f3dbbaee57c8f5ee010b036878883ff7e0c168e39876369652c3c"
+        }
+      ]
+    },
+    {
+      "sourceId": "vl_1774",
+      "rawRows": 26265,
+      "actualSourceMeanGroups": 25909,
+      "publicSummaryFailure": "Summary output cannot exceed 10000 groups.",
+      "pathCommandSecondaryLimit": "Even after summary support, the existing independently approved 20000 per-path command ceiling would still reject this unsplit 25909-vertex line.",
+      "frozenInputs": [
+        {
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL29yZGluYXJ5LW5leHQtdGVtcG9yYWwtc2l4LXNvdXJjZS1uYXRpdmUtNjkwL3ZsXzE3NzQvc291cmNlLW9yaWdpbmFsLnZsLmpzb24=",
+          "sha256": "d303043c94a32d7a5f465ae33e9b8d29d9de88ac1a698aa9446962bdc6f867eb"
+        },
+        {
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL29yZGluYXJ5LW5leHQtdGVtcG9yYWwtc2l4LXNvdXJjZS1uYXRpdmUtNjkwL3ZsXzE3NzQvZGF0YS5qc29u",
+          "sha256": "1ae3e91972addcbdba23e94c13e30fce6708b402efe315403b1ed8b2d23ffd02"
+        },
+        {
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL29yZGluYXJ5LW5leHQtdGVtcG9yYWwtc2l4LXNvdXJjZS1uYXRpdmUtNjkwL3ZsXzE3NzQvcmVmZXJlbmNlL2NvbXBpbGVkLnZlZ2EuanNvbg==",
+          "sha256": "5a607f721d23c816670afa2d4604403135e9f022ae351d8fa1f00765f379b5c9"
+        },
+        {
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL29yZGluYXJ5LW5leHQtdGVtcG9yYWwtc2l4LXNvdXJjZS1uYXRpdmUtNjkwL3ZsXzE3NzQvcmVmZXJlbmNlL2NoYXJ0LnN2Zw==",
+          "sha256": "1298d6e394f5e82d1fc859741c0ca2fc5ab6a9daefe6d1aaa6a9f8221363f43d"
+        },
+        {
+          "pathEncoding": "utf8-base64",
+          "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL29yZGluYXJ5LW5leHQtdGVtcG9yYWwtc2l4LXNvdXJjZS1uYXRpdmUtNjkwL3ZsXzE3NzQvcmVmZXJlbmNlL3JlZmVyZW5jZS1ldmlkZW5jZS5qc29u",
+          "sha256": "9c9acfc3f71b6bbdcbedb20a5d8f9c7c3dd48710c91f27592a87ea1b08a1b047"
+        }
+      ]
+    }
+  ],
+  "probe": {
+    "pathEncoding": "utf8-base64",
+    "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi90bXAvdGhvdXNhbmQtcnVubmVyL3Byb2JlLXRocmVlLXRlbXBvcmFsLW1lYW4tdW5pdHMtNjkwLm1qcw==",
+    "sha256": "e2e034b611df2f1f59dc354a89396906da6c6d52e43d96c0994718a862abd634"
+  },
+  "sourceBrowserReport": {
+    "pathEncoding": "utf8-base64",
+    "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9yZXBvcnRzL3YxMi1uZXh0LXRlbXBvcmFsLXNpeC11bml0LXNvdXJjZS1icm93c2VyLXByZWZsaWdodC02OTAuanNvbg==",
+    "sha256": "2e185fc276a953a91843e2f6b8305f428994ac73f4e96c65b169471dd9a4296d"
+  },
+  "resourceScopeReview": {
+    "pathEncoding": "utf8-base64",
+    "pathUtf8Base64": "L1VzZXJzL2h5ZW9uamVvbi9Qcm9qZWN0cy92ZWdhbGl0ZS1nZ2FjdGlvbi10cmFuc2xhdGlvbi9yZXBvcnRzL3YxMi10aHJlZS10ZW1wb3JhbC1zdW1tYXJ5LXJlc291cmNlLXNjb3BlLXJldmlldy02OTAuanNvbg==",
+    "sha256": "014764a963e430e6beeb9c57ede4a88b40a9e2c3b7f2df8e2b88a14936e5004f"
+  },
+  "groupGuard": {
+    "path": "src/grammar/summary.js",
+    "sha256": "bf8b6e8d9b6a47ca869ae0ebba63d01b14a1a23e0b8d20964ff71d69fa9b63bd",
+    "currentGroupCeiling": 10000,
+    "proposedGroupCeiling": 30000
+  },
+  "pathCeilingUnchanged": 20000,
+  "otherResourceCapsUnchanged": true,
+  "modelCalls": 0,
+  "originalSourceDataMutation": false,
+  "admissionOrAcceptedStateMutation": false,
+  "sourcePathEncodingNote": "External absolute evidence paths use lossless explicit UTF-8 base64 so this public library review package stays source-neutral. Decode paths to inspect original immutable files; original SHA values are unchanged."
+}
