@@ -14,7 +14,7 @@ test("owns every legend family resource contract in one registry", () => {
   assert.deepEqual(
     policies.map(policy => policy.kind),
     [
-      "series", "color", "stroke", "size", "gradient", "interval",
+      "colorSize", "series", "color", "stroke", "size", "gradient", "interval",
       "strokeGradient", "strokeInterval", "opacity", "strokeWidth"
     ]
   );

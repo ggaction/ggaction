@@ -67,6 +67,7 @@ function categoricalSupports(config, property) {
 
 function validateSymbolSupport(descriptor, property) {
   const { channels, family, kind, config } = descriptor;
+  if(kind === "colorSize" && ["fill","size"].includes(property)) throw new Error("Color-size symbols cannot override mapped fill or size.");
   if (family === "gradient") {
     throw new Error(`editLegendBlock symbol.${property} is unsupported for gradient blocks.`);
   }
@@ -131,7 +132,7 @@ function normalizeSymbolPatch(value, descriptor) {
 }
 
 function normalizeBlockLabelMap(descriptor, map) {
-  if (descriptor.kind === "size" && descriptor.family === "sampled") {
+  if (["size","colorSize"].includes(descriptor.kind) && descriptor.family === "sampled") {
     return normalizeNumericDisplayLabelMap(map, "editLegendBlock labelMap");
   }
   if (descriptor.family !== "categorical") {
@@ -223,7 +224,7 @@ function applyCategoricalSymbol(symbol, patch) {
 }
 
 export function resolveEffectiveLegendBlockConfig(program, kind, config) {
-  const channels = kind === "series" || kind === "color" || kind === "stroke"
+  const channels = kind === "colorSize" ? ["color","size"] : kind === "series" || kind === "color" || kind === "stroke"
     ? config.channels
     : [{ size: "size", opacity: "opacity", strokeWidth: "strokeWidth",
       gradient: "color", interval: "color", strokeGradient: "stroke",
@@ -248,6 +249,7 @@ export function resolveEffectiveLegendBlockConfig(program, kind, config) {
       : {})
   };
   if (override.symbol === undefined) return effective;
+  if(kind === "colorSize") return {...effective,symbol:{...config.symbol,...override.symbol}};
   if (["series", "color", "stroke"].includes(kind)) {
     return {
       ...effective,
@@ -305,6 +307,7 @@ export function reconcileLegendBlockTitleGraphic(program, kind, visible) {
 }
 
 const SPECIALIZED_SYMBOLS = Object.freeze({
+  colorSize: Object.freeze({id:"colorSizeLegendSymbols",type:"circle"}),
   gradient: Object.freeze({ id: "colorGradientSymbols", type: "circle" }),
   size: Object.freeze({ id: "sizeLegendSymbols", type: "circle" }),
   opacity: Object.freeze({ id: "opacityLegendSymbols", type: "circle" }),

@@ -67,6 +67,8 @@ const CATEGORICAL_COMPONENTS = Object.freeze([
 ]);
 
 const LEGEND_RESOURCE_POLICIES = Object.freeze({
+  colorSize: Object.freeze({semanticKind:"colorSize",family:"sampled",rematerializeOp:undefined,
+    graphicIds:Object.freeze(["colorSizeLegendBackground","colorSizeLegendSymbols","colorSizeLegendLabels","colorSizeLegendTitle"])}),
   series: Object.freeze({
     semanticKind: "series",
     family: "categorical",

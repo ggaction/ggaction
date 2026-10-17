@@ -869,3 +869,12 @@ scaffolding does not propagate it into an unclipped gradient sibling. Ordinary
 child composition uses valid namespaced private graphics while source mark item
 identities remain stable. Evidence: legend-symbol-window unit and browser tests,
 and facet-parent-symbol-window unit tests.
+
+
+### Quantitative color-size combination
+
+- `createLegend` / whole `editLegend.combine: "color-size"` selects exactly color+size (omitted channels imply this pair). One ordinary Cartesian circle point owner, same quantitative field/data/grain, continuous scales and identical finite nondegenerate numeric endpoints are required. Encoded shape, ordinal size, independent fields/grains, or incompatible live edits reject atomically, without splitting.
+- `guideConfigs.legend.colorSize` owns target, field/type, colorScale/sizeScale, shared numeric domain, sampling, symbol and native item layout/style. `guide.legend.colorSize` references both scales and its title. One descriptor key `["color","size"]` aliases both selectors; no fabricated dataset or mark is created.
+- Each sample independently maps its fill and physical area through the original public color/size scale evaluators; radius is sqrt(area/PI). One strictly increasing exact numeric sample list or automatic count is used. Numeric labelMap, explicit values, windows, local positions, focused edits and removal resolve the same block. Scalar fill/size/radius overrides reject. The point symbol accepts stroke/strokeWidth/opacity; categorical layer-opacity semantics are not inferred here.
+- Whole combine omission retains policy; separate restores native gradient+size with compatible common text/title/placement, exact samples and compatible sample styles only on size. Recombination starts with new combined defaults; local-anchor merge conflicts require explicit relocation. Persistence validates both live scale references, eligibility, semantic owner, sampling and mapped domain.
+- Full and Basic create through the existing facade; supported Full editors/rematerialization/replay keep both references current. Stable independent geometry: `test/charts/combined-legends` numeric 0/5/10 -> black/#808080/white and radii1/2/3, exact graph/order/native calls/decoded pixels.

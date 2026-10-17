@@ -220,6 +220,7 @@ export const LEGEND_CHANNELS = Object.freeze([
 ]);
 
 export const LEGEND_CONFIG_KINDS = Object.freeze([
+  "colorSize",
   "series",
   "color",
   "stroke",

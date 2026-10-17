@@ -1678,9 +1678,10 @@ type CartesianGridOptions = Pick<CreateGridOptions, "horizontal" | "vertical">;
 type FilledLegendSymbolRecipe = "auto"
   | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
   | { layers: readonly LegendSymbolLayer[] };
-type FilledMarkLegendOptions = Omit<LegendOptions, "symbol" | "representation"> & (
-  | { representation?: "gradient"; symbol?: FilledLegendSymbolRecipe }
-  | { representation: "symbols"; symbol?: "auto" | { type?: "point"; radius?: number; stroke?: string; strokeWidth?: number } }
+type FilledMarkLegendOptions = Omit<LegendOptions, "symbol" | "representation" | "combine"> & (
+  | { combine?: "separate" | "size-shape"; representation?: "gradient"; symbol?: FilledLegendSymbolRecipe }
+  | { combine?: "separate" | "size-shape"; representation: "symbols"; symbol?: "auto" | { type?: "point"; radius?: number; stroke?: string; strokeWidth?: number } }
+  | { combine: "color-size"; representation?: never; symbol?: "auto" | { type?: "point"; stroke?: string; strokeWidth?: number; opacity?: number } }
 );
 type DistributiveLegendOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
 type CategoricalLegendTextOptions = {
@@ -4721,7 +4722,7 @@ export type LegendSymbolLayer =
 export type LegendSymbolRecipe =
   | "auto"
   /** Sampled opacity uses a single point recipe; radius defaults to 7 and must be positive. */
-  | { type?: "point"; radius?: number; fill?: string; stroke?: string; strokeWidth?: number }
+  | { type?: "point"; radius?: number; fill?: string; stroke?: string; strokeWidth?: number; opacity?: number }
   | { length?: number; lineWidth?: number }
   | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
   | { layers: readonly LegendSymbolLayer[] };
@@ -4743,8 +4744,8 @@ export type LegendOrder = LegendValueOrder |
 export interface LegendOptions {
   /** Positive sample window height. Clips point-bearing glyphs without changing mapped area. */
   clipHeight?: number;
-  /** Explicitly combine compatible ordinal size and shape samples. Omission retains separate blocks. */
-  combine?: "separate" | "size-shape";
+  /** Explicitly combine ordinal size/shape or same-field quantitative color/size circle samples. Omission retains separate blocks. */
+  combine?: "separate" | "size-shape" | "color-size";
   /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
   representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */

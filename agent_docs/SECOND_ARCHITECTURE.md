@@ -2464,3 +2464,13 @@ artifact는 unpacked4,049,330bytes다. 기존4,049,000한도 실패 로그를 �
 828580bytes(macOS/Node22.23.1/npm10.9.8)다. 기존828000 검사2개는 실패했으며
 모든 검색 항목·action·옵션을 유지하고 최소1000단위829000으로만 갱신한다.
 공개 runtime/패키지/browser 또는 coverage 한도는 이 예제 연결로 바꾸지 않는다.
+The quantitative color-size combined mode adds one closed combine literal to
+the existing cards. Measured createLegend3524/editLegend3855bytes require only
+3530/3860byte card ceilings; all other cards remain3360bytes.
+
+The same combined numeric legend adds two packed source owners (583entries),
+measured820007packed/4000493unpackedbytes. Narrow ceilings become
+820500/4002000; Full404727 and Basic199306gzipbytes use405000/199500.
+The complete searchable option inventory measures821151bytes (ceiling821200).
+SVG remains25000gzipbytes; no public options, card fields or coverage floors
+are removed.

@@ -2023,6 +2023,22 @@
     "executable": false
   },
   {
+    "file": "api/legends/categorical.md",
+    "block": 8,
+    "heading": "Quantitative color and size",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [
+      "target: \"points\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: \"points\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "4e4a75b1cff8721309e3691296638b8f4b8adcde2568e7d2d463bb6a1fd649d0",
+    "executable": false
+  },
+  {
     "file": "api/legends/composite.md",
     "block": 1,
     "heading": "Layered symbols",

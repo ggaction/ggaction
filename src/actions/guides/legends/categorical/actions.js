@@ -1,3 +1,4 @@
+import {resolveColorSizeConfig,createColorSizeLegendFromConfig,materializeColorSizeLegend} from "../colorSize.js";
 import {resetLegendClipGraphics,applyLegendClipGraphics,restoreLegendClipContext}from"../../../../materialization/legendClip.js";
 import {validateLegendCombine,resolveSizeShapeCreation} from "../combine.js";
 import { recordLegendOffsetIntent } from "../group.js";
@@ -157,6 +158,7 @@ export const rematerializeLegend = /* @__PURE__ */ action(
       ).some(highlight => highlight.target === config.target);
       if (hasHighlight) next = next.rematerializeLegendHighlights({ kind });
     }
+    if(next.guideConfigs.legend?.colorSize !== undefined) next=materializeColorSizeLegend(next,next.guideConfigs.legend.colorSize);
     for (const policy of legendResourcePolicies()) {
       if (
         policy.rematerializeOp !== undefined &&
@@ -244,6 +246,11 @@ export const createCategoricalLegend = /* @__PURE__ */ action(
 function resolveRawLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers, internalChannels) {
   if (Object.hasOwn(args, "combine")) {
     validateLegendCombine(args.combine);
+    if (args.combine === "color-size") {
+      const config=resolveColorSizeConfig(program,args);
+      const prepared=prepareLegendGroup(program,{...args,blockLayout:args.blockLayout??(["left","right"].includes(args.position??"right")?"column":"row")},config.target,{creation:true,nativeOffset:30});
+      return {steps:[{op:"createColorSizeLegend",args}],finish:"always",legendGroup:{target:config.target,config:prepared.program.guideConfigs.legendGroups[config.target]}};
+    }
     if (args.combine === "size-shape") return resolveSizeShapeCreation(program, args, layers, resolveRawLegendCreationPlan, internalChannels);
     const {combine: _combine, ...separate} = args;
     return resolveRawLegendCreationPlan(program, separate, layers);
@@ -465,7 +472,7 @@ export function applyLegendCreationPlan(program, plan) {
     }
     // The plan already validated that a retained size block is compatible.
     if (!(plan.combined && step.op === "createSizeLegend" && existingSize !== undefined)) {
-      next = next[step.op](step.args);
+      next = step.op === "createColorSizeLegend" ? createColorSizeLegendFromConfig(next,resolveColorSizeConfig(next,step.args)) : next[step.op](step.args);
     }
   }
   return plan.finish === "always" ? next.rematerializeLegend()

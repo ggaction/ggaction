@@ -27,6 +27,11 @@ function validateLegend(property, value) {
 
 export function validateGuideSemanticValue(_program, parsed, value) {
   const property = parsed.path.at(-1);
+  if (parsed.id === "legend.colorSize") {
+    if(property === "title") validateNonEmptySemanticString(value,"Legend title");
+    else validateUserId(value,"Legend scale id");
+    return;
+  }
   if (parsed.id === "axis.parallel" && property === "titles") {
     validateParallelAxisTitles(value);
     return;
