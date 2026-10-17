@@ -6,6 +6,27 @@
 
 ## 문서의 위치
 
+승인된 Cartesian guide dash는 순수 `grammar/guideDash.js`가 uniform pattern과 typed
+override map의 검증·정규화를 소유한다. 기존 tick/grid action이 값별 concrete line paint를
+명시적으로 materialize하며 renderer/state boundary는 바뀌지 않는다. 이 shared module로
+package entry 한도는567→568이다. Staging compaction 후 실제797471packed/
+3911785unpacked bytes이며 packed798000 한도는 유지한다. Unpacked3908000을 초과해
+기존 최소1000bytes 단위 정책으로3912000으로만 조정했다. 이전 entry/unpacked
+한도를 통과했다고 보고하지 않는다. 정확한 옵션은 current AXES/GRID 계약이 소유한다.
+검색 payload는 typed dash 옵션과 공개 예제를 모두 유지한814283bytes로 기존814000을
+초과하여 공유 search 한도만815000으로 갱신했다. 이전 search 한도 통과를 주장하지 않는다.
+
+승인된 Cartesian frame은 기존 guideConfigs.axis의 frame.offset 한 곳이 소유하며,
+coordinateBounds의 axis 전용 resolver가 perpendicular plot frame을 해결한다. Marks와
+grids는 원래 plot bounds를 소비한다. 순수 axisTextPlacement grammar가 local align/baseline,
+signed title offset과 multiline 배치를 검증하고 기존 textLines materializer를 재사용한다.
+새 module1개로 entry569, 실제798803packed/3918633unpacked bytes여서 최소1000bytes 단위
+한도를799000/3919000으로 조정했다. 검색815236bytes는816000한도로 갱신하며 payload를
+줄이지 않는다. 설치 consumer Basic gzip190093bytes가190000을 초과하여191000으로만
+조정하고 Full393000/SVG25000은 유지한다. 이전 한도를 통과했다고 보고하지 않는다.
+최종 compact action-card median은 승인된 축 옵션을 유지한1865bytes여서 기존1856을9bytes
+초과한다. 해당 regression ceiling만 실측1865로 갱신하고 최대3360한도(실측3358)는 유지한다.
+
 이 문서는 `ggaction`의 초기 차트 구현 단계가 끝난 뒤 실제 코드에서 확립된 현재
 아키텍처를 기록한다. `INITIAL_ARCHITECTURE.md`는 최초 설계 의도와 논의의 출발점을
 보존하는 역사적 문서다. 이 문서는 그 설계를 Phase 1–6의 구현, 테스트, 리팩토링을
@@ -310,8 +331,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 393,000 bytes |
-| `ggaction/basic` | 190,000 bytes |
+| `ggaction` | 397,000 bytes |
+| `ggaction/basic` | 194,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -357,6 +378,12 @@ Full 상한만 392000으로 조정하고 Basic190000과 SVG25000은 유지한다
 
 ## 실행 계약의 위치
 
+연도/floor 계산, native guide dash, 선택한 범례 block 편집을 통합한 첫0.0.19
+개발 artifact는 Node24.21.0/npm11.19.0에서568개 파일, 압축799,928바이트,
+압축 해제3,916,967바이트다. 동일 source를 stage/pack한 tarball을 직접 측정했다.
+기능 증가분에 따라 압축 상한은800,000, 압축 해제 상한은3,917,000바이트로
+최소1,000바이트 단위만 조정하며 이전 한도 통과로 보고하지 않는다.
+
 0.0.18 릴리스의 기능별 변경 내역을 추가한 패키지는 압축796,344바이트로
 이전796,000바이트 한도를 초과했다. Linux/Node24에서도797,971바이트를
 확인하여 압축 한도를798,000바이트로 조정하고,
@@ -366,6 +393,18 @@ Full 상한만 392000으로 조정하고 Basic190000과 SVG25000은 유지한다
 동일한0.0.18 패키지의 Full bundle은 macOS/Node22에서391,525 gzip바이트,
 Linux/Node24에서392,303바이트다. 지원 환경의 zlib 차이를 포함하도록
 Full 한도를393,000바이트로 한 단계 조정한다. Basic190,000 및 SVG25,000은 유지한다.
+
+line facade의 실행 불가능한 horizontal bandPosition 선언을 수정하고 공개 문서를
+동기화한 Node24.21.0/npm11.19.0 패키지는 798,062바이트다. 이 선언 수정분을
+포함하도록 압축 상한만 다음 1,000바이트 단계인 799,000으로 조정한다.
+승인된 연속 색상 보간·변환 옵션의 구현 checkpoint는 macOS/Node22.23.1,
+npm10.9.8에서 압축 해제3,913,392바이트로 기존3,908,000바이트를 초과했다.
+기능·선언·설치 소비자 증가분을 반영해 unpacked 한도만 다음 최소1,000바이트
+단계인3,914,000으로 조정한다. 설치 소비자의 Basic browser bundle은190,001 gzip
+바이트로190,000을 초과하므로 Basic만 다음1,000바이트 단계인191,000으로 조정한다.
+파일567개·packed798,000, Full393,000 및 SVG25,000은 유지한다.
+지원 Node 버전의 압축 차이와 최종 통합 크기는 별도로 다시 측정한다.
+이 조정은 이전 한도 통과나 테스트 기준의 완화를 뜻하지 않는다.
 
 이 문서는 상태 소유권, 계층 간 의존성과 실행 흐름을 설명한다. 메서드별 매개변수·기본값·추론·지원 조합·오류는 아래 Current 계약이 소유하며 이 문서에 복제하지 않는다. 구현 상태와 direct/internal 분류는 [ACTION_INDEX.json](contract/ACTION_INDEX.json), 선언은 `types/`, 자동화된 value vocabulary는 owning runtime registry를 사용한다.
 
@@ -2129,3 +2168,44 @@ package573entries/803727packed/3934180unpacked uses573/804000/3935000limits.
 Browser Full395897/Basic191800bytes uses396000/192000gzip limits. Existing
 coverage and per-file floors remain unchanged. These are feature-growth budgets,
 not a declaration that the full realistic option matrix has completed.
+
+### 첫 네 기능 통합의 검색 측정
+
+계산 두 옵션·Cartesian dash·범례 channel selector의 통합 검색 JSON은 815157bytes다.
+기존815000을 초과하므로 내용과 예제를 유지하고 공유 한도만 최소1000bytes 단위인816000으로 갱신했다.
+
+### 열네 승인 기능의 누적 통합 측정
+
+색상 세 옵션·축 배치 네 옵션·point shape 두 종류·sampled size label map을 합친
+Node24.21.0/npm11.19.0 staged package는569entries, packed803290/unpacked3932847bytes다.
+독립 branch 한도를 누적 결과에 적용할 수 없어 최소1000bytes 단위로804000/3933000으로
+조정했다. 검색은816898bytes로817000 한도를 적용했다. 전체 옵션·예제를 보존했으며
+이전 한도 통과를 주장하지 않는다.
+
+누적 설치 소비자14기능의 동일 minified bundle은 Node22에서 Full394038/Basic191023,
+Node24에서 Full394803/Basic191552 gzip bytes다. 공유 owner와 canonical table/README를
+Full395000·Basic192000으로 동기화하고 SVG25000은 유지했다. 1000bytes 최소 단계이며
+기존393000/191000을 통과한 것으로 보고하지 않는다.
+
+### 단일 glyph source의 명시적인 합성
+
+Bar editor의 optional semantic mark.blend 한 곳이 per-bar difference 의도를 소유한다.
+기존 materializer는 rect/path item에만 concrete blend를 명시적으로 물질화한다.
+Renderer는 이 concrete property만 소비하며 의미를 해석하지 않는다. SVG는 한 element의
+fill+stroke와 root isolation을 사용한다. Canvas의 private isolated owner는 기존 pure
+graphicBounds로 visible stroke bounds를 구하고 전체 capability/자원 preflight 후
+한 transparent surface를 재사용한다. Glyph source를 opacity1로 그린 뒤 destination에
+mark opacity와 difference를 한 번 적용한다. 공유 raster limits는 private limits owner다.
+DOM/Offscreen/native 동형 constructor와 Node PNG/PDF가 전달한 private createCanvas를
+사용하며 native import가 browser entry에 유입되지 않는다. Surface/plan은 ephemeral이고
+프로그램 저장 모양에는 backend object가 없다. PDF의 해당 glyph source만 raster다.
+독립 PDF8bit검사는 Poppler를 쓰며 renderer CI/release job에서 decoder를 설치한다.
+
+신규 private owner2개를 포함한 Node24.21.0/npm11.19.0 staged package는
+571entries, packed806317/unpacked3943154bytes다. 한도는571/807000/3944000으로
+최소1000bytes 단위 갱신했다. 기존569/804000/3933000 통과로 보고하지 않는다.
+
+같은 installed consumer의 Full/Basic gzip은 Node22에서395629/192616,
+Node24에서396420/193109bytes다. 공유 예산을 최소1000bytes 단위397000/194000으로
+갱신하고 SVG25000은 유지했다. README/current architecture table도 같은 owner 값이다.
+공개 검색은817417bytes이며 내용 축소 없이818000 한도를 적용했다.

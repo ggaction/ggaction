@@ -5,9 +5,13 @@ import { normalizeLegendBorderDash } from "../grammar/legendBorder.js";
 import { normalizeNumericDisplayLabelMap } from "../grammar/displayLabels.js";
 import { isContinuousSizeScaleType } from "../grammar/scales/size.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
+import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
+import { validateAxisTextPlacement } from "../grammar/axisTextPlacement.js";
 import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
+import { normalizeColorInterpolationOptions } from "../grammar/scales/color.js";
+import { normalizeTransformParameters } from "../grammar/scales/transformed.js";
 import { validateLegendGroupState } from "../grammar/legendGroups.js";
 import { normalizeGradientDirection, validateLegendGradient } from "../grammar/legendGradient.js";
 import { normalizeTextMetricProfile } from "../core/textMetricProfile.js";
@@ -142,6 +146,12 @@ export function validateProgramState(program, path) {
     }
     resources.set(referenceKind, entries);
     for (const resource of entries.values()) {
+      if (kind === "scale") {
+        normalizeColorInterpolationOptions(resource.interpolate, resource);
+        if (resource.type === "pow") normalizeTransformParameters("pow", {
+          ...(resource.exponent === undefined ? {} : {exponent:resource.exponent})
+        });
+      }
       for (const [key, value] of Object.entries(resource)) {
         if (key !== "id") validateSemanticProperties(program, value, `${kind}[${resource.id}].${key}`);
       }
@@ -154,6 +164,22 @@ export function validateProgramState(program, path) {
   for (const key of ["resolvedScales", "materializationConfigs", "context"]) requireObject(program[key], `${path}.${key}`);
   for (const key of ["marks", "guides"]) requireObject(program.materializationConfigs[key], `${path}.materializationConfigs.${key}`);
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
+  for (const config of [
+    ...Object.values(program.guideConfigs.axis ?? {}).map(axis => axis.ticks),
+    ...["horizontal", "vertical"].map(direction => program.guideConfigs.grid?.[direction])
+  ]) {
+    if (config?.strokeDash !== undefined) validateGuideDash(config.strokeDash);
+    if (config?.strokeDashMap !== undefined) normalizeGuideDashMap(config.strokeDashMap, { reset: false });
+  }
+  for (const channel of ["x", "y"]) {
+    const axis = program.guideConfigs.axis?.[channel];
+    if (axis?.frame !== undefined) {
+      exactKeys(axis.frame, ["offset"], `${path}.guides.axis.${channel}.frame`);
+      validateNonNegativeFinite(axis.frame.offset, "Axis frame offset");
+    }
+    if (axis?.labels !== undefined) validateAxisTextPlacement(axis.labels);
+    if (axis?.title !== undefined) validateAxisTextPlacement(axis.title, { title: true });
+  }
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
     if (localLegendPosition(config) !== undefined) {
@@ -244,6 +270,10 @@ export function validateProgramState(program, path) {
     requireObject(scale, `${path}.resolvedScales.${id}`);
     requireArray(scale.domain, `${path}.resolvedScales.${id}.domain`);
     requireArray(scale.range, `${path}.resolvedScales.${id}.range`);
+    normalizeColorInterpolationOptions(scale.interpolate, scale);
+    if (scale.type === "pow") normalizeTransformParameters("pow", {
+      ...(scale.exponent === undefined ? {} : {exponent:scale.exponent})
+    });
     if (!resources.get("scale").has(id) || scale.type !== resources.get("scale").get(id).type) {
       throw invalidSnapshot(`Resolved scale "${id}" has no matching semantic owner/type.`, path);
     }

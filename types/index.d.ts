@@ -21,6 +21,7 @@ export type {
   AxisLabelStyleOptions,
   AxisLineStyleOptions,
   AxisTickOptions,
+  CartesianGuideDashMap,
   AxisTicksAndLabelsOptions,
   AxisTickStyleOptions,
   AxisTitleOptions,

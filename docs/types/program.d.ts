@@ -802,12 +802,18 @@ export type ComputedExpression =
       readonly replacement: string;
     }
   | {
+      readonly op: "datePart";
+      readonly part: "year";
+      readonly operand: ComputedExpression;
+      readonly timeZone?: string;
+    }
+  | {
       readonly op: "parseTime";
       readonly operand: ComputedExpression;
       readonly format?: ParseTimeFormat;
     }
   | {
-      readonly op: "negate" | "absolute" | "log" | "sqrt" | "not" | "isNull" | "toNumber";
+      readonly op: "negate" | "absolute" | "log" | "sqrt" | "floor" | "not" | "isNull" | "toNumber";
       readonly operand: ComputedExpression;
     }
   | {
@@ -1234,7 +1240,7 @@ export interface SemanticLayer {
   readonly data?: string;
   readonly source?: string;
   readonly coordinate?: string;
-  readonly mark?: Readonly<{ type?: string; missing?: "error" | "break" | "skip"; [key: string]: unknown }>;
+  readonly mark?: Readonly<{ type?: string; missing?: "error" | "break" | "skip"; blend?: "difference"; [key: string]: unknown }>;
   readonly layout?: Readonly<{ mode?: ColorLayout }>;
   readonly derivedBindings?: Readonly<{ regression?: Readonly<{ mode: "follow"; roles: readonly ["data", "x", "y"] }> }>;
   readonly encoding?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
@@ -1338,9 +1344,16 @@ export interface AxisTickStyleOptions extends AxisLineStyleOptions {
   length?: number;
 }
 export interface CartesianAxisTickStyleOptions extends AxisTickStyleOptions {
+  strokeDash?: readonly number[];
+  /** Typed raw-value overrides. Empty arrays and auto clear only the map. */
+  strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Signed logical pixels along the axis: positive right for x, down for y. */
   alongOffset?: number;
 }
+export type CartesianGuideDashMap = ReadonlyArray<Readonly<{
+  value: AxisValue;
+  strokeDash: readonly number[];
+}>>;
 export interface AxisLabelStyleOptions {
   offset?: number;
   format?: AxisFormat;
@@ -1354,6 +1367,8 @@ export type CartesianAxisLabelColorMap = ReadonlyArray<Readonly<{
   color: string;
 }>>;
 export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Local text alignment before rotation; omitted edits retain existing intent. */
+  align?: "left" | "center" | "right";
   /** Typed raw-tick color overrides; missing entries use color. Auto removes the map. */
   colorMap?: CartesianAxisLabelColorMap | "auto";
   /** Keep unrotated label bounds inside the mapped axis span; defaults to false. */
@@ -1380,11 +1395,16 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
   labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 }
 export interface AxisTitleOptions<P extends string> {
-  /** Hard breaks retain ordered centered lines, spaced at 1.2 times fontSize. */
+  /** Signed logical pixels: positive right for x, down for y, independent of scale reversal. */
+  alongOffset?: number;
+  align?: "left" | "center" | "right";
+  baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom";
+  /** Hard breaks retain ordered lines with the chosen block baseline, spaced at 1.2 times fontSize. */
   text?: string;
   scale?: string;
   position?: P;
   at?: "start" | "center" | "end" | number;
+  /** Signed distance from the axis frame: positive outward, negative inward. */
   offset?: number;
   rotation?: RotationInput;
   color?: string;
@@ -1393,6 +1413,8 @@ export interface AxisTitleOptions<P extends string> {
   fontWeight?: string | number;
 }
 export interface CompleteAxisOptions<P extends string> {
+  /** Non-negative outward displacement of the complete axis frame in logical pixels. */
+  offset?: number;
   scale?: string;
   coordinate?: string;
   position?: P;
@@ -1542,6 +1564,7 @@ export interface EditRadialAxisOptions
 }
 
 export interface GridDirectionOptions {
+  strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Signed logical pixels along the scale: vertical lines right, horizontal lines down. */
   alongOffset?: number;
   /** Grid draw order relative to marks at zero: positive above, nonpositive behind. */
@@ -1557,6 +1580,7 @@ export interface GridDirectionOptions {
   strokeDash?: readonly number[];
 }
 export interface EditGridOptions {
+  strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Absolute signed logical-pixel displacement; omission preserves the current value. */
   alongOffset?: number;
   /** Preserve omitted order; finite values sort Cartesian grids relative to marks at zero. */
@@ -1748,6 +1772,8 @@ export interface ScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  whitePoint?: "d65" | "d50";
+  gamma?: number;
   midpoint?: number | "auto";
   unknown?: unknown;
 }
@@ -1903,6 +1929,8 @@ export interface EditScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  whitePoint?: "d65" | "d50" | "auto";
+  gamma?: number | "auto";
   midpoint?: number | "auto";
   unknown?: unknown;
 }
@@ -1929,12 +1957,10 @@ export type EditRScaleOptions = FocusedScaleSelection & WithoutScaleId<RadiusSca
   radialMapping?: RadialMapping;
 };
 export type EditColorScaleOptions = FocusedScaleSelection & WithoutScaleId<
-  CategoricalColorScaleOptions | ContinuousColorScaleOptions | DiscretizedColorScaleOptions
->;
-export type EditStrokeScaleOptions = { target: string } & Omit<
-  EditColorScaleOptions,
-  "id" | "target"
->;
+  CategoricalColorScaleOptions | Omit<ContinuousColorScaleOptions, "whitePoint" | "gamma"> | DiscretizedColorScaleOptions
+> & { whitePoint?: "d65" | "d50" | "auto"; gamma?: number | "auto" };
+type WithoutScaleSelection<T> = T extends unknown ? Omit<T, "id" | "target"> : never;
+export type EditStrokeScaleOptions = { target: string } & WithoutScaleSelection<EditColorScaleOptions>;
 type ExistingSizeScaleEditPatch = {
   type?: never;
   domain?: "auto" | readonly [string | number | boolean, ...(string | number | boolean)[]];
@@ -2961,7 +2987,7 @@ type BasicColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 type NonPointCategoricalColorChannel =
@@ -3026,7 +3052,7 @@ type RectColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 export type BasicSizeChannel = string | WithoutEncodingTarget<SizeEncodingOptions>;
@@ -3592,7 +3618,13 @@ export interface CreateLinePlotOptions {
     opacity?: number;
     closed?: false;
   };
-  guides?: false | (Omit<CPathGuides, "legend"> & {
+  guides?: false | (Omit<CPathGuides, "legend" | "grid"> & {
+    grid?: false | (Omit<CartesianGridOptions, "horizontal"> & {
+      horizontal?: boolean | (Omit<GridDirectionOptions, "bandPosition"> & {
+        /** Line y is continuous; band positioning is available only for categorical x grids. */
+        bandPosition?: never;
+      });
+    });
     legend?: false | (Omit<PathLegendOptions, "order"> & {
       order?: LegendValueOrder | { channel: "x"; values?: never };
     });
@@ -4177,9 +4209,8 @@ export type StrokeDashEncodingOptions =
     };
 
 export type NonPointContinuousColorScaleOptions = ScaleFields<
-  "id" | "interpolate" | "midpoint" | "clamp" | "reverse"
+  "id" | "interpolate" | "whitePoint" | "gamma" | "midpoint" | "clamp" | "reverse"
 > & {
-  type?: "sequential" | "log" | "sqrt" | "symlog";
   base?: number;
   constant?: number;
   domain?: "auto" | readonly [unknown, unknown];
@@ -4188,7 +4219,10 @@ export type NonPointContinuousColorScaleOptions = ScaleFields<
     name: PaletteName;
     extent?: readonly [number, number];
   };
-};
+} & (
+  | { type: "pow"; exponent?: number }
+  | { type?: "sequential" | "log" | "sqrt" | "symlog"; exponent?: never }
+);
 
 export type ContinuousColorScaleOptions =
   NonPointContinuousColorScaleOptions & { unknown?: string };
@@ -4245,7 +4279,7 @@ export type ColorEncodingOptions =
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
       layout?: never;
     };
@@ -4790,6 +4824,8 @@ export interface EditLegendBorderOptions {
 }
 
 export interface EditAxisOptions<P extends string> {
+  /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
+  offset?: number;
   position?: P;
   line?: false | AxisLineStyleOptions;
   ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position">;
@@ -5023,6 +5059,7 @@ export class ChartProgram {
   }): ChartProgram;
   editBarMark(options: RectStyleDetails & {
     target?: string;
+    blend?: "normal" | "difference";
     missing?: "error" | "skip";
     fill?: FillPaint;
     opacity?: number;

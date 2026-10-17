@@ -33,6 +33,20 @@ p.editColorScale({ type: "sqrt", domain: [-100, 100], range: ["black", "white"] 
 p.editStrokeScale({ target: "points", type: "sqrt", domain: [0, 100] });
 p.encodeColor({ field: "m", fieldType: "quantitative", scale: { type: "sqrt" } });
 basic.encodeColor({ field: "m", fieldType: "quantitative", scale: { type: "sqrt" } });
+p.encodeColor({ field: "m", fieldType: "quantitative", scale: { type: "pow", exponent: 3, interpolate: "lab", whitePoint: "d50" } });
+basic.encodeColor({ field: "m", fieldType: "quantitative", scale: { interpolate: "cubehelix", gamma: 2.2 } });
+p.editColorScale({ interpolate: "hcl", whitePoint: "d50" });
+p.editColorScale({ whitePoint: "auto" });
+p.editColorScale({ gamma: "auto" });
+p.editColorScale({ type: "pow", exponent: 3 });
+p.editColorScale({ exponent: 1 });
+p.editStrokeScale({ target: "points", type: "pow", exponent: 3 });
+p.editStrokeScale({ target: "points", interpolate: "lab", whitePoint: "d50" });
+p.editStrokeScale({ target: "points", gamma: "auto" });
+// @ts-expect-error white-point convention is closed
+p.editColorScale({ whitePoint: "d55" });
+// @ts-expect-error gamma creation does not accept the editor reset value
+p.encodeColor({ field: "m", fieldType: "quantitative", scale: { interpolate: "cubehelix", gamma: "auto" } });
 // @ts-expect-error square-root color has fixed exponent
 p.encodeColor({ field: "m", fieldType: "quantitative", scale: { type: "sqrt", exponent: 0.5 } });
 // @ts-expect-error temporal color remains sequential

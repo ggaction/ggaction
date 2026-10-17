@@ -30,7 +30,7 @@ const pages = Object.freeze([
     expected: {
       shared: { width: 908, height: 588 },
       independent: { width: 908, height: 588 },
-      outer: { width: 1044, height: 588 }
+      outer: { width: 971, height: 588 }
     }
   }),
   Object.freeze({

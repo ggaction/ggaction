@@ -1,0 +1,1608 @@
+{
+  "status": "passed",
+  "programs": 15,
+  "datasets": 3,
+  "occurrencesPerMode": 15,
+  "results": [
+    {
+      "dataset": "tt-penguins",
+      "repetition": 0,
+      "source": {
+        "sourceDataset": "tt-penguins",
+        "sourceRowIndexBasis": "zero-based-data-row-in-pinned-csv",
+        "sourceRowCount": 160,
+        "minimumSourceRow": 0,
+        "maximumSourceRow": 343,
+        "sourceSelectionSha256": "cc046037b82c7c30dacc0dae52d40e349b12c25370cdace17faed7d8e0135a79",
+        "indexEncoding": "sorted-zero-based-indexes-sha256-v1",
+        "fieldBindings": {
+          "measure": "body_mass_g",
+          "secondaryMeasure": "bill_length_mm",
+          "dimension": "species",
+          "secondaryDimension": "island",
+          "temporal": "year",
+          "order": "year",
+          "label": "species"
+        },
+        "transformations": [
+          {
+            "op": "filter-valid",
+            "fields": [
+              "body_mass_g",
+              "species"
+            ]
+          },
+          {
+            "op": "top-groups",
+            "field": "species",
+            "limit": 8
+          },
+          {
+            "op": "top-subgroups",
+            "field": "island",
+            "limit": 8
+          },
+          {
+            "op": "witness-preserving-even-sample",
+            "limit": 160,
+            "eligibleRowCount": 342,
+            "displayedRowCount": 160,
+            "strata": [
+              "species",
+              "island"
+            ],
+            "witnesses": [
+              "first",
+              "last",
+              "measure-min",
+              "measure-max",
+              "retained-dimension"
+            ]
+          },
+          {
+            "op": "source-order-numeric-projection",
+            "field": "year"
+          },
+          {
+            "op": "project",
+            "bindings": {
+              "measure": "body_mass_g",
+              "secondaryMeasure": "bill_length_mm",
+              "dimension": "species",
+              "secondaryDimension": "island",
+              "temporal": "year",
+              "order": "year",
+              "label": "species"
+            }
+          },
+          {
+            "op": "filter-valid-analysis-x",
+            "field": "bill_length_mm"
+          },
+          {
+            "op": "absolute-magnitude",
+            "source": "value",
+            "as": "positive"
+          },
+          {
+            "op": "min-max-normalize",
+            "source": "value",
+            "as": "opacity"
+          },
+          {
+            "op": "stable-angle-rank",
+            "source": "sourceRowIndex",
+            "as": "angle"
+          },
+          {
+            "op": "lifecycle-projection",
+            "kind": "style"
+          },
+          {
+            "op": "direct-lifecycle-field-projection",
+            "purpose": "derive positive, interval, position, label, and grouping witnesses without adding rows",
+            "sourceRowCount": 160
+          }
+        ]
+      },
+      "barItems": 1,
+      "svgBytes": 97608,
+      "modes": [
+        "normal",
+        "difference"
+      ]
+    },
+    {
+      "dataset": "tt-penguins",
+      "repetition": 1,
+      "source": {
+        "sourceDataset": "tt-penguins",
+        "sourceRowIndexBasis": "zero-based-data-row-in-pinned-csv",
+        "sourceRowCount": 160,
+        "minimumSourceRow": 0,
+        "maximumSourceRow": 343,
+        "sourceSelectionSha256": "cc046037b82c7c30dacc0dae52d40e349b12c25370cdace17faed7d8e0135a79",
+        "indexEncoding": "sorted-zero-based-indexes-sha256-v1",
+        "fieldBindings": {
+          "measure": "body_mass_g",
+          "secondaryMeasure": "bill_length_mm",
+          "dimension": "species",
+          "secondaryDimension": "island",
+          "temporal": "year",
+          "order": "year",
+          "label": "species"
+        },
+        "transformations": [
+          {
+            "op": "filter-valid",
+            "fields": [
+              "body_mass_g",
+              "species"
+            ]
+          },
+          {
+            "op": "top-groups",
+            "field": "species",
+            "limit": 8
+          },
+          {
+            "op": "top-subgroups",
+            "field": "island",
+            "limit": 8
+          },
+          {
+            "op": "witness-preserving-even-sample",
+            "limit": 160,
+            "eligibleRowCount": 342,
+            "displayedRowCount": 160,
+            "strata": [
+              "species",
+              "island"
+            ],
+            "witnesses": [
+              "first",
+              "last",
+              "measure-min",
+              "measure-max",
+              "retained-dimension"
+            ]
+          },
+          {
+            "op": "source-order-numeric-projection",
+            "field": "year"
+          },
+          {
+            "op": "project",
+            "bindings": {
+              "measure": "body_mass_g",
+              "secondaryMeasure": "bill_length_mm",
+              "dimension": "species",
+              "secondaryDimension": "island",
+              "temporal": "year",
+              "order": "year",
+              "label": "species"
+            }
+          },
+          {
+            "op": "filter-valid-analysis-x",
+            "field": "bill_length_mm"
+          },
+          {
+            "op": "absolute-magnitude",
+            "source": "value",
+            "as": "positive"
+          },
+          {
+            "op": "min-max-normalize",
+            "source": "value",
+            "as": "opacity"
+          },
+          {
+            "op": "stable-angle-rank",
+            "source": "sourceRowIndex",
+            "as": "angle"
+          },
+          {
+            "op": "lifecycle-projection",
+            "kind": "style"
+          },
+          {
+            "op": "direct-lifecycle-field-projection",
+            "purpose": "derive positive, interval, position, label, and grouping witnesses without adding rows",
+            "sourceRowCount": 160
+          }
+        ]
+      },
+      "barItems": 1,
+      "svgBytes": 97608,
+      "modes": [
+        "normal",
+        "difference"
+      ]
+    },
+    {
+      "dataset": "tt-penguins",
+      "repetition": 2,
+      "source": {
+        "sourceDataset": "tt-penguins",
+        "sourceRowIndexBasis": "zero-based-data-row-in-pinned-csv",
+        "sourceRowCount": 160,
+        "minimumSourceRow": 0,
+        "maximumSourceRow": 343,
+        "sourceSelectionSha256": "cc046037b82c7c30dacc0dae52d40e349b12c25370cdace17faed7d8e0135a79",
+        "indexEncoding": "sorted-zero-based-indexes-sha256-v1",
+        "fieldBindings": {
+          "measure": "body_mass_g",
+          "secondaryMeasure": "bill_length_mm",
+          "dimension": "species",
+          "secondaryDimension": "island",
+          "temporal": "year",
+          "order": "year",
+          "label": "species"
+        },
+        "transformations": [
+          {
+            "op": "filter-valid",
+            "fields": [
+              "body_mass_g",
+              "species"
+            ]
+          },
+          {
+            "op": "top-groups",
+            "field": "species",
+            "limit": 8
+          },
+          {
+            "op": "top-subgroups",
+            "field": "island",
+            "limit": 8
+          },
+          {
+            "op": "witness-preserving-even-sample",
+            "limit": 160,
+            "eligibleRowCount": 342,
+            "displayedRowCount": 160,
+            "strata": [
+              "species",
+              "island"
+            ],
+            "witnesses": [
+              "first",
+              "last",
+              "measure-min",
+              "measure-max",
+              "retained-dimension"
+            ]
+          },
+          {
+            "op": "source-order-numeric-projection",
+            "field": "year"
+          },
+          {
+            "op": "project",
+            "bindings": {
+              "measure": "body_mass_g",
+              "secondaryMeasure": "bill_length_mm",
+              "dimension": "species",
+              "secondaryDimension": "island",
+              "temporal": "year",
+              "order": "year",
+              "label": "species"
+            }
+          },
+          {
+            "op": "filter-valid-analysis-x",
+            "field": "bill_length_mm"
+          },
+          {
+            "op": "absolute-magnitude",
+            "source": "value",
+            "as": "positive"
+          },
+          {
+            "op": "min-max-normalize",
+            "source": "value",
+            "as": "opacity"
+          },
+          {
+            "op": "stable-angle-rank",
+            "source": "sourceRowIndex",
+            "as": "angle"
+          },
+          {
+            "op": "lifecycle-projection",
+            "kind": "style"
+          },
+          {
+            "op": "direct-lifecycle-field-projection",
+            "purpose": "derive positive, interval, position, label, and grouping witnesses without adding rows",
+            "sourceRowCount": 160
+          }
+        ]
+      },
+      "barItems": 1,
+      "svgBytes": 97608,
+      "modes": [
+        "normal",
+        "difference"
+      ]
+    },
+    {
+      "dataset": "tt-penguins",
+      "repetition": 3,
+      "source": {
+        "sourceDataset": "tt-penguins",
+        "sourceRowIndexBasis": "zero-based-data-row-in-pinned-csv",
+        "sourceRowCount": 160,
+        "minimumSourceRow": 0,
+        "maximumSourceRow": 343,
+        "sourceSelectionSha256": "cc046037b82c7c30dacc0dae52d40e349b12c25370cdace17faed7d8e0135a79",
+        "indexEncoding": "sorted-zero-based-indexes-sha256-v1",
+        "fieldBindings": {
+          "measure": "body_mass_g",
+          "secondaryMeasure": "bill_length_mm",
+          "dimension": "species",
+          "secondaryDimension": "island",
+          "temporal": "year",
+          "order": "year",
+          "label": "species"
+        },
+        "transformations": [
+          {
+            "op": "filter-valid",
+            "fields": [
+              "body_mass_g",
+              "species"
+            ]
+          },
+          {
+            "op": "top-groups",
+            "field": "species",
+            "limit": 8
+          },
+          {
+            "op": "top-subgroups",
+            "field": "island",
+            "limit": 8
+          },
+          {
+            "op": "witness-preserving-even-sample",
+            "limit": 160,
+            "eligibleRowCount": 342,
+            "displayedRowCount": 160,
+            "strata": [
+              "species",
+              "island"
+            ],
+            "witnesses": [
+              "first",
+              "last",
+              "measure-min",
+              "measure-max",
+              "retained-dimension"
+            ]
+          },
+          {
+            "op": "source-order-numeric-projection",
+            "field": "year"
+          },
+          {
+            "op": "project",
+            "bindings": {
+              "measure": "body_mass_g",
+              "secondaryMeasure": "bill_length_mm",
+              "dimension": "species",
+              "secondaryDimension": "island",
+              "temporal": "year",
+              "order": "year",
+              "label": "species"
+            }
+          },
+          {
+            "op": "filter-valid-analysis-x",
+            "field": "bill_length_mm"
+          },
+          {
+            "op": "absolute-magnitude",
+            "source": "value",
+            "as": "positive"
+          },
+          {
+            "op": "min-max-normalize",
+            "source": "value",
+            "as": "opacity"
+          },
+          {
+            "op": "stable-angle-rank",
+            "source": "sourceRowIndex",
+            "as": "angle"
+          },
+          {
+            "op": "lifecycle-projection",
+            "kind": "style"
+          },
+          {
+            "op": "direct-lifecycle-field-projection",
+            "purpose": "derive positive, interval, position, label, and grouping witnesses without adding rows",
+            "sourceRowCount": 160
+          }
+        ]
+      },
+      "barItems": 1,
+      "svgBytes": 97608,
+      "modes": [
+        "normal",
+        "difference"
+      ]
+    },
+    {
+      "dataset": "tt-penguins",
+      "repetition": 4,
+      "source": {
+        "sourceDataset": "tt-penguins",
+        "sourceRowIndexBasis": "zero-based-data-row-in-pinned-csv",
+        "sourceRowCount": 160,
+        "minimumSourceRow": 0,
+        "maximumSourceRow": 343,
+        "sourceSelectionSha256": "cc046037b82c7c30dacc0dae52d40e349b12c25370cdace17faed7d8e0135a79",
+        "indexEncoding": "sorted-zero-based-indexes-sha256-v1",
+        "fieldBindings": {
+          "measure": "body_mass_g",
+          "secondaryMeasure": "bill_length_mm",
+          "dimension": "species",
+          "secondaryDimension": "island",
+          "temporal": "year",
+          "order": "year",
+          "label": "species"
+        },
+        "transformations": [
+          {
+            "op": "filter-valid",
+            "fields": [
+              "body_mass_g",
+              "species"
+            ]
+          },
+          {
+            "op": "top-groups",
+            "field": "species",
+            "limit": 8
+          },
+          {
+            "op": "top-subgroups",
+            "field": "island",
+            "limit": 8
+          },
+          {
+            "op": "witness-preserving-even-sample",
+            "limit": 160,
+            "eligibleRowCount": 342,
+            "displayedRowCount": 160,
+            "strata": [
+              "species",
+              "island"
+            ],
+            "witnesses": [
+              "first",
+              "last",
+              "measure-min",
+              "measure-max",
+              "retained-dimension"
+            ]
+          },
+          {
+            "op": "source-order-numeric-projection",
+            "field": "year"
+          },
+          {
+            "op": "project",
+            "bindings": {
+              "measure": "body_mass_g",
+              "secondaryMeasure": "bill_length_mm",
+              "dimension": "species",
+              "secondaryDimension": "island",
+              "temporal": "year",
+              "order": "year",
+              "label": "species"
+            }
+          },
+          {
+            "op": "filter-valid-analysis-x",
+            "field": "bill_length_mm"
+          },
+          {
+            "op": "absolute-magnitude",
+            "source": "value",
+            "as": "positive"
+          },
+          {
+            "op": "min-max-normalize",
+            "source": "value",
+            "as": "opacity"
+          },
+          {
+            "op": "stable-angle-rank",
+            "source": "sourceRowIndex",
+            "as": "angle"
+          },
+          {
+            "op": "lifecycle-projection",
+            "kind": "style"
+          },
+          {
+            "op": "direct-lifecycle-field-projection",
+            "purpose": "derive positive, interval, position, label, and grouping witnesses without adding rows",
+            "sourceRowCount": 160
+          }
+        ]
+      },
+      "barItems": 1,
+      "svgBytes": 97608,
+      "modes": [
+        "normal",
+        "difference"
+      ]
+    },
+    {
+      "dataset": "tt-global-temperatures",
+      "repetition": 0,
+      "source": {
+        "sourceDataset": "tt-global-temperatures",
+        "sourceRowIndexBasis": "zero-based-data-row-in-pinned-csv",
+        "sourceRowCount": 8,
+        "minimumSourceRow": 0,
+        "maximumSourceRow": 7,
+        "sourceSelectionSha256": "1eacc8c10d0cdd8e4fef3d60fc25e5f32b3e29675e63ec3cbe4d9f244d1bfb40",
+        "indexEncoding": "sorted-zero-based-indexes-sha256-v1",
+        "fieldBindings": {
+          "measure": "J-D",
+          "secondaryMeasure": "Jan",
+          "dimension": "Year",
+          "temporal": "Year",
+          "order": "Year",
+          "label": "Year"
+        },
+        "transformations": [
+          {
+            "op": "filter-valid",
+            "fields": [
+              "J-D",
+              "Year"
+            ]
+          },
+          {
+            "op": "top-groups",
+            "field": "Year",
+            "limit": 8
+          },
+          {
+            "op": "witness-preserving-even-sample",
+            "limit": 160,
+            "eligibleRowCount": 8,
+            "displayedRowCount": 8,
+            "strata": [
+              "Year"
+            ],
+            "witnesses": [
+              "first",
+              "last",
+              "measure-min",
+              "measure-max",
+              "retained-dimension"
+            ]
+          },
+          {
+            "op": "median-split",
+            "field": "J-D",
+            "as": "subgroup",
+            "purpose": "compare below-median and at-or-above-median observations"
+          },
+          {
+            "op": "source-order-numeric-projection",
+            "field": "Year"
+          },
+          {
+            "op": "project",
+            "bindings": {
+              "measure": "J-D",
+              "secondaryMeasure": "Jan",
+              "dimension": "Year",
+              "temporal": "Year",
+              "order": "Year",
+              "label": "Year"
+            }
+          },
+          {
+            "op": "filter-valid-analysis-x",
+            "field": "Jan"
+          },
+          {
+            "op": "absolute-magnitude",
+            "source": "value",
+            "as": "positive"
+          },
+          {
+            "op": "min-max-normalize",
+            "source": "value",
+            "as": "opacity"
+          },
+          {
+            "op": "stable-angle-rank",
+            "source": "sourceRowIndex",
+            "as": "angle"
+          },
+          {
+            "op": "lifecycle-projection",
+            "kind": "style"
+          },
+          {
+            "op": "direct-lifecycle-field-projection",
+            "purpose": "derive positive, interval, position, label, and grouping witnesses without adding rows",
+            "sourceRowCount": 8
+          }
+        ]
+      },
+      "barItems": 8,
+      "svgBytes": 70006,
+      "modes": [
+        "normal",
+        "difference"
+      ]
+    },
+    {
+      "dataset": "tt-global-temperatures",
+      "repetition": 1,
+      "source": {
+        "sourceDataset": "tt-global-temperatures",
+        "sourceRowIndexBasis": "zero-based-data-row-in-pinned-csv",
+        "sourceRowCount": 8,
+        "minimumSourceRow": 0,
+        "maximumSourceRow": 7,
+        "sourceSelectionSha256": "1eacc8c10d0cdd8e4fef3d60fc25e5f32b3e29675e63ec3cbe4d9f244d1bfb40",
+        "indexEncoding": "sorted-zero-based-indexes-sha256-v1",
+        "fieldBindings": {
+          "measure": "J-D",
+          "secondaryMeasure": "Jan",
+          "dimension": "Year",
+          "temporal": "Year",
+          "order": "Year",
+          "label": "Year"
+        },
+        "transformations": [
+          {
+            "op": "filter-valid",
+            "fields": [
+              "J-D",
+              "Year"
+            ]
+          },
+          {
+            "op": "top-groups",
+            "field": "Year",
+            "limit": 8
+          },
+          {
+            "op": "witness-preserving-even-sample",
+            "limit": 160,
+            "eligibleRowCount": 8,
+            "displayedRowCount": 8,
+            "strata": [
+              "Year"
+            ],
+            "witnesses": [
+              "first",
+              "last",
+              "measure-min",
+              "measure-max",
+              "retained-dimension"
+            ]
+          },
+          {
+            "op": "median-split",
+            "field": "J-D",
+            "as": "subgroup",
+            "purpose": "compare below-median and at-or-above-median observations"
+          },
+          {
+            "op": "source-order-numeric-projection",
+            "field": "Year"
+          },
+          {
+            "op": "project",
+            "bindings": {
+              "measure": "J-D",
+              "secondaryMeasure": "Jan",
+              "dimension": "Year",
+              "temporal": "Year",
+              "order": "Year",
+              "label": "Year"
+            }
+          },
+          {
+            "op": "filter-valid-analysis-x",
+            "field": "Jan"
+          },
+          {
+            "op": "absolute-magnitude",
+            "source": "value",
+            "as": "positive"
+          },
+          {
+            "op": "min-max-normalize",
+            "source": "value",
+            "as": "opacity"
+          },
+          {
+            "op": "stable-angle-rank",
+            "source": "sourceRowIndex",
+            "as": "angle"
+          },
+          {
+            "op": "lifecycle-projection",
+            "kind": "style"
+          },
+          {
+            "op": "direct-lifecycle-field-projection",
+            "purpose": "derive positive, interval, position, label, and grouping witnesses without adding rows",
+            "sourceRowCount": 8
+          }
+        ]
+      },
+      "barItems": 8,
+      "svgBytes": 70006,
+      "modes": [
+        "normal",
+        "difference"
+      ]
+    },
+    {
+      "dataset": "tt-global-temperatures",
+      "repetition": 2,
+      "source": {
+        "sourceDataset": "tt-global-temperatures",
+        "sourceRowIndexBasis": "zero-based-data-row-in-pinned-csv",
+        "sourceRowCount": 8,
+        "minimumSourceRow": 0,
+        "maximumSourceRow": 7,
+        "sourceSelectionSha256": "1eacc8c10d0cdd8e4fef3d60fc25e5f32b3e29675e63ec3cbe4d9f244d1bfb40",
+        "indexEncoding": "sorted-zero-based-indexes-sha256-v1",
+        "fieldBindings": {
+          "measure": "J-D",
+          "secondaryMeasure": "Jan",
+          "dimension": "Year",
+          "temporal": "Year",
+          "order": "Year",
+          "label": "Year"
+        },
+        "transformations": [
+          {
+            "op": "filter-valid",
+            "fields": [
+              "J-D",
+              "Year"
+            ]
+          },
+          {
+            "op": "top-groups",
+            "field": "Year",
+            "limit": 8
+          },
+          {
+            "op": "witness-preserving-even-sample",
+            "limit": 160,
+            "eligibleRowCount": 8,
+            "displayedRowCount": 8,
+            "strata": [
+              "Year"
+            ],
+            "witnesses": [
+              "first",
+              "last",
+              "measure-min",
+              "measure-max",
+              "retained-dimension"
+            ]
+          },
+          {
+            "op": "median-split",
+            "field": "J-D",
+            "as": "subgroup",
+            "purpose": "compare below-median and at-or-above-median observations"
+          },
+          {
+            "op": "source-order-numeric-projection",
+            "field": "Year"
+          },
+          {
+            "op": "project",
+            "bindings": {
+              "measure": "J-D",
+              "secondaryMeasure": "Jan",
+              "dimension": "Year",
+              "temporal": "Year",
+              "order": "Year",
+              "label": "Year"
+            }
+          },
+          {
+            "op": "filter-valid-analysis-x",
+            "field": "Jan"
+          },
+          {
+            "op": "absolute-magnitude",
+            "source": "value",
+            "as": "positive"
+          },
+          {
+            "op": "min-max-normalize",
+            "source": "value",
+            "as": "opacity"
+          },
+          {
+            "op": "stable-angle-rank",
+            "source": "sourceRowIndex",
+            "as": "angle"
+          },
+          {
+            "op": "lifecycle-projection",
+            "kind": "style"
+          },
+          {
+            "op": "direct-lifecycle-field-projection",
+            "purpose": "derive positive, interval, position, label, and grouping witnesses without adding rows",
+            "sourceRowCount": 8
+          }
+        ]
+      },
+      "barItems": 8,
+      "svgBytes": 70006,
+      "modes": [
+        "normal",
+        "difference"
+      ]
+    },
+    {
+      "dataset": "tt-global-temperatures",
+      "repetition": 3,
+      "source": {
+        "sourceDataset": "tt-global-temperatures",
+        "sourceRowIndexBasis": "zero-based-data-row-in-pinned-csv",
+        "sourceRowCount": 8,
+        "minimumSourceRow": 0,
+        "maximumSourceRow": 7,
+        "sourceSelectionSha256": "1eacc8c10d0cdd8e4fef3d60fc25e5f32b3e29675e63ec3cbe4d9f244d1bfb40",
+        "indexEncoding": "sorted-zero-based-indexes-sha256-v1",
+        "fieldBindings": {
+          "measure": "J-D",
+          "secondaryMeasure": "Jan",
+          "dimension": "Year",
+          "temporal": "Year",
+          "order": "Year",
+          "label": "Year"
+        },
+        "transformations": [
+          {
+            "op": "filter-valid",
+            "fields": [
+              "J-D",
+              "Year"
+            ]
+          },
+          {
+            "op": "top-groups",
+            "field": "Year",
+            "limit": 8
+          },
+          {
+            "op": "witness-preserving-even-sample",
+            "limit": 160,
+            "eligibleRowCount": 8,
+            "displayedRowCount": 8,
+            "strata": [
+              "Year"
+            ],
+            "witnesses": [
+              "first",
+              "last",
+              "measure-min",
+              "measure-max",
+              "retained-dimension"
+            ]
+          },
+          {
+            "op": "median-split",
+            "field": "J-D",
+            "as": "subgroup",
+            "purpose": "compare below-median and at-or-above-median observations"
+          },
+          {
+            "op": "source-order-numeric-projection",
+            "field": "Year"
+          },
+          {
+            "op": "project",
+            "bindings": {
+              "measure": "J-D",
+              "secondaryMeasure": "Jan",
+              "dimension": "Year",
+              "temporal": "Year",
+              "order": "Year",
+              "label": "Year"
+            }
+          },
+          {
+            "op": "filter-valid-analysis-x",
+            "field": "Jan"
+          },
+          {
+            "op": "absolute-magnitude",
+            "source": "value",
+            "as": "positive"
+          },
+          {
+            "op": "min-max-normalize",
+            "source": "value",
+            "as": "opacity"
+          },
+          {
+            "op": "stable-angle-rank",
+            "source": "sourceRowIndex",
+            "as": "angle"
+          },
+          {
+            "op": "lifecycle-projection",
+            "kind": "style"
+          },
+          {
+            "op": "direct-lifecycle-field-projection",
+            "purpose": "derive positive, interval, position, label, and grouping witnesses without adding rows",
+            "sourceRowCount": 8
+          }
+        ]
+      },
+      "barItems": 8,
+      "svgBytes": 70006,
+      "modes": [
+        "normal",
+        "difference"
+      ]
+    },
+    {
+      "dataset": "tt-global-temperatures",
+      "repetition": 4,
+      "source": {
+        "sourceDataset": "tt-global-temperatures",
+        "sourceRowIndexBasis": "zero-based-data-row-in-pinned-csv",
+        "sourceRowCount": 8,
+        "minimumSourceRow": 0,
+        "maximumSourceRow": 7,
+        "sourceSelectionSha256": "1eacc8c10d0cdd8e4fef3d60fc25e5f32b3e29675e63ec3cbe4d9f244d1bfb40",
+        "indexEncoding": "sorted-zero-based-indexes-sha256-v1",
+        "fieldBindings": {
+          "measure": "J-D",
+          "secondaryMeasure": "Jan",
+          "dimension": "Year",
+          "temporal": "Year",
+          "order": "Year",
+          "label": "Year"
+        },
+        "transformations": [
+          {
+            "op": "filter-valid",
+            "fields": [
+              "J-D",
+              "Year"
+            ]
+          },
+          {
+            "op": "top-groups",
+            "field": "Year",
+            "limit": 8
+          },
+          {
+            "op": "witness-preserving-even-sample",
+            "limit": 160,
+            "eligibleRowCount": 8,
+            "displayedRowCount": 8,
+            "strata": [
+              "Year"
+            ],
+            "witnesses": [
+              "first",
+              "last",
+              "measure-min",
+              "measure-max",
+              "retained-dimension"
+            ]
+          },
+          {
+            "op": "median-split",
+            "field": "J-D",
+            "as": "subgroup",
+            "purpose": "compare below-median and at-or-above-median observations"
+          },
+          {
+            "op": "source-order-numeric-projection",
+            "field": "Year"
+          },
+          {
+            "op": "project",
+            "bindings": {
+              "measure": "J-D",
+              "secondaryMeasure": "Jan",
+              "dimension": "Year",
+              "temporal": "Year",
+              "order": "Year",
+              "label": "Year"
+            }
+          },
+          {
+            "op": "filter-valid-analysis-x",
+            "field": "Jan"
+          },
+          {
+            "op": "absolute-magnitude",
+            "source": "value",
+            "as": "positive"
+          },
+          {
+            "op": "min-max-normalize",
+            "source": "value",
+            "as": "opacity"
+          },
+          {
+            "op": "stable-angle-rank",
+            "source": "sourceRowIndex",
+            "as": "angle"
+          },
+          {
+            "op": "lifecycle-projection",
+            "kind": "style"
+          },
+          {
+            "op": "direct-lifecycle-field-projection",
+            "purpose": "derive positive, interval, position, label, and grouping witnesses without adding rows",
+            "sourceRowCount": 8
+          }
+        ]
+      },
+      "barItems": 8,
+      "svgBytes": 70006,
+      "modes": [
+        "normal",
+        "difference"
+      ]
+    },
+    {
+      "dataset": "tt-london-marathon-winners",
+      "repetition": 0,
+      "source": {
+        "sourceDataset": "tt-london-marathon-winners",
+        "sourceRowIndexBasis": "zero-based-data-row-in-pinned-csv",
+        "sourceRowCount": 122,
+        "minimumSourceRow": 0,
+        "maximumSourceRow": 162,
+        "sourceSelectionSha256": "82c41603938ef977c8ac114b33989b1f1eba769e9110de8b76f5ec1625e2ad09",
+        "indexEncoding": "sorted-zero-based-indexes-sha256-v1",
+        "fieldBindings": {
+          "measure": "Time",
+          "dimension": "Category",
+          "secondaryDimension": "Nationality",
+          "temporal": "Year",
+          "order": "Year",
+          "label": "Athlete"
+        },
+        "transformations": [
+          {
+            "op": "filter-valid",
+            "fields": [
+              "Time",
+              "Category"
+            ]
+          },
+          {
+            "op": "top-groups",
+            "field": "Category",
+            "limit": 8
+          },
+          {
+            "op": "top-subgroups",
+            "field": "Nationality",
+            "limit": 8
+          },
+          {
+            "op": "witness-preserving-even-sample",
+            "limit": 160,
+            "eligibleRowCount": 122,
+            "displayedRowCount": 122,
+            "strata": [
+              "Category",
+              "Nationality"
+            ],
+            "witnesses": [
+              "first",
+              "last",
+              "measure-min",
+              "measure-max",
+              "retained-dimension"
+            ]
+          },
+          {
+            "op": "source-order-numeric-projection",
+            "field": "Year"
+          },
+          {
+            "op": "project",
+            "bindings": {
+              "measure": "Time",
+              "dimension": "Category",
+              "secondaryDimension": "Nationality",
+              "temporal": "Year",
+              "order": "Year",
+              "label": "Athlete"
+            }
+          },
+          {
+            "op": "filter-valid-analysis-x",
+            "field": "Year"
+          },
+          {
+            "op": "absolute-magnitude",
+            "source": "value",
+            "as": "positive"
+          },
+          {
+            "op": "min-max-normalize",
+            "source": "value",
+            "as": "opacity"
+          },
+          {
+            "op": "stable-angle-rank",
+            "source": "sourceRowIndex",
+            "as": "angle"
+          },
+          {
+            "op": "lifecycle-projection",
+            "kind": "style"
+          },
+          {
+            "op": "direct-lifecycle-field-projection",
+            "purpose": "derive positive, interval, position, label, and grouping witnesses without adding rows",
+            "sourceRowCount": 122
+          }
+        ]
+      },
+      "barItems": 1,
+      "svgBytes": 96640,
+      "modes": [
+        "normal",
+        "difference"
+      ]
+    },
+    {
+      "dataset": "tt-london-marathon-winners",
+      "repetition": 1,
+      "source": {
+        "sourceDataset": "tt-london-marathon-winners",
+        "sourceRowIndexBasis": "zero-based-data-row-in-pinned-csv",
+        "sourceRowCount": 122,
+        "minimumSourceRow": 0,
+        "maximumSourceRow": 162,
+        "sourceSelectionSha256": "82c41603938ef977c8ac114b33989b1f1eba769e9110de8b76f5ec1625e2ad09",
+        "indexEncoding": "sorted-zero-based-indexes-sha256-v1",
+        "fieldBindings": {
+          "measure": "Time",
+          "dimension": "Category",
+          "secondaryDimension": "Nationality",
+          "temporal": "Year",
+          "order": "Year",
+          "label": "Athlete"
+        },
+        "transformations": [
+          {
+            "op": "filter-valid",
+            "fields": [
+              "Time",
+              "Category"
+            ]
+          },
+          {
+            "op": "top-groups",
+            "field": "Category",
+            "limit": 8
+          },
+          {
+            "op": "top-subgroups",
+            "field": "Nationality",
+            "limit": 8
+          },
+          {
+            "op": "witness-preserving-even-sample",
+            "limit": 160,
+            "eligibleRowCount": 122,
+            "displayedRowCount": 122,
+            "strata": [
+              "Category",
+              "Nationality"
+            ],
+            "witnesses": [
+              "first",
+              "last",
+              "measure-min",
+              "measure-max",
+              "retained-dimension"
+            ]
+          },
+          {
+            "op": "source-order-numeric-projection",
+            "field": "Year"
+          },
+          {
+            "op": "project",
+            "bindings": {
+              "measure": "Time",
+              "dimension": "Category",
+              "secondaryDimension": "Nationality",
+              "temporal": "Year",
+              "order": "Year",
+              "label": "Athlete"
+            }
+          },
+          {
+            "op": "filter-valid-analysis-x",
+            "field": "Year"
+          },
+          {
+            "op": "absolute-magnitude",
+            "source": "value",
+            "as": "positive"
+          },
+          {
+            "op": "min-max-normalize",
+            "source": "value",
+            "as": "opacity"
+          },
+          {
+            "op": "stable-angle-rank",
+            "source": "sourceRowIndex",
+            "as": "angle"
+          },
+          {
+            "op": "lifecycle-projection",
+            "kind": "style"
+          },
+          {
+            "op": "direct-lifecycle-field-projection",
+            "purpose": "derive positive, interval, position, label, and grouping witnesses without adding rows",
+            "sourceRowCount": 122
+          }
+        ]
+      },
+      "barItems": 1,
+      "svgBytes": 96640,
+      "modes": [
+        "normal",
+        "difference"
+      ]
+    },
+    {
+      "dataset": "tt-london-marathon-winners",
+      "repetition": 2,
+      "source": {
+        "sourceDataset": "tt-london-marathon-winners",
+        "sourceRowIndexBasis": "zero-based-data-row-in-pinned-csv",
+        "sourceRowCount": 122,
+        "minimumSourceRow": 0,
+        "maximumSourceRow": 162,
+        "sourceSelectionSha256": "82c41603938ef977c8ac114b33989b1f1eba769e9110de8b76f5ec1625e2ad09",
+        "indexEncoding": "sorted-zero-based-indexes-sha256-v1",
+        "fieldBindings": {
+          "measure": "Time",
+          "dimension": "Category",
+          "secondaryDimension": "Nationality",
+          "temporal": "Year",
+          "order": "Year",
+          "label": "Athlete"
+        },
+        "transformations": [
+          {
+            "op": "filter-valid",
+            "fields": [
+              "Time",
+              "Category"
+            ]
+          },
+          {
+            "op": "top-groups",
+            "field": "Category",
+            "limit": 8
+          },
+          {
+            "op": "top-subgroups",
+            "field": "Nationality",
+            "limit": 8
+          },
+          {
+            "op": "witness-preserving-even-sample",
+            "limit": 160,
+            "eligibleRowCount": 122,
+            "displayedRowCount": 122,
+            "strata": [
+              "Category",
+              "Nationality"
+            ],
+            "witnesses": [
+              "first",
+              "last",
+              "measure-min",
+              "measure-max",
+              "retained-dimension"
+            ]
+          },
+          {
+            "op": "source-order-numeric-projection",
+            "field": "Year"
+          },
+          {
+            "op": "project",
+            "bindings": {
+              "measure": "Time",
+              "dimension": "Category",
+              "secondaryDimension": "Nationality",
+              "temporal": "Year",
+              "order": "Year",
+              "label": "Athlete"
+            }
+          },
+          {
+            "op": "filter-valid-analysis-x",
+            "field": "Year"
+          },
+          {
+            "op": "absolute-magnitude",
+            "source": "value",
+            "as": "positive"
+          },
+          {
+            "op": "min-max-normalize",
+            "source": "value",
+            "as": "opacity"
+          },
+          {
+            "op": "stable-angle-rank",
+            "source": "sourceRowIndex",
+            "as": "angle"
+          },
+          {
+            "op": "lifecycle-projection",
+            "kind": "style"
+          },
+          {
+            "op": "direct-lifecycle-field-projection",
+            "purpose": "derive positive, interval, position, label, and grouping witnesses without adding rows",
+            "sourceRowCount": 122
+          }
+        ]
+      },
+      "barItems": 1,
+      "svgBytes": 96640,
+      "modes": [
+        "normal",
+        "difference"
+      ]
+    },
+    {
+      "dataset": "tt-london-marathon-winners",
+      "repetition": 3,
+      "source": {
+        "sourceDataset": "tt-london-marathon-winners",
+        "sourceRowIndexBasis": "zero-based-data-row-in-pinned-csv",
+        "sourceRowCount": 122,
+        "minimumSourceRow": 0,
+        "maximumSourceRow": 162,
+        "sourceSelectionSha256": "82c41603938ef977c8ac114b33989b1f1eba769e9110de8b76f5ec1625e2ad09",
+        "indexEncoding": "sorted-zero-based-indexes-sha256-v1",
+        "fieldBindings": {
+          "measure": "Time",
+          "dimension": "Category",
+          "secondaryDimension": "Nationality",
+          "temporal": "Year",
+          "order": "Year",
+          "label": "Athlete"
+        },
+        "transformations": [
+          {
+            "op": "filter-valid",
+            "fields": [
+              "Time",
+              "Category"
+            ]
+          },
+          {
+            "op": "top-groups",
+            "field": "Category",
+            "limit": 8
+          },
+          {
+            "op": "top-subgroups",
+            "field": "Nationality",
+            "limit": 8
+          },
+          {
+            "op": "witness-preserving-even-sample",
+            "limit": 160,
+            "eligibleRowCount": 122,
+            "displayedRowCount": 122,
+            "strata": [
+              "Category",
+              "Nationality"
+            ],
+            "witnesses": [
+              "first",
+              "last",
+              "measure-min",
+              "measure-max",
+              "retained-dimension"
+            ]
+          },
+          {
+            "op": "source-order-numeric-projection",
+            "field": "Year"
+          },
+          {
+            "op": "project",
+            "bindings": {
+              "measure": "Time",
+              "dimension": "Category",
+              "secondaryDimension": "Nationality",
+              "temporal": "Year",
+              "order": "Year",
+              "label": "Athlete"
+            }
+          },
+          {
+            "op": "filter-valid-analysis-x",
+            "field": "Year"
+          },
+          {
+            "op": "absolute-magnitude",
+            "source": "value",
+            "as": "positive"
+          },
+          {
+            "op": "min-max-normalize",
+            "source": "value",
+            "as": "opacity"
+          },
+          {
+            "op": "stable-angle-rank",
+            "source": "sourceRowIndex",
+            "as": "angle"
+          },
+          {
+            "op": "lifecycle-projection",
+            "kind": "style"
+          },
+          {
+            "op": "direct-lifecycle-field-projection",
+            "purpose": "derive positive, interval, position, label, and grouping witnesses without adding rows",
+            "sourceRowCount": 122
+          }
+        ]
+      },
+      "barItems": 1,
+      "svgBytes": 96640,
+      "modes": [
+        "normal",
+        "difference"
+      ]
+    },
+    {
+      "dataset": "tt-london-marathon-winners",
+      "repetition": 4,
+      "source": {
+        "sourceDataset": "tt-london-marathon-winners",
+        "sourceRowIndexBasis": "zero-based-data-row-in-pinned-csv",
+        "sourceRowCount": 122,
+        "minimumSourceRow": 0,
+        "maximumSourceRow": 162,
+        "sourceSelectionSha256": "82c41603938ef977c8ac114b33989b1f1eba769e9110de8b76f5ec1625e2ad09",
+        "indexEncoding": "sorted-zero-based-indexes-sha256-v1",
+        "fieldBindings": {
+          "measure": "Time",
+          "dimension": "Category",
+          "secondaryDimension": "Nationality",
+          "temporal": "Year",
+          "order": "Year",
+          "label": "Athlete"
+        },
+        "transformations": [
+          {
+            "op": "filter-valid",
+            "fields": [
+              "Time",
+              "Category"
+            ]
+          },
+          {
+            "op": "top-groups",
+            "field": "Category",
+            "limit": 8
+          },
+          {
+            "op": "top-subgroups",
+            "field": "Nationality",
+            "limit": 8
+          },
+          {
+            "op": "witness-preserving-even-sample",
+            "limit": 160,
+            "eligibleRowCount": 122,
+            "displayedRowCount": 122,
+            "strata": [
+              "Category",
+              "Nationality"
+            ],
+            "witnesses": [
+              "first",
+              "last",
+              "measure-min",
+              "measure-max",
+              "retained-dimension"
+            ]
+          },
+          {
+            "op": "source-order-numeric-projection",
+            "field": "Year"
+          },
+          {
+            "op": "project",
+            "bindings": {
+              "measure": "Time",
+              "dimension": "Category",
+              "secondaryDimension": "Nationality",
+              "temporal": "Year",
+              "order": "Year",
+              "label": "Athlete"
+            }
+          },
+          {
+            "op": "filter-valid-analysis-x",
+            "field": "Year"
+          },
+          {
+            "op": "absolute-magnitude",
+            "source": "value",
+            "as": "positive"
+          },
+          {
+            "op": "min-max-normalize",
+            "source": "value",
+            "as": "opacity"
+          },
+          {
+            "op": "stable-angle-rank",
+            "source": "sourceRowIndex",
+            "as": "angle"
+          },
+          {
+            "op": "lifecycle-projection",
+            "kind": "style"
+          },
+          {
+            "op": "direct-lifecycle-field-projection",
+            "purpose": "derive positive, interval, position, label, and grouping witnesses without adding rows",
+            "sourceRowCount": 122
+          }
+        ]
+      },
+      "barItems": 1,
+      "svgBytes": 96640,
+      "modes": [
+        "normal",
+        "difference"
+      ]
+    }
+  ]
+}

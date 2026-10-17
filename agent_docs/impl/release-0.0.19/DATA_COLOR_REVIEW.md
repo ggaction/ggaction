@@ -2,16 +2,54 @@
 
 ## 진행 상태와 승인 경계
 
-Gate: **ready-for-review**. 아래는 이슈 #167, #168, #169, #172, #196, #198, #202, #207, #209의 **권고 설계**다. 공개 호출, 저장 계약, 호환성 및 구현 검증 계획을 검토했지만 새 런타임 API는 구현하지 않았다. 사용자의 “미구현 28개도 설계 검토 후 모두 구현”은 기능 범위 승인이다. 루트 `AGENTS.md`에 따라 아래 구체적인 새 공개·저장 계약은 통합 검토 자료를 커밋·푸시한 뒤 별도 명시적 설계 승인을 받아야 한다.
+Gate: **approved**. 이슈 #167, #168, #169, #172, #196, #198, #202, #207, #209의 구체적인 공개·저장 계약과 시각 목표는 사용자에게 승인받았다. 승인된 검토 revision은 `bad3f346`, 승인 기록은 [`PROPOSAL.md`](PROPOSAL.md)의 `f53dd78a` checkpoint다. 이후 각 절의 구현·검증 증거를 개별 checkpoint로 기록하며, 설계 승인을 구현 완료로 간주하지 않는다.
 
 - [x] 현재 타입, grammar, data action, point materializer, primitive guard 및 persistence 검사 경로 확인
 - [x] 기존 floor·exponential·summary 제안의 정확한 결정 재검토
 - [x] 새 중요 선택마다 권고안과 이유, 호환성·검증 조건 작성
 - [x] 통합 리뷰 패키지의 원격 revision 및 사용자 설계 승인 기록: bad3f346, PROPOSAL.md 승인 기록
 - [ ] 승인 후 구현, focused/cumulative/installed 소비자 검증
-- [ ] 실제 색상 출력 비교의 시각 Gate 증거 및 사용자 확인
+- [x] 실제 색상 출력 비교의 시각 Gate 증거 및 사용자 확인: 초기 승인과 감마 보정 목표 `4f2f985c`, 승인 기록 `e670508b`
 
 검토 기준은 현재 작업트리의 0.0.18 공개 표면이다. 이 문서는 계약의 새 canonical 사본이 아니라 구현 전 검토 자료다. 구현 시 정확한 현재 계약은 해당 `agent_docs/contract/current/` 소유 파일에 반영하고 이 문서에는 승인·완료 근거만 연결한다. 데이터·색상 계산은 grammar, 의미·소유권·명시적 재물질화는 domain action, 이미 계산된 출력은 renderer가 담당한다. renderer에 데이터 변환이나 fitting을 추가하지 않는다.
+
+### 구현 checkpoint — computed expressions
+
+#167과 #198은 `src/grammar/computed.js`의 기존 validator/evaluator에서 구현했다.
+정확한 현재 계약은 [CORE](../../contract/current/CORE.md#createcomputeddata), 공개 설명은
+[expressions](../../../docs/api/data/expressions-and-normalization.md)가 소유한다.
+Year의 IANA/BCE 처리는 기존 calendar owner를 사용하고 era를 읽어 astronomical year를 보존한다.
+
+- Focused 21개 및 추가 calendar/facet/타입 lifecycle 5개 통과.
+- 전체 unit 3,086개, contracts 533개, docs 120개 통과.
+- `npm run docs:generate`와 실제 `npm run test:package` 통과. Packed npm 설치 후 두 표현식의
+  runtime·TypeScript·persistence, 기존 Basic 범위, browser·MCP 소비자를 검증했다.
+- 승인 당시 보존 source data SHA256 `2a0b94cc86e91266fda7547f90bea0292fc5f8e5888e5e87f09acbec303687f7`의
+  실제 5,000행에 explicit toNumber/floor 조합을 실행했다. 기존 독립 source proof와 같은
+  20,000개 ordered interval endpoints를 대조하여 최대오차 0, raw/derived 5,000행과 raw fields를 보존했다.
+- 유료 모델 호출·새 번역·차트 픽셀 관찰 없이 검증했다. 나머지 일곱 요구는 계속 구현 대상이다.
+
+### 구현 checkpoint — continuous color controls
+
+#168 D50/D65 whitePoint, #169 cubehelix gamma와 #172 signed-power color를 기존
+color grammar·scale action·materialization·persistence 소유자에 구현했다. 새 renderer
+분기나 공개 액션은 없다. 생략된 기본값을 저장 metadata에 추가하지 않으며, 편집의
+`"auto"` reset과 interpolation 변경 시 inherited control 제거를 구분한다.
+Stroke editor의 비분배 Omit 때문에 누락되던 기존 실행 가능한 타입 표면도 정정했다.
+
+- 감마의 양자화 공개 range `['#75190b','#90f2a4']` 목표는 사용자에게 재승인받았다.
+  검토 revision `4f2f985c`, 승인 기록 `e670508b`의 GAMMA_TARGET_REVIEW.md를 따른다.
+  기존8bit endpoint 정책은 바꾸지 않았다. 독립 Gaussian 역산·literal18 RGB·실제
+  public swatches의 전체480×270 RGBA가 오차 없이 일치했다. D50/D65·pow도 같은
+  primitive/public 픽셀 검증을 통과했다. 이미지 관찰/VLM은 사용하지 않았다.
+- 전체 unit3,101개, contracts533개, docs120개 통과. 뒤이어 multi-stop·역순·clamp와
+  source revision·shared facet lifecycle를 추가한 focused12개도 통과했다.
+- 실제 packed npm 설치 후 runtime·TypeScript·Full/Basic·stroke·sampled legend·snapshot,
+  browser/MCP 소비자가 통과했다. macOS/Node22.23.1/npm10.9.8에서 Full392,560,
+  Basic190,001, SVG7,176 gzip바이트다. 실측 unpacked3,913,392에 따라 unpacked만
+  3,914,000, Basic만191,000으로 최소 단위 갱신했다. 다른 예산은 유지했다.
+- 누적 통합 전에 computed와 색상 새 옵션의 realistic corpus 최소5회·3실데이터셋
+  실제 실행 증언을 추가해야 한다. 이 의무와 이후 회귀·통계·capacity 구현은 남아 있다.
 
 ## 1. 공통 결정
 

@@ -842,8 +842,18 @@ function facetCanvas(columns, guideLayout) {
 function buildFacet(spec, factors, resolution) {
   const { view, context } = resolution;
   const guideLayout = facetGuideLayout(view, factors);
+  const childCanvas = facetCanvas(factors.columns, guideLayout);
+  const occupiedColumns = Math.min(
+    factors.columns,
+    new Set(view.rows.map(row => row.subgroup)).size
+  );
+  // Equal-sized child canvases determine the final plot span. Wrap the complete
+  // title and question inside that span rather than relying on spare margins.
+  const titleWidth = occupiedColumns * childCanvas.width +
+    (occupiedColumns - 1) * factors.gap -
+    childCanvas.margin.left - childCanvas.margin.right;
   return chart()
-    .createCanvas(facetCanvas(factors.columns, guideLayout))
+    .createCanvas(childCanvas)
     .createData({ id: "analysisRows", values: view.rows })
     .createPointMark({ id: "facetPoints", opacity: factors.opacity })
     .encodeX({ target: "facetPoints", field: "value", scale: { zero: false } })
@@ -872,7 +882,13 @@ function buildFacet(spec, factors, resolution) {
       scales: { x: factors.facetScales, y: factors.facetScales },
       guides: { axes: factors.facetAxes, legend: false }
     })
-    .createTitle({ text: context.title, subtitle: context.analysisQuestion, align: factors.titleAlign });
+    .createTitle({
+      text: context.title,
+      subtitle: context.analysisQuestion,
+      align: factors.titleAlign,
+      maxWidth: titleWidth,
+      wrap: "word"
+    });
 }
 
 function miniSummary(view, color, title, context) {

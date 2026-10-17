@@ -85,7 +85,7 @@ function makeRematerialize(direction) {
         .editGraphics({
           target: operation.graphic,
           property: "strokeDash",
-          value: geometry.values.map(() => config.strokeDash)
+          value: geometry.strokeDash
         });
     }
   );

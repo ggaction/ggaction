@@ -70,6 +70,10 @@ export function validateLayerSemanticValue(
       !["vertical", "horizontal"].includes(value))) {
     throw new Error("Bar orientation must be vertical or horizontal.");
   }
+  if (property === "mark.blend" &&
+      (findLayer(program, parsed.id)?.mark?.type !== "bar" || value !== "difference")) {
+    throw new Error("Bar blend must be difference; remove the optional intent for normal painting.");
+  }
   if (property === "derivedBindings.regression") {
     if (!value || typeof value !== "object" || Array.isArray(value) ||
         Object.keys(value).length !== 2 || value.mode !== "follow" ||

@@ -52,6 +52,7 @@ function formatter(timeZone) {
     try {
       value = new Intl.DateTimeFormat("en-US-u-ca-gregory-nu-latn", {
         timeZone,
+        era: "short",
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
@@ -68,7 +69,7 @@ function formatter(timeZone) {
   return CALENDAR_FORMATTERS.get(timeZone);
 }
 
-function validateTimeZone(timeZone) {
+export function validateTimeZone(timeZone) {
   if (typeof timeZone !== "string" || timeZone.length === 0) {
     throw new TypeError("Time-unit timeZone must be a non-empty IANA time-zone name.");
   }
@@ -178,17 +179,18 @@ export function calendarParts(timestamp, timeZone) {
   validateTimeZone(timeZone);
   const parts = Object.fromEntries(formatter(timeZone).formatToParts(timestamp)
     .filter(part => part.type !== "literal")
-    .map(part => [part.type, Number(part.value)]));
+    .map(part => [part.type, part.type === "era" ? part.value : Number(part.value)]));
+  const year = parts.era === "BC" ? 1 - parts.year : parts.year;
   const millisecond = ((timestamp % 1000) + 1000) % 1000;
   return {
-    year: parts.year,
+    year,
     month: parts.month,
     day: parts.day,
     hour: parts.hour,
     minute: parts.minute,
     second: parts.second,
     millisecond,
-    weekday: weekdayFromDate(parts.year, parts.month, parts.day)
+    weekday: weekdayFromDate(year, parts.month, parts.day)
   };
 }
 

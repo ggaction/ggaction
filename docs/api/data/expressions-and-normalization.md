@@ -34,12 +34,29 @@ const shares = program.createComputedData({
 
 Leaves are `{ field }` and `{ constant }`; constants may be finite numbers,
 strings, booleans, or null. The closed union includes arithmetic, comparison,
-boolean logic, `if`, `coalesce`, `concat`, `log`, `sqrt`, `toNumber`, `getPath`, and `replaceLiteral`. Conditional
+boolean logic, `if`, `coalesce`, `concat`, `log`, `sqrt`, `floor`, `datePart`, `toNumber`, `getPath`, and `replaceLiteral`. Conditional
 and boolean nodes short-circuit value evaluation, while every branch and field
 name is structurally checked first. The action stores this data AST as
 provenance and never evaluates callbacks, source strings, or arbitrary code.
 
 Use `{ op: "toNumber", operand: { field: "amountText" } }` to explicitly convert a decimal or scientific-notation string into a finite number in a new derived field. Surrounding whitespace is trimmed. Empty strings, null, booleans, hexadecimal text and non-finite results reject. Finite numeric inputs remain unchanged.
+
+Use `{ op: "floor", operand: { field: "measurement" } }` to round a finite
+number down: `1.8` becomes `1`, and `-1.8` becomes `-2`. Strings require an
+explicit `toNumber`; null and nonnumeric operands reject. Compose floor with
+division and multiplication to derive interval bounds while retaining each row.
+
+Use `{ op: "datePart", part: "year", operand: { op: "parseTime", operand: { field: "dateText" } } }`
+to extract an integer calendar year. The only supported part is `"year"`.
+The default time zone is UTC; optional `timeZone` accepts a named IANA time zone,
+such as `"America/New_York"`. The operation consumes epoch milliseconds;
+parse strings explicitly rather than treating numeric years as timestamps.
+Null propagates; other nonnumeric or nonfinite inputs reject. Timestamps must
+lie within ±8,640,000,000,000,000 milliseconds, and fractional milliseconds follow
+Date's integer truncation. Years zero and before the common era retain their
+astronomical numbering. Subtract extracted years to obtain calendar-year
+duration, independently of elapsed days or leap years. For example, 1986-12-30
+to 2024-07-17 yields `38`. Replacing the expression without `timeZone` resets UTC.
 
 Use `{ op: "parseTime", operand: { field: "dateText" }, format: "%d/%m/%Y" }`
 for an explicit day/month/year date. The closed formats are `%Y-%m-%d`,

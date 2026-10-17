@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 573, // Size-shape planning/mapping plus shared pure block/graphic-property owners.
-  packedBytes: 804_000, // Size-shape combination measured 803727 packed bytes.
-  unpackedBytes: 3_935_000 // Size-shape combination measured 3934180 unpacked bytes.
+  entries: 575, // Isolated glyph painting and shared raster limit owners.
+  packedBytes: 807_000, // Node24/npm11 isolated-source artifact measured806317bytes.
+  unpackedBytes: 3_944_000 // Exact staged artifact measured3943154unpacked bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -73,6 +73,8 @@ const COMPACT_JSON_FILES = Object.freeze([
   "knowledge/task-packet.schema.json"
 ]);
 const COMPACT_JAVASCRIPT_FILES = Object.freeze([
+  "src/grammar/axisTextPlacement.js",
+  "src/grammar/guideDash.js",
   "knowledge/task-resolver.js",
   "src/grammar/scales/color.js",
   "src/grammar/scales/size.js",

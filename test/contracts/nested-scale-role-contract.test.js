@@ -821,12 +821,13 @@ test("derives only role-reachable nested scale type paths", async () => {
   );
 
   assert.equal(scaleTypes.length, 150);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 677);
+  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 689);
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:band"));
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:point"));
   assert.ok(options.get("option-path:encodeColor.scale.type").values.includes("string:log"));
   assert.ok(options.get("option-path:encodeColor.scale.type").values.includes("string:symlog"));
   assert.ok(options.get("option-path:encodeColor.scale.type").values.includes("string:sqrt"));
+  assert.ok(options.get("option-path:encodeColor.scale.type").values.includes("string:pow"));
   assert.doesNotMatch(declarations, /scale\?: ScaleOptions/u);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.palette"), false);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.interpolate"), false);
@@ -877,7 +878,7 @@ test("executes every strict nested scale type path and literal", async () => {
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 677);
+  assert.equal(witnesses, 689);
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {

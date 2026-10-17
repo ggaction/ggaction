@@ -723,7 +723,9 @@ function buildDataAndMarkCoverage(factors) {
     .encodeY({
       target: "maximalBars", field: "positiveY", aggregate: "sum",
       scale: { id: "maximal-bar-y", zero: true }
-    });
+    })
+    .editBarMark({ target: "maximalBars", blend: "normal" })
+    .editBarMark({ target: "maximalBars", blend: "difference" });
 
   program = program.createRuleMark({ id: "ranges", data: "directMaterialRows" })
     .encodeXRange({ target: "ranges", lower: "lower", upper: "upper" })

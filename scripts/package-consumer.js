@@ -89,6 +89,50 @@ async function testNodeConsumer(directory) {
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
+    const blendedBar = chart().createCanvas({width:200,height:200,margin:40})
+      .createData({values:[{category:"a",value:1}]})
+      .createBarPlot({x:"category",y:{field:"value",aggregate:"sum"},guides:false})
+      .encodeBarWidth({pixels:80})
+      .editBarMark({fill:"#f00000",stroke:"#ffff00",strokeWidth:8})
+      .editBarMark({blend:"difference"});
+    assert.equal(blendedBar.semanticSpec.layers[0].mark.blend,"difference");
+    assert.equal(blendedBar.graphicSpec.objects.barPlot.items[0].properties.blend,"difference");
+    assert.deepEqual(deserializeProgram(serializeProgram(blendedBar)).graphicSpec,blendedBar.graphicSpec);
+    assert.match(renderToSVG(blendedBar),/mix-blend-mode:difference/);
+    const {createCanvas: blendCanvas,loadImage: blendImage} = await import("@napi-rs/canvas");
+    const blendPNG=await renderToPNGBuffer(blendedBar),blendContext=blendCanvas(200,200).getContext("2d");
+    blendContext.drawImage(await blendImage(blendPNG.buffer),0,0);
+    assert.deepEqual([...blendContext.getImageData(100,100,1,1).data],[15,255,255,255]);
+    assert.ok((await renderToPDFBuffer(blendedBar)).buffer.length>100);
+    assert.equal(blendedBar.editBarMark({blend:"normal"}).semanticSpec.layers[0].mark.blend,undefined);
+
+    for (const create of [chart, basicChart]) {
+      const placedAxis = create().createCanvas({ width: 900, height: 800, margin: 200 })
+        .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
+        .createScatterPlot({ x: "x", y: "y", guides: false })
+        .createXAxis({ offset: 20, title: {
+          text: "Inside", offset: -50, alongOffset: 85, align: "right", baseline: "bottom"
+        }, ticksAndLabels: { labels: { align: "left" } } });
+      assert.equal(placedAxis.graphicSpec.objects.xAxisLine.properties.y1, 620);
+      assert.equal(placedAxis.graphicSpec.objects.xAxisTitle.properties.x, 535);
+      assert.equal(placedAxis.graphicSpec.objects.xAxisTitle.properties.y, 570);
+      assert.deepEqual(deserializeProgram(serializeProgram(placedAxis)).graphicSpec, placedAxis.graphicSpec);
+      assert.ok((await renderToPNGBuffer(placedAxis)).buffer.length > 100);
+      assert.ok((await renderToPDFBuffer(placedAxis)).buffer.length > 100);
+      const dashedGuides = create().createCanvas({ width: 700, height: 500, margin: 100 })
+        .createData({ values: [{ x: 0, y: 0 }, { x: 1, y: 2 }] })
+        .createScatterPlot({ x: "x", y: "y", guides: false })
+        .createYAxis({ ticksAndLabels: { values: [0, 1, 2], ticks: {
+          strokeDash: [2, 2], strokeDashMap: [{ value: 0, strokeDash: [] }]
+        } } })
+        .createHorizontalGrid({ values: [0, 1, 2], strokeDash: [2, 2],
+          strokeDashMap: [{ value: 0, strokeDash: [] }] });
+      assert.deepEqual(dashedGuides.graphicSpec.objects.yAxisTicks.items.map(item => item.properties.strokeDash),
+        [[], [2, 2], [2, 2]]);
+      assert.deepEqual(deserializeProgram(serializeProgram(dashedGuides)).graphicSpec, dashedGuides.graphicSpec);
+      assert.ok((await renderToPNGBuffer(dashedGuides)).buffer.length > 100);
+      assert.ok((await renderToPDFBuffer(dashedGuides)).buffer.length > 100);
+    }
     for (const factory of [chart, basicChart]) for (const shape of ["wedge", "arrow"]) {
       const directional = factory().createCanvas({width: 300, height: 200, margin: 50})
         .createData({values:[{x:0,y:0,g:"A"},{x:1,y:1,g:"B"}]})
@@ -153,6 +197,27 @@ async function testNodeConsumer(directory) {
     assert.equal(extracted.graphicSpec.objects.scatterPlot.items.length, 1);
     assert.deepEqual(deserializeProgram(serializeProgram(extracted)).graphicSpec, extracted.graphicSpec);
     assert.ok((await renderToPNGBuffer(extracted)).buffer.length > 100);
+    const calendar = chart().createData({ values: [{ issued: "1986-12-30", redeemed: "2024-07-17", value: -1.8 }] })
+      .createComputedData({ id: "years", as: "year", expression: { op: "datePart", part: "year", operand: { op: "parseTime", operand: { field: "redeemed" } } } })
+      .createComputedData({ id: "rounded", as: "lower", expression: { op: "floor", operand: { field: "value" } } });
+    assert.equal(calendar.semanticSpec.datasets.find(d => d.id === "years").values[0].year, 2024);
+    assert.equal(calendar.semanticSpec.datasets.find(d => d.id === "rounded").values[0].lower, -2);
+    assert.deepEqual(deserializeProgram(serializeProgram(calendar)).semanticSpec, calendar.semanticSpec);
+    for (const [settings, expected] of [
+      [{interpolate:"lab",whitePoint:"d50",range:["red","blue"]}, "#c10088"],
+      [{type:"pow",exponent:3,range:["black","white"]}, "#202020"],
+      [{interpolate:"cubehelix",gamma:2.2,range:["black","white"]}, "#373737"]
+    ]) {
+      const controls = chart().createCanvas({width:600,height:500,margin:{left:70,top:70,right:180,bottom:70}})
+        .createData({values:[{x:0,y:0,v:0},{x:1,y:1,v:.5},{x:2,y:2,v:1}]})
+        .createScatterPlot({x:"x",y:"y",guides:false})
+        .encodeColor({field:"v",fieldType:"quantitative",scale:{domain:[0,1],...settings}})
+        .createLegend({representation:"symbols",values:[0,.5,1],title:false});
+      assert.equal(controls.graphicSpec.objects.scatterPlot.items[1].properties.fill, expected);
+      assert.equal(controls.graphicSpec.objects.colorGradientSymbols.items[1].properties.fill, expected);
+      assert.deepEqual(deserializeProgram(serializeProgram(controls)).graphicSpec,controls.graphicSpec);
+      assert.ok((await renderToPNGBuffer(controls)).buffer.length>100);
+    }
     const longLine = chart().createCanvas({ width: 440, height: 340, margin: 20 })
       .createData({ values: Array.from({ length: 12070 }, (_, i) => ({ x: i, y: i % 11 })) })
       .createLinePlot({ x: "x", y: "y", guides: false });
@@ -3034,6 +3099,14 @@ async function testTypeScriptConsumer(directory) {
       type ProgramInspection
     } from "ggaction/inspection";
 
+    chart().editBarMark({blend:"difference"}).editBarMark({blend:"normal"});
+    // @ts-expect-error only the bar editor owns blend
+    chart().createBarMark({blend:"difference"});
+    // @ts-expect-error blend is a closed vocabulary
+    chart().editBarMark({blend:"multiply"});
+    // @ts-expect-error Basic does not expose appearance editing
+    basicChart().editBarMark({blend:"difference"});
+
     chart().createCanvas({ plot: { width: 30, height: 30 } })
       .editCanvas({ plot: { width: 60, height: 45 } })
       .editCanvas({ plot: false, width: 300 });
@@ -3585,6 +3658,24 @@ async function testTypeScriptConsumer(directory) {
       .createData({ values: [{ x: 1, y: 2 }] })
       .createScatterPlot(scatterOptions);
     const basicDraw: typeof basicRender = basicRender;
+    const axisTextFlow: ChartProgram = chart().createCanvas()
+      .createData({ values: [{ x: 0, y: 0 }, { x: 1, y: 1 }] })
+      .createScatterPlot({ x: "x", y: "y", guides: false })
+      .createXAxis({ offset: 20, title: { offset: -30, alongOffset: 10, align: "right", baseline: "bottom" },
+        ticksAndLabels: { labels: { align: "left" }, ticks: {
+          strokeDash: [2, 2], strokeDashMap: [{ value: 0, strokeDash: [] }]
+        } } })
+      .editXAxis({ offset: 0, title: { baseline: "alphabetic" } })
+      .editXAxisLabels({ align: "center" })
+      .editXAxisTicks({ strokeDashMap: "auto" });
+    // @ts-expect-error Axis title baselines use the closed text-baseline vocabulary.
+    axisTextFlow.editXAxisTitle({ baseline: "center" });
+    const basicAxisTextFlow: BasicChartProgram = basicChart().createCanvas()
+      .createData({ values: [{ x: 0, y: 0 }, { x: 1, y: 1 }] })
+      .createScatterPlot({ x: "x", y: "y", guides: false })
+      .createXAxis({ offset: 20, title: { offset: -30, alongOffset: 10, align: "left", baseline: "top" },
+        ticksAndLabels: { labels: { align: "right" } } });
+    void [axisTextFlow, basicAxisTextFlow];
     const horizonOptions: HorizonEncodingOptions = {
       x: { field: "time", fieldType: "temporal" },
       y: "value",
@@ -4167,6 +4258,18 @@ async function testTypeScriptConsumer(directory) {
       left: { field: "part" },
       right: { field: "whole" }
     };
+    const calendarYearExpression: ComputedExpression = {
+      op: "datePart", part: "year", timeZone: "UTC",
+      operand: { op: "parseTime", operand: { field: "date" } }
+    };
+    const floorExpression: ComputedExpression = { op: "floor", operand: { field: "measurement" } };
+    chart().createData({values:[{x:1,y:2,v:3}]})
+      .createScatterPlot({x:"x",y:"y",guides:false})
+      .encodeColor({field:"v",fieldType:"quantitative",scale:{interpolate:"lab",whitePoint:"d50"}})
+      .editColorScale({whitePoint:"auto"})
+      .editColorScale({type:"pow",exponent:3})
+      .editColorScale({type:"sequential",interpolate:"cubehelix",gamma:2.2})
+      .editColorScale({gamma:"auto"});
     const computedOptions: ComputedDataOptions = {
       id: "shares",
       as: "share",

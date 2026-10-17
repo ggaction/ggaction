@@ -64,6 +64,26 @@ color ranges are also limited to 10,000 stops. `interpolate` accepts
 `hcl`, `hcl-long`, `cubehelix`, or `cubehelix-long`. `clamp` and `reverse`
 affect both points and a connected gradient legend.
 
+Lab, HCL and HCL-long interpolation use D65 by default. Set
+`whitePoint: "d50"` together with one of those interpolation modes to use
+D50-adapted sRGB/XYZ matrices. An explicit white point with another interpolation
+mode rejects, including `"d65"`. `editColorScale({ whitePoint: "auto" })`
+removes the explicit choice and restores D65. Changing interpolation clears
+an incompatible inherited white point; supplying an incompatible choice in
+the same edit rejects. Marks, field-driven strokes, gradient legends and sampled
+color legends use the same selected convention.
+
+Cubehelix and cubehelix-long interpolation accept a positive finite `gamma`.
+The default is `1`; `editColorScale({ gamma: "auto" })` restores that default.
+Within each range segment, hue and saturation use the original position `t`,
+while lightness uses `t ** gamma`. Gamma does not exponentiate the complete
+color or alter hue progression. Other interpolation modes reject explicit
+gamma, including `1`. A nonfinite real result during unclamped extrapolation
+rejects atomically; clamping occurs before gamma. Range endpoints retain the
+ordinary 8-bit RGB normalization, and final channels use the same byte rounding
+as other interpolation modes. Changing interpolation clears an incompatible
+inherited gamma; an explicitly incompatible pair in one edit rejects.
+
 <!-- snippet-context:start -->
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -106,6 +126,22 @@ together. Temporal color remains sequential; numeric `midpoint` is available
 only on sequential scales. Switching type clears incompatible transform options.
 An unattached direct log/symlog color scale needs a color range, palette, or
 interpolation option to distinguish it from a numeric position scale.
+
+**Signed power color**
+
+Quantitative color and stroke accept `scale: { type: "pow", exponent: 3 }`.
+The exponent is positive and finite; omission defaults to `1`. Values use
+`f(v) = sign(v) * abs(v) ** exponent`, then interpolate between `f(domain[0])`
+and `f(domain[1])`. Transforming the already normalized position is a different
+mapping: for domain `[8, 24.8]`, the raw endpoints are cubed before normalization.
+Negative and zero-crossing domains retain their signs. Clamping and reversal
+keep their usual meaning, while numeric `midpoint` is unsupported.
+
+Gradient ticks and sampled color labels retain original data values, using
+the same transformed positions as marks. Set `exponent: 1` to reset the power
+mapping; changing scale type clears the inherited exponent. Explicit exponents
+on other color scale types reject. An unattached power color scale needs a
+color range, palette or interpolation option to distinguish it from a position scale.
 
 ## Explicit color midpoint
 

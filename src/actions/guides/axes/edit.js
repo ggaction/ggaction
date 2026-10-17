@@ -1,7 +1,7 @@
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
-import { validateKeys, validateOptionObject } from "../../../core/validation.js";
+import { validateKeys, validateOptionObject, validateNonNegativeFinite } from "../../../core/validation.js";
 
 import {
   AXIS_COMPONENTS,
@@ -12,21 +12,21 @@ import {
 } from "./components.js";
 
 const OPTIONS = Object.freeze([
-  "position", "line", "ticks", "labels", "ticksAndLabels", "title"
+  "position", "line", "ticks", "labels", "ticksAndLabels", "title", "offset"
 ]);
 const LINE_OPTIONS = Object.freeze(["color", "lineWidth"]);
 const TICK_OPTIONS = Object.freeze([
-  "count", "values", "length", "color", "lineWidth", "alongOffset"
+  "count", "values", "length", "color", "lineWidth", "alongOffset", "strokeDash", "strokeDashMap"
 ]);
 const LABEL_OPTIONS = Object.freeze([
   "count", "values", "offset", "format", "color", "fontSize",
   "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
-  "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "colorMap"
+  "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "colorMap", "align"
 ]);
 const GROUP_OPTIONS = Object.freeze(["count", "values", "ticks", "labels"]);
 const TITLE_OPTIONS = Object.freeze([
   "text", "at", "offset", "rotation", "color", "fontSize",
-  "fontFamily", "fontWeight"
+  "fontFamily", "fontWeight", "alongOffset", "align", "baseline"
 ]);
 
 function validateNested(args, key, options, operation, { allowFalse = false } = {}) {
@@ -40,6 +40,7 @@ function validateNested(args, key, options, operation, { allowFalse = false } = 
 }
 
 function validateArgs(args, operation) {
+  if (Object.hasOwn(args, "offset")) validateNonNegativeFinite(args.offset, "Axis frame offset");
   validateOptionObject(args, OPTIONS, operation, {
     allowEmpty: false,
     emptyMessage: `${operation} requires at least one axis change.`,
@@ -59,12 +60,12 @@ function validateArgs(args, operation) {
     );
   }
   if (args.ticksAndLabels !== false && args.ticksAndLabels?.ticks !== undefined) {
-    validateNested(args.ticksAndLabels, "ticks", ["length", "color", "lineWidth", "alongOffset"], `${operation}.ticksAndLabels`);
+    validateNested(args.ticksAndLabels, "ticks", ["length", "color", "lineWidth", "alongOffset", "strokeDash", "strokeDashMap"], `${operation}.ticksAndLabels`);
   }
   if (args.ticksAndLabels !== false && args.ticksAndLabels?.labels !== undefined) {
     validateNested(args.ticksAndLabels, "labels", [
       "offset", "format", "color", "fontSize", "fontFamily", "fontWeight",
-      "rotation", "maxWidth", "wrap", "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "colorMap"
+      "rotation", "maxWidth", "wrap", "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "colorMap", "align"
     ], `${operation}.ticksAndLabels`);
   }
 }
@@ -94,7 +95,7 @@ function buildPlan(program, channel, args, operation) {
       plan.push({ kind: "remove", component });
     } else if (value !== undefined) {
       plan.push({ kind: "edit", operation: edit, args: { ...shared, ...value } });
-    } else if (args.position !== undefined && hasComponent(program, channel, component)) {
+    } else if ((args.position !== undefined || Object.hasOwn(args, "offset")) && hasComponent(program, channel, component)) {
       plan.push({ kind: "edit", operation: edit, args: shared });
     }
   };
@@ -154,12 +155,14 @@ function makeEditAxis(channel) {
     },
     withGuideLayoutValidation(function (args = {}) {
       validateArgs(args, operation.operation);
-      const plan = buildPlan(this, channel, args, operation);
+      const source = Object.hasOwn(args, "offset")
+        ? this._withGuideConfig(channel, "frame", { offset: args.offset }) : this;
+      const plan = buildPlan(source, channel, args, operation);
 
       // Run the complete proposal against an immutable speculative branch so a
       // later leaf failure cannot begin the returned action trace or state.
-      applyPlan(this, channel, plan, operation);
-      return applyPlan(this, channel, plan, operation);
+      applyPlan(source, channel, plan, operation);
+      return applyPlan(source, channel, plan, operation);
     })
   );
 }

@@ -587,7 +587,7 @@ function addColorScales(program) {
   let next = program;
   for (const [index, interpolate] of INTERPOLATIONS.entries()) {
     const id = `sequential-${slug(interpolate)}`;
-    const type = index === 0 ? "log" : index === 1 ? "symlog" : "sequential";
+    const type = index === 0 ? "log" : index === 1 ? "symlog" : index === 2 ? "sqrt" : "sequential";
     next = positionedPoint(next, id).encodeColor({
       target: id,
       field: "y",

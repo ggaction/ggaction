@@ -53,6 +53,9 @@ export function validateConcreteGraphicValue(type, property, value) {
   if (type === "text" && property === "fontSize" && value === 0) {
     throw new RangeError("text.fontSize must be positive.");
   }
+  if (property === "blend" && value !== "difference") {
+    throw new Error(`${type}.blend must be difference.`);
+  }
   if (property === "opacity" && (value < 0 || value > 1)) {
     throw new RangeError(`${type}.opacity must be between 0 and 1.`);
   }

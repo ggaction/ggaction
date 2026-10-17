@@ -1,5 +1,5 @@
 import { validateMeasuredRadiusScale } from "./radial.js";
-import { validateContinuousColorInterpolation, validateSequentialMidpoint } from "./color.js";
+import { normalizeColorInterpolationOptions, validateContinuousColorInterpolation, validateSequentialMidpoint } from "./color.js";
 import { isTransformedScaleType } from "./mapping.js";
 import {
   normalizeTransformParameters,
@@ -89,6 +89,7 @@ export function normalizeScaleDefinition({
   defaults = {},
   retainCoreOnTypeChange = false,
   retainCompatibleOnTypeChange = false,
+  allowColorReset = false,
   allowOrdinalBandParameters = false,
   validateDomain,
   validateRange
@@ -169,6 +170,19 @@ export function normalizeScaleDefinition({
   } else if (interpolate !== undefined) {
     throw new Error(`Scale type "${type}" does not support interpolate.`);
   }
+
+  const interpolationChanged = Object.hasOwn(patch, "interpolate") &&
+    patch.interpolate !== previous.interpolate;
+  const interpolationOptions = {};
+  for (const property of ["whitePoint", "gamma"]) {
+    const value = Object.hasOwn(patch, property)
+      ? patch[property]
+      : interpolationChanged ? undefined
+        : retainedValue(previous, patch, defaults, property,
+          typeChanged && !(retainCompatibleOnTypeChange && isContinuousColorScaleType(type)));
+    if (value !== undefined && !(allowColorReset && value === "auto")) interpolationOptions[property] = value;
+  }
+  Object.assign(definition, normalizeColorInterpolationOptions(definition.interpolate, interpolationOptions));
 
   const midpoint = validateSequentialMidpoint(
     retainedValue(previous, patch, defaults, "midpoint", typeChanged), type, definition.domain

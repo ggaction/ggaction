@@ -18,7 +18,7 @@ const EDIT_OPTIONS = Object.freeze([
   "ticks",
   "labels"
 ]);
-const TICK_OPTIONS = Object.freeze(["length", "color", "lineWidth", "alongOffset"]);
+const TICK_OPTIONS = Object.freeze(["length", "color", "lineWidth", "alongOffset", "strokeDash", "strokeDashMap"]);
 const LABEL_OPTIONS = Object.freeze([
   "offset",
   "format",
@@ -34,7 +34,8 @@ const LABEL_OPTIONS = Object.freeze([
   "labelMap",
   "alongOffset",
   "flush",
-  "colorMap"
+  "colorMap",
+  "align"
 ]);
 const SHARED_CREATE = Object.freeze(["scale", "position", "count", "values"]);
 const SHARED_EDIT = Object.freeze(["position", "count", "values"]);

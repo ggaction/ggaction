@@ -1128,6 +1128,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `number \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
 | `interpolate` | Optional / branch-dependent | `ContinuousColorInterpolation \| undefined` |
+| `whitePoint` | Optional / branch-dependent | `"d50" \| "d65" \| undefined` |
+| `gamma` | Optional / branch-dependent | `number \| undefined` |
 | `midpoint` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `unknown` | Optional / branch-dependent | `unknown` |
 
@@ -1175,6 +1177,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `number \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
 | `interpolate` | Optional / branch-dependent | `ContinuousColorInterpolation \| undefined` |
+| `whitePoint` | Optional / branch-dependent | `"auto" \| "d50" \| "d65" \| undefined` |
+| `gamma` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `midpoint` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `unknown` | Optional / branch-dependent | `unknown` |
 
@@ -1478,17 +1482,20 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
+| `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "pow" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |
+| `whitePoint` | Optional / branch-dependent | `"auto" \| "d50" \| "d65" \| undefined` |
+| `gamma` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `clamp` | Optional / branch-dependent | `boolean \| undefined` |
 | `reverse` | Optional / branch-dependent | `boolean \| undefined` |
 | `interpolate` | Optional / branch-dependent | `ContinuousColorInterpolation \| undefined` |
 | `midpoint` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `base` | Optional / branch-dependent | `number \| undefined` |
 | `constant` | Optional / branch-dependent | `number \| undefined` |
+| `exponent` | Optional / branch-dependent | `number \| undefined` |
 
 </details>
 
@@ -1516,11 +1523,20 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Required | `string` |
-| `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
-| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
+| `whitePoint` | Optional / branch-dependent | `"auto" \| "d50" \| "d65" \| undefined` |
+| `gamma` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly number[] \| readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly string[] \| { readonly palette: Palette; } \| readonly [string, string, ...string[]] \| undefined` |
+| `palette` | Optional / branch-dependent | `"accent" \| "bluegreen" \| "blueorange" \| "bluepurple" \| "blues" \| "brownbluegreen" \| "browns" \| "category10" \| "category20" \| "category20b" \| "category20c" \| "cividis" \| "dark2" \| ... 60 more ... \| undefined` |
+| `type` | Optional / branch-dependent | `"log" \| "ordinal" \| "pow" \| "quantile" \| "quantize" \| "sequential" \| "sqrt" \| "symlog" \| "threshold" \| undefined` |
 | `unknown` | Optional / branch-dependent | `string \| undefined` |
+| `clamp` | Optional / branch-dependent | `boolean \| undefined` |
+| `reverse` | Optional / branch-dependent | `boolean \| undefined` |
+| `interpolate` | Optional / branch-dependent | `ContinuousColorInterpolation \| undefined` |
+| `midpoint` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `base` | Optional / branch-dependent | `number \| undefined` |
+| `constant` | Optional / branch-dependent | `number \| undefined` |
+| `exponent` | Optional / branch-dependent | `number \| undefined` |
 
 </details>
 
@@ -2882,7 +2898,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "legend"> & { legend?: false \| (Omit<PathLegendOptions, "order"> & { order?: { channel: "x"; values?: undefined; } \| LegendValueOrder \| undefined; }) \| undefined; }) \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "grid" \| "legend"> & { grid?: false \| (Omit<CartesianGridOptions, "horizontal"> & { horizontal?: boolean \| ... 1 more ... \| undefined; }) \| undefined; legend?: false \| ... 1 more ... \| undefined; }) \| undefined` |
 
 </details>
 

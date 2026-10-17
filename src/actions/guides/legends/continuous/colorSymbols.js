@@ -36,9 +36,10 @@ export function resolveColorSymbolsLayout(program, config, scale) {
   config = intrinsicLegendConfig(program, config);
   const { plot, canvas } = resolveContinuousBounds(program);
   const sampling = validateSamplingAgainstScale(readLegendSampling(config), scale, "Sampled color legend");
-  let values = sampling.mode === "auto" && ["log", "sqrt", "symlog"].includes(scale.type)
+  let values = sampling.mode === "auto" && ["log", "pow", "sqrt", "symlog"].includes(scale.type)
     ? transformedTicks(scale.type, scale.domain, sampling.count,
       scale.type === "log" ? { base: scale.base }
+        : scale.type === "pow" ? { exponent: scale.exponent }
         : scale.type === "symlog" ? { constant: scale.constant } : {})
     : resolveLegendSampleValues(config, scale, "Sampled color legend");
   if (sampling.mode === "auto" && scale.midpoint !== undefined && !values.includes(scale.midpoint)) values = [...values, scale.midpoint].sort((a,b) => a-b);

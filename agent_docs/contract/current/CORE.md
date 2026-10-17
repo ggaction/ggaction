@@ -620,6 +620,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   `log`, `sqrt`의 닫힌 node union을 지원한다. `if`·`and`·`or`·`coalesce`는 값 평가를
   short-circuit하지만 모든 branch의 구조와 field 존재는 먼저 검증한다.
 - `toNumber` unary node는 finite number를 보존하고 trim된 signed decimal/scientific string을 finite number로 변환한다. Empty/whitespace, null, boolean, hex, invalid 및 non-finite 값은 거부한다. 다른 연산의 strict numeric 계약은 유지한다.
+- `floor`는 `{op:"floor",operand}` numeric unary node다. Finite number만 받고 Math.floor와 같은 음수/정수/signed-zero 결과를 반환한다. String은 명시 toNumber가 필요하며 null/nonnumeric은 오류다. 기존 depth16/nodes128/work10,000,000 및 lazy 평가를 유지한다.
+- `datePart`는 `{op:"datePart",part:"year",operand,timeZone?}`다. Epoch milliseconds인 finite number 또는 null을 받고 null은 전파한다. 기본 UTC와 명시 IANA timeZone의 Gregorian astronomical year 정수를 계산한다. 문자열은 parseTime으로 명시 변환한다. 잘못된 part/zone은 빈 입력에서도 오류며 비숫자/비유한 값과 Date 범위 ±8,640,000,000,000,000 초과를 거부한다. 소수 milliseconds는 Date TimeClip 정수 절삭이다. Expression 교체에서 timeZone 생략으로 UTC reset한다. 기존 derived lineage/재생/저장/소비자 계약을 유지한다. Evidence: `test/unit/actions/data/computed-calendar-year.test.js`, `test/unit/actions/data/computed-floor.test.js`.
 - `parseTime` node는 `{ op: "parseTime", operand, format? }`다. Format은 `"auto"`(기본), `"%Y-%m-%d"`, `"%d/%m/%Y"`, `"%m/%d/%Y"`의 closed union이다. Explicit calendar formats는 UTC millisecond timestamp를 만들고 잘못된 일자 rollover를 거부한다. Auto는 기존 temporal scalar normalization을 재사용한다. Invalid/nullish input은 null이므로 filter/impute 등 기존 명시적 missing-data 정책으로 처리한다. Raw field는 덮어쓰지 않는다.
 - `getPath` node는 `{ op: "getPath", operand: { field: root }, path }`다. Path는 1–8개의 non-empty literal string key이며 dot splitting, arrays/indices, dynamic expressions, prototype traversal를 지원하지 않는다. `__proto__`/`prototype`/`constructor`와 unknown node keys는 거부한다. Plain record의 own data property만 읽고 getter는 실행하지 않는다. Missing own property와 nullish intermediate는 null, present non-record intermediate/accessor/nonscalar 또는 nonfinite leaf는 atomic error다. Dataset 전체에서 unknown root는 오류지만 known optional root가 없는 row는 null이다. Ordinary literal field reference의 기존 의미와 missing-row 오류는 유지한다. Root field는 schema lineage dependency다.
 - `replaceLiteral` node는 `{ op: "replaceLiteral", operand, search, replacement }`다. Operand는 기존 recursive expression이며 평가 결과는 string이어야 한다. Search는 non-empty literal string, replacement는 empty를 허용하는 literal string이다. 첫 case-sensitive exact substring만 교체하고 no match는 원본을 보존한다. Dollar sequences는 literal이며 regex/flags/callback/dynamic search와 coercion은 지원하지 않는다. Null/nonstring operand와 malformed keys/types는 atomic error다. 기존 depth/node/work bounds와 lazy conditional 평가를 유지한다.
@@ -1551,7 +1553,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 
 ## `createScale`
 
-- Signature: `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, midpoint?, radialMapping?, unknown? })`.
+- Signature: `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, whitePoint?, gamma?, midpoint?, radialMapping?, unknown? })`.
 - `id`: 필수 user-defined scale ID.
 - `type`: `"linear" | "log" | "pow" | "sqrt" | "symlog" | "time" | "band" | "point" | "ordinal" | "sequential" | "quantize" | "quantile" | "threshold"`, 기본 linear.
 - `domain`: `"auto"` 또는 type-valid array. Direct continuous/time scale은 두 finite numeric values를
@@ -1569,14 +1571,17 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 - `clamp`: compatible continuous mapping을 resolved output extent로 제한한다. `reverse`는 final range direction을 뒤집는다.
 - `band`는 `paddingInner` 기본 `0`, `paddingOuter` 기본 `0`, `align` 기본 `0.5`; `point`는
   `padding` 기본 `0.5`, `align` 기본 `0.5`를 저장한다. Bandwidth는 band만 positive다.
-- `palette`는 sequential/log/sqrt/symlog/discretized color range descriptor이며 explicit `range`와 mutually exclusive다.
-  Unattached log/sqrt/symlog는 color range, palette 또는 interpolate로 color intent를 판별한다.
+- `palette`는 sequential/log/pow/sqrt/symlog/discretized color range descriptor이며 explicit `range`와 mutually exclusive다.
+  Unattached log/pow/sqrt/symlog는 color range, palette 또는 interpolate로 color intent를 판별한다.
   Color 범위와 numeric position 범위는 공유할 수 없다. Transform parameter는 position과 동일한 owner를 쓴다.
   Sequential descriptor의 `count`는 2 이상의 gradient-stop count이며 top-level `palette`와
   `range.palette`가 같은 validation과 resolution을 사용한다. `interpolate`는 continuous color 전용이고
   기본은 `"rgb"`다. Public palette `count`, sequential explicit range와 discretized explicit color
   range cardinality는 최대 `10,000`이다.
 - `midpoint`: sequential quantitative color의 finite 기준값 또는 `"auto"`. Numeric 값은 최종 domain의 두 끝 사이에 엄격히 있어야 한다. Auto domain은 consumer resolution 때 검증한다. 생성 생략은 endpoint-linear mapping, 편집 생략은 보존이며 `"auto"`는 semantic leaf를 제거한다. Temporal/position/ordinal/discretized numeric midpoint는 오류다. 양쪽 domain 구간을 color parameter [0,.5]/[.5,1]로 나누고 reverse/clamp/interpolation을 기존 mapper에서 적용한다. Palette 중앙색이 항상 neutral/white라고 추론하지 않는다.
+- `whitePoint`는 lab/hcl/hcl-long에서만 `"d65" | "d50"`를 받는다. 생략은 기존 D65, D50은 adapted sRGB/XYZ 행렬로 opt-in한다. Focused/generic edit의 `"auto"`는 explicit leaf를 제거한다. Interpolation 변경 시 비호환 inherited 값은 제거하고 동시 explicit 비호환 조합은 오류다. Mark/stroke/gradient/sample 범례는 같은 mapper를 공유한다. Evidence: `test/unit/grammar/scales/continuous-color-options.test.js`, `test/unit/actions/scales/color-interpolation-options.test.js`, `test/unit/actions/scales/color-primitive-parity.test.js`.
+- Continuous color의 `type:"pow"`와 positive finite `exponent`(기본1)는 기존 signed raw-value transform을 사용한다. `[f(v)-f(d0)]/[f(d1)-f(d0)]`를 색 위치로 사용하고 numeric midpoint는 거부한다. 원래 값의 범례 label/tick과 변환 위치를 유지한다. Exponent1로 reset하며 다른 type의 explicit exponent는 오류다. 기존 log/sqrt/symlog와 일반 position 척도는 같은 수치 owner를 유지한다.
+- `gamma`는 cubehelix/cubehelix-long에만 positive finite 값, 기본1, edit의 `"auto"` reset이다. Hue/saturation은 구간 t를 보존하고 lightness만 t**gamma로 보간한다. 기존 8bit endpoint와 final byte rounding을 유지한다. Clamp 뒤 적용하며 unclamped 음수 t의 fractional power 등 nonfinite 실수 결과는 원자적 오류다. 비호환 inherited 값 제거와 explicit 조합 거부는 whitePoint와 같다.
 - `unknown`은 direct unattached scale에서는 channel을 알 수 없으므로 그대로 저장한다. Consumer가 attach될 때
   concrete channel fallback validation과 supported item-grain policy를 적용한다.
 - Standalone `createScale`/`editScale`은 위의 전체 vocabulary를 유지하지만 action 안의 nested scale은
@@ -1602,7 +1607,7 @@ type ScaleType =
   | "sequential" | "quantize" | "quantile" | "threshold";
 ```
 
-- Implemented: `createScale({ id: UserId; type?: ScaleType; domain?: ContinuousDomain | OrdinalDomain; range?: "auto" | readonly unknown[]; nice?: boolean; zero?: boolean; clamp?: boolean; reverse?: boolean; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite; padding?: NonNegativeFinite; align?: UnitInterval; palette?: Palette; interpolate?: ContinuousColorInterpolation; midpoint?: number | "auto"; radialMapping?: "area" | "radius-length"; unknown?: unknown })`; type별 validation이 값을 제한한다. `time`은 유일한 UTC temporal token이다.
+- Implemented: `createScale({ id: UserId; type?: ScaleType; domain?: ContinuousDomain | OrdinalDomain; range?: "auto" | readonly unknown[]; nice?: boolean; zero?: boolean; clamp?: boolean; reverse?: boolean; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite; padding?: NonNegativeFinite; align?: UnitInterval; palette?: Palette; interpolate?: ContinuousColorInterpolation; whitePoint?: "d65" | "d50"; gamma?: PositiveFinite; midpoint?: number | "auto"; radialMapping?: "area" | "radius-length"; unknown?: unknown })`; type별 validation이 값을 제한한다. `time`은 유일한 UTC temporal token이다.
 - Maybe Future (NOT IMPLEMENTED): `{ type?: "identity" | "bin-ordinal" }`.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -1636,7 +1641,7 @@ type ScaleType =
 ## `editScale`
 
 - Implemented: immutable edits for every current `ScaleType`.
-- Signature: `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, midpoint?, radialMapping?, unknown? })`.
+- Signature: `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, whitePoint?, gamma?, midpoint?, radialMapping?, unknown? })`.
 - `id`는 existing scale을 선택한다. 생략하면 current scale, 그렇지 않으면 유일한 scale을 사용하며
   안전하게 하나를 정할 수 없으면 explicit ID를 요구한다.
 - `midpoint`는 create contract의 동일한 검증·mapping·reset을 따르며 연결된 모든 mark와 gradient legend를 갱신한다. Type이 바뀌면 이전 midpoint를 제거하고 돌아올 때 복구하지 않는다. Evidence: `test/unit/actions/scales/midpoint.test.js`, `test/unit/grammar/scales/midpoint.test.js`, `test/charts/color-midpoint/`.
@@ -1687,7 +1692,7 @@ type EditableCurrentScale = {
   padding?: NonNegativeFinite;
   align?: UnitInterval;
   palette?: Palette;
-  interpolate?: ContinuousColorInterpolation; midpoint?: number | "auto";
+  interpolate?: ContinuousColorInterpolation; whitePoint?: "d65" | "d50" | "auto"; gamma?: PositiveFinite | "auto"; midpoint?: number | "auto";
   unknown?: unknown;
 };
 ```
