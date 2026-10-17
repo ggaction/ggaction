@@ -7,7 +7,7 @@ Gate: **ready-for-review**. 아래는 이슈 #167, #168, #169, #172, #196, #198,
 - [x] 현재 타입, grammar, data action, point materializer, primitive guard 및 persistence 검사 경로 확인
 - [x] 기존 floor·exponential·summary 제안의 정확한 결정 재검토
 - [x] 새 중요 선택마다 권고안과 이유, 호환성·검증 조건 작성
-- [ ] 통합 리뷰 패키지의 원격 revision 및 사용자 설계 승인 기록
+- [x] 통합 리뷰 패키지의 원격 revision 및 사용자 설계 승인 기록: bad3f346, PROPOSAL.md 승인 기록
 - [ ] 승인 후 구현, focused/cumulative/installed 소비자 검증
 - [ ] 실제 색상 출력 비교의 시각 Gate 증거 및 사용자 확인
 

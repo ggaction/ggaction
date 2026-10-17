@@ -6,7 +6,7 @@
 - [x] 현행 public action, semantic/config 소유자, refresh, persistence, facet 경로 대조
 - [x] 현행 공개 호출의 거절과 immutable parent 보존을 직접 재현
 - [x] 충돌하는 선택을 하나의 권고 계약으로 정리
-- [ ] 이 문서의 구체적인 public API와 저장 상태 변경에 대한 사용자 승인
+- [x] 이 문서의 구체적인 public API와 저장 상태 변경에 대한 사용자 승인
 - [ ] 승인 후 구현·검증·선언·계약·공개 문서·검색 메타데이터 동기화
 
 Gate: **ready-for-review**. 사용자의 “미구현 28개도 설계 검토 후 모두 구현”은
