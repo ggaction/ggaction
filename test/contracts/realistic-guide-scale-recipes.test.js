@@ -45,14 +45,14 @@ const EXPECTED_SELECTIONS = Object.freeze({
   "realistic-guide-scale-cartesian-lifecycle": 50,
   "realistic-guide-scale-temporal-lifecycle": 30,
   "realistic-guide-scale-parallel-profiles": 10,
-  "realistic-guide-scale-vocabulary-primary": 327,
+  "realistic-guide-scale-vocabulary-primary": 332,
   "realistic-guide-scale-vocabulary-secondary": 272,
   "realistic-guide-scale-polar-lifecycle": 15,
   "realistic-guide-scale-facet-policies": 15
 });
 const EXPECTED_TIER_SELECTIONS = Object.freeze({
   simple: 15,
-  intermediate: 599,
+  intermediate: 604,
   advanced: 105,
   composite: 15
 });
@@ -415,7 +415,7 @@ function meetsMinimum(stats, occurrences = 5, datasets = 3) {
   return stats.occurrences >= occurrences && stats.datasets.size >= datasets;
 }
 
-test("defines a feasible 734-selection guide/scale coverage schedule", () => {
+test("defines a feasible 739-selection guide/scale coverage schedule", () => {
   assert.deepEqual(REALISTIC_GUIDE_SCALE_COUNTS, {
     simple: 1,
     intermediate: 2,
@@ -440,7 +440,7 @@ test("defines a feasible 734-selection guide/scale coverage schedule", () => {
     ])),
     EXPECTED_TIER_SELECTIONS
   );
-  assert.equal(Object.values(EXPECTED_SELECTIONS).reduce((sum, value) => sum + value, 0), 734);
+  assert.equal(Object.values(EXPECTED_SELECTIONS).reduce((sum, value) => sum + value, 0), 739);
   assert.ok(EXPECTED_TIER_SELECTIONS.intermediate <= Math.floor(3_600 * 0.45));
   assert.ok(Math.max(...Object.values(EXPECTED_SELECTIONS)) <= Math.floor(3_600 * 0.15));
   assert.equal(
@@ -494,12 +494,12 @@ test("defines a feasible 734-selection guide/scale coverage schedule", () => {
   }
 
   const scaleRecipes = SCALE_VOCABULARY_RECIPES;
-  assert.deepEqual(scaleRecipes.map(recipe => recipe.factors.variant.length), [283, 272]);
-  assert.deepEqual(scaleRecipes.map(recipe => recipe.coverageSchedule.minimumSelections), [327, 272]);
+  assert.deepEqual(scaleRecipes.map(recipe => recipe.factors.variant.length), [284, 272]);
+  assert.deepEqual(scaleRecipes.map(recipe => recipe.coverageSchedule.minimumSelections), [332, 272]);
   const variants = new Map(scaleRecipes.flatMap(recipe =>
     recipe.factors.variant.map(variant => [variant.id, variant])
   ));
-  assert.equal(variants.size, 555);
+  assert.equal(variants.size, 556);
   const scheduledAssignments = scaleRecipes.flatMap(recipe => {
     const recipeVariants = new Map(recipe.factors.variant.map(variant => [variant.id, variant]));
     return recipe.coverageSchedule.selectionVariantIds.map((id, index) => Object.freeze({
@@ -508,8 +508,8 @@ test("defines a feasible 734-selection guide/scale coverage schedule", () => {
     }));
   });
   const scheduled = scheduledAssignments.map(assignment => assignment.variant);
-  assert.equal(scheduled.length, 599);
-  assert.equal(new Set(scheduled.map(variant => variant.id)).size, 555);
+  assert.equal(scheduled.length, 604);
+  assert.equal(new Set(scheduled.map(variant => variant.id)).size, 556);
   const paletteCounts = Object.fromEntries(PALETTE_NAMES.map(name => [name, 0]));
   const paletteDatasets = new Map(PALETTE_NAMES.map(name => [name, new Set()]));
   scheduledAssignments.forEach(({ variant, dataset }) => {
@@ -531,13 +531,13 @@ test("defines a feasible 734-selection guide/scale coverage schedule", () => {
   const scaleRequirements = scaleRecipes.flatMap(recipe =>
     recipe.coverageSchedule.variantRequirements
   );
-  assert.equal(scaleRequirements.length, 555);
+  assert.equal(scaleRequirements.length, 556);
   assert.equal(scaleRequirements.filter(requirement =>
     requirement.minimumOccurrences === 1 && requirement.minimumDatasets === 1
   ).length, 544);
   assert.equal(scaleRequirements.filter(requirement =>
     requirement.minimumOccurrences === 5 && requirement.minimumDatasets === 3
-  ).length, 11);
+  ).length, 12);
 });
 
 test("observes field-pair and variant factors with independent direct and final evidence", () => {
@@ -780,7 +780,7 @@ test("runs every non-sequential scale profile with branch-exact direct actions",
     try {
       const domains = recipe.factorsForDataset(dataset);
       const variants = domains.variant.filter(value => value.type !== "sequential");
-      assert.equal(variants.length, 11);
+      assert.equal(variants.length, 12);
       variants.forEach((variant, index) => {
         const factors = Object.freeze({
           dataset,
@@ -801,7 +801,7 @@ test("runs every non-sequential scale profile with branch-exact direct actions",
       releaseTidyTuesdaySourceCache(dataset);
     }
   }
-  assert.equal(builds, 3 * 11);
+  assert.equal(builds, 3 * 12);
 });
 
 test("uses truthful record counts when a quantize share field has zero span", () => {
@@ -1124,9 +1124,9 @@ test("preserves whitespace through a realistic long wrapped title block", () => 
 test("builds every reserved witness and directly satisfies guide/scale coverage", async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
   const projection = buildCoverageProjection(inventory);
-  assert.equal(projection.projectedChartCount, 734);
-  assert.equal(projection.uniqueVariantCount, 582);
-  assert.equal(projection.actualChartCount, 598);
+  assert.equal(projection.projectedChartCount, 739);
+  assert.equal(projection.uniqueVariantCount, 583);
+  assert.equal(projection.actualChartCount, 599);
   assert.equal(projection.qualityChartCount, 24);
   for (const recipe of REALISTIC_GUIDE_SCALE_RECIPES) {
     assert.equal(
@@ -1138,7 +1138,7 @@ test("builds every reserved witness and directly satisfies guide/scale coverage"
   const scaleFingerprintUnion = new Set(SCALE_VOCABULARY_RECIPES.flatMap(recipe =>
     [...projection.finalFingerprintsByRecipe.get(recipe.id)]
   ));
-  assert.equal(scaleFingerprintUnion.size, 555, "all scale variants have unique actual finals");
+  assert.equal(scaleFingerprintUnion.size, 556, "all scale variants have unique actual finals");
 
   for (const action of REALISTIC_GUIDE_SCALE_EXPECTED_ACTIONS) {
     assert.ok(projection.actualActions.has(action), `${action} actual witness`);

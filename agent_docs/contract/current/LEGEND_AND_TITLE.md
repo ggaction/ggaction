@@ -302,6 +302,15 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - Evidence: `test/unit/actions/guides/legend-border-dash.test.js` covers family/edge geometry, exact solid bounds,
   reset/removal, malformed input/state, shared-facet replay and immutable state.
 
+## Facet parent legend lifecycle
+
+Existing whole/focused/block legend editors and `removeLegend` also operate on an existing facet,
+facetGrid or repeat parent shared guide. Source target/channel resolution and native family validation
+are identical to unit actions. Declare or replace the parent through facet `guides.legend: LegendOptions`
+or `editFacetGuides`; post-composition `createLegend` remains unavailable. The complete owner, final
+plot-union fit, persistence and replay contract is in [COMPOSITION](COMPOSITION.md). Concat parents
+and absent shared owners reject. Selected member removal follows native fused-block ownership.
+
 ## `editLegend`
 
 - Signature: `editLegend({ target?, channel?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
@@ -849,16 +858,20 @@ sampled color, and point-bearing categorical or combined recipes are supported.
 Gradient bodies, interval swatches, line-only recipes and stroke-width samples
 reject it. Every layer of one composite sample shares one nested concrete Canvas.
 Its horizontal extent includes the original stroke; vertical bounds intersect the
-window. Areas, radii, paths, sample values, opacity-zero geometry and generated
-item identities remain unchanged. Labels, titles and borders are never clipped.
+window. Areas, radii, paths, sample values, opacity-zero geometry and typed
+sample identities remain unchanged. Labels, titles and borders are never clipped.
 Pitch uses visible glyph bounds and label bounds with the original minimum gap.
 Small glyphs are not enlarged. Nested Canvas bounds intersect every ancestor
 window; root Canvas overflow checks still see geometry outside that root.
 Persistence, immutable edits, data/scale/Canvas replay and removal share the same
-materializer. Evidence: legend-symbol-window unit and browser tests.
+materializer. Authored facet-parent intent stores each block window independently;
+scaffolding does not propagate it into an unclipped gradient sibling. Ordinary
+child composition uses valid namespaced private graphics while source mark item
+identities remain stable. Evidence: legend-symbol-window unit and browser tests,
+and facet-parent-symbol-window unit tests.
 
 
-### Quantitative color-size combination (#205)
+### Quantitative color-size combination
 
 - `createLegend` / whole `editLegend.combine: "color-size"` selects exactly color+size (omitted channels imply this pair). One ordinary Cartesian circle point owner, same quantitative field/data/grain, continuous scales and identical finite nondegenerate numeric endpoints are required. Encoded shape, ordinal size, independent fields/grains, or incompatible live edits reject atomically, without splitting.
 - `guideConfigs.legend.colorSize` owns target, field/type, colorScale/sizeScale, shared numeric domain, sampling, symbol and native item layout/style. `guide.legend.colorSize` references both scales and its title. One descriptor key `["color","size"]` aliases both selectors; no fabricated dataset or mark is created.

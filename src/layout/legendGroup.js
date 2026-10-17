@@ -3,7 +3,7 @@ import { SIDE_LEGEND_BLOCK_GAP, HORIZONTAL_LEGEND_BLOCK_GAP } from "./legendLane
 
 // Pack complete occupied rectangles. Item direction, title layout and sample
 // geometry have already been resolved by each family and are not changed here.
-export function resolveLegendGroupPlacement({ blocks, group, plot, canvas, allowOverflow = false }) {
+export function resolveLegendGroupPlacement({ blocks, group, plot, canvas, allowOverflow = false, deferCanvasFit = false }) {
   if (blocks.length === 0) return [];
   const { placement, blockLayout } = group;
   const corner = PLOT_LEGEND_POSITIONS.includes(placement.position);
@@ -58,7 +58,7 @@ export function resolveLegendGroupPlacement({ blocks, group, plot, canvas, allow
       : plot.y + plot.height + placement.offset;
   }
   const occupied = { left, top, right: left + width, bottom: top + height };
-  if (occupied.left < 0 || occupied.top < 0 || occupied.right > canvas.width || occupied.bottom > canvas.height) {
+  if (!deferCanvasFit && (occupied.left < 0 || occupied.top < 0 || occupied.right > canvas.width || occupied.bottom > canvas.height)) {
     throw new Error("Legend group requires more Canvas space.");
   }
   return packed.map((block, index) => ({ id: block.id,

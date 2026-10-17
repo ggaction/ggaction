@@ -8,7 +8,7 @@ Gate: **approved**. 이슈 #167, #168, #169, #172, #196, #198, #202, #207, #209�
 - [x] 기존 floor·exponential·summary 제안의 정확한 결정 재검토
 - [x] 새 중요 선택마다 권고안과 이유, 호환성·검증 조건 작성
 - [x] 통합 리뷰 패키지의 원격 revision 및 사용자 설계 승인 기록: bad3f346, PROPOSAL.md 승인 기록
-- [ ] 승인 후 구현, focused/cumulative/installed 소비자 검증
+- [x] 승인 후9개 구현, focused/cumulative/installed 소비자 검증: 아래 마지막 누적 checkpoint
 - [x] 실제 색상 출력 비교의 시각 Gate 증거 및 사용자 확인: 초기 승인과 감마 보정 목표 `4f2f985c`, 승인 기록 `e670508b`
 
 검토 기준은 현재 작업트리의 0.0.18 공개 표면이다. 이 문서는 계약의 새 canonical 사본이 아니라 구현 전 검토 자료다. 구현 시 정확한 현재 계약은 해당 `agent_docs/contract/current/` 소유 파일에 반영하고 이 문서에는 승인·완료 근거만 연결한다. 데이터·색상 계산은 grammar, 의미·소유권·명시적 재물질화는 domain action, 이미 계산된 출력은 renderer가 담당한다. renderer에 데이터 변환이나 fitting을 추가하지 않는다.
@@ -50,6 +50,68 @@ Stroke editor의 비분배 Omit 때문에 누락되던 기존 실행 가능한 �
   3,914,000, Basic만191,000으로 최소 단위 갱신했다. 다른 예산은 유지했다.
 - 누적 통합 전에 computed와 색상 새 옵션의 realistic corpus 최소5회·3실데이터셋
   실제 실행 증언을 추가해야 한다. 이 의무와 이후 회귀·통계·capacity 구현은 남아 있다.
+
+### 구현 checkpoint — summary group capacity
+
+#209는 summary grammar의 단일 output-group ceiling만30,000 inclusive로 올린다.
+타입/schema/action trace와 계산·키 순서는 그대로며 새 bypass 옵션은 없다.
+현재 계약과 공개 shaping 설명을 동기화했다.
+
+- 9,999/10,000/10,001/29,999/30,000/30,001 경계,60,000행의30,000그룹,
+  typed/multifield keys·weighted members, revision/editor·30,000 snapshot·facet replay,
+  실패 부모 불변성과 독립10,000 graphic limit을 검사했다. Focused capacity5개 통과.
+- [source evidence](summary-source-evidence.json)와 [공개 재현](summary-source-proof.mjs)은
+  보존 입력 SHA256 `1ae3e91972addcbdba23e94c13e30fce6708b402efe315403b1ed8b2d23ffd02`
+  26,265행의 전체 membership을 검사한다. Clock/hour/minute19,194/10,968/25,909그룹이
+  독립 날짜 키·합계/건수 oracle과 순서·평균 오차0으로 일치하며 raw 문자열은 보존했다.
+  마지막25,909점 단일 경로의 독립20,000명령 hold는 유지한다.
+- 전체 unit3,106개와 docs120개 통과, 설치 package의10,001그룹·snapshot 소비자 통과.
+  뒤이어 추가한 facet capacity 사례5개도 통과했다. Contracts532/533의 한 실패는
+  앞선 Basic budget 변경의 README·architecture canonical table 누락이었고 두 곳을
+  동기화한 documentation-truth3개가 통과했다. 최종 누적 검사에서 재확인한다.
+
+### 구현 checkpoint — response-weighted exponential regression
+
+#196은 기존 regression method union에`exp`를 추가했다. Log response를 실제 y weight로
+계산하고, positive finite amplitude/rate·prediction 검사와 interval:false 정규화를
+데이터 action·facade·editor·follow/facet replay·persistence에 동일하게 적용했다.
+Renderer와 transform shape는 기존 소유자를 유지한다.
+
+- 독립 weighted raw moments와50자리 Decimal 교차검사 literal, noisy/정확한 지수,
+  극단 predictor와1e-300/1e300 response, missing·typed group·양수/옵션 오류,
+  band 제거/복원·원자성·follow/facet·snapshot을 검사했다. Focused8개와 기존 회귀46개 통과.
+- Primitive를 직접 그린400×300 Canvas 전체 RGBA가 public flow와 정확히 일치했다.
+  [실제 보존 source proof](exponential-source-proof.mjs)는 원본9행과 실제60개 sample 위치를
+  보존한다. [결과](exponential-source-evidence.json)는 원본 곡선 대비 최대 response오차
+  1.8474111129762605e-13, 좌표오차5.684341886080801e-13이며 전체360×360 RGBA는 정확히 같다.
+  고정 EPS 이내 수치 비교이며 pixel tolerance는 추가하지 않았다. 이미지를 관찰하지 않았다.
+- 전체 unit3,113개, docs120개, 실제 npm설치 runtime·TS·PNG/SVG·Full/Basic·MCP 통과.
+  Contracts531/533의 compact-card3바이트 초과와 측정 package 초과를 정정한14개가 통과했다.
+  Card의 모든 옵션을 유지하고 부정확했던 설명 문장만 짧게 다듬었으며3360 ceiling은 유지했다.
+- macOS/Node22.23.1/npm10.9.8에서 packed798,553/unpacked3,916,961,
+  Full393,012 gzip바이트를 측정했다. 최소 단계로799,000/3,917,000/394,000만 갱신하고
+  Basic191,000·SVG25,000·567entries는 유지했다. 측정과 이전 한도 통과를 혼동하지 않는다.
+- 새 exp literal의 realistic 최소5회·3실데이터셋 실제 증언과 최종 누적 검사는 남아 있다.
+
+### 구현 checkpoint — cached linear fit statistics
+
+#202의 두 공개 action과 내부 materializer, 닫힌 transform/typed schema·topology·DAG replay,
+fit-owned 최소cache·legacy 명시 계산·snapshot validation·remove/release cleanup을 구현했다.
+정확한 계약은 CORE, state 경계는 SECOND_ARCHITECTURE가 소유한다.
+
+- 독립 OLS/SSE literal, grouped typed first-seen·missing·constant R²null, prediction count 독립성,
+  cache reuse와 구 snapshot의 명시 fit1회, source 교체/revise·주석 갱신·순환/삭제·method 오류 원자성,
+  chart-owned edit/follow/facet와 기존 extreme numeric·tampered cache/행 일치 검사12개 통과.
+- 기존 fit trace는 createDerivedData→materializeRegressionData 그대로다. semanticSpec/graphicSpec/
+  prediction rows는 유지하며 editable state에 작은 cache만 추가된다. 구 snapshot 로드에서 fit하지 않는다.
+- 전체 unit3,124개, contracts532/533(유일 package-budget 실패는 실측 한도 정정 후 해당4개 통과),
+  docs120개와 Full/Basic TypeScript를 통과했다. 뒤이어 추가한 cache/source/facet/cycle12개도 통과했다.
+  실제 packed npm 설치에서 새 create/edit·coefficients/count/R²·snapshot·Full-only surface와
+  기존 browser/MCP 소비자까지 통과했다.
+- macOS/Node22.23.1/npm10.9.8 실제569entries, packed802,032/unpacked3,935,479와
+  search816,102바이트를 기준으로 최소 예산만 갱신했다. 별도 global test/coverage threshold는 유지했다.
+- 최종 realistic의 두 새 action과 옵션 최소5회·3실데이터셋 증언, #207 point capacity와
+  나머지 신규 computed/color/exp vocabulary의 누적 현실 데이터 검증은 아직 남아 있다.
 
 ## 1. 공통 결정
 
@@ -335,3 +397,148 @@ program.createSummaryData({
 
 새 공개 계약 승인 전에는 구현 완료/Current 승격/이슈 해결로 기록하지 않는다. 승인 이후 실제 구현과 소비자 행렬·문서·배포 패키지까지 확인한 이슈만 해결한다. 범위에 포함된 능력을 구현하지 않은 상태로 미래 기능으로 옮기거나 단순히 닫아 정리하지 않는다.
 
+
+## #207 구현 checkpoint
+
+- 상태: approved 설계를 구현했다. source/types/Current/public docs/installed consumer를 함께 동기화했다.
+- `selectors/graphicCapacity.js`는 실제 semantic point + materialized selected data + connected graphic
+  ID/type와 retained child namespace 소유권만 증명한다. 실제 bound와 structured diagnosis는 core
+  validation이 소유한다. composition materializer의 기존 namespace export는 재사용 re-export다.
+- create/editGraphics와 point materializer, source rebind preflight, editable persistence가 공통 guard를
+  사용한다. raw selected cardinality는 missing skip보다 먼저 확인하고 graphic-only 구조 검증은
+  기존 의미/capacity 미검사 경계를 유지한다. 새 action·옵션·state·trace-string 우회는 없다.
+- focused7개: Full/Basic9999/10000/10001/49999/50000/50001, shape/mixed/property arrays,
+  primitive negative 및 일반 mark/path/work 독립 한도, source revision/missing skip,50k selection/
+  highlight/accessibility/Canvas resize/Canvas/SVG/저장복원, facet/nested composition을 검증했다.
+- 보존된 두 실제 source는 [실행 CLI](point-source-proof.mjs)와 [증거](point-source-evidence.json)로
+  44992/20707전체 raw rows·문자열 타입·순서·item identity, 전체 좌표 오차0, editable/graphic-only
+  Canvas/SVG/accessibility를 확인했다. API 요청·새번역·이미지 시각 검사는 하지 않았다.
+- 누적 unit3134, contracts533, docs120통과. 설치 package의 Full/Basic50k, TypeScript,
+  persistence/Canvas/PNG/SVG/PDF/tutorial, MCP, browser bundle 소비자도 통과했다.
+- Node22.23.1/npm10.9.8/macOS에서 기능 증가분을 측정했다. canonical570entries/packed803124/
+  unpacked3939523, browser Full395462/Basic190821/SVG7176gzip. package570/804000/3940000과
+  Full396000만 최소 상향했다. Basic191000/SVG25000과 computed/work/path/일반graphics 한도는 유지한다.
+- 전체9개 기능의 realistic 새옵션/리터럴/action 실제5회·3TT데이터셋 증언은 다음 필수 checkpoint다.
+
+## 9개 기능의 실제 데이터 증언 checkpoint
+
+- source가 아닌 검증 계층의 checkpoint다. 공개 runtime9개(#167/#168/#169/#172/#196/#198/#202/#207/#209)는 앞선 커밋대로 유지한다.
+- `realistic-data-color-contracts.test.js`는 고정159requirements(78paths/81literals,
+  SHA256 `945f57c2d544486480599f6730c944b55f3f25eb74ba4e06a249f4f92950c071`)를
+  실제100개 프로그램과 다섯 pinned TT source에서 최소5회·3dataset으로 검증했다.
+  실제 사용 source는 Penguins, London Marathon Winners, Astronauts, US Births, Chocolate Ratings다.
+  새 함수 두 개의 source/target 및 computed floor/datePart create/edit, exp create/edit/data/facade,
+  모든 공개 color/stroke whitePoint/gamma/pow consumer와 기존 position/size pow를 포함한다.
+- 처음135개 계획은 전체 기존 miscellaneous/regression recipe를 반복해 새로운 증언과 무관한
+  수백 개 facade를 매번 재실행했다. 같은 pinned `realisticRecordView`와 공개 helper를 재사용해
+  필요한100개로 정리했다. 원래159개 요구와 SHA, 최소5/3은 그대로다. 다섯 서로 다른 원본의
+  선택 행·sourceRowIndex·원본 열은 보존하고 양수/명시 interval alias만 기록된 산식으로 만든다.
+  회귀 count·coefficients·R²와 floor는 독립 계산으로 대조한다. 그림을 관찰하거나 새번역하지 않았다.
+- 전용 color 양성 profile은 signed-power/Lab/HCL/cubehelix의 실제 적용이 있는 scatter/bar5종과
+  기존 scale/heatmap profile이다. 관련 없는 log+CI의 부호 제약 조합은 이 추가 증언에 넣지 않는다.
+  기존 전체 broad matrix, negative와 public admission 검증은 별도로 그대로 유지했다.
+- color union이8→9가 되면서 기존 small-family 임계값8을 넘는 문제를 발견했다. 전역 임계값은
+  바꾸지 않고 정확한 closed9color vocabulary만 path-values로 유지한다. 원래8종과 pow가 모든
+  공개 path마다 계속 필수이며, 다른9종 calendar union은 기존 family-values다. 이를 검증하는
+  positive/negative inventory assertions를 추가했다. 단순 fingerprint 변경으로 실행 증언을 대체하지 않았다.
+- 최신 출시 main `0447acaf`를 병합한 `be874696`에 R의 실제sqrt 증언과 실행 불가능한band 선언
+  정정을 보존했다. 기존 recipe의 행·sample·정책은 바꾸지 않았다. 새pow profile은 기존 feature
+  ordinal 뒤에 추가해 원래 quantile 등 역할의 실행을 그대로 유지한다.
+- broad actual matrix: Cartesian720, encoding15, facade255, guide739선택/599실제build,
+  statistical465. 옵션·리터럴의 증가분은 정확한 count/digest와 실제 최소5/3 실행을 함께 검사한다.
+  과거918개 gap partition은 그대로 두고 새statistics2개는 별도159개 증언 소유자에 포함한다.
+- 새 파일의 성공 실측은18273.828792ms(macOS/Node22.23.1/npm10.9.8)다. shard timing에18274ms를
+  등록하고 해당 항목의 환경 override를 남겼다. 기존 Ubuntu 측정값과 일반 sharding 기준은 유지한다.
+- 일반unit runtime3135개가 통과했고 새파일 timing누락으로 실패했던 shard 검사3개도 정정 후 통과했다.
+  최종 broad/statistical 재검증 결과와 stable 색상 artifact 증거는 후속 checkpoint에 기록한다.
+
+- 최종 재실행 Cartesian6개와 statistical7개가 모두 통과했다. 전용100프로그램159요구, timing/sharding3개도 통과했다. 출시 main병합 뒤 installed package unpacked실측3941633바이트로 기존3940000을 초과해 다음 최소1000단계인3942000만 적용했다. Entry570/packed804000/browser/search한도는 유지하며 macOS/Node22.23.1/npm10.9.8 환경이다.
+
+## 색상 승인 목표의 정식 예제 승격 checkpoint
+
+- 원래 승인된 chart body를 그대로 보존했다. `lab-white-point`는 D65/D50 각각9개,
+  `color-math`는 gamma1/gamma2.2 각각9개와 signed-power9개다. Gamma의 공개 range는
+  추가 승인 `4f2f985c`/기록 `e670508b`의 `['#75190b','#90f2a4']`로 고정했다.
+- 실행 소유자는 `test/charts/color-controls/`이고 public program은 각각
+  `examples/color-white-point/program.js`, `examples/color-controls/program.js` 한 개다.
+  첫 선언 뒤 `editColorScale`로 D50/gamma2.2/pow를 적용한다. Primitive는 독립 literal RGB와
+  concrete rectangle만 사용하는 명시적 createGraphics/editGraphics chain이다.
+  기존 독립 Lab행렬/cubehelix 역변환/signed-power oracle과45개 literal을 대조한다.
+- Manifest가 exact top-level public 호출, 크기480×270, row geometry/색상, artifact 소유자를
+  기록한다. 두 variant의 graphicSpec/order/Canvas호출/전체518400RGBA바이트와 PNG가 exact다.
+  SVG와 PDF의 concrete vector stream도 exact이며 raster image를 포함하지 않는다.
+  Rectangle전용 PDF에는 path move가 아니라 rectangle명령 `re`가 있으므로 shared vector
+  검사도 실제 요청 geometry에 맞는 명령을 요구한다. 기존 경로/원형 검사는 계속 `m`을 요구한다.
+- 재현: `node --test test/charts/color-controls/{public.test,png.render,vector.render}.js`.
+  PNG는 `.artifacts/test/png/charts/color-scales/color-white-point/lab-white-point/`와
+  `.artifacts/test/png/charts/color-scales/color-controls/color-math/`
+  아래 `primitive.png`, `user-facing.png`, exact호출의 `variant.json`이다.
+  Roadmap/review 디렉터리는 정식 테스트의 실행 의존성이 아니다.
+- Public registry/shared browser host/catalog/API설명을 연결했다. BrowserCanvas2개와
+  browser-safeSVG2개가 실제 Chromium에서 통과했고, SVG는 native Node 출력/모든 rectangle수와 exact다.
+  기존 vector2개를 포함한 대표9검사, hierarchy/source-boundary9검사가 통과했다.
+- 전체일반 unit3136/3136 통과(95.536초), installed packed consumer도 앞선 checkpoint 뒤 통과했다.
+  새예제 source-link검사는 HEAD의 canonical source를 검사하므로 source commit 뒤 provenance를
+  재생성하고 문서120개를 재실행한다. 문서 site는 로컬 기본Ruby2.6 PATH오류를 기록하고,
+  이미 설치된Ruby3.2.11을 명시해 preflight/build/built검증을 실행한다.
+- 검색 payload817927바이트의 새예제/사용법을 유지하며 cap은 다음 최소1000단계818000만 적용했다.
+  이 기록은 승인시각 목표의 코드·자동 검사 증거이며 새 VLM/이미지 관찰이나 유료번역은 실행하지 않았다.
+
+### 마지막 누적 검증
+
+- 일반unit3136/3136, normal contracts548/548, docs120/120 모두 통과했다.
+  계약 검사가 찾은 새slice의 primitive.test누락과 realistic discovery22→23을 보완했고,
+  모든 원래 검사와 파일별실제timing을 유지했다. Public pair의 호출은 subset만이 아니라
+  요약된 전체 trace arguments와 manifest 호출을 exact 비교한다.
+- Ruby3.2.11의 명시 PATH로 Jekyll build와150개 built pages/links/assets/search 검사를 통과했다.
+  전체 responsive/a11y/browser sweep은150페이지를320/390/768px에서 검사하고 desktop검색,
+  keyboard/mobile메뉴, JavaScript없는탐색을 포함해 통과했다. Stable예제를 포함한 실제 packed
+  installed소비자도 runtime/TypeScript/Basic/browser/MCP까지 최종 통과했다.
+  명시primitive2개와 registry/discovery를 포함한 focused23개 및 exacttrace5개도 모두 통과했다.
+- 통합 중 axes 작업에서 별도로 발견한 object|array union의 숨은valid leaf 복원은
+  현재branch의 검증 입력에 아직 들어 있지 않다. 그 parser변경 후 복원되는 requirement의
+  실제증언과 전체 통합 검사는 root가 합친 뒤 추가로 확인해야 한다. 여기의159개/기존closed9
+  color전수 및5/3증언은 그대로 보존하며 새통합 입력의 성공으로 과장하지 않는다.
+
+## 복원된 palette range 경로의 실제 증언
+
+- Root통합4135e971와 metadata/cap08329df4를 병합했다. 검사기의 object|array union 복원에서
+  드러난 정확124경로(31consumer×palette/name/count/extent), SHA256
+  `7dd3a0dccf3b59ec06d048dfb05b1f36bf055ef63c9281aa0f5a8f24b9cfcfaa`를 별도로 고정했다.
+  기존159요구·SHA·closed9 color전수 정책과 최소5회/3원본은 그대로다.
+- 새124경로는135개 실제public프로그램/다섯 pinned TT원본에서 모두 최소5회·3dataset,
+  모든name경로는 실제3개서로다른palette까지 통과했다. 원래159/100과 합친 전체파일의
+  actual235프로그램/3tests가 통과했고 실측50175.726291ms를 shard에50176ms로 등록했다.
+  원본지표를 보존하며 fresh numeric/group/temporal aliases는 기존 lifecycle projection의
+  정확한 원본 행선택/fieldBinding/변환 provenance와SHA로 확인한다.
+- Cartesian 원래36profile와 선택적 생략/음성조합은 그대로 두고 palette-range3profile을
+  뒤에 append했다(총39, 실제schedule780). Statistical Violin/Histogram/Heatmap 뒤에 각각
+  3profile을 append했다(기존feature ordinal불변). Direct/encoding/guide/facade/hierarchical
+  생성과 ECDF/Raincloud편집도 실제 public calls로 증언한다. Palette-only flow는 기존
+  source projection과 공개facade의3profile을 재사용하여 무관한33×13전체반복을 피한다.
+- 배열을 숨기는 trace정책을 바꾸지 않았다. `extentCount:2`의 실제 호출 증거를 기존 ledger와
+  같은 array-presence 방식으로 읽고 정확한길이2를 검사한다. 지워진 extent값을 복원하지
+  않으며 count0/음수/비정수/문자열과 count아래의 가짜nested경로는 negative로 거부한다.
+- 실제 증언에서 Raincloud색상재생성이 기존소비자없는ordinal palette range를 숫자쌍으로
+  오판하는 버그를 발견했다. `editScale`의 unboundordinal에 생성과 같은 기존
+  validateOrdinalRange를 재사용했다. 새옵션/타입/저장상태/역할추론은 없다. Atomically
+  malformedpalette를 거부하고 boundposition은 계속 numeric range만 허용한다.
+  Typed mixed-domain[1,'1',true], 원본/caller불변성, Raincloud색상·회전재생성·snapshot,
+  Full기능과 Basic의 기존genericedit미노출을 포함한18개 focused검사가 통과했다.
+  Installed runtime/TypeScript소비자에도 같은palette create/edit를 추가했다.
+- 전체unit3240/3240, inventory/union/source-boundary16/16, docs120/120 통과했다.
+  Root의 나머지axis복원profile과 결합한 전체broad requirement count/digest·actual최소 검사는
+  root가 마지막통합에서 재계산한다. 여기의 성공은 정확124팔레트와기존159에 한정한다.
+- 원래transform함수coverage누락은 별도488b62e3의 정식statistics policy2tests로 보완했다.
+  고정output roles/독립객체와닫힌edit/replay스키마를검사하며 RawV8에서normalizeEdit4회,
+  outputRoles2회 실행을 확인했다. Critical floor와global coverage기준은 그대로다.
+- 마지막 installed packed검사도 runtime/TypeScript·Raincloud palette lifecycle·Full/Basic경계,
+  browser bundle과MCP까지 통과했다. Full409512/Basic199726/SVG7325 gzip은
+  각각410000/200000/25000의 실측최소cap 안이며 package587/829705/4048931은
+  587/832000/4049000 안이다. Package entry나unpacked/packed한도는08329df4 그대로다.
+  Budget truth/timing sharding6개도 통과했다.
+- Source6e4b2397 기준으로 provenance/LLM을 재생성한 docs120/120과 Ruby3.2.11
+  Jekyll build/150built pages 정적검사도 통과했다. 전체통합 normal vertical검사에는
+  별도 bar-compositing/legend-appearance 디렉터리의 public registry미등록이 남아
+  root에 보고했다. Palette두정식chart는 등록되어 있으며 이 기록을 전체통합suite성공으로
+  제시하지 않는다. 나머지 broad axis/palette 결합 검증도 마지막통합 checkpoint에 남긴다.

@@ -5,7 +5,11 @@ import {serializeProgram,deserializeProgram} from '../../../../src/persistence.j
 import {resolveConcreteGraphicBounds} from '../../../../src/grammar/schemas/graphicBounds.js';
 const seed=()=>chart().createCanvas({width:1000,height:800,margin:250}).createData({values:[{x:1,y:2,v:0,g:'A'},{x:2,y:3,v:10,g:'B'}]}).createScatterPlot({x:'x',y:'y',guides:false});
 const size=()=>seed().encodeSize({field:'v',scale:{domain:[0,10],range:[5000,6000]}}).createLegend({channels:['size'],values:[0,10]});
-function windows(p){return Object.entries(p.graphicSpec.objects).filter(([id])=>id.startsWith('legendSampleClip:'));}
+function windows(p){
+ const objects=p.graphicSpec.objects;
+ return Object.entries(objects).filter(([,object])=>object.type==='canvas'&&object.children?.length>0&&
+  object.children.every(id=>objects[id]?.properties!==undefined&&objects[id].children===undefined));
+}
 test('size sample window preserves physical area, typed sample identity and reset',()=>{
  const base=size(), before=JSON.stringify(base), clipped=base.editLegendSymbols({clipHeight:30});
  assert.equal(windows(clipped).length,2);
@@ -22,7 +26,7 @@ test('size sample window preserves physical area, typed sample identity and rese
  assert.equal(JSON.stringify(base),before);
  assert.deepEqual(clipped.editCanvas({width:1100}).editCanvas({width:1000}).graphicSpec,clipped.graphicSpec);
  assert.deepEqual(clipped.rematerializeLegend().graphicSpec,clipped.graphicSpec);
- assert.equal(clipped.removeLegend().graphicSpec.objects['legendSampleClip:sizeLegendSymbols:0'],undefined);
+ for(const [id]of windows(clipped))assert.equal(clipped.removeLegend().graphicSpec.objects[id],undefined);
 });
 test('point-bearing composite clips every layer once and retains zero opacity geometry',()=>{
  const base=seed().encodeShape({field:'g'}).createLegend({channels:['shape'],symbol:{layers:[{type:'line',length:70,lineWidth:6},{type:'point',size:40,opacity:0}]}});
@@ -75,7 +79,8 @@ test('clipped samples survive scale, data, highlight and independent local-block
  const p=base.editLegendBlock({target:'scatterPlot',channel:'shape',position:'top-left'})
   .editScale({id:'size',range:[400,10000]});
  assert.equal(p.guideConfigs.legend.series.clipHeight,10);assert.equal(p.guideConfigs.legend.size.clipHeight,12);
- assert.equal(p.graphicSpec.objects['sizeLegendSymbols:1'].properties.radius,Math.sqrt(10000/Math.PI));
+ const sizeWindow=p.graphicSpec.objects[p.graphicSpec.objects.sizeLegendSymbols.children[1]];
+ assert.equal(p.graphicSpec.objects[sizeWindow.children[0]].properties.radius,Math.sqrt(10000/Math.PI));
  const revised=p.reviseData({source:'data',id:'revised',values:[{x:1,y:2,v:1,g:'A'},{x:3,y:4,v:9,g:'B'}]});
  assert.equal(windows(revised).length,4);assert.deepEqual(deserializeProgram(serializeProgram(revised)).graphicSpec,revised.graphicSpec);
  const highlighted=revised.highlightMarks({target:'scatterPlot',select:{field:'g',op:'eq',value:'B'},color:'red'});

@@ -342,7 +342,7 @@ test("validates facet scope, sources, guides, and structural edits atomically", 
   );
   assert.throws(
     () => base.facet({ field: "group", guides: { legend: true } }),
-    /false or "shared"/
+    /false, "shared", or legend options/
   );
   assert.throws(
     () => base.facet({ field: "group", columns: 0 }),

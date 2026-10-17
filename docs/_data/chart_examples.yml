@@ -1299,6 +1299,86 @@
   url: /tutorials/hierarchical-authoring/
   tutorial_order: 1
 
+- id: color-controls
+  example: /examples/color-controls/
+  title: Cubehelix gamma and signed-power color
+  image: /assets/images/color-controls.png
+  alt: Two cubehelix color rows and a blue to red signed-power row
+  width: 960
+  height: 540
+  thumbnail: /assets/images/color-controls-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 360
+  caption: Rows compare default gamma, gamma2.2 and cubic signed-power mapping.
+  summary: Edit lightness interpolation and transform original color values.
+  actions: createRectMark · encodeColor · editColorScale
+  tasks: continuous color editing
+  url: /api/scales/continuous-color/#color-gamma-and-signed-power
+
+- id: color-white-point
+  example: /examples/color-white-point/
+  title: Lab white point comparison
+  image: /assets/images/color-white-point.png
+  alt: Two red to blue color rows computed with D65 and D50 Lab white points
+  width: 960
+  height: 540
+  thumbnail: /assets/images/color-white-point-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 360
+  caption: D65 and D50 share original values and endpoints.
+  summary: Choose a white point and edit it without changing the source values.
+  actions: createRectMark · encodeColor · editColorScale
+  tasks: continuous color editing
+  url: /api/scales/continuous-color/#lab-white-point-comparison
+
+- id: bar-compositing
+  example: /examples/bar-compositing/
+  title: Bar difference compositing
+  image: /assets/images/bar-compositing.png
+  alt: A cyan bar with a blue outline produced by difference compositing on white
+  width: 400
+  height: 400
+  thumbnail: /assets/images/bar-compositing-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 640
+  caption: Fill and outline form one source before difference compositing.
+  summary: Refine a complete bar with one compositing edit.
+  actions: createBarPlot · editBarMark
+  tasks: appearance editing
+  url: /api/marks/bar/#blend-with-underlying-content
+
+- id: axis-owners
+  example: /examples/axis-owners/
+  title: Independent Cartesian axis owners
+  image: /assets/images/axis-owners.png
+  alt: A scatterplot with separate quantity and share axes and an inside horizontal title
+  width: 940
+  height: 540
+  thumbnail: /assets/images/axis-owners-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 368
+  caption: Each named axis retains its scale, frame offset, tick style and text alignment.
+  summary: Create complete named axes before focused placement and text edits.
+  actions: createAxes · editYAxis · editYAxisLabels
+  tasks: axis editing
+  url: /api/axes/complete/#independent-named-cartesian-axes
+
+- id: shared-facet-owner
+  example: /examples/shared-facet-owner/
+  title: A shared legend across narrow facet panels
+  image: /assets/images/shared-facet-owner.png
+  alt: Four narrow scatterplot panels above one horizontal legend owned by their parent
+  width: 890
+  height: 440
+  thumbnail: /assets/images/shared-facet-owner-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 316
+  caption: The 270-pixel legend fits the 375-pixel plot union without expanding 60-pixel panels.
+  summary: Declare and edit one parent legend across a repeated chart.
+  actions: facet · editLegendLayout
+  tasks: composition and guide editing
+  url: /api/composition/facets/#declare-a-legend-for-the-complete-facet
+
 - id: symbol-window
   example: /examples/symbol-window/
   title: Encoded area symbol window
@@ -1331,6 +1411,21 @@
   tasks: comparison
   url: /api/legends/categorical/#recipe-layer-opacity
 
+- id: named-shapes
+  example: /examples/named-shapes/
+  title: Directional point shapes preserve area
+  image: /assets/images/named-shapes.png
+  alt: Wedge and arrow shapes at areas 100 and 225 with zero and ninety degree rotations
+  width: 960
+  height: 540
+  thumbnail: /assets/images/named-shapes-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 360
+  caption: Wedges rotate around their centroid; arrows rotate around their bounding-box center.
+  summary: Refine a complete scatterplot with shape, physical area and angle encodings.
+  actions: createScatterPlot · encodeShape · encodeSize · encodeAngle
+  tasks: shape size appearance
+  url: /api/marks/point/#directional-shapes-and-area
 - id: combined-legends
   example: /examples/combined-legends/
   title: Combined legends
@@ -1346,19 +1441,3 @@
   actions: encodeColor · encodeSize · createLegend · editLegend
   tasks: comparison
   url: /api/legends/categorical/#quantitative-color-and-size
-
-- id: bar-compositing
-  example: /examples/bar-compositing/
-  title: Bar difference compositing
-  image: /assets/images/bar-compositing.png
-  alt: A cyan bar with a blue outline produced by difference compositing on white
-  width: 400
-  height: 400
-  thumbnail: /assets/images/bar-compositing-thumb.png
-  thumbnail_width: 640
-  thumbnail_height: 640
-  caption: Fill and outline form one source before difference compositing.
-  summary: Refine a complete bar with one compositing edit.
-  actions: createBarPlot · editBarMark
-  tasks: appearance editing
-  url: /api/marks/bar/#blend-with-underlying-content

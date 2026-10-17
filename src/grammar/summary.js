@@ -23,7 +23,7 @@ const TRANSFORM_KEYS = Object.freeze([
 ]);
 const AGGREGATE_KEYS = Object.freeze(["op", "field", "as"]);
 const NOMINAL_OPERATIONS = new Set(["distinct", "valid", "missing"]);
-const MAX_OUTPUT_ROWS = 10_000;
+const MAX_OUTPUT_ROWS = 30_000;
 
 function normalizeGroupBy(value) {
   if (value === undefined) return [];

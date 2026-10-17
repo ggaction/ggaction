@@ -1,5 +1,6 @@
 import { annotateError } from "./diagnostics.js";
 import { isPlainObject } from "./immutable.js";
+import { getMarkGraphicTypes } from "./vocabulary.js";
 
 export const MAX_GENERATED_ITEMS = 10_000;
 export const MAX_WORK_ITEMS = 10_000_000;
@@ -28,6 +29,14 @@ export function validateGeneratedItemLimit(
 
 export function validateWorkLimit(value, label) {
   return validateGeneratedItemLimit(value, label, MAX_WORK_ITEMS);
+}
+
+export function validateGraphicItemLimit(value, capacity) {
+  const point = capacity.pointOwned && getMarkGraphicTypes("point").includes(capacity.graphicType);
+  const label = point ? "Point mark item count" : capacity.label;
+  const maximum = point ? 50_000 : MAX_GENERATED_ITEMS;
+  if (point) validateGeneratedItemLimit(capacity.rawCount, label, maximum);
+  return validateGeneratedItemLimit(value, label, maximum);
 }
 
 export function validateKeys(value, supported, label) {

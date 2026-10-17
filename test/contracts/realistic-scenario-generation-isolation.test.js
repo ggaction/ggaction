@@ -31,7 +31,7 @@ test("leaves termination grace around the shared generation deadline", () => {
 for (const limit of REALISTIC_GENERATION_ISOLATION_LIMITS) {
   test(`matches the isolated strict ${limit} descriptor and state boundary`, {
     timeout: TEST_TIMEOUT_MS
-  }, () => {
+  }, t => {
     const result = spawnSync(process.execPath, [
       "--expose-gc",
       ISOLATION_WORKER,
@@ -46,6 +46,7 @@ for (const limit of REALISTIC_GENERATION_ISOLATION_LIMITS) {
     assert.equal(result.signal, null, result.stderr);
     assert.equal(result.status, 0, result.stderr || result.stdout);
     const report = JSON.parse(result.stdout);
+    t.diagnostic(JSON.stringify({limit,isolatedResources:report.isolatedResources,referenceResources:report.referenceResources}));
     assert.deepEqual(report.boundary, {
       limit,
       descriptors: limit,

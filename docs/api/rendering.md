@@ -314,8 +314,9 @@ strings plus an array of non-empty `keywords`.
 
 Text remains selectable/searchable PDF text. Paths, strokes, fills, clipping,
 opacity, dashes, and linear gradients remain vector output. An explicit bar
-`blend: "difference"` rasterizes only that bar's fill-and-outline source for native
-PDF compositing; the rest of the page stays vector. The adapter does not
+`blend: "difference"` or explicit legend recipe-layer opacity rasterizes only
+that glyph's fill-and-outline source for native PDF compositing; the rest of the
+page stays vector. The adapter does not
 rasterize the complete chart or accept `pixelRatio`. Nested Canvas translations apply to
 text as well as shapes, so concat children with different plot margins retain
 their distinct title and axis-label origins in PDF output.

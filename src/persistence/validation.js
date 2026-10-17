@@ -1,3 +1,10 @@
+import { validateAuthoredFacetLegend } from "../grammar/facets/legendIntent.js";
+import { AXIS_RESOURCE_CHANNELS } from "../core/vocabulary.js";
+import { cartesianAxisOwners, assertCartesianAxisSideAvailable } from "../selectors/axes.js";
+import { axisGraphicIds } from "../selectors/axes.js";
+
+
+
 import {findLayer} from '../selectors/layers.js';
 import {findCoordinate} from '../selectors/coordinates.js';
 import {resolveColorSizeMapping,normalizeColorSizeSymbol} from '../grammar/colorSizeLegend.js';
@@ -9,11 +16,14 @@ import { localLegendPosition } from "../grammar/legendGroups.js";
 import { normalizeLegendBorderDash } from "../grammar/legendBorder.js";
 import { normalizeNumericDisplayLabelMap } from "../grammar/displayLabels.js";
 import { isContinuousSizeScaleType } from "../grammar/scales/size.js";
+import { validateGraphicItemLimit } from "../core/validation.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
 import { validateAxisTextPlacement } from "../grammar/axisTextPlacement.js";
 import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
+import { validateRegressionFitStatistics, requireRegressionStatisticsSource, regressionStatisticsRows } from "../grammar/regression/statistics.js";
+import { resolveGraphicItemCapacity } from "../selectors/graphicCapacity.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
 import { normalizeColorInterpolationOptions } from "../grammar/scales/color.js";
 import { normalizeTransformParameters } from "../grammar/scales/transformed.js";
@@ -168,6 +178,9 @@ export function validateProgramState(program, path) {
   }
   for (const key of ["resolvedScales", "materializationConfigs", "context"]) requireObject(program[key], `${path}.${key}`);
   for (const key of ["marks", "guides"]) requireObject(program.materializationConfigs[key], `${path}.materializationConfigs.${key}`);
+  if (program.compositionSpec?.type === "facet" && isPlainObject(program.compositionSpec.facet.guides.legend)) {
+    validateAuthoredFacetLegend(program, program.compositionSpec.facet.guides.legend);
+  }
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   for (const config of [
     ...Object.values(program.guideConfigs.axis ?? {}).map(axis => axis.ticks),
@@ -176,14 +189,55 @@ export function validateProgramState(program, path) {
     if (config?.strokeDash !== undefined) validateGuideDash(config.strokeDash);
     if (config?.strokeDashMap !== undefined) normalizeGuideDashMap(config.strokeDashMap, { reset: false });
   }
-  for (const channel of ["x", "y"]) {
-    const axis = program.guideConfigs.axis?.[channel];
+  for (const owner of cartesianAxisOwners(program)) {
+    const channel = owner.id;
+    const axis = owner.config;
     if (axis?.frame !== undefined) {
       exactKeys(axis.frame, ["offset"], `${path}.guides.axis.${channel}.frame`);
       validateNonNegativeFinite(axis.frame.offset, "Axis frame offset");
     }
     if (axis?.labels !== undefined) validateAxisTextPlacement(axis.labels);
     if (axis?.title !== undefined) validateAxisTextPlacement(axis.title, { title: true });
+  }
+  for (const id of Object.keys(program.guideConfigs.axis ?? {})) {
+    if (!AXIS_RESOURCE_CHANNELS.includes(id) && !Object.hasOwn(program.semanticSpec.guides.axis ?? {}, id)) {
+      throw invalidSnapshot("Named axis configs require their semantic owner.", path);
+    }
+  }
+  for (const [id, semanticAxis] of Object.entries(program.semanticSpec.guides.axis ?? {})) {
+    if (AXIS_RESOURCE_CHANNELS.includes(id)) continue;
+    validateUserId(id, "Axis id");
+    validateKeys(semanticAxis, ["channel", "position", "scale", "coordinate", "title"], "Stored named axis");
+    if (!["x", "y"].includes(semanticAxis.channel) ||
+        !(semanticAxis.channel === "x" ? ["bottom", "top"] : ["left", "right"]).includes(semanticAxis.position)) {
+      throw invalidSnapshot("Named axes require a Cartesian channel and compatible physical side.", path);
+    }
+    validateUserId(semanticAxis.scale, "Axis scale id");
+    validateUserId(semanticAxis.coordinate, "Axis coordinate id");
+    if (resources.get("coordinate").get(semanticAxis.coordinate)?.type !== "cartesian") {
+      throw invalidSnapshot("Named Cartesian axes require a Cartesian coordinate.", path);
+    }
+    const config = program.guideConfigs.axis?.[id];
+    requireObject(config, `${path}.guides.axis.${id}`);
+    validateKeys(config, ["binding", "frame", "line", "ticks", "labels", "title"], "Stored named axis config");
+    const components = ["line", "ticks", "labels", "title"];
+    if (!components.some(component => config[component] !== undefined)) {
+      throw invalidSnapshot("Named axes require at least one retained component.", path);
+    }
+    for (const [index, component] of components.entries()) {
+      const stored = config[component];
+      const graphic = program.graphicSpec.objects[axisGraphicIds(semanticAxis.channel, id)[index]];
+      if ((program.compositionSpec === undefined && (stored !== undefined) !== (graphic !== undefined)) ||
+          (stored !== undefined && (stored.position !== semanticAxis.position ||
+            stored.scale !== undefined && stored.scale !== semanticAxis.scale))) {
+        throw invalidSnapshot("Named axis components must share their owner's side and scale.", path);
+      }
+    }
+    if ((semanticAxis.title !== undefined) !== (config.title !== undefined)) {
+      throw invalidSnapshot("Named axis title meaning requires its retained title component.", path);
+    }
+    assertCartesianAxisSideAvailable(program, { id, channel: semanticAxis.channel,
+      coordinate: semanticAxis.coordinate, position: semanticAxis.position });
   }
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
@@ -275,6 +329,27 @@ export function validateProgramState(program, path) {
     } else if (["sampling", "symbol", "columns", "direction", "layout"].some(key => config[key] !== undefined)) throw invalidSnapshot("Gradient color legend cannot store symbol representation settings.", path);
   }
 
+  const regressionFits = program.materializationConfigs.regressionFits ?? {};
+  requireObject(regressionFits, `${path}.materializationConfigs.regressionFits`);
+  for (const [id, cache] of Object.entries(regressionFits)) {
+    const dataset = resources.get("data").get(id);
+    validateRegressionFitStatistics(cache, dataset, resources.get("data").get(dataset?.source));
+  }
+  for (const dataset of semantic.datasets) {
+    if (dataset.transform?.[0]?.type !== "regressionStatistics") continue;
+    const fit = resources.get("data").get(dataset.source);
+    requireRegressionStatisticsSource(fit);
+    if (regressionFits[fit.id] === undefined) throw invalidSnapshot("Regression statistics requires its linear fit cache.", path);
+    if (dataset.values !== undefined) {
+      const expected = regressionStatisticsRows(regressionFits[fit.id], fit);
+      if (dataset.values.length !== expected.length || dataset.values.some((row, index) =>
+        !isPlainObject(row) || Object.keys(row).length !== Object.keys(expected[index]).length ||
+        Object.entries(expected[index]).some(([key, value]) => !Object.hasOwn(row, key) || !Object.is(row[key], value)))) {
+        throw invalidSnapshot("Regression statistics values do not match their linear fit cache.", path);
+      }
+    }
+  }
+
   const selections = program.materializationConfigs.selections ?? {};
   requireObject(selections, `${path}.materializationConfigs.selections`);
   for (const [id, selection] of Object.entries(selections)) {
@@ -322,4 +397,9 @@ export function validateProgramState(program, path) {
     for (const resource of resources.get(kind).values()) visit(resource);
   }
   validateGraphic(program.graphicSpec, `${path}.graphicSpec`);
+  for (const [id, graphic] of Object.entries(program.graphicSpec.objects)) {
+    if (graphic.items !== undefined) validateGraphicItemLimit(graphic.items.length, resolveGraphicItemCapacity(program, {
+      id, label: "Graphic collection length"
+    }));
+  }
 }

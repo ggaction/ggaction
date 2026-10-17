@@ -9,6 +9,59 @@ title: Facets and Field Repetition
 
 [Family overview](./../composition.md) · [Exact action lookup](./../../reference/actions.md)
 
+## Declare a legend for the complete facet
+
+{% include chart-example.html id="shared-facet-owner" %}
+
+Pass a legend object to `guides.legend` to create it against the combined inner plots.
+This runnable example keeps each child plot 60 pixels wide while its parent legend uses
+the 246-pixel union of four plots and three 2-pixel gaps:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ plot: { width: 60, height: 275 }, margin: { top: 35, right: 5, bottom: 60, left: 45 } })
+  .createData({ values: Array.from({ length: 8 }, (_, i) => ({
+    x: i, y: i + 1, group: i % 2 ? "B" : "A", panel: String(i % 4)
+  })) })
+  .createScatterPlot({ x: "x", y: "y", color: "group", guides: false })
+  .facet({ field: "panel", columns: 4, spacing: "plot", gap: 2,
+    guides: { axes: "outer", legend: { position: "top-left" } } })
+  .editLegendTitle({ fontSize: 11 })
+  .editLegendLabels({ fontSize: 10 });
+```
+
+The object uses ordinary `LegendOptions` defaults. `target` refers to the source mark;
+it is inferred only when unique. Child legend styles are independent. Use `"shared"`
+to promote or infer the template legend with its existing behavior, and `false` for
+no parent shared guide. Child dimensions and margins stay fixed.
+
+Existing legend editors, channel/block selectors and removal work on facet, grid and
+repeat parents. A missing parent legend can be declared with
+`editFacetGuides({ legend: { position: "top-left" } })`. Removing the final block keeps
+it absent during later edits. `"shared"` restores template promotion; an object replaces
+the parent declaration. `createLegend` remains an action for unit charts.
+
+Corners and free `at` coordinates use the final plot union. Explicit local block anchors
+use the same union. Occupied text, symbols and border must fit and clear retained axes,
+headers and the chart title. A layout edit that makes the union too small fails without
+changing the previous program. Parent styles and automatic title/sample/offset policies
+survive data, source, scale, theme, text-metric and layout changes and editable persistence.
+Shared appearance scales and compatible source mark recipes are required in every child.
+
+Point-bearing parent legend blocks support `clipHeight` just like unit legends.
+Each block retains its own window during layout edits and editable import; a
+clipped size block can share its owner with an unclipped color gradient.
+Use `editLegendBlock({ target: "scatterPlot", channel: "size", clipHeight: "auto" })`
+to remove only the selected block window.
+
 ## Repeat the current chart by a field
 
 {% include chart-example.html id="facet" %}

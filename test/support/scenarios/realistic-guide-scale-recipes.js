@@ -1,3 +1,5 @@
+import { exerciseCartesianAxisOwners } from "./cartesian-axis-owner-witness.js";
+import { realisticColorControls, realisticPaletteRange } from "./realistic-color-controls.js";
 import { createHash } from "node:crypto";
 
 import { chart } from "../../../src/index.js";
@@ -107,7 +109,7 @@ const NON_SEQUENTIAL_SCALE_PROFILES = Object.freeze([
     type
   })),
   Object.freeze({ profile: "shape-ordinal", kind: "category-shape", type: "ordinal" }),
-  ...["quantize", "quantile", "threshold"].map(type => Object.freeze({
+  ...["quantize", "quantile", "threshold", "pow"].map(type => Object.freeze({
     profile: `color-${type}`,
     kind: "color",
     type
@@ -155,7 +157,7 @@ const SCALE_SECONDARY_VARIANTS = Object.freeze(
 );
 
 // Every advertised sequential palette/interpolation pair is selected once. The
-// eleven non-sequential profiles repeat five times so their type-specific options
+// twelve non-sequential profiles repeat five times so their type-specific options
 // meet the same five-occurrence, three-dataset distribution requirement. Splitting
 // this vocabulary keeps each recipe under the 15% diversity ceiling at 3,600.
 const SCALE_PRIMARY_COVERAGE_VARIANTS = Object.freeze([
@@ -873,7 +875,10 @@ function exerciseCartesianGuides(factors, base) {
     position: oppositeY === "left" ? "right" : "left"
   };
   const { channels: _axesLegendChannels, ...editableMovedAxesLegend } = movedAxesLegend;
-  let program = base.program.createGuides({
+  // One scheduled numeric variant already runs five times across three source
+  // datasets; repeat the named-owner flow there and keep other sweeps focused.
+  const ownerWitness = numericOrdinal === 0 ? exerciseCartesianAxisOwners(base.program) : base.program;
+  let program = ownerWitness.createGuides({
     axes: {
       coordinate: { id: "main", type: ordinal % 2 === 0 ? "cartesian" : "auto" },
       x: xAxis,
@@ -1527,8 +1532,11 @@ function colorScaleOptions(variant, {
         type: "sequential",
         domain: "auto",
         midpoint: "auto",
-        palette: sequentialPalette(variant, createObjectPalette),
+        ...(createObjectPalette && variant.paletteOrdinal%3===0
+          ? {range:{palette:sequentialPalette(variant,true)}}
+          : {palette:sequentialPalette(variant,createObjectPalette)}),
         interpolate: variant.interpolate,
+        ...realisticColorControls(variant.interpolate, variant.interpolationOrdinal),
         clamp: initial,
         reverse: initial,
         unknown: "#94a3b8"
@@ -1538,14 +1546,23 @@ function colorScaleOptions(variant, {
         type: "sequential",
         domain: [0, 1],
         midpoint: initial ? "auto" : 0.4,
-        palette: sequentialPalette(variant, !createObjectPalette, true),
+        ...(!createObjectPalette && variant.paletteOrdinal%3===0
+          ? {range:{palette:sequentialPalette(variant,true,true)}}
+          : {palette:sequentialPalette(variant,!createObjectPalette,true)}),
         interpolate: variant.interpolate,
+        ...realisticColorControls(variant.interpolate, variant.interpolationOrdinal),
         clamp: !initial,
         reverse: !initial,
         unknown: "#64748b"
       }
     };
   }
+  if (variant.type === "pow") return {
+    create: { id, type:"pow", domain:"auto", range:realisticPaletteRange(variant.interpolationOrdinal??0), exponent:2,
+      interpolate:"lab", whitePoint:"d50", clamp:initial, reverse:initial },
+    edit: { id, type:"pow", domain:"auto", range:realisticPaletteRange((variant.interpolationOrdinal??0)+1), exponent:.5,
+      interpolate:"cubehelix", gamma:2.2, clamp:!initial, reverse:!initial }
+  };
   const range = ["#eff6ff", "#93c5fd", "#3b82f6", "#1e3a8a"];
   const normalized = encoding?.normalized ?? true;
   const extent = normalized ? [0, 1] : encoding.extent;
@@ -1632,6 +1649,11 @@ function buildScaleVocabulary(factors) {
     });
   }
   program = program.encodePointRadius({ target: "points", value: 5 });
+  if (["lab","hcl","hcl-long"].includes(variant.interpolate)) {
+    program = program.editScale({id:"color",whitePoint:"auto"});
+  } else if (["cubehelix","cubehelix-long"].includes(variant.interpolate)) {
+    program = program.editScale({id:"color",gamma:"auto"});
+  }
   if (variant.kind === "position" && variant.type === "linear") {
     program = program
       .createScale({
@@ -1749,6 +1771,10 @@ function buildScaleVocabulary(factors) {
       })
       .removeLegend({ target: "points", channels: ["color"] })
       .createGuides({ axes: false, grid: false, legend: gradientLegend });
+  } else if (variant.kind === "color" && variant.type === "pow") {
+    program = program.createLegend({target:"points",channels:["color"],position:"right",
+      align:"center",offset:180,title:colorEncoding.legendTitle,count:5,
+      gradient:{length:180,thickness:18}});
   } else if (variant.kind === "color") {
     program = program.createLegend({
       target: "points",
@@ -2535,7 +2561,7 @@ function variantHasDirectActionEvidence(program, variant) {
   if (variant.palette !== undefined) {
     return directTraceEntries(program, "createScale").some(({ args }) =>
       args.type === "sequential" &&
-      scalePaletteName(args.palette) === variant.palette &&
+      scalePaletteName(args.palette ?? args.range?.palette) === variant.palette &&
       args.interpolate === variant.interpolate
     );
   }

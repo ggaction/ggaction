@@ -1156,7 +1156,8 @@ test("terminates timed-out generation children and reports process crashes", asy
   assert.deepEqual(timedOut.killSignals, ["SIGKILL"]);
   assert.deepEqual(spawnOptions.execArgv, [
     "--expose-gc",
-    "--max-old-space-size=288"
+    "--max-old-space-size=224",
+    "--max-semi-space-size=8"
   ]);
   assert.equal(spawnOptions.serialization, "advanced");
 
@@ -1698,7 +1699,7 @@ test("accepts deterministic readable PNG and compressed PDF artifact regressions
       profile: Object.freeze({ id: "decimal-object" })
     }),
     semanticFingerprint:
-      "0ed3897f3303dad3e5c4259ddd0ed756aa8808821971f81b898ac486eb308951"
+      "9ab7dc4bf8424df54c981b78ff4fc00f977bd3a4c0b70dcc97d75e914fe81110"
   });
   const outerSpace = Object.freeze({
     id: "realistic-ranked-dots-1c891ae5f0d9",

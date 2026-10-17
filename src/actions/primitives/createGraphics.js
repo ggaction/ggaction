@@ -1,7 +1,8 @@
+import { validateGraphicItemLimit } from "../../core/validation.js";
 import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { freezeOwned } from "../../core/immutable.js";
-import { validateGeneratedItemLimit } from "../../core/validation.js";
+import { resolveGraphicItemCapacity } from "../../selectors/graphicCapacity.js";
 import {
   isDrawableGraphicType,
   isGraphicContainerType,
@@ -118,7 +119,7 @@ const createGraphics = /* @__PURE__ */ closedAction(
       throw new TypeError("createGraphics length must be a non-negative integer.");
     }
     if (length !== undefined) {
-      validateGeneratedItemLimit(length, "createGraphics length");
+      validateGraphicItemLimit(length, resolveGraphicItemCapacity(this, { id, label: "createGraphics length", type: validatedType }));
     }
     if (validatedType === "collection" && length !== undefined) {
       throw new Error("Heterogeneous collections use editGraphics items instead of length.");

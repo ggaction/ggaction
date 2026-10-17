@@ -201,9 +201,17 @@ export interface FacetScaleResolutions {
   strokeDash?: FacetScaleResolution;
   parallelDimensions?: FacetScaleResolution;
 }
+interface StoredFacetLegendIntent {
+  readonly type: "authored-legend";
+  readonly blocks: Readonly<Record<string, {
+    readonly config: Readonly<Record<string, unknown>>;
+    readonly guide?: Readonly<Record<string, unknown>>;
+  }>>;
+  readonly groups: Readonly<Record<string, unknown>>;
+}
 export interface FacetGuideOptions {
   axes?: "each" | "outer";
-  legend?: false | "shared";
+  legend?: false | "shared" | LegendOptions;
 }
 export interface FacetOptions {
   id?: string;
@@ -315,7 +323,7 @@ export interface FacetCompositionSpec {
     readonly scales: Readonly<Required<FacetScaleResolutions>>;
     readonly guides: {
       readonly axes: "each" | "outer";
-      readonly legend: false | "shared";
+      readonly legend: false | "shared" | Readonly<LegendOptions> | StoredFacetLegendIntent;
     };
   };
 }
@@ -425,6 +433,16 @@ export type DatasetRegressionTransform = {
       | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
       | { confidence: number; confidenceMethod?: never; level?: never }
     ))))
+  | {
+      method: "exp";
+      interval: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+    }
   | {
       method: "loess";
       span: number;
@@ -946,6 +964,7 @@ export type DatasetTransform =
   | DatasetFilterTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
+  | DatasetRegressionStatisticsTransform
   | DatasetSortTransform
   | DatasetDensityTransform
   | DatasetECDFTransform
@@ -1387,6 +1406,8 @@ export interface AxisLabelLayoutOptions {
   overlap?: "error" | "allow";
 }
 export interface AxisTicksAndLabelsOptions<P extends string> {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   scale?: string;
   position?: P;
   count?: number;
@@ -1395,6 +1416,8 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
   labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 }
 export interface AxisTitleOptions<P extends string> {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   /** Signed logical pixels: positive right for x, down for y, independent of scale reversal. */
   alongOffset?: number;
   align?: "left" | "center" | "right";
@@ -1413,27 +1436,32 @@ export interface AxisTitleOptions<P extends string> {
   fontWeight?: string | number;
 }
 export interface CompleteAxisOptions<P extends string> {
+  /** Omission retains the canonical x/y identity. */
+  id?: string;
   /** Non-negative outward displacement of the complete axis frame in logical pixels. */
   offset?: number;
   scale?: string;
   coordinate?: string;
   position?: P;
   line?: false | AxisLineStyleOptions;
-  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position">;
-  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position">;
+  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">;
+  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position" | "target">;
 }
+export type NamedCompleteAxis<P extends string> = CompleteAxisOptions<P> & { id: string };
 export interface CreateAxesOptions {
   coordinate?: {
     id?: string;
     type?: "auto" | "cartesian" | "polar" | "parallel";
   };
-  x?: false | CompleteAxisOptions<XAxisPosition>;
-  y?: false | CompleteAxisOptions<YAxisPosition>;
+  x?: false | CompleteAxisOptions<XAxisPosition> | readonly [NamedCompleteAxis<XAxisPosition>, ...NamedCompleteAxis<XAxisPosition>[]];
+  y?: false | CompleteAxisOptions<YAxisPosition> | readonly [NamedCompleteAxis<YAxisPosition>, ...NamedCompleteAxis<YAxisPosition>[]];
   theta?: false | CompletePolarAxisOptions;
   radius?: false | CompleteRadialAxisOptions;
 }
 export interface AxisTickOptions<P extends string>
   extends CartesianAxisTickStyleOptions {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   scale?: string;
   position?: P;
   count?: number;
@@ -1442,6 +1470,8 @@ export interface AxisTickOptions<P extends string>
 /** Cartesian label maps use typed category values or finite numeric/timestamp keys on continuous scales. Empty mapped labels are omitted without removing ticks. */
 export interface AxisLabelOptions<P extends string>
   extends CartesianAxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   scale?: string;
   position?: P;
   count?: number;
@@ -1638,11 +1668,11 @@ type CAxisTicks<P extends string> = Omit<AxisTicksAndLabelsOptions<P>, "labels">
   labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 };
 type CAxis<P extends string> = Omit<CompleteAxisOptions<P>, "ticksAndLabels"> & {
-  ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position">;
+  ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position" | "target">;
 };
 type CAxes = Omit<CartesianAxesOptions, "x" | "y"> & {
-  x?: false | CAxis<XAxisPosition>;
-  y?: false | CAxis<YAxisPosition>;
+  x?: false | CAxis<XAxisPosition> | readonly [CAxis<XAxisPosition> & { id: string }, ...(CAxis<XAxisPosition> & { id: string })[]];
+  y?: false | CAxis<YAxisPosition> | readonly [CAxis<YAxisPosition> & { id: string }, ...(CAxis<YAxisPosition> & { id: string })[]];
 };
 type CartesianGridOptions = Pick<CreateGridOptions, "horizontal" | "vertical">;
 type FilledLegendSymbolRecipe = "auto"
@@ -3414,8 +3444,17 @@ export interface RugTickOptions extends StrokeStyleDetails {
   strokeWidth?: number;
   opacity?: number;
 }
-export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend"> & {
+type ContinuousGridDirectionOptions = Omit<GridDirectionOptions, "bandPosition"> & {
+  /** Continuous position scales do not have categorical band edges. */
+  bandPosition?: never;
+};
+type ContinuousCartesianGridOptions = {
+  vertical?: boolean | ContinuousGridDirectionOptions;
+  horizontal?: boolean | ContinuousGridDirectionOptions;
+};
+export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend" | "grid"> & {
   axes?: false | CAxes;
+  grid?: false | ContinuousCartesianGridOptions;
   legend?: false;
 };
 export type CreateRugPlotOptions = {
@@ -3594,7 +3633,7 @@ export type CreateAreaPlotOptions = {
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
   area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
-  guides?: false | DensityPlotGuideOptions;
+  guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
@@ -3692,12 +3731,15 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CartesianCategoricalGuideOptions;
+  guides?: false | (Omit<CartesianCategoricalGuideOptions, "grid"> & {
+    /** Bin position and count axes are continuous; neither grid has categorical band edges. */
+    grid?: false | ContinuousCartesianGridOptions;
+  });
 };
 
 export type HorizonPlotGuideOptions = {
   axes?: false | (Omit<CAxes, "y"> & { y?: false });
-  grid?: false | (Pick<CartesianGridOptions, "vertical"> & { horizontal?: false });
+  grid?: false | { vertical?: boolean | ContinuousGridDirectionOptions; horizontal?: false };
   legend?: false;
 };
 export interface CreateHorizonPlotOptions {
@@ -3719,7 +3761,8 @@ export interface CreateHorizonPlotOptions {
 }
 
 export type DensityPlotLegendOptions = Omit<PieLegendOptions, "order"> & { order?: LegendValueOrder };
-export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend"> & {
+export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend" | "grid"> & {
+  grid?: false | ContinuousCartesianGridOptions;
   legend?: false | DensityPlotLegendOptions;
 };
 export interface CreateDensityPlotOptions {
@@ -4454,7 +4497,7 @@ export interface EncodeChannelsOptions {
   channels: AtLeastOne<EncodingChannelAssignments>;
 }
 
-export type RegressionMethod = "linear" | "polynomial" | "loess";
+export type RegressionMethod = "linear" | "polynomial" | "loess" | "exp";
 export type RegressionInterval = "mean" | "prediction";
 
 export interface RegressionBandOptions extends StrokeStyleDetails {
@@ -4497,6 +4540,17 @@ export interface CreateRegressionLineOptions extends StrokeStyleDetails {
 }
 
 type RegressionParameterOptions =
+  | {
+      method: "exp";
+      interval?: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+      predict?: RegressionPredictOptions;
+    }
   | {
       method?: "linear";
       degree?: never;
@@ -4541,6 +4595,18 @@ export type RegressionDataOptions = {
   missing?: "error" | "drop";
 } & RegressionParameterOptions;
 
+export interface DatasetRegressionStatisticsTransform {
+  readonly type: "regressionStatistics";
+}
+export interface RegressionStatisticsDataOptions {
+  id: string;
+  source: string;
+}
+export interface EditRegressionStatisticsDataOptions {
+  target?: string;
+  source?: string;
+}
+
 type RegressionCommonOptions = {
   target?: string;
   x?: string;
@@ -4552,6 +4618,9 @@ type RegressionCommonOptions = {
 };
 
 export type RegressionOptions = RegressionCommonOptions & (
+  | (Extract<RegressionParameterOptions, { method: "exp" }> & {
+      band?: false;
+    })
   | (Extract<RegressionParameterOptions, { method?: "linear" }> & {
       band?: false | RegressionBandOptions;
     })
@@ -4585,6 +4654,7 @@ export interface EditRegressionOptions {
 }
 
 export interface RemoveAxisOptions {
+  target?: string;
   coordinate?: string;
   scale?: string;
 }
@@ -4833,14 +4903,15 @@ export interface EditLegendBorderOptions {
 }
 
 export interface EditAxisOptions<P extends string> {
+  target?: string;
   /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
   offset?: number;
   position?: P;
   line?: false | AxisLineStyleOptions;
-  ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position">;
-  labels?: false | Omit<AxisLabelOptions<P>, "scale" | "position">;
-  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position">;
-  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position">;
+  ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position" | "target">;
+  labels?: false | Omit<AxisLabelOptions<P>, "scale" | "position" | "target">;
+  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">;
+  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position" | "target">;
 }
 
 export interface TitleTextStyleOptions {
@@ -4972,6 +5043,8 @@ export class ChartProgram {
   createImputedData(options: ImputedDataOptions): ChartProgram;
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
+  createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
+  editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createECDFData(options: ECDFDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
@@ -4997,6 +5070,7 @@ export class ChartProgram {
   editImputedData(options: EditImputedDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
 
+  /** One point layer accepts at most 50,000 selected rows, before missing-value filtering. */
   createPointMark(options?: StrokeStyleDetails & {
     id?: string;
     data?: string;
@@ -5242,10 +5316,10 @@ export class ChartProgram {
   editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;
   editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;
   editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;
-  createXAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: XAxisPosition }): ChartProgram;
-  createYAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: YAxisPosition }): ChartProgram;
-  editXAxisLine(options?: AxisLineStyleOptions & { position?: XAxisPosition }): ChartProgram;
-  editYAxisLine(options?: AxisLineStyleOptions & { position?: YAxisPosition }): ChartProgram;
+  createXAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }): ChartProgram;
+  createYAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }): ChartProgram;
+  editXAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: XAxisPosition }): ChartProgram;
+  editYAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: YAxisPosition }): ChartProgram;
   createXAxisTicks(options?: AxisTickOptions<XAxisPosition>): ChartProgram;
   createYAxisTicks(options?: AxisTickOptions<YAxisPosition>): ChartProgram;
   editXAxisTicks(options?: Omit<AxisTickOptions<XAxisPosition>, "scale">): ChartProgram;
@@ -5268,8 +5342,8 @@ export class ChartProgram {
   editRadialAxis(options: EditRadialAxisOptions): ChartProgram;
   removeXAxis(options?: RemoveAxisOptions): ChartProgram;
   removeYAxis(options?: RemoveAxisOptions): ChartProgram;
-  removeThetaAxis(options?: RemoveAxisOptions): ChartProgram;
-  removeRadialAxis(options?: RemoveAxisOptions): ChartProgram;
+  removeThetaAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
+  removeRadialAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
   createGrid(options?: CreateGridOptions): ChartProgram;
   createHorizontalGrid(options?: GridDirectionOptions): ChartProgram;
   createVerticalGrid(options?: GridDirectionOptions): ChartProgram;

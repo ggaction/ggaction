@@ -49,6 +49,8 @@ interface ChartProgramActions {
   createImputedData(options: ImputedDataOptions): ChartProgram;
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
+  createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
+  editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createECDFData(options: ECDFDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
@@ -210,10 +212,10 @@ interface ChartProgramActions {
   editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;
   editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;
   editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;
-  createXAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: XAxisPosition }): ChartProgram;
-  createYAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: YAxisPosition }): ChartProgram;
-  editXAxisLine(options?: AxisLineStyleOptions & { position?: XAxisPosition }): ChartProgram;
-  editYAxisLine(options?: AxisLineStyleOptions & { position?: YAxisPosition }): ChartProgram;
+  createXAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }): ChartProgram;
+  createYAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }): ChartProgram;
+  editXAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: XAxisPosition }): ChartProgram;
+  editYAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: YAxisPosition }): ChartProgram;
   createXAxisTicks(options?: AxisTickOptions<XAxisPosition>): ChartProgram;
   createYAxisTicks(options?: AxisTickOptions<YAxisPosition>): ChartProgram;
   editXAxisTicks(options?: Omit<AxisTickOptions<XAxisPosition>, "scale">): ChartProgram;
@@ -236,8 +238,8 @@ interface ChartProgramActions {
   editRadialAxis(options: EditRadialAxisOptions): ChartProgram;
   removeXAxis(options?: RemoveAxisOptions): ChartProgram;
   removeYAxis(options?: RemoveAxisOptions): ChartProgram;
-  removeThetaAxis(options?: RemoveAxisOptions): ChartProgram;
-  removeRadialAxis(options?: RemoveAxisOptions): ChartProgram;
+  removeThetaAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
+  removeRadialAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
   createGrid(options?: CreateGridOptions): ChartProgram;
   createHorizontalGrid(options?: GridDirectionOptions): ChartProgram;
   createVerticalGrid(options?: GridDirectionOptions): ChartProgram;
@@ -556,6 +558,8 @@ Related types: [`RotationInput`](#type-rotationinput).
 ```typescript
 export interface AxisLabelOptions<P extends string>
   extends CartesianAxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   scale?: string;
   position?: P;
   count?: number;
@@ -609,6 +613,8 @@ export interface AxisLineStyleOptions {
 ```typescript
 export interface AxisTickOptions<P extends string>
   extends CartesianAxisTickStyleOptions {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   scale?: string;
   position?: P;
   count?: number;
@@ -643,6 +649,8 @@ Related types: [`AxisLineStyleOptions`](#type-axislinestyleoptions).
 
 ```typescript
 export interface AxisTicksAndLabelsOptions<P extends string> {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   scale?: string;
   position?: P;
   count?: number;
@@ -663,6 +671,8 @@ Related types: [`AxisValue`](#type-axisvalue) · [`CartesianAxisTickStyleOptions
 
 ```typescript
 export interface AxisTitleOptions<P extends string> {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   /** Signed logical pixels: positive right for x, down for y, independent of scale reversal. */
   alongOffset?: number;
   align?: "left" | "center" | "right";
@@ -1354,8 +1364,8 @@ type BoxPlotWidth = { band?: number; pixels?: never } | { band?: never; pixels: 
 
 ```typescript
 type CAxes = Omit<CartesianAxesOptions, "x" | "y"> & {
-  x?: false | CAxis<XAxisPosition>;
-  y?: false | CAxis<YAxisPosition>;
+  x?: false | CAxis<XAxisPosition> | readonly [CAxis<XAxisPosition> & { id: string }, ...(CAxis<XAxisPosition> & { id: string })[]];
+  y?: false | CAxis<YAxisPosition> | readonly [CAxis<YAxisPosition> & { id: string }, ...(CAxis<YAxisPosition> & { id: string })[]];
 };
 ```
 
@@ -1370,7 +1380,7 @@ Related types: [`CartesianAxesOptions`](#type-cartesianaxesoptions) · [`CAxis`]
 
 ```typescript
 type CAxis<P extends string> = Omit<CompleteAxisOptions<P>, "ticksAndLabels"> & {
-  ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position">;
+  ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position" | "target">;
 };
 ```
 
@@ -1934,14 +1944,16 @@ export type ColorLayout =
 
 ```typescript
 export interface CompleteAxisOptions<P extends string> {
+  /** Omission retains the canonical x/y identity. */
+  id?: string;
   /** Non-negative outward displacement of the complete axis frame in logical pixels. */
   offset?: number;
   scale?: string;
   coordinate?: string;
   position?: P;
   line?: false | AxisLineStyleOptions;
-  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position">;
-  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position">;
+  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">;
+  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position" | "target">;
 }
 ```
 
@@ -2156,6 +2168,22 @@ export type ConfidenceIntervalMethod = "normal" | "student-t";
 
 </details>
 
+### `ContinuousCartesianGridOptions` {#type-continuouscartesiangridoptions}
+
+<details markdown="1">
+<summary>Expand ContinuousCartesianGridOptions</summary>
+
+```typescript
+type ContinuousCartesianGridOptions = {
+  vertical?: boolean | ContinuousGridDirectionOptions;
+  horizontal?: boolean | ContinuousGridDirectionOptions;
+};
+```
+
+</details>
+
+Related types: [`ContinuousGridDirectionOptions`](#type-continuousgriddirectionoptions).
+
 ### `ContinuousColorInterpolation` {#type-continuouscolorinterpolation}
 
 <details markdown="1">
@@ -2188,6 +2216,22 @@ export type ContinuousColorScaleOptions =
 </details>
 
 Related types: [`NonPointContinuousColorScaleOptions`](#type-nonpointcontinuouscolorscaleoptions).
+
+### `ContinuousGridDirectionOptions` {#type-continuousgriddirectionoptions}
+
+<details markdown="1">
+<summary>Expand ContinuousGridDirectionOptions</summary>
+
+```typescript
+type ContinuousGridDirectionOptions = Omit<GridDirectionOptions, "bandPosition"> & {
+  /** Continuous position scales do not have categorical band edges. */
+  bandPosition?: never;
+};
+```
+
+</details>
+
+Related types: [`GridDirectionOptions`](#type-griddirectionoptions).
 
 ### `ContinuousSizeScaleOptions` {#type-continuoussizescaleoptions}
 
@@ -2260,7 +2304,7 @@ export type CreateAreaPlotOptions = {
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
   area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
-  guides?: false | DensityPlotGuideOptions;
+  guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
@@ -2271,7 +2315,7 @@ export type CreateAreaPlotOptions = {
 
 </details>
 
-Related types: [`ColorLayout`](#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`FillPaint`](#type-fillpaint) · [`CurveInterpolation`](#type-curveinterpolation) · [`DensityPlotGuideOptions`](#type-densityplotguideoptions) · [`AreaPlotIndependentChannel`](#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](#type-areaplotmeasurechannel).
+Related types: [`ColorLayout`](#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`FillPaint`](#type-fillpaint) · [`CurveInterpolation`](#type-curveinterpolation) · [`DensityPlotGuideOptions`](#type-densityplotguideoptions) · [`CartesianGridOptions`](#type-cartesiangridoptions) · [`AreaPlotIndependentChannel`](#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](#type-areaplotmeasurechannel).
 
 ### `CreateAxesOptions` {#type-createaxesoptions}
 
@@ -2284,8 +2328,8 @@ export interface CreateAxesOptions {
     id?: string;
     type?: "auto" | "cartesian" | "polar" | "parallel";
   };
-  x?: false | CompleteAxisOptions<XAxisPosition>;
-  y?: false | CompleteAxisOptions<YAxisPosition>;
+  x?: false | CompleteAxisOptions<XAxisPosition> | readonly [NamedCompleteAxis<XAxisPosition>, ...NamedCompleteAxis<XAxisPosition>[]];
+  y?: false | CompleteAxisOptions<YAxisPosition> | readonly [NamedCompleteAxis<YAxisPosition>, ...NamedCompleteAxis<YAxisPosition>[]];
   theta?: false | CompletePolarAxisOptions;
   radius?: false | CompleteRadialAxisOptions;
 }
@@ -2293,7 +2337,7 @@ export interface CreateAxesOptions {
 
 </details>
 
-Related types: [`CompleteAxisOptions`](#type-completeaxisoptions) · [`XAxisPosition`](#type-xaxisposition) · [`YAxisPosition`](#type-yaxisposition) · [`CompletePolarAxisOptions`](#type-completepolaraxisoptions) · [`CompleteRadialAxisOptions`](#type-completeradialaxisoptions).
+Related types: [`CompleteAxisOptions`](#type-completeaxisoptions) · [`XAxisPosition`](#type-xaxisposition) · [`NamedCompleteAxis`](#type-namedcompleteaxis) · [`YAxisPosition`](#type-yaxisposition) · [`CompletePolarAxisOptions`](#type-completepolaraxisoptions) · [`CompleteRadialAxisOptions`](#type-completeradialaxisoptions).
 
 ### `CreateBarPlotOptions` {#type-createbarplotoptions}
 
@@ -2577,13 +2621,16 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CartesianCategoricalGuideOptions;
+  guides?: false | (Omit<CartesianCategoricalGuideOptions, "grid"> & {
+    /** Bin position and count axes are continuous; neither grid has categorical band edges. */
+    grid?: false | ContinuousCartesianGridOptions;
+  });
 };
 ```
 
 </details>
 
-Related types: [`BasicHistogramEncoding`](#type-basichistogramencoding) · [`HistogramCategoricalColorChannel`](#type-histogramcategoricalcolorchannel) · [`RectStyleDetails`](#type-rectstyledetails) · [`FillPaint`](#type-fillpaint) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions).
+Related types: [`BasicHistogramEncoding`](#type-basichistogramencoding) · [`HistogramCategoricalColorChannel`](#type-histogramcategoricalcolorchannel) · [`RectStyleDetails`](#type-rectstyledetails) · [`FillPaint`](#type-fillpaint) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions) · [`ContinuousCartesianGridOptions`](#type-continuouscartesiangridoptions).
 
 ### `CreateHorizonPlotOptions` {#type-createhorizonplotoptions}
 
@@ -3793,6 +3840,19 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
 
 Related types: [`DatasetNormalizedBaseTransform`](#type-datasetnormalizedbasetransform) · [`NormalizeZeroDenominator`](#type-normalizezerodenominator) · [`DatasetNormalizeBaselineTransform`](#type-datasetnormalizebaselinetransform).
 
+### `DatasetRegressionStatisticsTransform` {#type-datasetregressionstatisticstransform}
+
+<details markdown="1">
+<summary>Expand DatasetRegressionStatisticsTransform</summary>
+
+```typescript
+export interface DatasetRegressionStatisticsTransform {
+  readonly type: "regressionStatistics";
+}
+```
+
+</details>
+
 ### `DatasetRegressionTransform` {#type-datasetregressiontransform}
 
 <details markdown="1">
@@ -3823,6 +3883,16 @@ export type DatasetRegressionTransform = {
       | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
       | { confidence: number; confidenceMethod?: never; level?: never }
     ))))
+  | {
+      method: "exp";
+      interval: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+    }
   | {
       method: "loess";
       span: number;
@@ -4002,6 +4072,7 @@ export type DatasetTransform =
   | DatasetFilterTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
+  | DatasetRegressionStatisticsTransform
   | DatasetSortTransform
   | DatasetDensityTransform
   | DatasetECDFTransform
@@ -4016,7 +4087,7 @@ export type DatasetTransform =
 
 </details>
 
-Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
+Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -4289,14 +4360,15 @@ Related types: [`DensityWidthResolution`](#type-densitywidthresolution).
 <summary>Expand DensityPlotGuideOptions</summary>
 
 ```typescript
-export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend"> & {
+export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend" | "grid"> & {
+  grid?: false | ContinuousCartesianGridOptions;
   legend?: false | DensityPlotLegendOptions;
 };
 ```
 
 </details>
 
-Related types: [`CCategoricalGuides`](#type-ccategoricalguides) · [`DensityPlotLegendOptions`](#type-densityplotlegendoptions).
+Related types: [`CCategoricalGuides`](#type-ccategoricalguides) · [`ContinuousCartesianGridOptions`](#type-continuouscartesiangridoptions) · [`DensityPlotLegendOptions`](#type-densityplotlegendoptions).
 
 ### `DensityPlotLegendOptions` {#type-densityplotlegendoptions}
 
@@ -4489,14 +4561,15 @@ export interface ECDFOutputFields {
 
 ```typescript
 export interface EditAxisOptions<P extends string> {
+  target?: string;
   /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
   offset?: number;
   position?: P;
   line?: false | AxisLineStyleOptions;
-  ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position">;
-  labels?: false | Omit<AxisLabelOptions<P>, "scale" | "position">;
-  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position">;
-  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position">;
+  ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position" | "target">;
+  labels?: false | Omit<AxisLabelOptions<P>, "scale" | "position" | "target">;
+  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">;
+  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position" | "target">;
 }
 ```
 
@@ -5492,6 +5565,20 @@ export interface EditRegressionOptions {
 
 Related types: [`RegressionMethod`](#type-regressionmethod) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval) · [`RegressionPredictOptions`](#type-regressionpredictoptions) · [`RegressionBandOptions`](#type-regressionbandoptions) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation).
 
+### `EditRegressionStatisticsDataOptions` {#type-editregressionstatisticsdataoptions}
+
+<details markdown="1">
+<summary>Expand EditRegressionStatisticsDataOptions</summary>
+
+```typescript
+export interface EditRegressionStatisticsDataOptions {
+  target?: string;
+  source?: string;
+}
+```
+
+</details>
+
 ### `EditScaleOptions` {#type-editscaleoptions}
 
 <details markdown="1">
@@ -6277,11 +6364,13 @@ Related types: [`DatasetScalar`](#type-datasetscalar).
 ```typescript
 export interface FacetGuideOptions {
   axes?: "each" | "outer";
-  legend?: false | "shared";
+  legend?: false | "shared" | LegendOptions;
 }
 ```
 
 </details>
+
+Related types: [`LegendOptions`](#type-legendoptions).
 
 ### `FacetHeaderAlign` {#type-facetheaderalign}
 
@@ -7135,14 +7224,14 @@ Related types: [`Palette`](#type-palette).
 ```typescript
 export type HorizonPlotGuideOptions = {
   axes?: false | (Omit<CAxes, "y"> & { y?: false });
-  grid?: false | (Pick<CartesianGridOptions, "vertical"> & { horizontal?: false });
+  grid?: false | { vertical?: boolean | ContinuousGridDirectionOptions; horizontal?: false };
   legend?: false;
 };
 ```
 
 </details>
 
-Related types: [`CAxes`](#type-caxes) · [`CartesianGridOptions`](#type-cartesiangridoptions).
+Related types: [`CAxes`](#type-caxes) · [`ContinuousGridDirectionOptions`](#type-continuousgriddirectionoptions).
 
 ### `HorizonResolution` {#type-horizonresolution}
 
@@ -8032,6 +8121,19 @@ export type MeasuredRadiusScaleOptions = Pick<RadiusScaleOptions, "id" | "domain
 </details>
 
 Related types: [`RadiusScaleOptions`](#type-radiusscaleoptions).
+
+### `NamedCompleteAxis` {#type-namedcompleteaxis}
+
+<details markdown="1">
+<summary>Expand NamedCompleteAxis</summary>
+
+```typescript
+export type NamedCompleteAxis<P extends string> = CompleteAxisOptions<P> & { id: string };
+```
+
+</details>
+
+Related types: [`CompleteAxisOptions`](#type-completeaxisoptions).
 
 ### `NonPointBandPositionScaleOptions` {#type-nonpointbandpositionscaleoptions}
 
@@ -9900,7 +10002,7 @@ export type RegressionInterval = "mean" | "prediction";
 <summary>Expand RegressionMethod</summary>
 
 ```typescript
-export type RegressionMethod = "linear" | "polynomial" | "loess";
+export type RegressionMethod = "linear" | "polynomial" | "loess" | "exp";
 ```
 
 </details>
@@ -9912,6 +10014,9 @@ export type RegressionMethod = "linear" | "polynomial" | "loess";
 
 ```typescript
 export type RegressionOptions = RegressionCommonOptions & (
+  | (Extract<RegressionParameterOptions, { method: "exp" }> & {
+      band?: false;
+    })
   | (Extract<RegressionParameterOptions, { method?: "linear" }> & {
       band?: false | RegressionBandOptions;
     })
@@ -9935,6 +10040,17 @@ Related types: [`RegressionCommonOptions`](#type-regressioncommonoptions) · [`R
 
 ```typescript
 type RegressionParameterOptions =
+  | {
+      method: "exp";
+      interval?: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+      predict?: RegressionPredictOptions;
+    }
   | {
       method?: "linear";
       degree?: never;
@@ -9973,7 +10089,7 @@ type RegressionParameterOptions =
 
 </details>
 
-Related types: [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval) · [`RegressionPredictOptions`](#type-regressionpredictoptions).
+Related types: [`RegressionPredictOptions`](#type-regressionpredictoptions) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval).
 
 ### `RegressionPlotBaseOptions` {#type-regressionplotbaseoptions}
 
@@ -10042,6 +10158,20 @@ export type RegressionPredictOptions =
 
 </details>
 
+### `RegressionStatisticsDataOptions` {#type-regressionstatisticsdataoptions}
+
+<details markdown="1">
+<summary>Expand RegressionStatisticsDataOptions</summary>
+
+```typescript
+export interface RegressionStatisticsDataOptions {
+  id: string;
+  source: string;
+}
+```
+
+</details>
+
 ### `RemoveAxisOptions` {#type-removeaxisoptions}
 
 <details markdown="1">
@@ -10049,6 +10179,7 @@ export type RegressionPredictOptions =
 
 ```typescript
 export interface RemoveAxisOptions {
+  target?: string;
   coordinate?: string;
   scale?: string;
 }
@@ -10382,15 +10513,16 @@ export type RowWindowFrame = {
 <summary>Expand RugGuideOptions</summary>
 
 ```typescript
-export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend"> & {
+export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend" | "grid"> & {
   axes?: false | CAxes;
+  grid?: false | ContinuousCartesianGridOptions;
   legend?: false;
 };
 ```
 
 </details>
 
-Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`CAxes`](#type-caxes).
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`CAxes`](#type-caxes) · [`ContinuousCartesianGridOptions`](#type-continuouscartesiangridoptions).
 
 ### `RugMeasureChannel` {#type-rugmeasurechannel}
 

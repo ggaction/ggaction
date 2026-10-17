@@ -258,4 +258,12 @@
   for (const table of content.querySelectorAll("table")) {
     wrapScrollable(table, "docs-table-region", "Scrollable data table");
   }
+
+  for (const signature of content.querySelectorAll(".docs-action-signature")) {
+    const label = signature.getAttribute("aria-label");
+    const update = () => updateOverflow(signature, signature, label);
+    signature.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    requestAnimationFrame(update);
+  }
 })();

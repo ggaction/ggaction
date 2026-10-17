@@ -959,7 +959,7 @@ test("locks the disjoint corrected hard-requirement partition at 918", async () 
     REALISTIC_DIRECT_LIFECYCLE_COVERAGE_EXPECTED_ACTIONS.filter(action =>
       !targetActions.has(action)
     ),
-    ["removeEncoding"]
+    ["removeEncoding", "createRegressionStatisticsData", "editRegressionStatisticsData"]
   );
   assert.deepEqual(
     [...targetActions].filter(action =>
@@ -1062,7 +1062,7 @@ test(FACET_SWEEP_TEST_NAME, () => {
       childEnvironmentName: FACET_SWEEP_CHILD_ENV,
       expectedResources: {
         builds: 50,
-        maximumWidth: 4_648,
+        maximumWidth: 4_364,
         maximumHeight: 2_210
       },
       resourcePrefix: FACET_SWEEP_RESOURCE_PREFIX,
@@ -1120,7 +1120,7 @@ test(FACET_SWEEP_TEST_NAME, () => {
     }
   }
   assert.equal(builds, 50);
-  assert.equal(maximumWidth, 4_648);
+  assert.equal(maximumWidth, 4_364);
   assert.equal(maximumHeight, 2_210);
   collectGarbage();
   const maxRssKiB = process.resourceUsage().maxRSS;

@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 583, // Adds the pure color-size eligibility and private materializer owners.
-  packedBytes: 820_500, // Combined numeric legend artifact measured820007bytes.
-  unpackedBytes: 4_002_000 // Combined numeric legend artifact measured4000493bytes.
+  entries: 591, // The combined color-size grammar and materializer add two owners.
+  packedBytes: 841_000, // Node24 complete feature integration measured840502packed bytes.
+  unpackedBytes: 4_083_000 // Node24 complete feature integration measured4082583unpacked bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -73,6 +73,9 @@ const COMPACT_JSON_FILES = Object.freeze([
   "knowledge/task-packet.schema.json"
 ]);
 const COMPACT_JAVASCRIPT_FILES = Object.freeze([
+  "src/selectors/axes.js",
+  "src/grammar/legendBlocks.js",
+  "src/core/graphicProperties.js",
   "src/grammar/axisTextPlacement.js",
   "src/grammar/guideDash.js",
   "knowledge/task-resolver.js",

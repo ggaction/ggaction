@@ -1,3 +1,5 @@
+import { editFacetParentLegend } from "../../../materialization/facetGuides/edit.js";
+
 import {patchLegendClipHeight, validateLegendClip} from "../../../grammar/legendClip.js";
 import { LEGEND_POSITIONS } from "../../../core/vocabulary.js";
 import { action } from "../../../core/action.js";
@@ -374,10 +376,11 @@ function normalizeBlockPatch(args, descriptor) {
 
 export const editLegendBlock = /* @__PURE__ */ action(
   {
-    op: "editLegendBlock",
+    op: "editLegendBlock", scope: "any",
     description: "Edit one logical legend block selected by channel."
   },
   withGuideLayoutValidation(function (args = {}) {
+    if (this.compositionSpec !== undefined) return editFacetParentLegend(this, "editLegendBlock", args);
     validateOptionObject(args, OPTIONS, "editLegendBlock");
     if (!Object.hasOwn(args, "target") || typeof args.target !== "string") {
       throw new TypeError("editLegendBlock target must be an explicit legend target id.");

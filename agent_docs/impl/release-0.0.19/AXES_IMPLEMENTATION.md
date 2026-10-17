@@ -6,7 +6,7 @@
 - [x] 전용 branch/worktree와 `npm ci` 준비.
 - [x] #166 native tick/grid uniform dash 및 typed map 구현.
 - [x] #174/#194/#195/#199 frame/title/label 구현.
-- [ ] #197 named 축 소유자·selector·모든 consumer 구현.
+- [x] #197 named 축 소유자·selector·모든 consumer 구현(normal checkpoint; realistic는 아래 별도 미완).
 - [ ] #206 최종 facet parent shared 범례와 unit 범례 확장 결합.
 - [ ] 설치 소비자·독립 geometry 및 승인된 primitive/public pixel 검증 완료.
 - [ ] 전체 unit/contracts/docs/package/bundle 검증과 부모 통합.
@@ -54,3 +54,182 @@
   SVG의 exact parity를 추가했고14/14 focused 통과했다. 이미지 눈/VLM 검사는 하지 않았다.
 - Action-card 최대3358bytes는3360한도 안이며 승인된 placement 옵션을 모두 포함한 median1865가
   기존1856을9bytes 초과하여 해당 한도만 실측1865로 갱신했다. 옵션을 숨기거나 지우지 않는다.
+
+
+## #197 checkpoint
+
+- `selectors/axes.js`가 canonical/unique/explicit owner 선택과 native IDs를 소유한다. 기존
+  materialization module은 ID resolver를 재수출하고 persistence는 selector를 직접 소비한다.
+  Source layer 경계의 허용 목록을 넓히지 않았고 import/cycle/immutable primitive 검사가 통과했다.
+- Native named ID, coordinate+side uniqueness, explicit frame, independent scale/standalone,
+  sparse components, focused/group/whole/remove, aggregate/facade arrays, grid ambiguity와
+  all-owner replay를 source/types/Current/English docs/cards/inspection/LLM에 동기화했다.
+- 새로운18개 durable 사례가 data/encoding/mark/theme/Canvas/scale/coordinate/facet/grid/repeat,
+  title/labels/collision/atomicity, malformed import와 prototype-shaped ID를 검증한다.
+  Facade reuse는 retained frame offset이 다르면 거부한다. TS는 Full/Basic와 closed negative를 포함한다.
+- Full unit3117/3117 PASS 이후 facade-only 추가회귀18/18, source/types10/10,
+  package/cards/lifecycle/facet contracts27/27, action catalog PASS, docs120/120 PASS.
+- 같은 실행의 named/public design과 canonical native design PNG exact equality는
+  `test/unit/actions/guides/named-cartesian-axes.test.js`가 검증한다. Independent screen oracle와
+  explicit primitive translation의 PNG/SVG exact equality는 `axis-frame-offset.test.js`가 검증한다.
+  승인된 overview SVG의 설명 annotation 복제는 부모 통합 담당이며 이 checkpoint는 그 완료가 아니다.
+- Installed packed Full/Basic actual runtime/TS, PNG/PDF/persistence, optional peers, local MCP,
+  tutorial, private exports와 browser bundle 모두 PASS. 최종 artifact SHA256
+  `3769b14c112d8c03313e0070f1f0a6c830a148b7aaf2fb1b341aac990251a6ba`.
+  Browser gzip은 Full396214/Basic193136/SVG7176bytes다.
+- 최초 package/검색/card/browser 예산 초과와 provenance staleness는 로그에 보존했다.
+  Scope를 숨기거나 coverage 기준을 줄이지 않고 새 selector compaction 적용 뒤 실측한 최소 한도를
+  canonical owners와 SECOND_ARCHITECTURE에 기록했다. Package570entries,805115packed,
+  3948224unpacked; search816932; card median1896/max3358.
+- 남은 일: #206 parent owner 전체 lifecycle, sibling unit block 기능 결합 및 모든 신규 옵션의
+  authentic realistic5회/3dataset witness. 이들은 완료 체크하지 않았으며 다음 통합 checkpoint에서 실행한다.
+
+## #206 implementation boundary
+
+- 승인된 parent owner는 `compositionSpec.facet.guides.legend` 하나다. Public 입력은
+  closed `LegendOptions`이며 internal tag를 받아들이지 않는다. Focused edit의 block별
+  normalized intent와 inference flags는 이 객체 안의 private tagged normal form으로
+  보존한다. 부모가 승인 문서425–525를 대조해 이 해석을 승인된 lifecycle의 구현으로 확인했다.
+- 구현한 internal form은 `{ type: "authored-legend", blocks, groups }`다. Blocks는 kind별
+  `{config, guide?}`로 unit의 normalized config와 해당 semantic legend meaning을 재사용한다.
+  Groups는 기존 unit target-group intent다. 별도 override registry나 child authored owner는
+  만들지 않는다. Config flags는 자동 title/sample/offset을 explicit 값으로 고정하지 않는다.
+- Descriptor, local position과 border는 범례 담당의 pure grammar/materializer를 그대로 쓴다.
+  Final union 배치 전에 intrinsic frame으로만 측정하며 child Canvas/margin을 변경하지 않는다.
+- 이 section의 normal runtime 구현은 아래 checkpoint에서 검증했다. Authentic realistic와
+  stable approved primitive/public capability 증거는 별도 후속 통합 의무로 남아 있다.
+
+
+## 범례 checkpoint 결합
+
+- `23d2e59a`까지의 unit 범례 구현을 merge하고 pure descriptor/local query/graphic edit
+  helper의 layer boundary를 단일 owner로 정리했다. Unit3142/3142, docs120/120,
+  source-boundaries8/8, named/card/type19/19, package check와 installed Full/Basic
+  consumer를 모두 통과했다. 신규 옵션 realistic는 이 merge로 완료한 것으로 기록하지 않는다.
+- 누적 bundle 첫 실행은398463>397000으로 실패했다. 실제 Full398463/Basic194351/
+  SVG7176bytes를 확인하고 최소399000/195000/기존25000 한도로 재실행해 PASS했다.
+EOF
+## #206 native parent lifecycle checkpoint
+
+- 기존 unit 범례 #171까지를 통합해 parent 선언·whole/focused/block 편집·partial/final removal을
+  동일 native owner로 실행한다. Public internal tag는 거부하고 persisted tagged normal form은
+  outer/block/config closed keys, native flags, semantic binding, derived config/groups 일치를 검증한다.
+- Final child-plot union을 기준으로 8anchor/free at, local/inherited partition, retained axis/header
+  collision과 Canvas fit을 검증한다. Intrinsic measurement는 transient이고 child dimensions를
+  수정하지 않는다. Unit lane과 parent는 `materialization/graphicTranslation.js`를 공유한다.
+  Collection descendants를 이동하되 nested Canvas는 local frame만 이동한다.
+- 새 parent19회귀(9 native representations 포함), translation3회귀와 sibling local tests/source
+  boundaries를 통과했다. Parent 선언/재선언/legacy shared reset, auto title/sample/offset, combined
+  size-shape, partial removal, 9가지 malformed import, data/theme/source/grid/repeat/textmetrics/Canvas
+  replay와 immutable 실패를 검증한다. 부모 PNG/PDF export도 실제 실행했다.
+- 전체 unit3168/3168, docs120/120, source/types/cards20/20, package check PASS.
+  기존 invalid guide message fixture는 승인된 object vocabulary에 맞춰 정정했다. 새 sibling authentic
+  combined witness를3실데이터셋×5회 실행하고 실제 runtime을 canonical realistic timings에 추가했다.
+- 첫 installed consumer는 새 Full/Basic runtime/TS/PNG/PDF/persistence/MCP/tutorial 검증을 모두
+  수행한 뒤403710>399000gzip 한도로 실패했다. 측정은 Full403710/Basic196120/SVG7176bytes이며
+  최소404000/197000/기존25000으로만 올린 뒤 재검증한다. Package581/818028/3992869,
+  search820648 실측과 최소 예산은 SECOND_ARCHITECTURE 및 canonical owner에 동기화했다.
+- 남은 일은 모든 새 옵션5회/3TT authentic profile, 승인시각2개 stable literal primitive/public
+  capability, #176 clip/#205 color-size 결합이다. 이 checkpoint는 전체 feature 범위 완료가 아니다.
+
+- Installed 재실행은 전체 Full/Basic/optional peer/TS/local MCP/tutorial/browser 검증을 통과했다.
+  Artifact SHA256: `bfd896594fd9b12b568e9a76d3a405330657e61a4082144de6933f69b8ba0fbf`.
+  Same-run gzip 결과는 위 실측과 동일하다. 최종 source/type/card/translation/parent42회귀 PASS,
+  `git diff --check HEAD` PASS. 눈이나 VLM으로 이미지를 확인했다고 주장하지 않는다.
+
+## Released baseline 결합
+
+- Released main `0447acaf`의 SDK1.32.1 보안 수정, none-paint backend 수정, C5 actual facade
+  profiles, continuous grid negative/type 회귀를 결합했다. Public runtime source 충돌은 없었고
+  architecture 기록은 양쪽을 유지했다. Generated artifacts는 현재 merged source로 재생성했다.
+- `npm ci` audit0, focused52/52, full unit3170/3170, docs120/120, package check와 installed
+  Full/Basic runtime/TS/PNG/PDF/persistence/MCP/tutorial/browser 모두 PASS. Artifact `6b0b27b2a30e8f13c8410df73a65bbe0d24a1f74e989b960f5b4710e25957429`.
+- 실제 package581entries/818367packed/3994170unpacked, 검색821174bytes다. 기존 예산 초과
+  실패 로그를 보존하고 unpacked/search만 최소3995000/822000으로 갱신했다.
+
+## Public inventory union-array 정확성
+
+- Named axis의 object|named-array 공개 타입을 실제 조회하면서 inventory가 array를 발견하면
+  object branch를 건너뛰는 기존 결함을 확인했다. Array branch가 같은 interface를 참조할 때
+  union-wide ancestry가 조기 cycle로 오인하는 경우와 배열 인덱스가 property depth를 추가하는
+  경우도 함께 고쳤다. Array/object 두 branch를 모두 남기며 기존 leaf 삭제는0이다.
+- 새 durable 계약은 양쪽 named 축의 id/frame/title baseline·align·alongOffset/tick dash map와
+  중첩 label align을 같은 property depth에서 확인한다. Color range object의 palette/name/count/
+  extent도 다시 required direct trace이고 redacted array는 기존 replacement 부모 규칙을 유지한다.
+- 현재 정확한 inventory는16805paths/12187required/4618explicit redacted-array다. Literal8815,
+  diversity369, ledger21596이다. Global count 기대값은 실제 parser 결과와 동기화하며 executable
+  요구 기준5회/3dataset·리터럴·다양성은 변경하지 않는다. 복원된 실제 profile는 후속 통합 의무다.
+
+- Inventory normal8회귀 PASS. Generic count alias 경로로 actual `summarizeArgs`의 xCount/yCount와
+  facade nested counts가 부모 option occurrence만 기록하고 숨겨진 object leaf를 허위 기록하지
+  않음을 확인했다. Alias 목록/array exclusion/coverage 하한은 변경하지 않았다. Named-array
+  입력의 actual5×3와 복원된 object branch의 실제 증거는 서로 대체하지 않는다.
+
+
+## Named axis·parent legend 실제 데이터 checkpoint
+
+- 독립 realistic test에서 원본3TT 데이터셋(tour winners, marathon winners, penguins)을
+  변경하지 않고 각각5회 실행했다. Named 축의 complete/focused/aggregate object/array 경로,
+  독립 y scale 두 개, 6가지 title baseline·3가지 align, dash map, frame 이동, grid reset을
+  실제 public action으로 호출하고 매 단계 import 재생성·기하·이전 프로그램 불변성을 확인한다.
+  별도 facade named-array 실행도 기록하므로 object branch 증언으로 array를 대신하지 않는다.
+- 같은3×5 실행에서 부모 object 범례를 child60px·final union 기준으로 만들고 whole/focused/
+  block 편집, local 위치, reflow, 최종 removal·재배치 후 비복원, 저장/불러오기와 실제 PNG를
+  검증했다. 원본 긴 facet header는 글자·내용을 유지하고 명시적 간격과 여백으로 배치한다.
+  모든 child plot width는60px로 유지한다. 최종3/3 PASS, 실제 합산17031.924125ms를
+  canonical realistic timings에 기록했다.
+- 기존 guide-scale actual recipe도 동일 named-owner helper를 실제로 호출한다. Clone/reorder/
+  fresh-process replay 계약은1/1 PASS다. Test discovery는 새 authentic test와 sibling combined
+  test를 명시하고 realistic24개를 정상/coverage suite와 분리한다.
+- 기존 hierarchy8dataset 전체 실행은 기본 heap에서14분간 완료되지 않아 로그를 보존하고
+  본인 프로세스만 중단했다. 같은 기준을512MB old-space로 실행하면214초에 실제 전체 호출을
+  마치고 strict witness assertion에 도달했다. 남은89항목은 palette·새 sibling 범례와 일부
+  Rug/Strip 축 literal fixture 보강 의무다. Runtime/bounds/coverage 기준은 완화하지 않았다.
+  이 checkpoint로 전체 realistic 또는 전체 feature 완료를 주장하지 않는다.
+
+- CI의 정식 realistic runner도512MiB old-space를 명시한다. Normal/coverage 실행과 기존
+  private generation/execution child의 더 좁은 명시적 한도는 유지한다. 데이터·반복·deadline·
+  RSS·coverage 정책은 변경하지 않는다. Normal discovery/source/inventory22회귀 PASS.
+
+
+## Restored option surface의 실제 증명
+
+- Data/color `6e4b2397`과 결합하고 기존 범례/축 증거를 모두 유지했다. Cartesian은 원래36개에
+  object palette3개와 string palette2개를 더한41profiles·820charts다. Statistical은 원래465개를
+  유지하고 palette75개를 추가한540charts다. 각 variant는5회·최소3TT원본을 그대로 사용한다.
+  Hierarchy는 원래33profiles를 유지하고 두 string palette profile을 실제 최대 흐름에도 연결한다.
+- Cartesian 전체 actual 실행은94.7초에5PASS/1FAIL이며 strict 미충족20개는 신규 sibling 범례의
+  border dash/combine/title bottom뿐이다. Hierarchy8원본 전체는267.7초에 strict assert까지
+  도달했고 미충족55개도 같은 sibling 범례뿐이다. 모든 축/frame/title/label/map와 palette의
+  object·name·string diversity는 두 실제 흐름에서 요구5/3을 충족한다. 범례 누락을 면제하거나
+  전체 suite PASS로 기록하지 않는다. 해당 범례 helper 후속은 범례 담당자에게 넘겼다.
+- Statistical에 모든 실행 가능한 axis/grid option·literal의 실제 ledger5/3 검사를 추가했다.
+  기존319개 누락을 label style, tick offset, 양방향 grid, component false, 회전 단위·baseline,
+  pregridded guide 흐름에서 직접 호출해 채웠다. 이전 프로그램/원본 선택·기존 profile은 보존했다.
+  새 baseline/frame 조합에서 y 제목이2.762px 벗어난 fixture는 제목 offset280→260으로 맞췄다.
+  Runtime Canvas 경계를 느슨하게 하지 않았다. 최종 전체7/7 PASS,540charts·50dataset,
+  counterfactual·정확한 profile fingerprint·palette diversity12개와 legacy191paths/189literals PASS다.
+- Histogram은 bin extent x와 count/stack y가 모두 continuous라 bandPosition의 두 방향 역할이
+  불가능함을 확인했다. 기존 shared continuous grid 타입만 재사용해 해당2path/4literal 광고를
+  정정했다.4stack modes×2방향·두 band 값·auxiliary band resource의 실제 원자적 거부,
+  fresh/nonfresh 타입 검사와 inventory 회귀5/5 PASS다. 유효한 count/value/map/offset/zIndex는
+  유지했다. Current·영문 문서·generated reference/types/cards와 global inventory를 동기화했다.
+  현재16901paths/12248required/8886path literals/21734ledger를 실제 계산·normal1/1로 확인했다.
+- 실제 binned Heatmap이 title:false·named array를 거부하는 기존 consumer 버그는 root의
+  `44aac78e`를 가져왔다.3TT×5 named array/두 y owner/false·custom 제목/원본 행·import
+  검증을 기존 actual witness에 추가해3/3 PASS다. Root의 독립18회귀와 별도로 실행한 증거다.
+- Source/discovery/type/runtime normal30/30, named axis·parent lifecycle37/37, docs120/120 PASS.
+  첫 docs 검사는 generated descriptor 뒤 provenance가 달라져119/120이었다. 동일 generation을
+  다시 수행해 고정점과 전체120PASS를 확인했다. Installed Full/Basic runtime·types·PNG/PDF·
+  tutorial·MCP/browser consumer가 PASS했다. Artifact SHA256은
+  `a921ba03d73484d8478c50376e4be615118f09111882441cecd3e01aaceea519`다.
+- Package587entries/829785packed/4049330unpacked다. 기존4049000초과 실패를 보존하고
+  unpacked만4050000으로 올려 재검증했다. Root 통합의 더 큰 실제 누적 예산을 낮추지 않는다.
+  실제 gzip은 Full409541/Basic199761/SVG7325다. 소스/이미지 눈·VLM 확인이나 유료 API 호출은 없다.
+- Guide-scale 전체 추가 실행은12/14로 reserved strict·clone/process는 PASS했고 두50dataset
+  flow에서 새 helper의 긴 숫자 label/title 겹침을 발견했다. Character wrap과 y title offset220으로
+  전체 정보를 보존해 고쳤고 동일3TT×5는 다시 PASS했다. Named helper는 기존 scheduled numeric
+  variant 하나의5회/3원본 흐름에만 연결해 나머지500개 기본 guide sweep의 중복을 줄인다.
+  데이터·원래50dataset/모든 variant·coverage 기준은 유지한다. 전체14회귀는 같은 source에서 재실행 중이다.
+- #176/#205 parent coupling과 두 stable pair의 최종 독립 baseline 통합은 root가 소유한다.
+  전체28feature 또는 release 완료를 주장하지 않는다.

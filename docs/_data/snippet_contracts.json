@@ -239,6 +239,20 @@
   {
     "file": "api/axes/complete.md",
     "block": 1,
+    "heading": "Independent named Cartesian axes",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [
+      "target: \"share\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: \"share\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "39795f944a3111610e45fc6d3750e80715d703d4162a80f09c3ee7679234ede9",
+    "executable": false
+  },
+  {
+    "file": "api/axes/complete.md",
+    "block": 2,
     "heading": "Moving a complete axis and refining its text",
     "mode": "fragment",
     "environment": "esm-context",
@@ -250,7 +264,7 @@
   },
   {
     "file": "api/axes/complete.md",
-    "block": 2,
+    "block": 3,
     "heading": "Styling native tick dashes",
     "mode": "fragment",
     "environment": "esm-context",
@@ -258,20 +272,6 @@
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "cf1f11d653404c55e48dca7db30604813c72d379fa6f18facb9ba4c05e57114e",
-    "executable": false
-  },
-  {
-    "file": "api/axes/complete.md",
-    "block": 3,
-    "heading": "`createAxes(options?)`",
-    "mode": "fragment",
-    "environment": "esm-context",
-    "receivers": [
-      "program"
-    ],
-    "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "d5dcaf02169388ab3fb2f3ca12c0f46a200005e277b234305cb1e3a8942f734b",
     "executable": false
   },
   {
@@ -285,7 +285,7 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "ef35f4b5bcc59c999924a679003b57e0ef2720bb0ffed28e3774cf47436075e5",
+    "sha256": "d5dcaf02169388ab3fb2f3ca12c0f46a200005e277b234305cb1e3a8942f734b",
     "executable": false
   },
   {
@@ -299,7 +299,7 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "e617151251ffbc6048bd2e7e1fd8f2d31a02347143f6c7d7957cdba6f2c3cb6e",
+    "sha256": "ef35f4b5bcc59c999924a679003b57e0ef2720bb0ffed28e3774cf47436075e5",
     "executable": false
   },
   {
@@ -313,12 +313,26 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "9e744feb00c85430d869bc1e92a91d99050760e66c33d22e125cab1ba65345e8",
+    "sha256": "e617151251ffbc6048bd2e7e1fd8f2d31a02347143f6c7d7957cdba6f2c3cb6e",
     "executable": false
   },
   {
     "file": "api/axes/complete.md",
     "block": 7,
+    "heading": "`createAxes(options?)`",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "9e744feb00c85430d869bc1e92a91d99050760e66c33d22e125cab1ba65345e8",
+    "executable": false
+  },
+  {
+    "file": "api/axes/complete.md",
+    "block": 8,
     "heading": "`createAxes(options?)`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -719,13 +733,13 @@
   {
     "file": "api/composition/facets.md",
     "block": 1,
-    "heading": "Repeat the current chart by a field",
+    "heading": "Declare a legend for the complete facet",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "33b794a4af3053a7ead8c4c4e4abded49656926802e8f19bc264ca743f03a668",
+    "sha256": "cac60340f1e8ae5e82683d646f09038b63cfe144588d5c2fb2921101b8df52c4",
     "executable": false
   },
   {
@@ -737,12 +751,24 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "6a697b4af9d94353ab03b8e04be59c294c6d724e26d1ea1ae4d24f4543b3281c",
+    "sha256": "33b794a4af3053a7ead8c4c4e4abded49656926802e8f19bc264ca743f03a668",
     "executable": false
   },
   {
     "file": "api/composition/facets.md",
     "block": 3,
+    "heading": "Repeat the current chart by a field",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "6a697b4af9d94353ab03b8e04be59c294c6d724e26d1ea1ae4d24f4543b3281c",
+    "executable": false
+  },
+  {
+    "file": "api/composition/facets.md",
+    "block": 4,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -757,7 +783,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 4,
+    "block": 5,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -771,7 +797,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 5,
+    "block": 6,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -783,7 +809,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 6,
+    "block": 7,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -795,7 +821,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 7,
+    "block": 8,
     "heading": "Build a row and column facet grid",
     "mode": "fragment",
     "environment": "esm-context",
@@ -809,7 +835,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 8,
+    "block": 9,
     "heading": "Repeat a positional encoding across fields",
     "mode": "fragment",
     "environment": "esm-context",
@@ -825,7 +851,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 9,
+    "block": 10,
     "heading": "Repeat a positional encoding across fields",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1253,6 +1279,20 @@
   {
     "file": "api/data/statistical-transforms.md",
     "block": 2,
+    "heading": "Linear fit statistics {#fit-statistics}",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [
+      "source: \"fit\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: \"fit\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "4af4c56b2e903da2fa622c903fb6c8fbcd0f7ab6fda3d0dd9a10fc325196105c",
+    "executable": false
+  },
+  {
+    "file": "api/data/statistical-transforms.md",
+    "block": 3,
     "heading": "`createIntervalData({ id, source?, field, groupBy?, center?, extent?, method?, level?, missing?, as? })` {#create-interval-data}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1266,7 +1306,7 @@
   },
   {
     "file": "api/data/statistical-transforms.md",
-    "block": 3,
+    "block": 4,
     "heading": "`createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, weight?, missing?, as? })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3229,7 +3269,7 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `points`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "b30dc5b4fb5d1281a6d9245bdd18b0c4e2312440d4aad669cd125b943965b63c",
+    "sha256": "45554c55ffdcbd3afc7bd74bf95f08c7d37f51f66cdcc69777fff1da6547eac0",
     "executable": false
   },
   {

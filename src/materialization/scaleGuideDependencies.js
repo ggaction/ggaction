@@ -1,12 +1,10 @@
+import { cartesianAxisOwners, axisTargetArgs } from "../selectors/axes.js";
+import { axisGraphicIds } from "./guides/resources.js";
 import { isSourceOwnedText } from "../grammar/text.js";
 import { POSITION_ENCODING_CHANNELS } from "../core/vocabulary.js";
 import { materializedLegendUsesScale } from "./legends.js";
 import { buildMaterializationPlan } from "./planner.js";
 
-const CARTESIAN_AXES = Object.freeze([
-  Object.freeze({ channel: "x", prefix: "X", lineObject: "xAxisLine" }),
-  Object.freeze({ channel: "y", prefix: "Y", lineObject: "yAxisLine" })
-]);
 const POLAR_AXES = Object.freeze([
   Object.freeze({ channel: "theta", prefix: "Theta" }),
   Object.freeze({ channel: "radius", prefix: "Radial" })
@@ -18,8 +16,8 @@ const GRIDS = Object.freeze([
   Object.freeze({ role: "radial", op: "rematerializeRadialGrid" })
 ]);
 
-export function planAxisTickGridRematerialization(program, channel) {
-  const ticks = program.guideConfigs.axis?.[channel]?.ticks;
+export function planAxisTickGridRematerialization(program, channel, axisId = channel) {
+  const ticks = program.guideConfigs.axis?.[axisId]?.ticks;
   const role = channel === "x" ? "vertical" : "horizontal";
   const config = program.guideConfigs.grid?.[role];
   return buildMaterializationPlan({ guides:
@@ -48,9 +46,7 @@ function usesRadialScale(program, id) {
 
 function semanticGuideUsesScale(program, id) {
   return [
-    ...CARTESIAN_AXES.map(({ channel }) =>
-      program.semanticSpec.guides.axis?.[channel]
-    ),
+    ...cartesianAxisOwners(program).map(owner => owner.semantic),
     ...POLAR_AXES.map(({ channel }) =>
       program.semanticSpec.guides.axis?.[channel]
     ),
@@ -83,16 +79,19 @@ export function planScaleGuideRematerialization(program, id) {
       args: { target: guideConfigs.axis.parallel.axes.target }
     });
   }
-  for (const axis of CARTESIAN_AXES) {
+  for (const owner of cartesianAxisOwners(program)) {
+    const axis = { channel: owner.channel, prefix: owner.channel.toUpperCase(),
+      lineObject: axisGraphicIds(owner.channel, owner.id)[0] };
+    const target = owner.named ? { args: axisTargetArgs(owner.id, owner.channel) } : {};
     if (
       objects[axis.lineObject] &&
-      program.semanticSpec.guides.axis?.[axis.channel]?.scale === id
+      owner.scale === id
     ) {
-      guides.push({ op: componentEditOperation(axis.prefix, "line") });
+      guides.push({ op: componentEditOperation(axis.prefix, "line"), ...target });
     }
     for (const component of ["ticks", "labels", "title"]) {
-      if (guideConfigs.axis?.[axis.channel]?.[component]?.scale === id) {
-        guides.push({ op: componentEditOperation(axis.prefix, component) });
+      if (guideConfigs.axis?.[owner.id]?.[component]?.scale === id) {
+        guides.push({ op: componentEditOperation(axis.prefix, component), ...target });
       }
     }
   }

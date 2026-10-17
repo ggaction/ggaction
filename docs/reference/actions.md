@@ -102,6 +102,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createRegressionData`](./actions/charts-data.md#createregressiondata) | H2 | user-facing | core |
 | [`createRegressionLine`](./actions/statistics.md#createregressionline) | H1 | user-facing | statistics |
 | [`createRegressionPlot`](./actions/charts-data.md#createregressionplot) | H0, H1 | user-facing | charts |
+| [`createRegressionStatisticsData`](./actions/charts-data.md#createregressionstatisticsdata) | H2 | user-facing | core |
 | [`createRosePlot`](./actions/charts-data.md#createroseplot) | H0 | user-facing | charts |
 | [`createRugPlot`](./actions/charts-data.md#createrugplot) | H0 | user-facing | charts |
 | [`createRuleMark`](./actions/marks.md#createrulemark) | H2 | user-facing | marks |
@@ -199,6 +200,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editRegressionBand`](./actions/statistics.md#editregressionband) | H1, H3 | user-facing | statistics |
 | [`editRegressionData`](./actions/charts-data.md#editregressiondata) | H2 | user-facing | core |
 | [`editRegressionLine`](./actions/statistics.md#editregressionline) | H1, H3 | user-facing | statistics |
+| [`editRegressionStatisticsData`](./actions/charts-data.md#editregressionstatisticsdata) | H2 | user-facing | core |
 | [`editRScale`](./actions/charts-data.md#editrscale) | H2 | user-facing | core |
 | [`editRuleMark`](./actions/marks.md#editrulemark) | H3 | user-facing | marks |
 | [`editScale`](./actions/charts-data.md#editscale) | H2 | user-facing | core |

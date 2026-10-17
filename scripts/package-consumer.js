@@ -119,6 +119,21 @@ async function testNodeConsumer(directory) {
       assert.deepEqual(deserializeProgram(serializeProgram(placedAxis)).graphicSpec, placedAxis.graphicSpec);
       assert.ok((await renderToPNGBuffer(placedAxis)).buffer.length > 100);
       assert.ok((await renderToPDFBuffer(placedAxis)).buffer.length > 100);
+      const namedAxes = create().createCanvas({ width: 600, height: 400, margin: 80 })
+        .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+        .createScatterPlot({ x: "x", y: "y", guides: false })
+        .createAxes({ x: false, y: [{ id: "left", position: "left" }, { id: "right", position: "right" }] });
+      assert.equal(namedAxes.semanticSpec.guides.axis.right.channel, "y");
+      assert.equal(namedAxes.graphicSpec.objects.axis_right__Line.properties.x1, 520);
+      assert.deepEqual(deserializeProgram(serializeProgram(namedAxes)).graphicSpec, namedAxes.graphicSpec);
+      assert.ok((await renderToPNGBuffer(namedAxes)).buffer.length > 100);
+      assert.ok((await renderToPDFBuffer(namedAxes)).buffer.length > 100);
+      if (create === chart) {
+        const changed = namedAxes.editYAxisTitle({ target: "right", text: "Share" })
+          .editCanvas({ width: 700 }).removeYAxis({ target: "left" });
+        assert.equal(changed.graphicSpec.objects.axis_right__Line.properties.x1, 620);
+        assert.equal(changed.guideConfigs.axis.left, undefined);
+      }
       const dashedGuides = create().createCanvas({ width: 700, height: 500, margin: 100 })
         .createData({ values: [{ x: 0, y: 0 }, { x: 1, y: 2 }] })
         .createScatterPlot({ x: "x", y: "y", guides: false })
@@ -189,12 +204,34 @@ async function testNodeConsumer(directory) {
       assert.ok(windowed.graphicSpec.objects.seriesLegendSymbolPoints.children.length>0);
       if (factory === chart) assert.deepEqual(windowed.editLegendSymbols({channel:"shape",clipHeight:"auto"}).graphicSpec,combined.graphicSpec);
       assert.deepEqual(deserializeProgram(serializeProgram(windowed)).graphicSpec,windowed.graphicSpec);
+      if(factory===chart){
+        const windowParent=combinedBase.facet({field:"g",columns:2,guides:{legend:{combine:"size-shape",position:"top-left",clipHeight:6}}})
+          .editLegendSymbols({channel:"size",clipHeight:8}).editCompositionLayout({gap:10});
+        assert.equal(windowParent.guideConfigs.legend.series.clipHeight,8);
+        assert.deepEqual(deserializeProgram(serializeProgram(windowParent)).graphicSpec,windowParent.graphicSpec);
+        const windowPair=hconcat({programs:[windowed,windowed]});
+        assert.deepEqual(deserializeProgram(serializeProgram(windowPair)).graphicSpec,windowPair.graphicSpec);
+        assert.ok(Object.keys(windowPair.graphicSpec.objects).every(id=>/^[A-Za-z0-9_-]+$/.test(id)));
+      }
       const translucent=combinedBase.createLegend({combine:"size-shape",symbol:{layers:[{type:"point",opacity:0.7}]}});
       assert.equal(translucent.graphicSpec.objects.seriesLegendSymbolPoints.items[0].properties.blend,"normal");
       assert.deepEqual(deserializeProgram(serializeProgram(translucent)).graphicSpec,translucent.graphicSpec);
       assert.ok((await renderToPNGBuffer(translucent)).buffer.length>100);
     }
 
+    const parentLegend=chart().createCanvas({plot:{width:60,height:275},margin:{top:35,right:5,bottom:60,left:45}})
+      .createData({values:Array.from({length:8},(_,i)=>({x:i,y:i+1,g:i%2?"B":"A",panel:String(i%4)}))})
+      .createScatterPlot({x:"x",y:"y",color:"g",guides:false})
+      .facet({field:"panel",columns:4,spacing:"plot",gap:2,guides:{legend:{position:"top-left"}}})
+      .editLegendTitle({fontSize:11}).editLegendLabels({channel:"color",fontSize:10})
+      .editLegendLayout({channel:"color",position:"bottom-right"});
+    assert.equal(parentLegend.compositionSpec.facet.guides.legend.type,"authored-legend");
+    assert.equal(parentLegend.guideConfigs.legend.color.labels.fontSize,10);
+    assert.deepEqual(deserializeProgram(serializeProgram(parentLegend)).editCompositionLayout({gap:8}).graphicSpec,
+      parentLegend.editCompositionLayout({gap:8}).graphicSpec);
+    assert.ok((await renderToPNGBuffer(parentLegend)).buffer.length>100);
+    assert.ok((await renderToPDFBuffer(parentLegend)).buffer.length>100);
+    assert.equal(parentLegend.removeLegend().editCompositionLayout({gap:8}).compositionSpec.facet.guides.legend,false);
     for(const factory of [chart,basicChart]){
       const combined=factory().createCanvas({width:1000,height:800,margin:250})
         .createData({values:[{x:0,y:0,v:0},{x:1,y:1,v:10}]})
@@ -390,6 +427,15 @@ async function testNodeConsumer(directory) {
       assert.equal(scoped.graphicSpec.objects.xAxisLabels.items[0].properties.fill, "red");
       assert.deepEqual(deserializeProgram(serializeProgram(scoped)).graphicSpec, scoped.graphicSpec);
       assert.ok((await renderToPNGBuffer(scoped)).buffer.length > 1000);
+    }
+    for (const factory of [chart, basicChart]) {
+      const dense = factory().createCanvas({width:250,height:250,margin:25})
+        .createData({values:Array.from({length:50000},(_,x)=>({x,y:x%11}))})
+        .createScatterPlot({x:"x",y:"y",guides:false});
+      assert.equal(dense.graphicSpec.objects.scatterPlot.items.length,50000);
+      assert.deepEqual(deserializeProgram(serializeProgram(dense)).graphicSpec,dense.graphicSpec);
+      assert.equal(dense.graphicSpec.objects.scatterPlot.items.at(-1).id,"scatterPlot:49999");
+      assert.throws(()=>factory().createGraphics({id:"unowned",type:"circle",length:10001}),/10000/);
     }
     const initialHeaders = chart().createCanvas({ width: 250, height: 200, margin: 50 })
       .createData({ values: [{ x: 1, y: 2, group: "A" }, { x: 2, y: 3, group: "B" }] })
@@ -881,12 +927,15 @@ async function testNodeConsumer(directory) {
     });
     const raincloud = polarBase.createRaincloudPlot({
       id: "packageRaincloud",
+      color: {field:"group",fieldType:"nominal",scale:{id:"packageRaincloudColor",type:"ordinal",range:{palette:{name:"viridis",count:5,extent:[0.1,0.9]}}}},
       category: { field: "group", fieldType: "nominal" },
       value: { field: "distance", fieldType: "quantitative" },
       density: { steps: 16 },
       points: { type: "beeswarm", packing: { key: "angle", overflow: "overlap" } },
       guides: false
-    }).editRaincloudPlot({ target: "packageRaincloud", side: "after" });
+    }).editRaincloudPlot({ target: "packageRaincloud", side: "after",
+      color:{field:"group",fieldType:"nominal",scale:{id:"packageRaincloudColor",type:"ordinal",range:{palette:{name:"magma",count:7,extent:[0.08,0.92]}}}} });
+    assert.equal(raincloud.semanticSpec.scales.find(scale=>scale.id==="packageRaincloudColor").range.palette.name,"magma");
     const ecdfData = polarBase.createECDFData({
       id: "packageECDFData", field: "distance", groupBy: "group"
     });
@@ -1040,6 +1089,11 @@ async function testNodeConsumer(directory) {
         { region: "West", total: 4, records: 1 }
       ]
     );
+    const largeSummary = chart().createData({ values: Array.from({length: 10001}, (_,group) => ({group,value:group%17})) })
+      .createSummaryData({id:"largeSummary",groupBy:"group",aggregates:[{op:"mean",field:"value",as:"average"}]});
+    assert.equal(largeSummary.semanticSpec.datasets.at(-1).values.length,10001);
+    assert.equal(largeSummary.semanticSpec.datasets.at(-1).values.at(-1).average,10000%17);
+    assert.deepEqual(deserializeProgram(serializeProgram(largeSummary)).semanticSpec,largeSummary.semanticSpec);
     const weightedSummary = chart()
       .createData({ id: "weighted", values: [
         { value: 1, weight: 1 },
@@ -1356,6 +1410,14 @@ async function testNodeConsumer(directory) {
     ] }).createScatterPlot({ x: "x", y: "y", color: "group", guides: false })
       .createRegression(JSON.parse(JSON.stringify({ groupBy: false, band: false })));
     assert.equal(regressionOptOut.semanticSpec.datasets.at(-1).transform[0].groupBy, undefined);
+    const exponentialRegression = chart().createCanvas({width:500,height:350,margin:70})
+      .createData({values:[{x:0,y:1},{x:1,y:3},{x:2,y:8}]})
+      .createRegressionPlot({x:"x",y:"y",method:"exp",guides:false});
+    assert.equal(exponentialRegression.semanticSpec.datasets.at(-1).transform[0].interval,false);
+    assert.equal(exponentialRegression.markConfigs.regressionPlot.regression.bandId,undefined);
+    assert.ok(Math.abs(exponentialRegression.semanticSpec.datasets.at(-1).values[0].y-1.0490780630894252)<1e-12);
+    assert.deepEqual(deserializeProgram(serializeProgram(exponentialRegression)).graphicSpec,exponentialRegression.graphicSpec);
+    assert.ok((await renderToPNGBuffer(exponentialRegression)).buffer.length>500);
     const normalInterval = chart().createData({ values: [
       { value: 1 }, { value: 2 }, { value: 3 }
     ] }).createIntervalData({ id: "normalInterval", field: "value", method: "normal" });
@@ -1369,6 +1431,15 @@ async function testNodeConsumer(directory) {
     });
     assert.equal(normalRegression.semanticSpec.datasets.at(-1).transform[0].confidenceMethod, "normal");
     assert.equal(normalRegression.semanticSpec.datasets.at(-1).transform[0].level, 0.9);
+    const regressionStatistics = normalRegression.createRegressionStatisticsData({id:"fitStatistics",source:"normalRegression"});
+    assert.equal(regressionStatistics.semanticSpec.datasets.at(-1).values[0].count,3);
+    assert.equal(regressionStatistics.semanticSpec.datasets.at(-1).values[0].slope,1.5);
+    assert.equal(regressionStatistics.semanticSpec.datasets.at(-1).values[0].rSquared,27/28);
+    const statisticsRevision = regressionStatistics.createRegressionData({id:"anotherFit",source:"data",x:"x",y:"y",interval:false})
+      .editRegressionStatisticsData({source:"anotherFit"});
+    assert.equal(statisticsRevision.semanticSpec.datasets.at(-1).source,"anotherFit");
+    assert.deepEqual(deserializeProgram(serializeProgram(statisticsRevision)).semanticSpec,statisticsRevision.semanticSpec);
+    assert.equal(typeof basicChart().createRegressionStatisticsData,"undefined");
     assert.equal(basicScatter.createRegression, undefined);
     assert.equal(typeof basicRender, "function");
     const horizon = chart()
@@ -3276,6 +3347,7 @@ async function testTypeScriptConsumer(directory) {
       packing: { key: "id", padding: 1 }, guides: false
     };
     const raincloudOptions: CreateRaincloudPlotOptions = {
+      color:{field:"category",fieldType:"nominal",scale:{id:"typedRaincloudColor",type:"ordinal",range:{palette:{name:"viridis",count:5,extent:[0.1,0.9]}}}},
       category: { field: "category", fieldType: "nominal" },
       value: { field: "value", fieldType: "quantitative" },
       density: { steps: 16 },
@@ -3284,6 +3356,7 @@ async function testTypeScriptConsumer(directory) {
       guides: false
     };
     const raincloudEditOptions: EditRaincloudPlotOptions = {
+      color:{field:"category",fieldType:"nominal",scale:{id:"typedRaincloudColor",type:"ordinal",range:{palette:{name:"magma",count:7,extent:[0.08,0.92]}}}},
       side: "after", points: { type: "strip", jitter: { maxOffset: { band: 0.1 } } }
     };
     const ecdfDataOptions: ECDFDataOptions = {
@@ -3408,7 +3481,19 @@ async function testTypeScriptConsumer(directory) {
     };
     program.createAreaMark({ fill: sharedAreaPaint }).editAreaMark({ fill: sharedAreaPaint });
     program.createAreaPlot({ x: "x", y: "value", area: { fill: sharedAreaPaint } });
+    program.createAreaPlot({ x: { field: "group", fieldType: "nominal", scale: { type: "band" } }, y: "value", guides: { grid: { vertical: { bandPosition: "center" } } } });
+    program.createAreaPlot({ valueChannel: "x", x: "value", y: { field: "group", fieldType: "nominal", scale: { type: "band" } }, guides: { grid: { horizontal: { bandPosition: "boundary" } } } });
     program.createDensityPlot({ field: "value", area: { fill: sharedAreaPaint } });
+    // @ts-expect-error Density value and density scales are continuous.
+    program.createDensityPlot({ field: "value", guides: { grid: { vertical: { bandPosition: "center" } } } });
+    // @ts-expect-error Density has no horizontal band role either.
+    program.createDensityPlot({ field: "value", guides: { grid: { horizontal: { bandPosition: "boundary" } } } });
+    // @ts-expect-error Rug quantitative/temporal measure scales have no band edges.
+    program.createRugPlot({ x: "x", edge: "bottom", guides: { grid: { vertical: { bandPosition: "center" } } } });
+    // @ts-expect-error Rug's other orientation also has a continuous measure scale.
+    program.createRugPlot({ y: "value", edge: "left", guides: { grid: { horizontal: { bandPosition: "boundary" } } } });
+    // @ts-expect-error Horizon original x is continuous.
+    program.createHorizonPlot({ x: "x", y: "value", guides: { grid: { vertical: { bandPosition: "center" } } } });
     program.createViolinPlot({ x: "group", y: "value", area: { fill: sharedAreaPaint, stroke: "black" } });
     program.createErrorBand({ x: { field: "x" }, y: { center: "value", lower: "low", upper: "high" }, fill: sharedAreaPaint })
       .editErrorBand({ fill: sharedAreaPaint }).editErrorBand({ fill: false });
@@ -3476,6 +3561,16 @@ async function testTypeScriptConsumer(directory) {
     program.createTimeUnitData({ id: "seconds", field: "time", unit: "second", as: "bucket", temporalUnit: inputUnit });
     program.createRegression({ groupBy: false, confidenceMethod: "normal", level: 0.9 });
     program.createRegressionData({ id: "typedFit", x: "x", y: "y", confidenceMethod: "normal", level: 0.9 });
+    program.createRegressionData({id:"typedExponentialFit",x:"x",y:"y",method:"exp"});
+    program.createRegressionStatisticsData({id:"typedFitStatistics",source:"typedFit"})
+      .editRegressionStatisticsData({source:"typedFit"});
+    const typedStatistics: import("ggaction").RegressionStatisticsDataOptions = {id:"typedStats",source:"typedFit"};
+    void typedStatistics;
+    // @ts-expect-error statistics require an explicit fitted source
+    program.createRegressionStatisticsData({id:"invalidStats"});
+    program.createRegressionPlot({x:"x",y:"y",method:"exp",band:false});
+    // @ts-expect-error exponential fits have no confidence level
+    program.createRegressionData({id:"invalidExponentialFit",x:"x",y:"y",method:"exp",level:.95});
     program.createIntervalData({ id: "typedInterval", field: "y", method: "normal", level: 0.9 });
     program.encodeY({ field: "y", aggregate: { op: "ciUpper", method: "student-t", level: 0.95 } });
     program.encodeDensity({ field: "y", groupBy: false });
@@ -3703,6 +3798,27 @@ async function testTypeScriptConsumer(directory) {
       .createXAxis({ offset: 20, title: { offset: -30, alongOffset: 10, align: "left", baseline: "top" },
         ticksAndLabels: { labels: { align: "right" } } });
     void [axisTextFlow, basicAxisTextFlow];
+    const namedAxes: ChartProgram = chart().createCanvas().createData({ values: [{ x: 1, y: 2 }] })
+      .createScatterPlot({ x: "x", y: "y", guides: false })
+      .createAxes({ y: [{ id: "left", position: "left" }, { id: "right", position: "right" }] })
+      .editYAxis({ target: "right", offset: 2 }).editYAxisLabels({ target: "right", align: "right" })
+      .removeYAxis({ target: "left" });
+    const basicNamedAxes: BasicChartProgram = basicChart().createCanvas()
+      .createData({ values: [{ x: 1, y: 2 }] }).createScatterPlot({ x: "x", y: "y", guides: false })
+      .createYAxis({ id: "share", position: "right" });
+    // @ts-expect-error A complete creator names its axis with id, not target.
+    chart().createYAxis({ target: "share" });
+    // @ts-expect-error Polar axis removal does not select named Cartesian resources.
+    chart().removeThetaAxis({ target: "share" });
+    void [namedAxes, basicNamedAxes];
+    const parentLegend: ChartProgram = chart().createCanvas().createData({values:[{x:1,y:2,panel:"A",g:"B"}]})
+      .createScatterPlot({x:"x",y:"y",color:"g",guides:false})
+      .facet({field:"panel",guides:{legend:{position:"top-left",target:"scatterPlot"}}})
+      .editLegendTitle({channel:"color",fontSize:11})
+      .editFacetGuides({legend:{at:{x:10,y:20}}}).removeLegend({channels:["color"]});
+    // @ts-expect-error Parent declarations do not accept private persisted intent tags.
+    chart().editFacetGuides({legend:{type:"authored-legend",blocks:{},groups:{}}});
+    void parentLegend;
     const horizonOptions: HorizonEncodingOptions = {
       x: { field: "time", fieldType: "temporal" },
       y: "value",
@@ -4994,6 +5110,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
     },
     checks: [
       "node",
+      "linear-regression-statistics-cache-and-source-revision",
       "extension",
       "pdf",
       "png",

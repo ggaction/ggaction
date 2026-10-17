@@ -1,3 +1,4 @@
+import { realisticColorControls, realisticPaletteRange } from "./realistic-color-controls.js";
 import { chart } from "../../../src/index.js";
 
 import {
@@ -349,7 +350,8 @@ const HEATMAP_FEATURE_PROFILES = freeze([
     temporalColor: true,
     requiresTemporal: true,
     reverseX: true
-  }
+  },
+  { id:"heatmap-powered-color",bins:{x:10,y:10},colorType:"pow" }
 ].map((profile, featureIndex) => ({
   ...profile,
   featureIndex,
@@ -388,7 +390,13 @@ function profilesForAction(action) {
     createHeatmap: HEATMAP_FEATURE_PROFILES,
     createHistogram: HISTOGRAM_FEATURE_PROFILES
   }[action] ?? [];
-  return freeze([...GUIDE_PROFILES, ...featureProfiles]);
+  const rangeProfiles=["createViolinPlot","createHistogram","createHeatmap"].includes(action)
+    ? [0,1,2].map(index=>({id:`${slug(action)}-range-palette-${index}`,guideMode:"none",orientation:"vertical",
+      tickMode:"values",format:".1f",rangePalette:realisticPaletteRange(index)})).concat(["viridis", "magma"].map(name => ({
+      id: `${slug(action)}-range-palette-${name}`, guideMode: "none", orientation: "vertical",
+      tickMode: "values", format: ".1f", rangePalette: { palette: name } }))) : [];
+  return freeze([...GUIDE_PROFILES, ...featureProfiles.map((profile, index) => index < 2 || profile.pregridded
+    ? { ...profile, guideMode: "cartesian", axisType: "cartesian", legend: false } : profile), ...rangeProfiles]);
 }
 
 const viewCache = new Map();
@@ -551,15 +559,25 @@ function axisStyle(resource, channel, profile, ordinal) {
     ? ordinal % 2 === 0 ? "bottom" : "top"
     : ordinal % 2 === 0 ? "left" : "right";
   return {
+    id: channel,
+    offset: 4,
     scale: resource.scale,
     coordinate: "main",
     position,
-    line: { color: "#334155", lineWidth: 1.1 },
-    ticksAndLabels: {
+    line: ordinal === 3 ? false : { color: "#334155", lineWidth: 1.1 },
+    ticksAndLabels: ordinal === 1 ? false : {
       ...tickSelection(resource, profile.tickMode),
-      ticks: { color: "#475569", lineWidth: 1, length: 6 },
+      ticks: { color: "#475569", lineWidth: 1, length: 6, alongOffset: 1, strokeDash: [2, 2],
+        strokeDashMap: ordinal % 2 ? "auto" : [{ value: 0, strokeDash: [] }] },
       labels: {
         offset: 8,
+        align: ["left", "center", "right"][ordinal % 3],
+        alongOffset: ordinal % 2 ? -1 : 1,
+        colorMap: "auto", labelMap: "auto", flush: ordinal % 2 === 0,
+        maxWidth: ordinal % 3 === 0 ? false : 160,
+        ...(ordinal % 3 === 0 ? {} : { wrap: ordinal % 2 ? "character" : "word", lineHeight: 16 }),
+        overlap: ordinal % 2 ? "error" : "allow",
+        rotation: { value: 0, unit: ordinal % 2 ? "radians" : "degrees" },
         format: resource.numeric ? profile.format ?? ".1f" : "auto",
         color: "#334155",
         fontSize: 11,
@@ -567,11 +585,15 @@ function axisStyle(resource, channel, profile, ordinal) {
         fontWeight: 500
       }
     },
-    title: {
+    title: ordinal === 3 ? false : {
       text: resource.title,
       at: ["start", "center", "end"][ordinal % 3],
-      offset: channel === "y" ? 280 : 64,
-      rotation: channel === "y" ? -90 : 0,
+      offset: channel === "y" ? 260 : 64,
+      alongOffset: ordinal % 2 ? -2 : 2,
+      align: ["left", "center", "right"][ordinal % 3],
+      baseline: ["top", "hanging", "middle", "alphabetic", "ideographic", "bottom"][ordinal % 6],
+      rotation: { value: channel === "y" ? ordinal % 2 ? -Math.PI / 2 : -90 : 0,
+        unit: ordinal % 2 ? "radians" : "degrees" },
       color: "#0f172a",
       fontSize: 13,
       fontFamily: "Arial",
@@ -619,10 +641,13 @@ function gridStyle(resource, coordinate, profile) {
   return {
     scale: resource.scale,
     coordinate,
-    ...tickSelection(resource, profile.tickMode),
+    ...(resource.numeric ? tickSelection(resource, profile.tickMode)
+      : { bandPosition: profile.tickMode === "count" ? "center" : "boundary" }),
+    alongOffset: 1, zIndex: profile.tickMode === "count" ? 1 : -1,
     color: "#cbd5e1",
     lineWidth: 0.75,
-    strokeDash: [3, 3]
+    strokeDash: [3, 3],
+    strokeDashMap: profile.tickMode === "count" ? "auto" : [{ value: resource.values[0], strokeDash: [] }]
   };
 }
 
@@ -739,14 +764,9 @@ function cartesianGrid(profile, resources) {
   if (profile.gridBoolean === "vertical") {
     return { horizontal: false, vertical: true, theta: false, radial: false };
   }
-  const vertical = profile.orientation !== "horizontal";
   return {
-    horizontal: vertical
-      ? gridStyle(resources.y, "main", profile)
-      : false,
-    vertical: vertical
-      ? false
-      : gridStyle(resources.x, "main", profile),
+    horizontal: gridStyle(resources.y, "main", profile),
+    vertical: gridStyle(resources.x, "main", profile),
     theta: false,
     radial: false
   };
@@ -831,15 +851,20 @@ function createOwnedFacade(base, action, args) {
     const mode = categorical || tickOptions.values !== undefined ? { values } : { count: tickOptions.count ?? 4 };
     axes[channel] = previous === false ? false : {
       ...previous, scale: scaleId, coordinate: layer.coordinate,
-      ticksAndLabels: { ...tickOptions, ...mode,
+      ticksAndLabels: previous.ticksAndLabels === false ? false : { ...tickOptions, ...mode,
         labels: { ...tickOptions.labels, ...(categorical || scale.type === "time" ? { format: "auto" } : {}) } }
     };
     if (Object.hasOwn(mode, "values")) delete axes[channel]?.ticksAndLabels?.count;
     const directionOptions = requested.grid?.[direction];
-    grid[direction] = categorical || directionOptions === false ? false
+    grid[direction] = scale.type === "point" || directionOptions === false ? false
       : directionOptions === true ? true
       : { ...directionOptions, scale: scaleId, coordinate: layer.coordinate,
-          ...(directionOptions?.values === undefined ? {} : { values }) };
+          ...(categorical ? { bandPosition: directionOptions?.bandPosition ?? "center" }
+            : directionOptions?.values === undefined ? {} : { values }) };
+    if (typeof grid[direction] === "object") {
+      if (categorical) { delete grid[direction].count; delete grid[direction].values; }
+      else delete grid[direction].bandPosition;
+    }
   }
   let legend = false;
   if (action === "createGradientPlot") legend = requested.legend ?? false;
@@ -847,7 +872,7 @@ function createOwnedFacade(base, action, args) {
     !["quantize", "quantile", "threshold"].includes(candidate.resolvedScales[layer.encoding.color.scale].type)) {
     legend = { ...requested.legend, target: layer.id, channels: ["color"] };
     if (["quantitative", "temporal"].includes(layer.encoding.color.fieldType)) {
-      const continuous = ["sequential", "log", "symlog"].includes(
+      const continuous = ["sequential", "log", "symlog", "pow", "sqrt"].includes(
         candidate.resolvedScales[layer.encoding.color.scale].type
       );
       const allowed = ["target", "channels", "title", "labels", "titleStyle", "border", "offset"];
@@ -1156,7 +1181,9 @@ function palette(ordinal) {
   };
 }
 
-function categoricalColor(action, field, ordinal, layout) {
+function categoricalColor(action, field, ordinal, layout, rangePalette) {
+  if(rangePalette) return {field,fieldType:"ordinal",...(layout===undefined?{}:{layout}),
+    scale:{id:`${slug(action)}-color-${ordinal}`,type:"ordinal",domain:"auto",range:rangePalette}};
   const id = `${slug(action)}-color-${ordinal}`;
   const base = {
     field,
@@ -1308,7 +1335,8 @@ function violinColor(profile, layout) {
       "createViolinPlot",
       "distributionHalf",
       profile.ordinal,
-      layout
+      layout,
+      profile.rangePalette
     ),
     fieldType: profile.ordinal % 2 === 0 ? "nominal" : "ordinal"
   };
@@ -1384,13 +1412,18 @@ function heatmapColor(profile, ordinal) {
       type: "sequential",
       domain: "auto",
       interpolate: COLOR_INTERPOLATIONS[ordinal % COLOR_INTERPOLATIONS.length],
+      ...realisticColorControls(COLOR_INTERPOLATIONS[ordinal % COLOR_INTERPOLATIONS.length], ordinal),
       clamp: ordinal % 2 === 0,
       reverse: ordinal % 3 === 0
     }
   };
 }
 
-function heatmapBinnedColor(ordinal) {
+function heatmapBinnedColor(ordinal, type) {
+  if (type !== undefined) return {scale:{
+    id:`createheatmap-color-${ordinal}`,type,domain:"auto",range:realisticPaletteRange(0),
+    ...(type==="pow"?{exponent:2}:{}),interpolate:"lab",whitePoint:"d50",clamp:true
+  }};
   const index = ordinal % 12;
   const id = `createheatmap-color-${ordinal}`;
   if (index < COLOR_INTERPOLATIONS.length) {
@@ -1399,6 +1432,7 @@ function heatmapBinnedColor(ordinal) {
       type: "sequential",
       domain: "auto",
       interpolate: COLOR_INTERPOLATIONS[index],
+      ...realisticColorControls(COLOR_INTERPOLATIONS[index], index),
       midpoint: "auto",
       clamp: index % 2 === 0,
       reverse: index % 3 === 0
@@ -1413,14 +1447,14 @@ function heatmapBinnedColor(ordinal) {
         return {
           scale: {
             id, type: "log", domain: "auto", range: "auto", base: 10,
-            interpolate: COLOR_INTERPOLATIONS[index], clamp: true, reverse: false
+            interpolate: COLOR_INTERPOLATIONS[index], ...realisticColorControls(COLOR_INTERPOLATIONS[index], index), clamp: true, reverse: false
           }
         };
       case 5:
         return {
           scale: {
             id, type: "symlog", domain: "auto", range: "auto", constant: 1,
-            interpolate: COLOR_INTERPOLATIONS[index], clamp: false, reverse: true
+            interpolate: COLOR_INTERPOLATIONS[index], ...realisticColorControls(COLOR_INTERPOLATIONS[index], index), clamp: false, reverse: true
           }
         };
       case 6:
@@ -1587,7 +1621,8 @@ function buildHeatmap(factors) {
             }
           : {})
       },
-      color: heatmapBinnedColor(ordinal + (profile.paletteOffset ?? 0)),
+      color: profile.rangePalette ? {scale:{id:`createheatmap-color-${ordinal}`,type:"sequential",domain:"auto",range:profile.rangePalette}}
+        : heatmapBinnedColor(ordinal + (profile.paletteOffset ?? 0), profile.colorType),
       guides: guideOptions(profile, resources, context, ordinal, "createHeatmap")
     });
   }
@@ -1661,7 +1696,8 @@ function buildHistogram(factors) {
         "createHistogram",
         "category",
         ordinal,
-        profile.histogramLayout ?? ["diverging", "group", "overlay"][ordinal % 3]
+        profile.histogramLayout ?? ["diverging", "group", "overlay"][ordinal % 3],
+        profile.rangePalette
       )
     }),
     bar: {

@@ -1,5 +1,7 @@
+import { axisGraphicIds } from "../../selectors/axes.js";
+export { axisGraphicIds };
 import { localLegendPosition } from "../legendGroups.js";
-import { unionConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
+import { resolveConcreteGraphicBounds, unionConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
 
 // Only domain-owned guides participate. Extension primitives may deliberately
 // overlap, and a combined categorical/size legend is one occupied group.
@@ -12,10 +14,23 @@ export function resolveGuideCollisionBlocks(graphicSpec, guideConfigs, titleConf
     if (bounds !== undefined) blocks.push({ id, kind, position, bounds });
   };
   append("chart title", "title", titleConfig?.position, ["chartTitle", "chartSubtitle"]);
-  for (const channel of ["x", "y"]) {
-    for (const id of axisGraphicIds(channel)) {
-      const component = id.slice(`${channel}Axis`.length).toLowerCase();
-      append(`${channel}-axis ${component}`, "axis", guideConfigs.axis?.[channel]?.[component]?.position, [id]);
+  for (const [ownerId, config] of Object.entries(guideConfigs.axis ?? {})) {
+    const position = ["line", "ticks", "labels", "title"].map(component => config[component]?.position).find(Boolean);
+    const channel = ["x", "y"].includes(ownerId) ? ownerId
+      : ["top", "bottom"].includes(position) ? "x" : ["left", "right"].includes(position) ? "y" : undefined;
+    if (channel === undefined) continue;
+    for (const [index, component] of ["line", "ticks", "labels", "title"].entries()) {
+      const id = axisGraphicIds(channel, ownerId)[index];
+      const length = blocks.length;
+      append(`${ownerId}-axis ${component}`, "axis", config[component]?.position, [id]);
+      if (blocks.length === length) continue;
+      const block = blocks.at(-1);
+      block.axisId = ownerId;
+      block.namedAxis = ownerId !== channel;
+      if (["labels", "title"].includes(component)) {
+        const object = graphicSpec.objects[id];
+        block.textBounds = object.items?.map(item => resolveConcreteGraphicBounds(graphicSpec, item.id, profile)) ?? [block.bounds];
+      }
     }
   }
   const policies = legendResourcePolicies();
@@ -44,7 +59,7 @@ export function resolveGuideCollisionBlocks(graphicSpec, guideConfigs, titleConf
 
 
 
-const AXIS_COMPONENTS = Object.freeze(["Line", "Ticks", "Labels", "Title"]);
+
 
 const CATEGORICAL_COMPONENTS = Object.freeze([
   "Symbols", "SymbolLines", "SymbolPoints", "SymbolSwatches",
@@ -141,11 +156,6 @@ const LEGEND_RESOURCE_POLICIES = Object.freeze({
     ])
   })
 });
-
-export function axisGraphicIds(channel) {
-  const prefix = channel === "radius" ? "radial" : channel;
-  return AXIS_COMPONENTS.map(component => `${prefix}Axis${component}`);
-}
 
 export function legendGraphicIds(kind) {
   return legendResourcePolicy(kind).graphicIds;

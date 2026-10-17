@@ -12,7 +12,7 @@ test('public sample window has exact native PNG and PDF cropped-circle geometry'
  const p=chart().createCanvas({width:600,height:400,margin:150}).createData({values:[{v:0},{v:10}]}).createPointMark({id:'p'})
   .encodeSize({field:'v',scale:{domain:[0,10],range:[1600*Math.PI,1600*Math.PI]}}).createLegend({channels:['size'],values:[0],clipHeight:30})
   .editLegendBlock({target:'p',channel:'size',symbol:{fill:'red',stroke:'blue',strokeWidth:2,opacity:1}});
- const glyph=p.graphicSpec.objects['sizeLegendSymbols:0'];assert.equal(glyph.properties.radius,40);
+ const glyph=p.graphicSpec.objects[p.graphicSpec.objects[p.graphicSpec.objects.sizeLegendSymbols.children[0]].children[0]];assert.equal(glyph.properties.radius,40);
  const directory=await mkdtemp(path.join(tmpdir(),'ggaction-window-pdf-'));
  try{for(const background of ['white','#556677'])for(const[dx,dy]of[[0,0],[.5,.25]]){
   const scene={graphicSpec:{objects:{canvas:{type:'canvas',properties:{width:100,height:100,background},children:['window']},window:{type:'canvas',properties:{x:9+dx,y:35+dy,width:82,height:30},children:['glyph']},glyph},order:['canvas']}};

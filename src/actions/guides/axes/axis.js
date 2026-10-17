@@ -1,3 +1,7 @@
+import { AXIS_RESOURCE_CHANNELS } from "../../../core/vocabulary.js";
+import { cartesianAxisOwners, axisTargetArgs, assertCartesianAxisSideAvailable } from "../../../selectors/axes.js";
+import { axisGraphicIds } from "../../../materialization/guides/resources.js";
+import { defaultAxisPosition, validateAxisPosition } from "./policy.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
@@ -10,6 +14,7 @@ import { requireSemanticScale } from "../../../selectors/scales.js";
 import { requireCoordinate } from "../../../selectors/coordinates.js";
 
 const TOP_OPTIONS = Object.freeze([
+  "id",
   "scale",
   "coordinate",
   "position",
@@ -87,11 +92,52 @@ function makeCreateAxis(channel) {
     },
     withGuideLayoutValidation(function (args = {}) {
       validateAxisArgs(args, operation.create);
-      const shared = {};
+      const axisId = validateUserId(args.id ?? channel, "Axis id");
+      if (AXIS_RESOURCE_CHANNELS.includes(axisId) && axisId !== channel) {
+        throw new Error(`Axis id "${axisId}" is reserved for another axis channel.`);
+      }
+      const named = axisId !== channel;
+      let source = this;
+      if (named) {
+        if (cartesianAxisOwners(this).some(owner => owner.id === axisId) ||
+            axisGraphicIds(channel, axisId).some(id => this.graphicSpec.objects[id] !== undefined)) {
+          throw new Error(`Axis "${axisId}" requires a missing resource and missing concrete components.`);
+        }
+        const layers = this.semanticSpec.layers.filter(layer => !isSourceOwnedText(layer) &&
+          layer.encoding?.[channel]?.scale !== undefined &&
+          (args.coordinate === undefined || layer.coordinate === args.coordinate) &&
+          (args.scale === undefined || layer.encoding[channel].scale === args.scale));
+        const scales = [...new Set(layers.map(layer => layer.encoding[channel].scale))];
+        if (args.scale === undefined && scales.length !== 1) throw new Error("Named axes require an explicit scale when the channel binding is ambiguous.");
+        const scale = args.scale ?? scales[0];
+        const coordinates = [...new Set(layers.map(layer => layer.coordinate))];
+        if (args.coordinate === undefined && coordinates.length !== 1) throw new Error("Named axes require an explicit coordinate when the binding is ambiguous.");
+        const coordinate = args.coordinate ?? coordinates[0];
+        if (requireCoordinate(this, coordinate).type !== "cartesian") throw new Error("Named Cartesian axes require a Cartesian coordinate.");
+        const position = validateAxisPosition(channel, args.position ?? defaultAxisPosition(channel));
+        assertCartesianAxisSideAvailable(this, { id: axisId, channel, coordinate, position });
+        args = { ...args, scale, coordinate, position };
+        source = source.editSemantic({ property: `guide.axis.${axisId}.channel`, value: channel })
+          .editSemantic({ property: `guide.axis.${axisId}.position`, value: position })
+          .editSemantic({ property: `guide.axis.${axisId}.scale`, value: scale })
+          .editSemantic({ property: `guide.axis.${axisId}.coordinate`, value: coordinate });
+      } else if (cartesianAxisOwners(this).some(owner => owner.named)) {
+        const scale = args.scale ?? channel;
+        const coordinates = [...new Set(this.semanticSpec.layers.filter(layer =>
+          layer.encoding?.[channel]?.scale === scale).map(layer => layer.coordinate))];
+        const coordinate = args.coordinate ?? (coordinates.length === 1 ? coordinates[0] : undefined);
+        assertCartesianAxisSideAvailable(this, { id: axisId, channel, coordinate,
+          position: validateAxisPosition(channel, args.position ?? defaultAxisPosition(channel)) });
+        if (!cartesianAxisOwners(this).some(owner => owner.id === channel)) {
+          source = source.editSemantic({ property: `guide.axis.${axisId}.scale`, value: scale });
+          if (coordinate !== undefined) source = source.editSemantic({ property: `guide.axis.${axisId}.coordinate`, value: coordinate });
+        }
+      }
+      const shared = axisTargetArgs(axisId, channel);
       if (Object.hasOwn(args, "scale")) shared.scale = args.scale;
       if (Object.hasOwn(args, "position")) shared.position = args.position;
       let next = Object.hasOwn(args, "offset")
-        ? this._withGuideConfig(channel, "frame", { offset: args.offset }) : this;
+        ? source._withGuideConfig(axisId, "frame", { offset: args.offset }) : source;
 
       if (Object.hasOwn(args, "coordinate")) {
         const coordinate = validateUserId(args.coordinate, "Coordinate id");
@@ -120,11 +166,11 @@ function makeCreateAxis(channel) {
         }
 
         next = next.editSemantic({
-          property: `guide.axis.${channel}.coordinate`,
+          property: `guide.axis.${axisId}.coordinate`,
           value: coordinate
         });
-        if (standalone) next = next._withGuideConfig(channel, "binding", { standalone: true })
-          .editSemantic({ property: `guide.axis.${channel}.scale`, value: scale })
+        if (standalone) next = next._withGuideConfig(axisId, "binding", { standalone: true })
+          .editSemantic({ property: `guide.axis.${axisId}.scale`, value: scale })
           .rematerializeScale({ id: scale, guides: false, marks: false });
       }
 

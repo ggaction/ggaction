@@ -1,4 +1,4 @@
-import {translateGraphic}from"../../../materialization/graphicTranslation.js";
+import { translateGraphic } from "../../../materialization/graphicTranslation.js";
 import { editLegendBorderBounds } from "../../../materialization/legendBorder.js";
 import { resolveLegendAxisOffset, effectiveLegendOffsetConfig } from "../../../materialization/guides/resources.js";
 import { resolveLegendGroupPlacement } from "../../../layout/legendGroup.js";
@@ -254,7 +254,6 @@ export function hasLegendLane(program) {
     hasHorizontalLegendLane(program);
 }
 
-
 // Use the declared text-box top as the renderer anchor. A middle SVG baseline
 // depends on the font's x-height and otherwise protrudes above that box.
 function alignLegendTextBoxes(program, ids) {
@@ -346,6 +345,7 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
   },
   function (args = {}) {
     noOptions(args, "rematerializeSideLegendLane");
+    if (this.context.facetLegendIntrinsic === true) return this;
     const plot = resolveGraphicBounds(this);
     const canvas = findCanvasGraphic(this)?.properties;
     if (plot === undefined || canvas === undefined) {
@@ -430,6 +430,7 @@ export const rematerializeHorizontalLegendLane = /* @__PURE__ */ action(
   },
   function (args = {}) {
     noOptions(args, "rematerializeHorizontalLegendLane");
+    if (this.context.facetLegendIntrinsic === true) return this;
     const plot = resolveGraphicBounds(this);
     const canvas = findCanvasGraphic(this)?.properties;
     if (plot === undefined || canvas === undefined) {
@@ -495,6 +496,7 @@ export const rematerializeLegendGroups = /* @__PURE__ */ action(
   { op: "rematerializeLegendGroups", description: "Place each opted-in target legend group from occupied bounds." },
   function (args = {}) {
     noOptions(args, "rematerializeLegendGroups");
+    if (this.context.facetLegendIntrinsic === true) return this;
     let next = this;
     const plot = resolveGraphicBounds(next);
     const canvas = findCanvasGraphic(next)?.properties;

@@ -40,10 +40,19 @@ const program = chart()
   .encodeY({ field: "Miles_per_Gallon" });
 ```
 
-The collection remains empty until compatible position encodings exist. When a
+The initial collection reserves one item per selected data row; items receive
+visible positions when compatible position encodings exist. When a
 point is layered after one compatible source, omitted data, coordinate, x, and y
 encodings are inherited and persisted. Ambiguous sources require an explicit
 target or resource ID.
+
+A point layer supports at most **50,000 selected data rows**, including rows
+subsequently skipped by the missing-value policy. Creation, data revisions,
+property-array edits, facets, and editable snapshots use the same inclusive
+boundary. A 50,001-row point layer fails atomically with the structured
+`resource-limit` diagnostic `Point mark item count`. No sampling or layer
+splitting occurs. Ordinary extension graphics retain their 10,000-item limit;
+path-command and work limits are independent.
 
 Radius is an encoding-owned graphical value rather than a `createPointMark`
 option. Until a constant or field-driven size is authored, materialization uses
@@ -86,6 +95,20 @@ The cap, join, and miter options follow the shared
 [Mark Style](../appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles)
 contract. They are retained even though a circular glyph has no visible cap or
 corner, so a later shape or stroke replay does not discard authored style.
+
+## Directional shapes and area {#directional-shapes-and-area}
+
+{% include chart-example.html id="named-shapes" %}
+
+This complete example uses the same four source rows for shapes, areas, angles
+and labels. Start with `createScatterPlot`, then use `encodeShape`, `encodeSize`
+and `encodeAngle` to refine it. Areas 100 and 225 remain physical areas in logical
+square pixels after rotation; the larger symbol has 1.5 times the linear scale.
+The upper wedges rotate about their centroid and the lower arrows about the
+center of their bounding box. An angle field contains degrees directly.
+
+The example source linked above is the same program used by the standalone
+browser example and the exact primitive comparison.
 
 ## `jitterPoints({ target?, channel, maxOffset, seed?, key? })`
 

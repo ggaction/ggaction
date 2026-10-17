@@ -27,6 +27,15 @@ export const TRACE_OPTION_EVIDENCE_ALIASES = Object.freeze({
 
 const MAX_OPTION_PATH_DEPTH = 6;
 const SMALL_LITERAL_FAMILY_LIMIT = 8;
+// Keep the original eight color types exhaustive when their closed union gains
+// power. This exact vocabulary does not widen admission for other large unions.
+const EXHAUSTIVE_COLOR_TYPES = Object.freeze([
+  "log", "ordinal", "pow", "quantile", "quantize", "sequential", "sqrt", "symlog", "threshold"
+].map(value => `string:${value}`));
+function exhaustiveColorTypes(values) {
+  return values.length === EXHAUSTIVE_COLOR_TYPES.length &&
+    values.every((value, index) => value.key === EXHAUSTIVE_COLOR_TYPES[index]);
+}
 
 export const EXCLUDED_OPTION_PATH_SEGMENTS = Object.freeze({
   resolved: "Readonly derived-transform output; it is not accepted authoring input."
@@ -264,9 +273,13 @@ function collectActionPaths({
         });
       }
       for (const element of elements) {
-        visit(element, arrayPath, depth + 1, nextAncestry);
+        // An array index is not a property segment. Keep the same property
+        // depth and only add this branch owner to cycle detection; a union's
+        // non-array interface may also occur inside its named tuple element.
+        visit(element, arrayPath, depth, new Set([...ancestry, type.id]));
       }
-      return;
+      // A type can also have a non-array object branch. Preserve its leaves
+      // alongside the explicitly redacted element paths.
     }
 
     for (const property of structuredProperties(
@@ -350,7 +363,7 @@ function finalizeInventory(cards, rawPaths) {
       values,
       size: values.length,
       open: input.open,
-      policy: !input.open && values.length <= SMALL_LITERAL_FAMILY_LIMIT
+      policy: !input.open && (values.length <= SMALL_LITERAL_FAMILY_LIMIT || exhaustiveColorTypes(values))
         ? "path-values"
         : "family-values",
       paths: Object.freeze(input.paths.map(pathValue =>

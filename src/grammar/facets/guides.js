@@ -9,7 +9,8 @@ const LEGEND_FAMILIES = Object.freeze({
   strokeGradient: "gradient",
   strokeInterval: "discretized",
   size: "size",
-  opacity: "opacity"
+  opacity: "opacity",
+  strokeWidth: "stroke-width"
 });
 
 function requirePlacements(placements) {
@@ -72,25 +73,34 @@ function translatedBounds(placement, bounds, channel) {
   };
 }
 
+export function resolveFacetOuterSides({ placements } = {}) {
+  const cells = requirePlacements(placements);
+  const edges = { top: new Map(), bottom: new Map(), left: new Map(), right: new Map() };
+  for (const cell of cells) {
+    for (const [side, key, coordinate, better] of [
+      ["top", cell.column, "row", (a, b) => a < b],
+      ["bottom", cell.column, "row", (a, b) => a > b],
+      ["left", cell.row, "column", (a, b) => a < b],
+      ["right", cell.row, "column", (a, b) => a > b]
+    ]) {
+      const previous = edges[side].get(key);
+      if (previous === undefined || better(cell[coordinate], previous[coordinate])) edges[side].set(key, cell);
+    }
+  }
+  return cloneAndFreeze(Object.fromEntries(Object.entries(edges).map(([side, owners]) => {
+    const ids = new Set([...owners.values()].map(cell => cell.id));
+    return [side, cells.filter(cell => ids.has(cell.id)).map(cell => cell.id)];
+  })));
+}
+
 export function resolveFacetOuterAxes({ placements, axisBounds = {} } = {}) {
   const cells = requirePlacements(placements);
   if (!isPlainObject(axisBounds)) {
     throw new TypeError("Facet axisBounds must be a plain object.");
   }
-  const bottomByColumn = new Map();
-  const leftByRow = new Map();
-  for (const cell of cells) {
-    const bottom = bottomByColumn.get(cell.column);
-    if (bottom === undefined || cell.row > bottom.row) {
-      bottomByColumn.set(cell.column, cell);
-    }
-    const left = leftByRow.get(cell.row);
-    if (left === undefined || cell.column < left.column) {
-      leftByRow.set(cell.row, cell);
-    }
-  }
-  const xOwners = new Set([...bottomByColumn.values()].map(cell => cell.id));
-  const yOwners = new Set([...leftByRow.values()].map(cell => cell.id));
+  const sides = resolveFacetOuterSides({ placements: cells });
+  const xOwners = new Set(sides.bottom);
+  const yOwners = new Set(sides.left);
   return cloneAndFreeze({
     x: cells.filter(cell => xOwners.has(cell.id)).map(cell => cell.id),
     y: cells.filter(cell => yOwners.has(cell.id)).map(cell => cell.id),
@@ -129,7 +139,7 @@ function comparableConfig(config) {
   return stableValue(rest);
 }
 
-function sameValue(left, right) {
+export function sameFacetGuideValue(left, right) {
   return JSON.stringify(stableValue(left)) === JSON.stringify(stableValue(right));
 }
 
@@ -166,7 +176,7 @@ export function resolveSharedFacetLegends(children) {
   const normalized = requireLegendChildren(children);
   const first = normalized[0];
   for (const child of normalized.slice(1)) {
-    if (!sameValue(first.guideConfigs.legendGroups, child.guideConfigs.legendGroups)) {
+    if (!sameFacetGuideValue(first.guideConfigs.legendGroups, child.guideConfigs.legendGroups)) {
       throw new Error(`Facet child "${child.id}" has incompatible legend group placement.`);
     }
   }
@@ -195,14 +205,14 @@ export function resolveSharedFacetLegends(children) {
       const candidate = child.legends[kind];
       if (
         !isPlainObject(candidate) ||
-        !sameValue(comparableConfig(config), comparableConfig(candidate))
+        !sameFacetGuideValue(comparableConfig(config), comparableConfig(candidate))
       ) {
         throw new Error(
           `Facet child "${child.id}" has an incompatible ${kind} legend config.`
         );
       }
       for (const id of scales) {
-        if (!sameValue(resolvedScales[id], child.resolvedScales[id])) {
+        if (!sameFacetGuideValue(resolvedScales[id], child.resolvedScales[id])) {
           throw new Error(
             `Facet child "${child.id}" has an incompatible resolved legend scale "${id}".`
           );
@@ -213,7 +223,7 @@ export function resolveSharedFacetLegends(children) {
   });
   for (const child of normalized.slice(1)) {
     const childKinds = Object.keys(child.legends);
-    if (!sameValue([...kinds].sort(), [...childKinds].sort())) {
+    if (!sameFacetGuideValue([...kinds].sort(), [...childKinds].sort())) {
       throw new Error(`Facet child "${child.id}" has incompatible legend kinds.`);
     }
   }
@@ -234,7 +244,7 @@ export function planFacetGuideOwnership({
   if (!["each", "outer"].includes(axes)) {
     throw new Error("Facet axes must be each or outer.");
   }
-  if (![false, "shared"].includes(legend)) {
+  if (![false, "shared"].includes(legend) && !isPlainObject(legend)) {
     throw new Error("Facet legend must be false or shared.");
   }
   const byId = new Map(children.map(child => [child.id, child]));
@@ -242,23 +252,34 @@ export function planFacetGuideOwnership({
     throw new Error("Facet guide child ids must match occupied placements exactly.");
   }
   const outer = resolveFacetOuterAxes({ placements: cells });
-  if (legend === "shared" && !isPlainObject(sharedLegends)) {
+  const sides = resolveFacetOuterSides({ placements: cells });
+  if (legend !== false && !isPlainObject(sharedLegends)) {
     throw new Error("Shared facet legend ownership requires a compatibility plan.");
   }
   return cloneAndFreeze({
     children: Object.fromEntries(cells.map(cell => {
       const descriptor = byId.get(cell.id);
       const presentAxes = descriptor.axes ?? [];
-      const keepAxes = axes === "each"
-        ? presentAxes
-        : presentAxes.filter(channel => outer.children[cell.id][channel]);
+      const records = descriptor.axisOwners;
+      const removed = {};
+      const keepAxes = axes === "each" ? presentAxes : records === undefined
+        ? presentAxes.filter(channel => outer.children[cell.id][channel])
+        : presentAxes.filter(id => {
+          const owner = records.find(owner => owner.id === id);
+          if (owner === undefined) throw new Error("Facet axis descriptors must identify every retained owner.");
+          const components = Object.entries(owner.components);
+          const remove = components.filter(([, side]) => !sides[side]?.includes(cell.id)).map(([component]) => component);
+          if (remove.length > 0 && remove.length < components.length) removed[id] = remove;
+          return remove.length < components.length;
+        });
       return [cell.id, {
         keepAxes,
         removeAxes: presentAxes.filter(channel => !keepAxes.includes(channel)),
-        removeLegends: legend === "shared" ? descriptor.legendKinds ?? [] : []
+        ...(records === undefined ? {} : { removeAxisComponents: removed }),
+        removeLegends: legend !== false ? descriptor.legendKinds ?? [] : []
       }];
     })),
-    parent: legend === "shared"
+    parent: legend !== false
       ? { legends: sharedLegends.entries, promoteFrom: sharedLegends.source }
       : { legends: [] }
   });

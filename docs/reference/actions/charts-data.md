@@ -619,14 +619,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Required | `string` |
 | `groupBy` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
-| `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
+| `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
 | `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 
 </details>
@@ -640,11 +640,47 @@ createRegressionData({
 })
 ```
 
-Create immutable linear, polynomial, or LOESS fitted rows at observed unique x
+Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x
 values. Linear and polynomial fits support normal or Student-t mean or prediction bounds;
 LOESS is line-only. Optional `robustIterations` (integer `0..32`, default `0`)
 adds residual reweighting; see [regression](../../api/regression.md) for the estimator policy.
 [Data](../../api/data.md)
+
+
+## `createRegressionStatisticsData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
+```
+
+Named option contracts: [`RegressionStatisticsDataOptions`](./../types.md#type-regressionstatisticsdataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `source` | Required | `string` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createRegressionStatisticsData({ id, source })
+```
+
+Create observation counts, intercepts, slopes, and R-squared from an explicit existing linear fit.
+Grouped fits retain their original grouping field and typed first-seen group order.
+Constant responses produce `rSquared: null`.
+[Linear fit statistics](../../api/data/statistical-transforms.md#fit-statistics)
 
 
 ## `createWindowData`
@@ -1012,14 +1048,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Required | `string` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
-| `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
+| `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
 | `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 | `x` | Optional / branch-dependent | `string \| undefined` |
 | `y` | Optional / branch-dependent | `string \| undefined` |
@@ -1030,6 +1066,41 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 Behavior, inference, resets, and errors: [Focused core data editing](./charts-data.md#focused-core-data-editing).
 
+
+
+## `editRegressionStatisticsData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
+```
+
+Named option contracts: [`EditRegressionStatisticsDataOptions`](./../types.md#type-editregressionstatisticsdataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editRegressionStatisticsData({ target?, source? })
+```
+
+Revise a standalone statistics owner's linear fit source and replay its consumers atomically.
+Omitted source preserves the current fit. Target omission requires a current or unique statistics owner.
+[Linear fit statistics](../../api/data/statistical-transforms.md#fit-statistics)
 
 
 ## `createCoordinate`
@@ -2145,6 +2216,13 @@ legends use the existing recipe offset from the combined panel plots. Omitted
 offsets clear retained axis and header text; explicit colliding offsets reject.
 Child Canvas dimensions and margins remain intact, and the inferred parent
 Canvas contains the child snapshots and the complete legend bounds.
+A `guides.legend` object declares a native parent legend against the final child-plot
+union using ordinary `LegendOptions` defaults. Existing whole/focused/block legend
+editors and removal accept that facet, grid or repeat parent. Declare an absent
+owner with `editFacetGuides({ legend: {...} })`; post-facet `createLegend` stays
+unit-only. Target IDs name source marks. Corners/free coordinates and block-local
+anchors use the union and preserve child dimensions, automatic policies and editable
+persistence. See [parent legend creation](../../api/composition/facets.md#declare-a-legend-for-the-complete-facet).
 See [Program composition](../../api/composition.md#repeat-the-current-chart-by-a-field).
 
 Creation options for `facet`, `facetGrid`, and `repeatCharts` accept `headers`.
@@ -2400,7 +2478,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `axes` | Optional / branch-dependent | `"each" \| "outer" \| undefined` |
-| `legend` | Optional / branch-dependent | `"shared" \| false \| undefined` |
+| `legend` | Optional / branch-dependent | `"shared" \| false \| LegendOptions \| undefined` |
 
 </details>
 
@@ -2842,14 +2920,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
 | `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
-| `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
+| `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
 | `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
@@ -2865,8 +2943,8 @@ The following call patterns are abbreviated examples; the declaration above owns
 createRegressionPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, groupBy?, method?, band?, line?, guides? })
 ```
 
-Create a complete scatter plot with an existing regression data, line, and
-optional interval-band hierarchy. `groupBy: false` is preserved as an explicit
+Create a scatter plot with fitted regression data, a line, and optional interval bands.
+`groupBy: false` is preserved as an explicit
 ungrouped model request.
 
 
@@ -3088,6 +3166,8 @@ createRugPlot({ id?, data?, y, edge: "left" | "right", tick?, guides? })
 Create a one-dimensional distribution from quantitative or temporal observations.
 Ticks use an explicit plot edge as their constant position, so no dummy field is
 needed. The default guide contains only the measure axis.
+
+Its measure grid follows a continuous quantitative or temporal scale and rejects explicit `bandPosition`.
 
 
 ## `createStripPlot`
@@ -3350,7 +3430,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `field` | Required | `string` |
 | `color` | Optional / branch-dependent | `HistogramCategoricalColorChannel \| undefined` |
 | `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| CartesianCategoricalGuideOptions \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| (Omit<CartesianCategoricalGuideOptions, "grid"> & { grid?: false \| ContinuousCartesianGridOptions \| undefined; }) \| undefined` |
 
 </details>
 
@@ -3627,7 +3707,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; } \| undefined` |
 | `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| DensityPlotGuideOptions \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false \| CartesianGridOptions \| undefined; }) \| undefined` |
 | `valueChannel` | Optional / branch-dependent | `"x" \| "y" \| undefined` |
 | `x` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |
 | `y` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |

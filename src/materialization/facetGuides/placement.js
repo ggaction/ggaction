@@ -1,3 +1,5 @@
+import { translateGraphic } from "../graphicTranslation.js";
+import { cartesianAxisOwners } from "../../selectors/axes.js";
 import { resolveLegendGroupPlacement } from "../../layout/legendGroup.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { resolveConcreteGraphicBounds } from
@@ -118,6 +120,27 @@ function assertSharedLegendFits(program, id, layout, plot, occupiedGroup) {
   return program;
 }
 
+function attachAuthoredParentLegend(program, prepared, layout) {
+  const id = `${program.compositionSpec.id}-shared-legend`;
+  let next = program._withoutMaterializationConfig(["guides", "legend"])
+    ._withoutMaterializationConfig(["guides", "legendGroups"]);
+  next = copyLegendConfig(next, prepared.source).createGraphics({ id, type: "canvas", parent: "canvas" });
+  for (const [property, value] of Object.entries({ x: 0, y: 0, width: layout.width, height: layout.height, background: "transparent" })) {
+    next = next.editGraphics({ target: id, property, value });
+  }
+  for (const block of prepared.blocks) {
+    const placement = layout.parentLegendPlacements.find(item => item.kind === block.kind);
+    for (const root of block.roots) {
+      next = attachSnapshotObject(next, prepared.source.graphicSpec, root, id);
+      next = translateGraphic(next, root, placement.dx, placement.dy);
+    }
+  }
+  if (prepared.keepShared === true) return next;
+  const spec = next.compositionSpec;
+  return next._withCompositionState({ children: next.children,
+    compositionSpec: { ...spec, facet: { ...spec.facet, guides: { ...spec.facet.guides, legend: prepared.intent } } } });
+}
+
 export function applyFacetGuideComposition(program, { layout, plot } = {}) {
   if (!isPlainObject(layout) || !Array.isArray(layout.children)) {
     throw new TypeError("Facet guide composition requires a resolved layout.");
@@ -130,8 +153,10 @@ export function applyFacetGuideComposition(program, { layout, plot } = {}) {
     const child = program.children[cell.id];
     return {
       id: cell.id,
-      axes: Object.keys(child.guideConfigs.axis ?? {})
-        .filter(channel => ["x", "y"].includes(channel)),
+      axes: cartesianAxisOwners(child).map(owner => owner.id),
+      axisOwners: cartesianAxisOwners(child).map(owner => ({ id: owner.id, channel: owner.channel,
+        components: Object.fromEntries(["line", "ticks", "labels", "title"].flatMap(component =>
+          owner.config?.[component] === undefined ? [] : [[component, owner.config[component].position]])) })),
       legendKinds: legendKinds(child)
     };
   });
@@ -146,8 +171,15 @@ export function applyFacetGuideComposition(program, { layout, plot } = {}) {
   for (const cell of layout.children) {
     const namespace = `${program.compositionSpec.id}-${cell.id}`;
     const childPlan = ownership.children[cell.id];
-    for (const channel of childPlan.removeAxes) {
-      next = removeNamespacedGraphics(next, namespace, axisGraphicIds(channel));
+    const axisOwners = cartesianAxisOwners(program.children[cell.id]);
+    for (const axisId of childPlan.removeAxes) {
+      const owner = axisOwners.find(owner => owner.id === axisId);
+      next = removeNamespacedGraphics(next, namespace, axisGraphicIds(owner.channel, axisId));
+    }
+    for (const [axisId, components] of Object.entries(childPlan.removeAxisComponents ?? {})) {
+      const owner = axisOwners.find(owner => owner.id === axisId);
+      const ids = axisGraphicIds(owner.channel, axisId);
+      next = removeNamespacedGraphics(next, namespace, components.map(component => ids[["line", "ticks", "labels", "title"].indexOf(component)]));
     }
     if (childPlan.removeLegends.length > 0) {
       next = removeNamespacedGraphics(
@@ -157,7 +189,12 @@ export function applyFacetGuideComposition(program, { layout, plot } = {}) {
       );
     }
   }
-  if (prepared === undefined) return next;
+  if (prepared === undefined) return next._withoutMaterializationConfig(["guides", "legend"])
+    ._withoutMaterializationConfig(["guides", "legendGroups"]);
+  if (prepared.mode === "authored") {
+    next = attachAuthoredParentLegend(next, prepared, layout);
+    return assertSharedLegendFits(next, `${program.compositionSpec.id}-shared-legend`, layout, plot, {});
+  }
   let id;
   if (prepared.mode === "legacyCategorical") {
     id = `${program.compositionSpec.id}-legend`;

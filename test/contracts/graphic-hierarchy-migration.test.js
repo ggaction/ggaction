@@ -25,6 +25,19 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "named-shapes": ["canvas", "scatterPlot", "labels"],
+  "combined-legends": ["canvas", "scatterPlot", "colorSizeLegendSymbols", "colorSizeLegendLabels", "colorSizeLegendTitle"],
+  "axis-owners": [
+    "canvas", "horizontalGridLines", "scatterPlot", "xAxisLine", "xAxisTitle",
+    "axis_quantity__Line", "axis_quantity__Ticks", "axis_quantity__Labels", "axis_quantity__Title",
+    "axis_share__Line", "axis_share__Ticks", "axis_share__Labels", "axis_share__Title"
+  ],
+  "bar-compositing": ["canvas", "barPlot"],
+  "legend-appearance": ["canvas", "scatterPlot", "colorLegendSymbolPoints", "colorLegendLabels"],
+  "shared-facet-owner": [],
+  "symbol-window": ["canvas", "scatterPlot", "sizeLegendSymbols", "sizeLegendLabels"],
+  "color-controls": ["canvas", "gamma1", "gamma22", "power"],
+  "color-white-point": ["canvas", "d65", "d50"],
   "cars-origin-histogram-facet": [],
   "cars-weighted-rules": ["canvas", "cars", "strokeWidthLegendSymbols", "strokeWidthLegendLabels", "strokeWidthLegendTitle"],
   "facet-grid": [],
@@ -417,6 +430,8 @@ test("locks the complete public graphic hierarchy inventory", () => {
         ? ["matrix-headers"]
         : chart.id === "repeat-charts"
           ? ["metrics-headers", "metrics-shared-legend"]
+          : chart.id === "shared-facet-owner"
+            ? ["facet-headers", "facet-shared-legend"]
           : ["facet-headers", "facet-legend", "chartTitle", "chartSubtitle"];
       assert.deepEqual(rootChildren.slice(childCount), expectedParentChildren);
       for (const childId of rootChildren) {
@@ -430,6 +445,27 @@ test("locks the complete public graphic hierarchy inventory", () => {
           : undefined;
       if (expectedDrawLength === undefined) assert.ok(drawOrder.length > 20);
       else assert.equal(drawOrder.length, expectedDrawLength);
+      continue;
+    }
+    if (chart.id === "symbol-window") {
+      // The sample stays Canvas-owned; its window and glyph are nested owners.
+      const encode = value => "g" + [...value].map(character =>
+        character.charCodeAt(0).toString(16).padStart(6, "0")).join("");
+      const sample = encode("sizeLegendSymbols:0");
+      const window = `${encode("legendSampleClip")}_${sample}_window`;
+      const glyph = `${sample}_glyph`;
+      const owners = {
+        canvas: ["plot-main", "sizeLegendSymbols", "sizeLegendLabels"],
+        "plot-main": ["scatterPlot"],
+        sizeLegendSymbols: [window],
+        [window]: [glyph]
+      };
+      for (const [parent, children] of Object.entries(owners)) {
+        assert.deepEqual(program.graphicSpec.objects[parent].children, children);
+        for (const child of children) assert.equal(findGraphicParent(program.graphicSpec, child).id, parent);
+      }
+      assert.deepEqual(program.graphicSpec.order, ["canvas"]);
+      assert.deepEqual(drawOrder, ["canvas", "plot-main", "scatterPlot", "sizeLegendSymbols", window, glyph, "sizeLegendLabels"]);
       continue;
     }
     const descendants = expected.slice(1);

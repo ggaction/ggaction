@@ -1,0 +1,118 @@
+{
+  "scope": "Numeric native-font evidence; images not visually inspected",
+  "darwin": [
+    {
+      "chart": "cars-polar-guides",
+      "inkBounds": {
+        "x": 53.5,
+        "y": 60.5,
+        "width": 515,
+        "height": 527.5
+      },
+      "inkRatio": 0.04876690946930281,
+      "hash": "700072dd70e9c6b4800f80e4f7bdeafb06e49b01eabf161b93462d9913f6bd8d"
+    },
+    {
+      "chart": "gapminder-polar-trends",
+      "inkBounds": {
+        "x": 42.5,
+        "y": 41.5,
+        "width": 640.5,
+        "height": 554.5
+      },
+      "inkRatio": 0.043138264006791174,
+      "hash": "23928acafdff1918b62959a605fbbe0b596bf34fda47db3546a93a744fafc6e8"
+    },
+    {
+      "chart": "jobs-radar-chart",
+      "inkBounds": {
+        "x": 78,
+        "y": 80,
+        "width": 640.5,
+        "height": 528
+      },
+      "inkRatio": 0.029411819887429642,
+      "hash": "f1f64fdd8ae53af7cfc95448e9b203cf0fbd29dcf0dcb17d2ea44a3071f6a4fb"
+    }
+  ],
+  "linux": [
+    {
+      "chart": "cars-polar-guides",
+      "kind": "user-facing",
+      "inkBounds": {
+        "x": 50.5,
+        "y": 64,
+        "width": 520.5,
+        "height": 525
+      },
+      "inkRatio": 0.04864854318418314,
+      "hash": "293ac41e1f529f7aee87f1ab57117df48c5965c062b93673954a53d00f2798b4"
+    },
+    {
+      "chart": "cars-polar-guides",
+      "kind": "primitive",
+      "inkBounds": {
+        "x": 50.5,
+        "y": 64,
+        "width": 520.5,
+        "height": 525
+      },
+      "inkRatio": 0.04864854318418314,
+      "hash": "293ac41e1f529f7aee87f1ab57117df48c5965c062b93673954a53d00f2798b4"
+    },
+    {
+      "chart": "jobs-radar-chart",
+      "kind": "primitive",
+      "inkBounds": {
+        "x": 75.5,
+        "y": 83.5,
+        "width": 645,
+        "height": 526.5
+      },
+      "inkRatio": 0.02951078799249531,
+      "hash": "d371ed5916f0c3f4228c2eeefdaca966ee0280029485654d606103b0e729f4c6"
+    },
+    {
+      "chart": "jobs-radar-chart",
+      "kind": "user-facing",
+      "inkBounds": {
+        "x": 75.5,
+        "y": 83.5,
+        "width": 645,
+        "height": 526.5
+      },
+      "inkRatio": 0.02951078799249531,
+      "hash": "d371ed5916f0c3f4228c2eeefdaca966ee0280029485654d606103b0e729f4c6"
+    },
+    {
+      "chart": "gapminder-polar-trends",
+      "kind": "primitive",
+      "inkBounds": {
+        "x": 40,
+        "y": 45,
+        "width": 647,
+        "height": 552
+      },
+      "inkRatio": 0.04324808998302207,
+      "hash": "669fdc1ce694b6ae72db17cae923f29dc12c1b73b46ea51680f92d1aa6d01c07"
+    },
+    {
+      "chart": "gapminder-polar-trends",
+      "kind": "user-facing",
+      "inkBounds": {
+        "x": 40,
+        "y": 45,
+        "width": 647,
+        "height": 552
+      },
+      "inkRatio": 0.04324808998302207,
+      "hash": "669fdc1ce694b6ae72db17cae923f29dc12c1b73b46ea51680f92d1aa6d01c07"
+    }
+  ],
+  "sourceCommit": "533cf1fc9bed6555892c258b959a9e413616aa69",
+  "linuxRun": "https://github.com/ggaction/ggaction/actions/runs/39020584857",
+  "canvasVersion": "1.0.9",
+  "darwinNodeMajor": 22,
+  "linuxNodeMajor": 20,
+  "pixelRatio": 2
+}

@@ -199,6 +199,14 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "createRegressionStatisticsData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "createWindowData": {
     "operation": "create",
     "authoringRoles": [
@@ -317,6 +325,14 @@
     "domain": "statistics"
   },
   "editRegressionData": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "editRegressionStatisticsData": {
     "operation": "edit",
     "authoringRoles": [
       "H2"

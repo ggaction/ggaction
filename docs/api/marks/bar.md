@@ -117,6 +117,8 @@ overrides, so resetting the global radius alone does not clear them.
 
 ## Blend with underlying content
 
+{% include chart-example.html id="bar-compositing" %}
+
 After creating a bar chart, call `program.editBarMark({ blend: "difference" })`.
 Each bar combines its fill and outline first, then applies its opacity and
 composites that source once over the existing plot, grid, and earlier marks.

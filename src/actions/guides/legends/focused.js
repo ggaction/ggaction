@@ -4,7 +4,7 @@ import { validateOptionObject } from "../../../core/validation.js";
 function makeFocusedLegendEdit({ name, options, map }) {
   return action(
     {
-      op: name,
+      op: name, scope: "any",
       description: `Edit one focused legend component through editLegend.`
     },
     function (args = {}) {

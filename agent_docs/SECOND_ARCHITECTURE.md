@@ -331,8 +331,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 397,000 bytes |
-| `ggaction/basic` | 194,000 bytes |
+| `ggaction` | 412,000 bytes |
+| `ggaction/basic` | 202,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -405,6 +405,17 @@ npm10.9.8에서 압축 해제3,913,392바이트로 기존3,908,000바이트를 �
 파일567개·packed798,000, Full393,000 및 SVG25,000은 유지한다.
 지원 Node 버전의 압축 차이와 최종 통합 크기는 별도로 다시 측정한다.
 이 조정은 이전 한도 통과나 테스트 기준의 완화를 뜻하지 않는다.
+
+승인된 exponential regression checkpoint의 macOS/Node22.23.1/npm10.9.8
+패키지는 packed798,553 / unpacked3,916,961바이트로 기존 한도를 초과했다.
+각각 다음 최소1,000바이트 단계인799,000 /3,917,000으로 조정한다.
+모듈·entry 증가나 renderer 경계 변경은 없다. 설치한 Full browser bundle은393,012 gzip
+바이트로 이전393,000을12바이트 초과하여 Full만394,000으로 조정한다.
+Basic191,000/SVG25,000은 유지하며 Node/zlib 차이를 포함한 최종 통합 검증은 별도다.
+
+line facade의 실행 불가능한 horizontal bandPosition 선언을 수정하고 공개 문서를
+동기화한 Node24.21.0/npm11.19.0 패키지는 798,062바이트다. 이 선언 수정분을
+포함하도록 압축 상한만 다음 1,000바이트 단계인 799,000으로 조정한다.
 
 이 문서는 상태 소유권, 계층 간 의존성과 실행 흐름을 설명한다. 메서드별 매개변수·기본값·추론·지원 조합·오류는 아래 Current 계약이 소유하며 이 문서에 복제하지 않는다. 구현 상태와 direct/internal 분류는 [ACTION_INDEX.json](contract/ACTION_INDEX.json), 선언은 `types/`, 자동화된 value vocabulary는 owning runtime registry를 사용한다.
 
@@ -529,6 +540,9 @@ Automatic statistical parameter의 요청과 계산값은 서로 다른 provenan
 action은 기존 instance를 바꾸지 않고 새로운 instance를 반환한다.
 
 Named dataset, layer, scale, coordinate의 exact ID lookup은 `selectors/`만 소유한다.
+`selectors/graphicCapacity.js`는 semantic point owner와 retained child namespace identity를
+추적한다. namespace encoding도 이 순수 selector owner가 소유하며 composition materializer는
+이를 재사용한다. 수치 한도 검증은 core validation에 남고 persistence는 materializer를 호출하지 않는다.
 Action과 materializer는 semantic resource array에 직접 `.find(id)` 또는 identity `.some()`을
 작성하지 않는다. 이 경계는 source contract test가 기계적으로 검사한다. Eligibility filter와
 relationship scan은 exact resource lookup이 아니므로 해당 domain module에 남을 수 있다.
@@ -774,6 +788,30 @@ mark family에 종속된 계산은 `materialization/scales/policies/`가 소유�
 rematerialization만 담당한다. 따라서 순수 scale 계산은 trace를 만들거나 Program을
 변경하지 않고, renderer도 scale 의미를 다시 추론하지 않는다.
 
+### Reusable linear fit statistics
+
+승인된 linear statistics 기능은 fit dataset별 compact cache를
+`materializationConfigs.regressionFits[fitId]` 한 곳에 둔다. 기존 fit grammar가 계산한
+모델에서 observation count·coefficients·scaled SSE/SST를 추출하며 raw rows나 full
+model/prediction arrays를 복제하지 않는다. 기존 semanticSpec/graphicSpec/fit trace는
+유지하고 editable snapshot bytes만 cache로 늘어날 수 있다.
+
+`regressionStatistics`는 fit을 source로 참조하는 독립 derived dataset이다. 같은
+typed schema·transform topology·DAG planner가 fit→statistics→annotation 순서를
+소유한다. Chart-owned regression editor도 dependent statistics가 있으면 그 planner를
+재사용한다. 새 renderer나 자동 semantic compiler는 없다. 이전 snapshot은 cache 없이
+로드하고 첫 명시 statistics 요청만 wrapped fit materialization으로 cache를 복원한다.
+Full-state validation은 cache owner·version·group/order/count·finite coefficient를 검증하고,
+domain remove/release는 fit cache를 함께 정리한다. 정확한 공개 계약은 CORE가 소유한다.
+
+이 checkpoint의 macOS/Node22.23.1/npm10.9.8 실제 artifact는569entries,
+packed802,032/unpacked3,935,479바이트다. 새 grammar/action 두 모듈과 타입·machine metadata
+증가를 반영해 entry569, packed803,000, unpacked3,936,000으로 최소 단위 갱신한다.
+Search payload816,102바이트는 기존814,000을 초과하여817,000으로 조정했다.
+설치 Full bundle 최종394,855 gzip바이트를 측정하여 Full 한도만395,000으로
+갱신했고 Basic191,000/SVG25,000은 유지한다. 이전 한도 통과나 지원 Node 간
+압축 동일성을 주장하지 않으며 최종 통합에서 다시 측정한다.
+
 ## `materializationConfigs`
 
 일부 graphical decision은 semantic은 아니지만 나중에 Canvas 크기나 scale이 바뀌었을
@@ -994,7 +1032,12 @@ Semantic removal은 dependency preflight를, graphic removal은 subtree detach�
 
 ## Selector와 resource identity
 
-Dataset, layer, scale, coordinate를 ID로 찾는 규칙은 `src/selectors/`가 소유한다.
+Dataset, layer, scale, coordinate를 ID로 찾는 규칙은 `src/selectors/`가 소유한다. Cartesian axis resource도
+`selectors/axes.js`가 canonical/unique/explicit selection, binding과 physical-side occupancy를
+소유한다. 의미 identity(channel/position/scale/coordinate/title)는 semantic guide map, appearance와
+standalone/frame intent는 같은 ID의 guide config에 한 번만 저장한다. Concrete native IDs와
+consumer iteration은 같은 owner registry를 사용하며 data/scale/Canvas/theme/facet/persistence가
+canonical x/y 두 개만 가정하지 않는다. Exact API는 [AXES](contract/current/AXES.md)가 소유한다.
 
 ```text
 findResource    → 없으면 undefined
@@ -2125,6 +2168,46 @@ Approved area fallback fills reuse `FillPaint` on the existing area mark configu
 
 Corner item block은 기존 layout owner가 실제 title/item bounds와12px gap으로 측정한다. Group materialization의 ephemeral corner 의도를 같은 owner에 전달하며 state/schema나 renderer owner를 추가하지 않는다. 외부 SIDE의 fixed20/52 anchors는24조합에서 byte-identical이다. 이 수정 뒤 installed Full gzip389,027bytes가389,000 한도를27bytes 초과하므로 기존 최소1,000bytes 단위 정책에 따라 Full 한도만390,000으로 조정한다. Basic189,000/SVG25,000 및 package564entries/792,000packed/3,900,000unpacked 한도는 유지한다.
 
+### 첫 네 기능 통합의 검색 측정
+
+계산 두 옵션·Cartesian dash·범례 channel selector의 통합 검색 JSON은 815157bytes다.
+기존815000을 초과하므로 내용과 예제를 유지하고 공유 한도만 최소1000bytes 단위인816000으로 갱신했다.
+
+### 열네 승인 기능의 누적 통합 측정
+
+색상 세 옵션·축 배치 네 옵션·point shape 두 종류·sampled size label map을 합친
+Node24.21.0/npm11.19.0 staged package는569entries, packed803290/unpacked3932847bytes다.
+독립 branch 한도를 누적 결과에 적용할 수 없어 최소1000bytes 단위로804000/3933000으로
+조정했다. 검색은816898bytes로817000 한도를 적용했다. 전체 옵션·예제를 보존했으며
+이전 한도 통과를 주장하지 않는다.
+
+누적 설치 소비자14기능의 동일 minified bundle은 Node22에서 Full394038/Basic191023,
+Node24에서 Full394803/Basic191552 gzip bytes다. 공유 owner와 canonical table/README를
+Full395000·Basic192000으로 동기화하고 SVG25000은 유지했다. 1000bytes 최소 단계이며
+기존393000/191000을 통과한 것으로 보고하지 않는다.
+
+### Point-owned graphic capacity
+
+Point 생성·편집과 editable persistence는 selector가 증명한 semantic point/selected values/graphic
+ID·type 소유권을 공통 core guard에 전달한다. Namespace가 적용된 composition snapshot은 실제
+retained child owner까지 추적하며 별도 bypass state를 저장하지 않는다. 일반 generated-item/work
+및 graphic-only structural validation 경계는 바꾸지 않았다. 정확한 수치는 MARKS/PRIMITIVES가 소유한다.
+Node22.23.1/npm10.9.8/macOS canonical artifact 실측은570entries, packed803124, unpacked3939523이다.
+승인된 유한 기능 증가에 따라 entries570/packed804000/unpacked3940000으로 최소 상향했다.
+Browser gzip Full395462는396000으로 상향하고 Basic190821/SVG7176은 기존191000/25000을 유지한다.
+
+
+
+Named Cartesian axes는 기존 source boundary를 유지하는 selector owner 하나를 더한다. Native ID
+resolver는 `selectors/axes.js`가 소유하고 materialization은 이를 재수출하므로 persistence가
+materialization layer에 역방향 의존하지 않는다. 기존 package staging compaction을 새 selector에
+적용한 실측은570entries,805115packed,3948224unpacked bytes다. 기존 최소1000bytes 정책에 따라
+한도를570/806000/3949000으로 좁게 갱신하고 이전569/799000/3919000 통과로 보고하지 않는다.
+전체 승인 옵션을 보존한 search816932bytes는817000으로, action-card median1896bytes는1896으로
+갱신한다. Card max3358은3360 한도 안이다. Installed consumer의 actual gzip은 Full396214/Basic193136bytes이므로 최소1000bytes 단위로397000/194000으로만 조정한다. SVG25000은 유지한다.
+
+
+
 ### Gradient direction and bottom title checkpoint
 
 The complete editLegend card is 3,609 UTF-8 bytes after exposing gradient-only
@@ -2151,6 +2234,23 @@ The installed Full browser bundle measured393,508 gzip bytes, above393,000;
 its ceiling is394,000. Basic also measured190,409 above190,000 and moves to191,000; SVG stays25,000.
 
 
+
+축·범례 기능 통합에서는 descriptor validation과 block key/query를 pure
+`grammar/legendBlocks.js`로, local position query를 기존 `grammar/legendGroups.js`로
+모았다. 기존 actions/materialization 경로는 재수출하여 downstream 소유자의 이동을
+강요하지 않는다. Persistence는 이 grammar를 읽으므로 actions/materialization import를
+허용하도록 경계를 넓히지 않는다. 범용 immutable graphic-edit loop는
+`core/graphicProperties.js`가 소유하고 primitive helper도 재수출한다. 실제 편집은 여전히
+public editGraphics primitive를 호출하며 직접 state clone/mutation을 추가하지 않는다.
+
+이 결합 checkpoint의 staging compaction 뒤 actual package는574entries,
+809241packed/3964563unpackedbytes이며 한도는574/810000/3965000이다.
+Search818889bytes는819000으로만 늘리고 card median1896과 editLegend3620/other3360은
+유지한다. Native/runtime unit3142/3142와 source-boundaries8/8을 검증했다.
+
+설치 소비자 결합 실측은 Full398463/Basic194351/SVG7176gzipbytes다. 앞의397000/194000을
+초과한 실패 로그를 보존하고 최소1000bytes 한도399000/195000으로만 갱신한다. New public
+옵션을 줄이지 않았고 SVG25000은 유지한다.
 ### Explicit categorical size-shape block
 
 The opt-in `size-shape` combination reuses the categorical series owner and its
@@ -2168,24 +2268,6 @@ package573entries/803727packed/3934180unpacked uses573/804000/3935000limits.
 Browser Full395897/Basic191800bytes uses396000/192000gzip limits. Existing
 coverage and per-file floors remain unchanged. These are feature-growth budgets,
 not a declaration that the full realistic option matrix has completed.
-
-### 첫 네 기능 통합의 검색 측정
-
-계산 두 옵션·Cartesian dash·범례 channel selector의 통합 검색 JSON은 815157bytes다.
-기존815000을 초과하므로 내용과 예제를 유지하고 공유 한도만 최소1000bytes 단위인816000으로 갱신했다.
-
-### 열네 승인 기능의 누적 통합 측정
-
-색상 세 옵션·축 배치 네 옵션·point shape 두 종류·sampled size label map을 합친
-Node24.21.0/npm11.19.0 staged package는569entries, packed803290/unpacked3932847bytes다.
-독립 branch 한도를 누적 결과에 적용할 수 없어 최소1000bytes 단위로804000/3933000으로
-조정했다. 검색은816898bytes로817000 한도를 적용했다. 전체 옵션·예제를 보존했으며
-이전 한도 통과를 주장하지 않는다.
-
-누적 설치 소비자14기능의 동일 minified bundle은 Node22에서 Full394038/Basic191023,
-Node24에서 Full394803/Basic191552 gzip bytes다. 공유 owner와 canonical table/README를
-Full395000·Basic192000으로 동기화하고 SVG25000은 유지했다. 1000bytes 최소 단계이며
-기존393000/191000을 통과한 것으로 보고하지 않는다.
 
 ### 단일 glyph source의 명시적인 합성
 
@@ -2211,6 +2293,78 @@ Node24에서396420/193109bytes다. 공유 예산을 최소1000bytes 단위397000
 공개 검색은817417bytes이며 내용 축소 없이818000 한도를 적용했다.
 
 
+축·범례 기능 통합에서는 descriptor validation과 block key/query를 pure
+`grammar/legendBlocks.js`로, local position query를 기존 `grammar/legendGroups.js`로
+모았다. 기존 actions/materialization 경로는 재수출하여 downstream 소유자의 이동을
+강요하지 않는다. Persistence는 이 grammar를 읽으므로 actions/materialization import를
+허용하도록 경계를 넓히지 않는다. 범용 immutable graphic-edit loop는
+`core/graphicProperties.js`가 소유하고 primitive helper도 재수출한다. 실제 편집은 여전히
+public editGraphics primitive를 호출하며 직접 state clone/mutation을 추가하지 않는다.
+
+설치 소비자 결합 실측은 Full398463/Basic194351/SVG7176gzipbytes다. 앞의397000/194000을
+초과한 실패 로그를 보존하고 최소1000bytes 한도399000/195000으로만 갱신한다. New public
+옵션을 줄이지 않았고 SVG25000은 유지한다.
+
+
+### Facet parent의 native shared 범례
+
+Parent 선언/편집의 canonical intent는 `compositionSpec.facet.guides.legend` 한 곳에 둔다.
+False/shared 문자열은 기존 의미를 유지하고 새 객체는 private closed tagged block normal form으로
+정규화한다. 각 block은 기존 unit config/inference flags와 semantic guide 의미를 재사용한다.
+`materialization/facetGuides/owner.js`가 retained source의 transient intrinsic 측정과 shared scale/recipe
+검증을, `ownerLayout.js`가 final inner-plot union의 inherited/local partition과 실제 경계를 소유한다.
+Child Canvas/margin은 바꾸지 않고 transient flag는 반환 parent/context나 저장 state에 남지 않는다.
+Parent native guide configs와 fully concrete graphics는 파생 결과이며 renderer는 새 해석을 하지 않는다.
+Unit scope인 createLegend는 그대로이며 기존 edit/focused/block/remove만 parent router를 소비한다.
+Theme는 derived config를 recolor한 동일 transaction에서 parent canonical appearance를 갱신하므로
+다음 reflow가 자동 색상/font 변경을 되돌리지 않는다. Source replay는 public 선언에 internal tag를
+넘기지 않고 기존 child 생성 뒤 parent intent를 다시 연결한다. Exact API는 Current COMPOSITION과
+LEGEND_AND_TITLE에서만 정의한다. Source layer 경계를 완화하지 않는다.
+
+부모 범례 배치는 `materialization/graphicTranslation.js`의 동일한 primitive 이동 owner를
+사용한다. Collection은 자손을 이동하고 nested Canvas는 자신의 local frame만 이동하므로
+clip 내부 glyph를 두 번 이동하지 않는다. 이 규칙은 unit lane과 facet parent가 공유한다.
+
+Parent/combined 범례 checkpoint 실측은 package581entries/818028packed/3992869unpacked,
+search820648bytes, browser Full403710/Basic196120/SVG7176gzip bytes다. 추가한
+단일 책임5모듈은 기존 staging-only syntax compaction으로 배포하며 source는 읽기 쉽게 유지한다.
+한도는 최소581/819000/3993000, 검색821000, browser404000/197000/기존25000으로 둔다.
+옵션·리터럴·실제 호출 coverage 기준은 바꾸지 않는다.
+Canvas의 기존 fill owner는 정확한 CSS sentinel `none`을 투명 paint로 해석한다.
+같은 owner를 circle/stroke/text/background가 재사용하며 저장된 concrete 값과
+기하·opacity·일반 색상은 유지한다. Renderer의 source-over/difference 정책을
+새로 추론하거나 의미 상태를 읽지 않는다. 이는 기존 no-paint 계약의 backend 버그 수정이다.
+
+### 기존 Canvas 수정 및 실데이터 facade 검증 동기화
+
+0.0.18의 none paint 수정과 실행 불가능한 continuous band 선언5개 정정 후
+중간 development artifact는3908217unpacked bytes였다. 정확한 release provenance를
+갱신한 Node24.21.0/npm11.19.0 최종 staged package는567entries,
+packed798617/unpacked3907920bytes로 기존567/799000/3908000 한도 안이다.
+따라서 최종 package 한도를 올리지 않으며 browser 예산도 유지한다.
+
+### 승인 기능23개 누적 검색
+
+회귀 통계·named axes·shared 순수 query·범례 세부 옵션과 막대 합성을 합친 공개 검색은
+822975bytes다. 옵션/예제/enum을 줄이지 않고 공유 상한만 최소1000bytes 단위823000으로
+갱신한다. source-boundaries30개와 누적 unit3198개는 현재 통합 소스에서 통과했다.
+
+같은 누적 Node24.21.0/npm11.19.0 staged package는579entries, packed821063,
+unpacked4009853bytes다. 각 branch 단독 예산 통과와 구분하여 누적 예산을 실제 entry579,
+packed822000/unpacked4010000으로만 갱신한다. 이전574/810000/3965000은 통과하지 않았다.
+
+누적 실제 설치 consumer는 Node24에서 Full404564/Basic197642/SVG7315 gzipbytes다.
+기존399000/195000은 실패했고, canonical table와 README 및 공유 owner만
+최소1000bytes 단위405000/198000으로 동기화한다. SVG25000은 유지한다.
+
+
+
+Size-shape 통합 뒤 검색은823539bytes이며 최종 공개 옵션을 유지한 채824000으로만
+갱신한다. 범례 새 public 흐름·독립 Chromium·bar stable pair의 결합6검사가 통과했다.
+
+24개 통합 staged package의 실제581entries/824408packed/4021086unpackedbytes에 따라
+한도는581/825000/4022000으로 좁게 갱신한다. 이전579/822000/4010000은 실패했다.
+
 ### Explicit whole-glyph normal opacity
 
 The approved normal concrete marker shares the existing bounded isolated-glyph
@@ -2229,6 +2383,30 @@ limits are578/812000/3969000. Full399940/Basic195539gzipbytes require only
 createLegend/editLegend card caps3440/3710 and coverage thresholds stay unchanged.
 Normal Node/browser/PDF reference checks use zero added color tolerance.
 
+명시적 whole-glyph opacity 결합 검색은824703bytes이며825000으로만 갱신한다.
+
+25개 결합 staged package 실측582entries/825420packed/4024438unpackedbytes에 따라
+한도582/826000/4025000을 적용한다. 이전581/825000/4022000은 실패했고 내용은 보존했다.
+Released0.0.18 결합 뒤 동일 feature artifact는3994170unpacked bytes, 검색821174bytes다.
+기능을 제거하지 않고 이 두 최소 한도만3995000/822000으로 갱신한다.
+Released-main integration `0447acaf` with the approved nine data/color features measures 3,941,633 unpacked bytes on macOS/Node22.23.1/npm10.9.8. Only the unpacked cap grows from3,940,000 to3,942,000 (the next minimum1,000-byte step); entry570, packed804,000, browser and search caps remain unchanged. This does not claim the previous unpacked cap passed.
+
+승인된 색상 목표의 정식 public example 두 개와 연속 색상 사용법을 보존한 검색 payload는817,927바이트다. macOS/Node22.23.1/npm10.9.8에서 기존817,000을 초과해 다음 최소1,000바이트 단위인818,000으로만 조정한다. 검색 항목/내용/기준은 유지하며 이전 한도 통과로 보고하지 않는다.
+
+### Facet parent를 포함한26기능 통합 측정
+
+결합 소스의 Node24.21.0/npm11.19.0 staged package는587entries,831438packed,
+4048672unpackedbytes다. 추가 parent legend owner5모듈과 Current/types 내용을 포함하며
+예산은587/832000/4049000으로 측정된 최소1000bytes 단위만 조정한다. 검색827188bytes는
+828000 한도를 적용한다. 옵션과 실행 증언을 줄이지 않았고 browser 한도405000/198000/25000은
+최종 installed 측정 전까지 유지한다.
+
+통합 `08329df4`와 ordinal range validator복원 뒤 macOS/Node22.23.1/npm10.9.8 실제 installed
+artifact는587entries/829705packed/4048931unpackedbytes다. Node24의831438packed측정과 함께
+기존587/832000/4049000 package한도 안이다. 실제 browser gzip은 Full409512/Basic199726/SVG7325다.
+승인된 기능 증가분의 최소1000bytes정책으로 Full410000/Basic200000만 갱신하고 SVG25000과
+다른 global test/coverage 기준은 유지한다. 이전405000/198000 한도는 실패했으며 그 성공으로
+보고하지 않는다. 숫자 변경은 새로운 renderer/state 경계를 추가하지 않는다.
 ### Sample-window concrete materialization
 
 Point-bearing legend clipHeight is one stored block option. The materializer
@@ -2250,6 +2428,42 @@ limits401800/197400 cover only that measured growth. SVG remains25000bytes.
 Final authored-anchor/reset handling measures Full401927/Basic197371gzipbytes;
 Full ceiling402000 and Basic197400 retain the measured next small steps.
 
+
+### Parent sample-window identity and replay integration
+
+부모 범례와 일반 child composition은 기존 graphic namespace owner를 재사용하여
+clip Canvas와 그 glyph를 공개 primitive의 기존 valid-ID 정책에 맞게 생성한다.
+공개 ID 정규식과 state schema는 확장하지 않는다. 복원 scaffold는 저장된 block별
+channels/combine/representation/명시 symbol을 사용하며 window는 각 원래 config의
+최종 materialization에서만 적용한다. 이로써 gradient strip에 형제 size의 window가
+전파되지 않는다. 미지정12사례는 이전 JSON/SVG/전체RGBA와 정확히 동일하다.
+
+macOS/Node22.23.1/npm10.9.8의 통합 staged artifact는589entries/833342packed/
+4061404unpacked bytes다. clip의 새 grammar/materialization2모듈을 포함해 허용entries는
+589로, 크기 한도는 다음 최소1000bytes인834000/4062000으로 조정한다.
+기존832000/4049000 한도 통과로 보고하지 않으며 browser/global coverage 기준은 유지한다.
+
+동일 installed consumer의 실제 browser gzip은 Full411464/Basic201346bytes다.
+기존410000/200000을 초과해 최소1000bytes 단위412000/202000으로만 갱신한다.
+SVG25000 및 모든 기능/coverage 검사는 그대로 유지한다. 원래 한도 검사는 실제로
+실패했으며 성공 증거로 재사용하지 않는다.
+
+히트맵의 기존 title:false/named-axis 동작 복원과 통합 release notes를 포함한 Node22
+staged artifact는4063287unpacked bytes로 측정됐다. 기존4062000 검사는 실패했으므로
+다음 최소1000bytes 단계4064000으로만 올린다. Node24.19.0의 동일 staged 입력은
+835531packed bytes로 기존834000을 초과하여 다음 단계836000만 적용한다.
+entries589, browser 및 전체 기능/coverage 기준은 유지한다.
+
+Histogram의 실제 연속형 grid 역할과 동기화한 문서를 포함한 macOS/Node22.23.1/npm10.9.8
+artifact는 unpacked4,049,330bytes다. 기존4,049,000한도 실패 로그를 보존하고 unpacked만
+다음 최소1,000bytes 단위4,050,000으로 올렸다. Entries587·packed832,000 한도는 유지한다.
+
+### Named-shape canonical example discovery budget
+
+승인된 wedge/arrow 정식 예제와 공개 설명을 추가한 compact search payload의 실측은
+828580bytes(macOS/Node22.23.1/npm10.9.8)다. 기존828000 검사2개는 실패했으며
+모든 검색 항목·action·옵션을 유지하고 최소1000단위829000으로만 갱신한다.
+공개 runtime/패키지/browser 또는 coverage 한도는 이 예제 연결로 바꾸지 않는다.
 The quantitative color-size combined mode adds one closed combine literal to
 the existing cards. Measured createLegend3524/editLegend3855bytes require only
 3530/3860byte card ceilings; all other cards remain3360bytes.
@@ -2260,3 +2474,14 @@ measured820007packed/4000493unpackedbytes. Narrow ceilings become
 The complete searchable option inventory measures821151bytes (ceiling821200).
 SVG remains25000gzipbytes; no public options, card fields or coverage floors
 are removed.
+
+### Complete feature integration measurements
+
+28개 기능과 named-shapes 예제를 합친 compact search는829294bytes로 측정됐다.
+기존829000검사2개는 실패하여 항목 삭제 없이 다음 최소1000bytes인830000만 적용한다.
+정량 color-size 결합의 grammar/materialization2모듈을 통합해 package entries는591이다.
+최종 packed/unpacked 및 browser 측정은 같은 통합 입력으로 재검증한다.
+
+Node24.19.0 통합 staged 입력은840502packed/4082583unpackedbytes로 측정됐다.
+기존836000/4064000 검사가 실패하여 최소1000bytes 단계841000/4083000만 적용한다.
+591개 entry와 모든 기존 옵션·데이터·coverage 기준은 유지한다.
