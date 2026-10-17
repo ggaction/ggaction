@@ -3,7 +3,7 @@ import {createBlendProgram} from "../../support/bar-blend-program.js";
 
 export const variants = ["#ffffff", "#808080", "#336699"].flatMap((background,index) =>
   [1,.5].map(opacity => ({
-    capability:"bar-compositing",chart:"single-source",variant:`backdrop-${index+1}-opacity-${opacity}`,
+    capability:"bar-compositing",chart:"single-source",variant:`backdrop-${index+1}-opacity-${String(opacity).replace(".","-")}`,
     title:"One difference source per bar fill and outline",background,opacity,
     width:200,height:200,
     calls:[
