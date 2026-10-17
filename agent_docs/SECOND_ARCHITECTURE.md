@@ -2059,3 +2059,8 @@ Approved area fallback fills reuse `FillPaint` on the existing area mark configu
 승인된 연속 범례 body opacity는 creation/edit/persistence가 공유하는 closed grammar owner `grammar/legendGradient.js` 하나를 추가한다. 이에 따른 packed entry 한도는563에서564로만 조정한다. 최종 실측564entries·packed791,661bytes·unpacked3,888,408bytes는 기존792,000/3,900,000bytes 안에 있다. Browser gzip Full388,931bytes·Basic188,433bytes와 기존389,000/189,000bytes, SVG25,000bytes 한도는 유지한다. 생략 시 default graphic/SVG24경우의 byte identity와 명시적0/.7/1의 body-only materialization을 검증하며 renderer 추론은 추가하지 않는다.
 
 Corner item block은 기존 layout owner가 실제 title/item bounds와12px gap으로 측정한다. Group materialization의 ephemeral corner 의도를 같은 owner에 전달하며 state/schema나 renderer owner를 추가하지 않는다. 외부 SIDE의 fixed20/52 anchors는24조합에서 byte-identical이다. 이 수정 뒤 installed Full gzip389,027bytes가389,000 한도를27bytes 초과하므로 기존 최소1,000bytes 단위 정책에 따라 Full 한도만390,000으로 조정한다. Basic189,000/SVG25,000 및 package564entries/792,000packed/3,900,000unpacked 한도는 유지한다.
+
+Canvas의 기존 fill owner는 정확한 CSS sentinel `none`을 투명 paint로 해석한다.
+같은 owner를 circle/stroke/text/background가 재사용하며 저장된 concrete 값과
+기하·opacity·일반 색상은 유지한다. Renderer의 source-over/difference 정책을
+새로 추론하거나 의미 상태를 읽지 않는다. 이는 기존 no-paint 계약의 backend 버그 수정이다.
