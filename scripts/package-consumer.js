@@ -130,6 +130,18 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(localSize.editLegendLayout({channel:"size",position:"inherit"}).graphicSpec,mappedSize.graphicSpec);
     assert.ok((await renderToPNGBuffer(localSize)).buffer.length>100);
 
+    for(const factory of [chart,basicChart]){
+      const combined=factory().createCanvas({width:1000,height:800,margin:250})
+        .createData({values:[{x:0,y:0,g:"A"},{x:1,y:1,g:"B"}]})
+        .createPointMark({id:"p"}).encodeX({field:"x"}).encodeY({field:"y"})
+        .encodeShape({field:"g",scale:{range:["circle","square"]}})
+        .encodeSize({field:"g",fieldType:"ordinal",scale:{range:[25,100]}})
+        .createLegend({combine:"size-shape"});
+      assert.equal(combined.graphicSpec.objects.seriesLegendSymbolPoints.items[1].properties.width,10);
+      assert.deepEqual(deserializeProgram(serializeProgram(combined)).graphicSpec,combined.graphicSpec);
+      assert.ok((await renderToPNGBuffer(combined)).buffer.length>100);
+    }
+
     const extracted = chart().createCanvas({ width: 440, height: 340, margin: 20 })
       .createData({ values: [{ item: { value: 1 }, text: "1.5%" }, { text: "2%" }] })
       .createComputedData({ id: "nested", as: "x", expression: { op: "getPath", operand: { field: "item" }, path: ["value"] } })

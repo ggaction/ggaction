@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:b22a5b6f853439ab65b47e6d237feefbbd939d47796ef2a689dd8bff893aa71e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:680b86f0c0df8ed8cf4d519d513757c014f4c7d69fb6a13e8dd527f2be4522d7. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12971,6 +12971,31 @@ Combined legends require `layout: "edge"`; `"legacy-bottom"` is unsupported.
 A separately positioned size legend can coexist with a categorical
 `"legacy-bottom"` legend on another edge. Each keeps its own placement and styles.
 
+## Combine ordinal size and shape
+
+`createLegend({ combine: "size-shape" })` draws one categorical block whose
+sample uses both the mapped shape and the mapped physical area. It requires
+one point owner, the same nominal or ordinal field for both encodings, and
+identical typed, ordered ordinal domains. Explicit `channels` must contain
+exactly `"shape"` and `"size"`; with omitted channels, an encoded color legend
+remains an independent block. Different owners, fields, grain, numeric size
+scales, or domain order are rejected.
+
+Omitting `combine`, or creating with `"separate"`, preserves the previous output.
+An edited combination is retained unless explicitly changed. Whole-target
+`editLegend({ combine: "separate" })` splits the pair and copies shared text,
+title and placement styles; combining independent blocks uses supplied styles
+or the combined native defaults, rather than choosing one old block's styles.
+A split preserves an independent color block. Incompatible display maps must
+be reset before splitting.
+
+Either member selects the same combined block. Removing either member removes
+the entire block without removing either mark encoding. Fixed sample shape or
+size overrides conflict with the mapping; stroke, fill, opacity, labels and
+categorical item order retain their existing controls. Zero mapped area retains
+its category and text slot. Current data and scale revisions revalidate both
+encodings, so an invalid revision fails instead of silently splitting the block.
+
 ## Related
 
 [Legend overview](./api/legends/) · [Composite symbols](./api/legends/composite/) · [Editing legends](./api/legends/editing/)
@@ -13621,7 +13646,7 @@ packing and are measured independently, including titles, labels and frames.
 Corners use the existing 8px plot inset; outside edges retain native family gaps
 and the existing axis-lane policy. No coordinates, automatic Canvas growth, or
 extra offset option is introduced. Conflicting occupied guides fail atomically.
-A merged block moves through either member alias. Merging different local anchors
+A merged block moves through either member alias. `combine` is a whole-target content control and cannot accompany singular `channel`. Merging different local anchors
 requires resetting them or supplying an explicit whole-group position.
 
 Use `editLegendBlock()` when one mark has several legend blocks and an edit
@@ -24710,6 +24735,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `combine` | Optional / branch-dependent | `"separate" \| "size-shape" \| undefined` |
 | `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
@@ -24836,6 +24862,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
+| `combine` | Optional / branch-dependent | `"separate" \| "size-shape" \| undefined` |
 | `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
@@ -33183,6 +33210,8 @@ Related types: [`LegendOptions`](./reference/types/#type-legendoptions).
 
 ```typescript
 export interface LegendOptions {
+  /** Explicitly combine compatible ordinal size and shape samples. Omission retains separate blocks. */
+  combine?: "separate" | "size-shape";
   /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
   representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
@@ -39533,7 +39562,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:b22a5b6f853439ab65b47e6d237feefbbd939d47796ef2a689dd8bff893aa71e` |
+| Contract fingerprint | `sha256:680b86f0c0df8ed8cf4d519d513757c014f4c7d69fb6a13e8dd527f2be4522d7` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

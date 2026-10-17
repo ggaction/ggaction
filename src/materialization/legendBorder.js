@@ -1,5 +1,5 @@
 import { preserveGraphicPlacement } from './graphicHierarchy.js';
-import { editGraphicProperties } from '../actions/primitives/graphicProperties.js';
+import { editGraphicProperties } from '../core/graphicProperties.js';
 
 function borderCommands({x,y,width,height}) {
   return [{op:'M',x,y},{op:'L',x:x+width,y},{op:'L',x:x+width,y:y+height},

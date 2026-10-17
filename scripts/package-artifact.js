@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 569, // Dashed legend frames add pure dash policy and shared materializer owners.
-  packedBytes: 801_000, // Local block positions measured 800041 packed bytes.
-  unpackedBytes: 3_923_000 // Local block positions measured 3922635 unpacked bytes.
+  entries: 573, // Size-shape planning/mapping plus shared pure block/graphic-property owners.
+  packedBytes: 804_000, // Size-shape combination measured 803727 packed bytes.
+  unpackedBytes: 3_935_000 // Size-shape combination measured 3934180 unpacked bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

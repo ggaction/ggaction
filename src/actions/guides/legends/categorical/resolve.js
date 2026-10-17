@@ -1,3 +1,4 @@
+import { resolveSizeShapeMapping } from "../../../../grammar/legendCombinations.js";
 import { requireDataset } from "../../../../selectors/datasets.js";
 import { readNominalField } from "../../../../grammar/scales/fields.js";
 import { resolveLegendOrderDomain } from "../../../../grammar/categoryOrder.js";
@@ -85,11 +86,15 @@ export function resolveDefinition(program, layer, requestedChannels, requestedTi
   const channels = requestedChannels ?? CHANNELS.filter(
     channel => layer.encoding?.[channel]?.scale !== undefined
   );
+  const sizeShape = channels?.length === 2 && channels.includes("size") && channels.includes("shape");
+  if (sizeShape && (layer.mark.type !== "point" || !["nominal", "ordinal"].includes(layer.encoding.size?.fieldType))) {
+    throw new Error("Combined size-shape requires one categorical point owner.");
+  }
   const kind = resolveLegendKind(layer, channels);
   if (
     !Array.isArray(channels) ||
     channels.length === 0 ||
-    !channels.every(channel => CHANNELS.includes(channel)) ||
+    !channels.every(channel => CHANNELS.includes(channel) || sizeShape && channel === "size") ||
     new Set(channels).size !== channels.length
   ) {
     throw new Error(
@@ -129,7 +134,9 @@ export function resolveDefinition(program, layer, requestedChannels, requestedTi
     field,
     title: nonEmptyString(requestedTitle ?? field, "Legend title"),
     domain: resolveLegendOrderDomain(resolved.domain, order, linked,
-      order?.values === undefined ? undefined : readNominalField(requireDataset(program, layer.data).values, field))
+      order?.values === undefined ? undefined : readNominalField(requireDataset(program, layer.data).values, field)),
+    ...(sizeShape ? {combine:"size-shape",...resolveSizeShapeMapping({layer,
+      scales:program.resolvedScales,order,rows:requireDataset(program,layer.data).values})} : {})
   };
 }
 

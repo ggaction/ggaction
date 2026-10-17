@@ -277,6 +277,31 @@ Combined legends require `layout: "edge"`; `"legacy-bottom"` is unsupported.
 A separately positioned size legend can coexist with a categorical
 `"legacy-bottom"` legend on another edge. Each keeps its own placement and styles.
 
+## Combine ordinal size and shape
+
+`createLegend({ combine: "size-shape" })` draws one categorical block whose
+sample uses both the mapped shape and the mapped physical area. It requires
+one point owner, the same nominal or ordinal field for both encodings, and
+identical typed, ordered ordinal domains. Explicit `channels` must contain
+exactly `"shape"` and `"size"`; with omitted channels, an encoded color legend
+remains an independent block. Different owners, fields, grain, numeric size
+scales, or domain order are rejected.
+
+Omitting `combine`, or creating with `"separate"`, preserves the previous output.
+An edited combination is retained unless explicitly changed. Whole-target
+`editLegend({ combine: "separate" })` splits the pair and copies shared text,
+title and placement styles; combining independent blocks uses supplied styles
+or the combined native defaults, rather than choosing one old block's styles.
+A split preserves an independent color block. Incompatible display maps must
+be reset before splitting.
+
+Either member selects the same combined block. Removing either member removes
+the entire block without removing either mark encoding. Fixed sample shape or
+size overrides conflict with the mapping; stroke, fill, opacity, labels and
+categorical item order retain their existing controls. Zero mapped area retains
+its category and text slot. Current data and scale revisions revalidate both
+encodings, so an invalid revision fails instead of silently splitting the block.
+
 ## Related
 
 [Legend overview](../legends.md) · [Composite symbols](./composite.md) · [Editing legends](./editing.md)

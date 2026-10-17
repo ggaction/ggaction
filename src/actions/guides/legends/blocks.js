@@ -68,6 +68,7 @@ function validateSymbolSupport(descriptor, property) {
     throw new Error(`editLegendBlock symbol.${property} is unsupported for gradient blocks.`);
   }
   if (family === "categorical") {
+    if (property === "size" && channels.includes("size")) throw new Error("Combined size-shape block cannot override mapped size.");
     if (property === "fill" && channels.includes("color")) {
       throw new Error("editLegendBlock symbol.fill conflicts with the color mapping.");
     }

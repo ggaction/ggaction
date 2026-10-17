@@ -261,7 +261,7 @@ packing and are measured independently, including titles, labels and frames.
 Corners use the existing 8px plot inset; outside edges retain native family gaps
 and the existing axis-lane policy. No coordinates, automatic Canvas growth, or
 extra offset option is introduced. Conflicting occupied guides fail atomically.
-A merged block moves through either member alias. Merging different local anchors
+A merged block moves through either member alias. `combine` is a whole-target content control and cannot accompany singular `channel`. Merging different local anchors
 requires resetting them or supplying an explicit whole-group position.
 
 

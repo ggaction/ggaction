@@ -95,7 +95,7 @@ function makeEditSymbol(type) {
               shape: appearance.shapes[index],
               x: x[index],
               y: layout.itemY[index],
-              area: Math.PI * layer.size ** 2,
+              area: appearance.areas?.[index] ?? Math.PI * layer.size ** 2,
               fill,
               stroke: config.channels.includes("stroke")
                 ? appearance.strokes[index]

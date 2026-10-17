@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:b22a5b6f853439ab65b47e6d237feefbbd939d47796ef2a689dd8bff893aa71e",
+    "contractId": "sha256:680b86f0c0df8ed8cf4d519d513757c014f4c7d69fb6a13e8dd527f2be4522d7",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1620,10 +1620,11 @@
         "createlegendoptions",
         "item-order-without-changing-color",
         "combined-categorical-and-size-layout",
+        "combine-ordinal-size-and-shape",
         "related"
       ],
-      "bytes": 14662,
-      "sha256": "9bf095c17baa48db38e937b89600cd8cbaca71907bc7871d4e86775a4e53a8bc"
+      "bytes": 16159,
+      "sha256": "c7c9ccb1d5cf45eedcb6a63b447019e7b3f656f95f9a379285abf367ea77528d"
     },
     {
       "order": 99,
@@ -1673,8 +1674,8 @@
         "dashed-frames",
         "related"
       ],
-      "bytes": 24661,
-      "sha256": "cd48a4faf3c0b9069f3d7fb573073a2a5ddc5a30de088847c20f623c562fa423"
+      "bytes": 24746,
+      "sha256": "5f3bd0af3868effd5f73bcb0df0f986a3a7e22dd1c04ddfc866503b9126f7b6e"
     },
     {
       "order": 102,
@@ -2276,8 +2277,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 124915,
-      "sha256": "9c9d197a5898252a48eda168e0fe6f0b4c9bbb9e739d1463edac82295e8e71ba"
+      "bytes": 125091,
+      "sha256": "3752a8030c559d3319902d41339c9463571772410db305df4a38fac830847088"
     },
     {
       "order": 123,
@@ -2980,8 +2981,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 331372,
-      "sha256": "aa8a0e59532d2be7124ace1fb4ca9799315918148efab15fcfe67f6d25fe14cd"
+      "bytes": 331516,
+      "sha256": "994d8ba92f6b712814e2f2a37ebb37de6fa094e86a9f35c2ae170f3de451f017"
     },
     {
       "order": 127,
@@ -3334,7 +3335,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "a44a1cbe51fde592c3c9b3c6da365fbc4a9b57956e823c044fb2689dae5563d5"
+      "sha256": "1efba33502e2d92d427e2b365e0450f1f552ebdc2a44414b28fab76fba4ecde2"
     },
     {
       "order": 150,

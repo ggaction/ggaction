@@ -1,3 +1,4 @@
+import {isSizeShapeChannels} from "../../../grammar/legendCombinations.js";
 import { normalizeLegendOrder } from "../../../grammar/categoryOrder.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { CATEGORICAL_LEGEND_CHANNELS } from "../../../core/vocabulary.js";
@@ -16,7 +17,7 @@ function validateLegend(property, value) {
     throw new Error(`Legend ${property} must not contain duplicates.`);
   }
   if (property === "channels") {
-    if (!value.every(channel => CATEGORICAL_LEGEND_CHANNELS.includes(channel))) {
+    if (!isSizeShapeChannels(value) && !value.every(channel => CATEGORICAL_LEGEND_CHANNELS.includes(channel))) {
       throw new Error("Legend channels support only color, strokeDash, and shape.");
     }
     return;

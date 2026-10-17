@@ -1,5 +1,6 @@
-import { describeLegendBlock } from "../actions/guides/legends/target.js";
-import { localLegendPosition } from "../materialization/legendGroups.js";
+import { isSizeShapeChannels, resolveSizeShapeMapping } from "../grammar/legendCombinations.js";
+import { describeLegendBlock } from "../grammar/legendBlocks.js";
+import { localLegendPosition } from "../grammar/legendGroups.js";
 import { normalizeLegendBorderDash } from "../grammar/legendBorder.js";
 import { normalizeNumericDisplayLabelMap } from "../grammar/displayLabels.js";
 import { isContinuousSizeScaleType } from "../grammar/scales/size.js";
@@ -160,6 +161,14 @@ export function validateProgramState(program, path) {
       for (const [key, override] of Object.entries(config.blockOverrides)) {
         if (override.position !== undefined && key !== descriptor.key) throw invalidSnapshot("Local position requires its existing block owner.", path);
       }
+    }
+    if (config.combine !== undefined) {
+      if (config.combine !== "size-shape" || kind !== "series" || !isSizeShapeChannels(config.channels)) throw invalidSnapshot("Invalid combined legend owner.", path);
+      const layer = semantic.layers.find(layer=>layer.id===config.target);
+      const definition = resolveSizeShapeMapping({layer,scales:program.resolvedScales,
+        order:semantic.guides.legend?.series?.order,rows:resolveDatasetReference(program,layer.data).values});
+      if (!Array.isArray(config.sizeAreas) || config.sizeAreas.length !== definition.sizeAreas.length ||
+          config.sizeAreas.some((area,index)=>!Object.is(area,definition.sizeAreas[index]))) throw invalidSnapshot("Stale combined legend size mapping.", path);
     }
     if (config.gradientDirection !== undefined) {
       if (!["gradient", "strokeGradient"].includes(kind)) throw invalidSnapshot("Gradient direction requires a gradient owner.", path);
