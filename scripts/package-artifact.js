@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 582, // Whole-glyph integration measured582 permitted entries.
-  packedBytes: 826_000, // Whole-glyph integration measured825420packed bytes.
-  unpackedBytes: 4_025_000 // Whole-glyph integration measured4024438unpacked bytes.
+  entries: 587, // Parent facet legend integration measured587 permitted entries.
+  packedBytes: 832_000, // Parent owner integration measured831438packed bytes.
+  unpackedBytes: 4_049_000 // Parent owner integration measured4048672unpacked bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

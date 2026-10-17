@@ -2269,10 +2269,6 @@ Browser Full395897/Basic191800bytes uses396000/192000gzip limits. Existing
 coverage and per-file floors remain unchanged. These are feature-growth budgets,
 not a declaration that the full realistic option matrix has completed.
 
-### 첫 네 기능 통합의 검색 측정
-
-### 열네 승인 기능의 누적 통합 측정
-
 ### 단일 glyph source의 명시적인 합성
 
 Bar editor의 optional semantic mark.blend 한 곳이 per-bar difference 의도를 소유한다.
@@ -2362,7 +2358,6 @@ packed822000/unpacked4010000으로만 갱신한다. 이전574/810000/3965000은 
 최소1000bytes 단위405000/198000으로 동기화한다. SVG25000은 유지한다.
 
 
-### Explicit categorical size-shape block
 
 Size-shape 통합 뒤 검색은823539bytes이며 최종 공개 옵션을 유지한 채824000으로만
 갱신한다. 범례 새 public 흐름·독립 Chromium·bar stable pair의 결합6검사가 통과했다.
@@ -2397,3 +2392,11 @@ Released0.0.18 결합 뒤 동일 feature artifact는3994170unpacked bytes, 검�
 Released-main integration `0447acaf` with the approved nine data/color features measures 3,941,633 unpacked bytes on macOS/Node22.23.1/npm10.9.8. Only the unpacked cap grows from3,940,000 to3,942,000 (the next minimum1,000-byte step); entry570, packed804,000, browser and search caps remain unchanged. This does not claim the previous unpacked cap passed.
 
 승인된 색상 목표의 정식 public example 두 개와 연속 색상 사용법을 보존한 검색 payload는817,927바이트다. macOS/Node22.23.1/npm10.9.8에서 기존817,000을 초과해 다음 최소1,000바이트 단위인818,000으로만 조정한다. 검색 항목/내용/기준은 유지하며 이전 한도 통과로 보고하지 않는다.
+
+### Facet parent를 포함한26기능 통합 측정
+
+결합 소스의 Node24.21.0/npm11.19.0 staged package는587entries,831438packed,
+4048672unpackedbytes다. 추가 parent legend owner5모듈과 Current/types 내용을 포함하며
+예산은587/832000/4049000으로 측정된 최소1000bytes 단위만 조정한다. 검색827188bytes는
+828000 한도를 적용한다. 옵션과 실행 증언을 줄이지 않았고 browser 한도405000/198000/25000은
+최종 installed 측정 전까지 유지한다.

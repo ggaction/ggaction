@@ -55,7 +55,10 @@ test("separates network-backed corpus sweeps from source coverage", () => {
   const normal = collectTestFiles("all", testRoot);
   const realistic = collectTestFiles("realistic", testRoot);
 
-  assert.equal(realistic.length, 23);
+  assert.equal(realistic.length, 24);
+  assert.equal(realistic.some(file => file.endsWith(
+    `${path.sep}realistic-combined-legend-witness.test.js`
+  )), true);
   assert.equal(realistic.some(file => file.endsWith(
     `${path.sep}realistic-data-color-contracts.test.js`
   )), true);
