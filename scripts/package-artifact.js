@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 574, // Axis/legend integration adds shared pure query and graphic-edit owners.
-  packedBytes: 810_000, // Axis/legend integration measured809241bytes.
-  unpackedBytes: 3_965_000 // Axis/legend integration measured3964563bytes.
+  entries: 579, // Combined capability checkpoint measured579 permitted entries.
+  packedBytes: 822_000, // Combined checkpoint measured821063packed bytes.
+  unpackedBytes: 4_010_000 // Combined checkpoint measured4009853unpacked bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

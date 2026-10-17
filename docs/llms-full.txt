@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:653e358ea25bab0ef255035440c71c52b637c49cf19e163ae5e65affc4299afb. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:e8f18e4bfa6d34b7a0fa7610efc436864801ebb6065c08699f6dcbf00f5ca134. Status: development. Runtime source: 0fbefb520604f173d5b82bb04cf9524b1fa9c333. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/0fbefb520604f173d5b82bb04cf9524b1fa9c333/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/0fbefb520604f173d5b82bb04cf9524b1fa9c333/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -5002,6 +5002,7 @@ corresponding higher-level action when the library should materialize values:
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
+| `"regressionStatistics"` | `{ type }`, with an existing linear fit as source | `createRegressionStatisticsData` |
 | `"sort"` | `{ type, sortBy }` | `createSortedData` |
 | `"density"` | `{ type, field, groupBy?, bandwidth, extent, steps, kernel?, normalization?, weight?, as, resolve: "shared", resolved? }` | `createDensityData` |
 | `"ecdf"` | `{ type, field, groupBy, weight?, missing, as, resolved? }` | `createECDFData` |
@@ -5341,7 +5342,7 @@ program.createRegressionData({
 | `source` | existing dataset ID | current dataset |
 | `x`, `y` | finite quantitative field names | required |
 | `groupBy` | nominal field name | one ungrouped model |
-| `method` | `"linear"`, `"polynomial"`, or `"loess"` | `"linear"` |
+| `method` | `"linear"`, `"polynomial"`, `"loess"`, or `"exp"` | `"linear"` |
 | `degree` | integer from `1` through `32` for polynomial | `2` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
 | `confidenceMethod` | `"normal"` or `"student-t"`; not accepted by LOESS | `"student-t"` |
@@ -5367,6 +5368,49 @@ Source values remain unchanged.
 Regression output is limited to 10,000 unique group/x rows. Polynomial and
 LOESS fitting reject inputs whose estimated work exceeds 10,000,000 units,
 before allocating or entering the expensive fit.
+
+Exponential fits use positive-response-weighted least squares on `log(y)`;
+omitted or `false` intervals produce no confidence fields. Confidence options,
+degree, span, and robust iterations are rejected. See the [regression API](./api/regression/)
+for the positive-response and representable-result requirements.
+
+## Linear fit statistics {#fit-statistics}
+
+`createRegressionStatisticsData({ id, source })` creates reusable rows from an
+explicit existing **linear** regression dataset. Both options are required.
+It reuses the existing fit and does not infer a source from the current dataset.
+This advanced data action is available in the full entry.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "fit"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createData({ values: [{ x: 0, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createRegressionData({ id: "fit", x: "x", y: "y" })
+  .createRegressionStatisticsData({ id: "fitStatistics", source: "fit" });
+```
+
+Each row contains fixed `count`, `intercept`, `slope`, and `rSquared` fields.
+`count` describes eligible observed pairs, independent of prediction-grid size.
+R-squared is `1 - SSE / SST`; a constant response has `rSquared: null`.
+Grouped fits add their original typed grouping field in first source appearance
+order. Group fields named like a fixed output are rejected. Polynomial, LOESS,
+exponential, and ordinary raw datasets are unsupported sources.
+
+`editRegressionStatisticsData({ target?, source? })` changes the fit source and
+replays dependent data and annotations atomically. Omitted `source` preserves
+it. Omitted `target` uses the current statistics owner, otherwise the unique
+standalone owner; ambiguous ownership fails. Fixed output names have no aliases
+or reset options. Data revisions update fit statistics before their consumers.
+Remove dependent statistics and consumers before changing a fit to an
+unsupported model or deleting its source.
+
+Editable snapshots retain compact fit statistics for reuse. Earlier snapshots
+without them still load without recalculation; the first explicit statistics
+request computes and retains the fit once. Existing prediction rows, graphics,
+and authoring trace remain unchanged, although serialized bytes can increase.
 
 ## `createIntervalData({ id, source?, field, groupBy?, center?, extent?, method?, level?, missing?, as? })` {#create-interval-data}
 
@@ -5992,10 +6036,19 @@ const program = chart()
   .encodeY({ field: "Miles_per_Gallon" });
 ```
 
-The collection remains empty until compatible position encodings exist. When a
+The initial collection reserves one item per selected data row; items receive
+visible positions when compatible position encodings exist. When a
 point is layered after one compatible source, omitted data, coordinate, x, and y
 encodings are inherited and persisted. Ambiguous sources require an explicit
 target or resource ID.
+
+A point layer supports at most **50,000 selected data rows**, including rows
+subsequently skipped by the missing-value policy. Creation, data revisions,
+property-array edits, facets, and editable snapshots use the same inclusive
+boundary. A 50,001-row point layer fails atomically with the structured
+`resource-limit` diagnostic `Point mark item count`. No sampling or layer
+splitting occurs. Ordinary extension graphics retain their 10,000-item limit;
+path-command and work limits are independent.
 
 Radius is an encoding-owned graphical value rather than a `createPointMark`
 option. Until a constant or field-driven size is authored, materialization uses
@@ -7316,7 +7369,7 @@ After a temporal bar facade, use `.encodeBarWidth({ interval: { unit: "year", in
 
 # Regression
 
-`createRegression()` layers grouped linear, polynomial, or LOESS fits over an
+`createRegression()` layers grouped linear, polynomial, LOESS, or exponential fits over an
 existing quantitative point mark. Linear and polynomial fits can include mean
 or prediction interval bands; LOESS is line-only.
 
@@ -7363,7 +7416,7 @@ program.createRegression({
 | `target` | eligible point mark ID | inferred |
 | `x`, `y` | quantitative field names | target x/y fields |
 | `groupBy` | nominal field name or `false` (legacy explicit `undefined` also supported) | unique color/shape field |
-| `method` | `"linear"`, `"polynomial"`, or `"loess"` | `"linear"` |
+| `method` | `"linear"`, `"polynomial"`, `"loess"`, or `"exp"` | `"linear"` |
 | `degree` | integer from `1` through `32` for polynomial | `2` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
 | `robustIterations` | LOESS residual reweighting passes, integer `0..32` | `0` |
@@ -7392,6 +7445,7 @@ Choose another model or interval without coordinating its child layers:
 points.createRegression({ method: "polynomial", degree: 2 });
 points.createRegression({ method: "loess", span: 0.55 });
 points.createRegression({ method: "loess", span: 0.55, robustIterations: 2 });
+points.createRegression({ method: "exp" });
 points.createRegression({ interval: "prediction" });
 points.createRegression({ interval: false, band: false });
 ```
@@ -7402,6 +7456,16 @@ and are therefore at least as wide as matching mean intervals. LOESS does not
 accept `confidenceMethod`, `level`, `confidence`, `interval`, or a band object; its omitted or `false` band
 produces only the fitted line. Linear and polynomial bands can also be disabled
 with `band: false`.
+
+`method: "exp"` fits `y = amplitude * exp(rate * x)` using response weights
+`w = y` on `log(y)`. This differs from ordinary unweighted log regression.
+Every eligible response must be strictly positive, and each group needs at
+least two observations with varying x. Missing-value policy runs first;
+zero and negative responses are errors. Omitted or `false` `interval` gives
+point estimates with no band or interval columns. Confidence options, degree,
+span, robust iterations, interval objects, and band objects are rejected.
+Unrepresentable coefficients or nonpositive/nonfinite predictions fail
+atomically. Existing explicit prediction positions remain available.
 
 `sourceBinding: "fixed"` keeps the regression attached to the source snapshot
 used at creation. `"follow"` refits when `reviseData` advances that logical
@@ -7478,7 +7542,7 @@ component, and releases the old revision when nothing references it.
 coordinate, and position scale IDs remain stable. A request containing only
 `band` or `line` appearance retains the existing fitted rows.
 
-Set `band: false` or switch to LOESS to remove the owned band. Switching back
+Set `band: false` or switch to LOESS or exponential regression to remove the owned band. Switching back
 to linear or polynomial regression recreates the band by default; a band
 object can also restore it explicitly. Target omission uses the current or
 only regression owner and fails on ambiguity.
@@ -12303,6 +12367,13 @@ Cartesian label `labelMap` works with categorical values, numeric ticks and time
 
 Cartesian ticks and labels accept `alongOffset`, a signed finite displacement in logical pixels. Positive values move X-axis items right and Y-axis items down, including top/right axes and reversed scales. It defaults to zero and leaves the scale and axis baseline unchanged. Tick and label offsets are independent absolute values: set both when both should move. The existing label `offset` remains the outward gap from the plot edge. Complete axes, whole-axis editors and focused editors accept the same options; Canvas and scale updates preserve them. Polar and Parallel axes do not accept this option.
 
+## Independent Cartesian axes
+
+Use `createYAxis({ id: "share", position: "right" })` to establish another axis,
+then `editYAxisTitle({ target: "share", text: "Share" })` to refine it. See
+[Independent named Cartesian axes](./api/axes/complete/#independent-named-cartesian-axes)
+for side occupancy, selection, arrays and independent scales.
+
 ## Standalone Cartesian axes
 
 An axis does not need an invisible mark or dataset. Supply an existing Cartesian
@@ -12521,7 +12592,7 @@ Cartesian grids accept continuous, band and point scales. Band grids use centers
 An explicit `bandPosition`, including `"center"`, requires a band scale; continuous
 and point scales reject it. In `createLinePlot`, only a categorical x band scale
 can use it through `guides.grid.vertical`. The horizontal grid follows the
-line's continuous y scale and does not accept band positioning.
+line's continuous y scale and does not accept band positioning. Density plots use continuous value and density scales; Horizon and Rug plots use continuous quantitative or temporal measure scales. Their facade grids also reject explicit band positioning. Area plots retain categorical band grids on the independent channel: vertical for `valueChannel: "y"`, horizontal for `valueChannel: "x"`.
 
 Set Cartesian `zIndex` to a finite rank: positive values draw above related marks, zero or negative values draw behind them. Grids on each side sort by rank, with horizontal before vertical on a tie. Editors and resizing retain the chosen order.
 
@@ -13172,9 +13243,8 @@ program.createLegend({
 });
 ~~~
 
-Gradient legends reject categorical-only `symbol`, `columns`, `direction`, and
-`itemGap`. Opacity legends reject `columns`, `direction`, and `gradient`.
-Gradient and side-positioned opacity legends require `titlePosition: "top"`.
+Gradient legends reject categorical-only `symbol`, `columns`, and `itemGap`. Opacity legends reject `columns`, `direction`, and `gradient`.
+Side-positioned opacity legends require `titlePosition: "top"`.
 For a single top or bottom legend, `align` uses the complete visible outer
 bounds, including endpoint labels, symbol strokes and any border. `offset` is
 the gap between the plot and the nearest outer legend edge. This rule also
@@ -13183,8 +13253,25 @@ requested Canvas margin and never resize the Canvas.
 Side gradient and opacity legends accept only `align: "center"`. When moving
 a non-centered horizontal legend to a side, set `align: "center"` in the same
 edit. Title styles accept color and typography; `offset` belongs to `labels`.
-Gradient `titlePosition: "top"` is accepted by both creation and editing,
-including `editLegendLayout`; `"left"` is unsupported.
+Gradient `direction: "horizontal" | "vertical"` is independent of position.
+Omission at creation retains the position-derived default; an omitted edit
+preserves explicit intent. Gradient-only edit `direction: "auto"` restores the
+default. Length follows the ramp direction and thickness is perpendicular.
+Horizontal values run left to right with labels below; vertical values run
+bottom to top with labels on the left at a left anchor and on the right otherwise.
+Scale reverse and transformed-scale sampling retain their existing behavior.
+
+Gradient titles accept `titlePosition: "top" | "bottom"` in creation and editing,
+including `editLegendLayout`; `"left"` is unsupported. A bottom title clears the
+complete strip, tick and label bounds by 12 pixels. Its default anchor is the
+strip center for a horizontal ramp and the strip left for a vertical ramp;
+`titleStyle.align` still applies. Explicit line breaks and blank lines are retained.
+Hidden titles occupy no space. All visible content must fit the requested Canvas.
+
+Gradient orientation intent remains inactive while color uses `representation:
+"symbols"`; symbol direction is separate. Returning to a gradient restores its
+orientation. Changing to a different scale family cannot silently discard an
+explicit gradient direction; reset it with `"auto"` or remove and recreate the legend.
 
 ## Show a continuous color scale as symbols
 
@@ -13544,8 +13631,10 @@ gap to the grid or border. Changing its stored text style leaves the visible
 legend unchanged; restoration checks that the visible title fits. Legacy-bottom
 sample positions stay fixed, with a border around the visible items. Gradient and opacity legends accept only their
 kind-compatible options. Both require center alignment at the left or right
-side. Gradient title placement accepts `titlePosition: "top"` through creation,
-`editLegend` and `editLegendLayout`. Every legend title style accepts only
+side. Gradient title placement accepts `titlePosition: "top" | "bottom"` through
+creation, `editLegend` and `editLegendLayout`. Gradient direction is independent
+of its position; editing `direction: "auto"` removes the explicit orientation.
+Bottom titles follow the complete strip/tick/label bounds with a 12-pixel gap. Every legend title style accepts only
 color and typography; use `labels.offset` for label spacing. Interval legends support the four edges and four plot corners and
 `layout: "edge"`; top/bottom grids also accept alignment, direction, columns
 and inline titles. Side positions require vertical flow, center alignment,
@@ -13671,6 +13760,19 @@ title or count preserves independent size styles. Other targets remain intact.
 
 ## Editing one legend block
 
+A block-local `position` accepts the eight named anchors. `"inherit"` removes
+only that override, restoring the target group's placement or the legacy family
+placement. The same override is used by `editLegend({ channel, position })` and
+`editLegendLayout({ channel, position })`; without a singular selector, position
+continues to move the whole group. Group position, `at`, and block-layout edits
+preserve local overrides. Locally placed blocks are excluded from inherited
+packing and are measured independently, including titles, labels and frames.
+Corners use the existing 8px plot inset; outside edges retain native family gaps
+and the existing axis-lane policy. No coordinates, automatic Canvas growth, or
+extra offset option is introduced. Conflicting occupied guides fail atomically.
+A merged block moves through either member alias. Merging different local anchors
+requires resetting them or supplying an explicit whole-group position.
+
 Use `editLegendBlock()` when one mark has several legend blocks and an edit
 must apply to only one of them. Both selectors are required: `target` is the
 owning mark ID and `channel` identifies the logical block.
@@ -13700,7 +13802,7 @@ block, selecting either member edits that same block; a later call replaces the
 earlier block-local value.
 
 The action accepts `title`, `values`, `count`, `order`, `gap`, `text`, `symbol`,
-and `labelMap`. An empty title hides only that block's title. Exact `values` and
+`labelMap`, and `position`. An empty title hides only that block's title. Exact `values` and
 `count` apply to continuous size, opacity, stroke-width, and color-symbol blocks. `order`
 applies to a categorical block and must list every current category exactly
 once. `text` changes item-label typography and color. `symbol.size` is point
@@ -13869,6 +13971,20 @@ program.editLegendBlock({
 Empty strings hide text while preserving the sample and its glyph. Unmatched values keep the existing
 formatter. Use `labelMap: "auto"` to remove the override. Opacity, stroke-width and discrete-size blocks
 reject this map. Values are compared exactly, so zero and negative zero are duplicate keys.
+
+### Dashed frames
+
+Pass an even-length dash sequence on a legend border:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+// Fragment: program already owns one legend.
+program.editLegendBorder({ border: { strokeDash: [4, 2, 6, 1] } });
+```
+
+The pattern continues around all four sides. Use `strokeDash: []` for a solid frame or `border: false`
+to remove it. Dash entries must be finite and nonnegative; odd-length arrays are rejected.
 
 ## Related
 
@@ -15632,6 +15748,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createRegressionData`](./reference/actions/charts-data/#createregressiondata) | H2 | user-facing | core |
 | [`createRegressionLine`](./reference/actions/statistics/#createregressionline) | H1 | user-facing | statistics |
 | [`createRegressionPlot`](./reference/actions/charts-data/#createregressionplot) | H0, H1 | user-facing | charts |
+| [`createRegressionStatisticsData`](./reference/actions/charts-data/#createregressionstatisticsdata) | H2 | user-facing | core |
 | [`createRosePlot`](./reference/actions/charts-data/#createroseplot) | H0 | user-facing | charts |
 | [`createRugPlot`](./reference/actions/charts-data/#createrugplot) | H0 | user-facing | charts |
 | [`createRuleMark`](./reference/actions/marks/#createrulemark) | H2 | user-facing | marks |
@@ -15729,6 +15846,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editRegressionBand`](./reference/actions/statistics/#editregressionband) | H1, H3 | user-facing | statistics |
 | [`editRegressionData`](./reference/actions/charts-data/#editregressiondata) | H2 | user-facing | core |
 | [`editRegressionLine`](./reference/actions/statistics/#editregressionline) | H1, H3 | user-facing | statistics |
+| [`editRegressionStatisticsData`](./reference/actions/charts-data/#editregressionstatisticsdata) | H2 | user-facing | core |
 | [`editRScale`](./reference/actions/charts-data/#editrscale) | H2 | user-facing | core |
 | [`editRuleMark`](./reference/actions/marks/#editrulemark) | H3 | user-facing | marks |
 | [`editScale`](./reference/actions/charts-data/#editscale) | H2 | user-facing | core |
@@ -16401,14 +16519,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Required | `string` |
 | `groupBy` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
-| `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
+| `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
 | `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -16420,11 +16538,43 @@ createRegressionData({
 })
 ```
 
-Create immutable linear, polynomial, or LOESS fitted rows at observed unique x
+Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x
 values. Linear and polynomial fits support normal or Student-t mean or prediction bounds;
 LOESS is line-only. Optional `robustIterations` (integer `0..32`, default `0`)
 adds residual reweighting; see [regression](./api/regression/) for the estimator policy.
 [Data](./api/data/)
+
+## `createRegressionStatisticsData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
+```
+
+Named option contracts: [`RegressionStatisticsDataOptions`](./reference/types/#type-regressionstatisticsdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `source` | Required | `string` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createRegressionStatisticsData({ id, source })
+```
+
+Create observation counts, intercepts, slopes, and R-squared from an explicit existing linear fit.
+Grouped fits retain their original grouping field and typed first-seen group order.
+Constant responses produce `rSquared: null`.
+[Linear fit statistics](./api/data/statistical-transforms/#fit-statistics)
 
 ## `createWindowData`
 
@@ -16749,14 +16899,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Required | `string` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
-| `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
+| `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
 | `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 | `x` | Optional / branch-dependent | `string \| undefined` |
 | `y` | Optional / branch-dependent | `string \| undefined` |
@@ -16764,6 +16914,37 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused core data editing](./reference/actions/charts-data/#focused-core-data-editing).
+
+## `editRegressionStatisticsData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
+```
+
+Named option contracts: [`EditRegressionStatisticsDataOptions`](./reference/types/#type-editregressionstatisticsdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editRegressionStatisticsData({ target?, source? })
+```
+
+Revise a standalone statistics owner's linear fit source and replay its consumers atomically.
+Omitted source preserves the current fit. Target omission requires a current or unique statistics owner.
+[Linear fit statistics](./api/data/statistical-transforms/#fit-statistics)
 
 ## `createCoordinate`
 
@@ -18379,14 +18560,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
 | `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
-| `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
+| `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
 | `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
@@ -18400,8 +18581,8 @@ The following call patterns are abbreviated examples; the declaration above owns
 createRegressionPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, groupBy?, method?, band?, line?, guides? })
 ```
 
-Create a complete scatter plot with an existing regression data, line, and
-optional interval-band hierarchy. `groupBy: false` is preserved as an explicit
+Create a scatter plot with fitted regression data, a line, and optional interval bands.
+`groupBy: false` is preserved as an explicit
 ungrouped model request.
 
 ## `createLinePlot`
@@ -18603,6 +18784,8 @@ createRugPlot({ id?, data?, y, edge: "left" | "right", tick?, guides? })
 Create a one-dimensional distribution from quantitative or temporal observations.
 Ticks use an explicit plot edge as their constant position, so no dummy field is
 needed. The default guide contains only the measure axis.
+
+Its measure grid follows a continuous quantitative or temporal scale and rejects explicit `bandPosition`.
 
 ## `createStripPlot`
 
@@ -19096,7 +19279,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; } \| undefined` |
 | `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| DensityPlotGuideOptions \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false \| CartesianGridOptions \| undefined; }) \| undefined` |
 | `valueChannel` | Optional / branch-dependent | `"x" \| "y" \| undefined` |
 | `x` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |
 | `y` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |
@@ -22736,14 +22919,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `sourceBinding` | Optional / branch-dependent | `"fixed" \| "follow" \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
-| `method` | Optional / branch-dependent | `"linear" \| "loess" \| "polynomial" \| undefined` |
+| `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
+| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
 | `span` | Optional / branch-dependent | `number \| undefined` |
 | `robustIterations` | Optional / branch-dependent | `number \| undefined` |
 | `confidenceMethod` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
-| `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
 | `band` | Optional / branch-dependent | `false \| RegressionBandOptions \| undefined` |
 
@@ -23476,6 +23659,8 @@ are outside this facade. This action is available from `ggaction` and is absent 
 
 See the [complete density workflow](./tutorials/density-area/#complete-density-facade).
 
+Both value and density grid directions follow continuous scales and reject explicit `bandPosition`.
+
 ## `createHorizonPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0, H1.
@@ -23524,6 +23709,8 @@ The original x axis and vertical grid are the only automatic guides. Folded y/ho
 band legend options accept only false. Palette owns fill; area appearance accepts opacity, stroke,
 strokeWidth and curve. Explicit opacity is applied after encoding. Revise statistics with editHorizon
 and style with editAreaMark. See the [Horizon tutorial](./tutorials/horizon/).
+
+The vertical grid follows continuous original x and rejects explicit `bandPosition`.
 
 ## Focused statistical data editing
 
@@ -23775,8 +23962,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `coordinate` | Optional / branch-dependent | `{ id?: string \| undefined; type?: "auto" \| "cartesian" \| "parallel" \| "polar" \| undefined; } \| undefined` |
-| `x` | Optional / branch-dependent | `false \| CompleteAxisOptions<XAxisPosition> \| undefined` |
-| `y` | Optional / branch-dependent | `false \| CompleteAxisOptions<YAxisPosition> \| undefined` |
+| `x` | Optional / branch-dependent | `false \| CompleteAxisOptions<XAxisPosition> \| readonly [NamedCompleteAxis<XAxisPosition>, ...NamedCompleteAxis<XAxisPosition>[]] \| undefined` |
+| `y` | Optional / branch-dependent | `false \| CompleteAxisOptions<YAxisPosition> \| readonly [NamedCompleteAxis<YAxisPosition>, ...NamedCompleteAxis<YAxisPosition>[]] \| undefined` |
 | `theta` | Optional / branch-dependent | `false \| CompletePolarAxisOptions \| undefined` |
 | `radius` | Optional / branch-dependent | `false \| CompleteRadialAxisOptions \| undefined` |
 
@@ -23807,13 +23994,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale"> \| undefined` |
-| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale"> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
 
 Behavior, inference, resets, and errors: [Complete single-channel axes](./reference/actions/guides/#complete-single-channel-axes).
 
@@ -23835,13 +24023,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale"> \| undefined` |
-| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale"> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
 
 Behavior, inference, resets, and errors: [Complete single-channel axes](./reference/actions/guides/#complete-single-channel-axes).
 
@@ -23852,7 +24041,7 @@ Behavior, inference, resets, and errors: [Complete single-channel axes](./refere
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createXAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: XAxisPosition }): ChartProgram;
+createXAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }): ChartProgram;
 ```
 
 Named option contracts: [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleoptions) · [`XAxisPosition`](./reference/types/#type-xaxisposition).
@@ -23865,6 +24054,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 
@@ -23877,7 +24067,7 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./refer
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createYAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: YAxisPosition }): ChartProgram;
+createYAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }): ChartProgram;
 ```
 
 Named option contracts: [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleoptions) · [`YAxisPosition`](./reference/types/#type-yaxisposition).
@@ -23890,6 +24080,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 
@@ -23902,7 +24093,7 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./refer
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editXAxisLine(options?: AxisLineStyleOptions & { position?: XAxisPosition }): ChartProgram;
+editXAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: XAxisPosition }): ChartProgram;
 ```
 
 Named option contracts: [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleoptions) · [`XAxisPosition`](./reference/types/#type-xaxisposition).
@@ -23915,6 +24106,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 
 Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./reference/actions/guides/#axis-lines-ticks-and-labels).
@@ -23926,7 +24118,7 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./refer
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editYAxisLine(options?: AxisLineStyleOptions & { position?: YAxisPosition }): ChartProgram;
+editYAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: YAxisPosition }): ChartProgram;
 ```
 
 Named option contracts: [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleoptions) · [`YAxisPosition`](./reference/types/#type-yaxisposition).
@@ -23939,6 +24131,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 
 Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./reference/actions/guides/#axis-lines-ticks-and-labels).
@@ -23961,6 +24154,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -23992,6 +24186,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -24029,6 +24224,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
 | `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -24059,6 +24255,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
 | `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -24083,6 +24280,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -24124,6 +24322,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -24181,6 +24380,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -24221,6 +24421,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -24245,6 +24446,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -24272,6 +24474,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -24299,6 +24502,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -24325,6 +24529,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -24351,6 +24556,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
@@ -24385,6 +24591,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
@@ -24419,6 +24626,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
@@ -24452,6 +24660,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
@@ -24485,13 +24694,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<XAxisPosition>, "position" \| "scale"> \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<XAxisPosition>, "position" \| "scale"> \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale"> \| undefined` |
-| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale"> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
 
 Behavior, inference, resets, and errors: [Complete single-channel axes](./reference/actions/guides/#complete-single-channel-axes).
 
@@ -24513,13 +24723,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<YAxisPosition>, "position" \| "scale"> \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<YAxisPosition>, "position" \| "scale"> \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale"> \| undefined` |
-| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale"> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
 
 Behavior, inference, resets, and errors: [Complete single-channel axes](./reference/actions/guides/#complete-single-channel-axes).
 
@@ -24541,6 +24752,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 
@@ -24564,6 +24776,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 
@@ -24807,7 +25020,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
-| `titlePosition` | Optional / branch-dependent | `"left" \| "top" \| undefined` |
+| `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `readonly number[] \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -24914,6 +25127,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
+| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
+| `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `LegendTitleStyleEditOptions \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
@@ -24923,14 +25138,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
 | `order` | Optional / branch-dependent | `LegendOrder \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
 | `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
-| `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
-| `titlePosition` | Optional / branch-dependent | `"left" \| "top" \| undefined` |
+| `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
@@ -24994,6 +25207,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Required | `string` |
 | `channel` | Required | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth"` |
+| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `title` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Optional / branch-dependent | `"auto" \| readonly [number, ...number[]] \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -25049,14 +25263,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
-| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
+| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
 | `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
-| `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
+| `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
-| `titlePosition` | Optional / branch-dependent | `"left" \| "top" \| undefined` |
+| `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused legend edits](./reference/actions/guides/#focused-legend-edits).
@@ -25488,7 +25702,7 @@ Edit selected radial components; `angle` moves the whole axis.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-removeThetaAxis(options?: RemoveAxisOptions): ChartProgram;
+removeThetaAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
 ```
 
 Named option contracts: [`RemoveAxisOptions`](./reference/types/#type-removeaxisoptions).
@@ -25517,7 +25731,7 @@ Remove the complete theta-axis resource. [Axes](./api/axes/#removing-an-axis)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-removeRadialAxis(options?: RemoveAxisOptions): ChartProgram;
+removeRadialAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
 ```
 
 Named option contracts: [`RemoveAxisOptions`](./reference/types/#type-removeaxisoptions).
@@ -26936,6 +27150,8 @@ interface ChartProgramActions {
   createImputedData(options: ImputedDataOptions): ChartProgram;
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
+  createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
+  editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createECDFData(options: ECDFDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
@@ -27097,10 +27313,10 @@ interface ChartProgramActions {
   editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;
   editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;
   editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;
-  createXAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: XAxisPosition }): ChartProgram;
-  createYAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: YAxisPosition }): ChartProgram;
-  editXAxisLine(options?: AxisLineStyleOptions & { position?: XAxisPosition }): ChartProgram;
-  editYAxisLine(options?: AxisLineStyleOptions & { position?: YAxisPosition }): ChartProgram;
+  createXAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }): ChartProgram;
+  createYAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }): ChartProgram;
+  editXAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: XAxisPosition }): ChartProgram;
+  editYAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: YAxisPosition }): ChartProgram;
   createXAxisTicks(options?: AxisTickOptions<XAxisPosition>): ChartProgram;
   createYAxisTicks(options?: AxisTickOptions<YAxisPosition>): ChartProgram;
   editXAxisTicks(options?: Omit<AxisTickOptions<XAxisPosition>, "scale">): ChartProgram;
@@ -27123,8 +27339,8 @@ interface ChartProgramActions {
   editRadialAxis(options: EditRadialAxisOptions): ChartProgram;
   removeXAxis(options?: RemoveAxisOptions): ChartProgram;
   removeYAxis(options?: RemoveAxisOptions): ChartProgram;
-  removeThetaAxis(options?: RemoveAxisOptions): ChartProgram;
-  removeRadialAxis(options?: RemoveAxisOptions): ChartProgram;
+  removeThetaAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
+  removeRadialAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
   createGrid(options?: CreateGridOptions): ChartProgram;
   createHorizontalGrid(options?: GridDirectionOptions): ChartProgram;
   createVerticalGrid(options?: GridDirectionOptions): ChartProgram;
@@ -27403,6 +27619,8 @@ Related types: [`RotationInput`](./reference/types/#type-rotationinput).
 ```typescript
 export interface AxisLabelOptions<P extends string>
   extends CartesianAxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   scale?: string;
   position?: P;
   count?: number;
@@ -27447,6 +27665,8 @@ export interface AxisLineStyleOptions {
 ```typescript
 export interface AxisTickOptions<P extends string>
   extends CartesianAxisTickStyleOptions {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   scale?: string;
   position?: P;
   count?: number;
@@ -27475,6 +27695,8 @@ Related types: [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleopt
 
 ```typescript
 export interface AxisTicksAndLabelsOptions<P extends string> {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   scale?: string;
   position?: P;
   count?: number;
@@ -27492,6 +27714,8 @@ Related types: [`AxisValue`](./reference/types/#type-axisvalue) · [`CartesianAx
 
 ```typescript
 export interface AxisTitleOptions<P extends string> {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   /** Signed logical pixels: positive right for x, down for y, independent of scale reversal. */
   alongOffset?: number;
   align?: "left" | "center" | "right";
@@ -28072,8 +28296,8 @@ type BoxPlotWidth = { band?: number; pixels?: never } | { band?: never; pixels: 
 
 ```typescript
 type CAxes = Omit<CartesianAxesOptions, "x" | "y"> & {
-  x?: false | CAxis<XAxisPosition>;
-  y?: false | CAxis<YAxisPosition>;
+  x?: false | CAxis<XAxisPosition> | readonly [CAxis<XAxisPosition> & { id: string }, ...(CAxis<XAxisPosition> & { id: string })[]];
+  y?: false | CAxis<YAxisPosition> | readonly [CAxis<YAxisPosition> & { id: string }, ...(CAxis<YAxisPosition> & { id: string })[]];
 };
 ```
 
@@ -28085,7 +28309,7 @@ Related types: [`CartesianAxesOptions`](./reference/types/#type-cartesianaxesopt
 
 ```typescript
 type CAxis<P extends string> = Omit<CompleteAxisOptions<P>, "ticksAndLabels"> & {
-  ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position">;
+  ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position" | "target">;
 };
 ```
 
@@ -28553,14 +28777,16 @@ export type ColorLayout =
 
 ```typescript
 export interface CompleteAxisOptions<P extends string> {
+  /** Omission retains the canonical x/y identity. */
+  id?: string;
   /** Non-negative outward displacement of the complete axis frame in logical pixels. */
   offset?: number;
   scale?: string;
   coordinate?: string;
   position?: P;
   line?: false | AxisLineStyleOptions;
-  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position">;
-  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position">;
+  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">;
+  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position" | "target">;
 }
 ```
 
@@ -28743,6 +28969,19 @@ Related types: [`ParseTimeFormat`](./reference/types/#type-parsetimeformat).
 export type ConfidenceIntervalMethod = "normal" | "student-t";
 ```
 
+### `ContinuousCartesianGridOptions` {#type-continuouscartesiangridoptions}
+
+ Expand ContinuousCartesianGridOptions
+
+```typescript
+type ContinuousCartesianGridOptions = {
+  vertical?: boolean | ContinuousGridDirectionOptions;
+  horizontal?: boolean | ContinuousGridDirectionOptions;
+};
+```
+
+Related types: [`ContinuousGridDirectionOptions`](./reference/types/#type-continuousgriddirectionoptions).
+
 ### `ContinuousColorInterpolation` {#type-continuouscolorinterpolation}
 
  Expand ContinuousColorInterpolation
@@ -28769,6 +29008,19 @@ export type ContinuousColorScaleOptions =
 ```
 
 Related types: [`NonPointContinuousColorScaleOptions`](./reference/types/#type-nonpointcontinuouscolorscaleoptions).
+
+### `ContinuousGridDirectionOptions` {#type-continuousgriddirectionoptions}
+
+ Expand ContinuousGridDirectionOptions
+
+```typescript
+type ContinuousGridDirectionOptions = Omit<GridDirectionOptions, "bandPosition"> & {
+  /** Continuous position scales do not have categorical band edges. */
+  bandPosition?: never;
+};
+```
+
+Related types: [`GridDirectionOptions`](./reference/types/#type-griddirectionoptions).
 
 ### `ContinuousSizeScaleOptions` {#type-continuoussizescaleoptions}
 
@@ -28828,7 +29080,7 @@ export type CreateAreaPlotOptions = {
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
   area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
-  guides?: false | DensityPlotGuideOptions;
+  guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
@@ -28837,7 +29089,7 @@ export type CreateAreaPlotOptions = {
 );
 ```
 
-Related types: [`ColorLayout`](./reference/types/#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](./reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](./reference/types/#type-palette) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`DensityPlotGuideOptions`](./reference/types/#type-densityplotguideoptions) · [`AreaPlotIndependentChannel`](./reference/types/#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](./reference/types/#type-areaplotmeasurechannel).
+Related types: [`ColorLayout`](./reference/types/#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](./reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](./reference/types/#type-palette) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`DensityPlotGuideOptions`](./reference/types/#type-densityplotguideoptions) · [`CartesianGridOptions`](./reference/types/#type-cartesiangridoptions) · [`AreaPlotIndependentChannel`](./reference/types/#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](./reference/types/#type-areaplotmeasurechannel).
 
 ### `CreateAxesOptions` {#type-createaxesoptions}
 
@@ -28849,14 +29101,14 @@ export interface CreateAxesOptions {
     id?: string;
     type?: "auto" | "cartesian" | "polar" | "parallel";
   };
-  x?: false | CompleteAxisOptions<XAxisPosition>;
-  y?: false | CompleteAxisOptions<YAxisPosition>;
+  x?: false | CompleteAxisOptions<XAxisPosition> | readonly [NamedCompleteAxis<XAxisPosition>, ...NamedCompleteAxis<XAxisPosition>[]];
+  y?: false | CompleteAxisOptions<YAxisPosition> | readonly [NamedCompleteAxis<YAxisPosition>, ...NamedCompleteAxis<YAxisPosition>[]];
   theta?: false | CompletePolarAxisOptions;
   radius?: false | CompleteRadialAxisOptions;
 }
 ```
 
-Related types: [`CompleteAxisOptions`](./reference/types/#type-completeaxisoptions) · [`XAxisPosition`](./reference/types/#type-xaxisposition) · [`YAxisPosition`](./reference/types/#type-yaxisposition) · [`CompletePolarAxisOptions`](./reference/types/#type-completepolaraxisoptions) · [`CompleteRadialAxisOptions`](./reference/types/#type-completeradialaxisoptions).
+Related types: [`CompleteAxisOptions`](./reference/types/#type-completeaxisoptions) · [`XAxisPosition`](./reference/types/#type-xaxisposition) · [`NamedCompleteAxis`](./reference/types/#type-namedcompleteaxis) · [`YAxisPosition`](./reference/types/#type-yaxisposition) · [`CompletePolarAxisOptions`](./reference/types/#type-completepolaraxisoptions) · [`CompleteRadialAxisOptions`](./reference/types/#type-completeradialaxisoptions).
 
 ### `CreateBarPlotOptions` {#type-createbarplotoptions}
 
@@ -30155,6 +30407,16 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
 
 Related types: [`DatasetNormalizedBaseTransform`](./reference/types/#type-datasetnormalizedbasetransform) · [`NormalizeZeroDenominator`](./reference/types/#type-normalizezerodenominator) · [`DatasetNormalizeBaselineTransform`](./reference/types/#type-datasetnormalizebaselinetransform).
 
+### `DatasetRegressionStatisticsTransform` {#type-datasetregressionstatisticstransform}
+
+ Expand DatasetRegressionStatisticsTransform
+
+```typescript
+export interface DatasetRegressionStatisticsTransform {
+  readonly type: "regressionStatistics";
+}
+```
+
 ### `DatasetRegressionTransform` {#type-datasetregressiontransform}
 
  Expand DatasetRegressionTransform
@@ -30184,6 +30446,16 @@ export type DatasetRegressionTransform = {
       | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
       | { confidence: number; confidenceMethod?: never; level?: never }
     ))))
+  | {
+      method: "exp";
+      interval: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+    }
   | {
       method: "loess";
       span: number;
@@ -30336,6 +30608,7 @@ export type DatasetTransform =
   | DatasetFilterTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
+  | DatasetRegressionStatisticsTransform
   | DatasetSortTransform
   | DatasetDensityTransform
   | DatasetECDFTransform
@@ -30348,7 +30621,7 @@ export type DatasetTransform =
   | DatasetWindowTransform;
 ```
 
-Related types: [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetSortTransform`](./reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
+Related types: [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](./reference/types/#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](./reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -30581,12 +30854,13 @@ Related types: [`DensityWidthResolution`](./reference/types/#type-densitywidthre
  Expand DensityPlotGuideOptions
 
 ```typescript
-export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend"> & {
+export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend" | "grid"> & {
+  grid?: false | ContinuousCartesianGridOptions;
   legend?: false | DensityPlotLegendOptions;
 };
 ```
 
-Related types: [`CCategoricalGuides`](./reference/types/#type-ccategoricalguides) · [`DensityPlotLegendOptions`](./reference/types/#type-densityplotlegendoptions).
+Related types: [`CCategoricalGuides`](./reference/types/#type-ccategoricalguides) · [`ContinuousCartesianGridOptions`](./reference/types/#type-continuouscartesiangridoptions) · [`DensityPlotLegendOptions`](./reference/types/#type-densityplotlegendoptions).
 
 ### `DensityPlotLegendOptions` {#type-densityplotlegendoptions}
 
@@ -30742,14 +31016,15 @@ export interface ECDFOutputFields {
 
 ```typescript
 export interface EditAxisOptions<P extends string> {
+  target?: string;
   /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
   offset?: number;
   position?: P;
   line?: false | AxisLineStyleOptions;
-  ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position">;
-  labels?: false | Omit<AxisLabelOptions<P>, "scale" | "position">;
-  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position">;
-  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position">;
+  ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position" | "target">;
+  labels?: false | Omit<AxisLabelOptions<P>, "scale" | "position" | "target">;
+  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">;
+  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position" | "target">;
 }
 ```
 
@@ -31234,6 +31509,8 @@ Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderived
 export interface EditLegendBlockOptions {
   target: string;
   channel: LegendChannel;
+  /** Block-local anchor; inherit removes only this override. */
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   title?: string;
   values?: readonly [number, ...number[]] | "auto";
   count?: number;
@@ -31288,20 +31565,21 @@ export interface EditLegendLayoutOptions {
   channel?: LegendChannel;
   layout?: "edge" | "legacy-bottom";
   /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
-  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   /** Opt into whole-target legend group layout; a requested row never wraps. */
   blockLayout?: "row" | "column" | "wrap";
   /** Move the complete occupied group top-left to plot-relative logical pixels. A later position clears this anchor. */
   at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
-  /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
-  direction?: "horizontal" | "vertical";
+  /** Gradient orientation is independent of position; auto is gradient-only. Categorical sides require vertical. */
+  direction?: "horizontal" | "vertical" | "auto";
   /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
-  titlePosition?: "top" | "left";
+  /** bottom is gradient-only; left retains the existing categorical/opacity rules. */
+  titlePosition?: "top" | "left" | "bottom";
   /** Explicit spacing override; vertical creation defaults to 18 logical pixels. */
   itemGap?: number;
 }
@@ -31315,9 +31593,13 @@ Related types: [`LegendChannel`](./reference/types/#type-legendchannel).
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position"> {
   /** Select one existing block; cannot accompany channels. */
   channel?: LegendChannel;
+  /** inherit is allowed only with a singular channel selector. */
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
+  /** Gradient-only auto resets orientation. */
+  direction?: "horizontal" | "vertical" | "auto";
   titleStyle?: LegendTitleStyleEditOptions;
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
@@ -31578,6 +31860,17 @@ export interface EditRegressionOptions {
 ```
 
 Related types: [`RegressionMethod`](./reference/types/#type-regressionmethod) · [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod) · [`RegressionInterval`](./reference/types/#type-regressioninterval) · [`RegressionPredictOptions`](./reference/types/#type-regressionpredictoptions) · [`RegressionBandOptions`](./reference/types/#type-regressionbandoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
+
+### `EditRegressionStatisticsDataOptions` {#type-editregressionstatisticsdataoptions}
+
+ Expand EditRegressionStatisticsDataOptions
+
+```typescript
+export interface EditRegressionStatisticsDataOptions {
+  target?: string;
+  source?: string;
+}
+```
 
 ### `EditScaleOptions` {#type-editscaleoptions}
 
@@ -32938,12 +33231,12 @@ Related types: [`Palette`](./reference/types/#type-palette).
 ```typescript
 export type HorizonPlotGuideOptions = {
   axes?: false | (Omit<CAxes, "y"> & { y?: false });
-  grid?: false | (Pick<CartesianGridOptions, "vertical"> & { horizontal?: false });
+  grid?: false | { vertical?: boolean | ContinuousGridDirectionOptions; horizontal?: false };
   legend?: false;
 };
 ```
 
-Related types: [`CAxes`](./reference/types/#type-caxes) · [`CartesianGridOptions`](./reference/types/#type-cartesiangridoptions).
+Related types: [`CAxes`](./reference/types/#type-caxes) · [`ContinuousGridDirectionOptions`](./reference/types/#type-continuousgriddirectionoptions).
 
 ### `HorizonResolution` {#type-horizonresolution}
 
@@ -33274,6 +33567,8 @@ export interface LegendBlockTextPatch {
 
 ```typescript
 export interface LegendBorderOptions {
+  /** Even-length non-negative finite dash sequence; [] restores a solid frame. */
+  strokeDash?: readonly number[];
   color?: string;
   lineWidth?: number;
   padding?: number;
@@ -33316,13 +33611,14 @@ export interface LegendOptions {
   at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
-  /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
+  /** Gradient orientation is independent of position; auto is gradient-only. Categorical sides require vertical. */
   direction?: "horizontal" | "vertical";
   /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
-  titlePosition?: "top" | "left";
+  /** bottom is gradient-only; left retains the existing categorical/opacity rules. */
+  titlePosition?: "top" | "left" | "bottom";
   /** false hides the title while retaining its inferred field text. */
   /** LF, CRLF and CR preserve explicit title lines, including blank lines. */
   title?: string | false;
@@ -33686,6 +33982,16 @@ export type MeasuredRadiusScaleOptions = Pick<RadiusScaleOptions, "id" | "domain
 ```
 
 Related types: [`RadiusScaleOptions`](./reference/types/#type-radiusscaleoptions).
+
+### `NamedCompleteAxis` {#type-namedcompleteaxis}
+
+ Expand NamedCompleteAxis
+
+```typescript
+export type NamedCompleteAxis<P extends string> = CompleteAxisOptions<P> & { id: string };
+```
+
+Related types: [`CompleteAxisOptions`](./reference/types/#type-completeaxisoptions).
 
 ### `NonPointBandPositionScaleOptions` {#type-nonpointbandpositionscaleoptions}
 
@@ -35241,7 +35547,7 @@ export type RegressionInterval = "mean" | "prediction";
  Expand RegressionMethod
 
 ```typescript
-export type RegressionMethod = "linear" | "polynomial" | "loess";
+export type RegressionMethod = "linear" | "polynomial" | "loess" | "exp";
 ```
 
 ### `RegressionOptions` {#type-regressionoptions}
@@ -35250,6 +35556,9 @@ export type RegressionMethod = "linear" | "polynomial" | "loess";
 
 ```typescript
 export type RegressionOptions = RegressionCommonOptions & (
+  | (Extract<RegressionParameterOptions, { method: "exp" }> & {
+      band?: false;
+    })
   | (Extract<RegressionParameterOptions, { method?: "linear" }> & {
       band?: false | RegressionBandOptions;
     })
@@ -35270,6 +35579,17 @@ Related types: [`RegressionCommonOptions`](./reference/types/#type-regressioncom
 
 ```typescript
 type RegressionParameterOptions =
+  | {
+      method: "exp";
+      interval?: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+      predict?: RegressionPredictOptions;
+    }
   | {
       method?: "linear";
       degree?: never;
@@ -35306,7 +35626,7 @@ type RegressionParameterOptions =
     };
 ```
 
-Related types: [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod) · [`RegressionInterval`](./reference/types/#type-regressioninterval) · [`RegressionPredictOptions`](./reference/types/#type-regressionpredictoptions).
+Related types: [`RegressionPredictOptions`](./reference/types/#type-regressionpredictoptions) · [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod) · [`RegressionInterval`](./reference/types/#type-regressioninterval).
 
 ### `RegressionPlotBaseOptions` {#type-regressionplotbaseoptions}
 
@@ -35363,12 +35683,24 @@ export type RegressionPredictOptions =
   | { values?: never; domain: readonly [number, number]; steps: number };
 ```
 
+### `RegressionStatisticsDataOptions` {#type-regressionstatisticsdataoptions}
+
+ Expand RegressionStatisticsDataOptions
+
+```typescript
+export interface RegressionStatisticsDataOptions {
+  id: string;
+  source: string;
+}
+```
+
 ### `RemoveAxisOptions` {#type-removeaxisoptions}
 
  Expand RemoveAxisOptions
 
 ```typescript
 export interface RemoveAxisOptions {
+  target?: string;
   coordinate?: string;
   scale?: string;
 }
@@ -35630,13 +35962,14 @@ export type RowWindowFrame = {
  Expand RugGuideOptions
 
 ```typescript
-export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend"> & {
+export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend" | "grid"> & {
   axes?: false | CAxes;
+  grid?: false | ContinuousCartesianGridOptions;
   legend?: false;
 };
 ```
 
-Related types: [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions) · [`CAxes`](./reference/types/#type-caxes).
+Related types: [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions) · [`CAxes`](./reference/types/#type-caxes) · [`ContinuousCartesianGridOptions`](./reference/types/#type-continuouscartesiangridoptions).
 
 ### `RugMeasureChannel` {#type-rugmeasurechannel}
 
@@ -37508,12 +37841,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0fbefb520604f173d5b82bb04cf9524b1fa9c333/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0fbefb520604f173d5b82bb04cf9524b1fa9c333/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -37613,6 +37946,11 @@ objects. `count` counts rows and omits `field`; every other operation requires
 one. Output aliases, group fields, and the optional `members` alias must be
 distinct. The result contains concrete values and can be used immediately by
 marks or `bindMarkData`.
+
+The result supports at most 30,000 observed groups, including exactly 30,000.
+The limit counts distinct typed grouping keys, rather than input rows. A result
+of 30,001 groups fails atomically. Graphic item, path command, and work limits
+remain independent; a large summary does not increase those capacities.
 
 An ungrouped empty input produces one aggregate row, so a row count is `0`.
 A grouped empty input produces no observed groups. The action does not synthesize
@@ -39675,11 +40013,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:653e358ea25bab0ef255035440c71c52b637c49cf19e163ae5e65affc4299afb` |
+| Contract fingerprint | `sha256:e8f18e4bfa6d34b7a0fa7610efc436864801ebb6065c08699f6dcbf00f5ca134` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
-| Runtime source commit | `current` |
+| Runtime source commit | `0fbefb520604f173d5b82bb04cf9524b1fa9c333` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 282 |
+| Declared actions here | 284 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -39723,6 +40061,47 @@ forms described in their references.
 # Complete Axes and Labels
 
 [Axis family overview](./api/axes/)
+
+## Independent named Cartesian axes
+
+Create an axis with `id` when it needs an independent identity. The default IDs are
+`x` and `y`. Refine or remove a named axis with `target`, which selects the axis,
+not its mark or scale. This complete runnable program uses an independent right scale:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "share"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+import { chart } from "ggaction";
+
+const program = chart().createCanvas({ width: 600, height: 400, margin: 80 })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createScatterPlot({ x: "x", y: "y", guides: false })
+  .createYAxis()
+  .createScale({ id: "ratio", type: "linear", domain: [0, 1] })
+  .createYAxis({ id: "share", position: "right", scale: "ratio", coordinate: "main" })
+  .editYAxisTitle({ target: "share", text: "Share" });
+```
+
+`createAxes` and `createGuides.axes` also accept nonempty X/Y arrays, with an explicit
+`id` in every entry. Arrays create axes in entry order and fail atomically if any
+entry conflicts. A chart facade accepts the same arrays for its own position scales.
+One axis may occupy each physical side of a coordinate; moving another axis there
+fails even with a different frame offset. Named axes use one common side for their
+components. Move the complete axis to change that side; focused edits preserve it.
+
+An omitted `target` selects the canonical X/Y axis if present, otherwise the unique
+named axis in that channel. Several named candidates require an explicit target.
+Unknown IDs, wrong channels, conflicting scale/coordinate filters, reserved channel
+IDs and duplicate graphic identities fail. Polar and Parallel axes do not accept
+these selectors. A focused creator restores a missing component of an existing named
+axis; the complete creator establishes its identity. Removing the final component
+also removes the owner. Scale, data, Canvas, theme and editable persistence preserve
+all remaining owners. A grid with several eligible scales requires an explicit scale;
+conflicting axis tick policies require explicit grid `count` or `values`.
+
+For facet `axes: "outer"`, named components follow their actual top, right, bottom
+or left occupied edge, including incomplete rows. `axes: "each"` retains every axis.
+Named text bounds must fit the Canvas and remain separate from other axis text.
 
 ## Moving a complete axis and refining its text
 
@@ -39792,8 +40171,8 @@ program.createAxes({
 | Option | Type | Default |
 | --- | --- | --- |
 | `coordinate` | `{ id?, type? }` | unique coordinate used by x/y layers |
-| `x` | axis options or `false` | create when x is encoded |
-| `y` | axis options or `false` | create when y is encoded |
+| `x` | axis options, nonempty named-axis array, or `false` | create when x is encoded |
+| `y` | axis options, nonempty named-axis array, or `false` | create when y is encoded |
 | `theta` | Polar axis options or `false` | create when theta is encoded |
 | `radius` | Polar axis options or `false` | create when radius is encoded |
 

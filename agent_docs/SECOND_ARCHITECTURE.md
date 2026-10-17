@@ -331,11 +331,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 396,000 bytes |
-| `ggaction/basic` | 192,000 bytes |
-
-| `ggaction` | 397,000 bytes |
-| `ggaction/basic` | 194,000 bytes |
+| `ggaction` | 405,000 bytes |
+| `ggaction/basic` | 198,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -2284,3 +2281,17 @@ Canvas의 기존 fill owner는 정확한 CSS sentinel `none`을 투명 paint로 
 갱신한 Node24.21.0/npm11.19.0 최종 staged package는567entries,
 packed798617/unpacked3907920bytes로 기존567/799000/3908000 한도 안이다.
 따라서 최종 package 한도를 올리지 않으며 browser 예산도 유지한다.
+
+### 승인 기능23개 누적 검색
+
+회귀 통계·named axes·shared 순수 query·범례 세부 옵션과 막대 합성을 합친 공개 검색은
+822975bytes다. 옵션/예제/enum을 줄이지 않고 공유 상한만 최소1000bytes 단위823000으로
+갱신한다. source-boundaries30개와 누적 unit3198개는 현재 통합 소스에서 통과했다.
+
+같은 누적 Node24.21.0/npm11.19.0 staged package는579entries, packed821063,
+unpacked4009853bytes다. 각 branch 단독 예산 통과와 구분하여 누적 예산을 실제 entry579,
+packed822000/unpacked4010000으로만 갱신한다. 이전574/810000/3965000은 통과하지 않았다.
+
+누적 실제 설치 consumer는 Node24에서 Full404564/Basic197642/SVG7315 gzipbytes다.
+기존399000/195000은 실패했고, canonical table와 README 및 공유 owner만
+최소1000bytes 단위405000/198000으로 동기화한다. SVG25000은 유지한다.
