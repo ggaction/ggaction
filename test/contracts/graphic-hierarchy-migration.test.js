@@ -25,6 +25,8 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "named-shapes": ["canvas", "scatterPlot", "labels"],
+  "combined-legends": ["canvas", "scatterPlot", "colorSizeLegendSymbols", "colorSizeLegendLabels", "colorSizeLegendTitle"],
   "axis-owners": [
     "canvas", "horizontalGridLines", "scatterPlot", "xAxisLine", "xAxisTitle",
     "axis_quantity__Line", "axis_quantity__Ticks", "axis_quantity__Labels", "axis_quantity__Title",

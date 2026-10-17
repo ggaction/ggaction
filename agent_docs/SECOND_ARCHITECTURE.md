@@ -2474,3 +2474,14 @@ measured820007packed/4000493unpackedbytes. Narrow ceilings become
 The complete searchable option inventory measures821151bytes (ceiling821200).
 SVG remains25000gzipbytes; no public options, card fields or coverage floors
 are removed.
+
+### Complete feature integration measurements
+
+28개 기능과 named-shapes 예제를 합친 compact search는829294bytes로 측정됐다.
+기존829000검사2개는 실패하여 항목 삭제 없이 다음 최소1000bytes인830000만 적용한다.
+정량 color-size 결합의 grammar/materialization2모듈을 통합해 package entries는591이다.
+최종 packed/unpacked 및 browser 측정은 같은 통합 입력으로 재검증한다.
+
+Node24.19.0 통합 staged 입력은840502packed/4082583unpackedbytes로 측정됐다.
+기존836000/4064000 검사가 실패하여 최소1000bytes 단계841000/4083000만 적용한다.
+591개 entry와 모든 기존 옵션·데이터·coverage 기준은 유지한다.

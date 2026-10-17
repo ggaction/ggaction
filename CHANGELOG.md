@@ -16,6 +16,9 @@ All notable changes to `ggaction` are recorded in this file.
 - Added sampled size label maps, explicit categorical size-shape legend
   combinations, channel-selected text editors, dashed legend borders,
   independent gradient directions and bottom titles.
+- Compatible same-field quantitative color and point-size encodings can share
+  one sampled legend with one label list; both original scale mappings remain
+  independent through edits, splitting, replay and editable snapshots.
 - Sampled point-bearing legends support a clipping window without shrinking
   encoded areas. Explicit symbol-layer opacity applies once to the complete
   fill and outline, including SVG, Canvas, PNG and glyph-only PDF rasterization.
@@ -42,6 +45,8 @@ All notable changes to `ggaction` are recorded in this file.
   block anchors unless the author explicitly repositions the combined block.
 - Binned heatmaps preserve disabled axis titles and named axis arrays through
   the same guide-owner validation used by other Cartesian charts.
+- Facet parents restore each legend block's sampling window independently and
+  composed child windows preserve valid private graphic identities.
 
 ### Fixed
 

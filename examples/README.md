@@ -516,6 +516,12 @@ Refine a complete scatterplot with shape, physical area and angle encodings.
 
 Representative actions: `createScatterPlot`, `encodeShape`, `encodeSize`, `encodeAngle`. [Documentation](https://ggaction.github.io/ggaction/api/marks/point/#directional-shapes-and-area).
 
+### [Combined numeric legends](./combined-legends/)
+
+Combine compatible quantitative color and size without changing mark data.
+
+Representative actions: `encodeColor`, `encodeSize`, `createLegend`, `editLegend`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#quantitative-color-and-size).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started
