@@ -215,17 +215,17 @@ test("derives a bounded public option inventory without runtime prototype paths"
   const inventory = await buildPublicOptionInventory(actionCards);
 
   assert.equal(inventory.counts.publicActions, 275);
-  assert.equal(inventory.counts.topLevelOptionPaths, 2289);
-  assert.equal(inventory.counts.nestedOptionPaths, 10685);
-  assert.equal(inventory.counts.optionPaths, 12974);
-  assert.equal(inventory.counts.requiredOptionPaths, 11238);
-  assert.equal(inventory.counts.excludedOptionPaths, 1736);
-  assert.equal(inventory.counts.topLevelCategoricalPaths, 761);
-  assert.equal(inventory.counts.topLevelLiteralValues, 2996);
-  assert.equal(inventory.counts.literalFamilies, 170);
-  assert.equal(inventory.counts.pathLiteralRequirements, 7754);
-  assert.equal(inventory.counts.familyLiteralRequirements, 304);
-  assert.equal(inventory.counts.pathDiversityRequirements, 300);
+  assert.equal(inventory.counts.topLevelOptionPaths, 2356);
+  assert.equal(inventory.counts.nestedOptionPaths, 14449);
+  assert.equal(inventory.counts.optionPaths, 16805);
+  assert.equal(inventory.counts.requiredOptionPaths, 12187);
+  assert.equal(inventory.counts.excludedOptionPaths, 4618);
+  assert.equal(inventory.counts.topLevelCategoricalPaths, 790);
+  assert.equal(inventory.counts.topLevelLiteralValues, 3122);
+  assert.equal(inventory.counts.literalFamilies, 173);
+  assert.equal(inventory.counts.pathLiteralRequirements, 8815);
+  assert.equal(inventory.counts.familyLiteralRequirements, 315);
+  assert.equal(inventory.counts.pathDiversityRequirements, 369);
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:createCanvas.margin.top"), true);
   assert.equal(inventory.optionPaths.some(option => option.id ===
@@ -313,7 +313,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 1736 }
+    { "redacted-array": 4618 }
   );
   const values = id => optionById.get(id)?.values ?? [];
   assert.equal(optionById.has("option-path:createScatterPlot.x.scale.palette"), false);
@@ -357,7 +357,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 19575);
+  assert.equal(ledger.requirements.length, 21596);
   assert.throws(() => createScenarioCoverageLedger({
     publicInventory: inventory,
     rendererFeatures: [],
@@ -428,7 +428,7 @@ test("passes only trace-backed action and recursive option evidence plus observe
   });
 });
 
-test("observes nested collection parents through recursive trace count aliases", async () => {
+test("observes collection and named-axis array parents through recursive trace count aliases", async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
   const ledger = createScenarioCoverageLedger({
     publicInventory: inventory,
@@ -442,14 +442,20 @@ test("observes nested collection parents through recursive trace count aliases",
   });
   const traced = Object.freeze({
     ...base,
-    operations: Object.freeze(["createLegend"]),
-    directOperations: Object.freeze(["createLegend"]),
+    operations: Object.freeze(["createLegend", "createAxes", "createScatterPlot"]),
+    directOperations: Object.freeze(["createLegend", "createAxes", "createScatterPlot"]),
     directTrace: Object.freeze([Object.freeze({
       op: "createLegend",
       args: Object.freeze({
         symbol: Object.freeze({ layersCount: 2 })
       })
-    })])
+    }), Object.freeze({ op: "createAxes", args: summarizeArgs({
+      x: [{ id: "horizontal", title: { baseline: "top" } }],
+      y: [{ id: "vertical", title: { baseline: "top" } }]
+    }) }), Object.freeze({ op: "createScatterPlot", args: summarizeArgs({ guides: { axes: {
+      x: [{ id: "horizontal", title: { baseline: "top" } }],
+      y: [{ id: "vertical", title: { baseline: "top" } }]
+    } } }) })])
   });
   const report = summarizeScenarioFeatureCoverage({
     results: [traced],
@@ -465,6 +471,15 @@ test("observes nested collection parents through recursive trace count aliases",
     requirement.id === "option-path:createLegend.symbol.layers"
   );
   assert.equal(parent.occurrences, 1);
+  for (const [action, prefix] of [["createAxes", ""], ["createScatterPlot", "guides.axes."]]) {
+    for (const channel of ["x", "y"]) {
+      assert.equal(report.requirements.find(requirement =>
+        requirement.id === `option-path:${action}.${prefix}${channel}`).occurrences, 1);
+      assert.equal(report.requirements.find(requirement =>
+        requirement.id === `option-path:${action}.${prefix}${channel}.title.baseline`).occurrences, 0,
+      "a redacted array parent cannot claim an unseen object-branch leaf");
+    }
+  }
   assert.equal(ledger.requirements.some(requirement =>
     requirement.id === "option-path:createLegend.symbol.layers[]"
   ), false);

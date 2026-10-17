@@ -146,3 +146,21 @@ EOF
   Full/Basic runtime/TS/PNG/PDF/persistence/MCP/tutorial/browser 모두 PASS. Artifact `6b0b27b2a30e8f13c8410df73a65bbe0d24a1f74e989b960f5b4710e25957429`.
 - 실제 package581entries/818367packed/3994170unpacked, 검색821174bytes다. 기존 예산 초과
   실패 로그를 보존하고 unpacked/search만 최소3995000/822000으로 갱신했다.
+
+## Public inventory union-array 정확성
+
+- Named axis의 object|named-array 공개 타입을 실제 조회하면서 inventory가 array를 발견하면
+  object branch를 건너뛰는 기존 결함을 확인했다. Array branch가 같은 interface를 참조할 때
+  union-wide ancestry가 조기 cycle로 오인하는 경우와 배열 인덱스가 property depth를 추가하는
+  경우도 함께 고쳤다. Array/object 두 branch를 모두 남기며 기존 leaf 삭제는0이다.
+- 새 durable 계약은 양쪽 named 축의 id/frame/title baseline·align·alongOffset/tick dash map와
+  중첩 label align을 같은 property depth에서 확인한다. Color range object의 palette/name/count/
+  extent도 다시 required direct trace이고 redacted array는 기존 replacement 부모 규칙을 유지한다.
+- 현재 정확한 inventory는16805paths/12187required/4618explicit redacted-array다. Literal8815,
+  diversity369, ledger21596이다. Global count 기대값은 실제 parser 결과와 동기화하며 executable
+  요구 기준5회/3dataset·리터럴·다양성은 변경하지 않는다. 복원된 실제 profile는 후속 통합 의무다.
+
+- Inventory normal8회귀 PASS. Generic count alias 경로로 actual `summarizeArgs`의 xCount/yCount와
+  facade nested counts가 부모 option occurrence만 기록하고 숨겨진 object leaf를 허위 기록하지
+  않음을 확인했다. Alias 목록/array exclusion/coverage 하한은 변경하지 않았다. Named-array
+  입력의 actual5×3와 복원된 object branch의 실제 증거는 서로 대체하지 않는다.
