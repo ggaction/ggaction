@@ -311,6 +311,15 @@
     }
   },
   "tutorials": {
+    "named-shapes": {
+      "width": 960,
+      "height": 540,
+      "thumbnail": {
+        "width": 640,
+        "height": 360
+      },
+      "sourceHash": "3aaa20a97a08d8ebc03a2d36fdee8367c1cc1ee05c5cd2c300b292e1f666ae0c"
+    },
     "axis-owners": {
       "width": 940,
       "height": 540,

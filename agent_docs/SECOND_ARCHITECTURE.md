@@ -2457,3 +2457,10 @@ entries589, browser 및 전체 기능/coverage 기준은 유지한다.
 Histogram의 실제 연속형 grid 역할과 동기화한 문서를 포함한 macOS/Node22.23.1/npm10.9.8
 artifact는 unpacked4,049,330bytes다. 기존4,049,000한도 실패 로그를 보존하고 unpacked만
 다음 최소1,000bytes 단위4,050,000으로 올렸다. Entries587·packed832,000 한도는 유지한다.
+
+### Named-shape canonical example discovery budget
+
+승인된 wedge/arrow 정식 예제와 공개 설명을 추가한 compact search payload의 실측은
+828580bytes(macOS/Node22.23.1/npm10.9.8)다. 기존828000 검사2개는 실패했으며
+모든 검색 항목·action·옵션을 유지하고 최소1000단위829000으로만 갱신한다.
+공개 runtime/패키지/browser 또는 coverage 한도는 이 예제 연결로 바꾸지 않는다.

@@ -1410,3 +1410,19 @@
   actions: createLegend · editLegendSymbols
   tasks: comparison
   url: /api/legends/categorical/#recipe-layer-opacity
+
+- id: named-shapes
+  example: /examples/named-shapes/
+  title: Directional point shapes preserve area
+  image: /assets/images/named-shapes.png
+  alt: Wedge and arrow shapes at areas 100 and 225 with zero and ninety degree rotations
+  width: 960
+  height: 540
+  thumbnail: /assets/images/named-shapes-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 360
+  caption: Wedges rotate around their centroid; arrows rotate around their bounding-box center.
+  summary: Refine a complete scatterplot with shape, physical area and angle encodings.
+  actions: createScatterPlot · encodeShape · encodeSize · encodeAngle
+  tasks: shape size appearance
+  url: /api/marks/point/#directional-shapes-and-area
