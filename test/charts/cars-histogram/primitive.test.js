@@ -203,7 +203,9 @@ test("authors and renders the complete primitive cars histogram", () => {
   assert.equal(findCanvasCalls(context, "fillRect").length, 19);
   assert.equal(findCanvasCalls(context, "fillText").length, 23);
   assert.equal(findCanvasCalls(context, "moveTo").length, 40);
-  assert.equal(findCanvasCalls(context, "lineTo").length, 94);
+  // Each of the 18 bar outlines closes its fourth side with closePath.
+  assert.equal(findCanvasCalls(context, "lineTo").length, 76);
+  assert.equal(findCanvasCalls(context, "closePath").length, 18);
 
   const topLevelOps = new Set(program.trace.children.map(node => node.op));
   assert.deepEqual([...topLevelOps], [

@@ -17,12 +17,20 @@ import { chart as basic } from ${JSON.stringify(path.join(root, "types/basic.js"
 declare const p: ChartProgram;
 const options: LegendOptions = { representation: "symbols", values: [2,4,6,8], position: "top-left" };
 p.createLegend(options);
+p.createLegend({ combine: "color-size", values: [0,5,10], symbol: { type: "point", opacity: 0.7, strokeWidth: 1 } });
+p.editLegend({ combine: "color-size" });
+basic().createLegend({ combine: "color-size" });
+// @ts-expect-error Combined modes have a closed vocabulary.
+p.createLegend({ combine: "color-opacity" });
 p.editLegend({ representation: "symbols", values: [2,4] });
 p.editLegend({ representation: "gradient" });
 p.editLegend({ values: "auto", count: 5 });
 p.editLegendBlock({ target: "points", channel: "color", values: [2,4], symbol: { size: 25, strokeWidth: 1.5 } });
 p.createGuides({ legend: options });
 basic().createLegend(options);
+const colorSize: CreateScatterPlotOptions = { x: "x", y: "y", color: {field:"v",fieldType:"quantitative"}, size: "v", guides: {legend: {combine:"color-size",symbol:{opacity:0.7}}} };
+// @ts-expect-error A fused facade cannot override mapped sample radius.
+const colorSizeRadius: CreateScatterPlotOptions = { x: "x", y: "y", guides: {legend: {combine:"color-size",symbol:{radius:5}}} };
 const scatter: CreateScatterPlotOptions = { x: "x", y: "y", guides: { legend: { representation: "symbols", values: [2,4], symbol: { type: "point", radius: 5 } } } };
 const heatmap: CreateHeatmapOptions = { x: "x", y: "y", color: "value", guides: { legend: { representation: "symbols", values: [2,4] } } };
 p.createPolarScatterPlot({ theta: "x", radius: "y", guides: { legend: { representation: "symbols", symbol: { radius: 5 } } } });

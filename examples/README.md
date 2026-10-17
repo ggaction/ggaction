@@ -528,6 +528,12 @@ Style an existing legend with a complete line and point recipe.
 
 Representative actions: `createLegend`, `editLegendLabels`, `editLegendSymbols`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#layered-recipe-opacity).
 
+### [Combined numeric legends](./combined-legends/)
+
+Combine compatible quantitative color and size without changing mark data.
+
+Representative actions: `encodeColor`, `encodeSize`, `createLegend`, `editLegend`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#quantitative-color-and-size).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

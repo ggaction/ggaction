@@ -2621,13 +2621,16 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CartesianCategoricalGuideOptions;
+  guides?: false | (Omit<CartesianCategoricalGuideOptions, "grid"> & {
+    /** Bin position and count axes are continuous; neither grid has categorical band edges. */
+    grid?: false | ContinuousCartesianGridOptions;
+  });
 };
 ```
 
 </details>
 
-Related types: [`BasicHistogramEncoding`](#type-basichistogramencoding) · [`HistogramCategoricalColorChannel`](#type-histogramcategoricalcolorchannel) · [`RectStyleDetails`](#type-rectstyledetails) · [`FillPaint`](#type-fillpaint) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions).
+Related types: [`BasicHistogramEncoding`](#type-basichistogramencoding) · [`HistogramCategoricalColorChannel`](#type-histogramcategoricalcolorchannel) · [`RectStyleDetails`](#type-rectstyledetails) · [`FillPaint`](#type-fillpaint) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions) · [`ContinuousCartesianGridOptions`](#type-continuouscartesiangridoptions).
 
 ### `CreateHorizonPlotOptions` {#type-createhorizonplotoptions}
 
@@ -6528,9 +6531,10 @@ Related types: [`LegendSymbolLayer`](#type-legendsymbollayer).
 <summary>Expand FilledMarkLegendOptions</summary>
 
 ```typescript
-type FilledMarkLegendOptions = Omit<LegendOptions, "symbol" | "representation"> & (
-  | { representation?: "gradient"; symbol?: FilledLegendSymbolRecipe }
-  | { representation: "symbols"; symbol?: "auto" | { type?: "point"; radius?: number; stroke?: string; strokeWidth?: number } }
+type FilledMarkLegendOptions = Omit<LegendOptions, "symbol" | "representation" | "combine"> & (
+  | { combine?: "separate" | "size-shape"; representation?: "gradient"; symbol?: FilledLegendSymbolRecipe }
+  | { combine?: "separate" | "size-shape"; representation: "symbols"; symbol?: "auto" | { type?: "point"; radius?: number; stroke?: string; strokeWidth?: number } }
+  | { combine: "color-size"; representation?: never; symbol?: "auto" | { type?: "point"; stroke?: string; strokeWidth?: number; opacity?: number } }
 );
 ```
 
@@ -7658,8 +7662,8 @@ Related types: [`LegendOptions`](#type-legendoptions).
 export interface LegendOptions {
   /** Positive sample window height. Clips point-bearing glyphs without changing mapped area. */
   clipHeight?: number;
-  /** Explicitly combine compatible ordinal size and shape samples. Omission retains separate blocks. */
-  combine?: "separate" | "size-shape";
+  /** Explicitly combine ordinal size/shape or same-field quantitative color/size circle samples. Omission retains separate blocks. */
+  combine?: "separate" | "size-shape" | "color-size";
   /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
   representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
@@ -7761,7 +7765,7 @@ export type LegendSymbolLayer =
 export type LegendSymbolRecipe =
   | "auto"
   /** Sampled opacity uses a single point recipe; radius defaults to 7 and must be positive. */
-  | { type?: "point"; radius?: number; fill?: string; stroke?: string; strokeWidth?: number }
+  | { type?: "point"; radius?: number; fill?: string; stroke?: string; strokeWidth?: number; opacity?: number }
   | { length?: number; lineWidth?: number }
   | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
   | { layers: readonly LegendSymbolLayer[] };

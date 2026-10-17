@@ -19288,7 +19288,7 @@
         {
           "name": "combine",
           "required": false,
-          "type": "\"separate\" | \"size-shape\" | undefined"
+          "type": "\"color-size\" | \"separate\" | \"size-shape\" | undefined"
         },
         {
           "name": "representation",
@@ -19539,7 +19539,7 @@
         {
           "name": "combine",
           "required": false,
-          "type": "\"separate\" | \"size-shape\" | undefined"
+          "type": "\"color-size\" | \"separate\" | \"size-shape\" | undefined"
         },
         {
           "name": "representation",
@@ -32131,7 +32131,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianCategoricalGuideOptions | undefined"
+          "type": "false | (Omit<CartesianCategoricalGuideOptions, \"grid\"> & { grid?: false | ContinuousCartesianGridOptions | undefined; }) | undefined"
         }
       ],
       "callPatterns": [

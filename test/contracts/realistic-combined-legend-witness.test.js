@@ -30,3 +30,30 @@ for(const dataset of ['tt-tour-de-france-winners','tt-london-marathon-winners','
   }
  });
 }
+
+for(const dataset of ['tt-tour-de-france-winners','tt-london-marathon-winners','tt-penguins']){
+ test(`quantitative combined legend lifecycle preserves actual rows from ${dataset}`,()=>{
+  const view=realisticRecordView(dataset,{rowLimit:24}),values=view.rows.map(row=>row.value);
+  const domain=[Math.min(...values),Math.max(...values)];assert.ok(domain[1]>domain[0]);
+  const middle=(domain[0]+domain[1])/2;
+  for(let repetition=0;repetition<5;repetition++){
+   const seed=chart().createCanvas({width:1800,height:1400,margin:400}).createData({values:view.rows})
+    .createPointMark({id:'points'}).encodeX({field:'orderNumeric'}).encodeY({field:'value'})
+    .encodeColor({field:'value',fieldType:'quantitative',scale:{domain,range:['black','white']}})
+    .encodeSize({field:'value',scale:{domain,range:[0,900]}});
+   const p=seed.createLegend({combine:'color-size',channels:['size','color'],values:[domain[0],middle,domain[1]],clipHeight:8,
+     symbol:{stroke:'navy',strokeWidth:2,opacity:.7},border:{strokeDash:[2,2]}})
+    .editLegendLabels({channel:'size',fontSize:13})
+    .editLegendSymbols({channel:'color',symbol:{opacity:1},clipHeight:6})
+    .editLegendBlock({target:'points',channel:'size',labelMap:[{value:middle,label:'middle'}],clipHeight:'auto'})
+    .editLegendLayout({channel:'color',position:'top-right'})
+    .editLegend({channel:'size',values:'auto',count:3});
+   const split=p.editLegendLayout({channel:'size',position:'inherit'}).editLegend({combine:'separate'});
+   assert.deepEqual(split.guideConfigs.legend.size.sampling,{mode:'auto',count:3});
+   const restored=split.editLegend({combine:'color-size'});
+   assert.deepEqual(restored.semanticSpec.datasets,seed.semanticSpec.datasets);
+   assert.deepEqual(deserializeProgram(serializeProgram(restored)).graphicSpec,restored.graphicSpec);
+   assert.equal(restored.removeLegend({channels:['color']}).guideConfigs.legend?.colorSize,undefined);
+  }
+ });
+}

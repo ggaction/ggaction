@@ -42,9 +42,9 @@ const REMOVE_AXIS = Object.freeze({
   radius: "removeRadialAxis"
 });
 const SPECIALIZED_LEGEND_KIND = Object.freeze({
-  color: Object.freeze(["gradient", "interval"]),
+  color: Object.freeze(["gradient", "interval", "colorSize"]),
   stroke: Object.freeze(["strokeGradient", "strokeInterval"]),
-  size: Object.freeze(["size"]),
+  size: Object.freeze(["size", "colorSize"]),
   opacity: Object.freeze(["opacity"]),
   strokeWidth: Object.freeze(["strokeWidth"])
 });

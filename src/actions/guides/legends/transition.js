@@ -169,7 +169,7 @@ export function planLegendBlockTransitions(program, target, plans, position) {
     const descriptor = nextDescriptors[index];
     const incoming = oldDescriptors.filter(old => intersects(old, descriptor));
     let override;
-    if (descriptor.config.combine === "size-shape" && incoming.length > 1) {
+    if (["size-shape","color-size"].includes(descriptor.config.combine) && incoming.length > 1) {
       const positions = incoming.map(old=>old.config.blockOverrides?.[old.key]?.position);
       if (position === undefined && !positions.every(value=>value===positions[0])) transitionError(target, incoming, descriptor, "position");
       override = position === undefined && positions[0] !== undefined ? {position: positions[0]} : undefined;
@@ -181,13 +181,20 @@ export function planLegendBlockTransitions(program, target, plans, position) {
     } else if (incoming.length === 1) {
       const old = incoming[0];
       override = old.config.blockOverrides?.[old.key];
-      if (incoming[0].config.combine === "size-shape" && override !== undefined) {
+      if (["size-shape","color-size"].includes(incoming[0].config.combine) && override !== undefined) {
         const {title: _title, ...rest} = override; override = Object.keys(rest).length ? rest : undefined;
+      }
+      if(old.config.combine==='color-size'&&descriptor.kind==='gradient'&&override!==undefined){
+        const {symbol:_symbol,labelMap:_map,gap:_gap,...common}=override;override=Object.keys(common).length?common:undefined;
+      }
+      if(old.config.combine==='color-size'&&descriptor.kind==='size'){
+        const {type:_type,...style}=old.config.symbol;
+        override={...override,symbol:{...style,...override?.symbol}};
       }
       if (override?.title !== undefined) {
         transitionError(target, incoming, descriptor, "title");
       }
-      if (override?.labelMap !== undefined) {
+      if (override?.labelMap !== undefined && !(old.config.combine==='color-size'&&descriptor.kind==='size')) {
         transitionError(target, incoming, descriptor, "labelMap");
       }
     } else if (incoming.length > 1) {

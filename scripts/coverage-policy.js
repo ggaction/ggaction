@@ -5,6 +5,16 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "legend-policies": Object.freeze({
+    prefix: "grammar/legend",
+    floor: Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+    rationale: "Legend eligibility, stored intent and paint policies must reject incompatible edits atomically."
+  }),
+  "facet-guide-scaffolding": Object.freeze({
+    prefix: "materialization/facetGuides/",
+    floor: Object.freeze({ lines: 80, branches: 75, functions: 80 }),
+    rationale: "Shared facet scaffolding must retain independent guides through composition and replay."
+  }),
   "snapshot-validation": Object.freeze({
     prefix: "persistence/",
     floor: Object.freeze({ lines: 90, branches: 80, functions: 100 }),
@@ -48,6 +58,22 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
 });
 
 export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
+  "actions/data/regressionStatistics.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "actions/guides/legends/colorSize.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "actions/guides/legends/combine.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "core/graphicProperties.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
+  "grammar/axisTextPlacement.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
+  "grammar/colorSizeLegend.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "grammar/facets/legendIntent.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "grammar/guideDash.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
+  "materialization/facetGuides/edit.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "materialization/facetGuides/owner.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "materialization/facetGuides/ownerLayout.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "materialization/graphicTranslation.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
+  "materialization/legendBorder.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "materialization/legendClip.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "selectors/axes.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
+  "selectors/graphicCapacity.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "actions/guides/legends/continuous/colorSymbols.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "actions/intervals/revision.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "actions/primitives/graphicProperties.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),

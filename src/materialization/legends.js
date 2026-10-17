@@ -24,6 +24,6 @@ export function materializedLegendUsesScale(program, id) {
     const order = program.semanticSpec.guides.legend?.[kind]?.order;
     const linkedScale = order?.channel === undefined ? undefined
       : findLayer(program, config.target)?.encoding?.[order.channel]?.scale;
-    return config.scale === id || config.scales?.includes(id) || linkedScale === id;
+    return config.colorScale === id || config.sizeScale === id || config.scale === id || config.scales?.includes(id) || linkedScale === id;
   });
 }

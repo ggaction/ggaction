@@ -1946,6 +1946,10 @@ Global 평균과 별개로 `scripts/coverage-policy.js`는 immutable update, are
 grammar, concrete graphic schema, Canvas dispatch와 PNG adapter에 critical-file floor를
 적용한다. Native Node coverage table은 Node 22의 TAP `#` prefix와 Node 23의 `ℹ` prefix를
 모두 받아 source-relative path로 parse하며 parser와 failure policy 자체도 unit test한다.
+Legend grammar와 facet guide scaffolding은 prefix family로 새 모듈에도 자동 적용한다.
+새 결합/축/용량 정책과 facet parent 소유권의 핵심 owner에는 더 엄격한 별도 floor를
+적용한다. 결합 sample의 연결 순서와 잘못된 물리 면적, 중복 point ownership은 독립
+정책 회귀로 검증하며 global/기존 critical floor를 낮추지 않는다.
 Pure numeric grammar는 고정 fixture 외에도 monotonic mapping,
 histogram count conservation, non-negative unit-area density, stable group order와 regression
 interval containment을 deterministic invariant로 검증한다.
@@ -2448,6 +2452,15 @@ macOS/Node22.23.1/npm10.9.8의 통합 staged artifact는589entries/833342packed/
 SVG25000 및 모든 기능/coverage 검사는 그대로 유지한다. 원래 한도 검사는 실제로
 실패했으며 성공 증거로 재사용하지 않는다.
 
+히트맵의 기존 title:false/named-axis 동작 복원과 통합 release notes를 포함한 Node22
+staged artifact는4063287unpacked bytes로 측정됐다. 기존4062000 검사는 실패했으므로
+다음 최소1000bytes 단계4064000으로만 올린다. Node24.19.0의 동일 staged 입력은
+835531packed bytes로 기존834000을 초과하여 다음 단계836000만 적용한다.
+entries589, browser 및 전체 기능/coverage 기준은 유지한다.
+
+Histogram의 실제 연속형 grid 역할과 동기화한 문서를 포함한 macOS/Node22.23.1/npm10.9.8
+artifact는 unpacked4,049,330bytes다. 기존4,049,000한도 실패 로그를 보존하고 unpacked만
+다음 최소1,000bytes 단위4,050,000으로 올렸다. Entries587·packed832,000 한도는 유지한다.
 
 ### Named-shape canonical example discovery budget
 
@@ -2464,3 +2477,24 @@ opacity0/.7/1 안정 variant를 추가한 search payload는829884bytes(Node22.23
 npm10.9.8/macOS)다. 이전829000 한도를 초과해 최소1000단위830000으로만
 조정한다. 항목/공개옵션/enum을 숨기지 않으며 runtime/package/browser/coverage
 한도는 변경하지 않는다.
+The quantitative color-size combined mode adds one closed combine literal to
+the existing cards. Measured createLegend3524/editLegend3855bytes require only
+3530/3860byte card ceilings; all other cards remain3360bytes.
+
+The same combined numeric legend adds two packed source owners (583entries),
+measured820007packed/4000493unpackedbytes. Narrow ceilings become
+820500/4002000; Full404727 and Basic199306gzipbytes use405000/199500.
+The complete searchable option inventory measures821151bytes (ceiling821200).
+SVG remains25000gzipbytes; no public options, card fields or coverage floors
+are removed.
+
+### Complete feature integration measurements
+
+28개 기능과 named-shapes 예제를 합친 compact search는829294bytes로 측정됐다.
+기존829000검사2개는 실패하여 항목 삭제 없이 다음 최소1000bytes인830000만 적용한다.
+정량 color-size 결합의 grammar/materialization2모듈을 통합해 package entries는591이다.
+최종 packed/unpacked 및 browser 측정은 같은 통합 입력으로 재검증한다.
+
+Node24.19.0 통합 staged 입력은840502packed/4082583unpackedbytes로 측정됐다.
+기존836000/4064000 검사가 실패하여 최소1000bytes 단계841000/4083000만 적용한다.
+591개 entry와 모든 기존 옵션·데이터·coverage 기준은 유지한다.

@@ -384,6 +384,41 @@ shares its window. Gradient ramps, interval swatches, line-only recipes and
 stroke-width samples reject this option. Editing with `"auto"` removes the window;
 omitting it preserves the current setting.
 
+## Quantitative color and size
+
+`createLegend({combine: "color-size"})` creates one numeric sample list for a
+Cartesian circle point mark. Both encodings must use the same quantitative
+field and grain, continuous scales, and identical finite domain endpoints.
+Each sample uses the original color mapper and `sqrt(mappedArea / Math.PI)`;
+transformed scales keep their independent mappings. Mark data and mappings do
+not change. Omission keeps separate legends.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+program.createLegend({combine: "color-size", values: [0, 5, 10]});
+program.editLegendSymbols({channel: "color", symbol: {stroke: "black", strokeWidth: 1, opacity: 0.7}});
+program.editLegendBlock({target: "points", channel: "size", labelMap: [{value: 5, label: "middle"}]});
+program.editLegend({combine: "separate"});
+```
+
+Color and size select the same block. Exact values, automatic count, numeric
+format, labels, title, local position, border and sample window each have one
+owner. Mapped fill, size and radius cannot be overridden. A sample's stroke,
+stroke width and opacity can be styled. Splitting restores a gradient and a
+size list, retains compatible shared styles and placement, and carries exact
+samples only to the size list. Recombining starts with combined defaults.
+Incompatible field, shape, grain or endpoint edits fail atomically.
+
+The combined legends example
+compares samples 0, 5 and 10 with independently specified black, gray and white
+circles of radius 1, 2 and 3.
+
+
 ## Related
 
 [Legend overview](../legends.md) · [Composite symbols](./composite.md) · [Editing legends](./editing.md)
