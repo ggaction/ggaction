@@ -1,0 +1,65 @@
+{
+  "status": "current-public-gap-reproduced-no-implementation",
+  "genericRows": 2,
+  "markOpacity": 0.7,
+  "legendSampleEffectiveOpacity": 1,
+  "sampleCount": 2,
+  "sampleFill": [
+    "#4c78a8",
+    "#f58518"
+  ],
+  "sampleStroke": [
+    "#4c78a8",
+    "#f58518"
+  ],
+  "rejected": [
+    {
+      "method": "createLegend",
+      "type": "point",
+      "message": "Unknown createLegend.symbol.point option \"opacity\"."
+    },
+    {
+      "method": "editLegend",
+      "type": "point",
+      "message": "Unknown createLegend.symbol.point option \"opacity\"."
+    },
+    {
+      "method": "editLegendSymbols",
+      "type": "point",
+      "message": "Unknown createLegend.symbol.point option \"opacity\"."
+    },
+    {
+      "method": "createLegend",
+      "type": "line",
+      "message": "Unknown createLegend.symbol.line option \"opacity\"."
+    },
+    {
+      "method": "editLegend",
+      "type": "line",
+      "message": "Unknown createLegend.symbol.line option \"opacity\"."
+    },
+    {
+      "method": "editLegendSymbols",
+      "type": "line",
+      "message": "Unknown createLegend.symbol.line option \"opacity\"."
+    },
+    {
+      "method": "createLegend",
+      "type": "swatch",
+      "message": "Unknown createLegend.symbol.swatch option \"opacity\"."
+    },
+    {
+      "method": "editLegend",
+      "type": "swatch",
+      "message": "Unknown createLegend.symbol.swatch option \"opacity\"."
+    },
+    {
+      "method": "editLegendSymbols",
+      "type": "swatch",
+      "message": "Unknown createLegend.symbol.swatch option \"opacity\"."
+    }
+  ],
+  "publicOptionImplemented": false,
+  "chartPixelsInspected": false,
+  "modelCalls": 0
+}
