@@ -1,3 +1,4 @@
+import { resolveCanvasSolidPaint } from "./fill.js";
 import { requireFiniteProperty } from "./validation.js";
 import { validateConcreteGraphicProperties } from
   "../../grammar/schemas/concreteGraphic.js";
@@ -25,7 +26,7 @@ function drawCircle(context, child, collectionId) {
     throw new Error(`Graphic "${graphicId}" requires opacity from 0 to 1.`);
   }
 
-  context.fillStyle = properties.fill;
+  context.fillStyle = resolveCanvasSolidPaint(properties.fill);
   context.globalAlpha = opacity;
   context.beginPath();
   context.arc(x, y, radius, 0, Math.PI * 2);

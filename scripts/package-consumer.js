@@ -116,6 +116,25 @@ async function testNodeConsumer(directory) {
       assert.ok((await renderToPNGBuffer(dashedGuides)).buffer.length > 100);
       assert.ok((await renderToPDFBuffer(dashedGuides)).buffer.length > 100);
     }
+    for (const factory of [chart, basicChart]) for (const shape of ["wedge", "arrow"]) {
+      const directional = factory().createCanvas({width: 300, height: 200, margin: 50})
+        .createData({values:[{x:0,y:0,g:"A"},{x:1,y:1,g:"B"}]})
+        .createScatterPlot({x:"x",y:"y",point:{shape},guides:false});
+      assert.equal(directional.graphicSpec.objects.scatterPlot.items[0].type, "path");
+      assert.deepEqual(deserializeProgram(serializeProgram(directional)).graphicSpec, directional.graphicSpec);
+      assert.ok((await renderToPNGBuffer(directional)).buffer.length > 100);
+    }
+
+    const mappedSize = chart().createCanvas({width:700,height:500,margin:160})
+      .createData({values:[{x:0,y:0,v:0},{x:1,y:1,v:10}]})
+      .createScatterPlot({x:"x",y:"y",size:"v",guides:false})
+      .createLegend({channels:["size"],values:[0,5,10]})
+      .editLegendBlock({target:"scatterPlot",channel:"size",labelMap:[{value:5,label:"middle"}]});
+    assert.deepEqual(mappedSize.graphicSpec.objects.sizeLegendLabels.items.map(item=>item.properties.text),["0","middle","10"]);
+    assert.equal(mappedSize.graphicSpec.objects.sizeLegendSymbols.items.length,3);
+    assert.deepEqual(deserializeProgram(serializeProgram(mappedSize)).graphicSpec,mappedSize.graphicSpec);
+    assert.ok((await renderToPNGBuffer(mappedSize)).buffer.length>100);
+
     const extracted = chart().createCanvas({ width: 440, height: 340, margin: 20 })
       .createData({ values: [{ item: { value: 1 }, text: "1.5%" }, { text: "2%" }] })
       .createComputedData({ id: "nested", as: "x", expression: { op: "getPath", operand: { field: "item" }, path: ["value"] } })

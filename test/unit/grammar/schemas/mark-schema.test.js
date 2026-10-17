@@ -51,7 +51,7 @@ test("normalizes every point-shape recipe to one target area", () => {
 
   assert.deepEqual(
     graphics.map(graphic => graphic.type),
-    ["circle", "rect", ...Array(10).fill("path")]
+    ["circle", "rect", ...Array(12).fill("path")]
   );
   assert.equal(
     graphics.every(graphic => Math.abs(graphicArea(graphic) - area) < 1e-9),

@@ -383,14 +383,19 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - `order`는 현재 categorical domain의 typed scalar 전체를 정확히 한 번 포함한 permutation이어야 한다.
   Partial list, duplicate, missing/extra value와 display text 기반 비교는 거부한다. 결과는 기존 semantic
   legend order owner에 `{ values }`로 저장된다.
-- `labelMap`은 categorical block에서만 허용하는 typed
+- `labelMap` accepts a categorical display map, or a numeric-only map on a continuous sampled size block. It uses typed
   `readonly { value: DatasetScalar; label: string }[] | "auto"`다. Raw typed value를 표시 문자열로만
   바꾸며 semantic domain, order, symbol count와 selection identity는 유지한다. 같은 label을 여러
   category에 쓰거나 `""`로 text를 숨길 수 있다. Array는 전체 교체하고 `[]`는 empty map을 저장하며
   빈 label은 concrete text item만 생략하고 원래 category/symbol/item slot을 유지한다. 모두 숨겨도
   빈 text collection은 유효하며 lane/persistence/facet replay는 남은 symbol bounds를 사용한다.
-  `"auto"`는 이 block의 map override만 제거한다. Sampled size/opacity/strokeWidth, gradient와 interval
-  block은 map을 거부한다.
+  `"auto"` removes only this block's map override. Continuous size keys must be finite numbers;
+  equality is exact (0 and -0 are duplicates). Keys outside current samples remain stored and can
+  become active after sampling edits. Unmapped values use the existing numeric formatter. `[]` stores
+  an explicit empty map. Empty labels omit only text while retaining every sample, symbol and item slot.
+  No scale/domain/area/order or raw data changes. Opacity, strokeWidth, discrete size, gradient and interval
+  blocks reject maps. Creation has no map; omission preserves it.
+  Evidence: `test/unit/actions/guides/size-legend-label-map.test.js` and `test/contracts/legend-blocks.test.js`.
 - `gap`은 non-negative finite block-internal spacing이다. Root position, align, direction, columns와
   edge-lane order는 바꾸지 않는다. Gradient에서는 기존 12-pixel title/sample spacing을 기준으로 적용된다.
 - `text`는 item labels의 `fontSize`, `fontFamily`, `fontWeight`, `color`만 받는 closed object다.

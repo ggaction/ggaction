@@ -165,7 +165,7 @@ test("maps categorical legend labels by typed raw value and resets the block ove
   assert.equal(original.guideConfigs.legend.series.blockOverrides, undefined);
 });
 
-test("rejects display maps for non-categorical legend blocks atomically", () => {
+test("rejects nonnumeric display maps for continuous size legend blocks atomically", () => {
   const original = combined();
   const before = state(original);
   for (const channel of ["size"]) {
@@ -173,9 +173,9 @@ test("rejects display maps for non-categorical legend blocks atomically", () => 
       () => original.editLegendBlock({
         target: "points",
         channel,
-        labelMap: []
+        labelMap: [{value: "not-numeric", label: "invalid"}]
       }),
-      /labelMap requires a categorical block/
+      /values must be finite numbers/
     );
   }
   assert.equal(state(original), before);
@@ -533,7 +533,7 @@ test("rejects invalid block requests atomically", () => {
     { target: "points", channel: "shape", order: ["A", "B"] },
     { target: "points", channel: "shape", order: ["A", "B", "B"] },
     { target: "points", channel: "shape", order: ["A", "B", null] },
-    { target: "points", channel: "size", labelMap: [] },
+    { target: "points", channel: "size", labelMap: [{value: "5", label: "invalid"}] },
     { target: "points", channel: "size" }
   ];
   for (const options of invalid) {

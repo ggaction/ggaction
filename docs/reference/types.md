@@ -5078,7 +5078,7 @@ export interface EditLegendBlockOptions {
   gap?: number;
   text?: LegendBlockTextPatch;
   symbol?: LegendBlockSymbolPatch;
-  /** An empty mapped label omits only text; its category and symbol remain. */
+  /** Display-only: categorical keys, or finite numeric keys for continuous size samples. Empty labels omit text only. */
   labelMap?: DisplayLabelMap | "auto";
 }
 ```
@@ -8910,7 +8910,9 @@ export type PointShape =
   | "cross"
   | "star"
   | "hexagon"
-  | "wye";
+  | "wye"
+  | "wedge"
+  | "arrow";
 ```
 
 </details>

@@ -44,6 +44,12 @@ const basicRect: BasicRectStyleDetails = rect;
 
 // Direct mark create/edit pairs.
 p.createPointMark(stroke).editPointMark(stroke);
+p.createPointMark({shape:"wedge"}).editPointMark({shape:"arrow"});
+p.encodeShape({field:"group",scale:{range:["wedge","arrow"],unknown:"arrow"}});
+basic.createPointMark({shape:"arrow"});
+basic.createScatterPlot({x:"x",y:"y",point:{shape:"wedge"}});
+// @ts-expect-error directional shapes remain a closed named vocabulary
+p.editPointMark({shape:"arbitrary-arrow"});
 p.createTickMark(stroke).editTickMark(stroke);
 p.createBarPlot({ x: "category", y: { lower: "lo", upper: "hi" } });
 p.createBarPlot({ x: { lower: "lo", upper: "hi" }, y: "category" });

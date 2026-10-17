@@ -4,10 +4,16 @@ import {
 } from "../../grammar/paint.js";
 import { resolveCanvasGradientCoordinates } from "./native.js";
 
+// SVG's no-paint keyword is not a valid Canvas color assignment. Assign a real
+// transparent color so the backend cannot retain a previous opaque paint.
+export function resolveCanvasSolidPaint(paint) {
+  return paint === "none" ? "rgba(0,0,0,0)" : paint;
+}
+
 export function applyCanvasFill(context, fill, bounds, graphicId) {
   validateFillPaint(fill, `${graphicId}.fill`);
   if (!isLinearGradientPaint(fill)) {
-    context.fillStyle = fill;
+    context.fillStyle = resolveCanvasSolidPaint(fill);
     return fill;
   }
   if (typeof context.createLinearGradient !== "function") {

@@ -53,7 +53,7 @@ test("supports every constant shape and preserves equal logical area", () => {
   for (const shape of [
     "circle", "square", "diamond", "triangle-up", "triangle-down",
     "triangle-left", "triangle-right", "plus", "cross", "star",
-    "hexagon", "wye"
+    "hexagon", "wye", "wedge", "arrow"
   ]) {
     const program = base.editPointMark({ target: "points", shape });
     const child = program.graphicSpec.objects.points.items[0];

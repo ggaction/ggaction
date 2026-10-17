@@ -59,7 +59,7 @@ const BAND_CURVES_WITHOUT_MONOTONE = Object.freeze(
 const DASHES = Object.freeze(["solid", "dashed", "dotted", "dashdot"]);
 const POINT_SHAPES = Object.freeze([
   "circle", "cross", "diamond", "hexagon", "plus", "square", "star",
-  "triangle-down", "triangle-left", "triangle-right", "triangle-up", "wye"
+  "triangle-down", "triangle-left", "triangle-right", "triangle-up", "wye", "wedge", "arrow"
 ]);
 const DENSITY_PLACEMENTS = frozen([
   { id: "baseline", type: "baseline" },

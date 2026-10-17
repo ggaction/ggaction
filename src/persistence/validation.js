@@ -1,3 +1,5 @@
+import { normalizeNumericDisplayLabelMap } from "../grammar/displayLabels.js";
+import { isContinuousSizeScaleType } from "../grammar/scales/size.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
 import { validateAxisTextPlacement } from "../grammar/axisTextPlacement.js";
@@ -176,6 +178,15 @@ export function validateProgramState(program, path) {
   }
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
+    if (kind === "size" && config.blockOverrides !== undefined) {
+      for (const [key, override] of Object.entries(config.blockOverrides)) {
+        if (override.labelMap === undefined) continue;
+        if (key !== '["size"]' || !isContinuousSizeScaleType(program.resolvedScales[config.scale]?.type)) {
+          throw invalidSnapshot("Numeric display labels require a continuous size legend block.", path);
+        }
+        normalizeNumericDisplayLabelMap(override.labelMap, "Stored size legend labelMap");
+      }
+    }
     if (config.titleStyle !== undefined) {
       validateOptionObject(config.titleStyle, LEGEND_TITLE_STYLE_KEYS, "Stored legend title style");
       validateLegendTitleAlignment(config.titleStyle, config.titlePosition);

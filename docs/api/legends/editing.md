@@ -313,9 +313,8 @@ Unmapped categories keep their normal visible text. Duplicate display labels
 and empty labels are valid and do not merge symbols. `labelMap: []` stores an
 empty map. An empty mapped label omits only its text; its category, symbol and
 item slot remain through layout, resizing and shared facet legends.
-`labelMap: "auto"` removes only this block override. Sampled numeric,
-gradient, and interval blocks reject display maps because their labels describe
-numeric intervals or samples rather than categorical identities.
+`labelMap: "auto"` removes only this block override. Continuous size supports numeric keys as described below.
+Opacity, stroke-width, discrete-size, gradient and interval blocks reject display maps.
 
 Symbol properties cannot replace the mapping the block explains. For example,
 a size block rejects `symbol.size`, an opacity block rejects `symbol.opacity`,
@@ -450,6 +449,29 @@ bottom the categorical layout controls position both blocks. The size block's
 own stored layout returns when the categorical channels are removed. A title
 edit changes the categorical title; the size block retains its own title and
 visibility. Whole-content replacement preserves both retained blocks' settings.
+
+### Numeric sample display labels
+
+Continuous size blocks accept exact numeric display maps, including keys not currently sampled:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+// Fragment: program already owns a continuous size legend on points.
+program.editLegendBlock({
+  target: "points", channel: "size",
+  labelMap: [{ value: 3.14159, label: "0" }, { value: 10, label: "" }]
+});
+```
+
+Empty strings hide text while preserving the sample and its glyph. Unmatched values keep the existing
+formatter. Use `labelMap: "auto"` to remove the override. Opacity, stroke-width and discrete-size blocks
+reject this map. Values are compared exactly, so zero and negative zero are duplicate keys.
+
 
 ## Related
 

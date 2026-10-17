@@ -2265,6 +2265,22 @@
     "executable": false
   },
   {
+    "file": "api/legends/editing.md",
+    "block": 11,
+    "heading": "Numeric sample display labels",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [
+      "target: \"points\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: \"points\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "0d557196dc152754ad26a81eb370dceed9f14cff0dd71e6c67b2abde6075f8aa",
+    "executable": false
+  },
+  {
     "file": "api/marks.md",
     "block": 1,
     "heading": "At a glance",

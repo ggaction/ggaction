@@ -1,3 +1,4 @@
+import { resolveCanvasSolidPaint } from "./fill.js";
 import { requireFiniteProperty, requireStringProperty } from "./validation.js";
 import { validateConcreteGraphicProperties } from
   "../../grammar/schemas/concreteGraphic.js";
@@ -72,7 +73,7 @@ function drawText(context, child, collectionId) {
   context.save();
 
   try {
-    context.fillStyle = fill;
+    context.fillStyle = resolveCanvasSolidPaint(fill);
     context.globalAlpha = opacity;
     const rendererFontWeight = normalizeRendererFontWeight(fontWeight);
     context.font = `${properties.fontStyle === "italic" ? "italic " : ""}${rendererFontWeight} ${fontSize}px ${fontFamily}`;
