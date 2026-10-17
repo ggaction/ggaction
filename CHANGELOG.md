@@ -47,6 +47,8 @@ All notable changes to `ggaction` are recorded in this file.
   the same guide-owner validation used by other Cartesian charts.
 - Facet parents restore each legend block's sampling window independently and
   composed child windows preserve valid private graphic identities.
+- Overflowing documentation signatures support keyboard scrolling and retain
+  accessible focus at mobile widths.
 
 ### Fixed
 

@@ -84,3 +84,7 @@ compact search829294bytes를 측정해 실제 초과분에만 다음 최소1000b
 
 부모 facet 범례의 중첩 옵션 전수 실제 증언, combined/appearance 전체 시각 목표,
 최종 installed/browser/문서 build와 배포·dataset 동기화 의무는 아직 남아 있다.
+
+이후 source28 전체 normal contracts567/567, 모바일 키보드 수정 결합 후 문서120/120도
+통과했다. 개발 source 기준 기존1154개/8335개 코드의 frozen SVG 전량 비교는 진행 중이며,
+이는 최종 tagged/npm artifact 증명을 대체하지 않는다.
