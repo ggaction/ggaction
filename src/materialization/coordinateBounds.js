@@ -1,3 +1,4 @@
+import { cartesianAxisOwners } from "../selectors/axes.js";
 import { isSourceOwnedText } from "../grammar/text.js";
 import { resolvePolarFrame } from "../grammar/polar.js";
 import { resolveEffectiveBounds } from "../layout/aspect.js";
@@ -217,8 +218,8 @@ export function resolveCartesianAxisFrameBounds(program, channel, position, scal
 
 // Cartesian guide bindings are semantic scale consumers without data rows.
 export function axisScaleBindings(program, id) {
-  return Object.entries(program.semanticSpec.guides.axis ?? {}).flatMap(([channel, guide]) =>
-    ["x", "y"].includes(channel) && guide.scale === id && guide.coordinate !== undefined &&
-      program.materializationConfigs?.guides?.axis?.[channel]?.binding?.standalone === true
-      ? [{ channel, coordinate: guide.coordinate }] : []);
+  return cartesianAxisOwners(program).flatMap(owner =>
+    owner.scale === id && owner.coordinate !== undefined &&
+      owner.config?.binding?.standalone === true
+      ? [{ channel: owner.channel, coordinate: owner.coordinate }] : []);
 }

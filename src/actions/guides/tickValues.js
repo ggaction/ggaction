@@ -1,3 +1,4 @@
+import { cartesianAxisOwners } from "../../selectors/axes.js";
 import { resolveHistogramBins } from "../../grammar/histogram.js";
 import {
   isTransformedScaleType,
@@ -61,12 +62,14 @@ export function valuesFromTickConfig(program, config) {
 }
 
 export function inferGridTickConfig(program, channel, scaleId) {
-  const axis = program.guideConfigs.axis?.[channel]?.ticks;
-  if (axis?.scale === scaleId) {
-    return axis.mode === "values"
-      ? { mode: "values", values: axis.values }
-      : { mode: "count", count: axis.count };
+  const axes = cartesianAxisOwners(program).filter(owner => owner.channel === channel &&
+    owner.config?.ticks?.scale === scaleId).map(owner => owner.config.ticks);
+  const policies = axes.map(axis => axis.mode === "values"
+    ? { mode: "values", values: axis.values } : { mode: "count", count: axis.count });
+  if (new Set(policies.map(policy => JSON.stringify(policy))).size > 1) {
+    throw new Error("Grid values require explicit count or values when bound axis tick policies differ.");
   }
+  if (policies.length > 0) return policies[0];
 
   const boundaries = inferHistogramBoundaries(program, channel, scaleId);
   const scale = program.resolvedScales[scaleId];

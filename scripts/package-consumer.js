@@ -102,6 +102,21 @@ async function testNodeConsumer(directory) {
       assert.deepEqual(deserializeProgram(serializeProgram(placedAxis)).graphicSpec, placedAxis.graphicSpec);
       assert.ok((await renderToPNGBuffer(placedAxis)).buffer.length > 100);
       assert.ok((await renderToPDFBuffer(placedAxis)).buffer.length > 100);
+      const namedAxes = create().createCanvas({ width: 600, height: 400, margin: 80 })
+        .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+        .createScatterPlot({ x: "x", y: "y", guides: false })
+        .createAxes({ x: false, y: [{ id: "left", position: "left" }, { id: "right", position: "right" }] });
+      assert.equal(namedAxes.semanticSpec.guides.axis.right.channel, "y");
+      assert.equal(namedAxes.graphicSpec.objects.axis_right__Line.properties.x1, 520);
+      assert.deepEqual(deserializeProgram(serializeProgram(namedAxes)).graphicSpec, namedAxes.graphicSpec);
+      assert.ok((await renderToPNGBuffer(namedAxes)).buffer.length > 100);
+      assert.ok((await renderToPDFBuffer(namedAxes)).buffer.length > 100);
+      if (create === chart) {
+        const changed = namedAxes.editYAxisTitle({ target: "right", text: "Share" })
+          .editCanvas({ width: 700 }).removeYAxis({ target: "left" });
+        assert.equal(changed.graphicSpec.objects.axis_right__Line.properties.x1, 620);
+        assert.equal(changed.guideConfigs.axis.left, undefined);
+      }
       const dashedGuides = create().createCanvas({ width: 700, height: 500, margin: 100 })
         .createData({ values: [{ x: 0, y: 0 }, { x: 1, y: 2 }] })
         .createScatterPlot({ x: "x", y: "y", guides: false })
@@ -3658,6 +3673,19 @@ async function testTypeScriptConsumer(directory) {
       .createXAxis({ offset: 20, title: { offset: -30, alongOffset: 10, align: "left", baseline: "top" },
         ticksAndLabels: { labels: { align: "right" } } });
     void [axisTextFlow, basicAxisTextFlow];
+    const namedAxes: ChartProgram = chart().createCanvas().createData({ values: [{ x: 1, y: 2 }] })
+      .createScatterPlot({ x: "x", y: "y", guides: false })
+      .createAxes({ y: [{ id: "left", position: "left" }, { id: "right", position: "right" }] })
+      .editYAxis({ target: "right", offset: 2 }).editYAxisLabels({ target: "right", align: "right" })
+      .removeYAxis({ target: "left" });
+    const basicNamedAxes: BasicChartProgram = basicChart().createCanvas()
+      .createData({ values: [{ x: 1, y: 2 }] }).createScatterPlot({ x: "x", y: "y", guides: false })
+      .createYAxis({ id: "share", position: "right" });
+    // @ts-expect-error A complete creator names its axis with id, not target.
+    chart().createYAxis({ target: "share" });
+    // @ts-expect-error Polar axis removal does not select named Cartesian resources.
+    chart().removeThetaAxis({ target: "share" });
+    void [namedAxes, basicNamedAxes];
     const horizonOptions: HorizonEncodingOptions = {
       x: { field: "time", fieldType: "temporal" },
       y: "value",

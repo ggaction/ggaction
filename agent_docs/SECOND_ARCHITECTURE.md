@@ -1020,7 +1020,12 @@ Semantic removal은 dependency preflight를, graphic removal은 subtree detach�
 
 ## Selector와 resource identity
 
-Dataset, layer, scale, coordinate를 ID로 찾는 규칙은 `src/selectors/`가 소유한다.
+Dataset, layer, scale, coordinate를 ID로 찾는 규칙은 `src/selectors/`가 소유한다. Cartesian axis resource도
+`selectors/axes.js`가 canonical/unique/explicit selection, binding과 physical-side occupancy를
+소유한다. 의미 identity(channel/position/scale/coordinate/title)는 semantic guide map, appearance와
+standalone/frame intent는 같은 ID의 guide config에 한 번만 저장한다. Concrete native IDs와
+consumer iteration은 같은 owner registry를 사용하며 data/scale/Canvas/theme/facet/persistence가
+canonical x/y 두 개만 가정하지 않는다. Exact API는 [AXES](contract/current/AXES.md)가 소유한다.
 
 ```text
 findResource    → 없으면 undefined
@@ -2178,3 +2183,12 @@ retained child owner까지 추적하며 별도 bypass state를 저장하지 않�
 Node22.23.1/npm10.9.8/macOS canonical artifact 실측은570entries, packed803124, unpacked3939523이다.
 승인된 유한 기능 증가에 따라 entries570/packed804000/unpacked3940000으로 최소 상향했다.
 Browser gzip Full395462는396000으로 상향하고 Basic190821/SVG7176은 기존191000/25000을 유지한다.
+
+
+Named Cartesian axes는 기존 source boundary를 유지하는 selector owner 하나를 더한다. Native ID
+resolver는 `selectors/axes.js`가 소유하고 materialization은 이를 재수출하므로 persistence가
+materialization layer에 역방향 의존하지 않는다. 기존 package staging compaction을 새 selector에
+적용한 실측은570entries,805115packed,3948224unpacked bytes다. 기존 최소1000bytes 정책에 따라
+한도를570/806000/3949000으로 좁게 갱신하고 이전569/799000/3919000 통과로 보고하지 않는다.
+전체 승인 옵션을 보존한 search816932bytes는817000으로, action-card median1896bytes는1896으로
+갱신한다. Card max3358은3360 한도 안이다. Installed consumer의 actual gzip은 Full396214/Basic193136bytes이므로 최소1000bytes 단위로397000/194000으로만 조정한다. SVG25000은 유지한다.

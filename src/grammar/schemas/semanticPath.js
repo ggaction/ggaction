@@ -1,5 +1,6 @@
 import { USER_ID_SOURCE } from "../../core/identifiers.js";
 import {
+  AXIS_RESOURCE_CHANNELS,
   CARTESIAN_POSITION_CHANNELS,
   ENCODING_CHANNELS,
   SCALED_ENCODING_CHANNELS
@@ -147,6 +148,13 @@ const GUIDE_REMOVABLE_CONTAINERS = new Set([
 
 const TITLE_PATHS = new Set(["text", "subtitle"]);
 
+function isNamedAxisPath(path, container = false) {
+  const match = path.match(new RegExp(container
+    ? `^axis\\.(${USER_ID_SOURCE})$`
+    : `^axis\\.(${USER_ID_SOURCE})\\.(scale|coordinate|title|channel|position)$`));
+  return match !== null && !AXIS_RESOURCE_CHANNELS.includes(match[1]);
+}
+
 function splitPropertyPath(property) {
   return property.split(".");
 }
@@ -201,7 +209,9 @@ export function parseSemanticPath(property, { allowContainer = false } = {}) {
 
     if (
       !GUIDE_PATHS.has(propertyPath) &&
-      !(allowContainer && GUIDE_REMOVABLE_CONTAINERS.has(propertyPath))
+      !isNamedAxisPath(propertyPath) &&
+      !(allowContainer && (GUIDE_REMOVABLE_CONTAINERS.has(propertyPath) ||
+        isNamedAxisPath(propertyPath, true)))
     ) {
       throw new Error(`Unknown semantic property "${property}".`);
     }

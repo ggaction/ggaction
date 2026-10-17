@@ -14868,12 +14868,12 @@
         {
           "name": "x",
           "required": false,
-          "type": "false | CompleteAxisOptions<XAxisPosition> | undefined"
+          "type": "false | CompleteAxisOptions<XAxisPosition> | readonly [NamedCompleteAxis<XAxisPosition>, ...NamedCompleteAxis<XAxisPosition>[]] | undefined"
         },
         {
           "name": "y",
           "required": false,
-          "type": "false | CompleteAxisOptions<YAxisPosition> | undefined"
+          "type": "false | CompleteAxisOptions<YAxisPosition> | readonly [NamedCompleteAxis<YAxisPosition>, ...NamedCompleteAxis<YAxisPosition>[]] | undefined"
         },
         {
           "name": "theta",
@@ -14918,6 +14918,7 @@
           "x axis"
         ],
         "idOptions": [
+          "id",
           "scale",
           "coordinate"
         ]
@@ -14969,6 +14970,11 @@
       },
       "options": [
         {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "offset",
           "required": false,
           "type": "number | undefined"
@@ -14996,16 +15002,16 @@
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "title",
           "required": false,
-          "type": "false | Omit<AxisTitleOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTitleOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         }
       ],
       "callPatterns": [
-        "createXAxis({ scale?, coordinate?, offset?, position?, line?, ticksAndLabels?, title? })"
+        "createXAxis({ id?, scale?, coordinate?, offset?, position?, line?, ticksAndLabels?, title? })"
       ],
       "snippet": "program.createXAxis({})",
       "errors": [],
@@ -15036,6 +15042,7 @@
           "y axis"
         ],
         "idOptions": [
+          "id",
           "scale",
           "coordinate"
         ]
@@ -15087,6 +15094,11 @@
       },
       "options": [
         {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "offset",
           "required": false,
           "type": "number | undefined"
@@ -15114,16 +15126,16 @@
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "title",
           "required": false,
-          "type": "false | Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         }
       ],
       "callPatterns": [
-        "createYAxis({ scale?, coordinate?, offset?, position?, line?, ticksAndLabels?, title? })"
+        "createYAxis({ id?, scale?, coordinate?, offset?, position?, line?, ticksAndLabels?, title? })"
       ],
       "snippet": "program.createYAxis({})",
       "errors": [],
@@ -15135,7 +15147,7 @@
       "layer": "user-facing",
       "domain": "axes",
       "summary": "Creates x-axis line for horizontal baseline.",
-      "signature": "createXAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: XAxisPosition }): ChartProgram;",
+      "signature": "createXAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }): ChartProgram;",
       "intents": [
         "create x axis line",
         "create",
@@ -15154,6 +15166,7 @@
           "x-axis line"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -15182,6 +15195,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -15209,6 +15226,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "scale",
           "required": false,
           "type": "string | undefined"
@@ -15220,7 +15242,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisLine({ scale?, color?, lineWidth?, position? })"
+        "createXAxisLine({ target?, scale?, color?, lineWidth?, position? })"
       ],
       "snippet": "program.createXAxisLine({})",
       "errors": [],
@@ -15232,7 +15254,7 @@
       "layer": "user-facing",
       "domain": "axes",
       "summary": "Creates y-axis line for vertical baseline.",
-      "signature": "createYAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: YAxisPosition }): ChartProgram;",
+      "signature": "createYAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }): ChartProgram;",
       "intents": [
         "create y axis line",
         "create",
@@ -15251,6 +15273,7 @@
           "y-axis line"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -15279,6 +15302,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -15306,6 +15333,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "scale",
           "required": false,
           "type": "string | undefined"
@@ -15317,7 +15349,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisLine({ scale?, color?, lineWidth?, position? })"
+        "createYAxisLine({ target?, scale?, color?, lineWidth?, position? })"
       ],
       "snippet": "program.createYAxisLine({})",
       "errors": [],
@@ -15329,7 +15361,7 @@
       "layer": "user-facing",
       "domain": "axes",
       "summary": "Edits x-axis line, including settings for horizontal baseline.",
-      "signature": "editXAxisLine(options?: AxisLineStyleOptions & { position?: XAxisPosition }): ChartProgram;",
+      "signature": "editXAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: XAxisPosition }): ChartProgram;",
       "intents": [
         "edit x axis line",
         "edit",
@@ -15346,7 +15378,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -15368,7 +15402,12 @@
           "unit": "logical-pixel"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -15389,13 +15428,18 @@
           "type": "number | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "XAxisPosition | undefined"
         }
       ],
       "callPatterns": [
-        "editXAxisLine({ color?, lineWidth?, position? })"
+        "editXAxisLine({ target?, color?, lineWidth?, position? })"
       ],
       "snippet": "program.editXAxisLine({ color: \"#f28e2b\" })",
       "errors": [],
@@ -15407,7 +15451,7 @@
       "layer": "user-facing",
       "domain": "axes",
       "summary": "Edits y-axis line, including settings for vertical baseline.",
-      "signature": "editYAxisLine(options?: AxisLineStyleOptions & { position?: YAxisPosition }): ChartProgram;",
+      "signature": "editYAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: YAxisPosition }): ChartProgram;",
       "intents": [
         "edit y axis line",
         "edit",
@@ -15424,7 +15468,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -15446,7 +15492,12 @@
           "unit": "logical-pixel"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -15467,13 +15518,18 @@
           "type": "number | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "YAxisPosition | undefined"
         }
       ],
       "callPatterns": [
-        "editYAxisLine({ color?, lineWidth?, position? })"
+        "editYAxisLine({ target?, color?, lineWidth?, position? })"
       ],
       "snippet": "program.editYAxisLine({ color: \"#f28e2b\" })",
       "errors": [],
@@ -15504,6 +15560,7 @@
           "x-axis ticks"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -15544,6 +15601,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -15564,6 +15625,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "scale",
           "required": false,
@@ -15616,7 +15682,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length?, strokeDash? })"
+        "createXAxisTicks({ target?, scale?, position?, count?, values?, color?, lineWidth?, length? })"
       ],
       "snippet": "program.createXAxisTicks({})",
       "errors": [],
@@ -15647,6 +15713,7 @@
           "y-axis ticks"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -15687,6 +15754,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -15707,6 +15778,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "scale",
           "required": false,
@@ -15759,7 +15835,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length?, strokeDash? })"
+        "createYAxisTicks({ target?, scale?, position?, count?, values?, color?, lineWidth?, length? })"
       ],
       "snippet": "program.createYAxisTicks({})",
       "errors": [],
@@ -15788,7 +15864,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -15826,6 +15904,10 @@
         {
           "input": "strokeDashMap",
           "strategy": "documented-auto"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
         }
       ],
       "completionRequirements": {
@@ -15868,6 +15950,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "XAxisPosition | undefined"
@@ -15884,7 +15971,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisTicks({ color?, lineWidth?, length?, strokeDash?, strokeDashMap?, alongOffset?, position?, count? })"
+        "editXAxisTicks({ target?, color?, lineWidth?, length?, strokeDash?, strokeDashMap?, alongOffset?, position? })"
       ],
       "snippet": "program.editXAxisTicks({ color: \"#f28e2b\" })",
       "errors": [],
@@ -15913,7 +16000,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -15951,6 +16040,10 @@
         {
           "input": "strokeDashMap",
           "strategy": "documented-auto"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
         }
       ],
       "completionRequirements": {
@@ -15993,6 +16086,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "YAxisPosition | undefined"
@@ -16009,7 +16107,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisTicks({ color?, lineWidth?, length?, strokeDash?, strokeDashMap?, alongOffset?, position?, count? })"
+        "editYAxisTicks({ target?, color?, lineWidth?, length?, strokeDash?, strokeDashMap?, alongOffset?, position? })"
       ],
       "snippet": "program.editYAxisTicks({ color: \"#f28e2b\" })",
       "errors": [],
@@ -16040,6 +16138,7 @@
           "x-axis labels"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -16092,6 +16191,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -16116,6 +16219,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "scale",
           "required": false,
@@ -16218,7 +16326,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisLabels({ scale?, position?, count?, values?, labelMap?, offset?, format?, color? })"
+        "createXAxisLabels({ target?, scale?, position?, count?, values?, labelMap?, offset?, format? })"
       ],
       "snippet": "program.createXAxisLabels({})",
       "errors": [],
@@ -16249,6 +16357,7 @@
           "y-axis labels"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -16301,6 +16410,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -16325,6 +16438,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "scale",
           "required": false,
@@ -16427,7 +16545,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisLabels({ scale?, position?, count?, values?, labelMap?, offset?, format?, color? })"
+        "createYAxisLabels({ target?, scale?, position?, count?, values?, labelMap?, offset?, format? })"
       ],
       "snippet": "program.createYAxisLabels({})",
       "errors": [],
@@ -16456,7 +16574,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -16511,6 +16631,10 @@
         {
           "input": "colorMap",
           "strategy": "documented-auto"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
         }
       ],
       "completionRequirements": {
@@ -16603,6 +16727,11 @@
           "type": "\"allow\" | \"error\" | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "XAxisPosition | undefined"
@@ -16619,7 +16748,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, align? })"
+        "editXAxisLabels({ target?, labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? })"
       ],
       "snippet": "program.editXAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
@@ -16648,7 +16777,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -16703,6 +16834,10 @@
         {
           "input": "colorMap",
           "strategy": "documented-auto"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
         }
       ],
       "completionRequirements": {
@@ -16795,6 +16930,11 @@
           "type": "\"allow\" | \"error\" | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "YAxisPosition | undefined"
@@ -16811,7 +16951,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, align? })"
+        "editYAxisLabels({ target?, labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? })"
       ],
       "snippet": "program.editYAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
@@ -16842,6 +16982,7 @@
           "x-axis ticks and labels"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -16869,6 +17010,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -16885,6 +17030,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "scale",
           "required": false,
@@ -16917,7 +17067,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisTicksAndLabels({ scale?, position?, count?, values?, ticks?, labels? })"
+        "createXAxisTicksAndLabels({ target?, scale?, position?, count?, values?, ticks?, labels? })"
       ],
       "snippet": "program.createXAxisTicksAndLabels({})",
       "errors": [],
@@ -16948,6 +17098,7 @@
           "y-axis ticks and labels"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -16975,6 +17126,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -16991,6 +17146,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "scale",
           "required": false,
@@ -17023,7 +17183,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisTicksAndLabels({ scale?, position?, count?, values?, ticks?, labels? })"
+        "createYAxisTicksAndLabels({ target?, scale?, position?, count?, values?, ticks?, labels? })"
       ],
       "snippet": "program.createYAxisTicksAndLabels({})",
       "errors": [],
@@ -17052,7 +17212,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -17075,7 +17237,12 @@
           "unit": "count"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -17085,6 +17252,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "position",
           "required": false,
@@ -17112,7 +17284,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisTicksAndLabels({ position?, count?, values?, ticks?, labels? })"
+        "editXAxisTicksAndLabels({ target?, position?, count?, values?, ticks?, labels? })"
       ],
       "snippet": "program.editXAxisTicksAndLabels({ position: \"bottom\" })",
       "errors": [],
@@ -17141,7 +17313,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -17164,7 +17338,12 @@
           "unit": "count"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -17174,6 +17353,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "position",
           "required": false,
@@ -17201,7 +17385,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisTicksAndLabels({ position?, count?, values?, ticks?, labels? })"
+        "editYAxisTicksAndLabels({ target?, position?, count?, values?, ticks?, labels? })"
       ],
       "snippet": "program.editYAxisTicksAndLabels({ position: \"left\" })",
       "errors": [],
@@ -17232,6 +17416,7 @@
           "x-axis title"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -17272,6 +17457,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -17288,6 +17477,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "alongOffset",
           "required": false,
@@ -17355,7 +17549,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisTitle({ scale?, alongOffset?, align?, baseline?, text?, position?, at?, offset? })"
+        "createXAxisTitle({ target?, scale?, alongOffset?, align?, baseline?, text?, position?, at? })"
       ],
       "snippet": "program.createXAxisTitle({})",
       "errors": [],
@@ -17386,6 +17580,7 @@
           "y-axis title"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -17426,6 +17621,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -17442,6 +17641,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "alongOffset",
           "required": false,
@@ -17509,7 +17713,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisTitle({ scale?, alongOffset?, align?, baseline?, text?, position?, at?, offset? })"
+        "createYAxisTitle({ target?, scale?, alongOffset?, align?, baseline?, text?, position?, at? })"
       ],
       "snippet": "program.createYAxisTitle({})",
       "errors": [],
@@ -17538,7 +17742,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -17573,7 +17779,12 @@
           "unit": "logical-pixel"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -17583,6 +17794,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "alongOffset",
           "required": false,
@@ -17645,7 +17861,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisTitle({ alongOffset?, align?, baseline?, text?, position?, at?, offset?, rotation? })"
+        "editXAxisTitle({ target?, alongOffset?, align?, baseline?, text?, position?, at?, offset? })"
       ],
       "snippet": "program.editXAxisTitle({ alongOffset: 1 })",
       "errors": [],
@@ -17674,7 +17890,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -17709,7 +17927,12 @@
           "unit": "logical-pixel"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -17719,6 +17942,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "alongOffset",
           "required": false,
@@ -17781,7 +18009,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisTitle({ alongOffset?, align?, baseline?, text?, position?, at?, offset?, rotation? })"
+        "editYAxisTitle({ target?, alongOffset?, align?, baseline?, text?, position?, at?, offset? })"
       ],
       "snippet": "program.editYAxisTitle({ alongOffset: 1 })",
       "errors": [],
@@ -17810,7 +18038,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -17835,7 +18065,12 @@
           "unit": "logical-pixel"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -17845,6 +18080,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "offset",
           "required": false,
@@ -17863,26 +18103,26 @@
         {
           "name": "ticks",
           "required": false,
-          "type": "false | Omit<AxisTickOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTickOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "false | Omit<AxisLabelOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisLabelOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "title",
           "required": false,
-          "type": "false | Omit<AxisTitleOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTitleOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         }
       ],
       "callPatterns": [
-        "editXAxis({ offset?, position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
+        "editXAxis({ target?, offset?, position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
       ],
       "snippet": "program.editXAxis({ position: \"bottom\" })",
       "errors": [],
@@ -17911,7 +18151,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -17934,7 +18176,12 @@
           "unit": "logical-pixel"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -17944,6 +18191,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "offset",
           "required": false,
@@ -17962,26 +18214,26 @@
         {
           "name": "ticks",
           "required": false,
-          "type": "false | Omit<AxisTickOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTickOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "false | Omit<AxisLabelOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisLabelOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "title",
           "required": false,
-          "type": "false | Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         }
       ],
       "callPatterns": [
-        "editYAxis({ offset?, position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
+        "editYAxis({ target?, offset?, position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
       ],
       "snippet": "program.editYAxis({ position: \"left\" })",
       "errors": [],
@@ -18011,6 +18263,7 @@
         ],
         "owns": [],
         "idOptions": [
+          "target",
           "coordinate",
           "scale"
         ]
@@ -18031,6 +18284,10 @@
       "units": [],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "coordinate",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -18049,6 +18306,11 @@
       },
       "options": [
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
@@ -18060,7 +18322,7 @@
         }
       ],
       "callPatterns": [
-        "removeXAxis({ coordinate?, scale? })"
+        "removeXAxis({ target?, coordinate?, scale? })"
       ],
       "snippet": "program.removeXAxis({})",
       "errors": [],
@@ -18090,6 +18352,7 @@
         ],
         "owns": [],
         "idOptions": [
+          "target",
           "coordinate",
           "scale"
         ]
@@ -18110,6 +18373,10 @@
       "units": [],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "coordinate",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -18128,6 +18395,11 @@
       },
       "options": [
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
@@ -18139,7 +18411,7 @@
         }
       ],
       "callPatterns": [
-        "removeYAxis({ coordinate?, scale? })"
+        "removeYAxis({ target?, coordinate?, scale? })"
       ],
       "snippet": "program.removeYAxis({})",
       "errors": [],
@@ -25418,7 +25690,7 @@
       "layer": "user-facing",
       "domain": "axes",
       "summary": "Remove the complete theta-axis resource.",
-      "signature": "removeThetaAxis(options?: RemoveAxisOptions): ChartProgram;",
+      "signature": "removeThetaAxis(options?: Omit<RemoveAxisOptions, \"target\">): ChartProgram;",
       "intents": [
         "remove theta axis",
         "remove",
@@ -25497,7 +25769,7 @@
       "layer": "user-facing",
       "domain": "axes",
       "summary": "Remove the complete radial-axis resource.",
-      "signature": "removeRadialAxis(options?: RemoveAxisOptions): ChartProgram;",
+      "signature": "removeRadialAxis(options?: Omit<RemoveAxisOptions, \"target\">): ChartProgram;",
       "intents": [
         "remove radial axis",
         "remove",

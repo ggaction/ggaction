@@ -1,3 +1,5 @@
+import { cartesianAxisOwners } from "../../../selectors/axes.js";
+import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { isNominalValue } from "../../../grammar/scales/fields.js";
 import { patchGuideDash, validateGuideDash, normalizeGuideDashMap, resolveGuideDashes } from "../../../grammar/guideDash.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
@@ -132,39 +134,25 @@ export function resolveGridResources(program, direction, args) {
   let layers = program.semanticSpec.layers.filter(
     layer => !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale !== undefined
   );
-  if (layers.length === 0) throw new Error(`${direction} grid requires a ${channel} encoding.`);
-  const requestedCoordinate = args.coordinate === undefined
-    ? undefined
-    : validateUserId(args.coordinate, "Grid coordinate id");
-  const requestedScale = args.scale === undefined
-    ? undefined
-    : validateUserId(args.scale, "Grid scale id");
-  if (requestedCoordinate !== undefined) {
-    layers = layers.filter(layer => layer.coordinate === requestedCoordinate);
-  }
-  if (requestedScale !== undefined) {
-    layers = layers.filter(layer => layer.encoding[channel].scale === requestedScale);
-  }
-  if (layers.length === 0) throw new Error(`${direction} grid found no matching encoded layers.`);
-  const coordinateIds = [...new Set(layers.map(layer => layer.coordinate).filter(Boolean))];
-  if (layers.some(layer => layer.coordinate === undefined)) {
-    throw new Error(`${direction} grid requires a stored coordinate.`);
-  }
-  if (coordinateIds.length === 0) throw new Error(`Unknown grid coordinate "${requestedCoordinate}".`);
-  if (coordinateIds.length > 1) {
-    throw new Error(`${direction} grid found multiple coordinates; provide coordinate explicitly.`);
-  }
+  const requestedCoordinate = args.coordinate === undefined ? undefined : validateUserId(args.coordinate, "Grid coordinate id");
+  const requestedScale = args.scale === undefined ? undefined : validateUserId(args.scale, "Grid scale id");
+  const axes = cartesianAxisOwners(program).filter(owner => owner.channel === channel && owner.scale !== undefined && owner.coordinate !== undefined);
+  const bindings = [...layers.map(layer => ({ coordinate: layer.coordinate, scale: layer.encoding[channel].scale })),
+    ...axes.map(owner => ({ coordinate: owner.coordinate, scale: owner.scale }))]
+    .filter(binding => (requestedCoordinate === undefined || binding.coordinate === requestedCoordinate) &&
+      (requestedScale === undefined || binding.scale === requestedScale));
+  if (bindings.length === 0) throw new Error(layers.length === 0
+    ? `${direction} grid requires a ${channel} encoding or bound Cartesian axis.`
+    : `${direction} grid found no matching encoded layers.`);
+  if (bindings.some(binding => binding.coordinate === undefined)) throw new Error(`${direction} grid requires a stored coordinate.`);
+  const coordinateIds = [...new Set(bindings.map(binding => binding.coordinate))];
+  if (coordinateIds.length > 1) throw new Error(`${direction} grid found multiple coordinates; provide coordinate explicitly.`);
   const coordinate = requestedCoordinate ?? coordinateIds[0];
-  const definition = findCoordinate(program, coordinate);
-  if (definition?.type !== "cartesian") {
-    throw new Error(`${direction} grid requires a Cartesian coordinate.`);
-  }
-  const scaleIds = [...new Set(layers.map(layer => layer.encoding[channel].scale))];
-  if (scaleIds.length === 0) throw new Error(`Unknown grid scale "${requestedScale}".`);
-  if (scaleIds.length > 1) {
-    throw new Error(`${direction} grid found multiple ${channel} scales; provide scale explicitly.`);
-  }
+  if (findCoordinate(program, coordinate)?.type !== "cartesian") throw new Error(`${direction} grid requires a Cartesian coordinate.`);
+  const scaleIds = [...new Set(bindings.map(binding => binding.scale))];
+  if (scaleIds.length > 1) throw new Error(`${direction} grid found multiple ${channel} scales; provide scale explicitly.`);
   const scale = requestedScale ?? scaleIds[0];
+  layers = layers.filter(layer => layer.coordinate === coordinate && layer.encoding[channel].scale === scale);
   if (
     !["linear", "time", "band", "point"].includes(program.resolvedScales[scale]?.type) &&
     !isTransformedScaleType(program.resolvedScales[scale]?.type)
@@ -179,6 +167,11 @@ export function resolveGridResources(program, direction, args) {
     const leader = program.materializationConfigs.labelLayouts?.[layer.id]?.leaderId;
     return leader === undefined ? [layer.id] : [leader, layer.id];
   }));
+  if (related.size === 0) {
+    for (const owner of axes.filter(owner => owner.scale === scale && owner.coordinate === coordinate)) {
+      for (const id of axisGraphicIds(channel, owner.id)) if (program.graphicSpec.objects[id] !== undefined) related.add(id);
+    }
+  }
   let before;
   let after;
   walkGraphicDrawOrder(program.graphicSpec, ({ id }) => {

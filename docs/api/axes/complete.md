@@ -9,6 +9,51 @@ title: Complete Axes and Labels
 
 [Axis family overview](../axes.md)
 
+## Independent named Cartesian axes
+
+Create an axis with `id` when it needs an independent identity. The default IDs are
+`x` and `y`. Refine or remove a named axis with `target`, which selects the axis,
+not its mark or scale. This complete runnable program uses an independent right scale:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "share"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from "ggaction";
+
+const program = chart().createCanvas({ width: 600, height: 400, margin: 80 })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createScatterPlot({ x: "x", y: "y", guides: false })
+  .createYAxis()
+  .createScale({ id: "ratio", type: "linear", domain: [0, 1] })
+  .createYAxis({ id: "share", position: "right", scale: "ratio", coordinate: "main" })
+  .editYAxisTitle({ target: "share", text: "Share" });
+```
+
+`createAxes` and `createGuides.axes` also accept nonempty X/Y arrays, with an explicit
+`id` in every entry. Arrays create axes in entry order and fail atomically if any
+entry conflicts. A chart facade accepts the same arrays for its own position scales.
+One axis may occupy each physical side of a coordinate; moving another axis there
+fails even with a different frame offset. Named axes use one common side for their
+components. Move the complete axis to change that side; focused edits preserve it.
+
+An omitted `target` selects the canonical X/Y axis if present, otherwise the unique
+named axis in that channel. Several named candidates require an explicit target.
+Unknown IDs, wrong channels, conflicting scale/coordinate filters, reserved channel
+IDs and duplicate graphic identities fail. Polar and Parallel axes do not accept
+these selectors. A focused creator restores a missing component of an existing named
+axis; the complete creator establishes its identity. Removing the final component
+also removes the owner. Scale, data, Canvas, theme and editable persistence preserve
+all remaining owners. A grid with several eligible scales requires an explicit scale;
+conflicting axis tick policies require explicit grid `count` or `values`.
+
+For facet `axes: "outer"`, named components follow their actual top, right, bottom
+or left occupied edge, including incomplete rows. `axes: "each"` retains every axis.
+Named text bounds must fit the Canvas and remain separate from other axis text.
+
 ## Moving a complete axis and refining its text
 
 On an existing Cartesian program, create the full axis before focused text edits:
@@ -89,8 +134,8 @@ program.createAxes({
 | Option | Type | Default |
 | --- | --- | --- |
 | `coordinate` | `{ id?, type? }` | unique coordinate used by x/y layers |
-| `x` | axis options or `false` | create when x is encoded |
-| `y` | axis options or `false` | create when y is encoded |
+| `x` | axis options, nonempty named-axis array, or `false` | create when x is encoded |
+| `y` | axis options, nonempty named-axis array, or `false` | create when y is encoded |
 | `theta` | Polar axis options or `false` | create when theta is encoded |
 | `radius` | Polar axis options or `false` | create when radius is encoded |
 

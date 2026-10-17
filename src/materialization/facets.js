@@ -1,3 +1,4 @@
+import { cartesianAxisOwners } from "../selectors/axes.js";
 import { resolveConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js";
 import { textBoundsFitCanvas, textBoundsIntersect, resolveTextBounds } from "../core/textMetrics.js";
 import { axisGraphicIds, allLegendGraphicIds } from "./guides/resources.js";
@@ -168,7 +169,7 @@ function assertPlotSpacingGuides(program, layout, plots) {
   for (const cell of layout.children) {
     const child = program.children[cell.id];
     const ids = [
-      ...["x", "y"].flatMap(axisGraphicIds).filter(id => /Labels|Title/.test(id)),
+      ...cartesianAxisOwners(child).flatMap(owner => axisGraphicIds(owner.channel, owner.id).slice(2)),
       ...allLegendGraphicIds(Object.keys(child.guideConfigs.legend ?? {}))
     ];
     for (const id of ids) {

@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 570, // Approved point-capacity selector adds one private owner.
-  packedBytes: 804_000, // Approved point capacity measured803124 on Node22; next1000-byte step.
-  unpackedBytes: 3_940_000 // Approved point capacity measured3939523 on Node22; next1000-byte step.
+  entries: 570, // Named Cartesian axes add one shared selector owner.
+  packedBytes: 806_000, // Named axes measured805143bytes; minimum1000-byte step.
+  unpackedBytes: 3_949_000 // Named axes measured3948224bytes; minimum1000-byte step.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -73,6 +73,7 @@ const COMPACT_JSON_FILES = Object.freeze([
   "knowledge/task-packet.schema.json"
 ]);
 const COMPACT_JAVASCRIPT_FILES = Object.freeze([
+  "src/selectors/axes.js",
   "src/grammar/axisTextPlacement.js",
   "src/grammar/guideDash.js",
   "knowledge/task-resolver.js",

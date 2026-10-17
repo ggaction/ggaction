@@ -58,7 +58,7 @@ test("compact action cards are generated from the current action contract", asyn
   assert.ok(artifact.cards.find(card => card.name === "editLegend").options
     .some(option => option.name === "channel" && option.type.includes('"opacity"')));
   // Preserve all approved Cartesian placement options and legend channel selectors.
-  assert.equal(stats.medianBytes <= 1865, true);
+  assert.equal(stats.medianBytes <= 1896, true);
   assert.deepEqual(
     artifact.cards.map(card => card.name),
     context.actions.map(action => action.name)

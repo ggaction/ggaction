@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 396_000, // Retain approved point-capacity ceiling pending combined measurement.
-  "ggaction/basic": 192_000, // Retain integrated Node24 ceiling pending combined measurement.
+  ggaction: 397_000, // Named axes measured396214 gzip bytes; narrow1000-byte step.
+  "ggaction/basic": 194_000, // Named axes measured193136 gzip bytes; narrow1000-byte step.
   "ggaction/svg": 25_000
 });
 

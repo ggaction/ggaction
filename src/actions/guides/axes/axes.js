@@ -1,3 +1,4 @@
+import { withGuideLayoutTransaction } from "../../../materialization/guides/layout.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
@@ -15,6 +16,13 @@ const COORDINATE_API_TYPES = new Set([
 ]);
 
 function validateAxisOption(value, channel) {
+  if (["x", "y"].includes(channel) && Array.isArray(value)) {
+    if (value.length === 0 || value.some(entry => !isPlainObject(entry) || !Object.hasOwn(entry, "id"))) {
+      throw new TypeError(`createAxes ${channel} arrays require nonempty named axis descriptors.`);
+    }
+    for (const entry of value) validateUserId(entry.id, "Axis id");
+    return;
+  }
   if (value !== undefined && value !== false && !isPlainObject(value)) {
     throw new TypeError(`createAxes ${channel} must be false or a plain object.`);
   }
@@ -287,23 +295,34 @@ const createAxes = /* @__PURE__ */ action(
       coordinateDescriptor,
       cartesianLayers
     );
-    const x = resolveAxisArgs(coordinate.layers, "x", args.x);
-    const y = resolveAxisArgs(coordinate.layers, "y", args.y);
+    const resolve = (channel, value) => Array.isArray(value)
+      ? value.map(entry => resolveAxisArgs(coordinate.layers, channel, entry))
+      : resolveAxisArgs(coordinate.layers, channel, value);
+    const x = resolve("x", args.x);
+    const y = resolve("y", args.y);
 
     if (x === undefined && y === undefined) {
       throw new Error("createAxes requires at least one selected axis.");
     }
 
-    let program = this;
-
-    if (x !== undefined) {
-      program = program.createXAxis({ ...x, coordinate: coordinate.id });
+    const apply = source => {
+      let program = source;
+      for (const [channel, option] of [["x", x], ["y", y]]) {
+        if (option === undefined) continue;
+        for (const entry of Array.isArray(option) ? option : [option]) {
+          program = program[`create${channel.toUpperCase()}Axis`]({ ...entry, coordinate: coordinate.id });
+        }
+      }
+      return program;
+    };
+    if (Array.isArray(x) || Array.isArray(y)) {
+      const ids = [...(Array.isArray(x) ? x : x === undefined ? [] : [x]),
+        ...(Array.isArray(y) ? y : y === undefined ? [] : [y])].map((entry, index) => entry.id ?? (index === 0 ? "x" : "y"));
+      if (new Set(ids).size !== ids.length) throw new Error("createAxes requires unique axis ids across its descriptors.");
+      withGuideLayoutTransaction(this, apply);
+      return withGuideLayoutTransaction(this, apply);
     }
-    if (y !== undefined) {
-      program = program.createYAxis({ ...y, coordinate: coordinate.id });
-    }
-
-    return program;
+    return apply(this);
   }
 );
 

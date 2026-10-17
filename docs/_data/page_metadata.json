@@ -699,7 +699,7 @@
   },
   "/api/axes/complete/": {
     "title": "Complete Axes and Labels",
-    "description": "On an existing Cartesian program, create the full axis before focused text edits:",
+    "description": "Create an axis with id when it needs an independent identity. The default IDs are x and y.",
     "image": "/assets/images/cars-line-chart.png"
   }
 }

@@ -44,6 +44,10 @@ export function validateGuideSemanticValue(_program, parsed, value) {
       throw new TypeError("Parallel axis scales must contain at least two ids.");
     }
     value.forEach(id => validateUserId(id, "Parallel axis scale id"));
+  } else if (parsed.id.startsWith("axis.") && property === "channel") {
+    if (!["x", "y"].includes(value)) throw new Error("Named Cartesian axis channel requires x or y.");
+  } else if (parsed.id.startsWith("axis.") && property === "position") {
+    if (!["top", "bottom", "left", "right"].includes(value)) throw new Error("Named Cartesian axis position requires a physical side.");
   } else if (property === "title") {
     validateNonEmptySemanticString(value, "Axis title");
   } else {

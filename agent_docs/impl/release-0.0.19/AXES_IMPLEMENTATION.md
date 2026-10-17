@@ -6,7 +6,7 @@
 - [x] 전용 branch/worktree와 `npm ci` 준비.
 - [x] #166 native tick/grid uniform dash 및 typed map 구현.
 - [x] #174/#194/#195/#199 frame/title/label 구현.
-- [ ] #197 named 축 소유자·selector·모든 consumer 구현.
+- [x] #197 named 축 소유자·selector·모든 consumer 구현(normal checkpoint; realistic는 아래 별도 미완).
 - [ ] #206 최종 facet parent shared 범례와 unit 범례 확장 결합.
 - [ ] 설치 소비자·독립 geometry 및 승인된 primitive/public pixel 검증 완료.
 - [ ] 전체 unit/contracts/docs/package/bundle 검증과 부모 통합.
@@ -54,3 +54,32 @@
   SVG의 exact parity를 추가했고14/14 focused 통과했다. 이미지 눈/VLM 검사는 하지 않았다.
 - Action-card 최대3358bytes는3360한도 안이며 승인된 placement 옵션을 모두 포함한 median1865가
   기존1856을9bytes 초과하여 해당 한도만 실측1865로 갱신했다. 옵션을 숨기거나 지우지 않는다.
+
+
+## #197 checkpoint
+
+- `selectors/axes.js`가 canonical/unique/explicit owner 선택과 native IDs를 소유한다. 기존
+  materialization module은 ID resolver를 재수출하고 persistence는 selector를 직접 소비한다.
+  Source layer 경계의 허용 목록을 넓히지 않았고 import/cycle/immutable primitive 검사가 통과했다.
+- Native named ID, coordinate+side uniqueness, explicit frame, independent scale/standalone,
+  sparse components, focused/group/whole/remove, aggregate/facade arrays, grid ambiguity와
+  all-owner replay를 source/types/Current/English docs/cards/inspection/LLM에 동기화했다.
+- 새로운18개 durable 사례가 data/encoding/mark/theme/Canvas/scale/coordinate/facet/grid/repeat,
+  title/labels/collision/atomicity, malformed import와 prototype-shaped ID를 검증한다.
+  Facade reuse는 retained frame offset이 다르면 거부한다. TS는 Full/Basic와 closed negative를 포함한다.
+- Full unit3117/3117 PASS 이후 facade-only 추가회귀18/18, source/types10/10,
+  package/cards/lifecycle/facet contracts27/27, action catalog PASS, docs120/120 PASS.
+- 같은 실행의 named/public design과 canonical native design PNG exact equality는
+  `test/unit/actions/guides/named-cartesian-axes.test.js`가 검증한다. Independent screen oracle와
+  explicit primitive translation의 PNG/SVG exact equality는 `axis-frame-offset.test.js`가 검증한다.
+  승인된 overview SVG의 설명 annotation 복제는 부모 통합 담당이며 이 checkpoint는 그 완료가 아니다.
+- Installed packed Full/Basic actual runtime/TS, PNG/PDF/persistence, optional peers, local MCP,
+  tutorial, private exports와 browser bundle 모두 PASS. 최종 artifact SHA256
+  `3769b14c112d8c03313e0070f1f0a6c830a148b7aaf2fb1b341aac990251a6ba`.
+  Browser gzip은 Full396214/Basic193136/SVG7176bytes다.
+- 최초 package/검색/card/browser 예산 초과와 provenance staleness는 로그에 보존했다.
+  Scope를 숨기거나 coverage 기준을 줄이지 않고 새 selector compaction 적용 뒤 실측한 최소 한도를
+  canonical owners와 SECOND_ARCHITECTURE에 기록했다. Package570entries,805115packed,
+  3948224unpacked; search816932; card median1896/max3358.
+- 남은 일: #206 parent owner 전체 lifecycle, sibling unit block 기능 결합 및 모든 신규 옵션의
+  authentic realistic5회/3dataset witness. 이들은 완료 체크하지 않았으며 다음 통합 checkpoint에서 실행한다.
