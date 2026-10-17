@@ -135,3 +135,10 @@ focused-opacity variant, legend-layout, legend-recipe-opacity를 기존 목표�
 
 최종 main/tag/OIDC출판·동일 registry artifact 검증·dataset1154/8335 재동기화와 Pages
 배포는 여전히 남아 있다. 로컬 package/문서 성공을 실제0.0.19 출판으로 표시하지 않는다.
+
+CI가 발견한 smoke의 user-facing count275→277은 새 regression-statistics 두 action이다.
+실제 데이터 direct lifecycle에는 이미 있었지만 smoke root에는 없었으므로 독립 선형 fit 두 개와
+statistics 생성→source편집을 추가했다. 원래 recipe·관측값·모든 action을 보존하고 최종
+통계의 source 전이와 count4/intercept0/slope1/rSquared1을 직접 검증한다.
+공식 realistic 선택 실행에서 integrity/SVG/직접277actions/최종상태3/3PASS(8890.93ms).
+원본 실패는 CI39034674598 realistic5, 로컬 성공은 `/tmp/ggaction-217-direct-stats-smoke.log`다.
