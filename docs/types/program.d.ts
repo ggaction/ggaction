@@ -3385,8 +3385,17 @@ export interface RugTickOptions extends StrokeStyleDetails {
   strokeWidth?: number;
   opacity?: number;
 }
-export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend"> & {
+type ContinuousGridDirectionOptions = Omit<GridDirectionOptions, "bandPosition"> & {
+  /** Continuous position scales do not have categorical band edges. */
+  bandPosition?: never;
+};
+type ContinuousCartesianGridOptions = {
+  vertical?: boolean | ContinuousGridDirectionOptions;
+  horizontal?: boolean | ContinuousGridDirectionOptions;
+};
+export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend" | "grid"> & {
   axes?: false | CAxes;
+  grid?: false | ContinuousCartesianGridOptions;
   legend?: false;
 };
 export type CreateRugPlotOptions = {
@@ -3565,7 +3574,7 @@ export type CreateAreaPlotOptions = {
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
   area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
-  guides?: false | DensityPlotGuideOptions;
+  guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
@@ -3668,7 +3677,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
 
 export type HorizonPlotGuideOptions = {
   axes?: false | (Omit<CAxes, "y"> & { y?: false });
-  grid?: false | (Pick<CartesianGridOptions, "vertical"> & { horizontal?: false });
+  grid?: false | { vertical?: boolean | ContinuousGridDirectionOptions; horizontal?: false };
   legend?: false;
 };
 export interface CreateHorizonPlotOptions {
@@ -3690,7 +3699,8 @@ export interface CreateHorizonPlotOptions {
 }
 
 export type DensityPlotLegendOptions = Omit<PieLegendOptions, "order"> & { order?: LegendValueOrder };
-export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend"> & {
+export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend" | "grid"> & {
+  grid?: false | ContinuousCartesianGridOptions;
   legend?: false | DensityPlotLegendOptions;
 };
 export interface CreateDensityPlotOptions {

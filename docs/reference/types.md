@@ -2122,6 +2122,22 @@ export type ConfidenceIntervalMethod = "normal" | "student-t";
 
 </details>
 
+### `ContinuousCartesianGridOptions` {#type-continuouscartesiangridoptions}
+
+<details markdown="1">
+<summary>Expand ContinuousCartesianGridOptions</summary>
+
+```typescript
+type ContinuousCartesianGridOptions = {
+  vertical?: boolean | ContinuousGridDirectionOptions;
+  horizontal?: boolean | ContinuousGridDirectionOptions;
+};
+```
+
+</details>
+
+Related types: [`ContinuousGridDirectionOptions`](#type-continuousgriddirectionoptions).
+
 ### `ContinuousColorInterpolation` {#type-continuouscolorinterpolation}
 
 <details markdown="1">
@@ -2154,6 +2170,22 @@ export type ContinuousColorScaleOptions =
 </details>
 
 Related types: [`NonPointContinuousColorScaleOptions`](#type-nonpointcontinuouscolorscaleoptions).
+
+### `ContinuousGridDirectionOptions` {#type-continuousgriddirectionoptions}
+
+<details markdown="1">
+<summary>Expand ContinuousGridDirectionOptions</summary>
+
+```typescript
+type ContinuousGridDirectionOptions = Omit<GridDirectionOptions, "bandPosition"> & {
+  /** Continuous position scales do not have categorical band edges. */
+  bandPosition?: never;
+};
+```
+
+</details>
+
+Related types: [`GridDirectionOptions`](#type-griddirectionoptions).
 
 ### `ContinuousSizeScaleOptions` {#type-continuoussizescaleoptions}
 
@@ -2226,7 +2258,7 @@ export type CreateAreaPlotOptions = {
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
   area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
-  guides?: false | DensityPlotGuideOptions;
+  guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
@@ -2237,7 +2269,7 @@ export type CreateAreaPlotOptions = {
 
 </details>
 
-Related types: [`ColorLayout`](#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`FillPaint`](#type-fillpaint) · [`CurveInterpolation`](#type-curveinterpolation) · [`DensityPlotGuideOptions`](#type-densityplotguideoptions) · [`AreaPlotIndependentChannel`](#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](#type-areaplotmeasurechannel).
+Related types: [`ColorLayout`](#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`FillPaint`](#type-fillpaint) · [`CurveInterpolation`](#type-curveinterpolation) · [`DensityPlotGuideOptions`](#type-densityplotguideoptions) · [`CartesianGridOptions`](#type-cartesiangridoptions) · [`AreaPlotIndependentChannel`](#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](#type-areaplotmeasurechannel).
 
 ### `CreateAxesOptions` {#type-createaxesoptions}
 
@@ -4255,14 +4287,15 @@ Related types: [`DensityWidthResolution`](#type-densitywidthresolution).
 <summary>Expand DensityPlotGuideOptions</summary>
 
 ```typescript
-export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend"> & {
+export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend" | "grid"> & {
+  grid?: false | ContinuousCartesianGridOptions;
   legend?: false | DensityPlotLegendOptions;
 };
 ```
 
 </details>
 
-Related types: [`CCategoricalGuides`](#type-ccategoricalguides) · [`DensityPlotLegendOptions`](#type-densityplotlegendoptions).
+Related types: [`CCategoricalGuides`](#type-ccategoricalguides) · [`ContinuousCartesianGridOptions`](#type-continuouscartesiangridoptions) · [`DensityPlotLegendOptions`](#type-densityplotlegendoptions).
 
 ### `DensityPlotLegendOptions` {#type-densityplotlegendoptions}
 
@@ -7072,14 +7105,14 @@ Related types: [`Palette`](#type-palette).
 ```typescript
 export type HorizonPlotGuideOptions = {
   axes?: false | (Omit<CAxes, "y"> & { y?: false });
-  grid?: false | (Pick<CartesianGridOptions, "vertical"> & { horizontal?: false });
+  grid?: false | { vertical?: boolean | ContinuousGridDirectionOptions; horizontal?: false };
   legend?: false;
 };
 ```
 
 </details>
 
-Related types: [`CAxes`](#type-caxes) · [`CartesianGridOptions`](#type-cartesiangridoptions).
+Related types: [`CAxes`](#type-caxes) · [`ContinuousGridDirectionOptions`](#type-continuousgriddirectionoptions).
 
 ### `HorizonResolution` {#type-horizonresolution}
 
@@ -10306,15 +10339,16 @@ export type RowWindowFrame = {
 <summary>Expand RugGuideOptions</summary>
 
 ```typescript
-export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend"> & {
+export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend" | "grid"> & {
   axes?: false | CAxes;
+  grid?: false | ContinuousCartesianGridOptions;
   legend?: false;
 };
 ```
 
 </details>
 
-Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`CAxes`](#type-caxes).
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`CAxes`](#type-caxes) · [`ContinuousCartesianGridOptions`](#type-continuouscartesiangridoptions).
 
 ### `RugMeasureChannel` {#type-rugmeasurechannel}
 
