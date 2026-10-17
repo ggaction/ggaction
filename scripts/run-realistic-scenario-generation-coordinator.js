@@ -9,7 +9,8 @@ const childPath = fileURLToPath(new URL(
 ));
 
 const MAX_DIAGNOSTIC_OUTPUT = 8_192;
-const GENERATION_CHILD_OLD_SPACE_MIB = 288;
+// Leave native/parser and V8 non-heap headroom below the unchanged 448MiB RSS ceiling.
+const GENERATION_CHILD_OLD_SPACE_MIB = 256;
 const DEFAULT_GENERATION_TIMEOUT = 30 * 60_000;
 const CHILD_TERMINATION_GRACE_MS = 5_000;
 const CHILD_FAILURE_RESOURCES = Symbol("realisticGenerationChildFailureResources");
