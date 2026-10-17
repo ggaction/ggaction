@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:01ff4060774023a948fa5546e78da539298d46e772838e58af3aa45240ed2586. Status: development. Runtime source: e19ae34a9c29c8da0fc544b703c52fe6c8a0b4b2. Release baseline: v0.0.13.
+Contract: sha256:e53df0408015666bebd601dd65848994f6dd20d82fe4e7649549e4899e6c0d1d. Status: development. Runtime source: 75edfc24a5559c26b8ef616a90fdb27c1ca9d46f. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/e19ae34a9c29c8da0fc544b703c52fe6c8a0b4b2/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/75edfc24a5559c26b8ef616a90fdb27c1ca9d46f/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/e19ae34a9c29c8da0fc544b703c52fe6c8a0b4b2/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/75edfc24a5559c26b8ef616a90fdb27c1ca9d46f/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12436,6 +12436,13 @@ An explicit Cartesian `labelMap` entry with `label: ""` hides only that displaye
 
 # Grids
 
+Cartesian grid creators and editors accept `strokeDashMap: [{ value, strokeDash }]`
+alongside the uniform `strokeDash` pattern. A matching raw typed value overrides only
+that line; unmatched values use the uniform pattern. `strokeDashMap: "auto"` or `[]`
+clears only the overrides. Entries do not add grid values. Patterns are even-length
+arrays of finite non-negative lengths, with `[]` solid. Duplicate typed keys are errors.
+Band-boundary grids use the first selected band's pattern for a shared edge.
+
 ## At a glance
 
 | Action | Shortest call | Inference/defaults | Result |
@@ -23845,6 +23852,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 
 Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./reference/actions/guides/#axis-lines-ticks-and-labels).
@@ -23874,6 +23883,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 
 Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./reference/actions/guides/#axis-lines-ticks-and-labels).
@@ -23899,6 +23910,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -23927,6 +23940,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -24471,6 +24486,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
 | `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
@@ -24502,6 +24518,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
 | `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
@@ -24533,6 +24550,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
 | `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
@@ -24562,6 +24580,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
 | `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
@@ -28031,12 +28050,15 @@ Related types: [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleo
 
 ```typescript
 export interface CartesianAxisTickStyleOptions extends AxisTickStyleOptions {
+  strokeDash?: readonly number[];
+  /** Typed raw-value overrides. Empty arrays and auto clear only the map. */
+  strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Signed logical pixels along the axis: positive right for x, down for y. */
   alongOffset?: number;
 }
 ```
 
-Related types: [`AxisTickStyleOptions`](./reference/types/#type-axistickstyleoptions).
+Related types: [`AxisTickStyleOptions`](./reference/types/#type-axistickstyleoptions) · [`CartesianGuideDashMap`](./reference/types/#type-cartesianguidedashmap).
 
 ### `CartesianCategoricalGuideOptions` {#type-cartesiancategoricalguideoptions}
 
@@ -28066,6 +28088,19 @@ type CartesianGridOptions = Pick<CreateGridOptions, "horizontal" | "vertical">;
 ```
 
 Related types: [`CreateGridOptions`](./reference/types/#type-creategridoptions).
+
+### `CartesianGuideDashMap` {#type-cartesianguidedashmap}
+
+ Expand CartesianGuideDashMap
+
+```typescript
+export type CartesianGuideDashMap = ReadonlyArray<Readonly<{
+  value: AxisValue;
+  strokeDash: readonly number[];
+}>>;
+```
+
+Related types: [`AxisValue`](./reference/types/#type-axisvalue).
 
 ### `CartesianGuideOptions` {#type-cartesianguideoptions}
 
@@ -30985,6 +31020,7 @@ Related types: [`EditGridOptions`](./reference/types/#type-editgridoptions) · [
 
 ```typescript
 export interface EditGridOptions {
+  strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Absolute signed logical-pixel displacement; omission preserves the current value. */
   alongOffset?: number;
   /** Preserve omitted order; finite values sort Cartesian grids relative to marks at zero. */
@@ -30999,7 +31035,7 @@ export interface EditGridOptions {
 }
 ```
 
-Related types: [`CategoryValue`](./reference/types/#type-categoryvalue).
+Related types: [`CartesianGuideDashMap`](./reference/types/#type-cartesianguidedashmap) · [`CategoryValue`](./reference/types/#type-categoryvalue).
 
 ### `EditHorizonOptions` {#type-edithorizonoptions}
 
@@ -32507,6 +32543,7 @@ export type GraphicType =
 
 ```typescript
 export interface GridDirectionOptions {
+  strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Signed logical pixels along the scale: vertical lines right, horizontal lines down. */
   alongOffset?: number;
   /** Grid draw order relative to marks at zero: positive above, nonpositive behind. */
@@ -32523,7 +32560,7 @@ export interface GridDirectionOptions {
 }
 ```
 
-Related types: [`CategoryValue`](./reference/types/#type-categoryvalue).
+Related types: [`CartesianGuideDashMap`](./reference/types/#type-cartesianguidedashmap) · [`CategoryValue`](./reference/types/#type-categoryvalue).
 
 ### `GroupEncodingOptions` {#type-groupencodingoptions}
 
@@ -37288,12 +37325,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e19ae34a9c29c8da0fc544b703c52fe6c8a0b4b2/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/75edfc24a5559c26b8ef616a90fdb27c1ca9d46f/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e19ae34a9c29c8da0fc544b703c52fe6c8a0b4b2/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/75edfc24a5559c26b8ef616a90fdb27c1ca9d46f/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39455,9 +39492,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:01ff4060774023a948fa5546e78da539298d46e772838e58af3aa45240ed2586` |
+| Contract fingerprint | `sha256:e53df0408015666bebd601dd65848994f6dd20d82fe4e7649549e4899e6c0d1d` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
-| Runtime source commit | `e19ae34a9c29c8da0fc544b703c52fe6c8a0b4b2` |
+| Runtime source commit | `75edfc24a5559c26b8ef616a90fdb27c1ca9d46f` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 282 |
 | Declared actions in that release | 234 |
@@ -39503,6 +39540,26 @@ forms described in their references.
 # Complete Axes and Labels
 
 [Axis family overview](./api/axes/)
+
+## Value-specific Cartesian tick dashes
+
+Create a complete axis first, then refine its native ticks. On an existing Cartesian
+program with a quantitative y encoding, this fragment keeps the zero tick solid:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+program
+  .createYAxis({ ticksAndLabels: { values: [0, 1, 2] } })
+  .editYAxisTicks({ strokeDash: [2, 2], strokeDashMap: [{ value: 0, strokeDash: [] }] });
+```
+
+Patterns contain an even number of finite non-negative lengths; `[]` means solid.
+Map keys use raw typed values, so `1` differs from `"1"`. Missing map entries use the
+uniform pattern. An omitted edit preserves the map; `strokeDashMap: "auto"` or `[]`
+removes only its overrides. Values absent from the current ticks stay available for
+later scale/data refresh. The same tick options work inside complete-axis creation,
+whole-axis edits and ticks-and-labels groups. Polar and Parallel ticks are unchanged.
 
 ## `createAxes(options?)`
 
