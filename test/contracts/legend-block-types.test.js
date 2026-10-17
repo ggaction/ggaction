@@ -40,6 +40,22 @@ const symbol: LegendBlockSymbolPatch = { size: 64, fill: "white", stroke: "black
 const options: EditLegendBlockOptions = { target: "points", channel: "size", values: [10], text: {}, symbol: {} };
 const labels: DisplayLabelMap = [{ value: 1, label: "one" }, { value: "1", label: "string one" }];
 program.editLegendBlock(options);
+program.editLegendBlock({target:"points",channel:"size",position:"bottom-left"});
+program.editLegendLayout({channel:"color",position:"inherit"});
+// @ts-expect-error local reset grammar is inherit, not auto
+program.editLegendBlock({target:"points",channel:"size",position:"auto"});
+program.createLegend({position:"right",direction:"horizontal",titlePosition:"bottom"});
+basic.createLegend({position:"top",direction:"vertical",titlePosition:"bottom"});
+program.editLegendLayout({channel:"color",direction:"auto",titlePosition:"top"});
+// @ts-expect-error auto direction is edit-only
+program.createLegend({direction:"auto"});
+// @ts-expect-error gradient direction is closed
+program.editLegendLayout({direction:"diagonal"});
+program.createLegend({border:{strokeDash:[4,2,6,1]}});
+program.editLegendBorder({border:{strokeDash:[]}});
+// @ts-expect-error dash entries are numeric
+program.editLegendBorder({border:{strokeDash:["dash",2]}});
+program.editLegendBlock({target:"points",channel:"size",labelMap:[{value:3.14159,label:"zero"}]});
 program.editLegendBlock({ target: "points", channel, count: 3, gap: 0, title: "Weight", text, symbol });
 program.editLegendBlock({ target: "points", channel: "color", values: "auto", order: [1, "2", true] });
 program.editLegendBlock({ target: "points", channel: "color", labelMap: labels });

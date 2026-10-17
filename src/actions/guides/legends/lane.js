@@ -1,6 +1,7 @@
+import { editLegendBorderBounds } from "../../../materialization/legendBorder.js";
 import { resolveLegendAxisOffset, effectiveLegendOffsetConfig } from "../../../materialization/guides/resources.js";
 import { resolveLegendGroupPlacement } from "../../../layout/legendGroup.js";
-import { legendGroup } from "../../../materialization/legendGroups.js";
+import { localLegendPosition, localLegendPlacement, legendGroup } from "../../../materialization/legendGroups.js";
 import { editLegendBackground, resolveLegendBackgroundFromBounds } from "./continuous/common.js";
 import { action } from "../../../core/action.js";
 import { noOptions } from "../../../core/validation.js";
@@ -152,10 +153,14 @@ function blockDescriptor(program, kind, config) {
   if ([bounds, symbolAnchor, symbolBounds].includes(undefined) || (labels === undefined && !emptyLabels)) {
     throw new Error(`Legend lane could not measure ${kind} graphics.`);
   }
+  const preserveGradientLayout = ["gradient", "strokeGradient"].includes(kind) &&
+    config.representation !== "symbols" &&
+    (config.gradientDirection === "horizontal" || config.titlePosition === "bottom");
   return {
     id: kind,
     kind,
-    preserveGrid: (["series", "color", "stroke"].includes(kind) || config.representation === "symbols") && (config.columns ?? 1) > 1,
+    preserveAlignment: preserveGradientLayout,
+    preserveGrid: preserveGradientLayout || (["series", "color", "stroke"].includes(kind) || config.representation === "symbols") && (config.columns ?? 1) > 1,
     target: config.target,
     border: borderFor(kind, config),
     offset: requestedOffset(config),
@@ -225,7 +230,7 @@ function edgeKinds(program, edge) {
     (layer, index) => [layer.id, index]
   ));
   return Object.entries(configs)
-    .filter(([kind, config]) => legendGroup(program, config.target) === undefined && legendPosition(program, kind, config) === edge)
+    .filter(([kind, config]) => localLegendPosition(config) === undefined && legendGroup(program, config.target) === undefined && legendPosition(program, kind, config) === edge)
     .sort(([kindA, configA], [kindB, configB]) =>
       (layerOrder.get(configA.target) - layerOrder.get(configB.target)) ||
       (FAMILY_ORDER[kindA] - FAMILY_ORDER[kindB])
@@ -243,7 +248,7 @@ export function hasHorizontalLegendLane(program) {
 }
 
 export function hasLegendLane(program) {
-  return hasSideLegendLane(program) ||
+  return Object.values(program.guideConfigs.legend ?? {}).some(config => localLegendPosition(config) !== undefined) || hasSideLegendLane(program) ||
     hasHorizontalLegendLane(program);
 }
 
@@ -389,17 +394,11 @@ function applyHorizontalPlan(program, groups, plan) {
       next = translateGraphic(next, id, placement.dx, placement.contentDy);
     }
     if (placement.background !== undefined) {
-      for (const property of ["x", "y", "width", "height"]) {
-        next = next.editGraphics({ target: placement.background.id, property,
-          value: placement.background[property] });
-      }
+      next = editLegendBorderBounds(next, placement.background.id, placement.background);
     }
   }
   if (plan.background !== undefined) {
-    for (const property of ["x", "y", "width", "height"]) {
-      next = next.editGraphics({ target: plan.background.id, property,
-        value: plan.background[property] });
-    }
+    next = editLegendBorderBounds(next, plan.background.id, plan.background);
   }
   return next;
 }
@@ -444,10 +443,9 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
             block.titleId,
             placement.titleDx,
             placement.dy
-          ).editGraphics({
-            target: block.titleId,
-            property: "textAlign",
-            value: "left"
+          );
+          if (!block.preserveAlignment) next = next.editGraphics({
+            target: block.titleId, property: "textAlign", value: "left"
           });
         }
         for (const id of block.symbolIds) {
@@ -463,10 +461,9 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
           block.labelId,
           placement.labelDx,
           placement.dy
-        ).editGraphics({
-          target: block.labelId,
-          property: "textAlign",
-          value: "left"
+        );
+        if (!block.preserveAlignment) next = next.editGraphics({
+          target: block.labelId, property: "textAlign", value: "left"
         });
       }
       for (const block of blocks) {
@@ -476,13 +473,7 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
         next = editLegendBackground(next, block.backgroundId, background, block.border);
       }
       for (const background of plan.backgrounds) {
-        for (const property of ["x", "y", "width", "height"]) {
-          next = next.editGraphics({
-            target: background.id,
-            property,
-            value: background[property]
-          });
-        }
+        next = editLegendBorderBounds(next, background.id, background);
       }
     }
     for (const { side, entries } of plans) {
@@ -572,7 +563,7 @@ export const rematerializeLegendGroups = /* @__PURE__ */ action(
     const plot = resolveGraphicBounds(next);
     const canvas = findCanvasGraphic(next)?.properties;
     for (const [target, group] of Object.entries(next.guideConfigs.legendGroups ?? {})) {
-      const entries = Object.entries(next.guideConfigs.legend ?? {}).filter(([, config]) => config.target === target)
+      const entries = Object.entries(next.guideConfigs.legend ?? {}).filter(([, config]) => config.target === target && localLegendPosition(config) === undefined)
         .sort(([a], [b]) => FAMILY_ORDER[a] - FAMILY_ORDER[b]);
       next = alignLegendTextBoxes(next, entries.flatMap(([kind]) => existingIds(next, kind)));
       const blocks = entries.map(([kind]) => ({ id: kind, ids: existingIds(next, kind),
@@ -585,6 +576,16 @@ export const rematerializeLegendGroups = /* @__PURE__ */ action(
         const block = blocks.find(item => item.id === placement.id);
         for (const id of block.ids) next = translateGraphic(next, id, placement.dx, placement.dy);
       }
+    }
+    for (const [kind, config] of Object.entries(next.guideConfigs.legend ?? {})) {
+      const placement = localLegendPlacement(config);
+      if (placement === undefined) continue;
+      const ids = existingIds(next, kind);
+      next = alignLegendTextBoxes(next, ids);
+      const group = {placement: {...placement, offset: resolveLegendAxisOffset(next, placement, plot)}, blockLayout: "column"};
+      const [shift] = resolveLegendGroupPlacement({blocks: [{id: kind, bounds: unionLegendBounds(next, ids)}], group, plot, canvas,
+        allowOverflow: next.materializationConfigs.canvas?.plot !== undefined});
+      for (const id of ids) next = translateGraphic(next, id, shift.dx, shift.dy);
     }
     return next;
   }

@@ -295,6 +295,36 @@ Static built-in `action(...)` declaration에만 pure-call annotation을 둔다. 
 Package staging은 task resolver와 scale definition/color/quantitative transform, polar/arc geometry 및 Canvas/facet/guide layout 모듈을 기존 esbuild 정책으로 compact한다.
 Repository 원본과 module 경로/export는 유지하고, packed math equivalence와 artifact size를 검사한다.
 
+The approved wedge and arrow shapes reuse the existing named point-shape grammar,
+concrete path materializer, shape scales, legends and renderers. They introduce no new state
+owner or primitive. The complete installed artifact measured 3,909,563 unpacked bytes,
+exceeding the prior 3,908,000 ceiling; its narrow ceiling becomes 3,910,000. Entry count,
+packed bytes, browser budgets and all existing tests remain unchanged. This is measured
+feature growth, not a claim that the previous unpacked limit passed.
+
+Canvas no-paint uses the existing shared fill owner to translate the concrete `"none"`
+sentinel into a transparent backend color for fill, stroke, text and backgrounds. It neither
+changes stored graphics nor introduces semantic inference. Unpacked size is 3,910,160 bytes,
+so only its ceiling grows from 3,910,000 to 3,911,000; all other limits remain unchanged.
+
+Continuous-size display maps reuse the existing block override owner and typed display-label
+grammar. A numeric-only guard is shared by edits and saved-state validation; materialization
+omits empty text items while retaining every sample glyph. No new state owner is introduced.
+Measured unpacked size is 3,911,967 bytes, so only that ceiling changes from 3,911,000 to
+3,912,000; entry, packed and browser budgets remain unchanged.
+
+Numeric size display-map public documentation and generated signatures produce an 814,532-byte
+search index. Its independent ceiling increases only from 814,000 to 815,000 bytes; the search corpus,
+option literals and existing regression assertions stay complete.
+
+Dashed legend borders add two private owners: pure even-array grammar and a shared stable-ID
+rect/closed-path frame materializer. Existing family rematerializers and lane placement explicitly
+invoke the same owner; renderers keep consuming concrete path commands. A nonempty pattern is one
+closed path with a continuous dash phase. Default solid rects and their output remain unchanged.
+Measured artifact growth is 569 entries / 798,338 packed / 3,914,211 unpacked bytes. The narrow
+ceilings become 569 / 799,000 / 3,915,000, keeping browser limits unchanged. Search is 815,026 bytes;
+its independent ceiling becomes 816,000. These are growth adjustments, not previous-limit passes.
+
 ### Browser bundle regression ceilings
 
 Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 않아야 한다.
@@ -2090,3 +2120,45 @@ materialization layer에 역방향 의존하지 않는다. 기존 package stagin
 한도를570/806000/3949000으로 좁게 갱신하고 이전569/799000/3919000 통과로 보고하지 않는다.
 전체 승인 옵션을 보존한 search816932bytes는817000으로, action-card median1896bytes는1896으로
 갱신한다. Card max3358은3360 한도 안이다. Installed consumer의 actual gzip은 Full396214/Basic193136bytes이므로 최소1000bytes 단위로397000/194000으로만 조정한다. SVG25000은 유지한다.
+### Gradient direction and bottom title checkpoint
+
+The complete editLegend card is 3,609 UTF-8 bytes after exposing gradient-only
+edit direction auto and bottom title. Its individual ceiling moves from 3,600
+to 3,620 bytes; all other cards retain 3,360 bytes. No public enum or option is
+removed to fit. Existing family config owns optional gradientDirection; symbols
+keep their separate direction. No renderer orientation or text rotation is added.
+
+This checkpoint measures 569 entries / 799,016 packed bytes / 3,917,456
+unpacked bytes. Entry count stays 569; packed/unpacked limits become
+800,000 / 3,918,000 bytes. Search remains below 816,000 bytes and browser
+budgets remain unchanged. The previous package limits were exceeded, not passed.
+
+### Local legend block placement checkpoint
+
+Local placement reuses blockOverrides[key].position and transient intrinsic
+frames, so no renderer/semantic placement field is added. Unit inherited/local
+blocks partition before packing, use full occupied bounds, and reject collisions.
+The complete editLegend card is 3,617 bytes, within its 3,620 ceiling. Package
+measurement is 569 entries / 800,270 packed / 3,922,635 unpacked bytes after layout-validation preservation; limits
+move only to 801,000 / 3,923,000 bytes. Facet parent-union normalization is a
+coordinated #206 integration seam; no override keeps the existing promotion path.
+The installed Full browser bundle measured393,508 gzip bytes, above393,000;
+its ceiling is394,000. Basic also measured190,409 above190,000 and moves to191,000; SVG stays25,000.
+
+
+축·범례 기능 통합에서는 descriptor validation과 block key/query를 pure
+`grammar/legendBlocks.js`로, local position query를 기존 `grammar/legendGroups.js`로
+모았다. 기존 actions/materialization 경로는 재수출하여 downstream 소유자의 이동을
+강요하지 않는다. Persistence는 이 grammar를 읽으므로 actions/materialization import를
+허용하도록 경계를 넓히지 않는다. 범용 immutable graphic-edit loop는
+`core/graphicProperties.js`가 소유하고 primitive helper도 재수출한다. 실제 편집은 여전히
+public editGraphics primitive를 호출하며 직접 state clone/mutation을 추가하지 않는다.
+
+이 결합 checkpoint의 staging compaction 뒤 actual package는574entries,
+809241packed/3964563unpackedbytes이며 한도는574/810000/3965000이다.
+Search818889bytes는819000으로만 늘리고 card median1896과 editLegend3620/other3360은
+유지한다. Native/runtime unit3142/3142와 source-boundaries8/8을 검증했다.
+
+설치 소비자 결합 실측은 Full398463/Basic194351/SVG7176gzipbytes다. 앞의397000/194000을
+초과한 실패 로그를 보존하고 최소1000bytes 한도399000/195000으로만 갱신한다. New public
+옵션을 줄이지 않았고 SVG25000은 유지한다.

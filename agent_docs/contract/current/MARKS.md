@@ -6,7 +6,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 type PointShape =
   | "circle" | "square" | "diamond"
   | "triangle-up" | "triangle-down" | "triangle-left" | "triangle-right"
-  | "plus" | "cross" | "star" | "hexagon" | "wye";
+  | "plus" | "cross" | "star" | "hexagon" | "wye" | "wedge" | "arrow";
 
 type CurveInterpolation =
   | "linear" | "step" | "step-before" | "step-after"
@@ -15,6 +15,17 @@ type CurveInterpolation =
 
 This closed vocabulary is owned by the shared point-shape grammar and reused by mark creation/editing,
 shape encoding, concrete materialization, and legend symbols.
+
+`wedge` is an upward narrow triangle with raw vertices `(0,-2/√3)`, `(-1/4,1/√3)`,
+`(1/4,1/√3)`, area `√3/4`, and centroid at the anchor. `arrow` is an upward seven-vertex
+polygon `(-1/7,1),(1/7,1),(1/7,-1/8),(2/5,-1/8),(0,-1),(-2/5,-1/8),(-1/7,-1/8)`
+with area `47/70`, anchored at its bounding-box center. Its centroid is intentionally not recentered.
+Each polygon is scaled by `sqrt(requestedArea/rawArea)` and rotated clockwise in screen coordinates
+about the anchor. Zero area preserves existing degenerate-path behavior. Both are named shapes for
+constant create/edit, encoded ranges and unknown fallbacks, legend glyphs, and highlights; no arbitrary
+path input is added. The previous twelve automatic range entries keep their order, followed by wedge/arrow.
+Evidence: `test/contracts/directional-point-shapes.test.js` independently checks vertices/area/rotation,
+primitive-public PNG equality, SVG/PDF, Full/Basic persistence and Canvas replay.
 
 Ordinary mark creation may omit `id` for the first mark of that semantic type. The library persists the
   deterministic role ID `"point" | "line" | "bar" | "area" | "arc" | "rule" | "tick" | "text"`. A second mark of the same type requires an
@@ -103,7 +114,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - `id`: Implemented optional 새 layer/graphic ID. 첫 unnamed point는 `"point"`; 동일 type이 이미 있으면 required다.
 - `data`: Implemented, existing dataset ID. 생략하면 current data를 사용한다.
 - `shape`
-  - Status: Implemented. shared `PointShape` 12종, 기본값 `"circle"`.
+  - Status: Implemented. shared `PointShape` 14종, 기본값 `"circle"`.
   - Effect: semantic mark는 항상 `point`지만 concrete child는 circle, rect 또는 normalized path가 된다.
 - `fill`, `opacity`, `stroke`, `strokeWidth`: Implemented creation-time appearance shorthand. 각각
   `editPointMark`와 같은 validation/config persistence를 사용하며 wrapped `editPointMark`로 적용한다.
@@ -148,7 +159,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - Signature: `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`은 existing point mark다. current compatible mark 또는 유일한 point mark로 infer하며
   ambiguity는 explicit target을 요구한다.
-- `shape`은 shared `PointShape` 12종 중 하나다. Field-driven `encodeShape`가 있으면 constant shape
+- `shape`은 shared `PointShape` 14종 중 하나다. Field-driven `encodeShape`가 있으면 constant shape
   edit와 충돌하므로 오류다.
 - `fill`은 non-empty color string이며 field-driven `encodeColor`가 있으면 충돌하므로 오류다.
 - `opacity`는 `[0, 1]`, `stroke`는 non-empty color string 또는 edit-time `false`, `strokeWidth`는 non-negative

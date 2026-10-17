@@ -5070,6 +5070,8 @@ Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`Int
 export interface EditLegendBlockOptions {
   target: string;
   channel: LegendChannel;
+  /** Block-local anchor; inherit removes only this override. */
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   title?: string;
   values?: readonly [number, ...number[]] | "auto";
   count?: number;
@@ -5077,7 +5079,7 @@ export interface EditLegendBlockOptions {
   gap?: number;
   text?: LegendBlockTextPatch;
   symbol?: LegendBlockSymbolPatch;
-  /** An empty mapped label omits only text; its category and symbol remain. */
+  /** Display-only: categorical keys, or finite numeric keys for continuous size samples. Empty labels omit text only. */
   labelMap?: DisplayLabelMap | "auto";
 }
 ```
@@ -5094,13 +5096,15 @@ Related types: [`LegendChannel`](#type-legendchannel) · [`CategoryValue`](#type
 ```typescript
 export interface EditLegendBorderOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   border: boolean | LegendBorderOptions;
 }
 ```
 
 </details>
 
-Related types: [`LegendBorderOptions`](#type-legendborderoptions).
+Related types: [`LegendChannel`](#type-legendchannel) · [`LegendBorderOptions`](#type-legendborderoptions).
 
 ### `EditLegendLabelsOptions` {#type-editlegendlabelsoptions}
 
@@ -5110,12 +5114,14 @@ Related types: [`LegendBorderOptions`](#type-legendborderoptions).
 ```typescript
 export interface EditLegendLabelsOptions extends LegendTextOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
 }
 ```
 
 </details>
 
-Related types: [`LegendTextOptions`](#type-legendtextoptions).
+Related types: [`LegendTextOptions`](#type-legendtextoptions) · [`LegendChannel`](#type-legendchannel).
 
 ### `EditLegendLayoutOptions` {#type-editlegendlayoutoptions}
 
@@ -5125,28 +5131,33 @@ Related types: [`LegendTextOptions`](#type-legendtextoptions).
 ```typescript
 export interface EditLegendLayoutOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   layout?: "edge" | "legacy-bottom";
   /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
-  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   /** Opt into whole-target legend group layout; a requested row never wraps. */
   blockLayout?: "row" | "column" | "wrap";
   /** Move the complete occupied group top-left to plot-relative logical pixels. A later position clears this anchor. */
   at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
-  /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
-  direction?: "horizontal" | "vertical";
+  /** Gradient orientation is independent of position; auto is gradient-only. Categorical sides require vertical. */
+  direction?: "horizontal" | "vertical" | "auto";
   /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
-  titlePosition?: "top" | "left";
+  /** bottom is gradient-only; left retains the existing categorical/opacity rules. */
+  titlePosition?: "top" | "left" | "bottom";
   /** Explicit spacing override; vertical creation defaults to 18 logical pixels. */
   itemGap?: number;
 }
 ```
 
 </details>
+
+Related types: [`LegendChannel`](#type-legendchannel).
 
 ### `EditLegendOptions` {#type-editlegendoptions}
 
@@ -5155,7 +5166,13 @@ export interface EditLegendLayoutOptions {
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position"> {
+  /** Select one existing block; cannot accompany channels. */
+  channel?: LegendChannel;
+  /** inherit is allowed only with a singular channel selector. */
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
+  /** Gradient-only auto resets orientation. */
+  direction?: "horizontal" | "vertical" | "auto";
   titleStyle?: LegendTitleStyleEditOptions;
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
@@ -5167,7 +5184,7 @@ export interface EditLegendOptions
 
 </details>
 
-Related types: [`LegendOptions`](#type-legendoptions) · [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions).
+Related types: [`LegendOptions`](#type-legendoptions) · [`LegendChannel`](#type-legendchannel) · [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions).
 
 ### `EditLegendSymbolsOptions` {#type-editlegendsymbolsoptions}
 
@@ -5177,6 +5194,8 @@ Related types: [`LegendOptions`](#type-legendoptions) · [`LegendTitleStyleEditO
 ```typescript
 export interface EditLegendSymbolsOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   symbol?: LegendSymbolRecipe;
   count?: number;
   gradient?: { length?: number; thickness?: number; opacity?: number };
@@ -5185,7 +5204,7 @@ export interface EditLegendSymbolsOptions {
 
 </details>
 
-Related types: [`LegendSymbolRecipe`](#type-legendsymbolrecipe).
+Related types: [`LegendChannel`](#type-legendchannel) · [`LegendSymbolRecipe`](#type-legendsymbolrecipe).
 
 ### `EditLegendTitleOptions` {#type-editlegendtitleoptions}
 
@@ -5195,13 +5214,15 @@ Related types: [`LegendSymbolRecipe`](#type-legendsymbolrecipe).
 ```typescript
 export interface EditLegendTitleOptions extends LegendTitleStyleEditOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   title?: string | "auto" | false;
 }
 ```
 
 </details>
 
-Related types: [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions).
+Related types: [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions) · [`LegendChannel`](#type-legendchannel).
 
 ### `EditMarkLabelPlacementOptions` {#type-editmarklabelplacementoptions}
 
@@ -7514,6 +7535,8 @@ export interface LegendBlockTextPatch {
 
 ```typescript
 export interface LegendBorderOptions {
+  /** Even-length non-negative finite dash sequence; [] restores a solid frame. */
+  strokeDash?: readonly number[];
   color?: string;
   lineWidth?: number;
   padding?: number;
@@ -7562,13 +7585,14 @@ export interface LegendOptions {
   at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
-  /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
+  /** Gradient orientation is independent of position; auto is gradient-only. Categorical sides require vertical. */
   direction?: "horizontal" | "vertical";
   /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
-  titlePosition?: "top" | "left";
+  /** bottom is gradient-only; left retains the existing categorical/opacity rules. */
+  titlePosition?: "top" | "left" | "bottom";
   /** false hides the title while retaining its inferred field text. */
   /** LF, CRLF and CR preserve explicit title lines, including blank lines. */
   title?: string | false;
@@ -8907,7 +8931,9 @@ export type PointShape =
   | "cross"
   | "star"
   | "hexagon"
-  | "wye";
+  | "wye"
+  | "wedge"
+  | "arrow";
 ```
 
 </details>

@@ -1018,11 +1018,13 @@ function exerciseCartesianGuides(factors, base) {
     })
     .createLegend(movedAxesLegend)
     .editLegend({
+      channel: "color",
       ...editableMovedAxesLegend,
       title: ordinal % 3 === 0 ? false : ordinal % 3 === 1 ? "auto" : `${base.context.dimensionText} group`
     })
     .editLegendLayout({
       target: "points",
+      channel: "color",
       position: movedAxesLegend.position,
       align: "center",
       direction: "vertical",
@@ -1034,6 +1036,7 @@ function exerciseCartesianGuides(factors, base) {
     })
     .editLegendLabels({
       target: "points",
+      channel: "color",
       color: "#334155",
       fontSize: 12,
       fontFamily: "sans-serif",
@@ -1041,6 +1044,7 @@ function exerciseCartesianGuides(factors, base) {
     })
     .editLegendTitle({
       target: "points",
+      channel: "color",
       title: ordinal % 3 === 0 ? false : ordinal % 3 === 1 ? "auto" : base.context.dimensionText,
       color: "#0f172a",
       fontSize: 13,
@@ -1049,10 +1053,12 @@ function exerciseCartesianGuides(factors, base) {
     })
     .editLegendSymbols({
       target: "points",
+      channel: "color",
       symbol: legend.symbol
     })
     .editLegendBorder({
       target: "points",
+      channel: "color",
       border: ordinal % 3 === 0
         ? false
         : ordinal % 3 === 1 ? true : {
@@ -1062,6 +1068,8 @@ function exerciseCartesianGuides(factors, base) {
             background: "#ffffff"
           }
     })
+    .editLegendBorder({target:"points",channel:"color",border:{strokeDash:[4,2,6,1]}})
+    .editLegendBorder({target:"points",channel:"color",border:{strokeDash:[]}})
     .createTitle(titleOptions(base.context, variant))
     .editTitle({
       ...titleOptions(base.context, variant),
@@ -1438,7 +1446,7 @@ function categoryScaleOptions(variant, view) {
 function ordinalShapeScaleOptions(variant, view) {
   const shapes = [
     "circle", "square", "diamond", "triangle-up", "triangle-down", "triangle-left",
-    "triangle-right", "plus", "cross", "star", "hexagon", "wye"
+    "triangle-right", "plus", "cross", "star", "hexagon", "wye", "wedge", "arrow"
   ];
   return {
     create: {
@@ -1722,7 +1730,9 @@ function buildScaleVocabulary(factors) {
       border: { color: "#cbd5e1", lineWidth: 1, padding: 10, background: "#ffffff" }
     };
     program = program
-      .createLegend(gradientLegend)
+      .createLegend({...gradientLegend,direction:"horizontal",titlePosition:"bottom"})
+      .editLegendLayout({channel:"color",direction:"vertical",titlePosition:"top"})
+      .editLegendLayout({channel:"color",direction:"auto"})
       .editLegend({
         target: "points",
         count: 4,

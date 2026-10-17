@@ -1,6 +1,11 @@
 import { AXIS_RESOURCE_CHANNELS } from "../core/vocabulary.js";
 import { cartesianAxisOwners, assertCartesianAxisSideAvailable } from "../selectors/axes.js";
 import { axisGraphicIds } from "../selectors/axes.js";
+import { describeLegendBlock } from "../grammar/legendBlocks.js";
+import { localLegendPosition } from "../grammar/legendGroups.js";
+import { normalizeLegendBorderDash } from "../grammar/legendBorder.js";
+import { normalizeNumericDisplayLabelMap } from "../grammar/displayLabels.js";
+import { isContinuousSizeScaleType } from "../grammar/scales/size.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
 import { validateAxisTextPlacement } from "../grammar/axisTextPlacement.js";
@@ -8,7 +13,7 @@ import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
 import { validateLegendGroupState } from "../grammar/legendGroups.js";
-import { validateLegendGradient } from "../grammar/legendGradient.js";
+import { normalizeGradientDirection, validateLegendGradient } from "../grammar/legendGradient.js";
 import { normalizeTextMetricProfile } from "../core/textMetricProfile.js";
 import { isPlainObject } from "../core/immutable.js";
 import { validateUserId } from "../core/identifiers.js";
@@ -212,6 +217,31 @@ export function validateProgramState(program, path) {
   }
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
+    if (localLegendPosition(config) !== undefined) {
+      const descriptor = describeLegendBlock(program, kind, config);
+      for (const [key, override] of Object.entries(config.blockOverrides)) {
+        if (override.position !== undefined && key !== descriptor.key) throw invalidSnapshot("Local position requires its existing block owner.", path);
+      }
+    }
+    if (config.gradientDirection !== undefined) {
+      if (!["gradient", "strokeGradient"].includes(kind)) throw invalidSnapshot("Gradient direction requires a gradient owner.", path);
+      normalizeGradientDirection(config.gradientDirection, "Stored gradient direction");
+    }
+    if (["gradient", "strokeGradient"].includes(kind) && config.representation !== "symbols" && !["top", "bottom"].includes(config.titlePosition)) {
+      throw invalidSnapshot("Gradient titlePosition requires top or bottom.", path);
+    }
+    if (config.border && Object.hasOwn(config.border, "strokeDash")) {
+      normalizeLegendBorderDash(config.border.strokeDash, "Stored legend border strokeDash");
+    }
+    if (kind === "size" && config.blockOverrides !== undefined) {
+      for (const [key, override] of Object.entries(config.blockOverrides)) {
+        if (override.labelMap === undefined) continue;
+        if (key !== '["size"]' || !isContinuousSizeScaleType(program.resolvedScales[config.scale]?.type)) {
+          throw invalidSnapshot("Numeric display labels require a continuous size legend block.", path);
+        }
+        normalizeNumericDisplayLabelMap(override.labelMap, "Stored size legend labelMap");
+      }
+    }
     if (config.titleStyle !== undefined) {
       validateOptionObject(config.titleStyle, LEGEND_TITLE_STYLE_KEYS, "Stored legend title style");
       validateLegendTitleAlignment(config.titleStyle, config.titlePosition);

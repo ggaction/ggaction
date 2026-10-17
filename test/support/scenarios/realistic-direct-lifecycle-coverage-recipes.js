@@ -61,7 +61,7 @@ const SELECTOR_OPERATORS = Object.freeze([
 ]);
 const POINT_SHAPES = Object.freeze([
   "circle", "cross", "diamond", "hexagon", "plus", "square", "star",
-  "triangle-down", "triangle-left", "triangle-right", "triangle-up", "wye"
+  "triangle-down", "triangle-left", "triangle-right", "triangle-up", "wye", "wedge", "arrow"
 ]);
 const DATASETS = Object.freeze(realisticDatasetIds());
 const EXCLUDED_FACADE_ACTIONS = Object.freeze([

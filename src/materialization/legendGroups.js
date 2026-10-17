@@ -1,3 +1,6 @@
+import { localLegendPosition, localLegendPlacement } from "../grammar/legendGroups.js";
+export { localLegendPosition, localLegendPlacement };
+import { LEGEND_POSITIONS } from "../core/vocabulary.js";
 import { PLOT_LEGEND_POSITIONS } from "../layout/legend.js";
 
 export function legendGroup(program, target) {
@@ -7,7 +10,8 @@ export function legendGroup(program, target) {
 // A group's anchor is owned once. Family materializers receive a temporary
 // intrinsic frame; they never write that derived frame back into stored intent.
 export function intrinsicLegendConfig(program, config) {
-  const group = legendGroup(program, config.target);
+  const local = localLegendPlacement(config);
+  const group = local === undefined ? legendGroup(program, config.target) : {placement: local};
   if (group === undefined) return config;
   const anchor = group.placement.position;
   const corner = PLOT_LEGEND_POSITIONS.includes(anchor);
@@ -15,7 +19,7 @@ export function intrinsicLegendConfig(program, config) {
     (PLOT_LEGEND_POSITIONS.includes(config.position)
       ? config.direction === "horizontal" ? "top" : "right"
       : config.position ?? "right");
-  return { ...config, position, offset: 0, align: "left", groupIntrinsic: true,
+  return { ...config, ...(local === undefined ? {} : {blockLocalPosition: local.position}), position, offset: 0, align: "left", groupIntrinsic: true,
     ...(corner ? { groupCorner: true } : {}),
     ...(position === "right" ? { align: "center" } : {}) };
 }

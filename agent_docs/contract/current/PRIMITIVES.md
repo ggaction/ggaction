@@ -163,6 +163,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     identity while rendering no glyph. High-level titles, annotations and author-supplied text contracts keep their
     own non-empty validation.
   - ✅ Covered: finite/non-negative/unit-interval boundaries and font/text vocabularies are shared with renderers.
+    The exact string `"none"` means no paint for fill, stroke, text fill and canvas background across SVG
+    and Canvas-backed outputs. Canvas assigns a real transparent color for this sentinel, so a previous
+    opaque context paint cannot leak into a later graphic. Geometry, opacity and stroke bounds are unchanged.
+    Evidence: `test/contracts/none-paint.test.js` and `test/browser/none-paint.browser.js`.
     Exhaustive backend parsing of arbitrary accepted color strings is outside library validation. Renderer output
     capacity is checked separately and atomically: Canvas/PNG enforce physical side and total-pixel limits; all
     Canvas-backed outputs cap native geometry/style magnitude at `16777216`; PDF additionally requires an exactly

@@ -225,11 +225,11 @@ test("records field encodings and validates appearance contracts", () => {
   );
 });
 
-test("materializes all twelve shapes in marks and a shape-only legend", () => {
+test("materializes all fourteen shapes in marks and a shape-only legend", () => {
   const shapes = [
     "circle", "square", "diamond", "triangle-up", "triangle-down",
     "triangle-left", "triangle-right", "plus", "cross", "star",
-    "hexagon", "wye"
+    "hexagon", "wye", "wedge", "arrow"
   ];
   const rows = shapes.map((shape, index) => ({
     x: index,
@@ -239,7 +239,7 @@ test("materializes all twelve shapes in marks and a shape-only legend", () => {
   const program = chart()
     .createCanvas({
       width: 520,
-      height: 400,
+      height: 520,
       margin: { top: 20, right: 170, bottom: 40, left: 40 }
     })
     .createData({ id: "shapes", values: rows })
@@ -253,16 +253,16 @@ test("materializes all twelve shapes in marks and a shape-only legend", () => {
   assert.deepEqual(program.resolvedScales.shape.range, shapes);
   assert.deepEqual(
     program.graphicSpec.objects.points.items.map(child => child.type),
-    ["circle", "rect", ...Array(10).fill("path")]
+    ["circle", "rect", ...Array(12).fill("path")]
   );
   assert.deepEqual(
     program.graphicSpec.objects.seriesLegendSymbolPoints.items.map(
       child => child.type
     ),
-    ["circle", "rect", ...Array(10).fill("path")]
+    ["circle", "rect", ...Array(12).fill("path")]
   );
 
-  const overflowRows = [...rows, { x: 12, y: 12, shape: "thirteenth" }];
+  const overflowRows = [...rows, { x: 14, y: 14, shape: "fifteenth" }];
   assert.throws(
     () => chart()
       .createCanvas({ width: 200, height: 120, margin: 10 })

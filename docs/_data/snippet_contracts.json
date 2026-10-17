@@ -1885,6 +1885,20 @@
     "executable": false
   },
   {
+    "file": "api/legends.md",
+    "block": 1,
+    "heading": "Editing one block",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "46e8bf94d158bd4a0cafc94af7fad3f69f82b3fd282c870806f76a83465724a1",
+    "executable": false
+  },
+  {
     "file": "api/legends/categorical.md",
     "block": 1,
     "heading": "`createLegend(options?)`",
@@ -2262,6 +2276,36 @@
     ],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: \"points\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "56fe1b9f882eadec1c211ffc86101565fcdc968768d29e706de6227c834166e9",
+    "executable": false
+  },
+  {
+    "file": "api/legends/editing.md",
+    "block": 11,
+    "heading": "Numeric sample display labels",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [
+      "target: \"points\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: \"points\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "0d557196dc152754ad26a81eb370dceed9f14cff0dd71e6c67b2abde6075f8aa",
+    "executable": false
+  },
+  {
+    "file": "api/legends/editing.md",
+    "block": 12,
+    "heading": "Dashed frames",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "7cc79fac47c5d602c5fc0c3ec205cb4c1f58cc2ea2b99acaaa34eab1f44e394f",
     "executable": false
   },
   {

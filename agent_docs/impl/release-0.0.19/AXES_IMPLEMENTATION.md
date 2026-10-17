@@ -83,3 +83,29 @@
   3948224unpacked; search816932; card median1896/max3358.
 - 남은 일: #206 parent owner 전체 lifecycle, sibling unit block 기능 결합 및 모든 신규 옵션의
   authentic realistic5회/3dataset witness. 이들은 완료 체크하지 않았으며 다음 통합 checkpoint에서 실행한다.
+
+## #206 implementation boundary
+
+- 승인된 parent owner는 `compositionSpec.facet.guides.legend` 하나다. Public 입력은
+  closed `LegendOptions`이며 internal tag를 받아들이지 않는다. Focused edit의 block별
+  normalized intent와 inference flags는 이 객체 안의 private tagged normal form으로
+  보존한다. 부모가 승인 문서425–525를 대조해 이 해석을 승인된 lifecycle의 구현으로 확인했다.
+- 계획한 internal form은 `{ type: "authored-legend", blocks, groups }`다. Blocks는 kind별
+  `{config, guide?}`로 unit의 normalized config와 해당 semantic legend meaning을 재사용한다.
+  Groups는 기존 unit target-group intent다. 별도 override registry나 child authored owner는
+  만들지 않는다. Config flags는 자동 title/sample/offset을 explicit 값으로 고정하지 않는다.
+- Descriptor, local position과 border는 범례 담당의 pure grammar/materializer를 그대로 쓴다.
+  Final union 배치 전에 intrinsic frame으로만 측정하며 child Canvas/margin을 변경하지 않는다.
+- 아직 #206 runtime 구현·완료 보고가 아니다. Closed import/malformed tag, partial removal,
+  final-block false reset, old shared exact parity와 all-consumer replay를 구현·검증해야 한다.
+
+
+## 범례 checkpoint 결합
+
+- `23d2e59a`까지의 unit 범례 구현을 merge하고 pure descriptor/local query/graphic edit
+  helper의 layer boundary를 단일 owner로 정리했다. Unit3142/3142, docs120/120,
+  source-boundaries8/8, named/card/type19/19, package check와 installed Full/Basic
+  consumer를 모두 통과했다. 신규 옵션 realistic는 이 merge로 완료한 것으로 기록하지 않는다.
+- 누적 bundle 첫 실행은398463>397000으로 실패했다. 실제 Full398463/Basic194351/
+  SVG7176bytes를 확인하고 최소399000/195000/기존25000 한도로 재실행해 PASS했다.
+EOF

@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:09dfe48a17888e5795ebaef607606a59f7bd166d9a9c9c0c4c67bc7e2a12a7f6",
+    "contractId": "sha256:037baa9c8e8aa2f40f6f8eb7b39229783d2bb082cc0238af23feb33527d305a1",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -911,8 +911,8 @@
         "continue-with-encodings",
         "errors-and-limitations"
       ],
-      "bytes": 6445,
-      "sha256": "8e813474596e87cca564b6f4ff7c48319660b21e7bfdcb7bf6cc7e810a79776b"
+      "bytes": 6662,
+      "sha256": "3f0c4ce8d05fb46c8f2339660f437089f78d6dd56b98aedac5f9b1dbc80d593b"
     },
     {
       "order": 58,
@@ -1197,8 +1197,8 @@
         "accessible-data-alternatives",
         "related"
       ],
-      "bytes": 19400,
-      "sha256": "deff30908f50a23c9d094568f26bc606a678a0e24b9d93332fa04ff6a78c80c0"
+      "bytes": 19554,
+      "sha256": "c7141b259dc96e2468219712be2494801f28dc3d6c437058cc0523f6f4c16fb7"
     },
     {
       "order": 73,
@@ -1601,14 +1601,15 @@
       "headings": [
         "legends",
         "at-a-glance",
+        "editing-one-block",
         "supported-legend-families",
         "focused-legend-families",
         "errors-and-limitations",
         "put-a-compact-categorical-legend-inside-the-plot",
         "related"
       ],
-      "bytes": 7138,
-      "sha256": "f90b7009d4ca2588fd0c06b31867ee7eaa2f69dbb694fb814c240b58bad8b618"
+      "bytes": 7961,
+      "sha256": "186aad12c4cf8123bf3bf68b4f8dc2906cd7721bc8ae24ba312be235d564cbf8"
     },
     {
       "order": 98,
@@ -1637,8 +1638,8 @@
         "show-a-continuous-color-scale-as-symbols",
         "related"
       ],
-      "bytes": 15626,
-      "sha256": "864042b2b4e919232a86c025d04ece842aa46b2a1ab873b8086e0e167eadd5a2"
+      "bytes": 16818,
+      "sha256": "bc03af80bfa0b11d418db08dbfa8a0a12edeaf38bed0ead4c318b815457682bc"
     },
     {
       "order": 100,
@@ -1669,10 +1670,12 @@
         "editing-one-legend-block",
         "focused-edits",
         "removing-a-legend",
+        "numeric-sample-display-labels",
+        "dashed-frames",
         "related"
       ],
-      "bytes": 21897,
-      "sha256": "87d621c40eaedd2acc131d5e95575b84fc7bec691a3ee1afaee9d7d344919df3"
+      "bytes": 24661,
+      "sha256": "cd48a4faf3c0b9069f3d7fb573073a2a5ddc5a30de088847c20f623c562fa423"
     },
     {
       "order": 102,
@@ -2274,8 +2277,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 128439,
-      "sha256": "a6185224d0f3f339f17575c501b86f42a665cf4f52a62a90c2f97f160c6b7943"
+      "bytes": 130005,
+      "sha256": "cc79fb0b73c25a98e406aef98b03f1b0397004d3f3c126a3b30ddd66ef0caee1"
     },
     {
       "order": 123,
@@ -2980,8 +2983,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 332390,
-      "sha256": "a6386cd1e8e5c9966d6a505e99b6c9e0f7f3f5c94083420d7fb1bdfc44d1e244"
+      "bytes": 334251,
+      "sha256": "bdc09ce7c7449c02bc54ff902c5e1a84f0a2c50d4496b83332c237571779185c"
     },
     {
       "order": 127,
@@ -3334,7 +3337,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "e7b4f3642e61fc09913eb9db67428dda90fcbb465f73293b95e6d3a71161639d"
+      "sha256": "d26dccb69286e1b095ddf61e0ddb6deaef092ce9ceef63de654d0cee121a43b5"
     },
     {
       "order": 150,

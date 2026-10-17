@@ -315,7 +315,8 @@ their distinct title and axis-label origins in PDF output.
 The current renderers support concrete canvas, collection, circle, rect, line,
 text, and `M/L/C/Z` command-path graphics. Path and line strokes may use concrete
 dash arrays. They validate values with the same concrete property contract used
-by `editGraphics`.
+by `editGraphics`. The paint string `"none"` draws no fill or stroke in every backend,
+including text fill and Canvas backgrounds. It never reuses an earlier drawing color.
 
 Rect and closed-path fills may be solid strings or item-local linear-gradient
 paint values. Gradient endpoints are normalized against the final fill geometry;

@@ -30,3 +30,19 @@ export function validateLegendGroupState(groups) {
   }
   return groups;
 }
+
+export function localLegendPosition(config) {
+  const positions = Object.values(config?.blockOverrides ?? {}).map(value => value.position).filter(value => value !== undefined);
+  if (positions.length > 1) throw new Error("Legend family has ambiguous local positions.");
+  if (positions.length && !LEGEND_POSITIONS.includes(positions[0])) throw new Error("Invalid local legend position.");
+  return positions[0];
+}
+
+export function localLegendPlacement(config) {
+  const position = localLegendPosition(config);
+  if (position === undefined) return undefined;
+  return { position,
+    align: ["top", "bottom"].includes(position) ? config.align ?? "center" : "center",
+    offset: PLOT_LEGEND_POSITIONS.includes(position) ? 8 : config.offset ?? (config.channels === undefined ? 30 : 8),
+    inferredOffset: config.inferredOffset ?? true };
+}

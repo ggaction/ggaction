@@ -1289,7 +1289,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - Signature: `encodeShape({ field, target?, fieldType?, scale? })`
 - `field`, `target`, `fieldType`: nominal field, optional point ID, nominal-only type다.
-- `scale`: ordinal shape scale. Shared `PointShape` 12종을 non-repeating automatic range로 사용한다. Explicit range는 category별 shape entry를 제공하며 의도적인 shape 재사용을 허용한다. Domain보다 짧은 range는 오류이고 암묵적 cycling은 하지 않는다.
+- `scale`: ordinal shape scale. Shared `PointShape` 14종을 non-repeating automatic range로 사용한다. Explicit range는 category별 shape entry를 제공하며 의도적인 shape 재사용을 허용한다. Domain보다 짧은 range는 오류이고 암묵적 cycling은 하지 않는다.
 - Effect: point graphic을 heterogeneous collection으로 바꾸고 각 datum의 concrete primitive type과
   legend symbol을 rematerialize한다.
 - Coverage: regression scatterplot과 point/legend tests가 circle/square mapping을 검증한다.

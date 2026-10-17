@@ -44,6 +44,14 @@ export function normalizeDisplayLabelMap(value, label = "labelMap") {
   return Object.freeze(normalized);
 }
 
+export function normalizeNumericDisplayLabelMap(value, label = "labelMap") {
+  const map = normalizeDisplayLabelMap(value, label);
+  if (map.some(entry => typeof entry.value !== "number" || !Number.isFinite(entry.value))) {
+    throw new TypeError(`${label} values must be finite numbers.`);
+  }
+  return map;
+}
+
 export function resolveDisplayLabel(value, map, fallback) {
   if (map !== undefined) {
     for (const entry of map) {

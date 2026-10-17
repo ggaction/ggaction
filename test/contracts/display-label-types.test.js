@@ -34,6 +34,16 @@ program.createThetaAxis({ ticksAndLabels: { values: [1, "1"], labels: { labelMap
 program.editThetaAxis({ labels: { labelMap: "auto" } });
 program.editThetaAxisLabels(thetaEdit);
 program.editFacetHeaders(facet);
+program.editLegend({ channel: "opacity", labels: { fontSize: 10 } });
+program.editLegendLayout({ channel: "size", itemGap: 24 });
+program.editLegendLabels({ channel: "opacity", fontSize: 10 });
+program.editLegendTitle({ channel: "color", title: false });
+program.editLegendSymbols({ channel: "opacity", count: 3 });
+program.editLegendBorder({ channel: "size", border: false });
+// @ts-expect-error selectors accept only legend channels.
+program.editLegendLabels({ channel: "x", fontSize: 10 });
+// @ts-expect-error focused legend edits remain Full-only.
+basic.editLegendLabels({ channel: "color", fontSize: 10 });
 basic.createXAxisLabels({ values: [1, "1"], labelMap: map });
 // @ts-expect-error radial labels do not accept categorical display maps.
 program.createRadialAxisLabels({ values: [0, 1], labelMap: map });

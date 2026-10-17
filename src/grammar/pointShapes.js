@@ -14,7 +14,9 @@ export const POINT_SHAPES = cloneAndFreeze([
   "cross",
   "star",
   "hexagon",
-  "wye"
+  "wye",
+  "wedge",
+  "arrow"
 ]);
 
 const SHAPE_SET = new Set(POINT_SHAPES);
@@ -98,7 +100,19 @@ function shapePolygon(shape) {
     cross: rotate(plus, Math.PI / 4),
     star: alternatingPolygon(5, 0.45),
     hexagon: regularPolygon(6),
-    wye: alternatingPolygon(3, 0.28)
+    wye: alternatingPolygon(3, 0.28),
+    wedge: [
+      { x: 0, y: -2 / Math.sqrt(3) },
+      { x: -1 / 4, y: 1 / Math.sqrt(3) },
+      { x: 1 / 4, y: 1 / Math.sqrt(3) }
+    ],
+    // The directional arrow is anchored at its bounding-box center, not its centroid.
+    arrow: [
+      { x: -1 / 7, y: 1 }, { x: 1 / 7, y: 1 },
+      { x: 1 / 7, y: -1 / 8 }, { x: 2 / 5, y: -1 / 8 },
+      { x: 0, y: -1 }, { x: -2 / 5, y: -1 / 8 },
+      { x: -1 / 7, y: -1 / 8 }
+    ]
   }[shape];
 }
 
