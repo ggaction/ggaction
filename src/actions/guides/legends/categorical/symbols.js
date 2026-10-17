@@ -21,10 +21,17 @@ import {
 import { requestedStrokeDetails } from "../../../../grammar/strokeStyle.js";
 import { replaceGraphicItems } from "../../../primitives/editGraphics.js";
 
-function applyLayerOpacity(program, id, opacity) {
-  return opacity === undefined
-    ? program
-    : program.editGraphics({ target: id, property: "opacity", value: opacity });
+function applyLayerOpacity(program,id,opacity,normal=false) {
+  const owner=program.graphicSpec.objects[id];
+  if(!normal&&!owner.items.some(item=>item.properties.blend!==undefined)){
+    if(opacity!==undefined)return program.editGraphics({target:id,property:"opacity",value:opacity});
+    if(!owner.items.some(item=>item.properties.opacity!==undefined))return program;
+  }
+  return program.editGraphics({target:id,property:"items",value:owner.items.map(item=>{
+    const {opacity:_old,blend:_blend,...properties}=item.properties;
+    return {type:item.type??owner.type,properties:{...properties,
+      ...(opacity===undefined?{}:{opacity}),...(normal?{blend:"normal"}:{})}};
+  })});
 }
 
 function makeEditSymbol(type) {
@@ -34,9 +41,11 @@ function makeEditSymbol(type) {
     { op, description: `Rematerialize categorical legend ${type} symbols.` },
     function (args = {}) {
       noOptions(args, op);
-      const { config: stored } = activeConfig(this, args.kind);
+      const { kind, config: stored } = activeConfig(this, args.kind);
       const config = categoricalLegendView(stored);
       const layer = layerFor(config, type);
+      const explicitRecipeOpacity = this.guideConfigs.legend[kind].symbol.layers
+        .some(sample=>sample.type===type&&sample.opacity!==undefined);
       const id = symbolGraphic(config, type);
       const dynamicPoint = type === "point" && config.channels.includes("shape");
       const styledSwatch = type === "swatch" && hasRectRadius(layer);
@@ -91,7 +100,7 @@ function makeEditSymbol(type) {
         if (dynamicPoint) {
           const items = config.domain.map((_, index) => {
             const fill = layer.fill ?? appearance.colors[index];
-            return createPointShapeGraphic({
+            const graphic = createPointShapeGraphic({
               shape: appearance.shapes[index],
               x: x[index],
               y: layout.itemY[index],
@@ -104,6 +113,7 @@ function makeEditSymbol(type) {
               opacity: layer.opacity ?? appearance.opacity,
               ...requestedStrokeDetails(layer, "Legend point symbol")
             });
+            return !explicitRecipeOpacity?graphic:{...graphic,properties:{...graphic.properties,blend:"normal"}};
           });
           return next.editGraphics({
             target: id,
@@ -130,7 +140,7 @@ function makeEditSymbol(type) {
         )) {
           next = next.editGraphics({ target: id, property, value });
         }
-        return applyLayerOpacity(next, id, layer.opacity ?? appearance.opacity);
+        return applyLayerOpacity(next, id, layer.opacity ?? appearance.opacity, explicitRecipeOpacity);
       }
       const x = layout.symbolX.map(
         value => value + (symbolWidth(config) - layer.width) / 2
@@ -155,6 +165,7 @@ function makeEditSymbol(type) {
           stroke: strokes[index],
           strokeWidth: layer.strokeWidth,
           ...((layer.opacity ?? appearance.opacity) === undefined ? {} : { opacity: layer.opacity ?? appearance.opacity }),
+          ...(!explicitRecipeOpacity?{}:{blend:"normal"}),
           ...requestedStrokeDetails(details, "Legend swatch symbol")
         }, details))
       );

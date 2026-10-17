@@ -2209,3 +2209,22 @@ DOM/Offscreen/native 동형 constructor와 Node PNG/PDF가 전달한 private cre
 Node24에서396420/193109bytes다. 공유 예산을 최소1000bytes 단위397000/194000으로
 갱신하고 SVG25000은 유지했다. README/current architecture table도 같은 owner 값이다.
 공개 검색은817417bytes이며 내용 축소 없이818000 한도를 적용했다.
+
+
+### Explicit whole-glyph normal opacity
+
+The approved normal concrete marker shares the existing bounded isolated-glyph
+allocation owner with difference, while preserving the omitted renderer path.
+Only explicit recipe-layer opacity lowers to normal; legacy block patches and
+fallback numbers do not infer a marker. Normal source attenuation uses one
+native destination-in mask before source-over at alpha1. Source arc/transform/
+mask and target composition capabilities are checked before destination changes.
+The pure `grammar/legendOpacity.js` validator is shared by creation/edit/import.
+No source surface or backend state enters stored graphical or semantic data.
+
+The cumulative artifact after bar/data/color integration and normal-opacity
+implementation measures578entries/811763packed/3968822unpackedbytes; narrow
+limits are578/812000/3969000. Full399940/Basic195539gzipbytes require only
+400000/196000; SVG remains25000. Search819631bytes uses820000. Complete
+createLegend/editLegend card caps3440/3710 and coverage thresholds stay unchanged.
+Normal Node/browser/PDF reference checks use zero added color tolerance.

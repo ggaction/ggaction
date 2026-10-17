@@ -302,6 +302,36 @@ categorical item order retain their existing controls. Zero mapped area retains
 its category and text slot. Current data and scale revisions revalidate both
 encodings, so an invalid revision fails instead of silently splitting the block.
 
+## Recipe layer opacity
+
+Each `symbol.layers` line, point or swatch accepts optional `opacity` in0..1.
+The supplied value applies once to that layer's complete fill and outline;
+it does not change other recipe layers, labels, title or frame. Omission keeps
+historical fallback appearance. Replacing a recipe without opacity, including
+`symbol:'auto'`, removes its explicit layer opacity.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+program.createLegend({
+  channels: ['shape'],
+  symbol: {layers: [
+    {type: 'line', opacity: 0.3},
+    {type: 'point', fill: 'red', stroke: 'blue', strokeWidth: 4, opacity: 0.7}
+  ]}
+});
+```
+
+A mapped size-shape block retains its mapped shape and physical area when the
+point layer supplies opacity. Canvas uses a bounded transparent glyph source;
+SVG uses whole-element opacity. PDF rasterizes only the explicitly affected
+glyph, preserving surrounding vector output. Existing block symbol-opacity
+patches retain their established behavior and do not opt into this new path.
+
 ## Related
 
 [Legend overview](../legends.md) · [Composite symbols](./composite.md) · [Editing legends](./editing.md)

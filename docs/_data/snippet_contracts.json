@@ -1953,6 +1953,20 @@
     "executable": false
   },
   {
+    "file": "api/legends/categorical.md",
+    "block": 6,
+    "heading": "Recipe layer opacity",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "60628d1a86ca95954a28c9ae000b19d7a954dbc0798fffa38c6c1cd252bc85c8",
+    "executable": false
+  },
+  {
     "file": "api/legends/composite.md",
     "block": 1,
     "heading": "Layered symbols",

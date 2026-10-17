@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 397_000, // Node24 isolated glyph source measured396420 gzip bytes.
-  "ggaction/basic": 194_000, // Node24 shared renderer measured193109 gzip bytes.
+  ggaction: 400_000, // Cumulative normal glyph source measured399940 gzip bytes.
+  "ggaction/basic": 196_000, // Cumulative shared renderer measured195539 gzip bytes.
   "ggaction/svg": 25_000
 });
 

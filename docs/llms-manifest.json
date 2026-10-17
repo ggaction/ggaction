@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:680b86f0c0df8ed8cf4d519d513757c014f4c7d69fb6a13e8dd527f2be4522d7",
+    "contractId": "sha256:8eb4ba2c9ca0cca3ab300af8af5fc053cc92c88fa06c182416ff20ed0ad7dd5c",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -727,8 +727,8 @@
         "advanced-authoring",
         "createtextplot"
       ],
-      "bytes": 17671,
-      "sha256": "c2667c4b712746f17f449e8a17b4e52d0cff50f6c6cfb2277dbcb0aa36d6c60f"
+      "bytes": 18019,
+      "sha256": "fdb456397a4a9aa66475eb40392b1d741a416375548fe233c8645a4dce545045"
     },
     {
       "order": 47,
@@ -947,10 +947,11 @@
         "createbarmark-id-data-missing-fill-opacity-stroke-strokewidth-cornerradius-cornerradiustopleft-cornerradiustopright-cornerradiusbottomright-cornerradiusbottomleft-linecap-linejoin-miterlimit",
         "edit-bar-mark",
         "independent-corners",
+        "blend-with-underlying-content",
         "related"
       ],
-      "bytes": 5497,
-      "sha256": "cf72473c4677bc034f776ea0e23ec4de08ab7be23b479f36365d2e2ba8157ac6"
+      "bytes": 6396,
+      "sha256": "bd716536e1e1aacc96cf8d734cf8eaa27267acfdf76f25d4526bc499d6068655"
     },
     {
       "order": 60,
@@ -1195,10 +1196,11 @@
         "pdf-in-memory",
         "errors-and-limitations",
         "accessible-data-alternatives",
+        "explicit-whole-glyph-opacity",
         "related"
       ],
-      "bytes": 19554,
-      "sha256": "c7141b259dc96e2468219712be2494801f28dc3d6c437058cc0523f6f4c16fb7"
+      "bytes": 20698,
+      "sha256": "1d0620f9a4ab446655f663a669bc742185fb40b76f9b6fd4b71f3e839c597dd2"
     },
     {
       "order": 73,
@@ -1504,8 +1506,8 @@
         "explicit-color-midpoint",
         "related"
       ],
-      "bytes": 7745,
-      "sha256": "5ea1a7167ad62ceca20d58fc5425930eedbb0e7b1cdf86fb100278b78dd144ca"
+      "bytes": 10035,
+      "sha256": "9158f127b14b4f533e3a9c76d907656e89e797862a6f5d42b554d10616fcc053"
     },
     {
       "order": 92,
@@ -1589,8 +1591,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 7281,
-      "sha256": "ba9fa92a708038c59609b571f400dd3c19791bd6d8c7ddd1e125a8a3945251fb"
+      "bytes": 8092,
+      "sha256": "762ff11fb431df676369eb4087b81c73e1223fcf6a1f3665cb7b724717f3a40d"
     },
     {
       "order": 97,
@@ -1621,10 +1623,11 @@
         "item-order-without-changing-color",
         "combined-categorical-and-size-layout",
         "combine-ordinal-size-and-shape",
+        "recipe-layer-opacity",
         "related"
       ],
-      "bytes": 16159,
-      "sha256": "c7c9ccb1d5cf45eedcb6a63b447019e7b3f656f95f9a379285abf367ea77528d"
+      "bytes": 17395,
+      "sha256": "1efb0296c5329a3d1f859b6e9b2f1917d64bea1b69edee4d21c48ff1456ca697"
     },
     {
       "order": 99,
@@ -2029,8 +2032,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 160624,
-      "sha256": "d2261bff31e2be53843ff3030de33ffdb3a03c45460d1002dbe26d74981fa44c"
+      "bytes": 161899,
+      "sha256": "8687cdb1f2f5df9ad9c55297b248fd9cc9cc9639ab510383a8ad5c2628785cbd"
     },
     {
       "order": 119,
@@ -2074,8 +2077,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 69593,
-      "sha256": "431dfb73197b975f333107ee76723893a2677872f5cb9017f3d3c4382dcce45a"
+      "bytes": 69893,
+      "sha256": "1db4eebb58dbad26b5c84a5a1c208341b3f755c9dffd4a7f73437a9b6ed1e570"
     },
     {
       "order": 120,
@@ -2125,7 +2128,7 @@
         "related"
       ],
       "bytes": 60973,
-      "sha256": "07aa26ec675aebe640a5f86d4898ee169448c890a6f26f31831171731ce05ffd"
+      "sha256": "3a20a0e2743f23d03c999e8099beb762ffa3d188ab7b81ac11b01169dc2e9f28"
     },
     {
       "order": 121,
@@ -2277,8 +2280,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 125091,
-      "sha256": "3752a8030c559d3319902d41339c9463571772410db305df4a38fac830847088"
+      "bytes": 128031,
+      "sha256": "694077326a9a794d951192522612586e198c2541fe4f7c8a63bcf77e2f3ea905"
     },
     {
       "order": 123,
@@ -2420,6 +2423,7 @@
         "type-cartesianaxistickstyleoptions",
         "type-cartesiancategoricalguideoptions",
         "type-cartesiangridoptions",
+        "type-cartesianguidedashmap",
         "type-cartesianguideoptions",
         "type-cartesianlegendorder",
         "type-cartesianpathguideoptions",
@@ -2972,6 +2976,7 @@
         "type-windowsortorder",
         "type-withoutencodingtarget",
         "type-withoutscaleid",
+        "type-withoutscaleselection",
         "type-xaxisposition",
         "type-xoffsetencodingoptions",
         "type-yaxisposition",
@@ -2981,8 +2986,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 331516,
-      "sha256": "994d8ba92f6b712814e2f2a37ebb37de6fa094e86a9f35c2ae170f3de451f017"
+      "bytes": 334288,
+      "sha256": "0715a77086eeab5dbe299f702024d47b46f5ea8cc0be223f2bc856fce1b49422"
     },
     {
       "order": 127,
@@ -3040,8 +3045,8 @@
         "createcomputeddata-id-source-as-expression",
         "createnormalizeddata-id-source-field-as-groupby-method"
       ],
-      "bytes": 5450,
-      "sha256": "0463f9b2cc47b8f4d9f630d8b92ce5ac4f2f51f7aac1d335b4686b1f4ca2e546"
+      "bytes": 6660,
+      "sha256": "b4c12fa0493bd538aad6e85afb30c9281bf92210eb44461c046ef7bc7cd7b499"
     },
     {
       "order": 131,
@@ -3335,7 +3340,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "1efba33502e2d92d427e2b365e0450f1f552ebdc2a44414b28fab76fba4ecde2"
+      "sha256": "96f7d7dc5560139452a4d569263b93f7a31a9457328f59b82d13074dbdf51c3e"
     },
     {
       "order": 150,
@@ -3344,10 +3349,12 @@
       "source": "api/axes/complete.md",
       "headings": [
         "complete-axes-and-labels",
+        "moving-a-complete-axis-and-refining-its-text",
+        "styling-native-tick-dashes",
         "createaxesoptions"
       ],
-      "bytes": 14830,
-      "sha256": "54d4a090b3168560f70c9317f41d68f9e4c790bc79461ba3e38d2cc9bc75e467"
+      "bytes": 17772,
+      "sha256": "dc4898f74ef9bbd420c7a9ebc9fe3f9908a615472dedbd486317ac4b256e5441"
     }
   ]
 }

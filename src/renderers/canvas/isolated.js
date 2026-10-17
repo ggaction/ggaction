@@ -32,8 +32,8 @@ function requireSurface(surface) {
 // This is renderer-private state: no surface or backend object enters graphicSpec.
 export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createCanvas } = {}) {
   const requested = Object.values(target.graphicSpec.objects).some(object =>
-    object.properties?.blend === "difference" ||
-    object.items?.some(item => item.properties?.blend === "difference"));
+    ["normal","difference"].includes(object.properties?.blend) ||
+    object.items?.some(item => ["normal","difference"].includes(item.properties?.blend)));
   if (!requested) return undefined;
   if (typeof context.drawImage !== "function" || typeof context.globalCompositeOperation !== "string") {
     throw new TypeError("Isolated glyph painting requires Canvas drawImage and compositing support.");
@@ -45,7 +45,19 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
     const source = requireSurface(surface);
     const hasGradient = Object.values(target.graphicSpec.objects).some(object =>
       [object, ...(object.items ?? [])].some(item =>
-        item.properties?.blend === "difference" && item.properties.fill?.type === "linear-gradient"));
+        ["normal","difference"].includes(item.properties?.blend) && item.properties.fill?.type === "linear-gradient"));
+    const normal=Object.values(target.graphicSpec.objects).some(object=>
+      [object,...(object.items??[])].some(item=>item.properties?.blend==="normal"));
+    if(normal){
+      if(typeof source.setTransform!=="function")throw new TypeError("Normal glyph opacity requires Canvas transform support.");
+      source.save();try{
+        source.globalCompositeOperation="destination-in";
+        if(source.globalCompositeOperation!=="destination-in")throw new TypeError("Normal glyph opacity requires source attenuation.");
+      }finally{source.restore();}
+      const circle=Object.values(target.graphicSpec.objects).some(object=>
+        [object,...(object.items??[])].some(item=>item.properties?.blend==="normal"&&(item.type??object.type)==="circle"));
+      if(circle&&typeof source.arc!=="function")throw new TypeError("Normal circle painting requires Canvas arcs.");
+    }
     if (hasGradient && (typeof source.createLinearGradient !== "function" ||
         typeof source.createLinearGradient(0, 0, 1, 0)?.addColorStop !== "function")) {
       throw new TypeError("Isolated gradient painting requires Canvas linear gradients.");
@@ -55,9 +67,13 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
   }
   context.save();
   try {
-    context.globalCompositeOperation = "difference";
-    if (context.globalCompositeOperation !== "difference") {
-      throw new TypeError("Canvas context does not support difference compositing.");
+    const modes=new Set();
+    for(const object of Object.values(target.graphicSpec.objects))for(const item of [object,...(object.items??[])]){
+      if(item.properties?.blend!==undefined)modes.add(item.properties.blend==="normal"?"source-over":item.properties.blend);
+    }
+    for(const mode of modes){
+      context.globalCompositeOperation=mode;
+      if(context.globalCompositeOperation!==mode)throw new TypeError(`Canvas context does not support ${mode} compositing.`);
     }
   } finally { context.restore(); }
 
@@ -66,7 +82,7 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
   const frames = [{offset:[0,0],clip:{left:0,top:0,right:target.width,bottom:target.height}}];
   function plan(id, object, type) {
     const properties = object.properties;
-    if (properties?.blend !== "difference") return;
+    if (!["normal","difference"].includes(properties?.blend)) return;
     const bounds = resolvePrimitiveGraphicBounds(type, properties);
     if (!bounds) throw new Error(`Graphic "${id}" requires finite isolated paint bounds.`);
     const {offset: [x, y], clip} = frames.at(-1);
@@ -129,10 +145,22 @@ export function drawIsolatedGlyph(context, id, graphic, draw, prepared) {
   source.translate(-plan.left, -plan.top);
   const {blend, opacity = 1, ...properties} = graphic.properties;
   draw(source, id, {...graphic, properties: {...properties, opacity: 1}});
+  if(blend==="normal"){
+    // Attenuate the complete source once. drawImage(globalAlpha) introduces
+    // additional native image-alpha quantization; source masking avoids it.
+    source.save();
+    try{
+      source.setTransform(1,0,0,1,0,0);
+      source.globalCompositeOperation="destination-in";
+      source.globalAlpha=opacity;
+      source.fillStyle="#fff";
+      source.fillRect(0,0,plan.width,plan.height);
+    }finally{source.restore();}
+  }
   context.save();
   try {
-    context.globalAlpha = opacity;
-    context.globalCompositeOperation = blend;
+    context.globalAlpha = blend==="normal"?1:opacity;
+    context.globalCompositeOperation = blend==="normal"?"source-over":blend;
     context.drawImage(surface, plan.left, plan.top, plan.width / pixelRatio, plan.height / pixelRatio);
   } finally { context.restore(); }
 }

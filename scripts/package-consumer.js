@@ -175,15 +175,19 @@ async function testNodeConsumer(directory) {
     assert.ok((await renderToPNGBuffer(localSize)).buffer.length>100);
 
     for(const factory of [chart,basicChart]){
-      const combined=factory().createCanvas({width:1000,height:800,margin:250})
+      const combinedBase=factory().createCanvas({width:1000,height:800,margin:250})
         .createData({values:[{x:0,y:0,g:"A"},{x:1,y:1,g:"B"}]})
         .createPointMark({id:"p"}).encodeX({field:"x"}).encodeY({field:"y"})
         .encodeShape({field:"g",scale:{range:["circle","square"]}})
-        .encodeSize({field:"g",fieldType:"ordinal",scale:{range:[25,100]}})
-        .createLegend({combine:"size-shape"});
+        .encodeSize({field:"g",fieldType:"ordinal",scale:{range:[25,100]}});
+      const combined=combinedBase.createLegend({combine:"size-shape"});
       assert.equal(combined.graphicSpec.objects.seriesLegendSymbolPoints.items[1].properties.width,10);
       assert.deepEqual(deserializeProgram(serializeProgram(combined)).graphicSpec,combined.graphicSpec);
       assert.ok((await renderToPNGBuffer(combined)).buffer.length>100);
+      const translucent=combinedBase.createLegend({combine:"size-shape",symbol:{layers:[{type:"point",opacity:0.7}]}});
+      assert.equal(translucent.graphicSpec.objects.seriesLegendSymbolPoints.items[0].properties.blend,"normal");
+      assert.deepEqual(deserializeProgram(serializeProgram(translucent)).graphicSpec,translucent.graphicSpec);
+      assert.ok((await renderToPNGBuffer(translucent)).buffer.length>100);
     }
 
     const extracted = chart().createCanvas({ width: 440, height: 340, margin: 20 })

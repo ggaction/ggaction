@@ -7638,7 +7638,7 @@ Related types: [`LegendValueOrder`](#type-legendvalueorder).
 
 ```typescript
 export type LegendSymbolLayer =
-  | { type: "line"; length?: number; lineWidth?: number }
+  | { type: "line"; length?: number; lineWidth?: number; opacity?: number }
   | {
       type: "point";
       shape?: "circle";
@@ -7646,6 +7646,7 @@ export type LegendSymbolLayer =
       fill?: string;
       stroke?: string;
       strokeWidth?: number;
+      opacity?: number;
     }
   | {
       type: "swatch";
@@ -7653,6 +7654,7 @@ export type LegendSymbolLayer =
       height?: number;
       stroke?: string;
       strokeWidth?: number;
+      opacity?: number;
     };
 ```
 

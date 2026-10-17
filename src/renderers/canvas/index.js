@@ -258,7 +258,7 @@ function drawConcreteGraphic(context, id, graphic, isolated) {
   if (draw === undefined) {
     throw new Error(`Canvas renderer does not support "${graphic.type}" yet.`);
   }
-  if (graphic.properties?.blend === "difference") {
+  if (["normal","difference"].includes(graphic.properties?.blend)) {
     drawIsolatedGlyph(context, id, graphic, draw, isolated);
   } else {
     draw(context, id, graphic);

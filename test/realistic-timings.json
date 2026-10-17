@@ -25,6 +25,13 @@
     "contracts/realistic-scenario-generation-isolation.test.js": 945678,
     "contracts/realistic-scenario-generator.test.js": 535185,
     "contracts/realistic-scenario-runner.test.js": 99611,
-    "contracts/realistic-statistical-facade-coverage-recipes.test.js": 159323
+    "contracts/realistic-statistical-facade-coverage-recipes.test.js": 159323,
+    "contracts/realistic-combined-legend-witness.test.js": 1338
+  },
+  "localMeasurementNotes": {
+    "contracts/realistic-combined-legend-witness.test.js": {
+      "environment": "macOS, Node22.23.1",
+      "measurement": "Sum of actual three test durations556.128334+354.670833+426.879375ms, rounded up; three authentic TidyTuesday datasets, each five repetitions and three recipe opacities. Scheduling estimate only."
+    }
   }
 }
