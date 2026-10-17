@@ -43,6 +43,8 @@ All notable changes to `ggaction` are recorded in this file.
   tight fixed margins. Automatic fitting retains space for the ink reserve.
 - Cartesian axis titles now materialize explicit hard line breaks before bounds
   checks, preserving line order through edits, resizing, facets and snapshots.
+- Updated the optional MCP SDK pin to 1.32.1 and refreshed affected transitive
+  dependencies to resolve the remaining dependency audit findings.
 
 ## [0.0.17] - 2026-09-15
 

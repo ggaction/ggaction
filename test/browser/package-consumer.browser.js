@@ -732,7 +732,7 @@ test("imports and renders the packed browser entries", async () => {
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
     theme: ["#0f172a", "#60a5fa", "white", "#60a5fa"],
     fitting: {
-      margin: { top: 4, right: 4, bottom: 69.5, left: 4 },
+      margin: { top: 4, right: 4, bottom: 81.25, left: 4 },
       status: "fit",
       lines: 7,
       rotation: -25 * Math.PI / 180,
