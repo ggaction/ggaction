@@ -89,16 +89,17 @@ function resolvedPosition(encoding, field, extent) {
 }
 
 function axisWithTitle(value, text) {
+  if (Array.isArray(value)) return value.map(axis => axisWithTitle(axis, text));
   if (value === false) return false;
   if (value !== undefined && !isPlainObject(value)) {
     throw new TypeError(`${OPERATION} binned axis must be false or a plain object.`);
   }
-  if (value?.title !== undefined && !isPlainObject(value.title)) {
-    throw new TypeError(`${OPERATION} binned axis title must be a plain object.`);
+  if (value?.title !== undefined && value.title !== false && !isPlainObject(value.title)) {
+    throw new TypeError(`${OPERATION} binned axis title must be false or a plain object.`);
   }
   return {
     ...value,
-    title: {
+    title: value?.title === false ? false : {
       text,
       ...value?.title
     }
