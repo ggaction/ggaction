@@ -3,6 +3,7 @@ import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 const LEGEND_FAMILIES = Object.freeze({
   series: "categorical",
   color: "categorical",
+  colorSize: "color-size",
   stroke: "categorical",
   gradient: "gradient",
   interval: "discretized",
@@ -162,12 +163,13 @@ function requireLegendChildren(children) {
   });
 }
 
-function scaleIds(config) {
-  const ids = config.scales ?? (config.scale === undefined ? [] : [config.scale]);
+function scaleIds(config, kind) {
+  const ids = kind === "colorSize" ? [config.colorScale, config.sizeScale]
+    : config.scales ?? (config.scale === undefined ? [] : [config.scale]);
   if (!Array.isArray(ids) || ids.length === 0 || !ids.every(id =>
     typeof id === "string" && id.length > 0
   )) {
-    throw new Error(`Shared ${config.kind} legend requires resolved scale ids.`);
+    throw new Error(`Shared ${kind} legend requires resolved scale ids.`);
   }
   return ids;
 }
@@ -193,7 +195,7 @@ export function resolveSharedFacetLegends(children) {
     ) {
       throw new Error(`Facet child "${first.id}" has invalid ${kind} legend config.`);
     }
-    const scales = scaleIds(config);
+    const scales = scaleIds(config, kind);
     const resolvedScales = Object.fromEntries(scales.map(id => {
       const scale = first.resolvedScales[id];
       if (!isPlainObject(scale)) {

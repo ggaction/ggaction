@@ -245,3 +245,63 @@ EOF
 - Parent actual3원본×5회는 lifecycle/최종 union/선택 편집/저장을 증명한다. `facet.guides.legend`
   전체 중첩 LegendOptions의 모든 literal을 별도 strict ledger로 전수 증명했다고 주장하지 않는다.
   Root의 #176/#205 parent coupling·범례 담당의 신규 옵션 actual 증명과 함께 최종 통합할 의무다.
+
+## 부모 범례 중첩 옵션의 실제 전수 증명
+
+- 앞 절의 미완료 항목을 별도 실제 실행으로 닫는다. `facet`, `facetGrid`, `repeatCharts`,
+  `editFacetGuides`의 부모 LegendOptions를 현재 public inventory에서 직접 추출한다.
+  248 option path, 168 path literal, 4 format 다양성 조건이며 unit 범례 trace로 대체하지 않는다.
+  처음 단일 baseline은 284개를 충족하지 못했다. 그 실패와 중간 fixture 배치 오류 로그를 보존했다.
+- 기존 실제 unit legend recipe의 옵션 어휘를 재사용하고 26개 부모 profile을 구성했다. 각 profile은
+  3 host에서 5회 실행하며 Tour de France, London Marathon, Penguins 원본 3종을 쓴다.
+  390개 부모 program이 원본 관측 행을 그대로 보존한다. 위치 8종, 자유 위치, legacy/shared/false,
+  블록 row/column/wrap, 연결 순서 x/y/theta, 명시 순서·overflow, 원형 표본·그라데이션,
+  size-shape/color-size 결합과 sample clipping을 실제로 만든다.
+- 직접 public trace의 옵션·literal·format 관측에서 각 조건을 최소 5회·원본 3종으로 검증한다.
+  opaque 배열은 기존 실제 Count trace에 한해서 존재를 세고 배열 자식의 증거를 만들어내지 않는다.
+  format은 서로 다른 실제 문자열 두 종류 각각에 같은 5/3 조건을 요구한다. 누락 면제는 없다.
+- 모든 program은 실제 source mark가 있는 child와 600×450 child plot, 원본 행·기존 program 불변,
+  editable import의 graphic exact를 검증한다. 첫 반복의 78개 profile/host에는 layout 재편집 후
+  import exact도 요구한다. 위치는 독립 inset/align 산술로 검사하고 row/column/wrap의 서로 다른
+  폭·높이를 확인한다. clip은 실제 sample Canvas, gradient는 concrete strip opacity,
+  exact samples와 결합 척도/domain은 native 저장 결과로 검사한다. 이미지 눈/VLM 검사는 없다.
+
+### 실제 실행에서 발견한 #205/#206 결합 버그
+
+- 유효한 `combine: "color-size"` 부모 입력이 shared kind allowlist에서 거부되었다. 그 뒤에는
+  두 scale ID의 검증 누락, parent closed tagged config/guide의 native key 누락, native semantic
+  owner를 전달하지 않아 editable persistence가 거부하는 문제가 차례로 드러났다.
+- `PROPOSAL.md`의 `f53dd78a` 승인 기록과 AXES_FACET_REVIEW #206 및 LEGENDS_MARKS_REVIEW #205
+  계약을 재사용한다. Root가 같은 승인 범위의 native 의미 전달 복원임을 확인했다. 새 public 입력,
+  persisted registry 또는 generic 저장 필드는 추가하지 않는다.
+- Pure shared compatibility owner가 color/size 두 scale을 비교한다. Parent closed state는
+  colorSize 종류에만 native `colorScale`/`sizeScale` config와 meaning을 허용하고 일치시킨다.
+  현재 native config가 단일 authored intent이며 derived parent meaning/config/graphics가 따른다.
+- Public composition `editSemantic` guard는 유지한다. 같은 semantic primitive owner의 좁은 private
+  adapter가 native color-size meaning의 구조 복사와 기존 wrapped primitive 전이를 소유한다.
+  `composeFacetGuides`가 명시적으로 이 adapter를 전달하므로 materialization→actions 역의존도
+  추가하지 않는다. 임의 semantic path를 우회하는 API가 아니다. 마지막 제거는 의미도 지우고,
+  부분 제거는 다른 native 블록과 clip window를 보존한다.
+- 세 host의 두 scale/domain 소유권, 색상·크기 alias 편집, clipping, PNG, 저장/import 후 재편집,
+  부적합 independent scale의 원자적 거부, 오염된 tagged state의 거부, mixed opacity 부분 제거,
+  이전 program 불변과 primitive trace 및 public guard 거부를 회귀로 고정했다.
+
+### 검증과 패키지 경계
+
+- 첫 최종 strict 실행은 41.97초에 PASS했다. 옵션·literal 416개와 다양성 4개 모두 최소 5회/3원본이며
+  `.artifacts/test/realistic/parent-legend-coverage.json`에 재생성 가능한 항목별 실제 횟수를 기록한다.
+  전체 기존 named axis/부모 lifecycle과 합친 actual 4/4도 79.24초에 PASS했다.
+  추가 concrete effect assertions와 최신 root 통합 후 전체 4/4도 61.28초에 PASS했다.
+  같은 최신 source의 전체 unit 3280/3280이 PASS했다. 최신 실제 합산 60772.958959ms를
+  canonical realistic scheduling timings에 기록했다.
+- Focused grammar/parent/source boundaries 35/35, 통합 전 전체 unit 3277/3277 PASS다.
+  Root의 gallery/generated 동기화 `49fcff18`을 병합한 뒤 docs 120/120 및 normal source/discovery/
+  composition/types 41/41 PASS다. Root가 소유한 승인 gallery 입력·이미지는 수정하지 않았다.
+- 초기 raw `npm pack` 4.6MB는 정식 JS/JSON staging compaction을 거치지 않은 측정이었다.
+  해당 cap 실패를 보존하고 정식 `inspectPackageArtifact`/`createPackageArtifact`로 다시 측정했다.
+  591 entries / 839440 packed / 4085334 unpacked bytes다. Entries 591, packed 841000과 browser
+  상한은 유지하고 unpacked만 다음 1000 단위인 4086000으로 조정했다.
+- Installed Full/Basic runtime·types·PNG/PDF·MCP/browser/tutor 소비자와 새 parent color-size
+  소비자가 모두 PASS했다. Artifact SHA256:
+  `389ad488f78cf0cd2cd80b9685aa3e96a934a6df7025897374f2513661427728`.
+  gzip Full/Basic/SVG는 414581/203485/7325 bytes다. 버전 변경·배포·새 번역·유료 API 호출은 없다.

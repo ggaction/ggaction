@@ -232,6 +232,25 @@ async function testNodeConsumer(directory) {
     assert.ok((await renderToPNGBuffer(parentLegend)).buffer.length>100);
     assert.ok((await renderToPDFBuffer(parentLegend)).buffer.length>100);
     assert.equal(parentLegend.removeLegend().editCompositionLayout({gap:8}).compositionSpec.facet.guides.legend,false);
+    const parentCombined=chart().createCanvas({plot:{width:600,height:450},margin:100})
+      .createData({values:Array.from({length:8},(_,i)=>({x:i,y:i+1,v:i+1,panel:i%2?"B":"A"}))})
+      .createScatterPlot({x:"x",y:"y",guides:false})
+      .encodeColor({field:"v",fieldType:"quantitative",scale:{domain:[1,8],range:["black","white"]}})
+      .encodeSize({field:"v",scale:{domain:[1,8],range:[100,900]}})
+      .facet({field:"panel",columns:2,guides:{legend:{channels:["color","size"],combine:"color-size",position:"top-right",count:3,clipHeight:12}}});
+    assert.deepEqual(Object.keys(parentCombined.guideConfigs.legend),["colorSize"]);
+    assert.equal(parentCombined.semanticSpec.guides.legend.colorSize.colorScale,"color");
+    assert.equal(parentCombined.semanticSpec.guides.legend.colorSize.sizeScale,"size");
+    assert.deepEqual(deserializeProgram(serializeProgram(parentCombined)).editCompositionLayout({gap:20}).graphicSpec,
+      parentCombined.editCompositionLayout({gap:20}).graphicSpec);
+    const parentCombinedEdited=parentCombined.editLegendSymbols({channel:"size",symbol:{opacity:0.7}});
+    assert.equal(parentCombinedEdited.guideConfigs.legend.colorSize.symbol.opacity,0.7);
+    const parentCombinedRemoved=parentCombinedEdited.removeLegend({channels:["color"]});
+    assert.equal(parentCombinedRemoved.editCompositionLayout({gap:25}).guideConfigs.legend,undefined);
+    assert.equal(parentCombinedRemoved.semanticSpec.guides.legend?.colorSize,undefined);
+    assert.deepEqual(deserializeProgram(serializeProgram(parentCombinedRemoved)).graphicSpec,parentCombinedRemoved.graphicSpec);
+    assert.ok((await renderToPNGBuffer(parentCombined)).buffer.length>100);
+    assert.ok((await renderToPDFBuffer(parentCombined)).buffer.length>100);
     for(const factory of [chart,basicChart]){
       const combined=factory().createCanvas({width:1000,height:800,margin:250})
         .createData({values:[{x:0,y:0,v:0},{x:1,y:1,v:10}]})
