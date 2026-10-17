@@ -26,12 +26,15 @@ test("renders every public chart through the SVG concrete schema", () => {
       new RegExp(
         `^<svg xmlns="http://www.w3.org/2000/svg" ` +
         `width="${chart.width}" height="${chart.height}" ` +
-        `viewBox="0 0 ${chart.width} ${chart.height}">`
+        `viewBox="0 0 ${chart.width} ${chart.height}"(?: style="isolation:isolate")?>`
       ),
       chart.id
     );
     assert.match(svg, /<(?:circle|rect|line|path|text)\b/, chart.id);
     assert.match(svg, new RegExp(`<title>${chart.id}</title>`), chart.id);
     assert.equal(svg.endsWith("</svg>"), true, chart.id);
+    const hasDifference = Object.values(program.graphicSpec.objects).some(object =>
+      [object, ...(object.items ?? [])].some(item => item.properties?.blend === "difference"));
+    assert.equal(svg.includes('style="isolation:isolate"'), hasDifference, chart.id);
   }
 });
