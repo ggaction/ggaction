@@ -82,9 +82,9 @@ const LEGACY_SCALE_ROOTS = Object.freeze({
 const LEGACY_SCALE_INVENTORY_COUNTS = Object.freeze({
   createBoxPlot: Object.freeze({ paths: 30, literals: 32, diversity: 0 }),
   createGradientPlot: Object.freeze({ paths: 30, literals: 32, diversity: 0 }),
-  createViolinPlot: Object.freeze({ paths: 39, literals: 35, diversity: 2 }),
-  createHeatmap: Object.freeze({ paths: 48, literals: 58, diversity: 2 }),
-  createHistogram: Object.freeze({ paths: 32, literals: 32, diversity: 2 })
+  createViolinPlot: Object.freeze({ paths: 43, literals: 35, diversity: 4 }),
+  createHeatmap: Object.freeze({ paths: 52, literals: 58, diversity: 4 }),
+  createHistogram: Object.freeze({ paths: 36, literals: 32, diversity: 4 })
 });
 const TAIL_LITERAL_REQUIREMENT_IDS = Object.freeze([
   "option-value:createGradientPlot.y.fieldType=string:nominal",
@@ -417,16 +417,16 @@ function legacyScaleInventory(inventory) {
   });
 }
 
-contractTest("defines five bounded statistical facade schedules totaling 465 real charts", () => {
+contractTest("defines five bounded statistical facade schedules totaling 540 real charts", () => {
   assert.deepEqual(REALISTIC_STATISTICAL_FACADE_COVERAGE_COUNTS, {
     recipes: 5,
     minimumVariantsPerRecipe: 14,
-    maximumVariantsPerRecipe: 28,
-    minimumSelections: 465,
-    maximumRecipeSelections: 140,
-    maximumFamilySelections: 465,
-    intermediateSelections: 290,
-    advancedSelections: 175,
+    maximumVariantsPerRecipe: 33,
+    minimumSelections: 540,
+    maximumRecipeSelections: 165,
+    maximumFamilySelections: 540,
+    intermediateSelections: 340,
+    advancedSelections: 200,
     targetRequirements: 847
   });
   assert.deepEqual(
@@ -453,13 +453,13 @@ contractTest("defines five bounded statistical facade schedules totaling 465 rea
     REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES
       .filter(recipe => recipe.complexity === "intermediate")
       .reduce((sum, recipe) => sum + recipe.minimumSelections, 0),
-    290
+    340
   );
   assert.equal(
     REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES
       .filter(recipe => recipe.complexity === "advanced")
       .reduce((sum, recipe) => sum + recipe.minimumSelections, 0),
-    175
+    200
   );
 });
 
@@ -523,14 +523,26 @@ contractTest("locks the corrected audit target counts and exact requirement-set 
   );
 });
 
-contractTest("465 actual direct-root witnesses close every corrected action target and diversity", async () => {
+contractTest("540 actual direct-root witnesses close every corrected action target and diversity", async () => {
   const projection = await buildProjection();
-  assert.equal(projection.results.length, 465);
+  assert.equal(projection.results.length, 540);
   const details = new Map(projection.report.requirements.map(detail => [detail.id, detail]));
   const inventory = await inventoryPromise;
   const actionSet = new Set(REALISTIC_STATISTICAL_FACADE_COVERAGE_EXPECTED_ACTIONS);
   const actionOptions = inventory.optionPaths.filter(option => actionSet.has(option.action));
   const optionIds = new Set(actionOptions.map(option => option.id));
+  const axisOptions = actionOptions.filter(option => option.required &&
+    /^guides\.(axes|grid)\./u.test(option.path));
+  const axisOptionIds = new Set(axisOptions.map(option => option.id));
+  const axisRequirements = [
+    ...axisOptions,
+    ...inventory.pathLiteralRequirements.filter(requirement => axisOptionIds.has(requirement.optionPath))
+  ];
+  assert.deepEqual(axisRequirements.filter(requirement =>
+    !details.get(requirement.id)?.meetsMinimum).map(requirement => {
+      const actual = details.get(requirement.id);
+      return `${requirement.id}: ${actual?.occurrences ?? 0}/${actual?.datasetCount ?? 0}`;
+    }), [], "every Cartesian axis/grid option and literal has authentic 5/3 evidence");
   const observedByAction = Object.fromEntries(
     [...actionSet].map(action => [action, projection.report.requirements.filter(detail =>
       requirementAction(detail.id) === action && detail.meetsMinimum
@@ -575,7 +587,7 @@ contractTest("465 actual direct-root witnesses close every corrected action targ
   );
 });
 
-contractTest("the exact 465-chart tail counterfactual fails before and passes after real root evidence", async () => {
+contractTest("the exact 540-chart tail counterfactual fails before and passes after real root evidence", async () => {
   const projection = await buildProjection();
   const inventory = await inventoryPromise;
   const counterfactualResults = projection.results.map(withoutStatisticalFacadeTailEvidence);
@@ -659,7 +671,7 @@ contractTest("the exact 465-chart tail counterfactual fails before and passes af
   );
 });
 
-contractTest("the 465-chart projection losslessly subsumes the retired facade scale surface", async () => {
+contractTest("the 540-chart projection losslessly subsumes the retired facade scale surface", async () => {
   const projection = await buildProjection();
   const inventory = await inventoryPromise;
   const target = legacyScaleInventory(inventory);
@@ -685,7 +697,7 @@ contractTest("the 465-chart projection losslessly subsumes the retired facade sc
   assert.deepEqual(byAction, LEGACY_SCALE_INVENTORY_COUNTS);
   assert.equal(
     hashIds([...target.options, ...target.literals].map(item => item.id)),
-    "cbbe1bf2da13198db1fb8fd803940b5537fc28249ba352e974864738c6f9c648"
+    "de0f1cff71b05d608f5bfbd420df948f82af6bdc9e4d784fe5aeca21442abcf5"
   );
   assert.deepEqual(
     {
@@ -693,7 +705,7 @@ contractTest("the 465-chart projection losslessly subsumes the retired facade sc
       literals: target.literals.length,
       diversity: target.diversity.length
     },
-    { paths: 179, literals: 189, diversity: 6 }
+    { paths: 191, literals: 189, diversity: 12 }
   );
   assert.deepEqual(
     [...target.options, ...target.literals].filter(requirement =>

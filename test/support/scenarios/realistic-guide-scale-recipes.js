@@ -875,7 +875,10 @@ function exerciseCartesianGuides(factors, base) {
     position: oppositeY === "left" ? "right" : "left"
   };
   const { channels: _axesLegendChannels, ...editableMovedAxesLegend } = movedAxesLegend;
-  let program = exerciseCartesianAxisOwners(base.program).createGuides({
+  // One scheduled numeric variant already runs five times across three source
+  // datasets; repeat the named-owner flow there and keep other sweeps focused.
+  const ownerWitness = numericOrdinal === 0 ? exerciseCartesianAxisOwners(base.program) : base.program;
+  let program = ownerWitness.createGuides({
     axes: {
       coordinate: { id: "main", type: ordinal % 2 === 0 ? "cartesian" : "auto" },
       x: xAxis,

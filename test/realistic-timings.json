@@ -10,7 +10,7 @@
     "contracts/generated-scenario-feature-coverage.test.js": 44770,
     "contracts/generated-scenarios.test.js": 24465,
     "contracts/realistic-arc-legend-layout.test.js": 67117,
-    "contracts/realistic-axis-facet-owner-witness.test.js": 17032,
+    "contracts/realistic-axis-facet-owner-witness.test.js": 9300,
     "contracts/realistic-cartesian-facade-coverage-recipes.test.js": 134704,
     "contracts/realistic-complete-chart-facades.test.js": 3510,
     "contracts/realistic-data-mark-recipes.test.js": 151354,
@@ -26,7 +26,7 @@
     "contracts/realistic-scenario-generation-isolation.test.js": 945678,
     "contracts/realistic-scenario-generator.test.js": 535185,
     "contracts/realistic-scenario-runner.test.js": 99611,
-    "contracts/realistic-statistical-facade-coverage-recipes.test.js": 159323,
+    "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393,
     "contracts/realistic-combined-legend-witness.test.js": 1338,
     "contracts/realistic-data-color-contracts.test.js": 50176
   },
@@ -44,8 +44,13 @@
     },
     "contracts/realistic-axis-facet-owner-witness.test.js": {
       "environment": "Darwin, Node 22",
-      "source": "actual three TT datasets, five flows per dataset",
-      "measuredDurationMs": 17031.924125
+      "source": "actual three TT datasets, five axis/facet/binned flows per dataset",
+      "measuredDurationMs": 9300.053333
+    },
+    "contracts/realistic-statistical-facade-coverage-recipes.test.js": {
+      "environment": "Darwin, Node 22",
+      "source": "540 scheduled real charts; strict axis/grid and palette evidence",
+      "measuredDurationMs": 98393.283417
     }
   },
   "measurementOverrides": {

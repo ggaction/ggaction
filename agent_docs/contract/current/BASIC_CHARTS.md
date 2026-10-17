@@ -207,7 +207,9 @@ createBarPlot({
 - ✅ Covered: vertical grouped, horizontal stacked, color layout, band width and constant appearance.
 - ✅ Covered: guide default/disable, caller ownership, invalid nested target/layout and immutable failure.
 - ✅ Covered: Browser Canvas, Node PNG and approved primitive equality.
-- Evidence: `test/unit/actions/charts/bar-histogram-facades.test.js`,
+- ✅ Covered: continuous grid roles reject band placement atomically in runtime, types and inventory.
+- Evidence: `test/contracts/continuous-facade-grid-role-contract.test.js`,
+  `test/unit/actions/charts/bar-histogram-facades.test.js`,
   `test/charts/jobs-grouped-bar/public.test.js`, and
   `test/charts/jobs-grouped-bar/png.render.js`.
 
@@ -233,6 +235,9 @@ createHistogram({
 ```
 
 - Stable default ID is `histogram`.
+- Both position axes are continuous: x owns bin extents and y owns count/stack mass.
+  Grid `count`, explicit `values`, dash maps, offsets and z-order retain their existing contracts;
+  categorical `bandPosition` is invalid on either direction, including normalized stacks and auxiliary band resources.
 - Hierarchy: `createBarMark`, one atomic `encodeHistogram`, optional `encodeColor`, optional `createGuides`.
 - Default `maxBins` is `10`; `maxBins`, `binStep` and `binBoundaries` remain mutually exclusive. Count, stack,
   normalized fill, empty-bin omission and x/y scale policy are owned by `encodeHistogram` and bar materialization.

@@ -2407,3 +2407,7 @@ artifact는587entries/829705packed/4048931unpackedbytes다. Node24의831438packe
 승인된 기능 증가분의 최소1000bytes정책으로 Full410000/Basic200000만 갱신하고 SVG25000과
 다른 global test/coverage 기준은 유지한다. 이전405000/198000 한도는 실패했으며 그 성공으로
 보고하지 않는다. 숫자 변경은 새로운 renderer/state 경계를 추가하지 않는다.
+
+Histogram의 실제 연속형 grid 역할과 동기화한 문서를 포함한 macOS/Node22.23.1/npm10.9.8
+artifact는 unpacked4,049,330bytes다. 기존4,049,000한도 실패 로그를 보존하고 unpacked만
+다음 최소1,000bytes 단위4,050,000으로 올렸다. Entries587·packed832,000 한도는 유지한다.

@@ -190,3 +190,46 @@ EOF
 - CI의 정식 realistic runner도512MiB old-space를 명시한다. Normal/coverage 실행과 기존
   private generation/execution child의 더 좁은 명시적 한도는 유지한다. 데이터·반복·deadline·
   RSS·coverage 정책은 변경하지 않는다. Normal discovery/source/inventory22회귀 PASS.
+
+
+## Restored option surface의 실제 증명
+
+- Data/color `6e4b2397`과 결합하고 기존 범례/축 증거를 모두 유지했다. Cartesian은 원래36개에
+  object palette3개와 string palette2개를 더한41profiles·820charts다. Statistical은 원래465개를
+  유지하고 palette75개를 추가한540charts다. 각 variant는5회·최소3TT원본을 그대로 사용한다.
+  Hierarchy는 원래33profiles를 유지하고 두 string palette profile을 실제 최대 흐름에도 연결한다.
+- Cartesian 전체 actual 실행은94.7초에5PASS/1FAIL이며 strict 미충족20개는 신규 sibling 범례의
+  border dash/combine/title bottom뿐이다. Hierarchy8원본 전체는267.7초에 strict assert까지
+  도달했고 미충족55개도 같은 sibling 범례뿐이다. 모든 축/frame/title/label/map와 palette의
+  object·name·string diversity는 두 실제 흐름에서 요구5/3을 충족한다. 범례 누락을 면제하거나
+  전체 suite PASS로 기록하지 않는다. 해당 범례 helper 후속은 범례 담당자에게 넘겼다.
+- Statistical에 모든 실행 가능한 axis/grid option·literal의 실제 ledger5/3 검사를 추가했다.
+  기존319개 누락을 label style, tick offset, 양방향 grid, component false, 회전 단위·baseline,
+  pregridded guide 흐름에서 직접 호출해 채웠다. 이전 프로그램/원본 선택·기존 profile은 보존했다.
+  새 baseline/frame 조합에서 y 제목이2.762px 벗어난 fixture는 제목 offset280→260으로 맞췄다.
+  Runtime Canvas 경계를 느슨하게 하지 않았다. 최종 전체7/7 PASS,540charts·50dataset,
+  counterfactual·정확한 profile fingerprint·palette diversity12개와 legacy191paths/189literals PASS다.
+- Histogram은 bin extent x와 count/stack y가 모두 continuous라 bandPosition의 두 방향 역할이
+  불가능함을 확인했다. 기존 shared continuous grid 타입만 재사용해 해당2path/4literal 광고를
+  정정했다.4stack modes×2방향·두 band 값·auxiliary band resource의 실제 원자적 거부,
+  fresh/nonfresh 타입 검사와 inventory 회귀5/5 PASS다. 유효한 count/value/map/offset/zIndex는
+  유지했다. Current·영문 문서·generated reference/types/cards와 global inventory를 동기화했다.
+  현재16901paths/12248required/8886path literals/21734ledger를 실제 계산·normal1/1로 확인했다.
+- 실제 binned Heatmap이 title:false·named array를 거부하는 기존 consumer 버그는 root의
+  `44aac78e`를 가져왔다.3TT×5 named array/두 y owner/false·custom 제목/원본 행·import
+  검증을 기존 actual witness에 추가해3/3 PASS다. Root의 독립18회귀와 별도로 실행한 증거다.
+- Source/discovery/type/runtime normal30/30, named axis·parent lifecycle37/37, docs120/120 PASS.
+  첫 docs 검사는 generated descriptor 뒤 provenance가 달라져119/120이었다. 동일 generation을
+  다시 수행해 고정점과 전체120PASS를 확인했다. Installed Full/Basic runtime·types·PNG/PDF·
+  tutorial·MCP/browser consumer가 PASS했다. Artifact SHA256은
+  `a921ba03d73484d8478c50376e4be615118f09111882441cecd3e01aaceea519`다.
+- Package587entries/829785packed/4049330unpacked다. 기존4049000초과 실패를 보존하고
+  unpacked만4050000으로 올려 재검증했다. Root 통합의 더 큰 실제 누적 예산을 낮추지 않는다.
+  실제 gzip은 Full409541/Basic199761/SVG7325다. 소스/이미지 눈·VLM 확인이나 유료 API 호출은 없다.
+- Guide-scale 전체 추가 실행은12/14로 reserved strict·clone/process는 PASS했고 두50dataset
+  flow에서 새 helper의 긴 숫자 label/title 겹침을 발견했다. Character wrap과 y title offset220으로
+  전체 정보를 보존해 고쳤고 동일3TT×5는 다시 PASS했다. Named helper는 기존 scheduled numeric
+  variant 하나의5회/3원본 흐름에만 연결해 나머지500개 기본 guide sweep의 중복을 줄인다.
+  데이터·원래50dataset/모든 variant·coverage 기준은 유지한다. 전체14회귀는 같은 source에서 재실행 중이다.
+- #176/#205 parent coupling과 두 stable pair의 최종 독립 baseline 통합은 root가 소유한다.
+  전체28feature 또는 release 완료를 주장하지 않는다.

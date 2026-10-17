@@ -48,6 +48,21 @@ for (const dataset of ["tt-tour-de-france-winners", "tt-london-marathon-winners"
       assert.equal(arrayFacade.trace.children.at(-1).args.guides.axes.xCount, 1);
       assert.equal(arrayFacade.trace.children.at(-1).args.guides.axes.yCount, 2);
       assert.deepEqual(deserializeProgram(serializeProgram(arrayFacade)).graphicSpec, arrayFacade.graphicSpec);
+      const binned = chart().createCanvas({ width: 4400, height: 3200, margin: 1000 })
+        .createData({ id: "rows", values: view.rows }).createHeatmap({ id: "binned",
+          x: "orderNumeric", y: "value", bin: { bins: 3 }, guides: { axes: {
+            x: [{ id: "heatmapX", title: false }],
+            y: [{ id: "heatmapY", title: false },
+              { id: "heatmapRight", position: "right", title: { text: "Source intervals" } }]
+          }, legend: false } });
+      assert.equal(binned.graphicSpec.objects.axis_heatmapX__Title, undefined);
+      assert.equal(binned.graphicSpec.objects.axis_heatmapY__Title, undefined);
+      assert.ok(binned.graphicSpec.objects.axis_heatmapX__Line);
+      assert.ok(binned.graphicSpec.objects.axis_heatmapY__Ticks);
+      assert.equal(binned.graphicSpec.objects.axis_heatmapRight__Title.properties.text, "Source intervals");
+      assert.equal(binned.trace.children.at(-1).args.guides.axes.yCount, 2);
+      assert.deepEqual(binned.semanticSpec.datasets.find(data => data.id === "rows").values, view.rows);
+      assert.deepEqual(deserializeProgram(serializeProgram(binned)).graphicSpec, binned.graphicSpec);
       const parent = chart().createCanvas({ plot: { width: 60, height: 275 },
         margin: { top: 35, right: 45, bottom: 60, left: 45 } })
         .createData({ id: "rows", values: view.rows })

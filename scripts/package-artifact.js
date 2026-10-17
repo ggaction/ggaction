@@ -25,7 +25,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 587, // Parent facet legend integration measured587 permitted entries.
   packedBytes: 832_000, // Parent owner integration measured831438packed bytes.
-  unpackedBytes: 4_049_000 // Parent owner integration measured4048672unpacked bytes.
+  unpackedBytes: 4_050_000 // Continuous histogram grid-role contracts measured4049330unpacked bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

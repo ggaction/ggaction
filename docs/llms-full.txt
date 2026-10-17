@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:11fd9997b5c3b2835cd82a934e0878f4e5f167c8797bf9d7699a94f6f95ce5b6. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:f2b56bc39d103158ba801b0e23c2343b1984404fb136b6b6124c22f6e05f4f8c. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -4404,6 +4404,9 @@ The stable default mark ID is `histogram`. The default is `maxBins: 10`.
 Choose exactly one of `maxBins`, `binStep`, or `binBoundaries`. Optional
 `xScale`, `yScale`, `stack`, `color`, and `bar` values use the corresponding
 histogram, color, and bar contracts.
+Both histogram position axes use continuous scales: x represents bin extents and
+y represents count or stacked mass. Grid `count` and explicit `values` remain
+available; categorical `bandPosition` is unavailable in both directions.
 
 ## `createHeatmap`
 
@@ -19129,7 +19132,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `field` | Required | `string` |
 | `color` | Optional / branch-dependent | `HistogramCategoricalColorChannel \| undefined` |
 | `bar` | Optional / branch-dependent | `(StrokeStyleDetails & { cornerRadius?: number \| undefined; cornerRadiusTopLeft?: number \| undefined; cornerRadiusTopRight?: number \| undefined; cornerRadiusBottomRight?: number \| undefined; cornerRadiusBottomLeft?: number \| undefined; } & { ...; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| CartesianCategoricalGuideOptions \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| (Omit<CartesianCategoricalGuideOptions, "grid"> & { grid?: false \| ContinuousCartesianGridOptions \| undefined; }) \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -29460,11 +29463,14 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CartesianCategoricalGuideOptions;
+  guides?: false | (Omit<CartesianCategoricalGuideOptions, "grid"> & {
+    /** Bin position and count axes are continuous; neither grid has categorical band edges. */
+    grid?: false | ContinuousCartesianGridOptions;
+  });
 };
 ```
 
-Related types: [`BasicHistogramEncoding`](./reference/types/#type-basichistogramencoding) · [`HistogramCategoricalColorChannel`](./reference/types/#type-histogramcategoricalcolorchannel) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`CartesianCategoricalGuideOptions`](./reference/types/#type-cartesiancategoricalguideoptions).
+Related types: [`BasicHistogramEncoding`](./reference/types/#type-basichistogramencoding) · [`HistogramCategoricalColorChannel`](./reference/types/#type-histogramcategoricalcolorchannel) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`CartesianCategoricalGuideOptions`](./reference/types/#type-cartesiancategoricalguideoptions) · [`ContinuousCartesianGridOptions`](./reference/types/#type-continuouscartesiangridoptions).
 
 ### `CreateHorizonPlotOptions` {#type-createhorizonplotoptions}
 
@@ -40165,7 +40171,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:11fd9997b5c3b2835cd82a934e0878f4e5f167c8797bf9d7699a94f6f95ce5b6` |
+| Contract fingerprint | `sha256:f2b56bc39d103158ba801b0e23c2343b1984404fb136b6b6124c22f6e05f4f8c` |
 | Example and dataset source | `2d6081ea84999114784691eea84e68c87de576c7` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

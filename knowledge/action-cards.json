@@ -32099,7 +32099,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianCategoricalGuideOptions | undefined"
+          "type": "false | (Omit<CartesianCategoricalGuideOptions, \"grid\"> & { grid?: false | ContinuousCartesianGridOptions | undefined; }) | undefined"
         }
       ],
       "callPatterns": [

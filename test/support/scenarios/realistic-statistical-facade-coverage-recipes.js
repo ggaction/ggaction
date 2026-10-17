@@ -392,8 +392,11 @@ function profilesForAction(action) {
   }[action] ?? [];
   const rangeProfiles=["createViolinPlot","createHistogram","createHeatmap"].includes(action)
     ? [0,1,2].map(index=>({id:`${slug(action)}-range-palette-${index}`,guideMode:"none",orientation:"vertical",
-      tickMode:"values",format:".1f",rangePalette:realisticPaletteRange(index)})) : [];
-  return freeze([...GUIDE_PROFILES, ...featureProfiles, ...rangeProfiles]);
+      tickMode:"values",format:".1f",rangePalette:realisticPaletteRange(index)})).concat(["viridis", "magma"].map(name => ({
+      id: `${slug(action)}-range-palette-${name}`, guideMode: "none", orientation: "vertical",
+      tickMode: "values", format: ".1f", rangePalette: { palette: name } }))) : [];
+  return freeze([...GUIDE_PROFILES, ...featureProfiles.map((profile, index) => index < 2 || profile.pregridded
+    ? { ...profile, guideMode: "cartesian", axisType: "cartesian", legend: false } : profile), ...rangeProfiles]);
 }
 
 const viewCache = new Map();
@@ -556,15 +559,25 @@ function axisStyle(resource, channel, profile, ordinal) {
     ? ordinal % 2 === 0 ? "bottom" : "top"
     : ordinal % 2 === 0 ? "left" : "right";
   return {
+    id: channel,
+    offset: 4,
     scale: resource.scale,
     coordinate: "main",
     position,
-    line: { color: "#334155", lineWidth: 1.1 },
-    ticksAndLabels: {
+    line: ordinal === 3 ? false : { color: "#334155", lineWidth: 1.1 },
+    ticksAndLabels: ordinal === 1 ? false : {
       ...tickSelection(resource, profile.tickMode),
-      ticks: { color: "#475569", lineWidth: 1, length: 6 },
+      ticks: { color: "#475569", lineWidth: 1, length: 6, alongOffset: 1, strokeDash: [2, 2],
+        strokeDashMap: ordinal % 2 ? "auto" : [{ value: 0, strokeDash: [] }] },
       labels: {
         offset: 8,
+        align: ["left", "center", "right"][ordinal % 3],
+        alongOffset: ordinal % 2 ? -1 : 1,
+        colorMap: "auto", labelMap: "auto", flush: ordinal % 2 === 0,
+        maxWidth: ordinal % 3 === 0 ? false : 160,
+        ...(ordinal % 3 === 0 ? {} : { wrap: ordinal % 2 ? "character" : "word", lineHeight: 16 }),
+        overlap: ordinal % 2 ? "error" : "allow",
+        rotation: { value: 0, unit: ordinal % 2 ? "radians" : "degrees" },
         format: resource.numeric ? profile.format ?? ".1f" : "auto",
         color: "#334155",
         fontSize: 11,
@@ -572,11 +585,15 @@ function axisStyle(resource, channel, profile, ordinal) {
         fontWeight: 500
       }
     },
-    title: {
+    title: ordinal === 3 ? false : {
       text: resource.title,
       at: ["start", "center", "end"][ordinal % 3],
-      offset: channel === "y" ? 280 : 64,
-      rotation: channel === "y" ? -90 : 0,
+      offset: channel === "y" ? 260 : 64,
+      alongOffset: ordinal % 2 ? -2 : 2,
+      align: ["left", "center", "right"][ordinal % 3],
+      baseline: ["top", "hanging", "middle", "alphabetic", "ideographic", "bottom"][ordinal % 6],
+      rotation: { value: channel === "y" ? ordinal % 2 ? -Math.PI / 2 : -90 : 0,
+        unit: ordinal % 2 ? "radians" : "degrees" },
       color: "#0f172a",
       fontSize: 13,
       fontFamily: "Arial",
@@ -624,10 +641,13 @@ function gridStyle(resource, coordinate, profile) {
   return {
     scale: resource.scale,
     coordinate,
-    ...tickSelection(resource, profile.tickMode),
+    ...(resource.numeric ? tickSelection(resource, profile.tickMode)
+      : { bandPosition: profile.tickMode === "count" ? "center" : "boundary" }),
+    alongOffset: 1, zIndex: profile.tickMode === "count" ? 1 : -1,
     color: "#cbd5e1",
     lineWidth: 0.75,
-    strokeDash: [3, 3]
+    strokeDash: [3, 3],
+    strokeDashMap: profile.tickMode === "count" ? "auto" : [{ value: resource.values[0], strokeDash: [] }]
   };
 }
 
@@ -744,14 +764,9 @@ function cartesianGrid(profile, resources) {
   if (profile.gridBoolean === "vertical") {
     return { horizontal: false, vertical: true, theta: false, radial: false };
   }
-  const vertical = profile.orientation !== "horizontal";
   return {
-    horizontal: vertical
-      ? gridStyle(resources.y, "main", profile)
-      : false,
-    vertical: vertical
-      ? false
-      : gridStyle(resources.x, "main", profile),
+    horizontal: gridStyle(resources.y, "main", profile),
+    vertical: gridStyle(resources.x, "main", profile),
     theta: false,
     radial: false
   };
@@ -836,15 +851,20 @@ function createOwnedFacade(base, action, args) {
     const mode = categorical || tickOptions.values !== undefined ? { values } : { count: tickOptions.count ?? 4 };
     axes[channel] = previous === false ? false : {
       ...previous, scale: scaleId, coordinate: layer.coordinate,
-      ticksAndLabels: { ...tickOptions, ...mode,
+      ticksAndLabels: previous.ticksAndLabels === false ? false : { ...tickOptions, ...mode,
         labels: { ...tickOptions.labels, ...(categorical || scale.type === "time" ? { format: "auto" } : {}) } }
     };
     if (Object.hasOwn(mode, "values")) delete axes[channel]?.ticksAndLabels?.count;
     const directionOptions = requested.grid?.[direction];
-    grid[direction] = categorical || directionOptions === false ? false
+    grid[direction] = scale.type === "point" || directionOptions === false ? false
       : directionOptions === true ? true
       : { ...directionOptions, scale: scaleId, coordinate: layer.coordinate,
-          ...(directionOptions?.values === undefined ? {} : { values }) };
+          ...(categorical ? { bandPosition: directionOptions?.bandPosition ?? "center" }
+            : directionOptions?.values === undefined ? {} : { values }) };
+    if (typeof grid[direction] === "object") {
+      if (categorical) { delete grid[direction].count; delete grid[direction].values; }
+      else delete grid[direction].bandPosition;
+    }
   }
   let legend = false;
   if (action === "createGradientPlot") legend = requested.legend ?? false;
