@@ -331,8 +331,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 412,000 bytes |
-| `ggaction/basic` | 202,000 bytes |
+| `ggaction` | 416,000 bytes |
+| `ggaction/basic` | 204,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -2468,15 +2468,6 @@ artifact는 unpacked4,049,330bytes다. 기존4,049,000한도 실패 로그를 �
 828580bytes(macOS/Node22.23.1/npm10.9.8)다. 기존828000 검사2개는 실패했으며
 모든 검색 항목·action·옵션을 유지하고 최소1000단위829000으로만 갱신한다.
 공개 runtime/패키지/browser 또는 coverage 한도는 이 예제 연결로 바꾸지 않는다.
-
-
-### Legend appearance canonical example discovery budget
-
-기존.7single-point 예제를 보존하고 독립 gradient/local-size 및 composite recipe
-opacity0/.7/1 안정 variant를 추가한 search payload는829884bytes(Node22.23.1/
-npm10.9.8/macOS)다. 이전829000 한도를 초과해 최소1000단위830000으로만
-조정한다. 항목/공개옵션/enum을 숨기지 않으며 runtime/package/browser/coverage
-한도는 변경하지 않는다.
 The quantitative color-size combined mode adds one closed combine literal to
 the existing cards. Measured createLegend3524/editLegend3855bytes require only
 3530/3860byte card ceilings; all other cards remain3360bytes.
@@ -2498,3 +2489,45 @@ are removed.
 Node24.19.0 통합 staged 입력은840502packed/4082583unpackedbytes로 측정됐다.
 기존836000/4064000 검사가 실패하여 최소1000bytes 단계841000/4083000만 적용한다.
 591개 entry와 모든 기존 옵션·데이터·coverage 기준은 유지한다.
+
+
+### Legend appearance canonical example discovery budget
+
+기존.7single-point 예제를 보존하고 독립 gradient/local-size 및 composite recipe
+opacity0/.7/1 안정 variant를 추가한 search payload는829884bytes(Node22.23.1/
+npm10.9.8/macOS)다. 이전829000 한도를 초과해 최소1000단위830000으로만
+조정한다. 항목/공개옵션/enum을 숨기지 않으며 runtime/package/browser/coverage
+한도는 변경하지 않는다.
+
+두 결합 범례의 전체 target와 appearance canonical 예제를 함께 합친 search 실측은
+830598bytes다. 기존830000 실패를 숨기지 않고 최소1000bytes 단계831000만 적용한다.
+다른 데이터·옵션·resource/coverage 기준은 유지한다.
+
+28개 기능의 실제 설치 consumer에서 측정한 browser gzip은
+Full414152/Basic203485/SVG7325bytes(Node22.23.1)다.
+기존412000/202000은 초과하여 다음 최소1000bytes 단계415000/204000만 적용한다.
+SVG25000과 기능/coverage 기준은 유지하며 README와 위 canonical table도 동기화한다.
+
+최종 parent-guide 통합의 Node24.19.0 staged packed 크기는841241bytes로 기존841000을
+넘었다. 동일 소스의 Node22 측정은839439packed/4085322unpackedbytes다. packed만
+다음 최소1000bytes 단계842000으로 갱신하며 entries591·unpacked4086000은 유지한다.
+### Facade capability declaration checkpoint
+
+런타임과 범용 범례 action은 그대로 유지하고, facade 선언의 point owner 역량과
+gradient 전용 bottom title 계약만 정정한다. 동기화된 선언/참조의 unpacked 실측은
+4083894bytes이므로 다음 최소1000bytes 단계4083000→4084000만 적용한다.
+부모 통합 실측 Full414152/Basic203485gzip의415000/204000 상한과 search831000을
+보존하며 SVG25000은 유지한다. Cartesian830차트와 hierarchical/guide-scale의
+실제 호출 ledger는5회/3개실데이터 기준과 모든 기존 profile을 유지한다.
+
+버전0.0.19와 facade 선언까지 동기화한 Node24 staged unpacked 실측4086545bytes는
+기존4086000을 초과한다. unpacked만 최소다음1000bytes 단계4087000으로 갱신하며
+entries591/packed842000과 browser/search/coverage 기준은 유지한다.
+
+최종 facade별 유효 범례 선언을 모두 검색에 포함한 version0.0.19 payload는832118bytes다.
+정확한 published-release fingerprint로도 기존831000을 초과해 docs2검사가 실패했다.
+옵션·값·문서를 삭제하지 않고 다음 최소1000bytes 단계833000만 적용한다.
+
+PR217 CI39034674598 package24의 Ubuntu/Node24.21.0 실제 설치 consumer에서 Full gzip은
+415484bytes로415000을 넘었다(job117402000022). Full만 다음 최소1000bytes 단계
+416000으로 갱신하며 Basic204000/SVG25000·package·search·coverage 기준은 유지한다.

@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.19] - 2026-10-17
+
 ### Added
 
 - Named independent Cartesian axes retain their own scales, physical sides,
@@ -49,9 +51,6 @@ All notable changes to `ggaction` are recorded in this file.
   composed child windows preserve valid private graphic identities.
 - Overflowing documentation signatures support keyboard scrolling and retain
   accessible focus at mobile widths.
-
-### Fixed
-
 - Unattached ordinal scale edits validate palette ranges like creation, including
   rebuilding Raincloud colors without losing their channel-specific checks.
 

@@ -260,3 +260,89 @@ test("child Canvas revisions keep parent intent and update the exact plot union"
   assert.equal(ownerBounds(q).left, resolveFacetProgramLayout(q).plot.x + 8);
   assert.equal(saved(p), before);
 });
+
+test("color-size parent legends retain two scales, clip windows and one owner through all composition hosts", async () => {
+  const source = chart().createCanvas({ plot: { width: 600, height: 450 }, margin: 100 })
+    .createData({ id: "rows", values: rows }).createPointMark({ id: "points" })
+    .encodeX({ field: "x" }).encodeY({ field: "y" })
+    .encodeColor({ field: "amount", fieldType: "quantitative", scale: { id: "color", type: "sequential", domain: [1, 8] } })
+    .encodeSize({ field: "amount", scale: { id: "size", domain: [1, 8], range: [100, 900] } });
+  const original = saved(source);
+  const legend = { target: "points", channels: ["color", "size"], combine: "color-size",
+    position: "top-right", count: 3, clipHeight: 12, symbol: { opacity: 0.7 } };
+  const hosts = [p => p.facet({ field: "panel", columns: 2, guides: { legend } }),
+    p => p.facetGrid({ rows: { field: "group" }, columns: { field: "panel" }, guides: { legend } }),
+    p => p.repeatCharts({ target: "points", channel: "x", fields: ["x"], guides: { legend } })];
+  for (const host of hosts) {
+    const parent = host(source), before = saved(parent), config = parent.guideConfigs.legend.colorSize;
+    assert.deepEqual(Object.keys(parent.guideConfigs.legend), ["colorSize"]);
+    assert.equal(config.colorScale, "color"); assert.equal(config.sizeScale, "size");
+    assert.deepEqual(config.domain, [1, 8]); assert.equal(config.clipHeight, 12);
+    assert.deepEqual(parent.semanticSpec.guides.legend.colorSize, { colorScale: "color", sizeScale: "size", title: "amount" });
+    const restored = deserializeProgram(before), reflow = parent.editCompositionLayout({ gap: 35 });
+    assert.deepEqual(restored.graphicSpec, parent.graphicSpec);
+    assert.deepEqual(restored.editCompositionLayout({ gap: 35 }).graphicSpec, reflow.graphicSpec);
+    assert.deepEqual(reflow.compositionSpec.facet.guides.legend, parent.compositionSpec.facet.guides.legend);
+    assert.equal(saved(parent), before); assert.equal(saved(source), original);
+    const moved = parent.editLegendLayout({ channel: "color", position: "bottom-left" });
+    assert.equal(moved.guideConfigs.legend.colorSize.blockOverrides['["color","size"]'].position, "bottom-left");
+    const movedPlot = resolveFacetProgramLayout(moved).plot, movedBounds = ownerBounds(moved);
+    assert.equal(movedBounds.left, movedPlot.x + 8);
+    assert.equal(movedBounds.bottom, movedPlot.y + movedPlot.height - 8);
+    assert.equal(moved.guideConfigs.legend.colorSize.clipHeight, 12);
+    const removed = moved.removeLegend({ channels: ["size"] });
+    assert.equal(removed.compositionSpec.facet.guides.legend, false);
+    assert.equal(removed.semanticSpec.guides.legend?.colorSize, undefined);
+    assert.equal(removed.editCompositionLayout({ gap: 45 }).guideConfigs.legend, undefined);
+    assert.deepEqual(deserializeProgram(saved(removed)).graphicSpec, removed.graphicSpec);
+    const disabled = parent.editFacetGuides({ legend: false });
+    assert.equal(disabled.semanticSpec.guides.legend?.colorSize, undefined);
+    assert.deepEqual(deserializeProgram(saved(disabled)).graphicSpec, disabled.graphicSpec);
+    const envelope = JSON.parse(before);
+    for (const change of [state => { state.compositionSpec.facet.guides.legend.blocks.colorSize.guide.sizeScale = "color"; },
+      state => { state.compositionSpec.facet.guides.legend.blocks.colorSize.config.colorScale = "size"; },
+      state => { state.compositionSpec.facet.guides.legend.blocks.colorSize.config.extra = true; }]) {
+      const state = structuredClone(decodeValue(envelope.payload)); change(state);
+      assert.throws(() => deserializeProgram(JSON.stringify({ ...envelope, payload: encodeValue(state) })));
+    }
+    for (const channel of ["color", "size"]) {
+      assert.throws(() => parent.editFacetScales({ [channel]: "independent" }), /shared encoded scales/u);
+      assert.equal(saved(parent), before);
+    }
+    assert.ok((await renderToPNGBuffer(parent)).buffer.length > 100);
+  }
+});
+
+test("partial color-size removal preserves a sibling native opacity owner and semantic meaning", () => {
+  const unit = chart().createCanvas({ plot: { width: 600, height: 450 }, margin: 200 })
+    .createData({ id: "rows", values: rows }).createPointMark({ id: "points" })
+    .encodeX({ field: "x" }).encodeY({ field: "y" })
+    .encodeColor({ field: "amount", fieldType: "quantitative", scale: { type: "sequential", domain: [1, 8] } })
+    .encodeSize({ field: "amount", scale: { domain: [1, 8], range: [100, 900] } })
+    .encodeOpacity({ field: "amount", scale: { domain: [1, 8], range: [0.2, 0.9] } })
+    .createLegend({ target: "points", channels: ["color", "size"], combine: "color-size", count: 3, clipHeight: 12 })
+    .createLegend({ target: "points", channels: ["opacity"], count: 3, clipHeight: 10 });
+  const parent = unit.facet({ field: "panel", columns: 2, guides: { legend: "shared" } })
+    .editLegendTitle({ channel: "color", title: "Amounts" });
+  const original = saved(parent), opacity = parent.compositionSpec.facet.guides.legend.blocks.opacity;
+  assert.deepEqual(Object.keys(parent.guideConfigs.legend), ["colorSize", "opacity"]);
+  const restored = deserializeProgram(original);
+  assert.deepEqual(restored.editLegendLabels({ channel: "size", color: "#06f" }).graphicSpec,
+    parent.editLegendLabels({ channel: "size", color: "#06f" }).graphicSpec);
+  const remaining = parent.removeLegend({ channels: ["color"] });
+  assert.deepEqual(Object.keys(remaining.guideConfigs.legend), ["opacity"]);
+  assert.deepEqual(remaining.compositionSpec.facet.guides.legend.blocks.opacity, opacity);
+  assert.equal(remaining.semanticSpec.guides.legend?.colorSize, undefined);
+  assert.deepEqual(deserializeProgram(saved(remaining)).editCompositionLayout({ gap: 40 }).graphicSpec,
+    remaining.editCompositionLayout({ gap: 40 }).graphicSpec);
+  assert.equal(saved(parent), original);
+  const empty = remaining.removeLegend({ channels: ["opacity"] });
+  assert.equal(empty.compositionSpec.facet.guides.legend, false);
+  assert.equal(empty.editCompositionLayout({ gap: 50 }).guideConfigs.legend, undefined);
+  assert.equal(parent.trace.children.at(-1).op, "editLegendTitle");
+  const traceEntries = entry => [entry, ...(entry.children ?? []).flatMap(traceEntries)];
+  const entries = traceEntries(parent.trace.children.at(-1));
+  assert.ok(entries.some(entry => entry.op === "materializeComposition"));
+  assert.ok(entries.some(entry => entry.op === "editSemantic" && entry.args.property === "guide.legend.colorSize.colorScale"));
+  assert.throws(() => parent.editSemantic({ property: "guide.legend.colorSize.title", value: "Unowned" }), /composition parent/u);
+});

@@ -1,3 +1,4 @@
+import { appendLegendCombinationLifecycle } from "./realistic-legend-combination-lifecycle.js";
 import { exerciseCartesianAxisOwners } from "./cartesian-axis-owner-witness.js";
 import { realisticColorControls, realisticPaletteRange } from "./realistic-color-controls.js";
 import { createHash } from "node:crypto";
@@ -653,11 +654,13 @@ function legendOptions(variant, title, { target = "points", channels = ["color"]
     color: "#cbd5e1",
     lineWidth: 1,
     padding: 12,
-    background: "#ffffff"
+    background: "#ffffff",
+    strokeDash: [4,2,6,1]
   }];
   return {
     target,
     channels,
+    combine: "separate",
     position,
     align: direction === "vertical" ? "center" : aligns[ordinal % aligns.length],
     direction,
@@ -687,7 +690,7 @@ function legendOptions(variant, title, { target = "points", channels = ["color"]
 }
 
 function editableLegendOptions(variant, title, options) {
-  const { channels: _channels, ...editable } = legendOptions(variant, title, options);
+  const { channels: _channels, combine: _combine, ...editable } = legendOptions(variant, title, options);
   return editable;
 }
 
@@ -874,10 +877,10 @@ function exerciseCartesianGuides(factors, base) {
     ...initialAxesLegend,
     position: oppositeY === "left" ? "right" : "left"
   };
-  const { channels: _axesLegendChannels, ...editableMovedAxesLegend } = movedAxesLegend;
+  const { channels: _axesLegendChannels, combine: _axesLegendCombine, ...editableMovedAxesLegend } = movedAxesLegend;
   // One scheduled numeric variant already runs five times across three source
   // datasets; repeat the named-owner flow there and keep other sweeps focused.
-  const ownerWitness = numericOrdinal === 0 ? exerciseCartesianAxisOwners(base.program) : base.program;
+  const ownerWitness = numericOrdinal === 0 ? appendLegendCombinationLifecycle(exerciseCartesianAxisOwners(base.program)) : base.program;
   let program = ownerWitness.createGuides({
     axes: {
       coordinate: { id: "main", type: ordinal % 2 === 0 ? "cartesian" : "auto" },
@@ -3014,3 +3017,6 @@ export function realisticGuideScaleCoverageFactors(recipe) {
     throw new Error(`${recipe.id} has no eligible dataset for variant "${variantId}".`);
   }));
 }
+
+// Shared authoring vocabulary for actual unit and parent guide witnesses.
+export { legendOptions as realisticLegendOptions };

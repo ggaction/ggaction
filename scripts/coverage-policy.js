@@ -62,6 +62,7 @@ export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
   "actions/guides/legends/colorSize.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "actions/guides/legends/combine.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "core/graphicProperties.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
+  "actions/primitives/semanticAction.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
   "grammar/axisTextPlacement.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
   "grammar/colorSizeLegend.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "grammar/facets/legendIntent.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),

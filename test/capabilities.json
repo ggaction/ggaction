@@ -133,6 +133,14 @@
       {
         "type": "prefix",
         "path": "charts/shared-facet-owner/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/facade-legend-owner-capabilities.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/facade-legend-combination-types.test.js"
       }
     ],
     "horizon": [
@@ -202,7 +210,10 @@
       }
     ],
     "marks": [
-      { "type": "prefix", "path": "charts/named-shapes/" },
+      {
+        "type": "prefix",
+        "path": "charts/named-shapes/"
+      },
       {
         "type": "prefix",
         "path": "charts/directional-tick-plot/"
@@ -278,6 +289,10 @@
       {
         "type": "prefix",
         "path": "contracts/realistic-"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-legend-option-witness.test.js"
       }
     ],
     "rendering": [

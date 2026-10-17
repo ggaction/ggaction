@@ -18,6 +18,11 @@ legend grammar와 facet guide scaffolding에 자동 prefix family를 적용했�
 - 이전 source28 전체 coverage는95.33/92.52/98.66 및 기존103개 floor를 통과했다.
   확장된 floor를 포함한 최종 전체 coverage는 별도 실행하며 이 기록을 그 성공으로 대체하지 않는다.
 
+부모 color-size meaning 복원 뒤에는 semantic primitive owner에도95/90/100 floor를 추가했다.
+기존 public composition guard를 넓히지 않는 좁은 private adapter의 잘못된 host/임의 key 거부,
+원래 program 불변과 composition 보존을 추가 회귀로 검사했다. 관련28개 unit 통과이며
+최종 전체 gate는133개 floor를 적용한다. 아래132개 raw 결과는 그 이전 입력의 증거로 보존한다.
+
 ## 통합 입력의 132개 floor 실행
 
 - 입력: `a5634be5c4cf66e7530cd0b1707cf7457fcd7438` — `5827527e` 정책과
@@ -72,3 +77,42 @@ if (run.error) throw run.error;
 assertCriticalCoverage(run.stdout);
 process.exitCode = run.status ?? 1;
 ```
+
+## 통합 입력의 133개 floor 최종 선제 검증
+
+위 132개 실행의 실패 원본과 판단은 그대로 보존한다. 아래는 gallery/search 동기화와
+부모 color-size meaning 복원, private adapter 회귀 및 추가 floor를 반영한 별도 입력의 결과다.
+
+- 입력: `f1fae3bd29831824b6af607554b332265b779bdd`, Node22.23.1/macOS.
+  `collectTestFiles('coverage')`의 정상 테스트 837개 파일과
+  `testRunnerArguments('coverage', files)`가 생성한 정확한 인자로 실행했다.
+  Concurrency4 및 global lines94/branches89/functions98 기준은 그대로다.
+  외부 `/tmp` orchestration이 전체 stdout/stderr를 보존한 뒤 원본
+  `assertCriticalCoverage(raw)`를 같은 보고서에 호출했다.
+- **4,585/4,585 PASS**, 실패·취소·skip0. TAP duration175753.716083ms,
+  child 실행과 결과 수집을 포함한 wall time181100ms다. 프로세스 exit0, stderr0bytes다.
+- 전체 coverage는 **95.35% lines / 92.58% branches / 98.68% functions**다.
+  **133개 critical floor를 모두 통과**했다. 기존 기준을 내리거나 파일을 제외하지 않았다.
+- 추가된 `actions/primitives/semanticAction.js`는99.45/97.34/100으로95/90/100 floor를 통과했다.
+  `grammar/facets/legendIntent.js`90.77/88.64/100,
+  `materialization/facetGuides/owner.js`97.6/88.14/100,
+  `materialization/facetGuides/edit.js`93.33/92.31/100,
+  `materialization/facetGuides/ownerLayout.js`91.55/84.78/100,
+  `materialization/facetGuides/placement.js`83.56/83.08/81.25다.
+  `materialization/graphicTranslation.js`100/100/100,
+  `selectors/axes.js`100/97.65/100도 확인했다. 수치는 lines/branches/functions 순서다.
+- 검사 중 제품 소스, runner, coverage policy, threshold 또는 fixture를 수정하지 않았다.
+  최종19 tag의 별도 CI/release 검증을 이 선제 실행으로 대체하지 않는다.
+
+### 보존한 원시 보고서
+
+- `/tmp/ggaction-axes-release-coverage-stdout.log`: 전체 TAP와 파일별 coverage,1005144bytes.
+- `/tmp/ggaction-axes-release-coverage-stderr.log`: 빈 stderr.
+- `/tmp/ggaction-axes-release-coverage-invocation.json`: Node 버전,837개 정확한 파일·인자와133개 floor 수.
+- `/tmp/ggaction-axes-release-coverage-summary.json`: 프로세스 상태, 시간, 전체 파일별 측정값과 원본 정책 판정.
+- `/tmp/ggaction-axes-release-coverage.mjs`: 원본 보고서를 보존하고 정식 정책을 적용한 외부 orchestration.
+
+stdout SHA256:
+`8e747f6324ab3a047b379b5ce635a2887356e3c200157b1b55787089ed87bff9`.
+이는 로컬 원시 TAP/coverage 보고서 보존이며, 원격 영구 artifact 또는 별도 원시 V8 계측 파일의
+보존을 주장하지 않는다. 위 재현 코드 또는 제품 `npm run test:coverage`로 같은 검사를 실행할 수 있다.

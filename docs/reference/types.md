@@ -1541,9 +1541,10 @@ Related types: [`AxisTickStyleOptions`](#type-axistickstyleoptions) · [`Cartesi
 ```typescript
 type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
   legend?: false | (Omit<
-    FilledMarkLegendOptions,
-    "count" | "values" | "gradient" | "labels" | "order" | "representation" | "symbol"
+    SeparateFilledLegendOptions,
+    "count" | "values" | "gradient" | "labels" | "order" | "representation" | "symbol" | "titlePosition"
   > & {
+    titlePosition?: "top" | "left";
     symbol?: FilledLegendSymbolRecipe;
     labels?: CategoricalLegendTextOptions;
     order?: CartesianLegendOrder;
@@ -1553,7 +1554,25 @@ type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & 
 
 </details>
 
-Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`FilledLegendSymbolRecipe`](#type-filledlegendsymbolrecipe) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`SeparateFilledLegendOptions`](#type-separatefilledlegendoptions) · [`FilledLegendSymbolRecipe`](#type-filledlegendsymbolrecipe) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
+
+### `CartesianCategoricalPointGuideOptions` {#type-cartesiancategoricalpointguideoptions}
+
+<details markdown="1">
+<summary>Expand CartesianCategoricalPointGuideOptions</summary>
+
+```typescript
+type CartesianCategoricalPointGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (Omit<CategoricalPointLegendOptions, "count" | "values" | "gradient" | "labels" | "order" | "symbol" | "titlePosition"> & {
+    titlePosition?: "top" | "left";
+    symbol?: FilledLegendSymbolRecipe; labels?: CategoricalLegendTextOptions; order?: CartesianLegendOrder;
+  });
+};
+```
+
+</details>
+
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`CategoricalPointLegendOptions`](#type-categoricalpointlegendoptions) · [`FilledLegendSymbolRecipe`](#type-filledlegendsymbolrecipe) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
 
 ### `CartesianGridOptions` {#type-cartesiangridoptions}
 
@@ -1629,6 +1648,21 @@ type CartesianPathGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
 
 Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`PathLegendOptions`](#type-pathlegendoptions) · [`LegendValueOrder`](#type-legendvalueorder).
 
+### `CartesianSeparateGuideOptions` {#type-cartesianseparateguideoptions}
+
+<details markdown="1">
+<summary>Expand CartesianSeparateGuideOptions</summary>
+
+```typescript
+type CartesianSeparateGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (DistributiveLegendOmit<SeparateFilledLegendOptions, "order"> & { order?: CartesianLegendOrder });
+};
+```
+
+</details>
+
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`DistributiveLegendOmit`](#type-distributivelegendomit) · [`SeparateFilledLegendOptions`](#type-separatefilledlegendoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
+
 ### `CategoricalColorScaleOptions` {#type-categoricalcolorscaleoptions}
 
 <details markdown="1">
@@ -1680,6 +1714,19 @@ type CategoricalLegendTextOptions = {
 ```
 
 </details>
+
+### `CategoricalPointLegendOptions` {#type-categoricalpointlegendoptions}
+
+<details markdown="1">
+<summary>Expand CategoricalPointLegendOptions</summary>
+
+```typescript
+type CategoricalPointLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "representation">;
+```
+
+</details>
+
+Related types: [`DistributiveLegendOmit`](#type-distributivelegendomit) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions).
 
 ### `CategoricalPolarAxesOptions` {#type-categoricalpolaraxesoptions}
 
@@ -1910,7 +1957,7 @@ Related types: [`CategoricalEncodingOptions`](#type-categoricalencodingoptions) 
 
 ```typescript
 type ColorGuides = Omit<CartesianGuideOptions, "legend"> & {
-  legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & {
+  legend?: false | (DistributiveLegendOmit<SeparateFilledLegendOptions, "order"> & {
     order?: CartesianLegendOrder;
   });
 };
@@ -1918,7 +1965,7 @@ type ColorGuides = Omit<CartesianGuideOptions, "legend"> & {
 
 </details>
 
-Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`DistributiveLegendOmit`](#type-distributivelegendomit) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`DistributiveLegendOmit`](#type-distributivelegendomit) · [`SeparateFilledLegendOptions`](#type-separatefilledlegendoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
 
 ### `ColorLayout` {#type-colorlayout}
 
@@ -3001,13 +3048,13 @@ export interface CreateRaincloudPlotOptions {
   summary?: false | RaincloudSummaryOptions;
   points?: false | RaincloudPointsOptions;
   color?: LineCategoricalColorChannel;
-  guides?: false | CartesianCategoricalGuideOptions;
+  guides?: false | CartesianCategoricalPointGuideOptions;
 }
 ```
 
 </details>
 
-Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions).
+Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`CartesianCategoricalPointGuideOptions`](#type-cartesiancategoricalpointguideoptions).
 
 ### `CreateReferenceBandOptions` {#type-createreferencebandoptions}
 
@@ -6006,13 +6053,13 @@ type EndpointPlotBaseOptions = {
   category: EndpointCategoryChannel;
   orientation?: "horizontal" | "vertical";
   summary?: EndpointPlotSummary;
-  guides?: false | CartesianGuideOptions;
+  guides?: false | CartesianSeparateGuideOptions;
 };
 ```
 
 </details>
 
-Related types: [`EndpointCategoryChannel`](#type-endpointcategorychannel) · [`EndpointPlotSummary`](#type-endpointplotsummary) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
+Related types: [`EndpointCategoryChannel`](#type-endpointcategorychannel) · [`EndpointPlotSummary`](#type-endpointplotsummary) · [`CartesianSeparateGuideOptions`](#type-cartesianseparateguideoptions).
 
 ### `EndpointPlotSummary` {#type-endpointplotsummary}
 
@@ -7009,13 +7056,13 @@ export interface HeatmapBaseOptions {
     stroke?: string | false;
     strokeWidth?: number;
   };
-  guides?: false | CartesianGuideOptions;
+  guides?: false | CartesianSeparateGuideOptions;
 }
 ```
 
 </details>
 
-Related types: [`RectStyleDetails`](#type-rectstyledetails) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
+Related types: [`RectStyleDetails`](#type-rectstyledetails) · [`CartesianSeparateGuideOptions`](#type-cartesianseparateguideoptions).
 
 ### `HeatmapBinOptions` {#type-heatmapbinoptions}
 
@@ -7470,13 +7517,13 @@ type IntervalPlotBaseOptions = {
   color?: BasicColorChannel;
   point?: CreateScatterPlotOptions["point"];
   errorBar?: IntervalPlotErrorBarOptions;
-  guides?: false | CartesianGuideOptions;
+  guides?: false | CartesianSeparateGuideOptions;
 };
 ```
 
 </details>
 
-Related types: [`ErrorBarOffsetChannel`](#type-errorbaroffsetchannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`IntervalPlotErrorBarOptions`](#type-intervalploterrorbaroptions) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
+Related types: [`ErrorBarOffsetChannel`](#type-errorbaroffsetchannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`IntervalPlotErrorBarOptions`](#type-intervalploterrorbaroptions) · [`CartesianSeparateGuideOptions`](#type-cartesianseparateguideoptions).
 
 ### `IntervalPlotErrorBarOptions` {#type-intervalploterrorbaroptions}
 
@@ -8860,8 +8907,10 @@ export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
 ```typescript
 type PathLegendOptions = Omit<
   LegendOptions,
-  "symbol" | "gradient" | "count" | "values" | "labels" | "representation"
+  "symbol" | "gradient" | "count" | "values" | "labels" | "representation" | "combine" | "titlePosition"
 > & {
+  titlePosition?: "top" | "left";
+  combine?: "separate";
   symbol?: "auto" | { length?: number; lineWidth?: number }
     | { layers: readonly LegendSymbolLayer[] };
   labels?: CategoricalLegendTextOptions;
@@ -8930,9 +8979,10 @@ Related types: [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategorica
 
 ```typescript
 export type PieLegendOptions = Omit<
-  FilledMarkLegendOptions,
-  "count" | "values" | "gradient" | "channels" | "order" | "labels" | "representation" | "symbol"
+  SeparateFilledLegendOptions,
+  "count" | "values" | "gradient" | "channels" | "order" | "labels" | "representation" | "symbol" | "titlePosition"
 > & {
+  titlePosition?: "top" | "left";
   symbol?: FilledLegendSymbolRecipe;
   channels?: readonly ["color"];
   order?: LegendValueOrder | { channel: "theta"; values?: never };
@@ -8942,7 +8992,7 @@ export type PieLegendOptions = Omit<
 
 </details>
 
-Related types: [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`FilledLegendSymbolRecipe`](#type-filledlegendsymbolrecipe) · [`LegendValueOrder`](#type-legendvalueorder) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions).
+Related types: [`SeparateFilledLegendOptions`](#type-separatefilledlegendoptions) · [`FilledLegendSymbolRecipe`](#type-filledlegendsymbolrecipe) · [`LegendValueOrder`](#type-legendvalueorder) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions).
 
 ### `PieRadiusChannel` {#type-pieradiuschannel}
 
@@ -9234,7 +9284,7 @@ Related types: [`PolarChartGuideOptions`](#type-polarchartguideoptions) · [`Pol
 <summary>Expand PolarPointLegendOptions</summary>
 
 ```typescript
-type PolarPointLegendOptions = DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & {
+type PolarPointLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "order"> & {
   order?: PolarLegendOrder;
 };
 ```
@@ -10768,6 +10818,19 @@ export type SelectMarksOptions = {
 </details>
 
 Related types: [`MarkSelector`](#type-markselector).
+
+### `SeparateFilledLegendOptions` {#type-separatefilledlegendoptions}
+
+<details markdown="1">
+<summary>Expand SeparateFilledLegendOptions</summary>
+
+```typescript
+type SeparateFilledLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "combine"> & { combine?: "separate" };
+```
+
+</details>
+
+Related types: [`DistributiveLegendOmit`](#type-distributivelegendomit) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions).
 
 ### `SeriesLayoutOptions` {#type-serieslayoutoptions}
 

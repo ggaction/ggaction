@@ -1,3 +1,4 @@
+import { appendFacadeLegendCombinations } from "./realistic-facade-legend-combinations.js";
 import { realisticColorControls, realisticPaletteRange, appendRealisticColorControls } from "./realistic-color-controls.js";
 const POSITION_TYPES = Object.freeze(["linear", "log", "pow", "sqrt", "symlog"]);
 const THETA_TYPES = Object.freeze(["linear", "time", "band", "point"]);
@@ -646,6 +647,8 @@ function baseLegend(target, index, {
 
 function legend(target, index, options = {}) {
   const result = baseLegend(target, index, options);
+  result.combine = "separate";
+  if (result.border && typeof result.border === "object") result.border.strokeDash = [4,2,6,1];
   if (index !== 14) {
     result.blockLayout = ["row", "column", "wrap"][index % 3];
   }
@@ -663,7 +666,11 @@ function legend(target, index, options = {}) {
     if (result.representation === "symbols") {
       delete result.gradient;
       result.symbol = { type: "point", radius: 5 };
-    } else result.gradient.opacity = 0.7;
+    } else { result.gradient.opacity = 0.7; result.titlePosition = "bottom"; }
+  }
+  if (result.symbol?.layers?.some(layer => layer.type === "point")) {
+    result.clipHeight=8;
+    result.symbol={layers:result.symbol.layers.map(layer=>({...layer,opacity:[0,0.7,1][index%3]}))};
   }
   return result;
 }
@@ -1958,7 +1965,12 @@ export function appendHierarchicalFacadeCoverage(program) {
       }
     }
   }
-  return appendPaletteRangeProfiles(next, [34, 35]);
+  next = appendPaletteRangeProfiles(next, [34, 35]);
+  for (const action of ["createPolarScatterPlot", "createStripPlot", "createBeeswarmPlot", "createRaincloudPlot"]) {
+    next = appendFacadeLegendCombinations(next, {action,xField:"positiveX",yField:"positiveY",categoryField:"group",numberField:"rowOrdinal",
+      modes: action === "createPolarScatterPlot" || action === "createRaincloudPlot" ? ["size-shape"] : ["size-shape","color-size"]});
+  }
+  return next;
 }
 
 function hierarchicalSteps() {

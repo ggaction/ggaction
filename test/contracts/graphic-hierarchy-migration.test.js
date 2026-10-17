@@ -26,7 +26,9 @@ const LOADERS = Object.freeze({
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
   "named-shapes": ["canvas", "scatterPlot", "labels"],
-  "combined-legends": ["canvas", "scatterPlot", "colorSizeLegendSymbols", "colorSizeLegendLabels", "colorSizeLegendTitle"],
+  "combined-legends": [],
+  "legend-layout": ["canvas", "scatterPlot", "sizeLegendSymbols", "sizeLegendLabels", "colorGradientBackground", "colorGradientStrips", "colorGradientTicks", "colorGradientLabels", "colorGradientTitle"],
+  "legend-recipe-opacity": ["canvas", "scatterPlot", "colorLegendSymbolLines", "colorLegendSymbolPoints", "colorLegendLabels"],
   "axis-owners": [
     "canvas", "horizontalGridLines", "scatterPlot", "xAxisLine", "xAxisTitle",
     "axis_quantity__Line", "axis_quantity__Ticks", "axis_quantity__Labels", "axis_quantity__Title",
@@ -364,6 +366,7 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
 });
 
 const EXPECTED_COMPOSITION_DRAW_LENGTH = Object.freeze({
+  "combined-legends": 13,
   "program-composition": 9,
   "directional-tick-plot": 28,
   "ordered-category-bar": 43,
@@ -373,6 +376,7 @@ const EXPECTED_COMPOSITION_DRAW_LENGTH = Object.freeze({
 });
 
 const EXPECTED_COMPOSITION_CHILDREN = Object.freeze({
+  "combined-legends": 2,
   "program-composition": 2,
   "directional-tick-plot": 3,
   "cross-feature-dashboard": 2,
