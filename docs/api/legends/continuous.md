@@ -138,9 +138,8 @@ program.createLegend({
 });
 ~~~
 
-Gradient legends reject categorical-only `symbol`, `columns`, `direction`, and
-`itemGap`. Opacity legends reject `columns`, `direction`, and `gradient`.
-Gradient and side-positioned opacity legends require `titlePosition: "top"`.
+Gradient legends reject categorical-only `symbol`, `columns`, and `itemGap`. Opacity legends reject `columns`, `direction`, and `gradient`.
+Side-positioned opacity legends require `titlePosition: "top"`.
 For a single top or bottom legend, `align` uses the complete visible outer
 bounds, including endpoint labels, symbol strokes and any border. `offset` is
 the gap between the plot and the nearest outer legend edge. This rule also
@@ -149,8 +148,25 @@ requested Canvas margin and never resize the Canvas.
 Side gradient and opacity legends accept only `align: "center"`. When moving
 a non-centered horizontal legend to a side, set `align: "center"` in the same
 edit. Title styles accept color and typography; `offset` belongs to `labels`.
-Gradient `titlePosition: "top"` is accepted by both creation and editing,
-including `editLegendLayout`; `"left"` is unsupported.
+Gradient `direction: "horizontal" | "vertical"` is independent of position.
+Omission at creation retains the position-derived default; an omitted edit
+preserves explicit intent. Gradient-only edit `direction: "auto"` restores the
+default. Length follows the ramp direction and thickness is perpendicular.
+Horizontal values run left to right with labels below; vertical values run
+bottom to top with labels on the left at a left anchor and on the right otherwise.
+Scale reverse and transformed-scale sampling retain their existing behavior.
+
+Gradient titles accept `titlePosition: "top" | "bottom"` in creation and editing,
+including `editLegendLayout`; `"left"` is unsupported. A bottom title clears the
+complete strip, tick and label bounds by 12 pixels. Its default anchor is the
+strip center for a horizontal ramp and the strip left for a vertical ramp;
+`titleStyle.align` still applies. Explicit line breaks and blank lines are retained.
+Hidden titles occupy no space. All visible content must fit the requested Canvas.
+
+Gradient orientation intent remains inactive while color uses `representation:
+"symbols"`; symbol direction is separate. Returning to a gradient restores its
+orientation. Changing to a different scale family cannot silently discard an
+explicit gradient direction; reset it with `"auto"` or remove and recreate the legend.
 
 ## Show a continuous color scale as symbols
 

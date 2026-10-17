@@ -1,6 +1,7 @@
 import { axisGraphicIds } from "../../selectors/axes.js";
 export { axisGraphicIds };
 import { resolveConcreteGraphicBounds, unionConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
+import { localLegendPosition } from "../legendGroups.js";
 
 // Only domain-owned guides participate. Extension primitives may deliberately
 // overlap, and a combined categorical/size legend is one occupied group.
@@ -37,20 +38,21 @@ export function resolveGuideCollisionBlocks(graphicSpec, guideConfigs, titleConf
   const categorical = policies.find(policy => policy.family === "categorical" && configs[policy.kind] !== undefined);
   const combined = categorical !== undefined && configs.size !== undefined &&
     configs[categorical.kind].target === configs.size.target &&
+    localLegendPosition(configs[categorical.kind]) === undefined && localLegendPosition(configs.size) === undefined &&
     (configs.size.inheritPosition !== false || configs[categorical.kind].position === configs.size.position);
   const groups = guideConfigs.legendGroups ?? {};
   for (const [target, group] of Object.entries(groups)) {
-    const ids = policies.filter(policy => configs[policy.kind]?.target === target).flatMap(policy => policy.graphicIds);
+    const ids = policies.filter(policy => configs[policy.kind]?.target === target && localLegendPosition(configs[policy.kind]) === undefined).flatMap(policy => policy.graphicIds);
     append(`${target} legend group`, "legend", group.placement.position ?? "free", ids);
   }
   for (const policy of policies) {
     const config = configs[policy.kind];
-    if (groups[config?.target] !== undefined) continue;
+    if (groups[config?.target] !== undefined && localLegendPosition(config) === undefined) continue;
     if (config === undefined || combined && policy.kind === "size") continue;
     const ids = combined && policy === categorical
       ? [...policy.graphicIds, ...policies.find(item => item.kind === "size").graphicIds]
       : policy.graphicIds;
-    append(`${policy.kind}${combined && policy === categorical ? "+size" : ""} legend`, "legend", config.position, ids);
+    append(`${policy.kind}${combined && policy === categorical ? "+size" : ""} legend`, "legend", localLegendPosition(config) ?? config.position, ids);
   }
   return blocks;
 }

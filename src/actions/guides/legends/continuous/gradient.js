@@ -32,7 +32,10 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
   if (config.representation === "symbols") return resolveColorSymbolsLayout(program, config, scale);
   config = intrinsicLegendConfig(program, config);
   const { plot, canvas } = resolveContinuousBounds(program);
-  const vertical = ["right", "left"].includes(config.position);
+  const vertical = config.gradientDirection === undefined
+    ? ["right", "left"].includes(config.position) : config.gradientDirection === "vertical";
+  const stripWidth = vertical ? config.gradient.thickness : config.gradient.length;
+  const stripHeight = vertical ? config.gradient.length : config.gradient.thickness;
   const length = config.gradient.length;
   const thickness = config.gradient.thickness;
   const titleText = config.titleVisible === false ? { height: 0, extraHeight: 0 }
@@ -44,20 +47,21 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
     x = plot.x + plot.width + config.offset;
     y = plot.y + 46 + titleGap - 12 + titleText.extraHeight / 2;
   } else if (config.position === "left") {
-    x = plot.x - config.offset - thickness;
+    x = plot.x - config.offset - stripWidth;
     y = plot.y + 46 + titleGap - 12 + titleText.extraHeight / 2;
   } else {
     x = config.align === "left" ? plot.x
-      : config.align === "right" ? plot.x + plot.width - length
-        : plot.x + (plot.width - length) / 2;
+      : config.align === "right" ? plot.x + plot.width - stripWidth
+        : plot.x + (plot.width - stripWidth) / 2;
     y = config.position === "top"
-      ? plot.y - config.offset - thickness - config.labels.offset -
+      ? plot.y - config.offset - stripHeight - config.labels.offset -
         config.labels.fontSize
       : plot.y + plot.height + config.offset +
         (config.titleVisible === false ? 0 : titleText.height + titleGap);
   }
   let title = vertical
-    ? { x, y: plot.y + 20, align: "left" }
+    ? { x, y: ["right", "left"].includes(config.position) ? plot.y + 20
+      : y - titleGap - titleText.height / 2, align: "left" }
     : {
         x: x + length / 2,
         y: y - titleGap - titleText.height / 2,
@@ -87,11 +91,10 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
   const labelOffset = config.labels.offset;
   const labels = vertical
     ? fractions.map(fraction => ({
-        x: config.position === "right"
-          ? x + thickness + labelOffset
-          : x - labelOffset,
+        x: config.position === "left"
+          ? x - labelOffset : x + thickness + labelOffset,
         y: y + length * (1 - fraction),
-        align: config.position === "right" ? "left" : "right"
+        align: config.position === "left" ? "right" : "left"
       }))
     : fractions.map(fraction => ({
         x: x + length * fraction,
@@ -100,9 +103,9 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
       }));
   const ticks = vertical
     ? labels.map(label => ({
-        x1: config.position === "right" ? x + thickness : x,
+        x1: config.position === "left" ? x : x + thickness,
         y1: label.y,
-        x2: config.position === "right" ? x + thickness + 6 : x - 6,
+        x2: config.position === "left" ? x - 6 : x + thickness + 6,
         y2: label.y
       }))
     : labels.map(label => ({
@@ -126,6 +129,12 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
   const labelBounds = labels.map((label, index) =>
     resolveLegendTextBounds(label, texts[index], config.labels, program.materializationConfigs.textMetrics)
   );
+  if (config.titlePosition === "bottom" && config.titleVisible !== false) {
+    const bottom = Math.max(stripBounds.bottom + stripStrokeWidth / 2,
+      ...tickBounds.map(bounds => bounds.bottom), ...labelBounds.map(bounds => bounds.bottom));
+    title = { x: vertical ? x : x + length / 2,
+      y: bottom + titleGap + titleText.height / 2, align: vertical ? "left" : "center" };
+  }
   if (config.titleVisible !== false) title = alignLegendTitle(title, config.title, config.titleStyle,
     [{ left: stripBounds.left - stripStrokeWidth / 2, right: stripBounds.right + stripStrokeWidth / 2,
       top: stripBounds.top - stripStrokeWidth / 2, bottom: stripBounds.bottom + stripStrokeWidth / 2 },

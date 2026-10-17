@@ -317,6 +317,14 @@ Numeric size display-map public documentation and generated signatures produce a
 search index. Its independent ceiling increases only from 814,000 to 815,000 bytes; the search corpus,
 option literals and existing regression assertions stay complete.
 
+Dashed legend borders add two private owners: pure even-array grammar and a shared stable-ID
+rect/closed-path frame materializer. Existing family rematerializers and lane placement explicitly
+invoke the same owner; renderers keep consuming concrete path commands. A nonempty pattern is one
+closed path with a continuous dash phase. Default solid rects and their output remain unchanged.
+Measured artifact growth is 569 entries / 798,338 packed / 3,914,211 unpacked bytes. The narrow
+ceilings become 569 / 799,000 / 3,915,000, keeping browser limits unchanged. Search is 815,026 bytes;
+its independent ceiling becomes 816,000. These are growth adjustments, not previous-limit passes.
+
 ### Browser bundle regression ceilings
 
 Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 않아야 한다.
@@ -2192,3 +2200,28 @@ materialization layer에 역방향 의존하지 않는다. 기존 package stagin
 한도를570/806000/3949000으로 좁게 갱신하고 이전569/799000/3919000 통과로 보고하지 않는다.
 전체 승인 옵션을 보존한 search816932bytes는817000으로, action-card median1896bytes는1896으로
 갱신한다. Card max3358은3360 한도 안이다. Installed consumer의 actual gzip은 Full396214/Basic193136bytes이므로 최소1000bytes 단위로397000/194000으로만 조정한다. SVG25000은 유지한다.
+
+### Gradient direction and bottom title checkpoint
+
+The complete editLegend card is 3,609 UTF-8 bytes after exposing gradient-only
+edit direction auto and bottom title. Its individual ceiling moves from 3,600
+to 3,620 bytes; all other cards retain 3,360 bytes. No public enum or option is
+removed to fit. Existing family config owns optional gradientDirection; symbols
+keep their separate direction. No renderer orientation or text rotation is added.
+
+This checkpoint measures 569 entries / 799,016 packed bytes / 3,917,456
+unpacked bytes. Entry count stays 569; packed/unpacked limits become
+800,000 / 3,918,000 bytes. Search remains below 816,000 bytes and browser
+budgets remain unchanged. The previous package limits were exceeded, not passed.
+
+### Local legend block placement checkpoint
+
+Local placement reuses blockOverrides[key].position and transient intrinsic
+frames, so no renderer/semantic placement field is added. Unit inherited/local
+blocks partition before packing, use full occupied bounds, and reject collisions.
+The complete editLegend card is 3,617 bytes, within its 3,620 ceiling. Package
+measurement is 569 entries / 800,270 packed / 3,922,635 unpacked bytes after layout-validation preservation; limits
+move only to 801,000 / 3,923,000 bytes. Facet parent-union normalization is a
+coordinated #206 integration seam; no override keeps the existing promotion path.
+The installed Full browser bundle measured393,508 gzip bytes, above393,000;
+its ceiling is394,000. Basic also measured190,409 above190,000 and moves to191,000; SVG stays25,000.

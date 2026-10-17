@@ -1,3 +1,4 @@
+import { LEGEND_POSITIONS } from "../../../core/vocabulary.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import {
@@ -27,7 +28,7 @@ import { normalizeDisplayLabelMap, normalizeNumericDisplayLabelMap } from "../..
 
 const OPTIONS = Object.freeze([
   "target", "channel", "title", "values", "count", "order", "gap", "text", "symbol",
-  "labelMap"
+  "labelMap", "position"
 ]);
 const TEXT_OPTIONS = Object.freeze(["fontSize", "fontFamily", "fontWeight", "color"]);
 const SYMBOL_OPTIONS = Object.freeze(["size", "fill", "stroke", "strokeWidth", "opacity"]);
@@ -136,6 +137,7 @@ function normalizeBlockLabelMap(descriptor, map) {
 }
 
 export function validateLegendBlockOverride(descriptor, override) {
+  if (override.position !== undefined && !LEGEND_POSITIONS.includes(override.position)) throw new Error("Invalid local legend position.");
   if (override.symbol !== undefined) normalizeSymbolPatch(override.symbol, descriptor);
   if (override.labelMap !== undefined) {
     normalizeBlockLabelMap(descriptor, override.labelMap);
@@ -183,6 +185,8 @@ export function patchLegendBlockOverride(config, key, patch) {
     entry = withoutEmptyNested(entry, "symbol", patch.symbol);
   }
   if (Object.hasOwn(patch, "labelMap")) entry.labelMap = patch.labelMap;
+  if (Object.hasOwn(patch, "position")) entry.position = patch.position;
+  if (patch.removePosition === true) delete entry.position;
   if (patch.removeLabelMap === true) delete entry.labelMap;
   const blockOverrides = { ...(config.blockOverrides ?? {}) };
   if (Object.keys(entry).length === 0) delete blockOverrides[key];
@@ -333,6 +337,13 @@ function recreateSymbolGraphics(program, descriptor) {
 
 function normalizeBlockPatch(args, descriptor) {
   const patch = {};
+  if (Object.hasOwn(args, "position")) {
+    if (args.position === "inherit") patch.removePosition = true;
+    else {
+      if (!LEGEND_POSITIONS.includes(args.position)) throw new Error("Legend block position requires an anchor or inherit.");
+      patch.position = args.position;
+    }
+  }
   if (Object.hasOwn(args, "title")) {
     if (typeof args.title !== "string") {
       throw new TypeError("editLegendBlock title must be a string.");
@@ -424,6 +435,8 @@ export const editLegendBlock = /* @__PURE__ */ action(
     }
     next = reconcileLegendBlockTitleGraphic(next, descriptor.kind,
       effective.titleVisible !== false);
-    return next.rematerializeLegend();
+    return Object.hasOwn(args, "position")
+      ? next.editLegend({target: args.target, channel: args.channel, position: args.position})
+      : next.rematerializeLegend();
   })
 );

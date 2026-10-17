@@ -89,7 +89,7 @@ export function resolveSizeLegendLayout(program, config) {
   const labels = effective.labels;
   const titleStyle = effective.titleStyle;
   // Group ownership replaces placement inheritance, never shared typography.
-  const placementCategorical = legendGroup(program, config.target) === undefined &&
+  const placementCategorical = config.blockLocalPosition === undefined && legendGroup(program, config.target) === undefined &&
     (config.inheritPosition !== false || categorical?.position === config.position)
     ? categorical : undefined;
   const position = placementCategorical?.position ?? config.position;

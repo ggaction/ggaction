@@ -58,7 +58,7 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   const custom = sampledColor ? false : categorical
     ? categoricalFamilyCustom(program, from, stored)
     : gradientFamily
-    ? stored.count !== defaults.count || !same({ ...stored.gradient, opacity: stored.gradient?.opacity ?? 1 }, { ...DEFAULT_GRADIENT_SIZE, opacity: 1 }) || stored.itemGap !== defaults.itemGap
+    ? stored.gradientDirection !== undefined || stored.count !== defaults.count || !same({ ...stored.gradient, opacity: stored.gradient?.opacity ?? 1 }, { ...DEFAULT_GRADIENT_SIZE, opacity: 1 }) || stored.itemGap !== defaults.itemGap
     : !same(comparableSymbol, defaults.symbol) || stored.itemGap !== defaults.itemGap ||
       stored.direction !== defaults.direction || (stored.columns !== undefined && !(side && stored.columns === 1));
   if (custom) {
@@ -161,7 +161,7 @@ function withoutBlockOverrides(config) {
   return rest;
 }
 
-export function planLegendBlockTransitions(program, target, plans) {
+export function planLegendBlockTransitions(program, target, plans, position) {
   const oldDescriptors = legendBlockDescriptors(program, target);
   const nextDescriptors = plans.map(plan =>
     describeLegendBlock(program, plan.kind, plan.config));
@@ -184,7 +184,12 @@ export function planLegendBlockTransitions(program, target, plans) {
         transitionError(target, incoming, descriptor, "labelMap");
       }
     } else if (incoming.length > 1) {
-      const overrides = incoming.map(old => old.config.blockOverrides?.[old.key]);
+      const overrides = incoming.map(old => {
+        const override = old.config.blockOverrides?.[old.key];
+        if (position === undefined || override === undefined) return override;
+        const {position: _local, ...rest} = override;
+        return Object.keys(rest).length ? rest : undefined;
+      });
       if (!overrides.every(value => sameBlockValue(value, overrides[0]))) {
         transitionError(target, incoming, descriptor, "block override");
       }

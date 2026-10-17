@@ -19343,7 +19343,7 @@
         {
           "name": "titlePosition",
           "required": false,
-          "type": "\"left\" | \"top\" | undefined"
+          "type": "\"bottom\" | \"left\" | \"top\" | undefined"
         },
         {
           "name": "title",
@@ -19456,6 +19456,10 @@
       ],
       "inference": [
         {
+          "input": "direction",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "values",
           "strategy": "documented-auto"
         },
@@ -19477,6 +19481,16 @@
           "name": "channel",
           "required": false,
           "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+        },
+        {
+          "name": "position",
+          "required": false,
+          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"inherit\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
+        },
+        {
+          "name": "direction",
+          "required": false,
+          "type": "\"auto\" | \"horizontal\" | \"vertical\" | undefined"
         },
         {
           "name": "titleStyle",
@@ -19524,11 +19538,6 @@
           "type": "string | undefined"
         },
         {
-          "name": "position",
-          "required": false,
-          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
-        },
-        {
           "name": "blockLayout",
           "required": false,
           "type": "\"column\" | \"row\" | \"wrap\" | undefined"
@@ -19544,11 +19553,6 @@
           "type": "\"center\" | \"left\" | \"right\" | undefined"
         },
         {
-          "name": "direction",
-          "required": false,
-          "type": "\"horizontal\" | \"vertical\" | undefined"
-        },
-        {
           "name": "columns",
           "required": false,
           "type": "number | undefined"
@@ -19561,7 +19565,7 @@
         {
           "name": "titlePosition",
           "required": false,
-          "type": "\"left\" | \"top\" | undefined"
+          "type": "\"bottom\" | \"left\" | \"top\" | undefined"
         },
         {
           "name": "count",
@@ -19595,7 +19599,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, channel?, titleStyle?, channels?, title?, values?, representation?, layout? })"
+        "editLegend({ target?, channel?, position?, direction?, titleStyle?, channels?, title?, values? })"
       ],
       "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],
@@ -19680,6 +19684,11 @@
           "name": "channel",
           "required": true,
           "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\""
+        },
+        {
+          "name": "position",
+          "required": false,
+          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"inherit\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
         },
         {
           "name": "title",
@@ -19785,6 +19794,10 @@
         {
           "input": "target",
           "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "direction",
+          "strategy": "documented-auto"
         }
       ],
       "completionRequirements": {
@@ -19814,7 +19827,7 @@
         {
           "name": "position",
           "required": false,
-          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
+          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"inherit\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
         },
         {
           "name": "blockLayout",
@@ -19834,7 +19847,7 @@
         {
           "name": "direction",
           "required": false,
-          "type": "\"horizontal\" | \"vertical\" | undefined"
+          "type": "\"auto\" | \"horizontal\" | \"vertical\" | undefined"
         },
         {
           "name": "columns",
@@ -19849,7 +19862,7 @@
         {
           "name": "titlePosition",
           "required": false,
-          "type": "\"left\" | \"top\" | undefined"
+          "type": "\"bottom\" | \"left\" | \"top\" | undefined"
         },
         {
           "name": "itemGap",

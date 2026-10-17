@@ -45,8 +45,10 @@ function drawCircle(context, child, collectionId) {
         `Graphic "${graphicId}" requires a non-negative strokeWidth.`
       );
     }
-    applyCanvasStroke(context, properties);
-    context.stroke();
+    if (strokeWidth > 0) {
+      applyCanvasStroke(context, properties);
+      context.stroke();
+    }
   }
 }
 

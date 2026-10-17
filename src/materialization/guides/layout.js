@@ -1,3 +1,4 @@
+import { localLegendPosition } from "../legendGroups.js";
 import { needsLegendAxisReflow } from "./resources.js";
 import { getErrorDetails } from "../../core/diagnostics.js";
 import { planCanvasRematerialization } from "../layout.js";
@@ -31,7 +32,7 @@ export function withGuideLayoutTransaction(program, apply) {
       if (result.compositionSpec === undefined && needsLegendAxisReflow(program, result)) {
         result = result.rematerializeHorizontalLegendLane();
       }
-      if (result.compositionSpec === undefined && Object.keys(result.guideConfigs.legendGroups ?? {}).length > 0) {
+      if (result.compositionSpec === undefined && (Object.keys(result.guideConfigs.legendGroups ?? {}).length > 0 || Object.values(result.guideConfigs.legend ?? {}).some(config=>localLegendPosition(config)!==undefined))) {
         result = result.rematerializeLegendGroups();
       }
       if (plot !== undefined && result.titleConfig !== undefined) result = result.rematerializeTitle();
