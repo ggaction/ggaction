@@ -6,6 +6,18 @@ All notable changes to `ggaction` are recorded in this file.
 
 ### Added
 
+- Added target-owned legend block layouts and plot-relative placement, sampled
+  symbols for continuous color legends, aligned legend titles, and explicit
+  gradient-strip opacity.
+- Added square-root continuous color scales, field opacity on bars, structured
+  gradient fills for bars and areas, categorical grid boundaries, and explicit
+  mark draw ranks.
+- Added computed scalar `getPath`, `replaceLiteral`, explicit numeric conversion
+  and calendar-date parsing; source datasets preserve unnamed columns losslessly.
+- Added grouped mean imputation, calendar interval widths for temporal bars,
+  collision-checked inferred transform roles, and an optional inset plot border.
+- Added compact heatmap and weighted-arc scaffolds. Individual paths now accept
+  up to 20,000 commands without reducing observations.
 - Box plots accept precomputed five-field summaries, fixed pixel box and median
   widths, and whisker cap/stroke styling through creation and editing.
 - Added full-entry `createTextPlot` for independent data text with position,
@@ -13,6 +25,18 @@ All notable changes to `ggaction` are recorded in this file.
 
 ### Fixed
 
+- Corrected rotated Cartesian label anchors, label containment, typed tick label
+  maps and colors, axis offsets, multiline titles, and title/label ink clearance.
+- Aligned side legend tops with plot bounds and shared facet legends with panel
+  plots. Restored independent legend placement, horizontal-guide clearance,
+  combined typography, sampled color guides, and finite size-symbol strokes.
+- Reduced default vertical legend spacing while preserving conservative label
+  clearance; corrected multiline and empty title/label materialization.
+- Preserved explicit temporal bar positions, shared measure scales for overlaid
+  bars, repeated observations during key completion, and text field bindings on
+  empty datasets with declared schemas.
+- Honored facet title offsets and bounds without changing immutable composition
+  ownership or renderer responsibilities.
 - Inferred Y-axis title ink clearance no longer introduces label collisions in
   tight fixed margins. Automatic fitting retains space for the ink reserve.
 - Cartesian axis titles now materialize explicit hard line breaks before bounds
