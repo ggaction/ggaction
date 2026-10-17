@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "published-release",
-    "contractId": "sha256:29f5c769aa079ee5e377424e42ffc8dd06cb1ad2d52cbee882a075c7bbe1c768",
-    "sourceCommit": "3db0644c3aae46acf0c08c313820d98a24af0333",
+    "contractId": "sha256:abe42a91764c5c08ff179037de1b0554106775c77aa18d73f52b16b1f5a5e435",
+    "sourceCommit": "d20df1c030838999be07093a760e49b4c951058e",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,7 +65,7 @@
         "related"
       ],
       "bytes": 11096,
-      "sha256": "e50f82f5d36cc4666075304a3cc50a80e22e34f3fc3728f46001b290245878be"
+      "sha256": "992d24cb21fa8fdd78accbdae5148c647621dae02d2337c230bc3d325db296f3"
     },
     {
       "order": 4,
@@ -1663,10 +1663,11 @@
         "layered-symbols",
         "items-and-semantics",
         "optional-border",
+        "facade-combinations",
         "related"
       ],
-      "bytes": 4837,
-      "sha256": "92014e51d5130f7b8c869188f12f921ab976b200370a8979b4423e1bbf3419f6"
+      "bytes": 5430,
+      "sha256": "73f9be8a6848ff6fb94a65bbb6e90b205d811024833577e9b69c1de0d5823ca5"
     },
     {
       "order": 101,
@@ -2044,8 +2045,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 164851,
-      "sha256": "7785bf40658db8c872133587f08674a7d113e510c7934ab8b9d7cf2935a3b5d3"
+      "bytes": 164896,
+      "sha256": "33ea03252ea2f218cc5f6617d3545050d5543665f6656882809e12d4f1e5a9e9"
     },
     {
       "order": 119,
@@ -2434,14 +2435,17 @@
         "type-cartesianaxislabelstyleoptions",
         "type-cartesianaxistickstyleoptions",
         "type-cartesiancategoricalguideoptions",
+        "type-cartesiancategoricalpointguideoptions",
         "type-cartesiangridoptions",
         "type-cartesianguidedashmap",
         "type-cartesianguideoptions",
         "type-cartesianlegendorder",
         "type-cartesianpathguideoptions",
+        "type-cartesianseparateguideoptions",
         "type-categoricalcolorscaleoptions",
         "type-categoricalencodingoptions",
         "type-categoricallegendtextoptions",
+        "type-categoricalpointlegendoptions",
         "type-categoricalpolaraxesoptions",
         "type-categoricalpolargridoptions",
         "type-categoricalpositionscaleoptions",
@@ -2926,6 +2930,7 @@
         "type-secondarypositionencodingoptions",
         "type-secondaryrulepositionencodingoptions",
         "type-selectmarksoptions",
+        "type-separatefilledlegendoptions",
         "type-serieslayoutoptions",
         "type-shapeencodingoptions",
         "type-shapescaleoptions",
@@ -3004,8 +3009,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 339525,
-      "sha256": "2671c84c05efca43560680c3768b0c442700e80ffda01c959cb0d3393d225cb2"
+      "bytes": 342411,
+      "sha256": "e33353652a891477241f1b6355d2d4fc26ee6e9705fe0a26de46ea91ae88c28e"
     },
     {
       "order": 127,
@@ -3036,7 +3041,7 @@
         "scale-materialization"
       ],
       "bytes": 16959,
-      "sha256": "96e22a083c033acb0ec9125d84baf506c6e098365b3269ff3f9b4118bcf8072c"
+      "sha256": "5388e953a4bfbcf09d3a57e39095e3d4290e1b3da2ae0da5743d52c34893f733"
     },
     {
       "order": 129,
@@ -3359,7 +3364,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3039,
-      "sha256": "3748e66939404685c2f55de83ccff50a4e21a43c39d8c6832b90adb690d35fc3"
+      "sha256": "947bee3643e18b22b988e4f81a35831059cd11cfae16c7fbb81196a9de6e975e"
     },
     {
       "order": 150,
