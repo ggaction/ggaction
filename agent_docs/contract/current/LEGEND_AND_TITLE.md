@@ -859,9 +859,13 @@ Gradient bodies, interval swatches, line-only recipes and stroke-width samples
 reject it. Every layer of one composite sample shares one nested concrete Canvas.
 Its horizontal extent includes the original stroke; vertical bounds intersect the
 window. Areas, radii, paths, sample values, opacity-zero geometry and generated
-item identities remain unchanged. Labels, titles and borders are never clipped.
+semantic sample identities remain unchanged. Labels, titles and borders are never clipped.
 Pitch uses visible glyph bounds and label bounds with the original minimum gap.
 Small glyphs are not enlarged. Nested Canvas bounds intersect every ancestor
 window; root Canvas overflow checks still see geometry outside that root.
 Persistence, immutable edits, data/scale/Canvas replay and removal share the same
-materializer. Evidence: legend-symbol-window unit and browser tests.
+materializer. Authored facet-parent intent stores each block window independently;
+scaffolding does not propagate it into an unclipped gradient sibling. Ordinary
+child composition uses valid namespaced private graphics while source mark item
+identities remain stable. Evidence: legend-symbol-window unit and browser tests,
+and facet-parent-symbol-window unit tests.

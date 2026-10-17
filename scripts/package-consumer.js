@@ -204,6 +204,15 @@ async function testNodeConsumer(directory) {
       assert.ok(windowed.graphicSpec.objects.seriesLegendSymbolPoints.children.length>0);
       if (factory === chart) assert.deepEqual(windowed.editLegendSymbols({channel:"shape",clipHeight:"auto"}).graphicSpec,combined.graphicSpec);
       assert.deepEqual(deserializeProgram(serializeProgram(windowed)).graphicSpec,windowed.graphicSpec);
+      if(factory===chart){
+        const windowParent=combinedBase.facet({field:"g",columns:2,guides:{legend:{combine:"size-shape",position:"top-left",clipHeight:6}}})
+          .editLegendSymbols({channel:"size",clipHeight:8}).editCompositionLayout({gap:10});
+        assert.equal(windowParent.guideConfigs.legend.series.clipHeight,8);
+        assert.deepEqual(deserializeProgram(serializeProgram(windowParent)).graphicSpec,windowParent.graphicSpec);
+        const windowPair=hconcat({programs:[windowed,windowed]});
+        assert.deepEqual(deserializeProgram(serializeProgram(windowPair)).graphicSpec,windowPair.graphicSpec);
+        assert.ok(Object.keys(windowPair.graphicSpec.objects).every(id=>/^[A-Za-z0-9_-]+$/.test(id)));
+      }
       const translucent=combinedBase.createLegend({combine:"size-shape",symbol:{layers:[{type:"point",opacity:0.7}]}});
       assert.equal(translucent.graphicSpec.objects.seriesLegendSymbolPoints.items[0].properties.blend,"normal");
       assert.deepEqual(deserializeProgram(serializeProgram(translucent)).graphicSpec,translucent.graphicSpec);

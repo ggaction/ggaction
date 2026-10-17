@@ -21,7 +21,7 @@ test('sample windows preserve full circles and clip fill and stroke with exact b
    const p=chart().createCanvas({width:600,height:400,margin:150}).createData({values:[{v:0},{v:10}]}).createPointMark({id:'p'})
     .encodeSize({field:'v',scale:{domain:[0,10],range:[1600*Math.PI,1600*Math.PI]}}).createLegend({channels:['size'],values:[0],clipHeight:30})
     .editLegendBlock({target:'p',channel:'size',symbol:{fill:'red',stroke:'blue',strokeWidth:2,opacity:1}});
-   const glyph=p.graphicSpec.objects['sizeLegendSymbols:0'];
+   const glyph=p.graphicSpec.objects[p.graphicSpec.objects[p.graphicSpec.objects.sizeLegendSymbols.children[0]].children[0]];
    if(glyph.properties.radius!==40||glyph.properties.x!==41||glyph.properties.y!==15)throw Error('physical sample geometry changed');
    for(const backend of ['DOM','Offscreen'])for(const pixelRatio of [1,1.5,2])for(const [dx,dy]of [[0,0],[.5,.25]])for(const background of ['white','#556677','transparent']){
     const factory=()=>backend==='DOM'?document.createElement('canvas'):new OffscreenCanvas(1,1),a=factory(),b=factory();
