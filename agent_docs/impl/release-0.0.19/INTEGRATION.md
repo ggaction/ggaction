@@ -88,3 +88,15 @@ compact search829294bytes를 측정해 실제 초과분에만 다음 최소1000b
 이후 source28 전체 normal contracts567/567, 모바일 키보드 수정 결합 후 문서120/120도
 통과했다. 개발 source 기준 기존1154개/8335개 코드의 frozen SVG 전량 비교는 진행 중이며,
 이는 최종 tagged/npm artifact 증명을 대체하지 않는다.
+
+## 9개 시각 목표의 안정 예제 통합
+
+`b7a3fdaf`까지 named-shapes, combined-legends 전체 모음과 개별 categorical/numeric/label-map/
+focused-opacity variant, legend-layout, legend-recipe-opacity를 기존 목표들과 함께 통합했다.
+전체 chart616/616, 문서120/120, 공개 gallery hierarchy/SVG/PDF3/3 통과.
+별도 tree의 같은 runtime source 및 새132개 critical floor 검사는 모두 통과했으나 그 run은
+갤러리 기대목록1개·검색 한도2개 실패가 있어 전체 suite 성공으로 표시하지 않는다.
+이3개는 root 통합의 정식 목록/실측831000 한도에 반영했다.
+
+개발 source28의 기존1154개/8335개 frozen SVG 전량 비교는 차이0·오류0으로 완료했다.
+브라우저는153.0.8010.12였다. 이는 출판 artifact 검증을 대체하지 않는다.

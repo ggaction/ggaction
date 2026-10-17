@@ -516,11 +516,23 @@ Refine a complete scatterplot with shape, physical area and angle encodings.
 
 Representative actions: `createScatterPlot`, `encodeShape`, `encodeSize`, `encodeAngle`. [Documentation](https://ggaction.github.io/ggaction/api/marks/point/#directional-shapes-and-area).
 
-### [Combined numeric legends](./combined-legends/)
+### [Combined legends](./combined-legends/)
 
 Combine compatible quantitative color and size without changing mark data.
 
 Representative actions: `encodeColor`, `encodeSize`, `createLegend`, `editLegend`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#quantitative-color-and-size).
+
+### [Independent legend layout and border](./legend-layout/)
+
+Start with legend blocks, then edit orientation, title, border and one local anchor.
+
+Representative actions: `createLegend`, `editLegendLayout`, `editLegendBorder`, `editLegendBlock`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#independent-legend-appearance).
+
+### [Opacity of a layered legend recipe](./legend-recipe-opacity/)
+
+Style an existing legend with a complete line and point recipe.
+
+Representative actions: `createLegend`, `editLegendLabels`, `editLegendSymbols`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#layered-recipe-opacity).
 
 ## Development fixtures
 

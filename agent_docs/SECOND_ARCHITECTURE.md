@@ -331,8 +331,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 412,000 bytes |
-| `ggaction/basic` | 202,000 bytes |
+| `ggaction` | 415,000 bytes |
+| `ggaction/basic` | 204,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -2498,3 +2498,12 @@ opacity0/.7/1 안정 variant를 추가한 search payload는829884bytes(Node22.23
 npm10.9.8/macOS)다. 이전829000 한도를 초과해 최소1000단위830000으로만
 조정한다. 항목/공개옵션/enum을 숨기지 않으며 runtime/package/browser/coverage
 한도는 변경하지 않는다.
+
+두 결합 범례의 전체 target와 appearance canonical 예제를 함께 합친 search 실측은
+830598bytes다. 기존830000 실패를 숨기지 않고 최소1000bytes 단계831000만 적용한다.
+다른 데이터·옵션·resource/coverage 기준은 유지한다.
+
+28개 기능의 실제 설치 consumer에서 측정한 browser gzip은
+Full414152/Basic203485/SVG7325bytes(Node22.23.1)다.
+기존412000/202000은 초과하여 다음 최소1000bytes 단계415000/204000만 적용한다.
+SVG25000과 기능/coverage 기준은 유지하며 README와 위 canonical table도 동기화한다.

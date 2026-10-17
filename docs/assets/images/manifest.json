@@ -474,13 +474,13 @@
       "sourceHash": "e559c510e372134cc1096b9c18ebd81763a607a4ec230b345baca37c42a74334"
     },
     "combined-legends": {
-      "width": 1200,
+      "width": 2448,
       "height": 600,
       "thumbnail": {
         "width": 640,
-        "height": 320
+        "height": 157
       },
-      "sourceHash": "33963526c9d2ca315f518be9e1b8f5e151534e9668317b92c23d931ce2816db8"
+      "sourceHash": "b453fb6ae15b6f98b2a5226af510e32b96dd84f7cfc777625da94b27fa8af9f3"
     },
     "legend-layout": {
       "width": 960,
@@ -489,7 +489,7 @@
         "width": 640,
         "height": 360
       },
-      "sourceHash": "75d1ed0b5d64fa2f9551642cf8dc876ce58bfaba9a288c02f3fc79524baf1f72"
+      "sourceHash": "e033284c1bb3059474c2d19fd3fde52e0979078ebf2f9a55dffec2f64e5bda17"
     },
     "legend-recipe-opacity": {
       "width": 960,
@@ -498,7 +498,7 @@
         "width": 640,
         "height": 360
       },
-      "sourceHash": "d1f3346d57e001b58415b9118c14a64a7b2510b1effbf427f76371be7e4950e0"
+      "sourceHash": "f93c7095a362a5cc112194847ff79292a9a94ccb4f05814d24ff73a3d0144ad2"
     },
     "legend-appearance": {
       "width": 800,
