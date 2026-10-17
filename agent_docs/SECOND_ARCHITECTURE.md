@@ -323,8 +323,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 393,000 bytes |
-| `ggaction/basic` | 190,000 bytes |
+| `ggaction` | 395,000 bytes |
+| `ggaction/basic` | 192,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
@@ -2129,3 +2129,8 @@ Node24.21.0/npm11.19.0 staged package는569entries, packed803290/unpacked3932847
 독립 branch 한도를 누적 결과에 적용할 수 없어 최소1000bytes 단위로804000/3933000으로
 조정했다. 검색은816898bytes로817000 한도를 적용했다. 전체 옵션·예제를 보존했으며
 이전 한도 통과를 주장하지 않는다.
+
+누적 설치 소비자14기능의 동일 minified bundle은 Node22에서 Full394038/Basic191023,
+Node24에서 Full394803/Basic191552 gzip bytes다. 공유 owner와 canonical table/README를
+Full395000·Basic192000으로 동기화하고 SVG25000은 유지했다. 1000bytes 최소 단계이며
+기존393000/191000을 통과한 것으로 보고하지 않는다.
