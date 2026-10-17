@@ -93,3 +93,14 @@ is `[77,77,255,255]`. The two-step native image-alpha difference is explicitly
 **not** an approved allowance. The signal decision and this backend arithmetic
 finding are separate: an implementation must resolve or accurately validate the
 normal-alpha path without broadening the existing quantization approval.
+
+
+A source attenuation candidate avoids that observed native image-alpha error:
+after painting the complete glyph once at intrinsic opacity, apply a bounded
+`destination-in` opaque rectangle at the requested layer alpha on that same
+source, then draw it to the destination at globalAlpha1. The probe records
+straight RGBA readback and derived premultiplied channels at opacity0/.2/.5/.7/1;
+for those native blue samples its source alpha and final white composite are
+exactly equal to direct single-paint source alpha. This is a private candidate,
+not an installed renderer or a claim about all edge/translucent/browser/PDF
+cases. The implementation must independently verify that full matrix.

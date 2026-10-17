@@ -34,6 +34,17 @@ let currentRecipeError;
 const proposedPublicCall='program.createLegend({channels:["shape"],symbol:{layers:[{type:"point",fill:"red",stroke:"blue",strokeWidth:10,opacity:0.7}]}})';
 try{base.encodeShape({field:'g'}).createLegend({channels:['shape'],symbol:{layers:[{type:'point',fill:'red',stroke:'blue',strokeWidth:10,opacity:.7}]}});}catch(error){currentRecipeError=error.message;}
 assert.match(currentRecipeError,/opacity/);
+const normalAlphaCandidates=[];
+for(const opacity of [0,.2,.5,.7,1]){
+ const opaque=createCanvas(20,20),o=opaque.getContext('2d');o.fillStyle='blue';o.fillRect(0,0,20,20);
+ const attenuated=createCanvas(20,20),a=attenuated.getContext('2d');a.drawImage(opaque,0,0);a.globalCompositeOperation='destination-in';a.globalAlpha=opacity;a.fillStyle='white';a.fillRect(0,0,20,20);
+ const directSource=createCanvas(20,20),q=directSource.getContext('2d');q.globalAlpha=opacity;q.fillStyle='blue';q.fillRect(0,0,20,20);
+ const composite=(surface,alpha=1)=>{const canvas=createCanvas(20,20),c=canvas.getContext('2d');c.fillStyle='white';c.fillRect(0,0,20,20);c.globalAlpha=alpha;c.drawImage(surface,0,0);return [...c.getImageData(10,10,1,1).data];};
+ const sourcePixel=[...a.getImageData(10,10,1,1).data],directSourcePixel=[...q.getImageData(10,10,1,1).data];
+ assert.deepEqual(sourcePixel,directSourcePixel);
+ assert.deepEqual(composite(attenuated),composite(directSource));
+ normalAlphaCandidates.push({opacity,opaqueSourceRGBA:[...o.getImageData(10,10,1,1).data],drawImageAlphaRGBA:composite(opaque,opacity),directSourceRGBA:directSourcePixel,destinationInSourceRGBA:sourcePixel,destinationInOverWhiteRGBA:composite(attenuated),directSourceOverWhiteRGBA:composite(directSource),premultipliedDestinationIn:sourcePixel.map((v,i)=>i===3?v:v*sourcePixel[3]/255),straightRGBAReadback:true});
+}
 const files=['src/renderers/canvas/circle.js','src/renderers/canvas/stroke.js','src/renderers/canvas/index.js','agent_docs/impl/release-0.0.19/probes/legend-opacity-signal.mjs'];
 const bindings=Object.fromEntries(await Promise.all(files.map(async path=>[path,sha(await readFile(new URL('../../../../'+path,import.meta.url)))])));
 const output={status:'pass',kind:'legend-explicit-opacity-concrete-signal-gate-v1',newVisualTarget:false,
@@ -44,7 +55,7 @@ const output={status:'pass',kind:'legend-explicit-opacity-concrete-signal-gate-v
  fallbackOverride:fallback.guideConfigs.legend.size.blockOverrides,
  suppliedOverride:supplied.guideConfigs.legend.size.blockOverrides,
  identicalConcreteGlyph:glyph,sample,legacySeparatePaintRGBA:pixel(actualContext),independentSourceOnceRGBA:pixel(e),
- intrinsicSourceRGBA,directSinglePaintRGBA,nativeImageAlphaChannelDelta,
+ intrinsicSourceRGBA,directSinglePaintRGBA,nativeImageAlphaChannelDelta,normalAlphaCandidates,
  nativeImageAlphaLimitation:'This native drawImage/globalAlpha probe differs by two RGB steps from direct one-paint alpha at opacity 0.7. It is not an approved quantization allowance or renderer correctness proof; the normal implementation must resolve and independently test its alpha behavior.',
  fullLegacyPixelSha256:sha(actualContext.getImageData(0,0,700,500).data),fullSourceOncePixelSha256:sha(e.getImageData(0,0,700,500).data),
  proofLimit:'The existing block override is a numeric information-loss witness. New recipe-layer opacity remains rejected until the approved #208 implementation and concrete-signal decision. No marker implementation is present.',

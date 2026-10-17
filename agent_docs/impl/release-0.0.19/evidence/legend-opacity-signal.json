@@ -75,6 +75,238 @@
     0,
     0
   ],
+  "normalAlphaCandidates": [
+    {
+      "opacity": 0,
+      "opaqueSourceRGBA": [
+        0,
+        0,
+        255,
+        255
+      ],
+      "drawImageAlphaRGBA": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "directSourceRGBA": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "destinationInSourceRGBA": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "destinationInOverWhiteRGBA": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "directSourceOverWhiteRGBA": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "premultipliedDestinationIn": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "straightRGBAReadback": true
+    },
+    {
+      "opacity": 0.2,
+      "opaqueSourceRGBA": [
+        0,
+        0,
+        255,
+        255
+      ],
+      "drawImageAlphaRGBA": [
+        203,
+        203,
+        255,
+        255
+      ],
+      "directSourceRGBA": [
+        0,
+        0,
+        255,
+        51
+      ],
+      "destinationInSourceRGBA": [
+        0,
+        0,
+        255,
+        51
+      ],
+      "destinationInOverWhiteRGBA": [
+        204,
+        204,
+        255,
+        255
+      ],
+      "directSourceOverWhiteRGBA": [
+        204,
+        204,
+        255,
+        255
+      ],
+      "premultipliedDestinationIn": [
+        0,
+        0,
+        51,
+        51
+      ],
+      "straightRGBAReadback": true
+    },
+    {
+      "opacity": 0.5,
+      "opaqueSourceRGBA": [
+        0,
+        0,
+        255,
+        255
+      ],
+      "drawImageAlphaRGBA": [
+        126,
+        126,
+        255,
+        255
+      ],
+      "directSourceRGBA": [
+        0,
+        0,
+        255,
+        127
+      ],
+      "destinationInSourceRGBA": [
+        0,
+        0,
+        255,
+        127
+      ],
+      "destinationInOverWhiteRGBA": [
+        128,
+        128,
+        255,
+        255
+      ],
+      "directSourceOverWhiteRGBA": [
+        128,
+        128,
+        255,
+        255
+      ],
+      "premultipliedDestinationIn": [
+        0,
+        0,
+        127,
+        127
+      ],
+      "straightRGBAReadback": true
+    },
+    {
+      "opacity": 0.7,
+      "opaqueSourceRGBA": [
+        0,
+        0,
+        255,
+        255
+      ],
+      "drawImageAlphaRGBA": [
+        75,
+        75,
+        255,
+        255
+      ],
+      "directSourceRGBA": [
+        0,
+        0,
+        255,
+        178
+      ],
+      "destinationInSourceRGBA": [
+        0,
+        0,
+        255,
+        178
+      ],
+      "destinationInOverWhiteRGBA": [
+        77,
+        77,
+        255,
+        255
+      ],
+      "directSourceOverWhiteRGBA": [
+        77,
+        77,
+        255,
+        255
+      ],
+      "premultipliedDestinationIn": [
+        0,
+        0,
+        178,
+        178
+      ],
+      "straightRGBAReadback": true
+    },
+    {
+      "opacity": 1,
+      "opaqueSourceRGBA": [
+        0,
+        0,
+        255,
+        255
+      ],
+      "drawImageAlphaRGBA": [
+        0,
+        0,
+        255,
+        255
+      ],
+      "directSourceRGBA": [
+        0,
+        0,
+        255,
+        255
+      ],
+      "destinationInSourceRGBA": [
+        0,
+        0,
+        255,
+        255
+      ],
+      "destinationInOverWhiteRGBA": [
+        0,
+        0,
+        255,
+        255
+      ],
+      "directSourceOverWhiteRGBA": [
+        0,
+        0,
+        255,
+        255
+      ],
+      "premultipliedDestinationIn": [
+        0,
+        0,
+        255,
+        255
+      ],
+      "straightRGBAReadback": true
+    }
+  ],
   "nativeImageAlphaLimitation": "This native drawImage/globalAlpha probe differs by two RGB steps from direct one-paint alpha at opacity 0.7. It is not an approved quantization allowance or renderer correctness proof; the normal implementation must resolve and independently test its alpha behavior.",
   "fullLegacyPixelSha256": "a8acf0d9a778261a8ee32656329db50f51c0c627374dc90cc203f6164ba85ef8",
   "fullSourceOncePixelSha256": "aed1dd243747052ee1b0954928e509841568aa04d72cbaa94b5b2e29c933ea34",
@@ -84,6 +316,6 @@
     "src/renderers/canvas/circle.js": "3eb0c4d844a0f53bd8e67f4285ed04bc8f02d8afa40f75dee2a5c6a4f7c05377",
     "src/renderers/canvas/stroke.js": "6da3b87a48e57c4556e3101333550d0effc82665e076bf0e5038dabdd46d11e8",
     "src/renderers/canvas/index.js": "f0a4adb2de8fa7ecf6ba6dcf1790a7f9fc971efda2a1e780e8081d692f5d264f",
-    "agent_docs/impl/release-0.0.19/probes/legend-opacity-signal.mjs": "062039e1b2ff002f6ffbdf35b9bac3cb3bac3bc2ce67cc78858af6b22c4ae041"
+    "agent_docs/impl/release-0.0.19/probes/legend-opacity-signal.mjs": "96e2d7b564df8f0da6bcd7ebe038ac04b98502e5184c030ca06905179605e721"
   }
 }
