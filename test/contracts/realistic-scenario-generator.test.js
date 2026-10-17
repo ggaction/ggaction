@@ -60,9 +60,9 @@ import { REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES } from
   "../support/scenarios/realistic-statistical-facade-coverage-recipes.js";
 
 const EXPECTED_TIERS = Object.freeze({
-  simple: 11,
-  intermediate: 26,
-  advanced: 28,
+  simple: 7,
+  intermediate: 27,
+  advanced: 31,
   composite: 7
 });
 const strictDescriptorCache = new Map();
@@ -183,22 +183,29 @@ test("integrates every coverage recipe once with bounded tier capacity", () => {
   });
   assert.deepEqual(report.minimumSelections, {
     simple: 90,
-    intermediate: 1_094,
-    advanced: 1_370,
+    intermediate: 1_154,
+    advanced: 1_505,
     composite: 100
   });
   assert.deepEqual(report.declaredFactorSelectionTargets, {
     simple: 179,
-    intermediate: 1_278,
-    advanced: 1_392,
+    intermediate: 1_338,
+    advanced: 1_527,
     composite: 113
   });
   assert.deepEqual(report.capacity, {
-    simple: 550,
-    intermediate: 1_300,
-    advanced: 1_400,
+    simple: 350,
+    intermediate: 1_350,
+    advanced: 1_550,
     composite: 350
   });
+  // One fewer whole-source slot would fail each of the two growing tiers.
+  // This reassigns existing simple surplus, rather than reducing any recipe or
+  // changing the 3600-chart corpus and its five-call/three-dataset requirements.
+  for (const complexity of ["intermediate", "advanced"]) {
+    assert.ok(report.capacity[complexity] - report.datasetCount <
+      report.declaredFactorSelectionTargets[complexity]);
+  }
   assert.equal(Object.values(REALISTIC_DATASET_QUOTAS)
     .reduce((sum, count) => sum + count, 0), 72);
   assert.equal(Object.values(report.capacity)
@@ -832,8 +839,8 @@ test("plans every heatmap schedule variant across eligible real datasets", () =>
   );
 
   assert.equal(plan.complete, true);
-  assert.equal(plan.assignments.length, 135);
-  assert.equal(plan.requirements.length, 27);
+  assert.equal(plan.assignments.length, 165);
+  assert.equal(plan.requirements.length, 33);
   assert.deepEqual(plan.unavailable, []);
   assert.deepEqual(plan.exhausted, []);
   assert.equal(plan.requirements.every(requirement =>
