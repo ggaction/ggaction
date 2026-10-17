@@ -33532,7 +33532,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | DensityPlotGuideOptions | undefined"
+          "type": "false | (Omit<DensityPlotGuideOptions, \"grid\"> & { grid?: false | CartesianGridOptions | undefined; }) | undefined"
         },
         {
           "name": "valueChannel",

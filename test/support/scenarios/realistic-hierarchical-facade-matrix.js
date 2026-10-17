@@ -204,6 +204,10 @@ function colorScale(id, index, categorical = false) {
       interpolate: "hcl", clamp: true, reverse: false, unknown: "#94a3b8"
     };
   }
+  if (index === 19) {
+    return { id, type: "sqrt", domain: "auto", range: "auto",
+      interpolate: "lab", clamp: true, reverse: false, unknown: "#94a3b8" };
+  }
   if (index === 20) {
     return {
       id, type: "symlog", domain: "auto", range: "auto", constant: 1,
@@ -305,9 +309,21 @@ function horizonPalette(index, bands, negative = false) {
   return { name: negative ? "magma" : "viridis", extent: [0.08, 0.92] };
 }
 
+function gradientPaint(index = 0) {
+  return {
+    type: "linear-gradient",
+    from: { x: 0, y: 1 }, to: { x: index % 2, y: 0 },
+    stops: [{ offset: 0, color: "#eff6ff" }, { offset: 1, color: "#2563eb" }]
+  };
+}
+
 function labelStyle(index) {
   return {
     offset: 10,
+    alongOffset: index % 2 === 0 ? 1 : -1,
+    colorMap: index % 2 === 0 ? "auto" : [{ value: 1, color: "#1d4ed8" }],
+    labelMap: "auto",
+    flush: index % 2 === 0,
     format: "auto",
     color: "#334155",
     fontSize: 11,
@@ -349,7 +365,8 @@ function polarTitle(text, index, radial = false) {
 function ticksAndLabels(index, { polar = false } = {}) {
   return {
     count: 2,
-    ticks: { length: 7, color: "#64748b", lineWidth: 1 },
+    ticks: { length: 7, color: "#64748b", lineWidth: 1,
+      ...(polar ? {} : { alongOffset: index % 2 === 0 ? 1 : -1 }) },
     labels: polar
       ? {
           offset: 10, format: "auto", color: "#334155",
@@ -444,7 +461,7 @@ function legendSymbol(index, kind) {
   }
 }
 
-function legend(target, index, {
+function baseLegend(target, index, {
   orderChannel, orderValues, continuous = false, kind = "filled", temporal = false,
   sampledValues
 } = {}) {
@@ -612,9 +629,33 @@ function legend(target, index, {
   };
 }
 
+function legend(target, index, options = {}) {
+  const result = baseLegend(target, index, options);
+  if (index !== 14) {
+    result.blockLayout = ["row", "column", "wrap"][index % 3];
+  }
+  if (index === 28) {
+    delete result.position;
+    delete result.align;
+    delete result.offset;
+    result.at = { x: 24, y: 24 };
+  }
+  if (result.titleStyle !== undefined && result.titlePosition !== "left") {
+    result.titleStyle.align = ["left", "center", "right"][index % 3];
+  }
+  if (options.continuous === "gradient" && options.sampledValues === undefined) {
+    result.representation = index === 16 ? "symbols" : "gradient";
+    if (result.representation === "symbols") {
+      delete result.gradient;
+      result.symbol = { type: "point", radius: 5 };
+    } else result.gradient.opacity = 0.7;
+  }
+  return result;
+}
+
 function cartesianGuides({
   id, coordinate, xScale, yScale, index, hasColor = true, horizon = false,
-  rug = false, xDiscrete = false, yDiscrete = false, continuousColor = false,
+  rug = false, xDiscrete = false, yDiscrete = false, xBand = false, yBand = false, continuousColor = false,
   legendKind = "filled", legendOrderValues, legendOrderChannel,
   legendTemporal = false, legendSampleValues,
   xValues, yValues, xFormat = "auto", yFormat = "auto"
@@ -634,7 +675,7 @@ function cartesianGuides({
           scale: xScale, coordinate,
           ...(xValues === undefined ? { count: 4 } : { values: xValues }),
           color: "#dbeafe",
-          lineWidth: 0.8, strokeDash: [2, 3]
+          lineWidth: 0.8, strokeDash: [2, 3], alongOffset: 1, zIndex: -1
         }
       },
       legend: false
@@ -646,18 +687,26 @@ function cartesianGuides({
       x: index % 7 === 0 ? false : axis(xScale, coordinate, index, "x", xDiscrete, xValues, xFormat),
       y: index % 7 === 1 ? false : axis(yScale, coordinate, index + 1, "y", yDiscrete, yValues, yFormat)
     },
-    grid: index % 5 === 1 ? false : {
-      vertical: xDiscrete || index === 8 ? false : index === 4 || xValues === undefined && index % 6 === 0 ? true : {
+    grid: index % 5 === 1 && !xBand && !yBand ? false : {
+      vertical: index === 8 ? false : xBand ? {
+        scale: xScale, coordinate,
+        bandPosition: Math.floor(index / 8) % 2 === 0 ? "boundary" : "center",
+        alongOffset: 0, zIndex: -1, color: "#dbeafe", lineWidth: 0.8, strokeDash: [2, 3]
+      } : xDiscrete || index === 8 ? false : index === 4 || xValues === undefined && index % 6 === 0 ? true : {
         scale: xScale, coordinate,
         ...(xValues === undefined ? { count: 4 } : { values: xValues }),
         color: "#dbeafe",
-        lineWidth: 0.8, strokeDash: [2, 3]
+        lineWidth: 0.8, strokeDash: [2, 3], alongOffset: 1, zIndex: -1
       },
-      horizontal: yDiscrete || index === 9 ? false : yValues === undefined && index % 6 === 1 ? true : {
+      horizontal: index === 9 ? false : yBand ? {
+        scale: yScale, coordinate,
+        bandPosition: Math.floor(index / 8) % 2 === 0 ? "boundary" : "center",
+        alongOffset: 0, zIndex: 1, color: "#e2e8f0", lineWidth: 0.8, strokeDash: [3, 2]
+      } : yDiscrete || index === 9 ? false : yValues === undefined && index % 6 === 1 ? true : {
         scale: yScale, coordinate,
         ...(yValues === undefined ? { count: 4 } : { values: yValues }),
         color: "#e2e8f0",
-        lineWidth: 0.8, strokeDash: [3, 2]
+        lineWidth: 0.8, strokeDash: [3, 2], alongOffset: -1, zIndex: 1
       }
     },
     legend: rug || !hasColor || index >= 29 || index % 5 === 2 && index !== 27
@@ -749,11 +798,11 @@ function rugGuides({ coordinate, scale, horizontal, index, edge, values, format 
     grid: index % 5 === 1 ? false : {
       vertical: horizontal ? index === 2 ? true : {
         scale, coordinate, ...(values === undefined ? { count: 4 } : { values }), color: "#dbeafe",
-        lineWidth: 0.8, strokeDash: [2, 3]
+        lineWidth: 0.8, strokeDash: [2, 3], alongOffset: 1, zIndex: -1
       } : false,
       horizontal: horizontal ? false : index === 3 ? true : {
         scale, coordinate, ...(values === undefined ? { count: 4 } : { values }), color: "#e2e8f0",
-        lineWidth: 0.8, strokeDash: [3, 2]
+        lineWidth: 0.8, strokeDash: [3, 2], alongOffset: -1, zIndex: 1
       }
     },
     legend: false
@@ -884,7 +933,7 @@ function appendPolarScatter(program, index) {
   options.guides = polarGuides({
     id: suffix, coordinate: `${suffix}-coordinate`,
     thetaScale: `${suffix}-theta`, radiusScale: `${suffix}-radius`, index, hasColor,
-    continuousColor: hasColor && [16, 20].includes(index)
+    continuousColor: hasColor && [16, 19, 20].includes(index)
       ? "gradient"
       : hasColor && index !== 14 && !(index >= 24 && index <= 28) && index >= 16
       ? "interval"
@@ -1061,6 +1110,10 @@ function appendRug(program, index) {
   });
   if (options.guides !== false && options.guides.axes !== false) {
     const guide = horizontal ? options.guides.axes.x : options.guides.axes.y;
+    if (index === 4 && guide.ticksAndLabels !== false) guide.ticksAndLabels.labels.flush = false;
+    if (index === 3 && guide.ticksAndLabels !== false) Object.assign(guide.ticksAndLabels.labels, {
+      flush: true, colorMap: "auto"
+    });
     if (horizontal && index === 12) guide.ticksAndLabels = false;
     if (horizontal && index === 14) guide.title = false;
     if (horizontal && index === 18 && guide.ticksAndLabels !== false) {
@@ -1153,13 +1206,15 @@ function appendStrip(program, index) {
   options.guides = cartesianGuides({
     id: suffix, coordinate: `${suffix}-coordinate`, xScale: `${suffix}-x`, yScale: `${suffix}-y`, index,
     hasColor,
-    continuousColor: hasColor && [16, 20].includes(index)
+    continuousColor: hasColor && [16, 19, 20].includes(index)
       ? "gradient"
       : hasColor && ![5, 14].includes(index) && !(index >= 24 && index <= 28) && index >= 16
       ? "interval"
       : hasColor && ![5, 14].includes(index) && !(index >= 24 && index <= 28) && index >= 8
         ? "gradient"
         : false,
+    xBand: options.x?.scale?.type === "band",
+    yBand: options.y?.scale?.type === "band",
     xDiscrete: mode === 2,
     yDiscrete: mode === 1 || mode === 3,
     legendKind: "point",
@@ -1292,13 +1347,15 @@ function appendBeeswarm(program, index) {
     yScale: `${suffix}-y`,
     index,
     hasColor,
-    continuousColor: hasColor && [16, 20].includes(index)
+    continuousColor: hasColor && [16, 19, 20].includes(index)
       ? "gradient"
       : hasColor && ![5, 14].includes(index) && !(index >= 24 && index <= 28) && index >= 16
         ? "interval"
         : hasColor && ![5, 14].includes(index) && !(index >= 24 && index <= 28) && index >= 8
           ? "gradient"
           : false,
+    xBand: options.x?.scale?.type === "band",
+    yBand: options.y?.scale?.type === "band",
     xDiscrete: mode === 2,
     yDiscrete: mode !== 2,
     legendKind: "point",
@@ -1371,7 +1428,7 @@ function appendRaincloud(program, index) {
         },
         area: {
           ...strokeDetails(index),
-          ...(hasColor ? {} : { fill: "#93c5fd" }),
+          ...(hasColor ? {} : { fill: gradientPaint(index) }),
           opacity: 0.45 + index / 100,
           stroke: "#1d4ed8",
           strokeWidth: 0.8 + index % 3 * 0.2,
@@ -1512,6 +1569,8 @@ function appendRaincloud(program, index) {
     yScale: orientation === "vertical" ? valueScaleId : categoryScaleId,
     index,
     hasColor,
+    xBand: orientation === "vertical",
+    yBand: orientation === "horizontal",
     xDiscrete: orientation === "vertical",
     yDiscrete: orientation === "horizontal",
     legendKind: index % 3 === 0 ? "filled" : "point",
@@ -1560,19 +1619,24 @@ function appendArea(program, index) {
       ? index === 11 ? "overlay" : ["diverging", "fill", "overlay", "stack"][index % 4]
       : ["center", "diverging", "fill", "overlay", "stack"][index % 5];
   const source = `${suffix}-data`;
-  let next = program.createData({
-    id: source,
-    values: ["A", "B"].flatMap((group, groupIndex) => [1, 2, 3].map(position => ({
-      group,
-      bucket: position,
-      positiveX: position,
-      positiveY: position + groupIndex + 1,
-      lower: 0,
-      upper: position + groupIndex + 1,
-      timeUnique: new Date(Date.UTC(2000 + position, 0, 1)).toISOString(),
-      timeTimestamp: Date.UTC(2000 + position, 0, 1),
-      calendarYear: String(2000 + position)
-    })))
+  // Aggregate authentic observations into stable three-bucket positions. Numeric
+  // magnitudes and timestamp anchors come from the selected source dataset.
+  const summary = `${suffix}-summary`;
+  let next = program.createSummaryData({
+    id: summary, source: "analysisRows", groupBy: "bucket",
+    aggregates: [
+      { op: "min", field: "rowOrdinal", as: "positiveX" },
+      { op: "mean", field: "positiveY", as: "positiveY" },
+      { op: "min", field: "lower", as: "lower" },
+      { op: "max", field: "upper", as: "upper" },
+      { op: "min", field: "timeTimestamp", as: "timeTimestamp" },
+      { op: "min", field: "timeTimestamp", as: "timeUnique" }
+    ]
+  }).createComputedData({
+    id: `${suffix}-grouped`, source: summary, as: "group", expression: { constant: "All observations" }
+  }).createComputedData({
+    id: source, source: `${suffix}-grouped`, as: "calendarYear",
+    expression: { op: "add", left: { constant: 2000 }, right: { field: "bucket" } }
   });
   const xScale = `${suffix}-x`;
   const yScale = `${suffix}-y`;
@@ -1648,7 +1712,7 @@ function appendArea(program, index) {
     color: colorChannel(`${suffix}-color`, index, { categorical: true }),
     area: {
       ...strokeDetails(index),
-      fill: index % 11 === 0 ? "#bfdbfe" : undefined,
+      fill: index % 11 === 0 ? gradientPaint(index) : undefined,
       opacity: 0.2 + index / 100,
       stroke: "#2563eb",
       strokeWidth: 1,
@@ -1659,15 +1723,29 @@ function appendArea(program, index) {
   options.guides = cartesianGuides({
     id: suffix, coordinate: `${suffix}-coordinate`, xScale, yScale, index,
     hasColor: options.color !== undefined,
+    xBand: options.x?.scale?.type === "band",
+    yBand: options.y?.scale?.type === "band",
     xDiscrete: ["nominal", "ordinal"].includes(options.x.fieldType),
     yDiscrete: ["nominal", "ordinal"].includes(options.y.fieldType),
-    legendOrderValues: ["A", "B"],
-    xValues: [12, 18].includes(index) ? [1] : undefined,
-    yValues: [12, 18].includes(index) ? [2] : undefined,
+    legendOrderValues: ["All observations"],
+    xValues: [12, 18].includes(index)
+      ? [numericFieldValue(next, source, options.x.field)] : undefined,
+    yValues: [12, 18].includes(index)
+      ? [numericFieldValue(next, source, options.y.field)] : undefined,
     xFormat: index === 4 ? ".1f" : "auto",
     yFormat: index === 3 ? ".1f" : "auto"
   });
-  return removeWitness(next.createAreaPlot(options), suffix);
+  next = removeWitness(next.createAreaPlot(options), suffix);
+  if (index === 29 || index === 31) {
+    const direction = index === 29 ? "vertical" : "horizontal";
+    const grid = options.guides.grid[direction];
+    const alternate = { ...options, guides: { ...options.guides, grid: {
+      ...options.guides.grid, [direction]: { ...grid,
+        bandPosition: grid.bandPosition === "center" ? "boundary" : "center" }
+    } } };
+    next = removeWitness(next.createAreaPlot(alternate), suffix);
+  }
+  return next;
 }
 
 function appendDensity(program, index) {
@@ -1698,7 +1776,7 @@ function appendDensity(program, index) {
     ...(grouped ? { color: colorChannel(`${suffix}-color`, index, { categorical: true, layout: true }) } : {}),
     area: {
       ...strokeDetails(index),
-      fill: grouped ? undefined : "#bfdbfe",
+      fill: grouped ? undefined : gradientPaint(index),
       opacity: 0.28,
       stroke: "#2563eb",
       strokeWidth: 1,
