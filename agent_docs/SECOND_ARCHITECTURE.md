@@ -6,6 +6,16 @@
 
 ## 문서의 위치
 
+승인된 Cartesian guide dash는 순수 `grammar/guideDash.js`가 uniform pattern과 typed
+override map의 검증·정규화를 소유한다. 기존 tick/grid action이 값별 concrete line paint를
+명시적으로 materialize하며 renderer/state boundary는 바뀌지 않는다. 이 shared module로
+package entry 한도는567→568이다. Staging compaction 후 실제797471packed/
+3911785unpacked bytes이며 packed798000 한도는 유지한다. Unpacked3908000을 초과해
+기존 최소1000bytes 단위 정책으로3912000으로만 조정했다. 이전 entry/unpacked
+한도를 통과했다고 보고하지 않는다. 정확한 옵션은 current AXES/GRID 계약이 소유한다.
+검색 payload는 typed dash 옵션과 공개 예제를 모두 유지한814283bytes로 기존814000을
+초과하여 공유 search 한도만815000으로 갱신했다. 이전 search 한도 통과를 주장하지 않는다.
+
 이 문서는 `ggaction`의 초기 차트 구현 단계가 끝난 뒤 실제 코드에서 확립된 현재
 아키텍처를 기록한다. `INITIAL_ARCHITECTURE.md`는 최초 설계 의도와 논의의 출발점을
 보존하는 역사적 문서다. 이 문서는 그 설계를 Phase 1–6의 구현, 테스트, 리팩토링을

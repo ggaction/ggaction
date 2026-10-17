@@ -16,7 +16,7 @@ const OPTIONS = Object.freeze([
 ]);
 const LINE_OPTIONS = Object.freeze(["color", "lineWidth"]);
 const TICK_OPTIONS = Object.freeze([
-  "count", "values", "length", "color", "lineWidth", "alongOffset"
+  "count", "values", "length", "color", "lineWidth", "alongOffset", "strokeDash", "strokeDashMap"
 ]);
 const LABEL_OPTIONS = Object.freeze([
   "count", "values", "offset", "format", "color", "fontSize",
@@ -59,7 +59,7 @@ function validateArgs(args, operation) {
     );
   }
   if (args.ticksAndLabels !== false && args.ticksAndLabels?.ticks !== undefined) {
-    validateNested(args.ticksAndLabels, "ticks", ["length", "color", "lineWidth", "alongOffset"], `${operation}.ticksAndLabels`);
+    validateNested(args.ticksAndLabels, "ticks", ["length", "color", "lineWidth", "alongOffset", "strokeDash", "strokeDashMap"], `${operation}.ticksAndLabels`);
   }
   if (args.ticksAndLabels !== false && args.ticksAndLabels?.labels !== undefined) {
     validateNested(args.ticksAndLabels, "labels", [

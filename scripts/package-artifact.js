@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 567, // Promoted facet guide layout adds one private owner.
+  entries: 568, // Shared Cartesian guide dash grammar adds one private owner.
   packedBytes: 798_000, // Supported Linux/Node24 release candidate measured797971bytes.
-  unpackedBytes: 3_908_000 // Release documentation growth; retain a bounded3000-byte step.
+  unpackedBytes: 3_912_000 // Native dash API measured3911785bytes; retain a bounded1000-byte step.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -73,6 +73,7 @@ const COMPACT_JSON_FILES = Object.freeze([
   "knowledge/task-packet.schema.json"
 ]);
 const COMPACT_JAVASCRIPT_FILES = Object.freeze([
+  "src/grammar/guideDash.js",
   "knowledge/task-resolver.js",
   "src/grammar/scales/color.js",
   "src/grammar/scales/size.js",

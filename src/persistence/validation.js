@@ -1,4 +1,5 @@
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
+import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
 import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
@@ -148,6 +149,13 @@ export function validateProgramState(program, path) {
   for (const key of ["resolvedScales", "materializationConfigs", "context"]) requireObject(program[key], `${path}.${key}`);
   for (const key of ["marks", "guides"]) requireObject(program.materializationConfigs[key], `${path}.materializationConfigs.${key}`);
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
+  for (const config of [
+    ...Object.values(program.guideConfigs.axis ?? {}).map(axis => axis.ticks),
+    ...["horizontal", "vertical"].map(direction => program.guideConfigs.grid?.[direction])
+  ]) {
+    if (config?.strokeDash !== undefined) validateGuideDash(config.strokeDash);
+    if (config?.strokeDashMap !== undefined) normalizeGuideDashMap(config.strokeDashMap, { reset: false });
+  }
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
     if (config.titleStyle !== undefined) {

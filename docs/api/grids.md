@@ -5,6 +5,13 @@ title: Grids
 
 # Grids
 
+Cartesian grid creators and editors accept `strokeDashMap: [{ value, strokeDash }]`
+alongside the uniform `strokeDash` pattern. A matching raw typed value overrides only
+that line; unmatched values use the uniform pattern. `strokeDashMap: "auto"` or `[]`
+clears only the overrides. Entries do not add grid values. Patterns are even-length
+arrays of finite non-negative lengths, with `[]` solid. Duplicate typed keys are errors.
+Band-boundary grids use the first selected band's pattern for a shared edge.
+
 {% include chart-example.html id="histogram" lead=true %}
 
 ## At a glance

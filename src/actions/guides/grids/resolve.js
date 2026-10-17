@@ -1,4 +1,5 @@
 import { isNominalValue } from "../../../grammar/scales/fields.js";
+import { patchGuideDash, validateGuideDash, normalizeGuideDashMap, resolveGuideDashes } from "../../../grammar/guideDash.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -27,10 +28,10 @@ import {
 } from "../../../grammar/schemas/graphicTree.js";
 
 const GRID_OPTIONS = Object.freeze([
-  "scale", "coordinate", "count", "values", "color", "lineWidth", "strokeDash", "zIndex", "bandPosition", "alongOffset"
+  "scale", "coordinate", "count", "values", "color", "lineWidth", "strokeDash", "strokeDashMap", "zIndex", "bandPosition", "alongOffset"
 ]);
 const GRID_EDIT_OPTIONS = Object.freeze([
-  "count", "values", "color", "lineWidth", "strokeDash", "zIndex", "bandPosition", "alongOffset"
+  "count", "values", "color", "lineWidth", "strokeDash", "strokeDashMap", "zIndex", "bandPosition", "alongOffset"
 ]);
 const DEFAULT_STYLE = Object.freeze({
   color: DEFAULT_COLORS.grid,
@@ -49,19 +50,11 @@ export function gridNames(direction) {
 }
 
 function validateStrokeDash(value) {
-  if (
-    !Array.isArray(value) ||
-    value.length % 2 !== 0 ||
-    !value.every(item => Number.isFinite(item) && item >= 0)
-  ) {
-    throw new TypeError(
-      "Grid strokeDash must be an even-length array of non-negative finite numbers."
-    );
-  }
-  return value;
+  return validateGuideDash(value, "Grid strokeDash");
 }
 
 export function validateGridCreateArgs(args, operation) {
+  if (Object.hasOwn(args, "strokeDashMap")) normalizeGuideDashMap(args.strokeDashMap);
   validateOptionObject(args, GRID_OPTIONS, operation);
   if (Array.isArray(args.values)) {
     validateGeneratedItemLimit(args.values.length, "Grid value count");
@@ -95,6 +88,7 @@ export function validateGridCreateArgs(args, operation) {
 }
 
 export function validateGridEditArgs(args, operation) {
+  if (Object.hasOwn(args, "strokeDashMap")) normalizeGuideDashMap(args.strokeDashMap);
   validateOptionObject(args, GRID_EDIT_OPTIONS, operation, {
     allowEmpty: false
   });
@@ -210,7 +204,7 @@ export function resolveGridConfig(program, direction, args, resources) {
     : Object.hasOwn(args, "count")
       ? { mode: "count", count: args.count }
       : inferGridTickConfig(program, resources.channel, resources.scale);
-  return {
+  return patchGuideDash({
     direction,
     ...(args.bandPosition === undefined ? {} : { bandPosition: args.bandPosition }),
     ...(args.zIndex === undefined ? {} : { zIndex: args.zIndex }),
@@ -222,7 +216,7 @@ export function resolveGridConfig(program, direction, args, resources) {
     color: args.color ?? DEFAULT_STYLE.color,
     lineWidth: args.lineWidth ?? DEFAULT_STYLE.lineWidth,
     strokeDash: args.strokeDash ?? DEFAULT_STYLE.strokeDash
-  };
+  }, args);
 }
 
 export function refreshGridConfig(program, config) {
@@ -257,7 +251,7 @@ export function editGridConfig(previous, args) {
   } else if (args.values === "auto") {
     config.inferredValues = true;
   }
-  return config;
+  return patchGuideDash(config, args);
 }
 
 export function resolveGridGeometry(program, config) {
@@ -281,11 +275,21 @@ export function resolveGridGeometry(program, config) {
     if (!values.every(value => scale.domain.includes(value))) throw new RangeError("Grid values must be inside the scale domain.");
     const centers = mapOrdinalPositionValues(values, scale);
     const direction = scale.range[1] >= scale.range[0] ? 1 : -1;
+    const owners = new Map();
+    if (config.bandPosition === "boundary") {
+      centers.forEach((center, index) => {
+        for (const edge of [center - direction * scale.bandwidth / 2, center + direction * scale.bandwidth / 2]) {
+          if (!owners.has(edge)) owners.set(edge, values[index]);
+        }
+      });
+    }
     const positions = config.bandPosition === "boundary"
-      ? [...new Set(centers.flatMap(center => [center - direction * scale.bandwidth / 2, center + direction * scale.bandwidth / 2]))].sort((a, b) => direction * (a - b))
-      : centers;
+      ? [...owners.keys()].sort((a, b) => direction * (a - b)) : centers;
     validateGeneratedItemLimit(positions.length, "Grid value count");
-    return resolveGridLineGeometry({ direction: config.direction, values: positions, positions: positions.map(value => value + (config.alongOffset ?? 0)), bounds });
+    return {
+      ...resolveGridLineGeometry({ direction: config.direction, values: positions, positions: positions.map(value => value + (config.alongOffset ?? 0)), bounds }),
+      strokeDash: resolveGuideDashes(config.bandPosition === "boundary" ? positions.map(value => owners.get(value)) : values, config)
+    };
   }
   const values = valuesFromTickConfig(program, config);
   validateGeneratedItemLimit(values.length, "Grid value count");
@@ -295,12 +299,12 @@ export function resolveGridGeometry(program, config) {
     throw new RangeError("Grid values must be inside the scale domain.");
   }
   const positions = mapContinuousScaleValues(values, scale);
-  return resolveGridLineGeometry({
+  return { ...resolveGridLineGeometry({
     direction: config.direction,
     values,
     positions: positions.map(value => value + (config.alongOffset ?? 0)),
     bounds
-  });
+  }), strokeDash: resolveGuideDashes(values, config) };
 }
 
 

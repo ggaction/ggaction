@@ -457,7 +457,7 @@
   },
   "/api/grids/": {
     "title": "Grids",
-    "description": "Cartesian grids accept continuous, band and point scales. Band grids use centers by default; set bandPosition: \"boundary\" for both edges of each selected cell.",
+    "description": "Cartesian grid creators and editors accept strokeDashMap: [{ value, strokeDash }] alongside the uniform strokeDash pattern.",
     "image": "/assets/images/cars-histogram.png"
   },
   "/api/legends/": {
@@ -699,7 +699,7 @@
   },
   "/api/axes/complete/": {
     "title": "Complete Axes and Labels",
-    "description": "Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis action for ordinary chart authoring.",
+    "description": "Create a complete axis first, then refine its native ticks. On an existing Cartesian program with a quantitative y encoding, this fragment keeps the zero tick solid:",
     "image": "/assets/images/cars-line-chart.png"
   }
 }

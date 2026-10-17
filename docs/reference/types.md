@@ -1504,6 +1504,9 @@ Related types: [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`Carte
 
 ```typescript
 export interface CartesianAxisTickStyleOptions extends AxisTickStyleOptions {
+  strokeDash?: readonly number[];
+  /** Typed raw-value overrides. Empty arrays and auto clear only the map. */
+  strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Signed logical pixels along the axis: positive right for x, down for y. */
   alongOffset?: number;
 }
@@ -1511,7 +1514,7 @@ export interface CartesianAxisTickStyleOptions extends AxisTickStyleOptions {
 
 </details>
 
-Related types: [`AxisTickStyleOptions`](#type-axistickstyleoptions).
+Related types: [`AxisTickStyleOptions`](#type-axistickstyleoptions) · [`CartesianGuideDashMap`](#type-cartesianguidedashmap).
 
 ### `CartesianCategoricalGuideOptions` {#type-cartesiancategoricalguideoptions}
 
@@ -1547,6 +1550,22 @@ type CartesianGridOptions = Pick<CreateGridOptions, "horizontal" | "vertical">;
 </details>
 
 Related types: [`CreateGridOptions`](#type-creategridoptions).
+
+### `CartesianGuideDashMap` {#type-cartesianguidedashmap}
+
+<details markdown="1">
+<summary>Expand CartesianGuideDashMap</summary>
+
+```typescript
+export type CartesianGuideDashMap = ReadonlyArray<Readonly<{
+  value: AxisValue;
+  strokeDash: readonly number[];
+}>>;
+```
+
+</details>
+
+Related types: [`AxisValue`](#type-axisvalue).
 
 ### `CartesianGuideOptions` {#type-cartesianguideoptions}
 
@@ -4959,6 +4978,7 @@ Related types: [`EditGridOptions`](#type-editgridoptions) · [`EditPolarGridOpti
 
 ```typescript
 export interface EditGridOptions {
+  strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Absolute signed logical-pixel displacement; omission preserves the current value. */
   alongOffset?: number;
   /** Preserve omitted order; finite values sort Cartesian grids relative to marks at zero. */
@@ -4975,7 +4995,7 @@ export interface EditGridOptions {
 
 </details>
 
-Related types: [`CategoryValue`](#type-categoryvalue).
+Related types: [`CartesianGuideDashMap`](#type-cartesianguidedashmap) · [`CategoryValue`](#type-categoryvalue).
 
 ### `EditHorizonOptions` {#type-edithorizonoptions}
 
@@ -6802,6 +6822,7 @@ export type GraphicType =
 
 ```typescript
 export interface GridDirectionOptions {
+  strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Signed logical pixels along the scale: vertical lines right, horizontal lines down. */
   alongOffset?: number;
   /** Grid draw order relative to marks at zero: positive above, nonpositive behind. */
@@ -6820,7 +6841,7 @@ export interface GridDirectionOptions {
 
 </details>
 
-Related types: [`CategoryValue`](#type-categoryvalue).
+Related types: [`CartesianGuideDashMap`](#type-cartesianguidedashmap) · [`CategoryValue`](#type-categoryvalue).
 
 ### `GroupEncodingOptions` {#type-groupencodingoptions}
 
