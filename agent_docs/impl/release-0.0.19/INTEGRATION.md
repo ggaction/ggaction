@@ -24,3 +24,10 @@
   overview 설명 annotation을 공개 API 출력이라고 주장하지 않는다.
 - 0.0.18 배포는 별도 exact tag0447acaf에서 진행한다. 새 기능은 다음 release를 준비한다.
   최종 main 병합·실제 npm 출판·문서/Context7·dataset 재동기화까지 끝나야 전체 완료다.
+
+## 24개 source checkpoint
+
+#171 size-shape와 root sibling viewport 수정·bar canonical artifact pair를 통합했다.
+결합6개 검사(새guide4/Chromium1/bar pair1), source와bar20개, named-axis type·card11개,
+문서120개가 통과했다. Staged package581/824408/4021086은 측정된 최소 예산
+581/825000/4022000 안이다. 전체 누적 unit·consumer 및 남은 기능 결합은 최종 통합에서 재검증한다.

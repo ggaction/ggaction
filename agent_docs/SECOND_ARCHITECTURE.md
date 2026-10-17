@@ -2317,3 +2317,6 @@ not a declaration that the full realistic option matrix has completed.
 
 Size-shape 통합 뒤 검색은823539bytes이며 최종 공개 옵션을 유지한 채824000으로만
 갱신한다. 범례 새 public 흐름·독립 Chromium·bar stable pair의 결합6검사가 통과했다.
+
+24개 통합 staged package의 실제581entries/824408packed/4021086unpackedbytes에 따라
+한도는581/825000/4022000으로 좁게 갱신한다. 이전579/822000/4010000은 실패했다.

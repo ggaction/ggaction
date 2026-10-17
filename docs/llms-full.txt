@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:e8f18e4bfa6d34b7a0fa7610efc436864801ebb6065c08699f6dcbf00f5ca134. Status: development. Runtime source: 0fbefb520604f173d5b82bb04cf9524b1fa9c333. Release baseline: v0.0.13.
+Contract: sha256:5b56ded600d541827089c04b7b0f44260fe0716590d6eb35785fd2272faa9a87. Status: development. Runtime source: 2d1f928e8b835a3351f32e04db41a90860a99a11. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/0fbefb520604f173d5b82bb04cf9524b1fa9c333/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/2d1f928e8b835a3351f32e04db41a90860a99a11/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/0fbefb520604f173d5b82bb04cf9524b1fa9c333/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/2d1f928e8b835a3351f32e04db41a90860a99a11/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -13120,6 +13120,31 @@ Combined legends require `layout: "edge"`; `"legacy-bottom"` is unsupported.
 A separately positioned size legend can coexist with a categorical
 `"legacy-bottom"` legend on another edge. Each keeps its own placement and styles.
 
+## Combine ordinal size and shape
+
+`createLegend({ combine: "size-shape" })` draws one categorical block whose
+sample uses both the mapped shape and the mapped physical area. It requires
+one point owner, the same nominal or ordinal field for both encodings, and
+identical typed, ordered ordinal domains. Explicit `channels` must contain
+exactly `"shape"` and `"size"`; with omitted channels, an encoded color legend
+remains an independent block. Different owners, fields, grain, numeric size
+scales, or domain order are rejected.
+
+Omitting `combine`, or creating with `"separate"`, preserves the previous output.
+An edited combination is retained unless explicitly changed. Whole-target
+`editLegend({ combine: "separate" })` splits the pair and copies shared text,
+title and placement styles; combining independent blocks uses supplied styles
+or the combined native defaults, rather than choosing one old block's styles.
+A split preserves an independent color block. Incompatible display maps must
+be reset before splitting.
+
+Either member selects the same combined block. Removing either member removes
+the entire block without removing either mark encoding. Fixed sample shape or
+size overrides conflict with the mapping; stroke, fill, opacity, labels and
+categorical item order retain their existing controls. Zero mapped area retains
+its category and text slot. Current data and scale revisions revalidate both
+encodings, so an invalid revision fails instead of silently splitting the block.
+
 ## Related
 
 [Legend overview](./api/legends/) · [Composite symbols](./api/legends/composite/) · [Editing legends](./api/legends/editing/)
@@ -13770,7 +13795,7 @@ packing and are measured independently, including titles, labels and frames.
 Corners use the existing 8px plot inset; outside edges retain native family gaps
 and the existing axis-lane policy. No coordinates, automatic Canvas growth, or
 extra offset option is introduced. Conflicting occupied guides fail atomically.
-A merged block moves through either member alias. Merging different local anchors
+A merged block moves through either member alias. `combine` is a whole-target content control and cannot accompany singular `channel`. Merging different local anchors
 requires resetting them or supplying an explicit whole-group position.
 
 Use `editLegendBlock()` when one mark has several legend blocks and an edit
@@ -25007,6 +25032,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `combine` | Optional / branch-dependent | `"separate" \| "size-shape" \| undefined` |
 | `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
@@ -25133,6 +25159,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
+| `combine` | Optional / branch-dependent | `"separate" \| "size-shape" \| undefined` |
 | `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
@@ -33592,6 +33619,8 @@ Related types: [`LegendOptions`](./reference/types/#type-legendoptions).
 
 ```typescript
 export interface LegendOptions {
+  /** Explicitly combine compatible ordinal size and shape samples. Omission retains separate blocks. */
+  combine?: "separate" | "size-shape";
   /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
   representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
@@ -37841,12 +37870,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0fbefb520604f173d5b82bb04cf9524b1fa9c333/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/2d1f928e8b835a3351f32e04db41a90860a99a11/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0fbefb520604f173d5b82bb04cf9524b1fa9c333/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/2d1f928e8b835a3351f32e04db41a90860a99a11/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -40013,9 +40042,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:e8f18e4bfa6d34b7a0fa7610efc436864801ebb6065c08699f6dcbf00f5ca134` |
+| Contract fingerprint | `sha256:5b56ded600d541827089c04b7b0f44260fe0716590d6eb35785fd2272faa9a87` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
-| Runtime source commit | `0fbefb520604f173d5b82bb04cf9524b1fa9c333` |
+| Runtime source commit | `2d1f928e8b835a3351f32e04db41a90860a99a11` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 284 |
 | Declared actions in that release | 234 |
