@@ -4,6 +4,7 @@ export type {
   AxisLabelOptions,
   AxisLineStyleOptions,
   AxisTickOptions,
+  CartesianGuideDashMap,
   AxisTicksAndLabelsOptions,
   AxisTitleOptions,
   DisplayLabelMap,

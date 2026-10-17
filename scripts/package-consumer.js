@@ -89,6 +89,21 @@ async function testNodeConsumer(directory) {
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
+    for (const create of [chart, basicChart]) {
+      const dashedGuides = create().createCanvas({ width: 700, height: 500, margin: 100 })
+        .createData({ values: [{ x: 0, y: 0 }, { x: 1, y: 2 }] })
+        .createScatterPlot({ x: "x", y: "y", guides: false })
+        .createYAxis({ ticksAndLabels: { values: [0, 1, 2], ticks: {
+          strokeDash: [2, 2], strokeDashMap: [{ value: 0, strokeDash: [] }]
+        } } })
+        .createHorizontalGrid({ values: [0, 1, 2], strokeDash: [2, 2],
+          strokeDashMap: [{ value: 0, strokeDash: [] }] });
+      assert.deepEqual(dashedGuides.graphicSpec.objects.yAxisTicks.items.map(item => item.properties.strokeDash),
+        [[], [2, 2], [2, 2]]);
+      assert.deepEqual(deserializeProgram(serializeProgram(dashedGuides)).graphicSpec, dashedGuides.graphicSpec);
+      assert.ok((await renderToPNGBuffer(dashedGuides)).buffer.length > 100);
+      assert.ok((await renderToPDFBuffer(dashedGuides)).buffer.length > 100);
+    }
     const extracted = chart().createCanvas({ width: 440, height: 340, margin: 20 })
       .createData({ values: [{ item: { value: 1 }, text: "1.5%" }, { text: "2%" }] })
       .createComputedData({ id: "nested", as: "x", expression: { op: "getPath", operand: { field: "item" }, path: ["value"] } })

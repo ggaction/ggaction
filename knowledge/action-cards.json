@@ -15368,6 +15368,10 @@
           "strategy": "explicit-current-unique-or-error"
         },
         {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "omitted optional options",
           "strategy": "documented-default"
         }
@@ -15416,13 +15420,23 @@
           "type": "number | undefined"
         },
         {
+          "name": "strokeDash",
+          "required": false,
+          "type": "readonly number[] | undefined"
+        },
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
+        {
           "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "createXAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length?, alongOffset? })"
+        "createXAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length?, strokeDash? })"
       ],
       "snippet": "program.createXAxisTicks({})",
       "errors": [],
@@ -15497,6 +15511,10 @@
           "strategy": "explicit-current-unique-or-error"
         },
         {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "omitted optional options",
           "strategy": "documented-default"
         }
@@ -15545,13 +15563,23 @@
           "type": "number | undefined"
         },
         {
+          "name": "strokeDash",
+          "required": false,
+          "type": "readonly number[] | undefined"
+        },
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
+        {
           "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "createYAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length?, alongOffset? })"
+        "createYAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length?, strokeDash? })"
       ],
       "snippet": "program.createYAxisTicks({})",
       "errors": [],
@@ -15614,7 +15642,12 @@
           "unit": "count"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -15640,6 +15673,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "strokeDash",
+          "required": false,
+          "type": "readonly number[] | undefined"
+        },
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
+        {
           "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
@@ -15661,7 +15704,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisTicks({ color?, lineWidth?, length?, alongOffset?, position?, count?, values? })"
+        "editXAxisTicks({ color?, lineWidth?, length?, strokeDash?, strokeDashMap?, alongOffset?, position?, count? })"
       ],
       "snippet": "program.editXAxisTicks({ color: \"#f28e2b\" })",
       "errors": [],
@@ -15724,7 +15767,12 @@
           "unit": "count"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -15750,6 +15798,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "strokeDash",
+          "required": false,
+          "type": "readonly number[] | undefined"
+        },
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
+        {
           "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
@@ -15771,7 +15829,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisTicks({ color?, lineWidth?, length?, alongOffset?, position?, count?, values? })"
+        "editYAxisTicks({ color?, lineWidth?, length?, strokeDash?, strokeDashMap?, alongOffset?, position?, count? })"
       ],
       "snippet": "program.editYAxisTicks({ color: \"#f28e2b\" })",
       "errors": [],
@@ -17939,6 +17997,10 @@
       ],
       "inference": [
         {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -17959,6 +18021,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
         {
           "name": "alongOffset",
           "required": false,
@@ -18011,7 +18078,7 @@
         }
       ],
       "callPatterns": [
-        "createHorizontalGrid({ scale?, coordinate?, alongOffset?, zIndex?, bandPosition?, count?, values?, color? })"
+        "createHorizontalGrid({ scale?, coordinate?, strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values? })"
       ],
       "snippet": "program.createHorizontalGrid({})",
       "errors": [],
@@ -18078,6 +18145,10 @@
       ],
       "inference": [
         {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -18098,6 +18169,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
         {
           "name": "alongOffset",
           "required": false,
@@ -18150,7 +18226,7 @@
         }
       ],
       "callPatterns": [
-        "createVerticalGrid({ scale?, coordinate?, alongOffset?, zIndex?, bandPosition?, count?, values?, color? })"
+        "createVerticalGrid({ scale?, coordinate?, strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values? })"
       ],
       "snippet": "program.createVerticalGrid({})",
       "errors": [],
@@ -18209,6 +18285,10 @@
       ],
       "inference": [
         {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "values",
           "strategy": "documented-auto"
         }
@@ -18222,6 +18302,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
         {
           "name": "alongOffset",
           "required": false,
@@ -18264,9 +18349,9 @@
         }
       ],
       "callPatterns": [
-        "editHorizontalGrid({ alongOffset?, zIndex?, bandPosition?, count?, values?, color?, lineWidth?, strokeDash? })"
+        "editHorizontalGrid({ strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values?, color?, lineWidth? })"
       ],
-      "snippet": "program.editHorizontalGrid({ alongOffset: 1 })",
+      "snippet": "program.editHorizontalGrid({ strokeDashMap: \"auto\" })",
       "errors": [],
       "route": "/reference/actions/guides/#edithorizontalgrid"
     },
@@ -18323,6 +18408,10 @@
       ],
       "inference": [
         {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "values",
           "strategy": "documented-auto"
         }
@@ -18336,6 +18425,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
         {
           "name": "alongOffset",
           "required": false,
@@ -18378,9 +18472,9 @@
         }
       ],
       "callPatterns": [
-        "editVerticalGrid({ alongOffset?, zIndex?, bandPosition?, count?, values?, color?, lineWidth?, strokeDash? })"
+        "editVerticalGrid({ strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values?, color?, lineWidth? })"
       ],
-      "snippet": "program.editVerticalGrid({ alongOffset: 1 })",
+      "snippet": "program.editVerticalGrid({ strokeDashMap: \"auto\" })",
       "errors": [],
       "route": "/reference/actions/guides/#editverticalgrid"
     },

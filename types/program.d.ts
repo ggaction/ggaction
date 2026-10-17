@@ -1342,9 +1342,16 @@ export interface AxisTickStyleOptions extends AxisLineStyleOptions {
   length?: number;
 }
 export interface CartesianAxisTickStyleOptions extends AxisTickStyleOptions {
+  strokeDash?: readonly number[];
+  /** Typed raw-value overrides. Empty arrays and auto clear only the map. */
+  strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Signed logical pixels along the axis: positive right for x, down for y. */
   alongOffset?: number;
 }
+export type CartesianGuideDashMap = ReadonlyArray<Readonly<{
+  value: AxisValue;
+  strokeDash: readonly number[];
+}>>;
 export interface AxisLabelStyleOptions {
   offset?: number;
   format?: AxisFormat;
@@ -1546,6 +1553,7 @@ export interface EditRadialAxisOptions
 }
 
 export interface GridDirectionOptions {
+  strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Signed logical pixels along the scale: vertical lines right, horizontal lines down. */
   alongOffset?: number;
   /** Grid draw order relative to marks at zero: positive above, nonpositive behind. */
@@ -1561,6 +1569,7 @@ export interface GridDirectionOptions {
   strokeDash?: readonly number[];
 }
 export interface EditGridOptions {
+  strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Absolute signed logical-pixel displacement; omission preserves the current value. */
   alongOffset?: number;
   /** Preserve omitted order; finite values sort Cartesian grids relative to marks at zero. */

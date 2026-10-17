@@ -1,4 +1,5 @@
 import { canvasOverflowError } from "../../../layout/canvas.js";
+import { patchGuideDash, validateGuideDash, normalizeGuideDashMap, resolveGuideDashes } from "../../../grammar/guideDash.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { applyMaterializationPlan } from "../../../materialization/planner.js";
@@ -32,7 +33,7 @@ import {
 import { findCanvasGraphic, resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 
-const OPTIONS = Object.freeze(["scale", "position", "count", "values", "length", "color", "lineWidth", "alongOffset"]);
+const OPTIONS = Object.freeze(["scale", "position", "count", "values", "length", "color", "lineWidth", "alongOffset", "strokeDash", "strokeDashMap"]);
 const DEFAULTS = Object.freeze({
   count: DEFAULT_TICK_COUNT,
   length: 6,
@@ -54,6 +55,8 @@ function validateOptions(args, operation, create) {
 }
 
 function validateConfig(channel, config) {
+  if (config.strokeDash !== undefined) validateGuideDash(config.strokeDash, "Tick strokeDash");
+  if (config.strokeDashMap !== undefined) normalizeGuideDashMap(config.strokeDashMap, { reset: false });
   validateAxisPosition(channel, config.position);
   if (config.mode === "count") {
     if (!Number.isInteger(config.count) || config.count <= 0) throw new RangeError("Tick count must be a positive integer.");
@@ -155,13 +158,13 @@ function makeEdit(channel) {
     const mode = Object.hasOwn(args, "values") || inferredValues !== undefined
       ? "values"
       : Object.hasOwn(args, "count") ? "count" : previous.mode;
-    const config = {
+    const config = patchGuideDash({
       ...previous,
       ...args,
       ...(inferredValues === undefined ? {} : { values: inferredValues }),
       ...(explicitMode ? { inferredValues: false } : {}),
       mode
-    };
+    }, args);
     if (mode === "values") delete config.count; else delete config.values;
     validateConfig(channel, config);
     const resolved = geometry(this, channel, config);
@@ -171,6 +174,10 @@ function makeEdit(channel) {
       stroke: config.color,
       strokeWidth: config.lineWidth
     });
+    if (config.strokeDash !== undefined || config.strokeDashMap !== undefined ||
+        previous.strokeDashMap !== undefined) {
+      next = next.editGraphics({ target: id, property: "strokeDash", value: resolveGuideDashes(resolved.values, config) });
+    }
     // Structural dependency plans own grids during a scale/role handoff.
     return explicitMode ? applyMaterializationPlan(next, planAxisTickGridRematerialization(next, channel)) : next;
   }));
@@ -197,7 +204,7 @@ function makeCreate(channel) {
           : inferHistogramBoundaries(this, channel, scale);
     const options =
       inferredValues === undefined ? args : { ...args, values: inferredValues };
-    const config = { scale, position: defaultAxisPosition(channel), length: DEFAULTS.length, color: DEFAULTS.color, lineWidth: DEFAULTS.lineWidth, ...options, inferredValues: inferredValues !== undefined, mode: Object.hasOwn(options, "values") ? "values" : "count" };
+    const config = patchGuideDash({ scale, position: defaultAxisPosition(channel), length: DEFAULTS.length, color: DEFAULTS.color, lineWidth: DEFAULTS.lineWidth, ...options, inferredValues: inferredValues !== undefined, mode: Object.hasOwn(options, "values") ? "values" : "count" }, args);
     if (config.mode === "values") delete config.count; else config.count ??= DEFAULTS.count;
     validateConfig(channel, config); geometry(this, channel, config);
     const next = this.editSemantic({ property: `guide.axis.${channel}.scale`, value: scale })

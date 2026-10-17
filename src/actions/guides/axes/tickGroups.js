@@ -18,7 +18,7 @@ const EDIT_OPTIONS = Object.freeze([
   "ticks",
   "labels"
 ]);
-const TICK_OPTIONS = Object.freeze(["length", "color", "lineWidth", "alongOffset"]);
+const TICK_OPTIONS = Object.freeze(["length", "color", "lineWidth", "alongOffset", "strokeDash", "strokeDashMap"]);
 const LABEL_OPTIONS = Object.freeze([
   "offset",
   "format",

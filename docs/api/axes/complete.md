@@ -9,6 +9,30 @@ title: Complete Axes and Labels
 
 [Axis family overview](../axes.md)
 
+## Value-specific Cartesian tick dashes
+
+Create a complete axis first, then refine its native ticks. On an existing Cartesian
+program with a quantitative y encoding, this fragment keeps the zero tick solid:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+program
+  .createYAxis({ ticksAndLabels: { values: [0, 1, 2] } })
+  .editYAxisTicks({ strokeDash: [2, 2], strokeDashMap: [{ value: 0, strokeDash: [] }] });
+```
+
+Patterns contain an even number of finite non-negative lengths; `[]` means solid.
+Map keys use raw typed values, so `1` differs from `"1"`. Missing map entries use the
+uniform pattern. An omitted edit preserves the map; `strokeDashMap: "auto"` or `[]`
+removes only its overrides. Values absent from the current ticks stay available for
+later scale/data refresh. The same tick options work inside complete-axis creation,
+whole-axis edits and ticks-and-labels groups. Polar and Parallel ticks are unchanged.
+
 ## `createAxes(options?)`
 
 Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis

@@ -14,6 +14,12 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `alongOffset`: signed finite logical pixels, 기본 `0`. Vertical grid는 오른쪽, horizontal grid는 아래쪽으로 mapped 위치를 이동한다. Axis tick/label offset과 독립이며 domain, values, span과 mark 위치는 보존한다. Band boundary 계산 뒤 offset을 적용한다. Create/edit/Canvas·scale replay가 같은 절대값을 유지한다. String, null, 명시 undefined와 nonfinite 입력은 거부한다. Evidence: `test/unit/actions/guides/axis-grid-along-offset.test.js`.
 - `zIndex`: Cartesian grid의 finite draw rank, 기본0은 mark 뒤, 양수는 mark 앞이다. 같은 면의 grid는 값 오름차순, 동점은 horizontal/vertical 순서다. 생략 edit는 보존하며 resize/scale/axis refresh도 명시 rank를 유지한다. Polar에는 적용하지 않는다.
 - `strokeDash`: even-length non-negative finite number array, 기본 `[]`.
+- `strokeDashMap`: Cartesian typed raw-value overrides `[{value,strokeDash}]`; unselected values remain stored,
+  matched raw ticks override uniform dash, unmatched ticks retain it. Strings/booleans/finite numbers are accepted
+  with typed equality and duplicate keys rejected. `"auto"` or `[]` clears only the map; omitted edits preserve it.
+  Band boundary dedup uses the first selected band owning a shared edge. Every pattern uses the same even-length
+  non-negative finite contract and generated-item budget. Native ownership, replay and persistence remain intact.
+  Evidence: `test/unit/actions/guides/guide-dash-styling.test.js`.
 - Effect: semantic guide에는 scale/coordinate, graphical config에는 tick policy/style, concrete line
   collection에는 endpoints를 저장한다. 기본 graphic은 관련 mark와 label leader보다 앞에 배치하며 명시 positive zIndex는 그 뒤에 배치한다.
   Creation order, same-value Canvas edits, and scale rematerialization preserve that drawing order and pixels.
@@ -24,6 +30,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ```typescript
 type GridDirectionOptions = {
+  strokeDashMap?: readonly { value: CategoryValue; strokeDash: DashPattern }[] | "auto";
   alongOffset?: Finite;
   zIndex?: Finite;
   bandPosition?: "center" | "boundary";
@@ -36,6 +43,7 @@ type GridDirectionOptions = {
   strokeDash?: DashPattern;
 };
 type EditGridOptions = {
+  strokeDashMap?: readonly { value: CategoryValue; strokeDash: DashPattern }[] | "auto";
   alongOffset?: Finite;
   zIndex?: Finite;
   bandPosition?: "center" | "boundary";

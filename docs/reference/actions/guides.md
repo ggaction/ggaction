@@ -403,6 +403,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 
 </details>
@@ -437,6 +439,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 
 </details>
@@ -467,6 +471,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -500,6 +506,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -1133,6 +1141,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
 | `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
@@ -1169,6 +1178,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
 | `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
@@ -1205,6 +1215,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
 | `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
@@ -1239,6 +1250,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
 | `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |

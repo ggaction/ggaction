@@ -271,6 +271,8 @@ type NumericFormatString = `.${ValueFormatPrecision}${"f" | "%" | "e"}`;
 type AxisFormatString = NumericFormatString | TimeAxisFormatString;
 type TickValue = string | boolean | Finite;
 type TickOptions = {
+  strokeDash?: readonly NonNegativeFinite[];
+  strokeDashMap?: readonly { value: TickValue; strokeDash: readonly NonNegativeFinite[] }[] | "auto";
   length?: NonNegativeFinite;
   color?: NonEmptyString;
   lineWidth?: NonNegativeFinite;
@@ -307,6 +309,20 @@ type CompleteAxisOptions<P extends string> = {
 ```
 
 ## `createAxes`
+
+### Cartesian tick dash contract
+
+Cartesian tick component creation/whole/group/focused editing accepts uniform
+`strokeDash` and typed `strokeDashMap:[{value,strokeDash}]`. A pattern is an even-length
+array of finite non-negative numbers; `[]` is solid. Default omission preserves legacy
+solid graphics and editing omission preserves stored intent. Map matches use raw typed
+tick identity (`1` differs from `"1"`; `0` equals `-0`), overriding only the uniform
+pattern; unmatched entries remain stored for refresh and create no ticks.
+`strokeDashMap:"auto"` or `[]` removes only the map. Duplicate typed values, unknown keys,
+null/nonfinite keys and invalid patterns fail atomically. Maps/patterns use the generated-item
+budget. Native guide ownership, Canvas/scale/data/facet refresh and persistence retain these
+styles. Polar/Parallel tick options are unchanged. Evidence:
+`test/unit/actions/guides/guide-dash-styling.test.js`.
 
 - Signature: `createAxes({ coordinate?, x?, y?, theta?, radius? })`
 - `coordinate.id`: existing coordinate ID. 생략하면 encoded Cartesian layers가 참조하는 유일한 ID를 추론한다.
