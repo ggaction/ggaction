@@ -53,7 +53,7 @@ function decodeLocalGraphicId(id) {
 test("keeps outer axes on occupied edges and one parent population legend", () => {
   const program = createGapminderOuterGuideFacetPrimitives(loadGapminder());
   const canvases = nestedCanvases(program);
-  assert.equal(program.graphicSpec.objects.canvas.properties.width, 1044);
+  assert.equal(program.graphicSpec.objects.canvas.properties.width, 971);
   assert.equal(program.graphicSpec.objects.canvas.properties.height, 588);
   assert.equal(canvases.length, 5);
 

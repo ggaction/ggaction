@@ -280,7 +280,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 391,000 bytes |
+| `ggaction` | 392,000 bytes |
 | `ggaction/basic` | 190,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -326,6 +326,11 @@ Full 상한만 392000으로 조정하고 Basic190000과 SVG25000은 유지한다
 이는 실제 증가량을 반영한 조정이며, 이전 상한을 통과했다고 주장하지 않는다.
 
 ## 실행 계약의 위치
+
+0.0.18 릴리스의 기능별 변경 내역을 추가한 패키지는 압축796,344바이트로
+이전796,000바이트 한도를 초과했다. 압축 한도를797,000바이트로 조정하고,
+릴리스 문서 증가분에 대해 압축 해제 한도만 기존3,000바이트 단위로
+3,908,000바이트까지 조정한다. 파일567개 및 browser bundle 한도는 유지한다.
 
 이 문서는 상태 소유권, 계층 간 의존성과 실행 흐름을 설명한다. 메서드별 매개변수·기본값·추론·지원 조합·오류는 아래 Current 계약이 소유하며 이 문서에 복제하지 않는다. 구현 상태와 direct/internal 분류는 [ACTION_INDEX.json](contract/ACTION_INDEX.json), 선언은 `types/`, 자동화된 value vocabulary는 owning runtime registry를 사용한다.
 

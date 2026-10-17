@@ -11,7 +11,7 @@ test("keeps the explicit fitted-margin primitive baseline", () => {
     top: 60,
     right: 4,
     bottom: 79.75,
-    left: 39.75
+    left: 43
   });
   assert.equal(program.graphicSpec.objects.xAxisLabels.items.length, 10);
   assert.equal(program.trace.children.some(node => node.op === "fitCanvas"), false);

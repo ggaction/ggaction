@@ -405,7 +405,7 @@ export function createGapminderTimePrimitives(gapminder) {
       parent: "plot-main",
       type: "text"
     })
-    .editGraphics({ target: "yAxisTitle", property: "x", value: 6.5 })
+    .editGraphics({ target: "yAxisTitle", property: "x", value: 9.75 })
     .editGraphics({ target: "yAxisTitle", property: "y", value: (plot.top + plot.bottom) / 2 })
     .editGraphics({ target: "yAxisTitle", property: "text", value: "Life expectancy" })
     .editGraphics({ target: "yAxisTitle", property: "fill", value: AXIS })

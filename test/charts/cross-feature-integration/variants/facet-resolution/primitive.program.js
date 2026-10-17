@@ -243,7 +243,7 @@ function compactPopulation(value) {
 
 function addPopulationLegend(program, values) {
   const layout = OUTER_GUIDE_LAYOUT;
-  const x = values.width + layout.legendGap;
+  const x = layout.legendX;
   // The inferred 11px title is shifted 8px down in its source; its final top owns the shared plot anchor.
   const y = values.plot.y + 23.5;
   const ratios = Array.from(
@@ -359,8 +359,7 @@ export function createGapminderOuterGuideFacetPrimitives(rows) {
     clusters: OUTER_GUIDE_CLUSTERS
   });
   const owners = outerAxisOwners(values.cells);
-  const width = values.width + OUTER_GUIDE_LAYOUT.legendGap +
-    OUTER_GUIDE_LAYOUT.legendWidth;
+  const width = OUTER_GUIDE_LAYOUT.canvasWidth;
   let program = graphic(chart(), "canvas", "canvas", {
     width,
     height: values.height,

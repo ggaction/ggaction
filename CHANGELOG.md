@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.18] - 2026-10-17
+
 ### Added
 
 - Added target-owned legend block layouts and plot-relative placement, sampled

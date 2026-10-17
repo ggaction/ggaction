@@ -23,7 +23,10 @@ export const FACET_LAYOUT = Object.freeze({
 export const OUTER_GUIDE_CLUSTERS = Object.freeze([0, 3, 4, 1, 5]);
 export const OUTER_GUIDE_LAYOUT = Object.freeze({
   legendGap: 24,
-  legendWidth: 112,
+  // Fixed primitive reference: clear the rightmost retained tick label by24px.
+  legendX: 908.89750000000004,
+  canvasWidth: 971,
+  legendWidth: 48.102499999999964,
   gradientWidth: 12,
   gradientHeight: 180,
   gradientSteps: 60
