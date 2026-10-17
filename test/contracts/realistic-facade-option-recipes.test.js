@@ -36,7 +36,7 @@ const EXPECTED_INVENTORY_BY_ACTION = Object.freeze({
   createBoxPlot: Object.freeze({ paths: 30, literals: 32, typeLiterals: 12, diversity: 0 }),
   createGradientPlot: Object.freeze({ paths: 30, literals: 32, typeLiterals: 12, diversity: 0 }),
   createViolinPlot: Object.freeze({ paths: 39, literals: 35, typeLiterals: 13, diversity: 2 }),
-  createHeatmap: Object.freeze({ paths: 45, literals: 54, typeLiterals: 19, diversity: 2 }),
+  createHeatmap: Object.freeze({ paths: 45, literals: 55, typeLiterals: 20, diversity: 2 }),
   createHistogram: Object.freeze({ paths: 32, literals: 32, typeLiterals: 10, diversity: 2 })
 });
 
@@ -339,13 +339,13 @@ async function buildProjection() {
   return projectionPromise;
 }
 
-test("defines five integration-ready facade recipes and a 245-chart selection schedule", () => {
+test("defines five integration-ready facade recipes and a 250-chart selection schedule", () => {
   assert.deepEqual(REALISTIC_FACADE_OPTION_COUNTS, {
     recipes: 5,
     advanced: 4,
     intermediate: 1,
-    minimumSelections: 245,
-    advancedSelections: 220,
+    minimumSelections: 250,
+    advancedSelections: 225,
     intermediateSelections: 25
   });
   assert.deepEqual(
@@ -609,16 +609,22 @@ test("fits baseline and longest authentic titles across every eligible TT facade
   assert.equal(chartCount, 470);
 });
 
-test("locks the role-valid facade scale inventory at 176 paths and 185 literals", async () => {
+test("locks the role-valid facade scale inventory at 176 paths and 186 literals", async () => {
   const target = targetInventory(await inventoryPromise);
   assert.equal(target.options.length, 176);
-  assert.equal(target.literals.length, 185);
+  assert.equal(target.literals.length, 186);
   assert.equal(target.diversity.length, 6);
+  assert.equal(
+    createHash("sha256")
+      .update([...target.options, ...target.literals].map(item => item.id).sort().join("\n"))
+      .digest("hex"),
+    "6cf04ec70a5a30c4bfe5d527770e4d2e2493ebbd448f723a09efbb2f1808a964"
+  );
   assert.equal(target.options.filter(option => option.path.endsWith(".unknown")).length, 0);
   assert.equal(target.literals.filter(requirement => {
     const option = target.options.find(candidate => candidate.id === requirement.optionPath);
     return option.path.endsWith("type");
-  }).length, 66);
+  }).length, 67);
   for (const [action, expected] of Object.entries(EXPECTED_INVENTORY_BY_ACTION)) {
     const options = target.options.filter(option => option.action === action);
     const optionIds = new Set(options.map(option => option.id));
@@ -636,9 +642,9 @@ test("locks the role-valid facade scale inventory at 176 paths and 185 literals"
   }
 });
 
-test("245 actual TT charts cover every target path and literal at least five times across three datasets", async () => {
+test("250 actual TT charts cover every target path and literal at least five times across three datasets", async () => {
   const projection = await buildProjection();
-  assert.equal(projection.chartCount, 245);
+  assert.equal(projection.chartCount, 250);
   assert.ok(projection.datasetCount >= 5);
   for (const option of projection.target.options) {
     assert.equal(meetsMinimum(projection.optionStats.get(option.id)), true, option.id);
@@ -658,6 +664,11 @@ test("245 actual TT charts cover every target path and literal at least five tim
     assert.equal(stats.occurrences, 5, variant);
     assert.ok(stats.datasets.size >= 3, variant);
   }
+  const sqrt = projection.literalStats.get(
+    "option-value:createHeatmap.color.scale.type=string:sqrt"
+  );
+  assert.equal(sqrt.occurrences, 5, "actual sqrt heatmap root witnesses");
+  assert.ok(sqrt.datasets.size >= 3, "authentic sqrt heatmap dataset diversity");
 });
 
 test("every facade variant changes the final program on an identical TT field binding", () => {

@@ -337,6 +337,10 @@ Full 상한만 392000으로 조정하고 Basic190000과 SVG25000은 유지한다
 Linux/Node24에서392,303바이트다. 지원 환경의 zlib 차이를 포함하도록
 Full 한도를393,000바이트로 한 단계 조정한다. Basic190,000 및 SVG25,000은 유지한다.
 
+line facade의 실행 불가능한 horizontal bandPosition 선언을 수정하고 공개 문서를
+동기화한 Node24.21.0/npm11.19.0 패키지는 798,062바이트다. 이 선언 수정분을
+포함하도록 압축 상한만 다음 1,000바이트 단계인 799,000으로 조정한다.
+
 이 문서는 상태 소유권, 계층 간 의존성과 실행 흐름을 설명한다. 메서드별 매개변수·기본값·추론·지원 조합·오류는 아래 Current 계약이 소유하며 이 문서에 복제하지 않는다. 구현 상태와 direct/internal 분류는 [ACTION_INDEX.json](contract/ACTION_INDEX.json), 선언은 `types/`, 자동화된 value vocabulary는 owning runtime registry를 사용한다.
 
 | 결정 | 정확한 계약 |

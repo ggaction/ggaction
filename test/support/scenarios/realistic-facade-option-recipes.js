@@ -132,6 +132,13 @@ const HEATMAP_VARIANTS = freeze([
     profileIndex: index
   })),
   {
+    id: "sqrt-rgb",
+    colorType: "sqrt",
+    interpolate: "rgb",
+    positionType: "linear",
+    profileIndex: 2
+  },
+  {
     id: "log-rgb",
     colorType: "log",
     interpolate: "rgb",
@@ -469,6 +476,12 @@ function heatmapColorScale(variant) {
     return {
       id, type: "log", domain: "auto", range: "auto",
       base: 10, interpolate: variant.interpolate, clamp: true, reverse: false
+    };
+  }
+  if (variant.colorType === "sqrt") {
+    return {
+      id, type: "sqrt", domain: "auto", range: "auto",
+      interpolate: variant.interpolate, clamp: true, reverse: false
     };
   }
   if (variant.colorType === "symlog") {
