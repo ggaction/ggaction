@@ -1,3 +1,5 @@
+import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
+import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
@@ -9,7 +11,7 @@ import {
   validateNonEmptyString,
   validateNonNegativeFinite
 } from "../../../core/validation.js";
-import { axisScaleBindings, resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
+import { axisScaleBindings, resolveCartesianAxisFrameBounds } from "../../../materialization/coordinateBounds.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import {
   defaultAxisPosition,
@@ -20,8 +22,8 @@ import { resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 
 const DEFAULT_STYLE = Object.freeze({ color: DEFAULT_COLORS.text, lineWidth: 1 });
-const CREATE_OPTIONS = Object.freeze(["scale", "position", "color", "lineWidth"]);
-const EDIT_OPTIONS = Object.freeze(["position", "color", "lineWidth"]);
+const CREATE_OPTIONS = Object.freeze(["target", "scale", "position", "color", "lineWidth"]);
+const EDIT_OPTIONS = Object.freeze(["target", "position", "color", "lineWidth"]);
 
 function validateStyle({ color, lineWidth }) {
   validateNonEmptyString(color, "Axis line color");
@@ -42,7 +44,7 @@ function resolveLineRange(resolvedScale, bounds, channel, explicitRange) {
     : plotRange.reverse();
 }
 
-function resolveGeometry(program, channel, scaleId, position) {
+function resolveGeometry(program, channel, scaleId, position, axisId = channel) {
   const hasConsumer = program.semanticSpec.layers.some(
     layer => !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale === scaleId
   );
@@ -55,11 +57,7 @@ function resolveGeometry(program, channel, scaleId, position) {
 
   const resolvedScale = program.resolvedScales[scaleId];
   const range = resolvedScale?.range;
-  const bounds = resolveGuideCoordinateBounds(program, {
-    coordinate: program.semanticSpec.guides.axis?.[channel]?.coordinate,
-    scale: scaleId,
-    channel
-  });
+  const bounds = resolveCartesianAxisFrameBounds(program, channel, position, scaleId, axisId);
 
   if (!Array.isArray(range) || range.length !== 2 || !range.every(Number.isFinite)) {
     throw new Error(`Axis line requires a resolved numeric scale "${scaleId}".`);
@@ -80,10 +78,10 @@ function resolveGeometry(program, channel, scaleId, position) {
   );
 }
 
-function axisIds(channel) {
+function axisIds(channel, axisId = channel) {
   return {
-    graphic: `${channel}AxisLine`,
-    guidePath: `guide.axis.${channel}.scale`
+    graphic: axisGraphicIds(channel, axisId)[0],
+    guidePath: `guide.axis.${axisId}.scale`
   };
 }
 
@@ -94,24 +92,26 @@ function createEditAxisLine(channel) {
     { op: operation, description: `Edit the concrete ${channel}-axis line.` },
     withGuideLayoutValidation(function (args = {}) {
       validateKeys(args, EDIT_OPTIONS, operation);
-      const { graphic } = axisIds(channel);
+      const selected = selectCartesianAxis(this, channel, args, { create: false });
+      const axisId = selected.id; args = selected.options;
+      const { graphic } = axisIds(channel, axisId);
       const line = this.graphicSpec.objects[graphic];
 
       if (line?.type !== "line") {
         throw new Error(`${operation} requires an existing ${channel}-axis line.`);
       }
 
-      const previous = this.guideConfigs.axis?.[channel]?.line;
+      const previous = this.guideConfigs.axis?.[axisId]?.line;
       const position = validateAxisPosition(
         channel,
         args.position ?? previous?.position ?? defaultAxisPosition(channel)
       );
-      const scaleId = this.semanticSpec.guides.axis?.[channel]?.scale;
-      const geometry = resolveGeometry(this, channel, scaleId, position);
+      const scaleId = this.semanticSpec.guides.axis?.[axisId]?.scale;
+      const geometry = resolveGeometry(this, channel, scaleId, position, axisId);
       const color = args.color ?? line.properties.stroke;
       const lineWidth = args.lineWidth ?? line.properties.strokeWidth;
       validateStyle({ color, lineWidth });
-      let next = this._withGuideConfig(channel, "line", {
+      let next = this._withGuideConfig(axisId, "line", {
         position,
         color,
         lineWidth
@@ -140,6 +140,8 @@ function createAxisLine(channel) {
     { op: operation, description: `Create the concrete ${channel}-axis line.` },
     withGuideLayoutValidation(function (args = {}) {
       validateKeys(args, CREATE_OPTIONS, operation);
+      const selected = selectCartesianAxis(this, channel, args, { create: true });
+      const axisId = selected.id; args = selected.options;
       const scale = validateUserId(args.scale ?? channel, "Scale id");
       const position = validateAxisPosition(
         channel,
@@ -148,8 +150,8 @@ function createAxisLine(channel) {
       const color = args.color ?? DEFAULT_STYLE.color;
       const lineWidth = args.lineWidth ?? DEFAULT_STYLE.lineWidth;
       validateStyle({ color, lineWidth });
-      resolveGeometry(this, channel, scale, position);
-      const { graphic, guidePath } = axisIds(channel);
+      resolveGeometry(this, channel, scale, position, axisId);
+      const { graphic, guidePath } = axisIds(channel, axisId);
 
       if (this.graphicSpec.objects[graphic] !== undefined) {
         throw new Error(`${operation} requires a missing ${channel}-axis line.`);
@@ -162,7 +164,7 @@ function createAxisLine(channel) {
           type: "line",
           ...resolvePlotGraphicPlacement(this)
         })
-        [editOperation]({ position, color, lineWidth });
+        [editOperation]({ ...axisTargetArgs(axisId, channel), position, color, lineWidth });
     })
   );
 }

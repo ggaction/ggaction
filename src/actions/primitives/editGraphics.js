@@ -1,6 +1,7 @@
+import { validateGraphicItemLimit } from "../../core/validation.js";
 import { closedAction } from "../../core/action.js";
 import { cloneAndFreeze, freezeOwned, isPlainObject } from "../../core/immutable.js";
-import { validateGeneratedItemLimit } from "../../core/validation.js";
+import { resolveGraphicItemCapacity } from "../../selectors/graphicCapacity.js";
 import {
   isPrimitiveDrawableGraphicType,
   isStructuralGraphicType,
@@ -43,14 +44,14 @@ function validateCollectionItem(item, ownerId, index) {
   });
 }
 
-function replaceCollectionItems(value, id) {
+function replaceCollectionItems(value, id, program) {
   if (!Array.isArray(value)) throw new TypeError("collection.items must be an array.");
-  validateGeneratedItemLimit(value.length, "collection.items length");
+  validateGraphicItemLimit(value.length, resolveGraphicItemCapacity(program, { id, label: "collection.items length" }));
   return freezeOwned(value.map((item, index) => validateCollectionItem(item, id, index)));
 }
 
-function replaceDrawableItems(value, id, type) {
-  const items = replaceCollectionItems(value, id);
+function replaceDrawableItems(value, id, type, program) {
+  const items = replaceCollectionItems(value, id, program);
   if (!items.every(item => item.type === type)) {
     return freezeOwned({ type: "collection", items });
   }
@@ -102,15 +103,15 @@ function editGeneratedItem(owner, itemIndex, property, value) {
   return freezeOwned({ ...owner, items: freezeOwned(items) });
 }
 
-function editItems(owner, property, value, id) {
+function editItems(owner, property, value, id, program) {
   if (owner.type === "collection" && property === "items") {
-    return freezeOwned({ ...owner, items: replaceCollectionItems(value, id) });
+    return freezeOwned({ ...owner, items: replaceCollectionItems(value, id, program) });
   }
   if (property === "length") {
     if (!Number.isInteger(value) || value < 0) {
       throw new TypeError("Graphic collection length must be a non-negative integer.");
     }
-    validateGeneratedItemLimit(value, "Graphic collection length");
+    validateGraphicItemLimit(value, resolveGraphicItemCapacity(program, { id, label: "Graphic collection length" }));
     const items = owner.items.slice(0, value);
     for (let index = items.length; index < value; index += 1) {
       if (owner.type === "collection") {
@@ -189,6 +190,9 @@ const editGraphics = /* @__PURE__ */ closedAction(
 
     const ownerId = found.kind === "item" ? found.ownerId : found.id;
     const owner = found.kind === "item" ? found.owner : found.object;
+    if (owner.items !== undefined) validateGraphicItemLimit(owner.items.length, resolveGraphicItemCapacity(this, {
+      id: ownerId, label: "Graphic collection length"
+    }));
     const replacesDrawableItems =
       found.kind === "object" && property === "items" &&
       owner.items !== undefined && owner.type !== "collection";
@@ -199,7 +203,7 @@ const editGraphics = /* @__PURE__ */ closedAction(
           : owner.type, property);
     let updated;
     if (replacesDrawableItems) {
-      updated = replaceDrawableItems(value, ownerId, owner.type);
+      updated = replaceDrawableItems(value, ownerId, owner.type, this);
     } else if (found.kind === "item") {
       if (validatedProperty === "length" || validatedProperty === "items") {
         throw new Error(`${validatedProperty} can only target an owning graphic.`);
@@ -212,12 +216,12 @@ const editGraphics = /* @__PURE__ */ closedAction(
         properties: setGraphicProperty(owner.properties, validatedProperty, value)
       });
     } else if (owner.items !== undefined) {
-      updated = editItems(owner, validatedProperty, value, ownerId);
+      updated = editItems(owner, validatedProperty, value, ownerId, this);
     } else if (validatedProperty === "length") {
       if (!Number.isInteger(value) || value < 0) {
         throw new TypeError("Graphic collection length must be a non-negative integer.");
       }
-      validateGeneratedItemLimit(value, "Graphic collection length");
+      validateGraphicItemLimit(value, resolveGraphicItemCapacity(this, { id: ownerId, label: "Graphic collection length" }));
       updated = freezeOwned({
         type: owner.type,
         items: freezeOwned(Array.from({ length: value }, (_, index) => freezeOwned({

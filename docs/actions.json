@@ -1,9 +1,9 @@
 {
   "schemaVersion": 3,
-  "packageVersion": "0.0.18",
+  "packageVersion": "0.0.19",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 282,
+  "count": 284,
   "cards": [
     {
       "schemaVersion": 3,
@@ -2196,7 +2196,7 @@
       "name": "createRegressionData",
       "layer": "user-facing",
       "domain": "core",
-      "summary": "Create immutable linear, polynomial, or LOESS fitted rows at observed unique x values.",
+      "summary": "Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x values.",
       "signature": "createRegressionData(options: RegressionDataOptions): ChartProgram;",
       "intents": [
         "create regression data",
@@ -2286,7 +2286,12 @@
         {
           "name": "method",
           "required": false,
-          "type": "\"linear\" | \"loess\" | \"polynomial\" | undefined"
+          "type": "\"exp\" | \"linear\" | \"loess\" | \"polynomial\" | undefined"
+        },
+        {
+          "name": "interval",
+          "required": false,
+          "type": "false | RegressionInterval | undefined"
         },
         {
           "name": "degree",
@@ -2319,22 +2324,95 @@
           "type": "number | undefined"
         },
         {
-          "name": "interval",
-          "required": false,
-          "type": "false | RegressionInterval | undefined"
-        },
-        {
           "name": "predict",
           "required": false,
           "type": "RegressionPredictOptions | undefined"
         }
       ],
       "callPatterns": [
-        "createRegressionData({ id, x, y, source?, groupBy?, missing?, method?, degree? })"
+        "createRegressionData({ id, x, y, source?, groupBy?, missing?, method?, interval? })"
       ],
       "snippet": "program.createRegressionData({ id: \"regression-data-1\", x: \"x\", y: \"y\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createregressiondata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createRegressionStatisticsData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Create observation counts, intercepts, slopes, and R-squared from an explicit existing linear fit.",
+      "signature": "createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;",
+      "intents": [
+        "create regression statistics data",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "regression statistics dataset",
+        "linear fit coefficients"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "materialized linear regression dataset",
+          "source dataset"
+        ],
+        "owns": [
+          "regression statistics dataset"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "createDerivedData"
+      ],
+      "editableVia": [
+        "editRegressionStatisticsData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "materialized linear regression dataset",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "createRegressionStatisticsData({ id, source })"
+      ],
+      "snippet": "program.createRegressionStatisticsData({ id: \"fitStatistics\", source: \"fit\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createregressionstatisticsdata"
     },
     {
       "schemaVersion": 3,
@@ -3942,7 +4020,12 @@
         {
           "name": "method",
           "required": false,
-          "type": "\"linear\" | \"loess\" | \"polynomial\" | undefined"
+          "type": "\"exp\" | \"linear\" | \"loess\" | \"polynomial\" | undefined"
+        },
+        {
+          "name": "interval",
+          "required": false,
+          "type": "false | RegressionInterval | undefined"
         },
         {
           "name": "degree",
@@ -3975,11 +4058,6 @@
           "type": "number | undefined"
         },
         {
-          "name": "interval",
-          "required": false,
-          "type": "false | RegressionInterval | undefined"
-        },
-        {
           "name": "predict",
           "required": false,
           "type": "RegressionPredictOptions | undefined"
@@ -4006,11 +4084,93 @@
         }
       ],
       "callPatterns": [
-        "editRegressionData({ target, dependents?, method?, degree?, span?, robustIterations?, confidenceMethod?, level? })"
+        "editRegressionData({ target, dependents?, method?, interval?, degree?, span?, robustIterations?, confidenceMethod? })"
       ],
       "snippet": "program.editRegressionData({ target: \"regression\", method: \"loess\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editregressiondata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editRegressionStatisticsData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Revise a standalone statistics owner's linear fit source and replay its consumers atomically.",
+      "signature": "editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;",
+      "intents": [
+        "edit regression statistics data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "regression statistics dataset",
+        "linear fit coefficients"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "materialized linear regression dataset",
+          "existing regression statistics dataset",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "source"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "createDerivedData"
+      ],
+      "editableVia": [
+        "editRegressionStatisticsData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "source",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "materialized linear regression dataset",
+          "existing regression statistics dataset",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editRegressionStatisticsData({ target?, source? })"
+      ],
+      "snippet": "program.editRegressionStatisticsData({ target: \"fitStatistics\", source: \"anotherFit\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editregressionstatisticsdata"
     },
     {
       "schemaVersion": 3,
@@ -7822,7 +7982,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit whole-bar appearance and rematerialize every concrete rectangle.",
-      "signature": "editBarMark(options: RectStyleDetails & { target?: string; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "editBarMark(options: RectStyleDetails & { target?: string; blend?: \"normal\" | \"difference\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "edit bar mark",
         "edit",
@@ -7922,6 +8082,11 @@
           "name": "target",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "\"difference\" | \"normal\" | undefined"
         },
         {
           "name": "missing",
@@ -9016,7 +9181,7 @@
         {
           "name": "scale",
           "required": false,
-          "type": "DiscretizedColorScaleOptions | CategoricalColorScaleOptions | ContinuousColorScaleOptions | (Omit<...> & { ...; }) | undefined"
+          "type": "ContinuousColorScaleOptions | DiscretizedColorScaleOptions | CategoricalColorScaleOptions | (Omit<...> & { ...; }) | undefined"
         },
         {
           "name": "palette",
@@ -9243,7 +9408,7 @@
         {
           "name": "scale",
           "required": false,
-          "type": "DiscretizedColorScaleOptions | CategoricalColorScaleOptions | ContinuousColorScaleOptions | (Omit<...> & { ...; }) | undefined"
+          "type": "ContinuousColorScaleOptions | DiscretizedColorScaleOptions | CategoricalColorScaleOptions | (Omit<...> & { ...; }) | undefined"
         }
       ],
       "callPatterns": [
@@ -12384,7 +12549,12 @@
         {
           "name": "method",
           "required": false,
-          "type": "\"linear\" | \"loess\" | \"polynomial\" | undefined"
+          "type": "\"exp\" | \"linear\" | \"loess\" | \"polynomial\" | undefined"
+        },
+        {
+          "name": "interval",
+          "required": false,
+          "type": "false | RegressionInterval | undefined"
         },
         {
           "name": "degree",
@@ -12415,11 +12585,6 @@
           "name": "confidence",
           "required": false,
           "type": "number | undefined"
-        },
-        {
-          "name": "interval",
-          "required": false,
-          "type": "false | RegressionInterval | undefined"
         },
         {
           "name": "predict",
@@ -14708,12 +14873,12 @@
         {
           "name": "x",
           "required": false,
-          "type": "false | CompleteAxisOptions<XAxisPosition> | undefined"
+          "type": "false | CompleteAxisOptions<XAxisPosition> | readonly [NamedCompleteAxis<XAxisPosition>, ...NamedCompleteAxis<XAxisPosition>[]] | undefined"
         },
         {
           "name": "y",
           "required": false,
-          "type": "false | CompleteAxisOptions<YAxisPosition> | undefined"
+          "type": "false | CompleteAxisOptions<YAxisPosition> | readonly [NamedCompleteAxis<YAxisPosition>, ...NamedCompleteAxis<YAxisPosition>[]] | undefined"
         },
         {
           "name": "theta",
@@ -14758,6 +14923,7 @@
           "x axis"
         ],
         "idOptions": [
+          "id",
           "scale",
           "coordinate"
         ]
@@ -14780,7 +14946,12 @@
           "basic"
         ]
       },
-      "units": [],
+      "units": [
+        {
+          "path": "offset",
+          "unit": "logical-pixel"
+        }
+      ],
       "inference": [
         {
           "input": "scale",
@@ -14804,6 +14975,16 @@
       },
       "options": [
         {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "offset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "scale",
           "required": false,
           "type": "string | undefined"
@@ -14826,16 +15007,16 @@
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "title",
           "required": false,
-          "type": "false | Omit<AxisTitleOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTitleOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         }
       ],
       "callPatterns": [
-        "createXAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })"
+        "createXAxis({ id?, scale?, coordinate?, offset?, position?, line?, ticksAndLabels?, title? })"
       ],
       "snippet": "program.createXAxis({})",
       "errors": [],
@@ -14866,6 +15047,7 @@
           "y axis"
         ],
         "idOptions": [
+          "id",
           "scale",
           "coordinate"
         ]
@@ -14888,7 +15070,12 @@
           "basic"
         ]
       },
-      "units": [],
+      "units": [
+        {
+          "path": "offset",
+          "unit": "logical-pixel"
+        }
+      ],
       "inference": [
         {
           "input": "scale",
@@ -14912,6 +15099,16 @@
       },
       "options": [
         {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "offset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "scale",
           "required": false,
           "type": "string | undefined"
@@ -14934,16 +15131,16 @@
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "title",
           "required": false,
-          "type": "false | Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         }
       ],
       "callPatterns": [
-        "createYAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })"
+        "createYAxis({ id?, scale?, coordinate?, offset?, position?, line?, ticksAndLabels?, title? })"
       ],
       "snippet": "program.createYAxis({})",
       "errors": [],
@@ -14955,7 +15152,7 @@
       "layer": "user-facing",
       "domain": "axes",
       "summary": "Creates x-axis line for horizontal baseline.",
-      "signature": "createXAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: XAxisPosition }): ChartProgram;",
+      "signature": "createXAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }): ChartProgram;",
       "intents": [
         "create x axis line",
         "create",
@@ -14974,6 +15171,7 @@
           "x-axis line"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -15002,6 +15200,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -15029,6 +15231,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "scale",
           "required": false,
           "type": "string | undefined"
@@ -15040,7 +15247,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisLine({ scale?, color?, lineWidth?, position? })"
+        "createXAxisLine({ target?, scale?, color?, lineWidth?, position? })"
       ],
       "snippet": "program.createXAxisLine({})",
       "errors": [],
@@ -15052,7 +15259,7 @@
       "layer": "user-facing",
       "domain": "axes",
       "summary": "Creates y-axis line for vertical baseline.",
-      "signature": "createYAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: YAxisPosition }): ChartProgram;",
+      "signature": "createYAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }): ChartProgram;",
       "intents": [
         "create y axis line",
         "create",
@@ -15071,6 +15278,7 @@
           "y-axis line"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -15099,6 +15307,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -15126,6 +15338,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "scale",
           "required": false,
           "type": "string | undefined"
@@ -15137,7 +15354,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisLine({ scale?, color?, lineWidth?, position? })"
+        "createYAxisLine({ target?, scale?, color?, lineWidth?, position? })"
       ],
       "snippet": "program.createYAxisLine({})",
       "errors": [],
@@ -15149,7 +15366,7 @@
       "layer": "user-facing",
       "domain": "axes",
       "summary": "Edits x-axis line, including settings for horizontal baseline.",
-      "signature": "editXAxisLine(options?: AxisLineStyleOptions & { position?: XAxisPosition }): ChartProgram;",
+      "signature": "editXAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: XAxisPosition }): ChartProgram;",
       "intents": [
         "edit x axis line",
         "edit",
@@ -15166,7 +15383,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -15188,7 +15407,12 @@
           "unit": "logical-pixel"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -15209,13 +15433,18 @@
           "type": "number | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "XAxisPosition | undefined"
         }
       ],
       "callPatterns": [
-        "editXAxisLine({ color?, lineWidth?, position? })"
+        "editXAxisLine({ target?, color?, lineWidth?, position? })"
       ],
       "snippet": "program.editXAxisLine({ color: \"#f28e2b\" })",
       "errors": [],
@@ -15227,7 +15456,7 @@
       "layer": "user-facing",
       "domain": "axes",
       "summary": "Edits y-axis line, including settings for vertical baseline.",
-      "signature": "editYAxisLine(options?: AxisLineStyleOptions & { position?: YAxisPosition }): ChartProgram;",
+      "signature": "editYAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: YAxisPosition }): ChartProgram;",
       "intents": [
         "edit y axis line",
         "edit",
@@ -15244,7 +15473,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -15266,7 +15497,12 @@
           "unit": "logical-pixel"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -15287,13 +15523,18 @@
           "type": "number | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "YAxisPosition | undefined"
         }
       ],
       "callPatterns": [
-        "editYAxisLine({ color?, lineWidth?, position? })"
+        "editYAxisLine({ target?, color?, lineWidth?, position? })"
       ],
       "snippet": "program.editYAxisLine({ color: \"#f28e2b\" })",
       "errors": [],
@@ -15324,6 +15565,7 @@
           "x-axis ticks"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -15364,8 +15606,16 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
         },
         {
           "input": "omitted optional options",
@@ -15380,6 +15630,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "scale",
           "required": false,
@@ -15416,13 +15671,23 @@
           "type": "number | undefined"
         },
         {
+          "name": "strokeDash",
+          "required": false,
+          "type": "readonly number[] | undefined"
+        },
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
+        {
           "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "createXAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length?, alongOffset? })"
+        "createXAxisTicks({ target?, scale?, position?, count?, values?, color?, lineWidth?, length? })"
       ],
       "snippet": "program.createXAxisTicks({})",
       "errors": [],
@@ -15453,6 +15718,7 @@
           "y-axis ticks"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -15493,8 +15759,16 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
         },
         {
           "input": "omitted optional options",
@@ -15509,6 +15783,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "scale",
           "required": false,
@@ -15545,13 +15824,23 @@
           "type": "number | undefined"
         },
         {
+          "name": "strokeDash",
+          "required": false,
+          "type": "readonly number[] | undefined"
+        },
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
+        {
           "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "createYAxisTicks({ scale?, position?, count?, values?, color?, lineWidth?, length?, alongOffset? })"
+        "createYAxisTicks({ target?, scale?, position?, count?, values?, color?, lineWidth?, length? })"
       ],
       "snippet": "program.createYAxisTicks({})",
       "errors": [],
@@ -15580,7 +15869,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -15614,7 +15905,16 @@
           "unit": "count"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -15640,9 +15940,24 @@
           "type": "number | undefined"
         },
         {
+          "name": "strokeDash",
+          "required": false,
+          "type": "readonly number[] | undefined"
+        },
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
+        {
           "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
         },
         {
           "name": "position",
@@ -15661,7 +15976,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisTicks({ color?, lineWidth?, length?, alongOffset?, position?, count?, values? })"
+        "editXAxisTicks({ target?, color?, lineWidth?, length?, strokeDash?, strokeDashMap?, alongOffset?, position? })"
       ],
       "snippet": "program.editXAxisTicks({ color: \"#f28e2b\" })",
       "errors": [],
@@ -15690,7 +16005,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -15724,7 +16041,16 @@
           "unit": "count"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -15750,9 +16076,24 @@
           "type": "number | undefined"
         },
         {
+          "name": "strokeDash",
+          "required": false,
+          "type": "readonly number[] | undefined"
+        },
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
+        {
           "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
         },
         {
           "name": "position",
@@ -15771,7 +16112,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisTicks({ color?, lineWidth?, length?, alongOffset?, position?, count?, values? })"
+        "editYAxisTicks({ target?, color?, lineWidth?, length?, strokeDash?, strokeDashMap?, alongOffset?, position? })"
       ],
       "snippet": "program.editYAxisTicks({ color: \"#f28e2b\" })",
       "errors": [],
@@ -15802,6 +16143,7 @@
           "x-axis labels"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -15854,6 +16196,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -15878,6 +16224,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "scale",
           "required": false,
@@ -15934,6 +16285,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "colorMap",
           "required": false,
           "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
@@ -15975,7 +16331,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisLabels({ scale?, position?, count?, values?, labelMap?, offset?, format?, color? })"
+        "createXAxisLabels({ target?, scale?, position?, count?, values?, labelMap?, offset?, format? })"
       ],
       "snippet": "program.createXAxisLabels({})",
       "errors": [],
@@ -16006,6 +16362,7 @@
           "y-axis labels"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -16058,6 +16415,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -16082,6 +16443,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "scale",
           "required": false,
@@ -16138,6 +16504,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "colorMap",
           "required": false,
           "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
@@ -16179,7 +16550,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisLabels({ scale?, position?, count?, values?, labelMap?, offset?, format?, color? })"
+        "createYAxisLabels({ target?, scale?, position?, count?, values?, labelMap?, offset?, format? })"
       ],
       "snippet": "program.createYAxisLabels({})",
       "errors": [],
@@ -16208,7 +16579,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -16263,6 +16636,10 @@
         {
           "input": "colorMap",
           "strategy": "documented-auto"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
         }
       ],
       "completionRequirements": {
@@ -16310,6 +16687,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "colorMap",
           "required": false,
           "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
@@ -16350,6 +16732,11 @@
           "type": "\"allow\" | \"error\" | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "XAxisPosition | undefined"
@@ -16366,7 +16753,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, colorMap? })"
+        "editXAxisLabels({ target?, labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? })"
       ],
       "snippet": "program.editXAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
@@ -16395,7 +16782,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -16450,6 +16839,10 @@
         {
           "input": "colorMap",
           "strategy": "documented-auto"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
         }
       ],
       "completionRequirements": {
@@ -16497,6 +16890,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "colorMap",
           "required": false,
           "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
@@ -16537,6 +16935,11 @@
           "type": "\"allow\" | \"error\" | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "YAxisPosition | undefined"
@@ -16553,7 +16956,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, colorMap? })"
+        "editYAxisLabels({ target?, labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? })"
       ],
       "snippet": "program.editYAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
@@ -16584,6 +16987,7 @@
           "x-axis ticks and labels"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -16611,6 +17015,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -16627,6 +17035,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "scale",
           "required": false,
@@ -16659,7 +17072,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisTicksAndLabels({ scale?, position?, count?, values?, ticks?, labels? })"
+        "createXAxisTicksAndLabels({ target?, scale?, position?, count?, values?, ticks?, labels? })"
       ],
       "snippet": "program.createXAxisTicksAndLabels({})",
       "errors": [],
@@ -16690,6 +17103,7 @@
           "y-axis ticks and labels"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -16717,6 +17131,10 @@
       ],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -16733,6 +17151,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "scale",
           "required": false,
@@ -16765,7 +17188,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisTicksAndLabels({ scale?, position?, count?, values?, ticks?, labels? })"
+        "createYAxisTicksAndLabels({ target?, scale?, position?, count?, values?, ticks?, labels? })"
       ],
       "snippet": "program.createYAxisTicksAndLabels({})",
       "errors": [],
@@ -16794,7 +17217,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -16817,7 +17242,12 @@
           "unit": "count"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -16827,6 +17257,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "position",
           "required": false,
@@ -16854,7 +17289,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisTicksAndLabels({ position?, count?, values?, ticks?, labels? })"
+        "editXAxisTicksAndLabels({ target?, position?, count?, values?, ticks?, labels? })"
       ],
       "snippet": "program.editXAxisTicksAndLabels({ position: \"bottom\" })",
       "errors": [],
@@ -16883,7 +17318,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -16906,7 +17343,12 @@
           "unit": "count"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -16916,6 +17358,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
         {
           "name": "position",
           "required": false,
@@ -16943,7 +17390,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisTicksAndLabels({ position?, count?, values?, ticks?, labels? })"
+        "editYAxisTicksAndLabels({ target?, position?, count?, values?, ticks?, labels? })"
       ],
       "snippet": "program.editYAxisTicksAndLabels({ position: \"left\" })",
       "errors": [],
@@ -16974,6 +17421,7 @@
           "x-axis title"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -16996,6 +17444,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -17009,6 +17461,10 @@
         }
       ],
       "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
         {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
@@ -17026,6 +17482,26 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+        },
         {
           "name": "text",
           "required": false,
@@ -17078,7 +17554,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisTitle({ scale?, text?, position?, at?, offset?, rotation?, color?, fontSize? })"
+        "createXAxisTitle({ target?, scale?, alongOffset?, align?, baseline?, text?, position?, at? })"
       ],
       "snippet": "program.createXAxisTitle({})",
       "errors": [],
@@ -17109,6 +17585,7 @@
           "y-axis title"
         ],
         "idOptions": [
+          "target",
           "scale"
         ]
       },
@@ -17131,6 +17608,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -17144,6 +17625,10 @@
         }
       ],
       "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
         {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
@@ -17161,6 +17646,26 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+        },
         {
           "name": "text",
           "required": false,
@@ -17213,7 +17718,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisTitle({ scale?, text?, position?, at?, offset?, rotation?, color?, fontSize? })"
+        "createYAxisTitle({ target?, scale?, alongOffset?, align?, baseline?, text?, position?, at? })"
       ],
       "snippet": "program.createYAxisTitle({})",
       "errors": [],
@@ -17242,7 +17747,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -17261,6 +17768,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -17273,7 +17784,12 @@
           "unit": "logical-pixel"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -17283,6 +17799,26 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+        },
         {
           "name": "text",
           "required": false,
@@ -17330,9 +17866,9 @@
         }
       ],
       "callPatterns": [
-        "editXAxisTitle({ text?, position?, at?, offset?, rotation?, color?, fontSize?, fontFamily? })"
+        "editXAxisTitle({ target?, alongOffset?, align?, baseline?, text?, position?, at?, offset? })"
       ],
-      "snippet": "program.editXAxisTitle({ text: \"Chart title\" })",
+      "snippet": "program.editXAxisTitle({ alongOffset: 1 })",
       "errors": [],
       "route": "/reference/actions/guides/#editxaxistitle"
     },
@@ -17359,7 +17895,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -17378,6 +17916,10 @@
       },
       "units": [
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -17390,7 +17932,12 @@
           "unit": "logical-pixel"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -17400,6 +17947,26 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "alongOffset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+        },
         {
           "name": "text",
           "required": false,
@@ -17447,9 +18014,9 @@
         }
       ],
       "callPatterns": [
-        "editYAxisTitle({ text?, position?, at?, offset?, rotation?, color?, fontSize?, fontFamily? })"
+        "editYAxisTitle({ target?, alongOffset?, align?, baseline?, text?, position?, at?, offset? })"
       ],
-      "snippet": "program.editYAxisTitle({ text: \"Chart title\" })",
+      "snippet": "program.editYAxisTitle({ alongOffset: 1 })",
       "errors": [],
       "route": "/reference/actions/guides/#edityaxistitle"
     },
@@ -17476,7 +18043,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -17495,8 +18064,18 @@
           "default"
         ]
       },
-      "units": [],
-      "inference": [],
+      "units": [
+        {
+          "path": "offset",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -17506,6 +18085,16 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "offset",
+          "required": false,
+          "type": "number | undefined"
+        },
         {
           "name": "position",
           "required": false,
@@ -17519,26 +18108,26 @@
         {
           "name": "ticks",
           "required": false,
-          "type": "false | Omit<AxisTickOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTickOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "false | Omit<AxisLabelOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisLabelOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "title",
           "required": false,
-          "type": "false | Omit<AxisTitleOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTitleOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         }
       ],
       "callPatterns": [
-        "editXAxis({ position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
+        "editXAxis({ target?, offset?, position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
       ],
       "snippet": "program.editXAxis({ position: \"bottom\" })",
       "errors": [],
@@ -17567,7 +18156,9 @@
           "compatible scale or encoding context"
         ],
         "owns": [],
-        "idOptions": []
+        "idOptions": [
+          "target"
+        ]
       },
       "authoringRoles": [
         "H3"
@@ -17584,8 +18175,18 @@
           "default"
         ]
       },
-      "units": [],
-      "inference": [],
+      "units": [
+        {
+          "path": "offset",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -17595,6 +18196,16 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "offset",
+          "required": false,
+          "type": "number | undefined"
+        },
         {
           "name": "position",
           "required": false,
@@ -17608,26 +18219,26 @@
         {
           "name": "ticks",
           "required": false,
-          "type": "false | Omit<AxisTickOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTickOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "false | Omit<AxisLabelOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisLabelOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         },
         {
           "name": "title",
           "required": false,
-          "type": "false | Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
         }
       ],
       "callPatterns": [
-        "editYAxis({ position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
+        "editYAxis({ target?, offset?, position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
       ],
       "snippet": "program.editYAxis({ position: \"left\" })",
       "errors": [],
@@ -17657,6 +18268,7 @@
         ],
         "owns": [],
         "idOptions": [
+          "target",
           "coordinate",
           "scale"
         ]
@@ -17677,6 +18289,10 @@
       "units": [],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "coordinate",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -17695,6 +18311,11 @@
       },
       "options": [
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
@@ -17706,7 +18327,7 @@
         }
       ],
       "callPatterns": [
-        "removeXAxis({ coordinate?, scale? })"
+        "removeXAxis({ target?, coordinate?, scale? })"
       ],
       "snippet": "program.removeXAxis({})",
       "errors": [],
@@ -17736,6 +18357,7 @@
         ],
         "owns": [],
         "idOptions": [
+          "target",
           "coordinate",
           "scale"
         ]
@@ -17756,6 +18378,10 @@
       "units": [],
       "inference": [
         {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
           "input": "coordinate",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -17774,6 +18400,11 @@
       },
       "options": [
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
@@ -17785,7 +18416,7 @@
         }
       ],
       "callPatterns": [
-        "removeYAxis({ coordinate?, scale? })"
+        "removeYAxis({ target?, coordinate?, scale? })"
       ],
       "snippet": "program.removeYAxis({})",
       "errors": [],
@@ -17939,6 +18570,10 @@
       ],
       "inference": [
         {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -17959,6 +18594,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
         {
           "name": "alongOffset",
           "required": false,
@@ -18011,7 +18651,7 @@
         }
       ],
       "callPatterns": [
-        "createHorizontalGrid({ scale?, coordinate?, alongOffset?, zIndex?, bandPosition?, count?, values?, color? })"
+        "createHorizontalGrid({ scale?, coordinate?, strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values? })"
       ],
       "snippet": "program.createHorizontalGrid({})",
       "errors": [],
@@ -18078,6 +18718,10 @@
       ],
       "inference": [
         {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -18098,6 +18742,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
         {
           "name": "alongOffset",
           "required": false,
@@ -18150,7 +18799,7 @@
         }
       ],
       "callPatterns": [
-        "createVerticalGrid({ scale?, coordinate?, alongOffset?, zIndex?, bandPosition?, count?, values?, color? })"
+        "createVerticalGrid({ scale?, coordinate?, strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values? })"
       ],
       "snippet": "program.createVerticalGrid({})",
       "errors": [],
@@ -18209,6 +18858,10 @@
       ],
       "inference": [
         {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "values",
           "strategy": "documented-auto"
         }
@@ -18222,6 +18875,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
         {
           "name": "alongOffset",
           "required": false,
@@ -18264,9 +18922,9 @@
         }
       ],
       "callPatterns": [
-        "editHorizontalGrid({ alongOffset?, zIndex?, bandPosition?, count?, values?, color?, lineWidth?, strokeDash? })"
+        "editHorizontalGrid({ strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values?, color?, lineWidth? })"
       ],
-      "snippet": "program.editHorizontalGrid({ alongOffset: 1 })",
+      "snippet": "program.editHorizontalGrid({ strokeDashMap: \"auto\" })",
       "errors": [],
       "route": "/reference/actions/guides/#edithorizontalgrid"
     },
@@ -18323,6 +18981,10 @@
       ],
       "inference": [
         {
+          "input": "strokeDashMap",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "values",
           "strategy": "documented-auto"
         }
@@ -18336,6 +18998,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "strokeDashMap",
+          "required": false,
+          "type": "\"auto\" | CartesianGuideDashMap | undefined"
+        },
         {
           "name": "alongOffset",
           "required": false,
@@ -18378,9 +19045,9 @@
         }
       ],
       "callPatterns": [
-        "editVerticalGrid({ alongOffset?, zIndex?, bandPosition?, count?, values?, color?, lineWidth?, strokeDash? })"
+        "editVerticalGrid({ strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values?, color?, lineWidth? })"
       ],
-      "snippet": "program.editVerticalGrid({ alongOffset: 1 })",
+      "snippet": "program.editVerticalGrid({ strokeDashMap: \"auto\" })",
       "errors": [],
       "route": "/reference/actions/guides/#editverticalgrid"
     },
@@ -18614,6 +19281,16 @@
       },
       "options": [
         {
+          "name": "clipHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "combine",
+          "required": false,
+          "type": "\"color-size\" | \"separate\" | \"size-shape\" | undefined"
+        },
+        {
           "name": "representation",
           "required": false,
           "type": "\"gradient\" | \"symbols\" | undefined"
@@ -18681,7 +19358,7 @@
         {
           "name": "titlePosition",
           "required": false,
-          "type": "\"left\" | \"top\" | undefined"
+          "type": "\"bottom\" | \"left\" | \"top\" | undefined"
         },
         {
           "name": "title",
@@ -18730,7 +19407,7 @@
         }
       ],
       "callPatterns": [
-        "createLegend({ target?, representation?, layout?, overflow?, order?, channels?, position?, blockLayout? })"
+        "createLegend({ target?, clipHeight?, combine?, representation?, layout?, overflow?, order?, channels? })"
       ],
       "snippet": "program.createLegend({})",
       "errors": [],
@@ -18741,7 +19418,7 @@
       "name": "editLegend",
       "layer": "user-facing",
       "domain": "legend_and_title",
-      "summary": "Partially edit one existing legend.",
+      "summary": "Singular channel selects one existing block without changing sibling typography.",
       "signature": "editLegend(options: EditLegendOptions): ChartProgram;",
       "intents": [
         "edit legend",
@@ -18794,6 +19471,14 @@
       ],
       "inference": [
         {
+          "input": "clipHeight",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "direction",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "values",
           "strategy": "documented-auto"
         },
@@ -18811,6 +19496,26 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "clipHeight",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
+          "name": "channel",
+          "required": false,
+          "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+        },
+        {
+          "name": "position",
+          "required": false,
+          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"inherit\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
+        },
+        {
+          "name": "direction",
+          "required": false,
+          "type": "\"auto\" | \"horizontal\" | \"vertical\" | undefined"
+        },
         {
           "name": "titleStyle",
           "required": false,
@@ -18830,6 +19535,11 @@
           "name": "values",
           "required": false,
           "type": "\"auto\" | readonly number[] | undefined"
+        },
+        {
+          "name": "combine",
+          "required": false,
+          "type": "\"color-size\" | \"separate\" | \"size-shape\" | undefined"
         },
         {
           "name": "representation",
@@ -18857,11 +19567,6 @@
           "type": "string | undefined"
         },
         {
-          "name": "position",
-          "required": false,
-          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
-        },
-        {
           "name": "blockLayout",
           "required": false,
           "type": "\"column\" | \"row\" | \"wrap\" | undefined"
@@ -18877,11 +19582,6 @@
           "type": "\"center\" | \"left\" | \"right\" | undefined"
         },
         {
-          "name": "direction",
-          "required": false,
-          "type": "\"horizontal\" | \"vertical\" | undefined"
-        },
-        {
           "name": "columns",
           "required": false,
           "type": "number | undefined"
@@ -18894,7 +19594,7 @@
         {
           "name": "titlePosition",
           "required": false,
-          "type": "\"left\" | \"top\" | undefined"
+          "type": "\"bottom\" | \"left\" | \"top\" | undefined"
         },
         {
           "name": "count",
@@ -18928,7 +19628,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, titleStyle?, channels?, title?, values?, representation?, layout?, overflow? })"
+        "editLegend({ target?, clipHeight?, channel?, position?, direction?, titleStyle?, channels?, title? })"
       ],
       "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],
@@ -18983,6 +19683,10 @@
       ],
       "inference": [
         {
+          "input": "clipHeight",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "target",
           "strategy": "explicit"
         },
@@ -19005,6 +19709,11 @@
       },
       "options": [
         {
+          "name": "clipHeight",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
           "name": "target",
           "required": true,
           "type": "string"
@@ -19013,6 +19722,11 @@
           "name": "channel",
           "required": true,
           "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\""
+        },
+        {
+          "name": "position",
+          "required": false,
+          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"inherit\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
         },
         {
           "name": "title",
@@ -19118,6 +19832,10 @@
         {
           "input": "target",
           "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "direction",
+          "strategy": "documented-auto"
         }
       ],
       "completionRequirements": {
@@ -19135,6 +19853,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "channel",
+          "required": false,
+          "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+        },
+        {
           "name": "layout",
           "required": false,
           "type": "\"edge\" | \"legacy-bottom\" | undefined"
@@ -19142,7 +19865,7 @@
         {
           "name": "position",
           "required": false,
-          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
+          "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"inherit\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
         },
         {
           "name": "blockLayout",
@@ -19162,7 +19885,7 @@
         {
           "name": "direction",
           "required": false,
-          "type": "\"horizontal\" | \"vertical\" | undefined"
+          "type": "\"auto\" | \"horizontal\" | \"vertical\" | undefined"
         },
         {
           "name": "columns",
@@ -19177,7 +19900,7 @@
         {
           "name": "titlePosition",
           "required": false,
-          "type": "\"left\" | \"top\" | undefined"
+          "type": "\"bottom\" | \"left\" | \"top\" | undefined"
         },
         {
           "name": "itemGap",
@@ -19186,9 +19909,9 @@
         }
       ],
       "callPatterns": [
-        "editLegendLayout({ target?, layout?, position?, blockLayout?, at?, align?, direction?, columns? })"
+        "editLegendLayout({ target?, channel?, layout?, position?, blockLayout?, at?, align?, direction? })"
       ],
-      "snippet": "program.editLegendLayout({ layout: \"edge\" })",
+      "snippet": "program.editLegendLayout({ channel: \"color\" })",
       "errors": [],
       "route": "/reference/actions/guides/#editlegendlayout"
     },
@@ -19264,6 +19987,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "channel",
+          "required": false,
+          "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+        },
+        {
           "name": "offset",
           "required": false,
           "type": "number | undefined"
@@ -19295,9 +20023,9 @@
         }
       ],
       "callPatterns": [
-        "editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })"
+        "editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })"
       ],
-      "snippet": "program.editLegendLabels({ offset: 1 })",
+      "snippet": "program.editLegendLabels({ channel: \"color\" })",
       "errors": [],
       "route": "/reference/actions/guides/#editlegendlabels"
     },
@@ -19373,6 +20101,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "channel",
+          "required": false,
+          "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+        },
+        {
           "name": "title",
           "required": false,
           "type": "string | false | undefined"
@@ -19404,9 +20137,9 @@
         }
       ],
       "callPatterns": [
-        "editLegendTitle({ target?, title?, color?, fontSize?, fontFamily?, fontWeight?, align? })"
+        "editLegendTitle({ target?, channel?, title?, color?, fontSize?, fontFamily?, fontWeight?, align? })"
       ],
-      "snippet": "program.editLegendTitle({ title: \"title\" })",
+      "snippet": "program.editLegendTitle({ channel: \"color\" })",
       "errors": [],
       "route": "/reference/actions/guides/#editlegendtitle"
     },
@@ -19459,6 +20192,10 @@
       ],
       "inference": [
         {
+          "input": "clipHeight",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "target",
           "strategy": "explicit-current-unique-or-error"
         }
@@ -19473,9 +20210,19 @@
       },
       "options": [
         {
+          "name": "clipHeight",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "channel",
+          "required": false,
+          "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
         },
         {
           "name": "symbol",
@@ -19494,7 +20241,7 @@
         }
       ],
       "callPatterns": [
-        "editLegendSymbols({ target?, symbol?, count?, gradient? })"
+        "editLegendSymbols({ target?, clipHeight?, channel?, symbol?, count?, gradient? })"
       ],
       "snippet": "program.editLegendSymbols({ count: 5 })",
       "errors": [],
@@ -19563,13 +20310,18 @@
           "type": "string | undefined"
         },
         {
+          "name": "channel",
+          "required": false,
+          "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+        },
+        {
           "name": "border",
           "required": true,
           "type": "boolean | LegendBorderOptions"
         }
       ],
       "callPatterns": [
-        "editLegendBorder({ border, target? })"
+        "editLegendBorder({ border, target?, channel? })"
       ],
       "snippet": "program.editLegendBorder({ border: true })",
       "errors": [],
@@ -20388,6 +21140,16 @@
           "type": "ContinuousColorInterpolation | undefined"
         },
         {
+          "name": "whitePoint",
+          "required": false,
+          "type": "\"d50\" | \"d65\" | undefined"
+        },
+        {
+          "name": "gamma",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "midpoint",
           "required": false,
           "type": "number | \"auto\" | undefined"
@@ -20466,6 +21228,14 @@
       "inference": [
         {
           "input": "domain",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "whitePoint",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "gamma",
           "strategy": "documented-auto"
         },
         {
@@ -20575,6 +21345,16 @@
           "name": "interpolate",
           "required": false,
           "type": "ContinuousColorInterpolation | undefined"
+        },
+        {
+          "name": "whitePoint",
+          "required": false,
+          "type": "\"auto\" | \"d50\" | \"d65\" | undefined"
+        },
+        {
+          "name": "gamma",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
         },
         {
           "name": "midpoint",
@@ -21723,6 +22503,14 @@
           "strategy": "documented-auto"
         },
         {
+          "input": "whitePoint",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "gamma",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "midpoint",
           "strategy": "documented-auto"
         }
@@ -21746,16 +22534,6 @@
           "type": "string | undefined"
         },
         {
-          "name": "palette",
-          "required": false,
-          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 60 more ... | undefined"
-        },
-        {
-          "name": "type",
-          "required": false,
-          "type": "\"log\" | \"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"sqrt\" | \"symlog\" | \"threshold\" | undefined"
-        },
-        {
           "name": "domain",
           "required": false,
           "type": "\"auto\" | readonly unknown[] | readonly number[] | readonly [unknown, unknown] | readonly [number, number] | undefined"
@@ -21766,9 +22544,29 @@
           "type": "\"auto\" | readonly string[] | { readonly palette: Palette; } | readonly [string, string, ...string[]] | undefined"
         },
         {
+          "name": "palette",
+          "required": false,
+          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 60 more ... | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"log\" | \"ordinal\" | \"pow\" | \"quantile\" | \"quantize\" | \"sequential\" | \"sqrt\" | \"symlog\" | \"threshold\" | undefined"
+        },
+        {
           "name": "unknown",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "whitePoint",
+          "required": false,
+          "type": "\"auto\" | \"d50\" | \"d65\" | undefined"
+        },
+        {
+          "name": "gamma",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
         },
         {
           "name": "clamp",
@@ -21799,10 +22597,15 @@
           "name": "constant",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "exponent",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "editColorScale({ id?, target?, palette?, type?, domain?, range?, unknown?, clamp? })"
+        "editColorScale({ id?, target?, domain?, range?, palette?, type?, unknown?, whitePoint? })"
       ],
       "snippet": "program.editColorScale({ palette: \"set2\" })",
       "errors": [],
@@ -21856,11 +22659,23 @@
           "strategy": "explicit"
         },
         {
+          "input": "whitePoint",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "gamma",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "domain",
           "strategy": "documented-auto"
         },
         {
           "input": "range",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "midpoint",
           "strategy": "documented-auto"
         }
       ],
@@ -21878,14 +22693,14 @@
           "type": "string"
         },
         {
-          "name": "palette",
+          "name": "whitePoint",
           "required": false,
-          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 60 more ... | undefined"
+          "type": "\"auto\" | \"d50\" | \"d65\" | undefined"
         },
         {
-          "name": "type",
+          "name": "gamma",
           "required": false,
-          "type": "\"log\" | \"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"sqrt\" | \"symlog\" | \"threshold\" | undefined"
+          "type": "number | \"auto\" | undefined"
         },
         {
           "name": "domain",
@@ -21898,13 +22713,58 @@
           "type": "\"auto\" | readonly string[] | { readonly palette: Palette; } | readonly [string, string, ...string[]] | undefined"
         },
         {
+          "name": "palette",
+          "required": false,
+          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 60 more ... | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"log\" | \"ordinal\" | \"pow\" | \"quantile\" | \"quantize\" | \"sequential\" | \"sqrt\" | \"symlog\" | \"threshold\" | undefined"
+        },
+        {
           "name": "unknown",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "clamp",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reverse",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "interpolate",
+          "required": false,
+          "type": "ContinuousColorInterpolation | undefined"
+        },
+        {
+          "name": "midpoint",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
+          "name": "base",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "constant",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "exponent",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "editStrokeScale({ target, palette?, type?, domain?, range?, unknown? })"
+        "editStrokeScale({ target, whitePoint?, gamma?, domain?, range?, palette?, type?, unknown? })"
       ],
       "snippet": "program.editStrokeScale({ target: \"points\", palette: \"set1\" })",
       "errors": [],
@@ -24890,7 +25750,7 @@
       "layer": "user-facing",
       "domain": "axes",
       "summary": "Remove the complete theta-axis resource.",
-      "signature": "removeThetaAxis(options?: RemoveAxisOptions): ChartProgram;",
+      "signature": "removeThetaAxis(options?: Omit<RemoveAxisOptions, \"target\">): ChartProgram;",
       "intents": [
         "remove theta axis",
         "remove",
@@ -24969,7 +25829,7 @@
       "layer": "user-facing",
       "domain": "axes",
       "summary": "Remove the complete radial-axis resource.",
-      "signature": "removeRadialAxis(options?: RemoveAxisOptions): ChartProgram;",
+      "signature": "removeRadialAxis(options?: Omit<RemoveAxisOptions, \"target\">): ChartProgram;",
       "intents": [
         "remove radial axis",
         "remove",
@@ -28402,7 +29262,7 @@
         {
           "name": "legend",
           "required": false,
-          "type": "\"shared\" | false | undefined"
+          "type": "\"shared\" | false | LegendOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -28793,7 +29653,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianGuideOptions | undefined"
+          "type": "false | CartesianSeparateGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -28935,7 +29795,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianGuideOptions | undefined"
+          "type": "false | CartesianSeparateGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -29082,7 +29942,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianGuideOptions | undefined"
+          "type": "false | CartesianSeparateGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -29600,7 +30460,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianGuideOptions | undefined"
+          "type": "false | CartesianSeparateGuideOptions | undefined"
         },
         {
           "name": "x",
@@ -29626,7 +30486,7 @@
       "name": "createRegressionPlot",
       "layer": "user-facing",
       "domain": "charts",
-      "summary": "Create a complete scatter plot with an existing regression data, line, and optional interval-band hierarchy.",
+      "summary": "Create a scatter plot with fitted regression data, a line, and optional interval bands.",
       "signature": "createRegressionPlot(options: CreateRegressionPlotOptions): ChartProgram;",
       "intents": [
         "create regression plot",
@@ -29741,7 +30601,12 @@
         {
           "name": "method",
           "required": false,
-          "type": "\"linear\" | \"loess\" | \"polynomial\" | undefined"
+          "type": "\"exp\" | \"linear\" | \"loess\" | \"polynomial\" | undefined"
+        },
+        {
+          "name": "interval",
+          "required": false,
+          "type": "false | RegressionInterval | undefined"
         },
         {
           "name": "degree",
@@ -29772,11 +30637,6 @@
           "name": "confidence",
           "required": false,
           "type": "number | undefined"
-        },
-        {
-          "name": "interval",
-          "required": false,
-          "type": "false | RegressionInterval | undefined"
         },
         {
           "name": "predict",
@@ -30840,7 +31700,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianCategoricalGuideOptions | undefined"
+          "type": "false | CartesianCategoricalPointGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -31271,7 +32131,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianCategoricalGuideOptions | undefined"
+          "type": "false | (Omit<CartesianCategoricalGuideOptions, \"grid\"> & { grid?: false | ContinuousCartesianGridOptions | undefined; }) | undefined"
         }
       ],
       "callPatterns": [
@@ -31398,7 +32258,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianGuideOptions | undefined"
+          "type": "false | CartesianSeparateGuideOptions | undefined"
         }
       ],
       "callPatterns": [

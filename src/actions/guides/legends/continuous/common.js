@@ -1,3 +1,8 @@
+import{normalizeLegendClipHeight}from"../../../../grammar/legendClip.js";
+import{applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
+import { normalizeGradientDirection } from "../../../../grammar/legendGradient.js";
+import { normalizeLegendBorderDash } from "../../../../grammar/legendBorder.js";
+import { materializeLegendBorder } from "../../../../materialization/legendBorder.js";
 import { LEGEND_TITLE_STYLE_KEYS, mergeLegendTitleStyle, validateLegendTitleAlignment } from "../../../../grammar/legendTitleStyle.js";
 import { PLOT_LEGEND_POSITIONS, isPlotLegend } from "../../../../layout/legend.js";
 import { isContinuousColorScaleType } from "../../../../grammar/scales/types.js";
@@ -35,12 +40,14 @@ import { normalizeLegendSampling } from "../sampling.js";
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 
 const OPTIONS = [
+  "clipHeight",
   "target", "channels", "position", "align", "offset", "title", "count",
   "values",
   "gradient", "symbol", "labels", "titleStyle", "itemGap", "border",
   "direction", "columns", "titlePosition"
 ];
 export const ITEM_LEGEND_OPTIONS = Object.freeze([
+  "clipHeight",
   "target", "count", "values", "position", "layout", "align", "direction",
   "columns", "titlePosition", "offset", "itemGap", "title", "labels", "titleStyle", "border", "overflow"
 ]);
@@ -48,7 +55,7 @@ const TEXT_OPTIONS = [
   "offset", "color", "fontSize", "fontFamily", "fontWeight", "format"
 ];
 const BORDER_OPTIONS = [
-  "color", "lineWidth", "padding", "background"
+  "color", "lineWidth", "padding", "background", "strokeDash"
 ];
 const POSITIONS = ["right", "left", "top", "bottom", ...PLOT_LEGEND_POSITIONS];
 const DEFAULT_LABELS = {
@@ -83,6 +90,7 @@ export function normalizeItemLegendConfig(args, encoding, itemGap) {
   const direction = args.direction ?? (side ? "vertical" : "horizontal");
   const defaultGap = direction === "vertical" ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : itemGap;
   return {
+    ...(args.clipHeight===undefined?{}:{clipHeight:normalizeLegendClipHeight(args.clipHeight)}),
     ...normalizeItemLegendLayout({ ...args, itemGap: args.itemGap ?? defaultGap }),
     ...normalizeInitialLegendTitle(args.title, encoding.field),
     labels: normalizeLegendTextOptions(args.labels, "createLegend.labels", ITEM_LEGEND_LABELS),
@@ -143,7 +151,8 @@ export function normalizeLegendBorder(value) {
   }
   validateNonNegative(border.lineWidth, "Legend border lineWidth");
   validateNonNegative(border.padding, "Legend border padding");
-  return border;
+  const dash = normalizeLegendBorderDash(border.strokeDash);
+  return { ...border, ...(dash === undefined ? {} : { strokeDash: dash }) };
 }
 
 export function normalizeContinuousLegend(args, kind) {
@@ -181,7 +190,7 @@ export function normalizeContinuousLegend(args, kind) {
   validateNonNegative(offset, "Legend offset");
   const titlePosition = args.titlePosition ?? "top";
   validateLegendTitleAlignment(args.titleStyle, titlePosition);
-  if (!["top", "left"].includes(titlePosition)) {
+  if (!(kind === "gradient" ? ["top", "left", "bottom"] : ["top", "left"]).includes(titlePosition)) {
     throw new Error(`Unsupported legend titlePosition "${titlePosition}".`);
   }
   if (
@@ -196,7 +205,7 @@ export function normalizeContinuousLegend(args, kind) {
     ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : titlePosition === "left" ? 20 : 28);
   validatePositive(itemGap, "Legend itemGap");
   if (kind === "gradient") {
-    for (const key of ["symbol", "columns", "direction", "itemGap"]) {
+    for (const key of ["symbol", "columns", "itemGap"]) {
       if (Object.hasOwn(args, key)) {
         throw new Error(`Gradient legend does not accept ${key}.`);
       }
@@ -209,11 +218,14 @@ export function normalizeContinuousLegend(args, kind) {
     }
   }
   return {
+    ...(args.clipHeight===undefined?{}:{clipHeight:normalizeLegendClipHeight(args.clipHeight)}),
     target: args.target,
     position,
     align,
     offset,
-    ...(kind === "gradient" ? { count } : { sampling }),
+    ...(kind === "gradient" ? { count,
+      ...(args.direction === undefined ? {} : { gradientDirection: normalizeGradientDirection(args.direction) })
+    } : { sampling }),
     ...normalizeInitialLegendTitle(args.title),
     labels: normalizeLegendTextOptions(
       args.labels,
@@ -411,12 +423,7 @@ export function resolveLegendBackgroundFromBounds(
 
 export function editLegendBackground(program, id, bounds, border) {
   if (bounds === undefined) return program;
-  return editGraphicProperties(program, id, {
-    ...bounds,
-    fill: border.background,
-    stroke: border.color,
-    strokeWidth: border.lineWidth
-  });
+  return materializeLegendBorder(program, id, bounds, border);
 }
 
 export function normalizeItemLegendLayout(args, { multiColumnSide = false } = {}) {
@@ -458,8 +465,12 @@ export function materializeItemLegend(program, kind, config, layout, {
     length: symbolLength,
     ...symbols
   });
+  const labelIndices = layout.labelItemIndices;
+  const selectLabels = values => labelIndices === undefined || !Array.isArray(values)
+    ? values : labelIndices.map(index => values[index]);
   next = editGraphicProperties(next, `${prefix}Labels`, {
-    length: text.length, x: layout.labelX, y: layout.itemY, text
+    length: labelIndices?.length ?? text.length,
+    x: selectLabels(layout.labelX), y: selectLabels(layout.itemY), text: selectLabels(text)
   });
   next = editLegendBackground(next, `${prefix}Background`, layout.background, config.border);
   next = editGraphicProperties(next, `${prefix}Symbols`, Object.fromEntries(
@@ -467,11 +478,11 @@ export function materializeItemLegend(program, kind, config, layout, {
   ));
   next = styleContinuousText(next, `${prefix}Labels`, labels);
   const effective = layout.config;
-  if (effective.titleVisible === false) return next;
+  if (effective.titleVisible === false) return applyLegendClipGraphics(next);
   next = editGraphicProperties(next, `${prefix}Title`, {
     x: layout.title.x, y: layout.title.y, text: effective.title
   });
-  return styleContinuousText(next, `${prefix}Title`, titleStyle, { align: layout.title.align });
+  return applyLegendClipGraphics(styleContinuousText(next, `${prefix}Title`, titleStyle, { align: layout.title.align }));
 }
 
 export function createItemLegendGraphics(program, kind, config, count, type, placement) {

@@ -121,7 +121,7 @@ test("calls every user-facing action directly from a generated scenario root", (
     directTraceOperations(buildScenario(descriptor), directOperations);
   }
 
-  assert.equal(publicActions.length, 275);
+  assert.equal(publicActions.length, 277);
   for (const operation of ["removeData", "removeScale", "removeCoordinate"]) {
     assert.equal(publicActions.includes(operation), true, operation);
     assert.equal(directOperations.has(operation), true, operation);
@@ -136,6 +136,9 @@ test("retains direct action effects in final semantic and graphic state", () => 
   const resources = buildLifecycleRecipe("action-direct-data-resources");
   assert.equal(resources.graphicSpec.objects.canvas.properties.width, 920);
   assert.equal(resources.graphicSpec.objects.canvas.properties.background, "#ffffff");
+  const statistics = currentDerivedDataset(resources, "regressionStatistics", "editStatistics");
+  assert.equal(statistics.source, "statisticsAlternateFit");
+  assert.deepEqual(statistics.values, [{ count: 4, intercept: 0, slope: 1, rSquared: 1 }]);
   assert.ok(semanticResource(resources, "datasets", "directDensity").values.length > 0);
   assert.ok(semanticResource(resources, "datasets", "directBins").values.length > 0);
   assert.equal(

@@ -172,7 +172,8 @@ test("authors and renders the complete primitive density area chart", () => {
   ]);
 
   assert.equal(findCanvasCalls(context, "fillRect").length, 4);
-  assert.equal(findCanvasCalls(context, "closePath").length, 3);
+  // Three filled areas and three closed legend-swatch outlines.
+  assert.equal(findCanvasCalls(context, "closePath").length, 6);
   assert.equal(findCanvasCalls(context, "fill").length, 3);
   assert.equal(findCanvasCalls(context, "fillText").length, 17);
   assert.equal(findCanvasCalls(context, "stroke").length, 23);
@@ -214,6 +215,6 @@ test("owns primitive input and renders from graphicSpec alone", () => {
 
   const context = createMockCanvasContext();
   renderCarsDensityAreaPrimitives({ graphicSpec: program.graphicSpec }, context);
-  assert.equal(findCanvasCalls(context, "closePath").length, 3);
+  assert.equal(findCanvasCalls(context, "closePath").length, 6);
   assert.equal(findCanvasCalls(context, "fillText").length, 17);
 });

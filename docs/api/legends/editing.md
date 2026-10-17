@@ -7,6 +7,15 @@ title: Editing Legends
 
 {% include chart-example.html id="density" lead=true %}
 
+## Edit a facet parent legend
+
+Whole, focused and block editors and `removeLegend` also accept an existing shared
+legend on a facet, row-column facet grid or field-repeat parent. Targets name source
+marks, and channel selectors keep their normal meaning. Declare a missing parent with
+`editFacetGuides({ legend: { position: "top-left" } })`; the complete placement and
+lifecycle contract is in [Facets and Field Repetition](../composition/facets.md#declare-a-legend-for-the-complete-facet).
+Concat parents do not support these operations.
+
 ## Keep explicit title lines
 
 Use newline characters in a title string, for example
@@ -106,8 +115,10 @@ gap to the grid or border. Changing its stored text style leaves the visible
 legend unchanged; restoration checks that the visible title fits. Legacy-bottom
 sample positions stay fixed, with a border around the visible items. Gradient and opacity legends accept only their
 kind-compatible options. Both require center alignment at the left or right
-side. Gradient title placement accepts `titlePosition: "top"` through creation,
-`editLegend` and `editLegendLayout`. Every legend title style accepts only
+side. Gradient title placement accepts `titlePosition: "top" | "bottom"` through
+creation, `editLegend` and `editLegendLayout`. Gradient direction is independent
+of its position; editing `direction: "auto"` removes the explicit orientation.
+Bottom titles follow the complete strip/tick/label bounds with a 12-pixel gap. Every legend title style accepts only
 color and typography; use `labels.offset` for label spacing. Interval legends support the four edges and four plot corners and
 `layout: "edge"`; top/bottom grids also accept alignment, direction, columns
 and inline titles. Side positions require vertical flow, center alignment,
@@ -249,6 +260,20 @@ title or count preserves independent size styles. Other targets remain intact.
 
 ## Editing one legend block
 
+A block-local `position` accepts the eight named anchors. `"inherit"` removes
+only that override, restoring the target group's placement or the legacy family
+placement. The same override is used by `editLegend({ channel, position })` and
+`editLegendLayout({ channel, position })`; without a singular selector, position
+continues to move the whole group. Group position, `at`, and block-layout edits
+preserve local overrides. Locally placed blocks are excluded from inherited
+packing and are measured independently, including titles, labels and frames.
+Corners use the existing 8px plot inset; outside edges retain native family gaps
+and the existing axis-lane policy. No coordinates, automatic Canvas growth, or
+extra offset option is introduced. Conflicting occupied guides fail atomically.
+A merged block moves through either member alias. `combine` is a whole-target content control and cannot accompany singular `channel`. Merging different local anchors
+requires resetting them or supplying an explicit whole-group position.
+
+
 Use `editLegendBlock()` when one mark has several legend blocks and an edit
 must apply to only one of them. Both selectors are required: `target` is the
 owning mark ID and `channel` identifies the logical block.
@@ -282,7 +307,7 @@ block, selecting either member edits that same block; a later call replaces the
 earlier block-local value.
 
 The action accepts `title`, `values`, `count`, `order`, `gap`, `text`, `symbol`,
-and `labelMap`. An empty title hides only that block's title. Exact `values` and
+`labelMap`, and `position`. An empty title hides only that block's title. Exact `values` and
 `count` apply to continuous size, opacity, stroke-width, and color-symbol blocks. `order`
 applies to a categorical block and must list every current category exactly
 once. `text` changes item-label typography and color. `symbol.size` is point
@@ -313,9 +338,8 @@ Unmapped categories keep their normal visible text. Duplicate display labels
 and empty labels are valid and do not merge symbols. `labelMap: []` stores an
 empty map. An empty mapped label omits only its text; its category, symbol and
 item slot remain through layout, resizing and shared facet legends.
-`labelMap: "auto"` removes only this block override. Sampled numeric,
-gradient, and interval blocks reject display maps because their labels describe
-numeric intervals or samples rather than categorical identities.
+`labelMap: "auto"` removes only this block override. Continuous size supports numeric keys as described below.
+Opacity, stroke-width, discrete-size, gradient and interval blocks reject display maps.
 
 Symbol properties cannot replace the mapping the block explains. For example,
 a size block rejects `symbol.size`, an opacity block rejects `symbol.opacity`,
@@ -450,6 +474,47 @@ bottom the categorical layout controls position both blocks. The size block's
 own stored layout returns when the categorical channels are removed. A title
 edit changes the categorical title; the size block retains its own title and
 visibility. Whole-content replacement preserves both retained blocks' settings.
+
+### Numeric sample display labels
+
+Continuous size blocks accept exact numeric display maps, including keys not currently sampled:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+// Fragment: program already owns a continuous size legend on points.
+program.editLegendBlock({
+  target: "points", channel: "size",
+  labelMap: [{ value: 3.14159, label: "0" }, { value: 10, label: "" }]
+});
+```
+
+Empty strings hide text while preserving the sample and its glyph. Unmatched values keep the existing
+formatter. Use `labelMap: "auto"` to remove the override. Opacity, stroke-width and discrete-size blocks
+reject this map. Values are compared exactly, so zero and negative zero are duplicate keys.
+
+
+### Dashed frames
+
+Pass an even-length dash sequence on a legend border:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+// Fragment: program already owns one legend.
+program.editLegendBorder({ border: { strokeDash: [4, 2, 6, 1] } });
+```
+
+The pattern continues around all four sides. Use `strokeDash: []` for a solid frame or `border: false`
+to remove it. Dash entries must be finite and nonnegative; odd-length arrays are rejected.
 
 ## Related
 

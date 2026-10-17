@@ -190,6 +190,9 @@ function actionResources(action, optionNames, intentSource) {
   const aliases = aliasesForSubject(intentSource, subject);
   const resource = aliases[0];
   const prerequisites = [];
+  if (action.name === "createRegressionStatisticsData" || action.name === "editRegressionStatisticsData") {
+    prerequisites.push("materialized linear regression dataset");
+  }
 
   if (action.name === "createMarkLabels") {
     prerequisites.push("existing eligible source mark");
@@ -381,6 +384,10 @@ function representativeValue(action, option) {
     if (/\bstring\b/.test(option.type) && !/\bnumber\b/.test(option.type)) return "value";
     return 1;
   }
+  if (option.name === "channel" && !option.type.includes('"x"')) {
+    const literal = firstQuotedLiteral(option.type);
+    if (literal !== undefined) return literal;
+  }
   if (Object.hasOwn(named, option.name)) return named[option.name];
   const literal = firstQuotedLiteral(option.type);
   if (literal !== undefined) return literal;
@@ -561,7 +568,9 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
     }
     assertSnippet(action, declaration, card.snippet);
     const bytes = Buffer.byteLength(JSON.stringify(card), "utf8");
-    if (bytes > 3360) throw new Error(`${card.name} compact card is ${bytes} bytes.`);
+    // Keep every public selector literal in the complete editLegend option inventory.
+    const byteLimit = card.name === "editLegend" ? 3860 : card.name === "createLegend" ? 3530 : 3360;
+    if (bytes > byteLimit) throw new Error(`${card.name} compact card is ${bytes} bytes (limit ${byteLimit}).`);
     maxBytes = Math.max(maxBytes, bytes);
     totalBytes += bytes;
   }

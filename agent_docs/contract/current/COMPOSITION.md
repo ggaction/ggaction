@@ -48,7 +48,12 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
   lane; an explicit offset that collides with retained text rejects atomically. Explicit child Canvas dimensions
   and margins remain unchanged. The inferred parent Canvas contains both the child snapshots and the occupied
   legend bounds, translating the complete child layout when a left/top guide needs additional space. Shared side legends align their complete occupied top (including border strokes) to the translated child-plot union top; parent titles and headers do not set this anchor. This also applies to inferred categorical shared legends and layout/guide-policy replay. An inferred legacy
-  categorical legend defaults to `"right"`; facet itself has no separate legend-position option.
+  categorical legend defaults to `"right"`; the legacy shared-string policy has no separate position input.
+- `guides.legend: LegendOptions` directly declares one parent guide. Its target names the source template mark; omitted target must be unique. Unit defaults apply independently of incidental child legend styles. Final placement uses the bounding rectangle of occupied child inner plots, including gaps. Corners and free `at` must fit that union; outside groups use actual retained guide lanes and the inferred parent Canvas. Child Canvas sizes/margins remain unchanged. Family validation, grouped/local placement, combined mappings, borders and samples reuse the unit owners.
+- `editLegend`, focused legend editors, `editLegendBlock` and `removeLegend` accept facet/facetGrid/repeat parents with an existing shared owner. Concat and absent owners reject. `createLegend` stays unit-only; use `editFacetGuides({legend:{…}})` to declare a missing parent owner. Source mark/channel selectors retain their unit closed contracts. A focused edit of `"shared"` normalizes the current native owner while preserving automatic title/sample/offset flags. Partial removal retains other blocks; final removal sets false and cannot resurrect on replay.
+- Authored intent is owned once by `compositionSpec.facet.guides.legend`. Public input remains closed `LegendOptions`; returned/imported authored state uses a private closed tagged block normal form. Parent native guide configs/graphics are derived from it. Child templates/programs do not store parent intent. False clears the parent owner, shared resets template promotion/inference, and another object replaces the declaration. Scale/data/source/theme/text metrics/headers/layout/persistence replay must preserve all authored settings or fail atomically on incompatible bindings, independent appearance scales, recipe changes, overflow or occupied-text collision. Existing no-override shared-string rendering remains unchanged.
+- A `combine: "color-size"` parent block retains both native color/size scale IDs, the identical numeric endpoint domain, samples and optional point clipping. Its color and size selectors address one owner. Editable persistence validates both scale references and the native combined guide meaning; partial removal clears that owner while preserving sibling blocks, and final removal cannot restore it during reflow.
+- Evidence for authored parent lifecycle: `test/unit/actions/composition/facet-parent-legend.test.js`, `test/contracts/named-cartesian-axis-types.test.js`. Normalized internal shape is an implementation contract, not a new accepted public input vocabulary.
 - The result is a composition parent whose `children` retain immutable filtered programs and whose `graphicSpec` contains the complete namespaced nested-Canvas snapshot.
 - Canonical title order is `.facet(...).createTitle(...)`. A valid title authored before `facet` is promoted once to the parent.
 - Parent title alignment uses the translated child-plot union. The existing signed `alongOffset` shifts every
@@ -63,11 +68,11 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 - Facet child cardinality는 공통 generated-item 한도 `10,000`을 적용하며 child derivation 전 `partitionRows * childCount <= 10,000,000`
   work budget을 검증한다.
 - Facet materialization fails atomically when a header leaves the composed Canvas, intersects another header or its
-  child plot, or when the shared legend leaves the composed Canvas or intersects the translated child-plot union.
+  child plot, or when a shared legend leaves the composed Canvas. Legacy outside promotion cannot intersect the child-plot union; authored corners/free placement may overlap marks while retaining axis/header clearance.
 
 ### Formal values — `facet`
 
-- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingRowPreservingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer"; legend?: false | "shared" }; headers?: FacetHeadersOptions }): ChartProgram`.
+- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingRowPreservingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer"; legend?: false | "shared" | LegendOptions }; headers?: FacetHeadersOptions }): ChartProgram`.
 - Implemented non-Cartesian families: Polar Point/Line/direct Arc/Pie/Rose/Radar and Parallel coordinates.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -311,7 +316,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `editFacetGuides`
 
-- Implemented: `editFacetGuides({ axes?: "each" | "outer"; legend?: false | "shared" }): ChartProgram`.
+- Implemented: `editFacetGuides({ axes?: "each" | "outer"; legend?: false | "shared" | LegendOptions }): ChartProgram`.
 - Polar and Parallel child-local guide replay is implemented; their outer-axis promotion is explicitly unsupported.
 - Proposed (NOT IMPLEMENTED): —
 

@@ -150,4 +150,3 @@ test("the option inventory follows the corrected line role without excluding val
     assert.deepEqual(paths.get(id)?.values, ["string:boundary", "string:center"], id);
   }
 });
-

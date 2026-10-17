@@ -51,8 +51,14 @@ test("compact action cards are generated from the current action contract", asyn
   assert.equal(artifact.typeSource, "types/program.d.ts");
   assert.match(artifact.errorPolicy, /curated error override/);
   assert.equal(stats.count, context.actions.length);
-  assert.equal(stats.maxBytes <= 3360, true);
-  assert.equal(stats.medianBytes <= 1856, true);
+  for (const card of artifact.cards) {
+    const limit = card.name === "editLegend" ? 3860 : card.name === "createLegend" ? 3530 : 3360;
+    assert.ok(Buffer.byteLength(JSON.stringify(card)) <= limit, card.name);
+  }
+  assert.ok(artifact.cards.find(card => card.name === "editLegend").options
+    .some(option => option.name === "channel" && option.type.includes('"opacity"')));
+  // Preserve all approved Cartesian placement options and legend channel selectors.
+  assert.equal(stats.medianBytes <= 1896, true);
   assert.deepEqual(
     artifact.cards.map(card => card.name),
     context.actions.map(action => action.name)

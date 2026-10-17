@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 567, // Promoted facet guide layout adds one private owner.
-  packedBytes: 799_000, // Node24/npm11 release candidate with corrected declarations: 798062 bytes.
-  unpackedBytes: 3_908_000 // Release documentation growth; retain a bounded3000-byte step.
+  entries: 591, // The combined color-size grammar and materializer add two owners.
+  packedBytes: 842_000, // Node24 parent-guide integration measured841241packed bytes.
+  unpackedBytes: 4_087_000 // Versioned facade declarations measured4086545unpacked bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -73,6 +73,11 @@ const COMPACT_JSON_FILES = Object.freeze([
   "knowledge/task-packet.schema.json"
 ]);
 const COMPACT_JAVASCRIPT_FILES = Object.freeze([
+  "src/selectors/axes.js",
+  "src/grammar/legendBlocks.js",
+  "src/core/graphicProperties.js",
+  "src/grammar/axisTextPlacement.js",
+  "src/grammar/guideDash.js",
   "knowledge/task-resolver.js",
   "src/grammar/scales/color.js",
   "src/grammar/scales/size.js",

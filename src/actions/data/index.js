@@ -21,6 +21,7 @@ import {
   materializeGradientProfileData
 } from "./gradientProfile.js";
 import { createRegressionData, materializeRegressionData } from "./regression.js";
+import { createRegressionStatisticsData, editRegressionStatisticsData, materializeRegressionStatisticsData } from "./regressionStatistics.js";
 import {
   createCategoricalDensityData,
   createDensityData,
@@ -69,6 +70,9 @@ export function registerDataActions(ProgramClass) {
     materializeEmptyMark,
     removeMarkFilter,
     materializeRegressionData,
+    materializeRegressionStatisticsData,
+    createRegressionStatisticsData,
+    editRegressionStatisticsData,
     materializeDensityData,
     createGradientProfileData,
     materializeGradientProfileData,

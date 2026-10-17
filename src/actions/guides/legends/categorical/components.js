@@ -1,3 +1,4 @@
+import { materializeLegendBorder } from "../../../../materialization/legendBorder.js";
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 import { materializeLegendTitleLines } from "../../../../materialization/legendText.js";
 import { action } from "../../../../core/action.js";
@@ -122,19 +123,11 @@ export const rematerializeLegendBackground = /* @__PURE__ */ action(
       throw new Error("rematerializeLegendBackground requires border configuration.");
     }
     const id = graphic(config, "Background");
-    if (this.graphicSpec.objects[id]?.type !== "rect") {
+    if (!["rect", "path"].includes(this.graphicSpec.objects[id]?.type)) {
       throw new Error("rematerializeLegendBackground requires an existing background.");
     }
     const layout = resolveLayout(this, config).background;
-    return editGraphicProperties(this, id, {
-      x: layout.x,
-      y: layout.y,
-      width: layout.width,
-      height: layout.height,
-      fill: config.border.background,
-      stroke: config.border.color,
-      strokeWidth: config.border.lineWidth
-    });
+    return materializeLegendBorder(this, id, layout, config.border);
   }
 );
 

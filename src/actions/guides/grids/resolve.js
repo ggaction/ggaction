@@ -1,4 +1,7 @@
+import { cartesianAxisOwners } from "../../../selectors/axes.js";
+import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { isNominalValue } from "../../../grammar/scales/fields.js";
+import { patchGuideDash, validateGuideDash, normalizeGuideDashMap, resolveGuideDashes } from "../../../grammar/guideDash.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -27,10 +30,10 @@ import {
 } from "../../../grammar/schemas/graphicTree.js";
 
 const GRID_OPTIONS = Object.freeze([
-  "scale", "coordinate", "count", "values", "color", "lineWidth", "strokeDash", "zIndex", "bandPosition", "alongOffset"
+  "scale", "coordinate", "count", "values", "color", "lineWidth", "strokeDash", "strokeDashMap", "zIndex", "bandPosition", "alongOffset"
 ]);
 const GRID_EDIT_OPTIONS = Object.freeze([
-  "count", "values", "color", "lineWidth", "strokeDash", "zIndex", "bandPosition", "alongOffset"
+  "count", "values", "color", "lineWidth", "strokeDash", "strokeDashMap", "zIndex", "bandPosition", "alongOffset"
 ]);
 const DEFAULT_STYLE = Object.freeze({
   color: DEFAULT_COLORS.grid,
@@ -49,19 +52,11 @@ export function gridNames(direction) {
 }
 
 function validateStrokeDash(value) {
-  if (
-    !Array.isArray(value) ||
-    value.length % 2 !== 0 ||
-    !value.every(item => Number.isFinite(item) && item >= 0)
-  ) {
-    throw new TypeError(
-      "Grid strokeDash must be an even-length array of non-negative finite numbers."
-    );
-  }
-  return value;
+  return validateGuideDash(value, "Grid strokeDash");
 }
 
 export function validateGridCreateArgs(args, operation) {
+  if (Object.hasOwn(args, "strokeDashMap")) normalizeGuideDashMap(args.strokeDashMap);
   validateOptionObject(args, GRID_OPTIONS, operation);
   if (Array.isArray(args.values)) {
     validateGeneratedItemLimit(args.values.length, "Grid value count");
@@ -95,6 +90,7 @@ export function validateGridCreateArgs(args, operation) {
 }
 
 export function validateGridEditArgs(args, operation) {
+  if (Object.hasOwn(args, "strokeDashMap")) normalizeGuideDashMap(args.strokeDashMap);
   validateOptionObject(args, GRID_EDIT_OPTIONS, operation, {
     allowEmpty: false
   });
@@ -138,39 +134,25 @@ export function resolveGridResources(program, direction, args) {
   let layers = program.semanticSpec.layers.filter(
     layer => !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale !== undefined
   );
-  if (layers.length === 0) throw new Error(`${direction} grid requires a ${channel} encoding.`);
-  const requestedCoordinate = args.coordinate === undefined
-    ? undefined
-    : validateUserId(args.coordinate, "Grid coordinate id");
-  const requestedScale = args.scale === undefined
-    ? undefined
-    : validateUserId(args.scale, "Grid scale id");
-  if (requestedCoordinate !== undefined) {
-    layers = layers.filter(layer => layer.coordinate === requestedCoordinate);
-  }
-  if (requestedScale !== undefined) {
-    layers = layers.filter(layer => layer.encoding[channel].scale === requestedScale);
-  }
-  if (layers.length === 0) throw new Error(`${direction} grid found no matching encoded layers.`);
-  const coordinateIds = [...new Set(layers.map(layer => layer.coordinate).filter(Boolean))];
-  if (layers.some(layer => layer.coordinate === undefined)) {
-    throw new Error(`${direction} grid requires a stored coordinate.`);
-  }
-  if (coordinateIds.length === 0) throw new Error(`Unknown grid coordinate "${requestedCoordinate}".`);
-  if (coordinateIds.length > 1) {
-    throw new Error(`${direction} grid found multiple coordinates; provide coordinate explicitly.`);
-  }
+  const requestedCoordinate = args.coordinate === undefined ? undefined : validateUserId(args.coordinate, "Grid coordinate id");
+  const requestedScale = args.scale === undefined ? undefined : validateUserId(args.scale, "Grid scale id");
+  const axes = cartesianAxisOwners(program).filter(owner => owner.channel === channel && owner.scale !== undefined && owner.coordinate !== undefined);
+  const bindings = [...layers.map(layer => ({ coordinate: layer.coordinate, scale: layer.encoding[channel].scale })),
+    ...axes.map(owner => ({ coordinate: owner.coordinate, scale: owner.scale }))]
+    .filter(binding => (requestedCoordinate === undefined || binding.coordinate === requestedCoordinate) &&
+      (requestedScale === undefined || binding.scale === requestedScale));
+  if (bindings.length === 0) throw new Error(layers.length === 0
+    ? `${direction} grid requires a ${channel} encoding or bound Cartesian axis.`
+    : `${direction} grid found no matching encoded layers.`);
+  if (bindings.some(binding => binding.coordinate === undefined)) throw new Error(`${direction} grid requires a stored coordinate.`);
+  const coordinateIds = [...new Set(bindings.map(binding => binding.coordinate))];
+  if (coordinateIds.length > 1) throw new Error(`${direction} grid found multiple coordinates; provide coordinate explicitly.`);
   const coordinate = requestedCoordinate ?? coordinateIds[0];
-  const definition = findCoordinate(program, coordinate);
-  if (definition?.type !== "cartesian") {
-    throw new Error(`${direction} grid requires a Cartesian coordinate.`);
-  }
-  const scaleIds = [...new Set(layers.map(layer => layer.encoding[channel].scale))];
-  if (scaleIds.length === 0) throw new Error(`Unknown grid scale "${requestedScale}".`);
-  if (scaleIds.length > 1) {
-    throw new Error(`${direction} grid found multiple ${channel} scales; provide scale explicitly.`);
-  }
+  if (findCoordinate(program, coordinate)?.type !== "cartesian") throw new Error(`${direction} grid requires a Cartesian coordinate.`);
+  const scaleIds = [...new Set(bindings.map(binding => binding.scale))];
+  if (scaleIds.length > 1) throw new Error(`${direction} grid found multiple ${channel} scales; provide scale explicitly.`);
   const scale = requestedScale ?? scaleIds[0];
+  layers = layers.filter(layer => layer.coordinate === coordinate && layer.encoding[channel].scale === scale);
   if (
     !["linear", "time", "band", "point"].includes(program.resolvedScales[scale]?.type) &&
     !isTransformedScaleType(program.resolvedScales[scale]?.type)
@@ -185,6 +167,11 @@ export function resolveGridResources(program, direction, args) {
     const leader = program.materializationConfigs.labelLayouts?.[layer.id]?.leaderId;
     return leader === undefined ? [layer.id] : [leader, layer.id];
   }));
+  if (related.size === 0) {
+    for (const owner of axes.filter(owner => owner.scale === scale && owner.coordinate === coordinate)) {
+      for (const id of axisGraphicIds(channel, owner.id)) if (program.graphicSpec.objects[id] !== undefined) related.add(id);
+    }
+  }
   let before;
   let after;
   walkGraphicDrawOrder(program.graphicSpec, ({ id }) => {
@@ -210,7 +197,7 @@ export function resolveGridConfig(program, direction, args, resources) {
     : Object.hasOwn(args, "count")
       ? { mode: "count", count: args.count }
       : inferGridTickConfig(program, resources.channel, resources.scale);
-  return {
+  return patchGuideDash({
     direction,
     ...(args.bandPosition === undefined ? {} : { bandPosition: args.bandPosition }),
     ...(args.zIndex === undefined ? {} : { zIndex: args.zIndex }),
@@ -222,7 +209,7 @@ export function resolveGridConfig(program, direction, args, resources) {
     color: args.color ?? DEFAULT_STYLE.color,
     lineWidth: args.lineWidth ?? DEFAULT_STYLE.lineWidth,
     strokeDash: args.strokeDash ?? DEFAULT_STYLE.strokeDash
-  };
+  }, args);
 }
 
 export function refreshGridConfig(program, config) {
@@ -257,7 +244,7 @@ export function editGridConfig(previous, args) {
   } else if (args.values === "auto") {
     config.inferredValues = true;
   }
-  return config;
+  return patchGuideDash(config, args);
 }
 
 export function resolveGridGeometry(program, config) {
@@ -281,11 +268,21 @@ export function resolveGridGeometry(program, config) {
     if (!values.every(value => scale.domain.includes(value))) throw new RangeError("Grid values must be inside the scale domain.");
     const centers = mapOrdinalPositionValues(values, scale);
     const direction = scale.range[1] >= scale.range[0] ? 1 : -1;
+    const owners = new Map();
+    if (config.bandPosition === "boundary") {
+      centers.forEach((center, index) => {
+        for (const edge of [center - direction * scale.bandwidth / 2, center + direction * scale.bandwidth / 2]) {
+          if (!owners.has(edge)) owners.set(edge, values[index]);
+        }
+      });
+    }
     const positions = config.bandPosition === "boundary"
-      ? [...new Set(centers.flatMap(center => [center - direction * scale.bandwidth / 2, center + direction * scale.bandwidth / 2]))].sort((a, b) => direction * (a - b))
-      : centers;
+      ? [...owners.keys()].sort((a, b) => direction * (a - b)) : centers;
     validateGeneratedItemLimit(positions.length, "Grid value count");
-    return resolveGridLineGeometry({ direction: config.direction, values: positions, positions: positions.map(value => value + (config.alongOffset ?? 0)), bounds });
+    return {
+      ...resolveGridLineGeometry({ direction: config.direction, values: positions, positions: positions.map(value => value + (config.alongOffset ?? 0)), bounds }),
+      strokeDash: resolveGuideDashes(config.bandPosition === "boundary" ? positions.map(value => owners.get(value)) : values, config)
+    };
   }
   const values = valuesFromTickConfig(program, config);
   validateGeneratedItemLimit(values.length, "Grid value count");
@@ -295,12 +292,12 @@ export function resolveGridGeometry(program, config) {
     throw new RangeError("Grid values must be inside the scale domain.");
   }
   const positions = mapContinuousScaleValues(values, scale);
-  return resolveGridLineGeometry({
+  return { ...resolveGridLineGeometry({
     direction: config.direction,
     values,
     positions: positions.map(value => value + (config.alongOffset ?? 0)),
     bounds
-  });
+  }), strokeDash: resolveGuideDashes(values, config) };
 }
 
 

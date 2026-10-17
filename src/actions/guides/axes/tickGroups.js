@@ -3,7 +3,7 @@ import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateKeys, validateOptionObject } from "../../../core/validation.js";
 
-const CREATE_OPTIONS = Object.freeze([
+const CREATE_OPTIONS = Object.freeze(["target",
   "scale",
   "position",
   "count",
@@ -11,14 +11,14 @@ const CREATE_OPTIONS = Object.freeze([
   "ticks",
   "labels"
 ]);
-const EDIT_OPTIONS = Object.freeze([
+const EDIT_OPTIONS = Object.freeze(["target",
   "position",
   "count",
   "values",
   "ticks",
   "labels"
 ]);
-const TICK_OPTIONS = Object.freeze(["length", "color", "lineWidth", "alongOffset"]);
+const TICK_OPTIONS = Object.freeze(["length", "color", "lineWidth", "alongOffset", "strokeDash", "strokeDashMap"]);
 const LABEL_OPTIONS = Object.freeze([
   "offset",
   "format",
@@ -34,10 +34,11 @@ const LABEL_OPTIONS = Object.freeze([
   "labelMap",
   "alongOffset",
   "flush",
-  "colorMap"
+  "colorMap",
+  "align"
 ]);
-const SHARED_CREATE = Object.freeze(["scale", "position", "count", "values"]);
-const SHARED_EDIT = Object.freeze(["position", "count", "values"]);
+const SHARED_CREATE = Object.freeze(["target", "scale", "position", "count", "values"]);
+const SHARED_EDIT = Object.freeze(["target", "position", "count", "values"]);
 
 function validateNested(value, supported, label) {
   if (!isPlainObject(value)) {
@@ -104,7 +105,7 @@ function makeCreate(channel) {
       const shared = select(args, SHARED_CREATE);
       const tickArgs = { ...shared, ...(args.ticks ?? {}) };
       const labelArgs = {
-        ...select(shared, ["scale", "position"]),
+        ...select(shared, ["target", "scale", "position"]),
         ...(args.labels ?? {})
       };
 

@@ -38,7 +38,7 @@ export async function assertVectorParity(variant, { geometry = "path" } = {}) {
     }
     const streams = buffers.map(decodedStreams);
     assert.ok(streams[0].length > 0);
-    assert.match(streams[0].join("\n"), /\bm\b/);
+    assert.match(streams[0].join("\n"), geometry === "rect" ? /\bre\b/ : /\bm\b/);
     assert.deepEqual(streams[1], streams[0]);
   } finally {
     await rm(directory, { recursive: true, force: true });

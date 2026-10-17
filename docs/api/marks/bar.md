@@ -75,7 +75,7 @@ width, before or after assigning positions; otherwise the default band fraction
 uses the smallest observed time gap. Both orientations support ISO dates and
 explicit timestamp units.
 
-## `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}
+## `editBarMark({ target?, blend?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}
 
 <!-- snippet-context:start -->
 
@@ -114,6 +114,24 @@ Each value is a finite non-negative logical-pixel radius, clamped independently
 to half the smaller item side. An explicit zero keeps that corner square.
 Omitted corners use the global radius or zero. Edits retain unspecified
 overrides, so resetting the global radius alone does not clear them.
+
+## Blend with underlying content
+
+{% include chart-example.html id="bar-compositing" %}
+
+After creating a bar chart, call `program.editBarMark({ blend: "difference" })`.
+Each bar combines its fill and outline first, then applies its opacity and
+composites that source once over the existing plot, grid, and earlier marks.
+Bars retain their drawing order. The RGB operation is the absolute difference
+between the source and backdrop colors. This changes paint, never data or sizes.
+
+Use `blend: "normal"` to return to ordinary source-over painting. Omission preserves
+the current mode. This refinement belongs to the Full bar editor; creation,
+facade appearance objects, and other mark families do not accept it.
+
+SVG, browser Canvas, PNG, and PDF support the same concrete effect. PDF rasterizes
+only the opted-in bar source; other content remains vector. Isolated sources obey
+the [renderer allocation limits](../rendering.md#browser-canvas).
 
 ## Related
 

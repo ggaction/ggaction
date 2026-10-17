@@ -1121,6 +1121,14 @@ function addDirectDerivedDataEdits(program) {
       y: "y"
     })
     .editRegressionData({ target: "editRegression", method: "polynomial" })
+    .createRegressionData({
+      id: "statisticsOriginalFit", source: "editSource", x: "x", y: "y", interval: false
+    })
+    .createRegressionStatisticsData({ id: "editStatistics", source: "statisticsOriginalFit" })
+    .createRegressionData({
+      id: "statisticsAlternateFit", source: "editSource", x: "x", y: "value", interval: false
+    })
+    .editRegressionStatisticsData({ target: "editStatistics", source: "statisticsAlternateFit" })
     .createIntervalData({
       id: "editInterval",
       source: "editSource",
@@ -2092,7 +2100,7 @@ function lifecycleSignature(base, factors) {
       "createNormalizedData", "createCompleteData", "createImputedData", "editDerivedData",
       "editComputedData", "editFilteredData", "editFoldData", "editSummaryData",
       "editBinData", "editTimeUnitData", "editWindowData", "createSortedData", "editSortedData", "editDensityData",
-      "editStackData", "editRegressionData", "editIntervalData", "editECDFData",
+      "editStackData", "editRegressionData", "createRegressionStatisticsData", "editRegressionStatisticsData", "editIntervalData", "editECDFData",
       "editNormalizedData", "editCompleteData", "editImputedData"
     ],
     "action-direct-point-text": [
@@ -2349,7 +2357,7 @@ export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createNormalizedData", "createCompleteData", "createImputedData",
   "editDerivedData", "editComputedData", "editFilteredData", "editFoldData",
   "editSummaryData", "editBinData", "editTimeUnitData", "editWindowData",
-  "editDensityData", "editStackData", "editRegressionData", "editIntervalData",
+  "editDensityData", "editStackData", "editRegressionData", "createRegressionStatisticsData", "editRegressionStatisticsData", "editIntervalData",
   "editECDFData", "editNormalizedData", "editCompleteData", "editImputedData",
   "editAreaMark", "editRuleMark", "encodeShape", "encodeAngle", "removePointRadius",
   "encodeYOffset", "encodeParallelCoordinates", "removeEncoding", "encodeHorizon",

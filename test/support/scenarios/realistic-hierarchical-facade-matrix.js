@@ -1,3 +1,5 @@
+import { appendFacadeLegendCombinations } from "./realistic-facade-legend-combinations.js";
+import { realisticColorControls, realisticPaletteRange, appendRealisticColorControls } from "./realistic-color-controls.js";
 const POSITION_TYPES = Object.freeze(["linear", "log", "pow", "sqrt", "symlog"]);
 const THETA_TYPES = Object.freeze(["linear", "time", "band", "point"]);
 const TEMPORAL_UNITS = Object.freeze(["auto", "year", "timestamp"]);
@@ -8,7 +10,7 @@ const CURVES = Object.freeze([
 const DASHES = Object.freeze(["solid", "dashed", "dotted", "dashdot"]);
 const POINT_SHAPES = Object.freeze([
   "circle", "cross", "diamond", "hexagon", "plus", "square", "star",
-  "triangle-down", "triangle-left", "triangle-right", "triangle-up", "wye"
+  "triangle-down", "triangle-left", "triangle-right", "triangle-up", "wye", "wedge", "arrow"
 ]);
 const FORMATS = Object.freeze(["auto", ".0f", ".1f", ".2f"]);
 const PALETTES = Object.freeze([
@@ -180,7 +182,12 @@ function areaBaseline(index) {
 }
 
 function colorScale(id, index, categorical = false) {
+  if (index === 34 || index === 35) return { id, type: categorical ? "ordinal" : "sequential",
+    domain: "auto", range: { palette: index === 34 ? "viridis" : "magma" } };
   if (categorical || index < 8) {
+    if ([7,16,25].includes(index)) return {id,type:"ordinal",domain:"auto",range:realisticPaletteRange(Math.floor(index/9))};
+    if (index === 4) return { id, type: "ordinal", domain: "auto",
+      range: { palette: { name: "viridis", count: 6, extent: [0.08, 0.92] } } };
     const palette = PALETTES[index % PALETTES.length];
     if (index % 3 === 0) return { id, type: "ordinal", domain: "auto", range: "auto" };
     if (index % 3 === 1) return { id, type: "ordinal", domain: "auto", palette };
@@ -205,7 +212,8 @@ function colorScale(id, index, categorical = false) {
     };
   }
   if (index === 19) {
-    return { id, type: "sqrt", domain: "auto", range: "auto",
+    return { id, type: "sqrt", domain: "auto",
+      range: { palette: { name: "viridis", count: 6, extent: [0.08, 0.92] } },
       interpolate: "lab", clamp: true, reverse: false, unknown: "#94a3b8" };
   }
   if (index === 20) {
@@ -238,6 +246,7 @@ function colorChannel(id, index, { categorical = false, layout = false, temporal
   }
   if (temporal && index === 12) scale.interpolate = "lab";
   if (temporal && index === 13) scale.interpolate = "cubehelix";
+  Object.assign(scale, realisticColorControls(scale.interpolate, index));
   return {
     field: temporal ? temporalField(temporalUnit) : categorical || index < 8 ? "group" : "positiveY",
     fieldType: temporal ? "temporal" : categorical || index < 8
@@ -248,7 +257,7 @@ function colorChannel(id, index, { categorical = false, layout = false, temporal
     ...(layout ? { layout: "overlay" } : {}),
     ...(temporal && index === 12
       ? { palette: { name: "viridis", extent: [0.08, 0.92] } }
-      : (categorical || index < 8) && index % 3 === 2
+      : index < 34 && (categorical || index < 8) && index % 3 === 2
       ? { palette: PALETTES[index % PALETTES.length] }
       : {})
   };
@@ -320,6 +329,7 @@ function gradientPaint(index = 0) {
 function labelStyle(index) {
   return {
     offset: 10,
+    align: ["left", "center", "right"][index % 3],
     alongOffset: index % 2 === 0 ? 1 : -1,
     colorMap: index % 2 === 0 ? "auto" : [{ value: 1, color: "#1d4ed8" }],
     labelMap: "auto",
@@ -341,6 +351,9 @@ function axisTitle(text, index, radial = false) {
     text,
     at: ["start", "center", "end"][index % 3],
     offset: 160,
+    alongOffset: index % 2 ? -2 : 2,
+    align: ["left", "center", "right"][index % 3],
+    baseline: ["top", "hanging", "middle", "alphabetic", "ideographic", "bottom"][index % 6],
     rotation: { value: 0, unit: index % 2 === 0 ? "degrees" : "radians" },
     color: "#0f172a",
     fontSize: 13,
@@ -366,7 +379,8 @@ function ticksAndLabels(index, { polar = false } = {}) {
   return {
     count: 2,
     ticks: { length: 7, color: "#64748b", lineWidth: 1,
-      ...(polar ? {} : { alongOffset: index % 2 === 0 ? 1 : -1 }) },
+      ...(polar ? {} : { alongOffset: index % 2 === 0 ? 1 : -1,
+        strokeDash: [2, 2], strokeDashMap: index % 2 ? "auto" : [{ value: 0, strokeDash: [] }] }) },
     labels: polar
       ? {
           offset: 10, format: "auto", color: "#334155",
@@ -426,6 +440,8 @@ function axis(scaleId, coordinate, index, channel, discrete = false, values, for
     ticksAndLabels.labels = { ...ticksAndLabels.labels, labelMap: "auto" };
   }
   return {
+    id: channel,
+    offset: 4,
     scale: scaleId,
     coordinate,
     position,
@@ -631,6 +647,8 @@ function baseLegend(target, index, {
 
 function legend(target, index, options = {}) {
   const result = baseLegend(target, index, options);
+  result.combine = "separate";
+  if (result.border && typeof result.border === "object") result.border.strokeDash = [4,2,6,1];
   if (index !== 14) {
     result.blockLayout = ["row", "column", "wrap"][index % 3];
   }
@@ -648,7 +666,11 @@ function legend(target, index, options = {}) {
     if (result.representation === "symbols") {
       delete result.gradient;
       result.symbol = { type: "point", radius: 5 };
-    } else result.gradient.opacity = 0.7;
+    } else { result.gradient.opacity = 0.7; result.titlePosition = "bottom"; }
+  }
+  if (result.symbol?.layers?.some(layer => layer.type === "point")) {
+    result.clipHeight=8;
+    result.symbol={layers:result.symbol.layers.map(layer=>({...layer,opacity:[0,0.7,1][index%3]}))};
   }
   return result;
 }
@@ -675,7 +697,7 @@ function cartesianGuides({
           scale: xScale, coordinate,
           ...(xValues === undefined ? { count: 4 } : { values: xValues }),
           color: "#dbeafe",
-          lineWidth: 0.8, strokeDash: [2, 3], alongOffset: 1, zIndex: -1
+          lineWidth: 0.8, strokeDash: [2, 3], strokeDashMap: index % 2 ? "auto" : [{ value: 0, strokeDash: [] }], alongOffset: 1, zIndex: -1
         }
       },
       legend: false
@@ -691,22 +713,22 @@ function cartesianGuides({
       vertical: index === 8 ? false : xBand ? {
         scale: xScale, coordinate,
         bandPosition: Math.floor(index / 8) % 2 === 0 ? "boundary" : "center",
-        alongOffset: 0, zIndex: -1, color: "#dbeafe", lineWidth: 0.8, strokeDash: [2, 3]
+        alongOffset: 0, zIndex: -1, color: "#dbeafe", lineWidth: 0.8, strokeDash: [2, 3], strokeDashMap: index % 2 ? "auto" : [{ value: 0, strokeDash: [] }]
       } : xDiscrete || index === 8 ? false : index === 4 || xValues === undefined && index % 6 === 0 ? true : {
         scale: xScale, coordinate,
         ...(xValues === undefined ? { count: 4 } : { values: xValues }),
         color: "#dbeafe",
-        lineWidth: 0.8, strokeDash: [2, 3], alongOffset: 1, zIndex: -1
+        lineWidth: 0.8, strokeDash: [2, 3], strokeDashMap: index % 2 ? "auto" : [{ value: 0, strokeDash: [] }], alongOffset: 1, zIndex: -1
       },
       horizontal: index === 9 ? false : yBand ? {
         scale: yScale, coordinate,
         bandPosition: Math.floor(index / 8) % 2 === 0 ? "boundary" : "center",
-        alongOffset: 0, zIndex: 1, color: "#e2e8f0", lineWidth: 0.8, strokeDash: [3, 2]
+        alongOffset: 0, zIndex: 1, color: "#e2e8f0", lineWidth: 0.8, strokeDash: [3, 2], strokeDashMap: index % 2 ? "auto" : [{ value: 0, strokeDash: [] }]
       } : yDiscrete || index === 9 ? false : yValues === undefined && index % 6 === 1 ? true : {
         scale: yScale, coordinate,
         ...(yValues === undefined ? { count: 4 } : { values: yValues }),
         color: "#e2e8f0",
-        lineWidth: 0.8, strokeDash: [3, 2], alongOffset: -1, zIndex: 1
+        lineWidth: 0.8, strokeDash: [3, 2], strokeDashMap: index % 2 ? "auto" : [{ value: 0, strokeDash: [] }], alongOffset: -1, zIndex: 1
       }
     },
     legend: rug || !hasColor || index >= 29 || index % 5 === 2 && index !== 27
@@ -798,11 +820,11 @@ function rugGuides({ coordinate, scale, horizontal, index, edge, values, format 
     grid: index % 5 === 1 ? false : {
       vertical: horizontal ? index === 2 ? true : {
         scale, coordinate, ...(values === undefined ? { count: 4 } : { values }), color: "#dbeafe",
-        lineWidth: 0.8, strokeDash: [2, 3], alongOffset: 1, zIndex: -1
+        lineWidth: 0.8, strokeDash: [2, 3], strokeDashMap: Math.floor(index / 2) % 2 ? "auto" : [{ value: 0, strokeDash: [] }], alongOffset: 1, zIndex: -1
       } : false,
       horizontal: horizontal ? false : index === 3 ? true : {
         scale, coordinate, ...(values === undefined ? { count: 4 } : { values }), color: "#e2e8f0",
-        lineWidth: 0.8, strokeDash: [3, 2], alongOffset: -1, zIndex: 1
+        lineWidth: 0.8, strokeDash: [3, 2], strokeDashMap: Math.floor(index / 2) % 2 ? "auto" : [{ value: 0, strokeDash: [] }], alongOffset: -1, zIndex: 1
       }
     },
     legend: false
@@ -1110,6 +1132,11 @@ function appendRug(program, index) {
   });
   if (options.guides !== false && options.guides.axes !== false) {
     const guide = horizontal ? options.guides.axes.x : options.guides.axes.y;
+    // Orientation alternates with parity: use a separate cycle for each side.
+    if (guide.title !== false) guide.title.baseline =
+      ["top", "hanging", "middle", "alphabetic", "ideographic", "bottom"][Math.floor(index / 2) % 6];
+    if (guide.ticksAndLabels !== false) guide.ticksAndLabels.ticks.strokeDashMap =
+      Math.floor(index / 2) % 2 ? "auto" : [{ value: 0, strokeDash: [] }];
     if (index === 4 && guide.ticksAndLabels !== false) guide.ticksAndLabels.labels.flush = false;
     if (index === 3 && guide.ticksAndLabels !== false) Object.assign(guide.ticksAndLabels.labels, {
       flush: true, colorMap: "auto"
@@ -1237,6 +1264,10 @@ function appendStrip(program, index) {
     xFormat: index === 4 ? ".1f" : "auto",
     yFormat: index === 14 ? ".1f" : "auto"
   });
+  if (index === 3 && options.guides !== false && options.guides.axes !== false &&
+      options.guides.axes.y !== false && options.guides.axes.y.title !== false) {
+    options.guides.axes.y.title.baseline = "bottom";
+  }
   if (mode === 0 && options.guides !== false) {
     if (options.guides.axes !== false) options.guides.axes.y = false;
     if (options.guides.grid !== false) options.guides.grid.horizontal = false;
@@ -1922,9 +1953,28 @@ function appendRadial(program, action, index) {
 }
 
 export function appendHierarchicalFacadeCoverage(program) {
-  let next = program;
+  let next = appendRealisticColorControls(program);
   for (let index = 0; index < REALISTIC_HIERARCHICAL_FACADE_PROFILE_COUNT; index += 1) {
-    const steps = [
+    const steps = hierarchicalSteps();
+    for (const [action, append] of steps) {
+      try {
+        next = append(next, index);
+      } catch (error) {
+        error.message = `Hierarchical facade profile ${index} ${action}: ${error.message}`;
+        throw error;
+      }
+    }
+  }
+  next = appendPaletteRangeProfiles(next, [34, 35]);
+  for (const action of ["createPolarScatterPlot", "createStripPlot", "createBeeswarmPlot", "createRaincloudPlot"]) {
+    next = appendFacadeLegendCombinations(next, {action,xField:"positiveX",yField:"positiveY",categoryField:"group",numberField:"rowOrdinal",
+      modes: action === "createPolarScatterPlot" || action === "createRaincloudPlot" ? ["size-shape"] : ["size-shape","color-size"]});
+  }
+  return next;
+}
+
+function hierarchicalSteps() {
+  return [
       ["createAreaPlot", appendArea],
       ["createDensityPlot", appendDensity],
       ["createHorizonPlot", appendHorizon],
@@ -1939,13 +1989,17 @@ export function appendHierarchicalFacadeCoverage(program) {
       ["createBeeswarmPlot", appendBeeswarm],
       ["createRaincloudPlot", appendRaincloud]
     ];
-    for (const [action, append] of steps) {
-      try {
-        next = append(next, index);
-      } catch (error) {
-        error.message = `Hierarchical facade profile ${index} ${action}: ${error.message}`;
-        throw error;
-      }
+}
+
+export function appendHierarchicalPaletteRangeCoverage(program) {
+  return appendPaletteRangeProfiles(program, [7, 16, 25, 34, 35]);
+}
+
+function appendPaletteRangeProfiles(program, indexes) {
+  let next=program;
+  for(const index of indexes) {
+    for(const [action,append] of hierarchicalSteps().filter(([action])=>!["createHorizonPlot","createRugPlot"].includes(action))) {
+      try {next=append(next,index);} catch(error) {error.message=`Palette range ${index} ${action}: ${error.message}`;throw error;}
     }
   }
   return next;

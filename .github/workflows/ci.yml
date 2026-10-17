@@ -68,6 +68,8 @@ jobs:
         run: node scripts/run-check.js test -- npm test
       - name: Test browser examples and the packed browser entry
         run: node scripts/run-check.js test-browser -- npm run test:browser
+      - name: Install PDF pixel-test decoder
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
       - name: Render PNG regression charts
         run: node scripts/run-check.js test-render -- npm run test:render
       - name: Collect bounded failure evidence

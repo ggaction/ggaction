@@ -376,7 +376,7 @@ function hasActiveStroke(properties) {
     (properties.strokeWidth ?? 0) > 0;
 }
 
-function primitiveBounds(type, properties = {}, profile) {
+export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
   const strokeExtent = hasActiveStroke(properties)
     ? properties.strokeWidth / 2
     : 0;
@@ -469,15 +469,34 @@ function ancestorOffset(graphicSpec, target) {
   }
 }
 
+function intersectVisibleBounds(bounds,clip) {
+  if(bounds===undefined)return undefined;
+  const result={left:Math.max(bounds.left,clip.left),right:Math.min(bounds.right,clip.right),
+    top:Math.max(bounds.top,clip.top),bottom:Math.min(bounds.bottom,clip.bottom)};
+  return result.right<=result.left||result.bottom<=result.top?undefined:result;
+}
+
+function clipAncestorBounds(graphicSpec,id,bounds) {
+  let parent=findGraphicParent(graphicSpec,id);
+  while(parent!==undefined){
+    if(parent.object.type==="canvas"&&findGraphicParent(graphicSpec,parent.id)!==undefined){
+      const [x,y]=ancestorOffset(graphicSpec,parent.id),p=parent.object.properties;
+      bounds=intersectVisibleBounds(bounds,{left:x+(p.x??0),right:x+(p.x??0)+p.width,top:y+(p.y??0),bottom:y+(p.y??0)+p.height});
+    }
+    parent=findGraphicParent(graphicSpec,parent.id);
+  }
+  return bounds;
+}
+
 function objectBounds(graphicSpec, id, object, ancestors, x, y, profile) {
   if (ancestors.has(id)) {
     throw new Error(`Graphic attachment cycle includes "${id}".`);
   }
   ancestors.add(id);
   let result = object.items === undefined
-    ? translateBounds(primitiveBounds(object.type, object.properties, profile), x, y)
+    ? translateBounds(resolvePrimitiveGraphicBounds(object.type, object.properties, profile), x, y)
     : unionBounds(object.items.map(item => translateBounds(
-        primitiveBounds(item.type ?? object.type, item.properties, profile),
+        resolvePrimitiveGraphicBounds(item.type ?? object.type, item.properties, profile),
         x,
         y
       )));
@@ -497,20 +516,25 @@ function objectBounds(graphicSpec, id, object, ancestors, x, y, profile) {
       );
     }
   }
+  if(object.type==="canvas"&&findGraphicParent(graphicSpec,id)!==undefined){
+    result=intersectVisibleBounds(result,{left:childX,right:childX+object.properties.width,
+      top:childY,bottom:childY+object.properties.height});
+  }
   ancestors.delete(id);
   return result;
 }
 
 export function resolveConcreteGraphicBounds(graphicSpec, target, profile) {
   const found = requireGraphic(graphicSpec, target);
-  const [x, y] = ancestorOffset(graphicSpec, target);
-  return requireFiniteBounds(found.kind === "item"
+  const anchor=found.kind==="item"?found.ownerId:found.id;
+  const [x, y] = ancestorOffset(graphicSpec, anchor);
+  return requireFiniteBounds(clipAncestorBounds(graphicSpec,anchor,found.kind === "item"
     ? translateBounds(
-      primitiveBounds(found.object.type ?? found.owner.type, found.object.properties, profile),
+      resolvePrimitiveGraphicBounds(found.object.type ?? found.owner.type, found.object.properties, profile),
       x,
       y
     )
-    : objectBounds(graphicSpec, found.id, found.object, new Set(), x, y, profile));
+    : objectBounds(graphicSpec, found.id, found.object, new Set(), x, y, profile)));
 }
 
 export function unionConcreteGraphicBounds(graphicSpec, targets, profile) {

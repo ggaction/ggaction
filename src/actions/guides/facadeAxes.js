@@ -1,3 +1,4 @@
+import { axisTargetArgs } from "../../selectors/axes.js";
 import { validatePolarAxisArgs } from "./polar/axes/facade.js";
 import { prefix as polarPrefix, resolveAngle } from "./polar/axes/shared.js";
 import { validateAxesArgs } from "./axes/axes.js";
@@ -47,24 +48,26 @@ export function scopeFacadeAxes(program, layer, args) {
   }
   const scoped = { coordinate: { id: coordinate.id, type: "cartesian" } };
   for (const channel of ["x", "y"]) {
-    const option = args[channel];
-    if (option === false || (option === undefined && layer.encoding?.[channel] === undefined)) {
-      scoped[channel] = false;
-      continue;
-    }
-    const scale = layer.encoding?.[channel]?.scale;
-    if (scale === undefined) guideConflict(`this facade has no ${channel} scale`);
-    if (option?.scale !== undefined && option.scale !== scale) {
-      guideConflict(`axes.${channel}.scale does not belong to this facade`);
-    }
-    if (option?.coordinate !== undefined && option.coordinate !== coordinate.id) {
-      guideConflict(`axes.${channel}.coordinate does not belong to this facade`);
-    }
-    scoped[channel] = { ...option, scale, coordinate: coordinate.id };
-    validateAxisArgs(scoped[channel], `create${channel.toUpperCase()}Axis`);
-    if (scoped[channel].ticksAndLabels !== false) {
-      validateAxisTickGroupArgs(scoped[channel].ticksAndLabels ?? {}, "createAxisTicksAndLabels", true);
-    }
+    const scope = option => {
+      if (option === false || (option === undefined && layer.encoding?.[channel] === undefined)) {
+        return false;
+      }
+      const scale = layer.encoding?.[channel]?.scale;
+      if (scale === undefined) guideConflict(`this facade has no ${channel} scale`);
+      if (option?.scale !== undefined && option.scale !== scale) {
+        guideConflict(`axes.${channel}.scale does not belong to this facade`);
+      }
+      if (option?.coordinate !== undefined && option.coordinate !== coordinate.id) {
+        guideConflict(`axes.${channel}.coordinate does not belong to this facade`);
+      }
+      const scopedOption = { ...option, scale, coordinate: coordinate.id };
+      validateAxisArgs(scopedOption, `create${channel.toUpperCase()}Axis`);
+      if (scopedOption.ticksAndLabels !== false) {
+        validateAxisTickGroupArgs(scopedOption.ticksAndLabels ?? {}, "createAxisTicksAndLabels", true);
+      }
+      return scopedOption;
+    };
+    scoped[channel] = Array.isArray(args[channel]) ? args[channel].map(scope) : scope(args[channel]);
   }
   return scoped;
 }
@@ -76,21 +79,25 @@ function tickMode(config) {
 
 function planAxis(program, channel, args, explicit) {
   const prefix = channel.toUpperCase();
-  const guide = program.semanticSpec.guides.axis?.[channel];
-  const configs = program.guideConfigs.axis?.[channel] ?? {};
+  const axisId = args.id ?? channel;
+  const guide = program.semanticSpec.guides.axis?.[axisId];
+  const configs = program.guideConfigs.axis?.[axisId] ?? {};
   if (guide === undefined && Object.keys(configs).length === 0) {
     return [{ op: `create${prefix}Axis`, args }];
   }
   if (guide?.scale !== args.scale || resolveStoredGuideCoordinate(program, guide, channel) !== args.coordinate) {
     guideConflict(`${channel} axis uses a different coordinate or scale`);
   }
+  if (explicit.offset !== undefined && explicit.offset !== (configs.frame?.offset ?? 0)) {
+    guideConflict(`${channel} axis uses a different frame offset`);
+  }
   const positions = [...new Set(Object.values(configs).map(config => config.position).filter(Boolean))];
   if (positions.length > 1) guideConflict(`${channel} axis components have incompatible positions`);
   const position = explicit.position ?? positions[0];
-  const shared = { scale: args.scale, ...(position === undefined ? {} : { position }) };
+  const shared = { ...axisTargetArgs(axisId, channel), scale: args.scale, ...(position === undefined ? {} : { position }) };
   const explicitShared = explicit.position === undefined ? {} : { position: explicit.position };
   const steps = guide.coordinate === undefined ? [{
-    op: "editSemantic", args: { property: `guide.axis.${channel}.coordinate`, value: args.coordinate }
+    op: "editSemantic", args: { property: `guide.axis.${axisId}.coordinate`, value: args.coordinate }
   }] : [];
   const group = args.ticksAndLabels ?? {};
   const explicitGroup = explicit.ticksAndLabels ?? {};
@@ -106,7 +113,7 @@ function planAxis(program, channel, args, explicit) {
   for (const component of ["line", "ticks", "labels", "title"]) {
     const config = configs[component];
     if (axisComponentDisabled(args, component)) {
-      if (hasAxisComponent(program, channel, component)) guideConflict(`${channel} axis already has ${component}`);
+      if (hasAxisComponent(program, channel, component, axisId)) guideConflict(`${channel} axis already has ${component}`);
       continue;
     }
     if (config === undefined) continue;
@@ -154,7 +161,9 @@ export function planFacadeAxes(program, layer, scoped, explicit = {}) {
       : planPolarAxis(program, channel, scoped[channel], explicit[channel] ?? {}));
   }
   return ["x", "y"].flatMap(channel => scoped[channel] === false ? []
-    : planAxis(program, channel, scoped[channel], explicit[channel] ?? {}));
+    : Array.isArray(scoped[channel])
+      ? scoped[channel].flatMap((entry, index) => planAxis(program, channel, entry, explicit[channel]?.[index] ?? {}))
+      : planAxis(program, channel, scoped[channel], explicit[channel] ?? {}));
 }
 
 function planPolarAxis(program, channel, args, explicit) {

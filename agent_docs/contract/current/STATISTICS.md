@@ -306,6 +306,10 @@ without naming generated child layers.
 - `interval`: Implemented `"mean" | "prediction"`; 기본값은 `"mean"`이며 LOESS에서는 생략해야 한다.
 - `band`: style object 또는 `false`. linear/polynomial은 생략 시 band를 만들고,
   LOESS는 생략/false일 때 band child를 만들지 않으며 object는 오류다.
+- `method:"exp"`는 CORE의 response-weighted log fit을 그대로 사용한다. Interval 생략/false만
+  허용하고 band 생략/false는 line만 만든다. Explicit band object·confidence 옵션은 오류다.
+  Exp로 편집하면 inherited CI 설정과 owned band를 제거하고 linear/polynomial로 돌아가면
+  기존 기본 band를 복원한다. Data-only 및 facade 모두 같은 positive-response 검사를 사용한다.
 - `band.color`: non-empty color string, 기본 theme regression-band color `"#111111"`.
 - `band.opacity`: `[0, 1]` finite number, 기본값 `0.18`.
 - `line.strokeWidth`: non-negative finite number, 기본값 `3`.
@@ -320,7 +324,7 @@ without naming generated child layers.
 
 ### Formal values — `createRegression`
 
-- Implemented: `createRegression({ target?: UserId; x?: FieldName; y?: FieldName; groupBy?: FieldName | false; line?: { strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } } & ({ method?: "linear"; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "polynomial"; degree?: PositiveInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "loess"; span?: UnitIntervalExclusiveZero; robustIterations?: NonNegativeInteger; band?: false }))`
+- Implemented: `createRegression({ target?: UserId; x?: FieldName; y?: FieldName; groupBy?: FieldName | false; line?: { strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } } & ({ method?: "linear"; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "polynomial"; degree?: PositiveInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "loess"; span?: UnitIntervalExclusiveZero; robustIterations?: NonNegativeInteger; band?: false } | { method: "exp"; interval?: false; band?: false }))`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -360,7 +364,7 @@ without naming generated child layers.
 
 ### Formal values — `editRegression`
 
-- Implemented: `editRegression({ target?: UserId; data?: UserId; x?: FieldName; y?: FieldName; groupBy?: FieldName | false; method?: "linear" | "polynomial" | "loess"; degree?: PositiveInteger; span?: UnitIntervalExclusiveZero; robustIterations?: NonNegativeInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions; line?: { strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } })` with method-specific runtime validation.
+- Implemented: `editRegression({ target?: UserId; data?: UserId; x?: FieldName; y?: FieldName; groupBy?: FieldName | false; method?: "linear" | "polynomial" | "loess" | "exp"; degree?: PositiveInteger; span?: UnitIntervalExclusiveZero; robustIterations?: NonNegativeInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions; line?: { strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } })` with method-specific runtime validation.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 

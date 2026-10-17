@@ -1,0 +1,40 @@
+{
+  "sources": [
+    {
+      "rawSha256": "d723a41982591a80b0c84434b5efe88efe16a757c3b92f3b15ebedf5a8de18ef",
+      "rows": 44992,
+      "elapsedMilliseconds": 1920,
+      "proofs": [
+        {
+          "entry": "Full",
+          "pointItems": 44992,
+          "maximumCoordinateError": 0,
+          "wholeRawRowsAndStringTypesPreserved": true,
+          "editableRoundTrip": true,
+          "graphicOnlyCanvasAndSvg": true,
+          "accessibleRows": 44992
+        }
+      ]
+    },
+    {
+      "rawSha256": "d63c96f99e459e7f61a3721cb1476c05aa3b5c6365131f7d067e67126333ceb7",
+      "rows": 20707,
+      "elapsedMilliseconds": 856,
+      "proofs": [
+        {
+          "entry": "Full",
+          "pointItems": 20707,
+          "maximumCoordinateError": 0,
+          "wholeRawRowsAndStringTypesPreserved": true,
+          "editableRoundTrip": true,
+          "graphicOnlyCanvasAndSvg": true,
+          "accessibleRows": 20707
+        }
+      ]
+    }
+  ],
+  "generatedItemLimit": 10000,
+  "pointItemLimit": 50000,
+  "workLimit": 10000000,
+  "chartPixelsInspected": false
+}

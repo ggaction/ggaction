@@ -1,3 +1,6 @@
+import{validateLegendClip,clippedSampleBounds}from"../../../grammar/legendClip.js";
+import{hasLegendClipGraphics}from"../../../materialization/legendClip.js";
+import { resolveDisplayLabel } from "../../../grammar/displayLabels.js";
 import { intrinsicLegendConfig, legendGroup } from "../../../materialization/legendGroups.js";
 import { formatVisibleText } from "../../../core/textMetrics.js";
 import { action, closedAction } from "../../../core/action.js";
@@ -69,6 +72,7 @@ function requireScale(program, id) {
 }
 
 export function resolveSizeLegendLayout(program, config) {
+  validateLegendClip("size",config);
   config = intrinsicLegendConfig(program, config);
   const scale = requireScale(program, config.scale);
   const categorical = [
@@ -88,7 +92,7 @@ export function resolveSizeLegendLayout(program, config) {
   const labels = effective.labels;
   const titleStyle = effective.titleStyle;
   // Group ownership replaces placement inheritance, never shared typography.
-  const placementCategorical = legendGroup(program, config.target) === undefined &&
+  const placementCategorical = config.blockLocalPosition === undefined && legendGroup(program, config.target) === undefined &&
     (config.inheritPosition !== false || categorical?.position === config.position)
     ? categorical : undefined;
   const position = placementCategorical?.position ?? config.position;
@@ -134,24 +138,29 @@ export function resolveSizeLegendLayout(program, config) {
         "quantitative",
         config.labels.format
       );
-  const text = hiddenCount > 0 ? [...itemText, `…${hiddenCount} entries`] : itemText;
+  const mappedText = !discrete && !ordinalSize && effective.labelMap !== undefined
+    ? itemText.map((label, index) => resolveDisplayLabel(values[index], effective.labelMap, () => label))
+    : itemText;
+  const text = hiddenCount > 0 ? [...mappedText, `…${hiddenCount} entries`] : mappedText;
   const symbolStroke = effective.blockSymbol?.strokeWidth ?? 0;
   const symbolExtent = symbolStroke / 2;
   const sampleWidth = width + symbolStroke;
   const layout = resolveLegendItemLayout(plot, { ...effective, ...geometry, labels, titleStyle }, text, {
-    width: sampleWidth, height: radius * 2 + symbolStroke,
-    itemBounds: radii.map(r => ({
+    width: sampleWidth, height: Math.min(radius * 2 + symbolStroke, effective.clipHeight??Infinity),
+    itemBounds: radii.map(r => clippedSampleBounds({
       left: sampleWidth / 2 - r - symbolExtent,
       right: sampleWidth / 2 + r + symbolExtent,
       top: -r - symbolExtent,
       bottom: r + symbolExtent
-    }))
+    },effective.clipHeight))
   }, undefined, program.materializationConfigs.textMetrics);
   assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Size legend layout", { ...effective, ...geometry });
   const background = resolveLegendBackgroundFromBounds(layout.bounds, effective.border, canvas, "Size legend", { ...effective, ...geometry });
   return { ...layout, symbolX: layout.symbolX.slice(0, radii.length).map(x => x + sampleWidth / 2),
     symbolY: layout.itemY.slice(0, radii.length), radii, text,
-    labels, titleStyle, background, config: effective };
+    ...(effective.labelMap === undefined ? {} : {
+      labelItemIndices: text.flatMap((label, index) => label === "" ? [] : [index])
+    }), labels, titleStyle, background, config: effective };
 }
 
 export const rematerializeSizeLegend = /* @__PURE__ */ closedAction(
@@ -160,6 +169,7 @@ export const rematerializeSizeLegend = /* @__PURE__ */ closedAction(
     description: "Rematerialize a point-size legend."
   }, [],
   function (args = {}) {
+    if(hasLegendClipGraphics(this))return this.rematerializeLegend();
     const config = this.guideConfigs.legend?.size;
     if (config === undefined) throw new Error("Size legend requires stored configuration.");
     const layer = findLayer(this, config.target);

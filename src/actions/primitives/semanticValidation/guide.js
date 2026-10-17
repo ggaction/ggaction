@@ -1,3 +1,4 @@
+import {isSizeShapeChannels} from "../../../grammar/legendCombinations.js";
 import { normalizeLegendOrder } from "../../../grammar/categoryOrder.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { CATEGORICAL_LEGEND_CHANNELS } from "../../../core/vocabulary.js";
@@ -16,7 +17,7 @@ function validateLegend(property, value) {
     throw new Error(`Legend ${property} must not contain duplicates.`);
   }
   if (property === "channels") {
-    if (!value.every(channel => CATEGORICAL_LEGEND_CHANNELS.includes(channel))) {
+    if (!isSizeShapeChannels(value) && !value.every(channel => CATEGORICAL_LEGEND_CHANNELS.includes(channel))) {
       throw new Error("Legend channels support only color, strokeDash, and shape.");
     }
     return;
@@ -26,6 +27,11 @@ function validateLegend(property, value) {
 
 export function validateGuideSemanticValue(_program, parsed, value) {
   const property = parsed.path.at(-1);
+  if (parsed.id === "legend.colorSize") {
+    if(property === "title") validateNonEmptySemanticString(value,"Legend title");
+    else validateUserId(value,"Legend scale id");
+    return;
+  }
   if (parsed.id === "axis.parallel" && property === "titles") {
     validateParallelAxisTitles(value);
     return;
@@ -44,6 +50,10 @@ export function validateGuideSemanticValue(_program, parsed, value) {
       throw new TypeError("Parallel axis scales must contain at least two ids.");
     }
     value.forEach(id => validateUserId(id, "Parallel axis scale id"));
+  } else if (parsed.id.startsWith("axis.") && property === "channel") {
+    if (!["x", "y"].includes(value)) throw new Error("Named Cartesian axis channel requires x or y.");
+  } else if (parsed.id.startsWith("axis.") && property === "position") {
+    if (!["top", "bottom", "left", "right"].includes(value)) throw new Error("Named Cartesian axis position requires a physical side.");
   } else if (property === "title") {
     validateNonEmptySemanticString(value, "Axis title");
   } else {

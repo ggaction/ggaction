@@ -2,6 +2,19 @@
 
 Current direct-action contracts for this domain. Shared notation and lifecycle rules live in [`../README.md`](../README.md).
 
+## Named Cartesian owner contract
+
+- Complete X/Y creation의 `id?`는 axis resource identity이며 생략하면 기존 x/y다. Explicit own canonical alias도 같은 결과이고 다른 reserved channel ID(x/y/theta/radius/parallel)와 기존 native graphic ID 충돌은 거부한다. ID는 기존 user-ID grammar를 따른다.
+- Focused create/edit, complete edit, remove는 `target?` axis ID를 받는다. Target을 생략하면 canonical owner, 없으면 같은 channel의 유일 named owner, 여러 후보면 오류다. Unknown/wrong-channel target와 충돌하는 resource filter는 원자적으로 거부한다. Nested component appearance에는 target이 없고 complete creator에는 target 대신 id가 있다. Polar/Parallel 계약은 바뀌지 않는다.
+- `createAxes`/`createGuides.axes` x/y는 기존 singular/false 또는 id가 필수인 nonempty named axis array다. Entry 순서를 유지하고 전체를 atomic preflight하며 facade는 자신이 소비하는 coordinate/scale에 한정한다.
+- Named meaning은 `semanticSpec.guides.axis[id] = {channel,position,scale,coordinate,title?}`가 소유하고 appearance/binding/frame은 `guideConfigs.axis[id]`가 소유한다. Native concrete IDs는 `axis_<id>__Line/Ticks/Labels/Title`; canonical IDs는 그대로다. Selector는 appearance config에 저장하지 않는다.
+- Coordinate의 physical side마다 한 owner만 허용한다. Canonical의 기존 mixed-side component는 기존처럼 유지되지만 해당 모든 side를 점유한다. Named 축은 complete position 하나를 공유하고 focused position 변경은 거부한다. Frame offset으로 중복 side lane을 만들지 않는다. Named text와 다른 owner의 실제 개별 text bounds 교차는 거부하고 legacy canonical↔canonical 정책은 보존한다.
+- Explicit coordinate+unused explicit-domain scale의 standalone named 축과 sparse native components를 지원한다. Scale/coordinate/data/encoding/Canvas/theme replay는 모든 owner를 소비하며 final component 제거는 그 owner만 정리한다. Encoding/mark 제거는 해당 binding owner 전부를 정리한다.
+- Grid는 matching coordinate/scale의 owner를 모두 읽는다. Candidate scale/coordinate가 여러 개면 명시 ID가 필요하고 matching tick 정책이 다르면 grid count/values가 필요하다. Grid 자체는 원래 plot bounds를 쓴다.
+- Facet outer는 actual occupied topology의 top/right/bottom/left마다 component의 physical side를 보존한다. Ragged row/column도 동일하며 each는 모든 owner를 유지한다. 기존 repeat outer 제한은 바꾸지 않는다.
+- Editable import는 owner의 channel/side/resource, config/component consistency와 duplicate occupied side를 검증한다. Composition source recipe는 namespaced child graphics를 가지므로 native unit graphic 검증은 unit state에 적용한다. 이전 program과 caller input은 불변이다.
+- Evidence: `test/unit/actions/guides/named-cartesian-axes.test.js`, `test/contracts/named-cartesian-axis-types.test.js`. Realistic 5회/3dataset evidence는 release 통합에서 별도 완성한다.
+
 ## Shared complete-axis contract
 
 Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component position에서 chart title과 legend group의 bounds를 검사한다. 작성 순서, focused/whole-axis edit와 Canvas/scale replay에 공통인 최종 상태 검증이며 이전 program은 immutable하다. 정확한 cross-guide policy는 [공통 guide collision 계약](LEGEND_AND_TITLE.md#shared-guide-collision-contract)이 소유한다. 내부 axis component 간 검증은 기존 axis 계약을 따른다.
@@ -125,7 +138,7 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
   `fontFamily?`, `fontWeight?`; edit에서는 scale을 제외한다.
 - `text`: non-empty string. 생략하면 unique connected field/aggregate 또는 density provenance에서 추론한다.
 - `at`: `"start" | "center" | "end"` 또는 continuous scale domain 안의 finite number; 기본 center.
-- `offset`: non-negative finite; x default `42`, y default `52`.
+- `offset`: signed finite; positive outward, negative inward; inferred preferred defaults x `42`, y `52`.
 - `rotation`: `RotationInput = Finite | { value: Finite; unit: "degrees" | "radians" }`. 기존 finite 숫자는
   radians 의미를 유지하고 구조형 입력은 단위를 명시한다. 둘 다 stored materialization config에서 radians로
   정규화한다. x bottom/top default `0`, y left default `-Math.PI / 2`, y right default `Math.PI / 2`이며
@@ -271,11 +284,14 @@ type NumericFormatString = `.${ValueFormatPrecision}${"f" | "%" | "e"}`;
 type AxisFormatString = NumericFormatString | TimeAxisFormatString;
 type TickValue = string | boolean | Finite;
 type TickOptions = {
+  strokeDash?: readonly NonNegativeFinite[];
+  strokeDashMap?: readonly { value: TickValue; strokeDash: readonly NonNegativeFinite[] }[] | "auto";
   length?: NonNegativeFinite;
   color?: NonEmptyString;
   lineWidth?: NonNegativeFinite;
 };
 type LabelOptions = {
+  align?: "left" | "center" | "right";
   offset?: NonNegativeFinite;
   format?: "auto" | { decimals: NonNegativeInteger } | AxisFormatString;
   color?: NonEmptyString;
@@ -293,10 +309,14 @@ type AxisTitleOptions<P extends string> = TextStyle & {
   text?: NonEmptyString;
   position?: P;
   at?: "start" | "center" | "end" | Finite;
-  offset?: NonNegativeFinite;
+  offset?: Finite;
+  alongOffset?: Finite;
+  align?: "left" | "center" | "right";
+  baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom";
   rotation?: RotationInput;
 };
 type CompleteAxisOptions<P extends string> = {
+  offset?: NonNegativeFinite;
   scale?: UserId;
   coordinate?: UserId;
   position?: P;
@@ -307,6 +327,57 @@ type CompleteAxisOptions<P extends string> = {
 ```
 
 ## `createAxes`
+
+### Cartesian frame and text placement
+
+Complete Cartesian creators (`createXAxis`, `createYAxis`, nested `createAxes` and
+`createGuides.axes`) and whole-axis editors accept `offset`: finite non-negative outward
+logical pixels, creation default0, edit omission preserves the stored value, explicit0
+restores the plot edge. One `guideConfigs.axis[channel].frame.offset` owns that intent.
+Line, ticks, labels and title move together; all local component offsets remain relative
+to that frame. Marks, scale range, plot dimensions and grids remain fixed. Changing side
+applies the same distance in its new outward direction; component recreation inherits it.
+
+Cartesian title `offset` now accepts finite signed logical pixels: positive outward and
+negative inward. Its omitted inferred placement remains unchanged; an explicit number
+disables inference. To restore inference remove/recreate the title without offset.
+`alongOffset` defaults0 and moves X titles screen-right or Y titles screen-down for
+positive values, independent of side and reversed scales. Resolve scale-domain `at`
+first; numeric `at` remains a domain value. Rotation is around the translated anchor.
+
+Title `align` is left/center/right (defaultcenter), `baseline` is
+top/hanging/middle/alphabetic/ideographic/bottom (defaultmiddle), applied in the local text
+frame before rotation. For multiline text top/hanging/alphabetic anchor the first line,
+bottom/ideographic anchor the last line, middle centers the whole block; spacing remains
+1.2×fontSize. Omitted edits preserve explicit style; explicitcenter/middle/alongOffset0
+restore those defaults. These same options reach complete/whole/focused creation/editing.
+
+Cartesian labels accept explicit local-before-rotation `align` left/center/right. Creation
+omission keeps side/rotation/flush inference; edit omission preserves prior intent. Explicit
+align supersedes inferred anchoring while retaining the previous resolved label positions,
+values, offsets, format/maps, wrapping and stored flush intent. Side changes preserve explicit
+align. Removing/recreating labels without align restores inference; no auto/null reset literal
+is added. Bounds are recomputed for the final glyph alignment and rotation.
+
+Finite/enum validation, measured Canvas/own-label-title collisions, immutable failure,
+refresh/Canvas/theme/facet and persistence apply to every new option. Inward titles do not
+introduce a new mark-overlap prohibition or automatic fit mode. Legacy no-option output
+remains identical. Evidence: `axis-text-placement.test.js`, `axis-frame-offset.test.js`
+under `test/unit/actions/guides/`, with independent `test/oracles/cartesian-axis-geometry.js`.
+
+### Cartesian tick dash values
+
+Cartesian tick component creation/whole/group/focused editing accepts uniform
+`strokeDash` and typed `strokeDashMap:[{value,strokeDash}]`. A pattern is an even-length
+array of finite non-negative numbers; `[]` is solid. Default omission preserves legacy
+solid graphics and editing omission preserves stored intent. Map matches use raw typed
+tick identity (`1` differs from `"1"`; `0` equals `-0`), overriding only the uniform
+pattern; unmatched entries remain stored for refresh and create no ticks.
+`strokeDashMap:"auto"` or `[]` removes only the map. Duplicate typed values, unknown keys,
+null/nonfinite keys and invalid patterns fail atomically. Maps/patterns use the generated-item
+budget. Native guide ownership, Canvas/scale/data/facet refresh and persistence retain these
+styles. Polar/Parallel tick options are unchanged. Evidence:
+`test/unit/actions/guides/guide-dash-styling.test.js`.
 
 - Signature: `createAxes({ coordinate?, x?, y?, theta?, radius? })`
 - `coordinate.id`: existing coordinate ID. 생략하면 encoded Cartesian layers가 참조하는 유일한 ID를 추론한다.
@@ -1032,7 +1103,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 - `scale`: ✅ Covered default/explicit/conflicting scale.
 - `position`: ✅ Covered bottom/top, default rotation, margin failure and invalid values.
 - `at`: ✅ Covered `"start" | "center" | "end"`, in-domain number and out-of-domain/invalid.
-- `offset`: ✅ Covered default `42`, zero/positive, negative rejection.
+- `offset`: ✅ Covered default `42`, signed negative/zero/positive, Canvas/collision rejection.
 - `rotation`: ✅ Covered default `0`, finite explicit and non-finite rejection.
 - `color`, `fontSize`, `fontFamily`, `fontWeight`: ✅ Covered defaults, representatives and invalid classes.
 - Evidence: `test/unit/actions/guides/axis-title-actions.test.js`.

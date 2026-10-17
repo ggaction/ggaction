@@ -17,6 +17,10 @@ const source = () => chart().createCanvas({ width: 600, height: 420, margin: 80 
   ] });
 
 const continuousCases = [
+  ...[undefined, "zero", "normalize", null].flatMap(stack => ["vertical", "horizontal"].map(direction => ({
+    action: "createHistogram", options: { field: "x", maxBins: 2,
+      ...(stack === undefined ? {} : { stack }) }, direction
+  }))),
   ...["x", "y"].flatMap(densityChannel => ["vertical", "horizontal"].map(direction => ({
     action: "createDensityPlot", options: { field: "y", bandwidth: 1, steps: 8, densityChannel }, direction
   }))),
@@ -84,12 +88,14 @@ test("continuous facade grid declarations prohibit only physically impossible ba
   try {
     const file = path.join(directory, "grids.mts");
     const cases = [
+      ...["vertical", "horizontal"].map(direction => `p.createHistogram({field:"x",guides:{grid:{${direction}:{bandPosition:"center"}}}});`),
       ...["vertical", "horizontal"].map(direction => `p.createDensityPlot({field:"y",guides:{grid:{${direction}:{bandPosition:"center"}}}});`),
       ...["vertical", "horizontal"].map(direction => `p.createRugPlot({x:"x",edge:"bottom",guides:{grid:{${direction}:{bandPosition:"center"}}}});`),
       'p.createHorizonPlot({x:"x",y:"y",guides:{grid:{vertical:{bandPosition:"boundary"}}}});'
     ];
     await writeFile(file, `import type { ChartProgram } from ${JSON.stringify(path.join(root, "types/program.js"))};
 declare const p: ChartProgram;
+p.createHistogram({field:"x",guides:{grid:{vertical:{count:4,alongOffset:1,zIndex:-1},horizontal:{values:[1,2]}}}});
 p.createDensityPlot({field:"y",guides:{grid:{vertical:{count:4,alongOffset:1,zIndex:1}}}});
 p.createRugPlot({y:"y",edge:"left",guides:{grid:{horizontal:{values:[1,2],alongOffset:-1}}}});
 p.createHorizonPlot({x:"x",y:"y",guides:{grid:{vertical:{count:4,zIndex:-1}}}});
@@ -99,6 +105,8 @@ ${cases.map(call => `// @ts-expect-error Continuous scale grids have no band edg
 const nonfresh = {bandPosition:"center" as const};
 // @ts-expect-error Non-fresh values cannot bypass the closed continuous grid role.
 p.createDensityPlot({field:"y",guides:{grid:{vertical:nonfresh}}});
+// @ts-expect-error Histogram grids also reject non-fresh categorical band placement.
+p.createHistogram({field:"x",guides:{grid:{vertical:nonfresh}}});
 `);
     const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
       "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
@@ -112,7 +120,7 @@ test("generated option inventory retains real band paths and omits unreachable c
   const cards = JSON.parse(await readFile(path.join(root, "knowledge/action-cards.json"), "utf8"));
   const inventory = await buildPublicOptionInventory(cards);
   const paths = new Map(inventory.optionPaths.map(option => [option.id, option]));
-  for (const [action, directions] of [["createDensityPlot", ["vertical", "horizontal"]], ["createRugPlot", ["vertical", "horizontal"]], ["createHorizonPlot", ["vertical"]]]) {
+  for (const [action, directions] of [["createHistogram", ["vertical", "horizontal"]], ["createDensityPlot", ["vertical", "horizontal"]], ["createRugPlot", ["vertical", "horizontal"]], ["createHorizonPlot", ["vertical"]]]) {
     for (const direction of directions) assert.equal(paths.has(`option-path:${action}.guides.grid.${direction}.bandPosition`), false);
   }
   for (const action of ["createAreaPlot", "createStripPlot", "createBeeswarmPlot", "createRaincloudPlot"]) {

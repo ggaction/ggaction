@@ -1,3 +1,4 @@
+import { cartesianAxisOwners, axisTargetArgs } from "../../selectors/axes.js";
 import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 
@@ -41,9 +42,9 @@ const REMOVE_AXIS = Object.freeze({
   radius: "removeRadialAxis"
 });
 const SPECIALIZED_LEGEND_KIND = Object.freeze({
-  color: Object.freeze(["gradient", "interval"]),
+  color: Object.freeze(["gradient", "interval", "colorSize"]),
   stroke: Object.freeze(["strokeGradient", "strokeInterval"]),
-  size: Object.freeze(["size"]),
+  size: Object.freeze(["size", "colorSize"]),
   opacity: Object.freeze(["opacity"]),
   strokeWidth: Object.freeze(["strokeWidth"])
 });
@@ -144,10 +145,14 @@ function cleanupPositionGuides(program, removed) {
     ) {
       continue;
     }
-    const axis = next.semanticSpec.guides.axis?.[definition.guideChannel];
-    if (axis?.scale === scale) {
-      next = next[REMOVE_AXIS[definition.guideChannel]]({
-        scale,
+    const owners = ["x", "y"].includes(definition.guideChannel)
+      ? cartesianAxisOwners(next).filter(owner => owner.channel === definition.guideChannel)
+      : [{ id: definition.guideChannel, channel: definition.guideChannel,
+          semantic: next.semanticSpec.guides.axis?.[definition.guideChannel] }];
+    for (const owner of owners) {
+      const axis = owner.semantic;
+      if (axis?.scale === scale) next = next[REMOVE_AXIS[definition.guideChannel]]({
+        ...axisTargetArgs(owner.id, owner.channel), scale,
         ...(axis.coordinate === undefined ? {} : { coordinate: axis.coordinate })
       });
     }

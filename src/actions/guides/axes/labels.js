@@ -1,4 +1,7 @@
+import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
+import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { axisThemeTypography } from "../../theme/state.js";
+import { validateAxisTextPlacement } from "../../../grammar/axisTextPlacement.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
@@ -11,7 +14,7 @@ import {
   validateNonNegativeFinite,
   validatePositiveFinite
 } from "../../../core/validation.js";
-import { resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
+import { resolveCartesianAxisFrameBounds } from "../../../materialization/coordinateBounds.js";
 import {
   isTransformedScaleType,
   mapContinuousScaleValues,
@@ -48,9 +51,9 @@ import {
 } from "../../../grammar/displayLabels.js";
 
 const OPTIONS = [
-  "scale", "position", "count", "values", "offset", "format", "color",
+  "target", "scale", "position", "count", "values", "offset", "format", "color",
   "fontSize", "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
-  "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "colorMap"
+  "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "colorMap", "align"
 ];
 
 const DEFAULTS = {
@@ -85,6 +88,7 @@ function normalizeLabelLayout(config, args, operation) {
 export { validateTextStyle as validateAxisTextStyle };
 
 function validateOptions(args, operation, create) {
+  validateAxisTextPlacement(args);
   validateOptionObject(
     args,
     create ? OPTIONS : OPTIONS.filter(key => key !== "scale"),
@@ -98,6 +102,7 @@ function validateOptions(args, operation, create) {
 }
 
 function validateConfig(channel, config) {
+  validateAxisTextPlacement(config);
   validateAxisPosition(channel, config.position);
   if (config.mode === "count") {
     if (!Number.isInteger(config.count) || config.count <= 0) throw new RangeError("Label count must be a positive integer.");
@@ -224,13 +229,9 @@ function unionLabelBounds(records) {
   return [...byGroup.values()];
 }
 
-function resolve(program, channel, config) {
+function resolve(program, channel, config, axisId = channel) {
   const scale = program.resolvedScales[config.scale];
-  const bounds = resolveGuideCoordinateBounds(program, {
-    coordinate: program.semanticSpec.guides.axis?.[channel]?.coordinate,
-    scale: config.scale,
-    channel
-  });
+  const bounds = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale, axisId);
   const discrete = ["ordinal", "band", "point"].includes(scale?.type);
   validateAxisLabelMapScale(config, scale);
   if ((
@@ -292,7 +293,7 @@ function resolve(program, channel, config) {
     resolved.textBaseline = "middle";
   }
   const canvas = findCanvasGraphic(program)?.properties;
-  let labelBounds = resolved.text.map((value, index) => resolveTextBounds({
+  const measuredBounds = () => resolved.text.map((value, index) => resolveTextBounds({
     x: Array.isArray(resolved.x) ? resolved.x[index] : resolved.x,
     y: Array.isArray(resolved.y) ? resolved.y[index] : resolved.y,
     text: value,
@@ -303,6 +304,7 @@ function resolve(program, channel, config) {
     textBaseline: resolved.textBaseline,
     rotation: config.rotation
   }, program.materializationConfigs.textMetrics));
+  let labelBounds = measuredBounds();
   if (program.materializationConfigs.canvas?.plot !== undefined || config.rotation !== 0) {
     const horizontal = channel === "x";
     const near = ["bottom", "right"].includes(config.position);
@@ -343,6 +345,10 @@ function resolve(program, channel, config) {
       return { ...item, [lowKey]: item[lowKey] + delta, [highKey]: item[highKey] + delta };
     });
   }
+  if (config.align !== undefined) {
+    resolved.textAlign = config.align;
+    labelBounds = measuredBounds();
+  }
   const rotatedOverlap = config.rotation !== 0;
   const collisionBounds = rotatedOverlap ? resolved.text.map((text, index) => {
     const x = Array.isArray(resolved.x) ? resolved.x[index] : resolved.x;
@@ -369,11 +375,11 @@ function resolve(program, channel, config) {
     : index > 0 && textBoundsIntersect(orderedBounds[index - 1], item))) {
     throw new Error(`The ${channel}-axis labels overlap each other.`);
   }
-  const title = program.graphicSpec.objects[`${channel}AxisTitle`]
-    ? resolveConcreteGraphicBounds(program.graphicSpec, `${channel}AxisTitle`, program.materializationConfigs.textMetrics)
+  const title = program.graphicSpec.objects[axisGraphicIds(channel, axisId)[3]]
+    ? resolveConcreteGraphicBounds(program.graphicSpec, axisGraphicIds(channel, axisId)[3], program.materializationConfigs.textMetrics)
     : undefined;
   if (title &&
-    program.guideConfigs.axis?.[channel]?.title?.inferredOffset !== true &&
+    program.guideConfigs.axis?.[axisId]?.title?.inferredOffset !== true &&
     labelBounds.some(item => textBoundsIntersect(item, title))) {
     throw new Error(`The ${channel}-axis labels overlap the axis title.`);
   }
@@ -384,12 +390,14 @@ function makeEdit(channel) {
   const op = channel === "x" ? "editXAxisLabels" : "editYAxisLabels";
   return action({ op, description: `Edit concrete ${channel}-axis labels.` }, withGuideLayoutValidation(function (args = {}) {
     validateOptions(args, op, false);
-    const id = `${channel}AxisLabels`;
+    const selected = selectCartesianAxis(this, channel, args, { create: false });
+    const axisId = selected.id; args = selected.options;
+    const id = axisGraphicIds(channel, axisId)[2];
     if (this.graphicSpec.objects[id]?.type !== "text") throw new Error(`${op} requires existing axis labels.`);
-    const previous = this.guideConfigs.axis?.[channel]?.labels;
+    const previous = this.guideConfigs.axis?.[axisId]?.labels;
     if (!previous) throw new Error(`${op} requires label configuration.`);
     const explicitMode = Object.hasOwn(args, "values") || Object.hasOwn(args, "count");
-    const ticks = this.guideConfigs.axis?.[channel]?.ticks;
+    const ticks = this.guideConfigs.axis?.[axisId]?.ticks;
     const inferredValues = !explicitMode && previous.inferredValues === true &&
       ticks?.mode === "values"
       ? ticks.values
@@ -407,9 +415,9 @@ function makeEdit(channel) {
     config = normalizeAxisLabelMaps(this, config, args, op);
     if (mode === "values") delete config.count; else delete config.values;
     validateConfig(channel, config);
-    assertTickCompatibility(this.guideConfigs.axis?.[channel]?.ticks, config, op);
-    const resolved = resolve(this, channel, config);
-    let next = this._withGuideConfig(channel, "labels", config);
+    assertTickCompatibility(this.guideConfigs.axis?.[axisId]?.ticks, config, op);
+    const resolved = resolve(this, channel, config, axisId);
+    let next = this._withGuideConfig(axisId, "labels", config);
     const properties = {
       length: resolved.text.length,
       x: resolved.x,
@@ -430,10 +438,10 @@ function makeEdit(channel) {
     for (const [property, value] of Object.entries(properties)) {
       next = next.editGraphics({ target: id, property, value });
     }
-    const titleConfig = next.guideConfigs.axis?.[channel]?.title;
+    const titleConfig = next.guideConfigs.axis?.[axisId]?.title;
     if (titleConfig?.inferredOffset === true) {
       const editTitle = channel === "x" ? "editXAxisTitle" : "editYAxisTitle";
-      next = next[editTitle]();
+      next = next[editTitle](axisId === channel ? undefined : axisTargetArgs(axisId, channel));
     }
     return next;
   }));
@@ -447,12 +455,14 @@ function makeCreate(channel) {
   const edit = channel === "x" ? "editXAxisLabels" : "editYAxisLabels";
   return action({ op, description: `Create concrete ${channel}-axis labels.` }, withGuideLayoutValidation(function (args = {}) {
     validateOptions(args, op, true);
+    const selected = selectCartesianAxis(this, channel, args, { create: true });
+    const axisId = selected.id; args = selected.options;
     const scale = validateUserId(args.scale ?? channel, "Scale id");
-    const guideScale = this.semanticSpec.guides.axis?.[channel]?.scale;
+    const guideScale = this.semanticSpec.guides.axis?.[axisId]?.scale;
     if (guideScale && guideScale !== scale) throw new Error(`${op} conflicts with the existing axis scale.`);
-    const id = `${channel}AxisLabels`;
+    const id = axisGraphicIds(channel, axisId)[2];
     if (this.graphicSpec.objects[id]) throw new Error(`${op} requires missing axis labels.`);
-    const ticks = this.guideConfigs.axis?.[channel]?.ticks;
+    const ticks = this.guideConfigs.axis?.[axisId]?.ticks;
     const hasValues = Object.hasOwn(args, "values");
     const hasCount = Object.hasOwn(args, "count");
     const resolvedScale = this.resolvedScales[scale];
@@ -488,15 +498,15 @@ function makeCreate(channel) {
     }
     validateConfig(channel, config);
     assertTickCompatibility(ticks, config, op);
-    resolve(this, channel, config);
-    return this.editSemantic({ property: `guide.axis.${channel}.scale`, value: scale })
+    resolve(this, channel, config, axisId);
+    return this.editSemantic({ property: `guide.axis.${axisId}.scale`, value: scale })
       .createGraphics({
         id,
         type: "text",
         length: 0,
         ...resolvePlotGraphicPlacement(this)
       })
-      ._withGuideConfig(channel, "labels", config)[edit]();
+      ._withGuideConfig(axisId, "labels", config)[edit](axisId === channel ? undefined : axisTargetArgs(axisId, channel));
   }));
 }
 

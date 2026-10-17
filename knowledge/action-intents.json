@@ -896,6 +896,11 @@
       "text chart",
       "data text plot",
       "positioned data labels"
+    ],
+    "RegressionStatisticsData": [
+      "regression statistics dataset",
+      "linear fit coefficients",
+      "R-squared and observation count"
     ]
   },
   "summaryOverrides": {
@@ -1554,6 +1559,14 @@
       "x": "x",
       "y": "y",
       "text": "label"
+    },
+    "createRegressionStatisticsData": {
+      "id": "fitStatistics",
+      "source": "fit"
+    },
+    "editRegressionStatisticsData": {
+      "target": "fitStatistics",
+      "source": "anotherFit"
     }
   },
   "callPatternOverrides": {
@@ -1742,6 +1755,12 @@
     "createTextPlot": [
       "createTextPlot({ x, y, text })",
       "createTextPlot({ x, y, text, color?, style?, guides? })"
+    ],
+    "createRegressionStatisticsData": [
+      "createRegressionStatisticsData({ id, source })"
+    ],
+    "editRegressionStatisticsData": [
+      "editRegressionStatisticsData({ target?, source? })"
     ]
   },
   "errorOverrides": {

@@ -24,12 +24,12 @@ const actionCards = JSON.parse(readFileSync(
 ));
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const EXPECTED = Object.freeze({
-  paths: 291,
-  pathSha256: "edd3dce5d47804a36482574b0437e1bd724acf25c65c3a4fdf569eb384f7df9a",
-  literals: 293,
-  literalSha256: "2782a374189a1fb2c22dce055733d4b84ad9bcc87b0f93351ce868fb3ef3d2b0",
-  diversity: 9,
-  diversitySha256: "bd6a602f3ed8ec4c3b838ea75503e7bc1c3a7005962add809467c01190c57906"
+  "paths": 298,
+  "pathSha256": "b2e76cc591358ca2dc0244e6fcb1076ed9d282f11539b0c0879681d1528925ce",
+  "literals": 296,
+  "literalSha256": "9d050c5ceffac5f2df667d8a64e13e79e61693ef19bfd5011845f0ea6d00c29a",
+  "diversity": 11,
+  "diversitySha256": "aab418064dda7b38adfbae46c342685808d65af63ce05ce9caab855e86d0072f"
 });
 
 function digest(values) {
@@ -299,4 +299,27 @@ test("covers every valid direct encoding option path and path literal at 5/3", a
     }),
     []
   );
+});
+
+
+test("executes both restored range palette spellings with authentic 5/3 witnesses", async () => {
+  const result = await projection();
+  const prefix = "option-path:encodeColor.scale.range.palette";
+  assert.deepEqual(
+    result.target.options.filter(option => option.id.startsWith(prefix)).map(option => option.id),
+    [prefix, `${prefix}.count`, `${prefix}.extent`, `${prefix}.name`]
+  );
+  for (const path of [prefix, `${prefix}.count`, `${prefix}.extent`, `${prefix}.name`]) {
+    const stats = result.optionStats.get(path);
+    assert.ok(meetsMinimum(stats), `${path} actual occurrences and dataset minimum`);
+    assert.equal(stats.datasets.size, 5, `${path} all five pinned datasets`);
+  }
+  for (const path of [prefix, `${prefix}.name`]) {
+    const values = result.valuesByOption.get(path);
+    for (const palette of ["viridis", "magma"]) {
+      const stats = values.get(`string:${palette}`);
+      assert.ok(stats && meetsMinimum(stats), `${path} ${palette} actual 5/3 evidence`);
+      assert.equal(stats.datasets.size, 5, `${path} ${palette} all five pinned datasets`);
+    }
+  }
 });

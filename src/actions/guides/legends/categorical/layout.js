@@ -1,3 +1,6 @@
+import{validateLegendClip,clippedSampleBounds}from"../../../../grammar/legendClip.js";
+import {categoricalLegendSymbolId as symbolGraphic}from"../../../../grammar/legendBlocks.js";
+export {symbolGraphic};
 import { findLayer } from "../../../../selectors/layers.js";
 import { isLinearGradientPaint } from "../../../../grammar/paint.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
@@ -60,14 +63,6 @@ function prefix(config) {
   return `${config.kind}Legend`;
 }
 
-export function symbolGraphic(config, type) {
-  const onlyDefault = config.symbol.layers.length === 1 &&
-    ((config.kind === "series" && type === "line") ||
-      (["color", "stroke"].includes(config.kind) && type === "swatch"));
-  if (onlyDefault) return `${prefix(config)}Symbols`;
-  const suffix = { line: "Lines", point: "Points", swatch: "Swatches" }[type];
-  return `${prefix(config)}Symbol${suffix}`;
-}
 
 export function graphic(config, component) {
   return `${prefix(config)}${component}`;
@@ -76,7 +71,7 @@ export function graphic(config, component) {
 export function symbolWidth(config) {
   return Math.max(...config.symbol.layers.map(layer => {
     if (layer.type === "line") return layer.length;
-    if (layer.type === "point") return layer.size * 2;
+    if (layer.type === "point") return config.combine === "size-shape" ? 2 * Math.sqrt(Math.max(...config.sizeAreas) / Math.PI) : layer.size * 2;
     return layer.width;
   }));
 }
@@ -123,7 +118,7 @@ function resolveSampleBounds(program, config, width) {
       }
       if (config.channels.includes("shape")) {
         return createPointShapeGraphic({ shape: appearance.shapes[index], x: width / 2, y: 0,
-          area: Math.PI * layer.size ** 2, fill: layer.fill ?? appearance.colors[index],
+          area: appearance.areas?.[index] ?? Math.PI * layer.size ** 2, fill: layer.fill ?? appearance.colors[index],
           stroke: layer.stroke, strokeWidth: layer.strokeWidth, opacity: layer.opacity ?? appearance.opacity,
           ...requestedStrokeDetails(layer, "Legend point symbol") });
       }
@@ -134,7 +129,7 @@ function resolveSampleBounds(program, config, width) {
         strokeWidth: layer.strokeWidth, opacity: layer.opacity ?? appearance.opacity,
         ...requestedStrokeDetails(layer, "Legend point symbol") } };
     });
-    return items.map((item, itemIndex) => {
+    return clippedSampleBounds(items.map((item, itemIndex) => {
       const bounds = resolveConcreteGraphicBounds({
         objects: { sample: item },
         order: ["sample"]
@@ -153,11 +148,12 @@ function resolveSampleBounds(program, config, width) {
           right: Math.max(result.right, bounds.right),
           top: Math.min(result.top, bounds.top),
           bottom: Math.max(result.bottom, bounds.bottom)
-        }, undefined);
+        }, undefined),config.clipHeight);
   });
 }
 
 export function resolveLayout(program, config) {
+  validateLegendClip(config.kind,config);
   config = intrinsicLegendConfig(program, config);
   config = categoricalLegendView(config);
   const { plot, canvas } = resolveContinuousBounds(program,
@@ -192,7 +188,7 @@ export function resolveAppearance(program, config) {
     if (config.channels[index] === "strokeDash") dashes = values;
     if (config.channels[index] === "shape") shapes = values;
   }
-  return { colors, strokes, dashes, shapes,
+  return { colors, strokes, dashes, shapes, ...(config.combine === "size-shape" ? {areas: config.sizeAreas} : {}),
     ...(gradientFallback ? { opacity: program.markConfigs[target.id].opacity } : {}) };
 }
 

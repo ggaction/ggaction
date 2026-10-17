@@ -58,7 +58,7 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   const custom = sampledColor ? false : categorical
     ? categoricalFamilyCustom(program, from, stored)
     : gradientFamily
-    ? stored.count !== defaults.count || !same({ ...stored.gradient, opacity: stored.gradient?.opacity ?? 1 }, { ...DEFAULT_GRADIENT_SIZE, opacity: 1 }) || stored.itemGap !== defaults.itemGap
+    ? stored.gradientDirection !== undefined || stored.count !== defaults.count || !same({ ...stored.gradient, opacity: stored.gradient?.opacity ?? 1 }, { ...DEFAULT_GRADIENT_SIZE, opacity: 1 }) || stored.itemGap !== defaults.itemGap
     : !same(comparableSymbol, defaults.symbol) || stored.itemGap !== defaults.itemGap ||
       stored.direction !== defaults.direction || (stored.columns !== undefined && !(side && stored.columns === 1));
   if (custom) {
@@ -161,7 +161,7 @@ function withoutBlockOverrides(config) {
   return rest;
 }
 
-export function planLegendBlockTransitions(program, target, plans) {
+export function planLegendBlockTransitions(program, target, plans, position) {
   const oldDescriptors = legendBlockDescriptors(program, target);
   const nextDescriptors = plans.map(plan =>
     describeLegendBlock(program, plan.kind, plan.config));
@@ -169,7 +169,11 @@ export function planLegendBlockTransitions(program, target, plans) {
     const descriptor = nextDescriptors[index];
     const incoming = oldDescriptors.filter(old => intersects(old, descriptor));
     let override;
-    if (incoming.length === 1 && incoming[0].key === descriptor.key) {
+    if (["size-shape","color-size"].includes(descriptor.config.combine) && incoming.length > 1) {
+      const positions = incoming.map(old=>old.config.blockOverrides?.[old.key]?.position);
+      if (position === undefined && !positions.every(value=>value===positions[0])) transitionError(target, incoming, descriptor, "position");
+      override = position === undefined && positions[0] !== undefined ? {position: positions[0]} : undefined;
+    } else if (incoming.length === 1 && incoming[0].key === descriptor.key) {
       override = incoming[0].config.blockOverrides?.[incoming[0].key];
       if (incoming[0].config.representation === "symbols" && descriptor.kind === "gradient" && descriptor.config.representation !== "symbols" && override !== undefined) {
         const { symbol: _symbol, labelMap: _labelMap, ...common } = override; override = common;
@@ -177,14 +181,29 @@ export function planLegendBlockTransitions(program, target, plans) {
     } else if (incoming.length === 1) {
       const old = incoming[0];
       override = old.config.blockOverrides?.[old.key];
+      if (["size-shape","color-size"].includes(incoming[0].config.combine) && override !== undefined) {
+        const {title: _title, ...rest} = override; override = Object.keys(rest).length ? rest : undefined;
+      }
+      if(old.config.combine==='color-size'&&descriptor.kind==='gradient'&&override!==undefined){
+        const {symbol:_symbol,labelMap:_map,gap:_gap,...common}=override;override=Object.keys(common).length?common:undefined;
+      }
+      if(old.config.combine==='color-size'&&descriptor.kind==='size'){
+        const {type:_type,...style}=old.config.symbol;
+        override={...override,symbol:{...style,...override?.symbol}};
+      }
       if (override?.title !== undefined) {
         transitionError(target, incoming, descriptor, "title");
       }
-      if (override?.labelMap !== undefined) {
+      if (override?.labelMap !== undefined && !(old.config.combine==='color-size'&&descriptor.kind==='size')) {
         transitionError(target, incoming, descriptor, "labelMap");
       }
     } else if (incoming.length > 1) {
-      const overrides = incoming.map(old => old.config.blockOverrides?.[old.key]);
+      const overrides = incoming.map(old => {
+        const override = old.config.blockOverrides?.[old.key];
+        if (position === undefined || override === undefined) return override;
+        const {position: _local, ...rest} = override;
+        return Object.keys(rest).length ? rest : undefined;
+      });
       if (!overrides.every(value => sameBlockValue(value, overrides[0]))) {
         transitionError(target, incoming, descriptor, "block override");
       }

@@ -277,6 +277,148 @@ Combined legends require `layout: "edge"`; `"legacy-bottom"` is unsupported.
 A separately positioned size legend can coexist with a categorical
 `"legacy-bottom"` legend on another edge. Each keeps its own placement and styles.
 
+## Combine ordinal size and shape
+
+`createLegend({ combine: "size-shape" })` draws one categorical block whose
+sample uses both the mapped shape and the mapped physical area. It requires
+one point owner, the same nominal or ordinal field for both encodings, and
+identical typed, ordered ordinal domains. Explicit `channels` must contain
+exactly `"shape"` and `"size"`; with omitted channels, an encoded color legend
+remains an independent block. Different owners, fields, grain, numeric size
+scales, or domain order are rejected.
+
+Omitting `combine`, or creating with `"separate"`, preserves the previous output.
+An edited combination is retained unless explicitly changed. Whole-target
+`editLegend({ combine: "separate" })` splits the pair and copies shared text,
+title and placement styles; combining independent blocks uses supplied styles
+or the combined native defaults, rather than choosing one old block's styles.
+A split preserves an independent color block. Incompatible display maps must
+be reset before splitting.
+
+Either member selects the same combined block. Removing either member removes
+the entire block without removing either mark encoding. Fixed sample shape or
+size overrides conflict with the mapping; stroke, fill, opacity, labels and
+categorical item order retain their existing controls. Zero mapped area retains
+its category and text slot. Current data and scale revisions revalidate both
+encodings, so an invalid revision fails instead of silently splitting the block.
+
+## Recipe layer opacity
+
+{% include chart-example.html id="legend-appearance" %}
+
+Each `symbol.layers` line, point or swatch accepts optional `opacity` in0..1.
+The supplied value applies once to that layer's complete fill and outline;
+it does not change other recipe layers, labels, title or frame. Omission keeps
+historical fallback appearance. Replacing a recipe without opacity, including
+`symbol:'auto'`, removes its explicit layer opacity.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+program.createLegend({
+  channels: ['shape'],
+  symbol: {layers: [
+    {type: 'line', opacity: 0.3},
+    {type: 'point', fill: 'red', stroke: 'blue', strokeWidth: 4, opacity: 0.7}
+  ]}
+});
+```
+
+A mapped size-shape block retains its mapped shape and physical area when the
+point layer supplies opacity. Canvas uses a bounded transparent glyph source;
+SVG uses whole-element opacity. PDF rasterizes only the explicitly affected
+glyph, preserving surrounding vector output. Existing block symbol-opacity
+patches retain their established behavior and do not opt into this new path.
+
+## Independent legend appearance {#independent-legend-appearance}
+
+{% include chart-example.html id="legend-layout" %}
+
+The complete example starts with a color legend, then edits its gradient,
+orientation, title and border. Its horizontal ramp measures 120 by 16 logical
+pixels. The bottom title clears the full strip, ticks and labels by 12 pixels.
+The border uses one continuous `[4, 2, 6, 1]` dash pattern around the frame.
+A later block edit moves only the size legend to `"bottom-left"`; the gradient
+keeps its own placement.
+
+## Layered recipe opacity {#layered-recipe-opacity}
+
+{% include chart-example.html id="legend-recipe-opacity" %}
+
+The linked canonical source has a `createRecipeOpacityProgram(opacity)` factory.
+It builds one line-and-point recipe with an explicit opacity of 0, 0.7 or 1
+on both layers. These are separate authored recipes; the categorical legend
+does not infer opacity from individual categories. Each case retains the same
+40-pixel line, 6-pixel point radius, outline and opaque label. The original
+single-point opacity example remains available above.
+
+## Sample windows
+
+Keep an encoded size while showing only a vertical slice of its symbol:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+program.createLegend({ channels: ["size"], clipHeight: 30 });
+program.editLegendSymbols({ channel: "size", clipHeight: 24 });
+program.editLegendBlock({ target: "points", channel: "size", clipHeight: "auto" });
+```
+
+A positive finite `clipHeight` centers the window on each glyph anchor. The
+original radius, physical area, shape and stroke remain intact; the symbol is
+cropped rather than shrunk. Labels, titles and frames stay outside the window.
+Item spacing uses the visible sample and label bounds. Smaller symbols retain
+their original height.
+
+This applies to sampled size, opacity and color-symbol legends, combined legends,
+and categorical recipes containing a point. Every layer of a composite sample
+shares its window. Gradient ramps, interval swatches, line-only recipes and
+stroke-width samples reject this option. Editing with `"auto"` removes the window;
+omitting it preserves the current setting.
+
+## Quantitative color and size
+
+`createLegend({combine: "color-size"})` creates one numeric sample list for a
+Cartesian circle point mark. Both encodings must use the same quantitative
+field and grain, continuous scales, and identical finite domain endpoints.
+Each sample uses the original color mapper and `sqrt(mappedArea / Math.PI)`;
+transformed scales keep their independent mappings. Mark data and mappings do
+not change. Omission keeps separate legends.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+program.createLegend({combine: "color-size", values: [0, 5, 10]});
+program.editLegendSymbols({channel: "color", symbol: {stroke: "black", strokeWidth: 1, opacity: 0.7}});
+program.editLegendBlock({target: "points", channel: "size", labelMap: [{value: 5, label: "middle"}]});
+program.editLegend({combine: "separate"});
+```
+
+Color and size select the same block. Exact values, automatic count, numeric
+format, labels, title, local position, border and sample window each have one
+owner. Mapped fill, size and radius cannot be overridden. A sample's stroke,
+stroke width and opacity can be styled. Splitting restores a gradient and a
+size list, retains compatible shared styles and placement, and carries exact
+samples only to the size list. Recombining starts with combined defaults.
+Incompatible field, shape, grain or endpoint edits fail atomically.
+
+The combined legends example
+compares samples 0, 5 and 10 with independently specified black, gray and white
+circles of radius 1, 2 and 3.
+
+
 ## Related
 
 [Legend overview](../legends.md) · [Composite symbols](./composite.md) · [Editing legends](./editing.md)

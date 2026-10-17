@@ -5,7 +5,7 @@ import {
   deriveRegression,
   normalizeRegressionTransform
 } from "../../grammar/regression/index.js";
-import { resolveDatasetReference } from "../../selectors/datasets.js";
+import { resolveDatasetReference, requireDataset, findDataset } from "../../selectors/datasets.js";
 import { derivedMaterializer } from "./shared.js";
 
 const OPTIONS = Object.freeze([
@@ -14,25 +14,33 @@ const OPTIONS = Object.freeze([
   , "predict", "missing"
 ]);
 
+function calculateRegression(values, transform) {
+  return deriveRegression(values, transform);
+}
+
+function retainFitStatistics(program, { id, result }) {
+  return result.fitStatistics === undefined ? program : program._withMaterializationConfig(
+    ["regressionFits", id], result.fitStatistics
+  );
+}
+
+function materializeMissingFitStatistics(program, args) {
+  const dataset = findDataset(program, args.id);
+  if (dataset?.values === undefined || dataset.transform?.length !== 1 ||
+      dataset.transform[0].type !== "regression" || dataset.transform[0].method !== "linear" ||
+      program.materializationConfigs.regressionFits?.[dataset.id] !== undefined) return undefined;
+  const source = requireDataset(program, dataset.source);
+  const result = calculateRegression(source.values, dataset.transform[0]);
+  return retainFitStatistics(program, { id: dataset.id, result });
+}
+
 export const materializeRegressionData = /* @__PURE__ */ derivedMaterializer(
   "materializeRegressionData",
   "Materialize one regression derived dataset.",
   "regression",
-  (values, transform) => deriveRegression(values, {
-      x: transform.x,
-      y: transform.y,
-      groupBy: transform.groupBy,
-      method: transform.method,
-      degree: transform.degree,
-      span: transform.span,
-      robustIterations: transform.robustIterations,
-      confidenceMethod: transform.confidenceMethod,
-      level: transform.level,
-      confidence: transform.confidence,
-      interval: transform.interval,
-      predict: transform.predict
-      , missing: transform.missing
-    })
+  calculateRegression,
+  undefined,
+  { before: materializeMissingFitStatistics, after: retainFitStatistics }
 );
 
 export const createRegressionData = /* @__PURE__ */ closedAction(

@@ -51,8 +51,16 @@ export function normalizeRegressionParameters({
   confidence,
   interval
 } = {}) {
-  if (!["linear", "polynomial", "loess"].includes(method)) {
+  if (!["linear", "polynomial", "loess", "exp"].includes(method)) {
     throw new Error(`Unsupported regression method "${method}".`);
+  }
+  if (method === "exp") {
+    if (degree !== undefined || span !== undefined || robustIterations !== undefined ||
+        confidenceMethod !== undefined || level !== undefined || confidence !== undefined ||
+        (interval !== undefined && interval !== false)) {
+      throw new Error("Exponential regression only supports interval false and no confidence or method-specific options.");
+    }
+    return cloneAndFreeze({ method, interval: false });
   }
   if (method === "loess") {
     if (degree !== undefined) {

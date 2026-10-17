@@ -468,6 +468,72 @@ Choose the smallest action that expresses the intended chart change.
 
 Representative actions: `createScatterPlot`, `createPointMark`, `editPointMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchical-authoring/).
 
+### [Cubehelix gamma and signed-power color](./color-controls/)
+
+Edit lightness interpolation and transform original color values.
+
+Representative actions: `createRectMark`, `encodeColor`, `editColorScale`. [Documentation](https://ggaction.github.io/ggaction/api/scales/continuous-color/#color-gamma-and-signed-power).
+
+### [Lab white point comparison](./color-white-point/)
+
+Choose a white point and edit it without changing the source values.
+
+Representative actions: `createRectMark`, `encodeColor`, `editColorScale`. [Documentation](https://ggaction.github.io/ggaction/api/scales/continuous-color/#lab-white-point-comparison).
+
+### [Bar difference compositing](./bar-compositing/)
+
+Refine a complete bar with one compositing edit.
+
+Representative actions: `createBarPlot`, `editBarMark`. [Documentation](https://ggaction.github.io/ggaction/api/marks/bar/#blend-with-underlying-content).
+
+### [Independent Cartesian axis owners](./axis-owners/)
+
+Create complete named axes before focused placement and text edits.
+
+Representative actions: `createAxes`, `editYAxis`, `editYAxisLabels`. [Documentation](https://ggaction.github.io/ggaction/api/axes/complete/#independent-named-cartesian-axes).
+
+### [A shared legend across narrow facet panels](./shared-facet-owner/)
+
+Declare and edit one parent legend across a repeated chart.
+
+Representative actions: `facet`, `editLegendLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/facets/#declare-a-legend-for-the-complete-facet).
+
+### [Encoded area symbol window](./symbol-window/)
+
+Clip an oversized sample without changing its physical area.
+
+Representative actions: `encodeSize`, `createLegend`, `editLegendSymbols`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#sample-windows).
+
+### [Whole symbol opacity](./legend-appearance/)
+
+Apply opacity to one recipe layer while retaining labels and mapped colors.
+
+Representative actions: `createLegend`, `editLegendSymbols`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#recipe-layer-opacity).
+
+### [Directional point shapes preserve area](./named-shapes/)
+
+Refine a complete scatterplot with shape, physical area and angle encodings.
+
+Representative actions: `createScatterPlot`, `encodeShape`, `encodeSize`, `encodeAngle`. [Documentation](https://ggaction.github.io/ggaction/api/marks/point/#directional-shapes-and-area).
+
+### [Combined legends](./combined-legends/)
+
+Combine compatible quantitative color and size without changing mark data.
+
+Representative actions: `encodeColor`, `encodeSize`, `createLegend`, `editLegend`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#quantitative-color-and-size).
+
+### [Independent legend layout and border](./legend-layout/)
+
+Start with legend blocks, then edit orientation, title, border and one local anchor.
+
+Representative actions: `createLegend`, `editLegendLayout`, `editLegendBorder`, `editLegendBlock`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#independent-legend-appearance).
+
+### [Opacity of a layered legend recipe](./legend-recipe-opacity/)
+
+Style an existing legend with a complete line and point recipe.
+
+Representative actions: `createLegend`, `editLegendLabels`, `editLegendSymbols`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#layered-recipe-opacity).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

@@ -1,3 +1,5 @@
+import{validateLegendClip}from"../../../../grammar/legendClip.js";
+import{applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { validateOptionObject, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString } from "../../../../core/validation.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { mapScaleConsumerValues } from "../../../../materialization/scales/map.js";
@@ -33,18 +35,20 @@ export function normalizeColorSymbols(args, previous, operation = "create") {
 }
 
 export function resolveColorSymbolsLayout(program, config, scale) {
+  validateLegendClip("gradient",config);
   config = intrinsicLegendConfig(program, config);
   const { plot, canvas } = resolveContinuousBounds(program);
   const sampling = validateSamplingAgainstScale(readLegendSampling(config), scale, "Sampled color legend");
-  let values = sampling.mode === "auto" && ["log", "sqrt", "symlog"].includes(scale.type)
+  let values = sampling.mode === "auto" && ["log", "pow", "sqrt", "symlog"].includes(scale.type)
     ? transformedTicks(scale.type, scale.domain, sampling.count,
       scale.type === "log" ? { base: scale.base }
+        : scale.type === "pow" ? { exponent: scale.exponent }
         : scale.type === "symlog" ? { constant: scale.constant } : {})
     : resolveLegendSampleValues(config, scale, "Sampled color legend");
   if (sampling.mode === "auto" && scale.midpoint !== undefined && !values.includes(scale.midpoint)) values = [...values, scale.midpoint].sort((a,b) => a-b);
   let texts = formatContinuousValues(values, scale.domain, config.fieldType, config.labels.format);
   const extent = config.symbol.radius + config.symbol.strokeWidth / 2;
-  const layout = resolveLegendItemLayout(plot, config, texts, { width: extent * 2, height: extent * 2 }, canvas, program.materializationConfigs.textMetrics);
+  const layout = resolveLegendItemLayout(plot, config, texts, { width: extent * 2, height: Math.min(extent*2,config.clipHeight??Infinity) }, canvas, program.materializationConfigs.textMetrics);
   assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Sampled color legend", config);
   const background = resolveLegendBackgroundFromBounds(layout.bounds, config.border, canvas, "Sampled color legend", config);
   return { ...layout, background, values, texts, extent, config };
@@ -67,7 +71,7 @@ export function materializeColorSymbols(program, resolved, currentConfig) {
   });
   next = editLegendBackground(next, "colorGradientBackground", layout.background, config.border);
   next = styleContinuousText(next, "colorGradientLabels", config.labels);
-  if (config.titleVisible === false) return next;
+  if (config.titleVisible === false) return applyLegendClipGraphics(next);
   next = editGraphicProperties(next, "colorGradientTitle", { x: layout.title.x, y: layout.title.y, text: config.title });
-  return styleContinuousText(next, "colorGradientTitle", config.titleStyle, { align: layout.title.align });
+  return applyLegendClipGraphics(styleContinuousText(next, "colorGradientTitle", config.titleStyle, { align: layout.title.align }));
 }

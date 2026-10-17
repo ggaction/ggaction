@@ -1,0 +1,17 @@
+{
+  "status": "pass",
+  "tested": "actual public merge/inherited-anchor/conflicting-local/explicit-reposition",
+  "results": [
+    {
+      "fn": "",
+      "start": 8609,
+      "end": 8636,
+      "count": 6
+    }
+  ],
+  "bindings": {
+    "src/actions/guides/legends/edit.js": "931e3362a33f418b24c5c77afd40545ee05f5d36e0e1fea30e37529a01419f03",
+    "src/actions/guides/legends/transition.js": "a7ff03961f12f30dde568f5c8d3579657bd94af4464a11ec7794e801673a5fa5",
+    "test/unit/actions/guides/size-shape-legend.test.js": "83e05cb37be0005df736c6036c3242b7cd6c2c2c39d7f959e1c39125f9f0f005"
+  }
+}

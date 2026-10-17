@@ -116,8 +116,8 @@ type TitleWrap = "word" | "character";
   offset≠8은 edge에서만 지원한다. Legacy mode에서 다른 edge로 옮길 때 layout edge도 같은 edit에 명시한다.
   기존 compact examples는 legacy-bottom으로 migration한다. Interval은 layout:"edge"를 지원하며 legacy-bottom은 거부한다. Stroke-width도 layout:"edge"를 지원한다. Size도 layout:"edge"를 지원한다. Gradient/opacity의 layout option은 아직 지원하지 않는다.
 - `offset`: non-negative finite number, 기본 `8`; 명시하면 plot과 legend block 간 거리다. 외부 top/bottom에서 생략한 기본값은 위 shared guide collision 계약의 실제 axis lane 뒤에 놓인다.
-- `titlePosition`: `"top" | "left"`, 기본 top. `"left"`는 horizontal categorical과 sampled opacity
-  legend에서 title, symbol, label을 한 reading line으로 배치한다. Gradient와 side opacity는 `"top"`만 지원한다.
+- `titlePosition`: `"top" | "left" | "bottom"`, 기본 top. `"left"`는 horizontal categorical과 sampled opacity
+  legend에서 title, symbol, label을 한 reading line으로 배치한다. Gradient는 top/bottom, side opacity는 top만 지원한다.
 - `title`: non-empty string 또는 `false`; 생략하면 encoded source field를 사용한다.
   문자열 안의 LF, CRLF, CR은 모든 범례 family에서 명시적 줄바꿈이다. 순서와 빈 줄을
   유지하며 행 간격은 title fontSize의 1.2배다. 가장 긴 행의 폭과 전체 행 높이를 layout,
@@ -143,7 +143,7 @@ type TitleWrap = "word" | "character";
   titleStyle.offset/format은 거절한다.
 - `itemGap`: positive finite number; vertical item의 기본값은18이다. Categorical top/bottom horizontal은24/20, sampled family의 horizontal 기본 간격은 기존 값을 유지한다. Side에서는 최소 center pitch이며 symbol paint 높이와 보수적인 label line-height(fontSize×1.2) 중 큰 값을 확보한다. 이 line-height는 특정 폰트 glyph 높이 보장이 아니며 horizontal grid 규칙은 그대로다. Explicit 값과 저장된 기존 config는 보존한다.
 - Corner item block의 title과 첫 item은 실제 painted title bottom/item top 사이 기존12px gap을 측정한다. 외부 side의 fixed first-row anchor52를 corner에 복사하지 않는다. Native corner inset8과 기본 pitch18, 전체 inset plot fit 검증은 유지하며 grouped intrinsic frame도 같은 corner 의도를 전달한다.
-- `border`: `false | true | { color?, lineWidth?, padding?, background? }`; false가 default이며 true는
+- `border`: `false | true | { color?, lineWidth?, padding?, background?, strokeDash? }`; false가 default이며 true는
   default bordered background를 만든다.
 - `count`: integer `2..10,000`; size, stroke-width, gradient tick-label, sampled-color 또는 opacity sample count이며 default `5`.
 - `values`: continuous size, opacity, stroke-width 및 representation symbols인 continuous color sampled legend 전용 `readonly number[]`다. 길이 `1..100`, 모든 값이 finite이고 엄격히 오름차순이어야 하며 caller 순서를 정렬하거나 중복을 제거하지 않는다. `-0` 뒤의 `0`도 중복으로 거절한다. `count`와 같은 호출에 함께 쓸 수 없다. Discrete size, categorical/combined legend와 strip 표현인 color/stroke gradient는 거절한다.
@@ -201,7 +201,7 @@ type TitleWrap = "word" | "character";
 
 ### Formal values — `createLegend`
 
-- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; representation?: "gradient" | "symbols"; position?: LegendPosition; blockLayout?: "row" | "column" | "wrap"; at?: { x: Finite; y: Finite }; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; values?: readonly number[]; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite; opacity?: UnitInterval }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
+- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; representation?: "gradient" | "symbols"; position?: LegendPosition; blockLayout?: "row" | "column" | "wrap"; at?: { x: Finite; y: Finite }; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left" | "bottom"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; values?: readonly number[]; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite; opacity?: UnitInterval }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -288,12 +288,47 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 독립 수치 oracle, primitive/public graphic·Canvas·decoded PNG·SVG/PDF 동등성을 검사한다.
 `test/contracts/category-legend-order-types.test.js`는 positive/negative declaration 계약을 검사한다.
 
+### Dashed legend borders
+
+- `border.strokeDash?: readonly number[]` accepts only even-length arrays of finite nonnegative numbers.
+  Empty arrays restore solid frames; omission preserves the existing border merge/creation semantics.
+  Odd length, sparse arrays, negative/nonfinite entries, nonarrays and unknown border keys fail atomically.
+  Inputs are cloned and frozen. All-zero patterns retain the existing concrete dash policy.
+- A nonempty pattern materializes one closed rectangular path starting at top-left, with a single dash phase
+  around all four sides. It never restarts a line on each edge. The frame keeps its logical ID, graphic parent,
+  placement/painter order, padding and complete stroke bounds. Dash/solid transitions replace path/rect atomically.
+- Omitted and empty patterns retain the existing solid rect graphic and SVG output. Border removal remains
+  `false`. Every legend family, grouped placement and parent shared guide uses the same stored border owner.
+- Evidence: `test/unit/actions/guides/legend-border-dash.test.js` covers family/edge geometry, exact solid bounds,
+  reset/removal, malformed input/state, shared-facet replay and immutable state.
+
+## Facet parent legend lifecycle
+
+Existing whole/focused/block legend editors and `removeLegend` also operate on an existing facet,
+facetGrid or repeat parent shared guide. Source target/channel resolution and native family validation
+are identical to unit actions. Declare or replace the parent through facet `guides.legend: LegendOptions`
+or `editFacetGuides`; post-composition `createLegend` remains unavailable. The complete owner, final
+plot-union fit, persistence and replay contract is in [COMPOSITION](COMPOSITION.md). Concat parents
+and absent shared owners reject. Selected member removal follows native fused-block ownership.
+
 ## `editLegend`
 
-- Signature: `editLegend({ target?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
+- Signature: `editLegend({ target?, channel?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
 - `target` selects an existing logical legend by mark ID. It may be omitted only when exactly one target owns all
   active blocks; independent targets are ambiguous.
-- At least one non-target change is required. Mark encodings and scale bindings remain unchanged.
+- At least one non-selector change is required. Mark encodings and scale bindings remain unchanged.
+- `channel?: LegendChannel` selects exactly one existing block of the resolved target. It cannot accompany
+  `channels`, `blockLayout`, or `at`; it never creates, removes, or replaces content. Combined member aliases
+  select the same block. Missing or ambiguous channels fail atomically, and a channel cannot disambiguate
+  multiple mark targets. All five focused editors forward this selector through the same family validation.
+- Selected edits do not propagate categorical typography to a sibling size block. The current effective size
+  typography is preserved and detached from legacy shared inheritance before a selected categorical or size
+  edit. Omitted selectors retain existing sharing and priority behavior. Selectors remain trace inputs;
+  the changed family configuration is the only stored owner.
+- Evidence: `test/unit/actions/guides/legend-focused-channel.test.js` covers focused/whole equivalence,
+  sibling typography, absent/ambiguous selectors, persistence and data/scale/Canvas replay.
+- The complete generated `editLegend` card retains all selector literals under a 3,600-byte budget;
+  other action cards retain the existing 3,360-byte budget.
 - Explicit `channels`는 target 전체의 최종 non-empty content 집합이다. 기존 createLegend의 compatible subset만 허용하며 child selector가 아니다. Omission은 기존 content를 유지한다. 같은 kind의 config/count/title visibility를 보존하고 categorical color↔series revision은 styles/order/compatible explicit recipe를 보존한다. 새 block은 생성 기본값을 사용하고 제외된 block과 그 설정은 제거한다. 같은 호출의 style/layout patch는 최종 content에 적용한다. 다른 target의 occupied resource나 unsupported combination은 오류다.
 - 새 categorical+size의 size block은 위치와 무관하게 categorical labels/titleStyle을 상속한다. Default title color는 두 block 모두#334155다. 기존 standalone size를 결합하면 저장된 자체 style을 보존하며 standalone default title#0f172a는 유지한다. Size label offset default12 및 명시 shared offset도 유지한다. Evidence: `test/unit/actions/guides/combined-legend-appearance.test.js`, `test/contracts/combined-legend-appearance.test.js`, `test/unit/actions/guides/legend-family-lifecycle.test.js`.
   Group placement에 opt-in하거나 edge/corner/free anchor를 바꿔도 기존 typography 상속은 유지하며, placement 상속과 독립적이다. Label/title의 color/fontSize/fontFamily/fontWeight 및 symbol paint는 Canvas/scale/data/persistence replay에도 보존한다. Evidence: `test/unit/actions/guides/grouped-legend-appearance.test.js`.
@@ -305,7 +340,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - Categorical `layout` omission은 stored edge/legacy-bottom을 보존한다. Style/title/border edit나 Canvas/scale/encoding replay가
   mode를 바꾸지 않는다. Explicit editLegend/editLegendLayout({layout})만 mode를 전환한다.
 - All legend families accept four edges and four plot corners. Left requires center alignment and vertical flow. Edge 변경 시 omitted direction은 새 edge의 default로 추론한다. `count` rematerializes an existing size block.
-- Gradient의 titlePosition top은 createLegend/editLegend/editLegendLayout 모두 허용하고 left는 모두 거절한다. Side alignment와 titleStyle의 동일 validation/immutable rejection evidence는 `test/unit/actions/guides/legend-option-parity.test.js`다.
+- Gradient의 titlePosition top/bottom은 createLegend/editLegend/editLegendLayout 모두 허용하고 left는 모두 거절한다. Side alignment와 titleStyle의 동일 validation/immutable rejection evidence는 `test/unit/actions/guides/legend-option-parity.test.js`다.
 - Gradient edits own `count` and `gradient`; opacity edits own `count`, `itemGap`, and a single point symbol recipe.
   Horizontal opacity edits also own `titlePosition`; entering `"left"` without explicit spacing selects the inline
   8-pixel symbol-label and 20-pixel sample defaults.
@@ -323,7 +358,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ### Formal values — `editLegend`
 
-- Implemented: the signature above with `title?: NonEmptyString | "auto" | false`, `channels?: readonly LegendChannel[]` for whole-target replacement, and `values?: readonly number[] | "auto"` for standalone sampled content.
+- Implemented: the signature above with `channel?: LegendChannel`, `title?: NonEmptyString | "auto" | false`, `channels?: readonly LegendChannel[]` for whole-target replacement, and `values?: readonly number[] | "auto"` for standalone sampled content.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -371,14 +406,19 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - `order`는 현재 categorical domain의 typed scalar 전체를 정확히 한 번 포함한 permutation이어야 한다.
   Partial list, duplicate, missing/extra value와 display text 기반 비교는 거부한다. 결과는 기존 semantic
   legend order owner에 `{ values }`로 저장된다.
-- `labelMap`은 categorical block에서만 허용하는 typed
+- `labelMap` accepts a categorical display map, or a numeric-only map on a continuous sampled size block. It uses typed
   `readonly { value: DatasetScalar; label: string }[] | "auto"`다. Raw typed value를 표시 문자열로만
   바꾸며 semantic domain, order, symbol count와 selection identity는 유지한다. 같은 label을 여러
   category에 쓰거나 `""`로 text를 숨길 수 있다. Array는 전체 교체하고 `[]`는 empty map을 저장하며
   빈 label은 concrete text item만 생략하고 원래 category/symbol/item slot을 유지한다. 모두 숨겨도
   빈 text collection은 유효하며 lane/persistence/facet replay는 남은 symbol bounds를 사용한다.
-  `"auto"`는 이 block의 map override만 제거한다. Sampled size/opacity/strokeWidth, gradient와 interval
-  block은 map을 거부한다.
+  `"auto"` removes only this block's map override. Continuous size keys must be finite numbers;
+  equality is exact (0 and -0 are duplicates). Keys outside current samples remain stored and can
+  become active after sampling edits. Unmapped values use the existing numeric formatter. `[]` stores
+  an explicit empty map. Empty labels omit only text while retaining every sample, symbol and item slot.
+  No scale/domain/area/order or raw data changes. Opacity, strokeWidth, discrete size, gradient and interval
+  blocks reject maps. Creation has no map; omission preserves it.
+  Evidence: `test/unit/actions/guides/size-legend-label-map.test.js` and `test/contracts/legend-blocks.test.js`.
 - `gap`은 non-negative finite block-internal spacing이다. Root position, align, direction, columns와
   edge-lane order는 바꾸지 않는다. Gradient에서는 기존 12-pixel title/sample spacing을 기준으로 적용된다.
 - `text`는 item labels의 `fontSize`, `fontFamily`, `fontWeight`, `color`만 받는 closed object다.
@@ -428,7 +468,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendLayout`
 
-- Signature: `editLegendLayout({ target?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, itemGap? })`.
+- Signature: `editLegendLayout({ target?, channel?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, itemGap? })`.
 - Layout-only facade이며 최소 한 layout change를 요구하고 wrapped `editLegend`를 호출한다.
 
 ### Formal values — `editLegendLayout`
@@ -444,7 +484,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendLabels`
 
-- Signature: `editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })`.
+- Signature: `editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })`.
 - Label style/format만 `editLegend({ labels })`로 전달한다. 최소 한 change가 필요하다. `format`은 continuous
   family에서만 지원하고 explicit token의 결과가 겹치더라도 그대로 유지한다.
 
@@ -462,7 +502,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendTitle`
 
-- Signature: `editLegendTitle({ target?, title?, color?, fontSize?, fontFamily?, fontWeight?, align? })`.
+- Signature: `editLegendTitle({ target?, channel?, title?, color?, fontSize?, fontFamily?, fontWeight?, align? })`.
 - `title`은 `NonEmptyString | "auto" | false`; 나머지는 `titleStyle`로 전달한다.
 
 ### Formal values — `editLegendTitle`
@@ -478,7 +518,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendSymbols`
 
-- Signature: `editLegendSymbols({ target?, symbol?, count?, gradient?, order?, overflow? })`.
+- Signature: `editLegendSymbols({ target?, channel?, symbol?, count?, gradient?, order?, overflow? })`.
 - Legend kind별 기존 symbol/count/gradient validation을 그대로 사용한다.
 
 ### Formal values — `editLegendSymbols`
@@ -494,7 +534,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendBorder`
 
-- Signature: `editLegendBorder({ target?, border })`.
+- Signature: `editLegendBorder({ target?, channel?, border })`.
 - `border`는 `boolean | LegendBorderOptions`이며 required다.
 
 ### Formal values — `editLegendBorder`
@@ -507,6 +547,8 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - ✅ Covered: partial border merge, invalid boundary and exact Gate parity.
 - No proposal: border removal은 `border: false`로 표현한다.
 - Evidence: `test/unit/actions/guides/legend-edit-actions.test.js` and Roadmap 3 focused-editing Gate.
+
+Focused actions accept `channel?: LegendChannel` with the same existing-block selection and errors as `editLegend`.
 
 Focused actions는 별도 stored schema를 만들지 않고 `editLegend`의 target resolution, closed kind policy,
 config normalization과 rematerialization을 공유한다. Evidence:
@@ -772,3 +814,73 @@ Standalone `createLegend({channels:["size"],position:...})`의 명시 position�
   explicitly publish concrete text alignment and renderers remain unchanged.
 - Evidence: `test/unit/actions/guides/legend-title-alignment.test.js` and
   `test/browser/legend-title-alignment.browser.js`.
+
+### Independent gradient orientation and bottom titles (#200)
+
+- Color/stroke gradient direction horizontal/vertical is independent of all eight anchors. Creation omission preserves historical position-derived orientation; editing omission preserves explicit intent, and edit-only auto removes it. The optional canonical gradientDirection belongs to the existing family config; symbols.direction remains independent and the inactive gradient intent survives representation switching.
+- Horizontal ramps use length×thickness, values left→right and labels below. Vertical ramps use thickness×length, values bottom→top, labels left only at the left anchor. Existing transformed/reverse/midpoint evaluators remain authoritative.
+- Gradient-only bottom title occupies the complete strip/tick/label union plus native gap12; horizontal strip-center / vertical strip-left anchors respect titleStyle.align. Hidden title has no occupied bounds; hard breaks/blank lines persist.
+- Side lanes move horizontal/bottom-title ramps as rigid content, preserving text alignment. Group/facet/Canvas/data/scale persistence reuse existing placement and fit checks; no Canvas auto-growth. Explicit gradient direction cannot silently disappear during a scale-family transition.
+- Evidence: test/unit/actions/guides/gradient-layout.test.js.
+
+### Block-local position (#193)
+
+- editLegendBlock.position accepts8anchors or inherit; reset removes only blockOverrides[key].position. Selected editLegend/editLegendLayout use that same owner. No selector retains existing whole-group position.
+- Materializers use transient local frames; inherited/local partition occurs before packing. Local occupied bounds place independently with native edge gaps/axis lane and8px corner inset. Group placement/at/layout changes cannot overwrite local anchors. Collision and insufficient Canvas reject atomically; no auto-growth/new coordinate/offset API.
+- Local positions survive scale/data/Canvas rematerialization and persistence. Canonical block key is checked on load; ambiguous/wrong-owner stored positions reject. Different local anchors cannot merge silently; explicit group position resets placement conflicts only.
+- Unit evidence: test/unit/actions/guides/legend-local-position.test.js. Facet parent final-union integration is coordinated with #206, using localLegendPosition/localLegendPlacement pure exports; legacy shared promotion stays unchanged without overrides.
+
+### Ordinal size-shape combination (#171)
+
+- create/editLegend.combine separate|size-shape uses the existing categorical series owner for paired channels shape,size and their two ordinal scales. One point owner, same categorical field/data/grain and identical typed ordered domains are mandatory. Physical mapped areas and shapes use the same native evaluators as marks.
+- Omitted create/separate preserve previous output; omitted edit retains an existing combination. Omitted channels infer the pair and keep color independent; explicit pair selection must be exactly shape+size. New combinations use supplied styles or combined native defaults. Split copies shared title/text/placement and retains independent color.
+- Either alias edits/moves/removes the entire block; removal leaves mark encodings. Fixed shape/size overrides reject. Existing local position, mapped label order, opacity and shared style controls remain available. Invalid data/scale revision rejects atomically; malformed/stale persisted combination/areas reject.
+- Native group planner packs these explicitly combined independent blocks; no renderer rotation or fake data is introduced. Evidence: test/unit/actions/guides/size-shape-legend.test.js.
+
+
+### Explicit recipe layer opacity (#208)
+
+- `symbol.layers` line/point/swatch opacity is optional finite0..1. Omission
+  preserves fallback graphics; replacement omission/auto removes explicit intent.
+- A point/swatch recipe's authored opacity emits concrete normal only for that
+  recipe, not for an existing block override or inherited fallback. Fill/stroke
+  are attenuated once; lines use their single-stroke opacity. Mapped size-shape
+  physical geometry remains unchanged. Labels/title/frame have independent paint.
+- Shared pure opacity validation rejects invalid create/edit/load input.
+  Source/data/scale/Canvas replay retains ownership and immutable inputs.
+
+### Sample symbol windows (#176)
+
+`clipHeight?: PositiveFinite` on creation clips eligible point-bearing samples to
+an anchor-centered logical-height window. Whole/focused symbol/block edits also
+accept `"auto"` to remove only that window; omission preserves it. Size, opacity,
+sampled color, and point-bearing categorical or combined recipes are supported.
+Gradient bodies, interval swatches, line-only recipes and stroke-width samples
+reject it. Every layer of one composite sample shares one nested concrete Canvas.
+Its horizontal extent includes the original stroke; vertical bounds intersect the
+window. Areas, radii, paths, sample values, opacity-zero geometry and typed
+sample identities remain unchanged. Labels, titles and borders are never clipped.
+Pitch uses visible glyph bounds and label bounds with the original minimum gap.
+Small glyphs are not enlarged. Nested Canvas bounds intersect every ancestor
+window; root Canvas overflow checks still see geometry outside that root.
+Persistence, immutable edits, data/scale/Canvas replay and removal share the same
+materializer. Authored facet-parent intent stores each block window independently;
+scaffolding does not propagate it into an unclipped gradient sibling. Ordinary
+child composition uses valid namespaced private graphics while source mark item
+identities remain stable. Evidence: legend-symbol-window unit and browser tests,
+and facet-parent-symbol-window unit tests.
+
+
+### Quantitative color-size combination
+
+- `createLegend` / whole `editLegend.combine: "color-size"` selects exactly color+size (omitted channels imply this pair). One ordinary Cartesian circle point owner, same quantitative field/data/grain, continuous scales and identical finite nondegenerate numeric endpoints are required. Encoded shape, ordinal size, independent fields/grains, or incompatible live edits reject atomically, without splitting.
+- `guideConfigs.legend.colorSize` owns target, field/type, colorScale/sizeScale, shared numeric domain, sampling, symbol and native item layout/style. `guide.legend.colorSize` references both scales and its title. One descriptor key `["color","size"]` aliases both selectors; no fabricated dataset or mark is created.
+- Each sample independently maps its fill and physical area through the original public color/size scale evaluators; radius is sqrt(area/PI). One strictly increasing exact numeric sample list or automatic count is used. Numeric labelMap, explicit values, windows, local positions, focused edits and removal resolve the same block. Scalar fill/size/radius overrides reject. The point symbol accepts stroke/strokeWidth/opacity; categorical layer-opacity semantics are not inferred here.
+- Whole combine omission retains policy; separate restores native gradient+size with compatible common text/title/placement, exact samples and compatible sample styles only on size. Recombination starts with new combined defaults; local-anchor merge conflicts require explicit relocation. Persistence validates both live scale references, eligibility, semantic owner, sampling and mapped domain.
+- Full and Basic create through the existing facade; supported Full editors/rematerialization/replay keep both references current. Stable independent geometry: `test/charts/combined-legends` numeric 0/5/10 -> black/#808080/white and radii1/2/3, exact graph/order/native calls/decoded pixels.
+
+### Facade legend capability boundary
+
+- Facade guides always resolve their own mark target; a second mark cannot satisfy a combination on behalf of a line, area, bar, heatmap, interval, or endpoint facade. Their declarations permit `combine: "separate"` only. Ordinary Scatter/Regression/Strip/Beeswarm point facades retain both combinations. PolarScatter retains ordinal `size-shape`; quantitative `color-size` requires a Cartesian point. Raincloud retains ordinal `size-shape` through its enabled points, while its categorical-only color input cannot satisfy `color-size`.
+- `titlePosition: "bottom"` remains gradient-only. Path and categorical-only facade guide declarations permit top/left; actual continuous-color consumers and generic guide actions retain bottom. No runtime inference, target override, or coverage exemption is added.
+- Approval scope remains the one-point-owner contract for ordinal combination and the Cartesian-circle contract for quantitative combination. Evidence: `test/contracts/facade-legend-combination-types.test.js`, `test/contracts/facade-legend-owner-capabilities.test.js`, and the exhaustive Cartesian/hierarchical realistic facade matrices. Those matrices retain the original profiles and add actual successful combination, dashed-frame, separate, and gradient-bottom calls.

@@ -297,7 +297,7 @@
   },
   "/api/regression/": {
     "title": "Regression",
-    "description": "createRegression() layers grouped linear, polynomial, or LOESS fits over an existing quantitative point mark.",
+    "description": "createRegression() layers grouped linear, polynomial, LOESS, or exponential fits over an existing quantitative point mark.",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
   "/api/error-bars/": {
@@ -457,7 +457,7 @@
   },
   "/api/grids/": {
     "title": "Grids",
-    "description": "Cartesian grids accept continuous, band and point scales. Band grids use centers by default; set bandPosition: \"boundary\" for both edges of each selected cell.",
+    "description": "Cartesian grid creators and editors accept strokeDashMap: [{ value, strokeDash }] alongside the uniform strokeDash pattern.",
     "image": "/assets/images/cars-histogram.png"
   },
   "/api/legends/": {
@@ -482,7 +482,7 @@
   },
   "/api/legends/editing/": {
     "title": "Editing Legends",
-    "description": "Use newline characters in a title string, for example program.editLegendTitle({ title: \"Revenue\\nUSD millions\" }), to keep an explicit line break.",
+    "description": "Whole, focused and block editors and removeLegend also accept an existing shared legend on a facet, row column facet grid or field repeat parent.",
     "image": "/assets/images/cars-density-area.png"
   },
   "/concepts/chart-program/": {
@@ -616,7 +616,7 @@
   },
   "/api/composition/facets/": {
     "title": "Facets and Field Repetition",
-    "description": "Call facet on one complete unit chart to repeat it for each observed field value:",
+    "description": "Pass a legend object to guides.legend to create it against the combined inner plots.",
     "image": "/assets/images/facet-grid.png"
   },
   "/api/composition/editing/": {
@@ -699,7 +699,7 @@
   },
   "/api/axes/complete/": {
     "title": "Complete Axes and Labels",
-    "description": "Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis action for ordinary chart authoring.",
+    "description": "Create an axis with id when it needs an independent identity. The default IDs are x and y.",
     "image": "/assets/images/cars-line-chart.png"
   }
 }

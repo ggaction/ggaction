@@ -1,3 +1,5 @@
+import { cartesianAxisOwners } from "../../selectors/axes.js";
+import { axisGraphicIds } from "../../materialization/guides/resources.js";
 import { action } from "../../core/action.js";
 import {
   validateNonNegativeFinite,
@@ -48,14 +50,16 @@ function normalizeOptions(args) {
 function probe(program, margin) {
   try {
     const next = program.editCanvas({ margin });
-    const title = next.guideConfigs.axis?.y?.title;
+    for (const owner of cartesianAxisOwners(next).filter(owner => owner.channel === "y")) {
+    const title = owner.config?.title;
     if (title?.inferredOffset && Math.abs(Math.cos(title.rotation)) < 1e-10) {
-      const bounds = resolveConcreteGraphicBounds(next.graphicSpec, "yAxisTitle", next.materializationConfigs.textMetrics);
+      const bounds = resolveConcreteGraphicBounds(next.graphicSpec, axisGraphicIds("y", owner.id)[3], next.materializationConfigs.textMetrics);
       const edge = title.position === "right" ? "right" : "left";
       const reserve = title.fontSize / 4 * (edge === "right" ? 1 : -1);
       if (!textBoundsFitCanvas({...bounds, [edge]: bounds[edge] + reserve}, findCanvasGraphic(next).properties)) {
         return {ok:false, message:"Fitting retains inferred axis-title ink clearance."};
       }
+    }
     }
     return { ok: true, program: next };
   } catch (error) {

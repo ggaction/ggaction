@@ -1,4 +1,7 @@
+import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
+import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
+import { patchGuideDash, validateGuideDash, normalizeGuideDashMap, resolveGuideDashes } from "../../../grammar/guideDash.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { applyMaterializationPlan } from "../../../materialization/planner.js";
@@ -11,7 +14,7 @@ import {
   validateNonNegativeFinite,
   validateOptionObject
 } from "../../../core/validation.js";
-import { resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
+import { resolveCartesianAxisFrameBounds } from "../../../materialization/coordinateBounds.js";
 import {
   isTransformedScaleType,
   mapContinuousScaleValues,
@@ -32,7 +35,7 @@ import {
 import { findCanvasGraphic, resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 
-const OPTIONS = Object.freeze(["scale", "position", "count", "values", "length", "color", "lineWidth", "alongOffset"]);
+const OPTIONS = Object.freeze(["target", "scale", "position", "count", "values", "length", "color", "lineWidth", "alongOffset", "strokeDash", "strokeDashMap"]);
 const DEFAULTS = Object.freeze({
   count: DEFAULT_TICK_COUNT,
   length: 6,
@@ -54,6 +57,8 @@ function validateOptions(args, operation, create) {
 }
 
 function validateConfig(channel, config) {
+  if (config.strokeDash !== undefined) validateGuideDash(config.strokeDash, "Tick strokeDash");
+  if (config.strokeDashMap !== undefined) normalizeGuideDashMap(config.strokeDashMap, { reset: false });
   validateAxisPosition(channel, config.position);
   if (config.mode === "count") {
     if (!Number.isInteger(config.count) || config.count <= 0) throw new RangeError("Tick count must be a positive integer.");
@@ -73,13 +78,9 @@ function validateConfig(channel, config) {
   validateNonEmptyString(config.color, "Tick color");
 }
 
-function geometry(program, channel, config) {
+function geometry(program, channel, config, axisId = channel) {
   const scale = program.resolvedScales[config.scale];
-  const bounds = resolveGuideCoordinateBounds(program, {
-    coordinate: program.semanticSpec.guides.axis?.[channel]?.coordinate,
-    scale: config.scale,
-    channel
-  });
+  const bounds = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale, axisId);
   const discrete = ["ordinal", "band", "point"].includes(scale?.type);
   if ((
     !["linear", "time", "ordinal", "band", "point"].includes(scale?.type) &&
@@ -139,9 +140,11 @@ function makeEdit(channel) {
   const op = channel === "x" ? "editXAxisTicks" : "editYAxisTicks";
   return action({ op, description: `Edit concrete ${channel}-axis ticks.` }, withGuideLayoutValidation(function (args = {}) {
     validateOptions(args, op, false);
-    const id = `${channel}AxisTicks`;
+    const selected = selectCartesianAxis(this, channel, args, { create: false });
+    const axisId = selected.id; args = selected.options;
+    const id = axisGraphicIds(channel, axisId)[1];
     if (this.graphicSpec.objects[id]?.type !== "line") throw new Error(`${op} requires existing axis ticks.`);
-    const previous = this.guideConfigs.axis?.[channel]?.ticks;
+    const previous = this.guideConfigs.axis?.[axisId]?.ticks;
     if (!previous) throw new Error(`${op} requires tick configuration.`);
     const explicitMode = Object.hasOwn(args, "values") || Object.hasOwn(args, "count");
     const inferredValues = !explicitMode && previous.inferredValues === true
@@ -155,24 +158,28 @@ function makeEdit(channel) {
     const mode = Object.hasOwn(args, "values") || inferredValues !== undefined
       ? "values"
       : Object.hasOwn(args, "count") ? "count" : previous.mode;
-    const config = {
+    const config = patchGuideDash({
       ...previous,
       ...args,
       ...(inferredValues === undefined ? {} : { values: inferredValues }),
       ...(explicitMode ? { inferredValues: false } : {}),
       mode
-    };
+    }, args);
     if (mode === "values") delete config.count; else delete config.values;
     validateConfig(channel, config);
-    const resolved = geometry(this, channel, config);
-    let next = this._withGuideConfig(channel, config).editGraphics({ target: id, property: "length", value: resolved.values.length });
+    const resolved = geometry(this, channel, config, axisId);
+    let next = this._withGuideConfig(axisId, config).editGraphics({ target: id, property: "length", value: resolved.values.length });
     for (const property of ["x1", "y1", "x2", "y2"]) next = next.editGraphics({ target: id, property, value: resolved[property] });
     next = editGraphicProperties(next, id, {
       stroke: config.color,
       strokeWidth: config.lineWidth
     });
+    if (config.strokeDash !== undefined || config.strokeDashMap !== undefined ||
+        previous.strokeDashMap !== undefined) {
+      next = next.editGraphics({ target: id, property: "strokeDash", value: resolveGuideDashes(resolved.values, config) });
+    }
     // Structural dependency plans own grids during a scale/role handoff.
-    return explicitMode ? applyMaterializationPlan(next, planAxisTickGridRematerialization(next, channel)) : next;
+    return explicitMode ? applyMaterializationPlan(next, planAxisTickGridRematerialization(next, channel, axisId)) : next;
   }));
 }
 
@@ -183,10 +190,12 @@ function makeCreate(channel) {
   const edit = channel === "x" ? "editXAxisTicks" : "editYAxisTicks";
   return action({ op, description: `Create concrete ${channel}-axis ticks.` }, withGuideLayoutValidation(function (args = {}) {
     validateOptions(args, op, true);
+    const selected = selectCartesianAxis(this, channel, args, { create: true });
+    const axisId = selected.id; args = selected.options;
     const scale = validateUserId(args.scale ?? channel, "Scale id");
-    const existingGuide = this.semanticSpec.guides.axis?.[channel]?.scale;
+    const existingGuide = this.semanticSpec.guides.axis?.[axisId]?.scale;
     if (existingGuide && existingGuide !== scale) throw new Error(`${op} conflicts with the existing axis scale.`);
-    const id = `${channel}AxisTicks`;
+    const id = axisGraphicIds(channel, axisId)[1];
     if (this.graphicSpec.objects[id]) throw new Error(`${op} requires missing axis ticks.`);
     const resolvedScale = this.resolvedScales[scale];
     const inferredValues =
@@ -197,18 +206,18 @@ function makeCreate(channel) {
           : inferHistogramBoundaries(this, channel, scale);
     const options =
       inferredValues === undefined ? args : { ...args, values: inferredValues };
-    const config = { scale, position: defaultAxisPosition(channel), length: DEFAULTS.length, color: DEFAULTS.color, lineWidth: DEFAULTS.lineWidth, ...options, inferredValues: inferredValues !== undefined, mode: Object.hasOwn(options, "values") ? "values" : "count" };
+    const config = patchGuideDash({ scale, position: defaultAxisPosition(channel), length: DEFAULTS.length, color: DEFAULTS.color, lineWidth: DEFAULTS.lineWidth, ...options, inferredValues: inferredValues !== undefined, mode: Object.hasOwn(options, "values") ? "values" : "count" }, args);
     if (config.mode === "values") delete config.count; else config.count ??= DEFAULTS.count;
-    validateConfig(channel, config); geometry(this, channel, config);
-    const next = this.editSemantic({ property: `guide.axis.${channel}.scale`, value: scale })
+    validateConfig(channel, config); geometry(this, channel, config, axisId);
+    const next = this.editSemantic({ property: `guide.axis.${axisId}.scale`, value: scale })
       .createGraphics({
         id,
         type: "line",
         length: 0,
         ...resolvePlotGraphicPlacement(this)
       })
-      ._withGuideConfig(channel, config)[edit]();
-    return applyMaterializationPlan(next, planAxisTickGridRematerialization(next, channel));
+      ._withGuideConfig(axisId, config)[edit](axisId === channel ? undefined : axisTargetArgs(axisId, channel));
+    return applyMaterializationPlan(next, planAxisTickGridRematerialization(next, channel, axisId));
   }));
 }
 

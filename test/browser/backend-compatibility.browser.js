@@ -132,3 +132,46 @@ test(`${browserName} renders hard title breaks as concrete Canvas and SVG text l
     assertNoBrowserErrors(errors, "hard title breaks");await page.close();
   } finally { await context.close(); }
 });
+
+test(`${browserName} composites each bar fill and outline once in Canvas and SVG`, async () => {
+  const context = await browser.newContext();
+  try {
+    const {page,errors}=await openBrowserPage(context,server.baseUrl,{waitFor:()=>window.compatibility!==undefined});
+    const results=await page.evaluate(async()=>{
+      const {chart,render}=await import("/node_modules/ggaction/src/index.js");
+      const {renderToSVG}=await import("/node_modules/ggaction/src/renderers/svg.js");
+      const records=[];
+      const different=(a,b)=>a.reduce((n,v,i)=>n+(v!==b[i]),0);
+      for(const background of ["#ffffff","#808080","#336699","none"])
+      for(const opacity of [0,.4,.5,1])for(const strokeWidth of [0,8])for(const ratio of [1,2]) {
+        const size=200*ratio;
+        const program=chart().createCanvas({width:200,height:200,margin:40,background})
+          .createData({values:[{category:"a",value:1}]})
+          .createBarPlot({x:"category",y:{field:"value",aggregate:"sum"},guides:false})
+          .encodeBarWidth({pixels:80})
+          .editBarMark({fill:"#f00000",stroke:"#ffff00",strokeWidth})
+          .editBarMark({blend:"difference",opacity});
+        const actual=document.createElement("canvas"),a=actual.getContext("2d");render(program,a,{pixelRatio:ratio});
+        const expected=document.createElement("canvas");expected.width=size;expected.height=size;const e=expected.getContext("2d");
+        if(background!=="none"){e.fillStyle=background;e.fillRect(0,0,size,size);}
+        const source=document.createElement("canvas");source.width=size;source.height=size;const s=source.getContext("2d");
+        s.scale(ratio,ratio);s.fillStyle="#f00000";s.fillRect(60,40,80,120);
+        if(strokeWidth){s.strokeStyle="#ffff00";s.lineWidth=strokeWidth;s.strokeRect(60,40,80,120);}
+        e.globalAlpha=opacity;e.globalCompositeOperation="difference";e.drawImage(source,0,0);
+        async function svgPixels(svg){
+          const image=new Image();image.src="data:image/svg+xml;base64,"+btoa(svg);await image.decode();
+          const canvas=document.createElement("canvas");canvas.width=size;canvas.height=size;
+          const c=canvas.getContext("2d");c.drawImage(image,0,0,size,size);return c.getImageData(0,0,size,size).data;
+        }
+        const literal=`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" style="isolation:isolate">${background==="none"?"":`<rect width="200" height="200" fill="${background}"/>`}<rect x="60" y="40" width="80" height="120" fill="#f00000" stroke="#ffff00" stroke-width="${strokeWidth}" opacity="${opacity}" style="mix-blend-mode:difference"/></svg>`;
+        records.push({background,opacity,strokeWidth,ratio,
+          canvas:different(a.getImageData(0,0,size,size).data,e.getImageData(0,0,size,size).data),
+          svg:different(await svgPixels(renderToSVG(program)),await svgPixels(literal))});
+      }
+      return records;
+    });
+    assert.equal(results.length,64);
+    for(const result of results){assert.equal(result.canvas,0,JSON.stringify(result));assert.equal(result.svg,0,JSON.stringify(result));}
+    assertNoBrowserErrors(errors,browserName);await page.close();
+  } finally {await context.close();}
+});

@@ -1,5 +1,6 @@
 import { USER_ID_SOURCE } from "../../core/identifiers.js";
 import {
+  AXIS_RESOURCE_CHANNELS,
   CARTESIAN_POSITION_CHANNELS,
   ENCODING_CHANNELS,
   SCALED_ENCODING_CHANNELS
@@ -65,6 +66,7 @@ const ENTITY_PATHS = Object.freeze({
       "mark.type",
       "mark.missing",
       "mark.orientation",
+      "mark.blend",
       "derivedBindings.regression",
       "layout.mode",
       ...ENCODING_PATHS
@@ -74,7 +76,7 @@ const ENTITY_PATHS = Object.freeze({
     collection: "scales",
     properties: new Set([
       "type", "domain", "range", "emptyDomain", "nice", "zero", "clamp", "reverse",
-      "unknown", "base", "exponent", "constant", "interpolate", "radialMapping", "midpoint",
+      "unknown", "base", "exponent", "constant", "interpolate", "whitePoint", "gamma", "radialMapping", "midpoint",
       "paddingInner", "paddingOuter", "padding", "align"
     ])
   },
@@ -101,6 +103,9 @@ const GUIDE_PATHS = new Set([
   "axis.parallel.coordinate",
   "axis.parallel.scales",
   "axis.parallel.titles",
+  "legend.colorSize.colorScale",
+  "legend.colorSize.sizeScale",
+  "legend.colorSize.title",
   "legend.color.scale",
   "legend.color.title",
   "legend.color.order",
@@ -137,6 +142,7 @@ const GUIDE_REMOVABLE_CONTAINERS = new Set([
   "grid.vertical",
   "grid.theta",
   "grid.radial",
+  "legend.colorSize",
   "legend.color",
   "legend.stroke",
   "legend.size",
@@ -146,6 +152,13 @@ const GUIDE_REMOVABLE_CONTAINERS = new Set([
 ]);
 
 const TITLE_PATHS = new Set(["text", "subtitle"]);
+
+function isNamedAxisPath(path, container = false) {
+  const match = path.match(new RegExp(container
+    ? `^axis\\.(${USER_ID_SOURCE})$`
+    : `^axis\\.(${USER_ID_SOURCE})\\.(scale|coordinate|title|channel|position)$`));
+  return match !== null && !AXIS_RESOURCE_CHANNELS.includes(match[1]);
+}
 
 function splitPropertyPath(property) {
   return property.split(".");
@@ -201,7 +214,9 @@ export function parseSemanticPath(property, { allowContainer = false } = {}) {
 
     if (
       !GUIDE_PATHS.has(propertyPath) &&
-      !(allowContainer && GUIDE_REMOVABLE_CONTAINERS.has(propertyPath))
+      !isNamedAxisPath(propertyPath) &&
+      !(allowContainer && (GUIDE_REMOVABLE_CONTAINERS.has(propertyPath) ||
+        isNamedAxisPath(propertyPath, true)))
     ) {
       throw new Error(`Unknown semantic property "${property}".`);
     }

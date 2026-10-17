@@ -1,3 +1,4 @@
+import {validateLegendLayerOpacity}from"../../../../grammar/legendOpacity.js";
 import { isPlainObject } from "../../../../core/immutable.js";
 import {
   nonEmptyString,
@@ -16,21 +17,23 @@ import {
 import { findLayerMatching } from "../../../../selectors/layers.js";
 
 const LAYER_OPTIONS = Object.freeze({
-  line: Object.freeze(["type", "length", "lineWidth"]),
+  line: Object.freeze(["type", "length", "lineWidth", "opacity"]),
   point: Object.freeze([
     "type",
     "shape",
     "size",
     "fill",
     "stroke",
-    "strokeWidth"
+    "strokeWidth",
+    "opacity"
   ]),
   swatch: Object.freeze([
     "type",
     "width",
     "height",
     "stroke",
-    "strokeWidth"
+    "strokeWidth",
+    "opacity"
   ])
 });
 const INTERNAL_LAYER_OPTIONS = Object.freeze({
@@ -145,6 +148,7 @@ function defaultRecipe(kind) {
 }
 
 function normalizeLayer(layer, internal) {
+  validateLegendLayerOpacity(layer?.opacity);
   if (!isPlainObject(layer) || !Object.hasOwn(LAYER_OPTIONS, layer.type)) {
     throw new Error("Legend symbol layer type must be line, point, or swatch.");
   }

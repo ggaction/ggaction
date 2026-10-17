@@ -4,11 +4,11 @@ import { validateOptionObject } from "../../../core/validation.js";
 function makeFocusedLegendEdit({ name, options, map }) {
   return action(
     {
-      op: name,
+      op: name, scope: "any",
       description: `Edit one focused legend component through editLegend.`
     },
     function (args = {}) {
-      validateOptionObject(args, ["target", ...options], name);
+      validateOptionObject(args, ["target", "channel", ...options], name);
       if (!options.some(option => Object.hasOwn(args, option))) {
         throw new Error(`${name} requires at least one component change.`);
       }
@@ -29,14 +29,15 @@ const editLegendLayout = /* @__PURE__ */ makeFocusedLegendEdit({
 const editLegendLabels = /* @__PURE__ */ makeFocusedLegendEdit({
   name: "editLegendLabels",
   options: ["offset", "color", "fontSize", "fontFamily", "fontWeight", "format"],
-  map: ({ target, ...labels }) => ({ target, labels })
+  map: ({ target, channel, ...labels }) => ({ target, ...(channel === undefined ? {} : { channel }), labels })
 });
 
 const editLegendTitle = /* @__PURE__ */ makeFocusedLegendEdit({
   name: "editLegendTitle",
   options: ["title", "color", "fontSize", "fontFamily", "fontWeight", "align"],
-  map: ({ target, title, ...titleStyle }) => ({
+  map: ({ target, channel, title, ...titleStyle }) => ({
     target,
+    ...(channel === undefined ? {} : { channel }),
     ...(title === undefined ? {} : { title }),
     ...(Object.keys(titleStyle).length === 0 ? {} : { titleStyle })
   })
@@ -44,7 +45,7 @@ const editLegendTitle = /* @__PURE__ */ makeFocusedLegendEdit({
 
 const editLegendSymbols = /* @__PURE__ */ makeFocusedLegendEdit({
   name: "editLegendSymbols",
-  options: ["symbol", "count", "gradient"],
+  options: ["symbol", "count", "gradient", "clipHeight"],
   map: args => args
 });
 

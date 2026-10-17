@@ -1,4 +1,5 @@
 import {parseTimeValue,validateParseTimeFormat} from "./parseTime.js";
+import { calendarParts, validateTimeZone } from "./timeUnit.js";
 import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation.js";
 import { requireStringValue as requireField } from "../core/validation.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
@@ -6,7 +7,7 @@ import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 const TRANSFORM_KEYS = Object.freeze(["type", "as", "expression"]);
 const ARITHMETIC_BINARY = new Set(["add", "subtract", "multiply", "divide"]);
 const COMPARISONS = new Set(["eq", "neq", "lt", "lte", "gt", "gte"]);
-const NUMERIC_UNARY = new Set(["negate", "absolute", "log", "sqrt"]);
+const NUMERIC_UNARY = new Set(["negate", "absolute", "log", "sqrt", "floor"]);
 const BOOLEAN_UNARY = new Set(["not", "isNull"]);
 const LOGICAL = new Set(["and", "or"]);
 const VARIADIC = new Set(["coalesce", "concat"]);
@@ -104,6 +105,14 @@ function inspectExpression(expression, depth, state, optionalPathRoot = false) {
           typeof expression.replacement !== "string") {
         throw new TypeError("Computed replaceLiteral requires a nonempty string search and string replacement.");
       }
+      inspectExpression(expression.operand, depth + 1, state);
+      return;
+    }
+    if (expression.op === "datePart") {
+      rejectUnknownKeys(expression, ["op", "part", "operand", "timeZone"], "computed calendar expression");
+      requireNode(expression, "operand", expression.op);
+      if (expression.part !== "year") throw new Error("Computed datePart supports part year only.");
+      if (Object.hasOwn(expression, "timeZone")) validateTimeZone(expression.timeZone);
       inspectExpression(expression.operand, depth + 1, state);
       return;
     }
@@ -339,6 +348,18 @@ function evaluate(expression, row, rowIndex) {
       ? value === null
       : !boolean(value, operation, rowIndex);
   }
+  if (operation === "datePart") {
+    const value = evaluate(expression.operand, row, rowIndex);
+    if (value === null) return null;
+    number(value, operation, rowIndex);
+    if (Math.abs(value) > 8_640_000_000_000_000) {
+      throw new RangeError(`Computed datePart timestamp is outside the supported Date range at row ${rowIndex}.`);
+    }
+    const timestamp = new Date(value).getTime();
+    return (expression.timeZone ?? "UTC") === "UTC"
+      ? new Date(timestamp).getUTCFullYear()
+      : calendarParts(timestamp, expression.timeZone).year;
+  }
   if (operation === "parseTime") {
     return parseTimeValue(evaluate(expression.operand, row, rowIndex), expression.format);
   }
@@ -360,6 +381,7 @@ function evaluate(expression, row, rowIndex) {
     }
     const result = operation === "negate" ? -value
       : operation === "absolute" ? Math.abs(value)
+        : operation === "floor" ? Math.floor(value)
         : operation === "log" ? Math.log(value)
           : Math.sqrt(value);
     if (!Number.isFinite(result)) {

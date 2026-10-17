@@ -16,3 +16,12 @@ export function normalizeLegendGradient(patch, previous = DEFAULT_LEGEND_GRADIEN
   validateLegendGradient(value);
   return value;
 }
+
+
+export function normalizeGradientDirection(value, label = "Gradient legend direction") {
+  if (value === undefined) return undefined;
+  if (value !== "horizontal" && value !== "vertical") {
+    throw new Error(`${label} must be horizontal or vertical.`);
+  }
+  return value;
+}

@@ -9,6 +9,113 @@ title: Complete Axes and Labels
 
 [Axis family overview](../axes.md)
 
+## Independent named Cartesian axes
+
+{% include chart-example.html id="axis-owners" %}
+
+Create an axis with `id` when it needs an independent identity. The default IDs are
+`x` and `y`. Refine or remove a named axis with `target`, which selects the axis,
+not its mark or scale. This complete runnable program uses an independent right scale:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "share"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from "ggaction";
+
+const program = chart().createCanvas({ width: 600, height: 400, margin: 80 })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createScatterPlot({ x: "x", y: "y", guides: false })
+  .createYAxis()
+  .createScale({ id: "ratio", type: "linear", domain: [0, 1] })
+  .createYAxis({ id: "share", position: "right", scale: "ratio", coordinate: "main" })
+  .editYAxisTitle({ target: "share", text: "Share" });
+```
+
+`createAxes` and `createGuides.axes` also accept nonempty X/Y arrays, with an explicit
+`id` in every entry. Arrays create axes in entry order and fail atomically if any
+entry conflicts. A chart facade accepts the same arrays for its own position scales.
+One axis may occupy each physical side of a coordinate; moving another axis there
+fails even with a different frame offset. Named axes use one common side for their
+components. Move the complete axis to change that side; focused edits preserve it.
+
+An omitted `target` selects the canonical X/Y axis if present, otherwise the unique
+named axis in that channel. Several named candidates require an explicit target.
+Unknown IDs, wrong channels, conflicting scale/coordinate filters, reserved channel
+IDs and duplicate graphic identities fail. Polar and Parallel axes do not accept
+these selectors. A focused creator restores a missing component of an existing named
+axis; the complete creator establishes its identity. Removing the final component
+also removes the owner. Scale, data, Canvas, theme and editable persistence preserve
+all remaining owners. A grid with several eligible scales requires an explicit scale;
+conflicting axis tick policies require explicit grid `count` or `values`.
+
+For facet `axes: "outer"`, named components follow their actual top, right, bottom
+or left occupied edge, including incomplete rows. `axes: "each"` retains every axis.
+Named text bounds must fit the Canvas and remain separate from other axis text.
+
+## Moving a complete axis and refining its text
+
+On an existing Cartesian program, create the full axis before focused text edits:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+program
+  .createXAxis({ offset: 20, title: { text: "Measurement" } })
+  .editXAxisTitle({ offset: -40, alongOffset: 30, align: "right" })
+  .editXAxisTitle({ baseline: "bottom" })
+  .editXAxisLabels({ align: "left" });
+```
+
+The complete-axis `offset` moves its line, ticks, labels and title outward together.
+It must be non-negative; zero restores the plot edge. Marks and grids stay fixed.
+The nested title `offset` is signed: positive outward, negative into the plot.
+`alongOffset` is a separate translation along the axis: positive right for X and
+down for Y, even with a reversed scale. Numeric `at` still means a scale-domain value.
+
+Title alignment (`left`, `center`, `right`) and baseline (`top`, `hanging`, `middle`,
+`alphabetic`, `ideographic`, `bottom`) apply before rotation. Defaults remain center/middle.
+Multiline titles keep their text and 1.2×font-size spacing; top/hanging/alphabetic
+anchor the first line, bottom/ideographic the last, and middle centers the block.
+Omitted edits retain explicit settings. Explicit defaults restore alignment/baseline;
+remove and recreate a title without `offset` to restore automatic title clearance.
+
+Explicit label `align` changes text anchoring before rotation while keeping existing
+resolved label positions. It takes precedence over inferred side/flush anchoring.
+Remove and recreate labels without alignment to restore inference. All final rotated
+bounds must still fit, and axis-title/label collision checks remain active.
+
+## Styling native tick dashes
+
+Create a complete axis first, then refine its native ticks. On an existing Cartesian
+program with a quantitative y encoding, this fragment keeps the zero tick solid:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+program
+  .createYAxis({ ticksAndLabels: { values: [0, 1, 2] } })
+  .editYAxisTicks({ strokeDash: [2, 2], strokeDashMap: [{ value: 0, strokeDash: [] }] });
+```
+
+Patterns contain an even number of finite non-negative lengths; `[]` means solid.
+Map keys use raw typed values, so `1` differs from `"1"`. Missing map entries use the
+uniform pattern. An omitted edit preserves the map; `strokeDashMap: "auto"` or `[]`
+removes only its overrides. Values absent from the current ticks stay available for
+later scale/data refresh. The same tick options work inside complete-axis creation,
+whole-axis edits and ticks-and-labels groups. Polar and Parallel ticks are unchanged.
+
 ## `createAxes(options?)`
 
 Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis
@@ -29,8 +136,8 @@ program.createAxes({
 | Option | Type | Default |
 | --- | --- | --- |
 | `coordinate` | `{ id?, type? }` | unique coordinate used by x/y layers |
-| `x` | axis options or `false` | create when x is encoded |
-| `y` | axis options or `false` | create when y is encoded |
+| `x` | axis options, nonempty named-axis array, or `false` | create when x is encoded |
+| `y` | axis options, nonempty named-axis array, or `false` | create when y is encoded |
 | `theta` | Polar axis options or `false` | create when theta is encoded |
 | `radius` | Polar axis options or `false` | create when radius is encoded |
 

@@ -49,6 +49,8 @@ interface ChartProgramActions {
   createImputedData(options: ImputedDataOptions): ChartProgram;
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
+  createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
+  editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createECDFData(options: ECDFDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
@@ -84,7 +86,7 @@ interface ChartProgramActions {
   createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: RectStyleDetails & { target?: string; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: RectStyleDetails & { target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
@@ -210,10 +212,10 @@ interface ChartProgramActions {
   editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;
   editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;
   editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;
-  createXAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: XAxisPosition }): ChartProgram;
-  createYAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: YAxisPosition }): ChartProgram;
-  editXAxisLine(options?: AxisLineStyleOptions & { position?: XAxisPosition }): ChartProgram;
-  editYAxisLine(options?: AxisLineStyleOptions & { position?: YAxisPosition }): ChartProgram;
+  createXAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }): ChartProgram;
+  createYAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }): ChartProgram;
+  editXAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: XAxisPosition }): ChartProgram;
+  editYAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: YAxisPosition }): ChartProgram;
   createXAxisTicks(options?: AxisTickOptions<XAxisPosition>): ChartProgram;
   createYAxisTicks(options?: AxisTickOptions<YAxisPosition>): ChartProgram;
   editXAxisTicks(options?: Omit<AxisTickOptions<XAxisPosition>, "scale">): ChartProgram;
@@ -236,8 +238,8 @@ interface ChartProgramActions {
   editRadialAxis(options: EditRadialAxisOptions): ChartProgram;
   removeXAxis(options?: RemoveAxisOptions): ChartProgram;
   removeYAxis(options?: RemoveAxisOptions): ChartProgram;
-  removeThetaAxis(options?: RemoveAxisOptions): ChartProgram;
-  removeRadialAxis(options?: RemoveAxisOptions): ChartProgram;
+  removeThetaAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
+  removeRadialAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
   createGrid(options?: CreateGridOptions): ChartProgram;
   createHorizontalGrid(options?: GridDirectionOptions): ChartProgram;
   createVerticalGrid(options?: GridDirectionOptions): ChartProgram;
@@ -556,6 +558,8 @@ Related types: [`RotationInput`](#type-rotationinput).
 ```typescript
 export interface AxisLabelOptions<P extends string>
   extends CartesianAxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   scale?: string;
   position?: P;
   count?: number;
@@ -609,6 +613,8 @@ export interface AxisLineStyleOptions {
 ```typescript
 export interface AxisTickOptions<P extends string>
   extends CartesianAxisTickStyleOptions {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   scale?: string;
   position?: P;
   count?: number;
@@ -643,6 +649,8 @@ Related types: [`AxisLineStyleOptions`](#type-axislinestyleoptions).
 
 ```typescript
 export interface AxisTicksAndLabelsOptions<P extends string> {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   scale?: string;
   position?: P;
   count?: number;
@@ -663,11 +671,18 @@ Related types: [`AxisValue`](#type-axisvalue) · [`CartesianAxisTickStyleOptions
 
 ```typescript
 export interface AxisTitleOptions<P extends string> {
-  /** Hard breaks retain ordered centered lines, spaced at 1.2 times fontSize. */
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
+  /** Signed logical pixels: positive right for x, down for y, independent of scale reversal. */
+  alongOffset?: number;
+  align?: "left" | "center" | "right";
+  baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom";
+  /** Hard breaks retain ordered lines with the chosen block baseline, spaced at 1.2 times fontSize. */
   text?: string;
   scale?: string;
   position?: P;
   at?: "start" | "center" | "end" | number;
+  /** Signed distance from the axis frame: positive outward, negative inward. */
   offset?: number;
   rotation?: RotationInput;
   color?: string;
@@ -906,7 +921,7 @@ type BasicColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 ```
@@ -1349,8 +1364,8 @@ type BoxPlotWidth = { band?: number; pixels?: never } | { band?: never; pixels: 
 
 ```typescript
 type CAxes = Omit<CartesianAxesOptions, "x" | "y"> & {
-  x?: false | CAxis<XAxisPosition>;
-  y?: false | CAxis<YAxisPosition>;
+  x?: false | CAxis<XAxisPosition> | readonly [CAxis<XAxisPosition> & { id: string }, ...(CAxis<XAxisPosition> & { id: string })[]];
+  y?: false | CAxis<YAxisPosition> | readonly [CAxis<YAxisPosition> & { id: string }, ...(CAxis<YAxisPosition> & { id: string })[]];
 };
 ```
 
@@ -1365,7 +1380,7 @@ Related types: [`CartesianAxesOptions`](#type-cartesianaxesoptions) · [`CAxis`]
 
 ```typescript
 type CAxis<P extends string> = Omit<CompleteAxisOptions<P>, "ticksAndLabels"> & {
-  ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position">;
+  ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position" | "target">;
 };
 ```
 
@@ -1484,6 +1499,8 @@ Related types: [`DatasetScalar`](#type-datasetscalar).
 
 ```typescript
 export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Local text alignment before rotation; omitted edits retain existing intent. */
+  align?: "left" | "center" | "right";
   /** Typed raw-tick color overrides; missing entries use color. Auto removes the map. */
   colorMap?: CartesianAxisLabelColorMap | "auto";
   /** Keep unrotated label bounds inside the mapped axis span; defaults to false. */
@@ -1504,6 +1521,9 @@ Related types: [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`Carte
 
 ```typescript
 export interface CartesianAxisTickStyleOptions extends AxisTickStyleOptions {
+  strokeDash?: readonly number[];
+  /** Typed raw-value overrides. Empty arrays and auto clear only the map. */
+  strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Signed logical pixels along the axis: positive right for x, down for y. */
   alongOffset?: number;
 }
@@ -1511,7 +1531,7 @@ export interface CartesianAxisTickStyleOptions extends AxisTickStyleOptions {
 
 </details>
 
-Related types: [`AxisTickStyleOptions`](#type-axistickstyleoptions).
+Related types: [`AxisTickStyleOptions`](#type-axistickstyleoptions) · [`CartesianGuideDashMap`](#type-cartesianguidedashmap).
 
 ### `CartesianCategoricalGuideOptions` {#type-cartesiancategoricalguideoptions}
 
@@ -1521,9 +1541,10 @@ Related types: [`AxisTickStyleOptions`](#type-axistickstyleoptions).
 ```typescript
 type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
   legend?: false | (Omit<
-    FilledMarkLegendOptions,
-    "count" | "values" | "gradient" | "labels" | "order" | "representation" | "symbol"
+    SeparateFilledLegendOptions,
+    "count" | "values" | "gradient" | "labels" | "order" | "representation" | "symbol" | "titlePosition"
   > & {
+    titlePosition?: "top" | "left";
     symbol?: FilledLegendSymbolRecipe;
     labels?: CategoricalLegendTextOptions;
     order?: CartesianLegendOrder;
@@ -1533,7 +1554,25 @@ type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & 
 
 </details>
 
-Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`FilledLegendSymbolRecipe`](#type-filledlegendsymbolrecipe) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`SeparateFilledLegendOptions`](#type-separatefilledlegendoptions) · [`FilledLegendSymbolRecipe`](#type-filledlegendsymbolrecipe) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
+
+### `CartesianCategoricalPointGuideOptions` {#type-cartesiancategoricalpointguideoptions}
+
+<details markdown="1">
+<summary>Expand CartesianCategoricalPointGuideOptions</summary>
+
+```typescript
+type CartesianCategoricalPointGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (Omit<CategoricalPointLegendOptions, "count" | "values" | "gradient" | "labels" | "order" | "symbol" | "titlePosition"> & {
+    titlePosition?: "top" | "left";
+    symbol?: FilledLegendSymbolRecipe; labels?: CategoricalLegendTextOptions; order?: CartesianLegendOrder;
+  });
+};
+```
+
+</details>
+
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`CategoricalPointLegendOptions`](#type-categoricalpointlegendoptions) · [`FilledLegendSymbolRecipe`](#type-filledlegendsymbolrecipe) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
 
 ### `CartesianGridOptions` {#type-cartesiangridoptions}
 
@@ -1547,6 +1586,22 @@ type CartesianGridOptions = Pick<CreateGridOptions, "horizontal" | "vertical">;
 </details>
 
 Related types: [`CreateGridOptions`](#type-creategridoptions).
+
+### `CartesianGuideDashMap` {#type-cartesianguidedashmap}
+
+<details markdown="1">
+<summary>Expand CartesianGuideDashMap</summary>
+
+```typescript
+export type CartesianGuideDashMap = ReadonlyArray<Readonly<{
+  value: AxisValue;
+  strokeDash: readonly number[];
+}>>;
+```
+
+</details>
+
+Related types: [`AxisValue`](#type-axisvalue).
 
 ### `CartesianGuideOptions` {#type-cartesianguideoptions}
 
@@ -1592,6 +1647,21 @@ type CartesianPathGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
 </details>
 
 Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`PathLegendOptions`](#type-pathlegendoptions) · [`LegendValueOrder`](#type-legendvalueorder).
+
+### `CartesianSeparateGuideOptions` {#type-cartesianseparateguideoptions}
+
+<details markdown="1">
+<summary>Expand CartesianSeparateGuideOptions</summary>
+
+```typescript
+type CartesianSeparateGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (DistributiveLegendOmit<SeparateFilledLegendOptions, "order"> & { order?: CartesianLegendOrder });
+};
+```
+
+</details>
+
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`DistributiveLegendOmit`](#type-distributivelegendomit) · [`SeparateFilledLegendOptions`](#type-separatefilledlegendoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
 
 ### `CategoricalColorScaleOptions` {#type-categoricalcolorscaleoptions}
 
@@ -1644,6 +1714,19 @@ type CategoricalLegendTextOptions = {
 ```
 
 </details>
+
+### `CategoricalPointLegendOptions` {#type-categoricalpointlegendoptions}
+
+<details markdown="1">
+<summary>Expand CategoricalPointLegendOptions</summary>
+
+```typescript
+type CategoricalPointLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "representation">;
+```
+
+</details>
+
+Related types: [`DistributiveLegendOmit`](#type-distributivelegendomit) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions).
 
 ### `CategoricalPolarAxesOptions` {#type-categoricalpolaraxesoptions}
 
@@ -1857,7 +1940,7 @@ export type ColorEncodingOptions =
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
-      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
       layout?: never;
     };
@@ -1874,7 +1957,7 @@ Related types: [`CategoricalEncodingOptions`](#type-categoricalencodingoptions) 
 
 ```typescript
 type ColorGuides = Omit<CartesianGuideOptions, "legend"> & {
-  legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & {
+  legend?: false | (DistributiveLegendOmit<SeparateFilledLegendOptions, "order"> & {
     order?: CartesianLegendOrder;
   });
 };
@@ -1882,7 +1965,7 @@ type ColorGuides = Omit<CartesianGuideOptions, "legend"> & {
 
 </details>
 
-Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`DistributiveLegendOmit`](#type-distributivelegendomit) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`DistributiveLegendOmit`](#type-distributivelegendomit) · [`SeparateFilledLegendOptions`](#type-separatefilledlegendoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
 
 ### `ColorLayout` {#type-colorlayout}
 
@@ -1908,12 +1991,16 @@ export type ColorLayout =
 
 ```typescript
 export interface CompleteAxisOptions<P extends string> {
+  /** Omission retains the canonical x/y identity. */
+  id?: string;
+  /** Non-negative outward displacement of the complete axis frame in logical pixels. */
+  offset?: number;
   scale?: string;
   coordinate?: string;
   position?: P;
   line?: false | AxisLineStyleOptions;
-  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position">;
-  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position">;
+  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">;
+  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position" | "target">;
 }
 ```
 
@@ -2077,12 +2164,18 @@ export type ComputedExpression =
       readonly replacement: string;
     }
   | {
+      readonly op: "datePart";
+      readonly part: "year";
+      readonly operand: ComputedExpression;
+      readonly timeZone?: string;
+    }
+  | {
       readonly op: "parseTime";
       readonly operand: ComputedExpression;
       readonly format?: ParseTimeFormat;
     }
   | {
-      readonly op: "negate" | "absolute" | "log" | "sqrt" | "not" | "isNull" | "toNumber";
+      readonly op: "negate" | "absolute" | "log" | "sqrt" | "floor" | "not" | "isNull" | "toNumber";
       readonly operand: ComputedExpression;
     }
   | {
@@ -2282,8 +2375,8 @@ export interface CreateAxesOptions {
     id?: string;
     type?: "auto" | "cartesian" | "polar" | "parallel";
   };
-  x?: false | CompleteAxisOptions<XAxisPosition>;
-  y?: false | CompleteAxisOptions<YAxisPosition>;
+  x?: false | CompleteAxisOptions<XAxisPosition> | readonly [NamedCompleteAxis<XAxisPosition>, ...NamedCompleteAxis<XAxisPosition>[]];
+  y?: false | CompleteAxisOptions<YAxisPosition> | readonly [NamedCompleteAxis<YAxisPosition>, ...NamedCompleteAxis<YAxisPosition>[]];
   theta?: false | CompletePolarAxisOptions;
   radius?: false | CompleteRadialAxisOptions;
 }
@@ -2291,7 +2384,7 @@ export interface CreateAxesOptions {
 
 </details>
 
-Related types: [`CompleteAxisOptions`](#type-completeaxisoptions) · [`XAxisPosition`](#type-xaxisposition) · [`YAxisPosition`](#type-yaxisposition) · [`CompletePolarAxisOptions`](#type-completepolaraxisoptions) · [`CompleteRadialAxisOptions`](#type-completeradialaxisoptions).
+Related types: [`CompleteAxisOptions`](#type-completeaxisoptions) · [`XAxisPosition`](#type-xaxisposition) · [`NamedCompleteAxis`](#type-namedcompleteaxis) · [`YAxisPosition`](#type-yaxisposition) · [`CompletePolarAxisOptions`](#type-completepolaraxisoptions) · [`CompleteRadialAxisOptions`](#type-completeradialaxisoptions).
 
 ### `CreateBarPlotOptions` {#type-createbarplotoptions}
 
@@ -2575,13 +2668,16 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CartesianCategoricalGuideOptions;
+  guides?: false | (Omit<CartesianCategoricalGuideOptions, "grid"> & {
+    /** Bin position and count axes are continuous; neither grid has categorical band edges. */
+    grid?: false | ContinuousCartesianGridOptions;
+  });
 };
 ```
 
 </details>
 
-Related types: [`BasicHistogramEncoding`](#type-basichistogramencoding) · [`HistogramCategoricalColorChannel`](#type-histogramcategoricalcolorchannel) · [`RectStyleDetails`](#type-rectstyledetails) · [`FillPaint`](#type-fillpaint) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions).
+Related types: [`BasicHistogramEncoding`](#type-basichistogramencoding) · [`HistogramCategoricalColorChannel`](#type-histogramcategoricalcolorchannel) · [`RectStyleDetails`](#type-rectstyledetails) · [`FillPaint`](#type-fillpaint) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions) · [`ContinuousCartesianGridOptions`](#type-continuouscartesiangridoptions).
 
 ### `CreateHorizonPlotOptions` {#type-createhorizonplotoptions}
 
@@ -2952,13 +3048,13 @@ export interface CreateRaincloudPlotOptions {
   summary?: false | RaincloudSummaryOptions;
   points?: false | RaincloudPointsOptions;
   color?: LineCategoricalColorChannel;
-  guides?: false | CartesianCategoricalGuideOptions;
+  guides?: false | CartesianCategoricalPointGuideOptions;
 }
 ```
 
 </details>
 
-Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`CartesianCategoricalGuideOptions`](#type-cartesiancategoricalguideoptions).
+Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`CartesianCategoricalPointGuideOptions`](#type-cartesiancategoricalpointguideoptions).
 
 ### `CreateReferenceBandOptions` {#type-createreferencebandoptions}
 
@@ -3791,6 +3887,19 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
 
 Related types: [`DatasetNormalizedBaseTransform`](#type-datasetnormalizedbasetransform) · [`NormalizeZeroDenominator`](#type-normalizezerodenominator) · [`DatasetNormalizeBaselineTransform`](#type-datasetnormalizebaselinetransform).
 
+### `DatasetRegressionStatisticsTransform` {#type-datasetregressionstatisticstransform}
+
+<details markdown="1">
+<summary>Expand DatasetRegressionStatisticsTransform</summary>
+
+```typescript
+export interface DatasetRegressionStatisticsTransform {
+  readonly type: "regressionStatistics";
+}
+```
+
+</details>
+
 ### `DatasetRegressionTransform` {#type-datasetregressiontransform}
 
 <details markdown="1">
@@ -3821,6 +3930,16 @@ export type DatasetRegressionTransform = {
       | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
       | { confidence: number; confidenceMethod?: never; level?: never }
     ))))
+  | {
+      method: "exp";
+      interval: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+    }
   | {
       method: "loess";
       span: number;
@@ -4000,6 +4119,7 @@ export type DatasetTransform =
   | DatasetFilterTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
+  | DatasetRegressionStatisticsTransform
   | DatasetSortTransform
   | DatasetDensityTransform
   | DatasetECDFTransform
@@ -4014,7 +4134,7 @@ export type DatasetTransform =
 
 </details>
 
-Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
+Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -4488,12 +4608,15 @@ export interface ECDFOutputFields {
 
 ```typescript
 export interface EditAxisOptions<P extends string> {
+  target?: string;
+  /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
+  offset?: number;
   position?: P;
   line?: false | AxisLineStyleOptions;
-  ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position">;
-  labels?: false | Omit<AxisLabelOptions<P>, "scale" | "position">;
-  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position">;
-  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position">;
+  ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position" | "target">;
+  labels?: false | Omit<AxisLabelOptions<P>, "scale" | "position" | "target">;
+  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">;
+  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position" | "target">;
 }
 ```
 
@@ -4586,8 +4709,8 @@ Related types: [`BoxPlotSummaryFields`](#type-boxplotsummaryfields) · [`BoxPlot
 
 ```typescript
 export type EditColorScaleOptions = FocusedScaleSelection & WithoutScaleId<
-  CategoricalColorScaleOptions | ContinuousColorScaleOptions | DiscretizedColorScaleOptions
->;
+  CategoricalColorScaleOptions | Omit<ContinuousColorScaleOptions, "whitePoint" | "gamma"> | DiscretizedColorScaleOptions
+> & { whitePoint?: "d65" | "d50" | "auto"; gamma?: number | "auto" };
 ```
 
 </details>
@@ -4998,6 +5121,7 @@ Related types: [`EditGridOptions`](#type-editgridoptions) · [`EditPolarGridOpti
 
 ```typescript
 export interface EditGridOptions {
+  strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Absolute signed logical-pixel displacement; omission preserves the current value. */
   alongOffset?: number;
   /** Preserve omitted order; finite values sort Cartesian grids relative to marks at zero. */
@@ -5014,7 +5138,7 @@ export interface EditGridOptions {
 
 </details>
 
-Related types: [`CategoryValue`](#type-categoryvalue).
+Related types: [`CartesianGuideDashMap`](#type-cartesianguidedashmap) · [`CategoryValue`](#type-categoryvalue).
 
 ### `EditHorizonOptions` {#type-edithorizonoptions}
 
@@ -5065,8 +5189,12 @@ Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`Int
 
 ```typescript
 export interface EditLegendBlockOptions {
+  /** Reset only the sample window with auto. */
+  clipHeight?: number | "auto";
   target: string;
   channel: LegendChannel;
+  /** Block-local anchor; inherit removes only this override. */
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   title?: string;
   values?: readonly [number, ...number[]] | "auto";
   count?: number;
@@ -5074,7 +5202,7 @@ export interface EditLegendBlockOptions {
   gap?: number;
   text?: LegendBlockTextPatch;
   symbol?: LegendBlockSymbolPatch;
-  /** An empty mapped label omits only text; its category and symbol remain. */
+  /** Display-only: categorical keys, or finite numeric keys for continuous size samples. Empty labels omit text only. */
   labelMap?: DisplayLabelMap | "auto";
 }
 ```
@@ -5091,13 +5219,15 @@ Related types: [`LegendChannel`](#type-legendchannel) · [`CategoryValue`](#type
 ```typescript
 export interface EditLegendBorderOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   border: boolean | LegendBorderOptions;
 }
 ```
 
 </details>
 
-Related types: [`LegendBorderOptions`](#type-legendborderoptions).
+Related types: [`LegendChannel`](#type-legendchannel) · [`LegendBorderOptions`](#type-legendborderoptions).
 
 ### `EditLegendLabelsOptions` {#type-editlegendlabelsoptions}
 
@@ -5107,12 +5237,14 @@ Related types: [`LegendBorderOptions`](#type-legendborderoptions).
 ```typescript
 export interface EditLegendLabelsOptions extends LegendTextOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
 }
 ```
 
 </details>
 
-Related types: [`LegendTextOptions`](#type-legendtextoptions).
+Related types: [`LegendTextOptions`](#type-legendtextoptions) · [`LegendChannel`](#type-legendchannel).
 
 ### `EditLegendLayoutOptions` {#type-editlegendlayoutoptions}
 
@@ -5122,28 +5254,33 @@ Related types: [`LegendTextOptions`](#type-legendtextoptions).
 ```typescript
 export interface EditLegendLayoutOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   layout?: "edge" | "legacy-bottom";
   /** Outside right/left: complete legend stack top aligns with the plot top, including borders and excluding chart titles. */
-  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   /** Opt into whole-target legend group layout; a requested row never wraps. */
   blockLayout?: "row" | "column" | "wrap";
   /** Move the complete occupied group top-left to plot-relative logical pixels. A later position clears this anchor. */
   at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
-  /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
-  direction?: "horizontal" | "vertical";
+  /** Gradient orientation is independent of position; auto is gradient-only. Categorical sides require vertical. */
+  direction?: "horizontal" | "vertical" | "auto";
   /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
-  titlePosition?: "top" | "left";
+  /** bottom is gradient-only; left retains the existing categorical/opacity rules. */
+  titlePosition?: "top" | "left" | "bottom";
   /** Explicit spacing override; vertical creation defaults to 18 logical pixels. */
   itemGap?: number;
 }
 ```
 
 </details>
+
+Related types: [`LegendChannel`](#type-legendchannel).
 
 ### `EditLegendOptions` {#type-editlegendoptions}
 
@@ -5152,7 +5289,14 @@ export interface EditLegendLayoutOptions {
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight"> {
+  clipHeight?: number | "auto";
+  /** Select one existing block; cannot accompany channels. */
+  channel?: LegendChannel;
+  /** inherit is allowed only with a singular channel selector. */
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
+  /** Gradient-only auto resets orientation. */
+  direction?: "horizontal" | "vertical" | "auto";
   titleStyle?: LegendTitleStyleEditOptions;
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
@@ -5164,7 +5308,7 @@ export interface EditLegendOptions
 
 </details>
 
-Related types: [`LegendOptions`](#type-legendoptions) · [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions).
+Related types: [`LegendOptions`](#type-legendoptions) · [`LegendChannel`](#type-legendchannel) · [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions).
 
 ### `EditLegendSymbolsOptions` {#type-editlegendsymbolsoptions}
 
@@ -5173,7 +5317,10 @@ Related types: [`LegendOptions`](#type-legendoptions) · [`LegendTitleStyleEditO
 
 ```typescript
 export interface EditLegendSymbolsOptions {
+  clipHeight?: number | "auto";
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   symbol?: LegendSymbolRecipe;
   count?: number;
   gradient?: { length?: number; thickness?: number; opacity?: number };
@@ -5182,7 +5329,7 @@ export interface EditLegendSymbolsOptions {
 
 </details>
 
-Related types: [`LegendSymbolRecipe`](#type-legendsymbolrecipe).
+Related types: [`LegendChannel`](#type-legendchannel) · [`LegendSymbolRecipe`](#type-legendsymbolrecipe).
 
 ### `EditLegendTitleOptions` {#type-editlegendtitleoptions}
 
@@ -5192,13 +5339,15 @@ Related types: [`LegendSymbolRecipe`](#type-legendsymbolrecipe).
 ```typescript
 export interface EditLegendTitleOptions extends LegendTitleStyleEditOptions {
   target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
   title?: string | "auto" | false;
 }
 ```
 
 </details>
 
-Related types: [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions).
+Related types: [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions) · [`LegendChannel`](#type-legendchannel).
 
 ### `EditMarkLabelPlacementOptions` {#type-editmarklabelplacementoptions}
 
@@ -5463,6 +5612,20 @@ export interface EditRegressionOptions {
 
 Related types: [`RegressionMethod`](#type-regressionmethod) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval) · [`RegressionPredictOptions`](#type-regressionpredictoptions) · [`RegressionBandOptions`](#type-regressionbandoptions) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation).
 
+### `EditRegressionStatisticsDataOptions` {#type-editregressionstatisticsdataoptions}
+
+<details markdown="1">
+<summary>Expand EditRegressionStatisticsDataOptions</summary>
+
+```typescript
+export interface EditRegressionStatisticsDataOptions {
+  target?: string;
+  source?: string;
+}
+```
+
+</details>
+
 ### `EditScaleOptions` {#type-editscaleoptions}
 
 <details markdown="1">
@@ -5489,6 +5652,8 @@ export interface EditScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  whitePoint?: "d65" | "d50" | "auto";
+  gamma?: number | "auto";
   midpoint?: number | "auto";
   unknown?: unknown;
 }
@@ -5587,15 +5752,12 @@ Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`Witho
 <summary>Expand EditStrokeScaleOptions</summary>
 
 ```typescript
-export type EditStrokeScaleOptions = { target: string } & Omit<
-  EditColorScaleOptions,
-  "id" | "target"
->;
+export type EditStrokeScaleOptions = { target: string } & WithoutScaleSelection<EditColorScaleOptions>;
 ```
 
 </details>
 
-Related types: [`EditColorScaleOptions`](#type-editcolorscaleoptions).
+Related types: [`WithoutScaleSelection`](#type-withoutscaleselection) · [`EditColorScaleOptions`](#type-editcolorscaleoptions).
 
 ### `EditStrokeWidthScaleOptions` {#type-editstrokewidthscaleoptions}
 
@@ -5891,13 +6053,13 @@ type EndpointPlotBaseOptions = {
   category: EndpointCategoryChannel;
   orientation?: "horizontal" | "vertical";
   summary?: EndpointPlotSummary;
-  guides?: false | CartesianGuideOptions;
+  guides?: false | CartesianSeparateGuideOptions;
 };
 ```
 
 </details>
 
-Related types: [`EndpointCategoryChannel`](#type-endpointcategorychannel) · [`EndpointPlotSummary`](#type-endpointplotsummary) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
+Related types: [`EndpointCategoryChannel`](#type-endpointcategorychannel) · [`EndpointPlotSummary`](#type-endpointplotsummary) · [`CartesianSeparateGuideOptions`](#type-cartesianseparateguideoptions).
 
 ### `EndpointPlotSummary` {#type-endpointplotsummary}
 
@@ -6249,11 +6411,13 @@ Related types: [`DatasetScalar`](#type-datasetscalar).
 ```typescript
 export interface FacetGuideOptions {
   axes?: "each" | "outer";
-  legend?: false | "shared";
+  legend?: false | "shared" | LegendOptions;
 }
 ```
 
 </details>
+
+Related types: [`LegendOptions`](#type-legendoptions).
 
 ### `FacetHeaderAlign` {#type-facetheaderalign}
 
@@ -6414,9 +6578,10 @@ Related types: [`LegendSymbolLayer`](#type-legendsymbollayer).
 <summary>Expand FilledMarkLegendOptions</summary>
 
 ```typescript
-type FilledMarkLegendOptions = Omit<LegendOptions, "symbol" | "representation"> & (
-  | { representation?: "gradient"; symbol?: FilledLegendSymbolRecipe }
-  | { representation: "symbols"; symbol?: "auto" | { type?: "point"; radius?: number; stroke?: string; strokeWidth?: number } }
+type FilledMarkLegendOptions = Omit<LegendOptions, "symbol" | "representation" | "combine"> & (
+  | { combine?: "separate" | "size-shape"; representation?: "gradient"; symbol?: FilledLegendSymbolRecipe }
+  | { combine?: "separate" | "size-shape"; representation: "symbols"; symbol?: "auto" | { type?: "point"; radius?: number; stroke?: string; strokeWidth?: number } }
+  | { combine: "color-size"; representation?: never; symbol?: "auto" | { type?: "point"; stroke?: string; strokeWidth?: number; opacity?: number } }
 );
 ```
 
@@ -6841,6 +7006,7 @@ export type GraphicType =
 
 ```typescript
 export interface GridDirectionOptions {
+  strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Signed logical pixels along the scale: vertical lines right, horizontal lines down. */
   alongOffset?: number;
   /** Grid draw order relative to marks at zero: positive above, nonpositive behind. */
@@ -6859,7 +7025,7 @@ export interface GridDirectionOptions {
 
 </details>
 
-Related types: [`CategoryValue`](#type-categoryvalue).
+Related types: [`CartesianGuideDashMap`](#type-cartesianguidedashmap) · [`CategoryValue`](#type-categoryvalue).
 
 ### `GroupEncodingOptions` {#type-groupencodingoptions}
 
@@ -6890,13 +7056,13 @@ export interface HeatmapBaseOptions {
     stroke?: string | false;
     strokeWidth?: number;
   };
-  guides?: false | CartesianGuideOptions;
+  guides?: false | CartesianSeparateGuideOptions;
 }
 ```
 
 </details>
 
-Related types: [`RectStyleDetails`](#type-rectstyledetails) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
+Related types: [`RectStyleDetails`](#type-rectstyledetails) · [`CartesianSeparateGuideOptions`](#type-cartesianseparateguideoptions).
 
 ### `HeatmapBinOptions` {#type-heatmapbinoptions}
 
@@ -7351,13 +7517,13 @@ type IntervalPlotBaseOptions = {
   color?: BasicColorChannel;
   point?: CreateScatterPlotOptions["point"];
   errorBar?: IntervalPlotErrorBarOptions;
-  guides?: false | CartesianGuideOptions;
+  guides?: false | CartesianSeparateGuideOptions;
 };
 ```
 
 </details>
 
-Related types: [`ErrorBarOffsetChannel`](#type-errorbaroffsetchannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`IntervalPlotErrorBarOptions`](#type-intervalploterrorbaroptions) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
+Related types: [`ErrorBarOffsetChannel`](#type-errorbaroffsetchannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`IntervalPlotErrorBarOptions`](#type-intervalploterrorbaroptions) · [`CartesianSeparateGuideOptions`](#type-cartesianseparateguideoptions).
 
 ### `IntervalPlotErrorBarOptions` {#type-intervalploterrorbaroptions}
 
@@ -7510,6 +7676,8 @@ export interface LegendBlockTextPatch {
 
 ```typescript
 export interface LegendBorderOptions {
+  /** Even-length non-negative finite dash sequence; [] restores a solid frame. */
+  strokeDash?: readonly number[];
   color?: string;
   lineWidth?: number;
   padding?: number;
@@ -7539,6 +7707,10 @@ Related types: [`LegendOptions`](#type-legendoptions).
 
 ```typescript
 export interface LegendOptions {
+  /** Positive sample window height. Clips point-bearing glyphs without changing mapped area. */
+  clipHeight?: number;
+  /** Explicitly combine ordinal size/shape or same-field quantitative color/size circle samples. Omission retains separate blocks. */
+  combine?: "separate" | "size-shape" | "color-size";
   /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
   representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
@@ -7558,13 +7730,14 @@ export interface LegendOptions {
   at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
-  /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
+  /** Gradient orientation is independent of position; auto is gradient-only. Categorical sides require vertical. */
   direction?: "horizontal" | "vertical";
   /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
-  titlePosition?: "top" | "left";
+  /** bottom is gradient-only; left retains the existing categorical/opacity rules. */
+  titlePosition?: "top" | "left" | "bottom";
   /** false hides the title while retaining its inferred field text. */
   /** LF, CRLF and CR preserve explicit title lines, including blank lines. */
   title?: string | false;
@@ -7608,7 +7781,7 @@ Related types: [`LegendValueOrder`](#type-legendvalueorder).
 
 ```typescript
 export type LegendSymbolLayer =
-  | { type: "line"; length?: number; lineWidth?: number }
+  | { type: "line"; length?: number; lineWidth?: number; opacity?: number }
   | {
       type: "point";
       shape?: "circle";
@@ -7616,6 +7789,7 @@ export type LegendSymbolLayer =
       fill?: string;
       stroke?: string;
       strokeWidth?: number;
+      opacity?: number;
     }
   | {
       type: "swatch";
@@ -7623,6 +7797,7 @@ export type LegendSymbolLayer =
       height?: number;
       stroke?: string;
       strokeWidth?: number;
+      opacity?: number;
     };
 ```
 
@@ -7637,7 +7812,7 @@ export type LegendSymbolLayer =
 export type LegendSymbolRecipe =
   | "auto"
   /** Sampled opacity uses a single point recipe; radius defaults to 7 and must be positive. */
-  | { type?: "point"; radius?: number; fill?: string; stroke?: string; strokeWidth?: number }
+  | { type?: "point"; radius?: number; fill?: string; stroke?: string; strokeWidth?: number; opacity?: number }
   | { length?: number; lineWidth?: number }
   | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
   | { layers: readonly LegendSymbolLayer[] };
@@ -7994,6 +8169,19 @@ export type MeasuredRadiusScaleOptions = Pick<RadiusScaleOptions, "id" | "domain
 
 Related types: [`RadiusScaleOptions`](#type-radiusscaleoptions).
 
+### `NamedCompleteAxis` {#type-namedcompleteaxis}
+
+<details markdown="1">
+<summary>Expand NamedCompleteAxis</summary>
+
+```typescript
+export type NamedCompleteAxis<P extends string> = CompleteAxisOptions<P> & { id: string };
+```
+
+</details>
+
+Related types: [`CompleteAxisOptions`](#type-completeaxisoptions).
+
 ### `NonPointBandPositionScaleOptions` {#type-nonpointbandpositionscaleoptions}
 
 <details markdown="1">
@@ -8052,9 +8240,8 @@ Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionsc
 
 ```typescript
 export type NonPointContinuousColorScaleOptions = ScaleFields<
-  "id" | "interpolate" | "midpoint" | "clamp" | "reverse"
+  "id" | "interpolate" | "whitePoint" | "gamma" | "midpoint" | "clamp" | "reverse"
 > & {
-  type?: "sequential" | "log" | "sqrt" | "symlog";
   base?: number;
   constant?: number;
   domain?: "auto" | readonly [unknown, unknown];
@@ -8063,7 +8250,10 @@ export type NonPointContinuousColorScaleOptions = ScaleFields<
     name: PaletteName;
     extent?: readonly [number, number];
   };
-};
+} & (
+  | { type: "pow"; exponent?: number }
+  | { type?: "sequential" | "log" | "sqrt" | "symlog"; exponent?: never }
+);
 ```
 
 </details>
@@ -8717,8 +8907,10 @@ export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
 ```typescript
 type PathLegendOptions = Omit<
   LegendOptions,
-  "symbol" | "gradient" | "count" | "values" | "labels" | "representation"
+  "symbol" | "gradient" | "count" | "values" | "labels" | "representation" | "combine" | "titlePosition"
 > & {
+  titlePosition?: "top" | "left";
+  combine?: "separate";
   symbol?: "auto" | { length?: number; lineWidth?: number }
     | { layers: readonly LegendSymbolLayer[] };
   labels?: CategoricalLegendTextOptions;
@@ -8787,9 +8979,10 @@ Related types: [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategorica
 
 ```typescript
 export type PieLegendOptions = Omit<
-  FilledMarkLegendOptions,
-  "count" | "values" | "gradient" | "channels" | "order" | "labels" | "representation" | "symbol"
+  SeparateFilledLegendOptions,
+  "count" | "values" | "gradient" | "channels" | "order" | "labels" | "representation" | "symbol" | "titlePosition"
 > & {
+  titlePosition?: "top" | "left";
   symbol?: FilledLegendSymbolRecipe;
   channels?: readonly ["color"];
   order?: LegendValueOrder | { channel: "theta"; values?: never };
@@ -8799,7 +8992,7 @@ export type PieLegendOptions = Omit<
 
 </details>
 
-Related types: [`FilledMarkLegendOptions`](#type-filledmarklegendoptions) · [`FilledLegendSymbolRecipe`](#type-filledlegendsymbolrecipe) · [`LegendValueOrder`](#type-legendvalueorder) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions).
+Related types: [`SeparateFilledLegendOptions`](#type-separatefilledlegendoptions) · [`FilledLegendSymbolRecipe`](#type-filledlegendsymbolrecipe) · [`LegendValueOrder`](#type-legendvalueorder) · [`CategoricalLegendTextOptions`](#type-categoricallegendtextoptions).
 
 ### `PieRadiusChannel` {#type-pieradiuschannel}
 
@@ -8890,7 +9083,9 @@ export type PointShape =
   | "cross"
   | "star"
   | "hexagon"
-  | "wye";
+  | "wye"
+  | "wedge"
+  | "arrow";
 ```
 
 </details>
@@ -9089,7 +9284,7 @@ Related types: [`PolarChartGuideOptions`](#type-polarchartguideoptions) · [`Pol
 <summary>Expand PolarPointLegendOptions</summary>
 
 ```typescript
-type PolarPointLegendOptions = DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & {
+type PolarPointLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "order"> & {
   order?: PolarLegendOrder;
 };
 ```
@@ -9690,7 +9885,7 @@ type RectColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
       palette?: Palette;
     };
 ```
@@ -9857,7 +10052,7 @@ export type RegressionInterval = "mean" | "prediction";
 <summary>Expand RegressionMethod</summary>
 
 ```typescript
-export type RegressionMethod = "linear" | "polynomial" | "loess";
+export type RegressionMethod = "linear" | "polynomial" | "loess" | "exp";
 ```
 
 </details>
@@ -9869,6 +10064,9 @@ export type RegressionMethod = "linear" | "polynomial" | "loess";
 
 ```typescript
 export type RegressionOptions = RegressionCommonOptions & (
+  | (Extract<RegressionParameterOptions, { method: "exp" }> & {
+      band?: false;
+    })
   | (Extract<RegressionParameterOptions, { method?: "linear" }> & {
       band?: false | RegressionBandOptions;
     })
@@ -9892,6 +10090,17 @@ Related types: [`RegressionCommonOptions`](#type-regressioncommonoptions) · [`R
 
 ```typescript
 type RegressionParameterOptions =
+  | {
+      method: "exp";
+      interval?: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+      predict?: RegressionPredictOptions;
+    }
   | {
       method?: "linear";
       degree?: never;
@@ -9930,7 +10139,7 @@ type RegressionParameterOptions =
 
 </details>
 
-Related types: [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval) · [`RegressionPredictOptions`](#type-regressionpredictoptions).
+Related types: [`RegressionPredictOptions`](#type-regressionpredictoptions) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`RegressionInterval`](#type-regressioninterval).
 
 ### `RegressionPlotBaseOptions` {#type-regressionplotbaseoptions}
 
@@ -9999,6 +10208,20 @@ export type RegressionPredictOptions =
 
 </details>
 
+### `RegressionStatisticsDataOptions` {#type-regressionstatisticsdataoptions}
+
+<details markdown="1">
+<summary>Expand RegressionStatisticsDataOptions</summary>
+
+```typescript
+export interface RegressionStatisticsDataOptions {
+  id: string;
+  source: string;
+}
+```
+
+</details>
+
 ### `RemoveAxisOptions` {#type-removeaxisoptions}
 
 <details markdown="1">
@@ -10006,6 +10229,7 @@ export type RegressionPredictOptions =
 
 ```typescript
 export interface RemoveAxisOptions {
+  target?: string;
   coordinate?: string;
   scale?: string;
 }
@@ -10495,6 +10719,8 @@ export interface ScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  whitePoint?: "d65" | "d50";
+  gamma?: number;
   midpoint?: number | "auto";
   unknown?: unknown;
 }
@@ -10592,6 +10818,19 @@ export type SelectMarksOptions = {
 </details>
 
 Related types: [`MarkSelector`](#type-markselector).
+
+### `SeparateFilledLegendOptions` {#type-separatefilledlegendoptions}
+
+<details markdown="1">
+<summary>Expand SeparateFilledLegendOptions</summary>
+
+```typescript
+type SeparateFilledLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "combine"> & { combine?: "separate" };
+```
+
+</details>
+
+Related types: [`DistributiveLegendOmit`](#type-distributivelegendomit) · [`FilledMarkLegendOptions`](#type-filledmarklegendoptions).
 
 ### `SeriesLayoutOptions` {#type-serieslayoutoptions}
 
@@ -11889,6 +12128,17 @@ type WithoutEncodingTarget<T> = T extends unknown
 
 ```typescript
 type WithoutScaleId<T> = T extends unknown ? Omit<T, "id"> : never;
+```
+
+</details>
+
+### `WithoutScaleSelection` {#type-withoutscaleselection}
+
+<details markdown="1">
+<summary>Expand WithoutScaleSelection</summary>
+
+```typescript
+type WithoutScaleSelection<T> = T extends unknown ? Omit<T, "id" | "target"> : never;
 ```
 
 </details>

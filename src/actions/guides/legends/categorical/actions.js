@@ -1,3 +1,6 @@
+import {resolveColorSizeConfig,createColorSizeLegendFromConfig,materializeColorSizeLegend} from "../colorSize.js";
+import {resetLegendClipGraphics,applyLegendClipGraphics,restoreLegendClipContext}from"../../../../materialization/legendClip.js";
+import {validateLegendCombine,resolveSizeShapeCreation} from "../combine.js";
 import { recordLegendOffsetIntent } from "../group.js";
 import { prepareLegendGroup, creationLegendTarget, validateLegendGroupOptions } from "../group.js";
 import { PLOT_LEGEND_POSITIONS } from "../../../../layout/legend.js";
@@ -37,7 +40,7 @@ import {
 } from "../blocks.js";
 
 function finishLegend(program) {
-  return hasLegendLane(program) || Object.keys(program.guideConfigs.legendGroups ?? {}).length > 0
+  return Object.values(program.guideConfigs.legend??{}).some(config=>config.clipHeight!==undefined)||hasLegendLane(program) || Object.keys(program.guideConfigs.legendGroups ?? {}).length > 0
     ? program.rematerializeLegend() : program;
 }
 
@@ -59,7 +62,8 @@ export const rematerializeLegend = /* @__PURE__ */ action(
   { op: "rematerializeLegend", description: "Rematerialize every existing legend component." },
   withGuideLayoutValidation(function (args = {}) {
     noOptions(args, "rematerializeLegend");
-    let next = this;
+    const oldClipContext=this.context.deferLegendClip;
+    let next = resetLegendClipGraphics(this)._withContext({deferLegendClip:true});
     const categoricalKinds = ["series", "color", "stroke"].filter(
       kind => this.guideConfigs.legend?.[kind] !== undefined
     );
@@ -85,6 +89,7 @@ export const rematerializeLegend = /* @__PURE__ */ action(
         !sameValues(stored.domain, definition.domain) ||
         !sameValues(stored.scales, definition.scales) ||
         stored.field !== definition.field ||
+        !sameValues(stored.sizeAreas ?? [], definition.sizeAreas ?? []) ||
         stored.title !== definition.title;
       next = changed
         ? next._withLegendConfig(kind, {
@@ -93,6 +98,7 @@ export const rematerializeLegend = /* @__PURE__ */ action(
             channels: definition.channels,
             scales: definition.scales,
             field: definition.field,
+            ...(definition.combine === undefined ? {} : {combine: definition.combine, sizeAreas: definition.sizeAreas}),
             title: definition.title,
             domain: definition.domain
           })
@@ -152,6 +158,7 @@ export const rematerializeLegend = /* @__PURE__ */ action(
       ).some(highlight => highlight.target === config.target);
       if (hasHighlight) next = next.rematerializeLegendHighlights({ kind });
     }
+    if(next.guideConfigs.legend?.colorSize !== undefined) next=materializeColorSizeLegend(next,next.guideConfigs.legend.colorSize);
     for (const policy of legendResourcePolicies()) {
       if (
         policy.rematerializeOp !== undefined &&
@@ -167,6 +174,10 @@ export const rematerializeLegend = /* @__PURE__ */ action(
         next = next[policy.rematerializeOp]();
       }
     }
+    const clipAnchors = Object.fromEntries(categoricalKinds.filter(kind => next.guideConfigs.legend[kind].clipHeight !== undefined)
+      .map(kind => [kind, resolveLayout(next, resolveEffectiveLegendBlockConfig(next, kind, next.guideConfigs.legend[kind])).itemY]));
+    next=applyLegendClipGraphics(next,{force:true,anchors:clipAnchors});
+    next=restoreLegendClipContext(next,oldClipContext);
     if (hasHorizontalLegendLane(next)) {
       next = next.rematerializeHorizontalLegendLane();
     }
@@ -210,6 +221,7 @@ export function resolveCategoricalLegendConfig(program, args = {}) {
     titleStyle: options.titleStyle,
     itemGap: options.itemGap,
     layout: options.layout,
+    ...(options.clipHeight === undefined ? {} : {clipHeight:options.clipHeight}),
     ...(options.overflow === undefined ? {} : { overflow: options.overflow }),
     border: options.border
   };
@@ -231,7 +243,18 @@ export const createCategoricalLegend = /* @__PURE__ */ action(
   })
 );
 
-function resolveRawLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers) {
+function resolveRawLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers, internalChannels) {
+  if (Object.hasOwn(args, "combine")) {
+    validateLegendCombine(args.combine);
+    if (args.combine === "color-size") {
+      const config=resolveColorSizeConfig(program,args);
+      const prepared=prepareLegendGroup(program,{...args,blockLayout:args.blockLayout??(["left","right"].includes(args.position??"right")?"column":"row")},config.target,{creation:true,nativeOffset:30});
+      return {steps:[{op:"createColorSizeLegend",args}],finish:"always",legendGroup:{target:config.target,config:prepared.program.guideConfigs.legendGroups[config.target]}};
+    }
+    if (args.combine === "size-shape") return resolveSizeShapeCreation(program, args, layers, resolveRawLegendCreationPlan, internalChannels);
+    const {combine: _combine, ...separate} = args;
+    return resolveRawLegendCreationPlan(program, separate, layers);
+  }
   validateOptionObject(args, undefined, "createLegend");
   const candidates = args.target === undefined ? layers : layers.filter(layer => layer.id === args.target);
   const channels = args.channels;
@@ -403,7 +426,7 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
   return { steps: [{ op: "createCategoricalLegend", args }], finish: "auto" };
 }
 
-export function resolveLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers) {
+export function resolveLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers, internalChannels) {
   validateLegendGroupOptions(args);
   const { blockLayout: _layout, at: _at, ...raw } = args;
   const groups = program.guideConfigs.legendGroups ?? {};
@@ -418,7 +441,7 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
   }
   if (raw.position === undefined && args.direction === "horizontal" &&
       (args.at !== undefined || Object.keys(groups).length > 0)) raw.position = "top";
-  const initial = resolveRawLegendCreationPlan(program, raw, layers);
+  const initial = resolveRawLegendCreationPlan(program, raw, layers, internalChannels);
   const inherited = Object.keys(program.guideConfigs.legendGroups ?? {}).length > 0;
   const corner = PLOT_LEGEND_POSITIONS.includes(args.position) &&
     (initial.steps.length > 1 || initial.steps[0]?.op !== "createCategoricalLegend" ||
@@ -434,7 +457,7 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
   if (prepared.options.position === undefined && raw.position !== undefined) {
     prepared.options.position = raw.position;
   }
-  return { ...resolveRawLegendCreationPlan(prepared.program, prepared.options, layers),
+  return { ...resolveRawLegendCreationPlan(prepared.program, prepared.options, layers, internalChannels),
     legendGroup: { target, config: prepared.program.guideConfigs.legendGroups[target] } };
 }
 
@@ -449,7 +472,7 @@ export function applyLegendCreationPlan(program, plan) {
     }
     // The plan already validated that a retained size block is compatible.
     if (!(plan.combined && step.op === "createSizeLegend" && existingSize !== undefined)) {
-      next = next[step.op](step.args);
+      next = step.op === "createColorSizeLegend" ? createColorSizeLegendFromConfig(next,resolveColorSizeConfig(next,step.args)) : next[step.op](step.args);
     }
   }
   return plan.finish === "always" ? next.rematerializeLegend()

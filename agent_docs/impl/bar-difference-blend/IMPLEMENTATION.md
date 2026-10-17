@@ -1,0 +1,95 @@
+# 막대 difference 합성 구현
+
+## 승인과 범위
+
+- 28개 설계 `bad3f346` 및 사용자 승인 기록 `f53dd78a`의 #203과
+  difference-source 시각 목표를 재사용한다. 새 시각 목표나 허용 오차를 추가하지 않았다.
+- 공개 흐름: `chart.editBarMark({blend: 'difference'})`,
+  `chart.editBarMark({blend: 'normal'})`. creator·다른 mark·Basic에는 확장하지 않는다.
+- normal reset은 optional semantic/concrete blend를 제거한다. 생략은 현재값을 보존한다.
+  authored owner는 `layer.mark.blend` 하나다. appearance config에 복제하지 않는다.
+- concrete rect/path만 optional `blend:'difference'`를 받는다. collection 상속이나
+  circle/line/text blend는 없다. 범례 explicit opacity의 normal 신호는 별도 #208 Gate다.
+
+## 구현 경계
+
+bar domain action이 명시적으로 기존 rect/rounded-path를 다시 materialize한다.
+renderer는 concrete graphicSpec만 읽는다. Canvas는 fill·outline을 하나의 임시 source로
+그린 뒤 glyph opacity를 한 번 적용한다. 중첩 clip·stroke bounds·pixel ratio를 반영한다.
+임시 source와 factory는 program에 저장하지 않는다. capability와 source allocation은
+대상 canvas clear/resize 전에 검사한다. 기존 32767px/16777216px 한도를 유지한다.
+SVG는 element difference와 root isolation을 명시한다. PDF는 해당 glyph source만
+raster로 포함하며 나머지 내용은 vector다. PNG/PDF backend가 native factory를 전달한다.
+정상 기존 렌더에는 새 backend capability를 요구하지 않는다.
+
+같은 primitive 대조로 발견한 기존 닫히지 않은 rectangle outline은 별도
+`dcaf6040` 및 [복구 기록](../rect-outline/IMPLEMENTATION.md), 이슈 #214가 소유한다.
+
+## 검증 결과
+
+- `node --test test/contracts/bar-blend.test.js`: 12개 통과.
+  immutable/reset/저장복원·atomic failure·nested fractional clip·offscreen bounds·
+  gradient·겹치는 bar·theme/data/Canvas/facet/highlight lifecycle을 포함한다.
+- Chromium의 실제 Canvas/OffscreenCanvas 및 SVG: 4배경×4opacity×2outline의
+  32조합에서 각각 독립 primitive와 전체 RGBA 정확히 일치. interior/outline의
+  Canvas/SVG 표본도 정확히 일치한다. 이미지 육안/VLM 검사는 하지 않았다.
+- Poppler PDF: 4배경×2opacity의 8조합. opaque RGB/alpha 정확히 일치,
+  반투명 RGB만 기존 승인된 1단계 범위다. PDF white paper는 같은 white paper로
+  합성한 PNG와 비교했다. CI의 test-render에도 실제 Poppler를 설치한다.
+- helper focused coverage: lines100%, branches98.61%, functions100%.
+- 누적 unit3134개, metadata/type/card14개 통과. 마지막 preflight 정렬 후 관련17개와
+  최종 bar12개를 재검증했다. 최종 통합 누적검사는 통합 branch가 소유한다.
+- 설치 tarball의 runtime·TS positive/negative·PNG 정확한 픽셀·PDF·MCP·tutorial
+  전체 consumer 통과. 로컬 검증 artifact SHA256:
+  `b3e14bb5621552c1755e601b6913ed2b80b35465421e3948f3ad2ed9a9ad2a6f`.
+  이것은 개발 검증 artifact이며 canonical release/npm 출판 증거가 아니다.
+- 실제 3개 TidyTuesday 데이터셋×5회에서 normal/difference 각각15회 실행,
+  최종 concrete items와 SVG 검증. `realistic-evidence.json`은 실제 provenance와
+  source selection hash를 기록한다. 160개 penguin 선택은 전체 원본이라고 주장하지 않는다.
+
+재현:
+
+```sh
+node --test test/contracts/bar-blend.test.js
+node test/browser/bar-blend.browser.js
+node test/charts/bar-compositing/pdf.render.js
+GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT=/path/to/tidytuesday node agent_docs/impl/bar-difference-blend/verify-realistic.mjs /tmp/bar-realistic.json
+npm run test:package
+```
+
+일반 SVG omission/reset의 byte 보존과 기존 렌더의 생략 동작도 회귀검증한다.
+최종 combined inventory/strict realistic 및 release는 전체 기능 통합에서 수행한다.
+
+## 안정된 시각 재현 쌍
+
+`test/charts/bar-compositing/manifest.js`가 public call chain·200×200 크기·3배경×2opacity를
+소유한다. 독립 literal primitive는 runtime geometry나 public state를 읽지 않는다.
+`png.render.js`로6개 실제 decoded PNG 쌍·plot ink·trace를 정확히 검증하고
+`.artifacts/test/png/charts/bar-compositing/bar-compositing/`에 variant metadata와 출력한다.
+
+이 독립 primitive가 root Canvas의 형제인 collection인 경로에서 새 isolated helper의
+preflight stack에 viewport frame이 없던 오류를 재현했다. 항상 render viewport base frame을
+유지해 고쳤다. 자원 한도/새 API/저장 의미는 바꾸지 않는다. 관련13개와 실제 Chromium32조합·
+PDF8조합을 재실행해 모두 통과했다.
+
+## 설치 패키지의 세 브라우저 검증
+
+기존 backend compatibility owner에 공개 bar flow의 독립 source/literal SVG 대조를
+추가했다. Chromium·Firefox·WebKit 각각64조합(4배경×4opacity×2outline×DPR1/2)에서
+Canvas 전체RGBA가 독립 native source와, SVG 전체RGBA가 독립 literal SVG와 정확히
+일치했다. Runtime package는 한 번 packed한 같은 tarball을 사용했고 각 설치 consumer는
+격리했다. 이는 엔진 사이의 AA 픽셀이 서로 같다는 주장이 아니다. 새 tolerance는 없다.
+
+### 공개 예제의 canonical 연결
+
+공개 action chain은 examples/bar-compositing/program.js 한 곳에서 소유한다. 기존 test support는
+이를 재수출하며 registry·browser host·문서 figure·독립 primitive/normal/PNG 검사가 같은 함수를
+실행한다. Literal primitive는 plot-main/barPlot의 실제 concrete 구조와 order까지 독립 상수로
+구성한다.3배경×2opacity 모두 graphicSpec·order·전체 native Canvas 호출(격리 source RGBA
+hash 포함)·전체RGBA가 정확히 같다.8개 paired 검사,15개 bar/registry 계약, 실제browser1개
+통과. 문서119/120의 유일한 사전 commit 실패는 새 source의 git-ref가 아직 없기 때문이며
+commit 뒤 같은120개를 재실행한다.
+
+새 canonical source commit8bf19ae0 이후 provenance/LLM 문서를 재생성하고 문서120/120을
+모두 통과했다. Browser의 접근 가능한 Canvas와 non-loading status,200×200 논리 크기도
+공유 harness에서 확인했다. source/RGBA primitive pair에는 비교 오차를 추가하지 않았다.
