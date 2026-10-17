@@ -2507,3 +2507,7 @@ npm10.9.8/macOS)다. 이전829000 한도를 초과해 최소1000단위830000으�
 Full414152/Basic203485/SVG7325bytes(Node22.23.1)다.
 기존412000/202000은 초과하여 다음 최소1000bytes 단계415000/204000만 적용한다.
 SVG25000과 기능/coverage 기준은 유지하며 README와 위 canonical table도 동기화한다.
+
+최종 parent-guide 통합의 Node24.19.0 staged packed 크기는841241bytes로 기존841000을
+넘었다. 동일 소스의 Node22 측정은839439packed/4085322unpackedbytes다. packed만
+다음 최소1000bytes 단계842000으로 갱신하며 entries591·unpacked4086000은 유지한다.
