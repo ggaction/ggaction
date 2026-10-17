@@ -1,6 +1,6 @@
 # Gate: explicit legend-layer opacity in concrete graphics
 
-Status: ready-for-review; not implemented. This document does not change
+Status: approved; implementation pending. This document does not change
 any approved default or expand the public API by itself. This is not a new visual
 target: the proposed concrete signal preserves the already approved whole-glyph
 opacity appearance.
@@ -69,8 +69,12 @@ alternative is silently covered by the approved difference-only concrete enum.
 6. Public/current contracts, concrete primitive documentation/types/generated
    metadata and actual realistic5calls/3datasets coverage synchronized together.
 
-Decision required: approve this exact normal marker expansion, choose the
-alternative field, or keep #208 pending. No code for either signal is installed.
+Approval recorded on 2026-10-17: the user explicitly selected “설계대로 구현 (권장)”
+for the exact recommended normal-marker design reviewed at `faba5a7b`.
+The parent relayed that approval before implementation. No increased numerical
+error allowance was approved. Existing bar normal reset and omitted default
+pixels must remain unchanged. The alternative field was not selected.
+No marker implementation is installed in this recording checkpoint.
 
 ## Reproduce and inspect the decision evidence
 
