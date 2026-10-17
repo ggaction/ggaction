@@ -1,0 +1,551 @@
+{
+  "schemaVersion": 1,
+  "status": "primitive-review-only",
+  "browser": "153.0.8010.12",
+  "scope": "Independent literal expectations; public APIs are proposed and public/primitive parity awaits approved implementation. No chart images were visually inspected by the agent.",
+  "panels": [
+    {
+      "id": "named-shapes",
+      "title": "1. Wedge / arrow: physical area, fixed anchor",
+      "issues": [
+        170,
+        175
+      ],
+      "calls": [
+        "program.editPointMark({shape:'wedge'})",
+        "program.editPointMark({shape:'arrow', angle:90})"
+      ],
+      "checks": {
+        "wedgeArea": 0.4330127018922194,
+        "arrowArea": 0.6714285714285714,
+        "wedgeAnchor": "centroid",
+        "arrowAnchor": "bounds-center"
+      },
+      "svg": "named-shapes.svg"
+    },
+    {
+      "id": "combined-legends",
+      "title": "2. One label list per combined block",
+      "issues": [
+        164,
+        171,
+        177,
+        205
+      ],
+      "calls": [
+        "program.createLegend({combine:'size-shape'})",
+        "program.createLegend({combine:'color-size',values:[0,5,10]})",
+        "program.editLegendLabels({channel:'opacity',fontSize:10})"
+      ],
+      "checks": {
+        "categoricalAreas": [
+          25,
+          100,
+          225
+        ],
+        "quantitativeRadii": [
+          1,
+          2,
+          3
+        ],
+        "labelLists": 2
+      },
+      "svg": "combined-legends.svg"
+    },
+    {
+      "id": "symbol-window",
+      "title": "3. Clip a large symbol without shrinking it",
+      "issues": [
+        176
+      ],
+      "calls": [
+        "program.createLegend({channels:['size'],clipHeight:30})"
+      ],
+      "checks": {
+        "fullRadius": 39.89422804014327,
+        "clipHeight": 30,
+        "visibleBounds": [
+          44.10577195985673,
+          105,
+          81.78845608028654,
+          30
+        ]
+      },
+      "svg": "symbol-window.svg"
+    },
+    {
+      "id": "legend-appearance",
+      "title": "4. Direction, title, border and recipe opacity",
+      "issues": [
+        173,
+        193,
+        200,
+        208
+      ],
+      "calls": [
+        "program.editLegendLayout({channel:'color',direction:'horizontal',titlePosition:'bottom'})",
+        "program.editLegendBorder({border:{strokeDash:[4,2,6,1]}})",
+        "program.editLegendSymbols({symbol:{layers:[{type:'point',opacity:0.7}]}})",
+        "program.editLegendBlock({target:'points',channel:'size',position:'bottom-left'})"
+      ],
+      "checks": {
+        "gradient": [
+          120,
+          16
+        ],
+        "titleClearance": 12,
+        "recipeOpacities": [
+          0,
+          0.7,
+          1
+        ],
+        "dash": [
+          4,
+          2,
+          6,
+          1
+        ]
+      },
+      "svg": "legend-appearance.svg"
+    },
+    {
+      "id": "axis-owners",
+      "title": "5. Named axes, frame and owned title placement",
+      "issues": [
+        166,
+        174,
+        194,
+        195,
+        197,
+        199
+      ],
+      "calls": [
+        "program.createAxes({y:[{id:'quantity',scale:'quantity',position:'left'},{id:'share',scale:'share',position:'right'}]})",
+        "program.editYAxis({target:'share',offset:20})",
+        "program.editXAxisTitle({offset:-20,align:'right',alongOffset:10})",
+        "program.editYAxisLabels({target:'quantity',align:'right'})"
+      ],
+      "checks": {
+        "plot": [
+          65,
+          55,
+          310,
+          140
+        ],
+        "axisFrames": [
+          45,
+          395
+        ],
+        "outwardOffsets": [
+          20,
+          20
+        ],
+        "insideTitleY": 175
+      },
+      "svg": "axis-owners.svg"
+    },
+    {
+      "id": "shared-facet-owner",
+      "title": "6. One shared legend owned by the parent",
+      "issues": [
+        193,
+        206
+      ],
+      "calls": [
+        "program.facet({field:'group',columns:4,guides:{legend:{position:'bottom',direction:'horizontal'}}})",
+        "program.editLegendLayout({position:'bottom'})"
+      ],
+      "checks": {
+        "cellPlotWidth": 60,
+        "finalPlotUnionWidth": 375,
+        "legendWidth": 270,
+        "parentOwners": 1
+      },
+      "svg": "shared-facet-owner.svg"
+    },
+    {
+      "id": "color-math",
+      "title": "7. Gamma affects lightness; pow uses raw values",
+      "issues": [
+        169,
+        172
+      ],
+      "calls": [
+        "program.editColorScale({interpolate:'cubehelix',gamma:2.2})",
+        "program.editColorScale({type:'pow',exponent:3})"
+      ],
+      "checks": {
+        "cubehelixSamples": [
+          {
+            "gamma": 1,
+            "t": 0,
+            "rgb": [
+              117,
+              25,
+              11
+            ]
+          },
+          {
+            "gamma": 1,
+            "t": 0.125,
+            "rgb": [
+              140,
+              48,
+              0
+            ]
+          },
+          {
+            "gamma": 1,
+            "t": 0.25,
+            "rgb": [
+              148,
+              78,
+              0
+            ]
+          },
+          {
+            "gamma": 1,
+            "t": 0.375,
+            "rgb": [
+              146,
+              111,
+              0
+            ]
+          },
+          {
+            "gamma": 1,
+            "t": 0.5,
+            "rgb": [
+              137,
+              146,
+              2
+            ]
+          },
+          {
+            "gamma": 1,
+            "t": 0.625,
+            "rgb": [
+              127,
+              179,
+              28
+            ]
+          },
+          {
+            "gamma": 1,
+            "t": 0.75,
+            "rgb": [
+              122,
+              207,
+              67
+            ]
+          },
+          {
+            "gamma": 1,
+            "t": 0.875,
+            "rgb": [
+              126,
+              228,
+              114
+            ]
+          },
+          {
+            "gamma": 1,
+            "t": 1,
+            "rgb": [
+              144,
+              242,
+              164
+            ]
+          },
+          {
+            "gamma": 2.2,
+            "t": 0,
+            "rgb": [
+              117,
+              25,
+              11
+            ]
+          },
+          {
+            "gamma": 2.2,
+            "t": 0.125,
+            "rgb": [
+              110,
+              34,
+              0
+            ]
+          },
+          {
+            "gamma": 2.2,
+            "t": 0.25,
+            "rgb": [
+              104,
+              49,
+              0
+            ]
+          },
+          {
+            "gamma": 2.2,
+            "t": 0.375,
+            "rgb": [
+              99,
+              71,
+              0
+            ]
+          },
+          {
+            "gamma": 2.2,
+            "t": 0.5,
+            "rgb": [
+              93,
+              101,
+              0
+            ]
+          },
+          {
+            "gamma": 2.2,
+            "t": 0.625,
+            "rgb": [
+              86,
+              137,
+              0
+            ]
+          },
+          {
+            "gamma": 2.2,
+            "t": 0.75,
+            "rgb": [
+              84,
+              177,
+              23
+            ]
+          },
+          {
+            "gamma": 2.2,
+            "t": 0.875,
+            "rgb": [
+              98,
+              214,
+              84
+            ]
+          },
+          {
+            "gamma": 2.2,
+            "t": 1,
+            "rgb": [
+              144,
+              242,
+              164
+            ]
+          }
+        ],
+        "powerDomain": [
+          -2,
+          2
+        ],
+        "powerExponent": 3
+      },
+      "svg": "color-math.svg"
+    },
+    {
+      "id": "difference-source",
+      "title": "8. Each bar fill + stroke is composited once",
+      "issues": [
+        203
+      ],
+      "calls": [
+        "program.editBarMark({blend:'difference'})"
+      ],
+      "checks": {
+        "source": "#f00000",
+        "outline": "#ffff00",
+        "backdrops": [
+          "#fff",
+          "#808080",
+          "#336699"
+        ],
+        "nativeProbe": "blend-native-probe.json"
+      },
+      "svg": "difference-source.svg"
+    },
+    {
+      "id": "lab-white-point",
+      "title": "9. D65 stays default; D50 is explicit",
+      "issues": [
+        168
+      ],
+      "calls": [
+        "program.editColorScale({interpolate:'lab',whitePoint:'d50'})",
+        "program.editColorScale({whitePoint:'auto'})"
+      ],
+      "checks": {
+        "whitePointSamples": [
+          {
+            "whitePoint": "d65",
+            "t": 0,
+            "rgb": [
+              255,
+              0,
+              0
+            ]
+          },
+          {
+            "whitePoint": "d65",
+            "t": 0.125,
+            "rgb": [
+              244,
+              0,
+              49
+            ]
+          },
+          {
+            "whitePoint": "d65",
+            "t": 0.25,
+            "rgb": [
+              232,
+              0,
+              80
+            ]
+          },
+          {
+            "whitePoint": "d65",
+            "t": 0.375,
+            "rgb": [
+              218,
+              0,
+              108
+            ]
+          },
+          {
+            "whitePoint": "d65",
+            "t": 0.5,
+            "rgb": [
+              202,
+              0,
+              136
+            ]
+          },
+          {
+            "whitePoint": "d65",
+            "t": 0.625,
+            "rgb": [
+              181,
+              0,
+              165
+            ]
+          },
+          {
+            "whitePoint": "d65",
+            "t": 0.75,
+            "rgb": [
+              154,
+              0,
+              195
+            ]
+          },
+          {
+            "whitePoint": "d65",
+            "t": 0.875,
+            "rgb": [
+              115,
+              0,
+              224
+            ]
+          },
+          {
+            "whitePoint": "d65",
+            "t": 1,
+            "rgb": [
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "whitePoint": "d50",
+            "t": 0,
+            "rgb": [
+              255,
+              0,
+              0
+            ]
+          },
+          {
+            "whitePoint": "d50",
+            "t": 0.125,
+            "rgb": [
+              241,
+              0,
+              49
+            ]
+          },
+          {
+            "whitePoint": "d50",
+            "t": 0.25,
+            "rgb": [
+              227,
+              0,
+              79
+            ]
+          },
+          {
+            "whitePoint": "d50",
+            "t": 0.375,
+            "rgb": [
+              211,
+              0,
+              108
+            ]
+          },
+          {
+            "whitePoint": "d50",
+            "t": 0.5,
+            "rgb": [
+              193,
+              0,
+              136
+            ]
+          },
+          {
+            "whitePoint": "d50",
+            "t": 0.625,
+            "rgb": [
+              172,
+              0,
+              165
+            ]
+          },
+          {
+            "whitePoint": "d50",
+            "t": 0.75,
+            "rgb": [
+              145,
+              0,
+              194
+            ]
+          },
+          {
+            "whitePoint": "d50",
+            "t": 0.875,
+            "rgb": [
+              107,
+              0,
+              224
+            ]
+          },
+          {
+            "whitePoint": "d50",
+            "t": 1,
+            "rgb": [
+              0,
+              0,
+              255
+            ]
+          }
+        ],
+        "method": "Independent sRGB/XYZ D65 and D50-adapted matrices; Lab interpolation; byte quantization"
+      },
+      "svg": "lab-white-point.svg"
+    }
+  ]
+}

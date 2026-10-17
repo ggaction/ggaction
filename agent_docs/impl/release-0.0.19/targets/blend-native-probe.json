@@ -1,0 +1,273 @@
+{
+  "status": "differences",
+  "scope": "Native offscreen image difference compositing on Canvas and PDF; this is not an implemented ggaction bar API or the complete renderer acceptance matrix.",
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "canvasVersion": "1.0.9",
+  "results": [
+    {
+      "backdrop": "#ffffff",
+      "alpha": 1,
+      "samples": [
+        {
+          "position": [
+            10,
+            10
+          ],
+          "canvas": [
+            15,
+            255,
+            255,
+            255
+          ],
+          "pdf": [
+            15,
+            255,
+            255,
+            255
+          ],
+          "equal": true
+        },
+        {
+          "position": [
+            4,
+            10
+          ],
+          "canvas": [
+            0,
+            0,
+            255,
+            255
+          ],
+          "pdf": [
+            0,
+            0,
+            255,
+            255
+          ],
+          "equal": true
+        }
+      ]
+    },
+    {
+      "backdrop": "#ffffff",
+      "alpha": 0.5,
+      "samples": [
+        {
+          "position": [
+            10,
+            10
+          ],
+          "canvas": [
+            135,
+            255,
+            255,
+            255
+          ],
+          "pdf": [
+            134,
+            255,
+            255,
+            255
+          ],
+          "equal": false
+        },
+        {
+          "position": [
+            4,
+            10
+          ],
+          "canvas": [
+            127,
+            127,
+            255,
+            255
+          ],
+          "pdf": [
+            127,
+            127,
+            255,
+            255
+          ],
+          "equal": true
+        }
+      ]
+    },
+    {
+      "backdrop": "#808080",
+      "alpha": 1,
+      "samples": [
+        {
+          "position": [
+            10,
+            10
+          ],
+          "canvas": [
+            112,
+            128,
+            128,
+            255
+          ],
+          "pdf": [
+            112,
+            128,
+            128,
+            255
+          ],
+          "equal": true
+        },
+        {
+          "position": [
+            4,
+            10
+          ],
+          "canvas": [
+            127,
+            127,
+            128,
+            255
+          ],
+          "pdf": [
+            127,
+            127,
+            128,
+            255
+          ],
+          "equal": true
+        }
+      ]
+    },
+    {
+      "backdrop": "#808080",
+      "alpha": 0.5,
+      "samples": [
+        {
+          "position": [
+            10,
+            10
+          ],
+          "canvas": [
+            120,
+            128,
+            128,
+            255
+          ],
+          "pdf": [
+            119,
+            128,
+            128,
+            255
+          ],
+          "equal": false
+        },
+        {
+          "position": [
+            4,
+            10
+          ],
+          "canvas": [
+            128,
+            128,
+            128,
+            255
+          ],
+          "pdf": [
+            127,
+            127,
+            128,
+            255
+          ],
+          "equal": false
+        }
+      ]
+    },
+    {
+      "backdrop": "#336699",
+      "alpha": 1,
+      "samples": [
+        {
+          "position": [
+            10,
+            10
+          ],
+          "canvas": [
+            189,
+            102,
+            153,
+            255
+          ],
+          "pdf": [
+            189,
+            102,
+            153,
+            255
+          ],
+          "equal": true
+        },
+        {
+          "position": [
+            4,
+            10
+          ],
+          "canvas": [
+            204,
+            153,
+            153,
+            255
+          ],
+          "pdf": [
+            204,
+            153,
+            153,
+            255
+          ],
+          "equal": true
+        }
+      ]
+    },
+    {
+      "backdrop": "#336699",
+      "alpha": 0.5,
+      "samples": [
+        {
+          "position": [
+            10,
+            10
+          ],
+          "canvas": [
+            119,
+            102,
+            153,
+            255
+          ],
+          "pdf": [
+            120,
+            102,
+            153,
+            255
+          ],
+          "equal": false
+        },
+        {
+          "position": [
+            4,
+            10
+          ],
+          "canvas": [
+            127,
+            128,
+            153,
+            255
+          ],
+          "pdf": [
+            127,
+            127,
+            153,
+            255
+          ],
+          "equal": false
+        }
+      ]
+    }
+  ]
+}
