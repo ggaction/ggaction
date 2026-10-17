@@ -1333,15 +1333,15 @@
 
 - id: combined-legends
   example: /examples/combined-legends/
-  title: Combined numeric legends
+  title: Combined legends
   image: /assets/images/combined-legends.png
-  alt: One shared numeric sample list mapping color and physical circle area
-  width: 1200
+  alt: Categorical shape and size samples alongside a shared numeric color and size list
+  width: 2448
   height: 600
   thumbnail: /assets/images/combined-legends-thumb.png
   thumbnail_width: 640
-  thumbnail_height: 320
-  caption: Samples 0, 5 and 10 share one label list with black, gray and white radius 1, 2 and 3 circles.
+  thumbnail_height: 157
+  caption: Independent shape areas25/100/225 and numeric radii1/2/3 each retain one label list.
   summary: Combine compatible quantitative color and size without changing mark data.
   actions: encodeColor · encodeSize · createLegend · editLegend
   tasks: comparison

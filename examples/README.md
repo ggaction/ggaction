@@ -480,7 +480,7 @@ Apply opacity to one recipe layer while retaining labels and mapped colors.
 
 Representative actions: `createLegend`, `editLegendSymbols`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#recipe-layer-opacity).
 
-### [Combined numeric legends](./combined-legends/)
+### [Combined legends](./combined-legends/)
 
 Combine compatible quantitative color and size without changing mark data.
 

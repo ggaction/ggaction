@@ -208,8 +208,8 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "browser-host/?chart=theta-legend-order", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "theta-legend-order", width: 1000, height: 700 } } }
   }),
-  example({id:"combined-legends",data:{},width:600,height:300,docsGroup:"tutorials",createProgram:createCombinedLegendsProgram,
-    browser:{path:"combined-legends/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"combined-legends",width:600,height:300}}}}),
+  example({id:"combined-legends",data:{},width:1224,height:300,docsGroup:"tutorials",createProgram:createCombinedLegendsProgram,
+    browser:{path:"combined-legends/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"combined-legends",width:1224,height:300}}}}),
   example({ id: "bar-compositing", data: {}, width: 200, height: 200, docsGroup: "tutorials", createProgram: () => createBlendProgram(),
     browser: { path: "bar-compositing/", canvas: "#chart" } }),
   example({id:"legend-appearance",data:{},width:400,height:240,docsGroup:"tutorials",createProgram:createLegendAppearanceProgram,
