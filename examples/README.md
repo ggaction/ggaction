@@ -498,6 +498,18 @@ Declare and edit one parent legend across a repeated chart.
 
 Representative actions: `facet`, `editLegendLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/facets/#declare-a-legend-for-the-complete-facet).
 
+### [Encoded area symbol window](./symbol-window/)
+
+Clip an oversized sample without changing its physical area.
+
+Representative actions: `encodeSize`, `createLegend`, `editLegendSymbols`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#sample-windows).
+
+### [Whole symbol opacity](./legend-appearance/)
+
+Apply opacity to one recipe layer while retaining labels and mapped colors.
+
+Representative actions: `createLegend`, `editLegendSymbols`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#recipe-layer-opacity).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started
