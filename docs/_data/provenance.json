@@ -5,7 +5,7 @@
   "contractId": "sha256:4ca3337282476c04b0effdb44da0a2a7634921212e0f8b3fbd13b0d0db85cff4",
   "sourceCommit": "16724999cc29fc887226ab6052c34d3c62118a30",
   "sourceRef": "16724999cc29fc887226ab6052c34d3c62118a30",
-  "exampleSourceRef": "codex/features-bar-blend",
+  "exampleSourceRef": "8bf19ae09648a8237b968b926825f136c5235666",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",

@@ -89,3 +89,7 @@ Canvas 전체RGBA가 독립 native source와, SVG 전체RGBA가 독립 literal S
 hash 포함)·전체RGBA가 정확히 같다.8개 paired 검사,15개 bar/registry 계약, 실제browser1개
 통과. 문서119/120의 유일한 사전 commit 실패는 새 source의 git-ref가 아직 없기 때문이며
 commit 뒤 같은120개를 재실행한다.
+
+새 canonical source commit8bf19ae0 이후 provenance/LLM 문서를 재생성하고 문서120/120을
+모두 통과했다. Browser의 접근 가능한 Canvas와 non-loading status,200×200 논리 크기도
+공유 harness에서 확인했다. source/RGBA primitive pair에는 비교 오차를 추가하지 않았다.
