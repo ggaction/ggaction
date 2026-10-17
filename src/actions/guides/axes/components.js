@@ -2,8 +2,8 @@ import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 
 export const AXIS_COMPONENTS = Object.freeze(["line", "ticks", "labels", "title"]);
 
-export function axisComponentId(channel, component) {
-  return axisGraphicIds(channel)[AXIS_COMPONENTS.indexOf(component)];
+export function axisComponentId(channel, component, axisId = channel) {
+  return axisGraphicIds(channel, axisId)[AXIS_COMPONENTS.indexOf(component)];
 }
 
 export function axisComponentDisabled(args, component) {
@@ -17,27 +17,27 @@ export function validateEnabledAxisComponents(args, operation) {
   }
 }
 
-export function hasAxisComponent(program, channel, component) {
-  return program.graphicSpec.objects[axisComponentId(channel, component)] !== undefined ||
-    program.guideConfigs.axis?.[channel]?.[component] !== undefined ||
+export function hasAxisComponent(program, channel, component, axisId = channel) {
+  return program.graphicSpec.objects[axisComponentId(channel, component, axisId)] !== undefined ||
+    program.guideConfigs.axis?.[axisId]?.[component] !== undefined ||
     (component === "title" &&
-      program.semanticSpec.guides.axis?.[channel]?.title !== undefined);
+      program.semanticSpec.guides.axis?.[axisId]?.title !== undefined);
 }
 
-export function assertRemovableAxisComponent(program, channel, component, operation) {
-  if (!hasAxisComponent(program, channel, component)) {
+export function assertRemovableAxisComponent(program, channel, component, operation, axisId = channel) {
+  if (!hasAxisComponent(program, channel, component, axisId)) {
     throw new Error(`${operation}.${component} requires an existing ${channel}-axis ${component}.`);
   }
 }
 
-export function removeAxisComponent(program, channel, component) {
-  const id = axisComponentId(channel, component);
+export function removeAxisComponent(program, channel, component, axisId = channel) {
+  const id = axisComponentId(channel, component, axisId);
   let next = program;
-  if (component === "title" && next.semanticSpec.guides.axis?.[channel]?.title !== undefined) {
-    next = next.editSemantic({ property: `guide.axis.${channel}.title`, remove: true });
+  if (component === "title" && next.semanticSpec.guides.axis?.[axisId]?.title !== undefined) {
+    next = next.editSemantic({ property: `guide.axis.${axisId}.title`, remove: true });
   }
   if (next.graphicSpec.objects[id] !== undefined) {
     next = next.editGraphics({ target: id, remove: true });
   }
-  return next._withoutMaterializationConfig(["guides", "axis", channel, component]);
+  return next._withoutMaterializationConfig(["guides", "axis", axisId, component]);
 }

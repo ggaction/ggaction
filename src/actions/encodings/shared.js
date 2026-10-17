@@ -1,3 +1,4 @@
+import { cartesianAxisOwners } from "../../selectors/axes.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { findDataset } from "../../selectors/datasets.js";
@@ -102,26 +103,26 @@ export function rebindPositionGuides(
   if (definition?.guideChannel === undefined) return program;
   if (previousScale === undefined || previousScale === nextScale) return program;
 
-  const axis = program.semanticSpec.guides.axis?.[definition.guideChannel];
+  const owners = ["x", "y"].includes(definition.guideChannel)
+    ? cartesianAxisOwners(program).filter(owner => owner.channel === definition.guideChannel)
+    : [{ id: definition.guideChannel, semantic: program.semanticSpec.guides.axis?.[definition.guideChannel] }];
   const direction = definition.gridDirection;
   const grid = program.semanticSpec.guides.grid?.[direction];
-  const ownsAxis = axis?.scale === previousScale;
-  const refreshesReboundAxis = axis?.scale === nextScale;
   const ownsGrid = grid?.scale === previousScale;
-  if (!ownsAxis && !ownsGrid && !refreshesReboundAxis) return program;
-
-  const remaining = program.semanticSpec.layers.some(layer =>
-    layer.id !== target && !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale === previousScale
-  );
-  if ((ownsAxis || ownsGrid) && remaining) {
-    throw new Error(
-      `Cannot rebind ${channel} guides from shared scale "${previousScale}" while it has other consumers.`
-    );
+  const affected = owners.filter(owner => [previousScale, nextScale].includes(owner.semantic?.scale));
+  if (!affected.length && !ownsGrid) return program;
+  const remaining = program.semanticSpec.layers.some(layer => layer.id !== target &&
+    !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale === previousScale);
+  if ((affected.some(owner => owner.semantic?.scale === previousScale) || ownsGrid) && remaining) {
+    throw new Error(`Cannot rebind ${channel} guides from shared scale "${previousScale}" while it has other consumers.`);
   }
-
   let next = program;
+  for (const owner of affected) {
+    const axisId = owner.id;
+    const ownsAxis = owner.semantic?.scale === previousScale;
+    const refreshesReboundAxis = owner.semantic?.scale === nextScale;
   if (ownsAxis || refreshesReboundAxis) {
-    const previousAxisConfig = next.guideConfigs.axis?.[definition.guideChannel];
+    const previousAxisConfig = next.guideConfigs.axis?.[axisId];
     const previousTicks = previousAxisConfig?.ticks;
     const previousLabels = previousAxisConfig?.labels;
     const labelsFollowTicks = previousTicks !== undefined &&
@@ -135,13 +136,13 @@ export function rebindPositionGuides(
           ));
     if (ownsAxis) {
       next = next.editSemantic({
-        property: `guide.axis.${definition.guideChannel}.scale`,
+        property: `guide.axis.${axisId}.scale`,
         value: nextScale
       });
       for (const component of ["line", "ticks", "labels", "title"]) {
-        const config = next.guideConfigs.axis?.[definition.guideChannel]?.[component];
+        const config = next.guideConfigs.axis?.[axisId]?.[component];
         if (config?.scale === previousScale) {
-          next = next._withGuideConfig(definition.guideChannel, component, {
+          next = next._withGuideConfig(axisId, component, {
             ...config,
             scale: nextScale
           });
@@ -151,7 +152,7 @@ export function rebindPositionGuides(
     const resolved = next.resolvedScales[nextScale] ??
       findSemanticScale(next, nextScale);
     const discrete = ["ordinal", "band", "point"].includes(resolved?.type);
-    let ticks = next.guideConfigs.axis?.[definition.guideChannel]?.ticks;
+    let ticks = next.guideConfigs.axis?.[axisId]?.ticks;
     if (ticks !== undefined && discrete && ticks.mode !== "values") {
       ticks = {
         ...ticks,
@@ -160,7 +161,7 @@ export function rebindPositionGuides(
         inferredValues: true
       };
       delete ticks.count;
-      next = next._withGuideConfig(definition.guideChannel, "ticks", ticks);
+      next = next._withGuideConfig(axisId, "ticks", ticks);
     } else if (
       ticks !== undefined &&
       !discrete &&
@@ -174,18 +175,18 @@ export function rebindPositionGuides(
         inferredValues: true
       };
       delete ticks.values;
-      next = next._withGuideConfig(definition.guideChannel, "ticks", ticks);
+      next = next._withGuideConfig(axisId, "ticks", ticks);
     } else if (
       ticks !== undefined &&
       discrete &&
       ticks.inferredValues === true
     ) {
       ticks = { ...ticks, values: resolved.domain };
-      next = next._withGuideConfig(definition.guideChannel, "ticks", ticks);
+      next = next._withGuideConfig(axisId, "ticks", ticks);
     }
     if (previousLabels !== undefined && labelsFollowTicks && ticks !== undefined) {
       const labels = {
-        ...next.guideConfigs.axis[definition.guideChannel].labels,
+        ...next.guideConfigs.axis[axisId].labels,
         mode: ticks.mode,
         inferredValues: ticks.inferredValues === true,
         ...(ticks.mode === "values"
@@ -195,11 +196,12 @@ export function rebindPositionGuides(
       if (ticks.mode === "values") delete labels.count;
       else delete labels.values;
       next = next._withGuideConfig(
-        definition.guideChannel,
+        axisId,
         "labels",
         labels
       );
     }
+  }
   }
   if (ownsGrid) {
     next = next

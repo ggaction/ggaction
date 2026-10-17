@@ -1,3 +1,4 @@
+import { selectCartesianAxis } from "../../../selectors/axes.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { validateKeys } from "../../../core/validation.js";
@@ -15,16 +16,19 @@ function makeRemoveAxis(channel) {
         ? "Theta"
         : "Radial";
   const operation = `remove${prefix}Axis`;
-  const graphicIds = axisGraphicIds(channel);
   return action(
     {
       op: operation,
       description: `Remove the complete ${channel}-axis resource.`
     },
     withGuideLayoutValidation(function (args = {}) {
-      validateKeys(args, OPTIONS, operation);
-      const semantic = this.semanticSpec.guides.axis?.[channel];
-      const config = this.guideConfigs.axis?.[channel];
+      const cartesian = ["x", "y"].includes(channel);
+      validateKeys(args, cartesian ? [...OPTIONS, "target"] : OPTIONS, operation);
+      const selected = cartesian ? selectCartesianAxis(this, channel, args, { whole: true }) : { id: channel, options: args };
+      const axisId = selected.id; args = selected.options;
+      const graphicIds = axisGraphicIds(channel, axisId);
+      const semantic = this.semanticSpec.guides.axis?.[axisId];
+      const config = this.guideConfigs.axis?.[axisId];
       const hasGraphic = graphicIds.some(
         id => this.graphicSpec.objects[id] !== undefined
       );
@@ -42,7 +46,7 @@ function makeRemoveAxis(channel) {
       let next = semantic === undefined
         ? this
         : this.editSemantic({
-            property: `guide.axis.${channel}`,
+            property: `guide.axis.${axisId}`,
             remove: true
           });
       for (const id of graphicIds) {
@@ -50,7 +54,7 @@ function makeRemoveAxis(channel) {
           next = next.editGraphics({ target: id, remove: true });
         }
       }
-      return next._withoutMaterializationConfig(["guides", "axis", channel]);
+      return next._withoutMaterializationConfig(["guides", "axis", axisId]);
     })
   );
 }

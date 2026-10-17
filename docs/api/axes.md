@@ -54,6 +54,13 @@ Cartesian label `labelMap` works with categorical values, numeric ticks and time
 
 Cartesian ticks and labels accept `alongOffset`, a signed finite displacement in logical pixels. Positive values move X-axis items right and Y-axis items down, including top/right axes and reversed scales. It defaults to zero and leaves the scale and axis baseline unchanged. Tick and label offsets are independent absolute values: set both when both should move. The existing label `offset` remains the outward gap from the plot edge. Complete axes, whole-axis editors and focused editors accept the same options; Canvas and scale updates preserve them. Polar and Parallel axes do not accept this option.
 
+## Independent Cartesian axes
+
+Use `createYAxis({ id: "share", position: "right" })` to establish another axis,
+then `editYAxisTitle({ target: "share", text: "Share" })` to refine it. See
+[Independent named Cartesian axes](./axes/complete.md#independent-named-cartesian-axes)
+for side occupancy, selection, arrays and independent scales.
+
 ## Standalone Cartesian axes
 
 An axis does not need an invisible mark or dataset. Supply an existing Cartesian

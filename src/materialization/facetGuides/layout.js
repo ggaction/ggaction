@@ -1,6 +1,7 @@
+import { cartesianAxisOwners } from "../../selectors/axes.js";
 import { PLOT_LEGEND_POSITIONS } from "../../layout/legend.js";
 import { resolveConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
-import { resolveFacetOuterAxes } from "../../grammar/facets/guides.js";
+import { resolveFacetOuterSides } from "../../grammar/facets/guides.js";
 import { resolveTextBounds, textBoundsIntersect } from "../../core/textMetrics.js";
 import { axisGraphicIds } from "../guides/resources.js";
 import { resolveFacetHeaderItems } from "../facetHeaders.js";
@@ -12,15 +13,16 @@ function translated(bounds, x, y) {
 
 function retainedGuideBounds(program, layout, plots, headers) {
   const profile = program.materializationConfigs.textMetrics;
-  const outer = resolveFacetOuterAxes({ placements: layout.children });
+  const outer = resolveFacetOuterSides({ placements: layout.children });
   const bounds = [];
   for (const cell of layout.children) {
     const child = program.children[cell.id];
-    for (const channel of ["x", "y"]) {
-      if (program.compositionSpec.facet.guides.axes === "outer" &&
-          !outer.children[cell.id][channel]) continue;
-      for (const id of axisGraphicIds(channel)) {
-        if (!/Labels|Title/.test(id) || child.graphicSpec.objects[id] === undefined) continue;
+    for (const owner of cartesianAxisOwners(child)) {
+      for (const [index, component] of [[2, "labels"], [3, "title"]]) {
+        const position = owner.config?.[component]?.position;
+        if (program.compositionSpec.facet.guides.axes === "outer" && !outer[position]?.includes(cell.id)) continue;
+        const id = axisGraphicIds(owner.channel, owner.id)[index];
+        if (child.graphicSpec.objects[id] === undefined) continue;
         const value = resolveConcreteGraphicBounds(child.graphicSpec, id, profile);
         if (value !== undefined) bounds.push(translated(value, cell.x, cell.y));
       }

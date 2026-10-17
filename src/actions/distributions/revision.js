@@ -1,3 +1,4 @@
+import { cartesianAxisOwners, axisTargetArgs } from "../../selectors/axes.js";
 import { DEFAULT_TICK_COUNT } from "../guides/tickValues.js";
 import { findLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
@@ -296,39 +297,44 @@ export function clearCartesianPositions(program, id) {
   return next;
 }
 
-function rebindAxis(program, channel, {
+function rebindAxis(program, channel, options) {
+  return cartesianAxisOwners(program).filter(owner => owner.channel === channel)
+    .reduce((next, owner) => rebindAxisOwner(next, channel, owner.id, options), program);
+}
+
+function rebindAxisOwner(program, channel, axisId, {
   previousScale,
   nextScale,
   previousTitle,
   nextTitle
 }) {
-  const semantic = program.semanticSpec.guides.axis?.[channel];
+  const semantic = program.semanticSpec.guides.axis?.[axisId];
   if (semantic?.scale !== previousScale) return program;
   let next = program.editSemantic({
-    property: `guide.axis.${channel}.scale`,
+    property: `guide.axis.${axisId}.scale`,
     value: nextScale
   });
   if (semantic.title === previousTitle) {
     next = next.editSemantic({
-      property: `guide.axis.${channel}.title`,
+      property: `guide.axis.${axisId}.title`,
       value: nextTitle
     });
   }
   const scale = next.resolvedScales[nextScale];
   const ticks = normalizeTickConfig(
-    next.guideConfigs.axis?.[channel]?.ticks,
+    next.guideConfigs.axis?.[axisId]?.ticks,
     scale
   );
   if (ticks !== undefined) {
-    next = next._withGuideConfig(channel, "ticks", {
+    next = next._withGuideConfig(axisId, "ticks", {
       ...ticks,
       scale: nextScale
     });
   }
-  const labels = next.guideConfigs.axis?.[channel]?.labels;
+  const labels = next.guideConfigs.axis?.[axisId]?.labels;
   if (labels !== undefined) {
-    const tickConfig = next.guideConfigs.axis[channel].ticks;
-    next = next._withGuideConfig(channel, "labels", {
+    const tickConfig = next.guideConfigs.axis[axisId].ticks;
+    next = next._withGuideConfig(axisId, "labels", {
       ...labels,
       scale: nextScale,
       mode: tickConfig.mode,
@@ -338,30 +344,30 @@ function rebindAxis(program, channel, {
         : { count: tickConfig.count })
     });
     if (tickConfig.mode === "values") {
-      const config = next.guideConfigs.axis[channel].labels;
+      const config = next.guideConfigs.axis[axisId].labels;
       if (Object.hasOwn(config, "count")) {
         const { count: _count, ...withoutCount } = config;
-        next = next._withGuideConfig(channel, "labels", withoutCount);
+        next = next._withGuideConfig(axisId, "labels", withoutCount);
       }
     } else {
-      const config = next.guideConfigs.axis[channel].labels;
+      const config = next.guideConfigs.axis[axisId].labels;
       if (Object.hasOwn(config, "values")) {
         const { values: _values, ...withoutValues } = config;
-        next = next._withGuideConfig(channel, "labels", withoutValues);
+        next = next._withGuideConfig(axisId, "labels", withoutValues);
       }
     }
   }
-  const title = next.guideConfigs.axis?.[channel]?.title;
+  const title = next.guideConfigs.axis?.[axisId]?.title;
   if (title !== undefined) {
-    next = next._withGuideConfig(channel, "title", {
+    next = next._withGuideConfig(axisId, "title", {
       ...title,
       scale: nextScale
     });
   }
   const methods = axisMethods(channel);
-  if (ticks !== undefined) next = next[methods.ticks]();
-  if (labels !== undefined) next = next[methods.labels]();
-  if (title !== undefined) next = next[methods.title]();
+  if (ticks !== undefined) next = next[methods.ticks](axisId === channel ? undefined : axisTargetArgs(axisId, channel));
+  if (labels !== undefined) next = next[methods.labels](axisId === channel ? undefined : axisTargetArgs(axisId, channel));
+  if (title !== undefined) next = next[methods.title](axisId === channel ? undefined : axisTargetArgs(axisId, channel));
   return next;
 }
 

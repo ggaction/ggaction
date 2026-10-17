@@ -52,8 +52,8 @@ test("compact action cards are generated from the current action contract", asyn
   assert.match(artifact.errorPolicy, /curated error override/);
   assert.equal(stats.count, context.actions.length);
   assert.equal(stats.maxBytes <= 3360, true);
-  // Preserve every approved Cartesian placement option; measured median is 1865.
-  assert.equal(stats.medianBytes <= 1865, true);
+  // Preserve every approved Cartesian placement and named-axis option; measured median is 1896.
+  assert.equal(stats.medianBytes <= 1896, true);
   assert.deepEqual(
     artifact.cards.map(card => card.name),
     context.actions.map(action => action.name)

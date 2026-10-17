@@ -946,7 +946,12 @@ Semantic removal은 dependency preflight를, graphic removal은 subtree detach�
 
 ## Selector와 resource identity
 
-Dataset, layer, scale, coordinate를 ID로 찾는 규칙은 `src/selectors/`가 소유한다.
+Dataset, layer, scale, coordinate를 ID로 찾는 규칙은 `src/selectors/`가 소유한다. Cartesian axis resource도
+`selectors/axes.js`가 canonical/unique/explicit selection, binding과 physical-side occupancy를
+소유한다. 의미 identity(channel/position/scale/coordinate/title)는 semantic guide map, appearance와
+standalone/frame intent는 같은 ID의 guide config에 한 번만 저장한다. Concrete native IDs와
+consumer iteration은 같은 owner registry를 사용하며 data/scale/Canvas/theme/facet/persistence가
+canonical x/y 두 개만 가정하지 않는다. Exact API는 [AXES](contract/current/AXES.md)가 소유한다.
 
 ```text
 findResource    → 없으면 undefined
@@ -2076,3 +2081,12 @@ Approved area fallback fills reuse `FillPaint` on the existing area mark configu
 승인된 연속 범례 body opacity는 creation/edit/persistence가 공유하는 closed grammar owner `grammar/legendGradient.js` 하나를 추가한다. 이에 따른 packed entry 한도는563에서564로만 조정한다. 최종 실측564entries·packed791,661bytes·unpacked3,888,408bytes는 기존792,000/3,900,000bytes 안에 있다. Browser gzip Full388,931bytes·Basic188,433bytes와 기존389,000/189,000bytes, SVG25,000bytes 한도는 유지한다. 생략 시 default graphic/SVG24경우의 byte identity와 명시적0/.7/1의 body-only materialization을 검증하며 renderer 추론은 추가하지 않는다.
 
 Corner item block은 기존 layout owner가 실제 title/item bounds와12px gap으로 측정한다. Group materialization의 ephemeral corner 의도를 같은 owner에 전달하며 state/schema나 renderer owner를 추가하지 않는다. 외부 SIDE의 fixed20/52 anchors는24조합에서 byte-identical이다. 이 수정 뒤 installed Full gzip389,027bytes가389,000 한도를27bytes 초과하므로 기존 최소1,000bytes 단위 정책에 따라 Full 한도만390,000으로 조정한다. Basic189,000/SVG25,000 및 package564entries/792,000packed/3,900,000unpacked 한도는 유지한다.
+
+
+Named Cartesian axes는 기존 source boundary를 유지하는 selector owner 하나를 더한다. Native ID
+resolver는 `selectors/axes.js`가 소유하고 materialization은 이를 재수출하므로 persistence가
+materialization layer에 역방향 의존하지 않는다. 기존 package staging compaction을 새 selector에
+적용한 실측은570entries,805115packed,3948224unpacked bytes다. 기존 최소1000bytes 정책에 따라
+한도를570/806000/3949000으로 좁게 갱신하고 이전569/799000/3919000 통과로 보고하지 않는다.
+전체 승인 옵션을 보존한 search816932bytes는817000으로, action-card median1896bytes는1896으로
+갱신한다. Card max3358은3360 한도 안이다. Installed consumer의 actual gzip은 Full396214/Basic193136bytes이므로 최소1000bytes 단위로397000/194000으로만 조정한다. SVG25000은 유지한다.

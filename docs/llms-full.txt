@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.18.
 
-Contract: sha256:af4caf79d3c38d006ac5730c0bdd4c047e9d3697b2beba89540b1b8f19eedf1e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:09dfe48a17888e5795ebaef607606a59f7bd166d9a9c9c0c4c67bc7e2a12a7f6. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12234,6 +12234,13 @@ Cartesian label `labelMap` works with categorical values, numeric ticks and time
 
 Cartesian ticks and labels accept `alongOffset`, a signed finite displacement in logical pixels. Positive values move X-axis items right and Y-axis items down, including top/right axes and reversed scales. It defaults to zero and leaves the scale and axis baseline unchanged. Tick and label offsets are independent absolute values: set both when both should move. The existing label `offset` remains the outward gap from the plot edge. Complete axes, whole-axis editors and focused editors accept the same options; Canvas and scale updates preserve them. Polar and Parallel axes do not accept this option.
 
+## Independent Cartesian axes
+
+Use `createYAxis({ id: "share", position: "right" })` to establish another axis,
+then `editYAxisTitle({ target: "share", text: "Share" })` to refine it. See
+[Independent named Cartesian axes](./api/axes/complete/#independent-named-cartesian-axes)
+for side occupancy, selection, arrays and independent scales.
+
 ## Standalone Cartesian axes
 
 An axis does not need an invisible mark or dataset. Supply an existing Cartesian
@@ -23650,8 +23657,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `coordinate` | Optional / branch-dependent | `{ id?: string \| undefined; type?: "auto" \| "cartesian" \| "parallel" \| "polar" \| undefined; } \| undefined` |
-| `x` | Optional / branch-dependent | `false \| CompleteAxisOptions<XAxisPosition> \| undefined` |
-| `y` | Optional / branch-dependent | `false \| CompleteAxisOptions<YAxisPosition> \| undefined` |
+| `x` | Optional / branch-dependent | `false \| CompleteAxisOptions<XAxisPosition> \| readonly [NamedCompleteAxis<XAxisPosition>, ...NamedCompleteAxis<XAxisPosition>[]] \| undefined` |
+| `y` | Optional / branch-dependent | `false \| CompleteAxisOptions<YAxisPosition> \| readonly [NamedCompleteAxis<YAxisPosition>, ...NamedCompleteAxis<YAxisPosition>[]] \| undefined` |
 | `theta` | Optional / branch-dependent | `false \| CompletePolarAxisOptions \| undefined` |
 | `radius` | Optional / branch-dependent | `false \| CompleteRadialAxisOptions \| undefined` |
 
@@ -23682,13 +23689,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale"> \| undefined` |
-| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale"> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
 
 Behavior, inference, resets, and errors: [Complete single-channel axes](./reference/actions/guides/#complete-single-channel-axes).
 
@@ -23710,13 +23718,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale"> \| undefined` |
-| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale"> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
 
 Behavior, inference, resets, and errors: [Complete single-channel axes](./reference/actions/guides/#complete-single-channel-axes).
 
@@ -23727,7 +23736,7 @@ Behavior, inference, resets, and errors: [Complete single-channel axes](./refere
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createXAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: XAxisPosition }): ChartProgram;
+createXAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }): ChartProgram;
 ```
 
 Named option contracts: [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleoptions) · [`XAxisPosition`](./reference/types/#type-xaxisposition).
@@ -23740,6 +23749,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 
@@ -23752,7 +23762,7 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./refer
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createYAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: YAxisPosition }): ChartProgram;
+createYAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }): ChartProgram;
 ```
 
 Named option contracts: [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleoptions) · [`YAxisPosition`](./reference/types/#type-yaxisposition).
@@ -23765,6 +23775,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 
@@ -23777,7 +23788,7 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./refer
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editXAxisLine(options?: AxisLineStyleOptions & { position?: XAxisPosition }): ChartProgram;
+editXAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: XAxisPosition }): ChartProgram;
 ```
 
 Named option contracts: [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleoptions) · [`XAxisPosition`](./reference/types/#type-xaxisposition).
@@ -23790,6 +23801,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 
 Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./reference/actions/guides/#axis-lines-ticks-and-labels).
@@ -23801,7 +23813,7 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./refer
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editYAxisLine(options?: AxisLineStyleOptions & { position?: YAxisPosition }): ChartProgram;
+editYAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: YAxisPosition }): ChartProgram;
 ```
 
 Named option contracts: [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleoptions) · [`YAxisPosition`](./reference/types/#type-yaxisposition).
@@ -23814,6 +23826,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 
 Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./reference/actions/guides/#axis-lines-ticks-and-labels).
@@ -23836,6 +23849,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -23867,6 +23881,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -23904,6 +23919,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
 | `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -23934,6 +23950,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
 | `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -23958,6 +23975,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -23999,6 +24017,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -24056,6 +24075,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -24096,6 +24116,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -24120,6 +24141,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -24147,6 +24169,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -24174,6 +24197,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -24200,6 +24224,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
@@ -24226,6 +24251,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
@@ -24260,6 +24286,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
@@ -24294,6 +24321,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
@@ -24327,6 +24355,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
@@ -24360,13 +24389,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<XAxisPosition>, "position" \| "scale"> \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<XAxisPosition>, "position" \| "scale"> \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale"> \| undefined` |
-| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale"> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
 
 Behavior, inference, resets, and errors: [Complete single-channel axes](./reference/actions/guides/#complete-single-channel-axes).
 
@@ -24388,13 +24418,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<YAxisPosition>, "position" \| "scale"> \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<YAxisPosition>, "position" \| "scale"> \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale"> \| undefined` |
-| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale"> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
 
 Behavior, inference, resets, and errors: [Complete single-channel axes](./reference/actions/guides/#complete-single-channel-axes).
 
@@ -24416,6 +24447,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 
@@ -24439,6 +24471,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 
@@ -25352,7 +25385,7 @@ Edit selected radial components; `angle` moves the whole axis.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-removeThetaAxis(options?: RemoveAxisOptions): ChartProgram;
+removeThetaAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
 ```
 
 Named option contracts: [`RemoveAxisOptions`](./reference/types/#type-removeaxisoptions).
@@ -25381,7 +25414,7 @@ Remove the complete theta-axis resource. [Axes](./api/axes/#removing-an-axis)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-removeRadialAxis(options?: RemoveAxisOptions): ChartProgram;
+removeRadialAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
 ```
 
 Named option contracts: [`RemoveAxisOptions`](./reference/types/#type-removeaxisoptions).
@@ -26961,10 +26994,10 @@ interface ChartProgramActions {
   editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;
   editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;
   editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;
-  createXAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: XAxisPosition }): ChartProgram;
-  createYAxisLine(options?: AxisLineStyleOptions & { scale?: string; position?: YAxisPosition }): ChartProgram;
-  editXAxisLine(options?: AxisLineStyleOptions & { position?: XAxisPosition }): ChartProgram;
-  editYAxisLine(options?: AxisLineStyleOptions & { position?: YAxisPosition }): ChartProgram;
+  createXAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }): ChartProgram;
+  createYAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }): ChartProgram;
+  editXAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: XAxisPosition }): ChartProgram;
+  editYAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: YAxisPosition }): ChartProgram;
   createXAxisTicks(options?: AxisTickOptions<XAxisPosition>): ChartProgram;
   createYAxisTicks(options?: AxisTickOptions<YAxisPosition>): ChartProgram;
   editXAxisTicks(options?: Omit<AxisTickOptions<XAxisPosition>, "scale">): ChartProgram;
@@ -26987,8 +27020,8 @@ interface ChartProgramActions {
   editRadialAxis(options: EditRadialAxisOptions): ChartProgram;
   removeXAxis(options?: RemoveAxisOptions): ChartProgram;
   removeYAxis(options?: RemoveAxisOptions): ChartProgram;
-  removeThetaAxis(options?: RemoveAxisOptions): ChartProgram;
-  removeRadialAxis(options?: RemoveAxisOptions): ChartProgram;
+  removeThetaAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
+  removeRadialAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
   createGrid(options?: CreateGridOptions): ChartProgram;
   createHorizontalGrid(options?: GridDirectionOptions): ChartProgram;
   createVerticalGrid(options?: GridDirectionOptions): ChartProgram;
@@ -27267,6 +27300,8 @@ Related types: [`RotationInput`](./reference/types/#type-rotationinput).
 ```typescript
 export interface AxisLabelOptions<P extends string>
   extends CartesianAxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   scale?: string;
   position?: P;
   count?: number;
@@ -27311,6 +27346,8 @@ export interface AxisLineStyleOptions {
 ```typescript
 export interface AxisTickOptions<P extends string>
   extends CartesianAxisTickStyleOptions {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   scale?: string;
   position?: P;
   count?: number;
@@ -27339,6 +27376,8 @@ Related types: [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleopt
 
 ```typescript
 export interface AxisTicksAndLabelsOptions<P extends string> {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   scale?: string;
   position?: P;
   count?: number;
@@ -27356,6 +27395,8 @@ Related types: [`AxisValue`](./reference/types/#type-axisvalue) · [`CartesianAx
 
 ```typescript
 export interface AxisTitleOptions<P extends string> {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
   /** Signed logical pixels: positive right for x, down for y, independent of scale reversal. */
   alongOffset?: number;
   align?: "left" | "center" | "right";
@@ -27936,8 +27977,8 @@ type BoxPlotWidth = { band?: number; pixels?: never } | { band?: never; pixels: 
 
 ```typescript
 type CAxes = Omit<CartesianAxesOptions, "x" | "y"> & {
-  x?: false | CAxis<XAxisPosition>;
-  y?: false | CAxis<YAxisPosition>;
+  x?: false | CAxis<XAxisPosition> | readonly [CAxis<XAxisPosition> & { id: string }, ...(CAxis<XAxisPosition> & { id: string })[]];
+  y?: false | CAxis<YAxisPosition> | readonly [CAxis<YAxisPosition> & { id: string }, ...(CAxis<YAxisPosition> & { id: string })[]];
 };
 ```
 
@@ -27949,7 +27990,7 @@ Related types: [`CartesianAxesOptions`](./reference/types/#type-cartesianaxesopt
 
 ```typescript
 type CAxis<P extends string> = Omit<CompleteAxisOptions<P>, "ticksAndLabels"> & {
-  ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position">;
+  ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position" | "target">;
 };
 ```
 
@@ -28417,14 +28458,16 @@ export type ColorLayout =
 
 ```typescript
 export interface CompleteAxisOptions<P extends string> {
+  /** Omission retains the canonical x/y identity. */
+  id?: string;
   /** Non-negative outward displacement of the complete axis frame in logical pixels. */
   offset?: number;
   scale?: string;
   coordinate?: string;
   position?: P;
   line?: false | AxisLineStyleOptions;
-  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position">;
-  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position">;
+  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">;
+  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position" | "target">;
 }
 ```
 
@@ -28707,14 +28750,14 @@ export interface CreateAxesOptions {
     id?: string;
     type?: "auto" | "cartesian" | "polar" | "parallel";
   };
-  x?: false | CompleteAxisOptions<XAxisPosition>;
-  y?: false | CompleteAxisOptions<YAxisPosition>;
+  x?: false | CompleteAxisOptions<XAxisPosition> | readonly [NamedCompleteAxis<XAxisPosition>, ...NamedCompleteAxis<XAxisPosition>[]];
+  y?: false | CompleteAxisOptions<YAxisPosition> | readonly [NamedCompleteAxis<YAxisPosition>, ...NamedCompleteAxis<YAxisPosition>[]];
   theta?: false | CompletePolarAxisOptions;
   radius?: false | CompleteRadialAxisOptions;
 }
 ```
 
-Related types: [`CompleteAxisOptions`](./reference/types/#type-completeaxisoptions) · [`XAxisPosition`](./reference/types/#type-xaxisposition) · [`YAxisPosition`](./reference/types/#type-yaxisposition) · [`CompletePolarAxisOptions`](./reference/types/#type-completepolaraxisoptions) · [`CompleteRadialAxisOptions`](./reference/types/#type-completeradialaxisoptions).
+Related types: [`CompleteAxisOptions`](./reference/types/#type-completeaxisoptions) · [`XAxisPosition`](./reference/types/#type-xaxisposition) · [`NamedCompleteAxis`](./reference/types/#type-namedcompleteaxis) · [`YAxisPosition`](./reference/types/#type-yaxisposition) · [`CompletePolarAxisOptions`](./reference/types/#type-completepolaraxisoptions) · [`CompleteRadialAxisOptions`](./reference/types/#type-completeradialaxisoptions).
 
 ### `CreateBarPlotOptions` {#type-createbarplotoptions}
 
@@ -30594,14 +30637,15 @@ export interface ECDFOutputFields {
 
 ```typescript
 export interface EditAxisOptions<P extends string> {
+  target?: string;
   /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
   offset?: number;
   position?: P;
   line?: false | AxisLineStyleOptions;
-  ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position">;
-  labels?: false | Omit<AxisLabelOptions<P>, "scale" | "position">;
-  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position">;
-  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position">;
+  ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position" | "target">;
+  labels?: false | Omit<AxisLabelOptions<P>, "scale" | "position" | "target">;
+  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">;
+  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position" | "target">;
 }
 ```
 
@@ -33526,6 +33570,16 @@ export type MeasuredRadiusScaleOptions = Pick<RadiusScaleOptions, "id" | "domain
 
 Related types: [`RadiusScaleOptions`](./reference/types/#type-radiusscaleoptions).
 
+### `NamedCompleteAxis` {#type-namedcompleteaxis}
+
+ Expand NamedCompleteAxis
+
+```typescript
+export type NamedCompleteAxis<P extends string> = CompleteAxisOptions<P> & { id: string };
+```
+
+Related types: [`CompleteAxisOptions`](./reference/types/#type-completeaxisoptions).
+
 ### `NonPointBandPositionScaleOptions` {#type-nonpointbandpositionscaleoptions}
 
  Expand NonPointBandPositionScaleOptions
@@ -35204,6 +35258,7 @@ export type RegressionPredictOptions =
 
 ```typescript
 export interface RemoveAxisOptions {
+  target?: string;
   coordinate?: string;
   scale?: string;
 }
@@ -39483,7 +39538,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:af4caf79d3c38d006ac5730c0bdd4c047e9d3697b2beba89540b1b8f19eedf1e` |
+| Contract fingerprint | `sha256:09dfe48a17888e5795ebaef607606a59f7bd166d9a9c9c0c4c67bc7e2a12a7f6` |
 | Example and dataset source | `b90ce36d35d3f91c1d3045db54412f9bc8341228` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
@@ -39531,6 +39586,47 @@ forms described in their references.
 # Complete Axes and Labels
 
 [Axis family overview](./api/axes/)
+
+## Independent named Cartesian axes
+
+Create an axis with `id` when it needs an independent identity. The default IDs are
+`x` and `y`. Refine or remove a named axis with `target`, which selects the axis,
+not its mark or scale. This complete runnable program uses an independent right scale:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "share"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+import { chart } from "ggaction";
+
+const program = chart().createCanvas({ width: 600, height: 400, margin: 80 })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createScatterPlot({ x: "x", y: "y", guides: false })
+  .createYAxis()
+  .createScale({ id: "ratio", type: "linear", domain: [0, 1] })
+  .createYAxis({ id: "share", position: "right", scale: "ratio", coordinate: "main" })
+  .editYAxisTitle({ target: "share", text: "Share" });
+```
+
+`createAxes` and `createGuides.axes` also accept nonempty X/Y arrays, with an explicit
+`id` in every entry. Arrays create axes in entry order and fail atomically if any
+entry conflicts. A chart facade accepts the same arrays for its own position scales.
+One axis may occupy each physical side of a coordinate; moving another axis there
+fails even with a different frame offset. Named axes use one common side for their
+components. Move the complete axis to change that side; focused edits preserve it.
+
+An omitted `target` selects the canonical X/Y axis if present, otherwise the unique
+named axis in that channel. Several named candidates require an explicit target.
+Unknown IDs, wrong channels, conflicting scale/coordinate filters, reserved channel
+IDs and duplicate graphic identities fail. Polar and Parallel axes do not accept
+these selectors. A focused creator restores a missing component of an existing named
+axis; the complete creator establishes its identity. Removing the final component
+also removes the owner. Scale, data, Canvas, theme and editable persistence preserve
+all remaining owners. A grid with several eligible scales requires an explicit scale;
+conflicting axis tick policies require explicit grid `count` or `values`.
+
+For facet `axes: "outer"`, named components follow their actual top, right, bottom
+or left occupied edge, including incomplete rows. `axes: "each"` retains every axis.
+Named text bounds must fit the Canvas and remain separate from other axis text.
 
 ## Moving a complete axis and refining its text
 
@@ -39600,8 +39696,8 @@ program.createAxes({
 | Option | Type | Default |
 | --- | --- | --- |
 | `coordinate` | `{ id?, type? }` | unique coordinate used by x/y layers |
-| `x` | axis options or `false` | create when x is encoded |
-| `y` | axis options or `false` | create when y is encoded |
+| `x` | axis options, nonempty named-axis array, or `false` | create when x is encoded |
+| `y` | axis options, nonempty named-axis array, or `false` | create when y is encoded |
 | `theta` | Polar axis options or `false` | create when theta is encoded |
 | `radius` | Polar axis options or `false` | create when radius is encoded |
 

@@ -16,6 +16,7 @@ export type {
   CanvasOptions,
   ColorEncodingOptions,
   CompleteAxisOptions,
+  NamedCompleteAxis,
   CreateAxesOptions,
   CreateBarPlotOptions,
   BarRangePositionChannel,

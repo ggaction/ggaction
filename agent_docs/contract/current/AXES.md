@@ -2,6 +2,19 @@
 
 Current direct-action contracts for this domain. Shared notation and lifecycle rules live in [`../README.md`](../README.md).
 
+## Named Cartesian owner contract
+
+- Complete X/Y creation의 `id?`는 axis resource identity이며 생략하면 기존 x/y다. Explicit own canonical alias도 같은 결과이고 다른 reserved channel ID(x/y/theta/radius/parallel)와 기존 native graphic ID 충돌은 거부한다. ID는 기존 user-ID grammar를 따른다.
+- Focused create/edit, complete edit, remove는 `target?` axis ID를 받는다. Target을 생략하면 canonical owner, 없으면 같은 channel의 유일 named owner, 여러 후보면 오류다. Unknown/wrong-channel target와 충돌하는 resource filter는 원자적으로 거부한다. Nested component appearance에는 target이 없고 complete creator에는 target 대신 id가 있다. Polar/Parallel 계약은 바뀌지 않는다.
+- `createAxes`/`createGuides.axes` x/y는 기존 singular/false 또는 id가 필수인 nonempty named axis array다. Entry 순서를 유지하고 전체를 atomic preflight하며 facade는 자신이 소비하는 coordinate/scale에 한정한다.
+- Named meaning은 `semanticSpec.guides.axis[id] = {channel,position,scale,coordinate,title?}`가 소유하고 appearance/binding/frame은 `guideConfigs.axis[id]`가 소유한다. Native concrete IDs는 `axis_<id>__Line/Ticks/Labels/Title`; canonical IDs는 그대로다. Selector는 appearance config에 저장하지 않는다.
+- Coordinate의 physical side마다 한 owner만 허용한다. Canonical의 기존 mixed-side component는 기존처럼 유지되지만 해당 모든 side를 점유한다. Named 축은 complete position 하나를 공유하고 focused position 변경은 거부한다. Frame offset으로 중복 side lane을 만들지 않는다. Named text와 다른 owner의 실제 개별 text bounds 교차는 거부하고 legacy canonical↔canonical 정책은 보존한다.
+- Explicit coordinate+unused explicit-domain scale의 standalone named 축과 sparse native components를 지원한다. Scale/coordinate/data/encoding/Canvas/theme replay는 모든 owner를 소비하며 final component 제거는 그 owner만 정리한다. Encoding/mark 제거는 해당 binding owner 전부를 정리한다.
+- Grid는 matching coordinate/scale의 owner를 모두 읽는다. Candidate scale/coordinate가 여러 개면 명시 ID가 필요하고 matching tick 정책이 다르면 grid count/values가 필요하다. Grid 자체는 원래 plot bounds를 쓴다.
+- Facet outer는 actual occupied topology의 top/right/bottom/left마다 component의 physical side를 보존한다. Ragged row/column도 동일하며 each는 모든 owner를 유지한다. 기존 repeat outer 제한은 바꾸지 않는다.
+- Editable import는 owner의 channel/side/resource, config/component consistency와 duplicate occupied side를 검증한다. Composition source recipe는 namespaced child graphics를 가지므로 native unit graphic 검증은 unit state에 적용한다. 이전 program과 caller input은 불변이다.
+- Evidence: `test/unit/actions/guides/named-cartesian-axes.test.js`, `test/contracts/named-cartesian-axis-types.test.js`. Realistic 5회/3dataset evidence는 release 통합에서 별도 완성한다.
+
 ## Shared complete-axis contract
 
 Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component position에서 chart title과 legend group의 bounds를 검사한다. 작성 순서, focused/whole-axis edit와 Canvas/scale replay에 공통인 최종 상태 검증이며 이전 program은 immutable하다. 정확한 cross-guide policy는 [공통 guide collision 계약](LEGEND_AND_TITLE.md#shared-guide-collision-contract)이 소유한다. 내부 axis component 간 검증은 기존 axis 계약을 따른다.

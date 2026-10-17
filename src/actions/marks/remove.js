@@ -1,3 +1,4 @@
+import { cartesianAxisOwners, axisTargetArgs } from "../../selectors/axes.js";
 import { ownedChildren, ownership } from "../../selectors/markOwners.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
 import { closedAction } from "../../core/action.js";
@@ -183,16 +184,15 @@ function cleanupPositionGuides(program, scales) {
   let next = program;
   for (const channel of POSITION_CHANNELS) {
     const definition = getPositionChannelDefinition(channel);
-    const axis = next.semanticSpec.guides.axis?.[channel];
-    if (
-      axis !== undefined &&
-      scales[channel].has(axis.scale) &&
-      !hasScaleConsumer(next, channel, axis.scale)
-    ) {
-      next = next[REMOVE_AXIS[channel]]({
-        scale: axis.scale,
-        ...(axis.coordinate === undefined ? {} : { coordinate: axis.coordinate })
-      });
+    const owners = ["x", "y"].includes(channel)
+      ? cartesianAxisOwners(next).filter(owner => owner.channel === channel)
+      : [{ id: channel, channel, semantic: next.semanticSpec.guides.axis?.[channel] }];
+    for (const owner of owners) {
+      const axis = owner.semantic;
+      if (axis !== undefined && scales[channel].has(axis.scale) && !hasScaleConsumer(next, channel, axis.scale)) {
+        next = next[REMOVE_AXIS[channel]]({ ...axisTargetArgs(owner.id, channel), scale: axis.scale,
+          ...(axis.coordinate === undefined ? {} : { coordinate: axis.coordinate }) });
+      }
     }
     const grid = next.semanticSpec.guides.grid?.[definition.gridDirection];
     if (

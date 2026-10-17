@@ -182,7 +182,7 @@ function componentRole(program, id, property) {
 }
 
 function graphicRole(program, id, property) {
-  const axisPart = /Axis(Labels|Titles?)$/u.exec(id);
+  const axisPart = /(?:Axis|^axis_.+__)(Labels|Titles?)$/u.exec(id);
   const scoped = axisPart === null ? undefined : axisTextRole(property, axisPart[1] === "Labels" ? "labels" : "title");
   if (scoped !== undefined) return scoped;
   if (property === "fontFamily") return "fontFamily";
@@ -200,11 +200,11 @@ function graphicRole(program, id, property) {
     }
     return layer.mark?.type === "text" ? "text" : "mark";
   }
-  if (/AxisLines?$/u.test(id) && property === "stroke") return "axis";
-  if (/AxisTicks$/u.test(id) && property === "stroke") return "mutedText";
+  if (/(?:Axis|^axis_.+__)Lines?$/u.test(id) && property === "stroke") return "axis";
+  if (/(?:Axis|^axis_.+__)Ticks$/u.test(id) && property === "stroke") return "mutedText";
   if (/^parallelAxisLabels$/u.test(id) && property === "fill") return "axis";
-  if (/AxisLabels$/u.test(id) && property === "fill") return "text";
-  if (/AxisTitles?$/u.test(id) && property === "fill") return "axisTitle";
+  if (/(?:Axis|^axis_.+__)Labels$/u.test(id) && property === "fill") return "text";
+  if (/(?:Axis|^axis_.+__)Titles?$/u.test(id) && property === "fill") return "axisTitle";
   if (/Grid(?:Lines|Circles)?$/u.test(id) && property === "stroke") return "grid";
   if (id === "chartTitle" && property === "fill") return "strongText";
   if (id === "chartSubtitle" && property === "fill") return "mutedText";
@@ -676,12 +676,13 @@ function clearRemovedResources(overrides, node) {
       clearPrefix(overrides, `g:${mark[1]}.`);
       return;
     }
-    const axis = /^guide\.axis\.(x|y|theta|radius)$/u
+    const axis = /^guide\.axis\.([A-Za-z0-9_-]+)$/u
       .exec(current.args.property);
     if (axis !== null) {
       const prefix = axis[1] === "radius" ? "radial" : axis[1];
+      const graphicPrefix = ["x", "y", "theta", "radius"].includes(axis[1]) ? `${prefix}Axis` : `axis_${axis[1]}__`;
       clearPrefix(overrides, `c:guides.axis.${axis[1]}.`);
-      clearPrefix(overrides, `g:${prefix}Axis`);
+      clearPrefix(overrides, `g:${graphicPrefix}`);
       return;
     }
     const grid = /^guide\.grid\.([^\.]+)$/u.exec(current.args.property);
@@ -737,7 +738,23 @@ function clearRecreatedOverrides(overrides, op, args) {
   }
 }
 
-function addAxisOverrides(overrides, op, args) {
+function axisOverrideId(node, channel, args) {
+  if (args.target !== undefined || args.id !== undefined) return args.target ?? args.id;
+  const ids = new Set();
+  const visit = entry => {
+    if (["createGraphics", "editGraphics"].includes(entry.op)) {
+      const id = entry.args.target ?? entry.args.id;
+      const named = /^axis_(.+)__(Line|Ticks|Labels|Title)$/u.exec(id ?? "");
+      if (named !== null) ids.add(named[1]);
+      else if (new RegExp(`^${channel}Axis(?:Line|Ticks|Labels|Title)$`).test(id ?? "")) ids.add(channel);
+    }
+    entry.children?.forEach(visit);
+  };
+  if (node !== undefined) visit(node);
+  return ids.size === 1 ? [...ids][0] : channel;
+}
+
+function addAxisOverrides(overrides, op, args, node) {
   const match = /^(?:create|edit)(X|Y|Theta|Radial)Axis(Line|Ticks|Labels|Title)$/u
     .exec(op);
   if (match === null) return;
@@ -748,23 +765,25 @@ function addAxisOverrides(overrides, op, args) {
     Radial: "radius"
   }[match[1]];
   const component = match[2].toLowerCase();
+  const axisId = axisOverrideId(node, channel, args);
   const idPrefix = match[1] === "Radial" ? "radial" : channel;
   if (Object.hasOwn(args, "color")) {
-    overrides.add(`c:guides.axis.${channel}.${component}.color`);
+    overrides.add(`c:guides.axis.${axisId}.${component}.color`);
     overrides.add(
-      `g:${idPrefix}Axis${match[2]}.${component === "line" || component === "ticks" ? "stroke" : "fill"}`
+      `g:${axisId === channel ? `${idPrefix}Axis` : `axis_${axisId}__`}${match[2]}.${component === "line" || component === "ticks" ? "stroke" : "fill"}`
     );
   }
   for (const property of ["fontFamily", "fontSize"]) {
     if (["labels", "title"].includes(component) && Object.hasOwn(args, property)) {
-      overrides.add(`c:guides.axis.${channel}.${component}.${property}`);
-      overrides.add(`g:${idPrefix}Axis${match[2]}.${property}`);
+      overrides.add(`c:guides.axis.${axisId}.${component}.${property}`);
+      overrides.add(`g:${axisId === channel ? `${idPrefix}Axis` : `axis_${axisId}__`}${match[2]}.${property}`);
     }
   }
 }
 
-function addCompleteAxisOverride(overrides, name, args) {
+function addCompleteAxisOverride(overrides, name, args, node) {
   const channel = { X: "x", Y: "y", Theta: "theta", Radial: "radius" }[name];
+  const axisId = axisOverrideId(node, channel, args);
   const idPrefix = name === "Radial" ? "radial" : channel;
   const components = {
     line: args.line,
@@ -779,21 +798,21 @@ function addCompleteAxisOverride(overrides, name, args) {
   for (const [component, options] of Object.entries(components)) {
     const suffix = `${component[0].toUpperCase()}${component.slice(1)}`;
     if (Object.hasOwn(options ?? {}, "color")) {
-      overrides.add(`c:guides.axis.${channel}.${component}.color`);
+      overrides.add(`c:guides.axis.${axisId}.${component}.color`);
       overrides.add(
-        `g:${idPrefix}Axis${suffix}.${component === "line" || component === "ticks" ? "stroke" : "fill"}`
+        `g:${axisId === channel ? `${idPrefix}Axis` : `axis_${axisId}__`}${suffix}.${component === "line" || component === "ticks" ? "stroke" : "fill"}`
       );
     }
     for (const property of ["fontFamily", "fontSize"]) {
       if (["labels", "title"].includes(component) && Object.hasOwn(options ?? {}, property)) {
-        overrides.add(`c:guides.axis.${channel}.${component}.${property}`);
-        overrides.add(`g:${idPrefix}Axis${suffix}.${property}`);
+        overrides.add(`c:guides.axis.${axisId}.${component}.${property}`);
+        overrides.add(`g:${axisId === channel ? `${idPrefix}Axis` : `axis_${axisId}__`}${suffix}.${property}`);
       }
     }
   }
 }
 
-function addCompleteAxisOverrides(overrides, op, args) {
+function addCompleteAxisOverrides(overrides, op, args, node) {
   if (args.guides?.axes !== null && typeof args.guides?.axes === "object") {
     addCompleteAxisOverrides(overrides, "createAxes", args.guides.axes);
   }
@@ -801,10 +820,10 @@ function addCompleteAxisOverrides(overrides, op, args) {
     addCompleteAxisOverrides(overrides, "createAxes", args.axes);
   }
   const match = /^(?:create|edit)(X|Y|Theta|Radial)Axis$/u.exec(op);
-  if (match !== null) addCompleteAxisOverride(overrides, match[1], args);
+  if (match !== null) addCompleteAxisOverride(overrides, match[1], args, node);
   const group = /^(?:create|edit)(X|Y)AxisTicksAndLabels$/u.exec(op);
   if (group !== null) {
-    addCompleteAxisOverride(overrides, group[1], { ticksAndLabels: args });
+    addCompleteAxisOverride(overrides, group[1], { target: args.target, ticksAndLabels: args }, node);
   }
   if (op !== "createAxes") return;
   for (const [option, name] of [
@@ -814,7 +833,7 @@ function addCompleteAxisOverrides(overrides, op, args) {
     ["radius", "Radial"]
   ]) {
     if (args[option] && typeof args[option] === "object") {
-      addCompleteAxisOverride(overrides, name, args[option]);
+      for (const entry of Array.isArray(args[option]) ? args[option] : [args[option]]) addCompleteAxisOverride(overrides, name, entry);
     }
   }
 }
@@ -977,8 +996,8 @@ function explicitOverrides(program, node) {
   addErrorBarOverrides(overrides, program, node);
   addErrorBandOverrides(overrides, program, node);
   addRegressionOverrides(overrides, node);
-  addAxisOverrides(overrides, op, args);
-  addCompleteAxisOverrides(overrides, op, args);
+  addAxisOverrides(overrides, op, args, node);
+  addCompleteAxisOverrides(overrides, op, args, node);
   addGridOverrides(overrides, op, args);
   addParallelOverrides(overrides, program, op, args);
   if (["createTitle", "editTitle"].includes(op)) {

@@ -239,6 +239,20 @@
   {
     "file": "api/axes/complete.md",
     "block": 1,
+    "heading": "Independent named Cartesian axes",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [
+      "target: \"share\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: \"share\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "39795f944a3111610e45fc6d3750e80715d703d4162a80f09c3ee7679234ede9",
+    "executable": false
+  },
+  {
+    "file": "api/axes/complete.md",
+    "block": 2,
     "heading": "Moving a complete axis and refining its text",
     "mode": "fragment",
     "environment": "esm-context",
@@ -250,7 +264,7 @@
   },
   {
     "file": "api/axes/complete.md",
-    "block": 2,
+    "block": 3,
     "heading": "Styling native tick dashes",
     "mode": "fragment",
     "environment": "esm-context",
@@ -258,20 +272,6 @@
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "cf1f11d653404c55e48dca7db30604813c72d379fa6f18facb9ba4c05e57114e",
-    "executable": false
-  },
-  {
-    "file": "api/axes/complete.md",
-    "block": 3,
-    "heading": "`createAxes(options?)`",
-    "mode": "fragment",
-    "environment": "esm-context",
-    "receivers": [
-      "program"
-    ],
-    "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "d5dcaf02169388ab3fb2f3ca12c0f46a200005e277b234305cb1e3a8942f734b",
     "executable": false
   },
   {
@@ -285,7 +285,7 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "ef35f4b5bcc59c999924a679003b57e0ef2720bb0ffed28e3774cf47436075e5",
+    "sha256": "d5dcaf02169388ab3fb2f3ca12c0f46a200005e277b234305cb1e3a8942f734b",
     "executable": false
   },
   {
@@ -299,7 +299,7 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "e617151251ffbc6048bd2e7e1fd8f2d31a02347143f6c7d7957cdba6f2c3cb6e",
+    "sha256": "ef35f4b5bcc59c999924a679003b57e0ef2720bb0ffed28e3774cf47436075e5",
     "executable": false
   },
   {
@@ -313,12 +313,26 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "9e744feb00c85430d869bc1e92a91d99050760e66c33d22e125cab1ba65345e8",
+    "sha256": "e617151251ffbc6048bd2e7e1fd8f2d31a02347143f6c7d7957cdba6f2c3cb6e",
     "executable": false
   },
   {
     "file": "api/axes/complete.md",
     "block": 7,
+    "heading": "`createAxes(options?)`",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "9e744feb00c85430d869bc1e92a91d99050760e66c33d22e125cab1ba65345e8",
+    "executable": false
+  },
+  {
+    "file": "api/axes/complete.md",
+    "block": 8,
     "heading": "`createAxes(options?)`",
     "mode": "fragment",
     "environment": "esm-context",

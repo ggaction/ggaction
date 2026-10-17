@@ -239,3 +239,5 @@ export function includesVocabulary(vocabulary, value) {
 export const PLOT_LEGEND_POSITIONS = Object.freeze(["top-left", "top-right", "bottom-left", "bottom-right"]);
 export const LEGEND_POSITIONS = Object.freeze(["left", "right", "top", "bottom", ...PLOT_LEGEND_POSITIONS]);
 export const LEGEND_BLOCK_LAYOUTS = Object.freeze(["row", "column", "wrap"]);
+
+export const AXIS_RESOURCE_CHANNELS = Object.freeze(["x", "y", "theta", "radius", "parallel"]);

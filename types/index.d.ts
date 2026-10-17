@@ -66,6 +66,7 @@ export type {
   ShapeEncodingOptions,
   AngleEncodingOptions,
   CompleteAxisOptions,
+  NamedCompleteAxis,
   ConcatCompositionSpec,
   CompositionAlign,
   CompositionOptions,

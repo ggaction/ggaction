@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:af4caf79d3c38d006ac5730c0bdd4c047e9d3697b2beba89540b1b8f19eedf1e",
+    "contractId": "sha256:09dfe48a17888e5795ebaef607606a59f7bd166d9a9c9c0c4c67bc7e2a12a7f6",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1563,6 +1563,7 @@
         "color-individual-tick-labels",
         "override-displayed-tick-text",
         "shift-ticks-and-labels-along-an-axis",
+        "independent-cartesian-axes",
         "standalone-cartesian-axes",
         "polar-component-creation",
         "omit-remove-and-restore-components",
@@ -1572,8 +1573,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 13498,
-      "sha256": "9a66532fd924fc9214e6cf2722a493f5d370b103cb5465a6fd012dabce1a4a6f"
+      "bytes": 13839,
+      "sha256": "2365b88c1cbb0030774291ff543803a7f59ed359418f981ab603222dd0496bf8"
     },
     {
       "order": 96,
@@ -2273,8 +2274,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 126289,
-      "sha256": "addb279fef98e230d443c3ed8158429ea009f6b566027c97c0de32ab2b99911d"
+      "bytes": 128439,
+      "sha256": "a6185224d0f3f339f17575c501b86f42a665cf4f52a62a90c2f97f160c6b7943"
     },
     {
       "order": 123,
@@ -2752,6 +2753,7 @@
         "type-markselector",
         "type-measuredradialguideoptions",
         "type-measuredradiusscaleoptions",
+        "type-namedcompleteaxis",
         "type-nonpointbandpositionscaleoptions",
         "type-nonpointcategoricalcolorscaleoptions",
         "type-nonpointcategoricalpositionscaleoptions",
@@ -2978,8 +2980,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 330972,
-      "sha256": "bcb69ab768bd299d36508bafe0dd88728c3d091da73f66aff7828cf464783a32"
+      "bytes": 332390,
+      "sha256": "a6386cd1e8e5c9966d6a505e99b6c9e0f7f3f5c94083420d7fb1bdfc44d1e244"
     },
     {
       "order": 127,
@@ -3332,7 +3334,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "c01e9105e1ebd440a1724b397b1d53102e02e97bb9c4bc09f578b47629225958"
+      "sha256": "e7b4f3642e61fc09913eb9db67428dda90fcbb465f73293b95e6d3a71161639d"
     },
     {
       "order": 150,
@@ -3341,12 +3343,13 @@
       "source": "api/axes/complete.md",
       "headings": [
         "complete-axes-and-labels",
+        "independent-named-cartesian-axes",
         "moving-a-complete-axis-and-refining-its-text",
         "styling-native-tick-dashes",
         "createaxesoptions"
       ],
-      "bytes": 17772,
-      "sha256": "dc4898f74ef9bbd420c7a9ebc9fe3f9908a615472dedbd486317ac4b256e5441"
+      "bytes": 20350,
+      "sha256": "bc0b5ea6cac34cf129f5cba2d1997d051af8d2befe6264ca0e0cb43e235ad87a"
     }
   ]
 }

@@ -1,3 +1,5 @@
+import { cartesianAxisOwners, axisTargetArgs } from "../selectors/axes.js";
+import { axisGraphicIds } from "./guides/resources.js";
 import { applyMaterializationPlan, buildMaterializationPlan } from "./planner.js";
 import { withGuideLayoutTransaction } from "./guides/layout.js";
 
@@ -13,11 +15,17 @@ export function rematerializeTypography(program) {
     .map(layer => ({ op: "rematerializeTextMark", args: { id: layer.id } }));
   const guides = [];
   for (const [id, op] of [
-    ["xAxisLabels", "editXAxisLabels"], ["yAxisLabels", "editYAxisLabels"],
-    ["xAxisTitle", "editXAxisTitle"], ["yAxisTitle", "editYAxisTitle"],
     ["thetaAxisLabels", "editThetaAxisLabels"], ["radialAxisLabels", "editRadialAxisLabels"],
     ["thetaAxisTitle", "editThetaAxisTitle"], ["radialAxisTitle", "editRadialAxisTitle"]
   ]) if (exists(id, op)) guides.push({ op });
+  for (const owner of cartesianAxisOwners(program)) {
+    for (const [index, component] of [[2, "Labels"], [3, "Title"]]) {
+      const op = `edit${owner.channel.toUpperCase()}Axis${component}`;
+      if (exists(axisGraphicIds(owner.channel, owner.id)[index], op)) {
+        guides.push({ op, ...(owner.named ? { args: axisTargetArgs(owner.id, owner.channel) } : {}) });
+      }
+    }
+  }
   const parallel = program.guideConfigs.axis?.parallel?.axes;
   if (parallel !== undefined && typeof program.rematerializeParallelAxes === "function") {
     guides.push({ op: "rematerializeParallelAxes", args: { target: parallel.target } });

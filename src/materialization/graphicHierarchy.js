@@ -1,3 +1,5 @@
+import { cartesianAxisOwners } from "../selectors/axes.js";
+import { axisGraphicIds } from "./guides/resources.js";
 import {
   findGraphicParent,
   graphicSiblings
@@ -55,8 +57,10 @@ export function resolveMarkGraphicPlacement(program, { data, markType }) {
     ? dataset.transform[0]
     : undefined;
   if (transform?.type !== "regression") {
+    const named = new Set(cartesianAxisOwners(program).filter(owner => owner.named)
+      .flatMap(owner => axisGraphicIds(owner.channel, owner.id)));
     const axis = program.graphicSpec.objects[PLOT_GRAPHIC_ID]?.children?.find(
-      id => id === "plotBorder" || /^(x|y)Axis/.test(id)
+      id => id === "plotBorder" || /^(x|y)Axis/.test(id) || named.has(id)
     );
     return resolvePlotGraphicPlacement(
       program,

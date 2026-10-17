@@ -1,3 +1,5 @@
+import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
+import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { materializeTextLines } from "../../../materialization/textLines.js";
 import { axisTitleTextLines as titleLines, validateAxisTextPlacement } from "../../../grammar/axisTextPlacement.js";
 import { axisThemeTypography } from "../../theme/state.js";
@@ -73,19 +75,19 @@ function resolveTitleAlong(scale, config) {
   return along + (config.alongOffset ?? 0);
 }
 
-function axisLabelBounds(program, channel) {
-  const id = `${channel}AxisLabels`, labels = program.graphicSpec.objects[id];
+function axisLabelBounds(program, channel, axisId = channel) {
+  const id = axisGraphicIds(channel, axisId)[2], labels = program.graphicSpec.objects[id];
   const bounds = target => resolveConcreteGraphicBounds(
     program.graphicSpec, target, program.materializationConfigs.textMetrics
   );
   return labels?.items?.map(item => bounds(item.id)) ?? (labels ? [bounds(id)] : []);
 }
 
-function inferredTitleOffset(program, channel, config) {
-  const plot = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale);
+function inferredTitleOffset(program, channel, config, axisId = channel) {
+  const plot = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale, axisId);
   const canvas = findCanvasGraphic(program)?.properties;
-  const labels = program.graphicSpec.objects[`${channel}AxisLabels`]
-    ? resolveConcreteGraphicBounds(program.graphicSpec, `${channel}AxisLabels`, program.materializationConfigs.textMetrics)
+  const labels = program.graphicSpec.objects[axisGraphicIds(channel, axisId)[2]]
+    ? resolveConcreteGraphicBounds(program.graphicSpec, axisGraphicIds(channel, axisId)[2], program.materializationConfigs.textMetrics)
     : undefined;
   const preferred = channel === "x" ? 42 : 52;
   if (!plot || !canvas || !labels) return preferred;
@@ -99,7 +101,7 @@ function inferredTitleOffset(program, channel, config) {
     position: config.position,
     along: 0,
     offset: preferred
-  }), config, program.semanticSpec.guides.axis?.[channel]?.title ?? "", program.materializationConfigs.textMetrics);
+  }), config, program.semanticSpec.guides.axis?.[axisId]?.title ?? "", program.materializationConfigs.textMetrics);
   const needed = positive
     ? labels[far] + 4 - bounds[near]
     : bounds[far] - labels[near] + 4;
@@ -122,13 +124,13 @@ function inferredTitleOffset(program, channel, config) {
     bounds: plot, channel, position: config.position,
     along: resolveTitleAlong(program.resolvedScales[config.scale], config),
     offset: preferred + adjustment
-  }), config, program.semanticSpec.guides.axis?.[channel]?.title ?? "", program.materializationConfigs.textMetrics);
+  }), config, program.semanticSpec.guides.axis?.[axisId]?.title ?? "", program.materializationConfigs.textMetrics);
   // Optional ink reserve must not introduce a label collision.
-  return preferred + (axisLabelBounds(program, channel).some(label => label && textBoundsIntersect(candidateBounds, label))
+  return preferred + (axisLabelBounds(program, channel, axisId).some(label => label && textBoundsIntersect(candidateBounds, label))
     ? legacyAdjustment : adjustment);
 }
 
-const CREATE_OPTIONS = [
+const CREATE_OPTIONS = ["target",
   "text", "scale", "position", "at", "offset", "rotation", "color",
   "fontSize", "fontFamily", "fontWeight", "alongOffset", "align", "baseline"
 ];
@@ -201,9 +203,9 @@ export function inferAxisTitleText(program, channel, scaleId) {
   return [...titles][0];
 }
 
-function resolveGeometry(program, channel, config) {
+function resolveGeometry(program, channel, config, axisId = channel) {
   const scale = program.resolvedScales[config.scale];
-  const bounds = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale);
+  const bounds = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale, axisId);
   if ((
     !["linear", "time", "ordinal", "band", "point"].includes(scale?.type) &&
     !isTransformedScaleType(scale?.type)
@@ -219,13 +221,13 @@ function resolveGeometry(program, channel, config) {
   const resolvedBounds = titleBounds(
     geometry,
     config,
-    program.semanticSpec.guides.axis?.[channel]?.title ?? ""
+    program.semanticSpec.guides.axis?.[axisId]?.title ?? ""
   , program.materializationConfigs.textMetrics);
   const canvas = findCanvasGraphic(program)?.properties;
   if (!canvas || !textBoundsFitCanvas(resolvedBounds, canvas)) {
     throw canvasOverflowError(`The ${channel}-axis title does not fit the Canvas margin.`, [resolvedBounds], canvas);
   }
-  const labelBounds = axisLabelBounds(program, channel);
+  const labelBounds = axisLabelBounds(program, channel, axisId);
   if (labelBounds.some(bounds => bounds && textBoundsIntersect(resolvedBounds, bounds))) {
     throw new Error(`The ${channel}-axis title overlaps the axis labels.`);
   }
@@ -234,16 +236,19 @@ function resolveGeometry(program, channel, config) {
 
 function names(channel) {
   const prefix = channel === "x" ? "X" : "Y";
-  return { create: `create${prefix}AxisTitle`, edit: `edit${prefix}AxisTitle`, graphic: `${channel}AxisTitle` };
+  return { create: `create${prefix}AxisTitle`, edit: `edit${prefix}AxisTitle` };
 }
 
 function makeEdit(channel) {
   const operation = names(channel);
   return action({ op: operation.edit, description: `Edit the ${channel}-axis title.` }, withGuideLayoutValidation(function (args = {}) {
       validateKeys(args, EDIT_OPTIONS, operation.edit);
+    const selected = selectCartesianAxis(this, channel, args, { create: false });
+    const axisId = selected.id; args = selected.options;
+    const graphic = axisGraphicIds(channel, axisId)[3];
     validateAxisTextPlacement(args, { title: true });
-    if (this.graphicSpec.objects[operation.graphic]?.type !== "text") throw new Error(`${operation.edit} requires an existing axis title.`);
-    const previous = this.guideConfigs.axis?.[channel]?.title;
+    if (this.graphicSpec.objects[graphic]?.type !== "text") throw new Error(`${operation.edit} requires an existing axis title.`);
+    const previous = this.guideConfigs.axis?.[axisId]?.title;
     if (!previous) throw new Error(`${operation.edit} requires title configuration.`);
     const { text, rotation: requestedRotation, ...appearance } = args;
     const explicitText = Object.hasOwn(args, "text");
@@ -273,27 +278,27 @@ function makeEdit(channel) {
       ? validateText(text)
       : config.inferredText === true
         ? inferAxisTitleText(this, channel, config.scale)
-        : this.semanticSpec.guides.axis?.[channel]?.title;
-    if (resolvedTitle !== this.semanticSpec.guides.axis?.[channel]?.title) {
+        : this.semanticSpec.guides.axis?.[axisId]?.title;
+    if (resolvedTitle !== this.semanticSpec.guides.axis?.[axisId]?.title) {
       next = next.editSemantic({
-        property: `guide.axis.${channel}.title`,
+        property: `guide.axis.${axisId}.title`,
         value: validateText(resolvedTitle)
       });
     }
-    const resolvedText = validateText(next.semanticSpec.guides.axis?.[channel]?.title);
+    const resolvedText = validateText(next.semanticSpec.guides.axis?.[axisId]?.title);
     if (config.inferredOffset) {
-      config.offset = inferredTitleOffset(next, channel, config);
+      config.offset = inferredTitleOffset(next, channel, config, axisId);
     }
-    const geometry = resolveGeometry(next, channel, config);
-    next = next._withGuideConfig(channel, "title", config);
+    const geometry = resolveGeometry(next, channel, config, axisId);
+    next = next._withGuideConfig(axisId, "title", config);
     const properties = {
       x: geometry.x, y: geometry.y, text: resolvedText, fill: config.color,
       fontSize: config.fontSize, fontFamily: config.fontFamily,
       fontWeight: config.fontWeight, textAlign: config.align ?? "center", textBaseline: config.baseline ?? "middle",
       rotation: config.rotation
     };
-    for (const [property, value] of Object.entries(properties)) next = next.editGraphics({ target: operation.graphic, property, value });
-    return materializeTextLines(next, operation.graphic, titleLines(resolvedText, config));
+    for (const [property, value] of Object.entries(properties)) next = next.editGraphics({ target: graphic, property, value });
+    return materializeTextLines(next, graphic, titleLines(resolvedText, config));
   }));
 }
 
@@ -304,6 +309,9 @@ function makeCreate(channel) {
   const operation = names(channel);
   return action({ op: operation.create, description: `Create the ${channel}-axis title.` }, withGuideLayoutValidation(function (args = {}) {
       validateKeys(args, CREATE_OPTIONS, operation.create);
+    const selected = selectCartesianAxis(this, channel, args, { create: true });
+    const axisId = selected.id; args = selected.options;
+    const graphic = axisGraphicIds(channel, axisId)[3];
     validateAxisTextPlacement(args, { title: true });
     const {
       text: requestedText,
@@ -313,9 +321,9 @@ function makeCreate(channel) {
       ...appearance
     } = args;
     const scale = validateUserId(requestedScale ?? channel, "Scale id");
-    const guideScale = this.semanticSpec.guides.axis?.[channel]?.scale;
+    const guideScale = this.semanticSpec.guides.axis?.[axisId]?.scale;
     if (guideScale && guideScale !== scale) throw new Error(`${operation.create} conflicts with the existing axis scale.`);
-    if (this.graphicSpec.objects[operation.graphic]) throw new Error(`${operation.create} requires a missing axis title.`);
+    if (this.graphicSpec.objects[graphic]) throw new Error(`${operation.create} requires a missing axis title.`);
     const inferredText = !Object.hasOwn(args, "text");
     const text = validateText(
       requestedText ?? inferAxisTitleText(this, channel, scale)
@@ -342,18 +350,18 @@ function makeCreate(channel) {
       ...appearance
     };
     let next = this
-      .editSemantic({ property: `guide.axis.${channel}.scale`, value: scale })
-      .editSemantic({ property: `guide.axis.${channel}.title`, value: text });
-    if (inferredOffset) config.offset = inferredTitleOffset(next, channel, config);
+      .editSemantic({ property: `guide.axis.${axisId}.scale`, value: scale })
+      .editSemantic({ property: `guide.axis.${axisId}.title`, value: text });
+    if (inferredOffset) config.offset = inferredTitleOffset(next, channel, config, axisId);
     validateConfig(channel, config);
-    resolveGeometry(next, channel, config);
+    resolveGeometry(next, channel, config, axisId);
     return next
       .createGraphics({
-        id: operation.graphic,
+        id: graphic,
         type: "text",
         ...resolvePlotGraphicPlacement(this)
       })
-      ._withGuideConfig(channel, "title", config)[operation.edit]();
+      ._withGuideConfig(axisId, "title", config)[operation.edit](axisId === channel ? undefined : axisTargetArgs(axisId, channel));
   }));
 }
 

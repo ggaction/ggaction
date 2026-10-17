@@ -1,3 +1,4 @@
+import { cartesianAxisOwners } from "../../selectors/axes.js";
 import { resolveLegendGroupPlacement } from "../../layout/legendGroup.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { resolveConcreteGraphicBounds } from
@@ -130,8 +131,10 @@ export function applyFacetGuideComposition(program, { layout, plot } = {}) {
     const child = program.children[cell.id];
     return {
       id: cell.id,
-      axes: Object.keys(child.guideConfigs.axis ?? {})
-        .filter(channel => ["x", "y"].includes(channel)),
+      axes: cartesianAxisOwners(child).map(owner => owner.id),
+      axisOwners: cartesianAxisOwners(child).map(owner => ({ id: owner.id, channel: owner.channel,
+        components: Object.fromEntries(["line", "ticks", "labels", "title"].flatMap(component =>
+          owner.config?.[component] === undefined ? [] : [[component, owner.config[component].position]])) })),
       legendKinds: legendKinds(child)
     };
   });
@@ -146,8 +149,15 @@ export function applyFacetGuideComposition(program, { layout, plot } = {}) {
   for (const cell of layout.children) {
     const namespace = `${program.compositionSpec.id}-${cell.id}`;
     const childPlan = ownership.children[cell.id];
-    for (const channel of childPlan.removeAxes) {
-      next = removeNamespacedGraphics(next, namespace, axisGraphicIds(channel));
+    const axisOwners = cartesianAxisOwners(program.children[cell.id]);
+    for (const axisId of childPlan.removeAxes) {
+      const owner = axisOwners.find(owner => owner.id === axisId);
+      next = removeNamespacedGraphics(next, namespace, axisGraphicIds(owner.channel, axisId));
+    }
+    for (const [axisId, components] of Object.entries(childPlan.removeAxisComponents ?? {})) {
+      const owner = axisOwners.find(owner => owner.id === axisId);
+      const ids = axisGraphicIds(owner.channel, axisId);
+      next = removeNamespacedGraphics(next, namespace, components.map(component => ids[["line", "ticks", "labels", "title"].indexOf(component)]));
     }
     if (childPlan.removeLegends.length > 0) {
       next = removeNamespacedGraphics(
