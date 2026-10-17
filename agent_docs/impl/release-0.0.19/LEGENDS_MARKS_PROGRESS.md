@@ -215,3 +215,9 @@
 - Pending overall scope: canonical full legend-appearance layout target, parent
   color-size integration, and exhaustive realistic option/literal witnesses.
   Named-shapes stable target is delegated by ROOT to data/color owner.
+
+- Postcommit source d2b49552: docs120/120 PASS and the exact final-source
+  installed consumer suite PASS (Full404646/Basic199430gzip measurement as
+  recorded by the consumer log; final integration remeasures cumulative size).
+  Full/Basic numeric combined creation and Full aliases/map/clip/split persisted
+  and rendered from the installed tarball, not source-relative imports.
