@@ -171,10 +171,26 @@
         172
       ],
       "calls": [
-        "program.editColorScale({interpolate:'cubehelix',gamma:2.2})",
+        "program.editColorScale({range:['#75190b','#90f2a4'],interpolate:'cubehelix',gamma:2.2})",
         "program.editColorScale({type:'pow',exponent:3})"
       ],
       "checks": {
+        "cubehelixRange": [
+          "#75190b",
+          "#90f2a4"
+        ],
+        "endpointCubehelix": [
+          {
+            "h": 359.91131155362626,
+            "s": 0.9971265231069638,
+            "l": 0.20023511872546734
+          },
+          {
+            "h": 120.15734226531444,
+            "s": 0.9993891368856703,
+            "l": 0.8000787823234881
+          }
+        ],
         "cubehelixSamples": [
           {
             "gamma": 1,
@@ -234,7 +250,7 @@
             "gamma": 1,
             "t": 0.75,
             "rgb": [
-              122,
+              121,
               207,
               67
             ]
@@ -271,7 +287,7 @@
             "t": 0.125,
             "rgb": [
               110,
-              34,
+              35,
               0
             ]
           },
@@ -317,7 +333,7 @@
             "rgb": [
               84,
               177,
-              23
+              24
             ]
           },
           {
