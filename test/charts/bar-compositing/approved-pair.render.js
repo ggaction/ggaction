@@ -20,7 +20,11 @@ test("approved difference source has stable literal/public PNG pairs",async()=>{
     assert.deepEqual(publicProgram.trace.children.map(node=>node.op),[
       "createCanvas","createData","createBarPlot","encodeBarWidth","editBarMark","editBarMark"
     ]);
-    assert.deepEqual(publicProgram.trace.children[5].args,{blend:"difference",opacity:variant.opacity});
+    assert.deepEqual(publicProgram.trace.children.map(node=>node.args),[
+      {width:200,height:200,margin:40,background:variant.background},{valuesCount:1},
+      {x:"category",y:{field:"value",aggregate:"sum"},guides:false},{pixels:80},
+      {fill:"#f00000",stroke:"#ffff00",strokeWidth:8},{blend:"difference",opacity:variant.opacity}
+    ]);
     assert.ok(publicOutput.rgba[(100*200+100)*4]!==publicOutput.rgba[0],"plot-region ink");
     const directory=path.join(".artifacts/test/png/charts",variant.capability,variant.chart,variant.variant);
     await mkdir(directory,{recursive:true});
