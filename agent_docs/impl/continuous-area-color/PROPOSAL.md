@@ -6,7 +6,7 @@
 - [x] 새 API의 범위·저장 결과·호환성·소비자 검증 계획
 - [x] 독립적인 9개 면적 primitive 목표와 실제 PNG 렌더
 - [x] **Gate: approved — 공개 계약과 아래 그림에 대한 사용자 승인**
-- [ ] 승인된 범위 구현, 소비자 검증, 문서/계약/타입 동기화
+- [x] 승인된 범위 구현, 소비자 검증, 문서/계약/타입 동기화 — [RESULTS.md](RESULTS.md)
 
 승인 후 구현했으며 `fixture.mjs`의 `proposedProgram()`은 이제 성공한다. `rejection-evidence.json`은 승인 전 0.0.19의 역사적 거부 증거로 보존한다. 진단·목표 생성 명령은 다음과 같다.
 
