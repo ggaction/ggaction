@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "packageVersion": "0.0.20",
+  "packageVersion": "0.0.21",
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
-    "status": "published-release",
-    "contractId": "sha256:6e87a7533f9c704a422f5578f5a4370375ae9cdba93e0f42ac7f7f1dbe3c54f1",
-    "sourceCommit": "08cf5a45cda7166cc6555f3a476880181bbebea6",
+    "status": "development",
+    "contractId": "sha256:c2450e35c268baaf95a21d55b0d53161f1a0c76b2cd1821217a75c30d00de5ea",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -30,7 +30,7 @@
         "go-deeper"
       ],
       "bytes": 2429,
-      "sha256": "3e51ad19e49bee6ecf85c2978e71bdd8d55c681b75a4f3a07ce8e62f68027d88"
+      "sha256": "316af2a13ae878a0b6f01129b9738bd49811c250bdcda1eadf7547f3e2cfbbb1"
     },
     {
       "order": 2,
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "28966095b05bfcbe8e725cd5dafc5eff8eec9bb64234deade5c7c24e2fb13aaa"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -837,8 +837,8 @@
         "createdensitydata-id-source-field-groupby-bandwidth-extent-steps-kernel-normalization-weight-missing-as",
         "related"
       ],
-      "bytes": 10576,
-      "sha256": "8711168b08774e4275aba2e38b84b2c29c9b735c164437e6850e2dba65ac5730"
+      "bytes": 10724,
+      "sha256": "3af220ca6cac156bee797360ed6fde8fc3bef12e6b513a01a83e1fbf2c2be1f1"
     },
     {
       "order": 53,
@@ -2046,8 +2046,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 164896,
-      "sha256": "afe4c0f75370582aaf129f6951e300473d5c2c6680b7c8ed0f652101cbf645ff"
+      "bytes": 165256,
+      "sha256": "1c15a018a83937306ed3963c4280b72e5c4ee2921bf45b40c5bdede1e6e91073"
     },
     {
       "order": 119,
@@ -2091,8 +2091,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 69857,
-      "sha256": "e22ce20d388af5175a7f26c5e50a8b485381caada0a1a9990e1f958334d8ca8f"
+      "bytes": 69893,
+      "sha256": "1db4eebb58dbad26b5c84a5a1c208341b3f755c9dffd4a7f73437a9b6ed1e570"
     },
     {
       "order": 120,
@@ -2197,8 +2197,8 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 79041,
-      "sha256": "79c35e42a82395043332de0b0ea6005993bbc8053ecba5cb905d08d2135924ee"
+      "bytes": 79221,
+      "sha256": "aaf0640a21f5a4c5caea45d73ec3dc80fb3af15c49532ece13b7e81faa0e9d1d"
     },
     {
       "order": 122,
@@ -2294,8 +2294,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 130515,
-      "sha256": "599178a8174d560c91a04ae100381840e177137147d755c1413cbc4791c6002a"
+      "bytes": 130527,
+      "sha256": "3e48bac90154f61b296db015513c3fc5c96967a39a890c13dc82eb095914f924"
     },
     {
       "order": 123,
@@ -2319,8 +2319,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 10273,
-      "sha256": "f98349fc7e2d3ee59b685a98ed293e3428fc0a57286f7cc1673b4aeee45ddd74"
+      "bytes": 10285,
+      "sha256": "8254783a14842402919b5ff7afd3faa0628e393e51b4035403b3afc61811071e"
     },
     {
       "order": 124,
@@ -3043,8 +3043,8 @@
         "editgraphics-target-property-value-remove",
         "scale-materialization"
       ],
-      "bytes": 16959,
-      "sha256": "c6ba31ee5457cb61164f834ed832de082361f4cbd17f41b4694c768213bd4e8b"
+      "bytes": 16887,
+      "sha256": "6290b807e031ee8069a7df5b38464bea8906ecdd59f5124a91617d4a1de87f96"
     },
     {
       "order": 129,
@@ -3059,8 +3059,8 @@
         "createfolddata-id-source-fields-as",
         "createstackdata-id-source-category-group-value-mode-as"
       ],
-      "bytes": 8984,
-      "sha256": "537959f79690d7dc95b8942672aa2e5d35ce700438dcb6ed0faa00d96c12c594"
+      "bytes": 9117,
+      "sha256": "b0e9e81ac2abdb206491699397bf2f809c686cb34662e91268bc067791df13a0"
     },
     {
       "order": 130,
@@ -3367,8 +3367,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3039,
-      "sha256": "6d22981be88a5b6e28ebe9fae8820c98cc61284279242e1b4d0183f81961106a"
+      "bytes": 3000,
+      "sha256": "450fafbff6ad2006b6ae12af70477be825c385bfd4bce9696cd76b516ff86b8a"
     },
     {
       "order": 150,
