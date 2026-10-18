@@ -1,0 +1,121 @@
+{
+  "status": "existing-primitive-target-rendered-public-clip-not-yet-implemented",
+  "sourceCommit": "86e6f46e2581115253a86fedd45fdc8a2150a8e1",
+  "scriptSha256": "8db86585b51fd6f4af8544c2fa4c81e648f2469754a2edde9d8173d4376b41a8",
+  "frame": {
+    "x": 40,
+    "y": 30,
+    "width": 160,
+    "height": 128
+  },
+  "rawRows": [
+    {
+      "x": -0.25,
+      "y": 4,
+      "series": "Series A"
+    },
+    {
+      "x": 0.25,
+      "y": 8.25,
+      "series": "Series A"
+    },
+    {
+      "x": 5,
+      "y": 0,
+      "series": "Series A"
+    },
+    {
+      "x": 10.25,
+      "y": 4,
+      "series": "Series A"
+    },
+    {
+      "x": 5,
+      "y": 4,
+      "series": "Series A"
+    },
+    {
+      "x": 12,
+      "y": 10,
+      "series": "Series A"
+    },
+    {
+      "x": 10,
+      "y": 8,
+      "series": "Series A"
+    },
+    {
+      "x": -1,
+      "y": -1,
+      "series": "Series A"
+    }
+  ],
+  "expectedCenters": [
+    [
+      36,
+      94
+    ],
+    [
+      44,
+      26
+    ],
+    [
+      120,
+      158
+    ],
+    [
+      204,
+      94
+    ],
+    [
+      120,
+      94
+    ],
+    [
+      232,
+      -2
+    ],
+    [
+      200,
+      30
+    ],
+    [
+      24,
+      174
+    ]
+  ],
+  "pointCount": 8,
+  "offPlotCenters": 5,
+  "fullyOutsideGlyphs": 2,
+  "partiallyVisibleGlyphs": 5,
+  "fullyInsideGlyphs": 1,
+  "unclippedLineAndOutsideLegendUnchanged": true,
+  "before": [
+    {
+      "label": "mark API",
+      "error": "Unknown editPointMark option \"clip\"."
+    },
+    {
+      "label": "concrete owner property",
+      "error": "Unknown circle graphic property \"clip\"."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "unclipped-control",
+      "svgSha256": "5ab2de406fcaea7ac6ec88884eef0ebdd6929ad497095b45be49fab6cdc027db",
+      "pngSha256": "1e864676bf6b7fc8ff35771d3ef790618a1c5912162bef4d8eef74fb670bf5e9",
+      "pdfSha256": "b20c49c0a0d94e6aece3000ae5e33db99f5317760ed5d822bb7222c7806df7b4",
+      "clipReferences": 0
+    },
+    {
+      "name": "clipped-primitive-target",
+      "svgSha256": "0f4c9d3a11f1848b93a3ba48bca3eab786a865d68c654a9c51b81fb4b8defaff",
+      "pngSha256": "9338732bf3cc78c57b28b0f0c4faaebae4143bcf940ba2d3744c4b7c748b36b6",
+      "pdfSha256": "4a82518799c2e3bcada0e7ef0387f31a937e54a5f1d83ccda6426b016b01eba6",
+      "clipReferences": 1
+    }
+  ],
+  "schoolCalls": 0,
+  "chartPixelsInspected": false
+}
