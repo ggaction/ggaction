@@ -80,6 +80,12 @@ an incompatible inherited white point; supplying an incompatible choice in
 the same edit rejects. Marks, field-driven strokes, gradient legends and sampled
 color legends use the same selected convention.
 
+For HCL and HCL-long, an endpoint whose parsed RGB channels are exactly equal
+has zero chroma and no hue. A segment with one neutral endpoint retains the
+other endpoint's hue; two neutral endpoints interpolate lightness with zero
+chroma. This applies to D50 and D65. Chromatic endpoints retain the ordinary
+short or long hue path, and final RGB byte rounding stays unchanged.
+
 Cubehelix and cubehelix-long interpolation accept a positive finite `gamma`.
 The default is `1`; `editColorScale({ gamma: "auto" })` restores that default.
 Within each range segment, hue and saturation use the original position `t`,

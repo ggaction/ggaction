@@ -1128,6 +1128,7 @@ export type ParameterizedAggregateOperation =
 export type AggregateOperation =
   | ScalarAggregateOperation
   | ParameterizedAggregateOperation;
+/** HCL modes borrow a chromatic endpoint's hue across an exact RGB-neutral endpoint. */
 export type ContinuousColorInterpolation =
   | "rgb"
   | "hsl"

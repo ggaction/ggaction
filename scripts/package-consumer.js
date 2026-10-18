@@ -116,6 +116,23 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(deserializeProgram(serializeProgram(rangedInterval)).graphicSpec,rangedInterval.graphicSpec);
     assert.ok((await renderToPDFBuffer(rangedInterval)).buffer.length>100);
 
+    {
+      const neutralHueExpected = ["#4682b4","#6090bd","#789fc6","#8faecf","#a5bed8","#bbcde2","#d1ddeb","#e7edf4","#fdfdfd"];
+      const neutralHueRows = Array.from({length:9},(_,i)=>({x:i,y:i,v:i/8}));
+      const neutralHue = chart().createCanvas({width:600,height:500,margin:100})
+        .createData({values:neutralHueRows}).createScatterPlot({x:"x",y:"y",guides:false})
+        .encodeColor({field:"v",fieldType:"quantitative",scale:{domain:[0,1],range:["#4682b4","#fdfdfd"],interpolate:"hcl",whitePoint:"d50"}})
+        .createLegend({title:false,representation:"symbols",values:[0,.5,1]});
+      assert.deepEqual(neutralHue.graphicSpec.objects.scatterPlot.items.map(item=>item.properties.fill),neutralHueExpected);
+      assert.deepEqual(neutralHue.graphicSpec.objects.colorGradientSymbols.items.map(item=>item.properties.fill),[neutralHueExpected[0],neutralHueExpected[4],neutralHueExpected[8]]);
+      assert.deepEqual(deserializeProgram(serializeProgram(neutralHue)).graphicSpec,neutralHue.graphicSpec);
+      const neutralHueLab = neutralHue.editColorScale({interpolate:"lab",whitePoint:"d50"});
+      assert.equal(renderToSVG(neutralHue),renderToSVG(neutralHueLab));
+      assert.deepEqual((await renderToPNGBuffer(neutralHue)).buffer,(await renderToPNGBuffer(neutralHueLab)).buffer);
+      assert.deepEqual(neutralHue.editColorScale({reverse:true}).graphicSpec.objects.scatterPlot.items.map(item=>item.properties.fill),neutralHueExpected.toReversed());
+      assert.deepEqual(neutralHue.semanticSpec.datasets[0].values,neutralHueRows);
+    }
+
     const bootstrapRows = [{x:0,y:0},{x:0,y:1},{x:0,y:2},{x:0,y:30}];
     const bootstrapSummary = chart().createData({values:bootstrapRows}).createSummaryData({id:"ci",groupBy:"x",aggregates:[
       {field:"y",op:{op:"ciLower",method:{type:"bootstrap",seed:1}},as:"lower"},
@@ -5260,6 +5277,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "grouped-corner-and-free-legend-placement",
       "sequential-palette-count",
       "ranged-numeric-datum-wrapper-parity",
+      "neutral-hcl-hue-borrowing",
       "typescript",
       "basic-entry-runtime-and-types",
       "tutorial-consumers",

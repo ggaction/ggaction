@@ -183,8 +183,12 @@ function labToRgb({ l, a, b }, whitePoint = "d65") {
   };
 }
 
-function labToHcl({ l, a, b }) {
-  return { h: hue(Math.atan2(b, a) * 180 / Math.PI), c: Math.hypot(a, b), l };
+function labToHcl({ l, a, b }, neutral = false) {
+  return {
+    h: neutral ? undefined : hue(Math.atan2(b, a) * 180 / Math.PI),
+    c: neutral ? 0 : Math.hypot(a, b),
+    l
+  };
 }
 
 function hclToLab({ h, c, l }) {
@@ -251,10 +255,12 @@ function mix(left, right, amount, method, options) {
     }, whitePoint);
   }
   if (method.startsWith("hcl")) {
-    const a = labToHcl(rgbToLab(left, whitePoint));
-    const b = labToHcl(rgbToLab(right, whitePoint));
+    const a = labToHcl(rgbToLab(left, whitePoint), left.r === left.g && left.g === left.b);
+    const b = labToHcl(rgbToLab(right, whitePoint), right.r === right.g && right.g === right.b);
     return labToRgb(hclToLab({
-      h: interpolateHue(a.h, b.h, amount, method.endsWith("-long")),
+      h: a.h === undefined ? b.h ?? 0
+        : b.h === undefined ? a.h
+          : interpolateHue(a.h, b.h, amount, method.endsWith("-long")),
       c: a.c + (b.c - a.c) * amount,
       l: a.l + (b.l - a.l) * amount
     }), whitePoint);

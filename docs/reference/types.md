@@ -318,6 +318,7 @@ These declarations are generated from the same source as the action signatures. 
 export type AggregateOperation =
   | ScalarAggregateOperation
   | ParameterizedAggregateOperation;
+/** HCL modes borrow a chromatic endpoint's hue across an exact RGB-neutral endpoint. */
 ```
 
 </details>
