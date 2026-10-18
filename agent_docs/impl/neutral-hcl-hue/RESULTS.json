@@ -208,5 +208,15 @@
   "schoolCalls": 0,
   "chartPixelsInspected": false,
   "publication": false,
-  "releaseChecks": "Node24 protected release/size-budget measurement, canonical registry archive, live docs and dataset synchronization remain due at1413; no budget increase or publication performed."
+  "releaseChecks": "Node24 protected release/size-budget measurement, canonical registry archive, live docs and dataset synchronization remain due at1413; no budget increase or publication performed.",
+  "sourceCheckpoint": "af762df6289253b88c2e135a426f100cefcbcf5a",
+  "postCommitDocs": {
+    "status": "pass",
+    "tests": 120,
+    "logSha256": "44e37eebb18af8fdc3381a4230224ff78df1d7ab7fa97938427bcfea83960a6e",
+    "provenanceSourceCommit": "af762df6289253b88c2e135a426f100cefcbcf5a",
+    "provenanceStatus": "development",
+    "testedRuntimeAndPackedInputsUnchanged": true,
+    "existingInterpolationControlResetClarified": true
+  }
 }

@@ -5,7 +5,7 @@
 - [x] #227의 공개 재현, 현재 색상 변환 및 기존 36-cell 대체 표현의 증거 검토.
 - [x] 아래 구체 설계에 현재 작업 범위의 사용자 포괄 승인 재사용.
 - [x] 독립 수치 oracle, 공개 액션·범례·렌더링·저장 복원과 문서 검증. [RESULTS.json](./RESULTS.json).
-- [ ] 검증된 후보 commit/push. 새 배포는 1,413-family checkpoint에 통합.
+- [x] 검증된 source checkpoint `af762df6` commit/push. 새 배포는 1,413-family checkpoint에 통합.
 
 ## 승인과 범위
 

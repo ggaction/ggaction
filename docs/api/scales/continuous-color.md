@@ -75,9 +75,9 @@ Lab, HCL and HCL-long interpolation use D65 by default. Set
 `whitePoint: "d50"` together with one of those interpolation modes to use
 D50-adapted sRGB/XYZ matrices. An explicit white point with another interpolation
 mode rejects, including `"d65"`. `editColorScale({ whitePoint: "auto" })`
-removes the explicit choice and restores D65. Changing interpolation clears
-an incompatible inherited white point; supplying an incompatible choice in
-the same edit rejects. Marks, field-driven strokes, gradient legends and sampled
+removes the explicit choice and restores D65. When changing `interpolate`,
+supply `whitePoint` again to retain the selected convention; omission restores
+D65. An incompatible explicit pair rejects. Marks, field-driven strokes, gradient legends and sampled
 color legends use the same selected convention.
 
 For HCL and HCL-long, an endpoint whose parsed RGB channels are exactly equal
@@ -94,8 +94,8 @@ color or alter hue progression. Other interpolation modes reject explicit
 gamma, including `1`. A nonfinite real result during unclamped extrapolation
 rejects atomically; clamping occurs before gamma. Range endpoints retain the
 ordinary 8-bit RGB normalization, and final channels use the same byte rounding
-as other interpolation modes. Changing interpolation clears an incompatible
-inherited gamma; an explicitly incompatible pair in one edit rejects.
+as other interpolation modes. When changing `interpolate`, supply `gamma` again
+to retain it; omission restores `1`. An explicitly incompatible pair rejects.
 
 <!-- snippet-context:start -->
 
