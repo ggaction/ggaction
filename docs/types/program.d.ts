@@ -4280,11 +4280,8 @@ export type NonPointContinuousColorScaleOptions = ScaleFields<
   base?: number;
   constant?: number;
   domain?: "auto" | readonly [unknown, unknown];
-  range?: "auto" | readonly [string, string, ...string[]];
-  palette?: PaletteName | {
-    name: PaletteName;
-    extent?: readonly [number, number];
-  };
+  range?: "auto" | readonly [string, string, ...string[]] | { readonly palette: Palette };
+  palette?: Palette;
 } & (
   | { type: "pow"; exponent?: number }
   | { type?: "sequential" | "log" | "sqrt" | "symlog"; exponent?: never }

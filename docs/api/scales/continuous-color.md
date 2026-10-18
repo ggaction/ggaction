@@ -46,6 +46,13 @@ The semantic scale stores the palette descriptor. Materialized scales, marks,
 legends, and renderers receive only concrete CSS colors. Explicit `range` and
 `palette` cannot be supplied together.
 
+Continuous color and field-driven stroke accept the same palette descriptor in
+`scale.palette` and `scale.range: { palette: { name: "turbo", count: 64 } }`.
+Both forms have the same JavaScript behavior and TypeScript declarations,
+including the optional `extent` pair. Explicit color arrays still need at least
+two stops. The same descriptors work in compatible chart facade color and
+stroke options and in Full `encodeChannels` assignments.
+
 ## Continuous point and aggregate-bar color
 
 This section also applies to Rect color: one value per final cell. Keep this

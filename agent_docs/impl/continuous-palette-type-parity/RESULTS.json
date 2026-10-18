@@ -1,0 +1,150 @@
+{
+  "status": "verified-local-candidate-not-published",
+  "issue": 224,
+  "parent": "e93500081b6dde6be7614e3e9352e947bec5908d",
+  "node": "22.23.1",
+  "runtimeJavaScriptChanged": false,
+  "newRuntimeExports": false,
+  "newVisualTargetRequired": false,
+  "schoolModelCalls": 0,
+  "checks": {
+    "unit": {
+      "status": "pass",
+      "tests": 3315,
+      "logSha256": "82941f836f24e22fb0aaf5fb7f4bda7bca987792fc5a636fb9739148507ec22c"
+    },
+    "contracts": {
+      "status": "pass",
+      "tests": 575,
+      "logSha256": "ff2045b827610d6a1cc7332fadec2fb783d37bd439a43669e2c321180714a521"
+    },
+    "docs": {
+      "status": "pass",
+      "tests": 120,
+      "logSha256": "9406bdf0e57545cd48642092a326f5ea5dd6dd8a35ba4815352f23c116c933fc"
+    },
+    "focused": {
+      "status": "pass",
+      "logSha256": "4ed396e4b5b21a69d877d6c535f1270f0c493a543c2a2a0fde5bcb2ff8a7fed4"
+    },
+    "after-types": {
+      "status": "pass",
+      "logSha256": "27d5c5b6088ad8feb4abf1942962c686b9e7c7d2cb5e052fc6b278fb982d8e60"
+    },
+    "before-types": {
+      "status": "expected-failure-preserved",
+      "logSha256": "3a21db597eb9f7e517c87311ec8bafe8ad62ed6a895cf7441efa2cb4b5535faf"
+    },
+    "before-types-corrected-test": {
+      "status": "expected-failure-preserved",
+      "logSha256": "4dd24675ee794db3cfe0df1e1acbc2372c97c74b3fe90bd2c58b47472cf4fc23"
+    },
+    "docs-generate": {
+      "status": "pass",
+      "logSha256": "8a983686b1e35ed1c1bda6504bbc68fe6979b99b44ca60ce569a843888454101"
+    },
+    "package-consumer": {
+      "status": "pass",
+      "logSha256": "f6221085dd0c205f0a4737d87f7d2bc2e26120cec6e3a3feeb90e8cfc35809fd"
+    },
+    "package-check": {
+      "status": "pass",
+      "logSha256": "b0e50e5b6e354a53d08abd30fabc26a8f43fdb27c0b4a16d733c983a1bca368b"
+    }
+  },
+  "installedCandidate": {
+    "package": "ggaction@0.0.21",
+    "source": "ggaction-0.0.21.tgz",
+    "sha256": "20ae1e0a266daaa59f475bd8b63d518ebcc9ebba93037cf84d9b7db61dbb9b02",
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 523,
+        "minifiedBytes": 1536017,
+        "gzipBytes": 415617
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 307,
+        "minifiedBytes": 724172,
+        "gzipBytes": 203811
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 18,
+        "minifiedBytes": 22817,
+        "gzipBytes": 7325
+      }
+    },
+    "mcp": {
+      "coldStartMilliseconds": 257
+    },
+    "checks": [
+      "node",
+      "linear-regression-statistics-cache-and-source-revision",
+      "extension",
+      "pdf",
+      "png",
+      "svg",
+      "inspection",
+      "numeric-font-weight",
+      "point-jitter",
+      "point-packing",
+      "mark-label-removal",
+      "selected-mark-labels",
+      "semantic-label-placement",
+      "beeswarm-plot",
+      "raincloud-plot",
+      "path-order",
+      "time-unit-data",
+      "summary-data",
+      "bin-data",
+      "fold-data",
+      "computed-data",
+      "derived-data-editing",
+      "safe-resource-removal",
+      "advanced-authoring-integration",
+      "normalized-data",
+      "complete-data",
+      "imputed-data",
+      "stack-data",
+      "window-data",
+      "bin2d-data",
+      "binned-heatmap",
+      "parallel-coordinates",
+      "parallel-dimension-scale-editing",
+      "offset-scale-editing",
+      "stroke-color-encoding-and-legends",
+      "atomic-channel-encoding",
+      "statistical-references",
+      "coordinate-aspect-and-polar-frame-editing",
+      "facet-grid-repeat-and-named-composition-editing",
+      "non-cartesian-facet-grid-and-repeat",
+      "horizon",
+      "violin-plot",
+      "polar-radar-rug-strip-ecdf-facades",
+      "right-categorical-legend-offset",
+      "grouped-corner-and-free-legend-placement",
+      "sequential-palette-count",
+      "typescript",
+      "basic-entry-runtime-and-types",
+      "tutorial-consumers",
+      "minimal-browser-bundle-measurement",
+      "private-export-rejection",
+      "installed-local-mcp",
+      "direct-mcp-byte-equality",
+      "task-packet-v5-authoring-execution",
+      "explicit-unresolved-docs-fallback",
+      "terminal-unsupported-no-fallback"
+    ]
+  },
+  "archive": {
+    "entryCount": 591,
+    "packedBytes": 840105,
+    "unpackedBytes": 4074374
+  },
+  "releaseChecks": "Node24 protected release, canonical registry archive, live documentation and dataset synchronization remain due at the 1413-family checkpoint. No budget changes or publication performed. Node22 package check does not establish Node24 release-size headroom."
+}

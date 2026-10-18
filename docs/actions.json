@@ -22541,12 +22541,12 @@
         {
           "name": "range",
           "required": false,
-          "type": "\"auto\" | readonly string[] | { readonly palette: Palette; } | readonly [string, string, ...string[]] | undefined"
+          "type": "\"auto\" | readonly string[] | { readonly palette: Palette; } | { readonly palette: Palette; } | readonly [string, string, ...string[]] | undefined"
         },
         {
           "name": "palette",
           "required": false,
-          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 60 more ... | undefined"
+          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 59 more ... | undefined"
         },
         {
           "name": "type",
@@ -22710,12 +22710,12 @@
         {
           "name": "range",
           "required": false,
-          "type": "\"auto\" | readonly string[] | { readonly palette: Palette; } | readonly [string, string, ...string[]] | undefined"
+          "type": "\"auto\" | readonly string[] | { readonly palette: Palette; } | { readonly palette: Palette; } | readonly [string, string, ...string[]] | undefined"
         },
         {
           "name": "palette",
           "required": false,
-          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 60 more ... | undefined"
+          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 59 more ... | undefined"
         },
         {
           "name": "type",

@@ -42,6 +42,9 @@ type Palette =
 - `count` is a positive integer. Categorical counts shorter than the native range select a prefix; longer counts
   cycle deterministically. Sequential scales require at least two and use it as the concrete gradient-stop count;
   top-level `palette` and `range.palette` resolve identically.
+- Continuous color and field-driven stroke declarations use the shared `Palette` type for both
+  `scale.palette` and `scale.range: { palette }`, including `count` and `extent`. Explicit color arrays
+  still require at least two stops; descriptors and wrappers retain closed property names.
 - `extent` is accepted only for non-categorical schemes. Its two endpoints are distinct finite values in
   `[0, 1]`; descending extent reverses sampling direction.
 - Scale `reverse` applies after palette resolution, including a descending extent, so two reversals intentionally
@@ -57,4 +60,6 @@ type Palette =
   invalid family options and frozen returned arrays.
 - ✅ Covered: color encoding range conflict, ordinal cycling, scale reverse, point fill and legend parity.
 - Evidence: `test/unit/grammar/scales/palettes.test.js`,
-  `test/unit/actions/encodings/color-encoding.test.js`, and Roadmap 2 cars scatterplot variants.
+  `test/unit/actions/encodings/color-encoding.test.js`,
+  `test/unit/actions/scales/sequential-palette-count.test.js`,
+  `test/contracts/continuous-palette-types.test.js`, and Roadmap 2 cars scatterplot variants.

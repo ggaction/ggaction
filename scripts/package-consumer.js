@@ -89,6 +89,17 @@ async function testNodeConsumer(directory) {
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
+    const paletteBase = chart().createCanvas({width:240,height:180,margin:30})
+      .createData({values:[{x:0,y:1,v:0},{x:1,y:2,v:0.3},{x:2,y:3,v:1}]})
+      .createScatterPlot({x:"x",y:"y",guides:false});
+    const paletteDescriptor = Object.freeze({name:"turbo",count:64,extent:Object.freeze([0.1,0.9])});
+    const paletteTop = paletteBase.encodeStroke({field:"v",fieldType:"quantitative",scale:{type:"sequential",domain:[0,1],palette:paletteDescriptor}});
+    const paletteRange = paletteBase.encodeStroke({field:"v",fieldType:"quantitative",scale:{type:"sequential",domain:[0,1],range:{palette:paletteDescriptor}}});
+    assert.deepEqual(paletteTop.semanticSpec,paletteRange.semanticSpec);
+    assert.deepEqual(paletteTop.graphicSpec,paletteRange.graphicSpec);
+    assert.ok(Object.values(paletteTop.resolvedScales).some(scale=>scale.range.length===64));
+    assert.deepEqual(deserializeProgram(serializeProgram(paletteTop)).graphicSpec,paletteTop.graphicSpec);
+
     const bootstrapRows = [{x:0,y:0},{x:0,y:1},{x:0,y:2},{x:0,y:30}];
     const bootstrapSummary = chart().createData({values:bootstrapRows}).createSummaryData({id:"ci",groupBy:"x",aggregates:[
       {field:"y",op:{op:"ciLower",method:{type:"bootstrap",seed:1}},as:"lower"},
@@ -3276,6 +3287,24 @@ async function testTypeScriptConsumer(directory) {
     basicChart().createTextPlot({ x: "x", y: "y", text: "label" });
 
     chart().createScatterPlot({ x: "x", y: "y", stroke: "group", point: { strokeWidth: 2 } });
+    const sampledPalette = { name: "turbo", count: 64, extent: [0.1, 0.9] } as const;
+    for (const scale of [{ type: "sequential", palette: sampledPalette },
+      { type: "sequential", range: { palette: sampledPalette } }] as const) {
+      chart().encodeColor({ field: "value", fieldType: "quantitative", scale });
+      basicChart().encodeColor({ field: "value", fieldType: "quantitative", scale });
+      chart().encodeStroke({ field: "value", fieldType: "quantitative", scale });
+      chart().encodeChannels({ target: "points", channels: {
+        color: { field: "value", fieldType: "quantitative", scale },
+        stroke: { field: "value", fieldType: "quantitative", scale }
+      } });
+      basicChart().createScatterPlot({ x: "x", y: "y", stroke: { field: "value", fieldType: "quantitative", scale } });
+    }
+    // @ts-expect-error palette counts remain numeric
+    chart().encodeStroke({ field: "v", fieldType: "quantitative", scale: { palette: { name: "turbo", count: "64" } } });
+    // @ts-expect-error nested palette names remain closed
+    chart().encodeColor({ field: "v", fieldType: "quantitative", scale: { range: { palette: { name: "unknown" } } } });
+    // @ts-expect-error range wrappers do not accept sampling keys directly
+    chart().encodeColor({ field: "v", fieldType: "quantitative", scale: { range: { palette: "turbo", count: 64 } } });
     basicChart().createScatterPlot({ x: "x", y: "y", stroke: { field: "amount", fieldType: "quantitative" } });
     // @ts-expect-error Basic authors stroke through the facade
     basicChart().encodeStroke({ field: "group" });

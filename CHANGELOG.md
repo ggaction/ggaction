@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Align continuous color and stroke TypeScript palette descriptors with existing runtime count, extent and nested range forms.
+
 ## [0.0.21] - 2026-10-18
 
 - Fix precision loss and collapsed bounds in bootstrap interval data and charts.

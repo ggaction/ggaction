@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart } from "../../../../src/index.js";
+import { chart as basicChart } from "../../../../src/basic.js";
 
 const VALUES = Object.freeze([
   Object.freeze({ x: 1, y: 2, value: 0, group: "A" }),
@@ -86,4 +87,47 @@ test("preserves ordinal palette count behavior and rejects one sequential stop",
   assert.throws(() => prior.createScale(options), /at least 2/);
   assert.deepEqual(prior.semanticSpec.scales, []);
   assert.deepEqual(options.palette, { name: "viridis", count: 1 });
+});
+
+test("continuous field color and stroke preserve palette descriptor parity through public consumers", () => {
+  const rows = Object.freeze([
+    Object.freeze({ x: 0, y: 1, value: 1 }),
+    Object.freeze({ x: 1, y: 2, value: 10 }),
+    Object.freeze({ x: 2, y: 3, value: 100 })
+  ]);
+  const palette = Object.freeze({ name: "turbo", count: 64, extent: Object.freeze([0.1, 0.9]) });
+  const base = factory => factory().createCanvas({ width: 320, height: 200, margin: 30 })
+    .createData({ values: rows }).createScatterPlot({ x: "x", y: "y", guides: false });
+  for (const type of ["sequential", "log", "pow", "sqrt", "symlog"]) {
+    const common = { type, domain: [1, 100], ...(type === "pow" ? { exponent: 2 } : {}) };
+    const top = { ...common, palette }, nested = { ...common, range: { palette } };
+    const consumers = [
+      [chart, (p, scale) => p.encodeColor({ field: "value", fieldType: "quantitative", scale })],
+      [basicChart, (p, scale) => p.encodeColor({ field: "value", fieldType: "quantitative", scale })],
+      [chart, (p, scale) => p.encodeStroke({ field: "value", fieldType: "quantitative", scale })],
+      [chart, (p, scale) => p.encodeChannels({ target: "scatterPlot", channels: {
+        color: { field: "value", fieldType: "quantitative", scale },
+        stroke: { field: "value", fieldType: "quantitative", scale }
+      } })]
+    ];
+    for (const [factory, assign] of consumers) {
+      const before = base(factory), snapshot = JSON.stringify(before);
+      const a = assign(before, top), b = assign(before, nested);
+      assert.deepEqual(a.semanticSpec, b.semanticSpec);
+      assert.deepEqual(a.resolvedScales, b.resolvedScales);
+      assert.deepEqual(a.graphicSpec, b.graphicSpec);
+      assert.ok(Object.values(a.resolvedScales).some(scale => scale.range.length === 64));
+      const fewer = assign(before, { ...common, palette: { ...palette, count: 2 } });
+      assert.notDeepEqual(a.graphicSpec, fewer.graphicSpec);
+      assert.equal(JSON.stringify(before), snapshot);
+      assert.deepEqual(a.semanticSpec.datasets[0].values, rows);
+    }
+    for (const factory of [chart, basicChart]) {
+      const make = scale => factory().createCanvas({ width: 320, height: 200, margin: 30 })
+        .createData({ values: rows }).createScatterPlot({ x: "x", y: "y", guides: false,
+          stroke: { field: "value", fieldType: "quantitative", scale } });
+      assert.deepEqual(make(top).graphicSpec, make(nested).graphicSpec);
+    }
+  }
+  assert.deepEqual(palette, { name: "turbo", count: 64, extent: [0.1, 0.9] });
 });
