@@ -26,8 +26,8 @@ export function validateContinuousColorConsumer(layer, encoding, scale, {
     }
     return undefined;
   }
-  if (!["point", "bar", "rect", "text"].includes(kind)) {
-    throw new Error("Continuous color requires a Point, aggregate Bar, Rect, or Text consumer.");
+  if (!["point", "bar", "rect", "text", "area"].includes(kind)) {
+    throw new Error("Continuous color requires a Point, aggregate Bar, Rect, Text, or quantitative Area consumer.");
   }
   if (!["quantitative", "temporal"].includes(encoding.fieldType) ||
     (isDiscretizedColorScaleType(scale.type) && encoding.fieldType !== "quantitative")) {
@@ -35,6 +35,9 @@ export function validateContinuousColorConsumer(layer, encoding, scale, {
   }
   if (Object.hasOwn(scale, "unknown") && kind !== "point") {
     throw new Error("Continuous color scale unknown currently requires a row-owned point mark.");
+  }
+  if (kind === "area" && encoding.fieldType !== "quantitative") {
+    throw new Error("Continuous area color requires a quantitative field.");
   }
   if (kind !== "bar") {
     if (encoding.aggregate !== undefined) throw new Error(`${kind} continuous color does not support aggregate.`);

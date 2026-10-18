@@ -1,0 +1,17 @@
+{
+  "gate": "approved",
+  "humanInstruction": "너가 지금까지 질문한거 있으면 다 승인함",
+  "receivedAt": "2026-10-18T10:08:51.889Z",
+  "recordedAt": "2026-10-18T10:19:37.622076+00:00",
+  "approvedReview": {
+    "issue": 219,
+    "sourceId": "vl_1263",
+    "proposalRevision": "abce08c24b12d049e9a0f246b71d3eefdaaeba92",
+    "proposal": "agent_docs/impl/bootstrap-mean-ci/PROPOSAL.md",
+    "target": "agent_docs/impl/bootstrap-mean-ci/target.svg",
+    "scope": "Previously asked nonweighted seeded percentile bootstrap mean CI method object, samples/seed/draw bounds/shared streams/R7 and independent numerical/area-line target; related-source-only seed1 reference freezing with original unseeded history preserved.",
+    "proposalSha256": "16f574fa16f6812083187fa8a50c8fe0276a2af07a60f7bae879c0bcc3dd3215",
+    "targetSha256": "2706458641b8efb0f72775a8494d1f95e1798607ec28b190120cedcd4635d48c"
+  },
+  "scopeNote": "Exact previously asked contract and graphical target approved. Implementation and release verification remain pending."
+}

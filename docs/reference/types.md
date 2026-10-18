@@ -1209,6 +1209,21 @@ export interface BinnedHeatmapPositionChannel {
 
 Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions).
 
+### `BootstrapMeanIntervalMethod` {#type-bootstrapmeanintervalmethod}
+
+<details markdown="1">
+<summary>Expand BootstrapMeanIntervalMethod</summary>
+
+```typescript
+export interface BootstrapMeanIntervalMethod {
+  type: "bootstrap";
+  seed: number;
+  samples?: number;
+}
+```
+
+</details>
+
 ### `BoxPlotCategoryChannel` {#type-boxplotcategorychannel}
 
 <details markdown="1">
@@ -2211,6 +2226,7 @@ Related types: [`ParseTimeFormat`](#type-parsetimeformat).
 
 ```typescript
 export type ConfidenceIntervalMethod = "normal" | "student-t";
+/** Seeded percentile bootstrap of nonweighted means; samples defaults to 1000. */
 ```
 
 </details>
@@ -3811,7 +3827,7 @@ export type DatasetIntervalTransform = {
   | {
       center: "mean";
       extent: "ci";
-      method?: ConfidenceIntervalMethod;
+      method?: MeanConfidenceIntervalMethod;
       level: number;
     }
   | {
@@ -3825,7 +3841,7 @@ export type DatasetIntervalTransform = {
 
 </details>
 
-Related types: [`DatasetIntervalOutputFields`](#type-datasetintervaloutputfields) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod).
+Related types: [`DatasetIntervalOutputFields`](#type-datasetintervaloutputfields) · [`MeanConfidenceIntervalMethod`](#type-meanconfidenceintervalmethod).
 
 ### `DatasetNormalizeBaselineTransform` {#type-datasetnormalizebaselinetransform}
 
@@ -4462,6 +4478,11 @@ export type DiscretizedColorScaleOptions =
   | QuantizeColorScaleOptions
   | QuantileColorScaleOptions
   | ThresholdColorScaleOptions;
+
+/** Area quantitative color requires one finite value per existing series;
+ * aggregate, temporal color and unknown fallback remain mark-specific restrictions.
+ * Area authoring uses the Full facade; createAreaPlot.color stays categorical.
+ */
 ```
 
 </details>
@@ -7464,7 +7485,7 @@ export interface IntervalDataOptions {
   groupBy?: string | readonly string[];
   center?: IntervalCenter;
   extent?: IntervalExtent;
-  method?: ConfidenceIntervalMethod;
+  method?: MeanConfidenceIntervalMethod;
   level?: number;
   missing?: "error" | "drop";
   as?: IntervalOutputFields;
@@ -7473,7 +7494,7 @@ export interface IntervalDataOptions {
 
 </details>
 
-Related types: [`IntervalCenter`](#type-intervalcenter) · [`IntervalExtent`](#type-intervalextent) · [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`IntervalOutputFields`](#type-intervaloutputfields).
+Related types: [`IntervalCenter`](#type-intervalcenter) · [`IntervalExtent`](#type-intervalextent) · [`MeanConfidenceIntervalMethod`](#type-meanconfidenceintervalmethod) · [`IntervalOutputFields`](#type-intervaloutputfields).
 
 ### `IntervalExtent` {#type-intervalextent}
 
@@ -8133,6 +8154,19 @@ export type MarkSelector = {
 </details>
 
 Related types: [`MarkGraphicProperty`](#type-markgraphicproperty).
+
+### `MeanConfidenceIntervalMethod` {#type-meanconfidenceintervalmethod}
+
+<details markdown="1">
+<summary>Expand MeanConfidenceIntervalMethod</summary>
+
+```typescript
+export type MeanConfidenceIntervalMethod = ConfidenceIntervalMethod | BootstrapMeanIntervalMethod;
+```
+
+</details>
+
+Related types: [`ConfidenceIntervalMethod`](#type-confidenceintervalmethod) · [`BootstrapMeanIntervalMethod`](#type-bootstrapmeanintervalmethod).
 
 ### `MeasuredRadialGuideOptions` {#type-measuredradialguideoptions}
 
@@ -11348,7 +11382,7 @@ Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquanti
 
 ```typescript
 export interface SummaryAggregateOptions {
-  op: AggregateOperation;
+  op: AggregateOperation | { op: "ciLower" | "ciUpper"; method: BootstrapMeanIntervalMethod; level?: number };
   field?: string;
   as: string;
 }
@@ -11356,7 +11390,7 @@ export interface SummaryAggregateOptions {
 
 </details>
 
-Related types: [`AggregateOperation`](#type-aggregateoperation).
+Related types: [`AggregateOperation`](#type-aggregateoperation) · [`BootstrapMeanIntervalMethod`](#type-bootstrapmeanintervalmethod).
 
 ### `SummaryDataOptions` {#type-summarydataoptions}
 

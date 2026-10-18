@@ -1473,3 +1473,35 @@
   actions: createLegend · editLegendLabels · editLegendSymbols
   tasks: appearance guide editing
   url: /api/legends/categorical/#layered-recipe-opacity
+
+- id: continuous-area-color
+  example: /examples/continuous-area-color/
+  title: Quantitative color within independent area series
+  image: /assets/images/continuous-area-color.png
+  alt: Nine stacked area series filled by one continuous HCL color scale
+  width: 640
+  height: 440
+  thumbnail: /assets/images/continuous-area-color-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 440
+  caption: Group identity controls the paths while a constant numeric value per series controls fill.
+  summary: Declare complete areas and refine color independently from series layout.
+  actions: createAreaPlot · encodeGroup · encodeColor · layoutSeries
+  tasks: color grouping appearance
+  url: /api/series/color/#continuous-area-color
+
+- id: bootstrap-mean-ci
+  example: /examples/bootstrap-mean-ci/
+  title: Reproducible bootstrap mean confidence intervals
+  image: /assets/images/bootstrap-mean-ci.png
+  alt: An asymmetric blue bootstrap confidence band around a mean line for five groups
+  width: 640
+  height: 440
+  thumbnail: /assets/images/bootstrap-mean-ci-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 440
+  caption: One seeded stream supplies both percentile endpoints of each mean interval.
+  summary: Preserve raw observations and calculate reusable asymmetric intervals before drawing existing areas and lines.
+  actions: createSummaryData · createAreaPlot · createLineMark
+  tasks: statistics dataflow uncertainty
+  url: /api/data/summaries-and-shaping/#bootstrap-mean-confidence-intervals

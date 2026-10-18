@@ -1,4 +1,5 @@
-import { cloneAndFreeze } from "../../core/immutable.js";
+import { quantileSorted, requireFiniteResult } from "../numeric.js";
+import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { studentTCriticalValue } from "./studentT.js";
 
 export const CONFIDENCE_INTERVAL_METHODS = Object.freeze([
@@ -6,10 +7,24 @@ export const CONFIDENCE_INTERVAL_METHODS = Object.freeze([
   "student-t"
 ]);
 
-function validateMethod(method, label) {
+function validateMethod(method, label, allowBootstrap = false) {
+  if (allowBootstrap && isPlainObject(method)) {
+    const unknown = Object.keys(method).find(key => !["type", "seed", "samples"].includes(key));
+    if (unknown !== undefined) throw new Error(`Unknown bootstrap method property "${unknown}".`);
+    if (method.type !== "bootstrap") throw new Error(`Unsupported ${label} method type.`);
+    if (!Number.isInteger(method.seed) || method.seed < 1 || method.seed > 2147483646) {
+      throw new RangeError("Bootstrap seed must be an integer between 1 and 2147483646.");
+    }
+    const samples = method.samples === undefined ? 1000 : method.samples;
+    if (!Number.isInteger(samples) || samples < 1 || samples > 10000) {
+      throw new RangeError("Bootstrap samples must be an integer between 1 and 10000.");
+    }
+    return { type: "bootstrap", seed: method.seed, samples };
+  }
   if (!CONFIDENCE_INTERVAL_METHODS.includes(method)) {
     throw new Error(`Unsupported ${label} method "${method}".`);
   }
+  return method;
 }
 
 function validateLevel(level, label) {
@@ -64,12 +79,12 @@ export function normalizeConfidenceInterval({
 } = {}, {
   defaultMethod,
   defaultLevel = 0.95,
-  label = "Confidence interval"
+  label = "Confidence interval",
+  allowBootstrap = false
 } = {}) {
   validateMethod(defaultMethod, label);
-  const resolvedMethod = method ?? defaultMethod;
+  const resolvedMethod = validateMethod(method ?? defaultMethod, label, allowBootstrap);
   const resolvedLevel = level ?? defaultLevel;
-  validateMethod(resolvedMethod, label);
   validateLevel(resolvedLevel, label);
   return cloneAndFreeze({ method: resolvedMethod, level: resolvedLevel });
 }
@@ -98,4 +113,42 @@ export function confidenceCriticalValue({
     );
   }
   return studentTCriticalValue(normalized.level, degreesOfFreedom);
+}
+
+
+export function validateBootstrapDrawCount(draws) {
+  if (!Number.isSafeInteger(draws) || draws < 0 || draws > 50000000) {
+    throw new RangeError("Bootstrap resampling cannot exceed 50000000 draws per action.");
+  }
+}
+
+// One action-owned sampler per field/samples/seed. Its stream advances in group
+// first-appearance order; all interval levels reuse the same sorted sample means.
+export function createBootstrapMeanSampler(method) {
+  const normalized = validateMethod(method, "Bootstrap mean interval", true);
+  if (normalized?.type !== "bootstrap") throw new Error("Bootstrap sampler requires a bootstrap method.");
+  let state = normalized.seed;
+  return values => {
+    if (values.length === 0) return [];
+    const means = [];
+    for (let sample = 0; sample < normalized.samples; sample += 1) {
+      let sum = 0;
+      for (let draw = 0; draw < values.length; draw += 1) {
+        state = (1103515245 * state + 12345) % 2147483647;
+        sum += values[Math.floor(state / 2147483647 * values.length)];
+      }
+      means.push(requireFiniteResult(sum / values.length, "Bootstrap sample mean"));
+    }
+    return means.sort((left, right) => left - right);
+  };
+}
+
+export function bootstrapMeanBounds(sortedMeans, level = 0.95) {
+  validateLevel(level, "Bootstrap mean interval");
+  if (sortedMeans.length === 0) return undefined;
+  const tail = (1 - level) / 2;
+  return {
+    lower: requireFiniteResult(quantileSorted(sortedMeans, tail), "Bootstrap lower endpoint"),
+    upper: requireFiniteResult(quantileSorted(sortedMeans, 1 - tail), "Bootstrap upper endpoint")
+  };
 }

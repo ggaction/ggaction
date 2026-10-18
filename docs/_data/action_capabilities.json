@@ -228,9 +228,12 @@
         "text": [
           "quantitative",
           "temporal"
+        ],
+        "area": [
+          "quantitative"
         ]
       },
-      "options": "sequential scale; aggregate required for a different bar measure"
+      "options": "sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series"
     },
     {
       "mode": "Discretized continuous",
@@ -246,9 +249,12 @@
         ],
         "text": [
           "quantitative"
+        ],
+        "area": [
+          "quantitative"
         ]
       },
-      "options": "quantize, quantile, or threshold scale"
+      "options": "quantize, quantile, or threshold scale; area requires one finite value per existing series"
     }
   ],
   "highlight": [

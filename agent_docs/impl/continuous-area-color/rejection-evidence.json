@@ -1,0 +1,55 @@
+{
+  "status": "reproduced-current-public-rejection",
+  "runtimeCommit": "f6b50bf55a9de1857f106c7aa519326ce7a86d76",
+  "runtimeVersion": "0.0.19",
+  "syntheticRows": 27,
+  "groups": 9,
+  "rejected": {
+    "message": "continuous color mark requires an eligible layer.",
+    "earlierProgramUnchanged": true
+  },
+  "currentPointColorControl": "pass-existing-public-API",
+  "existingHclD50Colors": [
+    "#d9d9f3",
+    "#51c1ff",
+    "#008aff",
+    "#0930af",
+    "#000080",
+    "#0930af",
+    "#008aff",
+    "#51c1ff",
+    "#d9d9f3"
+  ],
+  "targetSvgSha256": "316515a60af6274ade9ae4d36e7358cf0c1ba22c1941092cfecb0c77ed56abf5",
+  "targetPathCount": 9,
+  "targetVertexCount": 54,
+  "targetOpacity": 0.7,
+  "targetPlot": {
+    "x": 20,
+    "y": 20,
+    "width": 280,
+    "height": 180
+  },
+  "targetSemantic": {
+    "mark": "area",
+    "group": "series",
+    "color": {
+      "field": "level",
+      "fieldType": "quantitative",
+      "scale": "one shared continuous HCL D50 scale"
+    },
+    "layout": "stack"
+  },
+  "expectedPublicTrace": [
+    "createCanvas",
+    "createData",
+    "createAreaPlot",
+    "encodeGroup",
+    "encodeColor",
+    "layoutSeries",
+    "editAreaMark"
+  ],
+  "publicAreaImplementation": "not implemented; proposedProgram is expected to reject before approval",
+  "chartPixelsInspected": false,
+  "newApiModelCalls": 0
+}

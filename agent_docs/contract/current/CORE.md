@@ -503,6 +503,19 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createSummaryData`
 
+- Nonweighted mean ciLower/ciUpper additionally accept method `{type:"bootstrap", seed, samples?}`.
+  Seed is an integer 1..2147483646; samples is 1..10000, default1000; existing level defaults to0.95.
+  Resample n observations with replacement n times per sample; sum in source order of draws, divide by n,
+  sort means and use R7 percentile bounds. Exact Number RNG: state=(1103515245*state+12345)%2147483647,
+  index=floor(state/2147483647*n). Each unique field/samples/seed owns a stream over first-appearance
+  groups/raw row order. Bounds/levels reuse means; output order and added mean do not affect draws.
+  Singleton consumes samples; empty consumes none. Draws summed once per unique stream must be
+  <=50000000 before calculation; existing group30000/output64 limits remain. Method is normalized
+  in existing transform provenance, RNG/cache stays private. Weighted/regression/implicit-seed/string
+  bootstrap/unknown method keys reject. Basic has no summary authoring surface.
+  Evidence: `test/unit/actions/data/bootstrap-mean-ci.test.js`, `test/charts/bootstrap-mean-ci/`.
+
+
 - Signature: `createSummaryData({ id, source?, groupBy?, aggregates, members?, weight? })`
 - `id`, `source`: 새 immutable derived dataset ID와 existing materialized source다. `source` 생략 시
   current data를 사용한다.
@@ -533,7 +546,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createSummaryData`
 
-- Implemented: `createSummaryData({ id: UserId; source?: UserId; groupBy?: FieldName | readonly FieldName[]; aggregates: readonly { op: AggregateOperation; field?: FieldName; as: FieldName }[]; members?: FieldName; weight?: StatisticalWeight }): ChartProgram`
+- Implemented: `createSummaryData({ id: UserId; source?: UserId; groupBy?: FieldName | readonly FieldName[]; aggregates: readonly SummaryAggregateOptions[]; members?: FieldName; weight?: StatisticalWeight }): ChartProgram`
 - Proposed (NOT IMPLEMENTED): full categorical cube/empty-group synthesis, callback aggregate.
 
 ### Value coverage — `createSummaryData`

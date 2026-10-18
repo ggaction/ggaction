@@ -25,6 +25,8 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "bootstrap-mean-ci": ["canvas", "areaPlot", "meanLine"],
+  "continuous-area-color": ["canvas", "areaPlot"],
   "named-shapes": ["canvas", "scatterPlot", "labels"],
   "combined-legends": [],
   "legend-layout": ["canvas", "scatterPlot", "sizeLegendSymbols", "sizeLegendLabels", "colorGradientBackground", "colorGradientStrips", "colorGradientTicks", "colorGradientLabels", "colorGradientTitle"],

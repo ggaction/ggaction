@@ -5,6 +5,7 @@ import {
   resolveTemporalUnit
 } from "../../../grammar/scales/index.js";
 import { validateContinuousColorConsumer } from "../../../grammar/scales/colorConsumers.js";
+import { validatePathSeriesAppearance } from "../../../grammar/pathSeries.js";
 import { validateAggregateFieldValues } from "../../../grammar/aggregate.js";
 import {
   resolveQuantitativeColorScaleDefinition
@@ -39,7 +40,7 @@ export function encodeContinuousColor(program, args) {
   const { id: target, dataset: sourceDataset, layer } = resolveTarget(
     program,
     args.target,
-    ["point", "bar", "rect", "text"],
+    ["point", "bar", "rect", "text", "area"],
     "continuous color mark"
   );
   const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
@@ -55,6 +56,11 @@ export function encodeContinuousColor(program, args) {
     requestedScale
   );
   const aggregate = validateContinuousColorConsumer(layer, args, scale, { inferAggregate: true });
+  if (layer.mark.type === "area") {
+    validatePathSeriesAppearance(dataset.values, {
+      ...layer, encoding: { ...layer.encoding, color: { field: args.field, fieldType: args.fieldType } }
+    });
+  }
   if (aggregate !== undefined) validateAggregateFieldValues(dataset.values, args.field, args.fieldType);
   if (layer.mark.type === "rect") {
     readScaleField(dataset.values, args.field, args.fieldType, {

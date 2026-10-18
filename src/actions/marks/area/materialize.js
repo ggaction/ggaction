@@ -6,8 +6,7 @@ import {
 } from "../../../grammar/areaSeries.js";
 import {
   mapContinuousScaleValues,
-  mapOrdinalPositionValues,
-  mapOrdinalValues
+  mapOrdinalPositionValues
 } from "../../../grammar/scales/index.js";
 import { mapScaleConsumerValues } from
   "../../../materialization/scales/map.js";
@@ -165,12 +164,12 @@ export function resolveAreaMaterialization({
     ? paths.map(() => config.errorBand.fill)
     : colorEncoding?.scale === undefined
       ? paths.map(() => config.fill)
-      : mapOrdinalValues(
-          densityTransform !== undefined || centered
+      : mapScaleConsumerValues(
+          colorEncoding.fieldType !== "quantitative" && (densityTransform !== undefined || centered)
             ? derived.series.map(series => series.key[colorEncoding.field])
-            : derivePathSeriesFieldValues(rows, derived.series, colorEncoding.field, "color"),
-          resolvedScales[colorEncoding.scale].domain,
-          resolvedScales[colorEncoding.scale].range
+            : derivePathSeriesFieldValues(rows, derived.series, colorEncoding.field, "color", colorEncoding),
+          resolvedScales[colorEncoding.scale],
+          "color"
         );
   const strokeEncoding = layer.encoding?.stroke;
   const strokes = strokeEncoding?.scale === undefined

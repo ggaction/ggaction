@@ -33,6 +33,14 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createIntervalData`
 
+- Nonweighted mean/CI accepts the same seeded percentile-bootstrap method object and exact RNG/draw
+  policy as CORE createSummaryData. Method is normalized in existing interval provenance; existing
+  12-decimal output rounding remains. Singleton yields its own center/bounds and consumes samples;
+  no eligible observations produces no interval. editIntervalData supports the same method.
+  Regression, weighted CI and other statistical facade method options retain their current vocabulary.
+  Evidence: `test/unit/actions/data/bootstrap-mean-ci.test.js`, `test/charts/bootstrap-mean-ci/`.
+
+
 - Signature: `createIntervalData({ id, source?, field, groupBy?, center?, extent?, method?, level?, as? })`.
 - `id`: required new immutable derived-dataset ID. `source` defaults to current data.
 - `field`: finite quantitative input field. Missing and non-finite rows are omitted.
@@ -50,7 +58,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createIntervalData`
 
-- Implemented: `createIntervalData({ id: UserId; source?: UserId; field: FieldName; groupBy?: FieldName | readonly FieldName[]; center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; method?: "normal" | "student-t"; level?: UnitIntervalExclusive; as?: { center: FieldName; lower: FieldName; upper: FieldName } })`.
+- Implemented: `createIntervalData({ id: UserId; source?: UserId; field: FieldName; groupBy?: FieldName | readonly FieldName[]; center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; method?: MeanConfidenceIntervalMethod; level?: UnitIntervalExclusive; as?: { center: FieldName; lower: FieldName; upper: FieldName } })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 

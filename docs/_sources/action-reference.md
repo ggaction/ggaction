@@ -547,7 +547,9 @@ createSummaryData({ id, source?, groupBy?, aggregates, members? })
 ```
 
 Materialize reusable, first-appearance-ordered summary rows from one or more
-shared aggregate operations. [Source and Derived Data](../api/data/source-and-derived.md#createsummarydata-id-source-groupby-aggregates-members)
+shared aggregate operations. Nonweighted mean CI outputs also accept seeded percentile
+bootstrap method objects; see [bootstrap mean intervals](../api/data/summaries-and-shaping.md#bootstrap-mean-confidence-intervals).
+[Source and Derived Data](../api/data/source-and-derived.md#createsummarydata-id-source-groupby-aggregates-members)
 
 ### `createBinData`
 
@@ -1132,7 +1134,8 @@ createIntervalData({
 ```
 
 Create immutable grouped center/lower/upper summary rows. Mean supports
-standard error, sample standard deviation, and normal or Student-t confidence intervals;
+standard error, sample standard deviation, and normal, Student-t or explicitly seeded
+percentile-bootstrap confidence intervals;
 median supports interquartile range. [Data](../api/data.md)
 
 ### `createECDFData`
@@ -2005,8 +2008,8 @@ removes grouping.
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
-| Continuous | point, aggregate bar, rect, text | point/rect/text: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
-| Discretized continuous | point, aggregate bar, rect, text | point/aggregate bar/rect/text: quantitative | quantize, quantile, or threshold scale |
+| Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
+| Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
 
 <!-- action-capabilities:color:end -->
 
@@ -2033,6 +2036,13 @@ its aggregate, while a different field requires `aggregate`.
 Area `layout: "center"` creates a matching nominal group when needed and records
 wrapped `encodeY({ stack: "center" })`. It requires non-negative values aligned
 at every x position and stacks each partition from `-total / 2`.
+Area also accepts quantitative continuous or discretized color with exactly one finite
+value per existing series. Grouping and layout stay independent; no vertex gradients,
+aggregate, temporal color, or point-only unknown fallback are supported. Use
+`encodeColor` after a complete `createAreaPlot`, whose color option remains categorical.
+The real color scale drives fills and legends and uses one sample per series for
+automatic quantile domains. Basic does not expose Area authoring.
+
 Row-owned rects accept categorical or continuous color. Arc sectors accept
 categorical color with optional overlay layout.
 [Series encodings](../api/series-encodings.md)

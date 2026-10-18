@@ -1111,6 +1111,14 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - An ErrorBand with explicit constant fill rejects color encoding. Use `editErrorBand({ fill: false })`
   to restore field eligibility. The reverse transition requires removing the color encoding first.
 
+- Quantitative Area color uses the existing continuous/discretized scale mapper and real legend owner.
+  Exactly one finite numeric value is required per existing series (ungrouped means one series);
+  it neither infers grouping nor interpolates within a path. Temporal color, aggregate and unknown
+  fallback reject atomically. Missing-break subpaths retain their series color. Existing FillPaint
+  fallback, stroke, opacity and layout remain independent. Automatic domains/quantile samples use
+  one value per group, not one value per path vertex. Full Area creation is supported; Basic has no
+  Area authoring surface and is unchanged. createAreaPlot.color stays categorical-only.
+  Evidence: `test/unit/actions/encodings/continuous-area-color.test.js`, `test/charts/continuous-area-color/`.
 - Signature: `encodeColor({ field, target?, fieldType?, layout?, aggregate?, scale? })`
 - `field`: 필수 field. nominal/ordinal은 categorical color contract에, quantitative/temporal은 point에 사용하며
   aggregate bar는 quantitative field를 지원한다.
@@ -1164,7 +1172,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeColor`
 
-- Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging" | "center"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; `"center"` is area-only, ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales support quantitative point/rect consumers and quantitative aggregate bars, `unknown` remains point-row-only, and mark compatibility narrows the categorical layout set.
+- Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging" | "center"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; `"center"` is area-only, ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales support quantitative point/rect/text/Area consumers and quantitative aggregate bars, `unknown` remains point-row-only, and mark compatibility narrows the categorical layout set.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeColor`

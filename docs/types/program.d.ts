@@ -563,7 +563,7 @@ export type DatasetIntervalTransform = {
   | {
       center: "mean";
       extent: "ci";
-      method?: ConfidenceIntervalMethod;
+      method?: MeanConfidenceIntervalMethod;
       level: number;
     }
   | {
@@ -1001,7 +1001,7 @@ export interface DatasetSummaryTransform {
   empty?: "null" | "identity";
 }
 export interface SummaryAggregateOptions {
-  op: AggregateOperation;
+  op: AggregateOperation | { op: "ciLower" | "ciUpper"; method: BootstrapMeanIntervalMethod; level?: number };
   field?: string;
   as: string;
 }
@@ -1106,6 +1106,13 @@ export type ScalarAggregateOperation =
   | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr"
   | "q1" | "q3" | "ciLower" | "ciUpper";
 export type ConfidenceIntervalMethod = "normal" | "student-t";
+/** Seeded percentile bootstrap of nonweighted means; samples defaults to 1000. */
+export interface BootstrapMeanIntervalMethod {
+  type: "bootstrap";
+  seed: number;
+  samples?: number;
+}
+export type MeanConfidenceIntervalMethod = ConfidenceIntervalMethod | BootstrapMeanIntervalMethod;
 export type ParameterizedAggregateOperation =
   | { op: "quantile"; probability: number }
   | {
@@ -2372,7 +2379,7 @@ export interface IntervalDataOptions {
   groupBy?: string | readonly string[];
   center?: IntervalCenter;
   extent?: IntervalExtent;
-  method?: ConfidenceIntervalMethod;
+  method?: MeanConfidenceIntervalMethod;
   level?: number;
   missing?: "error" | "drop";
   as?: IntervalOutputFields;
@@ -4321,6 +4328,10 @@ export type DiscretizedColorScaleOptions =
   | QuantileColorScaleOptions
   | ThresholdColorScaleOptions;
 
+/** Area quantitative color requires one finite value per existing series;
+ * aggregate, temporal color and unknown fallback remain mark-specific restrictions.
+ * Area authoring uses the Full facade; createAreaPlot.color stays categorical.
+ */
 export type ColorEncodingOptions =
   | CategoricalEncodingOptions
   | {

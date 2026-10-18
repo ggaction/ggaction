@@ -89,6 +89,28 @@ async function testNodeConsumer(directory) {
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
+    const bootstrapRows = [{x:0,y:0},{x:0,y:1},{x:0,y:2},{x:0,y:30}];
+    const bootstrapSummary = chart().createData({values:bootstrapRows}).createSummaryData({id:"ci",groupBy:"x",aggregates:[
+      {field:"y",op:{op:"ciLower",method:{type:"bootstrap",seed:1}},as:"lower"},
+      {field:"y",op:{op:"ciUpper",method:{type:"bootstrap",seed:1}},as:"upper"}
+    ]});
+    const bootstrapInterval = chart().createData({values:bootstrapRows}).createIntervalData({id:"ci",groupBy:"x",field:"y",method:{type:"bootstrap",seed:1},as:{center:"mean",lower:"lower",upper:"upper"}});
+    const summaryCI = bootstrapSummary.semanticSpec.datasets.find(dataset=>dataset.id==="ci").values[0];
+    const intervalCI = bootstrapInterval.semanticSpec.datasets.find(dataset=>dataset.id==="ci").values[0];
+    assert.equal(summaryCI.lower,intervalCI.lower);assert.equal(summaryCI.upper,intervalCI.upper);
+    assert.deepEqual(deserializeProgram(serializeProgram(bootstrapSummary)).graphicSpec,bootstrapSummary.graphicSpec);
+
+    const numericArea = chart().createCanvas({ width: 320, height: 220, margin: 20 })
+      .createData({ values: [{ x: 0, value: 1, level: 10 }, { x: 1, value: 2, level: 10 }] })
+      .createAreaPlot({ x: "x", y: "value", guides: false })
+      .encodeColor({ field: "level", fieldType: "quantitative", scale: { domain: [10, 90], range: ["red", "blue"] } });
+    assert.equal(numericArea.graphicSpec.objects.areaPlot.items[0].properties.fill, "#ff0000");
+    assert.deepEqual(deserializeProgram(serializeProgram(numericArea)).graphicSpec, numericArea.graphicSpec);
+    assert.ok((await renderToPNGBuffer(numericArea)).buffer.length > 100);
+    assert.ok((await renderToPDFBuffer(numericArea)).buffer.length > 100);
+    assert.match(renderToSVG(numericArea), /#ff0000/);
+    assert.equal(basicChart().createAreaMark, undefined);
+
     const blendedBar = chart().createCanvas({width:200,height:200,margin:40})
       .createData({values:[{category:"a",value:1}]})
       .createBarPlot({x:"category",y:{field:"value",aggregate:"sum"},guides:false})
@@ -4208,6 +4230,16 @@ async function testTypeScriptConsumer(directory) {
         { group: "A", value: 2 }
       ] })
       .createViolinPlot(violinOptions);
+    const seededMeanCI: ChartProgram = chart().createData({values:[{y:1},{y:2}]}).createSummaryData({id:"ci",aggregates:[
+      {field:"y",op:{op:"ciLower",method:{type:"bootstrap",seed:1,samples:10}},as:"lower"}
+    ]});
+    const seededInterval: ChartProgram = chart().createData({values:[{y:1},{y:2}]}).createIntervalData({id:"ci",field:"y",method:{type:"bootstrap",seed:1}});
+    // @ts-expect-error Regression retains its normal/student-t confidence vocabulary.
+    chart().createRegressionData({id:"reg",x:"x",y:"y",confidenceMethod:{type:"bootstrap",seed:1}});
+    const quantitativeArea: ChartProgram = chart().createCanvas()
+      .createData({ values: [{ x: 0, y: 1, level: 10 }, { x: 1, y: 2, level: 10 }] })
+      .createAreaPlot({ x: "x", y: "y", guides: false })
+      .encodeColor({ field: "level", fieldType: "quantitative", scale: { type: "sqrt", range: ["red", "blue"] } });
     const composed: ChartProgram = hconcat({
       programs: [program, program]
     })

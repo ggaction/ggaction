@@ -45,7 +45,9 @@ createSummaryData({ id, source?, groupBy?, aggregates, members? })
 ```
 
 Materialize reusable, first-appearance-ordered summary rows from one or more
-shared aggregate operations. [Source and Derived Data](../../api/data/source-and-derived.md#createsummarydata-id-source-groupby-aggregates-members)
+shared aggregate operations. Nonweighted mean CI outputs also accept seeded percentile
+bootstrap method objects; see [bootstrap mean intervals](../../api/data/summaries-and-shaping.md#bootstrap-mean-confidence-intervals).
+[Source and Derived Data](../../api/data/source-and-derived.md#createsummarydata-id-source-groupby-aggregates-members)
 
 
 ## `createBinData`
@@ -172,7 +174,7 @@ expression, including explicit nested scalar `getPath` and first-occurrence
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.19. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
 
 ```typescript
 createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -215,7 +217,7 @@ percent-change values independently within each group.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.19. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
 
 ```typescript
 createSortedData(options: SortedDataOptions): ChartProgram;
@@ -251,7 +253,7 @@ null placement, and quantitative, categorical, or temporal comparison.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.19. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
 
 ```typescript
 createCompleteData(options: CompleteDataOptions): ChartProgram;
@@ -292,7 +294,7 @@ explicit fill and source-membership provenance for synthesized rows.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.19. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
 
 ```typescript
 createImputedData(options: ImputedDataOptions): ChartProgram;
@@ -373,7 +375,7 @@ by Bar and Area layouts. [Source and Derived Data](../../api/data/source-and-der
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.19. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
 
 ```typescript
 editComputedData(options: EditComputedDataOptions): ChartProgram;
@@ -403,7 +405,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.19. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
 
 ```typescript
 editFoldData(options: EditFoldDataOptions): ChartProgram;
@@ -433,7 +435,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.19. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
 
 ```typescript
 editSummaryData(options: EditSummaryDataOptions): ChartProgram;
@@ -467,7 +469,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.19. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
 
 ```typescript
 editBinData(options: EditBinDataOptions): ChartProgram;
@@ -507,7 +509,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.19. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
 
 ```typescript
 editStackData(options: EditStackDataOptions): ChartProgram;
@@ -540,7 +542,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.19. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
 
 ```typescript
 editIntervalData(options: EditIntervalDataOptions): ChartProgram;
@@ -561,7 +563,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `center` | Optional / branch-dependent | `IntervalCenter \| undefined` |
 | `extent` | Optional / branch-dependent | `IntervalExtent \| undefined` |
-| `method` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
+| `method` | Optional / branch-dependent | `MeanConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `IntervalOutputFields \| undefined` |
@@ -576,7 +578,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.19. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
 
 ```typescript
 editECDFData(options: EditECDFDataOptions): ChartProgram;
@@ -609,7 +611,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.19. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
 
 ```typescript
 editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;
@@ -645,7 +647,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.19. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
 
 ```typescript
 editSortedData(options: EditSortedDataOptions): ChartProgram;
@@ -674,7 +676,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.19. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
 
 ```typescript
 editCompleteData(options: EditCompleteDataOptions): ChartProgram;
@@ -708,7 +710,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.19. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
 
 ```typescript
 editImputedData(options: EditImputedDataOptions): ChartProgram;
@@ -764,7 +766,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `center` | Optional / branch-dependent | `IntervalCenter \| undefined` |
 | `extent` | Optional / branch-dependent | `IntervalExtent \| undefined` |
-| `method` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
+| `method` | Optional / branch-dependent | `MeanConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `IntervalOutputFields \| undefined` |
@@ -780,7 +782,8 @@ createIntervalData({
 ```
 
 Create immutable grouped center/lower/upper summary rows. Mean supports
-standard error, sample standard deviation, and normal or Student-t confidence intervals;
+standard error, sample standard deviation, and normal, Student-t or explicitly seeded
+percentile-bootstrap confidence intervals;
 median supports interquartile range. [Data](../../api/data.md)
 
 

@@ -1,3 +1,4 @@
+import { createBootstrapMeanSampler, bootstrapMeanBounds, validateBootstrapDrawCount } from "./statistics/confidenceInterval.js";
 import { scalarKey } from "./transformKeys.js";
 import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation.js";
 import { requireStringValue as requireField } from "../core/validation.js";
@@ -34,7 +35,7 @@ function normalizeAggregate(value) {
   if (!isPlainObject(value)) return value;
   return {
     ...value,
-    op: validateAggregate(value.op),
+    op: validateAggregate(value.op, { allowBootstrap: true }),
     ...(Object.hasOwn(value, "field") ? { field: value.field } : {}),
     as: value.as
   };
@@ -87,7 +88,7 @@ export function validateSummaryTransform(transform) {
       throw new TypeError(`Summary aggregate ${index} must be a plain object.`);
     }
     rejectUnknownKeys(aggregate, AGGREGATE_KEYS, `summary aggregate ${index}`);
-    const operation = validateAggregate(aggregate.op);
+    const operation = validateAggregate(aggregate.op, { allowBootstrap: true });
     if (transform.weight !== undefined) validateWeightedAggregate(operation);
     if (operation === "count") {
       if (Object.hasOwn(aggregate, "field")) {
@@ -154,17 +155,18 @@ function validateAggregateValues(rows, aggregate) {
 export function deriveSummaryRows(rows, transform) {
   validateSummaryTransform(transform);
   requireSourceFields(rows, transform);
+  const aggregates = transform.aggregates.map(aggregate => ({ ...aggregate, op: validateAggregate(aggregate.op, { allowBootstrap: true }) }));
   const explicitWeighted = transform.weight !== undefined && transform.missing !== undefined;
   let weightEntries;
   if (transform.weight === undefined) {
-    for (const aggregate of transform.aggregates) {
+    for (const aggregate of aggregates) {
       validateAggregateValues(rows, aggregate);
     }
   } else if (!explicitWeighted) {
     weightEntries = readStatisticalWeights(rows, transform.weight, "Summary").entries;
     validateWeightedNumericFields(
       weightEntries,
-      [...new Set(transform.aggregates.flatMap(aggregate =>
+      [...new Set(aggregates.flatMap(aggregate =>
         aggregate.field === undefined ? [] : [aggregate.field]
       ))],
       "Summary"
@@ -178,7 +180,7 @@ export function deriveSummaryRows(rows, transform) {
       transform.weight,
       "Summary"
     );
-    for (const aggregate of transform.aggregates) {
+    for (const aggregate of aggregates) {
       if (aggregate.field === undefined) continue;
       validateAggregateValues(
         rows.filter(row => row[aggregate.field] !== null && row[aggregate.field] !== undefined),
@@ -195,7 +197,7 @@ export function deriveSummaryRows(rows, transform) {
         throw new TypeError(`Summary weight "${transform.weight.field}" is missing at row ${weightIndex}.`);
       }
     }
-    for (const aggregate of transform.aggregates) {
+    for (const aggregate of aggregates) {
       if (aggregate.field === undefined) continue;
       const index = rows.findIndex(row => row[aggregate.field] === null || row[aggregate.field] === undefined);
       if (index !== -1) throw new TypeError(`Summary field "${aggregate.field}" is missing at row ${index}.`);
@@ -229,8 +231,21 @@ export function deriveSummaryRows(rows, transform) {
     throw new RangeError(`Summary output cannot exceed ${MAX_OUTPUT_ROWS} groups.`);
   }
 
+  const bootstrapStreams = new Map();
+  let draws = 0;
+  for (const aggregate of aggregates) {
+    const method = aggregate.op?.method;
+    if (method?.type !== "bootstrap") continue;
+    const key = JSON.stringify([aggregate.field, method.samples, method.seed]);
+    if (bootstrapStreams.has(key)) continue;
+    draws += method.samples * rows.filter(row => Number.isFinite(row[aggregate.field])).length;
+    validateBootstrapDrawCount(draws);
+    bootstrapStreams.set(key, createBootstrapMeanSampler(method));
+  }
+
   const units = [];
   const values = [...groups.values()].map(group => {
+    const bootstrapSamples = new Map();
     const sharedWeightSummary = transform.weight === undefined || explicitWeighted
       ? undefined
       : summarizeStatisticalWeights(
@@ -238,7 +253,7 @@ export function deriveSummaryRows(rows, transform) {
           transform.weight.kind,
           "Summary group"
         );
-    const aggregated = Object.fromEntries(transform.aggregates.map(aggregate => {
+    const aggregated = Object.fromEntries(aggregates.map(aggregate => {
       let missingValue = 0;
       let missingWeight = 0;
       let zeroWeightRows = 0;
@@ -264,7 +279,18 @@ export function deriveSummaryRows(rows, transform) {
           "Summary group"
         );
       }
-      let value = measureWeightSummary === undefined
+      const method = aggregate.op?.method;
+      let bootstrapValue;
+      if (method?.type === "bootstrap") {
+        const key = JSON.stringify([aggregate.field, method.samples, method.seed]);
+        if (!bootstrapSamples.has(key)) {
+          const input = group.rows.map(row => row[aggregate.field]).filter(Number.isFinite);
+          bootstrapSamples.set(key, bootstrapStreams.get(key)(input));
+        }
+        const bounds = bootstrapMeanBounds(bootstrapSamples.get(key), aggregate.op.level);
+        bootstrapValue = bounds?.[aggregate.op.op === "ciLower" ? "lower" : "upper"];
+      }
+      let value = method?.type === "bootstrap" ? bootstrapValue : measureWeightSummary === undefined
         ? aggregateRows(group.rows, aggregate.field ?? "__row", aggregate.op)
         : calculateWeightedAggregate(
             measureWeightSummary,
