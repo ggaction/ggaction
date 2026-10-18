@@ -4462,6 +4462,11 @@ export type DiscretizedColorScaleOptions =
   | QuantizeColorScaleOptions
   | QuantileColorScaleOptions
   | ThresholdColorScaleOptions;
+
+/** Area quantitative color requires one finite value per existing series;
+ * aggregate, temporal color and unknown fallback remain mark-specific restrictions.
+ * Area authoring uses the Full facade; createAreaPlot.color stays categorical.
+ */
 ```
 
 </details>

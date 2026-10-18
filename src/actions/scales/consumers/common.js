@@ -1,5 +1,5 @@
 import { isSourceOwnedText } from "../../../grammar/text.js";
-import { readSeriesIdentity } from "../../../grammar/pathSeries.js";
+import { readSeriesIdentity, validatePathSeriesAppearance } from "../../../grammar/pathSeries.js";
 import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
 import { readScaleField } from "../../../grammar/scales/index.js";
 import { findDataset } from "../../../selectors/datasets.js";
@@ -58,6 +58,12 @@ export function readConsumerFieldValues(
   const { field, fieldType, temporalUnit } = consumer.encoding;
   if (consumer.layer.mark.type === "bar" && consumer.layer.encoding?.group !== undefined && ["xOffset", "yOffset"].includes(consumer.channel)) {
     return readSeriesIdentity(dataset.values, consumer.layer).values;
+  }
+  if (consumer.layer.mark.type === "area" && consumer.channel === "color" && fieldType === "quantitative") {
+    validatePathSeriesAppearance(dataset.values, consumer.layer);
+    const identities = readSeriesIdentity(dataset.values, consumer.layer).values;
+    const values = readScaleField(dataset.values, field, fieldType);
+    return [...new Map(identities.map((identity, index) => [identity, values[index]])).values()];
   }
   const parallel = consumer.role === "parallelDimension";
   if (!parallel && !isDirectCategoricalConsumer(consumer) &&

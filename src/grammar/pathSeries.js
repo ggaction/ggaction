@@ -42,7 +42,7 @@ export function readPathSeriesFields(rows, layer) {
 
 function seriesValueIndex(rows, fields, field, channel, encoding = {}) {
   const quantitative = channel === "strokeWidth" || channel === "opacity";
-  const values = channel === "stroke"
+  const values = channel === "stroke" || (channel === "color" && encoding.fieldType === "quantitative")
     ? readScaleField(rows, field, encoding.fieldType ?? "nominal", {
         temporalUnit: encoding.temporalUnit
       })
@@ -88,7 +88,7 @@ export function validatePathSeriesAppearance(rows, layer) {
     if (encoding?.field === undefined) continue;
     const allowed = ["color", "stroke"].includes(channel)
       ? channel === "color"
-        ? ["nominal", "ordinal"]
+        ? layer.mark.type === "area" ? ["nominal", "ordinal", "quantitative"] : ["nominal", "ordinal"]
         : ["nominal", "ordinal", "quantitative", "temporal"]
       : channel === "strokeDash" ? ["nominal"] : ["quantitative"];
     if (!allowed.includes(encoding.fieldType)) {

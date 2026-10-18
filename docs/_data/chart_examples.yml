@@ -1473,3 +1473,19 @@
   actions: createLegend · editLegendLabels · editLegendSymbols
   tasks: appearance guide editing
   url: /api/legends/categorical/#layered-recipe-opacity
+
+- id: continuous-area-color
+  example: /examples/continuous-area-color/
+  title: Quantitative color within independent area series
+  image: /assets/images/continuous-area-color.png
+  alt: Nine stacked area series filled by one continuous HCL color scale
+  width: 640
+  height: 440
+  thumbnail: /assets/images/continuous-area-color-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 440
+  caption: Group identity controls the paths while a constant numeric value per series controls fill.
+  summary: Declare complete areas and refine color independently from series layout.
+  actions: createAreaPlot · encodeGroup · encodeColor · layoutSeries
+  tasks: color grouping appearance
+  url: /api/series/color/#continuous-area-color

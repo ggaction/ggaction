@@ -45,7 +45,7 @@ export function assertPathGroupCompatible(program, layer, dataset, group) {
     ![undefined, "overlay"].includes(layer.encoding?.color?.layout)
   )) {
     if (group?.fields !== undefined ||
-        (layer.encoding?.color !== undefined && field !== layer.encoding.color.field)) {
+        (layer.encoding?.color !== undefined && layer.encoding.color.fieldType !== "quantitative" && field !== layer.encoding.color.field)) {
       throw new Error("Area layout requires one group field matching its color field.");
     }
   }

@@ -83,7 +83,7 @@ test("publishes only the bounded public package artifact", async () => {
     Buffer.byteLength(compactPackageJavaScript(resolverSource))
   );
   assert.equal(await readFile(resolverFile, "utf8"), resolverSource);
-  for (const relative of ["src/grammar/scales/color.js", "src/grammar/scales/transformed.js",
+  for (const relative of ["src/actions/marks/area/materialize.js", "src/grammar/scales/color.js", "src/grammar/scales/transformed.js",
     "src/grammar/scales/definition.js", "src/actions/scales/definitions.js",
     "src/grammar/polar.js", "src/grammar/arcs.js",
     "src/actions/guides/legends/group.js", "src/actions/guides/legends/lane.js",

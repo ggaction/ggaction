@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Support quantitative color on existing Area series through `encodeColor`, including shared scales, continuous/discretized legends and immutable rematerialization. Keep series identity independent and reject varying within-series color values.
+
 ## [0.0.19] - 2026-10-17
 
 ### Added

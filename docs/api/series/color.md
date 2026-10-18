@@ -24,8 +24,8 @@ per series. Raw Area supports an independent group field or tuple. Color must be
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
-| Continuous | point, aggregate bar, rect, text | point/rect/text: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
-| Discretized continuous | point, aggregate bar, rect, text | point/aggregate bar/rect/text: quantitative | quantize, quantile, or threshold scale |
+| Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
+| Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
 
 <!-- action-capabilities:color:end -->
 
@@ -285,8 +285,34 @@ The resolved color domain contains the per-rectangle aggregate values.
 `createLegend({ channels: ["color"] })` creates a gradient legend, and
 `editScale({ id: "color", reverse: true })` rematerializes both bar fills and
 the gradient without changing geometry. Continuous bar color rejects
-`layout`; histogram, ranged-bar, line-path, and area-path continuous color are
+`layout`; histogram, ranged-bar, and line-path continuous color are
 not part of this contract.
+
+### Continuous area color
+
+{% include chart-example.html id="continuous-area-color" %}
+
+A complete Area can use `encodeColor({ field, fieldType: "quantitative", scale })`
+with an existing continuous or discretized color scale. Create the complete area,
+then declare `encodeGroup` when it contains several series. Every existing series
+must have exactly one finite numeric color value, including all missing-break
+subpaths. Without grouping, the entire area is one series. Color never creates
+extra series, changes their order, interpolates between vertices, or changes layout.
+Use `layoutSeries` independently for stack, fill, center, overlay, or diverging placement.
+
+The same scale drives the area fills and `createLegend({ channels: ["color"] })`.
+Gradient legends, sampled color symbols, and discretized intervals retain their
+existing contracts. Automatic color domains use one value per series; path length
+does not weight quantile samples. Scale, data, coordinate and Canvas edits update
+the real consumers together. Existing constant or gradient fills return when the
+color encoding is removed, and independent outlines and opacity remain unchanged.
+
+Area rejects temporal color, color aggregation, and point-only `scale.unknown`.
+`createAreaPlot.color` remains categorical; refine numeric color with `encodeColor`
+after the complete plot exists. A density-derived Area can use numeric color only
+when its own derived dataset contains a finite constant value per existing series;
+raw input fields discarded by density estimation cannot be referenced. Basic does
+not expose Area authoring; use the Full facade for Area charts.
 
 ## Related
 

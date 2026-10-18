@@ -89,6 +89,17 @@ async function testNodeConsumer(directory) {
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
+    const numericArea = chart().createCanvas({ width: 320, height: 220, margin: 20 })
+      .createData({ values: [{ x: 0, value: 1, level: 10 }, { x: 1, value: 2, level: 10 }] })
+      .createAreaPlot({ x: "x", y: "value", guides: false })
+      .encodeColor({ field: "level", fieldType: "quantitative", scale: { domain: [10, 90], range: ["red", "blue"] } });
+    assert.equal(numericArea.graphicSpec.objects.areaPlot.items[0].properties.fill, "#ff0000");
+    assert.deepEqual(deserializeProgram(serializeProgram(numericArea)).graphicSpec, numericArea.graphicSpec);
+    assert.ok((await renderToPNGBuffer(numericArea)).buffer.length > 100);
+    assert.ok((await renderToPDFBuffer(numericArea)).buffer.length > 100);
+    assert.match(renderToSVG(numericArea), /#ff0000/);
+    assert.equal(basicChart().createAreaMark, undefined);
+
     const blendedBar = chart().createCanvas({width:200,height:200,margin:40})
       .createData({values:[{category:"a",value:1}]})
       .createBarPlot({x:"category",y:{field:"value",aggregate:"sum"},guides:false})
@@ -4208,6 +4219,10 @@ async function testTypeScriptConsumer(directory) {
         { group: "A", value: 2 }
       ] })
       .createViolinPlot(violinOptions);
+    const quantitativeArea: ChartProgram = chart().createCanvas()
+      .createData({ values: [{ x: 0, y: 1, level: 10 }, { x: 1, y: 2, level: 10 }] })
+      .createAreaPlot({ x: "x", y: "y", guides: false })
+      .encodeColor({ field: "level", fieldType: "quantitative", scale: { type: "sqrt", range: ["red", "blue"] } });
     const composed: ChartProgram = hconcat({
       programs: [program, program]
     })

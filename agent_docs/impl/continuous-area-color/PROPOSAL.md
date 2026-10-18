@@ -5,10 +5,10 @@
 - [x] 0.0.19 공개 동작의 거부와 이전 프로그램 불변성 재현
 - [x] 새 API의 범위·저장 결과·호환성·소비자 검증 계획
 - [x] 독립적인 9개 면적 primitive 목표와 실제 PNG 렌더
-- [ ] **Gate: ready-for-review — 공개 계약과 아래 그림에 대한 사용자 승인**
+- [x] **Gate: approved — 공개 계약과 아래 그림에 대한 사용자 승인**
 - [ ] 승인된 범위 구현, 소비자 검증, 문서/계약/타입 동기화
 
-현재 라이브러리 구현을 수정하지 않았다. `fixture.mjs`의 `proposedProgram()`은 지금 실패해야 한다. 진단·목표 생성 명령은 다음과 같다.
+승인 후 구현했으며 `fixture.mjs`의 `proposedProgram()`은 이제 성공한다. `rejection-evidence.json`은 승인 전 0.0.19의 역사적 거부 증거로 보존한다. 진단·목표 생성 명령은 다음과 같다.
 
 ```sh
 node agent_docs/impl/continuous-area-color/reproduce.mjs
@@ -16,6 +16,8 @@ node agent_docs/impl/continuous-area-color/render-target.mjs
 ```
 
 기준 릴리스는 `f6b50bf55a9de1857f106c7aa519326ce7a86d76` / 0.0.19다. 검토할 소스와 증거 revision은 승인 요청에 링크한 이 패키지의 Git commit이다. 승인 전에는 이 Gate에 의존하는 구현만 보류한다.
+
+승인 근거: [approval-evidence.json](approval-evidence.json). 사용자의 “너가 지금까지 질문한거 있으면 다 승인함”은 앞서 실제로 요청한 이 계약과 독립 그림을 승인한다. 구현 완료나 배포 완료를 뜻하지 않는다.
 
 ## 문제와 재현
 
@@ -53,13 +55,13 @@ chart()
 - 기존 정량 색상 척도 종류·range·보간·whitePoint/gamma·domain 검증을 재사용한다. 새 수학 공식이나 오차 허용은 없다. 척도가 요구하는 양수 등 기존 유효성도 그대로다.
 - Area의 `color.aggregate`, `color.fieldType:'temporal'`, point 전용 `scale.unknown`은 이번 범위에서 거부한다. 일반 Line의 기존 색상 지원 범위도 유지한다.
 - 한 시리즈의 전체 경로/결측 subpath에는 동일한 척도 색상을 채운다. 경로 내부의 값별 gradient나 vertex 색상 보간은 제안하지 않는다. 현재 단색/구조화 FillPaint fallback과 인코딩 우선순위는 유지한다.
-- Full facade와 Basic의 기존 Area mark 흐름은 같은 domain 인코더를 사용한다. 정량 fill과 별도 stroke·opacity·그룹·stack/center/ranged/수평 면적을 각각 유지한다. 색상이 layout이나 group 의미를 다시 소유하지 않는다.
+- Full facade의 Area는 기존 domain 인코더를 사용한다. 실제 Basic에는 Area authoring API가 없어 새로 추가하지 않으며 기존 Point 인코더와 facade 경계 회귀를 확인한다. 정량 fill과 별도 stroke·opacity·그룹·stack/center/ranged/수평 면적을 각각 유지한다. 색상이 layout이나 group 의미를 다시 소유하지 않는다.
 
 ## 그래픽 목표
 
 [독립적인 primitive 그림](target.svg) — 320×220, 9개 선형 면적 경로, 각 6개 경계 꼭짓점, opacity 0.7. 세 X지점에서 시리즈별 값은 1/2/1이며 숫자 level은 10부터 8,090까지 1,010 간격이다. 색상은 현재 공개 Point 인코더가 같은 HCL/D50 척도에서 이미 내는 정확한 9색이다.
 
-`target-render-evidence.json`은 실제 SVG의 양수 경로 길이, 플롯 안의 painted bounds, 색/opacity와 PNG hash를 기록한다. PNG는 `.artifacts/test/png/review/continuous-area-color/nine-series-hcl/target.png`에 있다. 이미지 픽셀을 사람이/모델이 검사했다는 주장은 하지 않는다. **새 public Area 실행/primitive 동일성/최상위 public trace 검증은 구현 뒤 수행할 항목이며 아직 통과하지 않았다.**
+`target-render-evidence.json`은 실제 SVG의 양수 경로 길이, 플롯 안의 painted bounds, 색/opacity와 PNG hash를 기록한다. PNG는 `.artifacts/test/png/charts/continuous-area-color/continuous-area-color/nine-series-hcl/approved-target.png`에 있다. 이미지 픽셀을 사람이/모델이 검사했다는 주장은 하지 않는다. **승인 후 public Area/primitive의 graphicSpec·SVG·실제 Canvas 호출/RGBA·PNG·브라우저 및 최상위 public trace가 정확히 일치했다.**
 
 이 목표는 새 채움 조합만 검토한다. 연속 범례의 primitive·외부 기본 간격·정렬·gradient opacity는 기존 승인된 범례 계약을 그대로 사용한다. Area의 척도가 그 범례의 실제 소비자가 되어야 하며 dummy mark/scale 복제는 허용하지 않는다.
 

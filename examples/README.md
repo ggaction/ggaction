@@ -534,6 +534,12 @@ Style an existing legend with a complete line and point recipe.
 
 Representative actions: `createLegend`, `editLegendLabels`, `editLegendSymbols`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#layered-recipe-opacity).
 
+### [Quantitative color within independent area series](./continuous-area-color/)
+
+Declare complete areas and refine color independently from series layout.
+
+Representative actions: `createAreaPlot`, `encodeGroup`, `encodeColor`, `layoutSeries`. [Documentation](https://ggaction.github.io/ggaction/api/series/color/#continuous-area-color).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

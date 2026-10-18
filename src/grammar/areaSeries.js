@@ -148,11 +148,12 @@ export function deriveCenteredAreaSeries(rows, layer, options = {}) {
   if (group?.fieldType !== "nominal") {
     throw new Error(`Centered area mark "${layer.id}" requires a nominal group encoding.`);
   }
-  if (color !== undefined && color.field !== group.field) {
+  if (color !== undefined && color.fieldType !== "quantitative" && color.field !== group.field) {
     throw new Error(
       `Centered area color on mark "${layer.id}" must match its group field.`
     );
   }
+  validatePathSeriesAppearance(rows, layer);
   const categorical = ["nominal", "ordinal"].includes(x.fieldType);
   const xValues = categorical ? readNominalField(rows, x.field) : x.fieldType === "temporal"
     ? readTemporalField(rows, x.field, x.temporalUnit)
@@ -217,7 +218,7 @@ export function deriveCenteredAreaSeries(rows, layer, options = {}) {
   const series = groupOrder.map((key, index) => ({
     key: {
       [group.field]: key,
-      ...(color === undefined ? {} : { [color.field]: key })
+      ...(color === undefined || color.fieldType === "quantitative" ? {} : { [color.field]: key })
     },
     values: valuesBySeries[index]
   }));
