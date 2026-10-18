@@ -4,6 +4,7 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Support finite numeric datum bounds in Rect/Rule range encoders, with final-pair validation and unchanged source data.
 - Align continuous color and stroke TypeScript palette descriptors with existing runtime count, extent and nested range forms.
 
 ## [0.0.21] - 2026-10-18

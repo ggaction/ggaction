@@ -176,6 +176,18 @@ full-span rule; `y` alone draws a horizontal full-span rule. `x+y+y2` and
 `y+x+x2` draw bounded intervals, while all four endpoints draw a diagonal.
 Calling the same action again replaces only that endpoint.
 
+## Quantitative ranges
+
+Full `encodeXRange` and `encodeYRange` accept field names or finite
+`{ datum: number }` bounds for Rect and Rule marks. Either or both bounds may
+be constants; the two endpoints share one scale and coordinate. No source rows
+or columns are added. The wrapper validates the final pair before changing it
+and records the ordinary primary/secondary encoding actions.
+
+Bar ranges require two fields. Temporal ranges also require two fields;
+use the individual position encoders for temporal constants. Area bounds retain
+the more specific requirements below.
+
 ## Area bounds
 
 Area `encodeXRange` and `encodeYRange` accept a field name or `{ datum: number }`

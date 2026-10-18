@@ -100,6 +100,22 @@ async function testNodeConsumer(directory) {
     assert.ok(Object.values(paletteTop.resolvedScales).some(scale=>scale.range.length===64));
     assert.deepEqual(deserializeProgram(serializeProgram(paletteTop)).graphicSpec,paletteTop.graphicSpec);
 
+    const intervalRows = Object.freeze([Object.freeze({x0:0,x1:2})]);
+    const intervalBase = chart().createCanvas({width:240,height:160,margin:20})
+      .createData({values:intervalRows}).createRectMark({id:"period"})
+      .encodeXRange({lower:"x0",upper:"x1",scale:{domain:[0,2],nice:false}});
+    const directInterval = intervalBase.encodeY({datum:45000,scale:{domain:[0,45000],nice:false}}).encodeY2({datum:0});
+    const rangedInterval = intervalBase.encodeYRange({lower:{datum:45000},upper:{datum:0},scale:{domain:[0,45000],nice:false}});
+    assert.deepEqual(rangedInterval.semanticSpec,directInterval.semanticSpec);
+    assert.deepEqual(rangedInterval.graphicSpec,directInterval.graphicSpec);
+    assert.equal(rangedInterval.graphicSpec.objects.period.items[0].properties.y,20);
+    assert.equal(rangedInterval.graphicSpec.objects.period.items[0].properties.height,120);
+    assert.equal(renderToSVG(rangedInterval),renderToSVG(directInterval));
+    assert.deepEqual((await renderToPNGBuffer(rangedInterval)).buffer,(await renderToPNGBuffer(directInterval)).buffer);
+    assert.deepEqual(rangedInterval.semanticSpec.datasets[0].values,intervalRows);
+    assert.deepEqual(deserializeProgram(serializeProgram(rangedInterval)).graphicSpec,rangedInterval.graphicSpec);
+    assert.ok((await renderToPDFBuffer(rangedInterval)).buffer.length>100);
+
     const bootstrapRows = [{x:0,y:0},{x:0,y:1},{x:0,y:2},{x:0,y:30}];
     const bootstrapSummary = chart().createData({values:bootstrapRows}).createSummaryData({id:"ci",groupBy:"x",aggregates:[
       {field:"y",op:{op:"ciLower",method:{type:"bootstrap",seed:1}},as:"lower"},
@@ -3287,6 +3303,14 @@ async function testTypeScriptConsumer(directory) {
     basicChart().createTextPlot({ x: "x", y: "y", text: "label" });
 
     chart().createScatterPlot({ x: "x", y: "y", stroke: "group", point: { strokeWidth: 2 } });
+    chart().encodeYRange({ lower: { datum: 45000 }, upper: { datum: 0 }, scale: { domain: [0, 45000], nice: false } });
+    chart().encodeXRange({ lower: { datum: 1 }, upper: "high" });
+    // @ts-expect-error numeric range constants remain numeric
+    chart().encodeXRange({ lower: { datum: "1" }, upper: "high" });
+    // @ts-expect-error temporal datum ranges are not added by numeric wrapper support
+    chart().encodeXRange({ lower: { datum: 1 }, upper: { datum: 2 }, fieldType: "temporal" });
+    // @ts-expect-error Basic retains individual endpoint actions
+    basicChart().encodeYRange({ lower: { datum: 1 }, upper: { datum: 2 } });
     const sampledPalette = { name: "turbo", count: 64, extent: [0.1, 0.9] } as const;
     for (const scale of [{ type: "sequential", palette: sampledPalette },
       { type: "sequential", range: { palette: sampledPalette } }] as const) {
@@ -5235,6 +5259,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "right-categorical-legend-offset",
       "grouped-corner-and-free-legend-placement",
       "sequential-palette-count",
+      "ranged-numeric-datum-wrapper-parity",
       "typescript",
       "basic-entry-runtime-and-types",
       "tutorial-consumers",

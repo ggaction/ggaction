@@ -10772,6 +10772,16 @@
       },
       "options": [
         {
+          "name": "lower",
+          "required": true,
+          "type": "string | { datum: number; }"
+        },
+        {
+          "name": "upper",
+          "required": true,
+          "type": "string | { datum: number; }"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -10795,16 +10805,6 @@
           "name": "scale",
           "required": false,
           "type": "NonPointQuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | undefined"
-        },
-        {
-          "name": "lower",
-          "required": true,
-          "type": "string | { datum: number; }"
-        },
-        {
-          "name": "upper",
-          "required": true,
-          "type": "string | { datum: number; }"
         }
       ],
       "callPatterns": [
@@ -10889,6 +10889,16 @@
       },
       "options": [
         {
+          "name": "lower",
+          "required": true,
+          "type": "string | { datum: number; }"
+        },
+        {
+          "name": "upper",
+          "required": true,
+          "type": "string | { datum: number; }"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -10912,16 +10922,6 @@
           "name": "scale",
           "required": false,
           "type": "NonPointQuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | undefined"
-        },
-        {
-          "name": "lower",
-          "required": true,
-          "type": "string | { datum: number; }"
-        },
-        {
-          "name": "upper",
-          "required": true,
-          "type": "string | { datum: number; }"
         }
       ],
       "callPatterns": [

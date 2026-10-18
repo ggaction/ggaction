@@ -199,6 +199,39 @@ const encodeY2 = /* @__PURE__ */ action(
   }
 );
 
+function normalizeDatumRangeBound(value, fieldType, operation) {
+  if (typeof value === "string") return { field: value };
+  validateOptions(value, ["datum"], `${operation} endpoint`);
+  if (!Object.hasOwn(value, "datum") || fieldType !== "quantitative") {
+    throw new TypeError(`${operation} datum endpoints require a quantitative datum object.`);
+  }
+  return { datum: normalizePositionDatum(value.datum, fieldType, operation, undefined, "Range") };
+}
+
+function prepareDatumRange(program, layer, dataset, channel, args, common, lower, upper) {
+  if (Object.hasOwn(upper, "field")) {
+    validateSecondaryField(applyRequestedItemMissingPolicy(layer, dataset, upper.field),
+      upper.field, common.fieldType, undefined);
+  }
+  const resolved = resolvePositionEncoding(program, channel, {
+    ...common, ...lower,
+    ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }),
+    ...(args.scale === undefined ? {} : { scale: args.scale })
+  }, channel === "x" ? "encodeXRange" : "encodeYRange");
+  const primary = { ...lower, fieldType: common.fieldType, scale: resolved.scale.id };
+  const secondary = { ...upper, fieldType: common.fieldType, scale: resolved.scale.id };
+  const updated = { ...layer, coordinate: resolved.coordinate.id,
+    encoding: { ...layer.encoding, [channel]: primary, [`${channel}2`]: secondary } };
+  const coordinates = program.semanticSpec.coordinates;
+  resolveScalePreview({ ...program, semanticSpec: { ...program.semanticSpec,
+    layers: program.semanticSpec.layers.map(item => item.id === layer.id ? updated : item),
+    coordinates: coordinates.some(item => item.id === resolved.coordinate.id)
+      ? coordinates : [...coordinates, resolved.coordinate],
+    scales: [...program.semanticSpec.scales.filter(item => item.id !== resolved.scale.id), resolved.scale]
+  } }, resolved.scale.id);
+  return secondary;
+}
+
 function rangeAction(channel) {
   const primary = channel === "x" ? "encodeX" : "encodeY";
   const secondary = channel === "x" ? "encodeX2" : "encodeY2";
@@ -213,6 +246,19 @@ function rangeAction(channel) {
     const { layer, dataset } = resolveTarget(this, args.target, ["area", "bar", "rect", "rule"], "ranged mark");
     let next = this;
     let lower = { field: args.lower }, upper = { field: args.upper };
+    if (layer.mark.type === "rect" || layer.mark.type === "rule") {
+      lower = normalizeDatumRangeBound(args.lower, common.fieldType, op);
+      upper = normalizeDatumRangeBound(args.upper, common.fieldType, op);
+      if (Object.hasOwn(lower, "datum") || Object.hasOwn(upper, "datum")) {
+        common.target = layer.id;
+        const prepared = prepareDatumRange(this, layer, dataset, channel, args, common, lower, upper);
+        const secondaryChannel = `${channel}2`;
+        if (layer.encoding?.[secondaryChannel] !== undefined) {
+          next = next.editSemantic({ property: `layer[${layer.id}].encoding.${secondaryChannel}`, remove: true });
+        }
+        next = setEncodingProperties(next, layer.id, secondaryChannel, prepared);
+      }
+    }
     if (layer.mark.type === "bar") {
       if (layer.mark.orientation !== undefined && channel !== (layer.mark.orientation === "vertical" ? "y" : "x")) {
         throw new Error("Numeric bar endpoints must use the measure channel.");

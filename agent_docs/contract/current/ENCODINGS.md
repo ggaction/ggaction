@@ -640,7 +640,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ## `encodeYRange`
 
 - Signature: `encodeYRange({ lower, upper, target?, fieldType?, coordinate?, scale? })`
-- `lower`, `upper`: 필수 quantitative field names이며 각각 y와 y2가 된다.
+- `lower`, `upper`: 각각 y/y2다. Rect/Rule의 quantitative range는 field string 또는 finite `{ datum: number }`를 각 끝점에 받으며 양쪽 datum도 허용한다. Area는 최소 한 field, Bar는 두 field를 요구한다. Temporal range는 두 field다.
 - `target`, `fieldType`, `coordinate`, `scale`: `encodeY` 계약을 공유한다.
 - Effect: bar는 secondary endpoint 의미를 먼저 설정해 일시적인 평균 집계를 방지한다. 이후 wrapped `encodeY` 뒤 `encodeY2`를 호출하는 atomic action이다. 중간의 incomplete area/bar
   상태를 public workflow에 노출하지 않는다.
@@ -651,7 +651,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeYRange`
 
-- Implemented: `encodeYRange({ lower: FieldName; upper: FieldName; target?: UserId; fieldType?: "quantitative"; coordinate?: UserId; scale?: PositionScale })`
+- Implemented: `encodeYRange({ lower: FieldName | { datum: Finite }; upper: FieldName | { datum: Finite }; target?: UserId; fieldType?: "quantitative"; coordinate?: UserId; scale?: PositionScale })`; mark별 위 제한을 적용하며 기존 temporal field/field branch는 유지한다.
 - Planned (NOT IMPLEMENTED): —.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -666,12 +666,13 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Reassignment
   - ✅ Covered: lower/upper 동시 교체, wrapped child order, concrete path change와 earlier-program immutability.
 - Temporal ranged bar는 실제 날짜 간격을 유지하고 aggregate temporal bar와 같은 slot 정책을 사용한다. ISO/timestamp 정규화, 양방향, pixel width의 선후 지정, resize/scale edit/source revision/저장 복원을 지원한다.
-- Evidence: ranged-area, ranged-bar and regression tests.
+- Datum Rect/Rule은 최종 pair의 shared scale을 pure preview로 검증하고 companion semantic을 먼저 기록한 뒤 wrapped primary/secondary를 호출한다. 새 scale ID로 전환할 때 이전 zero endpoint가 새 log scale에 잠시 남지 않는다. 원래 field/field 경로는 유지한다.
+- Evidence: ranged-area, ranged-bar and regression tests, `test/unit/actions/encodings/ranged-datum-encodings.test.js`, `test/contracts/ranged-datum-types.test.js`.
 
 ## `encodeXRange`
 
 - Signature: `encodeXRange({ lower, upper, target?, fieldType?, coordinate?, scale? })`
-- `lower`, `upper`: Area는 field string 또는 finite datum 객체이며 최소 하나는 field다. Bar/Rect는 field names이고 각각 x와 x2가 된다.
+- `lower`, `upper`: 각각 x/x2며 `encodeYRange`와 같은 mark별 field/datum 정책 및 최종 pair 검증을 따른다.
 - Effect: bar는 secondary endpoint 의미를 먼저 설정해 기존 raw scale consumers와 호환된다. 이후 wrapped `encodeX` 뒤 area/bar-compatible `encodeX2`를 호출하는 atomic action이다.
 - Horizontal area는 y independent position 순서로 lower path와 reversed upper path를 연결해 Z-closed
   concrete path를 만들고 ranged bar는 one rect per observed category를 만든다. x/x2는 one shared scale and coordinate를 사용한다.
@@ -680,7 +681,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeXRange`
 
-- Implemented: `encodeXRange({ lower: FieldName; upper: FieldName; target?: UserId; fieldType?: "quantitative"; coordinate?: UserId; scale?: PositionScale })`.
+- Implemented: `encodeXRange({ lower: FieldName | { datum: Finite }; upper: FieldName | { datum: Finite }; target?: UserId; fieldType?: "quantitative"; coordinate?: UserId; scale?: PositionScale })`; mark별 위 제한과 기존 temporal field/field branch를 적용한다.
 - Planned (NOT IMPLEMENTED): —.
 - Proposed (NOT IMPLEMENTED): —.
 
@@ -688,7 +689,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - ✅ Covered: shortest horizontal area assignment, explicit target, wrapped x/x2 order, shared scale/coordinate,
   invalid/missing fields, conflicting scale, atomic reassignment, Canvas rematerialization and primitive parity.
-- Evidence: `test/unit/actions/encodings/area-encodings.test.js` and
+- Evidence: `test/unit/actions/encodings/ranged-datum-encodings.test.js`, `test/contracts/ranged-datum-types.test.js`, `test/unit/actions/encodings/area-encodings.test.js` and
   `test/charts/gapminder-error-band/public.test.js`.
 
 ## `encodeGroup`

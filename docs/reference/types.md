@@ -478,28 +478,6 @@ export type AreaPlotMeasureChannel = string | { field: string; scale?: NonPointQ
 
 Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions).
 
-### `AreaRangePositionEncodingOptions` {#type-arearangepositionencodingoptions}
-
-<details markdown="1">
-<summary>Expand AreaRangePositionEncodingOptions</summary>
-
-```typescript
-type AreaRangePositionEncodingOptions = {
-  target?: string;
-  coordinate?: string;
-  fieldType?: "quantitative";
-  temporalUnit?: never;
-  scale?: NonPointQuantitativePositionScaleOptions;
-} & (
-  | { lower: string; upper: { datum: number } }
-  | { lower: { datum: number }; upper: string }
-);
-```
-
-</details>
-
-Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions).
-
 ### `AtLeastOne` {#type-atleastone}
 
 <details markdown="1">
@@ -9566,6 +9544,27 @@ export type QuantitativePositionScaleType =
 
 </details>
 
+### `QuantitativeRangePositionEncodingOptions` {#type-quantitativerangepositionencodingoptions}
+
+<details markdown="1">
+<summary>Expand QuantitativeRangePositionEncodingOptions</summary>
+
+```typescript
+type QuantitativeRangePositionEncodingOptions = {
+  lower: string | { datum: number };
+  upper: string | { datum: number };
+  target?: string;
+  coordinate?: string;
+  fieldType?: "quantitative";
+  temporalUnit?: never;
+  scale?: NonPointQuantitativePositionScaleOptions;
+};
+```
+
+</details>
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions).
+
 ### `QuantizeColorScaleOptions` {#type-quantizecolorscaleoptions}
 
 <details markdown="1">
@@ -9881,20 +9880,20 @@ Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquanti
 <summary>Expand RangePositionEncodingOptions</summary>
 
 ```typescript
-type RangePositionEncodingOptions = AreaRangePositionEncodingOptions | {
+type RangePositionEncodingOptions = QuantitativeRangePositionEncodingOptions | {
   lower: string;
   upper: string;
   target?: string;
   coordinate?: string;
-} & (
-  | { fieldType?: "quantitative"; temporalUnit?: never; scale?: NonPointQuantitativePositionScaleOptions }
-  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit; scale?: NonPointTemporalPositionScaleOptions }
-);
+  fieldType: "temporal";
+  temporalUnit?: TemporalInputUnit;
+  scale?: NonPointTemporalPositionScaleOptions;
+};
 ```
 
 </details>
 
-Related types: [`AreaRangePositionEncodingOptions`](#type-arearangepositionencodingoptions) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions).
+Related types: [`QuantitativeRangePositionEncodingOptions`](#type-quantitativerangepositionencodingoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions).
 
 ### `RectColorChannel` {#type-rectcolorchannel}
 

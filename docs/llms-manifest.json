@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:5f36bcafaae9455b1395a35a2abdd14ad14c56a5afd625b79a60df029fa2500f",
+    "contractId": "sha256:47284f996ea16c168e353356564b487cd80b208e918bb15f2350e1ce07413ea8",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1005,8 +1005,8 @@
         "independent-corners",
         "related"
       ],
-      "bytes": 6744,
-      "sha256": "415f5698ba84fbc4ca6fff3201fb4d99733059e1e4215938c060572d4b5cf900"
+      "bytes": 7054,
+      "sha256": "d60c5d5e5c7186dd3e7ae2eb2340043a2dad31829792b9b5f655159431406386"
     },
     {
       "order": 63,
@@ -1240,11 +1240,12 @@
         "polar-positions",
         "measured-radial-sectors",
         "rule-endpoints",
+        "quantitative-ranges",
         "area-bounds",
         "related"
       ],
-      "bytes": 10981,
-      "sha256": "7d7e8b4a8162fd85f4b27e172da4a42887af74b9052cbb1c1be0b9246bdadad4"
+      "bytes": 11561,
+      "sha256": "37354d649d4bc62b8982a47f738971750f1fc3f889784046aa313f06fa9d763f"
     },
     {
       "order": 75,
@@ -2142,7 +2143,7 @@
         "related"
       ],
       "bytes": 61586,
-      "sha256": "a95c7a41a46949aa6c6fd435e5461615673f802ca7f9553258d4eea017621319"
+      "sha256": "35c5bd36da5697cb0e8f12a901a19f9a119fcea6bd40496c62656224141ed162"
     },
     {
       "order": 121,
@@ -2378,7 +2379,6 @@
         "type-arcinnerradius",
         "type-areaplotindependentchannel",
         "type-areaplotmeasurechannel",
-        "type-arearangepositionencodingoptions",
         "type-atleastone",
         "type-axisformat",
         "type-axislabellayoutoptions",
@@ -2858,6 +2858,7 @@
         "type-quantitativebarcolorchannel",
         "type-quantitativepositionscaleoptions",
         "type-quantitativepositionscaletype",
+        "type-quantitativerangepositionencodingoptions",
         "type-quantizecolorscaleoptions",
         "type-radarcategorychannel",
         "type-radarcategoryscaleoptions",
@@ -3012,8 +3013,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 343531,
-      "sha256": "a70e72f38ec726d5eb4686741a4d3bfc90db80b584418782d51ff2edd95f12f6"
+      "bytes": 343331,
+      "sha256": "068c53a2854b2c86231246598c792995c9518eb08e7522ed06bd55ea7c1b463a"
     },
     {
       "order": 127,
@@ -3368,7 +3369,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "0fc795349ad8eb87e08f79450a06d25eae0c64f9acb018de1396764b7659c7e4"
+      "sha256": "6f59271c10be9357a3a65d74a8177fe55a280e36b31d4608a03b0fb005d12c5e"
     },
     {
       "order": 150,

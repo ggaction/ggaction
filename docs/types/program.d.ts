@@ -2226,26 +2226,25 @@ export type SecondaryPositionEncodingOptions =
   | { datum: unknown; field?: never; fieldType?: "quantitative"; target?: string; scale?: { id?: string }; coordinate?: string }
   | ({ field: string; datum?: never; target?: string; scale?: { id?: string }; coordinate?: string } & TemporalBindingBranch);
 
-type AreaRangePositionEncodingOptions = {
+type QuantitativeRangePositionEncodingOptions = {
+  lower: string | { datum: number };
+  upper: string | { datum: number };
   target?: string;
   coordinate?: string;
   fieldType?: "quantitative";
   temporalUnit?: never;
   scale?: NonPointQuantitativePositionScaleOptions;
-} & (
-  | { lower: string; upper: { datum: number } }
-  | { lower: { datum: number }; upper: string }
-);
+};
 
-type RangePositionEncodingOptions = AreaRangePositionEncodingOptions | {
+type RangePositionEncodingOptions = QuantitativeRangePositionEncodingOptions | {
   lower: string;
   upper: string;
   target?: string;
   coordinate?: string;
-} & (
-  | { fieldType?: "quantitative"; temporalUnit?: never; scale?: NonPointQuantitativePositionScaleOptions }
-  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit; scale?: NonPointTemporalPositionScaleOptions }
-);
+  fieldType: "temporal";
+  temporalUnit?: TemporalInputUnit;
+  scale?: NonPointTemporalPositionScaleOptions;
+};
 
 export type HistogramEncodingOptions = {
   field: string;

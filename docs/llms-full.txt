@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:5f36bcafaae9455b1395a35a2abdd14ad14c56a5afd625b79a60df029fa2500f. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:47284f996ea16c168e353356564b487cd80b208e918bb15f2350e1ce07413ea8. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -7075,6 +7075,11 @@ const interval = chart()
   .encodeX2({ datum: 6 });
 ```
 
+Full authors can assign the same numeric interval atomically with
+`encodeXRange({ lower: { datum: 2 }, upper: { datum: 6 }, scale: { domain: [0, 10] } })`.
+The [range wrapper](./api/position-encodings/#quantitative-ranges) accepts field
+names or finite numeric datum objects and leaves source data unchanged.
+
 Each position accepts exactly one `field` or `datum`. When every position and
 color is constant, the result is one rectangle even with an empty or multirow
 dataset. A field binding makes the rectangle row-based again; constants broadcast
@@ -9816,6 +9821,18 @@ and share its scale, coordinate, and field type. `x` alone draws a vertical
 full-span rule; `y` alone draws a horizontal full-span rule. `x+y+y2` and
 `y+x+x2` draw bounded intervals, while all four endpoints draw a diagonal.
 Calling the same action again replaces only that endpoint.
+
+## Quantitative ranges
+
+Full `encodeXRange` and `encodeYRange` accept field names or finite
+`{ datum: number }` bounds for Rect and Rule marks. Either or both bounds may
+be constants; the two endpoints share one scale and coordinate. No source rows
+or columns are added. The wrapper validates the final pair before changing it
+and records the ordinary primary/secondary encoding actions.
+
+Bar ranges require two fields. Temporal ranges also require two fields;
+use the individual position encoders for temporal constants. Area bounds retain
+the more specific requirements below.
 
 ## Area bounds
 
@@ -21774,13 +21791,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `lower` | Required | `string \| { datum: number; }` |
+| `upper` | Required | `string \| { datum: number; }` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| "temporal" \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 | `scale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| undefined` |
-| `lower` | Required | `string \| { datum: number; }` |
-| `upper` | Required | `string \| { datum: number; }` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -21809,13 +21826,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `lower` | Required | `string \| { datum: number; }` |
+| `upper` | Required | `string \| { datum: number; }` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| "temporal" \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 | `scale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| undefined` |
-| `lower` | Required | `string \| { datum: number; }` |
-| `upper` | Required | `string \| { datum: number; }` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -27802,25 +27819,6 @@ export type AreaPlotMeasureChannel = string | { field: string; scale?: NonPointQ
     | { lower: string; upper: string | { datum: number } }
     | { lower: { datum: number }; upper: string }
   ));
-```
-
-Related types: [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions).
-
-### `AreaRangePositionEncodingOptions` {#type-arearangepositionencodingoptions}
-
- Expand AreaRangePositionEncodingOptions
-
-```typescript
-type AreaRangePositionEncodingOptions = {
-  target?: string;
-  coordinate?: string;
-  fieldType?: "quantitative";
-  temporalUnit?: never;
-  scale?: NonPointQuantitativePositionScaleOptions;
-} & (
-  | { lower: string; upper: { datum: number } }
-  | { lower: { datum: number }; upper: string }
-);
 ```
 
 Related types: [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions).
@@ -35454,6 +35452,24 @@ export type QuantitativePositionScaleType =
   | "linear" | "log" | "pow" | "sqrt" | "symlog";
 ```
 
+### `QuantitativeRangePositionEncodingOptions` {#type-quantitativerangepositionencodingoptions}
+
+ Expand QuantitativeRangePositionEncodingOptions
+
+```typescript
+type QuantitativeRangePositionEncodingOptions = {
+  lower: string | { datum: number };
+  upper: string | { datum: number };
+  target?: string;
+  coordinate?: string;
+  fieldType?: "quantitative";
+  temporalUnit?: never;
+  scale?: NonPointQuantitativePositionScaleOptions;
+};
+```
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions).
+
 ### `QuantizeColorScaleOptions` {#type-quantizecolorscaleoptions}
 
  Expand QuantizeColorScaleOptions
@@ -35714,18 +35730,18 @@ Related types: [`NonPointQuantitativePositionScaleOptions`](./reference/types/#t
  Expand RangePositionEncodingOptions
 
 ```typescript
-type RangePositionEncodingOptions = AreaRangePositionEncodingOptions | {
+type RangePositionEncodingOptions = QuantitativeRangePositionEncodingOptions | {
   lower: string;
   upper: string;
   target?: string;
   coordinate?: string;
-} & (
-  | { fieldType?: "quantitative"; temporalUnit?: never; scale?: NonPointQuantitativePositionScaleOptions }
-  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit; scale?: NonPointTemporalPositionScaleOptions }
-);
+  fieldType: "temporal";
+  temporalUnit?: TemporalInputUnit;
+  scale?: NonPointTemporalPositionScaleOptions;
+};
 ```
 
-Related types: [`AreaRangePositionEncodingOptions`](./reference/types/#type-arearangepositionencodingoptions) · [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](./reference/types/#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](./reference/types/#type-nonpointtemporalpositionscaleoptions).
+Related types: [`QuantitativeRangePositionEncodingOptions`](./reference/types/#type-quantitativerangepositionencodingoptions) · [`TemporalInputUnit`](./reference/types/#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](./reference/types/#type-nonpointtemporalpositionscaleoptions).
 
 ### `RectColorChannel` {#type-rectcolorchannel}
 
@@ -40451,7 +40467,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:5f36bcafaae9455b1395a35a2abdd14ad14c56a5afd625b79a60df029fa2500f` |
+| Contract fingerprint | `sha256:47284f996ea16c168e353356564b487cd80b208e918bb15f2350e1ce07413ea8` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

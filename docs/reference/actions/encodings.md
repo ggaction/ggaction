@@ -846,13 +846,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `lower` | Required | `string \| { datum: number; }` |
+| `upper` | Required | `string \| { datum: number; }` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| "temporal" \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 | `scale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| undefined` |
-| `lower` | Required | `string \| { datum: number; }` |
-| `upper` | Required | `string \| { datum: number; }` |
 
 </details>
 
@@ -885,13 +885,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `lower` | Required | `string \| { datum: number; }` |
+| `upper` | Required | `string \| { datum: number; }` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| "temporal" \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 | `scale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| undefined` |
-| `lower` | Required | `string \| { datum: number; }` |
-| `upper` | Required | `string \| { datum: number; }` |
 
 </details>
 
