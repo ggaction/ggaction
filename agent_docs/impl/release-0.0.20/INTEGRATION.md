@@ -31,3 +31,13 @@ quantitative Area도 검사하며 target을 임의 선택하지 않는다. 관�
 `6e87a7533f9c704a422f5578f5a4370375ae9cdba93e0f42ac7f7f1dbe3c54f1`다.
 준비된 문서 metadata의 release 표시는 publish를 대신하지 않는다. 실제 registry/배포 검증 전에는
 사용자 보고나 번역 pipeline에서 공개0.0.20가 사용된 것으로 기록하지 않는다.
+
+
+두 번째 CI39121507363은 package archive와 Windows/macOS/Firefox/WebKit/coverage/docs를 통과한 뒤
+Node20 browser bundle에서416480>416000을 발견했다. 로컬 Node20.20.2로 동일 Full416480/Basic204183을
+독립 재현했다. Node22 측정415595/203811과 지원 Node20의 gzip 구현 차이가 있어 Node22만의 통과를
+최종 근거로 삼지 않았다. 수정한8owners에 기존 compaction을 추가한 실험은 Full415596/Basic203810으로
+효과가 없어 되돌렸고 실패/실험 로그를 보존했다. 새 기능의 실제 코드 증가에 맞춰 버전0.0.20의
+bounded bundle budget만 최소1000bytes 단위417000/205000으로 갱신한다(Full+0.24%, Basic+0.49%).
+SVG25000, archive842000/4087000/591entries, 데이터·경로·통계 한도와 모든 수치/시각 오차 기준은 유지한다.
+이것은 새 release의 측정된 코드 예산이며 기능·알고리즘을 생략하거나 측정기를 바꾸지 않는다.

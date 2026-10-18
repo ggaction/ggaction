@@ -331,9 +331,14 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 416,000 bytes |
-| `ggaction/basic` | 204,000 bytes |
+| `ggaction` | 417,000 bytes |
+| `ggaction/basic` | 205,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
+
+0.0.20의 Area 정량 색상과 seeded mean CI 추가 후 Node20.20.2 installed consumer는
+Full416480/Basic204183bytes다. Node22의415595/203811만으로 지원 환경 전체 통과를
+주장하지 않고, 최소1000bytes 단위417000/205000으로 예산을 조정한다. SVG·package
+상한과 계산/자료/경로 한도는 유지하며 이전 bundle 한도 통과를 뜻하지 않는다.
 
 명시적 inner plot 크기의 자동 guide 여백과 plot 간격 배치 기능 추가에 따라 Full 예산을
 370,000에서 375,000 bytes로 조정했다. 이전 기능 기준선은 369,996 bytes였으며,
