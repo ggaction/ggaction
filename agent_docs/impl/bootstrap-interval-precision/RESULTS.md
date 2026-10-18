@@ -8,7 +8,10 @@
 - [x] API·transform 저장 형태·RNG·추출 순서·한도는 변경하지 않음
 - [x] 정상/t/오차/표준편차/중앙값 IQR의 기존 출력 경계는 유지
 - [x] 독립 literal 및 summary 대조·binary scaling·그룹 순서·singleton·edit/revise/persistence·IntervalPlot/ErrorBand 소비자 35개 집중 검증
-- [ ] 전체 단위·계약·문서·차트·패키지·브라우저·실제 corpus 검증
+- [x] 단위3314·계약574·문서120·차트620 = 정상4628개 모두 통과
+- [x] 설치 package consumer·bootstrap 브라우저1·primitive PNG1 및 문서150페이지 build 통과
+- [ ] 문서 전체 화면·검색·키보드·접근성 browser 검사
+- [ ] 새 버전 원격 CI의 전체 실제 corpus·coverage·플랫폼 검증
 - [ ] 원격 PR 검증·통합·새 버전 배포와 실제 registry 확인
 - [ ] 번역 runtime/문서 전환 및 기존 출력 호환성 검증
 
@@ -36,3 +39,20 @@ summary의 mean/lower/upper는 각각 1.0000000000002 / 1.00000000000008 /
 진행 중 chart1264는 반올림 없는 Summary 경로로 완료했으며, 수정된 미배포 checkout을
 번역 runtime으로 소급 사용하지 않는다. 새 버전 전환은 실제 registry와 호환성
 확인 후 별도 checkpoint에서만 한다.
+
+## 0.0.21 후보 checkpoint
+
+수정 source commit은 f5c420de, 버전이 포함된 runtime commit은891d9345다.
+문서/LLM 산출물은 `prepare-release.js 0.0.21`을 runtime commit 후 다시 실행해
+contract `c2450e35c268baaf95a21d55b0d53161f1a0c76b2cd1821217a75c30d00de5ea`에
+결합했다. API/type/변환 schema의 추가·삭제는 없다.
+로컬 archive는591files/840093packed/4074366unpackedbytes로 기존 예산을 유지했다.
+설치 consumer의 실제 archive SHA256은
+`ee5c565ef5c98192c5630971df06d624e8d9d99c3e4da6809cb1f05693d46bcb`다.
+이는 로컬 후보이며 실제 npm registry 공개 archive라고 주장하지 않는다.
+
+단위 회귀 초기 harness 오류와 첫 docs build의 시스템 Ruby2.6/Bundler 누락도
+로그로 보존했다. 올바른 complete ErrorBand 입력과 설치된 Ruby3.2 환경으로
+수정 후 필요한 검사를 다시 실행했다. 통계·좌표 허용오차나 자원 한도는 늘리지 않았다.
+1212families/8780programs의 frozen SVG를 이 후보의 실제591파일로 순차 비교 중이며,
+원본 코드/데이터/참조와 후보 입력별 hash를 별도 checkpoint에 고정했다.
