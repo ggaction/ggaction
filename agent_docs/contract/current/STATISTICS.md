@@ -34,11 +34,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ## `createIntervalData`
 
 - Nonweighted mean/CI accepts the same seeded percentile-bootstrap method object and exact RNG/draw
-  policy as CORE createSummaryData. Method is normalized in existing interval provenance; existing
-  12-decimal output rounding remains. Singleton yields its own center/bounds and consumes samples;
+  policy as CORE createSummaryData. Method is normalized in existing interval provenance. Bootstrap
+  center and percentile endpoints retain full finite JavaScript Number precision, exactly matching
+  the shared summary calculation without decimal rounding. Singleton yields its own center/bounds and consumes samples;
   no eligible observations produces no interval. editIntervalData supports the same method.
   Regression, weighted CI and other statistical facade method options retain their current vocabulary.
-  Evidence: `test/unit/actions/data/bootstrap-mean-ci.test.js`, `test/charts/bootstrap-mean-ci/`.
+  Evidence: `test/unit/actions/data/bootstrap-mean-ci.test.js`,
+  `test/unit/actions/data/bootstrap-interval-precision.test.js`, `test/charts/bootstrap-mean-ci/`.
 
 
 - Signature: `createIntervalData({ id, source?, field, groupBy?, center?, extent?, method?, level?, as? })`.
@@ -51,8 +53,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   and does not accept `method` or `level`.
 - `as`: optional distinct `{ center, lower, upper }` output fields. Omission namespaces all three from `id`.
 - Effect: wrapped `createDerivedData` records complete interval provenance and wrapped
-  `materializeIntervalData` stores owned concrete rows at a deterministic 12-decimal boundary. Values below
-  `1e-12` retain 12 significant digits so a finite nonzero interval cannot collapse to zero solely from rounding.
+  `materializeIntervalData` stores owned concrete rows. Explicit bootstrap mean/CI preserves the full
+  finite JavaScript Number center and endpoints. Other methods retain their deterministic 12-decimal
+  boundary; values below `1e-12` retain 12 significant digits.
   Center/lower/upper 중 하나라도 finite number로 표현할 수 없으면 atomic `RangeError`다. It creates no
   graphics and never changes source values.
 

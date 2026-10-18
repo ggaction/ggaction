@@ -87,7 +87,9 @@ existing 30,000-group and 64-output limits remain. Raw data is preserved, normal
 method provenance is stored, and private random state is not persisted.
 
 `createIntervalData` and `editIntervalData` accept the same method object for
-`center: "mean", extent: "ci"`, retaining their existing decimal output boundary.
+`center: "mean", extent: "ci"`. Bootstrap centers and endpoints preserve full finite
+JavaScript Number precision, exactly as summary outputs do. Other interval methods
+retain their existing decimal output boundary.
 Weighted CI, regression bootstrap, median/IQR bootstrap, the `"bootstrap"` string,
 unknown method keys and implicit seeds are rejected. Other statistical facade
 options retain their existing method vocabulary. Basic does not expose summary

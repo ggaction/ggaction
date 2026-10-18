@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Preserve full finite Number precision in seeded bootstrap interval centers and percentile endpoints, including interval-backed charts, edits and source revisions. Keep other statistical interval output policies unchanged.
+
 ## [0.0.20] - 2026-10-18
 
 - Add explicitly seeded percentile-bootstrap mean confidence intervals to summary and interval data creation/editing, with reproducible shared streams, bounded work and unchanged raw data.

@@ -79,7 +79,7 @@ test("preserves row/group traversal and consumes singleton samples while empty g
   assert.deepEqual(deriveSummaryRows([], normalizeSummaryTransform({ aggregates })), [{ mean: undefined, lower: undefined, upper: undefined }]);
 });
 
-test("uses the same mean bootstrap in interval data with the existing decimal output boundary", () => {
+test("uses the same exact mean bootstrap in interval data", () => {
   const p = chart().createData({ values: rows }).createIntervalData({
     id: "result", field: "value", groupBy: "group", method,
     as: { center: "mean", lower: "lower", upper: "upper" }
