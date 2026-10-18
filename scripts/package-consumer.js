@@ -131,6 +131,26 @@ async function testNodeConsumer(directory) {
       assert.deepEqual((await renderToPNGBuffer(neutralHue)).buffer,(await renderToPNGBuffer(neutralHueLab)).buffer);
       assert.deepEqual(neutralHue.editColorScale({reverse:true}).graphicSpec.objects.scatterPlot.items.map(item=>item.properties.fill),neutralHueExpected.toReversed());
       assert.deepEqual(neutralHue.semanticSpec.datasets[0].values,neutralHueRows);
+      const facetNumericRows = [{x:0,y:0,v:0,g:"a"},{x:1,y:1,v:1,g:"b"}];
+      const facetNumericScale = {domain:[0,1],range:["red","blue"],interpolate:"lab",whitePoint:"d50"};
+      const facetNumericUnit = chart().createCanvas({width:800,height:800,margin:200})
+        .createData({values:facetNumericRows}).createScatterPlot({x:"x",y:"y",guides:false})
+        .encodeColor({field:"v",fieldType:"quantitative",scale:facetNumericScale})
+        .encodeStroke({field:"v",fieldType:"quantitative",scale:facetNumericScale});
+      const facetNumeric = facetNumericUnit.facet({field:"g",guides:{legend:"shared"}});
+      assert.deepEqual(Object.keys(facetNumeric.guideConfigs.legend),["gradient","strokeGradient"]);
+      const facetNumericRestored = deserializeProgram(serializeProgram(facetNumeric));
+      assert.deepEqual(facetNumericRestored.graphicSpec,facetNumeric.graphicSpec);
+      assert.equal(renderToSVG(facetNumeric),renderToSVG(facetNumericRestored));
+      const facetNumericPng = await renderToPNGBuffer(facetNumeric);
+      assert.ok(facetNumericPng.buffer.byteLength > 1000);
+      assert.deepEqual(facetNumericPng.buffer,(await renderToPNGBuffer(facetNumericRestored)).buffer);
+      assert.deepEqual(facetNumericUnit.semanticSpec.datasets[0].values,facetNumericRows);
+      for (const child of Object.values(facetNumeric.children)) {
+        assert.equal(child.graphicSpec.objects.canvas.properties.height,800);
+        assert.deepEqual(child.guideConfigs.legend ?? {},{});
+      }
+
     }
 
     const bootstrapRows = [{x:0,y:0},{x:0,y:1},{x:0,y:2},{x:0,y:30}];
@@ -5278,6 +5298,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "sequential-palette-count",
       "ranged-numeric-datum-wrapper-parity",
       "neutral-hcl-hue-borrowing",
+      "facet-numeric-legend-inference",
       "typescript",
       "basic-entry-runtime-and-types",
       "tutorial-consumers",

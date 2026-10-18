@@ -43,6 +43,12 @@ it is inferred only when unique. Child legend styles are independent. Use `"shar
 to promote or infer the template legend with its existing behavior, and `false` for
 no parent shared guide. Child dimensions and margins stay fixed.
 
+Automatic `"shared"` inference keeps continuous or discretized color and stroke
+in separate native legend blocks, each using its own scale. Compatible ordinal
+channels keep their combined categorical symbols. This also works when a numeric
+color or stroke has an ordinal shape companion. Existing child legend owners keep
+their configured styles when promoted.
+
 Existing legend editors, channel/block selectors and removal work on facet, grid and
 repeat parents. A missing parent legend can be declared with
 `editFacetGuides({ legend: { position: "top-left" } })`. Removing the final block keeps

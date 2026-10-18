@@ -1,0 +1,152 @@
+{
+  "status": "verified-local-candidate-not-published",
+  "issue": 231,
+  "parent": "732e05d61f16584804ad65549dbe1c845a46c4af",
+  "scope": "automatic shared-string facet legend requests use existing native single-channel owners; general unit multi-channel expansion not claimed",
+  "newPublicActionsOrOptions": false,
+  "persistedSchemaChanged": false,
+  "checks": {
+    "unit": {
+      "status": "pass",
+      "tests": 3331,
+      "logSha256": "8fd383432f7af4509a96c14ff1af6cf669ca5df57e310bc924d1f65baa257abc"
+    },
+    "contracts": {
+      "status": "pass",
+      "tests": 576,
+      "logSha256": "dabf06deea3a57488db13ddd1a625cfa4154c558b1d536ba1d6ef3421b87d40d"
+    },
+    "docs": {
+      "status": "pass",
+      "tests": 120,
+      "logSha256": "370dd6ce2107a4fcd78ada0a82a51433bb767c72f2249bea1aca8e7bf51b3418"
+    },
+    "charts": {
+      "status": "pass",
+      "tests": 620,
+      "logSha256": "d64211d1a389f879aefb6b3abd807615a3541593ca586243b58bff8e843aeb24"
+    }
+  },
+  "normalTests": 4647,
+  "focusedTests": 13,
+  "installedCandidate": {
+    "package": "ggaction@0.0.21",
+    "source": "ggaction-0.0.21.tgz",
+    "sha256": "a37e56a01c644408fb15537e960622540da7690083b286d65692d27d1e92ef7c",
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 523,
+        "minifiedBytes": 1537909,
+        "gzipBytes": 416100
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 307,
+        "minifiedBytes": 724269,
+        "gzipBytes": 203857
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 18,
+        "minifiedBytes": 22817,
+        "gzipBytes": 7325
+      }
+    },
+    "mcp": {
+      "coldStartMilliseconds": 253
+    },
+    "checks": [
+      "node",
+      "linear-regression-statistics-cache-and-source-revision",
+      "extension",
+      "pdf",
+      "png",
+      "svg",
+      "inspection",
+      "numeric-font-weight",
+      "point-jitter",
+      "point-packing",
+      "mark-label-removal",
+      "selected-mark-labels",
+      "semantic-label-placement",
+      "beeswarm-plot",
+      "raincloud-plot",
+      "path-order",
+      "time-unit-data",
+      "summary-data",
+      "bin-data",
+      "fold-data",
+      "computed-data",
+      "derived-data-editing",
+      "safe-resource-removal",
+      "advanced-authoring-integration",
+      "normalized-data",
+      "complete-data",
+      "imputed-data",
+      "stack-data",
+      "window-data",
+      "bin2d-data",
+      "binned-heatmap",
+      "parallel-coordinates",
+      "parallel-dimension-scale-editing",
+      "offset-scale-editing",
+      "stroke-color-encoding-and-legends",
+      "atomic-channel-encoding",
+      "statistical-references",
+      "coordinate-aspect-and-polar-frame-editing",
+      "facet-grid-repeat-and-named-composition-editing",
+      "non-cartesian-facet-grid-and-repeat",
+      "horizon",
+      "violin-plot",
+      "polar-radar-rug-strip-ecdf-facades",
+      "right-categorical-legend-offset",
+      "grouped-corner-and-free-legend-placement",
+      "sequential-palette-count",
+      "ranged-numeric-datum-wrapper-parity",
+      "neutral-hcl-hue-borrowing",
+      "facet-numeric-legend-inference",
+      "typescript",
+      "basic-entry-runtime-and-types",
+      "tutorial-consumers",
+      "minimal-browser-bundle-measurement",
+      "private-export-rejection",
+      "installed-local-mcp",
+      "direct-mcp-byte-equality",
+      "task-packet-v5-authoring-execution",
+      "explicit-unresolved-docs-fallback",
+      "terminal-unsupported-no-fallback"
+    ]
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.21",
+    "filename": "ggaction-0.0.21.tgz",
+    "entryCount": 591,
+    "packedBytes": 840796,
+    "unpackedBytes": 4078269
+  },
+  "runtimeInputsSha256": {
+    "src/materialization/facetGuides/preparation.js": "cdbc6c6531b612f703a033a3cdc7cefec4337c01d4fde100f3bf644f542857d7",
+    "src/grammar/scales/color.js": "c213ce37c36a5bab10b8c79d0163cb4f1337956a4f71e6f290961c903c23798d",
+    "src/actions/encodings/ranged.js": "4b06c46221e100bf2431549e852cc4121d0408d39f4ec31554f7ec95079310c0",
+    "src/inspectionDescriptors.js": "e36e2da62125de9735d5db5b7a982217006dbf9028bb71fd2494a5f847e7a2f7",
+    "types/program.d.ts": "ed17937c33765fe2d280fa1b12e2b6f4e64d9ba4876b536277a96ddbd97db944",
+    "package.json": "de171fb93d47abc584a4a22622bc86217c67e3b832fea1cd7bf696d9e1317ce3",
+    "knowledge/action-cards.json": "c8e6b689e561aba6cddca9a0081e9e91751c2f8710b50fd48b5bfda7fc4e24e3"
+  },
+  "sourceDataAndChildCanvasUnchanged": true,
+  "ordinalSeriesBehaviorPreserved": true,
+  "chartPixelsInspected": false,
+  "schoolCalls": 0,
+  "publication": false,
+  "releaseChecks": "Node24 package budget, protected release, registry/live docs and dataset synchronization due at1413; no threshold change",
+  "failedHistory": [
+    "Initial direct grouping failure was retained in published21 reproduction.",
+    "First private split exposed a400px temporary capture overflow with two gradients; temporary capture height now scales by request count only.",
+    "First test assumed gradient strips sampled endpoints; existing implementation uses60bin centers. Corrected independent exact per-bin RGB expectations; no renderer/color change or tolerance."
+  ]
+}

@@ -2,7 +2,7 @@ import { localLegendPosition } from "../../grammar/legendGroups.js";
 import { prepareAuthoredFacetLegend, facetLegendIntent } from "./owner.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { PLOT_LEGEND_POSITIONS } from "../../layout/legend.js";
-import { isContinuousColorScaleType } from "../../grammar/scales/types.js";
+import { isContinuousColorScaleType, isDiscretizedColorScaleType } from "../../grammar/scales/types.js";
 import {
   unionConcreteGraphicBounds
 } from "../../grammar/schemas/graphicBounds.js";
@@ -83,8 +83,24 @@ function continuousValues(domain, count) {
   return sampleNumericRange(domain[0], domain[1], count, "Facet legend domain");
 }
 
+function legendRequests(program) {
+  const request = legendCandidates(program);
+  const layer = findLayer(program, request.target);
+  const separate = request.channels.filter(channel => {
+    if (!["color", "stroke"].includes(channel)) return false;
+    const type = findSemanticScale(program, layer.encoding[channel].scale)?.type;
+    return isContinuousColorScaleType(type) || isDiscretizedColorScaleType(type);
+  });
+  if (separate.length === 0) return [request];
+  const categorical = request.channels.filter(channel => !separate.includes(channel));
+  return [
+    ...(categorical.length === 0 ? [] : [{ ...request, channels: categorical }]),
+    ...separate.map(channel => ({ ...request, channels: [channel] }))
+  ];
+}
+
 function prepareAutoLegendSource(child) {
-  const request = legendCandidates(child);
+  const requests = legendRequests(child);
   const canvas = child.graphicSpec.objects.canvas;
   let source = child
     ._withCanvasConfig({
@@ -99,7 +115,7 @@ function prepareAutoLegendSource(child) {
     .editGraphics({
       target: "canvas",
       property: "height",
-      value: LEGEND_SOURCE_CANVAS.height
+      value: LEGEND_SOURCE_CANVAS.height * requests.length
     });
   if (canvas?.properties.background !== undefined) {
     source = source.editGraphics({
@@ -108,27 +124,30 @@ function prepareAutoLegendSource(child) {
       value: canvas.properties.background
     });
   }
-  const scale = findSemanticScale(
-    source,
-    findLayer(source, request.target)?.encoding?.[
-      request.channels.includes("color") ? "color" : "stroke"
-    ]?.scale
-  );
-  const gradient = isContinuousColorScaleType(scale?.type);
-  const gradientPrefix = request.channels.includes("color")
-    ? "colorGradient"
-    : "strokeGradient";
-  source = source.createLegend({
-    target: request.target,
-    channels: request.channels,
-    ...(gradient ? {
-      count: 5,
-      gradient: { length: 180, thickness: 12 },
-      labels: { offset: 9, fontSize: 10 },
-      titleStyle: { color: DEFAULT_COLORS.strongText, fontSize: 11 }
-    } : {})
-  });
-  if (gradient && scale.type === "sequential") {
+  const gradients = [];
+  for (const request of requests) {
+    const colorChannel = request.channels.find(channel => ["color", "stroke"].includes(channel));
+    const scale = findSemanticScale(
+      source,
+      findLayer(source, request.target)?.encoding?.[colorChannel]?.scale
+    );
+    const gradient = isContinuousColorScaleType(scale?.type);
+    const gradientPrefix = colorChannel === "color"
+      ? "colorGradient"
+      : "strokeGradient";
+    source = source.createLegend({
+      target: request.target,
+      channels: request.channels,
+      ...(gradient ? {
+        count: 5,
+        gradient: { length: 180, thickness: 12 },
+        labels: { offset: 9, fontSize: 10 },
+        titleStyle: { color: DEFAULT_COLORS.strongText, fontSize: 11 }
+      } : {})
+    });
+    if (gradient && scale.type === "sequential") gradients.push({ scale, gradientPrefix });
+  }
+  for (const { scale, gradientPrefix } of gradients) {
     const resolved = source.resolvedScales[scale.id];
     source = source
       .editGraphics({
