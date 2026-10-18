@@ -279,7 +279,8 @@ export function resolveContinuousColorLayer(program, requested, channel = "color
       ? ["point", "line", "area", "bar", "rect", "arc", "rule", "tick"]
       : ["point", "bar", "rect", "text", "area"]
     ).includes(candidate.mark?.type) &&
-      candidate.encoding?.[channel]?.scale !== undefined
+      candidate.encoding?.[channel]?.scale !== undefined &&
+      (channel !== "color" || ["quantitative", "temporal"].includes(candidate.encoding[channel].fieldType))
   );
   if (layer === undefined) {
     throw new Error(

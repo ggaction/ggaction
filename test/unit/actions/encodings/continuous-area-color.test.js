@@ -174,3 +174,21 @@ test("rejects a density field that varies within each derived path without alter
   assert.throws(() => p.encodeColor({ field: "value_value", fieldType: "quantitative" }), /one value within each series/);
   assert.equal(JSON.stringify(p), snapshot);
 });
+
+test("infers the real continuous owner when the other mark uses categorical color", () => {
+  const data = [{ x: 0, y: 1, group: "A", level: 10 }, { x: 1, y: 2, group: "A", level: 10 }];
+  const base = () => chart().createCanvas({ width: 600, height: 300, margin: { left: 30, top: 30, right: 220, bottom: 30 } }).createData({ values: data });
+  const point = base().createScatterPlot({ x: "x", y: "y", guides: false })
+    .encodeColor({ field: "level", fieldType: "quantitative", scale: { id: "pointColor" } })
+    .createAreaPlot({ x: "x", y: "y", guides: false })
+    .encodeColor({ field: "group", scale: { id: "areaColor" } });
+  const before = serializeProgram(point);
+  const pointLegend = point.createLegend({ channels: ["color"] });
+  assert.equal(pointLegend.semanticSpec.guides.legend.color.scale, "pointColor");
+  assert.equal(serializeProgram(point), before);
+  const bands = base().createScatterPlot({ x: "x", y: "y", guides: false })
+    .encodeColor({ field: "group", scale: { id: "pointColor" } })
+    .createAreaPlot({ x: "x", y: "y", guides: false })
+    .encodeColor({ field: "level", fieldType: "quantitative", scale: { id: "areaColor" } });
+  assert.equal(bands.createLegend({ channels: ["color"] }).semanticSpec.guides.legend.color.scale, "areaColor");
+});
