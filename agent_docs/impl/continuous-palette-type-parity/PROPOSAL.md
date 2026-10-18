@@ -5,7 +5,7 @@
 - [x] 기존 runtime과 선언의 불일치 확인 (#224).
 - [x] 구체 설계 기록 및 현재 작업 범위의 사용자 포괄 승인 재사용.
 - [x] 선언, 문서, 계약, 설치된 패키지 consumer 검증 동기화. [RESULTS.json](./RESULTS.json).
-- [ ] 검증된 checkpoint commit/push. 정기 배포는 다음 200-family checkpoint에 통합.
+- [x] 검증된 checkpoint `39feb73b` commit/push. 정기 배포는 다음 200-family checkpoint에 통합.
 
 ## 승인과 배포 범위
 
