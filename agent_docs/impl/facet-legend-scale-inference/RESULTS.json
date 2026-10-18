@@ -148,5 +148,14 @@
     "Initial direct grouping failure was retained in published21 reproduction.",
     "First private split exposed a400px temporary capture overflow with two gradients; temporary capture height now scales by request count only.",
     "First test assumed gradient strips sampled endpoints; existing implementation uses60bin centers. Corrected independent exact per-bin RGB expectations; no renderer/color change or tolerance."
-  ]
+  ],
+  "sourceCheckpoint": "41d3238250f52d473917d6eaad5e88953e528b23",
+  "postCommitDocs": {
+    "status": "pass",
+    "tests": 120,
+    "logSha256": "009db7a7adfab0cf4ad6860f3613fbd8aa47360c27dad4ba0bc0a8b80fc5ecdf",
+    "provenanceSourceCommit": "41d3238250f52d473917d6eaad5e88953e528b23",
+    "provenanceStatus": "development",
+    "testedRuntimeAndPackedInputsUnchanged": true
+  }
 }

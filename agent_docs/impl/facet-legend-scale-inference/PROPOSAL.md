@@ -5,7 +5,7 @@
 - [x] 사용자 standing approval: 2026-10-18 “지금까지 모든 질문, 앞으로 할 모든 질문 승인함”; 번역 프로젝트 reports/v12-sequential1500-standing-design-approval-and-200-family-releases-20261018.json. 재질문하지 않는다.
 - [x] 구현 전 구체적 결정과 검증 범위를 기록한다.
 - [x] focused13, unit3331/contracts576/docs120/charts620 =4647 PASS; 설치 소비자 SVG/PNG/import 및 package check PASS.
-- [ ] source commit/push 뒤 docs provenance 재생성 및 metadata checkpoint.
+- [x] source41d32382 commit/push; docs 재생성+120검사 및 runtime/package hash 불변 확인. Metadata checkpoint로 source provenance를 고정한다.
 
 ## 결정
 자동 shared-string facet에서 한 target의 color/stroke/shape/strokeDash를 일괄 categorical로 보내던 요청을 실제 scale family로 나눈다. 기존 ordinal 채널은 하나의 원래 categorical 요청으로 유지하고, continuous/discretized color와 stroke는 각각 기존 단일-channel createLegend 경로를 호출한다. 각 continuous 요청에만 기존 자동 gradient 스타일과 숫자 표기 보정을 적용한다. 기존 explicit owner promotion은 변경하지 않는다. 원시 데이터·척도·마크·렌더러·저장 schema·새 옵션은 변경하지 않는다. 애매한 target과 incompatible independent scale 거부는 유지한다.
