@@ -216,16 +216,42 @@ test("derives a bounded public option inventory without runtime prototype paths"
 
   assert.equal(inventory.counts.publicActions, 277);
   assert.equal(inventory.counts.topLevelOptionPaths, 2381);
-  assert.equal(inventory.counts.nestedOptionPaths, 14566);
-  assert.equal(inventory.counts.optionPaths, 16947);
-  assert.equal(inventory.counts.requiredOptionPaths, 12294);
-  assert.equal(inventory.counts.excludedOptionPaths, 4653);
+  assert.equal(inventory.counts.nestedOptionPaths, 14590);
+  assert.equal(inventory.counts.optionPaths, 16971);
+  assert.equal(inventory.counts.requiredOptionPaths, 12303);
+  assert.equal(inventory.counts.excludedOptionPaths, 4668);
   assert.equal(inventory.counts.topLevelCategoricalPaths, 805);
   assert.equal(inventory.counts.topLevelLiteralValues, 3163);
-  assert.equal(inventory.counts.literalFamilies, 180);
-  assert.equal(inventory.counts.pathLiteralRequirements, 8868);
+  assert.equal(inventory.counts.literalFamilies, 181);
+  assert.equal(inventory.counts.pathLiteralRequirements, 8871);
   assert.equal(inventory.counts.familyLiteralRequirements, 319);
   assert.equal(inventory.counts.pathDiversityRequirements, 369);
+  const bootstrapMethodRoots = [
+    "createDerivedData.transform[].aggregates[].op.method",
+    "createDerivedData.transform[].method",
+    "createIntervalData.method",
+    "createSummaryData.aggregates[].op.method",
+    "editDerivedData.definition.aggregates[].op.method",
+    "editDerivedData.definition.method",
+    "editIntervalData.method",
+    "editSummaryData.aggregates[].op.method"
+  ];
+  const bootstrapTypePaths = inventory.optionPaths.filter(option =>
+    option.values.includes("string:bootstrap"));
+  assert.deepEqual(bootstrapTypePaths.map(option => option.id),
+    bootstrapMethodRoots.map(root => `option-path:${root}.type`),
+    "bootstrap methods are confined to summary and interval data definitions");
+  for (const root of bootstrapMethodRoots) {
+    const redacted = root.includes("[]");
+    for (const key of ["samples", "seed", "type"]) {
+      const option = inventory.optionPaths.find(candidate =>
+        candidate.id === `option-path:${root}.${key}`);
+      assert.ok(option, `${root}.${key}`);
+      assert.equal(option.required, !redacted, option.id);
+      assert.equal(option.evidence, redacted ? "redacted-trace" : "direct-trace", option.id);
+      assert.deepEqual(option.values, key === "type" ? ["string:bootstrap"] : [], option.id);
+    }
+  }
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:createCanvas.margin.top"), true);
   assert.equal(inventory.optionPaths.some(option => option.id ===
@@ -373,7 +399,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 4653 }
+    { "redacted-array": 4668 }
   );
   const values = id => optionById.get(id)?.values ?? [];
   assert.equal(optionById.has("option-path:createScatterPlot.x.scale.palette"), false);
@@ -417,7 +443,16 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 21762);
+  assert.equal(ledger.requirements.length, 21774);
+  const directBootstrapMethods = bootstrapMethodRoots.filter(root => !root.includes("[]"));
+  const directBootstrapOptions = directBootstrapMethods.flatMap(root =>
+    ["samples", "seed", "type"].map(key => `option-path:${root}.${key}`));
+  assert.deepEqual(ledger.requirements.filter(requirement =>
+    directBootstrapOptions.includes(requirement.id)).map(requirement => requirement.id).sort(),
+  directBootstrapOptions.sort(), "all nine observable bootstrap options require scenario evidence");
+  assert.equal(inventory.pathLiteralRequirements.filter(requirement =>
+    directBootstrapMethods.some(root => requirement.optionPath === `option-path:${root}.type`)).length, 3,
+  "each observable bootstrap discriminator requires literal evidence");
   assert.throws(() => createScenarioCoverageLedger({
     publicInventory: inventory,
     rendererFeatures: [],

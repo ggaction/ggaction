@@ -41,3 +41,12 @@ Node20 browser bundle에서416480>416000을 발견했다. 로컬 Node20.20.2로 
 bounded bundle budget만 최소1000bytes 단위417000/205000으로 갱신한다(Full+0.24%, Basic+0.49%).
 SVG25000, archive842000/4087000/591entries, 데이터·경로·통계 한도와 모든 수치/시각 오차 기준은 유지한다.
 이것은 새 release의 측정된 코드 예산이며 기능·알고리즘을 생략하거나 측정기를 바꾸지 않는다.
+
+세 번째 CI39122526026은 package20/22/24, 두 플랫폼, Firefox/WebKit, coverage, documentation,
+일반 test와 realistic1–5/7을 통과했다. realistic6의 단일 실패는 이전 공개 옵션 inventory 고정값이었다.
+공개0.0.19 선언과 새 선언을 같은 생성기로 비교하여 bootstrap method의8개 데이터 정의 위치에
+samples/seed/type 경로24개가 추가되고 삭제는0임을 확인했다. 직접 관찰 가능한3위치의9경로와
+bootstrap literal3개가 실제 coverage requirement12개를 더한다. 나머지15경로는 기존 trace의
+배열 요약 정책에 따라 부모 옵션으로 증명하며 예외 정책을 변경하지 않는다.
+검사는 새 개수뿐 아니라8개 위치의 정확한 집합·관찰 방식과9개 직접 경로·3개 literal 요구를 검증한다.
+로컬 비교와 실패/재검사 로그는 `.artifacts/release/0.0.20-option-inventory-*`에 보존한다.
