@@ -6,7 +6,7 @@
 - [x] 구현 전 아래 구체적 경계와 수치 목표를 기록한다.
 - [x] 공개21/현재 후보에서 두 오류를 재현했다. private planner preview는 정확한 네 값/원시2행/접힌4행/패널 순서 및 bar 좌표를 독립 수식으로 통과했다. 실제SVG SHA256 3572d809ad09e927c656262bff06e9280bb40fd39131dc19815a8361674e3f5a.
 - [x] 구현/focused16 및 unit3342/contracts576/docs120/charts620 =4658 PASS. 설치 SVG/PNG/PDF/type/패키지 검사 PASS.
-- [ ] source/docs checkpoint push 및 source commit 뒤 provenance 재고정.
+- [x] source59c0b420 push; canonical docs 재생성+120검사 및 tested runtime/package input hash 불변 확인. Source provenance를 metadata checkpoint로 고정한다.
 
 ## 결정
 `facet`와 같은 planner를 쓰는 `facetGrid`에서 기존 `data` 옵션이 **모든 표시 layer의 공통 ancestor인 materialized fold dataset**을 명시하면 그 dataset 자체를 partition anchor로 허용한다. fold의 원래 wide source와 transform 정의/전체 materialized 행은 그대로 보존하고, 기존 filterData가 anchor 뒤에 cell별 view를 만든다. anchor 이후 dependency만 기존 wrapped replayDerivedData와 rebindLayerData로 재생한다. Fold를 raw row-preserving으로 재분류하지 않으며 다른 통계 transform을 anchor로 새로 허용하지 않는다. Omitted data의 기존 row-preserving inference 및 raw-field partition/replay는 그대로 유지한다. 원시/접힌 행의 multiplicity와 순서를 보존하며 표를 수동으로 대체하지 않는다.

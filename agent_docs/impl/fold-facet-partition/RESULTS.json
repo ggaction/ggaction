@@ -185,5 +185,15 @@
     "Original private rendered-only proof preserved separately; first post-code rerun incorrectly tested a live fixed candidate as a failing baseline. Corrected private source is pinned to unchanged git HEAD dependency module and published21 reproduction.",
     "Initial public tests used an invalid filter range array and accidentally reused a band-position scale for a numeric point; corrected existing min/max API and explicit independent scale IDs. All diagnostics retained."
   ],
-  "releaseChecks": "Node24 protected package size and canonical release, current cohort compatibility, registry/live docs and dataset synchronization remain due at1413; no budget or quality threshold changed."
+  "releaseChecks": "Node24 protected package size and canonical release, current cohort compatibility, registry/live docs and dataset synchronization remain due at1413; no budget or quality threshold changed.",
+  "sourceCheckpoint": "59c0b4209f1504c5d163f7feca7b6da6c1ca4d26",
+  "postCommitDocs": {
+    "status": "pass",
+    "tests": 120,
+    "logSha256": "5ee97c2452d44776c39704429e4e73fff58119513258d08db7e173b38113c64a",
+    "provenanceSourceCommit": "59c0b4209f1504c5d163f7feca7b6da6c1ca4d26",
+    "provenanceStatus": "development",
+    "testedRuntimeAndPackedInputsUnchanged": true,
+    "canonicalGeneratedDocsIncluded": true
+  }
 }
