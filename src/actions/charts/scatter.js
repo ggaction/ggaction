@@ -20,7 +20,7 @@ const OPTIONS = Object.freeze([
   "point", "guides"
 ]);
 const POINT_OPTIONS = Object.freeze([
-  "shape", "fill", "opacity", "stroke", "strokeWidth", "radius",
+  "clip",   "shape", "fill", "opacity", "stroke", "strokeWidth", "radius",
   ...STROKE_STYLE_PROPERTIES
 ]);
 

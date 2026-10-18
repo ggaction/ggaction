@@ -1,4 +1,5 @@
 import { closedAction } from "../../core/action.js";
+import { validateMarkClipCoordinate } from "../../selectors/markClip.js";
 
 import {
   normalizeParallelDimensions,
@@ -45,6 +46,7 @@ export const encodeParallelCoordinates = /* @__PURE__ */ closedAction(
       layer,
       operation: "encodeParallelCoordinates"
     });
+    validateMarkClipCoordinate(this, layer, this.markConfigs[target]?.clip, "parallel");
     const dimensions = normalizeParallelDimensions(
       dataset.values,
       args.dimensions,

@@ -331,8 +331,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 417,000 bytes |
-| `ggaction/basic` | 205,000 bytes |
+| `ggaction` | 418,000 bytes |
+| `ggaction/basic` | 206,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 0.0.20의 Area 정량 색상과 seeded mean CI 추가 후 Node20.20.2 installed consumer는
@@ -754,6 +754,8 @@ Text bounds는 `core/textMetrics.js`의 deterministic code-point width policy를
 baseline과 rotation까지 적용한 concrete bounds를 반환하며 axis label/title, chart title과 `graphicBounds`가 같은
 계산을 공유한다. Renderer의 platform text measurement는 drawing 품질에만 사용되고 layout topology를 결정하지
 않는다.
+
+Named non-Canvas owner는 optional resolved `clip: {x,y,width,height}`를 가질 수 있다. 같은 parent frame에서 전체 items/subtree의 보이는 영역만 제한하며 좌표/identity를 재작성하지 않는다. Request는 canonical mark config가, rectangle은 owning materializer가, drawing은 graphic-only renderer가 각각 소유한다. 자기/조상 clip의 교집합은 공통 visible-bounds/isolated-paint 경로가 적용한다. 정확한 API는 [mark clipping](contract/current/MARKS.md#shared-cartesian-plot-clipping)과 [primitive editor](contract/current/PRIMITIVES.md#editgraphics)에 둔다.
 
 ### Shared concrete-graphic contract
 
@@ -2537,3 +2539,11 @@ entries591/packed842000과 browser/search/coverage 기준은 유지한다.
 PR217 CI39034674598 package24의 Ubuntu/Node24.21.0 실제 설치 consumer에서 Full gzip은
 415484bytes로415000을 넘었다(job117402000022). Full만 다음 최소1000bytes 단계
 416000으로 갱신하며 Basic204000/SVG25000·package·search·coverage 기준은 유지한다.
+
+### Cartesian owner clipping measurement checkpoint
+
+기존 API에 optional boolean과 concrete owner rectangle을 추가하면서 resource selector·rectangle schema·materialization의 세 owner가 package entries591→594가 되었다. Node22.23.1/npm10.9.8 staged 실측은 packed843921/unpacked4095633bytes로 기존842000/4087000과 entries591을 초과한다. 실제 기존 검사 실패를 보존하고 entries594 및 최소1000byte 단계844000/4096000으로만 조정한다. Node24 protected-release 크기는 다음 정기 배포에서 반드시 다시 측정하며 이번 수치를 Node24 통과로 주장하지 않는다.
+
+Compact card는 clip option을 실제 노출하는 createMarkLabels3420/createAnnotation3414/createRegressionPlot3370bytes가 기존3360을 초과한다. 해당 세 cap만 최소10byte 단위3420/3420/3370으로 갱신하고 default3360과 legend3530/3860, median1896은 유지한다. Validator와 contract test는 한 budget owner를 참조하며 option 또는 supported value를 삭제하지 않았다. ReferenceBand와 Polar/Radar/Parallel의 상속 타입에 Cartesian clip이 잘못 유입되지 않도록 명시적으로 제외했다.
+
+같은 staged artifact의 실제 설치 consumer bundle은 Full417514/Basic205024/SVG7554gzip bytes다. 기존417000/205000 초과를 보존하고 Full418000/Basic206000으로 최소1000byte씩만 갱신한다. SVG25000과 모든 기능/검증/coverage 한도는 유지한다.

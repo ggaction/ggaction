@@ -15,7 +15,7 @@ Each declared action has an exact signature and its own stable link. Option tabl
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+createPointMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`PointShape`](./../types.md#type-pointshape) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
@@ -30,6 +30,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -44,7 +45,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createPointMark({ clip?, id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic point mark with one of 12 equal-area shape realizations.
@@ -58,7 +59,7 @@ Create a semantic point mark with one of 12 equal-area shape realizations.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+createTickMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails).
@@ -73,6 +74,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -86,7 +88,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
+createTickMark({ clip?, id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
 ```
 
 Create a centered line glyph that materializes after both x and y are complete.
@@ -241,6 +243,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
@@ -272,7 +275,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
+createMarkLabels({ clip?, id?, source?, field?, value?, content?, normalizeBy?, format?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
 ```
 
 Label source mark items. The default content is the source's semantic value;
@@ -432,6 +435,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
@@ -463,7 +467,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createAnnotation({ id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
+createAnnotation({ clip?, id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
 ```
 
 Create anchored text. Omit x/y/space for a
@@ -508,6 +512,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
@@ -532,7 +537,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createTextMark({ id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+createTextMark({ clip?, id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
@@ -575,6 +580,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
@@ -595,7 +601,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editTextMark({ target?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
+editTextMark({ clip?, target?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
 ```
 
 Edit text typography and graphical offsets without changing its semantic
@@ -704,7 +710,7 @@ binding clears it. Domains and tick values are already normalized timestamps.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editPointMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+editPointMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`PointShape`](./../types.md#type-pointshape) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
@@ -719,6 +725,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `shape` | Optional / branch-dependent | `PointShape \| undefined` |
@@ -732,7 +739,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editPointMark({ target?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? })
+editPointMark({ clip?, target?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
@@ -746,7 +753,7 @@ Change constant point shape, fill, opacity, or outline appearance and rematerial
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editTickMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+editTickMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails).
@@ -761,6 +768,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
@@ -773,7 +781,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editTickMark({ target?, length?, stroke?, strokeWidth?, opacity? })
+editTickMark({ clip?, target?, length?, stroke?, strokeWidth?, opacity? })
 ```
 
 Partially edit Tick length or constant line appearance while preserving data,
@@ -964,7 +972,7 @@ and independently shared resources. [Marks](../../api/marks.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+createLineMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
@@ -979,6 +987,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -993,7 +1002,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
+createLineMark({ clip?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
 ```
 
 Create a semantic line mark and empty path collection. Curve defaults to
@@ -1012,7 +1021,7 @@ series as a radar path.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+editLineMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
@@ -1027,6 +1036,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
@@ -1040,7 +1050,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
+editLineMark({ clip?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
 ```
 
 Edit line appearance and rematerialize concrete path commands without changing
@@ -1054,7 +1064,7 @@ semantic encodings. [Marks](../../api/marks.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+createBarMark(options?: RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`FillPaint`](./../types.md#type-fillpaint) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
@@ -1074,6 +1084,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
@@ -1088,7 +1099,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createBarMark({ id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createBarMark({ clip?, id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection.
@@ -1107,7 +1118,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editBarMark(options: RectStyleDetails & { target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+editBarMark(options: RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`FillPaint`](./../types.md#type-fillpaint) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
@@ -1127,6 +1138,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `blend` | Optional / branch-dependent | `"difference" \| "normal" \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -1140,7 +1152,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editBarMark({ target?, blend?, fill?, opacity?, stroke?, strokeWidth? })
+editBarMark({ clip?, target?, blend?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit whole-bar appearance and rematerialize every concrete rectangle.
@@ -1165,7 +1177,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+createAreaMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`FillPaint`](./../types.md#type-fillpaint) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
@@ -1180,6 +1192,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
@@ -1194,7 +1207,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
+createAreaMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
 ```
 
 Create a semantic area mark and empty path collection. Fixed fill defaults to
@@ -1212,7 +1225,7 @@ Area `missing` defaults to `"error"`. `"break"` splits null/undefined measured e
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createRuleMark(options?: { id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+createRuleMark(options?: { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
 ```
 
 Named option contracts: [`RuleStyleOptions`](./../types.md#type-rulestyleoptions).
@@ -1224,6 +1237,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -1240,7 +1254,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
+createRuleMark({ clip?, id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
 ```
 
 Create a semantic rule mark and empty line collection. The first omitted ID is
@@ -1254,7 +1268,7 @@ Create a semantic rule mark and empty line collection. The first omitted ID is
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editRuleMark(options: { target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+editRuleMark(options: { clip?: boolean; target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
 ```
 
 Named option contracts: [`RuleStyleOptions`](./../types.md#type-rulestyleoptions).
@@ -1266,6 +1280,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
@@ -1281,7 +1296,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })
+editRuleMark({ clip?, target?, stroke?, strokeWidth?, strokeDash?, opacity? })
 ```
 
 Edit constant Rule appearance through the four existing encoding owners. At least
@@ -1296,7 +1311,7 @@ accepts the same styles. [Rule marks](../../api/marks/rule.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+editAreaMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`FillPaint`](./../types.md#type-fillpaint) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
@@ -1311,6 +1326,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -1324,7 +1340,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
+editAreaMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 ```
 
 Edit constant area appearance. `stroke: false` removes an existing outline.
@@ -1438,6 +1454,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -1459,7 +1476,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createRectMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic rect mark and empty rect collection. Two discrete x/y bands
@@ -1501,6 +1518,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -1512,7 +1530,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
+editRectMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit rect appearance and rematerialize complete cells. Constant fill conflicts

@@ -23,7 +23,7 @@ const OPTIONS = [
   "id", "data", "coordinate", "x", "y", "bin", "color", "rect", "guides"
 ];
 const RECT_OPTIONS = [
-  "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
+  "clip",   "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
 ];
 const BIN_OPTIONS = [
   "bins", "extent", "includeEmpty"

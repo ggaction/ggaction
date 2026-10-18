@@ -1645,7 +1645,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `valueScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
 | `densityScale` | Optional / branch-dependent | `NonPointZeroSupportingPositionScaleOptions \| undefined` |
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; layout?: "overlay" \| undefined; } \| undefined` |
-| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| DensityPlotGuideOptions \| undefined` |
 
 </details>
@@ -1704,7 +1704,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `missing` | Optional / branch-dependent | `HorizonMissingPolicy \| undefined` |
 | `overflow` | Optional / branch-dependent | `HorizonOverflowPolicy \| undefined` |
 | `palette` | Optional / branch-dependent | `HorizonPaletteOptions \| undefined` |
-| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| HorizonPlotGuideOptions \| undefined` |
 
 </details>

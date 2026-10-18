@@ -21,13 +21,13 @@ import {
 const RUG_OPTIONS = Object.freeze(["id", "data", "coordinate", "x", "y", "edge", "tick", "guides"]);
 const MEASURE_OPTIONS = Object.freeze(["field", "fieldType", "temporalUnit", "scale"]);
 const TICK_OPTIONS = Object.freeze([
-  "length", "stroke", "strokeWidth", "opacity", ...STROKE_STYLE_PROPERTIES
+  "clip", "length", "stroke", "strokeWidth", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const STRIP_OPTIONS = Object.freeze([
   "id", "data", "coordinate", "x", "y", "color", "size", "shape", "point", "jitter", "guides"
 ]);
 const POINT_OPTIONS = Object.freeze([
-  "radius", "shape", "fill", "opacity", "stroke", "strokeWidth",
+  "clip",   "radius", "shape", "fill", "opacity", "stroke", "strokeWidth",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const JITTER_OPTIONS = Object.freeze(["maxOffset", "seed", "key"]);

@@ -1,4 +1,5 @@
 import { isOwned } from "../core/immutable.js";
+import { validateGraphicClip } from "../grammar/schemas/graphicClip.js";
 import {
   requireSingleOrderedGraphicByType,
   walkGraphicTreeEvents
@@ -507,6 +508,13 @@ function serializeBody(graphicSpec, rootId, rootCanvas, width, height, state) {
   walkGraphicTreeEvents(graphicSpec, {
     enter({ id, object }) {
       if (id === rootId) return;
+      if (object.clip !== undefined) {
+        validateGraphicClip(object.clip, object.type);
+        const clipId = `ggaction-clip-${state.resourceNamespace}-${state.clipCount++}`;
+        state.definitions.push(element("clipPath", [["id", clipId]], element("rect",
+          Object.entries(object.clip).map(([key, value]) => [key, formatNumber(value)]))));
+        output.push(`<g clip-path="url(#${clipId})">`);
+      }
       if (object.type === "canvas") {
         output.push(openNestedCanvas(state, id, object));
         return;
@@ -532,6 +540,7 @@ function serializeBody(graphicSpec, rootId, rootCanvas, width, height, state) {
       ) {
         output.push("</g>");
       }
+      if (object.clip !== undefined) output.push("</g>");
     }
   });
   return output.join("");
@@ -585,7 +594,10 @@ export function renderToSVG(program, options = {}) {
       resolvedOptions.resourceNamespace ?? resourceNamespace(graphicSpec)
   };
   walkGraphicTreeEvents(graphicSpec, {
-    enter({object}) { if (object.properties?.blend === "difference") state.hasBlend = true; },
+    enter({object}) {
+      if (object.clip !== undefined) validateGraphicClip(object.clip, object.type);
+      if (object.properties?.blend === "difference") state.hasBlend = true;
+    },
     item({object}) { if (object.properties?.blend === "difference") state.hasBlend = true; }
   });
   const body = serializeBody(

@@ -1,3 +1,4 @@
+import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { validateFillPaint } from "../../../grammar/paint.js";
 import { validateAreaPaintConfig } from "../../../grammar/areaPaint.js";
 import { validateAreaMissing } from "../../../grammar/areaEndpoints.js";
@@ -36,7 +37,7 @@ import {
 } from "../../../grammar/strokeStyle.js";
 
 const AREA_OPTIONS = Object.freeze([
-  "fill", "opacity", "stroke", "strokeWidth", "curve",
+  "clip", "fill", "opacity", "stroke", "strokeWidth", "curve",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...AREA_OPTIONS]);
@@ -66,6 +67,7 @@ const createAreaMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createAreaMark");
+    requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "createAreaMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "area",
@@ -101,6 +103,7 @@ const createAreaMark = /* @__PURE__ */ action(
         ...resolveMarkGraphicPlacement(created, { data, markType: "area" })
       })
       ._withMarkConfig(id, {
+        ...requestedMarkClip(args),
         fill,
         opacity,
         ...(Object.hasOwn(args, "curve") ? { curve } : {}),
@@ -240,9 +243,10 @@ const editAreaMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editAreaMark");
+    requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "editAreaMark");
     const changes = [
-      "fill", "opacity", "stroke", "strokeWidth", "curve", "missing",
+      "clip", "fill", "opacity", "stroke", "strokeWidth", "curve", "missing",
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!changes.some(key => Object.hasOwn(args, key))) {
@@ -272,7 +276,8 @@ const editAreaMark = /* @__PURE__ */ action(
       throw new Error("editAreaMark cannot set strokeWidth while removing stroke.");
     }
 
-    let config = { ...this.markConfigs[layer.id] };
+    validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
+    let config = { ...this.markConfigs[layer.id], ...requestedMarkClip(args) };
     Object.assign(config, strokeDetails);
     if (Object.hasOwn(args, "fill")) {
       config.fill = validateFillPaint(args.fill, "Area fill");

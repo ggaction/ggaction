@@ -20,7 +20,7 @@ const OPTIONS = Object.freeze([
   "id", "data", "coordinate", "orientation", "x", "y", "color", "width", "bar", "guides"
 ]);
 const BAR_OPTIONS = Object.freeze([
-  "fill", "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
+  "clip",   "fill", "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
 ]);
 
 function normalizeBarPosition(value, label) {

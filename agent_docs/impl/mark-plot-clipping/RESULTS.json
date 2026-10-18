@@ -1,0 +1,135 @@
+{
+  "status": "verified-local-candidate-not-published",
+  "issue": 220,
+  "designCheckpoint": "6f9c1d78",
+  "parent": "86e6f46e2581115253a86fedd45fdc8a2150a8e1",
+  "node": "v22.23.1",
+  "approval": "Latest direct human standing approval of past/future in-scope questions; concrete design and existing-primitive target recorded before implementation.",
+  "publicActionsAdded": 0,
+  "publicMarkOption": "clip?: boolean on Point/Line/Area/Bar/Rect/Rule/Text/Tick create/edit and declared Cartesian facade styles",
+  "stateOwnership": {
+    "intent": "materializationConfigs.marks[id].clip",
+    "concrete": "named non-Canvas graphic.clip rectangle in the unchanged parent frame"
+  },
+  "checks": {
+    "all": {
+      "status": "pass",
+      "path": ".artifacts/mark-plot-clipping/all-final-v2.log",
+      "sha256": "2d2e44d26252e79f87068a8df41f49c55932c23f8b8999936a1a9b3e51131f0f"
+    },
+    "focusedSelection": {
+      "status": "pass",
+      "path": ".artifacts/mark-plot-clipping/selection-clip-after-fix.log",
+      "sha256": "f990558eca66c83b8ee30e04ee35ddbdcb6103c362ee21d17a03fc9132140e75"
+    },
+    "browserChromium": {
+      "status": "pass",
+      "path": ".artifacts/mark-plot-clipping/browser-chromium-final-v3.log",
+      "sha256": "6d3072b3aa797e2449ab23f8af2ba493cb7732e7c1d409c260e99ee23b9b8b6a"
+    },
+    "browserFirefox": {
+      "status": "pass",
+      "path": ".artifacts/mark-plot-clipping/browser-firefox-final-v2.log",
+      "sha256": "952424402dbebcc607c1259b44e3f9fd0bddd81c385b2cb3c73f80b83e8f5676"
+    },
+    "browserWebkit": {
+      "status": "pass",
+      "path": ".artifacts/mark-plot-clipping/browser-webkit-final-v2.log",
+      "sha256": "c3188c61bc7778f00b08331cd1952e42e0f13c18a12d16ed231191ce85876253"
+    },
+    "packageConsumer": {
+      "status": "pass",
+      "path": ".artifacts/mark-plot-clipping/package-consumer-final-v3.log",
+      "sha256": "f89d25dba292566dd2fa510439a3a8180bbf15273ae731dfe56189e65189b1d8"
+    },
+    "docsSource": {
+      "status": "pass",
+      "path": ".artifacts/mark-plot-clipping/docs-v4.log",
+      "sha256": "8c9699be849b3fccf754b383ebed8cadaf003515f31c10ab5a4c1d3dcc9e088f"
+    },
+    "docsBuilt": {
+      "status": "pass",
+      "path": ".artifacts/mark-plot-clipping/docs-built-v1.log",
+      "sha256": "8b67b737002bb9a40f52b91eba9a2aba91b043a875723aacaf5ca645421b217d"
+    },
+    "docsBrowser": {
+      "status": "pass",
+      "path": ".artifacts/mark-plot-clipping/docs-browser-v1.log",
+      "sha256": "a6c413832c2ac970262d660fe51fe2b6b1ac8d6ab97e797817fdb77cd9193c60"
+    }
+  },
+  "normalSuite": {
+    "unit": 3359,
+    "contracts": 578,
+    "docs": 120,
+    "charts": 620,
+    "total": 4677,
+    "pass": 4677,
+    "fail": 0
+  },
+  "independentTarget": {
+    "checkpoint": "6f9c1d78",
+    "reproduction": "Run frozen target.mjs --before-implementation from the design checkpoint, where both new clip APIs are unsupported. Current capability tests reconstruct the same original primitive target independently.",
+    "controlPngSha256": "1e864676bf6b7fc8ff35771d3ef790618a1c5912162bef4d8eef74fb670bf5e9",
+    "clippedPngSha256": "9338732bf3cc78c57b28b0f0c4faaebae4143bcf940ba2d3744c4b7c748b36b6",
+    "sameBackendRGBAExact": true,
+    "pixelRatios": [
+      1,
+      2
+    ],
+    "pdfVectorRectangleAndClipCommandVerified": true
+  },
+  "selectionPolicy": "Owner clip changes visible bounds only; raw point and complete-stack selection properties remain identical. Previous nested Canvas viewport policy is retained.",
+  "defaultOutputParity": "Frozen unclipped SVG/PNG remain exact. All92 documentation image manifest differences are sourceHash only.",
+  "package": {
+    "status": "local-development-candidate-not-registry-release",
+    "sourceDesignCommit": "6f9c1d78",
+    "node": "v22.23.1",
+    "entries": 594,
+    "packedBytes": 843954,
+    "unpackedBytes": 4095900,
+    "sha256": "88030d7ede5af99b9ea765a9d79c80199c8a3a077316f030453a29a213ab5989",
+    "schoolCalls": 0,
+    "nextReleaseAtCompletedFamilies": 1413
+  },
+  "browserBundles": {
+    "ggaction": 417575,
+    "basic": 205067,
+    "svg": 7554,
+    "units": "gzip bytes"
+  },
+  "resourceBudgets": {
+    "entries": 594,
+    "packed": 844000,
+    "unpacked": 4096000,
+    "browserFull": 418000,
+    "browserBasic": 206000,
+    "browserSvg": 25000,
+    "measuredMinimumIncrementsOnly": true,
+    "Node24ProtectedReleaseMeasurementStillRequired": true
+  },
+  "schoolModelCalls": 0,
+  "chartPixelsInspected": false,
+  "translationRuntimeUnchanged": "published0.0.21",
+  "release": {
+    "status": "candidate-only",
+    "nextRegularCompletedFamilyCheckpoint": 1413,
+    "newVersionPublished": false,
+    "githubIssuesStillOpenUntilIntegration": true
+  },
+  "failureHistory": {
+    "preserved": true,
+    "realRegressions": [
+      "Initial Area/Bar clip-only editors rejected edits; corrected editable vocabularies.",
+      "Grammar-to-selector import violated architecture boundaries; resource resolution moved to the shared selector owner.",
+      "Complete-stack property bounds changed after clipping; reproduced with a failing regression, then separated owner visibility from selection geometry.",
+      "Original card/package/browser budgets and documented budget synchronization failed; retained failures and applied only measured scoped increments."
+    ],
+    "harnessCorrections": [
+      "Review target chose binary-exact dimensions before target approval.",
+      "Rule fieldType, Polar radius name, highlight reorder and concat option test fixtures corrected to existing contracts.",
+      "Browser expectedCenters variable typo, relative private module/output paths and optional native peer setup corrected.",
+      "Generated provenance and Markdown link freshness repaired."
+    ]
+  }
+}

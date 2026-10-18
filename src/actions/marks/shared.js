@@ -1,3 +1,4 @@
+import { materializeMarkClip } from "../../materialization/markClip.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
 import {
   resolveOptionalUserId,
@@ -243,5 +244,5 @@ export function editMarkGraphic(program, target, properties) {
   for (const [property, value] of Object.entries(properties)) {
     program = program.editGraphics({ target, property, value });
   }
-  return program;
+  return materializeMarkClip(program, target);
 }

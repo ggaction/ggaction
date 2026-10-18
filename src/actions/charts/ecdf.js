@@ -23,7 +23,7 @@ const EDIT_OPTIONS = Object.freeze([
   "target", "data", "coordinate", "field", "groupBy", "weight", "missing", "as", "color"
 ]);
 const LINE_OPTIONS = Object.freeze([
-  "strokeWidth", "stroke", "opacity", ...STROKE_STYLE_PROPERTIES
+  "clip",   "strokeWidth", "stroke", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const LABEL_OPTIONS = Object.freeze([
   "field", "value", "content", "normalizeBy", "format", "layout", "fill",

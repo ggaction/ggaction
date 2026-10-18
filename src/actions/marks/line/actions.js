@@ -1,3 +1,4 @@
+import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -43,11 +44,11 @@ import {
 const DEFAULT_LINE_STROKE = DEFAULT_COLORS.mark;
 const DEFAULT_LINE_WIDTH = 2;
 const CREATE_OPTIONS = Object.freeze([
-  "id", "data", "stroke", "strokeWidth", "opacity", "curve", "tension", "closed",
+  "clip", "id", "data", "stroke", "strokeWidth", "opacity", "curve", "tension", "closed",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const EDIT_OPTIONS = Object.freeze([
-  "target", "stroke", "strokeWidth", "opacity", "curve", "tension", "closed",
+  "clip", "target", "stroke", "strokeWidth", "opacity", "curve", "tension", "closed",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
@@ -100,6 +101,7 @@ const createLineMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createLineMark");
+    requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "createLineMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "line",
@@ -159,6 +161,7 @@ const createLineMark = /* @__PURE__ */ action(
       );
     created = materializeInheritedMark(created, id);
     const appearance = {
+      ...requestedMarkClip(args),
       ...(stroke === undefined ? {} : { stroke }),
       ...(opacity === undefined ? {} : { opacity })
     };
@@ -277,8 +280,9 @@ const editLineMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editLineMark");
+    requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "editLineMark");
-    if (!EDIT_OPTIONS.slice(1).some(key => Object.hasOwn(args, key))) {
+    if (!EDIT_OPTIONS.filter(key => key !== "target").some(key => Object.hasOwn(args, key))) {
       throw new Error("editLineMark requires stroke, strokeWidth, opacity, curve, tension, or closed.");
     }
     const target = Object.hasOwn(args, "target")
@@ -306,7 +310,8 @@ const editLineMark = /* @__PURE__ */ action(
         (layer.encoding?.x !== undefined || isParallelLine(layer))) {
       throw new Error("Line closed requires theta/radius Polar position encodings.");
     }
-    const config = { ...this.markConfigs[layer.id] };
+    validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
+    const config = { ...this.markConfigs[layer.id], ...requestedMarkClip(args) };
     Object.assign(config, strokeDetails);
     for (const [key, validate] of Object.entries({
       stroke: validateNonEmptyString,

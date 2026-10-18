@@ -2522,7 +2522,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `stroke` | Optional / branch-dependent | `string \| Omit<{ target?: string \| undefined; field: string; value?: undefined; fieldType?: "nominal" \| "ordinal" \| undefined; temporalUnit?: undefined; scale?: CategoricalColorScaleOptions \| undefined; }, "coordinate" \| "target"> \| Omit<...> \| Omit<...> \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
 
 </details>
@@ -2599,7 +2599,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `value` | Required | `EndpointValueChannel` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
@@ -2642,8 +2642,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `value` | Required | `EndpointValueChannel` |
 | `baseline` | Optional / branch-dependent | `number \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
-| `stem` | Optional / branch-dependent | `RuleStyleOptions \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `stem` | Optional / branch-dependent | `(RuleStyleOptions & { clip?: boolean \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
@@ -2686,9 +2686,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `start` | Required | `EndpointValueChannel` |
 | `end` | Required | `EndpointValueChannel` |
-| `startPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
-| `endPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
-| `connector` | Optional / branch-dependent | `RuleStyleOptions \| undefined` |
+| `startPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `endPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `connector` | Optional / branch-dependent | `(RuleStyleOptions & { clip?: boolean \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| (EndpointLabelOptions & { endpoint?: "both" \| "end" \| "start" \| undefined; }) \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
@@ -2784,7 +2784,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `ECDFOutputFields \| undefined` |
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
-| `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; }) \| undefined` |
+| `line` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianPathGuideOptions \| undefined` |
 
@@ -2869,7 +2869,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `yOffset` | Optional / branch-dependent | `ErrorBarOffsetChannel \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `errorBar` | Optional / branch-dependent | `IntervalPlotErrorBarOptions \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianSeparateGuideOptions \| undefined` |
 | `x` | Required | `string \| ErrorBarIntervalChannel \| ErrorBarPositionChannel` |
@@ -2918,7 +2918,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
 | `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
 | `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
@@ -2975,7 +2975,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
-| `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
+| `line` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "grid" \| "legend"> & { grid?: false \| (Omit<CartesianGridOptions, "horizontal"> & { horizontal?: boolean \| ... 1 more ... \| undefined; }) \| undefined; legend?: false \| ... 1 more ... \| undefined; }) \| undefined` |
 
 </details>
@@ -3022,7 +3022,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `Omit<StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }, "clip"> \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| PolarPointGuideOptions \| undefined` |
 
 </details>
@@ -3065,7 +3065,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
-| `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "closed" \| ... 1 more ... \| "tension"> & { ...; }) \| undefined` |
+| `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "clip" \| ... 2 more ... \| "tension"> & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| PolarPathGuideOptions \| undefined` |
 
 </details>
@@ -3106,7 +3106,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `order` | Optional / branch-dependent | `readonly [RadarCategoryValue, RadarCategoryValue, RadarCategoryValue, ...RadarCategoryValue[]] \| undefined` |
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
-| `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "closed" \| ... 1 more ... \| "tension"> & { ...; }) \| undefined` |
+| `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "clip" \| ... 2 more ... \| "tension"> & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| RadarGuideOptions \| undefined` |
 | `category` | Optional / branch-dependent | `RadarCategoryChannel \| undefined` |
 | `value` | Optional / branch-dependent | `PolarRadiusChannel \| undefined` |
@@ -3195,7 +3195,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
 | `x` | Required | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; }` |
 | `y` | Optional / branch-dependent | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; } \| undefined` |
@@ -3240,7 +3240,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `packing` | Optional / branch-dependent | `false \| BeeswarmPackingOptions \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
 | `x` | Required | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; }` |
@@ -3706,7 +3706,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `layout` | Optional / branch-dependent | `"center" \| "diverging" \| "fill" \| "overlay" \| "stack" \| undefined` |
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; } \| undefined` |
-| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false \| CartesianGridOptions \| undefined; }) \| undefined` |
 | `valueChannel` | Optional / branch-dependent | `"x" \| "y" \| undefined` |
 | `x` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |

@@ -289,6 +289,7 @@ export type {
   FacetGridRole,
   FacetScaleResolution,
   FacetScaleResolutions,
+  GraphicClipRect,
   GraphicObject,
   GraphicSpec,
   GraphicType,

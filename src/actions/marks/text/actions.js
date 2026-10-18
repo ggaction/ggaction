@@ -1,9 +1,11 @@
+import { materializeMarkClip } from "../../../materialization/markClip.js";
+import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { TEXT_LABEL_LAYOUT_OPTIONS } from "./layout.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
   DEFAULT_TEXT_MARK,
-  TEXT_MARK_STYLE_OPTIONS as STYLE_OPTIONS,
+  TEXT_MARK_STYLE_OPTIONS,
   isSourceOwnedText,
   normalizeTextMarkConfig
 } from "../../../grammar/text.js";
@@ -42,6 +44,7 @@ import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
+const STYLE_OPTIONS = Object.freeze(["clip", ...TEXT_MARK_STYLE_OPTIONS]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "source", "text", "missing", ...STYLE_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", "missing", ...STYLE_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "replayLayout"]);
@@ -130,6 +133,7 @@ const createTextMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createTextMark");
+    requestedMarkClip(args);
     const id = resolveMarkId(this, args.id, {
       defaultId: "text",
       label: "Text mark id",
@@ -456,7 +460,7 @@ const rematerializeTextMark = /* @__PURE__ */ action(
           ? next
           : next.materializeMarkLabelPlacement({ id });
     }
-    let next = this.editGraphics({
+    let next = materializeMarkClip(this.editGraphics({
       target: id,
       property: "items",
       value: resolveTextGraphicItems(
@@ -464,7 +468,7 @@ const rematerializeTextMark = /* @__PURE__ */ action(
         layer,
         this.markConfigs[id] ?? DEFAULT_TEXT_MARK
       )
-    });
+    }), id);
     if (replayLayout && next.materializationConfigs.labelLayouts?.[id] !== undefined) {
       return next.materializeLabelLayout({ id, rematerializeBase: false });
     }
@@ -481,6 +485,7 @@ const editTextMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editTextMark");
+    requestedMarkClip(args);
     if (!["missing", ...STYLE_OPTIONS].some(option => Object.hasOwn(args, option))) {
       throw new Error("editTextMark requires at least one editable property.");
     }
@@ -494,6 +499,7 @@ const editTextMark = /* @__PURE__ */ action(
     if (Object.hasOwn(args, "fill") && layer.encoding?.color !== undefined) {
       throw new Error("Text fill conflicts with its color encoding.");
     }
+    validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
     const semantic = Object.hasOwn(args, "missing")
       ? this.editSemantic({
           property: `layer[${layer.id}].mark.missing`,
@@ -507,6 +513,7 @@ const editTextMark = /* @__PURE__ */ action(
           args,
           semantic.markConfigs[layer.id] ?? DEFAULT_TEXT_MARK
         ),
+        ...requestedMarkClip(args),
         fillExplicit: Object.hasOwn(args, "fill")
           ? true
           : semantic.markConfigs[layer.id]?.fillExplicit ?? false

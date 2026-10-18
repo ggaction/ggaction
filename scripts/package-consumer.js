@@ -89,6 +89,17 @@ async function testNodeConsumer(directory) {
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
+    const clipBase = chart().createCanvas({width:240,height:180,margin:40})
+      .createData({values:[{x:-1,y:4},{x:5,y:4}]})
+      .createScatterPlot({x:{field:"x",scale:{domain:[0,10]}},y:{field:"y",scale:{domain:[0,8]}},guides:false});
+    const clipped = clipBase.editPointMark({clip:true});
+    assert.deepEqual(clipped.graphicSpec.objects.scatterPlot.clip,{x:40,y:40,width:160,height:100});
+    assert.deepEqual(clipped.graphicSpec.objects.scatterPlot.items,clipBase.graphicSpec.objects.scatterPlot.items);
+    assert.equal((renderToSVG(clipped).match(/clip-path=/g)||[]).length,1);
+    assert.deepEqual(clipped.editPointMark({clip:false}).graphicSpec,clipBase.graphicSpec);
+    assert.deepEqual(deserializeProgram(serializeProgram(clipped)).graphicSpec,clipped.graphicSpec);
+    assert.notDeepEqual((await renderToPNGBuffer(clipped)).buffer,(await renderToPNGBuffer(clipBase)).buffer);
+
     const paletteBase = chart().createCanvas({width:240,height:180,margin:30})
       .createData({values:[{x:0,y:1,v:0},{x:1,y:2,v:0.3},{x:2,y:3,v:1}]})
       .createScatterPlot({x:"x",y:"y",guides:false});
@@ -4835,6 +4846,24 @@ async function testTypeScriptConsumer(directory) {
       includeEmpty: false
     };
     const editedBinned: ChartProgram = binned.editBin2DData(binEdit);
+    const clippingTypes: ChartProgram = chart();
+    clippingTypes.createPointMark({clip:true}); clippingTypes.editPointMark({clip:false});
+    clippingTypes.createLineMark({clip:true}); clippingTypes.editLineMark({clip:false});
+    clippingTypes.createAreaMark({clip:true}); clippingTypes.editAreaMark({clip:false});
+    clippingTypes.createBarMark({clip:true}); clippingTypes.editBarMark({clip:false});
+    clippingTypes.createRectMark({clip:true}); clippingTypes.editRectMark({clip:false});
+    clippingTypes.createRuleMark({clip:true}); clippingTypes.editRuleMark({clip:false});
+    clippingTypes.createTextMark({clip:true}); clippingTypes.editTextMark({clip:false});
+    clippingTypes.createTickMark({clip:true}); clippingTypes.editTickMark({clip:false});
+    clippingTypes.createScatterPlot({x:"x",y:"y",point:{clip:true}});
+    clippingTypes.createLinePlot({x:"x",y:"y",line:{clip:true}});
+    // @ts-expect-error clip uses a boolean
+    clippingTypes.editPointMark({clip:"true"});
+    // @ts-expect-error Cartesian clip is not part of Polar facade styles
+    clippingTypes.createPolarScatterPlot({theta:"x",radius:"y",point:{clip:true}});
+    // @ts-expect-error Arc does not use Cartesian clipping
+    clippingTypes.createArcMark({clip:true});
+
     const inspected = chart()
       .createCanvas()
       .createData({ values: [{ x: 1, y: 2 }] })

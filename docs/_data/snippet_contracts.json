@@ -2383,6 +2383,18 @@
   {
     "file": "api/marks.md",
     "block": 1,
+    "heading": "Clip one layer to its plot",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "5d94a633602a8ee041ee0dc8d1331b64006089cb791533646677df00060263c4",
+    "executable": false
+  },
+  {
+    "file": "api/marks.md",
+    "block": 2,
     "heading": "At a glance",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2398,7 +2410,7 @@
   },
   {
     "file": "api/marks.md",
-    "block": 2,
+    "block": 3,
     "heading": "Tick marks",
     "mode": "fragment",
     "environment": "esm-context",

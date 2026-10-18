@@ -1,3 +1,4 @@
+import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -37,7 +38,7 @@ import {
 } from "../shared.js";
 
 const APPEARANCE_OPTIONS = Object.freeze([
-  "length", "stroke", "strokeWidth", "opacity", ...STROKE_STYLE_PROPERTIES
+  "clip", "length", "stroke", "strokeWidth", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...APPEARANCE_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", "missing", ...APPEARANCE_OPTIONS]);
@@ -74,6 +75,7 @@ function resolveTick(program, requested, operation) {
 function validateTickConfig(args, current = DEFAULT_TICK_CONFIG) {
   return {
     ...current,
+    ...requestedMarkClip(args),
     length: Object.hasOwn(args, "length")
       ? validatePositiveFinite(args.length, "Tick length")
       : current.length,
@@ -97,6 +99,7 @@ export const createTickMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createTickMark");
+    requestedMarkClip(args);
     requestedStrokeDetails(args, "createTickMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "tick",
@@ -148,6 +151,7 @@ export const editTickMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editTickMark");
+    requestedMarkClip(args);
     requestedStrokeDetails(args, "editTickMark");
     if (!["missing", ...APPEARANCE_OPTIONS].some(property => Object.hasOwn(args, property))) {
       throw new Error(
@@ -160,6 +164,7 @@ export const editTickMark = /* @__PURE__ */ action(
         "editTickMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
       );
     }
+    validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
     const semantic = Object.hasOwn(args, "missing")
       ? this.editSemantic({
           property: `layer[${layer.id}].mark.missing`,

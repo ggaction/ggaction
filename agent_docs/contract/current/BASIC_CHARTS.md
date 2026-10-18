@@ -25,6 +25,8 @@ Aggregate create-only는 child action 합성을 뜻하며 source rows의 통계 
   existing mark owner. Exact values, defaults, replay, and unsupported-family errors are owned by
   [the shared mark-style contract](MARKS.md#shared-stroke-and-rounded-rectangle-style-details).
 
+Existing Cartesian Scatter/Line/Bar/Histogram/Heatmap/Text, Area/Density/ECDF/Horizon and Cartesian endpoint/rug/strip/interval point styles also forward `clip?: boolean` to their existing mark owner. The [shared clipping contract](MARKS.md#shared-cartesian-plot-clipping) owns the exact behavior. Polar/Parallel styles do not expose this Cartesian option.
+
 ## Facade guide reuse
 
 - Scatter, Line, Bar, Histogram, Heatmap, Parallel, Violin과 Box/Gradient completion의 공통 계약이다.

@@ -1249,7 +1249,7 @@ belong only to the previous mode before validating the final definition.
 ### `createPointMark`
 
 ```javascript
-createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createPointMark({ clip?, id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic point mark with one of 12 equal-area shape realizations.
@@ -1258,7 +1258,7 @@ Create a semantic point mark with one of 12 equal-area shape realizations.
 ### `editPointMark`
 
 ```javascript
-editPointMark({ target?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? })
+editPointMark({ clip?, target?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
@@ -1267,7 +1267,7 @@ Change constant point shape, fill, opacity, or outline appearance and rematerial
 ### `createTickMark`
 
 ```javascript
-createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
+createTickMark({ clip?, id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
 ```
 
 Create a centered line glyph that materializes after both x and y are complete.
@@ -1276,7 +1276,7 @@ Length defaults to `14`; stroke width defaults to `2`. [Marks](../api/marks.md)
 ### `editTickMark`
 
 ```javascript
-editTickMark({ target?, length?, stroke?, strokeWidth?, opacity? })
+editTickMark({ clip?, target?, length?, stroke?, strokeWidth?, opacity? })
 ```
 
 Partially edit Tick length or constant line appearance while preserving data,
@@ -1333,7 +1333,7 @@ and independently shared resources. [Marks](../api/marks.md)
 ### `createLineMark`
 
 ```javascript
-createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
+createLineMark({ clip?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
 ```
 
 Create a semantic line mark and empty path collection. Curve defaults to
@@ -1347,7 +1347,7 @@ series as a radar path.
 ### `editLineMark`
 
 ```javascript
-editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
+editLineMark({ clip?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
 ```
 
 Edit line appearance and rematerialize concrete path commands without changing
@@ -1356,7 +1356,7 @@ semantic encodings. [Marks](../api/marks.md)
 ### `createBarMark`
 
 ```javascript
-createBarMark({ id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createBarMark({ clip?, id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection.
@@ -1370,7 +1370,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 ### `editBarMark`
 
 ```javascript
-editBarMark({ target?, blend?, fill?, opacity?, stroke?, strokeWidth? })
+editBarMark({ clip?, target?, blend?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit whole-bar appearance and rematerialize every concrete rectangle.
@@ -1390,7 +1390,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 ### `createAreaMark`
 
 ```javascript
-createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
+createAreaMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
 ```
 
 Create a semantic area mark and empty path collection. Fixed fill defaults to
@@ -1403,7 +1403,7 @@ Area `missing` defaults to `"error"`. `"break"` splits null/undefined measured e
 ### `editAreaMark`
 
 ```javascript
-editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
+editAreaMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 ```
 
 Edit constant area appearance. `stroke: false` removes an existing outline.
@@ -1433,7 +1433,7 @@ Edit arc geometry or appearance and rematerialize complete sector paths.
 ### `createRuleMark`
 
 ```javascript
-createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
+createRuleMark({ clip?, id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
 ```
 
 Create a semantic rule mark and empty line collection. The first omitted ID is
@@ -1442,7 +1442,7 @@ Create a semantic rule mark and empty line collection. The first omitted ID is
 ### `editRuleMark`
 
 ```javascript
-editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })
+editRuleMark({ clip?, target?, stroke?, strokeWidth?, strokeDash?, opacity? })
 ```
 
 Edit constant Rule appearance through the four existing encoding owners. At least
@@ -1452,7 +1452,7 @@ accepts the same styles. [Rule marks](../api/marks/rule.md)
 ### `createRectMark`
 
 ```javascript
-createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createRectMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic rect mark and empty rect collection. Two discrete x/y bands
@@ -1468,7 +1468,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 ### `editRectMark`
 
 ```javascript
-editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
+editRectMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit rect appearance and rematerialize complete cells. Constant fill conflicts
@@ -1522,7 +1522,7 @@ is needed. Both reference facades are available in the full entry point.
 ### `createMarkLabels`
 
 ```javascript
-createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
+createMarkLabels({ clip?, id?, source?, field?, value?, content?, normalizeBy?, format?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
 ```
 
 Label source mark items. The default content is the source's semantic value;
@@ -1588,7 +1588,7 @@ to use `removeMark`.
 ### `createAnnotation`
 
 ```javascript
-createAnnotation({ id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
+createAnnotation({ clip?, id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
 ```
 
 Create anchored text. Omit x/y/space for a
@@ -1616,7 +1616,7 @@ Omit `layout` or pass `false` to retain the exact anchor. A layout object accept
 ### `createTextMark`
 
 ```javascript
-createTextMark({ id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+createTextMark({ clip?, id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
@@ -1641,7 +1641,7 @@ centers the entire block vertically. Empty internal lines are retained.
 ### `editTextMark`
 
 ```javascript
-editTextMark({ target?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
+editTextMark({ clip?, target?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
 ```
 
 Edit text typography and graphical offsets without changing its semantic

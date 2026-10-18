@@ -10,6 +10,7 @@ import Ajv2020 from "ajv/dist/2020.js";
 
 import {
   buildActionCards,
+  compactActionCardByteLimit,
   validateActionCards,
   validateCallPatternOptions
 } from "../../scripts/action-card-source.js";
@@ -52,7 +53,7 @@ test("compact action cards are generated from the current action contract", asyn
   assert.match(artifact.errorPolicy, /curated error override/);
   assert.equal(stats.count, context.actions.length);
   for (const card of artifact.cards) {
-    const limit = card.name === "editLegend" ? 3860 : card.name === "createLegend" ? 3530 : 3360;
+    const limit = compactActionCardByteLimit(card.name);
     assert.ok(Buffer.byteLength(JSON.stringify(card)) <= limit, card.name);
   }
   assert.ok(artifact.cards.find(card => card.name === "editLegend").options

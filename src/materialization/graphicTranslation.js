@@ -35,6 +35,8 @@ export function translatedProperties(type, properties, dx, dy) {
 export function translateGraphic(program, id, dx, dy) {
   const graphic = program.graphicSpec.objects[id];
   if (dx === 0 && dy === 0) return program;
+  if (graphic.clip !== undefined) program = program.editGraphics({target: id, property: "clip",
+    value: {...graphic.clip, x: graphic.clip.x + dx, y: graphic.clip.y + dy}});
   if (graphic.items !== undefined) {
     let next = program.editGraphics({
       target: id,

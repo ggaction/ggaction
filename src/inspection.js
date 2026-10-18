@@ -1,3 +1,4 @@
+import { resolveGraphicClipBounds, resolveGraphicParentOffset } from "./grammar/schemas/graphicBounds.js";
 import { ChartProgram } from "./ChartProgram.js";
 import { BasicChartProgram } from "./BasicChartProgram.js";
 import { getWrappedActionMetadata } from "./core/action.js";
@@ -339,11 +340,15 @@ function inspectMark(program, layer, childPath) {
   const opacityZero = items.filter(item => item.properties.opacity === 0).length;
   const zeroSize = items.filter(item => { const b = itemBounds(item.properties, item.type ?? graphic?.type); return b !== null && b.width === 0 && b.height === 0; }).length;
   const bounds = items.map(item => itemBounds(item.properties, item.type ?? graphic?.type)).filter(Boolean);
-  const canvas = program.graphicSpec.objects.canvas?.properties;
-  const outside = Number.isFinite(canvas?.width) && Number.isFinite(canvas?.height)
-    ? bounds.filter(bound => bound.x + bound.width < 0 || bound.y + bound.height < 0 ||
-        bound.x > canvas.width || bound.y > canvas.height).length
-    : null;
+  const clip = graphic === undefined ? undefined : resolveGraphicClipBounds(program.graphicSpec, layer.id, {rootViewport: true});
+  const offset = graphic === undefined ? [0,0] : resolveGraphicParentOffset(program.graphicSpec, layer.id);
+  const outsideIndices = clip === undefined ? null : items.flatMap((item,index) => {
+    const b = itemBounds(item.properties, item.type ?? graphic.type);
+    return b !== null && (clip.right <= clip.left || clip.bottom <= clip.top ||
+      b.x + offset[0] + b.width < clip.left || b.y + offset[1] + b.height < clip.top ||
+      b.x + offset[0] > clip.right || b.y + offset[1] > clip.bottom) ? [index] : [];
+  });
+  const outside = outsideIndices?.length ?? null;
   const union = bounds.length === 0 ? null : {
     x: Math.min(...bounds.map(item => item.x)), y: Math.min(...bounds.map(item => item.y)),
     width: Math.max(...bounds.map(item => item.x + item.width)) - Math.min(...bounds.map(item => item.x)),
@@ -358,7 +363,7 @@ function inspectMark(program, layer, childPath) {
     visibleCandidates: geometrySupported ? Math.max(0, items.length - new Set([
       ...items.map((item, index) => item.properties.opacity === 0 ? index : -1),
       ...items.map((item, index) => { const b = itemBounds(item.properties, item.type ?? graphic?.type); return b !== null && b.width === 0 && b.height === 0 ? index : -1; }),
-      ...(outside === null ? [] : items.map((item, index) => { const b = itemBounds(item.properties, item.type ?? graphic?.type); return b !== null && (b.x + b.width < 0 || b.y + b.height < 0 || b.x > canvas.width || b.y > canvas.height) ? index : -1; }))
+      ...(outsideIndices ?? [])
     ].filter(index => index >= 0)).size) : null,
     flags: [
       { reason: "opacity-zero", count: opacityZero },

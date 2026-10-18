@@ -10,7 +10,7 @@ const OPERATION = "createDensityPlot";
 const OPTIONS = ["id", "data", "coordinate", "field", "groupBy", "bandwidth", "extent", "steps",
   "kernel", "normalization", "weight", "as", "densityChannel", "valueScale", "densityScale", "color", "area", "guides"];
 const AREA_OPTIONS = [
-  "fill", "opacity", "stroke", "strokeWidth", "curve",
+  "clip",   "fill", "opacity", "stroke", "strokeWidth", "curve",
   ...STROKE_STYLE_PROPERTIES
 ];
 

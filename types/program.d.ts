@@ -1308,7 +1308,13 @@ export interface GraphicItem {
   readonly properties: Readonly<Record<string, unknown>>;
 }
 
+export interface GraphicClipRect {
+  readonly x: number; readonly y: number; readonly width: number; readonly height: number;
+}
+
 export interface GraphicObject {
+  /** Optional named non-Canvas owner clip in its unchanged parent frame. */
+  readonly clip?: GraphicClipRect;
   readonly type: GraphicType;
   readonly properties?: Readonly<Record<string, unknown>>;
   readonly items?: readonly GraphicItem[];
@@ -3176,6 +3182,7 @@ export interface CreateScatterPlotOptions {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    clip?: boolean;
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -3279,7 +3286,7 @@ export interface CreateLollipopPlotOptions extends EndpointPlotBaseOptions {
   value: EndpointValueChannel;
   baseline?: number;
   point?: CreateScatterPlotOptions["point"];
-  stem?: RuleStyleOptions;
+  stem?: RuleStyleOptions & { clip?: boolean };
   labels?: false | EndpointLabelOptions;
 }
 export interface CreateDumbbellPlotOptions extends EndpointPlotBaseOptions {
@@ -3287,7 +3294,7 @@ export interface CreateDumbbellPlotOptions extends EndpointPlotBaseOptions {
   end: EndpointValueChannel;
   startPoint?: CreateScatterPlotOptions["point"];
   endPoint?: CreateScatterPlotOptions["point"];
-  connector?: RuleStyleOptions;
+  connector?: RuleStyleOptions & { clip?: boolean };
   labels?: false | (EndpointLabelOptions & { endpoint?: "start" | "end" | "both" });
 }
 export type EditEndpointPlotOptions = { target?: string } & Partial<Pick<
@@ -3308,7 +3315,7 @@ export interface CreateECDFPlotOptions {
   missing?: "drop" | "error";
   as?: ECDFOutputFields;
   color?: string | LineCategoricalColorChannel;
-  line?: StrokeStyleDetails & { strokeWidth?: number; stroke?: string; opacity?: number };
+  line?: StrokeStyleDetails & { clip?: boolean; strokeWidth?: number; stroke?: string; opacity?: number };
   labels?: false | EndpointLabelOptions;
   guides?: false | CartesianPathGuideOptions;
 }
@@ -3359,7 +3366,7 @@ export interface CreatePolarScatterPlotOptions {
   color?: BasicColorChannel;
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
-  point?: CreateScatterPlotOptions["point"];
+  point?: Omit<NonNullable<CreateScatterPlotOptions["point"]>, "clip">;
   guides?: false | PolarPointGuideOptions;
 }
 export interface CreatePolarLinePlotOptions {
@@ -3371,7 +3378,7 @@ export interface CreatePolarLinePlotOptions {
   color?: LineCategoricalColorChannel;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve" | "tension"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: boolean;
   };
@@ -3437,7 +3444,7 @@ export type CreateRadarPlotOptions = {
   ];
   color?: LineCategoricalColorChannel;
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve" | "tension"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: true;
   };
@@ -3461,6 +3468,7 @@ export type RugMeasureChannel = string | (
     }
 );
 export interface RugTickOptions extends StrokeStyleDetails {
+  clip?: boolean;
   length?: number;
   stroke?: string;
   strokeWidth?: number;
@@ -3513,6 +3521,7 @@ export type CreateStripPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    clip?: boolean;
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -3540,6 +3549,7 @@ export type CreateBeeswarmPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    clip?: boolean;
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -3654,7 +3664,7 @@ export type CreateAreaPlotOptions = {
   groupBy?: string | readonly [string, ...string[]];
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
-  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
@@ -3673,6 +3683,7 @@ export interface CreateLinePlotOptions {
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
   line?: StrokeStyleDetails & {
+    clip?: boolean;
     strokeWidth?: number;
     curve?: CurveInterpolation;
     tension?: number;
@@ -3729,6 +3740,7 @@ export type CreateBarPlotOptions = {
   color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target" | "interval">;
   bar?: RectStyleDetails & {
+    clip?: boolean;
     fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
@@ -3748,6 +3760,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   field: string;
   color?: HistogramCategoricalColorChannel;
   bar?: RectStyleDetails & {
+    clip?: boolean;
     fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
@@ -3778,7 +3791,7 @@ export interface CreateHorizonPlotOptions {
   missing?: HorizonMissingPolicy;
   overflow?: HorizonOverflowPolicy;
   palette?: HorizonPaletteOptions;
-  area?: StrokeStyleDetails & { opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { clip?: boolean; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | HorizonPlotGuideOptions;
 }
 
@@ -3810,7 +3823,7 @@ export interface CreateDensityPlotOptions {
     palette?: Palette;
     layout?: "overlay";
   };
-  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | DensityPlotGuideOptions;
 }
 
@@ -3867,6 +3880,7 @@ export interface HeatmapBaseOptions {
   data?: string;
   coordinate?: string;
   rect?: RectStyleDetails & {
+    clip?: boolean;
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;
@@ -4047,6 +4061,7 @@ export interface YOffsetEncodingOptions extends OffsetEncodingOptions {}
 export type TextFormat = ValueFormat;
 
 export interface TextMarkOptions {
+  clip?: boolean;
   /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
   lineHeight?: number;
   /** Anchor the first line or center the complete multiline block. */
@@ -4120,6 +4135,7 @@ export interface RemoveLabelLayoutOptions {
 }
 
 export interface RectMarkOptions extends RectStyleDetails {
+  clip?: boolean;
   id?: string;
   data?: string;
   missing?: "error" | "skip";
@@ -4445,9 +4461,9 @@ export type CreateReferenceLineOptions =
       readonly statistic: ReferenceStatistic;
     });
 export type CreateReferenceBandOptions =
-  | (Omit<RectMarkOptions, "data"> &
+  | (Omit<RectMarkOptions, "clip" | "data"> &
       ReferenceBinding<readonly [unknown, unknown], readonly [number, number]>)
-  | (DynamicReferenceBinding & Omit<RectMarkOptions, "id" | "data" | "source"> & {
+  | (DynamicReferenceBinding & Omit<RectMarkOptions, "clip" | "id" | "data" | "source"> & {
       readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic];
     });
 
@@ -5096,6 +5112,7 @@ export class ChartProgram {
 
   /** One point layer accepts at most 50,000 selected rows, before missing-value filtering. */
   createPointMark(options?: StrokeStyleDetails & {
+    clip?: boolean;
     id?: string;
     data?: string;
     missing?: "error" | "skip";
@@ -5106,6 +5123,7 @@ export class ChartProgram {
     strokeWidth?: number;
   }): ChartProgram;
   editPointMark(options: StrokeStyleDetails & {
+    clip?: boolean;
     target?: string;
     missing?: "error" | "skip";
     shape?: PointShape;
@@ -5115,6 +5133,7 @@ export class ChartProgram {
     strokeWidth?: number;
   }): ChartProgram;
   createTickMark(options?: StrokeStyleDetails & {
+    clip?: boolean;
     id?: string;
     data?: string;
     missing?: "error" | "skip";
@@ -5124,6 +5143,7 @@ export class ChartProgram {
     opacity?: number;
   }): ChartProgram;
   editTickMark(options: StrokeStyleDetails & {
+    clip?: boolean;
     target?: string;
     missing?: "error" | "skip";
     length?: number;
@@ -5136,6 +5156,7 @@ export class ChartProgram {
   packPoints(options: PackPointsOptions): ChartProgram;
   removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
   createLineMark(options?: StrokeStyleDetails & {
+    clip?: boolean;
     id?: string;
     data?: string;
     strokeWidth?: number;
@@ -5146,6 +5167,7 @@ export class ChartProgram {
     closed?: boolean;
   }): ChartProgram;
   editLineMark(options: StrokeStyleDetails & {
+    clip?: boolean;
     target?: string;
     strokeWidth?: number;
     curve?: CurveInterpolation;
@@ -5155,6 +5177,7 @@ export class ChartProgram {
     closed?: boolean;
   }): ChartProgram;
   createBarMark(options?: RectStyleDetails & {
+    clip?: boolean;
     id?: string;
     data?: string;
     orientation?: "vertical" | "horizontal";
@@ -5165,6 +5188,7 @@ export class ChartProgram {
     strokeWidth?: number;
   }): ChartProgram;
   editBarMark(options: RectStyleDetails & {
+    clip?: boolean;
     target?: string;
     blend?: "normal" | "difference";
     missing?: "error" | "skip";
@@ -5174,6 +5198,7 @@ export class ChartProgram {
     strokeWidth?: number;
   }): ChartProgram;
   createAreaMark(options?: StrokeStyleDetails & {
+    clip?: boolean;
     id?: string;
     data?: string;
     fill?: FillPaint;
@@ -5204,8 +5229,8 @@ export class ChartProgram {
   }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
-  createRuleMark(options?: { id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
-  editRuleMark(options: { target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+  createRuleMark(options?: { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+  editRuleMark(options: { clip?: boolean; target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createTextPlot(options: CreateTextPlotOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
@@ -5219,6 +5244,7 @@ export class ChartProgram {
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
   editAreaMark(options: StrokeStyleDetails & {
+    clip?: boolean;
     target?: string;
     fill?: FillPaint;
     opacity?: number;

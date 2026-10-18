@@ -6,7 +6,7 @@
 - [x] 단일 상태 소유권과 최소 public API 설계
 - [x] 기존 graphical primitive로 독립 target 생성 및 수치 검증
 - [x] 정확한 target와 설계에 사용자 standing approval 기록; 구현 전 원격 checkpoint
-- [ ] 구현, types/Current/docs 및 소비자 회귀 검증
+- [x] 구현, types/Current/docs 및 소비자 회귀 검증
 - [ ] 검증된 candidate를 push하고 다음 200-family 배포에 포함
 
 이슈: <https://github.com/ggaction/ggaction/issues/220>.
@@ -73,3 +73,9 @@ chart()
 ## 승인된 구현 전 checkpoint
 
 Gate 상태: **approved**. 현재 사용자의 모든 과거·향후 질문에 대한 명시적 standing approval을 이 구체적인 설계 및 실행 target에 적용한다. 추가 질문은 하지 않는다. `target.mjs`와 `TARGET_EVIDENCE.json`은 구현 전 HEAD `86e6f46e2581115253a86fedd45fdc8a2150a8e1`에서 실행한 독립 primitive와 수치/출력 해시를 고정한다. 기존 두 API의 미지원 오류도 확인했으며 실제 차트는 열어 보지 않았다. 원격 checkpoint 뒤 이 계약대로 구현한다. 일반적인 사전 구현 승인과 실제 공개 배포는 구분하며, 다음 200-family 경계 전에는 공개 release를 만들지 않는다.
+
+## 구현 검증 결과
+
+정상 suite 4,677개, 세 browser 각각 6개, 실제 설치 package 및 전체 문서 browser 검증이 통과했다. 원래 primitive target와 Canvas/PNG decoded RGBA가 정확히 일치하고 PDF vector rectangle/clip 명령도 확인했다. Stack selector의 원래 property geometry는 clipping 전과 같아야 한다는 회귀를 추가했으며 visible bounds만 교집합을 적용한다. 실패 로그와 수치·해시는 `RESULTS.json`에 보존한다.
+
+Public clipping은 위에 명시한 8종 ordinary mark와 선언된 Cartesian facade style에 제공한다. Clip을 요청하지 않은 label/다른 layer에는 자동 상속하지 않으며 ReferenceBand 및 Polar/Radar/Parallel의 기존 상속 타입에서 새 옵션이 잘못 노출되지 않도록 명시적으로 제외했다. 고정한 구현 전 target script/evidence는 역사적 자료이므로 design checkpoint `6f9c1d78`에서 재현한다.

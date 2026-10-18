@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:c37deedc802f05699ebcfdbd2cc6382c7849e7e0dac273fda1a6501a2bb3624e. Status: development. Runtime source: 59c0b4209f1504c5d163f7feca7b6da6c1ca4d26. Release baseline: v0.0.13.
+Contract: sha256:51d9cb71fd347154974ef26bf8237270dd700c5d9e33e532f9130f5c5a0dc359. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/59c0b4209f1504c5d163f7feca7b6da6c1ca4d26/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/59c0b4209f1504c5d163f7feca7b6da6c1ca4d26/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -5884,6 +5884,33 @@ renames reject atomically.
 Marks define the semantic form of a layer. Create a mark first, then connect it
 to data through position, grouping, and appearance encodings. The first mark of
 each type infers its ID and current dataset when those choices are unambiguous.
+
+## Clip one layer to its plot
+
+Point, Line, Area, Bar, Rect, Rule, Text and Tick create/edit actions accept
+`clip: true`. It hides only the part of that mark outside its Cartesian plot.
+Raw data, coordinates, scales and glyph sizes remain unchanged; axes, legends
+and other layers keep their own placement. Omission preserves an edit's current
+setting, and `clip: false` disables it. Polar/Parallel clipping is unsupported.
+
+This complete module first creates a scatterplot, then refines its existing mark:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 480, height: 320, margin: 60 })
+  .createData({ values: [{ x: -1, y: 3 }, { x: 2, y: 7 }] })
+  .createScatterPlot({ x: { field: "x", scale: { domain: [0, 10] } }, y: "y" })
+  .editPointMark({ clip: true });
+```
+
+You may also set `point: { clip: true }` in `createScatterPlot`.
+Other Cartesian facades forward their declared nested mark styles in the same way.
+A source mark's clip is not automatically inherited by attached text labels.
+See the [mark action reference](./reference/actions/marks/) for exact signatures.
 
 ## Choose a mark family
 
@@ -18459,7 +18486,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `stroke` | Optional / branch-dependent | `string \| Omit<{ target?: string \| undefined; field: string; value?: undefined; fieldType?: "nominal" \| "ordinal" \| undefined; temporalUnit?: undefined; scale?: CategoricalColorScaleOptions \| undefined; }, "coordinate" \| "target"> \| Omit<...> \| Omit<...> \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -18528,7 +18555,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `value` | Required | `EndpointValueChannel` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
@@ -18567,8 +18594,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `value` | Required | `EndpointValueChannel` |
 | `baseline` | Optional / branch-dependent | `number \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
-| `stem` | Optional / branch-dependent | `RuleStyleOptions \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `stem` | Optional / branch-dependent | `(RuleStyleOptions & { clip?: boolean \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
@@ -18607,9 +18634,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `start` | Required | `EndpointValueChannel` |
 | `end` | Required | `EndpointValueChannel` |
-| `startPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
-| `endPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
-| `connector` | Optional / branch-dependent | `RuleStyleOptions \| undefined` |
+| `startPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `endPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `connector` | Optional / branch-dependent | `(RuleStyleOptions & { clip?: boolean \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| (EndpointLabelOptions & { endpoint?: "both" \| "end" \| "start" \| undefined; }) \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
@@ -18697,7 +18724,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `ECDFOutputFields \| undefined` |
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
-| `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; }) \| undefined` |
+| `line` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianPathGuideOptions \| undefined` |
 
@@ -18774,7 +18801,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `yOffset` | Optional / branch-dependent | `ErrorBarOffsetChannel \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `errorBar` | Optional / branch-dependent | `IntervalPlotErrorBarOptions \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianSeparateGuideOptions \| undefined` |
 | `x` | Required | `string \| ErrorBarIntervalChannel \| ErrorBarPositionChannel` |
@@ -18819,7 +18846,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
 | `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
 | `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
@@ -18872,7 +18899,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
-| `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
+| `line` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "grid" \| "legend"> & { grid?: false \| (Omit<CartesianGridOptions, "horizontal"> & { horizontal?: boolean \| ... 1 more ... \| undefined; }) \| undefined; legend?: false \| ... 1 more ... \| undefined; }) \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -18915,7 +18942,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `Omit<StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }, "clip"> \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| PolarPointGuideOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -18954,7 +18981,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
-| `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "closed" \| ... 1 more ... \| "tension"> & { ...; }) \| undefined` |
+| `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "clip" \| ... 2 more ... \| "tension"> & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| PolarPathGuideOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -18991,7 +19018,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `order` | Optional / branch-dependent | `readonly [RadarCategoryValue, RadarCategoryValue, RadarCategoryValue, ...RadarCategoryValue[]] \| undefined` |
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
-| `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "closed" \| ... 1 more ... \| "tension"> & { ...; }) \| undefined` |
+| `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "clip" \| ... 2 more ... \| "tension"> & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| RadarGuideOptions \| undefined` |
 | `category` | Optional / branch-dependent | `RadarCategoryChannel \| undefined` |
 | `value` | Optional / branch-dependent | `PolarRadiusChannel \| undefined` |
@@ -19072,7 +19099,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
 | `x` | Required | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; }` |
 | `y` | Optional / branch-dependent | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; } \| undefined` |
@@ -19113,7 +19140,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `BasicColorChannel \| undefined` |
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
-| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `packing` | Optional / branch-dependent | `false \| BeeswarmPackingOptions \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
 | `x` | Required | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; }` |
@@ -19539,7 +19566,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `layout` | Optional / branch-dependent | `"center" \| "diverging" \| "fill" \| "overlay" \| "stack" \| undefined` |
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; } \| undefined` |
-| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false \| CartesianGridOptions \| undefined; }) \| undefined` |
 | `valueChannel` | Optional / branch-dependent | `"x" \| "y" \| undefined` |
 | `x` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |
@@ -19653,7 +19680,7 @@ Each declared action has an exact signature and its own stable link. Option tabl
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+createPointMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
@@ -19667,6 +19694,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -19679,7 +19707,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createPointMark({ clip?, id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic point mark with one of 12 equal-area shape realizations.
@@ -19692,7 +19720,7 @@ Create a semantic point mark with one of 12 equal-area shape realizations.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+createTickMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails).
@@ -19706,6 +19734,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -19717,7 +19746,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
+createTickMark({ clip?, id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
 ```
 
 Create a centered line glyph that materializes after both x and y are complete.
@@ -19862,6 +19891,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
@@ -19891,7 +19921,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
+createMarkLabels({ clip?, id?, source?, field?, value?, content?, normalizeBy?, format?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
 ```
 
 Label source mark items. The default content is the source's semantic value;
@@ -20037,6 +20067,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
@@ -20066,7 +20097,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createAnnotation({ id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
+createAnnotation({ clip?, id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
 ```
 
 Create anchored text. Omit x/y/space for a
@@ -20109,6 +20140,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
@@ -20131,7 +20163,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createTextMark({ id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+createTextMark({ clip?, id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
@@ -20172,6 +20204,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
@@ -20190,7 +20223,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editTextMark({ target?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
+editTextMark({ clip?, target?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
 ```
 
 Edit text typography and graphical offsets without changing its semantic
@@ -20286,7 +20319,7 @@ binding clears it. Domains and tick values are already normalized timestamps.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editPointMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+editPointMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
@@ -20300,6 +20333,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `shape` | Optional / branch-dependent | `PointShape \| undefined` |
@@ -20311,7 +20345,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editPointMark({ target?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? })
+editPointMark({ clip?, target?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
@@ -20324,7 +20358,7 @@ Change constant point shape, fill, opacity, or outline appearance and rematerial
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editTickMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+editTickMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails).
@@ -20338,6 +20372,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
@@ -20348,7 +20383,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editTickMark({ target?, length?, stroke?, strokeWidth?, opacity? })
+editTickMark({ clip?, target?, length?, stroke?, strokeWidth?, opacity? })
 ```
 
 Partially edit Tick length or constant line appearance while preserving data,
@@ -20518,7 +20553,7 @@ and independently shared resources. [Marks](./api/marks/)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+createLineMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
@@ -20532,6 +20567,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -20544,7 +20580,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
+createLineMark({ clip?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
 ```
 
 Create a semantic line mark and empty path collection. Curve defaults to
@@ -20562,7 +20598,7 @@ series as a radar path.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+editLineMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
@@ -20576,6 +20612,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
@@ -20587,7 +20624,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
+editLineMark({ clip?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
 ```
 
 Edit line appearance and rematerialize concrete path commands without changing
@@ -20600,7 +20637,7 @@ semantic encodings. [Marks](./api/marks/)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+createBarMark(options?: RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
@@ -20619,6 +20656,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
@@ -20631,7 +20669,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createBarMark({ id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createBarMark({ clip?, id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection.
@@ -20649,7 +20687,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editBarMark(options: RectStyleDetails & { target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+editBarMark(options: RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
 ```
 
 Named option contracts: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
@@ -20668,6 +20706,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `blend` | Optional / branch-dependent | `"difference" \| "normal" \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -20679,7 +20718,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editBarMark({ target?, blend?, fill?, opacity?, stroke?, strokeWidth? })
+editBarMark({ clip?, target?, blend?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit whole-bar appearance and rematerialize every concrete rectangle.
@@ -20702,7 +20741,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+createAreaMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
@@ -20716,6 +20755,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
@@ -20728,7 +20768,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
+createAreaMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
 ```
 
 Create a semantic area mark and empty path collection. Fixed fill defaults to
@@ -20745,7 +20785,7 @@ Area `missing` defaults to `"error"`. `"break"` splits null/undefined measured e
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createRuleMark(options?: { id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+createRuleMark(options?: { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
 ```
 
 Named option contracts: [`RuleStyleOptions`](./reference/types/#type-rulestyleoptions).
@@ -20756,6 +20796,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -20770,7 +20811,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
+createRuleMark({ clip?, id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
 ```
 
 Create a semantic rule mark and empty line collection. The first omitted ID is
@@ -20783,7 +20824,7 @@ Create a semantic rule mark and empty line collection. The first omitted ID is
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editRuleMark(options: { target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+editRuleMark(options: { clip?: boolean; target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
 ```
 
 Named option contracts: [`RuleStyleOptions`](./reference/types/#type-rulestyleoptions).
@@ -20794,6 +20835,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
@@ -20807,7 +20849,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })
+editRuleMark({ clip?, target?, stroke?, strokeWidth?, strokeDash?, opacity? })
 ```
 
 Edit constant Rule appearance through the four existing encoding owners. At least
@@ -20821,7 +20863,7 @@ accepts the same styles. [Rule marks](./api/marks/rule/)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+editAreaMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
@@ -20835,6 +20877,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -20846,7 +20889,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
+editAreaMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 ```
 
 Edit constant area appearance. `stroke: false` removes an existing outline.
@@ -20950,6 +20993,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -20969,7 +21013,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createRectMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic rect mark and empty rect collection. Two discrete x/y bands
@@ -21009,6 +21053,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -21018,7 +21063,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
+editRectMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit rect appearance and rematerialize complete cells. Constant fill conflicts
@@ -23908,7 +23953,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `valueScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
 | `densityScale` | Optional / branch-dependent | `NonPointZeroSupportingPositionScaleOptions \| undefined` |
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; layout?: "overlay" \| undefined; } \| undefined` |
-| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| DensityPlotGuideOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -23963,7 +24008,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `missing` | Optional / branch-dependent | `HorizonMissingPolicy \| undefined` |
 | `overflow` | Optional / branch-dependent | `HorizonOverflowPolicy \| undefined` |
 | `palette` | Optional / branch-dependent | `HorizonPaletteOptions \| undefined` |
-| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| HorizonPlotGuideOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -27453,25 +27498,25 @@ interface ChartProgramActions {
   editCompleteData(options: EditCompleteDataOptions): ChartProgram;
   editImputedData(options: EditImputedDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
-  createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editPointMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
-  editTickMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+  createPointMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editPointMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  createTickMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+  editTickMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   packPoints(options: PackPointsOptions): ChartProgram;
   removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
-  createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: RectStyleDetails & { target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+  createLineMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+  editLineMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+  createBarMark(options?: RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  createAreaMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
-  createRuleMark(options?: { id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
-  editRuleMark(options: { target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+  createRuleMark(options?: { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+  editRuleMark(options: { clip?: boolean; target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createTextPlot(options: CreateTextPlotOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
@@ -27484,7 +27529,7 @@ interface ChartProgramActions {
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
-  editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+  editAreaMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   encodeX(options: PositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
   encodeY(options: YPositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;
@@ -29389,7 +29434,7 @@ export type CreateAreaPlotOptions = {
   groupBy?: string | readonly [string, ...string[]];
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
-  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
@@ -29433,6 +29478,7 @@ export type CreateBarPlotOptions = {
   color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target" | "interval">;
   bar?: RectStyleDetails & {
+    clip?: boolean;
     fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
@@ -29461,6 +29507,7 @@ export type CreateBeeswarmPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    clip?: boolean;
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -29532,7 +29579,7 @@ export interface CreateDensityPlotOptions {
     palette?: Palette;
     layout?: "overlay";
   };
-  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | DensityPlotGuideOptions;
 }
 ```
@@ -29577,7 +29624,7 @@ export interface CreateDumbbellPlotOptions extends EndpointPlotBaseOptions {
   end: EndpointValueChannel;
   startPoint?: CreateScatterPlotOptions["point"];
   endPoint?: CreateScatterPlotOptions["point"];
-  connector?: RuleStyleOptions;
+  connector?: RuleStyleOptions & { clip?: boolean };
   labels?: false | (EndpointLabelOptions & { endpoint?: "start" | "end" | "both" });
 }
 ```
@@ -29599,7 +29646,7 @@ export interface CreateECDFPlotOptions {
   missing?: "drop" | "error";
   as?: ECDFOutputFields;
   color?: string | LineCategoricalColorChannel;
-  line?: StrokeStyleDetails & { strokeWidth?: number; stroke?: string; opacity?: number };
+  line?: StrokeStyleDetails & { clip?: boolean; strokeWidth?: number; stroke?: string; opacity?: number };
   labels?: false | EndpointLabelOptions;
   guides?: false | CartesianPathGuideOptions;
 }
@@ -29660,6 +29707,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   field: string;
   color?: HistogramCategoricalColorChannel;
   bar?: RectStyleDetails & {
+    clip?: boolean;
     fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
@@ -29693,7 +29741,7 @@ export interface CreateHorizonPlotOptions {
   missing?: HorizonMissingPolicy;
   overflow?: HorizonOverflowPolicy;
   palette?: HorizonPaletteOptions;
-  area?: StrokeStyleDetails & { opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { clip?: boolean; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | HorizonPlotGuideOptions;
 }
 ```
@@ -29734,6 +29782,7 @@ export interface CreateLinePlotOptions {
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
   line?: StrokeStyleDetails & {
+    clip?: boolean;
     strokeWidth?: number;
     curve?: CurveInterpolation;
     tension?: number;
@@ -29766,7 +29815,7 @@ export interface CreateLollipopPlotOptions extends EndpointPlotBaseOptions {
   value: EndpointValueChannel;
   baseline?: number;
   point?: CreateScatterPlotOptions["point"];
-  stem?: RuleStyleOptions;
+  stem?: RuleStyleOptions & { clip?: boolean };
   labels?: false | EndpointLabelOptions;
 }
 ```
@@ -29863,7 +29912,7 @@ export interface CreatePolarLinePlotOptions {
   color?: LineCategoricalColorChannel;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve" | "tension"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: boolean;
   };
@@ -29887,7 +29936,7 @@ export interface CreatePolarScatterPlotOptions {
   color?: BasicColorChannel;
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
-  point?: CreateScatterPlotOptions["point"];
+  point?: Omit<NonNullable<CreateScatterPlotOptions["point"]>, "clip">;
   guides?: false | PolarPointGuideOptions;
 }
 ```
@@ -29912,7 +29961,7 @@ export type CreateRadarPlotOptions = {
   ];
   color?: LineCategoricalColorChannel;
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve" | "tension"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: true;
   };
@@ -30006,9 +30055,9 @@ Related types: [`RaincloudCategoryChannel`](./reference/types/#type-raincloudcat
 
 ```typescript
 export type CreateReferenceBandOptions =
-  | (Omit<RectMarkOptions, "data"> &
+  | (Omit<RectMarkOptions, "clip" | "data"> &
       ReferenceBinding<readonly [unknown, unknown], readonly [number, number]>)
-  | (DynamicReferenceBinding & Omit<RectMarkOptions, "id" | "data" | "source"> & {
+  | (DynamicReferenceBinding & Omit<RectMarkOptions, "clip" | "id" | "data" | "source"> & {
       readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic];
     });
 ```
@@ -30146,6 +30195,7 @@ export interface CreateScatterPlotOptions {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    clip?: boolean;
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -30172,6 +30222,7 @@ export type CreateStripPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    clip?: boolean;
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -33371,6 +33422,7 @@ export interface HeatmapBaseOptions {
   data?: string;
   coordinate?: string;
   rect?: RectStyleDetails & {
+    clip?: boolean;
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;
@@ -35783,6 +35835,7 @@ Related types: [`LineCategoricalColorChannel`](./reference/types/#type-linecateg
 
 ```typescript
 export interface RectMarkOptions extends RectStyleDetails {
+  clip?: boolean;
   id?: string;
   data?: string;
   missing?: "error" | "skip";
@@ -36360,6 +36413,7 @@ Related types: [`NonPointQuantitativePositionScaleOptions`](./reference/types/#t
 
 ```typescript
 export interface RugTickOptions extends StrokeStyleDetails {
+  clip?: boolean;
   length?: number;
   stroke?: string;
   strokeWidth?: number;
@@ -37081,6 +37135,7 @@ Related types: [`ValueFormat`](./reference/types/#type-valueformat).
 
 ```typescript
 export interface TextMarkOptions {
+  clip?: boolean;
   /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
   lineHeight?: number;
   /** Anchor the first line or center the complete multiline block. */
@@ -38211,12 +38266,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/59c0b4209f1504c5d163f7feca7b6da6c1ca4d26/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/59c0b4209f1504c5d163f7feca7b6da6c1ca4d26/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -38259,6 +38314,17 @@ opacity stays between `0` and `1`, text alignment uses the Canvas vocabulary,
 and appearance strings must be non-empty. Structured rect/path fill follows the
 `FillPaint` contract described above. Rendering additionally requires all
 properties needed to draw the primitive to be present.
+
+### Clip a named graphic owner
+
+Use `editGraphics({ target, property: "clip", value: { x, y, width, height } })`
+to clip one named non-Canvas owner and its items/children in its unchanged parent
+frame. Values must be finite, dimensions nonnegative, and endpoints finite.
+Use `value: false` to clear the optional clip. Generated item IDs, inline item
+properties and Canvas clips are rejected; nested Canvas retains its existing
+viewport behavior. Item coordinates and IDs stay unchanged, including after
+`items` or `length` replacement. Ordinary chart authors use the mark's
+`clip` option instead.
 
 ## Scale materialization
 
@@ -40490,9 +40556,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:c37deedc802f05699ebcfdbd2cc6382c7849e7e0dac273fda1a6501a2bb3624e` |
+| Contract fingerprint | `sha256:51d9cb71fd347154974ef26bf8237270dd700c5d9e33e532f9130f5c5a0dc359` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
-| Runtime source commit | `59c0b4209f1504c5d163f7feca7b6da6c1ca4d26` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 284 |
 | Declared actions in that release | 234 |

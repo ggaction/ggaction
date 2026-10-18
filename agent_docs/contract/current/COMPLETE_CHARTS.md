@@ -16,6 +16,8 @@ density, rug, strip, raincloud, and other composite facade branches; unsupported
 The exact vocabulary, defaults, geometry, and replay behavior live in
 [the shared mark-style contract](MARKS.md#shared-stroke-and-rounded-rectangle-style-details).
 
+Cartesian point/line/area/tick/Rule style objects that forward ordinary mark appearance accept `clip?: boolean` where declared. Clipping belongs to that mark only and is replayed by its existing owner; it is not an aggregate-owner filter. See [the shared mark contract](MARKS.md#shared-cartesian-plot-clipping).
+
 ## `createECDFPlot`
 
 `createECDFPlot({ id?, data?, coordinate?, field, groupBy?, weight?, missing?, as?, color?, line?, labels?, guides? })`

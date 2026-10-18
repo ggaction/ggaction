@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 591, // The combined color-size grammar and materializer add two owners.
-  packedBytes: 842_000, // Node24 parent-guide integration measured841241packed bytes.
-  unpackedBytes: 4_087_000 // Versioned facade declarations measured4086545unpacked bytes.
+  entries: 594, // Cartesian clipping adds three focused selector/schema/materialization owners.
+  packedBytes: 844_000, // Node22 Cartesian clipping staged artifact measured843921bytes; Node24 remeasured at release.
+  unpackedBytes: 4_096_000 // Cartesian clipping staged artifact measured4095633bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

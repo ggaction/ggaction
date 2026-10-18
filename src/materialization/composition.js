@@ -103,6 +103,7 @@ export function attachSnapshotObject(program, snapshot, id, parent) {
       value: itemDefinitions(object)
     });
   }
+  if (object.clip !== undefined) next = next.editGraphics({target: id, property: "clip", value: object.clip});
   for (const childId of object.children ?? []) {
     next = attachSnapshotObject(next, snapshot, childId, id);
   }

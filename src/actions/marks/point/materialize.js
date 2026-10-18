@@ -1,3 +1,4 @@
+import { materializeMarkClip } from "../../../materialization/markClip.js";
 import { validateGraphicItemLimit } from "../../../core/validation.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { action } from "../../../core/action.js";
@@ -456,11 +457,11 @@ export const rematerializePointMark = /* @__PURE__ */ action(
           ...strokeDetails
         });
       });
-      return jittered.program.editGraphics({
+      return materializeMarkClip(jittered.program.editGraphics({
         target: id,
         property: "items",
         value: items
-      });
+      }), id);
     }
 
     let next = graphic.items.length === dataset.values.length
@@ -555,6 +556,6 @@ export const rematerializePointMark = /* @__PURE__ */ action(
     for (const [property, value] of Object.entries(strokeDetails)) {
       next = next.editGraphics({ target: id, property, value });
     }
-    return next;
+    return materializeMarkClip(next, id);
   }
 );

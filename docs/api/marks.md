@@ -11,6 +11,37 @@ Marks define the semantic form of a layer. Create a mark first, then connect it
 to data through position, grouping, and appearance encodings. The first mark of
 each type infers its ID and current dataset when those choices are unambiguous.
 
+## Clip one layer to its plot
+
+Point, Line, Area, Bar, Rect, Rule, Text and Tick create/edit actions accept
+`clip: true`. It hides only the part of that mark outside its Cartesian plot.
+Raw data, coordinates, scales and glyph sizes remain unchanged; axes, legends
+and other layers keep their own placement. Omission preserves an edit's current
+setting, and `clip: false` disables it. Polar/Parallel clipping is unsupported.
+
+This complete module first creates a scatterplot, then refines its existing mark:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 480, height: 320, margin: 60 })
+  .createData({ values: [{ x: -1, y: 3 }, { x: 2, y: 7 }] })
+  .createScatterPlot({ x: { field: "x", scale: { domain: [0, 10] } }, y: "y" })
+  .editPointMark({ clip: true });
+```
+
+You may also set `point: { clip: true }` in `createScatterPlot`.
+Other Cartesian facades forward their declared nested mark styles in the same way.
+A source mark's clip is not automatically inherited by attached text labels.
+See the [mark action reference](../reference/actions/marks.md) for exact signatures.
+
 ## Choose a mark family
 
 <div class="docs-entry-grid docs-entry-grid--two">

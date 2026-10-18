@@ -1,3 +1,5 @@
+import { validateGraphicClip } from "../grammar/schemas/graphicClip.js";
+import { requestedMarkClip, validateMarkClipCoordinate } from "../selectors/markClip.js";
 import { validateAuthoredFacetLegend } from "../grammar/facets/legendIntent.js";
 import { AXIS_RESOURCE_CHANNELS } from "../core/vocabulary.js";
 import { cartesianAxisOwners, assertCartesianAxisSideAvailable } from "../selectors/axes.js";
@@ -79,9 +81,10 @@ export function validateGraphic(graphic, path = "payload.graphicSpec") {
     if (!id.length) throw invalidSnapshot("Graphic IDs must be non-empty.", path);
     requireObject(object, `${path}.objects.${id}`);
     validateGraphicType(object.type);
-    if (Object.keys(object).some(key => !["type", "properties", "items", "children"].includes(key))) {
+    if (Object.keys(object).some(key => !["type", "properties", "items", "children", "clip"].includes(key))) {
       throw invalidSnapshot(`Unknown graphic member at ${id}.`, path);
     }
+    if (object.clip !== undefined) validateGraphicClip(object.clip, object.type);
     if (object.properties !== undefined) validateConcreteGraphicProperties(object.type, object.properties);
     if (object.items !== undefined) {
       if (object.type === "canvas" || object.properties !== undefined) throw invalidSnapshot(`Invalid item owner "${id}".`, path);
@@ -378,6 +381,8 @@ export function validateProgramState(program, path) {
     }
   }
   for (const id of Object.keys(program.markConfigs)) {
+    requestedMarkClip(program.markConfigs[id]);
+    validateMarkClipCoordinate(program, resources.get("mark").get(id), program.markConfigs[id].clip);
     if (!resources.get("mark").has(id)) throw invalidSnapshot(`Mark config "${id}" has no layer owner.`, path);
     if (resources.get("mark").get(id).mark.type === "area") {
       validateAreaPaintConfig(program.markConfigs[id]);

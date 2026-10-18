@@ -46,6 +46,22 @@ Every ordinary mark requires materialized `values` on its selected dataset, incl
 dataset from `createDerivedData` is rejected with an error explaining the required value-producing data action.
 Definition registration and internal layer rebinding remain available without automatic transform execution.
 
+## Shared Cartesian plot clipping
+
+- Point, Line, Area, Bar, Rect, Rule, Text and Tick create/edit actions accept optional `clip: boolean`.
+  Omission defaults off on creation and preserves intent on edit; `false` disables an existing clip. Other types reject it.
+- This is graphical intent, owned once by `materializationConfigs.marks[id].clip`. It never filters rows, clamps coordinates,
+  changes scale domains/ranges or resizes glyphs. Compatible incomplete marks retain intent until their frame exists.
+- Enabled clipping requires a Cartesian coordinate and its effective plot rectangle. Polar/Parallel assignment rejects
+  before child effects. Source-owned Text follows its current source frame only when its own clip is explicitly enabled.
+- The owning wrapped materializer resolves `{x,y,width,height}` into the named graphic owner's optional `clip` field.
+  Original item geometry, identity and order remain unchanged; independent layers and guides are unaffected.
+- Canvas/coordinate/scale/data/appearance replay refreshes the same owner. Shape/cardinality changes, selections,
+  highlights, composition snapshots and editable/graphic persistence retain the clip. Ordinary highlight reordering rules
+  still apply independently. Renderers consume only concrete graphics; Canvas, SVG, PNG and PDF share the rectangle.
+- Primitive rectangle validation/removal is owned by [`editGraphics`](PRIMITIVES.md#editgraphics).
+- Evidence: `test/unit/actions/marks/plot-clipping.test.js` and `test/unit/renderers/graphic-owner-clipping.test.js`.
+
 ## Shared stroke and rounded-rectangle style details
 
 The existing create/edit actions expose one closed, renderer-neutral stroke vocabulary:
@@ -110,7 +126,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ## `createPointMark`
 
-- Signature: `createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
+- Signature: `createPointMark({ clip?, id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`: Implemented optional 새 layer/graphic ID. 첫 unnamed point는 `"point"`; 동일 type이 이미 있으면 required다.
 - `data`: Implemented, existing dataset ID. 생략하면 current data를 사용한다.
 - `shape`
@@ -141,8 +157,9 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ### Formal values — `createPointMark`
 
-- Implemented: `createPointMark({ id?: UserId; data?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createPointMark({ clip?: boolean; id?: UserId; data?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createPointMark`
@@ -163,7 +180,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 ## `editPointMark`
 
 - Implemented: immutable constant shape and appearance edits for existing point marks.
-- Signature: `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editPointMark({ clip?, target?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`은 existing point mark다. current compatible mark 또는 유일한 point mark로 infer하며
   ambiguity는 explicit target을 요구한다.
 - `shape`은 shared `PointShape` 14종 중 하나다. Field-driven `encodeShape`가 있으면 constant shape
@@ -180,8 +197,9 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ### Formal values — `editPointMark`
 
-- Implemented: `editPointMark({ target?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editPointMark({ clip?: boolean; target?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editPointMark`
@@ -196,7 +214,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ## `createTickMark`
 
-- Signature: `createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`.
+- Signature: `createTickMark({ clip?, id?, data?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`.
 - `id`: 첫 unnamed Tick은 `"tick"`을 사용한다. 같은 type의 두 번째 mark는 explicit ID가 필요하다.
 - `data`: existing dataset ID. 생략하면 current data를 사용하고, compatible current/unique Cartesian
   layer가 있으면 data, coordinate와 x/y field encoding을 shared layered-inference policy로 상속한다.
@@ -212,8 +230,9 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ### Formal values — `createTickMark`
 
-- Implemented: `createTickMark({ id?: UserId; data?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
+- Implemented: `createTickMark({ clip?: boolean; id?: UserId; data?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
 - Implemented direction assignment은 `encodeAngle`이 소유한다.
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): x-only rug placement inference.
 
 ### Value coverage — `createTickMark`
@@ -227,7 +246,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ## `editTickMark`
 
-- Signature: `editTickMark({ target?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editTickMark({ clip?, target?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`: current compatible Tick, otherwise unique Tick으로 infer하며 ambiguity는 explicit target을 요구한다.
 - 최소 한 edit property가 필요하다. Omitted properties는 current config를 보존한다.
 - Validation은 create action과 동일한 positive length, non-empty stroke, non-negative width와 unit opacity를 사용한다.
@@ -236,7 +255,8 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ### Formal values — `editTickMark`
 
-- Implemented: `editTickMark({ target?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editTickMark({ clip?: boolean; target?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editTickMark`
@@ -374,7 +394,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createLineMark`
 
-- Signature: `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
+- Signature: `createLineMark({ clip?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`, `data`: `createPointMark`와 같은 ID/data 계약이다.
 - `strokeWidth`: Implemented, non-negative finite number이며 concrete default는 `2`다. 명시한 값은
   mark materialization config에 저장되어 path 재생성 후에도 유지된다.
@@ -410,8 +430,9 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createLineMark`
 
-- Implemented: `createLineMark({ id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; tension?: UnitInterval; closed?: boolean; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createLineMark({ clip?: boolean; id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; tension?: UnitInterval; closed?: boolean; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createLineMark`
@@ -436,7 +457,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editLineMark`
 
-- Signature: `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editLineMark({ clip?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`: existing line mark. Current compatible mark 또는 유일한 line mark로 infer하며 ambiguity는 explicit target을 요구한다.
 - `strokeWidth`: non-negative finite number. Active field width와 scalar edit는 충돌한다. Constant mode에서
   전달되면 stored line config와 every concrete series path를 갱신한다. `opacity`도 active field와 scalar edit가
@@ -449,8 +470,9 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editLineMark`
 
-- Implemented: `editLineMark({ target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; tension?: UnitInterval; closed?: boolean; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editLineMark({ clip?: boolean; target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; tension?: UnitInterval; closed?: boolean; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editLineMark`
@@ -465,7 +487,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createBarMark`
 
-- Signature: `createBarMark({ id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
+- Signature: `createBarMark({ clip?, id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`, `data`: 첫 unnamed bar의 deterministic `"bar"` 또는 explicit 새 ID와 optional existing/current data다.
 - Effect: semantic `bar` layer와 길이 0의 rect collection을 만든다. 관련 x/y/grouping semantics가
   완성될 때 rect가 materialize된다.
@@ -476,7 +498,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createBarMark`
 
-- Implemented: `createBarMark({ id?: UserId; data?: UserId; orientation?: "vertical" | "horizontal"; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createBarMark({ clip?: boolean; id?: UserId; data?: UserId; orientation?: "vertical" | "horizontal"; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createBarMark`
@@ -494,7 +517,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editBarMark`
 
-- Signature: `editBarMark({ target?, blend?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editBarMark({ clip?, target?, blend?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`: current compatible bar, unique bar, or explicit existing bar ID.
 - `fill`: non-empty constant color 또는 기존 `FillPaint` item-local linear gradient다. 정규화된 from/to와 단조 stops를 shared paint validator로 검증한다. Field-driven color encoding과 함께 사용할 수 없다.
 - `opacity`: unit interval. `stroke`: non-empty color or `false`; false는 concrete transparent zero-width outline로
@@ -509,8 +532,9 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editBarMark`
 
-- Implemented: `editBarMark({ target?: UserId; blend?: "normal" | "difference"; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editBarMark({ clip?: boolean; target?: UserId; blend?: "normal" | "difference"; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editBarMark`
@@ -531,7 +555,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createAreaMark`
 
-- Signature: `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`
+- Signature: `createAreaMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`, `data`: 첫 unnamed area의 deterministic `"area"` 또는 explicit 새 ID와 optional existing/current dataset이다.
 - `fill`: Implemented, 기존 `FillPaint`의 non-empty color string 또는 path-local linear gradient. 기본값은 theme mark color `"#4c78a8"`다. 구조화된 paint는 shared grammar로 검증하고 immutable config와 concrete path에 보존한다.
 - `opacity`: Implemented, `[0, 1]` finite number. 기본값은 `0.2`다.
@@ -546,8 +570,9 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createAreaMark`
 
-- Implemented: `createAreaMark({ id?: UserId; data?: UserId; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break"; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createAreaMark({ clip?: boolean; id?: UserId; data?: UserId; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break"; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createAreaMark`
@@ -572,7 +597,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editAreaMark`
 
-- Signature: `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editAreaMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`: existing area mark. Current compatible mark 또는 유일한 area mark를 infer하고 ambiguity는
   explicit target을 요구한다.
 - `fill`, `opacity`: constant graphical appearance다. Field-driven color encoding이 있으면 fill edit는
@@ -588,8 +613,9 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editAreaMark`
 
-- Implemented: `editAreaMark({ target?: UserId; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break"; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editAreaMark({ clip?: boolean; target?: UserId; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break"; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editAreaMark`
@@ -653,7 +679,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createRuleMark`
 
-- Signature: `createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`.
+- Signature: `createRuleMark({ clip?, id?, data?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`.
 - `id`: 첫 unnamed rule은 deterministic `"rule"`을 사용한다. 동일 type의 두 번째 rule은 explicit ID가
   필요하며 numbered public ID를 만들지 않는다.
 - `data`: existing dataset ID. 생략하면 current dataset을 사용하며 안전한 current source가 없으면 오류다.
@@ -670,7 +696,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createRuleMark`
 
-- Implemented: `createRuleMark({ id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
+- Implemented: `createRuleMark({ clip?: boolean; id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createRuleMark`
@@ -683,7 +710,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editRuleMark`
 
-- Signature: `editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editRuleMark({ clip?, target?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? })`.
 - Target resolution is explicit Rule → current Rule → unique Rule. Missing, non-Rule and ambiguous targets fail.
 - At least one style is required. Full closed-option and value validation happens before the first child action.
 - Requested children run in stroke → strokeWidth → strokeDash → opacity order and reuse their encoding owners.
@@ -695,7 +722,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editRuleMark`
 
-- Implemented: `editRuleMark({ target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editRuleMark({ clip?: boolean; target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editRuleMark`
@@ -706,7 +734,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createRectMark`
 
-- Signature: `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`.
+- Signature: `createRectMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`.
 - The first omitted ID resolves to `"rect"`. Data is explicit or inferred from the current dataset; a newly layered
   rect may inherit one unique compatible Cartesian source's data, coordinate, and position encodings.
 - Rect is a distinct semantic mark. It materializes two discrete band positions (`x` and `y`), two complete
@@ -729,7 +757,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createRectMark`
 
-- Implemented: `createRectMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
+- Implemented: `createRectMark({ clip?: boolean; id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): categorical cell completion and automatic missing-cell placeholders.
 
 ### Value coverage — `createRectMark`
@@ -741,7 +770,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editRectMark`
 
-- Signature: `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editRectMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`.
 - At least one property is required. Omitted target resolves only one eligible rect. Omitted properties preserve the
   immutable mark configuration; `stroke: false` disables the stroke and rejects a simultaneous width.
 - Constant fill and `encodeColor` are mutually exclusive. Complete cells rematerialize immediately; incomplete rects
@@ -749,7 +778,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editRectMark`
 
-- Implemented: `editRectMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editRectMark({ clip?: boolean; target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editRectMark`
@@ -1057,7 +1087,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createTextMark`
 
-- Signature: `createTextMark({ id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})`.
+- Signature: `createTextMark({ clip?, id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})`.
 - The first omitted ID resolves to `"text"`. Passing `data` explicitly creates an independent text layer; otherwise
   the current compatible point, bar, rect, rule, or complete arc layer, then one unique compatible layer, supplies data,
   coordinate, compatible position encodings, and a persisted semantic `source` relation.
@@ -1094,7 +1124,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createTextMark`
 
-- Implemented: `createTextMark({ id?: UserId; data?: UserId; source?: UserId; text?: unknown; fill?: NonEmptyString; opacity?: UnitInterval; fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; align?: "left" | "right" | "center" | "start" | "end"; baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom"; rotation?: RotationInput; dx?: Finite; dy?: Finite } = {})`.
+- Implemented: `createTextMark({ clip?: boolean; id?: UserId; data?: UserId; source?: UserId; text?: unknown; fill?: NonEmptyString; opacity?: UnitInterval; fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; align?: "left" | "right" | "center" | "start" | "end"; baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom"; rotation?: RotationInput; dx?: Finite; dy?: Finite } = {})`.
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): interactive tooltips.
 
 ### Value coverage — `createTextMark`
@@ -1107,7 +1138,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editTextMark`
 
-- Signature: `editTextMark({ target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })`.
+- Signature: `editTextMark({ clip?, target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })`.
 - At least one property is required. Omitted properties preserve current immutable materialization config.
 - Complete text rematerializes immediately; incomplete text retains the edit until position and content complete.
 - `dx` and `dy` are final graphical offsets and never alter inherited semantic position or source geometry.
@@ -1116,6 +1147,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 ### Formal values — `editTextMark`
 
 - Implemented: the appearance subset and value vocabularies of `createTextMark`, plus optional inferred/explicit target.
+- `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editTextMark`

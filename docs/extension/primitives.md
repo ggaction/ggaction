@@ -373,6 +373,17 @@ and appearance strings must be non-empty. Structured rect/path fill follows the
 `FillPaint` contract described above. Rendering additionally requires all
 properties needed to draw the primitive to be present.
 
+### Clip a named graphic owner
+
+Use `editGraphics({ target, property: "clip", value: { x, y, width, height } })`
+to clip one named non-Canvas owner and its items/children in its unchanged parent
+frame. Values must be finite, dimensions nonnegative, and endpoints finite.
+Use `value: false` to clear the optional clip. Generated item IDs, inline item
+properties and Canvas clips are rejected; nested Canvas retains its existing
+viewport behavior. Item coordinates and IDs stay unchanged, including after
+`items` or `length` replacement. Ordinary chart authors use the mark's
+`clip` option instead.
+
 ## Scale materialization
 
 `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant? })` creates an

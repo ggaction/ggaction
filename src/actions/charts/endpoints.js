@@ -33,14 +33,14 @@ const DUMBBELL_OPTIONS = Object.freeze([
 const CATEGORY_OPTIONS = Object.freeze(["field", "fieldType", "scale"]);
 const VALUE_OPTIONS = Object.freeze(["field", "fieldType", "scale"]);
 const POINT_OPTIONS = Object.freeze([
-  "shape", "fill", "opacity", "stroke", "strokeWidth", "radius",
+  "clip",   "shape", "fill", "opacity", "stroke", "strokeWidth", "radius",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const RULE_OPTIONS = Object.freeze([
-  "stroke", "strokeWidth", "strokeDash", "opacity", ...STROKE_STYLE_PROPERTIES
+  "clip", "stroke", "strokeWidth", "strokeDash", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const LABEL_OPTIONS = Object.freeze([
-  "endpoint", "field", "value", "content", "normalizeBy", "format", "layout",
+  "clip",   "endpoint", "field", "value", "content", "normalizeBy", "format", "layout",
   "fill", "opacity", "fontSize", "fontFamily", "fontWeight", "align", "baseline",
   "rotation", "dx", "dy"
 ]);

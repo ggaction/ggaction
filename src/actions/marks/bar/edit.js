@@ -1,3 +1,4 @@
+import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -18,7 +19,7 @@ import { validateFillPaint } from "../../../grammar/paint.js";
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const EDIT_OPTIONS = Object.freeze([
-  "target", "missing", "blend", "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
+  "target", "clip", "missing", "blend", "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
   ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -29,9 +30,10 @@ export const editBarMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editBarMark");
+    requestedMarkClip(args);
     const styleDetails = requestedRectStyleDetails(args, "editBarMark");
     const changes = [
-      "missing", "blend", "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
+      "clip", "missing", "blend", "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!changes.some(key => Object.hasOwn(args, key))) {
@@ -71,7 +73,8 @@ export const editBarMark = /* @__PURE__ */ action(
     }
     const missing = Object.hasOwn(args, "missing")
       ? validateItemMissing(args.missing, "Bar missing") : undefined;
-    const config = { ...this.markConfigs[layer.id] };
+    validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
+    const config = { ...this.markConfigs[layer.id], ...requestedMarkClip(args) };
     const appearance = { ...config.barAppearance };
     Object.assign(appearance, styleDetails);
     if (Object.hasOwn(args, "fill")) {
@@ -115,11 +118,11 @@ export const editBarMark = /* @__PURE__ */ action(
         semantic = semantic.editSemantic({property: `layer[${layer.id}].mark.blend`, remove: true});
       }
     }
-    const editsAppearance = changes.some(key => key !== "missing" && key !== "blend" &&
+    const editsAppearance = changes.some(key => key !== "missing" && key !== "blend" && key !== "clip" &&
       Object.hasOwn(args, key));
-    const next = editsAppearance ? semantic._withMarkConfig(layer.id, {
+    const next = editsAppearance || Object.hasOwn(args, "clip") ? semantic._withMarkConfig(layer.id, {
       ...config,
-      barAppearance: appearance
+      ...(editsAppearance ? {barAppearance: appearance} : {})
     }) : semantic;
     const materialized = canMaterializeBar(next, layer)
       ? next.rematerializeBarMark({ id: layer.id })

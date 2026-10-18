@@ -75,25 +75,25 @@ interface ChartProgramActions {
   editCompleteData(options: EditCompleteDataOptions): ChartProgram;
   editImputedData(options: EditImputedDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
-  createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editPointMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
-  editTickMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+  createPointMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editPointMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  createTickMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+  editTickMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   packPoints(options: PackPointsOptions): ChartProgram;
   removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
-  createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: RectStyleDetails & { target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+  createLineMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+  editLineMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+  createBarMark(options?: RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  createAreaMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
-  createRuleMark(options?: { id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
-  editRuleMark(options: { target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+  createRuleMark(options?: { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+  editRuleMark(options: { clip?: boolean; target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createTextPlot(options: CreateTextPlotOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
@@ -106,7 +106,7 @@ interface ChartProgramActions {
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
-  editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+  editAreaMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   encodeX(options: PositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
   encodeY(options: YPositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;
@@ -2345,7 +2345,7 @@ export type CreateAreaPlotOptions = {
   groupBy?: string | readonly [string, ...string[]];
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
-  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
@@ -2395,6 +2395,7 @@ export type CreateBarPlotOptions = {
   color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target" | "interval">;
   bar?: RectStyleDetails & {
+    clip?: boolean;
     fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
@@ -2426,6 +2427,7 @@ export type CreateBeeswarmPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    clip?: boolean;
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -2506,7 +2508,7 @@ export interface CreateDensityPlotOptions {
     palette?: Palette;
     layout?: "overlay";
   };
-  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | DensityPlotGuideOptions;
 }
 ```
@@ -2560,7 +2562,7 @@ export interface CreateDumbbellPlotOptions extends EndpointPlotBaseOptions {
   end: EndpointValueChannel;
   startPoint?: CreateScatterPlotOptions["point"];
   endPoint?: CreateScatterPlotOptions["point"];
-  connector?: RuleStyleOptions;
+  connector?: RuleStyleOptions & { clip?: boolean };
   labels?: false | (EndpointLabelOptions & { endpoint?: "start" | "end" | "both" });
 }
 ```
@@ -2585,7 +2587,7 @@ export interface CreateECDFPlotOptions {
   missing?: "drop" | "error";
   as?: ECDFOutputFields;
   color?: string | LineCategoricalColorChannel;
-  line?: StrokeStyleDetails & { strokeWidth?: number; stroke?: string; opacity?: number };
+  line?: StrokeStyleDetails & { clip?: boolean; strokeWidth?: number; stroke?: string; opacity?: number };
   labels?: false | EndpointLabelOptions;
   guides?: false | CartesianPathGuideOptions;
 }
@@ -2658,6 +2660,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   field: string;
   color?: HistogramCategoricalColorChannel;
   bar?: RectStyleDetails & {
+    clip?: boolean;
     fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
@@ -2694,7 +2697,7 @@ export interface CreateHorizonPlotOptions {
   missing?: HorizonMissingPolicy;
   overflow?: HorizonOverflowPolicy;
   palette?: HorizonPaletteOptions;
-  area?: StrokeStyleDetails & { opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { clip?: boolean; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | HorizonPlotGuideOptions;
 }
 ```
@@ -2741,6 +2744,7 @@ export interface CreateLinePlotOptions {
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
   line?: StrokeStyleDetails & {
+    clip?: boolean;
     strokeWidth?: number;
     curve?: CurveInterpolation;
     tension?: number;
@@ -2776,7 +2780,7 @@ export interface CreateLollipopPlotOptions extends EndpointPlotBaseOptions {
   value: EndpointValueChannel;
   baseline?: number;
   point?: CreateScatterPlotOptions["point"];
-  stem?: RuleStyleOptions;
+  stem?: RuleStyleOptions & { clip?: boolean };
   labels?: false | EndpointLabelOptions;
 }
 ```
@@ -2888,7 +2892,7 @@ export interface CreatePolarLinePlotOptions {
   color?: LineCategoricalColorChannel;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve" | "tension"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: boolean;
   };
@@ -2915,7 +2919,7 @@ export interface CreatePolarScatterPlotOptions {
   color?: BasicColorChannel;
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
-  point?: CreateScatterPlotOptions["point"];
+  point?: Omit<NonNullable<CreateScatterPlotOptions["point"]>, "clip">;
   guides?: false | PolarPointGuideOptions;
 }
 ```
@@ -2943,7 +2947,7 @@ export type CreateRadarPlotOptions = {
   ];
   color?: LineCategoricalColorChannel;
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve" | "tension"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: true;
   };
@@ -3058,9 +3062,9 @@ Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [
 
 ```typescript
 export type CreateReferenceBandOptions =
-  | (Omit<RectMarkOptions, "data"> &
+  | (Omit<RectMarkOptions, "clip" | "data"> &
       ReferenceBinding<readonly [unknown, unknown], readonly [number, number]>)
-  | (DynamicReferenceBinding & Omit<RectMarkOptions, "id" | "data" | "source"> & {
+  | (DynamicReferenceBinding & Omit<RectMarkOptions, "clip" | "id" | "data" | "source"> & {
       readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic];
     });
 ```
@@ -3222,6 +3226,7 @@ export interface CreateScatterPlotOptions {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    clip?: boolean;
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -3251,6 +3256,7 @@ export type CreateStripPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    clip?: boolean;
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -7053,6 +7059,7 @@ export interface HeatmapBaseOptions {
   data?: string;
   coordinate?: string;
   rect?: RectStyleDetails & {
+    clip?: boolean;
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;
@@ -9933,6 +9940,7 @@ Related types: [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel
 
 ```typescript
 export interface RectMarkOptions extends RectStyleDetails {
+  clip?: boolean;
   id?: string;
   data?: string;
   missing?: "error" | "skip";
@@ -10639,6 +10647,7 @@ Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquanti
 
 ```typescript
 export interface RugTickOptions extends StrokeStyleDetails {
+  clip?: boolean;
   length?: number;
   stroke?: string;
   strokeWidth?: number;
@@ -11495,6 +11504,7 @@ Related types: [`ValueFormat`](#type-valueformat).
 
 ```typescript
 export interface TextMarkOptions {
+  clip?: boolean;
   /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
   lineHeight?: number;
   /** Anchor the first line or center the complete multiline block. */

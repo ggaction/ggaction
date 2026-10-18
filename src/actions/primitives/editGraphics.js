@@ -1,3 +1,4 @@
+import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { validateGraphicItemLimit } from "../../core/validation.js";
 import { closedAction } from "../../core/action.js";
 import { cloneAndFreeze, freezeOwned, isPlainObject } from "../../core/immutable.js";
@@ -193,6 +194,15 @@ const editGraphics = /* @__PURE__ */ closedAction(
     if (owner.items !== undefined) validateGraphicItemLimit(owner.items.length, resolveGraphicItemCapacity(this, {
       id: ownerId, label: "Graphic collection length"
     }));
+    if (property === "clip") {
+      if (found.kind !== "object") throw new Error("Graphic clip requires a named owner, not a generated item.");
+      if (owner.type === "canvas") validateGraphicClip(value, owner.type);
+      if (value !== false) validateGraphicClip(value, owner.type);
+      const {clip: previous, ...rest} = owner;
+      const updated = value === false ? freezeOwned(rest) : freezeOwned({...rest, clip: cloneAndFreeze(value)});
+      return this._clone({graphicSpec: freezeOwned({...this.graphicSpec,
+        objects: freezeOwned({...this.graphicSpec.objects, [ownerId]: updated})})});
+    }
     const replacesDrawableItems =
       found.kind === "object" && property === "items" &&
       owner.items !== undefined && owner.type !== "collection";
@@ -203,7 +213,8 @@ const editGraphics = /* @__PURE__ */ closedAction(
           : owner.type, property);
     let updated;
     if (replacesDrawableItems) {
-      updated = replaceDrawableItems(value, ownerId, owner.type, this);
+      updated = freezeOwned({...replaceDrawableItems(value, ownerId, owner.type, this),
+        ...(owner.clip === undefined ? {} : {clip: owner.clip})});
     } else if (found.kind === "item") {
       if (validatedProperty === "length" || validatedProperty === "items") {
         throw new Error(`${validatedProperty} can only target an owning graphic.`);
@@ -224,6 +235,7 @@ const editGraphics = /* @__PURE__ */ closedAction(
       validateGraphicItemLimit(value, resolveGraphicItemCapacity(this, { id: ownerId, label: "Graphic collection length" }));
       updated = freezeOwned({
         type: owner.type,
+        ...(owner.clip === undefined ? {} : {clip: owner.clip}),
         items: freezeOwned(Array.from({ length: value }, (_, index) => freezeOwned({
           id: `${ownerId}:${index}`,
           properties: index === 0 ? owner.properties : freezeOwned({})

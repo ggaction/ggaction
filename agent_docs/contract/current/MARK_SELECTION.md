@@ -43,6 +43,9 @@ type MarkSelector =
 - Bar semantic geometry는 start endpoint `x`/`y`와 end endpoint `x2`/`y2`를 사용한다. Concrete rect는
   property `x`/`y`(top-left), `width`/`height`를 사용한다. 예를 들어 vertical zero-based stack의 전체 높이는
   `channel: "y2"`, concrete pixel 높이는 `property: "height"`로 선택한다.
+- Mark owner clipping changes visible bounds only. Selection properties retain the original concrete item geometry,
+  including multi-segment stack unions and fully invisible items. Existing nested Canvas viewport behavior is preserved.
+  Evidence: `test/unit/actions/marks/plot-clipping.test.js`.
 - Stable key는 semantic item identity에서 만들며 collection child order를 selector identity로 사용하지 않는다.
   Multi-row path의 field/channel은 series grain에서 값이 하나로 unique할 때만 selectable하다.
   Explicit tuple group의 각 field를 선택할 수 있으며 Line/Area의 stroke와 Line의

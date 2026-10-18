@@ -15,6 +15,7 @@ let browser, consumer, server;
 test.before(async () => {
   consumer = await preparePackageConsumer();
   await writeFile(path.join(consumer.directory, "index.html"), compatibilityPage());
+  await writeFile(path.join(consumer.directory, "clipping-fixture.js"), await readFile(new URL("../support/plot-clipping.js", import.meta.url), "utf8"));
   server = await startStaticServer(consumer.directory);
   browser = await browsers[browserName].launch({ headless: true });
 });
@@ -174,4 +175,36 @@ test(`${browserName} composites each bar fill and outline once in Canvas and SVG
     for(const result of results){assert.equal(result.canvas,0,JSON.stringify(result));assert.equal(result.svg,0,JSON.stringify(result));}
     assertNoBrowserErrors(errors,browserName);await page.close();
   } finally {await context.close();}
+});
+
+test(`${browserName} clips one Cartesian mark without moving its items or outside guides`, async()=>{
+  const context=await browser.newContext();
+  try{
+    const {page,errors}=await openBrowserPage(context,server.baseUrl,{waitFor:()=>window.compatibility!==undefined});
+    const record=await page.evaluate(async()=>{
+      const {chart,render}=await import('/node_modules/ggaction/src/index.js');
+      const {renderToSVG}=await import('/node_modules/ggaction/src/renderers/svg.js');
+      const {clippingControl,clippingPrimitive,clippingFrame,clippingCenters}=await import('/clipping-fixture.js');
+      const control=clippingControl(chart),actual=control.editPointMark({target:'scatterPlot',clip:true}),primitive=clippingPrimitive(chart,control);
+      const output=[];
+      for(const ratio of [1,2]){
+        function canvasPixels(p){const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');render(p,ctx,{pixelRatio:ratio});return ctx.getImageData(0,0,canvas.width,canvas.height).data;}
+        const a=canvasPixels(actual),b=canvasPixels(primitive);
+        output.push({ratio,canvasEqual:a.length===b.length&&a.every((v,i)=>v===b[i])});
+      }
+      async function svgPixels(p){
+        const url=URL.createObjectURL(new Blob([renderToSVG(p)],{type:'image/svg+xml'}));
+        try{const image=new Image();image.src=url;await image.decode();const canvas=document.createElement('canvas');canvas.width=320;canvas.height=240;const ctx=canvas.getContext('2d');ctx.drawImage(image,0,0);return ctx.getImageData(0,0,320,240).data;}finally{URL.revokeObjectURL(url);}
+      }
+      const a=await svgPixels(actual),b=await svgPixels(primitive),svg=renderToSVG(actual);
+      return {output,svgEqual:a.length===b.length&&a.every((v,i)=>v===b[i]),frame:actual.graphicSpec.objects.scatterPlot.clip,
+        centers:actual.graphicSpec.objects.scatterPlot.items.map(i=>[i.properties.x,i.properties.y]),expectedCenters:clippingCenters,
+        clipCount:(svg.match(/clip-path=/g)||[]).length,expectedFrame:clippingFrame,
+        disabledEqual:renderToSVG(actual.editPointMark({target:'scatterPlot',clip:false}))===renderToSVG(control)};
+    });
+    for(const result of record.output)assert.equal(result.canvasEqual,true,`DPR ${result.ratio}`);
+    assert.equal(record.svgEqual,true);assert.equal(record.clipCount,1);assert.equal(record.disabledEqual,true);
+    assert.deepEqual(record.frame,record.expectedFrame);assert.deepEqual(record.centers,record.expectedCenters);
+    assertNoBrowserErrors(errors,'Cartesian mark clipping');await page.close();
+  }finally{await context.close();}
 });

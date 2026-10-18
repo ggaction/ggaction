@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:c37deedc802f05699ebcfdbd2cc6382c7849e7e0dac273fda1a6501a2bb3624e",
-    "sourceCommit": "59c0b4209f1504c5d163f7feca7b6da6c1ca4d26",
+    "contractId": "sha256:51d9cb71fd347154974ef26bf8237270dd700c5d9e33e532f9130f5c5a0dc359",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "e97a7b9b6a63cb071f4f36790661e7e7e3d8d8518e27f82dc4fb9b49b8ac3a02"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -889,14 +889,15 @@
       "source": "api/marks.md",
       "headings": [
         "marks",
+        "clip-one-layer-to-its-plot",
         "choose-a-mark-family",
         "at-a-glance",
         "shared-inference",
         "tick-marks",
         "related"
       ],
-      "bytes": 6794,
-      "sha256": "f61e22f113cad53e58a33133eb514552022df4c4eaf532f824946741216abe73"
+      "bytes": 8144,
+      "sha256": "cdb6fc04b5ffb28b0310e8a5c93af5e3dc1b911c4fffa2444b614902c93fd508"
     },
     {
       "order": 57,
@@ -2047,8 +2048,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 165324,
-      "sha256": "d8c29fbde0c682280d0e1a1a11efcbe83df4ee5992bb2effc8d197a89fbfff6b"
+      "bytes": 165841,
+      "sha256": "be055e01bb75b1d7314f349ff2207faaced6cd086694da8a4538f76189c70d47"
     },
     {
       "order": 119,
@@ -2092,8 +2093,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 69893,
-      "sha256": "1db4eebb58dbad26b5c84a5a1c208341b3f755c9dffd4a7f73437a9b6ed1e570"
+      "bytes": 71399,
+      "sha256": "734e7078fce42404f0289f8b3c200feac7c27e71d75c981b49e273a5c82ef906"
     },
     {
       "order": 120,
@@ -2198,8 +2199,8 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 79221,
-      "sha256": "aaf0640a21f5a4c5caea45d73ec3dc80fb3af15c49532ece13b7e81faa0e9d1d"
+      "bytes": 79279,
+      "sha256": "5fd3b12ae17159f997b0ae7b1828d978ba89278424b0c024ef26265a50564595"
     },
     {
       "order": 122,
@@ -3013,8 +3014,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 343519,
-      "sha256": "51da1594e05638d0bfa3dd5f8f7397606d3d8af2c4a023a2d519d15ebdf6d821"
+      "bytes": 344074,
+      "sha256": "ec524fe2b83b2e5c34d8adc3ce0b8361a46eba702a7be1cbbc7c33f474a0773c"
     },
     {
       "order": 127,
@@ -3042,10 +3043,11 @@
         "editsemantic-property-value-remove",
         "creategraphics-id-type-length-parent-before-after",
         "editgraphics-target-property-value-remove",
+        "clip-a-named-graphic-owner",
         "scale-materialization"
       ],
-      "bytes": 16959,
-      "sha256": "3c863a986def1b125a205cda34bf7596c77b2f8b74443ac175eaef44a39779b6"
+      "bytes": 17485,
+      "sha256": "98f69fa00b3a971341c41d0975ac9bc4bd330b08cdb38d82d9acde05561c98c0"
     },
     {
       "order": 129,
@@ -3368,8 +3370,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "98cb3a2953d5032e854a0ce345720d360e4e5080f260b92ddb7cd476858912bc"
+      "bytes": 3000,
+      "sha256": "35c500890ef504bfa4b4c2bcf624f0acf3df339745a269cd7ec09a7214d5649d"
     },
     {
       "order": 150,
