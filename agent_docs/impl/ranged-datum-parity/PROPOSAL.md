@@ -5,7 +5,7 @@
 - [x] #226 재현과 기존 개별 인코더/선언의 실제 범위 검토.
 - [x] 아래 구체 설계에 현재 작업 범위의 사용자 포괄 승인 재사용.
 - [x] runtime, 선언, 계약, 문서와 패키지 consumer 동기화. [RESULTS.json](./RESULTS.json).
-- [ ] 검증 결과와 remote checkpoint 기록. 배포는 1,413-family checkpoint에 통합.
+- [x] 검증 결과와 remote source checkpoint `d0a117ca` 기록. 배포는 1,413-family checkpoint에 통합.
 
 ## 승인과 정확한 범위
 
