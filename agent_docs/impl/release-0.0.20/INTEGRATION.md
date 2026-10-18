@@ -9,9 +9,9 @@
 - [x] 0.0.20 버전·knowledge·Context7 version entry·정확한 source fingerprint 준비
 - [x] 혼합 mark의 continuous legend inference 회귀를 공개0.0.19와 독립 재현 후 수정
 - [x] 첫 원격 CI의 package 상한 초과를 보존하고 기존 compaction 범위로 보완
-- [ ] 최종 source/metadata PR CI 전체 통과 및 main merge
-- [ ] 승인된 정확한 annotated tag의 protected release workflow 성공
-- [ ] 실제 registry artifact 동일성·설치·문서 배포 및 번역 runtime 동기화
+- [x] 최종 source/metadata PR CI 전체 통과 및 main merge — c219b993
+- [x] 승인된 정확한 annotated tag의 protected release workflow 성공 — 39125792201
+- [x] 실제 registry artifact 동일성·설치·문서 배포 및 번역 runtime 동기화
 
 PR: https://github.com/ggaction/ggaction/pull/228
 기능별 증거는 `../continuous-area-color/RESULTS.md`, `../bootstrap-mean-ci/RESULTS.md`가 소유한다.
@@ -50,3 +50,19 @@ bootstrap literal3개가 실제 coverage requirement12개를 더한다. 나머�
 배열 요약 정책에 따라 부모 옵션으로 증명하며 예외 정책을 변경하지 않는다.
 검사는 새 개수뿐 아니라8개 위치의 정확한 집합·관찰 방식과9개 직접 경로·3개 literal 요구를 검증한다.
 로컬 비교와 실패/재검사 로그는 `.artifacts/release/0.0.20-option-inventory-*`에 보존한다.
+
+## 실제 배포 완료 기록
+
+PR228은 c219b993f31530051420857cca6c430a7df9aefa로 통합됐고, annotated
+`v0.0.20`의 protected release [39125792201](https://github.com/ggaction/ggaction/actions/runs/39125792201)은
+검증·npm publish·GitHub Release·Pages 배포를 완료했다. Registry 전파 중 초기
+404 두 회는 보존했으며, 이후 실제 registry archive를 내려받아 확인했다.
+Canonical archive는591files, packed841935/unpacked4074029bytes,
+SHA1 `852c812f2c3323c3cd337db58f8ff4e46426b77e`,
+SHA256 `dfa3d3afc44343ff40941fccb331827ebd607687ecc4e63fc96be7eab8c76744`다.
+번역/데이터셋 두 설치의 모든591파일이 이 archive와 동일하다.
+기존1206families/8732programs도 현행 runtime에서 같은 SVG와 가족 출력을 확인했다.
+문서 contract `6e87a7533f9c704a422f5578f5a4370375ae9cdba93e0f42ac7f7f1dbe3c54f1`가
+실제 사이트에 배포됐고 로컬 snapshot422files/1262chunks는 설치 package에 결합했다.
+이는 배포 당시 checkpoint다. 이후 추가 차트와 향후 runtime은 별도 증거를 요구한다.
+원격 Context7의0.0.20 재색인 완료는 확인되지 않았다.

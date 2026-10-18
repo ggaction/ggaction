@@ -142,7 +142,9 @@ program.createIntervalData({
 Mean supports standard error, sample standard deviation, and two-sided normal
 or Student-t confidence intervals. Explicit seeded percentile-bootstrap mean CI
 also uses the [shared resampling contract](./summaries-and-shaping.md#bootstrap-mean-confidence-intervals);
-`editIntervalData` accepts the same method and preserves raw data. Median requires interquartile range, and IQR
+`editIntervalData` accepts the same method and preserves raw data. Bootstrap centers
+and endpoints retain full finite JavaScript Number precision; other interval methods
+keep their existing decimal output boundary. Median requires interquartile range, and IQR
 requires median. Group order follows first appearance. Missing group values,
 non-finite measures follow the explicit `missing` policy when provided;
 undersized mean groups fail with a diagnostic. Valid source rows

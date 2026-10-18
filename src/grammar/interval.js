@@ -251,15 +251,16 @@ export function deriveInterval(rows, transform) {
   }
   const bootstrapSampler = bootstrapMethod === undefined ? undefined : createBootstrapMeanSampler(bootstrapMethod);
 
+  const outputValue = bootstrapSampler === undefined ? stableDecimal : requireFiniteResult;
   const output = [];
   for (const group of groups.values()) {
     const result = deriveGroup(group.values, transform, bootstrapSampler);
     if (result === undefined) continue;
     output.push({
       ...group.fields,
-      [transform.as.center]: stableDecimal(result.center),
-      [transform.as.lower]: stableDecimal(result.lower),
-      [transform.as.upper]: stableDecimal(result.upper)
+      [transform.as.center]: outputValue(result.center),
+      [transform.as.lower]: outputValue(result.lower),
+      [transform.as.upper]: outputValue(result.upper)
     });
   }
   if (transform.missing === undefined) return cloneAndFreeze(output);

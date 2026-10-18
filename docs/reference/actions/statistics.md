@@ -174,7 +174,7 @@ expression, including explicit nested scalar `getPath` and first-occurrence
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
 
 ```typescript
 createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -217,7 +217,7 @@ percent-change values independently within each group.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
 
 ```typescript
 createSortedData(options: SortedDataOptions): ChartProgram;
@@ -253,7 +253,7 @@ null placement, and quantitative, categorical, or temporal comparison.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
 
 ```typescript
 createCompleteData(options: CompleteDataOptions): ChartProgram;
@@ -294,7 +294,7 @@ explicit fill and source-membership provenance for synthesized rows.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
 
 ```typescript
 createImputedData(options: ImputedDataOptions): ChartProgram;
@@ -375,7 +375,7 @@ by Bar and Area layouts. [Source and Derived Data](../../api/data/source-and-der
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
 
 ```typescript
 editComputedData(options: EditComputedDataOptions): ChartProgram;
@@ -405,7 +405,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
 
 ```typescript
 editFoldData(options: EditFoldDataOptions): ChartProgram;
@@ -435,7 +435,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
 
 ```typescript
 editSummaryData(options: EditSummaryDataOptions): ChartProgram;
@@ -469,7 +469,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
 
 ```typescript
 editBinData(options: EditBinDataOptions): ChartProgram;
@@ -509,7 +509,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
 
 ```typescript
 editStackData(options: EditStackDataOptions): ChartProgram;
@@ -542,7 +542,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
 
 ```typescript
 editIntervalData(options: EditIntervalDataOptions): ChartProgram;
@@ -578,7 +578,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
 
 ```typescript
 editECDFData(options: EditECDFDataOptions): ChartProgram;
@@ -611,7 +611,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
 
 ```typescript
 editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;
@@ -647,7 +647,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
 
 ```typescript
 editSortedData(options: EditSortedDataOptions): ChartProgram;
@@ -676,7 +676,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
 
 ```typescript
 editCompleteData(options: EditCompleteDataOptions): ChartProgram;
@@ -710,7 +710,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.20. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
 
 ```typescript
 editImputedData(options: EditImputedDataOptions): ChartProgram;
