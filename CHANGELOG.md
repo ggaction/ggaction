@@ -6,7 +6,7 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## [0.0.21] - 2026-10-18
 
-- Preserve full finite Number precision in seeded bootstrap interval centers and percentile endpoints, including interval-backed charts, edits and source revisions. Keep other statistical interval output policies unchanged.
+- Fix precision loss and collapsed bounds in bootstrap interval data and charts.
 
 ## [0.0.20] - 2026-10-18
 

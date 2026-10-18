@@ -10,7 +10,7 @@
 - [x] 독립 literal 및 summary 대조·binary scaling·그룹 순서·singleton·edit/revise/persistence·IntervalPlot/ErrorBand 소비자 35개 집중 검증
 - [x] 단위3314·계약574·문서120·차트620 = 정상4628개 모두 통과
 - [x] 설치 package consumer·bootstrap 브라우저1·primitive PNG1 및 문서150페이지 build 통과
-- [ ] 문서 전체 화면·검색·키보드·접근성 browser 검사
+- [x] 문서 전체320·390·768px·검색·키보드·접근성 browser 검사 통과
 - [ ] 새 버전 원격 CI의 전체 실제 corpus·coverage·플랫폼 검증
 - [ ] 원격 PR 검증·통합·새 버전 배포와 실제 registry 확인
 - [ ] 번역 runtime/문서 전환 및 기존 출력 호환성 검증
@@ -56,3 +56,12 @@ contract `c2450e35c268baaf95a21d55b0d53161f1a0c76b2cd1821217a75c30d00de5ea`에
 수정 후 필요한 검사를 다시 실행했다. 통계·좌표 허용오차나 자원 한도는 늘리지 않았다.
 1212families/8780programs의 frozen SVG를 이 후보의 실제591파일로 순차 비교 중이며,
 원본 코드/데이터/참조와 후보 입력별 hash를 별도 checkpoint에 고정했다.
+
+첫 PR CI39146868417의 Node24 archive는842045>842000으로45bytes 초과했다.
+로그를 보존하고 실행 코드나 예산 대신 CHANGELOG의 같은 수정 설명만 간결하게 줄였다.
+Node24.21.0 재검사는841982/842000, Node22는840035/842000으로 통과했다.
+새 로컬 archive SHA256은
+`4ef2bae7646299ff49e729eab62db51e09bf388580ee1ba2c9229b46a34c15ce`다.
+이전 archive의 추출591파일은 보존했으며, 두 후보의 차이가 CHANGELOG 한 파일뿐임을
+실제 hash로 검사했다. 실행/타입/JSON과 나머지590파일은 모두 바이트 동일하다.
+따라서 진행 중 순차 렌더의 실행 입력은 그대로다. 실제 registry identity는 아직 대기 중이다.
