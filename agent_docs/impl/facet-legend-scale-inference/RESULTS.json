@@ -156,6 +156,16 @@
     "logSha256": "009db7a7adfab0cf4ad6860f3613fbd8aa47360c27dad4ba0bc0a8b80fc5ecdf",
     "provenanceSourceCommit": "41d3238250f52d473917d6eaad5e88953e528b23",
     "provenanceStatus": "development",
-    "testedRuntimeAndPackedInputsUnchanged": true
+    "testedRuntimeAndPackedInputsUnchanged": true,
+    "generatedSupplement": {
+      "reason": "The canonical generator also updated LLM bundle, its manifest and image sourceHash metadata; include these verified derived files before declaring the candidate clean.",
+      "paths": {
+        "docs/llms-full.txt": "7cdf6b76c36cb1161b026e3328b7e2ac5538d138c8a5f10ece90efe18b3738db",
+        "docs/llms-manifest.json": "78f31f8d977a4b39d04343530cc6f03fc3b8437e00212364ab24398d53031d22",
+        "docs/assets/images/manifest.json": "2cc676de7be654966e98d125960a6ac703052ccccb43cad64e1bc23596994037"
+      },
+      "imageGeometryOrPixelsChanged": false,
+      "imageSourceHashOnlyRecords": 92
+    }
   }
 }
