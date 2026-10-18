@@ -44,12 +44,12 @@
     },
     "docsSource": {
       "status": "pass",
-      "path": ".artifacts/mark-plot-clipping/docs-v4.log",
-      "sha256": "8c9699be849b3fccf754b383ebed8cadaf003515f31c10ab5a4c1d3dcc9e088f"
+      "path": ".artifacts/mark-plot-clipping/docs-committed-v5.log",
+      "sha256": "7c38178c70e9bf3dcd7a6176a244942550f3188be2dae4d6e116710808d13ce4"
     },
     "docsBuilt": {
       "status": "pass",
-      "path": ".artifacts/mark-plot-clipping/docs-built-v1.log",
+      "path": ".artifacts/mark-plot-clipping/docs-built-committed-v2.log",
       "sha256": "8b67b737002bb9a40f52b91eba9a2aba91b043a875723aacaf5ca645421b217d"
     },
     "docsBrowser": {
@@ -131,5 +131,33 @@
       "Browser expectedCenters variable typo, relative private module/output paths and optional native peer setup corrected.",
       "Generated provenance and Markdown link freshness repaired."
     ]
+  },
+  "sourceCheckpoint": "f68c5225cd525aba2fa34fbfc8bc5ddc3e8af0a1",
+  "committedDocumentationFollowup": {
+    "status": "pass-source-checkpoint-metadata-followup",
+    "sourceCheckpoint": "f68c5225cd525aba2fa34fbfc8bc5ddc3e8af0a1",
+    "runtimeContractId": "sha256:51d9cb71fd347154974ef26bf8237270dd700c5d9e33e532f9130f5c5a0dc359",
+    "sameRuntimeContractId": true,
+    "packageInputFilesUnchanged": true,
+    "documentationTests": 120,
+    "docsLogSha256": "7c38178c70e9bf3dcd7a6176a244942550f3188be2dae4d6e116710808d13ce4",
+    "builtPagesChecked": 150,
+    "browserEvidenceReuse": "Full responsive/search/accessibility suite already passed. Followup updates only committed source references in machine documentation; source runtime/package fingerprint and public UI sources are unchanged, and the rebuilt site passes all150 page/link checks."
+  },
+  "realSourceProbe": {
+    "rawRows": 500,
+    "selectedRows": 494,
+    "pointItems": 494,
+    "outsideCentersRetained": 10,
+    "plot": {
+      "x": 53,
+      "y": 7,
+      "width": 500,
+      "height": 500
+    },
+    "pointClippingImplemented": true,
+    "fullChartCompleted": false,
+    "separateMissingNominalFieldGapRemains": true,
+    "modelCalls": 0
   }
 }

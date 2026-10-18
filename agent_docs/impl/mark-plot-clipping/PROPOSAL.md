@@ -7,7 +7,7 @@
 - [x] 기존 graphical primitive로 독립 target 생성 및 수치 검증
 - [x] 정확한 target와 설계에 사용자 standing approval 기록; 구현 전 원격 checkpoint
 - [x] 구현, types/Current/docs 및 소비자 회귀 검증
-- [ ] 검증된 candidate를 push하고 다음 200-family 배포에 포함
+- [x] 검증된 candidate를 push; 다음 200-family 배포에 포함 대기
 
 이슈: <https://github.com/ggaction/ggaction/issues/220>.
 
