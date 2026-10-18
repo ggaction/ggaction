@@ -131,6 +131,23 @@ async function testNodeConsumer(directory) {
       assert.deepEqual((await renderToPNGBuffer(neutralHue)).buffer,(await renderToPNGBuffer(neutralHueLab)).buffer);
       assert.deepEqual(neutralHue.editColorScale({reverse:true}).graphicSpec.objects.scatterPlot.items.map(item=>item.properties.fill),neutralHueExpected.toReversed());
       assert.deepEqual(neutralHue.semanticSpec.datasets[0].values,neutralHueRows);
+      const foldPartitionRows = [{country:"USA",gold:10,silver:20},{country:"Canada",gold:7,silver:26}];
+      const foldPartitionUnit = chart().createCanvas({width:160,height:320,margin:{left:45,right:10,top:70,bottom:50}})
+        .createData({values:foldPartitionRows}).createFoldData({id:"long",fields:["gold","silver"],as:{key:"k",value:"v"}})
+        .createBarPlot({x:"country",y:"v",guides:false});
+      const foldPartition = foldPartitionUnit.facet({field:"k",data:"long",columns:2});
+      assert.deepEqual(foldPartition.compositionSpec.facet.values,["gold","silver"]);
+      const foldPanelValues = foldPartition.compositionSpec.children.map(id=>{
+        const c=foldPartition.children[id],d=c.semanticSpec.datasets.find(d=>d.id===c.semanticSpec.layers[0].data);
+        assert.deepEqual(c.semanticSpec.datasets[0].values,foldPartitionRows);
+        assert.equal(c.semanticSpec.datasets.find(d=>d.id==="long").values.length,4);
+        return d.values.map(r=>r.v);
+      });
+      assert.deepEqual(foldPanelValues,[[10,7],[20,26]]);
+      const foldRestored = deserializeProgram(serializeProgram(foldPartition));
+      assert.equal(renderToSVG(foldRestored),renderToSVG(foldPartition));
+      assert.deepEqual((await renderToPNGBuffer(foldPartition)).buffer,(await renderToPNGBuffer(foldRestored)).buffer);
+      assert.ok((await renderToPDFBuffer(foldPartition)).buffer.length>100);
       const facetNumericRows = [{x:0,y:0,v:0,g:"a"},{x:1,y:1,v:1,g:"b"}];
       const facetNumericScale = {domain:[0,1],range:["red","blue"],interpolate:"lab",whitePoint:"d50"};
       const facetNumericUnit = chart().createCanvas({width:800,height:800,margin:200})
@@ -5299,6 +5316,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "ranged-numeric-datum-wrapper-parity",
       "neutral-hcl-hue-borrowing",
       "facet-numeric-legend-inference",
+      "explicit-fold-facet-partition",
       "typescript",
       "basic-entry-runtime-and-types",
       "tutorial-consumers",

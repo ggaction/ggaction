@@ -6477,6 +6477,7 @@ Related types: [`EditFacetHeadersOptions`](#type-editfacetheadersoptions).
 export interface FacetOptions {
   id?: string;
   field: string;
+  /** Common row-preserving ancestor, or an explicit materialized fold ancestor of every layer. */
   data?: string;
   values?: readonly DatasetScalar[];
   columns?: number;

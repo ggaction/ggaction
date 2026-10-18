@@ -1,0 +1,189 @@
+{
+  "status": "verified-local-candidate-not-published",
+  "issue": 221,
+  "parent": "aa0722f2b2c42d87c0e98f2b9ce22926897c4905",
+  "node": "v22.23.1",
+  "scope": "explicit common materialized fold snapshot only; omitted inference and other statistical-anchor rejection unchanged",
+  "newPublicActionsOrOptions": false,
+  "persistedSchemaChanged": false,
+  "checks": {
+    "unit": {
+      "status": "pass",
+      "tests": 3342,
+      "logSha256": "5a381ab6062a45a8e51410bffea227469a804302a61a3a647b5e349bcfda1209"
+    },
+    "contracts": {
+      "status": "pass",
+      "tests": 576,
+      "logSha256": "a0a63a6acf2cf1b362855957d5287843e78e4cafbf7fd6072657fd101f9574f1"
+    },
+    "docs": {
+      "status": "pass",
+      "tests": 120,
+      "logSha256": "40fd1f9bfae85b387c52f7d078d9acdba22aa61b5815acac07c5e8015507e1f0"
+    },
+    "charts": {
+      "status": "pass",
+      "tests": 620,
+      "logSha256": "53c0466672ce0cd794f2b480b4a804742b2f8fded0896a2042a9327c05670f1d"
+    }
+  },
+  "normalTests": 4658,
+  "focusedTests": 16,
+  "publicTarget": {
+    "status": "pass-exact-private-target-and-public-SVG-PNG",
+    "svgSha256": "3572d809ad09e927c656262bff06e9280bb40fd39131dc19815a8361674e3f5a",
+    "pngSha256": "41cca5753df0cb20cadb52dd1b74f85ceccef9035d5c4692e5666b5c22155094",
+    "sameSvg": true,
+    "samePngBytes": true,
+    "pdfCreated": true,
+    "chartPixelsInspected": false,
+    "schoolCalls": 0
+  },
+  "publicTargetProofSha256": "31021b9a3b5949d03ad46a4663335480e920071e2f6e6381d55b8d7e5d2afcef",
+  "privateExactTargetProofSha256": "63165ca605af0e647f7899b15df690b38d11f188ee5ca4d05218de5a7247bd18",
+  "installedCandidate": {
+    "package": "ggaction@0.0.21",
+    "source": "ggaction-0.0.21.tgz",
+    "sha256": "a1e3d37b57f95e19379f629d76ac24c6efd207833f14be282fccb76478b080f1",
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 523,
+        "minifiedBytes": 1538068,
+        "gzipBytes": 416158
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 307,
+        "minifiedBytes": 724269,
+        "gzipBytes": 203857
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 18,
+        "minifiedBytes": 22817,
+        "gzipBytes": 7325
+      }
+    },
+    "mcp": {
+      "coldStartMilliseconds": 292
+    },
+    "checks": [
+      "node",
+      "linear-regression-statistics-cache-and-source-revision",
+      "extension",
+      "pdf",
+      "png",
+      "svg",
+      "inspection",
+      "numeric-font-weight",
+      "point-jitter",
+      "point-packing",
+      "mark-label-removal",
+      "selected-mark-labels",
+      "semantic-label-placement",
+      "beeswarm-plot",
+      "raincloud-plot",
+      "path-order",
+      "time-unit-data",
+      "summary-data",
+      "bin-data",
+      "fold-data",
+      "computed-data",
+      "derived-data-editing",
+      "safe-resource-removal",
+      "advanced-authoring-integration",
+      "normalized-data",
+      "complete-data",
+      "imputed-data",
+      "stack-data",
+      "window-data",
+      "bin2d-data",
+      "binned-heatmap",
+      "parallel-coordinates",
+      "parallel-dimension-scale-editing",
+      "offset-scale-editing",
+      "stroke-color-encoding-and-legends",
+      "atomic-channel-encoding",
+      "statistical-references",
+      "coordinate-aspect-and-polar-frame-editing",
+      "facet-grid-repeat-and-named-composition-editing",
+      "non-cartesian-facet-grid-and-repeat",
+      "horizon",
+      "violin-plot",
+      "polar-radar-rug-strip-ecdf-facades",
+      "right-categorical-legend-offset",
+      "grouped-corner-and-free-legend-placement",
+      "sequential-palette-count",
+      "ranged-numeric-datum-wrapper-parity",
+      "neutral-hcl-hue-borrowing",
+      "facet-numeric-legend-inference",
+      "explicit-fold-facet-partition",
+      "typescript",
+      "basic-entry-runtime-and-types",
+      "tutorial-consumers",
+      "minimal-browser-bundle-measurement",
+      "private-export-rejection",
+      "installed-local-mcp",
+      "direct-mcp-byte-equality",
+      "task-packet-v5-authoring-execution",
+      "explicit-unresolved-docs-fallback",
+      "terminal-unsupported-no-fallback"
+    ]
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.21",
+    "filename": "ggaction-0.0.21.tgz",
+    "entryCount": 591,
+    "packedBytes": 840886,
+    "unpackedBytes": 4078544
+  },
+  "runtimeInputsSha256": {
+    "src/grammar/facets/dependencies.js": "6d873afe33df84cb671589efc16419f883c0c043fcbdd177fa1cacb10472822b",
+    "src/materialization/facetGuides/preparation.js": "cdbc6c6531b612f703a033a3cdc7cefec4337c01d4fde100f3bf644f542857d7",
+    "src/grammar/scales/color.js": "c213ce37c36a5bab10b8c79d0163cb4f1337956a4f71e6f290961c903c23798d",
+    "src/actions/encodings/ranged.js": "4b06c46221e100bf2431549e852cc4121d0408d39f4ec31554f7ec95079310c0",
+    "src/inspectionDescriptors.js": "e36e2da62125de9735d5db5b7a982217006dbf9028bb71fd2494a5f847e7a2f7",
+    "types/program.d.ts": "faa9cd8a7e9a37ae1dc16d9bc46a067bb41e82b5eea04b0c8660fd14fbfad931",
+    "package.json": "de171fb93d47abc584a4a22622bc86217c67e3b832fea1cd7bf696d9e1317ce3",
+    "knowledge/action-cards.json": "c8e6b689e561aba6cddca9a0081e9e91751c2f8710b50fd48b5bfda7fc4e24e3"
+  },
+  "allLogsSha256": {
+    "contracts.log": "a0a63a6acf2cf1b362855957d5287843e78e4cafbf7fd6072657fd101f9574f1",
+    "new-public-focused-initial.log": "6d18a781b345edf572a5a75ae21886fa64f9ea118c48d085c7d5be497d7c1555",
+    "private-preview-exact-target.log": "94c1713d3ce66738340a0211a123934022ba3bfb6f8560c4b734f354f7596ebf",
+    "docs.log": "40fd1f9bfae85b387c52f7d078d9acdba22aa61b5815acac07c5e8015507e1f0",
+    "package-check.log": "e8217f74306bf6668e06950babf72400a85a3e0ebe9fcd76eac285b07c2c59fe",
+    "focused-expanded.log": "35323c4be4466fbea1e5672439659069a923c049f3935acc71d3ebabae466781",
+    "new-public-focused-corrected.log": "dc09e3fbb386d06b4c04e33fddfbe15b8d7767cf39ffc850d22be523e7eb337c",
+    "charts.log": "53c0466672ce0cd794f2b480b4a804742b2f8fded0896a2042a9327c05670f1d",
+    "package-consumer.log": "485499d9351c90d5472679635471c93f864d1ccb7e6d9cbe9ba2d3562c527777",
+    "unit.log": "5a381ab6062a45a8e51410bffea227469a804302a61a3a647b5e349bcfda1209",
+    "private-preview-exact-target-corrected.log": "c3f6a79aae963a66547e9ed70270d8470c44eaadae9f31c7a6cd05d254f2497d",
+    "docs-generate.log": "aa09abdc257457272a73402f6b91ca3d20f22fce033abf7e9df11142a5689dce",
+    "private-preview-exact-target-corrected-v2.log": "0e46410b9a2210868f04a6e24ada5af9bf4554dafaaae06c7262a9020d74d0ba",
+    "private-preview.log": "4f2e77a4f5a12b2a2e4998d2a7a14cf442b2076119a08a57459d61f36bff39fc",
+    "existing-planner-focused.log": "e9ff0baf3dee272d9a33432f8aa7da3a8bde3a415688371fc90f1a72a8b0630c"
+  },
+  "sourceRawRowsAndCompleteFoldTableRetained": true,
+  "rawSourceRevisionAndEditedFoldSnapshotVerified": true,
+  "downstreamComputedFilterReplayVerified": true,
+  "duplicateMultiplicityOrderPreserved": true,
+  "existingRawFieldFacetPreserved": true,
+  "sharedIndependentScalesAndLegendVerified": true,
+  "editablePersistenceVerified": true,
+  "schoolCalls": 0,
+  "chartPixelsInspected": false,
+  "publication": false,
+  "failedHistory": [
+    "First target assert used (1-t)*height, which differs from endpoint+delta*t by IEEE operation order for value7. Strict affine endpoint formula corrected and all4target coordinates passed; no tolerance or runtime numeric change.",
+    "Original private rendered-only proof preserved separately; first post-code rerun incorrectly tested a live fixed candidate as a failing baseline. Corrected private source is pinned to unchanged git HEAD dependency module and published21 reproduction.",
+    "Initial public tests used an invalid filter range array and accidentally reused a band-position scale for a numeric point; corrected existing min/max API and explicit independent scale IDs. All diagnostics retained."
+  ],
+  "releaseChecks": "Node24 protected package size and canonical release, current cohort compatibility, registry/live docs and dataset synchronization remain due at1413; no budget or quality threshold changed."
+}

@@ -227,9 +227,11 @@ function resolveAnchor(paths, datasets, classifications, requested) {
     if (!datasets.has(id)) {
       throw new Error(`Facet partition dataset "${id}" does not exist.`);
     }
-    if (!common.includes(id)) {
+    const explicitFold = datasets.get(id).value.transform?.[0]?.type === "fold" &&
+      paths.every(path => path.includes(id));
+    if (!common.includes(id) && !explicitFold) {
       throw new Error(
-        `Facet partition dataset "${id}" is not a common row-preserving ancestor of every layer.`
+        `Facet partition dataset "${id}" is not a common row-preserving ancestor or materialized fold boundary of every layer.`
       );
     }
     return id;

@@ -524,6 +524,7 @@ Action scope는 unit/composition/any를 구분한다. Package composition은 com
 Facet/repeat는 retained source에서 다음 transaction을 수행한다.
 
 1. Dataset ancestry에서 partition anchor와 transform DAG를 pure planner로 결정한다.
+   Omitted anchor는 기존 row-preserving inference를 유지한다. 명시한 공통 materialized fold snapshot은 그 뒤에 cell filter를 붙이는 경계로 허용하며 원래 wide source와 fold 정의/전체 행은 보존한다. Fold를 row-preserving으로 재분류하거나 새 저장 alias를 만들지 않는다.
 2. Child별 partition과 canonical transform replay, layer 및 private owner reference rebind를 wrapped action으로 실행한다.
 3. 모든 candidate의 semantic scale intent를 비교해 shared/independent domain을 확정한다.
 4. Child-local coordinate range로 mark, guide, label, selection/highlight와 style을 materialize한다.

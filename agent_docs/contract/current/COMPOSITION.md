@@ -21,6 +21,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 - Signature: `facet({ id?, field, data?, values?, columns?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })`.
 - `field` is required. Omitted `data` resolves only when every eligible repeated layer has one unique common row-preserving ancestor.
+- Explicit `data` may also select a materialized fold snapshot that is an ancestor of every repeated layer. Cells filter that snapshot and replay only its descendants; raw rows and the original fold definition/materialization remain intact. Fold stays a cardinality-changing transform, omitted inference is unchanged, and other statistical anchors remain unsupported. Missing/noncommon/nonmaterialized boundaries and absent fields fail atomically. This also applies to explicit `facetGrid.data`. Data revisions rebind the stored partition snapshot through the existing retained-template DAG; changing the fold definition can explicitly select its new snapshot in a new composition. Evidence: `test/unit/actions/composition/fold-facet-partition.test.js`, `test/unit/grammar/facet-dependencies.test.js`.
 - Supported sources are complete Cartesian point, line, area, histogram bar, aggregate bar, ranged bar, rule, data-bound text,
   regression, density, interval/error-band, and box-plot programs; Polar Point, Line, direct Arc, Pie, Rose and Radar;
   and Parallel-coordinate programs whose visible layers share one valid partition anchor and one coordinate family.
@@ -73,7 +74,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `facet`
 
-- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingRowPreservingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer"; legend?: false | "shared" | LegendOptions }; headers?: FacetHeadersOptions }): ChartProgram`.
+- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer"; legend?: false | "shared" | LegendOptions }; headers?: FacetHeadersOptions }): ChartProgram`.
 - Implemented non-Cartesian families: Polar Point/Line/direct Arc/Pie/Rose/Radar and Parallel coordinates.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -130,7 +131,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `facetGrid`
 
-- Implemented: `facetGrid({ id?: UserId; data?: ExistingRowPreservingDatasetId; rows: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; columns: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; combinations?: "observed" | "full"; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
+- Implemented: `facetGrid({ id?: UserId; data?: ExistingDatasetId; rows: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; columns: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; combinations?: "observed" | "full"; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
 - Implemented for the same Cartesian, Polar and Parallel families and policies as `facet`.
 - Proposed (NOT IMPLEMENTED): —
 

@@ -124,11 +124,20 @@ a positive value wraps cells row-major. A facet uses the shared 10,000 generated
 and source-row count multiplied by child count must not exceed the shared
 10,000,000-unit work budget.
 
+To facet on a key created by `createFoldData`, pass its materialized dataset ID
+explicitly as `data`. Every repeated layer must depend on that fold snapshot.
+The original wide rows, fold definition and complete folded table remain intact;
+each child filters the folded table, then replays only downstream transforms.
+Omitting `data` keeps the usual row-preserving inference. Other statistical
+transforms do not become valid partition anchors. `facetGrid` accepts the same
+explicit fold boundary. Changing a fold definition creates a new snapshot;
+select that snapshot explicitly when creating a new composition.
+
 | Option | Default | Effect |
 | --- | --- | --- |
 | `id` | `"facet"` | Names the parent and deterministic child namespaces |
-| `field` | required | Direct-source field whose values define cells |
-| `data` | unique common ancestor | Selects the row-preserving partition dataset explicitly |
+| `field` | required | Field in the selected partition dataset whose values define cells |
+| `data` | unique common ancestor | Selects a common row-preserving ancestor, or an explicit materialized fold snapshot shared by every layer |
 | `values` | source first-appearance order | Selects and orders a non-empty set of observed scalar values |
 | `columns` | number of values | Sets the grid column count |
 | `gap` | `16` | Sets horizontal and vertical cell spacing |
