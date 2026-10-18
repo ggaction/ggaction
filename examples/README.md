@@ -540,6 +540,12 @@ Declare complete areas and refine color independently from series layout.
 
 Representative actions: `createAreaPlot`, `encodeGroup`, `encodeColor`, `layoutSeries`. [Documentation](https://ggaction.github.io/ggaction/api/series/color/#continuous-area-color).
 
+### [Reproducible bootstrap mean confidence intervals](./bootstrap-mean-ci/)
+
+Preserve raw observations and calculate reusable asymmetric intervals before drawing existing areas and lines.
+
+Representative actions: `createSummaryData`, `createAreaPlot`, `createLineMark`. [Documentation](https://ggaction.github.io/ggaction/api/data/summaries-and-shaping/#bootstrap-mean-confidence-intervals).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

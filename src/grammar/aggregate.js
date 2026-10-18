@@ -40,7 +40,7 @@ export function isAggregate(value) {
   return isScalarAggregate(value) || isParameterizedAggregate(value);
 }
 
-export function validateAggregate(value) {
+export function validateAggregate(value, { allowBootstrap = false } = {}) {
   if (typeof value === "string") {
     if (!SCALAR_OPERATIONS.has(value)) {
       throw new Error(`Unsupported aggregate "${value}".`);
@@ -97,7 +97,8 @@ export function validateAggregate(value) {
       op: value.op,
       ...normalizeConfidenceInterval(value, {
         defaultMethod: "normal",
-        label: "Aggregate confidence interval"
+        label: "Aggregate confidence interval",
+        allowBootstrap
       })
     };
   }

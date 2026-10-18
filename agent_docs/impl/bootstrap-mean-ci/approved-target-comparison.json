@@ -1,0 +1,8 @@
+{
+  "status": "pass",
+  "method": "Same-run Chromium SVG rasterization then exact decoded RGBA comparison; no image inspection",
+  "width": 320,
+  "height": 220,
+  "comparedBytes": 281600,
+  "exact": true
+}

@@ -1,3 +1,4 @@
+import { createBootstrapMeanCI } from "./bootstrap-mean-ci/program.js";
 import { createContinuousAreaColor } from "./continuous-area-color/program.js";
 import { createNamedShapes } from "./named-shapes/program.js";
 import { createAxisOwners } from "./axis-owners/program.js";
@@ -160,6 +161,8 @@ export const DOCUMENTATION_WORKFLOWS = Object.freeze([
 
 // Chart-family examples retain their independent primitive/public baselines.
 export const PUBLIC_CHARTS = Object.freeze([
+  example({ id: "bootstrap-mean-ci", data: {}, width: 320, height: 220, docsGroup: "tutorials", createProgram: createBootstrapMeanCI,
+    browser: { path: "bootstrap-mean-ci/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "bootstrap-mean-ci", width: 320, height: 220 } } } }),
   example({ id: "continuous-area-color", data: {}, width: 320, height: 220, docsGroup: "tutorials", createProgram: createContinuousAreaColor,
     browser: { path: "continuous-area-color/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "continuous-area-color", width: 320, height: 220 } } } }),
   example({ id: "named-shapes", data: {}, width: 480, height: 270, docsGroup: "tutorials", createProgram: createNamedShapes,

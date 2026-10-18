@@ -8,7 +8,7 @@
 - [x] Gate: approved — 앞서 요청한 계약·수치 목표와 해당 소스의 seed 1 기준 고정을 승인받음
 - [ ] 승인 후 구현·회귀 검증·타입/계약/문서 동기화
 
-이 문서는 **설계 제안**이다. 승인 근거는 [approval-evidence.json](approval-evidence.json)이며 기능 구현은 아직 대기 중이다. 기준은 0.0.19 / f6b50bf55a9de1857f106c7aa519326ce7a86d76이다. [이슈 #219](https://github.com/ggaction/ggaction/issues/219).
+이 문서는 **설계 제안**이다. 승인 근거는 [approval-evidence.json](approval-evidence.json)이며 기능을 구현하고 검증 중이다. 기준은 0.0.19 / f6b50bf55a9de1857f106c7aa519326ce7a86d76이다. [이슈 #219](https://github.com/ggaction/ggaction/issues/219).
 
 ## 문제
 
@@ -59,6 +59,6 @@ chart().createData({values}).createSummaryData({
 
 ## 검토 재현
 
-`node agent_docs/impl/bootstrap-mean-ci/review-evidence.mjs`는 현재 공개 API 거부/이전 상태 불변성, fixture 반복 실행의 정확한 수치 동일성, 모든 구간이 평균을 포함하며 비대칭임, 두 primitive의 양수 ink/path와 PNG 생성을 검증한다. 결과는 [target-evidence.json](target-evidence.json), 그림은 [target.svg](target.svg), 실제 제안 호출은 [fixture.mjs](fixture.mjs)다. 공개 bootstrap action/consumer 동일성은 승인 후 구현해야 하며 아직 통과하지 않았다. 이미지 픽셀은 검사하지 않았다. 수치 목표는 5그룹 순서대로 mean/low/high = 6.6/0.4/18.4, 8.6/1.6/22, 10/1.2/25.2, 12.6/3.2/29.2, 13.8/2.2/31.6이다.
+`node agent_docs/impl/bootstrap-mean-ci/review-evidence.mjs`는 현재 공개 API 거부/이전 상태 불변성, fixture 반복 실행의 정확한 수치 동일성, 모든 구간이 평균을 포함하며 비대칭임, 두 primitive의 양수 ink/path와 PNG 생성을 검증한다. 결과는 [target-evidence.json](target-evidence.json), 그림은 [target.svg](target.svg), 실제 제안 호출은 [fixture.mjs](fixture.mjs)다. 승인 후 public 데이터 계산과 기존 Area/Line 소비자를 구현했으며 독립 primitive 및 승인 목표의 RGBA가 정확히 일치했다. [추가 비교 증거](approved-target-comparison.json)를 참고한다. 이미지 픽셀은 검사하지 않았다. 수치 목표는 5그룹 순서대로 mean/low/high = 6.6/0.4/18.4, 8.6/1.6/22, 10/1.2/25.2, 12.6/3.2/29.2, 13.8/2.2/31.6이다.
 
-승인 근거: [approval-evidence.json](approval-evidence.json). 앞서 실제로 요청한 계약·그림과 해당 소스의 seed 1 기준 고정을 승인받았다. 구현과 검증은 아직 대기 중이다.
+승인 근거: [approval-evidence.json](approval-evidence.json). 앞서 실제로 요청한 계약·그림과 해당 소스의 seed 1 기준 고정을 승인받았다. 구현 후 통합 검증을 진행하고 있다.

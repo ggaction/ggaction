@@ -547,7 +547,9 @@ createSummaryData({ id, source?, groupBy?, aggregates, members? })
 ```
 
 Materialize reusable, first-appearance-ordered summary rows from one or more
-shared aggregate operations. [Source and Derived Data](../api/data/source-and-derived.md#createsummarydata-id-source-groupby-aggregates-members)
+shared aggregate operations. Nonweighted mean CI outputs also accept seeded percentile
+bootstrap method objects; see [bootstrap mean intervals](../api/data/summaries-and-shaping.md#bootstrap-mean-confidence-intervals).
+[Source and Derived Data](../api/data/source-and-derived.md#createsummarydata-id-source-groupby-aggregates-members)
 
 ### `createBinData`
 
@@ -1132,7 +1134,8 @@ createIntervalData({
 ```
 
 Create immutable grouped center/lower/upper summary rows. Mean supports
-standard error, sample standard deviation, and normal or Student-t confidence intervals;
+standard error, sample standard deviation, and normal, Student-t or explicitly seeded
+percentile-bootstrap confidence intervals;
 median supports interquartile range. [Data](../api/data.md)
 
 ### `createECDFData`

@@ -4,6 +4,9 @@ import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { aggregateScalarValues } from "./aggregate.js";
 import { requireFiniteResult, stableDecimal } from "./numeric.js";
 import {
+  createBootstrapMeanSampler,
+  bootstrapMeanBounds,
+  validateBootstrapDrawCount,
   confidenceCriticalValue,
   normalizeConfidenceInterval
 } from "./statistics/confidenceInterval.js";
@@ -91,7 +94,8 @@ export function validateIntervalTransform(transform) {
   if (transform.extent === "ci") {
     normalizeConfidenceInterval(transform, {
       defaultMethod: "student-t",
-      label: "Interval CI"
+      label: "Interval CI",
+      allowBootstrap: true
     });
   } else if (transform.method !== undefined) {
     throw new Error("Interval method is supported only for ci extent.");
@@ -117,11 +121,12 @@ export function normalizeIntervalParameters({
   extent = "ci",
   method,
   level
-} = {}) {
+} = {}, { allowBootstrap = false } = {}) {
   const confidence = extent === "ci"
     ? normalizeConfidenceInterval({ method, level }, {
         defaultMethod: "student-t",
-        label: "Interval CI"
+        label: "Interval CI",
+        allowBootstrap
       })
     : undefined;
   const candidate = {
@@ -164,7 +169,11 @@ function isMissing(value) {
 }
 
 
-function deriveGroup(values, transform) {
+function deriveGroup(values, transform, bootstrapSampler) {
+  if (bootstrapSampler !== undefined) {
+    const bounds = bootstrapMeanBounds(bootstrapSampler(values), transform.level);
+    return bounds === undefined ? undefined : { center: aggregateScalarValues(values, "mean"), ...bounds };
+  }
   if (transform.center === "median") {
     if (values.length === 0) return undefined;
     return {
@@ -235,9 +244,16 @@ export function deriveInterval(rows, transform) {
     groups.get(key).values.push(value);
   }
 
+  const bootstrapMethod = transform.method?.type === "bootstrap"
+    ? normalizeConfidenceInterval(transform, { defaultMethod: "student-t", allowBootstrap: true }).method : undefined;
+  if (bootstrapMethod !== undefined) {
+    validateBootstrapDrawCount(bootstrapMethod.samples * [...groups.values()].reduce((count, group) => count + group.values.length, 0));
+  }
+  const bootstrapSampler = bootstrapMethod === undefined ? undefined : createBootstrapMeanSampler(bootstrapMethod);
+
   const output = [];
   for (const group of groups.values()) {
-    const result = deriveGroup(group.values, transform);
+    const result = deriveGroup(group.values, transform, bootstrapSampler);
     if (result === undefined) continue;
     output.push({
       ...group.fields,
@@ -277,7 +293,7 @@ export function normalizeIntervalTransform({
 }) {
   nonEmptyString(field, "Interval field");
   const grouping = normalizeGrouping(groupBy);
-  const parameters = normalizeIntervalParameters({ center, extent, method, level });
+  const parameters = normalizeIntervalParameters({ center, extent, method, level }, { allowBootstrap: true });
   const transform = {
     type: "interval",
     field,

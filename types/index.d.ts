@@ -391,6 +391,8 @@ export type {
   StackDataMode,
   StackDataOptions,
   StackDataOutputFields,
+  BootstrapMeanIntervalMethod,
+  MeanConfidenceIntervalMethod,
   SummaryAggregateOptions,
   SummaryDataOptions,
   YStackMode,

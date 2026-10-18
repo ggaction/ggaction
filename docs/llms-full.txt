@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.19.
 
-Contract: sha256:5d341535890f07d7891fed9f6bfabd47180f5bc1b6be6431e63079521bad02e8. Status: development. Runtime source: 7da7a0cce2d820c32e4281ffd8f76e1d2336184e. Release baseline: v0.0.13.
+Contract: sha256:2149c8ac88e6e829f3a5db2f6240ba901cd94b29f2df99522de915308a8e5f45. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -212,11 +212,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -644,15 +644,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/continuous-area-color-review/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -798,7 +798,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -816,7 +816,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/continuous-area-color-review/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -929,7 +929,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/continuous-area-color-review/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1099,7 +1099,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/continuous-area-color-review/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1321,15 +1321,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/continuous-area-color-review/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1465,7 +1465,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1479,15 +1479,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/continuous-area-color-review/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1585,7 +1585,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1599,15 +1599,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/continuous-area-color-review/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1716,7 +1716,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1732,15 +1732,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/continuous-area-color-review/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1865,7 +1865,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1940,7 +1940,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1950,15 +1950,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/continuous-area-color-review/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2083,7 +2083,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2116,7 +2116,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2127,8 +2127,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2224,15 +2224,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/continuous-area-color-review/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2329,15 +2329,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/continuous-area-color-review/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2443,8 +2443,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2453,7 +2453,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/continuous-area-color-review/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2752,7 +2752,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -5438,13 +5438,15 @@ program.createIntervalData({
 | `groupBy` | field name or array of field names | one ungrouped interval |
 | `center` | `"mean"` or `"median"` | `"mean"` |
 | `extent` | `"stderr"`, `"stdev"`, `"ci"`, or `"iqr"` | `"ci"` |
-| `method` | `"normal"` or `"student-t"` | `"student-t"` for CI |
+| `method` | `"normal"`, `"student-t"`, or `{ type: "bootstrap", seed, samples? }` | `"student-t"` for CI |
 | `level` | number strictly between `0` and `1` | `0.95` for CI |
 | `missing` | `"error"` or `"drop"` | compatibility behavior when omitted |
 | `as` | `{ center, lower, upper }` distinct field names | ID-namespaced fields |
 
 Mean supports standard error, sample standard deviation, and two-sided normal
-or Student-t confidence intervals. Median requires interquartile range, and IQR
+or Student-t confidence intervals. Explicit seeded percentile-bootstrap mean CI
+also uses the [shared resampling contract](./api/data/summaries-and-shaping/#bootstrap-mean-confidence-intervals);
+`editIntervalData` accepts the same method and preserves raw data. Median requires interquartile range, and IQR
 requires median. Group order follows first appearance. Missing group values,
 non-finite measures follow the explicit `missing` policy when provided;
 undersized mean groups fail with a diagnostic. Valid source rows
@@ -5734,7 +5736,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -9539,7 +9541,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -9600,7 +9602,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -9953,7 +9955,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -10515,7 +10517,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -22445,7 +22447,9 @@ createSummaryData({ id, source?, groupBy?, aggregates, members? })
 ```
 
 Materialize reusable, first-appearance-ordered summary rows from one or more
-shared aggregate operations. [Source and Derived Data](./api/data/source-and-derived/#createsummarydata-id-source-groupby-aggregates-members)
+shared aggregate operations. Nonweighted mean CI outputs also accept seeded percentile
+bootstrap method objects; see [bootstrap mean intervals](./api/data/summaries-and-shaping/#bootstrap-mean-confidence-intervals).
+[Source and Derived Data](./api/data/source-and-derived/#createsummarydata-id-source-groupby-aggregates-members)
 
 ## `createBinData`
 
@@ -22902,7 +22906,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `center` | Optional / branch-dependent | `IntervalCenter \| undefined` |
 | `extent` | Optional / branch-dependent | `IntervalExtent \| undefined` |
-| `method` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
+| `method` | Optional / branch-dependent | `MeanConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `IntervalOutputFields \| undefined` |
@@ -23075,7 +23079,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `center` | Optional / branch-dependent | `IntervalCenter \| undefined` |
 | `extent` | Optional / branch-dependent | `IntervalExtent \| undefined` |
-| `method` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
+| `method` | Optional / branch-dependent | `MeanConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `IntervalOutputFields \| undefined` |
@@ -23089,7 +23093,8 @@ createIntervalData({
 ```
 
 Create immutable grouped center/lower/upper summary rows. Mean supports
-standard error, sample standard deviation, and normal or Student-t confidence intervals;
+standard error, sample standard deviation, and normal, Student-t or explicitly seeded
+percentile-bootstrap confidence intervals;
 median supports interquartile range. [Data](./api/data/)
 
 ## `createECDFData`
@@ -28406,6 +28411,18 @@ export interface BinnedHeatmapPositionChannel {
 
 Related types: [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions).
 
+### `BootstrapMeanIntervalMethod` {#type-bootstrapmeanintervalmethod}
+
+ Expand BootstrapMeanIntervalMethod
+
+```typescript
+export interface BootstrapMeanIntervalMethod {
+  type: "bootstrap";
+  seed: number;
+  samples?: number;
+}
+```
+
 ### `BoxPlotCategoryChannel` {#type-boxplotcategorychannel}
 
  Expand BoxPlotCategoryChannel
@@ -29245,6 +29262,7 @@ Related types: [`ParseTimeFormat`](./reference/types/#type-parsetimeformat).
 
 ```typescript
 export type ConfidenceIntervalMethod = "normal" | "student-t";
+/** Seeded percentile bootstrap of nonweighted means; samples defaults to 1000. */
 ```
 
 ### `ContinuousCartesianGridOptions` {#type-continuouscartesiangridoptions}
@@ -30623,7 +30641,7 @@ export type DatasetIntervalTransform = {
   | {
       center: "mean";
       extent: "ci";
-      method?: ConfidenceIntervalMethod;
+      method?: MeanConfidenceIntervalMethod;
       level: number;
     }
   | {
@@ -30635,7 +30653,7 @@ export type DatasetIntervalTransform = {
 );
 ```
 
-Related types: [`DatasetIntervalOutputFields`](./reference/types/#type-datasetintervaloutputfields) · [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod).
+Related types: [`DatasetIntervalOutputFields`](./reference/types/#type-datasetintervaloutputfields) · [`MeanConfidenceIntervalMethod`](./reference/types/#type-meanconfidenceintervalmethod).
 
 ### `DatasetNormalizeBaselineTransform` {#type-datasetnormalizebaselinetransform}
 
@@ -33687,14 +33705,14 @@ export interface IntervalDataOptions {
   groupBy?: string | readonly string[];
   center?: IntervalCenter;
   extent?: IntervalExtent;
-  method?: ConfidenceIntervalMethod;
+  method?: MeanConfidenceIntervalMethod;
   level?: number;
   missing?: "error" | "drop";
   as?: IntervalOutputFields;
 }
 ```
 
-Related types: [`IntervalCenter`](./reference/types/#type-intervalcenter) · [`IntervalExtent`](./reference/types/#type-intervalextent) · [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod) · [`IntervalOutputFields`](./reference/types/#type-intervaloutputfields).
+Related types: [`IntervalCenter`](./reference/types/#type-intervalcenter) · [`IntervalExtent`](./reference/types/#type-intervalextent) · [`MeanConfidenceIntervalMethod`](./reference/types/#type-meanconfidenceintervalmethod) · [`IntervalOutputFields`](./reference/types/#type-intervaloutputfields).
 
 ### `IntervalExtent` {#type-intervalextent}
 
@@ -34252,6 +34270,16 @@ export type MarkSelector = {
 ```
 
 Related types: [`MarkGraphicProperty`](./reference/types/#type-markgraphicproperty).
+
+### `MeanConfidenceIntervalMethod` {#type-meanconfidenceintervalmethod}
+
+ Expand MeanConfidenceIntervalMethod
+
+```typescript
+export type MeanConfidenceIntervalMethod = ConfidenceIntervalMethod | BootstrapMeanIntervalMethod;
+```
+
+Related types: [`ConfidenceIntervalMethod`](./reference/types/#type-confidenceintervalmethod) · [`BootstrapMeanIntervalMethod`](./reference/types/#type-bootstrapmeanintervalmethod).
 
 ### `MeasuredRadialGuideOptions` {#type-measuredradialguideoptions}
 
@@ -36929,13 +36957,13 @@ Related types: [`NonPointQuantitativePositionScaleOptions`](./reference/types/#t
 
 ```typescript
 export interface SummaryAggregateOptions {
-  op: AggregateOperation;
+  op: AggregateOperation | { op: "ciLower" | "ciUpper"; method: BootstrapMeanIntervalMethod; level?: number };
   field?: string;
   as: string;
 }
 ```
 
-Related types: [`AggregateOperation`](./reference/types/#type-aggregateoperation).
+Related types: [`AggregateOperation`](./reference/types/#type-aggregateoperation) · [`BootstrapMeanIntervalMethod`](./reference/types/#type-bootstrapmeanintervalmethod).
 
 ### `SummaryDataOptions` {#type-summarydataoptions}
 
@@ -38153,12 +38181,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -38274,6 +38302,42 @@ or quantile. Frequency weights act like virtual repeated rows without allocating
 them; reliability weights use effective sample size for sample statistics. The
 action validates every requested value and weight before grouping. Zero-weight
 rows remain in the source but are omitted from statistical membership.
+
+### Bootstrap mean confidence intervals
+
+For nonweighted summary `ciLower` and `ciUpper`, use
+`method: { type: "bootstrap", seed, samples? }`. The seed is required and must be
+an integer from 1 through 2,147,483,646. Samples defaults to 1,000 and accepts
+integers from 1 through 10,000. Confidence level retains its default of 0.95 and
+must lie strictly between zero and one. `editSummaryData` accepts the same definition.
+
+Each group draws its original valid observation count with replacement for each
+sample, computes the sample mean, sorts the means, and takes R7 linearly
+interpolated percentile endpoints. This is a percentile interval, not a normal,
+Student-t or BCa approximation. Numeric strings are not converted. Existing
+missing/empty policies remain in effect; a singleton returns its own value.
+
+For reproducibility, JavaScript Number arithmetic advances the state as
+`state = (1103515245 * state + 12345) % 2147483647`; each index is
+`Math.floor(state / 2147483647 * n)`. A unique field/sample-count/seed combination
+owns one stream per action. Groups and observations retain first source appearance
+and row order. Lower/upper and multiple levels reuse the same sorted means;
+reordering output definitions or adding a mean does not change their results.
+Different fields, seeds or sample counts have independent streams. A singleton
+consumes its samples; an empty group consumes none. Changing group or row order
+can change later results.
+
+Before resampling, the action sums `samples * valid observations` once per unique
+field/sample-count/seed and rejects more than 50,000,000 draws atomically. The
+existing 30,000-group and 64-output limits remain. Raw data is preserved, normalized
+method provenance is stored, and private random state is not persisted.
+
+`createIntervalData` and `editIntervalData` accept the same method object for
+`center: "mean", extent: "ci"`, retaining their existing decimal output boundary.
+Weighted CI, regression bootstrap, median/IQR bootstrap, the `"bootstrap"` string,
+unknown method keys and implicit seeds are rejected. Other statistical facade
+options retain their existing method vocabulary. Basic does not expose summary
+or interval data creation; use the Full facade.
 
 ## `createBinData({ id, source?, field, ...binOptions })` {#createbindata-id-source-field-binoptions}
 
@@ -38826,7 +38890,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -39056,7 +39120,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -39103,7 +39167,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/codex/continuous-area-color-review/examples/repeat-charts).
 
 ## Space between plots
 
@@ -39493,7 +39557,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/7da7a0cce2d820c32e4281ffd8f76e1d2336184e/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/continuous-area-color-review/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -40379,9 +40443,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:5d341535890f07d7891fed9f6bfabd47180f5bc1b6be6431e63079521bad02e8` |
-| Example and dataset source | `7da7a0cce2d820c32e4281ffd8f76e1d2336184e` |
-| Runtime source commit | `7da7a0cce2d820c32e4281ffd8f76e1d2336184e` |
+| Contract fingerprint | `sha256:2149c8ac88e6e829f3a5db2f6240ba901cd94b29f2df99522de915308a8e5f45` |
+| Example and dataset source | `codex/continuous-area-color-review` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 284 |
 | Declared actions in that release | 234 |

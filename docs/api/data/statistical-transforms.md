@@ -134,13 +134,15 @@ program.createIntervalData({
 | `groupBy` | field name or array of field names | one ungrouped interval |
 | `center` | `"mean"` or `"median"` | `"mean"` |
 | `extent` | `"stderr"`, `"stdev"`, `"ci"`, or `"iqr"` | `"ci"` |
-| `method` | `"normal"` or `"student-t"` | `"student-t"` for CI |
+| `method` | `"normal"`, `"student-t"`, or `{ type: "bootstrap", seed, samples? }` | `"student-t"` for CI |
 | `level` | number strictly between `0` and `1` | `0.95` for CI |
 | `missing` | `"error"` or `"drop"` | compatibility behavior when omitted |
 | `as` | `{ center, lower, upper }` distinct field names | ID-namespaced fields |
 
 Mean supports standard error, sample standard deviation, and two-sided normal
-or Student-t confidence intervals. Median requires interquartile range, and IQR
+or Student-t confidence intervals. Explicit seeded percentile-bootstrap mean CI
+also uses the [shared resampling contract](./summaries-and-shaping.md#bootstrap-mean-confidence-intervals);
+`editIntervalData` accepts the same method and preserves raw data. Median requires interquartile range, and IQR
 requires median. Group order follows first appearance. Missing group values,
 non-finite measures follow the explicit `missing` policy when provided;
 undersized mean groups fail with a diagnostic. Valid source rows

@@ -73,6 +73,8 @@ const COMPACT_JSON_FILES = Object.freeze([
   "knowledge/task-packet.schema.json"
 ]);
 const COMPACT_JAVASCRIPT_FILES = Object.freeze([
+  "src/grammar/summary.js",
+  "src/grammar/statistics/confidenceInterval.js",
   "src/actions/marks/area/materialize.js",
   "src/selectors/axes.js",
   "src/grammar/legendBlocks.js",

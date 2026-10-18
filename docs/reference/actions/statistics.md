@@ -45,7 +45,9 @@ createSummaryData({ id, source?, groupBy?, aggregates, members? })
 ```
 
 Materialize reusable, first-appearance-ordered summary rows from one or more
-shared aggregate operations. [Source and Derived Data](../../api/data/source-and-derived.md#createsummarydata-id-source-groupby-aggregates-members)
+shared aggregate operations. Nonweighted mean CI outputs also accept seeded percentile
+bootstrap method objects; see [bootstrap mean intervals](../../api/data/summaries-and-shaping.md#bootstrap-mean-confidence-intervals).
+[Source and Derived Data](../../api/data/source-and-derived.md#createsummarydata-id-source-groupby-aggregates-members)
 
 
 ## `createBinData`
@@ -561,7 +563,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `center` | Optional / branch-dependent | `IntervalCenter \| undefined` |
 | `extent` | Optional / branch-dependent | `IntervalExtent \| undefined` |
-| `method` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
+| `method` | Optional / branch-dependent | `MeanConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `IntervalOutputFields \| undefined` |
@@ -764,7 +766,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `center` | Optional / branch-dependent | `IntervalCenter \| undefined` |
 | `extent` | Optional / branch-dependent | `IntervalExtent \| undefined` |
-| `method` | Optional / branch-dependent | `ConfidenceIntervalMethod \| undefined` |
+| `method` | Optional / branch-dependent | `MeanConfidenceIntervalMethod \| undefined` |
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `IntervalOutputFields \| undefined` |
@@ -780,7 +782,8 @@ createIntervalData({
 ```
 
 Create immutable grouped center/lower/upper summary rows. Mean supports
-standard error, sample standard deviation, and normal or Student-t confidence intervals;
+standard error, sample standard deviation, and normal, Student-t or explicitly seeded
+percentile-bootstrap confidence intervals;
 median supports interquartile range. [Data](../../api/data.md)
 
 

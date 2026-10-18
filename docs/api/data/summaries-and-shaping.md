@@ -55,6 +55,44 @@ them; reliability weights use effective sample size for sample statistics. The
 action validates every requested value and weight before grouping. Zero-weight
 rows remain in the source but are omitted from statistical membership.
 
+### Bootstrap mean confidence intervals
+
+{% include chart-example.html id="bootstrap-mean-ci" %}
+
+For nonweighted summary `ciLower` and `ciUpper`, use
+`method: { type: "bootstrap", seed, samples? }`. The seed is required and must be
+an integer from 1 through 2,147,483,646. Samples defaults to 1,000 and accepts
+integers from 1 through 10,000. Confidence level retains its default of 0.95 and
+must lie strictly between zero and one. `editSummaryData` accepts the same definition.
+
+Each group draws its original valid observation count with replacement for each
+sample, computes the sample mean, sorts the means, and takes R7 linearly
+interpolated percentile endpoints. This is a percentile interval, not a normal,
+Student-t or BCa approximation. Numeric strings are not converted. Existing
+missing/empty policies remain in effect; a singleton returns its own value.
+
+For reproducibility, JavaScript Number arithmetic advances the state as
+`state = (1103515245 * state + 12345) % 2147483647`; each index is
+`Math.floor(state / 2147483647 * n)`. A unique field/sample-count/seed combination
+owns one stream per action. Groups and observations retain first source appearance
+and row order. Lower/upper and multiple levels reuse the same sorted means;
+reordering output definitions or adding a mean does not change their results.
+Different fields, seeds or sample counts have independent streams. A singleton
+consumes its samples; an empty group consumes none. Changing group or row order
+can change later results.
+
+Before resampling, the action sums `samples * valid observations` once per unique
+field/sample-count/seed and rejects more than 50,000,000 draws atomically. The
+existing 30,000-group and 64-output limits remain. Raw data is preserved, normalized
+method provenance is stored, and private random state is not persisted.
+
+`createIntervalData` and `editIntervalData` accept the same method object for
+`center: "mean", extent: "ci"`, retaining their existing decimal output boundary.
+Weighted CI, regression bootstrap, median/IQR bootstrap, the `"bootstrap"` string,
+unknown method keys and implicit seeds are rejected. Other statistical facade
+options retain their existing method vocabulary. Basic does not expose summary
+or interval data creation; use the Full facade.
+
 ## `createBinData({ id, source?, field, ...binOptions })` {#createbindata-id-source-field-binoptions}
 
 Materialize one-dimensional bin bounds and counts for reuse by ranged marks,
