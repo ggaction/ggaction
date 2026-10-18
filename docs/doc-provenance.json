@@ -3,9 +3,9 @@
   "status": "development",
   "packageVersion": "0.0.19",
   "contractId": "sha256:2149c8ac88e6e829f3a5db2f6240ba901cd94b29f2df99522de915308a8e5f45",
-  "sourceCommit": null,
-  "sourceRef": "main",
-  "exampleSourceRef": "codex/continuous-area-color-review",
+  "sourceCommit": "84e86de2bbaa210b0a17165cd5f7b778398b3e18",
+  "sourceRef": "84e86de2bbaa210b0a17165cd5f7b778398b3e18",
+  "exampleSourceRef": "84e86de2bbaa210b0a17165cd5f7b778398b3e18",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",

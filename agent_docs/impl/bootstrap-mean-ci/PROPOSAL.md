@@ -6,7 +6,7 @@
 - [x] 아래 공개 계약·저장·난수·한도·호환성 제안
 - [x] 독립 수치/기존 면적·선 primitive 목표의 실행 증거
 - [x] Gate: approved — 앞서 요청한 계약·수치 목표와 해당 소스의 seed 1 기준 고정을 승인받음
-- [ ] 승인 후 구현·회귀 검증·타입/계약/문서 동기화
+- [x] 승인 후 구현·회귀 검증·타입/계약/문서 동기화 — [RESULTS.md](RESULTS.md)
 
 이 문서는 **설계 제안**이다. 승인 근거는 [approval-evidence.json](approval-evidence.json)이며 기능을 구현하고 검증 중이다. 기준은 0.0.19 / f6b50bf55a9de1857f106c7aa519326ce7a86d76이다. [이슈 #219](https://github.com/ggaction/ggaction/issues/219).
 

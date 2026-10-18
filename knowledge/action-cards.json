@@ -4263,7 +4263,7 @@
         {
           "name": "method",
           "required": false,
-          "type": "ConfidenceIntervalMethod | undefined"
+          "type": "MeanConfidenceIntervalMethod | undefined"
         },
         {
           "name": "level",
@@ -4898,7 +4898,7 @@
         {
           "name": "method",
           "required": false,
-          "type": "ConfidenceIntervalMethod | undefined"
+          "type": "MeanConfidenceIntervalMethod | undefined"
         },
         {
           "name": "level",
