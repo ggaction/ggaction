@@ -45,8 +45,8 @@ no parent shared guide. Child dimensions and margins stay fixed.
 
 Automatic `"shared"` inference keeps continuous or discretized color and stroke
 in separate native legend blocks, each using its own scale. Compatible ordinal
-channels keep their combined categorical symbols. This also works when a numeric
-color or stroke has an ordinal shape companion. Existing child legend owners keep
+channels keep their combined categorical symbols. A mark with numeric color can
+also retain an ordinal shape companion. Existing child legend owners keep
 their configured styles when promoted.
 
 Existing legend editors, channel/block selectors and removal work on facet, grid and
