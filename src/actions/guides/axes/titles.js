@@ -185,6 +185,10 @@ export function inferAxisTitleText(program, channel, scaleId) {
           : encoding.field === transform.as?.[1]
             ? "Density"
             : undefined;
+      } else if (transform?.type === "ecdf") {
+        derivedTitle = encoding.field === transform.as.value ? transform.field
+          : encoding.field === transform.as.probability ? "Cumulative probability"
+            : encoding.field === transform.as.cumulative ? "Cumulative count" : undefined;
       } else if (transform?.type === "interval" &&
         Object.values(transform.as).includes(encoding.field)) {
         derivedTitle = `${transform.center}(${transform.field})`;

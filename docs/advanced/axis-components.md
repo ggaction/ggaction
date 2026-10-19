@@ -175,6 +175,9 @@ A summary of row counts without an input field infers the title `count`.
 Other summaries retain their operation and source field, such as `mean(value)`.
 An explicit title always takes precedence.
 
+ECDF guides use the original measure name and `Cumulative probability` instead
+of generated output field names; cumulative-count outputs use `Cumulative count`.
+
 <!-- snippet-context:start -->
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.

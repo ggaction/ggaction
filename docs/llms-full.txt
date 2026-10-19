@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:127fe2d3b7306d08cd0d0539351bb31cb0ee5c8d5bc2372cba54e5ad2a7ab799. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:2d3e6c5bec32df71a75959463ebda46ad5163594e9944046761dfff566a6cfe2. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -15898,6 +15898,9 @@ the shared ticks-and-labels request. See [axis label layout](./api/axes/complete
 A summary of row counts without an input field infers the title `count`.
 Other summaries retain their operation and source field, such as `mean(value)`.
 An explicit title always takes precedence.
+
+ECDF guides use the original measure name and `Cumulative probability` instead
+of generated output field names; cumulative-count outputs use `Cumulative count`.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -40819,7 +40822,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:127fe2d3b7306d08cd0d0539351bb31cb0ee5c8d5bc2372cba54e5ad2a7ab799` |
+| Contract fingerprint | `sha256:2d3e6c5bec32df71a75959463ebda46ad5163594e9944046761dfff566a6cfe2` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

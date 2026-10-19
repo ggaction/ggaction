@@ -24,6 +24,17 @@ test("infers a fieldless row-count summary title and preserves explicit titles",
   assert.equal(base.semanticSpec.guides.axis, undefined);
 });
 
+test("ECDF guides use source-facing titles through measure revisions", () => {
+  const original = chart().createCanvas({ width: 600, height: 450, margin: 100 })
+    .createData({ values: [{ income: 1, weight: 5 }, { income: 2, weight: 8 }, { income: 3, weight: 10 }] })
+    .createECDFPlot({ id: "plot", field: "income" });
+  assert.equal(original.graphicSpec.objects.xAxisTitle.properties.text, "income");
+  assert.equal(original.graphicSpec.objects.yAxisTitle.properties.text, "Cumulative probability");
+  const edited = original.editECDFPlot({ target: "plot", field: "weight" });
+  assert.equal(edited.graphicSpec.objects.xAxisTitle.properties.text, "weight");
+  assert.equal(original.graphicSpec.objects.xAxisTitle.properties.text, "income");
+});
+
 test("infers title text and materializes centered x/y titles", () => {
   const before = program();
   const result = before.createXAxisTitle().createYAxisTitle();
