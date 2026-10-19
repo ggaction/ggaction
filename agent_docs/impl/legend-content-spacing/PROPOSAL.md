@@ -6,8 +6,9 @@
 - [x] 구체적인 public/persisted 계약 작성
 - [x] 기존 primitive 시각 목표와 실패하는 현재 API 재현 검증
 - [x] 원격 review checkpoint 및 기존 명시적 승인 기록
-- [ ] 구현·회귀·타입·persistence·문서·설치 consumer 검증
-- [ ] 검증된 후보 commit/push; 정규 200-family checkpoint에서 통합
+- [x] 구현·회귀·타입·persistence·문서·설치 consumer 검증
+- [x] 검증된 runtime 후보 commit `8a9b125a`; 검증 기록은 `RESULTS.json`
+- [ ] 정규1413-family release checkpoint에서 통합·배포 (현재 후보는 공개되지 않음)
 
 관련 이슈: <https://github.com/ggaction/ggaction/issues/225>.
 
@@ -137,3 +138,7 @@ snapshot에서 실행했다. 여섯 새 API 경로는 그 baseline에서 모두 
 control과 정확히 같다. `verify-plot.mjs <target-directory>`가 DPR1/2 plot ink와 control/target의
 unrelated plot RGBA 일치를 독립적으로 재검증한다. 새 목표도 기존 명시적 standing approval 범위로
 기록하며 별도의 사람/모델 pixel 시각 검토를 했다고 주장하지 않는다.
+
+## 구현 검증 결과
+
+전체 unit/contracts/docs/charts4720개, pure/atomic/lifecycle/type 검사, 기존91예제의 semantic/guide/graphic/SVG exact parity, 독립 primitive와 PNG/DPR2/PDF 일치, Chromium/Firefox/WebKit 각각7개 검사와 실제 example readiness를 통과했다. Built150pages와 desktop search/keyboard/no-JS/accessibility 및320/390/768px 전체 페이지 containment 검사도 통과했다. 최종596-file tarball을 직접 설치해 runtime·TypeScript·MCP·bundle consumer를 검증했다. 자세한 해시·실패 보존·실측 budget은 RESULTS.json을 따른다. 이는 미배포 library 후보이며 번역 완료1240개와 공개1213개 수를 늘리지 않는다. 1720의 private size-block capability probe는 raw406/visible392를 보존하고 spacing15/20을 확인했으나 전체 원본 세 블록 배치나 차트 번역 승인을 의미하지 않는다.
