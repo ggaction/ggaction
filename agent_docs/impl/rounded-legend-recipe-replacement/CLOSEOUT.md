@@ -23,3 +23,7 @@ npm test
 ```
 
 기존 current 계약의 recipe reconciliation을 복원한 수정이며 타입/공개 signature는 그대로다. Current coverage와 composite symbols 문서, changelog, 생성된 provenance/LLM bundle을 함께 갱신했다. 별도 npm 배포나 이슈 종료는 하지 않는다. 정규 다음200가족 checkpoint1413에서 다른 후보와 통합 후 package/registry/CI/전체 corpus 호환성 및 release checks를 다시 실행한다. 이전233후보 tarball은 이 수정234를 포함하지 않으므로 재사용해 이번 수정의 packed 검증으로 보고해서는 안 된다.
+
+## 추가 packed 검증
+
+같은 구현 commit의 새 staged artifact는602entries/851111packed/4124908unpacked bytes, SHA-256 `62b0c5477778dacd990d9d1e686d7555dd39da6079a867dcf0c34a2b699753ee`다. 기존602/852000/4125000상한을 그대로 통과했다. 실제 tarball 설치 consumer의 Node/TypeScript/Full/Basic/MCP/PNG/SVG/PDF/tutorial과 bundle 검사가 통과했고, 설치된 공개 package에서 새 회귀6개도 통과했다. Browser gzip은 Full421167/Basic207733/SVG7567bytes로 기존 상한 안이다. 구현과 tarball은 f92e966a 기준이며 이 후속 기록은 metadata만 추가한다. 자세한 hash/검증은 [VERIFICATION.json](VERIFICATION.json)에 있다. npm 게시를 한 것은 아니다.
