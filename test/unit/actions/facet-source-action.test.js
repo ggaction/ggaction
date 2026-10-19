@@ -1,0 +1,62 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { chart } from '../../../src/index.js';
+import { renderToSVG } from '../../../src/renderers/svg.js';
+import { serializeProgram, deserializeProgram } from '../../../src/persistence.js';
+import { inspectProgram, describeAction } from '../../../src/inspection.js';
+const rows = Array.from({length:12}, (_,i)=>({X:i,Y:i*i+1,G:i%3 ? 'B':'A',H:i%2?'C':'D'}));
+const source = () => chart().createCanvas({width:600,height:420,margin:{left:80,right:150,top:45,bottom:65}})
+  .createData({values:rows}).createScatterPlot({id:'plot',x:'X',y:'Y',guides:false});
+const facet = () => source().facet({field:'G',columns:2,guides:{axes:'outer',legend:false}}).createGuides();
+
+test('one source action edits full-data marks and rederives every facet without changing its input',()=>{
+ const p=facet(), before=serializeProgram(p);
+ const next=p.editFacetSource({action:{method:'encodeOpacity',options:{target:'plot',value:.4}}});
+ assert.equal(next.trace.children.length,p.trace.children.length+1);
+ assert.equal(next.trace.children.at(-1).op,'editFacetSource');
+ for(const child of Object.values(next.children)) assert.ok(child.graphicSpec.objects.plot.items.every(i=>i.properties.opacity===.4));
+ assert.deepEqual(serializeProgram(p),before);
+ assert.equal(describeAction(p,{action:'editFacetSource',options:{action:{method:'encodeSize',options:{target:'plot',value:80}}}}).applicability,'supported');
+ assert.equal(inspectProgram(next).findings.filter(f=>f.severity==='error').length,0);
+});
+
+test('source actions restore full item grain, source guide components, and new dependent mark configurations',()=>{
+ let p=facet().editFacetSource({action:{method:'createMarkLabels',options:{source:'plot',field:'Y'}}});
+ for(const child of Object.values(p.children)) {
+  const label=child.semanticSpec.layers.find(l=>l.source==='plot');
+  assert.ok(label);
+  assert.equal(child.graphicSpec.objects[label.id].items.length,child.graphicSpec.objects.plot.items.length);
+ }
+ p=p.editFacetSource({action:{method:'editXAxisLabels',options:{fontSize:10}}});
+ assert.equal(p.guideConfigs.axis.x.labels.fontSize,10);
+ assert.ok(renderToSVG(p).startsWith('<svg'));
+ const stat=facet().editFacetSource({action:{method:'createStatisticalReference',options:{source:'plot',axis:'y',statistic:{op:'mean'},stroke:'#222222',strokeWidth:2.5}}});
+ for(const child of Object.values(stat.children)) assert.ok(child.markConfigs.statisticalReference?.statisticalReference);
+});
+
+test('final guide setup follows source encodings and retains a parent title through persistence',()=>{
+ const p=facet().editFacetSource({action:{method:'encodeColor',options:{target:'plot',field:'H',fieldType:'nominal'}}})
+  .createGuides({legend:{target:'plot',channels:['color']}}).createTitle({text:'Facet title'}).createGuides();
+ assert.equal(p.trace.children.at(-1).op,'createGuides');
+ assert.equal(p.semanticSpec.title.text,'Facet title');
+ assert.ok(Object.values(p.children).every(child=>Object.keys(child.semanticSpec.guides.legend??{}).length>0));
+ const copy=deserializeProgram(serializeProgram(p));
+ assert.equal(renderToSVG(copy),renderToSVG(p));
+ assert.ok(renderToSVG(copy.editFacetSource({action:{method:'encodeSize',options:{target:'plot',value:80}}})).startsWith('<svg'));
+});
+
+test('source descriptors reject ambiguous options, extension primitives and composition actions atomically',()=>{
+ const p=facet(), before=serializeProgram(p);
+ for(const args of [{},{program:source(),action:{method:'encodeSize'}},{action:{method:'editSemantic'}},{action:{method:'facet'}},{action:{method:'unknown'}}]) assert.throws(()=>p.editFacetSource(args));
+ assert.deepEqual(serializeProgram(p),before);
+ assert.ok(p.editFacetSource({program:source().createGuides().encodeOpacity({target:'plot',value:.5})}).children);
+});
+
+test('facet inspection rejects aggregate partition outputs and accepts their raw ancestor without executing',()=>{
+ const q=chart().createCanvas().createData({values:rows}).createHeatmap({id:'cells',x:{field:'X',fieldType:'quantitative'},y:{field:'Y',fieldType:'quantitative'},bin:{bins:2},guides:false});
+ const layer=q.semanticSpec.layers.find(l=>l.id==='cells');
+ const before=q.trace;
+ assert.equal(describeAction(q,{action:'facet',options:{field:'G',data:'data'}}).applicability,'supported');
+ assert.equal(describeAction(q,{action:'facet',options:{field:layer.encoding.x.field,data:layer.data}}).applicability,'incompatible');
+ assert.equal(q.trace,before);
+});

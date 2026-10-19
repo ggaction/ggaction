@@ -603,18 +603,19 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - Signature: `encodeStrokeWidth({ target?, value })` or
   `encodeStrokeWidth({ target?, field, fieldType?, scale? })`.
-- Constant mode targets Line or Rule: `value` is a non-negative finite logical Canvas
+- Constant mode targets Line, Rule or Rect: `value` is a non-negative finite logical Canvas
   width, creates no scale or legend, and rematerializes every rule child.
-- Field mode targets a line or rule, defaults `fieldType` to `"quantitative"`, creates an independent
+- Field mode targets a line, rule or rect, defaults `fieldType` to `"quantitative"`, creates an independent
   `strokeWidth` scale, and maps to concrete logical Canvas widths. Default range is `[1, 8]`; explicit range
   must be an ascending pair of non-negative finite widths.
+- Rect grain is one source row per concrete cell, preserving ranged/discrete positions.
 - Rule grain is one source row per concrete line. Line grain is one complete series path. Every source row
   contributing to a line series must have the same field value; the action never chooses or aggregates a
   representative value implicitly.
 - Field values are finite and non-negative. Missing, non-finite, negative, ambiguous-target, and unequal
   within-series values fail atomically. Zero is valid.
 - `value` and `field` are mutually exclusive. Reassignment structurally replaces the semantic field binding;
-  returning a Line or Rule to constant mode removes the `strokeWidth` encoding and only its own legend.
+  returning a Line, Rule or Rect to constant mode removes the `strokeWidth` encoding and only its own legend.
   Constant mode rejects fieldType/scale and a selection bound to the replaced channel; detached shared scales
   retain other consumers. Field mode removes the constant override. Line scalar editors reject active field width.
 - Field mode participates in `editScale`, `createLegend({ channels: ["strokeWidth"] })`, Canvas
@@ -1373,8 +1374,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Signature: `encodeOpacity({ value, target? } | { field, target?, fieldType?, scale? })`
 - 상수로 전환할 때 target이 소유한 opacity legend만 제거하며 다른 layer의 범례는 보존한다.
 - `value`: field와 mutually exclusive인 finite `[0, 1]` number.
-- `field`: value와 mutually exclusive인 quantitative point/rule/line/bar field. auto linear range는 `[0.2, 1]`이다.
-- `target`: optional point, rule, line 또는 bar ID.
+- `field`: value와 mutually exclusive인 quantitative point/rule/line/bar/rect field. auto linear range는 `[0.2, 1]`이다.
+- `target`: optional point, rule, line, bar 또는 rect ID.
 - Effect: constant는 graphical config, field는 semantic encoding과 linear scale을 저장한다. 같은 target에
   다시 호출하면 constant↔field 또는 field↔field를 structural copy로 교체하고 target mark/legend를 rematerialize한다.
 - Line은 final-series grain이며 모든 source row의 field 값이 같아야 한다. Width처럼 implicit grouping을
@@ -1383,6 +1384,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Field Line opacity는 scale/Canvas/filter/highlight replay와 sampled opacity legend를 지원한다.
 - Bar는 ranged item 또는 final aggregate/bin/series cell마다 하나의 field 값을 요구하며 opacity로 새로운 그룹을 만들지 않는다. 값이 다른 cell은 거부한다. 상수↔field 전환 시 `barAppearance.opacity`도 정리하며 `editBarMark({ opacity })`는 field mode와 충돌한다. Position 이전의 field 지정, scale/Canvas/persistence replay와 opacity sample legend를 지원한다.
 - Evidence: `test/unit/actions/encodings/bar-opacity.test.js` covers constant/field replacement, aggregate rejection, grouped/ranged/histogram cells, scale/Canvas edits, persistence and legend cleanup.
+- Rect는 discrete/ranged cell의 원본 행마다 opacity를 매핑한다. Rect의 field opacity/width와 scalar `editRectMark`는 충돌하며 같은 encoding 함수의 constant mode로 교체한다. Rect opacity unknown fallback은 지원하지 않는다. Scale/Canvas/persistence 및 sampled legend replay를 지원한다.
+- Evidence: `test/unit/actions/encodings/rect-appearance.test.js`.
 - Coverage: point/rule/regression 및 line-appearance-modes tests가 replacement와 invalid range를 검증한다.
 
 ### Formal values — `encodeOpacity`

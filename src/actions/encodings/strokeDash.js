@@ -1,3 +1,4 @@
+import { APPEARANCE_MARK_TYPES } from "../../core/vocabulary.js";
 import { action } from "../../core/action.js";
 import {
   normalizeStrokeDashPattern,
@@ -78,7 +79,7 @@ const encodeStrokeDash = /* @__PURE__ */ action(
     const { id: target, dataset: sourceDataset, layer } = resolveTarget(
       this,
       args.target,
-      ["line", "rule"],
+      APPEARANCE_MARK_TYPES.encodeStrokeDash,
       "line or rule mark"
     );
     const dataset = hasField

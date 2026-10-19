@@ -1,3 +1,5 @@
+import { resolveFacetDefinition, resolveFacetGridDefinition } from "./grammar/facets/index.js";
+import { APPEARANCE_MARK_TYPES } from "./core/vocabulary.js";
 import { ChartProgram } from "./ChartProgram.js";
 import { BasicChartProgram } from "./BasicChartProgram.js";
 import { getWrappedActionMetadata } from "./core/action.js";
@@ -103,11 +105,12 @@ export function describeAction(program, { action, target, options = {} } = {}) {
         findings: [{ severity: "error", code: "incompatible-resource", reason: "target-mismatch", message: `Inspection target "${target.id}" conflicts with options.target "${options.target}".`, resource: resourceRef(target.kind, target.id, target.childPath), optionPath: "target" }]
       });
     }
-    if (action === "encodeShape" && (target.kind !== "mark" || targetResource.mark?.type !== "point")) {
+    const markTypes = APPEARANCE_MARK_TYPES[action];
+    if (markTypes && (target.kind !== "mark" || !markTypes.includes(targetResource.mark?.type))) {
       return cloneAndFreeze({
         version: 1, action, applicability: "unsupported", parameterDefinitions: [], requirements: [],
         checks: [{ name: "target", status: "not_applicable", evidencePaths: ["target"], findings: [] }],
-        findings: [{ severity: "info", code: "unsupported-combination", reason: "mark-type", message: "encodeShape supports Point marks.", resource: resourceRef(target.kind, target.id, target.childPath) }]
+        findings: [{ severity: "info", code: "unsupported-combination", reason: "mark-type", message: `${action} supports ${markTypes.join(", ")} marks.`, resource: resourceRef(target.kind, target.id, target.childPath) }]
       });
     }
   }
@@ -151,6 +154,15 @@ export function describeAction(program, { action, target, options = {} } = {}) {
           resource: resourceRef("data", targetResource.data, target.childPath),
           optionPath: definition.path
         }));
+    }
+  }
+  if (unknown === undefined && missing.length === 0 &&
+      ((action === "facet" && options.field) || (action === "facetGrid" && options.rows && options.columns))) {
+    try {
+      (action === "facet" ? resolveFacetDefinition : resolveFacetGridDefinition)(program.semanticSpec, options);
+    } catch (error) {
+      fieldFinding.push({ severity: "error", code: "unsupported-combination", reason: "facet-partition",
+        message: error.message, optionPath: "data" });
     }
   }
   const finding = unknown !== undefined
@@ -389,7 +401,7 @@ function inspectMark(program, layer, childPath) {
     bounds: union,
     sourceRefs: dataset === undefined ? [] : [resourceRef("data", dataset.id, childPath)],
     checks: [
-      { name: "concrete-structure", status: graphic === undefined ? "failed" : logicalSupported ? "passed" : "not_applicable", evidencePaths: [layer.id], findings: [] },
+      { name: "concrete-structure", status: graphic === undefined && !program.compositionSpec?.facet ? "failed" : logicalSupported ? "passed" : "not_applicable", evidencePaths: [layer.id], findings: [] },
       { name: "pixel-visibility", status: "not_run", evidencePaths: [], findings: [] }
     ]
   };

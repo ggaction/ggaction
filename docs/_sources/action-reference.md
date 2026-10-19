@@ -444,13 +444,17 @@ layers, and composite roles are rejected with explicit errors.
 
 ```javascript
 editFacetSource({ program })
+editFacetSource({ action: { method, options? } })
 ```
 
 Reapply the current facet, grid, or repeat recipe to a revised complete unit
 program while preserving the partition dataset ID, ordered domains, layout,
 scale/guide policy, headers, and parent title. All stored facet values must
 remain observed; create a new composition when the dataset ID, domain, or
-repeat field list changes.
+repeat field list changes. Alternatively, pass one actual unit chart-authoring action
+name and its options to edit the retained full-data source in the same transaction.
+Specify exactly one of `program` or `action`; extension primitives, materializers,
+and composition actions cannot be source edits.
 
 ### `editFacetHeaders`
 
@@ -2168,7 +2172,7 @@ encodeOpacity({ value, target? })
 encodeOpacity({ field, target?, fieldType?, scale? })
 ```
 
-Apply a constant point/rule/line opacity from `0` to `1`, or map a quantitative field
+Apply a constant point/rule/line/bar/rect opacity from `0` to `1`, or map a quantitative field
 through a linear opacity scale. The two modes are mutually exclusive and may
 replace each other through the same action. Lines require one raw field value per
 series and support sampled opacity legends. Constant mode clears its field and
@@ -2196,8 +2200,8 @@ encodeStrokeWidth({ value, target? })
 encodeStrokeWidth({ field, target?, fieldType?, scale? })
 ```
 
-Assign a non-negative finite logical Canvas width to a Line or Rule. Field mode
-maps one quantitative value per rule row or complete line series. Constant mode
+Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect. Field mode
+maps one quantitative value per rule/rect row or complete line series. Constant mode
 clears the field and its own sampled width legend; fieldType/scale are invalid in
 constant mode. Active channel selections must be removed before replacement.
 [Appearance encodings](../api/appearance.md)
@@ -2409,7 +2413,9 @@ createGuides({ axes?, grid?, legend? })
 
 Create applicable axes, grids, and legends; omitted branches infer applicability, false skips a branch, and explicit direction objects enable only named directions: `axes:{x:false}` requests neither axis while `axes:{x:false,y:{}}` requests y.
 Automatic calls preserve existing guide collections and add missing applicable
-collections; explicit collection objects retain strict create semantics.
+collections; explicit collection objects retain strict create semantics. Datum-only
+anchors do not infer axes. On facet parents this action updates the retained source
+and rederives its panels while preserving the parent title and guide policy.
 [Guides](../api/guides.md)
 
 ### `editAxes`
@@ -2672,6 +2678,8 @@ Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Interval legends support all four
 edges with layout `"edge"`, side single columns and horizontal item grids. Explicit `channels` creates exactly
 the selected content; include `"size"` in a point categorical-and-size request.
+Compatible point categorical channels stay combined. Independent fields,
+continuous color/stroke, opacity, and stroke width use separate native blocks.
 For outside top/bottom legends, omitting `offset` places the occupied legend after
 the same-side axis line, ticks, labels, and title, with the family's native gap
 (8 pixels for categorical legends, 30 for continuous families). Axis edits and

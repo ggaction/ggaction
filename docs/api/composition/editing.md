@@ -91,16 +91,25 @@ still rejects `axes: "outer"`.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `matrix`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `matrix`. Resource selectors used here: `target: "plot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 <!-- snippet-context:end -->
 
 ```javascript
 const revised = matrix.editFacetSource({ program: revisedUnit });
+const styled = matrix.editFacetSource({
+  action: { method: "encodeOpacity", options: { target: "plot", value: 0.6 } }
+});
 ```
 
 `editFacetSource` reapplies the stored facet, grid, or repeat recipe to a new
-complete unit program. It preserves layout, scale and guide policies, header
+complete unit program. Alternatively, `action: { method, options? }` invokes one
+public unit chart-authoring function against the retained full-data source before
+rederiving every panel. Specify exactly one input form. Source edits retain new
+label and statistical-reference recipes; they do not edit just one filtered cell.
+Primitive, materialization, and composition actions are rejected.
+
+It preserves layout, scale and guide policies, header
 style, parent title, and stable child IDs. The revised unit must still contain
 the stored partition dataset and fields or repeated target role, and every
 stored ordered value must remain observed. To change a partition dataset ID,

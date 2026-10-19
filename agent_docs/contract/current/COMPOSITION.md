@@ -178,7 +178,9 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ## `editFacetSource`
 
-- Signature: `editFacetSource({ program })`.
+- Signature: `editFacetSource({ program })` 또는 `editFacetSource({ action: { method, options? } })`.
+- `describeAction`의 facet/facetGrid preflight는 같은 pure dependency planner로 partition ancestry를 검사하며 action을 실행하지 않는다.
+- 두 입력은 상호 배타적이다. `action`은 retained source unit에 실제 wrapped chart-authoring 함수를 한 번 실행한 후 기존 facet/grid/repeat recipe를 다시 적용한다. Primitive, materialization, composition 함수와 알 수 없는 함수는 거부한다. Full-data item과 원래 axis config를 복원하므로 partitioned seed child의 item grain이나 outer-axis 생략을 source 의미로 사용하지 않는다. 새로운 label/statistical-reference config를 보존하고 전체 transaction은 하나의 `editFacetSource` trace node이다.
 - Requires a facet, grid or repeat parent and one complete unit `ChartProgram`. It reapplies the current partition or
   repeat recipe to the revised unit while preserving explicit value/field order, IDs when the recipe cardinality is
   unchanged, layout, scale/guide policy, parent header styling and parent title.
@@ -190,7 +192,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `editFacetSource`
 
-- Implemented: `editFacetSource({ program: CompleteUnitChartProgram }): ChartProgram`.
+- Implemented: `editFacetSource({ program: CompleteUnitChartProgram } | { action: { method: PublicUnitActionName, options?: object } }): ChartProgram`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editFacetSource`
@@ -198,7 +200,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 - ✅ Covered: one-field, grid and repeat recipe replay, revised rows under retained Cartesian/Polar/Parallel domains,
   stable policy and IDs, attached-label/selection/placement/theme/style preservation, revised-unit Canvas replay,
   title/header preservation, nested action trace and immutable failure.
-- Evidence: `test/unit/actions/composition/facet-grid-repeat.test.js`.
+- Evidence: `test/unit/actions/composition/facet-grid-repeat.test.js`, `test/unit/actions/facet-source-action.test.js`.
 
 ## `editFacetHeaders`
 

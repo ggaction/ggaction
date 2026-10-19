@@ -349,8 +349,8 @@ encodeStrokeWidth({ value, target? })
 encodeStrokeWidth({ field, target?, fieldType?, scale? })
 ```
 
-Assign a non-negative finite logical Canvas width to a Line or Rule. Field mode
-maps one quantitative value per rule row or complete line series. Constant mode
+Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect. Field mode
+maps one quantitative value per rule/rect row or complete line series. Constant mode
 clears the field and its own sampled width legend; fieldType/scale are invalid in
 constant mode. Active channel selections must be removed before replacement.
 [Appearance encodings](../../api/appearance.md)
@@ -505,7 +505,7 @@ encodeOpacity({ value, target? })
 encodeOpacity({ field, target?, fieldType?, scale? })
 ```
 
-Apply a constant point/rule/line opacity from `0` to `1`, or map a quantitative field
+Apply a constant point/rule/line/bar/rect opacity from `0` to `1`, or map a quantitative field
 through a linear opacity scale. The two modes are mutually exclusive and may
 replace each other through the same action. Lines require one raw field value per
 series and support sampled opacity legends. Constant mode clears its field and

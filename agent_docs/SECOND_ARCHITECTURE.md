@@ -87,6 +87,8 @@ Axis 전용 typography는 기존 theme frame의 partial token을 사용한다. �
 active font 기본값을 읽고, theme 변경 시 기존 guide config와 concrete text bounds를 함께
 갱신한다. Facet 초기 header 스타일은 기존 header config에 정규화하며 editor와 같은 검증을 사용한다.
 
+외형 encoding의 mark 지원 범위는 `core/vocabulary.js`가 소유하며 실제 action과 inspection이 함께 사용한다. Facet source action descriptor는 기존 retained semantic/config를 복원하여 기존 wrapped mark/guide materializer와 facet derivation을 호출한다. 새 renderer나 별도 source-state 복제본을 추가하지 않는다. 기존 vocabulary owner를 재사용하여 package entry는591을 유지한다. Rect 외형과 facet source action/inspection 확장의 실측846294packed/4093902unpacked bytes에 따라 최소1000byte 단위 ceiling을847000/4094000으로 갱신했다.
+
 ## 전체 계층
 
 ```text

@@ -1593,7 +1593,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces constant rule width or field-driven line/rule width",
+      "update": "Same action replaces constant or field-driven line/rule/rect width",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1665,7 +1665,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the constant value",
+      "update": "Same action replaces constant or field opacity on point/rule/line/bar/rect marks",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -4545,7 +4545,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Replays a facet or repeat recipe on a revised unit",
+      "update": "Reapply retained facet recipe to a complete unit program or one public unit source action.",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

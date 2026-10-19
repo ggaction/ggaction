@@ -1,3 +1,4 @@
+import { APPEARANCE_MARK_TYPES } from "../../core/vocabulary.js";
 import { action } from "../../core/action.js";
 import { validateRuleStrokeWidth } from "../../grammar/ruleAppearance.js";
 import { readQuantitativeField } from "../../grammar/scales/index.js";
@@ -24,7 +25,7 @@ const WIDTH_OPTIONS = Object.freeze([
 const encodeStrokeWidth = /* @__PURE__ */ action(
   {
     op: "encodeStrokeWidth",
-    description: "Assign constant or field-driven line or rule stroke width."
+    description: "Assign constant or field-driven mark stroke width."
   },
   function (args = {}) {
     validateOptions(args, WIDTH_OPTIONS, "encodeStrokeWidth");
@@ -38,7 +39,7 @@ const encodeStrokeWidth = /* @__PURE__ */ action(
         throw new Error("Constant stroke width does not accept fieldType or scale.");
       }
       validateRuleStrokeWidth(args.value);
-      const { id, layer } = resolveTarget(this, args.target, ["rule", "line"], "rule or line mark");
+      const { id, layer } = resolveTarget(this, args.target, APPEARANCE_MARK_TYPES.encodeStrokeWidth, "rule, line or rect mark");
       assertEncodingSelectionCompatibility(this, id, ["strokeWidth"]);
       let next = this.guideConfigs.legend?.strokeWidth?.target === id
         ? this.removeLegend({ target: id, channels: ["strokeWidth"] })
@@ -53,7 +54,7 @@ const encodeStrokeWidth = /* @__PURE__ */ action(
           ...next.markConfigs[id],
           strokeWidth: args.value
         });
-      if (layer.mark.type === "line") {
+      if (["line", "rect"].includes(layer.mark.type)) {
         return rematerializeEncoding(next, id, "strokeWidth", undefined, layer);
       }
       next = next.rematerializeRuleMark({ id });
@@ -62,8 +63,8 @@ const encodeStrokeWidth = /* @__PURE__ */ action(
     const { id, dataset: sourceDataset, layer } = resolveTarget(
       this,
       args.target,
-      ["rule", "line"],
-      "rule or line mark"
+      APPEARANCE_MARK_TYPES.encodeStrokeWidth,
+      "rule, line or rect mark"
     );
     const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
     const fieldType = args.fieldType ?? "quantitative";

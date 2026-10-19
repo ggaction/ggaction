@@ -741,6 +741,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editRectMark`
 
+- Field opacity/width가 활성화된 경우 scalar edit는 거부한다. `encodeOpacity({ value })` 또는 `encodeStrokeWidth({ value })`로 명시적으로 교체한다.
+
 - Signature: `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`.
 - At least one property is required. Omitted target resolves only one eligible rect. Omitted properties preserve the
   immutable mark configuration; `stroke: false` disables the stroke and rejects a simultaneous width.

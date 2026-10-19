@@ -63,8 +63,8 @@ The tables below are generated from the same reviewed capability registry used b
 | --- | --- | --- | --- | --- |
 | `encodeSize` | point | quantitative, nominal, ordinal or constant | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; constant value replaces field size; field size replaces constant radius |
 | `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
-| `encodeOpacity` | point, line, rule, bar | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree |
-| `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
+| `encodeOpacity` | point, line, rule, bar, rect | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree; row-owned Rect cells |
+| `encodeStrokeWidth` | line, rule, rect | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels; row-owned Rect cells |
 | `encodeStrokeDash` | line, rule | nominal or constant | ordinal for field; none for constant | complete line series or rule item; series values must agree |
 | `encodeAngle` | point, tick | quantitative or constant | none | item; clockwise degrees; circles retain the angle as a visual no-op |
 | `encodePointRadius` / `encodeRadius` | point | constant | none | glyph radius in logical pixels; independent from Polar position r |
@@ -85,8 +85,8 @@ The tables below are generated from the same reviewed capability registry used b
 | Discretized color interval | point, aggregate bar, rect | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
 | Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
-| Opacity | point, line, bar | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
-| Stroke width | line, rule | quantitative strokeWidth samples; line symbol |
+| Opacity | point, line, bar, rect | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
+| Stroke width | line, rule, rect | quantitative strokeWidth samples; line symbol |
 
 | Axis family | Create | Edit | Editable components |
 | --- | --- | --- | --- |

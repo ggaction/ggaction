@@ -1,3 +1,4 @@
+import { APPEARANCE_MARK_TYPES } from "../../../core/vocabulary.js";
 import { removeEncoding } from "../remove.js";
 import { validateNonEmptyString } from "../../../core/validation.js";
 import { inferSeriesGroup } from "../shared.js";
@@ -62,7 +63,7 @@ const encodeColor = /* @__PURE__ */ action(
       }
       const value = validateNonEmptyString(args.value, "Color value");
       const { id: target, layer } = resolveTarget(this, args.target,
-        ["point", "line", "bar", "area", "arc", "rect", "text"], "color mark");
+        APPEARANCE_MARK_TYPES.encodeColor, "color mark");
       const next = layer.encoding?.color === undefined ? this
         : removeEncoding.call(this, { target, channel: "color" });
       const method = { point: "editPointMark", line: "editLineMark", bar: "editBarMark",
@@ -84,7 +85,7 @@ const encodeColor = /* @__PURE__ */ action(
     const { id: target, dataset: sourceDataset, layer } = resolveTarget(
       this,
       args.target,
-      ["point", "line", "bar", "area", "arc", "rect", "text"],
+      APPEARANCE_MARK_TYPES.encodeColor,
       "color mark"
     );
     const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);

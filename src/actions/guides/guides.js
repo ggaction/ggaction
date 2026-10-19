@@ -37,6 +37,11 @@ function inferAxesOptions(program, applicability, layers) {
     ? { x: { ticksAndLabels: { count: 7 } } }
     : {};
   const directions = applicability.axes.directions;
+  for (const channel of ["x", "y"]) {
+    if (!directions[channel] && layers.some(layer => layer.encoding?.[channel] !== undefined)) {
+      inferred[channel] = false;
+    }
+  }
   const hasStoredY = layers.some(
     layer => layer.encoding?.y !== undefined
   );
@@ -126,9 +131,15 @@ export function resolveGuideOptions(program, args = {}, layers = program.semanti
 const createGuides = /* @__PURE__ */ action(
   {
     op: "createGuides",
-    description: "Create applicable axes, grid, and legend."
+    description: "Create applicable axes, grid, and legend.",
+    scope: "any"
   },
   function (args = {}) {
+    if (this.compositionSpec?.facet) {
+      validateOptions(args);
+      return this.editFacetSource({ action: { method: "createGuides", options: args } });
+    }
+    this._assertUnitProgram("createGuides");
     const { axes, grid, legend } = resolveGuideOptions(this, args);
     if (axes === undefined && grid === undefined && legend === undefined) {
       throw new Error("createGuides requires at least one selected guide.");

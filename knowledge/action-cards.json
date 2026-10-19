@@ -9609,7 +9609,7 @@
       "name": "encodeStrokeWidth",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Assign a non-negative finite logical Canvas width to a Line or Rule.",
+      "summary": "Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect.",
       "signature": "encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;",
       "intents": [
         "encode stroke width",
@@ -9993,7 +9993,7 @@
       "name": "encodeOpacity",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Apply a constant point/rule/line opacity from 0 to 1, or map a quantitative field through a linear opacity scale.",
+      "summary": "Apply a constant point/rule/line/bar/rect opacity from 0 to 1, or map a quantitative field through a linear opacity scale.",
       "signature": "encodeOpacity(options: OpacityEncodingOptions): ChartProgram;",
       "intents": [
         "encode opacity",
@@ -29237,12 +29237,17 @@
       "options": [
         {
           "name": "program",
-          "required": true,
-          "type": "ChartProgram"
+          "required": false,
+          "type": "ChartProgram | undefined"
+        },
+        {
+          "name": "action",
+          "required": false,
+          "type": "{ method: string; options?: Readonly<Record<string, unknown>> | undefined; } | undefined"
         }
       ],
       "callPatterns": [
-        "editFacetSource({ program })"
+        "editFacetSource({ program?, action? })"
       ],
       "snippet": "program.editFacetSource({ program: chart().createCanvas({}).createData({ values: [] }) })",
       "errors": [],

@@ -1,3 +1,4 @@
+import { APPEARANCE_MARK_TYPES } from "../../core/vocabulary.js";
 import { removeEncoding } from "./remove.js";
 import { canMaterializeBar } from "../../materialization/marks/index.js";
 import { action } from "../../core/action.js";
@@ -40,7 +41,7 @@ function encodeAppearanceField(program, channel, args, operation) {
   const { id: target, dataset: sourceDataset, layer } = resolveTarget(
     program,
     args.target,
-    ["point"],
+    APPEARANCE_MARK_TYPES[operation],
     "point mark"
   );
   const fieldTypes = channel === "shape" ? ["nominal"] : ["quantitative", "nominal", "ordinal"];
@@ -166,7 +167,7 @@ const encodeSize = /* @__PURE__ */ action(
       if (!Number.isFinite(args.value) || args.value < 0) {
         throw new RangeError("encodeSize requires a non-negative finite area.");
       }
-      const { id: target, layer } = resolveTarget(this, args.target, ["point"], "point mark");
+      const { id: target, layer } = resolveTarget(this, args.target, APPEARANCE_MARK_TYPES.encodeSize, "point mark");
       const next = layer.encoding?.size === undefined ? this
         : removeEncoding.call(this, { target, channel: "size" });
       return next.encodeRadius({ target, value: Math.sqrt(args.value / Math.PI) });
@@ -229,8 +230,8 @@ const encodeOpacity = /* @__PURE__ */ action(
     const { id: target, dataset: sourceDataset, layer } = resolveTarget(
       this,
       args.target,
-      ["point", "rule", "line", "bar"],
-      "point, rule, line or bar mark"
+      APPEARANCE_MARK_TYPES.encodeOpacity,
+      "point, rule, line, bar or rect mark"
     );
     if (hasValue) {
       validateOpacityValue(args.value, "encodeOpacity");
@@ -243,7 +244,7 @@ const encodeOpacity = /* @__PURE__ */ action(
         .clearOpacityEncoding({ target })
         ._withoutMaterializationConfig(["marks", target, "opacity"])
         ._withMarkConfig(target, { ...config, opacity: args.value });
-      if (layer.mark.type === "line") {
+      if (["line", "rect"].includes(layer.mark.type)) {
         return rematerializeEncoding(next, target, "opacity", undefined, layer);
       }
       if (layer.mark.type === "bar") {
@@ -267,9 +268,9 @@ const encodeOpacity = /* @__PURE__ */ action(
       args.scale ?? {}
     );
     const scale = resolveOpacityScaleDefinition(this, requestedScale);
-    if (layer.mark.type === "line") {
+    if (["line", "rect"].includes(layer.mark.type)) {
       if (Object.hasOwn(scale, "unknown")) {
-        throw new Error("Line opacity does not support unknown fallback.");
+        throw new Error("Line and Rect opacity do not support unknown fallback.");
       }
       validatePathSeriesAppearance(dataset.values, {
         ...layer, encoding: { ...layer.encoding, opacity: { field: args.field, fieldType } }

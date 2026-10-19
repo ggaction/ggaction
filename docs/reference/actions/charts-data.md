@@ -2349,7 +2349,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `program` | Required | `ChartProgram` |
+| `program` | Optional / branch-dependent | `ChartProgram \| undefined` |
+| `action` | Optional / branch-dependent | `{ method: string; options?: Readonly<Record<string, unknown>> \| undefined; } \| undefined` |
 
 </details>
 
@@ -2357,13 +2358,17 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 editFacetSource({ program })
+editFacetSource({ action: { method, options? } })
 ```
 
 Reapply the current facet, grid, or repeat recipe to a revised complete unit
 program while preserving the partition dataset ID, ordered domains, layout,
 scale/guide policy, headers, and parent title. All stored facet values must
 remain observed; create a new composition when the dataset ID, domain, or
-repeat field list changes.
+repeat field list changes. Alternatively, pass one actual unit chart-authoring action
+name and its options to edit the retained full-data source in the same transaction.
+Specify exactly one of `program` or `action`; extension primitives, materializers,
+and composition actions cannot be source edits.
 
 
 ## `editFacetHeaders`

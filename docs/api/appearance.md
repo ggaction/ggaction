@@ -15,8 +15,8 @@ title: Appearance Encodings
 | --- | --- | --- | --- | --- |
 | `encodeSize` | point | quantitative, nominal, ordinal or constant | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; constant value replaces field size; field size replaces constant radius |
 | `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
-| `encodeOpacity` | point, line, rule, bar | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree |
-| `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
+| `encodeOpacity` | point, line, rule, bar, rect | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree; row-owned Rect cells |
+| `encodeStrokeWidth` | line, rule, rect | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels; row-owned Rect cells |
 | `encodeStrokeDash` | line, rule | nominal or constant | ordinal for field; none for constant | complete line series or rule item; series values must agree |
 | `encodeAngle` | point, tick | quantitative or constant | none | item; clockwise degrees; circles retain the angle as a visual no-op |
 | `encodePointRadius` / `encodeRadius` | point | constant | none | glyph radius in logical pixels; independent from Polar position r |
@@ -33,12 +33,12 @@ title: Appearance Encodings
 | `encodeSize` | `encodeSize({ field: "Acceleration" })` | Current point; linear scale; area range `[24, 196]` | Semantic size and concrete equal-area symbols |
 | `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
 | `encodeAngle` | `encodeAngle({ field: "direction" })` | Current point or Tick; direct clockwise degrees | Rotated concrete paths or line endpoints |
-| `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current Point/Rule/Line | Constant concrete opacity |
-| `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current Point/Rule/Line; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
+| `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current Point/Rule/Line/Bar/Rect | Constant concrete opacity |
+| `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current Point/Rule/Line/Bar/Rect; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
 | `encodeStroke` | `encodeStroke({ value: "#334155" })` | Current supported mark | Constant concrete outline color |
 | `encodeStroke` | `encodeStroke({ field: "status" })` | Current supported mark; independent ordinal stroke scale | Field-driven item or series outline |
-| `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current Line/Rule | Constant concrete width |
-| `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; quantitative scale; width range `[1, 8]` | Field-driven rule items or line series |
+| `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current Line/Rule/Rect | Constant concrete width |
+| `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule/rect; quantitative scale; width range `[1, 8]` | Field-driven rule/rect items or line series |
 | `encodeBarWidth` | `encodeBarWidth()` | Current bar; first assignment uses band `0.72` | Saved width; rectangles when positions are complete |
 | `selectMarks` | `selectMarks({ field: "Horsepower", op: "max" })` | Current or unique mark; deterministic selection ID | Reusable semantic final-item selection |
 | `editMarkSelection` | `editMarkSelection({ field: "Horsepower", op: "min" })` | Current or unique stored selection | Same ID/target with a replaced selector |

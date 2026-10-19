@@ -707,9 +707,11 @@
     "receivers": [
       "matrix"
     ],
-    "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `matrix`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "652d8f07e8d8fcead654c17b662ce3ffa7df5f602cdbd8d5c400dd22c6d4eda2",
+    "resources": [
+      "target: \"plot\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `matrix`. Resource selectors used here: `target: \"plot\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "ae6b2c095be27f09926604eaa290828c5f57454c8699b8dabdb403af4de8c295",
     "executable": false
   },
   {

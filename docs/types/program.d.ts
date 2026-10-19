@@ -262,7 +262,9 @@ export interface RepeatChartsOptions {
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
 }
-export interface EditFacetSourceOptions { program: ChartProgram; }
+export type EditFacetSourceOptions =
+  | { program: ChartProgram; action?: never }
+  | { program?: never; action: { method: string; options?: Readonly<Record<string, unknown>> } };
 export interface EditFacetHeadersOptions {
   fontSize?: number;
   fontFamily?: string;
@@ -4410,6 +4412,7 @@ export type OpacityScaleOptions = ScaleFields<
   unknown?: number;
 };
 
+/** Constant or quantitative opacity on Point, Rule, Line, Bar, or row-owned Rect marks. */
 export type OpacityEncodingOptions =
   | { value: number; field?: never; target?: string; fieldType?: never; scale?: never }
   | {
@@ -4471,6 +4474,7 @@ export type CreateReferenceBandOptions =
       readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic];
     });
 
+/** Constant or quantitative stroke width on Line, Rule, or row-owned Rect marks. */
 export type StrokeWidthEncodingOptions =
   | {
       value: number;

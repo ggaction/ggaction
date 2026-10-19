@@ -3095,6 +3095,8 @@ export type CreateReferenceBandOptions =
   | (DynamicReferenceBinding & Omit<RectMarkOptions, "id" | "data" | "source"> & {
       readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic];
     });
+
+/** Constant or quantitative stroke width on Line, Rule, or row-owned Rect marks. */
 ```
 
 </details>
@@ -5097,7 +5099,9 @@ Related types: [`FacetHeaderRole`](#type-facetheaderrole) · [`DisplayLabelMap`]
 <summary>Expand EditFacetSourceOptions</summary>
 
 ```typescript
-export interface EditFacetSourceOptions { program: ChartProgram; }
+export type EditFacetSourceOptions =
+  | { program: ChartProgram; action?: never }
+  | { program?: never; action: { method: string; options?: Readonly<Record<string, unknown>> } };
 ```
 
 </details>
@@ -8687,6 +8691,8 @@ export type OpacityScaleOptions = ScaleFields<
   range?: "auto" | readonly [number, number];
   unknown?: number;
 };
+
+/** Constant or quantitative opacity on Point, Rule, Line, Bar, or row-owned Rect marks. */
 ```
 
 </details>

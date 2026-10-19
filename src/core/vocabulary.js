@@ -242,3 +242,16 @@ export const LEGEND_POSITIONS = Object.freeze(["left", "right", "top", "bottom",
 export const LEGEND_BLOCK_LAYOUTS = Object.freeze(["row", "column", "wrap"]);
 
 export const AXIS_RESOURCE_CHANNELS = Object.freeze(["x", "y", "theta", "radius", "parallel"]);
+
+// Shared target policy for authoring and read-only action inspection.
+const marks = (...types) => Object.freeze(types);
+export const APPEARANCE_MARK_TYPES = Object.freeze({
+  encodeColor: marks('point', 'line', 'bar', 'area', 'arc', 'rect', 'text'),
+  encodeStroke: marks('point', 'line', 'area', 'bar', 'rect', 'arc', 'rule', 'tick'),
+  encodeOpacity: marks('point', 'rule', 'line', 'bar', 'rect'),
+  encodeStrokeWidth: marks('rule', 'line', 'rect'),
+  encodeStrokeDash: marks('line', 'rule'),
+  encodeSize: marks('point'),
+  encodeShape: marks('point'),
+  encodeAngle: marks('point', 'tick')
+});

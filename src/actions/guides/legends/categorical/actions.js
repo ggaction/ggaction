@@ -259,6 +259,42 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
   const candidates = args.target === undefined ? layers : layers.filter(layer => layer.id === args.target);
   const channels = args.channels;
   if (channels !== undefined) validateLegendChannels(channels, "createLegend");
+  // Independent appearance channels on cells, bars and arcs are separate
+  // blocks. Mixed sampled channels likewise cannot use a categorical symbol.
+  // Resolve each existing owner before any child action changes the program.
+  const point = candidates.length === 1 && candidates[0].mark?.type === "point";
+  const continuousChannel = channel => ["color", "stroke"].includes(channel) &&
+    !["ordinal", "band", "point"].includes(findSemanticScale(program, candidates[0]?.encoding?.[channel]?.scale)?.type);
+  const independentPoint = point && ((channels ?? []).some(continuousChannel) || new Set((channels ?? []).filter(channel => !["size", "opacity", "strokeWidth"].includes(channel))
+    .map(channel => candidates[0].encoding?.[channel]?.field)).size > 1);
+  if (channels?.length > 1 && (independentPoint || channels.some(c => ["opacity", "strokeWidth"].includes(c)) ||
+      candidates.length === 1 && ["rect", "bar", "arc", "text"].includes(candidates[0].mark?.type))) {
+    const { representation, values, count, symbol, gradient, overflow, ...common } = args;
+    const sampled = channels.filter(channel => ["opacity", "strokeWidth"].includes(channel));
+    const primary = channels.filter(channel => !sampled.includes(channel));
+    const primaryBlocks = new Map();
+    for (const channel of primary.filter(channel => channel !== "size")) {
+      const field = continuousChannel(channel) ? `channel:${channel}` : `field:${candidates[0]?.encoding?.[channel]?.field}`;
+      if (!primaryBlocks.has(field)) primaryBlocks.set(field, []);
+      primaryBlocks.get(field).push(channel);
+    }
+    const grouped = [...primaryBlocks.values()];
+    if (primary.includes("size")) {
+      const categorical = grouped.find(block => !block.some(continuousChannel));
+      if (categorical) categorical.push("size");
+      else grouped.push(["size"]);
+    }
+    const blocks = point ? [...grouped, ...sampled.map(channel => [channel])]
+      : channels.map(channel => [channel]);
+    const steps = blocks.flatMap(block => resolveRawLegendCreationPlan(program,
+      block.includes("color") && (representation !== undefined || gradient !== undefined) ? { ...args, channels: block }
+        : { ...common, channels: block,
+          ...(block.some(continuousChannel) && gradient !== undefined ? { gradient } : {}),
+          ...(block.some(channel => !["size", "opacity", "strokeWidth"].includes(channel) &&
+            ["ordinal", "band", "point"].includes(findSemanticScale(program, candidates[0]?.encoding?.[channel]?.scale)?.type)) && overflow !== undefined ? { overflow } : {}),
+          ...(block.some(channel => ["size", "opacity", "strokeWidth"].includes(channel)) && count !== undefined ? { count } : {}) }, layers).steps);
+    return { steps, finish: "always" };
+  }
   // Two independent sampled channels can remain when color becomes constant.
   // Their existing owners create separate blocks; there is no categorical block.
   if (channels === undefined && candidates.length === 1 &&

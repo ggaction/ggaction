@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:0937ed383aaa84587efdf474247177ac404f7025cf487c4f8f9e3b22269bcdf0",
-    "sourceCommit": "a377b6c22dc361bdc235180e490d4fd90f4ae2c3",
+    "contractId": "sha256:48d296358c3a8929e1b71c6e4a8611b653e93b20763e1bb966583fd053a4bcc3",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "8097a85bb56c03fe04f0881683d0dd92fb8ef4967aa2111000c6038498f2f905"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -1035,8 +1035,8 @@
         "calendar-interval-bar-widths",
         "related"
       ],
-      "bytes": 18811,
-      "sha256": "8a850343c0875a15633b23c078d54510489ae93c9cac473ab35f4b7593998b26"
+      "bytes": 18879,
+      "sha256": "98f3bfa27f5dfe38be2d390e8576efb9c067a7bc58b8eeef052a252ef0ffbdf3"
     },
     {
       "order": 64,
@@ -1158,8 +1158,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 8641,
-      "sha256": "f6514513d09a64dd1d2d4bc76e966e989cbb3a87d8da4f12a56d23d28cd66413"
+      "bytes": 9032,
+      "sha256": "865a17f22e461f109ab94f2bd48249603e0a889b3f8f7f8a4ccf8145ed0fda4f"
     },
     {
       "order": 71,
@@ -1405,8 +1405,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 6263,
-      "sha256": "32496faa5dd27820c7e3f633241d2040a4c4a123296ef361adb8b351fdbe7c69"
+      "bytes": 6352,
+      "sha256": "cf8354058961dd98c41d456c9418b1b1486d8c0764c15a721dea744e42c2e4ac"
     },
     {
       "order": 85,
@@ -1619,8 +1619,8 @@
         "put-a-compact-categorical-legend-inside-the-plot",
         "related"
       ],
-      "bytes": 8366,
-      "sha256": "8f07b98e2713b8e580d993df0e841acde2c7bce2d2ac0f80c2f9e71870a6e9d3"
+      "bytes": 8378,
+      "sha256": "a39499f7197476e342e3be563f20284e15aba34dcc6a9d57279c7a2bdfe32c33"
     },
     {
       "order": 98,
@@ -1833,8 +1833,8 @@
         "inspect-concrete-results",
         "related"
       ],
-      "bytes": 3909,
-      "sha256": "7d2995e97dc0e761e6e70d1dc6103844a21a41cd51884b2754f613b9df0ea438"
+      "bytes": 4524,
+      "sha256": "3a416e20b7067911feeaf4b7d6b64c7012994e83d39eb15b357376f3974165ba"
     },
     {
       "order": 111,
@@ -2050,8 +2050,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 165685,
-      "sha256": "5114a0e3856cb3c1fe8a3ef6870064ce942aaa32f23c3d9d7e4e7a1f8d0e2aea"
+      "bytes": 166179,
+      "sha256": "9ce49c7078e95b21e2f87ba8d8c27a7fa3fa6439ac91138b9b1227339b5dee40"
     },
     {
       "order": 119,
@@ -2146,8 +2146,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 62062,
-      "sha256": "0fb8dec5ccf3a0d562c8c9754abf19910a29dd3a140c5bd564a83855af013996"
+      "bytes": 62083,
+      "sha256": "a3704864d3545040a0ff1e6aa249c9148af8e53fc72356f96db913d678b996d9"
     },
     {
       "order": 121,
@@ -2300,8 +2300,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 132740,
-      "sha256": "b3274a5560cc9c4990fe6bff4064733694869ba1bf7779bc66edcf8d7ff71b44"
+      "bytes": 133064,
+      "sha256": "8f159a78a420bd219f9dcff55f3e92518be6e545d39c15f3135a908774532ab8"
     },
     {
       "order": 123,
@@ -3020,8 +3020,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 346621,
-      "sha256": "a4aa860d06ac9b895d1d87a5f91b2d74eef68a5de198790e4a2c827097ce1f09"
+      "bytes": 346914,
+      "sha256": "84c93cbb3b0dad907a3bb94a309bb56f5630c1c69e3cadeb05bf5667a18945f4"
     },
     {
       "order": 127,
@@ -3051,8 +3051,8 @@
         "editgraphics-target-property-value-remove",
         "scale-materialization"
       ],
-      "bytes": 16959,
-      "sha256": "9b53801eff29b0c23a063790c58c5ec35a311ad9016151f385f6da60419735ef"
+      "bytes": 16887,
+      "sha256": "6290b807e031ee8069a7df5b38464bea8906ecdd59f5124a91617d4a1de87f96"
     },
     {
       "order": 129,
@@ -3139,8 +3139,8 @@
         "replace-one-stable-slot",
         "insert-remove-and-reorder-named-concat-children"
       ],
-      "bytes": 6438,
-      "sha256": "bb361c47a285ea29c454fb414ce8d16b10ba909b5e9bc5c5a511d5b348c311f7"
+      "bytes": 6978,
+      "sha256": "1e769c97efc0abf34cec5e36643f27950e37b944a5684873925c24aa930a425b"
     },
     {
       "order": 135,
@@ -3375,8 +3375,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "509492acc1ad6719b78b6929487ffb4149c8a5724f95a2a994cd4a1e2d2258b5"
+      "bytes": 3000,
+      "sha256": "9c46b330bd6e06a5ebd823778b7104737b483199fa3eda7d699bcc8cf62f9119"
     },
     {
       "order": 150,

@@ -892,3 +892,10 @@ and facet-parent-symbol-window unit tests.
 - Facade guides always resolve their own mark target; a second mark cannot satisfy a combination on behalf of a line, area, bar, heatmap, interval, or endpoint facade. Their declarations permit `combine: "separate"` only. Ordinary Scatter/Regression/Strip/Beeswarm point facades retain both combinations. PolarScatter retains ordinal `size-shape`; quantitative `color-size` requires a Cartesian point. Raincloud retains ordinal `size-shape` through its enabled points, while its categorical-only color input cannot satisfy `color-size`.
 - `titlePosition: "bottom"` remains gradient-only. Path and categorical-only facade guide declarations permit top/left; actual continuous-color consumers and generic guide actions retain bottom. No runtime inference, target override, or coverage exemption is added.
 - Approval scope remains the one-point-owner contract for ordinal combination and the Cartesian-circle contract for quantitative combination. Evidence: `test/contracts/facade-legend-combination-types.test.js`, `test/contracts/facade-legend-owner-capabilities.test.js`, and the exhaustive Cartesian/hierarchical realistic facade matrices. Those matrices retain the original profiles and add actual successful combination, dashed-frame, separate, and gradient-bottom calls.
+
+## Guide inference and mixed appearance channels
+
+- Datum-only positional anchors는 자동 axis/grid 후보가 아니다. Rug의 anchor scale에 축 제목을 추론하지 않는다.
+- `createLegend({channels:[...]})`는 Rect/Bar/Arc/Text의 독립 channel들을 기존 owner별 block으로 생성한다. Opacity/strokeWidth sampled block도 다른 channel과 함께 생성할 수 있다. Point의 호환되는 categorical color/size/shape block은 유지하며 서로 다른 field 또는 continuous color/stroke는 별도 block으로 나눈다. Categorical overflow는 continuous/sample block에 전달하지 않는다.
+- `createGuides`는 facet/grid/repeat parent에서도 retained source의 native guide action을 실행하고 모든 child를 재도출한다. 기존 guide collections와 parent title/header/layout은 보존한다.
+- Evidence: `test/unit/actions/facet-source-action.test.js`, `test/unit/actions/encodings/rect-appearance.test.js`, `test/unit/actions/guides/mixed-appearance-guides.test.js`.

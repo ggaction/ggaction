@@ -1,3 +1,4 @@
+import { APPEARANCE_MARK_TYPES } from "../../core/vocabulary.js";
 import { action } from "../../core/action.js";
 import {
   readNominalField,
@@ -33,9 +34,7 @@ import { applyRequestedItemMissingPolicy } from
 const OPTIONS = Object.freeze([
   "target", "value", "field", "fieldType", "temporalUnit", "scale"
 ]);
-const MARK_TYPES = Object.freeze([
-  "point", "line", "area", "bar", "rect", "arc", "rule", "tick"
-]);
+const MARK_TYPES = APPEARANCE_MARK_TYPES.encodeStroke;
 
 function withoutConstantStroke(program, layer) {
   const config = { ...program.markConfigs[layer.id] };

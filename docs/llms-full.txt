@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:0937ed383aaa84587efdf474247177ac404f7025cf487c4f8f9e3b22269bcdf0. Status: development. Runtime source: a377b6c22dc361bdc235180e490d4fd90f4ae2c3. Release baseline: v0.0.13.
+Contract: sha256:48d296358c3a8929e1b71c6e4a8611b653e93b20763e1bb966583fd053a4bcc3. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/a377b6c22dc361bdc235180e490d4fd90f4ae2c3/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/a377b6c22dc361bdc235180e490d4fd90f4ae2c3/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -7243,8 +7243,8 @@ The tables below are generated from the same reviewed capability registry used b
 | --- | --- | --- | --- | --- |
 | `encodeSize` | point | quantitative, nominal, ordinal or constant | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; constant value replaces field size; field size replaces constant radius |
 | `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
-| `encodeOpacity` | point, line, rule, bar | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree |
-| `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
+| `encodeOpacity` | point, line, rule, bar, rect | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree; row-owned Rect cells |
+| `encodeStrokeWidth` | line, rule, rect | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels; row-owned Rect cells |
 | `encodeStrokeDash` | line, rule | nominal or constant | ordinal for field; none for constant | complete line series or rule item; series values must agree |
 | `encodeAngle` | point, tick | quantitative or constant | none | item; clockwise degrees; circles retain the angle as a visual no-op |
 | `encodePointRadius` / `encodeRadius` | point | constant | none | glyph radius in logical pixels; independent from Polar position r |
@@ -7265,8 +7265,8 @@ The tables below are generated from the same reviewed capability registry used b
 | Discretized color interval | point, aggregate bar, rect | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
 | Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
-| Opacity | point, line, bar | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
-| Stroke width | line, rule | quantitative strokeWidth samples; line symbol |
+| Opacity | point, line, bar, rect | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
+| Stroke width | line, rule, rect | quantitative strokeWidth samples; line symbol |
 
 | Axis family | Create | Edit | Editable components |
 | --- | --- | --- | --- |
@@ -9010,6 +9010,12 @@ be selected.
 
 [Axes](./api/axes/) · [Grids](./api/grids/) · [Legends](./api/legends/) ·
 [Titles](./api/titles/)
+
+`createGuides` also accepts facet parents: it creates applicable guides on the
+retained source and rederives all panels using the current facet guide policy.
+Datum-only anchors, such as a rug baseline, do not infer an axis. Independent
+appearance channels can be requested together through `legend.channels`; sampled
+opacity and stroke-width legends become separate blocks alongside color.
 
 <!-- Source: /api/titles/ -->
 
@@ -11027,8 +11033,8 @@ See [Scale options](./api/scales/) and [Legends](./api/legends/).
 | --- | --- | --- | --- | --- |
 | `encodeSize` | point | quantitative, nominal, ordinal or constant | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; constant value replaces field size; field size replaces constant radius |
 | `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
-| `encodeOpacity` | point, line, rule, bar | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree |
-| `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
+| `encodeOpacity` | point, line, rule, bar, rect | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree; row-owned Rect cells |
+| `encodeStrokeWidth` | line, rule, rect | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels; row-owned Rect cells |
 | `encodeStrokeDash` | line, rule | nominal or constant | ordinal for field; none for constant | complete line series or rule item; series values must agree |
 | `encodeAngle` | point, tick | quantitative or constant | none | item; clockwise degrees; circles retain the angle as a visual no-op |
 | `encodePointRadius` / `encodeRadius` | point | constant | none | glyph radius in logical pixels; independent from Polar position r |
@@ -11043,12 +11049,12 @@ See [Scale options](./api/scales/) and [Legends](./api/legends/).
 | `encodeSize` | `encodeSize({ field: "Acceleration" })` | Current point; linear scale; area range `[24, 196]` | Semantic size and concrete equal-area symbols |
 | `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
 | `encodeAngle` | `encodeAngle({ field: "direction" })` | Current point or Tick; direct clockwise degrees | Rotated concrete paths or line endpoints |
-| `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current Point/Rule/Line | Constant concrete opacity |
-| `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current Point/Rule/Line; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
+| `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current Point/Rule/Line/Bar/Rect | Constant concrete opacity |
+| `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current Point/Rule/Line/Bar/Rect; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
 | `encodeStroke` | `encodeStroke({ value: "#334155" })` | Current supported mark | Constant concrete outline color |
 | `encodeStroke` | `encodeStroke({ field: "status" })` | Current supported mark; independent ordinal stroke scale | Field-driven item or series outline |
-| `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current Line/Rule | Constant concrete width |
-| `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; quantitative scale; width range `[1, 8]` | Field-driven rule items or line series |
+| `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current Line/Rule/Rect | Constant concrete width |
+| `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule/rect; quantitative scale; width range `[1, 8]` | Field-driven rule/rect items or line series |
 | `encodeBarWidth` | `encodeBarWidth()` | Current bar; first assignment uses band `0.72` | Saved width; rectangles when positions are complete |
 | `selectMarks` | `selectMarks({ field: "Horsepower", op: "max" })` | Current or unique mark; deterministic selection ID | Reusable semantic final-item selection |
 | `editMarkSelection` | `editMarkSelection({ field: "Horsepower", op: "min" })` | Current or unique stored selection | Same ID/target with a replaced selector |
@@ -13005,8 +13011,8 @@ whole-target content, or whole-group `blockLayout`/`at` controls.
 | Discretized color interval | point, aggregate bar, rect | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
 | Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
-| Opacity | point, line, bar | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
-| Stroke width | line, rule | quantitative strokeWidth samples; line symbol |
+| Opacity | point, line, bar, rect | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
+| Stroke width | line, rule, rect | quantitative strokeWidth samples; line symbol |
 
 ## Focused legend families
 
@@ -15280,7 +15286,8 @@ const description = describeAction(program, {
 `parameterDefinitions` comes from the same generated action-card and type
 contract as the public reference. Required options, unknown options, an
 explicit target mismatch, known missing fields, and supported mark-family
-constraints appear in `requirements`, `checks`, and structured `findings`.
+constraints use the same appearance-channel policy as the actual encoding actions
+(including Rect opacity and stroke width) and appear in `requirements`, `checks`, and structured `findings`.
 `applicability: "supported"` means the static checks passed; numerical fitting,
 allocation, and rendering remain `not_run`. Registered extension actions with
 no built-in descriptor return `unverified`.
@@ -15336,6 +15343,15 @@ Targets use `{ kind, id, childPath? }`, where `kind` is `data`, `mark`, `scale`,
 [Data updates and snapshots](./data-updates/) ·
 [ChartProgram and immutability](./concepts/chart-program/) ·
 [Errors and recovery](./errors-and-recovery/)
+
+A facet parent retains source semantics, while its drawable marks belong to the
+child panels. The parent's retained mark template reports concrete structure as
+`not_applicable`; inspection still checks each actual child graphic.
+
+Facet preflight also checks partition ancestry and supported transform replay
+using the same pure dependency planner as facet creation. Aggregate output fields
+that are not valid partition ancestors return a `facet-partition` finding before
+any chart action executes.
 
 <!-- Source: /errors-and-recovery/ -->
 
@@ -18411,19 +18427,24 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `program` | Required | `ChartProgram` |
+| `program` | Optional / branch-dependent | `ChartProgram \| undefined` |
+| `action` | Optional / branch-dependent | `{ method: string; options?: Readonly<Record<string, unknown>> \| undefined; } \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 editFacetSource({ program })
+editFacetSource({ action: { method, options? } })
 ```
 
 Reapply the current facet, grid, or repeat recipe to a revised complete unit
 program while preserving the partition dataset ID, ordered domains, layout,
 scale/guide policy, headers, and parent title. All stored facet values must
 remain observed; create a new composition when the dataset ID, domain, or
-repeat field list changes.
+repeat field list changes. Alternatively, pass one actual unit chart-authoring action
+name and its options to edit the retained full-data source in the same transaction.
+Specify exactly one of `program` or `action`; extension primitives, materializers,
+and composition actions cannot be source edits.
 
 ## `editFacetHeaders`
 
@@ -21517,8 +21538,8 @@ encodeStrokeWidth({ value, target? })
 encodeStrokeWidth({ field, target?, fieldType?, scale? })
 ```
 
-Assign a non-negative finite logical Canvas width to a Line or Rule. Field mode
-maps one quantitative value per rule row or complete line series. Constant mode
+Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect. Field mode
+maps one quantitative value per rule/rect row or complete line series. Constant mode
 clears the field and its own sampled width legend; fieldType/scale are invalid in
 constant mode. Active channel selections must be removed before replacement.
 [Appearance encodings](./api/appearance/)
@@ -21657,7 +21678,7 @@ encodeOpacity({ value, target? })
 encodeOpacity({ field, target?, fieldType?, scale? })
 ```
 
-Apply a constant point/rule/line opacity from `0` to `1`, or map a quantitative field
+Apply a constant point/rule/line/bar/rect opacity from `0` to `1`, or map a quantitative field
 through a linear opacity scale. The two modes are mutually exclusive and may
 replace each other through the same action. Lines require one raw field value per
 series and support sampled opacity legends. Constant mode clears its field and
@@ -25528,6 +25549,8 @@ Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Interval legends support all four
 edges with layout `"edge"`, side single columns and horizontal item grids. Explicit `channels` creates exactly
 the selected content; include `"size"` in a point categorical-and-size request.
+Compatible point categorical channels stay combined. Independent fields,
+continuous color/stroke, opacity, and stroke width use separate native blocks.
 For outside top/bottom legends, omitting `offset` places the occupied legend after
 the same-side axis line, ticks, labels, and title, with the family's native gap
 (8 pixels for categorical legends, 30 for continuous families). Axis edits and
@@ -25900,7 +25923,9 @@ createGuides({ axes?, grid?, legend? })
 
 Create applicable axes, grids, and legends; omitted branches infer applicability, false skips a branch, and explicit direction objects enable only named directions: `axes:{x:false}` requests neither axis while `axes:{x:false,y:{}}` requests y.
 Automatic calls preserve existing guide collections and add missing applicable
-collections; explicit collection objects retain strict create semantics.
+collections; explicit collection objects retain strict create semantics. Datum-only
+anchors do not infer axes. On facet parents this action updates the retained source
+and rederives its panels while preserving the parent title and guide policy.
 [Guides](./api/guides/)
 
 ## `removeLegend`
@@ -30250,6 +30275,8 @@ export type CreateReferenceBandOptions =
   | (DynamicReferenceBinding & Omit<RectMarkOptions, "id" | "data" | "source"> & {
       readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic];
     });
+
+/** Constant or quantitative stroke width on Line, Rule, or row-owned Rect marks. */
 ```
 
 Related types: [`RectMarkOptions`](./reference/types/#type-rectmarkoptions) · [`ReferenceBinding`](./reference/types/#type-referencebinding) · [`DynamicReferenceBinding`](./reference/types/#type-dynamicreferencebinding) · [`ReferenceStatistic`](./reference/types/#type-referencestatistic).
@@ -31964,7 +31991,9 @@ Related types: [`FacetHeaderRole`](./reference/types/#type-facetheaderrole) · [
  Expand EditFacetSourceOptions
 
 ```typescript
-export interface EditFacetSourceOptions { program: ChartProgram; }
+export type EditFacetSourceOptions =
+  | { program: ChartProgram; action?: never }
+  | { program?: never; action: { method: string; options?: Readonly<Record<string, unknown>> } };
 ```
 
 ### `EditFilteredDataOptions` {#type-editfiltereddataoptions}
@@ -34960,6 +34989,8 @@ export type OpacityScaleOptions = ScaleFields<
   range?: "auto" | readonly [number, number];
   unknown?: number;
 };
+
+/** Constant or quantitative opacity on Point, Rule, Line, Bar, or row-owned Rect marks. */
 ```
 
 Related types: [`ScaleFields`](./reference/types/#type-scalefields).
@@ -38475,12 +38506,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/a377b6c22dc361bdc235180e490d4fd90f4ae2c3/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/a377b6c22dc361bdc235180e490d4fd90f4ae2c3/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39554,14 +39585,23 @@ still rejects `axes: "outer"`.
 
 ## Replace the repeated source recipe
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `matrix`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `matrix`. Resource selectors used here: `target: "plot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 ```javascript
 const revised = matrix.editFacetSource({ program: revisedUnit });
+const styled = matrix.editFacetSource({
+  action: { method: "encodeOpacity", options: { target: "plot", value: 0.6 } }
+});
 ```
 
 `editFacetSource` reapplies the stored facet, grid, or repeat recipe to a new
-complete unit program. It preserves layout, scale and guide policies, header
+complete unit program. Alternatively, `action: { method, options? }` invokes one
+public unit chart-authoring function against the retained full-data source before
+rederiving every panel. Specify exactly one input form. Source edits retain new
+label and statistical-reference recipes; they do not edit just one filtered cell.
+Primitive, materialization, and composition actions are rejected.
+
+It preserves layout, scale and guide policies, header
 style, parent title, and stable child IDs. The revised unit must still contain
 the stored partition dataset and fields or repeated target role, and every
 stored ordered value must remain observed. To change a partition dataset ID,
@@ -40739,9 +40779,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:0937ed383aaa84587efdf474247177ac404f7025cf487c4f8f9e3b22269bcdf0` |
+| Contract fingerprint | `sha256:48d296358c3a8929e1b71c6e4a8611b653e93b20763e1bb966583fd053a4bcc3` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
-| Runtime source commit | `a377b6c22dc361bdc235180e490d4fd90f4ae2c3` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 286 |
 | Declared actions in that release | 234 |

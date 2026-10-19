@@ -388,7 +388,8 @@
       "marks": [
         "point",
         "line",
-        "bar"
+        "bar",
+        "rect"
       ],
       "channels": "quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend"
     },
@@ -396,7 +397,8 @@
       "family": "Stroke width",
       "marks": [
         "line",
-        "rule"
+        "rule",
+        "rect"
       ],
       "channels": "quantitative strokeWidth samples; line symbol"
     }
@@ -625,21 +627,23 @@
         "point",
         "line",
         "rule",
-        "bar"
+        "bar",
+        "rect"
       ],
       "fieldTypes": "quantitative or constant",
       "scales": "linear for field; none for constant",
-      "grain": "point/rule item, complete line series, or final bar cell; values within one series/cell must agree"
+      "grain": "point/rule item, complete line series, or final bar cell; values within one series/cell must agree; row-owned Rect cells"
     },
     {
       "action": "encodeStrokeWidth",
       "marks": [
         "line",
-        "rule"
+        "rule",
+        "rect"
       ],
       "fieldTypes": "quantitative or constant",
       "scales": "linear, log, sqrt, pow, symlog for field; none for constant",
-      "grain": "complete line series or rule item; width in logical pixels"
+      "grain": "complete line series or rule item; width in logical pixels; row-owned Rect cells"
     },
     {
       "action": "encodeStrokeDash",

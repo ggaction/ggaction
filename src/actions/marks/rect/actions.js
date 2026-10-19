@@ -172,6 +172,11 @@ const editRectMark = /* @__PURE__ */ action(
         "editRectMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
       );
     }
+    for (const channel of ["opacity", "strokeWidth"]) {
+      if (Object.hasOwn(args, channel) && layer.encoding?.[channel] !== undefined) {
+        throw new Error(`editRectMark ${channel} conflicts with a field encoding; use ${channel === "opacity" ? "encodeOpacity" : "encodeStrokeWidth"} with value to replace it.`);
+      }
+    }
     const semantic = Object.hasOwn(args, "missing")
       ? this.editSemantic({
           property: `layer[${layer.id}].mark.missing`,
