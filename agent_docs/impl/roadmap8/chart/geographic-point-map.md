@@ -1,6 +1,8 @@
 # 지리 Point map — X01 확장 계약 제안
 
-상태: **설계만 작성, API 구현 없음**. Roadmap 8의 조건부 확장 E01을 검토한다.
+상태: **사용자 명시적 제외, 구현하지 않음**. 2026-10-20 사용자가 “지도는 안해.
+ggaction에도안하고 Autocomplete에도지도ㄴㄴ”라고 결정했다. ggaction 지리 API와
+Autocomplete 지도 추천을 모두 범위에서 제외한다. 아래 제안은 거절된 설계 이력이며 활성 계획이 아니다.
 2026-10-20 앱 사용자 테스팅 수정 요청은 지리 차트 필요성을 승인했으나 아래 새 public/schema
 결정의 세부값을 승인한 것은 아니다. 기존 동작 수정은 이 Gate와 독립적으로 진행한다.
 
@@ -8,9 +10,9 @@
 
 - [x] 현재 coordinate/path 제약 조사
 - [x] 최소 public 호출·저장 의미·경계·인수 시나리오 작성
-- [ ] Gate A: public/data 계약 승인 — `ready-for-review`
-- [ ] Gate V: primitive 시각 증거 승인 — `planned`
-- [ ] 승인된 public API 구현·consumer matrix·전체 native 검증
+- [x] Gate A: `changes-requested` — 사용자 범위 결정으로 지도 전체 제외, 승인 없음
+- [x] Gate V: 범위 제외로 진행하지 않음
+- [x] 지리 API 구현 의무를 명시적 사용자 범위 변경으로 종료
 
 검토 기준 runtime revision은 `190f5a96`이다. 이 문서의 제안은 executable API가 아니며,
 아래 호출을 현재 버전에 실행하면 안 된다. 제안 자체를 담은 commit을 Gate A 검토 revision으로
