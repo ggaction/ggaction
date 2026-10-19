@@ -356,9 +356,14 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
       const entries = edgeKinds(this, side);
       if (entries.length === 0) return [];
       if (entries.length === 1) return [{ side, entries }];
-      const blocks = entries.map(([kind, config]) =>
-        blockDescriptor(this, kind, config)
-      );
+      const blocks = entries.map(([kind, config]) => {
+        const effective = effectiveLegendOffsetConfig(this, kind, config);
+        // Preserve each family's native lane gap; inheritance selects the edge
+        // and inference policy, not a replacement for the stored block offset.
+        const placement = { ...config, position: side, inferredOffset: effective.inferredOffset };
+        return blockDescriptor(this, kind, { ...config,
+          offset: resolveLegendAxisOffset(this, placement, plot) });
+      });
       const plan = resolveSideLegendLane({
         side,
         plot,
@@ -415,7 +420,20 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
     for (const { side, entries } of plans) {
       const ids = entries.flatMap(([kind]) => existingIds(next, kind));
       next = alignLegendTextBoxes(next, ids);
-      const bounds = unionLegendBounds(next, ids);
+      let bounds = unionLegendBounds(next, ids);
+      // A single block bypasses the shared-lane planner. Re-anchor inferred
+      // offsets from current axis paint, without accumulating earlier shifts.
+      if (entries.length === 1) {
+        const [kind, config] = entries[0];
+        const effective = effectiveLegendOffsetConfig(next, kind, config);
+        const offset = resolveLegendAxisOffset(next, effective, plot);
+        if (effective.inferredOffset === true && offset !== effective.offset) {
+          const dx = side === "left" ? plot.x - offset - bounds.right
+            : plot.x + plot.width + offset - bounds.left;
+          for (const id of ids) next = translateGraphic(next, id, dx, 0);
+          bounds = unionLegendBounds(next, ids);
+        }
+      }
       const { dy } = resolveSingleSideLegendPlacement({ side, plot, canvas, bounds });
       for (const id of ids) next = translateGraphic(next, id, 0, dy);
     }
@@ -520,7 +538,8 @@ export const rematerializeLegendGroups = /* @__PURE__ */ action(
       if (placement === undefined) continue;
       const ids = existingIds(next, kind);
       next = alignLegendTextBoxes(next, ids);
-      const group = {placement: {...placement, offset: resolveLegendAxisOffset(next, placement, plot)}, blockLayout: "column"};
+      const group = {placement: {...placement, offset: resolveLegendAxisOffset(next, placement, plot)},
+        inferredOffset: config.inferredOffset, blockLayout: "column"};
       const [shift] = resolveLegendGroupPlacement({blocks: [{id: kind, bounds: unionLegendBounds(next, ids)}], group, plot, canvas,
         allowOverflow: next.materializationConfigs.canvas?.plot !== undefined});
       for (const id of ids) next = translateGraphic(next, id, shift.dx, shift.dy);

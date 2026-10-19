@@ -60,7 +60,8 @@ const dataScoped = comparePrograms(before, after, {
 
 The full comparison includes datasets and values, layer order and bindings,
 scales, coordinates, guides, Canvas settings, composition intent, and
-user-authored appearance. It ignores trace-only IDs, current selection context,
+user-authored appearance. Title position, alignment, and typography are included
+even when the title text is unchanged. It ignores trace-only IDs, current selection context,
 and cache identity. Changes are classified as `data`, `binding`, `structure`,
 `scale`, `guide`, or `style`. A targeted comparison also includes changed
 downstream consumers and sets `completeProgramComparison: false`.

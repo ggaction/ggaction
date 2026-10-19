@@ -1,6 +1,6 @@
 import {resetLegendClipGraphics, hasLegendClipGraphics}from"../legendClip.js";
 import { localLegendPosition } from "../legendGroups.js";
-import { needsLegendAxisReflow } from "./resources.js";
+import { needsLegendAxisReflow, needsSideLegendAxisReflow } from "./resources.js";
 import { getErrorDetails } from "../../core/diagnostics.js";
 import { planCanvasRematerialization } from "../layout.js";
 import { applyMaterializationPlan } from "../planner.js";
@@ -28,6 +28,11 @@ export function withGuideLayoutTransaction(program, apply) {
       result = apply(candidate);
       if (hasLegendClipGraphics(program) && !hasLegendClipGraphics(result) &&
           Object.values(result.guideConfigs.legend ?? {}).some(config => config.clipHeight !== undefined)) {
+        result = result.rematerializeLegend();
+      }
+      if (result.compositionSpec === undefined && needsSideLegendAxisReflow(program, result)) {
+        // Rebuild the native anchor before applying the current axis clearance.
+        // Axis removal must also discard any previously inferred displacement.
         result = result.rematerializeLegend();
       }
       if (result.compositionSpec === undefined && Object.values(result.guideConfigs.legend ?? {}).some(config =>

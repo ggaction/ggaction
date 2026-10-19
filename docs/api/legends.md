@@ -33,7 +33,7 @@ Right and left legends start at the top of the actual plot, excluding the chart 
 The complete legend includes its visible title, symbols, labels, and optional border.
 Multiple blocks share one stack whose top aligns with the plot; blocks retain their spacing.
 Shared facet legends align with the top of the translated child plots.
-The horizontal `offset` still controls the gap beside the plot.
+When `offset` is omitted, the native gap follows the actual occupied axis guides on the same edge, including left and right. An explicit `offset` remains anchored to the plot.
 Top, bottom, and in-plot corner positions keep their own alignment rules.
 
 ## Editing one block
@@ -90,7 +90,7 @@ Opacity legends support Point and Line; discretized color legends support Point,
 Combined point-series and size legends support every edge. Continuous size
 blocks sample the domain; discrete size blocks show every interval.
 Side positions stack the blocks; horizontal positions place them in rows. A left block must
-fit outside any left y-axis guides; use sufficient margin and offset.
+fit outside any left y-axis guides; omitted offsets reserve this clearance automatically.
 Stroke-width legends support all four edges and plot corners through `createLegend` and
 `editLegendLayout`. Use `layout: "edge"`, `offset`, `itemGap`, and horizontal
 `align`, `direction`, `columns`, and `titlePosition` controls. Title, count,
@@ -105,8 +105,9 @@ multiple blocks and only one block's samples, order, title, labels, spacing, or
 supported symbol appearance should change.
 Right-side layout requires sufficient right margin; bottom layout requires
 sufficient bottom margin; top layout requires enough top margin for its title,
-item grid, offset, and optional border. The library reports a layout error
-instead of resizing the Canvas or dropping symbol layers.
+item grid, offset, and optional border. A fixed outer Canvas reports a layout error when there is insufficient space. Use
+`createCanvas({ plot: { width, height } })` to retain exact plot dimensions while
+measured guide overflow grows the outer margins. Symbol layers are never dropped.
 
 ## Put a compact categorical legend inside the plot
 

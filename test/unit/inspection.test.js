@@ -138,3 +138,16 @@ test("inspectProgram keeps guide items separate from data-mark counts", () => {
   });
   assert.deepEqual(targeted.views.map(view => view.owner.id), ["axis"]);
 });
+
+
+test("comparePrograms detects title layout and typography changes without changing title text", () => {
+  const before = chart().createCanvas({ width: 900, height: 700, margin: 200 }).createTitle({ text: "Same title" });
+  for (const options of [{ titleStyle: { fontSize: 30 } }, { position: "bottom", offset: 80 }, { align: "right" }]) {
+    const after = before.editTitle(options);
+    assert.deepEqual(after.semanticSpec.title, before.semanticSpec.title);
+    const comparison = comparePrograms(before, after);
+    assert.equal(comparison.equivalence, "different");
+    assert.ok(comparison.changes.some(change => change.resource.id === "title" && change.effect === "guide"));
+  }
+  assert.equal(comparePrograms(before, before.editTitle({ titleStyle: { fontSize: 22 } })).equivalence, "equal");
+});

@@ -195,7 +195,7 @@ function resources(program, childPath = [], output = []) {
   for (const value of program.semanticSpec.scales) output.push({ ref: resourceRef("scale", value.id, childPath), value: { semantic: value, resolved: program.resolvedScales[value.id] } });
   for (const value of program.semanticSpec.coordinates) output.push({ ref: resourceRef("coordinate", value.id, childPath), value });
   for (const [id, value] of Object.entries(program.semanticSpec.guides)) output.push({ ref: resourceRef("guide", id, childPath), value: { semantic: value, graphic: program.graphicSpec.objects[id], config: program.guideConfigs[id] } });
-  if (Object.keys(program.semanticSpec.title).length) output.push({ ref: resourceRef("guide", "title", childPath), value: { semantic: program.semanticSpec.title, config: program.guideConfigs.title } });
+  if (Object.keys(program.semanticSpec.title).length) output.push({ ref: resourceRef("guide", "title", childPath), value: { semantic: program.semanticSpec.title, config: program.titleConfig } });
   if (program.graphicSpec.objects.canvas !== undefined) output.push({
     ref: resourceRef("canvas", "canvas", childPath),
     value: program.graphicSpec.objects.canvas

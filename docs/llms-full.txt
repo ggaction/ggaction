@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:5431d9033ba183924798f3c4c321fbb8adf1a1800e90d59311f8983d23e8f5f3. Status: development. Runtime source: 018ed9f82c7eb53a89f92374526f301b8ce8bbe1. Release baseline: v0.0.13.
+Contract: sha256:cd5adfc7e3d71b4d19a3880a61247d121971342365c3f7e1148eeb942f5c5bca. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/018ed9f82c7eb53a89f92374526f301b8ce8bbe1/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/018ed9f82c7eb53a89f92374526f301b8ce8bbe1/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12863,7 +12863,7 @@ Right and left legends start at the top of the actual plot, excluding the chart 
 The complete legend includes its visible title, symbols, labels, and optional border.
 Multiple blocks share one stack whose top aligns with the plot; blocks retain their spacing.
 Shared facet legends align with the top of the translated child plots.
-The horizontal `offset` still controls the gap beside the plot.
+When `offset` is omitted, the native gap follows the actual occupied axis guides on the same edge, including left and right. An explicit `offset` remains anchored to the plot.
 Top, bottom, and in-plot corner positions keep their own alignment rules.
 
 ## Editing one block
@@ -12910,7 +12910,7 @@ Opacity legends support Point and Line; discretized color legends support Point,
 Combined point-series and size legends support every edge. Continuous size
 blocks sample the domain; discrete size blocks show every interval.
 Side positions stack the blocks; horizontal positions place them in rows. A left block must
-fit outside any left y-axis guides; use sufficient margin and offset.
+fit outside any left y-axis guides; omitted offsets reserve this clearance automatically.
 Stroke-width legends support all four edges and plot corners through `createLegend` and
 `editLegendLayout`. Use `layout: "edge"`, `offset`, `itemGap`, and horizontal
 `align`, `direction`, `columns`, and `titlePosition` controls. Title, count,
@@ -12925,8 +12925,9 @@ multiple blocks and only one block's samples, order, title, labels, spacing, or
 supported symbol appearance should change.
 Right-side layout requires sufficient right margin; bottom layout requires
 sufficient bottom margin; top layout requires enough top margin for its title,
-item grid, offset, and optional border. The library reports a layout error
-instead of resizing the Canvas or dropping symbol layers.
+item grid, offset, and optional border. A fixed outer Canvas reports a layout error when there is insufficient space. Use
+`createCanvas({ plot: { width, height } })` to retain exact plot dimensions while
+measured guide overflow grows the outer margins. Symbol layers are never dropped.
 
 ## Put a compact categorical legend inside the plot
 
@@ -15178,7 +15179,8 @@ const dataScoped = comparePrograms(before, after, {
 
 The full comparison includes datasets and values, layer order and bindings,
 scales, coordinates, guides, Canvas settings, composition intent, and
-user-authored appearance. It ignores trace-only IDs, current selection context,
+user-authored appearance. Title position, alignment, and typography are included
+even when the title text is unchanged. It ignores trace-only IDs, current selection context,
 and cache identity. Changes are classified as `data`, `binding`, `structure`,
 `scale`, `guide`, or `style`. A targeted comparison also includes changed
 downstream consumers and sets `completeProgramComparison: false`.
@@ -38263,12 +38265,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/018ed9f82c7eb53a89f92374526f301b8ce8bbe1/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/018ed9f82c7eb53a89f92374526f301b8ce8bbe1/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -40527,9 +40529,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:5431d9033ba183924798f3c4c321fbb8adf1a1800e90d59311f8983d23e8f5f3` |
+| Contract fingerprint | `sha256:cd5adfc7e3d71b4d19a3880a61247d121971342365c3f7e1148eeb942f5c5bca` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
-| Runtime source commit | `018ed9f82c7eb53a89f92374526f301b8ce8bbe1` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 285 |
 | Declared actions in that release | 234 |
