@@ -399,7 +399,11 @@ export async function buildActionRelationships() {
   const directNames = new Set(actionNames);
   const relationships = new Map(actionNames.map(name => [name, new Set()]));
   const observed = new Set();
-  const programs = buildActionRelationshipPrograms();
+  const programs = [...buildActionRelationshipPrograms(), chart()
+    .createCanvas({ width: 500, height: 400, margin: 70 })
+    .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
+    .createScatterPlot({ x: "x", y: "y" })
+    .editAxes({ x: { labels: { fontSize: 11 } }, y: { labels: { fontSize: 11 } } })];
   for (const program of programs) {
     collectDirectRelationships(program.trace, directNames, relationships, observed);
   }

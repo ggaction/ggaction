@@ -192,6 +192,7 @@ interface ChartProgramActions {
   removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram;
   removeParallelAxes(options?: ParallelAxesOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
+  editAxes(options: EditAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
   createThetaAxis(options?: CompleteThetaAxisOptions): ChartProgram;
@@ -2409,6 +2410,8 @@ Related types: [`CompleteAxisOptions`](#type-completeaxisoptions) · [`XAxisPosi
 
 ```typescript
 export type CreateBarPlotOptions = {
+  /** Forward the native mark missing-value policy. */
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -3233,6 +3236,8 @@ Related types: [`ScaleOptions`](#type-scaleoptions).
 
 ```typescript
 export interface CreateScatterPlotOptions {
+  /** Forward the native mark missing-value policy. */
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -4622,6 +4627,25 @@ export interface ECDFOutputFields {
 
 </details>
 
+### `EditAxesOptions` {#type-editaxesoptions}
+
+<details markdown="1">
+<summary>Expand EditAxesOptions</summary>
+
+```typescript
+export interface EditAxesOptions {
+  x?: false | EditAxisOptions<XAxisPosition> | readonly [EditAxisOptions<XAxisPosition> & { target: string }, ...(EditAxisOptions<XAxisPosition> & { target: string })[]];
+  y?: false | EditAxisOptions<YAxisPosition> | readonly [EditAxisOptions<YAxisPosition> & { target: string }, ...(EditAxisOptions<YAxisPosition> & { target: string })[]];
+  theta?: false | EditThetaAxisOptions;
+  radius?: false | EditRadialAxisOptions;
+  parallel?: false | EditParallelAxisOptions | readonly [EditParallelAxisOptions, ...EditParallelAxisOptions[]];
+}
+```
+
+</details>
+
+Related types: [`EditAxisOptions`](#type-editaxisoptions) · [`XAxisPosition`](#type-xaxisposition) · [`YAxisPosition`](#type-yaxisposition) · [`EditThetaAxisOptions`](#type-editthetaaxisoptions) · [`EditRadialAxisOptions`](#type-editradialaxisoptions) · [`EditParallelAxisOptions`](#type-editparallelaxisoptions).
+
 ### `EditAxisOptions` {#type-editaxisoptions}
 
 <details markdown="1">
@@ -5244,6 +5268,8 @@ export interface EditLegendBorderOptions {
   channel?: LegendChannel;
   border: boolean | LegendBorderOptions;
 }
+
+/** Omitted/false axes are preserved; component false values remove existing components. */
 ```
 
 </details>

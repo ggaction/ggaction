@@ -163,6 +163,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createYAxisTitle`](current/AXES.md#createyaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editXAxisTitle`](current/AXES.md#editxaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editYAxisTitle`](current/AXES.md#edityaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editAxes`](current/AXES.md#editaxes) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editXAxis`](current/AXES.md#editxaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editYAxis`](current/AXES.md#edityaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeXAxis`](current/AXES.md#removexaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |

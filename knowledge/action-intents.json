@@ -1567,6 +1567,18 @@
     "editRegressionStatisticsData": {
       "target": "fitStatistics",
       "source": "anotherFit"
+    },
+    "editAxes": {
+      "x": {
+        "labels": {
+          "fontSize": 11
+        }
+      },
+      "y": {
+        "labels": {
+          "fontSize": 11
+        }
+      }
     }
   },
   "callPatternOverrides": {

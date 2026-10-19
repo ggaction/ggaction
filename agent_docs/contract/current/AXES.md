@@ -1253,3 +1253,21 @@ Wrapped line은 같은 원본 label group으로 처리한다. 자동 axis title 
 제한되지 않으며 측정 overflow를 Canvas guide transaction이 수용한다. 명시적 overlap:error와
 실제 label 충돌은 여전히 오류다. 고정 외부 Canvas 동작은 변경하지 않는다.
 Evidence: `test/unit/actions/canvas/inner-plot-size.test.js`.
+
+## `editAxes`
+
+- 사용자 승인: 2026-10-19 “ggaction 받아서 editAxes 구현해서 쓰자” 요청. 기존 channel editor의 option 계약을 그대로 묶는 aggregate이며 새 state owner나 rendering 경계는 없다.
+- Signature: `editAxes(options: EditAxesOptions): ChartProgram`.
+- `x`, `y`, `theta`, `radius`, `parallel`은 해당 기존 editor의 option object다. 생략/false는 보존하며 하나 이상 실제 edit가 필요하다. x/y array는 각 entry에 `target`이 필수이고 parallel array는 기존 `field`/`target` 선택을 사용한다. 빈 array, 중복 선택, theta/radius array는 거부한다.
+- 기존 axis/component만 수정한다. Resource binding, 누락/모호성, appearance, component 제거는 소유 editor 계약을 따른다. Scale/coordinate 재바인딩이나 guide 생성을 하지 않는다.
+- 전체 immutable speculative preflight와 하나의 guide layout transaction으로 최종 상태를 검증한다. 이전 program과 caller input은 불변이다. Trace에는 editAxes 하나와 실제 channel edit children이 남는다.
+
+### Formal values — `editAxes`
+
+- Implemented: `editAxes({ x?, y?, theta?, radius?, parallel? })`; each value is `false | ExistingAxisEditOptions`, with named x/y and parallel arrays as declared above.
+
+### Value coverage — `editAxes`
+
+- Proposed (NOT IMPLEMENTED): —
+- ✅ Covered: Cartesian multi-axis edits, named arrays, Polar/Parallel delegation, missing/invalid edits, atomic failure, immutable state, trace grouping, public declarations and inspection.
+- Evidence: `test/unit/actions/guides/edit-axes.test.js`.

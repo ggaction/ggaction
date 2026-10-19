@@ -67,6 +67,7 @@ createScatterPlot({
   size?: FieldName | SizeEncodingOptionsWithoutTarget;
   shape?: FieldName | ShapeEncodingOptionsWithoutTarget;
   point?: PointMarkAppearanceOptions & { radius?: NonNegativeFinite };
+  missing?: "error" | "skip";
   guides?: false | CreateGuidesOptions;
 }): ChartProgram;
 ```
@@ -103,6 +104,8 @@ createScatterPlot({
  `test/unit/actions/charts/basic-chart-facades.test.js`,
   `test/charts/cars-scatterplot/public.test.js`, and
   `test/charts/cars-scatterplot/png.render.js`.
+
+- `missing`은 기존 native mark missing-value policy로 그대로 전달한다. 생략하면 기존 mark 기본 동작을 보존한다. 원본 dataset은 변경하지 않는다. Evidence: `test/unit/actions/charts/facade-missing-policy.test.js`.
 
 ## `createLinePlot`
 
@@ -166,6 +169,7 @@ createBarPlot({
   color?: FieldName | ColorEncodingOptionsWithoutTarget;
   width?: BarWidthOptionsWithoutTarget;
   bar?: BarMarkAppearanceOptions;
+  missing?: "error" | "skip";
   guides?: false | CreateGuidesOptions;
 }): ChartProgram;
 ```
@@ -212,6 +216,8 @@ createBarPlot({
   `test/unit/actions/charts/bar-histogram-facades.test.js`,
   `test/charts/jobs-grouped-bar/public.test.js`, and
   `test/charts/jobs-grouped-bar/png.render.js`.
+
+- `missing`은 기존 native mark missing-value policy로 그대로 전달한다. 생략하면 기존 mark 기본 동작을 보존한다. 원본 dataset은 변경하지 않는다. Evidence: `test/unit/actions/charts/facade-missing-policy.test.js`.
 
 ## `createHistogram`
 

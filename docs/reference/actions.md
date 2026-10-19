@@ -140,6 +140,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createYAxisTitle`](./actions/guides.md#createyaxistitle) | H3 | user-facing | axes |
 | [`editArcMark`](./actions/marks.md#editarcmark) | H3 | user-facing | marks |
 | [`editAreaMark`](./actions/marks.md#editareamark) | H3 | user-facing | marks |
+| [`editAxes`](./actions/guides.md#editaxes) | H3 | user-facing | axes |
 | [`editBarMark`](./actions/marks.md#editbarmark) | H3 | user-facing | marks |
 | [`editBin2DData`](./actions/charts-data.md#editbin2ddata) | H2 | user-facing | core |
 | [`editBinData`](./actions/statistics.md#editbindata) | H1, H3 | user-facing | statistics |

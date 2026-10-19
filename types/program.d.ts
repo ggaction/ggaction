@@ -3165,6 +3165,8 @@ export interface CreateParallelCoordinatesOptions {
 }
 
 export interface CreateScatterPlotOptions {
+  /** Forward the native mark missing-value policy. */
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -3721,6 +3723,8 @@ type BarRangeOppositePositionChannel = string | {
   stack?: never;
 };
 export type CreateBarPlotOptions = {
+  /** Forward the native mark missing-value policy. */
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -4928,6 +4932,15 @@ export interface EditLegendBorderOptions {
   border: boolean | LegendBorderOptions;
 }
 
+/** Omitted/false axes are preserved; component false values remove existing components. */
+export interface EditAxesOptions {
+  x?: false | EditAxisOptions<XAxisPosition> | readonly [EditAxisOptions<XAxisPosition> & { target: string }, ...(EditAxisOptions<XAxisPosition> & { target: string })[]];
+  y?: false | EditAxisOptions<YAxisPosition> | readonly [EditAxisOptions<YAxisPosition> & { target: string }, ...(EditAxisOptions<YAxisPosition> & { target: string })[]];
+  theta?: false | EditThetaAxisOptions;
+  radius?: false | EditRadialAxisOptions;
+  parallel?: false | EditParallelAxisOptions | readonly [EditParallelAxisOptions, ...EditParallelAxisOptions[]];
+}
+
 export interface EditAxisOptions<P extends string> {
   target?: string;
   /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
@@ -5322,6 +5335,7 @@ export class ChartProgram {
   removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram;
   removeParallelAxes(options?: ParallelAxesOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
+  editAxes(options: EditAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
   createThetaAxis(options?: CompleteThetaAxisOptions): ChartProgram;

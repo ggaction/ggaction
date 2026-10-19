@@ -4,6 +4,9 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add `editAxes` to edit selected Cartesian, Polar, or Parallel axes through one atomic public action, with existing channel-editor options and explicit named-axis selection.
+- Forward native `missing: "error" | "skip"` through `createScatterPlot` and `createBarPlot` without changing source rows.
+
 ## [0.0.21] - 2026-10-18
 
 - Fix precision loss and collapsed bounds in bootstrap interval data and charts.

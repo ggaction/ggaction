@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 284,
+  "actionCount": 285,
   "relationships": [
     {
       "name": "createCanvas",
@@ -1051,6 +1051,13 @@
       ]
     },
     {
+      "name": "editAxes",
+      "wraps": [
+        "editXAxis",
+        "editYAxis"
+      ]
+    },
+    {
       "name": "editXAxis",
       "wraps": [
         "editXAxisLine",
@@ -1063,7 +1070,8 @@
       "name": "editYAxis",
       "wraps": [
         "editYAxisLine",
-        "editYAxisTitle"
+        "editYAxisTitle",
+        "editYAxisLabels"
       ]
     },
     {

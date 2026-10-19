@@ -154,6 +154,7 @@
   "createYAxisTitle": "/reference/actions/guides/#createyaxistitle",
   "editXAxisTitle": "/reference/actions/guides/#editxaxistitle",
   "editYAxisTitle": "/reference/actions/guides/#edityaxistitle",
+  "editAxes": "/reference/actions/guides/#editaxes",
   "editXAxis": "/reference/actions/guides/#editxaxis",
   "editYAxis": "/reference/actions/guides/#edityaxis",
   "removeXAxis": "/reference/actions/guides/#removexaxis",

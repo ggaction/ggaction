@@ -1005,6 +1005,50 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 
 
 
+## `editAxes`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editAxes(options: EditAxesOptions): ChartProgram;
+```
+
+Named option contracts: [`EditAxesOptions`](./../types.md#type-editaxesoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `x` | Optional / branch-dependent | `false \| EditAxisOptions<XAxisPosition> \| readonly [EditAxisOptions<XAxisPosition> & { target: string; }, ...(EditAxisOptions<XAxisPosition> & { ...; })[]] \| undefined` |
+| `y` | Optional / branch-dependent | `false \| EditAxisOptions<YAxisPosition> \| readonly [EditAxisOptions<YAxisPosition> & { target: string; }, ...(EditAxisOptions<YAxisPosition> & { ...; })[]] \| undefined` |
+| `theta` | Optional / branch-dependent | `false \| EditThetaAxisOptions \| undefined` |
+| `radius` | Optional / branch-dependent | `false \| EditRadialAxisOptions \| undefined` |
+| `parallel` | Optional / branch-dependent | `false \| readonly [ParallelAxisComponentsOptions, ...ParallelAxisComponentsOptions[]] \| ParallelAxisComponentsOptions \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+editAxes({ x?, y?, theta?, radius?, parallel? })
+```
+
+Chart-authoring action. Edit existing axes in one atomic call. Each selected option uses the corresponding `editXAxis`, `editYAxis`, `editThetaAxis`, `editRadialAxis`, or `editParallelAxis` options. Omission or `false` preserves that axis. At least one nonempty edit is required. No axes or components are created and scale/coordinate bindings are preserved. Cartesian arrays require explicit `target` IDs; parallel arrays select fields with the existing `field`/`target` options. Duplicate selections and empty arrays are rejected.
+
+```js
+// Fragment: program already contains x and y axes.
+program.editAxes({
+  x: { labels: { fontSize: 11 } },
+  y: { ticksAndLabels: { count: 4, labels: { fontSize: 11 } } }
+});
+```
+
+
 ## `editXAxis`
 
 **API layer:** user-facing. **Authoring roles:** H3.
@@ -1586,7 +1630,7 @@ dependent replay that would invalidate a stored exact sample fails atomically.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editLegendBlock(options: EditLegendBlockOptions): ChartProgram;

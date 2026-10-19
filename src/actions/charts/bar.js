@@ -17,7 +17,7 @@ import {
 } from "./shared.js";
 
 const OPTIONS = Object.freeze([
-  "id", "data", "coordinate", "orientation", "x", "y", "color", "width", "bar", "guides"
+  "id", "data", "coordinate", "orientation", "x", "y", "color", "width", "bar", "missing", "guides"
 ]);
 const BAR_OPTIONS = Object.freeze([
   "fill", "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
@@ -74,7 +74,7 @@ export const createBarPlot = /* @__PURE__ */ action(
     const positions = isBarCategoryEncoding(y) || orientation === "horizontal"
       ? [["encodeY", y], [xRange ? "encodeXRange" : "encodeX", x]]
       : [["encodeX", x], [yRange ? "encodeYRange" : "encodeY", y]];
-    let next = this.createBarMark({ id, data, ...bar, ...(orientation === undefined ? {} : { orientation }) });
+    let next = this.createBarMark({ id, data, ...bar, ...(args.missing === undefined ? {} : { missing: args.missing }), ...(orientation === undefined ? {} : { orientation }) });
     for (const [operation, encoding] of positions) {
       next = next[operation](positionArgs(encoding, {
         target: id, coordinate: args.coordinate

@@ -633,7 +633,7 @@ highlights before it rematerializes every registered consumer.
 ### `createScatterPlot`
 
 ```javascript
-createScatterPlot({ id?, data?, coordinate?, x, y, color?, stroke?, size?, shape?, point?, guides? })
+createScatterPlot({ id?, data?, coordinate?, x, y, color?, stroke?, size?, shape?, point?, missing?, guides? })
 ```
 
 Create a complete Cartesian point chart from required x/y fields and optional
@@ -749,7 +749,7 @@ are not synthesized, and remaining observations connect across their category sp
 ### `createPolarScatterPlot`
 
 ```javascript
-createPolarScatterPlot({ id?, data?, coordinate?, theta, radius, color?, size?, shape?, point?, guides? })
+createPolarScatterPlot({ id?, data?, coordinate?, theta, radius, color?, size?, shape?, point?, missing?, guides? })
 ```
 
 Create a complete Polar point chart from required angular and radial fields.
@@ -835,7 +835,7 @@ an optional component or remove color; at least one component must remain enable
 ### `createBarPlot`
 
 ```javascript
-createBarPlot({ id?, data?, coordinate?, orientation?, x, y, color?, width?, bar?, guides? })
+createBarPlot({ id?, data?, coordinate?, orientation?, x, y, color?, width?, bar?, missing?, guides? })
 ```
 
 Create categorical or temporal bars with quantitative measures; use `color.layout` for grouped or stacked partitions, not top-level `stack`/`groupBy`; width defaults to 0.72 of the slot and guides are inferred unless disabled.
@@ -2393,6 +2393,22 @@ Create applicable axes, grids, and legends; omitted branches infer applicability
 Automatic calls preserve existing guide collections and add missing applicable
 collections; explicit collection objects retain strict create semantics.
 [Guides](../api/guides.md)
+
+### `editAxes`
+
+```js
+editAxes({ x?, y?, theta?, radius?, parallel? })
+```
+
+Chart-authoring action. Edit existing axes in one atomic call. Each selected option uses the corresponding `editXAxis`, `editYAxis`, `editThetaAxis`, `editRadialAxis`, or `editParallelAxis` options. Omission or `false` preserves that axis. At least one nonempty edit is required. No axes or components are created and scale/coordinate bindings are preserved. Cartesian arrays require explicit `target` IDs; parallel arrays select fields with the existing `field`/`target` options. Duplicate selections and empty arrays are rejected.
+
+```js
+// Fragment: program already contains x and y axes.
+program.editAxes({
+  x: { labels: { fontSize: 11 } },
+  y: { ticksAndLabels: { count: 4, labels: { fontSize: 11 } } }
+});
+```
 
 ### `createAxes`
 

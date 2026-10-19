@@ -2830,6 +2830,24 @@
       }
     },
     {
+      "name": "editAxes",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Atomically delegates selected existing axes to their channel editors",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editaxes"
+      }
+    },
+    {
       "name": "editXAxis",
       "layer": "user-facing",
       "domain": "axes",

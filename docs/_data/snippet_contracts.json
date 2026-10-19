@@ -237,6 +237,20 @@
     "executable": false
   },
   {
+    "file": "api/axes.md",
+    "block": 5,
+    "heading": "Edit several existing axes",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "87632174e3f458d85c132caea7bcbb51c66492e6f4e03b57791bdbf7dbc803ed",
+    "executable": false
+  },
+  {
     "file": "api/axes/complete.md",
     "block": 1,
     "heading": "Independent named Cartesian axes",
