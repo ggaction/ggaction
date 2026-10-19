@@ -297,6 +297,7 @@ export function aggregateRows(rows, field, operation) {
 
 export function formatAggregateTitle(operation, field) {
   const aggregate = validateAggregate(operation);
+  if (aggregate === "count" && field === undefined) return "count";
   nonEmptyString(field, "Aggregate field");
   if (isScalarAggregate(aggregate)) return `${aggregate}(${field})`;
   if (aggregate.op === "quantile") {

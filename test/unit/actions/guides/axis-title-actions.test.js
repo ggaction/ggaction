@@ -11,6 +11,19 @@ function program() {
     .encodeY({ field: "y" });
 }
 
+test("infers a fieldless row-count summary title and preserves explicit titles", () => {
+  const base = chart()
+    .createCanvas({ width: 400, height: 300, margin: 65 })
+    .createData({ id: "observations", values: [{ weather: "rain" }, { weather: "sun" }, { weather: "rain" }] })
+    .createSummaryData({ id: "counts", source: "observations", groupBy: ["weather"], aggregates: [{ op: "count", as: "count" }] })
+    .createBarPlot({ id: "plot", data: "counts", x: "weather", y: "count", guides: false });
+  const guided = base.createGuides();
+  assert.equal(guided.semanticSpec.guides.axis.y.title, "count");
+  assert.equal(guided.graphicSpec.objects.yAxisTitle.properties.text, "count");
+  assert.equal(guided.editYAxisTitle({ text: "Observations" }).graphicSpec.objects.yAxisTitle.properties.text, "Observations");
+  assert.equal(base.semanticSpec.guides.axis, undefined);
+});
+
 test("infers title text and materializes centered x/y titles", () => {
   const before = program();
   const result = before.createXAxisTitle().createYAxisTitle();
