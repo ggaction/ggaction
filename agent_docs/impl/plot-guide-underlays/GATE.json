@@ -1,0 +1,142 @@
+{
+  "state": "ready-for-review",
+  "issue": 223,
+  "baselineRuntimeCommit": "8e1c809c78d0b50336e53db11439e3f194d83725",
+  "scope": "Complete Cartesian axis and Canvas plot-border Boolean underlay; exact named-container child permutation in existing editGraphics; explicit wrapped draw-order reconciliation. No global rank or renderer semantic inference.",
+  "publicCallChain": "unit.editCanvas({ plotBorder: { underlay: true } }).editXAxis({ underlay: true });",
+  "primitive": "agent_docs/impl/plot-guide-underlays/target.primitive.mjs",
+  "primitiveCalls": 25,
+  "renderedTarget": ".artifacts/test/png/review/plot-guide-underlays/repro/underlay-target.png",
+  "baselineRejectChecks": [
+    {
+      "name": "whole-axis-create",
+      "error": "Unknown createXAxis option \"underlay\"."
+    },
+    {
+      "name": "whole-axis-edit",
+      "error": "Unknown editXAxis option \"underlay\"."
+    },
+    {
+      "name": "border-create",
+      "error": "Unknown Canvas plotBorder option \"underlay\"."
+    },
+    {
+      "name": "border-edit",
+      "error": "Unknown Canvas plotBorder option \"underlay\"."
+    },
+    {
+      "name": "container-child-order",
+      "error": "Unknown collection graphic property \"children\"."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "overlay-control",
+      "width": 240,
+      "height": 180,
+      "svgSha256": "f6cbe33b7e3c5d00a2e4f95c3b9ee39cd4e21a3c711eb7bc739a70bfab6bcb50",
+      "pngSha256": "deaea8c17c6657ad851b7201a15a7fad3c499c650fee1c4a57425dba48f9a5b0",
+      "pngDpr2Sha256": "db142482d1fb3fc1aebf25caa7008cd78cde7a8a7614561e305e1135286da399",
+      "pdfSha256": "6efa4fbeda877c4e95e58159cfe14b1af9262017665856184af0dd3ebe57f500",
+      "nodeProbe": {
+        "at": [
+          85,
+          139
+        ],
+        "rgba": [
+          136,
+          136,
+          136,
+          255
+        ],
+        "plotInk": 16588
+      },
+      "pdfProbe": {
+        "at": [
+          85,
+          139
+        ],
+        "rgba": [
+          136,
+          136,
+          136,
+          255
+        ],
+        "plotInk": 16526
+      },
+      "chromiumSvgProbe": [
+        136,
+        136,
+        136,
+        255
+      ]
+    },
+    {
+      "name": "underlay-target",
+      "width": 240,
+      "height": 180,
+      "svgSha256": "528c01aad462c918b8d2364dde9208ce5ef1520c16ce9e10d6054592785b47e0",
+      "pngSha256": "91e23652e4d7bf45be253c8d2cccaab2b59fd7d85c6cee5934c1b74f8b36bd3b",
+      "pngDpr2Sha256": "9cc3095ff20aecbe38fc0c9dd4dbd9e0c0fed7a85eb0c897bd3275e11afb9ec8",
+      "pdfSha256": "f8ca0b550ec0f02323267861276b99ee8f51fc1936257ac597afbce716d5e6b6",
+      "nodeProbe": {
+        "at": [
+          85,
+          139
+        ],
+        "rgba": [
+          119,
+          119,
+          136,
+          255
+        ],
+        "plotInk": 16588
+      },
+      "pdfProbe": {
+        "at": [
+          85,
+          139
+        ],
+        "rgba": [
+          119,
+          119,
+          136,
+          255
+        ],
+        "plotInk": 16526
+      },
+      "chromiumSvgProbe": [
+        119,
+        119,
+        136,
+        255
+      ]
+    }
+  ],
+  "bindings": [
+    {
+      "path": "agent_docs/impl/plot-guide-underlays/PROPOSAL.md",
+      "sha256": "7c7e8a4082cd32120f708587468f2fc58cc96980e8455d6ebf0d2308d7d02c2f"
+    },
+    {
+      "path": "agent_docs/impl/plot-guide-underlays/baseline.mjs",
+      "sha256": "61de4d00978543007ba0da3197b63bfaddc8ac2331dcdc5f64723d79a14660f7"
+    },
+    {
+      "path": "agent_docs/impl/plot-guide-underlays/prepare-target.mjs",
+      "sha256": "593d74c3d983b88416dd66099c704bf2d1b7cbd32433d08eca008633734c448a"
+    },
+    {
+      "path": "agent_docs/impl/plot-guide-underlays/target.primitive.mjs",
+      "sha256": "beaad9d1ef60aa4342dba691aa0d611f5afc4f0983b6cb01a7b476aefe16a786"
+    },
+    {
+      "path": "agent_docs/impl/plot-guide-underlays/TARGET_EVIDENCE.json",
+      "sha256": "869e5a7c9bc236cbbe32c8608949e3c4b7c0a9d2f3b8b084997a63ac25783106"
+    }
+  ],
+  "chartPixelsInspected": false,
+  "humanVisualInspectionClaimed": false,
+  "schoolCalls": 0,
+  "privatePreparationHistory": "First target generator supplied stored item IDs to an existing items input that generates IDs itself. Corrected input uses type/properties only; failed draft/log retained in .artifacts/plot-guide-underlays/. No library code, target geometry or tolerance changed."
+}
