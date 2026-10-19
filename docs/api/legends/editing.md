@@ -78,6 +78,16 @@ order; provide more margin space or different offsets. Canvas and scale updates
 apply the same check after dependent guides have moved. A failed action leaves
 the earlier program unchanged.
 
+When you omit an external legend's `offset`, its existing family gap follows
+any axis on the same edge. This applies to all four edges, including named
+right Y axes: the whole side legend sits beyond the occupied axis labels,
+title, ticks and strokes, while its top remains aligned to the plot top.
+The categorical default gap remains 8 pixels; standalone continuous and size
+families retain 30 pixels. Borders participate in the occupied gap. Axis
+edits, removal and Canvas/data/scale replay recalculate the same placement.
+An explicit `offset`, including `0` or `8`, remains measured from the plot;
+free anchors, plot corners and `legacy-bottom` keep their own rules.
+
 A single top/bottom edge legend keeps its actual outer bounds aligned to the
 plot after content, border, style or Canvas changes. Its `offset` includes the
 border stroke, so adding a border preserves the requested plot-to-legend gap.

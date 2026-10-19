@@ -415,7 +415,20 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
     for (const { side, entries } of plans) {
       const ids = entries.flatMap(([kind]) => existingIds(next, kind));
       next = alignLegendTextBoxes(next, ids);
-      const bounds = unionLegendBounds(next, ids);
+      let bounds = unionLegendBounds(next, ids);
+      const automaticOffsets = entries.map(([kind, config]) =>
+        effectiveLegendOffsetConfig(next, kind, config)
+      ).filter(config => config.inferredOffset === true).map(config => ({
+        base: config.offset, resolved: resolveLegendAxisOffset(next, config, plot)
+      })).filter(offset => offset.resolved > offset.base);
+      if (automaticOffsets.length > 0) {
+        const offset = Math.max(...automaticOffsets.map(value => value.resolved));
+        const dx = side === "right"
+          ? Math.max(0, plot.x + plot.width + offset - bounds.left)
+          : Math.min(0, plot.x - offset - bounds.right);
+        for (const id of ids) next = translateGraphic(next, id, dx, 0);
+        bounds = unionLegendBounds(next, ids);
+      }
       const { dy } = resolveSingleSideLegendPlacement({ side, plot, canvas, bounds });
       for (const id of ids) next = translateGraphic(next, id, 0, dy);
     }

@@ -6,7 +6,7 @@ import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 422_000, // Explicit underlays measured421169gzip bytes on Node22.23.1.
-  "ggaction/basic": 208_000, // Explicit underlays measured207723gzip bytes on Node22.23.1.
+  "ggaction/basic": 209_000, // Side-axis clearance measured208003gzip bytes; minimal1000-byte rounding.
   "ggaction/svg": 25_000
 });
 

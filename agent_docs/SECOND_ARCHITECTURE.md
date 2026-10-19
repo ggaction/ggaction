@@ -332,7 +332,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Gzip ceiling |
 | --- | ---: |
 | `ggaction` | 422,000 bytes |
-| `ggaction/basic` | 208,000 bytes |
+| `ggaction/basic` | 209,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 0.0.20의 Area 정량 색상과 seeded mean CI 추가 후 Node20.20.2 installed consumer는
@@ -2587,3 +2587,18 @@ entries는602가 되었다. Node22.23.1 staged 실측851052packed/4124450unpacke
 같은 underlay 문서의 search-index는834254bytes로 기존833000 한도를 넘었다. 실제 두 normal-suite
 실패를 보존하고 search cap만 최소다음1000byte 단계835000으로 조정한다. 검색 내용이나 action
 coverage를 삭제하지 않으며 runtime/renderer/수치/그림 기준에는 영향이 없다.
+
+### Inferred side legend axis clearance
+
+기존 guide resource resolver와 side lane materializer가 같은 edge axis의 occupied extent 뒤에
+기존 family gap을 적용한다. 기존 guide-layout transaction은 관련 side-axis 변경·제거 때
+wrapped legend materialization을 먼저 재생해 이전 translation을 누적하지 않는다. 새 state,
+cache, public action/type 또는 renderer/package ownership 경계는 없고 stored offset과
+inferredOffset의 기존 소유권을 유지한다. 정확한 inference는 current/LEGEND_AND_TITLE.md가 소유한다.
+
+Node22.23.1 staged unpacked4126126bytes가 기존4125000을1126bytes 초과했다. Normal4806중
+4805pass/해당 package-size1fail 기록을 보존하고 unpacked cap만 최소1000byte 단계4127000으로
+갱신한다. Entries602, packed852000, Full422000/SVG25000과 source/data/numeric/visual/coverage
+기준은 유지한다. Installed consumer의 Basic208009gzipbytes 실패 뒤 edge-distance 계산을 단순화해
+208003bytes를 실측했다. 이 실제 실패와 측정을 보존하고 Basic cap만 최소다음1000byte 단계209000으로
+갱신한다. Node24 protected-release 측정은 정기1413-family 배포에서 별도 필요하다.

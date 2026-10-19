@@ -1,6 +1,6 @@
 import { axisGraphicIds } from "../../selectors/axes.js";
 export { axisGraphicIds };
-import { localLegendPosition } from "../legendGroups.js";
+import { localLegendPosition, localLegendPlacement } from "../legendGroups.js";
 import { resolveConcreteGraphicBounds, unionConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
 
 // Only domain-owned guides participate. Extension primitives may deliberately
@@ -181,16 +181,17 @@ export function allLegendGraphicIds(kinds) {
 }
 
 
-// A default outside horizontal legend follows the actual occupied axis lane.
+// An inferred outside edge legend follows the actual occupied same-edge axis lane.
 // Explicit offsets, plot corners, free coordinates and legacy layouts retain
 // their authored anchor. This returns a derived offset, never stored geometry.
 export function resolveLegendAxisOffset(program, config, plot) {
-  if (config.inferredOffset !== true || !["top", "bottom"].includes(config.position) || config.layout === "legacy-bottom") return config.offset;
+  if (config.inferredOffset !== true || !["top", "bottom", "left", "right"].includes(config.position) || config.layout === "legacy-bottom") return config.offset;
   const axes = resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs, undefined,
     program.materializationConfigs.textMetrics).filter(block=>block.kind === "axis" && block.position === config.position);
-  const clearance = config.position === "bottom"
-    ? Math.max(0, ...axes.map(block=>block.bounds.bottom - plot.y - plot.height))
-    : Math.max(0, ...axes.map(block=>plot.y - block.bounds.top));
+  const clearance = Math.max(0, ...axes.map(({ bounds }) =>
+    config.position === "bottom" ? bounds.bottom - plot.y - plot.height :
+    config.position === "top" ? plot.y - bounds.top :
+    config.position === "right" ? bounds.right - plot.x - plot.width : plot.x - bounds.left));
   return config.offset + clearance;
 }
 
@@ -208,4 +209,26 @@ export function needsLegendAxisReflow(before, after) {
   }) || Object.values(program.guideConfigs.legendGroups ?? {}).some(group=>group.inferredOffset === true && ["top","bottom"].includes(group.placement.position)));
   return inferred && [before, after].some(program=>resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs,
     undefined, program.materializationConfigs.textMetrics).some(block=>block.kind === "axis" && ["top","bottom"].includes(block.position)));
+}
+
+// Reset intrinsic side geometry only when an inferred side placement and a real
+// same-edge axis meet before or after the edit. This also handles axis removal.
+export function needsSideLegendAxisReflow(before, after) {
+  const edges = new Set();
+  for (const program of [before, after]) {
+    for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
+      const local = localLegendPlacement(config);
+      const group = local === undefined ? program.guideConfigs.legendGroups?.[config.target] : undefined;
+      const effective = effectiveLegendOffsetConfig(program, kind, config);
+      const placement = local ?? group?.placement ?? effective;
+      const inferred = local?.inferredOffset ?? group?.inferredOffset ?? effective.inferredOffset;
+      if (inferred === true && placement.at === undefined &&
+          ["left", "right"].includes(placement.position) && effective.layout !== "legacy-bottom") {
+        edges.add(placement.position);
+      }
+    }
+  }
+  return edges.size > 0 && [before, after].some(program =>
+    resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs, undefined,
+      program.materializationConfigs.textMetrics).some(block => block.kind === "axis" && edges.has(block.position)));
 }

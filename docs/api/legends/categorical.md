@@ -97,7 +97,7 @@ preserves its remaining shape legend.
 | `align` | `"left"`, `"center"`, or `"right"` | `"center"` |
 | `direction` | `"horizontal"` or `"vertical"` | `"vertical"` at either side; `"horizontal"` at top/bottom |
 | `columns` | positive integer | all items in one row at top |
-| `offset` | non-negative number | `8` |
+| `offset` | non-negative number | `8`; omission clears an occupied same-edge axis, explicit values stay plot-relative |
 | `titlePosition` | `"top"` or `"left"` | `"top"` |
 | `title` | non-empty string or `false` | encoded field name; `false` initially hides it |
 | `symbol` | `"auto"`, shorthand object, or layered recipe | inferred from mark |

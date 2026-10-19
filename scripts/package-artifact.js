@@ -25,7 +25,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 602, // Explicit underlays add four focused order/resource owners.
   packedBytes: 852_000, // Underlay staged artifact measured851069bytes; Node24 remeasured at release.
-  unpackedBytes: 4_125_000 // Underlay staged artifact measured4124538bytes.
+  unpackedBytes: 4_127_000 // Side-axis clearance staged artifact measured4126126bytes; minimal1000-byte rounding.
 });
 
 const REQUIRED_FILES = Object.freeze([

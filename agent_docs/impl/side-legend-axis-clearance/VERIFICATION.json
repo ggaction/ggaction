@@ -1,0 +1,336 @@
+{
+  "status": "verified-unreleased-candidate",
+  "issue": 235,
+  "sourceDesignCommit": "8132869b",
+  "node": "v22.23.1",
+  "normalSuite": {
+    "tests": 4806,
+    "pass": 4806,
+    "fail": 0,
+    "logSha256": "c1b37926e9d7953a24b8c571f7d125d1e9dda355f4238704b1c8b4a4e40b9c9a",
+    "durationMs": 128157.265708
+  },
+  "newRegressionTests": 23,
+  "rendererPairs": [
+    {
+      "position": "left",
+      "family": "categorical",
+      "gap": 8,
+      "independentExplicitOffset": 48.5,
+      "sameGraphic": true,
+      "sameSvg": true,
+      "svgSha256": "e74835533882115ef8a29a10da8944bcb6de82b7eeede9141659fd2f4ed18aa5",
+      "rasters": [
+        {
+          "pixelRatio": 1,
+          "exactDecodedRgba": true,
+          "decodedRgbaSha256": "f42a49ec9d5bdc08be2b703b4ca83e1f1bbc576c6a61280498ac1a67053d57c9",
+          "plotInkPixels": 442
+        },
+        {
+          "pixelRatio": 2,
+          "exactDecodedRgba": true,
+          "decodedRgbaSha256": "fafe711a0ade226de322cebf09a5a062bf15f67c9bb3835635a7f57d97ceae4b",
+          "plotInkPixels": 949
+        }
+      ],
+      "sameDecodedPdfStreams": true
+    },
+    {
+      "position": "left",
+      "family": "border",
+      "gap": 8,
+      "independentExplicitOffset": 62.5,
+      "sameGraphic": true,
+      "sameSvg": true,
+      "svgSha256": "5cd8bb9e5ee4a12269c5fa319f3b17c0029d789b71f51d56741893c37f458e8a",
+      "rasters": [
+        {
+          "pixelRatio": 1,
+          "exactDecodedRgba": true,
+          "decodedRgbaSha256": "09d36cafb54e504367694d05c52ef9183d9ce584c9205a6d5857a1fe73fe438e",
+          "plotInkPixels": 442
+        },
+        {
+          "pixelRatio": 2,
+          "exactDecodedRgba": true,
+          "decodedRgbaSha256": "c3ac14f38483d4135fff70abcc19dddf82d62be4db090e55060a06714bd96fb6",
+          "plotInkPixels": 949
+        }
+      ],
+      "sameDecodedPdfStreams": true
+    },
+    {
+      "position": "left",
+      "family": "gradient",
+      "gap": 30,
+      "independentExplicitOffset": 70.5,
+      "sameGraphic": true,
+      "sameSvg": true,
+      "svgSha256": "ca635d1feb5659761b9c62d736b0346dec3c85f58335c852577544e8699e779a",
+      "rasters": [
+        {
+          "pixelRatio": 1,
+          "exactDecodedRgba": true,
+          "decodedRgbaSha256": "0bcd34ddc1f3839cdbe89228b581f9cbd4db0ef3f00cfb4bc333ddfb62a5ef52",
+          "plotInkPixels": 442
+        },
+        {
+          "pixelRatio": 2,
+          "exactDecodedRgba": true,
+          "decodedRgbaSha256": "209e8b5813a581526f3610bf8636dab821e8f6a367787224d1a1dbaf0fcc60de",
+          "plotInkPixels": 949
+        }
+      ],
+      "sameDecodedPdfStreams": true
+    },
+    {
+      "position": "right",
+      "family": "categorical",
+      "gap": 8,
+      "independentExplicitOffset": 48.5,
+      "sameGraphic": true,
+      "sameSvg": true,
+      "svgSha256": "0f2b0d87a4b8580a823e623c8ead2c956bb444d0d01e4e56f6b9bf339b972300",
+      "rasters": [
+        {
+          "pixelRatio": 1,
+          "exactDecodedRgba": true,
+          "decodedRgbaSha256": "d2a5e92ef5ec1dfaa3620a36abecab623c61aa67de23cff211e4ba21404acb03",
+          "plotInkPixels": 439
+        },
+        {
+          "pixelRatio": 2,
+          "exactDecodedRgba": true,
+          "decodedRgbaSha256": "1c475e94c0fa71b929c0817f0ebbeac6d1f08824b7ef9092b18445aa4e944c50",
+          "plotInkPixels": 943
+        }
+      ],
+      "sameDecodedPdfStreams": true
+    },
+    {
+      "position": "right",
+      "family": "border",
+      "gap": 8,
+      "independentExplicitOffset": 62.5,
+      "sameGraphic": true,
+      "sameSvg": true,
+      "svgSha256": "d19f29fae1ed7620abdd1f8ed0e9936a2846e5da1048834103f7ce5b0f48dd79",
+      "rasters": [
+        {
+          "pixelRatio": 1,
+          "exactDecodedRgba": true,
+          "decodedRgbaSha256": "eb9f7359c7bccf840b5dc349984604b1d4ae72b984ff3ffaa817cc48b67af4e6",
+          "plotInkPixels": 439
+        },
+        {
+          "pixelRatio": 2,
+          "exactDecodedRgba": true,
+          "decodedRgbaSha256": "bf23dcb9989f827617efcdc26b19afe708dd2931adf334600f228bfd6045e648",
+          "plotInkPixels": 943
+        }
+      ],
+      "sameDecodedPdfStreams": true
+    },
+    {
+      "position": "right",
+      "family": "gradient",
+      "gap": 30,
+      "independentExplicitOffset": 70.5,
+      "sameGraphic": true,
+      "sameSvg": true,
+      "svgSha256": "460f5a6269013805a9a9ec3047ca3a18363446f911b57f54f48d5fee485ba63b",
+      "rasters": [
+        {
+          "pixelRatio": 1,
+          "exactDecodedRgba": true,
+          "decodedRgbaSha256": "da15dedf164e9fdec12dba841341e823a4b732223d239c01c582e3012d77fc44",
+          "plotInkPixels": 439
+        },
+        {
+          "pixelRatio": 2,
+          "exactDecodedRgba": true,
+          "decodedRgbaSha256": "92a49fbbef199746bbc7be24993a7001dc7433a3523c490596cdfbfac98957c4",
+          "plotInkPixels": 943
+        }
+      ],
+      "sameDecodedPdfStreams": true
+    }
+  ],
+  "packedRegression": {
+    "status": "pass",
+    "publicEntryCases": 12,
+    "installedPublicModuleTest": true,
+    "published": false,
+    "packageSpec": "/Users/hyeonjeon/Projects/ggaction-feature-review-0.0.19/.artifacts/side-legend-axis-clearance/candidate-v3/ggaction-0.0.21.tgz",
+    "tarballSha256": "3efd314b0da5287042df8c82fdd0f41b558dfb9958cba95659dca3e24a35006b",
+    "sourceSha256": "0f30767988defa528b2c30148429084de322021c574aabfe274a206609326dca",
+    "installedVersion": "0.0.21"
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.21",
+    "file": "/Users/hyeonjeon/Projects/ggaction-feature-review-0.0.19/.artifacts/side-legend-axis-clearance/candidate-v3/ggaction-0.0.21.tgz",
+    "entryCount": 602,
+    "packedBytes": 851546,
+    "unpackedBytes": 4126122,
+    "sha256": "3efd314b0da5287042df8c82fdd0f41b558dfb9958cba95659dca3e24a35006b",
+    "integrity": "sha512-6jsT3jjpDv9gQjk423qXitczK2kCauPWqfxbnh0U14hAbQ50Gf33xt56YtW3RXhN+sVO9RMUr+uUFZgHl8ZGIw==",
+    "publicRelease": false
+  },
+  "installedConsumer": {
+    "status": "pass",
+    "checks": [
+      "node",
+      "linear-regression-statistics-cache-and-source-revision",
+      "extension",
+      "pdf",
+      "png",
+      "svg",
+      "inspection",
+      "numeric-font-weight",
+      "point-jitter",
+      "point-packing",
+      "mark-label-removal",
+      "selected-mark-labels",
+      "semantic-label-placement",
+      "beeswarm-plot",
+      "raincloud-plot",
+      "path-order",
+      "time-unit-data",
+      "summary-data",
+      "bin-data",
+      "fold-data",
+      "computed-data",
+      "derived-data-editing",
+      "safe-resource-removal",
+      "advanced-authoring-integration",
+      "normalized-data",
+      "complete-data",
+      "imputed-data",
+      "stack-data",
+      "window-data",
+      "bin2d-data",
+      "binned-heatmap",
+      "parallel-coordinates",
+      "parallel-dimension-scale-editing",
+      "offset-scale-editing",
+      "stroke-color-encoding-and-legends",
+      "atomic-channel-encoding",
+      "statistical-references",
+      "coordinate-aspect-and-polar-frame-editing",
+      "facet-grid-repeat-and-named-composition-editing",
+      "non-cartesian-facet-grid-and-repeat",
+      "horizon",
+      "violin-plot",
+      "polar-radar-rug-strip-ecdf-facades",
+      "right-categorical-legend-offset",
+      "grouped-corner-and-free-legend-placement",
+      "sequential-palette-count",
+      "ranged-numeric-datum-wrapper-parity",
+      "neutral-hcl-hue-borrowing",
+      "facet-numeric-legend-inference",
+      "explicit-fold-facet-partition",
+      "shared-facet-top-lane",
+      "explicit-axis-and-border-underlays",
+      "typescript",
+      "basic-entry-runtime-and-types",
+      "tutorial-consumers",
+      "minimal-browser-bundle-measurement",
+      "private-export-rejection",
+      "installed-local-mcp",
+      "direct-mcp-byte-equality",
+      "task-packet-v5-authoring-execution",
+      "explicit-unresolved-docs-fallback",
+      "terminal-unsupported-no-fallback"
+    ],
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 534,
+        "minifiedBytes": 1555867,
+        "gzipBytes": 421454
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 316,
+        "minifiedBytes": 737800,
+        "gzipBytes": 208003
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 19,
+        "minifiedBytes": 23548,
+        "gzipBytes": 7567
+      }
+    },
+    "logSha256": "abb660f895c9896ea387ff37c0fcb191c427e888ad11eaa9fd21281494341078"
+  },
+  "sourceHashes": {
+    "src/materialization/guides/resources.js": "87c0a838a8aaa7e44c4bc01960c156a95a0891103e490df0f5056080c4af9230",
+    "src/materialization/guides/layout.js": "83e78b8cb920260e07031100341b80487e7045d03c77d425e726f8de6e61dcd4",
+    "src/actions/guides/legends/lane.js": "03ba687684b4b742888b343798d46579d6442cd777ff4f5efafaf997226258ad",
+    "test/unit/actions/guides/default-side-legend-offset.test.js": "63958e5b6979678ebdeeb37d4e079292093bbb668585f5d87314ffda0ca56c7a",
+    "scripts/package-artifact.js": "92b53f2c8b8e520f37e774d9efdd32838256d114f7ee64214e45103f862d35ca",
+    "scripts/browser-bundle-size.js": "81d5eb9e94db179f5853c072a67951f436e1d387adbd60fdad6c222734c2be8e"
+  },
+  "budgetChanges": {
+    "unpacked": {
+      "before": 4125000,
+      "after": 4127000,
+      "initialMeasured": 4126126,
+      "finalMeasured": 4126122
+    },
+    "basicGzip": {
+      "before": 208000,
+      "after": 209000,
+      "initialMeasured": 208009,
+      "afterSimplification": 208003
+    },
+    "unchanged": {
+      "entries": 602,
+      "packed": 852000,
+      "fullGzip": 422000,
+      "svgGzip": 25000
+    },
+    "policy": "Only minimal next1000-byte rounding after retained actual failures; no source/data/numeric/visual/coverage relaxation"
+  },
+  "retainedFailures": [
+    "normal-v1 package unpacked cap failure",
+    "normal-v3 documented budget synchronization failure; architecture table and README synchronized",
+    "relative pack destination ENOENT; absolute destination retry",
+    "consumer-v1 Basic gzip208009",
+    "installed-v1 Basic removeYAxis fixture misuse",
+    "installed-v2 Basic color-scale transition fixture misuse"
+  ],
+  "source0167": {
+    "status": "private-renderability-only-not-admitted",
+    "originalRawRows": [
+      365,
+      106
+    ],
+    "originalCanvas": [
+      576,
+      364
+    ],
+    "schoolCalls": 0,
+    "remaining": "Own original ISO temporal/signed-two-group baseline/full glyph proof and published library fix"
+  },
+  "chartPixelsInspected": false,
+  "newPublicApiOrSchema": false,
+  "translationRuntimeUnchanged": {
+    "version": "0.0.21",
+    "commit": "e93500081b6dde6be7614e3e9352e947bec5908d"
+  },
+  "publicationCheckpoint": 1413,
+  "published": false,
+  "releaseValidationRemaining": [
+    "Node24 protected release artifact and budgets",
+    "full verified corpus compatibility on selected release runtime",
+    "registry publication and registry installation",
+    "exact tag/release/docs/dataset/viewer synchronization"
+  ]
+}

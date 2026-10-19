@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:8d92a788f4def7da6ddab5b14f845f0865e7ddf96d4280476f4ca05a90eb3139. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:59d096e248a27b3e81c1307668cc7f4d9ffea85ceed3b79fd1e8d777bbaa79c9. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -13128,7 +13128,7 @@ preserves its remaining shape legend.
 | `align` | `"left"`, `"center"`, or `"right"` | `"center"` |
 | `direction` | `"horizontal"` or `"vertical"` | `"vertical"` at either side; `"horizontal"` at top/bottom |
 | `columns` | positive integer | all items in one row at top |
-| `offset` | non-negative number | `8` |
+| `offset` | non-negative number | `8`; omission clears an occupied same-edge axis, explicit values stay plot-relative |
 | `titlePosition` | `"top"` or `"left"` | `"top"` |
 | `title` | non-empty string or `false` | encoded field name; `false` initially hides it |
 | `symbol` | `"auto"`, shorthand object, or layered recipe | inferred from mark |
@@ -13935,6 +13935,16 @@ its size companion counts as one group. Overlap is an error in either authoring
 order; provide more margin space or different offsets. Canvas and scale updates
 apply the same check after dependent guides have moved. A failed action leaves
 the earlier program unchanged.
+
+When you omit an external legend's `offset`, its existing family gap follows
+any axis on the same edge. This applies to all four edges, including named
+right Y axes: the whole side legend sits beyond the occupied axis labels,
+title, ticks and strokes, while its top remains aligned to the plot top.
+The categorical default gap remains 8 pixels; standalone continuous and size
+families retain 30 pixels. Borders participate in the occupied gap. Axis
+edits, removal and Canvas/data/scale replay recalculate the same placement.
+An explicit `offset`, including `0` or `8`, remains measured from the plot;
+free anchors, plot corners and `legacy-bottom` keep their own rules.
 
 A single top/bottom edge legend keeps its actual outer bounds aligned to the
 plot after content, border, style or Canvas changes. Its `offset` includes the
@@ -40755,7 +40765,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:8d92a788f4def7da6ddab5b14f845f0865e7ddf96d4280476f4ca05a90eb3139` |
+| Contract fingerprint | `sha256:59d096e248a27b3e81c1307668cc7f4d9ffea85ceed3b79fd1e8d777bbaa79c9` |
 | Example and dataset source | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

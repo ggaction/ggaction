@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Place inferred external side legends beyond occupied same-edge axes, preserving family gaps, plot-top alignment, explicit offsets and immutable guide replay.
+
 - Fix categorical symbol recipe edits from rounded bar samples to plain swatches, including restoration to automatic samples and facet/data replay.
 
 - Support explicit ordinal stroke-dash fields in existing line/rule, facade and bulk encodings, preserving categorical domain order and immutable rematerialization.

@@ -5,9 +5,9 @@
 - [x] published0.0.21에서 독립2행 최소 재현과 충분한 Canvas 공간 확인
 - [x] offset90 대조군은 동일 Canvas/data/axis로 생성됨
 - [x] 구체 설계 및 기존 사용자 직접 승인 재사용 기록
-- [ ] 구현·독립 occupied-bounds 회귀 검증
-- [ ] 전체 normal/설치 consumer/대표 renderer 검증
-- [ ] 문서·계약·생성물 동기화와 candidate commit/push
+- [x] 구현·독립 occupied-bounds 회귀 검증
+- [x] 전체 normal/설치 consumer/대표 renderer 검증
+- [x] 문서·계약·생성물 동기화; 아래 후보 checkpoint로 commit/push
 - [ ] 다음200-family checkpoint에서 통합·배포
 
 ## 승인과 이슈
