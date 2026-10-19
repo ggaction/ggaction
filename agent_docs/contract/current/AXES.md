@@ -137,6 +137,7 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
 - Create: `text?`, `scale?`, `position?`, `at?`, `offset?`, `rotation?`, `color?`, `fontSize?`,
   `fontFamily?`, `fontWeight?`; edit에서는 scale을 제외한다.
 - `text`: non-empty string. 생략하면 unique connected field/aggregate 또는 density provenance에서 추론한다.
+  같은 축을 재사용하는 statistical reference의 내부 출력 필드는 원본 축 제목 추론에서 제외한다.
 - `at`: `"start" | "center" | "end"` 또는 continuous scale domain 안의 finite number; 기본 center.
 - `offset`: signed finite; positive outward, negative inward; inferred preferred defaults x `42`, y `52`.
 - `rotation`: `RotationInput = Finite | { value: Finite; unit: "degrees" | "radians" }`. 기존 finite 숫자는

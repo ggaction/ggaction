@@ -10,6 +10,28 @@ function points() { return base().createPointMark().encodeX({ field: "x" }).enco
 const items = (p, id) => p.graphicSpec.objects[id].items.map(item => item.properties);
 const layer = (p, id) => p.semanticSpec.layers.find(item => item.id === id);
 
+test("statistical references preserve aggregate source axis titles and rematerialize", () => {
+  for (const method of ["createBarPlot", "createLinePlot", "createAreaPlot"]) {
+    let setup = chart().createCanvas({ width: 640, height: 480, margin: 80 })
+      .createData({ values: [{ c: "A", x: 1, y: 2 }, { c: "A", x: 1, y: 4 },
+        { c: "B", x: 2, y: 8 }, { c: "B", x: 2, y: 10 }] })
+      ;
+    if (method === "createAreaPlot") setup = setup.createSummaryData({ id: "summary", groupBy: ["x"], aggregates: [{ op: "mean", field: "y", as: "y" }] });
+    const source = setup[method]({ id: "plot", x: method === "createBarPlot" ? { field: "c", fieldType: "nominal" }
+      : method === "createLinePlot" ? { field: "x", bin: { maxBins: 2 } } : "x",
+      y: method === "createAreaPlot" ? "y" : { field: "y", aggregate: "mean" } }).createGuides();
+    const before = JSON.stringify(source);
+    for (const [action, options] of [["createReferenceLine", { statistic: { op: "mean" } }],
+      ["createReferenceBand", { statistics: [{ op: "quantile", p: .25 }, { op: "quantile", p: .75 }] }]]) {
+      const next = source[action]({ source: "plot", axis: "y", ...options });
+      assert.equal(next.semanticSpec.guides.axis.y.title, source.semanticSpec.guides.axis.y.title);
+      assert.equal(next.trace.children.length, source.trace.children.length + 1);
+      assert.doesNotThrow(() => next.createGuides().editYScale({ target: "plot", reverse: true }));
+      assert.equal(JSON.stringify(source), before);
+    }
+  }
+});
+
 test("data references share inferred source bindings through visible lower actions", () => {
   const source = points();
   const p = source.createReferenceLine({ y: 5 }).createReferenceBand({ x: [2, 6] });
