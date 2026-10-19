@@ -137,6 +137,13 @@ const createGuides = /* @__PURE__ */ action(
   function (args = {}) {
     if (this.compositionSpec?.facet) {
       validateOptions(args);
+      if (Object.keys(args).length === 0) {
+        const selected = Object.entries(resolveGuideOptions(this, args))
+          .filter(([, options]) => options !== undefined);
+        if (selected.length > 0 && selected.every(([kind]) =>
+          hasStoredGuideCollection(this, kind === "axes" ? "axis" : kind)
+        )) return this;
+      }
       return this.editFacetSource({ action: { method: "createGuides", options: args } });
     }
     this._assertUnitProgram("createGuides");

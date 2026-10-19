@@ -106,3 +106,37 @@ test('independent continuous facets clip inherited tick selections including emp
  assert.deepEqual(Object.values(faceted.children).map(child=>child.guideConfigs.axis.x.ticks.values),[[1,2],[]]);
  assert.ok(renderToSVG(faceted).startsWith('<svg'));
 });
+
+
+test('final default guides preserve fully guided facet snapshots without rederiving cells', () => {
+ const base = source().encodeColor({target:'plot',field:'H',fieldType:'nominal'}).createGuides();
+ const faceted = base.facet({field:'G',guides:{axes:'outer',legend:'shared'}});
+ const before = serializeProgram(faceted);
+ const next = faceted.createGuides();
+ assert.equal(next.graphicSpec,faceted.graphicSpec);
+ assert.equal(next.children,faceted.children);
+ assert.deepEqual(next.semanticSpec,faceted.semanticSpec);
+ assert.equal(next.trace.children.at(-1).op,'createGuides');
+ assert.equal(next.trace.children.at(-1).children.length,0);
+ assert.deepEqual(serializeProgram(faceted),before);
+ assert.throws(()=>next.createGuides({axes:{x:{ticksAndLabels:{labels:{fontSize:9}}}}}), /requires a missing/);
+ const unguided = source().facet({field:'G'});
+ const guided = unguided.createGuides();
+ assert.notEqual(guided.children,unguided.children);
+ assert.ok(Object.values(guided.children).every(child=>child.guideConfigs.axis.x));
+});
+
+
+test('faceted heatmap rematerialization preserves shared position domains before guides run', () => {
+ const base=chart().createCanvas({width:600,height:420,margin:{left:80,right:160,top:40,bottom:70}})
+  .createData({values:[{x:'A',y:'a',v:2},{x:'B',y:'a',v:4},{x:'A',y:'b',v:3},{x:'B',y:'b',v:6}]})
+  .createHeatmap({id:'plot',x:{field:'x',fieldType:'nominal'},y:{field:'y',fieldType:'nominal'},color:{field:'v',fieldType:'quantitative'}})
+  .editYAxisTicks({values:['a','b']}).editYAxisLabels({values:['a','b']});
+ const facets=base.facet({field:'y',scales:{color:'independent'}});
+ for(const child of Object.values(facets.children)) {
+  assert.deepEqual(child.resolvedScales.y.domain,['a','b']);
+  assert.deepEqual(child.guideConfigs.axis.y.ticks.values,['a','b']);
+  assert.equal(child.graphicSpec.objects.plot.items.length,2);
+ }
+ assert.equal(renderToSVG(deserializeProgram(serializeProgram(facets))),renderToSVG(facets));
+});

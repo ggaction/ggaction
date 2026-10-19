@@ -253,7 +253,7 @@ be selected.
 [Titles](./titles.md)
 
 `createGuides` also accepts facet parents: it creates applicable guides on the
-retained source and rederives all panels using the current facet guide policy.
+retained source. Unchanged automatic guides preserve panels; new guides rederive them.
 Datum-only anchors, such as a rug baseline, do not infer an axis. Independent
 appearance channels can be requested together through `legend.channels`; sampled
 opacity and stroke-width legends become separate blocks alongside color.

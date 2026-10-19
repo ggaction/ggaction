@@ -218,7 +218,7 @@ function applyResolvedDomains(
   const marks = materializeMarks ? next.semanticSpec.layers.flatMap(layer => {
     const step = getMarkMaterializationStep(next, layer);
     if (step === undefined) return [];
-    return ["bar", "line", "area", "arc"].includes(layer.mark?.type)
+    return ["bar", "line", "area", "arc", "rect"].includes(layer.mark?.type)
       ? [{ ...step, args: { ...step.args, scales: false } }]
       : [step];
   }) : [];

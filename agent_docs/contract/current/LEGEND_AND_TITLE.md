@@ -602,6 +602,8 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 ## `createGuides`
 
+- Facet에서 default guides가 이미 모두 있으면 기존 children/graphics를 재사용하며 마지막 wrapped createGuides trace는 유지한다. 새 collection 또는 명시적 옵션은 source action 검증과 rederive 경로를 따른다.
+
 - Signature: `createGuides({ axes?, grid?, legend? })`.
 - `axes`, `grid`, `legend`: 해당 child option object, `false`, 또는 생략. 생략은 semantic applicability
   inference, `{}`는 명시적 선택+inference, false는 opt-out이다.
