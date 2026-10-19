@@ -2583,3 +2583,7 @@ entries는602가 되었다. Node22.23.1 staged 실측851052packed/4124450unpacke
 적용한다. Installed browser consumer의 Full421169/Basic207723gzip도 이전420000/207000을 넘었다.
 기존 실패를 보존하고 해당 cap만422000/208000으로 올린다. SVG25000과 data/path/그림/수치/coverage
 기준은 그대로다. Node24 protected-release 수치는 다음 정기 배포에서 별도로 다시 측정한다.
+
+같은 underlay 문서의 search-index는834254bytes로 기존833000 한도를 넘었다. 실제 두 normal-suite
+실패를 보존하고 search cap만 최소다음1000byte 단계835000으로 조정한다. 검색 내용이나 action
+coverage를 삭제하지 않으며 runtime/renderer/수치/그림 기준에는 영향이 없다.

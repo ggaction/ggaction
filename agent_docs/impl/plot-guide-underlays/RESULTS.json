@@ -1,0 +1,255 @@
+{
+  "status": "verified-unreleased-library-candidate",
+  "issues": [
+    223
+  ],
+  "publicRelease": false,
+  "regularReleaseAtDistinctFamilies": 1413,
+  "chartFamiliesCompleted": 1250,
+  "schoolModelCalls": 0,
+  "chartPixelsInspected": false,
+  "runtimeCommits": [
+    "895006bccd39fd97b602b7ef42b5821b9c1d44ad"
+  ],
+  "reviewCommit": "0ef92ca761d3bed8db84f3d43326397b99c5067c",
+  "approvalCommit": "cf82d135",
+  "approval": "APPROVAL.json",
+  "target": "TARGET_EVIDENCE.json",
+  "publicApi": "underlay Boolean for complete Cartesian axes and Canvas plotBorder; extension-only exact direct-child permutation via editGraphics",
+  "passed": {
+    "normalSuite": {
+      "total": 4761,
+      "pass": 4761,
+      "fail": 0
+    },
+    "newNormalTests": 25,
+    "cartesianMarkFamilies": 8,
+    "noOptInPublicExamplesExact": 93,
+    "renderPngDpr2PdfAndNormalBlend": 4,
+    "frozenTargetSvgAndBothPngDensitiesExact": true,
+    "publicBrowserExample": 1,
+    "installedBrowserEngines": {
+      "chromium": 2,
+      "firefox": 2,
+      "webkit": 2
+    },
+    "finalExactTarballConsumer": true,
+    "builtDocumentationPages": 150,
+    "finalBuiltDocsBrowser": {
+      "desktopSearchKeyboardAndNoJavascript": true,
+      "automatedAccessibility": true,
+      "allPagesAtWidths": [
+        320,
+        390,
+        768
+      ]
+    }
+  },
+  "independentOpaqueProbe": {
+    "coordinate": [
+      85,
+      139
+    ],
+    "underlayDifferenceRgba": [
+      119,
+      119,
+      136,
+      255
+    ],
+    "overlayControlRgba": [
+      136,
+      136,
+      136,
+      255
+    ],
+    "normalBlendRgba": [
+      255,
+      255,
+      0,
+      255
+    ],
+    "comparisonToleranceChanged": false
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.21",
+    "file": "/Users/hyeonjeon/Projects/ggaction-feature-review-0.0.19/.artifacts/plot-guide-underlays/candidate-final/ggaction-0.0.21.tgz",
+    "entryCount": 602,
+    "packedBytes": 851052,
+    "unpackedBytes": 4124450,
+    "sha256": "1970c2635e44090cf796a10cab36e6f4ba4fcd7ef976731c76a8b5507842ccaf",
+    "integrity": "sha512-2V3tx0+ZRHaP2pshqvN64Y7XihmCPGTj8WozIX7yGUZXs1yRrS2MHLC7wPNCpIbrNcAvINa8xp1FpBw91xwwuA==",
+    "node": "v22.23.1",
+    "publicRelease": false
+  },
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 534,
+      "minifiedBytes": 1554876,
+      "gzipBytes": 421169
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 316,
+      "minifiedBytes": 736809,
+      "gzipBytes": 207723
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 19,
+      "minifiedBytes": 23548,
+      "gzipBytes": 7567
+    }
+  },
+  "measuredBudgetUpdates": {
+    "packageEntries": 602,
+    "packedBytes": 852000,
+    "unpackedBytes": 4125000,
+    "fullBrowserGzipBytes": 422000,
+    "basicBrowserGzipBytes": 208000,
+    "svgBrowserGzipBytesUnchanged": 25000,
+    "searchIndexBytes": 835000,
+    "actualSearchIndexBytes": 834254
+  },
+  "pending": [
+    "Node24 protected-release remeasurement and regular1413-family runtime/docs/dataset/viewer integration",
+    "Source1694 remains held until released runtime integration; not admitted or accepted through this gap"
+  ],
+  "failuresPreserved": [
+    "Target preparation-v1 included stored item id in a constructor input; corrected explicit type/properties, kept failed source/log before freezing the target.",
+    "First runtime matched target graphics/default SVG then exposed old exactKeys requiring both independent optional frame fields. Closed optional-key validation now preserves offset and underlay independently, rejects empty or noncanonical frames.",
+    "Lifecycle-v1 expected facade reuse behavior from a direct createGuides call; corrected fixture uses the real chart-facade reuse path.",
+    "Polar auto-label fixture failed the existing gap constraint before the new border policy. Line-only complete axes isolate the border policy; no overlap criteria changed.",
+    "First docs edit had a host JavaScript backtick parse error before source writes. Failure recorded; corrected fail-fast generation passed.",
+    "Actual old package caps failed at602entries,851069packed and4124538unpacked; minimally rounded caps602/852000/4125000. Final actual851052/4124450.",
+    "Actual old browser caps failed:421169 Full versus420000 and207723 Basic versus207000. Only minima422000/208000 updated, SVG cap unchanged.",
+    "all-v1 passed4759/4761; only two doc search size checks failed834254>833000. Search cap minimally raised835000,31 focused checks and final4761/4761 passed.",
+    "First final host proof assumed explicit package consumer echoed an automatic-pack sha field. Frozen hashes had already passed; v2 binds exact explicit source path, unchanged tar SHA, original receipt, raw stdout SHA and observed consumer exit0. Library/tar/tolerances unchanged."
+  ],
+  "bindings": [
+    {
+      "path": ".artifacts/plot-guide-underlays/first-runtime-v2.log",
+      "bytes": 263,
+      "sha256": "79634e5fa62c5eb0c2fe7253b5a27594e001f2edcd6f0c2cec0b688e4e9bb3d8"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/existing-focused-v1.log",
+      "bytes": 10322,
+      "sha256": "568a2995cb01fecd98bd1db1e295f1d17848496d9cda09d546df961dfc93bb17"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/boundaries-v1.log",
+      "bytes": 6707,
+      "sha256": "eec28a509038c58492d5e84068eae10020561db2ed420e842a6c758cc9223753"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/inventory-v1.log",
+      "bytes": 3855,
+      "sha256": "f5d7f5c0ad31b9bc177869c921504c6229d98938a81000939d05bc1f68effe51"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/focused-v3.log",
+      "bytes": 6269,
+      "sha256": "d14d3b0dcc46d1adf75e395afe94e0f904dd5ba11c96eb71f14c2fa9ba49f849"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/mark-vocabulary-v2.log",
+      "bytes": 2553,
+      "sha256": "aee763e9ff60e3c5d6cb57b977c590abf6432de8dad28990ab342496f6866a9e"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/types-v1.log",
+      "bytes": 361,
+      "sha256": "7f258d603f793b3b3100b569e1192e4ebb5c6c6f039397e5360b6612f062dbb8"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/render-v2.log",
+      "bytes": 945,
+      "sha256": "7cb6ad18510506688ce3c2169bfe00d09be893388051a63f81152246600b88c0"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/public-browser-v1.log",
+      "bytes": 303,
+      "sha256": "a5639de87756bee62980e6cfd50d4516360b7c99838e6ac540e9f26b7d3aa144"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/browser-chromium-v1.log",
+      "bytes": 821,
+      "sha256": "916f03d1b02ffd0ce628f45170e104f46fd9d2c5eadbffa3dcbb73a0483bee3c"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/browser-firefox-v1.log",
+      "bytes": 813,
+      "sha256": "f930cb3ea494071b6a337ce14965714ba6ad42a6d489835df4bed574cca4e5c7"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/browser-webkit-v1.log",
+      "bytes": 812,
+      "sha256": "4dd7119378e9eddf6a74f4d51121af57e0e826aa1430649d5b26ff12055aa607"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/all-v2.log",
+      "bytes": 992249,
+      "sha256": "130663ec43707aad25a4f36a5e490ab36233eb9b284cff60e2708d5b04cc5f89"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/docs-generate-v4.log",
+      "bytes": 9527,
+      "sha256": "288aed8ac15e0fa7b5f32b65082438b7a018da743dbf707c1874aac3deb37a4c"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/docs-preflight-v1.log",
+      "bytes": 257,
+      "sha256": "5498bb281530d50ed1534e8ebfce1934e86f6c7a33491aa407ff4db951e1674d"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/docs-build-v2.log",
+      "bytes": 419,
+      "sha256": "88d45aec7c7acbfdfdd583c585554815d964cc71f110d98a482bc5dda5f41eb1"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/docs-built-v2.log",
+      "bytes": 115,
+      "sha256": "8b67b737002bb9a40f52b91eba9a2aba91b043a875723aacaf5ca645421b217d"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/docs-browser-v2.log",
+      "bytes": 157,
+      "sha256": "a6c413832c2ac970262d660fe51fe2b6b1ac8d6ab97e797817fdb77cd9193c60"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/package-check-v4.log",
+      "bytes": 444,
+      "sha256": "60e86e0acade19338df227eed634077766fe627ae0fe01c6372d324a45c01971"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/package-consumer-final-v1.log",
+      "bytes": 2513,
+      "sha256": "fc5083712bbf55de7ddd6805dc2c86d2f75a0bd86e1adcea2e9351daa3e4c764"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/candidate-final.json",
+      "bytes": 502,
+      "sha256": "52c8b728ed5fd7eacdbe42c69785b0917b3f7639ba7b4eb6040a194fd58451d1"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/final-frozen-target-and-tarball-proof-v2.json",
+      "bytes": 1327,
+      "sha256": "fd36a3c1c4c884e4da37fc787355c6319a70f4c310955a15cc347424a35fcea3"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays/final-tarball-proof-v1-host-diagnosis.json",
+      "bytes": 605,
+      "sha256": "c2417d0409a21c3d86756f73f756468bb3ca5f2f2c375e3fbf8a833065916f4a"
+    },
+    {
+      "path": ".artifacts/plot-guide-underlays-default-parity-v1.json",
+      "bytes": 22745,
+      "sha256": "9ff2031f413106c2ac55ddf761238b721fa506d138a95b06d629e41654c4b8e8"
+    }
+  ]
+}

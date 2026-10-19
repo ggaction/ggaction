@@ -6,11 +6,11 @@
 - [x] 기존 defaults와 grid rank를 유지하는 최소 공개 설계 확정
 - [x] 기존 primitive만으로 독립적인 목표와 수치·renderer 증거 준비
 - [x] 검토 commit/push 후 직접적인 standing approval 재사용 기록
-- [ ] 구현·타입·현재 계약·예제·문서·패키지와 전체 검증
-- [ ] 검증 checkpoint commit/push; 다음 정기 릴리즈까지 candidate 유지
+- [x] 구현·타입·현재 계약·예제·문서·패키지와 전체 검증
+- [x] 검증 checkpoint commit/push; 다음 정기 릴리즈까지 candidate 유지
 
 이슈: <https://github.com/ggaction/ggaction/issues/223>.
-이 본문은 구현 전 설계다. 아직 새 공개 옵션이나 primitive 편집을 구현하지 않는다.
+아래는 원격 검토·승인 뒤 구현한 설계 기록이다. 최종 검증은 [RESULTS.json](RESULTS.json)에 묶었다. 공개 릴리즈는 다음1413-family 통합까지 보류한다.
 학교 모델 호출은0이며 source1694 번역을 이 gap을 통해 승인하지 않는다.
 
 ## 범위와 공개 입력
