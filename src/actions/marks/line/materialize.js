@@ -4,6 +4,7 @@ import {
 import {
   mapContinuousScaleValues,
   mapOrdinalPositionValues,
+  readScaleField,
   normalizeStrokeDashPattern
 } from "../../../grammar/scales/index.js";
 import { buildCurvePathCommands } from
@@ -55,7 +56,9 @@ export function resolveParallelLineMaterialization({
   );
   const sourceRows = items.map(item => rows[item.sourceRowIndex]);
   const mapAppearance = appearanceMapper(layer, resolvedScales,
-    field => sourceRows.map(row => row[field]));
+    (field, channel, encoding) => readScaleField(sourceRows, field, encoding.fieldType, {
+      temporalUnit: encoding.temporalUnit
+    }));
   return {
     commands: items.map(item => item.commands),
     strokes: layer.encoding?.stroke?.scale !== undefined

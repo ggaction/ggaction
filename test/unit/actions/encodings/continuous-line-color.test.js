@@ -18,6 +18,14 @@ test("Parallel continuous color maps each row and creates a gradient guide", () 
   assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec, p.graphicSpec);
 });
 
+test("Parallel temporal appearance parses source values before continuous mapping", () => {
+  const p = chart().createCanvas({ width: 900, height: 600, margin: 140 })
+    .createData({ values: rows.map((row, index) => ({ ...row, date: `${2000 + index}-01-01` })) })
+    .createParallelCoordinates({ id: "plot", dimensions: ["x", "y"], color: { field: "date", fieldType: "temporal" } });
+  assert.equal(new Set(p.graphicSpec.objects.plot.items.map(item => item.properties.stroke)).size, 4);
+  assert.ok(p.resolvedScales.color.domain.every(Number.isFinite));
+});
+
 test("Cartesian and Polar continuous color respect explicit series instead of regrouping numeric values", () => {
   for (const create of [p => p.createLinePlot({ id: "plot", x: "x", y: "y", groupBy: "group", guides: false }),
     p => p.createPolarLinePlot({ id: "plot", theta: "x", radius: "y", groupBy: "group", guides: false })]) {

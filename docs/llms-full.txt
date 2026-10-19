@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:2d3e6c5bec32df71a75959463ebda46ad5163594e9944046761dfff566a6cfe2. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:fa4f66ff16498a6a93a7e7ec5524ff1461628206ae3522815680c7b8f0a4ad5f. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -40822,7 +40822,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:2d3e6c5bec32df71a75959463ebda46ad5163594e9944046761dfff566a6cfe2` |
+| Contract fingerprint | `sha256:fa4f66ff16498a6a93a7e7ec5524ff1461628206ae3522815680c7b8f0a4ad5f` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
