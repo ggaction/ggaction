@@ -85,6 +85,7 @@ export const rematerializeLegend = /* @__PURE__ */ action(
         : stored.symbol;
       const symbolChanged = !sameGuideValue(symbol, stored.symbol);
       const changed = symbolChanged ||
+        !sameGuideValue(stored.defaultLabelMap, definition.defaultLabelMap) ||
         !sameValues(stored.channels, definition.channels) ||
         !sameValues(stored.domain, definition.domain) ||
         !sameValues(stored.scales, definition.scales) ||
@@ -98,6 +99,7 @@ export const rematerializeLegend = /* @__PURE__ */ action(
             channels: definition.channels,
             scales: definition.scales,
             field: definition.field,
+            defaultLabelMap: definition.defaultLabelMap,
             ...(definition.combine === undefined ? {} : {combine: definition.combine, sizeAreas: definition.sizeAreas}),
             title: definition.title,
             domain: definition.domain

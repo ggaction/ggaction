@@ -11,6 +11,7 @@ import { CHANNELS } from "./options.js";
 import { nonEmptyString } from "./validation.js";
 import { findLayer } from "../../../../selectors/layers.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
+import { horizonLegendPresentation } from "../../../../grammar/horizonLegend.js";
 
 function isCategoricalTarget(layer) {
   if (["line", "point"].includes(layer?.mark?.type)) {
@@ -119,6 +120,8 @@ export function resolveDefinition(program, layer, requestedChannels, requestedTi
   const scales = encodings.map(item => item.encoding.scale);
   const resolved = resolveOrdinalScales(program, scales);
   const field = [...fields][0];
+  const transform = requireDataset(program, layer.data).transform?.[0];
+  const horizon = field === transform?.as?.color ? horizonLegendPresentation(transform) : undefined;
   let linked;
   if (order?.channel !== undefined) {
     const position = layer.encoding?.[order.channel];
@@ -132,7 +135,8 @@ export function resolveDefinition(program, layer, requestedChannels, requestedTi
     channels,
     scales,
     field,
-    title: nonEmptyString(requestedTitle ?? field, "Legend title"),
+    title: nonEmptyString(requestedTitle ?? horizon?.title ?? field, "Legend title"),
+    ...(horizon === undefined ? {} : { defaultLabelMap: horizon.labelMap }),
     domain: resolveLegendOrderDomain(resolved.domain, order, linked,
       order?.values === undefined ? undefined : readNominalField(requireDataset(program, layer.data).values, field)),
     ...(sizeShape ? {combine:"size-shape",...resolveSizeShapeMapping({layer,

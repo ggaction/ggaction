@@ -1061,6 +1061,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   다시 계산한다.
 - Shared x guides: 원래 x field의 title을 x position materialization 전에 저장한다. 같은 source x를 공유하는
   Horizon을 추가할 때 namespaced derived field 이름 때문에 title inference가 충돌하지 않는다.
+- 명시적으로 추가한 categorical legend는 원본 y field를 title로 쓰고 shared extent의 band를 원본 값
+  구간으로 표시한다. 서로 다른 independent extent는 baseline 위/아래 band 순서로 표시해 공통 수치
+  구간을 암시하지 않는다. `editHorizon`은 inferred label을 갱신하며 explicit title/labelMap은 유지한다.
 
 ### Formal values — `encodeHorizon`
 

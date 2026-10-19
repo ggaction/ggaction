@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:19f16dc506187c560272d976eb30261bd62d3c29b94fb5979be62578ac799222",
+    "contractId": "sha256:36a71f55c992a69ff468848b2e8cc66bbf7de3393ec0253944dd32b7435297eb",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1035,8 +1035,8 @@
         "calendar-interval-bar-widths",
         "related"
       ],
-      "bytes": 18879,
-      "sha256": "98f3bfa27f5dfe38be2d390e8576efb9c067a7bc58b8eeef052a252ef0ffbdf3"
+      "bytes": 19265,
+      "sha256": "8843cc967b49ff04662acb430c0b5fa2788c061dba2cb87a565ebd6c81bc6bae"
     },
     {
       "order": 64,
@@ -3376,7 +3376,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "b4e8c639a8a1f12df30f17c708022ab43d53d879f28d230b31f95bb151b59d57"
+      "sha256": "3d64716154eba0a98f88d365a382e6506f2f90cc8ef2e24e6eef4be8b61364fd"
     },
     {
       "order": 150,
