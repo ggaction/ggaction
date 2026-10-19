@@ -77,3 +77,32 @@ test('facet inspection rejects aggregate partition outputs and accepts their raw
  assert.equal(describeAction(q,{action:'facet',options:{field:layer.encoding.x.field,data:layer.data}}).applicability,'incompatible');
  assert.equal(q.trace,before);
 });
+
+
+test('facet partitions authored guide values and restores their full source intent', () => {
+ const base = chart().createCanvas({width:600,height:420}).createData({values:[
+  {x:'A',y:2,g:'a'}, {x:'B',y:4,g:'b'}, {x:'C',y:6,g:'b'}
+ ]}).createBarPlot({x:'x',y:'y'})
+  .editXAxisTicks({values:['A','C']}).editXAxisLabels({values:['A','C']})
+  .createVerticalGrid({values:['A','C']});
+ const before = serializeProgram(base);
+ const independent = base.facet({field:'g',scales:{x:'independent'}});
+ assert.deepEqual(Object.values(independent.children).map(child=>child.guideConfigs.axis.x.ticks.values), [['A'],['C']]);
+ assert.deepEqual(Object.values(independent.children).map(child=>child.guideConfigs.axis.x.labels.values), [['A'],['C']]);
+ assert.deepEqual(Object.values(independent.children).map(child=>child.guideConfigs.grid.vertical.values), [['A'],['C']]);
+ const restored = deserializeProgram(serializeProgram(independent)).editFacetScales({x:'shared'});
+ for(const child of Object.values(restored.children)) assert.deepEqual(child.guideConfigs.axis.x.ticks.values,['A','C']);
+ assert.deepEqual(serializeProgram(base), before);
+ assert.equal(renderToSVG(deserializeProgram(serializeProgram(independent))),renderToSVG(independent));
+ assert.throws(()=>base.editXAxisTicks({values:['not observed']}),/inside the scale domain/);
+});
+
+test('independent continuous facets clip inherited tick selections including empty selections', () => {
+ const base = chart().createCanvas({width:600,height:420}).createData({values:[
+  {x:1,y:2,g:'a'}, {x:2,y:4,g:'a'}, {x:10,y:6,g:'b'}, {x:20,y:8,g:'b'}
+ ]}).createScatterPlot({x:'x',y:'y'})
+  .editXAxisTicks({values:[1,2]}).editXAxisLabels({values:[1,2]});
+ const faceted = base.facet({field:'g',scales:{x:'independent'}});
+ assert.deepEqual(Object.values(faceted.children).map(child=>child.guideConfigs.axis.x.ticks.values),[[1,2],[]]);
+ assert.ok(renderToSVG(faceted).startsWith('<svg'));
+});

@@ -118,6 +118,8 @@ a positive value wraps cells row-major. A facet uses the shared 10,000 generated
 and source-row count multiplied by child count must not exceed the shared
 10,000,000-unit work budget.
 
+Explicit tick, label, and grid values are intersected with each cell domain; shared scales restore the source selection.
+
 Final-item `filterMarks` recipes are also evaluated within each partition, after
 the target mark has been rebound to that partition. Empty matches preserve
 shared-scale panels, and `editFacetSource` can add, replace, or remove the filter.

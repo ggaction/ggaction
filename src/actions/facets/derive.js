@@ -163,6 +163,32 @@ function buildFacetCellCandidate(
   return { program, populated: true };
 }
 
+function partitionGuideValues(program) {
+  let next = program;
+  const restrict = config => {
+    if (config?.mode !== "values" || config.inferredValues === true) return config;
+    const scale = next.resolvedScales[config.scale];
+    if (!Array.isArray(scale?.domain)) return config;
+    const discrete = ["ordinal", "band", "point"].includes(scale.type);
+    const domain = new Set(scale.domain);
+    const low = Math.min(...scale.domain), high = Math.max(...scale.domain);
+    return { ...config, values: config.values.filter(value => discrete
+      ? domain.has(value) : value >= low && value <= high) };
+  };
+  for (const [id, axis] of Object.entries(program.guideConfigs.axis ?? {})) {
+    for (const component of ["ticks", "labels"]) {
+      const config = axis[component];
+      const restricted = restrict(config);
+      if (restricted !== config) next = next._withGuideConfig(id, component, restricted);
+    }
+  }
+  for (const [id, config] of Object.entries(program.guideConfigs.grid ?? {})) {
+    const restricted = restrict(config);
+    if (restricted !== config) next = next._withGridConfig(id, restricted);
+  }
+  return next;
+}
+
 function applyResolvedDomains(
   program,
   childId,
@@ -188,6 +214,7 @@ function applyResolvedDomains(
       domain
     });
   }
+  next = partitionGuideValues(next);
   const marks = materializeMarks ? next.semanticSpec.layers.flatMap(layer => {
     const step = getMarkMaterializationStep(next, layer);
     if (step === undefined) return [];

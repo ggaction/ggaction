@@ -113,9 +113,9 @@ function facetUnitTemplate(program, sourceAction = false) {
   }
   const { facets: _facets, guides: _guides, ...unitConfigs } = program.materializationConfigs;
   const { legend: _parentLegend, ...sourceSemanticGuides } = program.semanticSpec.guides;
-  const sourceGuides = sourceAction ? { ...seed.materializationConfigs.guides,
+  const sourceGuides = { ...seed.materializationConfigs.guides,
     axis: _guides?.axis ?? seed.guideConfigs.axis,
-    grid: _guides?.grid ?? seed.guideConfigs.grid } : seed.materializationConfigs.guides;
+    grid: _guides?.grid ?? seed.guideConfigs.grid };
   if (sourceAction) delete unitConfigs.title;
   return new program.constructor({
     semanticSpec: sourceAction ? { ...program.semanticSpec, title: {},
