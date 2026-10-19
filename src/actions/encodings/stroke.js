@@ -20,6 +20,7 @@ import {
 import { applyTemporalUnit } from "./temporal.js";
 import {
   applyEncodingScale,
+  releaseDetachedEncodingScale,
   rematerializeEncoding,
   resolveReassignmentScaleOptions,
   resolveTarget,
@@ -210,6 +211,9 @@ export const encodeStroke = /* @__PURE__ */ action(
     }
 
     let next = withoutConstantStroke(this, layer);
+    if (this.markConfigs[target]?.stroke !== undefined || this.markConfigs[target]?.barAppearance?.stroke !== undefined) {
+      next = releaseDetachedEncodingScale(next, scale.id);
+    }
     next = applyTemporalUnit(next, target, "stroke", temporalUnit, previous);
     next = setEncodingProperties(next, target, "stroke", {
       field: args.field,

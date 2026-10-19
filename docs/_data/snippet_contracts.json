@@ -1451,6 +1451,18 @@
   {
     "file": "api/encodings.md",
     "block": 1,
+    "heading": "Fixed or variable appearance",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "9f0e1dfec31d3c8706832238ac75bb28b1560d6d72ce6a3f29c31104d0523e54",
+    "executable": false
+  },
+  {
+    "file": "api/encodings.md",
+    "block": 2,
     "heading": "Direction",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1464,7 +1476,7 @@
   },
   {
     "file": "api/encodings.md",
-    "block": 2,
+    "block": 3,
     "heading": "Removing an encoding",
     "mode": "fragment",
     "environment": "esm-context",

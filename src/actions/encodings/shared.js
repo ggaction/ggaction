@@ -1,3 +1,5 @@
+import { collectResourceReferences } from "../../core/resourceReferences.js";
+import { removeScale } from "../resources/remove.js";
 import { cartesianAxisOwners } from "../../selectors/axes.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -58,6 +60,15 @@ export function clearMarkGraphic(program, target) {
 export function resolveReassignmentScaleOptions(encoding, options) {
   if (encoding?.scale === undefined || options?.id !== undefined) return options;
   return { ...options, id: encoding.scale };
+}
+
+// A fixed-to-field transition may reuse a detached named channel scale with
+// changed options. Recreate it through the existing resource owner, preserving
+// the resolved definition's omitted defaults and never touching live consumers.
+export function releaseDetachedEncodingScale(program, id) {
+  if (findSemanticScale(program, id) === undefined ||
+      collectResourceReferences(program, { kind: "scale", id }).some(ref => ref.strength === "live")) return program;
+  return removeScale.call(program, { id });
 }
 
 export function applyEncodingScale(

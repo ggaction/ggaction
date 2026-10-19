@@ -259,6 +259,16 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
   const candidates = args.target === undefined ? layers : layers.filter(layer => layer.id === args.target);
   const channels = args.channels;
   if (channels !== undefined) validateLegendChannels(channels, "createLegend");
+  // Two independent sampled channels can remain when color becomes constant.
+  // Their existing owners create separate blocks; there is no categorical block.
+  if (channels === undefined && candidates.length === 1 &&
+      isSizeLegendPoint(candidates[0]) && isOpacityLegendLayer(candidates[0]) &&
+      !["color", "stroke", "shape", "strokeDash", "strokeWidth"].some(channel =>
+        candidates[0].encoding?.[channel]?.scale !== undefined)) {
+    const target = candidates[0].id;
+    return { steps: [resolveStandaloneLegendStep({ ...args, target }, "size"),
+      { op: "createOpacityLegend", args: { ...args, target } }], finish: "auto" };
+  }
   const standalone = [
     ["size", isSizeLegendPoint, ["color", "stroke", "shape", "strokeDash", "opacity"]],
     ["strokeWidth", isStrokeWidthLegendLayer, args.target === undefined

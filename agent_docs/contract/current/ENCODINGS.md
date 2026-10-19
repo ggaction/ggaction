@@ -1108,8 +1108,19 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeColor`
 
-- An ErrorBand with explicit constant fill rejects color encoding. Use `editErrorBand({ fill: false })`
-  to restore field eligibility. The reverse transition requires removing the color encoding first.
+- User authorization: the requested Fixed/Variable appearance modes approve constant `value` branches
+  on the existing encodeColor/encodeSize APIs, following encodeOpacity/encodeStroke vocabulary.
+- `encodeColor({ value, target? })` assigns one non-empty graphical color string. Exactly one of value/field
+  is required; constants reject fieldType, scale, palette, layout, aggregate and temporalUnit. It composes the
+  existing wrapped removeEncoding and mark editor, removes only the replaced channel's legend participation,
+  and preserves axes, independent grouping/layout and unrelated appearance. Shared scales remain resources.
+- Field reassignment explicitly replaces constant fill/stroke, including an ErrorBand fill. Direct mark editors
+  retain their conflicts with active field mappings. Source-owned text still rejects field color.
+- Full and Basic share the implementation; Basic records the nested removal as built-in for persistence.
+  A fixed-to-field transition recreates a detached scale through removeScale/createScale under the
+  same ID when needed, carrying forward resolved omitted defaults and accepting new ranges/palettes.
+  A scale with live references is preserved and keeps normal shared-resource validation.
+  Evidence: `test/unit/actions/encodings/fixed-variable-appearance.test.js`.
 
 - Quantitative Area color uses the existing continuous/discretized scale mapper and real legend owner.
   Exactly one finite numeric value is required per existing series (ungrouped means one series);
@@ -1119,7 +1130,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   one value per group, not one value per path vertex. Full Area creation is supported; Basic has no
   Area authoring surface and is unchanged. createAreaPlot.color stays categorical-only.
   Evidence: `test/unit/actions/encodings/continuous-area-color.test.js`, `test/charts/continuous-area-color/`.
-- Signature: `encodeColor({ field, target?, fieldType?, layout?, aggregate?, scale? })`
+- Signature: `encodeColor({ value, target? } | { field, target?, fieldType?, layout?, aggregate?, scale? })`
 - `field`: 필수 field. nominal/ordinal은 categorical color contract에, quantitative/temporal은 point에 사용하며
   aggregate bar는 quantitative field를 지원한다.
 - `target`: point, line, bar, rect 또는 area ID; current/unique inference를 지원한다.
@@ -1173,7 +1184,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeColor`
 
-- Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging" | "center"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; `"center"` is area-only, ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales support quantitative point/rect/text/Area consumers and quantitative aggregate bars, `unknown` remains point-row-only, and mark compatibility narrows the categorical layout set.
+- Implemented: `encodeColor({ value: string; target?: UserId } | { field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging" | "center"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; `"center"` is area-only, ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales support quantitative point/rect/text/Area consumers and quantitative aggregate bars, `unknown` remains point-row-only, and mark compatibility narrows the categorical layout set.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeColor`
@@ -1251,7 +1262,12 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeSize`
 
-- Signature: `encodeSize({ field, target?, fieldType?, scale? })`
+- Signature: `encodeSize({ value, target? } | { field, target?, fieldType?, scale? })`
+- `value`: nonnegative finite graphical area in square pixels, including zero. Exactly one of value/field;
+  constants reject fieldType and scale. Native removeEncoding cleans size legend participation, then
+  encodeRadius stores sqrt(area/pi) in the existing graphical radius owner. Circle/square/other glyphs
+  retain equal area through shape edits, persistence and rematerialization. No new state schema is added.
+  Evidence: `test/unit/actions/encodings/fixed-variable-appearance.test.js`.
 - `field`: 필수 quantitative 또는 categorical field.
 - `target`: optional point ID.
 - `fieldType`: 기본 `"quantitative"`; `"nominal"`, `"ordinal"`도 지원한다.
@@ -1260,9 +1276,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   `pow`는 positive finite `exponent`가 필수다. discrete range는 최소 두 개의
   nonnegative, nondecreasing area를 명시한다.
 - Effect: semantic size를 concrete area로 mapping하고 circle radius=`sqrt(area/pi)`, square side=`sqrt(area)`로
-  materialize한다. constant `encodeRadius`와 함께 사용할 수 없다.
+  materialize한다. Field assignment는 기존 constant radius를 명시적으로 교체한다.
 - Reassignment: 다시 호출하면 size field와 compatible scale binding을 교체하고 point 및 existing
-  size legend를 rematerialize한다. constant radius conflict는 자동 제거하지 않는다.
+  size legend를 rematerialize한다. Constant radius는 같은 전환에서 제거한다.
 - Coverage: regression scatterplot과 size legend tests가 representative mapping을 검증한다. explicit
   domain/range와 constant-size conflict의 값 matrix는 부분적이다.
 
@@ -1274,7 +1290,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeSize`
 
-- Implemented: `encodeSize({ field: FieldName; target?: UserId; fieldType?: "quantitative" | "nominal" | "ordinal"; scale?: SizeScaleOptions | CategoricalSizeScaleOptions })`, where `SizeScaleOptions` is the closed discriminated union for quantitative `linear | log | sqrt | pow | quantize | quantile | threshold`; categorical fields use `CategoricalSizeScaleOptions`. Continuous ranges are two areas; quantize/quantile ranges contain at least two areas; threshold range length is domain cut count plus one.
+- Implemented: `encodeSize({ value: NonNegativeFinite; target?: UserId } | { field: FieldName; target?: UserId; fieldType?: "quantitative" | "nominal" | "ordinal"; scale?: SizeScaleOptions | CategoricalSizeScaleOptions })`, where `SizeScaleOptions` is the closed discriminated union for quantitative `linear | log | sqrt | pow | quantize | quantile | threshold`; categorical fields use `CategoricalSizeScaleOptions`. Continuous ranges are two areas; quantize/quantile ranges contain at least two areas; threshold range length is domain cut count plus one.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeSize`
@@ -1288,7 +1304,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: transformed-domain interpolation for log/pow/sqrt, quantize endpoints, duplicate-preserving
     quantile cuts, strict threshold cuts, reversed areas with stable interval labels, and invalid family migrations.
 - Interaction
-  - ✅ Covered: constant radius conflict, shape-independent equal-area materialization, discrete legends, shared
+  - ✅ Covered: constant radius replacement, shape-independent equal-area materialization, discrete legends, shared
     consumer refresh, and automatic quantile threshold recomputation after a derived-source revision.
 - No proposal: explicit `scale.range` remains the single size-area range API.
 - Evidence: `test/contracts/size-scale-types.test.js`, point appearance, size legend, shared-scale, and
@@ -1415,7 +1431,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Interaction
   - ✅ Covered: semanticSpec unchanged, child broadcast, same-action reassignment, explicit-radius/encodeSize
     conflict, default-radius/encodeSize override.
-- No proposal: constant area shorthand는 추가하지 않고 field-driven area는 `encodeSize`가 소유한다.
+- Constant area is also owned by `encodeSize({ value })`; direct encodeRadius retains its field-size conflict.
 - Evidence: `test/unit/actions/encodings/radius-encoding.test.js` and
   `test/contracts/point-default-radius.test.js`.
 

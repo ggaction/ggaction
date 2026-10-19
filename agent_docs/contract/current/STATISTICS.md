@@ -255,7 +255,7 @@ without naming generated child layers.
   convert between statistical and explicit center/lower/upper intervals while retaining the body and enabled
   boundary IDs. `groupBy` replaces the path grouping field and `groupBy: false` removes it.
 - Constant fill conflicts with an active color encoding. Remove color with `removeEncoding({ channel: "color" })`
-  first; this also updates the owned legend. Conversely, encodeColor rejects an explicit ErrorBand fill.
+  first; this also updates the owned legend. encodeColor field assignment explicitly replaces an ErrorBand constant fill.
 - Edit-only `fill: false` removes the constant override, restoring active encoded color or the theme default.
   It is not transparency and is invalid at creation. Opacity and curve preserve interval data.
 - `statistics` follows `editErrorBar`: it is statistical-owner-only, validates the complete partial merge, revisions

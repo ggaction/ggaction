@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:0e557372b990990bd4e10e7641416f2d21cb253d92402201fe5379c9e9201a95. Status: development. Runtime source: ef3092a72d9ec214d34dc0d1857b3fed6e51aef3. Release baseline: v0.0.13.
+Contract: sha256:ec834f4ce7996d8cbf9de20cf61f438f7f775df677ad8aa8c1c8ea5f3f603ad7. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/ef3092a72d9ec214d34dc0d1857b3fed6e51aef3/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/ef3092a72d9ec214d34dc0d1857b3fed6e51aef3/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -7190,6 +7190,7 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
+| Constant | point, line, bar, area, arc, rect, text | point/line/bar/area/arc/rect/text: constant color | value only; no field, scale, palette, layout or aggregate; replaces color mapping and its legend participation |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
 | Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
 | Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
@@ -7207,7 +7208,7 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Action | Marks | Field types | Scale family | Item grain and units |
 | --- | --- | --- | --- | --- |
-| `encodeSize` | point | quantitative, nominal, ordinal | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; remove explicit radius first |
+| `encodeSize` | point | quantitative, nominal, ordinal or constant | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; constant value replaces field size; field size replaces constant radius |
 | `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
 | `encodeOpacity` | point, line, rule, bar | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree |
 | `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
@@ -7239,6 +7240,36 @@ The tables below are generated from the same reviewed capability registry used b
 | Cartesian complete axis | `createXAxis` / `createYAxis` / `createAxes` | `editXAxis` / `editYAxis` | line, ticks, labels, ticksAndLabels, title, position |
 | Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, radial angle and radial title position |
 | Parallel dimension axes | `createAxes` / `createParallelAxes` / `createParallelAxis` | `editParallelAxis` / `removeParallelAxis` / `removeParallelAxes` | line, ticks, labels, title from each stored dimension |
+
+## Fixed or variable appearance
+
+Use the same action for either a constant `value` or a data `field`. These are
+mutually exclusive. Constants have no scale or legend; field mappings use the
+existing scale options and final-item grain constraints. Switching to a constant
+removes that channel's legend participation, preserving other guides and styles.
+Switching back to a field removes its constant override. Color supports point,
+line, bar, area, arc, rect and text; size supports point marks.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+import { chart } from "ggaction";
+const data = [{ x: 1, y: 2, group: "A" }, { x: 2, y: 4, group: "B" }];
+const fixed = chart().createCanvas().createData({ values: data })
+  .createScatterPlot({ x: "x", y: "y", guides: false })
+  .encodeColor({ value: "#4c78a8" })
+  .encodeSize({ value: 64 }) // Equal graphical area, in square pixels.
+  .encodeOpacity({ value: 0.7 });
+const variable = fixed.encodeColor({ field: "group" })
+  .encodeSize({ field: "y", scale: { range: [20, 240] } })
+  .encodeOpacity({ field: "y", scale: { range: [0.25, 1] } });
+```
+
+`encodeStroke` likewise accepts constant colors or field mappings. Field-driven
+Line/Area appearance must still be unambiguous within each series; fixed values
+work without requiring a suitable field. `encodeRadius` remains a direct radius
+assignment and rejects an active size mapping; use `encodeSize({ value })` for
+an atomic switch to constant area.
 
 For an aggregate bar with no existing group or layout, coloring the same
 nominal/ordinal field used on the category axis preserves bar positions, widths,
@@ -10596,6 +10627,7 @@ per series. Raw Area supports an independent group field or tuple. Color must be
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
+| Constant | point, line, bar, area, arc, rect, text | point/line/bar/area/arc/rect/text: constant color | value only; no field, scale, palette, layout or aggregate; replaces color mapping and its legend participation |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
 | Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
 | Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
@@ -10924,7 +10956,7 @@ See [Scale options](./api/scales/) and [Legends](./api/legends/).
 
 | Action | Marks | Field types | Scale family | Item grain and units |
 | --- | --- | --- | --- | --- |
-| `encodeSize` | point | quantitative, nominal, ordinal | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; remove explicit radius first |
+| `encodeSize` | point | quantitative, nominal, ordinal or constant | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; constant value replaces field size; field size replaces constant radius |
 | `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
 | `encodeOpacity` | point, line, rule, bar | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree |
 | `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
@@ -21182,14 +21214,15 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Required | `string` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
 | `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
 | `layout` | Optional / branch-dependent | `ColorLayout \| undefined` |
-| `aggregate` | Optional / branch-dependent | `AggregateOperation \| undefined` |
-| `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
+| `aggregate` | Optional / branch-dependent | `undefined` |
+| `temporalUnit` | Optional / branch-dependent | `undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -21197,6 +21230,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
+| Constant | point, line, bar, area, arc, rect, text | point/line/bar/area/arc/rect/text: constant color | value only; no field, scale, palette, layout or aggregate; replaces color mapping and its legend participation |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
 | Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
 | Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
@@ -21367,8 +21401,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Required | `string` |
+| `value` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| undefined` |
 | `scale` | Optional / branch-dependent | `SizeScaleOptions \| CategoricalSizeScaleOptions \| undefined` |
 
@@ -29084,10 +29119,13 @@ export type CategoryValue = string | number | boolean;
 
 ```typescript
 export type ColorEncodingOptions =
-  | CategoricalEncodingOptions
+  | { value: string; target?: string; field?: never; fieldType?: never;
+      scale?: never; palette?: never; layout?: never; aggregate?: never; temporalUnit?: never }
+  | (CategoricalEncodingOptions & { value?: never })
   | {
       field: string;
       target?: string;
+      value?: never;
       fieldType: "quantitative";
       aggregate?: AggregateOperation;
       scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
@@ -29097,6 +29135,7 @@ export type ColorEncodingOptions =
   | {
       field: string;
       target?: string;
+      value?: never;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
@@ -36655,13 +36694,16 @@ Related types: [`ScaleFields`](./reference/types/#type-scalefields) · [`PointSh
  Expand SizeEncodingOptions
 
 ```typescript
-export type SizeEncodingOptions = {
+export type SizeEncodingOptions =
+  | { value: number; target?: string; field?: never; fieldType?: never; scale?: never }
+  | ({
+  value?: never;
   field: string;
   target?: string;
 } & (
   | { fieldType?: "quantitative"; scale?: SizeScaleOptions }
   | { fieldType: "nominal" | "ordinal"; scale?: CategoricalSizeScaleOptions }
-);
+));
 ```
 
 Related types: [`SizeScaleOptions`](./reference/types/#type-sizescaleoptions) · [`CategoricalSizeScaleOptions`](./reference/types/#type-categoricalsizescaleoptions).
@@ -37029,6 +37071,8 @@ export type StrokeWidthEncodingOptions =
       fieldType?: "quantitative";
       scale?: StrokeWidthScaleOptions;
     };
+
+/** Constant value and scale ranges are graphical areas in square pixels. */
 ```
 
 Related types: [`StrokeWidthScaleOptions`](./reference/types/#type-strokewidthscaleoptions).
@@ -38273,12 +38317,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/ef3092a72d9ec214d34dc0d1857b3fed6e51aef3/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/ef3092a72d9ec214d34dc0d1857b3fed6e51aef3/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -40537,9 +40581,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:0e557372b990990bd4e10e7641416f2d21cb253d92402201fe5379c9e9201a95` |
+| Contract fingerprint | `sha256:ec834f4ce7996d8cbf9de20cf61f438f7f775df677ad8aa8c1c8ea5f3f603ad7` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
-| Runtime source commit | `ef3092a72d9ec214d34dc0d1857b3fed6e51aef3` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 285 |
 | Declared actions in that release | 234 |

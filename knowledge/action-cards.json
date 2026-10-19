@@ -9164,12 +9164,17 @@
       },
       "options": [
         {
-          "name": "field",
-          "required": true,
-          "type": "string"
+          "name": "value",
+          "required": false,
+          "type": "string | undefined"
         },
         {
           "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
           "required": false,
           "type": "string | undefined"
         },
@@ -9196,18 +9201,18 @@
         {
           "name": "aggregate",
           "required": false,
-          "type": "AggregateOperation | undefined"
+          "type": "undefined"
         },
         {
           "name": "temporalUnit",
           "required": false,
-          "type": "TemporalInputUnit | undefined"
+          "type": "undefined"
         }
       ],
       "callPatterns": [
-        "encodeColor({ field, target?, scale?, fieldType?, palette?, layout?, aggregate?, temporalUnit? })"
+        "encodeColor({ target?, scale?, value?, field?, fieldType?, palette?, layout?, aggregate? })"
       ],
-      "snippet": "program.encodeColor({ field: \"value\" })",
+      "snippet": "program.encodeColor({ value: \"value\" })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodecolor"
     },
@@ -9583,12 +9588,17 @@
       },
       "options": [
         {
-          "name": "field",
-          "required": true,
-          "type": "string"
+          "name": "value",
+          "required": false,
+          "type": "number | undefined"
         },
         {
           "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
           "required": false,
           "type": "string | undefined"
         },
@@ -9604,9 +9614,9 @@
         }
       ],
       "callPatterns": [
-        "encodeSize({ field, target?, scale?, fieldType? })"
+        "encodeSize({ target?, scale?, value?, field?, fieldType? })"
       ],
-      "snippet": "program.encodeSize({ field: \"value\" })",
+      "snippet": "program.encodeSize({ value: 1 })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodesize"
     },

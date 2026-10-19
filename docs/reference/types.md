@@ -1942,10 +1942,13 @@ export type CategoryValue = string | number | boolean;
 
 ```typescript
 export type ColorEncodingOptions =
-  | CategoricalEncodingOptions
+  | { value: string; target?: string; field?: never; fieldType?: never;
+      scale?: never; palette?: never; layout?: never; aggregate?: never; temporalUnit?: never }
+  | (CategoricalEncodingOptions & { value?: never })
   | {
       field: string;
       target?: string;
+      value?: never;
       fieldType: "quantitative";
       aggregate?: AggregateOperation;
       scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
@@ -1955,6 +1958,7 @@ export type ColorEncodingOptions =
   | {
       field: string;
       target?: string;
+      value?: never;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
@@ -10950,13 +10954,16 @@ Related types: [`ScaleFields`](#type-scalefields) · [`PointShape`](#type-points
 <summary>Expand SizeEncodingOptions</summary>
 
 ```typescript
-export type SizeEncodingOptions = {
+export type SizeEncodingOptions =
+  | { value: number; target?: string; field?: never; fieldType?: never; scale?: never }
+  | ({
+  value?: never;
   field: string;
   target?: string;
 } & (
   | { fieldType?: "quantitative"; scale?: SizeScaleOptions }
   | { fieldType: "nominal" | "ordinal"; scale?: CategoricalSizeScaleOptions }
-);
+));
 ```
 
 </details>
@@ -11384,6 +11391,8 @@ export type StrokeWidthEncodingOptions =
       fieldType?: "quantitative";
       scale?: StrokeWidthScaleOptions;
     };
+
+/** Constant value and scale ranges are graphical areas in square pixels. */
 ```
 
 </details>

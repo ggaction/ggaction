@@ -219,10 +219,8 @@ test("records field encodings and validates appearance contracts", () => {
     }),
     /from 0 to 1/
   );
-  assert.throws(
-    () => base().encodeRadius({ value: 3 }).encodeSize({ field: "amount" }),
-    /constant radius/
-  );
+  assert.equal(base().encodeRadius({ value: 3 }).encodeSize({ field: "amount" })
+    .markConfigs.points.radius, undefined);
 });
 
 test("materializes all fourteen shapes in marks and a shape-only legend", () => {

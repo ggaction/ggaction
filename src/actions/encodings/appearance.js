@@ -1,3 +1,4 @@
+import { removeEncoding } from "./remove.js";
 import { canMaterializeBar } from "../../materialization/marks/index.js";
 import { action } from "../../core/action.js";
 import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
@@ -16,6 +17,7 @@ import {
 } from "../../selectors/layers.js";
 import {
   applyEncodingScale,
+  releaseDetachedEncodingScale,
   applyDetachedScaleRematerialization,
   clearMarkGraphic,
   rematerializeEncoding,
@@ -47,9 +49,7 @@ function encodeAppearanceField(program, channel, args, operation) {
   if (!fieldTypes.includes(fieldType)) {
     throw new Error(`${operation} requires a ${fieldTypes.join(" or ")} field.`);
   }
-  if (channel === "size" && program.markConfigs[target]?.radius !== undefined) {
-    throw new Error("encodeSize cannot be combined with a constant radius.");
-  }
+
   const previous = layer.encoding?.[channel];
   const requestedScale = resolveReassignmentScaleOptions(
     previous,
@@ -65,7 +65,12 @@ function encodeAppearanceField(program, channel, args, operation) {
     allowUnknown: Object.hasOwn(scale, "unknown")
   });
 
-  let next = setEncodingProperties(program, target, channel, {
+  const baseline = channel === "size"
+    ? program._withoutMaterializationConfig(["marks", target, "radius"])
+    : program;
+  const prepared = channel === "size" && program.markConfigs[target]?.radius !== undefined
+    ? releaseDetachedEncodingScale(baseline, scale.id) : baseline;
+  let next = setEncodingProperties(prepared, target, channel, {
     field: args.field,
     fieldType,
     scale: scale.id
@@ -146,9 +151,26 @@ const removePointRadius = /* @__PURE__ */ action(
 const encodeSize = /* @__PURE__ */ action(
   {
     op: "encodeSize",
-    description: "Encode a field as equal-area point size."
+    description: "Assign constant or field-driven equal-area point size."
   },
   function (args = {}) {
+    validateOptions(args, [...FIELD_OPTIONS, "value"], "encodeSize");
+    const hasValue = Object.hasOwn(args, "value");
+    if (hasValue === Object.hasOwn(args, "field")) {
+      throw new Error("encodeSize requires exactly one of value or field.");
+    }
+    if (hasValue) {
+      if (args.fieldType !== undefined || args.scale !== undefined) {
+        throw new Error("Constant size does not accept fieldType or scale.");
+      }
+      if (!Number.isFinite(args.value) || args.value < 0) {
+        throw new RangeError("encodeSize requires a non-negative finite area.");
+      }
+      const { id: target, layer } = resolveTarget(this, args.target, ["point"], "point mark");
+      const next = layer.encoding?.size === undefined ? this
+        : removeEncoding.call(this, { target, channel: "size" });
+      return next.encodeRadius({ target, value: Math.sqrt(args.value / Math.PI) });
+    }
     return encodeAppearanceField(this, "size", args, "encodeSize");
   }
 );
@@ -259,7 +281,9 @@ const encodeOpacity = /* @__PURE__ */ action(
     const { opacity, ...config } = this.markConfigs[target] ?? {};
     void opacity;
     let next = setEncodingProperties(
-      withoutConstantOpacity(this, target),
+      this.markConfigs[target]?.opacity !== undefined || this.markConfigs[target]?.barAppearance?.opacity !== undefined
+        ? releaseDetachedEncodingScale(withoutConstantOpacity(this, target), scale.id)
+        : withoutConstantOpacity(this, target),
       target,
       "opacity",
       { field: args.field, fieldType, scale: scale.id }

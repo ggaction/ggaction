@@ -1186,7 +1186,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Text 색상과 source appearance
 
-- Row-backed Text는 encodeColor로 범주형/연속형 색상을 지정한다. 명시적 fill과 충돌하며 source-owned label은 독립 color encoding을 받지 않는다.
+- Row-backed Text는 encodeColor로 범주형/연속형 색상을 지정한다. Field color assignment는 명시적 fill을 교체하며 source-owned label은 독립 color encoding을 받지 않는다.
 - Text/MarkLabels의 inheritColor는 fill/stroke/false다. source final item의 실제 색상을 따르며 명시적 fill이 우선한다. 기본 arc/rect 대비색 정책은 유지한다.
 - 상속은 추가 scale/legend를 만들지 않고 source 재계산을 따른다. source appearance가 없으면 오류다.
 - Evidence: `test/unit/actions/encodings/text-color.test.js`.

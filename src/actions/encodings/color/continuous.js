@@ -11,6 +11,7 @@ import {
   resolveQuantitativeColorScaleDefinition
 } from "../../scales/definitions.js";
 import {
+  releaseDetachedEncodingScale,
   resolveReassignmentScaleOptions,
   resolveTarget
 } from "../shared.js";
@@ -23,6 +24,7 @@ import {
 } from "../../../materialization/encodings.js";
 import {
   assertNoConstantColor,
+  withoutConstantColor,
   resolveColorScaleOptions
 } from "./policy.js";
 
@@ -44,7 +46,8 @@ export function encodeContinuousColor(program, args) {
     "continuous color mark"
   );
   const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
-  assertNoConstantColor(program, layer);
+  const baseline = withoutConstantColor(program, layer);
+  assertNoConstantColor(baseline, layer);
   const temporalUnit = resolveTemporalUnit(args, args.fieldType, layer.encoding?.color);
   const requestedScale = resolveReassignmentScaleOptions(
     layer.encoding?.color,
@@ -75,7 +78,8 @@ export function encodeContinuousColor(program, args) {
   } else {
     readQuantitativeField(dataset.values, args.field);
   }
-  const next = applyTemporalUnit(program, target, "color", temporalUnit, layer.encoding?.color)
+  const prepared = baseline === program ? baseline : releaseDetachedEncodingScale(baseline, scale.id);
+  const next = applyTemporalUnit(prepared, target, "color", temporalUnit, layer.encoding?.color)
     .editSemantic({
       property: `layer[${target}].encoding.color.field`,
       value: args.field

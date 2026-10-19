@@ -1,3 +1,5 @@
+import { removeEncoding } from "../remove.js";
+import { validateNonEmptyString } from "../../../core/validation.js";
 import { inferSeriesGroup } from "../shared.js";
 import { action } from "../../../core/action.js";
 import {
@@ -12,6 +14,7 @@ import {
 import { resolveColorScaleDefinition } from "../../scales/definitions.js";
 import {
   applyEncodingScale,
+  releaseDetachedEncodingScale,
   resolveReassignmentScaleOptions,
   resolveTarget,
   validateOptions
@@ -32,6 +35,7 @@ import {
 } from "./layout.js";
 import {
   assertNoConstantColor,
+  withoutConstantColor,
   COLOR_ENCODING_OPTIONS,
   resolveColorLayout,
   resolveColorScaleOptions
@@ -44,10 +48,27 @@ import { applyRequestedItemMissingPolicy } from
 const encodeColor = /* @__PURE__ */ action(
   {
     op: "encodeColor",
-    description: "Encode a field as graphical color."
+    description: "Assign constant or field-driven graphical color."
   },
   function (args = {}) {
     validateOptions(args, COLOR_ENCODING_OPTIONS, "encodeColor");
+    const hasValue = Object.hasOwn(args, "value");
+    if (hasValue === Object.hasOwn(args, "field")) {
+      throw new Error("encodeColor requires exactly one of value or field.");
+    }
+    if (hasValue) {
+      if (COLOR_ENCODING_OPTIONS.some(key => !["target", "value"].includes(key) && args[key] !== undefined)) {
+        throw new Error("Constant color accepts only value and target.");
+      }
+      const value = validateNonEmptyString(args.value, "Color value");
+      const { id: target, layer } = resolveTarget(this, args.target,
+        ["point", "line", "bar", "area", "arc", "rect", "text"], "color mark");
+      const next = layer.encoding?.color === undefined ? this
+        : removeEncoding.call(this, { target, channel: "color" });
+      const method = { point: "editPointMark", line: "editLineMark", bar: "editBarMark",
+        area: "editAreaMark", arc: "editArcMark", rect: "editRectMark", text: "editTextMark" }[layer.mark.type];
+      return next[method]({ target, [layer.mark.type === "line" ? "stroke" : "fill"]: value });
+    }
     const requestedFieldType = args.fieldType ?? "nominal";
     if (!["nominal", "ordinal"].includes(requestedFieldType)) {
       return encodeContinuousColor(this, {
@@ -67,7 +88,8 @@ const encodeColor = /* @__PURE__ */ action(
       "color mark"
     );
     const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
-    assertNoConstantColor(this, layer);
+    const baseline = withoutConstantColor(this, layer);
+    assertNoConstantColor(baseline, layer);
     const densityTransform = dataset.transform?.length === 1 &&
       dataset.transform[0].type === "density"
       ? dataset.transform[0]
@@ -131,9 +153,10 @@ const encodeColor = /* @__PURE__ */ action(
       readNominalField(dataset.values, args.field);
     }
 
+    const prepared = baseline === this ? baseline : releaseDetachedEncodingScale(baseline, scale.id);
     let next = layer.mark.type === "bar" || createsCenterGroup
-      ? inferSeriesGroup(this, layer, args.field, "color")
-      : this;
+      ? inferSeriesGroup(prepared, layer, args.field, "color")
+      : prepared;
     next = applyTemporalUnit(next, target, "color", undefined, layer.encoding?.color).editSemantic({
       property: `layer[${target}].encoding.color.field`,
       value: args.field

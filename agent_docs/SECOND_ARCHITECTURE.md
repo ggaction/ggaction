@@ -2536,3 +2536,12 @@ entries591/packed842000과 browser/search/coverage 기준은 유지한다.
 PR217 CI39034674598 package24의 Ubuntu/Node24.21.0 실제 설치 consumer에서 Full gzip은
 415484bytes로415000을 넘었다(job117402000022). Full만 다음 최소1000bytes 단계
 416000으로 갱신하며 Basic204000/SVG25000·package·search·coverage 기준은 유지한다.
+
+
+### Fixed/field appearance integration measurement
+
+사용자 요청의 고정값/필드 전환은 기존 materialization config·semantic encoding·scale resource
+owner를 재사용한다. 별도 상태 schema나 렌더러 경계를 추가하지 않는다. macOS/Node23.5.0/
+npm11.18.0 staged package 실측은591entries/843246packed/4088383unpacked bytes다.
+기존842000/4087000 검사는 실패했으며, 내용을 줄이지 않고 다음 최소1000bytes 단위인
+844000/4089000으로만 올린다. Entries591과 browser/search/coverage 기준은 유지한다.

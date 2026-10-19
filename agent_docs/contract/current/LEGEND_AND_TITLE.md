@@ -53,6 +53,9 @@ type TitleWrap = "word" | "character";
 
 - Sampled opacity legend는 active quantitative opacity scale이 있는 Point와 Line을 지원한다.
   Line도 기존 circle sample recipe를 사용하며 constant assignment는 자신의 opacity block만 제거한다.
+  한 Point에 size와 opacity만 남은 경우 channels omission은 두 기존 sampled owner의 별도 block을
+  생성한다. Color를 상수로 전환한 뒤에도 자동 guides가 유지된다. Explicit opacity는 단독 channel 규칙을 유지한다.
+  Evidence: `test/unit/actions/encodings/fixed-variable-appearance.test.js`.
 
 - Signature: `createLegend({ target?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
 - 모든 legend family의 `position`은 plot 내부 네 corner도 지원한다. Corner gradient는 vertical이며 sampled opacity는 vertical items를 사용한다. Offset은 painted border/content의

@@ -4339,10 +4339,13 @@ export type DiscretizedColorScaleOptions =
  * Area authoring uses the Full facade; createAreaPlot.color stays categorical.
  */
 export type ColorEncodingOptions =
-  | CategoricalEncodingOptions
+  | { value: string; target?: string; field?: never; fieldType?: never;
+      scale?: never; palette?: never; layout?: never; aggregate?: never; temporalUnit?: never }
+  | (CategoricalEncodingOptions & { value?: never })
   | {
       field: string;
       target?: string;
+      value?: never;
       fieldType: "quantitative";
       aggregate?: AggregateOperation;
       scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
@@ -4352,6 +4355,7 @@ export type ColorEncodingOptions =
   | {
       field: string;
       target?: string;
+      value?: never;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
@@ -4475,13 +4479,17 @@ export type StrokeWidthEncodingOptions =
       scale?: StrokeWidthScaleOptions;
     };
 
-export type SizeEncodingOptions = {
+/** Constant value and scale ranges are graphical areas in square pixels. */
+export type SizeEncodingOptions =
+  | { value: number; target?: string; field?: never; fieldType?: never; scale?: never }
+  | ({
+  value?: never;
   field: string;
   target?: string;
 } & (
   | { fieldType?: "quantitative"; scale?: SizeScaleOptions }
   | { fieldType: "nominal" | "ordinal"; scale?: CategoricalSizeScaleOptions }
-);
+));
 
 export type ShapeEncodingOptions = {
   field: string;

@@ -178,6 +178,33 @@
   ],
   "color": [
     {
+      "mode": "Constant",
+      "support": {
+        "point": [
+          "constant color"
+        ],
+        "line": [
+          "constant color"
+        ],
+        "bar": [
+          "constant color"
+        ],
+        "area": [
+          "constant color"
+        ],
+        "arc": [
+          "constant color"
+        ],
+        "rect": [
+          "constant color"
+        ],
+        "text": [
+          "constant color"
+        ]
+      },
+      "options": "value only; no field, scale, palette, layout or aggregate; replaces color mapping and its legend participation"
+    },
+    {
       "mode": "Categorical",
       "support": {
         "point": [
@@ -579,9 +606,9 @@
       "marks": [
         "point"
       ],
-      "fieldTypes": "quantitative, nominal, ordinal",
+      "fieldTypes": "quantitative, nominal, ordinal or constant",
       "scales": "linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories",
-      "grain": "row-owned point; range values are areas; remove explicit radius first"
+      "grain": "row-owned point; range values are areas; constant value replaces field size; field size replaces constant radius"
     },
     {
       "action": "encodeShape",

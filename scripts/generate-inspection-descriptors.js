@@ -7,9 +7,11 @@ const cardsFile = path.join(root, "knowledge/action-cards.json");
 const catalogFile = path.join(root, "agent_docs/contract/ACTION_INDEX.json");
 const outputFile = path.join(root, "src/inspectionDescriptors.js");
 
-function optionKind(name, type) {
+function optionKind(name, type, action) {
   if (["target", "source", "data", "coordinate", "scale", "id"].includes(name)) return "resource";
-  if (["field", "x", "y", "groupBy", "category", "value"].includes(name)) return "field";
+  // Encoding value branches are literals, not dataset column references.
+  if (["field", "x", "y", "groupBy", "category"].includes(name) ||
+      (name === "value" && !action.startsWith("encode"))) return "field";
   if (/domain|range|extent/i.test(name)) return "range";
   if (name === "plot") return "object";
   if (/readonly .*\[\]|\[.*\]/.test(type)) return "array";
@@ -34,7 +36,7 @@ export async function buildInspectionDescriptors() {
     card.options.map(option => [
       option.name,
       option.required,
-      optionKind(option.name, option.type),
+      optionKind(option.name, option.type, card.name),
       choices(option.type),
       card.units.find(unit => unit.path === option.name)?.unit ?? null
     ]),

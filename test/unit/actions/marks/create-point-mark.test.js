@@ -127,13 +127,9 @@ test("applies create-time point appearance through the existing edit action", ()
   });
   assert.equal(node.children.at(-1).op, "editPointMark");
 
-  assert.throws(
-    () => chart()
-      .createData({ values: [{ group: "a" }] })
-      .createPointMark({ fill: "#7c3aed" })
-      .encodeColor({ field: "group" }),
-    /cannot replace constant appearance/
-  );
+  assert.equal(chart().createData({ values: [{ group: "a" }] })
+    .createPointMark({ fill: "#7c3aed" }).encodeColor({ field: "group" })
+    .markConfigs.point.fill, undefined);
 });
 
 test("supports square points and rejects missing or unknown data", () => {

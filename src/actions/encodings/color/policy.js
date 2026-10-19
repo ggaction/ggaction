@@ -6,7 +6,7 @@ import {
 import { validateColorLayout } from "../../../grammar/seriesLayout.js";
 
 export const COLOR_ENCODING_OPTIONS = Object.freeze([
-  "field", "target", "fieldType", "scale", "palette", "layout", "aggregate", "temporalUnit"
+  "value", "field", "target", "fieldType", "scale", "palette", "layout", "aggregate", "temporalUnit"
 ]);
 
 export function resolveColorScaleOptions(args) {
@@ -18,6 +18,30 @@ export function resolveColorScaleOptions(args) {
     );
   }
   return { ...options, palette: args.palette };
+}
+
+export function withoutConstantColor(program, layer) {
+  const previous = program.markConfigs[layer.id];
+  const explicit = { point: previous?.fill !== undefined, line: previous?.stroke !== undefined,
+    bar: previous?.barAppearance?.fill !== undefined, area: previous?.errorBand?.fill !== undefined,
+    arc: previous?.fill !== undefined, rect: previous?.fillExplicit === true,
+    text: previous?.fillExplicit === true }[layer.mark.type];
+  if (!explicit) return program;
+  const config = { ...previous };
+  if (layer.mark.type === "bar") {
+    config.barAppearance = { ...config.barAppearance };
+    delete config.barAppearance.fill;
+  } else if (layer.mark.type === "line") {
+    delete config.stroke;
+  } else {
+    if (["point", "arc"].includes(layer.mark.type)) delete config.fill;
+    if (["rect", "text"].includes(layer.mark.type)) config.fillExplicit = false;
+    if (config.errorBand !== undefined) {
+      config.errorBand = { ...config.errorBand };
+      delete config.errorBand.fill;
+    }
+  }
+  return program._withMarkConfig(layer.id, config);
 }
 
 export function assertNoConstantColor(program, layer) {

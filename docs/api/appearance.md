@@ -13,7 +13,7 @@ title: Appearance Encodings
 
 | Action | Marks | Field types | Scale family | Item grain and units |
 | --- | --- | --- | --- | --- |
-| `encodeSize` | point | quantitative, nominal, ordinal | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; remove explicit radius first |
+| `encodeSize` | point | quantitative, nominal, ordinal or constant | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; constant value replaces field size; field size replaces constant radius |
 | `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
 | `encodeOpacity` | point, line, rule, bar | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree |
 | `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |

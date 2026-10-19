@@ -43,6 +43,7 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
+| Constant | point, line, bar, area, arc, rect, text | point/line/bar/area/arc/rect/text: constant color | value only; no field, scale, palette, layout or aggregate; replaces color mapping and its legend participation |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
 | Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
 | Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
@@ -60,7 +61,7 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Action | Marks | Field types | Scale family | Item grain and units |
 | --- | --- | --- | --- | --- |
-| `encodeSize` | point | quantitative, nominal, ordinal | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; remove explicit radius first |
+| `encodeSize` | point | quantitative, nominal, ordinal or constant | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; constant value replaces field size; field size replaces constant radius |
 | `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
 | `encodeOpacity` | point, line, rule, bar | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree |
 | `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
@@ -94,6 +95,41 @@ The tables below are generated from the same reviewed capability registry used b
 | Parallel dimension axes | `createAxes` / `createParallelAxes` / `createParallelAxis` | `editParallelAxis` / `removeParallelAxis` / `removeParallelAxes` | line, ticks, labels, title from each stored dimension |
 
 <!-- action-capabilities:summary:end -->
+
+## Fixed or variable appearance
+
+Use the same action for either a constant `value` or a data `field`. These are
+mutually exclusive. Constants have no scale or legend; field mappings use the
+existing scale options and final-item grain constraints. Switching to a constant
+removes that channel's legend participation, preserving other guides and styles.
+Switching back to a field removes its constant override. Color supports point,
+line, bar, area, arc, rect and text; size supports point marks.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from "ggaction";
+const data = [{ x: 1, y: 2, group: "A" }, { x: 2, y: 4, group: "B" }];
+const fixed = chart().createCanvas().createData({ values: data })
+  .createScatterPlot({ x: "x", y: "y", guides: false })
+  .encodeColor({ value: "#4c78a8" })
+  .encodeSize({ value: 64 }) // Equal graphical area, in square pixels.
+  .encodeOpacity({ value: 0.7 });
+const variable = fixed.encodeColor({ field: "group" })
+  .encodeSize({ field: "y", scale: { range: [20, 240] } })
+  .encodeOpacity({ field: "y", scale: { range: [0.25, 1] } });
+```
+
+`encodeStroke` likewise accepts constant colors or field mappings. Field-driven
+Line/Area appearance must still be unambiguous within each series; fixed values
+work without requiring a suitable field. `encodeRadius` remains a direct radius
+assignment and rejects an active size mapping; use `encodeSize({ value })` for
+an atomic switch to constant area.
+
 
 For an aggregate bar with no existing group or layout, coloring the same
 nominal/ordinal field used on the category axis preserves bar positions, widths,
