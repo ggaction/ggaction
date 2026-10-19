@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:7ab3b4cd00c24e95e0927e14b24b7098bc73a3d1e0ee4de2ed07b2d681462256. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:19f16dc506187c560272d976eb30261bd62d3c29b94fb5979be62578ac799222. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -39245,6 +39245,10 @@ a positive value wraps cells row-major. A facet uses the shared 10,000 generated
 and source-row count multiplied by child count must not exceed the shared
 10,000,000-unit work budget.
 
+Final-item `filterMarks` recipes are also evaluated within each partition, after
+the target mark has been rebound to that partition. Empty matches preserve
+shared-scale panels, and `editFacetSource` can add, replace, or remove the filter.
+
 | Option | Default | Effect |
 | --- | --- | --- |
 | `id` | `"facet"` | Names the parent and deterministic child namespaces |
@@ -40792,7 +40796,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:7ab3b4cd00c24e95e0927e14b24b7098bc73a3d1e0ee4de2ed07b2d681462256` |
+| Contract fingerprint | `sha256:19f16dc506187c560272d976eb30261bd62d3c29b94fb5979be62578ac799222` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

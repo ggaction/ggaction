@@ -9,6 +9,23 @@ const source = () => chart().createCanvas({width:600,height:420,margin:{left:80,
   .createData({values:rows}).createScatterPlot({id:'plot',x:'X',y:'Y',guides:false});
 const facet = () => source().facet({field:'G',columns:2,guides:{axes:'outer',legend:false}}).createGuides();
 
+test('facet source mark filters replay within each partition and preserve empty shared-scale cells', () => {
+ const initial=facet(), before=serializeProgram(initial);
+ const next=initial.editFacetSource({action:{method:'filterMarks',options:{target:'plot',channel:'y',op:'gte',value:90}}});
+ const children=Object.values(next.children);
+ assert.equal(children.reduce((sum,child)=>sum+child.graphicSpec.objects.plot.items.length,0),2);
+ assert.ok(children.some(child=>child.graphicSpec.objects.plot.items.length===0));
+ for(const child of children) {
+  const layer=child.semanticSpec.layers.find(layer=>layer.id==='plot');
+  const values=child.semanticSpec.datasets.find(dataset=>dataset.id===layer.data).values;
+  assert.ok(values.every(row=>row.Y>=90));
+ }
+ assert.deepEqual(serializeProgram(initial),before);
+ const restored=next.editFacetSource({action:{method:'removeMarkFilter',options:{target:'plot'}}});
+ assert.equal(Object.values(restored.children).reduce((sum,child)=>sum+child.graphicSpec.objects.plot.items.length,0),rows.length);
+ assert.equal(renderToSVG(deserializeProgram(serializeProgram(next))),renderToSVG(next));
+});
+
 test('one source action edits full-data marks and rederives every facet without changing its input',()=>{
  const p=facet(), before=serializeProgram(p);
  const next=p.editFacetSource({action:{method:'encodeOpacity',options:{target:'plot',value:.4}}});

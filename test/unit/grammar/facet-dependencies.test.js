@@ -122,10 +122,10 @@ test("rejects cycles, missing ancestors, unsupported transforms, and ambiguous r
   );
   assert.throws(
     () => planFacetDependencies({
-      datasets: [source(), derived("selected", "cars", "markFilter")],
+      datasets: [source(), derived("selected", "cars", "unsupportedTransform")],
       layers: [{ id: "points", data: "selected" }]
     }, { field: "group" }),
-    /does not support.*markFilter/
+    /does not support.*unsupportedTransform/
   );
   assert.throws(
     () => planFacetDependencies({

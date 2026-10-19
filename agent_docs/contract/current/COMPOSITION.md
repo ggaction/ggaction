@@ -36,6 +36,8 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 - Filter, regression, density, interval, box-summary, and box-outlier dependencies replay topologically from each
   filtered cell source through `replayDerivedData`. Every affected layer is explicitly rebound through
   `rebindLayerData` before one deduplicated rematerialization plan runs.
+- `markFilter`도 partition source에 target mark를 먼저 rebind/materialize한 뒤 같은 selector recipe를
+  실행한다. 빈 결과의 shared-scale cell은 유지하며 원본 filter/remove 이력은 바뀌지 않는다.
 - `guides.axes` is `"each"` by default. `"outer"` keeps x axes on the bottommost occupied cell in each column and y
   axes on the leftmost occupied cell in each row, including an incomplete final row. Polar theta/radius and Parallel
   dimension axes remain child-local; requesting `"outer"` for either family is an atomic error.
