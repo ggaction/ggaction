@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Support explicit ordinal stroke-dash fields in existing line/rule, facade and bulk encodings, preserving categorical domain order and immutable rematerialization.
+
 - Add explicit Cartesian-axis and plot-border underlays, with strict existing-container child-order editing.
 - Add opt-in facet `topLane: "shared"` with plot spacing, fixed child sizes, collision validation and editable persistence. Render blank mapped text consistently.
 - Add opt-in content-aware legend `rowPadding` and independent `titlePadding`, with focused editing, explicit reset and retained replay intent.

@@ -1570,6 +1570,17 @@ async function testNodeConsumer(directory) {
         .createScatterPlot({ x: "x", y: "y", point: { radius: 4 }, guides: false });
       assert.equal(radius.graphicSpec.objects.scatterPlot.items[0].properties.radius, 4);
     }
+    for (const factory of [chart, basicChart]) {
+      const orderedDash = factory().createCanvas({ width: 260, height: 180, margin: 24 })
+        .createData({ values: [
+          { level: 2, x: 0, y: 20 }, { level: 2, x: 1, y: 20 },
+          { level: 1, x: 0, y: 10 }, { level: 1, x: 1, y: 10 }
+        ] }).createLinePlot({ x: "x", y: "y", guides: false })
+        .encodeStrokeDash({ field: "level", fieldType: "ordinal", scale: { domain: [1, 2], range: [[1, 0], [4, 2]] } });
+      assert.equal(orderedDash.semanticSpec.layers[0].encoding.strokeDash.fieldType, "ordinal");
+      assert.deepEqual(orderedDash.resolvedScales.strokeDash.domain, [1, 2]);
+      assert.deepEqual(orderedDash.graphicSpec.objects.linePlot.items.map(item => item.properties.strokeDash), [[4, 2], [1, 0]]);
+    }
     const ruleSource = chart().createCanvas().createData({ values: [{ x: 1 }, { x: 2 }] });
     const styledRule = ruleSource.createRuleMark({ stroke: "red", strokeWidth: 0, opacity: 0.5 })
       .encodeX({ field: "x", fieldType: "quantitative" }).editRuleMark({ strokeDash: "dashed", opacity: 0.8 });
@@ -5144,6 +5155,14 @@ async function testTypeScriptConsumer(directory) {
     chart().encodeSize({ field: "m", scale: { type: "pow", domain: [0, 100], exponent: 2 } });
     chart().encodeSize({ field: "m", scale: { type: "threshold", domain: [10], range: [20, 80] } });
     chart().editSizeScale({ type: "quantile", domain: "auto", range: [20, 40, 80] });
+    program.encodeStrokeDash({ field: "level", fieldType: "ordinal", scale: { domain: [1, 2], range: [[1, 0], [4, 2]] } });
+    basicChart().encodeStrokeDash({ field: "level", fieldType: "ordinal" });
+    chart().createLinePlot({ x: "x", y: "y", strokeDash: { field: "level", fieldType: "ordinal" } });
+    program.encodeChannels({ target: "paths", channels: { strokeDash: { field: "level", fieldType: "ordinal" } } });
+    // @ts-expect-error Stroke dash does not become a continuous channel.
+    program.encodeStrokeDash({ field: "level", fieldType: "quantitative" });
+    // @ts-expect-error Constant dash still rejects fieldType.
+    program.encodeStrokeDash({ value: "solid", fieldType: "ordinal" });
     program.encodeSize({ field: "category", fieldType: "nominal", scale: { domain: [10, "10", false], range: [9, 81, 25] } });
     program.editSizeScale({ type: "ordinal", domain: [false, "10", 10], range: [25] });
     basicChart().createScatterPlot({ x: "x", y: "y", size: { field: "group", fieldType: "ordinal" } });

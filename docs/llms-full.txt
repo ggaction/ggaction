@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:6fa1f6d84aeaa186cbe94623149014bb9d73edbd31475819863916555a1b41fa. Status: development. Runtime source: 895006bccd39fd97b602b7ef42b5821b9c1d44ad. Release baseline: v0.0.13.
+Contract: sha256:5e7ec8d7efddb63f87c37eae347d1d54cdb0784eb2cbcc2428c0050f25020510. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/895006bccd39fd97b602b7ef42b5821b9c1d44ad/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/895006bccd39fd97b602b7ef42b5821b9c1d44ad/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -10533,7 +10533,7 @@ mark-owned padding policies must be resolved before they can be migrated.
 | `encodeOpacity` | `encodeOpacity({ field: "quality" })` | Current Point/Rule/Line/Bar; quantitative field | One opacity per item, series, or bar cell |
 | `encodeColor` | `encodeColor({ field: "group" })` | Current mark, nominal default or explicit ordinal field type, color scale | Semantic grouping and concrete color |
 | `encodeStroke` | `encodeStroke({ field: "status" })` | Current supported mark; independent stroke scale | Item or series outline color without replacing fill |
-| `encodeStrokeDash` | `encodeStrokeDash({ field: "group" })` | Current line/rule mark and dash scale | Field-driven or constant concrete dash |
+| `encodeStrokeDash` | `encodeStrokeDash({ field: "group" })` | Current line/rule; nominal default or explicit ordinal field type | Field-driven or constant concrete dash |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; independent quantitative scale | Rule-item or line-series widths |
 | `encodePathOrder` | `encodePathOrder({ field: "year" })` | Current or unique compatible Cartesian path; ascending default | Stable per-series vertex order without a scale |
 | `encodeParallelCoordinates` | `encodeParallelCoordinates({ dimensions: ["a", "b"] })` | Current line, Parallel coordinate, local scales, `break` missing policy | One row path across ordered dimension axes |
@@ -10605,7 +10605,7 @@ dimension scales, row identity, missing policies, and lifecycle behavior.
 
 ## Errors and limitations
 
-Stroke-dash and explicit group fields must be nominal. Color fields may be
+Explicit group fields must be nominal. Color and stroke-dash fields may be
 nominal or ordinal. Without an explicit Line group, color and field-driven dash
 must use the same field. Explicit identity allows different appearance fields
 when each is unique within the series. Center/stack/fill Area retains matching
@@ -10893,7 +10893,7 @@ not expose Area authoring; use the Full facade for Area charts.
 
 ## `encodeStrokeDash(options)`
 
-Map a nominal field to line-series or rule dash patterns, or apply one constant pattern
+Map a nominal or ordinal field to line-series or rule dash patterns, or apply one constant pattern
 to every series.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -10909,11 +10909,15 @@ program.encodeStrokeDash({ value: "dotted" });
 | `field` | non-empty string; mutually exclusive with `value` | — |
 | `value` | named style or direct dash pattern; mutually exclusive with `field` | — |
 | `target` | line or rule mark ID | current mark |
-| `fieldType` | `"nominal"`; field mode only | `"nominal"` |
+| `fieldType` | `"nominal"` or `"ordinal"`; field mode only | `"nominal"` |
 | `scale.id` | scale ID | `"strokeDash"` |
 | `scale.type` | `"ordinal"` | `"ordinal"` |
 | `scale.domain` | `"auto"` or category array | `"auto"` |
 | `scale.range` | `"auto"` or named/direct pattern array | `"auto"` |
+
+Ordinal fields retain their ordered categorical meaning in semantic state. Automatic domains
+preserve first-appearance order; use `scale.domain` for a specific category order.
+Neither field type sorts the original rows or vertices.
 
 The automatic range contains ten reusable patterns. An explicit pattern is an
 empty array for a solid stroke or an even-length array of non-negative finite
@@ -11458,7 +11462,7 @@ Use `{ value: 0.5 }` to return to constant opacity. Constant mode rejects
 `editLineMark` rejects scalar width/opacity while the same field encoding is
 active; use the corresponding encoder's explicit value assignment to replace it.
 
-Rules also reuse `encodeStrokeDash` in constant or nominal-field mode and
+Rules also reuse `encodeStrokeDash` in constant or nominal/ordinal-field mode and
 `encodeOpacity` in constant or quantitative-field mode. Field modes produce
 one concrete value per rule line; constant modes remain scale-free. Recalling
 an owning action replaces that appearance assignment immutably.
@@ -11750,7 +11754,7 @@ require explicit removal and recreation; see [color transitions](./api/scales/di
 | `time` | Temporal x/y on compatible marks; UTC normalization, ticks, and labels |
 | `band` | Discrete category position that needs positive bandwidth, especially bars |
 | `point` | Discrete point/rule centers and compatible shared centers; never bar width |
-| `ordinal` | Nominal or ordinal color, nominal shape/stroke dash, and xOffset lookup |
+| `ordinal` | Nominal/ordinal color and stroke dash, nominal shape, and xOffset lookup |
 | `sequential` | Compatible Point/Bar/Rect color and supported quantitative/temporal stroke consumers |
 | `quantize`, `quantile`, `threshold` | Supported quantitative color/stroke consumers and Point size; see the channel-specific matrix |
 | `unknown` fallback | Row-owned point x/y/color/size/shape/opacity only |
@@ -11872,8 +11876,9 @@ continues to require that measured radius encodings have already been removed.
 Band/point position, color, and stroke-dash encodings use ordered discrete
 domains. Automatic domains preserve first-appearance order. `ordinal` remains
 the appearance and offset lookup type; position uses explicit `band` or `point`.
-Color accepts both nominal and ordinal fields; ordinal is useful for discrete,
-ordered numeric categories and does not turn them into a continuous gradient.
+Color and stroke-dash accept nominal and ordinal fields. Ordinal preserves
+ordered categorical intent; it does not sort rows or turn numeric categories
+into a continuous mapping. Explicit domain order takes precedence.
 
 A band or point position scale uses `"auto"` or a numeric pair as its range.
 Automatic ranges use the plot bounds. Resolved band scales record signed
@@ -18961,7 +18966,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Required | `LineYPositionChannel` |
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
-| `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "grid" \| "legend"> & { grid?: false \| (Omit<CartesianGridOptions, "horizontal"> & { horizontal?: boolean \| ... 1 more ... \| undefined; }) \| undefined; legend?: false \| ... 1 more ... \| undefined; }) \| undefined` |
 
@@ -19043,7 +19048,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `radius` | Required | `PolarRadiusChannel` |
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
-| `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "clip" \| ... 2 more ... \| "tension"> & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| PolarPathGuideOptions \| undefined` |
 
@@ -19080,7 +19085,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `order` | Optional / branch-dependent | `readonly [RadarCategoryValue, RadarCategoryValue, RadarCategoryValue, ...RadarCategoryValue[]] \| undefined` |
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
-| `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "clip" \| ... 2 more ... \| "tension"> & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| RadarGuideOptions \| undefined` |
 | `category` | Optional / branch-dependent | `RadarCategoryChannel \| undefined` |
@@ -19450,7 +19455,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `key` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `ParallelMissingPolicy \| undefined` |
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
-| `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; curve?: "linear" \| undefined; closed?: false \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ParallelGuideOptions \| undefined` |
 
@@ -21369,7 +21374,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `value` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `fieldType` | Optional / branch-dependent | `"nominal" \| undefined` |
+| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| undefined` |
 | `scale` | Optional / branch-dependent | `DashScaleOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -21381,7 +21386,7 @@ encodeStrokeDash(
 )
 ```
 
-Create or replace nominal line-series or rule dash patterns, or apply one
+Create or replace nominal/ordinal line-series or rule dash patterns, or apply one
 constant named/direct pattern. Named styles are `solid`, `dashed`, `dotted`, and
 `dashdot`.
 [Series encodings](./api/series-encodings/)
@@ -37044,7 +37049,7 @@ export type StrokeDashEncodingOptions =
       field: string;
       value?: never;
       target?: string;
-      fieldType?: "nominal";
+      fieldType?: "nominal" | "ordinal";
       scale?: DashScaleOptions;
     }
   | {
@@ -38406,12 +38411,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/895006bccd39fd97b602b7ef42b5821b9c1d44ad/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/895006bccd39fd97b602b7ef42b5821b9c1d44ad/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -40746,9 +40751,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:6fa1f6d84aeaa186cbe94623149014bb9d73edbd31475819863916555a1b41fa` |
+| Contract fingerprint | `sha256:5e7ec8d7efddb63f87c37eae347d1d54cdb0784eb2cbcc2428c0050f25020510` |
 | Example and dataset source | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
-| Runtime source commit | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 284 |
 | Declared actions in that release | 234 |

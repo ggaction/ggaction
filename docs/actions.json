@@ -9296,7 +9296,7 @@
       "name": "encodeStrokeDash",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Create or replace nominal line-series or rule dash patterns, or apply one constant named/direct pattern.",
+      "summary": "Create or replace nominal/ordinal line-series or rule dash patterns, or apply one constant named/direct pattern.",
       "signature": "encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;",
       "intents": [
         "encode stroke dash",
@@ -9375,7 +9375,7 @@
         {
           "name": "fieldType",
           "required": false,
-          "type": "\"nominal\" | undefined"
+          "type": "\"nominal\" | \"ordinal\" | undefined"
         },
         {
           "name": "scale",
@@ -30976,7 +30976,7 @@
         {
           "name": "strokeDash",
           "required": false,
-          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
+          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | \"ordinal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
         },
         {
           "name": "line",
@@ -31228,7 +31228,7 @@
         {
           "name": "strokeDash",
           "required": false,
-          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
+          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | \"ordinal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
         },
         {
           "name": "line",
@@ -31347,7 +31347,7 @@
         {
           "name": "strokeDash",
           "required": false,
-          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
+          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | \"ordinal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
         },
         {
           "name": "line",
@@ -32572,7 +32572,7 @@
         {
           "name": "strokeDash",
           "required": false,
-          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
+          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | \"ordinal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
         },
         {
           "name": "line",

@@ -15,7 +15,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
 - `id`: Implemented. user-defined scale ID; 생략하면 channel 이름(`x`, `y`, `color`, `size`,
   `shape`, `strokeDash`, `xOffset`, `yOffset`)을 사용한다.
-- `type`: Implemented. compatible quantitative position은 `linear | log | pow | sqrt | symlog`, temporal position은 `time`, discrete position은 `band | point`; nominal color/shape/dash/offset은
+- `type`: Implemented. compatible quantitative position은 `linear | log | pow | sqrt | symlog`, temporal position은 `time`, discrete position은 `band | point`; categorical color/dash/offset과 nominal shape은
   `ordinal`, continuous point/aggregate-bar/rect color는 `sequential`, quantitative point/aggregate-bar/rect color는 추가로
   `quantize | quantile | threshold`, size는 `linear`만 허용한다.
 - `domain`: Implemented. `"auto"` 또는 type에 맞는 explicit array. explicit domain은 data inference,
@@ -1208,9 +1208,10 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ## `encodeStrokeDash`
 
 - Signature: `encodeStrokeDash({ field, target?, fieldType?, scale? } | { value, target? })`
-- `field`, `target`, `fieldType`: field mode의 nominal field, optional line ID, nominal-only type다.
+- `field`, `target`, `fieldType`: field mode의 categorical field, optional line/rule ID, `"nominal" | "ordinal"` type다. 생략 기본값은 nominal이다.
 - `value`: constant mode의 `"solid" | "dashed" | "dotted" | "dashdot" | DashPattern`이다.
 - `scale`: field mode의 ordinal dash scale이다. range는 named style 또는 direct pattern의 array다.
+- Ordinal field intent는 semantic encoding과 editable snapshot에 보존한다. Auto domain은 기존 raw first-appearance order이며 explicit domain 순서가 우선한다. Field type으로 rows/group/vertices를 자동 정렬하거나 값을 변환하지 않는다.
 - Effect: field mode는 line series별 concrete dash와 categorical legend symbol을 rematerialize한다.
   Constant mode는 모든 series에 같은 concrete dash를 적용하며 scale이나 legend를 만들지 않는다.
 - Reassignment: `field`와 `value`는 mutually exclusive하며 같은 action이 두 mode를 원자적으로
@@ -1227,7 +1228,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeStrokeDash`
 
-- Implemented: `encodeStrokeDash({ field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: DashScale } | { value: DashStyle | DashPattern; target?: UserId })`
+- Implemented: `encodeStrokeDash({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; scale?: DashScale } | { value: DashStyle | DashPattern; target?: UserId })`
 - `DashStyle = "solid" | "dashed" | "dotted" | "dashdot"`
 - `DashPattern = readonly number[]`; empty array는 solid, non-empty array는 even-length,
   non-negative finite values이며 all-zero는 허용하지 않는다.
@@ -1236,7 +1237,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ### Value coverage — `encodeStrokeDash`
 
 - `field`, `target`, `fieldType`
-  - ✅ Covered: nominal line series, inferred/explicit target, invalid mark/type/field, compatible/incompatible
+  - ✅ Covered: nominal/ordinal line and rule series, first-appearance/explicit order, facade/bulk and early/late assignment, inferred/explicit target, invalid mark/type/field, compatible/incompatible
     group/color field, same/different-field reassignment.
 - `value`
   - ✅ Covered: four named styles, direct pattern, field↔constant replacement, field/value exclusivity,
@@ -1247,7 +1248,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: automatic cycling, direct patterns, named styles, resolved numeric recipes, invalid patterns.
 - Named recipes: `solid → []`, `dashed → [6, 4]`, `dotted → [1, 3]`,
   `dashdot → [6, 3, 1, 3]`.
-- Evidence: line-series encoding and scale tests.
+- Evidence: line-series encoding and scale tests; `test/unit/actions/encodings/ordinal-stroke-dash.test.js` and `test/contracts/ordinal-stroke-dash-types.test.js`.
 
 ## `encodeSize`
 

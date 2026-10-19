@@ -9,7 +9,7 @@ title: Stroke Dash Encoding
 
 ## `encodeStrokeDash(options)`
 
-Map a nominal field to line-series or rule dash patterns, or apply one constant pattern
+Map a nominal or ordinal field to line-series or rule dash patterns, or apply one constant pattern
 to every series.
 
 <!-- snippet-context:start -->
@@ -29,11 +29,15 @@ program.encodeStrokeDash({ value: "dotted" });
 | `field` | non-empty string; mutually exclusive with `value` | — |
 | `value` | named style or direct dash pattern; mutually exclusive with `field` | — |
 | `target` | line or rule mark ID | current mark |
-| `fieldType` | `"nominal"`; field mode only | `"nominal"` |
+| `fieldType` | `"nominal"` or `"ordinal"`; field mode only | `"nominal"` |
 | `scale.id` | scale ID | `"strokeDash"` |
 | `scale.type` | `"ordinal"` | `"ordinal"` |
 | `scale.domain` | `"auto"` or category array | `"auto"` |
 | `scale.range` | `"auto"` or named/direct pattern array | `"auto"` |
+
+Ordinal fields retain their ordered categorical meaning in semantic state. Automatic domains
+preserve first-appearance order; use `scale.domain` for a specific category order.
+Neither field type sorts the original rows or vertices.
 
 The automatic range contains ten reusable patterns. An explicit pattern is an
 empty array for a solid stroke or an even-length array of non-negative finite

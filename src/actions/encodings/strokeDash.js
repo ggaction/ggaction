@@ -2,7 +2,7 @@ import { action } from "../../core/action.js";
 import {
   normalizeStrokeDashPattern,
   readNominalField,
-  validateNominalFieldType
+  validateCategoricalFieldType
 } from "../../grammar/scales/index.js";
 import { resolveStrokeDashScaleDefinition } from "../scales/definitions.js";
 import {
@@ -63,7 +63,7 @@ function reconcileLegendAfterDashRemoval(program, target) {
 const encodeStrokeDash = /* @__PURE__ */ action(
   {
     op: "encodeStrokeDash",
-    description: "Encode a nominal field as line stroke dash."
+    description: "Encode a categorical field as line stroke dash."
   },
   function (args = {}) {
     validateOptions(args, STROKE_DASH_ENCODING_OPTIONS, "encodeStrokeDash");
@@ -100,7 +100,7 @@ const encodeStrokeDash = /* @__PURE__ */ action(
       return rematerializeEncoding(next, target, "strokeDash", undefined, layer);
     }
 
-    const fieldType = validateNominalFieldType(args.fieldType ?? "nominal");
+    const fieldType = validateCategoricalFieldType(args.fieldType ?? "nominal");
     validatePathSeriesAppearance(dataset.values, {
       ...layer, encoding: { ...layer.encoding, strokeDash: { field: args.field, fieldType } }
     });

@@ -11301,7 +11301,7 @@ export type StrokeDashEncodingOptions =
       field: string;
       value?: never;
       target?: string;
-      fieldType?: "nominal";
+      fieldType?: "nominal" | "ordinal";
       scale?: DashScaleOptions;
     }
   | {

@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:6fa1f6d84aeaa186cbe94623149014bb9d73edbd31475819863916555a1b41fa",
-    "sourceCommit": "895006bccd39fd97b602b7ef42b5821b9c1d44ad",
+    "contractId": "sha256:5e7ec8d7efddb63f87c37eae347d1d54cdb0784eb2cbcc2428c0050f25020510",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "4a7c478ef56f6b02deab6cd3eacebf7f2f0cb2eeac973dc0b1b7fc7e9cb47377"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -1358,8 +1358,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 5518,
-      "sha256": "523192f5aae642c6a34d71e9616a402f25e17fd20c28d66248beafe568be4b55"
+      "bytes": 5546,
+      "sha256": "76abf0882756ee5d0f45a42b9fd7bf17fdb58232e00ca75f64d35a89ae030ffc"
     },
     {
       "order": 82,
@@ -1387,8 +1387,8 @@
         "encodestrokedashoptions",
         "related"
       ],
-      "bytes": 2955,
-      "sha256": "2d76eb9312a24a8200d5da956d3ec50b4b2ec1529ab44485ada35d180335466d"
+      "bytes": 3214,
+      "sha256": "1f0758303143049ec042e345f6eca8435850223b3fca376448c8d9dee4421d12"
     },
     {
       "order": 84,
@@ -1449,8 +1449,8 @@
         "encodebarwidth-band-pixels-target",
         "related"
       ],
-      "bytes": 10359,
-      "sha256": "1c6bc8ed9f79facbb7a40095559a9e171dba13ee38498ee6a4d6b538c6daa235"
+      "bytes": 10367,
+      "sha256": "e246b91f38b6b2d754f25c801113bea9c75b783d149dcd6f0e2d5cb41cc0bd01"
     },
     {
       "order": 88,
@@ -1482,8 +1482,8 @@
         "measured-radius-scales",
         "related"
       ],
-      "bytes": 6574,
-      "sha256": "839aa0a11eddaeacfe0066d6b0f1bfa27725fa2d167c34e842bdf3eede794d1d"
+      "bytes": 6575,
+      "sha256": "bff833f3241d2c11c7d699bace1034b0b223ea89619551583b19ab389c102e3b"
     },
     {
       "order": 90,
@@ -1496,8 +1496,8 @@
         "stroke-dash-ranges",
         "related"
       ],
-      "bytes": 2479,
-      "sha256": "1849735f827db7418bd615633b13f3341b2a4df550b16a1a98041e17bd9e6b93"
+      "bytes": 2541,
+      "sha256": "d08c66070e1072574f03a60a6f176add05b82859b5b6d451dbedeee0bc2a9457"
     },
     {
       "order": 91,
@@ -2049,8 +2049,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 166219,
-      "sha256": "40c7730223f31b51006faabb254993ec23db34f8c91eb9c9cdc113a737285c2c"
+      "bytes": 166271,
+      "sha256": "238fa58d4ae642e6e2cdac8aa1c21e71e92cff277042c310439b1433a1b265e3"
     },
     {
       "order": 119,
@@ -2144,8 +2144,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 61586,
-      "sha256": "35c5bd36da5697cb0e8f12a901a19f9a119fcea6bd40496c62656224141ed162"
+      "bytes": 61607,
+      "sha256": "b71886fe648020f7ee7d1e2afdad18299b55987118574bd980626e9cf7b4596a"
     },
     {
       "order": 121,
@@ -3016,8 +3016,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 346071,
-      "sha256": "a3b9bdc756b7df9ea4ed0d5a9d4da8edf097ed849eba7083e6b00c52894854e9"
+      "bytes": 346083,
+      "sha256": "825615f259a7571bca86112aaefa7a41c243590f2b0eb50ae9edbb1b8c48d440"
     },
     {
       "order": 127,
@@ -3049,8 +3049,8 @@
         "clip-a-named-graphic-owner",
         "scale-materialization"
       ],
-      "bytes": 19022,
-      "sha256": "f6fa1b406ab84c1624bd2a8d08b350867e87fa51086d2e79a6640803a5e10549"
+      "bytes": 18950,
+      "sha256": "e60c7142e69ab6de1ac21e61dca900d15beae1e77c641beb17273081e6dc5d8c"
     },
     {
       "order": 129,
@@ -3374,8 +3374,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "82010f96609c93ba7167a3a75464af063045c0f639a3f48806a50a6ff0d95f47"
+      "bytes": 3000,
+      "sha256": "4876846fcf84d241a5cf9298151fc0ee98f1332baaea70899b6aa2a2082c515b"
     },
     {
       "order": 150,

@@ -1539,7 +1539,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action atomically replaces field, constant value, and scale binding",
+      "update": "Same action atomically replaces nominal/ordinal field, constant value, and scale binding",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",

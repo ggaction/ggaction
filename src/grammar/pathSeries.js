@@ -90,7 +90,7 @@ export function validatePathSeriesAppearance(rows, layer) {
       ? channel === "color"
         ? layer.mark.type === "area" ? ["nominal", "ordinal", "quantitative"] : ["nominal", "ordinal"]
         : ["nominal", "ordinal", "quantitative", "temporal"]
-      : channel === "strokeDash" ? ["nominal"] : ["quantitative"];
+      : channel === "strokeDash" ? ["nominal", "ordinal"] : ["quantitative"];
     if (!allowed.includes(encoding.fieldType)) {
       throw new Error(`Path ${channel} encoding has an unsupported field type.`);
     }

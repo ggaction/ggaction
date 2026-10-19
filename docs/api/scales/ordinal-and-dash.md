@@ -12,8 +12,9 @@ title: Ordinal and Stroke Dash Scales
 Band/point position, color, and stroke-dash encodings use ordered discrete
 domains. Automatic domains preserve first-appearance order. `ordinal` remains
 the appearance and offset lookup type; position uses explicit `band` or `point`.
-Color accepts both nominal and ordinal fields; ordinal is useful for discrete,
-ordered numeric categories and does not turn them into a continuous gradient.
+Color and stroke-dash accept nominal and ordinal fields. Ordinal preserves
+ordered categorical intent; it does not sort rows or turn numeric categories
+into a continuous mapping. Explicit domain order takes precedence.
 
 A band or point position scale uses `"auto"` or a numeric pair as its range.
 Automatic ranges use the plot bounds. Resolved band scales record signed

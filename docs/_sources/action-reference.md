@@ -2056,7 +2056,7 @@ encodeStrokeDash(
 )
 ```
 
-Create or replace nominal line-series or rule dash patterns, or apply one
+Create or replace nominal/ordinal line-series or rule dash patterns, or apply one
 constant named/direct pattern. Named styles are `solid`, `dashed`, `dotted`, and
 `dashdot`.
 [Series encodings](../api/series-encodings.md)
