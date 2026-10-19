@@ -6,7 +6,7 @@
 - [x] 구체 설계 확정 및 사용자 standing approval 재사용
 - [x] 구현·단위·타입·불변성·선택·범례·재물질화 검증
 - [x] 현재 계약·공개 문서·생성 산출물 동기화
-- [ ] 전체 검증 후 현재 후보 브랜치 commit/push
+- [x] 전체 검증 후 현재 후보 브랜치 commit/push
 - [ ] 200개 완료 차트 단위 정기 릴리즈에서 배포 및 이슈 종료
 
 ## 승인 근거
@@ -56,3 +56,7 @@ scale 재할당·편집, constant 전환, 범례와 선택/강조, 불완전 pos
 전체 4,777개와 단위/타입 16개, 문서/브라우저/packed consumer가 통과했다.
 [RESULTS.md](RESULTS.md)와 hash-bound [RESULTS.json](RESULTS.json)에 기록했다.
 원격 checkpoint 영수증은 번역 파이프라인의 issue233 후보 checkpoint에서 추적한다.
+
+원격 구현 checkpoint: `5f22e3755b09880ab33276e62da0cc1ac5f143c6`
+(`codex/batch200-library-fixes`). 같은 SHA의 origin branch 확인 후 기록했다.
+공개 배포와 이슈 종료는 여전히 1,413개 정기 checkpoint에서 진행한다.

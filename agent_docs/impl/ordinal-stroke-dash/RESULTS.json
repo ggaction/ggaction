@@ -1,5 +1,5 @@
 {
-  "status": "verified-candidate-ready-for-checkpoint",
+  "status": "implemented-verified-pushed-candidate-pending-200-family-release",
   "issue": 233,
   "baselineCommit": "8232b523dd34146bd0dcf304d61c4e37405613a0",
   "standingApproval": "PROPOSAL.md",
@@ -144,5 +144,8 @@
   "schoolRequests": 0,
   "schoolTokens": 0,
   "chartPixelsInspected": false,
-  "recordedAt": "2026-10-19T10:19:09.718245+00:00"
+  "recordedAt": "2026-10-19T10:19:09.718245+00:00",
+  "implementationCommit": "5f22e3755b09880ab33276e62da0cc1ac5f143c6",
+  "remoteSourceHeadVerified": "5f22e3755b09880ab33276e62da0cc1ac5f143c6",
+  "branch": "codex/batch200-library-fixes"
 }
