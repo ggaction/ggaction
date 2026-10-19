@@ -252,7 +252,9 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
   이전 concrete offset을 누적하지 않는다. 제거는 `removeJitter`가 소유한다.
 - `target`: complete Cartesian x/y point mark. Current compatible mark, otherwise unique compatible mark로
   infer하며 ambiguity는 explicit ID를 요구한다.
-- `channel`: closed vocabulary `"x" | "y"`. 지정 channel의 concrete center만 이동한다.
+- `channel`: closed vocabulary `"x" | "y" | "both"`. 지정 channel의 concrete center만 이동한다.
+  `both`는 한 호출에서 x/y 각각의 channel hash와 bounds로 독립 offset을 계산하며 같은 maxOffset을 적용한다.
+  Band form은 두 축 모두 categorical slot이 있어야 한다.
 - `maxOffset`: exactly one of `{ pixels: PositiveFinite }` or `{ band: PositiveFiniteAtMostHalf }`.
   `band`는 categorical position scale의 effective slot width에 대한 비율이다.
 - `seed`: string 또는 finite number, default `0`. `key`는 optional non-empty source field이며 지정하면
@@ -260,6 +262,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - State: requested policy와 resolved item offsets는
   `materializationConfigs.jitters[target]`이 단독 소유한다. `semanticSpec`의 field, scale와 channel value는
   변경하지 않고 final concrete centers만 `graphicSpec`에 materialize한다.
+  `both`의 resolved metadata는 `algorithm`, 공통 `itemCount`, 각 축의 기존 resolution 형식인 `axes.x/y`다.
 - Geometry: point shape, area/radius와 stroke extent를 고려해 plot bounds 안에 유지한다. Categorical
   channel은 category slot 안에도 유지한다. 들어갈 공간이 없으면 해당 item의 offset은 `0`이고 resolved
   metadata에 unavailable 상태가 남는다.
@@ -270,13 +273,14 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ### Formal values — `jitterPoints`
 
-- Implemented: `jitterPoints({ target?: UserId; channel: "x" | "y"; maxOffset: { pixels: PositiveFinite } | { band: PositiveFiniteAtMostHalf }; seed?: string | FiniteNumber; key?: NonEmptyString })`.
+- Implemented: `jitterPoints({ target?: UserId; channel: "x" | "y" | "both"; maxOffset: { pixels: PositiveFinite } | { band: PositiveFiniteAtMostHalf }; seed?: string | FiniteNumber; key?: NonEmptyString })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `jitterPoints`
 
 - ✅ Covered: exact deterministic hash vector, x/y, pixel/band offset, default/explicit seed and keyed reorder stability.
+- ✅ Covered: both-axis offsets equal independent x/y calls; replacement, removal, keyed ordering, facet replay, persistence and band compatibility.
 - ✅ Covered: plot/category containment for every point shape extent, replacement from semantic base, removal and immutability.
 - ✅ Covered: Canvas, scale, filtering, appearance, highlight and facet rematerialization; primitive/public Canvas parity.
 - ✅ Covered: incomplete/ambiguous/Polar target, invalid offsets, incompatible band scale and duplicate/invalid key errors.

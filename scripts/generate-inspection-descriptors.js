@@ -6,6 +6,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const cardsFile = path.join(root, "knowledge/action-cards.json");
 const catalogFile = path.join(root, "agent_docs/contract/ACTION_INDEX.json");
 const outputFile = path.join(root, "src/inspectionDescriptors.js");
+const vocabularyFile = path.join(root, "src/core/vocabulary.js");
 
 function optionKind(name, type, action) {
   if (["target", "source", "data", "coordinate", "scale", "id"].includes(name)) return "resource";
@@ -60,12 +61,20 @@ export async function buildInspectionDescriptors() {
 
 export async function generateInspectionDescriptors({ check = false } = {}) {
   const expected = await buildInspectionDescriptors();
+  const cards = JSON.parse(await readFile(cardsFile, "utf8")).cards;
+  const methods = cards.filter(card => card.supports.entryPoints.includes("default")).map(card => card.name);
+  const marker = /\/\/ Generated default action methods: start\n[\s\S]*?\/\/ Generated default action methods: end\n?/;
+  const block = `// Generated default action methods: start\nexport const DEFAULT_ACTION_METHODS = /* @__PURE__ */ Object.freeze(${JSON.stringify(methods)});\n// Generated default action methods: end\n`;
+  const vocabulary = await readFile(vocabularyFile, "utf8");
+  const expectedVocabulary = marker.test(vocabulary) ? vocabulary.replace(marker, block) : `${vocabulary}\n${block}`;
   if (check) {
     const actual = await readFile(outputFile, "utf8").catch(() => undefined);
     if (actual !== expected) throw new Error("Inspection descriptors are stale.");
+    if (vocabulary !== expectedVocabulary) throw new Error("Default action vocabulary is stale.");
     return;
   }
   await writeFile(outputFile, expected);
+  await writeFile(vocabularyFile, expectedVocabulary);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {

@@ -1432,7 +1432,8 @@ async function testNodeConsumer(directory) {
       { x: 2, y: 3, lower: 2, upper: 4, group: "A" }
     ] }).createErrorBand({ x: { field: "x" },
       y: { center: "y", lower: "lower", upper: "upper" }, groupBy: "group", fill: "red" });
-    assert.throws(() => filledBand.encodeColor({ field: "group" }), /constant appearance/);
+    assert.equal(filledBand.encodeColor({ field: "group" })
+      .semanticSpec.layers[0].encoding.color.field, "group");
     assert.equal(filledBand.editErrorBand({ fill: false }).encodeColor({ field: "group" })
       .semanticSpec.layers[0].encoding.color.field, "group");
     for (const factory of [chart, basicChart]) {
@@ -4841,7 +4842,7 @@ async function testTypeScriptConsumer(directory) {
       .editLegend({ border: { padding: 8 }, title: false });
     const jitterOffset: JitterMaxOffset = { pixels: 2 };
     const jitterOptions: JitterPointsOptions = {
-      channel: "x",
+      channel: "both",
       maxOffset: jitterOffset,
       key: "x"
     };

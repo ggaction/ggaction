@@ -1,4 +1,4 @@
-import { BUILTIN_ACTION_DESCRIPTOR_RECORDS } from "../../inspectionDescriptors.js";
+import { DEFAULT_ACTION_METHODS } from "../../core/vocabulary.js";
 import { axisGraphicIds } from "../../materialization/guides/resources.js";
 import { cartesianAxisOwners, axisTargetArgs } from "../../selectors/axes.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
@@ -56,8 +56,7 @@ const REPEAT_OPTIONS = Object.freeze([
   "id", "target", "channel", "fields", "columns", "gap", "spacing", "align",
   "padding", "scales", "guides", "headers"
 ]);
-const SOURCE_ACTION_NAMES = new Set(BUILTIN_ACTION_DESCRIPTOR_RECORDS
-  .filter(record => record[4].includes("default")).map(record => record[0]));
+const SOURCE_ACTION_NAMES = new Set(DEFAULT_ACTION_METHODS);
 
 const SOURCE_EDIT_OPTIONS = Object.freeze(["program", "action"]);
 const GUIDE_OPTIONS = Object.freeze(["axes", "legend"]);

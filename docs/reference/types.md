@@ -7644,7 +7644,7 @@ export type JitterMaxOffset =
 ```typescript
 export interface JitterPointsOptions {
   target?: string;
-  channel: "x" | "y";
+  channel: "x" | "y" | "both";
   maxOffset: JitterMaxOffset;
   seed?: string | number;
   key?: string;

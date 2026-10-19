@@ -1293,7 +1293,8 @@ position, and other assignments. [Marks](../api/marks.md)
 jitterPoints({ target?, channel, maxOffset, seed?, key? })
 ```
 
-Assign deterministic bounded graphical jitter to one Cartesian point mark. Use
+Assign deterministic bounded graphical jitter to one Cartesian point mark with
+`channel: "x"`, `"y"`, or `"both"`. Both axes use independent offsets. Use
 exactly one of `maxOffset.pixels` or `maxOffset.band`; calling the action again
 replaces the previous policy from the semantic base positions. [Point marks](../api/marks/point.md)
 

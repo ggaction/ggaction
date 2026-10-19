@@ -859,7 +859,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `channel` | Required | `"x" \| "y"` |
+| `channel` | Required | `"both" \| "x" \| "y"` |
 | `maxOffset` | Required | `JitterMaxOffset` |
 | `seed` | Optional / branch-dependent | `string \| number \| undefined` |
 | `key` | Optional / branch-dependent | `string \| undefined` |
@@ -872,7 +872,8 @@ The following call patterns are abbreviated examples; the declaration above owns
 jitterPoints({ target?, channel, maxOffset, seed?, key? })
 ```
 
-Assign deterministic bounded graphical jitter to one Cartesian point mark. Use
+Assign deterministic bounded graphical jitter to one Cartesian point mark with
+`channel: "x"`, `"y"`, or `"both"`. Both axes use independent offsets. Use
 exactly one of `maxOffset.pixels` or `maxOffset.band`; calling the action again
 replaces the previous policy from the semantic base positions. [Point marks](../../api/marks/point.md)
 

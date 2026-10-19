@@ -3,6 +3,8 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
+import { DEFAULT_ACTION_METHODS } from "../../src/core/vocabulary.js";
+import { BUILTIN_ACTION_DESCRIPTOR_RECORDS } from "../../src/inspectionDescriptors.js";
 
 import {
   moduleSpecifiers,
@@ -63,6 +65,12 @@ test("keeps source imports inside their architectural boundaries", () => {
       );
     }
   }
+});
+
+test("the compact source-action vocabulary matches public default action metadata", () => {
+  assert.deepEqual(DEFAULT_ACTION_METHODS, BUILTIN_ACTION_DESCRIPTOR_RECORDS
+    .filter(record => record[4].includes("default")).map(record => record[0]));
+  assert.equal(Object.isFrozen(DEFAULT_ACTION_METHODS), true);
 });
 
 test("parses static, re-exported, and dynamic module references", () => {

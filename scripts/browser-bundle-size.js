@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 417_000, // 0.0.20 seeded mean CI and Area color measured416480gzip bytes on Node20.20.2.
-  "ggaction/basic": 205_000, // 0.0.20 shared validation measured204183gzip bytes on Node20.20.2.
+  ggaction: 422_000, // Compact source-action vocabulary: 421644 gzip bytes on Node23.5.0.
+  "ggaction/basic": 214_000, // Both-axis jitter: 213862 gzip bytes on Node23.5.0.
   "ggaction/svg": 25_000
 });
 

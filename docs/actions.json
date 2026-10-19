@@ -7360,7 +7360,7 @@
       "name": "jitterPoints",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Assign deterministic bounded graphical jitter to one Cartesian point mark.",
+      "summary": "Assign deterministic bounded graphical jitter to one Cartesian point mark with channel: \"x\", \"y\", or \"both\".",
       "signature": "jitterPoints(options: JitterPointsOptions): ChartProgram;",
       "intents": [
         "jitter points",
@@ -7419,7 +7419,7 @@
         {
           "name": "channel",
           "required": true,
-          "type": "\"x\" | \"y\""
+          "type": "\"both\" | \"x\" | \"y\""
         },
         {
           "name": "maxOffset",

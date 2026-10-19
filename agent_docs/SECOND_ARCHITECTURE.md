@@ -49,6 +49,9 @@ agent가 다음을 빠르게 이해하기 위한 내부 아키텍처 문서다.
 
 ## 핵심 결론
 
+Point jitter의 `channel: "both"`도 기존 jitter policy 한 곳이 소유한다. 기존 단일 축 grammar를 x/y 각각 호출하고, 같은 wrapped point materializer가 두 concrete 좌표를 함께 갱신한다. Both의 resolved metadata만 축별 resolution을 `axes.x/y`로 묶으며 renderer나 semantic state 경계는 바뀌지 않는다.
+Both와 아래 compact action vocabulary를 포함한 package entry는591이며 실측847924packed/4099551unpacked bytes다. 기존847000/4094000을 초과하여 최소1000bytes 단위인848000/4100000으로만 갱신한다.
+
 `ggaction`은 완성된 선언형 specification을 renderer가 자동으로 compile하는
 라이브러리가 아니다. 사용자가 호출한 domain action이 의미 상태를 기록하고, 필요한
 하위 action을 명시적으로 호출해 concrete graphic을 즉시 만든다.
@@ -88,6 +91,8 @@ active font 기본값을 읽고, theme 변경 시 기존 guide config와 concret
 갱신한다. Facet 초기 header 스타일은 기존 header config에 정규화하며 editor와 같은 검증을 사용한다.
 
 외형 encoding의 mark 지원 범위는 `core/vocabulary.js`가 소유하며 실제 action과 inspection이 함께 사용한다. Facet source action descriptor는 기존 retained semantic/config를 복원하여 기존 wrapped mark/guide materializer와 facet derivation을 호출한다. 새 renderer나 별도 source-state 복제본을 추가하지 않는다. 기존 vocabulary owner를 재사용하여 package entry는591을 유지한다. Rect 외형과 facet source action/inspection 확장의 실측846294packed/4093902unpacked bytes에 따라 최소1000byte 단위 ceiling을847000/4094000으로 갱신했다.
+Facet source의 공개 action allowlist는 action-card 원본에서 생성한 `core/vocabulary.js`의 함수명 목록만 소비한다. 상세 inspection metadata는 inspection entry에 남겨 전체 authoring bundle에 불필요한 parameter table이 들어가지 않는다. Boundary 계약은 기존 계층 의존성을 유지하고 두 목록의 일치를 검사한다.
+같은 Node23.5.0 환경에서 이전 HEAD의 설치 consumer gzip은 Full431416/Basic213742 bytes로 기존417000/205000 한도를 이미 초과했다. 현재는 Full421644/Basic213862 bytes이며 Full은9772bytes 감소했다. 실측을 숨기지 않고 해당 한도를 최소1000bytes 단위422000/214000으로 갱신하고 SVG25000은 유지한다.
 
 ## 전체 계층
 

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:48d296358c3a8929e1b71c6e4a8611b653e93b20763e1bb966583fd053a4bcc3. Status: development. Runtime source: be9312686d438bafc734674bed3f661448508c2e. Release baseline: v0.0.13.
+Contract: sha256:6d7282f06a7d57d0a90a16bf76b344e98325ee919e3c35d6be1d468b6e1a45e3. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/be9312686d438bafc734674bed3f661448508c2e/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/be9312686d438bafc734674bed3f661448508c2e/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -6128,7 +6128,7 @@ const separated = program.jitterPoints({
 | Option | Type | Default or inference |
 | --- | --- | --- |
 | `target` | existing Cartesian point ID | current or only eligible point mark |
-| `channel` | `"x"` or `"y"` | required |
+| `channel` | `"x"`, `"y"`, or `"both"` | required |
 | `maxOffset` | `{ pixels: positiveNumber }` or `{ band: number }` | required; exactly one form |
 | `seed` | string or finite number | `0` |
 | `key` | non-empty field name | source-row index identity |
@@ -6138,6 +6138,10 @@ position scale. The final glyph remains inside both its category slot and plot
 bounds. Pixel offsets work with quantitative or categorical positions. The
 seed and item identity produce stable offsets; use a unique `key` when offsets
 must remain attached to rows after data reordering.
+
+Use `channel: "both"` to jitter X and Y in one call. Each axis gets an independent,
+deterministic offset with the same `maxOffset` limit. Pixel offsets support mixed
+position types; band offsets require categorical slots on both axes.
 
 Calling `jitterPoints` again replaces the target policy and recomputes from the
 semantic base position, so offsets never accumulate. Canvas, scale, data,
@@ -20561,7 +20565,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `channel` | Required | `"x" \| "y"` |
+| `channel` | Required | `"both" \| "x" \| "y"` |
 | `maxOffset` | Required | `JitterMaxOffset` |
 | `seed` | Optional / branch-dependent | `string \| number \| undefined` |
 | `key` | Optional / branch-dependent | `string \| undefined` |
@@ -20572,7 +20576,8 @@ The following call patterns are abbreviated examples; the declaration above owns
 jitterPoints({ target?, channel, maxOffset, seed?, key? })
 ```
 
-Assign deterministic bounded graphical jitter to one Cartesian point mark. Use
+Assign deterministic bounded graphical jitter to one Cartesian point mark with
+`channel: "x"`, `"y"`, or `"both"`. Both axes use independent offsets. Use
 exactly one of `maxOffset.pixels` or `maxOffset.band`; calling the action again
 replaces the previous policy from the semantic base positions. [Point marks](./api/marks/point/)
 
@@ -34107,7 +34112,7 @@ export type JitterMaxOffset =
 ```typescript
 export interface JitterPointsOptions {
   target?: string;
-  channel: "x" | "y";
+  channel: "x" | "y" | "both";
   maxOffset: JitterMaxOffset;
   seed?: string | number;
   key?: string;
@@ -38506,12 +38511,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/be9312686d438bafc734674bed3f661448508c2e/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/be9312686d438bafc734674bed3f661448508c2e/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -40779,9 +40784,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:48d296358c3a8929e1b71c6e4a8611b653e93b20763e1bb966583fd053a4bcc3` |
+| Contract fingerprint | `sha256:6d7282f06a7d57d0a90a16bf76b344e98325ee919e3c35d6be1d468b6e1a45e3` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
-| Runtime source commit | `be9312686d438bafc734674bed3f661448508c2e` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 286 |
 | Declared actions in that release | 234 |

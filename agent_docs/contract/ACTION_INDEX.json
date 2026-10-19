@@ -1233,7 +1233,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the target jitter assignment; `removeJitter` removes it",
+      "update": "Same action replaces the X, Y, or both-axis jitter assignment; `removeJitter` removes it",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",

@@ -54,6 +54,7 @@ test("resolves band maximum and contains the whole point extent", () => {
 });
 
 test("rejects invalid policies and incompatible band scales", () => {
+  assert.equal(normalizePointJitterPolicy({ channel: "both", maxOffset: { pixels: 4 } }).channel, "both");
   assert.throws(
     () => normalizePointJitterPolicy({ channel: "theta", maxOffset: { pixels: 1 } }),
     /channel/
