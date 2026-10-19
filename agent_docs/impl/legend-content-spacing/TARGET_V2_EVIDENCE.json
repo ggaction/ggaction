@@ -1,0 +1,186 @@
+{
+  "status": "corrected-existing-primitive-target-rendered-spacing-not-yet-implemented-in-baseline",
+  "runtimeBaselineCommit": "01f165612975971baa96f48f11a5774644b3b4f3",
+  "scriptSha256": "ff6c25ffeba77da4f3de39b094f46ec2b395d05a442d2ce720650eb813ea3905",
+  "canvas": {
+    "width": 320,
+    "height": 240
+  },
+  "plot": {
+    "x": 40,
+    "y": 30,
+    "width": 140,
+    "height": 160
+  },
+  "radii": [
+    8,
+    12,
+    20
+  ],
+  "paintedSampleHeights": [
+    18,
+    26,
+    42
+  ],
+  "titleHeight": 14,
+  "titleGraphicY": 30,
+  "titleGraphicBaseline": "top",
+  "titleCenterY": 37,
+  "labelGraphicY": [
+    68,
+    97,
+    138
+  ],
+  "labelGraphicBaseline": "top",
+  "labelCenterY": [
+    73,
+    102,
+    143
+  ],
+  "sampleCenterY": [
+    73,
+    102,
+    143
+  ],
+  "sampleCenterDistances": [
+    29,
+    41
+  ],
+  "samplePaintedEdgeGaps": [
+    7,
+    7
+  ],
+  "titlePaintedBodyGap": 20,
+  "sourceRows": [
+    {
+      "x": 0,
+      "y": 0,
+      "v": 0
+    },
+    {
+      "x": 1,
+      "y": 1,
+      "v": 80
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "v": 336
+    }
+  ],
+  "pointCenters": [
+    [
+      40,
+      190
+    ],
+    [
+      110,
+      110
+    ],
+    [
+      180,
+      30
+    ]
+  ],
+  "unrelatedPrimitivesUnchanged": true,
+  "before": [
+    {
+      "option": "rowPadding",
+      "phase": "create",
+      "error": "Unknown createSizeLegend option \"rowPadding\"."
+    },
+    {
+      "option": "rowPadding",
+      "phase": "whole-edit",
+      "error": "Unknown editLegend option \"rowPadding\"."
+    },
+    {
+      "option": "rowPadding",
+      "phase": "layout-edit",
+      "error": "Unknown editLegendLayout option \"rowPadding\"."
+    },
+    {
+      "option": "titlePadding",
+      "phase": "create",
+      "error": "Unknown createSizeLegend option \"titlePadding\"."
+    },
+    {
+      "option": "titlePadding",
+      "phase": "whole-edit",
+      "error": "Unknown editLegend option \"titlePadding\"."
+    },
+    {
+      "option": "titlePadding",
+      "phase": "layout-edit",
+      "error": "Unknown editLegendLayout option \"titlePadding\"."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "uniform-control",
+      "svgSha256": "6c2d83e3a6dd4a31902381e74da6e7e36f2d1b4282c9475e1929f8e49aff1a3d",
+      "pngSha256": "61f0fa28d5b7e1d02a082ed309c8bfb050b739ba64fc86e70397caedcd40290e",
+      "pngDpr2Sha256": "0eba6e03c41fc0f67dafe35528210e1ea0fbbff614781de3faacc57bb1c909a8",
+      "pdfSha256": "af52701051b5d114ece98b9794981124766b53a2c31c2cb195a56c04fe0390f2"
+    },
+    {
+      "name": "content-spacing-primitive-target",
+      "svgSha256": "d21c3b984a88a4fc2bb43f543517055876319a509855cc2e89a01d61b4614726",
+      "pngSha256": "fa8a365132fd3fd09b98be07beadb04d253f2dcc18b4d16f0451856a63cf5f39",
+      "pngDpr2Sha256": "35f57ffc2b9bf50d50a51aa60c492c836faa54150bce7bd0b975d8af6ce7d039",
+      "pdfSha256": "74b1a4249f6ff551523b256034e43020a1d3c0e95d34c280415e91581de264de"
+    }
+  ],
+  "schoolCalls": 0,
+  "chartPixelsInspected": false,
+  "plotInkEvidence": {
+    "status": "pass",
+    "targetProofSha256": "422f8e36d67178e1abb730741c2158be93cfa6a687dd5b56e195cb357479993a",
+    "verificationScriptSha256": "955705447c05e663a5f9e02db0d18bf192ea6a84b6fc096dd649cc043296e824",
+    "samples": [
+      {
+        "ratio": 1,
+        "plotInkPixels": 863,
+        "unchangedPlotRgbaSha256": "dfe79354138e37c0cac26a7fb769ec19a890d6862de205a9a23567f4c6797463",
+        "wholeImageChannelDifferences": 9311,
+        "plotRgbaExact": true
+      },
+      {
+        "ratio": 2,
+        "plotInkPixels": 3350,
+        "unchangedPlotRgbaSha256": "cf8b92c5370dd3bb0348f7d2dd94765760531ab39dc9b662c0a85c52a860b7ab",
+        "wholeImageChannelDifferences": 33658,
+        "plotRgbaExact": true
+      }
+    ],
+    "schoolCalls": 0,
+    "chartPixelsInspected": false
+  },
+  "baselineArchive": {
+    "commit": "01f165612975971baa96f48f11a5774644b3b4f3",
+    "path": ".artifacts/legend-content-spacing/baseline-01f16561.tar",
+    "sha256": "c540df4f068f7d0491867d753faef83ba27852abe24d4d63c7711c35d9bcdc49",
+    "source": "git archive, before spacing runtime implementation",
+    "runtimeImportsFromArchive": true,
+    "dependenciesFromUnchangedNodeModules": true
+  },
+  "correction": {
+    "previousReviewCommit": "f56833b0c113744c4940acceea9315fddd8a54ef",
+    "previousTargetScript": "target.mjs",
+    "previousTargetRetainedUnchanged": true,
+    "cause": "Primitive labels used their center as concrete top, placing them5px low. Current concrete labels have top baseline; font10 means top=center-5. Intended centered reading line and all sample/title/row-gap geometry unchanged.",
+    "labelTopY": [
+      68,
+      97,
+      138
+    ],
+    "labelCenterY": [
+      73,
+      102,
+      143
+    ],
+    "noToleranceIncrease": true,
+    "noPublicContractChange": true,
+    "controlSvgAndPngExactlyMatchFrozenPreviousControl": true
+  }
+}

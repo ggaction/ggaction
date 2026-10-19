@@ -123,3 +123,17 @@ Public 구현 후에는 변경 입력에 대해 필요한 검증을 다시 수�
 원격 review commit은 `f56833b0c113744c4940acceea9315fddd8a54ef`다.
 후속 checklist/evidence metadata 기록은 public 설계나 target geometry를 바꾸지 않는다.
 일반 승인 질문을 다시 하지 않고 `APPROVAL.json`에 명시적인 standing approval의 출처와 한계를 기록한다.
+
+## 레이블 기준 보정
+
+현재 유효한 독립 목표는 `target-v2.mjs`와 `TARGET_V2_EVIDENCE.json`이다.
+초기 `target.mjs`와 그 evidence/approval은 수정하지 않고 보존한다. 초기 primitive가 label center를
+concrete `top` 값으로 써서 글자를5px 아래에 둔 검증 fixture 오류를 보정했다. Font10 label의
+top은68/97/138, center는 원래 설계대로73/102/143이다. 반지름·sample center·title·행 gap7·title gap20,
+public 옵션과 text measurement 정책은 바꾸지 않았다. 비교 오차도 늘리지 않았다.
+
+보정 목표는 runtime 구현 전 commit `01f165612975971baa96f48f11a5774644b3b4f3`의 `git archive`
+snapshot에서 실행했다. 여섯 새 API 경로는 그 baseline에서 모두 거절하고 control SVG/PNG는 기존
+control과 정확히 같다. `verify-plot.mjs <target-directory>`가 DPR1/2 plot ink와 control/target의
+unrelated plot RGBA 일치를 독립적으로 재검증한다. 새 목표도 기존 명시적 standing approval 범위로
+기록하며 별도의 사람/모델 pixel 시각 검토를 했다고 주장하지 않는다.
