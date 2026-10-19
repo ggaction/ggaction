@@ -2010,6 +2010,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
+| `topLane` | Optional / branch-dependent | `FacetTopLaneMode \| undefined` |
 
 </details>
 
@@ -2192,6 +2193,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
 | `headers` | Optional / branch-dependent | `FacetHeadersOptions \| undefined` |
 | `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
+| `topLane` | Optional / branch-dependent | `FacetTopLaneMode \| undefined` |
 
 </details>
 
@@ -2266,6 +2268,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
 | `headers` | Optional / branch-dependent | `FacetHeadersOptions \| undefined` |
 | `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
+| `topLane` | Optional / branch-dependent | `FacetTopLaneMode \| undefined` |
 
 </details>
 
@@ -2313,6 +2316,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
 | `headers` | Optional / branch-dependent | `FacetHeadersOptions \| undefined` |
 | `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
+| `topLane` | Optional / branch-dependent | `FacetTopLaneMode \| undefined` |
 
 </details>
 

@@ -142,6 +142,7 @@ select that snapshot explicitly when creating a new composition.
 | `columns` | number of values | Sets the grid column count |
 | `gap` | `16` | Sets horizontal and vertical cell spacing |
 | `spacing` | `"canvas"` | Measures gaps between child canvases or, with `"plot"`, inner plot tracks |
+| `topLane` | `"stacked"` | With plot spacing, `"shared"` places parent title and top headers in the existing top margin |
 | `align` | `"center"` | Aligns unequal cells inside grid tracks |
 | `padding` | `0` on every side | Adds scalar or four-side parent padding |
 | `scales` | every used role `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `yOffset`, `theta`, public `r`, `color`, `stroke`, `size`, `shape`, `opacity`, `strokeDash`, or all `parallelDimensions` |
@@ -447,3 +448,58 @@ otherwise the action reports a collision. `guides: { axes: "outer" }` removes
 interior axes, but remaining edge labels still need enough space. Increasing the
 gap or changing guide/header settings resolves those collisions without changing
 panel dimensions.
+
+## Share the existing top margin
+
+{% include chart-example.html id="facet-shared-top-lane" %}
+
+With plot spacing, `topLane: "shared"` lets the parent title and top headers use the
+existing child top margin and parent padding. The default `"stacked"` reserves their
+height separately. This complete program retains seven 40 × 200 plots inside a
+508 × 262 Canvas, including the upper Y-axis endpoint:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from "ggaction";
+
+export const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+export const rows = days.flatMap(panel => [{panel,group:'a',value:13},{panel,group:'b',value:14}]);
+
+export function createFacetLaneUnit() {
+  return chart().createCanvas({width:136,height:262,margin:{left:40,right:56,top:43,bottom:19}})
+    .createData({values:rows})
+    .createBarPlot({x:'group',y:{field:'value',scale:{domain:[0,50],nice:false}},guides:false})
+    .encodeColor({field:'group',layout:'overlay'})
+    .createAxes({x:{title:false,ticksAndLabels:{labels:{fontSize:10,color:'black',offset:5.5}}},
+      y:{ticksAndLabels:{values:[0,10,20,30,40,50],labels:{fontSize:10,color:'black',alongOffset:.890625}},title:false}})
+    .createLegend({title:'group',titleStyle:{fontSize:10},labels:{fontSize:10}});
+}
+
+export function createFacetSharedTopLaneProgram() {
+  return createFacetLaneUnit().facet({field:'panel',values:days})
+    .editFacetGuides({axes:'outer',legend:'shared'})
+    .editCompositionLayout({spacing:'plot',gap:22})
+    .editFacetHeaders({fontSize:10,fontWeight:400,offset:10.609375})
+    .createTitle({text:'Grouped Bar Chart',align:'left',offset:-2.953125,
+      titleStyle:{fontSize:13,fontWeight:700,color:'black'}})
+    .editCompositionLayout({topLane:"shared"});
+}
+
+const program = createFacetSharedTopLaneProgram();
+```
+
+The same option works at facet, grid and repeat creation or in
+`editCompositionLayout`. Text must fit and clear the plots and retained labels;
+insufficient space reports a collision. Adjust explicit padding, title or header
+settings to make space. The action keeps child dimensions and font sizes.
+
+Omitting the option in an edit preserves it. Reset with
+`editCompositionLayout({ topLane: "stacked" })`. To switch back to Canvas spacing,
+reset both together: `editCompositionLayout({ spacing: "canvas", topLane: "stacked" })`.
+Concat compositions reject this option. Shared legend placement keeps its existing
+edge, offset and occupied bounds.

@@ -39,15 +39,15 @@ import {
 } from "../../materialization/facetHeaders.js";
 
 const FACET_OPTIONS = Object.freeze([
-  "id", "field", "data", "values", "columns", "gap", "spacing", "align", "padding", "scales",
+  "id", "field", "data", "values", "columns", "gap", "spacing", "topLane", "align", "padding", "scales",
   "guides", "headers"
 ]);
 const FACET_GRID_OPTIONS = Object.freeze([
-  "id", "data", "rows", "columns", "combinations", "gap", "spacing", "align",
+  "id", "data", "rows", "columns", "combinations", "gap", "spacing", "topLane", "align",
   "padding", "scales", "guides", "headers"
 ]);
 const REPEAT_OPTIONS = Object.freeze([
-  "id", "target", "channel", "fields", "columns", "gap", "spacing", "align",
+  "id", "target", "channel", "fields", "columns", "gap", "spacing", "topLane", "align",
   "padding", "scales", "guides", "headers"
 ]);
 const SOURCE_EDIT_OPTIONS = Object.freeze(["program"]);
@@ -284,6 +284,7 @@ function composeDerivedFacet(program, args, { definition, derived, guides, scale
   const headers = initialFacetHeaders(args.headers, definition.grid);
   const preflight = resolveFacetLayout({
     spacing: args.spacing,
+    topLane: args.topLane,
     plots: Object.entries(derived.children).map(([id, child]) => ({ id, ...resolveGraphicBounds(child) })),
     children: definition.cells.map(cell => ({
       ...compositionChildDescriptor(cell.id, derived.children[cell.id]), value: cell.value,
@@ -297,6 +298,7 @@ function composeDerivedFacet(program, args, { definition, derived, guides, scale
     id: definition.id, type: "facet", children: definition.cells.map(cell => cell.id),
     columns: preflight.columns, gap: preflight.gap, align: preflight.align, padding: preflight.padding,
     ...(preflight.spacing === undefined ? {} : { spacing: preflight.spacing }),
+    ...(preflight.topLane === undefined ? {} : { topLane: preflight.topLane }),
     facet: { data: definition.data, ...facet, scales: scalePolicies.channels, guides }
   };
   return applyCompositionState(
@@ -705,6 +707,7 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
         combinations: current.facet.grid.combinations,
         gap: current.gap,
         ...(current.spacing === undefined ? {} : { spacing: current.spacing }),
+        ...(current.topLane === undefined ? {} : { topLane: current.topLane }),
         align: current.align,
         padding: current.padding,
         scales,
@@ -717,6 +720,7 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
         columns: current.columns,
         gap: current.gap,
         ...(current.spacing === undefined ? {} : { spacing: current.spacing }),
+        ...(current.topLane === undefined ? {} : { topLane: current.topLane }),
         align: current.align,
         padding: current.padding,
         scales,
@@ -731,6 +735,7 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
         columns: current.columns,
         gap: current.gap,
         ...(current.spacing === undefined ? {} : { spacing: current.spacing }),
+        ...(current.topLane === undefined ? {} : { topLane: current.topLane }),
         align: current.align,
         padding: current.padding,
         scales,

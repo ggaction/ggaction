@@ -2549,3 +2549,16 @@ PR217 CI39034674598 package24의 Ubuntu/Node24.21.0 실제 설치 consumer에서
 Compact card는 clip option을 실제 노출하는 createMarkLabels3420/createAnnotation3414/createRegressionPlot3370bytes가 기존3360을 초과한다. 해당 세 cap만 최소10byte 단위3420/3420/3370으로 갱신하고 default3360과 legend3530/3860, median1896은 유지한다. Validator와 contract test는 한 budget owner를 참조하며 option 또는 supported value를 삭제하지 않았다. ReferenceBand와 Polar/Radar/Parallel의 상속 타입에 Cartesian clip이 잘못 유입되지 않도록 명시적으로 제외했다.
 
 같은 staged artifact의 실제 설치 consumer bundle은 Full417514/Basic205024/SVG7554gzip bytes다. 기존417000/205000 초과를 보존하고 Full418000/Basic206000으로 최소1000byte씩만 갱신한다. SVG25000과 모든 기능/검증/coverage 한도는 유지한다.
+
+### Facet top margin sharing
+
+Facet의 opt-in topLane 정책은 compositionSpec 한 곳에 저장한다. Pure layout이 기존 top margin과
+예약량을 계산하고 materialization이 final graphic-tree text bounds를 수집하여 pure collision 검사에
+전달한다. 기존 explicit wrapped rematerialization과 renderer의 concrete-only 경계는 유지한다.
+정확한 동작은 current/COMPOSITION.md의 Shared facet top lane이 소유한다.
+
+새 pure layout/final concrete 검사 두 owner로 package entries가598이 되었다. Node22.23.1 staged
+실측848529packed/4114879unpackedbytes는 기존848000/4109000을 초과하므로 최소1000byte 단위
+849000/4115000으로만 갱신한다. 실제 설치 browser consumer는 Full419868/Basic206509gzipbytes로
+기존420000/207000 안에 있다. SVG25000과 모든 그림/수치/coverage 기준은 유지한다. 이전 상한
+실패를 보존하며 Node24 protected-release 실측은 다음 정기 배포에서 별도로 필요하다.

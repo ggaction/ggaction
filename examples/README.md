@@ -552,6 +552,12 @@ Preserve raw observations and calculate reusable asymmetric intervals before dra
 
 Representative actions: `createSummaryData`, `createAreaPlot`, `createLineMark`. [Documentation](https://ggaction.github.io/ggaction/api/data/summaries-and-shaping/#bootstrap-mean-confidence-intervals).
 
+### [Share the existing facet top margin](./facet-shared-top-lane/)
+
+Keep fixed plot sizes while reusing existing top space for titles and facet headers.
+
+Representative actions: `facet`, `editCompositionLayout`, `editFacetHeaders`. [Documentation](https://ggaction.github.io/ggaction/api/composition/facets/#share-the-existing-top-margin).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

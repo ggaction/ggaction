@@ -12,6 +12,7 @@ import {
   titleTextProperties
 } from "../layout/title.js";
 import { resolveFacetLayout } from "../layout/facets.js";
+import { assertFacetTopLane } from "./facetTopLane.js";
 import { namespaceGraphicId, namespaceGraphicSnapshot } from "./compositionSnapshot.js";
 import { prepareSharedFacetLegend } from "./facetGuides/index.js";
 import { resolvePromotedFacetLegendLayout } from "./facetGuides/layout.js";
@@ -22,10 +23,12 @@ import {
 } from "./composition.js";
 import {
   materializeFacetHeaders,
-  prepareFacetHeaders
+  prepareFacetHeaders,
+  facetHeaderGraphicId
 } from "./facetHeaders.js";
 
 const ZERO_MARGIN = { top: 0, right: 0, bottom: 0, left: 0 };
+const TITLE_IDS = Object.freeze(["chartTitle", "chartSubtitle"]);
 
 function facetConfig(program) {
   const config = program.materializationConfigs.facets?.[program.compositionSpec.id];
@@ -85,7 +88,7 @@ function materializeTitleComponent(program, id, lines, centers, style, plot, top
 function materializeTitle(program, plot, title) {
   let next = materializeTitleComponent(
     program,
-    "chartTitle",
+    TITLE_IDS[0],
     title.block.titleLines,
     title.block.titleCenters,
     title.config.titleStyle,
@@ -95,7 +98,7 @@ function materializeTitle(program, plot, title) {
   if (title.block.subtitleLines.length > 0) {
     next = materializeTitleComponent(
       next,
-      "chartSubtitle",
+      TITLE_IDS[1],
       title.block.subtitleLines,
       title.block.subtitleCenters,
       title.config.subtitleStyle,
@@ -131,6 +134,7 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
       } : {})
     })),
     spacing: spec.spacing,
+    topLane: spec.topLane,
     plots: spec.children.map(id => ({ id, ...resolveGraphicBounds(program.children[id]) })),
     columns: spec.columns,
     gap: spec.gap,
@@ -179,7 +183,7 @@ function assertPlotSpacingGuides(program, layout, plots) {
       if (bounds !== undefined) occupied.push({ owner: cell.id, bounds });
     }
   }
-  const headers = program.graphicSpec.objects[`${program.compositionSpec.id}-headers`];
+  const headers = program.graphicSpec.objects[facetHeaderGraphicId(program.compositionSpec.id)];
   for (const item of headers?.items ?? []) {
     if (item.properties.text !== "") occupied.push({ owner: "headers", bounds: resolveTextBounds(item.properties, program.materializationConfigs.textMetrics) });
   }
@@ -235,6 +239,8 @@ export function materializeFacetGraphics(program) {
   next = next.composeFacetGuides({ layout, plot });
   if (layout.spacing === "plot") assertPlotSpacingGuides(next, layout, plots);
   if (title.height > 0) next = materializeTitle(next, plot, title);
+  assertFacetTopLane(next, { layout, plots,
+    headerId: facetHeaderGraphicId(program.compositionSpec.id), titleIds: TITLE_IDS });
   return next._withCanvasConfig({
     margin: ZERO_MARGIN,
     size: { width: "auto", height: "auto" }

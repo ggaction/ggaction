@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 596, // Content spacing adds focused grammar and pure layout owners.
-  packedBytes: 848_000, // Node22 content spacing staged artifact measured847008bytes; Node24 remeasured at release.
-  unpackedBytes: 4_109_000 // Content spacing staged artifact measured4108965bytes.
+  entries: 598, // Shared top lane adds pure layout and final concrete bounds owners.
+  packedBytes: 849_000, // Shared top lane measured848458bytes on Node22; Node24 remeasured at release.
+  unpackedBytes: 4_115_000 // Shared top lane staged artifact measured4114755bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

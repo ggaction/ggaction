@@ -20,7 +20,7 @@ const CONCAT_OPTIONS = Object.freeze([
   "id", "programs", "gap", "align", "padding"
 ]);
 const LAYOUT_EDIT_OPTIONS = Object.freeze([
-  "columns", "gap", "spacing", "align", "padding"
+  "columns", "gap", "spacing", "topLane", "align", "padding"
 ]);
 const REPLACEMENT_OPTIONS = Object.freeze(["target", "program"]);
 const INSERTION_OPTIONS = Object.freeze(["id", "program", "before", "after"]);
@@ -181,6 +181,9 @@ const editCompositionLayout = /* @__PURE__ */ closedAction(
       );
     }
     if (current.type !== "facet" && Object.hasOwn(args, "spacing")) throw new Error("Plot spacing requires a facet composition.");
+    if (current.type !== "facet" && Object.hasOwn(args, "topLane")) {
+      throw new Error("topLane requires a facet composition.");
+    }
     const padding = Object.hasOwn(args, "padding")
       ? normalizeCompositionPadding(args.padding, current.padding)
       : current.padding;
@@ -191,6 +194,7 @@ const editCompositionLayout = /* @__PURE__ */ closedAction(
       );
       layout = resolveFacetLayout({
         spacing: option(args, "spacing", current.spacing),
+        topLane: args.topLane === undefined ? current.topLane : args.topLane,
         plots: current.children.map(id => ({ id, ...resolveGraphicBounds(this.children[id]) })),
         children: current.children.map((id, index) => ({
           ...childDescriptor({ id, program: this.children[id] }),
@@ -218,11 +222,14 @@ const editCompositionLayout = /* @__PURE__ */ closedAction(
         padding
       });
     }
+    const { topLane: _previousTopLane, ...currentLayoutSpec } = current;
     return applyCompositionState(this, {
       children: this.children,
       compositionSpec: {
-        ...current,
-        ...(current.type === "facet" ? { columns: layout.columns, ...(layout.spacing !== undefined ? { spacing: layout.spacing } : current.spacing !== undefined ? { spacing: "canvas" } : {}) } : {}),
+        ...currentLayoutSpec,
+        ...(current.type === "facet" ? { columns: layout.columns,
+          ...(layout.spacing !== undefined ? { spacing: layout.spacing } : current.spacing !== undefined ? { spacing: "canvas" } : {}),
+          ...(layout.topLane === undefined ? {} : { topLane: layout.topLane }) } : {}),
         gap: layout.gap,
         align: layout.align,
         padding: layout.padding

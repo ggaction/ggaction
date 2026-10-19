@@ -176,6 +176,9 @@ export const FACET_SCALE_RESOLUTIONS = Object.freeze([
   "independent"
 ]);
 
+export const FACET_TOP_LANE_MODES = Object.freeze(["stacked", "shared"]);
+export const DEFAULT_FACET_TOP_LANE = "stacked";
+
 export function getPositionChannelDefinition(channel) {
   return POSITION_CHANNEL_DEFINITIONS[channel];
 }

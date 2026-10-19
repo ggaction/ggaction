@@ -4365,7 +4365,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits concat layout or facet columns/layout",
+      "update": "Edits concat layout or facet columns/layout; optional shared top lane with plot spacing",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4455,7 +4455,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "Creates immutable derived child views",
+      "update": "Creates immutable derived child views; optional shared top lane with plot spacing",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4473,7 +4473,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Creates ordered row-column facet cells",
+      "update": "Creates ordered row-column facet cells; optional shared top lane with plot spacing",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4491,7 +4491,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Repeats one eligible Cartesian or Polar role or one Parallel dimension across fields",
+      "update": "Repeats one eligible Cartesian or Polar role or one Parallel dimension across fields; optional shared top lane with plot spacing",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

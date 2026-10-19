@@ -170,7 +170,10 @@ export interface EditCompositionLayoutOptions {
   padding?: number | CompositionPadding;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share existing top margin with parent title and headers; requires plot spacing. Stacked restores the default. */
+  topLane?: FacetTopLaneMode;
 }
+export type FacetTopLaneMode = "stacked" | "shared";
 export interface ReplaceCompositionChildOptions {
   target: string;
   program: ChartProgram;
@@ -228,6 +231,8 @@ export interface FacetOptions {
   headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
+  topLane?: FacetTopLaneMode;
 }
 export interface FacetGridRole {
   field: string;
@@ -247,6 +252,8 @@ export interface FacetGridOptions {
   headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
+  topLane?: FacetTopLaneMode;
 }
 export interface RepeatChartsOptions {
   id?: string;
@@ -262,6 +269,8 @@ export interface RepeatChartsOptions {
   headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
+  topLane?: FacetTopLaneMode;
 }
 export interface EditFacetSourceOptions { program: ChartProgram; }
 export interface EditFacetHeadersOptions {
@@ -296,6 +305,8 @@ export interface FacetCompositionSpec {
   readonly children: readonly string[];
   readonly columns: number;
   readonly spacing?: "canvas" | "plot";
+  /** Canonical opt-in intent; stacked is represented by omission. */
+  readonly topLane?: "shared";
   readonly gap: number;
   readonly align: CompositionAlign;
   readonly padding: Readonly<Required<CompositionPadding>>;

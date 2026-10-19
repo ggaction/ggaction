@@ -285,6 +285,7 @@ export type {
   FacetCompositionSpec,
   FacetGuideOptions,
   FacetOptions,
+  FacetTopLaneMode,
   FacetGridOptions,
   FacetGridRole,
   FacetScaleResolution,

@@ -11,6 +11,10 @@ import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../theme/defaults.js";
 const SIDES = Object.freeze(["top", "right", "bottom", "left"]);
 const ZERO_SIDES = Object.freeze({ top: 0, right: 0, bottom: 0, left: 0 });
 
+export function facetHeaderGraphicId(facetId) {
+  return `${facetId}-headers`;
+}
+
 export function createDefaultFacetHeaders() {
   return {
     mode: "legacy",
@@ -364,7 +368,7 @@ export function materializeFacetHeaders(program, layout, plots, prepared) {
   } else {
     assertRoleHeadersFit(records, items, layout, profile, plotById);
   }
-  const id = `${program.compositionSpec.id}-headers`;
+  const id = facetHeaderGraphicId(program.compositionSpec.id);
   return program
     .createGraphics({ id, type: "collection", parent: "canvas" })
     .editGraphics({ target: id, property: "items", value: items });

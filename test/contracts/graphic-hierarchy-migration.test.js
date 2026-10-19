@@ -40,6 +40,7 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
   "bar-compositing": ["canvas", "barPlot"],
   "legend-appearance": ["canvas", "scatterPlot", "colorLegendSymbolPoints", "colorLegendLabels"],
   "shared-facet-owner": [],
+  "facet-shared-top-lane": [],
   "symbol-window": ["canvas", "scatterPlot", "sizeLegendSymbols", "sizeLegendLabels"],
   "color-controls": ["canvas", "gamma1", "gamma22", "power"],
   "color-white-point": ["canvas", "d65", "d50"],
@@ -439,6 +440,8 @@ test("locks the complete public graphic hierarchy inventory", () => {
           ? ["metrics-headers", "metrics-shared-legend"]
           : chart.id === "shared-facet-owner"
             ? ["facet-headers", "facet-shared-legend"]
+          : chart.id === "facet-shared-top-lane"
+            ? ["facet-headers", "facet-shared-legend", "chartTitle"]
           : ["facet-headers", "facet-legend", "chartTitle", "chartSubtitle"];
       assert.deepEqual(rootChildren.slice(childCount), expectedParentChildren);
       for (const childId of rootChildren) {

@@ -1521,3 +1521,19 @@
   actions: createSummaryData · createAreaPlot · createLineMark
   tasks: statistics dataflow uncertainty
   url: /api/data/summaries-and-shaping/#bootstrap-mean-confidence-intervals
+
+- id: facet-shared-top-lane
+  example: /examples/facet-shared-top-lane/
+  title: Share the existing facet top margin
+  image: /assets/images/facet-shared-top-lane.png
+  alt: Seven grouped bar panels retain their full height below a title and day headers in the existing top margin
+  width: 1016
+  height: 524
+  thumbnail: /assets/images/facet-shared-top-lane-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 330
+  caption: Seven 40 by 200 plots share one top margin for the parent title and panel headers.
+  summary: Keep fixed plot sizes while reusing existing top space for titles and facet headers.
+  actions: facet · editCompositionLayout · editFacetHeaders
+  tasks: composition layout
+  url: /api/composition/facets/#share-the-existing-top-margin

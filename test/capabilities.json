@@ -103,6 +103,28 @@
         "path": "contracts/documentation-truth.test.js"
       }
     ],
+    "facet-top-lane": [
+      {
+        "type": "file",
+        "path": "unit/layout/facet-top-lane.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/layout/facet-top-lane-concrete.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/composition/facet-top-lane.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/facet-top-lane-types.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/facet-shared-top-lane/"
+      }
+    ],
     "grammar": [
       {
         "type": "prefix",

@@ -74,6 +74,9 @@ export async function preparePackageConsumer({
 }
 
 async function testNodeConsumer(directory) {
+  await writeFile(path.join(directory,"facet-lane-public.js"),
+    (await readFile(new URL("../examples/facet-shared-top-lane/program.js",import.meta.url),"utf8"))
+      .replace("'../../src/index.js'","'ggaction'"));
   const output = path.join(directory, "chart.png");
   const pdfOutput = path.join(directory, "chart.pdf");
   const fontWeightOutput = path.join(directory, "font-weight.png");
@@ -88,6 +91,20 @@ async function testNodeConsumer(directory) {
     import { serializeProgram, deserializeProgram, serializeGraphic, deserializeGraphic } from "ggaction/persistence";
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
+    import {createFacetSharedTopLaneProgram} from "./facet-lane-public.js";
+
+    const sharedLane=createFacetSharedTopLaneProgram();
+    assert.equal(sharedLane.compositionSpec.topLane,"shared");
+    assert.deepEqual(sharedLane.graphicSpec.objects.canvas.properties,{width:508,height:262,background:"white"});
+    assert.deepEqual(deserializeProgram(serializeProgram(sharedLane)).graphicSpec,sharedLane.graphicSpec);
+    const stackedLane=sharedLane.editCompositionLayout({topLane:"stacked"});
+    assert.equal(Object.hasOwn(stackedLane.compositionSpec,"topLane"),false);
+    assert.equal(stackedLane.graphicSpec.objects.canvas.properties.height,302);
+    assert.deepEqual(stackedLane.editCompositionLayout({topLane:"shared"}).graphicSpec,sharedLane.graphicSpec);
+    assert.throws(()=>sharedLane.editTitle({offset:20}),/Shared facet top lane/);
+    assert.ok(renderToSVG(sharedLane).includes("Grouped Bar Chart"));
+    assert.ok((await renderToPNGBuffer(sharedLane)).buffer.length>100);
+    assert.ok((await renderToPDFBuffer(sharedLane)).buffer.length>100);
 
     const spacedBase = chart().createCanvas({width:500,height:400,margin:130})
       .createData({values:[{x:0,y:0,v:0},{x:1,y:1,v:1}]})
@@ -5379,6 +5396,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "neutral-hcl-hue-borrowing",
       "facet-numeric-legend-inference",
       "explicit-fold-facet-partition",
+      "shared-facet-top-lane",
       "typescript",
       "basic-entry-runtime-and-types",
       "tutorial-consumers",

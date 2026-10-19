@@ -864,6 +864,18 @@
     "executable": false
   },
   {
+    "file": "api/composition/facets.md",
+    "block": 11,
+    "heading": "Share the existing top margin",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "09bd667565ddb9aeeeb9a92127aa58be5670d5b328ed805b8a3c65d00914a9d2",
+    "executable": false
+  },
+  {
     "file": "api/coordinates.md",
     "block": 1,
     "heading": "`createCoordinate({ id?, type?, layers? })`",

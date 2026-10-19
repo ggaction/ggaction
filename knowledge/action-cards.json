@@ -28346,10 +28346,15 @@
           "name": "spacing",
           "required": false,
           "type": "\"canvas\" | \"plot\" | undefined"
+        },
+        {
+          "name": "topLane",
+          "required": false,
+          "type": "FacetTopLaneMode | undefined"
         }
       ],
       "callPatterns": [
-        "editCompositionLayout({ columns?, gap?, align?, padding?, spacing? })"
+        "editCompositionLayout({ columns?, gap?, align?, padding?, spacing?, topLane? })"
       ],
       "snippet": "program.editCompositionLayout({ columns: 2 })",
       "errors": [],
@@ -28768,6 +28773,11 @@
           "name": "spacing",
           "required": false,
           "type": "\"canvas\" | \"plot\" | undefined"
+        },
+        {
+          "name": "topLane",
+          "required": false,
+          "type": "FacetTopLaneMode | undefined"
         }
       ],
       "callPatterns": [
@@ -28905,6 +28915,11 @@
           "name": "spacing",
           "required": false,
           "type": "\"canvas\" | \"plot\" | undefined"
+        },
+        {
+          "name": "topLane",
+          "required": false,
+          "type": "FacetTopLaneMode | undefined"
         }
       ],
       "callPatterns": [
@@ -29046,6 +29061,11 @@
           "name": "spacing",
           "required": false,
           "type": "\"canvas\" | \"plot\" | undefined"
+        },
+        {
+          "name": "topLane",
+          "required": false,
+          "type": "FacetTopLaneMode | undefined"
         }
       ],
       "callPatterns": [

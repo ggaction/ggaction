@@ -4749,12 +4749,14 @@ export interface EditCompositionLayoutOptions {
   padding?: number | CompositionPadding;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share existing top margin with parent title and headers; requires plot spacing. Stacked restores the default. */
+  topLane?: FacetTopLaneMode;
 }
 ```
 
 </details>
 
-Related types: [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding).
+Related types: [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetTopLaneMode`](#type-facettoplanemode).
 
 ### `EditComputedDataOptions` {#type-editcomputeddataoptions}
 
@@ -6394,12 +6396,14 @@ export interface FacetGridOptions {
   headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
+  topLane?: FacetTopLaneMode;
 }
 ```
 
 </details>
 
-Related types: [`FacetGridRole`](#type-facetgridrole) · [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions) · [`FacetHeadersOptions`](#type-facetheadersoptions).
+Related types: [`FacetGridRole`](#type-facetgridrole) · [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions) · [`FacetHeadersOptions`](#type-facetheadersoptions) · [`FacetTopLaneMode`](#type-facettoplanemode).
 
 ### `FacetGridRole` {#type-facetgridrole}
 
@@ -6503,12 +6507,14 @@ export interface FacetOptions {
   headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
+  topLane?: FacetTopLaneMode;
 }
 ```
 
 </details>
 
-Related types: [`DatasetScalar`](#type-datasetscalar) · [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions) · [`FacetHeadersOptions`](#type-facetheadersoptions).
+Related types: [`DatasetScalar`](#type-datasetscalar) · [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions) · [`FacetHeadersOptions`](#type-facetheadersoptions) · [`FacetTopLaneMode`](#type-facettoplanemode).
 
 ### `FacetScaleResolution` {#type-facetscaleresolution}
 
@@ -6547,6 +6553,17 @@ export interface FacetScaleResolutions {
 </details>
 
 Related types: [`FacetScaleResolution`](#type-facetscaleresolution).
+
+### `FacetTopLaneMode` {#type-facettoplanemode}
+
+<details markdown="1">
+<summary>Expand FacetTopLaneMode</summary>
+
+```typescript
+export type FacetTopLaneMode = "stacked" | "shared";
+```
+
+</details>
 
 ### `FieldType` {#type-fieldtype}
 
@@ -10506,12 +10523,14 @@ export interface RepeatChartsOptions {
   headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
+  topLane?: FacetTopLaneMode;
 }
 ```
 
 </details>
 
-Related types: [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions) · [`FacetHeadersOptions`](#type-facetheadersoptions).
+Related types: [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions) · [`FacetHeadersOptions`](#type-facetheadersoptions) · [`FacetTopLaneMode`](#type-facettoplanemode).
 
 ### `ReplaceCompositionChildOptions` {#type-replacecompositionchildoptions}
 

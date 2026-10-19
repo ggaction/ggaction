@@ -2,7 +2,9 @@ import { isPlainObject } from "./immutable.js";
 import { ownProgramState } from "./programState.js";
 import {
   FACET_SCALE_CHANNELS,
-  FACET_SCALE_RESOLUTIONS
+  FACET_SCALE_RESOLUTIONS,
+  FACET_TOP_LANE_MODES,
+  DEFAULT_FACET_TOP_LANE
 } from "./vocabulary.js";
 
 function validateFacetSpec(compositionSpec) {
@@ -272,7 +274,7 @@ export function ownCompositionSpec(compositionSpec, children) {
   }
   const allowed = [
     "id", "type", "direction", "children", "columns", "gap", "align",
-    "padding", "facet", "spacing"
+    "padding", "facet", "spacing", "topLane"
   ];
   const unknown = Object.keys(compositionSpec).find(key => !allowed.includes(key));
   if (unknown !== undefined) {
@@ -284,6 +286,11 @@ export function ownCompositionSpec(compositionSpec, children) {
   const facet = compositionSpec.type === "facet";
   if (compositionSpec.spacing !== undefined && (!facet || !["plot", "canvas"].includes(compositionSpec.spacing))) {
     throw new Error("compositionSpec.spacing requires a facet and canvas or plot spacing.");
+  }
+  if (compositionSpec.topLane !== undefined && (!facet ||
+      !FACET_TOP_LANE_MODES.includes(compositionSpec.topLane) ||
+      compositionSpec.topLane === DEFAULT_FACET_TOP_LANE || compositionSpec.spacing !== "plot")) {
+    throw new Error('compositionSpec.topLane requires a facet with plot spacing and canonical shared intent.');
   }
   if (compositionSpec.type !== undefined && !facet) {
     throw new Error(`Unknown compositionSpec type "${compositionSpec.type}".`);

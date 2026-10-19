@@ -17,9 +17,29 @@ Panel background는 plot 안에만 그려 인접 panel을 덮지 않으며 paren
 Shared legend와 title의 parent 예약은 기존 규칙을 유지한다. Concat에는 spacing 옵션을 거부한다.
 Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit/grammar/layout/facets.test.js`.
 
+## Shared facet top lane
+
+The existing `facet`, `facetGrid`, `repeatCharts`, and facet `editCompositionLayout` accept
+`topLane: "stacked" | "shared"`. Omitted creation and explicit stacked retain the existing additive title/header
+layout and store no field. Shared requires plot spacing and stores only `compositionSpec.topLane: "shared"`.
+Edits that omit the option or pass undefined preserve it; explicit stacked removes it. Switching to canvas
+spacing while shared requires stacked in the same call. Concat rejects this option, including stacked.
+
+Shared uses the existing child top margin plus explicit parent padding for title and first-row top headers,
+without adding those two reservations again. Child plot and Canvas sizes, internal row/header gap checks,
+other header sides and existing shared-legend placement remain unchanged. Final concrete parent title, subtitle
+and header text must fit the parent Canvas, clear child plots, each other, and retained visible text. Nested
+Canvas translation, rotation and ancestor clipping use ordinary graphic bounds; empty or invisible text does
+not occupy a lane. Insufficient space fails atomically without shrinking fonts, hiding endpoints, expanding
+margins or relaxing standalone bounds. Existing stored policy survives layout, source, scale, guide, title,
+header, theme, text-metric and editable-persistence replay.
+
+Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composition/facet-top-lane.test.js`,
+`test/contracts/facet-top-lane-types.test.js`, and `test/charts/facet-shared-top-lane/`.
+
 ## `facet`
 
-- Signature: `facet({ id?, field, data?, values?, columns?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })`.
+- Signature: `facet({ id?, field, data?, values?, columns?, gap?, spacing?, topLane?, align?, padding?, scales?, guides?, headers? })`.
 - `field` is required. Omitted `data` resolves only when every eligible repeated layer has one unique common row-preserving ancestor.
 - Explicit `data` may also select a materialized fold snapshot that is an ancestor of every repeated layer. Cells filter that snapshot and replay only its descendants; raw rows and the original fold definition/materialization remain intact. Fold stays a cardinality-changing transform, omitted inference is unchanged, and other statistical anchors remain unsupported. Missing/noncommon/nonmaterialized boundaries and absent fields fail atomically. This also applies to explicit `facetGrid.data`. Data revisions rebind the stored partition snapshot through the existing retained-template DAG; changing the fold definition can explicitly select its new snapshot in a new composition. Evidence: `test/unit/actions/composition/fold-facet-partition.test.js`, `test/unit/grammar/facet-dependencies.test.js`.
 - Supported sources are complete Cartesian point, line, area, histogram bar, aggregate bar, ranged bar, rule, data-bound text,
@@ -74,7 +94,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `facet`
 
-- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer"; legend?: false | "shared" | LegendOptions }; headers?: FacetHeadersOptions }): ChartProgram`.
+- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; topLane?: "stacked" | "shared"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer"; legend?: false | "shared" | LegendOptions }; headers?: FacetHeadersOptions }): ChartProgram`.
 - Implemented non-Cartesian families: Polar Point/Line/direct Arc/Pie/Rose/Radar and Parallel coordinates.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -116,7 +136,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ## `facetGrid`
 
-- Signature: `facetGrid({ id?, data?, rows, columns, combinations?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })`.
+- Signature: `facetGrid({ id?, data?, rows, columns, combinations?, gap?, spacing?, topLane?, align?, padding?, scales?, guides?, headers? })`.
 - `rows` and `columns` each require a different source field and accept an optional unique observed `values` order.
   Omitted orders use first appearance independently on each field.
 - `combinations: "observed"` is the default. It creates only observed pairs while retaining their true row and column
@@ -131,7 +151,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `facetGrid`
 
-- Implemented: `facetGrid({ id?: UserId; data?: ExistingDatasetId; rows: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; columns: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; combinations?: "observed" | "full"; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
+- Implemented: `facetGrid({ id?: UserId; data?: ExistingDatasetId; rows: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; columns: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; combinations?: "observed" | "full"; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; topLane?: "stacked" | "shared"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
 - Implemented for the same Cartesian, Polar and Parallel families and policies as `facet`.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -146,7 +166,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ## `repeatCharts`
 
-- Signature: `repeatCharts({ id?, target?, channel, fields, columns?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })`.
+- Signature: `repeatCharts({ id?, target?, channel, fields, columns?, gap?, spacing?, topLane?, align?, padding?, scales?, guides?, headers? })`.
 - Repeats one complete direct-source mark by replacing an eligible field role across an ordered unique field list.
   Cartesian marks accept `x` or `y`; Polar Point/Line/direct field-bound Arc/Rose accept `theta` or public `r`; Parallel
   coordinates accept `{ parallelDimension: field }` and replace exactly that dimension while preserving its position,
@@ -163,7 +183,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `repeatCharts`
 
-- Implemented: `repeatCharts({ id?: UserId; target?: EligibleDirectMarkId; channel: "x" | "y" | "theta" | "r" | { parallelDimension: NonEmptyString }; fields: NonEmptyUniqueFieldTuple; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
+- Implemented: `repeatCharts({ id?: UserId; target?: EligibleDirectMarkId; channel: "x" | "y" | "theta" | "r" | { parallelDimension: NonEmptyString }; fields: NonEmptyUniqueFieldTuple; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; topLane?: "stacked" | "shared"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
 - Explicitly rejected: Pie/Radar raw positional-role replacement, composite statistical roles, derived target datasets,
   two-dimensional repeat matrices, and outer axes.
 - Proposed (NOT IMPLEMENTED): —
@@ -242,7 +262,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ## `editCompositionLayout`
 
-- Signature: `editCompositionLayout({ columns?, gap?, spacing?, align?, padding? })`.
+- Signature: `editCompositionLayout({ columns?, gap?, spacing?, topLane?, align?, padding? })`.
 - Requires an existing composition program and at least one layout option.
 - `columns`: positive integer for one-field facet and repeat layouts, no larger than the retained child count.
   A row-column grid keeps the width of its declared column domain; concat compositions reject it.
@@ -256,7 +276,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `editCompositionLayout`
 
-- Implemented: `editCompositionLayout({ columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding> }): ChartProgram`.
+- Implemented: `editCompositionLayout({ columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; topLane?: "stacked" | "shared"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding> }): ChartProgram`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editCompositionLayout`
