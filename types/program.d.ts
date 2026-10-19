@@ -4452,6 +4452,13 @@ type DynamicReferenceBinding = {
   readonly coordinate?: never;
   readonly temporalUnit?: never;
 };
+/** A statistical line (mean by default) or an exact two-statistic interval. */
+export type CreateStatisticalReferenceOptions = DynamicReferenceBinding & (
+  | (RuleStyleOptions & { readonly statistic?: ReferenceStatistic; readonly statistics?: never })
+  | (Omit<RectMarkOptions, "id" | "data" | "source"> & {
+      readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic]; readonly statistic?: never;
+    })
+);
 export type CreateReferenceLineOptions =
   | ({ id?: string } & RuleStyleOptions & ReferenceBinding<unknown, number>)
   | (DynamicReferenceBinding & RuleStyleOptions & {
@@ -5239,6 +5246,7 @@ export class ChartProgram {
   editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
   removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
   createAnnotation(options: CreateAnnotationOptions): ChartProgram;
+  createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
   createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;

@@ -976,6 +976,24 @@
       }
     },
     {
+      "name": "createStatisticalReference",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Existing rule/rect, encoding and scale actions; removeMark owns deletion",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "createstatisticalreference"
+      }
+    },
+    {
       "name": "createReferenceLine",
       "layer": "user-facing",
       "domain": "marks",

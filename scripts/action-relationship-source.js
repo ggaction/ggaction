@@ -429,6 +429,12 @@ export function buildActionRelationshipPrograms() {
   });
   return [
     ...descriptors.map(buildScenario),
+    ...[false, true].map(band => chart()
+      .createCanvas({ width: 400, height: 300, margin: 40 })
+      .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+      .createScatterPlot({ id: "points", x: "x", y: "y", guides: false })
+      .createStatisticalReference({ source: "points", axis: "y",
+        ...(band ? { statistics: [{ op: "quantile", p: 0.025 }, { op: "quantile", p: 0.975 }] } : {}) })),
     chart().createCanvas().createData({ values: [{ group: "A", min: 1, q1: 2, median: 3, q3: 4, max: 5 }] })
       .createBoxPlot({ x: { field: "group", fieldType: "nominal" },
         summary: { min: "min", q1: "q1", median: "median", q3: "q3", max: "max" },

@@ -32,6 +32,7 @@ const coreH3Names = new Set([
   "removeTheme"
 ]);
 const analyticMarkNames = new Set([
+  "createStatisticalReference",
   "createReferenceLine",
   "createReferenceBand",
   "createMarkLabels",

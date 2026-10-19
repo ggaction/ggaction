@@ -901,6 +901,10 @@
       "regression statistics dataset",
       "linear fit coefficients",
       "R-squared and observation count"
+    ],
+    "StatisticalReference": [
+      "statistical reference",
+      "interval"
     ]
   },
   "summaryOverrides": {
@@ -1579,6 +1583,10 @@
           "fontSize": 11
         }
       }
+    },
+    "createStatisticalReference": {
+      "source": "points",
+      "axis": "y"
     }
   },
   "callPatternOverrides": {
@@ -1591,7 +1599,7 @@
       "createReferenceLine({ space: \"plot\", x: 0.5 })"
     ],
     "createReferenceBand": [
-      "createReferenceBand({ space: \"plot\", y: [0.2, 0.8] })"
+      "createReferenceBand({ y: [2, 6] })"
     ],
     "createMarkLabels": [
       "createMarkLabels({ source?, content? })"
@@ -1773,6 +1781,9 @@
     ],
     "editRegressionStatisticsData": [
       "editRegressionStatisticsData({ target?, source? })"
+    ],
+    "createStatisticalReference": [
+      "createStatisticalReference({ source, axis, statistic?, statistics? })"
     ]
   },
   "errorOverrides": {

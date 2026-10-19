@@ -426,6 +426,15 @@
     "layer": "user-facing",
     "domain": "marks"
   },
+  "createStatisticalReference": {
+    "operation": "create",
+    "authoringRoles": [
+      "H1",
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
   "createReferenceLine": {
     "operation": "create",
     "authoringRoles": [

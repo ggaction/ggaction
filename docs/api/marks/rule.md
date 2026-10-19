@@ -141,6 +141,41 @@ Reference marks remain editable with ordinary mark, encoding, and scale actions.
 [reference-line contract](../../reference/actions/marks.md#createreferenceline) and
 [reference-band contract](../../reference/actions/marks.md#createreferenceband) for binding, defaults, and removal behavior.
 
+## Statistical reference action
+
+Use `createStatisticalReference` to choose a line or data interval through one action in the full API:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const source = chart()
+  .createCanvas({ width: 600, height: 450, margin: 80 })
+  .createData({ values: [0, 10, 20, 30, 40].map(value => ({ x: value, y: value * 2 })) })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false });
+
+const mean = source.createStatisticalReference({ source: "points", axis: "y" });
+const middle95 = source.createStatisticalReference({
+  source: "points", axis: "y",
+  statistics: [{ op: "quantile", p: 0.025 }, { op: "quantile", p: 0.975 }]
+});
+```
+
+The first branch creates a dark (`#222222`), 2.5-pixel solid mean line. Set `statistic` to mean, median, min, max,
+or a quantile using the existing `{ op, p? }` vocabulary. Supply an exact `statistics` pair instead for a gray
+(`#6b7280`) band with opacity `0.18`. Central 50% uses quantiles 0.25 and 0.75; central 95% uses 0.025 and 0.975.
+These describe the data distribution, not a confidence interval. Never supply both statistic keys.
+
+Both branches use ID `statisticalReference` by default. To add multiple references, give each an explicit `id`.
+Line styles use the Rule options and band styles use Rect options. `population` and `field` retain the statistical
+reference binding described above; literal coordinates belong to the separate literal reference actions.
+The wrapper delegates to `createReferenceLine` or `createReferenceBand`, so native replay, editing and removal remain available.
+
 ## Related
 
 [Appearance encodings](../appearance.md) · [Error bars](../error-bars.md) ·

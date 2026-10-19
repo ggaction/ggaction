@@ -110,6 +110,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createScatterPlot`](./actions/charts-data.md#createscatterplot) | H0 | user-facing | charts |
 | [`createSortedData`](./actions/statistics.md#createsorteddata) | H1 | user-facing | statistics |
 | [`createStackData`](./actions/statistics.md#createstackdata) | H1 | user-facing | statistics |
+| [`createStatisticalReference`](./actions/marks.md#createstatisticalreference) | H1, H2 | user-facing | marks |
 | [`createStripPlot`](./actions/charts-data.md#createstripplot) | H0 | user-facing | charts |
 | [`createSummaryData`](./actions/statistics.md#createsummarydata) | H1 | user-facing | statistics |
 | [`createTextMark`](./actions/marks.md#createtextmark) | H2 | user-facing | marks |

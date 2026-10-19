@@ -3,7 +3,7 @@
   "packageVersion": "0.0.21",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 285,
+  "count": 286,
   "cards": [
     {
       "schemaVersion": 3,
@@ -5303,6 +5303,190 @@
     },
     {
       "schemaVersion": 3,
+      "name": "createStatisticalReference",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Create a statistical line or interval through one public action.",
+      "signature": "createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;",
+      "intents": [
+        "create statistical reference",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "statistical reference",
+        "interval"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "dataset and coordinate context"
+        ],
+        "owns": [
+          "statistical reference"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H2"
+      ],
+      "wraps": [
+        "createReferenceLine",
+        "createReferenceBand"
+      ],
+      "editableVia": [],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "opacity",
+          "unit": "probability"
+        },
+        {
+          "path": "strokeWidth",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "dataset and coordinate context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "source",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "axis",
+          "required": true,
+          "type": "\"x\" | \"y\""
+        },
+        {
+          "name": "population",
+          "required": false,
+          "type": "\"boundData\" | \"visibleItems\" | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | false | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "statistics",
+          "required": false,
+          "type": "readonly [ReferenceStatistic, ReferenceStatistic] | undefined"
+        },
+        {
+          "name": "statistic",
+          "required": false,
+          "type": "ReferenceStatistic | undefined"
+        },
+        {
+          "name": "cornerRadius",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusTopLeft",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusTopRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomLeft",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeDash",
+          "required": false,
+          "type": "DashPattern | DashStyle | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createStatisticalReference({ source, axis, statistic?, statistics? })"
+      ],
+      "snippet": "program.createStatisticalReference({ source: \"points\", axis: \"y\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#createstatisticalreference"
+    },
+    {
+      "schemaVersion": 3,
       "name": "createReferenceLine",
       "layer": "user-facing",
       "domain": "marks",
@@ -5338,7 +5522,8 @@
       ],
       "wraps": [
         "createRuleMark",
-        "encodeY"
+        "encodeY",
+        "createDerivedData"
       ],
       "editableVia": [
         "editRuleMark",
@@ -5533,7 +5718,8 @@
       "wraps": [
         "createRectMark",
         "encodeX",
-        "encodeX2"
+        "encodeX2",
+        "createDerivedData"
       ],
       "editableVia": [
         "editRuleMark",
@@ -5713,7 +5899,7 @@
         }
       ],
       "callPatterns": [
-        "createReferenceBand({ space: \"plot\", y: [0.2, 0.8] })"
+        "createReferenceBand({ y: [2, 6] })"
       ],
       "snippet": "program.createReferenceBand({ x: [2, 6] })",
       "errors": [],
@@ -8748,7 +8934,7 @@
         {
           "name": "aggregate",
           "required": false,
-          "type": "undefined"
+          "type": "AggregateOperation"
         },
         {
           "name": "temporalUnit",
@@ -8875,7 +9061,7 @@
         {
           "name": "aggregate",
           "required": false,
-          "type": "undefined"
+          "type": "AggregateOperation"
         },
         {
           "name": "stack",
@@ -9081,7 +9267,7 @@
         {
           "name": "temporalUnit",
           "required": false,
-          "type": "undefined"
+          "type": "TemporalInputUnit | undefined"
         }
       ],
       "callPatterns": [
@@ -9201,12 +9387,12 @@
         {
           "name": "aggregate",
           "required": false,
-          "type": "undefined"
+          "type": "AggregateOperation | undefined"
         },
         {
           "name": "temporalUnit",
           "required": false,
-          "type": "undefined"
+          "type": "TemporalInputUnit | undefined"
         }
       ],
       "callPatterns": [
@@ -10697,7 +10883,7 @@
         {
           "name": "temporalUnit",
           "required": false,
-          "type": "undefined"
+          "type": "TemporalInputUnit | undefined"
         }
       ],
       "callPatterns": [

@@ -435,6 +435,7 @@ export type {
   RemoveMarkLabelsOptions,
   CreateAnnotationOptions,
   ReferenceStatistic,
+  CreateStatisticalReferenceOptions,
   CreateReferenceLineOptions,
   CreateReferenceBandOptions,
   XAxisPosition,

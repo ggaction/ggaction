@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add `createStatisticalReference` for a native mean/median/extreme/quantile line or exact percentile interval, with dark solid line defaults and existing statistical reference replay and ownership.
+
 - Preserve aggregate bar positions and widths when categorical color repeats the category-axis field and no group or layout was already specified.
 
 - Infer left/right legend clearance from occupied axis guides and reflow it after axis edits or removal; exact-inner Canvas sizing also fits inferred edge legend groups.

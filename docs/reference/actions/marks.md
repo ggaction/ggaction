@@ -93,6 +93,66 @@ Create a centered line glyph that materializes after both x and y are complete.
 Length defaults to `14`; stroke width defaults to `2`. [Marks](../../api/marks.md)
 
 
+## `createStatisticalReference`
+
+**API layer:** user-facing. **Authoring roles:** H1, H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateStatisticalReferenceOptions`](./../types.md#type-createstatisticalreferenceoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Required | `string` |
+| `axis` | Required | `"x" \| "y"` |
+| `population` | Optional / branch-dependent | `"boundData" \| "visibleItems" \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `statistics` | Optional / branch-dependent | `readonly [ReferenceStatistic, ReferenceStatistic] \| undefined` |
+| `statistic` | Optional / branch-dependent | `ReferenceStatistic \| undefined` |
+| `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopLeft` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createStatisticalReference({ id?, source, axis, population?, field?, statistic?, statistics?, ...style })
+```
+
+Create a statistical line or interval through one public action. `source` is the source mark ID and `axis` is `"x"` or `"y"`.
+Omit the statistic keys for a mean line, supply `statistic: { op: "median" }` for another single statistic, or an exact
+`statistics` pair for a band. The keys are mutually exclusive and use the existing `ReferenceStatistic` vocabulary.
+Quantiles 0.25–0.75 show the central 50%; 0.025–0.975 show the central 95% of data, rather than a confidence interval.
+The default ID is `statisticalReference`; use explicit IDs for additional references. Lines default to `#222222`,
+width `2.5`, solid stroke; bands to `#6b7280`, opacity `0.18`, no stroke. Use native Rule styles for lines and Rect styles for bands.
+This full-only action wraps `createReferenceLine` or `createReferenceBand` and retains their statistical binding,
+replay, editing, facet and removal behavior. Literal reference coordinates are not accepted.
+[Statistical references](../../api/marks/rule.md#statistical-reference-action)
+
+
 ## `createReferenceLine`
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.

@@ -101,6 +101,7 @@ interface ChartProgramActions {
   editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
   removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
   createAnnotation(options: CreateAnnotationOptions): ChartProgram;
+  createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
   createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
@@ -3270,6 +3271,24 @@ export interface CreateScatterPlotOptions {
 
 Related types: [`PointFacadePositionChannel`](#type-pointfacadepositionchannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`WithoutEncodingTarget`](#type-withoutencodingtarget) · [`StrokeEncodingOptions`](#type-strokeencodingoptions) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
 
+### `CreateStatisticalReferenceOptions` {#type-createstatisticalreferenceoptions}
+
+<details markdown="1">
+<summary>Expand CreateStatisticalReferenceOptions</summary>
+
+```typescript
+export type CreateStatisticalReferenceOptions = DynamicReferenceBinding & (
+  | (RuleStyleOptions & { readonly statistic?: ReferenceStatistic; readonly statistics?: never })
+  | (Omit<RectMarkOptions, "id" | "data" | "source"> & {
+      readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic]; readonly statistic?: never;
+    })
+);
+```
+
+</details>
+
+Related types: [`DynamicReferenceBinding`](#type-dynamicreferencebinding) · [`RuleStyleOptions`](#type-rulestyleoptions) · [`ReferenceStatistic`](#type-referencestatistic) · [`RectMarkOptions`](#type-rectmarkoptions).
+
 ### `CreateStripPlotOptions` {#type-createstripplotoptions}
 
 <details markdown="1">
@@ -4594,6 +4613,7 @@ type DynamicReferenceBinding = {
   readonly coordinate?: never;
   readonly temporalUnit?: never;
 };
+/** A statistical line (mean by default) or an exact two-statistic interval. */
 ```
 
 </details>

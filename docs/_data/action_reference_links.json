@@ -51,6 +51,7 @@
   "createECDFData": "/reference/actions/statistics/#createecdfdata",
   "createPointMark": "/reference/actions/marks/#createpointmark",
   "createTickMark": "/reference/actions/marks/#createtickmark",
+  "createStatisticalReference": "/reference/actions/marks/#createstatisticalreference",
   "createReferenceLine": "/reference/actions/marks/#createreferenceline",
   "createReferenceBand": "/reference/actions/marks/#createreferenceband",
   "createMarkLabels": "/reference/actions/marks/#createmarklabels",

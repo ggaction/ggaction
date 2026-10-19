@@ -654,3 +654,25 @@ export const createReferenceBand = /* @__PURE__ */ action(
     return createReference(this, args, true);
   }
 );
+
+
+export const createStatisticalReference = /* @__PURE__ */ action(
+  {
+    op: "createStatisticalReference",
+    description: "Create a statistical reference line or central interval through one public action."
+  },
+  function (args = {}) {
+    const band = Object.hasOwn(args, "statistics");
+    validateFacadeOptions(args, ["id", "source", "axis", "population", "field",
+      ...(band ? ["statistics", ...BAND_STYLE] : ["statistic", ...LINE_STYLE])], "createStatisticalReference");
+    const id = resolveFacadeId(this, args.id, {
+      defaultId: "statisticalReference", operation: "createStatisticalReference"
+    });
+    // The existing owners retain statistical population, scale exclusion,
+    // source replay, persistence and removal semantics, with wrapped trace steps.
+    return band
+      ? this.createReferenceBand({ fill: "#6b7280", opacity: 0.18, ...args, id })
+      : this.createReferenceLine({ statistic: { op: "mean" }, stroke: "#222222",
+          strokeWidth: 2.5, strokeDash: "solid", ...args, id });
+  }
+);

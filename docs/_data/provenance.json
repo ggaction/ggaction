@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.21",
-  "contractId": "sha256:5b8e5de473747d8b301e07763cc9421290d97e3a1acc54d261e2ae67687d1203",
-  "sourceCommit": "2e8f92cdaddf15d73ae8ee47bc05cf395ac2ece7",
-  "sourceRef": "2e8f92cdaddf15d73ae8ee47bc05cf395ac2ece7",
+  "contractId": "sha256:a17883fed057e067e6cb5afd27376eea37ceab6149e09eb02643fcc1bfa4a432",
+  "sourceCommit": null,
+  "sourceRef": "main",
   "exampleSourceRef": "84e86de2bbaa210b0a17165cd5f7b778398b3e18",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 285,
+  "actionCount": 286,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -294,6 +294,10 @@
     },
     "createAnnotation": {
       "availableBy": "v0.0.13"
+    },
+    "createStatisticalReference": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
     },
     "createReferenceLine": {
       "availableBy": "v0.0.13"

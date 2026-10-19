@@ -35,7 +35,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `datum` | Optional / branch-dependent | `unknown` |
 | `bin` | Optional / branch-dependent | `{ maxBins?: number \| undefined; step?: undefined; boundaries?: undefined; } \| { maxBins?: undefined; step: number; boundaries?: undefined; } \| { maxBins?: undefined; step?: undefined; boundaries: readonly [...]; } \| undefined` |
 | `stack` | Optional / branch-dependent | `StackMode \| undefined` |
-| `aggregate` | Optional / branch-dependent | `undefined` |
+| `aggregate` | Optional / branch-dependent | `AggregateOperation` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
 </details>
@@ -82,7 +82,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fieldType` | Optional / branch-dependent | `FieldType \| undefined` |
 | `scale` | Optional / branch-dependent | `CategoricalPositionScaleOptions \| NonPointCategoricalPositionScaleOptions \| NonPointQuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| QuantitativePositionScaleOptions \| TemporalPositionScaleOptions \| undefined` |
 | `datum` | Optional / branch-dependent | `unknown` |
-| `aggregate` | Optional / branch-dependent | `undefined` |
+| `aggregate` | Optional / branch-dependent | `AggregateOperation` |
 | `stack` | Optional / branch-dependent | `YStackMode \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
@@ -133,7 +133,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `{ id?: string \| undefined; } \| { id?: string \| undefined; } \| { id?: string \| undefined; } \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `temporalUnit` | Optional / branch-dependent | `undefined` |
+| `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
 </details>
 
@@ -175,8 +175,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
 | `layout` | Optional / branch-dependent | `ColorLayout \| undefined` |
-| `aggregate` | Optional / branch-dependent | `undefined` |
-| `temporalUnit` | Optional / branch-dependent | `undefined` |
+| `aggregate` | Optional / branch-dependent | `AggregateOperation \| undefined` |
+| `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
 </details>
 
@@ -814,7 +814,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `{ id?: string \| undefined; } \| { id?: string \| undefined; } \| { id?: string \| undefined; } \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `temporalUnit` | Optional / branch-dependent | `undefined` |
+| `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
 </details>
 

@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:5b8e5de473747d8b301e07763cc9421290d97e3a1acc54d261e2ae67687d1203",
-    "sourceCommit": "2e8f92cdaddf15d73ae8ee47bc05cf395ac2ece7",
+    "contractId": "sha256:a17883fed057e067e6cb5afd27376eea37ceab6149e09eb02643fcc1bfa4a432",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "0eed06b60d86a3aae3d7c3643817c45208ab196f222343efdef9ad218aa6f0b3"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -964,10 +964,11 @@
         "rule-marks",
         "createrulemark-id-data-missing-stroke-strokewidth-strokedash-opacity-linecap-linejoin-miterlimit",
         "reference-lines-and-bands",
+        "statistical-reference-action",
         "related"
       ],
-      "bytes": 6394,
-      "sha256": "c953291a8648a06faebc7b67186c59ebc13041945091f4808ab2e0e31923ef22"
+      "bytes": 8247,
+      "sha256": "485011cfb2cec7a5203097e25cf275ff5d75641fdc2d48f86ce79cbd7810007d"
     },
     {
       "order": 61,
@@ -1945,8 +1946,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 30699,
-      "sha256": "6fe1182e269a87dd0b9d3345b880ae08da76a54f5f0e539094af4dbffa7f6fc0"
+      "bytes": 30820,
+      "sha256": "589837a8df082b9b1062e06f71011eb95ee6c4d0bbe9bda29a31f1c0d7daf4f8"
     },
     {
       "order": 118,
@@ -2061,6 +2062,7 @@
         "mark-actions",
         "createpointmark",
         "createtickmark",
+        "createstatisticalreference",
         "createreferenceline",
         "createreferenceband",
         "createmarklabels",
@@ -2094,8 +2096,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 69893,
-      "sha256": "1db4eebb58dbad26b5c84a5a1c208341b3f755c9dffd4a7f73437a9b6ed1e570"
+      "bytes": 73370,
+      "sha256": "0ff09dc128dd4aa07324520c970e80f263d59ac7b267937b313233a23bfce3db"
     },
     {
       "order": 120,
@@ -2144,8 +2146,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 61959,
-      "sha256": "e417724a48ed3d60b4d4163aaadc2dc32485adc8b3b4d76811ce7dccb92b871c"
+      "bytes": 62062,
+      "sha256": "0fb8dec5ccf3a0d562c8c9754abf19910a29dd3a140c5bd564a83855af013996"
     },
     {
       "order": 121,
@@ -2526,6 +2528,7 @@
         "type-createrugplotoptions",
         "type-createscaleoptions",
         "type-createscatterplotoptions",
+        "type-createstatisticalreferenceoptions",
         "type-createstripplotoptions",
         "type-createtextplotoptions",
         "type-createthetaaxislabelsoptions",
@@ -3017,8 +3020,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 345655,
-      "sha256": "a70514770a3cbedb9f83f4f4e15681f7ae9f23c1cd41a24a3256413bf36cefc5"
+      "bytes": 346609,
+      "sha256": "75cbf13831c726a36c1b6c8996bfcaecbb64561df92b0c3ad824bfff1ad3a3a4"
     },
     {
       "order": 127,
@@ -3048,8 +3051,8 @@
         "editgraphics-target-property-value-remove",
         "scale-materialization"
       ],
-      "bytes": 16959,
-      "sha256": "1a4e94dcab5849970d2ddf7378175fffc47370a34dd32d870a69d16b8ca48c80"
+      "bytes": 16887,
+      "sha256": "6290b807e031ee8069a7df5b38464bea8906ecdd59f5124a91617d4a1de87f96"
     },
     {
       "order": 129,
@@ -3372,8 +3375,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "f89bc7995281f17c5bb260d47b671521820363b341b9a4250782958500982e68"
+      "bytes": 3000,
+      "sha256": "cb37d9eff22b423641db1a215fdafce20a39caf4895604461356b43e71273cf9"
     },
     {
       "order": 150,

@@ -262,16 +262,20 @@ function exactSignatureFromSource(source, name) {
     .replace(/\s+/g, " ");
 }
 
-function topLevelPropertySymbols(checker, type) {
+function topLevelPropertySymbols(checker, type, project, declaration) {
   const properties = new Map();
+  const prohibited = property => checker.typeToString(checker.getNonNullableType(
+    checker.getTypeOfSymbolAtLocation(property, property.valueDeclaration?.resolve(project) ?? declaration)
+  )) === "never";
   const visit = current => {
     for (const property of checker.getPropertiesOfType(current)) {
-      if (!properties.has(property.name)) properties.set(property.name, property);
+      const previous = properties.get(property.name);
+      if (!previous || prohibited(previous) && !prohibited(property)) properties.set(property.name, property);
     }
     for (const constituent of current.getTypes?.() ?? []) visit(constituent);
   };
   visit(type);
-  return [...properties.values()];
+  return [...properties.values()].filter(property => !prohibited(property));
 }
 
 export async function declaredActionMetadata(actions) {
@@ -304,7 +308,7 @@ export async function declaredActionMetadata(actions) {
         const commonProperties = new Map(
           checker.getPropertiesOfType(parameterType).map(property => [property.name, property])
         );
-        for (const property of topLevelPropertySymbols(checker, parameterType)) {
+        for (const property of topLevelPropertySymbols(checker, parameterType, project, declaration)) {
           const propertyDeclaration = property.valueDeclaration?.resolve(project) ?? declaration;
           const commonProperty = commonProperties.get(property.name);
           options.push({

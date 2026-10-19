@@ -758,6 +758,37 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   rematerialization, and earlier-program immutability.
 - Evidence: `test/unit/actions/marks/rect-mark.test.js`.
 
+## `createStatisticalReference`
+
+- Approved scope: the user explicitly requested one native statistical action for the unified Add statistic card.
+- Signature: `createStatisticalReference({ id?, source, axis, population?, field?, statistic?, statistics?, ...style })`.
+- Full API Aggregate create-only facade. Exactly one wrapped child `createReferenceLine` or `createReferenceBand`
+  owns the existing Rule/Rect semantic configuration, derived dataset, validation and materialization. No new grammar.
+- Omit both statistic keys for `{ op: "mean" }`. A single `statistic` uses the existing `ReferenceStatistic` vocabulary:
+  mean, median, min, max, or `{ op: "quantile", p }`. An exact two-element `statistics` tuple creates a band.
+  The two keys are mutually exclusive. Literal x/y/space/data/coordinate/temporalUnit options are rejected.
+- Default ID is `statisticalReference` for either branch; another reference requires an explicit ID. The line defaults
+  to stroke `#222222`, width `2.5`, solid dash, opacity 1. The band defaults to fill `#6b7280`, opacity `0.18`, no stroke.
+  Styles follow RuleStyleOptions for lines and RectMarkOptions for bands; incompatible branch styles are rejected.
+- Central 50% is quantiles 0.25–0.75; central 95% is 0.025–0.975. These are population percentile intervals, not confidence intervals.
+- Source, axis, population, field tracking, missing/nonfinite validation, scale-domain exclusion, data/filter/Canvas replay,
+  facet-local statistics, persistence and source removal retain the native statistical reference contract below.
+  Later edits use the existing Rule/Rect, encoding and scale actions; `removeMark` owns deletion and owned dataset cleanup.
+
+### Formal values — `createStatisticalReference`
+
+- Implemented: `createStatisticalReference(options: CreateStatisticalReferenceOptions)`; shared dynamic source/axis binding,
+  exclusive optional single statistic or required exact statistic pair, and branch-specific native styles.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createStatisticalReference`
+
+- ✅ Covered: default mean/style, all statistics and central intervals on both axes, child delegation and output parity,
+  strict atomic errors, immutable input, data/encoding/filter/Canvas replay, persistence, facet/removal ownership,
+  Full/Basic boundary, inspection and public TypeScript declarations.
+- Evidence: `test/unit/actions/marks/statistical-reference-facade.test.js`,
+  `test/contracts/statistical-reference-facade-types.test.js`.
+
 ## `createReferenceLine`
 
 - Literal signature: `createReferenceLine({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, stroke?, strokeWidth?, strokeDash?, opacity? })`.

@@ -60,6 +60,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createECDFData`](current/STATISTICS.md#createecdfdata) | statistics | Mutable resource | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createPointMark`](current/MARKS.md#createpointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTickMark`](current/MARKS.md#createtickmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createStatisticalReference`](current/MARKS.md#createstatisticalreference) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createReferenceLine`](current/MARKS.md#createreferenceline) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createReferenceBand`](current/MARKS.md#createreferenceband) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createMarkLabels`](current/MARKS.md#createmarklabels) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |

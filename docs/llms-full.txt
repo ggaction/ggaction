@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:5b8e5de473747d8b301e07763cc9421290d97e3a1acc54d261e2ae67687d1203. Status: development. Runtime source: 2e8f92cdaddf15d73ae8ee47bc05cf395ac2ece7. Release baseline: v0.0.13.
+Contract: sha256:a17883fed057e067e6cb5afd27376eea37ceab6149e09eb02643fcc1bfa4a432. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/2e8f92cdaddf15d73ae8ee47bc05cf395ac2ece7/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/2e8f92cdaddf15d73ae8ee47bc05cf395ac2ece7/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -6719,6 +6719,37 @@ domain. They recompute for source-data, encoding, scale, Canvas, and facet repla
 Reference marks remain editable with ordinary mark, encoding, and scale actions. Refer to the
 [reference-line contract](./reference/actions/marks/#createreferenceline) and
 [reference-band contract](./reference/actions/marks/#createreferenceband) for binding, defaults, and removal behavior.
+
+## Statistical reference action
+
+Use `createStatisticalReference` to choose a line or data interval through one action in the full API:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+const source = chart()
+  .createCanvas({ width: 600, height: 450, margin: 80 })
+  .createData({ values: [0, 10, 20, 30, 40].map(value => ({ x: value, y: value * 2 })) })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false });
+
+const mean = source.createStatisticalReference({ source: "points", axis: "y" });
+const middle95 = source.createStatisticalReference({
+  source: "points", axis: "y",
+  statistics: [{ op: "quantile", p: 0.025 }, { op: "quantile", p: 0.975 }]
+});
+```
+
+The first branch creates a dark (`#222222`), 2.5-pixel solid mean line. Set `statistic` to mean, median, min, max,
+or a quantile using the existing `{ op, p? }` vocabulary. Supply an exact `statistics` pair instead for a gray
+(`#6b7280`) band with opacity `0.18`. Central 50% uses quantiles 0.25 and 0.75; central 95% uses 0.025 and 0.975.
+These describe the data distribution, not a confidence interval. Never supply both statistic keys.
+
+Both branches use ID `statisticalReference` by default. To add multiple references, give each an explicit `id`.
+Line styles use the Rule options and band styles use Rect options. `population` and `field` retain the statistical
+reference binding described above; literal coordinates belong to the separate literal reference actions.
+The wrapper delegates to `createReferenceLine` or `createReferenceBand`, so native replay, editing and removal remain available.
 
 ## Related
 
@@ -16086,6 +16117,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) | H0 | user-facing | charts |
 | [`createSortedData`](./reference/actions/statistics/#createsorteddata) | H1 | user-facing | statistics |
 | [`createStackData`](./reference/actions/statistics/#createstackdata) | H1 | user-facing | statistics |
+| [`createStatisticalReference`](./reference/actions/marks/#createstatisticalreference) | H1, H2 | user-facing | marks |
 | [`createStripPlot`](./reference/actions/charts-data/#createstripplot) | H0 | user-facing | charts |
 | [`createSummaryData`](./reference/actions/statistics/#createsummarydata) | H1 | user-facing | statistics |
 | [`createTextMark`](./reference/actions/marks/#createtextmark) | H2 | user-facing | marks |
@@ -19803,6 +19835,62 @@ createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
 Create a centered line glyph that materializes after both x and y are complete.
 Length defaults to `14`; stroke width defaults to `2`. [Marks](./api/marks/)
 
+## `createStatisticalReference`
+
+**API layer:** user-facing. **Authoring roles:** H1, H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateStatisticalReferenceOptions`](./reference/types/#type-createstatisticalreferenceoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Required | `string` |
+| `axis` | Required | `"x" \| "y"` |
+| `population` | Optional / branch-dependent | `"boundData" \| "visibleItems" \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `statistics` | Optional / branch-dependent | `readonly [ReferenceStatistic, ReferenceStatistic] \| undefined` |
+| `statistic` | Optional / branch-dependent | `ReferenceStatistic \| undefined` |
+| `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopLeft` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createStatisticalReference({ id?, source, axis, population?, field?, statistic?, statistics?, ...style })
+```
+
+Create a statistical line or interval through one public action. `source` is the source mark ID and `axis` is `"x"` or `"y"`.
+Omit the statistic keys for a mean line, supply `statistic: { op: "median" }` for another single statistic, or an exact
+`statistics` pair for a band. The keys are mutually exclusive and use the existing `ReferenceStatistic` vocabulary.
+Quantiles 0.25–0.75 show the central 50%; 0.025–0.975 show the central 95% of data, rather than a confidence interval.
+The default ID is `statisticalReference`; use explicit IDs for additional references. Lines default to `#222222`,
+width `2.5`, solid stroke; bands to `#6b7280`, opacity `0.18`, no stroke. Use native Rule styles for lines and Rect styles for bands.
+This full-only action wraps `createReferenceLine` or `createReferenceBand` and retains their statistical binding,
+replay, editing, facet and removal behavior. Literal reference coordinates are not accepted.
+[Statistical references](./api/marks/rule/#statistical-reference-action)
+
 ## `createReferenceLine`
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.
@@ -21146,7 +21234,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `datum` | Optional / branch-dependent | `unknown` |
 | `bin` | Optional / branch-dependent | `{ maxBins?: number \| undefined; step?: undefined; boundaries?: undefined; } \| { maxBins?: undefined; step: number; boundaries?: undefined; } \| { maxBins?: undefined; step?: undefined; boundaries: readonly [...]; } \| undefined` |
 | `stack` | Optional / branch-dependent | `StackMode \| undefined` |
-| `aggregate` | Optional / branch-dependent | `undefined` |
+| `aggregate` | Optional / branch-dependent | `AggregateOperation` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -21189,7 +21277,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fieldType` | Optional / branch-dependent | `FieldType \| undefined` |
 | `scale` | Optional / branch-dependent | `CategoricalPositionScaleOptions \| NonPointCategoricalPositionScaleOptions \| NonPointQuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| QuantitativePositionScaleOptions \| TemporalPositionScaleOptions \| undefined` |
 | `datum` | Optional / branch-dependent | `unknown` |
-| `aggregate` | Optional / branch-dependent | `undefined` |
+| `aggregate` | Optional / branch-dependent | `AggregateOperation` |
 | `stack` | Optional / branch-dependent | `YStackMode \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
@@ -21236,7 +21324,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `{ id?: string \| undefined; } \| { id?: string \| undefined; } \| { id?: string \| undefined; } \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `temporalUnit` | Optional / branch-dependent | `undefined` |
+| `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -21274,8 +21362,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
 | `layout` | Optional / branch-dependent | `ColorLayout \| undefined` |
-| `aggregate` | Optional / branch-dependent | `undefined` |
-| `temporalUnit` | Optional / branch-dependent | `undefined` |
+| `aggregate` | Optional / branch-dependent | `AggregateOperation \| undefined` |
+| `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -21849,7 +21937,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `{ id?: string \| undefined; } \| { id?: string \| undefined; } \| { id?: string \| undefined; } \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `temporalUnit` | Optional / branch-dependent | `undefined` |
+| `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -27602,6 +27690,7 @@ interface ChartProgramActions {
   editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
   removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
   createAnnotation(options: CreateAnnotationOptions): ChartProgram;
+  createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
   createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
@@ -30312,6 +30401,21 @@ export interface CreateScatterPlotOptions {
 
 Related types: [`PointFacadePositionChannel`](./reference/types/#type-pointfacadepositionchannel) · [`BasicColorChannel`](./reference/types/#type-basiccolorchannel) · [`WithoutEncodingTarget`](./reference/types/#type-withoutencodingtarget) · [`StrokeEncodingOptions`](./reference/types/#type-strokeencodingoptions) · [`BasicSizeChannel`](./reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](./reference/types/#type-basicshapechannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions).
 
+### `CreateStatisticalReferenceOptions` {#type-createstatisticalreferenceoptions}
+
+ Expand CreateStatisticalReferenceOptions
+
+```typescript
+export type CreateStatisticalReferenceOptions = DynamicReferenceBinding & (
+  | (RuleStyleOptions & { readonly statistic?: ReferenceStatistic; readonly statistics?: never })
+  | (Omit<RectMarkOptions, "id" | "data" | "source"> & {
+      readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic]; readonly statistic?: never;
+    })
+);
+```
+
+Related types: [`DynamicReferenceBinding`](./reference/types/#type-dynamicreferencebinding) · [`RuleStyleOptions`](./reference/types/#type-rulestyleoptions) · [`ReferenceStatistic`](./reference/types/#type-referencestatistic) · [`RectMarkOptions`](./reference/types/#type-rectmarkoptions).
+
 ### `CreateStripPlotOptions` {#type-createstripplotoptions}
 
  Expand CreateStripPlotOptions
@@ -31449,6 +31553,7 @@ type DynamicReferenceBinding = {
   readonly coordinate?: never;
   readonly temporalUnit?: never;
 };
+/** A statistical line (mean by default) or an exact two-statistic interval. */
 ```
 
 ### `ECDFDataOptions` {#type-ecdfdataoptions}
@@ -38371,12 +38476,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/2e8f92cdaddf15d73ae8ee47bc05cf395ac2ece7/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/2e8f92cdaddf15d73ae8ee47bc05cf395ac2ece7/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -40635,11 +40740,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:5b8e5de473747d8b301e07763cc9421290d97e3a1acc54d261e2ae67687d1203` |
+| Contract fingerprint | `sha256:a17883fed057e067e6cb5afd27376eea37ceab6149e09eb02643fcc1bfa4a432` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
-| Runtime source commit | `2e8f92cdaddf15d73ae8ee47bc05cf395ac2ece7` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 285 |
+| Declared actions here | 286 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
