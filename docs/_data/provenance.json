@@ -3,8 +3,8 @@
   "status": "development",
   "packageVersion": "0.0.21",
   "contractId": "sha256:a17883fed057e067e6cb5afd27376eea37ceab6149e09eb02643fcc1bfa4a432",
-  "sourceCommit": null,
-  "sourceRef": "main",
+  "sourceCommit": "a2ae73ef8c1e5705b311a5255e49a7ebc25fda29",
+  "sourceRef": "a2ae73ef8c1e5705b311a5255e49a7ebc25fda29",
   "exampleSourceRef": "84e86de2bbaa210b0a17165cd5f7b778398b3e18",
   "baseline": {
     "tag": "v0.0.13",
