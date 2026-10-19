@@ -6,7 +6,7 @@
 - [x] 공개 primitive로 독립적인 목표 작성, SVG/PNG/DPR2/PDF와 plot ink 확인
 - [x] 새 옵션이 현재 다섯 공개 경로에서 거부되는 baseline 증거
 - [x] 구체적인 API·상태·배치·오류·검증 범위 확정
-- [ ] 검토 패키지를 원격 commit에 고정하고 직접적인 기존 사용자 승인 기록
+- [x] 검토 패키지를 원격 commit에 고정하고 직접적인 기존 사용자 승인 기록
 - [ ] 공개 구현, 회귀·타입·예제·문서·패키지 검증
 - [ ] 검증 checkpoint commit/push; 다음200-family 릴리즈까지 candidate 유지
 
