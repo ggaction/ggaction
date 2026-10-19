@@ -1127,7 +1127,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   Ordinal은 숫자를 포함한 ordered category를 categorical palette와 first-appearance domain으로 매핑한다.
 - `layout`: bar는 `"stack" | "fill" | "group" | "overlay" | "diverging"`, area는 group을 제외하고
   `"center"`를 포함한 다섯 layout을 지원한다. Histogram default는 stack, ordinal aggregate bar default는
-  group, area default는 overlay다. Point/line과 continuous color는 layout을 거부한다.
+  group이다. 단, 기존 group/layout이 없는 aggregate bar의 nominal/ordinal 범주 위치와 새 color가 같은 field이면 기본 overlay로 위치·폭·높이를 보존하고 색만 추가한다. Horizontal bar의 y 범주에도 동일하게 적용한다. 별도 group, 저장한 layout, 명시적 layout은 우선하며 temporal grouping과 histogram은 이 예외를 사용하지 않는다. Area default는 overlay다. Point/line과 continuous color는 layout을 거부한다.
+  Evidence: `test/unit/actions/encodings/category-color-bar.test.js`.
 - `aggregate`: aggregate bar continuous color에서만 사용한다. Color field가 measure field와 같으면 measure
   aggregate를 상속하고, 다른 field는 compatible aggregate를 명시해야 한다. 집계는 최종 category rect
   grain에서 독립적으로 계산한다.

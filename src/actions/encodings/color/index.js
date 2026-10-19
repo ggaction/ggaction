@@ -86,7 +86,7 @@ const encodeColor = /* @__PURE__ */ action(
         "Bar color encoding requires a complete histogram encoding or a complete ordinal aggregate encoding."
       );
     }
-    const layout = resolveColorLayout(layer, args.layout, barGrain);
+    const layout = resolveColorLayout(layer, args.layout, barGrain, args.field);
     const createsCenterGroup = layer.mark.type === "area" &&
       layout === "center" && layer.encoding?.group === undefined;
     const ordinaryGroup = layer.mark.type === "area" && !createsCenterGroup &&

@@ -95,6 +95,12 @@ The tables below are generated from the same reviewed capability registry used b
 
 <!-- action-capabilities:summary:end -->
 
+For an aggregate bar with no existing group or layout, coloring the same
+nominal/ordinal field used on the category axis preserves bar positions, widths,
+and heights. This applies to both vertical and horizontal bars. A different color
+field retains the default grouped layout. Explicit or previously stored layouts
+and independent series groups take precedence.
+
 ## Direction
 
 `encodeAngle` rotates point and Tick glyphs with finite direct degrees. It

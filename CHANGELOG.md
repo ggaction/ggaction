@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Preserve aggregate bar positions and widths when categorical color repeats the category-axis field and no group or layout was already specified.
+
 - Infer left/right legend clearance from occupied axis guides and reflow it after axis edits or removal; exact-inner Canvas sizing also fits inferred edge legend groups.
 - Detect chart title position and typography changes in `comparePrograms` when the title text is unchanged.
 - Add `editAxes` to edit selected Cartesian, Polar, or Parallel axes through one atomic public action, with existing channel-editor options and explicit named-axis selection.

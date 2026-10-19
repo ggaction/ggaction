@@ -1,6 +1,7 @@
 import {
   BAR_GRAINS,
-  inferBarColorLayout
+  inferBarColorLayout,
+  resolveBarChannels
 } from "../../../grammar/bars/policy.js";
 import { validateColorLayout } from "../../../grammar/seriesLayout.js";
 
@@ -47,7 +48,13 @@ export function isRangedArea(layer) {
   );
 }
 
-export function resolveColorLayout(layer, requested, barGrain) {
+export function resolveColorLayout(layer, requested, barGrain, field) {
+  const category = layer.encoding?.[resolveBarChannels(layer)?.category];
+  // Coloring the category does not introduce another partition. An explicit
+  // group or a stored/requested layout still owns series placement.
+  const categoryColorOnly = barGrain === BAR_GRAINS.aggregate &&
+    ["nominal", "ordinal"].includes(category?.fieldType) &&
+    category.field === field && layer.encoding?.group === undefined;
   const existing = layer.encoding?.color === undefined
     ? undefined
     : layer.encoding.color.layout ?? (
@@ -62,7 +69,7 @@ export function resolveColorLayout(layer, requested, barGrain) {
     layer.mark.type === "bar"
       ? barGrain === BAR_GRAINS.histogram
         ? "stack"
-        : [BAR_GRAINS.ranged, BAR_GRAINS.centered].includes(barGrain) ? "overlay" : "group"
+        : [BAR_GRAINS.ranged, BAR_GRAINS.centered].includes(barGrain) || categoryColorOnly ? "overlay" : "group"
       : layer.mark.type === "area"
         ? "overlay"
         : undefined

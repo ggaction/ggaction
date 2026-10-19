@@ -2271,6 +2271,8 @@ export interface CategoricalEncodingOptions {
   fieldType?: "nominal" | "ordinal";
   scale?: CategoricalColorScaleOptions;
   palette?: Palette;
+  /** Aggregate bars default to overlay for their category field, otherwise group;
+   * existing groups and stored or explicit layouts take precedence. */
   layout?: ColorLayout;
 }
 

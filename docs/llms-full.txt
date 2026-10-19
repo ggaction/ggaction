@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:cd5adfc7e3d71b4d19a3880a61247d121971342365c3f7e1148eeb942f5c5bca. Status: development. Runtime source: b8fde01f0e36cb5106bd85b3f83e647c72351109. Release baseline: v0.0.13.
+Contract: sha256:0e557372b990990bd4e10e7641416f2d21cb253d92402201fe5379c9e9201a95. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/b8fde01f0e36cb5106bd85b3f83e647c72351109/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/b8fde01f0e36cb5106bd85b3f83e647c72351109/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -7239,6 +7239,12 @@ The tables below are generated from the same reviewed capability registry used b
 | Cartesian complete axis | `createXAxis` / `createYAxis` / `createAxes` | `editXAxis` / `editYAxis` | line, ticks, labels, ticksAndLabels, title, position |
 | Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, radial angle and radial title position |
 | Parallel dimension axes | `createAxes` / `createParallelAxes` / `createParallelAxis` | `editParallelAxis` / `removeParallelAxis` / `removeParallelAxes` | line, ticks, labels, title from each stored dimension |
+
+For an aggregate bar with no existing group or layout, coloring the same
+nominal/ordinal field used on the category axis preserves bar positions, widths,
+and heights. This applies to both vertical and horizontal bars. A different color
+field retains the default grouped layout. Explicit or previously stored layouts
+and independent series groups take precedence.
 
 ## Direction
 
@@ -28883,6 +28889,8 @@ export interface CategoricalEncodingOptions {
   fieldType?: "nominal" | "ordinal";
   scale?: CategoricalColorScaleOptions;
   palette?: Palette;
+  /** Aggregate bars default to overlay for their category field, otherwise group;
+   * existing groups and stored or explicit layouts take precedence. */
   layout?: ColorLayout;
 }
 ```
@@ -38265,12 +38273,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b8fde01f0e36cb5106bd85b3f83e647c72351109/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b8fde01f0e36cb5106bd85b3f83e647c72351109/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -40529,9 +40537,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:cd5adfc7e3d71b4d19a3880a61247d121971342365c3f7e1148eeb942f5c5bca` |
+| Contract fingerprint | `sha256:0e557372b990990bd4e10e7641416f2d21cb253d92402201fe5379c9e9201a95` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
-| Runtime source commit | `b8fde01f0e36cb5106bd85b3f83e647c72351109` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 285 |
 | Declared actions in that release | 234 |
