@@ -331,8 +331,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 420,000 bytes |
-| `ggaction/basic` | 207,000 bytes |
+| `ggaction` | 422,000 bytes |
+| `ggaction/basic` | 208,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 0.0.20의 Area 정량 색상과 seeded mean CI 추가 후 Node20.20.2 installed consumer는
@@ -676,6 +676,13 @@ graphicSpec.order
 `canvas`가 유일한 root이고 `plot-main`은 layout/transform 기능이 없는 named collection이다. Ordinary
 domain action은 이 owner와 sibling placement를 infer하지만, extension primitive는 `parent`, `before`,
 `after`를 명시하며 parent를 생략한 explicit top-level graphic도 계속 지원한다.
+
+명시적인 guide underlay는 기존 frame/Canvas config에서만 intent를 소유한다. 순수 draw-order 계산을
+internal wrapped materializer가 호출하고 `editGraphics`의 exact children-permutation 편집으로
+반영한다. Graphic ID/content/object 선언 순서를 재생성하지 않으며 renderer는 여전히 concrete tree만
+읽는다. Policy가 없는 기존 authoring 경로에는 이 reconciliation을 추가하지 않는다. 정확한 API는
+[축 계약](contract/current/AXES.md#cartesian-axis-underlays), [Canvas 계약](contract/current/CORE.md),
+[primitive 계약](contract/current/PRIMITIVES.md#editgraphics)이 소유한다.
 
 ### Graphic type
 
@@ -2567,3 +2574,12 @@ Facet의 opt-in topLane 정책은 compositionSpec 한 곳에 저장한다. Pure 
 불일치를 찾았다. Canvas/SVG가 기존 concrete value validator를 직접 재사용하도록 복원했다.
 새 schema나 renderer semantic inference는 없다. 수정된 staged unpacked4115014bytes가 이전4115000을
 14bytes 넘었으므로 해당 실패를 보존하고 최소다음1000byte 단계4116000만 적용한다.
+
+### Explicit guide underlay budgets
+
+Draw-order 계산/materializer/wrapped action과 grid resource selector의 네 owner를 추가해 package
+entries는602가 되었다. Node22.23.1 staged 실측851052packed/4124450unpackedbytes는 이전
+849000/4116000을 초과한다. 실제 실패를 보존하고 entries602와 최소1000byte 단계852000/4125000만
+적용한다. Installed browser consumer의 Full421169/Basic207723gzip도 이전420000/207000을 넘었다.
+기존 실패를 보존하고 해당 cap만422000/208000으로 올린다. SVG25000과 data/path/그림/수치/coverage
+기준은 그대로다. Node24 protected-release 수치는 다음 정기 배포에서 별도로 다시 측정한다.

@@ -138,6 +138,7 @@ Concrete rectangle의 outline은 네 모서리 모두 closed join을 갖는다. 
     자체가 nested array인 경우 한 item value 단위를 보존한다.
   - `items`: heterogeneous collection의 typed concrete item array를 원자적으로 교체하며 최대 길이는
     일반 graphic은 `10,000`, 위에서 정의한 point-owned collection만 `50,000`이다.
+- `children`: named Canvas/collection의 기존 직접 자식 ID의 정확한 순열을 편집한다. 기존 ID·parent·property·items·clip·object 선언 순서와 root order는 유지한다. 누락/추가/중복/다른 parent/비문자열과 generated item/drawable owner는 거부한다. 빈 container의 `[]`와 동일 순열도 허용한다. Caller array와 이전 상태는 불변이다. 실제 `children` field를 편집하며 property bag에 저장하지 않는다. Evidence: `test/unit/actions/primitives/graphic-child-order.test.js`.
 - `clip`: named non-Canvas owner의 node-level rectangle을 편집한다. `value: {x,y,width,height}`는 finite x/y와 nonnegative finite width/height를 요구하며 끝점도 finite여야 한다. 같은 parent frame에서 전체 items/subtree를 자르고 item properties/좌표/ID를 바꾸지 않는다. `false`는 optional field를 제거한다. Generated/inline item과 Canvas에는 지원하지 않는다. `items`/`length` 변경, renderer와 persistence가 같은 owner clip을 보존한다. Evidence: `test/unit/renderers/graphic-owner-clipping.test.js`.
 - `remove`: `true`일 때 property/value 없이 named graphic과 owned named subtree를 삭제하고 parent의
   `children` 또는 top-level `order`에서 detach한다. Canvas root와 generated item의 독립 삭제는 허용하지 않는다.

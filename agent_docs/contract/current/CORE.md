@@ -32,15 +32,18 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     resize, persistence, text metrics, title와 고정 외부 모드 회귀를 검증한다.
 - `plotBorder`
   - Status: Implemented. Full/Basic 공통이며 기본값은 `false`다. `false`는 비활성화하고
-    `{ color?: NonEmptyString, lineWidth?: PositiveFinite }`는 내부 플롯 테두리를 활성화한다.
+    `{ color?: NonEmptyString, lineWidth?: PositiveFinite, underlay?: boolean }`는 내부 플롯 테두리를 활성화한다.
     `{}`의 기본 style은 `color: "#ddd"`, `lineWidth: 1`이다. `true`, 비객체와 unknown key는 거부한다.
   - `lineWidth`는 resolved plot width와 height 중 작은 값보다 엄격히 작아야 한다.
     stroke 중심은 plot edge에서 반 폭만큼 안으로 들어가므로 painted outer bounds는 plot bounds와 같다.
   - Effect: immutable Canvas materialization config에 저장하며 stable internal rectangle `plotBorder`로 그린다.
-    ordinary marks 위, axes 아래에 배치하고 mark/scales/plot size/margins/clipping은 변경하지 않는다.
+    기본은 ordinary marks 위, axes 아래다. `underlay:true`는 같은 rectangle을 marks 전에 배치한다.
+    Boolean만 받고 생략/false는 optional intent를 저장하지 않는다. Border object replacement에서
+    underlay 생략도 기본 overlay로 복원한다. 다른 Canvas 속성만 편집하면 현재 정책을 유지한다.
+    mark/scales/plot size/margins/clipping은 변경하지 않는다.
     내부 wrapped `rematerializePlotBorder`가 Canvas, scale, data 및 facet replay에서 최종 plot bounds를 따른다.
     semantic state나 public direct action을 추가하지 않는다. 생략한 기존 차트는 테두리가 생기지 않는다.
-  - Coverage: `test/unit/actions/canvas/plot-border.test.js`의 Full/Basic, default off, style default,
+  - Coverage: `test/unit/actions/canvas/plot-border.test.js`와 `test/unit/actions/guides/plot-underlays.test.js`의 Full/Basic, default off, style default,
     stroke inset, plot bounds, draw order, invalid style 및 immutable replay 계약을 검증한다.
 - 오류와 상호작용: unknown option, invalid dimension/color/margin, 두 번째 Canvas를 거부한다.
 - Coverage: `test/unit/actions/canvas/create-canvas.test.js`,
@@ -49,7 +52,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createCanvas`
 
-- Implemented: `createCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite }; plotBorder?: false | { color?: NonEmptyString; lineWidth?: PositiveFinite } } = {})`
+- Implemented: `createCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite }; plotBorder?: false | { color?: NonEmptyString; lineWidth?: PositiveFinite; underlay?: boolean } } = {})`
 - Proposed (NOT IMPLEMENTED): `{ width?: "auto"; height?: "auto"; margin?: "auto" }`
 
 ### Value coverage — `createCanvas`
@@ -89,7 +92,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `editCanvas`
 
-- Implemented: `editCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite }; plotBorder?: false | { color?: NonEmptyString; lineWidth?: PositiveFinite } })`; 최소 한 property가 필요하다.
+- Implemented: `editCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite }; plotBorder?: false | { color?: NonEmptyString; lineWidth?: PositiveFinite; underlay?: boolean } })`; 최소 한 property가 필요하다.
 - Proposed (NOT IMPLEMENTED): `createCanvas`의 `"auto"` dimension/margin과 동일하다.
 
 ### Value coverage — `editCanvas`

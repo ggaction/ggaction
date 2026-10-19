@@ -558,6 +558,12 @@ Keep fixed plot sizes while reusing existing top space for titles and facet head
 
 Representative actions: `facet`, `editCompositionLayout`, `editFacetHeaders`. [Documentation](https://ggaction.github.io/ggaction/api/composition/facets/#share-the-existing-top-margin).
 
+### [Composite marks over guides](./plot-guide-underlays/)
+
+Move a complete Cartesian axis or plot border behind ordinary marks without changing geometry.
+
+Representative actions: `createXAxis`, `editXAxis`, `editCanvas`. [Documentation](https://ggaction.github.io/ggaction/api/axes/complete/#composite-marks-over-guides).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

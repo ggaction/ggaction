@@ -38,6 +38,7 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "axis_share__Line", "axis_share__Ticks", "axis_share__Labels", "axis_share__Title"
   ],
   "bar-compositing": ["canvas", "barPlot"],
+  "plot-guide-underlays": ["canvas", "horizontalGridLines", "plotBorder", "xAxisLine", "barPlot"],
   "legend-appearance": ["canvas", "scatterPlot", "colorLegendSymbolPoints", "colorLegendLabels"],
   "shared-facet-owner": [],
   "facet-shared-top-lane": [],

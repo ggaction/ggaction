@@ -193,17 +193,30 @@ export function validateProgramState(program, path) {
     if (config?.strokeDash !== undefined) validateGuideDash(config.strokeDash);
     if (config?.strokeDashMap !== undefined) normalizeGuideDashMap(config.strokeDashMap, { reset: false });
   }
-  for (const owner of cartesianAxisOwners(program)) {
+  const cartesianOwners = cartesianAxisOwners(program);
+  for (const owner of cartesianOwners) {
     const channel = owner.id;
     const axis = owner.config;
     if (axis?.frame !== undefined) {
-      exactKeys(axis.frame, ["offset"], `${path}.guides.axis.${channel}.frame`);
-      validateNonNegativeFinite(axis.frame.offset, "Axis frame offset");
+      validateOptionObject(axis.frame, ["offset", "underlay"], `Stored axis "${channel}" frame`, { allowEmpty: false });
+      if (Object.hasOwn(axis.frame, "offset")) validateNonNegativeFinite(axis.frame.offset, "Axis frame offset");
+      if (Object.hasOwn(axis.frame, "underlay") && axis.frame.underlay !== true) {
+        throw new Error("Stored axis underlay must be canonical true intent.");
+      }
     }
     if (axis?.labels !== undefined) validateAxisTextPlacement(axis.labels);
     if (axis?.title !== undefined) validateAxisTextPlacement(axis.title, { title: true });
   }
+  const border = program.materializationConfigs.canvas?.plotBorder;
+  if (isPlainObject(border) && Object.hasOwn(border, "underlay") && border.underlay !== true) {
+    throw new Error("Stored plot border underlay must be canonical true intent.");
+  }
   for (const id of Object.keys(program.guideConfigs.axis ?? {})) {
+    const config = program.guideConfigs.axis[id];
+    if (config?.frame !== undefined && Object.hasOwn(config.frame, "underlay") &&
+        !cartesianOwners.some(owner => owner.id === id)) {
+      throw new Error("Stored axis underlay requires a Cartesian axis owner.");
+    }
     if (!AXIS_RESOURCE_CHANNELS.includes(id) && !Object.hasOwn(program.semanticSpec.guides.axis ?? {}, id)) {
       throw invalidSnapshot("Named axis configs require their semantic owner.", path);
     }

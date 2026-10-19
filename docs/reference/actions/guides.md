@@ -214,6 +214,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `underlay` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
@@ -248,6 +249,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `underlay` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
@@ -1024,6 +1026,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `underlay` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
@@ -1058,6 +1061,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `underlay` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |

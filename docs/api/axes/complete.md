@@ -9,6 +9,53 @@ title: Complete Axes and Labels
 
 [Axis family overview](../axes.md)
 
+## Composite marks over guides
+
+{% include chart-example.html id="plot-guide-underlays" %}
+
+Use `underlay: true` when the complete Cartesian axis should be painted before
+ordinary marks. The plot border accepts the same choice. This makes guides part
+of the backdrop for a difference-blended bar. Geometry, clips and source rows
+stay the same; the drawing order changes.
+
+This complete example declares the axis first and then edits its placement:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import {chart} from "ggaction";
+export const rows=[{category:'a',value:6},{category:'b',value:9}];
+export function createPlotUnderlayProgram({axisUnderlay=true,borderUnderlay=true,blend="difference"}={}){return chart()
+ .createCanvas({width:240,height:180,margin:{left:40,right:20,top:20,bottom:40}})
+ .editCanvas({plotBorder:{color:'#ddd',lineWidth:1,underlay:borderUnderlay}})
+ .createData({values:rows})
+ .createBarPlot({x:'category',y:{field:'value',scale:{domain:[0,10],nice:false}},guides:false})
+ .encodeBarWidth({band:1})
+ .editBarMark({fill:'yellow',stroke:'yellow',strokeWidth:4})
+ .editBarMark({cornerRadius:10,blend})
+ .createXAxis({line:{color:'#888',lineWidth:2},ticksAndLabels:false,title:false})
+ .createGrid({horizontal:{values:[0,5,10],color:'#ddd',lineWidth:1},vertical:false})
+ .editXAxis({underlay:axisUnderlay});}
+
+const program = createPlotUnderlayProgram();
+```
+
+The option also works in `createXAxis`, `createYAxis`, nested `createAxes`,
+guides and chart facades. Select a named axis through the existing `target` on
+whole-axis edits. Focused component editors and Polar/Parallel axes keep their
+existing options.
+
+Omitted edits preserve placement. `editXAxis({ underlay: false })` restores
+the ordinary overlay. Frame offsets and placement edits preserve each other.
+All retained components move as one axis; marks and text keep their relative order.
+Nonpositive Cartesian grids remain behind these underlays, and positive grid
+`zIndex` values keep their existing position after marks. Source, scale, data,
+Canvas, theme, facet and editable-persistence replay retain the requested placement.
+
 ## Independent named Cartesian axes
 
 {% include chart-example.html id="axis-owners" %}

@@ -2,6 +2,12 @@
 const CARTESIAN_CHANNELS = Object.freeze(["x", "y"]);
 const COMPONENTS = Object.freeze(["line", "ticks", "labels", "title"]);
 
+export const PARALLEL_AXIS_PARTS = COMPONENTS;
+export const PARALLEL_AXIS_GRAPHICS = Object.freeze({
+  line: "parallelAxisLines", ticks: "parallelAxisTicks",
+  labels: "parallelAxisLabels", title: "parallelAxisTitles"
+});
+
 export function cartesianAxisOwners(program) {
   const semantics = program.semanticSpec?.guides?.axis ?? {};
   const configs = (program.guideConfigs ?? program.materializationConfigs?.guides)?.axis ?? {};

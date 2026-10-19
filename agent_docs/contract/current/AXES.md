@@ -316,6 +316,7 @@ type AxisTitleOptions<P extends string> = TextStyle & {
   rotation?: RotationInput;
 };
 type CompleteAxisOptions<P extends string> = {
+  underlay?: boolean;
   offset?: NonNegativeFinite;
   scale?: UserId;
   coordinate?: UserId;
@@ -745,7 +746,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 ## `createXAxis`
 
-- Signature: `createXAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })`
+- Signature: `createXAxis({ id?, scale?, coordinate?, position?, offset?, underlay?, line?, ticksAndLabels?, title? })`
 - Parameter contract와 effect는 Shared complete-axis contract를 따른다. x default는 bottom이다.
 - Coverage: `test/unit/actions/guides/axis-actions.test.js`가 defaults, routing, coordinate와 duplicates를 검증한다.
 
@@ -769,7 +770,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 ## `createYAxis`
 
-- Signature: `createYAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })`
+- Signature: `createYAxis({ id?, scale?, coordinate?, position?, offset?, underlay?, line?, ticksAndLabels?, title? })`
 - Parameter contract와 effect는 Shared complete-axis contract를 따른다. y default는 left다.
 - Coverage: `test/unit/actions/guides/axis-actions.test.js`가 symmetric behavior를 검증한다.
 
@@ -1163,7 +1164,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 ## `editXAxis`
 
-- Signature: `editXAxis({ position?, line?, ticks?, labels?, ticksAndLabels?, title? })`; each component accepts its
+- Signature: `editXAxis({ target?, position?, offset?, underlay?, line?, ticks?, labels?, ticksAndLabels?, title? })`; each component accepts its
   existing edit object or `false`.
 - Existing x-axis leaf resources를 선택해 편집하거나 제거하는 aggregate facade다. `position`은 제거되지 않은 existing
   line, ticks/labels와 title 전체에 공유된다. `ticksAndLabels`는 standalone `ticks`/`labels`와 함께 쓸 수 없다.
@@ -1253,3 +1254,23 @@ Wrapped line은 같은 원본 label group으로 처리한다. 자동 axis title 
 제한되지 않으며 측정 overflow를 Canvas guide transaction이 수용한다. 명시적 overlap:error와
 실제 label 충돌은 여전히 오류다. 고정 외부 Canvas 동작은 변경하지 않는다.
 Evidence: `test/unit/actions/canvas/inner-plot-size.test.js`.
+
+## Cartesian axis underlays
+
+Complete Cartesian create/edit actions accept `underlay?: boolean`; aggregate axes, guides and chart facades
+reuse that complete option. Focused components and Polar/Parallel axes do not accept it. Default omission/false
+keeps ordinary axes after marks. True paints all retained components before ordinary marks, after nonpositive
+Cartesian grids and an underlay border. Positive grids retain their own rank after marks. Overlay border and
+axes keep their existing front tier. Axis owner order and its existing component order are retained; ordinary
+marks, regression bands/lines and unowned graphics retain their relative order.
+
+Edit omission/undefined preserves the policy; false removes the optional canonical frame intent.
+It is stored once as `guides.axis[id].frame.underlay?: true` beside the independent optional frame offset.
+Editing either field preserves the other. Empty frames disappear. The returned concrete scene changes only
+its existing child permutation; graph IDs, parents, properties, items, clips and object declaration order stay
+intact. Removing an axis removes its policy; restoring a missing component follows its retained owner.
+Source, data, scales, Canvas, theme, metrics, facet/concat snapshots and editable persistence retain placement.
+Invalid requests fail atomically. No renderer reads axis intent.
+
+Evidence: `test/unit/actions/guides/plot-underlays.test.js`, `test/unit/layout/plot-draw-order.test.js`,
+`test/unit/actions/primitives/graphic-child-order.test.js`, and `test/charts/plot-guide-underlays/`.

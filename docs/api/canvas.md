@@ -25,7 +25,7 @@ encodings.
 | `width` | positive finite number | `640` |
 | `height` | positive finite number | `400` |
 | `plot` | `{ width, height }` or `false` | Fixed outer dimensions |
-| `plotBorder` | `false` or `{ color?, lineWidth? }` | `false` |
+| `plotBorder` | `false` or `{ color?, lineWidth?, underlay? }` | `false` |
 | `background` | non-empty string | `"white"` |
 | `margin` | non-negative number or side object | `{ top: 30, right: 30, bottom: 60, left: 70 }` |
 
@@ -64,7 +64,8 @@ or other incompatible guide geometry; those errors still reject the action.
 Set `plotBorder: {}` to draw an outline around the data region in Full or Basic.
 The default style is `color: "#ddd"` and `lineWidth: 1`. The stroke sits entirely
 inside the plot: its outer painted edge matches the plot bounds. It draws above
-ordinary marks and below axes, without changing mark positions, scale ranges,
+ordinary marks and below axes by default. Set `underlay: true` to paint it before
+ordinary marks, without changing mark positions, scale ranges,
 plot size, margins, or clipping.
 
 <!-- snippet-context:start -->
@@ -81,7 +82,10 @@ const unbordered = recolored.editCanvas({ plotBorder: false });
 
 On Full, omitting `plotBorder` from `editCanvas` preserves its setting. An object
 replaces the complete border style: omitted `color` or `lineWidth` returns to its
-default, rather than keeping an earlier value. `false` removes the outline.
+default, rather than keeping an earlier value. Omitting `underlay` from a new
+border object also restores the default overlay; include `underlay: true` to retain
+that choice. See [compositing marks over guides](./axes/complete.md#composite-marks-over-guides).
+`false` removes the outline.
 Colors must be non-empty strings. Line width must be positive and finite, and
 strictly smaller than both resolved plot dimensions. Resizing, scale or data
 edits, and facet replay preserve the border setting and update its bounds.

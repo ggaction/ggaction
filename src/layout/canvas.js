@@ -4,7 +4,8 @@ import {
   validateNonEmptyString,
   validateNonNegativeFinite,
   validatePositiveFinite,
-  validateOptionObject
+  validateOptionObject,
+  validateBoolean
 } from "../core/validation.js";
 
 const MARGIN_KEYS = Object.freeze(["top", "right", "bottom", "left"]);
@@ -67,8 +68,11 @@ export function normalizeMargin(margin, base = DEFAULT_MARGIN) {
 
 export function normalizePlotBorder(value) {
   if (value === false) return false;
-  validateOptionObject(value, ["color", "lineWidth"], "Canvas plotBorder");
-  const border = { color: "#ddd", lineWidth: 1, ...value };
+  validateOptionObject(value, ["color", "lineWidth", "underlay"], "Canvas plotBorder");
+  if (value.underlay !== undefined) validateBoolean(value.underlay, "Canvas plotBorder underlay");
+  const { underlay, ...style } = value;
+  const border = { color: "#ddd", lineWidth: 1, ...style,
+    ...(underlay === true ? { underlay: true } : {}) };
   validateNonEmptyString(border.color, "Canvas plotBorder color");
   validatePositiveFinite(border.lineWidth, "Canvas plotBorder lineWidth");
   return cloneAndFreeze(border);

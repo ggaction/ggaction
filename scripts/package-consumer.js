@@ -77,6 +77,9 @@ async function testNodeConsumer(directory) {
   await writeFile(path.join(directory,"facet-lane-public.js"),
     (await readFile(new URL("../examples/facet-shared-top-lane/program.js",import.meta.url),"utf8"))
       .replace("'../../src/index.js'","'ggaction'"));
+  await writeFile(path.join(directory,"plot-underlay-public.js"),
+    (await readFile(new URL("../examples/plot-guide-underlays/program.js",import.meta.url),"utf8"))
+      .replace("'../../src/index.js'","'ggaction'"));
   const output = path.join(directory, "chart.png");
   const pdfOutput = path.join(directory, "chart.pdf");
   const fontWeightOutput = path.join(directory, "font-weight.png");
@@ -92,6 +95,23 @@ async function testNodeConsumer(directory) {
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
     import {createFacetSharedTopLaneProgram} from "./facet-lane-public.js";
+    import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
+
+    const underlayPlot=createPlotUnderlayProgram();
+    assert.deepEqual(underlayPlot.graphicSpec.objects["plot-main"].children,
+      ["horizontalGridLines","plotBorder","xAxisLine","barPlot"]);
+    assert.equal(underlayPlot.guideConfigs.axis.x.frame.underlay,true);
+    assert.equal(underlayPlot.materializationConfigs.canvas.plotBorder.underlay,true);
+    assert.deepEqual(deserializeProgram(serializeProgram(underlayPlot)).graphicSpec,underlayPlot.graphicSpec);
+    const defaultPlot=underlayPlot.editXAxis({underlay:false}).editCanvas({plotBorder:{underlay:false}});
+    assert.deepEqual(defaultPlot.graphicSpec,createPlotUnderlayProgram({axisUnderlay:false,borderUnderlay:false}).graphicSpec);
+    assert.notEqual(renderToSVG(underlayPlot),renderToSVG(defaultPlot));
+    assert.ok((await renderToPNGBuffer(underlayPlot)).buffer.length>100);
+    assert.ok((await renderToPDFBuffer(underlayPlot)).buffer.length>100);
+    const onlyOrder=underlayPlot.editGraphics({target:"plot-main",property:"children",
+      value:["horizontalGridLines","barPlot","plotBorder","xAxisLine"]});
+    assert.deepEqual(onlyOrder.graphicSpec,defaultPlot.graphicSpec);
+    assert.throws(()=>underlayPlot.editGraphics({target:"plot-main",property:"children",value:["barPlot"]}));
 
     const sharedLane=createFacetSharedTopLaneProgram();
     assert.equal(sharedLane.compositionSpec.topLane,"shared");
@@ -5397,6 +5417,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "facet-numeric-legend-inference",
       "explicit-fold-facet-partition",
       "shared-facet-top-lane",
+      "explicit-axis-and-border-underlays",
       "typescript",
       "basic-entry-runtime-and-types",
       "tutorial-consumers",

@@ -1,4 +1,5 @@
 import { action } from "../../core/action.js";
+import { hasPlotUnderlays } from "../../materialization/plotDrawOrder.js";
 import { findLayer } from "../../selectors/layers.js";
 import {
   DEFAULT_CANVAS,
@@ -126,7 +127,7 @@ export const editCanvas = /* @__PURE__ */ action(
       next = next.rematerializePlotBorder();
     }
 
-    return next;
+    return hasPlotUnderlays(this) || hasPlotUnderlays(next) ? next.rematerializePlotDrawOrder() : next;
   }
 );
 

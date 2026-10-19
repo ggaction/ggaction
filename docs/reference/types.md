@@ -1446,6 +1446,8 @@ export interface CanvasOptions {
     color?: string;
     /** Positive finite width smaller than both plot dimensions. Defaults to 1. */
     lineWidth?: number;
+    /** Paint this border before ordinary marks. Defaults to false. */
+    underlay?: boolean;
   };
 }
 ```
@@ -1985,6 +1987,8 @@ export type ColorLayout =
 
 ```typescript
 export interface CompleteAxisOptions<P extends string> {
+  /** Paint the complete Cartesian axis before ordinary marks. Defaults to false. */
+  underlay?: boolean;
   /** Omission retains the canonical x/y identity. */
   id?: string;
   /** Non-negative outward displacement of the complete axis frame in logical pixels. */
@@ -4614,6 +4618,8 @@ export interface ECDFOutputFields {
 
 ```typescript
 export interface EditAxisOptions<P extends string> {
+  /** Omission preserves placement; false restores the ordinary overlay. */
+  underlay?: boolean;
   target?: string;
   /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
   offset?: number;

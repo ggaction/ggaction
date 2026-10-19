@@ -14,7 +14,8 @@ import { validateConcreteGraphicValue } from
 import {
   collectGraphicSubtreeIds,
   findGraphicParent,
-  requireGraphic
+  requireGraphic,
+  resolveGraphicChildOrder
 } from "../../grammar/schemas/graphicTree.js";
 
 function setGraphicProperty(properties, property, value) {
@@ -187,6 +188,13 @@ const editGraphics = /* @__PURE__ */ closedAction(
         throw new Error("editGraphics cannot remove a generated item independently.");
       }
       return this._clone({ graphicSpec: removeGraphicTree(this.graphicSpec, found.id) });
+    }
+
+    if (property === "children") {
+      const children = freezeOwned(resolveGraphicChildOrder(this.graphicSpec, target, value));
+      const updated = freezeOwned({ ...found.object, children });
+      return this._clone({ graphicSpec: freezeOwned({ ...this.graphicSpec,
+        objects: freezeOwned({ ...this.graphicSpec.objects, [target]: updated }) }) });
     }
 
     const ownerId = found.kind === "item" ? found.ownerId : found.id;

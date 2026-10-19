@@ -5,6 +5,37 @@ title: Primitive Extension API
 
 # Primitive Extension API
 
+## Reorder existing direct children
+
+A named Canvas or collection can reorder its existing direct children with
+`editGraphics({ target, property: "children", value: orderedIds })`. The value
+must contain each existing direct child exactly once. It cannot add, remove,
+reparent or rename a graphic, and cannot target a generated item or a drawable.
+Properties, items, clips, object declaration order and top-level order stay intact.
+An empty container accepts `[]`. Caller arrays and earlier programs stay immutable.
+
+This runnable identity-and-order example leaves geometry for a later authoring step:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "plot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import { ChartProgram } from "ggaction/extension";
+
+const program = new ChartProgram()
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .createGraphics({ id: "plot", type: "collection", parent: "canvas" })
+  .createGraphics({ id: "front", type: "rect", parent: "plot" })
+  .createGraphics({ id: "back", type: "rect", parent: "plot" })
+  .editGraphics({ target: "plot", property: "children", value: ["back", "front"] });
+```
+
+Ordinary chart authors use complete-axis `underlay` and Canvas `plotBorder`
+options for guide placement; direct child IDs belong to extension authoring.
+
 <div class="docs-concept-flow" role="img" aria-label="Extension actions compose editSemantic, createGraphics, and editGraphics primitives">
   <span>editSemantic<strong>meaning</strong></span>
   <span>createGraphics<strong>identity</strong></span>

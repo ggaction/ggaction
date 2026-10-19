@@ -99,7 +99,7 @@
         {
           "name": "plotBorder",
           "required": false,
-          "type": "false | { color?: string | undefined; lineWidth?: number | undefined; } | undefined"
+          "type": "false | { color?: string | undefined; lineWidth?: number | undefined; underlay?: boolean | undefined; } | undefined"
         }
       ],
       "callPatterns": [
@@ -206,7 +206,7 @@
         {
           "name": "plotBorder",
           "required": false,
-          "type": "false | { color?: string | undefined; lineWidth?: number | undefined; } | undefined"
+          "type": "false | { color?: string | undefined; lineWidth?: number | undefined; underlay?: boolean | undefined; } | undefined"
         }
       ],
       "callPatterns": [
@@ -15055,6 +15055,11 @@
       },
       "options": [
         {
+          "name": "underlay",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -15096,7 +15101,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxis({ id?, scale?, coordinate?, offset?, position?, line?, ticksAndLabels?, title? })"
+        "createXAxis({ id?, scale?, coordinate?, underlay?, offset?, position?, line?, ticksAndLabels? })"
       ],
       "snippet": "program.createXAxis({})",
       "errors": [],
@@ -15179,6 +15184,11 @@
       },
       "options": [
         {
+          "name": "underlay",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -15220,7 +15230,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxis({ id?, scale?, coordinate?, offset?, position?, line?, ticksAndLabels?, title? })"
+        "createYAxis({ id?, scale?, coordinate?, underlay?, offset?, position?, line?, ticksAndLabels? })"
       ],
       "snippet": "program.createYAxis({})",
       "errors": [],
@@ -18166,6 +18176,11 @@
       },
       "options": [
         {
+          "name": "underlay",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -18207,7 +18222,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxis({ target?, offset?, position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
+        "editXAxis({ target?, underlay?, offset?, position?, line?, ticks?, labels?, ticksAndLabels? })"
       ],
       "snippet": "program.editXAxis({ position: \"bottom\" })",
       "errors": [],
@@ -18277,6 +18292,11 @@
       },
       "options": [
         {
+          "name": "underlay",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -18318,7 +18338,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxis({ target?, offset?, position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
+        "editYAxis({ target?, underlay?, offset?, position?, line?, ticks?, labels?, ticksAndLabels? })"
       ],
       "snippet": "program.editYAxis({ position: \"left\" })",
       "errors": [],

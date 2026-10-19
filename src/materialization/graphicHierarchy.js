@@ -5,6 +5,7 @@ import {
   graphicSiblings
 } from "../grammar/schemas/graphicTree.js";
 import { findDataset } from "../selectors/datasets.js";
+import { hasPlotUnderlays, firstOverlayGuide } from "./plotDrawOrder.js";
 
 export const CANVAS_GRAPHIC_ID = "canvas";
 export const PLOT_GRAPHIC_ID = "plot-main";
@@ -57,6 +58,10 @@ export function resolveMarkGraphicPlacement(program, { data, markType }) {
     ? dataset.transform[0]
     : undefined;
   if (transform?.type !== "regression") {
+    if (hasPlotUnderlays(program)) {
+      const before = firstOverlayGuide(program);
+      return resolvePlotGraphicPlacement(program, before === undefined ? {} : { before });
+    }
     const named = new Set(cartesianAxisOwners(program).filter(owner => owner.named)
       .flatMap(owner => axisGraphicIds(owner.channel, owner.id)));
     const axis = program.graphicSpec.objects[PLOT_GRAPHIC_ID]?.children?.find(

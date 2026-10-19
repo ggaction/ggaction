@@ -11,6 +11,7 @@ import { createBlendProgram } from "./bar-compositing/program.js";
 import {createCombinedLegendsProgram} from './combined-legends/program.js';
 import {createLegendAppearanceProgram} from "./legend-appearance/program.js";
 import {createLegendContentSpacingProgram} from "./legend-content-spacing/program.js";
+import {createPlotUnderlayProgram} from "./plot-guide-underlays/program.js";
 import {createFacetSharedTopLaneProgram} from "./facet-shared-top-lane/program.js";
 import {createGradientBlockProgram} from "./legend-layout/program.js";
 import {createRecipeOpacityProgram} from "./legend-recipe-opacity/program.js";
@@ -249,6 +250,8 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser:{path:"legend-appearance/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"legend-appearance",width:400,height:240}}}}),
   example({id:"legend-content-spacing",data:{},width:320,height:240,docsGroup:"tutorials",createProgram:createLegendContentSpacingProgram,
     browser:{path:"legend-content-spacing/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"legend-content-spacing",width:320,height:240}}}}),
+  example({id:"plot-guide-underlays",data:{},width:240,height:180,docsGroup:"tutorials",createProgram:createPlotUnderlayProgram,
+    browser:{path:"plot-guide-underlays/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"plot-guide-underlays",width:240,height:180}}}}),
   example({id:"facet-shared-top-lane",data:{},width:508,height:262,docsGroup:"tutorials",createProgram:createFacetSharedTopLaneProgram,
     browser:{path:"facet-shared-top-lane/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"facet-shared-top-lane",width:508,height:262}}}}),
   example({id:"symbol-window",data:{},width:400,height:200,docsGroup:"tutorials",createProgram:createSymbolWindowProgram,

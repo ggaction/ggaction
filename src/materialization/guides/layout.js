@@ -6,6 +6,7 @@ import { planCanvasRematerialization } from "../layout.js";
 import { applyMaterializationPlan } from "../planner.js";
 import { assertGuideCollisionBlocks } from "../../layout/guideCollisions.js";
 import { resolveGuideCollisionBlocks } from "./resources.js";
+import { hasPlotUnderlays } from "../plotDrawOrder.js";
 export { resolveGuideCollisionBlocks } from "./resources.js";
 
 // Defer cross-guide checks while sibling materializers still carry old
@@ -41,6 +42,7 @@ export function withGuideLayoutTransaction(program, apply) {
         result = result.rematerializeLegendGroups();
       }
       if (plot !== undefined && result.titleConfig !== undefined) result = result.rematerializeTitle();
+      if (hasPlotUnderlays(program) || hasPlotUnderlays(result)) result = result.rematerializePlotDrawOrder();
       break;
     } catch (error) {
       const overflow = getErrorDetails(error)?.canvasOverflow;

@@ -592,7 +592,7 @@
   },
   "/extension/primitives/": {
     "title": "Primitive API",
-    "description": "These methods are the low level public extension layer, not the recommended chart authoring API."
+    "description": "A named Canvas or collection can reorder its existing direct children with editGraphics({ target, property: \"children\", value: orderedIds })."
   },
   "/api/data/summaries-and-shaping/": {
     "title": "Summaries, Bins, and Data Shaping",
@@ -699,7 +699,7 @@
   },
   "/api/axes/complete/": {
     "title": "Complete Axes and Labels",
-    "description": "Create an axis with id when it needs an independent identity. The default IDs are x and y.",
+    "description": "Use underlay: true when the complete Cartesian axis should be painted before ordinary marks. The plot border accepts the same choice.",
     "image": "/assets/images/cars-line-chart.png"
   }
 }

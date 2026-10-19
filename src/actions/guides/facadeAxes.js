@@ -91,6 +91,9 @@ function planAxis(program, channel, args, explicit) {
   if (explicit.offset !== undefined && explicit.offset !== (configs.frame?.offset ?? 0)) {
     guideConflict(`${channel} axis uses a different frame offset`);
   }
+  if (explicit.underlay !== undefined && explicit.underlay !== (configs.frame?.underlay === true)) {
+    guideConflict(`${channel} axis uses a different underlay policy`);
+  }
   const positions = [...new Set(Object.values(configs).map(config => config.position).filter(Boolean))];
   if (positions.length > 1) guideConflict(`${channel} axis components have incompatible positions`);
   const position = explicit.position ?? positions[0];

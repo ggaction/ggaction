@@ -299,6 +299,32 @@
         "path": "unit/persistence/"
       }
     ],
+    "plot-guide-underlays": [
+      {
+        "type": "file",
+        "path": "unit/actions/primitives/graphic-child-order.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/layout/plot-draw-order.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/guides/plot-underlays.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/plot-guide-underlays/"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/guides/plot-underlay-marks.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/plot-underlay-types.test.js"
+      }
+    ],
     "polar": [
       {
         "type": "prefix",

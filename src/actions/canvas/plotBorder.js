@@ -2,6 +2,7 @@ import { action } from "../../core/action.js";
 import { noOptions } from "../../core/validation.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { resolvePlotGraphicPlacement } from "../../materialization/graphicHierarchy.js";
+import { hasPlotUnderlays } from "../../materialization/plotDrawOrder.js";
 
 export const rematerializePlotBorder = /* @__PURE__ */ action(
   { op: "rematerializePlotBorder", description: "Materialize the optional inset plot border." },
@@ -23,6 +24,6 @@ export const rematerializePlotBorder = /* @__PURE__ */ action(
     for (const [property, value] of Object.entries(properties)) {
       next = next.editGraphics({ target: "plotBorder", property, value });
     }
-    return next;
+    return hasPlotUnderlays(next) ? next.rematerializePlotDrawOrder() : next;
   }
 );

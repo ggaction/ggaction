@@ -1537,3 +1537,19 @@
   actions: facet · editCompositionLayout · editFacetHeaders
   tasks: composition layout
   url: /api/composition/facets/#share-the-existing-top-margin
+
+- id: plot-guide-underlays
+  example: /examples/plot-guide-underlays/
+  title: Composite marks over guides
+  image: /assets/images/plot-guide-underlays.png
+  alt: Two rounded difference-blended bars use the gray axis and plot border as their backdrop
+  width: 480
+  height: 360
+  thumbnail: /assets/images/plot-guide-underlays-thumb.png
+  thumbnail_width: 480
+  thumbnail_height: 360
+  caption: The axis and border paint first, so opaque difference blending uses the existing guides as its backdrop.
+  summary: Move a complete Cartesian axis or plot border behind ordinary marks without changing geometry.
+  actions: createXAxis · editXAxis · editCanvas
+  tasks: composition appearance editing
+  url: /api/axes/complete/#composite-marks-over-guides

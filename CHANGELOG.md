@@ -4,6 +4,7 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add explicit Cartesian-axis and plot-border underlays, with strict existing-container child-order editing.
 - Add opt-in facet `topLane: "shared"` with plot spacing, fixed child sizes, collision validation and editable persistence. Render blank mapped text consistently.
 - Add opt-in content-aware legend `rowPadding` and independent `titlePadding`, with focused editing, explicit reset and retained replay intent.
 - Fix HCL and HCL-long hue handling at exact neutral RGB endpoints for D50 and D65.
