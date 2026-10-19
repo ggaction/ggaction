@@ -9,9 +9,10 @@ const outputFile = path.join(root, "src/inspectionDescriptors.js");
 
 function optionKind(name, type, action) {
   if (["target", "source", "data", "coordinate", "scale", "id"].includes(name)) return "resource";
-  // Encoding value branches are literals, not dataset column references.
+  // "value" is a field role only in data-stack and chart value channels.
+  // Selection/filter comparisons, imputation and labels accept literal values.
   if (["field", "x", "y", "groupBy", "category"].includes(name) ||
-      (name === "value" && !action.startsWith("encode"))) return "field";
+      (name === "value" && /^(?:create|edit)(?:StackData|DotPlot|LollipopPlot|EndpointPlot|RadarPlot|RaincloudPlot|PiePlot|RosePlot|RadialBarPlot)$/.test(action))) return "field";
   if (/domain|range|extent/i.test(name)) return "range";
   if (name === "plot") return "object";
   if (/readonly .*\[\]|\[.*\]/.test(type)) return "array";

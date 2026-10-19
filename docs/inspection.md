@@ -49,6 +49,10 @@ constraints appear in `requirements`, `checks`, and structured `findings`.
 allocation, and rendering remain `not_run`. Registered extension actions with
 no built-in descriptor return `unverified`.
 
+Literal comparison values in `filterMarks`, `selectMarks`, and `editMarkSelection`
+are not field references. Their `field` option selects the column; a string
+`value` such as a category name is checked as a literal.
+
 ## Compare immutable revisions
 
 ```javascript

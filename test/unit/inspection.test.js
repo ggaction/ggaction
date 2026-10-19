@@ -18,6 +18,20 @@ function pointProgram() {
     .encodeY({ field: "y" });
 }
 
+test("literal filter and selection values are not interpreted as field names", () => {
+  const program = chart().createCanvas().createData({ values: [{ x: 1, y: 2, group: "A" }, { x: 2, y: 3, group: "B" }] })
+    .createScatterPlot({ id: "points", x: "x", y: "y" });
+  for (const action of ["filterMarks", "selectMarks"]) {
+    const options = { target: "points", field: "group", op: "eq", value: "A" };
+    const descriptor = describeAction(program, { action, target: { kind: "mark", id: "points" }, options });
+    assert.equal(descriptor.applicability, "supported");
+    assert.notEqual(descriptor.parameterDefinitions.find(p => p.path === "value").kind, "field");
+    assert.doesNotThrow(() => program[action](options));
+    assert.equal(describeAction(program, { action, target: { kind: "mark", id: "points" }, options: { ...options, field: "missing" } }).applicability, "incompatible");
+  }
+  assert.equal(describeAction(program, { action: "createStackData" }).parameterDefinitions.find(p => p.path === "value").kind, "field");
+});
+
 test("describeAction reports supported and incompatible checks without execution", () => {
   const program = pointProgram();
   const supported = describeAction(program, {
