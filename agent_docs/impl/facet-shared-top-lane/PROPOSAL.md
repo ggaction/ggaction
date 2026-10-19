@@ -140,3 +140,17 @@ node agent_docs/impl/facet-shared-top-lane/prepare-target.mjs \
 Committed primitive는 생성 내용과 같을 때만 재사용하며 덮어쓰지 않는다.
 `TARGET_EVIDENCE.json`이 최초 숫자·SVG/PNG/DPR2/PDF hash·다섯 baseline 거부 경로를 기록한다.
 기존 private probe의 실패·다른 범례 경로도 그 기록에 구분해 보존했다.
+
+## 목표의 선언 순서 보정 (화면 변경 없음)
+
+최초 구현과 원래 primitive는 deep-equal graphicSpec·그리기 순서·같은 namespace의 SVG가 같았다.
+다만 primitive가 plot background를 먼저 선언하고 기존 source는 나중에 before로 삽입하므로,
+object-key 삽입 순서를 사용하는 기본 SVG resource ID hash가 달랐다. Renderer나 비교 조건을 바꾸지 않았다.
+기존 stacked baseline의 선언 순서를 그대로 따르고 before로 paint 순서를 지정한
+`target-v2.primitive.mjs`를 새로 고정했다. 원래 파일과 증거는 보존한다.
+
+V2는 새 API 구현을 읽지 않고 기존 baseline만 사용한다. Original PNG와 DPR2 PNG가 byte-exact이고,
+모든 위치·색·텍스트·graphic tree의 draw 순서가 같다. 이제 기본 namespace의 SVG도 원래 public
+materialization과 byte-exact하게 비교할 수 있다. 보정 검토는 `GATE_TARGET_V2.json`, 실제 증거는
+`TARGET_V2_EVIDENCE.json`에 있다. Local probe에서 preliminary public source가 존재했지만, 이 문서
+검토 commit은 기존 API runtime을 유지하며 새 target 생성은 그 API를 호출하지 않는다.
