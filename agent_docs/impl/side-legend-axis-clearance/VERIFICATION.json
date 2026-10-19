@@ -332,5 +332,15 @@
     "full verified corpus compatibility on selected release runtime",
     "registry publication and registry installation",
     "exact tag/release/docs/dataset/viewer synchronization"
-  ]
+  ],
+  "implementationCommit": "eac19dc02b1d20e682471dd997ad87850f365e91",
+  "metadataFollowup": {
+    "sourceCommit": "eac19dc02b1d20e682471dd997ad87850f365e91",
+    "documentationProvenanceStatus": "development",
+    "tests": 12,
+    "pass": 12,
+    "fail": 0,
+    "logSha256": "1e04350895986393e225336ccf741988e02e1d388d9893563fb2ea537cb3996f",
+    "runtimeAndPackedBytesUnchanged": true
+  }
 }
