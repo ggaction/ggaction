@@ -572,6 +572,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   `test/unit/actions/marks/edit-area-mark.test.js`, density and regression chart tests.
 
 - `missing`: Implemented `"error"|"break"`, 기본 error. Semantic mark.missing에만 저장한다. Break는 raw Area 측정 endpoint의 null/undefined에서 2점 이상 segment로 나누며 density/horizon 재해석을 거부한다.
+- 명시적 break 뒤 인접한 유효 sample이 없으면 유한한 원래 좌표 domain을 유지하는 빈 path collection이다.
+  Sparse grouped Area는 `createCompleteData`로 먼저 정렬한다. count/sum의 명시적 zero fill과 mean의 null gap은 구분한다.
 - Evidence: test/unit/actions/encodings/area-endpoints.test.js.
 
 ## `editAreaMark`

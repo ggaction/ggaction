@@ -87,8 +87,9 @@ test("invalid endpoints and missing policies reject without changing any program
   for (const value of [NaN, Infinity, "3"]) {
     assert.throws(() => base([{ x: 0, value }, { x: 1, value: 1 }], "break").encodeX({ field: "x" }).encodeYRange({ lower: "value", upper: { datum: 0 } }));
   }
-  assert.throws(() => base([{ x: 0, value: 1 }, { x: 1, value: null }, { x: 2, value: 2 }], "break")
-    .encodeX({ field: "x" }).encodeYRange({ lower: "value", upper: { datum: 0 } }), /valid segment/);
+  const isolated = base([{ x: 0, value: 1 }, { x: 1, value: null }, { x: 2, value: 2 }], "break")
+    .encodeX({ field: "x" }).encodeYRange({ lower: "value", upper: { datum: 0 } });
+  assert.equal(isolated.graphicSpec.objects[isolated.semanticSpec.layers[0].id].items.length, 0);
   assert.throws(() => base([{ x: null, value: 1 }, { x: 1, value: 2 }], "break")
     .encodeX({ field: "x" }).encodeYRange({ lower: "value", upper: { datum: 0 } }), /finite number/);
 });

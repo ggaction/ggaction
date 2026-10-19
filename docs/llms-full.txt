@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:36a71f55c992a69ff468848b2e8cc66bbf7de3393ec0253944dd32b7435297eb. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:e4ce0118c561a58e5a0eb1c1a15bd65a8bf1f75888ad23c10dbf4de2433de5df. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -6455,6 +6455,13 @@ Missing independent positions, invalid group keys, NaN and Infinity remain error
 Nominal/ordinal independent positions support point/band scales. Domain order
 (or first appearance) orders vertices unless path order is explicit. Stacking
 requires aligned groups; missing categories are not synthesized.
+
+Use `createCompleteData` to align sparse group/key combinations explicitly.
+Counts or sums may use an explicit zero fill; missing means should remain null
+and use `missing: "break"`. Stacked, normalized, and centered layouts break every
+series at an unknown total. If gaps leave no adjacent valid samples, the result
+is an empty path collection with finite coordinate domains, without invented
+connections. Editing the completion dataset rematerializes its area consumers.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -40802,7 +40809,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:36a71f55c992a69ff468848b2e8cc66bbf7de3393ec0253944dd32b7435297eb` |
+| Contract fingerprint | `sha256:e4ce0118c561a58e5a0eb1c1a15bd65a8bf1f75888ad23c10dbf4de2433de5df` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
