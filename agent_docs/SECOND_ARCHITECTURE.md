@@ -2552,3 +2552,16 @@ owner를 재사용한다. 별도 상태 schema나 렌더러 경계를 추가하�
 npm11.18.0 staged package 실측은591entries/843246packed/4088383unpacked bytes다.
 기존842000/4087000 검사는 실패했으며, 내용을 줄이지 않고 다음 최소1000bytes 단위인
 844000/4089000으로만 올린다. Entries591과 browser/search/coverage 기준은 유지한다.
+
+
+### Native correctness integration package measurement
+
+2026-10-20 composite Box filtering, facet derived-data/guide replay, sparse Area, and
+source-facing Horizon/ECDF guides add required runtime behavior. Installed consumer
+measurements on Node23.5.0 are Full423043 / Basic214385 gzip bytes, compared with the
+previous recorded421644 /213862. The existing422000 /214000 checks failed and are
+not reported as passing. The minimum1000-byte ceilings become Full424000 /Basic215000;
+SVG25000 and package entry/packed/unpacked limits remain unchanged. Final identical
+facet guide reuse avoids rebuilding completed panels without changing exports or
+explicit guide creation semantics. This is a measured correctness-feature allowance,
+not a bundle optimization claim.
