@@ -1,0 +1,18 @@
+{
+  "state": "approved",
+  "approvalSource": "reuse-direct-human-standing-approval-for-all-future-in-scope-design-and-visual-questions",
+  "humanInstruction": "지금까지 모든 질문, 앞으로 할 모든 질문 승인함. 새로운 릴리즈는 200개 단위로 하자",
+  "reviewCommit": "0ef92ca761d3bed8db84f3d43326397b99c5067c",
+  "scope": "Complete Cartesian axis and Canvas plot-border Boolean underlay; exact named-container child permutation in existing editGraphics; explicit wrapped draw-order reconciliation. No global rank or renderer semantic inference.",
+  "proposalSha256": "7c7e8a4082cd32120f708587468f2fc58cc96980e8455d6ebf0d2308d7d02c2f",
+  "gateSha256": "e471af9cd80d868f82e1458ef9ac1f580e65c75f77a2e17e072b8928369cd76c",
+  "primitiveSha256": "beaad9d1ef60aa4342dba691aa0d611f5afc4f0983b6cb01a7b476aefe16a786",
+  "targetSvgSha256": "528c01aad462c918b8d2364dde9208ce5ef1520c16ce9e10d6054592785b47e0",
+  "targetPngSha256": "91e23652e4d7bf45be253c8d2cccaab2b59fd7d85c6cee5934c1b74f8b36bd3b",
+  "targetPngDpr2Sha256": "9cc3095ff20aecbe38fc0c9dd4dbd9e0c0fed7a85eb0c897bd3275e11afb9ec8",
+  "newInteractiveApprovalRequested": false,
+  "humanVisualInspectionClaimed": false,
+  "chartPixelsInspected": false,
+  "schoolCalls": 0,
+  "publicImplementationBeforeThisRecord": false
+}

@@ -1,5 +1,5 @@
 {
-  "state": "ready-for-review",
+  "state": "approved",
   "issue": 223,
   "baselineRuntimeCommit": "8e1c809c78d0b50336e53db11439e3f194d83725",
   "scope": "Complete Cartesian axis and Canvas plot-border Boolean underlay; exact named-container child permutation in existing editGraphics; explicit wrapped draw-order reconciliation. No global rank or renderer semantic inference.",
@@ -138,5 +138,6 @@
   "chartPixelsInspected": false,
   "humanVisualInspectionClaimed": false,
   "schoolCalls": 0,
-  "privatePreparationHistory": "First target generator supplied stored item IDs to an existing items input that generates IDs itself. Corrected input uses type/properties only; failed draft/log retained in .artifacts/plot-guide-underlays/. No library code, target geometry or tolerance changed."
+  "privatePreparationHistory": "First target generator supplied stored item IDs to an existing items input that generates IDs itself. Corrected input uses type/properties only; failed draft/log retained in .artifacts/plot-guide-underlays/. No library code, target geometry or tolerance changed.",
+  "approval": "APPROVAL.json"
 }

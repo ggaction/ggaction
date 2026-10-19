@@ -5,7 +5,7 @@
 - [x] #223의 기존 공개 재현·현재 ownership/그리기 순서 구현 확인
 - [x] 기존 defaults와 grid rank를 유지하는 최소 공개 설계 확정
 - [x] 기존 primitive만으로 독립적인 목표와 수치·renderer 증거 준비
-- [ ] 검토 commit/push 후 직접적인 standing approval 재사용 기록
+- [x] 검토 commit/push 후 직접적인 standing approval 재사용 기록
 - [ ] 구현·타입·현재 계약·예제·문서·패키지와 전체 검증
 - [ ] 검증 checkpoint commit/push; 다음 정기 릴리즈까지 candidate 유지
 
