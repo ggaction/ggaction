@@ -5,7 +5,8 @@ import {
   walkGraphicTreeEvents
 } from "../grammar/schemas/graphicTree.js";
 import {
-  validateConcreteGraphicProperties
+  validateConcreteGraphicProperties,
+  validateConcreteGraphicValue
 } from "../grammar/schemas/concreteGraphic.js";
 import { resolvePathCommandBounds } from
   "../grammar/schemas/graphicBounds.js";
@@ -376,7 +377,8 @@ function serializeText(state, graphicId, properties) {
   const fontSize = requireFiniteProperty(properties, "fontSize", graphicId);
   const rotation = properties.rotation ?? 0;
   const opacity = requireOpacity(properties, graphicId);
-  const text = requireStringProperty(properties, "text", graphicId);
+  const text = properties.text;
+  validateConcreteGraphicValue("text", "text", text);
   const fill = requireStringProperty(properties, "fill", graphicId);
   const fontFamily = requireStringProperty(
     properties,

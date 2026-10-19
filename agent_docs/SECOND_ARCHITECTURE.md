@@ -2562,3 +2562,8 @@ Facet의 opt-in topLane 정책은 compositionSpec 한 곳에 저장한다. Pure 
 849000/4115000으로만 갱신한다. 실제 설치 browser consumer는 Full419868/Basic206509gzipbytes로
 기존420000/207000 안에 있다. SVG25000과 모든 그림/수치/coverage 기준은 유지한다. 이전 상한
 실패를 보존하며 Node24 protected-release 실측은 다음 정기 배포에서 별도로 필요하다.
+
+같은 qualification에서 이미 허용된 concrete text:""를 renderer의 추가 non-empty 검사가 거부하는
+불일치를 찾았다. Canvas/SVG가 기존 concrete value validator를 직접 재사용하도록 복원했다.
+새 schema나 renderer semantic inference는 없다. 수정된 staged unpacked4115014bytes가 이전4115000을
+14bytes 넘었으므로 해당 실패를 보존하고 최소다음1000byte 단계4116000만 적용한다.

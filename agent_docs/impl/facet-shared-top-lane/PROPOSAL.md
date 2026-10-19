@@ -154,3 +154,12 @@ V2는 새 API 구현을 읽지 않고 기존 baseline만 사용한다. Original 
 materialization과 byte-exact하게 비교할 수 있다. 보정 검토는 `GATE_TARGET_V2.json`, 실제 증거는
 `TARGET_V2_EVIDENCE.json`에 있다. Local probe에서 preliminary public source가 존재했지만, 이 문서
 검토 commit은 기존 API runtime을 유지하며 새 target 생성은 그 API를 호출하지 않는다.
+
+## 공개 빈 레이블 렌더러 계약 불일치 복원
+
+최종 replay matrix의 빈 mapped header는 문서·공통 concrete schema에서 허용되지만, SVG와 Canvas의
+추가 drawable 검사가 non-empty string을 다시 요구했다. 기존 PRIMITIVES.md와 COMPOSITION.md의
+이미 구현된 계약에 대한 회귀다. 새 공개 API·스키마·visual target을 바꾸지 않고 text 값의 필수 여부를
+기존 validateConcreteGraphicValue owner로 검사한다. Appearance 문자열은 기존처럼 비어 있으면 거부한다.
+Item identity·text 값·부모 layout·기본 nonempty 그림은 유지한다. PNG/PDF와 세 브라우저를 포함해
+빈 header의 실제 렌더링을 별도로 검증한다. 기존 실패 replay-matrix-v1.log는 보존한다.

@@ -123,6 +123,10 @@
       {
         "type": "prefix",
         "path": "charts/facet-shared-top-lane/"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/empty-text-renderer.test.js"
       }
     ],
     "grammar": [

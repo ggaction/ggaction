@@ -25,7 +25,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 598, // Shared top lane adds pure layout and final concrete bounds owners.
   packedBytes: 849_000, // Shared top lane measured848458bytes on Node22; Node24 remeasured at release.
-  unpackedBytes: 4_115_000 // Shared top lane staged artifact measured4114755bytes.
+  unpackedBytes: 4_116_000 // Blank-text renderer contract restoration measured4115014bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

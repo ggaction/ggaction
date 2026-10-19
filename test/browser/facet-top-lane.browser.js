@@ -23,16 +23,20 @@ test.before(async()=>{
 });
 test.after(async()=>{await closeBrowserWithEvidence(browser);await server?.close();await consumer?.cleanup();});
 
-for(const ratio of [1,2])test(`${name} matches shared top lane primitive in installed Canvas and SVG at DPR ${ratio}`,async()=>{
+for(const blank of [false,true])for(const ratio of [1,2])test(`${name} matches ${blank?'blank header':'shared top lane'} primitive in installed Canvas and SVG at DPR ${ratio}`,async()=>{
   const context=await browser.newContext({deviceScaleFactor:ratio});
   try{
     const {page,errors}=await openBrowserPage(context,server.baseUrl);
-    const result=await page.evaluate(async ratio=>{
+    const result=await page.evaluate(async ({ratio,blank})=>{
       const {render}=await import('/node_modules/ggaction/src/index.js');
       const {renderToSVG}=await import('/node_modules/ggaction/src/renderers/svg.js');
       const {createFacetSharedTopLaneProgram}=await import('/public.js');
       const {createPrimitiveProgram}=await import('/primitive.js');
-      const programs=[createFacetSharedTopLaneProgram(),createPrimitiveProgram()],svgs=programs.map(p=>renderToSVG(p)),checks=[];
+      const programs=blank?[
+        createFacetSharedTopLaneProgram().editFacetHeaders({labelMap:[{value:'Sun',label:''}]}),
+        createPrimitiveProgram().editGraphics({target:'facet-headers:0',property:'text',value:''})
+      ]:[createFacetSharedTopLaneProgram(),createPrimitiveProgram()];
+      const svgs=programs.map(p=>renderToSVG(p)),checks=[];
       for(const backend of ['Canvas','SVG']){
         const pixels=[];
         for(let i=0;i<programs.length;i++){
@@ -57,11 +61,13 @@ for(const ratio of [1,2])test(`${name} matches shared top lane primitive in inst
       const text=[...host.querySelectorAll('text')].filter(n=>['Grouped Bar Chart','Sun','50'].includes(n.textContent))
         .map(n=>{const b=n.getBoundingClientRect();return{text:n.textContent,top:b.top-root.top,bottom:b.bottom-root.top};});
       return{svgExact:svgs[0]===svgs[1],checks,text,canvas:programs[0].graphicSpec.objects.canvas.properties};
-    },ratio);
+    },{ratio,blank});
     assert.equal(result.svgExact,true);assert.equal(result.canvas.width,508);assert.equal(result.canvas.height,262);
     for(const check of result.checks){assert.equal(check.differences,0,check.backend);assert.ok(check.ink>5000*ratio*ratio);}
     const [title,header,endpoint]=['Grouped Bar Chart','Sun','50'].map(text=>result.text.find(item=>item.text===text));
-    assert.ok(title.top>=0);assert.ok(title.bottom<=header.top);assert.ok(header.bottom<endpoint.top);
+    assert.ok(title.top>=0);
+    if(blank){assert.equal(header,undefined);assert.ok(title.bottom<endpoint.top);}
+    else{assert.ok(title.bottom<=header.top);assert.ok(header.bottom<endpoint.top);}
     assert.ok(endpoint.top<43&&endpoint.bottom>43,'upper endpoint is retained at the plot edge');
     assertNoBrowserErrors(errors,name);await page.close();
   }finally{await context.close();}

@@ -175,7 +175,7 @@ Concrete rectangle의 outline은 네 모서리 모두 closed join을 갖는다. 
     Canvas text vocabulary and renderer-shared validation.
   - ✅ Covered: a concrete text graphic accepts `text:""` so a high-level display map can retain stable item
     identity while rendering no glyph. High-level titles, annotations and author-supplied text contracts keep their
-    own non-empty validation.
+    own non-empty validation. Evidence: `test/unit/renderers/empty-text-renderer.test.js`.
   - ✅ Covered: finite/non-negative/unit-interval boundaries and font/text vocabularies are shared with renderers.
     The exact string `"none"` means no paint for fill, stroke, text fill and canvas background across SVG
     and Canvas-backed outputs. Canvas assigns a real transparent color for this sentinel, so a previous
