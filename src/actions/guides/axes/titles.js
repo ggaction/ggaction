@@ -159,8 +159,7 @@ export function inferAxisTitleText(program, channel, scaleId) {
   const primaryTitles = new Set();
   for (const layer of program.semanticSpec.layers) {
     if (isSourceOwnedText(layer)) continue;
-    // Statistical references reuse the source axis. Their internal statistic
-    // output is not another independent measure for the shared axis title.
+    // Reference statistics reuse the source axis title.
     if (program.markConfigs[layer.id]?.statisticalReference !== undefined) continue;
     const primary = layer.encoding?.[channel];
     const encoding = layer.mark?.type === "area" && Object.hasOwn(primary ?? {}, "datum")
@@ -192,6 +191,9 @@ export function inferAxisTitleText(program, channel, scaleId) {
       } else if (transform?.type === "boxSummary" &&
         Object.values(transform.as).includes(encoding.field)) {
         derivedTitle = transform.field;
+      } else if (transform?.type === "summary") {
+        const aggregate = transform.aggregates.find(value => value.as === encoding.field);
+        if (aggregate) derivedTitle = formatAggregateTitle(aggregate.op, aggregate.field);
       }
       const title = encoding.title ?? derivedTitle ?? (encoding.aggregate === undefined
         ? encoding.field

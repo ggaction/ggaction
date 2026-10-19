@@ -100,7 +100,9 @@ gradient, and order are unsupported; edit quantitative mapping through `editScal
 Continuous size, opacity, stroke-width, and color-symbol legends accept `values` for exact
 ascending samples. Exact values must fit the effective domain and cannot be
 combined with `count`; use `editLegend({ values: "auto" })` to return to the
-remembered automatic sample count. Use `editLegendBlock()` when a target has
+remembered automatic sample count. Automatic samples retain the exact domain
+endpoints so decimal rounding cannot extrapolate an opacity beyond its range.
+Use `editLegendBlock()` when a target has
 multiple blocks and only one block's samples, order, title, labels, spacing, or
 supported symbol appearance should change.
 Right-side layout requires sufficient right margin; bottom layout requires

@@ -269,6 +269,18 @@ test("infers the only field-opacity legend through createGuides", () => {
   assert.equal(program.graphicSpec.objects.opacityLegendSymbols.items.length, 5);
 });
 
+test("automatic opacity samples preserve exact nondecimal domain endpoints", () => {
+  const domain = [11.5, 34.977777777777774];
+  const source = pointProgram().encodeOpacity({ field: "value", scale: { domain, range: [.25, 1] } });
+  const before = JSON.stringify(source);
+  const next = source.createLegend({ target: "points", channels: ["opacity"] });
+  const opacities = next.graphicSpec.objects.opacityLegendSymbols.items.map(item => item.properties.opacity);
+  assert.equal(opacities[0], .25);
+  assert.equal(opacities.at(-1), 1);
+  assert.ok(opacities.every((value, i) => value >= .25 && value <= 1 && (i === 0 || value > opacities[i - 1])));
+  assert.equal(JSON.stringify(source), before);
+});
+
 test("lays opacity legends out in all four positions", () => {
   for (const position of ["right", "left", "top", "bottom"]) {
     const program = pointProgram()

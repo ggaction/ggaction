@@ -10,6 +10,19 @@ function points() { return base().createPointMark().encodeX({ field: "x" }).enco
 const items = (p, id) => p.graphicSpec.objects[id].items.map(item => item.properties);
 const layer = (p, id) => p.semanticSpec.layers.find(item => item.id === id);
 
+test("summary output aliases retain inferred measure titles across input edits", () => {
+  const source = chart().createCanvas({ width: 640, height: 480, margin: 80 })
+    .createData({ values: [{ x: 1, y: 2, z: 20 }, { x: 1, y: 4, z: 40 }, { x: 2, y: 8, z: 80 }] })
+    .createSummaryData({ id: "summary", groupBy: ["x"], aggregates: [{ op: "mean", field: "y", as: "value" }] })
+    .createAreaPlot({ id: "plot", x: "x", y: "value" }).createGuides();
+  const before = JSON.stringify(source);
+  assert.equal(source.semanticSpec.guides.axis.y.title, "mean(y)");
+  const next = source.editSummaryData({ target: "summary", aggregates: [{ op: "mean", field: "z", as: "value" }], dependents: "recompute" });
+  assert.equal(next.semanticSpec.guides.axis.y.title, "mean(z)");
+  assert.equal(next.trace.children.length, source.trace.children.length + 1);
+  assert.equal(JSON.stringify(source), before);
+});
+
 test("statistical references preserve aggregate source axis titles and rematerialize", () => {
   for (const method of ["createBarPlot", "createLinePlot", "createAreaPlot"]) {
     let setup = chart().createCanvas({ width: 640, height: 480, margin: 80 })

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:9c1267452b2748540780e27c9e9a3d802ceb325e2f6496aa091d8fec5b021a25. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:0d4eea8ab386d13266bf5711815aacb8ea727170952fda0422775321619549c2. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12456,6 +12456,8 @@ earlier program.
 Automatic axis titles use the source field or aggregate. Statistical reference
 lines and bands reuse that title; their internal output columns do not introduce
 another measure name.
+Grouped summary outputs use their aggregate and source field, including after
+changing the source measure while retaining an output alias.
 
 An omitted offset for a vertical Y-axis title reserves a quarter-em ink gap when
 its estimated text box is clamped to the Canvas edge. This applies at every font
@@ -12962,7 +12964,9 @@ gradient, and order are unsupported; edit quantitative mapping through `editScal
 Continuous size, opacity, stroke-width, and color-symbol legends accept `values` for exact
 ascending samples. Exact values must fit the effective domain and cannot be
 combined with `count`; use `editLegend({ values: "auto" })` to return to the
-remembered automatic sample count. Use `editLegendBlock()` when a target has
+remembered automatic sample count. Automatic samples retain the exact domain
+endpoints so decimal rounding cannot extrapolate an opacity beyond its range.
+Use `editLegendBlock()` when a target has
 multiple blocks and only one block's samples, order, title, labels, spacing, or
 supported symbol appearance should change.
 Right-side layout requires sufficient right margin; bottom layout requires
@@ -40589,7 +40593,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:9c1267452b2748540780e27c9e9a3d802ceb325e2f6496aa091d8fec5b021a25` |
+| Contract fingerprint | `sha256:0d4eea8ab386d13266bf5711815aacb8ea727170952fda0422775321619549c2` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

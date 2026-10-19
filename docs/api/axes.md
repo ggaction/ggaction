@@ -25,6 +25,8 @@ earlier program.
 Automatic axis titles use the source field or aggregate. Statistical reference
 lines and bands reuse that title; their internal output columns do not introduce
 another measure name.
+Grouped summary outputs use their aggregate and source field, including after
+changing the source measure while retaining an output alias.
 
 An omitted offset for a vertical Y-axis title reserves a quarter-em ink gap when
 its estimated text box is clamped to the Canvas edge. This applies at every font

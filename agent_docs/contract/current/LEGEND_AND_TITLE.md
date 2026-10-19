@@ -295,6 +295,9 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ### Dashed legend borders
 
+Automatic continuous legend samples preserve the exact effective domain endpoints;
+decimal cleanup must not extrapolate an opacity sample beyond its authored range.
+
 - `border.strokeDash?: readonly number[]` accepts only even-length arrays of finite nonnegative numbers.
   Empty arrays restore solid frames; omission preserves the existing border merge/creation semantics.
   Odd length, sparse arrays, negative/nonfinite entries, nonarrays and unknown border keys fail atomically.
