@@ -1,0 +1,192 @@
+{
+  "status": "verified-unreleased-library-candidate",
+  "issues": [
+    222,
+    232
+  ],
+  "publicRelease": false,
+  "regularReleaseAtDistinctFamilies": 1413,
+  "chartFamiliesCompleted": 1250,
+  "schoolModelCalls": 0,
+  "chartPixelsInspected": false,
+  "runtimeCommits": [
+    "a1f93dea66de5f523b403b2fadced538b1040079",
+    "eea2d2f15098bdd7682e3e81bdd48f3bd0647171"
+  ],
+  "approval": "APPROVAL_TARGET_V2.json",
+  "target": "TARGET_V2_EVIDENCE.json",
+  "passed": {
+    "focusedWithBoundaries": 38,
+    "normalSuite": {
+      "total": 4736,
+      "pass": 4736,
+      "fail": 0
+    },
+    "noOptInPublicExamplesExact": 92,
+    "renderPngDpr2Pdf": 3,
+    "sourceReplayMatrix": 21,
+    "frozenTargetSvgAndBothPngDensitiesExact": true,
+    "publicBrowserExample": 1,
+    "installedBrowserEngines": {
+      "chromium": 4,
+      "firefox": 4,
+      "webkit": 4
+    },
+    "finalExactTarballConsumer": true,
+    "builtDocumentationPages": 150,
+    "finalBuiltDocsBrowser": {
+      "desktopSearchKeyboardAndNoJavascript": true,
+      "automatedAccessibility": true,
+      "allPagesAtWidths": [
+        320,
+        390,
+        768
+      ]
+    }
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.21",
+    "file": "/Users/hyeonjeon/Projects/ggaction-feature-review-0.0.19/.artifacts/facet-shared-top-lane/candidate-final-v2/ggaction-0.0.21.tgz",
+    "entryCount": 598,
+    "packedBytes": 848567,
+    "unpackedBytes": 4115014,
+    "sha256": "21dda78d37c00c68b3368320cb64304fe6bd2dd0c78d9b2341bde2a02edeac0e",
+    "integrity": "sha512-sJPypfrfKiHl7qQBoSdHgu2FJ9BusJL8VrwtaJZ9ZxEs536q+P0yaiiTdOJFnEOYvMRk5pZKY33sx9DpgM3grw==",
+    "node": "v22.23.1",
+    "publicRelease": false
+  },
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 530,
+      "minifiedBytes": 1550759,
+      "gzipBytes": 419884
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 312,
+      "minifiedBytes": 732753,
+      "gzipBytes": 206498
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 19,
+      "minifiedBytes": 23548,
+      "gzipBytes": 7564
+    }
+  },
+  "pending": [
+    "Node24 protected-release remeasurement and regular1413-family runtime/docs/dataset/viewer integration"
+  ],
+  "failuresPreserved": [
+    "Original target-v1 differs only in object declaration order and default SVG namespace; target-v2 retains exact original PNG/DPR2 and draw order. Both historical targets and approvals retained.",
+    "lifecycle-v1/v2 used incorrect theme/concat test setup, incorrectly counted legend rect as a bar, and corrupted an encoded persistence envelope as a plain object. Corrected tests use the actual existing APIs and canonical codec. A non-colliding header is correctly accepted; explicit logical collision probes remain strict.",
+    "Initial render-v1/v2 passed a bare selector rather than the required capability: prefix; render-v4 completes all three stable render cases.",
+    "all-v1 had four failures: missing public hierarchy registration, package ceiling growth, unsorted capability registration, and an uncommitted canonical example source link. All corrected; final all-v3 is4736/4736.",
+    "all-v2 was an intermediate4734/4734 run before the final blank-text correction was fully qualified; not reused as final runtime evidence.",
+    "replay-matrix-v1 found an existing documented empty concrete text accepted by the schema but rejected by renderers. Fixed by reusing the canonical concrete value validator; issue232 records it. Final matrix-v2 has21passed cases; both modes/invalid inputs/three browsers/two densities covered.",
+    "Package old limits actually failed: entries598>596, packed848458>848000, unpacked4114755>4109000, and final blank-text4115014>4115000. Entry cap598 and minimum1000byte steps849000/4116000 only; browser/geometry/numeric/coverage ceilings unchanged.",
+    "candidate-final/ggaction-0.0.21.tgz is the superseded pre-blank-text local artifact. Only candidate-final-v2 is final verified candidate; neither is a public release."
+  ],
+  "bindings": [
+    {
+      "path": ".artifacts/facet-shared-top-lane/focused-v6.log",
+      "bytes": 8260,
+      "sha256": "11fbe2e1698aa8e3164a31ca047b3f03c7b3832562670a3fbce2c9e79fc9ba4a"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/render-v4.log",
+      "bytes": 708,
+      "sha256": "eb60e3281627bf214b946849e9a4b69ab616ab583e7c1d5b386fba308664fa0f"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/empty-text-v1.log",
+      "bytes": 2162,
+      "sha256": "3c55bd09e388dc9e0e62d120de1bbfb4c7ae8c1cd34fa8495e651b00fbe9adca"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane-default-parity-v2.json",
+      "bytes": 22468,
+      "sha256": "69fe16b386074af07a92c38e55a1a5c104969fbb26ae862ad44b221cfad08239"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/replay-matrix-v2.mjs",
+      "bytes": 2488,
+      "sha256": "92acff92ae3766c474b51c3205da8c7fc2929fa4844f0916e54a34cac23abd4a"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/replay-matrix-v2.json",
+      "bytes": 5222,
+      "sha256": "c7c9a0726dd1e2765df99499e41989c5fdecc347dfc8adc7074a3a42f5aa6e71"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/frozen-target-runtime-parity-v1.json",
+      "bytes": 887,
+      "sha256": "8e59b71da43e14e54546fe4feac7579cb66f152419d864eb0257494ac76351d3"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/browser-chromium-v2.log",
+      "bytes": 1245,
+      "sha256": "f1f6297a0dffe095318b65a162dc6717d4be3054afe87244841f82c6e3bf7257"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/browser-firefox-v2.log",
+      "bytes": 1243,
+      "sha256": "02659ff1777e4dc6524f661c0d7fcd79bcc5bfd21dc84765b0db34ef205c8bdc"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/browser-webkit-v2.log",
+      "bytes": 1237,
+      "sha256": "4814afa05a87f1008b5331078b7ecf2d817b9f39844b70731c1549a9c372070c"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/public-browser-v1.log",
+      "bytes": 305,
+      "sha256": "136e6f6372e6977363658e61d5d6ecbf7d6741e6cb67746cfd05718cdee3855e"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/all-v3.log",
+      "bytes": 985951,
+      "sha256": "17ce7c765246a5d785a96463f2ac7c186bd7461d539bf9ec706a6403c84ca159"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/docs-preflight-v1.log",
+      "bytes": 257,
+      "sha256": "5498bb281530d50ed1534e8ebfce1934e86f6c7a33491aa407ff4db951e1674d"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/docs-generate-v3.log",
+      "bytes": 9451,
+      "sha256": "b98cfea46e68fe2d63635b213f01e38de1dc5b11ad1fdbd6e3bff8a130bdb552"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/docs-build-v3.log",
+      "bytes": 419,
+      "sha256": "32412432262f502ec4ba70fef73185e7fe65afa61f8306763628cef3685bed08"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/docs-built-v3.log",
+      "bytes": 115,
+      "sha256": "8b67b737002bb9a40f52b91eba9a2aba91b043a875723aacaf5ca645421b217d"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/package-consumer-final-v2.log",
+      "bytes": 2475,
+      "sha256": "df98fd1b114563bbdf37b8be29ac1e8e30e1f0b8aee9f184fd1b553d81830beb"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/candidate-final-v2.json",
+      "bytes": 506,
+      "sha256": "1c2483b04715a38095eae92d01a97579c1b61fceae31839437a4aadd7494e34f"
+    },
+    {
+      "path": ".artifacts/facet-shared-top-lane/docs-browser-v3.log",
+      "bytes": 157,
+      "sha256": "a6c413832c2ac970262d660fe51fe2b6b1ac8d6ab97e797817fdb77cd9193c60"
+    }
+  ]
+}

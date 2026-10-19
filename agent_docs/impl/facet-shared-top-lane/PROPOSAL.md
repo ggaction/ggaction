@@ -7,10 +7,10 @@
 - [x] 새 옵션이 현재 다섯 공개 경로에서 거부되는 baseline 증거
 - [x] 구체적인 API·상태·배치·오류·검증 범위 확정
 - [x] 검토 패키지를 원격 commit에 고정하고 직접적인 기존 사용자 승인 기록
-- [ ] 공개 구현, 회귀·타입·예제·문서·패키지 검증
-- [ ] 검증 checkpoint commit/push; 다음200-family 릴리즈까지 candidate 유지
+- [x] 공개 구현, 회귀·타입·예제·문서·패키지 검증 (최종 built-browser 실행은 RESULTS에서 별도 기록)
+- [x] 검증 checkpoint commit/push; 다음200-family 릴리즈까지 candidate 유지
 
-이 문서는 구현 전 제안이다. 이슈: <https://github.com/ggaction/ggaction/issues/222>.
+이 문서의 설계 본문은 검토 commit의 구현 전 baseline을 기록한다. 최종 구현·검증은 RESULTS.json에 기록한다. 이슈: <https://github.com/ggaction/ggaction/issues/222>.
 현재 라이브러리는 아래 옵션을 지원하지 않는다. 기존 동작·standalone unit의 경계 검증을 유지한다.
 
 ## 문제와 측정된 목표
