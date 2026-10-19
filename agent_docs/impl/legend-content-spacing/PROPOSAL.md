@@ -4,8 +4,8 @@
 
 - [x] 현행 계약·공통 item layout·opacity/gradient 예외 경로 조사
 - [x] 구체적인 public/persisted 계약 작성
-- [ ] 기존 primitive 시각 목표와 실패하는 현재 API 재현 검증
-- [ ] 원격 review checkpoint 및 기존 명시적 승인 기록
+- [x] 기존 primitive 시각 목표와 실패하는 현재 API 재현 검증
+- [x] 원격 review checkpoint 및 기존 명시적 승인 기록
 - [ ] 구현·회귀·타입·persistence·문서·설치 consumer 검증
 - [ ] 검증된 후보 commit/push; 정규 200-family checkpoint에서 통합
 
@@ -108,3 +108,18 @@ serialized restoration과 Canvas/scale/data/theme replay를 포함한다. 경계
 개념 checkpoint에서 focused+unit/contracts/charts/docs/installed-consumer 및 관련 browser 검증을 수행한다.
 패키지/카드/bundle budget은 실제 초과를 확인한 항목에만 기존 최소 단위로 조정하며 측정값과 실패를
 보존한다. Node24 protected-release 재측정은1413 release checkpoint에서 별도로 수행한다.
+
+## 준비 검증 결과
+
+`target.mjs`와 `TARGET_EVIDENCE.json`이 실행 원문과 목표 좌표/해시를 소유한다.
+DPR1/2에서 plot RGBA는 control과 정확히 같고 plot ink는863/3350 pixels다.
+전체 출력은 의도한 범례 이동으로 달라지며 새 create/whole-edit/focused-layout 옵션6개 경로는
+모두 현재 API에서 거절한다. 초기 review-control의 explicit target 누락과 concrete title baseline
+가정 오류는 수정하고 원래 실패 로그를 보존했다. Runtime source/types/knowledge는 아직 변경하지 않았다.
+기존24c6cbc8 입력의4677개 unit/contracts/docs/charts 및3browser×6, installed-consumer 검증은
+그 관련 runtime/package 입력이 그대로이므로 설계 준비의 cumulative 기준으로 재사용한다.
+Public 구현 후에는 변경 입력에 대해 필요한 검증을 다시 수행한다.
+
+원격 review commit은 `f56833b0c113744c4940acceea9315fddd8a54ef`다.
+후속 checklist/evidence metadata 기록은 public 설계나 target geometry를 바꾸지 않는다.
+일반 승인 질문을 다시 하지 않고 `APPROVAL.json`에 명시적인 standing approval의 출처와 한계를 기록한다.

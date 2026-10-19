@@ -152,7 +152,13 @@
     {
       "log": ".artifacts/legend-content-spacing-target-v2.log",
       "error": "Review assertion assumed a middle baseline, but existing concrete title uses top. Target retains the same visual center37 with concrete top30. Public API/visual design unchanged."
+    },
+    {
+      "stage": "review-checklist-metadata",
+      "error": "Python stdin source encoding failed; shell block lacked set -e and committed the already verified three-file design package. No runtime source changed. Subsequent checklist/evidence metadata is recorded with set -e and Node; original terminal failure remains in task history."
     }
   ],
-  "proposalSha256": "33971803d69056892fd72a8b21faecbbb9a1fb27d82bc70d77e295d5c16363a1"
+  "proposalSha256": "b4f2c0e77496afe36076cca930966b69a85b30c6109d5db604f032618db0aa3f",
+  "runtimeAndPackageInputsChanged": false,
+  "cumulativeEvidenceReusedFrom": "24c6cbc8682998ff136842847a3164976985cdd9"
 }

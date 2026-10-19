@@ -1,0 +1,19 @@
+{
+  "state": "approved",
+  "approvalSource": "direct-human-standing-approval-of-all-past-and-future-in-scope-questions",
+  "standingInstruction": "지금까지 모든 질문, 앞으로 할 모든 질문 승인함. 새로운 릴리즈는 200개 단위로 하자",
+  "scope": "Existing createLegend/editLegend/editLegendLayout rowPadding/titlePadding options, exact proposal defaults/precedence/reset/family/transition/persistence contract and independent primitive target.",
+  "remoteReviewCommit": "f56833b0c113744c4940acceea9315fddd8a54ef",
+  "reviewProposalSha256": "33971803d69056892fd72a8b21faecbbb9a1fb27d82bc70d77e295d5c16363a1",
+  "currentProposalSha256": "b4f2c0e77496afe36076cca930966b69a85b30c6109d5db604f032618db0aa3f",
+  "metadataOnlyFollowupPublicDesignUnchanged": true,
+  "targetScriptSha256": "5bb20b535d1f8c63f59ec3b571bfb001675ce33081686ea6abda121ea794e9aa",
+  "primitiveTargetSvgSha256": "38f9d73a518fbd1704f47d76cd63396edd777ea598454ba44f78d971ebdfdef4",
+  "primitiveTargetPngSha256": "a413670c4997a60162f739ad38c17bab22ba6bf3bbf5d834c56083d384bdea82",
+  "newInteractiveApprovalRequested": false,
+  "humanVisualInspectionClaimed": false,
+  "modelChartPixelsInspected": false,
+  "schoolCalls": 0,
+  "releaseCadence": "Collect verified candidate; regular release after200distinct completed families beyond1213, at1413; no current npm/tag/Pages publication.",
+  "implementationStarted": false
+}
