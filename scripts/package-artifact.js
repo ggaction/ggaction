@@ -113,7 +113,12 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/layout/legendGroup.js",
   "src/layout/legendText.js",
   "src/materialization/legendText.js",
-  "src/materialization/legendGroups.js"
+  "src/materialization/legendGroups.js",
+  "src/grammar/horizon.js",
+  "src/actions/boxPlots/components.js",
+  "src/actions/data/filter.js",
+  "src/actions/facets/replay.js",
+  "src/actions/guides/legends/categorical/actions.js"
 ]);
 
 export function compactPackageJavaScript(source, { keepNames = true } = {}) {

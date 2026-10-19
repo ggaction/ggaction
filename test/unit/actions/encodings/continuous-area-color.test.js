@@ -60,7 +60,7 @@ test("rejects varying, nonfinite, temporal, aggregate and unknown policies atomi
   assert.equal(JSON.stringify(base), snapshot);
   const line = chart().createCanvas().createData({ values: rows }).createLineMark()
     .encodeGroup({ field: "series" }).encodeX({ field: "x" }).encodeY({ field: "value" });
-  assert.throws(() => line.encodeColor(colors), /eligible layer/);
+  assert.equal(line.encodeColor(colors).semanticSpec.layers[0].encoding.color.field, colors.field);
   assert.throws(() => chart().createCanvas().createData({ values: rows }).createAreaPlot({ x: "x", y: "value", color: colors }), /nominal|categorical|unsupported|requires/i);
 });
 

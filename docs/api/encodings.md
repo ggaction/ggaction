@@ -205,11 +205,9 @@ It accepts existing compatible x/y encodings or explicit `x` and `y`, then
 owns the folded y/y2 positions and positive/negative palettes as one action.
 Horizon charts intentionally keep only the source-facing x guide.
 
-If you explicitly add a color legend, its title uses the original measure and
-its labels show the original value intervals represented by the bands. With
-different independent group extents, labels describe the band above or below
-the baseline instead of implying a shared numeric interval. `editHorizon`
-updates inferred labels while retaining explicit titles and display-label maps.
+An explicit color legend shows the original measure and band intervals.
+Different independent extents use relative band labels. `editHorizon` refreshes
+inferred labels while retaining authored titles and label maps.
 `bands` is at most 10,000 and the complete run-by-band output is limited to
 10,000 rows; unrepresentable signed deviations or fold extents are rejected.
 

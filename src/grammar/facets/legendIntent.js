@@ -5,13 +5,14 @@ import { LEGEND_CONFIG_KINDS, LEGEND_POSITIONS } from "../../core/vocabulary.js"
 import { describeLegendBlock } from "../legendBlocks.js";
 import { validateLegendGroupState } from "../legendGroups.js";
 import { resolveSharedFacetLegends, sameFacetGuideValue as same } from "./guides.js";
+import { normalizeDisplayLabelMap } from "../displayLabels.js";
 
 const CONFIG_KEYS = Object.freeze([
   "kind", "target", "channels", "scales", "scale", "field", "fieldType", "domain", "title", "titleVisible",
   "inferredTitle", "inferredSymbol", "inferredStrokeWidth", "inferredOffset", "position", "align", "offset", "direction", "columns",
   "titlePosition", "symbol", "labels", "titleStyle", "itemGap", "layout", "overflow", "border", "gradient",
   "count", "sampling", "representation", "gradientDirection", "inheritAppearance", "inheritPosition", "blockOverrides",
-  "combine", "sizeAreas", "clipHeight"
+  "combine", "sizeAreas", "clipHeight", "defaultLabelMap"
 ]);
 
 export function isAuthoredFacetLegend(value) {
@@ -31,6 +32,7 @@ export function validateAuthoredFacetLegend(program, intent) {
     validateOptionObject(block, ["config", "guide"], "Stored parent legend block");
     validateOptionObject(block.config, kind === "colorSize" ? [...CONFIG_KEYS, "colorScale", "sizeScale"] : CONFIG_KEYS, "Stored parent legend config");
     const config = block.config;
+    if (config.defaultLabelMap !== undefined) normalizeDisplayLabelMap(config.defaultLabelMap, "Stored inferred legend labels");
     validateUserId(config.target, "Parent legend target");
     if (!LEGEND_POSITIONS.includes(config.position)) throw new Error("Stored parent legend requires a native position.");
     for (const flag of ["inferredTitle", "inferredSymbol", "inferredStrokeWidth", "inferredOffset", "titleVisible", "inheritAppearance", "inheritPosition"]) {

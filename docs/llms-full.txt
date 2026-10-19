@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:fa4f66ff16498a6a93a7e7ec5524ff1461628206ae3522815680c7b8f0a4ad5f. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:57167b0edb02b568be4071a7f6cd23f8df21d00b40ecf2f6050216210b051b1f. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -6456,12 +6456,10 @@ Nominal/ordinal independent positions support point/band scales. Domain order
 (or first appearance) orders vertices unless path order is explicit. Stacking
 requires aligned groups; missing categories are not synthesized.
 
-Use `createCompleteData` to align sparse group/key combinations explicitly.
-Counts or sums may use an explicit zero fill; missing means should remain null
-and use `missing: "break"`. Stacked, normalized, and centered layouts break every
-series at an unknown total. If gaps leave no adjacent valid samples, the result
-is an empty path collection with finite coordinate domains, without invented
-connections. Editing the completion dataset rematerializes its area consumers.
+Align sparse groups with `createCompleteData`: explicitly fill counts/sums with
+zero; keep missing means null with `missing: "break"`. Stack/fill/center break all
+series at unknown totals. Isolated samples produce empty paths with finite
+domains. Completion edits rematerialize area consumers.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -7389,11 +7387,9 @@ It accepts existing compatible x/y encodings or explicit `x` and `y`, then
 owns the folded y/y2 positions and positive/negative palettes as one action.
 Horizon charts intentionally keep only the source-facing x guide.
 
-If you explicitly add a color legend, its title uses the original measure and
-its labels show the original value intervals represented by the bands. With
-different independent group extents, labels describe the band above or below
-the baseline instead of implying a shared numeric interval. `editHorizon`
-updates inferred labels while retaining explicit titles and display-label maps.
+An explicit color legend shows the original measure and band intervals.
+Different independent extents use relative band labels. `editHorizon` refreshes
+inferred labels while retaining authored titles and label maps.
 `bands` is at most 10,000 and the complete run-by-band output is limited to
 10,000 rows; unrepresentable signed deviations or fold extents are rejected.
 
@@ -10945,7 +10941,7 @@ the gradient without changing geometry. Continuous bar color rejects
 `layout`; histogram and ranged-bar continuous color are
 not part of this contract.
 
-### Continuous line color
+**Continuous line color.**
 
 Parallel-coordinate lines map quantitative or temporal color once per source
 row. Cartesian and Polar lines use one value per existing series: define the
@@ -40822,7 +40818,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:fa4f66ff16498a6a93a7e7ec5524ff1461628206ae3522815680c7b8f0a4ad5f` |
+| Contract fingerprint | `sha256:57167b0edb02b568be4071a7f6cd23f8df21d00b40ecf2f6050216210b051b1f` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

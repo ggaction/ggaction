@@ -318,12 +318,10 @@ Nominal/ordinal independent positions support point/band scales. Domain order
 (or first appearance) orders vertices unless path order is explicit. Stacking
 requires aligned groups; missing categories are not synthesized.
 
-Use `createCompleteData` to align sparse group/key combinations explicitly.
-Counts or sums may use an explicit zero fill; missing means should remain null
-and use `missing: "break"`. Stacked, normalized, and centered layouts break every
-series at an unknown total. If gaps leave no adjacent valid samples, the result
-is an empty path collection with finite coordinate domains, without invented
-connections. Editing the completion dataset rematerializes its area consumers.
+Align sparse groups with `createCompleteData`: explicitly fill counts/sums with
+zero; keep missing means null with `missing: "break"`. Stack/fill/center break all
+series at unknown totals. Isolated samples produce empty paths with finite
+domains. Completion edits rematerialize area consumers.
 
 <!-- snippet-context:start -->
 

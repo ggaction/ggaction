@@ -23,6 +23,15 @@ test("explains Horizon colors using original value intervals and updates them on
   assert.deepEqual(labels(custom), ["-3 – 0", "-6 – -3", "0 – 3", "High"]);
 });
 
+test("inferred Horizon labels survive a native shared facet legend and persistence", () => {
+  const p = base(["A", "B"].flatMap(group => rows.signed.map(row => ({ ...row, group }))))
+    .createHorizonPlot({ id: "horizon", x: "time", y: "value", groupBy: "group", bands: 2 })
+    .facet({ field: "group", columns: 2, guides: { legend: { target: "horizon", channels: ["color"] } } });
+  const saved = serializeProgram(p);
+  assert.ok(!saved.includes('"text":"negative:0"'));
+  assert.deepEqual(deserializeProgram(saved).graphicSpec, p.graphicSpec);
+});
+
 test("completes the shortest Horizon with x-only guides and opaque signed bands", () => {
   const source = base();
   const before = structuredClone({ semantic: source.semanticSpec, graphic: source.graphicSpec, trace: source.trace });

@@ -289,7 +289,7 @@ the gradient without changing geometry. Continuous bar color rejects
 `layout`; histogram and ranged-bar continuous color are
 not part of this contract.
 
-### Continuous line color
+**Continuous line color.**
 
 Parallel-coordinate lines map quantitative or temporal color once per source
 row. Cartesian and Polar lines use one value per existing series: define the

@@ -69,6 +69,7 @@ export const rematerializeLegend = /* @__PURE__ */ action(
     );
     for (const kind of categoricalKinds) {
       const stored = next.guideConfigs.legend[kind];
+      const { defaultLabelMap, ...retained } = stored;
       const definition = resolveCurrentDefinition(next, stored);
       const symbol = stored.inferredSymbol
         ? normalizeRecipe(
@@ -85,7 +86,7 @@ export const rematerializeLegend = /* @__PURE__ */ action(
         : stored.symbol;
       const symbolChanged = !sameGuideValue(symbol, stored.symbol);
       const changed = symbolChanged ||
-        !sameGuideValue(stored.defaultLabelMap, definition.defaultLabelMap) ||
+        !sameGuideValue(defaultLabelMap, definition.defaultLabelMap) ||
         !sameValues(stored.channels, definition.channels) ||
         !sameValues(stored.domain, definition.domain) ||
         !sameValues(stored.scales, definition.scales) ||
@@ -94,12 +95,12 @@ export const rematerializeLegend = /* @__PURE__ */ action(
         stored.title !== definition.title;
       next = changed
         ? next._withLegendConfig(kind, {
-            ...stored,
+            ...retained,
             symbol,
             channels: definition.channels,
             scales: definition.scales,
             field: definition.field,
-            defaultLabelMap: definition.defaultLabelMap,
+            ...(definition.defaultLabelMap === undefined ? {} : { defaultLabelMap: definition.defaultLabelMap }),
             ...(definition.combine === undefined ? {} : {combine: definition.combine, sizeAreas: definition.sizeAreas}),
             title: definition.title,
             domain: definition.domain

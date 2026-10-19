@@ -11,7 +11,7 @@ import { CHANNELS } from "./options.js";
 import { nonEmptyString } from "./validation.js";
 import { findLayer } from "../../../../selectors/layers.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
-import { horizonLegendPresentation } from "../../../../grammar/horizonLegend.js";
+import { horizonLegendPresentation } from "../../../../grammar/horizon.js";
 
 function isCategoricalTarget(layer) {
   if (["line", "point"].includes(layer?.mark?.type)) {

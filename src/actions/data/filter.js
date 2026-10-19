@@ -13,7 +13,7 @@ import {
   normalizeMarkFilterTransform
 } from "../../grammar/markFilter.js";
 import { resolveMarkFilterSelection } from "../../materialization/selection/filter.js";
-import { synchronizeBoxFilter } from "../boxPlots/filter.js";
+import { synchronizeBoxFilter } from "../boxPlots/components.js";
 import { findSelectionPolicy } from
   "../../materialization/selection/policies/index.js";
 import {

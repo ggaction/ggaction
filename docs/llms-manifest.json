@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:fa4f66ff16498a6a93a7e7ec5524ff1461628206ae3522815680c7b8f0a4ad5f",
+    "contractId": "sha256:57167b0edb02b568be4071a7f6cd23f8df21d00b40ecf2f6050216210b051b1f",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -936,8 +936,8 @@
         "editarcmark-target-innerradius-padangle-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
         "related"
       ],
-      "bytes": 15761,
-      "sha256": "2d5c2bf05bdd8da158eab14b43e74d7ff27d2acea573d85cd6b600a7733c0d5d"
+      "bytes": 15582,
+      "sha256": "48d3bfdfef035e61c7bbe5d2c5b49d180443fabb87bc1dadde687f2e1affd6e1"
     },
     {
       "order": 59,
@@ -1035,8 +1035,8 @@
         "calendar-interval-bar-widths",
         "related"
       ],
-      "bytes": 19357,
-      "sha256": "b123fdf3a32742a3a598792b1c6739153b7859d19b26cdbb32a850dfbd217815"
+      "bytes": 19188,
+      "sha256": "e05d62510eee401925ff5a8bb6537e17adbe3bf1111589c4a1b5fdd4bb71ca5d"
     },
     {
       "order": 64,
@@ -1372,12 +1372,11 @@
         "encodecoloroptions",
         "center-stacked-areas",
         "continuous-aggregate-bar-color",
-        "continuous-line-color",
         "continuous-area-color",
         "related"
       ],
-      "bytes": 14681,
-      "sha256": "3036bc0cbd527d0399f4b25c66eba9a1543ba8a3f533811714f3281724128902"
+      "bytes": 14682,
+      "sha256": "77faf92ba9bde5cf3201b870641dd693cb363d5ff687e285704cad58d747cd2a"
     },
     {
       "order": 83,
@@ -3377,7 +3376,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "88a92a3d6ef741578a29f7c389e8a340ec6ba7b624716dbe9a8e41e83d21fb30"
+      "sha256": "a99a76a3423df6dc5243f92fb713f4677ec8629396080095a18eed70d494ea45"
     },
     {
       "order": 150,
