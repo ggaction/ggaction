@@ -26,7 +26,8 @@ export function pathGroupFields(layer) {
     return normalizeGroupFields(group.fields ?? group.field);
   }
   if (layer.mark?.type !== "line") return [];
-  const color = layer.encoding?.color?.field;
+  const color = ["nominal", "ordinal"].includes(layer.encoding?.color?.fieldType)
+    ? layer.encoding.color.field : undefined;
   const dash = layer.encoding?.strokeDash?.field;
   if (color !== undefined && dash !== undefined && color !== dash) {
     throw new Error("Line color field must match strokeDash field unless encodeGroup defines the series.");
@@ -42,7 +43,7 @@ export function readPathSeriesFields(rows, layer) {
 
 function seriesValueIndex(rows, fields, field, channel, encoding = {}) {
   const quantitative = channel === "strokeWidth" || channel === "opacity";
-  const values = channel === "stroke" || (channel === "color" && encoding.fieldType === "quantitative")
+  const values = channel === "stroke" || (channel === "color" && ["quantitative", "temporal"].includes(encoding.fieldType))
     ? readScaleField(rows, field, encoding.fieldType ?? "nominal", {
         temporalUnit: encoding.temporalUnit
       })
@@ -88,7 +89,7 @@ export function validatePathSeriesAppearance(rows, layer) {
     if (encoding?.field === undefined) continue;
     const allowed = ["color", "stroke"].includes(channel)
       ? channel === "color"
-        ? layer.mark.type === "area" ? ["nominal", "ordinal", "quantitative"] : ["nominal", "ordinal"]
+        ? layer.mark.type === "area" ? ["nominal", "ordinal", "quantitative"] : ["nominal", "ordinal", "quantitative", "temporal"]
         : ["nominal", "ordinal", "quantitative", "temporal"]
       : channel === "strokeDash" ? ["nominal"] : ["quantitative"];
     if (!allowed.includes(encoding.fieldType)) {

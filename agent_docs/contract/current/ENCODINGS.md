@@ -1138,6 +1138,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Signature: `encodeColor({ value, target? } | { field, target?, fieldType?, layout?, aggregate?, scale? })`
 - `field`: 필수 field. nominal/ordinal은 categorical color contract에, quantitative/temporal은 point에 사용하며
   aggregate bar는 quantitative field를 지원한다.
+- Line의 quantitative/temporal color도 지원한다. Parallel은 row마다 값을 사용하고 Cartesian/Polar는
+  기존 series마다 값 하나를 요구한다. Continuous color 자체는 grouping을 만들지 않는다. Gradient 및
+  discretized legend를 지원하며 temporal은 sequential만 허용한다. Unknown fallback은 Point 전용이다.
 - `target`: point, line, bar, rect 또는 area ID; current/unique inference를 지원한다.
 - `fieldType`: `"nominal" | "ordinal" | "quantitative" | "temporal"`; 기본값은 nominal이다.
   Ordinal은 숫자를 포함한 ordered category를 categorical palette와 first-appearance domain으로 매핑한다.

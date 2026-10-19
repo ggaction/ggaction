@@ -258,9 +258,13 @@
         ],
         "area": [
           "quantitative"
+        ],
+        "line": [
+          "quantitative",
+          "temporal"
         ]
       },
-      "options": "sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series"
+      "options": "sequential scale; aggregate required for a different bar measure; line/area require one finite value per existing series; Parallel uses row grain"
     },
     {
       "mode": "Discretized continuous",
@@ -279,9 +283,12 @@
         ],
         "area": [
           "quantitative"
+        ],
+        "line": [
+          "quantitative"
         ]
       },
-      "options": "quantize, quantile, or threshold scale; area requires one finite value per existing series"
+      "options": "quantize, quantile, or threshold scale; line/area require one finite value per existing series; Parallel uses row grain"
     }
   ],
   "highlight": [
@@ -335,7 +342,8 @@
         "point",
         "aggregate bar",
         "rect",
-        "text"
+        "text",
+        "line"
       ],
       "channels": "sequential color; gradient swatch, no symbol recipe"
     },
@@ -358,7 +366,8 @@
       "marks": [
         "point",
         "aggregate bar",
-        "rect"
+        "rect",
+        "line"
       ],
       "channels": "quantize/quantile/threshold color; rectangle swatches"
     },

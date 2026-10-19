@@ -63,9 +63,9 @@ whole-target content, or whole-group `blockLayout`/`at` controls.
 | --- | --- | --- |
 | Categorical color/shape/dash | point, line, area, bar, rect, arc, text | ordinal color; point shape; line strokeDash; compatible composites follow family constraints |
 | Categorical stroke | point, line, area, bar, rect, arc, rule, tick | ordinal stroke; final-item or series identities |
-| Continuous color gradient | point, aggregate bar, rect, text | sequential color; gradient swatch, no symbol recipe |
+| Continuous color gradient | point, aggregate bar, rect, text, line | sequential color; gradient swatch, no symbol recipe |
 | Continuous stroke gradient | point, line, area, bar, rect, arc, rule, tick | sequential stroke; separate gradient, no symbol recipe |
-| Discretized color interval | point, aggregate bar, rect | quantize/quantile/threshold color; rectangle swatches |
+| Discretized color interval | point, aggregate bar, rect, line | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
 | Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
 | Opacity | point, line, bar, rect | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |

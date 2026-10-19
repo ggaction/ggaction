@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:e4ce0118c561a58e5a0eb1c1a15bd65a8bf1f75888ad23c10dbf4de2433de5df",
+    "contractId": "sha256:127fe2d3b7306d08cd0d0539351bb31cb0ee5c8d5bc2372cba54e5ad2a7ab799",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1035,8 +1035,8 @@
         "calendar-interval-bar-widths",
         "related"
       ],
-      "bytes": 19265,
-      "sha256": "8843cc967b49ff04662acb430c0b5fa2788c061dba2cb87a565ebd6c81bc6bae"
+      "bytes": 19357,
+      "sha256": "b123fdf3a32742a3a598792b1c6739153b7859d19b26cdbb32a850dfbd217815"
     },
     {
       "order": 64,
@@ -1372,11 +1372,12 @@
         "encodecoloroptions",
         "center-stacked-areas",
         "continuous-aggregate-bar-color",
+        "continuous-line-color",
         "continuous-area-color",
         "related"
       ],
-      "bytes": 14093,
-      "sha256": "4fe7676fd7e688c11fdf8e8b083415f5afd7aa65594f9c89c987740bb484dfb1"
+      "bytes": 14681,
+      "sha256": "3036bc0cbd527d0399f4b25c66eba9a1543ba8a3f533811714f3281724128902"
     },
     {
       "order": 83,
@@ -1619,8 +1620,8 @@
         "put-a-compact-categorical-legend-inside-the-plot",
         "related"
       ],
-      "bytes": 8378,
-      "sha256": "a39499f7197476e342e3be563f20284e15aba34dcc6a9d57279c7a2bdfe32c33"
+      "bytes": 8390,
+      "sha256": "56b75e9ac454bc7bbd7ed4836d46656113797cfd4dc07521a389b30d88c1ddb7"
     },
     {
       "order": 98,
@@ -2146,8 +2147,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 62083,
-      "sha256": "a3704864d3545040a0ff1e6aa249c9148af8e53fc72356f96db913d678b996d9"
+      "bytes": 62163,
+      "sha256": "efe04580667631789b04939eb7c987238fefb0c96935418b77e691f77e4ac350"
     },
     {
       "order": 121,
@@ -3376,7 +3377,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "314c15a4d3d7cef0680222a8760401803763abac7641214266f3a931676b9db6"
+      "sha256": "e49ad894c6b7827286857daceb21bce14b3b9bdb82939b01f0693bc5ff1175f7"
     },
     {
       "order": 150,

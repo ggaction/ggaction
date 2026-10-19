@@ -42,7 +42,7 @@ export function encodeContinuousColor(program, args) {
   const { id: target, dataset: sourceDataset, layer } = resolveTarget(
     program,
     args.target,
-    ["point", "bar", "rect", "text", "area"],
+    ["point", "line", "bar", "rect", "text", "area"],
     "continuous color mark"
   );
   const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
@@ -59,7 +59,7 @@ export function encodeContinuousColor(program, args) {
     requestedScale
   );
   const aggregate = validateContinuousColorConsumer(layer, args, scale, { inferAggregate: true });
-  if (layer.mark.type === "area") {
+  if (["line", "area"].includes(layer.mark.type)) {
     validatePathSeriesAppearance(dataset.values, {
       ...layer, encoding: { ...layer.encoding, color: { field: args.field, fieldType: args.fieldType } }
     });

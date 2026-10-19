@@ -25,8 +25,8 @@ per series. Raw Area supports an independent group field or tuple. Color must be
 | --- | --- | --- | --- |
 | Constant | point, line, bar, area, arc, rect, text | point/line/bar/area/arc/rect/text: constant color | value only; no field, scale, palette, layout or aggregate; replaces color mapping and its legend participation |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
-| Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
-| Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
+| Continuous | point, aggregate bar, rect, text, area, line | point/rect/text/line: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; line/area require one finite value per existing series; Parallel uses row grain |
+| Discretized continuous | point, aggregate bar, rect, text, area, line | point/aggregate bar/rect/text/area/line: quantitative | quantize, quantile, or threshold scale; line/area require one finite value per existing series; Parallel uses row grain |
 
 <!-- action-capabilities:color:end -->
 
@@ -286,8 +286,18 @@ The resolved color domain contains the per-rectangle aggregate values.
 `createLegend({ channels: ["color"] })` creates a gradient legend, and
 `editScale({ id: "color", reverse: true })` rematerializes both bar fills and
 the gradient without changing geometry. Continuous bar color rejects
-`layout`; histogram, ranged-bar, and line-path continuous color are
+`layout`; histogram and ranged-bar continuous color are
 not part of this contract.
+
+### Continuous line color
+
+Parallel-coordinate lines map quantitative or temporal color once per source
+row. Cartesian and Polar lines use one value per existing series: define the
+series with `encodeGroup` when needed. Continuous color does not split a path
+into a separate series for each numeric value, and varying values within one
+series are rejected. A continuous color creates a gradient legend; quantitative
+discretized scales create interval legends. Point-only unknown fallbacks remain
+unsupported for lines.
 
 ### Continuous area color
 
