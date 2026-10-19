@@ -4,8 +4,8 @@
 
 - [x] 공개0.0.21재현 및 원인 범위 축소
 - [x] 기존 계약/승인 범위 확인
-- [ ] 회귀 테스트와 구현
-- [ ] 변경 범위 검증/후보 commit push
+- [x] 회귀 테스트와 구현
+- [x] 변경 범위 검증/후보 commit push (이 패키지의 구현 checkpoint와 함께)
 - [ ] 정규200개 차트 릴리즈에서 통합·배포
 
 이슈: https://github.com/ggaction/ggaction/issues/234
@@ -20,8 +20,10 @@
 
 ## 구현 경계
 
-기존 swatch rematerializer는 rect/collection 모두를 유효한 이전 표본 소유자로 받아들인다. 최종 rect/rounded-path 선택과 stale property 정리는 기존 `replaceGraphicItems`/`materializeRectItem`에 맡긴다. Swatch의 전체 items를 이 owner가 치환하므로 그 전에 collection에 rect 전용 length 편집을 하지 않는다. Line/point/shape/clip의 기존 검사와 공개 오류는 유지한다. 명시적 domain action과 trace, immutable program, semantic/graphic/renderer 경계를 바꾸지 않는다.
+기존 swatch rematerializer는 rect/collection 모두를 유효한 이전 표본 소유자로 받아들인다. 최종 rect/rounded-path 선택과 stale property 정리는 기존 `replaceGraphicItems`/`materializeRectItem`에 맡긴다. Swatch의 전체 items를 이 owner가 치환하므로 collection→rect 전환에서는 collection에 rect 전용 length 편집을 하지 않는다. 기존 일반 rect 표본의 length action은 보존하여 기존 공개 trace도 동일하게 유지한다. Line/point/shape/clip의 기존 검사와 공개 오류는 유지한다. 명시적 domain action과 trace, immutable program, semantic/graphic/renderer 경계를 바꾸지 않는다.
 
 ## 완료 조건
 
 둥근→직선 swatch, auto 복원, 반복 전환, mixed recipe, Full/Basic 공개 흐름, 이전 program 불변성, 전체 concrete graph/order와 birth-recipe 비교, persistence 및 facet replay를 검사한다. 별도 owner/신규옵션은 추가하지 않는다. 해당 guide normal tests/필요한 render 검증과 전체 normal suite를 실행한다. 이미 공개된 버전·번역 runtime은 유지한다. 정규 다음 checkpoint1413에서 후보를 통합하고 배포할 때 나머지 release checks를 수행한다.
+
+검증과 남은 정규 통합 의무는 [CLOSEOUT.md](CLOSEOUT.md)에 기록했다.

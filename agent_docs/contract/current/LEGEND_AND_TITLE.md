@@ -534,8 +534,10 @@ and absent shared owners reject. Selected member removal follows native fused-bl
 ### Value coverage — `editLegendSymbols`
 
 - ✅ Covered: combined categorical-size count, kind incompatibility and rematerialization.
+- ✅ Covered: rounded fallback path collections to plain/layered swatches, auto restoration, repeated edits, immutable data revision and mixed-recipe facet replay; complete concrete output matches the same recipe at creation.
 - No proposal: symbol/count/gradient 외 kind-specific component는 현재 없다.
 - Evidence: `test/unit/actions/guides/legend-edit-actions.test.js`.
+- Rounded sample evidence: `test/unit/actions/guides/rounded-legend-recipe.test.js`.
 
 ## `editLegendBorder`
 

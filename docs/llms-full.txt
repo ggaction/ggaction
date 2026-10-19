@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:5e7ec8d7efddb63f87c37eae347d1d54cdb0784eb2cbcc2428c0050f25020510. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:8d92a788f4def7da6ddab5b14f845f0865e7ddf96d4280476f4ca05a90eb3139. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -13742,6 +13742,10 @@ lineProgram.createLegend({
 
 Histogram, grouped-bar, and grouped-area swatch shorthand supports `width`,
 `height`, `stroke`, and `strokeWidth`.
+
+Use `editLegendSymbols({ symbol })` to replace an existing sample recipe,
+including a rounded bar sample with a plain swatch. Setting `symbol: "auto"`
+restores the sample inferred from the mark, including its rounded corners.
 
 Use layers for a composite symbol:
 
@@ -40751,7 +40755,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:5e7ec8d7efddb63f87c37eae347d1d54cdb0784eb2cbcc2428c0050f25020510` |
+| Contract fingerprint | `sha256:8d92a788f4def7da6ddab5b14f845f0865e7ddf96d4280476f4ca05a90eb3139` |
 | Example and dataset source | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

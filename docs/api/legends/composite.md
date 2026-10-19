@@ -27,6 +27,10 @@ lineProgram.createLegend({
 Histogram, grouped-bar, and grouped-area swatch shorthand supports `width`,
 `height`, `stroke`, and `strokeWidth`.
 
+Use `editLegendSymbols({ symbol })` to replace an existing sample recipe,
+including a rounded bar sample with a plain swatch. Setting `symbol: "auto"`
+restores the sample inferred from the mark, including its rounded corners.
+
 Use layers for a composite symbol:
 
 <!-- snippet-context:start -->
