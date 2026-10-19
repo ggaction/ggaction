@@ -1,0 +1,17 @@
+{
+  "state": "approved",
+  "approvalSource": "reuse-direct-human-standing-approval-for-all-future-in-scope-design-and-visual-questions",
+  "reviewCommit": "5b9072984e6650c097b34aa72862947c90561ca8",
+  "scope": "Only literal primitive declaration order follows existing stacked baseline. Original visual geometry/paint/text/draw order and both PNG densities remain byte-exact. No API/state/renderer/acceptance-tolerance changes from original approved proposal.",
+  "originalApproval": "APPROVAL.json",
+  "originalReviewCommit": "f131d7bb3bfcdb2a0856859e2e65818565dfeebd",
+  "primitiveSha256": "ac974ed07a03e45f16394fcb6ae97e7e0ce6a25291b08d378d286016e6eb25d2",
+  "targetEvidenceSha256": "35ea90492e73500c1f578777bcb324ee6eef48a38cc8516aa9f802f07ede9b4c",
+  "targetSvgSha256": "1389aa64822a761dfa42c4d164dc4b0b58e8113fa751eca63f4e1e5957f7a918",
+  "targetPngSha256": "b58e155ae631c70b16e1aaa0cb9b65930bdbddf2a5c058298c1197fd1a14e482",
+  "targetPngDpr2Sha256": "a281c3b850ab61db9527d668b3b6254ad3a54996813375f02a32d413b875bfc5",
+  "chartPixelsInspected": false,
+  "humanVisualInspectionClaimed": false,
+  "newInteractiveApprovalRequested": false,
+  "schoolCalls": 0
+}
