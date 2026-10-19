@@ -1,4 +1,5 @@
 import{normalizeLegendClipHeight}from"../../../../grammar/legendClip.js";
+import {normalizeLegendSpacing} from "../../../../grammar/legendSpacing.js";
 import{applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { normalizeGradientDirection } from "../../../../grammar/legendGradient.js";
 import { normalizeLegendBorderDash } from "../../../../grammar/legendBorder.js";
@@ -43,13 +44,13 @@ const OPTIONS = [
   "clipHeight",
   "target", "channels", "position", "align", "offset", "title", "count",
   "values",
-  "gradient", "symbol", "labels", "titleStyle", "itemGap", "border",
+  "gradient", "symbol", "labels", "titleStyle", "itemGap", "rowPadding", "titlePadding", "border",
   "direction", "columns", "titlePosition"
 ];
 export const ITEM_LEGEND_OPTIONS = Object.freeze([
   "clipHeight",
   "target", "count", "values", "position", "layout", "align", "direction",
-  "columns", "titlePosition", "offset", "itemGap", "title", "labels", "titleStyle", "border", "overflow"
+  "columns", "titlePosition", "offset", "itemGap", "rowPadding", "titlePadding", "title", "labels", "titleStyle", "border", "overflow"
 ]);
 const TEXT_OPTIONS = [
   "offset", "color", "fontSize", "fontFamily", "fontWeight", "format"
@@ -220,6 +221,7 @@ export function normalizeContinuousLegend(args, kind) {
   return {
     ...(args.clipHeight===undefined?{}:{clipHeight:normalizeLegendClipHeight(args.clipHeight)}),
     target: args.target,
+    ...normalizeLegendSpacing(args),
     position,
     align,
     offset,
@@ -449,7 +451,8 @@ export function normalizeItemLegendLayout(args, { multiColumnSide = false } = {}
   const itemGap = args.itemGap ?? (direction === "vertical" ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : 28);
   validateNonNegative(offset, "Legend offset");
   validatePositive(itemGap, "Legend itemGap");
-  return { position, layout, align, direction, columns, titlePosition, offset, itemGap };
+  return { position, layout, align, direction, columns, titlePosition, offset, itemGap,
+    ...normalizeLegendSpacing(args) };
 }
 
 export function materializeItemLegend(program, kind, config, layout, {

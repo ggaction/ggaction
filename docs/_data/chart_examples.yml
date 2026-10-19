@@ -1458,6 +1458,22 @@
   tasks: appearance guide editing
   url: /api/legends/categorical/#independent-legend-appearance
 
+- id: legend-content-spacing
+  example: /examples/legend-content-spacing/
+  title: Equal gaps between different-sized legend rows
+  image: /assets/images/legend-content-spacing.png
+  alt: Three blue size samples have equal seven-pixel gaps and clear a separate title by twenty pixels
+  width: 640
+  height: 480
+  thumbnail: /assets/images/legend-content-spacing-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: Painted sample heights of 18, 26 and 42 pixels have equal 7-pixel gaps; the title clears the body by 20 pixels.
+  summary: Set occupied row gaps separately from title padding and legacy center pitch.
+  actions: createLegend · editLegendLayout
+  tasks: appearance guide editing
+  url: /api/legends/#space-rows-by-content
+
 - id: legend-recipe-opacity
   example: /examples/legend-recipe-opacity/
   title: Opacity of a layered legend recipe

@@ -11,6 +11,7 @@ import {
 } from "./target.js";
 import { validateLegendBlockOverride } from "./blocks.js";
 import { DEFAULT_VERTICAL_LEGEND_ITEM_GAP } from "../../../theme/defaults.js";
+import {LEGEND_SPACING_KEYS,normalizeLegendSpacing,validateLegendSpacing} from "../../../grammar/legendSpacing.js";
 
 const family = (channel, type) => isContinuousColorScaleType(type)
   ? channel === "stroke" ? "strokeGradient" : "gradient"
@@ -38,6 +39,9 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   if (from === undefined || to === undefined || from === to) return undefined;
   const stored = program.guideConfigs.legend?.[from];
   if ((stored?.scale ?? stored?.scales?.[0]) !== scale.id) return undefined;
+  if (["gradient","strokeGradient"].includes(to) && stored.rowPadding !== undefined) {
+    throw new Error(`${channel} legend transition requires resetting rowPadding before creating a gradient block.`);
+  }
   const oldDescriptor = describeLegendBlock(program, from, stored);
   const overrideKeys = Object.keys(stored.blockOverrides ?? {});
   if (overrideKeys.some(key => key !== oldDescriptor.key)) {
@@ -77,6 +81,7 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
     target: stored.target, channels: [channel], position: stored.position,
     labels: stored.labels, titleStyle: stored.titleStyle, border: stored.border,
     align: stored.align, offset: stored.offset, titlePosition: sampledColor ? "top" : stored.titlePosition,
+    ...normalizeLegendSpacing(stored),
     ...(stored.inferredTitle ? {} : { title: stored.title })
   };
   try {
@@ -161,7 +166,7 @@ function withoutBlockOverrides(config) {
   return rest;
 }
 
-export function planLegendBlockTransitions(program, target, plans, position) {
+export function planLegendBlockTransitions(program, target, plans, position, spacingPatch = {}) {
   const oldDescriptors = legendBlockDescriptors(program, target);
   const nextDescriptors = plans.map(plan =>
     describeLegendBlock(program, plan.kind, plan.config));
@@ -215,6 +220,18 @@ export function planLegendBlockTransitions(program, target, plans, position) {
     }
     if (override !== undefined) validateLegendBlockOverride(descriptor, override);
     const config = withoutBlockOverrides(plan.config);
+    for (const key of LEGEND_SPACING_KEYS) {
+      let value=config[key];
+      if (spacingPatch[key] !== undefined) value=spacingPatch[key] === "auto" ? undefined
+        : normalizeLegendSpacing({[key]:spacingPatch[key]})[key];
+      else if (incoming.length > 0) {
+        const values=incoming.map(old=>old.config[key]);
+        if (!values.every(value=>value===values[0])) transitionError(target,incoming,descriptor,key);
+        value=values[0];
+      }
+      if (value === undefined) delete config[key];else config[key]=value;
+    }
+    validateLegendSpacing(plan.kind,config);
     return {
       ...plan,
       config: override === undefined

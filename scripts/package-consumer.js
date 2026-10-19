@@ -89,6 +89,27 @@ async function testNodeConsumer(directory) {
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
+    const spacedBase = chart().createCanvas({width:500,height:400,margin:130})
+      .createData({values:[{x:0,y:0,v:0},{x:1,y:1,v:1}]})
+      .createScatterPlot({x:"x",y:"y",guides:false}).encodeSize({field:"v"});
+    const spacedControl = spacedBase.createLegend({channels:["size"]});
+    const spaced = spacedControl.editLegendLayout({rowPadding:7,titlePadding:20});
+    assert.equal(spaced.guideConfigs.legend.size.rowPadding,7);
+    assert.equal(spaced.guideConfigs.legend.size.titlePadding,20);
+    assert.deepEqual(spacedBase.createLegend({channels:["size"],rowPadding:7,titlePadding:20}).graphicSpec,spaced.graphicSpec);
+    assert.deepEqual(deserializeProgram(serializeProgram(spaced)).editCanvas({width:550}).graphicSpec,spaced.editCanvas({width:550}).graphicSpec);
+    assert.deepEqual(spaced.editLegend({rowPadding:"auto",titlePadding:"auto"}).graphicSpec,spacedControl.graphicSpec);
+    assert.notEqual(renderToSVG(spaced),renderToSVG(spacedControl));
+    assert.ok((await renderToPNGBuffer(spaced)).buffer.length>100);
+    assert.ok((await renderToPDFBuffer(spaced)).buffer.length>100);
+    assert.throws(()=>spaced.editLegendLayout({rowPadding:-1}));
+    const spacedBasic = basicChart().createCanvas({width:500,height:400,margin:130})
+      .createData({values:[{x:0,y:0,g:"A"},{x:1,y:1,g:"B"}]})
+      .createScatterPlot({x:"x",y:"y",guides:false}).encodeColor({field:"g"})
+      .createLegend({rowPadding:0,titlePadding:20});
+    assert.equal(spacedBasic.guideConfigs.legend.color.rowPadding,0);
+    assert.equal(spacedBasic.editLegendLayout,undefined);
+
     const clipBase = chart().createCanvas({width:240,height:180,margin:40})
       .createData({values:[{x:-1,y:4},{x:5,y:4}]})
       .createScatterPlot({x:{field:"x",scale:{domain:[0,10]}},y:{field:"y",scale:{domain:[0,8]}},guides:false});
@@ -5191,6 +5212,18 @@ async function testTypeScriptConsumer(directory) {
     opacityLegendTypes.createGuides({ legend: { channels: ["opacity"], symbol: { radius: 9 }, clipHeight: 12 } });
     opacityLegendTypes.editLegendSymbols({clipHeight:"auto"});
     opacityLegendTypes.editLegendBlock({target:"points",channel:"opacity",clipHeight:8});
+    const legendSpacingCreate: import("ggaction").LegendOptions = {rowPadding:0,titlePadding:20};
+    chart().createLegend(legendSpacingCreate).editLegend({rowPadding:"auto",titlePadding:7});
+    chart().editLegendLayout({channel:"size",rowPadding:7,titlePadding:"auto"});
+    basicChart().createLegend(legendSpacingCreate);
+    // @ts-expect-error Creation accepts numbers only.
+    chart().createLegend({rowPadding:"auto"});
+    // @ts-expect-error A focused layout edit does not accept false as reset.
+    chart().editLegendLayout({titlePadding:false});
+    // @ts-expect-error Basic keeps its creation-only lifecycle.
+    basicChart().editLegendLayout({rowPadding:7});
+    // @ts-expect-error Title style edits do not own layout spacing.
+    chart().editLegendTitle({titlePadding:20});
     // @ts-expect-error Creation does not accept edit-only auto.
     opacityLegendTypes.createLegend({clipHeight:"auto"});
     // @ts-expect-error Opacity symbol radius must be numeric.

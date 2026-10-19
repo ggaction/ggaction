@@ -4,6 +4,7 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add opt-in content-aware legend `rowPadding` and independent `titlePadding`, with focused editing, explicit reset and retained replay intent.
 - Fix HCL and HCL-long hue handling at exact neutral RGB endpoints for D50 and D65.
 - Support finite numeric datum bounds in Rect/Rule range encoders, with final-pair validation and unchanged source data.
 - Align continuous color and stroke TypeScript palette descriptors with existing runtime count, extent and nested range forms.

@@ -1,4 +1,5 @@
 import { isPlainObject } from "../../core/immutable.js";
+import {validateLegendSpacing} from "../legendSpacing.js";
 import { validateOptionObject, validateNonEmptyString } from "../../core/validation.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { LEGEND_CONFIG_KINDS, LEGEND_POSITIONS } from "../../core/vocabulary.js";
@@ -9,7 +10,7 @@ import { resolveSharedFacetLegends, sameFacetGuideValue as same } from "./guides
 const CONFIG_KEYS = Object.freeze([
   "kind", "target", "channels", "scales", "scale", "field", "fieldType", "domain", "title", "titleVisible",
   "inferredTitle", "inferredSymbol", "inferredStrokeWidth", "inferredOffset", "position", "align", "offset", "direction", "columns",
-  "titlePosition", "symbol", "labels", "titleStyle", "itemGap", "layout", "overflow", "border", "gradient",
+  "titlePosition", "symbol", "labels", "titleStyle", "itemGap", "rowPadding", "titlePadding", "layout", "overflow", "border", "gradient",
   "count", "sampling", "representation", "gradientDirection", "inheritAppearance", "inheritPosition", "blockOverrides",
   "combine", "sizeAreas", "clipHeight"
 ]);
@@ -31,6 +32,7 @@ export function validateAuthoredFacetLegend(program, intent) {
     validateOptionObject(block, ["config", "guide"], "Stored parent legend block");
     validateOptionObject(block.config, kind === "colorSize" ? [...CONFIG_KEYS, "colorScale", "sizeScale"] : CONFIG_KEYS, "Stored parent legend config");
     const config = block.config;
+    validateLegendSpacing(kind,config);
     validateUserId(config.target, "Parent legend target");
     if (!LEGEND_POSITIONS.includes(config.position)) throw new Error("Stored parent legend requires a native position.");
     for (const flag of ["inferredTitle", "inferredSymbol", "inferredStrokeWidth", "inferredOffset", "titleVisible", "inheritAppearance", "inheritPosition"]) {

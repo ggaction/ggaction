@@ -10,6 +10,7 @@ import { createBlendProgram } from "./bar-compositing/program.js";
 
 import {createCombinedLegendsProgram} from './combined-legends/program.js';
 import {createLegendAppearanceProgram} from "./legend-appearance/program.js";
+import {createLegendContentSpacingProgram} from "./legend-content-spacing/program.js";
 import {createGradientBlockProgram} from "./legend-layout/program.js";
 import {createRecipeOpacityProgram} from "./legend-recipe-opacity/program.js";
 import {createSymbolWindowProgram} from "./symbol-window/program.js";
@@ -245,6 +246,8 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser:{path:"legend-recipe-opacity/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"legend-recipe-opacity",width:480,height:270}}}}),
   example({id:"legend-appearance",data:{},width:400,height:240,docsGroup:"tutorials",createProgram:createLegendAppearanceProgram,
     browser:{path:"legend-appearance/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"legend-appearance",width:400,height:240}}}}),
+  example({id:"legend-content-spacing",data:{},width:320,height:240,docsGroup:"tutorials",createProgram:createLegendContentSpacingProgram,
+    browser:{path:"legend-content-spacing/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"legend-content-spacing",width:320,height:240}}}}),
   example({id:"symbol-window",data:{},width:400,height:200,docsGroup:"tutorials",createProgram:createSymbolWindowProgram,
     browser:{path:"symbol-window/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"symbol-window",width:400,height:200}}}}),
   example({

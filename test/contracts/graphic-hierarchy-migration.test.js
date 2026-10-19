@@ -31,6 +31,7 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
   "combined-legends": [],
   "legend-layout": ["canvas", "scatterPlot", "sizeLegendSymbols", "sizeLegendLabels", "colorGradientBackground", "colorGradientStrips", "colorGradientTicks", "colorGradientLabels", "colorGradientTitle"],
   "legend-recipe-opacity": ["canvas", "scatterPlot", "colorLegendSymbolLines", "colorLegendSymbolPoints", "colorLegendLabels"],
+  "legend-content-spacing": ["canvas", "scatterPlot", "sizeLegendSymbols", "sizeLegendLabels", "sizeLegendTitle"],
   "axis-owners": [
     "canvas", "horizontalGridLines", "scatterPlot", "xAxisLine", "xAxisTitle",
     "axis_quantity__Line", "axis_quantity__Ticks", "axis_quantity__Labels", "axis_quantity__Title",

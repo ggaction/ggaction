@@ -112,7 +112,7 @@ before the next sample. `labels.offset` and `itemGap` override those distances.
 All sample spacing includes half the stroke width around the circle. Label
 offset measures the visible edge-to-edge gap; its non-inline default is 12.
 
-Vertical sampled and interval legends default to `itemGap: 18`. At either side,
+Without `rowPadding`, vertical sampled and interval legends default to `itemGap: 18`. At either side,
 `itemGap` is a minimum center pitch and grows to fit the largest
 sample or a conservative label line height of `fontSize * 1.2`. This allowance
 does not guarantee the exact height of every font. A visible title keeps at
@@ -122,6 +122,13 @@ pixels and twice `itemGap`, enlarged when needed to keep `itemGap` between
 neighbouring sample or label bounds. Inline legends keep `itemGap` between
 complete sample-label pairs. Large fonts and strokes require sufficient Canvas
 space; overflow is an error.
+
+Sampled and interval families also accept opt-in `rowPadding` for per-row
+occupied edge gaps, independently of `titlePadding` for the title-to-body gap.
+Both are non-negative finite logical pixels and support `"auto"` reset in whole
+or focused layout edits. Gradient strips accept only `titlePadding`; explicitly
+reset a stored `rowPadding` before a symbols-to-gradient or scale-family
+transition. See [content spacing](../legends.md#space-rows-by-content).
 
 <!-- snippet-context:start -->
 

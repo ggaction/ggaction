@@ -1,0 +1,94 @@
+{
+  "status": "implemented-focused-and-package-verified-full-checkpoint-pending",
+  "issue": 225,
+  "publicRelease": false,
+  "regularReleaseAtDistinctFamilies": 1413,
+  "chartFamiliesCompleted": 1240,
+  "schoolModelCalls": 0,
+  "approval": "APPROVAL_TARGET_V2.json",
+  "target": "TARGET_V2_EVIDENCE.json",
+  "noChartPixelsViewed": true,
+  "passed": {
+    "focusedBeforeBoundaryMove": 42,
+    "boundaryAndDiscoveryAndSpacing": 61,
+    "inventory": 3,
+    "noOptInPublicExamplesExact": 91,
+    "renderPNGAndPDF": 3,
+    "installedPackageConsumer": true,
+    "browserEngines": {
+      "chromium": 7,
+      "firefox": 7,
+      "webkit": 7
+    },
+    "publicBrowserExample": 1
+  },
+  "pending": [
+    "coherent-commit full unit/contracts/charts/docs rerun",
+    "source-link proof after canonical public example is committed",
+    "fresh complete built docs browser finish"
+  ],
+  "failuresPreserved": [
+    "all-v1: six missing registration/boundary/package/source-link conditions; runtime boundary and registrations corrected, final rerun pending",
+    "docs-generate-v1/v2: compact createLegend3804/editLegend4220 exceeded old caps; minimum ten-byte steps only",
+    "package-check-v1/v2/v3: entries596, packed847008, unpacked4108965 exceeded old caps; minimum measured caps only",
+    "package-consumer-v1: full gzip419180 exceeded418000; final full419185/basic206425 measured, caps420000/207000"
+  ],
+  "package": {
+    "entries": 596,
+    "packedBytes": 847024,
+    "unpackedBytes": 4108969,
+    "limits": {
+      "entries": 596,
+      "packedBytes": 848000,
+      "unpackedBytes": 4109000
+    },
+    "node": "22.23.1",
+    "node24ProtectedReleaseRemeasurementPending": true
+  },
+  "bindings": [
+    {
+      "path": ".artifacts/legend-content-spacing-focused-v3.log",
+      "sha256": "fd63a8e5d44f78b814c119872c202c250f7be6a9ab880200bfb988f766ba2ee9"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-boundaries-v3.log",
+      "sha256": "139811f6ab9e0e4c5cb429557883688c5333cc5caf59c94d0f47148dfc44ec19"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-inventory-v2.log",
+      "sha256": "c4d9ac9315cd9a7da78b021aadb3fd9a6748054816711aa59aae13db5ca2fab7"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-default-parity.json",
+      "sha256": "1966a219bea6ebfeec4df9d29916619db385be15e4b6ba57039f1c57c3e40bdd"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-render-v2.log",
+      "sha256": "2ea18c6cc53b17095fe6e8c3c19a7432e96e42d9e540fa8b21cdc8418aad408a"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-package-check-v5.log",
+      "sha256": "4be8b3ee74df5ff639d89bede19f09ad81fc7fbf1e52015d27448ac16d40825b"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-package-consumer-v2.log",
+      "sha256": "9f85b46e49c393bc19446df4a2be082101bdf2428168392b1563087ec8c9be47"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-browser-compat-v1.log",
+      "sha256": "bd7d53cd796a46be793ad79b77c634553b5fc755a43a979a6831312fdbad9d73"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-browser-firefox-v1.log",
+      "sha256": "d41b1cc68b593f17fd273c051d29464f87eb1eb96be91c074be9be8b725e6e98"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-browser-webkit-v1.log",
+      "sha256": "b17e7acf43b7e7a746254739fe531edbec67649c41924df712fa628cafbe550b"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-public-browser-v1.log",
+      "sha256": "894590cb7662e975f5ff29c6f57d1695426f636f5d326314709471d6dbf180a8"
+    }
+  ]
+}

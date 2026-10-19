@@ -104,15 +104,22 @@ preserves its remaining shape legend.
 | `labels` | label style object | default sans-serif label style |
 | `titleStyle` | title style object | default sans-serif title style |
 | `itemGap` | positive number | `18` for vertical items; horizontal items keep `24` at top and `20` at bottom |
+| `rowPadding` | non-negative finite number | omitted; opt into occupied edge-to-edge vertical row spacing |
+| `titlePadding` | non-negative finite number | omitted; independently set title-to-body spacing |
 | `border` | boolean or border style object | `false` |
 | `count` | size-legend symbol count from `2` through `10,000` | `5` for point legends |
 | `gradient` | `{ length?, thickness? }` with positive values | `{ length: 120, thickness: 12 }` |
 
 Pass `position: "bottom"` explicitly to place the legend below the plot.
-Vertical items reserve the larger of `itemGap`, painted sample height, and
+Without `rowPadding`, vertical items reserve the larger of `itemGap`, painted sample height, and
 `labels.fontSize * 1.2`. This conservative line-height allowance retains the
 18-pixel pitch for ordinary 12-pixel labels and grows for larger labels; it is
 not a font-specific glyph-height guarantee. Horizontal grids are unchanged.
+Opt-in [content spacing](../legends.md#space-rows-by-content) uses each row's
+actual sample and logical text bounds. It takes precedence over the vertical
+pitch while retaining `itemGap` for column separation and later reset. Both
+spacing policies override the corresponding legacy `editLegendBlock({gap})`
+distance while active; resetting them restores that retained fallback.
 For a combined categorical-and-size legend, `title: false` hides the categorical
 title; the size block retains its independent title, matching `editLegend`.
 Bottom legends use the same item grid as top legends and can use left, center,

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:51d9cb71fd347154974ef26bf8237270dd700c5d9e33e532f9130f5c5a0dc359. Status: development. Runtime source: f68c5225cd525aba2fa34fbfc8bc5ddc3e8af0a1. Release baseline: v0.0.13.
+Contract: sha256:ba182b200109d6592dc72ddd7afea1562aa6e5dd11349bf196575b10b72fd8dd. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -212,11 +212,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/f68c5225cd525aba2fa34fbfc8bc5ddc3e8af0a1/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/f68c5225cd525aba2fa34fbfc8bc5ddc3e8af0a1/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -644,15 +644,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/84e86de2bbaa210b0a17165cd5f7b778398b3e18/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -798,7 +798,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -816,7 +816,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/84e86de2bbaa210b0a17165cd5f7b778398b3e18/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -929,7 +929,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/84e86de2bbaa210b0a17165cd5f7b778398b3e18/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1099,7 +1099,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/84e86de2bbaa210b0a17165cd5f7b778398b3e18/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1321,15 +1321,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/84e86de2bbaa210b0a17165cd5f7b778398b3e18/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1465,7 +1465,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1479,15 +1479,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/84e86de2bbaa210b0a17165cd5f7b778398b3e18/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1585,7 +1585,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1599,15 +1599,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/84e86de2bbaa210b0a17165cd5f7b778398b3e18/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1716,7 +1716,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1732,15 +1732,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/84e86de2bbaa210b0a17165cd5f7b778398b3e18/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1865,7 +1865,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1940,7 +1940,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1950,15 +1950,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/84e86de2bbaa210b0a17165cd5f7b778398b3e18/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2083,7 +2083,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2116,7 +2116,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2127,8 +2127,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2224,15 +2224,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/84e86de2bbaa210b0a17165cd5f7b778398b3e18/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2329,15 +2329,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/84e86de2bbaa210b0a17165cd5f7b778398b3e18/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2443,8 +2443,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2453,7 +2453,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/84e86de2bbaa210b0a17165cd5f7b778398b3e18/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2752,7 +2752,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -5738,7 +5738,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -9575,7 +9575,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -9636,7 +9636,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -10001,7 +10001,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -10563,7 +10563,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -12971,6 +12971,36 @@ sufficient bottom margin; top layout requires enough top margin for its title,
 item grid, offset, and optional border. The library reports a layout error
 instead of resizing the Canvas or dropping symbol layers.
 
+## Space rows by content
+
+Create the complete legend first, then refine its spacing. This fragment requires
+an existing item-based legend:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+program.editLegendLayout({ rowPadding: 7, titlePadding: 20 });
+```
+
+`rowPadding` is the empty vertical distance between adjacent rows' occupied
+sample and label bounds. It accounts for each row's own symbol size and stroke;
+a text-only overflow row reserves only its label. Multi-column grids measure
+the union of each row. `itemGap` continues to control horizontal spacing and
+supplies the original vertical pitch when `rowPadding` is omitted.
+
+`titlePadding` independently sets the occupied title-to-body distance: vertical
+for top or bottom titles, horizontal for an inline left title. Hidden titles
+reserve no distance. Text bounds use the library's deterministic font-size and
+hard-line-break measurement, rather than browser-specific glyph ink.
+
+Both values accept finite non-negative logical pixels, including zero.
+`editLegend` and `editLegendLayout` accept `"auto"` to remove either policy;
+omitting a value preserves it. Creation accepts numbers only. The original
+layout is unchanged when neither policy is supplied. Gradient strips accept
+`titlePadding` only; reset `rowPadding` before switching an item legend to a
+gradient. Both options require `layout: "edge"`, rather than `"legacy-bottom"`.
+See [editing legends](./api/legends/editing/#focused-edits) for block selection.
+
 ## Put a compact categorical legend inside the plot
 
 Use a corner position such as `"top-left"` and
@@ -13096,15 +13126,22 @@ preserves its remaining shape legend.
 | `labels` | label style object | default sans-serif label style |
 | `titleStyle` | title style object | default sans-serif title style |
 | `itemGap` | positive number | `18` for vertical items; horizontal items keep `24` at top and `20` at bottom |
+| `rowPadding` | non-negative finite number | omitted; opt into occupied edge-to-edge vertical row spacing |
+| `titlePadding` | non-negative finite number | omitted; independently set title-to-body spacing |
 | `border` | boolean or border style object | `false` |
 | `count` | size-legend symbol count from `2` through `10,000` | `5` for point legends |
 | `gradient` | `{ length?, thickness? }` with positive values | `{ length: 120, thickness: 12 }` |
 
 Pass `position: "bottom"` explicitly to place the legend below the plot.
-Vertical items reserve the larger of `itemGap`, painted sample height, and
+Without `rowPadding`, vertical items reserve the larger of `itemGap`, painted sample height, and
 `labels.fontSize * 1.2`. This conservative line-height allowance retains the
 18-pixel pitch for ordinary 12-pixel labels and grows for larger labels; it is
 not a font-specific glyph-height guarantee. Horizontal grids are unchanged.
+Opt-in [content spacing](./api/legends/#space-rows-by-content) uses each row's
+actual sample and logical text bounds. It takes precedence over the vertical
+pitch while retaining `itemGap` for column separation and later reset. Both
+spacing policies override the corresponding legacy `editLegendBlock({gap})`
+distance while active; resetting them restores that retained fallback.
 For a combined categorical-and-size legend, `title: false` hides the categorical
 title; the size block retains its independent title, matching `editLegend`.
 Bottom legends use the same item grid as top legends and can use left, center,
@@ -13481,7 +13518,7 @@ before the next sample. `labels.offset` and `itemGap` override those distances.
 All sample spacing includes half the stroke width around the circle. Label
 offset measures the visible edge-to-edge gap; its non-inline default is 12.
 
-Vertical sampled and interval legends default to `itemGap: 18`. At either side,
+Without `rowPadding`, vertical sampled and interval legends default to `itemGap: 18`. At either side,
 `itemGap` is a minimum center pitch and grows to fit the largest
 sample or a conservative label line height of `fontSize * 1.2`. This allowance
 does not guarantee the exact height of every font. A visible title keeps at
@@ -13491,6 +13528,13 @@ pixels and twice `itemGap`, enlarged when needed to keep `itemGap` between
 neighbouring sample or label bounds. Inline legends keep `itemGap` between
 complete sample-label pairs. Large fonts and strokes require sufficient Canvas
 space; overflow is an error.
+
+Sampled and interval families also accept opt-in `rowPadding` for per-row
+occupied edge gaps, independently of `titlePadding` for the title-to-body gap.
+Both are non-negative finite logical pixels and support `"auto"` reset in whole
+or focused layout edits. Gradient strips accept only `titlePadding`; explicitly
+reset a stored `rowPadding` before a symbols-to-gradient or scale-family
+transition. See [content spacing](./api/legends/#space-rows-by-content).
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -14148,7 +14192,7 @@ program
 
 | Action | Accepted component options |
 | --- | --- |
-| `editLegendLayout` | `position`, `blockLayout`, `at`, `layout`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap` |
+| `editLegendLayout` | `position`, `blockLayout`, `at`, `layout`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap`, `rowPadding`, `titlePadding` |
 | `editLegendLabels` | `offset`, `color`, `fontSize`, `fontFamily`, `fontWeight`, continuous `format` |
 | `editLegendTitle` | `title`, `color`, `fontSize`, `fontFamily`, `fontWeight` |
 | `editLegendSymbols` | `symbol`, `count`, `gradient` |
@@ -14159,6 +14203,17 @@ legend is inferable. The actions use `editLegend` internally, so title modes,
 partial nested merges, legend-kind compatibility, layout errors, and
 rematerialization behavior remain identical. At least one component option is
 required.
+
+`rowPadding` and `titlePadding` accept non-negative finite numbers or `"auto"`
+in both whole and focused layout edits. An omitted or `undefined` field preserves
+its policy; `"auto"` removes it and restores the original layout. Use `channel`
+to edit one block. `editLegendTitle` changes title text/style only, and
+`editLegendBlock({gap})` keeps its original uniform-gap contract. Explicit
+content spacing takes precedence over the corresponding old gap while active.
+When combining blocks with conflicting spacing policies, choose the resulting
+policy explicitly in the same whole edit. A split that would leave row padding
+on a gradient requires an explicit `rowPadding: "auto"` reset. No layout edit
+enlarges the Canvas or drops items to make content fit.
 
 Legend label and title weights follow the shared
 [Canvas font-weight policy](./api/marks/text/#font-weights).
@@ -25347,6 +25402,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `labels` | Optional / branch-dependent | `LegendTextOptions \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `LegendTitleStyleOptions \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
+| `rowPadding` | Optional / branch-dependent | `number \| undefined` |
+| `titlePadding` | Optional / branch-dependent | `number \| undefined` |
 | `border` | Optional / branch-dependent | `boolean \| LegendBorderOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -25354,10 +25411,12 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 createLegend({
   target?, channels?, position?, layout?, align?, direction?, columns?, offset?,
-  titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?,
+  titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?,
   values?, gradient?, order?
 })
 ```
+
+`rowPadding` sets non-negative finite occupied edge-to-edge vertical row gaps for item-based legends; `titlePadding` independently sets title-to-body spacing for every family. Omission preserves the original layout. Text uses deterministic font-size and hard-line-break bounds; strokes, paths and clips contribute to sample bounds. Multi-column rows use their union; text-only summaries have no sample. These options require edge layout. Gradient strips reject row padding.
 
 Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Interval legends support all four
@@ -25445,6 +25504,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `rowPadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `titlePadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
@@ -25476,12 +25537,14 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 editLegend({
   target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
-  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow?
+  title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?, values?, gradient?, order?, overflow?
 })
 ```
 
 Singular `channel` selects one existing block without changing sibling typography. It cannot
 accompany `channels`, `blockLayout`, or `at`. A channel never disambiguates mark targets.
+
+`rowPadding` and `titlePadding` accept numbers or `"auto"` to remove retained intent; omission or undefined preserves it. Explicit row spacing wins over vertical itemGap/block gap while retaining the old fallback and horizontal spacing. Explicit title spacing wins over the old title gap. Reset row padding before a transition to a gradient. Combining conflicting policies requires an explicit choice; incompatible splits require explicit reset. Content and Canvas/data/scale/theme/facet replay retain compatible policies.
 
 Partially edit one existing legend. Categorical `overflow` can be replaced or reset
 with `false`; data/scale/order revisions recompute the hidden count and remove stale
@@ -25593,6 +25656,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
+| `rowPadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `titlePadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused legend edits](./reference/actions/guides/#focused-legend-edits).
 
@@ -26906,7 +26971,7 @@ See [Coordinates](./api/coordinates/) and
 ```javascript
 editLegendLayout({
   target?, channel?, position?, layout?, align?, direction?, columns?, offset?,
-  titlePosition?, itemGap?
+  titlePosition?, itemGap?, rowPadding?, titlePadding?
 })
 editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
@@ -26915,6 +26980,8 @@ editLegendTitle({
 editLegendSymbols({ target?, channel?, symbol?, count?, gradient? })
 editLegendBorder({ target?, channel?, border })
 ```
+
+`editLegendLayout` owns content spacing and its edit-only `"auto"` reset. Title editing remains text/style-only; block editing retains its original gap contract. See [content spacing](./api/legends/#space-rows-by-content).
 
 Edit one legend component without constructing the nested options accepted by
 `editLegend`. Each action uses the same target inference, validation, and
@@ -31953,6 +32020,10 @@ export interface EditLegendLayoutOptions {
   titlePosition?: "top" | "left" | "bottom";
   /** Explicit spacing override; vertical creation defaults to 18 logical pixels. */
   itemGap?: number;
+  /** Non-negative occupied-row gap; auto restores the retained legacy pitch. */
+  rowPadding?: number | "auto";
+  /** Non-negative visible-title/body gap; auto restores the family default. */
+  titlePadding?: number | "auto";
 }
 ```
 
@@ -31964,8 +32035,12 @@ Related types: [`LegendChannel`](./reference/types/#type-legendchannel).
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
   clipHeight?: number | "auto";
+  /** auto removes the row policy and restores the retained itemGap behavior. */
+  rowPadding?: number | "auto";
+  /** auto removes the title/body spacing override. */
+  titlePadding?: number | "auto";
   /** Select one existing block; cannot accompany channels. */
   channel?: LegendChannel;
   /** inherit is allowed only with a singular channel selector. */
@@ -34015,6 +34090,10 @@ export interface LegendOptions {
   titleStyle?: LegendTitleStyleOptions;
   /** Vertical items default to 18 logical pixels; the pitch grows to fit samples and labels. */
   itemGap?: number;
+  /** Non-negative gap between occupied item rows; overrides vertical itemGap pitch. Item legends in edge layout only. */
+  rowPadding?: number;
+  /** Non-negative gap between visible title and body bounds; legacy-bottom is excluded. */
+  titlePadding?: number;
   border?: boolean | LegendBorderOptions;
 }
 ```
@@ -38266,12 +38345,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f68c5225cd525aba2fa34fbfc8bc5ddc3e8af0a1/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f68c5225cd525aba2fa34fbfc8bc5ddc3e8af0a1/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -38994,7 +39073,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -39233,7 +39312,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -39280,7 +39359,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/repeat-charts).
 
 ## Space between plots
 
@@ -39670,7 +39749,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/84e86de2bbaa210b0a17165cd5f7b778398b3e18/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -40556,9 +40635,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:51d9cb71fd347154974ef26bf8237270dd700c5d9e33e532f9130f5c5a0dc359` |
-| Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
-| Runtime source commit | `f68c5225cd525aba2fa34fbfc8bc5ddc3e8af0a1` |
+| Contract fingerprint | `sha256:ba182b200109d6592dc72ddd7afea1562aa6e5dd11349bf196575b10b72fd8dd` |
+| Example and dataset source | `codex/batch200-library-fixes` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 284 |
 | Declared actions in that release | 234 |

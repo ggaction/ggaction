@@ -589,7 +589,7 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
 }
 
 export function compactActionCardByteLimit(name) {
-  return {editLegend: 3860, createLegend: 3530, createMarkLabels: 3420,
+  return {editLegend: 4220, createLegend: 3810, createMarkLabels: 3420,
     createAnnotation: 3420, createRegressionPlot: 3370}[name] ?? 3360;
 }
 

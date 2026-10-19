@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 594, // Cartesian clipping adds three focused selector/schema/materialization owners.
-  packedBytes: 844_000, // Node22 Cartesian clipping staged artifact measured843921bytes; Node24 remeasured at release.
-  unpackedBytes: 4_096_000 // Cartesian clipping staged artifact measured4095633bytes.
+  entries: 596, // Content spacing adds focused grammar and pure layout owners.
+  packedBytes: 848_000, // Node22 content spacing staged artifact measured847008bytes; Node24 remeasured at release.
+  unpackedBytes: 4_109_000 // Content spacing staged artifact measured4108965bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

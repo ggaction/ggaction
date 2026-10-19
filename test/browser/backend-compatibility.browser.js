@@ -16,6 +16,12 @@ test.before(async () => {
   consumer = await preparePackageConsumer();
   await writeFile(path.join(consumer.directory, "index.html"), compatibilityPage());
   await writeFile(path.join(consumer.directory, "clipping-fixture.js"), await readFile(new URL("../support/plot-clipping.js", import.meta.url), "utf8"));
+  await writeFile(path.join(consumer.directory,"legend-spacing-public.js"),
+    (await readFile(new URL("../../examples/legend-content-spacing/program.js",import.meta.url),"utf8"))
+      .replace("'../../src/index.js'","'ggaction'"));
+  await writeFile(path.join(consumer.directory,"legend-spacing-primitive.js"),
+    (await readFile(new URL("../charts/legend-content-spacing/primitive.program.js",import.meta.url),"utf8"))
+      .replace("'../../../src/index.js'","'ggaction'"));
   server = await startStaticServer(consumer.directory);
   browser = await browsers[browserName].launch({ headless: true });
 });
@@ -23,6 +29,47 @@ test.after(async () => {
   await closeBrowserWithEvidence(browser);
   await server?.close();
   await consumer?.cleanup();
+});
+
+test(`${browserName} preserves occupied legend spacing in installed Canvas and SVG at both densities`,async()=>{
+  for(const ratio of[1,2]){
+    const context=await browser.newContext({deviceScaleFactor:ratio});
+    try{
+      const {page,errors}=await openBrowserPage(context,server.baseUrl,{waitFor:()=>window.compatibility!==undefined});
+      const result=await page.evaluate(async ratio=>{
+        const {render}=await import('/node_modules/ggaction/src/index.js');
+        const {renderToSVG}=await import('/node_modules/ggaction/src/renderers/svg.js');
+        const {createLegendContentSpacingProgram}=await import('/legend-spacing-public.js');
+        const {createPrimitiveProgram}=await import('/legend-spacing-primitive.js');
+        const programs=[createLegendContentSpacingProgram(),createPrimitiveProgram()],svgs=programs.map(p=>renderToSVG(p)),checks=[];
+        for(const backend of['Canvas','SVG']){
+          const arrays=[];
+          for(let index=0;index<programs.length;index++){
+            const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
+            if(backend==='Canvas')render(programs[index],ctx,{pixelRatio:ratio});
+            else{
+              canvas.width=320*ratio;canvas.height=240*ratio;
+              const url=URL.createObjectURL(new Blob([svgs[index]],{type:'image/svg+xml'})),image=new Image();
+              image.src=url;await image.decode();ctx.scale(ratio,ratio);ctx.drawImage(image,0,0);URL.revokeObjectURL(url);
+            }
+            arrays.push(ctx.getImageData(0,0,canvas.width,canvas.height).data);
+          }
+          let differences=0,ink=0;
+          for(let index=0;index<arrays[0].length;index++)if(arrays[0][index]!==arrays[1][index])differences++;
+          for(let y=30*ratio;y<190*ratio;y++)for(let x=40*ratio;x<180*ratio;x++){
+            const i=(y*320*ratio+x)*4;if(arrays[0][i]+arrays[0][i+1]+arrays[0][i+2]<740&&arrays[0][i+3]>0)ink++;
+          }
+          checks.push({backend,differences,ink,dimensions:[320*ratio,240*ratio]});
+        }
+        return{svgExact:svgs[0]===svgs[1],svg:svgs[0],checks,
+          sampleCenterY:programs[0].graphicSpec.objects.sizeLegendSymbols.items.map(i=>i.properties.y),
+          labelTopY:programs[0].graphicSpec.objects.sizeLegendLabels.items.map(i=>i.properties.y)};
+      },ratio);
+      assert.equal(result.svgExact,true);assert.deepEqual(result.sampleCenterY,[73,102,143]);assert.deepEqual(result.labelTopY,[68,97,138]);
+      for(const check of result.checks){assert.equal(check.differences,0,check.backend);assert.ok(check.ink>100*ratio*ratio);assert.deepEqual(check.dimensions,[320*ratio,240*ratio]);}
+      assert.match(result.svg,/cx="231" cy="73" r="8"/);assertNoBrowserErrors(errors,browserName);await page.close();
+    }finally{await context.close();}
+  }
 });
 
 for (const ratio of [1, 2]) {

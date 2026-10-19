@@ -5281,6 +5281,10 @@ export interface EditLegendLayoutOptions {
   titlePosition?: "top" | "left" | "bottom";
   /** Explicit spacing override; vertical creation defaults to 18 logical pixels. */
   itemGap?: number;
+  /** Non-negative occupied-row gap; auto restores the retained legacy pitch. */
+  rowPadding?: number | "auto";
+  /** Non-negative visible-title/body gap; auto restores the family default. */
+  titlePadding?: number | "auto";
 }
 ```
 
@@ -5295,8 +5299,12 @@ Related types: [`LegendChannel`](#type-legendchannel).
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
   clipHeight?: number | "auto";
+  /** auto removes the row policy and restores the retained itemGap behavior. */
+  rowPadding?: number | "auto";
+  /** auto removes the title/body spacing override. */
+  titlePadding?: number | "auto";
   /** Select one existing block; cannot accompany channels. */
   channel?: LegendChannel;
   /** inherit is allowed only with a singular channel selector. */
@@ -7760,6 +7768,10 @@ export interface LegendOptions {
   titleStyle?: LegendTitleStyleOptions;
   /** Vertical items default to 18 logical pixels; the pitch grows to fit samples and labels. */
   itemGap?: number;
+  /** Non-negative gap between occupied item rows; overrides vertical itemGap pitch. Item legends in edge layout only. */
+  rowPadding?: number;
+  /** Non-negative gap between visible title and body bounds; legacy-bottom is excluded. */
+  titlePadding?: number;
   border?: boolean | LegendBorderOptions;
 }
 ```

@@ -52,7 +52,7 @@ type TitleWrap = "word" | "character";
 - Sampled opacity legend는 active quantitative opacity scale이 있는 Point와 Line을 지원한다.
   Line도 기존 circle sample recipe를 사용하며 constant assignment는 자신의 opacity block만 제거한다.
 
-- Signature: `createLegend({ target?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
+- Signature: `createLegend({ target?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?, values?, gradient?, order?, overflow? })`.
 - 모든 legend family의 `position`은 plot 내부 네 corner도 지원한다. Corner gradient는 vertical이며 sampled opacity는 vertical items를 사용한다. Offset은 painted border/content의
   plot 안쪽 간격이며 border padding을 추가 예약한다. 기본 vertical/1-column/top-title,
   align center다. 전체 내용이 plot에 맞지 않으면 atomic 오류이며 outer lane은 예약하지 않는다.
@@ -142,6 +142,11 @@ type TitleWrap = "word" | "character";
   temporal에는 UTC token만 허용한다. Categorical identity label은 `"auto"`만 허용한다. 모든 family의
   titleStyle.offset/format은 거절한다.
 - `itemGap`: positive finite number; vertical item의 기본값은18이다. Categorical top/bottom horizontal은24/20, sampled family의 horizontal 기본 간격은 기존 값을 유지한다. Side에서는 최소 center pitch이며 symbol paint 높이와 보수적인 label line-height(fontSize×1.2) 중 큰 값을 확보한다. 이 line-height는 특정 폰트 glyph 높이 보장이 아니며 horizontal grid 규칙은 그대로다. Explicit 값과 저장된 기존 config는 보존한다.
+- Opt-in content spacing: `rowPadding?: NonNegativeFinite`은 각 row의 actual sample/stroke/path/clip와 visible logical text bounds union 사이 빈 세로 간격이다. 각 row 고유 높이를 사용하며 multi-column은 row union, text-only summary는 label만 측정한다. `titlePadding?: NonNegativeFinite`은 top/bottom title과 body의 세로 간격 또는 inline left title의 가로 간격이다. Hidden title은 간격을 예약하지 않되 intent는 보존한다. Text는 기존 backend-neutral fontSize/hard-break bounds를 사용하며 browser glyph ink를 새로 측정하지 않는다. 두 필드는 finite≥0이며 omission 시 새 config field를 쓰지 않고 기존 geometry/trace를 보존한다.
+- `rowPadding`은 vertical row pitch보다 우선한다. `itemGap`의 horizontal/column 간격과 저장된 fallback은 유지한다. 기존 block override `gap`의 해당 row/title distance보다 새 policy가 우선하며 reset 후 기존 fallback을 복원한다. 기존 title align, occupied side-top/plot alignment, group anchors, borders, collision/overflow 검증을 유지한다. Canvas 확대·text wrap·항목 누락으로 실패를 숨기지 않는다.
+- Create/facade/complete-guide는 numeric spacing만 받는다. `editLegend`와 `editLegendLayout`은 각 필드 `number | "auto"`를 받으며 auto는 optional intent를 삭제, omission/undefined는 보존한다. null/false/다른 string은 오류다. `editLegendTitle`은 text/style, `editLegendBlock`은 기존 gap 계약만 소유한다. Legacy-bottom은 두 필드를 거절하므로 explicit edge로 전환한다. Gradient strips는 titlePadding만, item-based categorical/series/stroke/size/interval/stroke-width/opacity/sampled-color/color-size는 두 필드를 지원한다.
+- Row policy가 남은 symbols→gradient/scale-family 전환은 먼저 또는 같은 지원 edit에서 explicit reset해야 한다. Combine의 old block policy가 서로 다르면 같은 edit에 명시 선택/reset이 필요하며 split 후 gradient에 남는 row policy도 reset해야 한다. 생성/편집/content replacement/combine/split/encoding 제거/scale·data·theme·Canvas replay/persistence/facet parent 소유 경로에 같은 검증을 적용한다. 저장은 기존 family guideConfigs의 optional numeric intent만 사용하며 derived row geometry를 저장하지 않는다.
+- Evidence: `test/unit/layout/legend-content-spacing.test.js`, `test/unit/actions/guides/legend-content-spacing.test.js`, `test/contracts/legend-spacing-types.test.js`, `test/charts/legend-content-spacing/`, browser backend compatibility와 installed package consumer.
 - Corner item block의 title과 첫 item은 실제 painted title bottom/item top 사이 기존12px gap을 측정한다. 외부 side의 fixed first-row anchor52를 corner에 복사하지 않는다. Native corner inset8과 기본 pitch18, 전체 inset plot fit 검증은 유지하며 grouped intrinsic frame도 같은 corner 의도를 전달한다.
 - `border`: `false | true | { color?, lineWidth?, padding?, background?, strokeDash? }`; false가 default이며 true는
   default bordered background를 만든다.
@@ -201,7 +206,7 @@ type TitleWrap = "word" | "character";
 
 ### Formal values — `createLegend`
 
-- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; representation?: "gradient" | "symbols"; position?: LegendPosition; blockLayout?: "row" | "column" | "wrap"; at?: { x: Finite; y: Finite }; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left" | "bottom"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; values?: readonly number[]; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite; opacity?: UnitInterval }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
+- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; representation?: "gradient" | "symbols"; position?: LegendPosition; blockLayout?: "row" | "column" | "wrap"; at?: { x: Finite; y: Finite }; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left" | "bottom"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; rowPadding?: NonNegativeFinite; titlePadding?: NonNegativeFinite; border?: LegendBorder; count?: IntegerAtLeast2; values?: readonly number[]; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite; opacity?: UnitInterval }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -313,7 +318,7 @@ and absent shared owners reject. Selected member removal follows native fused-bl
 
 ## `editLegend`
 
-- Signature: `editLegend({ target?, channel?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow? })`.
+- Signature: `editLegend({ target?, channel?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?, values?, gradient?, order?, overflow? })`.
 - `target` selects an existing logical legend by mark ID. It may be omitted only when exactly one target owns all
   active blocks; independent targets are ambiguous.
 - At least one non-selector change is required. Mark encodings and scale bindings remain unchanged.
@@ -468,7 +473,7 @@ and absent shared owners reject. Selected member removal follows native fused-bl
 
 ## `editLegendLayout`
 
-- Signature: `editLegendLayout({ target?, channel?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, itemGap? })`.
+- Signature: `editLegendLayout({ target?, channel?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, itemGap?, rowPadding?, titlePadding? })`.
 - Layout-only facade이며 최소 한 layout change를 요구하고 wrapped `editLegend`를 호출한다.
 
 ### Formal values — `editLegendLayout`

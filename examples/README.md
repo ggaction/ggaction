@@ -528,6 +528,12 @@ Start with legend blocks, then edit orientation, title, border and one local anc
 
 Representative actions: `createLegend`, `editLegendLayout`, `editLegendBorder`, `editLegendBlock`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#independent-legend-appearance).
 
+### [Equal gaps between different-sized legend rows](./legend-content-spacing/)
+
+Set occupied row gaps separately from title padding and legacy center pitch.
+
+Representative actions: `createLegend`, `editLegendLayout`. [Documentation](https://ggaction.github.io/ggaction/api/legends/#space-rows-by-content).
+
 ### [Opacity of a layered legend recipe](./legend-recipe-opacity/)
 
 Style an existing legend with a complete line and point recipe.

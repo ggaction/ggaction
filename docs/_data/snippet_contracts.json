@@ -1925,6 +1925,20 @@
     "executable": false
   },
   {
+    "file": "api/legends.md",
+    "block": 2,
+    "heading": "Space rows by content",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "1e38f6ab48084bf36b9152f285cd3c25b92a7eab60f9941800f1c82d52ba7ed2",
+    "executable": false
+  },
+  {
     "file": "api/legends/categorical.md",
     "block": 1,
     "heading": "`createLegend(options?)`",

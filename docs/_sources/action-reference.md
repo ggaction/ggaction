@@ -2629,10 +2629,12 @@ Edit the existing radial grid. [Grids](../api/grids.md#editing-grids)
 ```javascript
 createLegend({
   target?, channels?, position?, layout?, align?, direction?, columns?, offset?,
-  titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?,
+  titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?,
   values?, gradient?, order?
 })
 ```
+
+`rowPadding` sets non-negative finite occupied edge-to-edge vertical row gaps for item-based legends; `titlePadding` independently sets title-to-body spacing for every family. Omission preserves the original layout. Text uses deterministic font-size and hard-line-break bounds; strokes, paths and clips contribute to sample bounds. Multi-column rows use their union; text-only summaries have no sample. These options require edge layout. Gradient strips reject row padding.
 
 Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Interval legends support all four
@@ -2706,12 +2708,14 @@ Continuous and combined sampled legends retain their existing edge-only contract
 ```javascript
 editLegend({
   target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
-  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow?
+  title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?, values?, gradient?, order?, overflow?
 })
 ```
 
 Singular `channel` selects one existing block without changing sibling typography. It cannot
 accompany `channels`, `blockLayout`, or `at`. A channel never disambiguates mark targets.
+
+`rowPadding` and `titlePadding` accept numbers or `"auto"` to remove retained intent; omission or undefined preserves it. Explicit row spacing wins over vertical itemGap/block gap while retaining the old fallback and horizontal spacing. Explicit title spacing wins over the old title gap. Reset row padding before a transition to a gradient. Combining conflicting policies requires an explicit choice; incompatible splits require explicit reset. Content and Canvas/data/scale/theme/facet replay retain compatible policies.
 
 Partially edit one existing legend. Categorical `overflow` can be replaced or reset
 with `false`; data/scale/order revisions recompute the hidden count and remove stale
@@ -2767,7 +2771,7 @@ numeric keys only; unmatched samples keep their normal formatter. `"auto"` remov
 ```javascript
 editLegendLayout({
   target?, channel?, position?, layout?, align?, direction?, columns?, offset?,
-  titlePosition?, itemGap?
+  titlePosition?, itemGap?, rowPadding?, titlePadding?
 })
 editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
@@ -2776,6 +2780,8 @@ editLegendTitle({
 editLegendSymbols({ target?, channel?, symbol?, count?, gradient? })
 editLegendBorder({ target?, channel?, border })
 ```
+
+`editLegendLayout` owns content spacing and its edit-only `"auto"` reset. Title editing remains text/style-only; block editing retains its original gap contract. See [content spacing](../api/legends.md#space-rows-by-content).
 
 Edit one legend component without constructing the nested options accepted by
 `editLegend`. Each action uses the same target inference, validation, and

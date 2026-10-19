@@ -380,7 +380,7 @@ program
 
 | Action | Accepted component options |
 | --- | --- |
-| `editLegendLayout` | `position`, `blockLayout`, `at`, `layout`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap` |
+| `editLegendLayout` | `position`, `blockLayout`, `at`, `layout`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap`, `rowPadding`, `titlePadding` |
 | `editLegendLabels` | `offset`, `color`, `fontSize`, `fontFamily`, `fontWeight`, continuous `format` |
 | `editLegendTitle` | `title`, `color`, `fontSize`, `fontFamily`, `fontWeight` |
 | `editLegendSymbols` | `symbol`, `count`, `gradient` |
@@ -391,6 +391,17 @@ legend is inferable. The actions use `editLegend` internally, so title modes,
 partial nested merges, legend-kind compatibility, layout errors, and
 rematerialization behavior remain identical. At least one component option is
 required.
+
+`rowPadding` and `titlePadding` accept non-negative finite numbers or `"auto"`
+in both whole and focused layout edits. An omitted or `undefined` field preserves
+its policy; `"auto"` removes it and restores the original layout. Use `channel`
+to edit one block. `editLegendTitle` changes title text/style only, and
+`editLegendBlock({gap})` keeps its original uniform-gap contract. Explicit
+content spacing takes precedence over the corresponding old gap while active.
+When combining blocks with conflicting spacing policies, choose the resulting
+policy explicitly in the same whole edit. A split that would leave row padding
+on a gradient requires an explicit `rowPadding: "auto"` reset. No layout edit
+enlarges the Canvas or drops items to make content fit.
 
 Legend label and title weights follow the shared
 [Canvas font-weight policy](../marks/text.md#font-weights).

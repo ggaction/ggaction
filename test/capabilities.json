@@ -191,6 +191,24 @@
         "path": "unit/layout/"
       }
     ],
+    "legend-content-spacing": [
+      {
+        "type": "file",
+        "path": "unit/layout/legend-content-spacing.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/guides/legend-content-spacing.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/legend-spacing-types.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/legend-content-spacing/"
+      }
+    ],
     "legend-layout": [
       {
         "type": "prefix",

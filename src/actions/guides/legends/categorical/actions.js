@@ -220,6 +220,8 @@ export function resolveCategoricalLegendConfig(program, args = {}) {
     labels: options.labels,
     titleStyle: options.titleStyle,
     itemGap: options.itemGap,
+    ...(options.rowPadding === undefined ? {} : {rowPadding:options.rowPadding}),
+    ...(options.titlePadding === undefined ? {} : {titlePadding:options.titlePadding}),
     layout: options.layout,
     ...(options.clipHeight === undefined ? {} : {clipHeight:options.clipHeight}),
     ...(options.overflow === undefined ? {} : { overflow: options.overflow }),

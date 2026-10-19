@@ -1415,6 +1415,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `labels` | Optional / branch-dependent | `LegendTextOptions \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `LegendTitleStyleOptions \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
+| `rowPadding` | Optional / branch-dependent | `number \| undefined` |
+| `titlePadding` | Optional / branch-dependent | `number \| undefined` |
 | `border` | Optional / branch-dependent | `boolean \| LegendBorderOptions \| undefined` |
 
 </details>
@@ -1424,10 +1426,12 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 createLegend({
   target?, channels?, position?, layout?, align?, direction?, columns?, offset?,
-  titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?,
+  titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?,
   values?, gradient?, order?
 })
 ```
+
+`rowPadding` sets non-negative finite occupied edge-to-edge vertical row gaps for item-based legends; `titlePadding` independently sets title-to-body spacing for every family. Omission preserves the original layout. Text uses deterministic font-size and hard-line-break bounds; strokes, paths and clips contribute to sample bounds. Multi-column rows use their union; text-only summaries have no sample. These options require edge layout. Gradient strips reject row padding.
 
 Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Interval legends support all four
@@ -1517,6 +1521,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `rowPadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `titlePadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
@@ -1550,12 +1556,14 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 editLegend({
   target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
-  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow?
+  title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?, values?, gradient?, order?, overflow?
 })
 ```
 
 Singular `channel` selects one existing block without changing sibling typography. It cannot
 accompany `channels`, `blockLayout`, or `at`. A channel never disambiguates mark targets.
+
+`rowPadding` and `titlePadding` accept numbers or `"auto"` to remove retained intent; omission or undefined preserves it. Explicit row spacing wins over vertical itemGap/block gap while retaining the old fallback and horizontal spacing. Explicit title spacing wins over the old title gap. Reset row padding before a transition to a gradient. Combining conflicting policies requires an explicit choice; incompatible splits require explicit reset. Content and Canvas/data/scale/theme/facet replay retain compatible policies.
 
 Partially edit one existing legend. Categorical `overflow` can be replaced or reset
 with `false`; data/scale/order revisions recompute the hidden count and remove stale
@@ -1673,6 +1681,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
+| `rowPadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `titlePadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 
 </details>
 
@@ -3134,7 +3144,7 @@ See [Coordinates](../../api/coordinates.md) and
 ```javascript
 editLegendLayout({
   target?, channel?, position?, layout?, align?, direction?, columns?, offset?,
-  titlePosition?, itemGap?
+  titlePosition?, itemGap?, rowPadding?, titlePadding?
 })
 editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
@@ -3143,6 +3153,8 @@ editLegendTitle({
 editLegendSymbols({ target?, channel?, symbol?, count?, gradient? })
 editLegendBorder({ target?, channel?, border })
 ```
+
+`editLegendLayout` owns content spacing and its edit-only `"auto"` reset. Title editing remains text/style-only; block editing retains its original gap contract. See [content spacing](../../api/legends.md#space-rows-by-content).
 
 Edit one legend component without constructing the nested options accepted by
 `editLegend`. Each action uses the same target inference, validation, and

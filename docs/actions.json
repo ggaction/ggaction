@@ -19292,7 +19292,7 @@
       "name": "createLegend",
       "layer": "user-facing",
       "domain": "legend_and_title",
-      "summary": "Create categorical, point-size, continuous-color gradient, discretized-color interval, or field-opacity sample legends.",
+      "summary": "rowPadding sets non-negative finite occupied edge-to-edge vertical row gaps for item-based legends; titlePadding independently sets title-to-body spacing for every family.",
       "signature": "createLegend(options?: LegendOptions): ChartProgram;",
       "intents": [
         "create legend",
@@ -19340,6 +19340,14 @@
         {
           "path": "count",
           "unit": "count"
+        },
+        {
+          "path": "rowPadding",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "titlePadding",
+          "unit": "logical-pixel"
         }
       ],
       "inference": [
@@ -19481,6 +19489,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "rowPadding",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "titlePadding",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "border",
           "required": false,
           "type": "boolean | LegendBorderOptions | undefined"
@@ -19537,6 +19555,14 @@
       },
       "units": [
         {
+          "path": "rowPadding",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "titlePadding",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "columns",
           "unit": "count"
         },
@@ -19552,6 +19578,14 @@
       "inference": [
         {
           "input": "clipHeight",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "rowPadding",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "titlePadding",
           "strategy": "documented-auto"
         },
         {
@@ -19578,6 +19612,16 @@
       "options": [
         {
           "name": "clipHeight",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
+          "name": "rowPadding",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
+          "name": "titlePadding",
           "required": false,
           "type": "number | \"auto\" | undefined"
         },
@@ -19708,7 +19752,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, clipHeight?, channel?, position?, direction?, titleStyle?, channels?, title? })"
+        "editLegend({ target?, clipHeight?, rowPadding?, titlePadding?, channel?, position?, direction?, titleStyle? })"
       ],
       "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],
@@ -19906,6 +19950,14 @@
         {
           "path": "offset",
           "unit": "logical-pixel"
+        },
+        {
+          "path": "rowPadding",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "titlePadding",
+          "unit": "logical-pixel"
         }
       ],
       "inference": [
@@ -19915,6 +19967,14 @@
         },
         {
           "input": "direction",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "rowPadding",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "titlePadding",
           "strategy": "documented-auto"
         }
       ],
@@ -19986,6 +20046,16 @@
           "name": "itemGap",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "rowPadding",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
+          "name": "titlePadding",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
         }
       ],
       "callPatterns": [

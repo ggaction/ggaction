@@ -1376,6 +1376,8 @@ Renderer는 representation을 해석하지 않고 완성된 concrete primitives�
 
 Family action은 scale/content/appearance를 검증하고 intrinsic concrete recipe를 만든다. `layout/legendItems.js`는 실제 sample stroke/path bounds와 formatted text를 측정해 공통 occupied item slot을 계산한다. Size/interval/stroke-width는 categorical symbol implementation을 복제하지 않고 같은 layout owner에 자기 recipe를 제공한다.
 
+선택적 content spacing의 검증·reset은 `grammar/legendSpacing.js`가, 이미 측정한 concrete row/title bounds의 순수 이동 계산은 `layout/legendSpacing.js`가 소유한다. Family config에는 선택적 numeric authoring intent만 저장하고 계산된 row geometry나 renderer 전용 상태를 저장하지 않는다. Item 공통 경로와 opacity/gradient 경로는 같은 순수 계산을 호출하며 기존 wrapped materialization이 결과를 적용한다. 정확한 지원 범위·기본값·전환은 [현재 범례 계약](contract/current/LEGEND_AND_TITLE.md)을 따른다.
+
 `layout/legendLane.js`는 family-independent concrete block을 edge별로 배치한다. Wrapped side/horizontal lane owner만 그 계산 결과를 graphics에 적용한다. Border와 title을 포함한 occupied bounds로 최종 Canvas/guide collision을 검증한다. Multi-block packaging과 single-block alignment를 혼동하지 않는다. Legacy-bottom은 별도 명시된 placement 계약이며 option 존재 여부로 추측하지 않는다.
 
 Opt-in 다중 블록 배치와 자유 좌표는 `materializationConfigs.guides.legendGroups[target]`이 소유한다.

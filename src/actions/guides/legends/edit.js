@@ -1,4 +1,5 @@
 import {resolveColorSizeEdit,createColorSizeLegendFromConfig} from './colorSize.js';
+import {prepareLegendSpacingEdit,patchLegendSpacing,validateLegendSpacing} from "../../../grammar/legendSpacing.js";
 import {patchLegendClipHeight, validateLegendClip} from "../../../grammar/legendClip.js";
 import { validateLegendCombine, validateMappedSizeShapeSymbol } from "../../../grammar/legendCombinations.js";
 import { legendBlockDescriptors } from "./target.js";
@@ -60,7 +61,7 @@ import { planLegendBlockTransitions } from "./transition.js";
 
 const OPTIONS = Object.freeze([
   "target", "channel", "channels", "position", "layout", "align", "direction", "columns", "offset",
-  "titlePosition", "title", "symbol", "labels", "titleStyle", "itemGap",
+  "titlePosition", "title", "symbol", "labels", "titleStyle", "itemGap", "rowPadding", "titlePadding",
   "border", "count", "values", "gradient", "representation", "order", "overflow", "blockLayout", "at", "combine", "clipHeight"
 ]);
 
@@ -143,6 +144,7 @@ function resolveColorRepresentationEdit(program, previous, args) {
 }
 
 function resolveContinuousEdit(program, kind, previous, args) {
+  ({previous,args}=prepareLegendSpacingEdit(previous,args));
   if (kind === "gradient" && (previous.representation === "symbols" || args.representation !== undefined)) return resolveColorRepresentationEdit(program, previous, args);
   const gradient = ["gradient", "strokeGradient"].includes(kind);
   const allowed = gradient
@@ -241,6 +243,7 @@ function editContinuous(program, kind, previous, args) {
 }
 
 function resolveIntervalEdit(program, previous, args, channel = "color") {
+  ({previous,args}=prepareLegendSpacingEdit(previous,args));
   for (const key of Object.keys(args)) {
     if (![
       "target", "position", "align", "direction", "offset", "title",
@@ -321,6 +324,7 @@ function editInterval(program, previous, args, channel = "color") {
 }
 
 function resolveSampledLegendEdit(program, kind, previous, args, preserveAppearance = false) {
+  ({previous,args}=prepareLegendSpacingEdit(previous,args));
   const size = kind === "size";
   const label = size ? "size" : "stroke-width";
   const allowed = ["target", "title", "count", "values", "labels", "titleStyle",
@@ -440,6 +444,8 @@ function resolveCompanionSizeEdit(program, previous, size, args) {
 }
 
 function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder = program.semanticSpec.guides.legend?.[kind]?.order) {
+  if (size !== undefined) size=patchLegendSpacing(size,args);
+  ({previous,args}=prepareLegendSpacingEdit(previous,args));
   if (args.values !== undefined) {
     throw new Error(
       "Combined and categorical legends require a channel block selector for exact values."
@@ -502,6 +508,7 @@ function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder
     inferredSymbol,
     titleVisible
   };
+  validateLegendSpacing(kind,config);
   const order = args.order === undefined
     ? storedOrder
     : normalizeLegendOrder(args.order);
@@ -658,7 +665,7 @@ function editLegendContent(program, target, args, positionIntent = {position: ar
     }
     else plan.config = resolveContinuousEdit(view, plan.kind, plan.config, patch).config;
   }
-  plans = planLegendBlockTransitions(program, target, plans, positionIntent.position);
+  plans = planLegendBlockTransitions(program, target, plans, positionIntent.position, args);
   // The complete final content and styles are validated before removing resources.
   for (const { kind, config } of plans) view = view._withLegendConfig(kind, config);
   if (categorical !== undefined) resolveLayout(view, categorical.config);
@@ -756,7 +763,7 @@ function editLegendImplementation(args = {}, skipGroup = false, positionIntent =
       const prepared = prepareLegendGroup(this, args, target, { corner: PLOT_LEGEND_POSITIONS.includes(args.position) });
       const { channels, ...patch } = prepared.options;
       if (channels !== undefined) return editLegendContent(prepared.program, target, prepared.options, positionIntent);
-      const layoutKeys = ["position", "layout", "align", "direction", "columns", "offset", "titlePosition", "itemGap"];
+      const layoutKeys = ["position", "layout", "align", "direction", "columns", "offset", "titlePosition", "itemGap", "rowPadding", "titlePadding"];
       const layoutOnly = Object.keys(patch).every(key => key === "target" || layoutKeys.includes(key));
       if (layoutOnly) {
         let next = prepared.program;

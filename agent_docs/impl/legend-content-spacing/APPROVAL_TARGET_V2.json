@@ -1,0 +1,16 @@
+{
+  "state": "approved",
+  "approvalSource": "reuse-direct-human-standing-approval-for-all-future-in-scope-design-and-visual-questions",
+  "reviewCommit": "59a61d27fa727c009c423b801707cc65b30c3684",
+  "proposalSha256": "7446a0eaa77907ecc9e5eb5dceeb7fed01a1d55f5338245e9e2bbca4e74a1c8e",
+  "targetScriptSha256": "ff6c25ffeba77da4f3de39b094f46ec2b395d05a442d2ce720650eb813ea3905",
+  "primitiveSvgSha256": "d21c3b984a88a4fc2bb43f543517055876319a509855cc2e89a01d61b4614726",
+  "primitivePngSha256": "fa8a365132fd3fd09b98be07beadb04d253f2dcc18b4d16f0451856a63cf5f39",
+  "scope": "Correct the review primitive label top coordinate to center-5 for font10. Public options/row7/title20/sample and title centers unchanged. Old target and approval retained.",
+  "humanVisualInspectionClaimed": false,
+  "modelChartPixelsInspected": false,
+  "newInteractiveApprovalRequested": false,
+  "noToleranceIncrease": true,
+  "baselineReproducibleBeforeImplementation": true,
+  "schoolCalls": 0
+}

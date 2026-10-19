@@ -108,6 +108,42 @@ sufficient bottom margin; top layout requires enough top margin for its title,
 item grid, offset, and optional border. The library reports a layout error
 instead of resizing the Canvas or dropping symbol layers.
 
+## Space rows by content
+
+Create the complete legend first, then refine its spacing. This fragment requires
+an existing item-based legend:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+program.editLegendLayout({ rowPadding: 7, titlePadding: 20 });
+```
+
+{% include chart-example.html id="legend-content-spacing" %}
+
+`rowPadding` is the empty vertical distance between adjacent rows' occupied
+sample and label bounds. It accounts for each row's own symbol size and stroke;
+a text-only overflow row reserves only its label. Multi-column grids measure
+the union of each row. `itemGap` continues to control horizontal spacing and
+supplies the original vertical pitch when `rowPadding` is omitted.
+
+`titlePadding` independently sets the occupied title-to-body distance: vertical
+for top or bottom titles, horizontal for an inline left title. Hidden titles
+reserve no distance. Text bounds use the library's deterministic font-size and
+hard-line-break measurement, rather than browser-specific glyph ink.
+
+Both values accept finite non-negative logical pixels, including zero.
+`editLegend` and `editLegendLayout` accept `"auto"` to remove either policy;
+omitting a value preserves it. Creation accepts numbers only. The original
+layout is unchanged when neither policy is supplied. Gradient strips accept
+`titlePadding` only; reset `rowPadding` before switching an item legend to a
+gradient. Both options require `layout: "edge"`, rather than `"legacy-bottom"`.
+See [editing legends](./legends/editing.md#focused-edits) for block selection.
+
 ## Put a compact categorical legend inside the plot
 
 Use a corner position such as `"top-left"` and

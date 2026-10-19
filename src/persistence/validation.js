@@ -1,4 +1,5 @@
 import { validateGraphicClip } from "../grammar/schemas/graphicClip.js";
+import {validateLegendSpacing} from "../grammar/legendSpacing.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../selectors/markClip.js";
 import { validateAuthoredFacetLegend } from "../grammar/facets/legendIntent.js";
 import { AXIS_RESOURCE_CHANNELS } from "../core/vocabulary.js";
@@ -245,6 +246,7 @@ export function validateProgramState(program, path) {
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
     validateLegendClip(kind,config);
+    validateLegendSpacing(kind,config);
     if (localLegendPosition(config) !== undefined) {
       const descriptor = describeLegendBlock(program, kind, config);
       for (const [key, override] of Object.entries(config.blockOverrides)) {
