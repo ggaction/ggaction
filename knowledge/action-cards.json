@@ -31944,7 +31944,7 @@
       "name": "createBarPlot",
       "layer": "user-facing",
       "domain": "charts",
-      "summary": "Create categorical or temporal bars with quantitative measures; use color.layout for grouped or stacked partitions, not top-level stack/groupBy; width defaults to 0.72 of the slot and guides are inferred unless disabled.",
+      "summary": "Create categorical, temporal or binned bars with quantitative measures; bin rectangles fill their complete intervals, while category bars default to 0.72 of the slot.",
       "signature": "createBarPlot(options: CreateBarPlotOptions): ChartProgram;",
       "intents": [
         "create bar plot",

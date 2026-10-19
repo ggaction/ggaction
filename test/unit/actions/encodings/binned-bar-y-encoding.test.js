@@ -141,10 +141,7 @@ test("validates histogram y prerequisites and policies", () => {
     () => program.encodeY({ fieldType: "temporal" }),
     /requires a quantitative field/
   );
-  assert.throws(
-    () => program.encodeY({ aggregate: "mean" }),
-    /aggregate must be "count"/
-  );
+  assert.equal(program.encodeY({ aggregate: "mean" }).semanticSpec.layers[0].encoding.y.aggregate, "mean");
   assert.throws(() => program.encodeY({ stack: "middle" }), /unsupported stack/);
   assert.throws(
     () => program.encodeY({ bin: {} }),

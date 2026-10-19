@@ -50,6 +50,9 @@ function resolveBarChannelPolicy({
     const weight = args.weight === undefined
       ? undefined
       : normalizeStatisticalWeight(args.weight, "Histogram weight");
+    if (weight !== undefined && opposite?.aggregate !== undefined && opposite.aggregate !== "count") {
+      throw new Error("Binned bar weights require count aggregation.");
+    }
     return { bin, aggregate, stack, weight };
   } else if (
     fieldType === "quantitative" &&
@@ -59,14 +62,15 @@ function resolveBarChannelPolicy({
     if (args.bin !== undefined) {
       throw new Error("Histogram bar y encoding does not support bin.");
     }
-    if (field !== xEncoding.field) {
-      throw new Error("Bar y field must match the binned x field.");
+    aggregate = validateAggregate(args.aggregate ?? "count");
+    validateAggregateFieldType(aggregate, fieldType);
+    if (aggregate === "count" && field !== xEncoding.field) {
+      throw new Error("Count bar y field must match the binned x field.");
     }
-    aggregate = args.aggregate ?? "count";
-    stack = Object.hasOwn(args, "stack") ? args.stack : "zero";
-    if (aggregate !== "count") {
-      throw new Error('Histogram bar y aggregate must be "count".');
+    if (aggregate !== "count" && xEncoding.weight !== undefined) {
+      throw new Error("Binned bar weights require count aggregation.");
     }
+    stack = Object.hasOwn(args, "stack") ? args.stack : aggregate === "count" ? "zero" : null;
     stack = validateStack(stack, "Histogram bar y encoding");
     if (stack === "center") {
       throw new Error("Centered bars are not supported.");

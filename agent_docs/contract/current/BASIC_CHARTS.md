@@ -181,6 +181,7 @@ createBarPlot({
   자동 measure domain에는 baseline0이 참여한다. 폭은 기본5px 또는 width.pixels이며 band 폭과 stack/group은
   거부한다. 기존 category/temporal/aggregate/histogram에는 orientation을 지정하지 않는다.
   Evidence: `test/unit/actions/charts/numeric-bar-centers.test.js`.
+- `x:{field,bin}` + `y:{field,aggregate}`는 numeric-center가 아닌 bin/series 집계 막대다. 서로 다른 X/Y를 지원하고 각 rect는 bin lower/upper 전체 폭을 사용한다. Count는 기존 histogram 기본 stack, 다른 집계는 기본 overlay이며 Color layout 또는 layoutSeries로 stack/fill/group/overlay/diverging을 선택한다. 비어 있는 bin은 생략한다. Native source data와 경계를 보존하고 scale/Canvas/labels/persistence에서 같은 grain을 사용한다. Evidence: `test/unit/actions/charts/binned-bar-aggregate.test.js`.
 - 한 위치 channel은 `{ lower, upper, fieldType?: "quantitative", scale? }` raw interval을 받는다. 다른 channel은 categorical/temporal 또는 numeric field다. 양쪽 range, field/aggregate/stack과 range의 혼합은 거부한다.
 - Raw range는 category-first `encodeXRange`/`encodeYRange`를 호출하고 입력 행을 합치지 않는다. 여러 구간 layer와 raw line이 compatible value scale을 공유하고 resize/facet에도 경계·폭·그리기 순서를 유지한다.
 - Hierarchy: `createBarMark`, category-first position actions (`encodeX`→`encodeY` vertically,

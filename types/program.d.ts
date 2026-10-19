@@ -2995,6 +2995,7 @@ type BandPositionChannel = FacadePositionChannel<
   NonPointTemporalPositionScaleOptions,
   NonPointBandPositionScaleOptions
 >;
+/** With binned quantitative X, aggregate Y per exact interval (and optional series). */
 type BarYPositionChannel =
   | string
   | {

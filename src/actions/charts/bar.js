@@ -40,7 +40,7 @@ function normalizeBarPosition(value, label) {
 export const createBarPlot = /* @__PURE__ */ action(
   {
     op: "createBarPlot",
-    description: "Create a Cartesian bar plot from existing chart data."
+    description: "Create a Cartesian bar plot, including interval-width X bins with Y aggregates, from existing chart data."
   },
   function (args = {}) {
     validateFacadeOptions(args, OPTIONS, "createBarPlot");

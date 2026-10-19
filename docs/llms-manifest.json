@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:32533c61d856aed8556865300d544c8ee2904c59e13a9e4592185bf63b0ff7d2",
-    "sourceCommit": "bf27bb0796866f21c961988e75201c2bac15f726",
+    "contractId": "sha256:5b8e5de473747d8b301e07763cc9421290d97e3a1acc54d261e2ae67687d1203",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "d20b515d572b4aad45e86c1775a4983036d2aa7a1837a8d347cd784a17621412"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -727,8 +727,8 @@
         "advanced-authoring",
         "createtextplot"
       ],
-      "bytes": 18251,
-      "sha256": "fb2407e3d3c10debcc443145145db15d271f688a349fd48291388318f3942541"
+      "bytes": 18447,
+      "sha256": "fbb22af3aa36c7e14bbd6f6806c66d0035a2913d24ce88155b723c645116dac2"
     },
     {
       "order": 47,
@@ -1321,11 +1321,12 @@
         "at-a-glance",
         "binned-bar-encodexoptions",
         "countstack-bar-encodeyoptions",
+        "bins-with-a-separate-measure",
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4491,
-      "sha256": "38dd1b1bedb67c0233913612c18429d353ffbf057dd03b1e8c63b257929b6f2d"
+      "bytes": 6150,
+      "sha256": "0f4e09106450a3f0f45981c6aa759d4c7173b580caa1fe89fcd2efb0e6cc1351"
     },
     {
       "order": 80,
@@ -2048,8 +2049,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 165444,
-      "sha256": "d2da603faf3c6e56f9682cd9b3b23342b109ebd4fd253ae247915a063b214885"
+      "bytes": 165685,
+      "sha256": "5114a0e3856cb3c1fe8a3ef6870064ce942aaa32f23c3d9d7e4e7a1f8d0e2aea"
     },
     {
       "order": 119,
@@ -3016,8 +3017,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 345566,
-      "sha256": "1ce50ae0b9e5c3986458cc24cb87395a353b19c88d5f638dce020470df99ba37"
+      "bytes": 345655,
+      "sha256": "a70514770a3cbedb9f83f4f4e15681f7ae9f23c1cd41a24a3256413bf36cefc5"
     },
     {
       "order": 127,
@@ -3047,8 +3048,8 @@
         "editgraphics-target-property-value-remove",
         "scale-materialization"
       ],
-      "bytes": 16959,
-      "sha256": "424e216e65a12dae730e66e7b95947da0faa8a6ba50c24a383dc5a6d2fcc3079"
+      "bytes": 16887,
+      "sha256": "6290b807e031ee8069a7df5b38464bea8906ecdd59f5124a91617d4a1de87f96"
     },
     {
       "order": 129,
@@ -3371,8 +3372,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "5d23b965f8503f24aaa21c2630a072cb2d10bab64e8c530c6a4620b5da81d9d6"
+      "bytes": 3000,
+      "sha256": "49c95c17ac8cb876fe1ca4bfa8eac2a6418100f2b2d4f8efa6e45d9eb1d1b0db"
     },
     {
       "order": 150,

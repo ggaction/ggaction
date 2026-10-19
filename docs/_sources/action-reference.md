@@ -838,8 +838,9 @@ an optional component or remove color; at least one component must remain enable
 createBarPlot({ id?, data?, coordinate?, orientation?, x, y, color?, width?, bar?, missing?, guides? })
 ```
 
-Create categorical or temporal bars with quantitative measures; use `color.layout` for grouped or stacked partitions, not top-level `stack`/`groupBy`; width defaults to 0.72 of the slot and guides are inferred unless disabled.
+Create categorical, temporal or binned bars with quantitative measures; bin rectangles fill their complete intervals, while category bars default to 0.72 of the slot. Use `color.layout` for grouped or stacked partitions; guides are inferred unless disabled.
 A channel may instead specify `{ lower, upper, scale? }` for raw interval bars without aggregation.
+Binned quantitative X with an explicit Y aggregate creates interval-width bars per bin and series; use `color.layout` or `layoutSeries` for overlay, stack, fill or group. Empty bins retain their interval gaps.
 Two raw numeric positions preserve each input row and numeric center spacing.
 Their orientation defaults to vertical (or follows the range channel); use
 `orientation: "horizontal"` for horizontal numeric bars. Their width defaults to

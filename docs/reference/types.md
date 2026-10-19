@@ -719,6 +719,7 @@ type BandPositionChannel = FacadePositionChannel<
   NonPointTemporalPositionScaleOptions,
   NonPointBandPositionScaleOptions
 >;
+/** With binned quantitative X, aggregate Y per exact interval (and optional series). */
 ```
 
 </details>

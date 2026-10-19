@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:32533c61d856aed8556865300d544c8ee2904c59e13a9e4592185bf63b0ff7d2. Status: development. Runtime source: bf27bb0796866f21c961988e75201c2bac15f726. Release baseline: v0.0.13.
+Contract: sha256:5b8e5de473747d8b301e07763cc9421290d97e3a1acc54d261e2ae67687d1203. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/bf27bb0796866f21c961988e75201c2bac15f726/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/bf27bb0796866f21c961988e75201c2bac15f726/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -4377,6 +4377,8 @@ const bars = chart()
 The stable default mark ID is `barPlot`. `width` accepts the same band or
 logical-pixel options as `encodeBarWidth`; `bar` controls constant fill,
 opacity, stroke, and stroke width.
+
+For interval-width bars with a separate Y measure, use `createBarPlot` with `x.bin` and `y.aggregate`; see [bins with a separate measure](./api/position/histogram/#bins-with-a-separate-measure).
 
 ## `createHistogram`
 
@@ -10388,9 +10390,45 @@ counts for unstacked layouts, and `[0, 1]` for normalize. The action materialize
 one concrete rectangle per non-empty bin; a later color encoding can split each
 bin according to its layout.
 
+## Bins with a separate measure
+
+For a binned bar whose height is a measure rather than a count, supply a
+quantitative Y field and its aggregate. Each rectangle spans the complete bin
+interval; numeric bin centers do not become fixed-width bars. Empty bins leave
+empty intervals. Mean, median, sum, min, max and the other native aggregate
+operations use the same per-bin, per-series samples as the measure domain and
+mark labels. Non-count bins do not accept statistical weights.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+const binned = chart()
+  .createCanvas({ width: 600, height: 450, margin: 90 })
+  .createData({ values: [
+    { X: 1, Y: 2, Group: "A" }, { X: 2, Y: 6, Group: "A" },
+    { X: 1, Y: 10, Group: "B" }, { X: 8, Y: 5, Group: "A" }
+  ] })
+  .createBarPlot({
+    x: { field: "X", bin: { boundaries: [0, 5, 10] } },
+    y: { field: "Y", aggregate: "mean" },
+    color: { field: "Group", layout: "overlay" },
+    guides: false
+  });
+const stacked = binned.layoutSeries({ mode: "stack" });
+const normalized = binned.layoutSeries({ mode: "fill" });
+const dodged = binned.layoutSeries({ mode: "group" });
+```
+
+Non-count bins default to overlay. Stack adds the group aggregates; fill divides
+each aggregate by their sum within the bin. Stacked group means therefore do
+not represent the pooled mean. Dodge subdivides each bin by series; the other
+layouts retain its full width.
+
 ## Errors and limitations
 
-Explicit fields must match the binned x field. `maxBins`, `binStep`, and
+Count Y fields must match the binned x field; explicit non-count measures may differ. `maxBins`, `binStep`, and
 `binBoundaries` are mutually exclusive. Step-aligned explicit domains must
 contain the data and use zero-anchored step multiples. Explicit boundaries
 must contain the complete data extent; a separate domain must match their
@@ -19287,8 +19325,9 @@ The following call patterns are abbreviated examples; the declaration above owns
 createBarPlot({ id?, data?, coordinate?, orientation?, x, y, color?, width?, bar?, missing?, guides? })
 ```
 
-Create categorical or temporal bars with quantitative measures; use `color.layout` for grouped or stacked partitions, not top-level `stack`/`groupBy`; width defaults to 0.72 of the slot and guides are inferred unless disabled.
+Create categorical, temporal or binned bars with quantitative measures; bin rectangles fill their complete intervals, while category bars default to 0.72 of the slot. Use `color.layout` for grouped or stacked partitions; guides are inferred unless disabled.
 A channel may instead specify `{ lower, upper, scale? }` for raw interval bars without aggregation.
+Binned quantitative X with an explicit Y aggregate creates interval-width bars per bin and series; use `color.layout` or `layoutSeries` for overlay, stack, fill or group. Empty bins retain their interval gaps.
 Two raw numeric positions preserve each input row and numeric center spacing.
 Their orientation defaults to vertical (or follows the range channel); use
 `orientation: "horizontal"` for horizontal numeric bars. Their width defaults to
@@ -28117,6 +28156,7 @@ type BandPositionChannel = FacadePositionChannel<
   NonPointTemporalPositionScaleOptions,
   NonPointBandPositionScaleOptions
 >;
+/** With binned quantitative X, aggregate Y per exact interval (and optional series). */
 ```
 
 Related types: [`FacadePositionChannel`](./reference/types/#type-facadepositionchannel) · [`NonPointZeroSupportingPositionScaleOptions`](./reference/types/#type-nonpointzerosupportingpositionscaleoptions) · [`NonPointTemporalPositionScaleOptions`](./reference/types/#type-nonpointtemporalpositionscaleoptions) · [`NonPointBandPositionScaleOptions`](./reference/types/#type-nonpointbandpositionscaleoptions).
@@ -38331,12 +38371,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/bf27bb0796866f21c961988e75201c2bac15f726/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/bf27bb0796866f21c961988e75201c2bac15f726/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -40595,9 +40635,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:32533c61d856aed8556865300d544c8ee2904c59e13a9e4592185bf63b0ff7d2` |
+| Contract fingerprint | `sha256:5b8e5de473747d8b301e07763cc9421290d97e3a1acc54d261e2ae67687d1203` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
-| Runtime source commit | `bf27bb0796866f21c961988e75201c2bac15f726` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 285 |
 | Declared actions in that release | 234 |

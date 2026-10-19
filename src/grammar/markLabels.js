@@ -51,6 +51,8 @@ export function normalizeMarkLabelContent(source, { content, normalizeBy }) {
 function itemValue(source, item) {
   if (source.mark.type === "bar") {
     if (resolveBarGrain(source) === BAR_GRAINS.histogram) {
+      const measure = source.encoding.y;
+      if (measure.aggregate !== "count") return aggregateRows(item.members, measure.field, measure.aggregate);
       const weight = source.encoding.x.weight;
       if (weight === undefined || item.members.length === 0) return item.members.length;
       const weighted = readStatisticalWeights(item.members, weight, "Histogram label");

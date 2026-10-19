@@ -170,7 +170,7 @@ Source-owned Text의 inherited aliases는 domain, guide inference/rebinding, sca
 - Bar order independence: quantitative measure를 category보다 먼저 쓰면 field/type/scale과 명시적
   aggregate/stack만 저장한다. 생략한 aggregate/stack은 아직 결정하지 않으며 graphic items는 비어 있다.
   반대 category가 완성되면 같은 Bar policy와 wrapped position action으로 mean/null을 적용한다.
-  Histogram의 y-first는 같은 field의 binned x가 완성될 때 count/zero로 결정한다. 명시적 집계·stack·scale
+  Histogram의 y-first는 같은 field의 binned x가 완성될 때 count/zero로 결정한다. 다른 quantitative Y도 명시한 aggregate로 bin별 집계하며 기본 stack은 null(overlay)이다. 명시적 집계·stack·scale
   설정은 보존하며 잘못된 field/type/value는 미완성 상태에서도 즉시 거부한다. 두 위치가 모두 있는
   지원 불가 pair는 거부한다. Scale의 자동 zero 결정도 role이 완성될 때 적용한다.
 - Line order independence: direct quantitative line은 y가 아직 없어도 x semantic과 scale을 저장한다.
@@ -271,10 +271,11 @@ type AggregateOperation =
 - `field`: point/line/ordinal-bar에서는 필수 field다. Rect는 field/datum 중 정확히 하나이며 area datum은 별도 endpoint 계약을 따른다. histogram count y는 x field에서 추론한다.
 - `target`, `fieldType`, `scale`, `coordinate`: x와 같은 selection/storage contract이다. Continuous y
   auto range는 bottom-to-top, ordinal y band는 top-to-bottom이다.
-- `aggregate`: line과 ordinal bar는 `"count" | "sum" | "mean" | "median" | "min" | "max" |
+- `aggregate`: line과 ordinal/binned bar는 `"count" | "sum" | "mean" | "median" | "min" | "max" |
   "distinct" | "valid" | "missing" | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr" |
-  "q1" | "q3" | "ciLower" | "ciUpper"`를 지원한다. Histogram은 count를 사용하고 raw quantitative
+  "q1" | "q3" | "ciLower" | "ciUpper"`를 지원한다. Count histogram은 count를 사용하고 raw quantitative
   point/area는 aggregate를 생략한다.
+- Binned X bar도 별도 quantitative Y의 모든 AggregateOperation을 bin/series별 계산한다. 빈 bin과 유효 통계가 없는 cell은 생략하고 실제 lower/upper 경계까지 폭을 채운다. Color는 overlay/stack/fill/group/diverging을 지원하며 기존 count histogram은 그대로 유지한다. Non-count bin은 통계 weight를 거부한다. Evidence: `test/unit/actions/charts/binned-bar-aggregate.test.js`.
 - `count`는 group row 수, `valid`/`missing`은 null·undefined·NaN 여부, `distinct`는 valid value의
   SameValueZero distinct count를 반환한다. 이 네 연산은 nominal input도 허용하되 output scale은 linear다.
 - 나머지 연산은 finite quantitative sample만 사용한다. Sample variance/stdev/stderr와 CI는 `n < 2`,
@@ -1137,7 +1138,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `fieldType`: `"nominal" | "ordinal" | "quantitative" | "temporal"`; 기본값은 nominal이다.
   Ordinal은 숫자를 포함한 ordered category를 categorical palette와 first-appearance domain으로 매핑한다.
 - `layout`: bar는 `"stack" | "fill" | "group" | "overlay" | "diverging"`, area는 group을 제외하고
-  `"center"`를 포함한 다섯 layout을 지원한다. Histogram default는 stack, ordinal aggregate bar default는
+  `"center"`를 포함한 다섯 layout을 지원한다. Count histogram default는 stack, non-count binned bar default는 overlay, ordinal aggregate bar default는
   group이다. 단, 기존 group/layout이 없는 aggregate bar의 nominal/ordinal 범주 위치와 새 color가 같은 field이면 기본 overlay로 위치·폭·높이를 보존하고 색만 추가한다. Horizontal bar의 y 범주에도 동일하게 적용한다. 별도 group, 저장한 layout, 명시적 layout은 우선하며 temporal grouping과 histogram은 이 예외를 사용하지 않는다. Area default는 overlay다. Point/line과 continuous color는 layout을 거부한다.
   Evidence: `test/unit/actions/encodings/category-color-bar.test.js`.
 - `aggregate`: aggregate bar continuous color에서만 사용한다. Color field가 measure field와 같으면 measure

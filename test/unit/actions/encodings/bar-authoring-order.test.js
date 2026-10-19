@@ -116,7 +116,7 @@ test("invalid partial input and incompatible completions reject without changing
     [initial, p => p.encodeBarWidth({ pixels: -1 }), /positive finite/],
     [initial.encodeY({ field: "value" }), p => p.encodeX({ field: "other" }), /opposite a categorical/],
     [initial.encodeY({ field: "other" }), p => p.encodeX({ field: "value", bin: {} }), /must match/],
-    [initial.encodeY({ field: "value", aggregate: "sum" }), p => p.encodeX({ field: "value", bin: {} }), /must be "count"/],
+    [initial.encodeY({ field: "value", aggregate: "sum" }), p => p.encodeX({ field: "value", bin: {}, weight: { field: "other", kind: "frequency" } }), /weights require count/],
     [initial.encodeBarWidth({ band: 0.5 }).encodeY({ field: "value" }), p => p.encodeX({ field: "value", bin: {} }), /category slot/],
     [initial.encodeX({ field: "value", bin: {} }).encodeY(), p => p.encodeBarWidth(), /category slot/]
   ]) {

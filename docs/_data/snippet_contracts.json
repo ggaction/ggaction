@@ -3107,6 +3107,18 @@
     "executable": false
   },
   {
+    "file": "api/position/histogram.md",
+    "block": 3,
+    "heading": "Bins with a separate measure",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "3c0e6d6892f62b37221a1ba030f232383bd10a66df347ef016af3e7981de2515",
+    "executable": false
+  },
+  {
     "file": "api/position/offsets.md",
     "block": 1,
     "heading": "At a glance",
