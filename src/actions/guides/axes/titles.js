@@ -21,6 +21,7 @@ import {
 import { AXIS_TITLE_FONT_SIZE, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
 import { findDataset } from "../../../selectors/datasets.js";
+import { findUpstreamTransform } from "../../../materialization/dataProvenance.js";
 import { formatAggregateTitle } from "../../../grammar/aggregate.js";
 import { finiteMidpoint } from "../../../grammar/numeric.js";
 import {
@@ -175,9 +176,8 @@ export function inferAxisTitleText(program, channel, scaleId) {
       encoding.field.length
     ) {
       const dataset = findDataset(program, layer.data);
-      const transform = dataset?.transform?.length === 1
-        ? dataset.transform[0]
-        : undefined;
+      const transform = findUpstreamTransform(program, dataset,
+        ["density", "ecdf", "interval", "boxSummary", "summary"]);
       let derivedTitle;
       if (transform?.type === "density") {
         derivedTitle = encoding.field === transform.as?.[0]

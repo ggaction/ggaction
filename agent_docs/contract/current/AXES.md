@@ -1275,3 +1275,5 @@ Evidence: `test/unit/actions/canvas/inner-plot-size.test.js`.
 - Proposed (NOT IMPLEMENTED): —
 - ✅ Covered: Cartesian multi-axis edits, named arrays, Polar/Parallel delegation, missing/invalid edits, atomic failure, immutable state, trace grouping, public declarations and inspection.
 - Evidence: `test/unit/actions/guides/edit-axes.test.js`.
+
+- Axis title의 statistical provenance는 row-preserving filter/markFilter를 통과하여 가장 가까운 지원 transform을 읽는다. Box measure revision 뒤 category filtering도 원본 measure title을 유지한다.

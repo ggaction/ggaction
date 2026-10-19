@@ -208,3 +208,27 @@ for (const channel of ["X", "Y"]) {
     assert.equal(labelsFirst.guideConfigs.axis[prefix].title.at, "center");
   });
 }
+
+
+test("filtered revised box owners retain the source measure title", () => {
+  const original = chart().createCanvas({width:600,height:450,margin:90})
+    .createData({values:["A","B"].flatMap((category,index)=>[1,2,3,4,20].map(value=>({category,value,width:value/2+index})))})
+    .createBoxPlot({id:"plot",x:{field:"category",fieldType:"nominal"},y:{field:"value"},guides:false})
+    .editBoxPlot({target:"plot",whisker:{type:"minmax"}})
+    .editBoxPlot({target:"plot",y:{field:"width",fieldType:"quantitative"}});
+  const filtered=original.filterMarks({target:"plot",channel:"x",op:"eq",value:"A",mode:"replace"}).createGuides();
+  assert.equal(filtered.graphicSpec.objects.yAxisTitle.properties.text,"width");
+  assert.equal(filtered.graphicSpec.objects.plot.items.length,1);
+  assert.equal(filtered.graphicSpec.objects.plotMedian.items.length,1);
+  assert.equal(filtered.removeMarkFilter({target:"plot"}).graphicSpec.objects.yAxisTitle.properties.text,"width");
+  assert.equal(original.graphicSpec.objects.plot.items.length,2);
+});
+
+test("filtered aggregate summaries keep derived titles instead of internal output fields", () => {
+  const p=chart().createCanvas({width:500,height:400,margin:70})
+    .createData({values:[{category:"A",amount:2},{category:"B",amount:8}]})
+    .createSummaryData({id:"totals",groupBy:["category"],aggregates:[{op:"sum",field:"amount",as:"computed_total"}]})
+    .createBarPlot({id:"plot",data:"totals",x:"category",y:"computed_total",guides:false})
+    .filterMarks({target:"plot",channel:"x",op:"eq",value:"A"}).createGuides();
+  assert.equal(p.graphicSpec.objects.yAxisTitle.properties.text,"sum(amount)");
+});

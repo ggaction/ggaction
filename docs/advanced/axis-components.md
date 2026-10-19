@@ -221,3 +221,5 @@ edge, values, formats, and appearance.
 
 Scale or Canvas rematerialization recomputes existing component geometry while
 preserving configured appearance.
+
+Statistical axis titles retain their source meaning after row-preserving filters, including filtered box categories.
