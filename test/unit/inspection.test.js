@@ -84,6 +84,23 @@ test("comparePrograms ignores trace-only identity and reports binding roles", ()
   assert.deepEqual(mark.roles, ["y"]);
 });
 
+test("comparison preserves exact scalar values, sparse arrays and changed immutable branches", () => {
+  const make = value => chart().createCanvas().createData({ id: "source", values: [{ value }] });
+  for (const value of [NaN, Infinity, -Infinity, -0, undefined, null, 1, "1"]) {
+    const before = make(value);
+    assert.equal(comparePrograms(before, make(value)).equivalence, "equal");
+    assert.equal(comparePrograms(before, before._withContext({ note: "unchanged" })).equivalence, "equal");
+  }
+  assert.equal(comparePrograms(make(-0), make(0)).equivalence, "different");
+  assert.equal(comparePrograms(make(undefined), make(null)).equivalence, "different");
+  assert.equal(comparePrograms(make(NaN), make(Infinity)).equivalence, "different");
+  const before = pointProgram();
+  const after = before.encodeSize({ target: "points", value: 60 });
+  const expected = comparePrograms(before, after);
+  for (let i = 0; i < 4; i++) assert.deepEqual(comparePrograms(before, after), expected);
+  assert.equal(comparePrograms(after, before).equivalence, "different");
+});
+
 test("comparePrograms includes composition intent and changed consumers in target scope", () => {
   const child = pointProgram();
   const before = hconcat({ programs: [

@@ -14,6 +14,19 @@ import { createCarsRegressionScatterplotValues } from
   "../../../charts/cars-regression-scatterplot/reference-values.js";
 import { loadCars } from "../../../support/data.js";
 
+test("regression reuses immutable inputs but recomputes caller-owned rows and parameter changes", () => {
+  const rows = [{ x: 1, y: 2 }, { x: 2, y: 4 }, { x: 3, y: 5 }, { x: 4, y: 8 }];
+  const owned = chart().createData({ id: "source", values: rows }).semanticSpec.datasets[0].values;
+  const options = { x: "x", y: "y", method: "linear", level: 0.95 };
+  const first = deriveRegression(owned, options);
+  assert.equal(deriveRegression(owned, { ...options }), first);
+  assert.notEqual(deriveRegression(owned, { ...options, level: 0.9 }), first);
+  const raw = deriveRegression(rows, options);
+  rows[0].y = 20;
+  assert.notDeepEqual(deriveRegression(rows, options).values, raw.values);
+  assert.throws(() => deriveRegression(owned, { ...options, level: NaN }));
+});
+
 test("derives grouped OLS rows at observed unique x values", () => {
   const expected = createCarsRegressionScatterplotValues(loadCars());
   const result = deriveLinearRegression(expected.filteredRows, {

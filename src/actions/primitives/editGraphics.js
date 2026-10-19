@@ -96,6 +96,7 @@ function editGeneratedItem(owner, itemIndex, property, value) {
   const type = item.type ?? owner.type;
   validateGraphicProperty(type, property);
   validateConcreteGraphicValue(type, property, value);
+  if (Object.is(item.properties[property], value)) return owner;
   items[itemIndex] = freezeOwned({
     ...item,
     properties: setGraphicProperty(item.properties, property, value)
@@ -126,17 +127,20 @@ function editItems(owner, property, value, id, program) {
       `${owner.type}.${property} requires ${owner.items.length} values, received ${value.length}.`
     );
   }
+  let changed = false;
   const items = owner.items.map((item, index) => {
     const itemValue = Array.isArray(value) ? value[index] : value;
     const type = item.type ?? owner.type;
     validateGraphicProperty(type, property);
     validateConcreteGraphicValue(type, property, itemValue);
+    if (Object.is(item.properties[property], itemValue)) return item;
+    changed = true;
     return freezeOwned({
       ...item,
       properties: setGraphicProperty(item.properties, property, itemValue)
     });
   });
-  return freezeOwned({ ...owner, items: freezeOwned(items) });
+  return changed ? freezeOwned({ ...owner, items: freezeOwned(items) }) : owner;
 }
 
 function removeGraphicTree(graphicSpec, id) {
@@ -236,6 +240,7 @@ const editGraphics = /* @__PURE__ */ closedAction(
         properties: setGraphicProperty(owner.properties, validatedProperty, value)
       });
     }
+    if (updated === owner) return this;
     return this._clone({
       graphicSpec: freezeOwned({
         ...this.graphicSpec,

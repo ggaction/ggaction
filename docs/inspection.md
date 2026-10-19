@@ -5,6 +5,8 @@ title: Program Inspection
 
 # Program Inspection
 
+Repeated comparisons reuse unchanged immutable resources while preserving exact value comparisons and change reports.
+
 The browser-safe `ggaction/inspection` entry reads a closed Full or Basic
 program without executing an action or changing its trace, context, or cached
 materialization. Every returned object is immutable and carries `version: 1`

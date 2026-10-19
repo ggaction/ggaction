@@ -1,7 +1,7 @@
 import { ChartProgram } from "./ChartProgram.js";
 import { BasicChartProgram } from "./BasicChartProgram.js";
 import { getWrappedActionMetadata } from "./core/action.js";
-import { cloneAndFreeze, isPlainObject } from "./core/immutable.js";
+import { cloneAndFreeze, isOwned, isPlainObject } from "./core/immutable.js";
 import { encodeValue } from "./persistence/codec.js";
 import {
   findDataset,
@@ -186,6 +186,25 @@ function canonical(value) {
   return JSON.stringify(encodeValue(canonicalInput(value)));
 }
 
+const equalOwned = new WeakMap();
+function equalValue(a, b) {
+  if (Object.is(a, b)) return true;
+  if (a === null || b === null || typeof a !== "object" || typeof b !== "object") return false;
+  if (Array.isArray(a) !== Array.isArray(b)) return false;
+  if (!Array.isArray(a) && (!isPlainObject(a) || !isPlainObject(b))) return canonical(a) === canonical(b);
+  const cacheable = isOwned(a) && isOwned(b);
+  const cached = cacheable ? equalOwned.get(a)?.get(b) : undefined;
+  if (cached !== undefined) return cached;
+  const keys = Object.keys(a);
+  const equal = (!Array.isArray(a) || a.length === b.length) && keys.length === Object.keys(b).length &&
+    keys.every(key => Object.hasOwn(b, key) && equalValue(a[key], b[key]));
+  if (cacheable) {
+    if (!equalOwned.has(a)) equalOwned.set(a, new WeakMap());
+    equalOwned.get(a).set(b, equal);
+  }
+  return equal;
+}
+
 function resources(program, childPath = [], output = []) {
   for (const value of program.semanticSpec.datasets) output.push({ ref: resourceRef("data", value.id, childPath), value });
   for (const [orderIndex, value] of program.semanticSpec.layers.entries()) output.push({
@@ -213,9 +232,9 @@ function effect(kind) { return kind === "data" ? "data" : kind === "scale" ? "sc
 function changeEffect(a, b, kind) {
   if (kind !== "mark" || a === undefined || b === undefined) return effect(kind);
   if (a.value.orderIndex !== b.value.orderIndex) return "structure";
-  if (canonical(a.value.semantic?.encoding) !== canonical(b.value.semantic?.encoding) ||
+  if (!equalValue(a.value.semantic?.encoding, b.value.semantic?.encoding) ||
       a.value.semantic?.data !== b.value.semantic?.data) return "binding";
-  if (canonical(a.value.semantic) !== canonical(b.value.semantic)) return "structure";
+  if (!equalValue(a.value.semantic, b.value.semantic)) return "structure";
   return "style";
 }
 
@@ -228,10 +247,10 @@ export function comparePrograms(before, after, { target } = {}) {
   const keys = [...new Set([...left.keys(), ...right.keys()])].sort();
   let changes = keys.flatMap(key => {
     const a = left.get(key); const b = right.get(key); const item = a ?? b;
-    if (a !== undefined && b !== undefined && canonical(a.value) === canonical(b.value)) return [];
+    if (a !== undefined && b !== undefined && equalValue(a.value, b.value)) return [];
     const semanticRoles = item.ref.kind === "mark" && a !== undefined && b !== undefined
       ? [...new Set([...Object.keys(a.value.semantic?.encoding ?? {}), ...Object.keys(b.value.semantic?.encoding ?? {})])]
-        .filter(role => canonical(a.value.semantic?.encoding?.[role]) !== canonical(b.value.semantic?.encoding?.[role]))
+        .filter(role => !equalValue(a.value.semantic?.encoding?.[role], b.value.semantic?.encoding?.[role]))
       : [];
     return [{ resource: item.ref, operation: a === undefined ? "add" : b === undefined ? "remove" : "modify", effect: changeEffect(a, b, item.ref.kind), roles: semanticRoles }];
   });

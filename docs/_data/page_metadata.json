@@ -519,7 +519,7 @@
   },
   "/inspection/": {
     "title": "Program Inspection",
-    "description": "The browser safe ggaction/inspection entry reads a closed Full or Basic program without executing an action or changing its trace, context, or cached materialization."
+    "description": "Repeated comparisons reuse unchanged immutable resources while preserving exact value comparisons and change reports."
   },
   "/errors-and-recovery/": {
     "title": "Errors and Recovery",
