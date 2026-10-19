@@ -94,6 +94,7 @@ test("comparison preserves exact scalar values, sparse arrays and changed immuta
   assert.equal(comparePrograms(make(-0), make(0)).equivalence, "different");
   assert.equal(comparePrograms(make(undefined), make(null)).equivalence, "different");
   assert.equal(comparePrograms(make(NaN), make(Infinity)).equivalence, "different");
+  assert.equal(comparePrograms(make(new Array(2)), make([undefined, undefined])).equivalence, "different");
   const before = pointProgram();
   const after = before.encodeSize({ target: "points", value: 60 });
   const expected = comparePrograms(before, after);

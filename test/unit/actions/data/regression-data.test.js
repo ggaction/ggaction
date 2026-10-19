@@ -25,6 +25,11 @@ test("regression reuses immutable inputs but recomputes caller-owned rows and pa
   rows[0].y = 20;
   assert.notDeepEqual(deriveRegression(rows, options).values, raw.values);
   assert.throws(() => deriveRegression(owned, { ...options, level: NaN }));
+  let reads = 0;
+  const accessor = { ...options, get x() { reads++; return "x"; } };
+  deriveRegression(owned, accessor);
+  deriveRegression(owned, accessor);
+  assert.equal(reads, 2);
 });
 
 test("derives grouped OLS rows at observed unique x values", () => {

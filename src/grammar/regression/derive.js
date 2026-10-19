@@ -1,4 +1,4 @@
-import { cloneAndFreeze, isOwned } from "../../core/immutable.js";
+import { cloneAndFreeze, isOwned, isPlainObject } from "../../core/immutable.js";
 import {
   readNominalField,
   readQuantitativeField
@@ -22,6 +22,10 @@ const parameterKeys = ["x", "y", "groupBy", "method", "degree", "span", "robustI
   "confidenceMethod", "level", "confidence", "interval", "predict", "missing"];
 
 export function deriveRegression(values, options = {}) {
+  if (!isOwned(values) || !isPlainObject(options) || parameterKeys.some(key => {
+    const descriptor = Object.getOwnPropertyDescriptor(options, key);
+    return descriptor ? !Object.hasOwn(descriptor, "value") : key in options;
+  })) return computeRegression(values, options);
   const entries = parameterKeys.map(key => options[key]);
   const cacheable = isOwned(values) && entries.every(value => value === undefined || value === null ||
     typeof value === "string" || typeof value === "boolean" ||
