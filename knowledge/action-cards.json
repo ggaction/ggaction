@@ -5463,11 +5463,6 @@
           "type": "number | undefined"
         },
         {
-          "name": "missing",
-          "required": false,
-          "type": "\"error\" | \"skip\" | undefined"
-        },
-        {
           "name": "fill",
           "required": false,
           "type": "string | undefined"

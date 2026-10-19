@@ -4455,7 +4455,7 @@ type DynamicReferenceBinding = {
 /** A statistical line (mean by default) or an exact two-statistic interval. */
 export type CreateStatisticalReferenceOptions = DynamicReferenceBinding & (
   | (RuleStyleOptions & { readonly statistic?: ReferenceStatistic; readonly statistics?: never })
-  | (Omit<RectMarkOptions, "id" | "data" | "source"> & {
+  | (Omit<RectMarkOptions, "id" | "data" | "source" | "missing"> & {
       readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic]; readonly statistic?: never;
     })
 );

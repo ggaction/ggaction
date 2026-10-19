@@ -30,6 +30,8 @@ p.createStatisticalReference({source:'points',axis:'y',y:5});
 p.createStatisticalReference({source:'points',axis:'y',statistic:{op:'mean'},fill:'red'});
 // @ts-expect-error band styles do not accept strokeDash
 p.createStatisticalReference({source:'points',axis:'y',statistics:[{op:'min'},{op:'max'}],strokeDash:'solid'});
+// @ts-expect-error reference populations own missing-value validation, not the Rect row policy
+p.createStatisticalReference({source:'points',axis:'y',statistics:[{op:'min'},{op:'max'}],missing:'skip'});
 // @ts-expect-error source is required
 p.createStatisticalReference({axis:'y'});
 // @ts-expect-error full API only

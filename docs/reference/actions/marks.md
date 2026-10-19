@@ -130,7 +130,6 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
-| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
 

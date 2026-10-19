@@ -96,6 +96,7 @@ test("facade rejects ambiguous recipes, invalid branches and resource conflicts 
     { source: "points", axis: "y", statistics: [{ op: "max" }, { op: "min" }] },
     { source: "points", axis: "y", fill: "red" },
     { source: "points", axis: "y", statistics: middle(.25), strokeDash: "solid" },
+    { source: "points", axis: "y", statistics: middle(.25), missing: "skip" },
     { source: "points", axis: "y", y: 10 }, { source: "points", axis: "y", field: "group" },
   ]) { assert.throws(() => p.createStatisticalReference(args)); assert.equal(serializeProgram(p), before); }
   const q = p.createStatisticalReference({ source: "points", axis: "y" });

@@ -3279,7 +3279,7 @@ Related types: [`PointFacadePositionChannel`](#type-pointfacadepositionchannel) 
 ```typescript
 export type CreateStatisticalReferenceOptions = DynamicReferenceBinding & (
   | (RuleStyleOptions & { readonly statistic?: ReferenceStatistic; readonly statistics?: never })
-  | (Omit<RectMarkOptions, "id" | "data" | "source"> & {
+  | (Omit<RectMarkOptions, "id" | "data" | "source" | "missing"> & {
       readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic]; readonly statistic?: never;
     })
 );
