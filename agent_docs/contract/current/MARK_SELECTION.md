@@ -69,6 +69,8 @@ type MarkSelector =
 - Native grain: aggregate/ranged bar는 selected cell members, stacked bar는 complete selected stack members,
   line/area는 selected series members, arc는 selected sector members, rule/Tick은 selected line members를 보존한다. Histogram은 filtering 전 resolved
   boundaries를 explicit semantic boundaries로 고정해서 selected bins가 subset domain에서 다시 나뉘지 않게 한다.
+- Box owner의 선택은 category 전체를 보존한다. 소유 median/whisker/cap은 같은 filtered summary로 rebind하고,
+  outlier는 선택된 category만 보존한다. empty/compose/replace/remove도 모든 owned component에 함께 적용한다.
 - Rematerialization: target scale을 deduplicate한 순서로 resolve하고 target과 그 scale을 공유하는 모든
   complete mark 및 source-dependent mark를 다시 만든 뒤 connected axes,
   grids와 legends를 갱신한다. Coupled categorical legend scales는 intermediate mismatch를 노출하지 않고 final

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:861dc3101536dd73f8ba61466d6f3a58c6ecfd7b3487df86524d924665e826e6. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:7ab3b4cd00c24e95e0927e14b24b7098bc73a3d1e0ee4de2ed07b2d681462256. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -5302,6 +5302,10 @@ retain their pre-filter bin boundaries while active, and line/area filters retai
 complete series. An empty match is a valid empty view: the preceding scale
 domains and connected guide meaning stay fixed while mark items, source labels,
 and stale highlight graphics are cleared.
+
+Filtering a Box plot owner retains complete selected categories. Its median,
+whiskers, caps, and outliers follow the selected boxes, including empty views,
+composed filters, and restoration through `removeMarkFilter`.
 
 ## `removeMarkFilter({ target? } = {})`
 
@@ -40788,7 +40792,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:861dc3101536dd73f8ba61466d6f3a58c6ecfd7b3487df86524d924665e826e6` |
+| Contract fingerprint | `sha256:7ab3b4cd00c24e95e0927e14b24b7098bc73a3d1e0ee4de2ed07b2d681462256` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

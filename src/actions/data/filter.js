@@ -13,6 +13,7 @@ import {
   normalizeMarkFilterTransform
 } from "../../grammar/markFilter.js";
 import { resolveMarkFilterSelection } from "../../materialization/selection/filter.js";
+import { synchronizeBoxFilter } from "../boxPlots/filter.js";
 import { findSelectionPolicy } from
   "../../materialization/selection/policies/index.js";
 import {
@@ -143,6 +144,7 @@ export const materializeMarkFilteredData = /* @__PURE__ */ closedAction(
           values: currentRows,
           target: transform.target
         });
+        preview = synchronizeBoxFilter(preview, transform.target, id);
         preview = currentRows.length === 0
           ? applyLayerEmptyDataView(preview, transform.target)
           : applyLayerDataRematerialization(preview, transform.target);
@@ -172,6 +174,7 @@ export const materializeMarkFilteredData = /* @__PURE__ */ closedAction(
         empty: currentRows.length === 0
       }
     });
+    next = synchronizeBoxFilter(next, transform.target, id);
     return currentRows.length === 0
       ? next.materializeEmptyMark({ id: transform.target })
       : applyLayerDataRematerialization(next, transform.target);
@@ -243,7 +246,7 @@ function restoreHistogramBin(program, layer, originalBin) {
 }
 
 function removeActiveMarkFilter(program, layer, owner) {
-  let next = program.editSemantic({
+  let next = synchronizeBoxFilter(program, layer.id).editSemantic({
     property: `layer[${layer.id}].data`,
     value: owner.source
   });

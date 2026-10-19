@@ -1,6 +1,31 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+test("filters complete box categories with aligned medians, whiskers and outliers", () => {
+  const original = chart().createCanvas({ width: 500, height: 400, margin: 70 })
+    .createData({ id: "boxes", values: ["A", "B", "C"].flatMap((category, index) =>
+      [1, 2, 3, 4, 30].map(value => ({ category, value: value + index * 50 }))) })
+    .createBoxPlot({ id: "plot", data: "boxes", x: { field: "category", fieldType: "nominal" }, y: { field: "value" }, guides: false });
+  const first = original.filterMarks({ target: "plot", channel: "y", op: "lte", value: 70 });
+  const second = first.filterMarks({ target: "plot", channel: "y", op: "lte", value: 10, mode: "compose" });
+  for (const [program, count] of [[original, 3], [first, 2], [second, 1]]) {
+    for (const layer of program.semanticSpec.layers) {
+      assert.equal(program.graphicSpec.objects[layer.id].items.length, count, layer.id);
+    }
+    const body = program.graphicSpec.objects.plot.items.at(-1).properties;
+    const median = program.graphicSpec.objects.plotMedian.items.at(-1).properties;
+    assert.equal(median.x1, body.x);
+    assert.equal(median.x2, body.x + body.width);
+  }
+  const restored = second.removeMarkFilter({ target: "plot" });
+  assert.equal(restored.graphicSpec.objects.plot.items.length, 3);
+  assert.ok(!restored.semanticSpec.datasets.some(dataset => dataset.id.includes("FilteredData")));
+  const empty = original.filterMarks({ target: "plot", channel: "y", op: "lt", value: -1 })
+    .editCanvas({ width: 520 });
+  for (const layer of empty.semanticSpec.layers) assert.equal(empty.graphicSpec.objects[layer.id].items.length, 0);
+  assert.equal(empty.removeMarkFilter({ target: "plot" }).graphicSpec.objects.plotMedian.items.length, 3);
+});
+
 import { chart } from "../../../../src/index.js";
 import { createCarsDensityArea } from "../../../../examples/cars-density-area/program.js";
 import { createCarsHistogram } from "../../../../examples/cars-histogram/program.js";

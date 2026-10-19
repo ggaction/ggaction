@@ -62,7 +62,8 @@ export function getSourceDependentMarkSteps(program, sourceId) {
       getMarkMaterializationPolicy(layer)?.sourceDependent === true;
     const statistical = program.markConfigs?.[layer.id]
       ?.statisticalReference?.source === sourceId;
-    return sourceOwned || statistical
+    const filteredCompanion = program.markConfigs?.[layer.id]?.markFilter?.owner === sourceId;
+    return sourceOwned || statistical || filteredCompanion
       ? [getMarkMaterializationStep(program, layer) ??
           getExistingMarkRematerializationStep(program, layer)].filter(
           step => step !== undefined
