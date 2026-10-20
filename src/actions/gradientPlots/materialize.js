@@ -5,6 +5,8 @@ import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { GRADIENT_PROFILE_FIELDS } from "../../grammar/gradientProfile.js";
 import { requestedStrokeDetails } from "../../grammar/strokeStyle.js";
+import { materializeRectItem } from "../../grammar/roundedRect.js";
+import { replaceGraphicItems } from "../primitives/editGraphics.js";
 import {
   mapContinuousScaleValues,
   mapOrdinalPositionValues
@@ -16,7 +18,7 @@ import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import {
   createGradientPlotPaint,
-  resolveGradientPlotCategoryColors
+  resolveGradientPlotAppearanceValues
 } from "./paint.js";
 import { resolveGradientOrientation } from "./resolve.js";
 
@@ -73,11 +75,9 @@ function bodyItems(program, layer, dataset, config) {
     rows.map(row => row[GRADIENT_PROFILE_FIELDS.upper]),
     measureScale
   );
-  const categoryColors = resolveGradientPlotCategoryColors(
-    program,
-    layer,
-    categories
-  );
+  const appearance = program.markConfigs[layer.id];
+  const mapped = Object.fromEntries(["color", "opacity", "stroke", "strokeWidth"]
+    .map(channel => [channel, resolveGradientPlotAppearanceValues(program, layer, rows, channel)]));
   const thickness = categoryScale.bandwidth * config.width.band;
   if (!Number.isFinite(thickness) || thickness <= 0) {
     throw new Error(`Gradient plot "${layer.id}" requires a positive band width.`);
@@ -98,28 +98,27 @@ function bodyItems(program, layer, dataset, config) {
           width: Math.abs(a - b),
           height: thickness
         };
-    return {
-      type: "rect",
-      properties: {
-        ...geometry,
-        fill: createGradientPlotPaint({
-          values: row[GRADIENT_PROFILE_FIELDS.values],
-          intensities: row[GRADIENT_PROFILE_FIELDS.intensities]
-        }, {
-          orientation: config.orientation,
-          valueScale: measureScale,
-          intensityDomain: config.intensityDomain,
-          palette: config.gradient.palette,
-          opacity: config.gradient.opacity,
-          ...(categoryColors === undefined
-            ? {}
-            : { baseColor: categoryColors[index] })
-        }),
-        opacity: 1,
-        stroke: "transparent",
-        strokeWidth: 0
-      }
-    };
+    return materializeRectItem({
+      ...geometry,
+      fill: createGradientPlotPaint({
+        values: row[GRADIENT_PROFILE_FIELDS.values],
+        intensities: row[GRADIENT_PROFILE_FIELDS.intensities]
+      }, {
+        orientation: config.orientation,
+        valueScale: measureScale,
+        intensityDomain: config.intensityDomain,
+        palette: config.gradient.palette,
+        opacity: config.gradient.opacity,
+        ...(mapped.color === undefined
+          ? appearance.fillExplicit ? { baseColor: appearance.fill } : {}
+          : { baseColor: mapped.color[index] })
+      }),
+      opacity: mapped.opacity?.[index] ?? appearance.opacity ?? 1,
+      stroke: mapped.stroke?.[index] ?? (appearance.stroke === false ? "transparent" : appearance.stroke ?? "transparent"),
+      strokeWidth: mapped.strokeWidth?.[index] ??
+        (mapped.stroke === undefined && appearance.stroke === false ? 0 : appearance.strokeWidth ?? 1),
+      ...requestedStrokeDetails(appearance, "Gradient plot strip")
+    }, appearance);
   });
 }
 
@@ -128,7 +127,7 @@ export const materializeGradientPlotFill = /* @__PURE__ */ action(
     op: "materializeGradientPlotFill",
     description: "Materialize categorical density profiles as gradient strips."
   },
-  function ({ id } = {}) {
+  function ({ id, scales = true } = {}) {
     const owner = validateUserId(id, "Gradient-plot id");
     const layer = findLayer(this, owner);
     const config = this.markConfigs[owner]?.gradientPlot;
@@ -142,17 +141,14 @@ export const materializeGradientPlotFill = /* @__PURE__ */ action(
     const scaleIds = [...new Set([
       layer.encoding?.x?.scale,
       layer.encoding?.y?.scale,
-      layer.encoding?.color?.scale
+      ...["color", "opacity", "stroke", "strokeWidth"].map(channel => layer.encoding?.[channel]?.scale)
     ].filter(Boolean))];
     let next = this;
-    for (const scale of scaleIds) {
+    for (const scale of scales ? scaleIds : []) {
       next = next.rematerializeScale({ id: scale, marks: false, guides: false });
     }
-    next = next.editGraphics({
-      target: owner,
-      property: "items",
-      value: bodyItems(next, findLayer(next, owner), dataset, config)
-    });
+    next = replaceGraphicItems(next, owner, "rect",
+      bodyItems(next, findLayer(next, owner), dataset, config));
     next = applyMaterializationPlan(
       next,
       buildMaterializationPlan({

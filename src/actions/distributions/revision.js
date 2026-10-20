@@ -321,8 +321,10 @@ function rebindAxisOwner(program, channel, axisId, {
     });
   }
   const scale = next.resolvedScales[nextScale];
+  const previousTicks = next.guideConfigs.axis?.[axisId]?.ticks;
   const ticks = normalizeTickConfig(
-    next.guideConfigs.axis?.[axisId]?.ticks,
+    previousTitle !== nextTitle && previousTicks?.mode === "values"
+      ? { ...previousTicks, inferredValues: true } : previousTicks,
     scale
   );
   if (ticks !== undefined) {

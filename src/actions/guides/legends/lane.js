@@ -437,6 +437,12 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
       const { dy } = resolveSingleSideLegendPlacement({ side, plot, canvas, bounds });
       for (const id of ids) next = translateGraphic(next, id, 0, dy);
     }
+    for (const [owner, config] of Object.entries(next.markConfigs)) {
+      if (config.gradientPlot?.materialized &&
+          next.graphicSpec.objects[`${owner}DensityLegend`]) {
+        next = next.rematerializeGradientPlotLegend({ owner });
+      }
+    }
     return next;
   }
 );

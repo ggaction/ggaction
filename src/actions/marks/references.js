@@ -1,4 +1,5 @@
 import { isSourceOwnedText } from "../../grammar/text.js";
+import { GRADIENT_PROFILE_FIELDS } from "../../grammar/gradientProfile.js";
 import { action, closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -237,7 +238,9 @@ function requireStatisticalSource(program, config, referenceId) {
 }
 
 function resolvePopulationDataset(program, source, population, referenceId) {
-  let dataset = findDataset(program, source.data);
+  const gradient = program.markConfigs[source.id]?.gradientPlot;
+  let dataset = findDataset(program, population === "boundData" && gradient?.materialized
+    ? gradient.source : source.data);
   if (dataset === undefined || !Array.isArray(dataset.values)) {
     throw new Error(
       `Statistical reference "${referenceId}" source requires materialized data.`
@@ -343,6 +346,13 @@ function resolvePopulationValues(
           config.field.field,
           `Statistical reference "${referenceId}" boundData`
         );
+  }
+  const gradient = program.markConfigs[source.id]?.gradientPlot;
+  if (gradient?.materialized &&
+      config.axis === (gradient.orientation === "vertical" ? "y" : "x")) {
+    return strictFieldValues(dataset.values, config.population === "boundData"
+      ? gradient.measure : GRADIENT_PROFILE_FIELDS.center,
+    `Statistical reference "${referenceId}" ${config.population}`);
   }
   return resolveConsumerValuesForDataset(program, {
     layer: source,
@@ -524,9 +534,12 @@ export const rematerializeStatisticalReference = /* @__PURE__ */ closedAction(
       });
     }
     next = syncReferenceEncoding(next, id, source, config);
+    // References do not contribute to their source's positional scale domain.
+    // Re-entering that scale's mark plan here would rematerialize the source
+    // and its dependent reference recursively (notably gradient strips).
     next = config.statistics.length === 1
-      ? next.rematerializeRuleMark({ id })
-      : next.rematerializeRectMark({ id });
+      ? next.rematerializeRuleMark({ id, scales: false })
+      : next.rematerializeRectMark({ id, scales: false });
     return next._withContext(this.context);
   }
 );

@@ -1,6 +1,8 @@
 import { resolveContinuousPalette } from "../../grammar/palettes.js";
 import { inverseLerp } from "../../grammar/numeric.js";
 import { mapScaleConsumerValues } from "../../materialization/scales/map.js";
+import { readScaleField } from "../../grammar/scales/index.js";
+import { resolveSequentialColorStops } from "../../grammar/scales/color.js";
 
 function parseHex(value) {
   const match = value.match(/^#([0-9a-f]{6})$/i);
@@ -31,21 +33,25 @@ function paletteColor(colors, amount) {
 }
 
 function categoricalRamp(base) {
-  const rgb = parseHex(base);
+  const normalized = resolveSequentialColorStops([base, base])[0];
+  const rgb = parseHex(normalized);
   const pale = interpolate([255, 255, 255], rgb, 0.2);
   return [
     `#${pale.map(value => value.toString(16).padStart(2, "0")).join("")}`,
-    base
+    normalized
   ];
 }
 
-export function resolveGradientPlotCategoryColors(program, layer, categories) {
-  if (layer.encoding?.color === undefined) return undefined;
-  const scale = program.resolvedScales[layer.encoding.color.scale];
+export function resolveGradientPlotAppearanceValues(program, layer, rows, channel) {
+  const encoding = layer.encoding?.[channel];
+  if (encoding === undefined) return undefined;
+  const scale = program.resolvedScales[encoding.scale];
   if (scale === undefined) {
-    throw new Error(`Gradient plot "${layer.id}" requires a resolved color scale.`);
+    throw new Error(`Gradient plot "${layer.id}" requires a resolved ${channel} scale.`);
   }
-  return mapScaleConsumerValues(categories, scale, "color");
+  return mapScaleConsumerValues(readScaleField(rows, encoding.field, encoding.fieldType, {
+    temporalUnit: encoding.temporalUnit
+  }), scale, channel);
 }
 
 export function createGradientPlotPaint(profile, {

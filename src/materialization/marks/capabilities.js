@@ -190,6 +190,7 @@ export function canMaterializeText(program, layer) {
   return hasCartesianPositionScales(layer);
 }
 
-export function canMaterializeRect(_program, layer) {
-  return resolveRectMode(layer) !== undefined;
+export function canMaterializeRect(program, layer) {
+  return program.markConfigs[layer.id]?.gradientPlot?.materialized === true ||
+    resolveRectMode(layer) !== undefined;
 }

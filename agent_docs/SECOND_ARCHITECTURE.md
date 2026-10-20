@@ -49,6 +49,13 @@ agent가 다음을 빠르게 이해하기 위한 내부 아키텍처 문서다.
 
 ## 핵심 결론
 
+Gradient strip도 기존 rect completeness policy와 동일한 외형 materialization owner를 사용한다.
+색상/불투명도/테두리는 canonical mark config와 encoding에서 읽고, facet plan이 해결한 scale은
+다시 추론하지 않는다. 독립 density guide는 기존 gradientPlot.guides.legend가 소유하며 hue channel의
+semantic legend slot을 점유하지 않는다. Side legend lane 이후 wrapped density guide materializer로
+배치한다. Statistical reference는 source position scale을 재사용하여 순환 재계산을 막는다.
+정확한 동작은 current/GRADIENT_PLOTS.md와 MARKS.md 계약 및 회귀 테스트가 소유한다.
+
 Point jitter의 `channel: "both"`도 기존 jitter policy 한 곳이 소유한다. 기존 단일 축 grammar를 x/y 각각 호출하고, 같은 wrapped point materializer가 두 concrete 좌표를 함께 갱신한다. Both의 resolved metadata만 축별 resolution을 `axes.x/y`로 묶으며 renderer나 semantic state 경계는 바뀌지 않는다.
 Both와 아래 compact action vocabulary를 포함한 package entry는591이며 실측847924packed/4099551unpacked bytes다. 기존847000/4094000을 초과하여 최소1000bytes 단위인848000/4100000으로만 갱신한다.
 
@@ -338,7 +345,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 424,000 bytes |
+| `ggaction` | 425,000 bytes |
 | `ggaction/basic` | 215,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 

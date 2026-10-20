@@ -826,6 +826,10 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   provenance-transparent하게 역추적한다. `visibleItems`는 `filterMarks` 이후 최종 item grain에서 scalar를 읽는다.
   selection/highlight는 두 population 모두 바꾸지 않는다. Line/Area/Parallel의 visible item scalar는 모호하므로 오류다.
   missing/nonfinite/empty population은 오류다.
+- Gradient source의 measure 축은 `boundData`에서 profile provenance의 원본 measure 값을,
+  `visibleItems`에서 각 strip의 center 값을 소비한다. 원본의 다른 field로 groupBy할 때는
+  boundData를 사용한다. 통계 reference는 source domain에 기여하지 않으므로 이미 해결한
+  position scale을 재사용하여 source/reference 재계산 feedback을 만들지 않는다.
 - `groupBy?: string`은 원본 source field로 모집단을 나눈다. null/string/boolean/finite number를 구분하고
   원본 첫 출현 순서를 보존한다. 축이나 color에 매핑되지 않은 변수도 쓸 수 있다. VisibleItems에서는 각 최종 mark의
   group field가 scalar여야 하며 섞여 있으면 오류다. BoundData는 원본 그룹으로 나눈 뒤 기존 axis-value grain을 따른다.

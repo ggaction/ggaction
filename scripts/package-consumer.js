@@ -2138,6 +2138,20 @@ async function testNodeConsumer(directory) {
         .properties.fill.type,
       "linear-gradient"
     );
+    const styledGradient = gradientPlotFacade
+      .encodeColor({ target: "gradientPlot", value: "#e45756" })
+      .encodeOpacity({ target: "gradientPlot", value: 0.5 })
+      .encodeStroke({ target: "gradientPlot", value: "#000000" })
+      .encodeStrokeWidth({ target: "gradientPlot", value: 2 })
+      .editGradientPlot({ density: { bandwidth: 1 } });
+    const gradientAppearance = styledGradient.graphicSpec.objects.gradientPlot.items[0].properties;
+    assert.equal(gradientAppearance.opacity, 0.5);
+    assert.equal(gradientAppearance.stroke, "#000000");
+    assert.equal(gradientAppearance.strokeWidth, 2);
+    assert.equal(gradientAppearance.fill.type, "linear-gradient");
+    assert.notDeepEqual(gradientAppearance.fill,
+      gradientPlotFacade.graphicSpec.objects.gradientPlot.items[0].properties.fill);
+    assert.ok(renderToSVG(styledGradient).startsWith("<svg "));
     const violinPlotFacade = chart()
       .createCanvas({ width: 180, height: 140, margin: 20 })
       .createData({ values: [

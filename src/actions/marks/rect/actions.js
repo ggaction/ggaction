@@ -127,7 +127,7 @@ const rematerializeRectMark = /* @__PURE__ */ action(
       throw new Error(`Rect mark "${id}" requires rect collection graphics.`);
     }
     if (this.markConfigs[id]?.gradientPlot?.materialized === true) {
-      return this.materializeGradientPlotFill({ id });
+      return this.materializeGradientPlotFill({ id, scales: args.scales });
     }
     const sourceDataset = findDataset(this, layer.data);
     if (sourceDataset === undefined) {

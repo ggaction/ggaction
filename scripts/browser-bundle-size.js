@@ -5,7 +5,7 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 424_000, // Composite filtering, facet replay and human-readable guides; measured 423043 bytes before final guide reuse.
+  ggaction: 425_000, // Gradient appearance, independent legends and statistical references: measured 424414 bytes.
   "ggaction/basic": 215_000, // Shared coherent composite-filter dependency: measured 214385 bytes.
   "ggaction/svg": 25_000
 });

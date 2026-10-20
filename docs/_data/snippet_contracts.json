@@ -2877,7 +2877,7 @@
       "source: \"points\""
     ],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: \"points\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "05fd8283341c3d9d71434a569cb9bc8f5fb22bebdd1aec302ce8f60db6a99069",
+    "sha256": "4dbd9eb8a96a16181d5d3b8fe11b2461ffa14b8a40bc3acb5eca05b56a5a6319",
     "executable": false
   },
   {

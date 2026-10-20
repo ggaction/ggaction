@@ -73,8 +73,7 @@ export const createGradientPlot = /* @__PURE__ */ closedAction(
         guides
       },
       itemFilterable: false,
-      stroke: false,
-      strokeWidth: 0
+      stroke: false
     });
     if (positions.x !== undefined) {
       next = next.encodeX({

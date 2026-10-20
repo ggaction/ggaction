@@ -58,9 +58,24 @@ const colored = program.encodeColor({
 });
 ```
 
-Density still controls lightness and opacity inside each strip. `gradient`
-controls the neutral palette and opacity range when no category color encoding
-is present.
+Density still controls lightness and opacity inside each strip. A fixed
+`encodeColor({ target: "gradientPlot", value: "#e45756" })` uses one hue for
+all strips while preserving the density gradient. A field color uses the
+actual value in each profile row; category, center, and observation count
+are available at this grain. Unrelated raw columns cannot assign several
+colors to one strip.
+
+`gradient.palette` controls density colors when no fixed or field color owns
+the hue. `gradient.opacity` controls the within-strip opacity range in every
+mode. `encodeOpacity`, `encodeStroke`, `encodeStrokeWidth`, and `editRectMark`
+apply to the strip itself and survive scale, Canvas, density, and facet
+replay. Enable an outline with `encodeStroke` before changing its width.
+Rounded corners use the same `editRectMark` options as other rect marks.
+
+The neutral density legend is independent of the color channel. A later
+`createGuides({ legend: { target: "gradientPlot", channels: ["color"] } })`
+can display a hue legend alongside it. The density legend moves beyond
+right-side channel legends to keep their labels separate.
 
 ## Options and defaults
 
