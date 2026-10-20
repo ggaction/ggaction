@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Support exact continuous color/stroke gradient tick values through existing legend creation and editing, with mapped positions, explicit reset, retained representation sampling and atomic domain validation.
+
 - Raise the bounded per-path capacity to 30,000 commands, preserving interpolation/area expansion checks, immutable native edits and independent allocation limits.
 
 - Add `createFlattenData` / `editFlattenData` for aligned parallel-array data expansion with null padding, immutable raw ancestors, typed lineage, Full derived editing/replay and Basic creation.

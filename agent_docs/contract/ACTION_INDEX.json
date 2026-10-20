@@ -3069,7 +3069,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editLegend` edits content, layout, appearance, and exact sampled values",
+      "update": "`editLegend` edits content, layout, appearance, exact samples and gradient ticks",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3087,7 +3087,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edit whole-target content or select one existing channel block for layout, appearance and samples",
+      "update": "Edit whole-target content or select one existing channel block for layout, appearance, samples and gradient ticks",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

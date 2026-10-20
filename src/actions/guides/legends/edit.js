@@ -96,7 +96,7 @@ function reconcileGraphic(program, id, shouldExist, definition) {
 function resolveColorRepresentationEdit(program, previous, args) {
   const representation = args.representation ?? previous.representation ?? "gradient";
   if (!["gradient", "symbols"].includes(representation)) throw new Error("Legend representation must be gradient or symbols.");
-  const allowed = ["target", "representation", "position", "align", "offset", "title", "labels", "titleStyle", "titlePosition", "border", "count", ...(representation === "symbols" ? ["symbol", "values", "itemGap", "layout", "direction", "columns"] : ["gradient", "direction"])];
+  const allowed = ["target", "representation", "position", "align", "offset", "title", "labels", "titleStyle", "titlePosition", "border", "count", "values", ...(representation === "symbols" ? ["symbol", "itemGap", "layout", "direction", "columns"] : ["gradient", "direction"])];
   for (const key of Object.keys(args)) if (!allowed.includes(key)) throw new Error(`Color ${representation} legend does not accept ${key}.`);
   const switching = (previous.representation ?? "gradient") !== representation;
   const titleMode = args.title;
@@ -111,7 +111,9 @@ function resolveColorRepresentationEdit(program, previous, args) {
   let normalized;
   if (representation === "symbols") {
     if (args.symbol !== undefined && args.symbol !== "auto") validateOptionObject(args.symbol, ["type", "radius", "stroke", "strokeWidth"], "Sampled color symbol");
-    const sample = switching ? { count: previous.count } : {};
+    const priorSampling = readLegendSampling(previous);
+    const sample = switching ? priorSampling.mode === "values"
+      ? { values: priorSampling.values } : { count: priorSampling.count } : {};
     for (const key of ["values", "count"]) if (Object.hasOwn(args, key)) sample[key] = args[key];
     if (Object.hasOwn(args, "values")) delete sample.count;
     if (Object.hasOwn(args, "count")) sample.count = args.count;
@@ -123,10 +125,14 @@ function resolveColorRepresentationEdit(program, previous, args) {
       symbol: args.symbol === "auto" ? "auto" : args.symbol === undefined ? (switching ? undefined : previous.symbol) : { ...(switching ? {} : previous.symbol), ...args.symbol }
     }, switching ? { count: previous.count } : previous, "edit");
   } else {
+    const sampling = normalizeLegendSampling(args, {
+      previous, operation: "edit", label: "Gradient legend"
+    });
     normalized = normalizeContinuousLegend({ ...common,
       ...(args.direction === "auto" ? {} : args.direction !== undefined
         ? { direction: args.direction } : previous.gradientDirection === undefined ? {} : { direction: previous.gradientDirection }),
-      count: args.count ?? (switching ? readLegendSampling(previous).count : previous.count) }, "gradient");
+      count: sampling.count }, "gradient");
+    if (sampling.mode === "values") normalized.sampling = sampling;
     const gradient = normalizeLegendGradient(args.gradient, switching ? undefined : previous.gradient);
     normalized.gradient = gradient;
   }
@@ -149,7 +155,7 @@ function resolveContinuousEdit(program, kind, previous, args) {
   const gradient = ["gradient", "strokeGradient"].includes(kind);
   const allowed = gradient
     ? ["target", "position", "align", "offset", "title", "labels",
-      "titleStyle", "titlePosition", "border", "count", "gradient", "representation", "direction"]
+      "titleStyle", "titlePosition", "border", "count", "values", "gradient", "representation", "direction"]
     : ["target", "position", "align", "offset", "title", "symbol", "labels",
       "titleStyle", "titlePosition", "itemGap", "border", "count", "values"];
   for (const key of Object.keys(args)) {
@@ -172,17 +178,17 @@ function resolveContinuousEdit(program, kind, previous, args) {
   const enteringInline = kind === "opacity" &&
     titlePosition === "left" && previous.titlePosition !== "left";
   const labels = mergeObject(previous.labels, args.labels);
-  const sampling = gradient ? undefined : normalizeLegendSampling(args, {
+  const sampling = normalizeLegendSampling(args, {
     previous,
     operation: "edit",
-    label: "Opacity legend"
+    label: gradient ? "Gradient legend" : "Opacity legend"
   });
   const normalized = normalizeContinuousLegend({
     target: previous.target,
     position: args.position ?? previous.position,
     align: args.align ?? previous.align,
     offset: args.offset ?? previous.offset,
-    ...(gradient ? { count: args.count ?? previous.count,
+    ...(gradient ? { count: sampling.count,
       ...(args.direction === "auto" ? {} : args.direction !== undefined ? { direction: args.direction }
         : previous.gradientDirection === undefined ? {} : { direction: previous.gradientDirection }) } : {}),
     titlePosition,
@@ -198,10 +204,11 @@ function resolveContinuousEdit(program, kind, previous, args) {
     } : {})
   }, gradient ? "gradient" : kind);
   const { count: _legacyCount, ...canonicalPrevious } = previous;
+  const { sampling: _priorSampling, ...gradientPrevious } = previous;
   const config = {
-    ...(gradient ? previous : canonicalPrevious),
+    ...(gradient ? gradientPrevious : canonicalPrevious),
     ...normalized,
-    ...(gradient ? {} : { sampling }),
+    ...(gradient && sampling.mode !== "values" ? {} : { sampling }),
     inferredTitle,
     titleVisible
   };

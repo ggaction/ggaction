@@ -2213,6 +2213,20 @@
   {
     "file": "api/legends/continuous.md",
     "block": 5,
+    "heading": "Choose exact gradient ticks",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "b5f6ffd863524ba7a57a55d1474dbbcbe7dd0193976ae24cfbf87134ec403735",
+    "executable": false
+  },
+  {
+    "file": "api/legends/continuous.md",
+    "block": 6,
     "heading": "Show a continuous color scale as symbols",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2224,7 +2238,7 @@
   },
   {
     "file": "api/legends/continuous.md",
-    "block": 6,
+    "block": 7,
     "heading": "Show a continuous color scale as symbols",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2238,7 +2252,7 @@
   },
   {
     "file": "api/legends/continuous.md",
-    "block": 7,
+    "block": 8,
     "heading": "Show a continuous color scale as symbols",
     "mode": "fragment",
     "environment": "esm-context",

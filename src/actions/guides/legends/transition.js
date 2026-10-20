@@ -62,7 +62,7 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   const custom = sampledColor ? false : categorical
     ? categoricalFamilyCustom(program, from, stored)
     : gradientFamily
-    ? stored.gradientDirection !== undefined || stored.count !== defaults.count || !same({ ...stored.gradient, opacity: stored.gradient?.opacity ?? 1 }, { ...DEFAULT_GRADIENT_SIZE, opacity: 1 }) || stored.itemGap !== defaults.itemGap
+    ? stored.sampling?.mode === "values" || stored.gradientDirection !== undefined || stored.count !== defaults.count || !same({ ...stored.gradient, opacity: stored.gradient?.opacity ?? 1 }, { ...DEFAULT_GRADIENT_SIZE, opacity: 1 }) || stored.itemGap !== defaults.itemGap
     : !same(comparableSymbol, defaults.symbol) || stored.itemGap !== defaults.itemGap ||
       stored.direction !== defaults.direction || (stored.columns !== undefined && !(side && stored.columns === 1));
   if (custom) {

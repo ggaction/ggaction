@@ -169,16 +169,13 @@ export function normalizeContinuousLegend(args, kind) {
   if (["left", "right"].includes(position) && align !== "center") {
     throw new Error("Side continuous legends require center alignment.");
   }
-  if (kind === "gradient" && Object.hasOwn(args, "values")) {
-    throw new Error("Gradient legends do not support exact sample values.");
-  }
-  const sampling = kind === "opacity"
+  const sampling = kind === "opacity" || Object.hasOwn(args, "values")
     ? normalizeLegendSampling(args, {
         operation: "create",
-        label: "Opacity legend"
+        label: kind === "gradient" ? "Gradient legend" : "Opacity legend"
       })
     : undefined;
-  const count = kind === "gradient" ? args.count ?? 5 : undefined;
+  const count = kind === "gradient" ? sampling?.count ?? args.count ?? 5 : undefined;
   if (kind === "gradient") {
     if (!Number.isInteger(count) || count < 2) {
       throw new RangeError(
@@ -226,6 +223,7 @@ export function normalizeContinuousLegend(args, kind) {
     align,
     offset,
     ...(kind === "gradient" ? { count,
+      ...(sampling?.mode === "values" ? { sampling } : {}),
       ...(args.direction === undefined ? {} : { gradientDirection: normalizeGradientDirection(args.direction) })
     } : { sampling }),
     ...normalizeInitialLegendTitle(args.title),

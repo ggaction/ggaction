@@ -29,6 +29,7 @@ import {
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
 import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
+import { readLegendSampling, validateSamplingAgainstScale } from "../sampling.js";
 
 export const DEFAULT_GRADIENT_SIZE = DEFAULT_LEGEND_GRADIENT;
 
@@ -74,13 +75,15 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
         align: "center"
       };
   const transformed = ["log", "pow", "sqrt", "symlog"].includes(scale.type);
-  const values = transformed
+  const sampling = validateSamplingAgainstScale(readLegendSampling(config), scale, label);
+  const exact = sampling.mode === "values";
+  const values = exact ? [...sampling.values] : transformed
     ? transformedTicks(scale.type, scale.domain, config.count,
         scale.type === "log" ? {base: scale.base}
           : scale.type === "pow" ? {exponent: scale.exponent}
           : scale.type === "symlog" ? {constant: scale.constant} : {})
     : [...sampleContinuousValues(scale.domain, config.count)];
-  if (scale.midpoint !== undefined && !values.includes(scale.midpoint)) {
+  if (!exact && scale.midpoint !== undefined && !values.includes(scale.midpoint)) {
     values.push(scale.midpoint);
     values.sort((a, b) => scale.domain[1] > scale.domain[0] ? a - b : b - a);
   }
@@ -90,8 +93,8 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
     config.fieldType,
     config.labels.format
   );
-  const fractions = transformed ? mapContinuousScaleValues(values, {...scale, range: [0, 1]})
-    : values.map((value, index) => scale.midpoint === undefined
+  const fractions = transformed || exact ? mapContinuousScaleValues(values, {...scale, range: [0, 1]})
+    : values.map((value, index) => !exact && scale.midpoint === undefined
     ? index / (values.length - 1)
     : inverseLerp(value, ...scale.domain));
   const labelOffset = config.labels.offset;

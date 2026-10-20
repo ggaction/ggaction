@@ -1,0 +1,363 @@
+{
+  "status": "implemented-source-verified-pending-immutable-candidate-and-release",
+  "checkedAt": "2026-10-20T21:38:00.302855+00:00",
+  "issue": "https://github.com/ggaction/ggaction/issues/245",
+  "approvedProposalCommit": "b0c9d484",
+  "authority": "Direct human standing approval of all past/future in-scope questions, with200additional-successful-family release cadence.",
+  "normal": {
+    "tests": 4902,
+    "pass": 4902,
+    "fail": 0
+  },
+  "focusedTests": 62,
+  "relatedLifecycleAndTypeTests": 48,
+  "installedConsumerGroups": 62,
+  "installedConsumer": {
+    "package": "ggaction@0.0.21",
+    "source": "ggaction-0.0.21.tgz",
+    "sha256": "26aba1a2f0deab591669484e67e1bc80f80cf4e026c416e1fc6294d876636b66",
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 536,
+        "minifiedBytes": 1561175,
+        "gzipBytes": 423413
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 321,
+        "minifiedBytes": 756360,
+        "gzipBytes": 213222
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 19,
+        "minifiedBytes": 23548,
+        "gzipBytes": 7567
+      }
+    },
+    "mcp": {
+      "coldStartMilliseconds": 307
+    },
+    "checks": [
+      "node",
+      "linear-regression-statistics-cache-and-source-revision",
+      "extension",
+      "pdf",
+      "png",
+      "svg",
+      "inspection",
+      "numeric-font-weight",
+      "point-jitter",
+      "point-packing",
+      "mark-label-removal",
+      "selected-mark-labels",
+      "semantic-label-placement",
+      "beeswarm-plot",
+      "raincloud-plot",
+      "path-order",
+      "time-unit-data",
+      "summary-data",
+      "bin-data",
+      "fold-data",
+      "computed-data",
+      "derived-data-editing",
+      "safe-resource-removal",
+      "advanced-authoring-integration",
+      "normalized-data",
+      "complete-data",
+      "imputed-data",
+      "stack-data",
+      "window-data",
+      "bin2d-data",
+      "binned-heatmap",
+      "parallel-coordinates",
+      "parallel-dimension-scale-editing",
+      "offset-scale-editing",
+      "stroke-color-encoding-and-legends",
+      "atomic-channel-encoding",
+      "statistical-references",
+      "coordinate-aspect-and-polar-frame-editing",
+      "facet-grid-repeat-and-named-composition-editing",
+      "non-cartesian-facet-grid-and-repeat",
+      "horizon",
+      "violin-plot",
+      "polar-radar-rug-strip-ecdf-facades",
+      "right-categorical-legend-offset",
+      "grouped-corner-and-free-legend-placement",
+      "sequential-palette-count",
+      "ranged-numeric-datum-wrapper-parity",
+      "neutral-hcl-hue-borrowing",
+      "facet-numeric-legend-inference",
+      "explicit-fold-facet-partition",
+      "shared-facet-top-lane",
+      "explicit-axis-and-border-underlays",
+      "typescript",
+      "basic-entry-runtime-and-types",
+      "tutorial-consumers",
+      "minimal-browser-bundle-measurement",
+      "private-export-rejection",
+      "installed-local-mcp",
+      "direct-mcp-byte-equality",
+      "task-packet-v5-authoring-execution",
+      "explicit-unresolved-docs-fallback",
+      "terminal-unsupported-no-fallback"
+    ]
+  },
+  "package": {
+    "entries": 604,
+    "packedBytes": 853776,
+    "unpackedBytes": 4129919,
+    "javascriptCompactions": 44,
+    "compactJsonFiles": 8,
+    "limitsUnchanged": true,
+    "firstFailureRetained": "Initial unpacked4131750 exceeded4131000; add changed shared sampling module to existing official esbuild compaction. No behavioral or limit relaxation."
+  },
+  "docs": {
+    "normalTests": 120,
+    "finalBuiltPages": 150,
+    "browser": "Desktopsearch/accessibility and allpages at320/390/768passed; unchangedUIassets. Final prose-only canonical-reference/selection clarification then regenerated/tested120 and fresh built150.",
+    "ruby": "System2.6preflightfailure retained; locked Ruby3.2bundle passed."
+  },
+  "reproduce": [
+    "node scripts/run-tests.js all",
+    "node scripts/package-consumer.js",
+    "npm run contracts:catalog",
+    "npm run docs:generate",
+    "node scripts/run-tests.js docs",
+    "PATH=/opt/homebrew/opt/ruby@3.2/bin:$PATH npm run docs:build",
+    "node scripts/check-built-docs.js _site",
+    "node scripts/test-built-docs.js _site"
+  ],
+  "semanticEvidence": {
+    "literalDomain": [
+      35,
+      85
+    ],
+    "literalValues": [
+      40,
+      60,
+      80
+    ],
+    "literalFractions": [
+      0.1,
+      0.5,
+      0.9
+    ],
+    "verticalLength125Offsets": [
+      112.5,
+      62.5,
+      12.5
+    ],
+    "covered": [
+      "Full/Basic color/stroke creation",
+      "Exactsinglevalue/boundedfiniteascendingarrays",
+      "Edit/preserve/reset/rememberedcount",
+      "Log/sqrt/pow/symlog/reversed/midpointpositions",
+      "Scale/domain/familyrejectionatomicity",
+      "Colorrepresentationroundtrip",
+      "Persistencevalidation/rematerialization",
+      "Sharedfacetcompatibility",
+      "SVG/PNG/PDF",
+      "Callerandpriorprogramimmutability"
+    ],
+    "sourcePixelInspection": false
+  },
+  "sourceBindings": [
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "edd9ce56df782c21c58a485c89bcbcf96aae31a9d382f4d5bbb18b5ec7cdbe27"
+    },
+    {
+      "path": "agent_docs/contract/ACTION_INDEX.json",
+      "sha256": "aea056e9f294fa6e44075b671e514bbb76ed7ee19ea174269449b5f51ec558ac"
+    },
+    {
+      "path": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+      "sha256": "061f2931f9a43a885661136c8a78045797707ffc13939b33b30a89c0a0115277"
+    },
+    {
+      "path": "agent_docs/impl/gradient-exact-values/PROPOSAL.md",
+      "sha256": "8c766ab8ed3029e4c0c9c89c856e3a724096c71e4e09efbac263c63065055bfc"
+    },
+    {
+      "path": "docs/_data/provenance.json",
+      "sha256": "ddb74791fe2fe4a8409dac02508dd1f80b8beaaa3c0fd4c33844b83889db7590"
+    },
+    {
+      "path": "docs/_data/snippet_contracts.json",
+      "sha256": "4eb6e3c215e4b018e52f39f3d2fa41268aa99d820fa1de9108215e6887ef61c0"
+    },
+    {
+      "path": "docs/_sources/action-reference.md",
+      "sha256": "48d06990d12a37b1b069070f9f68553bf25809ae97cd1d64ac8fbbe19b21bd82"
+    },
+    {
+      "path": "docs/api/legends.md",
+      "sha256": "806eb7ef82f65ce5f6f42d1967eacb8050046f8246d135981e6dbcbf35fe81cb"
+    },
+    {
+      "path": "docs/api/legends/continuous.md",
+      "sha256": "6fb978c24fc30c2ffce56c2d37e337e06a3196b37ba2f56b40eba8e6991a684a"
+    },
+    {
+      "path": "docs/api/legends/editing.md",
+      "sha256": "c5c19db192d39e986fc8027518129b39ec7ece7e62d6122c52d2ac0c9a3284e9"
+    },
+    {
+      "path": "docs/assets/images/manifest.json",
+      "sha256": "64cd8db73347bc8b3dbeeaccebdfccb6fdad2b00e4019feb859c6b50a4cb0a44"
+    },
+    {
+      "path": "docs/doc-provenance.json",
+      "sha256": "ddb74791fe2fe4a8409dac02508dd1f80b8beaaa3c0fd4c33844b83889db7590"
+    },
+    {
+      "path": "docs/llms-full.txt",
+      "sha256": "80ff6a27482673d49362ab3a5dfd990737ae0a3ac66af4f8b22d7b58892f216c"
+    },
+    {
+      "path": "docs/llms-manifest.json",
+      "sha256": "2bb615e2160745251306dd8a783d9e07316d92f425d74a57e8c3d71cacf7d7c7"
+    },
+    {
+      "path": "docs/reference/actions/guides.md",
+      "sha256": "a27241ed908990159f90ce36b89cd620c68be405742811354eefb19d71ce01ef"
+    },
+    {
+      "path": "docs/reference/types.md",
+      "sha256": "bb24b0a1432abf1790eacbb61f7a4d9006eb50fa797bc8b6065c809fb666c700"
+    },
+    {
+      "path": "docs/search-index.json",
+      "sha256": "26a0648eb3e3669c6cf1d9636d7b99581afc3604be2b2f3273ede33dafd6cb84"
+    },
+    {
+      "path": "docs/types/program.d.ts",
+      "sha256": "fef06de460fa56eb7cf59bd4cb5d99114ad178f4bee122a0ef50e96013613104"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "f0734ad2e76a452572b9146d8e02a4bb3eb8ef95b30f2c4d75d1a66e47962138"
+    },
+    {
+      "path": "scripts/package-consumer.js",
+      "sha256": "69926ffea29203938b409f6d28e2e2b42bd5299b52139b20409022ef9e64afd3"
+    },
+    {
+      "path": "src/actions/guides/legends/continuous/common.js",
+      "sha256": "37af625d9176ad5cbf166c9d63795bf48b0c90d2e3a6295fc34f1ce5d91bdd68"
+    },
+    {
+      "path": "src/actions/guides/legends/continuous/gradient.js",
+      "sha256": "a01ca102d64623ff09a92e1a1abe1d7555fd82fd47d8ed0c61136fe095040284"
+    },
+    {
+      "path": "src/actions/guides/legends/edit.js",
+      "sha256": "056eb95378a29a1653c9b49f5812127fede1270071c8730af8a9ea439ac4163b"
+    },
+    {
+      "path": "src/actions/guides/legends/sampling.js",
+      "sha256": "437e443ec5cba1cd1136addc45e7fb3ba548305487f290ea51ec1332f39d4f69"
+    },
+    {
+      "path": "src/actions/guides/legends/transition.js",
+      "sha256": "86fe21fca40928bb8f1dc0dcd853361f6d9178e52287eb32502cb1d0c761849a"
+    },
+    {
+      "path": "src/persistence/validation.js",
+      "sha256": "552d0e4a285c88da954c3a6ddc1d13514b7044dea158cf0fdb6737da6c6cc66a"
+    },
+    {
+      "path": "test/contracts/legend-values.test.js",
+      "sha256": "8e81e52e3e337812d56fd24bea75e2823ff74451251be45edd85d6680cfcba7e"
+    },
+    {
+      "path": "test/contracts/sampled-color-legend-types.test.js",
+      "sha256": "e1eb7ce9d2fa43df6e625ef4bd4075edb411071a2fa487d4b08121597d2cec59"
+    },
+    {
+      "path": "test/unit/actions/guides/sampled-color-legend.test.js",
+      "sha256": "3af09f0dd5c456b25abc9672957a76df298efecee1f9ab8890d9087c6e513139"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "fef06de460fa56eb7cf59bd4cb5d99114ad178f4bee122a0ef50e96013613104"
+    },
+    {
+      "path": "test/unit/actions/guides/gradient-exact-values.test.js",
+      "sha256": "f26994547acbaeaecf424c638f614f972377c603d21d7999b1982e842d6b78aa"
+    }
+  ],
+  "logBindings": [
+    {
+      "kind": "normal",
+      "path": "/tmp/ggaction-gradient-values-normal-v2.log",
+      "sha256": "16c2f186e7768e78d447fb7fe8e8c909f55bab7ca389d0e6c15625fbd01d071e"
+    },
+    {
+      "kind": "firstNormalRetained",
+      "path": "/tmp/ggaction-gradient-values-normal-v1.log",
+      "sha256": "7644eeddaf1335d23bd132f72f1cb5ce56d68b40355cd9a8655ce021abf05d43"
+    },
+    {
+      "kind": "focused",
+      "path": "/tmp/ggaction-gradient-values-focused-v3.log",
+      "sha256": "a586a8a40e15bc06a1c521db5117d897fcf37e910c963c43420e7160feed8bf3"
+    },
+    {
+      "kind": "facetsTransitionsAndTypes",
+      "path": "/tmp/ggaction-gradient-values-lifecycle-v1.log",
+      "sha256": "4224c36d3854b7dc4a550b2397a5df29338f4589c8aa51c0dc287b5348b0db41"
+    },
+    {
+      "kind": "installedConsumer",
+      "path": "/tmp/ggaction-gradient-values-installed-consumer-v1.log",
+      "sha256": "d39262c4c5b522eb98a37a54749b07e5e07072eae4ee1aa05dd7dd36fb6961f3"
+    },
+    {
+      "kind": "packageCheck",
+      "path": "/tmp/ggaction-gradient-values-package-check-v1.log",
+      "sha256": "0e571735a28fc45f601ad9dbb76515a4328ad7e3e908abac90a85a2efc6050f2"
+    },
+    {
+      "kind": "docsFinalGenerate",
+      "path": "/tmp/ggaction-gradient-values-docs-generate-v4.log",
+      "sha256": "2e7002b47d4ceb97de1cd338889bb9f54f16c99831c942995de1db088327e0b7"
+    },
+    {
+      "kind": "docsFinalTests",
+      "path": "/tmp/ggaction-gradient-values-docs-tests-final-v1.log",
+      "sha256": "575ea46d31c1d727549c54734cb366653795c9df14e59372e292bd6329377ea3"
+    },
+    {
+      "kind": "docsFinalBuild",
+      "path": "/tmp/ggaction-gradient-values-docs-build-final-v1.log",
+      "sha256": "15c6e02c13fad8bb333209b79c39d8e6c4a4dca38ee16443b734b9ad195ba00f"
+    },
+    {
+      "kind": "docsFinalBuiltPages",
+      "path": "/tmp/ggaction-gradient-values-docs-built-final-v1.log",
+      "sha256": "3149166d5edc5113be55b5bb0cf1aaecfce64512e0980b4722b95a78e0a04bbf"
+    },
+    {
+      "kind": "docsBrowser",
+      "path": "/tmp/ggaction-gradient-values-docs-browser-v1.log",
+      "sha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d"
+    }
+  ],
+  "activeTranslationRuntimeChanged": false,
+  "SchoolCalls": 0,
+  "pending": {
+    "immutablePackageAndMatchingDocs": true,
+    "nativeCompatibility": {
+      "families": 1288,
+      "programs": 9382
+    },
+    "publicReleaseAtSuccessfulFamilies": 1413,
+    "issueMustRemainOpenUntilReleaseVerification": true
+  }
+}

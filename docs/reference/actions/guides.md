@@ -1462,6 +1462,13 @@ Continuous color and stroke ramps accept
 defaults to `1`, and preserves space at zero. It never fades marks, text, ticks,
 or borders. Whole and focused legend edits preserve omitted gradient fields;
 switching from symbols back to a gradient resets exclusive gradient settings.
+Continuous color and stroke gradients also accept exact ascending numeric
+`values` inside their domain. Ticks use their mapped positions, without adding
+midpoint or endpoint values. Creation omits `values` for automatic ticks; editors
+preserve omitted arrays and use `values: "auto"` to restore the remembered count.
+Do not combine an exact array with `count`. Exact samples survive color
+gradient/symbol representation changes. Select a gradient block with the
+`editLegend` channel option; `editLegendBlock` sample edits remain sampled-only.
 Omitted point channels infer the available categorical color, shape, and
 quantitative size with the same result as explicit selection. Color-only uses
 swatches; shape uses typed symbols; a size encoding adds its own sample block.

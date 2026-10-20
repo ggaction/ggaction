@@ -56,7 +56,7 @@ test('exact samples enforce finite ascending unique domain-bounded arrays includ
   assert.deepEqual(symbols(reverse).map(p=>p.fill),['#abdc32','#28ae80','#2c728e','#472d7b']);
 });
 
-test('representation transitions preserve common styles and remembered count but clear exclusive state',()=>{
+test('representation transitions preserve common styles and remembered count and exact values but clear symbol-only state',()=>{
   const p=source().createLegend({count:4,gradient:{length:180,thickness:8},labels:{fontSize:10},title:false,border:true});
   const s=p.editLegend({representation:'symbols',values:samples,symbol:{radius:5}});
   assert.equal(config(s).gradient,undefined); assert.equal(config(s).count,undefined);
@@ -65,11 +65,12 @@ test('representation transitions preserve common styles and remembered count but
   const b=s.editLegendBlock({target:'scatterPlot',channel:'color',values:'auto'}); assert.equal(symbols(b).length,4);
   const g=s.editLegend({representation:'gradient'});
   assert.deepEqual(config(g).gradient,{length:120,thickness:12}); assert.equal(config(g).count,4);
-  for(const key of ['representation','sampling','symbol','layout','direction','columns']) assert.equal(config(g)[key],undefined);
+  for(const key of ['representation','symbol','layout','direction','columns']) assert.equal(config(g)[key],undefined);
+  assert.deepEqual(config(g).sampling,{mode:'values',values:samples,count:4});
   assert.equal(config(g).labels.fontSize,10); assert.equal(config(g).titleVisible,false); assert.deepEqual(config(g).border,config(p).border);
   assert.equal(g.graphicSpec.objects.colorGradientSymbols,undefined);
   assert.deepEqual(config(p).gradient,{length:180,thickness:8});
-  assert.throws(()=>s.editLegend({representation:'gradient',values:[2]}));
+  assert.deepEqual(config(s.editLegend({representation:'gradient',values:[2]})).sampling.values,[2]);
   assert.throws(()=>p.editLegend({representation:'symbols',gradient:{length:99}}));
 });
 
@@ -163,7 +164,7 @@ test('stored gradient representation rejects every stale symbol-only property',(
     const corrupt=p._withLegendConfig('gradient',{
       ...config(p),representation:'gradient',[key]:value
     });
-    assert.throws(()=>serializeProgram(corrupt),/Gradient color legend cannot store symbol representation settings/);
+    assert.throws(()=>serializeProgram(corrupt),key==='sampling'?/Gradient exact sampling must retain/:/Gradient color legend cannot store symbol representation settings/);
     assert.equal(serializeProgram(p),before);
   }
 });

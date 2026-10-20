@@ -19,7 +19,7 @@ title: Legends
 
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
-| `createLegend` | `createLegend()` | Current/unique compatible mark; right position | Categorical, size, stroke-width, gradient, interval, or opacity guide; sampled channels accept exact `values` |
+| `createLegend` | `createLegend()` | Current/unique compatible mark; right position | Categorical, size, stroke-width, gradient, interval, or opacity guide; sampled channels and gradient ticks accept exact `values` |
 | `editLegend` | `editLegend({ position: "left" })` | Unique existing legend; omitted properties retained | Rematerialized content, layout, and appearance |
 | `editLegendBlock` | `editLegendBlock({ target: "points", channel: "size", title: "Magnitude" })` | Explicit mark and represented channel | Only the selected logical block is rematerialized |
 | Focused edits | `editLegendLabels({ fontSize: 11 })` | Same target inference as `editLegend` | One legend component rematerialized |
@@ -97,12 +97,13 @@ Stroke-width legends support all four edges and plot corners through `createLege
 label/title styles, and border are editable. Side positions require vertical
 direction, center alignment, one column, and a top title. Symbol recipes,
 gradient, and order are unsupported; edit quantitative mapping through `editScale`.
-Continuous size, opacity, stroke-width, and color-symbol legends accept `values` for exact
+Continuous size, opacity, stroke-width, color-symbol and color/stroke-gradient legends accept `values` for exact
 ascending samples. Exact values must fit the effective domain and cannot be
 combined with `count`; use `editLegend({ values: "auto" })` to return to the
-remembered automatic sample count. Use `editLegendBlock()` when a target has
-multiple blocks and only one block's samples, order, title, labels, spacing, or
-supported symbol appearance should change.
+remembered automatic sample count. For a gradient tick selection, use
+`editLegend({ channel: "color", values: [40, 60, 80] })` on an existing matching
+scale. Use `editLegendBlock()` for sampled blocks, order, title, labels, spacing,
+and supported symbol appearance when a target has multiple blocks.
 Right-side layout requires sufficient right margin; bottom layout requires
 sufficient bottom margin; top layout requires enough top margin for its title,
 item grid, offset, and optional border. The library reports a layout error

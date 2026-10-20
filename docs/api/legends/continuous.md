@@ -16,8 +16,8 @@ type as the plotted consumer: an opacity legend uses point samples even for a Li
 
 | Family | Consumer and scale | Samples | Display recipe | Composition and edges |
 | --- | --- | --- | --- | --- |
-| Continuous color | Point, aggregate Bar, Rect, Text; existing continuous color scale | Gradient tick `count`; symbols accepts `count` or exact `values` | Default gradient rectangle; `representation: "symbols"` uses colored points | Separate block; four edges and four plot corners |
-| Stroke gradient | Supported stroke marks; sequential quantitative/temporal stroke | Tick `count` | Gradient rectangle; rejects `symbol` | Separate stroke block; four edges and four plot corners |
+| Continuous color | Point, aggregate Bar, Rect, Text; existing continuous color scale | Gradient ticks and symbols accept `count` or exact `values` | Default gradient rectangle; `representation: "symbols"` uses colored points | Separate block; four edges and four plot corners |
+| Stroke gradient | Supported stroke marks; sequential quantitative/temporal stroke | Tick `count` or exact `values` | Gradient rectangle; rejects `symbol` | Separate stroke block; four edges and four plot corners |
 | Color/stroke interval | Compatible quantize, quantile, threshold consumer | Every interval | Filled or outlined swatches, respectively | Ordered interval block; four edges and four plot corners |
 | Opacity | Point, Line; quantitative linear opacity | `count` or explicit ascending `values` | One point recipe; `type` omitted or `"point"` | Separate block; four edges and four plot corners |
 | Size | Point; continuous numeric size or discrete area scale | Continuous `count`/`values`; every discrete interval | Area-scaled point symbol | Separate block; four edges and four plot corners |
@@ -175,6 +175,49 @@ Gradient orientation intent remains inactive while color uses `representation:
 orientation. Changing to a different scale family cannot silently discard an
 explicit gradient direction; reset it with `"auto"` or remove and recreate the legend.
 
+## Choose exact gradient ticks
+
+**Unreleased candidate:** exact gradient tick arrays extend the existing
+`values` option; released versions retain their previous count behavior.
+
+For a prepared continuous color or stroke scale with domain `[35, 85]`, this
+contextual fragment labels only 40, 60, and 80:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+~~~javascript
+program.createLegend({ values: [40, 60, 80], gradient: { length: 125 } });
+~~~
+
+The values occupy their numeric positions along the ramp, including for log,
+power, square-root, and symlog scales. This changes ticks and labels; the
+ramp, encoded marks, and scale domain retain their mapping. For this example:
+
+| Value | Fraction of the domain | Distance from the top of a vertical ramp |
+| --- | --- | --- |
+| 40 | 0.1 | 112.5 |
+| 60 | 0.5 | 62.5 |
+| 80 | 0.9 | 12.5 |
+
+Values must contain 1–100 finite, strictly increasing numbers inside the
+scale domain. Do not combine an exact array with `count`. A single value is
+valid. Explicit arrays do not acquire extra midpoint or endpoint ticks.
+Creation uses omission for automatic ticks. Editors preserve omitted values;
+`editLegend({ values: "auto" })` restores the remembered automatic count, and
+`editLegend({ values: "auto", count: 3 })` resets and changes that count together.
+A `count` edit alone cannot replace exact values.
+
+Use `editLegend({ channel: "stroke", values: [40, 60, 80] })` to select one
+existing stroke block when a target has multiple blocks. `editLegendBlock`
+continues to edit samples only for sampled families. Exact ticks survive
+Canvas, theme, data, scale, persistence, and shared-facet replay. An edit that
+would put a stored value outside its domain fails atomically. Reset exact
+values before a scale-family transition that would discard them.
+
 ## Show a continuous color scale as symbols
 
 `representation: "symbols"` displays sample colors as points while preserving
@@ -226,10 +269,10 @@ items default to a gap of 20.
 
 Use `editLegend({ representation: "gradient" })` to return to a gradient.
 Common titles, fonts, border, position, and whole-target group placement remain;
-symbol-only settings and exact samples are cleared, and gradient dimensions
+symbol-only settings are cleared, exact values are retained, and gradient dimensions
 return to 120 by 12. Do not supply `gradient` dimensions in a symbols call.
-On the reverse switch, omitted sample values use automatic sampling and the
-remembered count. No hidden snapshot of the previous representation is kept.
+On the reverse switch, omitted values retain exact samples when present, or use
+the remembered automatic count. No hidden snapshot of the previous representation is kept.
 
 In an editor, omitted `channels` preserves the current content set. Explicit
 `channels` still replaces the target's final content set; it is not a selector.
@@ -247,8 +290,8 @@ use the full entry point for the editing flow above.
 
 Their requested sample `count` is limited to the inclusive range `2`–`10,000`.
 
-Continuous size, opacity, stroke-width, and color-symbol legends can instead show exact
-numeric samples. Pass a finite, strictly increasing array with 1–100 values.
+Continuous size, opacity, stroke-width, color-symbol, and color/stroke-gradient
+legends can instead show exact numeric values. Pass a finite, strictly increasing array with 1–100 values.
 The array is used as written: ggaction does not sort or deduplicate it. Every
 value must lie inside the effective scale domain, and log scales require
 positive values. `count` and `values` cannot appear in the same call.
@@ -271,7 +314,8 @@ the scale therefore reverses the symbol appearance while the label order stays
 ascending. A mapped opacity, area, or width of zero keeps its label and layout
 slot. Exact values do not change the scale domain or the encoded marks.
 Discrete size legends continue to show every interval. Gradient color and
-stroke legends continue to use `count` for their tick labels.
+stroke legends use exact `values` when supplied, and otherwise retain their
+existing automatic `count` behavior.
 
 Continuous legend labels accept the same explicit value formats as axes and
 Text: `.0f`–`.12f`, `.0%`–`.12%`, `.0e`–`.12e`, or a compatible UTC pattern

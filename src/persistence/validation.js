@@ -51,6 +51,21 @@ export const STATE_KEYS = Object.freeze([
   "children", "compositionSpec", "context", "trace", "actionStack"
 ]);
 
+function validateStoredColorLegendSampling(program, config, path) {
+  requireObject(config.sampling, path);
+  const sample = config.sampling;
+  exactKeys(sample, sample.mode === "values" ? ["mode", "values", "count"] : ["mode", "count"], path);
+  if (!["auto", "values"].includes(sample.mode)) throw invalidSnapshot("Invalid color legend sample mode.", path);
+  if (!Number.isInteger(sample.count) || sample.count < 2) throw invalidSnapshot("Invalid color legend sample count.", path);
+  validateGeneratedItemLimit(sample.count, "Color legend sample count");
+  const scale = program.resolvedScales[config.scale];
+  if (!isContinuousColorScaleType(scale?.type)) throw invalidSnapshot("Sampled color legend requires a continuous color scale.", path);
+  if (sample.mode === "values") {
+    requireArray(sample.values, path);
+    if (!sample.values.length || sample.values.length > 100 || sample.values.some((value, index) => !Number.isFinite(value) || index > 0 && value <= sample.values[index - 1] || value < Math.min(...scale.domain) || value > Math.max(...scale.domain) || scale.type === "log" && value <= 0)) throw invalidSnapshot("Invalid exact color legend samples.", path);
+  }
+}
+
 export function requireObject(value, path) {
   if (!isPlainObject(value)) throw invalidSnapshot(`${path} must be a plain object.`, path);
 }
@@ -319,22 +334,17 @@ export function validateProgramState(program, path) {
     if (["gradient", "strokeGradient"].includes(kind) && config.representation !== "symbols") {
       validateLegendGradient(config.gradient, "Stored legend gradient");
     }
+    if (["gradient", "strokeGradient"].includes(kind) && config.representation !== "symbols" && config.sampling !== undefined) {
+      validateStoredColorLegendSampling(program, config, path);
+      if (config.sampling.mode !== "values" || config.count !== config.sampling.count) {
+        throw invalidSnapshot("Gradient exact sampling must retain its automatic count.", path);
+      }
+    }
     if (config.representation === undefined) continue;
     if (kind !== "gradient" || !["symbols", "gradient"].includes(config.representation)) throw invalidSnapshot("Invalid continuous color legend representation.", path);
     if (config.representation === "symbols") {
       if (config.gradient !== undefined) throw invalidSnapshot("Symbol color legend cannot store gradient dimensions.", path);
-      requireObject(config.sampling, path);
-      const sample = config.sampling;
-      exactKeys(sample, sample.mode === "values" ? ["mode", "values", "count"] : ["mode", "count"], path);
-      if (!["auto", "values"].includes(sample.mode)) throw invalidSnapshot("Invalid color legend sample mode.", path);
-      if (!Number.isInteger(sample.count) || sample.count < 2) throw invalidSnapshot("Invalid color legend sample count.", path);
-      validateGeneratedItemLimit(sample.count, "Color legend sample count");
-      const scale = program.resolvedScales[config.scale];
-      if (!isContinuousColorScaleType(scale?.type)) throw invalidSnapshot("Sampled color legend requires a continuous color scale.", path);
-      if (sample.mode === "values") {
-        requireArray(sample.values, path);
-        if (!sample.values.length || sample.values.length > 100 || sample.values.some((value, index) => !Number.isFinite(value) || index > 0 && value <= sample.values[index - 1] || value < Math.min(...scale.domain) || value > Math.max(...scale.domain) || scale.type === "log" && value <= 0)) throw invalidSnapshot("Invalid exact color legend samples.", path);
-      }
+      validateStoredColorLegendSampling(program, config, path);
       requireObject(config.symbol, path);
       validateKeys(config.symbol, ["type", "radius", "stroke", "strokeWidth"], "Stored sampled color symbol");
       if (config.symbol.type !== "point") throw invalidSnapshot("Invalid sampled color symbol type.", path);
@@ -344,7 +354,7 @@ export function validateProgramState(program, path) {
       if (!["left", "right", "top", "bottom", "top-left", "top-right", "bottom-left", "bottom-right"].includes(config.position) || !["horizontal", "vertical"].includes(config.direction) || config.layout !== "edge" || !["left", "center", "right"].includes(config.align) || !["top", "left"].includes(config.titlePosition) || config.columns !== undefined && (!Number.isInteger(config.columns) || config.columns < 1)) throw invalidSnapshot("Invalid sampled color item layout.", path);
       validatePositiveFinite(config.itemGap, "Stored sampled color itemGap");
       validateNonNegativeFinite(config.offset, "Stored sampled color offset");
-    } else if (["sampling", "symbol", "columns", "direction", "layout"].some(key => config[key] !== undefined)) throw invalidSnapshot("Gradient color legend cannot store symbol representation settings.", path);
+    } else if (["symbol", "columns", "direction", "layout"].some(key => config[key] !== undefined)) throw invalidSnapshot("Gradient color legend cannot store symbol representation settings.", path);
   }
 
   const regressionFits = program.materializationConfigs.regressionFits ?? {};

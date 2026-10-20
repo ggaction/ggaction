@@ -163,7 +163,7 @@ const restored = edited.editLegendTitle({ title: false })
   .editLegendTitle({ title: "auto" });
 ```
 
-For continuous size, opacity, stroke-width, and color-symbol legends, `values` replaces the
+For continuous size, opacity, stroke-width, color-symbol and color/stroke-gradient legends, `values` replaces the
 automatic samples with exact values:
 
 <!-- snippet-context:start -->
@@ -190,7 +190,8 @@ sorted or clamped. Layout, title, style, theme, and Canvas edits preserve the
 array. A later scale, data, encoding, or facet change that would put a stored
 sample outside its effective domain fails without changing the earlier
 program. On a combined or multi-block legend, use `editLegendBlock()` to name
-the sampled channel whose values should change.
+a sampled channel. For gradient ticks, select the existing block with
+`editLegend({ channel: "color", values: [10, 50, 100] })` instead.
 
 Size samples retain the encoded area mapping. For continuous size scales, count
 must be an integer from 2 through 10,000 when automatic sampling is active.

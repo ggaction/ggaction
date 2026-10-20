@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:c6c35ec526c5ff316e300eaafabd7e36fca32b859ef289c3bdabb55404b4ea58. Status: development. Runtime source: da0dceaf69e411b3cc72b7a16530957e8fc304ff. Release baseline: v0.0.13.
+Contract: sha256:e614f3ce8cc827f6d27e8ab1d2bd2afdbcb71f185aa7df9c79d67247d9059bcf. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/da0dceaf69e411b3cc72b7a16530957e8fc304ff/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/da0dceaf69e411b3cc72b7a16530957e8fc304ff/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12977,7 +12977,7 @@ Cartesian or Polar coordinate. Ambiguous resources require explicit IDs.
 
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
-| `createLegend` | `createLegend()` | Current/unique compatible mark; right position | Categorical, size, stroke-width, gradient, interval, or opacity guide; sampled channels accept exact `values` |
+| `createLegend` | `createLegend()` | Current/unique compatible mark; right position | Categorical, size, stroke-width, gradient, interval, or opacity guide; sampled channels and gradient ticks accept exact `values` |
 | `editLegend` | `editLegend({ position: "left" })` | Unique existing legend; omitted properties retained | Rematerialized content, layout, and appearance |
 | `editLegendBlock` | `editLegendBlock({ target: "points", channel: "size", title: "Magnitude" })` | Explicit mark and represented channel | Only the selected logical block is rematerialized |
 | Focused edits | `editLegendLabels({ fontSize: 11 })` | Same target inference as `editLegend` | One legend component rematerialized |
@@ -13045,12 +13045,13 @@ Stroke-width legends support all four edges and plot corners through `createLege
 label/title styles, and border are editable. Side positions require vertical
 direction, center alignment, one column, and a top title. Symbol recipes,
 gradient, and order are unsupported; edit quantitative mapping through `editScale`.
-Continuous size, opacity, stroke-width, and color-symbol legends accept `values` for exact
+Continuous size, opacity, stroke-width, color-symbol and color/stroke-gradient legends accept `values` for exact
 ascending samples. Exact values must fit the effective domain and cannot be
 combined with `count`; use `editLegend({ values: "auto" })` to return to the
-remembered automatic sample count. Use `editLegendBlock()` when a target has
-multiple blocks and only one block's samples, order, title, labels, spacing, or
-supported symbol appearance should change.
+remembered automatic sample count. For a gradient tick selection, use
+`editLegend({ channel: "color", values: [40, 60, 80] })` on an existing matching
+scale. Use `editLegendBlock()` for sampled blocks, order, title, labels, spacing,
+and supported symbol appearance when a target has multiple blocks.
 Right-side layout requires sufficient right margin; bottom layout requires
 sufficient bottom margin; top layout requires enough top margin for its title,
 item grid, offset, and optional border. The library reports a layout error
@@ -13524,8 +13525,8 @@ type as the plotted consumer: an opacity legend uses point samples even for a Li
 
 | Family | Consumer and scale | Samples | Display recipe | Composition and edges |
 | --- | --- | --- | --- | --- |
-| Continuous color | Point, aggregate Bar, Rect, Text; existing continuous color scale | Gradient tick `count`; symbols accepts `count` or exact `values` | Default gradient rectangle; `representation: "symbols"` uses colored points | Separate block; four edges and four plot corners |
-| Stroke gradient | Supported stroke marks; sequential quantitative/temporal stroke | Tick `count` | Gradient rectangle; rejects `symbol` | Separate stroke block; four edges and four plot corners |
+| Continuous color | Point, aggregate Bar, Rect, Text; existing continuous color scale | Gradient ticks and symbols accept `count` or exact `values` | Default gradient rectangle; `representation: "symbols"` uses colored points | Separate block; four edges and four plot corners |
+| Stroke gradient | Supported stroke marks; sequential quantitative/temporal stroke | Tick `count` or exact `values` | Gradient rectangle; rejects `symbol` | Separate stroke block; four edges and four plot corners |
 | Color/stroke interval | Compatible quantize, quantile, threshold consumer | Every interval | Filled or outlined swatches, respectively | Ordered interval block; four edges and four plot corners |
 | Opacity | Point, Line; quantitative linear opacity | `count` or explicit ascending `values` | One point recipe; `type` omitted or `"point"` | Separate block; four edges and four plot corners |
 | Size | Point; continuous numeric size or discrete area scale | Continuous `count`/`values`; every discrete interval | Area-scaled point symbol | Separate block; four edges and four plot corners |
@@ -13667,6 +13668,45 @@ Gradient orientation intent remains inactive while color uses `representation:
 orientation. Changing to a different scale family cannot silently discard an
 explicit gradient direction; reset it with `"auto"` or remove and recreate the legend.
 
+## Choose exact gradient ticks
+
+**Unreleased candidate:** exact gradient tick arrays extend the existing
+`values` option; released versions retain their previous count behavior.
+
+For a prepared continuous color or stroke scale with domain `[35, 85]`, this
+contextual fragment labels only 40, 60, and 80:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+~~~javascript
+program.createLegend({ values: [40, 60, 80], gradient: { length: 125 } });
+~~~
+
+The values occupy their numeric positions along the ramp, including for log,
+power, square-root, and symlog scales. This changes ticks and labels; the
+ramp, encoded marks, and scale domain retain their mapping. For this example:
+
+| Value | Fraction of the domain | Distance from the top of a vertical ramp |
+| --- | --- | --- |
+| 40 | 0.1 | 112.5 |
+| 60 | 0.5 | 62.5 |
+| 80 | 0.9 | 12.5 |
+
+Values must contain 1–100 finite, strictly increasing numbers inside the
+scale domain. Do not combine an exact array with `count`. A single value is
+valid. Explicit arrays do not acquire extra midpoint or endpoint ticks.
+Creation uses omission for automatic ticks. Editors preserve omitted values;
+`editLegend({ values: "auto" })` restores the remembered automatic count, and
+`editLegend({ values: "auto", count: 3 })` resets and changes that count together.
+A `count` edit alone cannot replace exact values.
+
+Use `editLegend({ channel: "stroke", values: [40, 60, 80] })` to select one
+existing stroke block when a target has multiple blocks. `editLegendBlock`
+continues to edit samples only for sampled families. Exact ticks survive
+Canvas, theme, data, scale, persistence, and shared-facet replay. An edit that
+would put a stored value outside its domain fails atomically. Reset exact
+values before a scale-family transition that would discard them.
+
 ## Show a continuous color scale as symbols
 
 `representation: "symbols"` displays sample colors as points while preserving
@@ -13714,10 +13754,10 @@ items default to a gap of 20.
 
 Use `editLegend({ representation: "gradient" })` to return to a gradient.
 Common titles, fonts, border, position, and whole-target group placement remain;
-symbol-only settings and exact samples are cleared, and gradient dimensions
+symbol-only settings are cleared, exact values are retained, and gradient dimensions
 return to 120 by 12. Do not supply `gradient` dimensions in a symbols call.
-On the reverse switch, omitted sample values use automatic sampling and the
-remembered count. No hidden snapshot of the previous representation is kept.
+On the reverse switch, omitted values retain exact samples when present, or use
+the remembered automatic count. No hidden snapshot of the previous representation is kept.
 
 In an editor, omitted `channels` preserves the current content set. Explicit
 `channels` still replaces the target's final content set; it is not a selector.
@@ -13735,8 +13775,8 @@ use the full entry point for the editing flow above.
 
 Their requested sample `count` is limited to the inclusive range `2`–`10,000`.
 
-Continuous size, opacity, stroke-width, and color-symbol legends can instead show exact
-numeric samples. Pass a finite, strictly increasing array with 1–100 values.
+Continuous size, opacity, stroke-width, color-symbol, and color/stroke-gradient
+legends can instead show exact numeric values. Pass a finite, strictly increasing array with 1–100 values.
 The array is used as written: ggaction does not sort or deduplicate it. Every
 value must lie inside the effective scale domain, and log scales require
 positive values. `count` and `values` cannot appear in the same call.
@@ -13755,7 +13795,8 @@ the scale therefore reverses the symbol appearance while the label order stays
 ascending. A mapped opacity, area, or width of zero keeps its label and layout
 slot. Exact values do not change the scale domain or the encoded marks.
 Discrete size legends continue to show every interval. Gradient color and
-stroke legends continue to use `count` for their tick labels.
+stroke legends use exact `values` when supplied, and otherwise retain their
+existing automatic `count` behavior.
 
 Continuous legend labels accept the same explicit value formats as axes and
 Text: `.0f`–`.12f`, `.0%`–`.12%`, `.0e`–`.12e`, or a compatible UTC pattern
@@ -14094,7 +14135,7 @@ const restored = edited.editLegendTitle({ title: false })
   .editLegendTitle({ title: "auto" });
 ```
 
-For continuous size, opacity, stroke-width, and color-symbol legends, `values` replaces the
+For continuous size, opacity, stroke-width, color-symbol and color/stroke-gradient legends, `values` replaces the
 automatic samples with exact values:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -14117,7 +14158,8 @@ sorted or clamped. Layout, title, style, theme, and Canvas edits preserve the
 array. A later scale, data, encoding, or facet change that would put a stored
 sample outside its effective domain fails without changing the earlier
 program. On a combined or multi-block legend, use `editLegendBlock()` to name
-the sampled channel whose values should change.
+a sampled channel. For gradient ticks, select the existing block with
+`editLegend({ channel: "color", values: [10, 50, 100] })` instead.
 
 Size samples retain the encoded area mapping. For continuous size scales, count
 must be an integer from 2 through 10,000 when automatic sampling is active.
@@ -25624,6 +25666,13 @@ Continuous color and stroke ramps accept
 defaults to `1`, and preserves space at zero. It never fades marks, text, ticks,
 or borders. Whole and focused legend edits preserve omitted gradient fields;
 switching from symbols back to a gradient resets exclusive gradient settings.
+Continuous color and stroke gradients also accept exact ascending numeric
+`values` inside their domain. Ticks use their mapped positions, without adding
+midpoint or endpoint values. Creation omits `values` for automatic ticks; editors
+preserve omitted arrays and use `values: "auto"` to restore the remembered count.
+Do not combine an exact array with `count`. Exact samples survive color
+gradient/symbol representation changes. Select a gradient block with the
+`editLegend` channel option; `editLegendBlock` sample edits remain sampled-only.
 Omitted point channels infer the available categorical color, shape, and
 quantitative size with the same result as explicit selection. Color-only uses
 swatches; shape uses typed symbols; a size encoding adds its own sample block.
@@ -34320,7 +34369,7 @@ export interface LegendOptions {
   /** false hides the title while retaining its inferred field text. */
   /** LF, CRLF and CR preserve explicit title lines, including blank lines. */
   title?: string | false;
-  /** Exact ascending samples for continuous size, opacity, stroke-width, or color with representation symbols. Cannot be combined with count. */
+  /** Exact ascending samples for continuous size, opacity, stroke-width, color symbols, or color/stroke gradient ticks. Cannot be combined with count. */
   values?: readonly number[];
   count?: number;
   /** Body-only opacity defaults to 1; edits preserve omitted fields. */
@@ -38618,12 +38667,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/da0dceaf69e411b3cc72b7a16530957e8fc304ff/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/da0dceaf69e411b3cc72b7a16530957e8fc304ff/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -41002,9 +41051,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:c6c35ec526c5ff316e300eaafabd7e36fca32b859ef289c3bdabb55404b4ea58` |
+| Contract fingerprint | `sha256:e614f3ce8cc827f6d27e8ab1d2bd2afdbcb71f185aa7df9c79d67247d9059bcf` |
 | Example and dataset source | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
-| Runtime source commit | `da0dceaf69e411b3cc72b7a16530957e8fc304ff` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 286 |
 | Declared actions in that release | 234 |

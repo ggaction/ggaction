@@ -97,6 +97,28 @@ async function testNodeConsumer(directory) {
     import {createFacetSharedTopLaneProgram} from "./facet-lane-public.js";
     import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
 
+    for (const factory of [chart,basicChart]) for(const channel of ["color","stroke"]) {
+      const scale={domain:[35,85],palette:"viridis"};
+      const channelOption={field:"v",fieldType:"quantitative",scale};
+      const p=factory().createCanvas({width:800,height:700,margin:200})
+        .createData({values:[{x:0,y:0,v:35},{x:1,y:1,v:60},{x:2,y:0,v:85}]})
+        .createScatterPlot({x:"x",y:"y",guides:false,[channel]:channelOption})
+        .createLegend({values:[40,60,80],gradient:{length:125}});
+      const prefix=channel+"Gradient";
+      assert.deepEqual(p.graphicSpec.objects[prefix+"Labels"].items.map(i=>i.properties.text),["40","60","80"]);
+      const top=Math.min(...p.graphicSpec.objects[prefix+"Strips"].items.map(i=>i.properties.y));
+      const offsets=p.graphicSpec.objects[prefix+"Ticks"].items.map(i=>i.properties.y1-top);
+      offsets.forEach((v,i)=>assert.ok(Math.abs(v-[112.5,62.5,12.5][i])<1e-9));
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      if(factory===chart){
+        const q=p.editLegend({values:"auto",count:3});
+        assert.equal(q.guideConfigs.legend[channel==="color"?"gradient":"strokeGradient"].sampling,undefined);
+        assert.throws(()=>p.editScale({id:channel,domain:[35,70]}),/outside the scale domain/);
+      }
+      assert.ok((await renderToPNGBuffer(p)).buffer.length>100);
+      assert.ok((await renderToPDFBuffer(p)).buffer.length>100);
+    }
+
     for (const factory of [chart,basicChart]) {
       const arrayRows=[{amounts:[1,2],labels:["A","B"],group:"alpha"},{amounts:[3,4,5],labels:["C","D"],group:"beta"}];
       const base=factory().createCanvas().createData({values:arrayRows});
