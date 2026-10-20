@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:ed5de35f3fc056f74306ec3a09be16d0740c6b68080cb1216e8e259d58550b0e. Status: development. Runtime source: 8d20a7278b6c425378b7aa6dcde3d5c4f61f5c9b. Release baseline: v0.0.13.
+Contract: sha256:d3980cb90be914361069ca02dfaaf6040d501468004e714abb48929ebafab5b5. Status: development. Runtime source: bd20e0eba0454ba76928a44fb3af9642e39df16b. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/8d20a7278b6c425378b7aa6dcde3d5c4f61f5c9b/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/bd20e0eba0454ba76928a44fb3af9642e39df16b/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/8d20a7278b6c425378b7aa6dcde3d5c4f61f5c9b/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/bd20e0eba0454ba76928a44fb3af9642e39df16b/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -15471,7 +15471,10 @@ Optional fields are `operation`, `optionPath`, `resourceId`, `candidates`,
 `limit`, and `actual`. `operation` identifies the innermost wrapped action that
 observed the error (or an explicitly named renderer). `optionPath` identifies
 the supplied key or the validator's named quantity. `candidates` lists resource
-IDs; `actual` and `limit` are numeric counts. No row values or complete program
+IDs; `actual` and `limit` are numeric measurements or bounds. For insufficient
+facet header spacing, `optionPath: "gap"` reports the requested gap in `actual`
+and the minimum header clearance in `limit`. Retry with that clearance and
+validate again: other retained guides can require additional space. No row values or complete program
 state are included. Use codes and available fields for recovery, and retain
 the message for human diagnosis. Do not parse complete message text.
 
@@ -38737,12 +38740,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/8d20a7278b6c425378b7aa6dcde3d5c4f61f5c9b/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/bd20e0eba0454ba76928a44fb3af9642e39df16b/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/8d20a7278b6c425378b7aa6dcde3d5c4f61f5c9b/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/bd20e0eba0454ba76928a44fb3af9642e39df16b/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -41016,9 +41019,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:ed5de35f3fc056f74306ec3a09be16d0740c6b68080cb1216e8e259d58550b0e` |
+| Contract fingerprint | `sha256:d3980cb90be914361069ca02dfaaf6040d501468004e714abb48929ebafab5b5` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
-| Runtime source commit | `8d20a7278b6c425378b7aa6dcde3d5c4f61f5c9b` |
+| Runtime source commit | `bd20e0eba0454ba76928a44fb3af9642e39df16b` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 287 |
 | Declared actions in that release | 234 |
