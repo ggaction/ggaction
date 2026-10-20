@@ -1,5 +1,5 @@
 {
-  "status": "verified-source-installed-package-and-built-documentation-awaiting-full-cohort-adoption",
+  "status": "verified-source-package-documentation-awaiting-current1281-native-cohort-and-local-adoption",
   "issue": 241,
   "approval": "APPROVAL.json",
   "proposal": "PROPOSAL.md",
@@ -10,7 +10,7 @@
     },
     {
       "path": "docs/_data/provenance.json",
-      "sha256": "5a5fa1fac292d21373b7ba1441b04e21450eae9e457901c057c927c6f2a90fd1"
+      "sha256": "03f200937bbc746c1682308be70e3032e1efb1894b3acdad85b40e742ccf5d77"
     },
     {
       "path": "docs/_sources/action-reference.md",
@@ -42,15 +42,15 @@
     },
     {
       "path": "docs/doc-provenance.json",
-      "sha256": "5a5fa1fac292d21373b7ba1441b04e21450eae9e457901c057c927c6f2a90fd1"
+      "sha256": "03f200937bbc746c1682308be70e3032e1efb1894b3acdad85b40e742ccf5d77"
     },
     {
       "path": "docs/llms-full.txt",
-      "sha256": "d88c77a43d2322f82a31c4d4e0be4355052b420895654984bef32d6b67803348"
+      "sha256": "a88e7d53bd7f0a197c1b006b24525e298f5d8df04cc7154bd5ed832ecdd48fa6"
     },
     {
       "path": "docs/llms-manifest.json",
-      "sha256": "a11bfc5384178200eed524c893c2487e96f9c02bdbec324983a4567f6b5183fb"
+      "sha256": "3439c53c49dfe479434cfe28b83092376f4f624a76ff4825d033b0a796da382d"
     },
     {
       "path": "docs/reference/actions/charts-data.md",
@@ -117,12 +117,12 @@
       "sha256": "9b7b39877766ef144233ac16bd6b343e6353b978f78d9a7dff9b9653a7463044"
     },
     {
-      "path": "types/program.d.ts",
-      "sha256": "f37c5b8d9ef737737af328817c43110e75e9f72aaf7fd7d057f79fcd246993d8"
-    },
-    {
       "path": "test/unit/actions/encodings/stroke-dash-unknown.test.js",
       "sha256": "08b00724f6692dee3eb7deb1516091220408869cfa1f1cd03fee74bf5f709008"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "f37c5b8d9ef737737af328817c43110e75e9f72aaf7fd7d057f79fcd246993d8"
     }
   ],
   "normalSuite": {
@@ -248,6 +248,14 @@
     {
       "path": ".artifacts/stroke-dash-unknown/gg241-doc-browser-tests-v1.log",
       "sha256": "a6c413832c2ac970262d660fe51fe2b6b1ac8d6ab97e797817fdb77cd9193c60"
+    },
+    {
+      "path": ".artifacts/stroke-dash-unknown/gg241-clean-doc-generation-v1.log",
+      "sha256": "2e7002b47d4ceb97de1cd338889bb9f54f16c99831c942995de1db088327e0b7"
+    },
+    {
+      "path": ".artifacts/stroke-dash-unknown/gg241-clean-doc-tests-v1.log",
+      "sha256": "444b16869c2490270869ae9617721bfcd9ea95467b733ab3c31cf58a51ef13b7"
     }
   ],
   "earlierFailuresPreserved": true,
@@ -269,5 +277,13 @@
   "SchoolRequests": 0,
   "npmPublished": false,
   "documentationDeployed": false,
-  "regularPublicReleaseAt": 1413
+  "regularPublicReleaseAt": 1413,
+  "implementationCommit": "c8c77f69c2928814dd49d99dc2a0693bb47b37b8",
+  "cleanSourceDocs": {
+    "pass": 120,
+    "fail": 0,
+    "sourceCommit": "c8c77f69c2928814dd49d99dc2a0693bb47b37b8",
+    "log": ".artifacts/stroke-dash-unknown/gg241-clean-doc-tests-v1.log",
+    "sha256": "444b16869c2490270869ae9617721bfcd9ea95467b733ab3c31cf58a51ef13b7"
+  }
 }

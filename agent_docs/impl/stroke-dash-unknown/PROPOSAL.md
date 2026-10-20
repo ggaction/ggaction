@@ -8,7 +8,7 @@
 - [x] 구현·선·rule·범례·재물질화·편집·복원·불변성 검증
 - [x] 선언·Current 계약·공개 문서·생성 참조 동기화
 - [x] 전체 라이브러리·설치 consumer·문서 build/built/browser 검증
-- [ ] 후보 commit/push 및 clean-source 문서 provenance
+- [x] 후보 commit/push 및 clean-source 문서 provenance
 - [ ] 전체 기존 차트 호환 검증 뒤 로컬 후보 runtime/docs 전환
 - [ ] 1,413개 정기 checkpoint에서 통합·배포·이슈 종료
 
@@ -99,3 +99,7 @@ executable 상한을 유지한다. Search838,297bytes는 최소1000단위839,000
 
 기존1,281families/9,326actual programs의 fresh nativebrowser replay와 로컬 후보 채택은
 아직 미실행이다. 학교 모델 호출/번역 완료 수/공개 dataset1213및 다음 release1413은 변함없다.
+
+구현 commit `c8c77f69c2928814dd49d99dc2a0693bb47b37b8`를 push했고, 그 clean-source
+provenance로 재생성한 문서의120개 검사도 통과했다. 메타데이터 checkpoint는 구현 소스와
+package bytes를 바꾸지 않는다. 다음 private cohort/adoption은 별도 증거로 기록한다.
