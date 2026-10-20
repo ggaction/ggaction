@@ -1,0 +1,46 @@
+{
+  "status": "clean-runtime-source-and-matching-documentation-ready-for-candidate",
+  "checkedAt": "2026-10-20T21:59:54.801982+00:00",
+  "runtimeImplementationCommit": "b8384692fb08ab4b8213977ab243458cc5ea9c0c",
+  "priorExactGradientImplementation": "cc222c1ff1a9ee185500721734633726a788bb9b",
+  "sourceContractId": "sha256:4c1afc2a6523c7e434918c40057e85a9094d5d50402c4d99491cefcf0cb2c383",
+  "normalTests": 4919,
+  "installedConsumerGroups": 62,
+  "cleanSourceDocumentationTests": 120,
+  "builtDocumentationPages": 150,
+  "browser": "Desktopsearch/accessibility/allpages320/390/768verified; only runtime provenance/header metadata changed since that build.",
+  "metadataOnlyFiles": [
+    "docs/_data/provenance.json",
+    "docs/doc-provenance.json",
+    "docs/llms-full.txt",
+    "docs/llms-manifest.json"
+  ],
+  "bindings": [
+    {
+      "path": "docs/_data/provenance.json",
+      "sha256": "4a7d8164a37758c4d6a7fd23440103cef5e0cbad316a73534c6d17498efb42cd"
+    },
+    {
+      "path": "docs/doc-provenance.json",
+      "sha256": "4a7d8164a37758c4d6a7fd23440103cef5e0cbad316a73534c6d17498efb42cd"
+    },
+    {
+      "path": "docs/llms-full.txt",
+      "sha256": "6f9ffd62e3b1e0a1be129f3f0fe0284fa35b494026583ff6e7ff1eb9e1f65a45"
+    },
+    {
+      "path": "docs/llms-manifest.json",
+      "sha256": "9f5ec70047dd59197cffc05e8a9a2c021fdbd4cda563677fa2e39ef8297ae66f"
+    }
+  ],
+  "retainedFailure": "First clean-source docs run118pass/2fail because pre-commit provenance recorded uncommitted runtime. Regenerated provenance/machine/LLM metadata only; runtime/source/contracts/test inputs unchanged.",
+  "cleanSourceDocsLogSha256": "bdb2c7a6614fc67c3ab44416ed49a646f8b60ebbf8aa71bb3e769bece72b01c9",
+  "packageLimitsUnchanged": true,
+  "nextPublicReleaseAt": 1413,
+  "nativeCompatibilityPending": {
+    "families": 1288,
+    "programs": 9382
+  },
+  "activeTranslationRuntimeChanged": false,
+  "SchoolRequests": 0
+}
