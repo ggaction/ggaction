@@ -5,8 +5,8 @@
 - [x] 변경 전49adee7d와 현재4c3cbb6d에서 공개 호출의 TypeError 확인
 - [x] 기존 wrapped editScale owner를 Basic receiver에 호출하면 선/범례를 정확히 갱신함을 확인
 - [x] 기존 사용자 standing approval과 구체 설계 기록
-- [ ] 공유 내부 dispatch 구현 및 Basic/Full 경계·동치·원자성 검사
-- [ ] Current 계약·공개 문서·선언 경계·설치 consumer 동기화
+- [x] 공유 내부 dispatch 구현 및 Basic/Full 경계·동치·원자성 검사
+- [x] Current 계약·공개 문서·선언 경계·설치 consumer 동기화
 - [ ] 전체 검사·패키지·문서·commit/push
 - [ ] 기존1282families/9334actual programs의 순차 native 호환 검증과 로컬 후보 채택
 - [ ] 다음1413정기 공개 통합 시 release/이슈 종료
@@ -54,7 +54,38 @@ Basic이 제공하는 rematerialization 경로로 같은 타입 range 변경을 
 - 공유 scale의 다른 mark/guide/legend 갱신과 invalid domain/range/unknown의 원자적 실패.
 - 기존 quantitative-color 타입 전환의 Full-only 오류와 새 scale ID 대안 유지.
 - Full override dispatch와 기존 Full 타입 전환·범례 lifecycle 회귀 유지.
-- Basic에 공개 editScale/focused editors/editLegend/removeLegend가 생기지 않으며 저장·복원도
-  같은 경계를 보존함을 runtime/type/installed consumer로 검증.
+- Basic에 공개 editScale/focused editors/editLegend/removeLegend가 생기지 않음을 runtime/type/
+  installed consumer로 검증. Basic 저장은 내부 trace를 허용하고, deserializeProgram은 기존
+  계약대로 editable Full을 반환한다. 복원 class/format을 변경하지 않는다.
 - 전체 기존1282families/9334actual modules의 실제 순차 native SVG 호환성 검증 후에만 새
   package/docs candidate를 사용. 원본/source/authoring/cold epoch는 덮어쓰지 않는다.
+
+## 저장 검사에서 확인한 내부 trace 등록
+
+첫 기능 검사13개 중11개는 통과했으나, 새 내부 wrapped editScale이 Basic의 builtin trace
+집합에는 없어 serializeProgram이 거부했다. 공개 method를 추가하지 않고 기존
+`recordBuiltinActions(BasicChartProgram, additional)`의 내부 연산 목록에 기존 op `editScale`
+하나를 기록한다. 저장 format/key/action 이름은 새로 만들지 않는다. Method/prototype/type/
+MCP action-card 경계와 builtin trace 인식은 별개이며, 실제 편집 API는 계속 undefined다.
+다른 미등록 op는 계속 거부하고, 각 기존 Basic 재할당 채널의 저장·복원도 추가 검증한다.
+이는 승인된 같은 wrapped owner 재사용의 저장 완결성을 보장하는 구체 구현이며 standing
+approval 범위 안에서 진행한다. 실패 기록은 보존한다.
+
+저장 검증의 class 기대값도 기존 normative `docs/data-updates.md`와
+`test/unit/persistence/program.test.js`에 맞춰 확인한다. 복원은 원래 Basic도 Full로 반환한다.
+이를 Basic으로 바꾸는 새 schema/옵션은 추가하지 않는다. 최초 테스트의 잘못된 class 기대는
+harness 문제로 수정하고 실제 Basic instance의 공개 method 부재와 저장 roundtrip 동치를
+각각 검사한다.
+
+## 구현 검증 수치
+
+일반4873개/실패0, 새 기능·타입15개, 설치consumer62그룹과 빌드문서150페이지 검사가
+통과했다. 실제604entries/853541packed/4130403unpackedbytes, Full423292/Basic213178/
+SVG7567gzipbytes다. Unpacked4130000, 검색839000, Basic210000의 기존 한도 초과를
+보존하고 각각4131000/840000/214000으로 최소1000bytes 단위만 조정했다. 나머지 한도와
+시각·동작 오차는 그대로다. 학교 API 사용 및 새 차트 추가는 없다. 정확한 로그와 실패 원인은
+`EVIDENCE.json`을 따른다. 전체1282가족/9334단계 native 호환성은 별도 채택 gate로 남긴다.
+
+문서 desktop search·전 페이지320/390/768px containment·키보드·ARIA·자동 접근성
+검사도 통과했다. 이미지 시각 검사는 수행하지 않았다. 다음은 검증된 구현 checkpoint와
+clean-source 문서 provenance, 이후 전체 native 호환성이다.

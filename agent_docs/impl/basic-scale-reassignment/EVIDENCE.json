@@ -1,0 +1,167 @@
+{
+  "status": "implementation-and-responsive-docs-verified-awaiting-clean-source-metadata-and-native-cohort",
+  "issue": 242,
+  "publicationStatus": "unreleased-local-candidate",
+  "regularReleaseAtCompletedFamilies": 1413,
+  "approval": "APPROVAL.json",
+  "normalSuite": {
+    "pass": 4873,
+    "fail": 0,
+    "log": ".artifacts/basic-scale-reassignment/gg242-normal-tests-v1.log"
+  },
+  "focusedFeatureAndTypes": {
+    "pass": 15,
+    "fail": 0
+  },
+  "installedConsumer": {
+    "groups": 62,
+    "sha256": "5f9365a4625ce1f9971bc25c25c40b83fe2cc1f6470944deb97b7056cd4be6f9",
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 536,
+        "minifiedBytes": 1560850,
+        "gzipBytes": 423292
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 321,
+        "minifiedBytes": 756206,
+        "gzipBytes": 213178
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 19,
+        "minifiedBytes": 23548,
+        "gzipBytes": 7567
+      }
+    },
+    "log": ".artifacts/basic-scale-reassignment/gg242-installed-consumer-v1.log"
+  },
+  "packedArtifact": {
+    "entries": 604,
+    "packedBytes": 853541,
+    "unpackedBytes": 4130403
+  },
+  "builtDocumentation": {
+    "pages": 150,
+    "status": "pass"
+  },
+  "searchIndexBytes": 839201,
+  "boundary": {
+    "newPublicAction": false,
+    "publicBasicEditorsAdded": false,
+    "newPersistedKeys": false,
+    "newRenderer": false,
+    "deserializeRetainsExistingFullRestoration": true
+  },
+  "failuresPreserved": {
+    "initialTestImport": "harness import corrected to extension entry",
+    "internalTraceRegistration": "Basic serialization rejected the previously unregistered wrapped editScale; existing op added only to known internal trace inventory",
+    "restoredClassExpectation": "test corrected to existing editable Full restoration contract",
+    "initialPackageCeiling": {
+      "actual": 4130403,
+      "previous": 4130000,
+      "current": 4131000
+    },
+    "searchCeiling": {
+      "actual": 839201,
+      "previous": 839000,
+      "current": 840000
+    },
+    "basicBundleCeiling": {
+      "actual": 213178,
+      "previous": 210000,
+      "current": 214000
+    },
+    "systemRubyBuild": "2.6 missing locked bundler; repeated with installed Ruby3.3 locked bundle"
+  },
+  "logs": [
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-focused-tests-v1.log",
+      "sha256": "616b60a3a3a0532d8f673ba8c8d0d96e7992f5d0fc0e00a6f5a54c6fc5d28462"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-focused-tests-v2.log",
+      "sha256": "5075fe812f482a65cbc5527337d99ae6fe236b1e7d2498f83a24cc55e26b68aa"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-focused-tests-v3.log",
+      "sha256": "ab4dea609f209f51c91a89d2fae8390e7c8e87d567b00b7a41b56b5612096d1f"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-focused-tests-v4.log",
+      "sha256": "1b412f6e666c6c9aae62f3b5ce7e4a564587a2f2c958a2a970e0fb2956bb305c"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-feature-type-tests-v1.log",
+      "sha256": "48189ce57ee914348d1e742abbc8cb8b54db9213fbb122c9b59a913539c7f862"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-doc-generation-v1.log",
+      "sha256": "2e7002b47d4ceb97de1cd338889bb9f54f16c99831c942995de1db088327e0b7"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-doc-generation-v2.log",
+      "sha256": "2e7002b47d4ceb97de1cd338889bb9f54f16c99831c942995de1db088327e0b7"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-normal-tests-v1.log",
+      "sha256": "5fb0e5e0bbece520bcc3c64997cc3527a25806297625960bdc138a851bcf818d"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-installed-consumer-v1.log",
+      "sha256": "03f5ec4801e577f15282a1a0f8f6f7fc8dcdd9ec6ed0487c4cbdc220fa189032"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-package-check-v1.log",
+      "sha256": "872f345a624564dafe91ca4c48a513c86f170b1584b96773feab58e1352b56e6"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-package-check-v2.log",
+      "sha256": "3fac253999660dcb99135eae4615afebf3bd311889587eebfded45909c13f45a"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-package-bundle-v1.log",
+      "sha256": "70a957f97a6ed682cd2a1969da6f66bb1255ecd45f3b829b3b27c0c4a511b3dd"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-doc-build-v1.log",
+      "sha256": "b9f5efb70e484264db0763294ba22545f2bd83a19f4b299c622f472b323f4dea"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-doc-build-v2.log",
+      "sha256": "2ad4ad8e316c59e99c9f89a5eb16abf2f3b3e659285552545d1fae9e975b9529"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-built-docs-check-v1.log",
+      "sha256": "8b67b737002bb9a40f52b91eba9a2aba91b043a875723aacaf5ca645421b217d"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-fixed-repro-v1.json",
+      "sha256": "58f9e9a917ce0295e1b3e7ea7664c049b655d6d590feeea3973b68bce2dc0380"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-doc-browser-v1.log",
+      "sha256": "a6c413832c2ac970262d660fe51fe2b6b1ac8d6ab97e797817fdb77cd9193c60"
+    }
+  ],
+  "SchoolRequests": 0,
+  "newSuccessfulTranslations": 0,
+  "fullCurrent1282Compatibility": "pending-before-local-adoption",
+  "chartImagesInspected": false,
+  "responsiveDocumentation": {
+    "status": "pass",
+    "widths": [
+      320,
+      390,
+      768
+    ],
+    "log": ".artifacts/basic-scale-reassignment/gg242-doc-browser-v1.log",
+    "sha256": "a6c413832c2ac970262d660fe51fe2b6b1ac8d6ab97e797817fdb77cd9193c60",
+    "pixelInspection": false
+  }
+}

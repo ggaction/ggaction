@@ -6,7 +6,7 @@ import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 424_000, // Aligned expansion measured423024gzip bytes; minimal1000-byte rounding.
-  "ggaction/basic": 210_000, // Aligned expansion measured209555gzip bytes; minimal1000-byte rounding.
+  "ggaction/basic": 214_000, // Shared scale reassignment measured213178gzip bytes; minimal1000-byte rounding.
   "ggaction/svg": 25_000
 });
 

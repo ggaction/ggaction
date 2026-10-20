@@ -52,6 +52,15 @@ creation, editing returns to the action that owns the decision; for example,
 use `encodeY`, `editScale`, `editBarMark`, or `editLegend` rather than a generic
 facade editor.
 
+### The Basic package entry
+
+`ggaction/basic` keeps its smaller creation API. Its available field encodings
+can be called again to replace settings on an existing scale of the same type;
+all dependent marks and guides are validated and updated together. It does not
+expose the Full `editScale`, focused scale editors, or legend editors. Use Full
+for scale-type transitions, or create a new scale ID in Basic. See
+[Encoding reassignment](./encodings.md#reassign-an-existing-encoding).
+
 ## Shared behavior
 
 - `data` is optional when there is a current dataset or exactly one dataset.

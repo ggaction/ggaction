@@ -1,3 +1,4 @@
+import { editScaleForEncoding } from "../scales/edit.js";
 import { cartesianAxisOwners } from "../../selectors/axes.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -71,7 +72,7 @@ export function applyEncodingScale(
     return program.createScale(definition);
   }
   if (existing.type !== definition.type) {
-    if (reassignment && allowTypeChange) return program.editScale({ ...definition });
+    if (reassignment && allowTypeChange) return editScaleForEncoding(program, { ...definition });
     throw new Error(
       `Scale "${definition.id}" cannot change type from "${existing.type}" to "${definition.type}".`
     );
@@ -89,7 +90,7 @@ export function applyEncodingScale(
 
   return Object.keys(patch).length === 1 || !reassignment
     ? program.createScale(definition)
-    : program.editScale(patch);
+    : editScaleForEncoding(program, patch);
 }
 
 export function rebindPositionGuides(

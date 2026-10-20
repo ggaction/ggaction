@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:8484896de42f6c8fd217ea14489ec8a0bbe9a9cb575ecdf4146eec2323197a78. Status: development. Runtime source: c8c77f69c2928814dd49d99dc2a0693bb47b37b8. Release baseline: v0.0.13.
+Contract: sha256:ceb24bd1fe349aa7b73aada2e1bed3e5fc119d7128f21d3e877f2c70510f9258. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/c8c77f69c2928814dd49d99dc2a0693bb47b37b8/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/c8c77f69c2928814dd49d99dc2a0693bb47b37b8/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -4185,6 +4185,15 @@ creation, editing returns to the action that owns the decision; for example,
 use `encodeY`, `editScale`, `editBarMark`, or `editLegend` rather than a generic
 facade editor.
 
+### The Basic package entry
+
+`ggaction/basic` keeps its smaller creation API. Its available field encodings
+can be called again to replace settings on an existing scale of the same type;
+all dependent marks and guides are validated and updated together. It does not
+expose the Full `editScale`, focused scale editors, or legend editors. Use Full
+for scale-type transitions, or create a new scale ID in Basic. See
+[Encoding reassignment](./api/encodings/#reassign-an-existing-encoding).
+
 ## Shared behavior
 
 - `data` is optional when there is a current dataset or exactly one dataset.
@@ -7203,6 +7212,18 @@ overrides, so resetting the global radius alone does not clear them.
 Encoding actions connect data fields or constants to chart channels. Ordinary
 authors choose the relationship; ggaction infers a unique target, coordinate,
 scale ID, and field type when the stored program makes that choice safe.
+
+## Reassign an existing encoding
+
+Calling an available field encoding again can replace settings on its bound
+scale. In `ggaction/basic`, same-type reassignment uses the same validation and
+mark, axis, grid, and legend updates as Full. Every shared consumer must remain
+valid; failure preserves the earlier program and caller data.
+
+Basic still has no public `editScale`, focused scale editors, or legend editors.
+Scale-type transitions require Full, or a new scale ID in Basic. Saving a Basic
+program preserves its internal actions; restoring it returns the existing
+editable Full program. See [Saved programs](./data-updates/#save-and-restore-snapshots).
 
 ## Choose a family
 
@@ -21429,6 +21450,11 @@ automatic quantile domains. Basic does not expose Area authoring.
 Row-owned rects accept categorical or continuous color. Arc sectors accept
 categorical color with optional overlay layout.
 [Series encodings](./api/series-encodings/)
+
+Existing field encodings in `ggaction/basic` can reassign settings on a bound
+scale of the same type, updating every consumer atomically. Generic/focused
+scale editors and legend editors remain Full-only; scale-type transitions use
+Full or a new scale ID in Basic. [Encoding reassignment](./api/encodings/#reassign-an-existing-encoding)
 
 ## `encodeStrokeDash`
 
@@ -38592,12 +38618,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c8c77f69c2928814dd49d99dc2a0693bb47b37b8/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c8c77f69c2928814dd49d99dc2a0693bb47b37b8/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -40976,9 +41002,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:8484896de42f6c8fd217ea14489ec8a0bbe9a9cb575ecdf4146eec2323197a78` |
+| Contract fingerprint | `sha256:ceb24bd1fe349aa7b73aada2e1bed3e5fc119d7128f21d3e877f2c70510f9258` |
 | Example and dataset source | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
-| Runtime source commit | `c8c77f69c2928814dd49d99dc2a0693bb47b37b8` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 286 |
 | Declared actions in that release | 234 |

@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:8484896de42f6c8fd217ea14489ec8a0bbe9a9cb575ecdf4146eec2323197a78",
-    "sourceCommit": "c8c77f69c2928814dd49d99dc2a0693bb47b37b8",
+    "contractId": "sha256:ceb24bd1fe349aa7b73aada2e1bed3e5fc119d7128f21d3e877f2c70510f9258",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "35119d868740b171d6eab0abb2f2233e44246b08ad609b942dca7227c6ee08e8"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -717,6 +717,7 @@
       "headings": [
         "basic-charts",
         "choose-a-facade",
+        "the-basic-package-entry",
         "shared-behavior",
         "createscatterplot",
         "createlineplot",
@@ -727,8 +728,8 @@
         "advanced-authoring",
         "createtextplot"
       ],
-      "bytes": 18251,
-      "sha256": "fb2407e3d3c10debcc443145145db15d271f688a349fd48291388318f3942541"
+      "bytes": 18738,
+      "sha256": "a28f14a7d42997d64f8520a83e52e4ae3ee4a2a12eb63350dbbd971a8c76547c"
     },
     {
       "order": 47,
@@ -1017,6 +1018,7 @@
       "source": "api/encodings.md",
       "headings": [
         "encodings",
+        "reassign-an-existing-encoding",
         "choose-a-family",
         "supported-markchannel-matrix",
         "position-channels",
@@ -1035,8 +1037,8 @@
         "calendar-interval-bar-widths",
         "related"
       ],
-      "bytes": 16610,
-      "sha256": "3cc0051754daf9fb6df7e151c653723a6a872cdbaa2cef05a7a9682891633504"
+      "bytes": 17268,
+      "sha256": "f3d0128f5f6f5b17b68740f4c53a8d8cc308383043546a87aeefb1f2de9f3666"
     },
     {
       "order": 64,
@@ -2146,8 +2148,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 61889,
-      "sha256": "15569bd7095af0c4ad65c1736b3f2670c58510eeda195326c3482827dcffdd58"
+      "bytes": 62227,
+      "sha256": "878025ac84928ed1643cd746292e31ac0bce7f30a501aa88146e6decafb875c1"
     },
     {
       "order": 121,
@@ -3056,8 +3058,8 @@
         "clip-a-named-graphic-owner",
         "scale-materialization"
       ],
-      "bytes": 19022,
-      "sha256": "73ba1779c6857f25c0cff028776cd458c089ae569ee8ad97fb670a9e87307caf"
+      "bytes": 18950,
+      "sha256": "e60c7142e69ab6de1ac21e61dca900d15beae1e77c641beb17273081e6dc5d8c"
     },
     {
       "order": 129,
@@ -3382,8 +3384,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "e98bf0370de22436132a0737ec2d8263821d402dd386bc9f63d61bc09a878815"
+      "bytes": 3000,
+      "sha256": "d60caa5ef486754c1bd7b31d4b74b93f7f09b8ef2dbe0cb0155179e3810ba216"
     },
     {
       "order": 150,

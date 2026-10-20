@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 839_000; // Categorical dash fallback documentation measured838297bytes; minimal1000-byte rounding.
+export const SEARCH_INDEX_MAX_BYTES = 840_000; // Basic scale reassignment documentation measured839201bytes; minimal1000-byte rounding.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

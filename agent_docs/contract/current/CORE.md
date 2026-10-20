@@ -1791,6 +1791,10 @@ type ScaleType =
 ## `editScale`
 
 - Implemented: immutable edits for every current `ScaleType`.
+- Availability: 공개 editScale은 Full 전용이다. Basic에 이미 제공되는 encoding의 같은 타입 bound-scale
+  재할당은 같은 wrapped owner를 내부에서 사용한다. Basic 공개 method/type/action-card 경계와
+  기존 타입 전환 제한은 유지하며 모든 shared consumer를 검증한다. 내부 builtin trace op 인식은
+  공개 method 등록과 별개다. Evidence: `test/unit/actions/encodings/basic-scale-reassignment.test.js`.
 - Signature: `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, whitePoint?, gamma?, midpoint?, radialMapping?, unknown? })`.
 - `id`는 existing scale을 선택한다. 생략하면 current scale, 그렇지 않으면 유일한 scale을 사용하며
   안전하게 하나를 정할 수 없으면 explicit ID를 요구한다.
@@ -1816,7 +1820,10 @@ type ScaleType =
 - `unknown`은 row-owned Point 및 explicit nonempty ordinal-domain의 categorical Cartesian Line color를 지원한다.
   Point의 기존 missing/invalid fallback은 유지한다. Line은 absent/null과 정상 out-of-domain scalar만 fallback으로 mapping하며
   malformed category는 거부하고 raw rows·vertices·series identity·domain members를 보존한다.
-  Aggregate/bin/parallel/polar Line과 다른 compound path, bar, area, rule, xOffset, strokeDash grains는 계속 거부한다.
+  이 missing-color 정책은 Aggregate/bin/parallel/polar Line과 다른 compound path, bar, area, rule,
+  xOffset에 확장하지 않는다. 별도의 Cartesian Line/Rule strokeDash는 유효한 domain 밖 범주의
+  named/direct dash fallback을 지원하며 missing/null/malformed 값은 계속 거부한다. 정확한
+  범위·정규화·domain/legend 보존은 `ENCODINGS.md`의 encodeStrokeDash 계약을 따른다.
   모든 shared consumer를 검증하며 explicit domain 또는 fallback 제거가 현재 rows와 호환되지 않으면 원자적으로 거부한다.
   Evidence: `test/unit/actions/encodings/categorical-line-unknown.test.js`.
 - Complete patch와 shared-consumer channel compatibility를 먼저 검증한 뒤 semantic scale을 수정하고,

@@ -45,6 +45,16 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   field type, channel, mark grain과 existing consumers에 맞는 subset을 검증한다.
 - Proposed: —
 
+### Basic encoding scale reassignment
+
+Basic에 이미 제공되는 field encoding을 다시 호출하면 같은 타입의 bound scale 설정을 갱신한다.
+Full과 같은 shared-consumer preflight와 wrapped scale/mark/guide 재물질화를 사용하며 invalid
+입력은 원래 program/caller data/trace를 보존한다. Incomplete 유효한 mark 선언도 유지한다.
+공개 editScale/focused scale editor/editLegend/removeLegend를 Basic에 등록하거나 선언하지 않는다.
+기존 scale 타입 전환은 Full 또는 Basic의 새 scale ID 경계를 유지한다. Basic 내부 trace의
+기존 editScale op는 builtin으로 저장할 수 있고 deserializeProgram은 기존 계약대로 Full을 반환한다.
+Evidence: `test/unit/actions/encodings/basic-scale-reassignment.test.js`, `test/contracts/basic-scale-reassignment-types.test.js`.
+
 ## `removeEncoding`
 
 - Signature: `removeEncoding({ target?, channel })`.

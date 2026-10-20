@@ -35,6 +35,17 @@ const EDITABLE = Object.freeze(
 );
 const REQUESTED_CHANGES = Object.freeze(OPTIONS.filter(option => option !== "id"));
 
+// Encoding assignment reuses the wrapped owner without exposing Full editors in Basic.
+export function editScaleForEncoding(program, args) {
+  const available = program.editScale;
+  if (typeof available === "function") return available.call(program, args);
+  const existing = requireSemanticScale(program, args.id);
+  if (args.type !== undefined && args.type !== existing.type) {
+    throw new Error("Color scale type transitions require the Full ChartProgram; use a new scale id in Basic.");
+  }
+  return editScale.call(program, args);
+}
+
 function resolveScaleId(program, requested) {
   if (requested !== undefined) {
     const id = validateUserId(requested, "Scale id");

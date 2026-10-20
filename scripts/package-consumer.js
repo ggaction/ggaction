@@ -1636,15 +1636,16 @@ async function testNodeConsumer(directory) {
       assert.equal(orderedDash.semanticSpec.layers[0].encoding.strokeDash.fieldType, "ordinal");
       assert.deepEqual(orderedDash.resolvedScales.strokeDash.domain, [1, 2]);
       assert.deepEqual(orderedDash.graphicSpec.objects.linePlot.items.map(item => item.properties.strokeDash), [[4, 2], [1, 0]]);
-      const fallbackDash = factory().createCanvas({ width: 260, height: 180, margin: 24 })
-        .createData({ values: [
-          { level: 2, x: 0, y: 20 }, { level: 2, x: 1, y: 20 },
-          { level: 1, x: 0, y: 10 }, { level: 1, x: 1, y: 10 }
-        ] }).createLinePlot({ x: "x", y: "y", guides: false })
-        .encodeStrokeDash({ field: "level", fieldType: "ordinal",
-          scale: { domain: [1], range: [[1, 0], [4, 2]], unknown: [] } });
+      const fallbackDash = orderedDash.encodeStrokeDash({ field: "level", fieldType: "ordinal",
+        scale: { domain: [1], range: [[1, 0], [4, 2]], unknown: [] } });
       assert.deepEqual(fallbackDash.graphicSpec.objects.linePlot.items.map(item => item.properties.strokeDash), [[], [1, 0]]);
       assert.deepEqual(fallbackDash.resolvedScales.strokeDash.domain, [1]);
+      assert.deepEqual(deserializeProgram(serializeProgram(fallbackDash)).graphicSpec, fallbackDash.graphicSpec);
+      if (factory === basicChart) {
+        assert.equal(typeof fallbackDash.editScale, "undefined");
+        assert.equal(typeof fallbackDash.editStrokeDashScale, "undefined");
+        assert.equal(typeof fallbackDash.editLegend, "undefined");
+      }
       if (factory === chart) {
         assert.throws(() => fallbackDash.editStrokeDashScale({ unknown: undefined }), /outside/);
         assert.deepEqual(fallbackDash.editStrokeDashScale({ unknown: "dotted" }).graphicSpec.objects.linePlot.items.map(item => item.properties.strokeDash), [[1, 3], [1, 0]]);

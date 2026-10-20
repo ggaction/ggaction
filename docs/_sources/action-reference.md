@@ -2058,6 +2058,11 @@ Row-owned rects accept categorical or continuous color. Arc sectors accept
 categorical color with optional overlay layout.
 [Series encodings](../api/series-encodings.md)
 
+Existing field encodings in `ggaction/basic` can reassign settings on a bound
+scale of the same type, updating every consumer atomically. Generic/focused
+scale editors and legend editors remain Full-only; scale-type transitions use
+Full or a new scale ID in Basic. [Encoding reassignment](../api/encodings.md#reassign-an-existing-encoding)
+
 ### `encodeStrokeDash`
 
 ```javascript

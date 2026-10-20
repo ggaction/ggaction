@@ -1,3 +1,4 @@
+import { editScaleForEncoding } from "./edit.js";
 import { closedAction } from "../../core/action.js";
 
 import { findSemanticScale } from "../../selectors/scales.js";
@@ -24,10 +25,7 @@ export const setQuantitativeColorScale = /* @__PURE__ */ closedAction(
     }
     const existing = findSemanticScale(this, args.id);
     if (existing !== undefined && existing.type !== args.type) {
-      if (typeof this.editScale !== "function") {
-        throw new Error("Color scale type transitions require the Full ChartProgram; use a new scale id in Basic.");
-      }
-      return this.editScale(args);
+      return editScaleForEncoding(this, args);
     }
     let next = this;
     for (const property of ["whitePoint", "gamma"]) {

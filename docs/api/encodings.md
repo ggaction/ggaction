@@ -11,6 +11,18 @@ Encoding actions connect data fields or constants to chart channels. Ordinary
 authors choose the relationship; ggaction infers a unique target, coordinate,
 scale ID, and field type when the stored program makes that choice safe.
 
+## Reassign an existing encoding
+
+Calling an available field encoding again can replace settings on its bound
+scale. In `ggaction/basic`, same-type reassignment uses the same validation and
+mark, axis, grid, and legend updates as Full. Every shared consumer must remain
+valid; failure preserves the earlier program and caller data.
+
+Basic still has no public `editScale`, focused scale editors, or legend editors.
+Scale-type transitions require Full, or a new scale ID in Basic. Saving a Basic
+program preserves its internal actions; restoring it returns the existing
+editable Full program. See [Saved programs](../data-updates.md#save-and-restore-snapshots).
+
 ## Choose a family
 
 <div class="docs-entry-grid docs-entry-grid--two">

@@ -10,9 +10,11 @@
   "newRendererOrVisualTarget": false,
   "publicBasicEditorAdded": false,
   "reapprovalRequested": false,
-  "libraryImplementationStarted": false,
+  "libraryImplementationStarted": true,
   "currentSuccessfulFamilies": 1282,
   "currentPublicFamilies": 1213,
   "regularPublicReleaseAtCompletedFamilies": 1413,
-  "publicationAtThisCheckpoint": false
+  "publicationAtThisCheckpoint": false,
+  "basicInternalTraceOwnerAdded": "editScale",
+  "persistedFormatOrKeyAdded": false
 }

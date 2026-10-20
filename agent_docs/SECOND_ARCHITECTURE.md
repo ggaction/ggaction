@@ -191,6 +191,11 @@ import { chart, render } from "ggaction/basic";
 - production Vite consumer의 minimal scatter build는 아래 browser bundle regression ceiling으로 검증한다.
 - `render()`는 default entry와 동일한 `graphicSpec`-only Canvas renderer다.
 
+Basic의 기존 encoding 재할당은 같은 타입의 scale에 한해 Full과 같은 wrapped editScale owner를
+내부 dispatch로 재사용한다. Public editor method를 등록하지 않고, 이미 존재하는 editScale op만
+Basic의 builtin trace 목록에 기록해 저장을 완결한다. 타입 전환 경계·저장 format·기존 Full 복원은
+바뀌지 않는다. 정확한 조건과 값은 Current ENCODINGS/CORE 계약이 소유한다.
+
 ### `ggaction/extension`
 
 action author를 위한 public extension boundary다.
@@ -343,6 +348,12 @@ its independent ceiling becomes 816,000. These are growth adjustments, not previ
 통과로 보고하지 않는다. 기존 aligned expansion 후보에서 측정한 Full423,024/Basic209,555
 bytes에 따라 이미 설정된424,000/210,000bytes executable 상한과 아래 표·README를 동기화한다.
 
+Basic의 기존 encoding 재할당은 Full 공개 editor 등록 없이 같은 wrapped scale owner를
+재사용한다. 실제 설치 consumer는 Full423292/Basic213178gzipbytes로 Basic만 기존210000을
+넘어 최소1000단위214000으로 갱신한다. 패키지unpacked4130403bytes와 검색839201bytes도
+각각 기존4130000/839000을 넘어4131000/840000으로만 조정한다. Full424000/SVG25000,
+604entries/packed854000과 동작·시각 오차 한도는 유지한다. 이전 한도 통과로 보고하지 않는다.
+
 ### Browser bundle regression ceilings
 
 Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 않아야 한다.
@@ -350,7 +361,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Gzip ceiling |
 | --- | ---: |
 | `ggaction` | 424,000 bytes |
-| `ggaction/basic` | 210,000 bytes |
+| `ggaction/basic` | 214,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 0.0.20의 Area 정량 색상과 seeded mean CI 추가 후 Node20.20.2 installed consumer는
