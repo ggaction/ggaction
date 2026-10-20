@@ -78,19 +78,19 @@
   "generatedDocumentation": [
     {
       "path": "docs/llms-full.txt",
-      "sha256": "e1838a132a8da2941071a577f84732f476e67dd6613f8e9cfc73fca7c25c3977"
+      "sha256": "b0238062e51160b0b12c19b69213f58ff2f918e9e7ed1c2721c372f5248d52f1"
     },
     {
       "path": "docs/llms-manifest.json",
-      "sha256": "9f826dab8840ef9bd5a5411195d88105e4a51078d9c18b4e5ffeac7735c8cb7d"
+      "sha256": "952af281e6120719fb458ca77e0da29b2c1b1249b2dd0fc0cae424bc34e14742"
     },
     {
       "path": "docs/_data/provenance.json",
-      "sha256": "6bdc77a3463ea4e982ac6bc37c0443955e225faf06b4db74bdeeca8af7ca2a6b"
+      "sha256": "3398f24e2a51e708dcc2671662ba8c639da2d0d9120b5dbb7300e277384cb586"
     },
     {
       "path": "docs/doc-provenance.json",
-      "sha256": "6bdc77a3463ea4e982ac6bc37c0443955e225faf06b4db74bdeeca8af7ca2a6b"
+      "sha256": "3398f24e2a51e708dcc2671662ba8c639da2d0d9120b5dbb7300e277384cb586"
     }
   ],
   "declarationsChanged": false,
@@ -103,5 +103,17 @@
   "docsDeployment": false,
   "issueClosed": false,
   "cohortCompatibility": "Deferred integration obligation: rerun current complete chart cohort before adopting this source/package into authoring or the next authorized public batch release. This source/consumer verification is not a current-cohort compatibility claim.",
-  "chartPixelsInspected": false
+  "chartPixelsInspected": false,
+  "implementationCommit": "c1484d37",
+  "cleanSourceMetadataFollowup": {
+    "reason": "After the source checkpoint, regenerate canonical provenance from the clean source commit. Runtime source/types/package content remain unchanged; docs-only followup preserves that exact source identity.",
+    "sourceCommit": "c1484d37",
+    "docsChecks": 120,
+    "pass": 120,
+    "fail": 0,
+    "log": {
+      "path": ".artifacts/fixed-line-dash-legend-docs-tests-clean.log",
+      "sha256": "86c25992d52b9a041bed4b6fff497fb59382396b479ece3dc629dc12fa37033a"
+    }
+  }
 }
