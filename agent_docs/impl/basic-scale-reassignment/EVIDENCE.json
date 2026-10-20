@@ -1,5 +1,5 @@
 {
-  "status": "implementation-and-responsive-docs-verified-awaiting-clean-source-metadata-and-native-cohort",
+  "status": "verified-pushed-local-candidate-awaiting-current1282-native-cohort-and-adoption",
   "issue": 242,
   "publicationStatus": "unreleased-local-candidate",
   "regularReleaseAtCompletedFamilies": 1413,
@@ -147,6 +147,14 @@
     {
       "path": ".artifacts/basic-scale-reassignment/gg242-doc-browser-v1.log",
       "sha256": "a6c413832c2ac970262d660fe51fe2b6b1ac8d6ab97e797817fdb77cd9193c60"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-clean-doc-generation-v1.log",
+      "sha256": "2e7002b47d4ceb97de1cd338889bb9f54f16c99831c942995de1db088327e0b7"
+    },
+    {
+      "path": ".artifacts/basic-scale-reassignment/gg242-clean-doc-tests-v1.log",
+      "sha256": "04dd49e6ca9fbb35153f9b66fd696d454035488b2a64b58e3ce32d6c9b7f245a"
     }
   ],
   "SchoolRequests": 0,
@@ -163,5 +171,15 @@
     "log": ".artifacts/basic-scale-reassignment/gg242-doc-browser-v1.log",
     "sha256": "a6c413832c2ac970262d660fe51fe2b6b1ac8d6ab97e797817fdb77cd9193c60",
     "pixelInspection": false
-  }
+  },
+  "sourceImplementationCommit": "8690369cf60ad24d871029b7d165444ad24abe0f",
+  "cleanSourceDocs": {
+    "pass": 120,
+    "fail": 0,
+    "sourceCommit": "8690369cf60ad24d871029b7d165444ad24abe0f",
+    "log": ".artifacts/basic-scale-reassignment/gg242-clean-doc-tests-v1.log",
+    "sha256": "04dd49e6ca9fbb35153f9b66fd696d454035488b2a64b58e3ce32d6c9b7f245a"
+  },
+  "cleanSourceProvenance": "docs/doc-provenance.json",
+  "publicReleaseCreated": false
 }

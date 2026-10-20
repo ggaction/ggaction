@@ -7,7 +7,7 @@
 - [x] 기존 사용자 standing approval과 구체 설계 기록
 - [x] 공유 내부 dispatch 구현 및 Basic/Full 경계·동치·원자성 검사
 - [x] Current 계약·공개 문서·선언 경계·설치 consumer 동기화
-- [ ] 전체 검사·패키지·문서·commit/push
+- [x] 전체 검사·패키지·문서·commit/push
 - [ ] 기존1282families/9334actual programs의 순차 native 호환 검증과 로컬 후보 채택
 - [ ] 다음1413정기 공개 통합 시 release/이슈 종료
 
@@ -89,3 +89,8 @@ SVG7567gzipbytes다. Unpacked4130000, 검색839000, Basic210000의 기존 한도
 문서 desktop search·전 페이지320/390/768px containment·키보드·ARIA·자동 접근성
 검사도 통과했다. 이미지 시각 검사는 수행하지 않았다. 다음은 검증된 구현 checkpoint와
 clean-source 문서 provenance, 이후 전체 native 호환성이다.
+
+구현8690369cf60ad24d871029b7d165444ad24abe0f를 push한 뒤 clean-source provenance로
+문서를 재생성했고120개 문서 검사도 통과했다. 이 후속 checkpoint는 메타데이터만 바꾸며
+실제 설치·기능 검사에서 검증한 패키지 내용은 그대로다. 다음 gate는1282/9334의 순차
+native SVG 호환성과 로컬 채택이며,1413 전 공개 릴리즈·main 통합·이슈 종료는 하지 않는다.
