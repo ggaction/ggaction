@@ -116,6 +116,22 @@ async function testNodeConsumer(directory) {
       assert.ok((await renderToPDFBuffer(missingColor)).buffer.length>100);
     }
 
+    for (const factory of [chart,basicChart]) {
+      const dashRows=[{x:0,y:1,g:"A"},{x:1,y:1,g:"A"},{x:0,y:2,g:"B"},{x:1,y:2,g:"B"}];
+      const fixedDash=factory().createCanvas({width:500,height:300,margin:60})
+        .createData({values:dashRows}).createLinePlot({x:"x",y:"y",guides:false})
+        .encodeGroup({field:"g"}).encodeStrokeDash({field:"g"})
+        .editLineMark({stroke:"orange",opacity:0.6})
+        .createLegend({symbol:{layers:[{type:"line",length:10,lineWidth:1,opacity:1}]}});
+      const samples=program=>program.graphicSpec.objects.seriesLegendSymbols.items.map(item=>item.properties);
+      assert.deepEqual(samples(fixedDash).map(item=>item.stroke),["orange","orange"]);
+      assert.ok(samples(fixedDash).every(item=>item.opacity===1));
+      const changed=fixedDash.editLineMark({stroke:"purple"});
+      assert.deepEqual(samples(changed).map(item=>item.stroke),["purple","purple"]);
+      assert.deepEqual(samples(fixedDash).map(item=>item.stroke),["orange","orange"]);
+      assert.deepEqual(deserializeProgram(serializeProgram(changed)).graphicSpec,changed.graphicSpec);
+    }
+
     const underlayPlot=createPlotUnderlayProgram();
     assert.deepEqual(underlayPlot.graphicSpec.objects["plot-main"].children,
       ["horizontalGridLines","plotBorder","xAxisLine","barPlot"]);

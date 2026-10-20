@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:67cf19dc16d005ef07abb0f74962050e16d2e21ef20dc361932235742cbd0f84. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:fc85f09897e981ce7238c8a90de044cc91218811f7fcbd33529d3869dc1749ed. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -13066,6 +13066,11 @@ color-stacked histogram, grouped ordinal-bar, grouped area, independent stroke, 
 quantitative point-size, continuous-color gradient, and field-opacity legends.
 It also infers interval swatches for quantize, quantile, and threshold point
 color scales.
+
+For a line legend that explains a categorical dash pattern, samples inherit the
+line’s fixed stroke color. Mapped color or stroke scales and explicit legend-block
+symbol overrides take precedence. Editing the line’s fixed color updates its
+existing samples; the sample recipe’s opacity remains independent of mark opacity.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -40781,7 +40786,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:67cf19dc16d005ef07abb0f74962050e16d2e21ef20dc361932235742cbd0f84` |
+| Contract fingerprint | `sha256:fc85f09897e981ce7238c8a90de044cc91218811f7fcbd33529d3869dc1749ed` |
 | Example and dataset source | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

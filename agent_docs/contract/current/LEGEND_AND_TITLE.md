@@ -138,6 +138,7 @@ type TitleWrap = "word" | "character";
 - Point의 자동 typed recipe는 selected shape를 설명하며, selected color가 있을 때만 matching line을 합친다.
   Config의 inferredSymbol이 omission/auto와 caller recipe를 구분한다. Edit symbol auto, encoding 제거·재연결, matching companion mark 추가·제거와 Canvas/scale/data dependency replay는
   자동 recipe를 재추론하고 concrete symbol type·순서를 reconcile한다. Explicit recipe는 보존한다. Recipe의 layer 순서는 생성과 편집 모두 실제 drawing order다.
+- Line의 categorical strokeDash 샘플은 mapped color/stroke가 없을 때 유일한 target markConfigs.stroke를 상속한다. createLineMark/editLineMark 및 encodeStroke({value})는 같은 저장소를 사용한다. 고정 stroke가 없으면 기존 기본색을 유지하며, 명시 block symbol stroke와 mapped scale 색상이 우선한다. 샘플 opacity/선 길이/폭/dash는 기존 recipe와 channel 규칙을 유지하고 mark opacity를 새로 곱하지 않는다. 생성·후속 line 편집·Canvas/data/scale replay가 같은 순수 appearance 계산을 사용한다. Evidence: `test/unit/actions/guides/fixed-line-dash-legend-paint.test.js`.
 - `labels`: color/fontSize/fontFamily/fontWeight style object with offset. `titleStyle` shares those typography fields and additionally accepts the top-title align choice specified below. Continuous
   gradient/opacity/size/stroke-width/interval labels는 `format?: ValueFormat`도 받으며 quantitative에는 numeric,
   temporal에는 UTC token만 허용한다. Categorical identity label은 `"auto"`만 허용한다. 모든 family의

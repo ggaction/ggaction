@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Inherit fixed line colors in categorical dash legends while preserving mapped colors, explicit sample overrides and independent sample opacity.
+
 - Place inferred external side legends beyond occupied same-edge axes, preserving family gaps, plot-top alignment, explicit offsets and immutable guide replay.
 
 - Fix categorical symbol recipe edits from rounded bar samples to plain swatches, including restoration to automatic samples and facet/data replay.

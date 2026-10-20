@@ -15,6 +15,11 @@ quantitative point-size, continuous-color gradient, and field-opacity legends.
 It also infers interval swatches for quantize, quantile, and threshold point
 color scales.
 
+For a line legend that explains a categorical dash pattern, samples inherit the
+line’s fixed stroke color. Mapped color or stroke scales and explicit legend-block
+symbol overrides take precedence. Editing the line’s fixed color updates its
+existing samples; the sample recipe’s opacity remains independent of mark opacity.
+
 <!-- snippet-context:start -->
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
