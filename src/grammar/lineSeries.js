@@ -17,7 +17,8 @@ import {
   resolveHistogramBins
 } from "./histogram.js";
 import {
-  validatePathSeriesAppearance
+  validatePathSeriesAppearance,
+  pathSeriesKey as groupKey
 } from "./pathSeries.js";
 
 function requireLineEncoding(layer) {
@@ -69,10 +70,6 @@ function requireLineEncoding(layer) {
     directRows: directTemporal || directNumericY,
     directTemporal
   };
-}
-
-function groupKey(values) {
-  return JSON.stringify(values);
 }
 
 function groupedSeries(groups, fields, dimensions) {
@@ -145,7 +142,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
   const compareX = categorical
     ? (left, right) => ranks.get(left.x) - ranks.get(right.x)
     : (left, right) => left.x - right.x;
-  const seriesFields = validatePathSeriesAppearance(rows, layer);
+  const seriesFields = validatePathSeriesAppearance(rows, layer, options.scales);
   const binBoundaries = binnedAggregate
     ? options.xBinBoundaries ?? resolveLineBins(rows, layer).boundaries
     : undefined;

@@ -8,7 +8,7 @@
   "individualImageReviewClaim": false,
   "newGraphicPrimitive": false,
   "newPersistedSchemaField": false,
-  "implementationStarted": false,
+  "implementationStarted": true,
   "publicationAuthorizedOnlyAtRegularCheckpoint": 1413,
   "sourceFamilySuccessfulClaim": false
 }

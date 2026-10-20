@@ -26,6 +26,7 @@ import {
 import { findUpstreamTransform } from
   "../../../materialization/dataProvenance.js";
 import { validatePathSeriesAppearance } from "../../../grammar/pathSeries.js";
+import { readCategoricalLineColor, validateCategoricalColorConsumer } from "../../../grammar/scales/colorConsumers.js";
 import { encodeContinuousColor } from "./continuous.js";
 import {
   applyColorLayoutCompanion
@@ -104,22 +105,21 @@ const encodeColor = /* @__PURE__ */ action(
         "Area color encoding must match an existing group encoding."
       );
     }
-    if (layer.mark.type === "line" || ordinaryGroup) {
-      validatePathSeriesAppearance(dataset.values, {
-        ...layer, encoding: { ...layer.encoding, color: { field: args.field, fieldType } }
-      });
-    }
     const requestedScale = resolveReassignmentScaleOptions(
       layer.encoding?.color,
       resolveColorScaleOptions(args)
     );
     const scale = resolveColorScaleDefinition(this, requestedScale);
-    if (Object.hasOwn(scale, "unknown") && layer.mark.type !== "point") {
-      throw new Error(
-        "Categorical color scale unknown currently requires a row-owned point mark."
-      );
+    const color = { field: args.field, fieldType, scale: scale.id };
+    const lineFallback = validateCategoricalColorConsumer(layer, color, scale);
+    if (layer.mark.type === "line" || ordinaryGroup) {
+      validatePathSeriesAppearance(dataset.values, {
+        ...layer, encoding: { ...layer.encoding, color }
+      }, [...this.semanticSpec.scales.filter(item => item.id !== scale.id), scale]);
     }
-    if (layer.mark.type === "rect") {
+    if (lineFallback) {
+      readCategoricalLineColor(dataset.values, args.field);
+    } else if (layer.mark.type === "rect") {
       readScaleField(dataset.values, args.field, fieldType, {
         allowUnknown: true
       });

@@ -209,7 +209,7 @@
           "ordinal"
         ]
       },
-      "options": "bar/area layout; arc overlay; palette and ordinal scale"
+      "options": "bar/area layout; arc overlay; palette and ordinal scale; explicit-domain row-owned Cartesian line color supports unknown paint"
     },
     {
       "mode": "Continuous",

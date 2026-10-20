@@ -79,7 +79,7 @@ function hasStrokeLegend(program, target) {
   );
 }
 
-function validateStrokeField(dataset, layer, args, scale, temporalUnit) {
+function validateStrokeField(dataset, layer, args, scale, temporalUnit, scales) {
   const { field, fieldType } = args;
   validateContinuousColorConsumer(layer, args, scale, { channel: "stroke" });
   if (["line", "area"].includes(layer.mark.type)) {
@@ -89,7 +89,7 @@ function validateStrokeField(dataset, layer, args, scale, temporalUnit) {
         ...layer.encoding,
         stroke: { field, fieldType, temporalUnit, scale: scale.id }
       }
-    });
+    }, scales);
   }
   if (Object.hasOwn(scale, "unknown")) {
     readScaleField(dataset.values, field, fieldType, {
@@ -189,7 +189,7 @@ export const encodeStroke = /* @__PURE__ */ action(
               scale: scale.id
             }
           }
-        });
+        }, this.semanticSpec.scales);
       }
     } else if (["quantitative", "temporal"].includes(fieldType)) {
       scale = resolveQuantitativeColorScaleDefinition(
@@ -203,7 +203,8 @@ export const encodeStroke = /* @__PURE__ */ action(
         layer,
         { ...args, fieldType },
         scale,
-        temporalUnit
+        temporalUnit,
+        this.semanticSpec.scales
       );
     } else {
       throw new Error(`Unsupported stroke field type "${fieldType}".`);

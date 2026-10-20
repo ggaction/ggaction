@@ -3082,12 +3082,12 @@ type HistogramCategoricalColorChannel =
       palette?: Palette;
       layout?: Exclude<ColorLayout, "center">;
     };
-type LineCategoricalColorChannel =
+type LineCategoricalColorChannel<Scale = NonPointCategoricalColorScaleOptions> =
   | string
   | {
       field: string;
       fieldType?: "nominal" | "ordinal";
-      scale?: NonPointCategoricalColorScaleOptions;
+      scale?: Scale;
       palette?: Palette;
     };
 type QuantitativeBarColorChannel = {
@@ -3694,7 +3694,7 @@ export interface CreateLinePlotOptions {
   coordinate?: string;
   x: LineXPositionChannel;
   y: LineYPositionChannel;
-  color?: LineCategoricalColorChannel;
+  color?: LineCategoricalColorChannel<CategoricalColorScaleOptions>;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
   line?: StrokeStyleDetails & {

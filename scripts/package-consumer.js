@@ -97,6 +97,21 @@ async function testNodeConsumer(directory) {
     import {createFacetSharedTopLaneProgram} from "./facet-lane-public.js";
     import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
 
+    for (const factory of [chart,basicChart]) {
+      const lineRows=[undefined,null,"Reference"].flatMap(kind=>[0,1].map(x=>({x,y:x,...(kind===undefined?{}:{kind})})));
+      const missingColor=factory().createCanvas({width:440,height:220,margin:{left:20,right:160,top:10,bottom:20}})
+        .createData({id:"raw",values:lineRows})
+        .createLinePlot({id:"paths",x:"x",y:"y",color:{field:"kind",scale:{domain:["Regression","Reference"],range:["firebrick","black"],unknown:"transparent"}},guides:false})
+        .createLegend({channels:["color"],title:"Line"});
+      assert.deepEqual(missingColor.graphicSpec.objects.paths.items.map(item=>item.properties.stroke),["transparent","transparent","black"]);
+      assert.deepEqual(missingColor.semanticSpec.datasets[0].values,lineRows);
+      assert.deepEqual(missingColor.resolvedScales.color.domain,["Regression","Reference"]);
+      assert.deepEqual(deserializeProgram(serializeProgram(missingColor)).graphicSpec,missingColor.graphicSpec);
+      assert.match(renderToSVG(missingColor),/Regression/);
+      assert.ok((await renderToPNGBuffer(missingColor)).buffer.length>100);
+      assert.ok((await renderToPDFBuffer(missingColor)).buffer.length>100);
+    }
+
     const underlayPlot=createPlotUnderlayProgram();
     assert.deepEqual(underlayPlot.graphicSpec.objects["plot-main"].children,
       ["horizontalGridLines","plotBorder","xAxisLine","barPlot"]);

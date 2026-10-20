@@ -251,7 +251,7 @@ const encodeOpacity = /* @__PURE__ */ action(
       }
       validatePathSeriesAppearance(dataset.values, {
         ...layer, encoding: { ...layer.encoding, opacity: { field: args.field, fieldType } }
-      });
+      }, this.semanticSpec.scales);
     }
     readScaleField(dataset.values, args.field, fieldType, {
       allowUnknown: Object.hasOwn(scale, "unknown")

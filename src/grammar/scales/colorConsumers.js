@@ -1,3 +1,4 @@
+import { isNominalValue, readNominalField } from "./fields.js";
 import { BAR_GRAINS, resolveBarChannels, resolveBarGrain } from "../bars/policy.js";
 import { validateAggregate, validateAggregateFieldType } from "../aggregate.js";
 import { isDiscretizedColorScaleType } from "./types.js";
@@ -60,4 +61,28 @@ export function validateContinuousColorConsumer(layer, encoding, scale, {
   validateAggregate(aggregate);
   validateAggregateFieldType(aggregate, encoding.fieldType);
   return aggregate;
+}
+
+export function validateCategoricalColorConsumer(layer, encoding, scale, channel = "color") {
+  if (!Object.hasOwn(scale, "unknown")) return false;
+  if (layer.mark?.type === "point") return false;
+  const position = layer.encoding ?? {};
+  if (layer.mark?.type !== "line" || channel !== "color" ||
+      !["nominal", "ordinal"].includes(encoding.fieldType) ||
+      scale.type !== "ordinal" || !Array.isArray(scale.domain) || scale.domain.length === 0 ||
+      position.parallel !== undefined || position.theta !== undefined || position.radius !== undefined ||
+      [position.x, position.y].some(item => item?.aggregate !== undefined || item?.bin !== undefined)) {
+    throw new Error("Categorical unknown requires a row-owned point or a Cartesian line with explicit ordinal domain.");
+  }
+  return true;
+}
+
+export function readCategoricalLineColor(rows, field) {
+  readNominalField([], field);
+  // Missing colors preserve the vertex; malformed categorical values remain errors.
+  return rows.map((row, index) => {
+    const value = row[field];
+    if (value == null || isNominalValue(value)) return value;
+    throw new TypeError(`Field "${field}" must contain a nominal value at row ${index}.`);
+  });
 }

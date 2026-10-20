@@ -7,7 +7,7 @@ export function validatePathGroupAppearance(program, layer, dataset) {
     readPathSeriesFields(dataset.values, layer);
     return;
   }
-  validatePathSeriesAppearance(dataset.values, layer);
+  validatePathSeriesAppearance(dataset.values, layer, program.semanticSpec.scales);
 }
 
 export function assertPathGroupCompatible(program, layer, dataset, group) {

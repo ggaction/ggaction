@@ -7,9 +7,9 @@
 - [x] 현재 설치 후보에서 누락된 색상 field 및 별도 display-key 경로의 거부를 재현했다.
 - [x] 기존 범위 내 미래 질문까지 승인한 사용자의 직접 지시를 기록했다.
 - [x] public API, raw data, series identity, 편집·재생 및 호환성 목표를 확정했다.
-- [ ] 공유 정책과 field/series 처리, action 및 materializer를 구현한다.
-- [ ] 선언·Current·사용자 문서·생성물을 동기화한다.
-- [ ] focused, 전체 normal, installed package 및 renderer 검증을 완료한다.
+- [x] 공유 정책과 field/series 처리, action 및 materializer를 구현한다.
+- [x] 선언·Current·사용자 문서·생성물을 동기화한다.
+- [x] focused, 전체 normal, installed package 및 renderer 검증을 완료한다.
 - [ ] 검증된 구현 checkpoint를 commit/push하고 로컬 번역 후보에 반영한다.
 
 ## 승인 근거
@@ -34,8 +34,8 @@ package manifest version은 `0.0.21`이지만 미배포 개발 후보이다. 이
 
 ```js
 chart()
-  .createCanvas({width: 240, height: 120,
-    margin: {left: 20, right: 100, top: 10, bottom: 20}})
+  .createCanvas({width: 440, height: 220,
+    margin: {left: 20, right: 160, top: 10, bottom: 20}})
   .createData({values: [{id: 0}, {id: 1}]})
   .createLinePlot({x: "id", y: "id", guides: false})
   .encodeColor({field: "kind", fieldType: "nominal", scale: {
@@ -99,3 +99,29 @@ chart()
 
 이 단계는 0702의 실제 모델 번역 완료가 아니다. 원본 500행/선택 494행, clipping·회귀·모든 layer/범례/축/글자와
 의미 있는 단계별 등가 출력을 새 runtime에서 독립 검증한 뒤에만 학교 모델을 호출한다.
+
+## 실제 budget 검증과 보정
+
+기존 package 한도에서 packed 852487bytes 실패를 보존했다. 수정한 세 pure module에 기존 공식 배포용
+compactor를 적용하여 entries602 및 packed852000/unpacked4127000 한도를 유지했다. 마지막 압축 전 검증에서
+packed851962/unpacked4120827이었다. 최종 source package는 다시 측정한다.
+
+실제 설치 consumer의 Full gzip은 422018→422005→422002bytes로 기존422000을 계속 초과했다.
+같은 범위의 중복 reader 처리를 정리했으며 기능을 없애거나 검증 오차를 늘리지 않았다.
+기존 최소1000byte 반올림 정책에 따라 Full ceiling만423000으로 갱신한다. Basic208440은209000 안이며
+SVG25000, package/resource/coverage/renderer tolerance는 유지한다. 이 실제 측정에 따른 범위 내 보정은
+APPROVAL.json의 기존 미래 질문 승인에 포함된다. Node24 또는 registry 배포 검증을 주장하지 않는다.
+
+## 라이브러리 구현 검증 완료
+
+최종 normal4816/4816, installed consumer(Node·Full/Basic·TypeScript·MCP·tutorial·SVG/PNG/PDF),
+focused10, 문서32개를 통과했다. 최종 staged package는602entries, packed851926/unpacked4120774bytes다.
+설치 browser gzip은 Full422002/Basic208440/SVG7567bytes로 최종 한도423000/209000/25000 이내다.
+PNG/PDF 독립 primitive와 decoded pixel equality는 tolerance0이며 actual PNG/PDF 파일과 hash는
+gitignored `.artifacts/categorical-line-unknown-render/report.json`에 남긴다.
+`EVIDENCE.json`은 검사 log와 source의 cryptographic binding을 보존한다. 초기 실패도 삭제하지 않았다.
+
+현재 normal suite는 이 범위의 잘못된 raw category, strict explicit grouping, shared scale edit와 제거,
+불완전 position 순서, aggregate/polar/parallel 거부, Point parity, selection/highlight, revision,
+derived edit·facet·editable restore·accessible export까지 검사한다. `REPRO.mjs`의 원래 거부는
+e9ee03d3 commit으로 재현하며 현재 버전은 해결됨을 검사한다. 0702 전체 번역 성공은 아직 주장하지 않는다.

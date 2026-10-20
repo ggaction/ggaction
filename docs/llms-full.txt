@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:59d096e248a27b3e81c1307668cc7f4d9ffea85ceed3b79fd1e8d777bbaa79c9. Status: development. Runtime source: eac19dc02b1d20e682471dd997ad87850f365e91. Release baseline: v0.0.13.
+Contract: sha256:cabee09cfc5f91f2f5c25cd2ed105b27fc807fb5b86abedb047970ac4b4b02cd. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/eac19dc02b1d20e682471dd997ad87850f365e91/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/eac19dc02b1d20e682471dd997ad87850f365e91/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -7226,7 +7226,7 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
-| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
+| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale; explicit-domain row-owned Cartesian line color supports unknown paint |
 | Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
 | Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
 
@@ -10638,7 +10638,7 @@ per series. Raw Area supports an independent group field or tuple. Color must be
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
-| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
+| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale; explicit-domain row-owned Cartesian line color supports unknown paint |
 | Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
 | Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
 
@@ -11546,6 +11546,12 @@ appearance values. Encodings create compatible scales automatically; use
 
 Encoding actions accept a nested `scale` object. Omitted properties use channel
 defaults and stored program state.
+
+For categorical color on a row-owned Cartesian line, `unknown` requires an explicit, nonempty
+ordinal domain. Missing or null colors and valid categories outside that domain use the fallback paint;
+raw rows, vertices, separate series, and explicit legend samples remain intact. This does not extend
+to aggregate, binned, parallel, or polar lines. Removing the domain or fallback must remain compatible
+with every consumer and its data; incompatible edits reject atomically.
 
 Existing scales can be changed with `editScale`:
 
@@ -18805,7 +18811,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `weight` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `ECDFOutputFields \| undefined` |
-| `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianPathGuideOptions \| undefined` |
@@ -18846,7 +18852,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `as` | Optional / branch-dependent | `ECDFOutputFields \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| readonly [string, ...string[]] \| undefined` |
 | `weight` | Optional / branch-dependent | `string \| false \| undefined` |
-| `color` | Optional / branch-dependent | `false \| LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `false \| LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -18978,7 +18984,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Required | `LineXPositionChannel` |
 | `y` | Required | `LineYPositionChannel` |
-| `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `LineCategoricalColorChannel<CategoricalColorScaleOptions> \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
@@ -19060,7 +19066,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `theta` | Required | `PolarThetaChannel` |
 | `radius` | Required | `PolarRadiusChannel` |
-| `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "clip" \| ... 2 more ... \| "tension"> & { ...; }) \| undefined` |
@@ -19098,7 +19104,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `order` | Optional / branch-dependent | `readonly [RadarCategoryValue, RadarCategoryValue, RadarCategoryValue, ...RadarCategoryValue[]] \| undefined` |
-| `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "clip" \| ... 2 more ... \| "tension"> & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| RadarGuideOptions \| undefined` |
@@ -19266,7 +19272,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `density` | Optional / branch-dependent | `false \| RaincloudDensityOptions \| undefined` |
 | `summary` | Optional / branch-dependent | `false \| RaincloudSummaryOptions \| undefined` |
 | `points` | Optional / branch-dependent | `false \| RaincloudPointsOptions \| undefined` |
-| `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianCategoricalPointGuideOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -19308,7 +19314,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `density` | Optional / branch-dependent | `false \| RaincloudDensityOptions \| undefined` |
 | `summary` | Optional / branch-dependent | `false \| RaincloudSummaryOptions \| undefined` |
 | `points` | Optional / branch-dependent | `false \| RaincloudPointsOptions \| undefined` |
-| `color` | Optional / branch-dependent | `false \| LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `false \| LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -19468,7 +19474,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `dimensions` | Required | `readonly [ParallelDimension, ParallelDimension, ...ParallelDimension[]]` |
 | `key` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `ParallelMissingPolicy \| undefined` |
-| `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; curve?: "linear" \| undefined; closed?: false \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ParallelGuideOptions \| undefined` |
@@ -21329,7 +21335,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
-| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
+| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale; explicit-domain row-owned Cartesian line color supports unknown paint |
 | Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
 | Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
 
@@ -29880,7 +29886,7 @@ export interface CreateLinePlotOptions {
   coordinate?: string;
   x: LineXPositionChannel;
   y: LineYPositionChannel;
-  color?: LineCategoricalColorChannel;
+  color?: LineCategoricalColorChannel<CategoricalColorScaleOptions>;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
   line?: StrokeStyleDetails & {
@@ -29906,7 +29912,7 @@ export interface CreateLinePlotOptions {
 }
 ```
 
-Related types: [`LineXPositionChannel`](./reference/types/#type-linexpositionchannel) · [`LineYPositionChannel`](./reference/types/#type-lineypositionchannel) · [`LineCategoricalColorChannel`](./reference/types/#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](./reference/types/#type-basicstrokedashchannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`CPathGuides`](./reference/types/#type-cpathguides) · [`CartesianGridOptions`](./reference/types/#type-cartesiangridoptions) · [`GridDirectionOptions`](./reference/types/#type-griddirectionoptions) · [`PathLegendOptions`](./reference/types/#type-pathlegendoptions) · [`LegendValueOrder`](./reference/types/#type-legendvalueorder).
+Related types: [`LineXPositionChannel`](./reference/types/#type-linexpositionchannel) · [`LineYPositionChannel`](./reference/types/#type-lineypositionchannel) · [`LineCategoricalColorChannel`](./reference/types/#type-linecategoricalcolorchannel) · [`CategoricalColorScaleOptions`](./reference/types/#type-categoricalcolorscaleoptions) · [`BasicStrokeDashChannel`](./reference/types/#type-basicstrokedashchannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`CPathGuides`](./reference/types/#type-cpathguides) · [`CartesianGridOptions`](./reference/types/#type-cartesiangridoptions) · [`GridDirectionOptions`](./reference/types/#type-griddirectionoptions) · [`PathLegendOptions`](./reference/types/#type-pathlegendoptions) · [`LegendValueOrder`](./reference/types/#type-legendvalueorder).
 
 ### `CreateLollipopPlotOptions` {#type-createlollipopplotoptions}
 
@@ -34268,12 +34274,12 @@ Related types: [`CategoryValue`](./reference/types/#type-categoryvalue).
  Expand LineCategoricalColorChannel
 
 ```typescript
-type LineCategoricalColorChannel =
+type LineCategoricalColorChannel<Scale = NonPointCategoricalColorScaleOptions> =
   | string
   | {
       field: string;
       fieldType?: "nominal" | "ordinal";
-      scale?: NonPointCategoricalColorScaleOptions;
+      scale?: Scale;
       palette?: Palette;
     };
 ```
@@ -38425,12 +38431,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/eac19dc02b1d20e682471dd997ad87850f365e91/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/eac19dc02b1d20e682471dd997ad87850f365e91/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -40765,9 +40771,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:59d096e248a27b3e81c1307668cc7f4d9ffea85ceed3b79fd1e8d777bbaa79c9` |
+| Contract fingerprint | `sha256:cabee09cfc5f91f2f5c25cd2ed105b27fc807fb5b86abedb047970ac4b4b02cd` |
 | Example and dataset source | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
-| Runtime source commit | `eac19dc02b1d20e682471dd997ad87850f365e91` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 284 |
 | Declared actions in that release | 234 |

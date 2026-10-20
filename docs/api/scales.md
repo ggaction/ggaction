@@ -35,6 +35,12 @@ appearance values. Encodings create compatible scales automatically; use
 Encoding actions accept a nested `scale` object. Omitted properties use channel
 defaults and stored program state.
 
+For categorical color on a row-owned Cartesian line, `unknown` requires an explicit, nonempty
+ordinal domain. Missing or null colors and valid categories outside that domain use the fallback paint;
+raw rows, vertices, separate series, and explicit legend samples remain intact. This does not extend
+to aggregate, binned, parallel, or polar lines. Removing the domain or fallback must remain compatible
+with every consumer and its data; incompatible edits reject atomically.
+
 Existing scales can be changed with `editScale`:
 
 <!-- snippet-context:start -->

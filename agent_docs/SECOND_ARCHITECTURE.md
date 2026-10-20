@@ -331,7 +331,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 422,000 bytes |
+| `ggaction` | 423,000 bytes |
 | `ggaction/basic` | 209,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -2602,3 +2602,12 @@ Node22.23.1 staged unpacked4126126bytes가 기존4125000을1126bytes 초과했�
 기준은 유지한다. Installed consumer의 Basic208009gzipbytes 실패 뒤 edge-distance 계산을 단순화해
 208003bytes를 실측했다. 이 실제 실패와 측정을 보존하고 Basic cap만 최소다음1000byte 단계209000으로
 갱신한다. Node24 protected-release 측정은 정기1413-family 배포에서 별도 필요하다.
+
+### Categorical line fallback measurement checkpoint
+
+행 단위 categorical Cartesian Line의 explicit-domain unknown 색상도 기존 scale/color consumer 정책과
+pathSeries grouping owner를 재사용한다. Missing/null key는 계산용 identity에서만 구분하고 semantic/raw
+state에 sentinel을 추가하지 않는다. State·renderer·package 경계는 바꾸지 않는다. 실제 설치 Full gzip
+422002bytes가422000을 초과하여 최소1000byte 경계423000으로만 갱신한다. Basic208440≤209000과
+SVG25000, package·coverage·pixel 오차 한도는 유지한다. 자세한 동작은 Current CORE/ENCODINGS/MARKS,
+검증 기록은 `impl/categorical-line-unknown/PROPOSAL.md`를 따른다.

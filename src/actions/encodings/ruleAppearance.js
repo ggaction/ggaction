@@ -78,7 +78,7 @@ const encodeStrokeWidth = /* @__PURE__ */ action(
     }
     validatePathSeriesAppearance(dataset.values, {
       ...layer, encoding: { ...layer.encoding, strokeWidth: { field: args.field, fieldType } }
-    });
+    }, this.semanticSpec.scales);
     const previous = layer.encoding?.strokeWidth;
     const requestedScale = resolveReassignmentScaleOptions(
       previous,

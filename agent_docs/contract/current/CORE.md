@@ -1678,7 +1678,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   output에서는 `log`를 제외한다. Categorical color는 `ordinal`, size/opacity는 `linear`, shape/dash는
   `ordinal`이고 stroke width는 quantitative transformed scale이다. Palette/interpolation 같은 color-only
   option이나 padding 같은 discrete-position option을 다른 role에 전달하면 저장 후 무시하지 않고 즉시
-  거부한다. Point row consumers만 channel-valid `unknown` fallback을 author할 수 있다.
+  거부한다. Point row consumers와 explicit-domain categorical Cartesian Line color만 channel-valid `unknown` fallback을 author할 수 있다.
 - Effect: semantic definition만 저장한다. equivalent repeated call은 idempotent, conflicting definition은 오류다.
 - Coverage: `test/unit/actions/scales/scale-actions.test.js`와 grammar scale tests가 types,
   auto/explicit values, idempotence와 conflicts를 검증한다. Consumer-specific ordinal range와 `unknown`
@@ -1751,9 +1751,12 @@ type ScaleType =
 - Discrete position은 compatible consumers에서 `band ↔ point`를 검증한다. Bar consumer가 있으면
   zero-bandwidth `point` 전환을 거부한다.
 - `nice`, `zero`, `clamp`, transformed parameters와 `reverse`는 create contract의 type별 policy를 따른다.
-- `unknown`은 row-owned point item에서만 지원한다. Missing/invalid input과 explicit ordinal domain 밖의 input을
-  channel-valid concrete fallback으로 mapping하며 domain member를 추가하지 않는다. Compound path, bar, area,
-  rule, xOffset와 strokeDash grains는 topology가 달라질 수 있어 명시적으로 거부한다.
+- `unknown`은 row-owned Point 및 explicit nonempty ordinal-domain의 categorical Cartesian Line color를 지원한다.
+  Point의 기존 missing/invalid fallback은 유지한다. Line은 absent/null과 정상 out-of-domain scalar만 fallback으로 mapping하며
+  malformed category는 거부하고 raw rows·vertices·series identity·domain members를 보존한다.
+  Aggregate/bin/parallel/polar Line과 다른 compound path, bar, area, rule, xOffset, strokeDash grains는 계속 거부한다.
+  모든 shared consumer를 검증하며 explicit domain 또는 fallback 제거가 현재 rows와 호환되지 않으면 원자적으로 거부한다.
+  Evidence: `test/unit/actions/encodings/categorical-line-unknown.test.js`.
 - Complete patch와 shared-consumer channel compatibility를 먼저 검증한 뒤 semantic scale을 수정하고,
   scale, mark, axes, grids와 legend consumer를 wrapped materialization plan으로 갱신한다.
 - Source-attached text는 source의 current scale consumer에서 dependency를 따라 갱신한다. Text의 inherited scale ID가 이전 binding을 유지해도 라벨이 이전 위치에 남지 않는다. Evidence: `test/unit/actions/marks/text-source.test.js`.

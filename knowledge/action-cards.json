@@ -30386,7 +30386,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "LineCategoricalColorChannel | undefined"
+          "type": "LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
         },
         {
           "name": "line",
@@ -30523,7 +30523,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "false | LineCategoricalColorChannel | undefined"
+          "type": "false | LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
         }
       ],
       "callPatterns": [
@@ -30966,7 +30966,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "LineCategoricalColorChannel | undefined"
+          "type": "LineCategoricalColorChannel<CategoricalColorScaleOptions> | undefined"
         },
         {
           "name": "groupBy",
@@ -31218,7 +31218,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "LineCategoricalColorChannel | undefined"
+          "type": "LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
         },
         {
           "name": "groupBy",
@@ -31342,7 +31342,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "LineCategoricalColorChannel | undefined"
+          "type": "LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
         },
         {
           "name": "strokeDash",
@@ -31885,7 +31885,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "LineCategoricalColorChannel | undefined"
+          "type": "LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
         },
         {
           "name": "guides",
@@ -32016,7 +32016,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "false | LineCategoricalColorChannel | undefined"
+          "type": "false | LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
         }
       ],
       "callPatterns": [
@@ -32567,7 +32567,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "LineCategoricalColorChannel | undefined"
+          "type": "LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
         },
         {
           "name": "strokeDash",

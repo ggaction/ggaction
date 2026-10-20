@@ -36,7 +36,9 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `paddingInner`, `paddingOuter`, `padding`, `align`: Implemented for type-compatible band/point position.
 - `unknown`: Implemented for row-owned point `x`, `y`, `color`, `size`, `shape`, `opacity`. Missing/invalid input과
   explicit ordinal domain 밖의 값에 channel-valid concrete fallback을 사용하며 scale domain에는 추가하지 않는다.
-  Compound path/bar/area/rule, offset과 strokeDash에서는 topology-safe fallback contract가 없어 거부한다.
+  행 단위 Cartesian Line의 nominal/ordinal color는 explicit nonempty ordinal domain과 unknown을 함께 지정하면 허용한다.
+  Line의 absent/null은 fallback paint를 쓰지만 서로 다른 inferred series identity를 유지하며 object/array/non-finite category는 거부한다.
+  Aggregate/bin/parallel/polar line, bar/area/rule, offset과 strokeDash는 이 color fallback 확장에 포함하지 않는다.
 - Direct `createScale`/`editScale`은 complete current scale vocabulary를 노출한다. Encoding attachment가
   field type, channel, mark grain과 existing consumers에 맞는 subset을 검증한다.
 - Proposed: —
@@ -1168,12 +1170,16 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   mismatch는 오류지만 유효한 layout transition은 layoutSeries로 수행한다. 실패 시 이전 program은 불변이다.
 - Line color and stroke-dash assignments may precede complete positions. Field scales resolve immediately, while
   line graphics stay empty until position prerequisites are complete. Compatible encoding orders converge.
+- Categorical Cartesian Line unknown은 explicit nonempty ordinal domain이 필요하다. 원본 rows/keys/order와 vertex를 유지하며
+  missing/null/out-of-domain paint만 fallback으로 mapping한다. 다른 raw category는 같은 fallback이라도 합치지 않는다.
+  Explicit group은 여전히 strict nominal이며 한 series에 raw color 하나만 허용한다. Aggregate/bin/parallel/polar line은 거부한다.
+  Evidence: `test/unit/actions/encodings/categorical-line-unknown.test.js`.
 - Coverage: 모든 대표 chart와 legend tests가 mark별 materialization을 검증한다. Five-layout bar matrix,
   five-layout area matrix, normalized/signed domains, primitive/public equivalence와 transition validation을 포함한다.
 
 ### Formal values — `encodeColor`
 
-- Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging" | "center"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; `"center"` is area-only, ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales support quantitative point/rect/text/Area consumers and quantitative aggregate bars, `unknown` remains point-row-only, and mark compatibility narrows the categorical layout set.
+- Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging" | "center"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; `"center"` is area-only, ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales support quantitative point/rect/text/Area consumers and quantitative aggregate bars, `unknown` supports row-owned points and explicit-domain categorical Cartesian lines, and mark compatibility narrows the categorical layout set.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeColor`

@@ -99,7 +99,7 @@ export function resolvePositionedLineMaterialization({
   const lineOptions = polar
     ? { thetaDomain: resolvedScales[thetaScaleId].domain }
     : { xBinBoundaries, xDomain: resolvedScales[xScaleId].domain };
-  const derived = deriveLineSeries(rows, layer, lineOptions);
+  const derived = deriveLineSeries(rows, layer, { ...lineOptions, scales: resolvedScales });
   const commands = polar
     ? derived.series.map(series => buildPolarLinePathCommands({
         series: series.values,
@@ -134,7 +134,8 @@ export function resolvePositionedLineMaterialization({
       derived.series,
       field,
       channel,
-      encoding
+      encoding,
+      channel === "color" ? resolvedScales[encoding.scale] : undefined
     ));
   return {
     commands,

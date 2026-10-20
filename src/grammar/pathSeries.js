@@ -1,4 +1,5 @@
 import { validateNonEmptyString } from "../core/validation.js";
+import { readCategoricalLineColor, validateCategoricalColorConsumer } from "./scales/colorConsumers.js";
 import {
   readNominalField,
   readQuantitativeField,
@@ -34,15 +35,32 @@ export function pathGroupFields(layer) {
   return color === undefined && dash === undefined ? [] : [color ?? dash];
 }
 
-export function readPathSeriesFields(rows, layer) {
+export function pathSeriesKey(values) {
+  return JSON.stringify(values.map(value => value === undefined ? {} : value));
+}
+
+function lineColorScale(layer, scales) {
+  const color = layer.encoding?.color;
+  const scale = Array.isArray(scales) ? scales.find(item => item.id === color?.scale) : scales?.[color?.scale];
+  return scale !== undefined && validateCategoricalColorConsumer(layer, color, scale) ? scale : undefined;
+}
+
+export function readPathSeriesFields(rows, layer, scales) {
   const fields = pathGroupFields(layer);
-  for (const field of fields) readNominalField(rows, field);
+  const fallback = lineColorScale(layer, scales);
+  for (const field of fields) {
+    if (fallback && layer.encoding?.group === undefined && field === layer.encoding.color.field) {
+      readCategoricalLineColor(rows, field);
+    } else readNominalField(rows, field);
+  }
   return fields;
 }
 
-function seriesValueIndex(rows, fields, field, channel, encoding = {}) {
+function seriesValueIndex(rows, fields, field, channel, encoding = {}, scale) {
   const quantitative = channel === "strokeWidth" || channel === "opacity";
-  const values = channel === "stroke" || (channel === "color" && encoding.fieldType === "quantitative")
+  const values = channel === "color" && scale !== undefined
+    ? readCategoricalLineColor(rows, field)
+    : channel === "stroke" || (channel === "color" && encoding.fieldType === "quantitative")
     ? readScaleField(rows, field, encoding.fieldType ?? "nominal", {
         temporalUnit: encoding.temporalUnit
       })
@@ -51,7 +69,7 @@ function seriesValueIndex(rows, fields, field, channel, encoding = {}) {
     : readNominalField(rows, field);
   const result = new Map();
   rows.forEach((row, index) => {
-    const key = JSON.stringify(fields.map(field => row[field]));
+    const key = pathSeriesKey(fields.map(field => row[field]));
     const value = values[index];
     if (channel === "strokeWidth" && value < 0) {
       throw new RangeError(`Line strokeWidth field "${field}" cannot contain negative values.`);
@@ -69,17 +87,20 @@ export function derivePathSeriesFieldValues(
   series,
   field,
   channel,
-  encoding
+  encoding,
+  scale
 ) {
   const fields = Object.keys(series[0]?.key ?? {});
-  const values = seriesValueIndex(rows, fields, field, channel, encoding);
-  return series.map(item => values.get(JSON.stringify(Object.values(item.key))));
+  const values = seriesValueIndex(rows, fields, field, channel, encoding,
+    Object.hasOwn(scale ?? {}, "unknown") ? scale : undefined);
+  return series.map(item => values.get(pathSeriesKey(Object.values(item.key))));
 }
 
-export function validatePathSeriesAppearance(rows, layer) {
+export function validatePathSeriesAppearance(rows, layer, scales) {
   if (!["line", "area"].includes(layer.mark?.type) ||
       layer.encoding?.parallel !== undefined) return;
-  const grouping = readPathSeriesFields(rows, layer);
+  const grouping = readPathSeriesFields(rows, layer, scales);
+  const colorScale = lineColorScale(layer, scales);
   const channels = layer.mark.type === "line"
     ? ["color", "stroke", "strokeDash", "strokeWidth", "opacity"]
     : ["color", "stroke"];
@@ -94,7 +115,7 @@ export function validatePathSeriesAppearance(rows, layer) {
     if (!allowed.includes(encoding.fieldType)) {
       throw new Error(`Path ${channel} encoding has an unsupported field type.`);
     }
-    seriesValueIndex(rows, grouping, encoding.field, channel, encoding);
+    seriesValueIndex(rows, grouping, encoding.field, channel, encoding, channel === "color" ? colorScale : undefined);
   }
   return grouping;
 }

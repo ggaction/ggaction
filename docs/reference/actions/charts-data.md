@@ -2787,7 +2787,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `weight` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `ECDFOutputFields \| undefined` |
-| `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianPathGuideOptions \| undefined` |
@@ -2832,7 +2832,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `as` | Optional / branch-dependent | `ECDFOutputFields \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| readonly [string, ...string[]] \| undefined` |
 | `weight` | Optional / branch-dependent | `string \| false \| undefined` |
-| `color` | Optional / branch-dependent | `false \| LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `false \| LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 
 </details>
 
@@ -2976,7 +2976,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Required | `LineXPositionChannel` |
 | `y` | Required | `LineYPositionChannel` |
-| `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `LineCategoricalColorChannel<CategoricalColorScaleOptions> \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
@@ -3066,7 +3066,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `theta` | Required | `PolarThetaChannel` |
 | `radius` | Required | `PolarRadiusChannel` |
-| `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "clip" \| ... 2 more ... \| "tension"> & { ...; }) \| undefined` |
@@ -3108,7 +3108,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `order` | Optional / branch-dependent | `readonly [RadarCategoryValue, RadarCategoryValue, RadarCategoryValue, ...RadarCategoryValue[]] \| undefined` |
-| `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "clip" \| ... 2 more ... \| "tension"> & { ...; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| RadarGuideOptions \| undefined` |
@@ -3292,7 +3292,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `density` | Optional / branch-dependent | `false \| RaincloudDensityOptions \| undefined` |
 | `summary` | Optional / branch-dependent | `false \| RaincloudSummaryOptions \| undefined` |
 | `points` | Optional / branch-dependent | `false \| RaincloudPointsOptions \| undefined` |
-| `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianCategoricalPointGuideOptions \| undefined` |
 
 </details>
@@ -3338,7 +3338,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `density` | Optional / branch-dependent | `false \| RaincloudDensityOptions \| undefined` |
 | `summary` | Optional / branch-dependent | `false \| RaincloudSummaryOptions \| undefined` |
 | `points` | Optional / branch-dependent | `false \| RaincloudPointsOptions \| undefined` |
-| `color` | Optional / branch-dependent | `false \| LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `false \| LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 
 </details>
 
@@ -3514,7 +3514,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `dimensions` | Required | `readonly [ParallelDimension, ParallelDimension, ...ParallelDimension[]]` |
 | `key` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `ParallelMissingPolicy \| undefined` |
-| `color` | Optional / branch-dependent | `LineCategoricalColorChannel \| undefined` |
+| `color` | Optional / branch-dependent | `LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; curve?: "linear" \| undefined; closed?: false \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| ParallelGuideOptions \| undefined` |

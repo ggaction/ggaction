@@ -2744,7 +2744,7 @@ export interface CreateLinePlotOptions {
   coordinate?: string;
   x: LineXPositionChannel;
   y: LineYPositionChannel;
-  color?: LineCategoricalColorChannel;
+  color?: LineCategoricalColorChannel<CategoricalColorScaleOptions>;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
   line?: StrokeStyleDetails & {
@@ -2772,7 +2772,7 @@ export interface CreateLinePlotOptions {
 
 </details>
 
-Related types: [`LineXPositionChannel`](#type-linexpositionchannel) · [`LineYPositionChannel`](#type-lineypositionchannel) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation) · [`CPathGuides`](#type-cpathguides) · [`CartesianGridOptions`](#type-cartesiangridoptions) · [`GridDirectionOptions`](#type-griddirectionoptions) · [`PathLegendOptions`](#type-pathlegendoptions) · [`LegendValueOrder`](#type-legendvalueorder).
+Related types: [`LineXPositionChannel`](#type-linexpositionchannel) · [`LineYPositionChannel`](#type-lineypositionchannel) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`CategoricalColorScaleOptions`](#type-categoricalcolorscaleoptions) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation) · [`CPathGuides`](#type-cpathguides) · [`CartesianGridOptions`](#type-cartesiangridoptions) · [`GridDirectionOptions`](#type-griddirectionoptions) · [`PathLegendOptions`](#type-pathlegendoptions) · [`LegendValueOrder`](#type-legendvalueorder).
 
 ### `CreateLollipopPlotOptions` {#type-createlollipopplotoptions}
 
@@ -7942,12 +7942,12 @@ Related types: [`CategoryValue`](#type-categoryvalue).
 <summary>Expand LineCategoricalColorChannel</summary>
 
 ```typescript
-type LineCategoricalColorChannel =
+type LineCategoricalColorChannel<Scale = NonPointCategoricalColorScaleOptions> =
   | string
   | {
       field: string;
       fieldType?: "nominal" | "ordinal";
-      scale?: NonPointCategoricalColorScaleOptions;
+      scale?: Scale;
       palette?: Palette;
     };
 ```

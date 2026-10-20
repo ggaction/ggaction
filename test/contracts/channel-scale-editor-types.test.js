@@ -22,6 +22,12 @@ const colorOptions: EditColorScaleOptions = { palette: "set2" };
 const radiusOptions: EditRScaleOptions = { domain: [0, 10] };
 const strokeOptions: EditStrokeScaleOptions = { target: "points", palette: "set2" };
 p.editColorScale(colorOptions);
+p.createLinePlot({ x: "x", y: "y", color: { field: "kind", scale: { domain: ["A"], unknown: "transparent" } } });
+basic.createLinePlot({ x: "x", y: "y", color: { field: "kind", scale: { domain: ["A"], unknown: "transparent" } } });
+// @ts-expect-error polar line color does not support a categorical unknown paint
+p.createPolarLinePlot({ theta: "x", radius: "y", color: { field: "kind", scale: { domain: ["A"], unknown: "transparent" } } });
+// @ts-expect-error rect color does not support a categorical unknown paint
+p.createHeatmap({ x: "x", y: "y", color: { field: "kind", scale: { domain: ["A"], unknown: "transparent" } } });
 p.editRScale(radiusOptions);
 p.editStrokeScale(strokeOptions);
 p.editXScale({ target: "points", type: "log", domain: [1, 100], base: 10 });

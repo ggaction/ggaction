@@ -88,7 +88,7 @@ const encodeStrokeDash = /* @__PURE__ */ action(
       normalizeStrokeDashPattern(args.value);
       validatePathSeriesAppearance(dataset.values, {
         ...layer, encoding: { ...layer.encoding, strokeDash: { datum: args.value } }
-      });
+      }, this.semanticSpec.scales);
       let next = layer.encoding?.strokeDash === undefined
         ? this
         : this.clearStrokeDashEncoding({ target });
@@ -103,7 +103,7 @@ const encodeStrokeDash = /* @__PURE__ */ action(
     const fieldType = validateCategoricalFieldType(args.fieldType ?? "nominal");
     validatePathSeriesAppearance(dataset.values, {
       ...layer, encoding: { ...layer.encoding, strokeDash: { field: args.field, fieldType } }
-    });
+    }, this.semanticSpec.scales);
     const previous = layer.encoding?.strokeDash;
     const requestedScale = previous?.field === args.field
       ? resolveReassignmentScaleOptions(previous, args.scale ?? {})

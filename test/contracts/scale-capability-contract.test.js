@@ -52,8 +52,9 @@ test("publishes the complete current scale type vocabulary", () => {
 });
 
 test("publishes mapping fallback ownership and compound-grain limits", () => {
-  assert.match(currentCore, /`unknown`[\s\S]*row-owned point item/);
+  assert.match(currentCore, /`unknown`[\s\S]*row-owned Point/);
+  assert.match(currentCore, /explicit nonempty ordinal-domain[\s\S]*Cartesian Line color/);
   assert.match(currentEncodings, /scale domain에는 추가하지 않는다/);
-  assert.match(currentEncodings, /Compound path\/bar\/area\/rule/);
+  assert.match(currentEncodings, /Aggregate\/bin\/parallel\/polar line, bar\/area\/rule/);
   assert.match(declarations, /unknown\?: unknown/);
 });
