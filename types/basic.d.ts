@@ -21,6 +21,7 @@ export type {
   CreateBarPlotOptions,
   BarRangePositionChannel,
   CreateDataOptions,
+  FlattenDataOptions,
   CreateGridOptions,
   CreateGuidesOptions,
   CreateHeatmapOptions,
@@ -65,6 +66,7 @@ type BasicMethodKey =
   | "applyTheme"
   | "removeTheme"
   | "createData"
+  | "createFlattenData"
   | "createPointMark"
   | "createLineMark"
   | "createBarMark"

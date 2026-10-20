@@ -1,0 +1,13 @@
+{
+  "status": "approved",
+  "reviewer": "human-user",
+  "scope": "Ongoing chart translation, pipeline and ggaction fixes, including future concrete in-scope designs",
+  "approvalText": "지금까지 모든 질문, 앞으로 할 모든 질문 승인함. 새로운 릴리즈는 200개 단위로 하자",
+  "proposal": "PROPOSAL.md",
+  "publicRelease": "Existing 200-completed-family cadence; no immediate package or documentation publication",
+  "originalDataPreserved": true,
+  "globalToleranceChanged": false,
+  "newApprovalRequestRequired": false,
+  "proposalSha256": "5b567b6521441503abf4febc1ea45107eb92f066cf828e9bc6d1a18abca9cbc8",
+  "visualScope": "Pure derived-data expansion; existing mark/render contracts remain unchanged. No human image inspection claimed."
+}

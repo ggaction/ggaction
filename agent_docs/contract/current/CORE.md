@@ -597,6 +597,41 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: weighted mass, positive-weight extent/members, zero-weight prevalidation과 invalid/all-zero weights.
 - Evidence: `test/unit/actions/data/bin-data.test.js`.
 
+## `createFlattenData`
+
+- Signature: `createFlattenData({id, source?, fields, as?})`. Full/Basic 생성이며 id는 명시적,
+  source 생략 시 기존 current-data resolver를 사용한다.
+- `fields`: source schema에 존재하는 1..64개 고유 nonempty field다. 각 행에서 선택된 값은
+  array/null/missing만 허용한다. null/missing은 길이0, 비배열은 row/field 오류다.
+- `as`: 생략 시 fields와 같다. 지정 시 같은 길이의 고유 field 이름 배열이다. 선택된 입력
+  배열 이름의 파생 결과 대체는 허용하지만 선택되지 않은 기존 열의 overwrite는 거부한다.
+- Effect: 입력 행 순서 다음 array-index 순서로 해당 행의 최대 array 길이만큼 생성한다.
+  짧은 배열의 빈 자리는 null이고 요소의 기존 JSON 값은 유지한다. 모든 배열이 비었으면
+  그 행은 출력0개다. Cartesian product가 아니다. 원본 dataset/배열/키/순서/이전 program은
+  불변이며 alias 외 모든 cell을 보존한다.
+- Semantic: `{type:"flatten",fields,as}` 정규화 한 곳, source provenance와 입력 field별
+  output schema lineage를 저장한다. 기존 derived materializer/replay 및 statistical facet
+  topology를 사용하며 renderer는 변경하지 않는다.
+- Limits/errors: output 총10,000행까지, 초과·잘못된 field/alias/value·unknown option을
+  반환된 상태나 원본 trace 변경 없이 거부한다. 기존 raw data/nested-value 한도는 그대로다.
+- Current coverage: `test/unit/actions/data/flatten-data.test.js`,
+  `test/contracts/transform-registry.test.js`, `test/contracts/derived-editing-types.test.js`.
+
+### Formal values — `createFlattenData`
+
+- Implemented: `FlattenDataOptions`의 id/source?/fields/as?와 `DatasetFlattenTransform`.
+- Full/Basic 생성, Full에서 immutable source revision·derived dependent replay·persistence를 지원한다.
+- Coverage: 길이가 다른5관측값/빈배열/null/missing/JSON요소/default replacement/alias collision,
+  원본 보존/typed schema/trace/한도/실제 scatter 소비/Full revision은 위 실행 테스트가 검증한다.
+- Proposed (NOT IMPLEMENTED): No proposal beyond the current aligned-array contract.
+
+### Value coverage — `createFlattenData`
+
+- ✅ Covered: alignment, null padding, field/alias validation, immutable raw snapshots and schema lineage.
+- ✅ Covered: Full revision/dependent replay, Basic creation, bounds and ordinary mark consumption.
+- Evidence: `test/unit/actions/data/flatten-data.test.js`, `test/contracts/derived-editing-types.test.js`.
+
+
 ## `createFoldData`
 
 - Signature: `createFoldData({ id, source?, fields, as? })`
@@ -975,7 +1010,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`: Implemented, 필수 새 dataset ID.
 - `source`: Implemented, 필수 existing dataset ID.
 - `transform`: Implemented, 정확히 하나의 transform definition을 가진 tuple. Public direct-authoring union은
-  filter/fold/computed/stack/regression/density/interval/time-unit/window/summary/bin/bin2d schema이며 값 materialization은 해당 전용 action이 담당한다. Box summary,
+  filter/fold/flatten/computed/stack/regression/density/interval/time-unit/window/summary/bin/bin2d schema이며 값 materialization은 해당 전용 action이 담당한다. Box summary,
   box outlier, mark filter provenance는 composite action이 생성하는 internal transform으로 public union에 넣지 않는다.
 - Effect: source와 transform provenance만 저장하고 values는 만들지 않는다.
 - 오류: duplicate ID, unknown source, invalid/empty/multiple transform schema를 거부한다.
@@ -1030,7 +1065,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Formal values — `editDerivedData`
 
 - Implemented: `editDerivedData({ target: UserId; definition: RequestedDatasetTransform; dependents?: "reject" | "recompute" }): ChartProgram`.
-- Editable transform types: `computed | filter | fold | summary | bin | bin2d | timeUnit | window | density | stack |
+- Editable transform types: `computed | filter | fold | flatten | summary | bin | bin2d | timeUnit | window | density | stack |
   regression | interval | ecdf | normalize | complete | impute`.
 - Planned (NOT IMPLEMENTED): source 교체와 transform type 교체. 기존 `editBin2DData.source`는 전용 compatibility 예외다.
 - Proposed (NOT IMPLEMENTED): 추가 transform family가 standalone create lifecycle을 얻을 때 같은 registry 계약으로 검토한다.
@@ -1080,6 +1115,33 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 
 - ✅ Covered: field-only 유지, oneOf/predicate/range 상호배타 전환, invalid range와 empty patch 거부.
 - Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editFlattenData`
+
+- Signature: `editFlattenData({target, fields?, as?, dependents?})`, Full 전용이다.
+- 기존 logical owner/current snapshot을 명시하고, 최소1개 의미 있는 edit가 필요하다.
+  기존 generic `editDerivedData({target, definition:{type:"flatten",fields,as},dependents?})`
+  역시 같은 typed definition·preflight·revision 경로를 사용한다.
+- Omitted 옵션은 유지한다. fields 개수가 달라지면 같은 길이의 as를 명시한다. 입력 field별
+  alias 역할을 사용하므로 alias rename은 호환되는 직접 소비자에 재결합하고, 참조 중인
+  역할 제거/모호한 output/schema·값·한도·의존 소비자 불일치는 atomic하게 거부한다.
+- dependents는 기존 reject/recompute 정책이다. 원본/이전 dataset은 보존하고 성공 시
+  immutable revision 및 영향받는 graphic/guide를 재계산한다. Basic은 생성 전용 surface다.
+- Coverage: `test/unit/actions/data/flatten-data.test.js`와
+  `test/contracts/derived-editing-types.test.js`의 재결합/연쇄계산/atomic rejection/공개 타입 검증.
+
+### Formal values — `editFlattenData`
+
+- Implemented: `EditFlattenDataOptions`, Full 전용 focused derived editor.
+- 정규화·null padding·한도는 `createFlattenData` 계약을 공유한다.
+- Proposed (NOT IMPLEMENTED): No proposal beyond the current aligned-array contract.
+
+### Value coverage — `editFlattenData`
+
+- ✅ Covered: alignment, null padding, field/alias validation, immutable raw snapshots and schema lineage.
+- ✅ Covered: Full revision/dependent replay, Basic creation, bounds and ordinary mark consumption.
+- Evidence: `test/unit/actions/data/flatten-data.test.js`, `test/contracts/derived-editing-types.test.js`.
+
 
 ## `editFoldData`
 

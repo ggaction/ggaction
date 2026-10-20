@@ -14,6 +14,7 @@ test("keeps every stored dataset transform in the grammar registry", () => {
     complete: ["materializeCompleteData", "statistical"],
     computed: ["materializeComputedData", "rowPreserving"],
     filter: ["materializeFilteredData", "rowPreserving"],
+    flatten: ["materializeFlattenData", "statistical"],
     fold: ["materializeFoldData", "statistical"],
     markFilter: ["materializeMarkFilteredData", undefined],
     normalize: ["materializeNormalizedData", "statistical"],

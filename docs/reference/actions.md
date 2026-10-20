@@ -60,6 +60,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createECDFPlot`](./actions/charts-data.md#createecdfplot) | H0, H1 | user-facing | charts |
 | [`createErrorBand`](./actions/statistics.md#createerrorband) | H1 | user-facing | statistics |
 | [`createErrorBar`](./actions/statistics.md#createerrorbar) | H1 | user-facing | statistics |
+| [`createFlattenData`](./actions/statistics.md#createflattendata) | H1 | user-facing | statistics |
 | [`createFoldData`](./actions/statistics.md#createfolddata) | H1 | user-facing | statistics |
 | [`createGradientPlot`](./actions/statistics.md#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphics`](./actions/extension.md#creategraphics) | H4 | primitive | primitives |
@@ -164,6 +165,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFacetScales`](./actions/charts-data.md#editfacetscales) | H3 | user-facing | composition |
 | [`editFacetSource`](./actions/charts-data.md#editfacetsource) | H3 | user-facing | composition |
 | [`editFilteredData`](./actions/charts-data.md#editfiltereddata) | H2 | user-facing | core |
+| [`editFlattenData`](./actions/statistics.md#editflattendata) | H1, H3 | user-facing | statistics |
 | [`editFoldData`](./actions/statistics.md#editfolddata) | H1, H3 | user-facing | statistics |
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphics`](./actions/extension.md#editgraphics) | H4 | primitive | primitives |

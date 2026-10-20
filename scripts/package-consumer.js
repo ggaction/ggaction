@@ -98,6 +98,27 @@ async function testNodeConsumer(directory) {
     import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
 
     for (const factory of [chart,basicChart]) {
+      const arrayRows=[{amounts:[1,2],labels:["A","B"],group:"alpha"},{amounts:[3,4,5],labels:["C","D"],group:"beta"}];
+      const base=factory().createCanvas().createData({values:arrayRows});
+      const expanded=base.createFlattenData({id:"expanded",fields:["amounts","labels"],as:["x","label"]});
+      assert.deepEqual(expanded.semanticSpec.datasets[1].values.map(r=>[r.x,r.label]),[[1,"A"],[2,"B"],[3,"C"],[4,"D"],[5,null]]);
+      assert.deepEqual(expanded.semanticSpec.datasets[0].values,arrayRows);
+      assert.equal(base.semanticSpec.datasets.length,1);
+      assert.throws(()=>base.createFlattenData({id:"bad",fields:["group"]}),/array/);
+      const points=expanded.createScatterPlot({x:"x",y:"x",guides:false});
+      assert.equal(points.graphicSpec.objects.scatterPlot.items.length,5);
+      assert.ok(renderToSVG(points).includes("<circle"));
+      assert.ok((await renderToPNGBuffer(points)).buffer.length>100);
+      assert.deepEqual(deserializeProgram(serializeProgram(points)).semanticSpec,points.semanticSpec);
+      if(factory===chart){
+        const renamed=points.editFlattenData({target:"expanded",as:["value","category"]});
+        assert.equal(renamed.semanticSpec.layers[0].encoding.x.field,"value");
+        assert.equal(renderToSVG(renamed),renderToSVG(points));
+        assert.equal(points.reviseData({source:"data",id:"newArrays",values:[{amounts:[4],labels:[],group:"alpha"}]}).graphicSpec.objects.scatterPlot.items.length,1);
+      } else assert.equal(points.editFlattenData,undefined);
+    }
+
+    for (const factory of [chart,basicChart]) {
       const lineRows=[undefined,null,"Reference"].flatMap(kind=>[0,1].map(x=>({x,y:x,...(kind===undefined?{}:{kind})})));
       const pendingColor=factory().createCanvas().createData({values:lineRows}).createLineMark()
         .encodeColor({field:"kind",scale:{domain:["Reference"],unknown:"transparent"}});

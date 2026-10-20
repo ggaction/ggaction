@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 423_000, // Categorical line fallback measured422002; next1000-byte boundary.
-  "ggaction/basic": 209_000, // Side-axis clearance measured208003gzip bytes; minimal1000-byte rounding.
+  ggaction: 424_000, // Aligned expansion measured423024gzip bytes; minimal1000-byte rounding.
+  "ggaction/basic": 210_000, // Aligned expansion measured209555gzip bytes; minimal1000-byte rounding.
   "ggaction/svg": 25_000
 });
 

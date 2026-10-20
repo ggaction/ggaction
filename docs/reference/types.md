@@ -42,6 +42,7 @@ interface ChartProgramActions {
   createDensityData(options: DensityDataOptions): ChartProgram;
   createSummaryData(options: SummaryDataOptions): ChartProgram;
   createBinData(options: BinDataOptions): ChartProgram;
+  createFlattenData(options: FlattenDataOptions): ChartProgram;
   createFoldData(options: FoldDataOptions): ChartProgram;
   createComputedData(options: ComputedDataOptions): ChartProgram;
   createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -60,6 +61,7 @@ interface ChartProgramActions {
   editDerivedData(options: EditDerivedDataOptions): ChartProgram;
   editComputedData(options: EditComputedDataOptions): ChartProgram;
   editFilteredData(options: EditFilteredDataOptions): ChartProgram;
+  editFlattenData(options: EditFlattenDataOptions): ChartProgram;
   editFoldData(options: EditFoldDataOptions): ChartProgram;
   editSummaryData(options: EditSummaryDataOptions): ChartProgram;
   editBinData(options: EditBinDataOptions): ChartProgram;
@@ -3672,6 +3674,21 @@ export type DatasetFilterTransform = {
 
 Related types: [`DatasetScalar`](#type-datasetscalar) · [`FilterComparison`](#type-filtercomparison) · [`FilterRange`](#type-filterrange).
 
+### `DatasetFlattenTransform` {#type-datasetflattentransform}
+
+<details markdown="1">
+<summary>Expand DatasetFlattenTransform</summary>
+
+```typescript
+export interface DatasetFlattenTransform {
+  readonly type: "flatten";
+  readonly fields: readonly string[];
+  readonly as: readonly string[];
+}
+```
+
+</details>
+
 ### `DatasetFoldTransform` {#type-datasetfoldtransform}
 
 <details markdown="1">
@@ -4122,6 +4139,7 @@ export type DatasetTransform =
   | DatasetImputedTransform
   | DatasetNormalizedTransform
   | DatasetFilterTransform
+  | DatasetFlattenTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
   | DatasetRegressionStatisticsTransform
@@ -4139,7 +4157,7 @@ export type DatasetTransform =
 
 </details>
 
-Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
+Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFlattenTransform`](#type-datasetflattentransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -5061,6 +5079,19 @@ export type EditFilteredDataOptions = FilterModePatch & {
 </details>
 
 Related types: [`FilterModePatch`](#type-filtermodepatch) · [`DerivedDataDependents`](#type-deriveddatadependents).
+
+### `EditFlattenDataOptions` {#type-editflattendataoptions}
+
+<details markdown="1">
+<summary>Expand EditFlattenDataOptions</summary>
+
+```typescript
+export type EditFlattenDataOptions = FocusedDerivedDataEdit<FlattenDataOptions>;
+```
+
+</details>
+
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`FlattenDataOptions`](#type-flattendataoptions).
 
 ### `EditFoldDataOptions` {#type-editfolddataoptions}
 
@@ -6805,6 +6836,22 @@ export interface FitCanvasOptions {
   iterationLimit?: number;
   /** Reject an unsatisfied fit or preserve it with a structured overflow result. */
   overflow?: "error" | "report";
+}
+```
+
+</details>
+
+### `FlattenDataOptions` {#type-flattendataoptions}
+
+<details markdown="1">
+<summary>Expand FlattenDataOptions</summary>
+
+```typescript
+export interface FlattenDataOptions {
+  id: string;
+  source?: string;
+  fields: readonly string[];
+  as?: readonly string[];
 }
 ```
 

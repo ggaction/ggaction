@@ -461,6 +461,9 @@ export function buildActionRelationshipPrograms() {
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms(),
+    chart().createData({values:[{amounts:[1,2],labels:["A"]}]})
+      .createFlattenData({id:"expandedArrays",fields:["amounts","labels"],as:["amount","label"]})
+      .editFlattenData({target:"expandedArrays",as:["value","category"]}),
     chart().createData({ id: "revisionSource", values: [{ x: 1 }] })
       .reviseData({ source: "revisionSource", id: "revisionNext", values: [{ x: 2 }] }),
     chart().applyTextMetrics({ profile: { schemaVersion: 1, id: "host", measurements: [] } }).removeTextMetrics()

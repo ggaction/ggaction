@@ -127,6 +127,14 @@
     "layer": "user-facing",
     "domain": "statistics"
   },
+  "createFlattenData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H1"
+    ],
+    "layer": "user-facing",
+    "domain": "statistics"
+  },
   "createFoldData": {
     "operation": "create",
     "authoringRoles": [
@@ -263,6 +271,15 @@
     ],
     "layer": "user-facing",
     "domain": "core"
+  },
+  "editFlattenData": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H1",
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "statistics"
   },
   "editFoldData": {
     "operation": "edit",

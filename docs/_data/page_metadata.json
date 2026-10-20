@@ -611,7 +611,7 @@
   },
   "/api/data/revisions-and-removal/": {
     "title": "Data Revisions and Removal",
-    "description": "Every standalone value producing data action creates a logical dataset owner. The owner ID remains stable while successful edits create immutable physical revisions.",
+    "description": "Aligned array datasets use editFlattenData({target, fields?, as?, dependents?}) in the Full entry point. Basic supports creation without expanding its public editing surface.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/composition/facets/": {

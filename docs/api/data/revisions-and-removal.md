@@ -9,6 +9,11 @@ title: Data Revisions and Removal
 
 [Family overview](./source-and-derived.md) · [Exact action lookup](./../../reference/actions.md)
 
+Aligned-array datasets use `editFlattenData({target, fields?, as?, dependents?})` in the Full entry point.
+Basic supports creation without expanding its public editing surface. Alias roles follow the original
+input field, so alias changes rebind compatible direct consumers. When changing the number of selected
+fields, provide a matching alias array. Generic `editDerivedData` accepts the same `flatten` definition.
+
 ## Editing derived data {#editing-derived-data}
 
 Every standalone value-producing data action creates a logical dataset owner.

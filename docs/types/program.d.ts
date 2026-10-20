@@ -808,6 +808,11 @@ export interface DatasetBinTransform {
     readonly boundaries: readonly [number, number, ...number[]];
   };
 }
+export interface DatasetFlattenTransform {
+  readonly type: "flatten";
+  readonly fields: readonly string[];
+  readonly as: readonly string[];
+}
 export interface DatasetFoldTransform {
   readonly type: "fold";
   readonly fields: readonly string[];
@@ -974,6 +979,7 @@ export type DatasetTransform =
   | DatasetImputedTransform
   | DatasetNormalizedTransform
   | DatasetFilterTransform
+  | DatasetFlattenTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
   | DatasetRegressionStatisticsTransform
@@ -2488,6 +2494,12 @@ export interface FoldDataOutputFields {
   key?: string;
   value?: string;
 }
+export interface FlattenDataOptions {
+  id: string;
+  source?: string;
+  fields: readonly string[];
+  as?: readonly string[];
+}
 export interface FoldDataOptions {
   id: string;
   source?: string;
@@ -2640,6 +2652,7 @@ export type EditFilteredDataOptions = FilterModePatch & {
   nulls?: "include" | "exclude" | false;
   dependents?: DerivedDataDependents;
 };
+export type EditFlattenDataOptions = FocusedDerivedDataEdit<FlattenDataOptions>;
 export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 export type EditSummaryDataOptions = FocusedWeightedDerivedDataEdit<
   SummaryDataOptions,
@@ -5108,6 +5121,7 @@ export class ChartProgram {
   createDensityData(options: DensityDataOptions): ChartProgram;
   createSummaryData(options: SummaryDataOptions): ChartProgram;
   createBinData(options: BinDataOptions): ChartProgram;
+  createFlattenData(options: FlattenDataOptions): ChartProgram;
   createFoldData(options: FoldDataOptions): ChartProgram;
   createComputedData(options: ComputedDataOptions): ChartProgram;
   createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -5126,6 +5140,7 @@ export class ChartProgram {
   editDerivedData(options: EditDerivedDataOptions): ChartProgram;
   editComputedData(options: EditComputedDataOptions): ChartProgram;
   editFilteredData(options: EditFilteredDataOptions): ChartProgram;
+  editFlattenData(options: EditFlattenDataOptions): ChartProgram;
   editFoldData(options: EditFoldDataOptions): ChartProgram;
   editSummaryData(options: EditSummaryDataOptions): ChartProgram;
   editBinData(options: EditBinDataOptions): ChartProgram;

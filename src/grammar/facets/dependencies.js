@@ -227,11 +227,13 @@ function resolveAnchor(paths, datasets, classifications, requested) {
     if (!datasets.has(id)) {
       throw new Error(`Facet partition dataset "${id}" does not exist.`);
     }
-    const explicitFold = datasets.get(id).value.transform?.[0]?.type === "fold" &&
+    const explicitExpansion = ["fold", "flatten"].includes(
+      datasets.get(id).value.transform?.[0]?.type
+    ) &&
       paths.every(path => path.includes(id));
-    if (!common.includes(id) && !explicitFold) {
+    if (!common.includes(id) && !explicitExpansion) {
       throw new Error(
-        `Facet partition dataset "${id}" is not a common row-preserving ancestor or materialized fold boundary of every layer.`
+        `Facet partition dataset "${id}" is not a common row-preserving ancestor or materialized fold boundary or aligned-array boundary of every layer.`
       );
     }
     return id;

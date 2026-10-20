@@ -1407,6 +1407,18 @@
     "executable": false
   },
   {
+    "file": "api/data/summaries-and-shaping.md",
+    "block": 5,
+    "heading": "`createFlattenData({ id, source?, fields, as? })` {#createflattendata-id-source-fields-as}",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "d269be5e32fc2dc4d90d81e16cbf7e1c2f27fc4793a2217abc409d71c825e808",
+    "executable": false
+  },
+  {
     "file": "api/data/time-units.md",
     "block": 1,
     "heading": "`createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })`",

@@ -561,6 +561,16 @@ Materialize reusable one-dimensional bounds, counts, and optional source
 members using the same edge rules as Histogram.
 [Source and Derived Data](../api/data/source-and-derived.md#createbindata-id-source-field-binoptions)
 
+### `createFlattenData`
+
+```javascript
+createFlattenData({ id, source?, fields, as? })
+```
+
+Expand parallel array columns into index-aligned rows; shorter arrays pad with null.
+Retain raw ancestors and original row/index order. Full and Basic support creation.
+[Aligned array data](../api/data/summaries-and-shaping.md#createflattendata-id-source-fields-as)
+
 ### `createFoldData`
 
 ```javascript
@@ -1227,6 +1237,7 @@ semantic roles; expressions and predicates are never rewritten as strings.
 
 ```javascript
 editComputedData({ target, as?, expression?, dependents? })
+editFlattenData({ target, fields?, as?, dependents? })
 editFoldData({ target, fields?, as?, dependents? })
 editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })
 editBinData({ target, field?, maxBins? | step? | boundaries?, extent?, nice?, zero?, includeEmpty?, members?, as?, weight?, dependents? })

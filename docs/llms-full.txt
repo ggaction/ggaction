@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:fc85f09897e981ce7238c8a90de044cc91218811f7fcbd33529d3869dc1749ed. Status: development. Runtime source: c1484d37ded8459b9cb81be06d30b80099d3bb8d. Release baseline: v0.0.13.
+Contract: sha256:feb2bd7f280c7598943d738360d13769062b3fb81d24bc44215fdfb4e8ba713d. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/c1484d37ded8459b9cb81be06d30b80099d3bb8d/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/c1484d37ded8459b9cb81be06d30b80099d3bb8d/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -4876,6 +4876,7 @@ operation; marks and renderers never mutate source values.
 | [Safe resource removal](./api/data/revisions-and-removal/#removedata-id) | `removeData` | Delete one named dataset only after all live consumers are gone |
 | [Reusable summaries](./api/data/summaries-and-shaping/#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
 | [Reusable bins](./api/data/summaries-and-shaping/#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
+| [Aligned array data](./api/data/summaries-and-shaping/#createflattendata-id-source-fields-as) | `createFlattenData` | Expand parallel array elements into aligned rows |
 | [Wide-to-long data](./api/data/summaries-and-shaping/#createfolddata-id-source-fields-as) | `createFoldData` | Materialize selected fields as stable key/value rows |
 | [Computed data](./api/data/expressions-and-normalization/#createcomputeddata-id-source-as-expression) | `createComputedData` | Add numeric, string, boolean, or nullable values using the closed expression grammar |
 | [Normalization](./api/data/expressions-and-normalization/#createnormalizeddata-id-source-field-as-groupby-method) | `createNormalizedData` | Preserve rows while expressing values relative to a group, baseline, or range |
@@ -5007,6 +5008,7 @@ corresponding higher-level action when the library should materialize values:
 | `"complete"` | `{ type, key, groupBy, values? or sequence?, fill, members? }` | `createCompleteData` |
 | `"impute"` | `{ type, fields, groupBy, sortBy, method, value?, edges, maxGap? }` | `createImputedData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
+| `"flatten"` | `{ type, fields, as }` | `createFlattenData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
 | `"regressionStatistics"` | `{ type }`, with an existing linear fit as source | `createRegressionStatisticsData` |
@@ -5109,6 +5111,10 @@ See [Summaries, Bins, and Data Shaping](./api/data/summaries-and-shaping/#create
 ## `createBinData({ id, source?, field, ...binOptions })` {#createbindata-id-source-field-binoptions}
 
 See [Summaries, Bins, and Data Shaping](./api/data/summaries-and-shaping/#createbindata-id-source-field-binoptions) for this contract and its examples.
+
+## `createFlattenData({ id, source?, fields, as? })` {#createflattendata-id-source-fields-as}
+
+See [aligned array data](./api/data/summaries-and-shaping/#createflattendata-id-source-fields-as).
 
 ## `createFoldData({ id, source?, fields, as? })` {#createfolddata-id-source-fields-as}
 
@@ -16083,6 +16089,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createECDFPlot`](./reference/actions/charts-data/#createecdfplot) | H0, H1 | user-facing | charts |
 | [`createErrorBand`](./reference/actions/statistics/#createerrorband) | H1 | user-facing | statistics |
 | [`createErrorBar`](./reference/actions/statistics/#createerrorbar) | H1 | user-facing | statistics |
+| [`createFlattenData`](./reference/actions/statistics/#createflattendata) | H1 | user-facing | statistics |
 | [`createFoldData`](./reference/actions/statistics/#createfolddata) | H1 | user-facing | statistics |
 | [`createGradientPlot`](./reference/actions/statistics/#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphics`](./reference/actions/extension/#creategraphics) | H4 | primitive | primitives |
@@ -16187,6 +16194,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFacetScales`](./reference/actions/charts-data/#editfacetscales) | H3 | user-facing | composition |
 | [`editFacetSource`](./reference/actions/charts-data/#editfacetsource) | H3 | user-facing | composition |
 | [`editFilteredData`](./reference/actions/charts-data/#editfiltereddata) | H2 | user-facing | core |
+| [`editFlattenData`](./reference/actions/statistics/#editflattendata) | H1, H3 | user-facing | statistics |
 | [`editFoldData`](./reference/actions/statistics/#editfolddata) | H1, H3 | user-facing | statistics |
 | [`editGradientPlot`](./reference/actions/statistics/#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphics`](./reference/actions/extension/#editgraphics) | H4 | primitive | primitives |
@@ -22671,6 +22679,39 @@ Materialize reusable one-dimensional bounds, counts, and optional source
 members using the same edge rules as Histogram.
 [Source and Derived Data](./api/data/source-and-derived/#createbindata-id-source-field-binoptions)
 
+## `createFlattenData`
+
+**API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createFlattenData(options: FlattenDataOptions): ChartProgram;
+```
+
+Named option contracts: [`FlattenDataOptions`](./reference/types/#type-flattendataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `fields` | Required | `readonly string[]` |
+| `as` | Optional / branch-dependent | `readonly string[] \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createFlattenData({ id, source?, fields, as? })
+```
+
+Expand parallel array columns into index-aligned rows; shorter arrays pad with null.
+Retain raw ancestors and original row/index order. Full and Basic support creation.
+[Aligned array data](./api/data/summaries-and-shaping/#createflattendata-id-source-fields-as)
+
 ## `createFoldData`
 
 **API layer:** user-facing. **Authoring roles:** H1.
@@ -22939,6 +22980,31 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `as` | Optional / branch-dependent | `string \| undefined` |
 | `expression` | Optional / branch-dependent | `ComputedExpression \| undefined` |
+
+Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
+
+## `editFlattenData`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editFlattenData(options: EditFlattenDataOptions): ChartProgram;
+```
+
+Named option contracts: [`EditFlattenDataOptions`](./reference/types/#type-editflattendataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string` |
+| `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
+| `fields` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `as` | Optional / branch-dependent | `readonly string[] \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
 
@@ -24132,6 +24198,7 @@ The vertical grid follows continuous original x and rejects explicit `bandPositi
 
 ```javascript
 editComputedData({ target, as?, expression?, dependents? })
+editFlattenData({ target, fields?, as?, dependents? })
 editFoldData({ target, fields?, as?, dependents? })
 editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })
 editBinData({ target, field?, maxBins? | step? | boundaries?, extent?, nice?, zero?, includeEmpty?, members?, as?, weight?, dependents? })
@@ -27581,6 +27648,7 @@ interface ChartProgramActions {
   createDensityData(options: DensityDataOptions): ChartProgram;
   createSummaryData(options: SummaryDataOptions): ChartProgram;
   createBinData(options: BinDataOptions): ChartProgram;
+  createFlattenData(options: FlattenDataOptions): ChartProgram;
   createFoldData(options: FoldDataOptions): ChartProgram;
   createComputedData(options: ComputedDataOptions): ChartProgram;
   createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -27599,6 +27667,7 @@ interface ChartProgramActions {
   editDerivedData(options: EditDerivedDataOptions): ChartProgram;
   editComputedData(options: EditComputedDataOptions): ChartProgram;
   editFilteredData(options: EditFilteredDataOptions): ChartProgram;
+  editFlattenData(options: EditFlattenDataOptions): ChartProgram;
   editFoldData(options: EditFoldDataOptions): ChartProgram;
   editSummaryData(options: EditSummaryDataOptions): ChartProgram;
   editBinData(options: EditBinDataOptions): ChartProgram;
@@ -30698,6 +30767,18 @@ export type DatasetFilterTransform = {
 
 Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`FilterComparison`](./reference/types/#type-filtercomparison) · [`FilterRange`](./reference/types/#type-filterrange).
 
+### `DatasetFlattenTransform` {#type-datasetflattentransform}
+
+ Expand DatasetFlattenTransform
+
+```typescript
+export interface DatasetFlattenTransform {
+  readonly type: "flatten";
+  readonly fields: readonly string[];
+  readonly as: readonly string[];
+}
+```
+
 ### `DatasetFoldTransform` {#type-datasetfoldtransform}
 
  Expand DatasetFoldTransform
@@ -31090,6 +31171,7 @@ export type DatasetTransform =
   | DatasetImputedTransform
   | DatasetNormalizedTransform
   | DatasetFilterTransform
+  | DatasetFlattenTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
   | DatasetRegressionStatisticsTransform
@@ -31105,7 +31187,7 @@ export type DatasetTransform =
   | DatasetWindowTransform;
 ```
 
-Related types: [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](./reference/types/#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](./reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
+Related types: [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFlattenTransform`](./reference/types/#type-datasetflattentransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](./reference/types/#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](./reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -31883,6 +31965,16 @@ export type EditFilteredDataOptions = FilterModePatch & {
 ```
 
 Related types: [`FilterModePatch`](./reference/types/#type-filtermodepatch) · [`DerivedDataDependents`](./reference/types/#type-deriveddatadependents).
+
+### `EditFlattenDataOptions` {#type-editflattendataoptions}
+
+ Expand EditFlattenDataOptions
+
+```typescript
+export type EditFlattenDataOptions = FocusedDerivedDataEdit<FlattenDataOptions>;
+```
+
+Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderiveddataedit) · [`FlattenDataOptions`](./reference/types/#type-flattendataoptions).
 
 ### `EditFoldDataOptions` {#type-editfolddataoptions}
 
@@ -33332,6 +33424,19 @@ export interface FitCanvasOptions {
   iterationLimit?: number;
   /** Reject an unsatisfied fit or preserve it with a structured overflow result. */
   overflow?: "error" | "report";
+}
+```
+
+### `FlattenDataOptions` {#type-flattendataoptions}
+
+ Expand FlattenDataOptions
+
+```typescript
+export interface FlattenDataOptions {
+  id: string;
+  source?: string;
+  fields: readonly string[];
+  as?: readonly string[];
 }
 ```
 
@@ -38446,12 +38551,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c1484d37ded8459b9cb81be06d30b80099d3bb8d/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c1484d37ded8459b9cb81be06d30b80099d3bb8d/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -38708,6 +38813,45 @@ The default fields are `<value>_start`, `<value>_end`, `<value>_value`, and
 require non-negative values. Diverging accumulates positive and negative values
 separately from zero. Zero cells remain as zero-thickness rows with share 0.
 
+## `createFlattenData({ id, source?, fields, as? })` {#createflattendata-id-source-fields-as}
+
+Expand parallel array fields by matching index. Each source row produces as many rows as its
+longest selected array, preserving source-row order followed by array-index order. Shorter
+arrays pad with `null`; this is not a Cartesian product. Raw ancestor records remain unchanged.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+const records = [
+  { amounts: [1, 2], labels: ["A", "B"], group: "alpha" },
+  { amounts: [3, 4, 5], labels: ["C", "D"], group: "beta" }
+];
+const program = chart()
+  .createCanvas()
+  .createData({ values: records })
+  .createFlattenData({ id: "expanded", fields: ["amounts", "labels"], as: ["amount", "label"] })
+  .createScatterPlot({ x: "amount", y: "amount", guides: false });
+```
+
+The derived data has five rows, ending with `amount: 5, label: null`. Every row also keeps
+its original `amounts`, `labels` and `group` cells. The same creation chain works with
+`chart` imported from `ggaction/basic`.
+
+`fields` contains 1–64 unique names available in the source schema. Per-row null or missing
+arrays behave as empty arrays; other non-array values reject. If every selected array in a
+row is empty, that row produces no output. Elements retain their existing JSON values.
+
+`as` defaults to `fields`. Explicit aliases must be unique and match the number of fields.
+Default aliases replace the selected arrays only in derived records, preserving the raw
+ancestor. Aliases cannot overwrite an unrelated source column. Output is limited to 10,000
+rows; invalid input and overflow leave the earlier program unchanged.
+
+The Full entry point supports `editFlattenData({target, fields?, as?, dependents?})` and the
+same normalized `flatten` definition through `editDerivedData`. See
+[data revisions](./api/data/revisions-and-removal/#editing-derived-data) for atomic dependent replay.
+
 <!-- Source: /api/data/expressions-and-normalization/ -->
 
 # Expressions and Normalization
@@ -38898,6 +39042,11 @@ than missing cells.
 # Data Revisions and Removal
 
 [Family overview](./api/data/source-and-derived/) · [Exact action lookup](./reference/actions/)
+
+Aligned-array datasets use `editFlattenData({target, fields?, as?, dependents?})` in the Full entry point.
+Basic supports creation without expanding its public editing surface. Alias roles follow the original
+input field, so alias changes rebind compatible direct consumers. When changing the number of selected
+fields, provide a matching alias array. Generic `editDerivedData` accepts the same `flatten` definition.
 
 ## Editing derived data {#editing-derived-data}
 
@@ -40786,11 +40935,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:fc85f09897e981ce7238c8a90de044cc91218811f7fcbd33529d3869dc1749ed` |
+| Contract fingerprint | `sha256:feb2bd7f280c7598943d738360d13769062b3fb81d24bc44215fdfb4e8ba713d` |
 | Example and dataset source | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
-| Runtime source commit | `c1484d37ded8459b9cb81be06d30b80099d3bb8d` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 284 |
+| Declared actions here | 286 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

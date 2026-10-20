@@ -197,3 +197,46 @@ The default fields are `<value>_start`, `<value>_end`, `<value>_value`, and
 `<value>_share`; use `as` to rename all four roles. Stack, fill, and center
 require non-negative values. Diverging accumulates positive and negative values
 separately from zero. Zero cells remain as zero-thickness rows with share 0.
+
+## `createFlattenData({ id, source?, fields, as? })` {#createflattendata-id-source-fields-as}
+
+Expand parallel array fields by matching index. Each source row produces as many rows as its
+longest selected array, preserving source-row order followed by array-index order. Shorter
+arrays pad with `null`; this is not a Cartesian product. Raw ancestor records remain unchanged.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const records = [
+  { amounts: [1, 2], labels: ["A", "B"], group: "alpha" },
+  { amounts: [3, 4, 5], labels: ["C", "D"], group: "beta" }
+];
+const program = chart()
+  .createCanvas()
+  .createData({ values: records })
+  .createFlattenData({ id: "expanded", fields: ["amounts", "labels"], as: ["amount", "label"] })
+  .createScatterPlot({ x: "amount", y: "amount", guides: false });
+```
+
+The derived data has five rows, ending with `amount: 5, label: null`. Every row also keeps
+its original `amounts`, `labels` and `group` cells. The same creation chain works with
+`chart` imported from `ggaction/basic`.
+
+`fields` contains 1–64 unique names available in the source schema. Per-row null or missing
+arrays behave as empty arrays; other non-array values reject. If every selected array in a
+row is empty, that row produces no output. Elements retain their existing JSON values.
+
+`as` defaults to `fields`. Explicit aliases must be unique and match the number of fields.
+Default aliases replace the selected arrays only in derived records, preserving the raw
+ancestor. Aliases cannot overwrite an unrelated source column. Output is limited to 10,000
+rows; invalid input and overflow leave the earlier program unchanged.
+
+The Full entry point supports `editFlattenData({target, fields?, as?, dependents?})` and the
+same normalized `flatten` definition through `editDerivedData`. See
+[data revisions](./revisions-and-removal.md#editing-derived-data) for atomic dependent replay.

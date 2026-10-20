@@ -87,6 +87,19 @@ Axis 전용 typography는 기존 theme frame의 partial token을 사용한다. �
 active font 기본값을 읽고, theme 변경 시 기존 guide config와 concrete text bounds를 함께
 갱신한다. Facet 초기 header 스타일은 기존 header config에 정규화하며 editor와 같은 검증을 사용한다.
 
+병렬 배열 expansion은 기존 derived-data 계층을 사용한다. 순수 `grammar/flatten.js`가
+index-aligned row/null padding과 한도를 소유하고, wrapped creator/materializer가 정규화한
+`flatten` 정의·typed schema lineage·immutable values를 기존 dataset에 저장한다. Full의
+derived revision/replay와 statistical facet topology가 같은 registry를 소비한다. Basic은
+생성·materialization만 추가하며 편집 surface는 늘리지 않는다. Renderer와 자동 compiler
+경계는 변하지 않는다. 정확한 공개 계약은 `contract/current/CORE.md`가 소유한다. 새 grammar/action module2개로
+package entry는602→604다. 마지막 grammar 검증을 포함한 staging unpacked4129044bytes는
+4129000을44bytes 초과하여 기존 최소1000단위 정책으로4130000까지 조정했다. Packed의
+853242bytes 측정은854000, search의837668bytes 측정은838000한도로만 반영하며 이전
+한도 통과를 주장하지 않는다. 정확한 최종 수치와 browser gzip은 설치 consumer evidence가
+소유한다. Full gzip423024와 Basic209555bytes는 각각 이전 한도423000/209000을
+24/555bytes 초과해 최소1000단위424000/210000으로 조정했다. SVG25000은 유지한다.
+
 ## 전체 계층
 
 ```text

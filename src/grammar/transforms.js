@@ -29,6 +29,7 @@ import {
   validateFilterTransform
 } from "./filter.js";
 import { normalizeFoldTransform, validateFoldTransform } from "./fold.js";
+import { normalizeFlattenTransform, validateFlattenTransform } from "./flatten.js";
 import {
   requestedGradientProfileTransform,
   validateGradientProfileTransform
@@ -380,6 +381,17 @@ const TRANSFORM_POLICIES = Object.freeze({
     editable: true,
     normalizeEdit: normalizeFilterTransformEdit,
     outputRoles: () => ({})
+  }),
+  flatten: Object.freeze({
+    ...findTransformTopology("flatten"),
+    validate: validateFlattenTransform,
+    materializeOp: "materializeFlattenData",
+    replayTransform: requestedTransform,
+    editable: true,
+    normalizeEdit: normalizeSimple(normalizeFlattenTransform),
+    outputRoles: transform => Object.fromEntries(
+      transform.fields.map((field, index) => [`value:${field}`, transform.as[index]])
+    )
   }),
   fold: Object.freeze({
     ...findTransformTopology("fold"),

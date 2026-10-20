@@ -33,6 +33,7 @@ const CREATOR_BY_TYPE = Object.freeze({
   density: "createDensityData",
   ecdf: "createECDFData",
   filter: "filterData",
+  flatten: "createFlattenData",
   fold: "createFoldData",
   impute: "createImputedData",
   interval: "createIntervalData",
@@ -53,6 +54,7 @@ const REVISION_ROLE = Object.freeze({
   density: "DensityData",
   ecdf: "ECDFData",
   filter: "FilteredData",
+  flatten: "FlattenData",
   fold: "FoldData",
   impute: "ImputedData",
   interval: "IntervalData",
@@ -477,6 +479,9 @@ export const editComputedData = /* @__PURE__ */ focusedEditor(
 export const editFilteredData = /* @__PURE__ */ focusedEditor(
   "editFilteredData", "filter", ["field", "oneOf", "noneOf", "predicate", "range", "nulls"]
 );
+export const editFlattenData = /* @__PURE__ */ focusedEditor(
+  "editFlattenData", "flatten", ["fields", "as"]
+);
 export const editFoldData = /* @__PURE__ */ focusedEditor(
   "editFoldData", "fold", ["fields", "as"]
 );
@@ -549,6 +554,7 @@ export const EDIT_DERIVED_DATA_ACTIONS = Object.freeze({
   editDerivedData,
   editComputedData,
   editFilteredData,
+  editFlattenData,
   editFoldData,
   editSummaryData,
   editBinData,

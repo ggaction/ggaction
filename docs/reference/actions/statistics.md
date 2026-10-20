@@ -97,6 +97,43 @@ members using the same edge rules as Histogram.
 [Source and Derived Data](../../api/data/source-and-derived.md#createbindata-id-source-field-binoptions)
 
 
+## `createFlattenData`
+
+**API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createFlattenData(options: FlattenDataOptions): ChartProgram;
+```
+
+Named option contracts: [`FlattenDataOptions`](./../types.md#type-flattendataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `fields` | Required | `readonly string[]` |
+| `as` | Optional / branch-dependent | `readonly string[] \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createFlattenData({ id, source?, fields, as? })
+```
+
+Expand parallel array columns into index-aligned rows; shorter arrays pad with null.
+Retain raw ancestors and original row/index order. Full and Basic support creation.
+[Aligned array data](../../api/data/summaries-and-shaping.md#createflattendata-id-source-fields-as)
+
+
 ## `createFoldData`
 
 **API layer:** user-facing. **Authoring roles:** H1.
@@ -394,6 +431,36 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `as` | Optional / branch-dependent | `string \| undefined` |
 | `expression` | Optional / branch-dependent | `ComputedExpression \| undefined` |
+
+</details>
+
+Behavior, inference, resets, and errors: [Focused statistical data editing](./statistics.md#focused-statistical-data-editing).
+
+
+
+## `editFlattenData`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editFlattenData(options: EditFlattenDataOptions): ChartProgram;
+```
+
+Named option contracts: [`EditFlattenDataOptions`](./../types.md#type-editflattendataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string` |
+| `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
+| `fields` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `as` | Optional / branch-dependent | `readonly string[] \| undefined` |
 
 </details>
 
@@ -1731,6 +1798,7 @@ The vertical grid follows continuous original x and rejects explicit `bandPositi
 
 ```javascript
 editComputedData({ target, as?, expression?, dependents? })
+editFlattenData({ target, fields?, as?, dependents? })
 editFoldData({ target, fields?, as?, dependents? })
 editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })
 editBinData({ target, field?, maxBins? | step? | boundaries?, extent?, nice?, zero?, includeEmpty?, members?, as?, weight?, dependents? })

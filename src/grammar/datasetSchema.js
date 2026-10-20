@@ -354,6 +354,11 @@ export function deriveTransformSchema(inputSchema, transform, values, { sourceId
     for (const [role, name] of Object.entries(transform.as ?? {})) {
       push(generatedField(name, "number", definition, role, [transform.field]));
     }
+  } else if (transform.type === "flatten") {
+    fields = input.fields.map(field => ({ ...field }));
+    transform.fields.forEach((field, index) => {
+      push(generatedField(transform.as[index], "unknown", definition, `value:${field}`, [field]));
+    });
   } else if (transform.type === "fold") {
     fields = input.fields.filter(field => !transform.fields.includes(field.name)).map(field => ({ ...field }));
     push(generatedField(transform.as.key, "string", definition, "key", transform.fields));

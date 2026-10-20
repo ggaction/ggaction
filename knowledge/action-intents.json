@@ -901,6 +901,11 @@
       "regression statistics dataset",
       "linear fit coefficients",
       "R-squared and observation count"
+    ],
+    "FlattenData": [
+      "aligned array data",
+      "parallel array expansion",
+      "zip arrays into rows"
     ]
   },
   "summaryOverrides": {
@@ -1567,6 +1572,24 @@
     "editRegressionStatisticsData": {
       "target": "fitStatistics",
       "source": "anotherFit"
+    },
+    "createFlattenData": {
+      "id": "expanded",
+      "fields": [
+        "amounts",
+        "labels"
+      ],
+      "as": [
+        "amount",
+        "label"
+      ]
+    },
+    "editFlattenData": {
+      "target": "expanded",
+      "as": [
+        "amount",
+        "category"
+      ]
     }
   },
   "callPatternOverrides": {

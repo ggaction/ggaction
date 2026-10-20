@@ -1,0 +1,127 @@
+{
+  "status": "verified-source-and-installed-package-awaiting-cohort-adoption-and-regular-release",
+  "issue": 240,
+  "createdAt": "2026-10-20T13:07:15.553Z",
+  "approval": "APPROVAL.json",
+  "proposal": "PROPOSAL.md",
+  "inputs": [
+    {
+      "path": "src/grammar/flatten.js",
+      "sha256": "0c04cbe0ad2fd97e03c18bdeb724c94495cd68419495a76da037b605bed2cb02"
+    },
+    {
+      "path": "src/actions/data/flatten.js",
+      "sha256": "691b5423193b11f12e5d07007ba63f7b67c2caae3e842f93a49170eecd330729"
+    },
+    {
+      "path": "src/grammar/transforms.js",
+      "sha256": "91ce5dd14928f3e803f23b45c864d6b720a19a653e8190ae8f888dd964479164"
+    },
+    {
+      "path": "src/grammar/datasetSchema.js",
+      "sha256": "32a2532da7ff707d762baceb1c97fd8f8f3cb16620443bb3a7d8610ecae8ba23"
+    },
+    {
+      "path": "src/grammar/facets/dependencies.js",
+      "sha256": "5eaee3aa4569056130ee2e44f5d72da7c7f19595bbb689e545f5775a6e542e9f"
+    },
+    {
+      "path": "src/actions/data/edit.js",
+      "sha256": "e76f07eb4191cd317a5facc6f7d947c904d248e639f7f8918439dfac1f56bd46"
+    },
+    {
+      "path": "src/actions/data/basic.js",
+      "sha256": "75f37b3dee7f217ea02573aded360a24632931c5615c6ab19348619fb30a2672"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "d67af50d1a3af24a6666f23ac890696a437d59926f26907949720a8f3f8ef3ff"
+    },
+    {
+      "path": "types/basic.d.ts",
+      "sha256": "9b6c536b488213682f726dbd3dac45ab7005a4efb18cca1ccf3fd031269288bf"
+    },
+    {
+      "path": "test/unit/actions/data/flatten-data.test.js",
+      "sha256": "9a3771c93abf05f893a34c0b4560e469666e3f010da08c503b29c8b4db4f7d11"
+    }
+  ],
+  "normalSuite": {
+    "pass": 4846,
+    "fail": 0,
+    "log": ".artifacts/parallel-array-expansion-normal-v3.log",
+    "sha256": "c180ebb1fdc8112f796caa23f2eda33a857245213c630fe0e06b1c5836a00bba"
+  },
+  "focusedSourceAndLegacy": {
+    "pass": 31,
+    "log": ".artifacts/parallel-array-expansion-focused-v6.log"
+  },
+  "metadataFocused": {
+    "pass": 64,
+    "log": ".artifacts/parallel-array-expansion-metadata-focused-v1.log"
+  },
+  "installedConsumer": {
+    "groups": 62,
+    "sha256": "e37945af174be7c98c4eeb4752643cdf2121d04e9764fb240b4478350d5f106b",
+    "log": ".artifacts/parallel-array-expansion-consumer-v2.log",
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 536,
+        "minifiedBytes": 1560281,
+        "gzipBytes": 423024
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 318,
+        "minifiedBytes": 742908,
+        "gzipBytes": 209555
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 19,
+        "minifiedBytes": 23548,
+        "gzipBytes": 7567
+      }
+    }
+  },
+  "package": {
+    "entries": 604,
+    "packedBytes": 853265,
+    "unpackedBytes": 4129044,
+    "limits": {
+      "entries": 604,
+      "packedBytes": 854000,
+      "unpackedBytes": 4130000
+    }
+  },
+  "search": {
+    "bytes": 837668,
+    "limit": 838000
+  },
+  "earlierFailuresPreserved": [
+    ".artifacts/parallel-array-expansion-focused-v1.log",
+    ".artifacts/parallel-array-expansion-focused-v2.log",
+    ".artifacts/parallel-array-expansion-focused-v4.log",
+    ".artifacts/parallel-array-expansion-normal-v1.log",
+    ".artifacts/parallel-array-expansion-normal-v2.log",
+    ".artifacts/parallel-array-expansion-consumer-v1.log"
+  ],
+  "rawAncestorsUnchanged": true,
+  "defaultAliasReplacementOnlyInDerivedRows": true,
+  "outputRows": 10000,
+  "fields": 64,
+  "nullPadding": true,
+  "publicCallbackSupportAdded": false,
+  "rendererChanged": false,
+  "BasicCreationOnly": true,
+  "FullRevisionAndPersistence": true,
+  "explicitCommonExpansionFacetBoundary": true,
+  "fullHistoricalCohortCompatibility": false,
+  "authoringRuntimeAdopted": false,
+  "npmPublished": false,
+  "documentationDeployed": false
+}
