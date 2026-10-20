@@ -76,6 +76,7 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/grammar/lineSeries.js",
   "src/grammar/pathSeries.js",
   "src/grammar/scales/colorConsumers.js",
+  "src/actions/encodings/position/policies/line.js",
   "src/grammar/areaSeries.js",
   "src/grammar/summary.js",
   "src/grammar/statistics/confidenceInterval.js",

@@ -40,6 +40,7 @@ ordinal domain. Missing or null colors and valid categories outside that domain 
 raw rows, vertices, separate series, and explicit legend samples remain intact. This does not extend
 to aggregate, binned, parallel, or polar lines. Removing the domain or fallback must remain compatible
 with every consumer and its data; incompatible edits reject atomically.
+The same restriction applies to the first position on an otherwise incomplete line.
 
 Existing scales can be changed with `editScale`:
 

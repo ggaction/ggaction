@@ -3,6 +3,8 @@ import {
   validateAggregateFieldType
 } from "../../../../grammar/aggregate.js";
 import { emptyPositionPolicy, resolveBin } from "./common.js";
+import { findSemanticScale } from "../../../../selectors/scales.js";
+import { validateCategoricalColorConsumer } from "../../../../grammar/scales/colorConsumers.js";
 
 function rejectStack(args, channel) {
   if (args.stack !== undefined) {
@@ -24,6 +26,14 @@ export function resolveLinePositionPolicy({
   args,
   fieldType
 }) {
+  const color = layer.encoding?.color;
+  const colorScale = color === undefined ? undefined : findSemanticScale(program, color.scale);
+  if (colorScale !== undefined) {
+    validateCategoricalColorConsumer({
+      ...layer,
+      encoding: { ...layer.encoding, [channel]: { ...layer.encoding[channel], ...args, fieldType } }
+    }, color, colorScale);
+  }
   const polar = ["theta", "radius"].includes(channel);
   const config = program.markConfigs[layer.id] ?? {};
   if (polar) {

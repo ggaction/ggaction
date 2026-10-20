@@ -103,6 +103,19 @@ test("explicit groups stay strict and require one raw color value within each se
   atomic(mixed, q => q.encodeColor({field: "kind", scale}), /one value/);
 });
 
+test("unsupported first positions reject before mutating an incomplete fallback line", () => {
+  const p = base().createLineMark({id: "paths"}).encodeColor({field: "kind", scale});
+  for (const operation of [
+    q => q.encodeTheta({field: "x"}),
+    q => q.encodeR({field: "y"}),
+    q => q.encodeX({field: "x", bin: {maxBins: 4}}),
+    q => q.encodeY({field: "y", aggregate: "mean"}),
+    q => q.encodeParallelCoordinates({dimensions: [{field: "x"}, {field: "y"}]})
+  ]) atomic(p, operation, /Cartesian line/);
+  assert.equal(paths(p.encodeX({field: "x"}).encodeY({field: "y"})).length, 1);
+  assert.doesNotThrow(() => base().createLineMark({id: "paths"}).encodeTheta({field: "x"}));
+});
+
 test("scale, appearance, canvas and grouping edits retain fallback ownership without changing raw rows", () => {
   const values = missing.map(row => ({...row, group: "one", width: 2, alpha: 0.6}));
   const p = colored(values).createLegend({channels: ["color"], title: "Line"});

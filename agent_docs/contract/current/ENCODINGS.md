@@ -1170,6 +1170,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   mismatch는 오류지만 유효한 layout transition은 layoutSeries로 수행한다. 실패 시 이전 program은 불변이다.
 - Line color and stroke-dash assignments may precede complete positions. Field scales resolve immediately, while
   line graphics stay empty until position prerequisites are complete. Compatible encoding orders converge.
+- Categorical unknown color가 먼저 있으면 unsupported polar/bin/aggregate position은 첫 partial assignment부터
+  coordinate/semantic/trace 변경 전에 거부한다. Direct Cartesian position 순서는 계속 호환된다.
 - Categorical Cartesian Line unknown은 explicit nonempty ordinal domain이 필요하다. 원본 rows/keys/order와 vertex를 유지하며
   missing/null/out-of-domain paint만 fallback으로 mapping한다. 다른 raw category는 같은 fallback이라도 합치지 않는다.
   Explicit group은 여전히 strict nominal이며 한 series에 raw color 하나만 허용한다. Aggregate/bin/parallel/polar line은 거부한다.

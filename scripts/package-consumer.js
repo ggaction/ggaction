@@ -99,6 +99,10 @@ async function testNodeConsumer(directory) {
 
     for (const factory of [chart,basicChart]) {
       const lineRows=[undefined,null,"Reference"].flatMap(kind=>[0,1].map(x=>({x,y:x,...(kind===undefined?{}:{kind})})));
+      const pendingColor=factory().createCanvas().createData({values:lineRows}).createLineMark()
+        .encodeColor({field:"kind",scale:{domain:["Reference"],unknown:"transparent"}});
+      assert.throws(()=>pendingColor.encodeX({field:"x",bin:{maxBins:4}}),/Cartesian line/);
+      if(factory===chart) assert.throws(()=>pendingColor.encodeTheta({field:"x"}),/Cartesian line/);
       const missingColor=factory().createCanvas({width:440,height:220,margin:{left:20,right:160,top:10,bottom:20}})
         .createData({id:"raw",values:lineRows})
         .createLinePlot({id:"paths",x:"x",y:"y",color:{field:"kind",scale:{domain:["Regression","Reference"],range:["firebrick","black"],unknown:"transparent"}},guides:false})

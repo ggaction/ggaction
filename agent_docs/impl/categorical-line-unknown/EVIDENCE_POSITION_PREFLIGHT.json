@@ -1,0 +1,188 @@
+{
+  "status": "position-preflight-followup-verified-not-activated",
+  "reviewer": "codex",
+  "previousImplementationCommit": "544cf4068f73fda33990ca23823dd8c861166e4e",
+  "previousEvidence": "EVIDENCE.json",
+  "previousEpochNativeCompatibility": "/Users/hyeonjeon/Projects/vegalite-ggaction-translation/reports/v12-runtime-batch200-issue236-current1275-compatibility.json",
+  "oldIncompletePositionReproduction": "/Users/hyeonjeon/Projects/vegalite-ggaction-translation/reports/v12-issue236-early-position-preflight-repro.json",
+  "normal": {
+    "tests": 4817,
+    "pass": 4817,
+    "fail": 0
+  },
+  "focused": {
+    "tests": 31,
+    "pass": 31,
+    "fail": 0
+  },
+  "installedPackageChecks": [
+    "node",
+    "linear-regression-statistics-cache-and-source-revision",
+    "extension",
+    "pdf",
+    "png",
+    "svg",
+    "inspection",
+    "numeric-font-weight",
+    "point-jitter",
+    "point-packing",
+    "mark-label-removal",
+    "selected-mark-labels",
+    "semantic-label-placement",
+    "beeswarm-plot",
+    "raincloud-plot",
+    "path-order",
+    "time-unit-data",
+    "summary-data",
+    "bin-data",
+    "fold-data",
+    "computed-data",
+    "derived-data-editing",
+    "safe-resource-removal",
+    "advanced-authoring-integration",
+    "normalized-data",
+    "complete-data",
+    "imputed-data",
+    "stack-data",
+    "window-data",
+    "bin2d-data",
+    "binned-heatmap",
+    "parallel-coordinates",
+    "parallel-dimension-scale-editing",
+    "offset-scale-editing",
+    "stroke-color-encoding-and-legends",
+    "atomic-channel-encoding",
+    "statistical-references",
+    "coordinate-aspect-and-polar-frame-editing",
+    "facet-grid-repeat-and-named-composition-editing",
+    "non-cartesian-facet-grid-and-repeat",
+    "horizon",
+    "violin-plot",
+    "polar-radar-rug-strip-ecdf-facades",
+    "right-categorical-legend-offset",
+    "grouped-corner-and-free-legend-placement",
+    "sequential-palette-count",
+    "ranged-numeric-datum-wrapper-parity",
+    "neutral-hcl-hue-borrowing",
+    "facet-numeric-legend-inference",
+    "explicit-fold-facet-partition",
+    "shared-facet-top-lane",
+    "explicit-axis-and-border-underlays",
+    "typescript",
+    "basic-entry-runtime-and-types",
+    "tutorial-consumers",
+    "minimal-browser-bundle-measurement",
+    "private-export-rejection",
+    "installed-local-mcp",
+    "direct-mcp-byte-equality",
+    "task-packet-v5-authoring-execution",
+    "explicit-unresolved-docs-fallback",
+    "terminal-unsupported-no-fallback"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 534,
+      "minifiedBytes": 1557546,
+      "gzipBytes": 422056
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 316,
+      "minifiedBytes": 739395,
+      "gzipBytes": 208486
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 19,
+      "minifiedBytes": 23548,
+      "gzipBytes": 7567
+    }
+  },
+  "package": {
+    "entries": 602,
+    "packedBytes": 851802,
+    "unpackedBytes": 4119146
+  },
+  "renderer": {
+    "status": "pass",
+    "dimensions": [
+      440,
+      220
+    ],
+    "rawRows": 6,
+    "paths": 3,
+    "transparentPaths": 2,
+    "normalReferencePaths": 1,
+    "nativePngDecodedPrimitiveExact": true,
+    "nativePdfDecodedPrimitiveExact": true,
+    "svgTransparentPathCount": 2,
+    "nativePngPixelsSha256": "21974880dd38c33e3c1ca2519bd864788f739da0f4c4e5e4337572db20c99d65",
+    "nativePdfPixelsSha256": "e0b0d8b32f22d252e6c71379dc59b804d2164ce02d2e90c1ffdc1ce9cb7eaad5",
+    "pixelTolerance": 0,
+    "chartPixelsInspected": false,
+    "schoolRequests": 0
+  },
+  "logs": {
+    ".artifacts/categorical-line-unknown-position-normal.log": "966ab83fa43cbf44cba607a20c88413af838c4b0d59076b17eabfc34e353df34",
+    ".artifacts/categorical-line-unknown-position-consumer.log": "2141dc29bfd43630a9d3a3afc4db7f8322c70f59932b0e04715088d9d51f0e08",
+    ".artifacts/categorical-line-unknown-position-followup.log": "6ddc86e51dec7970701a259b68303ab00d978fa2449831e00a6d167da2039137",
+    ".artifacts/categorical-line-unknown-position-package.log": "aa7858a3b95fc543323c85bd35887cc8d39c5b87922c09401c48e294d297e69e",
+    ".artifacts/categorical-line-unknown-position-package-v2.log": "7fbc3f13a41d5bb725b1d82bf3ba78fe264e054ebdc16d10b36d68173d335976",
+    ".artifacts/categorical-line-unknown-position-render.log": "4dc865ee07ff74e73f09c3687b3c327e9e48609547c1e511e00a0a5e0727b664"
+  },
+  "sourceBindings": [
+    {
+      "path": "agent_docs/contract/current/ENCODINGS.md",
+      "sha256": "1ab2a938684c47723768edf1e9c79100d0bf1dd1495b657fdc534170b720ae21"
+    },
+    {
+      "path": "docs/_data/provenance.json",
+      "sha256": "6e7ae4ef58c5cd76ced2ad845e0d085170ca472172eca1e1e80eac129c1a87d8"
+    },
+    {
+      "path": "docs/api/scales.md",
+      "sha256": "8473e52fe26ad711b04127884d208ff2363a3365f628b0f3ea3a16de477218b3"
+    },
+    {
+      "path": "docs/doc-provenance.json",
+      "sha256": "6e7ae4ef58c5cd76ced2ad845e0d085170ca472172eca1e1e80eac129c1a87d8"
+    },
+    {
+      "path": "docs/llms-full.txt",
+      "sha256": "ec1b8a3e6727fbe1ef3fcb606e77e8909f230342214d99938464af64fad7a497"
+    },
+    {
+      "path": "docs/llms-manifest.json",
+      "sha256": "4385f3d7456844d1aa6baf3faae28a7bce21396f59623243b826674c4dd56eaa"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "734066c381d3b48fccb73e3f9c32d398ff093bbe54a828af214fe1b8e99a98ad"
+    },
+    {
+      "path": "scripts/package-consumer.js",
+      "sha256": "d84a5a280b6f093c5481f88c726f760f3206d6cf832adfa037a8b733b99bc372"
+    },
+    {
+      "path": "src/actions/encodings/position/policies/line.js",
+      "sha256": "7a91aa380b20667a517935555ab8132138c59baa77cace53fe57866398592f8f"
+    },
+    {
+      "path": "test/unit/actions/encodings/categorical-line-unknown.test.js",
+      "sha256": "8f1335191d80e01f22d17548f6ad513f8adf80f3e9f08cbf7f0e0476d1513625"
+    }
+  ],
+  "publicApiShapeChanged": false,
+  "persistedSchemaChanged": false,
+  "resourceCapsChanged": false,
+  "verificationToleranceChanged": false,
+  "currentCohortNewCandidateVerification": "pending",
+  "schoolRequests": 0,
+  "source0702Successful": false,
+  "registryPublished": false,
+  "nextPublicReleaseAt": 1413
+}

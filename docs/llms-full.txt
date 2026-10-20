@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:cabee09cfc5f91f2f5c25cd2ed105b27fc807fb5b86abedb047970ac4b4b02cd. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:69cd1a0c2e9c09f93a983b7478e187e6fd2126a8ca2e632bf4400a44684fcd9e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -11552,6 +11552,7 @@ ordinal domain. Missing or null colors and valid categories outside that domain 
 raw rows, vertices, separate series, and explicit legend samples remain intact. This does not extend
 to aggregate, binned, parallel, or polar lines. Removing the domain or fallback must remain compatible
 with every consumer and its data; incompatible edits reject atomically.
+The same restriction applies to the first position on an otherwise incomplete line.
 
 Existing scales can be changed with `editScale`:
 
@@ -40771,7 +40772,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:cabee09cfc5f91f2f5c25cd2ed105b27fc807fb5b86abedb047970ac4b4b02cd` |
+| Contract fingerprint | `sha256:69cd1a0c2e9c09f93a983b7478e187e6fd2126a8ca2e632bf4400a44684fcd9e` |
 | Example and dataset source | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
