@@ -109,6 +109,7 @@ const rematerializeRectMark = /* @__PURE__ */ action(
     const highlighted = rematerializeHighlightBaseline(this, {
       target: id,
       operation: "rematerializeRectMark",
+      scales: args.scales,
       resetProperty: "items",
       resetValue: []
     });

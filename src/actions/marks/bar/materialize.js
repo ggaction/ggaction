@@ -74,6 +74,7 @@ export const rematerializeBarMark = /* @__PURE__ */ action(
     const highlighted = rematerializeHighlightBaseline(this, {
       target: id,
       operation: "rematerializeBarMark",
+      scales: args.scales,
       resetProperty: "items",
       resetValue: []
     });

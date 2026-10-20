@@ -10,7 +10,8 @@ import {
 } from "../../materialization/dependencies.js";
 import {
   getLayerScaleIds,
-  getMarkMaterializationStep
+  getMarkMaterializationStep,
+  reusePlannedMarkScales
 } from "../../materialization/marks/index.js";
 import { buildMaterializationPlan } from "../../materialization/planner.js";
 import { requireDataset } from "../../selectors/datasets.js";
@@ -218,16 +219,17 @@ function applyResolvedDomains(
   const marks = materializeMarks ? next.semanticSpec.layers.flatMap(layer => {
     const step = getMarkMaterializationStep(next, layer);
     if (step === undefined) return [];
-    return ["bar", "line", "area", "arc", "rect"].includes(layer.mark?.type)
-      ? [{ ...step, args: { ...step.args, scales: false } }]
-      : [step];
+    return [step];
   }) : [];
   const guides = Object.keys(resolution.scales).flatMap(id =>
     planScaleGuideRematerialization(next, id)
   );
   return applyMaterializationPlan(
     next,
-    buildMaterializationPlan({ marks, guides })
+    buildMaterializationPlan({
+      marks: reusePlannedMarkScales(next, marks, Object.keys(resolution.scales)),
+      guides
+    })
   );
 }
 

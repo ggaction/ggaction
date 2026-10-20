@@ -165,6 +165,7 @@ const rematerializeArcMark = /* @__PURE__ */ action(
     const highlighted = rematerializeHighlightBaseline(this, {
       target: id,
       operation: "rematerializeArcMark",
+      scales: args.scales,
       resetProperty: "length",
       resetValue: 0
     });

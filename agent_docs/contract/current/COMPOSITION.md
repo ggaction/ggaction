@@ -33,6 +33,9 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
   `r` resolves the semantic `radius` binding; `radius` is not an accepted facet-policy alias. The single
   `parallelDimensions` policy applies separately to every dimension scale and never unions different dimensions.
   Explicit semantic domains override either policy. Histogram children share one bin-boundary set only when x is shared.
+- Box-plot body, whisker/cap/median rules, and outliers consume the same resolved facet scales;
+  component or highlight rematerialization must not replace shared domains with cell-local domains.
+  Evidence: `test/unit/actions/composition/facet-box-geometry.test.js`.
 - 각 cell의 명시적 tick/label/grid values는 해결된 domain과 교집합으로 파생한다. 원본 guide intent는 parent에 보존하므로 shared policy로 돌아가면 전체 선택이 복원된다. Unit의 잘못된 명시적 값 검증은 그대로 유지한다.
 - Filter, regression, density, interval, box-summary, and box-outlier dependencies replay topologically from each
   filtered cell source through `replayDerivedData`. Every affected layer is explicitly rebound through

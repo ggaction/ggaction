@@ -48,6 +48,7 @@ const MARK_MATERIALIZATION_POLICIES = Object.freeze({
   area: Object.freeze({
     canMaterialize: canMaterializeArea,
     op: "rematerializeAreaMark",
+    acceptsResolvedScales: true,
     positionEncoding: Object.freeze({ incomplete: "scale", scaleFirst: true }),
     encoding: Object.freeze({
       sharedChannels: Object.freeze(["color", "stroke"]),
@@ -66,12 +67,14 @@ const MARK_MATERIALIZATION_POLICIES = Object.freeze({
   bar: Object.freeze({
     canMaterialize: canMaterializeBar,
     op: "rematerializeBarMark",
+    acceptsResolvedScales: true,
     positionEncoding: Object.freeze({ incomplete: "scale", scaleFirst: false }),
     scaleApplication: Object.freeze({ default: "defer" })
   }),
   rule: Object.freeze({
     canMaterialize: canMaterializeRule,
     op: "rematerializeRuleMark",
+    acceptsResolvedScales: true,
     positionEncoding: Object.freeze({ incomplete: "mark", scaleFirst: false }),
     scaleApplication: Object.freeze({ default: "defer" })
   }),
@@ -91,6 +94,7 @@ const MARK_MATERIALIZATION_POLICIES = Object.freeze({
   rect: Object.freeze({
     canMaterialize: canMaterializeRect,
     op: "rematerializeRectMark",
+    acceptsResolvedScales: true,
     positionEncoding: Object.freeze({ incomplete: "scale", scaleFirst: true }),
     encoding: Object.freeze({ scaleFirst: true }),
     scaleApplication: Object.freeze({

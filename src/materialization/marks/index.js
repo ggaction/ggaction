@@ -167,7 +167,8 @@ export function reusePlannedMarkScales(program, steps, scaleIds) {
   const resolved = new Set(scaleIds);
   return steps.map(step => {
     const layer = findLayer(program, step.args?.id);
-    if (layer === undefined || getMarkMaterializationPolicy(layer)?.acceptsResolvedScales !== true ||
+    const policy = layer === undefined ? undefined : getMarkMaterializationPolicy(layer);
+    if (policy?.acceptsResolvedScales !== true || step.op !== policy.op ||
         !getLayerScaleIds(layer).every(id => resolved.has(id))) return step;
     return { ...step, args: { ...step.args, scales: false } };
   });

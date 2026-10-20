@@ -154,6 +154,7 @@ const rematerializeAreaMark = /* @__PURE__ */ action(
     const highlighted = rematerializeHighlightBaseline(this, {
       target: id,
       operation: "rematerializeAreaMark",
+      scales: args.scales,
       resetProperty: "length",
       resetValue: 0
     });

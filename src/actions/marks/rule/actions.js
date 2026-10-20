@@ -48,7 +48,7 @@ const APPEARANCE_OPTIONS = Object.freeze([
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...APPEARANCE_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", "missing", ...APPEARANCE_OPTIONS]);
-const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
+const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
 const SPAN_OPTIONS = Object.freeze(["id", "orientation", "size"]);
 const DEFAULT_RULE_CONFIG = Object.freeze({
   stroke: DEFAULT_COLORS.mark,
@@ -191,10 +191,14 @@ const rematerializeRuleMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, REMATERIALIZE_OPTIONS, "rematerializeRuleMark");
+    if (args.scales !== undefined && typeof args.scales !== "boolean") {
+      throw new TypeError("rematerializeRuleMark scales must be a boolean.");
+    }
     const id = validateUserId(args.id, "Rule mark id");
     const highlighted = rematerializeHighlightBaseline(this, {
       target: id,
       operation: "rematerializeRuleMark",
+      scales: args.scales,
       resetProperty: "length",
       resetValue: 0
     });
@@ -226,8 +230,10 @@ const rematerializeRuleMark = /* @__PURE__ */ action(
         .filter(scale => scale !== undefined)
     )];
     let resolved = this;
-    for (const scaleId of scaleIds) {
-      resolved = resolved.rematerializeScale({ id: scaleId });
+    if (args.scales !== false) {
+      for (const scaleId of scaleIds) {
+        resolved = resolved.rematerializeScale({ id: scaleId });
+      }
     }
 
     const derived = deriveRuleValues(dataset.values, layer);
