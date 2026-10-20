@@ -17765,6 +17765,11 @@
           "type": "\"center\" | \"left\" | \"right\" | undefined"
         },
         {
+          "name": "overlap",
+          "required": false,
+          "type": "\"allow\" | \"error\" | undefined"
+        },
+        {
           "name": "baseline",
           "required": false,
           "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
@@ -17821,7 +17826,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisTitle({ target?, scale?, alongOffset?, align?, baseline?, text?, position?, at? })"
+        "createXAxisTitle({ target?, scale?, alongOffset?, align?, overlap?, baseline?, text?, position? })"
       ],
       "snippet": "program.createXAxisTitle({})",
       "errors": [],
@@ -17929,6 +17934,11 @@
           "type": "\"center\" | \"left\" | \"right\" | undefined"
         },
         {
+          "name": "overlap",
+          "required": false,
+          "type": "\"allow\" | \"error\" | undefined"
+        },
+        {
           "name": "baseline",
           "required": false,
           "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
@@ -17985,7 +17995,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisTitle({ target?, scale?, alongOffset?, align?, baseline?, text?, position?, at? })"
+        "createYAxisTitle({ target?, scale?, alongOffset?, align?, overlap?, baseline?, text?, position? })"
       ],
       "snippet": "program.createYAxisTitle({})",
       "errors": [],
@@ -18082,6 +18092,11 @@
           "type": "\"center\" | \"left\" | \"right\" | undefined"
         },
         {
+          "name": "overlap",
+          "required": false,
+          "type": "\"allow\" | \"error\" | undefined"
+        },
+        {
           "name": "baseline",
           "required": false,
           "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
@@ -18133,7 +18148,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisTitle({ target?, alongOffset?, align?, baseline?, text?, position?, at?, offset? })"
+        "editXAxisTitle({ target?, alongOffset?, align?, overlap?, baseline?, text?, position?, at? })"
       ],
       "snippet": "program.editXAxisTitle({ alongOffset: 1 })",
       "errors": [],
@@ -18230,6 +18245,11 @@
           "type": "\"center\" | \"left\" | \"right\" | undefined"
         },
         {
+          "name": "overlap",
+          "required": false,
+          "type": "\"allow\" | \"error\" | undefined"
+        },
+        {
           "name": "baseline",
           "required": false,
           "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
@@ -18281,7 +18301,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisTitle({ target?, alongOffset?, align?, baseline?, text?, position?, at?, offset? })"
+        "editYAxisTitle({ target?, alongOffset?, align?, overlap?, baseline?, text?, position?, at? })"
       ],
       "snippet": "program.editYAxisTitle({ alongOffset: 1 })",
       "errors": [],

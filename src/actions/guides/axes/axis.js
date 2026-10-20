@@ -39,7 +39,7 @@ const TITLE_OPTIONS = Object.freeze([
   "fontSize",
   "fontFamily",
   "fontWeight",
-  "alongOffset", "align", "baseline"
+  "alongOffset", "align", "baseline", "overlap"
 ]);
 
 function validateNested(value, supported, label) {

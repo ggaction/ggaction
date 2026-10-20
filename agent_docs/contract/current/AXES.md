@@ -34,7 +34,7 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - `position`: x는 `"bottom" | "top"`, y는 `"left" | "right"`를 사용하며 defaults는 bottom/left다.
 - `line`: `{ color?, lineWidth? }`; axis-line child에 전달한다.
 - `ticksAndLabels`: `{ count?, values?, ticks?, labels? }`; shared tick/label child에 전달한다.
-- `title`: `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight? }`.
+- `title`: `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight?, overlap? }`.
 - Effect: line → ticks/labels → title wrapped action 순서로 semantic guide와 concrete graphics를 만든다.
 - Complete axis는 선택한 position을 line, ticks/labels와 title child 모두에 전달한다.
 
@@ -97,10 +97,10 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - `wrap`: `"word" | "character"`, 기본값은 `"word"`다. 너무 긴 word는 Unicode code point 단위로 나눈다.
 - `lineHeight`: fontSize 이상의 finite number다. 생략하면 `fontSize * 1.2`다.
 - `overlap`: `"error" | "allow"`, 기본값은 `"error"`다. Allow는 label-label 교차만 허용하며 Canvas
-  overflow와 explicit axis-title collision은 계속 거부한다.
+  overflow는 계속 거부한다. 같은 축 제목이 명시적 `overlap: "allow"`를 저장한 경우에만 그 제목과의 교차도 허용한다.
   Axis title과 label의 교차는 실제 개별 concrete label item의 occupied bounds로 검사한다.
   Label collection 전체를 감싼 union의 빈 공간은 충돌로 보지 않으며 title/label 작성 순서와 무관하게
-  같은 최종 배치를 허용한다. 개별 label과 실제로 교차하는 explicit title은 계속 거부한다.
+  같은 최종 배치를 허용한다. 해당 제목의 정책이 생략 또는 `error`이면 개별 label과 실제로 교차하는 explicit title은 계속 거부한다.
 - `labelMap`: categorical/continuous Cartesian scale에서 쓰는 typed
   `readonly { value: DatasetScalar; label: string }[] | "auto"`다. `1`과 `"1"`은 서로 다른 key이고,
   `0`과 `-0`은 같은 key다. 중복 raw key는 거부하고 중복 label과 빈 label은 허용한다. Array는
@@ -135,7 +135,7 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
 ## Shared axis-title contract
 
 - Create: `text?`, `scale?`, `position?`, `at?`, `offset?`, `rotation?`, `color?`, `fontSize?`,
-  `fontFamily?`, `fontWeight?`; edit에서는 scale을 제외한다.
+  `fontFamily?`, `fontWeight?`, `overlap?`; edit에서는 scale을 제외한다.
 - `text`: non-empty string. 생략하면 unique connected field/aggregate 또는 density provenance에서 추론한다.
 - `at`: `"start" | "center" | "end"` 또는 continuous scale domain 안의 finite number; 기본 center.
 - `offset`: signed finite; positive outward, negative inward; inferred preferred defaults x `42`, y `52`.
@@ -151,6 +151,8 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
   graphic properties를 그대로 유지하고 multiline→single 편집은 stale `lines`만 제거한다.
 - Evidence: `test/unit/actions/guides/axis-title-hard-breaks.test.js` (네 방향, explicit rotation, blank lines,
   SVG/Canvas, immutable edit, Canvas/scale/facet replay, persistence, overflow/collision atomicity).
+
+- `overlap`: `"error" | "allow"`; 생략은 현재 엄격한 충돌 검사를 유지한다. `allow`는 이 제목과 같은 axis owner의 개별 레이블 교차만 허용한다. Canvas 이탈, 레이블끼리의 교차와 다른 owner 충돌은 별도 현재 규칙이다. 제목/레이블 생성·편집 순서와 Canvas·scale·data·facet 재구현에서 같은 title config를 읽는다. Edit 생략은 기존 정책을 보존하며 explicit `error` reset은 결합된 최종 배치가 유효할 때만 성공한다. 잘못된 값과 충돌 reset은 원자적으로 거부한다. 명시 정책은 기존 materialization title config에만 저장하며 기본 생략 경로에는 필드를 추가하지 않는다. Persistence는 손상된 값을 거부한다. Evidence: `test/unit/actions/guides/axis-title-overlap.test.js` 및 `test/contracts/axis-grid-offset-types.test.js`.
 
 ## Shared grid-direction contract
 

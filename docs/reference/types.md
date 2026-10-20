@@ -657,6 +657,8 @@ export interface AxisTitleOptions<P extends string> {
   /** Signed logical pixels: positive right for x, down for y, independent of scale reversal. */
   alongOffset?: number;
   align?: "left" | "center" | "right";
+  /** Defaults to error; allow permits only this title to intersect its own axis labels. */
+  overlap?: "error" | "allow";
   baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom";
   /** Hard breaks retain ordered lines with the chosen block baseline, spaced at 1.2 times fontSize. */
   text?: string;

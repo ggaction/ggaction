@@ -321,11 +321,41 @@ program.createXAxis({
 ```
 
 `overlap` defaults to `"error"`. Explicit `"allow"` permits label-to-label
-intersection while Canvas overflow and axis-title collisions still fail.
+intersection. Canvas overflow still fails; title-label collisions are controlled
+separately by the title policy below.
 `editXAxisLabels({ maxWidth: false })` or its y counterpart removes wrapping;
 that reset cannot include `wrap` or `lineHeight` in the same call. Canvas and
 scale replay rebuild the same lines from the stored policy. The 10,000-item
 limit applies after wrapping.
+
+### Intentional title-label overlap
+
+A Cartesian title defaults to `overlap: "error"`. Set `title.overlap: "allow"`
+when that title is deliberately placed across its own axis labels. This keeps
+Canvas bounds and label-label checks active. Apply `labels.overlap` separately
+when neighboring labels also overlap.
+
+Fragment after a data-backed Cartesian chart has been created:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+.createAxes({
+  y: {
+    ticksAndLabels: { labels: { overlap: "allow" } },
+    title: { text: "Group", offset: 80, overlap: "allow" }
+  }
+})
+```
+
+Focused title editors and whole-axis edits accept the same policy. Omitted edits
+preserve it; an explicit `"error"` reset must fit without that collision. The
+policy belongs to one axis title and remains valid when labels are created or
+edited later, including named axes, facets and saved programs.
 
 Cartesian title text preserves explicit hard line breaks as a centered block.
 See [axis-title text and rotation](../../reference/actions/guides.md#ticklabel-groups-and-axis-titles)

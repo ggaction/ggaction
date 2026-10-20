@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:4c1afc2a6523c7e434918c40057e85a9094d5d50402c4d99491cefcf0cb2c383. Status: development. Runtime source: b8384692fb08ab4b8213977ab243458cc5ea9c0c. Release baseline: v0.0.13.
+Contract: sha256:b5d220bb11d8aa8953c0b1135eb36a082a20da986fae8605002b006ebcd74ee7. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/b8384692fb08ab4b8213977ab243458cc5ea9c0c/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/b8384692fb08ab4b8213977ab243458cc5ea9c0c/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12604,7 +12604,7 @@ fixed Canvas or change its margins.
 
 Set Cartesian labels `flush: true` to keep unrotated text bounds inside the mapped scale span. This moves text inward only when its bounds cross an endpoint, without changing tick positions, text, font sizes or the outward gap. It works on X and Y axes, retains `alongOffset`, and moves wrapped lines together. The default is `false`. Rotated labels and text wider than the entire span are rejected.
 
-Flush preserves the existing overlap policy. When adjacent labels intentionally overlap, request `overlap: "allow"`; this does not disable Canvas or title collision checks. Specify required flush geometry at complete-axis creation so the initial axis also fits.
+Flush preserves the existing overlap policy. When adjacent labels intentionally overlap, request `overlap: "allow"`; this does not disable Canvas or title collision checks. Specify required flush geometry at complete-axis creation so the initial axis also fits. An independently explicit `title.overlap: "allow"` permits that title to intersect its own labels; see [intentional title-label overlap](./api/axes/complete/#intentional-title-label-overlap).
 
 ## Color individual tick labels
 
@@ -25191,6 +25191,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
@@ -25226,6 +25227,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
@@ -25261,6 +25263,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
@@ -25295,6 +25298,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
@@ -27173,19 +27177,19 @@ editYAxisTicksAndLabels({ position?, count?, values?, ticks?, labels? })
 
 createXAxisTitle({
   text?, scale?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, overlap?
 })
 createYAxisTitle({
   text?, scale?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, overlap?
 })
 editXAxisTitle({
   text?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, overlap?
 })
 editYAxisTitle({
   text?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, overlap?
 })
 ```
 
@@ -27198,6 +27202,13 @@ checks use their full bounds. Returning to single-line text removes the old line
 Cartesian title `rotation` accepts a finite legacy number in radians or
 `{ value, unit: "degrees" | "radians" }`. Both forms normalize to concrete
 radians. Polar component `angle` remains degree-valued placement.
+
+Cartesian title `overlap` is `"error"` by default. Explicit `"allow"` permits only
+that title to intersect labels of its own axis. Label-label overlap and Canvas
+bounds remain independent checks. Complete axes accept the policy in `title`;
+focused and whole-axis editors preserve it when omitted. Resetting to `"error"`
+requires a valid final layout. The same policy applies when labels are edited
+after the title and through Canvas, scale, data, facet and saved-program replay.
 
 ## Complete axis removal
 
@@ -28362,6 +28373,8 @@ export interface AxisTitleOptions<P extends string> {
   /** Signed logical pixels: positive right for x, down for y, independent of scale reversal. */
   alongOffset?: number;
   align?: "left" | "center" | "right";
+  /** Defaults to error; allow permits only this title to intersect its own axis labels. */
+  overlap?: "error" | "allow";
   baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom";
   /** Hard breaks retain ordered lines with the chosen block baseline, spaced at 1.2 times fontSize. */
   text?: string;
@@ -38708,12 +38721,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b8384692fb08ab4b8213977ab243458cc5ea9c0c/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b8384692fb08ab4b8213977ab243458cc5ea9c0c/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -41092,9 +41105,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:4c1afc2a6523c7e434918c40057e85a9094d5d50402c4d99491cefcf0cb2c383` |
+| Contract fingerprint | `sha256:b5d220bb11d8aa8953c0b1135eb36a082a20da986fae8605002b006ebcd74ee7` |
 | Example and dataset source | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
-| Runtime source commit | `b8384692fb08ab4b8213977ab243458cc5ea9c0c` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 286 |
 | Declared actions in that release | 234 |
@@ -41417,11 +41430,37 @@ program.createXAxis({
 ```
 
 `overlap` defaults to `"error"`. Explicit `"allow"` permits label-to-label
-intersection while Canvas overflow and axis-title collisions still fail.
+intersection. Canvas overflow still fails; title-label collisions are controlled
+separately by the title policy below.
 `editXAxisLabels({ maxWidth: false })` or its y counterpart removes wrapping;
 that reset cannot include `wrap` or `lineHeight` in the same call. Canvas and
 scale replay rebuild the same lines from the stored policy. The 10,000-item
 limit applies after wrapping.
+
+### Intentional title-label overlap
+
+A Cartesian title defaults to `overlap: "error"`. Set `title.overlap: "allow"`
+when that title is deliberately placed across its own axis labels. This keeps
+Canvas bounds and label-label checks active. Apply `labels.overlap` separately
+when neighboring labels also overlap.
+
+Fragment after a data-backed Cartesian chart has been created:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+.createAxes({
+  y: {
+    ticksAndLabels: { labels: { overlap: "allow" } },
+    title: { text: "Group", offset: 80, overlap: "allow" }
+  }
+})
+```
+
+Focused title editors and whole-axis edits accept the same policy. Omitted edits
+preserve it; an explicit `"error"` reset must fit without that collision. The
+policy belongs to one axis title and remains valid when labels are created or
+edited later, including named axes, facets and saved programs.
 
 Cartesian title text preserves explicit hard line breaks as a centered block.
 See [axis-title text and rotation](./reference/actions/guides/#ticklabel-groups-and-axis-titles)

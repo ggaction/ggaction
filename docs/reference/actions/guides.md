@@ -871,6 +871,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
@@ -911,6 +912,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
@@ -951,6 +953,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
@@ -990,6 +993,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
 | `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
@@ -3087,19 +3091,19 @@ editYAxisTicksAndLabels({ position?, count?, values?, ticks?, labels? })
 
 createXAxisTitle({
   text?, scale?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, overlap?
 })
 createYAxisTitle({
   text?, scale?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, overlap?
 })
 editXAxisTitle({
   text?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, overlap?
 })
 editYAxisTitle({
   text?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, overlap?
 })
 ```
 
@@ -3112,6 +3116,13 @@ checks use their full bounds. Returning to single-line text removes the old line
 Cartesian title `rotation` accepts a finite legacy number in radians or
 `{ value, unit: "degrees" | "radians" }`. Both forms normalize to concrete
 radians. Polar component `angle` remains degree-valued placement.
+
+Cartesian title `overlap` is `"error"` by default. Explicit `"allow"` permits only
+that title to intersect labels of its own axis. Label-label overlap and Canvas
+bounds remain independent checks. Complete axes accept the policy in `title`;
+focused and whole-axis editors preserve it when omitted. Resetting to `"error"`
+requires a valid final layout. The same policy applies when labels are edited
+after the title and through Canvas, scale, data, facet and saved-program replay.
 
 ## Complete axis removal
 

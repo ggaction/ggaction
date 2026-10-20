@@ -28,7 +28,7 @@ const LABEL_OPTIONS = Object.freeze([
 const GROUP_OPTIONS = Object.freeze(["count", "values", "ticks", "labels"]);
 const TITLE_OPTIONS = Object.freeze([
   "text", "at", "offset", "rotation", "color", "fontSize",
-  "fontFamily", "fontWeight", "alongOffset", "align", "baseline"
+  "fontFamily", "fontWeight", "alongOffset", "align", "baseline", "overlap"
 ]);
 
 function validateNested(args, key, options, operation, { allowFalse = false } = {}) {

@@ -1,7 +1,7 @@
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
 import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { materializeTextLines } from "../../../materialization/textLines.js";
-import { axisTitleTextLines as titleLines, validateAxisTextPlacement } from "../../../grammar/axisTextPlacement.js";
+import { axisTitleTextLines as titleLines, validateAxisTextPlacement, axisTitleAllowsLabelOverlap } from "../../../grammar/axisTextPlacement.js";
 import { axisThemeTypography } from "../../theme/state.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
@@ -132,7 +132,7 @@ function inferredTitleOffset(program, channel, config, axisId = channel) {
 
 const CREATE_OPTIONS = ["target",
   "text", "scale", "position", "at", "offset", "rotation", "color",
-  "fontSize", "fontFamily", "fontWeight", "alongOffset", "align", "baseline"
+  "fontSize", "fontFamily", "fontWeight", "alongOffset", "align", "baseline", "overlap"
 ];
 const EDIT_OPTIONS = CREATE_OPTIONS.filter(key => key !== "scale");
 const DEFAULTS = {
@@ -228,7 +228,7 @@ function resolveGeometry(program, channel, config, axisId = channel) {
     throw canvasOverflowError(`The ${channel}-axis title does not fit the Canvas margin.`, [resolvedBounds], canvas);
   }
   const labelBounds = axisLabelBounds(program, channel, axisId);
-  if (labelBounds.some(bounds => bounds && textBoundsIntersect(resolvedBounds, bounds))) {
+  if (!axisTitleAllowsLabelOverlap(config) && labelBounds.some(bounds => bounds && textBoundsIntersect(resolvedBounds, bounds))) {
     throw new Error(`The ${channel}-axis title overlaps the axis labels.`);
   }
   return geometry;

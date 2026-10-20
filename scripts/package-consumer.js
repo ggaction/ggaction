@@ -97,6 +97,26 @@ async function testNodeConsumer(directory) {
     import {createFacetSharedTopLaneProgram} from "./facet-lane-public.js";
     import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
 
+    for (const factory of [chart,basicChart]) {
+      const rows=Array.from({length:10},(_,i)=>({rank:i+1,group:"An intentionally long category "+(i+1)}));
+      const base=factory().createCanvas({width:500,height:220,margin:{left:320,right:20,top:20,bottom:60}})
+        .createData({values:rows}).createScatterPlot({x:"rank",y:{field:"group",fieldType:"nominal"},guides:false});
+      const labels={fontSize:14,overlap:"allow"};
+      assert.throws(()=>base.createAxes({x:false,y:{ticksAndLabels:{labels},title:{text:"Group",fontSize:11,offset:80}}}),/title overlaps the axis labels/);
+      const p=base.createAxes({x:false,y:{ticksAndLabels:{labels},title:{text:"Group",fontSize:11,offset:80,overlap:"allow"}}});
+      assert.equal(p.guideConfigs.axis.y.title.overlap,"allow");
+      assert.equal(p.graphicSpec.objects.yAxisTitle.properties.x,240);
+      assert.deepEqual(p.semanticSpec.datasets[0].values,rows);
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      if(factory===chart){
+        const before=serializeProgram(p);assert.throws(()=>p.editYAxisTitle({overlap:"error"}),/title overlaps the axis labels/);assert.equal(serializeProgram(p),before);
+        assert.equal(p.editYAxisTitle({offset:300,overlap:"error"}).guideConfigs.axis.y.title.overlap,"error");
+        assert.equal(p.editYAxisLabels({color:"red"}).guideConfigs.axis.y.title.overlap,"allow");
+      }
+      assert.ok((await renderToPNGBuffer(p)).buffer.length>100);
+      assert.ok((await renderToPDFBuffer(p)).buffer.length>100);
+    }
+
     for (const factory of [chart,basicChart]) for(const channel of ["color","stroke"]) {
       const scale={domain:[35,85],palette:"viridis"};
       const channelOption={field:"v",fieldType:"quantitative",scale};
@@ -3384,6 +3404,10 @@ const groupedFull: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {for
 const weekdayFull: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {format:"%a"};
 const groupedBasic: Parameters<BasicFormatsProgram["createLinePlot"]>[0] = {x:"x",y:"y",guides:{axes:{x:{ticksAndLabels:{labels:{format:",.2f"}}}}}};
 const weekdayBasic: Parameters<BasicFormatsProgram["createLinePlot"]>[0] = {x:{field:"date",fieldType:"temporal"},y:"y",guides:{axes:{x:{ticksAndLabels:{labels:{format:"%a"}}}}}};
+const overlapFull: Parameters<FullFormatsProgram["createYAxisTitle"]>[0] = {overlap:"allow"};
+const overlapBasic: Parameters<BasicFormatsProgram["createAxes"]>[0] = {y:{title:{overlap:"allow"}}};
+// @ts-expect-error title overlap is a closed string policy
+const overlapInvalid: Parameters<FullFormatsProgram["createYAxisTitle"]>[0] = {overlap:true};
 // @ts-expect-error grouped scientific notation remains unsupported
 const invalidGrouped: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {format:",.2e"};
 `);
@@ -5542,6 +5566,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "offset-scale-editing",
       "stroke-color-encoding-and-legends",
       "atomic-channel-encoding",
+      "axis-title-label-overlap-policy",
       "statistical-references",
       "coordinate-aspect-and-polar-frame-editing",
       "facet-grid-repeat-and-named-composition-editing",

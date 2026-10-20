@@ -40,7 +40,7 @@ fixed Canvas or change its margins.
 
 Set Cartesian labels `flush: true` to keep unrotated text bounds inside the mapped scale span. This moves text inward only when its bounds cross an endpoint, without changing tick positions, text, font sizes or the outward gap. It works on X and Y axes, retains `alongOffset`, and moves wrapped lines together. The default is `false`. Rotated labels and text wider than the entire span are rejected.
 
-Flush preserves the existing overlap policy. When adjacent labels intentionally overlap, request `overlap: "allow"`; this does not disable Canvas or title collision checks. Specify required flush geometry at complete-axis creation so the initial axis also fits.
+Flush preserves the existing overlap policy. When adjacent labels intentionally overlap, request `overlap: "allow"`; this does not disable Canvas or title collision checks. Specify required flush geometry at complete-axis creation so the initial axis also fits. An independently explicit `title.overlap: "allow"` permits that title to intersect its own labels; see [intentional title-label overlap](axes/complete.md#intentional-title-label-overlap).
 
 ## Color individual tick labels
 

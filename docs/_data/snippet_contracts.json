@@ -345,7 +345,19 @@
   {
     "file": "api/axes/complete.md",
     "block": 9,
-    "heading": "`createAxes(options?)`",
+    "heading": "Intentional title-label overlap",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "e8e1d40302e94d1efdc5504d7ec00a1fa11445842bbbe93aae08e939aa98ff58",
+    "executable": false
+  },
+  {
+    "file": "api/axes/complete.md",
+    "block": 10,
+    "heading": "Intentional title-label overlap",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
