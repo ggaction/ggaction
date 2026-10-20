@@ -273,14 +273,19 @@ Full-only Parallel axes는 encoded field별로 line/ticks/labels/title을 소유
 
 ## Shared formal types
 
+기존 shared formatter와 선언은 동일한 grouped numeric `","`/`,.0f`~`,.12f` 및 UTC weekday `%a`를
+지원한다. Grouped numeric은 quantitative field 전용이며 grouped percent/scientific은 지원하지 않는다.
+원본 값·domain·tick 위치는 바꾸지 않는다. Runtime evidence: `test/unit/grammar/value-format.test.js`;
+declaration evidence: `test/contracts/value-format-types.test.js`.
+
 ```typescript
 type AxisPositionX = "bottom" | "top";
 type AxisPositionY = "left" | "right";
-type TimeAxisDirective = "Y" | "m" | "d" | "b";
+type TimeAxisDirective = "Y" | "m" | "d" | "b" | "a" | "H" | "M" | "S" | "L";
 type TimeAxisFormatString = `${string}%${TimeAxisDirective}${string}`;
 type ValueFormatDigit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 type ValueFormatPrecision = ValueFormatDigit | 10 | 11 | 12 | `0${ValueFormatDigit}`;
-type NumericFormatString = `.${ValueFormatPrecision}${"f" | "%" | "e"}`;
+type NumericFormatString = `.${ValueFormatPrecision}${"f" | "%" | "e"}` | "," | `,.${ValueFormatPrecision}f`;
 type AxisFormatString = NumericFormatString | TimeAxisFormatString;
 type TickValue = string | boolean | Finite;
 type TickOptions = {

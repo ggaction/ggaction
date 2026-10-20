@@ -1632,7 +1632,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeText`
 
-- Implemented: `encodeText({ target?: UserId; format?: ValueFormat } & ({ field: FieldName } | { value: unknown } | { content: "category" | "value" } | { content: "share"; normalizeBy?: "source" | "category" }))`; branches are mutually exclusive. `ValueFormat` is `"auto" | NumericFormatString | UtcFormatString`; numeric precision is 0–12 and suffix is `f | % | e`.
+- Implemented: `encodeText({ target?: UserId; format?: ValueFormat } & ({ field: FieldName } | { value: unknown } | { content: "category" | "value" } | { content: "share"; normalizeBy?: "source" | "category" }))`; branches are mutually exclusive. `ValueFormat` is `"auto" | NumericFormatString | UtcFormatString`; numeric precision is 0–12 and suffix is `f | % | e`. Existing grouped quantitative forms are `","` and `,.<precision>f`; UTC weekday uses `%a`. Grouped percent/scientific remain unsupported.
 - Proposed (NOT IMPLEMENTED): locale-aware text formatting tokens.
 
 ### Value coverage — `encodeText`

@@ -8555,7 +8555,10 @@ Related types: [`NormalizedDataBaseOptions`](#type-normalizeddatabaseoptions) ·
 <summary>Expand NumericFormatString</summary>
 
 ```typescript
-export type NumericFormatString = `.${ValueFormatPrecision}${"f" | "%" | "e"}`;
+export type NumericFormatString =
+  | `.${ValueFormatPrecision}${"f" | "%" | "e"}`
+  | ","
+  | `,.${ValueFormatPrecision}f`;
 ```
 
 </details>
@@ -11799,7 +11802,7 @@ Related types: [`NonPointThresholdColorScaleOptions`](#type-nonpointthresholdcol
 <summary>Expand TimeAxisDirective</summary>
 
 ```typescript
-type TimeAxisDirective = "Y" | "m" | "d" | "b" | "H" | "M" | "S" | "L";
+type TimeAxisDirective = "Y" | "m" | "d" | "b" | "a" | "H" | "M" | "S" | "L";
 ```
 
 </details>

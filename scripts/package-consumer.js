@@ -3288,6 +3288,18 @@ async function testMcpConsumer(directory) {
 }
 
 async function testTypeScriptConsumer(directory) {
+  const formatsFile=path.join(directory,"value-formats.mts");
+  await writeFile(formatsFile,`
+type FullFormatsProgram = ReturnType<typeof import("ggaction").chart>;
+type BasicFormatsProgram = ReturnType<typeof import("ggaction/basic").chart>;
+const groupedFull: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {format:",.0f"};
+const weekdayFull: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {format:"%a"};
+const groupedBasic: Parameters<BasicFormatsProgram["createLinePlot"]>[0] = {x:"x",y:"y",guides:{axes:{x:{ticksAndLabels:{labels:{format:",.2f"}}}}}};
+const weekdayBasic: Parameters<BasicFormatsProgram["createLinePlot"]>[0] = {x:{field:"date",fieldType:"temporal"},y:"y",guides:{axes:{x:{ticksAndLabels:{labels:{format:"%a"}}}}}};
+// @ts-expect-error grouped scientific notation remains unsupported
+const invalidGrouped: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {format:",.2e"};
+`);
+  run(process.execPath,[tscCommand,"--noEmit","--strict","--skipLibCheck","--target","ES2022","--module","NodeNext","--moduleResolution","NodeNext",formatsFile],directory);
   const extensionAuthoring = await readFile(
     path.join(root, "examples", "extension-typescript", "program.ts"),
     "utf8"

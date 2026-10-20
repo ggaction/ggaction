@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:69cd1a0c2e9c09f93a983b7478e187e6fd2126a8ca2e632bf4400a44684fcd9e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:67cf19dc16d005ef07abb0f74962050e16d2e21ef20dc361932235742cbd0f84. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -12513,6 +12513,12 @@ Flush preserves the existing overlap policy. When adjacent labels intentionally 
 Use Cartesian labels `colorMap: [{ value, color }]` for per-value colors. Lookup uses raw typed tick values, independently of `labelMap` display text. Missing entries use the existing global `color`; `[]` stores an empty map and `"auto"` removes it. Continuous/time keys must be finite numbers or Unix milliseconds; categorical keys preserve their types. Duplicate keys, extra entry fields and empty colors are rejected. Wrapped lines share their tick color. Complete, whole-axis, grouped and focused label actions use the same policy, and tick/Canvas/scale changes preserve it. Polar and Parallel axes do not accept this option.
 
 ## Override displayed tick text
+
+Numeric labels accept `format: ","` for integer grouping (`1234` becomes `1,234`) or
+`format: ",.2f"` for grouping with two decimal places. The existing precision range is
+0–12. Grouped percent and scientific formats are unsupported. Temporal labels accept
+`format: "%a"` for UTC weekday names such as `Mon`. Formatting changes displayed text;
+it preserves raw values, scale domains and tick positions.
 
 Cartesian label `labelMap` works with categorical values, numeric ticks and time ticks. Provide typed `{ value, label }` entries. Continuous keys must be finite numbers; time keys use Unix milliseconds. Missing entries retain the normal formatter, and `"auto"` clears the map. Scale domains, tick positions and raw data are preserved. Use focused labels, nested ticks-and-labels or whole-axis editors to update the same policy.
 
@@ -34789,7 +34795,10 @@ Related types: [`NormalizedDataBaseOptions`](./reference/types/#type-normalizedd
  Expand NumericFormatString
 
 ```typescript
-export type NumericFormatString = `.${ValueFormatPrecision}${"f" | "%" | "e"}`;
+export type NumericFormatString =
+  | `.${ValueFormatPrecision}${"f" | "%" | "e"}`
+  | ","
+  | `,.${ValueFormatPrecision}f`;
 ```
 
 Related types: [`ValueFormatPrecision`](./reference/types/#type-valueformatprecision).
@@ -37493,7 +37502,7 @@ Related types: [`NonPointThresholdColorScaleOptions`](./reference/types/#type-no
  Expand TimeAxisDirective
 
 ```typescript
-type TimeAxisDirective = "Y" | "m" | "d" | "b" | "H" | "M" | "S" | "L";
+type TimeAxisDirective = "Y" | "m" | "d" | "b" | "a" | "H" | "M" | "S" | "L";
 ```
 
 ### `TimeUnit` {#type-timeunit}
@@ -40772,7 +40781,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:69cd1a0c2e9c09f93a983b7478e187e6fd2126a8ca2e632bf4400a44684fcd9e` |
+| Contract fingerprint | `sha256:67cf19dc16d005ef07abb0f74962050e16d2e21ef20dc361932235742cbd0f84` |
 | Example and dataset source | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

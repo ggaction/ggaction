@@ -1,0 +1,113 @@
+{
+  "status": "verified-local-unreleased-checkpoint",
+  "approval": "APPROVAL.json",
+  "issue": 237,
+  "runtimeBehaviorChanged": false,
+  "persistedSchemaChanged": false,
+  "rendererChanged": false,
+  "checks": {
+    "normal": {
+      "pass": 4818,
+      "fail": 0,
+      "log": {
+        "path": ".artifacts/formatter-type-parity/normal-clean.log",
+        "sha256": "752916b5d70293c7e97590f43da70c582dd2df1b1512ca0cdc3180693e9206ea"
+      }
+    },
+    "focused": {
+      "pass": 5,
+      "files": [
+        "test/contracts/value-format-types.test.js",
+        "test/unit/grammar/value-format.test.js"
+      ]
+    },
+    "installedConsumer": {
+      "checks": 62,
+      "log": {
+        "path": ".artifacts/formatter-type-parity/consumer.log",
+        "sha256": "98cc15b9714a1cffa22ad9bf8ff87bcae5e17ad0b702bb0e0484b827bb577f72"
+      },
+      "fullAndBasicTypeScript": true
+    }
+  },
+  "package": {
+    "sha256": "2fe620b8c5c2fb92dc7001b49155dab8ff61e8551a2bff8ef2db49955faa38fe",
+    "files": 602,
+    "packedBytes": 851816,
+    "unpackedBytes": 4119197
+  },
+  "runtimeIdentity": {
+    "status": "exact-executable-and-runtime-input-byte-identity",
+    "baselineImplementationCommit": "1ec40344a904102141d99076e60f8b3ba607b1f7",
+    "baselineArchiveSha256": "48e6d8137dfadd073e01d8f95e1fe4085a29251ebc3f267cf6d0bae41a6ba41c",
+    "newArchiveSha256": "2fe620b8c5c2fb92dc7001b49155dab8ff61e8551a2bff8ef2db49955faa38fe",
+    "packageFiles": 602,
+    "identicalFiles": 601,
+    "changedFiles": [
+      {
+        "path": "types/program.d.ts",
+        "before": "6e1101961a3243151cfbf1d99c3ed61756d46baaea4530dc187a8f9d122a0a3b",
+        "after": "a312e844b085f1d76823bf63c99de121fec68a2d1081d0932c63ac209cdcf560"
+      }
+    ],
+    "allExecutableFilesExact": true,
+    "allOtherRuntimeInputsExact": true,
+    "nativeImplementationChanged": false,
+    "rendererChanged": false,
+    "retainedCohort": {
+      "families": 1275,
+      "programs": 9278,
+      "artifact": "reports/v12-runtime-batch200-issue236-position-current1275-compatibility.json",
+      "sha256": "0d6844ed387b28b10f54932a04a145fb544e5e607502f269c084a2a16c930711"
+    },
+    "freshFullCohortReplayRequired": false,
+    "reason": "Only a declaration file differs. All other packaged files are byte-identical, including code, metadata, schemas, palettes and package manifest.",
+    "packedBytes": 851816,
+    "unpackedBytes": 4119197,
+    "schoolRequests": 0,
+    "registryPublished": false
+  },
+  "sourceAndEvidenceBindings": [
+    {
+      "path": ".artifacts/formatter-type-parity/normal-clean.log",
+      "sha256": "752916b5d70293c7e97590f43da70c582dd2df1b1512ca0cdc3180693e9206ea"
+    },
+    {
+      "path": ".artifacts/formatter-type-parity/consumer.log",
+      "sha256": "98cc15b9714a1cffa22ad9bf8ff87bcae5e17ad0b702bb0e0484b827bb577f72"
+    },
+    {
+      "path": ".artifacts/formatter-type-parity/before-diagnostics.json",
+      "sha256": "fc1d3541b06ad5168ae49c5f85644e8415fb1c489e25ccb6433a5877c4405f3b"
+    },
+    {
+      "path": ".artifacts/formatter-type-parity-package/runtime-byte-identity.json",
+      "sha256": "a3de64a5cd90332aa28121e093f1815a792b969b9b03a8d07b760b7fce137d2c"
+    },
+    {
+      "path": "test/contracts/value-format-types.test.js",
+      "sha256": "d8dfb060a540732ca99eacc1a05afa4e464acb86799a011b8303aae87d192177"
+    },
+    {
+      "path": "test/unit/grammar/value-format.test.js",
+      "sha256": "19a7030a6f20cf211d317864aeae74f0d44bda78a2efa542ecedc6d5c10502e0"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "a312e844b085f1d76823bf63c99de121fec68a2d1081d0932c63ac209cdcf560"
+    },
+    {
+      "path": "scripts/package-consumer.js",
+      "sha256": "c7c859d614fdd2010d6f49566274a3eeb4d29384687d073221526b67032c74f7"
+    }
+  ],
+  "bundlesGzipBytes": {
+    "full": 422056,
+    "basic": 208486,
+    "svg": 7567
+  },
+  "localActivationPending": true,
+  "publicPublication": false,
+  "publicRegularCheckpointFamilies": 1413,
+  "schoolRequests": 0
+}

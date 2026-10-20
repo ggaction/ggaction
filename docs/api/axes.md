@@ -48,6 +48,12 @@ Use Cartesian labels `colorMap: [{ value, color }]` for per-value colors. Lookup
 
 ## Override displayed tick text
 
+Numeric labels accept `format: ","` for integer grouping (`1234` becomes `1,234`) or
+`format: ",.2f"` for grouping with two decimal places. The existing precision range is
+0–12. Grouped percent and scientific formats are unsupported. Temporal labels accept
+`format: "%a"` for UTC weekday names such as `Mon`. Formatting changes displayed text;
+it preserves raw values, scale domains and tick positions.
+
 Cartesian label `labelMap` works with categorical values, numeric ticks and time ticks. Provide typed `{ value, label }` entries. Continuous keys must be finite numbers; time keys use Unix milliseconds. Missing entries retain the normal formatter, and `"auto"` clears the map. Scale domains, tick positions and raw data are preserved. Use focused labels, nested ticks-and-labels or whole-axis editors to update the same policy.
 
 ## Shift ticks and labels along an axis
