@@ -8,6 +8,10 @@ Exact internal graphic ID spelling is not a public authoring option.
 
 ## Facet spacing policy
 
+헤더 lane으로 plot gap이 부족하면 기존 오류 메시지를 유지하며 `getErrorDetails`에
+`code: "invalid-value"`, `optionPath: "gap"`, 요청값 `actual`, 헤더의 최소 간격 `limit`을 제공한다.
+이 하한은 guide 충돌까지 허용한다는 보장이 아니며 수정된 요청은 다시 검증한다.
+
 Facet, grid, repeat 및 facet의 `editCompositionLayout`은 `spacing: "canvas" | "plot"`을 받는다.
 기본 canvas는 기존 cell Canvas 사이 gap이다. plot은 내부 data region의 grid track 사이 gap이며
 child plot 크기는 유지한다. 바깥 여백은 각 방향 child margin의 최댓값을 외곽에 한 번 배정한다.

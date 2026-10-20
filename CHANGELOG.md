@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Reuse validated immutable composition state and namespaced child graphics during layout edits, preserving validation of changed state and caller-owned inputs.
+- Report measured minimum facet header spacing through existing structured error diagnostics so clients can retry without repeated gap searches.
 - Add `editRadarPlot` to atomically edit the selected dimensions and order of a wide Radar chart while preserving its closed paths, groups, appearance and guides.
 - Accept color in Box and Gradient plot creation, support continuous Arc color, and preserve compound-chart color and filtering through edits and facets.
 - Compute distribution and endpoint statistical references from their source observations; retain and recompute independently authored reference layers through owner edits.

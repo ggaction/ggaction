@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { cloneAndFreeze } from "../../../src/core/immutable.js";
 
 import { namespaceGraphicId, namespaceGraphicSnapshot } from
   "../../../src/materialization/compositionSnapshot.js";
@@ -56,6 +57,22 @@ function snapshotId(namespace, id) {
   ).join("");
   return `g${encode(namespace)}_${id}`;
 }
+
+test("moving an immutable snapshot shares graphics and preserves fresh namespace and mutable input semantics", () => {
+  const input = childGraphicSpec(), owned = cloneAndFreeze(input);
+  const first = namespaceGraphicSnapshot(owned, { namespace: "cell", x: 10, y: 20 });
+  const moved = namespaceGraphicSnapshot(owned, { namespace: "cell", x: 90, y: 60 });
+  assert.deepEqual(moved, namespaceGraphicSnapshot(input, { namespace: "cell", x: 90, y: 60 }));
+  assert.equal(moved.objects[snapshotId("cell", "points")], first.objects[snapshotId("cell", "points")]);
+  assert.equal(first.objects[first.order[0]].properties.x, 10);
+  assert.throws(() => namespaceGraphicSnapshot(owned, { namespace: "cell", x: NaN }), /finite/);
+  const other = namespaceGraphicSnapshot(owned, { namespace: "other" });
+  assert.notEqual(other.order[0], first.order[0]);
+  input.objects.points.items[0].properties.radius = 12;
+  const revised = namespaceGraphicSnapshot(input, { namespace: "cell", x: 90, y: 60 });
+  assert.equal(revised.objects[snapshotId("cell", "points")].items[0].properties.radius, 12);
+  assert.equal(moved.objects[snapshotId("cell", "points")].items[0].properties.radius, 3);
+});
 
 test("namespaces every object, item, attachment, and root", () => {
   const source = childGraphicSpec();
