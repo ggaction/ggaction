@@ -1557,7 +1557,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces compatible color grouping",
+      "update": "Reassign supported field color; Tick supports numeric/temporal segment color with explicit stroke-channel switching",
       "audit": "Reassignment \u2014 Implemented",
       "coverage": {
         "contract": "complete",

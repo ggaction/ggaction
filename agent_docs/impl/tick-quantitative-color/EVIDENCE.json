@@ -1,0 +1,351 @@
+{
+  "status": "implemented-source-verified-pending-combined-immutable-candidate",
+  "checkedAt": "2026-10-20T21:56:25.881606+00:00",
+  "issue": "https://github.com/ggaction/ggaction/issues/246",
+  "approvedProposalCommit": "8509fc95",
+  "authority": "Direct human standing future-question approval; recorded concrete contract;200additional-successful-family release cadence.",
+  "normal": {
+    "pass": 4919,
+    "fail": 0
+  },
+  "focusedTests": 68,
+  "featureSpecificTests": 17,
+  "installedConsumerGroups": 62,
+  "installedConsumer": {
+    "package": "ggaction@0.0.21",
+    "source": "ggaction-0.0.21.tgz",
+    "sha256": "e2665e48f4507adeb32de32b772e620775aed796bd85a7b17edfcc64f76abf87",
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 536,
+        "minifiedBytes": 1561897,
+        "gzipBytes": 423638
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 321,
+        "minifiedBytes": 756973,
+        "gzipBytes": 213399
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 19,
+        "minifiedBytes": 23548,
+        "gzipBytes": 7567
+      }
+    },
+    "mcp": {
+      "coldStartMilliseconds": 248
+    },
+    "checks": [
+      "node",
+      "linear-regression-statistics-cache-and-source-revision",
+      "extension",
+      "pdf",
+      "png",
+      "svg",
+      "inspection",
+      "numeric-font-weight",
+      "point-jitter",
+      "point-packing",
+      "mark-label-removal",
+      "selected-mark-labels",
+      "semantic-label-placement",
+      "beeswarm-plot",
+      "raincloud-plot",
+      "path-order",
+      "time-unit-data",
+      "summary-data",
+      "bin-data",
+      "fold-data",
+      "computed-data",
+      "derived-data-editing",
+      "safe-resource-removal",
+      "advanced-authoring-integration",
+      "normalized-data",
+      "complete-data",
+      "imputed-data",
+      "stack-data",
+      "window-data",
+      "bin2d-data",
+      "binned-heatmap",
+      "parallel-coordinates",
+      "parallel-dimension-scale-editing",
+      "offset-scale-editing",
+      "stroke-color-encoding-and-legends",
+      "atomic-channel-encoding",
+      "statistical-references",
+      "coordinate-aspect-and-polar-frame-editing",
+      "facet-grid-repeat-and-named-composition-editing",
+      "non-cartesian-facet-grid-and-repeat",
+      "horizon",
+      "violin-plot",
+      "polar-radar-rug-strip-ecdf-facades",
+      "right-categorical-legend-offset",
+      "grouped-corner-and-free-legend-placement",
+      "sequential-palette-count",
+      "ranged-numeric-datum-wrapper-parity",
+      "neutral-hcl-hue-borrowing",
+      "facet-numeric-legend-inference",
+      "explicit-fold-facet-partition",
+      "shared-facet-top-lane",
+      "explicit-axis-and-border-underlays",
+      "typescript",
+      "basic-entry-runtime-and-types",
+      "tutorial-consumers",
+      "minimal-browser-bundle-measurement",
+      "private-export-rejection",
+      "installed-local-mcp",
+      "direct-mcp-byte-equality",
+      "task-packet-v5-authoring-execution",
+      "explicit-unresolved-docs-fallback",
+      "terminal-unsupported-no-fallback"
+    ]
+  },
+  "package": {
+    "entries": 604,
+    "packedBytes": 853398,
+    "unpackedBytes": 4123898,
+    "javascriptCompactions": 45,
+    "compactJsonFiles": 8,
+    "packageLimitsUnchanged": true,
+    "normalization": "Use official existing esbuild compaction for shared gradient module; remove unsuccessful Tick-module packaging experiment."
+  },
+  "docs": {
+    "normalTestsIncludedInFinalFullSuite": 120,
+    "builtPages": 150,
+    "browser": "Desktop search, accessibility, all documentation pages at320/390/768 passed on final built files",
+    "searchIndexBytes": 840401,
+    "priorSearchMaximumBytes": 840000,
+    "searchMaximumBytes": 841000,
+    "minimal1000ByteBudgetAdjustmentDisclosed": true,
+    "entriesOrPayloadNotRemoved": true
+  },
+  "sourceBindings": [
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "bd9b2fc20cd64e93383ed29aed471ead9965203a7f2d71f18ff790365ee341ba"
+    },
+    {
+      "path": "agent_docs/contract/ACTION_INDEX.json",
+      "sha256": "03e441677e4aacce2ce2813a5662b1d27b06f9c5293a50d7713da6dae47280fa"
+    },
+    {
+      "path": "agent_docs/contract/current/ENCODINGS.md",
+      "sha256": "607ecffdd17e2528240dab50bb3302c59f149708399e8173b447ecbb54c2375b"
+    },
+    {
+      "path": "agent_docs/contract/current/MARKS.md",
+      "sha256": "d55de17a3118a4cb56f956cb9ae9442a378da9724b89f6ebafba9e4817542740"
+    },
+    {
+      "path": "agent_docs/impl/tick-quantitative-color/PROPOSAL.md",
+      "sha256": "396ed3843a10ad6287e5c0578ebbe4c4049f6fcfc5c36383631107488ba00faf"
+    },
+    {
+      "path": "docs/_data/action_capabilities.json",
+      "sha256": "f250a88a5a408b43eb034fe9d4cde463bd2036a4bc372a424aeca99906efff3d"
+    },
+    {
+      "path": "docs/_data/provenance.json",
+      "sha256": "2ff6a7ab1e1aa10e772be724e6b7af875634ce58151e7e20bba499fbe26177b2"
+    },
+    {
+      "path": "docs/_data/snippet_contracts.json",
+      "sha256": "3bbd303140e6aa34ca405307f22254c365ff4195c5ba4879ed5a5855e5838a5e"
+    },
+    {
+      "path": "docs/_sources/action-reference.md",
+      "sha256": "497a1a795997e61509855590bcd7e1a0c28546e3d3d84cd2da12adccfae871a9"
+    },
+    {
+      "path": "docs/api/encodings.md",
+      "sha256": "9ffc5fa7c59235d8dd1b1294effe266f11d41b2acb695851fec6ae3ee5372303"
+    },
+    {
+      "path": "docs/api/legends.md",
+      "sha256": "cce6836b8c7178434656d7b20b6c2c09aa8bd7e6753c033854b41eb43ff6e0c6"
+    },
+    {
+      "path": "docs/api/legends/continuous.md",
+      "sha256": "031d1726b8b2dfb03a2ca9165e31d1dd96b747426e31be2621e401f06c4b9219"
+    },
+    {
+      "path": "docs/api/series/color.md",
+      "sha256": "5baf6a1653c23c5dd585e3bfbd744a284329eb8a6261e63a338fecf4cfdba7b2"
+    },
+    {
+      "path": "docs/assets/images/manifest.json",
+      "sha256": "7d017b7957e449e4f52899a99c6d3e0a8ed891a49bf87924305c6224ceb59bb9"
+    },
+    {
+      "path": "docs/doc-provenance.json",
+      "sha256": "2ff6a7ab1e1aa10e772be724e6b7af875634ce58151e7e20bba499fbe26177b2"
+    },
+    {
+      "path": "docs/llms-full.txt",
+      "sha256": "5b9e04a82a2fe13e4c1d21f370370941d061e0b3d2ec50e0fd9a3cee689e75a9"
+    },
+    {
+      "path": "docs/llms-manifest.json",
+      "sha256": "b6d8175e1f3aa32a840f43e8372ed71068aa58b49da622375181579628361194"
+    },
+    {
+      "path": "docs/reference/actions/encodings.md",
+      "sha256": "a761c85bfd5bcecd37666e72139fa1d4b1ff295097e71823b61b90e8af33966c"
+    },
+    {
+      "path": "docs/reference/types.md",
+      "sha256": "860e75dcf3f3fe6d11d2d19b94c5317f85d8ee5db3972cdfbfb3e3ac98cfad0b"
+    },
+    {
+      "path": "docs/search-index.json",
+      "sha256": "8267dc082fef5b9ae541d6ec69502f38f45d532ff27ebad68ced96d69cf44f68"
+    },
+    {
+      "path": "docs/types/program.d.ts",
+      "sha256": "d63bbba4c0d097826ed4f8213535895813fe1d70cd6ae5e080cf978bc7811074"
+    },
+    {
+      "path": "scripts/generate-doc-search-index.js",
+      "sha256": "88c5345e51f325cab6c931e8bc1510c523854d2c7793842aeaeae2ca2b8f4ce6"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "2cad0aca8203d72c4475e0b3a1c5420e82c7febe39f770878bcea9ec93027124"
+    },
+    {
+      "path": "scripts/package-consumer.js",
+      "sha256": "da64fd2a1ce2199b550b7820eba69ce05d39e460e7016b7ed4e2c9980c9de953"
+    },
+    {
+      "path": "src/actions/encodings/color/continuous.js",
+      "sha256": "2ac5dc0de8c062cd087ed34fbf3c08c32a801d5a42c02703eb16d493b633c6c5"
+    },
+    {
+      "path": "src/actions/encodings/stroke.js",
+      "sha256": "d29d9e395de747a56b3bd8dbd4c8d3c57159f9cd77bffa3c16645c2f41719e95"
+    },
+    {
+      "path": "src/actions/guides/legends/categorical/actions.js",
+      "sha256": "077658a4ba1c14c92f70c06c3fd5aeff6e568842e8e2b773b5c19ca7de734056"
+    },
+    {
+      "path": "src/actions/guides/legends/continuous/common.js",
+      "sha256": "4f36f1ed27e94108f1561afeab37ad154cb604210231b5be4aa5d1b9616af997"
+    },
+    {
+      "path": "src/actions/marks/tick/actions.js",
+      "sha256": "aa8e29d73275abe7354beee91d64959d28dbc2ac06b60321fdc58d6ffefa2c5b"
+    },
+    {
+      "path": "src/grammar/scales/colorConsumers.js",
+      "sha256": "ff4d436ea3eaa01d3ec024791d042307307ac0a72b91c18e3ae10e340bf37f1a"
+    },
+    {
+      "path": "src/persistence/validation.js",
+      "sha256": "2feb40a00af9750863db94f0bd2e12ec40b971f7f5e47991d327bc800ea6718e"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "d63bbba4c0d097826ed4f8213535895813fe1d70cd6ae5e080cf978bc7811074"
+    },
+    {
+      "path": "test/unit/actions/encodings/tick-quantitative-color.test.js",
+      "sha256": "ec6d6a88bc252767e7929b42a573c690b545b3b6f7bb8e2501acb50a6c6914c5"
+    }
+  ],
+  "logBindings": [
+    {
+      "kind": "normal",
+      "path": "/tmp/ggaction-tick-color-normal-v2.log",
+      "sha256": "c01bc4e1f8b2b0ddca49758e4c1c02eb9f28db99daa2ded86af43f24b1b48000"
+    },
+    {
+      "kind": "retainedFirstNormal",
+      "path": "/tmp/ggaction-tick-color-normal-v1.log",
+      "sha256": "788a7eae6db6b9a73b19381e83539a54bd3c8b80d92343a8d04f78c4142f569c"
+    },
+    {
+      "kind": "focused",
+      "path": "/tmp/ggaction-tick-color-focused-v3.log",
+      "sha256": "34b453fc270e5f8d617ef062683667248099a632bd109c743ebe37aba758747b"
+    },
+    {
+      "kind": "installedConsumer",
+      "path": "/tmp/ggaction-tick-color-installed-consumer-v2.log",
+      "sha256": "d17966699d08477ec2deb54732fa84e60d010184210395f9dc983ea66bea0908"
+    },
+    {
+      "kind": "retainedFailedInstalledConsumer",
+      "path": "/tmp/ggaction-tick-color-installed-consumer-v1.log",
+      "sha256": "c8f2591d35c2eac80e430e54b77aa57c8fe9ba1752c43aa4d100d94f47cbc26e"
+    },
+    {
+      "kind": "package",
+      "path": "/tmp/ggaction-tick-color-package-check-v3.log",
+      "sha256": "e98c5e9971a8662e94268838cc6beab0c8a98ca67171ad8659cc4c5531387841"
+    },
+    {
+      "kind": "retainedOriginalPackageFailure",
+      "path": "/tmp/ggaction-tick-color-package-check-v1.log",
+      "sha256": "cbef864cf700485e8b77a9aa70fb2cdff11c6217cdd56b766444a7339014929f"
+    },
+    {
+      "kind": "retainedTickCompactionFailure",
+      "path": "/tmp/ggaction-tick-color-package-check-v2.log",
+      "sha256": "300909caf92047d5b8c8ef6b85e4e9268e2bc57365ea3c98fa71f9f79d37b3b9"
+    },
+    {
+      "kind": "docsGenerate",
+      "path": "/tmp/ggaction-tick-color-docs-generate-v2.log",
+      "sha256": "2e7002b47d4ceb97de1cd338889bb9f54f16c99831c942995de1db088327e0b7"
+    },
+    {
+      "kind": "docsBuild",
+      "path": "/tmp/ggaction-tick-color-docs-build-v1.log",
+      "sha256": "3209715ab7bd143885fe0fe8bebb15e0320dce0f51ff5a00a7587ae4f14ea7f4"
+    },
+    {
+      "kind": "docsBuiltPages",
+      "path": "/tmp/ggaction-tick-color-docs-built-v1.log",
+      "sha256": "3149166d5edc5113be55b5bb0cf1aaecfce64512e0980b4722b95a78e0a04bbf"
+    },
+    {
+      "kind": "docsBrowser",
+      "path": "/tmp/ggaction-tick-color-docs-browser-v1.log",
+      "sha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d"
+    }
+  ],
+  "contractsVerified": [
+    "Literal numeric midpoint/endpoints and unchanged geometry/data",
+    "Partial-position and Rug-first workflows",
+    "Continuous,temporal,quantize,quantile,threshold,log,sqrt,pow,symlog colors",
+    "Solid color gradient and exact ticks vs unchanged old stroke-gradient recipe",
+    "Sampled-color representation/persistence",
+    "Channel conflict and explicit removal/constant reset",
+    "Target inference and immutable input/prior program",
+    "Missing error/skip",
+    "Canvas/scale/data/selection/highlight replay",
+    "Clipping/sharedfacet/persistence",
+    "ExactSVG/PNG equivalence of Tick bodies between color/stroke mappings;PDF output",
+    "Basic Tick/Rug surface unchanged"
+  ],
+  "activeTranslationRuntimeChanged": false,
+  "SchoolRequests": 0,
+  "chartPixelsInspected": false,
+  "pending": {
+    "combinedCandidateWith245": true,
+    "immutablePackageAndMatchingDocs": true,
+    "nativeCompatibility": {
+      "families": 1288,
+      "programs": 9382
+    },
+    "nextPublicReleaseAt": 1413,
+    "keepIssueOpenUntilPublicReleaseVerification": true
+  }
+}

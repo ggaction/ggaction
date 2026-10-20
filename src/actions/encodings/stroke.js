@@ -7,7 +7,7 @@ import {
   resolveTemporalUnit,
   validateCategoricalFieldType
 } from "../../grammar/scales/index.js";
-import { validateContinuousColorConsumer } from
+import { validateContinuousColorConsumer, validateTickColorChannels } from
   "../../grammar/scales/colorConsumers.js";
 import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
 import { validateRuleStroke } from "../../grammar/ruleAppearance.js";
@@ -130,6 +130,7 @@ export const encodeStroke = /* @__PURE__ */ action(
       MARK_TYPES,
       "stroke-capable mark"
     );
+    validateTickColorChannels(layer, "stroke");
 
     if (hasValue) {
       const value = validateRuleStroke(args.value);

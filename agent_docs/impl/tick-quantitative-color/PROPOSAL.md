@@ -5,7 +5,7 @@
 - [x] 기존 Tick/stroke/color/범례 소비자 경로 진단
 - [x] 구체적인 계약과 수치 목표 기록
 - [x] 기존 사용자 승인 재사용
-- [ ] 구현과 문서·검사 동기화
+- [x] 구현과 문서·검사 동기화
 - [ ] 수정 후보 통합·기존 전체 native 호환 검사
 - [ ] 다음 200개 추가 완료 공개 릴리즈
 
@@ -40,3 +40,11 @@ program.createRugPlot({ x: 'value', edge: 'bottom', guides: false })
 양 끝의 수치가 blue/red에 대응하는 길이20·두께1인 수직 Tick 두 개는 기존 stroke 기반 Tick와 동일한 endpoints/paint여야 한다. Color gradient는 mapped fill을 가진60개의 strip이고 fixed-blue interior를 갖지 않는다. Value-domain [35,85] 위의 [40,60,80]은 기존 승인된 [0.1,0.5,0.9] 위치를 유지한다. Independent literal 색상, 원본 행, target별 자원 소유권과 동일 graphics/pixel 출력을 검사한다. 모든 renderer는 기존 graphicSpec만 읽는다.
 
 첫 구현은 shared color-consumer validation, 기존 continuous color action, Tick rematerializer 및 범례 dispatch를 수정한다. 중복 소비자 규칙을 만들지 않는다. 선언의 의미 설명·현재 계약·공개 호환표와 예제·generated docs를 함께 갱신한다. 검증된245와 함께 하나의 불변 후보를 만들어 전체1,288family/9,382program native 호환 검사 후 활성화한다. 원본0193은 완료된 qualification과 실제 School 코드 검증 전까지 성공 수에 넣지 않는다.
+
+## 검사 중 보정 기록
+
+- 집중 검사68개가 통과했다. 초기 신규 test의 discrete 색상 문자열 보존, legend owner 전체 제거, reviseData의 자동 rebind, highlight의 앞으로 이동 순서에 대한 잘못된 fixture 가정을 수정했으며 runtime 계약을 바꾸지 않았다.
+- 첫 전체4,919개 검사 중4개가 실패했다: 패키지 용량1개, 문서 Related 위치1개, 공통 검색 한도2개. 원래 실패 로그를 보존한다.
+- 패키지는 원본854,170bytes 및 Tick 모듈 압축 실험854,475bytes로 기존854,000bytes 한도를 넘었다. 기존 공식 compaction을 gradient module에 적용한 실제 결과853,398packed/4,123,898unpacked/604files로 통과했다. Tick module 실험은 제거했고 압축 JavaScript는45개이며 패키지 한도는 유지했다.
+- 새 Tick 검색 항목을 보존하면 실제 index840,401bytes로840,000bytes를 넘는다. 본문 중복을 줄여도 공통 요약 길이 때문에 거의 줄지 않았다. 정보·항목을 삭제하지 않고 기존 최소1,000bytes 단위 정책으로 검색 한도만841,000bytes로 조정한다. 사용자 일괄 승인 범위로 기록하며 old search 한도 통과라고 보고하지 않는다. 데이터·도형·픽셀·통계 허용치는 바꾸지 않는다.
+- 공개 Related navigation은 다시 마지막으로 옮겼다. 수정 후 전체/설치/문서와 built-site 검사를 다시 수행한다.

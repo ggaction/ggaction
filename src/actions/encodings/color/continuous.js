@@ -40,7 +40,7 @@ export function encodeContinuousColor(program, args) {
   const { id: target, dataset: sourceDataset, layer } = resolveTarget(
     program,
     args.target,
-    ["point", "bar", "rect", "text", "area"],
+    ["point", "bar", "rect", "text", "area", "tick"],
     "continuous color mark"
   );
   const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
@@ -75,7 +75,7 @@ export function encodeContinuousColor(program, args) {
   } else {
     readQuantitativeField(dataset.values, args.field);
   }
-  const next = applyTemporalUnit(program, target, "color", temporalUnit, layer.encoding?.color)
+  let next = applyTemporalUnit(program, target, "color", temporalUnit, layer.encoding?.color)
     .editSemantic({
       property: `layer[${target}].encoding.color.field`,
       value: args.field
@@ -88,6 +88,11 @@ export function encodeContinuousColor(program, args) {
       property: `layer[${target}].encoding.color.scale`,
       value: scale.id
     });
+  if (layer.mark.type === "tick") {
+    const config = { ...next.markConfigs[target] };
+    delete config.stroke;
+    next = next._withMarkConfig(target, config);
+  }
   const encoded = aggregate === undefined
     ? next
     : next.editSemantic({

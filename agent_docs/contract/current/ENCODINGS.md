@@ -1123,6 +1123,11 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeColor`
 
+- Tick의 quantitative/temporal color는 row 단위로 기존 scale mapper를 사용해 concrete segment stroke를 칠한다. Quantitative quantize/quantile/threshold와 기존 color gradient/interval/symbols 범례를 재사용한다. Color는 x/y/angle/length/strokeWidth/opacity를 바꾸지 않는다. Tick의 categorical color/aggregate/layout/point-only unknown은 지원하지 않는다.
+- Tick color와 field stroke는 동시에 보유할 수 없다. Color가 있으면 encodeStroke(field/value)와 editTickMark.stroke를 거부한다. 반대 방향도 기존 encoding을 먼저 removeEncoding으로 제거한다. Color assignment는 고정 stroke 설정을 지우며 제거 뒤 기본 Tick 색을 사용한다. 공유 pure color-consumer 정책이 action/rematerialization/persistence의 같은 제약을 소유한다.
+- 현재/유일 target 추론, partial positional state, missing error/skip, clip, scale/data/theme/Canvas replay, selection/highlight, persistence와 facet 공유 범례를 지원한다. Basic의 Tick/Rug 공개 표면은 추가하지 않는다. Evidence: test/unit/actions/encodings/tick-quantitative-color.test.js 및 설치 consumer.
+
+
 - An ErrorBand with explicit constant fill rejects color encoding. Use `editErrorBand({ fill: false })`
   to restore field eligibility. The reverse transition requires removing the color encoding first.
 

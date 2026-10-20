@@ -188,8 +188,8 @@ The following call patterns are abbreviated examples; the declaration above owns
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale; explicit-domain row-owned Cartesian line color supports unknown paint |
-| Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
-| Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
+| Continuous | point, aggregate bar, rect, text, area, tick | point/rect/text/tick: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series; tick paints its centered segment and rejects simultaneous stroke |
+| Discretized continuous | point, aggregate bar, rect, text, area, tick | point/aggregate bar/rect/text/area/tick: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series; tick maps colors per row |
 
 <!-- action-capabilities:color:end -->
 
@@ -222,6 +222,11 @@ aggregate, temporal color, or point-only unknown fallback are supported. Use
 `encodeColor` after a complete `createAreaPlot`, whose color option remains categorical.
 The real color scale drives fills and legends and uses one sample per series for
 automatic quantile domains. Basic does not expose Area authoring.
+Tick quantitative/temporal color paints its segment, using color gradients,
+intervals or samples without changing geometry. Remove the existing color or
+stroke encoding before switching channels or setting constant stroke.
+Categorical color, aggregate, layout and point-only unknown remain unsupported;
+Basic gains no Tick authoring.
 
 Row-owned rects accept categorical or continuous color. Arc sectors accept
 categorical color with optional overlay layout.

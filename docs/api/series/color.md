@@ -24,8 +24,8 @@ per series. Raw Area supports an independent group field or tuple. Color must be
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale; explicit-domain row-owned Cartesian line color supports unknown paint |
-| Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
-| Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
+| Continuous | point, aggregate bar, rect, text, area, tick | point/rect/text/tick: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series; tick paints its centered segment and rejects simultaneous stroke |
+| Discretized continuous | point, aggregate bar, rect, text, area, tick | point/aggregate bar/rect/text/area/tick: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series; tick maps colors per row |
 
 <!-- action-capabilities:color:end -->
 
@@ -313,6 +313,45 @@ after the complete plot exists. A density-derived Area can use numeric color onl
 when its own derived dataset contains a finite constant value per existing series;
 raw input fields discarded by density estimation cannot be referenced. Basic does
 not expose Area authoring; use the Full facade for Area charts.
+
+## Color numeric ticks
+
+**Unreleased candidate.** Quantitative or temporal Tick color paints the whole
+segment and uses a filled color ramp. Stroke retains its outlined ramp.
+Geometry and opacity stay independent.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const numericTicks = chart()
+  .createCanvas({ width: 600, height: 360, margin: { left: 50, right: 150, top: 50, bottom: 50 } })
+  .createData({ values: [
+    { amount: 40, region: "North" },
+    { amount: 60, region: "South" },
+    { amount: 80, region: "North" }
+  ] })
+  .createRugPlot({ x: { field: "amount", scale: { domain: [35, 85] } }, edge: "bottom", guides: false })
+  .editTickMark({ length: 20, strokeWidth: 1 })
+  .encodeY({ field: "region", fieldType: "nominal", scale: { id: "regions" } })
+  .encodeColor({ field: "amount", fieldType: "quantitative", scale: { domain: [35, 85] } })
+  .createLegend({ values: [40, 60, 80] });
+```
+
+The `regions` scale replaces the numeric edge anchor. Target inference uses
+the current or unique Tick; name ambiguous targets. Both positions complete
+the mark. Quantitative ticks also support quantize/quantile/threshold; missing
+values retain `error`/`skip`.
+
+A Tick accepts one color or stroke field. Remove its encoding before switching
+channels or editing a constant stroke. Color removal restores default stroke.
+Categorical color, aggregate, layout and point-only unknown remain unsupported.
+Basic has no Tick/Rug authoring.
 
 ## Related
 

@@ -96,6 +96,7 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/actions/guides/legends/continuous/common.js",
   "src/actions/guides/legends/continuous/colorSymbols.js",
   "src/actions/guides/legends/sampling.js",
+  "src/actions/guides/legends/continuous/gradient.js",
   "src/grammar/scales/transformed.js",
   "src/grammar/scales/definition.js",
   "src/actions/scales/definitions.js",

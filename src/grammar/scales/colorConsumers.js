@@ -3,11 +3,25 @@ import { BAR_GRAINS, resolveBarChannels, resolveBarGrain } from "../bars/policy.
 import { validateAggregate, validateAggregateFieldType } from "../aggregate.js";
 import { isDiscretizedColorScaleType } from "./types.js";
 
+export function validateTickColorChannels(layer, requestedChannel) {
+  if (layer.mark?.type !== "tick") return;
+  const { color, stroke } = layer.encoding ?? {};
+  if (color !== undefined && stroke !== undefined ||
+      requestedChannel === "color" && stroke !== undefined ||
+      requestedChannel === "stroke" && color !== undefined) {
+    throw new Error("Tick color and stroke cannot coexist; remove the existing encoding before switching channels.");
+  }
+  if (color !== undefined && !["quantitative", "temporal"].includes(color.fieldType)) {
+    throw new Error("Tick color requires a quantitative or temporal field.");
+  }
+}
+
 export function validateContinuousColorConsumer(layer, encoding, scale, {
   inferAggregate = false,
   channel = "color"
 } = {}) {
   const kind = layer.mark?.type;
+  validateTickColorChannels(layer, channel);
   if (["log", "pow", "sqrt", "symlog"].includes(scale.type) && encoding.fieldType !== "quantitative") {
     throw new Error(`Scale type "${scale.type}" requires quantitative color.`);
   }
@@ -27,8 +41,8 @@ export function validateContinuousColorConsumer(layer, encoding, scale, {
     }
     return undefined;
   }
-  if (!["point", "bar", "rect", "text", "area"].includes(kind)) {
-    throw new Error("Continuous color requires a Point, aggregate Bar, Rect, Text, or quantitative Area consumer.");
+  if (!["point", "bar", "rect", "text", "area", "tick"].includes(kind)) {
+    throw new Error("Continuous color requires a Point, aggregate Bar, Rect, Text, Tick, or quantitative Area consumer.");
   }
   if (!["quantitative", "temporal"].includes(encoding.fieldType) ||
     (isDiscretizedColorScaleType(scale.type) && encoding.fieldType !== "quantitative")) {

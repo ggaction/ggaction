@@ -16,6 +16,7 @@ import { resolveMarkGraphicPlacement } from
 import { resolveRowEncodingValues } from
   "../../../materialization/rowEncoding.js";
 import { findDataset } from "../../../selectors/datasets.js";
+import { validateTickColorChannels } from "../../../grammar/scales/colorConsumers.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import {
@@ -159,6 +160,7 @@ export const editTickMark = /* @__PURE__ */ action(
       );
     }
     const layer = resolveTick(this, args.target, "editTickMark");
+    if (Object.hasOwn(args, "stroke")) validateTickColorChannels(layer, "stroke");
     if (Object.hasOwn(args, "stroke") && layer.encoding?.stroke !== undefined) {
       throw new Error(
         "editTickMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
@@ -205,6 +207,7 @@ export const rematerializeTickMark = /* @__PURE__ */ action(
     if (layer?.mark?.type !== "tick") {
       throw new Error(`Unknown tick mark "${id}".`);
     }
+    validateTickColorChannels(layer);
     const graphic = this.graphicSpec.objects[id];
     if (graphic?.type !== "line" || !Array.isArray(graphic.items)) {
       throw new Error(`Tick mark "${id}" requires line collection graphics.`);
@@ -225,7 +228,8 @@ export const rematerializeTickMark = /* @__PURE__ */ action(
 
     const x = resolveRowEncodingValues(this, layer, dataset, "x");
     const y = resolveRowEncodingValues(this, layer, dataset, "y");
-    const stroke = resolveRowEncodingValues(this, layer, dataset, "stroke");
+    const stroke = resolveRowEncodingValues(this, layer, dataset,
+      layer.encoding?.color === undefined ? "stroke" : "color");
     const angles = resolveDirectionValues(dataset.values, layer.encoding?.angle);
     const config = validateTickConfig({}, {
       ...DEFAULT_TICK_CONFIG,

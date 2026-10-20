@@ -3871,6 +3871,18 @@
     "executable": false
   },
   {
+    "file": "api/series/color.md",
+    "block": 11,
+    "heading": "Color numeric ticks",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "ca0e27baa7f53df17dcf29fdb015ed3797cfd7cc5964f40a64a42aa6503ad03f",
+    "executable": false
+  },
+  {
     "file": "api/series/stroke-dash.md",
     "block": 1,
     "heading": "`encodeStrokeDash(options)`",

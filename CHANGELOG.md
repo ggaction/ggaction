@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Support quantitative/temporal Tick color mappings and their filled gradient, interval and sampled-color legends, preserving geometry, raw data, existing stroke-only behavior and explicit channel switching.
+
 - Support exact continuous color/stroke gradient tick values through existing legend creation and editing, with mapped positions, explicit reset, retained representation sampling and atomic domain validation.
 
 - Raise the bounded per-path capacity to 30,000 commands, preserving interpolation/area expansion checks, immutable native edits and independent allocation limits.

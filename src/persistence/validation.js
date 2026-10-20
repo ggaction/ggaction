@@ -28,6 +28,7 @@ import { validateOptionObject, validateKeys, validatePositiveFinite, validateNon
 import { validateRegressionFitStatistics, requireRegressionStatisticsSource, regressionStatisticsRows } from "../grammar/regression/statistics.js";
 import { resolveGraphicItemCapacity } from "../selectors/graphicCapacity.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
+import { validateTickColorChannels } from "../grammar/scales/colorConsumers.js";
 import { normalizeColorInterpolationOptions } from "../grammar/scales/color.js";
 import { normalizeTransformParameters } from "../grammar/scales/transformed.js";
 import { validateLegendGroupState } from "../grammar/legendGroups.js";
@@ -180,6 +181,7 @@ export function validateProgramState(program, path) {
     }
     resources.set(referenceKind, entries);
     for (const resource of entries.values()) {
+      if (kind === "layer") validateTickColorChannels(resource);
       if (kind === "scale") {
         normalizeColorInterpolationOptions(resource.interpolate, resource);
         if (resource.type === "pow") normalizeTransformParameters("pow", {

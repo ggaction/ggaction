@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:e614f3ce8cc827f6d27e8ab1d2bd2afdbcb71f185aa7df9c79d67247d9059bcf. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:4c1afc2a6523c7e434918c40057e85a9094d5d50402c4d99491cefcf0cb2c383. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -7254,8 +7254,8 @@ The tables below are generated from the same reviewed capability registry used b
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale; explicit-domain row-owned Cartesian line color supports unknown paint |
-| Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
-| Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
+| Continuous | point, aggregate bar, rect, text, area, tick | point/rect/text/tick: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series; tick paints its centered segment and rejects simultaneous stroke |
+| Discretized continuous | point, aggregate bar, rect, text, area, tick | point/aggregate bar/rect/text/area/tick: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series; tick maps colors per row |
 
 ### Independent stroke channel
 
@@ -7289,9 +7289,9 @@ The tables below are generated from the same reviewed capability registry used b
 | --- | --- | --- |
 | Categorical color/shape/dash | point, line, area, bar, rect, arc, text | ordinal color; point shape; line strokeDash; compatible composites follow family constraints |
 | Categorical stroke | point, line, area, bar, rect, arc, rule, tick | ordinal stroke; final-item or series identities |
-| Continuous color gradient | point, aggregate bar, rect, text | sequential color; gradient swatch, no symbol recipe |
+| Continuous color gradient | point, aggregate bar, rect, text, tick | sequential color; gradient swatch, no symbol recipe |
 | Continuous stroke gradient | point, line, area, bar, rect, arc, rule, tick | sequential stroke; separate gradient, no symbol recipe |
-| Discretized color interval | point, aggregate bar, rect | quantize/quantile/threshold color; rectangle swatches |
+| Discretized color interval | point, aggregate bar, rect, tick | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
 | Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
 | Opacity | point, line, bar | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
@@ -10669,8 +10669,8 @@ per series. Raw Area supports an independent group field or tuple. Color must be
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale; explicit-domain row-owned Cartesian line color supports unknown paint |
-| Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
-| Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
+| Continuous | point, aggregate bar, rect, text, area, tick | point/rect/text/tick: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series; tick paints its centered segment and rejects simultaneous stroke |
+| Discretized continuous | point, aggregate bar, rect, text, area, tick | point/aggregate bar/rect/text/area/tick: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series; tick maps colors per row |
 
 | Option | Type | Default |
 | --- | --- | --- |
@@ -10912,6 +10912,41 @@ after the complete plot exists. A density-derived Area can use numeric color onl
 when its own derived dataset contains a finite constant value per existing series;
 raw input fields discarded by density estimation cannot be referenced. Basic does
 not expose Area authoring; use the Full facade for Area charts.
+
+## Color numeric ticks
+
+**Unreleased candidate.** Quantitative or temporal Tick color paints the whole
+segment and uses a filled color ramp. Stroke retains its outlined ramp.
+Geometry and opacity stay independent.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+const numericTicks = chart()
+  .createCanvas({ width: 600, height: 360, margin: { left: 50, right: 150, top: 50, bottom: 50 } })
+  .createData({ values: [
+    { amount: 40, region: "North" },
+    { amount: 60, region: "South" },
+    { amount: 80, region: "North" }
+  ] })
+  .createRugPlot({ x: { field: "amount", scale: { domain: [35, 85] } }, edge: "bottom", guides: false })
+  .editTickMark({ length: 20, strokeWidth: 1 })
+  .encodeY({ field: "region", fieldType: "nominal", scale: { id: "regions" } })
+  .encodeColor({ field: "amount", fieldType: "quantitative", scale: { domain: [35, 85] } })
+  .createLegend({ values: [40, 60, 80] });
+```
+
+The `regions` scale replaces the numeric edge anchor. Target inference uses
+the current or unique Tick; name ambiguous targets. Both positions complete
+the mark. Quantitative ticks also support quantize/quantile/threshold; missing
+values retain `error`/`skip`.
+
+A Tick accepts one color or stroke field. Remove its encoding before switching
+channels or editing a constant stroke. Color removal restores default stroke.
+Categorical color, aggregate, layout and point-only unknown remain unsupported.
+Basic has no Tick/Rug authoring.
 
 ## Related
 
@@ -13015,9 +13050,9 @@ whole-target content, or whole-group `blockLayout`/`at` controls.
 | --- | --- | --- |
 | Categorical color/shape/dash | point, line, area, bar, rect, arc, text | ordinal color; point shape; line strokeDash; compatible composites follow family constraints |
 | Categorical stroke | point, line, area, bar, rect, arc, rule, tick | ordinal stroke; final-item or series identities |
-| Continuous color gradient | point, aggregate bar, rect, text | sequential color; gradient swatch, no symbol recipe |
+| Continuous color gradient | point, aggregate bar, rect, text, tick | sequential color; gradient swatch, no symbol recipe |
 | Continuous stroke gradient | point, line, area, bar, rect, arc, rule, tick | sequential stroke; separate gradient, no symbol recipe |
-| Discretized color interval | point, aggregate bar, rect | quantize/quantile/threshold color; rectangle swatches |
+| Discretized color interval | point, aggregate bar, rect, tick | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
 | Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
 | Opacity | point, line, bar | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
@@ -13525,7 +13560,7 @@ type as the plotted consumer: an opacity legend uses point samples even for a Li
 
 | Family | Consumer and scale | Samples | Display recipe | Composition and edges |
 | --- | --- | --- | --- | --- |
-| Continuous color | Point, aggregate Bar, Rect, Text; existing continuous color scale | Gradient ticks and symbols accept `count` or exact `values` | Default gradient rectangle; `representation: "symbols"` uses colored points | Separate block; four edges and four plot corners |
+| Continuous color | Point, aggregate Bar, Rect, Text, Tick; existing continuous color scale | Gradient ticks and symbols accept `count` or exact `values` | Default gradient rectangle; `representation: "symbols"` uses colored points | Separate block; four edges and four plot corners |
 | Stroke gradient | Supported stroke marks; sequential quantitative/temporal stroke | Tick `count` or exact `values` | Gradient rectangle; rejects `symbol` | Separate stroke block; four edges and four plot corners |
 | Color/stroke interval | Compatible quantize, quantile, threshold consumer | Every interval | Filled or outlined swatches, respectively | Ordered interval block; four edges and four plot corners |
 | Opacity | Point, Line; quantitative linear opacity | `count` or explicit ascending `values` | One point recipe; `type` omitted or `"point"` | Separate block; four edges and four plot corners |
@@ -13544,7 +13579,7 @@ to arrange independent blocks together or choose a plot-relative free anchor.
 
 ## Continuous color, stroke, and opacity
 
-A supported Point, aggregate Bar, or Rect `color` encoding with a quantitative or temporal field produces a
+A supported Point, aggregate Bar, Rect, or Tick `color` encoding with a quantitative or temporal field produces a
 continuous gradient. Right/left positions orient it vertically; top/bottom
 orient it horizontally. The implementation writes 60 adjacent concrete rects,
 tick lines, and text to `graphicSpec`; renderers do not interpolate colors.
@@ -21456,8 +21491,8 @@ The following call patterns are abbreviated examples; the declaration above owns
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale; explicit-domain row-owned Cartesian line color supports unknown paint |
-| Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
-| Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
+| Continuous | point, aggregate bar, rect, text, area, tick | point/rect/text/tick: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series; tick paints its centered segment and rejects simultaneous stroke |
+| Discretized continuous | point, aggregate bar, rect, text, area, tick | point/aggregate bar/rect/text/area/tick: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series; tick maps colors per row |
 
 ```javascript
 encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? })
@@ -21488,6 +21523,11 @@ aggregate, temporal color, or point-only unknown fallback are supported. Use
 `encodeColor` after a complete `createAreaPlot`, whose color option remains categorical.
 The real color scale drives fills and legends and uses one sample per series for
 automatic quantile domains. Basic does not expose Area authoring.
+Tick quantitative/temporal color paints its segment, using color gradients,
+intervals or samples without changing geometry. Remove the existing color or
+stroke encoding before switching channels or setting constant stroke.
+Categorical color, aggregate, layout and point-only unknown remain unsupported;
+Basic gains no Tick authoring.
 
 Row-owned rects accept categorical or continuous color. Arc sectors accept
 categorical color with optional overlay layout.
@@ -31582,6 +31622,7 @@ export type DiscretizedColorScaleOptions =
 /** Area quantitative color requires one finite value per existing series;
  * aggregate, temporal color and unknown fallback remain mark-specific restrictions.
  * Area authoring uses the Full facade; createAreaPlot.color stays categorical.
+ * Tick quantitative/temporal color paints its stroke and excludes a simultaneous stroke encoding.
  */
 ```
 
@@ -41051,7 +41092,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:e614f3ce8cc827f6d27e8ab1d2bd2afdbcb71f185aa7df9c79d67247d9059bcf` |
+| Contract fingerprint | `sha256:4c1afc2a6523c7e434918c40057e85a9094d5d50402c4d99491cefcf0cb2c383` |
 | Example and dataset source | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

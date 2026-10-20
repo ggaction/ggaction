@@ -119,6 +119,21 @@ async function testNodeConsumer(directory) {
       assert.ok((await renderToPDFBuffer(p)).buffer.length>100);
     }
 
+    {
+      const tickRows=[{x:0,y:0,v:35},{x:1,y:1,v:60},{x:2,y:0,v:85}];
+      const base=chart().createCanvas({width:800,height:700,margin:200}).createData({values:tickRows})
+        .createRugPlot({x:"x",edge:"bottom",guides:false}).encodeY({field:"y"});
+      const numeric=base.encodeColor({field:"v",fieldType:"quantitative",scale:{domain:[35,85],range:["blue","red"]}})
+        .createLegend({values:[40,60,80],gradient:{length:125}});
+      assert.deepEqual(numeric.graphicSpec.objects.rugPlot.items.map(i=>i.properties.stroke),["#0000ff","#800080","#ff0000"]);
+      assert.ok(numeric.graphicSpec.objects.colorGradientStrips.items.every(i=>i.properties.fill===i.properties.stroke&&i.properties.strokeWidth===0));
+      assert.deepEqual(numeric.semanticSpec.datasets[0].values,tickRows);
+      assert.throws(()=>numeric.encodeStroke({value:"green"}),/Tick color and stroke cannot coexist/);
+      assert.deepEqual(deserializeProgram(serializeProgram(numeric)).graphicSpec,numeric.graphicSpec);
+      assert.ok((await renderToPNGBuffer(numeric)).buffer.length>100);assert.ok((await renderToPDFBuffer(numeric)).buffer.length>100);
+      assert.equal(basicChart().createTickMark,undefined);
+    }
+
     for (const factory of [chart,basicChart]) {
       const arrayRows=[{amounts:[1,2],labels:["A","B"],group:"alpha"},{amounts:[3,4,5],labels:["C","D"],group:"beta"}];
       const base=factory().createCanvas().createData({values:arrayRows});

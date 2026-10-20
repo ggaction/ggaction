@@ -56,8 +56,8 @@ The tables below are generated from the same reviewed capability registry used b
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale; explicit-domain row-owned Cartesian line color supports unknown paint |
-| Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
-| Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
+| Continuous | point, aggregate bar, rect, text, area, tick | point/rect/text/tick: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series; tick paints its centered segment and rejects simultaneous stroke |
+| Discretized continuous | point, aggregate bar, rect, text, area, tick | point/aggregate bar/rect/text/area/tick: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series; tick maps colors per row |
 
 ### Independent stroke channel
 
@@ -91,9 +91,9 @@ The tables below are generated from the same reviewed capability registry used b
 | --- | --- | --- |
 | Categorical color/shape/dash | point, line, area, bar, rect, arc, text | ordinal color; point shape; line strokeDash; compatible composites follow family constraints |
 | Categorical stroke | point, line, area, bar, rect, arc, rule, tick | ordinal stroke; final-item or series identities |
-| Continuous color gradient | point, aggregate bar, rect, text | sequential color; gradient swatch, no symbol recipe |
+| Continuous color gradient | point, aggregate bar, rect, text, tick | sequential color; gradient swatch, no symbol recipe |
 | Continuous stroke gradient | point, line, area, bar, rect, arc, rule, tick | sequential stroke; separate gradient, no symbol recipe |
-| Discretized color interval | point, aggregate bar, rect | quantize/quantile/threshold color; rectangle swatches |
+| Discretized color interval | point, aggregate bar, rect, tick | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
 | Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
 | Opacity | point, line, bar | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |

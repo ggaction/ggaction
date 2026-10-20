@@ -222,6 +222,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - `stroke`: non-empty string, default shared theme mark color `"#4c78a8"`.
 - `strokeWidth`: non-negative finite logical pixel, default `2`.
 - `opacity`: unit interval, default `1`.
+- 기존 encodeColor의 quantitative/temporal 또는 discretized quantitative 채널을 whole segment stroke에 적용할 수 있다. Field stroke와 동시에 저장하지 않으며 상수 stroke 편집은 color 제거 뒤 허용한다. 기존 stroke-only 출력과 geometry는 유지한다. 정확한 인코딩/범례 계약은 ENCODINGS.md의 encodeColor가 소유한다.
 - Completeness: complete Cartesian x/y scale pair가 있을 때만 source row마다 centered line item을 만든다.
   x 또는 y 하나만 있는 상태는 semantic assignment와 scale을 보존하고 line collection을 비운다.
 - Geometry: unrotated baseline은 `0°`가 위쪽인 vertical segment이며 center와 length를 보존한 concrete

@@ -16,7 +16,7 @@ type as the plotted consumer: an opacity legend uses point samples even for a Li
 
 | Family | Consumer and scale | Samples | Display recipe | Composition and edges |
 | --- | --- | --- | --- | --- |
-| Continuous color | Point, aggregate Bar, Rect, Text; existing continuous color scale | Gradient ticks and symbols accept `count` or exact `values` | Default gradient rectangle; `representation: "symbols"` uses colored points | Separate block; four edges and four plot corners |
+| Continuous color | Point, aggregate Bar, Rect, Text, Tick; existing continuous color scale | Gradient ticks and symbols accept `count` or exact `values` | Default gradient rectangle; `representation: "symbols"` uses colored points | Separate block; four edges and four plot corners |
 | Stroke gradient | Supported stroke marks; sequential quantitative/temporal stroke | Tick `count` or exact `values` | Gradient rectangle; rejects `symbol` | Separate stroke block; four edges and four plot corners |
 | Color/stroke interval | Compatible quantize, quantile, threshold consumer | Every interval | Filled or outlined swatches, respectively | Ordered interval block; four edges and four plot corners |
 | Opacity | Point, Line; quantitative linear opacity | `count` or explicit ascending `values` | One point recipe; `type` omitted or `"point"` | Separate block; four edges and four plot corners |
@@ -35,7 +35,7 @@ to arrange independent blocks together or choose a plot-relative free anchor.
 
 ## Continuous color, stroke, and opacity
 
-A supported Point, aggregate Bar, or Rect `color` encoding with a quantitative or temporal field produces a
+A supported Point, aggregate Bar, Rect, or Tick `color` encoding with a quantitative or temporal field produces a
 continuous gradient. Right/left positions orient it vertically; top/bottom
 orient it horizontally. The implementation writes 60 adjacent concrete rects,
 tick lines, and text to `graphicSpec`; renderers do not interpolate colors.
