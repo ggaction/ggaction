@@ -184,10 +184,25 @@ export function allLegendGraphicIds(kinds) {
 // A default outside legend follows the actual occupied axis lane.
 // Explicit offsets, plot corners, free coordinates and legacy layouts retain
 // their authored anchor. This returns a derived offset, never stored geometry.
+function axisLaneBlocks(program) {
+  const blocks = resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs, undefined,
+    program.materializationConfigs.textMetrics).filter(block => block.kind === "axis");
+  // Polar labels have no single Cartesian side. Reserve their concrete ink on
+  // each outside edge without treating the circle itself as an axis obstacle.
+  for (const channel of ["theta", "radius"]) {
+    if (program.guideConfigs.axis?.[channel] === undefined) continue;
+    const ids = axisGraphicIds(channel).slice(2).filter(id => program.graphicSpec.objects[id] !== undefined);
+    const bounds = unionConcreteGraphicBounds(program.graphicSpec, ids, program.materializationConfigs.textMetrics);
+    if (bounds !== undefined) for (const position of ["left", "right", "top", "bottom"]) {
+      blocks.push({ id: `${channel}-axis text`, kind: "axis", position, bounds });
+    }
+  }
+  return blocks;
+}
+
 export function resolveLegendAxisOffset(program, config, plot) {
   if (config.inferredOffset !== true || !["top", "bottom", "left", "right"].includes(config.position) || config.layout === "legacy-bottom") return config.offset;
-  const axes = resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs, undefined,
-    program.materializationConfigs.textMetrics).filter(block=>block.kind === "axis" && block.position === config.position);
+  const axes = axisLaneBlocks(program).filter(block => block.position === config.position);
   const clearance = Math.max(0, ...axes.map(block => ({
     bottom: block.bounds.bottom - plot.y - plot.height,
     top: plot.y - block.bounds.top,
@@ -209,8 +224,7 @@ export function needsLegendAxisReflow(before, after) {
     const effective = effectiveLegendOffsetConfig(program, kind, config);
     return effective.inferredOffset === true && ["top", "bottom"].includes(effective.position) && effective.layout !== "legacy-bottom";
   }) || Object.values(program.guideConfigs.legendGroups ?? {}).some(group=>group.inferredOffset === true && ["top","bottom"].includes(group.placement.position)));
-  return inferred && [before, after].some(program=>resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs,
-    undefined, program.materializationConfigs.textMetrics).some(block=>block.kind === "axis" && ["top","bottom"].includes(block.position)));
+  return inferred && [before, after].some(program => axisLaneBlocks(program).some(block => ["top", "bottom"].includes(block.position)));
 }
 
 
@@ -220,7 +234,6 @@ export function needsSideLegendAxisReflow(before, after) {
     return effective.inferredOffset === true && ["left", "right"].includes(effective.position);
   }));
   if (!inferred) return false;
-  const signature = program => JSON.stringify(resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs,
-    undefined, program.materializationConfigs.textMetrics).filter(block => block.kind === "axis" && ["left", "right"].includes(block.position)));
+  const signature = program => JSON.stringify(axisLaneBlocks(program).filter(block => ["left", "right"].includes(block.position)));
   return signature(before) !== signature(after);
 }

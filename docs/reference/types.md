@@ -171,6 +171,7 @@ interface ChartProgramActions {
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
   createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;
+  editRadarPlot(options: EditRadarPlotOptions): ChartProgram;
   createRugPlot(options: CreateRugPlotOptions): ChartProgram;
   createStripPlot(options: CreateStripPlotOptions): ChartProgram;
   createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;
@@ -1288,6 +1289,12 @@ export interface BoxPlotOptions {
   x?: BoxPlotPositionChannel;
   y?: BoxPlotPositionChannel;
   coordinate?: string;
+  color?: string | {
+    field: string;
+    fieldType?: "nominal" | "ordinal";
+    scale?: NonPointCategoricalColorScaleOptions;
+    palette?: Palette;
+  } | { value: string };
   whisker?: BoxPlotWhisker;
   width?: BoxPlotWidth;
   outliers?: boolean;
@@ -1313,7 +1320,7 @@ export interface BoxPlotOptions {
 
 </details>
 
-Related types: [`BoxPlotSummaryFields`](#type-boxplotsummaryfields) · [`BoxPlotPositionChannel`](#type-boxplotpositionchannel) · [`BoxPlotWhisker`](#type-boxplotwhisker) · [`BoxPlotWidth`](#type-boxplotwidth) · [`RectStyleDetails`](#type-rectstyledetails) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`BoxPlotGuideOptions`](#type-boxplotguideoptions).
+Related types: [`BoxPlotSummaryFields`](#type-boxplotsummaryfields) · [`BoxPlotPositionChannel`](#type-boxplotpositionchannel) · [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`BoxPlotWhisker`](#type-boxplotwhisker) · [`BoxPlotWidth`](#type-boxplotwidth) · [`RectStyleDetails`](#type-rectstyledetails) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`BoxPlotGuideOptions`](#type-boxplotguideoptions).
 
 ### `BoxPlotPositionChannel` {#type-boxplotpositionchannel}
 
@@ -3074,14 +3081,14 @@ export interface CreateRaincloudPlotOptions {
   density?: false | RaincloudDensityOptions;
   summary?: false | RaincloudSummaryOptions;
   points?: false | RaincloudPointsOptions;
-  color?: LineCategoricalColorChannel;
+  color?: false | RaincloudColorChannel;
   guides?: false | CartesianCategoricalPointGuideOptions;
 }
 ```
 
 </details>
 
-Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`CartesianCategoricalPointGuideOptions`](#type-cartesiancategoricalpointguideoptions).
+Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions) · [`RaincloudColorChannel`](#type-raincloudcolorchannel) · [`CartesianCategoricalPointGuideOptions`](#type-cartesiancategoricalpointguideoptions).
 
 ### `CreateReferenceBandOptions` {#type-createreferencebandoptions}
 
@@ -4606,6 +4613,7 @@ type DynamicReferenceBinding = {
   readonly id?: string;
   readonly source: string;
   readonly axis: "x" | "y";
+  /** Distribution/endpoint measurement axes and quantitative Horizon X use original bound observations, retaining multiplicity. Horizon folded Y is unsupported. */
   readonly population?: "boundData" | "visibleItems";
   readonly field?: string;
   /** Compute a separate reference for each observed value of this field. */
@@ -5592,6 +5600,20 @@ export type EditRScaleOptions = FocusedScaleSelection & WithoutScaleId<RadiusSca
 
 Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`WithoutScaleId`](#type-withoutscaleid) · [`RadiusScaleOptions`](#type-radiusscaleoptions) · [`RadialMapping`](#type-radialmapping).
 
+### `EditRadarPlotOptions` {#type-editradarplotoptions}
+
+<details markdown="1">
+<summary>Expand EditRadarPlotOptions</summary>
+
+```typescript
+export interface EditRadarPlotOptions {
+  target?: string;
+  wide: { fields: readonly [string, string, ...string[]] };
+}
+```
+
+</details>
+
 ### `EditRadialAxisOptions` {#type-editradialaxisoptions}
 
 <details markdown="1">
@@ -5624,13 +5646,13 @@ export interface EditRaincloudPlotOptions {
   density?: false | RaincloudDensityOptions;
   summary?: false | RaincloudSummaryOptions;
   points?: false | RaincloudPointsOptions;
-  color?: false | LineCategoricalColorChannel;
+  color?: false | RaincloudColorChannel;
 }
 ```
 
 </details>
 
-Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel).
+Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions) · [`RaincloudColorChannel`](#type-raincloudcolorchannel).
 
 ### `EditRectMarkOptions` {#type-editrectmarkoptions}
 
@@ -7036,6 +7058,7 @@ export interface GradientPlotOptions {
   x?: GradientPlotPositionChannel;
   y?: GradientPlotPositionChannel;
   coordinate?: string;
+  color?: BasicColorChannel | { value: string };
   density?: GradientPlotDensityOptions;
   width?: { band?: number };
   gradient?: GradientPlotAppearanceOptions;
@@ -7046,7 +7069,7 @@ export interface GradientPlotOptions {
 
 </details>
 
-Related types: [`GradientPlotPositionChannel`](#type-gradientplotpositionchannel) · [`GradientPlotDensityOptions`](#type-gradientplotdensityoptions) · [`GradientPlotAppearanceOptions`](#type-gradientplotappearanceoptions) · [`GradientPlotCenterOptions`](#type-gradientplotcenteroptions) · [`GradientPlotGuideOptions`](#type-gradientplotguideoptions).
+Related types: [`GradientPlotPositionChannel`](#type-gradientplotpositionchannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`GradientPlotDensityOptions`](#type-gradientplotdensityoptions) · [`GradientPlotAppearanceOptions`](#type-gradientplotappearanceoptions) · [`GradientPlotCenterOptions`](#type-gradientplotcenteroptions) · [`GradientPlotGuideOptions`](#type-gradientplotguideoptions).
 
 ### `GradientPlotPositionChannel` {#type-gradientplotpositionchannel}
 
@@ -9829,6 +9852,19 @@ export type RaincloudCategoryChannel = string | {
 </details>
 
 Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionscaleoptions).
+
+### `RaincloudColorChannel` {#type-raincloudcolorchannel}
+
+<details markdown="1">
+<summary>Expand RaincloudColorChannel</summary>
+
+```typescript
+export type RaincloudColorChannel = LineCategoricalColorChannel | { value: string };
+```
+
+</details>
+
+Related types: [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel).
 
 ### `RaincloudDensityOptions` {#type-rainclouddensityoptions}
 

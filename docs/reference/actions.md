@@ -190,6 +190,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editParallelAxis`](./actions/guides.md#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](./actions/charts-data.md#editparallelscale) | H2 | user-facing | core |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |
+| [`editRadarPlot`](./actions/charts-data.md#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](./actions/guides.md#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](./actions/guides.md#editradialaxislabels) | H3 | user-facing | axes |
 | [`editRadialAxisLine`](./actions/guides.md#editradialaxisline) | H3 | user-facing | axes |

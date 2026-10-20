@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 591, // The combined color-size grammar and materializer add two owners.
-  packedBytes: 850_000, // Gradient appearance, independent guides and dependent replay: measured 849988 bytes.
-  unpackedBytes: 4_100_000 // Both-axis jitter and source-neutral public action names.
+  entries: 594, // Raincloud selection/filtering and shared statistical dependents add three owners.
+  packedBytes: 859_000, // Radar, compound-chart and guide repairs: measured 857507 bytes.
+  unpackedBytes: 4_125_000 // Same staged package measured 4119128 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

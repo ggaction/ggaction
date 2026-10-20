@@ -4,6 +4,13 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add `editRadarPlot` to atomically edit the selected dimensions and order of a wide Radar chart while preserving its closed paths, groups, appearance and guides.
+- Accept color in Box and Gradient plot creation, support continuous Arc color, and preserve compound-chart color and filtering through edits and facets.
+- Compute distribution and endpoint statistical references from their source observations; retain and recompute independently authored reference layers through owner edits.
+- Resolve compatible facet color/stroke policies and combined legend domains consistently. Automatic `createGuides` accepts a chart with no applicable guides.
+- Reserve Polar and Parallel axis text in facet header and shared-legend placement; inferred outside legends also clear Polar labels after typography changes.
+- Apply Histogram missing-value policy consistently to marks, scales, guides, labels and selections, and expose actual bin intervals as category labels.
+
 - Add `createStatisticalReference` for a native mean/median/extreme/quantile line or exact percentile interval, with dark solid line defaults and existing statistical reference replay and ownership.
 
 - Preserve aggregate bar positions and widths when categorical color repeats the category-axis field and no group or layout was already specified.

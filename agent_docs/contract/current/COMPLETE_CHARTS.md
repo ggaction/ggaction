@@ -127,6 +127,10 @@ connector?, labels?, guides? })`는 start/end Point와 connector를 하나의 qu
 `editEndpointPlot({ target?, data?, coordinate?, category?, value?, start?, end?, orientation?, summary?, baseline? })`
 은 target 종류에 맞는 semantic role만 받아 owned Point·Rule·label·summary data를 한 immutable action에서 교체한다.
 생성 때 저장한 appearance와 guide 정책은 유지한다.
+역할 또는 원자료 변경으로 축 domain이 달라질 때 이전 domain의 명시적 tick sample은
+새 domain에서 다시 추론한다. 글꼴, 회전, tick/line 스타일은 그대로 유지한다.
+별도로 추가한 statistical reference는 source endpoint 역할, 스타일, label을 보존하며 원자료에서 다시 계산한다.
+방향을 바꾸면 측정 축을 따라가고 새 구성요소보다 위에 다시 그려진다.
 
 ### Formal values — `editEndpointPlot`
 
@@ -137,7 +141,8 @@ connector?, labels?, guides? })`는 start/end Point와 connector를 하나의 qu
 ### Value coverage — `editEndpointPlot`
 
 - ✅ Covered: source/category/value/start/end/orientation/summary/baseline, owned cleanup, trace nesting과 atomic failure.
-- Evidence: `test/unit/actions/charts/endpoint-facades.test.js`, `test/contracts/endpoint-facade-types.test.js`.
+- Evidence: `test/unit/actions/charts/endpoint-facades.test.js`, `test/unit/actions/charts/endpoint-guide-edit.test.js`,
+  `test/contracts/endpoint-facade-types.test.js`, `test/unit/actions/marks/statistical-source-owners.test.js`.
 
 ## `createIntervalPlot`
 
@@ -285,6 +290,36 @@ line?, guides? })`. Default id는 `radarPlot`, lifecycle은 Aggregate create-onl
 - Evidence: `test/unit/actions/charts/radar-facade.test.js`, `test/contracts/radar-facade-types.test.js`,
   `test/charts/polar-line-radar/`, `examples/jobs-radar-chart/`.
 
+## `editRadarPlot`
+
+`editRadarPlot({ target?, wide: { fields } })`는 기존 wide Radar의 차원 목록과 순서를 원자적으로
+갱신한다. Target 생략은 current eligible mark, unique eligible mark 순서이며 ambiguity는 거부한다.
+`wide.fields`는 서로 다른 수치형 원자료 필드 2개 이상이다. Long-form Radar와 non-Radar 대상,
+누락/중복/비수치 필드, aliases 변경은 거부하며 이전 program/입력/trace는 변경되지 않는다.
+
+- 기존 fold provenance의 source와 aliases를 보존하는 새 owned revision을 생성한다.
+- 동일한 mark owner를 새 revision으로 rebind하고 theta domain/차원 순서를 함께 변경한다.
+  자동 radius domain은 새 측정값으로 재계산하며 사용자가 명시한 domain은 보존한다.
+- Group, color/stroke encodings, mark appearance, coordinate 및 guide 스타일을 보존한다.
+  자동 theta ticks/labels/grid와 이전 전체 차원 목록은 새 차원으로 바뀐다. 명시적인 부분집합은
+  남은 차원을 유지하고 모두 제거된 경우 새 차원 전체를 사용한다. Path는 closed로 유지한다.
+- Top-level trace는 하나의 `editRadarPlot`이며 fold revision, rebind, scale edit,
+  mark/guide rematerialization과 release는 기존 wrapped action을 재사용한다.
+
+### Formal values — `editRadarPlot`
+
+- Implemented: `editRadarPlot(options: EditRadarPlotOptions): ChartProgram` (default entry point only).
+- Required: `wide.fields: readonly [string, string, ...string[]]`.
+- Optional: `target?: string`.
+- Proposed (NOT IMPLEMENTED): long-form role changes and per-dimension normalization are outside this editor's approved scope.
+
+### Value coverage — `editRadarPlot`
+
+- ✅ Covered: dimension reorder/addition/two-axis reduction, direct final geometry parity, auto radius update,
+  grouped closed paths, preserved color/opacity/line width/guide styling, immutable invalid inputs,
+  trace and persistence replay, strict full-only declarations.
+- Evidence: `test/unit/actions/charts/radar-edit.test.js`, `test/contracts/radar-facade-types.test.js`.
+
 ## `createRugPlot`
 
 `createRugPlot({ id?, data?, x, edge: "top" | "bottom", tick?, guides? })` 또는
@@ -387,8 +422,8 @@ Default id는 `raincloudPlot`; lifecycle은 stable mutable composite다.
 - Summary와 Points는 Cloud 반대편 category half에 band-relative 0.22 offset을 저장한다. Point spread default는
   0.12 band, Box width default는 0.24 band다. Bar/Rule/Point rematerializer가 이 offset을 적용하므로 Canvas,
   scale과 child style 변경에도 누적 없이 다시 계산된다.
-- Density/Summary/Points는 각각 false로 끌 수 있으나 모두 false일 수 없다. `color`는 category field만 받으며
-  active child가 같은 categorical color scale을 공유한다. Guide는 한 active child를 owner로 한 번만 만든다.
+- Density/Summary/Points는 각각 false로 끌 수 있으나 모두 false일 수 없다. `color`는 category field 또는 `{value: NonEmptyString}`을 받는다. Field color는
+  active child가 같은 categorical color scale을 공유하고 fixed color는 모든 enabled child의 fill을 갱신한다. Guide는 한 active child를 owner로 한 번만 만든다.
 - Effects: `createViolinPlot? → createBoxPlot|createIntervalPlot? → createStripPlot|createBeeswarmPlot? → scoped
   guides`. First active child가 parent config와 active child closure를 소유한다. Parent 제거는 모든 children과
   unreferenced KDE/summary data를 함께 제거하며 owned child 직접 제거는 거부한다.
@@ -416,7 +451,14 @@ Default id는 `raincloudPlot`; lifecycle은 stable mutable composite다.
 - Source/category/value/orientation/side 변경은 existing parent closure를 immutable candidate에서 제거한 뒤 같은
   parent와 child IDs로 전체 recipe를 다시 만든다. 어떤 child validation이라도 실패하면 caller, 이전 program,
   trace와 derived data는 바뀌지 않는다.
-- Parent data revision만 KDE/summary/packing population을 함께 바꾼다. `filterMarks` 같은 child display filter는
+- 기존 component에 연결된 statistical reference와 label은 ID, 통계 정의, 외형을 보존하고 revised source에서
+  재계산한다. Orientation 변경 시 measure axis를 따라가고 원래 component를 끄면 남은 parent owner를 source로
+  사용한다. Reference와 label은 재생성된 component 위에 그린다.
+- Parent data revision과 명시적 facade ID를 target으로 한 `filterMarks`가 KDE/summary/packing population을 함께 바꾼다.
+  Parent filter는 field/item selector를 raw observations에 적용하며 replace/compose/remove와 grouped rank를 지원한다.
+  Rebuild 후에도 source/selector ownership을 유지하고 explicit data revision은 이전 filter ownership을 제거한다.
+  Parent source에는 enabled statistics의 nonempty input 요구가 적용된다. Named-child empty filter는 기존대로 지원한다.
+- `encodeColor({target: facadeId, ...})`는 `editRaincloudPlot`을 통해 parent color를 갱신한다. Category 변경 시 color가 생략되고 기존 color가 category role을 따라가면 새 category field로 함께 갱신한다. Fixed color 또는 명시적 color 요청은 덮어쓰지 않는다. `filterMarks` 같은 child display filter는
   해당 child의 derived display data만 바꾸며 sibling population을 다시 계산하지 않는다. Appearance는 각 lower
   mark editor가 소유한다.
 
@@ -430,7 +472,7 @@ Default id는 `raincloudPlot`; lifecycle은 stable mutable composite다.
 
 - ✅ Covered: source/role/orientation/side와 component type/enablement atomic revision, stable IDs, stale derived-data
   release, lower style retention boundary와 invalid target/options rollback.
-- Evidence: `test/unit/actions/charts/raincloud-facade.test.js`, `test/contracts/raincloud-types.test.js`.
+- Evidence: `test/unit/actions/charts/raincloud-facade.test.js`, `test/unit/actions/charts/raincloud-owner-operations.test.js`, `test/contracts/raincloud-types.test.js`.
 
 ## `createRosePlot`
 
@@ -598,6 +640,8 @@ Default id는 `horizonPlot`, lifecycle은 Aggregate create-only다.
 - Editing: `editHorizon`, `editAreaMark`, x scale/guide editor, selection/resize를 사용한다.
   Selection은 derived final band membership을 따르며 raw amplitude field를 보존한다고 약속하지 않는다.
   Shared x guide는 derived field 이름이 아니라 original x title로 호환성을 검증한다.
+- Statistical reference의 boundData는 quantitative X에서 원본 관측치를 사용한다. 접힌 Y나 temporal X의 수치 통계는
+  지원하지 않는다. 원본 진폭의 평균을 접힌 좌표에 그리는 대신 명시적인 오류를 반환한다.
 
 ### Formal values — `createHorizonPlot`
 

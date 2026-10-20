@@ -1,3 +1,5 @@
+import { findRaincloudParent } from "../../selectors/raincloud.js";
+import { filterRaincloud, materializeRaincloudFilter, removeRaincloudFilter } from "./raincloudFilter.js";
 import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 
@@ -118,6 +120,8 @@ export const materializeMarkFilteredData = /* @__PURE__ */ closedAction(
       args.id,
       "markFilter"
     );
+    const raincloud = findRaincloudParent(this, transform.target);
+    if (raincloud !== undefined) return materializeRaincloudFilter(this, { id, source, transform }, raincloud);
     const layer = requireLayer(this, transform.target);
     if (layer?.data !== dataset.source) {
       throw new Error(
@@ -280,6 +284,8 @@ export const removeMarkFilter = /* @__PURE__ */ closedAction(
     const target = args.target === undefined
       ? undefined
       : validateUserId(args.target, "Mark filter target id");
+    const raincloud = findRaincloudParent(this, target);
+    if (raincloud !== undefined) return removeRaincloudFilter(this, raincloud);
     const layer = resolveEligibleLayer(this, {
       target,
       label: "mark filter",
@@ -301,6 +307,11 @@ export const filterMarks = /* @__PURE__ */ closedAction(
     const target = args.target === undefined
       ? undefined
       : validateUserId(args.target, "Filter mark target id");
+    const raincloud = findRaincloudParent(this, target);
+    if (raincloud !== undefined) {
+      const selector = Object.fromEntries(MARK_SELECTOR_KEYS.flatMap(key => Object.hasOwn(args, key) ? [[key, args[key]]] : []));
+      return filterRaincloud(this, args, raincloud, selector);
+    }
     const layer = resolveEligibleLayer(this, {
       target,
       label: "filter mark",

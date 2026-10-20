@@ -149,6 +149,8 @@ const createGuides = /* @__PURE__ */ action(
     this._assertUnitProgram("createGuides");
     const { axes, grid, legend } = resolveGuideOptions(this, args);
     if (axes === undefined && grid === undefined && legend === undefined) {
+      if (this.semanticSpec.layers.length > 0 &&
+          OPTIONS.some(key => args[key] === undefined)) return this;
       throw new Error("createGuides requires at least one selected guide.");
     }
 

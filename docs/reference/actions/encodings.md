@@ -190,8 +190,8 @@ The following call patterns are abbreviated examples; the declaration above owns
 | --- | --- | --- | --- |
 | Constant | point, line, bar, area, arc, rect, text | point/line/bar/area/arc/rect/text: constant color | value only; no field, scale, palette, layout or aggregate; replaces color mapping and its legend participation |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
-| Continuous | point, aggregate bar, rect, text, area, line | point/rect/text/line: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; line/area require one finite value per existing series; Parallel uses row grain |
-| Discretized continuous | point, aggregate bar, rect, text, area, line | point/aggregate bar/rect/text/area/line: quantitative | quantize, quantile, or threshold scale; line/area require one finite value per existing series; Parallel uses row grain |
+| Continuous | point, aggregate bar, rect, text, area, line, arc | point/rect/text/line/arc: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; line/area require one finite value per existing series; Parallel uses row grain; arc requires one color value per sector |
+| Discretized continuous | point, aggregate bar, rect, text, area, line, arc | point/aggregate bar/rect/text/area/line/arc: quantitative | quantize, quantile, or threshold scale; line/area require one finite value per existing series; Parallel uses row grain; arc requires one color value per sector |
 
 <!-- action-capabilities:color:end -->
 
@@ -226,7 +226,15 @@ The real color scale drives fills and legends and uses one sample per series for
 automatic quantile domains. Basic does not expose Area authoring.
 
 Row-owned rects accept categorical or continuous color. Arc sectors accept
-categorical color with optional overlay layout.
+categorical color with optional overlay layout, or continuous/discretized color
+with one value per sector. Aggregated sectors require that value to be constant
+within their category; no implicit color aggregation is invented. Gradient and
+interval legends use the same scale mapping. Automatic quantile domains use one
+sample per sector.
+When changing a target between categorical and continuous color families, an
+omitted scale ID detaches from an incompatible shared scale into a target-owned
+scale. Explicit shared IDs keep strict consumer validation. Other consumers,
+such as grouped regression lines, retain their original mapping.
 [Series encodings](../../api/series-encodings.md)
 
 

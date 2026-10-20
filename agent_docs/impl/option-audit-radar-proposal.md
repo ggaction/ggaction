@@ -4,12 +4,12 @@
 
 - [x] 기존 공개 경로 검증: `editFoldData`는 차트 소유 데이터의 직접 편집을 거부한다.
 - [x] 기존 `encodeTheta`/`encodeR`로 원자료 필드를 지정하면 차원 접기 의미가 사라지는 문제 재현.
-- [ ] 공개 API 승인.
-- [ ] 구현, 문서, 타입, inspection, 회귀 검증.
+- [x] 공개 API 승인: 2026-10-20 사용자가 구체적인 API 제안에 “이 API로 추가해”라고 답했다.
+- [x] 구현, 문서, 타입, inspection, 회귀 검증.
 
 ## Gate
 
-상태: `ready-for-review`. 새 공개 함수는 이 제안에 대한 명시적 승인 전에는 구현하지 않는다.
+상태: `approved`. 제안 증거 revision: `533164c537d2819a47e6db6d92383d5c815b2bca`.
 기존 차트 생성이나 시각적 디자인을 바꾸는 제안이 아니라, 기존 Radar의 차원 목록과 순서를
 원자적으로 편집하는 계약이다. 다른 옵션 감사 버그 수정은 이 결정과 독립적으로 진행한다.
 
@@ -38,3 +38,13 @@ graphicSpec 경계를 추가하지 않는다. 생성 후 편집과 최종 fields
 기하/통계 동등성, 불변성, 실패 원자성, 코드/worker/persistence 재생, 가이드/색상 보존을
 회귀 테스트로 검증한다. 타입, action inventory, inspection, 현재 계약과 공개 문서를
 같은 변경으로 갱신한다. 새 API는 additive이며 기존 호출은 유지한다.
+
+## 구현 검증
+
+- `test/unit/actions/charts/radar-edit.test.js`: 차원 목록·순서 변경, 직접 생성과의
+  결과 동등성, 가이드·색상·닫힌 경로, 저장/복원, 불변성과 실패 원자성.
+- `test/contracts/radar-facade-types.test.js`: 공개 타입의 허용·거부 입력.
+- Autocomplete의 `test/owned-chart-controls.test.js` 및 실제 브라우저:
+  선택한 Color로 Radar 생성 후 차원 편집 카드를 Apply하는 흐름을 확인했다.
+- `COMPLETE_CHARTS.md`, action inventory, 관계/카드, inspection descriptor,
+  공개 참조와 타입을 같은 구현 체크포인트에서 갱신했다.

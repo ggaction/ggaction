@@ -77,8 +77,9 @@ function resolveOrdinalScales(program, scaleIds) {
     );
     return concrete;
   });
-  if (scales.slice(1).some(scale => !sameValues(scale.domain, scales[0].domain))) {
-    throw new Error("Combined legend scales must have identical ordered domains.");
+  if (scales.slice(1).some(scale => scale.domain.length !== scales[0].domain.length ||
+      scale.domain.some(value => !scales[0].domain.some(other => Object.is(value, other))))) {
+    throw new Error("Combined legend scales must contain the same domain values.");
   }
   return { scales, domain: scales[0].domain };
 }

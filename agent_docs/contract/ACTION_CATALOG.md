@@ -276,6 +276,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createPolarScatterPlot`](current/COMPLETE_CHARTS.md#createpolarscatterplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createPolarLinePlot`](current/COMPLETE_CHARTS.md#createpolarlineplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createRadarPlot`](current/COMPLETE_CHARTS.md#createradarplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`editRadarPlot`](current/COMPLETE_CHARTS.md#editradarplot) | charts | Mutable resource | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createRugPlot`](current/COMPLETE_CHARTS.md#createrugplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createStripPlot`](current/COMPLETE_CHARTS.md#createstripplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createBeeswarmPlot`](current/COMPLETE_CHARTS.md#createbeeswarmplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |

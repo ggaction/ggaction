@@ -2,6 +2,7 @@ import { isSourceOwnedText } from "../../../grammar/text.js";
 import { readSeriesIdentity, validatePathSeriesAppearance } from "../../../grammar/pathSeries.js";
 import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
 import { readScaleField } from "../../../grammar/scales/index.js";
+import { readArcColorValues } from "../../../grammar/arcs.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
 import { SCALED_ENCODING_CHANNELS } from "../../../core/vocabulary.js";
@@ -56,6 +57,9 @@ export function readConsumerFieldValues(
   scale = findScale(program, consumer.encoding.scale)
 ) {
   const { field, fieldType, temporalUnit } = consumer.encoding;
+  if (consumer.layer.mark.type === "arc" && consumer.channel === "color") {
+    return readArcColorValues(dataset.values, consumer.layer);
+  }
   if (consumer.layer.mark.type === "bar" && consumer.layer.encoding?.group !== undefined && ["xOffset", "yOffset"].includes(consumer.channel)) {
     return readSeriesIdentity(dataset.values, consumer.layer).values;
   }

@@ -8,12 +8,12 @@ import {
 import { AXIS_LABEL_FONT_SIZES, AXIS_TITLE_FONT_SIZE, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../../../../theme/defaults.js";
 import { validateAxisTextStyle } from "../labels.js";
 import { validateAxisFormat } from "../policy.js";
+import { axisGraphicIds } from "../../../../selectors/axes.js";
 
 export const PARALLEL_AXIS_PARTS = Object.freeze(["line", "ticks", "labels", "title"]);
-export const PARALLEL_AXIS_GRAPHICS = Object.freeze({
-  line: "parallelAxisLines", ticks: "parallelAxisTicks",
-  labels: "parallelAxisLabels", title: "parallelAxisTitles"
-});
+export const PARALLEL_AXIS_GRAPHICS = Object.freeze(Object.fromEntries(
+  PARALLEL_AXIS_PARTS.map((part, index) => [part, axisGraphicIds("parallel")[index]])
+));
 const STYLE_OPTIONS = Object.freeze({
   line: ["color", "lineWidth"],
   ticks: ["count", "values", "length", "color", "lineWidth"],

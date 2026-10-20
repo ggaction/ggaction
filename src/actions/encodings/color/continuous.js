@@ -5,14 +5,14 @@ import {
   resolveTemporalUnit
 } from "../../../grammar/scales/index.js";
 import { validateContinuousColorConsumer } from "../../../grammar/scales/colorConsumers.js";
-import { validatePathSeriesAppearance } from "../../../grammar/pathSeries.js";
+import { validatePathGroupAppearance } from "../../../materialization/marks/grouping.js";
+import { readArcColorValues } from "../../../grammar/arcs.js";
 import { validateAggregateFieldValues } from "../../../grammar/aggregate.js";
 import {
   resolveQuantitativeColorScaleDefinition
 } from "../../scales/definitions.js";
 import {
   releaseDetachedEncodingScale,
-  resolveReassignmentScaleOptions,
   resolveTarget
 } from "../shared.js";
 import {
@@ -25,7 +25,8 @@ import {
 import {
   assertNoConstantColor,
   withoutConstantColor,
-  resolveColorScaleOptions
+  resolveColorScaleOptions,
+  resolveColorReassignmentScaleOptions
 } from "./policy.js";
 
 import { applyTemporalUnit } from "../temporal.js";
@@ -42,15 +43,15 @@ export function encodeContinuousColor(program, args) {
   const { id: target, dataset: sourceDataset, layer } = resolveTarget(
     program,
     args.target,
-    ["point", "line", "bar", "rect", "text", "area"],
+    ["point", "line", "bar", "rect", "text", "area", "arc"],
     "continuous color mark"
   );
   const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
   const baseline = withoutConstantColor(program, layer);
   assertNoConstantColor(baseline, layer);
   const temporalUnit = resolveTemporalUnit(args, args.fieldType, layer.encoding?.color);
-  const requestedScale = resolveReassignmentScaleOptions(
-    layer.encoding?.color,
+  const requestedScale = resolveColorReassignmentScaleOptions(
+    program, layer, "color", args.fieldType,
     resolveColorScaleOptions(args)
   );
   const scale = resolveQuantitativeColorScaleDefinition(
@@ -60,8 +61,14 @@ export function encodeContinuousColor(program, args) {
   );
   const aggregate = validateContinuousColorConsumer(layer, args, scale, { inferAggregate: true });
   if (["line", "area"].includes(layer.mark.type)) {
-    validatePathSeriesAppearance(dataset.values, {
+    validatePathGroupAppearance(program, {
       ...layer, encoding: { ...layer.encoding, color: { field: args.field, fieldType: args.fieldType } }
+    }, dataset);
+  }
+  if (layer.mark.type === "arc") {
+    readArcColorValues(dataset.values, {
+      ...layer, encoding: { ...layer.encoding,
+        color: { field: args.field, fieldType: args.fieldType, temporalUnit } }
     });
   }
   if (aggregate !== undefined) validateAggregateFieldValues(dataset.values, args.field, args.fieldType);

@@ -148,11 +148,19 @@ Omit the statistic keys for a mean line, supply `statistic: { op: "median" }` fo
 Quantiles 0.25–0.75 show the central 50%; 0.025–0.975 show the central 95% of data, rather than a confidence interval.
 Set `groupBy` to one source field name for a separate result per observed group on either axis, even if that field is not encoded.
 Groups retain source order. Visible marks must have a single value of that grouping field; otherwise use `boundData`.
+For a distribution's measurement axis, `boundData` uses original observations from density, ECDF, computed
+box-summary, and gradient provenance. It preserves repeated observations and source groups instead of averaging
+rendering samples. Precomputed summaries keep their supplied data. Grouped aggregate line statistics can use
+singleton partitions without changing the source line.
+Summarized Dot, Lollipop, and Dumbbell endpoints also follow their original measurement roles.
+Horizon accepts quantitative X statistics from source observations; folded Y and temporal X are not numeric statistic axes.
 The owned output records the key in `group` beside `value` or `lower`/`upper`. Omitting `groupBy` preserves one overall result.
 The default ID is `statisticalReference`; use explicit IDs for additional references. Lines default to `#222222`,
 width `2.5`, solid stroke; bands to `#6b7280`, opacity `0.18`, no stroke. Use native Rule styles for lines and Rect styles for bands.
 When `groupBy` matches the source Color field without a color aggregate, omitted `stroke` shares that Color scale:
 each group's line matches its source marks, and palette edits update both. An explicit `stroke` overrides this default.
+Reference groups contribute to the shared appearance domain even when a mark filter hides that group.
+Statistical values do not expand positional domains, and distribution-role edits refresh existing references.
 This full-only action wraps `createReferenceLine` or `createReferenceBand` and retains their statistical binding,
 replay, editing, facet and removal behavior. Literal reference coordinates are not accepted.
 [Statistical references](../../api/marks/rule.md#statistical-reference-action)

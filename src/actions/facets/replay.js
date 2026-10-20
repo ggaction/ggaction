@@ -1,3 +1,4 @@
+import { findRaincloudParent } from "../../selectors/raincloud.js";
 import { closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -33,7 +34,7 @@ export const replayDerivedData = /* @__PURE__ */ closedAction(
     const source = validateUserId(args.source, "Facet replay source id");
     const resolved = requestedTransform(args.transform);
     let next = this;
-    if (resolved.transform.type === "markFilter") {
+    if (resolved.transform.type === "markFilter" && findRaincloudParent(next, resolved.transform.target) === undefined) {
       const target = resolved.transform.target;
       const { markFilter: previous, ...config } = next.markConfigs[target] ?? {};
       next = next.rebindLayerData({ id: target, data: source })._withMarkConfig(target, config);

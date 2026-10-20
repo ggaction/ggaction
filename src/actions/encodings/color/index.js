@@ -1,3 +1,4 @@
+import { findRaincloudParent } from "../../../selectors/raincloud.js";
 import { APPEARANCE_MARK_TYPES } from "../../../core/vocabulary.js";
 import { removeEncoding } from "../remove.js";
 import { validateNonEmptyString } from "../../../core/validation.js";
@@ -16,7 +17,6 @@ import { resolveColorScaleDefinition } from "../../scales/definitions.js";
 import {
   applyEncodingScale,
   releaseDetachedEncodingScale,
-  resolveReassignmentScaleOptions,
   resolveTarget,
   validateOptions
 } from "../shared.js";
@@ -39,7 +39,8 @@ import {
   withoutConstantColor,
   COLOR_ENCODING_OPTIONS,
   resolveColorLayout,
-  resolveColorScaleOptions
+  resolveColorScaleOptions,
+  resolveColorReassignmentScaleOptions
 } from "./policy.js";
 
 import { applyTemporalUnit } from "../temporal.js";
@@ -56,6 +57,11 @@ const encodeColor = /* @__PURE__ */ action(
     const hasValue = Object.hasOwn(args, "value");
     if (hasValue === Object.hasOwn(args, "field")) {
       throw new Error("encodeColor requires exactly one of value or field.");
+    }
+    const raincloud = findRaincloudParent(this, args.target);
+    if (raincloud !== undefined) {
+      const { target, ...color } = args;
+      return this.editRaincloudPlot({ target, color });
     }
     if (hasValue) {
       if (COLOR_ENCODING_OPTIONS.some(key => !["target", "value"].includes(key) && args[key] !== undefined)) {
@@ -132,8 +138,8 @@ const encodeColor = /* @__PURE__ */ action(
         ...layer, encoding: { ...layer.encoding, color: { field: args.field, fieldType } }
       });
     }
-    const requestedScale = resolveReassignmentScaleOptions(
-      layer.encoding?.color,
+    const requestedScale = resolveColorReassignmentScaleOptions(
+      this, layer, "color", fieldType,
       resolveColorScaleOptions(args)
     );
     const scale = resolveColorScaleDefinition(this, requestedScale);

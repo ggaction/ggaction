@@ -4,6 +4,8 @@ import {
   resolveBarChannels
 } from "../../../grammar/bars/policy.js";
 import { validateColorLayout } from "../../../grammar/seriesLayout.js";
+import { findScaleConsumers } from "../../scales/consumers/common.js";
+import { resolveReassignmentScaleOptions } from "../shared.js";
 
 export const COLOR_ENCODING_OPTIONS = Object.freeze([
   "value", "field", "target", "fieldType", "scale", "palette", "layout", "aggregate", "temporalUnit"
@@ -18,6 +20,26 @@ export function resolveColorScaleOptions(args) {
     );
   }
   return { ...options, palette: args.palette };
+}
+
+export function resolveColorReassignmentScaleOptions(
+  program, layer, channel, fieldType, options = {}
+) {
+  const previous = layer.encoding?.[channel];
+  const requested = resolveReassignmentScaleOptions(previous, options);
+  if (options.id !== undefined || previous?.scale === undefined) return requested;
+  const categorical = type => ["nominal", "ordinal"].includes(type);
+  if (categorical(previous.fieldType) === categorical(fieldType)) return requested;
+  const otherConsumer = consumer => consumer.layer.id !== layer.id ||
+    consumer.channel !== channel;
+  if (!findScaleConsumers(program, previous.scale).some(otherConsumer)) return requested;
+  // Re-encoding one mark must not change the scale family of its siblings.
+  // Explicit scale IDs still opt into normal shared-resource validation.
+  const id = `${layer.id}-${channel}-${fieldType}`;
+  if (findScaleConsumers(program, id).some(otherConsumer)) {
+    throw new Error(`Color reassignment requires scale.id because "${id}" has other consumers.`);
+  }
+  return { ...options, id };
 }
 
 export function withoutConstantColor(program, layer) {

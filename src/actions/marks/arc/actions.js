@@ -8,10 +8,7 @@ import {
 } from "../../../core/validation.js";
 import { deriveArcSectors } from "../../../grammar/arcs.js";
 import { buildAnnularSectorCommands } from "../../../grammar/polarPaths.js";
-import {
-  mapOrdinalValues,
-  readScaleField
-} from "../../../grammar/scales/index.js";
+import { readScaleField } from "../../../grammar/scales/index.js";
 import { resolveCoordinatePolarFrame } from
   "../../../materialization/coordinateBounds.js";
 import {
@@ -210,10 +207,10 @@ const rematerializeArcMark = /* @__PURE__ */ action(
     }));
     const fills = colorScaleId === undefined
       ? commands.map(() => config.fill ?? DEFAULT_COLORS.mark)
-      : mapOrdinalValues(
+      : mapScaleConsumerValues(
           derived.sectors.map(sector => sector.color),
-          resolved.resolvedScales[colorScaleId].domain,
-          resolved.resolvedScales[colorScaleId].range
+          resolved.resolvedScales[colorScaleId],
+          "color"
         );
     const strokeEncoding = layer.encoding?.stroke;
     const strokeValues = strokeEncoding === undefined ? undefined : derived.sectors.map(

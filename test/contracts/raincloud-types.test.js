@@ -27,6 +27,12 @@ const options: CreateRaincloudPlotOptions = {
 p.createRaincloudPlot(options);
 const edit: EditRaincloudPlotOptions = { target: "rain", orientation: "horizontal", side: "after", summary: false, color: false };
 p.editRaincloudPlot(edit);
+p.createRaincloudPlot({ category: "group", value: "value", color: { value: "#000000" } });
+p.editRaincloudPlot({ target: "rain", color: { value: "#345678" } });
+p.encodeColor({ target: "rain", value: "red" });
+p.filterMarks({ target: "rain", field: "group", op: "eq", value: "A" });
+// @ts-expect-error fixed color requires a string.
+p.editRaincloudPlot({ color: { value: 4 } });
 p.createViolinPlot({ x: "group", y: "value", density: { side: "left" } });
 // @ts-expect-error category is required.
 p.createRaincloudPlot({ value: "value" });

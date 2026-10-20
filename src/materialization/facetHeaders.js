@@ -7,6 +7,11 @@ import {
 } from "../core/textMetrics.js";
 import { resolveDisplayLabel } from "../grammar/displayLabels.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../theme/defaults.js";
+import { cartesianAxisOwners, axisGraphicIds } from "../selectors/axes.js";
+import { resolveFacetOuterSides } from "../grammar/facets/guides.js";
+import { resolveConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js";
+import { resolveGraphicBounds } from "../layout/canvas.js";
+import { allLegendGraphicIds } from "./guides/resources.js";
 
 const SIDES = Object.freeze(["top", "right", "bottom", "left"]);
 const ZERO_SIDES = Object.freeze({ top: 0, right: 0, bottom: 0, left: 0 });
@@ -150,11 +155,49 @@ function laneThickness(descriptors, role, profile) {
     item.config.offset));
 }
 
+export function retainedFacetGuideIds(program, childId) {
+  const spec = program.compositionSpec;
+  const child = program.children[childId];
+  const outer = spec.facet.guides.axes === "outer"
+    ? resolveFacetOuterSides({ placements: spec.facet.grid?.cells ?? spec.children.map((id, index) => ({
+      id, row: Math.floor(index / spec.columns), column: index % spec.columns
+    })) }) : undefined;
+  const ids = cartesianAxisOwners(child).flatMap(owner => axisGraphicIds(owner.channel, owner.id)
+    .filter((id, index) => index >= 2 && (outer === undefined ||
+      outer[owner.config?.[["line", "ticks", "labels", "title"][index]]?.position]?.includes(childId))));
+  for (const channel of ["theta", "radius", "parallel"]) {
+    if (child.guideConfigs.axis?.[channel] !== undefined) ids.push(...axisGraphicIds(channel).slice(2));
+  }
+  if (spec.facet.guides.legend === false) ids.push(...allLegendGraphicIds(Object.keys(child.guideConfigs.legend ?? {})));
+  return ids.filter(id => child.graphicSpec.objects[id] !== undefined);
+}
+
+function guideClearance(program, id) {
+  const child = program.children[id], plot = resolveGraphicBounds(child);
+  const bounds = retainedFacetGuideIds(program, id).map(target => resolveConcreteGraphicBounds(
+    child.graphicSpec, target, child.materializationConfigs.textMetrics
+  )).filter(Boolean);
+  return {
+    top: Math.max(0, ...bounds.map(bound => plot.y - bound.top)),
+    bottom: Math.max(0, ...bounds.map(bound => bound.bottom - plot.y - plot.height)),
+    left: Math.max(0, ...bounds.map(bound => plot.x - bound.left)),
+    right: Math.max(0, ...bounds.map(bound => bound.right - plot.x - plot.width))
+  };
+}
+
 export function prepareFacetHeaders(program, headersConfig) {
   const headers = normalizeFacetHeadersConfig(headersConfig);
   const descriptors = headers.mode === "legacy"
     ? legacyDescriptors(program, headers)
     : roleDescriptors(program, headers);
+  if (program.compositionSpec.spacing === "plot") {
+    const clearances = new Map(program.compositionSpec.children.map(id => [id, guideClearance(program, id)]));
+    for (const descriptor of descriptors) {
+      descriptor.clearance = Object.fromEntries(SIDES.map(side => [side,
+        Math.max(...(descriptor.ids ?? [descriptor.id]).map(id => clearances.get(id)[side]))
+      ]));
+    }
+  }
   const rows = program.compositionSpec.facet.grid === undefined
     ? Math.ceil(program.compositionSpec.children.length / program.compositionSpec.columns)
     : Math.max(...program.compositionSpec.facet.grid.cells.map(cell => cell.row)) + 1;
@@ -167,7 +210,8 @@ export function prepareFacetHeaders(program, headersConfig) {
       if (descriptor.text === "") continue;
       const index = program.compositionSpec.children.indexOf(descriptor.id);
       const row = program.compositionSpec.facet.grid?.cells[index]?.row ?? Math.floor(index / program.compositionSpec.columns);
-      headerLayout.cellRows.top[row] = Math.max(headerLayout.cellRows.top[row], descriptor.config.offset + descriptor.config.fontSize);
+      headerLayout.cellRows.top[row] = Math.max(headerLayout.cellRows.top[row],
+        descriptor.config.offset + descriptor.config.fontSize + (descriptor.clearance?.top ?? 0));
     }
   }
   if (headers.mode === "roles") {
@@ -189,14 +233,16 @@ export function prepareFacetHeaders(program, headersConfig) {
             ? measureTextWidth(descriptor.text, descriptor.config, program.materializationConfigs.textMetrics)
             : descriptor.config.fontSize;
           reservations[column.side][index] = Math.max(
-            reservations[column.side][index], thickness + descriptor.config.offset
+            reservations[column.side][index], thickness + descriptor.config.offset + (descriptor.clearance?.[column.side] ?? 0)
           );
         }
       }
     } else {
-      headerLayout.outer[column.side] = columnThickness;
+      headerLayout.outer[column.side] = columnThickness + Math.max(0,
+        ...descriptors.filter(item => item.role === "column" && item.text !== "").map(item => item.clearance?.[column.side] ?? 0));
       const row = resolveFacetHeaderConfig(headers, "row");
-      headerLayout.outer[row.side] = laneThickness(descriptors, "row", program.materializationConfigs.textMetrics);
+      headerLayout.outer[row.side] = laneThickness(descriptors, "row", program.materializationConfigs.textMetrics) +
+        Math.max(0, ...descriptors.filter(item => item.role === "row" && item.text !== "").map(item => item.clearance?.[row.side] ?? 0));
     }
   }
   return { headers, descriptors, headerLayout };
@@ -258,20 +304,21 @@ function roleItem(descriptor, cells, plots, spacing) {
   const plot = union(selectedPlots);
   const snapshots = spacing === "plot" ? plot : union(selectedCells.map(placedCell));
   const config = descriptor.config;
+  const clearance = descriptor.clearance?.[config.side] ?? 0;
   let anchor;
   if (["top", "bottom"].includes(config.side)) {
     anchor = horizontalAnchor(plot, config.align);
     const top = config.side === "top";
     anchor.y = top
-      ? snapshots.top - config.offset - config.fontSize / 2
-      : snapshots.bottom + config.offset + config.fontSize / 2;
+      ? snapshots.top - clearance - config.offset - config.fontSize / 2
+      : snapshots.bottom + clearance + config.offset + config.fontSize / 2;
     anchor.textBaseline = "middle";
   } else {
     anchor = verticalAnchor(plot, config.align);
     const left = config.side === "left";
     anchor.x = left
-      ? snapshots.left - config.offset
-      : snapshots.right + config.offset;
+      ? snapshots.left - clearance - config.offset
+      : snapshots.right + clearance + config.offset;
     anchor.textAlign = left ? "right" : "left";
   }
   return { descriptor, snapshots, properties: anchor };
@@ -286,7 +333,7 @@ function legacyItem(descriptor, cell, plot, spacing) {
     snapshots: placedCell(cell),
     properties: {
       ...horizontalAnchor(placedPlot(cell, plot), descriptor.config.align),
-      y: spacing === "plot" ? cell.y + plot.y - descriptor.config.offset - descriptor.config.fontSize / 2 : cell.y + descriptor.config.offset,
+      y: spacing === "plot" ? cell.y + plot.y - (descriptor.clearance?.top ?? 0) - descriptor.config.offset - descriptor.config.fontSize / 2 : cell.y + descriptor.config.offset,
       textBaseline: "middle"
     }
   };

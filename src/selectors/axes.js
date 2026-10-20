@@ -72,6 +72,9 @@ export function assertCartesianAxisSideAvailable(program, { id, channel, coordin
 }
 
 export function axisGraphicIds(channel, axisId = channel) {
+  if (channel === "parallel" && axisId === channel) {
+    return ["parallelAxisLines", "parallelAxisTicks", "parallelAxisLabels", "parallelAxisTitles"];
+  }
   const components = ["Line", "Ticks", "Labels", "Title"];
   if (axisId !== channel) return components.map(component => `axis_${axisId}__${component}`);
   const prefix = channel === "radius" ? "radial" : channel;

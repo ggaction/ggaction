@@ -45,8 +45,8 @@ The tables below are generated from the same reviewed capability registry used b
 | --- | --- | --- | --- |
 | Constant | point, line, bar, area, arc, rect, text | point/line/bar/area/arc/rect/text: constant color | value only; no field, scale, palette, layout or aggregate; replaces color mapping and its legend participation |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
-| Continuous | point, aggregate bar, rect, text, area, line | point/rect/text/line: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; line/area require one finite value per existing series; Parallel uses row grain |
-| Discretized continuous | point, aggregate bar, rect, text, area, line | point/aggregate bar/rect/text/area/line: quantitative | quantize, quantile, or threshold scale; line/area require one finite value per existing series; Parallel uses row grain |
+| Continuous | point, aggregate bar, rect, text, area, line, arc | point/rect/text/line/arc: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; line/area require one finite value per existing series; Parallel uses row grain; arc requires one color value per sector |
+| Discretized continuous | point, aggregate bar, rect, text, area, line, arc | point/aggregate bar/rect/text/area/line/arc: quantitative | quantize, quantile, or threshold scale; line/area require one finite value per existing series; Parallel uses row grain; arc requires one color value per sector |
 
 ### Independent stroke channel
 

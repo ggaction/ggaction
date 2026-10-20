@@ -38,7 +38,7 @@ Facet guide 정책은 local density graphics를 제거하며 shared density lege
 
 ```typescript
 createGradientPlot({
-  id?, target?, data?, x?, y?, coordinate?,
+  id?, target?, data?, x?, y?, coordinate?, color?: BasicColorChannel | { value: string },
   density?: {
     bandwidth?: "auto" | PositiveFinite,
     extent?: "auto" | OrderedFinitePair,
@@ -74,6 +74,11 @@ createGradientPlot({
   `materializeGradientPlotFill`, optional `createGradientPlotCenter`, and guide components.
 - A profile revision always reads the raw source dataset directly. Requested automatic parameters remain in provenance beside
   resolved bandwidth, extent, and intensity domain.
+- `color` accepts the existing string field, field/scale, or constant value encoding vocabulary and calls
+  `encodeColor` on the completed strip owner before guides. Deferred positions retain this intent.
+  This has the same result as creation followed by `encodeColor`: hue follows that encoding while density
+  controls the existing lightness/opacity profile. The neutral density legend keeps its existing separate ownership.
+  The parameter does not add subgroup profile generation or unrelated fields to the profile dataset.
 
 ### Effects and errors
 
@@ -94,7 +99,7 @@ createGradientPlot({
 
 ### Formal values — `createGradientPlot`
 
-- Implemented: `createGradientPlot({ id?: UserId; target?: UserId; data?: UserId; x?: GradientPlotPositionChannel; y?: GradientPlotPositionChannel; coordinate?: UserId; density?: GradientPlotDensityOptions; width?: { band?: UnitIntervalExclusive }; gradient?: { palette?: Palette; opacity?: readonly [UnitInterval, UnitInterval] }; center?: false | GradientPlotCenterOptions; guides?: false | CreateGuidesOptions } = {})`.
+- Implemented: `createGradientPlot({ id?: UserId; target?: UserId; data?: UserId; x?: GradientPlotPositionChannel; y?: GradientPlotPositionChannel; coordinate?: UserId; color?: BasicColorChannel | { value: string }; density?: GradientPlotDensityOptions; width?: { band?: UnitIntervalExclusive }; gradient?: { palette?: Palette; opacity?: readonly [UnitInterval, UnitInterval] }; center?: false | GradientPlotCenterOptions; guides?: false | CreateGuidesOptions } = {})`.
 - Proposed (NOT IMPLEMENTED): subgroup offsets, multiple profile overlays, and independent per-category intensity domains.
 
 ### Value coverage — `createGradientPlot`
@@ -103,6 +108,8 @@ createGradientPlot({
   selection/highlight, text, filtered-source, horizontal, and facet cases.
 - No proposal is required for the approved first implementation. Evidence:
   `test/unit/actions/statistics/gradient-plot-consumers.test.js` and `test/charts/cars-gradient-plot/`.
+- ✅ Covered: initial field/fixed color, deferred completion, exact direct-followup equality, guides and serialization.
+- Evidence: `test/unit/actions/statistics/distribution-color-facades.test.js`.
 
 ## `editGradientPlot`
 

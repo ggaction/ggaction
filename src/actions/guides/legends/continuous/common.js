@@ -277,7 +277,7 @@ export function resolveContinuousColorLayer(program, requested, channel = "color
     requested,
     candidate => (channel === "stroke"
       ? ["point", "line", "area", "bar", "rect", "arc", "rule", "tick"]
-      : ["point", "line", "bar", "rect", "text", "area"]
+      : ["point", "line", "bar", "rect", "text", "area", "arc"]
     ).includes(candidate.mark?.type) &&
       candidate.encoding?.[channel]?.scale !== undefined &&
       (channel !== "color" || ["quantitative", "temporal"].includes(candidate.encoding[channel].fieldType))
@@ -286,7 +286,7 @@ export function resolveContinuousColorLayer(program, requested, channel = "color
     throw new Error(
       requested === undefined
         ? channel === "color"
-          ? "color legend requires one eligible point, line, bar, rect, text, or area mark."
+          ? "color legend requires one eligible point, line, bar, rect, text, area, or arc mark."
           : "stroke legend requires one eligible mark."
         : `Unknown ${channel} legend target "${requested}".`
     );

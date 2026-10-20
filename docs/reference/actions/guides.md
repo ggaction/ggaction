@@ -1477,8 +1477,12 @@ Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Interval legends support all four
 edges with layout `"edge"`, side single columns and horizontal item grids. Explicit `channels` creates exactly
 the selected content; include `"size"` in a point categorical-and-size request.
-Compatible point categorical channels stay combined. Independent fields,
+Compatible point and line categorical channels stay combined when their domains
+contain the same values, even in different orders. The first selected channel
+owns item order; each symbol still looks up its own scale by value. Independent fields,
 continuous color/stroke, opacity, and stroke width use separate native blocks.
+Area fill and stroke are independently selectable blocks, including stroke-only
+legends for density and horizon areas.
 For outside top/bottom legends, omitting `offset` places the occupied legend after
 the same-side axis line, ticks, labels, and title, with the family's native gap
 (8 pixels for categorical legends, 30 for continuous families). Axis edits and
@@ -1889,7 +1893,9 @@ createGuides({ axes?, grid?, legend? })
 Create applicable axes, grids, and legends; omitted branches infer applicability, false skips a branch, and explicit direction objects enable only named directions: `axes:{x:false}` requests neither axis while `axes:{x:false,y:{}}` requests y.
 Automatic calls preserve existing guide collections and add missing applicable
 collections; explicit collection objects retain strict create semantics. Datum-only
-anchors do not infer axes. On facet parents this action updates the retained source
+anchors do not infer axes. An automatic call on an existing chart that has no
+applicable guides succeeds without adding graphics. An explicit all-false request
+or a chart without marks still fails. On facet parents this action updates the retained source
 and rederives its panels while preserving the parent title and guide policy.
 [Guides](../../api/guides.md)
 

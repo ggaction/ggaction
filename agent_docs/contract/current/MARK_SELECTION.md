@@ -66,6 +66,11 @@ type MarkSelector =
   `mode`가 필요하다. `replace`는 canonical source에서 새 recipe를 시작하고 `compose`는 기존 recipe 결과에
   다음 selector를 순서대로 적용한다. 이전 filtered dataset을 downstream dataset이 참조하면 그 snapshot은
   보존하고 `${target}FilteredData2`, `3`, …의 첫 빈 revision ID를 사용한다.
+- Raincloud parent: an explicit facade ID accepts field/item selectors over raw observations and
+  recomputes all enabled components. Comparisons, sets, ranges and grouped ranks use the same
+  selector algebra. The recipe is retained across appearance/component edits; explicit source
+  replacement clears it. Parent filters require nonempty input for enabled statistics. Named
+  child IDs retain display-only filtering, including empty views.
 - Native grain: aggregate/ranged bar는 selected cell members, stacked bar는 complete selected stack members,
   line/area는 selected series members, arc는 selected sector members, rule/Tick은 selected line members를 보존한다. Histogram은 filtering 전 resolved
   boundaries를 explicit semantic boundaries로 고정해서 selected bins가 subset domain에서 다시 나뉘지 않게 한다.

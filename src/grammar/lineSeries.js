@@ -258,7 +258,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
   const series = [...seriesGroups.values()].flatMap(item => {
     const values = item.values.sort(compareX);
 
-    if (values.length < 2) {
+    if (values.length < (options.allowSingleton === true ? 1 : 2)) {
       return [];
     }
 

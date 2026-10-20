@@ -8,6 +8,7 @@
 - Color/stroke/series/gradient/interval/size/opacity/strokeWidth의 네 edge에 같은 검증을 적용한다. 같은 target의 categorical+size는 하나의 group이며 retained border도 bounds에 포함한다.
 - Axis line/ticks/labels/title는 각자의 position과 실제 stroke·rotation·collection bounds를 사용한다. Axis 내부 component 제약은 axis owner가 별도로 담당한다.
 - 외부 top/bottom/left/right legend의 offset을 생략하면 같은 edge의 실제 axis line/ticks/labels/title occupied bounds 뒤에 해당 family의 기존 기본 간격(categorical 8, continuous 30)을 둔다. 저장한 offset 수치는 바꾸지 않고 최종 배치에서 clearance를 계산한다. 명시한 offset(0·8·30 포함)은 계속 plot 기준이며 free `at`, plot corner와 legacy-bottom은 이 추론을 사용하지 않는다.
+- Polar theta/radius labels와 title의 실제 ink bounds도 네 외부 edge의 clearance에 포함한다. 축 글꼴 편집과 Canvas·persistence replay가 이 간격을 다시 계산한다. Evidence: `test/unit/actions/guides/polar-legend-clearance.test.js`.
 - 기본 간격의 생략 여부는 private `inferredOffset` boolean으로 보존하며 creation order, axis 편집·제거, Canvas replay, group과 저장·복원에서도 다시 계산한다. 이 marker가 없는 이전 snapshot은 고정 offset으로 보수적으로 읽는다. 잘못된 marker 타입은 저장·복원 시 거부한다.
 - 서로 독립적인 legend group과 title↔axis, title↔legend, axis↔legend의 strict intersection은 오류다. 경계가 닿는 것만으로는 오류가 아니다.
 - Create/edit와 Canvas/scale/dependent replay는 해당 aggregate의 최종 guide geometry를 검증한다. 실패 시 이전 program의 semantic/graphic/config/context/trace는 변하지 않는다.
@@ -50,6 +51,14 @@ type TitleWrap = "word" | "character";
 ```
 
 ## `createLegend`
+
+- Combined categorical channels require the same category value set, not identical ordering.
+  The first selected channel owns legend order; each channel maps category values through its
+  own scale. Different sets still reject. The specialized size-shape recipe retains its own
+  stricter alignment contract. Area fill/stroke are separate selectable legend blocks.
+- Continuous and discretized Arc fill participates in gradient/interval legend inference.
+- Evidence: `test/unit/actions/encodings/compound-color-regressions.test.js`.
+
 
 - Sampled opacity legend는 active quantitative opacity scale이 있는 Point와 Line을 지원한다.
   Line도 기존 circle sample recipe를 사용하며 constant assignment는 자신의 opacity block만 제거한다.
@@ -620,7 +629,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
   [공통 facade guide 계약](BASIC_CHARTS.md#facade-guide-reuse)이 소유한다.
 - Polar omission은 실제 저장된 theta/radius channel별 axis와 grid만 선택한다. Arc color encoding은
   categorical legend applicability에 포함되며 theta-only count arc는 radial guide를 합성하지 않는다.
-- 오류: explicit/automatic selection 결과가 하나도 없거나 child resource inference가 ambiguous하면 거부한다.
+- 오류: 명시적 all-false 요청, mark 없는 program 또는 ambiguous child inference는 거부한다. 기존 mark가 있고 한 branch 이상이 생략된 자동 추론에서 applicable guide가 없으면 immutable no-op으로 성공한다.
 - Coverage: `test/unit/actions/guides/guide-collection-actions.test.js`와 size/regression/density guide tests가
   chart-type applicability, standalone size inference, forwarding, opt-out, ambiguity와 trace를 검증한다.
 

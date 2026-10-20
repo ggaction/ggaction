@@ -249,6 +249,9 @@ export const materializeGradientPlot = /* @__PURE__ */ action(
         ...requestedStrokeDetails(config.center, "Gradient plot center")
       });
     }
+    if (config.color !== undefined) {
+      next = next.encodeColor({ ...config.color, target: owner });
+    }
     const guides = config.guides;
     if (guides !== false) {
       const wantsStandard = guides.axes !== false || guides.grid !== false;

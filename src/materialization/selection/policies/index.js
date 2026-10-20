@@ -8,6 +8,7 @@ import { pointSelectionPolicy } from "./point.js";
 import { ruleSelectionPolicy } from "./rule.js";
 import { tickSelectionPolicy } from "./tick.js";
 import { rectSelectionPolicy } from "./rect.js";
+import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
 
 const POLICIES = Object.freeze({
   arc: arcSelectionPolicy,
@@ -42,5 +43,5 @@ export function resolveMarkItems(program, target, grain = "item") {
   if (!policy.supportedGrains.includes(grain)) {
     throw new Error(`Mark "${target}" does not support ${grain} selection grain.`);
   }
-  return policy.resolveItems(program, layer, dataset, grain);
+  return policy.resolveItems(program, layer, applyItemMissingPolicy(layer, dataset), grain);
 }

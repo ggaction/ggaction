@@ -21,6 +21,16 @@ p.createRadarPlot({ category: "dimension", value: "score" });
 p.createRadarPlot({ category: { field: "dimension", fieldType: "ordinal", scale: { type: "point" } }, value: { field: "score", scale: { type: "sqrt" } }, groupBy: ["series", "region"], order: ["speed", "quality", "cost"], color: "series", strokeDash: { field: "region" }, line: { closed: true } });
 p.createRadarPlot({ wide: { fields: ["speed", "quality", "cost"] }, groupBy: "product" });
 p.createRadarPlot({ wide: { fields: ["speed", "quality", "cost"], as: { key: "metric", value: "score" } }, order: ["quality", "cost", "speed"] });
+p.editRadarPlot({ target: "radar", wide: { fields: ["quality", "speed", "cost"] } });
+p.editRadarPlot({ wide: { fields: ["quality", "speed"] } });
+// @ts-expect-error Wide Radar revision requires at least two fields
+p.editRadarPlot({ wide: { fields: ["speed"] } });
+// @ts-expect-error Aliases remain owned by the existing Radar
+p.editRadarPlot({ wide: { fields: ["quality", "speed"], as: { key: "metric" } } });
+// @ts-expect-error The minimal Radar editor changes dimensions only
+p.editRadarPlot({ category: "category", value: "value" });
+// @ts-expect-error Full only
+basic.editRadarPlot({ wide: { fields: ["quality", "speed"] } });
 // @ts-expect-error categorical theta axes use exact values instead of numeric tick counts
 p.createRadarPlot({ category: "dimension", value: "score", guides: { axes: { theta: { ticksAndLabels: { count: 4 } } } } });
 // @ts-expect-error categorical theta labels accept auto formatting only

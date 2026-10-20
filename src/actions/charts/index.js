@@ -11,7 +11,7 @@ import { createPiePlot } from "./pie.js";
 import { createDensityPlot } from "./density.js";
 import { createHorizonPlot } from "./horizon.js";
 import { createPolarLinePlot, createPolarScatterPlot } from "./polar.js";
-import { createRadarPlot } from "./radar.js";
+import { createRadarPlot, editRadarPlot } from "./radar.js";
 import { createRugPlot, createStripPlot } from "./rug-strip.js";
 import { createIntervalPlot, createRegressionPlot } from "./interval-regression.js";
 import {
@@ -38,6 +38,7 @@ export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createPolarScatterPlot = createPolarScatterPlot;
   ProgramClass.prototype.createPolarLinePlot = createPolarLinePlot;
   ProgramClass.prototype.createRadarPlot = createRadarPlot;
+  ProgramClass.prototype.editRadarPlot = editRadarPlot;
   ProgramClass.prototype.createRugPlot = createRugPlot;
   ProgramClass.prototype.createStripPlot = createStripPlot;
   ProgramClass.prototype.createIntervalPlot = createIntervalPlot;

@@ -133,9 +133,20 @@ const summarized = chart()
 ```
 
 The default `boundData` population ignores `filterMarks`. Choose `visibleItems` to recompute after mark filtering.
+On a distribution's measurement axis, `boundData` uses the original observations recorded by its density,
+ECDF, computed box-summary, or gradient transform. Summarized Dot, Lollipop, and Dumbbell endpoints likewise
+resolve their original source measurement; a Dumbbell's start and end retain their separate fields.
+Repeated observations retain their frequency; density
+samples and summary rows do not substitute for observations. Source groups remain available for `groupBy`.
+Precomputed box summaries retain their supplied data because original observations are unavailable.
+Horizon supports statistics only on a quantitative X axis, using original X observations rather than
+the repeated folded-band samples. Its Y coordinate is a folded fraction, so a Y statistic is rejected;
+temporal X is also outside the numeric statistical-reference contract.
 Selections and highlights do not filter statistical populations. An omitted `field` follows the source axis after
-re-encoding; an explicit field remains fixed. Statistical values use the source scale but never expand its automatic
-domain. They recompute for source-data, encoding, scale, Canvas, and facet replay, and are removed with their source.
+re-encoding; an explicit field remains fixed. Statistical values use the source position scale but never expand its
+automatic domain. Shared appearance scales do include the reference's groups, including groups hidden by a mark
+filter. They recompute for source-data, distribution-role revisions, encoding, scale, Canvas, and facet replay,
+and are removed with their source.
 
 Reference marks remain editable with ordinary mark, encoding, and scale actions. Refer to the
 [reference-line contract](../../reference/actions/marks.md#createreferenceline) and

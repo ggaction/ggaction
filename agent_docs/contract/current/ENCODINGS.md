@@ -1113,6 +1113,21 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeColor`
 
+- Arc accepts quantitative/temporal continuous color and quantitative discretized color.
+  Each derived sector must have exactly one color value; aggregated category sectors reject
+  conflicting values. Automatic domains/quantile samples use one value per sector.
+  Gradient/interval guides map the same real color scale. Unknown fallback and color aggregate
+  remain unsupported for Arc.
+- Categorical↔continuous reassignment with an omitted scale ID detaches an incompatible shared
+  scale into `${target}-${channel}-${fieldType}` when another consumer remains. Explicit IDs
+  preserve strict shared-resource validation. No other consumer is rebound.
+- An explicit Raincloud facade ID dispatches color to the complete owned population through
+  editRaincloudPlot; a named child remains a local mark target. Fixed colors use `{value}`;
+  field colors must use the category role.
+- Evidence: `test/unit/actions/encodings/compound-color-regressions.test.js`,
+  `test/unit/actions/charts/raincloud-owner-operations.test.js`.
+
+
 - User authorization: the requested Fixed/Variable appearance modes approve constant `value` branches
   on the existing encodeColor/encodeSize APIs, following encodeOpacity/encodeStroke vocabulary.
 - `encodeColor({ value, target? })` assigns one non-empty graphical color string. Exactly one of value/field
@@ -1141,7 +1156,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Line의 quantitative/temporal color도 지원한다. Parallel은 row마다 값을 사용하고 Cartesian/Polar는
   기존 series마다 값 하나를 요구한다. Continuous color 자체는 grouping을 만들지 않는다. Gradient 및
   discretized legend를 지원하며 temporal은 sequential만 허용한다. Unknown fallback은 Point 전용이다.
-- `target`: point, line, bar, rect 또는 area ID; current/unique inference를 지원한다.
+- `target`: point, line, bar, rect, text, arc 또는 area ID; current/unique inference를 지원한다.
 - `fieldType`: `"nominal" | "ordinal" | "quantitative" | "temporal"`; 기본값은 nominal이다.
   Ordinal은 숫자를 포함한 ordered category를 categorical palette와 first-appearance domain으로 매핑한다.
 - `layout`: bar는 `"stack" | "fill" | "group" | "overlay" | "diverging"`, area는 group을 제외하고
@@ -1626,7 +1641,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `value`: constant content repeated at every final text anchor.
 - `content`: `"category" | "value" | "share"`, requiring an attached Bar or Arc source. Incomplete sources retain the
   intent until their position is complete. Point/Rule/Rect and independent text use explicit field or constant content.
-  Category reads an aggregate Bar's category channel or categorical Arc theta; histogram intervals and quantitative theta
+  Category reads an aggregate Bar's category channel, a histogram's semantic bin interval as `start–end`
+  (12 significant digits to suppress floating-point boundary noise), or categorical Arc theta; quantitative theta
   require explicit field/constant labels. Ranged Bars have no inferred single value and require explicit content fields.
 - Semantic value is the canonical aggregate over each final Bar item's members, histogram segment count, Pie sector
   count/weighted sum/quantitative theta, or Radial Arc radius. It is independent of stack endpoints and normalized heights.

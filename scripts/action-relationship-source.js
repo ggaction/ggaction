@@ -123,6 +123,26 @@ function atomicEncodingPrograms() {
     })];
 }
 
+function radarEditorPrograms() {
+  return [chart()
+    .createCanvas({ width: 320, height: 320, margin: 40 })
+    .createData({ values: [
+      { series: "a", first: 1, second: 2, third: 3 },
+      { series: "b", first: 2, second: 3, third: 4 }
+    ] })
+    .createRadarPlot({
+      id: "radarLines",
+      wide: { fields: ["first", "second", "third"] },
+      groupBy: "series",
+      color: "series",
+      guides: false
+    })
+    .editRadarPlot({
+      target: "radarLines",
+      wide: { fields: ["third", "first"] }
+    })];
+}
+
 function legendBlockPrograms() {
   return [chart()
     .createCanvas({ width: 760, height: 600, margin: 160 })
@@ -464,6 +484,7 @@ export function buildActionRelationshipPrograms() {
     ...selectionLifecyclePrograms(),
     ...focusedScaleEditorPrograms(),
     ...atomicEncodingPrograms(),
+    ...radarEditorPrograms(),
     ...legendBlockPrograms(),
     ...coordinateAspectPrograms(),
     ...labelRemovalPrograms(),

@@ -1204,6 +1204,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `x` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; } \| { ...; } \| undefined` |
 | `whisker` | Optional / branch-dependent | `BoxPlotWhisker \| undefined` |
 | `width` | Optional / branch-dependent | `BoxPlotWidth \| undefined` |
 | `outliers` | Optional / branch-dependent | `boolean \| undefined` |
@@ -1218,7 +1219,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createBoxPlot({
-  id?, target?, data?, x?, y?, coordinate?, summary?, whisker?, width?, outliers?,
+  id?, target?, data?, x?, y?, coordinate?, color?, summary?, whisker?, width?, outliers?,
   box?, median?, outlier?, guides?
 } = {})
 ```
@@ -1230,6 +1231,8 @@ median rules, and optional point outliers. Tukey factor, band width, component
 appearance, and outlier creation are configurable. [Box plots](../../api/box-plots.md)
 Guides remain opt-in for compatibility: pass `guides: {}` or nested options to
 ensure compatible guides inside the facade; omission and `false` create none.
+Optional `color` uses the ordinary field/fixed encoding on the body after
+position completion and before guides. It cannot be combined with explicit `box.fill`.
 
 
 ## `editBoxPlot`
@@ -1301,6 +1304,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `x` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `color` | Optional / branch-dependent | `{ value: string; } \| BasicColorChannel \| undefined` |
 | `density` | Optional / branch-dependent | `GradientPlotDensityOptions \| undefined` |
 | `width` | Optional / branch-dependent | `{ band?: number \| undefined; } \| undefined` |
 | `gradient` | Optional / branch-dependent | `GradientPlotAppearanceOptions \| undefined` |
@@ -1313,7 +1317,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createGradientPlot({
-  id?, target?, data?, x?, y?, coordinate?, density?, width?, gradient?,
+  id?, target?, data?, x?, y?, coordinate?, color?, density?, width?, gradient?,
   center?, guides?
 } = {})
 ```
@@ -1324,6 +1328,8 @@ encoded layer, or completed later. Defaults are Gaussian auto density, 64
 samples, width band `0.7`, no outline, a median center rule, and applicable
 guides. A categorical `encodeColor` owns strip hue while density continues to
 control lightness and opacity.
+Optional `color` applies that same field/fixed encoding at creation or deferred
+position completion, before guides.
 [Statistical actions](../../reference/actions/statistics.md#creategradientplot)
 
 

@@ -260,7 +260,16 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
   }
   validateOptionObject(args, undefined, "createLegend");
   const candidates = args.target === undefined ? layers : layers.filter(layer => layer.id === args.target);
-  const channels = args.channels;
+  const independentMark = candidates.length === 1 &&
+    ["area", "rect", "bar", "arc", "text", "rule", "tick"].includes(candidates[0].mark?.type);
+  const inferredChannels = independentMark
+    ? ["color", "stroke"].filter(channel => candidates[0].encoding?.[channel]?.scale !== undefined)
+    : [];
+  const channels = args.channels !== undefined ? args.channels
+    : inferredChannels.length > 0 ? inferredChannels : undefined;
+  if (args.channels === undefined && channels?.length > 0) {
+    return resolveRawLegendCreationPlan(program, { ...args, channels }, layers);
+  }
   if (channels !== undefined) validateLegendChannels(channels, "createLegend");
   // Independent appearance channels on cells, bars and arcs are separate
   // blocks. Mixed sampled channels likewise cannot use a categorical symbol.
@@ -271,7 +280,7 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
   const independentPoint = point && ((channels ?? []).some(continuousChannel) || new Set((channels ?? []).filter(channel => !["size", "opacity", "strokeWidth"].includes(channel))
     .map(channel => candidates[0].encoding?.[channel]?.field)).size > 1);
   if (channels?.length > 1 && (independentPoint || channels.some(c => ["opacity", "strokeWidth"].includes(c)) ||
-      candidates.length === 1 && ["rect", "bar", "arc", "text"].includes(candidates[0].mark?.type))) {
+      independentMark)) {
     const { representation, values, count, symbol, gradient, overflow, ...common } = args;
     const sampled = channels.filter(channel => ["opacity", "strokeWidth"].includes(channel));
     const primary = channels.filter(channel => !sampled.includes(channel));
@@ -327,7 +336,7 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
     }
   }
   const continuousColorCandidates = candidates.filter(layer => {
-    const encoding = ["point", "line", "bar", "rect", "text", "area"].includes(layer.mark?.type)
+    const encoding = ["point", "line", "bar", "rect", "text", "area", "arc"].includes(layer.mark?.type)
       ? layer.encoding?.color
       : undefined;
     const scale = findSemanticScale(program, encoding?.scale);
@@ -351,7 +360,7 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
     return { steps: [{ op: "createGradientLegend", args }], finish: "auto" };
   }
   const intervalColorCandidates = candidates.filter(layer => {
-    const encoding = ["point", "line", "bar", "rect", "text", "area"].includes(layer.mark?.type) ? layer.encoding?.color : undefined;
+    const encoding = ["point", "line", "bar", "rect", "text", "area", "arc"].includes(layer.mark?.type) ? layer.encoding?.color : undefined;
     const scale = findSemanticScale(program, encoding?.scale);
     return ["quantize", "quantile", "threshold"].includes(scale?.type);
   });

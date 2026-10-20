@@ -2769,6 +2769,12 @@ export interface BoxPlotOptions {
   x?: BoxPlotPositionChannel;
   y?: BoxPlotPositionChannel;
   coordinate?: string;
+  color?: string | {
+    field: string;
+    fieldType?: "nominal" | "ordinal";
+    scale?: NonPointCategoricalColorScaleOptions;
+    palette?: Palette;
+  } | { value: string };
   whisker?: BoxPlotWhisker;
   width?: BoxPlotWidth;
   outliers?: boolean;
@@ -2846,6 +2852,7 @@ export interface GradientPlotOptions {
   x?: GradientPlotPositionChannel;
   y?: GradientPlotPositionChannel;
   coordinate?: string;
+  color?: BasicColorChannel | { value: string };
   density?: GradientPlotDensityOptions;
   width?: { band?: number };
   gradient?: GradientPlotAppearanceOptions;
@@ -3452,6 +3459,10 @@ export type CreateRadarPlotOptions = {
   | { category: RadarCategoryChannel; value: PolarRadiusChannel; wide?: never }
   | { wide: RadarWideOptions; category?: never; value?: never }
 );
+export interface EditRadarPlotOptions {
+  target?: string;
+  wide: { fields: readonly [string, string, ...string[]] };
+}
 export type RugMeasureChannel = string | (
   | {
       field: string;
@@ -3611,6 +3622,7 @@ export type RaincloudValueChannel = string | {
   fieldType?: "quantitative";
   scale?: NonPointQuantitativePositionScaleOptions;
 };
+export type RaincloudColorChannel = LineCategoricalColorChannel | { value: string };
 export interface CreateRaincloudPlotOptions {
   id?: string;
   data?: string;
@@ -3622,7 +3634,7 @@ export interface CreateRaincloudPlotOptions {
   density?: false | RaincloudDensityOptions;
   summary?: false | RaincloudSummaryOptions;
   points?: false | RaincloudPointsOptions;
-  color?: LineCategoricalColorChannel;
+  color?: false | RaincloudColorChannel;
   guides?: false | CartesianCategoricalPointGuideOptions;
 }
 export interface EditRaincloudPlotOptions {
@@ -3635,7 +3647,7 @@ export interface EditRaincloudPlotOptions {
   density?: false | RaincloudDensityOptions;
   summary?: false | RaincloudSummaryOptions;
   points?: false | RaincloudPointsOptions;
-  color?: false | LineCategoricalColorChannel;
+  color?: false | RaincloudColorChannel;
 }
 
 export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & (
@@ -4446,6 +4458,7 @@ type DynamicReferenceBinding = {
   readonly id?: string;
   readonly source: string;
   readonly axis: "x" | "y";
+  /** Distribution/endpoint measurement axes and quantitative Horizon X use original bound observations, retaining multiplicity. Horizon folded Y is unsupported. */
   readonly population?: "boundData" | "visibleItems";
   readonly field?: string;
   /** Compute a separate reference for each observed value of this field. */
@@ -5338,6 +5351,7 @@ export class ChartProgram {
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
   createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;
+  editRadarPlot(options: EditRadarPlotOptions): ChartProgram;
   createRugPlot(options: CreateRugPlotOptions): ChartProgram;
   createStripPlot(options: CreateStripPlotOptions): ChartProgram;
   createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;

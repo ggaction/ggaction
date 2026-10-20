@@ -10,7 +10,8 @@ import {
 } from "../../grammar/scales/index.js";
 import { validateContinuousColorConsumer } from
   "../../grammar/scales/colorConsumers.js";
-import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
+import { validatePathGroupAppearance } from "../../materialization/marks/grouping.js";
+import { resolveColorReassignmentScaleOptions } from "./color/policy.js";
 import { validateRuleStroke } from "../../grammar/ruleAppearance.js";
 import { assertEncodingSelectionCompatibility } from
   "../../materialization/selection/compatibility.js";
@@ -23,7 +24,6 @@ import {
   applyEncodingScale,
   releaseDetachedEncodingScale,
   rematerializeEncoding,
-  resolveReassignmentScaleOptions,
   resolveTarget,
   setEncodingProperties,
   validateOptions
@@ -79,17 +79,17 @@ function hasStrokeLegend(program, target) {
   );
 }
 
-function validateStrokeField(dataset, layer, args, scale, temporalUnit) {
+function validateStrokeField(program, dataset, layer, args, scale, temporalUnit) {
   const { field, fieldType } = args;
   validateContinuousColorConsumer(layer, args, scale, { channel: "stroke" });
   if (["line", "area"].includes(layer.mark.type)) {
-    validatePathSeriesAppearance(dataset.values, {
+    validatePathGroupAppearance(program, {
       ...layer,
       encoding: {
         ...layer.encoding,
         stroke: { field, fieldType, temporalUnit, scale: scale.id }
       }
-    });
+    }, dataset);
   }
   if (Object.hasOwn(scale, "unknown")) {
     readScaleField(dataset.values, field, fieldType, {
@@ -160,8 +160,8 @@ export const encodeStroke = /* @__PURE__ */ action(
     const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
     const previous = layer.encoding?.stroke;
     const temporalUnit = resolveTemporalUnit(args, fieldType, previous);
-    const requestedScale = resolveReassignmentScaleOptions(
-      previous,
+    const requestedScale = resolveColorReassignmentScaleOptions(
+      this, layer, "stroke", fieldType,
       args.scale ?? {}
     );
     let scale;
@@ -179,7 +179,7 @@ export const encodeStroke = /* @__PURE__ */ action(
         readNominalField(dataset.values, args.field);
       }
       if (["line", "area"].includes(layer.mark.type)) {
-        validatePathSeriesAppearance(dataset.values, {
+        validatePathGroupAppearance(this, {
           ...layer,
           encoding: {
             ...layer.encoding,
@@ -189,7 +189,7 @@ export const encodeStroke = /* @__PURE__ */ action(
               scale: scale.id
             }
           }
-        });
+        }, dataset);
       }
     } else if (["quantitative", "temporal"].includes(fieldType)) {
       scale = resolveQuantitativeColorScaleDefinition(
@@ -199,6 +199,7 @@ export const encodeStroke = /* @__PURE__ */ action(
         "stroke"
       );
       validateStrokeField(
+        this,
         dataset,
         layer,
         { ...args, fieldType },

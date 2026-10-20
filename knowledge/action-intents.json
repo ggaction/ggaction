@@ -1235,6 +1235,15 @@
       "category": "category",
       "value": "value"
     },
+    "editRadarPlot": {
+      "target": "radarPlot",
+      "wide": {
+        "fields": [
+          "quality",
+          "speed"
+        ]
+      }
+    },
     "createRugPlot": {
       "x": "value",
       "edge": "bottom"
@@ -1715,6 +1724,9 @@
     "createRadarPlot": [
       "createRadarPlot({ category, value, groupBy?, order? })",
       "createRadarPlot({ wide: { fields, as? }, groupBy?, order?, color?, strokeDash?, guides? })"
+    ],
+    "editRadarPlot": [
+      "editRadarPlot({ target?, wide: { fields } })"
     ],
     "createRugPlot": [
       "createRugPlot({ x, edge: \"top\" | \"bottom\", tick?, guides? })",

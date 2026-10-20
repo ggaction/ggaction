@@ -3,7 +3,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 833_000;
+// Includes the Radar editor and distribution color contracts (833978 measured bytes).
+export const SEARCH_INDEX_MAX_BYTES = 835_000;
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

@@ -3,7 +3,7 @@
   "packageVersion": "0.0.21",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 286,
+  "count": 287,
   "cards": [
     {
       "schemaVersion": 3,
@@ -13880,6 +13880,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "color",
+          "required": false,
+          "type": "string | { field: string; fieldType?: \"nominal\" | \"ordinal\" | undefined; scale?: NonPointCategoricalColorScaleOptions | undefined; palette?: Palette | undefined; } | { ...; } | undefined"
+        },
+        {
           "name": "whisker",
           "required": false,
           "type": "BoxPlotWhisker | undefined"
@@ -14172,6 +14177,11 @@
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "{ value: string; } | BasicColorChannel | undefined"
         },
         {
           "name": "density",
@@ -31272,7 +31282,9 @@
       "wraps": [
         "createLineMark",
         "encodeTheta",
-        "encodeR"
+        "encodeR",
+        "encodeGroup",
+        "encodeColor"
       ],
       "editableVia": [],
       "supports": {
@@ -31396,9 +31408,12 @@
         "H0"
       ],
       "wraps": [
-        "createPolarLinePlot"
+        "createPolarLinePlot",
+        "createFoldData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editRadarPlot"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -31495,6 +31510,83 @@
       "snippet": "program.createRadarPlot({ category: \"category\", value: \"value\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createradarplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editRadarPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Edits radar plot, including settings for radar chart.",
+      "signature": "editRadarPlot(options: EditRadarPlotOptions): ChartProgram;",
+      "intents": [
+        "edit radar plot",
+        "edit",
+        "change",
+        "complete chart",
+        "chart facade",
+        "radar plot",
+        "radar chart"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing radar plot",
+          "canvas and dataset context"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "createFoldData",
+        "editThetaScale"
+      ],
+      "editableVia": [
+        "editRadarPlot"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing radar plot",
+          "canvas and dataset context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "wide",
+          "required": true,
+          "type": "{ fields: readonly [string, string, ...string[]]; }"
+        }
+      ],
+      "callPatterns": [
+        "editRadarPlot({ target?, wide: { fields } })"
+      ],
+      "snippet": "program.editRadarPlot({ target: \"radarPlot\", wide: { fields: [\"quality\", \"speed\"] } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editradarplot"
     },
     {
       "schemaVersion": 3,
@@ -31998,7 +32090,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "LineCategoricalColorChannel | undefined"
+          "type": "false | RaincloudColorChannel | undefined"
         },
         {
           "name": "guides",
@@ -32129,7 +32221,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "false | LineCategoricalColorChannel | undefined"
+          "type": "false | RaincloudColorChannel | undefined"
         }
       ],
       "callPatterns": [

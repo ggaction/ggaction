@@ -1,7 +1,5 @@
-import { cartesianAxisOwners } from "../selectors/axes.js";
 import { resolveConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js";
 import { textBoundsFitCanvas, textBoundsIntersect, resolveTextBounds } from "../core/textMetrics.js";
-import { axisGraphicIds, allLegendGraphicIds } from "./guides/resources.js";
 import { resolveGraphicBounds } from "../layout/canvas.js";
 import { resolvePlacedPlotBounds } from "../layout/composition.js";
 import {
@@ -22,7 +20,8 @@ import {
 } from "./composition.js";
 import {
   materializeFacetHeaders,
-  prepareFacetHeaders
+  prepareFacetHeaders,
+  retainedFacetGuideIds
 } from "./facetHeaders.js";
 
 const ZERO_MARGIN = { top: 0, right: 0, bottom: 0, left: 0 };
@@ -167,11 +166,7 @@ function assertPlotSpacingGuides(program, layout, plots) {
     top: cell.y + plots[index].y, bottom: cell.y + plots[index].y + plots[index].height
   }));
   for (const cell of layout.children) {
-    const child = program.children[cell.id];
-    const ids = [
-      ...cartesianAxisOwners(child).flatMap(owner => axisGraphicIds(owner.channel, owner.id).slice(2)),
-      ...allLegendGraphicIds(Object.keys(child.guideConfigs.legend ?? {}))
-    ];
+    const ids = retainedFacetGuideIds(program, cell.id);
     for (const id of ids) {
       const target = namespaceGraphicId(`${program.compositionSpec.id}-${cell.id}`, id);
       if (program.graphicSpec.objects[target] === undefined) continue;

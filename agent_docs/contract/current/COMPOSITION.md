@@ -11,11 +11,14 @@ Exact internal graphic ID spelling is not a public authoring option.
 Facet, grid, repeat 및 facet의 `editCompositionLayout`은 `spacing: "canvas" | "plot"`을 받는다.
 기본 canvas는 기존 cell Canvas 사이 gap이다. plot은 내부 data region의 grid track 사이 gap이며
 child plot 크기는 유지한다. 바깥 여백은 각 방향 child margin의 최댓값을 외곽에 한 번 배정한다.
-Role/legacy header는 plot edge에 배치하고 내부 header 예약은 gap 안에 들어가야 한다.
+Role/legacy header의 긴 축은 plot에 맞추고, 수직 방향은 retained Cartesian/Polar/Parallel guide text와
+local legend의 concrete ink 바깥에 offset만큼 배치한다. 내부 guide/header 예약은 gap 안에 들어가야 한다.
+바깥 header lane은 inferred parent Canvas에 예약하며 child Canvas와 명시적 plot gap은 바꾸지 않는다.
 남겨둔 축/범례/헤더가 다른 panel plot 또는 다른 panel guide와 겹치면 원자적으로 거부한다.
 Panel background는 plot 안에만 그려 인접 panel을 덮지 않으며 parent background가 외곽을 채운다.
 Shared legend와 title의 parent 예약은 기존 규칙을 유지한다. Concat에는 spacing 옵션을 거부한다.
 Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit/grammar/layout/facets.test.js`.
+Guide text/header clearance and source-style replay: `test/unit/actions/composition/facet-guide-header-clearance.test.js`.
 
 ## `facet`
 
@@ -28,7 +31,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 - Evidence: `test/unit/actions/composition/facet-text.test.js`.
 - Facet values use source first-appearance order. Explicit `values` is a unique observed-value list whose exact order controls
   child, header and layout order. Omitted `columns` creates one row; a positive integer wraps cells row-major.
-- Omitted scale policies are shared. `x`, `y`, `xOffset`, `yOffset`, `theta`, `r`, `color`, `stroke`, `size`, `shape`,
+- Omitted scale policies are shared unless another explicitly selected channel uses the same physical scale. In that case omitted aliases inherit its policy transitively; two explicitly contradictory policies still reject. `x`, `y`, `xOffset`, `yOffset`, `theta`, `r`, `color`, `stroke`, `size`, `shape`,
   `opacity`, `strokeDash`, and `parallelDimensions` accept `"shared" | "independent"` when the role is used. Public
   `r` resolves the semantic `radius` binding; `radius` is not an accepted facet-policy alias. The single
   `parallelDimensions` policy applies separately to every dimension scale and never unions different dimensions.

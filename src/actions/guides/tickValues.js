@@ -8,6 +8,7 @@ import {
 import { niceTicks, timeTicks } from "../../grammar/ticks.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findSemanticScale } from "../../selectors/scales.js";
+import { applyItemMissingPolicy } from "../../grammar/itemMissing.js";
 
 export const DEFAULT_TICK_COUNT = 5;
 
@@ -28,7 +29,7 @@ export function inferHistogramBoundaries(program, channel, scaleId) {
       throw new Error(`Guide values require histogram data and scale "${scaleId}".`);
     }
     return resolveHistogramBins({
-      values: readQuantitativeField(dataset.values, encoding.field),
+      values: readQuantitativeField(applyItemMissingPolicy(layer, dataset).values, encoding.field),
       bin: encoding.bin,
       domain: scale.domain,
       nice: scale.nice ?? true,

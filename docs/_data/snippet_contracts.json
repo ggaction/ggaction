@@ -499,7 +499,7 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "f77345a6549e85b3e7f8dc834b5d906b96bea2d589dc4ee1d589af3768c7e2a8",
+    "sha256": "f92ca13c4e6b0ec9df4ca387b7f1c75c8b9486cd5d63c9b3e58a519e82391c75",
     "executable": false
   },
   {
@@ -1729,7 +1729,7 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "796f41449851efb0526a3e7dfdb6c3d2e63067bbab948c70bdc15fdf02d52389",
+    "sha256": "951f4299c7ecb3233321312ac66bb6b3f228c7545513b4fb0776909ecdbacef6",
     "executable": false
   },
   {

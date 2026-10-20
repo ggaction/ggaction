@@ -414,6 +414,10 @@ two-field grid; its column sides are top/bottom, while one-field facets and
 repeats also allow left/right column headers. The option uses the same values,
 layout, and precedence as `editFacetHeaders`; authored styles survive themes
 and source replay. Omitting `headers` preserves the default headers.
+With `spacing: "plot"`, headers stay aligned to their panel plots and sit outside
+retained axis text and local legend ink, including outward Polar labels. Header lanes
+are recalculated after guide edits. The requested plot gap and child Canvas sizes
+remain unchanged; insufficient interior guide/header space rejects the operation.
 
 ### `facetGrid`
 
@@ -692,6 +696,11 @@ editEndpointPlot({ target?, data?, coordinate?, category?, value?, start?, end?,
 Atomically revise the semantic roles of a Dot, Lollipop, or Dumbbell facade.
 Owned points, rules, labels, and summary data are replaced together while the
 original appearance and guide policy are retained.
+When a changed role or source changes an axis domain, tick samples from the
+previous domain are inferred again while retaining their label and line styles.
+Separately added statistical references retain their source endpoint, styles, and
+labels, recompute from the revised observations, and follow the measurement axis
+when orientation changes.
 
 ### `createECDFPlot`
 
@@ -780,6 +789,32 @@ Create closed Radar paths from validated long rows or an explicit wide-to-long
 Fold. Every series must contain the same ordered dimensions exactly once. Values
 are used as supplied; the facade does not infer normalization. [Polar positions](../api/position-encodings.md#polar-positions)
 
+### `editRadarPlot`
+
+```js
+editRadarPlot({ target?, wide: { fields } })
+```
+
+Edit the dimensions and their angular order in an existing wide Radar plot. `fields` must contain
+at least two distinct numeric source fields. Omit `target` only when the current or sole wide Radar
+plot identifies the owner unambiguously. Long-form Radar plots are outside this editor's scope.
+
+The action updates the owned fold, angular domain, radial geometry and closed paths together.
+Series grouping, color, line appearance, coordinate and guide styles are preserved. Automatic radial
+domains are recalculated; explicit radial domains remain unchanged. Angular labels and grid values
+follow the revised dimension order, preserving valid explicit subsets.
+
+```js
+// Fragment: program already contains a wide Radar named "radar" and these source columns.
+const revised = program.editRadarPlot({
+  target: "radar",
+  wide: { fields: ["quality", "speed", "cost"] }
+});
+```
+
+Missing, duplicate or nonnumeric fields and incompatible targets reject without changing the
+previous program. Editing dimensions does not normalize values: compare columns with compatible units.
+
 ### `createRugPlot`
 
 ```javascript
@@ -824,7 +859,8 @@ Create a shared-source distribution composite from an optional half Violin,
 Box or Interval summary, and Strip or Beeswarm raw points. Defaults are vertical,
 `side: "before"`, Box summary, and Beeswarm points. Stable Cloud/Summary/Points
 children share role scales; summary and points use a replayable band-relative slot
-offset on the side opposite the density.
+offset on the side opposite the density. `color` accepts its category field or
+a fixed `{ value: "#345678" }`; every enabled component receives that color.
 
 ### `editRaincloudPlot`
 
@@ -835,6 +871,17 @@ editRaincloudPlot({ target?, data?, category?, value?, orientation?, side?, dens
 Atomically revise one Raincloud's shared source, roles, orientation, side, and
 component modes while preserving its parent and child IDs. Use `false` to disable
 an optional component or remove color; at least one component must remain enabled.
+Existing statistical references and their labels retain their identities, definitions,
+and styles, recompute from the revised source, and remain above the rebuilt components.
+Their measure axis follows orientation changes; if their original component is disabled,
+they bind to the remaining parent owner.
+When changing category without specifying color, an existing category-driven color
+follows the new field. Explicit color requests and fixed colors remain unchanged.
+An explicit parent ID also accepts `encodeColor({ target: parentId, ... })` and
+observation-field `filterMarks({ target: parentId, ... })`. Parent filtering
+recomputes density, summary, and raw points from one retained population;
+child-ID filters remain display-only. Parent filters support replace, compose,
+and removal, and require observations suitable for the enabled statistics.
 
 ### `createBarPlot`
 
@@ -1044,6 +1091,11 @@ filterMarks({ target?, mode?, grain?, field | channel | property, op, ...operand
 Retain matching final mark items through the shared selector grammar. Repeated
 filters are idempotent when equal and use explicit `replace` or `compose` mode
 when different. Empty results preserve the preceding scale domains.
+An explicit Raincloud parent ID selects raw observations by `field` at item grain
+and recomputes all enabled components. It accepts comparisons, sets, ranges, and
+grouped ranks; rendered channel/property selectors still require a child ID.
+Raincloud source filters retain the nonempty input requirements of their enabled
+statistical components; named-child empty filters remain supported.
 [Data](../api/data.md)
 
 ### `removeMarkFilter`
@@ -1498,11 +1550,19 @@ Omit the statistic keys for a mean line, supply `statistic: { op: "median" }` fo
 Quantiles 0.25–0.75 show the central 50%; 0.025–0.975 show the central 95% of data, rather than a confidence interval.
 Set `groupBy` to one source field name for a separate result per observed group on either axis, even if that field is not encoded.
 Groups retain source order. Visible marks must have a single value of that grouping field; otherwise use `boundData`.
+For a distribution's measurement axis, `boundData` uses original observations from density, ECDF, computed
+box-summary, and gradient provenance. It preserves repeated observations and source groups instead of averaging
+rendering samples. Precomputed summaries keep their supplied data. Grouped aggregate line statistics can use
+singleton partitions without changing the source line.
+Summarized Dot, Lollipop, and Dumbbell endpoints also follow their original measurement roles.
+Horizon accepts quantitative X statistics from source observations; folded Y and temporal X are not numeric statistic axes.
 The owned output records the key in `group` beside `value` or `lower`/`upper`. Omitting `groupBy` preserves one overall result.
 The default ID is `statisticalReference`; use explicit IDs for additional references. Lines default to `#222222`,
 width `2.5`, solid stroke; bands to `#6b7280`, opacity `0.18`, no stroke. Use native Rule styles for lines and Rect styles for bands.
 When `groupBy` matches the source Color field without a color aggregate, omitted `stroke` shares that Color scale:
 each group's line matches its source marks, and palette edits update both. An explicit `stroke` overrides this default.
+Reference groups contribute to the shared appearance domain even when a mark filter hides that group.
+Statistical values do not expand positional domains, and distribution-role edits refresh existing references.
 This full-only action wraps `createReferenceLine` or `createReferenceBand` and retains their statistical binding,
 replay, editing, facet and removal behavior. Literal reference coordinates are not accepted.
 [Statistical references](../api/marks/rule.md#statistical-reference-action)
@@ -2036,8 +2096,8 @@ removes grouping.
 | --- | --- | --- | --- |
 | Constant | point, line, bar, area, arc, rect, text | point/line/bar/area/arc/rect/text: constant color | value only; no field, scale, palette, layout or aggregate; replaces color mapping and its legend participation |
 | Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
-| Continuous | point, aggregate bar, rect, text, area, line | point/rect/text/line: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; line/area require one finite value per existing series; Parallel uses row grain |
-| Discretized continuous | point, aggregate bar, rect, text, area, line | point/aggregate bar/rect/text/area/line: quantitative | quantize, quantile, or threshold scale; line/area require one finite value per existing series; Parallel uses row grain |
+| Continuous | point, aggregate bar, rect, text, area, line, arc | point/rect/text/line/arc: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; line/area require one finite value per existing series; Parallel uses row grain; arc requires one color value per sector |
+| Discretized continuous | point, aggregate bar, rect, text, area, line, arc | point/aggregate bar/rect/text/area/line/arc: quantitative | quantize, quantile, or threshold scale; line/area require one finite value per existing series; Parallel uses row grain; arc requires one color value per sector |
 
 <!-- action-capabilities:color:end -->
 
@@ -2072,7 +2132,15 @@ The real color scale drives fills and legends and uses one sample per series for
 automatic quantile domains. Basic does not expose Area authoring.
 
 Row-owned rects accept categorical or continuous color. Arc sectors accept
-categorical color with optional overlay layout.
+categorical color with optional overlay layout, or continuous/discretized color
+with one value per sector. Aggregated sectors require that value to be constant
+within their category; no implicit color aggregation is invented. Gradient and
+interval legends use the same scale mapping. Automatic quantile domains use one
+sample per sector.
+When changing a target between categorical and continuous color families, an
+omitted scale ID detaches from an incompatible shared scale into a target-owned
+scale. Explicit shared IDs keep strict consumer validation. Other consumers,
+such as grouped regression lines, retain their original mapping.
 [Series encodings](../api/series-encodings.md)
 
 ### `encodeStrokeDash`
@@ -2331,7 +2399,7 @@ an object creates or edits both. The focused boundary action still accepts
 
 ```javascript
 createBoxPlot({
-  id?, target?, data?, x?, y?, coordinate?, summary?, whisker?, width?, outliers?,
+  id?, target?, data?, x?, y?, coordinate?, color?, summary?, whisker?, width?, outliers?,
   box?, median?, outlier?, guides?
 } = {})
 ```
@@ -2343,6 +2411,8 @@ median rules, and optional point outliers. Tukey factor, band width, component
 appearance, and outlier creation are configurable. [Box plots](../api/box-plots.md)
 Guides remain opt-in for compatibility: pass `guides: {}` or nested options to
 ensure compatible guides inside the facade; omission and `false` create none.
+Optional `color` uses the ordinary field/fixed encoding on the body after
+position completion and before guides. It cannot be combined with explicit `box.fill`.
 
 ### `editBoxPlot`
 
@@ -2358,7 +2428,7 @@ IDs. [Box plots](../api/box-plots.md#editing-a-box-plot)
 
 ```javascript
 createGradientPlot({
-  id?, target?, data?, x?, y?, coordinate?, density?, width?, gradient?,
+  id?, target?, data?, x?, y?, coordinate?, color?, density?, width?, gradient?,
   center?, guides?
 } = {})
 ```
@@ -2369,6 +2439,8 @@ encoded layer, or completed later. Defaults are Gaussian auto density, 64
 samples, width band `0.7`, no outline, a median center rule, and applicable
 guides. A categorical `encodeColor` owns strip hue while density continues to
 control lightness and opacity.
+Optional `color` applies that same field/fixed encoding at creation or deferred
+position completion, before guides.
 [Statistical actions](../reference/actions/statistics.md#creategradientplot)
 
 ### `editGradientPlot`
@@ -2420,7 +2492,9 @@ createGuides({ axes?, grid?, legend? })
 Create applicable axes, grids, and legends; omitted branches infer applicability, false skips a branch, and explicit direction objects enable only named directions: `axes:{x:false}` requests neither axis while `axes:{x:false,y:{}}` requests y.
 Automatic calls preserve existing guide collections and add missing applicable
 collections; explicit collection objects retain strict create semantics. Datum-only
-anchors do not infer axes. On facet parents this action updates the retained source
+anchors do not infer axes. An automatic call on an existing chart that has no
+applicable guides succeeds without adding graphics. An explicit all-false request
+or a chart without marks still fails. On facet parents this action updates the retained source
 and rederives its panels while preserving the parent title and guide policy.
 [Guides](../api/guides.md)
 
@@ -2684,8 +2758,12 @@ Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Interval legends support all four
 edges with layout `"edge"`, side single columns and horizontal item grids. Explicit `channels` creates exactly
 the selected content; include `"size"` in a point categorical-and-size request.
-Compatible point categorical channels stay combined. Independent fields,
+Compatible point and line categorical channels stay combined when their domains
+contain the same values, even in different orders. The first selected channel
+owns item order; each symbol still looks up its own scale by value. Independent fields,
 continuous color/stroke, opacity, and stroke width use separate native blocks.
+Area fill and stroke are independently selectable blocks, including stroke-only
+legends for density and horizon areas.
 For outside top/bottom legends, omitting `offset` places the occupied legend after
 the same-side axis line, ticks, labels, and title, with the family's native gap
 (8 pixels for categorical legends, 30 for continuous families). Axis edits and

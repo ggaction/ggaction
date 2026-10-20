@@ -77,10 +77,13 @@ export function derivePathSeriesFieldValues(
   return series.map(item => values.get(JSON.stringify(Object.values(item.key))));
 }
 
-export function validatePathSeriesAppearance(rows, layer) {
+export function validatePathSeriesAppearance(rows, layer, seriesFields) {
   if (!["line", "area"].includes(layer.mark?.type) ||
       layer.encoding?.parallel !== undefined) return;
-  const grouping = readPathSeriesFields(rows, layer);
+  const grouping = seriesFields ?? readPathSeriesFields(rows, layer);
+  if (seriesFields !== undefined) {
+    for (const field of grouping) readNominalField(rows, field);
+  }
   const channels = layer.mark.type === "line"
     ? ["color", "stroke", "strokeDash", "strokeWidth", "opacity"]
     : ["color", "stroke"];

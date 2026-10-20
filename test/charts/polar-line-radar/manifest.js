@@ -140,9 +140,11 @@ export const visualVariants = Object.freeze([
     visualSignature: {
       inkRatio: { min: 0.0264, max: 0.0324 },
       inkBounds: {
+        // Inferred legend placement now clears the rightmost theta label;
+        // translate the prior platform bounds by its 25.1215px overhang.
         ...(process.platform === "linux"
-          ? { x: 75.5, y: 83.5, width: 645, height: 526.5 }
-          : { x: 71.5, y: 80, width: 648.5, height: 528.5 }),
+          ? { x: 75.5, y: 83.5, width: 670.1215, height: 526.5 }
+          : { x: 71.5, y: 80, width: 673.6215, height: 528.5 }),
         tolerance: { x: 7, y: 1.5, width: 10.5, height: 1 }
       }
     },

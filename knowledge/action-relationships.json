@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 286,
+  "actionCount": 287,
   "relationships": [
     {
       "name": "createCanvas",
@@ -1787,13 +1787,23 @@
       "wraps": [
         "createLineMark",
         "encodeTheta",
-        "encodeR"
+        "encodeR",
+        "encodeGroup",
+        "encodeColor"
       ]
     },
     {
       "name": "createRadarPlot",
       "wraps": [
-        "createPolarLinePlot"
+        "createPolarLinePlot",
+        "createFoldData"
+      ]
+    },
+    {
+      "name": "editRadarPlot",
+      "wraps": [
+        "createFoldData",
+        "editThetaScale"
       ]
     },
     {

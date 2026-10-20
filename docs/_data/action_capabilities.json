@@ -262,9 +262,13 @@
         "line": [
           "quantitative",
           "temporal"
+        ],
+        "arc": [
+          "quantitative",
+          "temporal"
         ]
       },
-      "options": "sequential scale; aggregate required for a different bar measure; line/area require one finite value per existing series; Parallel uses row grain"
+      "options": "sequential scale; aggregate required for a different bar measure; line/area require one finite value per existing series; Parallel uses row grain; arc requires one color value per sector"
     },
     {
       "mode": "Discretized continuous",
@@ -286,9 +290,12 @@
         ],
         "line": [
           "quantitative"
+        ],
+        "arc": [
+          "quantitative"
         ]
       },
-      "options": "quantize, quantile, or threshold scale; line/area require one finite value per existing series; Parallel uses row grain"
+      "options": "quantize, quantile, or threshold scale; line/area require one finite value per existing series; Parallel uses row grain; arc requires one color value per sector"
     }
   ],
   "highlight": [

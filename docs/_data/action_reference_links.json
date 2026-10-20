@@ -267,6 +267,7 @@
   "createPolarScatterPlot": "/reference/actions/charts-data/#createpolarscatterplot",
   "createPolarLinePlot": "/reference/actions/charts-data/#createpolarlineplot",
   "createRadarPlot": "/reference/actions/charts-data/#createradarplot",
+  "editRadarPlot": "/reference/actions/charts-data/#editradarplot",
   "createRugPlot": "/reference/actions/charts-data/#createrugplot",
   "createStripPlot": "/reference/actions/charts-data/#createstripplot",
   "createBeeswarmPlot": "/reference/actions/charts-data/#createbeeswarmplot",

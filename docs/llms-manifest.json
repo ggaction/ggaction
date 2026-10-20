@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:6e454753b022ccd0477e432f0b30c1e327a1f7dee8d090b345557dc41db974f2",
-    "sourceCommit": "87ab7093f4e57e0c31dbaf4c543320c972388c8f",
+    "contractId": "sha256:ed5de35f3fc056f74306ec3a09be16d0740c6b68080cb1216e8e259d58550b0e",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "42cd00f4cd2288e9581176a7112b77b1fb55445b226faa1634fb50c06e1fd2ec"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -967,8 +967,8 @@
         "statistical-reference-action",
         "related"
       ],
-      "bytes": 9205,
-      "sha256": "aeab54a182475f15101651127d68c848b3d2f1247c838a9b0971431964a1d3ef"
+      "bytes": 10196,
+      "sha256": "3b52484311b419cdea46aaee43417673715cdd863876b982e5ec3d0794f6c406"
     },
     {
       "order": 61,
@@ -990,8 +990,8 @@
         "removelabellayoutoptions",
         "related"
       ],
-      "bytes": 14541,
-      "sha256": "c2e9535db04313e6c96e470c91b79711e7adfc9ed1445acd939b92002ab6c5a2"
+      "bytes": 14662,
+      "sha256": "b6a68a409cbf5c3b0d1f598fc85a520198de60c6581a9795f5f13800423f1029"
     },
     {
       "order": 62,
@@ -1035,8 +1035,8 @@
         "calendar-interval-bar-widths",
         "related"
       ],
-      "bytes": 19188,
-      "sha256": "e05d62510eee401925ff5a8bb6537e17adbe3bf1111589c4a1b5fdd4bb71ca5d"
+      "bytes": 19288,
+      "sha256": "5917fadf8afd4de161a0c502040ca348af74143bd721654eef344e4a04eb8913"
     },
     {
       "order": 64,
@@ -1107,8 +1107,8 @@
         "precomputed-summaries",
         "related"
       ],
-      "bytes": 10497,
-      "sha256": "897d74ea14eba2cf7e8c3bd39d61d4425de0c8299c5f1f96a9cef1b8222c9a93"
+      "bytes": 10920,
+      "sha256": "3323ae402c3bb647bd1a05681306a2a9cb9e19b5c26a8937580a3ad72537833c"
     },
     {
       "order": 68,
@@ -1123,8 +1123,8 @@
         "current-limitations",
         "related"
       ],
-      "bytes": 7062,
-      "sha256": "abd5dfcebee4cdddf0da4e6c61e13d40aeef975ef06c42ec3a28565af7b022e9"
+      "bytes": 7442,
+      "sha256": "6621c48e2ee3fd09ba954cfab4f95d6cfebbfd6a5e47121b55c0a0ddd3272e8a"
     },
     {
       "order": 69,
@@ -1375,8 +1375,8 @@
         "continuous-area-color",
         "related"
       ],
-      "bytes": 14682,
-      "sha256": "77faf92ba9bde5cf3201b870641dd693cb363d5ff687e285704cad58d747cd2a"
+      "bytes": 14782,
+      "sha256": "16d0f4ce10df4765f855c0310347e80613a28a6db61170c48d7b0d953884138a"
     },
     {
       "order": 83,
@@ -1619,8 +1619,8 @@
         "put-a-compact-categorical-legend-inside-the-plot",
         "related"
       ],
-      "bytes": 8390,
-      "sha256": "56b75e9ac454bc7bbd7ed4836d46656113797cfd4dc07521a389b30d88c1ddb7"
+      "bytes": 8588,
+      "sha256": "5142f9984f85f5067a5fc7669aeb2abff5cb65bbb150141caa98c06199c347ce"
     },
     {
       "order": 98,
@@ -1946,8 +1946,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 30820,
-      "sha256": "589837a8df082b9b1062e06f71011eb95ee6c4d0bbe9bda29a31f1c0d7daf4f8"
+      "bytes": 30922,
+      "sha256": "0386dcf7a9c7abf378426f21cd688939faa1ea8f0979e8fbf45d80353fb96783"
     },
     {
       "order": 118,
@@ -2033,6 +2033,7 @@
         "createpolarscatterplot",
         "createpolarlineplot",
         "createradarplot",
+        "editradarplot",
         "createrugplot",
         "createstripplot",
         "createbeeswarmplot",
@@ -2050,8 +2051,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 166179,
-      "sha256": "9ce49c7078e95b21e2f87ba8d8c27a7fa3fa6439ac91138b9b1227339b5dee40"
+      "bytes": 170163,
+      "sha256": "fcc6716e06feb1ae59f1e6840d6380064e98cccd6ff048b79c4db63784d86022"
     },
     {
       "order": 119,
@@ -2096,8 +2097,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 74202,
-      "sha256": "032e369b003b758123f2ffd3cdbc22e78141091e3e556cb998523fb830e53e4f"
+      "bytes": 75016,
+      "sha256": "187df32fab116684054b098759aa1c0e458eaa375fa64f03b08f384c8f05cd51"
     },
     {
       "order": 120,
@@ -2146,8 +2147,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 62163,
-      "sha256": "efe04580667631789b04939eb7c987238fefb0c96935418b77e691f77e4ac350"
+      "bytes": 62852,
+      "sha256": "28746c7152983e8851c00d9a2259dd61e9fdd9160c45608b1ff2f53cedb5650b"
     },
     {
       "order": 121,
@@ -2202,8 +2203,8 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 79221,
-      "sha256": "aaf0640a21f5a4c5caea45d73ec3dc80fb3af15c49532ece13b7e81faa0e9d1d"
+      "bytes": 79853,
+      "sha256": "9c8e9c6f4ab57761ba87cc8013d18cc435b78249dfaa44a82aeb7908a3fa2893"
     },
     {
       "order": 122,
@@ -2300,8 +2301,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 133064,
-      "sha256": "8f159a78a420bd219f9dcff55f3e92518be6e545d39c15f3135a908774532ab8"
+      "bytes": 133527,
+      "sha256": "7749fd33ba358ec9fbc02274d280cdfeb7969fce2dc86d3d145a2781b6f7deb5"
     },
     {
       "order": 123,
@@ -2642,6 +2643,7 @@
         "type-editpolaraxisoptions",
         "type-editpolargridoptions",
         "type-editrscaleoptions",
+        "type-editradarplotoptions",
         "type-editradialaxisoptions",
         "type-editraincloudplotoptions",
         "type-editrectmarkoptions",
@@ -2878,6 +2880,7 @@
         "type-radiusscaleoptions",
         "type-raincloudboxsummaryoptions",
         "type-raincloudcategorychannel",
+        "type-raincloudcolorchannel",
         "type-rainclouddensityoptions",
         "type-raincloudintervalsummaryoptions",
         "type-raincloudpointappearanceoptions",
@@ -3020,8 +3023,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 347029,
-      "sha256": "879d26137f6b75f542249c64369ca48940ada32fc82a59121bc893c61bbe5d15"
+      "bytes": 348199,
+      "sha256": "09f2b07c9923bd48752abfa2b1549dc2a1abff7e3a36c25b6fba5b885db7588d"
     },
     {
       "order": 127,
@@ -3051,8 +3054,8 @@
         "editgraphics-target-property-value-remove",
         "scale-materialization"
       ],
-      "bytes": 16959,
-      "sha256": "ba54c86bb6c7f177124596c0589cf4cb2142db213cda7b6277572ecbb7bdc505"
+      "bytes": 16887,
+      "sha256": "6290b807e031ee8069a7df5b38464bea8906ecdd59f5124a91617d4a1de87f96"
     },
     {
       "order": 129,
@@ -3362,8 +3365,8 @@
         "compose-or-refine",
         "related"
       ],
-      "bytes": 19495,
-      "sha256": "80bee0eb672290a76c16aa6a06ffa7f03214617d0139ab21c6a5eac68c976ad9"
+      "bytes": 19712,
+      "sha256": "82522c93bf0ca9611f15fe6960024b40924446651203885b875fb2d12f61a358"
     },
     {
       "order": 149,
@@ -3375,8 +3378,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "7599b19e45f68a8800005a637df59beccdc400964fda795691aede588291de6e"
+      "bytes": 3000,
+      "sha256": "b40c276dac98c0777f37fe9e1383479dba0c41124d123f66172980aa6417910e"
     },
     {
       "order": 150,

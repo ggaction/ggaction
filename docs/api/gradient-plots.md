@@ -87,7 +87,7 @@ right-side channel legends to keep their labels separate.
 
 ```javascript
 createGradientPlot({
-  id?, target?, data?, x?, y?, coordinate?,
+  id?, target?, data?, x?, y?, coordinate?, color?,
   density?: { bandwidth?, extent?, steps?, kernel?, normalization? },
   width?: { band? },
   gradient?: { palette?, opacity? },
@@ -102,6 +102,11 @@ createGradientPlot({
   budget.
 - `width.band` defaults to `0.7` of the category band.
 - `gradient` defaults to `blues` with opacity `[0, 1]`.
+- `color` accepts a field name, a field/scale encoding, or `{ value }`. It is
+  equivalent to a later `encodeColor` on the strips, including after deferred
+  positions complete. Color controls hue; density retains lightness and opacity.
+  The density legend remains separate. This option does not create subgroup
+  profiles or add unrelated source fields to the profile data.
 - `center` defaults to a median rule with a `1.5` logical-pixel dark stroke;
   `false` removes the complete optional component. Its cap/join/miter values
   follow the shared [Mark Style](./appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles)

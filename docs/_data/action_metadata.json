@@ -2185,6 +2185,15 @@
     "layer": "user-facing",
     "domain": "charts"
   },
+  "editRadarPlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H1",
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "charts"
+  },
   "createRugPlot": {
     "operation": "create",
     "authoringRoles": [

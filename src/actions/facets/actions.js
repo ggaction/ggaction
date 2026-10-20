@@ -98,7 +98,7 @@ function usedFacetScalePolicies(program, policies) {
   );
   return Object.fromEntries(
     FACET_SCALE_CHANNELS.flatMap(channel =>
-      used.has(channel) ? [[channel, policies[channel]]] : []
+      used.has(channel) && policies[channel] !== undefined ? [[channel, policies[channel]]] : []
     )
   );
 }
@@ -746,7 +746,11 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
     const authored = isPlainObject(current.facet.guides.legend);
     const guides = authored ? { ...current.facet.guides, legend: false } : current.facet.guides;
     let revised;
-    const scales = usedFacetScalePolicies(base, current.facet.scales);
+    // Policies for channels absent from the previous source are defaults, not
+    // authored requests. A newly introduced alias must inherit the policy of
+    // the existing physical scale rather than conflict with a stale default.
+    const scales = usedFacetScalePolicies(base,
+      usedFacetScalePolicies(this, current.facet.scales));
     if (current.facet.grid !== undefined) {
       revised = base.facetGrid({
         id: current.id,

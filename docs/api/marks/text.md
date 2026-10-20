@@ -233,7 +233,8 @@ const segmentValues = stackedBars
 normalization, each histogram segment's count, each Pie sector's count or
 weighted sum, or an Arc's radial value. For two stacked values of 10 and 30,
 it labels them 10 and 30. `content: "category"` reads the category of an
-aggregate Bar or categorical Arc.
+aggregate Bar or categorical Arc. For a histogram or other binned Bar it shows
+the bin interval as `start–end`, regardless of stacking or axis reversal.
 
 `content: "share"` divides these values by their total across the current
 source's final items. Use `normalizeBy: "category"` for percentages within

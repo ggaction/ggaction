@@ -44,7 +44,10 @@ test("histogram shares use segment counts and exact bin boundaries", () => {
   ];
   assert.deepEqual(resolveMarkLabelValues(source, items, { content: "value" }), [2, 1, 1]);
   assert.deepEqual(resolveMarkLabelValues(source, items, { content: "share", normalizeBy: "category" }), [2 / 3, 1 / 3, 1]);
-  assert.throws(() => normalizeMarkLabelContent(source, { content: "category" }), /intervals/);
+  assert.deepEqual(resolveMarkLabelValues(source, items, { content: "category" }), ["0–1", "0–1", "1–2"]);
+  assert.deepEqual(resolveMarkLabelValues(source, [
+    { channels: { x: 0.1 + 0.2, x2: 0.4 }, members: [] }
+  ], { content: "category" }), ["0.3–0.4"]);
 });
 
 test("arc values distinguish weighted/count sectors, quantitative theta and measured radius", () => {
