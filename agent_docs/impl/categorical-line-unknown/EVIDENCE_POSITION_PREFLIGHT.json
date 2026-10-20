@@ -3,8 +3,8 @@
   "reviewer": "codex",
   "previousImplementationCommit": "544cf4068f73fda33990ca23823dd8c861166e4e",
   "previousEvidence": "EVIDENCE.json",
-  "previousEpochNativeCompatibility": "/Users/hyeonjeon/Projects/vegalite-ggaction-translation/reports/v12-runtime-batch200-issue236-current1275-compatibility.json",
-  "oldIncompletePositionReproduction": "/Users/hyeonjeon/Projects/vegalite-ggaction-translation/reports/v12-issue236-early-position-preflight-repro.json",
+  "previousEpochNativeCompatibility": "reports/v12-runtime-batch200-issue236-current1275-compatibility.json",
+  "oldIncompletePositionReproduction": "reports/v12-issue236-early-position-preflight-repro.json",
   "normal": {
     "tests": 4817,
     "pass": 4817,
@@ -184,5 +184,22 @@
   "schoolRequests": 0,
   "source0702Successful": false,
   "registryPublished": false,
-  "nextPublicReleaseAt": 1413
+  "nextPublicReleaseAt": 1413,
+  "externalArtifactBindings": [
+    {
+      "artifact": "reports/v12-runtime-batch200-issue236-current1275-compatibility.json",
+      "workspace": "external translation workspace",
+      "sha256": "91548131c2dece8382f15b3239dab37e563f37ae5e83cbf85b5e4b03fb57b46e"
+    },
+    {
+      "artifact": "reports/v12-issue236-early-position-preflight-repro.json",
+      "workspace": "external translation workspace",
+      "sha256": "94bc1cacc1720d2e9738b56d5086a2ec9d4a4c9b74fe11b0dc96853d9f66442d"
+    }
+  ],
+  "metadataReferenceCorrection": {
+    "previousCommit": "1ec40344a904102141d99076e60f8b3ba607b1f7",
+    "previousFileSha256": "3cbb8ea5c30eeef5a2c835ce5b9a41ceecbcd2c025a60eada76362a8262a2ded",
+    "change": "Replace absolute external workspace paths with neutral logical artifact references and exact hashes; original evidence and runtime claims are retained."
+  }
 }
