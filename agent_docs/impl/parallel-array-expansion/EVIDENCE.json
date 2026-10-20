@@ -123,5 +123,12 @@
   "fullHistoricalCohortCompatibility": false,
   "authoringRuntimeAdopted": false,
   "npmPublished": false,
-  "documentationDeployed": false
+  "documentationDeployed": false,
+  "implementationCommit": "73c02ff0d3d939fcd3265d53953303e8a1570bd3",
+  "cleanSourceDocs": {
+    "pass": 120,
+    "sourceCommit": "73c02ff0d3d939fcd3265d53953303e8a1570bd3",
+    "log": ".artifacts/parallel-array-expansion-clean-docs-v1.log",
+    "sha256": "b10bbdcb58147f189edd57c5d9154fa3ceb35104dbd753431b570ab52b0c2191"
+  }
 }
