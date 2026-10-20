@@ -1,7 +1,7 @@
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { readSeriesIdentity, validatePathSeriesAppearance } from "../../../grammar/pathSeries.js";
 import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
-import { readScaleField } from "../../../grammar/scales/index.js";
+import { readNominalField, readScaleField } from "../../../grammar/scales/index.js";
 import { readCategoricalLineColor, validateCategoricalColorConsumer } from "../../../grammar/scales/colorConsumers.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
@@ -57,6 +57,10 @@ export function readConsumerFieldValues(
   scale = findScale(program, consumer.encoding.scale)
 ) {
   const { field, fieldType, temporalUnit } = consumer.encoding;
+  if (consumer.channel === "strokeDash") {
+    validateCategoricalColorConsumer(consumer.layer, consumer.encoding, scale, "strokeDash");
+    return readNominalField(dataset.values, field);
+  }
   if (consumer.channel === "color" && ["nominal", "ordinal"].includes(fieldType) &&
       validateCategoricalColorConsumer(consumer.layer, consumer.encoding, scale)) {
     return readCategoricalLineColor(dataset.values, field);

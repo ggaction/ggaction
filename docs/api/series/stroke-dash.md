@@ -34,10 +34,17 @@ program.encodeStrokeDash({ value: "dotted" });
 | `scale.type` | `"ordinal"` | `"ordinal"` |
 | `scale.domain` | `"auto"` or category array | `"auto"` |
 | `scale.range` | `"auto"` or named/direct pattern array | `"auto"` |
+| `scale.unknown` | named style or direct pattern for a valid category outside the domain | strict |
 
 Ordinal fields retain their ordered categorical meaning in semantic state. Automatic domains
 preserve first-appearance order; use `scale.domain` for a specific category order.
 Neither field type sorts the original rows or vertices.
+
+For Cartesian line and rule marks, `scale.unknown` maps a valid category outside
+the domain without adding a legend entry or changing raw series identity.
+Missing or malformed categories still fail. Parallel, polar, aggregate and
+binned paths reject this fallback. Use `editStrokeDashScale` to replace it;
+explicit `unknown: undefined` removes it only if all consumers remain valid.
 
 The automatic range contains ten reusable patterns. An explicit pattern is an
 empty array for a solid stroke or an even-length array of non-negative finite

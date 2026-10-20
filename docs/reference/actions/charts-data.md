@@ -1781,6 +1781,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `type` | Optional / branch-dependent | `"ordinal" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly (DashPattern \| DashStyle)[] \| undefined` |
+| `unknown` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
 
 </details>
 
@@ -3785,7 +3786,7 @@ editSizeScale({ id?, target?, type?, domain?, range?, unknown?, clamp?, reverse?
 editOpacityScale({ id?, target?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, unknown? })
 editShapeScale({ id?, target?, type?, domain?, range?, unknown? })
 editStrokeWidthScale({ id?, target?, type?, domain?, range?, ...quantitativeOptions })
-editStrokeDashScale({ id?, target?, type?, domain?, range? })
+editStrokeDashScale({ id?, target?, type?, domain?, range?, unknown? })
 ```
 
 Edit the scale bound to one semantic channel without requiring its generated

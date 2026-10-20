@@ -2086,7 +2086,8 @@ export type EditSizeScaleOptions = FocusedScaleSelection &
 export type EditOpacityScaleOptions = FocusedScaleSelection & WithoutScaleId<OpacityScaleOptions>;
 export type EditShapeScaleOptions = FocusedScaleSelection & WithoutScaleId<ShapeScaleOptions>;
 export type EditStrokeWidthScaleOptions = FocusedScaleSelection & WithoutScaleId<StrokeWidthScaleOptions>;
-export type EditStrokeDashScaleOptions = FocusedScaleSelection & WithoutScaleId<DashScaleOptions>;
+export type EditStrokeDashScaleOptions = FocusedScaleSelection &
+  Omit<WithoutScaleId<DashScaleOptions>, "unknown"> & { unknown?: DashStyle | DashPattern | undefined };
 
 interface PositionEncodingBase {
   field: string;
@@ -4304,6 +4305,7 @@ export interface DashScaleOptions {
   type?: "ordinal";
   domain?: "auto" | readonly unknown[];
   range?: "auto" | readonly (DashStyle | DashPattern)[];
+  unknown?: DashStyle | DashPattern;
 }
 
 export type StrokeDashEncodingOptions =

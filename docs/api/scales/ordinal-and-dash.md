@@ -67,6 +67,20 @@ Semantic scale state preserves the names; the resolved scale, line paths, and
 legend symbols contain numeric patterns only. Pattern lengths use logical
 Canvas units and do not change with output pixel ratio.
 
+### Categories outside a fixed domain
+
+Set `scale.unknown` to a named style or direct pattern for valid categories
+outside the domain of a Cartesian line or rule. `[]` draws a solid stroke.
+The fallback never becomes a domain or legend entry, and different raw
+categories remain distinct line series. Missing or malformed categories still
+fail. Omitting the option retains strict domain checking. An automatic domain
+continues to include the original categories in first-appearance order.
+
+Use `editStrokeDashScale({ unknown: "dotted" })` to replace the fallback.
+Omission retains it; explicit `unknown: undefined` removes it. Removal fails
+atomically while any consumer still has an out-of-domain category. Parallel,
+polar, aggregate and binned path topologies do not support this fallback.
+
 ## Related
 
 [Scale overview](../scales.md) · [Encodings](../encodings.md) · [Troubleshooting](../../troubleshooting.md)

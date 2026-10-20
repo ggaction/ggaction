@@ -23688,10 +23688,15 @@
           "name": "range",
           "required": false,
           "type": "\"auto\" | readonly (DashPattern | DashStyle)[] | undefined"
+        },
+        {
+          "name": "unknown",
+          "required": false,
+          "type": "DashPattern | DashStyle | undefined"
         }
       ],
       "callPatterns": [
-        "editStrokeDashScale({ id?, target?, type?, domain?, range? })"
+        "editStrokeDashScale({ id?, target?, type?, domain?, range?, unknown? })"
       ],
       "snippet": "program.editStrokeDashScale({ range: [[], [4, 2]] })",
       "errors": [],

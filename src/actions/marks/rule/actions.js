@@ -6,7 +6,6 @@ import {
   mapContinuousScaleValues,
   mapOrdinalOffsetValues,
   mapOrdinalPositionValues,
-  mapOrdinalValues,
   normalizeStrokeDashPattern
 } from "../../../grammar/scales/index.js";
 import { deriveRuleValues, resolveRuleMode } from "../../../grammar/rules.js";
@@ -362,10 +361,10 @@ const rematerializeRuleMark = /* @__PURE__ */ action(
             dashEncoding?.datum ?? resolvedConfig.strokeDash
           )
         )
-      : mapOrdinalValues(
+      : mapScaleConsumerValues(
           derived.values.strokeDash,
-          resolved.resolvedScales[dashEncoding.scale].domain,
-          resolved.resolvedScales[dashEncoding.scale].range
+          resolved.resolvedScales[dashEncoding.scale],
+          "strokeDash"
         );
     const opacity = opacityEncoding?.scale === undefined
       ? resolvedConfig.opacity

@@ -79,7 +79,7 @@ const DEFINITIONS = Object.freeze({
   }),
   editStrokeDashScale: Object.freeze({
     channel: "strokeDash",
-    options: Object.freeze(["type", "domain", "range", "emptyDomain"])
+    options: Object.freeze(["type", "domain", "range", "emptyDomain", "unknown"])
   })
 });
 

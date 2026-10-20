@@ -338,14 +338,19 @@ Measured artifact growth is 569 entries / 798,338 packed / 3,914,211 unpacked by
 ceilings become 569 / 799,000 / 3,915,000, keeping browser limits unchanged. Search is 815,026 bytes;
 its independent ceiling becomes 816,000. These are growth adjustments, not previous-limit passes.
 
+범주형 점선의 explicit unknown 문서 추가 후 search-index는838,297bytes이며 최소1000단위
+839,000bytes로 상한을 조정한다. 실제 지원 설명을 삭제하지 않으며 이전838,000bytes
+통과로 보고하지 않는다. 기존 aligned expansion 후보에서 측정한 Full423,024/Basic209,555
+bytes에 따라 이미 설정된424,000/210,000bytes executable 상한과 아래 표·README를 동기화한다.
+
 ### Browser bundle regression ceilings
 
 Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 않아야 한다.
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 423,000 bytes |
-| `ggaction/basic` | 209,000 bytes |
+| `ggaction` | 424,000 bytes |
+| `ggaction/basic` | 210,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 0.0.20의 Area 정량 색상과 seeded mean CI 추가 후 Node20.20.2 installed consumer는

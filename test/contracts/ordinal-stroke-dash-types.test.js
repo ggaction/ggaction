@@ -20,6 +20,15 @@ p.encodeStrokeDash({ field: "level", fieldType: "ordinal", scale: { domain: [1, 
 p.encodeStrokeDash({ field: "level", fieldType: "nominal" });
 p.encodeStrokeDash({ field: "level" });
 p.encodeStrokeDash({ value: "solid" });
+p.encodeStrokeDash({ field: "level", scale: { domain: [1], range: ["dotted"], unknown: [] } });
+p.editStrokeDashScale({ unknown: "dashdot" });
+p.editStrokeDashScale({ unknown: undefined });
+p.createLinePlot({ x: "x", y: "y", strokeDash: { field: "level", scale: { unknown: [2, 2] } } });
+p.encodeChannels({ target: "paths", channels: { strokeDash: { field: "level", scale: { unknown: "solid" } } } });
+// @ts-expect-error fallback is a dash style, not a coordinate
+p.encodeStrokeDash({ field: "level", scale: { unknown: 3 } });
+// @ts-expect-error creation does not accept an undefined fallback
+p.encodeStrokeDash({ field: "level", scale: { unknown: undefined } });
 p.createLinePlot({ x: "x", y: "y", strokeDash: { field: "level", fieldType: "ordinal" } });
 p.encodeChannels({ target: "paths", channels: { strokeDash: { field: "level", fieldType: "ordinal" } } });
 // @ts-expect-error continuous values remain unsupported
@@ -39,7 +48,7 @@ basic.encodeStrokeDash({ field: "level", fieldType: "ordinal" });
 basic.encodeChannels({ target: "paths", channels: { strokeDash: { field: "level", fieldType: "ordinal" } } });
 `);
     const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
-      "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
+      "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { cwd: root, encoding: "utf8" });
     assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);

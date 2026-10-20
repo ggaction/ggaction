@@ -67,6 +67,17 @@ export function validateCategoricalColorConsumer(layer, encoding, scale, channel
   if (!Object.hasOwn(scale, "unknown")) return false;
   if (layer.mark?.type === "point") return false;
   const position = layer.encoding ?? {};
+  if (channel === "strokeDash") {
+    if (!["line", "rule"].includes(layer.mark?.type) ||
+        !["nominal", "ordinal"].includes(encoding.fieldType) || scale.type !== "ordinal" ||
+        position.parallel !== undefined || position.theta !== undefined || position.radius !== undefined ||
+        [position.x, position.y, position.x2, position.y2].some(item =>
+          item?.aggregate !== undefined || item?.bin !== undefined)) {
+      throw new Error("StrokeDash unknown requires a Cartesian line or rule with categorical ordinal mapping.");
+    }
+    // Dash fallback maps valid categories only; never enable missing-color reads.
+    return false;
+  }
   if (layer.mark?.type !== "line" || channel !== "color" ||
       !["nominal", "ordinal"].includes(encoding.fieldType) ||
       scale.type !== "ordinal" || !Array.isArray(scale.domain) || scale.domain.length === 0 ||

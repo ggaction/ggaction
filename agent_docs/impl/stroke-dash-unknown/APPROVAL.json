@@ -8,9 +8,10 @@
   "newPersistedKey": false,
   "newMarkOrVisualTarget": false,
   "reapprovalRequested": false,
-  "libraryImplementationStarted": false,
+  "libraryImplementationStarted": true,
   "regularPublicReleaseAtCompletedFamilies": 1413,
   "currentPublicFamilies": 1213,
   "currentCompletedFamilies": 1281,
-  "publicPublicationAuthorizedAtThisDesignCheckpoint": false
+  "publicPublicationAuthorizedAtThisDesignCheckpoint": false,
+  "implementationScopeUnchanged": true
 }

@@ -2149,17 +2149,20 @@ type EditableCurrentScale = {
 
 ## `editStrokeDashScale`
 
-- Implemented: edits the ordinal scale bound to categorical line or rule dash patterns.
+- Implemented: edits the ordinal scale bound to categorical line or rule dash patterns, including named/direct `unknown`.
+- Omitted `unknown` retains the existing fallback; explicit `unknown: undefined` removes it, matching `editScale`.
+  Removal or any other edit preflights every consumer and fails atomically if raw values would become invalid.
+  Valid outside-domain categories only are supported by Cartesian Line/Rule, as defined in `ENCODINGS.md`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `editStrokeDashScale`
 
-- Implemented: `editStrokeDashScale(EditStrokeDashScaleOptions)` with ordinal domain/range plus `id?` and `target?`.
+- Implemented: `editStrokeDashScale(EditStrokeDashScaleOptions)` with ordinal domain/range/unknown plus `id?` and `target?`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editStrokeDashScale`
 
-- ✅ Covered: line-series dash-range editing, strict dash typing, and rematerialization. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+- ✅ Covered: line-series dash-range/fallback editing, removal and shared-consumer atomicity, strict dash typing, and rematerialization. Additional evidence: `test/unit/actions/encodings/stroke-dash-unknown.test.js`, `test/contracts/ordinal-stroke-dash-types.test.js`. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
 
 ## Persistence package boundary
 

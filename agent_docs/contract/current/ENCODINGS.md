@@ -39,6 +39,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   행 단위 Cartesian Line의 nominal/ordinal color는 explicit nonempty ordinal domain과 unknown을 함께 지정하면 허용한다.
   Line의 absent/null은 fallback paint를 쓰지만 서로 다른 inferred series identity를 유지하며 object/array/non-finite category는 거부한다.
   Aggregate/bin/parallel/polar line, bar/area/rule, offset과 strokeDash는 이 color fallback 확장에 포함하지 않는다.
+  별도의 Cartesian Line/Rule strokeDash는 유효한 domain 밖 raw 범주에 named/direct dash fallback을 허용한다.
+  Missing/null/malformed category는 계속 거부하며 raw series/vertex와 domain/legend membership을 보존한다.
 - Direct `createScale`/`editScale`은 complete current scale vocabulary를 노출한다. Encoding attachment가
   field type, channel, mark grain과 existing consumers에 맞는 subset을 검증한다.
 - Proposed: —
@@ -1219,6 +1221,12 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `field`, `target`, `fieldType`: field mode의 categorical field, optional line/rule ID, `"nominal" | "ordinal"` type다. 생략 기본값은 nominal이다.
 - `value`: constant mode의 `"solid" | "dashed" | "dotted" | "dashdot" | DashPattern`이다.
 - `scale`: field mode의 ordinal dash scale이다. range는 named style 또는 direct pattern의 array다.
+- `scale.unknown`: Cartesian Line/Rule의 유효한 raw 범주가 domain 밖일 때 사용할 named style/direct pattern이다.
+  기존 패턴 검증·정규화를 사용하며 `[]`는 solid다. 생략은 strict, 생성의 명시 undefined는 거부한다.
+  Auto domain은 기존 raw first-appearance order를 유지하며 fallback은 domain/legend에 추가하지 않는다.
+  서로 다른 raw unknown 범주는 같은 fallback이어도 별도 series이며 한 series의 raw appearance 일관성을 유지한다.
+  Missing/null/malformed 범주는 거부한다. Parallel/polar/aggregate/bin topology는 거부하며
+  위치 전/후 선언·facade/bulk·공유 scale과 editor는 같은 consumer 정책을 쓴다.
 - Ordinal field intent는 semantic encoding과 editable snapshot에 보존한다. Auto domain은 기존 raw first-appearance order이며 explicit domain 순서가 우선한다. Field type으로 rows/group/vertices를 자동 정렬하거나 값을 변환하지 않는다.
 - Effect: field mode는 line series별 concrete dash와 categorical legend symbol을 rematerialize한다.
   Constant mode는 모든 series에 같은 concrete dash를 적용하며 scale이나 legend를 만들지 않는다.
@@ -1254,6 +1262,11 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: auto and explicit order.
 - `scale.range`
   - ✅ Covered: automatic cycling, direct patterns, named styles, resolved numeric recipes, invalid patterns.
+- `scale.unknown`
+  - ✅ Covered: nominal/ordinal direct/facade/bulk/reused/early/late Line/Rule, raw category identity and rows,
+    unseen domain/legend entries, malformed/null/missing/topology rejection, shared edits/removal atomicity,
+    revision/highlight/persistence and exact SVG/Canvas plus PDF export.
+    Evidence: `test/unit/actions/encodings/stroke-dash-unknown.test.js`, `test/contracts/ordinal-stroke-dash-types.test.js`.
 - Named recipes: `solid → []`, `dashed → [6, 4]`, `dotted → [1, 3]`,
   `dashdot → [6, 3, 1, 3]`.
 - Evidence: line-series encoding and scale tests; `test/unit/actions/encodings/ordinal-stroke-dash.test.js` and `test/contracts/ordinal-stroke-dash-types.test.js`.

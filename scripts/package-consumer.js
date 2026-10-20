@@ -1636,6 +1636,19 @@ async function testNodeConsumer(directory) {
       assert.equal(orderedDash.semanticSpec.layers[0].encoding.strokeDash.fieldType, "ordinal");
       assert.deepEqual(orderedDash.resolvedScales.strokeDash.domain, [1, 2]);
       assert.deepEqual(orderedDash.graphicSpec.objects.linePlot.items.map(item => item.properties.strokeDash), [[4, 2], [1, 0]]);
+      const fallbackDash = factory().createCanvas({ width: 260, height: 180, margin: 24 })
+        .createData({ values: [
+          { level: 2, x: 0, y: 20 }, { level: 2, x: 1, y: 20 },
+          { level: 1, x: 0, y: 10 }, { level: 1, x: 1, y: 10 }
+        ] }).createLinePlot({ x: "x", y: "y", guides: false })
+        .encodeStrokeDash({ field: "level", fieldType: "ordinal",
+          scale: { domain: [1], range: [[1, 0], [4, 2]], unknown: [] } });
+      assert.deepEqual(fallbackDash.graphicSpec.objects.linePlot.items.map(item => item.properties.strokeDash), [[], [1, 0]]);
+      assert.deepEqual(fallbackDash.resolvedScales.strokeDash.domain, [1]);
+      if (factory === chart) {
+        assert.throws(() => fallbackDash.editStrokeDashScale({ unknown: undefined }), /outside/);
+        assert.deepEqual(fallbackDash.editStrokeDashScale({ unknown: "dotted" }).graphicSpec.objects.linePlot.items.map(item => item.properties.strokeDash), [[1, 3], [1, 0]]);
+      }
     }
     const ruleSource = chart().createCanvas().createData({ values: [{ x: 1 }, { x: 2 }] });
     const styledRule = ruleSource.createRuleMark({ stroke: "red", strokeWidth: 0, opacity: 0.5 })
@@ -5223,7 +5236,9 @@ const invalidGrouped: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {
     chart().encodeSize({ field: "m", scale: { type: "pow", domain: [0, 100], exponent: 2 } });
     chart().encodeSize({ field: "m", scale: { type: "threshold", domain: [10], range: [20, 80] } });
     chart().editSizeScale({ type: "quantile", domain: "auto", range: [20, 40, 80] });
-    program.encodeStrokeDash({ field: "level", fieldType: "ordinal", scale: { domain: [1, 2], range: [[1, 0], [4, 2]] } });
+    program.encodeStrokeDash({ field: "level", fieldType: "ordinal", scale: { domain: [1, 2], range: [[1, 0], [4, 2]], unknown: [] } });
+    program.editStrokeDashScale({ unknown: "dotted" });
+    program.editStrokeDashScale({ unknown: undefined });
     basicChart().encodeStrokeDash({ field: "level", fieldType: "ordinal" });
     chart().createLinePlot({ x: "x", y: "y", strokeDash: { field: "level", fieldType: "ordinal" } });
     program.encodeChannels({ target: "paths", channels: { strokeDash: { field: "level", fieldType: "ordinal" } } });

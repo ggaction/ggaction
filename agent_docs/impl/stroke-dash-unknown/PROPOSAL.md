@@ -5,9 +5,10 @@
 - [x] 기존 직접 encoding·일반 scale editor의 실제 거부 확인
 - [x] 기존 ordinal unknown 정규화와 consumer 정책 소유권 검토
 - [x] 구체 공개 계약 및 기존 사용자 standing approval 기록
-- [ ] 구현·선·rule·범례·재물질화·편집·복원·불변성 검증
-- [ ] 선언·Current 계약·공개 문서·생성 참조 동기화
-- [ ] 전체 라이브러리·설치 consumer 검증 및 후보 commit/push
+- [x] 구현·선·rule·범례·재물질화·편집·복원·불변성 검증
+- [x] 선언·Current 계약·공개 문서·생성 참조 동기화
+- [x] 전체 라이브러리·설치 consumer·문서 build/built/browser 검증
+- [ ] 후보 commit/push 및 clean-source 문서 provenance
 - [ ] 전체 기존 차트 호환 검증 뒤 로컬 후보 runtime/docs 전환
 - [ ] 1,413개 정기 checkpoint에서 통합·배포·이슈 종료
 
@@ -76,3 +77,25 @@ rematerialization plan을 사용한다. Renderer는 기존 concrete `strokeDash`
 
 현재 배포판과 49adee7d authoring epoch는 보존한다. 검증만으로 공개 배포를 주장하지 않는다.
 공개 integration/release는 1,413개 checkpoint에서 시행한다.
+
+## 구현 중 발견한 인접 기존 오류
+
+설치 consumer 검증에서 Basic의 기존 encoding에 같은 scale의 새 domain/range를 재할당하면
+공개되지 않은 `program.editScale`을 호출하는 오류를 발견했다. 변경 이전 활성49adee7d에서도
+`encodeStrokeDash({field:"g"})` 다음 `encodeStrokeDash({field:"g",scale:{range:["dotted"]}})`로
+재현된다. 이번 변경의 Full 생성/편집/재할당과 Basic 최초 fallback 생성 검증을 구분한다.
+Basic 공개 editor를 추가하거나 이 기존 재할당 오류를 해결했다고 주장하지 않는다.
+별도 source-neutral [issue242](https://github.com/ggaction/ggaction/issues/242)로 추적하고 다음 독립 checkpoint에서 해결한다.
+
+## 검증 결과
+
+전체4,858개·기능12개·설치 consumer62묶음과 built문서150페이지/320·390·768px
+브라우저 검사가 통과했다. Full423,097/Basic209,607/SVG7,567gzip bytes로 기존
+executable 상한을 유지한다. Search838,297bytes는 최소1000단위839,000으로 조정했다.
+기존 browser상한 문서의 오래된 숫자도 실행 기준424,000/210,000에 맞췄다.
+실패했던 초기 문서/Basic consumer/harness 실행과 시스템Ruby2.6 build 기록은 별도
+`.artifacts/stroke-dash-unknown/`에 보존한다. 실제 빌드는 Ruby3.3.12의 lockedbundle을
+썼으며 CI의 pinned3.2.6 환경과 동일하다고 주장하지 않는다. 이미지 열람은 하지 않았다.
+
+기존1,281families/9,326actual programs의 fresh nativebrowser replay와 로컬 후보 채택은
+아직 미실행이다. 학교 모델 호출/번역 완료 수/공개 dataset1213및 다음 release1413은 변함없다.

@@ -26,13 +26,15 @@ export function resolveLinePositionPolicy({
   args,
   fieldType
 }) {
-  const color = layer.encoding?.color;
-  const colorScale = color === undefined ? undefined : findSemanticScale(program, color.scale);
-  if (colorScale !== undefined) {
-    validateCategoricalColorConsumer({
-      ...layer,
-      encoding: { ...layer.encoding, [channel]: { ...layer.encoding[channel], ...args, fieldType } }
-    }, color, colorScale);
+  for (const appearance of ["color", "strokeDash"]) {
+    const encoding = layer.encoding?.[appearance];
+    const scale = encoding === undefined ? undefined : findSemanticScale(program, encoding.scale);
+    if (scale !== undefined) {
+      validateCategoricalColorConsumer({
+        ...layer,
+        encoding: { ...layer.encoding, [channel]: { ...layer.encoding[channel], ...args, fieldType } }
+      }, encoding, scale, appearance);
+    }
   }
   const polar = ["theta", "radius"].includes(channel);
   const config = program.markConfigs[layer.id] ?? {};

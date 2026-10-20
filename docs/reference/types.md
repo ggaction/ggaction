@@ -3403,6 +3403,7 @@ export interface DashScaleOptions {
   type?: "ordinal";
   domain?: "auto" | readonly unknown[];
   range?: "auto" | readonly (DashStyle | DashPattern)[];
+  unknown?: DashStyle | DashPattern;
 }
 ```
 
@@ -5792,12 +5793,13 @@ Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`Sta
 <summary>Expand EditStrokeDashScaleOptions</summary>
 
 ```typescript
-export type EditStrokeDashScaleOptions = FocusedScaleSelection & WithoutScaleId<DashScaleOptions>;
+export type EditStrokeDashScaleOptions = FocusedScaleSelection &
+  Omit<WithoutScaleId<DashScaleOptions>, "unknown"> & { unknown?: DashStyle | DashPattern | undefined };
 ```
 
 </details>
 
-Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`WithoutScaleId`](#type-withoutscaleid) · [`DashScaleOptions`](#type-dashscaleoptions).
+Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`WithoutScaleId`](#type-withoutscaleid) · [`DashScaleOptions`](#type-dashscaleoptions) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern).
 
 ### `EditStrokeScaleOptions` {#type-editstrokescaleoptions}
 

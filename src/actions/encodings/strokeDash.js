@@ -14,6 +14,7 @@ import {
   validateOptions
 } from "./shared.js";
 import { findLayer } from "../../selectors/layers.js";
+import { validateCategoricalColorConsumer } from "../../grammar/scales/colorConsumers.js";
 import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
 import { applyRequestedItemMissingPolicy } from
   "../../grammar/itemMissing.js";
@@ -109,11 +110,7 @@ const encodeStrokeDash = /* @__PURE__ */ action(
       ? resolveReassignmentScaleOptions(previous, args.scale ?? {})
       : args.scale ?? {};
     const scale = resolveStrokeDashScaleDefinition(this, requestedScale);
-    if (Object.hasOwn(scale, "unknown")) {
-      throw new Error(
-        "StrokeDash scale unknown is not supported for grouped line or rule paths."
-      );
-    }
+    validateCategoricalColorConsumer(layer, { field: args.field, fieldType }, scale, "strokeDash");
     readNominalField(dataset.values, args.field);
 
     let next = previous === undefined

@@ -2069,7 +2069,9 @@ encodeStrokeDash(
 
 Create or replace nominal/ordinal line-series or rule dash patterns, or apply one
 constant named/direct pattern. Named styles are `solid`, `dashed`, `dotted`, and
-`dashdot`.
+`dashdot`. Cartesian line/rule `scale.unknown` accepts the same named or direct
+pattern for valid categories outside a domain; missing categories remain errors,
+and domain, legend and raw series identities stay unchanged.
 [Series encodings](../api/series-encodings.md)
 
 ### `encodeRadius`
@@ -2901,7 +2903,7 @@ editSizeScale({ id?, target?, type?, domain?, range?, unknown?, clamp?, reverse?
 editOpacityScale({ id?, target?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, unknown? })
 editShapeScale({ id?, target?, type?, domain?, range?, unknown? })
 editStrokeWidthScale({ id?, target?, type?, domain?, range?, ...quantitativeOptions })
-editStrokeDashScale({ id?, target?, type?, domain?, range? })
+editStrokeDashScale({ id?, target?, type?, domain?, range?, unknown? })
 ```
 
 Edit the scale bound to one semantic channel without requiring its generated

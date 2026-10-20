@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:feb2bd7f280c7598943d738360d13769062b3fb81d24bc44215fdfb4e8ba713d. Status: development. Runtime source: 73c02ff0d3d939fcd3265d53953303e8a1570bd3. Release baseline: v0.0.13.
+Contract: sha256:8484896de42f6c8fd217ea14489ec8a0bbe9a9cb575ecdf4146eec2323197a78. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/73c02ff0d3d939fcd3265d53953303e8a1570bd3/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/73c02ff0d3d939fcd3265d53953303e8a1570bd3/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -10617,6 +10617,9 @@ must use the same field. Explicit identity allows different appearance fields
 when each is unique within the series. Center/stack/fill Area retains matching
 single-field color/group ownership.
 Combined line legends also require matching ordered domains.
+Cartesian line and rule dash scales accept an explicit `unknown` style for valid
+categories outside a domain, preserving raw series and legend membership.
+Missing or malformed categories remain errors. See [Stroke dash](./api/series/stroke-dash/).
 Stroke width is quantitative and independent of point size. A line series must
 have exactly one width value across all contributing rows; segment-local and
 tapered widths are unsupported.
@@ -10920,10 +10923,17 @@ program.encodeStrokeDash({ value: "dotted" });
 | `scale.type` | `"ordinal"` | `"ordinal"` |
 | `scale.domain` | `"auto"` or category array | `"auto"` |
 | `scale.range` | `"auto"` or named/direct pattern array | `"auto"` |
+| `scale.unknown` | named style or direct pattern for a valid category outside the domain | strict |
 
 Ordinal fields retain their ordered categorical meaning in semantic state. Automatic domains
 preserve first-appearance order; use `scale.domain` for a specific category order.
 Neither field type sorts the original rows or vertices.
+
+For Cartesian line and rule marks, `scale.unknown` maps a valid category outside
+the domain without adding a legend entry or changing raw series identity.
+Missing or malformed categories still fail. Parallel, polar, aggregate and
+binned paths reject this fallback. Use `editStrokeDashScale` to replace it;
+explicit `unknown: undefined` removes it only if all consumers remain valid.
 
 The automatic range contains ten reusable patterns. An explicit pattern is an
 empty array for a solid stroke or an even-length array of non-negative finite
@@ -11936,6 +11946,20 @@ Semantic scale state preserves the names; the resolved scale, line paths, and
 legend symbols contain numeric patterns only. Pattern lengths use logical
 Canvas units and do not change with output pixel ratio.
 
+### Categories outside a fixed domain
+
+Set `scale.unknown` to a named style or direct pattern for valid categories
+outside the domain of a Cartesian line or rule. `[]` draws a solid stroke.
+The fallback never becomes a domain or legend entry, and different raw
+categories remain distinct line series. Missing or malformed categories still
+fail. Omitting the option retains strict domain checking. An automatic domain
+continues to include the original categories in first-appearance order.
+
+Use `editStrokeDashScale({ unknown: "dotted" })` to replace the fallback.
+Omission retains it; explicit `unknown: undefined` removes it. Removal fails
+atomically while any consumer still has an out-of-domain category. Parallel,
+polar, aggregate and binned path topologies do not support this fallback.
+
 ## Related
 
 [Scale overview](./api/scales/) · [Encodings](./api/encodings/) · [Troubleshooting](./troubleshooting/)
@@ -12278,12 +12302,24 @@ channel: position uses a finite coordinate, color a non-empty string, size a
 non-negative area, opacity a value from `0` to `1`, and shape one supported
 point shape.
 
-This policy is intentionally limited to row-owned point items. A missing value
-inside a line/area path, bar aggregate, rule, xOffset group, or stroke-dash
-series could change item topology; those consumers reject `unknown` until they
-have a separate topology-safe policy. A direct unattached scale stores its
-fallback and defers channel validation until attachment. Set
-`unknown: undefined` with `editScale` to remove an existing fallback.
+Missing or invalid row fallback is limited to row-owned point items, with one
+separate line-color policy: a Cartesian line with nominal/ordinal color and an
+explicit nonempty ordinal domain can use an unknown paint while preserving raw
+series identities. Missing and null colors use that paint; malformed category
+objects, arrays and non-finite numbers still fail.
+
+Cartesian line and rule stroke-dash scales support `unknown` for valid raw
+categories outside a domain. The fallback is a named dash style or direct
+pattern, including `[]` for a solid stroke. It does not permit missing or invalid
+categories, add domain or legend entries, or merge different raw series.
+Parallel, polar, aggregate and binned path topologies reject this fallback.
+See [Ordinal and stroke dash scales](./api/scales/ordinal-and-dash/).
+
+Other grouped and aggregate consumers retain their existing strict policy.
+A direct unattached scale stores its fallback and defers channel validation
+until attachment. Set `unknown: undefined` with `editScale` to remove an existing
+fallback. The edit fails atomically if any dependent consumer would become
+invalid. The focused `editStrokeDashScale` supports the same removal.
 
 ## Related
 
@@ -17923,6 +17959,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `type` | Optional / branch-dependent | `"ordinal" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly (DashPattern \| DashStyle)[] \| undefined` |
+| `unknown` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused channel scale editors](./reference/actions/charts-data/#focused-channel-scale-editors).
 
@@ -19746,7 +19783,7 @@ editSizeScale({ id?, target?, type?, domain?, range?, unknown?, clamp?, reverse?
 editOpacityScale({ id?, target?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, unknown? })
 editShapeScale({ id?, target?, type?, domain?, range?, unknown? })
 editStrokeWidthScale({ id?, target?, type?, domain?, range?, ...quantitativeOptions })
-editStrokeDashScale({ id?, target?, type?, domain?, range? })
+editStrokeDashScale({ id?, target?, type?, domain?, range?, unknown? })
 ```
 
 Edit the scale bound to one semantic channel without requiring its generated
@@ -21428,7 +21465,9 @@ encodeStrokeDash(
 
 Create or replace nominal/ordinal line-series or rule dash patterns, or apply one
 constant named/direct pattern. Named styles are `solid`, `dashed`, `dotted`, and
-`dashdot`.
+`dashdot`. Cartesian line/rule `scale.unknown` accepts the same named or direct
+pattern for valid categories outside a domain; missing categories remain errors,
+and domain, legend and raw series identities stay unchanged.
 [Series encodings](./api/series-encodings/)
 
 ## `encodeStroke`
@@ -30528,6 +30567,7 @@ export interface DashScaleOptions {
   type?: "ordinal";
   domain?: "auto" | readonly unknown[];
   range?: "auto" | readonly (DashStyle | DashPattern)[];
+  unknown?: DashStyle | DashPattern;
 }
 ```
 
@@ -32563,10 +32603,11 @@ Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderived
  Expand EditStrokeDashScaleOptions
 
 ```typescript
-export type EditStrokeDashScaleOptions = FocusedScaleSelection & WithoutScaleId<DashScaleOptions>;
+export type EditStrokeDashScaleOptions = FocusedScaleSelection &
+  Omit<WithoutScaleId<DashScaleOptions>, "unknown"> & { unknown?: DashStyle | DashPattern | undefined };
 ```
 
-Related types: [`FocusedScaleSelection`](./reference/types/#type-focusedscaleselection) · [`WithoutScaleId`](./reference/types/#type-withoutscaleid) · [`DashScaleOptions`](./reference/types/#type-dashscaleoptions).
+Related types: [`FocusedScaleSelection`](./reference/types/#type-focusedscaleselection) · [`WithoutScaleId`](./reference/types/#type-withoutscaleid) · [`DashScaleOptions`](./reference/types/#type-dashscaleoptions) · [`DashStyle`](./reference/types/#type-dashstyle) · [`DashPattern`](./reference/types/#type-dashpattern).
 
 ### `EditStrokeScaleOptions` {#type-editstrokescaleoptions}
 
@@ -38551,12 +38592,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/73c02ff0d3d939fcd3265d53953303e8a1570bd3/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/73c02ff0d3d939fcd3265d53953303e8a1570bd3/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -40935,9 +40976,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:feb2bd7f280c7598943d738360d13769062b3fb81d24bc44215fdfb4e8ba713d` |
+| Contract fingerprint | `sha256:8484896de42f6c8fd217ea14489ec8a0bbe9a9cb575ecdf4146eec2323197a78` |
 | Example and dataset source | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
-| Runtime source commit | `73c02ff0d3d939fcd3265d53953303e8a1570bd3` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 286 |
 | Declared actions in that release | 234 |

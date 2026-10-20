@@ -266,7 +266,9 @@ encodeStrokeDash(
 
 Create or replace nominal/ordinal line-series or rule dash patterns, or apply one
 constant named/direct pattern. Named styles are `solid`, `dashed`, `dotted`, and
-`dashdot`.
+`dashdot`. Cartesian line/rule `scale.unknown` accepts the same named or direct
+pattern for valid categories outside a domain; missing categories remain errors,
+and domain, legend and raw series identities stay unchanged.
 [Series encodings](../../api/series-encodings.md)
 
 
