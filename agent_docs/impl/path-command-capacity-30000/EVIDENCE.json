@@ -1,0 +1,104 @@
+{
+  "status": "verified-implementation-awaiting-clean-source-repack",
+  "issue": 243,
+  "publicationStatus": "unreleased-local-candidate-only",
+  "regularReleaseAtCompletedFamilies": 1413,
+  "approval": {
+    "kind": "explicit-standing-human-approval",
+    "message": "지금까지 모든 질문, 앞으로 할 모든 질문 승인함. 새로운 릴리즈는 200개 단위로 하자",
+    "scope": "Existing shared per-path capacity20,000to30,000, unchanged primitive schema/renderers/otherlimits; concrete proposal8016da3a"
+  },
+  "normalSuite": {
+    "pass": 4876,
+    "fail": 0,
+    "log": ".artifacts/path-capacity-30000-normal-v1.log",
+    "sha256": "88d9ccded59709d971dcc9d016dd99c621d70ece6eed02922ee1d950d23a3154"
+  },
+  "sourceDocumentation": {
+    "pass": 120,
+    "fail": 0,
+    "log": ".artifacts/path-capacity-30000-source-docs-v1.log",
+    "sha256": "fddcd772f542f7b24048d3138c441c82efe5110ae4cab4c42a835342f14f7b15"
+  },
+  "installedConsumer": {
+    "groups": 62,
+    "sha256": "720f26e1404b2c22a1261eb267b1229710a0e5cef931103aa711185976c3f832",
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 536,
+        "minifiedBytes": 1560850,
+        "gzipBytes": 423292
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 321,
+        "minifiedBytes": 756206,
+        "gzipBytes": 213178
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 19,
+        "minifiedBytes": 23548,
+        "gzipBytes": 7567
+      }
+    },
+    "log": ".artifacts/path-capacity-30000-package-consumers-v1.log",
+    "sourceDirtyDuringInitialPack": true,
+    "needsCleanFinalPack": true
+  },
+  "builtDocumentation": {
+    "pages": 150,
+    "log": ".artifacts/path-capacity-30000-built-docs-v1.log"
+  },
+  "responsiveDocumentation": {
+    "status": "pass",
+    "widths": [
+      320,
+      390,
+      768
+    ],
+    "desktopSearch": true,
+    "accessibility": true,
+    "log": ".artifacts/path-capacity-30000-browser-docs-v1.log"
+  },
+  "boundary": {
+    "pathCommandsInclusive": 30000,
+    "firstRejected": 30001,
+    "otherGeneratedItems": 10000,
+    "pointOwnedItems": 50000,
+    "summaryGroups": 30000,
+    "workItems": 10000000,
+    "interpolationExpansionAndAreaClosureCountedBeforeAllocation": true
+  },
+  "nativeSourceProof": {
+    "rawRows": 26265,
+    "minuteGroups": 25909,
+    "allVerticesCompared": true,
+    "maximumCoordinateError": 2.842170943040401e-14,
+    "meanValueError": 0,
+    "sourceSha256": "d303043c94a32d7a5f465ae33e9b8d29d9de88ac1a698aa9446962bdc6f867eb",
+    "externalPrivateProofSha256": "e67a5fbeb33bf9d0a83e0d7b0cdb940bc5c4a50dfa84a2c7b4a156e9bd3c75d2",
+    "inputURL": "https://gicentre.github.io/data/tests/timeTest.tsv",
+    "sourceNeutralReproInIssue": true,
+    "SchoolRequests": 0
+  },
+  "failuresPreserved": [
+    {
+      "log": ".artifacts/path-capacity-30000-consumers-v1.log",
+      "kind": "New private test incorrectly combined a plot-sized birth with a later fixed-width Canvas edit. Corrected the test to editCanvas.plot; runtime contract unchanged."
+    },
+    {
+      "log": ".artifacts/path-capacity-30000-doc-preflight-v1.log",
+      "kind": "System Ruby2.6was selected. Reused installedRuby3.2and locked bundle, no dependency/environment mutation."
+    }
+  ],
+  "SchoolRequests": 0,
+  "newSuccessfulTranslations": 0,
+  "chartImagesInspected": false,
+  "fullCurrent1283Compatibility": "pending-before-translation-candidate-adoption",
+  "publicReleaseCreated": false
+}

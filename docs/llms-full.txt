@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:ceb24bd1fe349aa7b73aada2e1bed3e5fc119d7128f21d3e877f2c70510f9258. Status: development. Runtime source: 8690369cf60ad24d871029b7d165444ad24abe0f. Release baseline: v0.0.13.
+Contract: sha256:c6c35ec526c5ff316e300eaafabd7e36fca32b859ef289c3bdabb55404b4ea58. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/8690369cf60ad24d871029b7d165444ad24abe0f/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/8690369cf60ad24d871029b7d165444ad24abe0f/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -6319,7 +6319,7 @@ Supported curves are `linear`, `step`, `step-before`, `step-after`, `basis`,
 two-point series fall back to linear. Monotone paths require strictly increasing
 or decreasing materialized x values; duplicate or non-monotonic x is rejected.
 Materialization rejects any line or complete area that would expand beyond
-20,000 backend-neutral path commands before allocating that command array.
+30,000 backend-neutral path commands before allocating that command array.
 
 For Cartesian cardinal lines, `tension` is a finite number from 0 to 1,
 with default 0 preserving the existing curve. It multiplies each tangent by
@@ -15046,7 +15046,7 @@ same measurement unless the product question is end-to-end latency.
 
 Many expansion operations cap generated items at 10,000 per operation. This
 applies to grid values, symbols, and aggregate layout cells. Paths have a separate
-20,000-command bound, counting interpolation expansion and area closure;
+30,000-command bound, counting interpolation expansion and area closure;
 it is not a universal source-row limit. Work-intensive calculations such as
 label collision planning also have a 10,000,000-work-item budget. The shared
 validator reports `resource-limit` with the named quantity, `limit`, and
@@ -38536,7 +38536,7 @@ Path graphics use backend-neutral `path.commands` arrays rather than renderer-sp
 path strings. The closed command vocabulary is `M`, `L`, `C`, and `Z`. A path starts
 with one `M`; `L` and `C` draw straight and cubic segments; an optional final `Z`
 closes the path. At least one `L` or `C` segment is required. Coordinates and cubic
-control points must be finite numbers, and one path may contain at most 20,000
+control points must be finite numbers, and one path may contain at most 30,000
 commands. Generated linear and closed paths enforce the same limit before allocation.
 TypeScript users can import the `ConcretePathCommand` union from `ggaction`.
 `path.strokeDash` and `line.strokeDash` accept non-negative finite number arrays;
@@ -38618,12 +38618,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/8690369cf60ad24d871029b7d165444ad24abe0f/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/8690369cf60ad24d871029b7d165444ad24abe0f/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -41002,9 +41002,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:ceb24bd1fe349aa7b73aada2e1bed3e5fc119d7128f21d3e877f2c70510f9258` |
+| Contract fingerprint | `sha256:c6c35ec526c5ff316e300eaafabd7e36fca32b859ef289c3bdabb55404b4ea58` |
 | Example and dataset source | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
-| Runtime source commit | `8690369cf60ad24d871029b7d165444ad24abe0f` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 286 |
 | Declared actions in that release | 234 |

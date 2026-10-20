@@ -166,7 +166,7 @@ Concrete rectangle의 outline은 네 모서리 모두 closed join을 갖는다. 
   - ✅ Covered: type-specific canvas/circle/rect/line/text/path properties, `length`, heterogeneous `items`.
   - ✅ Covered: the shared concrete-property schema is table-tested by type and `editGraphics` exercises single,
     broadcast, distributed and heterogeneous application paths.
-  - ✅ Covered: finite `M | L | C | Z` path command arrays, maximum 20,000 commands, and command-order validation.
+  - ✅ Covered: finite `M | L | C | Z` path command arrays, maximum 30,000 commands, and command-order validation.
     A single initial M is a valid position-only path with no painted segment; longer paths require L/C.
 - `value` distribution
   - ✅ Covered: scalar broadcast, outer array distribution, mismatched length, nested points arrays preserved,

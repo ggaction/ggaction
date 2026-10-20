@@ -402,7 +402,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   기본값은 `linear`다. Monotone은 materialized x가 strictly increasing 또는 decreasing일 때 동작하며
   duplicate/non-monotonic x는 거부한다. Curve는 graphical materialization config이고 semantic field/scale/group을 바꾸지 않는다.
 - `tension`: cardinal 전용 finite `[0,1]`, 생략 기본 0이다. Tangent에 `1-tension`을 곱한다. Endpoint는 기존 duplicate-neighbor 규칙, 2점은 linear fallback을 유지한다. 다른 curve로 편집하면 이전 tension을 제거하며 동시에 explicit tension을 지정하면 거부한다. Create/edit, facade forwarding, resize/grouping과 저장/복원에 유지한다.
-- Resource bound: line path 또는 완성된 area path가 20,000개를 초과하는 concrete command로
+- Resource bound: line path 또는 완성된 area path가 30,000개를 초과하는 concrete command로
   확장되면 command 배열을 만들기 전에 deterministic `RangeError`로 거부한다.
 - `stroke`: Implemented non-empty constant color. Field-driven color encoding과 충돌한다.
 - `opacity`: Implemented `[0, 1]` constant appearance이며 default concrete value는 `1`이다.
