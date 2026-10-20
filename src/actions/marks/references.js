@@ -22,11 +22,14 @@ import { withRematerializedDerivedDataset } from
 import {
   deriveStatisticalReferenceValues,
   normalizeReferenceField,
+  normalizeReferenceGroupBy,
   normalizeReferencePopulation,
   normalizeReferenceStatistics,
   normalizeStatisticalReferenceTransform,
-  validateStatisticalReferenceTransform
+  validateStatisticalReferenceTransform,
+  partitionReferenceRows
 } from "../../grammar/statisticalReference.js";
+import { scalarKey } from "../../grammar/transformKeys.js";
 import {
   resolveFacadeData,
   resolveFacadeId,
@@ -39,7 +42,7 @@ const COMMON_OPTIONS = Object.freeze([
   "id", "x", "y", "space", "source", "data", "coordinate", "temporalUnit"
 ]);
 const DYNAMIC_OPTIONS = Object.freeze([
-  "id", "source", "axis", "population", "field", "statistic", "statistics"
+  "id", "source", "axis", "population", "field", "groupBy", "statistic", "statistics"
 ]);
 const LINE_STYLE = Object.freeze([
   "stroke", "strokeWidth", "strokeDash", "opacity", ...STROKE_STYLE_PROPERTIES
@@ -369,27 +372,37 @@ function statisticalRows(program, referenceId, dataset) {
     config.population,
     `Statistical reference "${referenceId}" population`
   );
-  const values = resolvePopulationValues(
-    program,
-    source,
-    encoding,
-    { ...config, population, statistics },
-    dataset,
-    referenceId
-  );
-  const resolved = deriveStatisticalReferenceValues(
-    values,
-    statistics,
-    `Statistical reference "${referenceId}"`
-  );
-  if (resolved.length === 2 && resolved[0] > resolved[1]) {
-    throw new Error(
-      `Statistical reference band "${referenceId}" lower statistic exceeds its upper statistic.`
-    );
+  const groupBy = normalizeReferenceGroupBy(config.groupBy);
+  let visibleGroups;
+  if (groupBy !== undefined && population === "visibleItems") {
+    if (SERIES_MARKS.has(source.mark?.type) || source.encoding?.parallel !== undefined) {
+      throw new Error(`Statistical reference "${referenceId}" visibleItems population is ambiguous for series marks.`);
+    }
+    visibleGroups = new Map();
+    for (const item of resolveMarkItems(program, source.id)) {
+      if (!Object.hasOwn(item.fields, groupBy)) {
+        throw new Error(`Statistical reference "${referenceId}" groupBy field "${groupBy}" is not scalar at a visible item. Use boundData.`);
+      }
+      const key = scalarKey(item.fields[groupBy], "Statistical reference groupBy");
+      if (!visibleGroups.has(key)) visibleGroups.set(key, []);
+      visibleGroups.get(key).push(item.fields);
+    }
   }
-  return resolved.length === 1
-    ? [{ value: resolved[0] }]
-    : [{ lower: resolved[0], upper: resolved[1] }];
+  const groups = partitionReferenceRows(dataset.values, groupBy)
+    .filter(group => !visibleGroups || visibleGroups.has(group.key));
+  if (!groups.length) throw new Error(`Statistical reference "${referenceId}" population must contain at least one value.`);
+  return groups.map(group => {
+    const values = visibleGroups && config.field.kind === "explicit"
+      ? strictFieldValues(visibleGroups.get(group.key), config.field.field, `Statistical reference "${referenceId}" visibleItems`)
+      : resolvePopulationValues(program, source, encoding,
+          { ...config, population, statistics }, { ...dataset, values: group.rows }, referenceId);
+    const resolved = deriveStatisticalReferenceValues(values, statistics, `Statistical reference "${referenceId}"`);
+    if (resolved.length === 2 && resolved[0] > resolved[1]) {
+      throw new Error(`Statistical reference band "${referenceId}" lower statistic exceeds its upper statistic.`);
+    }
+    return { ...(groupBy === undefined ? {} : { group: group.group }),
+      ...(resolved.length === 1 ? { value: resolved[0] } : { lower: resolved[0], upper: resolved[1] }) };
+  });
 }
 
 function replaceStatisticalDataset(program, id, source, transform, values) {
@@ -519,7 +532,7 @@ export const rematerializeStatisticalReference = /* @__PURE__ */ closedAction(
 );
 
 function isDynamicReference(args) {
-  return ["axis", "population", "field", "statistic", "statistics"]
+  return ["axis", "population", "field", "groupBy", "statistic", "statistics"]
     .some(key => Object.hasOwn(args, key));
 }
 
@@ -558,6 +571,7 @@ function normalizeDynamicReference(program, args, band) {
     axis: args.axis,
     population: normalizeReferencePopulation(args.population, `${operation} population`),
     field: normalizeReferenceField(args.field, `${operation} field`),
+    ...(args.groupBy === undefined ? {} : { groupBy: normalizeReferenceGroupBy(args.groupBy) }),
     statistics,
     dataId: `${id}-statistical-reference-data`
   };
@@ -663,16 +677,30 @@ export const createStatisticalReference = /* @__PURE__ */ action(
   },
   function (args = {}) {
     const band = Object.hasOwn(args, "statistics");
-    validateFacadeOptions(args, ["id", "source", "axis", "population", "field",
+    validateFacadeOptions(args, ["id", "source", "axis", "population", "field", "groupBy",
       ...(band ? ["statistics", ...BAND_STYLE] : ["statistic", ...LINE_STYLE])], "createStatisticalReference");
     const id = resolveFacadeId(this, args.id, {
       defaultId: "statisticalReference", operation: "createStatisticalReference"
     });
     // The existing owners retain statistical population, scale exclusion,
     // source replay, persistence and removal semantics, with wrapped trace steps.
-    return band
-      ? this.createReferenceBand({ fill: "#6b7280", opacity: 0.18, ...args, id })
-      : this.createReferenceLine({ statistic: { op: "mean" }, stroke: "#222222",
-          strokeWidth: 2.5, strokeDash: "solid", ...args, id });
+    if (band) {
+      return this.createReferenceBand({ fill: "#6b7280", opacity: 0.18, ...args, id });
+    }
+    const next = this.createReferenceLine({ statistic: { op: "mean" }, stroke: "#222222",
+      strokeWidth: 2.5, strokeDash: "solid", ...args, id });
+    const color = findLayer(this, args.source)?.encoding?.color;
+    // Reuse the source scale: a fresh palette would assign different colors
+    // after filtering, domain sorting, or a custom range.
+    if (args.stroke === undefined && args.groupBy !== undefined &&
+        color?.field === args.groupBy && color.scale !== undefined &&
+        color.aggregate === undefined) {
+      return next.encodeStroke({
+        target: id, field: "group", fieldType: color.fieldType,
+        ...(color.temporalUnit === undefined ? {} : { temporalUnit: color.temporalUnit }),
+        scale: { id: color.scale }
+      });
+    }
+    return next;
   }
 );

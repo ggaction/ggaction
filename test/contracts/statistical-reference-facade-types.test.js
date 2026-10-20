@@ -17,6 +17,10 @@ const p = chart();
 const mean: CreateStatisticalReferenceOptions = {source:'points',axis:'y'};
 p.createStatisticalReference(mean);
 p.createStatisticalReference({source:'points',axis:'x',statistic:{op:'median'},stroke:'black',strokeWidth:3});
+p.createStatisticalReference({source:'points',axis:'x',groupBy:'Origin'});
+p.createStatisticalReference({source:'points',axis:'y',groupBy:'Origin',statistics:[{op:'quantile',p:.025},{op:'quantile',p:.975}]});
+// @ts-expect-error grouping names one source field
+p.createStatisticalReference({source:'points',axis:'y',groupBy:['Origin']});
 p.createStatisticalReference({source:'points',axis:'y',statistics:[{op:'quantile',p:.025},{op:'quantile',p:.975}],fill:'gray',opacity:.18});
 // @ts-expect-error single and pair are mutually exclusive
 p.createStatisticalReference({source:'points',axis:'y',statistic:{op:'mean'},statistics:[{op:'min'},{op:'max'}]});

@@ -117,6 +117,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `axis` | Required | `"x" \| "y"` |
 | `population` | Optional / branch-dependent | `"boundData" \| "visibleItems" \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
+| `groupBy` | Optional / branch-dependent | `string \| undefined` |
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
@@ -138,15 +139,20 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createStatisticalReference({ id?, source, axis, population?, field?, statistic?, statistics?, ...style })
+createStatisticalReference({ id?, source, axis, population?, field?, groupBy?, statistic?, statistics?, ...style })
 ```
 
 Create a statistical line or interval through one public action. `source` is the source mark ID and `axis` is `"x"` or `"y"`.
 Omit the statistic keys for a mean line, supply `statistic: { op: "median" }` for another single statistic, or an exact
 `statistics` pair for a band. The keys are mutually exclusive and use the existing `ReferenceStatistic` vocabulary.
 Quantiles 0.25–0.75 show the central 50%; 0.025–0.975 show the central 95% of data, rather than a confidence interval.
+Set `groupBy` to one source field name for a separate result per observed group on either axis, even if that field is not encoded.
+Groups retain source order. Visible marks must have a single value of that grouping field; otherwise use `boundData`.
+The owned output records the key in `group` beside `value` or `lower`/`upper`. Omitting `groupBy` preserves one overall result.
 The default ID is `statisticalReference`; use explicit IDs for additional references. Lines default to `#222222`,
 width `2.5`, solid stroke; bands to `#6b7280`, opacity `0.18`, no stroke. Use native Rule styles for lines and Rect styles for bands.
+When `groupBy` matches the source Color field without a color aggregate, omitted `stroke` shares that Color scale:
+each group's line matches its source marks, and palette edits update both. An explicit `stroke` overrides this default.
 This full-only action wraps `createReferenceLine` or `createReferenceBand` and retains their statistical binding,
 replay, editing, facet and removal behavior. Literal reference coordinates are not accepted.
 [Statistical references](../../api/marks/rule.md#statistical-reference-action)
@@ -189,6 +195,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `axis` | Optional / branch-dependent | `"x" \| "y"` |
 | `population` | Optional / branch-dependent | `"boundData" \| "visibleItems" \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
+| `groupBy` | Optional / branch-dependent | `string \| undefined` |
 | `statistic` | Optional / branch-dependent | `ReferenceStatistic` |
 
 </details>
@@ -260,6 +267,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `axis` | Optional / branch-dependent | `"x" \| "y"` |
 | `population` | Optional / branch-dependent | `"boundData" \| "visibleItems" \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
+| `groupBy` | Optional / branch-dependent | `string \| undefined` |
 | `statistics` | Optional / branch-dependent | `readonly [ReferenceStatistic, ReferenceStatistic]` |
 
 </details>

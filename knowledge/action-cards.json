@@ -5398,6 +5398,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "lineCap",
           "required": false,
           "type": "\"butt\" | \"round\" | \"square\" | undefined"
@@ -5662,6 +5667,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "statistic",
           "required": false,
           "type": "ReferenceStatistic"
@@ -5884,6 +5894,11 @@
         },
         {
           "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupBy",
           "required": false,
           "type": "string | undefined"
         },

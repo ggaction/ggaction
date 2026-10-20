@@ -156,10 +156,11 @@ import { chart } from "ggaction";
 
 const source = chart()
   .createCanvas({ width: 600, height: 450, margin: 80 })
-  .createData({ values: [0, 10, 20, 30, 40].map(value => ({ x: value, y: value * 2 })) })
+  .createData({ values: [0, 10, 20, 30, 40].map(value => ({ x: value, y: value * 2, group: value < 20 ? "A" : "B" })) })
   .createScatterPlot({ id: "points", x: "x", y: "y", guides: false });
 
 const mean = source.createStatisticalReference({ source: "points", axis: "y" });
+const groupedMean = source.createStatisticalReference({ source: "points", axis: "y", groupBy: "group" });
 const middle95 = source.createStatisticalReference({
   source: "points", axis: "y",
   statistics: [{ op: "quantile", p: 0.025 }, { op: "quantile", p: 0.975 }]
@@ -170,6 +171,15 @@ The first branch creates a dark (`#222222`), 2.5-pixel solid mean line. Set `sta
 or a quantile using the existing `{ op, p? }` vocabulary. Supply an exact `statistics` pair instead for a gray
 (`#6b7280`) band with opacity `0.18`. Central 50% uses quantiles 0.25 and 0.75; central 95% uses 0.025 and 0.975.
 These describe the data distribution, not a confidence interval. Never supply both statistic keys.
+
+Use `groupBy: "group"` to compute one line or interval per observed source group on either axis.
+The field need not be mapped to color or an axis. Group order follows the source rows.
+When it matches the source Color field (without a color aggregate), each line defaults to that group's
+color using the same scale. Palette edits therefore update both the chart and the lines. Set `stroke`
+explicitly to override this; ungrouped lines or a different grouping field keep the dark default.
+The grouped output keeps its key in `group`; no group field names collide with statistical outputs.
+For `visibleItems`, a visible mark must belong to one group. If an aggregated mark mixes group values, use `boundData`.
+Filtering, re-encoding, facets and persistence keep the grouping; an omitted `groupBy` gives one overall result.
 
 Both branches use ID `statisticalReference` by default. To add multiple references, give each an explicit `id`.
 Line styles use the Rule options and band styles use Rect options. `population` and `field` retain the statistical

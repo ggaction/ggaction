@@ -4448,6 +4448,8 @@ type DynamicReferenceBinding = {
   readonly axis: "x" | "y";
   readonly population?: "boundData" | "visibleItems";
   readonly field?: string;
+  /** Compute a separate reference for each observed value of this field. */
+  readonly groupBy?: string;
   readonly x?: never;
   readonly y?: never;
   readonly space?: never;
