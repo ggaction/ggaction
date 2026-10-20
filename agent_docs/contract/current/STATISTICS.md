@@ -160,6 +160,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Without data-role options or `statistics`, the edit retains the existing interval dataset. Main and cap
   appearance is reconciled through one wrapped `rematerializeErrorBar` action; generated cap IDs are not public
   parameters. Attached mark labels are rebound with interval revisions, and stored selections/highlights replay.
+- A center point owned by `createIntervalPlot` follows the same data, position, orientation and offset revision.
+  Its appearance stays unchanged. Independent consumers of the previous interval dataset stay on that dataset.
+  Evidence: `test/unit/actions/error-bars/edit-error-bar.test.js`.
 
 ### Formal values — `editErrorBar`
 
