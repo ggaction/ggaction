@@ -1,0 +1,86 @@
+{
+  "status": "frozen-primitive-target-before-public-implementation",
+  "rows": [
+    {
+      "x": 2,
+      "y": 3,
+      "label": "Alpha",
+      "dx": 12,
+      "dy": -6
+    },
+    {
+      "x": 5,
+      "y": 6,
+      "label": "Beta",
+      "dx": -9,
+      "dy": 8
+    },
+    {
+      "x": 8,
+      "y": 4,
+      "label": "Gamma",
+      "dx": 0,
+      "dy": 4
+    }
+  ],
+  "frame": {
+    "width": 500,
+    "height": 300
+  },
+  "plot": {
+    "left": 80,
+    "top": 80,
+    "right": 420,
+    "bottom": 220
+  },
+  "plotInk": 1372,
+  "baseAnchors": [
+    {
+      "x": 148,
+      "y": 178
+    },
+    {
+      "x": 250,
+      "y": 136
+    },
+    {
+      "x": 352,
+      "y": 164
+    }
+  ],
+  "targetAnchors": [
+    {
+      "x": 160,
+      "y": 172
+    },
+    {
+      "x": 241,
+      "y": 144
+    },
+    {
+      "x": 352,
+      "y": 168
+    }
+  ],
+  "pngSha256": "d585e062ba4aa2b1d7c48ecf165e25115724e0e62092a03e70c21d251c54c75c",
+  "graphicSha256": "8c4e14c48d30561c14bf05d64c1e6eb9866fdce9d0d3bc092d1bb180c628f72a",
+  "targetPublicCallChain": [
+    "chart()",
+    ".createCanvas({width:500,height:300,margin:80})",
+    ".createData({values:rows})",
+    ".createTextPlot({x:{field:'x',scale:{domain:[0,10]}},y:{field:'y',scale:{domain:[0,10]}},text:{field:'label'}})",
+    ".editTextMark({fontSize:20,align:'center',baseline:'middle'})",
+    ".encodeDx({field:'dx'})",
+    ".encodeDy({field:'dy'})"
+  ],
+  "actualPrimitiveTopLevelActions": [
+    "createCanvas",
+    "createData",
+    "createTextPlot",
+    "editTextMark",
+    "editGraphics"
+  ],
+  "newPublicActionsImplemented": false,
+  "userAuthority": "Direct human standing approval of all future in-scope API and visual questions; no repeat approval.",
+  "chartPixelsInspected": false
+}

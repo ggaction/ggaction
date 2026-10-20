@@ -1,0 +1,41 @@
+{
+  "status": "approved-proposal-not-implemented",
+  "currentActionIndexChanged": false,
+  "gateAuthority": "Direct human standing approval of all future in-scope questions",
+  "actions": [
+    {
+      "name": "encodeDx",
+      "lifecycle": "assignment",
+      "scope": "independent Text only",
+      "options": [
+        "target",
+        "field",
+        "value"
+      ],
+      "maximumTopOptions": 3
+    },
+    {
+      "name": "encodeDy",
+      "lifecycle": "assignment",
+      "scope": "independent Text only",
+      "options": [
+        "target",
+        "field",
+        "value"
+      ],
+      "maximumTopOptions": 3
+    }
+  ],
+  "existingActionsExtended": [
+    "encodeChannels",
+    "removeEncoding"
+  ],
+  "storedChannels": [
+    "dx",
+    "dy"
+  ],
+  "scaled": false,
+  "renderersChanged": false,
+  "target": "TARGET_EVIDENCE.json",
+  "issue": 248
+}
