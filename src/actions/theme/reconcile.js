@@ -6,6 +6,7 @@ import {
   resolveEffectiveThemeTokens,
   setThemeStateOverrides
 } from "./state.js";
+import { isOwned } from "../../core/immutable.js";
 import { findLayer } from "../../selectors/layers.js";
 import { reconcileFollowingRegressions } from "../regression/follow.js";
 
@@ -663,18 +664,27 @@ function visitTrace(node, visitor) {
   for (const child of node.children ?? []) visitTrace(child, visitor);
 }
 
-function clearRemovedResources(overrides, node) {
+// Completed immutable action branches never acquire new removals. Retain only
+// their distinct reset prefixes so later themed edits do not rescan old facet
+// materialization traces. Prefix deletion commutes; authored overrides are still
+// applied in their original top-level action order.
+const removedResources = new WeakMap();
+
+function removedResourcePrefixes(node) {
+  const cached = removedResources.get(node);
+  if (cached !== undefined) return cached;
+  const prefixes = new Set();
   visitTrace(node, current => {
     if (current.op === "editGraphics" && current.args.remove === true &&
         typeof current.args.target === "string") {
-      clearPrefix(overrides, `g:${current.args.target}.`);
+      prefixes.add(`g:${current.args.target}.`);
     }
     if (current.op !== "editSemantic" || current.args.remove !== true ||
         typeof current.args.property !== "string") return;
     const mark = /^layer\[([^\]]+)\]$/u.exec(current.args.property);
     if (mark !== null) {
-      clearPrefix(overrides, `c:marks.${mark[1]}.`);
-      clearPrefix(overrides, `g:${mark[1]}.`);
+      prefixes.add(`c:marks.${mark[1]}.`);
+      prefixes.add(`g:${mark[1]}.`);
       return;
     }
     const axis = /^guide\.axis\.([A-Za-z0-9_-]+)$/u
@@ -682,21 +692,28 @@ function clearRemovedResources(overrides, node) {
     if (axis !== null) {
       const prefix = axis[1] === "radius" ? "radial" : axis[1];
       const graphicPrefix = ["x", "y", "theta", "radius"].includes(axis[1]) ? `${prefix}Axis` : `axis_${axis[1]}__`;
-      clearPrefix(overrides, `c:guides.axis.${axis[1]}.`);
-      clearPrefix(overrides, `g:${graphicPrefix}`);
+      prefixes.add(`c:guides.axis.${axis[1]}.`);
+      prefixes.add(`g:${graphicPrefix}`);
       return;
     }
     const grid = /^guide\.grid\.([^\.]+)$/u.exec(current.args.property);
     if (grid !== null) {
-      clearPrefix(overrides, `c:guides.grid.${grid[1]}.`);
-      clearPrefix(overrides, `g:${grid[1]}Grid`);
+      prefixes.add(`c:guides.grid.${grid[1]}.`);
+      prefixes.add(`g:${grid[1]}Grid`);
       return;
     }
     const legend = /^guide\.legend\.([^\.]+)$/u.exec(current.args.property);
     if (legend !== null) {
-      clearPrefix(overrides, `c:guides.legend.${legend[1]}.`);
+      prefixes.add(`c:guides.legend.${legend[1]}.`);
     }
   });
+  const result = [...prefixes];
+  if (isOwned(node)) removedResources.set(node, result);
+  return result;
+}
+
+function clearRemovedResources(overrides, node) {
+  for (const prefix of removedResourcePrefixes(node)) clearPrefix(overrides, prefix);
 }
 
 function clearLocalResets(overrides, program, node) {

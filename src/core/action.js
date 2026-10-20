@@ -89,28 +89,30 @@ function childList(node) {
   return list;
 }
 
-function withChildList(node, list) {
-  let children;
-  const next = {};
-  for (const key of Object.keys(node)) {
-    if (key !== "children") Object.defineProperty(next, key, {
-      value: node[key], enumerable: true
-    });
+// Share the accessor itself across revisions as well as the persistent tail.
+// A fresh getter closure per node gives engines a distinct property shape for
+// every immutable trace revision and makes large authoring sessions expensive.
+function materializeChildren() {
+  const list = childLists.get(this);
+  if (list.children === undefined) {
+    const values = new Array(list.length);
+    let item = list.tail;
+    for (let index = list.length - 1; index >= 0; index -= 1) {
+      values[index] = item.value;
+      item = item.previous;
+    }
+    list.children = freezeOwned(values);
   }
+  return list.children;
+}
+
+function withChildList(node, list) {
+  const next = Object.fromEntries(Object.keys(node)
+    .filter(key => key !== "children")
+    .map(key => [key, node[key]]));
   Object.defineProperty(next, "children", {
     enumerable: true,
-    get() {
-      if (children === undefined) {
-        const values = new Array(list.length);
-        let item = list.tail;
-        for (let index = list.length - 1; index >= 0; index -= 1) {
-          values[index] = item.value;
-          item = item.previous;
-        }
-        children = freezeOwned(values);
-      }
-      return children;
-    }
+    get: materializeChildren
   });
   childLists.set(next, list);
   return freezeOwned(next);
