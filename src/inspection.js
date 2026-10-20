@@ -136,8 +136,17 @@ export function describeAction(program, { action, target, options = {} } = {}) {
   const missing = required.filter(key => options[key] === undefined);
   let fieldFinding = [];
   if (targetResource !== undefined && target.kind === "mark") {
+    const scoped = atChildPath(program, target.childPath);
+    // Plot editors address source roles, whereas encoding actions address the
+    // mark's materialized rows. Inspect the same data owner as the public call.
+    const owner = action.startsWith("edit") && action.endsWith("Plot")
+      ? Object.entries(scoped.markConfigs[target.id] ?? {}).find(([key]) =>
+          key.toLowerCase() === action.slice(4).toLowerCase())?.[1]
+      : undefined;
+    const sourceData = owner?.source === undefined ? targetResource.data
+      : options.data ?? owner.source;
     const schema = getDatasetSchema(program, {
-      data: targetResource.data,
+      data: sourceData,
       childPath: target.childPath
     }).schema;
     if (schema.completeness === "known") {
@@ -151,7 +160,7 @@ export function describeAction(program, { action, target, options = {} } = {}) {
           code: "missing-resource",
           reason: "field-unavailable",
           message: `Dataset does not contain field "${options[definition.path]}".`,
-          resource: resourceRef("data", targetResource.data, target.childPath),
+          resource: resourceRef("data", sourceData, target.childPath),
           optionPath: definition.path
         }));
     }

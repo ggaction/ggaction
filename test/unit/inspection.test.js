@@ -183,3 +183,25 @@ test("comparePrograms detects title layout and typography changes without changi
   }
   assert.equal(comparePrograms(before, before.editTitle({ titleStyle: { fontSize: 22 } })).equivalence, "equal");
 });
+
+test('plot field inspection follows source roles and explicit replacement data, including composed children', () => {
+  const program = chart().createCanvas().createData({ id: 'source', values: [{ x: 1, other: 4 }, { x: 2, other: 7 }] })
+    .createData({ id: 'replacement', values: [{ fresh: 3 }, { fresh: 6 }] })
+    .createECDFPlot({ id: 'curve', data: 'source', field: 'x', guides: false });
+  const before = program.trace.children.length;
+  for (const options of [{ field: 'other' }, { data: 'replacement', field: 'fresh' }]) {
+    const result = describeAction(program, { action: 'editECDFPlot', target: { kind: 'mark', id: 'curve' }, options });
+    assert.equal(result.applicability, 'supported');
+    assert.doesNotThrow(() => program.editECDFPlot({ target: 'curve', ...options }));
+  }
+  const missing = describeAction(program, { action: 'editECDFPlot', target: { kind: 'mark', id: 'curve' }, options: { field: 'missing' } });
+  assert.equal(missing.applicability, 'incompatible');
+  assert.equal(missing.findings[0].resource.id, 'source');
+  const wrongSource = describeAction(program, { action: 'editECDFPlot', target: { kind: 'mark', id: 'curve' }, options: { data: 'replacement', field: 'other' } });
+  assert.equal(wrongSource.applicability, 'incompatible');
+  assert.equal(wrongSource.findings[0].resource.id, 'replacement');
+  assert.equal(describeAction(program, { action: 'encodeX', target: { kind: 'mark', id: 'curve' }, options: { field: 'other' } }).applicability, 'incompatible');
+  const composed = hconcat({ programs: [{ id: 'left', program }, { id: 'right', program: pointProgram() }] });
+  assert.equal(describeAction(composed, { action: 'editECDFPlot', target: { kind: 'mark', id: 'curve', childPath: ['left'] }, options: { field: 'other' } }).applicability, 'supported');
+  assert.equal(program.trace.children.length, before);
+});

@@ -46,6 +46,8 @@ The exact vocabulary, defaults, geometry, and replay behavior live in
 
 ## `editECDFPlot`
 
+Field preflight for plot editors uses the owning source dataset (or explicit replacement `data`), including composed children. Ordinary encoding field checks continue to use the mark-bound dataset.
+
 `editECDFPlot({ target?, data?, coordinate?, field?, groupBy?, weight?, missing?, as?, color? })` revises one stable ECDF
 owner atomically. Omitted target uses current/unique eligible owner inference. `groupBy:false` removes grouping and
 `weight:false` returns to unweighted count. `color:false` removes grouped color; `groupBy:false` also removes its
