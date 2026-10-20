@@ -141,6 +141,8 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
   Summary 출력은 alias 대신 해당 aggregate와 원본 field에서 제목을 추론하며, live summary edit 이후에도 갱신한다.
   원본 field 없이 행 수를 집계한 `count` Summary는 제목을 `count`로 추론한다.
   ECDF value는 원본 field, probability는 `Cumulative probability`, cumulative는 `Cumulative count`로 추론한다.
+  Gradient profile의 lower/upper/center는 모두 원본 measure 제목을 공유한다. 두 방향 및 measure revision에
+  적용하며 명시적인 사용자 제목은 유지한다. Evidence: `test/unit/actions/guides/axis-title-actions.test.js`.
 - `at`: `"start" | "center" | "end"` 또는 continuous scale domain 안의 finite number; 기본 center.
 - `offset`: signed finite; positive outward, negative inward; inferred preferred defaults x `42`, y `52`.
 - `rotation`: `RotationInput = Finite | { value: Finite; unit: "degrees" | "radians" }`. 기존 finite 숫자는

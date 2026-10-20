@@ -177,7 +177,7 @@ export function inferAxisTitleText(program, channel, scaleId) {
     ) {
       const dataset = findDataset(program, layer.data);
       const transform = findUpstreamTransform(program, dataset,
-        ["density", "ecdf", "interval", "boxSummary", "summary"]);
+        ["density", "ecdf", "interval", "boxSummary", "gradientProfile", "summary"]);
       let derivedTitle;
       if (transform?.type === "density") {
         derivedTitle = encoding.field === transform.as?.[0]
@@ -194,6 +194,10 @@ export function inferAxisTitleText(program, channel, scaleId) {
         derivedTitle = `${transform.center}(${transform.field})`;
       } else if (transform?.type === "boxSummary" &&
         Object.values(transform.as).includes(encoding.field)) {
+        derivedTitle = transform.field;
+      } else if (transform?.type === "gradientProfile" &&
+        [transform.as.lower, transform.as.upper, transform.as.center].includes(encoding.field)) {
+        // Profile bounds and the optional center share one source measure.
         derivedTitle = transform.field;
       } else if (transform?.type === "summary") {
         const aggregate = transform.aggregates.find(value => value.as === encoding.field);

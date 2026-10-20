@@ -35,6 +35,29 @@ test("ECDF guides use source-facing titles through measure revisions", () => {
   assert.equal(original.graphicSpec.objects.xAxisTitle.properties.text, "income");
 });
 
+test("gradient bounds and center infer one source title in either orientation", () => {
+  for (const horizontal of [false, true]) for (const center of [false, {}]) {
+    const category = { field: "group", fieldType: "nominal" };
+    const axis = horizontal ? "x" : "y";
+    const original = chart().createCanvas({ width: 600, height: 450, margin: 100 })
+      .createData({ values: [
+        { group: "A", value: 1, other: 4 }, { group: "A", value: 2, other: 8 },
+        { group: "B", value: 3, other: 6 }, { group: "B", value: 4, other: 10 }
+      ] })
+      .createGradientPlot({ id: "plot", x: horizontal ? "value" : category,
+        y: horizontal ? category : "value", center, guides: false });
+    const guided = original.createGuides();
+    assert.equal(guided.semanticSpec.guides.axis[axis].title, "value");
+    assert.equal(guided.graphicSpec.objects[`${axis}AxisTitle`].properties.text, "value");
+    const edited = guided.editGradientPlot({ target: "plot", [axis]: { field: "other" } });
+    assert.equal(edited.graphicSpec.objects[`${axis}AxisTitle`].properties.text, "other");
+    assert.equal(guided.graphicSpec.objects[`${axis}AxisTitle`].properties.text, "value");
+    const titled = guided[horizontal ? "editXAxisTitle" : "editYAxisTitle"]({ text: "Custom" });
+    assert.equal(titled.editGradientPlot({ target: "plot", [axis]: { field: "other" } })
+      .graphicSpec.objects[`${axis}AxisTitle`].properties.text, "Custom");
+  }
+});
+
 test("infers title text and materializes centered x/y titles", () => {
   const before = program();
   const result = before.createXAxisTitle().createYAxisTitle();
