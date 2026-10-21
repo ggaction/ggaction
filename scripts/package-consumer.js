@@ -592,9 +592,12 @@ async function testNodeConsumer(directory) {
     for (const [settings, expected] of [
       [{interpolate:"lab",whitePoint:"d50",range:["red","blue"]}, "#c10088"],
       [{type:"pow",exponent:3,range:["black","white"]}, "#202020"],
-      [{interpolate:"cubehelix",gamma:2.2,range:["black","white"]}, "#373737"]
+      [{interpolate:"cubehelix",gamma:2.2,range:["black","white"]}, "#373737"],
+      [{interpolate:"cubehelix",gamma:0,range:["#75190b","#90f2a4"]}, "#d2d87c"],
+      [{interpolate:"cubehelix",gamma:-.1,range:["#75190b","#90f2a4"]}, "#dce195"]
     ]) {
-      const controls = chart().createCanvas({width:600,height:500,margin:{left:70,top:70,right:180,bottom:70}})
+      for (const factory of [chart, basicChart]) {
+      const controls = factory().createCanvas({width:600,height:500,margin:{left:70,top:70,right:180,bottom:70}})
         .createData({values:[{x:0,y:0,v:0},{x:1,y:1,v:.5},{x:2,y:2,v:1}]})
         .createScatterPlot({x:"x",y:"y",guides:false})
         .encodeColor({field:"v",fieldType:"quantitative",scale:{domain:[0,1],...settings}})
@@ -603,6 +606,9 @@ async function testNodeConsumer(directory) {
       assert.equal(controls.graphicSpec.objects.colorGradientSymbols.items[1].properties.fill, expected);
       assert.deepEqual(deserializeProgram(serializeProgram(controls)).graphicSpec,controls.graphicSpec);
       assert.ok((await renderToPNGBuffer(controls)).buffer.length>100);
+      assert.ok((await renderToPDFBuffer(controls)).buffer.length>100);
+      assert.ok(renderToSVG(controls).includes(expected));
+      }
     }
     const longLine = chart().createCanvas({ width: 440, height: 340, margin: 20 })
       .createData({ values: Array.from({ length: 12070 }, (_, i) => ({ x: i, y: i % 11 })) })

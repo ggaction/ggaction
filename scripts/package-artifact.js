@@ -25,7 +25,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 604, // Aligned array expansion adds one grammar and one wrapped action module.
   packedBytes: 856_000, // Numeric Text offsets measured855390bytes; minimal1000-byte rounding.
-  unpackedBytes: 4_136_000 // Numeric Text offsets measured4135679bytes; minimal1000-byte rounding.
+  unpackedBytes: 4_137_000 // Finite Cubehelix gamma measured4136327bytes; minimal1000-byte rounding.
 });
 
 const REQUIRED_FILES = Object.freeze([

@@ -63,8 +63,8 @@ export function referenceCubehelixColor(left,right,t,gamma=1) {
   return {h:(Math.atan2(y,x)*180/Math.PI+240)%360,s:Math.hypot(x,y)/(l*(1-l)),l};
  };
  const a=decode(left),b=decode(right);
- const h=a.h+((b.h-a.h+540)%360-180)*t,s=a.s+(b.s-a.s)*t,l=a.l+(b.l-a.l)*t**gamma;
+ const h=a.h+((b.h-a.h+540)%360-180)*t,s=a.s+(b.s-a.s)*t,l=t===0&&gamma<0&&a.l===b.l?a.l:a.l+(b.l-a.l)*t**gamma;
  const angle=(h+120)*Math.PI/180,amplitude=s*l*(1-l);
- return hex(coefficients.map(([cosine,sine])=>byte(l+amplitude*(cosine*Math.cos(angle)+sine*Math.sin(angle)))));
+ return hex(coefficients.map(([cosine,sine])=>{const value=l+amplitude*(cosine*Math.cos(angle)+sine*Math.sin(angle));return t===0&&gamma<0&&Number.isNaN(value)?0:byte(value);}));
 }
 

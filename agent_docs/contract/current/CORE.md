@@ -1731,7 +1731,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 - `whitePoint`는 lab/hcl/hcl-long에서만 `"d65" | "d50"`를 받는다. 생략은 기존 D65, D50은 adapted sRGB/XYZ 행렬로 opt-in한다. Focused/generic edit의 `"auto"`는 explicit leaf를 제거한다. Interpolate를 다른 값으로 명시 편집하면 생략한 whitePoint/gamma는 기본값으로 돌아간다. 유지하려면 같은 편집에 다시 지정하며, 새 보간법과 비호환인 explicit 조합은 오류다. Mark/stroke/gradient/sample 범례는 같은 mapper를 공유한다. Evidence: `test/unit/grammar/scales/continuous-color-options.test.js`, `test/unit/actions/scales/color-interpolation-options.test.js`, `test/unit/actions/scales/color-primitive-parity.test.js`.
 - HCL/HCL-long은 파싱된 R/G/B가 정확히 같은 endpoint를 chroma0/undefined hue로 취급한다. 한쪽만 neutral이면 구간 hue를 반대 유채색 hue로 고정하고, 양쪽 neutral이면 hue0/chroma0으로 lightness만 보간한다. 별도 epsilon이나 byte 양자화를 추가하지 않고 기존 D50/D65 행렬·endpoint 정규화·최종 byte 반올림을 유지한다. 유채색끼리의 short/long 경로는 기존과 같다. Evidence: `test/unit/grammar/scales/neutral-hcl.test.js`, `test/unit/actions/scales/neutral-hcl-consumers.test.js`.
 - Continuous color의 `type:"pow"`와 positive finite `exponent`(기본1)는 기존 signed raw-value transform을 사용한다. `[f(v)-f(d0)]/[f(d1)-f(d0)]`를 색 위치로 사용하고 numeric midpoint는 거부한다. 원래 값의 범례 label/tick과 변환 위치를 유지한다. Exponent1로 reset하며 다른 type의 explicit exponent는 오류다. 기존 log/sqrt/symlog와 일반 position 척도는 같은 수치 owner를 유지한다.
-- `gamma`는 cubehelix/cubehelix-long에만 positive finite 값, 기본1, edit의 `"auto"` reset이다. Hue/saturation은 구간 t를 보존하고 lightness만 t**gamma로 보간한다. 기존 8bit endpoint와 final byte rounding을 유지한다. Clamp 뒤 적용하며 unclamped 음수 t의 fractional power 등 nonfinite 실수 결과는 원자적 오류다. 비호환 inherited 값 제거와 explicit 조합 거부는 whitePoint와 같다.
+- `gamma`는 cubehelix/cubehelix-long에만 finite number(0·음수 포함), 기본1, edit의 `"auto"` reset이다. Hue/saturation은 구간 t를 보존하고 lightness만 t**gamma로 보간한다. 0은 0**0도1이며 구간 오른쪽 lightness를 쓴다. 음수 gamma의 t=0에서만 같은 endpoint lightness와 saturation0의 무채색을 보존하고, 나머지 확장 RGB채널의 NaN/-Infinity는0,+Infinity는1로 제한한 뒤 기존8bit반올림을 한다. 이 경계를 일반 invalid raw fallback으로 사용하지 않는다. t!=0의 nonfinite power/음수gamma RGB산술은 원자적 오류다. Clamp 뒤 적용하고 여러stop의 정확한 내부경계는 오른쪽구간t0을 쓴다. 기존 양수·생략·1의 결과, 8bit endpoint와 final byte rounding은 유지한다. 비호환 inherited 값 제거와 explicit 조합 거부는 whitePoint와 같다. Evidence: `test/unit/grammar/scales/nonpositive-color-gamma.test.js`, `test/unit/actions/scales/nonpositive-color-controls.test.js`, `test/charts/color-controls/public.test.js`.
 - `unknown`은 direct unattached scale에서는 channel을 알 수 없으므로 그대로 저장한다. Consumer가 attach될 때
   concrete channel fallback validation과 supported item-grain policy를 적용한다.
 - Standalone `createScale`/`editScale`은 위의 전체 vocabulary를 유지하지만 action 안의 nested scale은
@@ -1757,7 +1757,7 @@ type ScaleType =
   | "sequential" | "quantize" | "quantile" | "threshold";
 ```
 
-- Implemented: `createScale({ id: UserId; type?: ScaleType; domain?: ContinuousDomain | OrdinalDomain; range?: "auto" | readonly unknown[]; nice?: boolean; zero?: boolean; clamp?: boolean; reverse?: boolean; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite; padding?: NonNegativeFinite; align?: UnitInterval; palette?: Palette; interpolate?: ContinuousColorInterpolation; whitePoint?: "d65" | "d50"; gamma?: PositiveFinite; midpoint?: number | "auto"; radialMapping?: "area" | "radius-length"; unknown?: unknown })`; type별 validation이 값을 제한한다. `time`은 유일한 UTC temporal token이다.
+- Implemented: `createScale({ id: UserId; type?: ScaleType; domain?: ContinuousDomain | OrdinalDomain; range?: "auto" | readonly unknown[]; nice?: boolean; zero?: boolean; clamp?: boolean; reverse?: boolean; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite; padding?: NonNegativeFinite; align?: UnitInterval; palette?: Palette; interpolate?: ContinuousColorInterpolation; whitePoint?: "d65" | "d50"; gamma?: Finite; midpoint?: number | "auto"; radialMapping?: "area" | "radius-length"; unknown?: unknown })`; type별 validation이 값을 제한한다. `time`은 유일한 UTC temporal token이다.
 - Maybe Future (NOT IMPLEMENTED): `{ type?: "identity" | "bin-ordinal" }`.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -1853,7 +1853,7 @@ type EditableCurrentScale = {
   padding?: NonNegativeFinite;
   align?: UnitInterval;
   palette?: Palette;
-  interpolate?: ContinuousColorInterpolation; whitePoint?: "d65" | "d50" | "auto"; gamma?: PositiveFinite | "auto"; midpoint?: number | "auto";
+  interpolate?: ContinuousColorInterpolation; whitePoint?: "d65" | "d50" | "auto"; gamma?: Finite | "auto"; midpoint?: number | "auto";
   unknown?: unknown;
 };
 ```

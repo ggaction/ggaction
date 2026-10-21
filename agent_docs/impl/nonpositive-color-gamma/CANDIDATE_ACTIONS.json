@@ -1,7 +1,7 @@
 {
-  "status": "approved-existing-parameter-domain-extension",
+  "status": "implemented-local-source-package-verified-clean-docs-cohort-pending",
   "approval": "Direct human standing approval of all previous and future in-scope API, numeric and visual questions; no image inspection.",
-  "implemented": false,
+  "implemented": true,
   "newActions": [],
   "newOptions": [],
   "parameter": "gamma",

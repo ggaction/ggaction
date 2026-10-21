@@ -1859,6 +1859,7 @@ export interface ScaleOptions {
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
   whitePoint?: "d65" | "d50";
+  /** Finite Cubehelix lightness gamma, including zero and negative values. Defaults to 1. */
   gamma?: number;
   midpoint?: number | "auto";
   unknown?: unknown;
@@ -2016,6 +2017,7 @@ export interface EditScaleOptions {
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
   whitePoint?: "d65" | "d50" | "auto";
+  /** Finite Cubehelix lightness gamma; auto restores 1. */
   gamma?: number | "auto";
   midpoint?: number | "auto";
   unknown?: unknown;

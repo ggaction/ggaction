@@ -86,16 +86,31 @@ other endpoint's hue; two neutral endpoints interpolate lightness with zero
 chroma. This applies to D50 and D65. Chromatic endpoints retain the ordinary
 short or long hue path, and final RGB byte rounding stays unchanged.
 
-Cubehelix and cubehelix-long interpolation accept a positive finite `gamma`.
+Cubehelix and cubehelix-long interpolation accept any finite numeric `gamma`,
+including zero and negative values.
 The default is `1`; `editColorScale({ gamma: "auto" })` restores that default.
 Within each range segment, hue and saturation use the original position `t`,
 while lightness uses `t ** gamma`. Gamma does not exponentiate the complete
 color or alter hue progression. Other interpolation modes reject explicit
-gamma, including `1`. A nonfinite real result during unclamped extrapolation
-rejects atomically; clamping occurs before gamma. Range endpoints retain the
+gamma, including `1`. Zero gamma keeps the segment's right-end lightness,
+including at `t = 0`, while hue and saturation continue to change.
+For negative gamma at zero segment position, constant lightness and neutral
+saturation are retained. Remaining extended RGB channels are bounded to bytes:
+NaN and negative infinity become 0, and positive infinity becomes 255. This is
+only the zero-position boundary, not an invalid-data fallback.
+Other nonfinite real powers or negative-gamma RGB overflow reject atomically;
+clamping occurs before gamma. With multiple stops, each half-open segment uses
+its own position and an exact interior stop belongs to the segment on its right.
+Range endpoints retain the
 ordinary 8-bit RGB normalization, and final channels use the same byte rounding
 as other interpolation modes. When changing `interpolate`, supply `gamma` again
 to retain it; omission restores `1`. An explicitly incompatible pair rejects.
+
+On an existing Cubehelix scale, `program.editColorScale({ gamma: 0 })` fixes
+lightness at the right endpoint; `program.editColorScale({ gamma: -0.1 })`
+extrapolates it toward the beginning of each segment. The
+[complete color controls program](https://github.com/ggaction/ggaction/blob/main/examples/color-controls/program.js) also exports
+`createZeroGammaControls` and `createBelowZeroGammaControls` as complete programs.
 
 <!-- snippet-context:start -->
 

@@ -1,0 +1,151 @@
+{
+  "status": "implemented-source-checkpoint-clean-metadata-verification-pending",
+  "issue": 249,
+  "authority": "Direct human standing approval, regular publication at1413",
+  "normalInitial": {
+    "tests": 5013,
+    "pass": 5011,
+    "fail": 2,
+    "failures": [
+      "source-neutral example export identifier now renamed",
+      "example source link requires this source commit"
+    ]
+  },
+  "normal": {
+    "pass": 5011,
+    "fail": 2,
+    "pending": "Clean source documentation/terminology tests after commit; no runtime failures"
+  },
+  "focusedDistinctTestsBeforeNormal": 72,
+  "installedConsumerGroups": 64,
+  "installedConsumer": {
+    "package": "ggaction@0.0.21",
+    "source": "ggaction-0.0.21.tgz",
+    "sha256": "f7120b81e4763e83a50a138c8232fdd366199d65719f1be422f313c7f2b64a60",
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 536,
+        "minifiedBytes": 1565966,
+        "gzipBytes": 424886
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 321,
+        "minifiedBytes": 758812,
+        "gzipBytes": 213913
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 19,
+        "minifiedBytes": 23548,
+        "gzipBytes": 7567
+      }
+    },
+    "mcp": {
+      "coldStartMilliseconds": 299
+    },
+    "checks": [
+      "node",
+      "linear-regression-statistics-cache-and-source-revision",
+      "extension",
+      "pdf",
+      "png",
+      "svg",
+      "inspection",
+      "numeric-font-weight",
+      "point-jitter",
+      "point-packing",
+      "mark-label-removal",
+      "selected-mark-labels",
+      "semantic-label-placement",
+      "beeswarm-plot",
+      "raincloud-plot",
+      "path-order",
+      "time-unit-data",
+      "summary-data",
+      "bin-data",
+      "fold-data",
+      "computed-data",
+      "derived-data-editing",
+      "safe-resource-removal",
+      "advanced-authoring-integration",
+      "normalized-data",
+      "complete-data",
+      "imputed-data",
+      "stack-data",
+      "window-data",
+      "bin2d-data",
+      "binned-heatmap",
+      "parallel-coordinates",
+      "parallel-dimension-scale-editing",
+      "offset-scale-editing",
+      "stroke-color-encoding-and-legends",
+      "atomic-channel-encoding",
+      "axis-title-label-overlap-policy",
+      "numeric-independent-text-offsets",
+      "statistical-references",
+      "coordinate-aspect-and-polar-frame-editing",
+      "facet-grid-repeat-and-named-composition-editing",
+      "non-cartesian-facet-grid-and-repeat",
+      "horizon",
+      "violin-plot",
+      "polar-radar-rug-strip-ecdf-facades",
+      "right-categorical-legend-offset",
+      "grouped-corner-and-free-legend-placement",
+      "sequential-palette-count",
+      "ranged-numeric-datum-wrapper-parity",
+      "neutral-hcl-hue-borrowing",
+      "facet-numeric-legend-inference",
+      "explicit-fold-facet-partition",
+      "shared-facet-top-lane",
+      "explicit-axis-and-border-underlays",
+      "typescript",
+      "basic-entry-runtime-and-types",
+      "tutorial-consumers",
+      "minimal-browser-bundle-measurement",
+      "private-export-rejection",
+      "installed-local-mcp",
+      "direct-mcp-byte-equality",
+      "task-packet-v5-authoring-execution",
+      "explicit-unresolved-docs-fallback",
+      "terminal-unsupported-no-fallback"
+    ]
+  },
+  "publicPrimitiveEvidence": "PUBLIC_TARGET_EVIDENCE.json",
+  "publicReleaseAt": 1413,
+  "activeTranslationRuntimeChanged": false,
+  "registryPublished": false,
+  "SchoolRequests": 0,
+  "resourceAdjustment": {
+    "previousUnpacked": 4136000,
+    "measuredUnpacked": 4136327,
+    "newUnpacked": 4137000,
+    "policy": "Minimal1000-byte rounding, all604files and existing packed/browser/search ceilings retained"
+  },
+  "logs": [
+    {
+      "path": "/tmp/ggaction-nonpositive-gamma-normal-v1.log",
+      "sha256": "edc5e95716841d620f01c909858fe8572edba93f007c077b75858101ba74db57"
+    },
+    {
+      "path": "/tmp/ggaction-nonpositive-gamma-package-consumer-v1.log",
+      "sha256": "617bda636f26fc5af1eab5faffbc8099cfb18bb86e8989cb4cbd1bd5504ebf1a"
+    },
+    {
+      "path": "/tmp/ggaction-nonpositive-gamma-package-consumer-v2.log",
+      "sha256": "d5455da4b52c9bcff4c1b2e2083602fe2fe32cb02fbc8dc7aa8628ffcecdab41"
+    },
+    {
+      "path": "/tmp/ggaction-nonpositive-gamma-docs-generation-v1.log",
+      "sha256": "bf464638afd7794344427fa0b1884d6cc456867bdc093eae98ce3a4776a0ac47"
+    },
+    {
+      "path": "/tmp/ggaction-nonpositive-gamma-docs-built-v1.log",
+      "sha256": "8b67b737002bb9a40f52b91eba9a2aba91b043a875723aacaf5ca645421b217d"
+    }
+  ]
+}

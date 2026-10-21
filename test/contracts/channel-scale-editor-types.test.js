@@ -41,6 +41,10 @@ p.encodeColor({ field: "m", fieldType: "quantitative", scale: { type: "sqrt" } }
 basic.encodeColor({ field: "m", fieldType: "quantitative", scale: { type: "sqrt" } });
 p.encodeColor({ field: "m", fieldType: "quantitative", scale: { type: "pow", exponent: 3, interpolate: "lab", whitePoint: "d50" } });
 basic.encodeColor({ field: "m", fieldType: "quantitative", scale: { interpolate: "cubehelix", gamma: 2.2 } });
+basic.encodeColor({ field: "m", fieldType: "quantitative", scale: { interpolate: "cubehelix-long", gamma: 0 } });
+p.encodeColor({ field: "m", fieldType: "quantitative", scale: { interpolate: "cubehelix-long", gamma: -0.1 } });
+p.editColorScale({ gamma: 0 });
+p.editStrokeScale({ target: "points", gamma: -0.1 });
 p.editColorScale({ interpolate: "hcl", whitePoint: "d50" });
 p.editColorScale({ whitePoint: "auto" });
 p.editColorScale({ gamma: "auto" });

@@ -43,6 +43,14 @@ export const literalColors = {
     "#62d654",
     "#90f2a4"
   ],
+  "gamma0": [
+    "#ffb2a4", "#ffba93", "#f6c487", "#e5ce7e", "#d2d87c",
+    "#bfe17e", "#ade986", "#9def93", "#90f2a4"
+  ],
+  "gammaNegative": [
+    "#00ffff", "#ffe9db", "#fcdeb8", "#eedda2", "#dce195",
+    "#c8e68f", "#b3eb90", "#a0f097", "#90f2a4"
+  ],
   "power": [
     "#0000ff",
     "#4a00b5",
@@ -87,9 +95,9 @@ export const rowGeometry = {
     "height": 25
   }
 };
-export function primitiveItems(name) {
+export function primitiveItems(name, colors = literalColors[name]) {
   const row = rowGeometry[name];
-  return literalColors[name].map((fill, i) => ({ type: "rect", properties: {
+  return colors.map((fill, i) => ({ type: "rect", properties: {
     x: row.x + i * row.width, y: row.y, width: row.width, height: row.height,
     fill, opacity: 1, stroke: "transparent", strokeWidth: 0
   } }));

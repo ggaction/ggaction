@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { visualVariants } from "./manifest.js";
-import { literalColors, rowGeometry } from "./fixtures.js";
+import { rowGeometry } from "./fixtures.js";
 for (const variant of visualVariants) {
   test(`${variant.variant} primitive contains only explicit bounded rectangles in row order`, () => {
     const program = variant.primitive();
@@ -19,7 +19,7 @@ for (const variant of visualVariants) {
         assert.equal(item.id, `${region.name}:${index}`);
         assert.deepEqual(item.properties, {
           x:row.x+index*row.width, y:row.y, width:row.width, height:row.height,
-          fill:literalColors[region.name][index], opacity:1, stroke:"transparent",strokeWidth:0
+          fill:region.colors[index].value, opacity:1, stroke:"transparent",strokeWidth:0
         });
         assert.ok(item.properties.x>=0 && item.properties.x+row.width<=480);
         assert.ok(row.y>=0 && row.y+row.height<=270);

@@ -25,7 +25,7 @@ test("positive cubehelix gamma affects lightness and preserves gamma-one default
  }
  assert.throws(()=>mapSequentialColors([-1],[0,1],["black","white"],{interpolation:"cubehelix",gamma:.5}),/nonfinite/);
  assert.deepEqual(mapSequentialColors([-1,2],[0,1],["black","white"],{interpolation:"cubehelix",gamma:.5,clamp:true}),["#000000","#ffffff"]);
- for(const gamma of [0,-1,Infinity,NaN,"2"])assert.throws(()=>mapSequentialColors([.5],[0,1],["black","white"],{interpolation:"cubehelix",gamma}));
+ for(const gamma of [Infinity,-Infinity,NaN,"2"])assert.throws(()=>mapSequentialColors([.5],[0,1],["black","white"],{interpolation:"cubehelix",gamma}));
  for(const options of [{whitePoint:"d55",interpolation:"lab"},{whitePoint:"d50",interpolation:"rgb"},{gamma:2,interpolation:"hcl"}])assert.throws(()=>mapSequentialColors([.5],[0,1],["red","blue"],options));
 });
 test("cubehelix gamma matches independently decoded quantized chromatic endpoints",()=>{

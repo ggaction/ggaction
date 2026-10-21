@@ -97,3 +97,14 @@ export function createColorControls() {
     .encodeColor(powerColorOptions)
     .editColorScale(powerEditOptions);
 }
+
+export const zeroGammaEditOptions = { target: "gamma22", gamma: 0 };
+export const belowZeroGammaEditOptions = { target: "gamma22", gamma: -0.1 };
+export const zeroGammaPublicCalls = [...publicCalls, { op: "editColorScale", args: zeroGammaEditOptions }];
+export const belowZeroGammaPublicCalls = [...publicCalls, { op: "editColorScale", args: belowZeroGammaEditOptions }];
+export function createZeroGammaControls() {
+  return createColorControls().editColorScale(zeroGammaEditOptions);
+}
+export function createBelowZeroGammaControls() {
+  return createColorControls().editColorScale(belowZeroGammaEditOptions);
+}
